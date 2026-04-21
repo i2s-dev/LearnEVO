@@ -19,3 +19,7 @@ env/
 _served.css
 *.log
 *.tmp
+
+# Built Docker image tarballs (rebuilt via deploy/build-image.bat)
+deploy/*.tar
+deploy/*.tar.gz

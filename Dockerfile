@@ -1,19 +1,26 @@
-# Minimal image for the LearnEVO help viewer.
+# Self-contained image for the LearnEVO help viewer.
 #
-# Only server.py is baked into the image. The rest of learnevo-help/
-# (content, data, css, js, index.html, glossary.py, build.py) is expected
-# to be bind-mounted at /app/learnevo-help so that `git pull` on the host
-# updates the served content with no image rebuild.
+# Used for the i2s111-CTDC4 deploy where the server has Docker but no
+# git and no Python. Everything the viewer needs is baked in; updates
+# are shipped by rebuilding the image here, saving to a tar file, and
+# copying that one file to the server.
 #
-# Rebuild the image only when server.py, Python version, or system deps
-# change:
-#     docker compose up -d --build
+#   Build:    deploy/build-image.bat        (on the workstation)
+#   Deploy:   deploy/update-server.bat      (on i2s111-CTDC4)
 FROM python:3.12-alpine
 
 WORKDIR /app/learnevo-help
 
-# Bake only the server. Content comes from the bind-mount at runtime.
+# Copy the server first so later rebuilds that only touch content reuse
+# this layer from cache.
 COPY learnevo-help/server.py ./server.py
+
+# Copy the viewer itself (prebuilt content + static assets).
+COPY learnevo-help/index.html   ./index.html
+COPY learnevo-help/css/         ./css/
+COPY learnevo-help/js/          ./js/
+COPY learnevo-help/content/     ./content/
+COPY learnevo-help/data/        ./data/
 
 ENV HOST=0.0.0.0 \
     PORT=8765 \

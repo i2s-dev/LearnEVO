@@ -1,8 +1,29 @@
-# Only learnevo-help/server.py is COPYed into the image; everything
-# else is bind-mounted at runtime. We still trim the build context so
-# `docker build` doesn't send 100MB of samples to the daemon each time.
+# Shrink the Docker build context. The Dockerfile only COPYs specific
+# subpaths under learnevo-help/, but excluding the heavy folders here
+# keeps `docker build` fast by never sending them to the daemon.
 .git/
+.gitattributes
+.gitignore
+.dockerignore
 samples/
 docs/
 research/
 scripts/
+deploy/
+__pycache__/
+*.pyc
+*.pyo
+*.swp
+Thumbs.db
+.DS_Store
+BUGS.md
+CLAUDE.md
+README.md
+LICENSE
+RUN.bat
+learnevo-help/build.py
+learnevo-help/launch.bat
+learnevo-help/kill-help-server.ps1
+learnevo-help/README.md
+learnevo-help/__pycache__/
+learnevo-help/content/glossary.py

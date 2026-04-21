@@ -1,24 +1,20 @@
-# Deploy target: i2s111-CTDC4 (Windows server, Docker).
+# Deploy target: i2s111-CTDC4 (Docker-only server, no git, no Python).
 #
-# Usage on the server:
-#     cd C:\deploy\LearnEVO
-#     docker compose up -d --build          # first run / after Dockerfile edits
-#     git pull                              # for content updates (no rebuild)
+# This compose file references an image that is loaded from a tar file
+# via `docker load -i evo-help.tar`. There is no `build:` step here —
+# the server never builds images.
 #
-# The ./learnevo-help volume is mounted read-only so the container can
-# never mutate the checked-out working tree.
+# First-time setup / every update, from the folder where this file lives:
+#     docker load -i evo-help.tar
+#     docker compose up -d --force-recreate
+#
+# Or, the one-click wrapper that does both:
+#     update-server.bat
 
 services:
   evo-help:
-    build: .
-    image: evo-help:local
+    image: evo-help:latest
     container_name: evo-help
     restart: unless-stopped
     ports:
       - "8765:8765"
-    volumes:
-      - ./learnevo-help:/app/learnevo-help:ro
-    environment:
-      HOST: 0.0.0.0
-      PORT: "8765"
-      NO_BROWSER: "1"
