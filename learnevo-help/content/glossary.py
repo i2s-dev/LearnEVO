@@ -149,4 +149,12 @@ GLOSSARY = [
 "The document that tells the shop floor what to make. See [[module-WO]] and [[recipe-work-order]].",
 ["module-WO", "recipe-work-order"]),
 
+("EvoHELP.CHM", "The user-facing EVO help file",
+"A standard Windows Compiled HTML Help (`.CHM`) file living at `C:\\ISTS\\EvoHELP.CHM`. Opened with F1 from inside EVO via `WINHLP32.EXE` (or the modern HHview equivalent). Contains 779 topics — one per menu operation plus ~90 conceptual chapters. Separate from (and complementary to) this LearnEVO help browser. See [[help-system]] and [[CHM]].",
+["CHM", "help-system"]),
+
+("tp7runtime.exe", "The TAS Professional 7 runtime — what actually runs EVO",
+"The ~8 MB Borland Delphi executable at `C:\\ISTS\\tp7runtime.exe` that loads and interprets every `.RWN` program, renders `.DFM` forms, talks to Pervasive/Btrieve, drives ReportBuilder, and embeds DCPcrypt (Twofish, SHA-1) for `.RWN`/`.DCY` decryption. Launched by `StartEvo.exe`, which points it at `\\\\i2s109-solidcrm\\DBAMFG$\\EvoERPmenu.rwn`. See [[boot-sequence]] and [[format-rwn]].",
+["TAS Professional (TAS Pro 7)", "DCPcrypt", "Twofish", "format-rwn", "boot-sequence"]),
+
 ]

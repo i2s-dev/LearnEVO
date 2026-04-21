@@ -1289,6 +1289,636 @@ DSN setup and example queries.
 ["data dictionary", "schema", "ddf", "pervasive", "btrieve", "field", "table"]),
 
 # =====================================================================
+# File-format deep-dive pages
+# =====================================================================
+
+("format-src", "SRC — TAS Professional 4GL Source", "Reference",
+"""
+`.SRC` files are the **plaintext source code** for TAS Professional
+programs — the language EVO is written in. ASCII, CR+LF line endings,
+no BOM. Keywords are case-insensitive; `;` starts a line comment.
+
+Only a handful survive on the share (`BKAWLB.SRC`, `BKDCA.SRC`,
+`BKLME.SRC`, `BKMRF.SRC`, `BKROA.SRC`, `Bkaph.SRC`, `Bkapha.SRC`) —
+copies in `samples/src/`. Most TAS source has been stripped before
+distribution; only compiled `.RWN` / `.RUN` ships.
+
+## Top-of-file directives
+
+```src
+;BKAWLB.src
+;Cvtd from TAS-Pro 3.0 edt to 5.0 src on 01/18/96
+;
+#UDX           ;allow both UDFs and UDCs
+#LIB LOOKUPS   ;link the DBA Routines library
+#LIB windows
+#INC HELPSCRN  ;source-level include
+SETUP_COLOR    ;macro from TASCOLOR.OVL
+```
+
+| Directive | Meaning |
+| --- | --- |
+| `#PRO3` | Target the Pro-3 compiler dialect (rare, often commented out). |
+| `#UDX` | Allow **U**ser-**D**efined **F**unctions and **C**ommands. |
+| `#LIB <name>` | Link against a named library (`LOOKUPS`, `windows`, `DBA`). |
+| `#INC <name>` | Source-level include. |
+| `#TDATA <n>` | Set total data segment size. |
+| `#WINFORM` | This program has a Windows form (loads paired `.DFM`). |
+| `#WINREPORT` | This program drives a ReportBuilder template. |
+| `#FORMSENCRYPTED` | Companion form is `.DCY` (encrypted), not `.DFM`. |
+| `#FORCERWN` | Must run as RWN, not legacy RUN. |
+| `#MAINMENU` | Program is a menu entry. |
+| `#DONTCOMPILE` | Skip this file during batch compile. |
+
+## Variables — `define`
+
+```src
+define PRT_WHR     type A size 1
+define PAGE        type I size 5
+define SELECT_FROM1 type D size 8
+define MENU_HLDR   type A size 22 array 7
+define inc.all.class, inc.blank.class type A size 1
+```
+
+Field types, from the compiler's own error 7621 — `"Field type must be
+one of: I, B, R, P, T, D, N, L, A, F"`:
+
+| Code | Type |
+| --- | --- |
+| `A` | Alpha (fixed-length string) |
+| `N` | Numeric (decimal; `dec <n>` sets fraction digits) |
+| `I` | Integer (up to 10 digits) |
+| `B` | Byte |
+| `R` | Record position / file pointer |
+| `P` | Memory pointer |
+| `T` | Time |
+| `D` | Date |
+| `L` | Logical (boolean; `.t.` / `.f.` literals) |
+| `F` | File handle / float |
+
+Arrays: `array <N>` — 1-based, fixed size. Identifiers can contain `.`
+(`inc.all.class`) — a holdover from dBase/Clipper tradition; the
+compiler rewrites `.` to `_` when persisting to the DDF, so source
+`BKAR.CUSTCODE` = DDF `BKAR_CUSTCODE`.
+
+## Database I/O
+
+```src
+open BKARCUST lock N
+find F srch BKSY.ARINV.NUM nlock
+clr BKSYMSTR rec
+```
+
+- `open <table> lock N` — open a Btrieve data file, `N` = shared read.
+- `find F srch <key>` — find first record matching key.
+- `clr <table> rec` — clear the record buffer.
+- Field access: `bksy.comp.name` — prefix is a 4-letter table
+  abbreviation (`BKSY` = `BKSYMSTR`).
+
+## Control flow
+
+`if cond ... [else_if ...] [else ...] endif`
+`for(v; start; end; step) ... next`
+`while ... loop_if ... exit_if`
+`select ... otherwise ... endselect`
+`goto <label>`, `gosub <label>` / `return`, `chain`, `chainr`, `quit`.
+
+Keyboard traps: `trap <key> goto <label>` / `trap <key> gosub <label>`
+/ `trap <key> dflt` (revert to default behaviour).
+
+## UI — screens and input
+
+```src
+mount SELECT2 type S
+prg_hdr "LW-J-B  Print Work Order Schedule"
+
+START:
+  xtrap chg ignr
+  fnc_list '','Esc Exit'
+  enter e.status[1] mask 'X ' up acr pre pre.stat() upar START
+  menu at 5,5 len 9 wdt 19 fld MENU_HLDR cntr SORT_BY nch 7 ttl "Sort by"
+```
+
+Input-statement grammar, **verbatim from the runtime string table**:
+
+```
+ENTER  |(*field_name*) (*MASK f/c/e*) (*HELP lbl/@udf*) (*UPAR lbl*)
+       (*UP*) (*ACR*) (*PSWD*) (*AT col;row*) (*NOREV*) (*COLOR f/c/e*)
+       (*PRE udf*) (*POST udf*) (*DFLT f/c/e*) (*VLD udf*) (*VLDM f/c/e*)
+       (*DO udf*) (*ARRAY*) (*CNTR fn/v*)
+       (*ENUM f/c/e1,...*) (*AUTO_SRCH*) (*GROUP f/c/e*)
+       (*NOCLICKOFF*) (*NOCLICKON*)
+```
+
+Inline user-defined functions live in `{ … }` blocks attached to the
+statement that references them:
+
+```src
+enter INC.ALL.CLASS mask 'YN' up post post.incall() acr
+  {
+    func post.incall
+      if inc.all.class = 'Y'
+         for(mcntr;1;6;1)
+           inc.class[mcntr] = ' '
+         next
+         inc.blank.class = 'Y'
+      endif
+      ret .t.
+  }
+```
+
+## What the language can reach
+
+From the runtime's keyword list — not a toy 4GL:
+
+- **Windows:** `OLECALL` (COM/OLE), `LOAD_DLL`, `REGEDIT`, `SENDKEYS`,
+  `APPACTIVATE`, `ISREMOTESESSION`, `GET_UNC_PATH`, `PLAYWAV`.
+- **Network / HTTP:** `GET_WEBSOURCE`, `GET_IP`,
+  `GET_SERVER_DATETIME`.
+- **SQL:** `SQLCALL`, `MYSQL_QUERY`.
+- **Runtime eval:** `COMPILE_EXPR`, `COMPILE_SRC`, `EXEC_TOP_WAIT`.
+- **Crypto:** `ENCRYPTSTR`, `DECRYPTSTR`.
+- **Data engine:** `USECODEBASE` (switch to CodeBase DBF),
+  `BTRIEVE_VERSION`, `PERVASIVE_SERVER`, `CREATE_DBF`,
+  `REC_LOCK`, `UNLOCK`, `DUPCHECK`.
+- **Reporting:** region-based (`INIT_REGION`, `MARK_REGION`,
+  `PRINT_REPORT`) and ReportBuilder (`EXEC_RB`, `RTM_FN`,
+  `REPORTNAME`, `PRINT_ARCHIVE`). See [[format-rtm]].
+- **Forms:** `WMOUNT`, `LOAD_FORM`, `LOAD_MODAL_FORM`, `DATA_GRID`
+  (bind a `TASDataGrid`), `NAVIGATOR`, `SET_OBJ_PROP`.
+
+## Naming convention for SRC files
+
+- `BK*` — Book-keeping / backbone modules from the TAS-Pro 3→5 era.
+- `T6*` — TAS Pro 6 generation (mostly compiled `.RUN`, not shipped as `.SRC`).
+- `T7*` — TAS Pro 7 generation (mostly compiled `.RWN` + `.DFM`).
+
+Module letter code in positions 3–4: `AR` / `AP` / `IN` / `SO` / `PO`
+/ `WO` / `GL` / `LW` / `LA` / `AW`.
+
+## Related
+
+- [[format-rwn]] — the compiled binary this source produces
+- [[format-dfm]] — the paired UI form
+- [[format-rtm]] — the report templates SRC programs drive
+- [[src-deep-dive]] — longer walk-through of a single program
+- [[file-formats]]
+""",
+["src", "source", "tas", "4gl", "language", "compiler", "syntax"]),
+
+
+("format-rwn", "RWN / DCY — Compiled TAS Pro 7 Binaries (Encrypted)", "Reference",
+"""
+`.RWN` is the **compiled TAS Pro 7 program** — the binary that
+`tp7runtime.exe` loads and runs. `.DCY` is the **encrypted form file**
+paired with it (the plaintext form is a `.DFM`). `.SCY` and `.LCY` are
+the same scheme applied to `.SRC` and `.LIB`.
+
+All four formats share one encryption pipeline. That pipeline is
+**confirmed by static analysis**, though the key itself has not been
+recovered from the runtime.
+
+## The encryption scheme
+
+- **Cipher:** Twofish (16-byte block) via the DCPcrypt Delphi library
+  (`TDCP_twofish`). No other 16-byte-block cipher is present in the
+  runtime.
+- **Mode:** CFB (ciphertext feedback). Proven by a divergence pattern
+  across file pairs: where two plaintexts match, their ciphertexts
+  XOR to the same value; where they diverge, the divergence begins
+  on a 16-byte boundary.
+- **IV:** the zero block. The first-block keystream is identical for
+  every encrypted file on the install — verified across 37 RWN and
+  14 DCY samples.
+- **Key:** a 16/24/32-byte Twofish key derived at runtime from a
+  passphrase baked into `tp7runtime.exe`. **Not recovered.**
+- **File layout:**
+  ```
+  [8-byte per-file salt] [CFB-encrypted body of same length as plaintext]
+  ```
+  The salt varies per file but does **not** influence the keystream —
+  different-salt/same-plaintext files produce identical ciphertext
+  after the salt. Role appears to be integrity-check or timestamp.
+
+The recovered first-block keystream is:
+
+```
+Stream[0] = 0f 73 76 7a a2 96 13 78 75 ea a2 2d 6f c6 4b 54
+```
+
+XOR this against bytes `8..23` of any encrypted file on the install
+and you get the plaintext's first 16 bytes.
+
+## How the encryption was identified
+
+Strings inside `tp7runtime.exe`:
+
+- At file offset `0x6232e4`:
+  `"You may only encrypt .DFM, .SRC & .LIB files."` → `DFM→DCY`,
+  `SRC→SCY`, `LIB→LCY`. The older `.RUN` format was never encrypted.
+- At `0x34e735`: `TDCP_twofish`, `Twofish.pas`, `DCPcrypt`,
+  `TDCP_sha1` — the full DCPcrypt library is statically linked.
+- At nearby offsets:
+  `"@TAS 7i Run Programs (RWN)|*.RWN|TAS 5.1 Run Programs (RUN)|*.RUN"`
+  — the file-dialog filter, which dates the split between RUN (TAS 5/6)
+  and RWN (TAS 7).
+
+## Why the key is hard to get statically
+
+The passphrase is never stored as a bare string. It is constructed at
+run time from DCPcrypt's key-setup routine (`TDCP_cipher.InitStr`)
+which applies SHA-1 expansion to whatever phrase is supplied. Tried
+and failed:
+
+1. Every printable string ≥ 3 chars in `tp7runtime.exe` (474,537 of
+   them) as a direct Twofish key with zero / space / repeat padding.
+2. MD5 / SHA-1 / SHA-256 of each of those strings.
+3. ~60 hand-crafted EVO/TAS-related phrases with upper / lower /
+   reverse / padded variants.
+4. High-entropy scan of the 20 KB of `.text` around the `.DCY`
+   references and the Twofish-class VMT.
+
+None matched. What would work: live-debugger breakpoint on
+`TDCP_twofish.Init`, read the key buffer. That requires a running
+process, which is out of scope for static read-only analysis.
+
+## What can be read today
+
+- **First 16 bytes of every encrypted file** — via `Stream[0]` XOR.
+  - Every `.DCY` decrypts to `object EditForm<N>:` (standard Delphi
+    form text header) → confirms same plaintext domain as `.DFM`.
+  - Every `.RWN` decrypts to a fixed 16-byte header whose bytes at
+    positions 3/7/11/14/15 are invariant `f3 79 b2 31 ec` across 23
+    samples → that's the TAS-Pro-7 compiled-program magic.
+- **Full plaintext for 13 DCY files** that have a matching plaintext
+  DFM still on the share. XORing plaintext with ciphertext yields the
+  per-file keystream; the keystream validates that the DFM is the
+  genuine source of the DCY.
+
+Pairs in `samples/crypto/pairs/`:
+`DBAMENU_LOGIN`, `DBAMENU_SELCOMP`, `EVOEMSG`, `EVOERROR`,
+`EVOGETDATE`, `EVOMESSAGE`, `EVORESETPASS`, `GETALPHAGEN`,
+`IMAGEPRINT`, `MDUMMY`, `NZEDEFS`, `PRINTTLL`, `T7CLOADING`.
+
+## Naming conventions
+
+- `T7<xx><y>.RWN` — TAS Pro 7 compiled program. `<xx>` = module code
+  (AR / AP / IN / SO / PO / WO / GL …), `<y>` = variant letter.
+- `T6<xx><y>.RUN` — older unencrypted TAS Pro 5/6 generation.
+- `BK*.RWN` / `BK*.RUN` — backbone legacy modules.
+- `EvoERPmenu.RWN` + `EVOERPMENU.DCY` — the main-menu program + form.
+- Generic Evo* programs (`EvoNotes.RWN`, `EvoLinks.RWN`,
+  `EvoScheduler.RWN`, `EvoUPDATE.RWN`, …) — later Addsum additions.
+
+## Related
+
+- [[dcy-rwn-decryption]] — full evidence trail + scripts
+- [[format-dfm]] — the plaintext form paired with `.DCY`
+- [[format-src]] — source language; `.SCY` is its encrypted form
+- [[glossary-twofish]], [[glossary-dcpcrypt]], [[glossary-cfb]]
+- [[file-formats]]
+""",
+["rwn", "dcy", "scy", "lcy", "encryption", "twofish", "dcpcrypt", "compiled", "tas"]),
+
+
+("format-dfm", "DFM / DCY — Delphi Form Layout", "Reference",
+"""
+`.DFM` files are **standard Borland Delphi form-resource files** in
+their textual representation — the output of the Delphi IDE's
+"Save As → Text DFM" option. Plaintext, ASCII. `.DCY` is the same
+content encrypted with the same Twofish-CFB scheme as `.RWN`
+(see [[format-rwn]]).
+
+The runtime picks which to load based on a source-level directive:
+`#FORMSENCRYPTED` → load `.DCY`; otherwise → `.DFM`.
+
+## Structure
+
+```dfm
+object EditForm1: TEditForm1
+  Left = 460
+  Top = 224
+  Hint = 'C:\\TASPRO7\\DBA7\\T7ARAE.DFM'
+  BorderStyle = bsSingle
+  Caption = 'New Screen'
+  ClientHeight = 471
+  ClientWidth = 666
+  Color = clBtnFace
+  Font.Name = 'Arial'
+  FormStyle = fsStayOnTop
+  Icon.Data = {
+    0000010001002020000001000800A80800001600000028000000200000004000
+    ...
+  }
+  object Panel1: TPanel
+    ...
+  end
+end
+```
+
+- Top-level: `object <Instance>: <Class>` … `end`.
+- Properties are `Name = Value` pairs.
+- Nested `object … end` blocks are child controls.
+- Strings: single-quoted (`'Arial'`).
+- Sets: `[bold, italic]`.
+- Enumerations: bare identifiers (`clBtnFace`, `DEFAULT_CHARSET`).
+- Binary blobs (icons, bitmaps) hex-encoded in `{ … }` braces,
+  wrapped across lines.
+
+The `Hint =` property often retains the **original developer path**
+(e.g. `C:\\TASPRO7\\DBA7\\T7ARAE.DFM` in `T7ARA.DFM:4`) — a useful
+breadcrumb for matching a deployed form back to its source layout.
+
+## Component library
+
+From the runtime's string table and observed samples:
+
+- **Standard VCL:** `TForm`, `TLabel`, `TEdit`, `TButton`, `TPanel`,
+  `TGroupBox`, `TDBGrid`, `TComboBox`, `TCheckBox`, `TMemo`.
+- **TAS-specific:** `TEditForm1` (base form), `TTASEdit`,
+  `TASDataGrid`, `TASNavigator`. Bound from SRC via `DATA_GRID …`,
+  `NAVIGATOR …`, `SET_OBJ_PROP …`.
+- **Third-party:** Nevrona ReportBuilder designer components appear
+  inside `.RTM` not `.DFM`.
+
+The presence of `qtintf70.dll` (Qt 3 / Borland CLX) on the install
+dates the form library to the **Delphi 6–7** era (2001-2002).
+
+## Pairing rules
+
+| Program file | Form file |
+| --- | --- |
+| `FOO.SRC` + no `#FORMSENCRYPTED` | `FOO.DFM` (plaintext) |
+| `FOO.SRC` + `#FORMSENCRYPTED` | `FOO.DCY` (encrypted) |
+| `FOO.RWN` (compiled from above) | same `.DFM` or `.DCY` |
+
+Name match is **case-insensitive and extension-driven**. Example:
+`T7ARA.RWN` loads `T7ARA.DFM` (or `T7ARA.DCY` if encrypted).
+
+## What you can learn from a plaintext DFM
+
+Without executing anything, a DFM gives you:
+
+- Every input field's name, position, size, validation mask.
+- Every button's caption + OnClick handler name (which is a SRC
+  function entry-point).
+- Every data-grid's column layout and bound pipeline.
+- The form's tab order (`TabOrder` property).
+- Embedded icons / glyphs — decodable as Windows `.ico` / `.bmp`
+  payloads from the `{ … }` hex blobs.
+
+## Why it matters
+
+- **All UI is readable** without reverse-engineering the binary.
+- A Python parser walking `object … end` emits a full field
+  inventory — `samples/dfm_parsed/dfm_summary.csv` already has 1,109
+  forms parsed.
+- Breakage during an update is detectable: compare old vs new DFM
+  with a tree-diff on the object graph.
+
+## Spec reference
+
+Embarcadero's "About the Form File Format" documents the text-DFM
+serialization. It is the Pascal `TComponent.WriteComponent` output
+and is stable across Delphi 2 – XE. No EVO-specific extensions
+observed — the file parses in any Delphi IDE.
+
+## Related
+
+- [[format-rwn]] — encryption applied when DFM becomes DCY
+- [[format-src]] — the SRC code that binds and drives the form
+- [[format-rtm]] — ReportBuilder templates use a binary Delphi
+  stream (`TPF0`) that is the same underlying mechanism
+- [[dcy-rwn-decryption]]
+- [[file-formats]]
+""",
+["dfm", "dcy", "form", "delphi", "ui", "layout", "vcl"]),
+
+
+("format-rtm", "RTM / btm — Nevrona ReportBuilder Template", "Reference",
+"""
+`.RTM` files are **Nevrona ReportBuilder** report templates. Every
+printed or exported report in EVO renders from one. `.btm` is a
+backup/snapshot at the same format. Authored in
+`C:\\ISTS\\RBDsgnr.exe` (the stand-alone ReportBuilder designer).
+
+## Binary structure
+
+RTMs are **Delphi binary-form streams** — the `TStream.WriteComponent`
+output that Delphi uses internally for compiled `.dfm` resources.
+
+First 4 bytes — the magic:
+```
+54 50 46 30    "TPF0"
+```
+
+After the magic, the body is a Delphi binary component tree with the
+standard encoding:
+
+- Length-prefixed ASCII class names and property names.
+- Typed property values (`vaString`, `vaInt32`, `vaSet`, `vaCollection`, …).
+- Nested components for child controls.
+
+A naïve hex dump shows those class/property name strings as readable
+text, which is why raw RTM dumps look "text-y" in places.
+
+## Component tree
+
+Top-level is `TppReport`. Observed component classes in
+`samples/btm/I2SCHK1.btm` (an A/P check layout):
+
+```
+TppReport, TppDataPipeline, TppDetailBand, TppSubReport,
+TppChildReport, TppShape, TppLabel, TppDBText, TppDBMemo
+```
+
+Observed properties:
+
+| Property | Meaning |
+| --- | --- |
+| `Template.FileName` | Sibling RTM referenced (e.g. `C:\\SOURCE\\apr99\\Bkapha1.rtm`) |
+| `DataPipelineName` | A `TASFile` pipeline bound at runtime |
+| `PrinterSetup.*` | Paper size, margins, printer name |
+| `DeviceType` | `Screen` / `Printer` / `TextFile` |
+| `OutlineSettings.*` | PDF outlines / bookmarks |
+| `TextSearchSettings.*` | Preview search |
+
+## How TAS programs invoke it
+
+From the `tp7runtime.exe` keyword table:
+
+- `RTM_FN <filename>` — specify the RTM to use.
+- `REPORTNAME <string>` — display name in preview window.
+- `USE_PRINTER <name>` — override the target printer.
+- `PRINT_TO_FILE <path>` — spool to file instead of a printer.
+- `NOPRINTWHRDIALOG` — skip the "Where do you want to print?" prompt.
+- `PRINT_CANCEL` — abort current print.
+- `PRINT_ARCHIVE` — archive a preview-copy.
+- `EXEC_RB` — "execute ReportBuilder" — hand control to RB.
+
+Buffer setup happens via `OUTPUT_REPORT_DATA`, `UPDATE_REPORT_DATA`,
+`SETUP_REPORT_BUFF`. The source program fills a record buffer, the
+pipeline pushes it into the RTM's `TppDBText` / `TppDBMemo` fields,
+and RB iterates until the buffer is empty.
+
+## The `TASFile` pipeline
+
+When an RTM says `DataPipelineName = TASFile`, it refers to a
+TAS-specific pipeline built into `tp7runtime.exe`. Field names in the
+template use TAS DDF names — example from `I2SCHK1.btm`:
+`BKAP_CHK_INVNUM`, `BKAP.CHK.AMTPD`, `BKAP_CHK_INVDTE`. (Dots and
+underscores are interchangeable — the runtime normalizes.)
+
+At run time, TAS fills that pipeline with one record per row; RB
+renders each record through the component tree.
+
+## Designer
+
+- `C:\\ISTS\\RBDsgnr.exe` (~6.2 MB) — Nevrona ReportBuilder's
+  stand-alone designer. Opens, edits, and saves `.RTM` files.
+- Settings persist in `C:\\ISTS\\RBuilder.ini`.
+- Opening a sample RTM is a safe read — it does not touch the
+  network share unless you Save.
+
+## Caller → template map
+
+`samples/rtm_callers.csv` holds the RTM→caller cross-reference built
+by grepping every `.RUN` / `.RWN` string dump for `.rtm` filenames.
+Use it to answer "which program prints template X?" or "which
+template does program Y use?". The data also powers the "Called by"
+block on each per-RTM help page.
+
+## Related
+
+- [[format-src]] — SRC keywords that drive reporting
+- [[format-dfm]] — shares the Delphi stream mechanism
+- [[reporting-pipeline]] — end-to-end from data to PDF
+- [[Nevrona ReportBuilder|ReportBuilder]]
+- [[file-formats]]
+""",
+["rtm", "btm", "reportbuilder", "report", "nevrona", "tpf0", "template", "print"]),
+
+
+# =====================================================================
+# Subsystem pages
+# =====================================================================
+
+("subsystem-evoupdate", "Evo Update — Data Dictionary Patch Mechanism", "Architecture",
+"""
+**Evo Update** is the subsystem that patches the production Pervasive
+**data dictionary** — the set of DDF files (`FILEDICT.B`, `FILEKEY.B`,
+`FILELOC.B`, `FILEKNUM.B`, `FILEDES.B`, `FILEDEF.B`, `FIELDDEF.B`,
+`INDEXDEF.B`) that define every EVO table and field.
+
+Shipped updates arrive as `.UPD` files in the same format as the
+production DDFs. The update program reads the `.UPD` files, compares
+them to the live dictionary, and restructures any table whose schema
+changed.
+
+## The `.UPD` file format
+
+`.UPD` files are **Btrieve data files** — identical structure to the
+live DDFs they patch. First 4 bytes of every sampled `.UPD` file
+(`FILEDEF.UPD`, `FILEDICT.UPD`, `FILES.UPD`):
+
+```
+46 43 00 00    "FC\\0\\0"
+```
+
+That is the Pervasive/Btrieve 6.x+ File Control Record signature.
+In other words: an `.UPD` is just a Btrieve table, opened by the
+update program and iterated record-by-record.
+
+Distributed `.UPD` companions:
+
+| File | Role |
+| --- | --- |
+| `FILELOC.UPD` | File-location records (where each data file lives per company) |
+| `FILEDICT.UPD` | Main dictionary — one row per table |
+| `FILEKEY.UPD` | Key definitions |
+| `FILEKNUM.UPD` | Key-number assignments |
+| `FILEDES.UPD` | File descriptions |
+| `FILEDEF.UPD` | File-definition records |
+| `FIELDDEF.UPD` | Field definitions |
+| `INDEXDEF.UPD` | Index definitions |
+| `FILES.UPD` | Master list of files touched by the update |
+
+Error messages in the update program reference these by name
+verbatim; e.g. `EvoUPDTE.RUN`:
+`"Error: Cannot locate the FILELOC.UPD file. UPDATE cannot run
+without this file."`
+
+## The program family
+
+Historically layered — each generation kept the prior's name and
+added a new one:
+
+| Program | Era / role |
+| --- | --- |
+| `DBAUPDTE.RUN` | DOS-era DBA update (still present; emits a "this version is Windows-only" warning) |
+| `DBAUPDT1.RUN`, `DBAUPDT2.RUN` | Two-phase companions of DBAUPDTE |
+| `UPDFILE.RUN` | Core file-update helper (touches BKSYMSTR, enforces main-company restriction) |
+| `ISUPDATE.RUN` | ISTech 2005 enhancement — "IS-UPDATE Update Data Dictionaries" |
+| `EvoUPDTE.RUN` | Modern Evo-branded variant |
+| `EvoUPDSetup.RWN` | Setup phase |
+| `EVOUPDATE.RWN` | Main TP7 update program |
+| `EvoERPupd.RWN` | ERP-wide orchestration |
+| `EvoPRupd.RWN` | Payroll-module update |
+| `evoForceUpd.RWN` | Force-update variant (bypasses some checks) |
+| `t7jUPD.RWN` | Journal-update (T7 era) |
+| `SCHUPD.RUN` | Scheduled update |
+
+## What an update actually does
+
+From `EvoUPDTE.RUN` plaintext strings:
+
+1. **Prerequisites.** "Please make sure that no other users are
+   currently logged into DBA." Update locks out everybody. Runs only
+   from the main (default) company; `UPDFILE.RUN`:
+   `"This can only be run from the main (default) company."`
+2. **Backup demand.** `"This routine if not completely successful can
+   delete the data file being restructured. It could also leave some
+   files complete and others not. To protect against this YOU MUST
+   MAKE A COMPLETE SYSTEM BACKUP BEFORE CONTINUING."`
+3. **Scan.** Reads every `.UPD` file; builds a work list of File
+   Descriptors (FDs) to process.
+4. **For each FD, four phases:**
+   - `Update Offsets`
+   - `Delete Old FD`
+   - `Save New FD`
+   - `Restructure` — rewrite the Btrieve `.B` file under the new
+     schema.
+5. **Log.** Progress lines like `"Working on FD: <name>"` and any
+   errors go to the screen; completion updates the `BKUPDATE` table.
+
+## Related tables
+
+- `BKUPDATE` — update history / tracking
+- `BKSYMSTR` — system master (checks for other logged-in users)
+- All DDF tables above (as both source and target)
+
+## Safety properties
+
+- Write-side scope: only the live DDF tables and the data files
+  being restructured. No code files (`.RWN`/`.DCY`) touched — that's
+  a separate distribution step (file-copy, not this subsystem).
+- Not idempotent: a half-completed run can leave the dictionary
+  inconsistent. Error messages explicitly warn the operator that a
+  restored backup may be the only recovery path.
+- Single-user: enforces no-other-logins and main-company-only at
+  start.
+
+## Related
+
+- [[architecture-overview]]
+- [[data-dictionary-overview]]
+- [[recipe-update-evo]]
+- [[recipe-backup]]
+""",
+["update", "upd", "ddf", "data dictionary", "patch", "evoupdate", "restructure", "filedict", "filedef"]),
+
+
+# =====================================================================
 # Placeholder stubs for many more pages — auto-generated module pages,
 # recipes, tables, etc. come from the build script.
 # =====================================================================

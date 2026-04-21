@@ -105,9 +105,29 @@ def _all_table_names():
         _SCHEMA_TABLES = set(schema.keys())
     return _SCHEMA_TABLES
 
+def _glossary_pid(term):
+    """Canonical page id for a glossary term — must match the construction
+    used when glossary pages are generated (see section 7 below). Do NOT
+    strip trailing dashes — the generator doesn't, and the pid must match
+    byte-for-byte."""
+    return "glossary-" + re.sub(r'[^a-z0-9]+', '-', term.lower())
+
+# Case-insensitive lookup: normalized term → canonical glossary pid.
+_GLOSSARY_TERMS = {term.lower(): _glossary_pid(term) for term, *_ in GLOSSARY}
+
+def _canonicalize(pid):
+    """If pid is a bare glossary term, rewrite to its canonical glossary pid.
+    Otherwise return pid unchanged."""
+    if pid.startswith(('table-', 'menu-', 'module-', 'form-', 'recipe-', 'glossary-')):
+        return pid
+    low = pid.lower()
+    if low in _GLOSSARY_TERMS:
+        return _GLOSSARY_TERMS[low]
+    return pid
+
 def convert_wiki_links(md):
     """Convert [[page-id]] or [[page-id|label]] to relative links understood by app.
-    If `page-id` looks like a bare table name or DFM filename, auto-prefix it.
+    If `page-id` looks like a bare table name or glossary term, auto-prefix it.
     """
     def repl(m):
         pid = m.group(1)
@@ -115,7 +135,8 @@ def convert_wiki_links(md):
         # Auto-prefix bare table names
         if pid in _all_table_names() and not pid.startswith(('table-', 'menu-', 'module-', 'form-', 'recipe-', 'glossary-')):
             return f'[{label}](#table-{pid})'
-        return f'[{label}](#{pid})'
+        # Auto-redirect bare glossary terms to glossary-<slug>
+        return f'[{label}](#{_canonicalize(pid)})'
     return WIKI_LINK_RE.sub(repl, md)
 
 # ---------------------------------------------------------------------- #
@@ -350,7 +371,8 @@ def _resolve_ref(ref):
     # Menu-code pattern
     if re.match(r'^[A-Z]{2}-[A-Z](?:-[A-Z])?$', ref):
         return 'menu-' + ref
-    return ref
+    # Bare glossary term → canonical glossary pid
+    return _canonicalize(ref)
 
 for term, short, body, see_also in GLOSSARY:
     pid = f"glossary-{re.sub(r'[^a-z0-9]+', '-', term.lower())}"
