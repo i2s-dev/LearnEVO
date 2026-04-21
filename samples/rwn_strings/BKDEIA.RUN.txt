@@ -1,0 +1,345 @@
+TAS322
+BKICMSTR
+MTICMSTR
+BKSYHELP
+DBAHLPID
+CLASMSTR
+BKAPVEND
+BKARCUST
+TASCOLOR
+BKSYPRTR
+BKSYMSTR
+MTICEMTRA
+CLASMSTRA
+BKICEMTRA
+BKAPVENDA
+BKARCUSTA
+DE-I-A  Print Inventory ErrorsA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+MTICEMTRA
+ERRLISTA
+BKICEMTRA
+there are no records in the primary file. A
+BKICEMTRA
+BKICEMTRF@
+ A - Item Number 0101AF@
+ B - Description 0102BA
+Search byvvI
+Inventory ItemsF
+Product DescriptionsF
+BKICEMTRF 
+BKICEMTRI
+BKICEMTRI
+BKICEMTRI
+BKICEMTRF
+There are no such records in the A
+ file.A
+BKICEMTRA
+BKICEMTRF 
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+               
+               
+      Item Number From                         
+               
+                  Thru                         
+               
+                                               
+               
+     Only print parts that have errors?        
+               
+                         INVENTORY IMPORT ERROR REPORT               Page:
+ Item Number     Error Condition
+ --------------- --------------------------------------------------------------
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+ERRLISTA
+IMPORTA
+ Part Type is MISSINGA
+NRMFABLTKOA
+ Part Type "A
+" is INVALIDA
+ Class is MISSINGA
+clasmstrI
+ Class "A
+" is INVALID.A
+ Stocking units of measure MISSING.A
+ Selling units of measure MISSING.A
+ Purchase units of measure MISSING.A
+bkapvendI
+ Vendor #A
+) is INVALID.A
+bkarcustI
+ Customer code (A
+) is INVALID.A
+ No errors.A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+RPTLINE        
+ERRORSONLY     
+NUMERRORS      
+WHOCALLED      
+WHICHLINE      
+PRINTRPT       
+RPT.DATE       
+RPT.TIME       
+MCNTR          
+ZRET           
+BKIC.PROD.CODE 
+MESSAGE        
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+BKIC.PROD.DESC 
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+BKIC.PROD.NOTE 
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+BKIC.PROD.TYPE -
+BKIC.PROD.CLASS6
+MTCLASS.M.CLASS
+BKIC.PROD.UM   .
+MTIC.PROD.SUM  1
+MTIC.PROD.PUM  4
+MTIC.PROD.VEND 
+BKAP.VENDCODE  
+MTIC.PROD.CUST 
+BKAR.CUSTCODE  
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+MSG_PTR        
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+PSTR           

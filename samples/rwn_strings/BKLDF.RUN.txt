@@ -1,0 +1,203 @@
+BKYSMSTR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+  Lot and Serial Control DefaultsA
+F1 HelpA
+F10 Save,A
+Esc ExitA
+Save this record? L
+ S - Scheduled F`
+ F - Firmed F`
+ R - Released I
+        
+        
+                                                             
+        
+    Print Lot Listing after Invoices/Packing Slips? [Y/N]    
+        
+                                                             
+        
+ Print Serial Listing after Invoices/Packing Slips? [Y/N]    
+        
+                                                             
+        
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+HDR_START      
+NO.LOCK        
+BKYS.YN        
+BKYSMSTR_HNDL  
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

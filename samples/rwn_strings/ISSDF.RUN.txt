@@ -1,0 +1,1222 @@
+TAS32L
+BKYSMSTR
+BKDCSHFT
+BKDCLAB 
+BKDCCFG 
+WORKORD 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKICMSTR
+BKAPDESC
+MKAHIST 
+BKAPVEND
+BKARCUST
+BKCMACCT
+ - ISTS Enhancement 09/12/05A
+ISTECHL
+bkdccfgA
+WORKORDA
+BKDCSHFTA
+BKYSMSTRA
+SD-F  Data Collection DefaultsA
+F1 Help,F5 Shift ScheduleA
+F10 Save,A
+Esc ExitA
+bkdcplabL
+You Have Multiple Open Jobs for some Employee's.  Please close these Jobs first then try again.A
+F1 Help,F2 Lookup,F5 Shift ScheduleA
+F10 Save,A
+Esc ExitA
+F1 Help,F5 Shift ScheduleA
+F10 Save,A
+Esc ExitA
+WORKORDI
+That Work Order does not exist.A
+That is not an Indirect Work Order.A
+WORKORDA
+WORKORDA
+Do you want to save this record? L
+SD-F  Data Collection DefaultsA
+F1 Help,F4 Main ScreenA
+F10 Save,A
+Esc ExitA
+Do you want to save this record? L
+BKDCSHFTA
+BKYSMSTRA
+Other users are currently logged into DBA.F@
+While others are on the system you can viewF@
+defaults, but you will not be allowed toF@
+save any changes.  To change defaults, exitF@
+this program, get all other users out ofF@
+DBA, go back into this program, make yourF@
+changes, and then save your entries byF@
+pressing the F10 key.I
+BKDCSHFTA
+BKDCSHFTF
+ Shift Name 1:             Shift Name 2:             Shift Name 3:            
+                                                                              
+                                                                              
+ Buffer                    Buffer                    Buffer                   
+ Start                     Start                     Start                    
+                                                                              
+ Break in                  Break in                  Break in                 
+ Break out                 Break out                 Break out                
+                                                                              
+ Lunch in                  Lunch in                  Lunch in                 
+ Lunch out                 Lunch out                 Lunch out                
+                                                                              
+ Break in                  Break in                  Break in                 
+ Break out                 Break out                 Break out                
+                                                                              
+ Finish                    Finish                    Finish                   
+ Buffer                    Buffer                    Buffer                   
+      
+      
+                                                                
+      
+  Allow clocking in/out on multiple jobs ?    [Y/N]             
+      
+                                                                
+      
+                         Use full screen ?    [Y/N]             
+      
+                                                                
+      
+        Enable Employee Shift Start/Stop ?    [Y/N]             
+      
+                                                                
+      
+  Indirect Work Order for Shop Time ?         -                 
+      
+                                                                
+      
+  Indirect Work Order for Maintenance?        -                 
+      
+                                                                
+      
+  Import Path From FOX                                          
+      
+                                                                
+      
+                                                                
+      
+  Export Path To Fox                                            
+      
+                                                                
+      
+                                                                
+      
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+WORKORDA
+ Work Orders A
+F1 Help,F2 Find,F3 Change Search KeyA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKORDA
+Work OA
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+WORKORDA
+Parent Part    A
+Work Ord  A
+Stat A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Cust Cd   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Customer Name            A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+SO#   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Start DtA
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Fin Dt  A
+Job Number     A
+WORKORDA
+Fin Dt  A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Job Number     A
+WORKORDA
+Job Number     A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+WORKORDA
+WORKORDA
+WORKORDA
+WORKORDA
+WORKORDI
+WORKORDA
+Work Order NoF
+Parent Item NoF
+Customer CodeF
+Customer NameF
+Sales Order NoF
+Job NumberI
+F1 HelpA
+Esc ExitA
+ A - Work Order NoF
+ B - Parent Item NoF
+ C - Customer CodeF
+ D - Customer NameF
+ E - Sales Order NoF
+ F - Job NumberA
+ Search Key I
+Open Work Orders only?A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter the WO number to find.      A
+             Work OrderA
+                  0-  0A
+WORKORDA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+Rel  A
+FirmdA
+SchedA
+ClosdA
+CanclA
+IndirA
+     A
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+ESCF0r
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+C:\ISTS\I
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+bkistek.bmpA
+MKAHISTA
+ISTECHSUPPORTA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYF
+YNNNNbB
+NNNNNF
+YNNNNCs
+YNNNYN
+YNNNNF0u
+NNNYNF0x
+YNNNYF
+YNNNNC
+YNNNYF
+YNNNNC
+YNNNYF`{
+YNNNNC
+YNNNYNK
+YNNNNCz
+YNNNYNN
+YNNNNC8
+YNNNYC
+YNNNYF
+NNNYN#
+YNNNYF
+YNNNYF0
+YNNNYF0
+YNNNYF0
+YNNNYF
+YNNNYX
+YNNNYF0
+YNNNYX
+YNNNYF0
+YNNNYX+
+YNNNYF0
+YNNNYF
+YNNNYF0
+YNNNYF0
+YNNNYF0
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+ISTS.EDATE     
+DCCFG          
+WHICH          
+NO.LOCK        
+BKYS.YN        
+DCPLAB         
+OERROR         
+OPEN.EMP       
+LAB.EMP        
+LAB.POSTED     
+BKDC.CFG.IDLEP 
+BKDC.CFG.IDLES 
+BKDC.CFG.BANKP 
+BKDC.CFG.BANKS 
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.STATUS-
+BKDC.CFG.IMPPTH
+BKDC.CFG.EXPPTHP
+BKDC.SH.NAME1  
+BKDC.SH.BUFFER K
+BKDC.SH.START  W
+BKDC.SH.BRK1IN c
+BKDC.SH.BRK1OUTo
+BKDC.SH.LUNCHIN{
+BKDC.SH.LUNCHOT
+BKDC.SH.BRK2IN 
+BKDC.SH.BRK2OUT
+BKDC.SH.FIN    
+BKDC.SH.FINBUF 
+BKDC.SH.NAME2  
+BKDC.SH.NAME3  2
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           h
+PTDN           n
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+CFG.BUFFER     
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+WOF2.COL       
+WOF2.ROW       
+WO.LKUP.OPEN   
+WOM.STAT       
+WOXFIND.PRE    
+NEW.WOXPRE     
+WOXFIND.SUF    
+NEW.WOXSUF     
+WOXDIDFIND     
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+WO_TTL1        
+WO_USCORE      
+MTWO.WIP.CODE  
+MTWO.WIP.DESC  
+MTWO.CUSTCODE  
+MTWO.CUSTNAME  
+MTWO.WIP.SONUM 
+MTWO.WIP.SQTY  
+MTWO.WIP.SSTART
+MTWO.WIP.SFIN  
+MTWO.WIP.PROJ  
+CC             
+DATC           
+TEMP.REC       
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+SRCH_HOW_MSG   
+BKIC.PROD.CODE 
+V.OLINK        
+XXWOM.STAT     
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+BK.DESC.NOTES  
+BK.DESC.DESC   _
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+CFG.PATH       
+CFG.FULLNAME   
+ZRET           
+X_HNDL         
+X.BUFF         
+TI             
+BPICT          
+TIME1          
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKAR.EMAIL     *
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+BUTTON_LIST    
+BUTTON_CNTR    
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        

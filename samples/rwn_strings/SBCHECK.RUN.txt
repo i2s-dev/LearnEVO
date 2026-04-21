@@ -1,0 +1,209 @@
+BKSBVEND
+BKSBMFG 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSBVENDA
+BKSBVENDA
+BKSBMFG A
+BKSBMFG A
+SBCHECK error!  Please specify which file - BKSBVEND or BKSBMFG - to clean. A
+bksbvendL
+bksbmfgL
+SBCHECK  Approved Vendor/Mfgr Data Checking UtilityA
+SBCHECK  Approved Vendor Data Checking UtilityA
+SBCHECK  Approved Mfgr Data Checking UtilityA
+Esc ExitA
+Removing BKSBVEND blank records....A
+Removing BKSBMFG blank records....A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Binary zero check (1st BKSBVEND). Changes: A
+          I
+Binary zero check (2nd BKSBVEND). Changes: A
+               I
+Binary zero check (3rd BKSBVEND). Changes: A
+                         I
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Binary zero check (1st BKSBMFG).  Changes: A
+          I
+Binary zero check (2nd BKSBMFG).  Changes: A
+               I
+Binary zero check (3rd BKSBMFG).  Changes: A
+                         I
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+SBV            
+SBM            
+MCNTR          
+DOSBVEND       
+DOSBMFG        
+FILE1          
+FILE2          
+BKSB.VEND.PROD 
+BKSB.VEND.VEND (
+BKSB.MFG.PROD  
+BKSB.MFG.MANUF (
+XCUST          
+XCUST1         
+XASC           
+BKSB.VEND.CUST 
+XPARNT         
+XPARNT1        
+BKSB.VEND.PARNT
+XVPART         
+XVPART1        
+BKSB.VEND.VPART2
+XMCUST         
+XMCUST1        
+BKSB.MFG.CUST  
+XMPARNT        
+XMPARNT1       
+BKSB.MFG.PARNT 
+XMPART         
+XMPART1        
+BKSB.MFG.MPART A
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+MESSAGE        
+FC             

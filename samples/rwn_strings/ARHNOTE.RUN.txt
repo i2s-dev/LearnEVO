@@ -1,0 +1,187 @@
+TASCOLOR
+BKARINV 
+BKAPDESC
+BKSYHELP
+DBAHLPID
+bkarhdscA
+bkardescA
+bkarhinvc
+AR NOTES UtilityA
+Do you wish to proceed?L
+Notes transfred from SO#:A
+ to Invoice#:A
+           
+           
+    This Utility will Create Notes for any Invoices that     
+           
+  were posted prior to DBA 2001.1. It will take the existing 
+           
+  notes on the sales ordes and copy them to thier invoices.  
+           
+  This will allow users to reprint Invoices with Notes.      
+           
+            
+            
+                                                          
+            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+DESC.HNDL      
+HDESC.HNDL     
+INV.H          
+BKAR.INV.NUM   
+BK.DESC.NUM    
+BKAR.INV.SONUM 
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        

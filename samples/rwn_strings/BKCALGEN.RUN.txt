@@ -1,0 +1,283 @@
+CALENDAR
+TASCOLOR
+SCHEDCAL
+CALTEMP 
+BKSYHELP
+DBAHLPID
+FILELOC 
+FILEDES 
+BKCALGEN  Generate Scheduling CalendarA
+CALENDARI
+CALENDARA
+Esc ExitA
+NormalBkgA
+NormalBkgA
+         1. Generate new date file for A
+ through A
+            Current 60-day block      : A
+         2. Mark weekends and holidays: A
+         3. Number all calendar days  : A
+         4. Resolve forward references: A
+WORKINGA
+schedcalL
+SCHEDCALA
+SCHEDCALI<
+DONE   A
+WORKINGA
+SCHEDCALA
+CALENDARA
+CALENDARA
+SCHEDCALA
+DONE   A
+WORKINGA
+SCHEDCALA
+caltempA
+CALTEMPI
+SCHEDCALA
+SCHEDCALL
+CALTEMPA
+SCHEDCALA
+DONE   A
+WORKINGA
+SCHEDCALI
+SCHEDCALA
+DONE   A
+Scheduling Calendar successfully generated. A
+BKCALGEN  Generate Scheduling CalendarA
+Esc ExitA
+This cannot be less than 1980.I
+This cannot be less than 1980 and cannot be less that the starting year.A
+Checking...A
+You have interrupted the generation of the Scheduling Calendar prior to its completion.  Please be sure to generate a complete Scheduling Calendar prior to using the Scheduling module. A
+          
+          
+  Your "days-off" Shop Calendar (as set up in MM-C) does  
+          
+        not have any weekends or holidays marked.         
+          
+                                                          
+          
+    You may choose to generate a Scheduling Calendar      
+          
+   that has no weekends or holidays marked by entering    
+          
+           the starting and ending years here.            
+          
+                         
+                         
+    Starting Year          
+                         
+      Ending Year          
+                         
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+filelocA
+ErrorA
+Error - in Initilizing fileA
+ ERROR = A
+FD NAME IS BLANKA
+CREATE NAME IS BLANKA
+filedesA
+ is not in FILEDES.B.  It needs to be there before using this program to initialize data files.A
+The FD: A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ST.YEAR        
+ST.YEAR2       
+FULL.START     
+FULL.END       
+FIRST.HOL      
+LAST.HOL       
+DFDATE         
+STARTIT        
+ENDIT          
+CURNT          
+SCURNT         
+LUPCNT         
+FILE           
+REAL1          
+REAL2          
+REAL3          
+SPDATE         
+SPBACK         
+BACKR          
+SAVE.FLD       
+SKIP.FLAG      
+SCRATCH.FILE   
+WHDATE         
+TEMP.DATE      
+MTCAL.DATE     
+WC             
+BC             
+SC             
+SCH.CAL.DATE   
+MTCAL.SAT      
+SCH.WH.FLAG    
+SCH.SHOP.DATE  
+SCH.BACK.DATE  
+SCH.SHOP.SLASH 
+SCH.BACK.SLASH 
+SHP.DATE       
+SLSH.DATE      
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+FC             
+CREATE_FILE    
+DELETE         
+FD_NAME_INT    
+FD_EXT         
+LOC_HNDL2      
+CREATE_SPECS   
+LOC_FILE_NAME  
+LOC_LOCATION   
+DES_HNDL       
+LOC_BUFF_NAME  
+DES_INFORMATION
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

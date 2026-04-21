@@ -1,0 +1,183 @@
+WOMAT   
+TASCOLOR
+INVTXN  
+BKSYHELP
+DBAHLPID
+INVTXNA
+WOMATA
+FIXWOMAT  Reconcile WOMAT Costs to INVTXNA
+womatI
+There are no WOMAT records A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Checking WO#:       -     Date:         A
+WOMATA
+invtxnI
+invtxnI
+WOMATA
+INVTXNA
+invtxnI
+WOMATA
+INVTXNA
+invtxnI
+WOMATA
+INVTXNA
+invtxnI
+WOMATA
+womatI
+Processing complete. A
+ This utility program will attempt to find the INVTXN record that 
+ corresponds to each WOMAT record, and recalculate the total cost 
+ in the WOMAT record (field WOMAT.COST) based on the unit cost of 
+ the transaction from the INVTXN record (NOTE: if using FIFO/LIFO 
+ costing, this may be the average cost at the time of the trans-  
+ action, rather than the actual unit cost).                       
+                                                                  
+ This program should only be used if you had material issues      
+ (using AW-F, AW-G, AW-I, AW-J) prior to 6/6/99 AND use lot or    
+ serial control on some or all of your components.                
+                                                                  
+ Only material-issue type INVTXN records will be considered.  If  
+ an exact match cannot be found in INVTXN (based on date, part#,  
+ quantity, and WO#), the nearest material-issue INVTXN record     
+ (based on date) will be used to at least provide an estimated    
+ cost.                                                            
+                                                                  
+ Please be sure to make a backup copy of your WOMAT.B file, and   
+ check the results using JC-M.  Ready to begin?                   
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+OK             
+QTY            
+XFOUND         
+HAVE.DATE      
+SC             
+WC             
+BC             
+WOMAT.WOPRE    
+WOMAT.WOSUF    
+WOMAT.DATE     
+WOMAT.QTYISSUED
+WOMAT.QTYSCRAP 
+WOMAT.COST     
+MTIT.CODE      
+WOMAT.PCODE    v
+MTIT.DATE      
+MTIT.TYPE      
+MTIT.QTY       
+MTIT.WOPRE     z
+MTIT.WOSUF     
+MTIT.AVGCOST    
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+MSG_PTR        
+MESSAGE        

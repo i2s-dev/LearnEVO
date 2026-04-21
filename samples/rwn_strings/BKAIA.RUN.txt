@@ -1,0 +1,1214 @@
+TAS323
+BKSYMSTR
+BKYSMSTR
+BKPRSALE
+BKGLCOA 
+BKAPVEND
+BKARCUST
+ISMCF   
+BKPRAGNT
+FILELOC 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+FILEDES 
+ISIS    
+ISLOG   
+MKAHIST 
+ - ISTS Enhancement 08/15/06A
+ISTECHL
+AI-A  Accounting ConfigurationA
+BKAIAA
+BKGLCOAA
+BKGLCOAA
+CLASSA
+BKPRSALEA
+BKPRAGNTL
+ISMCFA
+Press any key when finished viewing. A
+F1 HelpA
+Esc ExitA
+Cannot activate DBA Accounting.F@
+General Ledger accounts must first be set up inF@
+the Chart of Accounts.F@
+Please use the "Create General Ledger Accounts"F@
+menu selection to set up your Chart of Accounts.F@
+Then use the "General Ledger Defaults" menu selectionF@
+to specify the system default GL accounts.F@
+After both of these steps are done, you will be ableF@
+to activate DBA Accounting.I
+Cannot activate DBA Accounting.F@
+DBA Accounting cannot be activated until ALL of theF@
+system default GL accounts have been specified.F@
+Currently one or more of these GL accounts is blank.F@
+Please use the "General Ledger Defaults" menu selectionF@
+to complete the system default GL account setup beforeF@
+activating DBA Accounting.I
+Activate DBA Accounting?F@
+If Y, transactions will post to the General LedgerF@
+and AP Aging.F@
+If N, nothing will post to the General Ledger orF@
+AP Aging.I
+Activate DBA Accounts Receivable?F@
+If Y, transactions will post to the AR Aging andF@
+you will be able to use the AR menu programs andF@
+the SO Deposits feature.F@
+If N, nothing will post to the AR Aging and theF@
+SO Deposits feature will be disabled.I
+Save these settings? L
+Please specify whether Accounting should be activated. A
+Please specify whether Accounts Payable should be activated. A
+Please specify whether Accounts Receivable should be activated. A
+Cannot deactivate DBA Accounts Receivable.F@
+There are A
+ salespeople who are set upA
+to have commissions calculated at time of payment.F@
+In order to deactivate DBA AR, please first change theseF@
+salespeople to have commissions calculated at time of invoicing.I
+WARNING:  DBA Accounting will be deactivated!F@
+If you proceed with this change, the following will occur:F@
+1. All GL transaction history and unposted GL transactionsF@
+   will be deleted.  The GL Chart of Accounts will be leftF@
+   in place for possible future use, but the monthly amountsF@
+   will be cleared.  The system will no longer post to the GL.F@
+2. The GL Check Register file will be cleared (does not affectF@
+   AR and AP payment history, but you will no longer be ableF@
+   to reconcile the check register).  The bank account setupF@
+   will be cleared as bank accounts are not needed withF@
+   Accounting turned off.F@
+Additional notices must be displayed.  Please click "OK" hereF@
+to view them.I
+WARNING:  DBA Accounting will be deactivated!F@
+If you proceed with this change, the following will occur:F@
+3. All GJ and Recurring GJ entries will be deleted.F@
+4. You will no longer be able to use the AP module.F@
+5. You will no longer be able to use the PR ("Old Payroll")F@
+   module.F@
+The GL transactional and history data that gets clearedF@
+during this process cannot be recovered, so be very sureF@
+that you want to turn off DBA Accounting.F@
+The next prompt will allow you to cancel this change ifF@
+desired.  Please click "OK" here to get to that prompt.I
+OK to deactivate DBA Accounting? L
+WARNING:  DBA Accounts Payable will be deactivated!F@
+(AP gets deactivated along with Accounting)F@
+If you proceed with this change, the following will occur:F@
+1. All AP transaction history, AP aging history, and openF@
+   AP items will be deleted.  AP payment history and vendorF@
+   credit summaries will also be deleted (but the vendorsF@
+   themselves are NOT deleted).F@
+2. All AP Vouchers and Recurring AP Vouchers will be deleted.F@
+Your Purchase Orders, PO History, and associated reportingF@
+are NOT affected by this change.F@
+The AP transactional and history data that gets clearedF@
+during this process cannot be recovered, so be very sureF@
+that you want to turn off DBA Accounts Payable.F@
+The next prompt will allow you to cancel this change ifF@
+desired.  Please click "OK" here to get to that prompt.I
+OK to deactivate DBA Accounts Payable? L
+WARNING:  DBA Accounts Receivable will be deactivated!F@
+If you proceed with this change, the following will occur:F@
+1. All AR transaction history, AR aging history, and openF@
+   AR items will be deleted.  Customer payment history andF@
+   credit summaries will also be deleted (but the customersF@
+   themselves are NOT deleted).F@
+2. All customer deposits and deposit history will be deleted,F@
+   and you will no longer be able to use the SO DepositF@
+   feature.F@
+Additional notices must be displayed.  Please click "OK" hereF@
+to view them.I
+WARNING:  DBA Accounts Receivable will be deactivated!F@
+If you proceed with this change, the following will occur:F@
+3. All AR vouchers will be deleted.F@
+4. You will no longer be able to use most AR module menuF@
+   selections.F@
+Your Sales Orders, Sales History, and associated reportingF@
+are NOT affected by this change, and you will still be ableF@
+to track/report sales taxes using the "Sales Tax Report" andF@
+"Transfer Sales Taxes" selections from the AR menu.F@
+The AR transactional and history data that gets clearedF@
+during this process cannot be recovered, so be very sureF@
+that you want to turn off DBA Accounts Receivable.F@
+The next prompt will allow you to cancel this change ifF@
+desired.  Please click "OK" here to get to that prompt.I
+OK to deactivate DBA Accounts Receivable? L
+Clearing GL data, please wait... A
+filelocA
+BKGLCCOAA
+BKGLCHKA
+BKGLGJLNA
+BKGLRGJLA
+BKGLGJRNA
+BKGLRGJRA
+BKGLTRANA
+BKGLETRNA
+BKGLHISTA
+BKGLTEMPA
+BKGLTMP2A
+BKGLTMP3A
+BKGLTMPA
+Clearing GL COA Amounts: A
+BKGLCOAA
+BKGLCOAI
+BKGLCOAA
+Clearing AP data, please wait... A
+filelocA
+BKAPCHKFA
+BKAPCHKHA
+BKAPINVLA
+BKAPRIVLA
+BKAPINVTA
+BKAPEIVTA
+BKAPVENDI
+Clearing Vendor Credit Info: A
+Clearing AR data, please wait... A
+filelocA
+BKARCHKFA
+BKARDEPA
+BKARINVTA
+BKARINVVA
+BKARTA
+BKARTNOTA
+BKSYARA
+BKARCUSTI
+Clearing Customer Credit Info: A
+Primary Bank AccountF
+Activating DBA Accounting.......F@
+A default bank account has been set up for you.F@
+You MUST specify a GL account for this bank account.F@
+This GL account will be the system default GL for Cash.F@
+The "Checking Accounts Defaults" program will now run soF@
+that you may specify a GL account for this bank account.F@
+You can also change any of the bank-related default settingsF@
+and set up additional bank accounts if desired.I
+BKADCA
+Activating DBA Accounting.......F@
+There are A
+ currencies which need to haveA
+a complete GL account setup.  It is very important that eachF@
+currency have a complete GL setup prior to posting any transactions.F@
+The "Enter Multiple Currencies" program will now run.F@
+Be sure to enter ALL GL accounts for ALL currencies.I
+BKIMBA
+GLDFLTSA
+Activating DBA Accounting.......F@
+With DBA Accounting activated, there are threeF@
+Landed Cost GL accounts that have to be specified.F@
+The "Landed Cost Defaults" program will now runF@
+so that you may specify these GL accounts.I
+BKIMDA
+Activating DBA Accounts Payable.......F@
+There are A
+ agent salespeople whoA
+do not have a vendor code assigned.  A vendor code is requiredF@
+for each agent.F@
+The "Enter Salespersons" program will now run so that youF@
+can assign a vendor code to each of the agents.I
+BKCSAA
+DBA Accounting has been activated.F@
+The fiscal year start date has been set to A
+The "General Ledger Defaults" program will now runF@
+so that you may review the General Ledger defaultF@
+settings and make any necessary changes.I
+BKADBA
+CONFIGA
+DBA Accounts Payable has been activated.F@
+Default settings have been established for:F@
+     * Next AP Voucher#F@
+     * Next AP Recurring Voucher#F@
+     * AP aging periodsF@
+The "Accounts Payable Defaults" program will now runF@
+so that you may review the Accounts Payable defaultF@
+settings and make any necessary changes.I
+BKADDA
+DBA Accounts Receivable has been activated.F@
+Default settings have been established for:F@
+     * AR aging periodsF@
+     * AR aging methodF@
+     * Finance charge calculation methodF@
+     * Customer statement formattingF@
+MULTI-CURRENCY USERS:F@
+The AR finance charge calculation method is NOT controlledF@
+by the settings in "Accounts Receivable Defaults".  Instead,F@
+each currency has its own setting for this which you canF@
+affect by using the "Enter Multiple Currencies" menuF@
+selection.F@
+The "Accounts Receivable Defaults" program will now runF@
+so that you may review the Accounts Receivable defaultF@
+settings and make any necessary changes.I
+The "Accounts Receivable Defaults" program will now runF@
+so that you may review the Accounts Receivable defaultF@
+settings and make any necessary changes.I
+BKADEA
+DBA Accounting has been deactivated. A
+DBA Accounts Payable has been deactivated. A
+DBA Accounts Receivable has been deactivated. A
+Clearing Data File: A
+ was not found in FILELOC.A
+ The file: A
+ The clearing of this particular file will be skipped.F@
+ Please note the file name, and notify DBA Tech SupportF@
+ of this error condition.I
+ Activate DBA Accounts Receivable?    
+ Activate DBA Accounting (GL+AP)?     
+ Activate DBA Accounts Receivable?    
+tas50.ovlA
+tas50.ovlIS
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRA
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTECH support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTEC H support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when Accounting is activated. A
+This program is only available when Accounts Receivable is activated. A
+This program is only available when Accounts Payable is activated. A
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+filelocA
+ErrorA
+Error - in Initilizing fileA
+ ERROR = A
+FD NAME IS BLANKA
+CREATE NAME IS BLANKA
+filedesA
+ is not in FILEDES.B.  It needs to be there before using this program to initialize data files.A
+The FD: A
+TAX SYSTEM:F@
+ This Program requires the new TAX system.F@
+ Please contact your system administrator to F@
+ run the required Conversion routine. I
+Multi Currency System:F@
+ This Program requires the Multi Currency systemF@
+ to be converted to the 2000.1 configuration. F@
+ Please contact your system administrator to F@
+ run the required MCSTART routine. I
+NON EVOA
+DBA ClassicI
+ISLOGA
+EVOERPMENUA
+ISLOGA
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+WHOAMI.DBAA
+WHOAMI.DBAA
+C:\ISTS\I
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+MKAHISTA
+ISTECHSUPPORTA
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+NNNYNFP"
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+ISTS.EDATE     
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+TEMP_FY        
+CNTR           
+OK             
+GL.NUM1        
+GL_NUM2        
+GL_TYPE        
+TEMP.PART      
+NO.LOCK        
+ACCT_PTR       
+DEPT_PTR       
+ZRET           
+M_COL          
+M_ROW          
+M_TYPE         
+MB_NUM1        
+MB_NUM2        
+MB_NUM3        
+TEMP_MONTH     
+XMSG           
+USEACCTG       
+SETACCTG       
+ORIGACCTG      
+ORIGPOSTCOGS   
+ORIGPOSTPO     
+ORIGPOSTADJ    
+ORIGPOSTWO     
+USEPOSTCOGS    
+USEPOSTPO      
+USEPOSTADJ     
+USEPOSTWO      
+TITLEBAR       
+USECLASSGL     
+ORIGCLASSGL    
+CLASSHNDL      
+CLASSRECS      
+GLVACCT        
+GLVDEPT        
+GLVDESC        
+BKPRSALEHNDL   
+BKPRAGNTHNDL   
+BADRECS        
+ISMCFHNDL      
+PRGS.WHR       
+RECOK          
+USEAR          
+ORIGAR         
+USEAP          
+ORIGAP         
+CANTURNGLON    
+FISCAL.YR      
+TOTCOARECS     
+BKYS.YN251     
+SYSACCTGON     
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSITEMCLASSGL 
+BKSY.GL.CLRING 
+BKYS.GLNUM     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+ISIS.MULTI.CURR
+MESSAGE        
+MSG_PTR        
+BKPR.SLS.WHEN  
+LOC_HNDL       
+FILE_HNDL      
+BKSY.CHK.NAME  s
+BKSY.CHK.CHKACT
+BKSY.CHK.CHKDPT
+BKSY.CHK.CHKCUR
+BKSY.CHK.NUM   
+BKSY.CHK.BAL   +
+BKSY.AR.CHKACT 
+BKSY.AP.CHKACT 
+BKSY.PR.CHKACT 
+BKSY.FISCAL.YR 
+BKSY.GJ.NUM    
+BKSY.GJ.RECNUM 
+BKGL.ACCT      
+BKGL.CURRENT   *
+BKGL.BUDGET    
+BKGL.1YPAST    
+BKGL.2YPAST    z
+BKGL.1YPAST.YE 
+BKGL.2YPAST.YE $
+BKAP.VENDCODE  
+BKAP.OUTINV    
+BKAP.OUT.CREDITA
+BKAR.CUSTCODE  
+BKAR.REMAINCRD 
+BKAR.OUTINV    
+BKAR.OUT.CREDIT{
+BKAR.DAYS.TOPAY
+BKAR.NUM.INVCS 
+BKAR.FOLUPDTE  
+BKYS.YN        
+BKSY.AP.AGING  :
+BKSY.APINV.NUM 
+BKSY.AP.RECNUM 
+BKSY.AR.AGING  0
+BKSY.AR.INT.DAY
+BKSY.AR.INT.RTE
+BKSY.PLAIN.STMT-
+BKSY.PRGS.WHR  
+BKSYMSTR_HNDL  
+BKYSMSTR_HNDL  
+ISIS.MCF.GLAAP 
+ISIS.MCF.GLAAR 
+ISIS.MCF.GLAARD
+ISIS.MCF.GLAPO 
+ISIS.MCF.BASE  
+ISIS.MCF.GLAAPX<
+ISIS.MCF.GLAARXJ
+ISIS.MCF.GLAADX
+ISIS.MCF.GLAPOX
+ISIS.MCF.GLABKX.
+ISIS.MCF.GLABS 
+ISIS.MCF.GLAIS  
+ISIS.LANDED.COS
+BKPR.AGNT.NUM  
+BKPR.SLS.CLASS 
+BKPR.AGNT.CODE 
+FNAME          
+LONGNAME       
+LOC_LOCATION   
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+CFG.BUFFER     
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKSY.GLDPT.CLR 
+BKYS.GLDPT     
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+CREATE_FILE    
+DELETE         
+FD_NAME_INT    
+FD_EXT         
+LOC_HNDL2      
+CREATE_SPECS   
+DES_HNDL       
+LOC_BUFF_NAME  
+DES_INFORMATION
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CPAY
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+PRGNAME        
+DOING          
+LOG.REC        
+ISLOG.H        
+LOG.WHO        
+IS.LOG.WHO     
+IS.LOG.WHAT    #
+IS.LOG.DOING   2
+IS.LOG.STARTD  n
+IS.LOG.STARTT  r
+IS.LOG.COMPANY ~
+FORCE          
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      
+CFG.PATH       
+CFG.FULLNAME   
+X_HNDL         
+X.BUFF         
+TI             
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+ISCT           
+ALEN           
+NZCT           

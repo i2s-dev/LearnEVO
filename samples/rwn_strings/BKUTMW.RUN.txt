@@ -1,0 +1,274 @@
+TASCOLOR
+UT-F  Assign Printer Fonts/MarginsA
+This program can be run by the Windows version only.L
+An error occured while attempting to open the file TP5WIN.INI.F
+You are probably out of disk space.  This would apply where F
+ever the WINDOWS subdirectory is.  Please correct this before F
+attempting to run this program again.I
+FontNameA
+RegularSizeA
+CompressedSizeA
+MarginSideA
+MarginTopA
+LineSizeA
+PrintLaserA
+F1 Help,F10 SaveA
+ESC ExitA
+The name of the font to use.A
+Courier NewA
+This must be a valid name.A
+This is the font size to use for standard (non-compressed) printingI
+This must be more than 0.A
+This is the font size to use for compressed printing.I
+This must be more than 0.A
+If you enter Y here all printing will be done with Bold on.A
+This is the number of columns to offset from the side of the page.A
+This is the number of lines to offset from the top of the page.A
+This number is added to the normal number of pixels between each line.  If the lines are too far apart make this a negative number.  If they are too close make this a positive number.  You may have to experiment for each printer what the appropriate value is.  In most cases you will leave this at 0.A
+Save the printer information?A
+Make further changes?A
+ERASEA
+writeA
+FontNameA
+RegularSizeA
+CompressedSizeA
+MarginSideA
+MarginTopA
+LineSizeA
+PrintLaserA
+closeA
+The TP5WIN.INI file was updated.  You will now have toF
+exit this program and start again to have it take effect.I
+        
+        
+                                                             
+        
+  Printer Name                                               
+        
+                                                             
+        
+        
+                                                             
+        
+  Font Name                                                  
+        
+                                                             
+        
+  Regular Size       Compressed Size       Print in Bold     
+        
+                                                             
+        
+  Margin Side        Margin Top            Line Size         
+        
+                                                             
+        
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+  STANDARD FUNCTION KEYS/BUTTONSF
+  ------------------------------F
+  F1  HelpF
+  F2  LookupF
+  F3  ClearF
+  F4  DeleteF
+  F5  FirstF
+  F6  LastF
+  F7  PreviousF
+  F8  NextF
+  F9  FindF
+  F10 SaveI
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MAX_VIDEO_COLS 
+USE_DFLT_COLORS
+MAX_VIDEO_ROWS 
+GRAY_WINDOWS   
+FONT_SIZE_DISP 
+SHADOW_WIDTH   
+FONT_SIZE_ENTER
+UNDERSCORE_CHR 
+ENTER_FLD_BORDR
+INIT_RUN_PRG   
+INIT_CAPTION   
+DFLT_COMP      
+MESSAGE        
+DUMMY_L        
+NORMAL_BKG     
+NORMAL_TEXT    
+BOX_BKG        
+BOX_TEXT       
+ENTER_BKG      
+ENTER_TEXT     
+WINDOW_BKG     
+WINDOW_TEXT    
+MENU_BKG       
+MENU_TEXT      
+BUTTON_BKG     
+BUTTON_TEXT    
+CHOICE_BKG     
+CHOICE_TEXT    
+ECOLOR_BKG     
+ECOLOR_TEXT    
+DISPLAY_BKG    
+DISPLAY_TEXT   
+PRINTER_NAME   
+DRIVER_NAME    
+PRINT_WIDTH    
+PRINTABLE_LINES
+TOTAL_LINES    
+PRINT_DIRECT   
+LASER_PRINTER  
+BOLD           
+LASER_FORMS    
+FONT_NAME      
+REGULAR_SIZE   
+COMPRESSED_SIZE
+MARGIN_SIDE    
+MARGIN_TOP     
+LINE_SIZE      
+INI_FILE_OPEN  
+INI_SAVED      
+BOLD_BOOL      
+DUMMYL         
+DO             
+BLK            
+MSG_PTR        
+VALUE          
+PROG.HELP.NAME 
+CRNT.FIELD     
+XYZDBAHTEXT    
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

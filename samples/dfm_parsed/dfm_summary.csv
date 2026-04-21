@@ -1,0 +1,1110 @@
+file,prefix,caption,root_class,field_count,enter_count,num_count,date_count,combo_count,check_count,tab_count,grid_count,total_controls
+J7I2SACH.DFM,?,ACH Export,TEditForm1,11,3,2,3,3,0,0,0,41
+J7i2SystemSOOE.DFM,?,Custom SOOE,TEditForm4,11,2,0,2,7,0,0,0,38
+ACT7SHKNOTE.DFM,ACT,New Screen,TEditForm1,4,1,0,0,3,0,0,0,22
+autoT7POJC.DFM,AUTO,PO-J-C,TEditForm2,28,9,9,3,7,0,0,0,72
+BOMTREE.DFM,BOMT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+CALDRILL.DFM,CALD,New Screen,TEditForm1,0,0,0,0,0,0,0,0,14
+calDDsel.DFM,CALD,Calendar Drill Down,TEditForm4,4,0,0,0,1,0,0,0,9
+caldrillbt.DFM,CALD,caldrillbt,TEditForm2,0,0,0,0,0,0,0,0,48
+CALGRIDDRILL.DFM,CALG, Calandar Drill Downs,TEditForm1,0,0,0,0,0,0,0,1,2
+CALREMGC.DFM,CALR,New Screen,TEditForm1,6,0,0,2,1,0,0,0,25
+calrem.DFM,CALR,caldrillbt,TEditForm1,0,0,0,0,0,0,0,0,52
+CASHFLOW.DFM,CASH,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+CASHFLOWREPORT.DFM,CASH,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+ChartDemo.DFM,CHAR,Addsum TAS 7i Chart Demo Program,TEditForm1,2,0,0,0,2,0,0,0,11
+ChartPieModal.DFM,CHAR,Pie Chart Values & Captions,TEditForm2,21,11,10,0,0,0,0,0,55
+chartBarModal.DFM,CHAR,Bar Chart Values & Captions,TEditForm1,16,4,12,0,0,0,0,0,40
+chartLineModal.DFM,CHAR,Line Chart Values & Captions,TEditForm2,21,9,12,0,0,0,0,0,47
+classic2evonts.DFM,CLAS, Classic 2 Evo Notes,TEditForm1,0,0,0,0,0,0,0,0,4
+COMMISSIONRPT.DFM,COMM,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+CRMDASHBOARD.DFM,CRMD,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+dayrem.DFM,DAYR,,TShellExe,0,0,0,0,0,0,0,0,1
+DDFilters.DFM,DDFI,,TPanel,1,0,0,0,1,0,0,0,3
+DFMALTS.DFM,DFMA,Set ALT Keys for DFMs,TEditForm1,1,0,0,0,1,0,0,0,8
+drill_check.DFM,DRIL,,TPanel,1,1,0,0,0,0,0,0,3
+Dummy.DFM,DUMM,Evo Base Window,TEditForm1,0,0,0,0,0,0,0,0,6
+EDITBOMTREE.DFM,EDIT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+EMAILREL4.DFM,EMAI,New Screen,TEditForm2,3,3,0,0,0,0,0,0,11
+ENPM.DFM,ENPM,Evo Notes:,TEditForm1,0,0,0,0,0,0,0,0,3
+error1.DFM,ERRO,Error,TEditForm1,1,1,0,0,0,0,0,0,3
+EVOENOTES.DFM,EVO, Entering Notes,TEditForm3,8,4,0,1,2,1,0,0,35
+EVOERROR.DFM,EVO,File Open Error,TEditForm1,0,0,0,0,0,0,0,0,7
+EVOFILTERS.DFM,EVO,New Screen,TEditForm2,106,29,0,20,53,2,11,0,270
+EVOFUP.DFM,EVO,UpLoad Files,TEditForm1,5,3,0,0,1,0,0,0,21
+EVOMESSAGE.DFM,EVO, Evo Message,TEditForm3,0,0,0,0,0,0,0,0,4
+EVORESETPASS.DFM,EVO, Reset Password,TEditForm1,3,3,0,0,0,0,0,0,10
+EVOUPASS.DFM,EVO,Password,TEditForm1,2,3,0,0,0,0,0,0,7
+EvoBS.DFM,EVO, Business Status,TEditForm1,24,0,22,0,0,0,4,0,110
+EvoBSCash.DFM,EVO, Business Status Cash Detail,TEditForm2,10,0,10,0,0,0,0,0,24
+EvoBSR.DFM,EVO,Business Status Rebuild,TEditForm3,0,0,0,0,0,0,0,0,3
+EvoBSWO.DFM,EVO, Business Status Work Orders,TEditForm1,10,0,10,0,0,0,0,0,25
+EvoCSI.DFM,EVO,Evo Master Inquiry,TEditForm2,9,9,0,0,0,0,0,0,29
+EvoELinks.DFM,EVO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+EvoEMsg.DFM,EVO, Evo Message,TEditForm17,2,1,0,0,1,0,0,0,6
+EvoForceUpd.DFM,EVO, Evo ~ ERP  Force Update,TEditForm1,2,0,0,0,0,2,0,0,21
+EvoLinkCVT.DFM,EVO,Evo Links CVT,TEditForm1,0,0,0,0,0,0,0,0,4
+EvoLinks.DFM,EVO,,TTASStrList,0,0,0,0,0,0,0,0,1
+EvoMobilesetup.DFM,EVO, Create Mobile Reminders Setup,TEditForm1,8,6,0,0,0,0,0,0,25
+EvoMobilsetup.DFM,EVO, Create Mobil Reminders Setup,TEditForm1,1,1,0,0,0,0,0,0,6
+EvoUPDATE.DFM,EVO,Update EvoERP,TEditForm1,0,0,0,0,0,0,0,0,3
+EvoUPDsetup.DFM,EVO, Create Update Setup,TEditForm2,1,1,0,0,0,0,0,0,6
+EvocfgSave.DFM,EVO,Save or Restore Program Defaults ,TEditForm1,1,0,0,0,0,1,0,0,7
+Evocnvtb.DFM,EVO, Synchronize Data Dictionary with Btreive,TEditForm2,1,1,0,0,0,0,0,0,8
+Evopass.DFM,EVO,Password,TEditForm1,1,2,0,0,0,0,0,0,5
+Evowkssetup.DFM,EVO,Create Workstation Setup,TEditForm1,3,1,0,0,0,0,0,0,13
+evoCSR.DFM,EVO,Calandar Summary Report,TEditForm1,10,0,0,1,4,0,0,0,23
+evoalerts.DFM,EVO, Evo Alerts,TEditForm1,0,0,0,0,0,0,0,0,6
+evogetdate.DFM,EVO,Evo ~ ERP,TEditForm1,1,0,0,0,0,1,0,0,9
+evoreminders.DFM,EVO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+evorereminders.DFM,EVO,Reschedule,TEditForm5,3,0,0,1,1,0,0,0,9
+EVODCS.DFM,EVODC,New Screen,TEditForm2,0,0,0,0,0,0,0,0,2
+EvoDCmenu.DFM,EVODC,,TImageList,0,0,0,0,0,0,0,0,1
+EvoDCmenu2.DFM,EVODC,,TMainMenu,0,0,0,0,0,0,0,0,7
+EvoDCsetup.DFM,EVODC,Create Workstation Setup,TEditForm2,3,1,0,0,0,0,0,0,11
+EVOERPUPDW.DFM,EVOERP,Archive Work Orders,TEditForm1,1,0,0,1,0,0,0,0,6
+EvoERPDrillM.DFM,EVOERP,ToolBar1,TToolBar,0,0,0,0,0,0,0,0,7
+EvoERPbackup.DFM,EVOERP,,TZipMaster,0,0,0,0,0,0,0,0,1
+EvoERPupd.DFM,EVOERP, Evo ~ ERP  Update,TEditForm1,2,0,0,0,0,2,0,0,24
+evoERPsched.DFM,EVOERP,Evo ~ ERP Scheduler,TEditForm1,11,0,0,0,0,7,0,0,20
+EvoFNO.DFM,EVOFNO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+EvoFNOPO.DFM,EVOFNO,Converting to Purchase Order,TEditForm2,0,0,0,0,0,0,0,0,3
+EvoFNOQty.DFM,EVOFNO,F&O Qty,TEditForm1,4,0,1,1,2,0,0,0,13
+EvoFNOSO.DFM,EVOFNO,Converting to Sales Order,TEditForm1,0,0,0,0,0,0,0,0,3
+EvoFNOWO.DFM,EVOFNO,Converting to Work Order,TEditForm4,0,0,0,0,0,0,0,0,3
+EvoNoteSearch.DFM,EVONOTE,Evo Notes Search,TEditForm1,4,2,0,0,1,1,0,0,21
+EvoNotes.DFM,EVONOTE,,TRtnTimer,0,0,0,0,0,0,0,0,1
+EvoNotesARCH.DFM,EVONOTE,Evo Notes,TEditForm1,35,2,0,2,19,10,0,0,72
+EvoNotesPrt.DFM,EVONOTE, Evo Notes Selection,TEditForm1,6,0,0,0,0,6,0,0,24
+EvoNotesRpt.DFM,EVONOTE,Evo Notes,TEditForm1,33,2,0,2,19,10,0,0,70
+EvoSchedsetup.DFM,EVOSCHED, Create Evo Scheduler as a Service,TEditForm1,8,6,0,0,0,0,0,0,25
+EvoScheduler.DFM,EVOSCHED,,TImageList,0,0,0,0,0,0,0,0,1
+EVOSERVICEREMOVE.DFM,EVOSERVICE,Remove EvoService from your Server,TEditForm1,0,0,0,0,0,0,0,0,6
+EVOSERVICESETUP.DFM,EVOSERVICE,Create EvoService for your Server,TEditForm1,11,7,1,0,1,0,0,0,29
+GetAlphaGen.DFM,GETA,GAG Caption,TEditForm1,1,1,0,0,0,0,0,0,6
+GetFileName.DFM,GETF, Enter File,TEditForm5,3,1,0,0,0,0,0,0,9
+GRIDPLAY.DFM,GRID,&Edit TabOrder = 2 end object Select: TButton Left = 92 Top = 248 Width = 75 Height = 25 Caption = 'Select,TButton,0,0,0,0,0,0,0,0,1
+ht6close.DFM,HT6CL,Close,TEditForm2,0,0,0,0,0,0,0,0,4
+ht6inc.DFM,HT6IN,Receiving,TEditForm1,3,1,1,0,1,0,0,0,7
+ht6so.DFM,HT6SO,Create Sales Order,TEditForm1,4,2,1,0,1,0,0,0,12
+ht6wo.DFM,HT6WO,Work Orders,TEditForm1,40,16,16,0,8,0,0,0,74
+Imageprint.DFM,IMAG,Printing Linked Documents,TEditForm2,1,1,0,0,0,0,0,0,5
+imageinfo.DFM,IMAG,New Screen,TEditForm1,5,5,0,0,0,0,0,0,24
+INVCHANGE.DFM,INVC,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+ISCCREP.DFM,IS,Credit Card Report,TEditForm1,2,0,0,0,2,0,0,0,8
+J7ABIShipRpt.DFM,J7AB,Lapco Fulfillment Report,TEditForm1,7,0,0,2,5,0,0,0,29
+J7AppVend.DFM,J7AP,Approve Vendor,TEditForm2,5,1,1,0,2,1,0,0,23
+J7AutoAPC.DFM,J7AU,Auto Enter PO Invoices,TEditForm1,9,2,0,3,3,1,0,0,33
+J7BEFWebInv.DFM,J7BE,Web Item Export,TEditForm1,17,6,1,0,5,5,0,0,46
+J7CCPIC.DFM,J7CC,PI-C  Enter Tag Counts,TEditForm1,6,3,1,1,1,0,0,0,31
+J7CIWebImport.DFM,J7CI,Web Import,TEditForm1,17,10,0,0,3,4,0,0,192
+J7CJBUsage.DFM,J7CJ,Print Inventory Usage,TEditForm1,12,1,0,2,9,0,0,0,39
+J7CRSOW.DFM,J7CR,,TImageList,0,0,0,0,0,0,0,0,1
+J7DCMatLabels.DFM,J7DC,Print Mattress Labels,TEditForm2,7,2,2,0,3,0,0,0,37
+J7DCSSOE.DFM,J7DC,Shipping,TEditForm1,4,2,0,0,2,0,0,0,37
+J7DCSSOEVerify.DFM,J7DC,,TShellExe,0,0,0,0,0,0,0,0,1
+J7EBSerial.DFM,J7EB,Enter Serial Number,TEditForm1,3,1,0,0,1,0,0,1,32
+J7EIMDCRev.DFM,J7EI,,TImageList,0,0,0,0,0,0,0,0,1
+J7HHEBINC.DFM,J7HH,Inventory Adjustment,TEditForm1,2,1,0,0,1,0,0,0,31
+J7HHEBXFER.DFM,J7HH,Transfer Inventory,TEditForm1,2,1,0,0,1,0,0,0,34
+J7HHEBXferVerify.DFM,J7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+J7HHLITN.DFM,J7HH,Enter Tracking Numbers,TEditForm2,5,2,1,0,2,0,0,0,35
+J7HHPTSSOE.DFM,J7HH,Shipping,TEditForm2,7,1,0,0,5,1,0,0,42
+J7HHPTSSOELABELS.DFM,J7HH,Print Box Content Labels,TEditForm2,6,4,1,0,1,0,0,0,28
+J7HHPTSSOEVerify.DFM,J7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+J7HHRTSSOE.DFM,J7HH,Shipping,TEditForm2,6,3,0,0,3,0,0,0,38
+J7LapcoSO.DFM,J7LA,Print Inventory Usage,TEditForm2,11,2,0,0,9,0,0,0,37
+J7MCDSAReport.DFM,J7MC,Sales Analysis Report,TEditForm1,7,2,0,2,3,0,0,0,29
+J7MPImportAR.DFM,J7MP,Import AR ,TEditForm1,2,1,0,0,1,0,0,0,18
+J7NMBins.DFM,J7NM,Bin,TEditForm1,5,2,1,0,2,0,0,0,27
+J7NMRTMPRINTER.DFM,J7NM,,TImageList,0,0,0,0,0,0,0,0,1
+J7PEDCB.DFM,J7PE,Production Status,TEditForm1,10,3,4,0,3,0,0,0,36
+J7POAIMPLINES.DFM,J7PO,BASE Blank T7 SCREEN,TEditForm1,18,2,8,0,4,4,0,0,49
+J7PTRecPOLine.DFM,J7PT,Receive PO Line,TEditForm2,10,4,4,0,2,0,0,0,35
+J7PTWOKI.DFM,J7PT,WO-K-J,TEditForm1,8,0,0,0,5,3,0,0,29
+J7SMJCT.DFM,J7SM,Closed Job Cost Report,TEditForm1,9,4,0,2,3,0,0,0,28
+J7SOAImpLines.DFM,J7SO,,TImageList,0,0,0,0,0,0,0,0,1
+J7SyncWOtoSO.dfm,J7SY,,TShellExe,0,0,0,0,0,0,0,0,1
+J7TMCKanban.DFM,J7TM,,TImageList,0,0,0,0,0,0,0,0,1
+J7WOLL.DFM,J7WO,WO-L-L,TEditForm1,10,2,1,0,6,1,0,0,37
+MACHINEVIEW.DFM,MACH,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+mDummy.DFM,MDUM,Evo Base Window,TEditForm1,0,0,0,0,0,0,0,0,2
+NascoPAYex.DFM,NASC,Export Payroll Data,TEditForm1,1,0,0,1,0,0,0,0,6
+NUMEMP.DFM,NUME,# of Empolyees,TEditForm1,1,0,1,0,0,0,0,0,4
+nzedefs.DFM,NZED,Evo Email Default Settings,TEditForm1,5,2,0,0,3,0,0,0,21
+nzemailtll.DFM,NZEM,,TShellExe,0,0,0,0,0,0,0,0,1
+printtll.DFM,PRIN,Print,TEditForm1,11,2,0,0,2,1,0,0,37
+PURCHITEM.DFM,PURC,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+PURCHVEND.DFM,PURC,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+QUERYEXECUTE.DFM,QUER,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+REMREM.DFM,REMR,Reminder...,TEditForm3,0,0,0,0,0,0,0,0,3
+SQLEXPORT.DFM,SQLE,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+SSS.DFM,SSS,Drill Filters,TEditForm7,7,1,0,0,0,6,0,0,10
+SSSFD.DFM,SSSF, Sub String Search,TEditForm3,8,1,0,0,0,7,0,0,12
+stub.DFM,STUB,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+T6EvoART.DFM,T6EV,,TEditForm1,13,12,0,1,0,0,0,0,26
+T6EvoINB.DFM,T6EV, IN-B  Enter Inventory,TEditForm1,107,64,28,0,14,0,7,1,241
+T6ISINB.DFM,T6IS,IN-B  Enter Inventory,TEditForm2,42,26,8,0,8,0,0,0,101
+T6ISINB2.DFM,T6IS,IN-B  Enter Inventory,TEditForm1,14,12,0,0,3,0,0,0,34
+T6ISINBECO.DFM,T6IS,,TShellExe,0,0,0,0,0,0,0,0,1
+T6ISINBLNK.DFM,T6IS, Item Links,TEditForm8,30,26,1,0,2,0,0,1,66
+T6ISINBMFG.DFM,T6IS,,TShellExe,0,0,0,0,0,0,0,0,1
+T6ISINBMRP.DFM,T6IS, MRP Settings,TEditForm9,12,6,5,0,1,0,0,0,26
+T6ISINBSPC.DFM,T6IS, Specifications,TEditForm3,15,14,0,0,1,0,0,0,21
+T6ISINBVND.DFM,T6IS,,TShellExe,0,0,0,0,0,0,0,0,1
+T6ISSTDCST.DFM,T6IS, Standard Cost,TEditForm6,22,4,17,0,1,0,0,0,51
+T6MENUUTIL.DFM,T6ME, Evo ~ ERP T6 Program Names,TEditForm1,2,2,0,0,0,0,0,0,12
+T7ACDATE.DFM,T7AC,,TImageList,0,0,0,0,0,0,0,0,1
+T7ACRDTYPE.DFM,T7AC,,TImageList,0,0,0,0,0,0,0,0,1
+T7ACTION.DFM,T7AC,,TImageList,0,0,0,0,0,0,0,0,1
+T7ALERTMSG.DFM,T7AL,ALERT NOTIFICATION,TEditForm1,1,0,0,0,1,0,0,0,10
+T7ALOGSETUP.DFM,T7AL,New Screen,TEditForm1,3,1,0,0,2,0,0,0,22
+T7ALTPART.DFM,T7AL,,TTASDGColTemplate,1,0,0,0,0,0,0,0,1
+T7AMA.DFM,T7AM,New Screen,TEditForm1,9,3,0,5,1,0,0,0,29
+T7AMB.DFM,T7AM,New Screen,TEditForm1,17,2,14,0,1,0,0,0,44
+T7AMC.DFM,T7AM,New Screen,TEditForm1,33,3,14,12,2,2,0,0,59
+T7AMD.DFM,T7AM,New Screen,TEditForm1,10,3,0,0,1,6,0,0,32
+T7AME.DFM,T7AM,New Screen,TEditForm1,105,41,0,0,61,0,0,0,176
+T7AMG.DFM,T7AM,,TImageList,0,0,0,0,0,0,0,0,1
+T7AMH.DFM,T7AM,New Screen,TEditForm1,12,3,4,0,4,0,0,0,44
+T7AMI.DFM,T7AM,New Screen,TEditForm5,8,3,0,2,3,0,0,0,28
+T7AMJ.DFM,T7AM,New Screen,TEditForm4,5,1,0,1,3,0,0,0,24
+T7AMK.DFM,T7AM,New Screen,TEditForm9,5,1,0,1,3,0,0,0,24
+T7AMN.DFM,T7AM,New Screen,TEditForm2,96,0,0,95,1,0,0,0,159
+T7AMO.DFM,T7AM,New Screen,TEditForm1,8,4,0,1,3,0,0,0,30
+T7AMP.DFM,T7AM,New Screen,TEditForm1,9,5,0,1,3,0,0,0,32
+T7AMQ.DFM,T7AM,New Screen,TEditForm1,134,16,89,24,5,0,0,0,212
+T7AMS.DFM,T7AM,New Screen,TEditForm1,8,3,0,2,3,0,0,0,30
+T7APA.DFM,T7AP,New Screen,TEditForm3,39,25,4,3,5,2,0,0,101
+T7APABANK.DFM,T7AP,Vendor Bank Information,TEditForm1,16,15,0,0,1,0,0,0,36
+T7APACON.DFM,T7AP, Customer Contact Information,TEditForm1,13,12,0,0,1,0,0,0,20
+T7APAPRC.DFM,T7AP, Check Vendor Item Pricing,TEditForm2,5,1,3,0,1,0,0,0,12
+T7APASTA.DFM,T7AP, Vendor Statistics,TEditForm1,4,0,3,0,1,0,0,0,13
+T7APB.DFM,T7AP,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7APC.DFM,T7AP,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7APD.DFM,T7AP,,TImageList,0,0,0,0,0,0,0,0,1
+T7APE.DFM,T7AP,New Screen,TEditForm1,15,3,0,2,7,3,0,0,42
+T7APH.DFM,T7AP,,TImageList,0,0,0,0,0,0,0,0,1
+T7APHASK.DFM,T7AP,Check Note,TEditForm1,4,3,0,0,1,0,0,0,11
+T7API.DFM,T7AP,New Screen,TEditForm1,23,6,5,2,7,3,0,0,63
+T7APINFO.DFM,T7AP,New Screen,TEditForm1,63,47,10,5,1,0,0,0,84
+T7APJ.DFM,T7AP,New Screen,TEditForm1,19,7,0,4,3,5,0,0,48
+T7APK.DFM,T7AP,New Screen,TEditForm1,10,2,0,0,3,0,0,0,40
+T7APM.DFM,T7AP,AP-M,TEditForm3,10,6,0,0,4,0,0,0,35
+T7APO.DFM,T7AP,New Screen,TEditForm1,63,35,11,1,16,0,2,0,118
+T7APP.DFM,T7AP,New Screen,TEditForm1,8,5,0,2,1,0,0,0,31
+T7APQ.DFM,T7AP,New Screen,TEditForm1,10,3,1,2,4,0,0,0,43
+T7APR.DFM,T7AP,New Screen,TEditForm1,15,4,2,2,3,4,0,0,41
+T7APS.DFM,T7AP,New Screen,TEditForm10,11,4,2,0,4,1,0,0,39
+T7APT.DFM,T7AP,AP check info,TEditForm1,30,13,8,3,6,0,0,0,85
+T7APV.DFM,T7AP,,TImageList,0,0,0,0,0,0,0,0,1
+T7APX.DFM,T7AP,New Screen,TEditForm1,9,2,0,2,3,2,0,0,30
+T7APY.DFM,T7AP,Vendor Amount,TEditForm1,12,2,0,2,6,2,0,0,39
+T7APYB.DFM,T7AP,Pinacle,TEditForm1,15,2,7,2,2,2,0,0,48
+T7APYC.DFM,T7AP,NACHA,TEditForm1,9,2,2,3,2,0,0,0,35
+T7APZA.DFM,T7AP,New Screen,TEditForm1,13,1,1,6,5,0,0,0,44
+t7apaC.DFM,T7AP,New Screen,TEditForm4,55,37,4,4,7,4,0,0,144
+t7apae.DFM,T7AP,New Screen,TEditForm3,68,50,4,4,7,4,4,0,181
+t7apf.dfm,T7AP,,TImageList,0,0,0,0,0,0,0,0,1
+t7apg.dfm,T7AP,AP-G Print Proforma Check Register,TEditForm1,6,3,0,1,2,0,0,0,28
+t7apl.DFM,T7AP,New Screen,TEditForm3,7,4,0,0,3,0,0,0,29
+T7ARA.DFM,T7AR,New Screen,TEditForm4,63,33,5,1,17,7,0,0,154
+T7ARA2DB.DFM,T7AR,E&xit,TGlyphBtn,0,0,0,0,0,0,0,0,1
+T7ARAC.DFM,T7AR,New Screen,TEditForm4,63,33,5,1,17,7,0,0,154
+T7ARACON.DFM,T7AR, Customer Contact Information,TEditForm2,16,15,0,0,1,0,0,0,23
+T7ARACRE.DFM,T7AR, Customer Credit Information,TEditForm3,11,0,5,3,2,1,0,0,26
+T7ARAE.DFM,T7AR,New Screen,TEditForm1,118,57,25,5,22,9,7,0,279
+T7ARAPRC.DFM,T7AR, Check Customer Item Pricing,TEditForm4,6,1,4,0,1,0,0,0,14
+T7ARASTA.DFM,T7AR, Customer Statistics,TEditForm5,13,0,12,0,1,0,0,0,24
+T7ARB.DFM,T7AR,Voucher Entry,TEditForm1,72,43,11,1,17,0,0,0,134
+T7ARC.DFM,T7AR,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7ARD.DFM,T7AR,AR-D  Charge Interest on Invoices,TEditForm1,7,1,3,1,2,1,0,0,27
+T7ARE.DFM,T7AR,AR-E  Print Statements [Plain Paper],TEditForm1,23,7,1,3,4,8,0,0,52
+T7ARF.DFM,T7AR,AR-F  Print Aging,TEditForm1,42,10,5,4,9,11,0,0,98
+T7ARG.DFM,T7AR,"AR-G  Print Customer Code and Name""",TEditForm1,25,5,5,4,3,5,0,0,61
+T7ARH.DFM,T7AR,AR-H  Print Customer General Info,TEditForm1,19,4,1,4,8,2,0,0,50
+T7ARI.DFM,T7AR,AR-I  Print Customer Mail Labels,TEditForm3,28,8,1,4,6,5,0,0,66
+T7ARK.DFM,T7AR,AR-K,TEditForm1,14,6,0,2,5,1,0,0,42
+T7ARL.DFM,T7AR,,TImageList,0,0,0,0,0,0,0,0,1
+T7ARM.DFM,T7AR,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7ARN.DFM,T7AR,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7ARP.DFM,T7AR,BASE Blank T7 SCREEN,TEditForm1,12,3,2,0,7,0,0,0,40
+T7ARR.DFM,T7AR,AR-R Print AR Payment History,TEditForm1,12,5,0,2,3,2,0,0,37
+T7ART.DFM,T7AR,New Screen,TEditForm1,10,7,0,0,3,1,0,0,57
+T7ARU.DFM,T7AR,New Screen,TEditForm1,5,0,1,1,3,0,0,0,24
+T7askbut.DFM,T7AS,,TEditForm4,0,0,0,0,0,0,0,0,6
+T7AUTODCH.DFM,T7AU,AUTO DC-H,TEditForm2,10,1,0,2,5,0,0,0,37
+T7BINSET.DFM,T7BI,Istech Warehouse Control Setup Utility,TEditForm1,10,1,5,0,2,0,0,0,39
+T7BMA.DFM,T7BM,New Screen,TEditForm1,44,28,6,0,6,3,0,0,105
+T7BMAx.DFM,T7BM,New Screen,TEditForm1,42,27,6,0,2,3,0,0,77
+T7BMB.DFM,T7BM,BM-B,TEditForm1,28,6,1,2,5,14,0,0,58
+T7BMC.DFM,T7BM,BM-C,TEditForm1,6,2,1,0,3,0,0,0,27
+T7BMD.DFM,T7BM,Print Availability,TEditForm1,18,3,1,0,7,7,0,0,46
+T7BME.DFM,T7BM,BM-E,TEditForm1,6,2,0,0,3,1,0,0,24
+T7BMF.DFM,T7BM,BM-F,TEditForm1,2,0,0,0,2,0,0,0,18
+T7BMG.DFM,T7BM,BM-G,TEditForm1,18,5,0,0,8,5,0,0,48
+T7BMH.DFM,T7BM,BM-H,TEditForm1,11,3,0,0,4,4,0,0,33
+T7BMI.DFM,T7BM,BM-I,TEditForm1,16,3,0,0,5,8,0,0,40
+T7BMJ.DFM,T7BM,,TImageList,0,0,0,0,0,0,0,0,1
+T7BMK.DFM,T7BM,,TImageList,0,0,0,0,0,0,0,0,1
+T7BML.DFM,T7BM,,TImageList,0,0,0,0,0,0,0,0,1
+T7BMP.DFM,T7BM,BOM Pick List,TEditForm1,7,2,1,0,2,2,0,0,29
+T7BMQ.DFM,T7BM,BM-Q,TEditForm1,3,0,0,0,3,0,0,0,21
+T7BMR.DFM,T7BM,BM-R,TEditForm1,16,3,6,0,7,1,0,0,43
+T7BOL.DFM,T7BO,,TShellExe,0,0,0,0,0,0,0,0,1
+T7BOLMSO.DFM,T7BO,,TImageList,0,0,0,0,0,0,0,0,1
+T7BOMSCRAPFIX.DFM,T7BO,Reset Scrap Calculation,TEditForm1,8,3,0,0,2,2,0,0,26
+T7BRANDS.DFM,T7BR,,TImageList,0,0,0,0,0,0,0,0,1
+T7BS.DFM,T7BS, Business Status,TEditForm1,25,0,22,0,1,0,4,0,117
+T7BSCash.DFM,T7BS, Business Status Cash Detail,TEditForm1,3,0,1,0,0,0,0,1,6
+T7BSR.DFM,T7BS,Business Status Rebuild,TEditForm4,0,0,0,0,0,0,0,0,4
+T7BSWO.DFM,T7BS, Business Status Work Orders,TEditForm1,10,0,10,0,0,0,0,0,25
+T7BZFIX.DFM,T7BZ,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7CAR8D.DFM,T7CA,,TPanel,1,1,0,0,0,0,0,0,6
+T7CARFUP.DFM,T7CA,,TImageList,0,0,0,0,0,0,0,0,1
+t7carfu.DFM,T7CA,,TImageList,0,0,0,0,0,0,0,0,1
+T7CCCITM.DFM,T7CC,New Screen,TEditForm1,2,0,0,0,2,0,0,0,18
+T7CCCWOT.DFM,T7CC,New Screen,TEditForm1,3,0,0,0,3,0,0,0,20
+T7CCDE.DFM,T7CC,CC Import,TEditForm1,19,0,16,0,3,0,0,0,55
+T7CCP.DFM,T7CC,,TShellExe,0,0,0,0,0,0,0,0,1
+T7CCPO.DFM,T7CC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7ccr1.DFM,T7CC,Credit Card Invoice List,TEditForm1,4,0,0,2,2,0,0,0,13
+T7CHAINM.DFM,T7CH,ToolBar1,TToolBar,0,0,0,0,0,0,0,0,7
+T7CHARGBK.DFM,T7CH,,TImageList,0,0,0,0,0,0,0,0,1
+T7Chain.DFM,T7CH,ToolBar1,TToolBar,0,0,0,0,0,0,0,0,7
+T7CLoading.DFM,T7CL,  ,TEditForm1,0,0,0,0,0,0,0,0,4
+T7CMA.DFM,T7CM,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7CMABCL.DFM,T7CM,,TImageList,0,0,0,0,0,0,0,0,1
+T7CMABCLB.DFM,T7CM,,TImageList,0,0,0,0,0,0,0,0,1
+T7CMABCLP.DFM,T7CM,,TImageList,0,0,0,0,0,0,0,0,1
+T7CMACL.DFM,T7CM,,TImageList,0,0,0,0,0,0,0,0,1
+T7CMACON.DFM,T7CM, Customer Contact Information,TEditForm1,92,64,0,10,10,8,0,0,117
+T7CMAKD.DFM,T7CM,,TImageList,0,0,0,0,0,0,0,0,1
+T7CMBB.DFM,T7CM,,TImageList,0,0,0,0,0,0,0,0,1
+T7CMCON.DFM,T7CM, Customer Contact Information,TEditForm3,44,42,0,0,1,1,0,0,97
+T7CMK.DFM,T7CM,CM-K,TEditForm1,7,3,0,0,3,1,0,0,28
+T7CMfocvt.DFM,T7CM,Filters,TEditForm1,4,0,0,2,2,0,0,0,11
+T7CMnfcvt.DFM,T7CM,Filters,TEditForm2,4,0,0,2,2,0,0,0,11
+T7COLORS.DFM,T7CO,New Screen,TEditForm1,4,0,4,0,0,0,0,0,11
+T7COPY.DFM,T7CO,Copy,TEditForm1,1,0,1,0,0,0,0,0,5
+T7CSA.DFM,T7CS,New Screen,TEditForm3,11,4,1,0,7,0,0,0,35
+T7CSB.DFM,T7CS,CS-B  View Salespersons Info,TEditForm1,87,2,79,0,6,0,0,0,133
+T7CSC.DFM,T7CS,CS-C  Print Salespersons Info,TEditForm2,5,0,0,0,4,1,0,0,22
+T7CSD.DFM,T7CS,,TImageList,0,0,0,0,0,0,0,0,1
+T7CSDE.DFM,T7CS,Rep Link Import,TEditForm1,19,0,14,0,3,0,0,0,55
+T7CSDO.DFM,T7CS,,TImageList,0,0,0,0,0,0,0,0,1
+T7CSDX.DFM,T7CS,,TImageList,0,0,0,0,0,0,0,0,1
+T7CSE.DFM,T7CS,CS-E  Print Commission Detail,TEditForm1,10,0,0,2,5,3,0,0,34
+T7CSF.DFM,T7CS,CS-F  Print Commission Summary,TEditForm1,9,0,0,2,3,4,0,0,30
+T7CSI.DFM,T7CS,Evo Master Inquiry,TEditForm1,9,9,0,0,0,0,0,0,30
+T7CSO.DFM,T7CS,BASE Blank T7 SCREEN,TEditForm1,28,6,0,6,15,1,0,0,81
+T7CSP.DFM,T7CS,CS-P  Print Commission Summary,TEditForm1,7,0,2,2,3,0,0,0,30
+T7CTRevu.DFM,T7CT,Setup Contract Review Departments,TEditForm1,10,3,0,2,4,1,0,0,42
+T7CTRevuPSWD.DFM,T7CT,Enter Contract Review ID and password,TEditForm3,3,2,0,0,1,0,0,0,12
+T7CUSTCO.DFM,T7CU,Select,TEditForm3,0,0,0,0,0,0,0,0,3
+T7CUSTOMS.DFM,T7CU,Custom Content,TEditForm1,31,20,0,0,1,10,0,0,45
+t7cutsheet2.DFM,T7CU,,TImageList,0,0,0,0,0,0,0,0,1
+t7cutsheet2b.DFM,T7CU,,TImageList,0,0,0,0,0,0,0,0,1
+T7CVTROIA.DFM,T7CV,Filters,TEditForm1,4,0,0,0,4,0,0,0,11
+t7dba2evo.DFM,T7DB, Classic to Evo Notes,TEditForm1,12,0,0,0,0,12,0,0,30
+T7DCA.DFM,T7DC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7DCA2.DFM,T7DC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7DCALabel.DFM,T7DC,Print Transfer Label,TEditForm1,16,9,0,0,4,3,0,0,45
+T7DCANotes.DFM,T7DC,Notes Caption,TEditForm1,0,0,0,0,0,0,0,0,7
+T7DCAPstdLab.dfm,T7DC,New Screen,TEditForm1,2,0,0,0,0,0,0,1,4
+T7DCBSERIAL.DFM,T7DC,Enter Serial Numbers,TEditForm1,5,0,2,0,2,0,0,1,22
+T7DCD.DFM,T7DC,DC-D,TEditForm1,24,6,0,2,8,6,0,0,59
+T7DCE.DFM,T7DC,DC-E Print Labor Tickets,TEditForm1,6,0,1,0,3,2,0,0,24
+T7DCF.DFM,T7DC,DC-E Print Employee Tickets,TEditForm3,4,0,1,0,3,0,0,0,22
+T7DCG.DFM,T7DC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7DCH.DFM,T7DC,DC-H,TEditForm1,10,1,0,2,5,0,0,0,38
+T7DCK.DFM,T7DC,DC-K,TEditForm1,7,2,0,2,3,0,0,0,28
+T7DCL.DFM,T7DC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7DCM.DFM,T7DC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7DCN.DFM,T7DC,DC-N,TEditForm1,6,0,1,2,3,0,0,0,27
+T7DCPSF.DFM,T7DC,HH-L  Paperless Shop Floor,TEditForm1,36,32,0,0,2,0,0,0,109
+T7DCPSFComps.DFM,T7DC,,TImageList,0,0,0,0,0,0,0,0,1
+T7DCPSFECO.DFM,T7DC, Eco,TEditForm1,10,8,0,2,0,0,0,0,35
+T7DCSOLookup.DFM,T7DC,,TShellExe,0,0,0,0,0,0,0,0,1
+t7DCPSFNotes.DFM,T7DC,Notes Caption,TEditForm2,0,0,0,0,0,0,0,0,12
+t7DCina.DFM,T7DC,T7INA,TEditForm1,41,16,16,0,9,0,0,0,123
+t7dcb.DFM,T7DC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+t7ddcheck.DFM,T7DD,Data Dictionary Check,TEditForm1,0,0,0,0,0,0,0,0,6
+T7DEER.DFM,T7DE,New Screen,TEditForm1,6,2,0,0,3,1,0,0,26
+T7DEFECT.DFM,T7DE,,TImageList,0,0,0,0,0,0,0,0,1
+T7DEHD.DFM,T7DE,PI-C Import Tags,TEditForm1,26,3,18,1,3,1,0,0,60
+T7DEJH.DFM,T7DE,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7DEK.DFM,T7DE,New Screen,TEditForm1,6,3,0,0,3,0,0,0,27
+T7DEL.DFM,T7DE,New Screen,TEditForm1,8,0,0,0,1,7,0,0,24
+T7DEM.DFM,T7DE,New Screen,TEditForm1,4,2,0,0,1,1,0,0,22
+T7DEP860.DFM,T7DE,DE-P-B,TEditForm2,6,4,1,0,1,0,0,0,28
+T7DEPB.DFM,T7DE,DE-P-B,TEditForm2,10,7,2,0,1,0,0,0,38
+T7DEPD.DFM,T7DE,DE-P-D,TEditForm4,12,0,1,2,7,2,0,0,40
+T7DEPE.DFM,T7DE,DE-P-E,TEditForm2,14,4,3,0,5,2,0,0,41
+T7DEPF.DFM,T7DE,New Screen,TEditForm1,6,2,0,0,2,0,0,0,26
+T7DEPH.DFM,T7DE,DE-P-H,TEditForm1,6,0,0,0,3,3,0,0,30
+T7DEQ.DFM,T7DE,New Screen,TEditForm1,20,2,16,0,2,0,0,0,56
+T7DER.DFM,T7DE,New Screen,TEditForm1,24,2,20,0,2,0,0,0,62
+T7DET.DFM,T7DE,Web Import,TEditForm1,30,12,0,0,5,13,0,0,332
+T7DETB.DFM,T7DE,DE-T-B,TEditForm1,60,6,46,0,4,4,0,0,140
+T7DEU.DFM,T7DE,Web Item Export,TEditForm1,17,6,1,0,5,5,0,0,46
+T7DEV.DFM,T7DE,,TImageList,0,0,0,0,0,0,0,0,1
+T7DEX.DFM,T7DE,,TImageList,0,0,0,0,0,0,0,0,1
+T7DIGSIG.DFM,T7DI,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7DigSigChgPSWD.DFM,T7DI,Change Password,TEditForm1,3,3,0,0,0,0,0,0,13
+T7DRAG.DFM,T7DR,New Screen,TEditForm1,0,0,0,0,0,0,0,0,14
+T7DROPDOWN.DFM,T7DR,,TImageList,0,0,0,0,0,0,0,0,1
+T7DUPEISICFIX.DFM,T7DU,New Screen,TEditForm1,2,1,0,0,0,0,0,0,11
+T7EDII.DFM,T7ED,ED-I-I,TEditForm1,10,0,6,0,4,0,0,0,37
+t7ediftp.DFM,T7ED,EDI  FTP Program,TEditForm2,7,0,0,0,0,7,0,0,9
+t7edudf.DFM,T7ED,New Screen,TEditForm1,2,0,0,0,0,0,0,1,2
+T7EMGL.DFM,T7EM,,TImageList,0,0,0,0,0,0,0,0,1
+T7ESB.DFM,T7ES,ES-B,TEditForm1,16,4,0,0,6,6,0,0,42
+T7ESC.DFM,T7ES,ES-C,TEditForm1,19,0,0,0,3,16,0,0,42
+T7ESD.DFM,T7ES,ES-D  Print Customer Quotes,TEditForm1,14,4,0,2,6,2,0,0,43
+T7ESE.DFM,T7ES,,TImageList,0,0,0,0,0,0,0,0,1
+T7ESH.DFM,T7ES,ES-H Enter Material Costs,TEditForm1,19,3,12,1,3,0,0,0,55
+T7ESI.DFM,T7ES,New Screen,TEditForm3,5,0,0,2,3,0,0,0,24
+T7EST.DFM,T7ES,,TImageList,0,0,0,0,0,0,0,0,1
+T7EvoAPA.DFM,T7EV,New Screen,TEditForm4,51,38,4,3,5,2,4,0,134
+T7EvoARA.DFM,T7EV,New Screen,TEditForm4,66,35,10,4,13,4,4,0,161
+T7EvoINA.DFM,T7EV,,TImageList,0,0,0,0,0,0,0,0,1
+T7EvoINB.DFM,T7EV,,TImageList,0,0,0,0,0,0,0,0,1
+T7EvoINB.al.DFM,T7EV,,TImageList,0,0,0,0,0,0,0,0,1
+T7EvoPOA.DFM,T7EV,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7EvoWOA.DFM,T7EV,New Screen,TEditForm1,69,9,45,8,7,0,3,0,170
+t7evo2dba.DFM,T7EV, Evo 2 Classic Notes,TEditForm1,0,0,0,0,0,0,0,0,12
+t7evoSoa.DFM,T7EV,,TTASStrList,0,0,0,0,0,0,0,0,1
+t7EWC.DFM,T7EW,New Screen,TEditForm1,10,3,2,0,5,0,0,0,32
+T7FAA.DFM,T7FA,,TImageList,0,0,0,0,0,0,0,0,1
+T7FAB.DFM,T7FA,,TImageList,0,0,0,0,0,0,0,0,1
+T7FAE.DFM,T7FA,FA-E,TEditForm3,47,0,44,0,3,0,0,0,101
+T7FIX.DFM,T7FI,New Screen,TEditForm4,2,1,0,0,0,0,0,0,10
+T7FNR.DFM,T7FN,,TPopupMenu,0,0,0,0,0,0,0,0,3
+T7FOC.DFM,T7FO,FO-C,TEditForm1,8,2,1,0,3,2,0,0,28
+T7FOD.DFM,T7FO,New Screen,TEditForm1,7,0,0,0,7,0,0,0,28
+T7FOE.DFM,T7FO,New Screen,TEditForm1,2,0,0,0,2,0,0,0,18
+T7FSCLASS.DFM,T7FS,,TImageList,0,0,0,0,0,0,0,0,1
+T7FSEMP.DFM,T7FS,,TImageList,0,0,0,0,0,0,0,0,1
+T7FSINFO.DFM,T7FS,,TImageList,0,0,0,0,0,0,0,0,1
+t7ftp.DFM,T7FT,New Screen,TEditForm1,0,0,0,0,0,0,0,0,7
+T7gdm.DFM,T7GD, Grids & Drills Maintence,TEditForm1,3,0,0,0,0,0,0,0,10
+T7GENIMP.DFM,T7GE,,TImageList,0,0,0,0,0,0,0,0,1
+T7GETDEP.DFM,T7GE,Get Deposits,TEditForm7,4,0,1,0,0,0,0,1,23
+T7GETWEB.DFM,T7GE,New Screen,TEditForm1,0,0,0,0,0,0,0,0,6
+T7GFCB.DFM,T7GF,,TPanel,0,0,0,0,0,0,0,0,5
+T7GFPRICE.DFM,T7GF,,TImageList,0,0,0,0,0,0,0,0,1
+T7GFR.DFM,T7GF,New Screen,TEditForm1,3,0,0,2,1,0,0,0,20
+T7GFTEST.DFM,T7GF,New Screen,TEditForm2,1,0,0,0,1,0,0,0,4
+T7GFV.DFM,T7GF,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7GFVS.DFM,T7GF,,TImageList,0,0,0,0,0,0,0,0,1
+t7GFdept.DFM,T7GF,,TImageList,0,0,0,0,0,0,0,0,1
+t7GFdiv.DFM,T7GF,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLA.DFM,T7GL,GL-A,TEditForm3,113,5,82,24,2,0,0,0,162
+T7GLARCH.DFM,T7GL,,TEditForm1,2,0,0,1,1,0,0,0,19
+T7GLB.DFM,T7GL,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLBLIST.DFM,T7GL,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLC.DFM,T7GL,GL-C,TEditForm1,24,7,2,4,6,5,0,0,61
+T7GLD.DFM,T7GL,GL-D,TEditForm2,14,6,0,4,2,2,0,0,47
+T7GLE.DFM,T7GL,GL-E,TEditForm1,18,4,0,4,4,6,0,0,51
+T7GLE2.DFM,T7GL,GL-E,TEditForm3,15,3,0,4,4,4,0,0,39
+T7GLESPEED.DFM,T7GL,GL-E,TEditForm1,16,3,0,4,4,5,0,0,48
+T7GLF.DFM,T7GL,GL- F,TEditForm1,98,51,9,22,6,10,0,0,177
+T7GLG.DFM,T7GL,GL-G,TEditForm1,6,2,0,0,3,1,0,0,25
+T7GLH.DFM,T7GL,GL- H,TEditForm2,16,2,0,0,3,11,0,0,36
+T7GLI.DFM,T7GL,GL- I,TEditForm1,12,1,2,4,5,0,0,0,40
+T7GLJ.DFM,T7GL,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLJASK.DFM,T7GL,Change Location,TEditForm1,4,0,0,0,1,3,0,0,11
+T7GLK.DFM,T7GL,GL- K,TEditForm1,13,3,6,1,3,0,0,0,42
+T7GLL.DFM,T7GL,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLN.DFM,T7GL,GL- N,TEditForm1,40,10,8,8,6,8,0,0,87
+T7GLO.DFM,T7GL,GL-O,TEditForm1,117,38,63,4,3,10,0,0,160
+T7GLOOB.DFM,T7GL,GL- O-OB,TEditForm1,5,1,1,2,1,0,0,0,27
+T7GLP.DFM,T7GL,GL-P,TEditForm1,12,5,1,2,4,0,0,0,40
+T7GLQ.DFM,T7GL,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLS.DFM,T7GL,,TImageList,0,0,0,0,0,0,0,0,1
+T7GLT.DFM,T7GL,New Screen,TEditForm1,31,1,24,1,3,2,0,0,68
+T7GTEMP.DFM,T7GT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+t7helpset.DFM,T7HE,New Screen,TEditForm1,1,0,0,0,1,0,0,0,16
+T7HH.DFM,T7HH,New Screen,TEditForm1,1,0,0,0,1,0,0,0,14
+T7HHALERTMSG.DFM,T7HH,ALERT NOTIFICATION,TEditForm1,1,0,0,0,1,0,0,0,10
+T7HHDCA.DFM,T7HH,Shipping,TEditForm1,5,2,1,0,2,0,0,0,31
+T7HHH.DFM,T7HH,Enter Tracking Numbers,TEditForm2,5,2,1,0,2,0,0,0,35
+T7HHINLJLot.DFM,T7HH,Transfer Lot Numbers,TEditForm1,4,1,2,0,1,0,0,0,29
+T7HHINLJSer.DFM,T7HH,Transfer Serial Numbers,TEditForm1,3,1,1,0,1,0,0,0,28
+T7HHItemLU.DFM,T7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7HHN.DFM,T7HH,HH-N,TEditForm1,12,1,2,1,1,7,0,0,33
+T7HHN2.DFM,T7HH,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7HHNDTE.DFM,T7HH,Enter Shipping Details,TEditForm1,7,4,2,1,1,0,0,0,16
+T7HHNREL.DFM,T7HH,,TImageList,0,0,0,0,0,0,0,0,1
+T7HHO.DFM,T7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7HHPIC.DFM,T7HH,PI-C  Enter Tag Counts,TEditForm1,6,3,1,1,1,0,0,0,31
+T7HHPOCBIN.DFM,T7HH,Receive PO,TEditForm3,6,0,2,0,4,0,0,0,42
+T7HHPOCLot.DFM,T7HH,Receive Lot Numbers,TEditForm2,3,1,1,0,1,0,0,0,28
+T7HHPOCNotes.DFM,T7HH,Notes Caption,TEditForm2,0,0,0,0,0,0,0,0,12
+T7HHPOCSER.DFM,T7HH,Receive Serial Numbers,TEditForm3,3,2,0,0,1,0,0,0,30
+T7HHProcess.DFM,T7HH,PROCESS DATA,TEditForm2,1,0,0,0,1,0,0,0,21
+T7HHSOBIN.DFM,T7HH,WC Bin Selection,TEditForm1,3,1,0,0,2,0,0,0,30
+T7HHSODD.DFM,T7HH,Shipping,TEditForm3,6,1,0,0,2,3,0,0,32
+T7HHSOLOT.DFM,T7HH,RELEASE LOT NUMBER,TEditForm4,3,2,0,0,1,0,0,0,30
+T7HHSOLookup.DFM,T7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7HHSOSER.DFM,T7HH,Print Mattress Labels,TEditForm2,2,1,0,0,1,0,0,0,30
+T7HHSSOE.DFM,T7HH,Shipping,TEditForm1,7,2,1,0,3,1,0,0,39
+T7HHSSOESVerify.DFM,T7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7HHSSOEVerify.DFM,T7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7HHWOIBIN.DFM,T7HH,WC Bin Selection,TEditForm1,2,0,0,0,2,0,0,0,26
+T7HHWOIProcess.DFM,T7HH,PROCESS DATA,TEditForm3,1,0,0,0,1,0,0,0,21
+T7HHWOLOT.DFM,T7HH,RELEASE LOT NUMBER,TEditForm1,5,2,0,1,2,0,0,0,30
+T7HHWOLabel.DFM,T7HH,WO Label,TEditForm1,19,3,2,0,9,5,0,0,64
+T7HHWOLookup.DFM,T7HH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7HHWOSCRAP.DFM,T7HH,Report Scrap Material,TEditForm1,13,5,1,0,5,2,0,0,62
+t7hhINGA.DFM,T7HH,Print Inventory Labels,TEditForm1,14,3,1,1,5,4,0,0,46
+t7hhdcb.DFM,T7HH,Loading....,TEditForm4,0,0,0,0,0,0,0,0,3
+t7hhdcc.DFM,T7HH,Loading....,TEditForm3,0,0,0,0,0,0,0,0,3
+t7hhinbins.DFM,T7HH,WC Item Lookup,TEditForm1,1,0,0,0,1,0,0,0,17
+t7hhinlj.DFM,T7HH,Transfer Inventory,TEditForm1,13,5,5,1,2,0,0,0,46
+t7hhpictags.DFM,T7HH,PI-C  Enter Tag Counts,TEditForm1,9,3,2,0,3,1,0,0,37
+t7hhpoc.DFM,T7HH,,TRtnTimer,0,0,0,0,0,0,0,0,1
+t7hhssoeLabels.DFM,T7HH,Print Box Content Labels,TEditForm3,10,4,1,0,2,3,0,0,33
+t7hhssoeLverify.DFM,T7HH,,TImageList,0,0,0,0,0,0,0,0,1
+t7hhwog.DFM,T7HH,Issue Material,TEditForm1,11,3,1,0,4,3,0,0,54
+t7hhwop.DFM,T7HH,Finish Production,TEditForm1,9,4,0,0,3,2,0,0,52
+t7hhwoser.DFM,T7HH,Enter Serial Number,TEditForm1,3,0,0,0,2,1,0,0,35
+T7IALERTS.DFM,T7IA,,TPanel,0,0,0,0,0,0,0,0,2
+T7IC2EST.DFM,T7IC, Copy Production to Estimate Inventory,TEditForm1,0,0,0,0,0,0,0,0,8
+T7IMB.DFM,T7IM,,TImageList,0,0,0,0,0,0,0,0,1
+T7IMC.DFM,T7IM,,TImageList,0,0,0,0,0,0,0,0,1
+T7IMD.DFM,T7IM,New Screen,TEditForm5,7,3,0,0,4,0,0,0,25
+T7IME.DFM,T7IM,,TImageList,0,0,0,0,0,0,0,0,1
+T7IMF.DFM,T7IM,,TImageList,0,0,0,0,0,0,0,0,1
+T7INA.DFM,T7IN,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7INAACDOC.DFM,T7IN, Accutron Documentation,TEditForm1,4,3,0,0,1,0,0,0,23
+T7INAALO.DFM,T7IN,,TPanel,0,0,0,0,0,0,0,0,7
+T7INACMP.DFM,T7IN,Compliance,TEditForm1,34,24,0,0,1,9,0,0,68
+T7INAFORECAST.DFM,T7IN,,TPanel,4,3,0,0,1,0,0,0,8
+T7INAPRC.DFM,T7IN,Customer Price,TEditForm1,9,3,4,0,2,0,0,0,25
+T7INASPC.DFM,T7IN, Specifications,TEditForm1,16,15,0,0,1,0,0,0,23
+T7INAUDF.DFM,T7IN, Specifications,TEditForm1,33,32,0,0,1,0,0,0,73
+T7INAUSG.DFM,T7IN,,TPanel,4,3,0,0,1,0,0,0,8
+T7INAWIP.DFM,T7IN,Item In WIP,TEditForm1,7,3,1,0,1,0,0,1,19
+T7INB.DFM,T7IN,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7INB2DB.DFM,T7IN,,TShellExe,0,0,0,0,0,0,0,0,1
+T7INBCMP.DFM,T7IN,Compliance,TEditForm1,34,22,0,0,3,9,0,0,68
+T7INBECO.DFM,T7IN,,TShellExe,0,0,0,0,0,0,0,0,1
+T7INBLNK.DFM,T7IN,,TShellExe,0,0,0,0,0,0,0,0,1
+T7INBMFG.DFM,T7IN,,TShellExe,0,0,0,0,0,0,0,0,1
+T7INBMRP.DFM,T7IN, MRP Settings,TEditForm3,15,6,8,0,1,0,0,0,33
+T7INBSPC.DFM,T7IN, Specifications,TEditForm2,15,14,0,0,1,0,0,0,22
+T7INBUDF.DFM,T7IN, Specifications,TEditForm1,33,32,0,0,1,0,0,0,73
+T7INBVND.DFM,T7IN,,TShellExe,0,0,0,0,0,0,0,0,1
+T7INC.DFM,T7IN,IN-C Enter Inventory Adjustments,TEditForm1,60,12,31,1,13,3,0,0,138
+T7IND.DFM,T7IN,IN-D Print Record Report,TEditForm1,53,8,0,14,14,15,2,0,120
+T7INDPO.DFM,T7IN,IN-D  PO,TEditForm1,1,0,0,0,1,0,0,0,19
+T7INE.DFM,T7IN,IN-E Print Inventory Transactions,TEditForm1,17,2,0,2,9,4,0,0,47
+T7INF.DFM,T7IN,IN-F Print inventory Value,TEditForm1,43,6,0,7,14,16,0,0,87
+T7ING.DFM,T7IN,IN-G  Print Inventory Labels,TEditForm1,85,25,2,1,48,7,0,0,204
+T7INGimport.DFM,T7IN,IN-G-A  Import and Print Inventory Labels,TEditForm1,17,3,13,0,1,0,0,0,49
+T7INH.DFM,T7IN,IN-H  Print Inventory Listning,TEditForm1,20,5,0,2,11,2,0,0,55
+T7INI.DFM,T7IN,IN-I  Print Inventory General Info,TEditForm4,10,2,1,0,7,0,0,0,37
+T7INJ.DFM,T7IN,IN-J  Print Physikal Check,TEditForm1,20,4,0,0,9,5,0,0,51
+T7INK.DFM,T7IN,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7INLA.DFM,T7IN,IN-L-A,TEditForm1,25,4,18,1,2,0,0,0,77
+T7INLB.DFM,T7IN,IN-L-B,TEditForm1,27,19,0,0,7,1,0,0,71
+T7INLC.DFM,T7IN,IN-L-C,TEditForm1,9,6,0,0,3,0,0,0,33
+T7INLD.DFM,T7IN,IN-L-D  Print Customer Cross-Reference,TEditForm1,10,0,0,0,9,1,0,0,36
+T7INLE.DFM,T7IN,IN-L-E,TEditForm1,12,2,0,0,7,3,0,0,38
+T7INLF.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INLG.DFM,T7IN,IN-L-G,TEditForm7,12,2,0,0,10,0,0,0,40
+T7INLH.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INLI.DFM,T7IN,IN-L-I,TEditForm1,2,0,0,0,2,0,0,0,25
+T7INLJ.DFM,T7IN,IN-L-J Transfer Inventory,TEditForm1,28,4,13,1,8,2,0,0,81
+T7INLK.DFM,T7IN,IN-L-K,TEditForm1,33,5,4,0,10,12,0,0,69
+T7INLL.DFM,T7IN,IN-L-L,TEditForm13,10,3,0,0,7,0,0,0,36
+T7INLM.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INLN.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INLO.DFM,T7IN,GL-G,TEditForm1,41,4,0,4,12,21,0,0,77
+T7INLOA.DFM,T7IN,IN-L-O-A,TEditForm5,13,3,0,0,9,1,0,0,42
+T7INLQ.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INLR.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INLS.DFM,T7IN,New Screen,TEditForm1,3,0,0,0,3,0,0,0,20
+T7INLT.DFM,T7IN,IN-L-T,TEditForm1,40,1,20,2,17,0,0,0,68
+T7INLV.DFM,T7IN,BASE Blank T7 SCREEN,TEditForm16,10,3,0,0,7,0,0,0,36
+T7INM.DFM,T7IN,IN-M  Summary Reorder Report,TEditForm1,21,5,0,1,9,6,0,0,55
+T7INNA.DFM,T7IN,IN-N-A Print Month End Inventory Costing,TEditForm1,18,0,0,2,1,15,0,0,52
+T7INNB.DFM,T7IN,IN-N-B Print Shipments Costing,TEditForm1,13,1,0,2,9,1,0,0,42
+T7INNC.DFM,T7IN,IN-N-C Print Closed Work Orders Costing,TEditForm1,10,1,0,2,7,0,0,0,37
+T7INND.DFM,T7IN,IN-N-D Print Inventory to GL Exceptions Report,TEditForm1,12,1,0,2,2,7,0,0,32
+T7INO.DFM,T7IN,IN-E,TEditForm1,65,8,8,2,31,16,2,0,136
+T7INP.DFM,T7IN,IN-P,TEditForm1,39,11,2,2,15,9,0,0,87
+T7INS.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INVARCH.DFM,T7IN,New Screen,TEditForm1,2,0,0,0,2,0,0,0,18
+T7INVENTORY.DFM,T7IN,,TImageList,0,0,0,0,0,0,0,0,1
+T7INXFERNUM.DFM,T7IN,,TPanel,0,0,0,0,0,0,0,0,2
+t7INBE.DFM,T7IN,,TRtnTimer,0,0,0,0,0,0,0,0,1
+t7inaC.DFM,T7IN,T7INA,TEditForm1,53,19,22,2,9,1,0,0,178
+t7inaE.DFM,T7IN,,TRtnTimer,0,0,0,0,0,0,0,0,1
+t7inbc.DFM,T7IN,IN-B  Enter Inventory,TEditForm1,67,29,12,2,18,6,0,0,164
+T7ISMCC.DFM,T7IS,Convert Source to Base Currency,TEditForm2,27,12,1,13,1,0,0,0,48
+T7ITMCFG.DFM,T7IT,,TImageList,0,0,0,0,0,0,0,0,1
+T7JAVA.DFM,T7JA,Java Response,TEditForm1,0,0,0,0,0,0,0,0,4
+T7JAVASET.DFM,T7JA,New Screen,TEditForm1,4,2,1,0,1,0,0,0,17
+T7JBS.DFM,T7JB,New Screen,TEditForm1,5,2,1,0,2,0,0,0,29
+T7JCA.DFM,T7JC,New Screen,TEditForm1,17,5,1,0,7,4,0,0,45
+T7JCB.DFM,T7JC,New Screen,TEditForm1,10,4,0,0,5,1,0,0,34
+T7JCE.DFM,T7JC,JC-E,TEditForm1,20,6,0,2,9,3,0,0,53
+T7JCENG.DFM,T7JC,JC Engine,TEditForm1,54,7,0,4,23,20,0,0,104
+T7JCF.DFM,T7JC,New Screen,TEditForm1,19,6,0,2,11,0,0,0,53
+T7JCH.DFM,T7JC,New Screen,TEditForm1,22,4,0,4,11,3,0,0,56
+T7JCL.DFM,T7JC,JC-L,TEditForm1,12,2,0,4,6,1,0,0,39
+T7JCM.DFM,T7JC,JC-M,TEditForm1,28,4,0,7,9,8,0,0,62
+T7JCN.DFM,T7JC,JC-N,TEditForm6,14,1,0,2,7,1,0,0,40
+T7JCP.DFM,T7JC,JC-P Print Materials in WIP,TEditForm1,8,1,0,0,5,2,0,0,30
+T7JCQ.DFM,T7JC,New Screen,TEditForm2,20,4,0,4,9,3,0,0,43
+T7JCR.DFM,T7JC,New Screen,TEditForm1,23,4,0,5,11,3,0,0,53
+T7JCRM.DFM,T7JC,New Screen,TEditForm1,5,2,1,0,2,0,0,0,29
+T7JCS.DFM,T7JC,JC-S,TEditForm1,22,4,0,6,7,5,0,0,54
+T7JFTRANS.DFM,T7JF,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+T7JOANDA.DFM,T7JO,Java Response,TEditForm2,0,0,0,0,0,0,0,0,4
+T7JODPSALES.DFM,T7JO,New Screen,TEditForm1,5,2,1,0,2,0,0,0,28
+t7jobs.DFM,T7JO, Jobs,TEditForm18,4,0,0,0,4,0,0,0,13
+T7JPOS.DFM,T7JP,New Screen,TEditForm1,6,2,1,0,3,0,0,0,30
+T7JSACC.DFM,T7JS,New Screen,TEditForm1,4,2,1,0,1,0,0,0,26
+T7JSAIC.DFM,T7JS,New Screen,TEditForm1,4,2,1,0,1,0,0,0,26
+T7JSAPBI.DFM,T7JS,New Screen,TEditForm1,4,2,1,0,1,0,0,0,26
+T7JSASRS.DFM,T7JS,New Screen,TEditForm1,4,2,1,0,1,0,0,0,26
+T7JSOI.DFM,T7JS,New Screen,TEditForm2,4,2,1,0,1,0,0,0,26
+T7JSQL.DFM,T7JS,New Screen,TEditForm5,5,2,1,0,2,0,0,0,28
+T7JSettings.DFM,T7JS,New Screen,TEditForm1,5,2,1,0,2,0,0,0,28
+T7JTEMP.DFM,T7JT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+T7Jtree.DFM,T7JT,New Screen,TEditForm1,5,2,1,0,2,0,0,0,28
+T7JUPD.DFM,T7JU,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+T7KIT.DFM,T7KI,,TImageList,0,0,0,0,0,0,0,0,1
+t7lang.DFM,T7LA,New Screen,TEditForm1,0,0,0,0,0,0,0,0,7
+T7LCA.DFM,T7LC,LC-A Edit Lot Numbers,TEditForm1,13,1,5,2,5,0,0,0,44
+T7LCB.DFM,T7LC,LC-B Assign Lot Control,TEditForm2,6,3,0,0,2,1,0,0,24
+T7LCC.DFM,T7LC,LC-C,TEditForm1,10,0,0,2,6,2,0,0,35
+T7LCC2.DFM,T7LC,LC-C Print Lot Availability,TEditForm1,7,0,0,2,5,0,1,0,33
+T7LCE.DFM,T7LC,New Screen,TEditForm1,13,3,0,0,7,3,0,0,38
+T7LCF.DFM,T7LC,New Screen,TEditForm3,4,1,0,0,3,0,0,0,22
+T7LCG.DFM,T7LC,New Screen,TEditForm1,11,1,0,4,5,1,0,0,35
+T7LGSSOE.DFM,T7LG,Shipping,TEditForm1,4,2,0,0,2,0,0,0,35
+T7LGSSOEVerify.DFM,T7LG,,TShellExe,0,0,0,0,0,0,0,0,1
+t7LGssoeLabels.DFM,T7LG,Print Box Content Labels,TEditForm12,6,2,1,0,1,2,0,0,26
+T7LIMACC.DFM,T7LI, DFM Multi Limited Access Generator / Editor,TEditForm1,2,0,0,0,2,0,0,0,12
+T7Loading.DFM,T7LO,  ,TEditForm1,0,0,0,0,0,0,0,0,4
+T7LotSerial.DFM,T7LO,Enter Lot/Serial Information,TEditForm1,13,1,6,2,3,1,0,0,47
+t7lottag.DFM,T7LO,,TPanel,0,0,0,0,0,0,0,0,4
+T7MAPDEPO.DFM,T7MA,,TImageList,0,0,0,0,0,0,0,0,1
+T7MDefBanks.DFM,T7MD,,TImageList,0,0,0,0,0,0,0,0,1
+T7MDefNDC.DFM,T7MD, Evo ~ ERP   Master Default Settings,TEditForm1,404,342,26,3,47,0,44,0,880
+T7MDefaults.DFM,T7MD, Evo ~ ERP   Master Default Settings,TEditForm1,847,694,47,6,83,6,61,0,1786
+T7Memo2Alpha.DFM,T7ME, Evo Notes,TEditForm1,9,2,5,0,0,0,0,0,32
+T7MLC.DFM,T7ML, DFM Multi Language Generator / Editor,TEditForm4,3,1,0,0,2,0,0,0,15
+T7MLE.DFM,T7ML,,TTASComboBox,1,0,0,0,1,0,0,0,1
+T7MRA.DFM,T7MR,,TImageList,0,0,0,0,0,0,0,0,1
+T7MRADE.DFM,T7MR,New Screen,TEditForm2,9,1,6,0,2,0,0,0,33
+T7MRB.DFM,T7MR,MR-B,TEditForm1,13,2,0,2,8,1,0,0,42
+T7MRC.DFM,T7MR,New Screen,TEditForm1,16,1,0,2,9,4,0,0,45
+T7MRD.DFM,T7MR,New Screen,TEditForm1,52,12,14,0,12,14,0,0,134
+T7MRE.DFM,T7MR,New Screen,TEditForm2,10,3,0,0,7,0,0,0,35
+T7MRF.DFM,T7MR,MR-F,TEditForm1,41,19,1,1,2,18,0,0,91
+T7MRG.DFM,T7MR,MR-G,TEditForm1,25,5,1,2,12,5,0,0,61
+T7MRH.DFM,T7MR,MR-H,TEditForm1,32,7,1,4,14,6,0,0,91
+T7MRI.DFM,T7MR,MR-I,TEditForm1,24,11,0,4,8,1,0,0,58
+T7MRIR.DFM,T7MR,Review QTY'#39's,TEditForm2,5,2,1,2,0,0,0,0,13
+T7MRIX.DFM,T7MR,New Screen,TEditForm2,18,9,5,1,4,0,0,0,52
+T7MRJ.DFM,T7MR,MR-J,TEditForm1,29,6,1,6,9,7,0,0,77
+T7MRJR.DFM,T7MR,MR-J Review,TEditForm5,10,3,2,4,1,0,0,0,24
+T7MRJX.DFM,T7MR,,TImageList,0,0,0,0,0,0,0,0,1
+T7MRL.DFM,T7MR,MR-L,TEditForm1,3,0,1,0,1,1,0,0,22
+T7MRN.DFM,T7MR,MR-N,TEditForm1,5,0,1,0,3,1,0,0,23
+T7MRO.DFM,T7MR,MR-O,TEditForm1,1,0,0,0,1,0,0,0,17
+T7MULTIYIELD.DFM,T7MU,,TImageList,0,0,0,0,0,0,0,0,1
+T7NEWINIT.DFM,T7NE,New Screen,TEditForm1,1,0,0,0,1,0,0,0,17
+T7numdef.DFM,T7NU, Next Numbers,TEditForm1,21,0,21,0,0,0,0,0,55
+T7PASS.DFM,T7PA,Password,TEditForm2,1,2,0,0,0,0,0,0,5
+T7Paperless.DFM,T7PA,Paperless Shop Floor,TEditForm1,41,36,1,0,2,0,0,0,119
+t7packmenu.DFM,T7PA,Pack Menu,TEditForm1,2,0,0,0,0,2,0,0,7
+T7PIA.DFM,T7PI,PI-A Capture Frozen Inventory,TEditForm1,31,15,0,1,10,3,0,0,65
+T7PIB.DFM,T7PI,PI-B Frozen Inventory Report,TEditForm1,10,3,0,0,2,5,0,0,34
+T7PIC.DFM,T7PI,,TImageList,0,0,0,0,0,0,0,0,1
+T7PICA.DFM,T7PI,PI-C-A  Physical Inventory Exception Report,TEditForm3,6,3,0,0,2,1,0,0,26
+T7PID.DFM,T7PI,PI-D  Missing Tags Report,TEditForm1,4,1,0,0,3,0,0,0,28
+T7PIE.DFM,T7PI,,TImageList,0,0,0,0,0,0,0,0,1
+T7PIF.DFM,T7PI,PI-F Phisical Inventory Report,TEditForm1,13,5,0,0,2,6,0,0,44
+T7PIG.DFM,T7PI,PI-G Update Actual Inventory,TEditForm1,11,2,0,1,2,6,0,0,40
+T7PIH.DFM,T7PI,PI-H Purge Physical Inventory,TEditForm1,3,1,0,0,2,0,0,0,21
+T7PILOC.DFM,T7PI,,TPanel,0,0,0,0,0,0,0,0,3
+T7PLessComps.DFM,T7PL,,TImageList,0,0,0,0,0,0,0,0,1
+T7PLessNotes.DFM,T7PL,Notes Caption,TEditForm3,0,0,0,0,0,0,0,0,14
+T7PLessWODates.DFM,T7PL,,TPanel,0,0,0,0,0,0,0,0,4
+T7POA.DFM,T7PO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7POA2.DFM,T7PO,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7POAC.DFM,T7PO,T7POA,TEditForm1,54,35,6,1,11,2,0,0,146
+T7POACPY.DFM,T7PO,New Screen,TEditForm1,3,0,1,1,1,0,0,0,13
+T7POAE.DFM,T7PO,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7POAIMPLINES.DFM,T7PO,POA Import,TEditForm1,21,3,10,0,4,4,0,0,55
+T7POAPrBrk.DFM,T7PO,,TTASDateEdit,1,0,0,1,0,0,0,0,1
+T7POAVITEM.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+T7POB.DFM,T7PO,PO-B,TEditForm1,21,5,0,0,7,10,0,0,56
+T7POEA.DFM,T7PO, PO-E-A,TEditForm1,6,0,0,0,4,2,0,0,26
+T7POENG.DFM,T7PO,PO-ENG,TEditForm1,100,32,6,8,33,10,2,0,228
+T7POF.DFM,T7PO,PO-F,TEditForm1,39,5,24,2,7,2,2,0,98
+T7POG.DFM,T7PO,PO-G,TEditForm1,12,1,1,2,3,5,0,0,35
+T7POH.DFM,T7PO,PO-H,TEditForm1,37,6,14,5,7,5,0,0,111
+T7POIC.DFM,T7PO,PO-I-C,TEditForm1,16,0,2,2,11,1,0,0,55
+T7POID.DFM,T7PO,PO-I-D,TEditForm1,9,2,0,0,6,1,0,0,36
+T7POIG.DFM,T7PO,PO-I-G,TEditForm1,22,4,0,2,15,1,0,0,68
+T7POIH.DFM,T7PO,PO-I-H,TEditForm1,19,2,2,3,6,6,0,0,52
+T7POII.DFM,T7PO,PO-I-I,TEditForm1,12,2,0,2,8,0,0,0,40
+T7POIL.DFM,T7PO,PO-B,TEditForm1,10,0,0,2,7,1,0,0,38
+T7POJA.DFM,T7PO,PO-J-A  Print Receipt Travellers,TEditForm1,15,0,2,2,5,6,0,0,44
+T7POJB.DFM,T7PO,PO-J-B,TEditForm1,26,3,6,3,10,4,0,0,80
+T7POJC.DFM,T7PO,PO-J-C,TEditForm1,33,9,12,3,8,1,0,0,98
+T7POJD.DFM,T7PO,PO-J-D,TEditForm1,10,2,0,2,3,3,0,0,37
+T7POK.DFM,T7PO,PO-K,TEditForm1,9,1,0,3,5,0,0,0,37
+T7POL.DFM,T7PO,,TShellExe,0,0,0,0,0,0,0,0,1
+T7POLA.DFM,T7PO,PO-L-A,TEditForm1,9,0,0,0,9,0,1,0,41
+T7POLINEHIST.DFM,T7PO,,TShellExe,0,0,0,0,0,0,0,0,1
+T7POLP.DFM,T7PO,PO-L-P,TEditForm4,5,0,0,0,5,0,0,0,27
+T7POM.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+T7POMAST.DFM,T7PO,New Screen,TEditForm1,34,13,13,3,5,0,0,0,92
+T7POP.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+T7POPGET.DFM,T7PO,POP Caption,TEditForm4,10,5,0,5,0,0,0,0,21
+T7POS.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+T7POSCD.DFM,T7PO,Cash Due,TEditForm2,3,0,3,0,0,0,0,0,10
+T7POSI.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+T7POSX.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+T7pojcqc.DFM,T7PO,Multi Scrap Codes,TEditForm3,4,0,3,0,1,0,0,0,13
+T7pojcsc.DFM,T7PO,Multi Scrap Codes,TEditForm2,4,0,3,0,1,0,0,0,13
+t7POQ.DFM,T7PO,,TImageList,0,0,0,0,0,0,0,0,1
+t7poc.DFM,T7PO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7PRA.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRB.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRC.DFM,T7PR,PR-C,TEditForm1,10,0,0,2,5,3,0,0,33
+T7PRD.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRDIVFIX.DFM,T7PR,New Screen,TEditForm1,2,1,0,0,0,0,0,0,10
+T7PRE.DFM,T7PR,PR-E,TEditForm1,4,0,0,0,3,1,0,0,22
+T7PRF.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRFIX.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRG.DFM,T7PR,PR-G,TEditForm1,9,3,0,2,3,1,0,0,30
+T7PRH.DFM,T7PR,PR-H,TEditForm3,82,21,58,1,2,0,0,0,117
+T7PRI.DFM,T7PR,PR-I,TEditForm1,7,0,0,2,3,2,0,0,27
+T7PRJ.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRJCSYNC.DFM,T7PR,New Screen,TEditForm1,2,1,0,0,0,0,0,0,10
+T7PRK.DFM,T7PR,PR-K  Print/Post Time Cards,TEditForm1,13,1,0,4,7,1,0,0,45
+T7PRLA.DFM,T7PR,PR-L-A,TEditForm1,6,0,0,0,5,1,0,0,27
+T7PRLB.DFM,T7PR,PR-L-B,TEditForm1,8,0,0,2,5,1,0,0,30
+T7PRLC.DFM,T7PR,PR-L-C,TEditForm1,16,1,5,2,5,3,0,0,47
+T7PRLD.DFM,T7PR,PR-L-D,TEditForm1,8,0,0,2,5,1,0,0,30
+T7PRLE.DFM,T7PR,PR-L-E  Print Detail Deductions Ledger,TEditForm3,10,0,0,2,5,3,0,0,32
+T7PRLF.DFM,T7PR,PR-L-F,TEditForm1,21,3,7,2,5,4,0,0,52
+T7PRLG.DFM,T7PR,PR-L-G,TEditForm1,40,8,25,2,2,3,0,0,97
+T7PRLH.DFM,T7PR,PR-LH,TEditForm1,54,14,28,8,1,3,0,0,112
+T7PRLI.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRLJ.DFM,T7PR,PR-L-J,TEditForm2,11,1,4,2,2,2,0,0,35
+T7PRLK.DFM,T7PR,PR-L-K  Print Payroll Hours,TEditForm1,9,0,0,2,5,2,0,0,31
+T7PRLM.DFM,T7PR,PR-L-M,TEditForm1,8,0,0,2,5,1,0,0,30
+T7PRLN.DFM,T7PR,PR-L-N  Print Payroll Wages Detail,TEditForm2,8,0,0,2,5,1,0,0,30
+T7PRLO.DFM,T7PR,PR-L-O,TEditForm1,8,1,0,2,3,2,0,0,30
+T7PRLP.DFM,T7PR,PR-L-P,TEditForm1,10,1,0,1,5,3,0,0,33
+T7PRLQ.DFM,T7PR,PR-L-Q,TEditForm1,8,0,0,2,5,1,0,0,31
+T7PRM.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRN.DFM,T7PR,New Screen,TEditForm1,7,0,0,2,5,0,0,0,28
+T7PRO.DFM,T7PR,New Screen,TEditForm1,1,0,0,0,1,0,0,0,17
+T7PROGINFO.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRP.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRQ.DFM,T7PR,,TImageList,0,0,0,0,0,0,0,0,1
+T7PRQTRCHK.DFM,T7PR,New Screen,TEditForm2,2,0,1,0,1,0,0,0,24
+T7PRS.DFM,T7PR,Enter Employee Password,TEditForm1,5,3,0,0,2,0,0,0,29
+T7ProcessData.DFM,T7PR,Process Data,TEditForm1,0,0,0,0,0,0,0,0,9
+t7pretag.DFM,T7PR,New Screen,TEditForm1,0,0,0,0,0,0,0,0,3
+T7PSA.DFM,T7PS,New Screen,TEditForm1,10,4,2,0,2,2,0,0,35
+T7PSE.DFM,T7PS,User Security Report,TEditForm1,2,0,0,0,2,0,0,0,16
+T7PSEGRP.DFM,T7PS,New Screen,TEditForm3,2,0,0,0,0,0,0,1,2
+T7PSEITM.DFM,T7PS,New Screen,TEditForm2,2,0,0,0,0,0,0,1,2
+T7PSF.DFM,T7PS,Access to Program Report,TEditForm1,1,0,0,0,1,0,0,0,11
+T7PSK.DFM,T7PS,Approve Vendor,TEditForm1,6,1,1,0,2,2,0,0,25
+T7PUTAWAY.DFM,T7PU,,TImageList,0,0,0,0,0,0,0,0,1
+T7QCA.DFM,T7QC,New Screen,TEditForm3,13,0,0,2,9,0,0,0,41
+T7QCB.DFM,T7QC,New Screen,TEditForm2,16,1,0,2,13,0,0,0,46
+T7QCC.DFM,T7QC,New Screen,TEditForm1,12,1,0,2,9,0,0,0,38
+T7QCD.DFM,T7QC,New Screen,TEditForm3,18,1,0,2,13,0,0,0,51
+T7QCFA.DFM,T7QC,New Screen,TEditForm1,39,12,1,2,22,2,0,0,100
+T7QCFD.DFM,T7QC,New Screen,TEditForm1,6,0,0,2,3,1,0,0,25
+T7QCFF.DFM,T7QC,New Screen,TEditForm1,12,3,0,0,9,0,0,0,38
+T7QCGA.DFM,T7QC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7QCGD.DFM,T7QC,New Screen,TEditForm1,14,4,0,0,10,0,0,0,43
+T7QCMTHD.DFM,T7QC,,TImageList,0,0,0,0,0,0,0,0,1
+T7QCRESULTS.DFM,T7QC,QC Testing Results,TEditForm1,7,0,0,0,7,0,0,0,28
+T7QCRSLT.DFM,T7QC,,TImageList,0,0,0,0,0,0,0,0,1
+T7QCSPEC.DFM,T7QC,,TImageList,0,0,0,0,0,0,0,0,1
+t7qcfb.DFM,T7QC,New Screen,TEditForm1,7,1,0,0,4,2,0,0,27
+t7qcgb.DFM,T7QC,New Screen,TEditForm3,6,0,0,0,4,2,0,0,25
+T7QGRID.DFM,T7QG, Quick Grid,TEditForm1,1,0,0,0,1,0,0,0,8
+T7QSOALines.DFM,T7QS,New Screen,TEditForm1,9,3,3,0,3,0,0,0,40
+t7qsoa.DFM,T7QS, Quick Sales Entry,TEditForm3,0,0,0,0,0,0,0,0,3
+T7QTINFO.DFM,T7QT,Quote Misc. Infromation,TEditForm1,26,20,1,5,0,0,0,0,61
+T7REBQC.DFM,T7RE,Recalculate QC Qty,TEditForm1,6,0,0,0,4,0,0,0,26
+T7REBSS.DFM,T7RE,  ,TEditForm1,0,0,0,0,0,0,0,0,3
+T7REINDEX.DFM,T7RE,,TShellExe,0,0,0,0,0,0,0,0,1
+T7REPDEF.DFM,T7RE,,TImageList,0,0,0,0,0,0,0,0,1
+T7REPLNK.DFM,T7RE,,TImageList,0,0,0,0,0,0,0,0,1
+T7REPLNK1.DFM,T7RE,,TImageList,0,0,0,0,0,0,0,0,1
+T7RemindRpt.DFM,T7RE,CM-B-D,TEditForm1,20,5,0,2,10,1,0,0,53
+t7ResetDFM.DFM,T7RE,Reset DFM Settings,TEditForm1,0,0,0,0,0,0,0,0,6
+t7rebwo.DFM,T7RE,New Screen,TEditForm1,9,4,0,0,5,0,0,0,38
+t7redindexDD.DFM,T7RE, Reindex Data Dictionary,TEditForm1,6,0,0,0,0,6,0,0,11
+T7RFQ.DFM,T7RF,RFQ,TGlyphBtn,0,0,0,0,0,0,0,0,1
+T7RMAWHY.DFM,T7RM,RMA Why,TEditForm1,13,7,1,1,4,0,0,0,39
+T7RMD.DFM,T7RM,,TImageList,0,0,0,0,0,0,0,0,1
+T7RMDASK.DFM,T7RM,Change Location,TEditForm1,16,3,7,2,4,0,0,0,42
+T7RME.DFM,T7RM,,TImageList,0,0,0,0,0,0,0,0,1
+T7RMG.DFM,T7RM,BASE Blank T7 SCREEN,TEditForm1,17,0,0,2,14,1,0,0,48
+T7ROA.DFM,T7RO,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7ROAOpts.DFM,T7RO,RO-A,TEditForm2,5,1,3,0,0,0,0,0,14
+T7ROASpecs.DFM,T7RO,,TImageList,0,0,0,0,0,0,0,0,1
+T7ROB.DFM,T7RO,RO-B,TEditForm1,4,0,0,0,3,1,0,0,20
+T7ROC.DFM,T7RO,,TImageList,0,0,0,0,0,0,0,0,1
+T7ROD.DFM,T7RO,RO-D,TEditForm1,20,11,4,1,3,1,0,0,48
+T7ROE.DFM,T7RO,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7ROF.DFM,T7RO,,TImageList,0,0,0,0,0,0,0,0,1
+T7ROG.DFM,T7RO,,TImageList,0,0,0,0,0,0,0,0,1
+T7ROH.DFM,T7RO,,TImageList,0,0,0,0,0,0,0,0,1
+T7ROI.DFM,T7RO,RO-I,TEditForm1,44,23,9,0,7,1,0,0,88
+T7ROJA.DFM,T7RO,RO-J-A  Print Routings,TEditForm1,9,1,0,0,5,3,0,0,31
+T7ROJB.DFM,T7RO,RO-J-B,TEditForm1,5,2,0,0,3,0,0,0,24
+T7ROJC.DFM,T7RO,RO-J-C,TEditForm1,5,0,0,2,3,0,0,0,23
+T7ROJD.DFM,T7RO,RO-J-D  Print Tools,TEditForm1,9,2,0,2,3,2,0,0,31
+T7ROJE.DFM,T7RO,RO-J-C,TEditForm3,3,0,0,0,3,0,0,0,20
+T7ROJF.DFM,T7RO,RO-J-F,TEditForm1,3,0,0,0,3,0,0,0,20
+T7ROJG.DFM,T7RO,RO-J-G,TEditForm1,3,2,0,0,1,0,0,0,20
+T7ROJH.DFM,T7RO,RO-J-H,TEditForm4,6,1,2,0,3,0,0,0,28
+T7ROK.DFM,T7RO,,TImageList,0,0,0,0,0,0,0,0,1
+T7ROL.DFM,T7RO,RO-L,TEditForm1,6,2,1,0,2,1,0,0,22
+T7ROQ.DFM,T7RO,New Screen,TEditForm1,11,3,3,0,4,0,0,0,43
+T7ROUTWO.DFM,T7RO,Select,TEditForm1,0,0,0,0,0,0,0,0,3
+t7roacpy.DFM,T7RO,Copy Existing Routing,TEditForm1,5,1,0,0,2,0,0,0,13
+t7rop.DFM,T7RO,RO-P  Update Routing Standard,TEditForm1,7,1,1,2,3,0,0,0,29
+T7RTMVALID.DFM,T7RT,Select Report Format Name,TEditForm1,1,0,0,0,1,0,0,0,8
+T7SAA.DFM,T7SA,SA-A,TEditForm1,39,7,0,4,19,9,0,0,84
+T7SAM.DFM,T7SA,SA-M,TEditForm1,124,33,10,8,47,18,3,0,284
+T7SAN.DFM,T7SA,SA-N,TEditForm4,103,22,3,8,40,22,3,0,229
+T7SAO.DFM,T7SA,SA-O  Top N Sales Report,TEditForm1,35,4,1,6,12,12,0,0,76
+T7SAP.DFM,T7SA,SA-P,TEditForm1,15,2,0,2,11,0,0,0,45
+T7SAQ.DFM,T7SA,Actual Margin Report,TEditForm1,5,0,0,4,1,0,0,0,24
+T7SCA.DFM,T7SC,SC-A Edit Serial Numbers,TEditForm1,16,2,6,3,5,0,0,0,51
+T7SCB.DFM,T7SC,SC-B Assign Serial Control,TEditForm1,6,3,0,0,2,1,0,0,24
+T7SCC.DFM,T7SC,SC-C,TEditForm1,8,0,0,0,5,3,0,0,30
+T7SCC2.DFM,T7SC,SC-C Print Serial Availability,TEditForm1,8,0,0,0,7,1,1,0,34
+T7SCE.DFM,T7SC,New Screen,TEditForm1,13,1,0,6,5,1,0,0,39
+T7SCF.DFM,T7SC,SC-F  Serial Control Exceptions,TEditForm1,18,2,0,0,7,9,0,0,42
+T7SCG.DFM,T7SC,,TImageList,0,0,0,0,0,0,0,0,1
+T7SCH.DFM,T7SC,SC-H,TEditForm1,5,0,0,0,5,0,0,0,25
+T7SCOMP.DFM,T7SC,,TImageList,0,0,0,0,0,0,0,0,1
+T7SDET.DFM,T7SD,,TImageList,0,0,0,0,0,0,0,0,1
+T7SELLOC.DFM,T7SE,,TImageList,0,0,0,0,0,0,0,0,1
+T7SEPROC.DFM,T7SE,New Screen,TEditForm1,3,1,0,0,1,0,0,1,20
+T7SERR.DFM,T7SE,New Screen,TEditForm2,3,1,0,0,1,0,0,1,20
+T7SETYPE.DFM,T7SE,New Screen,TEditForm1,3,1,0,0,1,0,0,1,20
+T7SHA.DFM,T7SH,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7SHB.DFM,T7SH,,TImageList,0,0,0,0,0,0,0,0,1
+T7SHC.DFM,T7SH,,TImageList,0,0,0,0,0,0,0,0,1
+T7SHE.DFM,T7SH,,TImageList,0,0,0,0,0,0,0,0,1
+T7SHF.DFM,T7SH,SH-F,TEditForm1,15,8,0,4,3,0,0,0,43
+T7SHG.DFM,T7SH,SH-G,TEditForm1,31,11,0,4,8,8,0,0,69
+T7SHH.DFM,T7SH,New Screen,TEditForm1,14,3,0,4,7,0,0,0,42
+T7SHI.DFM,T7SH,SH-I,TEditForm1,47,16,0,5,13,13,0,0,106
+T7SHIPRTM.DFM,T7SH,,TImageList,0,0,0,0,0,0,0,0,1
+T7SHJ.DFM,T7SH,SH-J,TEditForm1,30,9,0,4,10,7,0,0,71
+T7SHM.DFM,T7SH,SH-M,TEditForm1,13,1,5,5,2,0,0,0,39
+T7SHN.DFM,T7SH,SH-N,TEditForm1,16,4,1,0,7,4,0,0,46
+T7SHO.DFM,T7SH,SH-O,TEditForm1,4,0,0,0,3,1,0,0,21
+T7SHOWLINEHIST.DFM,T7SH,,TShellExe,0,0,0,0,0,0,0,0,1
+T7SHP.DFM,T7SH,SH-P,TEditForm1,38,11,2,4,14,7,0,0,96
+T7SIVL.DFM,T7SI,Encrypting Data.....,TPanel,0,0,0,0,0,0,0,0,1
+T7SMC.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMCA.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMCB.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMCC.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMD.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SME.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMF.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMG.DFM,T7SM,New Screen,TEditForm1,37,20,4,1,5,5,0,0,94
+T7SMGA.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMH.DFM,T7SM,caldrillbt,TEditForm1,0,0,0,0,0,0,0,0,50
+T7SMHMRK.DFM,T7SM,New Screen,TEditForm2,8,5,0,2,1,0,0,0,29
+T7SMIA.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMIB.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMIC.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMID.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMIE.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMIF.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMJA.DFM,T7SM,SM-JA,TEditForm1,2,0,0,0,1,1,0,0,21
+T7SMJB.DFM,T7SM,SM-JB,TEditForm1,17,4,0,2,7,4,0,0,46
+T7SMJC.DFM,T7SM,SM-JC,TEditForm1,12,1,0,1,6,4,2,0,47
+T7SMJD.DFM,T7SM,SM-JD,TEditForm1,7,2,0,3,3,0,0,0,30
+T7SMJE.DFM,T7SM,SM-JE,TEditForm1,7,0,0,2,3,2,0,0,29
+T7SMJF.DFM,T7SM,SM-JF,TEditForm1,7,0,0,2,5,0,0,0,28
+T7SMJG.DFM,T7SM,SM-J-G,TEditForm1,8,1,0,2,5,0,0,0,30
+T7SMJH.DFM,T7SM,SM-JH,TEditForm3,2,0,0,1,1,0,0,0,18
+T7SMJI.DFM,T7SM,SM-J-I,TEditForm1,8,1,0,2,5,0,0,0,30
+T7SMJJ.DFM,T7SM,SM-JJ,TEditForm1,10,1,0,2,5,0,0,0,33
+T7SMJL.DFM,T7SM,SM-JL,TEditForm1,11,8,0,0,3,0,0,0,37
+T7SMJL2.DFM,T7SM,Merge Options,TEditForm3,4,4,0,0,0,0,0,0,12
+T7SMJM.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMJN.DFM,T7SM,SM-JN,TEditForm2,26,18,0,0,8,0,0,0,60
+T7SMJO.DFM,T7SM,T7AMK,TEditForm1,25,1,15,2,4,3,0,0,63
+T7SMJQ.DFM,T7SM,New Screen,TEditForm1,15,0,0,0,3,12,0,0,34
+T7SMJR.DFM,T7SM,SM-JR,TEditForm1,8,1,0,2,5,0,0,0,30
+T7SMJS.DFM,T7SM,SM-JS,TEditForm1,15,0,0,1,3,11,0,0,34
+T7SMJV.DFM,T7SM,BASE Blank T7 SCREEN,TEditForm1,10,1,0,3,5,1,0,0,34
+T7SMK.DFM,T7SM, Evo User Settings,TEditForm3,67,16,1,0,19,16,10,1,164
+T7SML.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMN.DFM,T7SM,E&xit,TGlyphBtn,0,0,0,0,0,0,0,0,1
+T7SMNA.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMNF.DFM,T7SM,BASE Blank T7 SCREEN,TEditForm1,4,1,0,0,3,0,0,0,24
+T7SMO.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMPA.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMPB.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMPF.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMPH.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMPI.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMPJ.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMSB.DFM,T7SM,New Screen,TEditForm1,7,3,0,0,1,0,0,0,25
+T7SMSC.DFM,T7SM,SMSC,TEditForm1,6,2,0,0,3,1,0,0,25
+T7SMSD.DFM,T7SM,BASE Blank T7 SCREEN,TEditForm1,9,4,0,0,5,0,0,0,38
+T7SMT.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMTEND.DFM,T7SM,New Screen,TEditForm3,6,2,0,0,5,0,0,0,33
+T7SMTSET.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMU.DFM,T7SM,,TImageList,0,0,0,0,0,0,0,0,1
+T7SMW.DFM,T7SM,BASE Blank T7 SCREEN,TEditForm1,3,1,0,0,1,0,0,1,24
+T7SOABKD.DFM,T7SO,Enter Booking Date,TEditForm2,1,0,0,1,0,0,0,0,5
+T7SOAC.DFM,T7SO,T7SOA,TEditForm2,71,40,10,2,19,1,0,0,167
+T7SOACITEM.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+T7SOACPY.DFM,T7SO,New Screen,TEditForm2,2,0,1,1,0,0,0,0,11
+T7SOAE.DFM,T7SO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7SOAFRT.DFM,T7SO,Enter Freight,TEditForm1,1,0,1,0,0,0,0,0,5
+T7SOAIMPLINES.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+T7SOAPRC.DFM,T7SO,Item Pricing,TEditForm1,4,1,1,0,0,0,0,1,11
+T7SOAXCOM.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+T7SOB.DFM,T7SO,SO-B,TEditForm1,23,5,0,0,8,10,0,0,52
+T7SOBIN.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+T7SOC.DFM,T7SO,SO-C,TEditForm1,59,16,1,5,16,21,0,0,118
+T7SOD.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+T7SODDesc.DFM,T7SO,New Screen,TEditForm4,2,2,0,0,0,0,0,0,9
+T7SODPallet.DFM,T7SO,New Screen,TEditForm1,2,0,0,0,0,0,0,1,4
+T7SOE.DFM,T7SO,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7SOF.DFM,T7SO,SO-F,TEditForm1,82,19,3,4,19,37,0,0,154
+T7SOFDEP.DFM,T7SO,New Screen,TEditForm3,7,1,4,1,1,0,0,0,30
+T7SOG.DFM,T7SO,SOG COGS Report,TEditForm1,12,0,2,2,5,3,0,0,38
+T7SOGA.DFM,T7SO,SO-G-A Order Posting,TEditForm1,2,0,2,0,0,0,0,0,7
+T7SOGACHK.DFM,T7SO,Cash Terms,TEditForm3,5,1,4,0,0,0,0,0,13
+T7SOGCogs.DFM,T7SO,SOG COGS Report,TEditForm1,10,0,2,2,5,1,0,0,35
+T7SOGComm.DFM,T7SO,SOG Commission Report,TEditForm1,10,0,2,2,5,1,0,0,35
+T7SOHINFO.DFM,T7SO,Sales Header Misc. Infromation,TEditForm1,26,20,1,5,0,0,0,0,61
+T7SOINFO.DFM,T7SO,Sales Misc. Infromation,TEditForm1,26,20,1,5,0,0,0,0,61
+T7SOJINFO.DFM,T7SO,Recurring Order Information,TEditForm2,4,1,2,1,0,0,0,0,12
+T7SOK.DFM,T7SO,,TPopupMenu,0,0,0,0,0,0,0,0,4
+T7SOLINEHIST.DFM,T7SO,,TShellExe,0,0,0,0,0,0,0,0,1
+T7SOLINFO.DFM,T7SO,Sales Line Misc. Infromation,TEditForm1,26,20,0,5,1,0,0,0,60
+T7SOLOT.DFM,T7SO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7SON.DFM,T7SO,SO-N,TEditForm1,32,5,3,0,10,14,0,0,69
+T7SONQTY.DFM,T7SO,T7SONQTY,TEditForm1,24,2,21,1,0,0,0,0,42
+T7SOOA.DFM,T7SO,SO-OA,TEditForm1,39,5,0,6,14,14,0,0,81
+T7SOOB.DFM,T7SO,SO-OB,TEditForm1,11,2,0,2,6,1,0,0,37
+T7SOOD.DFM,T7SO,SO-OA,TEditForm1,10,2,0,0,7,1,0,0,35
+T7SOOE.DFM,T7SO,SO-O-E,TEditForm1,47,7,0,6,22,12,0,0,107
+T7SOOF.DFM,T7SO,SO-OF,TEditForm1,29,4,0,4,13,8,0,0,73
+T7SOOG.DFM,T7SO,SO-O-G,TEditForm1,27,4,0,8,12,3,0,0,67
+T7SOOH.DFM,T7SO,SO-Oh,TEditForm1,18,1,0,2,10,5,0,0,49
+T7SOOI.DFM,T7SO,SO-OI,TEditForm1,30,5,0,2,16,7,0,0,69
+T7SOOM.DFM,T7SO,SO-O-M,TEditForm1,20,2,0,2,8,8,0,0,47
+T7SOON.DFM,T7SO,SO-O-N,TEditForm1,30,3,2,2,18,5,0,0,70
+T7SOPB.DFM,T7SO,SO-P-B,TEditForm1,17,1,1,0,4,11,0,0,40
+T7SOPC.DFM,T7SO,SO-PC,TEditForm1,30,3,1,8,7,11,0,0,72
+T7SOPF.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+T7SOPI.DFM,T7SO,New Screen,TEditForm1,11,2,1,1,6,1,0,0,41
+T7SOPJ.DFM,T7SO,New Screen,TEditForm1,2,1,0,0,0,0,0,0,10
+T7SOPK.DFM,T7SO,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7SOPM.DFM,T7SO,SO-P-M,TEditForm1,7,1,0,2,3,1,0,0,28
+T7SOPO.DFM,T7SO,SO-PO,TEditForm1,24,5,1,4,8,6,0,0,58
+T7SOPOR.DFM,T7SO,SO-PO Review,TEditForm1,9,3,3,2,1,0,0,0,22
+T7SOPP.DFM,T7SO,SO-P-P,TEditForm1,8,1,0,3,4,0,0,0,29
+T7SOQA.DFM,T7SO,SO-QA,TEditForm1,8,2,2,0,2,2,0,0,27
+T7SOQB.DFM,T7SO,SO-QB,TEditForm3,9,1,0,0,7,1,0,0,33
+T7SOQC.DFM,T7SO,SO-QC,TEditForm1,22,5,2,1,7,7,0,0,51
+T7SOQH.DFM,T7SO,SO-QH,TEditForm1,99,6,83,3,6,1,0,0,145
+T7SOQI.DFM,T7SO,T7SOQI,TEditForm1,39,0,2,8,23,4,0,0,91
+T7SOQJ.DFM,T7SO,SO-QJ,TEditForm1,17,1,2,0,8,6,0,0,45
+T7SOQK.DFM,T7SO,SO-Q-K  Print Catalog,TEditForm1,20,2,1,1,13,3,0,0,54
+T7SOQL.DFM,T7SO,SO-Q-L,TEditForm1,9,1,3,2,3,0,0,0,35
+T7SOR.DFM,T7SO,SO-R,TEditForm1,26,12,8,4,2,0,0,0,61
+T7SORevu.DFM,T7SO,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7SORevuPSWD.dfm,T7SO,Enter Contract Review ID and password,TEditForm3,3,2,0,0,1,0,0,0,12
+T7SOS.DFM,T7SO,SO-S,TEditForm1,12,0,0,2,7,3,0,0,36
+T7SOSER.DFM,T7SO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7SOV.DFM,T7SO,,TImageList,0,0,0,0,0,0,0,0,1
+t7SOA.DFM,T7SO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+t7Soa2.DFM,T7SO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+t7sondte.DFM,T7SO,t7sondte,TEditForm1,1,1,0,1,0,0,0,0,5
+T7SPC.DFM,T7SP,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7SPCLIVEGRID.DFM,T7SP,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7SPCLIVEREP.DFM,T7SP,New Screen,TEditForm4,8,0,2,1,5,0,0,0,31
+T7SPCREP.DFM,T7SP,New Screen,TEditForm2,29,7,0,2,17,1,0,0,70
+T7SPCREP2.DFM,T7SP,New Screen,TEditForm3,27,7,0,2,15,1,0,0,66
+T7SPCREPPPM.DFM,T7SP,New Screen,TEditForm1,16,2,0,2,11,1,0,0,45
+T7SRB.DFM,T7SR,SR-B,TEditForm1,22,4,0,0,6,12,0,0,50
+T7SRBK.DFM,T7SR,Live Work Center Schedule,TEditForm1,6,0,1,0,2,3,0,0,25
+T7SRD.DFM,T7SR,SR-D,TEditForm1,28,4,1,3,7,13,0,0,59
+T7SRE.DFM,T7SR,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7SRF.DFM,T7SR,SO-F,TEditForm1,56,9,0,4,17,26,0,0,109
+T7SRG.DFM,T7SR,SRG ,TEditForm1,7,0,0,0,5,2,0,0,29
+T7SRGA.DFM,T7SR,SR-G-A Order Posting,TEditForm2,2,0,2,0,0,0,0,0,7
+T7SRI.DFM,T7SR,SR-I,TEditForm1,26,12,8,4,2,0,0,0,61
+T7SRINFO.DFM,T7SR, S&R Misc. Infromation,TEditForm1,26,20,1,5,0,0,0,0,61
+T7SRK.DFM,T7SR,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7SRMMS.DFM,T7SR,"Make, Model and Serial Number",TEditForm1,6,6,0,0,0,0,0,0,21
+T7SRS.DFM,T7SR,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7STDCST.DFM,T7ST, Standard Cost,TEditForm5,23,4,18,0,1,0,0,0,54
+T7STEQUIP.DFM,T7ST,,TImageList,0,0,0,0,0,0,0,0,1
+T7STOCK.DFM,T7ST,,TImageList,0,0,0,0,0,0,0,0,1
+T7STTYPE.DFM,T7ST,New Screen,TEditForm1,3,1,0,0,1,0,0,1,20
+T7STYPE.DFM,T7ST,New Screen,TEditForm1,3,1,0,0,1,0,0,1,20
+T7TCC.DFM,T7TC,New Screen,TEditForm1,3,0,1,0,2,0,0,0,21
+T7TESTNACHA.DFM,T7TE,NACHA,TEditForm1,9,2,2,3,2,0,0,0,35
+T7USG.DFM,T7US,,TImageList,0,0,0,0,0,0,0,0,1
+T7UTH.DFM,T7UT,,TImageList,0,0,0,0,0,0,0,0,1
+T7UTKA.DFM,T7UT,New Screen,TEditForm1,15,7,0,0,1,7,0,0,44
+T7UTKD.DFM,T7UT,New Screen,TEditForm2,14,3,0,7,4,0,0,0,40
+T7UTKE.DFM,T7UT,New Screen,TEditForm1,3,1,0,0,2,0,0,0,24
+T7UTKF.DFM,T7UT,UT-K-F,TEditForm1,9,1,0,0,7,1,0,0,32
+T7UTKG.DFM,T7UT,UT-K-G,TEditForm1,14,4,0,0,9,1,0,0,40
+T7UTKH.DFM,T7UT,New Screen,TEditForm1,15,2,0,0,7,6,0,0,38
+t7uti.DFM,T7UT,,TImageList,0,0,0,0,0,0,0,0,1
+T7VSCHED.DFM,T7VS,New Screen,TEditForm1,17,5,2,2,3,0,0,0,58
+T7WCA.DFM,T7WC,,TImageList,0,0,0,0,0,0,0,0,1
+T7WCB.DFM,T7WC,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+T7WCBK.DFM,T7WC,Live Work Center Schedule,TEditForm1,9,2,2,0,3,2,0,0,34
+T7WCBinLot.DFM,T7WC,New Screen,TEditForm1,4,1,2,0,0,0,0,0,14
+T7WCC.DFM,T7WC,,TImageList,0,0,0,0,0,0,0,0,1
+T7WCD.DFM,T7WC,WC-D ,TEditForm1,21,3,16,0,2,0,0,0,51
+T7WCE.DFM,T7WC,WC-E,TEditForm1,20,4,0,0,10,6,0,0,49
+T7WCF.DFM,T7WC,WC-F,TEditForm1,11,2,0,0,7,2,0,0,35
+T7WCG.DFM,T7WC,WC-G,TEditForm1,12,2,0,0,9,1,0,0,40
+T7WCH.DFM,T7WC,BASE Blank T7 SCREEN,TEditForm1,5,1,0,0,4,0,0,0,25
+T7WCLOCFIX.DFM,T7WC,LOC SYNCH UTILITY,TEditForm1,4,3,0,0,0,0,0,0,24
+T7WCS.DFM,T7WC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7WCS2.DFM,T7WC,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7WOA.DFM,T7WO,New Screen,TEditForm2,69,9,45,8,7,0,3,0,171
+T7WOAC.DFM,T7WO,New Screen,TEditForm3,78,16,43,8,10,1,0,0,183
+T7WOACFG.DFM,T7WO,WO-A  Settings,TEditForm7,3,0,0,0,0,3,0,0,9
+T7WOACPY.DFM,T7WO,New Screen,TEditForm1,3,1,2,0,0,0,0,0,13
+T7WOAE.DFM,T7WO,New Screen,TEditForm1,100,22,49,13,12,4,4,0,247
+T7WOAECO.DFM,T7WO, Eco,TEditForm2,9,5,0,2,2,0,0,0,24
+T7WOAMDT.DFM,T7WO,,TPanel,0,0,0,0,0,0,0,0,8
+T7WOASOLINES.DFM,T7WO,,TPanel,0,0,0,0,0,0,0,0,2
+T7WOB.DFM,T7WO,WO-B,TEditForm1,15,4,2,2,5,2,0,0,46
+T7WOC.DFM,T7WO,WOC,TEditForm1,51,15,0,4,9,23,0,0,93
+T7WOD.DFM,T7WO,WO-D,TEditForm1,28,3,1,0,11,13,0,0,59
+T7WODATES.DFM,T7WO,,TShellExe,0,0,0,0,0,0,0,0,1
+T7WOE.DFM,T7WO,IN-E Print Inventory Transactions,TEditForm1,5,1,1,0,3,0,0,0,26
+T7WOF.DFM,T7WO,WO-F,TEditForm1,40,14,12,2,10,3,0,0,98
+T7WOFA.DFM,T7WO,WO-F Backflush Material,TEditForm1,1,0,0,0,1,0,0,0,22
+T7WOG.DFM,T7WO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7WOH.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOI.DFM,T7WO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7WOIASK.DFM,T7WO,Change Location,TEditForm3,18,5,7,0,5,1,0,0,43
+T7WOJ.DFM,T7WO,WO-J,TEditForm1,11,3,0,1,4,3,0,0,38
+T7WOJPRESERIALS.DFM,T7WO,WO-J Pre-Assigned Serial Numbers,TEditForm4,7,2,0,0,2,3,0,0,25
+T7WOKA.DFM,T7WO,WO-K-A,TEditForm1,35,8,12,0,10,4,0,0,100
+T7WOKACOPYROUT.DFM,T7WO,WO-K-A,TEditForm2,4,1,0,0,3,0,0,0,14
+T7WOKAOPTS.DFM,T7WO,WO-K-A,TEditForm2,3,1,1,0,0,0,0,0,12
+T7WOKB.DFM,T7WO,,TTASStrList,0,0,0,0,0,0,0,0,1
+T7WOKC.DFM,T7WO,WO-K-C,TEditForm1,4,3,0,0,2,0,0,0,21
+T7WOKD.DFM,T7WO,WO-K-D,TEditForm1,30,8,1,0,7,12,0,0,60
+T7WOKDQTY.DFM,T7WO,Enter Qty to Make,TEditForm2,16,2,14,0,0,0,0,0,34
+T7WOKE.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOKF.DFM,T7WO,New Screen,TEditForm1,5,0,1,2,2,0,0,0,24
+T7WOKG.DFM,T7WO,WO-K-G,TEditForm1,13,6,0,4,3,0,0,0,41
+T7WOKJ.DFM,T7WO,WO-K-J,TEditForm1,11,0,0,0,5,6,0,0,32
+T7WOKK.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOKL.DFM,T7WO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7WOKM.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOKMA.DFM,T7WO,New Screen,TEditForm1,3,1,0,0,1,0,0,1,21
+T7WOKNA.DFM,T7WO,Live Work Center Schedule,TEditForm1,4,0,1,0,2,1,0,0,22
+T7WOKNB.DFM,T7WO,,TRtnTimer,0,0,0,0,0,0,0,0,1
+T7WOKNC.DFM,T7WO,Issue Part from Request,TEditForm11,18,5,7,0,4,0,0,0,50
+T7WOKP.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOKS.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOKSA.DFM,T7WO,WO-K-SA,TEditForm2,10,1,0,0,9,0,0,0,33
+T7WOKT.DFM,T7WO,New Screen,TEditForm1,11,0,0,4,7,0,0,0,36
+T7WOLA.DFM,T7WO,WO-L-A,TEditForm1,61,19,0,6,17,19,0,0,116
+T7WOLB.DFM,T7WO,WO-L-B,TEditForm1,48,14,0,6,15,13,0,0,99
+T7WOLC.DFM,T7WO,WO-L-C,TEditForm1,22,3,0,2,14,3,0,0,56
+T7WOLD.DFM,T7WO,WO-L-D,TEditForm1,26,6,0,4,14,2,0,0,65
+T7WOLE.DFM,T7WO,WO-L-E,TEditForm1,7,1,0,2,3,1,0,0,31
+T7WOLF.DFM,T7WO,WO-L-F,TEditForm1,48,12,0,10,18,8,0,0,99
+T7WOLG.DFM,T7WO,WO-L-G,TEditForm1,32,0,0,4,26,2,0,0,65
+T7WOLH.DFM,T7WO,WO-L-H,TEditForm3,15,6,0,4,3,2,0,0,43
+T7WOLI.DFM,T7WO,WO-L-I,TEditForm1,32,8,0,4,12,8,0,0,71
+T7WOLJ.DFM,T7WO,WO-L-J  Print Finished Work Order Report,TEditForm1,19,1,0,2,13,3,0,0,53
+T7WOLK.DFM,T7WO,WO-L-K  Print WO Bill of Material,TEditForm1,23,1,0,0,9,13,0,0,48
+T7WOLL.DFM,T7WO,WO-L-L,TEditForm1,11,2,1,0,6,2,0,0,38
+T7WOLM.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOLN.DFM,T7WO,WO-L-N,TEditForm1,4,1,0,0,3,0,0,0,23
+T7WOLO.DFM,T7WO,WC by Customer,TEditForm1,5,0,0,2,3,0,0,0,24
+T7WONoteTLL.DFM,T7WO,WO Notes,TEditForm1,0,0,0,0,0,0,0,0,17
+T7WOP.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7WOPO.DFM,T7WO,WO-PO,TEditForm2,13,2,1,2,4,4,0,0,36
+T7WOPOR.DFM,T7WO,WO-PO Review,TEditForm1,8,3,2,2,1,0,0,0,20
+T7WOS.DFM,T7WO,,TShellExe,0,0,0,0,0,0,0,0,1
+T7WOTRWK.DFM,T7WO,Rework TO Stock WO,TEditForm1,8,1,1,2,3,1,0,0,30
+T7woko.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+t7wogimp.DFM,T7WO,Import Material Issues,TEditForm1,4,0,0,2,2,0,0,0,17
+t7woprio.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+t7woprio2.DFM,T7WO,,TImageList,0,0,0,0,0,0,0,0,1
+T7XCUTIL.DFM,T7XC,XCharge Conversion Utility,TEditForm1,1,1,0,0,0,0,0,0,6
+udfedit.DFM,UDFE,Enter Value,TEditForm8,1,2,0,0,0,0,0,0,3
+udfedit1.DFM,UDFE,Enter Value,TEditForm5,1,2,0,0,0,0,0,0,3
+udfedit2.DFM,UDFE,Enter Value,TEditForm4,1,2,0,0,0,0,0,0,3
+udfedit3.DFM,UDFE,Enter Value,TEditForm3,1,2,0,0,0,0,0,0,3
+udfedit4.DFM,UDFE,Enter Value,TEditForm2,1,2,0,0,0,0,0,0,3
+udfedit5.DFM,UDFE,Enter Value,TEditForm1,1,2,0,0,0,0,0,0,3
+UT7GBOM.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GDUPLOC.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GDUPLOC.R.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GFAC.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GFAD.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GISREPORD.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GSOH.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GUT7DUPLO.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+UT7GWOPRIO.DFM,UT,Loading....,TEditForm1,0,0,0,0,0,0,0,0,5
+VARINFO.DFM,VARI, VAR Infromation,TEditForm1,12,11,0,0,1,0,0,0,31
+WBKHHLOOKUP.DFM,WBKH,New Screen,TEditForm3,1,1,1,1,1,0,0,1,31
+WBKLKPMEMO.DFM,WBKL, Edit Memo Field,TEditForm9,0,0,0,0,0,0,0,0,5
+WBKLOOKUP.DFM,WBKL, Evo Lookups,TEditForm1,6,1,1,1,5,1,0,1,76
+WBKLPRINT.DFM,WBKL, Order Printing,TEditForm1,3,0,0,0,0,3,0,0,6
+WBKLUGRID.DFM,WBKL,,TTASStrList,0,0,0,0,0,0,0,0,1
+WBKMENUBUTT.DFM,WBKM,&Select,TGlyphBtn,0,0,0,0,0,0,0,0,1
+WBKMENUPICS.DFM,WBKM, Images,TEditForm1,0,0,0,0,0,0,0,0,6
+WBKMENUSETUP.DFM,WBKM,,TPopupMenu,0,0,0,0,0,0,0,0,2
+WBKMENUSUCPRG.DFM,WBKM,Change Program Name,TEditForm1,2,2,0,0,0,0,0,0,9
+WBKMENUSUNEWAC.DFM,WBKM,Enter New Access Code,TEditForm1,2,1,0,0,1,0,0,0,7
+wbkmenusueu.dfm,WBKM,,TPopupMenu,0,0,0,0,0,0,0,0,2
+WMBKLOOKUP.DFM,WMBK,Lookup: ,TEditForm1,1,1,1,1,1,0,0,1,33
+WORKCENTERLOAD.DFM,WORK,Loading....,TEditForm1,0,0,0,0,0,0,0,0,4
+WTASDMS2.DFM,WTAS,,TTASDGColTemplate,0,0,0,0,0,0,0,0,1
+WTASDMS3.DFM,WTAS,Edit Memo Field,TEditForm1,0,0,0,0,0,0,0,0,4
+WTASDMS4.DFM,WTAS,Enter Filter Expression,TEditForm1,1,1,0,0,0,0,0,0,6
+WTASFLLKUP.DFM,WTAS,,TStatusBar,0,0,0,0,0,0,0,0,1
+WTASFLOC.DFM,WTAS,Maintain File Names and Locations,TEditForm1,6,2,0,0,4,0,0,0,18
+WTASINIT.DFM,WTAS,Addsum TAS Professional 7 Create/Initialize File Program,TEditForm1,6,2,0,0,4,0,0,0,16
+wtaschkint.dfm,WTAS,DataScanIntegrity utility,TEditForm1,3,0,3,0,1,0,0,0,24
+wtaschkintcompany.dfm,WTAS,Include which companies,TEditForm2,0,0,0,0,0,0,0,0,5
+wtascvtdict.DFM,WTAS, Convert Existing Dictionary,TEditForm2,1,1,0,0,0,0,0,0,9
+wtasdatam.dfm,WTAS,Maintain Database,TEditForm1,9,2,5,1,3,5,0,1,54
+wtasdmgr.dfm,WTAS,,TMainMenu,0,0,0,0,0,0,0,0,21
+wtasdmgr2.DFM,WTAS,New FD,TEditForm1,1,1,0,0,0,0,0,0,5
+wtasdmgr3.DFM,WTAS,Restructure a file,TEditForm1,1,0,0,0,1,0,0,0,11
+wtasdms5.dfm,WTAS,Enter Find Next Expression,TEditForm1,1,1,0,0,0,0,0,0,6

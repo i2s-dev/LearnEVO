@@ -1,0 +1,1938 @@
+CLASS   
+TASCOLOR
+CLASMSTR
+BKICMSTR
+BKICLOCM
+BKGLCOA 
+BKYSMSTR
+BKSYMSTR
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+MKAHIST 
+BKAPDESC
+BKAPVEND
+BKARCUST
+BKCMACCT
+ - ISTS Enhancement 09/29/06A
+ISTECHL
+  Enter Item ClassesA
+BKICLOCA
+BKICMSTRA
+MTICMSTRA
+BKGLCOAA
+BKICLOCMA
+CLASMSTRA
+CLASSA
+ NOTE: To quickly locate any problems with the Class/LocationF
+ FIFO/LIFO GL setup, use the Reports button here and chooseF
+ the FIFO/LIFO GL Exception report.I
+  Enter Item ClassesA
+ Item Classes I
+INS Add,ENTER Edit,DEL Delete,F3 Chg Search KeyA
+ESC ExitA
+F9 Item Class GLsA
+INS Add,ENTER Edit,DEL Delete,F3 Chg Search KeyA
+ESC ExitA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+ClassA
+Description                   A
+Description                   A
+ClassA
+  Enter New Item ClassA
+  Edit Existing Item ClassA
+Exit without saving any changes?L
+Class      F@/
+DescriptionI
+F1 HelpA
+F10 Save,Esc ExitA
+The Item Class Code cannot be blank. A
+This Item Class Code already exists. A
+F1 HelpA
+F10 Save,Esc ExitA
+You may not delete a Class which has inventory items still associated with it.  You must first reassign all of the inventory items in this Class to another Class, then delete the old Class. A
+Delete Item Class "A
+Clearing related Item CLass GL entries.... L
+Please note that, until you have switched on the Item Class GLs option using the "General Ledger Defaults" menu selection, the GL setup that you enter here for your classes will NOT affect any of the GL postings. A
+  Enter Item ClassesA
+ Item Class GLs A
+INS Add,ENTER Edit,DEL Delete,F3 Chg Search KeyA
+ESC Back to Class ListA
+F5 Report,F7 Copy Location,F4 Mass Create,F6 Mass GL ChangeA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+Use these optional entries to override the system default GLsA
+for an item class at a particular location.A
+ClassA
+Location  A
+Class Description             A
+Location  A
+ClassA
+Class Description             A
+CLEDIT  A
+Class+LocationF@/
+Location      I
+Under construction. A
+                              A
+Delete the Item Class GL record for Class "A
+" at location "A
+"?  Doing so means that all GL postings for this class/location will now go to the system default GL accounts. A
+CLEDIT  A
+CLEDIT  A
+  Enter New Item Class GL RecordA
+  Edit Existing Item Class GL RecordA
+An Item Class GL entry is only required if you wish toA
+override the system default GLs for a class/location.A
+MASSCHG A
+Just this classA
+All locationsI
+All classesA
+Just this locationI
+All classesA
+All locationsA
+The GL accounts entered here will replace the GL accountsA
+for all class/locations that meet the criteria below:
+0123456789. A
+CLEDIT  A
+The Location is not valid. A
+Cannot save: a class/location record already exists for Class "A
+" at Location "A
+CLEDIT  A
+Abandon the GL Account changes that you just made?L
+Exit without saving any changes?L
+CLEDIT  A
+CLEDIT  A
+MASSCHG A
+CLEDIT  A
+F1 Help,F2 Lookup,F5 Import GLs,F6 Clear GLs,F7 Reset GLsA
+F10 Save,Esc ExitA
+The Item Class Code cannot be blank. A
+The Item Class Code is not valid. A
+CLEDIT  A
+This is not a valid Location.  Would you like to set it up as a new Location? L
+F1 Help,F2 Lookup,F5 Import GLs,F6 Clear GLs,F7 Reset GLsA
+F10 Save,Esc ExitA
+This is not a valid GL account code. A
+This is not a valid GL account code. A
+Inventory Asset/ExpL
+Taxable SalesL
+Non-Taxable SalesL
+WIP Inventory AssetL
+Absorbed LaborL
+Absorbed Fixed OHL
+Absorbed Variable OHL
+Material BurdenL
+ GL Account is not a valid GL Account code. A
+Please select the Class/Location whose GL Accounts should be used to replace all the GL Accounts on this screen. A
+Blank out all of the GL Accounts on this screen? L
+Reset all of the GL Accounts on this screen to their original (prior to any editing) values? L
+  Enter Item Classes - Mass CreateA
+  Enter Item Classes - Mass GL ChangeA
+Please indicate the scope of the Class Mass Creation A
+Please indicate the scope of the GL changes. A
+Please only indicate ONE scope of the Class Mass Creation. A
+Please only indicate ONE scope of the GL changes. A
+created.A
+changed. A
+Please select the Class for which all Locations will be A
+Please use the button at the bottom of the screen to review the GL Accounts to be used for this mass change.  At the moment they are all blank. A
+This will create Class "A
+" with the specified GL Accounts for all locations.  Ready to proceed? A
+This will create ALL Classes with the specified GL Accounts for Location "A
+".  Ready to proceed? A
+This will create ALL Classes with the specified GL Accounts for ALL Locations.  Ready to proceed? I
+This will create the selected Classes with the specified GL Accounts for selected Locations.  Ready to proceed? I
+This will change the GL Accounts of ALL Locations for Class "A
+" to the GL Accounts that you have specified here.  Ready to proceed? A
+This will change the GL Accounts of ALL Classes for Location "A
+" to the GL Accounts that you have specified here.  Ready to proceed? A
+This will change the GL Accounts of ALL Classes for ALL Locations to the GL Accounts that you have specified here.  Ready to proceed? L
+  Mass Created:     0   A
+Creating Class.....I
+  Mass GL Changes Made:     0A
+Making mass GL changes.....I
+  Mass GL Changes Made: A
+Mass Create processing is complete.  A total of A
+ Classes were made. A
+Mass GL change processing is complete.  A total of A
+ changes were made. A
+  Mass Created: A
+MASSCHG A
+F1 Help,F9 Review/Edit New GL AccountsA
+Esc ExitA
+This must be "X" or blank. A
+User Specified Class/LocationA
+SpecifiedA
+User Specified Class/LocationA
+SpecifiedA
+F1 Help,F2 Lookup,F9 Review/Edit New GL AccountsA
+Esc ExitA
+F1 Help,F9 Review/Edit New GL AccountsA
+Esc ExitA
+The Item Class Code cannot be blank. A
+This is not a valid Item Class. A
+F1 Help,F2 Lookup,F9 Review/Edit New GL AccountsA
+Esc ExitA
+F1 Help,F9 Review/Edit New GL AccountsA
+Esc ExitA
+This is not a valid Location. A
+CLASSL
+CLASSL
+CLASSA
+classI
+CLASSA
+CLASSL
+     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:F
+ One of the requirements for using FIFO or LIFO costingF
+ is that the Inventory Asset GL Account be the same forF
+ all locations within a given Class of inventory parts.F
+ The same holds true for the WIP GL Account.  The Asset/WIPF
+ GL Accounts can be different for each Class, but withinF
+ each Class, the Asset GL for every location must be theF
+ same, and the WIP GL for every location must be the sameF
+ (but the Asset and WIP GLs can be different from each other).F
+ The Class you just added/edited (A
+) has AssetA
+ and/or WIP GL Accounts that are NOT the same at all locationsF
+ within the Class.  You must correct this in order for FIFO orF
+ LIFO Costing to work correctly (your changes have been saved).F
+ (Enter Item Classes) to change the AssetA
+ You should use A
+ and WIP GL Accounts to be the same at all locations of eachF
+ Class.I
+  Enter Item Classes [Create New Location Class Records]A
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc Enter
+ClassesA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+One record for each inventory class you specified will be created for location "A
+".  Do you wish to generate these class/location records now?A
+BKICLOCMA
+BKICLOCMA
+CLASSA
+ < Press ESC to Abort > A
+CLASSA
+CLASSA
+CLASSA
+CLASSA
+CLASSA
+                        A
+There are no records in the class file that match your criteria.I
+CLASSA
+CLASMSTRA
+BKGLCOAA
+MTICMSTRA
+BKICMSTRA
+BKICLOCA
+BKICLOCMA
+CLASSA
+CLASMSTRA
+CLASMSTRA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKMMKAA
+  Print Inventory Class ListA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+Esc ExitA
+CLASMSTRA
+CLASMSTRA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+Esc ExitA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+F1 HelpA
+Esc ExitA
+classA
+No class/location records found for this class range. A
+CLASSA
+classA
+CLASSA
+  Enter Item ClassesA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ COPY FROM LOCATION 
+                                                                        
+       Template Location                    Copy From Class             
+                                                 Thru Class             
+                                                                        
+ COPY TO LOCATION 
+                                                                        
+       Location To Create                   Use G/L Accounts from       
+       Class Records For                    Template Loc? [Y/N]         
+                                                                        
+ NEW G/L ACCOUNTS 
+                                                                        
+ GL Asset/Exp Acct            -       GL Sales Non-Tax            -     
+ GL COGS Acct                 -       GL WIP Acct                 -     
+ GL Sales Acct                -                                         
+                                                                        
+     Creating Inventory Class                                           
+                                                                        
+                              
+                              
+   Class Range    
+                              
+                  
+                              
+                  
+                              
+                  
+                              
+  Location Range  
+                              
+                  
+                              
+                  
+                              
+                                                 INVENTORY CLASS DEFAULTS REPORT                                        Page:
+Class Description                    Location   GL Asset/Exp    GL COGS         GL Sales        GL NT Sales     GL WIP
+----- ------------------------------ ---------- --------------- --------------- --------------- --------------- ---------------
+                                                          -               -               -               -               -
+-------------------------------------------------------------------------------------------------------------------------------
+                
+                
+  Class Code                                  
+                
+                                              
+                
+  Description                                 
+                
+                                                                   
+                                                                   
+  Class                                                            
+  Location                                                         
+        Class/Location GL Account         Default GL Acct          
+          
+  Inventory Asset/Exp              -                -              
+  COGS                             -                -              
+  Taxable Sales                    -                -              
+  Non-Taxable Sales                -                -              
+  WIP Inventory Asset              -                -              
+  Absorbed Labor                   -                -              
+  Absorbed Fixed OH                -                -              
+  Absorbed Variable OH             -                -              
+  Material Burden                  -                 %             
+                                                                   
+  Any GL accounts specified here will override the system default  
+  GL accounts.  If a certain type of posting should continue to    
+  use the system default GL account, leave it blank here.          
+         
+         
+  Use this screen to easily make GL Account changes for   
+         
+  multiple Class/Locations.                               
+         
+         
+         
+  SCOPE OF GL CHANGES TO BE MADE                          
+         
+    All Locations for a specified Class                   
+         
+    All Classes for a specified Location                  
+         
+    All Classes for all Locations                         
+         
+                                                          
+         
+  Which Class?                                            
+         
+                                                          
+         
+  Which Location?                                         
+         
+                                                          
+         
+  Proceed with these changes?    (be sure to review/edit  
+         
+                                  the GL Accounts first)  
+         
+         
+         
+  Use this screen to easily Mass Create GL Accounts       
+         
+  for specified or multiple Class/Locations.              
+         
+         
+         
+  SCOPE OF GL CHANGES TO BE MADE                          
+         
+    All Locations for a specified Class                   
+         
+    All Classes for a specified Location                  
+         
+    All Classes for all Locations                         
+         
+    Specifed Classes for Specified Locations              
+         
+                                                          
+         
+  Which Class?                                            
+         
+                                                          
+         
+  Which Location?                                         
+         
+                                                          
+         
+  Proceed with these changes?    (be sure to review/edit  
+         
+                                  the GL Accounts first)  
+         
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF@/
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF@/
+ B - DescriptionA
+ Search Key A
+BKICLOCMA
+ Locations A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICLOCMA
+Code      A
+Name                          A
+StateA
+BKICLOCMA
+Name                          A
+Code      A
+StateA
+BKICLOCMA
+Code         F@/
+Name         I
+F1 HelpA
+Esc ExitA
+ A - CodeF@/
+ B - NameA
+ Search Key A
+ALOIEI
+BKGLCOAA
+ GL Accounts A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKGLCOAA
+Acct Cd   A
+Description              A
+BKGLCOAA
+Description              A
+Acct Cd   A
+BKGLCOAA
+BKGLCOAA
+GL AccountF@/
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - GL AccountF@/
+ B - DescriptionA
+ Search Key I
+All AccountsF@/
+Asset AccountsF@/
+Liability AccountsF@/
+Owners Equity AcctsF@/
+Income AccountsF@/
+Expense AccountsI
+ A - All AccountsF@/
+ B - Asset AccountsF@/
+ C - Liability AccountsF@/
+ D - Owners Equity AcctsF@/
+ E - Income AccountsF@/
+ F - Expense AccountsA
+ Choose Acct Type I
+CLASSA
+ Class/Location A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASSA
+ClassA
+Location  A
+Description                   A
+CLASSA
+Location  A
+ClassA
+Description                   A
+CLASSA
+                              A
+CLASMSTRI
+CLASSA
+Class   F@/
+LocationI
+F1 HelpA
+Esc ExitA
+ A - ClassF@/
+ B - LocationA
+ Search Key A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTEC H support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKSYMSTRA
+BKSYMSTRA
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTECH support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when Accounting is activated. A
+This program is only available when Accounts Receivable is activated. A
+This program is only available when Accounts Payable is activated. A
+Checking Item Class GL Setup for FIFO/LIFO...I
+Checking Item Class GL Setup for FIFO/LIFO:   0.00%L
+Checking Item Class GL Setup for FIFO/LIFO: A
+     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:F
+ One of the requirements for using FIFO or LIFO costingF
+ is that the Inventory Asset GL Account be the same forF
+ all locations within a given Class of inventory items.F
+ The same holds true for the WIP GL Account.  The Asset/WIPF
+ GL Accounts can be different for each Class, but withinF
+ each Class, the Asset GL for every location must be theF
+ same, and the WIP GL for every location must be the sameF
+ (but the Asset and WIP GLs can be different from each other).F
+ In your data, one or more Classes exist where the AssetF
+ and/or WIP GL Accounts are NOT the same at all locationsF
+ within the Class.  You must correct this in order for FIFOF
+ or LIFO Costing to work correctly.F
+ You should use "Enter Item Classes" to change the AssetF
+ and WIP GL Accounts to be the same at all locations of eachF
+ Class.  Use the report there to quickly spot the exceptions.I
+     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:F
+ One of the requirements for using FIFO or LIFO costingF
+ is that the Inventory Asset GL Account be the same forF
+ all locations within a given Class of inventory items.F
+ The same holds true for the WIP GL Account.F
+ In your Item Class GL setup, this requirement has beenF
+ met for all classes.  However, there are one or moreF
+ classes where the Inventory or WIP GL is different fromF
+ the system default Inventory or WIP GL.F
+ This may be intentional, and is not necessarily a problem,F
+ so long as you never post for a class at a location thatF
+ has not been set up in "Enter Item Classes", which wouldF
+ result in the system default GLs being used.F
+ This message is only a warning, not an error, and will notF
+ prevent any processing.  For a more complete analysis, useF
+ the FIFO/LIFO Exceptions report in "Enter Item Classes".I
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Default LocationA
+BKICLOCMA
+bkiclocmI
+More than 250 locations. A
+No locations. A
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+MKAHISTA
+ISTECHSUPPORTA
+ENTER Tag One,F5 Tag AllA
+F10 Go,ESC CancelA
+ENTER SelectA
+ESC ExitA
+MenuBkgA
+MenuBkgA
+LOCATION LISTINGA
+Only locations Tagged here will be included.A
+Location  A
+Location Name            A
+Comments                      A
+You have Previously selected a Location Type of 'A
+'. You cannot mix Location types. To select this Location, untag all other locations first.A
+Exit without choosing any locations? L
+No locations have been tagged. A
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+C:\ISTS\I
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+bkistek.bmpA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+MTCLASS.M.CLASSA
+CLASMSTRI
+More than 1000 classes. A
+No classes specified. A
+ENTER Tag One,F5 Tag AllA
+F10 Go,ESC CancelA
+ENTER SelectA
+ESC ExitA
+MenuBkgA
+MenuBkgA
+CLASS LISTINGA
+Only Classes Tagged here will be includedA
+ClassA
+Descritpion                   A
+Exit without choosing any locations? L
+No locations have been tagged. A
+NNNYNFP
+NNNYNF@
+NNNYNF
+YNNNYCf
+YNNNYF
+YNNNYF`
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF`
+YNNNYX(
+YNNNYF
+YNNNYX~
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF`
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC*
+YNNNYF 
+NNNNNF 
+YNNNNC5t
+YNNNYN
+YNNNNF
+NNNYNF
+YNNNYF 
+YNNNNCQ
+YNNNYFp
+YNNNNC
+YNNNYF0
+YNNNNCa
+YNNNYNK
+YNNNNC%
+YNNNYNN
+YNNNNC
+NNNYNvr
+NNNYNX
+NNNYNX
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+ISTS.EDATE     
+GL_TYPE        
+CLASS.HLD      
+GLA.ACT        
+GLA.DPT        
+GLC.ACT        
+GLC.DPT        
+GLS.ACT        
+GLS.DPT        
+GLN.ACT        
+GLN.DPT        
+GLW.ACT        
+GLW.DPT        
+NEED.ACCT      
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+CFROM          
+PASS.CLASS     
+PASS.LOC       
+FOUND.BAD      
+ORIG.ASSET     
+ORIG.WIP       
+NEW.ASSET      
+NEW.WIP        
+ORIG.CLASS     
+CLASS.REC      
+GL.OK          
+HDR_START      
+FROM_0         
+THRU_0         
+FROM_LOC       
+THRU_LOC       
+PAGE           
+RPT.DATE       
+RPT.TIME       
+WHICH          
+BREAK          
+NUM.PRINTED    
+CLASSHNDL      
+CLASMSTRHNDL   
+BKICMSTRHNDL   
+BKICLOCMHNDL   
+MTICMSTRHNDL   
+BKGLCOAHNDL    
+TITLEBAR       
+ZRET           
+MAINWINDOW     
+EDITWINDOW     
+RPTWINDOW      
+MASSCHGWINDOW  
+SOA.SRCHKEY    
+SOA.TEMPKEY    
+SOA.SHMSG      
+SOA_TTL1       
+SOA_USCORE     
+ENTRY.TYPE     
+EXIT.TYPE      
+CMMAINWINDOW   
+CMEDITWINDOW   
+CM.SRCHKEY     
+CM.TEMPKEY     
+CM.SHMSG       
+CM_TTL1        
+CM_USCORE      
+CMENTRY.TYPE   
+CMEXIT.TYPE    
+CMCBK.CLASS    
+CMCBK.DESC     
+CMNEW.REC      
+CMEDIT.CLASS   
+CMEDIT.DESC    
+CMREC.DELETED  
+WS             
+ICOL           
+IROW           
+I              
+J              
+K              
+CBK.CLASS      
+CBK.LOC        
+NEW.REC        
+DISPCMDESC     
+EDIT.CLASS     
+EDIT.LOC       
+EDIT.GLA       
+EDIT.GLC       
+EDIT.GLS       
+EDIT.GLSNT     
+EDIT.GLW       
+EDIT.GLLAB     
+EDIT.GLFOH     
+EDIT.GLVOH     
+EDIT.DPTA      
+EDIT.DPTC      
+EDIT.DPTS      
+EDIT.DPTNT     
+EDIT.DPTW      
+EDIT.DPTLAB    
+EDIT.DPTFOH    
+EDIT.DPTVOH    
+EDIT.GLMISC    
+EDIT.GLXTRA    
+OEDIT.GLMISC   
+OEDIT.GLXTRA   
+EDIT.DPTMISC   
+OEDIT.DPTMISC  
+STAT.GLA       
+STAT.GLC       
+STAT.GLS       
+STAT.GLSNT     
+STAT.GLW       
+STAT.GLLAB     
+STAT.GLFOH     
+STAT.GLVOH     
+OEDIT.GLA      
+OEDIT.GLC      
+OEDIT.GLS      
+OEDIT.GLSNT    
+OEDIT.GLW      
+OEDIT.GLLAB    
+OEDIT.GLFOH    
+OEDIT.GLVOH    
+OEDIT.DPTA     
+OEDIT.DPTC     
+OEDIT.DPTS     
+OEDIT.DPTNT    
+OEDIT.DPTW     
+OEDIT.DPTLAB   
+OEDIT.DPTFOH   
+OEDIT.DPTVOH   
+REC.DELETED    
+EDIT.DESC      
+CLORIG.DESC    
+CLORIG.CLASS   
+CLORIG.LOC     
+GLCFROM        
+GLTITLE1       
+GLTITLE2       
+GLWHICH        
+ACCT_PTR       
+DEPT_PTR       
+GLACCT         
+GLDPT          
+GLECHANGES     
+OLDGLECHANGES  
+XW             
+YW             
+GLVACCT        
+GLVDEPT        
+GLVDFLT        
+GLVDESC        
+CMORIG.CLASS   
+CMORIG.DESC    
+CMASK          
+CLASK          
+GLCHANGES      
+CLESCMESS      
+GLCLASSREC     
+MASSCHGCLASS   
+MASSCHGLOC     
+MASSCHGDESC    
+MASSCHGSCOPE   
+MCGWHICH       
+MCGSCOPE       
+MCGORIG.SCOPE  
+MCGPROCEED     
+MCGREVIEWED    
+MCGMESS        
+NUM.CHGS       
+SOA_TTL00      
+SOA_TTL01      
+SOA_TTL02      
+BKICLOCHNDL    
+EDIT.LOCDESC   
+TOTCOARECS     
+MASSCREATE     
+TOT.LOCS       
+CLASS.CNTR     
+LOC.CNTR       
+TOT.CLASS      
+MTCLASS.CLASS  
+SYSITEMCLASSGL 
+MESSAGE        
+MSG_PTR        
+WC             
+BC             
+SC             
+MTCLASS.M.CLASS
+MTCLASS.M.DESC 
+DATC           
+MENULIST       
+BKIC.PROD.CLASS6
+MTCLASS.LOC    
+CC             
+CLASS.GLA      ,
+CLASS.DPTA     6
+CLASS.GLC      :
+CLASS.DPTC     D
+CLASS.GLS      H
+CLASS.DPTS     R
+CLASS.GLSNT    V
+CLASS.DPTNT    `
+CLASS.GLW      d
+CLASS.DPTW     n
+CLASS.GLLAB    r
+CLASS.DPTLAB   |
+CLASS.GLFOH    
+CLASS.DPTFOH   
+CLASS.GLVOH    
+CLASS.DPTVOH   
+CLASS.GLMISC   
+CLASS.DPTMISC  
+CLASS.GLXTRA   
+MTCLASS.DESC   
+BKIC.LOCM.CODE 
+BKIC.LOCM.NAME 
+ISTS.CFG.BURDN 
+BKGL.ACCT      
+BKGL.GLDPT     
+LOC.LOC        
+CLASS.NAME     
+CLASS.DESC     
+CLASS.TAG      
+LOC.TAG        
+BKYS.YN        
+NUM.MSG        
+OLD.LOC        
+NEW.LOC        
+FROM.CLASS     
+THRU.CLASS     
+USE.OLD.GL     
+TEMP.CLASS     
+TEMP.LOC       
+TEMP.DESC      
+PRGS.WHR       
+BKSY.PRGS.WHR  
+BKSY.COMP.NAME X
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+CLASSMF2.COL   
+CLASSMF2.ROW   
+SRCH_KEY_NUM   
+CLASSM_TTL1    
+CLASSM_USCORE  
+TEMP_KEY       
+LOCMF2.COL     
+LOCMF2.ROW     
+KEY            
+LOCM_TTL1      
+LOCM_USCORE    
+BKIC.LOCM.STATE
+TEMP_KEY       
+GL_TYPE        
+GLF2.COL       
+GLF2.ROW       
+WHICH_ACCT     
+ACCT_LIST      
+GL_TTL1        
+GL_USCORE      
+BKGL.ACCTD     
+BKGL.TYPE      '
+TEMP_KEY       
+CLASSF2.COL    
+CLASSF2.ROW    
+CLKUCLDESC     
+CLASS_TTL1     
+CLASS_USCORE   
+TEMP_KEY       
+SRCH_HOW_MSG   
+BKIC.PROD.CODE 
+V.OLINK        
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+BKYSMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+SYSACCTGON     
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+FCCCLASSHNDL   
+FCCRETURN      
+FCCFOUND.BAD   
+FCCORIG.ASSET  
+FCCORIG.WIP    
+FCCNEW.ASSET   
+FCCNEW.WIP     
+FCCORIG.CLASS  
+FCCTITLEBAR    
+FCCTOTRECS     
+FCCCURCNTR     
+FCCPCTCOMP     
+FCCOTH.ASSET   
+FCCOTH.WIP     
+FCCWARNINGS    
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+BLD.CFROM      
+BLD.YEAR       
+BLD.QTR        
+BLD.TOT        
+BLD.CONDITION  
+LOC.NOTE       
+LOC.TYPE       
+LOC.NAME       
+BKIC.LOCM.ADDR3d
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+LS.TOTLOCS     
+LS.SINGLE      
+LS.TOT         
+LS.HEADER0     
+LS.HEADER1     
+LS.HEADER2     
+LS.HEADER3     
+LS.HEADER4     
+LS.HEADER5     
+LS.TITLE       
+LS.UNDSC       
+LS.CNTR        
+LS.TAGGED      
+LSTAG          
+LS.PREV        
+MAX.LOCS       
+LS.TYPE        
+LS.NUM         
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+BK.DESC.NOTES  
+BK.DESC.DESC   _
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+CFG.PATH       
+CFG.FULLNAME   
+X_HNDL         
+X.BUFF         
+TI             
+BPICT          
+TIME1          
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKAR.EMAIL     *
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+BLD.TOT        
+BLD.CONDITION  
+CLASSM.HNDL    
+CL.TOTCLASS    
+CL.SINGLE      
+CL.TOT         
+CL.HEADER0     
+CL.HEADER1     
+CL.HEADER2     
+CL.HEADER3     
+CL.HEADER4     
+CL.HEADER5     
+CL.TITLE       
+CL.UNDSC       
+CL.CNTR        
+CL.TAGGED      
+CLTAG          
+CL.PREV        
+CL.NUM         

@@ -1,0 +1,680 @@
+TAS32@
+TASCOLOR
+BKARCUST
+BKARINVT
+BKAPCHKF
+BKARINV 
+BKARINVL
+BKARINVV
+BKAPVEND
+BKAPINVT
+BKAPINVL
+BKSYHELP
+DBAHLPID
+BKARCUSTA
+BKARINVTA
+BKARCHKFA
+BKAPVENDA
+BKAPINVTA
+BKARINVVA
+BKARHINVA
+BKARHIVLA
+BKAPINVLA
+AM-Q  Rebuild Customer/Vendor TotalsA
+F1 HelpA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+Ready to proceed?L
+Esc ExitA
+Now Working On Customer: A
+BKARINVTA
+BKARHINVA
+BKARHIVLI
+BKARCHKFA
+BKARCHKFA
+BKARINVTA
+BKARCHKFA
+BKARINVTA
+BKARHIVLA
+BKARHINVA
+BKARHINVA
+BKARHIVLA
+BKARINVVA
+BKARINVVA
+BKARCUSTA
+BKARCUSTA
+Now Working On Vendor:   A
+BKAPINVTI
+BKAPINVTA
+BKAPINVTA
+BKAPINVLA
+BKAPINVLI
+BKAPVENDA
+BKAPVENDA
+BKAPVENDA
+BKAPVENDA
+BKARCUSTA
+BKARCUST
+                    
+                    
+                                     
+                    
+     Rebuild Customer Totals?:       
+                    
+     Rebuild Vendor Totals?  :       
+                    
+                                     
+                    
+      Customers From:                
+                    
+                Thru:                
+                    
+                                     
+                    
+        Vendors From:                
+                    
+                Thru:                
+                    
+                                     
+                    
+  Rebuild prior-year totals too?:    
+                    
+                                     
+                    
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+BKAPVENDA
+ Vendors A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vendor Name                   A
+Vend Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Zip Code  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Contact Name                  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKAPVENDA
+Telephone                A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKAPVENDA
+ClassA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKAPVENDA
+Alpha A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+BKAPVENDA
+Vendor CodeF
+Vendor NameF
+StateF
+Zip CodeF
+Contact NameF
+TelephoneF
+ClassF
+Alpha SortI
+BKARCUSTA
+ Customers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARC   A
+Cust Cd   A
+Name                          A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Name                          A
+Cust Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARC   A
+Name                          A
+Cust Cd   A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Zip Code  A
+Cust Cd   A
+Name                          A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Contact Name                  A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKARCUSTA
+Telephone                A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKARCUSTA
+ClassA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKARCUSTA
+E-mail Address                          A
+Cust Code A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Alpha A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARCUSTA
+Customer Code F
+Customer Name F
+State         F
+Zip Code      F
+Contact Name  F
+Telephone     F
+Class         F
+E-mail AddressF
+Alpha SortI
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYC
+YNNNYF
+NNNYN7
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX[v
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+FROM_VEND      
+THRU_VEND      
+FROM_CUST      
+THRU_CUST      
+NUM.INV        
+CHK.INVNUM     
+DAYS.TOPAY     
+VEND.TOO       
+CUST.TOO       
+PCOGS          
+WHICH          
+TODAY          
+CUR.YEAR       
+CUR.MONTH      
+LST.YEAR.N     
+LST.YEAR       
+UPD.LYR        
+INVC.YEAR      
+SC             
+BKAR.CUSTCODE  
+BKAR.CUSTNAME  
+BKAR.GROSS.MTD 
+BKAR.COGS.MTD  
+BKAR.NET.MTD   
+BKAR.PNET.MTD  
+BKAR.GROSS.YTD 
+BKAR.COGS.YTD  "
+BKAR.NET.YTD   *
+BKAR.PNET.YTD  2
+BKAR.OUTINV    
+BKAR.DAYS.TOPAY
+BKAR.LASTPMT   
+BKAR.LASTSALE  
+BKAR.OUT.CREDIT{
+BKAR.GROSS.LYR :
+BKAR.COGS.LYR  B
+BKAR.NET.LYR   J
+BKAR.PNET.LYR  R
+BKAR.INVT.CODE 
+BKAR.INVT.DATE 
+BKAR.INVT.NUM  
+BKAR.INVT.AMTRM
+BKAR.INVT.TYPE A
+BKAR.INVT.DEPSTH
+BKAP.CHK.VNDCOD
+BKAP.CHK.INVNUM
+BKAP.CHK.INVDTEF
+BKAP.CHK.CHKDTET
+BKAR.INV.CUSCOD
+BKAR.INV.INVDTE
+BKAR.INVL.INVNM
+BKAR.INV.NUM   
+BKAR.INVL.PEXT S
+BKAR.INVL.PDISCK
+BKAR.INVL.PQTY ;
+BKAR.INVL.PPRCEC
+BKAR.INVL.UM.LN
+BKAR.INVL.PCOGS[
+BKAR.INVV.CODE 
+BKAR.INVV.DATE 
+BKAR.INVV.TAMT F
+BKAR.GROSS.PVARZ
+BKAR.COGS.PVAR b
+BKAR.NET.PVAR  j
+BKAR.PNET.PVAR r
+BKAP.VENDCODE  
+BKAP.VENDNAME  
+BKAP.PURCH.MTD !
+BKAP.PURCH.YTD )
+BKAP.OUTINV    
+BKAP.OUT.CREDITA
+BKAP.LASTPMT   
+BKAP.LASTPURCH 
+BKAP.PURCH.LYR 1
+BKAP.PURCH.VAR 9
+BKAP.INVT.CODE 
+BKAP.INVT.DATE 
+BKAP.INVT.NUM  
+BKAP.INVT.AMTRM 
+BKAP.INVT.TYPE A
+BKAP.INVT.AMT  
+BKAP.INVL.CODE 
+BKAP.INVL.DATE 
+BKAP.INVL.TYPENG
+BKAP.INVL.TAMT I
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        
+FC             
+VENDF2.COL     
+VENDF2.ROW     
+SRCH_KEY_NUM   
+WC             
+BC             
+VEND_TTL1      
+VEND_USCORE    
+BKAP.CITY      
+BKAP.STATE     
+BKAP.ZIP       
+BKAP.CONTACT   
+BKAP.TELEPHONE N
+BKAP.CLASS     N
+CC             
+DATC           
+BKAP.SORT      
+TEMP_KEY       
+MENULIST       
+LKUP.CUS.FROM  
+CUSTF2.COL     
+CUSTF2.ROW     
+CUST_TTL1      
+CUST_USCORE    
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.CONTACT   
+BKAR.TELEPHONE >
+BKAR.CLASS     
+BKAR.EMAIL     b
+BKAR.SORT      ^
+TEMP_KEY       
+SRCH_HOW_MSG   
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

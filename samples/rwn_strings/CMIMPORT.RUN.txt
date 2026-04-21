@@ -1,0 +1,252 @@
+BKCMACCT
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKCMACCTA
+CMIMPORT  Import CM AccountsA
+This works a lot like the other DBA import programs except:I
+1) Goes directly into live BKCMACCT file, no intermediate file, so back up BKCMACCT!A
+2) Comma-delimited format only.A
+3) If account already exists and you indicated REPLACE, this is essentially a MERGE - only the fields you specify will be replaced, the rest left alone.A
+4) You must always specify account code as one of your import fields.A
+5) Best of luck and remember #1!A
+CMIMPORT.IMPA
+F1 HelpA
+Esc ExitA
+This program will only accept ISO date formats (YYYYMMDD).  Please make sure that dates to be imported are in that format, or they will not come in correctly.  Ready to proceed?L
+CMIMPORT.IMPI
+Now Working on Account#: A
+BKCMACCTI
+ Name of File to Import (with path):                                          
+ Skip or Replace existing Customers ?   [S,R]:  Comma or Fixed Length? [C,F]: 
+     CODE             SICCD               CNUM                                
+     OLDCD            CUST                CEXP                                
+     ALPHA            LEAD                CMPNM                               
+     NAME             START               PNAME                               
+     ADD1             TERR                EXTRA                               
+     ADD2             REM_1               EMAIL                               
+     ADD3             REM_2               EMPS                                
+     CITY             FONE_1                                                  
+     STATE            FONE_2                                                  
+     ZIP              FONE_3          Enter the column number from the ASCII  
+     CNTRY            FTWO_1          comma-delimited import file that        
+     CONT1            FTWO_2          corresponds to these BKCMACCT fields.   
+     TITLE            FTWO_3                                                  
+     PHONE            FTHRE_1         If REPLACING an existing account        
+     FAX              FTHRE_2         record, only those fields specified     
+     REP              FTIME           here will get merged into the record.   
+     DLOAD            CCARD           The other fields will be left as is.    
+                                                                              
+tas50.ovlA
+tas50.ovlIS
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+YYYY           
+MM             
+DD             
+FILE.NAME      
+REPLACE        
+COMMA.FIXED    
+FIELD.NUMBER   
+FIELD.NUMBER2  
+CRLF           
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+PART.NUM       
+TEMP.FIELD     
+TEMP.FIELD2    
+TEMP.DATE      
+XMSG           
+CUST.REC1      
+IMP_HNDL       
+BKCM.ACCT.CODE 
+BKCM.ACCT.OLDCD
+BKCM.ACCT.ALPHA
+BKCM.ACCT.NAME 
+BKCM.ACCT.ADD1 8
+BKCM.ACCT.ADD2 V
+BKCM.ACCT.ADD3 t
+BKCM.ACCT.CITY 
+BKCM.ACCT.STATE
+BKCM.ACCT.ZIP  
+BKCM.ACCT.CNTRY
+BKCM.ACCT.CONT1
+BKCM.ACCT.TITLE
+BKCM.ACCT.PHONE
+BKCM.ACCT.FAX  +
+BKCM.ACCT.REP  D
+BKCM.ACCT.DLOADI
+BKCM.ACCT.SICCDJ
+BKCM.ACCT.CUST Q
+BKCM.ACCT.LEAD R
+BKCM.ACCT.STARTW
+BKCM.ACCT.TERR [
+BKCM.ACCT.REM  _
+BKCM.ACCT.FONE 
+BKCM.ACCT.FTWO 
+BKCM.ACCT.FTHRE
+BKCM.ACCT.FTIME<
+BKCM.ACCT.CCARD>
+BKCM.ACCT.CNUM W
+BKCM.ACCT.CEXP p
+BKCM.ACCT.CMPNMt
+BKCM.ACCT.PNAME
+BKCM.ACCT.EXTRA
+BKCM.ACCT.EMAILn
+BKCM.ACCT.EMPS 
+DATE_TYPE      
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        
+FC             

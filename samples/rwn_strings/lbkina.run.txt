@@ -1,0 +1,2621 @@
+TAS32,
+BKYSMSTR
+BKSYMSTR
+MTICMSTR
+BKARINV 
+BKARINVL
+BKAPPO  
+BKAPPOL 
+BKICMSTR
+ISBINLOC
+TASCOLOR
+WORKORD 
+WOBOM   
+ISICMSTR
+BKARCUST
+BKAPVEND
+BKSBMFG 
+BKICLOC 
+BKICREF 
+BKBMMSTR
+BKSBVEND
+INVTXN  
+BKSYHELP
+DBAHLPID
+CLASMSTR
+ISLOG   
+BKAPDESC
+BKCMACCT
+MKAHIST 
+BKICLOCM
+BKMRPFC 
+BKGLTRAN
+DBAFIFO 
+ - ISTS Enhancement 11/07/08A
+ISTECHL
+isecoA
+BKYSMSTRA
+BKYSMSTRA
+BKSYMSTRA
+BKSYMSTRI
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+isicmstrA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+isicmstrA
+MTICMSTRA
+BKAPHPOA
+BKAPHPOLA
+BKAPPOA
+BKAPPOLA
+BKARINVA
+BKARINVLA
+ISSRINVA
+ISSRINVLA
+BKARHIVLA
+BKARHINVA
+BKSBMFGA
+BKSBVENDA
+BKSBPARTA
+WOBOMA
+WORKORDA
+BKBMMSTRA
+BKAPVENDA
+BKARCUSTA
+BKICREFA
+INVTXNA
+BKARINVA
+BKARINVLA
+BKAPPOA
+BKAPPOLI|
+You are about to run a one-time utility to increase the Cycle Code from 1 to 4 characters.  Ready to continue?L
+ISCYCMOVA
+CYCLECODA
+BKYSMSTRA
+BKINAA
+IN-A  Inventory InquiryA
+IN-A  Inventory InquiryA
+A record for this part is locked by another user.  If record lock conflicts occur frequently in IN-A, use Inventory Defaults to disable record locking in IN-A.  Note that doing this means that updated stock status counts will NOT be saved back to the inventory records by IN-A. A
+F1 Help,F2 Lookup,F3 Clear,F5 First,F6 Last,F7 Prev,F8 Next,F9 UPCA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+NZUPCA
+To enable this feature please contact lynn@istechsupport.com.A
+BKICMSTRL
+BKICMSTRL
+F1 HelpA
+Esc ExitA
+Rebuilding Stock Status...           A
+NLTKBOA
+BKICLOCA
+Please note that one or more of the stock status counts that will be displayed here has changed, based on an analysis of actual open orders.  However, because IN-A record locking has been disabled in Inventory Defaults, these revised counts will not get saved back to the inventory record for this part.  You can change the Inventory Defaults setting, then re-run IN-A for this part, or run Reconcile Inventory On-Hand to correct the stock status counts. A
+Please note that one or more of the stock status counts that will be displayed here has changed, based on an analysis of actual open orders.  However, because IN-A record locking has been disabled in Inventory Defaults, these revised counts will not get saved back to the inventory record for this part. A
+IN-A  Inventory InquiryA
+INS Bins,A
+PgDn Locs,A
+Home Specs,End Mfgrs,SF2 Vndrs,PgUp BOM,SF9 <-Back,SF4 Where Used,SF6 <-Back,SF3 Cust X-Ref,SF5 RoutsA
+Esc ExitA
+F2 SOs,F3 Shipments,F4 POs,F5 Recvd POs,F6 WOs,F7 Closed WOs,F8 Allocs,F9 WIP,SF1 ECOA
+SF7 Trans.,SF8 UsageA
+INS Bins,A
+PgDn Locs,A
+Home Specs,End Mfgrs,SF2 Vndrs,PgUp BOM,SF9 <-Back,SF4 Where Used,SF3 Cust X-Ref,SF5 RoutingsA
+Esc ExitA
+F2 SOs,F3 Shipments,F4 POs,F5 Recvd POs,F6 WOs,F7 Closed WOs,F8 Allocs,F9 WIP,SF1 ECOA
+SF7 Trans.,SF8 UsageA
+INS Bins,A
+PgDn Locs,A
+Home Specs,End Mfgrs,SF2 Vndrs,PgUp BOM,SF4 Where Used,SF6 <-Back,SF3 Cust X-Ref,SF5 RoutingsA
+Esc ExitA
+F2 SOs,F3 Shipments,F4 POs,F5 Recvd POs,F6 WOs,F7 Closed WOs,F8 Allocs,F9 WIP,SF1 ECOA
+SF7 Trans.,SF8 UsageA
+INS Bins,A
+PgDn Locs,A
+Home Specs,End Mfgrs,SF2 Vendors,PgUp BOM,SF4 Where Used,SF3 Cust X-Ref,SF5 RoutingsA
+Esc ExitA
+F2 SOs,F3 Shipments,F4 POs,F5 Recvd POs,F6 WOs,F7 Closed WOs,F8 Allocs,F9 WIP,SF1 ECOA
+SF7 Trans.,SF8 UsageA
+BKICMSTRA
+MTICMSTRA
+BKICLOCL
+BKICMSTRA
+MTICMSTRI
+NormalBkgA
+NormalBkgA
+ESC Stop LoadingA
+CLOSED WORK ORDERS A
+OPEN WORK ORDERS A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ Searching... WO#: A
+workordI
+WORKORDF
+The maximum of 40,000 work orders has been loaded. A
+WORKORDI
+There are no closed work orders for this part. A
+There are no open work orders for this part. A
+WORKORDA
+End Bottom,Home TopA
+ESC ExitA
+Work OrderA
+Stat A
+Customer Name     A
+Location  A
+   CompletedA
+Start DtA
+FinishDtA
+Job Number     A
+Work OrderA
+Stat A
+Customer Name     A
+   Start QtyA
+     BalanceA
+Start DtA
+FinishDtA
+Job Number     A
+Location  A
+WORKORDF
+WORKORDF
+WORKORDA
+NormalBkgA
+NormalBkgA
+ESC Stop LoadingA
+OPEN ALLOCATIONS A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ Searching... WO#: A
+wobomI
+WOBOMF
+The maximum of 40,000 open allocations has been loaded. A
+WOBOMI
+There are no open allocations for this part. A
+WORKORDA
+WOBOMI
+End Bottom,Home TopA
+ESC ExitA
+Work OrderA
+Stat A
+Parent Part    A
+      RequiredA
+        IssuedA
+     RemainingA
+Start DtA
+Location  A
+WOBOMF
+WORKORDA
+WOBOMA
+NormalBkgA
+NormalBkgA
+ESC Stop LoadingA
+WORK IN PROCESS A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ Searching... WO#: A
+wobomI
+WOBOMF
+The maximum of 40,000 work-in-process items has been loaded. A
+WOBOMI
+There is no work-in-process for this part. A
+WORKORDA
+WOBOMI
+End Bottom,Home TopA
+ESC ExitA
+Work OrderA
+Stat A
+Parent Part    A
+      RequiredA
+        IssuedA
+        In-WIPA
+Start DtA
+Location  A
+WOBOMF
+WORKORDA
+WOBOMI
+bkarcustI
+Invalid customer!A
+BKARCUSTI
+bkapvendI
+Invalid vendor!A
+BKAPVENDA
+bksbmfgI
+BKSBMFGA
+MTICMSTRA
+Please wait while the Inventory files are checked.A
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+Esc Main ScreenA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+SpecificationsA
+                              A
+F2 LookupA
+Esc Main ScreenA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Customer Item Number InquiryA
+Customer code A
+F2 LookupA
+Esc Main ScreenA
+Esc Main ScreenA
+BKARCUSTA
+bkarcustI
+This is not a valid customer code. A
+bkicrefI
+No cross-reference part# found for this customer. A
+Customer Code: A
+Customer Name: A
+Customer Item No  : A
+Customer Item Desc: A
+BKICREFA
+BKARCUSTA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+LOCATIONS A
+Location  A
+     On-HandA
+    On SO/BOA
+       On POA
+       On WOA
+   AllocatedA
+BKICLOCA
+BKICLOCA
+NormalBkgA
+NormalBkgA
+End Bottom,Home Top,Enter DrillA
+ESC ExitA
+BILL OF MATERIALS A
+BKICMSTRA
+bkicmstrA
+BKICMSTRA
+Component      A
+Description                   A
+    Quantity PerA
+BKBMMSTRI
+BKBMMSTRA
+BKICMSTRL
+BKICMSTRA
+BKICMSTRA
+bkicmstrA
+NormalBkgA
+NormalBkgA
+End Bottom,Home Top,Enter DrillA
+ESC ExitA
+WHERE USED A
+BKICMSTRA
+bkicmstrA
+BKICMSTRA
+Parent Part    A
+Parent Description            A
+    Quantity PerA
+BKBMMSTRA
+BKBMMSTRA
+BKICMSTRL
+BKICMSTRA
+BKICMSTRA
+bkicmstrA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+APPROVED MANUFACTURERS A
+(Lim: approval limited by parent assembly and/or customer)A
+Manufacturer Name        A
+Mfg Item Number          A
+BKSBMFGA
+BKSBMFGA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+APPROVED VENDORS A
+(Lim: approval limited by parent assembly and/or customer)A
+Vendor Cd A
+Vendor  Name                  A
+Vendor Item Number       A
+Telephone Number         A
+BKSBVENDA
+BKSBVENDA
+BKAPVENDA
+BKAPPOA
+BKAPPOLA
+BKAPPOA
+BKAPPOLA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+OPEN PURCHASE ORDERS A
+PO No.A
+Vendor    A
+Unrecvd QtyA
+  Recvd QtyA
+  Qty in QCA
+    Unit CostA
+Due DateA
+Work OrderA
+LocationA
+BKAPPOLA
+bkappoI
+bkappoI
+-LOST-A
+bkaphpoI
+-LOST-A
+bkappoI
+BKAPPOA
+BKAPPOLA
+BKAPHPOA
+BKAPHPOLA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+RECEIVED PURCHASE ORDERS A
+PO No.A
+Vendor    A
+Ordered QtyA
+  Recvd QtyA
+    Unit CostA
+ReceivedA
+Work OrderA
+LocationA
+BKAPHPOLA
+BKAPPOA
+BKAPPOLA
+BKARHINVA
+BKARHIVLA
+BKARHINVA
+BKARHIVLA
+NormalBkgA
+NormalBkgA
+End Bottom,Home Top,F5 Total QtyA
+ESC ExitA
+SHIPMENTS A
+Inv # A
+Customer Name  A
+ Order  QtyA
+    B/O QtyA
+ShipDateA
+        PriceA
+Disc%A
+   ExtensionA
+Location  A
+Customer PO Number       A
+BKARHIVLI
+BKARINVLA
+BKARINVA
+From Date : A
+Thru Date : A
+Esc ExitA
+BKARHIVLI
+Total Shipped Qty = A
+BKARINVA
+BKARINVLA
+BKARINVA
+BKARINVLA
+NormalBkgA
+NormalBkgA
+End Bottom,Home Top,F2 Service/RepairsA
+ESC ExitA
+OPEN SALES ORDERS A
+SO No.A
+Customer Name  A
+ Order  QtyA
+    B/O QtyA
+Due DateA
+        PriceA
+Disc%A
+   ExtensionA
+Location  A
+Customer PO Number       A
+BKARINVLI
+bkarhinvI
+No CustA
+BKARINVI
+BKARINVI
+No CustA
+BKARINVI
+          A
+BKARHINVI
+          A
+ISSRINVA
+ISSRINVLA
+ISSRINVA
+ISSRINVLA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+OPEN SERVICE/REPAIR A
+S/R NoA
+Customer Name  A
+ Order  QtyA
+    B/O QtyA
+Due DateA
+        PriceA
+Disc%A
+   ExtensionA
+Location  A
+Customer PO Number       A
+ISSRINVLI
+ISSRINVI
+ISSRINVI
+No CustA
+ISSRINVI
+          A
+BKARHINVI
+          A
+ISTECHA
+NormalBkgA
+NormalBkgA
+End Bottom,Home TopA
+ESC ExitA
+Transactions A
+Date    A
+Action  A
+    QuantityA
+Order No    A
+        CostA
+Customer/Vendor               A
+     Lot NumberA
+            Serial NumberA
+ADJUSTMTA
+SHIPMENTA
+PO RECPTA
+PO JOBRCA
+WO RECPTA
+WO ISSUEA
+O/S PROCA
+$ CHANGEA
+MKE FROMA
+QC RECPTA
+SERV&REPA
+TRANSFERA
+SCRAPA
+BIN TXNA
+BKICLOCA
+Consolidate Inv TransactionsA
+Consolidate Inv TransactionsA
+             A
+ to date     A
+*- Totals may be inaccurate, contains consolidated transaction records.I
+ISTECHA
+NormalBkgA
+NormalBkgA
+ESC ExitA
+Usage A
+ Date                A
+     Total  A
+bkroaA
+ISECO.RUNI
+ Item Number                     Stock UM      Cat         Price UM         
+ Description                                   Class       Purch UM         
+ Act Stat                                      Type        Conv             
+ (+) On-Hand                                (+) On Work Order               
+ (-) On Sales Order                         (-) Allocated                   
+ (-) On Back Order                          (=) Available                   
+ (+) On Purchase Order                                                      
+ (+) In QC Inspection                       In Work-in-Process              
+ Last Cost                Base Price                  Lead Time             
+ Avg Cost                 Bin Loc                     Reorder Lvl           
+ Std Cost                 Rev Level                   Min Ord Qty           
+ RoHS Comp                Drawing                     Std Pack              
+ Book Value               Weight                      Cycle Code            
+ Primary Vendor                              Manufacturer                   
+                                                                            
+ Customer                                    UPC          ITP               
+                                                                            
+ Image Link:                                                                
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+mticmstrI
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+ Inventory A
+F1 Help,F2 Find,F3 Change Search Key,F5 Stock StatusA
+F10 Search,Esc ExitA
+F1 Help,F3 Change Search Key,F5 Stock StatusA
+F10 Search,Esc ExitA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+CLASMSTRI
+CLASMSTRL
+ClassA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Specifications                A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+MTICMSTRA
+User Defined             A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+MTICMSTRA
+Cust Cd   A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Please only select item numbers of the following Types: A
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+CLASMSTRL
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial description.A
+ This is a case-sensitive search.  A
+   Item Description          A
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full/partial class, or theA
+ full class and full/partial part#.A
+   Class          Item NumberA
+CLASMSTRN
+BKICMSTRA
+MTICMSTRI
+Item Number    F
+Description    F
+Type           F
+2nd DescriptionF
+Category       F
+Class          F
+Specifications F
+User Defined   F
+Customer Code  F
+Alternates     I
+ N Non Inventory   F
+ R Purchased Part  F
+ M Make From       F
+ F Finished Good   F
+ A Subassembly     F
+ B Phantom AssemblyF
+ L Labor           F
+ T Outside Process F
+ K Selling Kit     F
+ O Feature         I
+Vendors Number F
+Manufacturers  F
+Customers X-RefI
+BKSBVENDI
+BKSBVENDA
+BKSBVENDA
+Vendor Item Number       A
+Item Number    A
+Description                   A
+Vendor Cd A
+BKSBVENDA
+BKSBVENDA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKSBVENDL
+BKSBMFGI
+BKSBMFGA
+BKSBMFGA
+Manuf. Item Number       A
+Item Number    A
+Description                   A
+Manuf. Name              A
+BKSBMFGA
+BKSBMFGA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKSBMFGL
+BKICREFI
+BKICREFA
+BKICREFA
+Customer X-Ref           A
+Item Number    A
+Description                   A
+Cust CodeA
+BKICREFA
+BKICREFA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKICREFL
+BKSBVENDL
+BKSBMFGL
+bkicmstrI
+BKICMSTRA
+MTICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+Item Number Sub StringF
+Description Sub StringF
+2nd Descrip Sub StringF
+Desc. or 2nd Desc. SubI
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ Sub String Search by NovaZygA
+ Enter string to search for.A
+F1 Help,F5 Stock StatusA
+Esc ExitA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Description                   A
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Rel  A
+FirmdA
+SchedA
+ClosdA
+CanclA
+IndirA
+     A
+BKARCUSTA
+ Customers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARCUSTA
+BKARC   A
+Cust Cd   A
+Name                          A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKSOA-Y A
+BKARC   A
+Name                          A
+Cust Cd   A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Name                          A
+Cust Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Zip Code  A
+Cust Cd   A
+Name                          A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Contact Name                  A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKARCUSTA
+Telephone                A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKARCUSTA
+ClassA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKARCUSTA
+E-mail Address                          A
+Cust Code A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Alpha A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARCUSTA
+BKARCUSTI
+BKARCUSTA
+Customer Code F
+Customer Name F
+State         F
+Zip Code      F
+Contact Name  F
+Telephone     F
+Class         F
+E-mail AddressF
+Alpha SortI
+BKARCUSTA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF
+ B - DescriptionA
+ Search Key A
+Item number cannot be blank. A
+BKICMSTR record for this item not in memory. A
+Note: The MTICMSTR record for this non-stock part is not available.  Only some of the stock status quantities can be reported. A
+NormalBkgA
+NormalBkgA
+ Inventory Stock Status A
+ Inventory Stock Status A
+bkiclocI
+BKICLOCL
+BKICLOCL
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+There are more than 100 locations for this part, which is the maximum that can be displayed. A
+BKICLOCA
+bkiclocI
+BKICLOCI
+Item Number    : A
+        Type: A
+Description    : A
+2nd Description: A
+               LOCATIONS              A
+(+) ON HAND          :A
+(-) On Sales Order   :A
+(-) On Back Order    :A
+(+) On Purchase Order:A
+(+) In QC Inspection :A
+(+) On Work Order    :A
+(-) Allocated        :A
+(=) Available        :A
+In Work-in-Process   :A
+   TOTAL    I
+    n/a     I
+    n/a     I
+    n/a     I
+            I
+    n/a     I
+Esc ExitA
+F7 Scroll Locations Left,F8 Scroll Locations RightA
+Esc ExitA
+Esc ExitA
+Please do not change the item number. A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+BKICLOCL
+BKICLOCA
+BKICLOCL
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+600041A
+600123A
+680133A
+64554A
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+bkarsivlA
+Error:   You are not licensed to run this Program. Please contact www.istechsupport.com to purchase a valid license.A
+START_UP.RUNA
+Ser No:A
+680133A
+64554A
+BBBBBBBA
+NOVAZYGA
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NON EVOA
+DBA ClassicI
+ISLOGA
+EVOERPMENUA
+ISLOGA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+bkistek.bmpA
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+C:\Program Files\internet Explorer\iexplore.exeA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+WHOAMI.DBAA
+WHOAMI.DBAA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+C:\ISTS\I
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+MKAHISTA
+ISTECHSUPPORTA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRL
+BKICMSTRA
+BKICMSTRI
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTR Record is locked by another user. This data may not be the most up to date.A
+BKICMSTRL
+MTICMSTRA
+MTICMSTRA
+MTICMSTRL
+MTICMSTRA
+MTICMSTRI
+MTICMSTRA
+MTICMSTRA
+MTICMSTRA
+MTICMSTRA
+MTICMSTRA
+MTICMSTR Record is locked by another user. This data may not be the most up to date.A
+MTICMSTRL
+ Tax Codes A
+F1 HelpA
+Esc ExitA
+BKICMSTRA
+UPC Code    A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+ISBNMSTRA
+ISBNMSTRA
+ISBINLOCA
+ISBINLOCA
+ Item Bin Locations A
+ Item Bin Locations for A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+Warehouse   A
+Bin            A
+Item           A
+         UOHA
+Bin DateA
+PIC DateA
+Warehouse   A
+Item           A
+Bin            A
+         UOHA
+Bin DateA
+PIC DateA
+Item           A
+Warehouse   A
+Bin            A
+         UOHA
+Bin DateA
+PIC DateA
+Item           A
+Warehouse   A
+Bin            A
+         UOHA
+Bin DateA
+PIC DateA
+Bin DateA
+Item           A
+Warehouse   A
+Bin            A
+         UOHA
+PIC DateA
+PIC DateA
+Item           A
+Warehouse   A
+Bin            A
+         UOHA
+Bin DateA
+Warehouse/Bin/Item                F
+Warehouse/Item                    F
+Item/Warehouse/Bin                F
+Item                              F
+Bin Creation Date       (Bin Date)F
+Count Verification Date (PIC Date)I
+ISSRINVI
+An Error has occured trying to open ISSRINV Error number A
+ Please contact ISTechSupport to report this error. Rebuild did not take placeA
+ISSRINVLI
+An Error has occured trying to open ISSRINVL Error number A
+ Please contact ISTechSupport to report this error. Rebuild did not take placeA
+BKICLOCMA
+INVETXNI
+bkiclocI
+BKICLOCL
+bkiclocA
+BKMRPFCI
+BKBMMSTRA
+ICLOC.TI
+BKARINVLA
+BKAPPOLA
+WORKORDA
+WOBOMA
+WOBOMA
+DBAFIFOI
+FORCEA
+ISSOPJ    A
+FORCEA
+ISSOPJ    A
+DBAFIFOI
+bkgltmp3I
+WARNING: BKICMSTR record is not for item number being posted (A
+WARNING: MTICMSTR record is not for item number being posted (A
+WARNING: BKICLOC record is not for part/location being posted (A
+warnI2
+WARNING: Unable to determine the costing method. A
+NLTKBOA
+FORCEA
+NOAVGA
+FORCEA
+FORCEA
+NOAVGA
+BKWOIA
+BKPOCA
+FORCEA
+ISSOPJA
+ICVALA
+NOUPDTA
+12/31/2099A
+dbafifoI
+DBAFIFOI
+DBAFIFOL
+DBAFIFOA
+DBAFIFOA
+DBAFIFOA
+DBAFIFOA
+dbafifoI
+DBAFIFOA
+DBAFIFOA
+DBAFIFOL
+DBAFIFOA
+DBAFIFOL
+DBAFIFOA
+DBAFIFOI
+DBAFIFOA
+DBAFIFOA
+DBAFIFOA
+DBAFIFOA
+dbafifoI
+DBAFIFOA
+DBAFIFOA
+DBAFIFOL
+DBAFIFOA
+DBAFIFOA
+DBAFIFOI
+bkicmstrA
+bkicmstrA
+bkicmstrI
+BKICMSTRA
+bkicmstrA
+BKICMSTRA
+bkicmstrI
+BKICMSTRA
+BKICMSTRI
+mticmstrA
+mticmstrA
+mticmstrI
+MTICMSTRA
+mticmstrA
+MTICMSTRA
+mticmstrI
+MTICMSTRA
+MTICMSTRI
+NOLOC.TXTA
+..Warning:  Saving a blank   Prod=A
+   loc=A
+  bkic.prod.code=A
+..Warning: Binzero being saved   Prod=A
+   loc=A
+   bkic.prod.code=A
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCI
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+NNNYNF
+YNNYNX
+YNNNYC
+YNNYNX
+YNNNYC
+YNNNYF
+NNNYNCB
+NNNYNF
+YNNNYC
+YNNNYF
+NNNYNC
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYXo^
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+NNNYNF0
+YNNNYN
+YNNNNF
+YNNNYF 
+NNNNNF 
+YNNNNC
+YNNNYF 
+YNNNNC
+YNNNYFp
+YNNNNC"
+YNNNYF0
+YNNNNC
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNCn
+NNNYN2n
+NNNYNX;
+YNNNYy
+NNNYN\n
+NNNYNX
+YNNNYC)
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+ISTS.EDATE     
+WEBLINK        
+PO.QC          
+NO.FULL        
+PRTR_CHR       
+WIDE_YN        
+SAVE_FLAG      
+OLD_FLAG       
+PROD.HLDR      
+UOSO           
+UBO            
+UOO            
+UIQC           
+UOWO           
+UOA            
+UIWIP          
+IC_OVLY        
+PRICE_FLD      
+CALC_PRICE     
+NEW_FLAG       
+CNTR_A         
+CODE.HLDR      
+PROD.DESC      
+REMAIN         
+TEMP.UWIP      
+LAST.LOC       
+MENU_CNTR      
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR4     
+MENU_CNTR5     
+MENU_CODE      
+MENU_DESC      
+MENU_FSIZE     
+MENU_MORE      
+MENU_MSIZE     
+MENU_FLAG      
+MENU_WIDTH     
+MENU_MWIDTH    
+MENU_RNUMS     
+PAGE_RNUMS     
+MENU_PAGE      
+MENU_SRCH      
+MENU_TITLE     
+OK             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+VND.NAME       
+COL            
+ROW            
+ADJ            
+FROM           
+LINE.PROD.CODE 
+DESC           
+LNE.REC        
+BEG.REC        
+END.REC        
+FND.END        
+LINE.PROD.PQTY 
+REC.QTY        
+TITLE          
+UNDSC          
+PO.OO.QTY      
+PO.TOT.RCVD    
+PO.OPEN.QTY    
+PO.QC.QTY      
+PO.UNIT.COST   
+PO.VCODE       
+PO.TYPE        
+PO.WO          
+PO.SEQ         
+WHICH.LIST     
+SERVICEPO.QTY  
+HOLD.PART      
+ZRET           
+REC.ARRAY      
+SORT.ARRAY     
+ARR.CNTR       
+LOCKING.ON     
+AOPARENT       
+AOREQUIRED     
+AOISSUED       
+AOREMAIN       
+AOSTART        
+WOCNAME        
+WOSTQTY        
+WOBALANCE      
+WOSTDATE       
+WOFINDATE      
+WOLOCA         
+WPPARENT       
+WPREQUIRED     
+WPISSUED       
+WPINWIP        
+WPSTART        
+WPLOCA         
+LOCSOBO        
+BOMDESC        
+BOMUM          
+PARENT.PART    
+PARENT.DESC1   
+PARENT.DESC2   
+BKIC.REC       
+MTIC.REC       
+AOLOC          
+BIN.LOCATION   
+CYCLE.CODE     
+BOM.DRILL.A    
+WU.DRILL.A     
+BN             
+WN             
+BACK.TO.BOM    
+BACK.TO.WU     
+ITPNUM         
+INVTXN.H       
+WOJOBNUM       
+WUDESC         
+WUTYPE         
+PARENT.UM      
+VENDVNAME      
+ORIG.UOH       
+ORIG.UOSO      
+ORIG.UBO       
+ORIG.UOO       
+ORIG.UOWO      
+ORIG.UOA       
+ORIG.UIWIP     
+ORIG.UIQC      
+COUNTS.CHGD    
+HEADER0        
+HEADER1        
+HEADER2        
+HEADER3        
+HEADER4        
+LASTC          
+DISCP          
+GO.HNDL        
+XINASTAT       
+DISPCUSTNAME   
+DISPVENDNAME   
+DISPMFGNAME    
+HEADER5        
+LIMAPPROVAL    
+ROHS           
+ECO.H          
+BKYS.YN        
+ISICMSTR.H     
+MTIC.PROD.CODE 
+DATE_TYPE      
+MESSAGE        
+BKSY.PRGS.WHR  
+BKIC.PROD.CODE 
+BKIC.PROD.DPTNTl
+MTIC.PROD.VEND 
+ISTS.CFG.WHCTRL
+BINLOC.H       
+BKYS.GLNUM     
+ISBIN.LOC.BIN  
+MTIC.PROD.LOC  ^
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.PROD.UOO  
+MTIC.PROD.UOWO 
+MTIC.PROD.UOA  
+MTIC.PROD.UIWIP
+MTIC.PROD.UIQC 
+BKIC.PROD.UOH  p
+WC             
+BC             
+SC             
+BKIC.PROD.TYPE -
+MTIC.PROD.AVAIL
+BKIC.PROD.DESC 
+BKIC.PROD.NOTE 
+MTWO.WIP.CODE  
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.STATUS-
+AWO.NUM        
+MTWO.CUSTNAME  
+MTWO.WIP.SQTY  
+MTWO.WIP.LOC   
+MTWO.WIP.COMQTY%
+MTWO.WIP.SSTART
+MTWO.WIP.AFIN  !
+MTWO.WIP.SFIN  
+MTWO.WIP.PROJ  
+WOBOM.COMPCODE 
+WOBOM.WOPRE    
+WOBOM.WOSUF    
+WOBOM.TOTQTY   |
+WOBOM.QTYISSUED
+WOBOM.START    ,
+WOBOM.ASSY     
+ISTS.CFG.SCRPQ 
+WOBOM.QTYPER   l
+WOBOM.SCRAPQTY t
+IS.PROD.ITP    
+MTIC.PROD.CUST 
+BKAR.CUSTCODE  
+BKAR.CUSTNAME  
+BKAP.VENDCODE  
+BKAP.VENDNAME  
+BKSB.MFG.PARNT 
+BKSB.MFG.PROD  
+BKSB.MFG.CUST  
+BKSB.MFG.MANUF (
+BKIC.LOC.PROD  
+MTIC.PROD.SPECS
+BKIC.REF.CUST  
+BKIC.REF.CODE  
+BKIC.REF.CUSCODU
+BKIC.REF.DESC  n
+BKIC.LOC.CODE  
+BKIC.LOC.UOH   
+BKIC.LOC.UOO   1
+BKIC.LOC.UOWO  
+BKIC.LOC.UALLOC
+CC             
+DATC           
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+TMP.BN         
+BKBM.PROD.LINE#
+BKBM.COMPONENT 
+BKBM.PROD.TYPE <
+BKBM.QTY.REQD   
+BKBM.PARENT    
+BKIC.PROD.UM   .
+TMP.WN         
+BKSB.MFG.MPART A
+BKSB.VEND.VEND (
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.VEND.PARNT
+BKSB.VEND.CUST 
+BKAP.TELEPHONE N
+BKAP.POL.PONM  
+BKAP.PO.ISCUR  i
+BKAP.POL.ERD   
+BKAP.POL.LOC   
+BKAP.POL.PCODE 
+BKAP.PO.NUM    
+BKAP.PO.PRTD   
+BKAP.POL.PQTY  ;
+BKAP.POL.PCONV Z
+BKAP.POL.RQTY  s
+BKAP.POL.IQTY  {
+BKAP.POL.QC.QTY
+BKAP.POL.PPRCE C
+BKAP.POL.PDISC K
+BKAP.PO.VNDCOD 
+BKAP.PO.CONFIRMJ
+BKAP.POL.WOPRE 
+BKAP.POL.WOSUF 
+BKAP.POL.OPER  
+BKAP.POL.OO.QTY
+BKAP.POL.ARD   
+BKAR.INVL.INVNM
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKAR.INVL.ASD  
+BKAR.INVL.PPRCEC
+BKAR.INV.ISCUR 
+BKAR.INVL.PDISCK
+BKAR.INVL.PEXT S
+BKAR.INV.CUSORD
+BKAR.INVL.PCODE
+TOT_QTY_S      
+FD             
+TD             
+BKAR.INVL.ESD  
+BKAR.INV.NUM   
+BKAR.INV.CUSNME=
+CUST.NAME      
+BKAR.INV.SONUM 
+BKAR.INV.INVCD 
+BKAR.INV.CUSCOD
+SOLOC.NAME     
+BKAR.INVL.LOC  v
+CUST.RNAME     
+SRLOC.NAME     
+RQTY           
+TXN.TEXT       
+MEMORY2        
+MTIT.DATE      
+MTIT.TYPE      
+MTIT.QTY       
+MTIT.AVGCOST    
+MTIT.REF       :
+MTIT.LOT       
+MTIT.SERIAL    
+MTIT.CODE      
+MTIT.INVOICE   b
+MTIT.PO        r
+MTIT.WOPRE     z
+MTIT.WOSUF     
+MTIT.PRODLOT   
+MONTH.TOTALS   
+CONSOL.MONTH   
+USAGE.TOTALS   
+CURR.MONTH     
+LAST.MONTH     
+CURR.YEAR      
+LAST.YEAR      
+START.DATE     
+MONTH.CNTR     
+TMP.DRAW       
+TMP.REV        
+TMP.DRAWR      
+TMP.REVR       
+MTIC.PROD.DRAW h
+MTIC.PROD.REV  w
+BKIC.PROD.CAT  1
+MTIC.PROD.SUM  1
+BKIC.PROD.CLASS6
+MTIC.PROD.PUM  4
+MTIC.PROD.ACTIVC
+MTIC.PROD.PCONV7
+BKIC.PROD.LSTC `
+BKIC.PROD.PRICEZ
+MTIC.PROD.LEAD \
+BKIC.PROD.AVGC h
+BKIC.PROD.RLVL :
+MTIC.PROD.RCOSTF
+BKIC.PROD.RAMT B
+MTIC.PROD.STDPKD
+BKIC.PROD.TOTVL
+CALC.WT        
+BKIC.PROD.ISUPCA
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_MAXD      
+PLDN           h
+PTDN           n
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+INV_TYPE       
+INVF2.COL      
+INVF2.ROW      
+INVF2.START    
+MTIC_OPEN      
+CLASS_OPEN     
+USE_ALTS       
+TYPE_CNTR      
+TYPE_CHR       
+ALT_CODE       
+INV_M_TY       
+INV_M_LOC      
+INV_M_MAIN     
+IMXFIND.PART   
+NEW.IMXPART    
+IMXFIND.DESC   
+NEW.IMXDESC    
+IMXFIND.CLASS  
+NEW.IMXCLASS   
+IMXF.CURORD    
+CLASS.POP.DONE 
+IMXLKUPA.HNDL  
+IMXLKUPI.HNDL  
+IMX.LKUA       
+IMX.LKUI       
+IMX.ZRET       
+SRCH_KEY_NUM   
+INV_TTL1       
+INV_USCORE     
+MTIC.PROD.SUBST$
+MTIC.PROD.CUSNM
+SRCH_KEY_NUM2  
+TITLE          
+UNDSC          
+BKSBVEND_OPEN  
+BKSBMFG_OPEN   
+BKICREF_OPEN   
+IMA.ZRET       
+MTCLASS.M.CLASS
+TEMP_KEY       
+MENULIST       
+BKIC.REF.PDESC 
+SRCH_KEY_NUM3  
+NEW.SSS        
+SFLD           
+XXWOM.STAT     
+LKUP.CUS.FROM  
+CUSTF2.COL     
+CUSTF2.ROW     
+CUST_TTL1      
+CUST_USCORE    
+BKAR.OUTINV    
+BKAR.OUT.CREDIT{
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.CONTACT   
+BKAR.TELEPHONE >
+BKAR.CLASS     
+CUST_CODE      
+BKAR.CUST.YEAR 
+BKAR.EMAIL     b
+BKAR.SORT      ^
+IS.TEMP.CUST   
+TEMP_KEY       
+SRCH_HOW_MSG   
+V.OLINK        
+CLASSMF2.COL   
+CLASSMF2.ROW   
+CLASSM_TTL1    
+CLASSM_USCORE  
+MTCLASS.M.DESC 
+TEMP_KEY       
+UV.PART        
+UV.ORIG.PART   
+UV.LOC1        
+UV.LOC         
+UV.UOH         
+UV.UOSO        
+UV.UBO         
+UV.UOO         
+UV.UIQC        
+UV.UOWO        
+UV.ALLOC       
+UV.AVAIL       
+UV.WIP         
+UVT.UOH        
+UVT.UOSO       
+UVT.UBO        
+UVT.UOO        
+UVT.UIQC       
+UVT.UOWO       
+UVT.ALLOC      
+UVT.AVAIL      
+UVT.WIP        
+UV.TCOL        
+UV.COL         
+UV.CUR1        
+UVNOW          
+UVWHR          
+UV.MAXLOCS     
+UV.OPND.LOC    
+UV.LOC.REC     
+UV.NA.LOC      
+UV.HAVE.MTIC   
+UV.CNTR        
+UV.DS          
+UV.F7          
+UV.F8          
+NORM           
+BKIC.LOC.UIQC  
+BKIC.LOC.UWIP  
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+ZA_TEXT        
+ZA_DFLT        
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+MSG_PTR        
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+FC             
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+IS.PROD.WT     
+MTIC.PROD.WT   L
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+BKAR.INVL.JOB# 
+IN_FILE        
+X              
+Y              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+PRGNAME        
+DOING          
+LOG.REC        
+ISLOG.H        
+LOG.WHO        
+IS.LOG.WHO     
+IS.LOG.WHAT    #
+IS.LOG.DOING   2
+IS.LOG.STARTD  n
+IS.LOG.STARTT  r
+IS.LOG.COMPANY ~
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+FORCE          
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+BK.DESC.NOTES  
+BK.DESC.DESC   _
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+BPICT          
+TIME1          
+XMM            
+XDD            
+XYY            
+XBUFF          
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+CFG.PATH       
+CFG.FULLNAME   
+X_HNDL         
+X.BUFF         
+TI             
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+NCLR           
+BKICMSTR.H     
+REC.LCK.MSG    
+BKIC_BUFF      
+BKIC_REC       
+ICLOCK         
+MTICMSTR.H     
+MTIC_BUFF      
+MTIC_REC       
+MICLOCK        
+MTIC.PROD.CLASS
+INV_TTL1       
+INV_USCORE     
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+BINMSTR.H      
+BINMSTR_LOCK   
+BINLOC_LOCK    
+BL.SRCH.KEY    
+BL.TTL1        
+BL.USCORE      
+BL.INV.ITEM    
+BL.INV.LOC     
+BL.USE.LOC     
+ISBIN.LOC.LOC  
+ISBIN.LOC.ITEM 
+ISBIN.LOC.DFLT 8
+ISBIN.LOC.UOH  (
+ISBIN.LOC.CDATE0
+ISBIN.LOC.VDATE4
+LOCMF2.COL     
+LOCMF2.ROW     
+TEMP_KEY       
+ALL.LOC        
+INCLUDE.LOC    
+TOT.LOCS       
+LOC.TAG        
+LOC.LOC        
+LOC.NOTE       
+LOC.TYPE       
+LOC.NAME       
+LOCM.T         
+SRINV.T        
+SRINVL.T       
+LOC.REC        
+DUPUOH         
+DUPGLA         
+DUPDPTA        
+DUPGLC         
+DUPDPTC        
+DUPGLS         
+DUPGLSNT       
+DUPDPTSNT      
+MME            
+NEED.SODATE    
+NEED.PODATE    
+NEED.WODATE    
+NEED.ALLOCDATE 
+ETXN.T         
+TRXNUCOST      
+TRXNQTY        
+FCNTR          
+CNTRM          
+AVAIL.A        
+UOA.A          
+COMPONENT.B    
+PARENT.B       
+QTY.REQD.B     
+PROD.SCRAP.B   
+MRPFC.H        
+BMMSTR.H       
+ICLOC.T        
+LOC.OPEN       
+WCOPTS         
+TEMP.WC        
+BKIC.LOC.DPTSNTm
+BKIC.LOC.GLA   9
+BKIC.LOC.DPTA  C
+BKIC.LOC.GLC   G
+BKIC.LOC.DPTC  Q
+BKIC.LOC.GLS   U
+BKIC.LOC.GLSNT c
+BKAR.INVL.UM.LN
+NKAP.POL.UM.LIN
+BKIC.LOCM.ADDR3d
+MTIT.LOC       0
+MTIT.PRICE     j
+BKBM.PROD.SCRAP=
+BKMRP.FC.PART  
+BKMRP.FC.QTY   
+ICUV.PART      
+ICUV.DATE      
+ICUV.QTY       
+ICUV.COST      
+ICUV.LOC       
+ICUV.CALLBY    
+ICUV.FORCE     
+ICUV.NOAVG     
+ICUV.TRXNUC    
+ICUV.AMT       
+ICUV.RET       
+ICUV.NEWTOT    
+ICUV.NEWUOH    
+ICUV.POC.POST  
+FREIGHT.COST   
+TMP3.H         
+BKGL.TRN.AMT   @
+BKGL.TRN.DATE  
+BKGL.TRN.CODE  
+FL_METH        
+FIFOPART       
+FIFOQTY        
+FIFOCOST       
+FIFODATE       
+FIFOUPDT       
+FIFOUPDTA      
+AVG            
+ORIG.FLREC     
+NEXT.FLREC     
+TEMP.FLREC     
+FL.NEXTOK      
+FLAVGC         
+FLLSTC         
+FLSTDC         
+UNITS.USED     
+COST.USED      
+REC.NOT.ACT    
+FIFO.PARTNO    
+FIFO.RECVDATE  
+FIFO.REMAIN    #
+FIFO.QTY       
+FIFO.COST      
+ICVAL.PART     
+ICVAL.DATE     
+ICVAL.LOC      
+ICVAL.AMT      
+ICVAL.UNITS    
+ISCT           
+ALEN           
+NZCT           
+BKICLOC.H      
+BKICL_BUFF     
+BKICL_REC      
+BKIC.LOC.GLWIP q
+BKIC.LOC.KEY   

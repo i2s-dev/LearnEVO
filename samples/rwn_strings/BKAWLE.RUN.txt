@@ -1,0 +1,436 @@
+TAS321
+BKGLTRAN
+BKYSMSTR
+BKSYMSTR
+BKCPMSTR
+WOLABOR 
+BKPRMSTR
+BKPRCURP
+MTICMSTR
+BKGLCOA 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+MTICMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKGLTEMPA
+BKGLCOAA
+BKPRCURPA
+BKPRMSTRA
+WOLABORA
+BKCPMSTRA
+BKGLTEMPA
+BKYSMSTRA
+BKSYMSTR^*
+AW-L-E  Print/Post Labor to PayrollA
+F1 Help,F10 ProcessA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 HelpA
+Esc ExitA
+Instead of posting the labor hours to DBA Payroll, an export file will be created which you can then use to import these hours into CheckMark Payroll for payment.  Ready to begin the posting (export) process? L
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Path and name of labor hours export file to be createdA
+This cannot be blank. A
+ already exists.  OK to overwrite this file? A
+The export file, A
+Are you sure you want to post?L
+Do you want to include posted items in this report?L
+wolaborI
+There are no time card entries. A
+bkprmstrI
+Error: employee no. A
+ not found in the employee master file.  Hours for this employee will not be printed/posted. A
+BKPRCURPI
+Acrued Labor I
+Acrued Payroll N
+BKPRCURPA
+WOLABORA
+WOLABORI
+Creating CheckMark export file...I
+RegularA
+OvertimeA
+DoubletimeA
+VacationA
+HolidayA
+ hours for employee no. A
+Warning: A
+ are A
+.  CheckMark cannot import numbers that are either greater than 999.99 or less than 0.  These hours will be imported as 0.  Use the printed report totals for this employee to manually enter these hours into CheckMark. A
+ successfully created.  Now run "Enter Hours" (then click "Import Hours") in CheckMark Payroll using this file name.  If there are problems importing, make sure that the employee names as set up in PR-A or MM-E exactly match (including upper/lower case) the employee names as set up in CheckMark. A
+Export file A
+Error: More than 2000 employees.  Employee no. A
+ will be listed on the report, but will not be in the CheckMark export file. A
+BKGLTEMPA
+BKGLCOAI
+ ************* WARNING ****************F
+A G/L Account was not found and you did not haveF
+a Clearing Account in the System Master File.F
+Because of this at least one posting during this processF
+was out of balance.  Please enter a clearing accountF
+right now   Then get an Other Journal reportF
+and find the out of balance items and fix them.  PleaseF
+refer to Program SY-E in the DBA-Accounting user manual.I
+BKSYAI
+A G/L account was not found for at least one of theF
+posted items in this process.  Please get an OtherF
+Journal Report and using the General Journal put theF
+amount in the correct account.  You should then fixF
+the appropriate item.I
+                           
+                           
+ Date Range              
+                           
+          -              
+                           
+                         
+                           
+   Post the hours to PR? 
+                           
+                                                                     Page:
+                          POST LABOR TO PAYROLL REPORT
+Date     Emp#  Name                      T Work Order Op  RunHrs SetHrs Posted?
+-------- ----  ------------------------- - ---------- --- ------ ------ -------
+                                                 -
+          Reg Hrs   OT Hrs    DT Hrs   Vac Hrs  Sick Hrs   Hol Hrs     Combined
+          =====================================================================
+                                                                     Page:
+                         POSTED LABOR TO PAYROLL REPORT
+Company   Reg Hrs   OT Hrs    DT Hrs   Vac Hrs  Sick Hrs   Hol Hrs     Combined
+Totals    =====================================================================
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TOT_RECORDS    
+PRT_WHR        
+PAGE           
+RUN.TOT        
+SETUP.TOT      
+TOT.HRS        
+TOT.OTHRS      
+TOT.DTHRS      
+TOT.VHRS       
+TOT.SHRS       
+TOT.HHRS       
+GRUN.TOT       
+GTOT.HRS       
+GTOT.OTHRS     
+GTOT.DTHRS     
+GTOT.VHRS      
+GTOT.SHRS      
+GTOT.HHRS      
+TOT.OTSET      
+SELECT_FROM1   
+SELECT_THRU1   
+POST           
+PRT.POSTED     
+BREAK_FIELD    
+TODAYS.DATE    
+POST.AMT       
+POST.FAIL      
+POST.OTHER     
+YEAR.PAST      
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+FULL_NAME      
+BKCPMSTR_HNDL  
+RPT.DATE       
+RPT.TIME       
+I              
+CPX.CNTR       
+CPX.EMP        
+CPX.REG        
+CPX.OT         
+CPX.DT         
+CPX.SICK       
+CPX.VAC        
+CPX.HOL        
+ZRET           
+HRS.TYPE       
+HRS.NUM        
+BKCP.MST.LABEX 
+BKCP.MST.EXPATH
+BKCP.MST.HFILE 
+MTWOLA.EMP     
+MTWOLA.DATE    
+BKSY.COMP.NAME X
+MTWOLA.POSTED  
+BKPR.EMP.NUM   
+BKPR.CURP.EMPNM
+MTWOLA.NOJOBS  
+MTWOLA.RUNHRS  
+MTWOLA.SETUPHRS 
+MTWOLA.REGOVER 
+BKPR.CURP.RPHRS
+BKPR.EMP.PAYAMT
+BKPR.CURP.RPRTE&
+BKPR.CURP.RPAMT.
+BKPR.CURP.OPHRS6
+BKPR.CURP.OPRTE
+BKPR.CURP.OPAMT
+BKPR.CURP.VPHRSV
+BKPR.CURP.VPRTE^
+BKPR.CURP.VPAMTf
+BKPR.CURP.SPHRSn
+BKPR.CURP.SPRTEv
+BKPR.CURP.SPAMT~
+BKPR.CURP.TOTHR
+BKPR.CURP.NTPAY
+BKPR.CURP.MDNME
+BKPR.EMP.MDNME 5
+BKPR.CURP.MDAMT
+BKPR.EMP.MDAMT 
+BKPR.CURP.MDACT
+BKPR.EMP.MDACT A
+BKPR.CURP.MDDPT
+BKPR.EMP.MDDPT K
+BKPR.CURP.ODNME
+BKPR.EMP.OTHNME
+BKPR.CURP.ODAMT
+BKPR.EMP.OTHAMT
+BKPR.CURP.ODACT
+BKPR.EMP.OTHACT'
+BKPR.CURP.ODDPT
+BKPR.EMP.OTHDPT1
+MTWOLA.ASSY    z
+BKGL.ACCT      
+BKYS.GLNUM     
+BKGL.GLDPT     
+BKYS.GLDPT     
+BKGL.TRN.DESC  &
+BKPR.EMP.EXPACT
+BKPR.EMP.EXPDPTL
+OUT_FILE       
+R_LINE         
+ALPHA6         
+NUM6           
+BKPR.EMP.LNME  
+BKPR.EMP.FNMI  
+BKYS.YN        
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKGL.TRN.TYPE  H
+BKGL.TRN.DATE  
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.CODE  
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.ENTDTEJ
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+MTWOLA.WOPRE   
+MTWOLA.WOSUF   
+MTWOLA.OPER    
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

@@ -1,0 +1,3637 @@
+BKYSMSTR
+BKSAREPT
+TASCOLOR
+BKCMLEAD
+BKARCUST
+BKICMSTR
+BKARINV 
+BKARINVL
+BKPRSALE
+BKCMTERR
+BKICLOCM
+ISMCF   
+BKSYHELP
+DBAHLPID
+ISIS    
+MKAHIST 
+ISMCR   
+BKAPVEND
+BKCMACCT
+FILELOC 
+BKSYPRTR
+BKSYMSTR
+BKAPDESC
+MKAHIST 
+ISIS    
+ISRMAI  
+ISICMSTR
+BKAPVEND
+BKCMACCT
+BKAPVEND
+BKARINVV
+BKAPINVL
+BKAPPO  
+ISNUMBER
+BKCMACCT
+FILELOC 
+ISRMAC  
+BKARINVT
+BKARINV 
+BKARINV 
+BKARINV 
+ - ISTS Enhancement 11/16/09A
+ISTECHL
+bksareptA
+ismcfA
+ismcrA
+BKICMSTRA
+BKPRMSTRA
+BKPRSALEA
+BKARCUSTA
+BKESTQTLA
+BKESTQTA
+T6SOPE1.rtmA
+BKARINVLA
+BKARINVA
+T6SOOK1.rtmA
+BKARHIVLA
+BKARHINVA
+J6CFSAN1.rtmA
+BKICLOCMA
+BKCMTERRA
+BKCMLEADA
+BKYSMSTRA
+BKYSMSTRA
+SO-P-E  Print User-Defined SummaryA
+SO-O-K  Print User-Defined SummaryA
+SA-N  Print User-Defined SummaryA
+Customers     A
+Customers     R
+OrderA
+Quote NoA
+This report works best if you specify a Order Date Range.A
+This report works best if you specify a Ship Date Range.A
+QTSUMA
+SOSUMA
+CSUMMARYA
+F1 Help,F2 LookupA
+Esc ExitA
+This Report Name was not found.  Would you like to create it?L
+Customers     A
+Customers     R
+QTSUMA
+SOSUMA
+CSUMMARYR
+SO-P-E  Print User-Defined SummaryA
+SO-O-K  Print User-Defined SummaryA
+SA-N  Print User-Defined SummaryA
+OrderA
+Quote NoA
+QTSUMA
+SOSUMA
+CSUMMARYA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+Please select a sort order. A
+Esc ExitA
+Customers      RF
+Customer Class RF
+Sales Person   RF
+Items          RF
+Item Class     A
+Quote NumberRF
+SO Number   RF
+User Defined   R
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgR
+Customers     A
+Customer ClassA
+Sales Person  A
+Items         A
+Item Class    A
+Quote Number   A
+SO Number      A
+User Defined  A
+The Show Top N value cannot be less than 0A
+F1 HelpA
+F6 User Defined,Esc ExitA
+F1 HelpA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F2 Lookup,F10 PrintA
+F8 Next Screen,Esc ExitA
+Please enter an "X" to indicate your choice(s) here. A
+SO-P-E  Print User-Defined Summary Second ScreenA
+SO-O-K  Print User-Defined Summary Second ScreenA
+SA-N  Print User-Defined Summary Second ScreenA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+F6 User Defined,F7 Prev ScreenA
+F1 Help,F2 Lookup,F10 PrintA
+F7 Previous ScreenA
+The thru value cannot be less than the from value.A
+Do you want to Print nowL
+SO-P-E  Print User-Defined SummaryA
+SO-O-K  Print User-Defined SummaryA
+SA-N  Print User-Defined SummaryA
+SO-P-E  Print User-Defined SummaryA
+SO-O-K  Print User-Defined SummaryA
+SA-N  Print User-Defined SummaryA
+F1 Help,F10 PrintA
+F8 Return,Esc ExitA
+Customers     RF@
+Order DateRF;2
+Est Ship DateA
+Sales OrderRF;2
+Quote NumberRF;2
+Bill CustRF;2
+Ship CustRF;2
+Bill StateRF;2
+Ship StateRF;2
+Bill ZipRF;2
+Ship ZipRF;2
+Bill CntRF;2
+Ship CntRF;2
+TerritoryRF;2
+Cust ClassRF;2
+Sales Rep1RF;2
+Sales Rep2RF;2
+CurrencyRF;2
+LocationRF;2
+Job NumberRF;2
+Cust Order #RF;2
+Item NumberRF;2
+Item ClassR
+InvoiceRF;2
+Ship DateRF;2
+Post dateRF;2
+Sales OrderRF;2
+Bill CustRF;2
+Ship CustRF;2
+Bill StateRF;2
+Ship StateRF;2
+Bill ZipRF;2
+Ship ZipRF;2
+Bill CntRF;2
+Ship CntRF;2
+TerritoryRF;2
+Cust ClassRF;2
+Sales Rep1RF;2
+Sales Rep2RF;2
+CurrencyRF;2
+LocationRF;2
+Job NumberRF;2
+Cust Order #RF;2
+Inv TotalRF;2
+Item NumberRF;2
+Item ClassA
+CLSIPVRA
+F1 Help,F2 Lookup,F10 PrintA
+F8 ReturnA
+SF2 BreakA
+Please select a sort order. A
+Esc ExitA
+Customers      RF
+Customer Class RF
+Sales Person   RF
+Items          RF
+Item Class     A
+Quote Number   RF
+SO Number      R#
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgR
+Customers     A
+Customer ClassA
+Sales Person  A
+Items         A
+Item Class    A
+Quote Number  A
+SO Number    A
+Bill CustA
+Ship CustA
+Sort By Bill to Customer?L
+Bill CustRF
+Ship CustR
+Cust ClassA
+Cust ClassR
+Sales Rep1A
+Sales Rep2A
+Sort By SLSP1?L
+Sales Rep1RF
+Sales Rep2R
+Item NumberA
+Item NumberR
+Item ClassA
+Item ClassR
+Quote NumberA
+Quote NumberRA
+Sales OrderA
+Sales OrderR
+F1 Help,F2 Lookup,F10 PrintA
+INS Insert,F4 Delete,F8 ReturnA
+SF1 BreakA
+F1 Help,F2 Lookup,F10 PrintA
+INS Insert,F4 Delete,F8 ReturnA
+Please select a index A
+Cannot have duplicate indexesA
+Esc ExitA
+User Defined IndexA
+Home Top,End BottomA
+Esc ExitA
+MenuBkgA
+Nothing to deleteA
+Cannot add another index since number of indexes=10, you must delete one of the others before adding another.A
+Cannot set break field to a blank indexA
+You must enter a mimimum of one Index for this reportA
+ - Top A
+ SalesA
+User Defined break on A
+ Field.A
+User Defined break on A
+ Field.A
+Used defined sort by: A
+                      + A
+Open Order Analysis Detail ReportA
+Please choose at least one invoice type. A
+Sort By Bill to Customer?L
+Sort By SLSP1?L
+ Excluding Freight & TaxesA
+ Including Freight & TaxesA
+ In Base CurrencyA
+ Excluding Freight & TaxesA
+ Including Freight & TaxesA
+ In Source CurrencyA
+ Excluding Freight & TaxesA
+ Including Freight & TaxesA
+F1 HelpA
+Esc ExitA
+Customer AnalysisA
+Customer Class AnalysisA
+Sales Person AnalysisA
+Sold Items AnalysisA
+Item Class AnalysisA
+Quote AnalysisA
+SO Number AnalysisA
+RRRRRRRRRRRRRA
+Grand Total : A
+Customer AnalysisA
+Customer Class AnalysisA
+Sales Person AnalysisA
+Sold Items AnalysisA
+Item Class AnalysisA
+Quote AnalysisA
+SO Number AnalysisA
+Searching... QT#: A
+Searching... SO#: A
+Searching...INV#: A
+CSLGVA
+The maximum of 250,000 SO lines has been loaded. A
+The maximum of 250,000 SO lines has been loaded. A
+                      A
+ZZZZZZZZZZZZZZVA
+ZZZZZZZZZZZZZZVA
+ZZZZZZZZZZZZZZFA
+ZZZZZZZZZZZZZZFA
+The maximum of 250,000 SO lines has been loaded. A
+ZZZZZZZZZZZZZZZF
+ZZZZZZZZZZZZZZZR
+There are no quotes for the chosen criteria. A
+There are no sales for the chosen criteria. A
+1ZZZZZZZZZZZZZZA
+ZZZZZZZZZZZZZZVA
+ZZZZZZZZZZZZZZFA
+VOUCHRA
+AR VOUCHERA
+FINCHGA
+FINANCE CHARGEA
+CSLGVA
+AR VOUCHERA
+FINANCE CHARGEA
+pct.new.ordsA
+new.num.ordsA
+num.ordsA
+>>>>>  Report was terminated before completion  <<<<<A
+lineReg2A
+titleReg2A
+SubtotReg2A
+lineReg3A
+titleReg3A
+SubtotReg3A
+lineReg4A
+titleReg4A
+SubtotReg4A
+lineReg7A
+titleReg7A
+SubtotReg7A
+lineReg5A
+titleReg5A
+SubtotReg5A
+lineReg6A
+titleReg6A
+SubtotReg6A
+SOOK-RTRA
+Sales Quotation Summary ReportA
+Sales Analysis Summary ReportA
+BKPRSALEA
+BKPRSALEA
+BKPRSALEA
+BKPRSALER
+Graphical Report names starting with BK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to T6A
+BKARCUSTA
+BKARCUSTA
+BKARCUSTA
+BKARCUSTA
+BKESTQTA
+BKARINVR
+BKARHINVA
+BKESTQTA
+BKARINVR
+BKARHINVA
+BKESTQTA
+BKARINVR
+BKARHINVA
+BKESTQTA
+BKARINVR
+BKARHINVA
+BKCMTERRA
+BKCMTERRA
+BKICLOCMA
+BKICLOCMA
+InvoiceA
+Ship DateA
+Due DateA
+Est Ship DateA
+Post dateA
+Sales OrderA
+Quote NumberA
+Bill CustA
+Ship CustA
+Bill StateA
+Ship StateA
+Bill ZipA
+Ship ZipA
+Bill Cnt FromA
+Ship Cnt FromA
+TerritoryA
+Cust ClassA
+Sales Rep1A
+Sales Rep2A
+CurrencyA
+LocationA
+Job NumberA
+Cust Order #A
+Inv TotalA
+Item NumberA
+Item ClassA
+F1 Help,F10 PrintA
+F6 User Defined,F8 Next Screen,Esc ExitA
+F1 Help,F10 PrintA
+F8 Next Screen,Esc ExitA
+F1 Help,F10 PrintA
+F6 User Defined,F7 Previous ScreenA
+F1 Help,F10 PrintA
+F7 Previous ScreenA
+CSLXGVA
+CSLGVA
+Someone is currently printing that report. Please try again later.A
+ZZZZZZZZZZZZZZVA
+ZZZZZZZZZZZZZZFA
+VOUCHRA
+AR VOUCHERA
+FINCHGA
+FINANCE CHARGEA
+You cannot open a report with a blank nameA
+Customer ClassA
+Sales Person  A
+Items         A
+Item Class    A
+User Defined  A
+Quote Number   A
+SO Number      A
+Customers     R
+Ship DateA
+Due DateA
+Post dateA
+Est Ship DateA
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXERRA
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+TRRRRRA
+STANDARD FUNCTION KEYS/BUTTONSA
+TRRRRA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+TRRRRRRA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+MRRRRA
+#RRRRRRRRRRRRRRA
+RRRRRRA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+MRRRRA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+TAX SYSTEM:RF
+ This Program requires the new TAX system.RF
+ Please contact your system administrator to RF
+ run the required Conversion routine. R
+Multi Currency System:RF
+ This Program requires the Multi Currency systemRF
+ to be converted to the 2000.1 configuration. RF
+ Please contact your system administrator to RF
+ run the required MCSTART routine. R
+MKAHISTRA
+ISTECHSUPPORTA
+nzemailtll.rwnA
+nzemailtll.rwnA
+An error has occured while trying to load the Email Functions. Please exit and try again.A
+Email TLLA
+printtll.rwnA
+printtll.rwnA
+An error has occured while trying to load the Printer Functions. Please exit and try again.A
+Print TLLA
+EvoNotesPRT.rwnA
+EvoNotesPRT.rwnA
+An error has occured while trying to load the Evo Notes Functions. Please exit and try again.A
+Evo Notes TLLA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+*.RTMA
+NormalBkgA
+NormalBkgA
+Graphical Form Name :  A
+            A
+Graphical Report names starting with IT6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to IBKA
+IBKRRA
+Graphical Report names starting with T6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to BKA
+Graphical Report names starting with IBK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to IT6A
+IT6RRA
+Graphical Report names starting with BK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to T6A
+Form A
+ was not found in the DBA directory.A
+ Forms List A
+F1 HelpA
+Esc ExitA
+Form Name      A
+Too many XBTN_SAVEs without any XBTN_RSTRsF d
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmR
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsRRR
+Too many XBTN_RSTRs without equal XBTN_SAVEsF d
+ Lead Source Codes A
+F1 HelpA
+Esc ExitA
+BKCMLEADA
+Code A
+Description              A
+BKCMLEADA
+BKARCUSTRRRA
+ Customers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARCUSTA
+BKARC   A
+Cust Cd   A
+Name                          A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKSOA-Y A
+BKARC   A
+Name                          A
+Cust Cd   A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Name                          A
+Cust Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Zip Code  A
+Cust Cd   A
+Name                          A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Contact Name                  A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKARCUSTA
+Telephone                A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKARCUSTA
+ClassA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKARCUSTA
+E-mail Address                          A
+Cust Code A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Alpha A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARCUSTA
+BKARCUSTR
+BKARCUSTA
+Customer Code RF
+Customer Name RF
+State         RF
+Zip Code      RF
+Contact Name  RF
+Telephone     RF
+Class         RF
+E-mail AddressRF
+Alpha SortRRA
+BKARCUSTA
+Print in condensed mode? [Y/N] YA
+initRRRRA
+ Print Line: A
+RRRRRRA
+P'.O. PRTR_WHERA
+60lnsL
+bktofRA
+T6_PRINTTLLA
+PrinterA
+T6_IMAGEPRINTA
+PreviewA
+EmailA
+RRRRRRA
+NZ_EMAILTLLA
+CancelA
+Finished Printing?L
+BKPRSALERRRA
+ Salespeople A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKPRSALEA
+Slsp#A
+Last Name                A
+First Name               A
+ClassA
+BKPRSALEA
+Last Name                A
+Slsp#A
+First Name               A
+ClassA
+BKPRSALEA
+BKPRSALEA
+Salesperson NoRF
+Last Name     RRA
+F1 HelpA
+Esc ExitA
+ A - Salesperson NoRF
+ B - Last NameA
+RRRRRA
+ Search Key A
+This feature needs to be turned on in SD-Q before it will save your settingsA
+Save Personal settings, or System Global settings? A
+Yes = Personal Settings.A
+No  = System Global settings.L
+Settings Saved.A
+BKESTQTRRRA
+ Sales Quotations A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKESTQTA
+Quote#A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKESTQTA
+Cust Cd   A
+Quote#A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKESTQTA
+Customer Name                 A
+Quote#A
+Cust Cd   A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKESTQTA
+Cust PO#                 A
+Quote#A
+Cust Cd   A
+Customer Name                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKESTQTA
+Ship to CdA
+Quote#A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKESTQTA
+Ship to Name                  A
+Quote#A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKESTQTA
+Job Number     A
+Quote#A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+BKESTQTA
+BKESTQTA
+Quotation NoRF
+Customer CodeRF
+Customer NameRF
+Customer PO#RF
+Ship to CodeRF
+Ship to NameRF
+Job NumberRRA
+F1 HelpA
+Esc ExitA
+ A - Quotation NoRF
+ B - Customer CodeRF
+ C - Customer NameRF
+ D - Customer PO#RF
+ E - Ship to CodeRF
+ F - Ship to NameRF
+ G - Job NumberA
+RRRRRA
+ Search Key R
+Open Quotations only?A
+Show All Orders   RFM
+Entered Orders    RFM
+Released Orders   RFM
+Printed not PostedR
+Open Sales Orders only?A
+BKARINVA
+ Sales Orders A
+F1 Help,F3 Change Search Key,F4 StatusA
+Esc ExitA
+Status: A
+BKARINVA
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Cust Cd   A
+SO#   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Customer Name                 A
+SO#   A
+Cust Cd   A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Cust PO#                 A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+BKARINVA
+Ship to CdA
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Ship to Name                  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Job Number     A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+BKARINVA
+BKARINVA
+BKARINVR
+BKARINVA
+Sales Order NoRF
+Customer CodeRF
+Customer NameRF
+Customer PO#RF
+Ship to CodeRF
+Ship to NameRF
+Job NumberRRA
+Open Sales Orders only?A
+BKARINVA
+Show All Orders   RF
+Entered Orders    RF
+Released Orders   RF
+Printed not PostedRRA
+Open Sales Orders only?A
+BKARHINVRRRA
+ Invoice History A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARHINVA
+Inv#  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+SO#   A
+Inv#  A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+Cust Cd   A
+Inv#  A
+SO#   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+Customer Name                 A
+Inv#  A
+SO#   A
+Cust Cd   A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+Cust PO#                 A
+Inv#  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+Ship to CdA
+Inv#  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+Ship to Name                  A
+Inv#  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARHINVA
+Job Number     A
+Inv#  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+BKARHINVA
+BKARHINVA
+BKARHINVA
+VOUCHRA
+FINCHGR
+Invoice NumberRF
+Sales Order NoRF
+Customer CodeRF
+Customer NameRF
+Customer PO#RF
+Ship to CodeRF
+Ship to NameRF
+Job NumberRRA
+F1 HelpA
+Esc ExitA
+ A - Invoice NumberRF
+ B - Sales Order NoRF
+ C - Customer CodeRF
+ D - Customer NameRF
+ E - Customer PO#RF
+ F - Ship to CodeRF
+ G - Ship to NameRF
+ H - Job NumberA
+RRRRRA
+ Search Key RRRA
+ Territories A
+F1 HelpA
+Esc ExitA
+Description              A
+BKCMTERRA
+BKCMTERRA
+BKICLOCMRRRA
+ Locations A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICLOCMA
+Code      A
+Name                          A
+StateA
+BKICLOCMA
+Name                          A
+Code      A
+StateA
+BKICLOCMA
+Code         RF
+Name         RRA
+F1 HelpA
+Esc ExitA
+ A - CodeRF
+ B - NameA
+RRRRRA
+ Search Key RRRA
+ Multi-Currency Codes A
+F1 HelpA
+Esc ExitA
+Code    A
+Description             A
+SymbolA
+ SA Detail Reports A
+ SA Summary Reports A
+F1 Help,DEL DeleteA
+Esc ExitA
+Name           A
+Format         A
+Are you sure you want to Delete this entry?L
+tas50.ovlA
+tas50.ovlA
+tas50.ovlRRRA
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+isoe.icoA
+isoe.icoA
+RRRRRA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+RRRRRRRRA
+calc.icoA
+isforum.icoA
+RRRRRRRRA
+isforum.icoA
+www.istechforum.comA
+C:\ISTS\RRA
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+fileloc.bA
+BKSYMSTRA
+dbalkuamA
+dbalkuimA
+dbabextmR
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.RRRRA
+dbabextmA
+dbaskeymR
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysR
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+RRRRRA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+RRRRR 
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsRRRRF
+NormalBkgA
+NormalBkgA
+Password  A
+        A
+This is not a valid password. A
+RRRRRRRRA
+bkistek.bmpA
+bkardescL
+bkapdescL
+bkqttempL
+FRRRRA
+IM.GPATH       A
+  RRRRA
+ACRRRRA
+BCRRRRA
+ABCRRRRA
+DFRRRRA
+EFRRRRA
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links R
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+AUTOEMAILA
+\auto\EvoSettings.iniRA
+EvoSettings.iniRA
+EvoSettings.ini was not found.A
+The INI file: A
+UsersA
+ToolbarA
+UsersA
+OpenListINBA
+UsersA
+OpenListINAA
+UsersA
+OpenListSOAA
+UsersA
+OpenListPOAA
+UsersA
+OpenListARAA
+UsersA
+OpenListAPAA
+UsersA
+OpenListWOAA
+UsersA
+LanguageA
+UsersA
+SoundsA
+UsersA
+DefPrintPathA
+UsersA
+ReminderA
+UsersA
+NotificationA
+UsersA
+RemSecondsA
+UsersA
+RemSnoozeAllA
+AUTOEMAILA
+EMAIL CO# A
+ User:A
+EMAIL CO# A
+ User:A
+SubjectA
+EMAIL CO# A
+ User:A
+Body1A
+EMAIL CO# A
+ User:A
+Body2A
+EMAIL CO# A
+ User:A
+Body3A
+EMAIL CO# A
+ User:A
+Body4A
+EMAIL CO# A
+ User:A
+Body5A
+EMAIL CO# A
+ User:A
+Body6A
+EMAIL CO# A
+ User:A
+Body7A
+EMAIL CO# A
+ User:A
+Body8A
+EMAIL CO# A
+ User:A
+Body9A
+EMAIL CO# A
+ User:A
+Body10A
+EMAIL CO# A
+ User:A
+Signature1A
+EMAIL CO# A
+ User:A
+Signature2A
+EMAIL CO# A
+ User:A
+Signature3A
+EMAIL CO# A
+ User:A
+Signature4A
+EMAIL CO# A
+ User:A
+Signature5A
+EMAIL CO# A
+ User:A
+Signature6A
+EMAIL CO# A
+ User:A
+Signature7A
+EMAIL CO# A
+ User:A
+Signature8A
+EMAIL CO# A
+ User:A
+Signature9A
+EMAIL CO# A
+ User:A
+Signature10A
+EMAIL CO# A
+ User:A
+Attach PathA
+EMAIL CO# A
+ User:A
+EMAIL CO# A
+ User:A
+EMAIL CO# A
+ User:A
+EMAILA
+EMAIL CO# A
+ User:A
+EMAIL CO# A
+ User:A
+EMAIL CO# A
+ User:A
+EMAILencrypt_phraseA
+EMAIL CO# A
+ User:A
+EFAILA
+EvoorClassicScreenA
+EvoorClassicScreenA
+EvoorClassicScreenA
+EvoorClassicScreenA
+EvoorClassicScreenA
+EvoorClassicScreenA
+EvoorClassicScreenA
+ConvertedA
+ConvertedA
+ConvertedA
+ConvertedA
+ConvertedA
+ConvertedA
+ConvertedA
+SAVE ACCESSA
+Notes INVOICE #A
+INVOICE #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes CUSTOMERA
+CUSTOMERA
+Notes CONTACTSA
+CONTACTSA
+SAVE ACCESSA
+Notes QUOTE #A
+QUOTE #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes ITEMSA
+ITEMSA
+Notes TRANS #A
+TRANS #A
+Notes PO #A
+Notes VENDORA
+VENDORA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes PO LINESA
+PO LINESA
+Notes RFQ #A
+RFQ #A
+Notes VENDORA
+VENDORA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes RFQ LINESA
+RFQ LINESA
+Notes RMA #A
+RMA #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes SO #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes SO #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes INVOICE #A
+INVOICE #A
+Notes SO #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes QUOTE #A
+QUOTE #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes S/R #A
+S/R #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes S/R #A
+S/R #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+Notes S/R #A
+S/R #A
+Notes CUSTOMERA
+CUSTOMERA
+Notes SHIP VIAA
+SHIP VIAA
+Notes ITEMSA
+ITEMSA
+Notes SO LINESA
+SO LINESA
+HHSSOELblPrinterA
+HHSSOERptPrinterA
+Notes WO #A
+Notes PARENT PARTA
+PARENT PARTA
+Notes CUSTOMERA
+CUSTOMERA
+Notes SO #A
+Notes ROUTINGA
+ROUTINGA
+Notes BOM COMPS.A
+BOM COMPS.A
+WHOAMI.DBAA
+WHOAMI.DBARA
+Dummy screen for RTM
+                                                  SALES ANALYSIS SUMMARY REPORT
+                                                                                                                      Page:
+Cust. Code            Name                Slsp  Date             Cust PO           Inv#     Total        Cost     Gross Profit   %   Cur
+==========================================================================================================================================
+                                                              Grand Total:
+Class Cust.Code               Name             Slsp  Date            Cust PO            Inv#     Total        Cost     Gross Profit   %   Cur
+===============================================================================================================================================
+                                                                   Grand Total:
+Slsp Cust. Code             Name                Date         Cust PO               Inv#     Total         Cost      Gross Profit %   Cur
+==========================================================================================================================================
+                                                              Grand Total:
+Item Code                      Item Description                         Qty         Total         Cost      Gross Profit     %
+================================================================================================================================
+                                                       Grand Total:
+           Item Class                                Qty         Total          Cost     Gross Profit     %
+=================================================================================================================
+                                 Grand Total:
+=======================================================================================================================================
+                                                           Report Filters
+Report Name   :
+Report Format :
+Invoice   From:               Ship Cust  From:             Territory  From:           Bill Cnt  From:
+          Thru:                          Thru:                        Thru:                     Thru:
+Ship date From:               Bill State From:             Cust Class From:           Ship Cnt  From:
+          Thru:                          Thru:                        Thru:                     Thru:
+Post Date From:               Ship State From:             Sls Rep 1  From:           Location  From:
+          Thru:                          Thru:                        Thru:                     Thru:
+SO #      From:               Bill Zip   From:             Sls Rep 2  From:           Job #     From:
+          Thru:                          Thru:                        Thru:                     Thru:
+Bill Cust From:               Ship Zip   From:             Currency   From:           Cust Ord# From:
+          Thru:                          Thru:                        Thru:                     Thru:
+                         Cust Start Date From:            Lead Source From:           Inv Total From:
+                                         Thru:                        Thru:                     Thru:
+SO Num SO Date  Cust. Code             Name               Slsp Cust PO                   Total        Cost         Cur
+======================================================================================================================
+                                                              Grand Total:
+   Report Name  :                           Report Format :                   
+   TEXT Report? :         Export? :         Print in Base/Source Currency :   
+          Title :                                                             
+           Sort :                   Top N Sales?    Show Top                  
+   Invoice From :              Bill Cnt From :                                
+           Thru :                       Thru :                                
+ Ship date From :              Ship Cnt From :                                
+           Thru :                       Thru :                                
+ Post date From :                 Cust Class :       -                        
+           Thru :                   Sls Rep1 :       -                        
+        SO From :                   Sls Rep2 :       -                        
+           Thru :                   Location :            -                   
+ Bill Cust From :                      Job # :                -               
+           Thru :             Cust Ord# From :                                
+ Ship Cust From :                       Thru :                                
+           Thru :                  Inv Total :              -                 
+     Bill State :    -       Cust Start Date :          -                     
+     Ship State :    -           Lead Source :       -                        
+       Currency :     -                         INVOICE TYPES TO INCLUDE      
+       Bill Zip :            -                    SO module invoices          
+       Ship Zip :            -                    AR voucher invoices         
+      Territory :       -                         Finance charge invoices     
+                 
+                                           
+                 
+      USER-DEFINED SORT/BREAK REPORT       
+                 
+                                           
+                 
+      Report Name :                        
+                 
+                                           
+                 
+                                 BREAK     
+                 
+      Layout   :                           
+                 
+                                           
+                 
+                   SORT FIELD    BREAK     
+                 
+                    (max 10)     FIELD     
+                 
+      Index 1  :                           
+                 
+      Index 2  :                           
+                 
+      Index 3  :                           
+                 
+      Index 4  :                           
+                 
+      Index 5  :                           
+                 
+      Index 6  :                           
+                 
+      Index 7  :                           
+                 
+      Index 8  :                           
+                 
+      Index 9  :                           
+                 
+      Index 10 :                           
+                 
+                                           
+  Report Name   :                           Print in Base/Source Currency :   
+                                                                              
+          Title :                                                             
+                                                                              
+                   Customer Ref From :                                        
+                                Thru :                                        
+                                                                              
+                  Est Ship Date From :                                        
+                                Thru :                                        
+                                                                              
+            Include Tax and Freight? :                                        
+                                                                              
+                         Print RMAs? :                                        
+                                                                              
+   Include 0 balance on open orders? :                                        
+                                                                              
+ Include Service/Repair SOs? [Y/N/O] :                                                                             
+                                                                              
+           Print Summary Only? [Y/N] :                                        
+                                                                              
+                                                                              
+                                                                              
+                                                                                                                                 Page:
+Cust. Code            Name                Slsp          Cust PO             Num    Date     Total        Cost       Cur
+========================================================================================================================
+                                                              Grand Total:
+Class Cust.Code               Name             Slsp         Cust PO              Num    Date     Total        Cost       Cur
+=============================================================================================================================
+                                                                   Grand Total:
+Slsp Cust. Code             Name                      Cust PO               Num    Date     Total         Cost      Cur
+========================================================================================================================
+                                                              Grand Total:
+Item Code                         Item Description                         Qty         Total         Cost
+===============================================================================================================
+                                                       Grand Total:
+           Item Class                                 Qty         Total          Cost
+==========================================================================================
+                                 Grand Total:
+=======================================================================================================================================
+                                                           Report Filters
+Report Name   :
+Report Format :
+ Ship Date From:              Ship Cust  From:             Territory  From:           Bill Cnt  From:
+  (Est.)   Thru:                         Thru:                        Thru:                     Thru:
+Order Date From:              Bill State From:             Cust Class From:           Ship Cnt  From:
+           Thru:                         Thru:                        Thru:                     Thru:
+   #       From:              Ship State From:             Sls Rep 1  From:           Location  From:
+           Thru:                         Thru:                        Thru:                     Thru:
+Bill Cust  From:              Bill Zip   From:             Sls Rep 2  From:           Job #     From:
+           Thru:                         Thru:                        Thru:                     Thru:
+                              Ship Zip   From:             Currency   From:           Cust Ord# From:
+                                         Thru:                        Thru:                     Thru:
+   Num    Date  Cust. Code            Name                Slsp          Cust PO               Total        Cost       Cur
+==========================================================================================================================
+                                                              Grand Total:
+                                Processing Data
+                                  Please Wait
+NNNYNo
+NNNYN)
+YNNNY 
+YNNNY#
+YNNNY)
+YNNNY0
+YNNNY1
+YNNNY4
+YNNNY5
+YNNNY8
+YNNNY9
+YNNNYA
+YNNNYF
+YNNNYI
+YNNNYL
+YNNNYR
+YNNNYL
+YNNNNM
+YNNNYe
+YNNNNf
+YNNNY3
+YNNNN4
+NNNYN(
+NNNYN+
+YNNNY-
+NNNYN1
+NNNYN4
+YNNNY6
+NNNYN<
+YNNNY}
+YNNNN~
+SETUP_COLOR
+SETUP_COLOR7
+NZ_LICLLS
+ISIS_GET
+ISTS.GETS
+LOAD_TLLS
+SHOWHELPT
+EXIT2_PRT
+START_PRT
+LOCK_EXIT
+TOOLBARREFER
+PRG_HDRT
+STARTTTON
+PRE.NAMEM
+FNC_LISTSP
+DSP_RPTNUP
+ZASKP_INV
+GET_SORT_TYPE
+PARSE_FILENAME
+LOAD_UD_REPORT
+CFG.OPENDTER
+SCRN_1YPENTR
+PRE.TEXTMODE
+PRE.CHKLASS
+POST.CHKSSS
+DSP_RTMSSLONS
+RTM_VALIDNURT
+BASE_POSTFLDS
+PRE.TITLET_UDC
+ENT.MENU1NU
+PRE.SORTRICE
+POST.SORT
+CHK.SORTIL
+DSP_SORTDTA
+GETSORT7TLL
+XTRAP_SI_UDC
+EXIT_SORTD
+GRAYBOX_DATES
+XTRAP_RSTR_UDC
+ENT.TOPENDK2
+GENERAL_SANC
+POST_TOPENDDS
+PRE.N.TOP_KE
+SCRN_3MELLS
+SCRN_2ENU2LDS
+SETUP_INVM
+DSP_INV1ST6DS
+DSP_INV2TR_UDC
+PRE.FROM3E
+SETUP_SOY
+DSP_SO1LE
+DSP_SO2BT
+SETUP_BTCEF
+DSP_CUST1
+DSP_CUST2D
+SETUP_STC
+DSP_CUST3
+DSP_CUST4
+SETUP_CURVK2
+DSP_CUR1OPDC
+DSP_CUR2_K2ILS
+SETUP_TERUDC
+DSP_TER1_K
+DSP_TER2KD_UDC
+SETUP_SLSP
+DSP_SLSP1_K2DC
+DSP_SLSP2TK
+SETUP_SLSP2DS
+DSP_SLSP32K
+DSP_SLSP4CT
+SETUP_LOCTYPE
+DSP_LOC1_ALTGE
+DSP_LOC2_ALT1
+LEAD_PRE_ALT22
+LEAD_POSTALT3
+DSP_LEAD_ALTX
+LSCODE_MENUUDC
+PTYPE1T5_C
+CHK.APVT_K2
+PTYPE2FIND1
+PTYPE3FIND2
+ENT.BILLCODE
+PRE.BILCODYPE
+POST.BILCODT
+DSP_BILCODLT1
+CUST_MENUESC2
+GENERAL_SAN23
+ENT.RMASCEFTX
+ENT.INDEXOUTFO
+ENT.LAYOUTSSDC
+PRE.LOSORT1
+POST.LOSORT
+CHK.LOSORTZSSS
+DSP_LOSORTU_K2
+SET_LAY_BREAK
+GET_INDEX1U2
+GETLOSORTC
+EXIT_LOSORT
+PREV_ELEMENT
+PRE.INDEXEFS
+POST.INDEX
+CHK.INDEXESS
+DEL_INDEXPZSSS
+INS_INDEXMAIL
+DSP_INDEXIMAGE
+SET_IND_BREAK
+EXIT_INDEXAIL
+LIST_LINESAIL
+GETINDEXD
+CHK_RTM_NAME
+ALLTRIMTR
+SAVE_RPTIA
+RTMSETUPC
+BUILDATHR
+SA.FILTER
+SORT_FUNCC
+GENSORT_FUNC
+BUILD_SRCH_DNG
+NEXTVVFFRC
+REMOVE_TLLS
+VIEW.LNV2
+ABORT_RPTC
+PRTR_SETUP
+PRT_TOFLOC
+PRT_DETAILMAGE
+GET_TOP_TOTALS
+GET_BREAKFIELD
+OUTPUT_DATAING
+GET_EXTNKIA
+ISIS_MCRATEAGE
+FINISHUTVIA
+GROUP_BRKIA
+PRINT_FILTERSG
+PRINT_T7TLL
+SLSP_MENU
+CFG.SAVEYN
+SQ_MENUPK
+SO_MENUYN
+SOH_MENUK
+TERR_MENU
+LOCM_MENUX
+IMCC_MENU
+RPT_MENUX
+USER_CHECKBRK
+UPDISCMENU
+SHOWHLPR
+OLDHELPUR
+INIT_MSG_FLDS
+DATE_VALR
+NZ_GETS5R
+NZ_ENCENU
+NZ_DCRSTOM
+MSG_LIST
+EMAILRTS
+CAMERALP
+CALCCONV
+WEBICONAB
+CALCTOOLT
+FORUMWEB
+BTN_LIST
+DOS_DACHS
+C1.SAVE
+SET_KEYIST
+CFG.PATHNV
+DATA.PATH
+OPENCFG1
+NOFILEL2
+MAG_STARTE
+RBUTTON_REF
+MAGBUTTON
+ENT.RTM4
+FRM_RTM3.A
+FRM_PREATA
+FRM_POSTHG
+DSP_ARRAY
+XBTN_SAVE
+XBTN_RSTR
+S_H_MSGLP
+LSCODE_MENU2
+CUST_MENU_K2
+CUST_MENU_K
+CUS_ESCS
+CUST_MENU2
+BILLTO.LIM
+CUS_OUTAX
+SEL.SKEY
+PTD_LIST
+CHSE_PRTPL
+DO_POST_CP
+PRINT_LOOP
+PRINT_NZEMAIL
+SLSP_MENU_K2
+SLSP_MENU_K
+SLSP_MENU2
+CFG.PASS
+SQ_MENU_K2
+SQ_MENU_KNUM
+SQ_MENU2NO
+SQ_RMAN_YES
+COO_NEXT_NUM
+ASK_COOT.EXT
+SO_MENU_CSO
+SO_MENU_K2
+FILTER.SOS
+SO_MENU_KPTIONS
+SO_MENU_S
+SO_MENU2
+SO_MENU_S2
+SOH_MENU_K2DS
+SOH_MENU_K
+SOH_MENU2
+SOHDISPSO
+LOCM.D
+LOCM_MENU_K2
+LOCM_MENU_K
+LOCM_MENU2
+SHOW.RTM.NAME
+KILLSOA.PASS
+EMAILLINKE
+BANNER.ADD
+INAIMLINKF
+GETWEBST
+WEBOPENH
+RUNUMCALC
+GOWEBEY
+RUNCALCVE
+FORUMLINK
+IMAGELINK
+SSK.ESCTR
+PTD_FCHRU_K2
+CP_SET_LASER
+CHK_PATH_CHR
+EVO.GET
+ENT.PSWDU2
+GET.CODE.IMAGE
+GETWLOUT
+DBAWHOAMI
+PARSEINISTRING
+j6cfsan.src                                                 LOOKUPS.LIB                                                 DBA.LIB                                                     IM.LIB                                                      ISTECH.LIB                                                  
+TEMP0         
+TEMP1         
+TEMP2         
+TEMP3         
+TEMP4         
+TEMP5         
+TEMP6         
+TEMP7         
+TEMP8         
+TEMP9         
+TEMP10        
+TEMP11        
+TEMP12        
+TEMP13        
+TEMP14        
+TEMP15        
+TEMP16        
+TEMP17        
+TEMP18        
+TEMP19        
+TEMP20        
+TEMP21        
+TEMP22        
+TEMP23        
+TEMP24        
+TEMP25        
+TEMP26        
+TEMP27        
+TEMP28        
+TEMP29        
+TEMP30        
+TEMP31        
+TEMP32        
+TEMP33        
+TEMP34        
+TEMP35        
+TEMP36        
+TEMP37        
+TEMP38        
+TEMP39        
+TEMP40        
+TEMP41        
+TEMP42        
+TEMP43        
+TEMP44        
+TEMP45        
+TEMP46        
+TEMP47        
+TEMP48        
+TEMP49        
+TEMP50        
+TEMP51        
+TEMP52        
+TEMP53        
+TEMP54        
+TEMP55        
+TEMP56        
+TEMP57        
+TEMP58        
+TEMP59        
+CFG.BUFF       
+RTYPE          
+SORT.TEXT      
+INDEX.TEXT     
+UDBRK.ARRAY    
+UDBRK.CHOICE   
+LAYSORT.TEXT   
+LTYPE          
+NUM.OF.INDEX   
+FROM.START.DATE
+THRU.START.DATE
+INVCTYPE       
+FROM.LEAD.SRC  
+THRU.LEAD.SRC  
+USE.LAY.BREAK  
+LAYOUT.BRK.LEN 
+UDBREAK.START  
+UDBREAK.LEN    
+GENBREAK.TEXT  
+FROM.BILCOD    
+THRU.BILCOD    
+INCL.ZERO.BAL  
+INC.TAX.FRT    
+PRT.RMA        
+INCL.SR        
+SUMM.ONLY      
+CFG.END        
+UD.RPT.NAME    
+ISTS.EDATE     
+PRT_WHR        
+PRTR_CHR       
+PAGE           
+SUB.TOT        
+SUB.TOT2       
+SUB.TOT3       
+SUB.TOT4       
+MONTH          
+WIDE_YN        
+DATE           
+CCLASS         
+PRT.TOTS       
+TOT.TITLE      
+GRAND.TIT      
+ARHKEY         
+ARLKEY         
+RETENTION.PART 
+INC.RETENTION  
+PRT.NC         
+WHICH          
+SA.HNDL        
+BASE           
+CURRMSG        
+PRG            
+ICM            
+SLM            
+SAL            
+ARC            
+ARL            
+ARH            
+ICL            
+TER            
+NUM.ORDS       
+NEW.NUM.ORDS   
+PCT.NEW.ORDS   
+COMM1          
+COMM2          
+TCOMM1         
+TCOMM2         
+GTCOMM1        
+GTCOMM2        
+REC.ARRAY      
+SORT.ARRAY     
+ARR.CNTR       
+RETVAL         
+SORT_STR       
+WHICHTYPE      
+ALPHASO        
+ITYPE          
+TEMP.RTYPE     
+TEMP.PCODE     
+TEMP.PCLASS    
+SORTPORTION    
+CURVALUE       
+TESTVALUE      
+TEXT.MODE      
+DETAIL.ONLY    
+PRT_HEADER     
+GROUPH         
+GROUPUS        
+DATALINE       
+SUBTOT         
+GRANDTOT       
+BREAKFLAG      
+BREAKFIELD     
+BREAK.PDESC    
+MNUM           
+MNUM2          
+TEMP.CNTR      
+OLD.BKGCOLOR   
+MENUCOL        
+MENUROW        
+ZRET           
+GENSORT.ARRAY  
+WHICH1         
+INDEX.CNTR     
+X              
+Y              
+INDEX.MESS     
+INDEX.TXT      
+HOLD.INDEX     
+FIELDSIZE      
+UDBREAKSET     
+UDBREAKLIST    
+UDSORTLIST1    
+UDSORTLIST2    
+TOP.END.SALES  
+N.TOP.SALES    
+TE.CNTR        
+NEXT.TOP.SALES 
+TE.CNTR1       
+TE.CNTR2       
+PRT.BKSA.TITLE 
+MAX.CHOICES    
+DFLT.RTM       
+QT.SO          
+LINEREG2       
+TITLEREG2      
+SUBTOTREG2     
+LINEREG3       
+TITLEREG3      
+SUBTOTREG3     
+LINEREG4       
+TITLEREG4      
+SUBTOTREG4     
+LINEREG5       
+TITLEREG5      
+SUBTOTREG5     
+LINEREG6       
+TITLEREG6      
+SUBTOTREG6     
+LINEREG7       
+TITLEREG7      
+SUBTOTREG7     
+GENSORT_STR    
+LASTPOS        
+CHK.GRANDTOT   
+LEAD.H         
+CFROM          
+REPORT.TITLE   
+SR.FLAG        
+ISMCF.HNDL     
+ISMCR.HNDL     
+BKSA.TYPE      
+BKSAREPTBKSA.NAME      
+BKSAREPTBKSA.RTM       
+BKSAREPTBKSA.FROM1     &
+BKSAREPTBKSA.THRU1     .
+BKSAREPTBKSA.FROM2     6
+BKSAREPTBKSA.THRU2     :
+BKSAREPTBKSA.FROM3     >
+BKSAREPTBKSA.THRU3     B
+BKSAREPTBKSA.FROM4     F
+BKSAREPTBKSA.THRU4     N
+BKSAREPTBKSA.FROM5     V
+BKSAREPTBKSA.THRU5     `
+BKSAREPTBKSA.FROM6     j
+BKSAREPTBKSA.THRU6     t
+BKSAREPTBKSA.FROM7     ~
+BKSAREPTBKSA.THRU7     
+BKSAREPTBKSA.FROM8     
+BKSAREPTBKSA.THRU8     
+BKSAREPTBKSA.FROM9     
+BKSAREPTBKSA.THRU9     
+BKSAREPTBKSA.FROM10    
+BKSAREPTBKSA.THRU10    
+BKSAREPTBKSA.FROM11    
+BKSAREPTBKSA.THRU11    
+BKSAREPTBKSA.FROM12    
+BKSAREPTBKSA.THRU12    
+BKSAREPTBKSA.FROM13    &
+BKSAREPTBKSA.THRU13    *
+BKSAREPTBKSA.FROM14    .
+BKSAREPTBKSA.THRU14    2
+BKSAREPTBKSA.FROM15    6
+BKSAREPTBKSA.THRU15    8
+BKSAREPTBKSA.FROM16    :
+BKSAREPTBKSA.THRU16    <
+BKSAREPTBKSA.FROM17    >
+BKSAREPTBKSA.THRU17    H
+BKSAREPTBKSA.FROM18    R
+BKSAREPTBKSA.THRU18    a
+BKSAREPTBKSA.FROM19    p
+BKSAREPTBKSA.THRU19    
+BKSAREPTBKSA.FROM20    
+BKSAREPTBKSA.THRU20    
+BKSAREPTBKSA.BASE      
+BKSAREPTBKSA.TITLE     
+BKSAREPTBKSA.FROM21    
+BKSAREPTBKSA.THRU21    
+BKSAREPTBKSA.FROM22    
+BKSAREPTBKSA.THRU22    
+BKSAREPTBKSA.FROM23    
+BKSAREPTBKSA.THRU23    
+BKSAREPTBKSA.FROM24    
+BKSAREPTBKSA.THRU24    
+BKSAREPTBKSA.FROM25    
+BKSAREPTBKSA.THRU25    !
+BKSAREPTBKSA.FROM26    )
+BKSAREPTBKSA.THRU26    ,
+BKSAREPTRTM_NAME       
+ISIS.MULTI.CURR
+MESSAGE        
+NORM           
+TASCOLORREV            
+TASCOLORHIGH           
+TASCOLORERR            
+TASCOLORWC             
+TASCOLORBC             
+TASCOLORMC             
+TASCOLORCC             
+TASCOLORSC             
+TASCOLORENTER          
+TASCOLORDATC           
+TASCOLORFC             
+TASCOLORGC             
+TASCOLORCCR_LF         J
+TASCOLORBKCM.LEAD.SCODE
+BKCMLEADBKCM.LEAD.DESC 
+BKCMLEADBKAR.CUSTCODE  
+BKARCUSTBKAR.CUSTNAME  
+BKARCUSTBKAR.ADD1      (
+BKARCUSTBKAR.ADD2      F
+BKARCUSTBKAR.CITY      
+BKARCUSTBKAR.STATE     
+BKARCUSTBKAR.ZIP       
+BKARCUSTBKAR.CONTACT   
+BKARCUSTBKAR.TELEPHONE >
+BKARCUSTBKAR.COUNTRY   
+BKARCUSTBKAR.CREDITLMT 
+BKARCUSTBKAR.CHG.INTRST
+BKARCUSTBKAR.REMAINCRD 
+BKARCUSTBKAR.OUTINV    
+BKARCUSTBKAR.LASTSALE  
+BKARCUSTBKAR.LASTPMT   
+BKARCUSTBKAR.GROSS.MTD 
+BKARCUSTBKAR.COGS.MTD  
+BKARCUSTBKAR.NET.MTD   
+BKARCUSTBKAR.PNET.MTD  
+BKARCUSTBKAR.GROSS.YTD 
+BKARCUSTBKAR.COGS.YTD  "
+BKARCUSTBKAR.NET.YTD   *
+BKARCUSTBKAR.PNET.YTD  2
+BKARCUSTBKAR.GROSS.LYR :
+BKARCUSTBKAR.COGS.LYR  B
+BKARCUSTBKAR.NET.LYR   J
+BKARCUSTBKAR.PNET.LYR  R
+BKARCUSTBKAR.GROSS.PVARZ
+BKARCUSTBKAR.COGS.PVAR b
+BKARCUSTBKAR.NET.PVAR  j
+BKARCUSTBKAR.PNET.PVAR r
+BKARCUSTBKAR.NEW.CUST  z
+BKARCUSTBKAR.OUT.CREDIT{
+BKARCUSTBKAR.TAX.STATE 
+BKARCUSTBKAR.TAX.LOCAL 
+BKARCUSTBKAR.TAX.YN    
+BKARCUSTBKAR.STATEMENT 
+BKARCUSTBKAR.SLSP.NUM  
+BKARCUSTBKAR.TERMS.NUM 
+BKARCUSTBKAR.START.DATE
+BKARCUSTBKAR.CLASS     
+BKARCUSTBKAR.PRICE.MAT 
+BKARCUSTBKAR.HIST.YN   
+BKARCUSTBKAR.DISC.CODE 
+BKARCUSTBKAR.NUM.INVCS 
+BKARCUSTBKAR.DAYS.TOPAY
+BKARCUSTBKAR.NOTES     
+BKARCUSTBKAR.GLACCT    
+BKARCUSTBKAR.GLDPT     
+BKARCUSTBKAR.FOB       
+BKARCUSTBKAR.SHIPTO    
+BKARCUSTBKAR.SHIPVIA   
+BKARCUSTBKAR.FOLUPDTE  
+BKARCUSTBKAR.COMM      
+BKARCUSTBKAR.SORT      &
+BKARCUSTBKAR.COOP.RATE ,
+BKARCUSTBKAR.COOP.AMT  4
+BKARCUSTBKAR.TERRITORY <
+BKARCUSTBKAR.LEAD.SRC  @
+BKARCUSTBKAR.SIC.CODE  E
+BKARCUSTBKAR.PURCH.AGMTL
+BKARCUSTBKAR.FORECAST  M
+BKARCUSTBKAR.CUST.YEAR Y
+BKARCUSTBKAR.QC.INFO   e
+BKARCUSTBKAR.MAIL.LIST 
+BKARCUSTBKAR.CARRIER   
+BKARCUSTBKAR.REQD.CERTS
+BKARCUSTBKAR.SHP.WINDOW
+BKARCUSTBKAR.RECV.HOURS
+BKARCUSTBKAR.SHP.TOLRNC
+BKARCUSTBKAR.RESALE.NO 
+BKARCUSTBKAR.FAX.PHONE 
+BKARCUSTBKAR.CREDIT.HLD
+BKARCUSTBKAR.EXTRA     
+BKARCUSTBKAR.EMAIL     *
+BKARCUSTBKAR.IS.TAXGRP 
+BKARCUSTBKAR.IS.TAXIN  
+BKARCUSTBKAR.IS.MCCODE 
+BKARCUSTBKAR.IS.REP    
+BKARCUSTLL_TITLE       
+LL_TITLE1      
+LL_CNTR        
+REP_TITLE      
+BKIC.PROD.CODE 
+BKICMSTRBKIC.PROD.DESC 
+BKICMSTRBKIC.PROD.TYPE -
+BKICMSTRBKIC.PROD.UM   .
+BKICMSTRBKIC.PROD.CAT  1
+BKICMSTRBKIC.PROD.TXBLE5
+BKICMSTRBKIC.PROD.CLASS6
+BKICMSTRBKIC.PROD.RLVL :
+BKICMSTRBKIC.PROD.RAMT B
+BKICMSTRBKIC.PROD.LSALEJ
+BKICMSTRBKIC.PROD.LORD N
+BKICMSTRBKIC.PROD.LRCPTR
+BKICMSTRBKIC.PROD.ADTR V
+BKICMSTRBKIC.PROD.TO   X
+BKICMSTRBKIC.PROD.LSTC `
+BKICMSTRBKIC.PROD.AVGC h
+BKICMSTRBKIC.PROD.UOH  p
+BKICMSTRBKIC.PROD.UOSO x
+BKICMSTRBKIC.PROD.TOTVL
+BKICMSTRBKIC.PROD.UOO  
+BKICMSTRBKIC.PROD.USMTD
+BKICMSTRBKIC.PROD.GSMTD
+BKICMSTRBKIC.PROD.CMTD 
+BKICMSTRBKIC.PROD.NSMTD
+BKICMSTRBKIC.PROD.NGMTD
+BKICMSTRBKIC.PROD.USYTD
+BKICMSTRBKIC.PROD.GSYTD
+BKICMSTRBKIC.PROD.CYTD 
+BKICMSTRBKIC.PROD.NSYTD
+BKICMSTRBKIC.PROD.NGYTD
+BKICMSTRBKIC.PROD.USLYR
+BKICMSTRBKIC.PROD.GSLYR
+BKICMSTRBKIC.PROD.CLYR 
+BKICMSTRBKIC.PROD.NSLYR
+BKICMSTRBKIC.PROD.NGLYR
+BKICMSTRBKIC.PROD.USVAR
+BKICMSTRBKIC.PROD.GSVAR
+BKICMSTRBKIC.PROD.CVAR 
+BKICMSTRBKIC.PROD.NSVAR 
+BKICMSTRBKIC.PROD.NGVAR(
+BKICMSTRBKIC.PROD.GLA  0
+BKICMSTRBKIC.PROD.DPTA :
+BKICMSTRBKIC.PROD.GLC  >
+BKICMSTRBKIC.PROD.DPTC H
+BKICMSTRBKIC.PROD.GLS  L
+BKICMSTRBKIC.PROD.DPTS V
+BKICMSTRBKIC.PROD.PRICEZ
+BKICMSTRBKIC.PROD.GLSNTb
+BKICMSTRBKIC.PROD.DPTNTl
+BKICMSTRBKIC.PROD.UBO  p
+BKICMSTRBKIC.PROD.PMAT x
+BKICMSTRBKIC.PROD.MANUFz
+BKICMSTRBKIC.PROD.NOTE 
+BKICMSTRBKIC.PROD.AVLAB
+BKICMSTRBKIC.PROD.AVSET
+BKICMSTRBKIC.PROD.AVOP 
+BKICMSTRBKIC.PROD.AVMAT
+BKICMSTRBKIC.PROD.AVFO 
+BKICMSTRBKIC.PROD.AVVO 
+BKICMSTRBKIC.PROD.EXTRA
+BKICMSTRBKIC.PROD.TAXIN@
+BKICMSTRBKIC.PROD.ISUPCA
+BKICMSTRBKIC.IS.DCODE  M
+BKICMSTRBKIC.PROD.LONGPP
+BKICMSTRGP             
+GPP            
+USR_TITLE      
+BKAR.INV.NUM   
+BKARINV BKAR.INV.SONUM 
+BKARINV BKAR.INV.INVCD 
+BKARINV BKAR.INV.INVDTE
+BKARINV BKAR.INV.CUSCOD
+BKARINV BKAR.INV.CUSA1 
+BKARINV BKAR.INV.CUSNME=
+BKARINV BKAR.INV.CUSA2 [
+BKARINV BKAR.INV.CUSCTY
+BKARINV BKAR.INV.CUSST 
+BKARINV BKAR.INV.CUSZIP
+BKARINV BKAR.INV.CUSCNT
+BKARINV BKAR.INV.CUSATT
+BKARINV BKAR.INV.SHPCTY
+BKARINV BKAR.INV.SHPST 
+BKARINV BKAR.INV.SHPZIP
+BKARINV BKAR.INV.SHPCOD
+BKARINV BKAR.INV.SHPNME)
+BKARINV BKAR.INV.SHPA1 G
+BKARINV BKAR.INV.SHPA2 e
+BKARINV BKAR.INV.SHPATN
+BKARINV BKAR.INV.SHPVIA
+BKARINV BKAR.INV.SHPCNT
+BKARINV BKAR.INV.TERMD 
+BKARINV BKAR.INV.TERMNM
+BKARINV BKAR.INV.SLSP  
+BKARINV BKAR.INV.ENTBY 
+BKARINV BKAR.INV.CUSORD
+BKARINV BKAR.INV.TAXABL
+BKARINV BKAR.INV.SUBTOT
+BKARINV BKAR.INV.TAXAMT!
+BKARINV BKAR.INV.TOTAL )
+BKARINV BKAR.INV.COGS  1
+BKARINV BKAR.INV.NL    9
+BKARINV BKAR.INV.TAXRTE;
+BKARINV BKAR.INV.DESC  C
+BKARINV BKAR.INV.GLDPT a
+BKARINV BKAR.INV.LINV#Pe
+BKARINV BKAR.INV.RTS   m
+BKARINV BKAR.INV.FRGHT n
+BKARINV BKAR.INV.LOC   v
+BKARINV BKAR.INV.TAXKEY
+BKARINV BKAR.INV.ORDDTE
+BKARINV BKAR.INV.ENDLNE
+BKARINV BKAR.INV.DCODE 
+BKARINV BKAR.INV.PCODE 
+BKARINV BKAR.INV.SHIPDT
+BKARINV BKAR.INV.FOB   
+BKARINV BKAR.INV.SLSP2 
+BKARINV BKAR.INV.COMMPR
+BKARINV BKAR.INV.CHKNUM
+BKARINV BKAR.INV.DEPAMT
+BKARINV BKAR.INV.SHIPPR
+BKARINV BKAR.INV.JOBNUM
+BKARINV BKAR.INV.ITMZTX
+BKARINV BKAR.INV.RETEN 
+BKARINV BKAR.INV.COMAMT
+BKARINV BKAR.INV.CCOAMT
+BKARINV BKAR.INV.BILCOD
+BKARINV BKAR.INV.BILNME
+BKARINV BKAR.INV.BILA1 #
+BKARINV BKAR.INV.BILA2 A
+BKARINV BKAR.INV.BILA3 _
+BKARINV BKAR.INV.BILCTY}
+BKARINV BKAR.INV.BILST 
+BKARINV BKAR.INV.BILZIP
+BKARINV BKAR.INV.BILCNT
+BKARINV BKAR.INV.BILATN
+BKARINV BKAR.INV.EXTRA 
+BKARINV BKAR.INV.INDATEy
+BKARINV BKAR.INV.SCCOGS}
+BKARINV BKAR.INV.ISTXKY
+BKARINV BKAR.INV.ISMCDT
+BKARINV BKAR.INV.ISREV 
+BKARINV BKAR.INV.ISRVDT
+BKARINV BKAR.INV.ISCUR 
+BKARINV BKAR.INVL.INVNM
+BKARINVLBKAR.INVL.KEY  
+BKARINVLBKAR.INVL.CNTR 
+BKARINVLBKAR.INVL.ESD  
+BKARINVLBKAR.INVL.PCODE
+BKARINVLBKAR.INVL.PDESC
+BKARINVLBKAR.INVL.PQTY ;
+BKARINVLBKAR.INVL.PPRCEC
+BKARINVLBKAR.INVL.PDISCK
+BKARINVLBKAR.INVL.PEXT S
+BKARINVLBKAR.INVL.PCOGS[
+BKARINVLBKAR.INVL.ITYPEc
+BKARINVLBKAR.INVL.TXBLEd
+BKARINVLBKAR.INVL.UBO  e
+BKARINVLBKAR.INVL.USTD m
+BKARINVLBKAR.INVL.RTS  u
+BKARINVLBKAR.INVL.LOC  v
+BKARINVLBKAR.INVL.ABQTY
+BKARINVLBKAR.INVL.JOB# 
+BKARINVLBKAR.INVL.UM.LN
+BKARINVLBKAR.INVL.COMPR
+BKARINVLBKAR.INVL.ASD  
+BKARINVLBKAR.INVL.TXAMT
+BKARINVLBKAR.INVL.FRGHT
+BKARINVLBKAR.INVL.COOP 
+BKARINVLBKAR.INVL.OOQTY
+BKARINVLBKAR.INVL.EXTRA
+BKARINVLBKAR.INVL.SCCOG0
+BKARINVLMCNTR          
+TOP.CNTR       
+CURR.START.POS 
+TOP.START.POS  
+ISCTR          
+GTEBD          
+TEBD           
+BKPR.SLS.EMPNUM
+BKPRSALEBKPR.SLS.CLASS 
+BKPRSALEBKPR.SLS.RATE  
+BKPRSALEBKPR.SLS.HOW   
+BKPRSALEBKPR.SLS.WHEN  
+BKPRSALEBKPR.SLS.QUOTA 
+BKPRSALEBKPR.SLS.GROSS z
+BKPRSALEBKPR.SLS.COGS  
+BKPRSALEBKPR.SLS.RCPTS :
+BKPRSALEBKPR.SLS.COMM  
+BKPRSALEBKPR.SLS.PAID  
+BKPRSALEBKPR.SLS.FNMI  Z
+BKPRSALEBKPR.SLS.LNME  s
+BKPRSALEBKPR.SLS.EXPACT
+BKPRSALEBKPR.SLS.EXPDPT
+BKPRSALEBKPR.SLS.EXTRA 
+BKPRSALEBKCM.TERR.TCODE
+BKCMTERRBKCM.TERR.DESC 
+BKCMTERRBKIC.LOCM.CODE 
+BKICLOCMBKIC.LOCM.NAME 
+BKICLOCMBKIC.LOCM.ADDR1(
+BKICLOCMBKIC.LOCM.ADDR2F
+BKICLOCMBKIC.LOCM.ADDR3d
+BKICLOCMBKIC.LOCM.CITY 
+BKICLOCMBKIC.LOCM.STATE
+BKICLOCMBKIC.LOCM.ZIP  
+BKICLOCMBKIC.LOCM.TAX# 
+BKICLOCMBKIC.LOCM.CNTCT
+BKICLOCMBKIC.LOCM.PHONE
+BKICLOCMBKIC.LOCM.FAX  
+BKICLOCMISIS.MCF.CODE  
+ISMCF   ISIS.MCF.BASE  
+ISMCF   ISIS.MCF.GLABK 
+ISMCF   ISIS.MCF.GLDBK 
+ISMCF   ISIS.MCF.GLABS 
+ISMCF   ISIS.MCF.GLDBS 
+ISMCF   ISIS.MCF.GLAIS  
+ISMCF   ISIS.MCF.GLDIS *
+ISMCF   ISIS.MCF.GLABKX.
+ISMCF   ISIS.MCF.GLDBKX8
+ISMCF   ISIS.MCF.GLAAPX<
+ISMCF   ISIS.MCF.GLDAPXF
+ISMCF   ISIS.MCF.GLAARXJ
+ISMCF   ISIS.MCF.GLDARXT
+ISMCF   ISIS.MCF.AMTBNKX
+ISMCF   ISIS.MCF.AMTAP `
+ISMCF   ISIS.MCF.AMTAR h
+ISMCF   ISIS.MCF.AMTFE p
+ISMCF   ISIS.MCF.SYMBOLx
+ISMCF   ISIS.MCF.DESC  y
+ISMCF   ISIS.MCF.AMTPOR
+ISMCF   ISIS.MCF.GLAAR 
+ISMCF   ISIS.MCF.GLDAR 
+ISMCF   ISIS.MCF.GLAAP 
+ISMCF   ISIS.MCF.GLAPO 
+ISMCF   ISIS.MCF.GLDPO 
+ISMCF   ISIS.MCF.GLDAP 
+ISMCF   ISIS.MCF.GLAPOX
+ISMCF   ISIS.MCF.GLDPOX
+ISMCF   ISIS.MCF.SYMPOS
+ISMCF   ISIS.MCF.DEC   
+ISMCF   ISIS.MCF.SYMDSC
+ISMCF   ISIS.MCF.INTRES
+ISMCF   ISIS.MCF.INTDAY
+ISMCF   ISIS.MCF.GLAARD
+ISMCF   ISIS.MCF.GLDARD
+ISMCF   ISIS.MCF.AMTAD 
+ISMCF   ISIS.MCF.GLAADX
+ISMCF   ISIS.MCF.GLDADX
+ISMCF   ISIS.MCF.GLACS 
+ISMCF   ISIS.MCF.GLDCS 
+ISMCF   ISIS.MCF.AMTCS !
+ISMCF   ISIS.MCF.GLACSX)
+ISMCF   ISIS.MCF.GLDCSX3
+ISMCF   PB_NUMBER      
+PBD            
+EBD            
+TOP.TOTALS     
+N.CNTR         
+TEMP.PEXT2     
+IN.STRING      
+RET.STRING     
+ICNTR          
+LAST.POS       
+LEN.IN.STRING  
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+CFG.BUFFER     
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+EVO.CFG.TOOLBAR
+EVO.CFG.OLWOA  
+EVO.CFG.OLPOA  
+EVO.CFG.OLINA  
+EVO.CFG.OLINB  
+EVO.CFG.OLSOA  
+EVO.CFG.OLARA  
+EVO.CFG.OLAPA  
+EVO.CFG.LANG   
+EVO.CFG.SOUNDS 
+EVO.CFG.REMIND 
+EVO.CFG.EREMIND
+EVO.CFG.REMSEC 
+EVO.CFG.RSNOOZE
+ARA.SAVE       
+APA.SAVE       
+DEFPRINTPATH   
+ARA.CFG.ECSCRN 
+APA.CFG.ECSCRN 
+INA.CFG.ECSCRN 
+INB.CFG.ECSCRN 
+POA.CFG.ECSCRN 
+SOA.CFG.ECSCRN 
+WOA.CFG.ECSCRN 
+ARA.CFG.CVTSCRN
+APA.CFG.CVTSCRN
+INA.CFG.CVTSCRN
+INB.CFG.CVTSCRN
+POA.CFG.CVTSCRN
+SOA.CFG.CVTSCRN
+WOA.CFG.CVTSCRN
+HH.CFG.RPTPTR  
+HH.CFG.LABPTR  
+PRINTBOXES     
+EMAIL.CFG.BCC  
+EMAIL.CFG.SUBJ 
+EMAIL.CFG.BOD1 
+EMAIL.CFG.BOD2 
+EMAIL.CFG.BOD3 
+EMAIL.CFG.BOD4 
+EMAIL.CFG.BOD5 
+EMAIL.CFG.BOD6 
+EMAIL.CFG.BOD7 
+EMAIL.CFG.BOD8 
+EMAIL.CFG.BOD9 
+EMAIL.CFG.BOD0 
+EMAIL.CFG.SIG1 
+EMAIL.CFG.SIG2 
+EMAIL.CFG.SIG3 
+EMAIL.CFG.SIG4 
+EMAIL.CFG.SIG5 
+EMAIL.CFG.SIG6 
+EMAIL.CFG.SIG7 
+EMAIL.CFG.SIG8 
+EMAIL.CFG.SIG9 
+EMAIL.CFG.SIG0 
+EMAIL.CFG.APTH 
+EMAIL.CFG.SMTP 
+EMAIL.CFG.PORT 
+EMAIL.CFG.EMAIL
+EMAIL.CFG.NAME 
+EMAIL.CFG.USER 
+EMAIL.CFG.PASS 
+EMAIL.CFG.EPASS
+EMAIL.CFG.EFAIL
+EVO.CO.CVTLINKS
+XCPATH         
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+BKSYHELPDBA.HELP.REF   
+DBAHLPIDDBA.HELP.MAP   
+DBAHLPIDSND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX         
+ISIS    IS.MULTI.CURR  
+ISIS    IS.LANDED.COST 
+ISIS    IS.UPC         
+ISIS    IS.RETAIL.PRICE
+ISIS    IS.COMM.PRICE  
+ISIS    IS.IMAGING     
+ISIS    IS.UPC.1       
+ISIS    IS.DEMO        
+ISIS    IS.UPC.2       
+ISIS    IS.MULTI.CPAY  
+ISIS    IS.PIC.PATH    
+ISIS    IS.TAX.FRM     +
+ISIS    IS.PO.TAX      ,
+ISIS    IS.TAX.IN      -
+ISIS    IS.TAX.CVT     .
+ISIS    IS.CUR.CVT     /
+ISIS    IS.AUTO.TAX.CAL0
+ISIS    IS.EZPAY       1
+ISIS    IS.RMA         2
+ISIS    IS.SPEC.SUP    3
+ISIS    IS.SPEC.SUPF   4
+ISIS    IS.SPEC.SUPT   6
+ISIS    MSG_PTR        
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+MKAHIST.ACCT   
+MKAHIST MKAHIST.DATE   
+MKAHIST MKAHIST.TRACK  
+MKAHIST MKAHIST.SEQ    
+MKAHIST MKAHIST.EVENT  
+MKAHIST MKAHIST.MEDIA   
+MKAHIST MKAHIST.FORM   !
+MKAHIST MKAHIST.REM1   )
+MKAHIST MKAHIST.REM2   e
+MKAHIST TLLNZE_HNDL    
+ZRETN          
+TLLENS_HNDL    
+TLLCC_HNDL     
+TLLPRT_HNDL    
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+CFG.NAME       
+CFG.SIZE       
+TEMP_HNDL      
+CFG.PATH       
+CFG.FULLNAME   
+ISTS.PATH      
+DEF_FORM       
+FILE.HLDR      
+FILE.NAME      
+ZRET           
+CNTR2          
+CNTR3          
+CNTR           
+X_TTL1         
+X_USCORE       
+BUTTON_LIST    
+BUTTON_CNTR    
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+LSCODE_TTL1    
+LSCODE_USCORE  
+LKUP.CUS.FROM  
+CUSTF2.COL     
+CUSTF2.ROW     
+SRCH_KEY_NUM   
+CUST_TTL1      
+CUST_USCORE    
+CUST_CODE      
+IS.TEMP.CUST   
+TEMP_KEY       
+MENULIST       
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+RDATE          
+CURR           
+RVAL           
+ISIS.MCR.BASE  
+ISMCR   ISIS.MCR.DATE  
+ISMCR   ISIS.MCR.SOURCE
+ISMCR   ISIS.MCR.RATE  %
+ISMCR   EMAIL_FROM_LIB 
+REPORT.TYPE    
+CALLED.FROM    
+OUT_FORM       
+PRINT.OPTIONS  
+PRINT.TO.WHERE 
+USE.PRINTER    
+PRT.WHERE.PATH 
+EML.AUTOEMAIL  
+EML.CONTNUM    
+PRT.TYPE.RPT   
+ASK.EMAIL      
+TIME.DATE.STAMP
+NUM.COPIES     
+NZ.EMAIL       
+TLL.RET        
+LINKED.DOC     
+PLD.ARRAY      
+PLD.LOOP       
+MCNTR6         
+PLD.POINTER    
+SLSPF2.COL     
+SLSPF2.ROW     
+SLSP_TTL1      
+SLSP_USCORE    
+TEMP_KEY       
+CFG.PROMPT     
+ISTS.PATH      
+SQF2.COL       
+SQF2.ROW       
+SQ_TTL1        
+SQ_USCORE      
+TEMP_KEY       
+SOF2.COL       
+SOF2.ROW       
+SO.DEFSORT     
+SO.FILT        
+SO.STATUS      
+STATUS         
+SSRCH_KEY_NUM  
+RETVL          
+SO_TTL2        
+SO_TTL1        
+SO_USCORE      
+IS.TEMP.SO     
+TEMP_KEY       
+STEMP_KEY      
+SOHF2.COL      
+SOHF2.ROW      
+SOH.DEFSORT    
+SOHALPHASO     
+SOH_TTL1       
+SOH_USCORE     
+TEMP_KEY       
+TERR_TTL1      
+TERR_USCORE    
+LOCMF2.COL     
+LOCMF2.ROW     
+KEY            
+LOCM_TTL1      
+LOCM_USCORE    
+TEMP_KEY       
+TAX_TTL1       
+TAX_USCORE     
+NBKSA.TYPE     
+TAX_TTL1       
+TAX_USCORE     
+SHORT.RTM.NAME 
+ENTRY.TYPE     
+R.UPVAL        
+IS.DISC.L      
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+EPICT          
+C1             
+R1             
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.VENDCODE  
+BKAPVENDBKAP.VENDNAME  
+BKAPVENDBKAP.ADD1      (
+BKAPVENDBKAP.ADD2      d
+BKAPVENDBKAP.CITY      
+BKAPVENDBKAP.STATE     
+BKAPVENDBKAP.CONTACT   
+BKAPVENDBKAP.TELEPHONE N
+BKAPVENDBKAP.ZIP       
+BKAPVENDBKAP.COUNTRY   
+BKAPVENDBKAP.OUTINV    
+BKAPVENDBKAP.LASTPURCH 
+BKAPVENDBKAP.LASTPMT   
+BKAPVENDBKAP.PURCH.MTD !
+BKAPVENDBKAP.PURCH.YTD )
+BKAPVENDBKAP.PURCH.LYR 1
+BKAPVENDBKAP.PURCH.VAR 9
+BKAPVENDBKAP.OUT.CREDITA
+BKAPVENDBKAP.NEW.VEND  I
+BKAPVENDBKAP.START.DATEJ
+BKAPVENDBKAP.CLASS     N
+BKAPVENDBKAP.TERMS.NUM R
+BKAPVENDBKAP.HIST.YN   T
+BKAPVENDBKAP.REM.ZIP   U
+BKAPVENDBKAP.REM.STATE _
+BKAPVENDBKAP.NOTES     a
+BKAPVENDBKAP.GL.ACCT   
+BKAPVENDBKAP.GL.DPT    
+BKAPVENDBKAP.SORT      
+BKAPVENDBKAP.SHIP.VIA  
+BKAPVENDBKAP.FOB.POINT 
+BKAPVENDBKAP.FTERMS.NUM
+BKAPVENDBKAP.TAX.ID    
+BKAPVENDBKAP.ADD3      
+BKAPVENDBKAP.EXTRA     $
+BKAPVENDBKAP.EMAIL     
+BKAPVENDBKAP.DESC      
+BKAPVENDBKAP.IS.TAXGRP 
+BKAPVENDBKAP.IS.TAXIN  
+BKAPVENDBKAP.IS.MCCODE 
+BKAPVENDBKAP.IS.DCODE  
+BKAPVENDBKAP.CUST.CODE 
+BKAPVENDBKCM.ACCT.CODE 
+BKCMACCTBKCM.ACCT.OLDCD
+BKCMACCTBKCM.ACCT.ALPHA
+BKCMACCTBKCM.ACCT.NAME 
+BKCMACCTBKCM.ACCT.ADD1 8
+BKCMACCTBKCM.ACCT.ADD2 V
+BKCMACCTBKCM.ACCT.ADD3 t
+BKCMACCTBKCM.ACCT.CITY 
+BKCMACCTBKCM.ACCT.STATE
+BKCMACCTBKCM.ACCT.ZIP  
+BKCMACCTBKCM.ACCT.CNTRY
+BKCMACCTBKCM.ACCT.CONT1
+BKCMACCTBKCM.ACCT.TITLE
+BKCMACCTBKCM.ACCT.PHONE
+BKCMACCTBKCM.ACCT.FAX  +
+BKCMACCTBKCM.ACCT.REP  D
+BKCMACCTBKCM.ACCT.DLOADI
+BKCMACCTBKCM.ACCT.SICCDJ
+BKCMACCTBKCM.ACCT.CUST Q
+BKCMACCTBKCM.ACCT.LEAD R
+BKCMACCTBKCM.ACCT.STARTW
+BKCMACCTBKCM.ACCT.TERR [
+BKCMACCTBKCM.ACCT.REM  _
+BKCMACCTBKCM.ACCT.FONE 
+BKCMACCTBKCM.ACCT.FTWO 
+BKCMACCTBKCM.ACCT.FTHRE
+BKCMACCTBKCM.ACCT.FTIME<
+BKCMACCTBKCM.ACCT.CCARD>
+BKCMACCTBKCM.ACCT.CNUM W
+BKCMACCTBKCM.ACCT.CEXP p
+BKCMACCTBKCM.ACCT.CMPNMt
+BKCMACCTBKCM.ACCT.PNAME
+BKCMACCTBKCM.ACCT.EXTRA
+BKCMACCTBKCM.ACCT.EMAILn
+BKCMACCTBKCM.ACCT.EMPS 
+BKCMACCTIPICT          
+ITEM           
+ICOSZ          
+V.OLINK        
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+X_HNDL         
+X.BUFF         
+TI             
+CO_PATH        
+LOC_HNDL       
+LOC_BUFF_NAME  
+FILELOC LOC_FILE_NAME  
+FILELOC LOC_COMP_CODE  (
+FILELOC LOC_REC_SIZE   +
+FILELOC LOC_REC_TYPE   0
+FILELOC LOC_LOCATION   1
+FILELOC LOC_DESCRIPTION
+FILELOC PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+SRCH_HOW_MSG   
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSYPRTRBKSY.PRTR.EXEC 
+BKSYPRTRBKSY.PRTR.TAS  &
+BKSYPRTRBKSY.PRTR.LPTNM'
+BKSYPRTRBKSY.PRTR.TYPE (
+BKSYPRTRBKSY.PRTR.PWDT 0
+BKSYPRTRBKSY.PRTR.PMAX 2
+BKSYPRTRBKSY.PRTR.PPLNE4
+BKSYPRTRBKSY.PRTR.LASER6
+BKSYPRTRBKSY.PRTR.POST 7
+BKSYPRTRBKSY.PRTR.PRUN ?
+BKSYPRTRBKSY.ARINV.NUM 
+BKSYMSTRBKSY.APINV.NUM 
+BKSYMSTRBKSY.APPO.NUM  
+BKSYMSTRBKSY.GJ.NUM    
+BKSYMSTRBKSY.TAX.RATE   
+BKSYMSTRBKSY.TERMS     (
+BKSYMSTRBKSY.TRM.AMT   
+BKSYMSTRBKSY.TRM.TYP   
+BKSYMSTRBKSY.TRM.DAY   
+BKSYMSTRBKSY.TRM.EOM   
+BKSYMSTRBKSY.TRM.MAX   0
+BKSYMSTRBKSY.COMP.NAME X
+BKSYMSTRBKSY.COMP.ADD1 q
+BKSYMSTRBKSY.COMP.ADD2 
+BKSYMSTRBKSY.COMP.CSZ  
+BKSYMSTRBKSY.AR.SHP.VIA
+BKSYMSTRBKSY.AR.SLSP   
+BKSYMSTRBKSY.AR.ENTBY  
+BKSYMSTRBKSY.AR.TAXABL 
+BKSYMSTRBKSY.AR.ENDDESC
+BKSYMSTRBKSY.AR.TURNOFFi
+BKSYMSTRBKSY.AR.PEL    j
+BKSYMSTRBKSY.AP.SHP.VIAk
+BKSYMSTRBKSY.AP.ENTBY  z
+BKSYMSTRBKSY.AP.PEL    |
+BKSYMSTRBKSY.AP.ENDDESC}
+BKSYMSTRBKSY.GL.CLRING 
+BKSYMSTRBKSY.GLDPT.CLR 
+BKSYMSTRBKSY.AR.GLACT  !
+BKSYMSTRBKSY.AR.GLDPT  +
+BKSYMSTRBKSY.AR.DISCGL /
+BKSYMSTRBKSY.AR.DISCDPT9
+BKSYMSTRBKSY.AP.GLACT  =
+BKSYMSTRBKSY.AP.GLDPT  G
+BKSYMSTRBKSY.AP.DISCGL K
+BKSYMSTRBKSY.AP.DISCDPTU
+BKSYMSTRBKSY.TAX.GLACT Y
+BKSYMSTRBKSY.TAX.GLDPT c
+BKSYMSTRBKSY.PO.TAXGL  g
+BKSYMSTRBKSY.PO.TAXDPT q
+BKSYMSTRBKSY.PO.FREIGHTu
+BKSYMSTRBKSY.PO.FRGTDPT
+BKSYMSTRBKSY.GL.RETEARN
+BKSYMSTRBKSY.GLDPT.RET 
+BKSYMSTRBKSY.PRGS.WHR  
+BKSYMSTRBKSY.FISCAL.YR 
+BKSYMSTRBKSY.GL.RELYR  
+BKSYMSTRBKSY.GLDPT.RELY
+BKSYMSTRBKSY.GL.ARINTR 
+BKSYMSTRBKSY.GLDPT.ARIN
+BKSYMSTRBKSY.AR.INT.RTE
+BKSYMSTRBKSY.AR.INT.DAY
+BKSYMSTRBKSY.CHK.NUM   
+BKSYMSTRBKSY.CHK.BAL   +
+BKSYMSTRBKSY.CHK.NAME  s
+BKSYMSTRBKSY.CHK.CHKACT
+BKSYMSTRBKSY.CHK.CHKDPT
+BKSYMSTRBKSY.AR.CHKACT 
+BKSYMSTRBKSY.AP.CHKACT 
+BKSYMSTRBKSY.PR.CHKACT 
+BKSYMSTRBKSY.ARSO.NUM  
+BKSYMSTRBKSY.AUTO.BO   
+BKSYMSTRBKSY.RTS.DEF   
+BKSYMSTRBKSY.AR.FREIGHT
+BKSYMSTRBKSY.AR.FRGTDPT
+BKSYMSTRBKSY.PO.RNI    
+BKSYMSTRBKSY.PO.RNIDPT '
+BKSYMSTRBKSY.PLAIN.INV +
+BKSYMSTRBKSY.PLAIN.PO  ,
+BKSYMSTRBKSY.PLAIN.STMT-
+BKSYMSTRBKSY.PLAIN.CHKS.
+BKSYMSTRBKSY.FORM.CMPNY/
+BKSYMSTRBKSY.AR.AGING  0
+BKSYMSTRBKSY.AP.AGING  :
+BKSYMSTRBKSY.PR.ODNAME D
+BKSYMSTRBKSY.AP.RECNUM 
+BKSYMSTRBKSY.GJ.RECNUM 
+BKSYMSTRBKSY.AR.RECNUM 
+BKSYMSTRBKSY.TAL       
+BKSYMSTRBKSY.TRM.DISC  
+BKSYMSTRBKSY.PO.INR    E
+BKSYMSTRBKSY.PO.INRDPT O
+BKSYMSTRBKSY.EXTRA     S
+BKSYMSTRBKSY.CHK.CHKCUR
+BKSYMSTRFILE_EXT_ARRAY 
+PSWD           
+XRVAL          
+COO_TEST       
+CHECK_OPEN_ONLY
+ASK_STRING     
+BPICT          
+TIME1          
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.KEY2   
+BKAPDESCBK.DESC.CODE   
+BKAPDESCBK.DESC.KEY    
+BKAPDESCBK.DESC.NUM    
+BKAPDESCBK.DESC.LINE   
+BKAPDESCBK.DESC.NOTES  
+BKAPDESCBK.DESC.DESC   _
+BKAPDESCCDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+FRMPRG         
+RWHO           
+ISTS.PATH      
+ARYCNTR        
+IX             
+FILLVAL        
+INISTRING      
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      

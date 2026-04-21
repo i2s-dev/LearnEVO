@@ -1,0 +1,1616 @@
+BKSYMSTR
+BKARINVL
+BKARINV 
+TASCOLOR
+BKICMSTR
+BKICLOC 
+BKICPMAT
+BKYSMSTR
+BKARCUST
+MTICMSTR
+BKICREF 
+BKBMMSTR
+BKFOCFG 
+BKEDIDUN
+BKARTXN 
+BKSYHELP
+DBAHLPID
+CLASMSTR
+BKSBVEND
+BKSBMFG 
+ISIS    
+BKESTCFG
+BKAPDESC
+BKARDEP 
+ISTAXGRP
+JKSOSAL
+BKEDIDUNA
+JKSOSAA
+R M A  A
+RETURN AUTHA
+Sales OrderA
+BKSYMSTRA
+BKYSMSTRA
+BKICREFA
+BKBMMSTRA
+BKARDESCA
+MTICMSTRA
+BKPRSALEA
+ISTAXGRPA
+ISMCFA
+DISCOUNTA
+BKICPMATA
+BKICLOCMA
+BKICLOCA
+BKICMSTRA
+BKESTQTLA
+BKESTQTA
+BKESTCFGA
+BKARINVLA
+BKARINVA
+BKARDEPA
+JKSOSAA
+BKARCUSTA
+BKFOCFGA
+BKARTXNA
+BKARTXNSI
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsL
+JKSOSAA
+JKSO-S-A  Enter RETURN AUTHORIZATION- Add New RMAA
+JKSO-S-A  RETURN AUTHORIZATION- Edit Existing RMAA
+SO-A  Enter Sales Orders - Add New SOA
+SO-A  Enter Sales Orders - Edit Existing SOA
+JKSOSAA
+RMA No.A
+RETURN A
+Error: Unable to activate the bill-to customer record. A
+Lin Item Number     Description        Ship Qty         Price         ExtA
+Home Top,End BottomA
+Esc ExitA
+,F9 DuplicateA
+F5 First,F6 Last,F7 Prev,F8 NextA
+F10 Save A
+,Esc Exit A
+,F9 DuplicateA
+F2 Display Lines,End Add,F3 Insert,F4 DeleteA
+Home A
+ Notes,PgUp Header ScreenA
+F1 Help,F2 LookupA
+Esc Exit LineA
+F1 HelpA
+Esc Exit LineA
+The item number cannot be changed.  If this line is not needed, use F4 to delete it. A
+F1 Help,F2 Stock StatusA
+Esc Exit LineA
+F1 HelpA
+Esc Exit LineA
+NLTKBOA
+F1 Help,F2 Stock StatusA
+Esc Exit LineA
+F1 HelpA
+Esc Exit LineA
+F1 Help,F2 LookupA
+Esc Exit LineA
+F1 HelpA
+Esc Exit LineA
+A price matrix has not been established for this part. A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+   Customer's quantity discount levelA
+  Quantity         Price    A
+ Base Price    A
+      F0<
+      F0<
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Enter Taxable Amount: A
+Since the line item extension is 0, the taxable amount must also be 0. A
+Since the line item extension is positive, the taxable amount cannot be negative. A
+Since the line item extension is negative, the taxable amount cannot be positive. A
+The taxable amount cannot exceed the line item extension. A
+Items cannot be released for a customer on Credit Hold. A
+Do you want to change all lines with A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Commission 1: A
+%  Amt: A
+Commission 2: A
+%  Amt: A
+Commission 1: A
+%  Amt: A
+Commission 2: A
+%  Amt: A
+Change Original Quantity (A
+Cus# A
+Error re-getting the BKICMSTR record! A
+warnF@
+Error re-getting the MTICMSTR record! A
+This customer has exceeded their credit limit.  Do you want to continue?  If not, any changes you have made to this A
+ will not be saved!A
+You have entered A
+ lines for this A
+.  That is the maximum allowable.  You will either have to delete lines or start a new A
+JKSOSAA
+ does not exist. A
+Item number A
+You cannot sell an 'O' type feature. A
+You cannot sell a 'B' type phantom part. A
+ has no MTICMSTR record.  Please use the master-level reconciliation in D-D to correct. A
+Item number A
+ at location "A
+There is no record of item number A
+".  Would you like to create a location record now?A
+This is the General Ledger Department Code to whichF@D
+the Accounts Receivable transactions will be posted.F@D
+The default is set to the default AR department asF@D
+defined through 'Enter Company Information'.I
+Kit Consists of:N
+Cus# A
+Yes F 1
+No  F 1
+NormalBkgA
+NormalBkgA
+        
+        Include specificationsA
+        for this kit component?A
+        Include specificationsA
+        for this part?A
+        Include specificationsA
+        for this option?A
+        
+ Specs For A
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+F10 Save SpecsA
+MenuBkgI
+Exit without including the specifications?L
+kit componentA
+optionA
+Change this item number's A
+ quantities proportionally?A
+CANCELA
+CANCELA
+No BKICMSTR record this partF`
+ [Level A
+Features of: A
+ENTER Select/UnselectA
+F10 SaveA
+                                                          A
+Exit without choosing any of these features?  (any features marked for selection in this window will be unselected)L
+Cancel the rest of the feature/option selection process?L
+CANCELA
+NORMALA
+NORMALI
+No BKICMSTR record this partI
+ [Level A
+Options for: A
+ENTER SelectA
+                                                                  A
+Exit without choosing any of these options?L
+Cancel the rest of the feature/option selection process?L
+CANCELA
+NORMALA
+NORMALI
+Options:N
+Sub-Options:N
+ does not exist. A
+Error: Item number A
+ has no MTICMSTR record. A
+Error: Item number A
+F10 Save LineA
+Cus# A
+Cus# A
+End OptionsN
+F10 Save LineA
+This is the first line of this A
+.  You can only use the Duplicate Line function on lines OTHER than the first line.  Move to the line where the duplicate should be placed (inserted), press F9, and the first line with a Item Number above the current location will be duplicated there. A
+You already have the maximum number of lines possible (A
+) on this A
+ and will not be able to duplicate any lines. A
+Did not find any duplicable lines above the current location.  Move to the line where the duplicate should be placed (inserted), press F9, and the first line with a Item Number above the current location will be duplicated there. A
+Unable to duplicate this line as it will exceed the maximum number of lines possible (A
+Include comments/options/components?L
+Unable to duplicate this line and its comments/options/components as they will exceed the maximum number of lines possible (A
+Unable to duplicate this line as it will exceed the maximum number of lines possible (A
+Insert a line?L
+This customer is an EDI customer.  No line items should be deleted,  unless this is a manual change being coordinated with the EDI trading partner.  Do you wish to continue? L
+Delete this line?L
+ units have been invoiced from this A
+ line.  Due to this the entire line cannot be deleted.  However, any remaining open order or backorder quantity for this line will be cleared. A
+Delete this line?L
+Is this A
+ line ready to be invoiced?A
+Y - This A
+ line can be invoiced.A
+N - This A
+ line will be held.A
+Estimated Ship Date:F@D
+Optionally enter the date on which this F@D
+ line is estimated to ship.A
+Tax this A
+ line item?:  [Y/N]A
+Y - This A
+ line item will be taxed.A
+N - This A
+ line item is tax exempt.A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+SAVE thinks its in header mode!A
+SAVE thinks its in header mode!A
+ RMA NO.                  SO Date              Ship to                        
+ Customer                 Entered by                        Last Invc#        
+ Name                                                                         
+                                         Original Qty               Line #
+ Lin       Item Number      Description                        
+ Tax?       
+                                                               
+ Release?   
+                                                               
+            
+   Ship Qty       Backord Qty    Price          UM   Disc%     
+   Est Ship 
+                                                               
+            
+ Subtotal               Tax           Freight          
+ Total              
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+mticmstrI
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+ Inventory A
+F1 Help,F2 Find,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+CLASMSTRI
+CLASMSTRL
+Choose the Class first, then the inventory item. A
+ClassA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Specifications                A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+User Defined             A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Cust Cd   A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Please only select item numbers of the following Types: A
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+CLASMSTRL
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial description.A
+ This is a case-sensitive search.  A
+   Item Description          A
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full/partial class, or theA
+ full class and full/partial part#.A
+   Class          Item NumberA
+CLASMSTRN
+BKICMSTRA
+MTICMSTRI
+Item Number    F
+Description    F
+Type           F
+2nd DescriptionF
+Category       F
+Class          F
+Specifications F
+User Defined   F
+Customer Code  F
+Alternates     I
+F1 HelpA
+Esc ExitA
+ A - Item NumberF
+ B - DescriptionF
+ C - TypeF
+ D - 2nd DescriptionF
+ E - CategoryF
+ F - ClassF
+ G - SpecificationsF
+ H - User DefinedF
+ I - Customer CodeF
+ J - AlternatesA
+ Search Key A
+ N Non Inventory   F
+ R Purchased Part  F
+ M Make From       F
+ F Finished Good   F
+ A Subassembly     F
+ B Phantom AssemblyF
+ L Labor           F
+ T Outside Process F
+ K Selling Kit     F
+ O Feature         I
+F1 HelpA
+Esc ExitA
+ N - Non InventoryF
+ R - Purchased PartF
+ M - Make FromF
+ F - Finished GoodF
+ A - SubassemblyF
+ B - Phantom AssemblyF
+ L - LaborF
+ T - Outside ProcessF
+ K - Selling KitF
+ O - FeatureA
+ Starting Type Value I
+ESC ExitA
+NormalBkgA
+NormalBkgA
+ Begin Alternate Part Search with: A
+bkicmstrA
+BKSBVENDI
+BKSBVENDA
+BKSBVENDA
+bksbvendA
+BKSBVENDL
+BKSBMFGI
+BKSBMFGA
+BKSBMFGA
+bksbmfgA
+BKSBMFGL
+BKICREFI
+BKICREFA
+BKICREFA
+bkicrefA
+BKICREFL
+No matching DBA, Vendor, Manufacturer, or Customer Cross-Reference item numbers were found matching the number you entered.  Do you want to display the DBA Inventory file beginning with the code entered?L
+BKSBVENDL
+BKSBMFGL
+bkicmstrI
+BKICMSTRA
+MTICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+Item number cannot be blank. A
+BKICMSTR record for this item not in memory. A
+Note: The MTICMSTR record for this non-stock part is not available.  Only some of the stock status quantities can be reported. A
+NormalBkgA
+NormalBkgA
+ Inventory Stock Status A
+ Inventory Stock Status A
+bkiclocI
+BKICLOCL
+BKICLOCL
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+There are more than 100 locations for this part, which is the maximum that can be displayed. A
+BKICLOCA
+bkiclocI
+BKICLOCI
+Item Number    : A
+        Type: A
+Description    : A
+2nd Description: A
+               LOCATIONS              A
+(+) ON HAND          :A
+(-) On Sales Order   :A
+(-) On Back Order    :A
+(+) On Purchase Order:A
+(+) In QC Inspection :A
+(+) On Work Order    :A
+(-) Allocated        :A
+(=) Available        :A
+In Work-in-Process   :A
+   TOTAL    I
+    n/a     I
+    n/a     I
+    n/a     I
+            I
+    n/a     I
+Esc ExitA
+F7 Scroll Locations Left,F8 Scroll Locations RightA
+Esc ExitA
+Esc ExitA
+Please do not change the item number. A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+BKICLOCL
+BKICLOCA
+BKICLOCA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF
+ B - DescriptionA
+ Search Key A
+TAX SYSTEM:F@D
+ This Program requires the new TAX system.F@D
+ Please contact your system administrator to F@D
+ run the required Conversion routine. I
+Multi Currency System:F@D
+ This Program requires the Multi Currency systemF@D
+ to be converted to the 2000.1 configuration. F@D
+ Please contact your system administrator to F@D
+ run the required MCSTART routine. I
+This A
+ already exists.  Please use a different number for the new A
+ does not exist.  Do you want to use the number entered for a new A
+BKSOPAA
+Do you want to reset SY NEXT RMA#  A
+# counter?A
+This A
+ is closed.  Do you want to reopen it?A
+ This A
+ has been assigned invoice# A
+ This invoice has been printed but not yet posted.F@D
+ In order to make changes to a A
+ which has a printedA
+ but unposted invoice, please first use SO-F (Print Invoices)F@D
+ to print the unposted invoice again, then answer 'No' whenF@D
+ asked to mark the invoice as printed.  This will unmark it,F@D
+ and you can then make changes to the A
+ This will prevent the making of accidental changes to theF@D
+ order that would then not be reflected on the printed invoice.I
+The location ("A
+") for this A
+ is invalid.  IF YOU CONVERTED FROM VERSION 96.2x, AND THIS IS THE DEFAULT (BLANK) LOCATION, please contact DBA Tech Support for assistance.  Otherwise, please change the location for this A
+Error: There is no record of customer code "A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Loading A
+ line items: A
+BKSOPAA
+BKSOPAA
+Has depositsA
+BKSOPAA
+New QuoteA
+Quote# A
+ for Customer A
+SO-P-A  Sales Quote Notes: A
+New RAA
+ for Customer A
+SO-PH  RMA Order Notes: A
+NormalBkgA
+F3 Ins Line,F4 Del Line,A
+ DownA
+F10 Save Notes,Esc Exit NotesA
+NormalBkgA
+NormalBkgA
+Inserting a line here will cause the last line of these notes to be dropped.  Do you still wish to insert the line?L
+Exit notes without saving any changes?L
+Saving A
+ notes...A
+BKSOPAA
+SO-P-A  Enter Sales Quotes - Add New QuoteA
+SO-P-H  Enter RMA- Edit Existing RMAA
+JKSOSA  Enter RMA - Add New RMAA
+JKSOSA  Enter RMA - Edit Existing RMAA
+BKSOPAA
+BKSOPAA
+ORDDTEA
+SLSP1A
+SLSP2A
+TAXABLA
+GLDPTA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Invoice freight amount: A
+BKSOPAA
+BKSOPAA
+BKSOPAA
+BKSOPAA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Saving A
+ line items:  A
+BKSOPAA
+Itemize Sales Tax?L
+This A
+ is set to invoice freight or tax only!  Do you still want to release this A
+Use the default ending lines?A
+Enter Lot Control information?L
+Enter Serial Control information?L
+BKSOLOTA
+BKSOSERA
+This A
+ has no line items with unbilled quantities and no freight or tax charges.  Do you wish to close it?A
+Cancel adding this A
+Exit this A
+ without saving any changes?A
+Exit this A
+ without saving any changes? (the changes you made to the A
+ notes HAVE been saved)A
+BKSOPAA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+NNNYNF@)
+YNNYNX&
+YNNYNX7
+YNNYNXE"
+YNNYNX
+YNNYNX0(
+YNNYNX
+YNNYNX'+
+YNNYNX8,
+YNNNYCg,
+NNNYNF@)
+YNNNYN
+YNNNYF
+NNNYNFp
+NNNYNFp
+YNNNYF
+NNNYNF0
+NNNYNLH
+YNNNYX
+YNNNYX
+YNNNYXzd
+YNNNYX
+YNNNYXJe
+YNNNYX
+YNNNYX
+YNNNYX
+YNNNY^
+YNNNYXsg
+YNNNYX
+YNNNYXCh
+YNNNYCrh
+YNNNYFP[
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYFP[
+YNNNYXm
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYFP[
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYCo
+YNNYNXX
+YNNNYC
+YNNYNX
+YNNNYCK
+YNNNYF
+NNNYNC
+NNNYN8w
+NNNYNF09
+NNNYNF`-
+YNNNYC
+YNNNYF
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+RET.LEVEL      
+YSMSTR.H       
+ICREF.H        
+BMMSTR.H       
+ARDESC.H       
+MTICMSTR.H     
+PRSALE.H       
+DISC.H         
+ICPMAT.H       
+ICLOCM.H       
+ICLOC.H        
+ICMSTR.H       
+ESTCFG.H       
+ARCUST.H       
+SYMSTR.H       
+ISTXG.HNDL     
+ISMCF.HNDL     
+BKFO.HNDL      
+TEMP.PEXT      
+MAXL           
+LINE.PROD.CODE 
+LINE.PROD.ESD  
+LINE.PROD.DESC 
+LINE.PROD.QTY  
+LINE.PROD.OQTY 
+LINE.PROD.UNUM 
+LINE.PROD.MQTY 
+LINE.PROD.PRCE 
+LINE.PROD.DISC 
+LINE.PROD.RNUM 
+LINE.PROD.COGS 
+LINE.PROD.TAX  
+LINE.PROD.UBO  
+LINE.PROD.USTD 
+LINE.PROD.RTS  
+LINE.PROD.NUM  
+LINE.PROD.COMM1
+LINE.PROD.COMM2
+LINE.PROD.UM   
+LINE.PROD.TXBLE
+PRT.PROD.DESC  
+PRT.PROD.QTY   
+PRT.PROD.EXT   
+PRT.PROD.PRCE  
+CUR.LINE       
+OK             
+PROD.HLDR      
+CUST_CODE      
+NEW_LIST       
+ACCEPT.TAX     
+MENU_FSIZE     
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MCNTR5         
+CNTR           
+TEMP.TURNOFF   
+TOT.AMT.TAXABLE
+CHK.QTY        
+BO.QTY         
+COMP_COST      
+MEM.NOTE       
+TEMP.CNTR1     
+NUM_RECS       
+HOLD.SO        
+FLAG           
+PARENT.ESD     
+ATT.LINES      
+COPY_MARK      
+LEVEL.QTY      
+HOLD.QTY       
+PARENT_LINE    
+TEMP_SO_NUM    
+FEAT.MAX       
+FEAT.CUR       
+FEAT.CNTR      
+FEAT.TITLE     
+FEAT_LTITLE    
+FEAT_LTITLE2   
+FEAT.QTY       
+FEAT.HDR       
+FEAT.MQTY      
+FEAT.REMQ      
+UNFILLED.QTY   
+MAIN2WINDOW    
+FEAT_SCR       
+FEAT_SCR_EXT   
+OPT_SCR        
+OPT_SCR_EXT    
+CUR.LEV        
+OP.CNTR        
+OP.TOT         
+OP.TITLE       
+OP_LTITLE      
+OP_LTITLE2     
+OTY.A          
+OP.MAX         
+FOUND          
+FEAT.MARK0     
+FEAT.PART0     
+FEAT.DESC0     
+FEAT.QTY0      
+FEAT.DUPE0     
+FEAT.MARK1     
+FEAT.MARK2     
+FEAT.MARK3     
+FEAT.MARK4     
+FEAT.MARK5     
+FEAT.MARK6     
+FEAT.MARK7     
+FEAT.MARK8     
+FEAT.MARK9     
+FEAT.PART1     
+FEAT.PART2     
+FEAT.PART3     
+FEAT.PART4     
+FEAT.PART5     
+FEAT.PART6     
+FEAT.PART7     
+FEAT.PART8     
+FEAT.PART9     
+FEAT.DESC1     
+FEAT.DESC2     
+FEAT.DESC3     
+FEAT.DESC4     
+FEAT.DESC5     
+FEAT.DESC6     
+FEAT.DESC7     
+FEAT.DESC8     
+FEAT.DESC9     
+FEAT.QTY1      
+FEAT.QTY2      
+FEAT.QTY3      
+FEAT.QTY4      
+FEAT.QTY5      
+FEAT.QTY6      
+FEAT.QTY7      
+FEAT.QTY8      
+FEAT.QTY9      
+FEAT.DUPE1     
+FEAT.DUPE2     
+FEAT.DUPE3     
+FEAT.DUPE4     
+FEAT.DUPE5     
+FEAT.DUPE6     
+FEAT.DUPE7     
+FEAT.DUPE8     
+FEAT.DUPE9     
+OP.PART        
+OP.DESC        
+OP.QTY         
+OP.DUPE        
+OP.TYPE        
+OP.RCN         
+I              
+J              
+K              
+FEAT.EXIT.TYPE 
+OPT.EXIT.TYPE  
+TITLE.SIZE     
+BKBM.1.REC     
+HAVE.O         
+NESTED.FEAT    
+NEST.FEAT.QTY  
+FROM_CM        
+CF_ARA         
+PRGS.WHR       
+NEW.SO         
+FP.FROMFO      
+SOA.SRCHKEY    
+SOA.TEMPKEY    
+SOA.OPENONLY   
+SOA.SHMSG      
+SOA_TTL1       
+SOA_USCORE     
+SOA.FIRSTLIST  
+ENTRY.TYPE     
+EXIT.TYPE      
+SO.DELETED     
+ZRET           
+ORIG.CUST      
+SHIP_CODE      
+ORIG.SHPC      
+CHG.SHIPTO     
+ORIG.SLSP      
+ORIG.AUTH      
+FROM.LOOKUP    
+DET.PASS.1     
+TEMP.NOTE      
+ORIG.NOTE      
+NOTE.CNTR      
+NOTE.LAST      
+NOTES.CHGD     
+SON.ENTRD      
+VALRET         
+VH.MSG         
+CUR.SCREEN     
+VIEW.ONLY      
+LKUPA.HNDL     
+LKUPI.HNDL     
+WCH.SCRN       
+CBK.SONUM      
+CBK.CUST       
+CBK.CNAME      
+CBK.PO         
+CBK.SHPC       
+CBK.SNAME      
+CBK.JOB        
+SLSP1.NAME     
+SLSP2.NAME     
+NEW.TERMNM     
+SOA.LKUA       
+SOA.LKUI       
+PROD.SPECS     
+IN.SONUMFLD    
+UPD.PART       
+UPD.UOSO       
+UPD.UBO        
+KIT.COMP.LINE  
+SPEC.TYPE      
+SPEC.ACTION    
+SPEC.ARRAY     
+INCL.ATT       
+NEW.LINE       
+BKARINV.HNDL   
+BKARINVL.HNDL  
+EBKARINV.HNDL  
+EBKARINVL.HNDL 
+ABKARINV.HNDL  
+ABKARINVL.HNDL 
+CFROM          
+FNS            
+FNM            
+FNL            
+OPT.PARENT.LINE
+OPT.PAR.DESC2  
+FIND.SONUM     
+COL.HDR        
+TEMP.COLOR     
+BLUE.EXIT      
+BLUE.EXIT.HNDL 
+INSERTED.LINE  
+TEMP.SO.REC    
+GETTING.CUST   
+CPRICE.FOUND   
+SO.LOCKED      
+BKEDIDUN_HNDL  
+DEPOSITSMSG    
+BKARDEPHNDL    
+NUMDEPOSITS    
+ORIG.CURRENCY  
+INS.LINE.FLAG  
+INS.LINE.NUM   
+INS.LINE.TYPE  
+PRE.ESD        
+NEW.SO.P       
+XPARAM         
+SYSARON        
+ENTER.PROD.OQTY
+TXN.H          
+TXNS.H         
+BKSY.PRGS.WHR  
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INV.CUSCOD
+BKAR.INV.NL    9
+LL_TITLE       
+LL_TITLE1      
+LL_CNTR        
+SC             
+DESC_HLDR      
+QTY_STR        
+PRICE_STR      
+EXT_STR        
+BKIC.PROD.CODE 
+BKAR.INV.RTS   m
+BKAR.INV.LOC   v
+BKIC.PROD.TYPE -
+BKIC.LOC.UOH   
+BKIC.PROD.PRICEZ
+BKIC.PMAT.QTY  k
+BKIC.PMAT.RATE 
+BKAR.INV.TAXABL
+BKYS.YN        
+BKAR.CREDIT.HLDC
+MTIC.PROD.TYPE #
+MTIC.PROD.OPT  
+BKIC.PROD.AVOP 
+PRE.ENT.QTY    
+MTIC.PROD.SUM  1
+MTIC.PROD.CODE 
+BKAR.INV.SUBTOT
+BKIC.REF.CUST  
+BKIC.REF.CODE  
+BKIC.REF.CUSCODU
+BKIC.REF.DESC  n
+MTIC.PROD.SPECS
+BKBM.PARENT    
+BKFO.CFG.YN    
+BKSY.AR.TURNOFFi
+BKAR.CREDITLMT 
+BKAR.REMAINCRD 
+BKAR.OUTINV    
+XPARAM2        
+BKAR.INV.SONUM 
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKIC.PROD.DESC 
+MTIC.PROD.RCOSTF
+BKIC.PROD.TXBLE5
+BKIC.PROD.NOTE 
+BKIC.PMAT.CUST 
+BKIC.PMAT.PCODE
+BKAR.INV.ORDDTE
+BKIC.PMAT.EXP  
+BKAR.INV.PCODE 
+BKIC.PMAT.PNUM 
+BKAR.INV.COMMPR
+MTIC.PROD.COMM 
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+BKAR.INV.SCCOGS}
+BKAR.INV.DCODE 
+BKIC.PMAT.COMM1
+BKIC.PMAT.COMM2m
+BKIC.PROD.CLASS6
+BKIC.PMAT.PER  
+BKBM.PROD.LINE#
+BKBM.COMPONENT 
+BKBM.QTY.REQD   
+BKBM.PROD.TYPE <
+BKBM.PROD.OPYN H
+BKBM.PROD.DUPOPX
+NORM           
+CC             
+BKBM.PROD.PRICEN
+BKEDI.DUN.EFFDT
+MTIC.PROD.LOT  A
+BKAR.INVL.PCODE
+BKAR.INVL.SCCOG0
+BKAR.TXN.SONUM 
+BKAR.TXN.LINE  x
+MTIC.PROD.SER  B
+BKAR.INV.ENTBY 
+BKAR.INV.NUM   
+BKAR.INV.CUSNME=
+BKAR.INV.SHPNME)
+BKAR.INV.TAXAMT!
+BKAR.INV.FRGHT n
+BKAR.INV.TOTAL )
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+BUTTON_LIST    
+BUTTON_CNTR    
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+INV_TYPE       
+INVF2.COL      
+INVF2.ROW      
+INVF2.START    
+MTIC_OPEN      
+CLASS_OPEN     
+USE_ALTS       
+TYPE_CNTR      
+TYPE_CHR       
+ALT_CODE       
+INV_M_TY       
+INV_M_LOC      
+INV_M_MAIN     
+IMXFIND.PART   
+NEW.IMXPART    
+IMXFIND.DESC   
+NEW.IMXDESC    
+IMXFIND.CLASS  
+NEW.IMXCLASS   
+IMXF.CURORD    
+CLASS.POP.DONE 
+IMXLKUPA.HNDL  
+IMXLKUPI.HNDL  
+IMX.LKUA       
+IMX.LKUI       
+IMX.ZRET       
+SRCH_KEY_NUM   
+WC             
+BC             
+INV_TTL1       
+INV_USCORE     
+BKIC.PROD.UM   .
+BKIC.PROD.UOH  p
+BKIC.PROD.CAT  1
+MTIC.PROD.SUBST$
+MTIC.PROD.CUST 
+MTIC.PROD.CUSNM
+DATC           
+MTCLASS.M.CLASS
+TEMP_KEY       
+MENULIST       
+BKSBVEND_OPEN  
+BKSBMFG_OPEN   
+BKICREF_OPEN   
+IMA.ZRET       
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.MFG.MPART A
+BKSB.MFG.PROD  
+UV.PART        
+UV.ORIG.PART   
+UV.LOC1        
+UV.LOC         
+UV.UOH         
+UV.UOSO        
+UV.UBO         
+UV.UOO         
+UV.UIQC        
+UV.UOWO        
+UV.ALLOC       
+UV.AVAIL       
+UV.WIP         
+UVT.UOH        
+UVT.UOSO       
+UVT.UBO        
+UVT.UOO        
+UVT.UIQC       
+UVT.UOWO       
+UVT.ALLOC      
+UVT.AVAIL      
+UVT.WIP        
+UV.TCOL        
+UV.COL         
+UV.CUR1        
+UVNOW          
+UVWHR          
+UV.MAXLOCS     
+UV.OPND.LOC    
+UV.LOC.REC     
+UV.NA.LOC      
+UV.HAVE.MTIC   
+UV.CNTR        
+UV.DS          
+UV.F7          
+UV.F8          
+BKIC.PROD.UOO  
+MTIC.PROD.UIQC 
+MTIC.PROD.UOWO 
+MTIC.PROD.UOA  
+MTIC.PROD.UIWIP
+BKIC.LOC.UOO   1
+BKIC.LOC.UIQC  
+BKIC.LOC.UOWO  
+BKIC.LOC.UALLOC
+BKIC.LOC.UWIP  
+SRCH_HOW_MSG   
+CLASSMF2.COL   
+CLASSMF2.ROW   
+CLASSM_TTL1    
+CLASSM_USCORE  
+MTCLASS.M.DESC 
+TEMP_KEY       
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CURR
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+PSTR           
+LINES          
+BKEST.CFG.SONUM
+NXRMAA         
+NXRMAN         
+BKSY.EXTRA     S
+BKAR.INV.INVCD 
+BKAR.INV.DEPAMT
+BKAR.INV.LINV#Pe
+BKSY.RTS.DEF   
+BKAR.INVL.ESD  
+BKAR.INVL.PDESC
+BKAR.INVL.PQTY ;
+BKAR.INVL.OOQTY
+BKAR.INVL.ABQTY
+BKAR.INVL.PDISCK
+BKAR.INVL.PPRCEC
+BKAR.INVL.UBO  e
+BKAR.INVL.USTD m
+BKAR.INVL.RTS  u
+BKAR.INVL.PCOGS[
+BKAR.INVL.TXBLEd
+BKAR.INVL.UM.LN
+BKAR.INVL.COMPR
+BKAR.INVL.COOP 
+BK.DESC.NUM    
+BK.DESC.LINE   
+BK.DESC.NOTES  
+BKAR.INV.ISCUR 
+BKAR.INV.SHPCOD
+LOT.P          
+SER.P          
+BKSY.AR.PEL    j
+BKAR.INVL.EXTRA
+BKAR.INVL.PEXT S
+BKAR.INV.ITMZTX
+BKAR.INV.TAXRTE;
+BKAR.INV.ENDLNE
+BKAR.DEP.SO    
+BKAR.INV.CUSORD
+BKAR.INV.JOBNUM
+PRA.LKUA       
+PRA.LKUI       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+BKAR.INV.ISTXKY
+ISIS.TXG.TOFPERQ
+ISIS.TXG.FRGT  H

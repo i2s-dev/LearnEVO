@@ -1,0 +1,273 @@
+FILELOC 
+TASCOLOR
+33333+`@A
+DBA Software for Acct/Mfg/DistI
+YYYNY I,
+start_up.runA
+An error occured while attempting to check START_UP.RUN.  It's A
+possible that you have the file set to Read-Only.  Please check A
+and remove the attribute if necessary (ATTRIB -R START_UP.RUN).  A
+If you have any questions please contact DBA Customer Support.A
+start_up.runA
+The registration screen has been changed.  You will need to restore from a back-up.A
+The registration screen has been changed.  You will need to restore from a back-up.A
+usecomp.runA
+usecomp.runN
+usecomp.runA
+Please wait while we do some short system checking.A
+filelocA
+BKSYMSTRA
+bksymstrI
+.  This could cause problems with default settings.  You should immediately stop using the system and call DBA support at 800-434-0809 for help in removing the duplicate record.A
+You have more than one system master (BKSYMSTR) record for company A
+BKYSMSTRA
+bkysmstrI
+.  This could cause problems with default settings.  You should immediately stop using the system and call DBA support at 800-434-0809 for help in removing the duplicate record.A
+You have more than one system defaults (BKYSMSTR) record for company A
+                                                  
+                  DEMO VERSION                   
+                                                 
+ This is the actual DBA system, limited to 150   
+ records in any one file.  From the main menu    
+ click on File and then on Change Company to go  
+ to company 99, which has sample data.  Keep     
+ data entry and posting to a minimum or else the 
+ record limit could adversely affect critical    
+ files.  To order and receive an unlocking code, 
+ call DBA at 800-995-1959.                       
+                                                 
+           Press Any Key To Continue             
+                                                 
+   Copyright DBA Software Inc. -  800-995-1959   
+        (c) 1992-2000 All Rights Reserved        
+                                                  
+                  DEMO VERSION                   
+                                                 
+ This is the actual DBA system, limited to 150   
+ records in any one file.  From the main menu    
+ click on File and then on Change Company to go  
+ to company 99, which has sample data.  Keep     
+ data entry and posting to a minimum or else the 
+ record limit could adversely affect critical    
+ files.  To order and receive an unlocking code, 
+ call DBA at 800-995-1959.                       
+                                                 
+           Press Any Key To Continue             
+                                                 
+   Copyright DBA Software Inc. -  800-995-1959   
+        (c) 1992-2000 All Rights Reserved        
+         This product is registered to:         
+                                                
+                                                
+            AMERICAN BACKPLANE INC.             
+              355 BANTAM LAKE ROAD              
+                MORRIS,CT 06763                 
+                                                
+                                                
+ Ser No:  75790  Exp Date: 12/31/30  Users:  15 
+                                                
+ IF YOU/YOUR COMPANY IS NOT THE REGISTERED USER 
+ YOU DO NOT HAVE THE RIGHT TO USE THIS PRODUCT. 
+                                                
+           Press any key to continue.           
+                                                
+u!0)&1G9
+A<IBQoYaa\i/q]y{
+!"A,/6
+TX^7hCrE|D
+B&X09:rD?I
+%&>IKrM{_
+2g&7*1IOxDn
+nq@{S:D
+Ab/nd<
+1gCZdKu8qW
+z$B%k=
+IIfIoi
+P%1rU+/k
+7)8+"G~:
+V=5Q1jSq+
+07&>%U
+s5LN/`0o2
+t4%Gf'
+1%u5;~:g]
+7d,09"Q(w
+&$R4[ 
+$j37G^_E
+StMktc^Mp=%B
+!/#STm
+65QObeg
+!LvQyO%2b
+*@|sL0-u
+)_:Y%4O
+,)rd5:i
+YUh5uq_
+}>>SiJ
+SJ.jV<
+&FGv'H\
+h&89j{S
+0*ETn~:
+&%P*zS
+S%=Q7}7
+\#dVl)t
+k$%,?4
+<qD&LdT~\Adslkt
+p+Z?&J
+ER\%Yrb
+.$kC(M(
+8Gsp,H-o>(
+/IM^rcP^#4YbGxp1.
+^Y)k:`ns
+Y|:m{ 
+'@5GIc$o
+OdK!pm
+lNqfn;
+YS9dQ'cSjz<
+G/^Y/i
+e<)W28%
+#5&|T@
+m.6=Wh'
+!^A:aD
++)pGOh)
+5BSoeuK
+Jvo8q[pG
+]~r>F9MAl
+K.~[ex1L
+n4VM(vr
+rYW@el+
+9,PTt|r
+ $ML.tZ
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ELAPSED_TIME   
+DATE_REC       
+SV_LOC         
+SC_LOC         
+START_TIME     
+BOTTOM_LINE    
+DUMMY_L        
+VERSION_FIELD  
+START_VAL_DMO  
+START_VAL_REG  
+TOTAL_NUM_DMO  
+TOTAL_NUM_REG  
+START_VAL_LOC  %
+SERIAL_NUMBER  -
+PSC_APPROVALS  9
+START_UP_BUFF  
+SERIAL_NUM_REC 
+PSC_APPROV_INT 
+REG_NUM        
+REG_CODE2      
+OFFSET         
+MESSAGE        
+MSG_PTR        
+START_DATE_STR 
+NUM_USERS_STR  
+START_DATE     
+NUM_USERS      
+REG_OPTIONS    
+COMPILER       
+CNTR           
+DATE_HLDR      
+LIC_END_DATE   
+NUM_CHR        
+SROW           
+SCOL           
+INT_VAL        
+INT_VAL_ALPHA  
+INT_VAL_LB     
+INT_VAL_HB     
+CHR_HLDR       
+START_VAL      
+TOTAL_NUM      
+TEMPHLDR       
+CNTR3          
+CNTR2          
+COMP_SN        
+USECOMP_BUFF   
+USECOMP_HNDL   
+USECOMP_LOC    
+LOC_HNDL       
+MSTR_HNDL      
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+LOC_LOCATION   
+INC_DATE_DATE  
+INC_DATE_AMT   
+INC_DATE_WCH   
+INC_DATE_DAY   
+INC_DATE_MONTH 
+INC_DATE_YEAR  
+INC_DAY_NUM    
+INC_MONTH_NUM  
+INC_YEAR_NUM   
+INC_DATE_MAXD  
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+ERR            

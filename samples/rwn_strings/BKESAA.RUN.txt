@@ -1,0 +1,1259 @@
+BKFOCFG 
+BKYSMSTR
+BKSYMSTR
+BKICMSTR
+BKBMMSTR
+MTICMSTR
+BKBMREMK
+TASCOLOR
+BKBMNOTE
+BKBMDIM 
+MACHINE 
+BKMATCST
+BKICDIM 
+BKMATRIM
+BKSYHELP
+DBAHLPID
+CLASMSTR
+BKSBVEND
+BKSBMFG 
+BKICREF 
+BKICLOC 
+BKFOCFGA
+BKFOCFGA
+BKYSMSTRA
+BKYSMSTRA
+BKSYMSTRA
+BKSYMSTRA
+BKBMMSTRA
+BKBMREMKA
+BKBMNOTEA
+BKICMSTRA
+MTICMSTRA
+BKMATCSTA
+CLASSA
+BKICDIMA
+BKBMDIMA
+MACHINEA
+BKMATRIMA
+ES-A  Enter Estimates [Bill of Materials]A
+F1 Help,F2 Lookup,F4 Delete,F8 DimA
+PgUp Return
+Screen
+1,Esc ExitA
+This part number is not a finished good, an assembly, aF
+selling kit, or a phantom.  Please enter the part numberF
+of a finished good, assembly, selling kit, or phantomF
+item, or use the F2 key to display parent part numbers.I
+F1 Help,End New Line,F4 Delete Line,F9 Auto
+Assign
+Line NumsA
+F10 Save,Esc ExitA
+F2 Display Lines,F5 First,F6 Last,F7 Prev,F8 NextA
+Please specify a part number. A
+ cannot be a component of its own Bill of Material. A
+ already exists on this Bill of Material.  Is this OK?A
+BKICMSTRA
+bkicmstrI
+ was not found in the inventory file.  Do you want to enter it as a new part number?A
+bkicmstrI
+A Kit cannot be used as a component. A
+BKICMSTRL
+mticmstrI
+ has no MTICMSTR record. A
+Error: A
+BKICMSTRL
+F1 Help,F2 Lookup,F3 Copy
+BOM,F4 Delete LineA
+F10 Save,Esc ExitA
+F1 Help,F3 Copy
+BOM,F4 Delete LineA
+F10 Save,Esc ExitA
+BKICMSTRA
+F1 Help,F2 Ent/Chg
+Remarks,F4 Delete,F5 Ent
+CostsA
+F10 Save,Esc ExitA
+Operation Number entry is required for this inventory typeI
+Is this line entry correct?L
+Do you wish to add/update remarks?L
+You have entered 200 components on this Bill ofF
+Material. That is the maximum allowed.  You willF
+have to delete some components to add new ones.I
+Do you want to save the Bill of Materials?L
+Do you want to add/update notes?L
+BKBMMSTRI
+BKBMMSTRF
+BKBMMSTRI
+Exit without saving the BOM?L
+Delete this component part?L
+BKBMMSTRF
+BKBMMSTRA
+BKBMREMKI
+Copy from A
+.  Do you want to copy the entire Bill of Materials?A
+BKBMMSTRI
+ENTER SelectA
+ESC ExitA
+  Parts To CopyA
+Are all of your entries correct?L
+Do you want to abort this BOM copy?L
+ cannot be a component of its own Bill of Materials.A
+It will not be included in this copy.I
+Delete the entire BOM?L
+BKBMMSTRI
+BKBMREMKA
+BKBMNOTEA
+Lin Component       T  Description                 Quantity Per   U/M  ScrapA
+F1 HelpA
+Esc ExitA
+BKBMMSTRA
+BKICMSTRI
+Please note that any changes made to this BOM will be saved to the master BOM.  Changes made to the BOM here are not limited to just this estimate. A
+bkicmstrI
+ was not found in the inventory file.  Do you want to enter it as a new part number? (if not, you will not be able to edit this BOM)A
+bkicmstrI
+BKBMMSTRF
+BKBMMSTRA
+ New BOM A
+BKBMMSTRA
+BKICMSTRA
+ Enter/Update Remarks 
+BKBMREMKA
+Save these remarks?L
+BKBMREMKA
+Exit remarks entry without saving changes?L
+Delete these remark lines?L
+BKBMREMKF
+ Enter/Update Notes 
+Save these notes?L
+BKBMNOTEA
+Exit notes entry without saving changes?L
+Delete these note lines?L
+BKBMNOTEF
+ not found in the inventory file.A
+KBMNOAFA
+BKICMSTRA
+BOM'sA
+BKBMMSTRF`
+BKBMMSTRI
+BKBMMSTRA
+BKBMMSTRI
+BKBMMSTRA
+BKBMMSTRF
+There are no such records in the A
+ file.A
+BKBMMSTRF`
+MACHINEA
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+previous screen of A
+ 0101AA
+ A - A
+ 0102BA
+ B - A
+ 0103CA
+ C - A
+ 0104DA
+ D - A
+ 0105EA
+ E - A
+ 0106FA
+ F - A
+ 0107GA
+ G - A
+ 0108HA
+ H - A
+ 0109IA
+ I - A
+ 0110JA
+ J - A
+ 0111KA
+ K - A
+ 0112LA
+ L - A
+ 0113MA
+ M - A
+ 0114OA
+ O - A
+ 0115NA
+next screen of A
+ 1 - Mandatory Feature 01011F
+ 2 - Feature not Reqd  01022I
+Option TypeffF
+ 1 = Display options - regardless of duplicates     01011F
+ 2 = Do not display - add duplicate to order        01022F
+ 3 = Do not display - do not add duplicate to order 01033I
+Duplicate Option CodeffF
+BKESAAA
+BKINBA
+bkicmstrI
+BKICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+Would you like to enter material costs for the new part number?L
+bkmatcstI
+MTICMSTRA
+BKMATCSTA
+BKICMSTRA
+MTICMSTRL
+ES-A  Enter Estimates [Material Costs]A
+Save these material costs? L
+BKMATCSTL
+BKMATCSTL
+ES-A  Enter Estimates [Bill of Materials]A
+BKINLFA
+R - Regular Inventory ItemF
+N - Non-inventory ItemF
+M - Make FromF
+P - PurchasedF
+K - Selling KitF
+B - PhantomF
+O - OptionF
+A - AssemblyF
+F - Finished GoodsI
+This material has dimensions.  Do you wish to use the yield calculator?L
+Part Size X : A
+            A
+Part Size Y : A
+            A
+Machine     : A
+Trim Size X : A
+      A
+Trim Size Y : A
+      A
+Blank Size X: A
+            A
+Blank Size Y: A
+            A
+X Remnant   : A
+            A
+Y Remnant   : A
+            A
+BKMATRIMI
+The machine code entered is not on file.  Please either enter an active code or press the Esc key to exit this routine. A
+Trim Size X : A
+      A
+Trim Size Y : A
+      A
+BKBMDIMID
+You have selected a generic material.  The system will select the actual material which offers the best cost per part.  Do you wish to continue?L
+Part Size X : A
+            A
+Part Size Y : A
+            A
+Machine     : A
+Trim Size X : A
+      A
+Trim Size Y : A
+      A
+Blank Size X: A
+            A
+Blank Size Y: A
+            A
+X Remnant   : A
+            A
+Y Remnant   : A
+            A
+Trim Size X : A
+      A
+Trim Size Y : A
+      A
+BKICDIMA
+bkicmstrI
+ was not found in the inventory file.  Do you want to enter it as a new part number? (if not, you will not be able to edit this BOM)A
+bkicmstrI
+BKBMDIMA
+Auto Assignment of line numbers in progress, please wait...I
+BKBMREMKFP
+bkbmmstrI
+BKBMMSTRFP
+Auto Assignment of line numbers is complete.A
+ Parent Part:                                                                 
+                                                                     Line#:
+      
+      
+   Component   
+       Description           
+  Quantity Per  
+      
+      
+               
+                             
+                
+      
+               
+ Scrap:        
+ Seq:     
+ Rt#:     
+ Ref:                    
+               
+       M = Manufactured Option
+       K = Kit Option
+       Enter option type[M/K]? :
+ Include in Cost Roll up[Y/N]? :
+          Use Base Price[Y/N]? :
+    Option Price :
+               
+               
+                                               
+               
+  Part Number:                                 
+               
+                                               
+               
+  Quantity 1:              Cost:               
+               
+  Quantity 2:              Cost:               
+               
+  Quantity 3:              Cost:               
+               
+  Quantity 4:              Cost:               
+               
+  Quantity 5:              Cost:               
+               
+                                               
+               
+  Last Update:                                 
+               
+                                               
+               
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+mticmstrI
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+ Inventory A
+F1 Help,F2 Find,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+CLASMSTRI
+CLASMSTRL
+Choose the Class first, then the inventory item. A
+ClassA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Specifications                A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+User Defined             A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Cust Cd   A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Please only select item numbers of the following Types: A
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+CLASMSTRL
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial description.A
+ This is a case-sensitive search.  A
+   Item Description          A
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full/partial class, or theA
+ full class and full/partial part#.A
+   Class          Item NumberA
+CLASMSTRN
+BKICMSTRA
+MTICMSTRI
+Item Number    F06
+Description    F06
+Type           F06
+2nd DescriptionF06
+Category       F06
+Class          F06
+Specifications F06
+User Defined   F06
+Customer Code  F06
+Alternates     I
+F1 HelpA
+Esc ExitA
+ A - Item NumberF06
+ B - DescriptionF06
+ C - TypeF06
+ D - 2nd DescriptionF06
+ E - CategoryF06
+ F - ClassF06
+ G - SpecificationsF06
+ H - User DefinedF06
+ I - Customer CodeF06
+ J - AlternatesA
+ Search Key A
+ N Non Inventory   F06
+ R Purchased Part  F06
+ M Make From       F06
+ F Finished Good   F06
+ A Subassembly     F06
+ B Phantom AssemblyF06
+ L Labor           F06
+ T Outside Process F06
+ K Selling Kit     F06
+ O Feature         I
+F1 HelpA
+Esc ExitA
+ N - Non InventoryF06
+ R - Purchased PartF06
+ M - Make FromF06
+ F - Finished GoodF06
+ A - SubassemblyF06
+ B - Phantom AssemblyF06
+ L - LaborF06
+ T - Outside ProcessF06
+ K - Selling KitF06
+ O - FeatureA
+ Starting Type Value I
+ESC ExitA
+NormalBkgA
+NormalBkgA
+ Begin Alternate Part Search with: A
+bkicmstrA
+BKSBVENDI
+BKSBVENDA
+BKSBVENDA
+bksbvendA
+BKSBVENDL
+BKSBMFGI
+BKSBMFGA
+BKSBMFGA
+bksbmfgA
+BKSBMFGL
+BKICREFI
+BKICREFA
+BKICREFA
+bkicrefA
+BKICREFL
+No matching DBA, Vendor, Manufacturer, or Customer Cross-Reference item numbers were found matching the number you entered.  Do you want to display the DBA Inventory file beginning with the code entered?L
+BKSBVENDL
+BKSBMFGL
+bkicmstrI
+BKICMSTRA
+MTICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+ Machines A
+F1 HelpA
+Esc ExitA
+MACHINEA
+Description                   A
+Hrs Used A
+Hrs MaintA
+Work Center A
+WC Description                A
+MACHINEA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF06
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF06
+ B - DescriptionA
+ Search Key A
+Item number cannot be blank. A
+BKICMSTR record for this item not in memory. A
+Note: The MTICMSTR record for this non-stock part is not available.  Only some of the stock status quantities can be reported. A
+NormalBkgA
+NormalBkgA
+ Inventory Stock Status A
+ Inventory Stock Status A
+bkiclocI
+BKICLOCL
+BKICLOCL
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+There are more than 100 locations for this part, which is the maximum that can be displayed. A
+BKICLOCA
+bkiclocI
+BKICLOCI
+Item Number    : A
+        Type: A
+Description    : A
+2nd Description: A
+               LOCATIONS              A
+(+) ON HAND          :A
+(-) On Sales Order   :A
+(-) On Back Order    :A
+(+) On Purchase Order:A
+(+) In QC Inspection :A
+(+) On Work Order    :A
+(-) Allocated        :A
+(=) Available        :A
+In Work-in-Process   :A
+   TOTAL    I
+    n/a     I
+    n/a     I
+    n/a     I
+            I
+    n/a     I
+Esc ExitA
+F7 Scroll Locations Left,F8 Scroll Locations RightA
+Esc ExitA
+Esc ExitA
+Please do not change the item number. A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+BKICLOCL
+BKICLOCA
+BKICLOCA
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNYNX
+YNNNYC
+YNNYNX
+YNNNYC
+YNNNYF
+YNNNYCS
+YNNNYF0H
+NNNYNG
+YNNNYF@J
+YNNNYFpJ
+YNNNYFpJ
+YNNNYFpJ
+YNNNYF@J
+YNNNYX
+YNNNYFpJ
+YNNNYX
+YNNNYFpJ
+YNNNYX,
+YNNNYFpJ
+YNNNYF@J
+YNNNYFpJ
+YNNNYFpJ
+YNNNYFpJ
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+QUOTE.NUM      
+QUOTE.PART     
+BMASCR         
+NEW_BILL       
+NUM_LINES      
+CUR_LINE       
+CLH            
+CNTR           
+CNTR1          
+OK             
+DEL_PPART      
+COMPONENT      
+TYPE           
+DESCRIPTION    
+QUANTITY       
+REFERENCE      
+RT.NO          
+UM             
+SCRAP          
+OP.NO          
+LINE           
+ENT_OPYN       
+ENT_PRICE      
+ENT_DUP        
+PRT_COMPONENT  
+PRT_TYPE       
+PRT_DESCRIPTION
+PRT_QUANTITY   
+PRT_REFERENCE  
+PRT_SCRAP      
+PRT_OP_NO      
+PRT_LINE       
+PRT_UM         
+LINE_COMP      
+LINE_TYPE      
+LINE_DESC      
+LINE_QTY       
+LINE_REF       
+LINE_RNUM      
+LINE_SCRAP     
+LINE_OP_NO     
+LINE_LINE      
+LINE_OP_TYPE1  
+LINE_OP_TYPE2  
+LINE_OP_ROLYN  
+LINE_OP_USEBP  
+LINE_PRICE     
+LINE_UM        
+LINE_RTNUM     
+LINE_DUP       
+PARENT_PART    
+PARENT_TYPE    
+PARENT_DESC    
+REM_RNUM       
+NOT_RNUM       
+COPY_PARENT    
+COPY_PART      
+COPY_MARK      
+COPY_LINE#     
+COPY_LINE      
+COPY_MAX       
+ROW            
+COL            
+MEM.PRICE      
+BLANK.X        
+BLANK.Y        
+QTY1           
+QTY2           
+PRODUCT.1      
+PRODUCT.2      
+HOLD.COMP      
+HOLD.COMP.COST1
+HOLD.COMP.COST2
+NUM_RECS       
+NEW_LIST       
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+PRGS.WHR       
+NEW.PART.NO    
+CFROM          
+FROM.NEW.PART  
+NEW.MC.SAVED   
+HAVE.STD       
+I              
+ZRET           
+BKSY.PRGS.WHR  
+BKIC.PROD.CODE 
+BKIC.PROD.PRICEZ
+BKIC.PROD.TYPE -
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+BKIC.PROD.DESC 
+BKBM.PARENT    
+MTIC.PROD.CODE 
+BKIC.PROD.MANUFz
+BKIC.PROD.UM   .
+BKYS.YN        
+BKBM.COMPONENT 
+BKBM.QTY.REQD   
+BKBM.REFERENCE (
+BKBM.PROD.TYPE <
+BKBM.PROD.LINE#
+BKBM.PROD.SCRAP=
+BKBM.PROD.OP   E
+BKBM.PROD.OPYN H
+BKBM.PROD.PRICEN
+BKBM.PROD.RTNUMV
+BKBM.PROD.DUPOPX
+BKBM.RM.PARENT 
+BKBM.RM.LINE   
+BKBM.RM.COMP   
+WC             
+BC             
+SC             
+CC             
+BKBM.NT.PARENT 
+LL_TITLE       
+LL_TITLE1      
+LL_CNTR        
+BKBM.RM.REMARK  
+BKBM.NT.NOTE   
+PART_HOLD      
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+BKBM.DIM.MACH  0
+TMACH.MACHINE  
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MAX       
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+BKFO.CFG.MANFET
+BKFO.CFG.YN    
+MTIC.PROD.RCOSTF
+BKMC.CODE      
+BKMC.COST      _
+BKMC.DATE      
+BKMC.QTY       
+BKICDIM.PARENT 
+BKICDIM.PARTNO 
+BKBM.DIM.PARENT
+BKBM.DIM.LINE  
+BKBM.DIM.COMP  
+BKBM.DIM.PART.X 
+BKBM.DIM.TRIM.X4
+BKBM.DIM.PART.Y(
+BKBM.DIM.TRIM.Y<
+BKMA.TRIM.MACH 
+BKYS.GLDPT     
+BKMA.TRIM.FIRST
+BKMA.TRIM.SECND
+BKBM.DIM.REMN.XD
+BKBM.DIM.REMN.YL
+BKICDIM.FIRST  
+BKICDIM.SECOND &
+BKICDIM.GENERIC.
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+INV_TYPE       
+INVF2.COL      
+INVF2.ROW      
+INVF2.START    
+MTIC_OPEN      
+CLASS_OPEN     
+USE_ALTS       
+TYPE_CNTR      
+TYPE_CHR       
+ALT_CODE       
+INV_M_TY       
+INV_M_LOC      
+INV_M_MAIN     
+IMXFIND.PART   
+NEW.IMXPART    
+IMXFIND.DESC   
+NEW.IMXDESC    
+IMXFIND.CLASS  
+NEW.IMXCLASS   
+IMXF.CURORD    
+CLASS.POP.DONE 
+IMXLKUPA.HNDL  
+IMXLKUPI.HNDL  
+IMX.LKUA       
+IMX.LKUI       
+IMX.ZRET       
+SRCH_KEY_NUM   
+INV_TTL1       
+INV_USCORE     
+BKIC.PROD.UOH  p
+BKIC.PROD.NOTE 
+BKIC.PROD.CAT  1
+BKIC.PROD.CLASS6
+MTIC.PROD.SUBST$
+MTIC.PROD.CUST 
+MTIC.PROD.CUSNM
+DATC           
+MTCLASS.M.CLASS
+MTIC.PROD.SPECS
+TEMP_KEY       
+MENULIST       
+BKSBVEND_OPEN  
+BKSBMFG_OPEN   
+BKICREF_OPEN   
+IMA.ZRET       
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.MFG.MPART A
+BKSB.MFG.PROD  
+BKIC.REF.CUSCODU
+BKIC.REF.CODE  
+MACHINE_TTL1   
+MACHINE_USCORE 
+TMACH.DESC     
+TMACH.HRSUSED  "
+TMACH.HRSMAINT *
+TMACH.WC       
+TMACH.WCDESC   
+SRCH_HOW_MSG   
+CLASSMF2.COL   
+CLASSMF2.ROW   
+CLASSM_TTL1    
+CLASSM_USCORE  
+MTCLASS.M.DESC 
+TEMP_KEY       
+UV.PART        
+UV.ORIG.PART   
+UV.LOC1        
+UV.LOC         
+UV.UOH         
+UV.UOSO        
+UV.UBO         
+UV.UOO         
+UV.UIQC        
+UV.UOWO        
+UV.ALLOC       
+UV.AVAIL       
+UV.WIP         
+UVT.UOH        
+UVT.UOSO       
+UVT.UBO        
+UVT.UOO        
+UVT.UIQC       
+UVT.UOWO       
+UVT.ALLOC      
+UVT.AVAIL      
+UVT.WIP        
+UV.TCOL        
+UV.COL         
+UV.CUR1        
+UVNOW          
+UVWHR          
+UV.MAXLOCS     
+UV.OPND.LOC    
+UV.LOC.REC     
+UV.NA.LOC      
+UV.HAVE.MTIC   
+UV.CNTR        
+UV.DS          
+UV.F7          
+UV.F8          
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.PROD.UOO  
+MTIC.PROD.UIQC 
+MTIC.PROD.UOWO 
+MTIC.PROD.UOA  
+MTIC.PROD.UIWIP
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKIC.LOC.UOH   
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+BKIC.LOC.UOO   1
+BKIC.LOC.UIQC  
+BKIC.LOC.UOWO  
+BKIC.LOC.UALLOC
+BKIC.LOC.UWIP  
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        

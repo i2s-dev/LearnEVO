@@ -1,0 +1,263 @@
+WOLABOR 
+WORKORD 
+WOROUT  
+BKSYHELP
+DBAHLPID
+TASCOLOR
+WORKORDA
+WOROUTA
+WOELABORA
+DE-H  Import LaborA
+BKDEH.IMPA
+F1 HelpA
+Esc ExitA
+This program will only accept ISO date formats (YYYYMMDD).  Please make sure that dates to be imported are in that format, or they will not come in correctly.  Ready to proceed?L
+BKDEH.IMPA
+Now Working on Labor for Emp: A
+Now Working on Labor for Emp: A
+WOELABORF
+           
+           
+        Name of File to Import (with path)              
+           
+                                                        
+           
+       Comma Delimited or Fixed Length? [C,F]           
+           
+                                                        
+           
+         Date                        Setup Hours        
+           
+         Employee Num                Rework?            
+           
+         Work Order Prefix           Run Hours (XXX.XX) 
+           
+         Work Order Suffix           Qty Complete       
+           
+         Assembly                    # Persons/Team     
+           
+         Description                 Qty Scrapped       
+           
+         Sequence Number             Run Hours (XX)     
+           
+         Reg/Over/Dbl                Run Minutes (XX)   
+           
+         Shift                       Run Seconds (XX)   
+           
+         # Jobs Worked                                  
+           
+tas50.ovlA
+tas50.ovlIS
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+YYYY           
+MM             
+DD             
+FILE.NAME      
+REPLACE        
+COMMA.FIXED    
+FIELD.NUMBER   
+FIELD.NUMBER2  
+CRLF           
+PART.NUM       
+TEMP.DATE      
+TEMP.FIELD     
+TEMP.FIELD2    
+TEMP.TIME1     
+TEMP.TIME2     
+TEMP.TIME3     
+CUST.REC1      
+CUST.REC2      
+CUST.REC3      
+CUST.REC4      
+MCNTR2         
+MCNTR3         
+IMP_HNDL       
+MCNTR          
+MTWOLA.EMP     
+MTWOLA.DATE    
+MTWOLA.WOPRE   
+MTWOLA.WOSUF   
+MTWOLA.ASSY    z
+MTWOLA.ASSYDESC
+MTWOLA.OPER    
+MTWOLA.REGOVER 
+MTWOLA.SHIFT   
+MTWOLA.NOJOBS  
+MTWOLA.SETUPHRS 
+MTWOLA.REWORK  0
+MTWOLA.RUNHRS  
+MTWOLA.PARTS   (
+MTWOLA.TEAM    
+MTWOLA.SCRAPPED2
+MTWOLA.POSTED  
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.CODE  
+MTWO.WIP.DESC  
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+MTWORO.OPER    
+MTWOLA.MACH    
+MTWORO.MACHNO  
+MTWOLA.WC      
+MTWORO.WC      
+MTWOLA.TOOL    
+MTWORO.TOOL    
+MTWORO.STD.TIME\
+MTWORO.TIMEPART
+MTWORO.LONGTIMEo
+DATE_TYPE      
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        
+FC             

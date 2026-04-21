@@ -1,0 +1,1511 @@
+# DFM forms parsed: 1109  errors: 25
+
+## ? (2 forms)
+  J7I2SACH.DFM                   ACH Export                                            fields=11  ctrls=41   tabs=0
+  J7i2SystemSOOE.DFM             Custom SOOE                                           fields=11  ctrls=38   tabs=0
+
+## ACT (1 forms)
+  ACT7SHKNOTE.DFM                New Screen                                            fields=4   ctrls=22   tabs=0
+
+## AUTO (1 forms)
+  autoT7POJC.DFM                 PO-J-C                                                fields=28  ctrls=72   tabs=0
+
+## BOMT (1 forms)
+  BOMTREE.DFM                    Loading....                                           fields=0   ctrls=4    tabs=0
+
+## CALD (3 forms)
+  CALDRILL.DFM                   New Screen                                            fields=0   ctrls=14   tabs=0
+  calDDsel.DFM                   Calendar Drill Down                                   fields=4   ctrls=9    tabs=0
+  caldrillbt.DFM                 caldrillbt                                            fields=0   ctrls=48   tabs=0
+
+## CALG (1 forms)
+  CALGRIDDRILL.DFM                Calandar Drill Downs                                 fields=0   ctrls=2    tabs=0
+
+## CALR (2 forms)
+  CALREMGC.DFM                   New Screen                                            fields=6   ctrls=25   tabs=0
+  calrem.DFM                     caldrillbt                                            fields=0   ctrls=52   tabs=0
+
+## CASH (2 forms)
+  CASHFLOW.DFM                   Loading....                                           fields=0   ctrls=4    tabs=0
+  CASHFLOWREPORT.DFM             Loading....                                           fields=0   ctrls=4    tabs=0
+
+## CHAR (4 forms)
+  ChartDemo.DFM                  Addsum TAS 7i Chart Demo Program                      fields=2   ctrls=11   tabs=0
+  ChartPieModal.DFM              Pie Chart Values & Captions                           fields=21  ctrls=55   tabs=0
+  chartBarModal.DFM              Bar Chart Values & Captions                           fields=16  ctrls=40   tabs=0
+  chartLineModal.DFM             Line Chart Values & Captions                          fields=21  ctrls=47   tabs=0
+
+## CLAS (1 forms)
+  classic2evonts.DFM              Classic 2 Evo Notes                                  fields=0   ctrls=4    tabs=0
+
+## COMM (1 forms)
+  COMMISSIONRPT.DFM              Loading....                                           fields=0   ctrls=4    tabs=0
+
+## CRMD (1 forms)
+  CRMDASHBOARD.DFM               Loading....                                           fields=0   ctrls=4    tabs=0
+
+## DAYR (1 forms)
+  dayrem.DFM                                                                           fields=0   ctrls=1    tabs=0
+
+## DDFI (1 forms)
+  DDFilters.DFM                                                                        fields=1   ctrls=3    tabs=0
+
+## DFMA (1 forms)
+  DFMALTS.DFM                    Set ALT Keys for DFMs                                 fields=1   ctrls=8    tabs=0
+
+## DRIL (1 forms)
+  drill_check.DFM                                                                      fields=1   ctrls=3    tabs=0
+
+## DUMM (1 forms)
+  Dummy.DFM                      Evo Base Window                                       fields=0   ctrls=6    tabs=0
+
+## EDIT (1 forms)
+  EDITBOMTREE.DFM                Loading....                                           fields=0   ctrls=4    tabs=0
+
+## EMAI (1 forms)
+  EMAILREL4.DFM                  New Screen                                            fields=3   ctrls=11   tabs=0
+
+## ENPM (1 forms)
+  ENPM.DFM                       Evo Notes:                                            fields=0   ctrls=3    tabs=0
+
+## ERRO (1 forms)
+  error1.DFM                     Error                                                 fields=1   ctrls=3    tabs=0
+
+## EVO (30 forms)
+  EVOENOTES.DFM                   Entering Notes                                       fields=8   ctrls=35   tabs=0
+  EVOERROR.DFM                   File Open Error                                       fields=0   ctrls=7    tabs=0
+  EVOFILTERS.DFM                 New Screen                                            fields=106 ctrls=270  tabs=11
+  EVOFUP.DFM                     UpLoad Files                                          fields=5   ctrls=21   tabs=0
+  EVOMESSAGE.DFM                  Evo Message                                          fields=0   ctrls=4    tabs=0
+  EVORESETPASS.DFM                Reset Password                                       fields=3   ctrls=10   tabs=0
+  EVOUPASS.DFM                   Password                                              fields=2   ctrls=7    tabs=0
+  EvoBS.DFM                       Business Status                                      fields=24  ctrls=110  tabs=4
+  EvoBSCash.DFM                   Business Status Cash Detail                          fields=10  ctrls=24   tabs=0
+  EvoBSR.DFM                     Business Status Rebuild                               fields=0   ctrls=3    tabs=0
+  EvoBSWO.DFM                     Business Status Work Orders                          fields=10  ctrls=25   tabs=0
+  EvoCSI.DFM                     Evo Master Inquiry                                    fields=9   ctrls=29   tabs=0
+  EvoELinks.DFM                                                                        fields=0   ctrls=1    tabs=0
+  EvoEMsg.DFM                     Evo Message                                          fields=2   ctrls=6    tabs=0
+  EvoForceUpd.DFM                 Evo ~ ERP  Force Update                              fields=2   ctrls=21   tabs=0
+  EvoLinkCVT.DFM                 Evo Links CVT                                         fields=0   ctrls=4    tabs=0
+  EvoLinks.DFM                                                                         fields=0   ctrls=1    tabs=0
+  EvoMobilesetup.DFM              Create Mobile Reminders Setup                        fields=8   ctrls=25   tabs=0
+  EvoMobilsetup.DFM               Create Mobil Reminders Setup                         fields=1   ctrls=6    tabs=0
+  EvoUPDATE.DFM                  Update EvoERP                                         fields=0   ctrls=3    tabs=0
+  EvoUPDsetup.DFM                 Create Update Setup                                  fields=1   ctrls=6    tabs=0
+  EvocfgSave.DFM                 Save or Restore Program Defaults                      fields=1   ctrls=7    tabs=0
+  Evocnvtb.DFM                    Synchronize Data Dictionary with Btreive             fields=1   ctrls=8    tabs=0
+  Evopass.DFM                    Password                                              fields=1   ctrls=5    tabs=0
+  Evowkssetup.DFM                Create Workstation Setup                              fields=3   ctrls=13   tabs=0
+  evoCSR.DFM                     Calandar Summary Report                               fields=10  ctrls=23   tabs=0
+  evoalerts.DFM                   Evo Alerts                                           fields=0   ctrls=6    tabs=0
+  evogetdate.DFM                 Evo ~ ERP                                             fields=1   ctrls=9    tabs=0
+  evoreminders.DFM                                                                     fields=0   ctrls=1    tabs=0
+  evorereminders.DFM             Reschedule                                            fields=3   ctrls=9    tabs=0
+
+## EVODC (4 forms)
+  EVODCS.DFM                     New Screen                                            fields=0   ctrls=2    tabs=0
+  EvoDCmenu.DFM                                                                        fields=0   ctrls=1    tabs=0
+  EvoDCmenu2.DFM                                                                       fields=0   ctrls=7    tabs=0
+  EvoDCsetup.DFM                 Create Workstation Setup                              fields=3   ctrls=11   tabs=0
+
+## EVOERP (5 forms)
+  EVOERPUPDW.DFM                 Archive Work Orders                                   fields=1   ctrls=6    tabs=0
+  EvoERPDrillM.DFM               ToolBar1                                              fields=0   ctrls=7    tabs=0
+  EvoERPbackup.DFM                                                                     fields=0   ctrls=1    tabs=0
+  EvoERPupd.DFM                   Evo ~ ERP  Update                                    fields=2   ctrls=24   tabs=0
+  evoERPsched.DFM                Evo ~ ERP Scheduler                                   fields=11  ctrls=20   tabs=0
+
+## EVOFNO (5 forms)
+  EvoFNO.DFM                                                                           fields=0   ctrls=1    tabs=0
+  EvoFNOPO.DFM                   Converting to Purchase Order                          fields=0   ctrls=3    tabs=0
+  EvoFNOQty.DFM                  F&O Qty                                               fields=4   ctrls=13   tabs=0
+  EvoFNOSO.DFM                   Converting to Sales Order                             fields=0   ctrls=3    tabs=0
+  EvoFNOWO.DFM                   Converting to Work Order                              fields=0   ctrls=3    tabs=0
+
+## EVONOTE (5 forms)
+  EvoNoteSearch.DFM              Evo Notes Search                                      fields=4   ctrls=21   tabs=0
+  EvoNotes.DFM                                                                         fields=0   ctrls=1    tabs=0
+  EvoNotesARCH.DFM               Evo Notes                                             fields=35  ctrls=72   tabs=0
+  EvoNotesPrt.DFM                 Evo Notes Selection                                  fields=6   ctrls=24   tabs=0
+  EvoNotesRpt.DFM                Evo Notes                                             fields=33  ctrls=70   tabs=0
+
+## EVOSCHED (2 forms)
+  EvoSchedsetup.DFM               Create Evo Scheduler as a Service                    fields=8   ctrls=25   tabs=0
+  EvoScheduler.DFM                                                                     fields=0   ctrls=1    tabs=0
+
+## EVOSERVICE (2 forms)
+  EVOSERVICEREMOVE.DFM           Remove EvoService from your Server                    fields=0   ctrls=6    tabs=0
+  EVOSERVICESETUP.DFM            Create EvoService for your Server                     fields=11  ctrls=29   tabs=0
+
+## GETA (1 forms)
+  GetAlphaGen.DFM                GAG Caption                                           fields=1   ctrls=6    tabs=0
+
+## GETF (1 forms)
+  GetFileName.DFM                 Enter File                                           fields=3   ctrls=9    tabs=0
+
+## GRID (1 forms)
+  GRIDPLAY.DFM                   &Edit TabOrder = 2 end object Select: TButton Left    fields=0   ctrls=1    tabs=0
+
+## HT6CL (1 forms)
+  ht6close.DFM                   Close                                                 fields=0   ctrls=4    tabs=0
+
+## HT6IN (1 forms)
+  ht6inc.DFM                     Receiving                                             fields=3   ctrls=7    tabs=0
+
+## HT6SO (1 forms)
+  ht6so.DFM                      Create Sales Order                                    fields=4   ctrls=12   tabs=0
+
+## HT6WO (1 forms)
+  ht6wo.DFM                      Work Orders                                           fields=40  ctrls=74   tabs=0
+
+## IMAG (2 forms)
+  Imageprint.DFM                 Printing Linked Documents                             fields=1   ctrls=5    tabs=0
+  imageinfo.DFM                  New Screen                                            fields=5   ctrls=24   tabs=0
+
+## INVC (1 forms)
+  INVCHANGE.DFM                  Loading....                                           fields=0   ctrls=4    tabs=0
+
+## IS (1 forms)
+  ISCCREP.DFM                    Credit Card Report                                    fields=2   ctrls=8    tabs=0
+
+## J7AB (1 forms)
+  J7ABIShipRpt.DFM               Lapco Fulfillment Report                              fields=7   ctrls=29   tabs=0
+
+## J7AP (1 forms)
+  J7AppVend.DFM                  Approve Vendor                                        fields=5   ctrls=23   tabs=0
+
+## J7AU (1 forms)
+  J7AutoAPC.DFM                  Auto Enter PO Invoices                                fields=9   ctrls=33   tabs=0
+
+## J7BE (1 forms)
+  J7BEFWebInv.DFM                Web Item Export                                       fields=17  ctrls=46   tabs=0
+
+## J7CC (1 forms)
+  J7CCPIC.DFM                    PI-C  Enter Tag Counts                                fields=6   ctrls=31   tabs=0
+
+## J7CI (1 forms)
+  J7CIWebImport.DFM              Web Import                                            fields=17  ctrls=192  tabs=0
+
+## J7CJ (1 forms)
+  J7CJBUsage.DFM                 Print Inventory Usage                                 fields=12  ctrls=39   tabs=0
+
+## J7CR (1 forms)
+  J7CRSOW.DFM                                                                          fields=0   ctrls=1    tabs=0
+
+## J7DC (3 forms)
+  J7DCMatLabels.DFM              Print Mattress Labels                                 fields=7   ctrls=37   tabs=0
+  J7DCSSOE.DFM                   Shipping                                              fields=4   ctrls=37   tabs=0
+  J7DCSSOEVerify.DFM                                                                   fields=0   ctrls=1    tabs=0
+
+## J7EB (1 forms)
+  J7EBSerial.DFM                 Enter Serial Number                                   fields=3   ctrls=32   tabs=0
+
+## J7EI (1 forms)
+  J7EIMDCRev.DFM                                                                       fields=0   ctrls=1    tabs=0
+
+## J7HH (8 forms)
+  J7HHEBINC.DFM                  Inventory Adjustment                                  fields=2   ctrls=31   tabs=0
+  J7HHEBXFER.DFM                 Transfer Inventory                                    fields=2   ctrls=34   tabs=0
+  J7HHEBXferVerify.DFM                                                                 fields=0   ctrls=1    tabs=0
+  J7HHLITN.DFM                   Enter Tracking Numbers                                fields=5   ctrls=35   tabs=0
+  J7HHPTSSOE.DFM                 Shipping                                              fields=7   ctrls=42   tabs=0
+  J7HHPTSSOELABELS.DFM           Print Box Content Labels                              fields=6   ctrls=28   tabs=0
+  J7HHPTSSOEVerify.DFM                                                                 fields=0   ctrls=1    tabs=0
+  J7HHRTSSOE.DFM                 Shipping                                              fields=6   ctrls=38   tabs=0
+
+## J7LA (1 forms)
+  J7LapcoSO.DFM                  Print Inventory Usage                                 fields=11  ctrls=37   tabs=0
+
+## J7MC (1 forms)
+  J7MCDSAReport.DFM              Sales Analysis Report                                 fields=7   ctrls=29   tabs=0
+
+## J7MP (1 forms)
+  J7MPImportAR.DFM               Import AR                                             fields=2   ctrls=18   tabs=0
+
+## J7NM (2 forms)
+  J7NMBins.DFM                   Bin                                                   fields=5   ctrls=27   tabs=0
+  J7NMRTMPRINTER.DFM                                                                   fields=0   ctrls=1    tabs=0
+
+## J7PE (1 forms)
+  J7PEDCB.DFM                    Production Status                                     fields=10  ctrls=36   tabs=0
+
+## J7PO (1 forms)
+  J7POAIMPLINES.DFM              BASE Blank T7 SCREEN                                  fields=18  ctrls=49   tabs=0
+
+## J7PT (2 forms)
+  J7PTRecPOLine.DFM              Receive PO Line                                       fields=10  ctrls=35   tabs=0
+  J7PTWOKI.DFM                   WO-K-J                                                fields=8   ctrls=29   tabs=0
+
+## J7SM (1 forms)
+  J7SMJCT.DFM                    Closed Job Cost Report                                fields=9   ctrls=28   tabs=0
+
+## J7SO (1 forms)
+  J7SOAImpLines.DFM                                                                    fields=0   ctrls=1    tabs=0
+
+## J7SY (1 forms)
+  J7SyncWOtoSO.dfm                                                                     fields=0   ctrls=1    tabs=0
+
+## J7TM (1 forms)
+  J7TMCKanban.DFM                                                                      fields=0   ctrls=1    tabs=0
+
+## J7WO (1 forms)
+  J7WOLL.DFM                     WO-L-L                                                fields=10  ctrls=37   tabs=0
+
+## MACH (1 forms)
+  MACHINEVIEW.DFM                Loading....                                           fields=0   ctrls=4    tabs=0
+
+## MDUM (1 forms)
+  mDummy.DFM                     Evo Base Window                                       fields=0   ctrls=2    tabs=0
+
+## NASC (1 forms)
+  NascoPAYex.DFM                 Export Payroll Data                                   fields=1   ctrls=6    tabs=0
+
+## NUME (1 forms)
+  NUMEMP.DFM                     # of Empolyees                                        fields=1   ctrls=4    tabs=0
+
+## NZED (1 forms)
+  nzedefs.DFM                    Evo Email Default Settings                            fields=5   ctrls=21   tabs=0
+
+## NZEM (1 forms)
+  nzemailtll.DFM                                                                       fields=0   ctrls=1    tabs=0
+
+## PRIN (1 forms)
+  printtll.DFM                   Print                                                 fields=11  ctrls=37   tabs=0
+
+## PURC (2 forms)
+  PURCHITEM.DFM                  Loading....                                           fields=0   ctrls=4    tabs=0
+  PURCHVEND.DFM                  Loading....                                           fields=0   ctrls=4    tabs=0
+
+## QUER (1 forms)
+  QUERYEXECUTE.DFM               Loading....                                           fields=0   ctrls=4    tabs=0
+
+## REMR (1 forms)
+  REMREM.DFM                     Reminder...                                           fields=0   ctrls=3    tabs=0
+
+## SQLE (1 forms)
+  SQLEXPORT.DFM                  Loading....                                           fields=0   ctrls=4    tabs=0
+
+## SSS (1 forms)
+  SSS.DFM                        Drill Filters                                         fields=7   ctrls=10   tabs=0
+
+## SSSF (1 forms)
+  SSSFD.DFM                       Sub String Search                                    fields=8   ctrls=12   tabs=0
+
+## STUB (1 forms)
+  stub.DFM                       Loading....                                           fields=0   ctrls=5    tabs=0
+
+## T6EV (2 forms)
+  T6EvoART.DFM                                                                         fields=13  ctrls=26   tabs=0
+  T6EvoINB.DFM                    IN-B  Enter Inventory                                fields=107 ctrls=241  tabs=7
+
+## T6IS (9 forms)
+  T6ISINB.DFM                    IN-B  Enter Inventory                                 fields=42  ctrls=101  tabs=0
+  T6ISINB2.DFM                   IN-B  Enter Inventory                                 fields=14  ctrls=34   tabs=0
+  T6ISINBECO.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T6ISINBLNK.DFM                  Item Links                                           fields=30  ctrls=66   tabs=0
+  T6ISINBMFG.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T6ISINBMRP.DFM                  MRP Settings                                         fields=12  ctrls=26   tabs=0
+  T6ISINBSPC.DFM                  Specifications                                       fields=15  ctrls=21   tabs=0
+  T6ISINBVND.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T6ISSTDCST.DFM                  Standard Cost                                        fields=22  ctrls=51   tabs=0
+
+## T6ME (1 forms)
+  T6MENUUTIL.DFM                  Evo ~ ERP T6 Program Names                           fields=2   ctrls=12   tabs=0
+
+## T7AC (3 forms)
+  T7ACDATE.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7ACRDTYPE.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T7ACTION.DFM                                                                         fields=0   ctrls=1    tabs=0
+
+## T7AL (3 forms)
+  T7ALERTMSG.DFM                 ALERT NOTIFICATION                                    fields=1   ctrls=10   tabs=0
+  T7ALOGSETUP.DFM                New Screen                                            fields=3   ctrls=22   tabs=0
+  T7ALTPART.DFM                                                                        fields=1   ctrls=1    tabs=0
+
+## T7AM (15 forms)
+  T7AMA.DFM                      New Screen                                            fields=9   ctrls=29   tabs=0
+  T7AMB.DFM                      New Screen                                            fields=17  ctrls=44   tabs=0
+  T7AMC.DFM                      New Screen                                            fields=33  ctrls=59   tabs=0
+  T7AMD.DFM                      New Screen                                            fields=10  ctrls=32   tabs=0
+  T7AME.DFM                      New Screen                                            fields=105 ctrls=176  tabs=0
+  T7AMG.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7AMH.DFM                      New Screen                                            fields=12  ctrls=44   tabs=0
+  T7AMI.DFM                      New Screen                                            fields=8   ctrls=28   tabs=0
+  T7AMJ.DFM                      New Screen                                            fields=5   ctrls=24   tabs=0
+  T7AMK.DFM                      New Screen                                            fields=5   ctrls=24   tabs=0
+  T7AMN.DFM                      New Screen                                            fields=96  ctrls=159  tabs=0
+  T7AMO.DFM                      New Screen                                            fields=8   ctrls=30   tabs=0
+  T7AMP.DFM                      New Screen                                            fields=9   ctrls=32   tabs=0
+  T7AMQ.DFM                      New Screen                                            fields=134 ctrls=212  tabs=0
+  T7AMS.DFM                      New Screen                                            fields=8   ctrls=30   tabs=0
+
+## T7AP (33 forms)
+  T7APA.DFM                      New Screen                                            fields=39  ctrls=101  tabs=0
+  T7APABANK.DFM                  Vendor Bank Information                               fields=16  ctrls=36   tabs=0
+  T7APACON.DFM                    Customer Contact Information                         fields=13  ctrls=20   tabs=0
+  T7APAPRC.DFM                    Check Vendor Item Pricing                            fields=5   ctrls=12   tabs=0
+  T7APASTA.DFM                    Vendor Statistics                                    fields=4   ctrls=13   tabs=0
+  T7APB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7APC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7APD.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7APE.DFM                      New Screen                                            fields=15  ctrls=42   tabs=0
+  T7APH.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7APHASK.DFM                   Check Note                                            fields=4   ctrls=11   tabs=0
+  T7API.DFM                      New Screen                                            fields=23  ctrls=63   tabs=0
+  T7APINFO.DFM                   New Screen                                            fields=63  ctrls=84   tabs=0
+  T7APJ.DFM                      New Screen                                            fields=19  ctrls=48   tabs=0
+  T7APK.DFM                      New Screen                                            fields=10  ctrls=40   tabs=0
+  T7APM.DFM                      AP-M                                                  fields=10  ctrls=35   tabs=0
+  T7APO.DFM                      New Screen                                            fields=63  ctrls=118  tabs=2
+  T7APP.DFM                      New Screen                                            fields=8   ctrls=31   tabs=0
+  T7APQ.DFM                      New Screen                                            fields=10  ctrls=43   tabs=0
+  T7APR.DFM                      New Screen                                            fields=15  ctrls=41   tabs=0
+  T7APS.DFM                      New Screen                                            fields=11  ctrls=39   tabs=0
+  T7APT.DFM                      AP check info                                         fields=30  ctrls=85   tabs=0
+  T7APV.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7APX.DFM                      New Screen                                            fields=9   ctrls=30   tabs=0
+  T7APY.DFM                      Vendor Amount                                         fields=12  ctrls=39   tabs=0
+  T7APYB.DFM                     Pinacle                                               fields=15  ctrls=48   tabs=0
+  T7APYC.DFM                     NACHA                                                 fields=9   ctrls=35   tabs=0
+  T7APZA.DFM                     New Screen                                            fields=13  ctrls=44   tabs=0
+  t7apaC.DFM                     New Screen                                            fields=55  ctrls=144  tabs=0
+  t7apae.DFM                     New Screen                                            fields=68  ctrls=181  tabs=4
+  t7apf.dfm                                                                            fields=0   ctrls=1    tabs=0
+  t7apg.dfm                      AP-G Print Proforma Check Register                    fields=6   ctrls=28   tabs=0
+  t7apl.DFM                      New Screen                                            fields=7   ctrls=29   tabs=0
+
+## T7AR (24 forms)
+  T7ARA.DFM                      New Screen                                            fields=63  ctrls=154  tabs=0
+  T7ARA2DB.DFM                   E&xit                                                 fields=0   ctrls=1    tabs=0
+  T7ARAC.DFM                     New Screen                                            fields=63  ctrls=154  tabs=0
+  T7ARACON.DFM                    Customer Contact Information                         fields=16  ctrls=23   tabs=0
+  T7ARACRE.DFM                    Customer Credit Information                          fields=11  ctrls=26   tabs=0
+  T7ARAE.DFM                     New Screen                                            fields=118 ctrls=279  tabs=7
+  T7ARAPRC.DFM                    Check Customer Item Pricing                          fields=6   ctrls=14   tabs=0
+  T7ARASTA.DFM                    Customer Statistics                                  fields=13  ctrls=24   tabs=0
+  T7ARB.DFM                      Voucher Entry                                         fields=72  ctrls=134  tabs=0
+  T7ARC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ARD.DFM                      AR-D  Charge Interest on Invoices                     fields=7   ctrls=27   tabs=0
+  T7ARE.DFM                      AR-E  Print Statements [Plain Paper]                  fields=23  ctrls=52   tabs=0
+  T7ARF.DFM                      AR-F  Print Aging                                     fields=42  ctrls=98   tabs=0
+  T7ARG.DFM                      AR-G  Print Customer Code and Name"                   fields=25  ctrls=61   tabs=0
+  T7ARH.DFM                      AR-H  Print Customer General Info                     fields=19  ctrls=50   tabs=0
+  T7ARI.DFM                      AR-I  Print Customer Mail Labels                      fields=28  ctrls=66   tabs=0
+  T7ARK.DFM                      AR-K                                                  fields=14  ctrls=42   tabs=0
+  T7ARL.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ARM.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ARN.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ARP.DFM                      BASE Blank T7 SCREEN                                  fields=12  ctrls=40   tabs=0
+  T7ARR.DFM                      AR-R Print AR Payment History                         fields=12  ctrls=37   tabs=0
+  T7ART.DFM                      New Screen                                            fields=10  ctrls=57   tabs=0
+  T7ARU.DFM                      New Screen                                            fields=5   ctrls=24   tabs=0
+
+## T7AS (1 forms)
+  T7askbut.DFM                                                                         fields=0   ctrls=6    tabs=0
+
+## T7AU (1 forms)
+  T7AUTODCH.DFM                  AUTO DC-H                                             fields=10  ctrls=37   tabs=0
+
+## T7BI (1 forms)
+  T7BINSET.DFM                   Istech Warehouse Control Setup Utility                fields=10  ctrls=39   tabs=0
+
+## T7BM (16 forms)
+  T7BMA.DFM                      New Screen                                            fields=44  ctrls=105  tabs=0
+  T7BMAx.DFM                     New Screen                                            fields=42  ctrls=77   tabs=0
+  T7BMB.DFM                      BM-B                                                  fields=28  ctrls=58   tabs=0
+  T7BMC.DFM                      BM-C                                                  fields=6   ctrls=27   tabs=0
+  T7BMD.DFM                      Print Availability                                    fields=18  ctrls=46   tabs=0
+  T7BME.DFM                      BM-E                                                  fields=6   ctrls=24   tabs=0
+  T7BMF.DFM                      BM-F                                                  fields=2   ctrls=18   tabs=0
+  T7BMG.DFM                      BM-G                                                  fields=18  ctrls=48   tabs=0
+  T7BMH.DFM                      BM-H                                                  fields=11  ctrls=33   tabs=0
+  T7BMI.DFM                      BM-I                                                  fields=16  ctrls=40   tabs=0
+  T7BMJ.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7BMK.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7BML.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7BMP.DFM                      BOM Pick List                                         fields=7   ctrls=29   tabs=0
+  T7BMQ.DFM                      BM-Q                                                  fields=3   ctrls=21   tabs=0
+  T7BMR.DFM                      BM-R                                                  fields=16  ctrls=43   tabs=0
+
+## T7BO (3 forms)
+  T7BOL.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7BOLMSO.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7BOMSCRAPFIX.DFM              Reset Scrap Calculation                               fields=8   ctrls=26   tabs=0
+
+## T7BR (1 forms)
+  T7BRANDS.DFM                                                                         fields=0   ctrls=1    tabs=0
+
+## T7BS (4 forms)
+  T7BS.DFM                        Business Status                                      fields=25  ctrls=117  tabs=4
+  T7BSCash.DFM                    Business Status Cash Detail                          fields=3   ctrls=6    tabs=0
+  T7BSR.DFM                      Business Status Rebuild                               fields=0   ctrls=4    tabs=0
+  T7BSWO.DFM                      Business Status Work Orders                          fields=10  ctrls=25   tabs=0
+
+## T7BZ (1 forms)
+  T7BZFIX.DFM                                                                          fields=0   ctrls=1    tabs=0
+
+## T7CA (3 forms)
+  T7CAR8D.DFM                                                                          fields=1   ctrls=6    tabs=0
+  T7CARFUP.DFM                                                                         fields=0   ctrls=1    tabs=0
+  t7carfu.DFM                                                                          fields=0   ctrls=1    tabs=0
+
+## T7CC (6 forms)
+  T7CCCITM.DFM                   New Screen                                            fields=2   ctrls=18   tabs=0
+  T7CCCWOT.DFM                   New Screen                                            fields=3   ctrls=20   tabs=0
+  T7CCDE.DFM                     CC Import                                             fields=19  ctrls=55   tabs=0
+  T7CCP.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7CCPO.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7ccr1.DFM                     Credit Card Invoice List                              fields=4   ctrls=13   tabs=0
+
+## T7CH (3 forms)
+  T7CHAINM.DFM                   ToolBar1                                              fields=0   ctrls=7    tabs=0
+  T7CHARGBK.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7Chain.DFM                    ToolBar1                                              fields=0   ctrls=7    tabs=0
+
+## T7CL (1 forms)
+  T7CLoading.DFM                                                                       fields=0   ctrls=4    tabs=0
+
+## T7CM (12 forms)
+  T7CMA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7CMABCL.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7CMABCLB.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7CMABCLP.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7CMACL.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7CMACON.DFM                    Customer Contact Information                         fields=92  ctrls=117  tabs=0
+  T7CMAKD.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7CMBB.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7CMCON.DFM                     Customer Contact Information                         fields=44  ctrls=97   tabs=0
+  T7CMK.DFM                      CM-K                                                  fields=7   ctrls=28   tabs=0
+  T7CMfocvt.DFM                  Filters                                               fields=4   ctrls=11   tabs=0
+  T7CMnfcvt.DFM                  Filters                                               fields=4   ctrls=11   tabs=0
+
+## T7CO (2 forms)
+  T7COLORS.DFM                   New Screen                                            fields=4   ctrls=11   tabs=0
+  T7COPY.DFM                     Copy                                                  fields=1   ctrls=5    tabs=0
+
+## T7CS (12 forms)
+  T7CSA.DFM                      New Screen                                            fields=11  ctrls=35   tabs=0
+  T7CSB.DFM                      CS-B  View Salespersons Info                          fields=87  ctrls=133  tabs=0
+  T7CSC.DFM                      CS-C  Print Salespersons Info                         fields=5   ctrls=22   tabs=0
+  T7CSD.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7CSDE.DFM                     Rep Link Import                                       fields=19  ctrls=55   tabs=0
+  T7CSDO.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7CSDX.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7CSE.DFM                      CS-E  Print Commission Detail                         fields=10  ctrls=34   tabs=0
+  T7CSF.DFM                      CS-F  Print Commission Summary                        fields=9   ctrls=30   tabs=0
+  T7CSI.DFM                      Evo Master Inquiry                                    fields=9   ctrls=30   tabs=0
+  T7CSO.DFM                      BASE Blank T7 SCREEN                                  fields=28  ctrls=81   tabs=0
+  T7CSP.DFM                      CS-P  Print Commission Summary                        fields=7   ctrls=30   tabs=0
+
+## T7CT (2 forms)
+  T7CTRevu.DFM                   Setup Contract Review Departments                     fields=10  ctrls=42   tabs=0
+  T7CTRevuPSWD.DFM               Enter Contract Review ID and password                 fields=3   ctrls=12   tabs=0
+
+## T7CU (4 forms)
+  T7CUSTCO.DFM                   Select                                                fields=0   ctrls=3    tabs=0
+  T7CUSTOMS.DFM                  Custom Content                                        fields=31  ctrls=45   tabs=0
+  t7cutsheet2.DFM                                                                      fields=0   ctrls=1    tabs=0
+  t7cutsheet2b.DFM                                                                     fields=0   ctrls=1    tabs=0
+
+## T7CV (1 forms)
+  T7CVTROIA.DFM                  Filters                                               fields=4   ctrls=11   tabs=0
+
+## T7DB (1 forms)
+  t7dba2evo.DFM                   Classic to Evo Notes                                 fields=12  ctrls=30   tabs=0
+
+## T7DC (22 forms)
+  T7DCA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7DCA2.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7DCALabel.DFM                 Print Transfer Label                                  fields=16  ctrls=45   tabs=0
+  T7DCANotes.DFM                 Notes Caption                                         fields=0   ctrls=7    tabs=0
+  T7DCAPstdLab.dfm               New Screen                                            fields=2   ctrls=4    tabs=0
+  T7DCBSERIAL.DFM                Enter Serial Numbers                                  fields=5   ctrls=22   tabs=0
+  T7DCD.DFM                      DC-D                                                  fields=24  ctrls=59   tabs=0
+  T7DCE.DFM                      DC-E Print Labor Tickets                              fields=6   ctrls=24   tabs=0
+  T7DCF.DFM                      DC-E Print Employee Tickets                           fields=4   ctrls=22   tabs=0
+  T7DCG.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7DCH.DFM                      DC-H                                                  fields=10  ctrls=38   tabs=0
+  T7DCK.DFM                      DC-K                                                  fields=7   ctrls=28   tabs=0
+  T7DCL.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7DCM.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7DCN.DFM                      DC-N                                                  fields=6   ctrls=27   tabs=0
+  T7DCPSF.DFM                    HH-L  Paperless Shop Floor                            fields=36  ctrls=109  tabs=0
+  T7DCPSFComps.DFM                                                                     fields=0   ctrls=1    tabs=0
+  T7DCPSFECO.DFM                  Eco                                                  fields=10  ctrls=35   tabs=0
+  T7DCSOLookup.DFM                                                                     fields=0   ctrls=1    tabs=0
+  t7DCPSFNotes.DFM               Notes Caption                                         fields=0   ctrls=12   tabs=0
+  t7DCina.DFM                    T7INA                                                 fields=41  ctrls=123  tabs=0
+  t7dcb.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7DD (1 forms)
+  t7ddcheck.DFM                  Data Dictionary Check                                 fields=0   ctrls=6    tabs=0
+
+## T7DE (20 forms)
+  T7DEER.DFM                     New Screen                                            fields=6   ctrls=26   tabs=0
+  T7DEFECT.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7DEHD.DFM                     PI-C Import Tags                                      fields=26  ctrls=60   tabs=0
+  T7DEJH.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7DEK.DFM                      New Screen                                            fields=6   ctrls=27   tabs=0
+  T7DEL.DFM                      New Screen                                            fields=8   ctrls=24   tabs=0
+  T7DEM.DFM                      New Screen                                            fields=4   ctrls=22   tabs=0
+  T7DEP860.DFM                   DE-P-B                                                fields=6   ctrls=28   tabs=0
+  T7DEPB.DFM                     DE-P-B                                                fields=10  ctrls=38   tabs=0
+  T7DEPD.DFM                     DE-P-D                                                fields=12  ctrls=40   tabs=0
+  T7DEPE.DFM                     DE-P-E                                                fields=14  ctrls=41   tabs=0
+  T7DEPF.DFM                     New Screen                                            fields=6   ctrls=26   tabs=0
+  T7DEPH.DFM                     DE-P-H                                                fields=6   ctrls=30   tabs=0
+  T7DEQ.DFM                      New Screen                                            fields=20  ctrls=56   tabs=0
+  T7DER.DFM                      New Screen                                            fields=24  ctrls=62   tabs=0
+  T7DET.DFM                      Web Import                                            fields=30  ctrls=332  tabs=0
+  T7DETB.DFM                     DE-T-B                                                fields=60  ctrls=140  tabs=0
+  T7DEU.DFM                      Web Item Export                                       fields=17  ctrls=46   tabs=0
+  T7DEV.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7DEX.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7DI (2 forms)
+  T7DIGSIG.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7DigSigChgPSWD.DFM            Change Password                                       fields=3   ctrls=13   tabs=0
+
+## T7DR (2 forms)
+  T7DRAG.DFM                     New Screen                                            fields=0   ctrls=14   tabs=0
+  T7DROPDOWN.DFM                                                                       fields=0   ctrls=1    tabs=0
+
+## T7DU (1 forms)
+  T7DUPEISICFIX.DFM              New Screen                                            fields=2   ctrls=11   tabs=0
+
+## T7ED (3 forms)
+  T7EDII.DFM                     ED-I-I                                                fields=10  ctrls=37   tabs=0
+  t7ediftp.DFM                   EDI  FTP Program                                      fields=7   ctrls=9    tabs=0
+  t7edudf.DFM                    New Screen                                            fields=2   ctrls=2    tabs=0
+
+## T7EM (1 forms)
+  T7EMGL.DFM                                                                           fields=0   ctrls=1    tabs=0
+
+## T7ES (7 forms)
+  T7ESB.DFM                      ES-B                                                  fields=16  ctrls=42   tabs=0
+  T7ESC.DFM                      ES-C                                                  fields=19  ctrls=42   tabs=0
+  T7ESD.DFM                      ES-D  Print Customer Quotes                           fields=14  ctrls=43   tabs=0
+  T7ESE.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ESH.DFM                      ES-H Enter Material Costs                             fields=19  ctrls=55   tabs=0
+  T7ESI.DFM                      New Screen                                            fields=5   ctrls=24   tabs=0
+  T7EST.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7EV (9 forms)
+  T7EvoAPA.DFM                   New Screen                                            fields=51  ctrls=134  tabs=4
+  T7EvoARA.DFM                   New Screen                                            fields=66  ctrls=161  tabs=4
+  T7EvoINA.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7EvoINB.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7EvoINB.al.DFM                                                                      fields=0   ctrls=1    tabs=0
+  T7EvoPOA.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7EvoWOA.DFM                   New Screen                                            fields=69  ctrls=170  tabs=3
+  t7evo2dba.DFM                   Evo 2 Classic Notes                                  fields=0   ctrls=12   tabs=0
+  t7evoSoa.DFM                                                                         fields=0   ctrls=1    tabs=0
+
+## T7EW (1 forms)
+  t7EWC.DFM                      New Screen                                            fields=10  ctrls=32   tabs=0
+
+## T7FA (3 forms)
+  T7FAA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7FAB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7FAE.DFM                      FA-E                                                  fields=47  ctrls=101  tabs=0
+
+## T7FI (1 forms)
+  T7FIX.DFM                      New Screen                                            fields=2   ctrls=10   tabs=0
+
+## T7FN (1 forms)
+  T7FNR.DFM                                                                            fields=0   ctrls=3    tabs=0
+
+## T7FO (3 forms)
+  T7FOC.DFM                      FO-C                                                  fields=8   ctrls=28   tabs=0
+  T7FOD.DFM                      New Screen                                            fields=7   ctrls=28   tabs=0
+  T7FOE.DFM                      New Screen                                            fields=2   ctrls=18   tabs=0
+
+## T7FS (3 forms)
+  T7FSCLASS.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7FSEMP.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7FSINFO.DFM                                                                         fields=0   ctrls=1    tabs=0
+
+## T7FT (1 forms)
+  t7ftp.DFM                      New Screen                                            fields=0   ctrls=7    tabs=0
+
+## T7GD (1 forms)
+  T7gdm.DFM                       Grids & Drills Maintence                             fields=3   ctrls=10   tabs=0
+
+## T7GE (3 forms)
+  T7GENIMP.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7GETDEP.DFM                   Get Deposits                                          fields=4   ctrls=23   tabs=0
+  T7GETWEB.DFM                   New Screen                                            fields=0   ctrls=6    tabs=0
+
+## T7GF (8 forms)
+  T7GFCB.DFM                                                                           fields=0   ctrls=5    tabs=0
+  T7GFPRICE.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7GFR.DFM                      New Screen                                            fields=3   ctrls=20   tabs=0
+  T7GFTEST.DFM                   New Screen                                            fields=1   ctrls=4    tabs=0
+  T7GFV.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7GFVS.DFM                                                                           fields=0   ctrls=1    tabs=0
+  t7GFdept.DFM                                                                         fields=0   ctrls=1    tabs=0
+  t7GFdiv.DFM                                                                          fields=0   ctrls=1    tabs=0
+
+## T7GL (24 forms)
+  T7GLA.DFM                      GL-A                                                  fields=113 ctrls=162  tabs=0
+  T7GLARCH.DFM                                                                         fields=2   ctrls=19   tabs=0
+  T7GLB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7GLBLIST.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7GLC.DFM                      GL-C                                                  fields=24  ctrls=61   tabs=0
+  T7GLD.DFM                      GL-D                                                  fields=14  ctrls=47   tabs=0
+  T7GLE.DFM                      GL-E                                                  fields=18  ctrls=51   tabs=0
+  T7GLE2.DFM                     GL-E                                                  fields=15  ctrls=39   tabs=0
+  T7GLESPEED.DFM                 GL-E                                                  fields=16  ctrls=48   tabs=0
+  T7GLF.DFM                      GL- F                                                 fields=98  ctrls=177  tabs=0
+  T7GLG.DFM                      GL-G                                                  fields=6   ctrls=25   tabs=0
+  T7GLH.DFM                      GL- H                                                 fields=16  ctrls=36   tabs=0
+  T7GLI.DFM                      GL- I                                                 fields=12  ctrls=40   tabs=0
+  T7GLJ.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7GLJASK.DFM                   Change Location                                       fields=4   ctrls=11   tabs=0
+  T7GLK.DFM                      GL- K                                                 fields=13  ctrls=42   tabs=0
+  T7GLL.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7GLN.DFM                      GL- N                                                 fields=40  ctrls=87   tabs=0
+  T7GLO.DFM                      GL-O                                                  fields=117 ctrls=160  tabs=0
+  T7GLOOB.DFM                    GL- O-OB                                              fields=5   ctrls=27   tabs=0
+  T7GLP.DFM                      GL-P                                                  fields=12  ctrls=40   tabs=0
+  T7GLQ.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7GLS.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7GLT.DFM                      New Screen                                            fields=31  ctrls=68   tabs=0
+
+## T7GT (1 forms)
+  T7GTEMP.DFM                    Loading....                                           fields=0   ctrls=5    tabs=0
+
+## T7HE (1 forms)
+  t7helpset.DFM                  New Screen                                            fields=1   ctrls=16   tabs=0
+
+## T7HH (44 forms)
+  T7HH.DFM                       New Screen                                            fields=1   ctrls=14   tabs=0
+  T7HHALERTMSG.DFM               ALERT NOTIFICATION                                    fields=1   ctrls=10   tabs=0
+  T7HHDCA.DFM                    Shipping                                              fields=5   ctrls=31   tabs=0
+  T7HHH.DFM                      Enter Tracking Numbers                                fields=5   ctrls=35   tabs=0
+  T7HHINLJLot.DFM                Transfer Lot Numbers                                  fields=4   ctrls=29   tabs=0
+  T7HHINLJSer.DFM                Transfer Serial Numbers                               fields=3   ctrls=28   tabs=0
+  T7HHItemLU.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T7HHN.DFM                      HH-N                                                  fields=12  ctrls=33   tabs=0
+  T7HHN2.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7HHNDTE.DFM                   Enter Shipping Details                                fields=7   ctrls=16   tabs=0
+  T7HHNREL.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7HHO.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7HHPIC.DFM                    PI-C  Enter Tag Counts                                fields=6   ctrls=31   tabs=0
+  T7HHPOCBIN.DFM                 Receive PO                                            fields=6   ctrls=42   tabs=0
+  T7HHPOCLot.DFM                 Receive Lot Numbers                                   fields=3   ctrls=28   tabs=0
+  T7HHPOCNotes.DFM               Notes Caption                                         fields=0   ctrls=12   tabs=0
+  T7HHPOCSER.DFM                 Receive Serial Numbers                                fields=3   ctrls=30   tabs=0
+  T7HHProcess.DFM                PROCESS DATA                                          fields=1   ctrls=21   tabs=0
+  T7HHSOBIN.DFM                  WC Bin Selection                                      fields=3   ctrls=30   tabs=0
+  T7HHSODD.DFM                   Shipping                                              fields=6   ctrls=32   tabs=0
+  T7HHSOLOT.DFM                  RELEASE LOT NUMBER                                    fields=3   ctrls=30   tabs=0
+  T7HHSOLookup.DFM                                                                     fields=0   ctrls=1    tabs=0
+  T7HHSOSER.DFM                  Print Mattress Labels                                 fields=2   ctrls=30   tabs=0
+  T7HHSSOE.DFM                   Shipping                                              fields=7   ctrls=39   tabs=0
+  T7HHSSOESVerify.DFM                                                                  fields=0   ctrls=1    tabs=0
+  T7HHSSOEVerify.DFM                                                                   fields=0   ctrls=1    tabs=0
+  T7HHWOIBIN.DFM                 WC Bin Selection                                      fields=2   ctrls=26   tabs=0
+  T7HHWOIProcess.DFM             PROCESS DATA                                          fields=1   ctrls=21   tabs=0
+  T7HHWOLOT.DFM                  RELEASE LOT NUMBER                                    fields=5   ctrls=30   tabs=0
+  T7HHWOLabel.DFM                WO Label                                              fields=19  ctrls=64   tabs=0
+  T7HHWOLookup.DFM                                                                     fields=0   ctrls=1    tabs=0
+  T7HHWOSCRAP.DFM                Report Scrap Material                                 fields=13  ctrls=62   tabs=0
+  t7hhINGA.DFM                   Print Inventory Labels                                fields=14  ctrls=46   tabs=0
+  t7hhdcb.DFM                    Loading....                                           fields=0   ctrls=3    tabs=0
+  t7hhdcc.DFM                    Loading....                                           fields=0   ctrls=3    tabs=0
+  t7hhinbins.DFM                 WC Item Lookup                                        fields=1   ctrls=17   tabs=0
+  t7hhinlj.DFM                   Transfer Inventory                                    fields=13  ctrls=46   tabs=0
+  t7hhpictags.DFM                PI-C  Enter Tag Counts                                fields=9   ctrls=37   tabs=0
+  t7hhpoc.DFM                                                                          fields=0   ctrls=1    tabs=0
+  t7hhssoeLabels.DFM             Print Box Content Labels                              fields=10  ctrls=33   tabs=0
+  t7hhssoeLverify.DFM                                                                  fields=0   ctrls=1    tabs=0
+  t7hhwog.DFM                    Issue Material                                        fields=11  ctrls=54   tabs=0
+  t7hhwop.DFM                    Finish Production                                     fields=9   ctrls=52   tabs=0
+  t7hhwoser.DFM                  Enter Serial Number                                   fields=3   ctrls=35   tabs=0
+
+## T7IA (1 forms)
+  T7IALERTS.DFM                                                                        fields=0   ctrls=2    tabs=0
+
+## T7IC (1 forms)
+  T7IC2EST.DFM                    Copy Production to Estimate Inventory                fields=0   ctrls=8    tabs=0
+
+## T7IM (5 forms)
+  T7IMB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7IMC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7IMD.DFM                      New Screen                                            fields=7   ctrls=25   tabs=0
+  T7IME.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7IMF.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7IN (67 forms)
+  T7INA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7INAACDOC.DFM                  Accutron Documentation                               fields=4   ctrls=23   tabs=0
+  T7INAALO.DFM                                                                         fields=0   ctrls=7    tabs=0
+  T7INACMP.DFM                   Compliance                                            fields=34  ctrls=68   tabs=0
+  T7INAFORECAST.DFM                                                                    fields=4   ctrls=8    tabs=0
+  T7INAPRC.DFM                   Customer Price                                        fields=9   ctrls=25   tabs=0
+  T7INASPC.DFM                    Specifications                                       fields=16  ctrls=23   tabs=0
+  T7INAUDF.DFM                    Specifications                                       fields=33  ctrls=73   tabs=0
+  T7INAUSG.DFM                                                                         fields=4   ctrls=8    tabs=0
+  T7INAWIP.DFM                   Item In WIP                                           fields=7   ctrls=19   tabs=0
+  T7INB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7INB2DB.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7INBCMP.DFM                   Compliance                                            fields=34  ctrls=68   tabs=0
+  T7INBECO.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7INBLNK.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7INBMFG.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7INBMRP.DFM                    MRP Settings                                         fields=15  ctrls=33   tabs=0
+  T7INBSPC.DFM                    Specifications                                       fields=15  ctrls=22   tabs=0
+  T7INBUDF.DFM                    Specifications                                       fields=33  ctrls=73   tabs=0
+  T7INBVND.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7INC.DFM                      IN-C Enter Inventory Adjustments                      fields=60  ctrls=138  tabs=0
+  T7IND.DFM                      IN-D Print Record Report                              fields=53  ctrls=120  tabs=2
+  T7INDPO.DFM                    IN-D  PO                                              fields=1   ctrls=19   tabs=0
+  T7INE.DFM                      IN-E Print Inventory Transactions                     fields=17  ctrls=47   tabs=0
+  T7INF.DFM                      IN-F Print inventory Value                            fields=43  ctrls=87   tabs=0
+  T7ING.DFM                      IN-G  Print Inventory Labels                          fields=85  ctrls=204  tabs=0
+  T7INGimport.DFM                IN-G-A  Import and Print Inventory Labels             fields=17  ctrls=49   tabs=0
+  T7INH.DFM                      IN-H  Print Inventory Listning                        fields=20  ctrls=55   tabs=0
+  T7INI.DFM                      IN-I  Print Inventory General Info                    fields=10  ctrls=37   tabs=0
+  T7INJ.DFM                      IN-J  Print Physikal Check                            fields=20  ctrls=51   tabs=0
+  T7INK.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7INLA.DFM                     IN-L-A                                                fields=25  ctrls=77   tabs=0
+  T7INLB.DFM                     IN-L-B                                                fields=27  ctrls=71   tabs=0
+  T7INLC.DFM                     IN-L-C                                                fields=9   ctrls=33   tabs=0
+  T7INLD.DFM                     IN-L-D  Print Customer Cross-Reference                fields=10  ctrls=36   tabs=0
+  T7INLE.DFM                     IN-L-E                                                fields=12  ctrls=38   tabs=0
+  T7INLF.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7INLG.DFM                     IN-L-G                                                fields=12  ctrls=40   tabs=0
+  T7INLH.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7INLI.DFM                     IN-L-I                                                fields=2   ctrls=25   tabs=0
+  T7INLJ.DFM                     IN-L-J Transfer Inventory                             fields=28  ctrls=81   tabs=0
+  T7INLK.DFM                     IN-L-K                                                fields=33  ctrls=69   tabs=0
+  T7INLL.DFM                     IN-L-L                                                fields=10  ctrls=36   tabs=0
+  T7INLM.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7INLN.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7INLO.DFM                     GL-G                                                  fields=41  ctrls=77   tabs=0
+  T7INLOA.DFM                    IN-L-O-A                                              fields=13  ctrls=42   tabs=0
+  T7INLQ.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7INLR.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7INLS.DFM                     New Screen                                            fields=3   ctrls=20   tabs=0
+  T7INLT.DFM                     IN-L-T                                                fields=40  ctrls=68   tabs=0
+  T7INLV.DFM                     BASE Blank T7 SCREEN                                  fields=10  ctrls=36   tabs=0
+  T7INM.DFM                      IN-M  Summary Reorder Report                          fields=21  ctrls=55   tabs=0
+  T7INNA.DFM                     IN-N-A Print Month End Inventory Costing              fields=18  ctrls=52   tabs=0
+  T7INNB.DFM                     IN-N-B Print Shipments Costing                        fields=13  ctrls=42   tabs=0
+  T7INNC.DFM                     IN-N-C Print Closed Work Orders Costing               fields=10  ctrls=37   tabs=0
+  T7INND.DFM                     IN-N-D Print Inventory to GL Exceptions Report        fields=12  ctrls=32   tabs=0
+  T7INO.DFM                      IN-E                                                  fields=65  ctrls=136  tabs=2
+  T7INP.DFM                      IN-P                                                  fields=39  ctrls=87   tabs=0
+  T7INS.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7INVARCH.DFM                  New Screen                                            fields=2   ctrls=18   tabs=0
+  T7INVENTORY.DFM                                                                      fields=0   ctrls=1    tabs=0
+  T7INXFERNUM.DFM                                                                      fields=0   ctrls=2    tabs=0
+  t7INBE.DFM                                                                           fields=0   ctrls=1    tabs=0
+  t7inaC.DFM                     T7INA                                                 fields=53  ctrls=178  tabs=0
+  t7inaE.DFM                                                                           fields=0   ctrls=1    tabs=0
+  t7inbc.DFM                     IN-B  Enter Inventory                                 fields=67  ctrls=164  tabs=0
+
+## T7IS (1 forms)
+  T7ISMCC.DFM                    Convert Source to Base Currency                       fields=27  ctrls=48   tabs=0
+
+## T7IT (1 forms)
+  T7ITMCFG.DFM                                                                         fields=0   ctrls=1    tabs=0
+
+## T7JA (2 forms)
+  T7JAVA.DFM                     Java Response                                         fields=0   ctrls=4    tabs=0
+  T7JAVASET.DFM                  New Screen                                            fields=4   ctrls=17   tabs=0
+
+## T7JB (1 forms)
+  T7JBS.DFM                      New Screen                                            fields=5   ctrls=29   tabs=0
+
+## T7JC (14 forms)
+  T7JCA.DFM                      New Screen                                            fields=17  ctrls=45   tabs=0
+  T7JCB.DFM                      New Screen                                            fields=10  ctrls=34   tabs=0
+  T7JCE.DFM                      JC-E                                                  fields=20  ctrls=53   tabs=0
+  T7JCENG.DFM                    JC Engine                                             fields=54  ctrls=104  tabs=0
+  T7JCF.DFM                      New Screen                                            fields=19  ctrls=53   tabs=0
+  T7JCH.DFM                      New Screen                                            fields=22  ctrls=56   tabs=0
+  T7JCL.DFM                      JC-L                                                  fields=12  ctrls=39   tabs=0
+  T7JCM.DFM                      JC-M                                                  fields=28  ctrls=62   tabs=0
+  T7JCN.DFM                      JC-N                                                  fields=14  ctrls=40   tabs=0
+  T7JCP.DFM                      JC-P Print Materials in WIP                           fields=8   ctrls=30   tabs=0
+  T7JCQ.DFM                      New Screen                                            fields=20  ctrls=43   tabs=0
+  T7JCR.DFM                      New Screen                                            fields=23  ctrls=53   tabs=0
+  T7JCRM.DFM                     New Screen                                            fields=5   ctrls=29   tabs=0
+  T7JCS.DFM                      JC-S                                                  fields=22  ctrls=54   tabs=0
+
+## T7JF (1 forms)
+  T7JFTRANS.DFM                  Loading....                                           fields=0   ctrls=4    tabs=0
+
+## T7JO (3 forms)
+  T7JOANDA.DFM                   Java Response                                         fields=0   ctrls=4    tabs=0
+  T7JODPSALES.DFM                New Screen                                            fields=5   ctrls=28   tabs=0
+  t7jobs.DFM                      Jobs                                                 fields=4   ctrls=13   tabs=0
+
+## T7JP (1 forms)
+  T7JPOS.DFM                     New Screen                                            fields=6   ctrls=30   tabs=0
+
+## T7JS (7 forms)
+  T7JSACC.DFM                    New Screen                                            fields=4   ctrls=26   tabs=0
+  T7JSAIC.DFM                    New Screen                                            fields=4   ctrls=26   tabs=0
+  T7JSAPBI.DFM                   New Screen                                            fields=4   ctrls=26   tabs=0
+  T7JSASRS.DFM                   New Screen                                            fields=4   ctrls=26   tabs=0
+  T7JSOI.DFM                     New Screen                                            fields=4   ctrls=26   tabs=0
+  T7JSQL.DFM                     New Screen                                            fields=5   ctrls=28   tabs=0
+  T7JSettings.DFM                New Screen                                            fields=5   ctrls=28   tabs=0
+
+## T7JT (2 forms)
+  T7JTEMP.DFM                    Loading....                                           fields=0   ctrls=4    tabs=0
+  T7Jtree.DFM                    New Screen                                            fields=5   ctrls=28   tabs=0
+
+## T7JU (1 forms)
+  T7JUPD.DFM                     Loading....                                           fields=0   ctrls=4    tabs=0
+
+## T7KI (1 forms)
+  T7KIT.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7LA (1 forms)
+  t7lang.DFM                     New Screen                                            fields=0   ctrls=7    tabs=0
+
+## T7LC (7 forms)
+  T7LCA.DFM                      LC-A Edit Lot Numbers                                 fields=13  ctrls=44   tabs=0
+  T7LCB.DFM                      LC-B Assign Lot Control                               fields=6   ctrls=24   tabs=0
+  T7LCC.DFM                      LC-C                                                  fields=10  ctrls=35   tabs=0
+  T7LCC2.DFM                     LC-C Print Lot Availability                           fields=7   ctrls=33   tabs=1
+  T7LCE.DFM                      New Screen                                            fields=13  ctrls=38   tabs=0
+  T7LCF.DFM                      New Screen                                            fields=4   ctrls=22   tabs=0
+  T7LCG.DFM                      New Screen                                            fields=11  ctrls=35   tabs=0
+
+## T7LG (3 forms)
+  T7LGSSOE.DFM                   Shipping                                              fields=4   ctrls=35   tabs=0
+  T7LGSSOEVerify.DFM                                                                   fields=0   ctrls=1    tabs=0
+  t7LGssoeLabels.DFM             Print Box Content Labels                              fields=6   ctrls=26   tabs=0
+
+## T7LI (1 forms)
+  T7LIMACC.DFM                    DFM Multi Limited Access Generator / Editor          fields=2   ctrls=12   tabs=0
+
+## T7LO (3 forms)
+  T7Loading.DFM                                                                        fields=0   ctrls=4    tabs=0
+  T7LotSerial.DFM                Enter Lot/Serial Information                          fields=13  ctrls=47   tabs=0
+  t7lottag.DFM                                                                         fields=0   ctrls=4    tabs=0
+
+## T7MA (1 forms)
+  T7MAPDEPO.DFM                                                                        fields=0   ctrls=1    tabs=0
+
+## T7MD (3 forms)
+  T7MDefBanks.DFM                                                                      fields=0   ctrls=1    tabs=0
+  T7MDefNDC.DFM                   Evo ~ ERP   Master Default Settings                  fields=404 ctrls=880  tabs=44
+  T7MDefaults.DFM                 Evo ~ ERP   Master Default Settings                  fields=847 ctrls=1786 tabs=61
+
+## T7ME (1 forms)
+  T7Memo2Alpha.DFM                Evo Notes                                            fields=9   ctrls=32   tabs=0
+
+## T7ML (2 forms)
+  T7MLC.DFM                       DFM Multi Language Generator / Editor                fields=3   ctrls=15   tabs=0
+  T7MLE.DFM                                                                            fields=1   ctrls=1    tabs=0
+
+## T7MR (18 forms)
+  T7MRA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7MRADE.DFM                    New Screen                                            fields=9   ctrls=33   tabs=0
+  T7MRB.DFM                      MR-B                                                  fields=13  ctrls=42   tabs=0
+  T7MRC.DFM                      New Screen                                            fields=16  ctrls=45   tabs=0
+  T7MRD.DFM                      New Screen                                            fields=52  ctrls=134  tabs=0
+  T7MRE.DFM                      New Screen                                            fields=10  ctrls=35   tabs=0
+  T7MRF.DFM                      MR-F                                                  fields=41  ctrls=91   tabs=0
+  T7MRG.DFM                      MR-G                                                  fields=25  ctrls=61   tabs=0
+  T7MRH.DFM                      MR-H                                                  fields=32  ctrls=91   tabs=0
+  T7MRI.DFM                      MR-I                                                  fields=24  ctrls=58   tabs=0
+  T7MRIR.DFM                     Review QTY'#39's                                      fields=5   ctrls=13   tabs=0
+  T7MRIX.DFM                     New Screen                                            fields=18  ctrls=52   tabs=0
+  T7MRJ.DFM                      MR-J                                                  fields=29  ctrls=77   tabs=0
+  T7MRJR.DFM                     MR-J Review                                           fields=10  ctrls=24   tabs=0
+  T7MRJX.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7MRL.DFM                      MR-L                                                  fields=3   ctrls=22   tabs=0
+  T7MRN.DFM                      MR-N                                                  fields=5   ctrls=23   tabs=0
+  T7MRO.DFM                      MR-O                                                  fields=1   ctrls=17   tabs=0
+
+## T7MU (1 forms)
+  T7MULTIYIELD.DFM                                                                     fields=0   ctrls=1    tabs=0
+
+## T7NE (1 forms)
+  T7NEWINIT.DFM                  New Screen                                            fields=1   ctrls=17   tabs=0
+
+## T7NU (1 forms)
+  T7numdef.DFM                    Next Numbers                                         fields=21  ctrls=55   tabs=0
+
+## T7PA (3 forms)
+  T7PASS.DFM                     Password                                              fields=1   ctrls=5    tabs=0
+  T7Paperless.DFM                Paperless Shop Floor                                  fields=41  ctrls=119  tabs=0
+  t7packmenu.DFM                 Pack Menu                                             fields=2   ctrls=7    tabs=0
+
+## T7PI (10 forms)
+  T7PIA.DFM                      PI-A Capture Frozen Inventory                         fields=31  ctrls=65   tabs=0
+  T7PIB.DFM                      PI-B Frozen Inventory Report                          fields=10  ctrls=34   tabs=0
+  T7PIC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PICA.DFM                     PI-C-A  Physical Inventory Exception Report           fields=6   ctrls=26   tabs=0
+  T7PID.DFM                      PI-D  Missing Tags Report                             fields=4   ctrls=28   tabs=0
+  T7PIE.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PIF.DFM                      PI-F Phisical Inventory Report                        fields=13  ctrls=44   tabs=0
+  T7PIG.DFM                      PI-G Update Actual Inventory                          fields=11  ctrls=40   tabs=0
+  T7PIH.DFM                      PI-H Purge Physical Inventory                         fields=3   ctrls=21   tabs=0
+  T7PILOC.DFM                                                                          fields=0   ctrls=3    tabs=0
+
+## T7PL (3 forms)
+  T7PLessComps.DFM                                                                     fields=0   ctrls=1    tabs=0
+  T7PLessNotes.DFM               Notes Caption                                         fields=0   ctrls=14   tabs=0
+  T7PLessWODates.DFM                                                                   fields=0   ctrls=4    tabs=0
+
+## T7PO (41 forms)
+  T7POA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7POA2.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7POAC.DFM                     T7POA                                                 fields=54  ctrls=146  tabs=0
+  T7POACPY.DFM                   New Screen                                            fields=3   ctrls=13   tabs=0
+  T7POAE.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7POAIMPLINES.DFM              POA Import                                            fields=21  ctrls=55   tabs=0
+  T7POAPrBrk.DFM                                                                       fields=1   ctrls=1    tabs=0
+  T7POAVITEM.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T7POB.DFM                      PO-B                                                  fields=21  ctrls=56   tabs=0
+  T7POEA.DFM                      PO-E-A                                               fields=6   ctrls=26   tabs=0
+  T7POENG.DFM                    PO-ENG                                                fields=100 ctrls=228  tabs=2
+  T7POF.DFM                      PO-F                                                  fields=39  ctrls=98   tabs=2
+  T7POG.DFM                      PO-G                                                  fields=12  ctrls=35   tabs=0
+  T7POH.DFM                      PO-H                                                  fields=37  ctrls=111  tabs=0
+  T7POIC.DFM                     PO-I-C                                                fields=16  ctrls=55   tabs=0
+  T7POID.DFM                     PO-I-D                                                fields=9   ctrls=36   tabs=0
+  T7POIG.DFM                     PO-I-G                                                fields=22  ctrls=68   tabs=0
+  T7POIH.DFM                     PO-I-H                                                fields=19  ctrls=52   tabs=0
+  T7POII.DFM                     PO-I-I                                                fields=12  ctrls=40   tabs=0
+  T7POIL.DFM                     PO-B                                                  fields=10  ctrls=38   tabs=0
+  T7POJA.DFM                     PO-J-A  Print Receipt Travellers                      fields=15  ctrls=44   tabs=0
+  T7POJB.DFM                     PO-J-B                                                fields=26  ctrls=80   tabs=0
+  T7POJC.DFM                     PO-J-C                                                fields=33  ctrls=98   tabs=0
+  T7POJD.DFM                     PO-J-D                                                fields=10  ctrls=37   tabs=0
+  T7POK.DFM                      PO-K                                                  fields=9   ctrls=37   tabs=0
+  T7POL.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7POLA.DFM                     PO-L-A                                                fields=9   ctrls=41   tabs=1
+  T7POLINEHIST.DFM                                                                     fields=0   ctrls=1    tabs=0
+  T7POLP.DFM                     PO-L-P                                                fields=5   ctrls=27   tabs=0
+  T7POM.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7POMAST.DFM                   New Screen                                            fields=34  ctrls=92   tabs=0
+  T7POP.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7POPGET.DFM                   POP Caption                                           fields=10  ctrls=21   tabs=0
+  T7POS.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7POSCD.DFM                    Cash Due                                              fields=3   ctrls=10   tabs=0
+  T7POSI.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7POSX.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7pojcqc.DFM                   Multi Scrap Codes                                     fields=4   ctrls=13   tabs=0
+  T7pojcsc.DFM                   Multi Scrap Codes                                     fields=4   ctrls=13   tabs=0
+  t7POQ.DFM                                                                            fields=0   ctrls=1    tabs=0
+  t7poc.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7PR (40 forms)
+  T7PRA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRC.DFM                      PR-C                                                  fields=10  ctrls=33   tabs=0
+  T7PRD.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRDIVFIX.DFM                 New Screen                                            fields=2   ctrls=10   tabs=0
+  T7PRE.DFM                      PR-E                                                  fields=4   ctrls=22   tabs=0
+  T7PRF.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRFIX.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7PRG.DFM                      PR-G                                                  fields=9   ctrls=30   tabs=0
+  T7PRH.DFM                      PR-H                                                  fields=82  ctrls=117  tabs=0
+  T7PRI.DFM                      PR-I                                                  fields=7   ctrls=27   tabs=0
+  T7PRJ.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRJCSYNC.DFM                 New Screen                                            fields=2   ctrls=10   tabs=0
+  T7PRK.DFM                      PR-K  Print/Post Time Cards                           fields=13  ctrls=45   tabs=0
+  T7PRLA.DFM                     PR-L-A                                                fields=6   ctrls=27   tabs=0
+  T7PRLB.DFM                     PR-L-B                                                fields=8   ctrls=30   tabs=0
+  T7PRLC.DFM                     PR-L-C                                                fields=16  ctrls=47   tabs=0
+  T7PRLD.DFM                     PR-L-D                                                fields=8   ctrls=30   tabs=0
+  T7PRLE.DFM                     PR-L-E  Print Detail Deductions Ledger                fields=10  ctrls=32   tabs=0
+  T7PRLF.DFM                     PR-L-F                                                fields=21  ctrls=52   tabs=0
+  T7PRLG.DFM                     PR-L-G                                                fields=40  ctrls=97   tabs=0
+  T7PRLH.DFM                     PR-LH                                                 fields=54  ctrls=112  tabs=0
+  T7PRLI.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7PRLJ.DFM                     PR-L-J                                                fields=11  ctrls=35   tabs=0
+  T7PRLK.DFM                     PR-L-K  Print Payroll Hours                           fields=9   ctrls=31   tabs=0
+  T7PRLM.DFM                     PR-L-M                                                fields=8   ctrls=30   tabs=0
+  T7PRLN.DFM                     PR-L-N  Print Payroll Wages Detail                    fields=8   ctrls=30   tabs=0
+  T7PRLO.DFM                     PR-L-O                                                fields=8   ctrls=30   tabs=0
+  T7PRLP.DFM                     PR-L-P                                                fields=10  ctrls=33   tabs=0
+  T7PRLQ.DFM                     PR-L-Q                                                fields=8   ctrls=31   tabs=0
+  T7PRM.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRN.DFM                      New Screen                                            fields=7   ctrls=28   tabs=0
+  T7PRO.DFM                      New Screen                                            fields=1   ctrls=17   tabs=0
+  T7PROGINFO.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T7PRP.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRQ.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7PRQTRCHK.DFM                 New Screen                                            fields=2   ctrls=24   tabs=0
+  T7PRS.DFM                      Enter Employee Password                               fields=5   ctrls=29   tabs=0
+  T7ProcessData.DFM              Process Data                                          fields=0   ctrls=9    tabs=0
+  t7pretag.DFM                   New Screen                                            fields=0   ctrls=3    tabs=0
+
+## T7PS (6 forms)
+  T7PSA.DFM                      New Screen                                            fields=10  ctrls=35   tabs=0
+  T7PSE.DFM                      User Security Report                                  fields=2   ctrls=16   tabs=0
+  T7PSEGRP.DFM                   New Screen                                            fields=2   ctrls=2    tabs=0
+  T7PSEITM.DFM                   New Screen                                            fields=2   ctrls=2    tabs=0
+  T7PSF.DFM                      Access to Program Report                              fields=1   ctrls=11   tabs=0
+  T7PSK.DFM                      Approve Vendor                                        fields=6   ctrls=25   tabs=0
+
+## T7PU (1 forms)
+  T7PUTAWAY.DFM                                                                        fields=0   ctrls=1    tabs=0
+
+## T7QC (15 forms)
+  T7QCA.DFM                      New Screen                                            fields=13  ctrls=41   tabs=0
+  T7QCB.DFM                      New Screen                                            fields=16  ctrls=46   tabs=0
+  T7QCC.DFM                      New Screen                                            fields=12  ctrls=38   tabs=0
+  T7QCD.DFM                      New Screen                                            fields=18  ctrls=51   tabs=0
+  T7QCFA.DFM                     New Screen                                            fields=39  ctrls=100  tabs=0
+  T7QCFD.DFM                     New Screen                                            fields=6   ctrls=25   tabs=0
+  T7QCFF.DFM                     New Screen                                            fields=12  ctrls=38   tabs=0
+  T7QCGA.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7QCGD.DFM                     New Screen                                            fields=14  ctrls=43   tabs=0
+  T7QCMTHD.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7QCRESULTS.DFM                QC Testing Results                                    fields=7   ctrls=28   tabs=0
+  T7QCRSLT.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7QCSPEC.DFM                                                                         fields=0   ctrls=1    tabs=0
+  t7qcfb.DFM                     New Screen                                            fields=7   ctrls=27   tabs=0
+  t7qcgb.DFM                     New Screen                                            fields=6   ctrls=25   tabs=0
+
+## T7QG (1 forms)
+  T7QGRID.DFM                     Quick Grid                                           fields=1   ctrls=8    tabs=0
+
+## T7QS (2 forms)
+  T7QSOALines.DFM                New Screen                                            fields=9   ctrls=40   tabs=0
+  t7qsoa.DFM                      Quick Sales Entry                                    fields=0   ctrls=3    tabs=0
+
+## T7QT (1 forms)
+  T7QTINFO.DFM                   Quote Misc. Infromation                               fields=26  ctrls=61   tabs=0
+
+## T7RE (10 forms)
+  T7REBQC.DFM                    Recalculate QC Qty                                    fields=6   ctrls=26   tabs=0
+  T7REBSS.DFM                                                                          fields=0   ctrls=3    tabs=0
+  T7REINDEX.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7REPDEF.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7REPLNK.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7REPLNK1.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7RemindRpt.DFM                CM-B-D                                                fields=20  ctrls=53   tabs=0
+  t7ResetDFM.DFM                 Reset DFM Settings                                    fields=0   ctrls=6    tabs=0
+  t7rebwo.DFM                    New Screen                                            fields=9   ctrls=38   tabs=0
+  t7redindexDD.DFM                Reindex Data Dictionary                              fields=6   ctrls=11   tabs=0
+
+## T7RF (1 forms)
+  T7RFQ.DFM                      RFQ                                                   fields=0   ctrls=1    tabs=0
+
+## T7RM (5 forms)
+  T7RMAWHY.DFM                   RMA Why                                               fields=13  ctrls=39   tabs=0
+  T7RMD.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7RMDASK.DFM                   Change Location                                       fields=16  ctrls=42   tabs=0
+  T7RME.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7RMG.DFM                      BASE Blank T7 SCREEN                                  fields=17  ctrls=48   tabs=0
+
+## T7RO (25 forms)
+  T7ROA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROAOpts.DFM                  RO-A                                                  fields=5   ctrls=14   tabs=0
+  T7ROASpecs.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T7ROB.DFM                      RO-B                                                  fields=4   ctrls=20   tabs=0
+  T7ROC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROD.DFM                      RO-D                                                  fields=20  ctrls=48   tabs=0
+  T7ROE.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROF.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROG.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROH.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROI.DFM                      RO-I                                                  fields=44  ctrls=88   tabs=0
+  T7ROJA.DFM                     RO-J-A  Print Routings                                fields=9   ctrls=31   tabs=0
+  T7ROJB.DFM                     RO-J-B                                                fields=5   ctrls=24   tabs=0
+  T7ROJC.DFM                     RO-J-C                                                fields=5   ctrls=23   tabs=0
+  T7ROJD.DFM                     RO-J-D  Print Tools                                   fields=9   ctrls=31   tabs=0
+  T7ROJE.DFM                     RO-J-C                                                fields=3   ctrls=20   tabs=0
+  T7ROJF.DFM                     RO-J-F                                                fields=3   ctrls=20   tabs=0
+  T7ROJG.DFM                     RO-J-G                                                fields=3   ctrls=20   tabs=0
+  T7ROJH.DFM                     RO-J-H                                                fields=6   ctrls=28   tabs=0
+  T7ROK.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7ROL.DFM                      RO-L                                                  fields=6   ctrls=22   tabs=0
+  T7ROQ.DFM                      New Screen                                            fields=11  ctrls=43   tabs=0
+  T7ROUTWO.DFM                   Select                                                fields=0   ctrls=3    tabs=0
+  t7roacpy.DFM                   Copy Existing Routing                                 fields=5   ctrls=13   tabs=0
+  t7rop.DFM                      RO-P  Update Routing Standard                         fields=7   ctrls=29   tabs=0
+
+## T7RT (1 forms)
+  T7RTMVALID.DFM                 Select Report Format Name                             fields=1   ctrls=8    tabs=0
+
+## T7SA (6 forms)
+  T7SAA.DFM                      SA-A                                                  fields=39  ctrls=84   tabs=0
+  T7SAM.DFM                      SA-M                                                  fields=124 ctrls=284  tabs=3
+  T7SAN.DFM                      SA-N                                                  fields=103 ctrls=229  tabs=3
+  T7SAO.DFM                      SA-O  Top N Sales Report                              fields=35  ctrls=76   tabs=0
+  T7SAP.DFM                      SA-P                                                  fields=15  ctrls=45   tabs=0
+  T7SAQ.DFM                      Actual Margin Report                                  fields=5   ctrls=24   tabs=0
+
+## T7SC (9 forms)
+  T7SCA.DFM                      SC-A Edit Serial Numbers                              fields=16  ctrls=51   tabs=0
+  T7SCB.DFM                      SC-B Assign Serial Control                            fields=6   ctrls=24   tabs=0
+  T7SCC.DFM                      SC-C                                                  fields=8   ctrls=30   tabs=0
+  T7SCC2.DFM                     SC-C Print Serial Availability                        fields=8   ctrls=34   tabs=1
+  T7SCE.DFM                      New Screen                                            fields=13  ctrls=39   tabs=0
+  T7SCF.DFM                      SC-F  Serial Control Exceptions                       fields=18  ctrls=42   tabs=0
+  T7SCG.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SCH.DFM                      SC-H                                                  fields=5   ctrls=25   tabs=0
+  T7SCOMP.DFM                                                                          fields=0   ctrls=1    tabs=0
+
+## T7SD (1 forms)
+  T7SDET.DFM                                                                           fields=0   ctrls=1    tabs=0
+
+## T7SE (4 forms)
+  T7SELLOC.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7SEPROC.DFM                   New Screen                                            fields=3   ctrls=20   tabs=0
+  T7SERR.DFM                     New Screen                                            fields=3   ctrls=20   tabs=0
+  T7SETYPE.DFM                   New Screen                                            fields=3   ctrls=20   tabs=0
+
+## T7SH (15 forms)
+  T7SHA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SHB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SHC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SHE.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SHF.DFM                      SH-F                                                  fields=15  ctrls=43   tabs=0
+  T7SHG.DFM                      SH-G                                                  fields=31  ctrls=69   tabs=0
+  T7SHH.DFM                      New Screen                                            fields=14  ctrls=42   tabs=0
+  T7SHI.DFM                      SH-I                                                  fields=47  ctrls=106  tabs=0
+  T7SHIPRTM.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7SHJ.DFM                      SH-J                                                  fields=30  ctrls=71   tabs=0
+  T7SHM.DFM                      SH-M                                                  fields=13  ctrls=39   tabs=0
+  T7SHN.DFM                      SH-N                                                  fields=16  ctrls=46   tabs=0
+  T7SHO.DFM                      SH-O                                                  fields=4   ctrls=21   tabs=0
+  T7SHOWLINEHIST.DFM                                                                   fields=0   ctrls=1    tabs=0
+  T7SHP.DFM                      SH-P                                                  fields=38  ctrls=96   tabs=0
+
+## T7SI (1 forms)
+  T7SIVL.DFM                     Encrypting Data.....                                  fields=0   ctrls=1    tabs=0
+
+## T7SM (56 forms)
+  T7SMC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMCA.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMCB.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMCC.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMD.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SME.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMF.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMG.DFM                      New Screen                                            fields=37  ctrls=94   tabs=0
+  T7SMGA.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMH.DFM                      caldrillbt                                            fields=0   ctrls=50   tabs=0
+  T7SMHMRK.DFM                   New Screen                                            fields=8   ctrls=29   tabs=0
+  T7SMIA.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMIB.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMIC.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMID.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMIE.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMIF.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMJA.DFM                     SM-JA                                                 fields=2   ctrls=21   tabs=0
+  T7SMJB.DFM                     SM-JB                                                 fields=17  ctrls=46   tabs=0
+  T7SMJC.DFM                     SM-JC                                                 fields=12  ctrls=47   tabs=2
+  T7SMJD.DFM                     SM-JD                                                 fields=7   ctrls=30   tabs=0
+  T7SMJE.DFM                     SM-JE                                                 fields=7   ctrls=29   tabs=0
+  T7SMJF.DFM                     SM-JF                                                 fields=7   ctrls=28   tabs=0
+  T7SMJG.DFM                     SM-J-G                                                fields=8   ctrls=30   tabs=0
+  T7SMJH.DFM                     SM-JH                                                 fields=2   ctrls=18   tabs=0
+  T7SMJI.DFM                     SM-J-I                                                fields=8   ctrls=30   tabs=0
+  T7SMJJ.DFM                     SM-JJ                                                 fields=10  ctrls=33   tabs=0
+  T7SMJL.DFM                     SM-JL                                                 fields=11  ctrls=37   tabs=0
+  T7SMJL2.DFM                    Merge Options                                         fields=4   ctrls=12   tabs=0
+  T7SMJM.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMJN.DFM                     SM-JN                                                 fields=26  ctrls=60   tabs=0
+  T7SMJO.DFM                     T7AMK                                                 fields=25  ctrls=63   tabs=0
+  T7SMJQ.DFM                     New Screen                                            fields=15  ctrls=34   tabs=0
+  T7SMJR.DFM                     SM-JR                                                 fields=8   ctrls=30   tabs=0
+  T7SMJS.DFM                     SM-JS                                                 fields=15  ctrls=34   tabs=0
+  T7SMJV.DFM                     BASE Blank T7 SCREEN                                  fields=10  ctrls=34   tabs=0
+  T7SMK.DFM                       Evo User Settings                                    fields=67  ctrls=164  tabs=10
+  T7SML.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMN.DFM                      E&xit                                                 fields=0   ctrls=1    tabs=0
+  T7SMNA.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMNF.DFM                     BASE Blank T7 SCREEN                                  fields=4   ctrls=24   tabs=0
+  T7SMO.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMPA.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMPB.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMPF.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMPH.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMPI.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMPJ.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SMSB.DFM                     New Screen                                            fields=7   ctrls=25   tabs=0
+  T7SMSC.DFM                     SMSC                                                  fields=6   ctrls=25   tabs=0
+  T7SMSD.DFM                     BASE Blank T7 SCREEN                                  fields=9   ctrls=38   tabs=0
+  T7SMT.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMTEND.DFM                   New Screen                                            fields=6   ctrls=33   tabs=0
+  T7SMTSET.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7SMU.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SMW.DFM                      BASE Blank T7 SCREEN                                  fields=3   ctrls=24   tabs=0
+
+## T7SO (69 forms)
+  T7SOABKD.DFM                   Enter Booking Date                                    fields=1   ctrls=5    tabs=0
+  T7SOAC.DFM                     T7SOA                                                 fields=71  ctrls=167  tabs=0
+  T7SOACITEM.DFM                                                                       fields=0   ctrls=1    tabs=0
+  T7SOACPY.DFM                   New Screen                                            fields=2   ctrls=11   tabs=0
+  T7SOAE.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SOAFRT.DFM                   Enter Freight                                         fields=1   ctrls=5    tabs=0
+  T7SOAIMPLINES.DFM                                                                    fields=0   ctrls=1    tabs=0
+  T7SOAPRC.DFM                   Item Pricing                                          fields=4   ctrls=11   tabs=0
+  T7SOAXCOM.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7SOB.DFM                      SO-B                                                  fields=23  ctrls=52   tabs=0
+  T7SOBIN.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7SOC.DFM                      SO-C                                                  fields=59  ctrls=118  tabs=0
+  T7SOD.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SODDesc.DFM                  New Screen                                            fields=2   ctrls=9    tabs=0
+  T7SODPallet.DFM                New Screen                                            fields=2   ctrls=4    tabs=0
+  T7SOE.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SOF.DFM                      SO-F                                                  fields=82  ctrls=154  tabs=0
+  T7SOFDEP.DFM                   New Screen                                            fields=7   ctrls=30   tabs=0
+  T7SOG.DFM                      SOG COGS Report                                       fields=12  ctrls=38   tabs=0
+  T7SOGA.DFM                     SO-G-A Order Posting                                  fields=2   ctrls=7    tabs=0
+  T7SOGACHK.DFM                  Cash Terms                                            fields=5   ctrls=13   tabs=0
+  T7SOGCogs.DFM                  SOG COGS Report                                       fields=10  ctrls=35   tabs=0
+  T7SOGComm.DFM                  SOG Commission Report                                 fields=10  ctrls=35   tabs=0
+  T7SOHINFO.DFM                  Sales Header Misc. Infromation                        fields=26  ctrls=61   tabs=0
+  T7SOINFO.DFM                   Sales Misc. Infromation                               fields=26  ctrls=61   tabs=0
+  T7SOJINFO.DFM                  Recurring Order Information                           fields=4   ctrls=12   tabs=0
+  T7SOK.DFM                                                                            fields=0   ctrls=4    tabs=0
+  T7SOLINEHIST.DFM                                                                     fields=0   ctrls=1    tabs=0
+  T7SOLINFO.DFM                  Sales Line Misc. Infromation                          fields=26  ctrls=60   tabs=0
+  T7SOLOT.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7SON.DFM                      SO-N                                                  fields=32  ctrls=69   tabs=0
+  T7SONQTY.DFM                   T7SONQTY                                              fields=24  ctrls=42   tabs=0
+  T7SOOA.DFM                     SO-OA                                                 fields=39  ctrls=81   tabs=0
+  T7SOOB.DFM                     SO-OB                                                 fields=11  ctrls=37   tabs=0
+  T7SOOD.DFM                     SO-OA                                                 fields=10  ctrls=35   tabs=0
+  T7SOOE.DFM                     SO-O-E                                                fields=47  ctrls=107  tabs=0
+  T7SOOF.DFM                     SO-OF                                                 fields=29  ctrls=73   tabs=0
+  T7SOOG.DFM                     SO-O-G                                                fields=27  ctrls=67   tabs=0
+  T7SOOH.DFM                     SO-Oh                                                 fields=18  ctrls=49   tabs=0
+  T7SOOI.DFM                     SO-OI                                                 fields=30  ctrls=69   tabs=0
+  T7SOOM.DFM                     SO-O-M                                                fields=20  ctrls=47   tabs=0
+  T7SOON.DFM                     SO-O-N                                                fields=30  ctrls=70   tabs=0
+  T7SOPB.DFM                     SO-P-B                                                fields=17  ctrls=40   tabs=0
+  T7SOPC.DFM                     SO-PC                                                 fields=30  ctrls=72   tabs=0
+  T7SOPF.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SOPI.DFM                     New Screen                                            fields=11  ctrls=41   tabs=0
+  T7SOPJ.DFM                     New Screen                                            fields=2   ctrls=10   tabs=0
+  T7SOPK.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7SOPM.DFM                     SO-P-M                                                fields=7   ctrls=28   tabs=0
+  T7SOPO.DFM                     SO-PO                                                 fields=24  ctrls=58   tabs=0
+  T7SOPOR.DFM                    SO-PO Review                                          fields=9   ctrls=22   tabs=0
+  T7SOPP.DFM                     SO-P-P                                                fields=8   ctrls=29   tabs=0
+  T7SOQA.DFM                     SO-QA                                                 fields=8   ctrls=27   tabs=0
+  T7SOQB.DFM                     SO-QB                                                 fields=9   ctrls=33   tabs=0
+  T7SOQC.DFM                     SO-QC                                                 fields=22  ctrls=51   tabs=0
+  T7SOQH.DFM                     SO-QH                                                 fields=99  ctrls=145  tabs=0
+  T7SOQI.DFM                     T7SOQI                                                fields=39  ctrls=91   tabs=0
+  T7SOQJ.DFM                     SO-QJ                                                 fields=17  ctrls=45   tabs=0
+  T7SOQK.DFM                     SO-Q-K  Print Catalog                                 fields=20  ctrls=54   tabs=0
+  T7SOQL.DFM                     SO-Q-L                                                fields=9   ctrls=35   tabs=0
+  T7SOR.DFM                      SO-R                                                  fields=26  ctrls=61   tabs=0
+  T7SORevu.DFM                                                                         fields=0   ctrls=1    tabs=0
+  T7SORevuPSWD.dfm               Enter Contract Review ID and password                 fields=3   ctrls=12   tabs=0
+  T7SOS.DFM                      SO-S                                                  fields=12  ctrls=36   tabs=0
+  T7SOSER.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7SOV.DFM                                                                            fields=0   ctrls=1    tabs=0
+  t7SOA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  t7Soa2.DFM                                                                           fields=0   ctrls=1    tabs=0
+  t7sondte.DFM                   t7sondte                                              fields=1   ctrls=5    tabs=0
+
+## T7SP (6 forms)
+  T7SPC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SPCLIVEGRID.DFM                                                                    fields=0   ctrls=1    tabs=0
+  T7SPCLIVEREP.DFM               New Screen                                            fields=8   ctrls=31   tabs=0
+  T7SPCREP.DFM                   New Screen                                            fields=29  ctrls=70   tabs=0
+  T7SPCREP2.DFM                  New Screen                                            fields=27  ctrls=66   tabs=0
+  T7SPCREPPPM.DFM                New Screen                                            fields=16  ctrls=45   tabs=0
+
+## T7SR (12 forms)
+  T7SRB.DFM                      SR-B                                                  fields=22  ctrls=50   tabs=0
+  T7SRBK.DFM                     Live Work Center Schedule                             fields=6   ctrls=25   tabs=0
+  T7SRD.DFM                      SR-D                                                  fields=28  ctrls=59   tabs=0
+  T7SRE.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SRF.DFM                      SO-F                                                  fields=56  ctrls=109  tabs=0
+  T7SRG.DFM                      SRG                                                   fields=7   ctrls=29   tabs=0
+  T7SRGA.DFM                     SR-G-A Order Posting                                  fields=2   ctrls=7    tabs=0
+  T7SRI.DFM                      SR-I                                                  fields=26  ctrls=61   tabs=0
+  T7SRINFO.DFM                    S&R Misc. Infromation                                fields=26  ctrls=61   tabs=0
+  T7SRK.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7SRMMS.DFM                    Make, Model and Serial Number                         fields=6   ctrls=21   tabs=0
+  T7SRS.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7ST (5 forms)
+  T7STDCST.DFM                    Standard Cost                                        fields=23  ctrls=54   tabs=0
+  T7STEQUIP.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7STOCK.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7STTYPE.DFM                   New Screen                                            fields=3   ctrls=20   tabs=0
+  T7STYPE.DFM                    New Screen                                            fields=3   ctrls=20   tabs=0
+
+## T7TC (1 forms)
+  T7TCC.DFM                      New Screen                                            fields=3   ctrls=21   tabs=0
+
+## T7TE (1 forms)
+  T7TESTNACHA.DFM                NACHA                                                 fields=9   ctrls=35   tabs=0
+
+## T7US (1 forms)
+  T7USG.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7UT (8 forms)
+  T7UTH.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7UTKA.DFM                     New Screen                                            fields=15  ctrls=44   tabs=0
+  T7UTKD.DFM                     New Screen                                            fields=14  ctrls=40   tabs=0
+  T7UTKE.DFM                     New Screen                                            fields=3   ctrls=24   tabs=0
+  T7UTKF.DFM                     UT-K-F                                                fields=9   ctrls=32   tabs=0
+  T7UTKG.DFM                     UT-K-G                                                fields=14  ctrls=40   tabs=0
+  T7UTKH.DFM                     New Screen                                            fields=15  ctrls=38   tabs=0
+  t7uti.DFM                                                                            fields=0   ctrls=1    tabs=0
+
+## T7VS (1 forms)
+  T7VSCHED.DFM                   New Screen                                            fields=17  ctrls=58   tabs=0
+
+## T7WC (13 forms)
+  T7WCA.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WCB.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WCBK.DFM                     Live Work Center Schedule                             fields=9   ctrls=34   tabs=0
+  T7WCBinLot.DFM                 New Screen                                            fields=4   ctrls=14   tabs=0
+  T7WCC.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WCD.DFM                      WC-D                                                  fields=21  ctrls=51   tabs=0
+  T7WCE.DFM                      WC-E                                                  fields=20  ctrls=49   tabs=0
+  T7WCF.DFM                      WC-F                                                  fields=11  ctrls=35   tabs=0
+  T7WCG.DFM                      WC-G                                                  fields=12  ctrls=40   tabs=0
+  T7WCH.DFM                      BASE Blank T7 SCREEN                                  fields=5   ctrls=25   tabs=0
+  T7WCLOCFIX.DFM                 LOC SYNCH UTILITY                                     fields=4   ctrls=24   tabs=0
+  T7WCS.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WCS2.DFM                                                                           fields=0   ctrls=1    tabs=0
+
+## T7WO (68 forms)
+  T7WOA.DFM                      New Screen                                            fields=69  ctrls=171  tabs=3
+  T7WOAC.DFM                     New Screen                                            fields=78  ctrls=183  tabs=0
+  T7WOACFG.DFM                   WO-A  Settings                                        fields=3   ctrls=9    tabs=0
+  T7WOACPY.DFM                   New Screen                                            fields=3   ctrls=13   tabs=0
+  T7WOAE.DFM                     New Screen                                            fields=100 ctrls=247  tabs=4
+  T7WOAECO.DFM                    Eco                                                  fields=9   ctrls=24   tabs=0
+  T7WOAMDT.DFM                                                                         fields=0   ctrls=8    tabs=0
+  T7WOASOLINES.DFM                                                                     fields=0   ctrls=2    tabs=0
+  T7WOB.DFM                      WO-B                                                  fields=15  ctrls=46   tabs=0
+  T7WOC.DFM                      WOC                                                   fields=51  ctrls=93   tabs=0
+  T7WOD.DFM                      WO-D                                                  fields=28  ctrls=59   tabs=0
+  T7WODATES.DFM                                                                        fields=0   ctrls=1    tabs=0
+  T7WOE.DFM                      IN-E Print Inventory Transactions                     fields=5   ctrls=26   tabs=0
+  T7WOF.DFM                      WO-F                                                  fields=40  ctrls=98   tabs=0
+  T7WOFA.DFM                     WO-F Backflush Material                               fields=1   ctrls=22   tabs=0
+  T7WOG.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WOH.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WOI.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WOIASK.DFM                   Change Location                                       fields=18  ctrls=43   tabs=0
+  T7WOJ.DFM                      WO-J                                                  fields=11  ctrls=38   tabs=0
+  T7WOJPRESERIALS.DFM            WO-J Pre-Assigned Serial Numbers                      fields=7   ctrls=25   tabs=0
+  T7WOKA.DFM                     WO-K-A                                                fields=35  ctrls=100  tabs=0
+  T7WOKACOPYROUT.DFM             WO-K-A                                                fields=4   ctrls=14   tabs=0
+  T7WOKAOPTS.DFM                 WO-K-A                                                fields=3   ctrls=12   tabs=0
+  T7WOKB.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKC.DFM                     WO-K-C                                                fields=4   ctrls=21   tabs=0
+  T7WOKD.DFM                     WO-K-D                                                fields=30  ctrls=60   tabs=0
+  T7WOKDQTY.DFM                  Enter Qty to Make                                     fields=16  ctrls=34   tabs=0
+  T7WOKE.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKF.DFM                     New Screen                                            fields=5   ctrls=24   tabs=0
+  T7WOKG.DFM                     WO-K-G                                                fields=13  ctrls=41   tabs=0
+  T7WOKJ.DFM                     WO-K-J                                                fields=11  ctrls=32   tabs=0
+  T7WOKK.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKL.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKM.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKMA.DFM                    New Screen                                            fields=3   ctrls=21   tabs=0
+  T7WOKNA.DFM                    Live Work Center Schedule                             fields=4   ctrls=22   tabs=0
+  T7WOKNB.DFM                                                                          fields=0   ctrls=1    tabs=0
+  T7WOKNC.DFM                    Issue Part from Request                               fields=18  ctrls=50   tabs=0
+  T7WOKP.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKS.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOKSA.DFM                    WO-K-SA                                               fields=10  ctrls=33   tabs=0
+  T7WOKT.DFM                     New Screen                                            fields=11  ctrls=36   tabs=0
+  T7WOLA.DFM                     WO-L-A                                                fields=61  ctrls=116  tabs=0
+  T7WOLB.DFM                     WO-L-B                                                fields=48  ctrls=99   tabs=0
+  T7WOLC.DFM                     WO-L-C                                                fields=22  ctrls=56   tabs=0
+  T7WOLD.DFM                     WO-L-D                                                fields=26  ctrls=65   tabs=0
+  T7WOLE.DFM                     WO-L-E                                                fields=7   ctrls=31   tabs=0
+  T7WOLF.DFM                     WO-L-F                                                fields=48  ctrls=99   tabs=0
+  T7WOLG.DFM                     WO-L-G                                                fields=32  ctrls=65   tabs=0
+  T7WOLH.DFM                     WO-L-H                                                fields=15  ctrls=43   tabs=0
+  T7WOLI.DFM                     WO-L-I                                                fields=32  ctrls=71   tabs=0
+  T7WOLJ.DFM                     WO-L-J  Print Finished Work Order Report              fields=19  ctrls=53   tabs=0
+  T7WOLK.DFM                     WO-L-K  Print WO Bill of Material                     fields=23  ctrls=48   tabs=0
+  T7WOLL.DFM                     WO-L-L                                                fields=11  ctrls=38   tabs=0
+  T7WOLM.DFM                                                                           fields=0   ctrls=1    tabs=0
+  T7WOLN.DFM                     WO-L-N                                                fields=4   ctrls=23   tabs=0
+  T7WOLO.DFM                     WC by Customer                                        fields=5   ctrls=24   tabs=0
+  T7WONoteTLL.DFM                WO Notes                                              fields=0   ctrls=17   tabs=0
+  T7WOP.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WOPO.DFM                     WO-PO                                                 fields=13  ctrls=36   tabs=0
+  T7WOPOR.DFM                    WO-PO Review                                          fields=8   ctrls=20   tabs=0
+  T7WOS.DFM                                                                            fields=0   ctrls=1    tabs=0
+  T7WOTRWK.DFM                   Rework TO Stock WO                                    fields=8   ctrls=30   tabs=0
+  T7woko.DFM                                                                           fields=0   ctrls=1    tabs=0
+  t7wogimp.DFM                   Import Material Issues                                fields=4   ctrls=17   tabs=0
+  t7woprio.DFM                                                                         fields=0   ctrls=1    tabs=0
+  t7woprio2.DFM                                                                        fields=0   ctrls=1    tabs=0
+
+## T7XC (1 forms)
+  T7XCUTIL.DFM                   XCharge Conversion Utility                            fields=1   ctrls=6    tabs=0
+
+## UDFE (6 forms)
+  udfedit.DFM                    Enter Value                                           fields=1   ctrls=3    tabs=0
+  udfedit1.DFM                   Enter Value                                           fields=1   ctrls=3    tabs=0
+  udfedit2.DFM                   Enter Value                                           fields=1   ctrls=3    tabs=0
+  udfedit3.DFM                   Enter Value                                           fields=1   ctrls=3    tabs=0
+  udfedit4.DFM                   Enter Value                                           fields=1   ctrls=3    tabs=0
+  udfedit5.DFM                   Enter Value                                           fields=1   ctrls=3    tabs=0
+
+## UT (9 forms)
+  UT7GBOM.DFM                    Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GDUPLOC.DFM                 Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GDUPLOC.R.DFM               Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GFAC.DFM                    Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GFAD.DFM                    Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GISREPORD.DFM               Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GSOH.DFM                    Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GUT7DUPLO.DFM               Loading....                                           fields=0   ctrls=5    tabs=0
+  UT7GWOPRIO.DFM                 Loading....                                           fields=0   ctrls=5    tabs=0
+
+## VARI (1 forms)
+  VARINFO.DFM                     VAR Infromation                                      fields=12  ctrls=31   tabs=0
+
+## WBKH (1 forms)
+  WBKHHLOOKUP.DFM                New Screen                                            fields=1   ctrls=31   tabs=0
+
+## WBKL (4 forms)
+  WBKLKPMEMO.DFM                  Edit Memo Field                                      fields=0   ctrls=5    tabs=0
+  WBKLOOKUP.DFM                   Evo Lookups                                          fields=6   ctrls=76   tabs=0
+  WBKLPRINT.DFM                   Order Printing                                       fields=3   ctrls=6    tabs=0
+  WBKLUGRID.DFM                                                                        fields=0   ctrls=1    tabs=0
+
+## WBKM (6 forms)
+  WBKMENUBUTT.DFM                &Select                                               fields=0   ctrls=1    tabs=0
+  WBKMENUPICS.DFM                 Images                                               fields=0   ctrls=6    tabs=0
+  WBKMENUSETUP.DFM                                                                     fields=0   ctrls=2    tabs=0
+  WBKMENUSUCPRG.DFM              Change Program Name                                   fields=2   ctrls=9    tabs=0
+  WBKMENUSUNEWAC.DFM             Enter New Access Code                                 fields=2   ctrls=7    tabs=0
+  wbkmenusueu.dfm                                                                      fields=0   ctrls=2    tabs=0
+
+## WMBK (1 forms)
+  WMBKLOOKUP.DFM                 Lookup:                                               fields=1   ctrls=33   tabs=0
+
+## WORK (1 forms)
+  WORKCENTERLOAD.DFM             Loading....                                           fields=0   ctrls=4    tabs=0
+
+## WTAS (14 forms)
+  WTASDMS2.DFM                                                                         fields=0   ctrls=1    tabs=0
+  WTASDMS3.DFM                   Edit Memo Field                                       fields=0   ctrls=4    tabs=0
+  WTASDMS4.DFM                   Enter Filter Expression                               fields=1   ctrls=6    tabs=0
+  WTASFLLKUP.DFM                                                                       fields=0   ctrls=1    tabs=0
+  WTASFLOC.DFM                   Maintain File Names and Locations                     fields=6   ctrls=18   tabs=0
+  WTASINIT.DFM                   Addsum TAS Professional 7 Create/Initialize File P    fields=6   ctrls=16   tabs=0
+  wtaschkint.dfm                 DataScanIntegrity utility                             fields=3   ctrls=24   tabs=0
+  wtaschkintcompany.dfm          Include which companies                               fields=0   ctrls=5    tabs=0
+  wtascvtdict.DFM                 Convert Existing Dictionary                          fields=1   ctrls=9    tabs=0
+  wtasdatam.dfm                  Maintain Database                                     fields=9   ctrls=54   tabs=0
+  wtasdmgr.dfm                                                                         fields=0   ctrls=21   tabs=0
+  wtasdmgr2.DFM                  New FD                                                fields=1   ctrls=5    tabs=0
+  wtasdmgr3.DFM                  Restructure a file                                    fields=1   ctrls=11   tabs=0
+  wtasdms5.dfm                   Enter Find Next Expression                            fields=1   ctrls=6    tabs=0
+

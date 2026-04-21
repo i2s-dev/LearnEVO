@@ -1,0 +1,208 @@
+BKYSMSTR
+BKCPMSTR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+This program cannot be run with the DOS version of DBA. A
+BKYSMSTRA
+BKCPMSTRV
+PL-E  Payroll Software Link SetupA
+F1 HelpA
+Esc ExitA
+D:\DBAMFG\A
+This is the path where the Payroll software is installed.  Generally this should be the same as your main DBA directory, although it does not have to be. A
+XPAY32.EXEA
+This cannot be blank. A
+) was not found in the path A
+.  Please enter the correct path and/or filename.  A
+The Payroll software (A
+This is the name of the Payroll software EXE file.  Be sure to specify the ".EXE" extension, and do not include any path information here. A
+This is the path where DBA will look for the employee check and employer voucher files created by Payroll software for import into DBA. A
+CHECKS.TXTA
+This cannot be blank.A
+This is the name of the employee check file created by Payroll software for import into DBA. A
+VOUCHERS.TXTA
+This cannot be blank.A
+This is the name of the employer voucher file created by Payroll software for import into DBA. A
+Indicate Y here to have AW-L-E [Print/Post Labor] create a file with the hours worked for export into Payroll software.  Then you can choose "Import Hours" in Payroll software to bring in these hours, instead of re-entering them. A
+This is the path where DBA will create the AW-L-E [Print/Post Labor] hours file for export to Payroll software. A
+HOURS.TXTA
+This is the name of the AW-L-E [Print/Post Labor] hours export file created by DBA for export into Payroll software. A
+Indicate Y here to have CS-D [Transfer Sales Commissions] print a report of employee commissions to be paid, instead of posting those internally to DBA.  You can then enter the commissions from the report into Payroll software for payment.  Commissions earned by agents who are not employees will still continue to be handled through the DBA AP module. A
+BKYSMSTRF
+ Location [path] of Payroll software                                      
+                                                                          
+                      Name of Payroll EXE file [include the .EXE]         
+                                                                          
+ Location [path] of employee check and employer voucher files             
+ created by Payroll software for import into DBA                          
+                                                                          
+                      Name of employee checks import file                 
+                      Name of employer vouchers import file               
+                                                                          
+   Have AW-L-E [Print/Post Labor] create a file for export of hours to    
+   Paryroll software, instead of posting to DBA?                          
+                                                                          
+ Location [path] of AW-L-E hours export file                              
+                                                                          
+                      Name of AW-L-E hours export file                    
+                                                                          
+   Have CS-D [Transfer Commissions] print a report of employee            
+   commissions [for entry into Payroll] instead of posting to DBA PR?     
+                                                                          
+   Disable GL Departments during Import?                                  
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+BKCPMSTR_HNDL  
+CNTR           
+SPACE          
+BKCP.MST.CMPATH
+BKCP.MST.EFILE 
+BKCP.MST.IMPATHB
+BKCP.MST.CFILE 
+BKCP.MST.VFILE 
+BKCP.MST.LABEX 
+BKCP.MST.EXPATH
+BKCP.MST.HFILE 
+BKCP.MST.COMMEX
+BKYS.YN        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+MESSAGE        
+FC             

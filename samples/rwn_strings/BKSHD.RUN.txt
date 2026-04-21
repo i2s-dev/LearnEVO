@@ -1,0 +1,539 @@
+TAS32?
+BKYSMSTR
+TASCOLOR
+WORKCTR 
+MACHINE 
+WORKORD 
+WOROUT  
+CALENDAR
+BKSYHELP
+DBAHLPID
+BKYSMSTRA
+MACHINEA
+CALENDARA
+WOROUTA
+WORKCTRA
+WORKORDA
+BKYSMSTRA
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+SH-D  Manually Schedule MachinesA
+WORKORDA
+WOROUTA
+WORKCTRA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+workctrI
+This is not a valid work center. A
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+MACHINEA
+machineI
+This is not a valid machine. A
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+MACHINEA
+machineI
+This is not a valid machine. A
+The "Thru" machine cannot be less than the "From" machine. A
+There are no operations scheduled for the work center/machines chosen. A
+NormalBkgA
+SH-D  Manually Schedule MachinesA
+ WO Operations A
+ WO Operations A
+F1 Help,ENTER EditA
+Esc ExitA
+Mach P Start    Finish   Work Order Seq Item Number     Customer NameA
+WOROUTA
+WOROUTF
+woroutI
+This work order operation was not found in WOROUT! A
+WOROUTA
+NormalBkgA
+F5 Disable Auto-Entry ModeA
+Esc ExitA
+F5 Enable Auto-Entry ModeA
+Esc ExitA
+F5 Disable Auto-Entry ModeA
+Esc ExitA
+F5 Enable Auto-Entry ModeA
+Esc ExitA
+MACHINEA
+machineI
+This is not a valid machine. A
+MACHINEI
+Please enter a start date. A
+calendarI
+This is not a valid date on the Shop Calendar. A
+Please enter a finish date. A
+calendarI
+This is not a valid date on the Shop Calendar. A
+WOROUTA
+WOROUTA
+WORKORDA
+MACHINEL
+WOROUTA
+WORKORDA
+MACHINEN
+Esc StopA
+Loading WO No.: A
+WOROUTI
+woroutI
+workordI
+WOROUTF
+You have reached the maximum number of work order operations (A
+) that can be loaded. A
+WOROUTA
+woroutI
+WOROUTA
+WORKORDA
+   Machine                              Part                                
+                                        Desc                                
+                                        Cust                                
+   Start                                                               Auto 
+   Finish            Work Order  Operation                            Entry 
+   Prty                    -                                                
+   Work Center                         Machine Range                        
+                                                                            
+                                                                            
+                                                                            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+WORKCTRA
+ Work Centers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKCTRA
+WC Code     A
+WC Description      A
+Dpt Descrip  A
+Parent WC   A
+% UtilA
+WORKCTRA
+WC Code     A
+WC Description      A
+Dpt Descrip  A
+Parent WC   A
+% UtilA
+WORKCTRA
+Parent WC   A
+WC Code     A
+WC Description      A
+Dpt Descrip  A
+% UtilA
+WORKCTRA
+DepartmentF
+Parent WCI
+F1 HelpA
+Esc ExitA
+ A - CodeF
+ B - DepartmentF
+ C - Parent WCA
+ Search Key A
+ Machines A
+F1 HelpA
+Esc ExitA
+MACHINEA
+Description                   A
+Hrs Used A
+Hrs MaintA
+Work Center A
+WC Description                A
+MACHINEA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNYNX
+YNNNYC
+YNNYNX
+YNNYNX%
+YNNNYC
+YNNYNX+
+YNNYNX7
+YNNYNX1
+YNNYNXF
+YNNNYCq
+YNNYNX
+YNNNYC?
+YNNNYX/
+YNNNYX
+YNNNYCM
+YNNNYC
+YNNNYF
+NNNYN&
+YNNNYF "
+YNNNYFP"
+YNNNYFP"
+YNNNYFP"
+YNNNYF "
+YNNNYX
+YNNNYFP"
+YNNNYXXV
+YNNNYFP"
+YNNNYX
+YNNNYFP"
+YNNNYF "
+YNNNYFP"
+YNNNYFP"
+YNNNYFP"
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+CUR.LINE       
+TOT.LINES      
+ENT.CUST       
+ENT.MDESC      
+LINE.MACH      
+LINE.PR        
+LINE.START     
+LINE.FINISH    
+LINE.SEQ       
+LINE.PART      
+LINE.WOPRE     
+LINE.WOSUF     
+LINE.CUST      
+LINE.RNUM      
+FROM.MACHINE   
+FROM.DESC      
+THRU.MACHINE   
+THRU.DESC      
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MAXL           
+ENTRY.TYPE     
+AUTO.ENTER     
+AUTO.TEXT      
+MAINWINDOW     
+LISTWINDOW     
+EDITWINDOW     
+PRA.LKUA       
+PRA.LKUI       
+LKUPA.HNDL     
+LKUPI.HNDL     
+ZRET           
+CUR.SCREEN     
+WCH.SCRN       
+LL_TITLE       
+LL_TITLE1      
+NORM           
+MTWC.WC        
+TMACH.MACHINE  
+TMACH.DESC     
+WC             
+BC             
+SC             
+MTWO.WIP.WOPRE 
+MTWORO.WOPRE   
+MTWO.WIP.WOSUF 
+MTWORO.WOSUF   
+MTWORO.MACHNO  
+MTWORO.START   
+MTWORO.FINISH  )
+MTCAL.DATE     
+MTWORO.FINISH2 
+MTWORO.WC      
+MTWO.WIP.STATUS-
+MTWORO.PRIORITY
+MTWORO.OPER    
+MTWO.WIP.CODE  
+MTWO.CUSTNAME  
+MTWO.WIP.DESC  
+MTWORO.OPERDESCO
+MTWC.WCDESC    
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+WCF2.COL       
+WCF2.ROW       
+WC.LKUP.WCDESC 
+WC.LKUP.DDESC  
+WC.LKUP.PARYN  
+SRCH_KEY_NUM   
+WC_TTL1        
+WC_USCORE      
+MTWC.DEPT      *
+MTWC.PARENT.WC 
+MTWC.%UTIL     M
+DATC           
+MTWC.DEPTDESC  -
+MTWC.PARENT.YN 
+TEMP_KEY       
+MENULIST       
+MACHINE_TTL1   
+MACHINE_USCORE 
+TMACH.HRSUSED  "
+TMACH.HRSMAINT *
+TMACH.WC       
+TMACH.WCDESC   
+SRCH_HOW_MSG   
+FC             
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

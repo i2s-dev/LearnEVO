@@ -1,0 +1,243 @@
+BKAPPO  
+BKAPPOL 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+POLOCFIX  Fix PO LocationsA
+Esc ExitA
+This will ensure that the location of all PO line items matches the location of the PO header.  Three files get processed: Open POs, PO History, and RFQs.  This may be run multiple times without harm.  All other users must be out of the system.  Ready to begin? L
+BKAPPOA
+BKAPPOA
+BKAPPOLA
+BKAPPOLA
+BKAPHPOA
+BKAPHPOA
+BKAPHPOLA
+BKAPHPOLA
+BKAPRFQA
+BKAPRFQA
+BKAPRFQLA
+BKAPRFQLA
+The file A
+ is open or there was an error opening that file.  Make sure all users are out of the system and try again.A
+BKAPPOA
+BKAPHPOA
+BKAPRFQA
+This utility is now complete.A
+           
+    Files     
+           
+                   
+   processed  
+           
+       Time        
+              
+           
+   Start     Now   
+      of      
+           
+                   
+           
+                   
+                             
+  Working on file  
+                             
+                   
+                             
+                   
+                             
+  Records in file  
+                             
+                   
+                             
+                   
+                             
+  Records scanned  
+                             
+                   
+                             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+                               A
+normalbkgA
+                           A
+normaltextA
+yellowI
+normaltextA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+PERCENT        
+PERC_OF_TOT    
+TOTRECS        
+SCANRECS       
+I_COL          
+START_COL      
+STOP_COL       
+CURR_TIME      
+START_TIME     
+FILENAME       
+I              
+FILE_COUNT     
+FILE_TOT       
+FILENAME2      
+ZRET           
+CFROM          
+BKAPPO_HNDL    
+BKAPPOL_HNDL   
+BKAPHPO_HNDL   
+BKAPHPOL_HNDL  
+BKAPRFQ_HNDL   
+BKAPRFQL_HNDL  
+BKAP.PO.LOC    
+BKAP.PO.NUM    
+BKAP.POL.PONM  
+BKAP.POL.PCODE 
+BKAP.POL.LOC   
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+COL            
+ROW            
+CURRENT        
+HOWMANY        
+MENU_TITLE     
+DONE           
+Z              
+Z1             
+X              
+MSG_PTR        
+MESSAGE        
+FC             

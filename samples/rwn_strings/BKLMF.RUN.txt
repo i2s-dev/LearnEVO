@@ -1,0 +1,241 @@
+BKAPPO  
+BKQCMSTR
+BKAPPOL 
+BKAPDESC
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKAPPOA
+BKAPPOLA
+BKAPDESCA
+BKQCMSTRA
+  Purge Closed Purchase OrdersA
+F10 Execute,Esc ExitA
+The second order date must be greater than the first order date! A
+Scanning through closed Purchase Orders..A
+There are no closed Purchase Orders within the specified date range. A
+Are you ready to begin purging closed Purchase Orders?A
+Purging closed Purchase Orders from A
+ has completed successfully! A
+Please note: There were A
+ POs within the range that could not be deleted because they had QC Receivers that had not been fully bought off yet. A
+                            
+                            
+ Purge Thru Ord Date 
+                            
+                     
+                            
+                     
+                            
+                   
+                   
+ PO Number          Ord Date           
+                   
+                   
+ Name                                  
+                   
+                                       
+                   
+ Number of line items                  
+                   
+ Number of note lines                  
+                   
+ Number of QC receiver lines           
+                   
+                                       
+                   
+                   SubTot              
+                   
+ Tax               Total               
+                   
+                                       
+                   
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+                               A
+normalbkgA
+                           A
+normaltextA
+yellowI
+normaltextA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TOTAL_DEL      
+WHERE          
+DUMMY          
+LI_CNTR        
+NOTE_CNTR      
+QC_CNTR        
+QC_REJECT      
+BUYOFF.REMAIN  
+NUM.OPEN       
+FROM_DATE      
+THRU_DATE      
+BKAPPO_HNDL    
+BKAPPOL_HNDL   
+BKAPDESC_HNDL  
+BKQCMSTR_HNDL  
+HDR_START      
+BKAP.PO.ORDDTE L
+BKAP.PO.PRTD   
+BKAP.PO.NUM    
+BKQC.PO.NUM    
+BKQC.QTY.RECVD 2
+BKQC.QTY.BUYOFF:
+BKQC.QTY.REJECTB
+BKAP.POL.PONM  
+BKAP.PO.NL     h
+BK.DESC.NUM    
+BKAP.PO.SHPNME 
+BKAP.PO.SUBTOT P
+BKAP.PO.TAXAMT X
+BKAP.PO.TOTAL  `
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+COL            
+ROW            
+CURRENT        
+HOWMANY        
+PERCENT        
+MENU_TITLE     
+DONE           
+Z              
+Z1             
+X              
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        
+FC             

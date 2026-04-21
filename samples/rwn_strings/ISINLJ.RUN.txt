@@ -1,0 +1,1388 @@
+TASCOLOR
+BKICLOCM
+BKICMSTR
+MTICMSTR
+BKICLOC 
+INVTXN  
+LOT     
+SERIAL  
+CLASS   
+BKSYMSTR
+BKARTXN 
+BKSYHELP
+DBAHLPID
+BKYSMSTR
+BKGLTRAN
+BKSYPRTR
+BKAPDESC
+FILELOC 
+BKAPVEND
+BKARCUST
+BKCMACCT
+ - ISTS Enhancement 08/20/04A
+ISTECHL
+bkartxnA
+bkartxnsA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+BKYSMSTRA
+BKSYMSTRA
+SERIALA
+BKICLOCA
+MTICMSTRA
+BKICMSTRA
+INVTXNA
+BKICLOCMA
+NormalBkgA
+NormalBkgA
+WindowBkgA
+ Items To Transfer A
+BoxBkgA
+NormalBkgA
+NormalBkgA
+IN-L-J  Transfer InventoryA
+F1 Help,F3 Re-Print Transfer,F4 Reverse TransferA
+ESC ExitA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+INVTXNA
+SERIALI
+F1 Help,F2 Lookup,F3 Re-Print Transfer,F4 Reverse TransferA
+ESC ExitA
+F1 HelpA
+Esc ExitA
+BKICLOCMI0
+BKICLOCMA
+bkiclocmI
+That is not a valid location. Please select a valid location.A
+You cannot transfer units to the same location. A
+Item Number:   A
+Desc.: A
+  Current UOH                            Current UOH                        A
+  UOH to Transfer                        UOH to Transfer                    A
+  New UOH                                New UOH                            A
+  Current Unit Cost     $                Transfer Amount    $               A
+DEL Delete,ENTER EditA
+F10 Done,Esc ExitA
+   Item        A
+   Description       A
+Qty To MoveA
+   Lot         A
+   Serial                 A
+                                                A
+Exit this Transfer without Processing the information?L
+Do you want you want to Process this List?L
+Exit this Transfer without saving the information?L
+Are you sure you want to delete this?L
+Item Number:   A
+Desc.: A
+  Current UOH                            Current UOH                        A
+  UOH to Transfer                        UOH to Transfer                    A
+  New UOH                                New UOH                            A
+  Current Unit Cost     $                Transfer Amount    $               A
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F3 ClearA
+Esc ExitA
+NormalBkgA
+Item           A
+Description                   A
+ On-hand QtyA
+BKICLOCA
+BKICLOCA
+F1 Help,F2 Choose Lots,F3 ClearA
+Esc ExitA
+F1 Help,F2 Choose Serial Numbers,F3 ClearA
+Esc ExitA
+F1 Help,F3 ClearA
+Esc ExitA
+Posting transfers...A
+TRANSI
+TRANSI
+INVTXNA
+INVTXNA
+INVTXNI
+INVTXNA
+.  This lot will not be transferred, and the GL and stock status postings will be adjusted to reflect this ommission. A
+Error: Could not find LOT record for lot number A
+ has been changed by another user since this transfer session was started.  This lot will not be transferred, and the GL and stock status postings will be adjusted to reflect this ommission. A
+Error: The UOH or location of the LOT record for lot number A
+INVTXNA
+INVTXNA
+INVTXNI
+INVTXNA
+SERIALA
+.  This serial number will not be transferred, and the GL and stock status postings will be adjusted to reflect this ommission. A
+Error: Could not find SERIAL record for serial number A
+ has been changed by another user since this transfer session was started.  This serial number will not be transferred, and the GL and stock status postings will be adjusted to reflect this ommission. A
+Error: The UOH or location of the SERIAL record for serial number A
+SERIALA
+SERIALA
+serialI
+SERIALA
+SERIALA
+SERIALA
+INVTXNA
+INVTXNA
+INVTXNI
+INVTXNA
+SERIALA
+.  This serial number will not be transferred, and the GL and stock status postings will be adjusted to reflect this ommission. A
+Error: Could not find SERIAL record for serial number A
+ has been changed by another user since this transfer session was started.  This serial number will not be transferred, and the GL and stock status postings will be adjusted to reflect this ommission. A
+Error: The UOH or location of the SERIAL record for serial number A
+SERIALA
+SERIALA
+serialI
+SERIALA
+SERIALA
+SERIALA
+INVTXNA
+INVTXNA
+INVTXNI
+INVTXNI
+bkiclocI
+Error: Could not find the location record for the "From" location (A
+).  Was not able to subtract A
+ units from UOH at that location.  You should run Reconcile Inventory On-Hand to correct. A
+bkiclocI
+BKICLOCA
+BKICLOCA
+BKICLOCA
+Tsf to Loc "A
+INVENA
+Tsf fr Loc "A
+INVENA
+BKINLJ1.rtmAi
+From_loc_nameA
+To_loc_nameA
+cust_bill_to[1]A
+cust_bill_to[2]A
+cust_bill_to[3]A
+cust_bill_to[4]A
+cust_bill_to[5]A
+cust_ship_to[1]A
+cust_ship_to[2]A
+cust_ship_to[3]A
+cust_ship_to[4]A
+trans_numA
+trans_dateA
+bksy_comp_nameA
+bksy_comp_add1A
+bksy_comp_add2A
+bksy_comp_cszA
+txtTitleA
+ptitleA
+from_contactA
+from_phoneA
+from_faxA
+to_contactA
+to_phoneA
+to_faxA
+mtit_itemA
+mtit_descA
+mtit_qtyA
+mtit_lotA
+mtit_serialA
+TRANSFER SLIPF
+INVTXNA
+Abandon this transfer and start a new one?L
+Loading lot numbers at the FROM location...I
+There are more than 5,000 lots with on-hand quantity at the FROM location.  This is the maximum that can be loaded at any one time. A
+There are no lots with on-hand quantity at the FROM location available for transfer. A
+Loading serial numbers at the FROM location...I
+There are more than 5,000 serial numbers with on-hand quantity at the FROM location.  This is the maximum that can be loaded at any one time. A
+SERIALA
+serialI
+There are no serial numbers with on-hand quantity at the FROM location available for transfer. A
+ENTER Select/UnselectA
+F10 SaveA
+NormalBkgA
+Tag/Untag Lot(s) for transferA
+Tag/Untag Serial#(s) for transferA
+Item No : A
+Location: A
+Lot Number     A
+ On-hand QtyA
+Serial Number            A
+OHQtyA
+Lot Number     A
+Exit without choosing any items for transfer?  (any items marked for selection in this window will be unselected)L
+NormalBkgA
+NormalBkgA
+Qty to Transfer for LOT # A
+You can't transfer more then you have on hand.A
+You can't transfer negative values.A
+Item A
+ has Open Sales Order (A
+) with Lot information allocated for this Location. Please unrelease this Order and try again.A
+Item A
+ has Open Sales Order (A
+) with Serial information allocated for this Location. Please unrelease this Order and try again.A
+Please select a item number. A
+bkicmstrI
+This is not a valid item number. A
+mticmstrI
+Could not find the MTICMSTR record for this part. A
+NLTKBOA
+You cannot transfer units for N, L, T, K, B, or O type parts. A
+BKICLOCA
+This is not a valid location.A
+bkiclocI
+This is not a valid location for this part. A
+BKICLOCA
+BKICLOCA
+You cannot transfer units to the same location. A
+BKICLOCL
+BKICLOCL
+The number of units to be transferred cannot be zero. A
+NormalBkgA
+Trns #A
+Date    A
+From      - To        A
+Item           A
+Description                   A
+ Trans. Qty A
+INVTXNA
+NormalBkgA
+NormalBkgA
+Enter Transfer number to Reprint :A
+F2 LookupA
+ESC ExitA
+INVTXNA
+INVTXNI
+Transfer number not foundA
+NormalBkgA
+NormalBkgA
+Enter Transfer number to Reverse :A
+Date to use for this Reverseal :A
+F2 LookupA
+ESC ExitA
+INVTXNA
+Are you sure you want to Reverse this Transfer?L
+  Transfer FROM Location                 Transfer TO Location               
+  Transfer date                          Print Transfer Document?           
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+BKICLOCMA
+ Locations A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICLOCMA
+Code      A
+Name                          A
+StateA
+BKICLOCMA
+Name                          A
+Code      A
+StateA
+BKICLOCMA
+Code         F
+Name         I
+F1 HelpA
+Esc ExitA
+ A - CodeF
+ B - NameA
+ Search Key A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when DBA Accounting is activated. A
+This program is only available when DBA Accounts Receivable is activated. A
+This program is only available when DBA Accounts Payable is activated. A
+BKGLTEMPI
+An error has occurred - BKGLTEMP could not be opened. A
+BKGLXI
+An error has occurred - BKGLX could not be opened. A
+BKGLCOAI
+An error has occurred - BKGLCOA could not be opened. A
+CLASSI
+An error has occurred - CLASS could not be opened. A
+ Demo A
+ DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+The date is not valid (00/00/00). A
+A transaction with this date cannot be posted to the GL.A
+The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the two preceding fiscal years.A
+The starting date of the current fiscal year is A
+A transaction with this date cannot be posted to the GL.  The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the two preceding fiscal years.  The starting date of the current fiscal year is A
+This transaction will be posted to a prior fiscal year.  Is this OK? L
+The transaction date is prior to the Period-End Close Date. A
+Invalid transaction type: "A
+".  Not sure whether to post to the GL or not, so will go ahead and post to the GL just in case. A
+GL      A
+No item class was provided, so the system default GLs will have to be used for this posting instead of location-specific GLs for the item class. A
+SALES   A
+NTSALES A
+INVEN   A
+COGS    A
+WIPINV  A
+ALAB    A
+AFOH    A
+AVOH    A
+Unrecognized GL Type: "A
+".  This transaction will post to the Clearing Account. A
+INVALID GL ACCOUNT ENCOUNTERED DURING POSTING.F
+A GL POSTING IS GOING TO THE CLEARING ACCOUNT.F
+Invalid GL account: A
+Transaction Desc  : A
+Transaction Amount: A
+The portion of this posting that would have gone to theF
+invalid GL account will instead post to the defaultF
+Clearing Account defined in "General Ledger Defaults".F
+A portion of this posting is going to the Clearing Account.F
+This may be due to a system default GL that is set to theF
+Clearing Account, as defined in "General Ledger Defaults".F
+You should click OK here to continue posting the restF
+of this transaction.F
+Then go to "Print/Post General Ledger Batches" to get aF
+listing of your Clearing Account entries and edit theF
+entries for the correct GL account(s) throughF
+"Edit General Ledger Batch Entries".I
+*.RTMA
+NormalBkgA
+NormalBkgA
+Graphical Form Name :  A
+            A
+That Form was not found in the DBA directory.A
+ Forms List A
+F1 HelpA
+Esc ExitA
+Form Name      A
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+660104A
+660102A
+NOVAZYGA
+Your DBA License has expired. Please contact DBA to renew your License.A
+NOVAZYGA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+NOVAZYGA
+NOVAZYGA
+Your DBA License does not match the number of Users you have purchased from ISTECH. Please contact lynn@istechsupport.com to update your License.A
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+C:\ISTS\scamera.icoA
+C:\ISTS\scamera.icoA
+C:\ISTS\camera.icoA
+C:\ISTS\camera.icoA
+BKARDESCI
+bkardescL
+BKARDESCA
+BKAPDESCI
+bkapdescL
+BKAPDESCA
+BKQTTEMPI
+bkqttempL
+bkqttempA
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+C:\ISTS\WHOAMI.DBAA
+WHOAMI.DBAA
+C:\ISTS\A
+fileloc.bA
+BKSYMSTRA
+C:\ISTS\isoe.icoA
+C:\ISTS\isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+C:\ISTS\umcalc.icoA
+C:\ISTS\umcalc.icoA
+CONVERTERA
+C:\ISTS\web.icoA
+C:\ISTS\web.icoA
+C:\ISTS\calc.icoA
+C:\ISTS\calc.icoA
+C:\ISTS\isforum.icoA
+C:\ISTS\isforum.icoA
+www.istechforum.comA
+bkistek.bmpA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+YNNYNX^
+YNNNY9
+YNNYNX*
+YNNYNXv
+YNNYNX<
+YNNYNN
+YNNYNN
+YNNNYN)
+YNNNYX
+YNNNYC
+YNNNYFP[
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYFP[
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYFP[
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+YNNNYC
+YNNNYF
+NNNYNFpw
+YNNNYF`x
+YNNNNm
+NNNNNF`x
+YNNNNC
+YNNNYF`x
+YNNNNC
+YNNNYF 
+YNNNNC
+YNNNYF
+YNNNNCB"
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNC4#
+YNNNYN
+YNNNNF
+NNNYNXi%
+NNNYN5S
+NNNYNX(&
+YNNNYCW&
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+NORM           
+ISTS.EDATE     
+CDEF.BUFF      
+TRANS.NUM      
+CDEF.JUNK      
+MAINWINDOW     
+LISTWINDOW     
+EDITWINDOW2    
+PRINT.TD       
+TSFR.DATE      
+FROM.LOC       
+TO.LOC         
+FROM.CUR.UOH   
+TO.CUR.UOH     
+TSFR.UOH       
+TSFRD.UOH      
+FROM.NEW.UOH   
+TO.NEW.UOH     
+ETYPE          
+L.ITEM         
+L.DESC         
+L.QTY          
+L.LOT          
+L.SER          
+NUM_POS        
+CUR_POS        
+NUMB_PO        
+MAX_POS        
+X              
+FROM.ACCT      
+TO.ACCT        
+FROM.DEPT      
+TO.DEPT        
+FROM.AVGC      
+TSFR.VALUE     
+POST.AMT       
+WHICH          
+WHICH2         
+TTL.1          
+TTL.2          
+ZRET           
+LEXIT          
+LEDIT          
+POST.IT        
+LKUPA.HNDL     
+LKUPI.HNDL     
+SOA.LKUA       
+SOA.LKUI       
+BLUE.EXIT      
+BLUE.EXIT.HNDL 
+INLJ.TCOLOR    
+LOT.NUM        
+LOT.UOH        
+LOT.OUOH       
+LOT.SEL        
+SER.NUM        
+SER.UOH        
+SER.LOT        
+SER.SEL        
+LOT.SER        
+LOT.CNTR       
+SER.CNTR       
+SEL.CNTR       
+SEL.TTL1       
+SEL.TTL2       
+SEL.TTL3       
+SEL.TTL4       
+SEL.TTL5       
+SEL.TTL6       
+SEL.TTL7       
+SEL.ACTV       
+I              
+J              
+LOT.NUMSEL     
+SER.NUMSEL     
+LISTED.ONCE    
+LOT.SER.UOH    
+TRXNDESC       
+TXN.H          
+TXNS.H         
+SC             
+BKIC.LOCM.CODE 
+BKIC.PROD.CODE 
+MTIC.PROD.CODE 
+BKIC.PROD.DESC 
+BKIC.LOC.CODE  
+BKIC.LOC.PROD  
+BKIC.LOC.UOH   
+BKIC.PROD.AVGC h
+ARC_TTL1       
+ARC_USCORE     
+CC             
+KILL.LOT       
+KILL.SER       
+II             
+LOT            
+SER            
+MTIT.TYPE      
+MTIT.CLASS     
+BKIC.PROD.CLASS6
+MTIT.DATE      
+MTIT.CODE      
+MTIT.QTY       
+MTIT.AVGCOST    
+MTIT.STDCST    (
+MTIC.PROD.RCOSTF
+MTIT.LOC       0
+MTIT.REF       :
+MTIT.DESC      
+MTLOT.CODE     
+MTLOT.LOT      
+MTLOT.LOC      U
+MTLOT.ONHAND   "
+LOT.REC        
+MTIT.LOT       
+SFND           
+MTSER.CODE     
+MTSER.SERIAL   
+MTSER.LOC      L
+MTSER.ONHAND   D
+S.RNUM         
+MTSER.RECDATE  Q
+MTIT.SERIAL    
+SYSITEMCLASSGL 
+SYSCLASSHNDL   
+CLASS.GLA      ,
+CLASS.DPTA     6
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+CUST.BILL.TO   
+CUST.SHIP.TO   
+FROM.PHONE     
+TO.PHONE       
+FROM.FAX       
+TO.FAX         
+FROM.CNTCT     
+TO.CNTCT       
+FROM.LOC.NAME  
+TO.LOC.NAME    
+RTM_NAME       
+PRT.TTL        
+TXTTITLE       
+PTITLE         
+BKIC.LOCM.NAME 
+BKIC.LOCM.ADDR1(
+BKIC.LOCM.ADDR2F
+BKIC.LOCM.ADDR3d
+BKIC.LOCM.CITY 
+BKIC.LOCM.STATE
+BKIC.LOCM.ZIP  
+BKIC.LOCM.CNTCT
+BKIC.LOCM.PHONE
+BKIC.LOCM.FAX  
+BKSY.FORM.CMPNY/
+BKSY.COMP.NAME X
+BKSY.COMP.ADD1 q
+BKSY.COMP.ADD2 
+BKSY.COMP.CSZ  
+MTSER.LOT      (
+BKAR.TXN.CODE  
+BKAR.TXN.LOC   
+BKAR.TXN.LOT   =
+BKAR.TXN.SONUM 
+BKAR.TXN.SERIALL
+BKIC.PROD.TYPE -
+MTIC.PROD.LOT  A
+MTIC.PROD.SER  B
+XTRANS.DATE    
+XTO.LOC        
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+LOCMF2.COL     
+LOCMF2.ROW     
+KEY            
+SRCH_KEY_NUM   
+WC             
+BC             
+LOCM_TTL1      
+LOCM_USCORE    
+DATC           
+TEMP_KEY       
+MENULIST       
+SRCH_HOW_MSG   
+V.OLINK        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BKYSMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+SYSACCTGON     
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKYS.YN        
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+SYSBKGLTEMPHNDL
+SYSBKGLXHNDL   
+SYSBKGLCOAHNDL 
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+CHK_FISC_DATE  
+CHK_FISC_MSG   
+CHKF.RET       
+CHKF.FYNUM     
+BKSY.FISCAL.YR 
+ASKPFY.RET     
+CHK_GLC_DATE   
+CHK_GLC_MSG    
+CHKG.RET       
+BKYS.DATE      
+ZA_TEXT        
+ZA_DFLT        
+GLTTRXNTYPE    
+GLTAMOUNT      
+GLTPOSTDATE    
+GLTGLTYPE      
+GLTACCT        
+GLTDEPT        
+GLTJOURNAL     
+GLTDESC        
+GLTCLASS       
+GLTLOCATION    
+GLTCODE        
+GLTINVC        
+GLTUSEACCT     
+GLTUSEDEPT     
+GLTUSECLASSGL  
+GLTINVALID     
+GLTERROR       
+CLASS.GLS      H
+CLASS.DPTS     R
+CLASS.GLSNT    V
+CLASS.DPTNT    `
+CLASS.GLC      :
+CLASS.DPTC     D
+CLASS.GLW      d
+CLASS.DPTW     n
+CLASS.GLLAB    r
+CLASS.DPTLAB   |
+CLASS.GLFOH    
+CLASS.DPTFOH   
+CLASS.GLVOH    
+CLASS.DPTVOH   
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.DATE  
+BKGL.TRN.CODE  
+BKGL.TRN.INVC  
+BKGL.TRN.DESC  &
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.TYPE  H
+BKGL.TRN.ENTDTEJ
+BKGL.TRN.EXTRA N
+BKGL.TRN.TRXN  g
+BKGL.TRN.POST  o
+BKGL.TRN.PERIODp
+BKGL.TRN.BATCH r
+DEF_FORM       
+FILE.HLDR      
+FILE.NAME      
+ZRET           
+CNTR2          
+CNTR3          
+CNTR           
+X_TTL1         
+X_USCORE       
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+GET.GLYPARAM   
+GET.GLYRET     
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+INC_DATE_DATE  
+INC_DATE_AMT   
+INC_DATE_WCH   
+INC_DATE_DAY   
+INC_DATE_MONTH 
+INC_DATE_YEAR  
+INC_DAY_NUM    
+INC_MONTH_NUM  
+INC_YEAR_NUM   
+INC_DATE_MAXD  
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+PSTR           
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+CDEF.NAME      
+CDEF.SIZE      
+TEMP_HNDL      
+CDEF.PATH      
+CDEF.FULLNAME  
+CDEF.PATH      
+CDEF.FULLNAME  
+ZRET           
+MTIT.EXTRA     
+NCLR           
+BKICL_BUFF     
+BKICL_REC      
+BKIC.LOC.KEY   
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ID             
+XFROM          
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+BK.DESC.CODE   
+BK.DESC.NOTES  
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+BK.DESC.DESC   _
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+WHO            
+WBUFF          
+RVAL           
+CO_PATH        
+LOC_HNDL       
+LOC_LOCATION   
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+BKAP.EMAIL     
+BKAR.EMAIL     b
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+CPICT          
+C1             
+R1             
+CPICT          
+FPICT          
+BPICT          
+TIME1          
+PRA.LKUA       
+PRA.LKUI       
+START_COLUMN   
+START_ROW      
+CO_ICON        
+BUTTON_NUM     

@@ -1,0 +1,15 @@
+package com.evoerp.sql;
+
+/**
+ * Stub interface for all {@link Expression}s that can be used in the SELECT
+ * clause.
+ * 
+ * @author nmpantic
+<<<<<<< HEAD
+ * @param <T> The data type of the data being selected
+=======
+>>>>>>> 4fb284f38f1caa0114070ac573a498f28eaacf6c
+ */
+public interface SelectableExpression<T> extends Expression, Selectable<T> {
+
+}

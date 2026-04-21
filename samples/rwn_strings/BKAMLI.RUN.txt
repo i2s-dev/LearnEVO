@@ -1,0 +1,518 @@
+TAS32<
+BKCMREP 
+BKPRMSTR
+BKCMHCOD
+BKCMACFC
+BKCMDTCD
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKCMDTCDA
+BKCMACFCA
+BKCMHCODA
+BKPRMSTRA
+BKCMREPA
+SM-I-I  Enter Reps and PasswordsA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+do you want to save this record? L
+BKCMREPA
+BKPRMSTRA
+BKCMHCODA
+BKCMACFCA
+BKCMDTCDA
+Do you want to delete this record? L
+BKCMREPA
+BKPRMSTRA
+BKCMHCODA
+BKCMACFCA
+BKCMDTCDA
+Do you want to clear this record? L
+BKCMREPA
+BKPRMSTRA
+BKCMHCODA
+BKCMACFCA
+BKCMDTCDF
+You may not delete this RepF
+in the Limited Record System.I
+               
+               
+ Rep                                           
+               
+ Employee Number                               
+               
+ First Name, M.I.                              
+               
+ Last Name                                     
+               
+ Password                                      
+               
+                                               
+               
+ Form Letter Name                              
+               
+ Form Ltr Title                                
+               
+                                               
+               
+ Default History Code                          
+               
+ Default Follow-up Code                        
+               
+ Default Date Code                             
+               
+ Allow others to View this Rep's Records?      
+               
+ Allow others to Change this Rep's Records?    
+               
+ Allow Changes, but provide Warning?           
+               
+ Allow others to add records for this Rep?     
+               
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+BKPRMSTRA
+ Employees A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKPRMSTRA
+Last Name                A
+First Name               A
+ShiftA
+BKPRMSTRA
+Last Name                A
+First Name               A
+ShiftA
+BKPRMSTRA
+BKPRMSTRA
+Employee NumberF0
+Last NameI
+F1 HelpA
+Esc ExitA
+ A - Employee NumberF0
+ B - Last NameA
+ Search Key I
+Active Employees only?A
+BKCMREPA
+ Reps A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKCMREPA
+Code A
+First Name & MI          A
+Last Name                A
+BKCMREPA
+Last Name                A
+Code A
+First Name & MI          A
+BKCMREPA
+Code A
+First Name & MI          A
+Last Name                A
+BKCMREPA
+CodeF0
+Last NameF0
+Employee NumberI
+F1 HelpA
+Esc ExitA
+ A - CodeF0
+ B - Last NameF0
+ C - Employee NumberA
+ Search Key A
+ History Codes A
+F1 HelpA
+Esc ExitA
+BKCMHCODA
+Description              A
+BKCMHCODA
+BKCMACFCA
+ Follow-up Codes A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKCMACFCA
+Description              A
+Rep  A
+BKCMACFCA
+Rep  A
+Description              A
+BKCMACFCA
+CodeF0
+Rep CodeI
+F1 HelpA
+Esc ExitA
+ A - CodeF0
+ B - Rep CodeA
+ Search Key A
+ Date Codes A
+F1 HelpA
+Esc ExitA
+BKCMDTCDA
+Description              A
+BKCMDTCDA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYC
+YNNNYF 
+NNNYN)
+YNNNYF`
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF`
+YNNNYXOG
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF`
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYCQJ
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MENU_CNTR4     
+MENU_RNUMS     
+BKCM.REP.REP   
+BKCM.REP.EMP   7
+BKPR.EMP.NUM   
+BKCM.REP.FNMEMI
+BKPR.EMP.FNMI  
+BKCM.REP.LNAME 
+BKPR.EMP.LNME  
+BKCM.REP.PSWD  9
+BKCM.REP.FNAME N
+BKCM.REP.FTITLEg
+BKCM.REP.DHCODEC
+BKCM.REP.DFCODEE
+BKCM.REP.DDCODEH
+BKCM.REP.VIEW  J
+BKCM.REP.CHANGEK
+BKCM.REP.GWARN L
+BKCM.REP.AADD  M
+BKCM.HCOD.HCODE
+BKCM.ACFC.FCODE
+BKCM.DTCD.DCODE
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+NO_S_TYPE      
+EMPF2.COL      
+EMPF2.ROW      
+EMP.LKUP.OPEN  
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+EMP_TTL1       
+EMP_USCORE     
+BKPR.EMP.DEPT  
+BKPR.EMP.SHIFT 
+BKPR.EMP.TERM  
+BKPR.EMP.PAYTYP
+CC             
+DATC           
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+REPF2.COL      
+REPF2.ROW      
+REP_TTL1       
+REP_USCORE     
+TEMP_KEY       
+HCODE_TTL1     
+HCODE_USCORE   
+BKCM.HCOD.DESC 
+FCODEF2.COL    
+FCODEF2.ROW    
+FCODE_TTL1     
+FCODE_USCORE   
+BKCM.ACFC.DESC 
+BKCM.ACFC.REP  
+TEMP_KEY       
+DCODE_TTL1     
+DCODE_USCORE   
+BKCM.DTCD.DESC 
+SRCH_HOW_MSG   
+FC             
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

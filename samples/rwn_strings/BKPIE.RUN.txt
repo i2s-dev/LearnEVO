@@ -1,0 +1,332 @@
+TAS32&
+BKYSMSTR
+BKPIMSTR
+TASCOLOR
+BKPIFROZ
+BKICMSTR
+BKSYHELP
+DBAHLPID
+MTICMSTRA
+BKICMSTRA
+BKPIFROZA
+BKPIMSTRA
+BKICLOCMA
+BKYSMSTRA
+BKYSMSTRA
+bkpimstrI
+BKPIMSTR
+PI-E  Edit Frozen Inventory CostsA
+For FIFO/LIFO systems, any adjustments posted by theF
+Physical Inventory module will be made at current costF
+at the time of the posting, rather than at cost at theF
+time the inventory was frozen.F
+There is no need to adjust frozen costs here.I
+Please specify a year.A
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKPIMSTRA
+BKPIMSTRI
+Please specify a Physical Inventory number.A
+bkpimstrI
+There is no such Physical Inventory. A
+NormalBkgA
+NormalBkgA
+PI-E  Edit Frozen Inventory CostsA
+ Parts Frozen for Physical Inventory No. A
+ Parts Frozen for Physical Inventory No. A
+ENTER Edit,F2 FindA
+Esc ExitA
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+BKPIFROZA
+If adjustments for this physical inventory will be postedA
+using unit cost at the time the inventory was frozen, ratherA
+than current unit cost, the frozen cost basis may be changed here.A
+Item Number    A
+Location  A
+Description                   A
+   Frozen CostA
+BKPIFROZA
+BKICMSTRA
+Adding or deleting frozen inventory records not permitted here. A
+This item number, at this location, has already had its count posted back to inventory.  Its frozen cost cannot be changed. A
+PI-E  Edit Frozen Inventory CostsA
+F1 HelpA
+F10 Save,Esc Opening ScreenA
+BKICMSTRI
+Cost cannot be negativeA
+BKPIFROZA
+BKPIFROZ
+        Year           
+        Phys Inv No.   
+        Year           
+  Item Number                         UM      
+        Phys Inv No.   
+                                              
+                                              
+                             
+                                              
+                             
+  Location                                    
+                             
+                                              
+                             
+  Frozen Cost                                 
+                             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+bkpimstrI
+bkpifrozI
+Checking for existing Physical Inventories...A
+BKPIMSTRL
+BKPIFROZA
+bkpifrozI
+BKPIMSTRA
+BKPIFROZA
+BKPIMSTRL
+ Physical Inventories A
+F1 HelpA
+Esc ExitA
+BKPIMSTRA
+PI No.A
+Description                   A
+BKPIMSTRA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+NNNYNF
+NNNYNL
+NNNYNX
+NNNYNX
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+YEAR           
+QTR            
+ZRET           
+ICOL           
+IROW           
+WHICH          
+OPENWINDOW     
+MAINWINDOW     
+CBK.PART       
+CBK.LOC        
+PRA_TTL1       
+PRA_USCORE     
+NEW.TFPART     
+ENTRY.TYPE     
+EXIT.TYPE      
+PIE.DESC       
+PIE.TTL1       
+PIE.TTL2       
+PIE.TTL3       
+PIE.TTL4       
+BKPI.MSTR.YEAR 
+BKPI.MSTR.QTR  
+BKYS.YN        
+MESSAGE        
+MSG_PTR        
+NORM           
+WC             
+BC             
+SC             
+BKPH.INFO.PROD 
+BKPH.INFO.LOC  
+BKPH.INFO.COST '
+BKPH.INFO.YEAR 
+BKPH.INFO.QTR  
+BKIC.PROD.CODE 
+BKIC.PROD.DESC 
+BKPH.INFO.GLPST/
+BKPH.INFO.INPST0
+BKIC.PROD.UM   .
+BKIC.PROD.NOTE 
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+PIBM.YEAR      
+PIBM.QTR       
+PILOC.TAG      
+PILOC.LOC      
+PILOC.NOTE     
+PILOC.NAME     
+BKPI.MSTR.DESC 
+PIMS_TTL1      
+PIMS_USCORE    
+CC             
+DATC           
+SRCH_HOW_MSG   

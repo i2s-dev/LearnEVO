@@ -1,0 +1,629 @@
+TAS327
+BKSYMSTR
+BKYSMSTR
+BKPRTCFG
+BKARINVL
+BKARINV 
+BKAPDESC
+BKICTAX 
+TASCOLOR
+BKARINVA
+BKARINVLA
+BKSYMSTRA
+BKAPPOA
+BKARDESCA
+BKICTAXA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+BKPRTCFGA
+BKPRTCFGA
+DiscIJ
+SO-B  Print AcknowledgementsA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+Esc ExitA
+F1 Help,F10 PrintA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKYSMSTRI
+BKYSMSTRA
+BKYSMSTRF
+Send report to View, Screen, Printer, or Disk file [V/S/P/D]:I
+Number of Copies? A
+Enter the Disk file name: A
+BKARINVLI
+BKARINVLI
+BKARDESCI
+BKARINVLI
+BKARINVI
+>>>>>  Report was terminated before completion  <<<<<A
+VIEWITA
+Continued....I
+ATTN: A
+There are no records in the primary fileI
+A matching record was not found during a related findI
+Press any key to continueA
+BKARINVA
+BKARINVA
+PREGIL
+ 1 - xxxxxxxxxxxxxxxxxxxxxxxxx 01011F
+ 2 - xxxxxxxxxxxxxxxxxxxxxxxxx 01022F
+ 3 - xxxxxxxxxxxxxxxxxxxxxxxxx 01033F
+ 4 - xxxxxxxxxxxxxxxxxxxxxxxxx 01044F
+ 5 - xxxxxxxxxxxxxxxxxxxxxxxxx 01055F
+ 6 - xxxxxxxxxxxxxxxxxxxxxxxxx 01066F
+ 7 - xxxxxxxxxxxxxxxxxxxxxxxxx 01077F
+ 8 - xxxxxxxxxxxxxxxxxxxxxxxxx 01088F
+ 9 - xxxxxxxxxxxxxxxxxxxxxxxxx 01099F
+ 0 - xxxxxxxxxxxxxxxxxxxxxxxxx 01100I
+Select Printer
+                                        *** A C K N O W L E D G E M E N T ***
+                                        =====================================
+                                                 Sales Order No:
+                                                     Order Date:
+                                                           Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  Ship Via            Terms          Slsp     Ent by    Cust Ord Num       Tax
+================================================================================
+================================================================================
+  Line   Order Qty    Part Number       Description                                   Price      UM    Extended Price    Est. Ship
+  ----   ----------   ---------------   ------------------------------   ------   ------------   ---   --------------    ---------
+                                                                              %
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                                       ==============
+                                                                                              Total:
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                       Less Deposit:
+                                                                                                       ==============
+            
+            
+ Print Acknowledgements for Sales Order From:        
+            
+                                    And Thru:        
+            
+                                                     
+            
+                Print Notes? [Y/N]:                  
+            
+                                                     
+            
+               Print Options? [Y/N]:                 
+            
+                                        *** A C K N O W L E D G E M E N T ***
+                                        =====================================
+                                                 Sales Order No:
+                                                     Order Date:
+                                                           Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  Ship Via            Terms          Slsp     Ent by    Cust Ord Num       Tax
+================================================================================
+================================================================================
+Lin  Quantity  Part#/Desc                   Price    UM    Ext Price   Est.Ship
+---  --------  ---------------   ------ ------------ --- ------------  --------
+                                      %
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                                        ==============
+                                               Total:
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                        Less Deposit:
+                                                        ==============
+                                        *** A C K N O W L E D G E M E N T ***
+                                                 Sales Order No:
+                                                     Order Date:
+                                                          Page :
+ SOLD                                      SHIP
+  TO:                                       TO:
+     Taxable    :                            Purchase Order:
+     Pmt Terms  :                            Ship Via      :
+     Account Cd :                            FOB           :
+     Salesperson:                            Job Number    :
+ LINE     ORDER QTY    PART NUMBER       DESCRIPTION                                      PRICE   UM    EXTENDED PRICE    EST. SHIP
+                                                                               %
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                                       ==============
+                                                                                              Total:
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                       Less Deposit:
+                                                                                                       ==============
+                                        *** A C K N O W L E D G E M E N T ***
+                                                 Sales Order No:
+                                                     Order Date:
+                                                          Page :
+ SOLD                                      SHIP
+  TO:                                       TO:
+     Taxable    :                            Purchase Order:
+     Pmt Terms  :                            Ship Via      :
+     Account Cd :                            FOB           :
+     Salesperson:                            Job Number    :
+ LINE     ORDER QTY    PART NUMBER       DESCRIPTION                                      PRICE   UM    EXTENDED PRICE    EST. SHIP
+                                                                               %
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                                       ==============
+                                                                                              Total:
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                       Less Deposit:
+                                                                                                       ==============
+                                        *** A C K N O W L E D G E M E N T ***
+                                        =====================================
+                                                 Sales Order No:
+                                                     Order Date:
+                                                           Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  Ship Via            Terms          Slsp     Ent by    Cust Ord Num       Tax
+================================================================================
+================================================================================
+Lin  Quantity   Part#/Desc                  Price    UM    Ext Price   Est.Ship
+--- ----------  ---------------  ------ ------------ --- ------------  --------
+                                      %
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                                        ==============
+                                               Total:
+                                            Subtotal:
+                                        Less Deposit:   --------------
+                                           Sales Tax:
+                                             Freight:
+                                        Less Deposit:
+                                                        ==============
+                                        *** A C K N O W L E D G E M E N T ***
+                                                 Sales Order No:
+                                                     Order Date:
+                                                          Page :
+ SOLD                                      SHIP
+  TO:                                       TO:
+     Taxable    :                            Purchase Order:
+     Pmt Terms  :                            Ship Via      :
+     Account Cd :                            FOB           :
+     Salesperson:                            Job Number    :
+LIN  QUANTITY  PART#/DESC                   PRICE    UM    EXT PRICE   EST.SHIP
+                                      %
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                                        ==============
+                                               Total:
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                        Less Deposit:
+                                                        ==============
+                                        *** A C K N O W L E D G E M E N T ***
+                                                 Sales Order No:
+                                                     Order Date:
+                                                          Page :
+ SOLD                                      SHIP
+  TO:                                       TO:
+     Taxable    :                            Purchase Order:
+     Pmt Terms  :                            Ship Via      :
+     Account Cd :                            FOB           :
+     Salesperson:                            Job Number    :
+LIN  QUANTITY   PART#/DESC                  PRICE    UM  EXT PRICE     EST.SHIP
+                                      %
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                                        ==============
+                                               Total:
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                        Less Deposit:
+                                                        ==============
+                                        *** A C K N O W L E D G E M E N T ***
+                                        =====================================
+                                                 Sales Order No:
+                                                     Order Date:
+                                                           Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  Ship Via            Terms          Slsp     Ent by    Cust Ord Num       Tax
+================================================================================
+================================================================================
+  Line   Order Qty    Part Number       Description                                   Price      UM    Extended Price    Est. Ship
+  ----   ----------   ---------------   ------------------------------   ------   ------------   ---   --------------    ---------
+                                                                              %
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                                       ==============
+                                                                                              Total:
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                       Less Deposit:
+                                                                                                       ==============
+Press any key to continueA
+ DBA HELP                          For Phone Support call 800-434-0809        
+   ON-LINE HELP: Documentation on this and all DBA programs is provided on    
+   line (Windows only) where it can be viewed or printed out.  Click on       
+   "Help" at the top of the Windows main menu and you will be presented       
+   with a Contents window.  Three clicks of the mouse will get you to most    
+   programs.  You can alternately click on the program screen and the help    
+   window to bring one in front of the other for reading and viewing the      
+   program.                                                                   
+   FUNCTION KEYS: Each standard screen button has an equivalent function      
+   key as an alternative to using the mouse -- these are listed across the    
+   bottom of the Windows main menu for reference.                             
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without Saving      CTRL+D = Delete Character            
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARINVA
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Cust Cd   A
+SO#   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Customer Name                 A
+SO#   A
+Cust Cd   A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Cust PO#                 A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Ship to CdA
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Ship to Name                  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Job Number     A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+BKARINVA
+BKARINVA
+F1 HelpA
+Esc ExitA
+ A - Sales Order NoF
+ B - Customer CodeF
+ C - Customer NameF
+ D - Customer PO#F
+ E - Ship to CodeF
+ F - Ship to NameF
+ G - Job NumberA
+ Search Key A
+Open Sales Orders only?A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+END_DESC       
+ANSWER         
+PRT_NOTES      
+TOT_RECORDS    
+PRT_WHR        
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+BREAK_FIELD    
+ORDERED        
+LINES          
+CONT           
+SUB.TOT        
+DEPOSIT        
+PRT_OPTIONS    
+QTY.ND         
+CUR.PRINTER    
+NUM.COPIES     
+PRT.ON         
+FORM_TYPE      
+DISC           
+TAX            
+FREIGHT        
+TAX_TAXBLE     
+ITEMIZE        
+WHICH          
+PRTCOP         
+BKAR.INVL.PEXT S
+BKAR.INVL.PPRCEC
+BKYS.YN        
+BKAR.INV.SONUM 
+BKAR.INV.DEPAMT
+BKAR.INV.FRGHT n
+BKAR.INV.ITMZTX
+LIST           
+DISK.FILE      
+FILE.CNTR      
+BKYS.VNUM      
+MESSAGE        
+NUM.MSG        
+ENT.MASK       
+OK             
+BKPRT.CFG.COPY <
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INV.INVCD 
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKAR.INVL.PDISCK
+BKAR.INVL.UM.LN
+BKAR.INVL.TXBLEd
+BKAR.INVL.TXAMT
+BKAR.INVL.PCODE
+BK.DESC.NUM    
+BK.DESC.LINE   
+BKIC.TAX.KEY   
+BKAR.INV.TAXKEY
+BKIC.TAX.FRGHT t
+BKAR.INV.TAXRTE;
+BKSY.FORM.CMPNY/
+BKSY.COMP.NAME X
+BKSY.COMP.ADD1 q
+BKSY.COMP.ADD2 
+BKSY.COMP.CSZ  
+CUST.BILL.TO   
+CUST.SHIP.TO   
+SHIP.TO.ATTN   
+MCNTR          
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPATN
+MSG_PTR        
+DATE_TIME      
+LNE.LNGTH      
+LNE.LN2        
+LLC            
+WD             
+HT             
+MCNTR2         
+MCNTR3         
+MCNTR4         
+BKPRT.CFG.USEPR
+BKPRT.CFG.NAME 
+BKPRT.CFG.PRTR t
+BKPRT.CFG.CMD  
+BKAR.INV.ORDDTE
+BKAR.INV.CUSNME=
+BKAR.INV.SHPNME)
+BKAR.INV.SHPVIA
+BKAR.INV.TERMD 
+BKAR.INV.SLSP  
+BKAR.INV.ENTBY 
+BKAR.INV.CUSORD
+BKAR.INV.TAXABL
+BKAR.INVL.PDESC
+BKAR.INVL.ESD  
+BKSY.AR.ENDDESC
+BK.DESC.NOTES  
+BKAR.INV.CUSCOD
+BKAR.INV.FOB   
+BKAR.INV.JOBNUM
+PROG.HELP.NAME 
+CRNT.FIELD     
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+SO_TTL1        
+SO_USCORE      
+BKAR.INV.SHPCOD
+BKAR.INV.TOTAL )
+BKAR.INV.DESC  C
+CC             
+DATC           
+TEMP_KEY       
+MENULIST       
+SRCH_HOW_MSG   
+COO_TEST       
+CHECK_OPEN_ONLY
+ASK_STRING     

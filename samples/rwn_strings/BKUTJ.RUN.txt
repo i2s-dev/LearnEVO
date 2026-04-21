@@ -1,0 +1,229 @@
+TASCOLOR
+FILELOC 
+BTRVFILE
+FILEDICT
+BTRVFLD 
+FILEKEY 
+BTRVINDX
+BKSYHELP
+DBAHLPID
+UT-J  Generate DDF FilesA
+This program recreates the DDF files used by Maintain Database in order to reflect recent database changes.  Do you wish to continue? YA
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESA
+file.ddfA
+field.ddfA
+index.ddfA
+FILE    A
+tasinitA
+FIELD   A
+FIELDA
+tasinitA
+INDEX   A
+INDEXA
+tasinitA
+fieldA
+indexA
+Working on: A
+Field Name: A
+Keys        A
+CMPDFLTA
+DBAHELPA
+DBALOCA
+DBAMAIMNA
+DBAMODULA
+DBAUSRMNA
+DCBUFFERA
+DEFAULTSA
+ERRMSGA
+MEMORYA
+RESTFILEA
+TRANSLTEA
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+RC             
+NORM           
+FILE_CNTR      
+FIELD_CNTR     
+FILE_DDF_HNDL  
+FIELD_DDF_HNDL 
+INDEX_DDF_HNDL 
+DES_FNAME      
+SUB_FIELDS     
+SUB_FIELDS_NUM 
+NEW            
+FILES_OPEN     
+CREATE_FILE    
+FN_PATH        
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+FLCODE         
+FILE_DEF       
+LOC_HNDL       
+KEY_HNDL       
+DICT_HNDL      
+KNUM_HNDL      
+LOC_COMP_CODE  
+LOC_FILE_NAME  
+XF$ID          
+XF$NAME        
+XF$LOCATION    
+LOC_LOCATION   
+XF$FLAGS       V
+SUB_FLD_CNTR   
+FARRAY_CNTR    
+LOC_BUFF_NAME  
+DICT_BUFF_NAME 
+DICT_FIELD_NAME
+DICT_ARRAY_ELE 
+XE$ID          
+XE$FILE        
+XE$NAME        
+XE$DEC         
+XE$OFFSET      
+DICT_OFFSET    
+DICT_TYPE      
+DICT_SIZE      
+XE$DATA_TYPE   
+XE$SIZE        
+DICT_DEC       
+SEG_CNTR       
+SEG_NUM        
+TEMP_KEY_FIELD 
+CNTR           
+KEY_NAME       
+XI$FLAGS       
+XI$FILE        
+KEY_FIELD      
+CNTR1          
+XI$FIELD       
+XI$NUMBER      
+KEY_NUM        r
+XI$PART        
+KEY_SEG        
+KEY_DUPS       :
+KEY_MODIFIABLE R
+KEY_ORDER      "
+RD_FIELD_NAME  
+CNTR3          
+FILE.OK        
+DBN            
+IS_TYP         
+IS_SZE         
+GIS_TEMP_SZE   
+DES_HNDL       
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+MSG_PTR        
+MESSAGE        

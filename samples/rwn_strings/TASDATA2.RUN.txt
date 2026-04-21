@@ -1,0 +1,199 @@
+TASCOLOR
+FILEDICT
+FILELOC 
+FILEKNUM
+tascolor.ovlA
+This program cannot be run directly.  Run TASDATAM first.A
+There are no records in FILEDICT for A
+F3 Choose AllA
+  C  Name             T  DescA
+ Owner Name A
+This is the password that may be required before you can access this file.  If none is required then just press the ENTER key.A
+An error occured while trying to open file: A
+The maximum number of fields that can be accessed at one time is 260.I
+ Key name A
+File: A
+ Key: I
+** none **A
+ Pg: A
+File: A
+ Pg: A
+Rcn:            Tot:A
+ Record Filter A
+Enter the filter expression:A
+File: A
+ Key: I
+** none **A
+ Pg: A
+File: A
+ Pg: A
+Rcn:            Tot:A
+File: A
+ Key: I
+** none **A
+ Pg: A
+File: A
+ Pg: A
+Rcn:            Tot:A
+^Pg_Up  Previous Page A
+^Pg_Dn  Next Page A
+ You have changed field(s) in a record in the file: A
+ Do you wish to save this record before continuing? I
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+RC             
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+ENTER_HNDL     
+NUM_ARRAY_FLDS 
+CNTR           
+CNTR2          
+MCNTR          
+ACT            
+LOC_ACT        
+ROW_CNTR       
+TOTAL_FLDS     
+PG_START       
+PG_STOP        
+ARRAY_CNTR     
+KCNTR          
+KCNTR2         
+PG_NUM         
+FILE_NAME      
+FN_CODE        
+FN_CODE_HLDR   
+FN_PATH        
+FN_PATH_HLDR   
+SCRNH_1        
+FILTER_HLDR    
+EXT_HLDR       
+LOC_FDN        
+LOC_FLN        
+LOC_DSC        
+LOC_LOC        
+FLD_NAME       
+FLD_TYPE       
+FLD_DESC       
+FLD_ARRAY      
+FLD_PICT       
+FLD_CHOOSE     
+FLD_SIZE       
+FLD_DEC        
+FLD_ARRAY_CNTR 
+FLD_KEY_NUM    
+FLD_OFFSET     
+FLD_UP         
+ENT_FLD_TYPE   
+ENT_FLD_FPTR   
+ENT_FLD_NAME   
+ENT_FLD_KEY    
+EF_PTR2        
+KEY_NMES       
+CEXPR          
+DICT_FIELD_NAME
+DICT_HTYPE     w
+DICT_DESC      !
+DICT_PICTURE   I
+DICT_HSIZE     x
+DICT_HARRAY    |
+DICT_HDEC      z
+DICT_HOFFSET   u
+DICT_UPCASE     
+DICT_BUFF_NAME 
+LOC_BUFF_NAME  
+DICT_TYPE      
+BC             
+WC             
+SC             
+CC             
+OWNER_NAME     
+LOC_COMP_CODE  
+LOC_LOCATION   
+LOC_REC_SIZE   
+KEYS_AVAIL     
+KNUM_KEY_NUMB  
+KNUM_BUFF_NAME 
+KNUM_KEY_NAME  
+CHK_NUM        
+MESSAGE        
+MSG_PTR        
+FC             
+ASK_UPDATE_FN  
+EL_ARRAY_PTR   
+EL_NUM         
+EL_WDT         
+EL_CNTR        
+EL_CHR         
+EL_PWHR_HLDR   
+EL_MASK        
+EL_COL         
+EL_ROW         

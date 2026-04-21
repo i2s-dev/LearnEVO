@@ -1,0 +1,9 @@
+.grid-line-border {
+    -fx-border-style: solid; 
+    -fx-border-width: 0.15px;
+}
+
+.grid-line-border-double {
+    -fx-border-style: solid; 
+    -fx-border-width: 0.30px;
+}

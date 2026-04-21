@@ -1,0 +1,1364 @@
+WORKCTR             
+WORKHORD            
+WORKORD             
+WORKSORD            
+WOROCHG             
+WOROUT              
+WOROUTMP            
+WOSROUT             
+X$Attrib            
+AHSYLOG             
+ARTTEMP             
+BKABCUST            
+BKABVEND            
+BKACTRPT            
+X$Field             
+X$File              
+X$Index             
+X$Trigger           trigger.ddf                                                     
+    
+X$Attrib            attrib.ddf                                                      
+    
+X$Occurs            occurs.ddf                                                      
+    
+X$File              file.ddf                                                        
+          
+X$Field             field.ddf                                                       
+          
+X$Index             index.ddf                                                       
+          
+AHSYLOG             AHSYLOG.B                                                       
+ARTTEMP             ARTTEMP.B                                                       
+BKAPAPO             BKAPAPO.B                                                       
+BKAPAPOL            BKAPAPOL.B                                                      
+BKAPCHKF            BKAPCHKF.B                                                      
+BKAPCHKH            BKAPCHKH.B                                                      
+BKAPDEP             BKAPDEP.B                                                       
+AHSYLOG             
+ARTTEMP             
+BKABCUST            
+BKABVEND            
+BKACTRPT            
+BKAPACCN            
+BKAPADSC            
+BKAPAPO             
+BKAPAPOL            
+BKAPHPOL            BKAPHPOL.B                                                      
+BKAPINVL            BKAPINVL.B                                                      
+BKAPINVT            BKAPINVT.B                                                      
+BKAPNOTE            BKAPNOTE.B                                                      
+BKAPPO              BKAPPO.B                                                        
+BKARINVI            BKARINVI.B                                                      
+BKARINVL            BKARINVL.B                                                      
+BKARINVT            BKARINVT.B                                                      
+BKARINVV            BKARINVV.B                                                      
+BKARRDSC            BKARRDSC.B                                                      
+BKABCUST            BKABCUST.B                                                      
+BKABVEND            BKABVEND.B                                                      
+BKACTRPT            BKACTRPT.B                                                      
+BKAPACCN            BKAPACCN.B                                                      
+BKAPADSC            BKAPADSC.B                                                      
+WORECV              WORECV.B                                                        
+WORKACHG            WORKACHG.B                                                      
+WORKCHG             WORKCHG.B                                                       
+WORKCTR             WORKCTR.B                                                       
+WORKHORD            WORKHORD.B                                                      
+X$Trigger           trigger.ddf                                                     
+    
+X$Attrib            attrib.ddf                                                      
+    
+X$Occurs            occurs.ddf                                                      
+    
+X$Variant           variant.ddf                                                     
+    
+WOHLABOR            
+WOHMAT              
+WOHRECV             
+WOHROUT             
+WOLABOR             
+WOLABRPT            
+WOMAT               
+WORECV              
+WORKACHG            
+BKAPDESC            BKAPDESC.B                                                      
+BKAPEIVT            BKAPEIVT.B                                                      
+BKAPEVND            BKAPEVND.B                                                      
+BKAPHDSC            BKAPHDSC.B                                                      
+BKAPHPO             BKAPHPO.B                                                       
+BKARDEP             BKARDEP.B                                                       
+BKARDESC            BKARDESC.B                                                      
+BKARDPST            BKARDPST.B                                                      
+BKARECST            BKARECST.B                                                      
+BKAREIVT            BKAREIVT.B                                                      
+BKAPPOL             BKAPPOL.B                                                       
+BKAPQUOT            BKAPQUOT.B                                                      
+BKAPRFQ             BKAPRFQ.B                                                       
+BKAPRFQL            BKAPRFQL.B                                                      
+BKAPRIVL            BKAPRIVL.B                                                      
+BKAPCHKH            
+BKAPDEP             
+BKAPDESC            
+BKAPEIVT            
+BKAPEVND            
+BKAPHDSC            
+BKAPHPO             
+BKAPHPOL            
+BKAPINVL            
+BKARTNOT            BKARTNOT.B                                                      
+BKARTXN             BKARTXN.B                                                       
+BKARTXNB            BKARTXNB.B                                                      
+BKARTXNS            BKARTXNS.B                                                      
+BKBMAMTR            BKBMAMTR.B                                                      
+BKAPVEND            BKAPVEND.B                                                      
+BKAPVND2            BKAPVND2.B                                                      
+BKARCHKF            BKARCHKF.B                                                      
+BKARCHKH            BKARCHKH.B                                                      
+BKARCUST            BKARCUST.B                                                      
+BKAPNOTE            
+BKAPPO              
+BKAPPOL             
+BKAPQUOT            
+BKAPRFQ             
+BKAPRFQL            
+BKAPRIVL            
+BKAPVEND            
+BKAPVND2            
+BKARHDSC            BKARHDSC.B                                                      
+BKARHINV            BKARHINV.B                                                      
+BKARHIVL            BKARHIVL.B                                                      
+BKARHTAX            BKARHTAX.B                                                      
+BKARINV             BKARINV.B                                                       
+BKARHTAX            
+BKARINV             
+BKARINVI            
+BKARINVL            
+BKARINVT            
+BKARINVV            
+BKARRDSC            
+BKARRINV            
+BKARRIVL            
+BKARCHKH            
+BKARCUST            
+BKARDEP             
+BKARDESC            
+BKARDPST            
+BKARECST            
+BKAREIVT            
+BKARHDSC            
+BKARHINV            
+BKARRINV            BKARRINV.B                                                      
+BKARRIVL            BKARRIVL.B                                                      
+BKARSHIP            BKARSHIP.B                                                      
+BKARSIVL            BKARSIVL.B                                                      
+BKART               BKART.B                                                         
+BKCMDTCD            BKCMDTCD.B                                                      
+BKCMDUN             BKCMDUN.B                                                       
+BKCMDUNH            BKCMDUNH.B                                                      
+BKCMEACC            BKCMEACC.B                                                      
+BKCMEACD            BKCMEACD.B                                                      
+BKBMAVAL            BKBMAVAL.B                                                      
+BKBMCNFG            BKBMCNFG.B                                                      
+BKBMDIM             BKBMDIM.B                                                       
+BKBMEMTR            BKBMEMTR.B                                                      
+BKBMERMK            BKBMERMK.B                                                      
+BKCMACTF            BKCMACTF.B                                                      
+BKCMACTH            BKCMACTH.B                                                      
+BKCMCNTD            BKCMCNTD.B                                                      
+BKCMCTL1            BKCMCTL1.B                                                      
+BKCMCTL2            BKCMCTL2.B                                                      
+BKARSIVL            
+BKART               
+BKARTNOT            
+BKARTXN             
+BKARTXNB            
+BKARTXNS            
+BKBMAMTR            
+BKBMAVAL            
+BKBMCNFG            
+BKBMMSTR            BKBMMSTR.B                                                      
+BKBMNOTE            BKBMNOTE.B                                                      
+BKBMREMK            BKBMREMK.B                                                      
+BKBMSUMM            BKBMSUMM.B                                                      
+BKCMACCC            BKCMACCC.B                                                      
+BKBMEMTR            
+BKBMERMK            
+BKBMMSTR            
+BKBMNOTE            
+BKBMREMK            
+BKBMSUMM            
+BKCMACCC            
+BKCMACCL            
+BKCMACCN            
+BKCMACCL            BKCMACCL.B                                                      
+BKCMACCN            BKCMACCN.B                                                      
+BKCMACCT            BKCMACCT.B                                                      
+BKCMACFC            BKCMACFC.B                                                      
+BKCMACTD            BKCMACTD.B                                                      
+BKCMFTME            BKCMFTME.B                                                      
+BKCMHCD2            BKCMHCD2.B                                                      
+BKCMHCOD            BKCMHCOD.B                                                      
+BKCMLEAD            BKCMLEAD.B                                                      
+BKCMMHST            BKCMMHST.B                                                      
+BKCMCTL3            BKCMCTL3.B                                                      
+BKCMCTL4            BKCMCTL4.B                                                      
+BKCMCTRL            BKCMCTRL.B                                                      
+BKCMCUST            BKCMCUST.B                                                      
+BKCMDE              BKCMDE.B                                                        
+BKCMACFC            
+BKCMACTD            
+BKCMACTF            
+BKCMACTH            
+BKCMCNTD            
+BKCMCTL1            
+BKCMCTL2            
+BKCMCTL3            
+BKCMCTL4            
+BKESTCFG            BKESTCFG.B                                                      
+BKESTQT             BKESTQT.B                                                       
+BKESTQTL            BKESTQTL.B                                                      
+BKFLDHLP            BKFLDHLP.B                                                      
+BKFOCFG             BKFOCFG.B                                                       
+BKCMEACF            BKCMEACF.B                                                      
+BKCMEACH            BKCMEACH.B                                                      
+BKCMEACT            BKCMEACT.B                                                      
+BKCMEFTM            BKCMEFTM.B                                                      
+BKCMFORM            BKCMFORM.B                                                      
+BKCMSBDF            BKCMSBDF.B                                                      
+BKCMTEMP            BKCMTEMP.B                                                      
+BKCMTERR            BKCMTERR.B                                                      
+BKCMTMP1            BKCMTMP1.B                                                      
+BKCMTMP2            BKCMTMP2.B                                                      
+BKCMCUST            
+BKCMDE              
+BKCMDTCD            
+BKCMDUN             
+BKCMDUNH            
+BKCMEACC            
+BKCMEACD            
+BKCMEACF            
+BKCMEACH            
+BKCMPCFC            BKCMPCFC.B                                                      
+BKCMPCNT            BKCMPCNT.B                                                      
+BKCMPCTF            BKCMPCTF.B                                                      
+BKCMPCTH            BKCMPCTH.B                                                      
+BKCMREP             BKCMREP.B                                                       
+BKCPEC              BKCPEC.B                                                        
+BKCPMSTR            BKCPMSTR.B                                                      
+BKDCCFG             BKDCCFG.B                                                       
+BKDCCLAB            BKDCCLAB.B                                                      
+BKDCHLAB            BKDCHLAB.B                                                      
+BKCMEFTM            
+BKCMFORM            
+BKCMFTME            
+BKCMHCD2            
+BKCMHCOD            
+BKCMLEAD            
+BKCMMHST            
+BKCMPCFC            
+BKCMPCNT            
+BKGLACHK            BKGLACHK.B                                                      
+BKGLAGJL            BKGLAGJL.B                                                      
+BKGLAGJR            BKGLAGJR.B                                                      
+BKGLATRN            BKGLATRN.B                                                      
+BKGLCCOA            BKGLCCOA.B                                                      
+BKEDIH              BKEDIH.B                                                        
+BKEDIL              BKEDIL.B                                                        
+BKEDMSTR            BKEDMSTR.B                                                      
+BKEDNOTE            BKEDNOTE.B                                                      
+BKEDPOST            BKEDPOST.B                                                      
+BKCMPCTH            
+BKCMREP             
+BKCMSBDF            
+BKCMTEMP            
+BKCMTERR            
+BKCMTMP1            
+BKCMTMP2            
+BKCMTMP3            
+BKCMTMP4            
+BKCMTMP3            BKCMTMP3.B                                                      
+BKCMTMP4            BKCMTMP4.B                                                      
+BKCMVNDF            BKCMVNDF.B                                                      
+BKCMVNDH            BKCMVNDH.B                                                      
+BKCMVNFC            BKCMVNFC.B                                                      
+BKDCLAB             BKDCLAB.B                                                       
+BKDCPLAB            BKDCPLAB.B                                                      
+BKDCSHFT            BKDCSHFT.B                                                      
+BKDCTLAB            BKDCTLAB.B                                                      
+BKEDIDUN            BKEDIDUN.B                                                      
+BKGLFCOA            BKGLFCOA.B                                                      
+BKGLFSTL            BKGLFSTL.B                                                      
+BKGLGJLN            BKGLGJLN.B                                                      
+BKGLGJRN            BKGLGJRN.B                                                      
+BKGLHIST            BKGLHIST.B                                                      
+BKCMVNDH            
+BKCMVNFC            
+BKCPEC              
+BKCPMSTR            
+BKDCCFG             
+BKDCCLAB            
+BKDCHLAB            
+BKDCLAB             
+BKDCPLAB            
+BKICREF             BKICREF.B                                                       
+BKICREQ             BKICREQ.B                                                       
+BKICTAX             BKICTAX.B                                                       
+BKICVAL             BKICVAL.B                                                       
+BKISHTAX            BKISHTAX.B                                                      
+BKDCTLAB            
+BKEDIDUN            
+BKEDIH              
+BKEDIL              
+BKEDMSTR            
+BKEDNOTE            
+BKEDPOST            
+BKESTCFG            
+BKESTQT             
+BKGLCHK             BKGLCHK.B                                                       
+BKGLCOA             BKGLCOA.B                                                       
+BKGLDESC            BKGLDESC.B                                                      
+BKGLECOA            BKGLECOA.B                                                      
+BKGLETRN            BKGLETRN.B                                                      
+BKGLTGJL            BKGLTGJL.B                                                      
+BKGLTGJR            BKGLTGJR.B                                                      
+BKGLTMP             BKGLTMP.B                                                       
+BKGLTMP2            BKGLTMP2.B                                                      
+BKGLTMP3            BKGLTMP3.B                                                      
+BKFLDHLP            
+BKFOCFG             
+BKGLACHK            
+BKGLAGJL            
+BKGLAGJR            
+BKGLATRN            
+BKGLCCOA            
+BKGLCHK             
+BKGLCOA             
+BKGLICC             BKGLICC.B                                                       
+BKGLRGJL            BKGLRGJL.B                                                      
+BKGLRGJR            BKGLRGJR.B                                                      
+BKGLSTMT            BKGLSTMT.B                                                      
+BKGLTEMP            BKGLTEMP.B                                                      
+BKICAMTR            BKICAMTR.B                                                      
+BKICAPMA            BKICAPMA.B                                                      
+BKICDIM             BKICDIM.B                                                       
+BKICELOC            BKICELOC.B                                                      
+BKICEMTR            BKICEMTR.B                                                      
+BKGLECOA            
+BKGLETRN            
+BKGLFCOA            
+BKGLFSTL            
+BKGLGJLN            
+BKGLGJRN            
+BKGLHIST            
+BKGLICC             
+BKGLRGJL            
+BKICMSTR            
+BKICPMAT            
+BKICREF             
+BKICREQ             
+BKICTAX             
+BKICVAL             
+BKISHTAX            
+BKISTAX             
+BKLOGON             
+BKMRPPO             BKMRPPO.B                                                       
+BKMRPSW             BKMRPSW.B                                                       
+BKPCKIT             BKPCKIT.B                                                       
+BKPCPLOT            BKPCPLOT.B                                                      
+BKPIFROZ            BKPIFROZ.B                                                      
+BKGLSTMT            
+BKGLTEMP            
+BKGLTGJL            
+BKGLTGJR            
+BKGLTMP             
+BKGLTMP2            
+BKGLTMP3            
+BKGLTRAN            
+BKGLX               
+BKGLTRAN            BKGLTRAN.B                                                      
+BKGLX               BKGLX.B                                                         
+BKGLXH              BKGLXH.B                                                        
+BKICALTD            BKICALTD.B                                                      
+BKICALTP            BKICALTP.B                                                      
+BKICLOC             BKICLOC.B                                                       
+BKICLOCM            BKICLOCM.B                                                      
+BKICMFG             BKICMFG.B                                                       
+BKICMSTR            BKICMSTR.B                                                      
+BKICPMAT            BKICPMAT.B                                                      
+BKPIPHYS            
+BKPISCNT            
+BKPISER             
+BKPOX               
+BKPOXH              
+BKPRACOM            
+BKPRAGNT            
+BKPRBOOK            
+BKPRCOMM            
+BKICALTD            
+BKICALTP            
+BKICAMTR            
+BKICAPMA            
+BKICDIM             
+BKICELOC            
+BKICEMTR            
+BKICLOC             
+BKICLOCM            
+BKISTAX             BKISTAX.B                                                       
+BKLOGON             BKLOGON.B                                                       
+BKMATCST            BKMATCST.B                                                      
+BKMATRIM            BKMATRIM.B                                                      
+BKMRPFC             BKMRPFC.B                                                       
+BKQCMSTR            BKQCMSTR.B                                                      
+BKQCTRAN            BKQCTRAN.B                                                      
+BKQTNOTE            BKQTNOTE.B                                                      
+BKQTTEMP            BKQTTEMP.B                                                      
+BKRFQ               BKRFQ.B                                                         
+BKPILCNT            BKPILCNT.B                                                      
+BKPILOT             BKPILOT.B                                                       
+BKPIMSTR            BKPIMSTR.B                                                      
+BKPIPHYS            BKPIPHYS.B                                                      
+BKPISCNT            BKPISCNT.B                                                      
+BKPRBOOK            BKPRBOOK.B                                                      
+BKPRCOMM            BKPRCOMM.B                                                      
+BKPRCURP            BKPRCURP.B                                                      
+BKPRFTAX            BKPRFTAX.B                                                      
+BKPRGLFL            BKPRGLFL.B                                                      
+BKPISER             BKPISER.B                                                       
+BKPOX               BKPOX.B                                                         
+BKPOXH              BKPOXH.B                                                        
+BKPRACOM            BKPRACOM.B                                                      
+BKPRAGNT            BKPRAGNT.B                                                      
+BKPRHCOM            BKPRHCOM.B                                                      
+BKPRHIST            BKPRHIST.B                                                      
+BKPRINFO            BKPRINFO.B                                                      
+BKPRMSTR            BKPRMSTR.B                                                      
+BKPRSALE            BKPRSALE.B                                                      
+BKMATRIM            
+BKMRPFC             
+BKMRPPO             
+BKMRPSW             
+BKPCKIT             
+BKPCPLOT            
+BKPIFROZ            
+BKPILCNT            
+BKPILOT             
+BKPRFTAX            
+BKPRGLFL            
+BKPRHCOM            
+BKPRHIST            
+BKPRINFO            
+BKPRMSTR            
+BKPRSALE            
+BKPRSTFL            
+BKPRTC              
+BKAPCHKF            
+BKAPINVT            
+BKARCHKF            
+BKARHIVL            
+BKARSHIP            
+BKBMDIM             
+BKCMACCT            
+BKCMCTRL            
+BKCMEACT            
+ISARAHTX            ISARAHTX.B                                                      
+ISARAINT            ISARAINT.B                                                      
+ISARAINV            ISARAINV.B                                                      
+ISARAIVI            ISARAIVI.B                                                      
+ISARAIVL            ISARAIVL.B                                                      
+BKPRSTFL            BKPRSTFL.B                                                      
+BKPRTC              BKPRTC.B                                                        
+BKPRTCFG            BKPRTCFG.B                                                      
+BKPRW2              BKPRW2.B                                                        
+BKPSUSER            BKPSUSER.B                                                      
+BKSAREPT            BKSAREPT.B                                                      
+BKSBMFG             BKSBMFG.B                                                       
+BKSBPART            BKSBPART.B                                                      
+BKSBVEND            BKSBVEND.B                                                      
+BKSHORT             BKSHORT.B                                                       
+DBAFIFO             DBAFIFO.B                                                       
+DBAHLPID            DBAHLPID.B                                                      
+DISCOUNT            DISCOUNT.B                                                      
+DPTMENT             DPTMENT.B                                                       
+EMERSNGL            EMERSNGL.B                                                      
+BKRFQDES            BKRFQDES.B                                                      
+BKRTCST             BKRTCST.B                                                       
+BKRTEMTR            BKRTEMTR.B                                                      
+BKRTSPEC            BKRTSPEC.B                                                      
+BKRTTEMP            BKRTTEMP.B                                                      
+BKSONOTE            BKSONOTE.B                                                      
+BKSOPO              BKSOPO.B                                                        
+BKSOX               BKSOX.B                                                         
+BKSOXH              BKSOXH.B                                                        
+BKSYAP              BKSYAP.B                                                        
+BKPRW2              
+BKPSUSER            
+BKQCMSTR            
+BKQCTRAN            
+BKQTNOTE            
+BKQTTEMP            
+BKRFQ               
+BKRFQDES            
+BKRTCST             
+BKSLEVEL            BKSLEVEL.B                                                      
+BKSLMSTR            BKSLMSTR.B                                                      
+BKSOHLOT            BKSOHLOT.B                                                      
+BKSOHSER            BKSOHSER.B                                                      
+BKSOLOCK            BKSOLOCK.B                                                      
+BKSYPRTR            BKSYPRTR.B                                                      
+BKSYUSER            BKSYUSER.B                                                      
+BKUMSRTY            BKUMSRTY.B                                                      
+BKUPDATE            BKUPDATE.B                                                      
+BKWOPO              BKWOPO.B                                                        
+BKRTSPEC            
+BKRTTEMP            
+BKSAREPT            
+BKSBMFG             
+BKSBPART            
+BKSBVEND            
+BKSHORT             
+BKSLEVEL            
+BKSLMSTR            
+ESTCHGS             ESTCHGS.B                                                       
+ESTMAT              ESTMAT.B                                                        
+ESTROUT             ESTROUT.B                                                       
+ESTSUM              ESTSUM.B                                                        
+EVOHLPID            EVOHLPID.B                                                      
+CCEDIXRF            CCEDIXRF.B                                                      
+CLASMSTR            CLASMSTR.B                                                      
+CLASS               CLASS.B                                                         
+CUSTCLAS            CUSTCLAS.B                                                      
+DBACNAME            DBACNAME.B                                                      
+BKSOHSER            
+BKSOLOCK            
+BKSONOTE            
+BKSOPO              
+BKSOX               
+BKSOXH              
+BKSYAP              
+BKSYAR              
+BKSYCFG             
+BKSYAR              BKSYAR.B                                                        
+BKSYCFG             BKSYCFG.B                                                       
+BKSYHELP            BKSYHELP.B                                                      
+BKSYLOG             BKSYLOG.B                                                       
+BKSYMSTR            BKSYMSTR.B                                                      
+BKYSMSTR            BKYSMSTR.B                                                      
+BOMCHG              BOMCHG.B                                                        
+BUCKETS             BUCKETS.B                                                       
+CALENDAR            CALENDAR.B                                                      
+CALTEMP             CALTEMP.B                                                       
+ISACAR              ISACAR.B                                                        
+ISACARFU            ISACARFU.B                                                      
+ISACTION            ISACTION.B                                                      
+ISALINKS            ISALINKS.B                                                      
+ISALOT              ISALOT.B                                                        
+BKSYLOG             
+BKSYMSTR            
+BKSYPRTR            
+BKSYUSER            
+BKUMSRTY            
+BKUPDATE            
+BKWOPO              
+BKYSMSTR            
+BOMCHG              
+ISARRCHG            ISARRCHG.B                                                      
+ISARSCGH            ISARSCGH.B                                                      
+ISARTXNB            ISARTXNB.B                                                      
+ISASIGN             ISASIGN.B                                                       
+ISAUTODC            ISAUTODC.B                                                      
+CALENDAR            
+CALTEMP             
+CCEDIXRF            
+CLASMSTR            
+CLASS               
+CUSTCLAS            
+DBACNAME            
+DBAFIFO             
+DBAHLPID            
+HELPURL             HELPURL.B                                                       
+INVATXN             INVATXN.B                                                       
+INVETXN             INVETXN.B                                                       
+INVTXN              INVTXN.B                                                        
+IS2DBAR             IS2DBAR.B                                                       
+ISAPAINT            ISAPAINT.B                                                      
+ISAPARFL            ISAPARFL.B                                                      
+ISAPARFQ            ISAPARFQ.B                                                      
+ISAPAVND            ISAPAVND.B                                                      
+ISAPCHG             ISAPCHG.B                                                       
+DPTMENT             
+EMERSNGL            
+ESTCHGS             
+ESTMAT              
+ESTROUT             
+ESTSUM              
+EVOHLPID            
+HELPURL             
+INVATXN             
+ISAMRPF             ISAMRPF.B                                                       
+ISANCR              ISANCR.B                                                        
+ISANOTES            ISANOTES.B                                                      
+ISAPACHK            ISAPACHK.B                                                      
+ISAPAINL            ISAPAINL.B                                                      
+ISARCHG             ISARCHG.B                                                       
+ISARECHG            ISARECHG.B                                                      
+ISAREMND            ISAREMND.B                                                      
+ISAREX              ISAREX.B                                                        
+ISARFQ              ISARFQ.B                                                        
+INVTXN              
+IS2DBAR             
+ISACAR              
+ISACARFU            
+ISACTION            
+ISALINKS            
+ISALOT              
+ISAMRPF             
+ISANCR              
+ISARAHIL            
+ISARAHIN            
+ISARAHTX            
+ISARAINT            
+ISARAINV            
+ISARAIVI            
+ISARAIVL            
+ISARAIVV            
+ISARAT              
+ISARACST            ISARACST.B                                                      
+ISARADSC            ISARADSC.B                                                      
+ISARAHDS            ISARAHDS.B                                                      
+ISARAHIL            ISARAHIL.B                                                      
+ISARAHIN            ISARAHIN.B                                                      
+ISAPPROJ            ISAPPROJ.B                                                      
+ISAPQPO             ISAPQPO.B                                                       
+ISAPQTQT            ISAPQTQT.B                                                      
+ISARACHG            ISARACHG.B                                                      
+ISARACHK            ISARACHK.B                                                      
+ISAPEX              ISAPEX.B                                                        
+ISAPHCHG            ISAPHCHG.B                                                      
+ISAPHQT             ISAPHQT.B                                                       
+ISAPOPO             ISAPOPO.B                                                       
+ISAPOPOL            ISAPOPOL.B                                                      
+ISAPACHK            
+ISAPAINL            
+ISAPAINT            
+ISAPARFL            
+ISAPARFQ            
+ISAPAVND            
+ISAPCHG             
+ISAPEX              
+ISAPHCHG            
+BKCMVNDF            
+BKDCSHFT            
+BKESTQTL            
+BKGLDESC            
+BKGLRGJR            
+BKGLXH              
+BKICMFG             
+BKMATCST            
+BKPIMSTR            
+ISGLNBGT            ISGLNBGT.B                                                      
+ISHLOTS             ISHLOTS.B                                                       
+ISHSERIA            ISHSERIA.B                                                      
+ISICADT             ISICADT.B                                                       
+ISICAMTR            ISICAMTR.B                                                      
+ISAPOPO             
+ISAPOPOL            
+ISAPPROJ            
+ISAPQPO             
+ISAPQTQT            
+ISARACHG            
+ISARACHK            
+ISARACST            
+ISARADSC            
+ISARAIVV            ISARAIVV.B                                                      
+ISARAT              ISARAT.B                                                        
+ISARATNT            ISARATNT.B                                                      
+ISARATXN            ISARATXN.B                                                      
+ISARATXS            ISARATXS.B                                                      
+ISARHCHG            ISARHCHG.B                                                      
+ISARICHG            ISARICHG.B                                                      
+ISARINVX            ISARINVX.B                                                      
+ISARMCHG            ISARMCHG.B                                                      
+ISARQCHG            ISARQCHG.B                                                      
+ISCAR               ISCAR.B                                                         
+ISCARFUP            ISCARFUP.B                                                      
+ISCATMST            ISCATMST.B                                                      
+ISCC                ISCC.B                                                          
+ISCCBTXN            ISCCBTXN.B                                                      
+ISBMEST             ISBMEST.B                                                       
+ISBMTMP             ISBMTMP.B                                                       
+ISBNMSTR            ISBNMSTR.B                                                      
+ISBOLMS             ISBOLMS.B                                                       
+ISBRANDC            ISBRANDC.B                                                      
+ISARATXN            
+ISARATXS            
+ISARCHG             
+ISARECHG            
+ISAREMND            
+ISAREX              
+ISARFQ              
+ISARHCHG            
+ISARICHG            
+ISARMCHG            
+ISARQCHG            
+ISARRCHG            
+ISARSCGH            
+ISARTXNB            
+ISASIGN             
+ISAUTODC            
+ISBANKS             
+ISBILLSH            
+ISBANKS             ISBANKS.B                                                       
+ISBILLSH            ISBILLSH.B                                                      
+ISBINLOC            ISBINLOC.B                                                      
+ISBINLOT            ISBINLOT.B                                                      
+ISBMESA             ISBMESA.B                                                       
+ISCONVRT            ISCONVRT.B                                                      
+ISCRISLS            ISCRISLS.B                                                      
+ISCTREVU            ISCTREVU.B                                                      
+ISCYCLCD            ISCYCLCD.B                                                      
+ISDCSER             ISDCSER.B                                                       
+ISBRANDS            ISBRANDS.B                                                      
+ISBROKER            ISBROKER.B                                                      
+ISBSF               ISBSF.B                                                         
+ISBTCSB             ISBTCSB.B                                                       
+ISBUILD             ISBUILD.B                                                       
+ISBINLOT            
+ISBMESA             
+ISBMEST             
+ISBMTMP             
+ISBNMSTR            
+ISBOLMS             
+ISBRANDC            
+ISBRANDS            
+ISBROKER            
+ISFOHEAD            ISFOHEAD.B                                                      
+ISFOHIST            ISFOHIST.B                                                      
+ISFOLINE            ISFOLINE.B                                                      
+ISFOORDL            ISFOORDL.B                                                      
+ISFSCLAS            ISFSCLAS.B                                                      
+ISCCICM             ISCCICM.B                                                       
+ISCCMTF             ISCCMTF.B                                                       
+ISCHAIN             ISCHAIN.B                                                       
+ISCHAINM            ISCHAINM.B                                                      
+ISCMGRP             ISCMGRP.B                                                       
+ISDLCK2             ISDLCK2.B                                                       
+ISDRILL             ISDRILL.B                                                       
+ISDRILLM            ISDRILLM.B                                                      
+ISDROP              ISDROP.B                                                        
+ISDUTY              ISDUTY.B                                                        
+ISBTCSB             
+ISBUILD             
+ISCAR               
+ISCARFUP            
+ISCATMST            
+ISCC                
+ISCCBTXN            
+ISCCICM             
+ISCCMTF             
+ISDEFECT            ISDEFECT.B                                                      
+ISDEPT              ISDEPT.B                                                        
+ISDIGSIG            ISDIGSIG.B                                                      
+ISDIV               ISDIV.B                                                         
+ISDLCK1             ISDLCK1.B                                                       
+ISESALNE            ISESALNE.B                                                      
+ISESTAQL            ISESTAQL.B                                                      
+ISESTAQT            ISESTAQT.B                                                      
+ISESTASM            ISESTASM.B                                                      
+ISESTDTL            ISESTDTL.B                                                      
+ISCHAINM            
+ISCMGRP             
+ISCONVRT            
+ISCRISLS            
+ISCTREVU            
+ISCYCLCD            
+ISDCSER             
+ISDEFECT            
+ISDEPT              
+ISICESA             ISICESA.B                                                       
+ISICEST             ISICEST.B                                                       
+ISICMSTR            ISICMSTR.B                                                      
+ISIS                ISIS.B                                                          
+ISISATAX            ISISATAX.B                                                      
+ISDIV               
+ISDLCK1             
+ISDLCK2             
+ISDRILL             
+ISDRILLM            
+ISDROP              
+ISDUTY              
+ISEAB               
+ISECO               
+ISEAB               ISEAB.B                                                         
+ISECO               ISECO.B                                                         
+ISEDINFO            ISEDINFO.B                                                      
+ISESADTL            ISESADTL.B                                                      
+ISESAHDR            ISESAHDR.B                                                      
+ISESTHDR            ISESTHDR.B                                                      
+ISESTLNE            ISESTLNE.B                                                      
+ISESTPO             ISESTPO.B                                                       
+ISFIELDS            ISFIELDS.B                                                      
+ISFOBMRM            ISFOBMRM.B                                                      
+ISMICADT            ISMICADT.B                                                      
+ISMICESA            ISMICESA.B                                                      
+ISMICEST            ISMICEST.B                                                      
+ISMRPFC             ISMRPFC.B                                                       
+ISNCR               ISNCR.B                                                         
+ISESADTL            
+ISESAHDR            
+ISESALNE            
+ISESTAQL            
+ISESTAQT            
+ISESTASM            
+ISESTDTL            
+ISESTHDR            
+ISESTLNE            
+ISFIELDS            
+ISFOBMRM            
+ISFOHEAD            
+ISFOHIST            
+ISFOLINE            
+ISFOORDL            
+ISFSCLAS            
+ISFSEMP             
+ISFSINFO            
+ISFSEMP             ISFSEMP.B                                                       
+ISFSINFO            ISFSINFO.B                                                      
+ISFUTYPE            ISFUTYPE.B                                                      
+ISFXASST            ISFXASST.B                                                      
+ISFXATRN            ISFXATRN.B                                                      
+ISGLBDGT            ISGLBDGT.B                                                      
+ISGLCOA             ISGLCOA.B                                                       
+ISGLDATE            ISGLDATE.B                                                      
+ISGLFCOA            ISGLFCOA.B                                                      
+ISGLHDAT            ISGLHDAT.B                                                      
+ISICADT             
+ISICAMTR            
+ISICESA             
+ISICEST             
+ISICMSTR            
+ISIS                
+ISISATAX            
+ISITMCFG            
+ISITP               
+BKPRTCFG            
+BKRTEMTR            
+BKSOHLOT            
+BKSYHELP            
+BUCKETS             
+DISCOUNT            
+INVETXN             
+ISANOTES            
+ISAPHQT             
+ISSMTCFG            ISSMTCFG.B                                                      
+ISSNOTES            ISSNOTES.B                                                      
+ISSOABOX            ISSOABOX.B                                                      
+ISSOAHBX            ISSOAHBX.B                                                      
+ISSOAINF            ISSOAINF.B                                                      
+ISFXASST            
+ISFXATRN            
+ISGLBDGT            
+ISGLCOA             
+ISGLDATE            
+ISGLFCOA            
+ISGLHDAT            
+ISGLNBGT            
+ISHLOTS             
+ISITMCFG            ISITMCFG.B                                                      
+ISITP               ISITP.B                                                         
+ISJBSF              ISJBSF.B                                                        
+ISJOB               ISJOB.B                                                         
+ISLANDF             ISLANDF.B                                                       
+ISPOBOX             ISPOBOX.B                                                       
+ISPODESC            ISPODESC.B                                                      
+ISPOHTRK            ISPOHTRK.B                                                      
+ISPOLOG             ISPOLOG.B                                                       
+ISPOS               ISPOS.B                                                         
+ISLBLMAP            ISLBLMAP.B                                                      
+ISLINKS             ISLINKS.B                                                       
+ISLOCCST            ISLOCCST.B                                                      
+ISLOG               ISLOG.B                                                         
+ISLOTS              ISLOTS.B                                                        
+ISORDDSC            
+ISORDECO            
+ISPOBOX             
+ISPODESC            
+ISPOHTRK            
+ISPOLOG             
+ISPOS               
+ISPOSC              
+ISPOTRK             
+ISPRMSTR            ISPRMSTR.B                                                      
+ISPRSALE            ISPRSALE.B                                                      
+ISPRTEMP            ISPRTEMP.B                                                      
+ISPRUDF             ISPRUDF.B                                                       
+ISQCAMST            ISQCAMST.B                                                      
+ISJOB               
+ISLANDF             
+ISLBLMAP            
+ISLINKS             
+ISLOCCST            
+ISLOG               
+ISLOTS              
+ISLSMAP             
+ISLTYPE             
+ISLSMAP             ISLSMAP.B                                                       
+ISLTYPE             ISLTYPE.B                                                       
+ISMACS              ISMACS.B                                                        
+ISMCF               ISMCF.B                                                         
+ISMCR               ISMCR.B                                                         
+ISNOTES             ISNOTES.B                                                       
+ISNTYPE             ISNTYPE.B                                                       
+ISNUMBER            ISNUMBER.B                                                      
+ISORDDSC            ISORDDSC.B                                                      
+ISORDECO            ISORDECO.B                                                      
+ISQSOA              ISQSOA.B                                                        
+ISQTCODE            ISQTCODE.B                                                      
+ISQTINFO            ISQTINFO.B                                                      
+ISREMIND            ISREMIND.B                                                      
+ISREPDEF            ISREPDEF.B                                                      
+ISMCF               
+ISMCR               
+ISMICADT            
+ISMICESA            
+ISMICEST            
+ISMRPFC             
+ISNCR               
+ISNOTES             
+ISNTYPE             
+ISPOSC              ISPOSC.B                                                        
+ISPOTRK             ISPOTRK.B                                                       
+ISPREQ              ISPREQ.B                                                        
+ISPRESN             ISPRESN.B                                                       
+ISPRINFO            ISPRINFO.B                                                      
+ISRMTXN             ISRMTXN.B                                                       
+ISRMTXNS            ISRMTXNS.B                                                      
+ISROUTEX            ISROUTEX.B                                                      
+ISRTESA             ISRTESA.B                                                       
+ISRTEST             ISRTEST.B                                                       
+ISQCATRN            ISQCATRN.B                                                      
+ISQCMTHD            ISQCMTHD.B                                                      
+ISQCRSLT            ISQCRSLT.B                                                      
+ISQCSPEC            ISQCSPEC.B                                                      
+ISQRYSQL            ISQRYSQL.B                                                      
+ISRMADSC            ISRMADSC.B                                                      
+ISRMAI              ISRMAI.B                                                        
+ISRMAINF            ISRMAINF.B                                                      
+ISRMAINV            ISRMAINV.B                                                      
+ISRMAIVL            ISRMAIVL.B                                                      
+ISPRESN             
+ISPRINFO            
+ISPRMSTR            
+ISPRSALE            
+ISPRTEMP            
+ISPRUDF             
+ISQCAMST            
+ISQCATRN            
+ISQCMTHD            
+ISQCSPEC            
+ISQRYSQL            
+ISQSOA              
+ISQTCODE            
+ISQTINFO            
+ISREMIND            
+ISREPDEF            
+ISREPLNK            
+ISREPORD            
+ISREPLNK            ISREPLNK.B                                                      
+ISREPORD            ISREPORD.B                                                      
+ISRFQADS            ISRFQADS.B                                                      
+ISRMAAI             ISRMAAI.B                                                       
+ISRMAC              ISRMAC.B                                                        
+ISSEDH              ISSEDH.B                                                        
+ISSEDL              ISSEDL.B                                                        
+ISSEPROC            ISSEPROC.B                                                      
+ISSEQUIP            ISSEQUIP.B                                                      
+ISSERCNT            ISSERCNT.B                                                      
+ISRMDESC            ISRMDESC.B                                                      
+ISRMHINF            ISRMHINF.B                                                      
+ISRMINFO            ISRMINFO.B                                                      
+ISRMINV             ISRMINV.B                                                       
+ISRMINVL            ISRMINVL.B                                                      
+ISSOALOT            ISSOALOT.B                                                      
+ISSOASER            ISSOASER.B                                                      
+ISSOBOX             ISSOBOX.B                                                       
+ISSOHBOX            ISSOHBOX.B                                                      
+ISSOHINF            ISSOHINF.B                                                      
+ISRMAAI             
+ISRMAC              
+ISRMADSC            
+ISRMAI              
+ISRMAINF            
+ISRMAINV            
+ISRMAIVL            
+ISRMDESC            
+ISRMHINF            
+ISSQTH              ISSQTH.B                                                        
+ISSQTL              ISSQTL.B                                                        
+ISSRADSC            ISSRADSC.B                                                      
+ISSRAINF            ISSRAINF.B                                                      
+ISSRAINV            ISSRAINV.B                                                      
+ISRTLOAD            ISRTLOAD.B                                                      
+ISRTMS              ISRTMS.B                                                        
+ISSCHED             ISSCHED.B                                                       
+ISSCOMP             ISSCOMP.B                                                       
+ISSDET              ISSDET.B                                                        
+ISSRAIVL            ISSRAIVL.B                                                      
+ISSRAMMS            ISSRAMMS.B                                                      
+ISSRCH              ISSRCH.B                                                        
+ISSRCL              ISSRCL.B                                                        
+ISSRDESC            ISSRDESC.B                                                      
+ISRMINV             
+ISRMINVL            
+ISRMTXN             
+ISRMTXNS            
+ISROUTEX            
+ISRTESA             
+ISRTEST             
+ISRTLOAD            
+ISRTMS              
+ISSERIAL            ISSERIAL.B                                                      
+ISSERR              ISSERR.B                                                        
+ISSESH              ISSESH.B                                                        
+ISSESL              ISSESL.B                                                        
+ISSETYPE            ISSETYPE.B                                                      
+ISSCOMP             
+ISSDET              
+ISSEDH              
+ISSEDL              
+ISSEPROC            
+ISSEQUIP            
+ISSERCNT            
+ISSERIAL            
+ISSERR              
+ISSHIPA             ISSHIPA.B                                                       
+ISSHIPCO            ISSHIPCO.B                                                      
+ISSHPVIA            ISSHPVIA.B                                                      
+ISSIGN              ISSIGN.B                                                        
+ISSLSFC             ISSLSFC.B                                                       
+ISSOAHBX            
+ISSOAINF            
+ISSOALOT            
+ISSOASER            
+ISSOBOX             
+ISSOHBOX            
+ISSOHINF            
+ISSOINFO            
+ISSOREVU            
+ISARATNT            
+ISARINVX            
+ISBINLOC            
+ISBSF               
+ISCHAIN             
+ISDIGSIG            
+ISEDINFO            
+ISESTPO             
+ISFUTYPE            
+ROUTAING            ROUTAING.B                                                      
+ROUTING             ROUTING.B                                                       
+ROUTTEMP            ROUTTEMP.B                                                      
+SCHEDCAL            SCHEDCAL.B                                                      
+SCHWO               SCHWO.B                                                         
+ISSESL              
+ISSETYPE            
+ISSHIPA             
+ISSHIPCO            
+ISSHPVIA            
+ISSIGN              
+ISSLSFC             
+ISSMTCFG            
+ISSNOTES            
+ISSRFQH             ISSRFQH.B                                                       
+ISSRFQL             ISSRFQL.B                                                       
+ISSRHINF            ISSRHINF.B                                                      
+ISSRINFO            ISSRINFO.B                                                      
+ISSRINV             ISSRINV.B                                                       
+ISSRMMS             ISSRMMS.B                                                       
+ISSRTXN             ISSRTXN.B                                                       
+ISSRTXNS            ISSRTXNS.B                                                      
+ISSSOH              ISSSOH.B                                                        
+ISSSOL              ISSSOL.B                                                        
+ISSOINFO            ISSOINFO.B                                                      
+ISSOREVU            ISSOREVU.B                                                      
+ISSPC               ISSPC.B                                                         
+ISSPOH              ISSPOH.B                                                        
+ISSPOL              ISSPOL.B                                                        
+ISWROHEX            ISWROHEX.B                                                      
+JGPITEMS            JGPITEMS.B                                                      
+JSPCNLCD            JSPCNLCD.B                                                      
+JSPCNLSO            JSPCNLSO.B                                                      
+LANGDICT            LANGDICT.B                                                      
+ISSPOH              
+ISSPOL              
+ISSQTH              
+ISSQTL              
+ISSRADSC            
+ISSRAINF            
+ISSRAINV            
+ISSRAIVL            
+ISSRAMMS            
+ISSRINVL            ISSRINVL.B                                                      
+ISSRMH              ISSRMH.B                                                        
+ISSRMINV            ISSRMINV.B                                                      
+ISSRMIVL            ISSRMIVL.B                                                      
+ISSRML              ISSRML.B                                                        
+ISSTYPE             ISSTYPE.B                                                       
+ISTAXFIL            ISTAXFIL.B                                                      
+ISTAXGRP            ISTAXGRP.B                                                      
+ISTERMS             ISTERMS.B                                                       
+ISTOOLOG            ISTOOLOG.B                                                      
+ISSRCL              
+ISSRDESC            
+ISSRFQH             
+ISSRFQL             
+ISSRHINF            
+ISSRINFO            
+ISSRINV             
+ISSRINVL            
+ISSRMH              
+ISSSRH              ISSSRH.B                                                        
+ISSSRL              ISSSRL.B                                                        
+ISSTEQUI            ISSTEQUI.B                                                      
+ISSTRACK            ISSTRACK.B                                                      
+ISSTTYPE            ISSTTYPE.B                                                      
+ISVARSQL            ISVARSQL.B                                                      
+ISVNDADT            ISVNDADT.B                                                      
+ISWOCLOG            ISWOCLOG.B                                                      
+ISWODESC            ISWODESC.B                                                      
+ISWOEX              ISWOEX.B                                                        
+ISSRMIVL            
+ISSRML              
+ISSRMMS             
+ISSRTXN             
+ISSRTXNS            
+ISSSOH              
+ISSSOL              
+ISSSRH              
+ISSSRL              
+ISWOROEX            
+ISWOTRAY            
+ISWROHEX            
+JGPITEMS            
+JSPCNLCD            
+JSPCNLSO            
+LANGDICT            
+LOT                 
+MACHINE             
+MKDEF               MKDEF.B                                                         
+MKECLASS            MKECLASS.B                                                      
+MKEVENT             MKEVENT.B                                                       
+MKFORM              MKFORM.B                                                        
+MKICLASS            MKICLASS.B                                                      
+ISSTRACK            
+ISSTTYPE            
+ISSTYPE             
+ISTAXFIL            
+ISTAXGRP            
+ISTERMS             
+ISTOOLOG            
+ISTRIGRS            
+ISUDFINV            
+ISTRIGRS            ISTRIGRS.B                                                      
+ISUDFINV            ISUDFINV.B                                                      
+ISUDMSTR            ISUDMSTR.B                                                      
+ISUSAGE             ISUSAGE.B                                                       
+ISVAR               ISVAR.B                                                         
+ISWOHDSC            ISWOHDSC.B                                                      
+ISWOHEX             ISWOHEX.B                                                       
+ISWOPRIO            ISWOPRIO.B                                                      
+ISWOROEX            ISWOROEX.B                                                      
+ISWOTRAY            ISWOTRAY.B                                                      
+MTICAMTR            MTICAMTR.B                                                      
+MTICEMTR            MTICEMTR.B                                                      
+MTICMSTR            MTICMSTR.B                                                      
+MTINVDEF            MTINVDEF.B                                                      
+MTMRP               MTMRP.B                                                         
+ISUSAGE             
+ISVAR               
+ISVARSQL            
+ISVNDADT            
+ISWOCLOG            
+ISWODESC            
+ISWOEX              
+ISWOHDSC            
+ISWOHEX             
+LOT                 LOT.B                                                           
+MACHINE             MACHINE.B                                                       
+MENUFILE            MENUFILE.B                                                      
+MKAHIST             MKAHIST.B                                                       
+MKASSIGN            MKASSIGN.B                                                      
+TOOL                TOOL.B                                                          
+WBTRVMEM            WBTRVMEM.B                                                      
+WBTRVMEMO           WBTRVMEMO.B                                                     
+WCCTL               WCCTL.B                                                         
+WCTRLOAD            WCTRLOAD.B                                                      
+MKTCLASS            MKTCLASS.B                                                      
+MKTNOTE             MKTNOTE.B                                                       
+MKTRACK             MKTRACK.B                                                       
+MKTROUT             MKTROUT.B                                                       
+MTEXCHG             MTEXCHG.B                                                       
+WODATE              WODATE.B                                                        
+WOELABOR            WOELABOR.B                                                      
+WOEMAT              WOEMAT.B                                                        
+WOERECV             WOERECV.B                                                       
+WOEXCHG             WOEXCHG.B                                                       
+MKAHIST             
+MKASSIGN            
+MKDEF               
+MKECLASS            
+MKEVENT             
+MKFORM              
+MKICLASS            
+MKTCLASS            
+MKTNOTE             
+SCRAP               SCRAP.B                                                         
+SERIAL              SERIAL.B                                                        
+SERIALH             SERIALH.B                                                       
+SUMCUST             SUMCUST.B                                                       
+SUMINV              SUMINV.B                                                        
+MWOPTEMP            MWOPTEMP.B                                                      
+NOTETEMP            NOTETEMP.B                                                      
+NZITPRE             NZITPRE.B                                                       
+OPQCDESC            OPQCDESC.B                                                      
+OUTHPROC            OUTHPROC.B                                                      
+MKTROUT             
+MTEXCHG             
+MTICAMTR            
+MTICEMTR            
+MTICMSTR            
+MTINVDEF            
+MTMRP               
+MWOPTEMP            
+NOTETEMP            
+OUTPROC             OUTPROC.B                                                       
+PIBINLOC            PIBINLOC.B                                                      
+PIBINLOT            PIBINLOT.B                                                      
+QCCODES             QCCODES.B                                                       
+ROCHG               ROCHG.B                                                         
+SCHEDCAL            
+SCHWO               
+SCRAP               
+SERIAL              
+SERIALH             
+SUMCUST             
+SUMINV              
+SUMPNCUS            
+SUMWC               
+ISJBSF              
+ISMACS              
+ISNUMBER            
+ISPREQ              
+ISQCRSLT            
+ISRFQADS            
+ISRMINFO            
+ISSCHED             
+ISSESH              
+BKCMPCTF            
+BKPRCURP            
+ISARAHDS            
+ISHSERIA            
+ISSOABOX            
+OPQCDESC            
+OUTHPROC            
+OUTPROC             
+PIBINLOC            
+PIBINLOT            
+QCCODES             
+ROCHG               
+ROUTAING            
+ROUTING             
+SUMPNCUS            SUMPNCUS.B                                                      
+SUMWC               SUMWC.B                                                         
+TEMPOLD             TEMPOLD.B                                                       
+TESTARRA            TESTARRA.B                                                      
+TESTFILE            TESTFILE.B                                                      
+WORKORD             WORKORD.B                                                       
+WORKSORD            WORKSORD.B                                                      
+WOROCHG             WOROCHG.B                                                       
+WOROUT              WOROUT.B                                                        
+WOROUTMP            WOROUTMP.B                                                      
+WCTRSLOD            WCTRSLOD.B                                                      
+WOBOM               WOBOM.B                                                         
+WOBOMCHG            WOBOMCHG.B                                                      
+WOBOMHRM            WOBOMHRM.B                                                      
+WOBOMREM            WOBOMREM.B                                                      
+WOHRECV             WOHRECV.B                                                       
+WOHROUT             WOHROUT.B                                                       
+WOLABOR             WOLABOR.B                                                       
+WOLABRPT            WOLABRPT.B                                                      
+WOMAT               WOMAT.B                                                         
+TESTARRA            
+TESTFILE            
+TOOL                
+WBTRVMEM            
+WBTRVMEMO           
+WCCTL               
+WCTRLOAD            
+WCTRSLOD            
+WOBOM               
+WOSROUT             WOSROUT.B                                                       
+XXICMSTR            XXICMSTR.B                                                      
+X$View              view.ddf                                                        
+    
+X$Proc              proc.ddf                                                        
+    
+X$Relate            relate.ddf                                                      
+    
+WOBOMHRM            
+WOBOMREM            
+WODATE              
+WOELABOR            
+WOEMAT              
+WOERECV             
+WOEXCHG             
+WOHBOM              
+WOHDATE             
+WOHBOM              WOHBOM.B                                                        
+WOHDATE             WOHDATE.B                                                       
+WOHEXCHG            WOHEXCHG.B                                                      
+WOHLABOR            WOHLABOR.B                                                      
+WOHMAT              WOHMAT.B                                                        
+ISSPC               
+ISSRCH              
+ISSRMINV            
+ISSTEQUI            
+ISUDMSTR            
+ISWOPRIO            
+MENUFILE            
+MKTRACK             
+NZITPRE             
+ROUTTEMP            
+TEMPOLD             
+WOBOMCHG            
+WOHEXCHG            
+WORKCHG             
+X$Field             
+X$File              
+X$Index             
+X$Occurs            
+X$Proc              
+X$Relate            
+X$Trigger           
+X$View              
+XXICMSTR            
+ISSPC               
+ISSRCH              
+ISSRMINV            
+ISSTEQUI            
+ISUDMSTR            
+ISWOPRIO            
+MENUFILE            
+MKTRACK             
+NZITPRE             
+ROUTTEMP            
+TEMPOLD             
+WOBOMCHG            
+WOHEXCHG            
+WORKCHG             
+X$File              
+X$Index             
+X$Occurs            
+X$Proc              
+X$Relate            
+X$Trigger           
+X$Variant           
+X$View              
+XXICMSTR            

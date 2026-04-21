@@ -1,0 +1,244 @@
+BKSLEVEL
+TASCOLOR
+Security Level A
+PS-B3  Light Manufacturing Security IIA
+BKSLEVELA
+Could not find the Light Manufacturing Menu access definitions for this Security Level.  Would you like to create these definitions now? YL
+PS-B3  Light Manufacturing Security IIA
+F1 HelpA
+F10 Save,ESC ExitA
+Light WO'sA
+WO MaintenanceA
+Reports A
+Lot Control A
+Serial Control A
+Features and OptionsA
+Save the Light Manufacturing Menu access definitions? YL
+Valid entries are:F
+   Y - Allow access to ALL menu choices within this module.F
+   N - Allow access to NO menu choices within this module.F
+   C - Choose by menu selection which choices will be accesable.I
+Valid entries are:F
+   Y - Allow access to this menu selection.F
+   N - Do not allow access to this menu selection.I
+Exit without saving any changes? NL
+ MODULES        
+ A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R 
+ Light WOs      
+                                                      
+ WO Maintenance 
+                                                      
+ Reports        
+                                                      
+ Material Reqs  
+                                                      
+ Lot Control    
+                                                      
+ Serial Control 
+                                                      
+ Feats & Opts   
+                                                      
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+  STANDARD FUNCTION KEYS/BUTTONSF
+  ------------------------------F
+  F1  HelpF
+  F2  LookupF
+  F3  ClearF
+  F4  DeleteF
+  F5  FirstF
+  F6  LastF
+  F7  PreviousF
+  F8  NextF
+  F9  FindF
+  F10 SaveI
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+CNTR           
+DEFAULT        
+PROMPT_TXT     
+BKSLEVEL_HNDL  
+FIND.LEVEL     
+FIND.DESC      
+MSGTXT         
+BKSL.MENU      
+BKSL.LEVEL     
+BKSL.MENU1.YN  
+BKSL.MENU2.YN  
+BKSL.MENU3.YN  .
+BKSL.MENU4.YN  C
+BKSL.MENU5.YN  X
+BKSL.MENU6.YN  m
+BKSL.MENU7.YN  
+BKSL.MENU8.YN  
+BKSL.MENU9.YN  
+BKSL.MENU10.YN 
+BKSL.MENU11.YN 
+BKSL.MENU12.YN 
+BKSL.MENU13.YN 
+BKSL.MENU14.YN 
+BKSL.MENU15.YN *
+BKSL.MENU16.YN ?
+BKSL.MENU17.YN T
+BKSL.MENU18.YN i
+BKSL.MENU1     
+BKSL.MENU2     
+BKSL.MENU3     /
+BKSL.MENU4     D
+BKSL.MENU5     Y
+BKSL.MENU6     n
+BKSL.MENU7     
+BKSL.MENU8     
+BKSL.MENU9     
+BKSL.MENU10    
+BKSL.MENU11    
+BKSL.MENU12    
+BKSL.MENU13    
+BKSL.MENU14    
+BKSL.MENU15    +
+BKSL.MENU16    @
+BKSL.MENU17    U
+BKSL.MENU18    j
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+PROG.HELP.NAME 
+CRNT.FIELD     
+XYZDBAHTEXT    
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

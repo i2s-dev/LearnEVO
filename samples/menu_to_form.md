@@ -1,0 +1,560 @@
+# Menu Code → DFM Form Cross-Reference
+
+Total menu codes: **554**. With at least 1 matching DFM form: **378** (68%).
+
+| Code | Description | DFM(s) |
+|---|---|---|
+| `AD-A` | General Ledger Defaults |  |
+| `AD-B` | Checking Accounts Defaults |  |
+| `AD-C` | Accounts Payable Defaults |  |
+| `AM-A` | Reset Period-End Close Date | `T7AMA.DFM` |
+| `AM-B` | Fiscal Year End Routine | `T7AMB.DFM` |
+| `AM-C` | Create General Ledger Accounts | `T7AMC.DFM` |
+| `AM-D` | Print GL Code and Description | `T7AMD.DFM` |
+| `AM-E` | Format Standard Financial Statements | `T7AME.DFM` |
+| `AM-F` | Format Custom Financial Statements |  |
+| `AM-G` | Consolidate Financials | `T7AMG.DFM` |
+| `AM-H` | Change GL Account Codes | `T7AMH.DFM` |
+| `AM-I` | Consolidate General Ledger Detail | `T7AMI.DFM` |
+| `AM-J` | Purge AP Vouchers | `T7AMJ.DFM` |
+| `AM-K` | Rebuild Customer/Vendor Totals | `T7AMK.DFM` |
+| `AM-L` | Purge AP Payment History |  |
+| `AM-N` | Maintain GL Fiscal Periods | `T7AMN.DFM` |
+| `AM-O` | Archive/Purge/Restore Vendor | `T7AMO.DFM` |
+| `AM-P` | Checking Orphans | `T7AMP.DFM` |
+| `AM-P-F` | Purge Commission Transactions |  |
+| `AM-Q` | Enter GL Budgets | `T7AMQ.DFM` |
+| `AP-A` | Enter Vendors | `T7APA.DFM`, `T7APABANK.DFM`, `T7APACON.DFM`, `T7APAPRC.DFM`, `T7APASTA.DFM` |
+| `AP-B` | Enter Vouchers | `T7APB.DFM` |
+| `AP-D` | Enter Scheduled Payment Dates | `T7APD.DFM` |
+| `AP-E` | Print Vouchers/Invoices Due by Date | `T7APE.DFM` |
+| `AP-F` | Pick Vouchers/Invoices to Pay | `t7apf.dfm` |
+| `AP-G` | Print Pro Forma Check Register | `t7apg.dfm` |
+| `AP-H` | Print Checks | `T7APH.DFM`, `T7APHASK.DFM` |
+| `AP-I` | Print Aging | `T7API.DFM`, `T7APINFO.DFM` |
+| `AP-J` | Print Vendor Code and Name | `T7APJ.DFM` |
+| `AP-K` | Print Vendor General Info | `T7APK.DFM` |
+| `AP-L` | Print Vendor Purchase Info | `t7apl.DFM` |
+| `AP-M` | Print Vendor Labels | `T7APM.DFM` |
+| `AP-N` | Print Vendor Rolodex |  |
+| `AP-O` | Enter Recurring Vouchers | `T7APO.DFM` |
+| `AP-P` | Generate Recurring Vouchers | `T7APP.DFM` |
+| `AP-Q` | Void AP Check | `T7APQ.DFM` |
+| `AP-R` | Print AP Payment History | `T7APR.DFM` |
+| `AP-S` | Print 1099 Forms | `T7APS.DFM` |
+| `AP-U` | Archive/Purge Vendor |  |
+| `AR-A` | Enter Customers | `T7ARA.DFM`, `T7ARA2DB.DFM`, `T7ARAC.DFM`, `T7ARACON.DFM`, `T7ARACRE.DFM` |
+| `AR-B` | Enter Vouchers | `T7ARB.DFM` |
+| `AR-C` | Record Payments | `T7ARC.DFM` |
+| `AR-D` | Charge Interest on Invoices | `T7ARD.DFM` |
+| `AR-E` | Print Statements | `T7ARE.DFM` |
+| `AR-F` | Print Aging | `T7ARF.DFM` |
+| `AR-G` | Print Customer Code and Name | `T7ARG.DFM` |
+| `AR-H` | Print Customer General Info | `T7ARH.DFM` |
+| `AR-I` | Print Customer Mail Labels | `T7ARI.DFM` |
+| `AR-J` | Print Customer Rolodex |  |
+| `AR-K` | Print Sales Tax Report | `T7ARK.DFM` |
+| `AR-L` | Transfer Sales Taxes | `T7ARL.DFM` |
+| `AR-M` | Enter Customer Refund | `T7ARM.DFM` |
+| `AR-N` | Print Customer Deposits | `T7ARN.DFM` |
+| `AR-P` | Generate Dun Letters | `T7ARP.DFM` |
+| `AR-Q` | View Customers |  |
+| `AR-S` | Accounts Receivable Defaults |  |
+| `BM-C` | Print Where Used | `T7BMC.DFM` |
+| `BM-D` | Print BOM Availability | `T7BMD.DFM` |
+| `BM-E` | Global Replace | `T7BME.DFM` |
+| `BM-F` | Global Delete | `T7BMF.DFM` |
+| `BM-G` | IN-B     IN-L-A     SO-Q- | `T7BMG.DFM` |
+| `BM-H` | Print BOM at Average Cost | `T7BMH.DFM` |
+| `BM-I` | Print Summarized BOM | `T7BMI.DFM` |
+| `BM-J` | Enter Approved Substitutes | `T7BMJ.DFM` |
+| `BM-J-C` | Enter Approved Manufacturers |  |
+| `BM-X` | BOM report |  |
+| `CS-A` | Enter Salespersons | `T7CSA.DFM` |
+| `CS-B` | Enter Vendors | `T7CSB.DFM` |
+| `CS-C` | Print Salespersons Info | `T7CSC.DFM` |
+| `CS-D` | Transfer Sales Commissions | `T7CSD.DFM`, `T7CSDE.DFM`, `T7CSDO.DFM`, `T7CSDX.DFM` |
+| `CS-E` | Print Commission Detail | `T7CSE.DFM` |
+| `CS-F` | Print Commission Summary | `T7CSF.DFM` |
+| `CS-G` | Print Slsp1 Commission Detail |  |
+| `CS-H` | Print Slsp1 Commission Summary |  |
+| `CS-I` | Print Slsp2 Commission Detail | `T7CSI.DFM` |
+| `CS-J` | Print Slsp2 Commission Summary |  |
+| `CS-L` | Print Price Code Commissions |  |
+| `CS-N` | Print Contract Price Commissions |  |
+| `CS-O` | Print Commission Earned Detail | `T7CSO.DFM` |
+| `CS-P` | Print Commissions Due Summary | `T7CSP.DFM` |
+| `CS-Q` | Commission Year End Routine |  |
+| `CS-R` | View Salespersons Booking Info |  |
+| `DC-A` | Print Transfer Labels | `T7DCA.DFM`, `T7DCA2.DFM`, `T7DCALabel.DFM`, `T7DCANotes.DFM`, `T7DCAPstdLab.dfm` |
+| `DC-D` | View/Print Labor Status | `T7DCD.DFM` |
+| `DC-E` | Print Labor Tickets | `T7DCE.DFM` |
+| `DC-F` | Print Employee Tickets | `T7DCF.DFM` |
+| `DC-G` | Edit Labor Transactions | `T7DCG.DFM` |
+| `DC-H` | Filelock on TOOL - | `T7DCH.DFM` |
+| `DC-I` | View | `t7DCina.DFM` |
+| `DE-A` | Export Data |  |
+| `DE-B` | Import Inventory |  |
+| `DE-C` | Import Bills of Material |  |
+| `DE-D` | Import Routings |  |
+| `DE-E` | Import Customers | `T7DEER.DFM` |
+| `DE-F` | Import Vendors | `T7DEFECT.DFM` |
+| `DE-G` | Import Chart of Accounts |  |
+| `DE-H` | Import Labor | `T7DEHD.DFM` |
+| `DE-H-A` | Import Labor |  |
+| `DE-H-B` | Import Material Issues |  |
+| `DE-H-C` | Import Finished Production |  |
+| `DE-H-D` | Import Physical Inventory Count | `T7DEHD.DFM` |
+| `DE-I-A` | Print Inventory Errors |  |
+| `DE-I-B` | Print Bills of Material Errors |  |
+| `DE-I-C` | Print Routings Errors |  |
+| `DE-I-D` | Print Chart of Accounts Errors |  |
+| `DE-I-E` | Print Labor Errors |  |
+| `DE-J-A` | Edit Imported Inventory |  |
+| `DE-J-C` | Edit Imported Routings |  |
+| `DE-J-D` | Edit Imported Customers |  |
+| `DE-J-E` | Edit Imported Vendors |  |
+| `DE-J-F` | Edit Imported Chart of Accounts |  |
+| `DE-J-G` | Edit Imported Labor |  |
+| `DE-J-H` | Imported Material Issue | `T7DEJH.DFM` |
+| `DE-J-I` | Edit Imported WO Receipts |  |
+| `DE-K` | Global Field Change | `T7DEK.DFM` |
+| `DE-L` | Erase Files | `T7DEL.DFM` |
+| `DE-M` | MR-D     IN-L- | `T7DEM.DFM` |
+| `DE-O` | Export GL Data to QuickBooks |  |
+| `DE-Q` | Import Open Receivables | `T7DEQ.DFM` |
+| `DE-R` | Import Open Payables | `T7DER.DFM` |
+| `DE-S` | Import Item Links |  |
+| `DE-T` | Import FIFO Layers | `T7DET.DFM`, `T7DETB.DFM` |
+| `DI-G` | Import Labor | `T7DIGSIG.DFM`, `T7DigSigChgPSWD.DFM` |
+| `ED-B` | Import EDI Orders |  |
+| `ED-C` | Edit EDI Orders |  |
+| `ED-D` | Convert EDI Orders to Sales Orders |  |
+| `ED-E` | Export EDI Orders |  |
+| `ED-G` | Master EDI Set-up |  |
+| `ED-H` | Error report |  |
+| `ES-A` | Copy RFQs |  |
+| `ES-B` | Print Estimates | `T7ESB.DFM` |
+| `ES-C` | Enter Quote Templates | `T7ESC.DFM` |
+| `ES-E` | Convert Estimates | `T7ESE.DFM` |
+| `ES-F` | Copy Estimates |  |
+| `ES-G` | Print Estimate Listing |  |
+| `ES-H` | Enter Material Costs | `T7ESH.DFM` |
+| `ES-I` | Print Material Costs | `T7ESI.DFM` |
+| `FO-C` | Enter Option Prices | `T7FOC.DFM` |
+| `FO-D` | Print Option Prices | `T7FOD.DFM` |
+| `FO-E` | Print Option Where Used | `T7FOE.DFM` |
+| `GL-A` | Edit Budgets | `T7GLA.DFM`, `T7GLARCH.DFM` |
+| `GL-B` | Add new GJ Transaction | `T7GLB.DFM`, `T7GLBLIST.DFM` |
+| `GL-D` | Print Journals | `T7GLD.DFM` |
+| `GL-F` | Print Financial Statements | `T7GLF.DFM` |
+| `GL-G` | Print GL Code and Description | `T7GLG.DFM` |
+| `GL-H` | Print Chart of Accounts | `T7GLH.DFM` |
+| `GL-I` | Print Check Register | `T7GLI.DFM` |
+| `GL-J` | Reconcile Check Register | `T7GLJ.DFM`, `T7GLJASK.DFM` |
+| `GL-K` | Transfer Bank Account Funds | `T7GLK.DFM` |
+| `GL-M` | Generate Recurring GJ Transactions |  |
+| `GL-N` | Print Custom Statements | `T7GLN.DFM` |
+| `GL-O` | Print/Post GL Batches | `T7GLO.DFM`, `T7GLOOB.DFM` |
+| `GL-P` | Edit GL Batch Entries | `T7GLP.DFM` |
+| `GL-Q` | Reverse Batch Posting | `T7GLQ.DFM` |
+| `GL-R` | Business Status |  |
+| `GL-S` | View GL Journal Notes | `T7GLS.DFM` |
+| `IN-A` | Inventory Inquiry | `T7INA.DFM`, `T7INAACDOC.DFM`, `T7INAALO.DFM`, `T7INACMP.DFM`, `T7INAFORECAST.DFM` |
+| `IN-B` | Enter Inventory | `T7INB.DFM`, `T7INB2DB.DFM`, `T7INBCMP.DFM`, `T7INBECO.DFM`, `T7INBLNK.DFM` |
+| `IN-C` | Enter Inventory Adjustments | `T7INC.DFM` |
+| `IN-D` | Print Reorder Report | `T7IND.DFM`, `T7INDPO.DFM` |
+| `IN-E` | Print Inventory Transactions | `T7INE.DFM` |
+| `IN-F` | Print Inventory Value | `T7INF.DFM` |
+| `IN-G` | Print Inventory Labels | `T7ING.DFM`, `T7INGimport.DFM` |
+| `IN-H` | Print Inventory Listing | `T7INH.DFM` |
+| `IN-I` | Print Inventory General Info | `T7INI.DFM` |
+| `IN-J` | Print Physical Check | `T7INJ.DFM` |
+| `IN-K` | IN-L-E     SM-J- | `T7INK.DFM` |
+| `IN-L-A` | Enter Standard Costs | `T7INLA.DFM` |
+| `IN-L-B` | Enter/Assign Locations | `T7INLB.DFM` |
+| `IN-L-C` | Enter Customer Cross-Reference | `T7INLC.DFM` |
+| `IN-L-D` | Print Customer Cross-Reference | `T7INLD.DFM` |
+| `IN-L-E` | Update Material Standard Costs | `T7INLE.DFM` |
+| `IN-L-F` | Enter Material Dimensions | `T7INLF.DFM` |
+| `IN-L-G` | Print Material Dimensions | `T7INLG.DFM` |
+| `IN-L-H` | Edit FIFO/LIFO Buckets | `T7INLH.DFM` |
+| `IN-L-I` | Change Inventory Costing Method | `T7INLI.DFM` |
+| `IN-L-J` | Transfer Inventory | `T7INLJ.DFM` |
+| `IN-L-K` | Inventory Exceptions Report | `T7INLK.DFM` |
+| `IN-L-L` | BOM report | `T7INLL.DFM` |
+| `IN-L-M` | Multi-Transfer Inventory | `T7INLM.DFM` |
+| `IN-L-N` | Copy Item | `T7INLN.DFM` |
+| `IN-L-O` | Inventory utilites | `T7INLO.DFM`, `T7INLOA.DFM` |
+| `IN-L-P` | Multi-Co-Transfer Inventory |  |
+| `IN-L-S` | Rebuild Stock Status | `T7INLS.DFM` |
+| `IN-L-T` | Reset Inventory Cycle Codes | `T7INLT.DFM` |
+| `IN-L-U` | Recal UOH From FIFO Layers |  |
+| `IN-L-V` | Archive Obsolete Inventory - | `T7INLV.DFM` |
+| `IN-M-C` | Global Price Change |  |
+| `IN-M-E` | Print Price Code Prices |  |
+| `IN-M-G` | Print Dicount Code Prices |  |
+| `IN-M-I` | Print Contract Prices |  |
+| `IN-N-A` | Print Month End Inventory Costing | `T7INNA.DFM` |
+| `IN-N-B` | Print Shipments Costing | `T7INNB.DFM` |
+| `IN-N-C` | Print Closed Work Orders Costing | `T7INNC.DFM` |
+| `IN-N-D` | Print Inventory Audit | `T7INND.DFM` |
+| `IN-O` | User Defined Inventory Transactions | `T7INO.DFM` |
+| `IS-A` | Item Recap |  |
+| `IS-B` | Production Report |  |
+| `IS-C` | Top N Shipped Items |  |
+| `IS-D` | New Customer Report |  |
+| `JC-A` | Print Job Cost Report | `T7JCA.DFM` |
+| `JC-B` | Print Profit Projection | `T7JCB.DFM` |
+| `JC-C` | Print Labor Transactions |  |
+| `JC-D` | Print Overhead Transactions |  |
+| `JC-E` | Print Material Issues | `T7JCE.DFM`, `T7JCENG.DFM` |
+| `JC-F` | Print Outside Purchases | `T7JCF.DFM` |
+| `JC-G` | Print Labor Efficiency |  |
+| `JC-H` | Print Active Work Order History | `T7JCH.DFM` |
+| `JC-I` | Print Production By Work Center |  |
+| `JC-J` | Print Production By Machine |  |
+| `JC-K` | Print Production By Tool |  |
+| `JC-L` | Print Job Cost Summary | `T7JCL.DFM` |
+| `JC-M` | Print WIP Summary | `T7JCM.DFM` |
+| `JC-N` | Print WIP Percent Completion | `T7JCN.DFM` |
+| `JC-O` | Print Standard Labor Hours |  |
+| `JC-P` | Print Materials in WIP | `T7JCP.DFM` |
+| `JC-Q` | Print WO Receipts | `T7JCQ.DFM` |
+| `JC-R` | Multi-Level Assembly Cost Breakdown | `T7JCR.DFM`, `T7JCRM.DFM` |
+| `LC-A` | Edit Lot Numbers | `T7LCA.DFM` |
+| `LC-B` | Assign Lot Control | `T7LCB.DFM` |
+| `LC-C` | Print Lot Availability | `T7LCC.DFM`, `T7LCC2.DFM` |
+| `LC-D` | Print Lot History |  |
+| `LC-E` | Reconcile Inventory | `T7LCE.DFM` |
+| `LC-F` | LOT Control Exceptions | `T7LCF.DFM` |
+| `LC-G` | Sales Order Lot Control | `T7LCG.DFM` |
+| `LM-B` | Enter Item Generator Templates |  |
+| `LM-H` | Purge QC Receipts |  |
+| `LW-A` | Enter Work Orders |  |
+| `LW-B` | Change WO Status |  |
+| `LW-D` | Print Pick Lists |  |
+| `LW-E` | Issue Material |  |
+| `LW-F` | Enter Extra Costs |  |
+| `LW-G` | Enter Finished Production |  |
+| `LW-H` | Close/Cancel Work Orders |  |
+| `LW-I-A` | Enter Work Order Bills of Material |  |
+| `LW-I-B` | Create Multi-Date Work Orders |  |
+| `LW-I-C` | Create Multi-Assy Work Orders |  |
+| `LW-I-D` | Swap Substitute Parts |  |
+| `LW-J-C` | Print Material/Labor Issues |  |
+| `LW-J-D` | Print Outside Purchases |  |
+| `LW-J-E` | Print Job Cost Summary |  |
+| `LW-J-F` | Print Job Cost Report |  |
+| `LW-J-G` | Print Work Order Shortages |  |
+| `LW-J-H` | Print WIP Summary |  |
+| `LW-J-I` | Print WO Receipts |  |
+| `MM-K-A` | Print Product Classes |  |
+| `MM-K-C` | Print Customer Code and Name |  |
+| `MM-K-D` | Print Vendor Code and Name |  |
+| `MM-L` | Enter Vendors |  |
+| `MR-A` | Enter Forecast | `T7MRA.DFM`, `T7MRADE.DFM` |
+| `MR-B` | Print Forecast | `T7MRB.DFM` |
+| `MR-C` | Reset Forecast | `T7MRC.DFM` |
+| `MR-D` | Enter MRP Parameters | `T7MRD.DFM` |
+| `MR-E` | Print MRP Parameters | `T7MRE.DFM` |
+| `MR-F` | Generate Material Requirements | `T7MRF.DFM` |
+| `MR-G` | Print Material Requirements | `T7MRG.DFM` |
+| `MR-H` | Print Order Action Report | `T7MRH.DFM` |
+| `MR-I` | Generate Work Orders | `T7MRI.DFM`, `T7MRIR.DFM`, `T7MRIX.DFM` |
+| `MR-J` | Generate Purchase Orders | `T7MRJ.DFM`, `T7MRJR.DFM`, `T7MRJX.DFM` |
+| `MR-K` | Generate RFQ's |  |
+| `MR-L` | Print Planned Orders Report | `T7MRL.DFM` |
+| `PI-A` | Frozen Inventory Report | `T7PIA.DFM` |
+| `PI-B` | Frozen Inventory Report | `T7PIB.DFM` |
+| `PI-C` | Enter Tag Counts | `T7PIC.DFM`, `T7PICA.DFM` |
+| `PI-C-A` | Physical Inventory Exception Report | `T7PICA.DFM` |
+| `PI-D` | Missing Tags Report | `T7PID.DFM` |
+| `PI-E` | Edit Frozen Inventory Costs | `T7PIE.DFM` |
+| `PI-F` | Physical Inventory Report | `T7PIF.DFM` |
+| `PI-G` | Update Actual Inventory | `T7PIG.DFM` |
+| `PI-H` | Purge Physical Inventory | `T7PIH.DFM` |
+| `PL-D` | Import Employees |  |
+| `PL-E` | Payroll Software Link Setup | `T7PLessComps.DFM`, `T7PLessNotes.DFM`, `T7PLessWODates.DFM` |
+| `PO-A` | Enable UPC Numbers | `T7POA.DFM`, `T7POA2.DFM`, `T7POAC.DFM`, `T7POACPY.DFM`, `T7POAE.DFM` |
+| `PO-B` | Print Purchase Orders | `T7POB.DFM` |
+| `PO-C` | P/O Lot Control | `t7poc.DFM` |
+| `PO-D` | View PO Receivers |  |
+| `PO-E` | Copy RFQs | `T7POEA.DFM`, `T7POENG.DFM` |
+| `PO-E-A` | Request for Quote (Universal) | `T7POEA.DFM` |
+| `PO-F` | Enter Verbal RFQs | `T7POF.DFM` |
+| `PO-G` | Convert RFQs | `T7POG.DFM` |
+| `PO-H` | Enter Vendor Prices | `T7POH.DFM` |
+| `PO-I-A` | Print Open Purchase Orders Listing |  |
+| `PO-I-B` | Print Closed Purchase Orders Listing |  |
+| `PO-I-C` | Print RFQ Status | `T7POIC.DFM` |
+| `PO-I-D` | Print Vendor Prices | `T7POID.DFM` |
+| `PO-I-E` | Print Receiving Report |  |
+| `PO-I-F` | Print Received not Invoiced |  |
+| `PO-I-G` | Print Purchase Order Items by Due Date | `T7POIG.DFM` |
+| `PO-I-H` | Vendor Performance | `T7POIH.DFM` |
+| `PO-I-I` | Print Purchase Order Changes | `T7POII.DFM` |
+| `PO-I-J` | Print Vendor Purchase History |  |
+| `PO-J-A` | Print Receipt Travelers | `T7POJA.DFM` |
+| `PO-J-B` | Print Inventory in QC | `T7POJB.DFM` |
+| `PO-J-C` | Enter Inspection Buyoffs | `T7POJC.DFM`, `T7pojcqc.DFM`, `T7pojcsc.DFM` |
+| `PO-J-D` | Close PO's | `T7POJD.DFM` |
+| `PO-K` | Close Purchase Orders | `T7POK.DFM` |
+| `PO-M` | Purchase Order Inquiry | `T7POM.DFM`, `T7POMAST.DFM` |
+| `PO-P` | View Vendors | `T7POP.DFM`, `T7POPGET.DFM` |
+| `PO-Q` | Maintain PO Delivery Dates | `t7POQ.DFM` |
+| `PO-R` | Print Receiving Slip |  |
+| `PO-T` | Print PO Stock Item Packing List |  |
+| `PR-A` | Edit W-2 Data | `T7PRA.DFM` |
+| `PR-B` | Enter Pay Info | `T7PRB.DFM` |
+| `PR-C` | Print Payroll Register | `T7PRC.DFM` |
+| `PR-D` | Print Payroll Checks | `T7PRD.DFM`, `T7PRDIVFIX.DFM` |
+| `PR-E` | Print Employee Info | `T7PRE.DFM`, `t7pretag.DFM` |
+| `PR-F` | Maintain Tax Tables | `T7PRF.DFM`, `T7PRFIX.DFM` |
+| `PR-G` | Void Payroll Checks | `T7PRG.DFM` |
+| `PR-H` | Transfer Liabilities to AP | `T7PRH.DFM` |
+| `PR-I` | Print Pay History | `T7PRI.DFM` |
+| `PR-J` | Enter Time Cards | `T7PRJ.DFM`, `T7PRJCSYNC.DFM` |
+| `PR-J-A` | Import Time Cards |  |
+| `PR-K` | Print/Post Time Cards | `T7PRK.DFM` |
+| `PR-L-A` | Print Quarterly Info | `T7PRLA.DFM` |
+| `PR-L-B` | Print QTD Earnings Register | `T7PRLB.DFM` |
+| `PR-L-C` | Print QTD Taxable Earnings | `T7PRLC.DFM` |
+| `PR-L-D` | Print Detail Earnings Ledger | `T7PRLD.DFM` |
+| `PR-L-E` | Print Detail Deductions Ledger | `T7PRLE.DFM` |
+| `PR-L-F` | Print Subject To Report | `T7PRLF.DFM` |
+| `PR-L-H` | Print 940 Report | `T7PRLH.DFM` |
+| `PR-L-I` | Print W-2 Forms | `T7PRLI.DFM` |
+| `PR-L-J` | Print California DE6 Form | `T7PRLJ.DFM` |
+| `PR-L-K` | Print Payroll Hours | `T7PRLK.DFM` |
+| `PR-L-M` | Print Employer Contributions | `T7PRLM.DFM` |
+| `PR-L-N` | Print Payroll Wages Detail | `T7PRLN.DFM` |
+| `PR-L-P` | Print Employee Raises | `T7PRLP.DFM` |
+| `PR-M` | Payroll Defaults | `T7PRM.DFM` |
+| `PR-N` | Purge Payroll History | `T7PRN.DFM` |
+| `PR-O` | Payroll Year End Routine | `T7PRO.DFM`, `T7PROGINFO.DFM`, `T7ProcessData.DFM` |
+| `PR-P` | Enter Employee Raises | `T7PRP.DFM` |
+| `PS-A` | System Users/Passwords | `T7PSA.DFM` |
+| `PS-B` | System Security Levels |  |
+| `PS-C` | Company Logon Access |  |
+| `PS-E` | System Manager Security | `T7PSE.DFM`, `T7PSEGRP.DFM`, `T7PSEITM.DFM` |
+| `PS-F` | Enter Users/Passwords | `T7PSF.DFM` |
+| `RM-A` | Enter RMA Orders | `T7RMAWHY.DFM` |
+| `RM-C` | Receive RMA |  |
+| `RM-D` | Process RMA | `T7RMD.DFM`, `T7RMDASK.DFM` |
+| `RM-E` | RMA Reason For Return Maintenance | `T7RME.DFM` |
+| `RO-A` | View Routings | `T7ROA.DFM`, `T7ROAOpts.DFM`, `T7ROASpecs.DFM`, `t7roacpy.DFM` |
+| `RO-B` | Print Costed Routing | `T7ROB.DFM` |
+| `RO-C` | Work Centers | `T7ROC.DFM` |
+| `RO-D` | Enter Machines | `T7ROD.DFM` |
+| `RO-E` | Enter Tools | `T7ROE.DFM` |
+| `RO-F` | Enter QC Codes | `T7ROF.DFM` |
+| `RO-G` | Enter Scrap Codes | `T7ROG.DFM` |
+| `RO-H` | Enter Departments | `T7ROH.DFM` |
+| `RO-I` | Enter Operation Templates | `T7ROI.DFM` |
+| `RO-J-A` | Print Routings | `T7ROJA.DFM` |
+| `RO-J-B` | Print Work Centers | `T7ROJB.DFM` |
+| `RO-J-C` | Print Machines | `T7ROJC.DFM` |
+| `RO-J-D` | Print Tools | `T7ROJD.DFM` |
+| `RO-J-E` | Print QC Codes | `T7ROJE.DFM` |
+| `RO-J-F` | Print Scrap Codes | `T7ROJF.DFM` |
+| `RO-J-G` | Print Departments | `T7ROJG.DFM` |
+| `RO-J-H` | Print Operation Templates | `T7ROJH.DFM` |
+| `RO-K` | Enter Specs Templates | `T7ROK.DFM` |
+| `RO-L` | Sequence Print Control | `T7ROL.DFM` |
+| `SA-A` | Print Daily Sales/Bookings | `T7SAA.DFM` |
+| `SA-B` | Print Profit By Invoice |  |
+| `SA-C` | Print Customer Detail |  |
+| `SA-D` | Print Customer Summary |  |
+| `SA-E` | Print Customer Class Detail |  |
+| `SA-G` | Print Customer Class Summary |  |
+| `SA-H` | Print Salesperson Detail |  |
+| `SA-I` | Print Salesperson Summary |  |
+| `SA-J` | Print Inventory Detail |  |
+| `SA-L` | Print Item Class Detail |  |
+| `SA-M` | Print User-Defined Detail | `T7SAM.DFM` |
+| `SA-N` | Print User-Defined Summary | `T7SAN.DFM` |
+| `SA-O` | Top N Customers | `T7SAO.DFM` |
+| `SC-A` | Edit Serial Numbers | `T7SCA.DFM` |
+| `SC-B` | Assign Serial Control | `T7SCB.DFM` |
+| `SC-C` | Print Serial Availability | `T7SCC.DFM`, `T7SCC2.DFM` |
+| `SC-D` | Serial Number History |  |
+| `SC-E` | Reconcile Inventory | `T7SCE.DFM` |
+| `SC-F` | Serial Control Exceptions | `T7SCF.DFM` |
+| `SC-G` | Sales Order Serial Control | `T7SCG.DFM` |
+| `SD-A` | Company Name and Address |  |
+| `SD-B` | Work Orders Defaults |  |
+| `SD-C` | Purchase Orders Defaults |  |
+| `SD-C-A` | PO Receiver Defaults |  |
+| `SD-E` | Scheduling Defaults | `T7SDET.DFM` |
+| `SD-F` | Data Collection Defaults |  |
+| `SD-G` | Estimating Defaults |  |
+| `SD-I` | Routings Defaults |  |
+| `SD-M` | Sales Orders Defaults |  |
+| `SD-N` | Sales Commissions Defaults |  |
+| `SD-O` | Contact Manager Defaults |  |
+| `SD-P` | Customer Defaults |  |
+| `SH-A` | Edit WO Start/Finish/Due Dates | `T7SHA.DFM` |
+| `SH-B` | Manually Schedule Work Orders | `T7SHB.DFM` |
+| `SH-C` | Manually Schedule Work Centers | `T7SHC.DFM` |
+| `SH-D` | Manually Schedule Machines |  |
+| `SH-E` | Finite Scheduling | `T7SHE.DFM` |
+| `SH-F` | Infinite Scheduling | `T7SHF.DFM` |
+| `SH-G` | Print Work Order Schedule | `T7SHG.DFM` |
+| `SH-H` | Print Work Order Status | `T7SHH.DFM` |
+| `SH-I` | Print Work Center Schedule | `T7SHI.DFM`, `T7SHIPRTM.DFM` |
+| `SH-J` | Print Machine Schedule | `T7SHJ.DFM` |
+| `SH-K` | View Work Center Load |  |
+| `SH-L` | Print Work Center Load |  |
+| `SH-M` | Lead Time Estimator | `T7SHM.DFM` |
+| `SH-N` | Generate Lead Times | `T7SHN.DFM` |
+| `SH-O` | Finite Schedule Bucket Report | `T7SHO.DFM`, `T7SHOWLINEHIST.DFM` |
+| `SH-P` | Lead Time Scheduling | `T7SHP.DFM` |
+| `SM-D` | Enter Terms Table | `T7SMD.DFM` |
+| `SM-E` | Enter Tax Codes | `T7SME.DFM` |
+| `SM-F` | Enter Tax Groups | `T7SMF.DFM` |
+| `SM-G` | Enter Employees | `T7SMG.DFM`, `T7SMGA.DFM` |
+| `SM-H` | Enter Shop Calendar | `T7SMH.DFM`, `T7SMHMRK.DFM` |
+| `SM-I-A` | Enter Lead Source Codes | `T7SMIA.DFM` |
+| `SM-I-B` | Enter Territory Codes | `T7SMIB.DFM` |
+| `SM-I-C` | Enter History Codes | `T7SMIC.DFM` |
+| `SM-I-D` | Enter Account Follow-up Codes | `T7SMID.DFM` |
+| `SM-I-E` | Enter Vendor Follow-up Codes | `T7SMIE.DFM` |
+| `SM-I-F` | Enter Personal Contact Follow-up Codes | `T7SMIF.DFM` |
+| `SM-I-G` | Enter Class Codes |  |
+| `SM-I-H` | Enter Key Date Codes |  |
+| `SM-I-I` | Enter Reps and Passwords |  |
+| `SM-I-J` | Purge Account History |  |
+| `SM-I-K` | Purge Account Follow-ups |  |
+| `SM-I-L` | Purge Vendor Contact History |  |
+| `SM-I-M` | Purge Vendor Follow-ups |  |
+| `SM-I-N` | Purge Personal Contact History |  |
+| `SM-I-O` | Purge Personal Contact Follow-ups |  |
+| `SM-J-A` | Work Order File Maintenance | `T7SMJA.DFM` |
+| `SM-J-H` | Purge Data Collection File | `T7SMJH.DFM` |
+| `SM-J-I` | Purge Estimates | `T7SMJI.DFM` |
+| `SM-J-J` | Purge Closed Sales Orders | `T7SMJJ.DFM` |
+| `SM-J-K` | Purge Invoice History |  |
+| `SM-J-M` | Change Customer Codes | `T7SMJM.DFM` |
+| `SM-J-N` | Change Vendor Codes | `T7SMJN.DFM` |
+| `SM-J-O` | Rebuild Customer/Vendor Totals | `T7SMJO.DFM` |
+| `SM-J-P` | Purge AR Vouchers |  |
+| `SM-J-Q` | Bill of Material Recursion Utility | `T7SMJQ.DFM` |
+| `SM-J-R` | Archive Purchase Order History | `T7SMJR.DFM` |
+| `SM-J-S` | Purge Inventory Audit Info. | `T7SMJS.DFM` |
+| `SM-J-T` | Archive/Restore Quotes |  |
+| `SM-P-F` | Description Entry | `T7SMPF.DFM` |
+| `SO-A` | View | `T7SOABKD.DFM`, `T7SOAC.DFM`, `T7SOACITEM.DFM`, `T7SOACPY.DFM`, `T7SOAE.DFM` |
+| `SO-B` | Print Acknowledgements | `T7SOB.DFM`, `T7SOBIN.DFM` |
+| `SO-C` | Print Pick Ticket | `T7SOC.DFM` |
+| `SO-D` | Print Shipping Labels | `T7SOD.DFM`, `T7SODDesc.DFM`, `T7SODPallet.DFM` |
+| `SO-E` | Release Sales Orders | `T7SOE.DFM` |
+| `SO-F` | Print/Reprint Invoices | `T7SOF.DFM`, `T7SOFDEP.DFM` |
+| `SO-G` | Post Invoices | `T7SOG.DFM`, `T7SOGA.DFM`, `T7SOGACHK.DFM`, `T7SOGCogs.DFM`, `T7SOGComm.DFM` |
+| `SO-H` | Display Invoice History | `T7SOHINFO.DFM` |
+| `SO-I` | Customer Service Inquiry | `T7SOINFO.DFM` |
+| `SO-J` | View Recurring Sales Orders | `T7SOJINFO.DFM` |
+| `SO-K` | Generate Sales Orders from Recurring SO Templates | `T7SOK.DFM` |
+| `SO-L` | Enter/Print Note Templates | `T7SOLINEHIST.DFM`, `T7SOLINFO.DFM`, `T7SOLOT.DFM` |
+| `SO-M` | Print Template Forms |  |
+| `SO-N` | Manual Mat Cost/Lab Hours | `T7SON.DFM`, `T7SONQTY.DFM`, `t7sondte.DFM` |
+| `SO-O-A` | Print Open Sales Order Listing | `T7SOOA.DFM` |
+| `SO-O-B` | Print Backorder Listing | `T7SOOB.DFM` |
+| `SO-O-D` | Print Commissions by Sales Order | `T7SOOD.DFM` |
+| `SO-O-E` | Print Shipping Schedule | `T7SOOE.DFM` |
+| `SO-O-F` | Print Available to Ship | `T7SOOF.DFM` |
+| `SO-O-G` | Print Sales Order/Work Order Schedule | `T7SOOG.DFM` |
+| `SO-O-H` | Print Invoice Listing | `T7SOOH.DFM` |
+| `SO-O-I` | Print Released Sales Orders | `T7SOOI.DFM` |
+| `SO-O-J` | Print User-Defined Detail |  |
+| `SO-O-K` | Print User-Defined Summary |  |
+| `SO-O-M` | Print Sales Order Changes | `T7SOOM.DFM` |
+| `SO-O-N` | Print OnTime Shipping Report | `T7SOON.DFM` |
+| `SO-O-O` | Sales Order/Work Order Exception Report |  |
+| `SO-P-A` | Enter Sales Quotations |  |
+| `SO-P-B` | Print Sales Quotations | `T7SOPB.DFM` |
+| `SO-P-C` | Convert Sales Quotation | `T7SOPC.DFM` |
+| `SO-P-D` | Print User-Defined Detail |  |
+| `SO-P-E` | Print User-Defined Summary |  |
+| `SO-P-F` | Enter Return Authorization | `T7SOPF.DFM` |
+| `SO-P-H` | Enter RMA- Edit Existing RMA |  |
+| `SO-P-I` | Enter Freight & Tracking # | `T7SOPI.DFM` |
+| `SO-P-J` | Post Shipped Items | `T7SOPJ.DFM` |
+| `SO-P-K` | Close Sales Quotation | `T7SOPK.DFM` |
+| `SO-P-L` | Enter Tracking # |  |
+| `SO-Q` | Customer Service Inquiry | `T7SOQA.DFM`, `T7SOQB.DFM`, `T7SOQC.DFM`, `T7SOQH.DFM`, `T7SOQI.DFM` |
+| `SO-Q-A` | Enter Base Prices | `T7SOQA.DFM` |
+| `SO-Q-B` | Print Base Prices | `T7SOQB.DFM` |
+| `SO-Q-C` | Global Price Change | `T7SOQC.DFM` |
+| `SO-Q-J` | Generate Base Prices | `T7SOQJ.DFM` |
+| `SO-R` | Void Invoice | `T7SOR.DFM`, `T7SORevu.DFM`, `T7SORevuPSWD.dfm` |
+| `SO-S-B` | Print Return Authorizations |  |
+| `SO-T` | View |  |
+| `SO-U` | Convert Sales Orders to Purchase Orders |  |
+| `SO-X` | Mass Void Invoice |  |
+| `SR-A` | View Service/Repair Orders |  |
+| `SR-B` | Print S/R or Quotes | `T7SRB.DFM`, `T7SRBK.DFM` |
+| `SR-C` | Convert Service/Repair Orders |  |
+| `SR-D` | Print S/R Pick Ticket | `T7SRD.DFM` |
+| `SR-E` | Release Service/Repair Orders | `T7SRE.DFM` |
+| `SR-F` | Print/Reprint S/R Invoices | `T7SRF.DFM` |
+| `SR-G` | Post Service/Repair Invoices | `T7SRG.DFM`, `T7SRGA.DFM` |
+| `SR-H` | Convert RMA Orders |  |
+| `SR-T` | View Service/Repair Orders |  |
+| `UT-A` | Run a DBA Program |  |
+| `UT-B` | Run a Non-DBA Program |  |
+| `UT-C` | Re-Index File |  |
+| `UT-D` | Edit Data Location File |  |
+| `UT-E` | Set System Configuration |  |
+| `UT-F` | Change DOS Color |  |
+| `UT-H` | Print File Layouts | `T7UTH.DFM` |
+| `UT-I` | Create/Delete Company | `t7uti.DFM` |
+| `UT-J` | Generate DDF Files |  |
+| `UT-K` | Export Data | `T7UTKA.DFM`, `T7UTKD.DFM`, `T7UTKE.DFM`, `T7UTKF.DFM`, `T7UTKG.DFM` |
+| `UT-K-A` | Clear Data | `T7UTKA.DFM` |
+| `UT-K-B` | Global Field Replace |  |
+| `UT-K-C` | Edit GL Detail File |  |
+| `UT-K-D` | Recalculate GL Chart of Accounts | `T7UTKD.DFM` |
+| `UT-K-E` | Consolidate Inventory Locations | `T7UTKE.DFM` |
+| `UT-K-F` | Set Avg and Last Costs to Std Cost | `T7UTKF.DFM` |
+| `UT-K-G` | Recalculate Inventory Book Value | `T7UTKG.DFM` |
+| `UT-K-H` | Recalculate Average Cost from FIFO/LIFO Buckets | `T7UTKH.DFM` |
+| `UT-K-I` | Fix Binary Zeroes |  |
+| `UT-L` | Set Screen Color |  |
+| `WC-A` | Enter Warehouse Bin Locations | `T7WCA.DFM` |
+| `WC-B` | Assign Warehouse Control | `T7WCB.DFM`, `T7WCBK.DFM`, `T7WCBinLot.DFM` |
+| `WC-C` | Assign Bin Locations to Items | `T7WCC.DFM` |
+| `WC-D` | Import Bin Locations for Items | `T7WCD.DFM` |
+| `WC-E` | Print Bin Inventory Listing | `T7WCE.DFM` |
+| `WC-F` | Warehouse Control Exceptions Report | `T7WCF.DFM` |
+| `WO-A` | Enter Work Orders | `T7WOA.DFM`, `T7WOAC.DFM`, `T7WOACFG.DFM`, `T7WOACPY.DFM`, `T7WOAE.DFM` |
+| `WO-A-A` | Enter Work Orders - ECO Drawing Entry |  |
+| `WO-B` | Change WO Status | `T7WOB.DFM` |
+| `WO-C` | Special Work Order Report | `T7WOC.DFM` |
+| `WO-D` | Print Pick Lists | `T7WOD.DFM`, `T7WODATES.DFM` |
+| `WO-E` | Print Labor Cards/Labels | `T7WOE.DFM` |
+| `WO-F` | Enter Labor | `T7WOF.DFM`, `T7WOFA.DFM` |
+| `WO-G` | Enter WO BOM | `T7WOG.DFM`, `t7wogimp.DFM` |
+| `WO-H` | Enter Misc/Extra Costs | `T7WOH.DFM` |
+| `WO-I` | Enter Finished Production | `T7WOI.DFM`, `T7WOIASK.DFM` |
+| `WO-J` | Rebuild Work Orders | `T7WOJ.DFM`, `T7WOJPRESERIALS.DFM` |
+| `WO-K-A` | Enter Work Order Routings | `T7WOKA.DFM`, `T7WOKACOPYROUT.DFM`, `T7WOKAOPTS.DFM` |
+| `WO-K-B` | Enter WO BOM | `T7WOKB.DFM` |
+| `WO-K-C` | Create Multi-Date Work Orders | `T7WOKC.DFM` |
+| `WO-K-D` | Create Multi-Assy Work Orders | `T7WOKD.DFM`, `T7WOKDQTY.DFM` |
+| `WO-K-E` | Swap Substitute Parts | `T7WOKE.DFM` |
+| `WO-K-F` | Edit Sequence Started/Finished Dates | `T7WOKF.DFM` |
+| `WO-K-G` | Recalculate Projected Hours | `T7WOKG.DFM` |
+| `WO-K-L` | Quick Work Orders | `T7WOKL.DFM` |
+| `WO-L-A` | Print Work Order Status | `T7WOLA.DFM` |
+| `WO-L-C` | Print Work Center Backlog | `T7WOLC.DFM` |
+| `WO-L-D` | Print Projected Shipments | `T7WOLD.DFM` |
+| `WO-L-E` | Print/Post Labor to Payroll | `T7WOLE.DFM` |
+| `WO-L-F` | Print Work Order Shortage | `T7WOLF.DFM` |
+| `WO-L-G` | Print Work Center by Key Component | `T7WOLG.DFM` |
+| `WO-L-H` | Print Projected Hours Report | `T7WOLH.DFM` |
+| `WO-L-I` | Print Allocations | `T7WOLI.DFM` |
+| `WO-L-J` | Print Finished Work Order Report | `T7WOLJ.DFM` |
+| `WO-M` | Batch Labor Entry |  |
+| `WO-N` | Post Labor Batches | `T7WONoteTLL.DFM` |
+| `WO-Q` | Convert Work Orders to Purchase Orders |  |

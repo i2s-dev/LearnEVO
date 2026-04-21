@@ -1,0 +1,447 @@
+FILELOC 
+FILEDICT
+FILEKEY 
+FILEKNUM
+FILEDES 
+BKYSMSTR
+TASCOLOR
+BKUPDATE
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_L
+SELECTA
+UPDFILE  Data File RestructureA
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESA
+ This version of DBA is a Windows-only version that will notF
+ run in the DOS environment.  If you want to use this version,F
+ you must upgrade your DBA system to a Windows Peer-to-PeerF
+ or Client/Server system.F
+ If you are not ready to upgrade at this time, you mustF
+ restore your system from backup or re-install (or upgrade to)F
+ version 99.2, which is the final version of DBA thatF
+ functions in DOS.F
+ If you need version 99.2 or information on upgrading to aF
+ Windows system, please call DBA at 800-995-1959.I
+LAB.KEY3A
+BKDCLAB A
+BKDCLAB A
+BKDCPLABA
+BKDCTLABA
+FILEDEFA
+FILEDEFA
+FIELDDEFA
+FIELDDEFA
+INDEXDEFA
+INDEXDEFA
+BKICREQ A
+BKICREQ A
+RESTFILEA
+RESTFILEA
+INDEXDEFA
+INDEXDEFA
+BKICREQ A
+BKICREQ A
+RESTFILEA
+RESTFILEA
+INDEXDEFA
+INDEXDEFA
+BKICREQ A
+BKICREQ A
+RESTFILEA
+RESTFILEA
+INDEXDEFA
+INDEXDEFA
+BKICREQ A
+BKICREQ A
+RESTFILEA
+RESTFILEA
+INDEXDEFA
+INDEXDEFA
+BKICREQ A
+BKICREQ A
+RESTFILEA
+RESTFILEA
+INDEXDEFA
+INDEXDEFA
+BKPIMSTRA
+991.VERA
+BKSYAP  A
+BKYSMSTRA
+FILELOCA
+FILELOCA
+DBA data dict file name update fileA
+FILEDICTA
+FILEDICTA
+DBA data dict main update fileA
+FILEKEYA
+FILEKEYA
+DBA data dict key update fileA
+MONTHENDA
+MEATTRIBA
+TASCOLORA
+ has a record type setting of "A
+Warning: File A
+".  If this is a Btrieve data file for use with the DBA system, this setting must be changed to "T".  If this is not set to "T", UPDATE may not run correctly for this file.  Would you like to have this correction made for you now?A
+Error: There are no B99 records in the FILELOC.UPD file.  UPDATE cannot run without these entries.  Please contact DBA Tech Support for a new set of UPD files. A
+Please wait...A
+BKAR.CITY      A
+BKAR.STATE      A
+BKSYMSTRA
+BKSYMSTRA
+bkarcustI
+BKARCUSTR
+BKARCUSTA
+DBA Data Dictionary Update ProgramA
+Please make sure that you have a current backup copy of your data and dictionary files.  This could take from a few minutes to several hours to run, depending on the size of your data files. A
+SELECTA
+Please make sure that you do not have any other DBA programs open, and do not try to use DBA while this process is running.A
+Please make sure that no other users are currently logged into DBA, and that no other users will attempt to use DBA while this process is running.A
+Are you ready to proceed? A
+BKSYMSTRA
+BKSYMSTRA
+dbaupdt2A
+SELECTA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Loading data structures: A
+CMPDFLTA
+DBAHELPA
+DBALOCA
+DBAMAIMNA
+DBAMODULA
+DBAUSRMNA
+DCBUFFERA
+DEFAULTSA
+ERRMSGA
+MEMORYA
+MENUFILEA
+RESTFILEA
+TRANSLTEA
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+No data structures were loaded from the UPD files.  Please make sure you have a current copy of the UPD files. A
+ENTER Tag/UntagA
+F10 Process,Esc ExitA
+MenuBkgA
+MenuBkgA
+Select the data structures to be updatedA
+  Name  A
+Description                             A
+Exit without restructuring any data files? L
+No data structures have been selected. A
+Ready to proceed with the restructuring?  This may take some time, depending on the number of files selected and the amount of data they contain. L
+Working on FD: A
+Update OffsetsA
+Delete Old FD A
+Save New FD   A
+Restructure   A
+Initialize    A
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+dbainitA
+SELECTA
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+dbainitA
+filedfldA
+filedfldA
+FILEDFLDA
+BKUPDATEA
+CVTUTILA
+UPDATEA
+DDCHECKA
+UPDATEA
+ FD to Restructure: A
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+There isn't enough internal RAM memory to complete this Restructure.  You need to make more memory available by removing TSRs or adding memory to your computer.A
+$$$$TEMP.RSTA
+dbainitA
+Internal Err - Mismatching FDs: A
+Internal Err - Mismatching FDs: A
+ Number of files remaining: A
+ Working on File: A
+ Number of records remaining out: A
+dbainitA
+An error has occured while creating the new file.  The Restructure routine will stop now.  RESTORE ALL APPLICABLE FILES AND THE DATA DICTIONARY (FILE*.B).  Fix the problem and try again.A
+ Number of records remaining in:  A
+Internal Err - Mismatching FDsA
+$$$$TEMP.RSTA
+FILELOCA
+FILEKEYA
+FILEDICTA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+FILE_DEF       
+FD_ARRAY       
+FLD_NAME       
+FLD_TYPE       
+FLD_SIZE       
+FLD_DEC        
+FLD_ARRAY      
+FLD_UPCASE     
+OLD_FLD_TYPE   
+OLD_FLD_SIZE   
+OLD_FLD_ARRAY  
+OLD_FLD_OFFSET 
+FLD_OFFSET     
+OLD_FLD_UPCASE 
+NUM_OF_COMPS   
+COMP_EXT       
+COMP_LOC       
+RESTRUCT_FLD   
+SIZE_HLDR      
+SIZE_HLDR1     
+INT_SIZE       
+KCNTR          
+NUM_RECS_REMAIN
+NUM_RECS_HLDR  
+FILE.CHRS      
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+TEMP_HLDR      
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DES_FNAME      
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+KEYXFR_HNDL    
+DICTXFR_HNDL   
+EXTRA_HNDL     
+EXTRA_HNDL2    
+LOCXFR_HNDL    
+XFR_LOCATION   
+REC_HLDR       
+NEW            
+FILES_OPEN     
+CREATE_FILE    
+INIT_CALL      
+HAVE.B99       
+BUFF991        
+FILE991        
+RUNMODE        
+MESSAGE        
+MSG_PTR        
+DCBETAKEY      
+LOC_BUFF_NAME  
+LOC_FILE_NAME  
+LOC_LOCATION   
+LOC_COMP_CODE  
+DICT_BUFF_NAME 
+KEY_BUFF_NAME  
+KNUM_BUFF_NAME 
+DES_HNDL       
+DES_FD_NAME    
+BKYSMSTRHNDL   
+BKYS.YN        
+LOC_REC_TYPE   
+LOC_DESCRIPTION>
+DICT_SIZE      
+RESET_CUST     
+BKARCUST_HNDL  
+STATE_HLDR     
+DICT_OFFSET    
+TEMP_OFFSET    
+TEMP_SIZE      
+DICT_HOFFSET   u
+DICT_HSIZE     x
+UPDATE_FD_CNTR 
+FD_EXISTS      
+SEL_ARRAY      
+SEL_TAG        
+SEL_DESC       
+TOT.STRUCS     
+STRUCS.TAGGED  
+SELFILE.OK     
+SELDBN         
+SELCNTR        
+HEADER0        
+HEADER1        
+HEADER2        
+HEADER3        
+HEADER4        
+HEADER5        
+DSPTAG         
+SHOWNO         
+SHOWTAG        
+DICT_TYPE      
+SC             
+FD_CNTR        
+ELE_LOC        
+CNTR           
+DICT_FIELD_NAME
+DICT_ARRAY_ELE 
+DICT_UPCASE     
+EXCLUDESUBS    
+FILE_NAME_HLDR 
+FD_NAME_HLDR   
+FLCODE         
+XCL            
+OKTOINCLUDE    
+DFLD_HNDL      
+DFLDXFR_HNDL   
+BKUPDATE_HNDL  
+BKUP.UPDATE    
+BKUP.DATE      
+A_CNTR         
+A_CNTR2        
+A_CNTR3        
+A_CNTR4        
+A_CNTR5        
+RSTR_FILES     
+N.NEW          
+N.OLD          
+I.NEW          
+I.OLD          
+B.NEW          
+B.OLD          
+R.NEW          
+R.OLD          
+WC             
+BC             
+CNTR2          
+OLDFLD         
+NEWFLD         
+DICT_HTYPE     w
+DICT_HDEC      z
+DICT_DEC       
+DICT_HARRAY    |
+IS_TYP         
+IS_SZE         
+VAL_TO_RETURN  
+RET_VAL        
+IMF_DONE       
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   

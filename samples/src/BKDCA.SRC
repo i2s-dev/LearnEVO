@@ -1,0 +1,938 @@
+***Program name:
+;BKDCA.src
+;
+;       Copyright DBA Software, Inc. 1992-1999 All Rights Reserved
+;   Portions Copyright 1985-1995 Business Tools, Inc.  All Rights Reserved
+; This source code is CONFIDENTIAL PROPRIETARY information of DBA Software, Inc.
+
+***Program desc:
+;Enter Data Collection Labor & Production
+;
+***History
+;Cvtd from TAS-Pro 3.0 edt to 5.0 src on 03/04/96 at 03:33 p
+***Chained to from:
+;
+***Modification summary
+;10/5/99  AjM Still getting locking on worout.  
+;12/06/99 FMZ Minor changes for changes to WOLABOR dates fields.
+;12/13/99 AjM taking out chk_fiscal/bad_fiscal 
+;12/15/99 AjM no code changes.  integrating with one FMZ sent us.
+;12/30/99 AjM changes reflecting AM module changes.
+;1/19/00  AjM further AM changes
+;04/16/00 FMZ Removed parallel-system stuff.
+;05/23/00 AGL RE-Write for batch processing
+;8/28/00  AGL debug info for testing
+;9/7/00   AGL record locking when clocking into a new job
+;
+#UDX  ;allow both UDFs and UDCs in this program
+#LIB DBA
+#LIB DBA50
+#lib lookups
+#lib windows
+#lib dclab
+#INC HELPSCRN
+SETUP_COLOR   ;use the color values in TASCOLOR.OVL
+;
+    ;BKDCA.EDT  10:11:13  01/11/1996
+
+
+    ;
+DO_DEFINES:
+    ;AGL 5/23/00
+    define tmp.time type T size 8
+    define tmp.emp type I size 4
+    define tmp.nojobs,no.jobs type I size 4
+    define t.date type D size 8
+    define t.emp type I size 4
+    define t.wopre type N size 6 dec 0
+    define t.wosuf type I size 3
+    define t.wokey type V size 10
+    define t.oper  type  I size 3
+    define t.posted type A size 1
+    define t.shift type I size 1
+    define t.start type t size 8
+    define t.finish type t size 8
+    define t.parts type N size 10 dec 2
+    define t.Scrapped type N size 10 dec 2
+    define t.nojobs type I size 4
+    define t.runhrs type N size 6 dec 2
+    define t.setuphrs type N size 5 dec 2
+    define t.regover type A size 1
+    define t.extra type A size 50
+    define rec.num type r size 10
+    define qline type I size 2
+    define trans type A size 74 array 10
+    define isct type I size 5
+    ;
+    define RUN.TIME type t size 8
+    define START.TIME type t size 8
+    define STOP.TIME type t size 8
+    define POST.AMT type N size 11 dec 2
+    define POST.FAIL type o size 1
+    define POST.OTHER type o size 1
+    define MONTH type o size 2
+    define TEMP.TIME type t size 8
+    define TEMP.TIME2 type t size 8
+    define TEMP.TIME3 type A size 8
+    define NUM.RECS type R size 8
+    define OK type A size 1
+    ;
+    ;FMZ 7/8/97
+    define allok type l
+    define i type i
+    ;end FMZ 7/8/97
+    ;
+    ;FMZ 9/9/97 Fixes this date are for problems scanning in the emp#
+    ;  and WO# and sequence#.
+    define emp.alpha type a size 4
+    define wopre.alpha type a size 6
+    define wosuf.alpha type a size 3
+    define oper.alpha type a size 3
+    ;end FMZ 9/9/97
+
+    define num.scroll type i size 1
+    define labor.type type a size 1
+
+    define init_file_loc type a size 8
+    define dclab,dcplab,dctlab type I size 5
+
+    define cfrom type a size 8
+    define cfname type a size 6
+    define cfdesc type a size 30
+    param cfrom, cfname, cfdesc
+
+    if cfrom=''   ;called directly by menu
+       cfrom='DCA'
+       cfname='DC-A'
+       cfdesc='Enter Labor/Production'
+    endif
+
+
+OPEN_FILES:
+    open BKDCSHFT lock N
+    open MTICMSTR lock N
+    open BKGLCOA lock N
+    open WORKCTR lock N
+    open BKPRMSTR lock N
+    open BKYSMSTR lock N
+    find F srch BKYS.WONUM  
+
+    ;AGL 5/23/00  change locking to N from R
+    open BKGLTEMP lock N
+    open WOLABOR lock N
+    open WOROUT lock N
+    open WORKORD lock N
+    open MACHINE lock N
+    open TOOL lock N
+    ;AGL 5/23/00
+;    openv 'fileloc' ext 'B  ' fnum loc_hndl lock n path dpath()
+;    gosub CREATE_LABS
+;    close @loc_hndl
+    openv "BKDCPLAB" fnum dcplab lock R
+    openv "BKDCTLAB" fnum dctlab lock R
+
+;    if create = .t.
+    gosub MOVE_LAB
+;    endif
+
+    ;AGL 8/1/00 patch for pervious data bug
+    ;    scan @dcPlab key lab.emp 
+    ;      if lab.shift = 0
+    ;       lab.shift = 1
+    ;       save @dcplab nocnf
+    ;      endif
+    ;    ends
+
+    find F srch BKDC.SH.NAME1  err NO.SHIFT
+    ;
+    ;FMZ 7/8/97 this had been giving a warning every time, even if all
+    ;  shifts had been defined correctly.  This was because usually
+    ;  there will only be a single record in BKDCSHFT, containing the
+    ;  data for all 3 shifts.  I have replaced this test with one that's
+    ;  not perfect (midnight - a time of 00:00:00 - is a problem
+    ;  because it could either be a valid time or just mean nothing
+    ;  was entered).  Will assume a single record in BKDCSHFT.
+    ;NUM.RECS=trc(fnum('BKDCSHFT'))
+    ;if NUM.RECS<3 goto NO.EN.SHFT
+    ;
+    ;If for any shift, NONE of the 4 crucial times has been set, give
+    ;  the warning.
+    allok = .t.
+    for(i;1;3;1)
+      if bkdc.sh.buffer[i]=0 .a. bkdc.sh.start[i]=0 .a. bkdc.sh.fin[i]=0 .a. bkdc.sh.finbuf[i]=0
+         allok = .f.
+         fexit
+      endif
+    next
+    ;
+    if allok = .f.
+       goto NO.EN.SHFT
+       ;Note jumps from NO.EN.SHFT to CONT.SHFT
+    endif
+    ;end FMZ 7/8/97
+    ;
+CONT.SHIFT:
+    clr BKDCSHFT rec
+    open BKYSMSTR lock N
+    find F srch BKYS.WONUM  err EXIT
+    clr BKYSMSTR rec
+    open BKSYMSTR lock N
+    find F srch BKSY.ARINV.NUM  err EXIT
+    clr BKSYMSTR rec
+    trap F1 GOSUB SHOWHELP
+    trap F10 ignr
+    trap F4 ignr
+    trap F3 ignr
+    trap ESC goto EXIT
+    trap F5 gosub dctlist
+    trap F8 gosub dcPlist
+    trap F9 gosub tflush
+    trap L_EXIT goto MY_exit
+
+MOUNT_SCRS:
+    clrscr
+    if bkys.yn[228] = "Y"
+      mount BKDCAF type S
+      qline = 8
+    else
+      mount BKDCA type S
+      qline = 12
+    endif
+
+    prg_hdr cfname*'  '+cfdesc
+    fnc_list "F1 Help","Esc Exit"
+    tmp.emp = 0
+    tmp.nojobs = 0 
+
+
+START:
+    ;FMZ 9/29/98 Had been reports of record locking conflicts on WORKORD
+    clr WORKORD buff
+    clr worout buff && AjM 10/5/99
+    ;end FMZ 9/29/98
+
+    ;FMZ 9/9/97
+    emp.alpha = ''
+    wopre.alpha = ''
+    wosuf.alpha = ''
+    oper.alpha = ''
+    ;end FMZ 9/9/97
+    ;
+
+    ;Display tmp file on screen
+    if BKYS.YN[228] = "Y"
+      gosub dctlistnw
+    endif
+
+    gosub CLR.LINE
+    if tmp.emp <> 0 .a. BKYS.YN[229] = "Y"
+      pmsg "Continue entering for Employee Number? "+str(tmp.emp,4) at 4,qline
+      OK="Y"
+      enter OK mask "YN" up acr at 49,qline noclickoff
+      if OK="N"
+        ;AGL 5/23/00
+        if bkys.yn[229] = "Y"
+          tmp.nojobs = 0 
+          gosub nojobs
+          if tmp.nojobs <> no.jobs
+            gosub auto_close
+          endif
+        endif
+        gosub move_tlab
+        tmp.emp = 0
+        ;Clr name
+        clrlne at 9,4 nchr 40
+        tmp.nojobs = 0 
+        goto START
+      else
+        lab.emp = tmp.emp
+      endif
+
+    else
+      gosub move_tlab
+      pmsg "Employee Number?  " at 4,qline
+      enter emp.alpha post adjemp() vld chk_emp() upar START acr at 23,qline noclickoff
+      {
+        func adjemp
+          lab.emp = val(just(emp.alpha,'R'))
+          ;SETS the time for this EMP for all transaction.
+          time TMP.TIME get
+;AGL 3/21/01 comment out the setting of tmp.time will take care of it later.
+;          if TMP.TIME=>BKDC.SH.BUFFER[1] do
+;            if tmp.time<=BKDC.SH.START[1] then tmp.time=BKDC.SH.START[1]
+;          endif
+;          if tmp.time=>BKDC.SH.BUFFER[2] do
+;            if tmp.time<=BKDC.SH.START[2] then tmp.time=BKDC.SH.START[2]
+;          endif
+;          if tmp.time=>BKDC.SH.BUFFER[3] do
+;            if tmp.time<=BKDC.SH.START[3] then tmp.time=BKDC.SH.START[3]
+;          endif
+          ret .t.
+
+        func chk_emp
+          lab.emp = val(just(emp.alpha,'R'))
+          findv M fnum dctlab key lab.emp val lab.emp nlock
+          if flerr(dctlab) = 0
+            msg "Someone is already entering transactions for this Employee number." windows 'w'
+            novldmsg
+            lab.emp = 0
+            tmp.emp = 0
+            ret .f.
+          endif
+          ret .t.
+      }
+      bkpr.emp.num = lab.emp
+      find M srch BKPR.EMP.NUM
+      if flerr(fnum('bkprmstr')) <> 0
+         msg 'This is not a valid employee number. ' windows 'warn'
+         goto START
+      endif
+      if bkpr.emp.term = 'Y'
+         msg 'This is a terminated employee. ' windows 'warn'
+         goto START
+      endif
+  
+
+      if BKYS.YN[228] = "Y"
+        MESSAGE[1]=BKPR.EMP.LNME * " " + BKPR.EMP.FNMI
+        pmsg cch(),mid(MESSAGE[1],1,size(message[1],'a')),CCF() at 9,4
+      endif
+
+      gosub CLR.LINE
+      MESSAGE[1]=BKPR.EMP.LNME * " " + BKPR.EMP.FNMI
+      pmsg cch(),mid(MESSAGE[1],1,size(message[1],'a')),CCF() at 4,(qline+1)
+      num.scroll=1
+      gosub CORRECT
+      if OK<>"Y"
+        ;Clr name
+        clrlne at 9,4 nchr 40
+        goto START
+      endif
+      tmp.emp = lab.emp
+      gosub MOVE_OPLAB
+      lab.emp = tmp.emp
+      ;Display tmp file on screen
+      if BKYS.YN[228] = "Y"
+        gosub dctlistnw
+      endif
+    endif
+    LAB.DATE=date()
+
+
+ENT.WO:
+    ;FMZ 9/9/97
+    wopre.alpha = ''
+    wosuf.alpha = ''
+    ;end FMZ 9/9/97
+    gosub CLR.LINE
+    pmsg "Work Order Number?         -",ccr(),"   " at 4,qline
+    ;
+    ;FMZ 9/9/97
+    ;enter LAB.WOPRE acr upar ENT.WO at 25,qline noclickoff
+    ;enter LAB.WOSUF acr at 32,qline noclickoff
+    enter WOPRE.alpha acr post adjwopre() upar ENT.WO at 25,qline noclickoff
+    {
+      func adjwopre
+        lab.wopre = val(just(wopre.alpha,'R'))
+        ret .t.
+    }
+    enter WOSUF.alpha acr post adjwosuf() at 32,qline noclickoff
+    {
+      func adjwosuf
+        lab.wosuf = val(just(wosuf.alpha,'R'))
+        ret .t.
+    }
+    ;end FMZ 9/9/97
+    ;
+    MTWO.WIP.WOPRE=LAB.WOPRE
+    MTWO.WIP.WOSUF=LAB.WOSUF
+    find M srch MTWO.WIP.KEY  err NO.WO
+    ;
+    ;FMZ 5/27/98 Ben fixed to allow status I also.
+    ;if MTWO.WIP.STATUS<>"R" .O. MTWO.WIP.STATUS <> "I" GOTO NO.WO
+    if mtwo.wip.status $ 'RI'
+    else
+       goto NO.WO
+    endif
+    ;end FMZ 5/27/98
+
+    MESSAGE[1]=MTWO.WIP.CODE * " " + MTWO.WIP.DESC
+    pmsg cch(),mid(MESSAGE[1],1,size(message[1],'a')),CCF() at 4,(qline+1)
+    num.scroll=1
+    gosub CORRECT
+    if OK<>"Y"
+       ;FMZ 9/29/98
+       clr WORKORD buff
+       clr worout buff && AjM 10/5/99
+       ;end FMZ 9/29/98
+       goto ENT.WO
+    endif
+
+ENT.OPER:
+    ;FMZ 9/9/97
+    oper.alpha = ''
+    ;end FMZ 9/9/97
+    gosub CLR.LINE
+    pmsg "Sequence Number?" at 4,qline
+    ;
+    ;FMZ 9/9/97
+    ;enter LAB.OPER upar ENT.OPER acr at 24,qline noclickoff
+    enter OPER.alpha upar ENT.OPER acr post adjoper() at 24,qline noclickoff
+    {
+      func adjoper
+        lab.oper = val(just(oper.alpha,'R'))
+        ret .t.
+    }
+    ;end FMZ 9/9/97
+    ;
+    MTWORO.WOPRE=LAB.WOPRE
+    MTWORO.WOSUF=LAB.WOSUF
+    MTWORO.OPER=LAB.OPER
+    find M srch MTWORO.KEY2  err NO.OPER
+    MESSAGE[1]=MTWORO.OPERDESC
+    pmsg cch(),mid(MESSAGE[1],1,size(message[1],'a')),CCF() at 4,(qline+1)
+    num.scroll=1
+    gosub CORRECT
+    if OK<>"Y" goto ENT.OPER
+
+
+    if cfrom='DCB'
+      gosub ENT.PARTS
+    else
+
+      ; if there is a trans "O"pen  you can only close it.
+      ; if there is a trans "C"osed you can open it again.
+      lab.emp = tmp.emp
+      lab.date = date()
+      gosub save_temp
+
+      ;AGL 9/7/00 record locking when clocking into a new job
+      ;AGL 10/3/00 moved outside of the if bkys.yn[229] = "Y"
+      clr @dctlab rec
+      ;
+
+      if bkys.yn[229] = "Y"
+
+        findv m fnum dctlab key lab.key val LAB.EMP,LAB.WOPRE,LAB.WOSUF,LAB.OPER,"O"
+        if flerr(dctlab) <> 0
+           gosub load_temp
+           goto ent.in
+        else
+           gosub ent.lab
+        endif
+      else
+        findv m fnum dctlab key lab.emp val lab.EMP
+        if flerr(dctlab) <> 0
+           AUTO_SINGLE:
+           gosub load_temp
+           clrlne at 3,(qline-2) nchr 74
+           goto ent.in
+        else
+           if  t.wopre <> lab.wopre .o. t.wosuf <> lab.wosuf .o. t.oper <> lab.oper 
+             gosub CLR.LINE
+             MESSAGE[1]="First you must Clock Out of Work Order "+str(lab.wopre)*"-"*str(lab.wosuf)
+             pmsg mid(MESSAGE[1],1,size(message[1],'a')) at 4,(qline-2)
+             gosub ent.lab
+             goto auto_single
+           else
+             gosub ent.lab
+           endif
+        endif
+      endif
+    endif
+    goto START
+
+ENT.IN:
+    gosub CLR.LINE
+    MESSAGE[1]="Clock in?"
+    pmsg mid(MESSAGE[1],1,size(message[1],'a')) at 4,qline
+    OK="Y"
+    enter OK mask "YN" upar ENT.IN up acr at 16,qline noclickoff
+    if OK="N" goto START
+
+    LAB.START = tmp.time
+    lab.FINISH = 0
+    ;
+;AGL 6/21/00 Lynn says to use PRMSTR record
+    LAB.SHIFT=iif(str(bkpr.emp.shift,1) $ "123",bkpr.emp.shift,1)
+;AGL 3/21/01  make sure buffers are contained to shifts.
+    if LAB.START>=BKDC.SH.BUFFER[lab.shift] do
+        if LAB.START<=BKDC.SH.START[lab.shift]
+          LAB.START=BKDC.SH.START[lab.shift]
+          ;AGL 7/5/01 time moved because of buffers tmp.time must also move
+          ;           or the auto close function would close this job as well.
+          tmp.time = lab.start
+          ;
+        endif
+    endif
+
+;    if LAB.START>=BKDC.SH.BUFFER[2] do
+;        if LAB.START<=BKDC.SH.START[2] then LAB.START=BKDC.SH.START[2]
+;    endif
+;    if LAB.START>=BKDC.SH.BUFFER[3] do
+;        if LAB.START<=BKDC.SH.START[3] then LAB.START=BKDC.SH.START[3]
+;    endif
+
+    LAB.POSTED="O"
+    lab.runhrs = 0
+    lab.parts = 0
+    lab.scrapped = 0
+    save @DCTLAB nocnf
+    clr @DCTLAB rec
+    goto START
+
+
+ENT.LAB:
+    gosub CLR.LINE
+    MESSAGE[1]="Reporting Labor?"
+    pmsg mid(MESSAGE[1],1,size(message[1],'a')) at 4,qline
+    OK="Y"
+    enter OK mask "YN" upar ENT.LAB up acr at 23,qline noclickoff
+    if OK="N" goto ENT.SETUP
+    if cfrom='DCC'
+      goto SAV.LAB
+    endif
+ENT.PARTS:
+    gosub CLR.LINE
+    MESSAGE[1]="Parts Made?"
+    pmsg mid(MESSAGE[1],1,size(message[1],'a')) at 4,qline
+    lab.parts = 0
+    enter LAB.PARTS upar ENT.PARTS acr at 19,qline noclickoff
+ENT.SCRAP:
+    MESSAGE[1]="Parts Scrapped?"
+    pmsg mid(MESSAGE[1],1,size(message[1],'a')) at 4,(qline+1)
+    lab.scrapped = 0
+    enter LAB.SCRAPPED upar ENT.SCRAP acr at 19,(qline+1) noclickoff
+    num.scroll=2
+    gosub CORRECT
+    if OK<>"Y" goto ENT.PARTS
+SAV.LAB:
+    if cfrom<>'DCB'
+      LAB.FINISH = tmp.time
+      labor.type = 'P'
+      calc_runhrs
+    else
+      if mtworo.std.time = "Y"
+       ;AGL 8/8/00 if std time then 0 out start and finish and just calc runhrs.
+       lab.RUNHRS=(MTWORO.TIMEPART * lab.PARTS) / 3600
+       if MTWORO.LONGTIME<>0 then lab.RUNHRS=MTWORO.LONGTIME * lab.PARTS
+;       lab.start = lab.finish - ((lab.runhrs*60)*60)
+       lab.start = 0
+       lab.finish = 0
+       lab.nojobs = iif(mtworo.num.pers = 0,1,mtworo.num.pers)
+      endif
+    endif
+    LAB.POSTED="C"
+    save @DCTLAB nocnf 
+    clr @DCTLAB rec
+    ret
+
+ENT.SETUP:
+    gosub CLR.LINE
+    MESSAGE[1]="Reporting Setup?"
+    pmsg mid(MESSAGE[1],1,size(message[1],'a')) at 4,qline
+    OK="Y"
+    enter OK mask "YN" upar ENT.LAB up acr at 23,qline noclickoff
+    if OK="N" goto ENT.LAB
+    ;AGL 5/23/00
+    LAB.FINISH = tmp.time
+    labor.type = 'S'
+    calc_runhrs
+    LAB.POSTED="C"
+    save @DCTLAB nocnf 
+    clr @DCTLAB rec
+    ret
+
+EXIT:
+    ;AGL 5/23/00
+    if bkys.yn[229] = "Y"
+      tmp.nojobs = 0 
+      gosub nojobs
+      if tmp.nojobs <> no.jobs
+        gosub auto_close
+      endif
+    endif
+    gosub move_tlab
+    quit
+
+MY_EXIT:
+  ;AGL record locked (usally DCPLAB) may be page lock?
+  msg "P File error # "+str(flerr(dcplab)) windows 'i'
+  msg "T File error # "+str(flerr(dctlab)) windows 'i'
+  msg "Please go back in and use F9 to flush the data to this employee "+lab.emp windows 'i'
+  quit
+
+
+NO.WO:
+    ;FMZ 9/29/98 clear WORKORD buffer to prevent locking conflicts
+    clr WORKORD buff
+    clr worout buff && AjM 10/5/99
+    ;end FMZ 9/29/98
+    msg "This WO doesn't exist or is not released. " windows 'info'
+    goto ENT.WO
+
+NO.OPER:
+    msg "This sequence doesn't exist for this WO. " windows 'info'
+    goto ENT.OPER
+
+CLR.LINE:
+    clrlne at 3,(qline-1) nchr 74
+    clrlne at 3,qline nchr 74
+    clrlne at 3,(qline+1) nchr 74
+    ret
+
+CORRECT:
+    if num.scroll = 1
+       scroll at 4,qline len 2 wdt 40 num 1 UP
+    else
+       scroll at 4,(qline-1) len 3 wdt 40 num 1 UP
+    endif
+    pmsg "Is this correct? " at 4,(qline+1)
+    OK="Y"
+    enter OK mask "YN" upar CORRECT up acr at 22,(qline+1) noclickoff
+    ret
+NO.SHIFT:
+    MESSAGE[1]="No Shifts have been defined yet."
+    NUM.MSG=1
+    msg_list msg_ptr,num.msg    ;gosub PRT.MSG
+    goto EXIT
+NO.EN.SHFT:
+    MESSAGE[1]="It is recommended that you define"
+    MESSAGE[2]="Start, Finish and buffer times for "
+    MESSAGE[3]="for all three shifts.              "
+    MESSAGE[4]=""
+    MESSAGE[5]="Do you still want to continue? [Y/N]"
+    NUM.MSG=5
+    ENT.MASK="YN"
+    OK="Y"
+    OK= ENT_LIST(MSG_PTR,NUM.MSG,OK,ENT.MASK)
+    if OK<>"Y" then goto EXIT
+    goto CONT.SHIFT
+
+NOJOBS:
+    tmp.nojobs = 0
+    scan @dctlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+      if lab.posted = "O"
+        tmp.nojobs = tmp.nojobs + 1
+      endif
+    ends
+    clr @dctlab
+RET
+
+Save_temp:
+  t.date     = lab.date
+  t.emp      = lab.emp
+  t.wopre    = lab.wopre
+  t.wosuf    = lab.wosuf
+  t.wokey    = lab.wokey
+  t.oper     = lab.oper
+  t.posted   = lab.posted
+  t.shift    = lab.shift
+  t.start    = lab.start
+  t.finish   = lab.finish
+  t.parts    = lab.parts
+  t.scrapped = lab.scrapped
+  t.nojobs   = lab.nojobs
+  t.runhrs   = lab.runhrs
+  t.setuphrs = lab.setuphrs
+  t.regover  = lab.regover
+  t.extra    = lab.extra
+RET
+
+Load_temp:
+  lab.date     = t.date
+  lab.emp      = t.emp
+  lab.wokey    = t.wokey  
+  lab.wopre    = t.wopre
+  lab.wosuf    = t.wosuf
+  lab.oper     = t.oper
+  lab.posted   = t.posted
+  lab.start    = t.start
+  lab.finish   = t.finish 
+  lab.shift    = t.shift
+  lab.parts    = t.parts
+  lab.scrapped = t.scrapped
+  lab.nojobs   = t.nojobs
+  lab.runhrs   = t.runhrs   
+  lab.setuphrs = t.setuphrs
+  lab.regover  = t.regover 
+  lab.extra    = t.extra
+RET
+
+
+MOVE_LAB:
+  define create type L
+  create = .f.
+  openv "BKDCLAB" fnum dclab lock R
+  scan @dclab key lab.posted start " "  while lab.posted <> "Y"
+    save @dcplab nocnf
+    create = .t.
+    del @DCLAB nocnf
+  ends
+  if create =.t.
+    scan @dcplab key lab.emp
+      if lab.posted <> "P"
+        lab.posted = "O"
+        save @dcplab nocnf
+      endif
+    ends
+  endif
+  close @dclab
+RET
+
+MOVE_OPLAB:
+  no.jobs = 0 
+  scan @dcPlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+;    if lab.shift = 0
+;     lab.shift = 1
+;     save @dcplab nocnf
+;    endif
+    if lab.posted = "O"
+     clr @DCTLAB rec
+     save @dctlab nocnf
+     no.jobs = no.jobs + 1
+     del @DCPLAB nocnf
+    endif
+  ends
+  clr @dcplab
+RET
+
+
+MOVE_TLAB:
+  gosub nojobs 
+  scan @dctlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+    if lab.posted = "O"
+      lab.nojobs = tmp.nojobs
+    else
+      lab.posted = "P"
+      if bkys.yn[20] = "Y" .a. lab.parts <> 0
+        lab.extra = "B"
+      endif
+    endif
+    ;AGL 8/8/00 make sure there is a shift.
+    if lab.shift = 0
+       lab.shift = 1
+    endif
+    save @dcplab nocnf
+    del @DCtLAB nocnf
+  ends
+  clr @dctlab
+RET
+
+AUTO_CLOSE:
+  scan @dctlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+    pmsg "Scanning   JOB :"+lab.emp+" "+lab.wopre+"-"+lab.wosuf+" "+lab.oper+" "+lab.posted at 30,2 
+    if lab.posted = "O" .a. lab.start <> tmp.time
+     pmsg "Processing JOB :"+lab.emp+" "+lab.wopre+"-"+lab.wosuf+" "+lab.oper+" "+lab.posted at 30,2 
+     lab.posted = "C"
+     lab.finish = tmp.time
+     lab.nojobs = no.jobs
+     labor.type = 'A'
+     gosub calc_runhrs
+     rcn @dctlab rcn rec.num get
+     save @dctlab nocnf noclr
+     clr @dctlab rec
+     lab.start = tmp.time
+     lab.posted = "N"
+     lab.finish = 0
+     lab.runhrs = 0
+     lab.parts  = 0
+     lab.scrapped = 0
+     lab.nojobs = tmp.nojobs
+     save @dctlab nocnf
+     rcn @dctlab rcn rec.num set
+    endif
+  ends
+  pmsg "                                                " at 30,2 
+
+  ;convert the "N"ew opens to "O"pen
+  scan @dctlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+    if lab.posted = "N"
+     lab.posted = "O"
+     save @dctlab nocnf
+    endif
+  ends
+
+RET
+
+DCTLISTNW:
+    if cfrom='DCA'
+      pmsg  "WO        ",' ',"Seq #",' ',"START     ",' ',"FINISH    ",' ',"Posted",' ',"Parts   ",' ',"Scrapped",' ',"Runhrs  " at 5,13
+      pmsg  "ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ" at 5,14
+    else_if cfrom='DCB'
+      pmsg  "WO        ",' ',"Seq #",' ',"Posted",' ',"Parts   ",' ',"Scrapped",' ' at 5,13
+      pmsg  "ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄ",' ',"ÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ",' ' at 5,14
+    else_if cfrom='DCC'
+      pmsg  "WO        ",' ',"Seq #",' ',"START     ",' ',"FINISH    ",' ',"Posted",' ',"Runhrs  " at 5,13
+      pmsg  "ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ" at 5,14
+    endif
+    findv L fnum dctlab key lab.emp val tmp.emp for lab.emp = tmp.emp nlock
+    t.wokey = 0
+    for(isct;1;10;1)
+      if lab.emp = tmp.emp .a. lab.wopre <> 0  .a. flerr(dctlab) = 0
+        if cfrom='DCA'
+          trans[isct]=str(lab.wopre)*"-"*str(lab.wosuf)+' '+str(lab.oper,4)+'   '+str(lab.start,8)+'  '+str(lab.finish,8)+'    '+lab.posted+'  '+str(lab.parts)+' '+str(lab.scrapped)+'   '+str(lab.runhrs)
+        else_if cfrom='DCB'
+          trans[isct]=str(lab.wopre)*"-"*str(lab.wosuf)+' '+str(lab.oper,4)+'   '+lab.posted+'  '+str(lab.parts)+' '+str(lab.scrapped)
+        else_if cfrom='DCC'
+          trans[isct]=str(lab.wopre)*"-"*str(lab.wosuf)+' '+str(lab.oper,4)+'   '+str(lab.start,8)+'  '+str(lab.finish,8)+'    '+lab.posted+'  '+str(lab.runhrs)
+        endif
+      else
+        trans[isct]=""
+      endif
+      findv P fnum dctlab key lab.emp for lab.emp = tmp.emp nlock
+    next
+RET
+
+DCPLIST:
+    saves
+    xtrap_si_udc
+    window at 1,1 len 23 wdt max_cols() wcolor wc  box 'S' bcolor bc shd 'R' scolor sc ttlw 'L' ttl ' pending file '
+    fnc_list 'F1 Help','Esc Exit'
+    s_h_msg
+    define tax_ttl1 type a size 159 local
+    define tax_uscore type a size 159 local
+    ;
+    clr @dcplab
+    setline tax_ttl1 with   "WO           ",' ',"Emp  ",' ',"START     ",' ',"FINISH    ",' ',"Posted",' ',"Parts   ",' ',"Runhrs  ","Shift   ","# of Jobs "
+    setline tax_uscore with "ÄÄÄÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ","ÄÄÄÄÄÄÄÄ","ÄÄÄÄÄÄÄÄÄÄ"
+    listf lab.wopre,'-',lab.wosuf,' ',lab.emp,' ',lab.start,' ',lab.finish,'      ',lab.posted,' ',lab.parts,' ',lab.runhrs,lab.shift,lab.nojobs file @dcplab key @1 ccolor CC ecolor DATC styp 'A' UP fline tax_ttl1,tax_uscore cbf "  " blnes 1 USE_TRAPS 
+    xtrap_rstr_udc
+    redsp
+RET
+
+DCTLIST:
+    saves
+    xtrap_si_udc
+    window at 1,1 len 23 wdt max_cols() wcolor wc  box 'S' bcolor bc shd 'R' scolor sc ttlw 'L' ttl ' Temp file '
+    fnc_list 'F1 Help','Esc Exit'
+    s_h_msg
+    define tax_ttl1 type a size 159 local
+    define tax_uscore type a size 159 local
+    ;
+    clr @dctlab
+    setline tax_ttl1 with   "WO           ",' ',"Emp  ",' ',"START     ",' ',"FINISH    ",' ',"Posted",' ',"Parts   ",' ',"Runhrs  "
+    setline tax_uscore with "ÄÄÄÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ",' ',"ÄÄÄÄÄÄÄÄ"
+    listf lab.wopre,'-',lab.wosuf,' ',lab.emp,' ',lab.start,' ',lab.finish,'      ',lab.posted,' ',lab.parts,' ',lab.runhrs file @dctlab key @1 ccolor CC ecolor DATC styp 'A' UP fline tax_ttl1,tax_uscore cbf "  " blnes 1 USE_TRAPS 
+    xtrap_rstr_udc
+    redsp
+RET
+
+;UTIL
+TFLUSH:
+  define ttemp.emp type I size 4
+  ttemp.emp = tmp.emp
+  saves
+  pmsg "Employee Number To Flush?  " at 4,qline
+  enter emp.alpha pre fempd() post femp() acr at 31,qline noclickoff
+      {
+        func fempd
+         fnc_list "F1 Help,F5 Display Temp File","Esc Exit"
+         ret .t.
+
+        func femp
+          fnc_list "F1 Help","Esc Exit"
+          tmp.emp = val(just(emp.alpha,'R'))
+          ret .t.
+      }
+  if tmp.emp <> 0
+    gosub nojobs
+  endif
+  scan @dctlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+    if lab.posted = "O"
+      lab.nojobs = tmp.nojobs
+    else
+      lab.posted = "P"
+      if bkys.yn[20] = "Y" .a. lab.parts <> 0
+        lab.extra = "B"
+      endif
+    endif
+    save @dcplab nocnf
+    del @DCtLAB nocnf
+  ends
+  gosub CLR.LINE
+  tmp.emp = ttemp.emp
+  redsp
+RET
+
+;End of Prg
+\S5BKDCA
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1  2 80
+  1  3  1 23 80
+  1 24  1 25 80
+\FIELDS
+\FILES
+\INCLUDE
+\KEY
+\\
+\S5BKDCAF
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³                                                                        ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³                                                                            ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ³  ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1 25 80
+\FIELDS
+TMP.EMP          0  4  4  0  0 0    4    0    0INRGDEFINED NN     4
+TRANS            0  4 15  0  0 0   74    1   10ANRGDEFINED NN    74
+TRANS            0  4 16  0  0 0   74    2   10ANRGDEFINED NN    74
+TRANS            0  4 17  0  0 0   74    3   10ANRGDEFINED NN    74
+TRANS            0  4 18  0  0 0   74    4   10ANRGDEFINED NN    74
+TRANS            0  4 19  0  0 0   74    5   10ANRGDEFINED NN    74
+TRANS            0  4 20  0  0 0   74    6   10ANRGDEFINED NN    74
+TRANS            0  4 21  0  0 0   74    7   10ANRGDEFINED NN    74
+TRANS            0  4 22  0  0 0   74    8   10ANRGDEFINED NN    74
+TRANS            0  4 23  0  0 0   74    9   10ANRGDEFINED NN    74
+TRANS            0  4 24  0  0 0   74   10   10ANRGDEFINED NN    74
+\FILES
+\INCLUDE
+\KEY
+\\
+ 

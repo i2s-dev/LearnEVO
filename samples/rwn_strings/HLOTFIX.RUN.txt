@@ -1,0 +1,314 @@
+BKARTXN 
+INVTXN  
+LOT     
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+BKSYMSTR
+INVTXN LOT RebuildA
+Esc ExitA
+INVTXNA
+INVTXNA
+BKSOHLOTA
+BKSOHLOTA
+Do you want to Auto-adjust the On-Hand qty for each LOT that get rebuilt, or print a summarized report per LOT to manually adjust. Auto-Adjust ?L
+BKSOHLOTL
+HLOTFIXA
+Will now print a list of Lots and the Qtys to adjust.A
+This utility is now complete.A
+SubtractA
+Add     A
+           
+    Files     
+           
+                   
+   processed  
+           
+       Time        
+              
+           
+   Start     Now   
+      of      
+           
+                   
+           
+                   
+                             
+  Working on file  
+                             
+                   
+                             
+                   
+                             
+  Records in file  
+                             
+                   
+                             
+                   
+                             
+  Records scanned  
+                             
+                   
+                             
+                                                             Page:
+                            LOT Adjustments Report           Date:
+     Item               Lot                 Adjustment Type          Qty
+     ---------------    ---------------     ---------------     ------------
+    Please use LC-A to make the necessary adjustments to Lot Numbers listed.
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+                               A
+normalbkgA
+                           A
+normaltextA
+yellowI
+normaltextA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+PERCENT        
+PERC_OF_TOT    
+TOTRECS        
+SCANRECS       
+REPT           
+M.INIT         
+LOTC           
+LOT.COD        
+LOT.REC        
+LOT.QTY        
+LOT.SAVE       
+OINVTXN        
+TODAY          
+I_COL          
+START_COL      
+STOP_COL       
+CONTINUE       
+CURR_TIME      
+START_TIME     
+FILENAME       
+I              
+FILE_COUNT     
+FILE_TOT       
+FILENAME2      
+WIP.INVOICE    
+ZRET           
+LOT_HNDL       
+INVTXN_HNDL    
+BKSOHLOT_HNDL  
+BKAR.TXN.DATE  e
+BKAR.TXN.CODE  
+MTIT.DATE      
+MTIT.CODE      
+MTIT.INVOICE   b
+BKAR.TXN.SONUM 
+MTIT.LOT       
+BKAR.TXN.LOT   =
+MTIT.QTY       
+BKAR.TXN.QTY   5
+MTIT.EXTRA     
+MTLOT.ONHAND   "
+LOT.CODE       
+LOT.FUNC       
+LOT.AQTY       
+PAGE           
+PRT_WHR        
+MTLOT.CODE     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+COL            
+ROW            
+CURRENT        
+HOWMANY        
+MENU_TITLE     
+DONE           
+Z              
+Z1             
+X              
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+MSG_PTR        
+MESSAGE        
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        

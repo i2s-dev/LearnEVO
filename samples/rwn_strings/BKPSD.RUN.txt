@@ -1,0 +1,267 @@
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYCFGA
+BKSLEVELA
+ACTDEACTA
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ACTDEACTA
+ Activate/Deactivate Modules - Loading Menu...A
+ACTDEACTA
+F1 HelpA
+ESC CancelA
+BKMENUW.ARYI
+Unable to open or read the menu. A
+Too many entries in the menu.  Unable to activate/deactivate modules at this time. A
+ACTDEACTA
+ Activate/Deactivate Modules - Loading Modules...A
+ACTDEACTA
+ Activate/Deactivate Modules - Loading Module A
+COMPCFGA
+,SUB,A
+ACTDEACTA
+There are more than 399 modules.  This is the maximum number of modules that can be loaded. A
+COMPCFGA
+Too many entries in the menu.  Unable to activate/deactivate modules at this time. A
+ACTDEACTA
+ Activate/Deactivate ModulesA
+ACTDEACTA
+MenuBkgA
+MenuBkgA
+MENU MODULES AND SUBMODULESA
+Enter Toggle ON/OFFA
+F10 Apply,Esc CancelA
+Orig  A
+ChangeA
+StatusA
+To    A
+Module Name                                       A
+      A
+ ---  I
+ OFF  A
+ ON   A
+      A
+ --- A
+ OFF  A
+ ON   A
+The parent module is turned OFF, thus the setting for this submodule may not be modified at this time. A
+The setting for this module may not be modified. A
+The setting for this submodule may not be modified. A
+There are no changes to apply. A
+Abandon these changes? L
+COMPCFGA
+Applying changes...I
+COMPCFGA
+,SUB,A
+BKMENUW.BAKA
+BKMENUW.BAKA
+BKMENUW.ARYA
+BKMENUW.BAKA
+BKMENUW.ARYI
+The menu has been updated.  You must restart DBA to have these changes take effect. A
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ZRET           
+BKSYCFGHNDL    
+BKSLEVELHNDL   
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+MSG_PTR        
+MESSAGE        
+CHMFROM        
+CHMPRGNAME     
+MAXMODULES     
+MODULESTATUS   
+MODULETYPE     
+MODULECODE     
+MODULENAME     
+MODULELINE     
+MODULEORIGSTAT 
+MODULECANCHG   
+SUBPARENTSTAT  
+SUBCODE        
+SUBLETTER2     
+SUBNAME2       
+NUMLINES       
+NUMMODULES     
+NUMCHANGES     
+BKMENUWHNDL    
+BKMENUWHNDL2   
+MENUBUFFER     
+TEMPSTATUS     
+TEMPCODE       
+TEMPNAME       
+CUMCHRS        
+XCHR           
+PLACE          
+STARTPLACE     
+TITLE1         
+TITLE2         
+TITLE3         
+HEADER0        
+HEADER1        
+HEADER2        
+HEADER3        
+HEADER4        
+I              
+J              
+K              
+XCURRSTAT      
+XNEWSTAT       
+WANTTOAPPLY    
+CURRENTMODULE  
+CURRPARENTCODE 
+CURRPARENTSTAT 
+CURRPARENTCCHG 
+XOKTOCHG       
+ITSASUB        
+SUBFIELDS      
+SUBON          
+XDISPCODE      
+XDISPNAME      
+JUSTSHOWIT     
+CHANGESMADE    
+TEMPDESC       
+DESCLENGTH     
+COMMALOC       
+MAIN           
+L              
+XMOD           
+SC             
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+FC             
+PSTR           

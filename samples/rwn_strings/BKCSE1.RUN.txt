@@ -1,0 +1,537 @@
+TAS32c
+BKPRSALE
+BKARINV 
+BKYSMSTR
+BKARINVL
+BKPRMSTR
+BKARCUST
+BKICMSTR
+TASCOLOR
+BKPRTCFG
+CLASS   
+BKSBVEND
+BKSBMFG 
+MTICMSTR
+BKSYPRTR
+BKSYMSTR
+MTICMSTRA
+BKICMSTRA
+BKPRMSTRA
+BKPRSALEA
+BKARCUSTA
+BKARHIVLA
+BKARHINVA
+CS-E  Print Commission DetailA
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKPRSALEI
+BKYSMSTRI
+BKYSMSTRA
+BKYSMSTRB.
+BKARHIVLA
+BKARHINVI
+BKPRSALEI
+BKPRSALEA
+>>>>>  Report was terminated before completion  <<<<<A
+There are no records in the primary fileI
+A matching record was not found during a related findI
+Press any key to continueA
+BKARCUSTA
+BKARCUSTA
+CustomersA
+BKARCUSTFP
+BKARCUSTI
+BKARCUSTI
+BKARCUSTA
+BKARCUSTF
+There are no such records in the A
+ file.A
+BKARCUSTA
+BKARCUSTFP
+SalespeopleA
+BKPRMSTRA
+BKPRSALEFP
+BKPRSALEI
+BKPRSALEI
+BKPRSALEA
+BKPRSALEF
+There are no such records in the A
+ file.A
+BKPRSALEFP
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+Please wait while the Invoice files are checked.A
+BKARHINVI
+BKARHIVLA
+BKARHINVA
+BKARHIVLA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKICMSTRA
+BKICMSTR
+                       
+                       
+          Salesperson           
+                       
+           From:                
+                       
+           Thru:                
+                       
+                                
+                       
+          Invoice Date          
+                       
+         From:                  
+                       
+         Thru:                  
+                       
+                                
+                       
+          Part Number           
+                       
+     From:                      
+                       
+     Thru:                      
+                       
+                                
+                       
+ Print monthly totals? [Y,N]:   
+                       
+                                                         COMMISSION DETAIL                                                Page:
+Cust Name            Cust PO         Part Number       Date    Inv#   Quantity     Price      Disc.   Comm%    Comm Amt    Tot Comm
+===================================================================================================================================
+                                                                                                   %
+               Sales     Commission          Sales     Commission              Sales     Commission             Sales     Commission
+   January :                        April:                        July     :                         October :
+   February:                        May  :                        August   :                         November:
+   March   :                        June :                        September:                         December:
+GRAND TOTAL:
+Salesperson - From :          Invoice Date - From :              Part Number - From :
+              Thru :                         Thru :                            Thru :
+                                                                     ---------------------------------------------------------------
+                                                 Salesperson Total:
+                                                       GRAND TOTAL:
+Press any key to continueA
+BKPRTCFGA
+ PRINTER TO USE A
+F1 - Display Printers   F10 - Start PrintingA
+Copies: A
+resetA
+ For product support call DBA Tech Support at 1-800-434-0809                  
+                                Function Keys                                 
+                                                                              
+           F1 = Help                         F6 = Get Last Record             
+           F2 = Lookup Window                F7 = Scroll Backward             
+           F3 = Clear Screen                 F8 = Scroll Forward              
+           F4 = Delete Record                F9 = Find Closest Match          
+           F5 = Get First Record            F10 = Save Record                 
+                                                                              
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without SAving      CTRL+D = Delete Character            
+                                                                              
+ Printer Name:
+ Printer Driver:              LPT#:
+ Page Width:           Total Lines:       Print lines:
+ Command Line
+ Print condensed(Y/N):   Exec CmdLine(Y/N):
+Part Number     Description                    UM  T Cat  ClassA
+A - Part NumberF@
+B - DescriptionF@
+C - Extended DescF@
+D - Product ClassF@
+E - CategoryF@
+F - TypeF@
+G - AlternatesF@
+H - User Defined F@
+I - SpecificationsA
+ Search By A
+BKICMSTRA
+BKICMSTRI
+BKICMSTRA
+BKICMSTRI
+BKICMSTRA
+BKICMSTRI
+CLASSI
+CLASSA
+ Select Starting Class 
+CLASSA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRI
+ N - Non Inventory     F
+ R - Purchased Part    F
+ M - Make From         F
+ F - Finished Good     F
+ A - Subassembly       F
+ B - Phantom Assembly  F
+ L - Labor             F
+ T - Outside Process   F
+ K - Selling Kit       F
+ O - Feature           I
+ Select Starting Type 
+BKICMSTRA
+BKICMSTRA
+Start Alternates search with: A
+A complete part number must be entered.A
+No matching DBA, Vendor, or Manufacturer part numberA
+found. Do you want to display the DBA part numberA
+file beginning with the number entered? [Y/N]: A
+BKICMSTRA
+BKICMSTRA
+Part Number     User Defined              T ClassA
+MTICMSTRA
+MTICMSTRI
+Part Number     Specifications                 T ClassA
+MTICMSTRA
+MTICMSTRI
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+DBA Mfg SystemA
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+bkprtcfgA
+Choose PrinterA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+DATE           
+TOT_RECORDS    
+PRT_WHR        
+PRTR_CHR       
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+SELECT_FROM2   
+SELECT_THRU2   
+SELECT_FROM3   
+SELECT_THRU3   
+SELECT_FROM4   
+SELECT_THRU4   
+SUB.TOT        
+SUB.TOT.COMM   
+MONTH          
+BREAK_FLD      
+WIDE_YN        
+COMMISSION     
+CUST.NAME      
+COMM.AMT       
+PRT.TOTS       
+CURR.SLSP      
+SLSP           
+COMM           
+NAME           
+RETENTION.PART 
+TOT.COMM       
+GTOT.COMM      
+TOT.QTY        
+GTOT.QTY       
+CUR.PRINTER    
+BKPR.SLS.EMPNUM
+BKAR.INV.SLSP  
+BKAR.INV.SLSP2 
+BKYS.DESC      Z
+BKAR.INV.INVDTE
+BKAR.INV.CUSNME=
+BKAR.INV.COMMPR
+BKPR.SLS.RATE  
+BKAR.INVL.INVNM
+BKAR.INV.NUM   
+BKAR.INVL.CNTR 
+BKAR.INVL.PCODE
+BKAR.INVL.PEXT S
+BKAR.INVL.TXAMT
+BKAR.INVL.FRGHT
+BKYS.YN        
+BKAR.INVL.COOP 
+BKAR.INVL.PPRCEC
+BKAR.INVL.PDISCK
+BKAR.INVL.PQTY ;
+BKAR.INVL.UM.LN
+BKAR.INVL.COMPR
+BKPR.SLS.HOW   
+BKAR.INVL.PCOGS[
+MCNTR4         
+BKPR.EMP.FNMI  
+BKPR.EMP.LNME  
+MESSAGE        
+NUM.MSG        
+DATE_TIME      
+CHG_TIME       
+CHG_DATE       
+STDDAYS        
+STDMONTH       
+STDYEAR        
+STDAYH         
+AM_PM          
+TIME_STRG      
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+OK             
+BKAR.CUSTCODE  
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+BKAR.CUSTNAME  
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+BKPR.EMP.NUM   
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+INV_FROM       
+BKIC.PROD.CODE 
+BKAR.INV.CUSORD
+NORM           
+ANSWCMD        
+PRTNAME        
+PRTDRIV        
+PRTLPTN        
+PRTWDT         
+PRTMAX         
+PRTLNES        
+PRTCMDLNE      
+PRTCOND        
+SCRNSAVER      
+PRTCOP         
+SPFLAG         
+BKPRT.CFG.NAME 
+BKPRT.CFG.PRTR t
+BKPRT.CFG.LPTNO
+BKPRT.CFG.PWDT 
+BKPRT.CFG.PMAX 
+BKPRT.CFG.PPLNE
+BKPRT.CFG.CMD  
+BKPRT.CFG.COND 
+SC             
+MENULIST       
+CNTR           
+ALTERNATES     
+INV_TYPE       
+MESSAGE        
+PRODUCTCLASS   
+ANSWER         
+TYPE           
+I              
+MTIC           
+TITLE          
+TITLE1         
+BKIC.PROD.DESC 
+BKIC.PROD.UM   .
+BKIC.PROD.TYPE -
+BKIC.PROD.CAT  1
+BKIC.PROD.CLASS6
+BKIC.PROD.NOTE 
+MTCLASS.CLASS  
+MTCLASS.DESC   
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.MFG.MPART A
+BKSB.MFG.PROD  
+MTIC.PROD.CODE 
+MTIC.PROD.SUBST$
+MTIC.PROD.TYPE #
+MTIC.PROD.CLASS
+MTIC.PROD.SPECS
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+PRG_HDR_PRG    
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_CLR_COLOR  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+PRTR_WCH       
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+CFG_CNTR       
+CFG_CNTRL      
+CFG_HNDL       
+MSG_PTR        
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+LASER_PRINTER  
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        

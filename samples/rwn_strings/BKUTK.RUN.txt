@@ -1,0 +1,361 @@
+TAS32Z
+FILELOC 
+FILEDICT
+FILEKNUM
+TASCOLOR
+FILEDICTA
+FILELOCA
+FILEKNUMA
+UT-K  Export DataA
+F1 Help,F2 LookupA
+Esc ExitA
+Error:  File not found . . . I
+Error:  There are no fields in the Data Dictionary for this file.I
+F1 Help,F2 LookupA
+Esc ExitA
+Use a previously saved format?L
+F1 Help,F2 LookupA
+Esc ExitA
+Output ALL fields? (answer 'No' for SELECTED fields)L
+F1 Help,F2 LookupA
+Esc ExitA
+Error:  Sort Field Not Found in Data Dictionary.I
+Error:  Sort By Field does not belong to this file.Fp
+Sort must be based on a KEY field within: A
+Error:  Sort by Field is Not A Key.  This field MUSTFp
+be defined as a Key Type [YBDM] in the Data Dictionary.I
+ will be written to: A
+Records from A
+.  Do you want to continue [Y/N]? A
+Do you want to save this format for future use [Y/N]? I
+Do you want to cancel this selection andFp
+start over [Y/N]? A
+Which Array Element# 1 - A
+F1 HelpA
+Esc ExitA
+                                                            A
+                                                            A
+                                                            A
+ F - Fixed Length    0101FFp
+ D - Delimited       0102DFp
+ T - Textfile        0103TFp
+ C - Common          0104CFp
+ S - Special         0105SI
+Output File Type: FFFp
+Please type the Common Delimiter: I
+Please type the Special Delimiter: I
+Press any key to continueA
+File ListA
+Field ListA
+Key ListA
+Do you want to view your exported data now? [Y/N]: A
+dbaxport.hlpA
+FROM: A
+THRU: A
+Report FormatsI
+ Reading directory.  Please wait... A
+There are no Export Formats in the current subdirectory.I
+    DBA Filename:           Output Filename:               Output Type:
+         Output  Filter                            Field  Field    Index
+         Order   Field   DBA Field Name    Array#  Type  Size/Dec  Type
+    # of Fields:      Rec Length:       Sort By Index Field:
+ Writing Tasfile:
+ Total Records:
+ To Diskfile:
+ Records Written:
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -
+                   
+                   
+ Now exiting to view your exported data 
+                   
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+infoFp
+  STANDARD FUNCTION KEYS/BUTTONSFp
+  ------------------------------Fp
+  F1  HelpFp
+  F2  LookupFp
+  F3  ClearFp
+  F4  DeleteFp
+  F5  FirstFp
+  F6  LastFp
+  F7  PreviousFp
+  F8  NextFp
+  F9  FindFp
+  F10 SaveI
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+ Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MEM.START      
+OUT.FILE       
+OUT.TYPE       
+OUT.SORT.FIELD 
+MEM_DICT_NAME  
+MEM_DICT_ARRAY 
+MEM.DICT_OFFSET
+MEM.DICT_TYPE  
+MEM.DICT_SIZE  
+MEM.DICT_DEC   
+GARBAGE        
+MEM.SELECT.FLD 
+MEM.SELECT.#   
+TOT.SELECT.FLDS
+MEM.CNTR       
+MEM.CNTR2      
+MEM.CNTR3      
+MEM.CUR.LINE#  
+MEM.EDIT.LINE# 
+MEM.FIRST.LINE#
+MEM.LAST.LINE# 
+MEM.TOTAL.LINES
+MEM.REC.SIZE   
+MEM.DIR        
+MEM.DELT.LINE# 
+ARRAY#         
+ARRAY.FLAG     
+DICT.CSIZE     
+MEM.TYPE       
+LNE.LNGTH      
+LNE.LN2        
+NUM.MSG        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+OK             
+A.SIZE         
+A.DEC          
+A.ARRAY        
+F.NAME         
+MENU_TITLE     
+FNRO           
+SEARCH.TYPE    
+MEM.OFFSET     
+REC.OFFSET     
+SRCH.KEY.FIELD 
+CONVERT.FIELD  
+CONVERT.NFIELD 
+CONVERT.SIZE   
+OUT.FIELD.VAL  
+OUT.TEXT       
+CR             
+LF             
+QUOTE          
+COMMA          
+FILL.CHAR      
+TOT.RECS       
+OUT.RECS       
+NUM.FIELDS     
+COMMON         
+SELECT.NUM     
+FROM           
+THRU           
+SPEC.DELIMITER 
+SAVE.FILE      
+TEMP.LOC       
+OLD.FORMAT     
+DATA.OUT.TEXT  
+OUT_HNDL       
+TEMP_HNDL      
+DICT_HNDL      
+LOC_HNDL       
+KNUM_HNDL      
+LOC_FILE_NAME  
+MESSAGE        
+MSG_PTR        
+DICT_OFFSET    
+DICT_BUFF_NAME 
+LOC_BUFF_NAME  
+KNUM_BUFF_NAME 
+KNUM_KEY_NAME  
+KNUM_KEY_NUMB  
+DICT_FIELD_NAME
+DICT_ARRAY_ELE 
+DICT_TYPE      
+DICT_SIZE      
+DICT_DEC       
+LOC_COMP_CODE  
+WC             
+BC             
+LOC_DESCRIPTION>
+CC             
+DICT_DESC      !
+DUMMY_L        
+CNTR           
+PRG.NAME       
+MEMORY         
+FILE_NAME      
+EXTENSION      
+SEARCH_FILE    
+CONTINUE       
+FILE_MENU      
+NUM_FILES      
+MENU_ROW       
+MENU_COL       
+QUOTIENT       
+IS_TYP         
+IS_SZE         
+BCD_DSIZE      
+BCD_ISIZE      
+PROG.HELP.NAME 
+CRNT.FIELD     
+XYZDBAHTEXT    
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+FILE_NAME      
+FILE_HNDL      
+FILE_BUFF      
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

@@ -1,0 +1,1149 @@
+BKYSMSTR
+BKSYMSTR
+BKESTCFG
+BKPRSALE
+BKICMSTR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+MTICMSTR
+CLASMSTR
+BKSBVEND
+BKSBMFG 
+BKICREF 
+BKICLOC 
+Unable to access one of the system files.  Another user may have it locked. A
+BKESTCFGA
+BKESTCFGA
+BKESTCFGA
+Unable to access the BKESTCFG system file.  Another user may have it locked. A
+BKICMSTRA
+BKPRSALEI
+SD-M  Sales Orders DefaultsA
+Press any key when finished viewing. A
+F1 HelpA
+F10 Save,Esc ExitA
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+ 1 - Universal Form (Condensed) F
+ 2 - Universal Form             F
+ 3 - Plain Paper (Condensed)    F
+ 4 - Plain Paper                F
+1 - Graphical Universal Form (Condensed) [BKSOB1.RTM]F
+2 - Graphical Universal Form             [BKSOB2.RTM]F
+3 - Graphical Plain Paper (Condensed)    [BKSOB3.RTM]F
+4 - Graphical Plain Paper                [BKSOB4.RTM]F
+5 - Text Universal Form                              F
+6 - Text Plain Paper                                 A
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+ 1 - Universal Form (Condensed)         F
+ 2 - Universal Form (Single Qty Format) F
+ 3 - Plain Paper (Condensed)            F
+ 4 - Plain Paper (Single Qty Format)    F
+1 - Graphical Universal Form (Condensed)         [BKSOC1.RTM]F
+2 - Graphical Universal Form (Single Qty Format) [BKSOC2.RTM]F
+3 - Graphical Plain Paper (Condensed)            [BKSOC3.RTM]F
+4 - Graphical Plain Paper (Single Qty Format)    [BKSOC4.RTM]F
+5 - Text Universal Form (Single Qty Format)                  F
+6 - Text Plain Paper (Single Qty Format)                     A
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+ 1 - Universal Form (Condensed)   F
+ 2 - Universal Form               F
+ 3 - Plain Paper (Condensed)      F
+ 4 - Plain Paper                  F
+ 5 - Invoice Form (Condensed)     F
+ 6 - Invoice Form                 F
+ 7 - Invoice Form, Old (Obsolete) F
+1 - Graphical Universal Form (Condensed) [BKSOF1.RTM]F
+2 - Graphical Universal Form             [BKSOF2.RTM]F
+3 - Graphical Plain Paper (Condensed)    [BKSOF3.RTM]F
+4 - Graphical Plain Paper                [BKSOF4.RTM]F
+5 - Graphical Invoice Form (Condensed)   [BKSOF6.RTM]F
+6 - Graphical Invoice Form               [BKSOF7.RTM]F
+7 - Text Universal Form                              F
+8 - Text Plain Paper                                 F
+9 - Text Invoice Form                                A
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+ 1 - Universal Form (Condensed)         F
+ 2 - Universal Form (Single Qty Format) F
+ 3 - Plain Paper (Condensed)            F
+ 4 - Plain Paper (Single Qty Format)    F
+1 - Graphical Universal Form (Condensed) [BKSOPB1.RTM]F
+2 - Graphical Universal Form             [BKSOPB2.RTM]F
+3 - Graphical Plain Paper (Condensed)    [BKSOPB3.RTM]F
+4 - Graphical Plain Paper                [BKSOPB4.RTM]F
+5 - Text Universal Form                               F
+6 - Text Plain Paper                                  A
+ 0 - Do not check if On-Hand is less   01011F
+ 1 - Warn if On-Hand is less but allow 01022F
+ 2 - Prohibit if On-Hand is less       01033I
+Quantity > OnhandffF
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+BKPRSALEI
+This when set to 'Y' will allow you to control the taxable amount on each line item.  A
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+BKICMSTRA
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+BKICMSTRA
+Save these settings?L
+Exit without saving any changes?L
+Prompt for Itemize Sales Tax?F
+Enter No to show sales tax on invoices and add it to invoice totals.F
+Enter Yes to have sales tax not shown separately on invoices, and to F
+calculate and post sales taxes to G/L and Tax Authority accountsF
+behind the scenes with the sales income posting as pre-tax. This is F
+for sales environments in which sales tax is already included in theF
+selling price of a taxable product.F
+If Yes, then the user will be prompted for this on each sales order.I
+Next Sales Order Number:F
+Enter the number to be assigned to the next A/R sales order.I
+Ready To Ship Default:F
+Enter the default value for the S/O ready to ship flag.I
+Next A/R Invoice Number:F
+Enter the number to be assigned to the next A/R invoice.I
+Next Recurring Invoice Number:F
+The number assigned to the next Recurring invoice template.I
+Print Company Info on Forms?F
+  Y - Enter Yes if you want your company name and addressF
+      to print on invoices, statements and P/O's.F
+  N - Enter No to not print your company name and addressF
+      on invoices, statements and P/O's.I
+Acknowledgement form number must be from 1-4. A
+123456A
+Acknowledgement form number must be from 1-6. A
+Packing slip form number must be from 1-4. A
+123456A
+Packing slip form number must be from 1-6. A
+1234567A
+Invoice form number must be from 1-7. A
+123456789AA
+Invoice form number must be from 1-9 or "A". A
+Sales quote form number must be from 1-4. A
+123456A
+Sales quote form number must be from 1-6. A
+bkicmstrI
+Retention item number is not valid. A
+Retention item number must be a non-inventory ("N") type part. A
+bkprsaleI
+Salesperson is not valid. A
+ Acknowledgement Print Format No.      Salesperson         Entered by       
+ Packing Slip Print Format Number      Default Ship Via                     
+ Invoice Print Format Number           Default FOB                          
+ Sales Quote Print Format Number       Turn the Credit Limit Message Off?   
+ Print Co. Name/Address on Forms?      Prompt for Taxable Line Item Amt?    
+ Print Discount Column on Forms?       Prompt for Itemized Sales Tax?       
+ Decimalized Quantities on Forms?      Prompt for Retention Billing?        
+ Next Sales Order Number               Retention Item No                    
+ Next Invoice Number                   Suppress Non-Tax warning message?    
+ Next Packing Slip Number              Print Title on:                      
+ Next Recurring Invoice No.             Acknowledgements    Allow entry to: 
+ Next Sales Quote Number                Packing Slips       (Y,N,R=Require) 
+ Ready to Ship Default                  Invoices             Location       
+ Release Qtys > On hand                 Sales Quotes                        
+ Increment WO Suffix in SO-N by         Next RMA#                           
+ Print      Sales Order Ending Lines         Sales Quote Ending Lines       
+ Ending                                                                     
+ Lines?                                                                     
+                                                                            
+                                                                            
+                                                                            
+ Acknowledgement Print Format No.      Salesperson         Entered by       
+ Packing Slip Print Format Number      Default Ship Via                     
+ Invoice Print Format Number           Default FOB                          
+ Sales Quote Print Format Number       Turn the Credit Limit Message Off?   
+ Print Co. Name/Address on Forms?      Prompt for Taxable Line Item Amt?    
+ Print Discount Column on Forms?       Prompt for Itemized Sales Tax?       
+ Decimalized Quantities on Forms?      Prompt for Retention Billing?        
+ Next Sales Order Number               Retention Item No                    
+ Next Invoice Number                   Suppress Non-Tax warning message?    
+ Next Packing Slip Number              Print Title on:      Allow entry to: 
+ Next Recurring Invoice No.             Acknowledgements    (Y,N,R=require) 
+ Next Sales Quote Number                Packing Slips       Location        
+ Ready to Ship Default                  Invoices            Department      
+ Release Qtys > On hand                 Sales Quotes                        
+ Increment WO Suffix in SO-N by         NEXT-RMA#                           
+ Print      Sales Order Ending Lines         Sales Quote Ending Lines       
+ Ending                                                                     
+ Lines?                                                                     
+                                                                            
+                                                                            
+                                                                            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+BKPRSALEA
+ Salespeople A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKPRSALEA
+Slsp#A
+Last Name                A
+First Name               A
+ClassA
+BKPRSALEA
+Last Name                A
+Slsp#A
+First Name               A
+ClassA
+BKPRSALEA
+BKPRSALEA
+Salesperson NoF
+Last Name     I
+F1 HelpA
+Esc ExitA
+ A - Salesperson NoF
+ B - Last NameA
+ Search Key A
+mticmstrI
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+ Inventory A
+F1 Help,F2 Find,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+CLASMSTRI
+CLASMSTRL
+Choose the Class first, then the inventory item. A
+ClassA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Specifications                A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+User Defined             A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Cust Cd   A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Please only select item numbers of the following Types: A
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+CLASMSTRL
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial description.A
+ This is a case-sensitive search.  A
+   Item Description          A
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full/partial class, or theA
+ full class and full/partial part#.A
+   Class          Item NumberA
+CLASMSTRN
+BKICMSTRA
+MTICMSTRI
+Item Number    F
+Description    F
+Type           F
+2nd DescriptionF
+Category       F
+Class          F
+Specifications F
+User Defined   F
+Customer Code  F
+Alternates     I
+F1 HelpA
+Esc ExitA
+ A - Item NumberF
+ B - DescriptionF
+ C - TypeF
+ D - 2nd DescriptionF
+ E - CategoryF
+ F - ClassF
+ G - SpecificationsF
+ H - User DefinedF
+ I - Customer CodeF
+ J - AlternatesA
+ Search Key A
+ N Non Inventory   F
+ R Purchased Part  F
+ M Make From       F
+ F Finished Good   F
+ A Subassembly     F
+ B Phantom AssemblyF
+ L Labor           F
+ T Outside Process F
+ K Selling Kit     F
+ O Feature         I
+F1 HelpA
+Esc ExitA
+ N - Non InventoryF
+ R - Purchased PartF
+ M - Make FromF
+ F - Finished GoodF
+ A - SubassemblyF
+ B - Phantom AssemblyF
+ L - LaborF
+ T - Outside ProcessF
+ K - Selling KitF
+ O - FeatureA
+ Starting Type Value I
+ESC ExitA
+NormalBkgA
+NormalBkgA
+ Begin Alternate Part Search with: A
+bkicmstrA
+BKSBVENDI
+BKSBVENDA
+BKSBVENDA
+bksbvendA
+BKSBVENDL
+BKSBMFGI
+BKSBMFGA
+BKSBMFGA
+bksbmfgA
+BKSBMFGL
+BKICREFI
+BKICREFA
+BKICREFA
+bkicrefA
+BKICREFL
+No matching DBA, Vendor, Manufacturer, or Customer Cross-Reference item numbers were found matching the number you entered.  Do you want to display the DBA Inventory file beginning with the code entered?L
+BKSBVENDL
+BKSBMFGL
+bkicmstrI
+BKICMSTRA
+MTICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF
+ B - DescriptionA
+ Search Key A
+Item number cannot be blank. A
+BKICMSTR record for this item not in memory. A
+Note: The MTICMSTR record for this non-stock part is not available.  Only some of the stock status quantities can be reported. A
+NormalBkgA
+NormalBkgA
+ Inventory Stock Status A
+ Inventory Stock Status A
+bkiclocI
+BKICLOCL
+BKICLOCL
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+There are more than 100 locations for this part, which is the maximum that can be displayed. A
+BKICLOCA
+bkiclocI
+BKICLOCI
+Item Number    : A
+        Type: A
+Description    : A
+2nd Description: A
+               LOCATIONS              A
+(+) ON HAND          :A
+(-) On Sales Order   :A
+(-) On Back Order    :A
+(+) On Purchase Order:A
+(+) In QC Inspection :A
+(+) On Work Order    :A
+(-) Allocated        :A
+(=) Available        :A
+In Work-in-Process   :A
+   TOTAL    I
+    n/a     I
+    n/a     I
+    n/a     I
+            I
+    n/a     I
+Esc ExitA
+F7 Scroll Locations Left,F8 Scroll Locations RightA
+Esc ExitA
+Esc ExitA
+Please do not change the item number. A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+BKICLOCL
+BKICLOCA
+BKICLOCL
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when DBA Accounting is activated. A
+This program is only available when DBA Accounts Receivable is activated. A
+This program is only available when DBA Accounts Payable is activated. A
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+dbabextmA
+dbaformmI
+dbabextlA
+dbaformlA
+dbabextsA
+dbaformsI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+F1 HelpA
+Esc ExitA
+ Select Form A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+YNNYNX
+YNNNYC
+YNNYNX
+YNNNYC
+YNNNYF
+YNNNYCP
+YNNNYF
+YNNNYC
+YNNNYF0?
+NNNYNY
+YNNNYF@A
+YNNNYFpA
+YNNNYFpA
+YNNNYFpA
+YNNNYF@A
+YNNNYXd
+YNNNYFpA
+YNNNYX
+YNNNYFpA
+YNNNYX
+YNNNYFpA
+YNNNYF@A
+YNNNYFpA
+YNNNYFpA
+YNNNYFpA
+YNNNYCf
+NNNYNX4
+NNNYNX
+YNNNYC"
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MWOINC         
+SALES.PER      
+CNTR           
+GL_TYPE        
+INV_TYPE       
+TEMP.PART      
+TEMP.FOB       
+NO.LOCK        
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+BKSY.HNDL      
+BKYS.HNDL      
+BKEST.HNDL     
+SAVE.BUTT      
+FORM.ARR       
+NEW.FORM       
+ZRET           
+BKYS.DESC      Z
+BKYS.RBNUM     
+SYSACCTGON     
+BKSY.RMA.ANUM  
+BKSY.EXTRA     S
+BKSY.RMA.NUM   
+NXRMA          
+BKSY.AR.SLSP   
+BKYS.YN        
+BKSY.PLAIN.INV +
+BKSY.FORM.CMPNY/
+BKSY.ARSO.NUM  
+BKSY.ARINV.NUM 
+BKYS.NUM       2
+BKSY.AR.RECNUM 
+BKEST.CFG.SONUM
+BKSY.RTS.DEF   
+TYPE           
+MESSAGE        
+SRCH_KEY_NUM   
+BKPR.SLS.EMPNUM
+BKSY.AR.ENTBY  
+BKSY.AR.SHP.VIA
+BKSY.AR.TURNOFFi
+BKIC.PROD.CODE 
+RMA.PART       
+BKSY.AR.PEL    j
+BKSY.AR.ENDDESC
+BKEST.CFG.ENDLN9
+BKSYMSTR_HNDL  
+BKYSMSTR_HNDL  
+NUM.MSG        
+MSG_PTR        
+BKIC.PROD.TYPE -
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SLSPF2.COL     
+SLSPF2.ROW     
+WC             
+BC             
+SC             
+SLSP_TTL1      
+SLSP_USCORE    
+BKPR.SLS.LNME  s
+BKPR.SLS.FNMI  Z
+BKPR.SLS.CLASS 
+CC             
+DATC           
+TEMP_KEY       
+MENULIST       
+INV_TYPE       
+INVF2.COL      
+INVF2.ROW      
+INVF2.START    
+MTIC_OPEN      
+CLASS_OPEN     
+USE_ALTS       
+TYPE_CNTR      
+TYPE_CHR       
+ALT_CODE       
+INV_M_TY       
+INV_M_LOC      
+INV_M_MAIN     
+IMXFIND.PART   
+NEW.IMXPART    
+IMXFIND.DESC   
+NEW.IMXDESC    
+IMXFIND.CLASS  
+NEW.IMXCLASS   
+IMXF.CURORD    
+CLASS.POP.DONE 
+IMXLKUPA.HNDL  
+IMXLKUPI.HNDL  
+IMX.LKUA       
+IMX.LKUI       
+IMX.ZRET       
+INV_TTL1       
+INV_USCORE     
+BKIC.PROD.DESC 
+BKIC.PROD.UM   .
+BKIC.PROD.UOH  p
+BKIC.PROD.NOTE 
+BKIC.PROD.CAT  1
+BKIC.PROD.CLASS6
+MTIC.PROD.SUBST$
+MTIC.PROD.CUST 
+MTIC.PROD.CUSNM
+MTIC.PROD.CODE 
+MTCLASS.M.CLASS
+MTIC.PROD.SPECS
+TEMP_KEY       
+BKSBVEND_OPEN  
+BKSBMFG_OPEN   
+BKICREF_OPEN   
+IMA.ZRET       
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.MFG.MPART A
+BKSB.MFG.PROD  
+BKIC.REF.CUSCODU
+BKIC.REF.CODE  
+SRCH_HOW_MSG   
+FC             
+CLASSMF2.COL   
+CLASSMF2.ROW   
+CLASSM_TTL1    
+CLASSM_USCORE  
+MTCLASS.M.DESC 
+TEMP_KEY       
+UV.PART        
+UV.ORIG.PART   
+UV.LOC1        
+UV.LOC         
+UV.UOH         
+UV.UOSO        
+UV.UBO         
+UV.UOO         
+UV.UIQC        
+UV.UOWO        
+UV.ALLOC       
+UV.AVAIL       
+UV.WIP         
+UVT.UOH        
+UVT.UOSO       
+UVT.UBO        
+UVT.UOO        
+UVT.UIQC       
+UVT.UOWO       
+UVT.ALLOC      
+UVT.AVAIL      
+UVT.WIP        
+UV.TCOL        
+UV.COL         
+UV.CUR1        
+UVNOW          
+UVWHR          
+UV.MAXLOCS     
+UV.OPND.LOC    
+UV.LOC.REC     
+UV.NA.LOC      
+UV.HAVE.MTIC   
+UV.CNTR        
+UV.DS          
+UV.F7          
+UV.F8          
+NORM           
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.PROD.UOO  
+MTIC.PROD.UIQC 
+MTIC.PROD.UOWO 
+MTIC.PROD.UOA  
+MTIC.PROD.UIWIP
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKIC.LOC.UOH   
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+BKIC.LOC.UOO   1
+BKIC.LOC.UIQC  
+BKIC.LOC.UOWO  
+BKIC.LOC.UALLOC
+BKIC.LOC.UWIP  
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSITEMCLASSGL 
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+SFX.PHNDL      
+SFX.EXPHNDL    
+SFX.COL        
+SFX.ROW        
+SFX.NCH        
+SFX.CHWDT      
+SFX.TLEN       
+SFX.TWDT       
+SFX.TCOLOR     
+SFX.RET        
+SFX.CHOICE     
+SFX.CNTR       
+SFX.EXT        
+SFX.TTL        
+MC             
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+MSG_TYPE       
+LOCK_TYPE      
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+POS            

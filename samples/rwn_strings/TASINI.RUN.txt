@@ -1,0 +1,427 @@
+TASCOLOR
+Enter/Change Windows General InfoA
+This program can be run by the Windows version only.A
+F1 Help,F2 Change Colors,F3 Printer Control,F10 SaveA
+ESC ExitA
+An error occured while attempting to open the file TP5WIN.INI.F
+You are probably out of disk space.  This would apply where F
+ever the WINDOWS subdirectory is.  Please correct this before F
+attempting to run this program again.I
+videoA
+FontSizeDisplayA
+FontSizeInputA
+FieldBorderOnA
+ShadowWidthA
+UnderScoreMenuChrA
+AllowGrayA
+InitRunPrgA
+InitCaptionA
+DefaultCompanyCodeA
+colorA
+NormalBkgA
+NormalTextA
+BoxBkgA
+BoxTextA
+EnterBkgA
+EnterTextA
+DisplayBkgA
+DisplayTextA
+WindowBkgA
+WindowTextA
+MenuBkgA
+MenuTextA
+ButtonBkgA
+ButtonTextA
+ChoiceBkgA
+ChoiceTextA
+EColorBkgA
+EColorTextA
+This is the maximum number of columns that can appear on the screen.  The Default value is 80 and can be as much as 132.IP
+This must be less than or equal to 132.A
+This is the maximum number of rows that can appear on the screen.  The default value is 26 and can be as much as 50.I
+This must be less than or equal to 50.A
+This is the size of the font during normal display.  If you have the Entry Border On set to N then the Display and Enter Mode size should be the same.  If Entry Border On is Y then this size should be smaller than Enter Mode.I
+This is the size of the font during entry.  If you have the Entry Border On set to N then this size and the Display size should be the same.  If Entry Border On is Y then this size should be larger than Display.A
+If this is set to Y a border will be displayed around the entry field during normal display but not during entry mode.  To have the largest display font at all times set this value to N.A
+If this is set to Y then the program will use colors set in the TP5WIN.INI file for the WINDOW, WINDEF and NMENU commands.  If this is set to N then those commands will use whatever color is specified in the command.  You can also override this value in the appropriate command.A
+If this is set to Y then the program will disable (gray out) non-active windows.  Depending on whether you are running Windows 3.1x or Win 95 you may get different results.I
+Depending on the options in the WINDOW, WINDEF and NMENU commands you can display a 3-D shadow around the window created.  This option allows you to specify the size of that shadow.  This is in pixels and a normal size is 4 pixels.A
+If you enter Y here the program will underscore (_) the first chr preceeded by an ampersand (&) in a menu option line.  You should be sure to use only one ampersand in the line or it might underscore the wrong chr.A
+Enter something other than a blank here if you want to start with a specific company code (2 chrs)A
+MENU.RUNA
+This is the program you want to run when starting TAS Pro for Windows.  Make sure it has the full path, if appropriate, and has the extension of .RUN.A
+This is the initial caption that will appear at the top of the window box.  This can also be changed in your program.A
+EnterBkgA
+EnterTextA
+F1 Help,F2 Change Color,F3 Reset Colors to DfltA
+ESC Return to Main ScreenA
+EnterBkgA
+EnterTextA
+NormalA
+EnterA
+DisplayA
+WindowA
+ChoiceA
+EColorA
+ButtonA
+ Colors A
+EnterBkgI
+EnterTextA
+NormalA
+EnterA
+DisplayA
+WindowA
+ChoiceA
+EColorA
+ButtonI
+Dflt Colors
+PrintDirectA
+PrintDriverA
+PrintWidthA
+PrintLinesA
+PrintPaperA
+PrintLaserA
+FontNameA
+RegularSizeA
+CompressedSizeA
+MarginSideA
+MarginTopA
+LineSizeA
+PrintLaserA
+Printer Info MaintenanceA
+F1 Help,F10 SaveA
+ESC ExitA
+This is the name of the .CTL file for this printer.  Press the F2 key to get a list of available drivers.A
+The file name entered here must be present in the TASPRO or ADV path.A
+You must enter Y here if you are running Adv 5.0 for Windows and the printer is HP2 compatible.A
+The number of characters that can be printed on a single line in normal (10 chrs/inch) mode.  This is generally 80 for a narrow carriage printer and 132 for a wide.IP
+This must be something other than 0.A
+The number of printable lines per page, generally 60.I<
+This must be something other than 0.A
+The maximum number of lines per page.  Generally 66 if you are printing to a laser printer this may be 60.IB
+This must be something other than 0.A
+The name of the font to use.A
+Courier NewA
+This must be a valid name.A
+If you are printing on single sheet forms (non-continuous) then enter Y here.A
+This is the font size to use for standard (non-compressed) printingI
+This must be more than 0.A
+This is the font size to use for compressed printing.I
+This must be more than 0.A
+If you enter Y here all printing will be done with Bold on.A
+This is the number of pixels to offset from the side of the page.A
+This is the number of pixels to offset from the top of the page.A
+This number is added to the normal number of pixels between each line.  If the lines are too far apart make this a negative number.  If they are too close make this a positive number.  You may have to experiment for each printer what the appropriate value is.  In most cases you will leave this at 0.A
+Save the printer information?A
+Make further changes?A
+ERASEA
+writeA
+PrintDirectA
+PrintDriverA
+PrintWidthA
+PrintLinesA
+PrintPaperA
+PrintLaserA
+FontNameA
+RegularSizeA
+CompressedSizeA
+MarginSideA
+MarginTopA
+LineSizeA
+PrintLaserA
+Enter/Change Windows General InformationA
+F1 Help,F2 Display Drivers,F10 SaveA
+ESC ExitA
+F1 Help,F10 SaveA
+ESC ExitA
+Please see documentation for complete information F
+about how you choose whether to print direct or not.I
+Are all entries correct, save to TP5WIN.INI file?A
+writeA
+videoA
+FontSizeDisplayA
+FontSizeInputA
+FieldBorderOnA
+ShadowWidthA
+UnderScoreMenuChrA
+AllowGrayA
+InitRunPrgA
+InitCaptionA
+DefaultCompanyCodeA
+colorA
+NormalBkgA
+NormalTextA
+BoxBkgA
+BoxTextA
+EnterBkgA
+EnterTextA
+DisplayBkgA
+DisplayTextA
+WindowBkgA
+WindowTextA
+MenuBkgA
+MenuTextA
+ButtonBkgA
+ButtonTextA
+ChoiceBkgA
+ChoiceTextA
+EColorBkgA
+EColorTextA
+closeA
+The TP5WIN.INI file was updated.  You will now have toF
+exit this program and start again to have it take effect.I
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Too many XBTN_SAVEs without any XBTN_RSTRsA
+Too many XBTN_RSTRs without equal XBTN_SAVEsA
+                                                                              
+   General Control Values in TP5WIN.INI file:                                 
+                                                                              
+                                                                              
+   Number of Video Columns:               Use Default Colors:                 
+                                                                              
+   Number of Video Rows:                  Set Non-Active Windows Gray:        
+                                                                              
+   Font Size Display:                     Shadow Width Around Windows:        
+                                                                              
+   Font Size Enter Mode:                  Underscore Menu Choice Chr:         
+                                                                              
+   Enter Field Border On:                 Default Company Code:               
+                                                                              
+                                                                              
+   Initial Run Prg:                                                           
+                                                                              
+   Initial Caption:                                                           
+                                                                              
+                                                                     
+  Printer Name:                                   Print Direct?:     
+                                                                     
+  Direct Printing                                                    
+                                                                     
+  Driver Name:                        Is this a Laser Printer?:      
+                                                                     
+  Width:       Printable Lines:      Total Lines for the Page:       
+                                                                     
+  Windows Driver Printing                                            
+                                                                     
+  Font Name:                                    Laser Forms:         
+                                                                     
+  Regular Size:      Compressed Size:      Print in Bold:            
+                                                                     
+  Margin Side:       Margin Top:           Line Size:                
+                                                                     
+       
+       
+                                                               
+       
+ To Change a color value press the F2 key.  A menu with the    
+       
+ available choices will be displayed.  Choose the one you      
+       
+ want to change and the color choice dialog will be displayed. 
+       
+ Choose the appropriate color and a sample of that color will  
+       
+ be displayed below in the entry field.                        
+       
+                                                               
+       
+ The first time the color dialog is displayed you will choose  
+       
+ the background color, the second time the text color.         
+       
+                                                               
+       
+       
+                                                               
+       
+           Color Name:                                         
+       
+                                                               
+       
+There are no A
+ files currently available.A
+ Files A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MAX_VIDEO_COLS 
+USE_DFLT_COLORS
+MAX_VIDEO_ROWS 
+GRAY_WINDOWS   
+FONT_SIZE_DISP 
+SHADOW_WIDTH   
+FONT_SIZE_ENTER
+UNDERSCORE_CHR 
+ENTER_FLD_BORDR
+INIT_RUN_PRG   
+INIT_CAPTION   
+DFLT_COMP      
+NORMAL_BKG     
+NORMAL_TEXT    
+BOX_BKG        
+BOX_TEXT       
+ENTER_BKG      
+ENTER_TEXT     
+WINDOW_BKG     
+WINDOW_TEXT    
+MENU_BKG       
+MENU_TEXT      
+BUTTON_BKG     
+BUTTON_TEXT    
+CHOICE_BKG     
+CHOICE_TEXT    
+ECOLOR_BKG     
+ECOLOR_TEXT    
+DISPLAY_BKG    
+DISPLAY_TEXT   
+PRINTER_NAME   
+DRIVER_NAME    
+PRINT_WIDTH    
+PRINTABLE_LINES
+TOTAL_LINES    
+PRINT_DIRECT   
+LASER_PRINTER  
+BOLD           
+LASER_FORMS    
+FONT_NAME      
+REGULAR_SIZE   
+COMPRESSED_SIZE
+MARGIN_SIDE    
+MARGIN_TOP     
+LINE_SIZE      
+COLOR_NAME     
+ENTER_BKG_HLDR 
+ENTER_TXT_HLDR 
+BKG_COLOR      
+TEXT_COLOR     
+BKG_COLOR_HLDR 
+TEXT_COLOR_HLDR
+INI_FILE_OPEN  
+INI_SAVED      
+BOLD_BOOL      
+DUMMYL         
+DO             
+BLK            
+MESSAGE        
+MSG_PTR        
+CNTR           
+FILE_NAME      
+VALUE          
+PL_CNTR        
+BUTTON_LIST    
+BUTTON_CNTR    
+BKSYNLUP_HNDL  
+BKSYNOTE_HNDL  
+CUR_COMP_NAME  
+LKUP_FULL_SCRN 
+POS            
+BOM            
+JOB_COST       
+NORMW          
+NORMTEXT       
+ENTERW         
+ENTERTEXT      
+WCW            
+WCTEXT         
+BCW            
+BCTEXT         
+MCW            
+MCTEXT         
+CCW            
+CCTEXT         
+ECW            
+ECTEXT         
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+BC             
+WC             
+SC             
+IMF_DONE       
+PRG_HDR_NAME   
+PRG_HDR_PRG    
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_ESC   
+FNC_CLR_COLOR  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+FIND_FILE_EXT  
+FIND_FILE_TITLE
+FIND_FILE_PATH 
+FLE_NAME       
+FLE_ARRAY      
+CNTR1          
+CC             
+FC             

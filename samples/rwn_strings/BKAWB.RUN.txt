@@ -1,0 +1,739 @@
+TAS32c
+WORKORD 
+WOBOM   
+BKICMSTR
+MTICMSTR
+BKARINVL
+BKICLOC 
+BKARINV 
+BKAPPOL 
+BKAPPO  
+BKSYMSTR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+MTICMSTRA
+BKICMSTRA
+WOBOMA
+WORKORDA
+BKARINVLA
+BKARINVA
+BKAPPOA
+BKAPPOLA
+BKICLOCA
+LW-B  Release Work OrdersA
+AW-B  Release Work OrdersA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 HelpA
+Esc ExitA
+Rebuild Stock Status Fields?L
+The stock status fields A
+on Sales Order,A
+on Back Order, on Purchase Order, on WorkF
+Order, Allocated, in WipA
+ will be rebuiltA
+directly from the order file. Be aware F
+that this may take some time to run, F
+depending on the number of inventory itemsF
+in your selection range.I
+WORKORDI
+WOBOMF
+WORKORDF
+BKICMSTRF
+MTICMSTRF
+WOBOMF
+WORKORDF
+BKICMSTRF
+MTICMSTRF
+WOBOMA
+WOBOMF
+WORKORDF
+BKICMSTRF
+MTICMSTRF
+WOBOMF
+WORKORDF
+BKICMSTRF
+MTICMSTRF
+WOBOMA
+WORKORDA
+>>>>>  Report was terminated before completion  <<<<<A
+RESETI
+There are no records in the primary fileI
+A matching record was not found during a related findI
+WORKORDA
+WORKORDI
+BKARINVLA
+BKAPPOLA
+WORKORDA
+WOBOMA
+WOBOMA
+BKICLOCI
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICMSTRA
+MTICMSTR
+                    
+                    
+(You may enter the work order prefix
+                    
+ or the complete work order number) 
+                    
+                                    
+                    
+       From Work Order         -    
+                    
+       Thru Work Order         -    
+                    
+                                    
+                    
+       From Start Date              
+                    
+       Thru Start Date              
+                    
+                                    
+                    
+ Print Shortages [Y/N]              
+                    
+                        Release Work Orders Files Report
+                                                                 Page #:
+    Work Order    Parent Part        Actual Start Dates     Status
+    ----------    ---------------    -------------------    ------
+          -                                                           Released
+Component          Required       On Hand     On SO/BO    Allocated     On Order
+--------------------------------------------------------------------------------
+                           WORK ORDER SHORTAGE REPORT
+Work Order :       -                               Release Date :
+Assembly   :                                      Order Quanity :
+Component            Required   On Hand      On SO/BO    Allocated     On Order
+----------------------------------------- ------------ ------------ ------------
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+F1 Help,F10 ProcessA
+Esc ExitA
+WORKORDA
+ Work Orders A
+F1 Help,F2 Find,F3 Change Search KeyA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKORDA
+Work OA
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+WORKORDA
+Parent Part    A
+Work Ord  A
+Stat A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Cust Cd   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Customer Name            A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+SO#   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Start DtA
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Fin Dt  A
+Job Number     A
+WORKORDA
+Fin Dt  A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Job Number     A
+WORKORDA
+Job Number     A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+WORKORDA
+WORKORDA
+Work Order NoF
+Parent Item NoF
+Customer CodeF
+Customer NameF
+Sales Order NoF
+Job NumberI
+F1 HelpA
+Esc ExitA
+ A - Work Order NoF
+ B - Parent Item NoF
+ C - Customer CodeF
+ D - Customer NameF
+ E - Sales Order NoF
+ F - Job NumberA
+ Search Key I
+Open Work Orders only?A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter the WO number to find.      A
+             Work OrderA
+                  0-  0A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Rel  A
+FirmdA
+SchedA
+ClosdA
+CanclA
+IndirA
+     A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYCb}
+YNNNYF
+NNNYNT
+YNNNYF 4
+YNNNYFP4
+YNNNYFP4
+YNNNYFP4
+YNNNYF 4
+YNNNYX
+YNNNYFP4
+YNNNYX<
+YNNNYFP4
+YNNNYXu
+YNNNYFP4
+YNNNYF 4
+YNNNYFP4
+YNNNYFP4
+YNNNYFP4
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+PRTR_CHR       
+WIDE_YN        
+TOT_RECORDS    
+PRT_WHR        
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+FROM2          
+THRU2          
+SELECT_FROM3   
+SELECT_THRU3   
+TEMP.PRE       
+TEMP.SUF       
+TOT.SOBO       
+TEMP.AMT       
+TOT.ORDER      
+PRT.SHORT      
+PRT_LINE       
+UOSO           
+UBO            
+UOO            
+UIQC           
+UOWO           
+UOA            
+UIWIP          
+LAST.LOC       
+PROD.DESC      
+TEMP.UWIP      
+REBUILD        
+REC.POS        
+HOLD.WOPRE     
+HOLD.WOSUF     
+WORD           
+NUM            
+WHICH          
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+LW_WO2         
+LW_WO          
+PRT            
+PRT2           
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.SSTART
+MTWO.WIP.STATUS-
+MTWO.WIP.ASTART
+WOBOM.WOPRE    
+WOBOM.WOSUF    
+WOBOM.ASSY     
+WOBOM.LINE#    
+WOBOM.COMPCODE 
+MTIC.PROD.TYPE #
+BKIC.PROD.UBO  p
+BKIC.PROD.UOSO x
+BKIC.PROD.UOO  
+MTIC.PROD.UOWO 
+MTIC.PROD.UOA  
+MTIC.PROD.UIWIP
+MTIC.PROD.UIQC 
+BKIC.PROD.TYPE -
+BKIC.PROD.UOH  p
+DATE_TIME      
+BKAR.INVL.PCODE
+BKIC.LOC.PROD  
+BKAR.INVL.UM.LN
+BKAR.INV.SONUM 
+BKAR.INVL.INVNM
+BKAR.INV.LOC   v
+BKIC.LOC.CODE  
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKAP.POL.PCODE 
+BKAP.PO.NUM    
+BKAP.POL.PONM  
+BKAP.PO.CONFIRMJ
+BKAP.PO.PRTD   
+BKAP.PO.LOC    
+BKAP.POL.PQTY  ;
+MTIC.PROD.PCONV7
+BKAP.POL.QC.QTY
+MTWO.WIP.CODE  
+MTWO.WIP.LOC   
+MTWO.WIP.COMQTY%
+MTWO.WIP.SQTY  
+WOBOM.QTYISSUED
+WOBOM.TOTQTY   |
+WOBOM.QTYPER   l
+WOBOM.SCRAPQTY t
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+BKIC.LOC.UOO   1
+BKIC.LOC.UIQC  
+BKIC.LOC.UOWO  
+BKIC.LOC.UALLOC
+BKIC.LOC.UWIP  
+BKIC.PROD.CODE 
+MTIC.PROD.AVAIL
+BKSY.COMP.NAME X
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+WOF2.COL       
+WOF2.ROW       
+WO.LKUP.OPEN   
+WOM.STAT       
+WOXFIND.PRE    
+NEW.WOXPRE     
+WOXFIND.SUF    
+NEW.WOXSUF     
+WOXDIDFIND     
+SRCH_KEY_NUM   
+WO_TTL1        
+WO_USCORE      
+MTWO.WIP.DESC  
+MTWO.CUSTCODE  
+MTWO.CUSTNAME  
+MTWO.WIP.SONUM 
+MTWO.WIP.SFIN  
+MTWO.WIP.PROJ  
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+SRCH_HOW_MSG   
+XXWOM.STAT     
+BUTTON_LIST    
+BUTTON_CNTR    
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        

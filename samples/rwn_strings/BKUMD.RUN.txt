@@ -1,0 +1,221 @@
+BKSYLOG 
+AHSYLOG 
+MENUFILE
+BKPRTCFG
+TASCOLOR
+AHSYLOGA
+MENUFILEA
+BKSYLOGA
+BKSYUSERA
+ DBA Manufacturing 
+        Enter User Menu Security        
+  Menu Maintenance A
+Please enter valid security levelA
+ F1-Help                                                               Esc-Menu A
+Please enter valid MENU code A
+ F1-Help   Home-Make new user                                          Esc-Menu A
+Do you want to save this record [Y/N]? : I
+AHSYLOGA
+MENUFILEF
+Do you want to delete this record [Y/N]? : I
+AHSYLOGA
+MENUFILEF
+Do you want to clear this record [Y/N]? : I
+AHSYLOGA
+BKSYUSERA
+MENUFILEA
+BKSYLOGI
+Press any key to continueA
+AHSYLOGA
+MENUFILEA
+Here is a list of the present Menu Codes & Menu Names    F
+    Code                   Menu Name                     F
+---------------------------------------------------------F
+    BKYS           Manufacturing System Maintenance      F
+    MINV           Inventory                             F
+    INVB           Inventory Entry                       F
+    INVC           Inventory Pricing                     F
+    INVL           Inventory Month End Reports           F
+    BKBM           Bills of Material                     F
+    BKLW           Light Work Orders                     F
+    BKRO           Routings                             F
+    BKAW           Advanced Work Orders                  F
+    BWOO           Advanced WO Reports                   F
+    BKJC           Job Costing                           F
+    BKFO           Features & Options                    F
+    BKLC           Lot Control                           I
+                                  Access Item          Menu Option            
+ Security Level :                1                                            
+                                 2                                            
+ Menu Name :                     3                                            
+ Menu Title:                     4                                            
+                                 5                                            
+                                 6                                            
+ Global Access [Y/N]:            7                                            
+                                 8                                            
+                                 9                                            
+                                10                                            
+                                11                                            
+                                12                                            
+                                13                                            
+                                14                                            
+                                15                                            
+                                16                                            
+                                17                                            
+                                18                                            
+                                19                                            
+                                20                                            
+Press any key to continueA
+BKPRTCFGA
+ PRINTER TO USE A
+F1 - Display Printers   F10 - Start PrintingA
+Copies: A
+resetA
+ For product support call DBA Tech Support at 1-800-434-0809   TAS 5.0 BETA 3 
+                                Function Keys                                 
+                                                                              
+           F1 = Help                         F6 = Get Last Record             
+           F2 = Lookup Window                F7 = Scroll Backward             
+           F3 = Clear Screen                 F8 = Scroll Forward              
+           F4 = Delete Record                F9 = Find Closest Match          
+           F5 = Get First Record            F10 = Save Record                 
+                                                                              
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without SAving      CTRL+D = Delete Character            
+                                                                              
+ Printer Name:
+ Printer Driver:              LPT#:
+ Page Width:           Total Lines:       Print lines:
+ Command Line
+ Print condensed(Y/N):   Exec CmdLine(Y/N):
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+bkprtcfgA
+Choose PrinterA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+INDEX          
+ONFILE         
+BKSY.LOGON.SCTY
+AHSY.USER.LEVL 
+AHSY.USER.MENU 
+MENU.CODE      
+SAVE.CTRL      
+AHSY.USER.CTRL 
+AHSY.USER.ACCES
+MENU.OPTIONS   
+MENU.TYPES     
+MESSAGE        
+NUM.MSG        
+ENT.MASK       
+OK             
+LNE.LNGTH      
+MCNTR          
+LNE.LN2        
+LLC            
+HT             
+WD             
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MENU.LINES     .
+MENU.TITLE     
+ANSWCMD        
+PRTNAME        
+PRTDRIV        
+PRTLPTN        
+PRTWDT         
+PRTMAX         
+PRTLNES        
+PRTCMDLNE      
+PRTCOND        
+SCRNSAVER      
+PRTCOP         
+SPFLAG         
+CUR.PRINTER    
+BKPRT.CFG.NAME 
+BKPRT.CFG.PRTR t
+BKPRT.CFG.LPTNO
+BKPRT.CFG.PWDT 
+BKPRT.CFG.PMAX 
+BKPRT.CFG.PPLNE
+BKPRT.CFG.CMD  
+BKPRT.CFG.COND 
+SC             
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+CFG_CNTR       
+CFG_CNTRL      
+CFG_HNDL       
+WC             
+BC             
+MSG_PTR        

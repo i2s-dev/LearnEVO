@@ -1,0 +1,404 @@
+TAS32;
+WODATE  
+WORKORD 
+WOBOM   
+MTICMSTR
+BKICLOC 
+WOROUT  
+WORKCTR 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+WORKCTRA
+BKICLOCA
+MTICMSTRA
+WOBOMA
+WOROUTA
+WORKORDA
+WODATEA
+LW-I-B  Create Multi-Date Work OrdersA
+AW-K-C  Create Multi-Date Work OrdersA
+F1 Help,F2 LookupA
+Esc ExitA
+Do you want to create multiple Work Orders from this Work Order?L
+Please wait as theA
+Bill of Materials File is updatedA
+BKICLOCA
+WOBOMA
+MTICMSTRA
+WOBOMA
+Routing File is updated          A
+WOROUTA
+WOROUTA
+WORKORDA
+WORKORDI
+WODATEA
+WODATEA
+Bill of Materials File is updatedA
+WOBOMA
+WOBOMA
+BKICLOCA
+WOBOMA
+MTICMSTRA
+WOBOMA
+WOBOMA
+Routing File is updated          A
+WOROUTA
+WOROUTA
+WOROUTA
+WOROUTA
+WOROUTA
+WORKORDA
+WORKORDI
+WODATEA
+WODATEA
+Do you want to delete this Record?L
+Do you want to clear this Record?L
+WODATEI
+Press any key to continueA
+Work OrdersA
+WORKORDF
+WORKORDI
+WORKORDI
+WORKORDA
+WORKORDF@
+There are no such records in the A
+ file.A
+WORKORDA
+WORKORDF
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+This Work Order is Closed.F0
+Please enter a new one.I
+This Work Order is Canceled.F0
+Please enter a new one.I
+You cannot have a Multi-Date Work Order after it has incurred costs.F0
+The system will no longer allow you to create Multi-Date Work Orders.F0
+You must either reverse out the cost incurred or delete the dates.I
+WODATEI
+WODATEA
+The sum of all the quantities for the dates entered is less than the W/O'sF0
+scheduled quantity. The two quantitis must be equal in order forF0
+the conversion to go forward. I
+WODATE
+                
+                
+ Create Multiple Work Orders for:       -    
+                
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP.PRE       
+TEMP.SUF       
+TEMP.PRE2      
+TEMP.SUF2      
+TEMP.LOC       
+FACTOR         
+HOLD.SQTY      
+WO.QTY         
+LW_WO2         
+LW_WO          
+WODATE.WOPRE   
+WODATE.WOSUF   
+WODATE.START   
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.STATUS-
+OK             
+MTWO.WIP.SQTY  
+MTWO.WIP.ESETUP/
+MTWO.WIP.EOUTPR?
+MTWO.WIP.ELABORG
+MTWO.WIP.EFOVHD
+MTWO.WIP.VOVHD 
+MTWO.WIP.EMAT  7
+MTWO.WIP.EMISC C
+MTWO.WIP.EEXTRAc
+MTWO.WIP.SSTART
+MTWO.WIP.SFIN  
+WODATE.FINISH  
+WODATE.QTY     
+WOBOM.WOPRE    
+WOBOM.WOSUF    
+WOBOM.COMPCODE 
+WOBOM.START    ,
+WOBOM.TOTQTY   |
+WOBOM.QTYPER   l
+WOBOM.SCRAPQTY t
+WOBOM.ASSYQTY  
+WOBOM.EMATCST  
+MTIC.PROD.RCOSTF
+MTIC.PROD.TYPE #
+MTIC.PROD.UOA  
+BKIC.LOC.PROD  
+MTIC.PROD.CODE 
+BKIC.LOC.CODE  
+MTWO.WIP.LOC   
+BKIC.LOC.UALLOC
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+MTWORO.OPER    
+MTWORO.STQTY   {
+MTWORO.SQTY    
+MTWORO.TYPE    
+MTWORO.ESTHRS  /
+MTWORO.PARTSHR 
+MTWORO.LONGTIMEo
+MTWC.WC        
+MTWORO.WC      
+MTWORO.ESETCST 
+MTWC.SETUP     U
+MTWORO.ESETHRS ?
+MTWORO.ELABCST 
+MTWC.LABOR     ]
+MTWORO.EFOHCST 
+MTWC.FOVHD     }
+MTWORO.EVOHCST 
+MTWC.VOVHD     u
+MTWORO.EOUTCST 
+MTWORO.MIN.CHG ]
+MTWORO.MISCCOST
+MTWORO.QTYCOM  M
+MTWORO.%COMP   -
+LNE.LNGTH      
+LNE.LN2        
+NUM.MSG        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MESSAGE        
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+MTWO.WIP.DESC  
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+MTWO.WIP.ETOT  o
+MTWO.WIP.SETUPV
+MTWO.WIP.ASETUPO
+MTWO.WIP.LABORV
+MTWO.WIP.ALABORg
+MTWO.WIP.MATV  
+MTWO.WIP.AMAT  W
+MTWO.WIP.OUTPRV
+MTWO.WIP.AOUTPR_
+MTWO.WIP.FOVHDV
+MTWO.WIP.AFOVHD
+MTWO.WIP.VOVHDV
+MTWO.WIP.AVOVHD
+MTWO.WIP.MISCV S
+MTWO.WIP.AMISC K
+MTWO.WIP.EXTRAVs
+MTWO.WIP.AEXTRAk
+MTWO.WIP.TOTV  @
+MTWO.WIP.ATOTALw
+MTWO.WIP.SETUP%
+MTWO.WIP.LABOR%
+MTWO.WIP.MAT%  
+MTWO.WIP.OUTPR%
+MTWO.WIP.FOVHD%
+MTWO.WIP.VOVHD%
+MTWO.WIP.MISC% [
+MTWO.WIP.EXTRA%{
+MTWO.WIP.TOT%  H
+MSG_PTR        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

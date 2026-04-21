@@ -1,0 +1,627 @@
+TAS322
+BKYSMSTR
+WORKORD 
+WOROUT  
+WORKCTR 
+ROUTING 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+WOROUTA
+WORKORDA
+WORKCTRA
+ROUTINGA
+BKYSMSTR
+WO-K-G  Recalculate Projected HoursA
+Warning: Your Work Order defaults are not set to use Projected $ and Hours. This utility recalculates Projected $ and Hours.A
+F1 HelpA
+F10 Process,Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+WORKORDA
+WORKORDA
+The "Thru" start date cannot be less than the "From" start date. A
+The "Thru" finish date cannot be less than the "From" finish date. A
+The "Thru" Job Number cannot be less than the "From" Job Number. A
+The "Thru" class code cannot be less than the "From" class code. A
+Esc ExitA
+WORKORDA
+WORKORDI
+Recalculating Work Order :A
+ Operation A
+WOROUTA
+WOROUTI
+  Filter the processing to only  
+   Work Order Range    
+  include work orders with:      
+         -             
+         -             
+  Status Codes        [FR]       
+                       
+  Priority Codes     [123]       
+   Start Date Range    
+                       
+                                        
+                       
+                                        
+                       
+                                        
+   Finish Date Range   
+                                        
+                       
+                                        
+                       
+                                        
+                       
+                                        
+   Job Number          
+                                        
+                       
+                                        
+                       
+                                        
+                       
+                                        
+   Class Code Range    
+                                        
+     -                 
+                                        
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+WORKORDA
+ Work Orders A
+F1 Help,F2 Find,F3 Change Search KeyA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKORDA
+Work OA
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+WORKORDA
+Parent Part    A
+Work Ord  A
+Stat A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Cust Cd   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Customer Name            A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+SO#   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Start DtA
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Fin Dt  A
+Job Number     A
+WORKORDA
+Fin Dt  A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Job Number     A
+WORKORDA
+Job Number     A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+WORKORDA
+WORKORDA
+Work Order NoF
+Parent Item NoF
+Customer CodeF
+Customer NameF
+Sales Order NoF
+Job NumberI
+F1 HelpA
+Esc ExitA
+ A - Work Order NoF
+ B - Parent Item NoF
+ C - Customer CodeF
+ D - Customer NameF
+ E - Sales Order NoF
+ F - Job NumberA
+ Search Key I
+Open Work Orders only?A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter the WO number to find.      A
+             Work OrderA
+                  0-  0A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Rel  A
+FirmdA
+SchedA
+ClosdA
+CanclA
+IndirA
+     A
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+NNNYNX
+NNNYN6
+NNNYNX
+YNNNYC
+YNNNYCW]
+YNNNYF@&
+NNNYN)
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX1d
+YNNNYF
+YNNNYXjd
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+HOLD.SQTY      
+FACTOR         
+YSMSTR.H       
+OK             
+CFROM          
+SELECT_FROM1   
+SELECT_THRU1   
+FROM2          
+THRU2          
+WHICH          
+SDATE          
+FDATE          
+WSDATE         
+WFDATE         
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+SELECT_FROM3   
+SELECT_THRU3   
+SELECT_FROM4   
+SELECT_THRU4   
+PRIORITY       
+PRIORITY_OK    
+SELECT_FROM5   
+SELECT_THRU5   
+SELECT_FROM6   
+SELECT_THRU6   
+STATUS         
+STATUS_OK      
+SCHED          
+DFDTE          
+ZRET           
+REP.TAG        
+STARTED        
+BKYS.YN        
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.STATUS-
+MTWO.WIP.SSTART
+MTWO.WIP.SFIN  
+MTWO.WIP.PRTY  
+MTWO.WIP.USERCD
+MTWO.WIP.PROJ  
+MTWO.WIP.EST   
+MTWO.WIP.ESETUP/
+MTWO.WIP.EOUTPR?
+MTWO.WIP.ELABORG
+MTWO.WIP.EFOVHD
+MTWO.WIP.VOVHD 
+MTWO.WIP.EMAT  7
+MTWO.WIP.SQTY  
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+MTWORO.OPER    
+MTWORO.STQTY   {
+MTWORO.%COMP   -
+MTWORO.SQTY    
+MTWORO.TYPE    
+MTWORO.ESTHRS  /
+MTWORO.ACTHRS  7
+MTWORO.ESETHRS ?
+MTWC.WC        
+MTWORO.WC      
+MTWORO.ESETCST 
+MTWC.SETUP     U
+MTWORO.ELABCST 
+MTWC.LABOR     ]
+MTWORO.NUM.PERS
+MTWORO.EFOHCST 
+MTWC.FOVHD     }
+MTWORO.EVOHCST 
+MTWC.VOVHD     u
+MTRO.CODE      
+MTWORO.CODE    
+MTRO.OPER      
+MTWORO.EOUTCST 
+MTRO.VENDCOST  P
+MTWORO.MIN.CHG ]
+MTWORO.QTYCOM  M
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+MESSAGE        
+FC             
+WOF2.COL       
+WOF2.ROW       
+WO.LKUP.OPEN   
+WOM.STAT       
+WOXFIND.PRE    
+NEW.WOXPRE     
+WOXFIND.SUF    
+NEW.WOXSUF     
+WOXDIDFIND     
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+WO_TTL1        
+WO_USCORE      
+MTWO.WIP.CODE  
+MTWO.WIP.DESC  
+MTWO.CUSTCODE  
+MTWO.CUSTNAME  
+MTWO.WIP.SONUM 
+CC             
+DATC           
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+SRCH_HOW_MSG   
+XXWOM.STAT     
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+BUTTON_LIST    
+BUTTON_CNTR    
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

@@ -1,0 +1,211 @@
+ISMCF   
+BKSYMSTR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+Pending
+Multi Currency Conversion Utility [International] 2000.1A
+You are about to configure DBA Data files to use Multiple Currency.  Do you wish to continue?L
+BKIMBA
+ismcfA
+You must assign one Currency to be your BASE.  Do you wish to continue?L
+You must assign Control Accounts for AR,AP,and PO/RNI for each currency.  Do you wish to continue?L
+PendingA
+BKIMCA
+ismcrI
+You must create at least one date with conversion rates.  Do you wish to continue?L
+PendingA
+BKADCL
+bksymstrI
+You must assign Currency codes to all your checking accounts.  Do you wish to continue?L
+PendingA
+BKAPCURF
+PendingA
+BKARCURF
+PendingA
+Are you setting up Multi Currency for the First time? If you answer YES to this question it will assume that all your previous transaction were calculated with your BASE currency. If you asnwer NO it will assign your Customers and Vendors default currency to all current and historical transactions.L
+BKFSTCURF
+BKINTCURF
+Currency Conversion Completed.A
+Do you wish to continue?L
+             
+             
+                                                       
+             
+   Setup Currency Codes                                
+             
+   Setup Currency Rates                                
+             
+   Setup Checking Accounts                             
+             
+   Setup Vendor's Currency                             
+             
+   Setup Customer's Currency                           
+             
+   Setup Current & Historical Data                     
+             
+                                                       
+             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+OK             
+VALID          
+SYMST          
+ISMCF.HNDL     
+ISIS.MCF.GLAAR 
+ISIS.MCF.GLAAP 
+ISIS.MCF.GLAPO 
+ISMCR.HNDL     
+ISCTR          
+BKSY.CHK.CHKACT
+BKSY.CHK.CHKCUR
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        

@@ -1,0 +1,203 @@
+FILELOC 
+TASCOLOR
+FILEDICT
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_L
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESA
+filelocA
+FILEDICTA
+FILEDICTA
+FILEDICTA
+FILEDICT.XFRA
+FILEKEY A
+FILEKEYA
+FILEKEYA
+FILEKEY.XFRA
+FILELOC A
+FILELOCA
+FILELOCA
+FILELOC.XFRA
+fileloc.xfrA
+TAS Professional 5.0 Data Dictionary Merge ProgramA
+Choose what you want to do:                      A
+ Copy A
+ Update A
+ Initialize A
+RRRRRA
+Enter the FD name to copy to the XFR file: A
+UpdateA
+***** This routine if not completely successful can delete the data file being restructured.  It could also leave some files complete and others not.  To protect against this YOU MUST MAKE A BACKUP OF ALL EFFECTED FILES AND THE DATA DICTIONARY (FILE*.B) BEFORE CONTINUING.  ***** A
+ARE YOU SURE YOU WANT TO CONTINUE? NA
+Working on FD: A
+Update OffsetsA
+Delete Old FD A
+Save New FD   A
+Restructure   A
+Initialize    A
+tasinitA
+InitializeA
+ARE YOU SURE YOU WANT TO INITIALIZE THE XFR FILES? NL
+FILEDICTA
+FILEDICTA
+tasinitA
+FILEKEY A
+FILEKEYA
+tasinitA
+FILELOC A
+FILELOCA
+tasinitA
+FILEKEYA
+FILEDICTA
+FILELOCRRRRA
+ FD to Restructure: A
+There isn't enough room on the disk to Restructure the file.  You need to either delete something from your disk or move the file to another location.R
+There isn't enough internal RAM memory to complete this Restructure.  You need to make more memory available by removing TSRs or adding memory to your computer.A
+$$$$TEMP.RSTA
+tasinitA
+Internal Err - Mismatching FDsA
+ Number of files remaining: A
+ Working on File: A
+ Number of records remaining out: A
+tasinitA
+An error has occured while creating the new file.  The Restructure routine will stop now.  RESTORE ALL APPLICABLE FILES AND THE DATA DICTIONARY (FILE*.B).  Fix the problem and try again.A
+ Number of records remaining in:  A
+Internal Err - Mismatching FDsA
+$$$$TEMP.RSTA
+FILEKEYR
+FILEDICTR
+FILELOCRRRRA
+ File Desc A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+SETUP_COLOR
+OPEN_FILES
+INITIAL_CREATE
+FILE_DEFS
+CHK_FILE_DEF
+RESTRUCT_FILE
+RESTRUCT_FINI
+INIT_MSG_FLDS
+TEMP0         
+TEMP1         
+TEMP2         
+TEMP3         
+TEMP4         
+TEMP5         
+TEMP6         
+TEMP7         
+TEMP8         
+TEMP9         
+TEMP10        
+TEMP11        
+TEMP12        
+TEMP13        
+TEMP14        
+TEMP15        
+TEMP16        
+TEMP17        
+TEMP18        
+TEMP19        
+TEMP20        
+TEMP21        
+TEMP22        
+TEMP23        
+TEMP24        
+TEMP25        
+TEMP26        
+TEMP27        
+TEMP28        
+TEMP29        
+FILE_DEF       
+FD_ARRAY       
+FLD_NAME       
+FLD_TYPE       
+FLD_SIZE       
+FLD_DEC        
+FLD_ARRAY      
+FLD_UPCASE     
+OLD_FLD_TYPE   
+OLD_FLD_SIZE   
+OLD_FLD_ARRAY  
+OLD_FLD_OFFSET 
+FLD_OFFSET     
+RESTRUCT_FLD   
+SIZE_HLDR      
+SIZE_HLDR1     
+INT_SIZE       
+KCNTR          
+NUM_RECS_REMAIN
+NUM_RECS_HLDR  
+FILE.CHRS      
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+TEMP_HLDR      
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DES_FNAME      
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+KEYXFR_HNDL    
+DICTXFR_HNDL   
+EXTRA_HNDL     
+EXTRA_HNDL2    
+LOCXFR_HNDL    
+XFR_LOCATION   
+NEW            
+FILES_OPEN     
+CREATE_FILE    
+LOC_BUFF_NAME  
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+LOC_REC_TYPE   
+CNTR           
+BC             
+MC             
+CC             
+SC             
+DICT_BUFF_NAME 
+UPDATE_FD_CNTR 
+FD_EXISTS      
+DICT_OFFSET    
+DICT_TYPE      
+FD_CNTR        
+ELE_LOC        
+DICT_FIELD_NAME
+DICT_SIZE      
+DICT_ARRAY_ELE 
+LOC_LOCATION   
+FLCODE         
+A_CNTR         
+A_CNTR2        
+A_CNTR3        
+A_CNTR4        
+A_CNTR5        
+RSTR_FILES     
+WC             
+CNTR2          
+DICT_HOFFSET   u
+DICT_HTYPE     w
+DICT_HSIZE     x
+DICT_HDEC      z
+DICT_DEC       
+DICT_HARRAY    |
+DES_HNDL       
+IS_TYP         
+IS_SZE         
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+MESSAGE        
+MSG_PTR        

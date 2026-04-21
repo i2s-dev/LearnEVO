@@ -1,0 +1,462 @@
+TAS32,
+BKYSMSTR
+WOLABOR 
+BKSYMSTR
+BKGLTRAN
+CALENDAR
+BKPRMSTR
+WORKORD 
+WOROUT  
+BKICMSTR
+MTICMSTR
+WORKCTR 
+BKGLCOA 
+CLASS   
+TOOL    
+MACHINE 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+BKYSMSTRA
+CLASSA
+MACHINEA
+WORKCTRA
+MTICMSTRA
+BKICMSTRA
+BKGLETRNA
+BKGLTEMPA
+BKGLCOAA
+WOROUTA
+WORKORDA
+WOLABORA
+WOELABORA
+BKPRMSTRA
+CALENDARA
+WOELABORA
+BKYSMSTRA
+BKSYMSTRA
+BKSYMSTRA
+BKGLTEMPh%
+DI-M Transfer Labor to DBAA
+F1 HelpA
+Esc ExitA
+BKYSMSTRA
+BKYSMSTR
+Now transfering Labor for Emp: A
+MISSINGF 
+INVALIDI
+INVALIDI
+INVALIDIm
+INVALIDF 
+INVALIDA
+MISSINGF 
+INVALIDF 
+CLOSEDA
+CANCELEDA
+UNRELEASEDI
+MISSINGI
+MISSINGF 
+INVALIDA
+MISSINGI
+WOELABORA
+>>>>>  Report was terminated before completion  <<<<<A
+        Total records printed: A
+There are no records in the primary fileI
+A matching record was not found during a related findI
+Press any key to continueA
+MACHINEA
+WORKORDA
+WOROUTA
+WOROUTA
+WOROUTI
+WOROUTA
+WOROUTA
+WOLABORA
+WOLABORA
+WOELABORA
+WOELABORI
+Labor on Work in ProcessI
+BKGLTEMPI<
+BKGLETRNA
+BKGLTEMPA
+BKGLCOAI
+ ************* WARNING ****************F
+A G/L Account was not found and you did not haveF
+a Clearing Account in the System Master File.F
+Because of this at least one posting during this processF
+was out of balance.  Please enter a clearing accountF
+right now   Then get an Other Journal reportF
+and find the out of balance items and fix them.  PleaseF
+refer to Program SY-E in the DBA-Accounting user manual.I
+BKADAI
+A G/L account was not found for at least one of theF
+posted items in this process.  Please get an OtherF
+Journal Report and using the General Journal put theF
+amount in the correct account.  You should then fixF
+the appropriate item.I
+                      
+                      
+                                 
+                      
+  Print errors report? [Y/N]:    
+                      
+                                 
+                      
+                              LABOR ERRORS REPORT                    Page:
+       Date               Emp            Work Order            Seq
+    -----------------------------------------------------------------------
+                                               -
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TOT_RECORDS    
+PRT_WHR        
+PRT_CHR        
+WIDE_YN        
+LIST           
+DISK.FILE      
+FILE.CNTR      
+PAGE           
+MISSING.INVALID
+PRT.BAD        
+TYPE.OK        
+POST.AMT       
+POST.FAIL      
+POST.OTHER     
+MONTH          
+MTWOLA.EMP     
+MTWOLA.DATE    
+MTCAL.DATE     
+BKYS.DATE      
+BKSY.FISCAL.YR 
+BKPR.EMP.NUM   
+BKPR.EMP.PAYTYP
+MTWO.WIP.WOPRE 
+MTWOLA.WOPRE   
+MTWO.WIP.WOSUF 
+MTWOLA.WOSUF   
+MTWO.WIP.STATUS-
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+MTWORO.OPER    
+MTWOLA.OPER    
+MTWORO.TYPE    
+MESSAGE        
+NUM.MSG        
+DATE_TIME      
+CHG_TIME       
+CHG_DATE       
+STDDAYS        
+STDMONTH       
+STDYEAR        
+STDAYH         
+AM_PM          
+TIME_STRG      
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+OK             
+MTWOLA.TEAM    
+MTWORO.STD.TIME\
+MTWOLA.RUNHRS  
+MTWORO.TIMEPART
+MTWOLA.PARTS   (
+MTWORO.LONGTIMEo
+MTWOLA.ASSY    z
+MTWO.WIP.CODE  
+MTWORO.WC      
+MTWOLA.POSTED  
+MTWOLA.FOHCOST 
+MTWC.FOVHD     }
+MTWOLA.SETUPHRS 
+MTWOLA.VOHCOST 
+MTWC.VOVHD     u
+BKYS.YN        
+MTWOLA.REGOVER 
+MTWOLA.LABRATE 
+BKPR.EMP.PAYAMT
+MTWOLA.SETCOST 
+MTWC.LABOR     ]
+MTWOLA.LABCOST 
+MTWC.SETUP     U
+BKGL.ACCT      
+MTIC.PROD.GLWIP
+BKGL.GLDPT     
+MTIC.PROD.WIPDP
+MTCLASS.CLASS  
+BKIC.PROD.CLASS6
+MTCLASS.LOC    
+MTWO.WIP.LOC   
+CLASS.GLW      d
+CLASS.DPTW     n
+MTWOLA.NOJOBS  
+MTWOLA.MISC    
+BKYS.GLNUM     
+BKYS.GLDPT     
+MTWO.WIP.ASETUPO
+MTWO.WIP.ALABORg
+MTWO.WIP.AFOVHD
+MTWO.WIP.AVOVHD
+MTWO.WIP.AMISC K
+MTWO.WIP.ATOTALw
+MTWO.WIP.AMAT  W
+MTWO.WIP.AOUTPR_
+MTWO.WIP.AEXTRAk
+MTWO.WIP.SETUPV
+MTWO.WIP.ESETUP/
+MTWO.WIP.LABORV
+MTWO.WIP.ELABORG
+MTWO.WIP.MATV  
+MTWO.WIP.EMAT  7
+MTWO.WIP.OUTPRV
+MTWO.WIP.EOUTPR?
+MTWO.WIP.FOVHDV
+MTWO.WIP.EFOVHD
+MTWO.WIP.VOVHDV
+MTWO.WIP.VOVHD 
+MTWO.WIP.MISCV S
+MTWO.WIP.EMISC C
+MTWO.WIP.EXTRAVs
+MTWO.WIP.EEXTRAc
+MTWO.WIP.TOTV  @
+MTWO.WIP.ETOT  o
+MTWO.WIP.SETUP%
+MTWO.WIP.LABOR%
+MTWO.WIP.MAT%  
+MTWO.WIP.OUTPR%
+MTWO.WIP.FOVHD%
+MTWO.WIP.VOVHD%
+MTWO.WIP.MISC% [
+MTWO.WIP.EXTRA%{
+MTWO.WIP.TOT%  H
+MTWORO.QTYCOM  M
+MTWORO.SCRAPPEDs
+MTWOLA.SCRAPPED2
+MTWORO.STQTY   {
+MTWORO.SQTY    
+MTWORO.%COMP   -
+MTWORO.ACTHRS  7
+MTWORO.ASETHRS G
+MTWORO.ASETCST 
+MTWORO.ALABCST 
+MTWORO.AFOHCST 
+MTWORO.AVOHCST 
+MTWORO.MISCACSTC
+MTWOLA.WC      
+MTWOLA.TOOL    
+MTWORO.TOOL    
+MTOOL.TOOL     
+MTOOL.NOPARTS  
+TMACH.MACHINE  
+MTWOLA.MACH    
+TMACH.HRSUSED  "
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKGL.TRN.TYPE  H
+BKGL.TRN.DATE  
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.CODE  
+BKIC.PROD.CODE 
+BKGL.TRN.DESC  &
+BKGL.TRN.INVC  
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.ENTDTEJ
+YEAR.PAST      
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+MSG_PTR        
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        

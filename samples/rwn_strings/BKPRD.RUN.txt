@@ -1,0 +1,2220 @@
+BKSYMSTR
+BKYSMSTR
+BKPRMSTR
+BKPRCURP
+BKPRTCFG
+ISBANKS 
+BKPRINFO
+BKPRGLFL
+TASCOLOR
+ISPRTEMP
+BKGLTRAN
+BKSYHELP
+DBAHLPID
+ISGLDATE
+BKSYPRTR
+BKICMSTR
+MKAHIST 
+BKAPDESC
+BKAPVEND
+BKARCUST
+BKCMACCT
+ISNUMBER
+ISBSF   
+ - ISTS Enhancement 08/02/23A
+ISTECHA
+ISTPRA
+threeF@
+fourF@
+fiveF@
+sevenF@
+eightF@
+nineF@
+elevenF@
+twelveF@
+thirteenF@
+fourteenF@
+fifteenF@
+sixteenF@
+seventeenF@
+eighteenF@
+nineteenF@
+twentyF@
+thirtyF@
+fortyF@
+fiftyF@
+sixtyF@
+seventyF@
+eightyF@
+ninetyA
+BKSYMSTRA
+BKPRCURPA
+ISPRMSTRA
+BKPRGLFLA
+BKGLCHKA
+ISBANKSA
+BKGLTRANA
+BKGLCOAA
+BKYSMSTRA
+BKPRINFOA
+BKYSMSTRA
+BKYSMSTRIs
+Due to changes in Payroll security, you must run a one-time utility before you can continue with this program.  Are you ready to begin?L
+PRJCSYNCA
+PAYROLLA
+BKYSMSTRIs
+ISPRMSTRI
+ISPRMSTRA
+BKPRCURPI
+BKPRCURPA
+The PR check print format setting is invalid.  Please use AD-B to correct this setting. A
+warnI/
+The PR check print format setting is invalid.  Please use AD-B to correct this setting. A
+BKPRTCFGA
+BKPRTCFGA
+PR-D  Print Payroll Checks [Laser Forms]A
+PR-D  Print Payroll Checks [Continuous Forms]A
+Checking payroll files...I
+BKPRCURPA
+BKPRCURPI
+DDNUMA
+F1 HelpA
+Esc ExitA
+DDNUMA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+ISPRMSTRA
+From Employee cannot be greater than the Thru EmployeeI2
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+ISPRMSTRA
+BKYSMSTRA
+ISPRMSTRA
+BKYSMSTRA
+BKPRCURPA
+bkpr_curp_empnmA
+emp_nameA
+bkpr_emp_deptA
+pr_end_dateA
+todays_dateA
+pay_name[1]A
+pay_hrs[1]A
+pay_amt[1]A
+ded_name[1]A
+ded_amt[1]A
+ded_name[11]A
+ded_amt[11]A
+ytd_name[1]A
+ytd_amt[1]A
+pay_name[2]A
+pay_hrs[2]A
+pay_amt[2]A
+ded_name[2]A
+ded_amt[2]A
+ded_name[12]A
+ded_amt[12]A
+ytd_name[2]A
+ytd_amt[2]A
+pay_name[3]A
+pay_hrs[3]A
+pay_amt[3]A
+ded_name[3]A
+ded_amt[3]A
+ded_name[13]A
+ded_amt[13]A
+ytd_name[3]A
+ytd_amt[3]A
+pay_name[4]A
+pay_hrs[4]A
+pay_amt[4]A
+ded_name[4]A
+ded_amt[4]A
+ded_name[14]A
+ded_amt[14]A
+ytd_name[4]A
+ytd_amt[4]A
+pay_name[5]A
+pay_hrs[5]A
+pay_amt[5]A
+ded_name[5]A
+ded_amt[5]A
+ded_name[15]A
+ded_amt[15]A
+ytd_name[5]A
+ytd_amt[5]A
+pay_name[6]A
+pay_hrs[6]A
+pay_amt[6]A
+ded_name[6]A
+ded_amt[6]A
+ded_name[16]A
+ded_amt[16]A
+ytd_name[6]A
+ytd_amt[6]A
+pay_name[7]A
+pay_hrs[7]A
+pay_amt[7]A
+ded_name[7]A
+ded_amt[7]A
+ded_name[17]A
+ded_amt[17]A
+ytd_name[7]A
+ytd_amt[7]A
+pay_name[8]A
+pay_hrs[8]A
+pay_amt[8]A
+ded_name[8]A
+ded_amt[8]A
+ded_name[18]A
+ded_amt[18]A
+ytd_name[8]A
+ytd_amt[8]A
+pay_name[9]A
+pay_hrs[9]A
+pay_amt[9]A
+ded_name[9]A
+ded_amt[9]A
+ded_name[19]A
+ded_amt[19]A
+ytd_name[9]A
+ytd_amt[9]A
+pay_name[10]A
+pay_hrs[10]A
+pay_amt[10]A
+ded_name[10]A
+ded_amt[10]A
+ded_name[20]A
+ded_amt[20]A
+ytd_name[10]A
+ytd_amt[10]A
+sick_dueA
+vac_dueA
+bkpr_curp_totpyA
+tot_deductA
+bkpr_curp_ntpayA
+chk_amt_dolA
+emp_name1A
+bkpr_emp_addA
+bkpr_emp_cszA
+chk_dateA
+chk_amt_dolA
+chk_numA
+hr_rateA
+dd_print_textA
+ref_chk_textA
+r_rateA
+ot_rateA
+sic_rateA
+vac_rateA
+hol_rateA
+pr_start_dateA
+ytd_401k_amtA
+ded_ytd[1]A
+ded_ytd[2]A
+ded_ytd[3]A
+ded_ytd[4]A
+ded_ytd[5]A
+ded_ytd[6]A
+ded_ytd[7]A
+ded_ytd[8]A
+ded_ytd[9]A
+ded_ytd[10]A
+pay_rate[1]A
+pay_rate[2]A
+pay_rate[3]A
+pay_rate[4]A
+pay_rate[5]A
+pay_rate[6]A
+pay_rate[7]A
+pay_rate[8]A
+pay_rate[9]A
+pay_rate[10]A
+pay_rate[11]A
+pay_rate[12]A
+tot_ded_ytdA
+bkpr_curp_tothrA
+bkprd1.rtmI
+bkprd2.rtmI
+For text-based continuous check forms we recommend using the "Generic / Text Only" printer driver.  When doing so make sure the "Paper Source" is set to "Continuous - No Page Br" to ensure correct page spacing. A
+NOT A CHECKA
+Reference #A
+Check #A
+**** VOID ****I
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxI
+        Pay A
+          Pay A
+          Pay A
+              A
+**** VOID ****I-
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxI
+      Pay A
+        Pay A
+Hr Rate: $A
+BKPRCURPF
+pay_amt[4]I
+pay_amt[7]I
+ytd_name[9]I
+r_rateI
+pay_rate[1]I
+BKPRCURPA
+BKPRCURPA
+BKPRCURPA
+RegularF
+OvertimeF
+DoubletimeF
+HolidayF
+CommissionF
+VacationF
+Sick PayF
+------A
+Federal W/HF
+FICA (SS)F
+FICA (MED)F
+State W/HF
+Workers CompF
+GROSS PAYF`
+FEDERAL W/HF`
+FICA (SS)F`
+FICA (MED)F`
+STATE W/HF`
+WORKERS COMPF`
+Other DeductionsF`
+Employee A
+ was not found.A
+Please reenter and then rerun this program again.   I
+Did the Direct Deposit check print properly?L
+Did the check print properly?L
+ISPRMSTRA
+BKPRGLFLA
+BKPRCURPF@2
+BKPRDPSTA
+BKPRCURPL
+There are currently no payroll checks to print.I
+ millionA
+ thousandA
+ and A
+/100 dollarsA
+/100 dollarsA
+ hundredA
+Payroll G/L Interface Record found.  It must be entered beforeF@2
+you can continue with this employee.  Use Choice D under theF@2
+System Maintenance menu to do so.I
+Enter the starting check number for the PayrollF@2
+Checks. The next check number for the chosen accountF@2
+is displayed automatically for you.I
+Enter the date to be printed on the Payroll Checks,F@2
+and to be used in posting the checks.   The computer'sF@2
+system date is displayed for you automatically.I
+Enter the Payroll Period Ending Date for printingF@2
+on the check stub.I
+The Check Register is locked by another user.  Please try again later. A
+ENTER Select/UnselectA
+F10 Save,Esc ExitA
+NormalBkgA
+Direct Deposit A
+ UnTag A
+Checks that did not print correctly.A
+Check A
+ Emp A
+Name                         A
+Amount     A
+Exit without choosing any items?  (any items marked for selection in this window will be unselected)L
+BKPRCURPF
+BKPRCURPA
+BKGLTEMPA
+ISPRTEMPA
+Consol PRA
+Consol PRF
+                      
+                      
+                                  
+                      
+  Bank Account                    
+                      
+                                  
+                      
+                                  
+                      
+  Bank Account for Direct Deposit 
+                      
+                                  
+                      
+                                  
+                      
+  Beginning Check Number          
+                      
+  Beginning  DD   Number          
+                      
+          From Employee           
+                      
+          Thru Employee           
+                      
+             Check Date           
+                      
+     Period Start  Date           
+                      
+     Period Ending Date           
+                      
+      Print Hourly Rate           
+                      
+                                  
+                      
+EMPLOYEE                              DIV.  PERIOD ENDING  CHECK DATE
+====================================================================================================================================
+  EARNINGS     HOURS      AMOUNT                        D  E  D  U  C  T  I  O  N  S                            YEAR TO DATE
+----------------------------------      ---------------------------------------------------------      ----------------------------
+                                                                                                         Accrued Sick Hrs
+                                                                                                         Accrued Vac  Hrs
+====================================================================================================================================
+TOTAL EARNINGS:              TOTAL DEDUCTIONS:               NET PAY:
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -
+EMPLOYEE                              DIV.  PERIOD ENDING  CHECK DATE
+===============================================================================
+              This Check --- YTD ---   Earnings    Hours        Rate     Total
+                                       Accr Sick Hrs:
+                                       Accr Vac Hrs :
+===============================================================================
+TOTAL EARNINGS:              TOTAL DEDUCTIONS:               NET PAY:
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -
+EMPLOYEE                              DIV.  PERIOD ENDING  CHECK DATE
+====================================================================================================================================
+  EARNINGS     HOURS      AMOUNT                        D  E  D  U  C  T  I  O  N  S                            YEAR TO DATE
+-----------------------------------      ---------------------------------------------------------      ----------------------------
+                                                                                                         Accrued Sick Hrs:
+                                                                                                         Accrued Vac  Hrs:
+====================================================================================================================================
+TOTAL EARNINGS:              TOTAL DEDUCTIONS:               NET PAY:
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -
+BKYSMSTRF@2
+The BKYSMSTR file is locked by another user.F@2
+Other users may be in the system.  Try F@2
+again when all users have exited the system.I
+PR-B  Enter Pay InfoA
+PR-D  Print Payroll Checks A
+Please enter 1, 2, 3 or 4.A
+ This is the first payroll of a new quarter.  You will need to F@2
+ proceed to clear the quarter to date fields at this time.F@2
+ If you wish to run any quarterly reports and have not alreadyF@2
+ done so, you MUST do so now.  If you proceed, the QTD F@2
+ amounts for each employee will be lost.  This will NOT howeverF@2
+ affect the payroll history records.  Clearing of the QTD figuresF@2
+ will be done for ALL payroll divisions, not just the one(s) for F@2
+ which you are printing checks now.I
+ ********************* VERY IMPORTANT *************************F@2
+ If this is the first payroll of the new year make sure you haveF@2
+ run the Payroll Year End Routine.  If you have not done F@2
+ so then exit the program now and complete running that option beforeF@2
+ preparing another payroll or computed amounts could be incorrect.I
+Proceed with clearing QTD amounts? L
+ISPRMSTRA
+Updating QTD Amts - Emp A
+ISPRMSTRA
+ISPRMSTRA
+                             A
+The BKYSMSTR file is locked by another user.F@2
+Make sure that all other users are out of the  F@2
+system and then press ENTER to try again.I
+                                                                          
+                                                                          
+                                                                          
+                      Quarter:                                            
+                                                                          
+                                                                          
+                                                                          
+   Please verify which calendar year quarter your current payroll is in.  
+                                                                          
+               1    =  1st quarter (JAN-MAR)                              
+               2    =  2nd quarter (APR-JUN)                              
+               3    =  3rd quarter (JUL-SEP)                              
+               4    -  4th quarter (OCT-DEC)                              
+                                                                          
+                                                                          
+   Based on the number input, this is how the system will "know" when     
+   a quarter has changed and will prompt you to clear the quarter-to-date 
+   information at the appropriate time in the PR-D program.               
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when Accounting is activated. A
+This program is only available when Accounts Receivable is activated. A
+This program is only available when Accounts Payable is activated. A
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+The date is not valid (00/00/00). A
+Transactions cannot be posted until the fiscal year dates are set up in AM-N.A
+Transactions with dates greater than the Future Post Date (A
+) cannot be posted.A
+A transaction with this date cannot be posted to the GL.A
+The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the six preceding fiscal years.A
+The starting date of the current fiscal year is A
+A transaction with this date cannot be posted to the GL.  The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the two preceding fiscal years.  The starting date of the current fiscal year is A
+This transaction will be posted to a prior fiscal year.  Is this OK? L
+The transaction date is prior to the Period-End Close Date. A
+*.RTMA
+NormalBkgA
+NormalBkgA
+Graphical Form Name :  A
+            A
+Graphical Report names starting with IT6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to IBKA
+Graphical Report names starting with T6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to BKA
+Graphical Report names starting with IBK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to IT6A
+Graphical Report names starting with BK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to T6A
+Form A
+ was not found in the DBA directory.A
+ Forms List A
+F1 HelpA
+Esc ExitA
+Form Name      A
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+ISGLDATEI
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+ISPRMSTRA
+ Employees A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+ISPRMSTRA
+Last Name                A
+First Name               A
+ShiftA
+ISPRMSTRA
+Last Name                A
+First Name               A
+ShiftA
+ISPRMSTRA
+ISPRMSTRA
+Employee NumberF@
+Last NameI
+F1 HelpA
+Esc ExitA
+ A - Employee NumberF@
+ B - Last NameA
+ Search Key I
+Active Employees only?A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCA
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+MKAHISTA
+BKWOAA
+ISTECHSUPPORTA
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+     A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+EVOSERVICEA
+C:\ISES\A
+C:\ISTS\I
+EVOSERVICEA
+WHOAMI.*A
+WHOAMI.DBAA
+EVOSERVICE                         A
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate or Create A
+ folder. Please contact Lynn@istechsupport.comA
+bkistek.bmpA
+ISNUMBERA
+There was an issue getting the next availble number. Please Try againA
+The Record Code A
+ Was not found. Please try running SD-R to initialize the file.A
+The Name A
+ Was not found. Please try running SD-R to initialize the file.A
+ISNUMBERA
+Error: Next Number is not on the correct record. Please remember what program you are running and contact ISTechSupport with a description of what happened.L
+WONUMA
+QCLABA
+BMARCA
+PONUMA
+QCNUMA
+RFQNUMA
+POSCRATCHA
+RECVNUMA
+SONUMA
+INVNUMA
+PSNUMA
+ESTNUMA
+RSONUMA
+QTNUMA
+SRNUMA
+SRPNUMA
+RMNUMA
+JOBNUMA
+SOSCRATCHA
+APINUMA
+RAPNUMA
+CHK1NUMA
+CHK2NUMA
+CHK3NUMA
+CHK4NUMA
+CHK5NUMA
+CHK6NUMA
+CHK7NUMA
+CHK8NUMA
+CHK9NUMA
+APDEPNUMA
+TRANSNUMA
+TRANFNUMA
+DDNUMA
+GJNUMA
+GJTNUMA
+NCRNUMA
+CARNUMA
+ACHNUMA
+ISBANKSI
+ISNUMBERA
+MKAHISTA
+ISBSFF
+ Select Bank AccountL
+F3 Change Search KeyA
+F3 Change Search KeyA
+Esc ExitA
+Sort#A
+DescriptionA
+Description                             A
+Sort#A
+  NumA
+DescriptionA
+The process you are running may not be able to continue if you don't choose a bank account.  Exit without selecting a bank account?L
+User Defined SortF@
+DescriptionF@
+Bank NumberI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERI
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+NNNYNF@ 
+YNNNYFp
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYFp
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX6
+YNNNYF
+YNNNYFp
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+NNNYN&@
+NNNYNX
+NNNYNP@
+NNNYNX
+YNNNYC
+NNNYNF 
+YNNNYF
+NNNNNF
+YNNNNC\
+YNNNYF
+YNNNNC+
+YNNNYF
+YNNNNCq
+YNNNYF
+YNNNNC;
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNC
+YNNNYN
+YNNNNF
+YNNNYCZ
+YNNNYF
+NNNYNP
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+ISTS.EDATE     
+MSG_LINE       
+ACNTR          
+PRT_WHR        
+CTR            
+CHK_NAME       
+CHKACT         
+NEW.CHKACT     
+BEG.CHK.NUM    
+CHK.DATE       
+CHK.NUM        
+EMP.NUM        
+TOT.AMT        
+TOT.TOT        
+TOT.DAMT       
+TOT.RAMT       
+LNES           
+CHK.AMT.DOL    
+YTD.FED        
+YTD.STATE      
+YTD.SDI        
+YTD.FICA       
+YTD.MDED       
+YTD.ODED       
+YTD.WC         
+YTD.GROSS      
+X              
+YTD.UOD        
+PR.END.DATE    
+OTH.TOT.HRS    
+OTH.TOT.AMT    
+EMP.NAME       
+EMP.NAME1      
+CHK.HLDR       
+NUM.HLDR       
+TODAYS.DATE    
+OK             
+NUM            
+DOLLAR.ALPHA   
+TMP.FLD        
+REP            
+REP1           
+REP2           
+REP3           
+SINGLE.CHR     
+SINGLE.NUM     
+ALPHA.MILLS    
+ALPHA.THOUS    
+ALPHA.HUNDS    
+SICK.DUE       
+VAC.DUE        
+PAY.NAME       
+PAY.HRS        
+PAY.AMT        
+PAY.RATE       
+DED.NAME       
+DED.AMT        
+DED.YTD        
+YTD.NAME       
+YTD.AMT        
+TOT_DEDUCT     
+PRT.ON         
+DISK.FILE      
+MCNTR2         
+MCNTR3         
+MCNTR4         
+F.EMP          
+T.EMP          
+PRGS.WHR       
+FORM.NUM       
+TEXT.MODE      
+GROSS.PAY      
+TOT.DED.YTD    
+PR.START.DATE  
+REG.RATE       
+OT.RATE        
+SIC.RATE       
+VAC.RATE       
+HOL.RATE       
+PAY.HRS.YTD    
+PAY.AMT.YTD    
+YTD.401K.AMT   
+LOCSPACE       
+ISBANKS.H      
+PHR            
+HR.RATE        
+DDCHKACT       
+NEW.DDCHKACT   
+TEMP.CHKACT    
+DDCHK.NAME     
+TEMP.CHK.NAME  
+DDCHK.NUM      
+TEMP.CHK.NUM   
+DD.PRINT.PASS  
+DD.PRINT.TEXT  
+CHECKS.EXIST   
+REF.CHK.TEXT   
+PRINFO.H       
+CHK.EMPNUM     
+CHK.EMPNAME    
+CHK.DEPT       
+CHK.NUMBER     
+CHK.AMOUNT     
+CHK.SEL        
+CHK.RECNUM     
+CHK.CNTR       
+SEL.CNTR       
+SEL.TCNTR      
+SEL.TTL1       
+SEL.TTL2       
+SEL.TTL3       
+SEL.TTL4       
+SEL.TTL5       
+SEL.TTL6       
+SEL.TTL7       
+SEL.ACTV       
+I              
+LOOP           
+ZRET           
+INC.VAC.RHRS   
+INC.VAC.HHRS   
+INC.VAC.OHRS   
+INC.VAC.DHRS   
+INC.VAC.VHRS   
+INC.VAC.SHRS   
+TOT.VAC.HRS    
+INC.SIC.RHRS   
+INC.SIC.HHRS   
+INC.SIC.OHRS   
+INC.SIC.DHRS   
+INC.SIC.VHRS   
+INC.SIC.SHRS   
+TOT.SIC.HRS    
+BKGLCHK_HNDL   
+BKSY.PRGS.WHR  
+BKYS.YN        
+BKPR.EMP.NUM   
+BKPR.CURP.EMPNM
+BKPR.CURP.RPHRS
+BKPR.CURP.RPAMT.
+BKPR.CURP.OPHRS6
+BKPR.CURP.OPAMT
+BKPR.CURP.TOTPY
+BKPR.CURP.VPHRSV
+BKPR.CURP.VPAMTf
+BKPR.CURP.SPHRSn
+BKPR.CURP.SPAMT~
+BKPR.CURP.FITWH6
+BKPR.CURP.FICWHF
+BKPR.CURP.SITWH>
+BKPR.CURP.MDAMT
+BKPR.CURP.ODAMT
+BKPR.CURP.SDIWH
+BKPR.CURP.UOD  
+BKPR.CURP.WCWH v
+BKPR.CURP.NTPAY
+BKSY.PR.CHKACT 
+IS.BANKS.DESC  
+IS.BANKS.NXTNUM:
+BKPR.INFO.DDEP 
+RTM_NAME       
+IS.BANKS.RTM   |
+BKPR.EMP.DEPT  
+BKPR.EMP.FNMI  
+BKPR.EMP.LNME  
+BKPR.EMP.FITYTD
+BKPR.EMP.FICYTD
+BKPR.EMP.STYTD 
+BKPR.EMP.SDIYTD 
+BKPR.EMP.WKYTD 
+BKPR.EMP.MDYTD 
+BKPR.EMP.OTHYTD
+BKPR.EMP.VDUE  r
+BKPR.INFO.ALPHA
+BKPR.INFO.AHOW 
+BKPR.INFO.VACAC
+BKPR.INFO.VHRS 
+BKPR.INFO.AVAC 
+BKPR.GL.PAYPER 
+BKPR.EMP.VRTE  )
+BKPR.EMP.VCAP  =
+BKPR.EMP.SDUE  
+BKPR.INFO.SICKA
+BKPR.INFO.SHRS 
+BKPR.INFO.ASICK
+BKPR.EMP.SRTE  1
+BKPR.EMP.SCAP  E
+BKPR.EMP.UODYTDB
+BKPR.EMP.OAYTD >
+BKPR.EMP.RAYTD J
+BKPR.EMP.VAYTD j
+BKPR.EMP.SAYTD 
+BKPR.EMP.PAYAMT
+BKPR.EMP.ADD   4
+BKPR.EMP.CSZ   R
+BKPR.CURP.TOTHR
+BKPR.CURP.CHKNM
+BKPR.CURP.ACTNM
+BKPR.CURP.PRDTE
+BKPR.CURP.RPRTE&
+BKPR.EMP.RHYTD B
+BKPR.CURP.OPRTE
+BKPR.EMP.OHYTD 
+BKPR.CURP.VPRTE^
+BKPR.EMP.VHYTD b
+BKPR.CURP.SPRTEv
+BKPR.EMP.SHYTD 
+BKPR.CURP.OPNME6
+CLRCNTR        
+BKPR.CURP.MDNME
+BKPR.CURP.ODNME
+MCNTR          
+BKPR.GL.UODNAMEV
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+ISTS.CFG.PRPOST
+MONTH.NUM      
+CC             
+BKPR.CURP.UODEC
+GLTEMP.H       
+PRTEMP.H       
+POS            
+REC.CNTR       
+REC.KEY        
+SORT.ARRAY     
+REC.ARRAY      
+ISPR.TRN.GLACCT
+ISPR.TRN.GLDPT 
+ISPR.TRN.DC    ?
+ISPR.TRN.DESC  &
+BKGL.TRN.TYPE  H
+ISPR.TRN.TYPE  H
+BKGL.TRN.DATE  
+ISPR.TRN.DATE  
+BKGL.TRN.INVC  
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.CODE  
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+ISPR.TRN.AMT   @
+BKGL.TRN.ENTDTEJ
+ISPR.TRN.ENTDTEJ
+BKGL.TRN.EXTRA N
+ISPR.TRN.EXTRA N
+BKGL.TRN.DESC  &
+FROM_PRG_A     
+CHK_DTE_D      
+BKYSMSTR_HNDL  
+A2_A           
+CUR_MONTH      
+CUR_QUARTER    
+BKPR.EMP.RHQTD 2
+BKPR.EMP.RAQTD :
+BKPR.EMP.VHQTD R
+BKPR.EMP.VAQTD Z
+BKPR.EMP.SHQTD z
+BKPR.EMP.SAQTD 
+BKPR.EMP.FITQTD
+BKPR.EMP.FICQTD
+BKPR.EMP.STQTD 
+BKPR.EMP.WKQTD 
+BKPR.EMP.MDQTD 
+BKPR.EMP.OTHQTD
+BKPR.EMP.OHQTD 
+BKPR.EMP.OAQTD ~
+BKPR.EMP.UODQTD
+BKPR.EMP.UDEQTD!
+BKPR.EMP.SDIQTD
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.BMTYPR
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.GLBSDT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+ISTS.CFG.SOELAB
+ISTS.CFG.WOICST
+ISTS.CFG.POCBIN
+ISTS.CFG.SOEGSB
+ISTS.CFG.SOACDL
+ISTS.CFG.DCBEMP
+ISTS.CFG.TPRTNT
+ISTS.CFG.POCPLL
+ISTS.CFG.POACAL
+ISTS.CFG.RMDCWO
+ISTS.CFG.RMDGLA
+ISTS.CFG.RMDGLD
+ISTS.CFG.SOESDT
+ISTS.CFG.SOEUBO
+ISTS.CFG.SHPBIN
+ISTS.CFG.POEPRX
+ISTS.CFG.SOFSND
+ISTS.CFG.EMAILS
+ISTS.CFG.EMAILP
+ISTS.CFG.NZETYP
+ISTS.CFG.INBTLS
+ISTS.CFG.SOASPK
+ISTS.CFG.HHDCWO
+ISTS.CFG.POARSK
+ISTS.CFG.ASTART
+ISTS.CFG.INACT 
+ISTS.CFG.URNT  
+ISTS.CFG.RECYCL
+ISTS.CFG.BLSTDC
+ISTS.CFG.TRKSER
+ISTS.CFG.INKTDT
+ISTS.CFG.POCERD
+ISTS.CFG.POADYS
+ISTS.CFG.QTYADJ
+ISTS.CFG.HHFLOC
+ISTS.CFG.HHTLOC
+ISTS.CFG.POCFRT
+ISTS.CFG.DCAENG
+ISTS.CFG.MSGLVL
+ISTS.CFG.SOARCH
+ISTS.CFG.WOITXN
+ISTS.CFG.SOLEAD
+ISTS.CFG.POCPJB
+ISTS.CFG.POCPIE
+ISTS.CFG.DCIRWK
+ISTS.CFG.APHXPT
+ISTS.CFG.SOACAL
+ISTS.CFG.SOACOM
+ISTS.CFG.SOSEC 
+ISTS.CFG.NEGCST
+ISTS.CFG.QUALOC
+ISTS.CFG.SOAGPP
+ISTS.CFG.ORIGPO
+ISTS.CFG.POPROM
+ISTS.CFG.POAMFG
+ISTS.CFG.INACUD
+ISTS.CFG.ARFTD 
+ISTS.CFG.DBLKIT
+ISTS.CFG.PSTKIT
+ISTS.CFG.SOAAUD
+ISTS.CFG.DCAWC 
+ISTS.CFG.PIUID 
+ISTS.CFG.PIPSW 
+ISTS.CFG.CCDEF 
+ISTS.CFG.DCCOMP
+ISTS.CFG.INCNEG
+ISTS.CFG.WOBWO1
+ISTS.CFG.ROADEC
+ISTS.CFG.SOAMAR
+ISTS.CFG.SOAMA%
+ISTS.CFG.SOPBLW
+ISTS.CFG.INADTE
+ISTS.CFG.LIMSCT
+ISTS.CFG.RRFPR 
+ISTS.CFG.VACGLA
+ISTS.CFG.VACGLD
+ISTS.CFG.DCPDTE
+ISTS.CFG.DCFREQ
+ISTS.CFG.DCMLST
+ISTS.CFG.RMDACM
+ISTS.CFG.INBXFR
+ISTS.CFG.POAPOH
+ISTS.CFG.SMGEDT
+ISTS.CFG.AVATAX
+ISTS.CFG.AVAACT
+ISTS.CFG.AVAKEY
+ISTS.CFG.SOEVIA
+ISTS.CFG.POQITM
+ISTS.CFG.WONEG 
+ISTS.CFG.DCNEG 
+ISTS.CFG.SOAARN
+ISTS.CFG.AVACOD
+ISTS.CFG.AVACO 
+ISTS.CFG.DSDTES
+ISTS.CFG.SOECDL
+ISTS.CFG.SMGSYN
+ISTS.CFG.SMGBDT
+ISTS.CFG.VOIC  
+ISTS.CFG.VOWO  
+ISTS.CFG.VOPO  
+ISTS.CFG.VOSO  
+ISTS.CFG.VOAR  
+ISTS.CFG.VOAP  
+ISTS.CFG.MAXDC 
+ISTS.CFG.DCNCR 
+ISTS.CFG.NCRRMD
+ISTS.CFG.WOMPST
+ISTS.CFG.INAMRP
+ISTS.CFG.OANDA 
+ISTS.CFG.FXKEY 
+ISTS.CFG.QCCNTR
+ISTS.CFG.POAVDT
+ISTS.CFG.DCRSH 
+ISTS.CFG.ARPSWD
+ISTS.CFG.SRCOMM
+ISTS.CFG.WOLBLS
+ISTS.CFG.WOILTX
+ISTS.CFG.HIDPTH
+ISTS.CFG.DCTSWC
+ISTS.CFG.BBCOLO
+ISTS.CFG.ARCBOM
+ISTS.CFG.POANO$
+ISTS.CFG.POAEBY
+ISTS.CFG.POXLOC
+ISTS.CFG.SOANO$
+ISTS.CFG.INBCOC
+ISTS.CFG.PRSSNX
+ISTS.CFG.CAROWN
+ISTS.CFG.FAMSG 
+ISTS.CFG.CAR8D 
+ISTS.CFG.CROPEN
+ISTS.CFG.CRPSWD
+ISTS.CFG.INBBMR
+ISTS.CFG.WOABMR
+ISTS.CFG.POACLS
+ISTS.CFG.WOISC%
+ISTS.CFG.DCCMP%
+ISTS.CFG.DSFEE 
+ISTS.CFG.WORBSS
+ISTS.CFG.WOPRI 
+ISTS.CFG.BMASTA
+ISTS.CFG.DCPOST
+ISTS.CFG.APCLST
+ISTS.CFG.WOFINQ
+ISTS.CFG.CCFEE 
+ISTS.CFG.POLOTC
+ISTS.CFG.ISTSFU
+ISTS.CFG.FUPSWD
+ISTS.CFG.SPOOH 
+ISTS.CFG.INCSTD
+ISTS.CFG.ROAPPH
+ISTS.CFG.NZWOI 
+ISTS.CFG.RMDSR#
+ISTS.CFG.SOAACT
+ISTS.CFG.LIMACC
+ISTS.CFG.ECO1  
+ISTS.CFG.SOEOVR
+ISTS.CFG.SOANUM
+ISTS.CFG.APLINK
+ISTS.CFG.PSLINK
+ISTS.CFG.EDIOUT
+ISTS.CFG.DCRND 
+ISTS.CFG.EDIBOL
+ISTS.CFG.SCRPYN
+ISTS.CFG.RMDDSP
+ISTS.CFG.DCOVRN
+ISTS.CFG.SOXSHP
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+SYSACCTGON     
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSITEMCLASSGL 
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+ZA_TEXT        
+ZA_DFLT        
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+CHK_FISC_DATE  
+CHK_FISC_MSG   
+CHKF.RET       
+CHKF.FYNUM     
+WHICH.MSG      
+BKSY.FISCAL.YR 
+ASKPFY.RET     
+CHK_GLC_DATE   
+CHK_GLC_MSG    
+CHKG.RET       
+BKYS.DATE      
+DEF_FORM       
+FILE.HLDR      
+FILE.NAME      
+ZRET           
+CNTR2          
+CNTR3          
+CNTR           
+WC             
+BC             
+SC             
+X_TTL1         
+X_USCORE       
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+BUTTON_LIST    
+BUTTON_CNTR    
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+FC             
+GET.GLYPARAM   
+GET.GLYRET     
+GL.CFROM       
+GLDATE.H       
+ISGL.1YDATE    0
+NY.FISCAL.YR   
+ISGL.EXTRA     T
+GL.FUTURE.DATE 
+ISGL.2YDATE    `
+ISGL.3YDATE    
+ISGL.4YDATE    
+ISGL.5YDATE    
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+INC_DATE_DATE  
+INC_DATE_AMT   
+INC_DATE_WCH   
+INC_DATE_DAY   
+INC_DATE_MONTH 
+INC_DATE_YEAR  
+INC_DAY_NUM    
+INC_MONTH_NUM  
+INC_YEAR_NUM   
+INC_DATE_MAXD  
+INC_ZRET       
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+NO_S_TYPE      
+EMPF2.COL      
+EMPF2.ROW      
+EMP.LKUP.OPEN  
+SRCH_KEY_NUM   
+EMP_TTL1       
+EMP_USCORE     
+BKPR.EMP.SHIFT 
+BKPR.EMP.TERM  
+BKPR.EMP.PAYTYP
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+SRCH_HOW_MSG   
+BKIC.PROD.CODE 
+V.OLINK        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+PSTR           
+RETATVAL       
+XATRETATVAL    
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+CFG.SODAYS     
+CFG.LATEDAYS   
+EIMCO.SHIFT2   
+EIMCO.SHIFT3   
+ISTS.CFROM     
+DCL.PERIOD.PDTE
+DCL.PERIOD.FREQ
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.ACCT   
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+XMM            
+XDD            
+XYY            
+XBUFF          
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+BK.DESC.NOTES  
+BK.DESC.DESC   _
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+XTRIM          
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKAR.EMAIL     *
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+SWHO           
+CFG.PATH       
+CFG.FULLNAME   
+X_HNDL         
+X.BUFF         
+TI             
+WHO.H          
+WBUFF          
+RVAL           
+BPICT          
+TIME1          
+NNUMB          
+RECCODE        
+NNNAME         
+ISNUM.H        
+ARYNUM         
+LAST.REC.NUM   
+IS.NUM.CODE    
+IS.NUM.NEXT    
+XNUMB          
+NUMB.H         
+MB.ISBSF.H     
+MB.MKAHIST.H   
+BLOOP          
+BKSY.CHK.CHKACT
+IS.BANKS.NUM   
+IS.BANKS.SRT   
+BKSY.CHK.NAME  s
+IS.BANKS.BAL   B
+BKSY.CHK.BAL   +
+IS.BANKS.GLA   ,
+IS.BANKS.GLD   6
+BKSY.CHK.CHKDPT
+IS.BANKS.CURR  h
+BKSY.CHK.CHKCUR
+IS.BANKS.ACTIVEw
+IS.BANKS.AR    y
+IS.BANKS.AP    z
+IS.BANKS.PR    {
+IS.BANKS.EXTRA 
+IS.BANKS.INC.BSx
+ISBSF.CASH.ACTSH
+ISBSF.CASH.ACT1
+ISBSF.CASH.ACT2
+ISBSF.CASH.ACT3
+ISBSF.CASH.ACT4
+ISBSF.CASH.ACT5
+ISBSF.CASH.ACT6
+ISBSF.CASH.ACT7
+ISBSF.CASH.ACT8
+ISBSF.CASH.ACT9
+SF2.COL        
+SF2.ROW        
+RET.BANK.NUM   
+BANKS.NOESC    
+DFLT.BANK.ACT  
+BANKS.FILTER   
+TOT.BANKS      
+SF2.LEN        
+SEL.GLA        
+SEL.GLD        
+BANKS_TTL1     
+BANKS_USCORE   
+TEMP_KEY       
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     
+NCLR           
+ISNUMBER.H     
+NUM_BUFF       
+NUM_REC        

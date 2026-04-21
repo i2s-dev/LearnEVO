@@ -1,0 +1,49 @@
+FILEDICT
+FILEDBF 
+filedictA
+filedbfA
+old: A
+ new: A
+TEMP0         
+TEMP1         
+TEMP2         
+TEMP3         
+TEMP4         
+TEMP5         
+TEMP6         
+TEMP7         
+TEMP8         
+TEMP9         
+TEMP10        
+TEMP11        
+TEMP12        
+TEMP13        
+TEMP14        
+TEMP15        
+TEMP16        
+TEMP17        
+TEMP18        
+TEMP19        
+TEMP20        
+TEMP21        
+TEMP22        
+TEMP23        
+TEMP24        
+TEMP25        
+TEMP26        
+TEMP27        
+TEMP28        
+TEMP29        
+DICT_HNDL      
+DBF_HNDL       
+CNTR           
+BUFF_HLDR      
+BUFF_CNTR      
+DICT_FIELD_NAME
+DBF_SMALL      
+DBF_ARRAY      !
+DICT_ARRAY_ELE 
+DBF_FIELD      
+DBF_SCHEMA     
+DICT_BUFF_NAME 
+DBF_START_FNUM #

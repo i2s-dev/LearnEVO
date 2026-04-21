@@ -1,0 +1,270 @@
+TASCOLOR
+FILEDICT
+FILEKNUM
+TAS Professional 5.0 Create List from Script - DBA VersionA
+filedictA
+fileknumA
+  Try again.A
+An error has occured while opening file: A
+F2 Display Report Script NamesA
+ List Script Name I
+Enter the Label Script file path and name:A
+ was not found? YA
+The file: A
+  Try again.A
+An error has occured while opening file: A
+.src already exists.A
+ The file A
+ Do you wish to overwrite it? I
+_menuA
+_menu_k2A
+gosub A
+if srch_key_num=0 then retA
+savesA
+xtrap_si_udcA
+ box 'A
+ bcolor bc A
+window at 1,1 len 23 wdt 80 wcolor wc A
+ shd 'A
+ scolor scA
+ ttlw 'A
+ ttl "A
+fnc_list 'F1 Help,F3 Change Search Key','Esc Exit'A
+fnc_list 'F1 Help','Esc Exit'A
+_ttl1 type a size A
+ localA
+define A
+_uscore type a size A
+ localA
+define A
+_menu_kA
+trap f3 goto A
+_menu2:A
+select srch_key_numA
+case A
+_ttl1 with "A
+setline A
+_uscore with "A
+setline A
+listf A
+ start A
+ for A
+ while A
+ file A
+ chse A
+ help A
+ cbf "  "A
+ blnes A
+ noaddA
+ use_trapsA
+ key A
+_ttl1A
+ fline A
+_uscoreA
+ ecolor datcA
+ styp 'A
+xtrap_rstr_udcA
+redspA
+_menu_k:A
+define temp_key type i size 3 localA
+temp_key=srch_key_numA
+_menu_k2A
+gosub A
+if srch_key_num=0 then srch_key_num=temp_keyA
+_menu2A
+goto A
+_menu_k2:A
+savesA
+xtrap_si_udcA
+fnc_list 'F1 Help','Esc Exit'A
+menulist[A
+ len A
+ wdt A
+ cntr srch_key_numA
+ box 'd' bcolor 23 mcolor 23A
+nmenu menulist at A
+ nch A
+ ccolor 26 shd 'r' scolor sc ttlw 'l' ttl ' Search Key ' arrayA
+ask_coo "A
+redspA
+xtrap_rstr_udcA
+BIRNOI
+)+fill(A
+," "),A
+ str(A
+)+fill(A
+," "),A
+ dtoc(A
+)+fill(A
+," "),A
+ ttoc(A
++fill(A
+," "),A
+LISTSA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+There are no A
+ files currently available.A
+ Files A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+LIST_FILE_HNDL 
+LIST_FILE_NAME 
+LIST_FILE_INDEX
+LIST_START_FLD 
+LIST_FOR_FILTER
+LIST_WHL_FILTER
+LIST_CHSE_HLDR 
+LIST_HELP_HLDR 
+LIST_SRCH_HLDR 
+LIST_WTD_RECS  
+LIST_WIND_TITLE
+LIST_CBF       
+LIST_WIND_COL  
+LIST_WIND_ROW  
+LIST_WIND_LEN  
+LIST_WIND_WDT  
+LIST_BOX_TYPE  
+LIST_TTL_WHR   
+LIST_SHD_WHR   
+LIST_RECS_WTD  
+LIST_BLANK_LNS 
+LIST_ENTER_UDF 
+LIST_FLD_NAME  
+LIST_FLD_TTL1  
+LIST_FLD_TTL2  
+LIST_FLD_USCORE
+LIST_FLD_CNTR  
+TEMP_BUFF      
+SRC_BUFF       
+BT             
+NEW_SCRIPT     
+TITLE_NAME     
+WW             
+WL             
+WX             
+WY             
+NUM_LFLDS      
+TTL1_SZE       
+TTL2_SZE       
+TOT_USZE       
+SCRN_HLDR      
+SCRIPT_EXT     
+SCRIPT_TOT_NAME
+SCRIPT_NAME_HLD
+TMP_SLT_NAME   
+SCRIPT_PATH    
+SCRIPT_NAME    
+SCRIPT_HNDL    
+SRC_HNDL       
+SCRN_NME_PTR   
+LIST_FLD_USZE  
+LIST_FLD_DSZE  
+LIST_FLD_TYPE  
+TTL1           
+TTL2           
+USR            
+STR_SZE        
+STR_SZE2       
+BYTE_HLDR      
+DICT_HNDL      
+KNUM_HNDL      
+CNTR           
+CNTR1          
+MESSAGE        
+MSG_PTR        
+NUM_KEYS       
+DICT_SIZE      
+DICT_TYPE      
+CNTR3          
+CNTR2          
+KNUM_KEY_NAME  
+DICT_UPCASE     
+MAX_WIDTH      
+TEMP_HLDR      
+LFLD_NUM       
+WC             
+SC             
+BC             
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+FC             
+EL_ARRAY_PTR   
+EL_NUM         
+EL_WDT         
+EL_CNTR        
+EL_CHR         
+EL_PWHR_HLDR   
+EL_MASK        
+EL_COL         
+EL_ROW         
+FIND_FILE_EXT  
+FIND_FILE_TITLE
+FIND_FILE_PATH 
+FLE_NAME       
+FLE_ARRAY      
+CC             

@@ -1,0 +1,336 @@
+FILELOC 
+FILEDICT
+BKUPDATE
+TASCOLOR
+MKAHIST 
+TASCOLOR
+ISIS    
+ISLOG   
+ISDRILL 
+BKAPVEND
+BKARCUST
+BKCMACCN
+BKICMSTR
+ISLINKS 
+BKAPDESC
+MKAHIST 
+MKAHIST 
+LANGDICT
+FILELOC 
+TASCOLOR
+ISFOHIST
+ISNUMBER
+ISTAXGRP
+ISMCF   
+ISTAXFIL
+BKAPVEND
+BKARINVV
+BKAPINVL
+BKAPPO  
+BKYSMSTR
+ISNOTES 
+ISNTYPE 
+FILELOC 
+BKPSUSER
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_L
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESA
+FILEDEFA
+FILEDEFA
+FIELDDEFA
+FIELDDEFA
+INDEXDEFA
+INDEXDEFA
+FILELOCA
+FILELOCA
+Evo data dict file name update fileA
+FILEDICTA
+FILEDICTA
+Evo data dict main update fileA
+FILEKEYA
+FILEKEYA
+Evo data dict key update fileA
+UFILELOC.DBFA
+Error: Cannot locate the FILELOC.UPD file.  UPDATE cannot run without this file.  Please contact ISTech Support for a new set of UPD files. A
+loc_file_name=A
+ loc_comp_code=A
+Error: There are no B99 records in the FILELOC.UPD file.  UPDATE cannot run without these entries.  Please contact ISTech Support for a new set of UPD files. A
+Please wait...A
+BKAR.CITY      A
+BKAR.STATE      A
+BKSYMSTRA
+BKSYMSTRA
+bkarcustR
+MRRRRA
+BKARCUSTR
+BKARCUSTA
+Data Dictionary Update ProgramA
+This routine if not completely successful can delete the data file being restructured.  It could also leave some files complete and others not.  To protect against this YOU MUST MAKE A COMPLETE SYSTEM BACKUP BEFORE CONTINUING.  Are you ready to proceed? L
+BKSYMSTRA
+BKSYMSTRA
+dbaupdt2FY
+BKCMPCNTR
+Working on FD: A
+Update OffsetsA
+Delete Old FD A
+Save New FD   A
+Restructure   A
+Initialize    A
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+dbainitA
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+dbainitA
+filedfldA
+filedfldA
+FILEDFLDA
+BKUPDATEA
+ FD to Restructure: A
+BKABCUSTA
+BKUPDATEA
+BKSLMSTRA
+BKPSUSERA
+BKSLEVELA
+BKSYUSERA
+There isn't enough internal RAM memory to complete this Restructure.  You need to make more memory available by removing TSRs or adding memory to your computer.A
+$$$$TEMP.RSTA
+dbainitA
+Internal Err - Mismatching FDs: A
+Internal Err - Mismatching FDs: A
+ Number of files remaining: A
+ Working on File: A
+ Number of records remaining out: A
+dbainitA
+An error has occured while creating the new file.  The Restructure routine will stop now.  RESTORE ALL APPLICABLE FILES AND THE DATA DICTIONARY (FILE*.B).  Fix the problem and try again.A
+ Number of records remaining in:  A
+Internal Err - Mismatching FDsA
+$$$$TEMP.RSTA
+FILELOCA
+FILEKEYA
+FILEDICTA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+SETUP_COLORS.ONOPENFILESS
+SETUP_COLOR7CTSTARTE
+INIT_MSG_FLDSLICKENFILES
+OPEN_FILESER.ONSTART
+STARTATHLLLESART.CLICK
+ZASK.GETCKLICKT
+LAST_STEPSPLAYDISPART
+GISHELPTLLSS.ONSTART
+RET_RMSG_FLDSSPCLOSE
+RESTRUCT_FILEPNCLOSEE
+RESTRUCT_FINIONCLOSE
+NEXT_ONECLICKCLICK
+EXITNCKUP_TLLK1.CLICK
+EvoUPDTE.SRC                                                TASRTNS.LIB                                                 DBA.LIB                                                     
+TEMP0         
+TEMP1         
+TEMP2         
+TEMP3         
+TEMP4         
+TEMP5         
+TEMP6         
+TEMP7         
+TEMP8         
+TEMP9         
+TEMP10        
+TEMP11        
+TEMP12        
+TEMP13        
+TEMP14        
+TEMP15        
+TEMP16        
+TEMP17        
+TEMP18        
+TEMP19        
+TEMP20        
+TEMP21        
+TEMP22        
+TEMP23        
+TEMP24        
+TEMP25        
+TEMP26        
+TEMP27        
+TEMP28        
+TEMP29        
+TEMP30        
+TEMP31        
+TEMP32        
+TEMP33        
+TEMP34        
+TEMP35        
+TEMP36        
+TEMP37        
+TEMP38        
+TEMP39        
+TEMP40        
+TEMP41        
+TEMP42        
+TEMP43        
+TEMP44        
+TEMP45        
+TEMP46        
+TEMP47        
+TEMP48        
+TEMP49        
+TEMP50        
+TEMP51        
+TEMP52        
+TEMP53        
+TEMP54        
+TEMP55        
+TEMP56        
+TEMP57        
+TEMP58        
+TEMP59        
+FILE_DEF       
+FD_ARRAY       
+FLD_NAME       
+FLD_TYPE       
+FLD_SIZE       
+FLD_DEC        
+FLD_ARRAY      
+FLD_UPCASE     
+OLD_FLD_TYPE   
+OLD_FLD_SIZE   
+OLD_FLD_ARRAY  
+OLD_FLD_OFFSET 
+FLD_OFFSET     
+OLD_FLD_UPCASE 
+NUM_OF_COMPS   
+COMP_EXT       
+COMP_LOC       
+RESTRUCT_FLD   
+SIZE_HLDR      
+SIZE_HLDR1     
+INT_SIZE       
+KCNTR          
+NUM_RECS_REMAIN
+NUM_RECS_HLDR  
+FILE.CHRS      
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+TEMP_HLDR      
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DES_FNAME      
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+KEYXFR_HNDL    
+DICTXFR_HNDL   
+EXTRA_HNDL     
+EXTRA_HNDL2    
+LOCXFR_HNDL    
+XFR_LOCATION   
+REC_HLDR       
+NEW            
+FILES_OPEN     
+CREATE_FILE    
+INIT_CALL      
+HAVE.B99       
+LOC_BUFF_NAME  
+FILELOC LOC_FILE_NAME  
+FILELOC LOC_COMP_CODE  (
+FILELOC LOC_REC_SIZE   +
+FILELOC LOC_REC_TYPE   0
+FILELOC LOC_LOCATION   1
+FILELOC LOC_DESCRIPTION
+FILELOC DICT_BUFF_NAME 
+FILEDICTDICT_FIELD_NAME
+FILEDICTDICT_OFFSET    
+FILEDICTDICT_TYPE      
+FILEDICTDICT_SIZE      
+FILEDICTDICT_DEC       
+FILEDICTDICT_ARRAY_ELE 
+FILEDICTDICT_UPCASE     
+FILEDICTDICT_DESC      !
+FILEDICTDICT_PICTURE   I
+FILEDICTDICT_LCD       q
+FILEDICTDICT_HOFFSET   u
+FILEDICTDICT_HTYPE     w
+FILEDICTDICT_HSIZE     x
+FILEDICTDICT_HDEC      z
+FILEDICTDICT_HARRAY    |
+FILEDICTRESET_CUST     
+BKARCUST_HNDL  
+STATE_HLDR     
+TEMP_OFFSET    
+TEMP_SIZE      
+UPDATE_FD_CNTR 
+FD_EXISTS      
+FD_CNTR        
+ELE_LOC        
+CNTR           
+EXCLUDESUBS    
+FILE_NAME_HLDR 
+FD_NAME_HLDR   
+FLCODE         
+DFLD_HNDL      
+DFLDXFR_HNDL   
+BKUPDATE_HNDL  
+BKUP.COMPANY   
+BKUPDATEBKUP.UPDATE    
+BKUPDATEBKUP.DATE      
+BKUPDATEBKUPDATE.VER   
+BKUPDATEA_CNTR         
+A_CNTR2        
+A_CNTR3        
+A_CNTR4        
+A_CNTR5        
+RSTR_FILES     
+N.NEW          
+N.OLD          
+I.NEW          
+I.OLD          
+B.NEW          
+B.OLD          
+R.NEW          
+R.OLD          
+NORM           
+TASCOLORREV            
+TASCOLORHIGH           
+TASCOLORERR            
+TASCOLORWC             
+TASCOLORBC             
+TASCOLORMC             
+TASCOLORCC             
+TASCOLORSC             
+TASCOLORENTER          
+TASCOLORDATC           
+TASCOLORFC             
+TASCOLORGC             
+TASCOLORCCR_LF         J
+TASCOLORCNTR2          
+OLDFLD         
+NEWFLD         
+DES_HNDL       
+IS_TYP         
+IS_SZE         
+VAL_TO_RETURN  
+RET_VAL        
+IMF_DONE       
+MESSAGE        
+MSG_PTR        
+COLOR_HNDL     
+NORM_HLDR      
+ZA_TEXT        
+ZA_DFLT        

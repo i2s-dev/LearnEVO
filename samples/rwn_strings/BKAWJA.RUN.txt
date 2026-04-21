@@ -1,0 +1,261 @@
+TASCOLOR
+WORKORD 
+WOMAT   
+MTICMSTR
+WOLABOR 
+OUTPROC 
+BKAPPO  
+WOEXCHG 
+BKSYHELP
+DBAHLPID
+WORKORDA
+OUTPROCA
+WOMATA
+WOROUTA
+WOEXCHGA
+WOBOMA
+WOLABORA
+MTICMSTRA
+BKAPPOA
+AW-J  Rebuild Work OrdersA
+WORKORDI
+WORKORDA
+WOMATA
+WOLABORA
+OUTPROCA
+WOEXCHGA
+WORKORDG
+ Work Order  :       -     Status:    Priority:    Class:    Loc:             
+                                                                              
+ Part Number:                <  Desc :                                        
+ Qty to Make:               Price:               UM:     Change Order #:      
+ Start Date:         Finish Date:          Job #:                Quote:       
+                                                                              
+ Cust:           < SO#:       < Due Dt:          PO:                          
+ Name:                             Contact:                                   
+                                                                              
+ Act Start Date:          Act Finish Date:          Qty Completed:            
+                                                                              
+                   Estimate         Actual           Variance       %         
+     Setup       :                                                            
+     Material    :                                                            
+     Outside Proc:                                                            
+     Labor       :                                                            
+     Fixed Ovhead:                                                            
+     Var Overhead:                                                            
+     Misc        :                                                            
+     Extra       :                                                            
+     TOTAL COST  :                                                            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+DATE           
+FLAG           
+L.RATIO        
+F.RATIO        
+V.RATIO        
+SELECT_FROM1   
+SELECT_THRU1   
+FROM2          
+THRU2          
+SELECT_FROM3   
+SELECT_THRU3   
+FLAG.YN        
+CL.CAN         
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.PROJ  
+MTWO.WIP.AMAT  W
+MTWO.WIP.ALABORg
+MTWO.WIP.ASETUPO
+MTWO.WIP.AMISC K
+MTWO.WIP.AEXTRAk
+MTWO.WIP.AOUTPR_
+MTWO.WIP.AFOVHD
+MTWO.WIP.AVOVHD
+MTWO.WIP.ATOTALw
+WOMAT.WOPRE    
+WOMAT.WOSUF    
+MTIC.PROD.TYPE #
+WOMAT.PCODE    v
+WOMAT.COST     
+MTIC.PROD.RCOSTF
+MTWOLA.WOPRE   
+MTWOLA.WOSUF   
+MTWOLA.SETCOST 
+MTWOLA.LABCOST 
+MTWOLA.NOJOBS  
+MTWOLA.FOHCOST 
+MTWOLA.TEAM    
+MTWOLA.VOHCOST 
+MTPO.WOPRE     &
+MTPO.WOSUF     .
+MTPO.PROD      6
+BKAP.PO.NUM    
+MTPO.PO        
+MTPO.OPER      4
+BKAP.PO.CONFIRMJ
+MTPO.EXTPR     n
+MTWO.EX.WOPRE  
+MTWO.EX.WOSUF  
+MTWO.EX.OP     o
+MTWO.EX.CHG    ;
+MTWO.WIP.ETOT  o
+MTWO.WIP.ESETUP/
+MTWO.WIP.EOUTPR?
+MTWO.WIP.ELABORG
+MTWO.WIP.EFOVHD
+MTWO.WIP.VOVHD 
+MTWO.WIP.EMAT  7
+MTWO.WIP.EMISC C
+MTWO.WIP.EEXTRAc
+MTWO.WIP.SETUPV
+MTWO.WIP.LABORV
+MTWO.WIP.MATV  
+MTWO.WIP.OUTPRV
+MTWO.WIP.FOVHDV
+MTWO.WIP.VOVHDV
+MTWO.WIP.MISCV S
+MTWO.WIP.EXTRAVs
+MTWO.WIP.TOTV  @
+MTWO.WIP.SETUP%
+MTWO.WIP.LABOR%
+MTWO.WIP.MAT%  
+MTWO.WIP.OUTPR%
+MTWO.WIP.FOVHD%
+MTWO.WIP.VOVHD%
+MTWO.WIP.MISC% [
+MTWO.WIP.EXTRA%{
+MTWO.WIP.TOT%  H
+MTWO.WIP.STATUS-
+MTWO.WIP.PRTY  
+MTWO.WIP.USERCD
+MTWO.WIP.LOC   
+MTWO.WIP.CODE  
+MTWO.WIP.DESC  
+MTWO.WIP.SQTY  
+MTWO.WIP.PPRCE 8
+MTIC.PROD.SUM  1
+MTWO.WIP.CHGORD!
+MTWO.WIP.SSTART
+MTWO.WIP.SFIN  
+MTWO.WIP.EST   
+MTWO.CUSTCODE  
+MTWO.WIP.SONUM 
+MTWO.WIP.DDATE 
+MTWO.WIP.CUSORD
+MTWO.CUSTNAME  
+MTWO.WIP.CONTAT
+MTWO.WIP.ASTART
+MTWO.WIP.AFIN  !
+MTWO.WIP.COMQTY%
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+MSG_PTR        
+MESSAGE        

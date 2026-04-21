@@ -1,0 +1,253 @@
+=== Extracted from C:\ISTS\tp7runtime.exe string table ===
+=== Line numbers refer to tp7runtime.strings.txt (min-len=6) ===
+=== This is the canonical TAS Professional 7 language surface, as built in to the runtime itself. ===
+
+# Vendor / version
+64541: {Copyright 2004-2023 Addsum Business Software, Inc.
+64542: Portions Copyright  1984-2003  MGM Holdings, Inc.
+37023: TAS6Evolution [
+45937: Software\Addsum\TAS Pro 7\Form Loc Size Storage\
+
+# Compiler pragmas (# directives)
+7744: #TDATA
+7745: #ADD_FLDS
+7746: #WINFORM
+7747: #WINREPORT
+7748: #FORMSENCRYPTED
+7749: #FORCERWN
+7750: #MAINMENU
+7751: #ALL_LOC
+7754: #DONTCOMPILE
+
+# Control-flow / structure keywords
+7581-7598: if / else / while / next / ret syntax families
+7663: ELSE_IF
+7664: LOOP_IF
+7665: EXIT_IF
+7666: SELECT
+7667: OTHERWISE
+7668: FLOOP_IF
+7669: FEXIT_IF
+7683: SEXIT_IF
+7684: SLOOP_IF
+
+# Program structure / flow
+7670: CHAINR
+7672: DEALOC
+7673: INSERT
+7674: REMOUNT
+7692: LD_PDRV
+7693: GOSUBL
+7694: GETLBL
+7696: NORSTRT
+
+# I/O: input/output statements
+CLRLNE |(*AT col,row*) (*NCHR f/c/e*) (*NOCOLOR*) (*COLOR f/c/e*) (*ABS*)
+DEL    |(*file_name/@filenum*) (*NOCNF*) (*GOTO lbl*) (*ERR lbl/NO_ERR*)
+DALL   |(*filename/@filenum*) (*KEY keyname/@keynum*) (*START f/c/e*)
+       (*SCOPE arfn f/c/e*) (*FOR f/c/e*) (*WHILE f/c/e*) (*CNTR fn/v*) (*DISP*)
+ENTER  |(*field_name*) (*MASK f/c/e*) (*HELP lbl/@udf*) (*UPAR lbl*)
+       (*UP*) (*ACR*) (*PSWD*) (*AT col;row*) (*NOREV*) (*COLOR f/c/e*)
+       (*PRE udf*) (*POST udf*) (*DFLT f/c/e*) (*VLD udf*) (*VLDM f/c/e*)
+       (*DO udf*) (*ARRAY*) (*CNTR fn/v*) (*ENUM f/c/e1,f/c/e2,...,f/c/ex*)
+       (*AUTO_SRCH*) (*GROUP f/c/e*) (*NOCLICKOFF*) (*NOCLICKON*)
+
+# Windowing / form commands
+7730: WMOUNT
+7731: SET_FOCUS
+7732: SET_OBJECT
+7733: COMBO_ITEM
+7734: NAVIGATOR
+7735: ENABLE_ALL
+7736: LOAD_FORM
+7737: WLISTF
+7738: WLISTM
+7739: DISABLE_ALL
+7740: RELEASE_FORM
+7741: ACTIVATE_FORM
+7742: DATA_GRID
+7743: LOAD_PICTURE
+7752: SETCBACTIVE
+7753: SAVE_FORM
+7756: REFRESHFORM
+7757: INHERITED
+7758: SET_ALL_OBJECTS
+7936: GET_ELEM_NUM
+7945: GET_OBJ_PROP
+7946: LOAD_MODAL_FORM
+7948: GET_FORM_NAME
+7973: SET_OBJ_PROP
+7994: LAST_OBJ_CLICK
+
+# Reporting
+7721: PRINT_REPORT
+7722: REGIONSOFF
+7723: INIT_REGION
+7724: MARK_REGION
+7725: NO_PRINT_FLD
+7726: SETUP_REPORT_BUFF
+7727: OUTPUT_REPORT_DATA
+7728: UPDATE_REPORT_DATA
+7759: PRINT_PROGRESS
+7814: RTM_FN             (ReportBuilder filename for a grid print)
+7865: USE_PRINTER
+7871: REPORTNAME
+7874: PRINT_TO_FILE
+7875: NOPRINTWHRDIALOG
+7922: PRINT_CANCEL
+7923: PRINTER_NAME
+7938: WLASER_PRT
+7995: REPORT_LINES
+8005: EXEC_RB            (execute ReportBuilder)
+
+# Data / file operations
+7781: RECORD
+7782: MEM_AREA
+7783: OCCURS
+7810: ADDROW
+7811: DISABLEROW
+7812: ENABLEROW
+7813: UNLOCK
+7858: GETARRAYFLDS
+7859: GETARRAYCOLS
+7863: REFRESHRECORD
+7868: INSERTROW
+7869: DELETEROW
+7870: MOVETOROW
+7872: SAVEGRIDREC
+7873: DELETEGRIDREC
+7876: REC_BUFF
+7877: DUPCHECK
+7952: CREATE_DBF
+7953: CONVERT_TO_DBF
+7981: RESTRUCTURE_DBF
+7982: IFDUPCB
+7985: PACK_DBF
+7986: REINDEX_DBF
+7992: REC_LOCK
+7993: FILE_STORE
+7999: DELETED
+8052: CBDELETED
+8031: BTRIEVE_VERSION
+8032: LOCK_OWNER
+8033: PERVASIVE_SERVER
+
+# Utility / system functions (non-exhaustive)
+7885: ALOCARY
+7889: MID_REC
+7891: FLDNME
+7892: GETENV
+7930: MAKE_DIR
+7931: COPY_FILE
+7933: REGEDIT
+7934: SETUP_PRINTER
+7935: CHOOSE_COLOR
+7960: FILE_EXISTS
+7961: TEXT_WIDTH
+7962: GET_RUN_PRG
+7963: STATUS_BAR
+7964: GET_FILE
+7965: WHOAMI             (reads/writes workstation identity — ties to WHOAMI.DBA)
+7966: PARSEFILE
+7967: OPEN_FILE_NAME
+7968: MAKE_PATH
+7969: LAST_FILE
+7975: USECODEBASE        (switch to CodeBase data engine)
+7976: GET_COMP_NAME
+7977: GET_USER_NAME
+7978: GET_BUFF_NAME
+7979: REC_PERCENTAGE
+7980: GET_INI_PATH
+7983: DFM_TO_TXT
+7984: TXT_TO_DFM
+7987: LOAD_DLL
+7988: REMOVE_DLL
+7989: COMPILE_EXPR
+7990: COMPILE_SRC
+7991: LICENSE
+8013: OLECALL            (invoke COM object)
+8016: DECRYPTSTR
+8017: ENCRYPTSTR
+8018: SQLCALL
+8019: SENDKEYS
+8020: APPACTIVATE
+8021: GET_IP
+8022: GET_UNC_PATH
+8023: MYSQL_QUERY
+8024: GET_SERVER_DATETIME
+8025: RESTART_RUNTIME
+8026: GET_WEBSOURCE
+8041: GET_PAGECOUNT
+8042: PRINT_ARCHIVE
+8043: PRINT_TEXT
+8044: ISREMOTESESSION
+8045: TRIMMEMSIZE
+8050: ISODATETIME
+8051: EXEC_TOP_WAIT
+8053: QRCODE
+8054: EXPORTGRID
+8055: COPYTOCLIPBOARD
+
+# TAS Delphi VCL components (from tp7runtime.exe)
+# These are the custom controls used inside every T7*.DFM.
+TTASForm            TASForm             (base form class)
+TTASEnter           TASENTER            (input field)
+TTASNumEnter        TASNumEnter         (numeric input)
+TTASDateEdit        TASDateEdit         (date input)
+TTASTimeEnter       TASTimeEnter        (time input)
+TTASTimeEdit        TASTimeEdit         (time edit)
+TTASCheckBox        TASCheckBox
+TTASRadioButton     TASRadioButton
+TTASComboBox        TASComboBox
+TTASComboEnter      TASComboEnter       (DB-aware combo)
+TTASStrList         TASStrList
+TTASPageControl     TASPageControl      (tabbed pages)
+TTASDataGrid        TASDataGrid         (data grid — the big one)
+TTASNavigator       TASNavigator        (nav-bar for grid)
+TTASGComboBox       TASGComboBox        (grid-cell combo)
+TTASGCustomCombo    TASGCustomCombo
+TTASGUniComboBox    TASGUniComboBox     (unicode grid combo)
+TTASGDropTarget     TASGDropTarget      (drag-drop support)
+TTASGDropSource     TASGDropSource
+TTASMemo            TASMemo
+
+# Entry / object properties (DFM)
+8065: AllowedChrs     - set of chars the user can enter
+8066: DataColumns     - grid column definitions
+8067: DfltValue       - default value when blank/0
+8068: BlankValue      - value considered blank
+8069: DispLabel       - label to goto on form display
+8070: FieldName       - name of program variable bound to control
+8071: NoClickOff, 8072: NoClickOn
+8073: OnDisplayScreen
+8074: ProgramName, 8075: ProgramStart
+8076: StartAtEnd
+8077: UpCase          - force entry to uppercase
+8078: ValidMsg
+8079: ValidExpr, 8080: ValidCheckOnExit
+8081: OnClose, 8082: OnStart
+8083: OpenFiles
+8084: PreLabel, 8085: PostLabel, 8086: ValidLabel
+8087: OnClickLabel, 8088: OnChangeLabel
+8089: FastSearchFld, 8090: FastSearchType
+8091: KeyTraps, 8092: KeyTrapHint
+8093: AttachGrid
+8094: HelpStatusBar, 8095: HelpStatusBarMsg
+8096: SourceFile, 8099: SourceAttached
+
+# Sections in DFM
+8100-8114: [Position] [Events] [Master-Slave] [Entry] sections, with
+LocalKeyName, MasterFile, MasterFieldList, EntryFont, EntryUseDflt, EntryBGColor
+
+# Field type codes (from DEFINE errors)
+7621: Field type must be one of: I,B,R,P,T,D,N,L,A or F
+# I=integer, B=byte(?), R=record, P=pointer, T=time, D=date, N=numeric(dec),
+# L=logical(bool), A=alpha, F=file handle/float — to verify
+
+# Error messages (shed light on compiler internals)
+7611-7648: every compiler error string
+
+# License / registration
+9287-9288: LicenseKey / LicenseName
+37031: R4 License Check Failed
+202327: @Unit3@ELicenseError

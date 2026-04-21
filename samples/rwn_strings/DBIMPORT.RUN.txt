@@ -1,0 +1,250 @@
+BKSYMSTR
+BKYSMSTR
+BKABCUST
+BKPRTCFG
+TASCOLOR
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+BKABCUSTA
+BKABCUST
+Data Import MenuA
+ (c) DBA Software                                                      A
+ F1-Help               Use arrow keys to highlight choice              Esc-Exit A
+ A - Import Inventory         0101AF
+ B - Import Bills of Material 0102BF
+ C - Import Routings          0103CF
+ D - Import Customers         0104DF
+ E - Import Vendors           0105EF
+ F - Import Chart of Accounts 0106FF
+ G - Import Labor             0107GF
+ Error Reports Menu       0108HF
+ Edit Programs Menu       0109IF
+ J - Global Field Change      0110JF
+ K - Erase Files              0111KF
+ L - Transfer Files to DBA    0112LF
+ M - Transfer Labor to DBA    0113MI
+Data ImportI
+Press any key to continueA
+Error:  program not found.F
+The program you are trying to run is not on the system.F
+Either you did not purchase this module or the programF
+is missing.  For more information, please contact yourF
+dealer or DBA Software.I
+Data ImportI
+ A - Print Inventory Errors      0101AF
+ B - Print Bills of Mat Errors   0102BF
+ C - Print Routings Errors       0103CF
+ D - Print Chart of Accts Errors 0104DF
+ E - Print Labor Errors          0105EI
+Error ReportI
+BKDIHA
+ A - Edit Inventory         0101AF
+ B - Edit Bills of Material 0102BF
+ C - Edit Routings          0103CF
+ D - Edit Customers         0104DF
+ E - Edit Vendors           0105EF
+ F - Edit Chart of Accounts 0106FF
+ G - Edit Labor             0107GI
+Edit ProgramsI
+BKDIIA
+        Current Company:                          
+Press any key to continueA
+BKPRTCFGA
+ PRINTER TO USE A
+F1 - Display Printers   F10 - Start PrintingA
+Copies: A
+resetA
+ For product support call DBA Tech Support at 1-800-434-0809   TAS 5.0 BETA 3 
+                                Function Keys                                 
+                                                                              
+           F1 = Help                         F6 = Get Last Record             
+           F2 = Lookup Window                F7 = Scroll Backward             
+           F3 = Clear Screen                 F8 = Scroll Forward              
+           F4 = Delete Record                F9 = Find Closest Match          
+           F5 = Get First Record            F10 = Save Record                 
+                                                                              
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without SAving      CTRL+D = Delete Character            
+                                                                              
+ Printer Name:
+ Printer Driver:              LPT#:
+ Page Width:           Total Lines:       Print lines:
+ Command Line
+ Print condensed(Y/N):   Exec CmdLine(Y/N):
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+DBA Mfg SystemA
+bkprtcfgA
+Choose PrinterA
+SETUP_COLOR   #
+SHOWHELP      c
+NO_AB         [
+PRG_HDR       
+START.1       
+REDO_BKDI     
+EXIT          
+BKDIH         6
+BKDII         
+RUN_PROG      
+RUN_PROG1     
+NO.PRG        
+RUN_PROG2     
+PRT.MSG       
+ENT.MSG       
+SUB.ESC       N
+SHOWPRTR      
+SELPRTR       
+UPDEXIT       
+STARTPRTR     J
+EXSHOWPRTR    m
+SEL_PRTR      
+INIT_MSG_FLDS s
+DBIMPORT
+HELPSCRN
+DBA.LIB
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MENU_FLAG      
+ADD_FLAG       
+MENU.ARRAY     
+CNTR           
+CNTR1          
+CNTR2          
+MENU.TITLE     
+MENU.TITLE2    
+CUR.DATE       
+CUR.TIME       
+LOG.CODE       
+PASSWORD       
+OK             
+CHOICE         
+MENU.F         
+RUN.PRG        
+COMP.CODE      
+COMMAND_LINE   
+LOGON_HLDR     
+PRT_PR         
+BKAB.EXP       
+MCNTR          
+MCNTR2         
+MCNTR3         
+BKSY.PRGS.WHR  
+EXIST          
+FILE           
+FILE2          
+FILE3          
+SIZE           
+LNE.LNGTH      
+LNE.LN2        
+NUM.MSG        
+MESSAGE        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR4         
+BKSY.COMP.NAME X
+ANSWCMD        
+PRTNAME        
+PRTDRIV        
+PRTLPTN        
+PRTWDT         
+PRTMAX         
+PRTLNES        
+PRTCMDLNE      
+PRTCOND        
+SCRNSAVER      
+PRTCOP         
+SPFLAG         
+CUR.PRINTER    
+BKPRT.CFG.NAME 
+BKPRT.CFG.PRTR t
+BKPRT.CFG.LPTNO
+BKPRT.CFG.PWDT 
+BKPRT.CFG.PMAX 
+BKPRT.CFG.PPLNE
+BKPRT.CFG.CMD  
+BKPRT.CFG.COND 
+SC             
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+PRG_HDR_PRG    
+PRG_HDR_LINE   
+PRG_HDR_CV     
+CFG_CNTR       
+CFG_CNTRL      
+CFG_HNDL       
+WC             
+BC             
+MSG_PTR        

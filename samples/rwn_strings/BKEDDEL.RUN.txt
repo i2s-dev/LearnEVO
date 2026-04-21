@@ -1,0 +1,232 @@
+BKICLOCM
+BKARINV 
+TASCOLOR
+BKARINVL
+BKICMSTR
+BKICLOC 
+BKSYHELP
+DBAHLPID
+BKARINVLA
+bkarinvA
+BKICLOCMA
+BKICMSTRA
+BKICLOCA
+There isn't a Sales Order of this number in pending Sales Orders. A
+The Location for this SO (A
+) is not valid.  This SO cannot be deleted. A
+ for customer A
+Delete entirely SO# A
+At least one invoice has been created and posted from this Sales Order.  Do you want to delete the entire order anyway?L
+ has been created from this Sales Order, but has not been posted.  Deleting the Sales Order will also delete the invoice.  Do you want to do so?A
+Invoice #A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Deleting SO line items: A
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+SONUM          
+BKARINVL_HNDL  
+BKARINV_HNDL   
+BKICLOCM_HNDL  
+BKICMSTR_HNDL  
+BKICLOC_HNDL   
+BKIC.LOCM.CODE 
+BKAR.INV.LOC   v
+BKAR.INV.SONUM 
+BKAR.INV.CUSCOD
+BKAR.INV.LINV#Pe
+BKAR.INV.NUM   
+SC             
+WC             
+BC             
+MCNTR          
+BKAR.INVL.INVNM
+BKAR.INVL.UM.LN
+BKAR.INVL.PCODE
+BKIC.PROD.CODE 
+BKIC.PROD.UOSO x
+BKAR.INVL.PQTY ;
+BKIC.PROD.UBO  p
+BKAR.INVL.UBO  e
+BKIC.PROD.TYPE -
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

@@ -1,0 +1,153 @@
+BKABCUST
+FILELOC 
+BKSYMSTR
+TASCOLOR
+BKSYMSTRA
+BKABCUSTA
+filelocA
+The Change Company program is notF
+provided with the Limited Record System.F
+The Limited Record System supports aF
+single company only.I
+BKABCUSTA
+BKSYMSTRA
+BKSYMSTRA
+BKSYMSTRA
+ A -                                0101AF
+ B -                                0102BF
+ C -                                0103CF
+ D -                                0104DF
+ E -                                0105EF
+ F -                                0106FF
+ G -                                0107GF
+ H -                                0108HF
+ I -                                0109IF
+ J -                                0110JF
+ K -                                0111KF
+ L -                                0112LF
+ M -                                0113MF
+ N -                                0114NF
+ O -                                0115OF
+ P -                                0116PF
+ Q -                                0117QF
+ R -                                0118RF
+ S -                                0119SF
+ T -                                0120TA
+BKSYMSTRI
+Company name not foundF
+BKSYMSTRA
+BKSYMSTRA
+BKSYMSTRA
+COMPANY NAMEFFF
+ must be present in the current subdirectoryA
+in order to change to the specified company code.I
+Press any key to continueA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ADD_FLAG       
+MENU.ARRAY     
+CNTR           
+CNTR1          
+CNTR2          
+CUR.DATE       
+CUR.TIME       
+LOG.CODE       
+PASSWORD       
+OK             
+CHOICE         
+MENU.F         
+RUN.PRG        
+COMP.CODE      
+COMMAND_LINE   
+LOGON_HLDR     
+PRT_PR         
+ACODE          
+MENU.LINE      
+CCMP           
+NEW_LOC        
+BKAB.WARNING   
+MESSAGE        
+NUM.MSG        
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+BKSY.COMP.NAME X
+MCNTR          
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR2         
+MCNTR3         
+MCNTR4         
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+MSG_PTR        

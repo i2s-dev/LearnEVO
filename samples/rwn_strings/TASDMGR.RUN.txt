@@ -1,0 +1,615 @@
+TAS32k
+TASCOLOR
+FILEDICT
+FILEKEY 
+FILEKNUM
+FILELOC 
+FILECHSP
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESI
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_.$%@#!A
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_$%@#!A
+  Field Name      T  Size Dec Array DescriptionA
+TAS Professional 5.0 Data Dictionary Maintenance ProgramA
+F1 HelpA
+F2 Def namesA
+^P Print DefsA
+^O Option MenuA
+           A
+Esc ExitA
+ File Definition Name A
+Enter the FD Name: A
+fdhldr.bA
+FILEDICTA
+fdhldr.bA
+initbtrvA
+fdhldrA
+The file doesn't exist in the data dictionary, create? YA
+F1 HelpA
+^D Delete FdA
+^K Add/Chg KeysA
+^P Prt DefA
+ESC Save FDA
+Are you sure you want to delete this field from the FD ? YA
+The field name cannot be blank, the first character must be alpha (A-Z) and you cannot have .A., .O. or .N. as part of the command name.I
+This field name is already part of this FD.  Please reenter.I
+This field already exists.  Please reenterA
+ANDTLBIRVOA
+You must choose from A, N, D, T, L, B, I, R, O or VI
+You have entered as size that is not allowed for this type of field.  Please try again.A
+012345678A
+This is the beginning character position in the record for this field.  The first character in the record is at position 0.I
+You have entered a value that is not allowed for number of array elements.  Please try again.A
+You haven't entered the minimum required for this field.A
+Is all of the above correct? (Y/N) YA
+Is all of the above correct? YA
+Do you want to exit and loose your changes? NL
+The record size must be greater than 4 bytes to create a data file Do you want to return to field entry to enter another field? (Y/N) YA
+This file will not be created.  You must use Maintain Data Dictionary to increase the record size by adding another field or increase the current field sizes.A
+tasinitA
+Do you want to add records now? (Y/N) YA
+tasdata2A
+F1 HelpA
+^V Move Deleted RecordA
+F10 Save FieldA
+                           A
+ESC Return to ListA
+F1 HelpA
+                                       A
+F10 Save FieldA
+ESC Return to ListA
+ANDTLBIRVI
+AlphanumericA
+NumericA
+LogicalA
+IntegerA
+RecordA
+oVerlayA
+Old form BCDA
+ Field Types I
+ANDTLBIRVOI
+Add new KeyL
+   Name          Del A
+F10 Save Key Info A
+ESC - Ret to MainA
+You must enter a name of some sort.A
+Must be A - Ascending, or D - DescendingA
+Must be Y - Yes, or N - NoA
+Must be Y - Yes, or N - NoA
+Must be Y - Yes, or N - NoA
+The field to be used as a segment in this key must be one of the fields in the FD. A
+You can't have more that 24 key segments.  You have reached that limit.I
+You must have an entry for each of the first 5 items and at least 1 segment field.A
+Is all of the above correct? (Y/N) YL
+Are you sure you want to lose any changes made? NL
+F2 Display FieldsA
+F4 Delete KeyA
+F2 Display FieldsA
+F4 Delete SegmentA
+Do you want to undelete this key? YA
+Are you sure you want to delete this entire key? YA
+Are you sure you want to delete this segment? (Y/N) YL
+F10 Save Key Info A
+ESC - Ret to MainA
+Thank you for using TAS Professional 5.0A
+ File Desc A
+F2 - Disp FDsA
+ Print All FDs 
+ From File Descriptor: A
+ Thru File Descriptor: A
+The thru value must be equal to or greater than the from.A
+ Now printing: A
+tas_tofA
+Do you want to delete this File Descriptor in its entirety, and all the files that belong to it? NL
+ARE YOU SURE?  A
+THIS WILL DELETE ALL FILES THAT USE THIS FD? YA
+  Are all entries to be upper case only? (Y/N)A
+  Maximum size of an ALPHANUMERIC field is 65534 charactersA
+  Maximum size of a NUMERIC field is 20 charactersA
+  Maximum size of a BCD field is 20 charactersA
+  Date sizes can be:  A
+  5 (mm\yy) or 7 (mm\yyyy) or 8 (mm\dd\yy) or 10 (mm\dd\yyyy)A
+  Time sizes can be:  5 (hh:mm) or 7 (hh:mm a) or 8 (hh:mm:ss) or A
+  10 (hh:mm:ss a) or 11 (hh:mm:ss.00) or 13 (hh:mm:ss.00 a) A
+  Maximum size of a BYTE field is 3 charactersA
+  Maximum size of an INTEGER field is 5 charactersA
+  Maximum size of a RECORD field is 10 charactersA
+  Maximum size of an OVERLAY field is 65534 charactersA
+  The number of decimal chrs, may be 0 thru 8 A
+  The number of decimal chrs, may be 0,2,4,6 or 8 A
+  How many array elements in this field? (0-65535)A
+  However, maximum record size is 65535 bytesA
+ This is a 40 chr description for this field.A
+There are no files listed that use this File Descriptor A
+tas_tofA
+Enter the path: A
+FILELOC.BA
+The dictionary files were not found.  Do you want to create a new set of files in that path? YL
+Enter the File Name:A
+Enter the File Ext:A
+You must enter a file name.A
+A record was not found in FILELOC for A
+  It must exist before it can be initialized.A
+tasinitA
+F2 Display filesA
+ Files     CC A
+ Chg Dict Loc A
+ Maint Loc FileA
+ Print Loc FileA
+ New Dict A
+-----FILE OPS-------A
+ Create/Init FileA
+ ReindexA
+ RestructureA
+ Copy FD to Dif DictA
+ Options A
+tasinitA
+Creating FILELOC record: A
+Error occured while searching for FILELOC record A
+Error occured while saving FILELOC record A
+Creating FILEDICT record: A
+Error occured while searching for FILEKEY record A
+Creating FILEKEY record: A
+Error occured while saving FILEKEY record A
+Creating FILEKNUM record: A
+tasflocA
+tas_tofA
+FILEDICTA
+FILEDICTA
+tasinitA
+FILELOCA
+FILELOCA
+tasinitA
+FILEKEYA
+FILEKEYA
+tasinitA
+FILEKNUMA
+FILEKNUMA
+tasinitA
+FILEDFLDA
+FILEDFLDA
+tasinitA
+FILERELA
+FILERELA
+tasinitA
+FILEDESA
+FILEDESA
+tasinitA
+FILELOCA
+FILELOCA
+FILEDICTA
+FILEKEYA
+FILEKNUMA
+FILEDFLDA
+FILERELA
+FILEDESA
+ERRMSGA
+CMPDFLTA
+TRANSLTEA
+TASCOLORA
+FILEDICTA
+FILELOCA
+FILEDICTA
+FILEKEYA
+FILEKNUMA
+FILEDFLDA
+FILERELA
+FILEDESA
+ERRMSGA
+CMPDFLTA
+TRANSLTEA
+TASCOLORA
+FILEKEYA
+FILELOCA
+FILEDICTA
+FILEKEYA
+FILEKNUMA
+FILEDFLDA
+FILERELA
+FILEDESA
+ERRMSGA
+CMPDFLTA
+TRANSLTEA
+FILEKNUMA
+FILELOCA
+FILEDICTA
+FILEKEYA
+FILEKNUMA
+FILEDFLDA
+FILERELA
+FILEDESA
+ERRMSGA
+CMPDFLTA
+TRANSLTEA
+F2 - Display FD NamesA
+You must have a FD name that is in the Data Dictionary.A
+You must have records in the Data Dictionary defining this file.  Please enter these before trying to copy the file.A
+If you don't put in a different Dictionary path the program doesn't know where to copy the FD.A
+FILELOC.BA
+The dictionary files were not found.  Do you want to create a new set of dictionary files in that path? YL
+FILEDICTA
+ already exists in the copy to dictionary.A
+The FD A
+An error has occured while adding the FILEDICT recordsA
+FILELOCA
+FILEKEYA
+An error has occured while adding the FILEKEY recordsA
+FILEKNUMA
+An error has occured while adding the FILEKNUM recordsA
+FILEDESA
+F2 - Chse FileA
+ Enter the File to Reindex: A
+ Enter the File Extension:  A
+The name of the file to be reindexed must be in the Location file.A
+You cannot reindex any file type other than TAS or BtrieveA
+There isn't enough room on the disk to Reindex the file.  You need to either delete something from your disk or move the file to another location.A
+$$$$TEMP.BA
+$$$$TEMP.BA
+$$$$TEMP.BA
+$$$$TEMP.BA
+An error occured while trying to rename A
+tasinitA
+An error has occured while creating the new file.  The Reindex routine will stop now.  Don't forget, the old data file is on the disk as $$$$TEMP.B.A
+$$$$TEMP.BA
+ Number of records remaining: A
+An error has occured while creating the new file.  The Reindex routine will stop now.  Don't forget, the old data file is on the disk as $$$$TEMP.B.A
+$$$$TEMP.BA
+ Enter the path for the new dictionary: A
+You can't create new dictionary files in the current dictionary path.A
+FILELOC.BA
+There are dictionary files in the path entered.  Do you want to delete these and create new ones? YL
+fileloc.bA
+filedict.bA
+filekey.bA
+fileknum.bA
+filedes.bA
+filedfld.bA
+filerel.bA
+***** This routine if not completely successful can delete the data file being restructured.  It could also leave some files complete and others not.  To protect against this YOU MUST MAKE A BACKUP OF ALL EFFECTED FILES AND THE DATA DICTIONARY (FILE*.B) BEFORE CONTINUING.  ***** A
+ARE YOU SURE YOU WANT TO CONTINUE? NA
+F2 - Chse FDA
+ Enter the FD to Restructure: A
+There are no files using that FD in the location file.I
+There isn't enough room on the disk to Restructure the file.  You need to either delete something from your disk or move the file to another location.I
+There are no files using that FD in the location file.A
+There isn't enough internal RAM memory to complete this Restructure.  You need to make more memory available by removing TSRs or adding memory to your computer.A
+$$$$TEMP.RSTA
+Internal Err - Mismatching FDsA
+ Number of files remaining: A
+ Working on File: A
+ Number of records remaining out: A
+tasinitA
+An error has occured while creating the new file.  The Restructure routine will stop now.  RESTORE ALL APPLICABLE FILES AND THE DATA DICTIONARY (FILE*.B).  Fix the problem and try again.A
+ Number of records remaining in:  A
+Internal Err - Mismatching FDsA
+$$$$TEMP.RSTA
+Print in condensed mode? YA
+ Desc Name:
+ Name:                  Type:    Size:        Dec:     Up:    Array:
+       Offset:        Desc:
+                              Key Maintenance
+                         Key Name:
+Ascending/Descending (A/D):              Key value can chg (Y/N):
+Duplicates OK        (Y/N):              Manual Keys       (Y/N):
+           Segment Nmbrs and Field Names      
+                                              
+  1                        13                 
+  2                        14                 
+  3                        15                 
+  4                        16                 
+  5                        17                 
+  6                        18                 
+  7                        19                 
+  8                        20                 
+  9                        21                 
+ 10                        22                 
+ 11                        23                 
+ 12                        24                 
+        Copy FD to Another Dictionary
+      
+      
+ File Descriptor Name:                           
+      
+                                                 
+      
+ Copy to Dictionary Path                         
+      
+                                                 
+      
+                   TAS Professional 5.0 File Descriptor Print-Out                      Page:
+                             Descriptor Name:
+Field Name       Description                               T  Size  Dec Offset Array Up
+---------------  ----------------------------------------  -  ----  --- ------ ----- --
+Key Info:
+D  Key Name         Num     Field(s)         Segment  Ascending/Descending  Duplicates  Modifiable Manual
+-  ---------------  ---     ---------------  -------  --------------------  ----------  ---------- ------
+Files that use this File Descriptor
+File Name  Ext  Size   Location                                   Description
+---------  ---  -----  ----------------------------------------   ----------------------------------------
+                 TAS Professional 5.0 File Location Print-Out                                  Page:
+File Name  Ext  Size   Location                                   Description
+---------  ---  -----  ----------------------------------------   ----------------------------------------
+There is not enough memory to display this report to the screen.  Try sending it to the printer.L
+Press any key to continue.A
+ 1 chr right   I
+ 1 chr left   ^I
+ 40 chrs right   ^I
+ 40 chrs left   Home / End    A
+Press Enter for next page     Press ESC to quit   Current Col:                       A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+filechspA
+ Choose Printer I
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+RC             
+NORM           
+PROG_NAME      
+KEY_YN         
+OK             
+KPTR           
+FIELD.NAME     
+FILE_DEF       
+TEMP_BUFF_NAME 
+DESCRIPTOR     
+CF_FDNAME      
+CNTR           
+CNTR1          
+CNTR2          
+CNTR3          
+CNTR4          
+CNTR5          
+SIZE_MAX       
+ACT            
+TEMP_HNDL      
+PAGE           
+COMP_CODE      
+MCNTR          
+OFFSET_HLDR    
+LAST_OFFSET    
+NEXT_OFFSET    
+ERR_HNDL       
+MENU.HLDR      
+S15.FLD        
+CUR.DATE       
+CURY           
+SZEHLDR        
+DUMMY          
+CHGD           
+NEW            
+NEW_REC        
+NEW_KEY        
+NEW_KEY_ADD    
+FILES_OPEN     
+FLD.CHRS       
+FILE.CHRS      
+SCRNH_1        
+SCRNH_2        
+FILEDICT_HLDR  
+DATE_TIME_FLD  
+FLD_NAME       
+FLD_TYPE       
+FLD_SIZE       
+FLD_DESC       
+FLD_DEC        
+FLD_ARRAY      
+FLD_UPCASE     
+FLD_PICT       
+OLD_FLD_TYPE   
+OLD_FLD_SIZE   
+OLD_FLD_ARRAY  
+OLD_FLD_OFFSET 
+FLD_OFFSET     
+RESTRUCT_FLD   
+SIZE_HLDR      
+SIZE_HLDR1     
+INT_SIZE       
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+EXTRA_HNDL     
+EXTRA_HNDL2    
+DES_FNAME      
+KDEL           
+KSEG           
+KORD           
+KDUP           
+KMOD           
+KNUL           
+KNME           
+KFLD           
+KNUM           
+PRT_HNDL       
+WIN1           
+WIN2           
+CR_LF          
+WC             
+BC             
+SC             
+DICT_BUFF_NAME 
+DICT_OFFSET    
+KACT           
+KCNTR          
+KCNTR2         
+KCNTR3         
+KCNTR4         
+TOT_KEYS       
+KEY_CHGS       
+KEY_CHGD       
+KNAME          
+KFLDS2         
+KDUPA          
+KMODA          
+KORDA          
+KNULA          
+KDELETE        
+KNUMA          
+KFLDS          
+DICT_FIELD_NAME
+DICT_TYPE      
+DICT_SIZE      
+DICT_DEC       
+DICT_ARRAY_ELE 
+DICT_DESC      !
+DICT_UPCASE     
+DICT_LCD       q
+FLCODE         
+KEY_NAME       
+KEY_FIELD      
+KEY_DUPS       :
+KEY_MODIFIABLE R
+KEY_ORDER      "
+KEY_NULL       j
+KEY_NUM        r
+CC             
+OFSET_HLDR     
+DICT_HOFFSET   u
+KEY_SEG        
+KEY_BUFF_NAME  
+KEY_NUMKEYS    
+KHLDR          
+EK_FPTR        
+KEY_SNME       
+FPTR           
+DEC_AMT        
+DEC_STOP       
+DES_HNDL       
+FROM_FD        
+THRU_FD        
+PFIRST         
+FROM_PALL      
+PALL_FIRST     
+RPT_RET        
+KNUM_BUFF_NAME 
+LOC_BUFF_NAME  
+LOC_LOCATION   
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+IS_TYP         
+IS_SZE         
+GIS_TEMP_SZE   
+MC             
+LOC_FDN        
+LOC_REC_TYPE   
+NUM_RECS_REMAIN
+NUM_RECS_HLDR  
+A_CNTR         
+A_CNTR2        
+A_CNTR3        
+A_CNTR4        
+A_CNTR5        
+RSTR_FILES     
+DICT_HTYPE     w
+DICT_HSIZE     x
+DICT_HARRAY    |
+DICT_HDEC      z
+TASDMGR3_HLL   
+TASDMGR3_PHCNTR
+TASDMGR3_PHRET 
+LOC_REC_SIZE   
+LOC_DESCRIPTION>
+DP_SCRN        
+DP_COLS        
+DP_CNTR        
+DP_CNTR1       
+DP_CNTR2       
+DP_CNTR3       
+DP_ROW         
+LOC_ACT        
+DP_FLD         
+DP_DONE        
+DP_FORCE       
+STRT_COL       
+CHR            
+DUMMY          
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+FC             
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+CP_CNTR        
+CP_CNTR1       
+CHSP_HNDL      
+CHSP_PRT_NAME  
+CHSP_PRT_TYPE  {
+CHSP_PRT_LPTNUMx
+CHSP_PRT_PWDT  
+CHSP_PRT_PMAX  
+CHSP_PRT_PPLNE 
+MESSAGE        
+MSG_PTR        

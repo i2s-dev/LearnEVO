@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>EVO Help</title>
+<link rel="stylesheet" href="css/style.css?v=20260421b" />
+</head>
+<body>
+
+<header id="topbar">
+  <div class="brand">
+    <a href="#welcome" class="logo">EVO Help</a>
+    <span class="tag" id="stats-tag"></span>
+  </div>
+  <div class="searchbox">
+    <input type="search" id="search-input"
+      placeholder="Search… (Ctrl+K)  — try: customer, AP-H, BKARCUST, 'print checks'"
+      autocomplete="off" spellcheck="false" />
+    <ol id="search-results" class="search-results" hidden></ol>
+  </div>
+  <div class="tools">
+    <button id="toggle-sidebar" title="Toggle sidebar">&#9776;</button>
+    <a href="#welcome" class="btn">Home</a>
+    <a href="#recipes-index" class="btn">Recipes</a>
+    <a href="#module-map" class="btn">Modules</a>
+    <a href="#tables-index" class="btn">Tables</a>
+  </div>
+</header>
+
+<main id="main">
+  <aside id="sidebar">
+    <nav id="sidebar-nav"></nav>
+  </aside>
+
+  <article id="page">
+    <div id="breadcrumbs"></div>
+    <div id="content">
+      <p>Loading…</p>
+    </div>
+    <footer id="page-footer">
+      <small>
+        <span id="related-links"></span>
+      </small>
+    </footer>
+  </article>
+</main>
+
+<div id="keyhint" class="keyhint">
+  <kbd>Ctrl+K</kbd> search · <kbd>Esc</kbd> close · <kbd>↑↓</kbd> navigate · <kbd>Enter</kbd> open · <kbd>g h</kbd> home · <kbd>/</kbd> focus
+</div>
+
+<script src="js/marked-lite.js?v=20260421b"></script>
+<script src="js/search.js?v=20260421b"></script>
+<script src="js/renderer.js?v=20260421b"></script>
+<script src="js/app.js?v=20260421b"></script>
+
+</body>
+</html>

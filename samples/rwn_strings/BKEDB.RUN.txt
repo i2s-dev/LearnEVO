@@ -1,0 +1,830 @@
+BKEDMSTR
+BKARINV 
+BKEDIDUN
+BKARCUST
+BKARINVL
+BKICREF 
+BKICMSTR
+BKEDNOTE
+BKBMMSTR
+MTICMSTR
+BKPRSALE
+BKSYMSTR
+BKYSMSTR
+BKICPMAT
+BKSYHELP
+DBAHLPID
+TASCOLOR
+ - ISTS Enhancement 10/31/03A
+ISTECHL
+BKICPMATA
+DISCOUNTA
+BKARINVA
+BKEDIHA
+BKEDILA
+BKEDMSTRA
+BKEDIDUNA
+BKARCUSTA
+BKEDNOTEA
+BKICREFA
+BKICMSTRA
+mticmstrA
+bkbmmstrA
+BKPRSALEA
+Unable to find a record in the EDI master file. A
+DBASO.INA
+TRANSFER\A
+dbaso.inA
+ was not found.  Please export your sales order information from CandoEDI, then re-run this program. A
+The file A
+Ready to begin importing? L
+ED-B   Import EDI OrdersA
+SOHEADA
+ has more than 500 line items.  You will not be able to process that order.  You should delete this EDI order and contact your trading partner and request they re-send with no more than 500 lines per order. A
+EDI Order #A
+CANCELA
+bkeddelA
+ could not be found in the pending sales order file, or in the pending EDI order file.  It has likely been posted, or was never received through ED-B. A
+The EDI/Sales Order with the release number of: A
+SOLINEA
+No Description FoundA
+No Description FoundF
+SONOTEA
+ EDI SO headers, A
+ EDI Line Items, and A
+ EDI Notes from A
+  Importing now complete.  Proceed to view/edit in ED-C. A
+You have just imported A
+Kit Consists of:I
+bkprsaleI
+) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this EDI Order. A
+Employee No. A
+ (one of the default salespersons as set in AR-A for customer A
+bkprsaleI
+Employee No. A
+ (the default salesperson as set in AD-F) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this EDI Order. A
+bkprsaleI
+) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this EDI Order. A
+Employee No. A
+ (the default salesperson #2 as set in AR-A for customer A
+BKPRSALEA
+          
+          
+                                                        
+          
+     Importing                                          
+          
+                                                        
+          
+        EDI Number                                      
+          
+        Customer                                        
+          
+                                                        
+          
+                                                        
+          
+        Release number                                  
+          
+        Customer order                                  
+          
+                                                        
+          
+        Line number                                     
+          
+                                                        
+          
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRA
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTECH support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTEC H support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+IS_XREF        
+CUSTCOD_VAL    
+GETTING.CUST   
+PROD_HLDR      
+PROD_ESD       
+PROD_QTY       
+WHAT_LINE      
+CNTR_HLDR      
+KCNTR          
+IS_KIT         
+ISTS.EDATE     
+SHIPCODE       
+PATH           
+BKARINV_HNDL   
+BKARINVL_HNDL  
+BKSYMSTR_HNDL  
+BKEDIH_HNDL    
+BKEDIL_HNDL    
+BKEDMSTR_HNDL  
+BKEDIDUN_HNDL  
+BKARCUST_HNDL  
+BKEDNOTE_HNDL  
+BKICPMAT_HNDL  
+DISCOUNT_HNDL  
+CPRICE_FOUND   
+MCNTR3         
+MCNTR4         
+CHK.QTY        
+DELETED        
+BKICREF_HNDL   
+MTICMSTR_HNDL  
+BKBMMSTR_HNDL  
+BKICMSTR_HNDL  
+IN_FILE        
+R_LINE         
+FILE_NAME      
+BKEDI.MST.PATH 
+TAG            
+SONUM          
+FIRST_PASS     
+A15_HLDR       
+A13_HLDR       
+A12_HLDR       
+A11_HLDR       
+A8_HLDR        
+A5_HLDR        
+A3_HLDR        
+L_CNTR         
+HEAD_CNTR      
+LINE_CNTR      
+NOTE_CNTR      
+RELEASE_NUM    
+BKAR.INV.SONUM 
+BKAR.INV.NL    9
+BKAR.INV.TOTAL )
+BKAR.INV.SUBTOT
+BKAR.INV.FRGHT n
+BKEDI.MST.NEXTN
+BKAR.INV.INVDTE
+BKEDI.DUN.DUNS 
+BKEDI.DUN.CUST 
+BKAR.INV.TAXABL
+BKAR.TAX.YN    
+BKAR.INV.TAXKEY
+BKAR.TAX.STATE 
+BKAR.TAX.LOCAL 
+BKAR.INV.PCODE 
+BKAR.PRICE.MAT 
+BKAR.INV.DCODE 
+BKAR.DISC.CODE 
+BKAR.INV.TERMNM
+BKAR.TERMS.NUM 
+BKAR.INV.CUSCOD
+BKAR.INV.CUSNME=
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.INV.CUSCNT
+BKAR.INV.CUSATT
+BKAR.CUSTNAME  
+BKAR.ADD1      (
+BKAR.ADD2      F
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.COUNTRY   
+BKAR.CONTACT   
+BKAR.INV.SHPNME)
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKEDI.DUN.SHPCD 
+BKAR.INV.SHPCNT
+BKAR.INV.SHPATN
+BKAR.INV.SHPVIA
+BKAR.INV.EXTRA 
+BKAR.INVL.INVNM
+BKAR.INV.SHPCOD
+BKAR.INV.TERMD 
+BKAR.INV.CUSORD
+BKAR.INV.TAXAMT!
+BKAR.INV.DESC  C
+BKAR.INV.ORDDTE
+BKAR.INV.SHIPDT
+BKAR.INV.FOB   
+BKAR.INV.RTS   m
+BKAR.INVL.CNTR 
+BKAR.INVL.PQTY ;
+BKEDI.DUN.PRODS
+BKIC.REF.CUSCODU
+BKIC.REF.CUST  
+BKAR.INVL.PCODE
+BKIC.REF.CODE  
+BKAR.INVL.EXTRA
+BKAR.INVL.PDESC
+BKIC.REF.PDESC 
+BKIC.PROD.DESC 
+BKAR.INVL.UM.LN
+BKAR.INVL.RTS  u
+BKIC.PROD.TYPE -
+BKAR.INVL.PPRCEC
+BKAR.INVL.PDISCK
+BKAR.INVL.PEXT S
+BKEDI.NOTE.EDI 
+BKEDI.NOTE.NOTE
+BKAR.INVL.TXBLEd
+BKAR.INVL.ASD  
+BKBM.PARENT    
+BKBM.COMPONENT 
+MTIC.PROD.SUM  1
+BKAR.INVL.ESD  
+BKIC.PROD.CODE 
+BKBM.QTY.REQD   
+BKIC.PROD.NOTE 
+BKAR.SLSP.NUM  
+BKAR.INV.SLSP  
+BKAR.COMM      
+BKAR.INV.COMMPR
+BKPR.SLS.EMPNUM
+BKPR.SLS.RATE  
+BKAR.CUSTCODE  
+BKSY.AR.SLSP   
+BKAR.INV.SLSP2 
+BKYS.YN        
+BKIC.PROD.PRICEZ
+BKIC.PMAT.EXP  
+BKIC.PMAT.PCODE
+BKIC.PMAT.CUST 
+BKIC.PMAT.RATE 
+BKIC.PMAT.QTY  k
+BKIC.PROD.AVOP 
+BKIC.PMAT.COMM1
+BKAR.INVL.COMPR
+BKIC.PMAT.COMM2m
+BKIC.PMAT.PNUM 
+BKIC.PROD.CLASS6
+BKIC.PMAT.PER  
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BKYSMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+ZA_TEXT        
+ZA_DFLT        
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+MSG_PTR        
+MESSAGE        
+MSG_TYPE       
+LOCK_TYPE      
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           

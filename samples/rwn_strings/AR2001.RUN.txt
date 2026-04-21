@@ -1,0 +1,625 @@
+TAS32Q
+BKYSMSTR
+BKSYMSTR
+BKARINVT
+BKAPDESC
+BKARINV 
+BKARINVL
+BKART   
+BKARTNOT
+BKARCUST
+BKARDEP 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYAR  
+BKSYPRTR
+ISIS    
+AR2001  AR Data Conversion UtilityA
+BKARINVTA
+BKARDPSTA
+BKARDEPA
+BKSYARA
+BKARINVA
+BKGLCOAA
+BKARCUSTA
+BKARINVLA
+BKESTQTLA
+BKEDILA
+BKARTA
+BKARTNOTA
+This conversion utility will prepare your data files for use of the revised AR system that was implemented beginning December 2000.  This may take a long time to run, depending on how much data the current company has.  No other users should log into this company while the conversion is running.  Be sure to run this conversion for each of your companies.  Are you ready to proceed with the conversion for this company? L
+These data files will potentially get changed: BKARINVT, BKARINV, BKARDEP, BKARINVL, BKESTQTL, BKEDIL, BKART, and BKARTNOT.  It is recommended that you have a current backup copy of these files for this company.  OK to proceed with the conversion? L
+The AR data conversion has already previously been completed for this company.  You may re-run it if desired, without harming your data, but doing so is not necessary.  Do you wish to re-run the AR conversion utility? L
+Previously doneA
+Needs to be runA
+Previously doneA
+Previously doneA
+Previously doneA
+Needs to be runA
+Needs to be runA
+Needs to be runA
+Previously doneA
+Previously doneA
+Previously doneA
+Previously doneA
+Needs to be runA
+Needs to be runA
+Needs to be runA
+Needs to be runA
+Previously doneA
+Needs to be runA
+*** user interaction may be required after step 2b finishes! ***
+Esc ExitA
+Stage 1 has not been run yet.  It must be run during this session. A
+Esc ExitA
+Stage 2 has not been run yet.  It must be run during this session. A
+Esc ExitA
+Stage 3 has not been run yet.  It must be run during this session. A
+Esc ExitA
+Stage 4 has not been run yet.  It must be run during this session. A
+No stages selected - nothing to run. A
+Stage 2:  The conversion may or may not be able to determine from the old data the bank account into which each of your deposits was deposited.  Please specify at the next prompt a bank account which will be used for deposits where the original bank account cannot be determined. A
+OverpaymentA
+Deposit on AccountA
+CompleteA
+Working...I
+Deposit #A
+Date:A
+Amount:A
+CompleteI
+*** please print the report now ***A
+A report of all open SOs that include a deposit amount will now be printed.  Any SOs that appear on this report are likely ones that have already had an invoice printed, but not yet posted.  After this AR conversion finishes, compare this report to the data in AR-N to make sure that deposit links have been established for all SOs on this report. A
+ERROR!  Could not find report file A
+.  Unable to print the report.  Please re-run this stage of the AR conversion if you wish to get this report. A
+ERROR!  Could not open report file A
+.  Unable to print the report.  Please re-run this stage of the AR conversion if you wish to get this report. A
+*** report has been printed ***A
+*** nothing needed to be printed ***I
+CompleteA
+CompleteA
+Working...I
+CompleteI
+CompleteI
+CompleteA
+CompleteA
+ERROR!  There was a problem assigning the next system AR transaction number.  Unable to continue processing. A
+Disc AllowedI
+Disc Allow Inv# A
+Open bal as of AR conversionI
+CompleteF@
+AR conversion successfully completed. A
+Another user is in this company and has one of the AR data files open.  Please make sure that no other users are using this company before trying to run this data conversion. A
+ERROR!  There was a problem assigning the next system deposit number.  Unable to continue processing. A
+bkarcustI
+BKARCUSTA
+Esc CancelA
+End of report.I
+                                                                            
+ Conversion Stage                                Done? Run? Progress        
+ 1. PAYMENTS: move invoice# to new check# field.                            
+                                                                            
+ 2. DEPOSITS:                                                               
+    a. Build BKARDEP from BKARINVT/BKARDPST.                                
+    b. Generate Open SO Deposit Amounts report.                             
+                                                                            
+                                                                            
+ 3. OPEN ORDER LINE ITEMS: move taxable amounts.                            
+    a. Open SO line items (BKARINVL).                                       
+    b. Quote line items (BKESTQTL).                                         
+    c. EDI order line items (BKEDIL).                                       
+                                                                            
+ 4. AGING: create trxn file entries from BKARINVT                           
+                                                                            
+  Stages that have already been run do not need to be run again.  However,
+  they can be run again if desired without harming the data.
+  All stages that have not yet been run must be run in this session.
+ ==================================================================================================================================
+ This is a listing of all open SOs that include a deposit amount.
+ If a sales order is included on this list, it is likely because it has
+ had an invoice printed for it, but not yet posted.
+ After the AR2001 conversion finishes running, please compare this report
+ to the data in AR-N to make sure that all of these sales orders have a
+ deposit linked to them.  In some cases, you may need to reestablish
+ a link using AR-N.
+ ==================================================================================================================================
+  Invc#    SO#  SO Dpst Amt  SO Date Cust Code  Customer Name                  Currency
+ ------ ------ ------------ -------- ---------- ------------------------------ --------
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when DBA Accounting is activated. A
+This program is only available when DBA Accounts Receivable is activated. A
+This program is only available when DBA Accounts Payable is activated. A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+ Select Bank Account I
+The process you are running may not be able to continue if you don't choose a bank account.  Exit without selecting a bank account?L
+bksyarI
+BKSYARI
+BKSYARI
+bkarinvtI
+BKARINVTA
+BKSYARA
+bksyarI
+BKSYARI
+BKSYARI
+bkarinvtI
+BKARINVTA
+bkardepI
+BKARDEPA
+BKSYARA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+" does not have a GL account assigned to it and will not be available for selection.  Please use the "Checking Accounts Defaults" menu selection to correct this. A
+Warning: Checking account "A
+Warning: Checking accounts have not yet been defined.  Please use the "Checking Accounts Defaults" menu selection to set up at least one checking account. A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+TAX SYSTEM:F
+ This Program requires the new TAX system.F
+ Please contact your system administrator to F
+ run the required Conversion routine. I
+Multi Currency System:F
+ This Program requires the Multi Currency systemF
+ to be converted to the 2000.1 configuration. F
+ Please contact your system administrator to F
+ run the required MCSTART routine. I
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+INVTHNDL       
+OLDDEPHNDL     
+NEWDEPHNDL     
+BKSYARHNDL     
+BKARINVHNDL    
+BKARINVLHNDL   
+BKESTQTLHNDL   
+BKEDILHNDL     
+BKARTHNDL      
+BKARTNOTHNDL   
+S1DONE         
+S1RUN          
+S1PROGRESS     
+S2DONE         
+S2RUN          
+S2PROGRESS     
+S2APROGRESS    
+S2BPROGRESS    
+S3DONE         
+S3RUN          
+S3PROGRESS     
+S3APROGRESS    
+S3BPROGRESS    
+S3CPROGRESS    
+S4DONE         
+S4RUN          
+S4PROGRESS     
+MSG2C          
+TOTRECS        
+CURCNTR        
+PCTCOMP        
+RECCHANGED     
+ZRET           
+TEMPDEPCODE    
+NEWDEPNO       
+INVTREC        
+ADSONUM        
+ADCHKACT       
+ADCURRENCY     
+HAVEMATCH      
+I              
+DEPDATE        
+DEPAMT         
+DEPCHKACT      
+NDEPCHKACT     
+RPTLINES       
+LINEINVC       
+LINESO         
+LINEDEPAMT     
+LINESODATE     
+LINECUSTCODE   
+LINECUSTNAME   
+LINECURRENCY   
+RPTFILE        
+RPTF           
+RPTARR         
+TIME.REC       
+STR.TIME.REC   
+SORPTHNDL      
+DEFAULTCHKACT  
+NEWTRXNNO      
+TODAY          
+BKYS.YN        
+SYSACCTGON     
+BKSY.AR.CHKACT 
+BKAR.INVT.DESC &
+BKAR.INVT.TYPE A
+BKAR.INVT.NUM  
+BKAR.INVT.CHKNO
+BKAR.INVT.DEPSTH
+BKAR.INVT.AMTRM
+BKAR.INVT.DEPNO
+BK.DESC.CODE   
+BK.DESC.NOTES  
+BKAR.INVT.DATE 
+BKAR.INVT.AMT  
+BK.DESC.NUM    
+BKAR.INV.CUSCOD
+BKAR.INVT.CODE 
+BKAR.INV.INVCD 
+BKAR.INV.ISCUR 
+BKSY.PRGS.WHR  
+BKAR.INV.DEPAMT
+BKAR.INV.SONUM 
+BKAR.INV.NUM   
+BKAR.INV.ORDDTE
+BKAR.INV.CUSNME=
+BKAR.INVL.TXAMT
+BKAR.INVL.COOP 
+BKAR.INVT.TRXN 
+BKART.CUST     
+BKART.TRXN     
+BKART.TYPE     
+BKART.AMOUNT   
+BKART.POSTDATE #
+BKART.CNTR     '
+BKART.ENTDATE  )
+BKART.NOTE     E
+BKART.NOT.TRXN 
+BKART.NOT.CNTR 
+BKART.NOT.DESC 
+BKAR.INVT.OPEND
+BKAR.INVT.CLOSD
+BKYSMSTR_HNDL  
+ISIS.MULTI.CURR
+BKAR.INVT.MCCOD
+BKAR.CUSTCODE  
+BKAR.IS.MCCODE 5
+BKAR.DEP.DEPNO 
+BKAR.DEP.CUST  
+BKAR.DEP.SO    
+BKAR.DEP.DATE  
+BKAR.INVT.CHKAC
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSITEMCLASSGL 
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+ZA_TEXT        
+ZA_DFLT        
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+SCK.DFLT.ACT   
+SCK.CHK.ACT    
+SCK.CHK.ARR    
+SCK.TOT        
+SCK.CNTR       
+SCK.GLREC      
+SCK.SEL.TXT    
+SCK.SEL.NUM    
+SCK.ROW        
+SCK.COL        
+SCK.NOESC      
+BKSY.CHK.NAME  s
+BKSY.CHK.CHKACT
+BC             
+MC             
+CC             
+SC             
+ARTSYAR        
+ARTARINVT      
+ARTRETURN      
+ARTDUPECHECK   
+ARTNODUPECHK   
+BKSY.AR.TRXN   
+ARDSYAR        
+ARDARINVT      
+ARDARDEP       
+ARDRETURN      
+ARDDUPECHECK   
+BKSY.AR.DEPNO  
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+LASER_PRINTER  
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+VCK.CNTR1      
+VCK.CNTR2      
+VCK.GLREC      
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+PSTR           

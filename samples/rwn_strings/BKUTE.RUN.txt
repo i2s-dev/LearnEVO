@@ -1,0 +1,292 @@
+TASCOLOR
+BKSYHELP
+DBAHLPID
+tas50.ovlA
+TAS50.ovlA
+UT-E  Set System ConfigurationA
+F1 HelpA
+F10 Save,Esc ExitA
+Warning: other than date and currency settings, the data on this screen should not be changed without advise from DBA technical support.A
+This is the number of times the program will attempt to read a record that is locked by another user before the locked message will be displayed.A
+This is the number of 64k loop cycles the program will wait before attempting to read the locked record again.  Time depends on computer type.A
+You must provide a currency symbol.A
+You must provide a currency symbol.A
+This is the currency symbol that will be used during printing.  May be different than the regular currency symbol.A
+You must provide some sort of decimal character.A
+You must provide some sort of comma character.A
+The only dates available are:  (M)DY, (D)MY, or (Y)MD.A
+The only dates available are:  (M)DY, (D)MY, or (Y)MD.A
+This is the character that will print after the time if it is before noon and the proper size is set.A
+This is the character that will print after the time if is is after noon and the proper size is set.A
+These are the characters that represent Yes and No respectively.A
+ (Y/N) YA
+These are the eight characters that appear at the end of internal questions that ask for a Yes or No answer.A
+Do you wish to save the information above? YL
+ABCDEFGA
+The changes have been saved.  Please exit DBA, then reenter so that they may take effect. A
+Do you wish to exit without saving? YL
+F2 Display Files A
+                 A
+ACS FilesA
+/p:4096 /m:64 /f:32L
+F1 Help,F2 Set
+current
+sub-directoryA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+             
+             
+     Multi-User?                                   
+             
+     No. of Retries on Locked Record               
+             
+     Delay Between Retries                         
+             
+                                                   
+             
+    Currency Symbol [screen]                       
+             
+    Currency Symbol [printer]                      
+             
+    Decimal Character for numeric displays         
+             
+    Comma Character for numeric displays           
+             
+                                                   
+             
+    Date Display Format [M:MDY D:DMY Y:YMD]        
+             
+    Date Separator Character                       
+             
+    Time Separator Character                       
+             
+    AM Specifier                                   
+             
+    PM Specifier                                   
+             
+                                                   
+             
+  YN Specifier                                     
+             
+  YN Extension                                     
+             
+                                                   
+             
+  General Buffer Size                              
+             
+                                                   
+             
+  Default Dictionary Path                          
+             
+                                                   
+             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+There are no A
+ files currently available.A
+ Files A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+RC             
+NORM           
+HNDL           
+CNTR           
+CNTR1          
+OVL_PATH       
+KEYBD_SPEED    
+ACS_FILE_NAME  
+CUSTOM_BOX     
+AM_SPECIFIER   
+PM_SPECIFIER   
+BINARY_0       
+LOWER_CASE_CHRS
+UPPER_CASE_CHRS
+YN_VALUE       
+REUSE_SPC2     
+BELL_TONE      
+COMMA_CHR      
+DOLLAR_CHR     
+DATE_SEPARATOR 
+TIME_SEPARATOR 
+DATE_TYPE      
+TIME_TYPE      
+DECIMAL_CHR    
+GEN_BUFF_SIZE  
+DFLT_DICT_PATH 
+NUM_OF_RETRIES 
+TIME_BTWN_RETRY
+BELL_DURATION  
+BELL_NOTE_FLD  
+BELL_BEAT_FLD  
+WTP_VALUE      
+MOUSE_DELAY    
+MOUSE_ON       
+NO_REVERSE_FLDS
+REAL_MEM_K     
+PRINTER_DOL_CHR
+REUSE_SPACE    
+DFLT_PRTR_CTRL 
+DFLT_PRTR_NUM  
+BTRV_LOAD_STR  
+INT_STACK_VALUE
+EXTRA_MEM_SIZE 
+MULTI_USER     
+YN_EXT         
+YN_EXT_END     
+CR_LF          
+CUSTOM_BRDR    
+DUMMY          
+DDP_PTR        
+NOTE_CNVT      
+NOTE           
+NOTE_VAL       
+OCTIVE         
+ACS_HLDR       
+MSG            
+CFE_PTR        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+FIND_FILE_EXT  
+FIND_FILE_TITLE
+FIND_FILE_PATH 
+FLE_NAME       
+FLE_ARRAY      
+WC             
+SC             
+BC             
+CC             
+MSG_PTR        
+MESSAGE        
+FC             

@@ -1,0 +1,1377 @@
+TAS32H
+TASCOLOR
+FILELOC 
+BKYSMSTR
+BKSYMSTR
+WORKORD 
+WORECV  
+BKDCLAB 
+WOEXCHG 
+WODATE  
+WOROUT  
+WOBOM   
+WOMAT   
+OUTPROC 
+WOBOMREM
+WOLABOR 
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+ - ISTS Enhancement 03/11/16A
+ISTECHL
+FILELOCA
+BKYSMSTRA
+BKYSMSTRA
+SM-J-A  Work Order File MaintenanceA
+SM-J-A  Work Order File MaintenanceA
+F1 HelpA
+Esc ExitA
+OUTPROCA
+WOLABORA
+WOMATA
+WOROUTA
+WOBOMA
+WODATEA
+WORKORDA
+WOEXCHGA
+WORECVA
+BKDCLABA
+WOBOMREMA
+THIS WILL BE DONE IN REPORT-ONLY MODE WITH NO CHANGES MADE TO THE DATA.A
+OUTPROCA
+WOLABORA
+WOMATA
+WOROUTA
+WOBOMA
+WODATEA
+WORKORDA
+WOEXCHGA
+WORECVA
+BKDCLABA
+WOBOMREMA
+THIS WILL MAKE ANY NECESSARY CHANGES TO THE DATA!A
+Ready to proceed? A
+Because this Work Order File Maintenance session is NOT in report-only mode (data may be changed), please have any other users exit this company now.  Ready to proceed? L
+Because this Work Order File Maintenance session is in report-only mode (data will not be changed), other users can be logged on to this company while this process is running.  However, for best results, you should ensure that no other users will be posting to the work order files during this time.  Ready to proceed? L
+Esc ExitA
+WORK ORDER FILE MAINTENANCE REPORTA
+ (Report-only mode: NO CHANGES made)A
+ (These changes HAVE BEEN made)A
+ (Co. Code: "A
+Checking for blank records in Master files...A
+Checkig WORKORD...A
+WORKORDA
+workordI
+WO No.: A
+WORKORD I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+WORKORDA
+workordI
+WORKORD I
+Duplicate WORKORD record; you should fix using MDBA
+Checking WORECV...A
+WORECVA
+worecvI
+WO No.: A
+workordI
+Stranded records found: A
+WORECVA
+WORECVA
+worecvI
+WORECV  I
+ WORECV record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WORECV  I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+WORECVA
+worecvI
+WORECV  I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+worecvI
+Checking BKDCLAB...A
+BKDCLABA
+bkdclabI
+WO No.: A
+workordI
+Stranded records found: A
+BKDCLABA
+BKDCLABA
+bkdclabI
+BKDCLAB I
+ BKDCLAB record(s) with this WO#A
+WO# not in WORKORD; deleted A
+BKDCLAB I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+BKDCLABA
+bkdclabI
+BKDCLAB I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+bkdclabI
+Checking WOEXCHG...A
+WOEXCHGA
+woexchgI
+WO No.: A
+workordI
+Stranded records found: A
+WOEXCHGA
+WOEXCHGA
+woexchgI
+WOEXCHG I
+ WOEXCHG record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WOEXCHG I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+WOEXCHGA
+woexchgI
+WOEXCHG I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+woexchgI
+Checking WODATE...A
+WODATEA
+wodateI
+WO No.: A
+workordI
+Stranded records found: A
+WODATEA
+WODATEA
+wodateI
+WODATE  I
+ WODATE record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WODATE  I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+WODATEA
+wodateI
+WODATE  I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+wodateI
+Checking WOROUT...A
+WOROUTA
+woroutI
+WO No.: A
+workordI
+Stranded records found: A
+WOROUTA
+WOROUTA
+woroutI
+WOROUT  I
+ WOROUT record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WOROUT  I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+woroutI
+Checking WOBOM...A
+WOBOMA
+wobomI
+WO No.: A
+workordI
+Stranded records found: A
+WOBOMA
+WOBOMA
+wobomI
+WOBOM   I
+ WOBOM record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WOBOM   I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+wobomI
+Checking WOMAT...A
+WOMATA
+womatI
+WO No.: A
+workordI
+Stranded records found: A
+WOMATA
+WOMATA
+womatI
+WOMAT   I
+ WOMAT record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WOMAT   I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+WOMATA
+womatI
+WOMAT   I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+womatI
+Checking OUTPROC...A
+OUTPROCA
+outprocI
+WO No.: A
+workordI
+Stranded records found: A
+OUTPROCA
+OUTPROCA
+outprocI
+OUTPROC I
+ OUTPROC record(s) with this WO#A
+WO# not in WORKORD; deleted A
+OUTPROC I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+OUTPROCA
+outprocI
+OUTPROC I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+outprocI
+Checking WOBOMREM...A
+WOBOMREMA
+wobomremI
+WO No.: A
+workordI
+Stranded records found: A
+WOBOMREMA
+WOBOMREMA
+wobomremI
+WOBOMREMI
+ WOBOMREM record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WOBOMREMI
+) not 1-999; you should fix using MDBA
+WO suffix (A
+wobomremI
+Checking WOLABOR...A
+WOLABORA
+wolaborI
+WO No.: A
+workordI
+Stranded records found: A
+WOLABORA
+WOLABORA
+wolaborI
+WOLABOR I
+ WOLABOR record(s) with this WO#A
+WO# not in WORKORD; deleted A
+WOLABOR I
+) not 1-999; you should fix using MDBA
+WO suffix (A
+Checking trxn dates: A
+WOLABORA
+wolaborI
+WOLABOR I
+ records).  You may need to delete via MDB.A
+Trxn dates before WO actual start date (A
+wolaborI
+WORKORDA
+WORECVA
+BKDCLABA
+WOEXCHGA
+WODATEA
+WOROUTA
+WOBOMA
+WOMATA
+OUTPROCA
+WOBOMREMA
+WOLABORA
+No changes necessaryI
+Error opening report file A
+warningI
+WORKORDA
+WORKORDI
+WORKORD I
+ blank record(s) in the WORKORD fileA
+Deleted A
+BKSHORTA
+initbtrvA
+WORECVA
+WORECVI
+WORECV  I
+ blank record(s) in the WORECV fileA
+Deleted A
+BKDCLABA
+BKDCLABI
+BKDCLAB I
+ blank record(s) in the BKDCLAB fileA
+Deleted A
+WOEXCHGA
+WOEXCHGI
+WOEXCHG I
+ blank record(s) in the WOEXCHG fileA
+Deleted A
+WODATEA
+WODATEI
+WODATE  I
+ blank record(s) in the WODATE fileA
+Deleted A
+WOROUTA
+WOROUTI
+WOROUT  I
+ blank record(s) in the WOROUT fileA
+Deleted A
+WOBOMA
+WOBOMI
+WOBOM   I
+ blank record(s) in the WOBOM fileA
+Deleted A
+WOMATA
+WOMATI
+WOMAT   I
+ blank record(s) in the WOMAT fileA
+Deleted A
+OUTPROCA
+OUTPROCI
+OUTPROC I
+ blank record(s) in the OUTPROC fileA
+Deleted A
+WOBOMREMA
+WOBOMREMI
+WOBOMREMI
+ blank record(s) in the WOBOMREM fileA
+Deleted A
+WOLABORA
+WOLABORI
+WOLABOR I
+ blank record(s) in the WOLABOR fileA
+Deleted A
+WORKORDA
+WORECVA
+BKDCLABA
+WOEXCHGA
+WODATEA
+WOROUTA
+WOBOMA
+WOMATA
+OUTPROCA
+WOBOMREMA
+WOLABORA
+F10 PrintA
+Esc ExitA
+Click the Print button to print this documentationA
+Esc ExitA
+Please Read Before Proceeding                                             F
+-----------------------------                                             F
+Work Order File MaintenanceF
+---------------------------F
+This program enables you to rapidly clean up any inconsistencies F
+in your Work Order and other manufacturing data.F
+The WO File Maintenance ReportF
+------------------------------F
+A report will be generated detailing any changes that may have been F
+made (you will be able to choose whether to print or display theF
+report after the maintenance process is complete).  The far leftF
+column will display an "*" for items that this program was unable to resolve F
+or that need more attention on your part.  This column will also display  F
+a "$" sign for items that may affect General Ledger amounts.F
+You can also choose to run the maintenance in 'report-only' mode.      F
+In this case, no changes will be made to your data.  Only a report        F
+detailing anticipated changes will be generated, so that you may preview  F
+what will be done without actually changing anything.F
+Please bear in mind, however, that when you subsequently run this         F
+process 'for real', the actual changes made may not exactly match the   F
+initial report.  This is because changes made later in the process are    F
+dependent upon changes made earlier in the process.  Thus problems fixed  F
+in early steps may mean that changes the report has indicated are needed  F
+in later steps are no longer necessary.  Also, some of the anticipated    F
+adjustments may look strange because they are using numbers that have not F
+yet really been fixed in the earlier steps.F
+Another factor contributing to differences between anticipated and actual F
+changes could be the actions of other users posting transactionsF
+between the time you ran the report and the time you actually made the    F
+maintenance changes.                                                   F
+Suggested StrategyF
+------------------F
+If you wish to back up your data before running this process,  F
+the following files may be affected: OUTPROC, WOLABOR, WOMAT, WOROUT, F
+WOBOM, WODATE, WORKORD, WOEXCHG, WORECV, BKDCLAB, and WOBOMREM. F
+This is an extensive process and can take some time to run, depending on  F
+how much data needs to be analyzed.  In addition it is interactive, so youF
+may be prompted for information during the run if this program encounters F
+a situation that it cannot resolve by itself.  Such cases will be         F
+indicated on the "report-only" report as "Program will prompt you".F
+If you choose NOT to run in report-only mode (so that data will get       F
+changed), the program will not run if any other users are currently       F
+working in this company.  This is done to ensure that the process does notF
+encounter a transaction that has not yet completely posted to all files,  F
+thus resulting in an unwarranted adjustment being made.  If you run this  F
+process in report-only mode (where no data will get changed), you can do  F
+so while other users are working with this company.  However, the report  F
+may still indicate unnecessary adjustments if incomplete transactions are F
+encountered.  In this case you should ensure that other users will be     F
+doing tasks that do not affect work order related files.F
+A suggested strategy might be as follows:                  F
+1. RUN IN REPORT-ONLY MODE FIRSTF
+     Run the maintenance process in report-only mode.  This will   F
+     give you a feel for the extent of necessary changes and you can      F
+     decide whether or not to proceed with them.                          F
+2. RUN THE MAINTENANCE PROCESS 'FOR REAL'F
+     After reviewing the report, go ahead and run the maintenance F
+     process 'for real'.  You'll get a second report indicating the     F
+     actual changes made.F
+What does Work Order File Maintenance do?F
+-----------------------------------------F
+NOTE: The information in this section is provided for technical reference F
+only.  You do not need to know it to effectively use this program and can F
+skip this section if desired.F
+*  Deletes any blank records (ones that have a work order number of zero) F
+   in the following files: OUTPROC, WOLABOR, WOMAT, WOROUT, WOBOM, WODATE,F
+   WORKORD, WOEXCHG, WORECV, BKDCLAB, WOBOMREM.                           F
+*  Deletes any orphan records (ones that do not have a parent WORKORD     F
+   record) in the following files: OUTPROC, WOLABOR, WOMAT, WOROUT, WOBOM,F
+   WODATE, WOEXCHG, WORECV, BKDCLAB, WOBOMREM.F
+*  Identifies any duplicate work order numbers in WORKORD.                 F
+*  Identifies any records having an invalid work order suffix (a suffix    F
+   that is not in the 1-999 range) in the following files:                 F
+   WORKORD, OUTPROC, WOLABOR, WOMAT, WOROUT, WOBOM, WODATE, WOEXCHG,       F
+   WORECV, BKDCLAB, WOBOMREM.                                              F
+*  Identifies any records in OUTPROC, WOLABOR, WOMAT, WODATE, WOEXCHG,     F
+   WORECV, and BKDCLAB that have a transaction date that is earlier        F
+   that the actual start date of the WO.                                   F
+   Records such as these need to be looked at as they may indicate a work  F
+   order number that was incompletely purged, leaving some records for thatF
+   WO in the subsidiary files.  If the WO number has gotten reused, those  F
+   subsidiary records will have "attached" themselves to the new WO, thus  F
+   distorting costs of the new WO.F
+                                                                                                                         Page:
+St COLUMN:
+* = Needs Further Attention
+$ = May Affect GL Inventory Value
+ St File     Work Order Seq Action Taken
+ -- -------- ---------- --- -------------------------------------------------------------------------------------------------------
+            
+            
+    Use report-only mode (no data changes made)?     
+            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+BKSYMSTRA
+BKSYMSTRA
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact IS Tech Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact IS Tech Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact IS Tech Support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+NORM           
+ISTS.EDATE     
+CNTR           
+COST           
+ORDER          
+TOT.UNIT       
+NET.UNIT       
+TOT.COST       
+MEMORY1        
+MEMORY2        
+MEMORY3        
+TYPE           
+TOT_RECORDS    
+PRT_WHR        
+WHICH          
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+SELECT_FROM2   
+SELECT_THRU2   
+BREAK_FIELD    
+DESC           
+TEMP.PRE       
+TEMP.SUF       
+TYPE_OK        
+QTY.I          
+QTY.A          
+QTY.J          
+QTY.P          
+QTY.W          
+QTY.S          
+QTY.Q          
+SAVE.QTY       
+MAKE.QTYOH     
+TODAYS.DATE    
+TIME.NOW       
+NET.QTY.YN     
+BKIC.LOC       
+LOCM.REC       
+LOC.REC        
+CLASM.REC      
+CLASS.REC      
+MTIC.REC       
+BKICM.REC      
+MTIC.ORIG      
+MTIC.NEXT      
+MTIT.ORIG      
+MTIT.NEXT      
+HAVE.NEXT      
+DATE_TIME      
+MM             
+PRT.MM         
+MMC            
+MCNTR          
+N.UOH          
+N.UOSO         
+N.UOO          
+N.UBO          
+N.UOWO         
+N.UOA          
+N.UIWIP        
+N.UIQC         
+MASTER         
+TRANSACT       
+RPT.ONLY       
+METHOD         
+AN.UOH         
+A.LOC          
+SRCH.LOC       
+ORIG.LOC       
+ORIG.PROD      
+REC.CHANGED    
+VITYPES        
+OLD.TYPE       
+OLD.CLASS      
+USED.MTIC      
+GET.OUT        
+CFROM          
+LOC.ACTIV      
+MTIC.ACTIV     
+CHK.PART       
+CHK.LOC        
+CHK.TYPE       
+LOC.OK         
+TEMP.UIWIP     
+N.UAVAIL       
+N.TOTVL        
+DUPE.PART      
+BKMMORPT_HNDL  
+PRGS.WHR       
+RPTFILE        
+RPTF           
+RPTARR         
+TIME.REC       
+STR.TIME.REC   
+RPT.TITLE      
+FIRST.REC      
+P.STAT         
+P.LEV          
+P.FILE         
+P.PART         
+P.LOC          
+P.ACT          
+ZRET           
+MMORPT_HNDL    
+ZMSG           
+ORIG.SCREEN    
+ENTRY.TYPE     
+A.ELE          
+A.COUNT        
+I              
+J              
+K              
+TXN.UOH        
+TXN.EOF        
+DEL.ALL.PROD   
+INVTXN.REC     
+ALL.DONE       
+FN.INVTXN      
+P.WOPRE        
+P.WOSUF        
+P.SEQ          
+CUR.WOPRE      
+CUR.WOSUF      
+CREATE_FILE    
+BKSY.PRGS.WHR  
+BKSY.COMP.NAME X
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWOR.WOPRE    
+MTWOR.WOSUF    
+MTWOR.DATE     
+MTWO.WIP.ASTART
+LAB.WOPRE      
+LAB.WOSUF      
+LAB.DATE       
+MTWO.EX.WOPRE  
+MTWO.EX.WOSUF  
+MTWO.EX.DATE   
+WODATE.WOPRE   
+WODATE.WOSUF   
+WODATE.START   
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+WOBOM.WOPRE    
+WOBOM.WOSUF    
+WOMAT.WOPRE    
+WOMAT.WOSUF    
+WOMAT.DATE     
+MTPO.WOPRE     &
+MTPO.WOSUF     .
+MTPO.DATE      0
+WOBOM.RM.WOPRE 
+WOBOM.RM.WOSUF 
+WOBOM.RM.PARENT
+WOBOM.RM.LINE  
+WOBOM.RM.COMP  
+WOBOM.RM.LINENM*
+MTWOLA.WOPRE   
+MTWOLA.WOSUF   
+MTWOLA.DATE    
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+LOC_LOCATION   
+LOC_BUFF_NAME  
+SC             
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.BMTYPR
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.GLBSDT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+ISTS.CFG.SOELAB
+ISTS.CFG.WOICST
+ISTS.CFG.POCBIN
+ISTS.CFG.SOEGSB
+ISTS.CFG.SOACDL
+ISTS.CFG.DCBEMP
+ISTS.CFG.TPRTNT
+ISTS.CFG.POCPLL
+ISTS.CFG.POACAL
+ISTS.CFG.RMDCWO
+ISTS.CFG.RMDGLA
+ISTS.CFG.RMDGLD
+ISTS.CFG.SOEUBO
+ISTS.CFG.SHPBIN
+ISTS.CFG.POEPRX
+ISTS.CFG.SOFSND
+ISTS.CFG.EMAILS
+ISTS.CFG.EMAILP
+ISTS.CFG.NZETYP
+ISTS.CFG.INBTLS
+ISTS.CFG.SOASPK
+ISTS.CFG.HHDCWO
+ISTS.CFG.DCBSER
+ISTS.CFG.POARSK
+CFG.BUFFER     
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+LASER_PRINTER  
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+FC             
+MSG_TYPE       
+LOCK_TYPE      
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           

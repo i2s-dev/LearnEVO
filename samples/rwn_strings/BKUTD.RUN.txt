@@ -1,0 +1,243 @@
+TASCOLOR
+FILELOC 
+filelocA
+UT-D  Edit Data Location FileA
+F1 Help,F2 Lookup,Home Chg All LocationsA
+Esc ExitA
+F1 Help,Home Chg All LocationsA
+Esc ExitA
+You must have the File & FD Name and Rec Type before the record can be saved.A
+Save the Location Record? YA
+TASCOLOR|CMPDFLT|FDHLDR|TASCMDH|TASCMDL|ERRMSG|TRANSLTE|A
+ New Location  A
+F1 HelpA
+Esc ExitA
+Comp Code: A
+This will be the path for all files.A
+Enter Company Code to change, otherwise leave at ??? for all companies.  Don't forget, you need to specify all three characters.  Most of the time it will start with BA
+ Please Wait...A
+FILELOCA
+FILELOCI
+           
+           
+  File Name                                               
+           
+  Extension                                               
+           
+  Layout Name                Record Size                  
+           
+  File Type                                               
+           
+  Location                                                
+           
+  Description                                             
+           
+        Note:  Always end the location (path) with a backslash (\) unless
+               the entry is for the default (blank or 'B') company,
+               in which case the location should generally be blank.
+               For a subsidiary company such as 'B99', the location will
+               usually be something like 99\.  The location must be the
+               same for all files within the same company.
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+infoF@
+  STANDARD FUNCTION KEYS/BUTTONSF@
+  ------------------------------F@
+  F1  HelpF@
+  F2  LookupF@
+  F3  ClearF@
+  F4  DeleteF@
+  F5  FirstF@
+  F6  LastF@
+  F7  PreviousF@
+  F8  NextF@
+  F9  FindF@
+  F10 SaveI
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+ File List A
+F1 HelpA
+Esc ExitA
+FILELOCA
+File NameA
+Location (Path)                         A
+FILELOCA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+RC             
+NORM           
+CNTR           
+CNTR1          
+CNTR2          
+CNTR3          
+CNTR4          
+CNTR5          
+CUR_DATE       
+DUMMY          
+CHG_LOC        
+NEW_LOC        
+SCRN_HLDR      
+NEW            
+NEW_LOCATION   
+OLD_LOCATION   
+COMP_CODE      
+LOC_HNDL       
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+LOC_BUFF_NAME  
+LOC_LOCATION   
+LOC_DESCRIPTION>
+LOC_REC_TYPE   
+SPCL_FILES     
+LOC_REC_SIZE   
+PROG.HELP.NAME 
+CRNT.FIELD     
+XYZDBAHTEXT    
+DUMMY_L        
+MESSAGE        
+MSG_PTR        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+WC             
+BC             
+SC             
+FILELOC_TTL1   
+FILELOC_USCORE 
+DATC           
+SRCH_HOW_MSG   

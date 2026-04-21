@@ -1,0 +1,280 @@
+BKSYMSTR
+BKYSMSTR
+BKSYAP  
+BKAPPO  
+BKAPPOL 
+MTICMSTR
+BKICMSTR
+BKISTAX 
+BKQCMSTR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKYSMSTRA
+MTICMSTRA
+BKICLOCA
+BKICMSTRA
+BKAPPOA
+BKAPPOLA
+BKAPHPOA
+BKAPHPOLA
+BKSYAPA
+BKISTAXA
+BKQCMSTRA
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTR4$
+AP2001  Convert Purchase Order ReceiversA
+This utility has already been run successfully.A
+F1 HelpA
+Esc ExitA
+This Utility will convert all PO's for this company to use the New Receivers format. It will archive all closed PO's. Create receivers for the existing archived PO's. Then create receivers for the RNI and Invoiced PO's. Before you proceed with this conversion you should make a backup of your data. Are you ready to start?L
+Phase 1 Archive closed PO's A
+Phase 2 Assign Receiver numbers to archived PO's A
+HISTORICALA
+Phase 2A
+Phase 3 Assign Receiver numbers RNI and Invoiced PO's A
+HISTORICALA
+Phase 3 rniA
+BKAPHPOA
+BKAPHPOI
+Phase 3 invA
+BKAPHPOA
+BKAPHPOA
+Phase 4 Delete Orphan records in BKAPPOL.A
+Phase 5 converting to use PCONV.A
+Phase 6 Copy PO# to APINV in Tax file.A
+Phase 7 Set QC Completed Dates.A
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+IQTY           
+RTD_QTY        
+OVER_REC       
+RCVD_QTY       
+RCVD_EXT       
+RNI_AMT        
+PO.OK          
+RECV.INTO      
+TODAYS.DATE    
+MONTH          
+PACKING.SLIPNUM
+UPDATE.TYPE    
+MEM.WOBOM.UOA  
+PKSLIP.QTY     
+PKSLIP.QTY.REC 
+CLOSE.PO       
+MAK.COST       
+HOLD.QTY       
+TEMP.PART      
+HOLD.ACCT      
+HOLD.DPT       
+FREIGHT.COST   
+POST.SUBTOT    
+RECV.THRU      
+DSP.COMMENTS   
+DSP.FULLY.RCVD 
+FIFOLIFO       
+IBKAP.PO.SUBTOT
+RBKAP.PO.SUBTOT
+IBKAP.PO.TAXAMT
+RBKAP.PO.TAXAMT
+RECVR.NUM      
+RRECV.NUM      
+IRECV.NUM      
+QTY            
+OK             
+S2APROGRESS    
+TOTRECS        
+CURCNTR        
+PCTCOMP        
+BKAPPO.HNDL    
+BKAPPOL.HNDL   
+BKAPHPO.HNDL   
+BKAPHPOL.HNDL  
+SYAP.H         
+ISTAX.H        
+QC.H           
+PO.NUM         
+BKSY.AP.RECVFLG
+BKAP.PO.PRTD   
+BKAP.PO.NUM    
+BKAP.POL.PONM  
+BKAP.PO.RECNUM 
+BKAP.POL.RECNUM
+BKAP.POL.INVNUMP
+BKAP.POL.INVDTEb
+BKAP.POL.PCODE 
+MTIC.PROD.CODE 
+BKAP.POL.PCONV Z
+MTIC.PROD.PCONV7
+BKAP.PO.EXTRA  
+BKAP.POL.RQTY  s
+BKAP.POL.PQTY  ;
+BKAP.POL.PEXT  S
+BKAP.POL.PDISC K
+BKAP.POL.PPRCE C
+NKAP.POL.UM.LIN
+BKIC.PROD.UM   .
+MTIC.PROD.WT   L
+MTIC.PROD.CUBFTT
+BKAP.POL.TXBLE r
+BKAP.PO.TAXRTE j
+BKAP.POL.IQTY  {
+BKAP.PO.SUBTOT P
+BKAP.PO.TOTAL  `
+BKAP.PO.RNI$   
+BKIS.TAX.PONO  C
+BKIS.TAX.APINV O
+BKQC.QTY.BUYOFF?
+BKQC.QTY.REJECTG
+BKQC.QTY.RECVD 7
+BKQC.OUT.DATE  
+BKSY.AP.PONUM  
+BKSY.APPO.NUM  
+BKSY.AP.QCRECV 
+BKYS.QCNUM     
+BKSY.AP.RFQNUM 
+BKYS.NUM       2
+BKSY.AP.RECVNUM
+BKSY.AP.CONVDTE.
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        
+FC             

@@ -1,0 +1,235 @@
+TASCOLOR
+FILELOC 
+BTRVFILE
+FILEDICT
+BTRVFLD 
+FILEKEY 
+BTRVINDX
+ODBC DDF - Create ODBC DDF FilesA
+This program will create a set of DDF files for company A
+.  Are you sure you wish to continue? YA
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESA
+BKSYMSTRA
+An error occurred while looking for the BKSYMSTR record for company A
+.  Please contact DBA support for further help.A
+file.newA
+file.ddfA
+An error occurred while copying FILE.NEW to FILE.DDF.  Please contact DBA Support for further help.A
+field.newA
+field.ddfA
+An error occurred while copying FIELD.NEW to FIELD.DDF.  Please contact DBA Support for further help.A
+index.newA
+index.ddfA
+An error occurred while copying INDEX.NEW to INDEX.DDF.  Please contact DBA Support for further help.A
+fieldA
+indexA
+Working on: A
+Field Name: A
+Keys        A
+CMPDFLTA
+DBAHELPA
+DBALOCA
+DBAMAIMNA
+DBAMODULA
+DBAUSRMNA
+DCBUFFERA
+DEFAULTSA
+ERRMSGA
+MEMORYA
+RESTFILEA
+TRANSLTEA
+Press any key to continueA
+ DBA HELP                          For Phone Support call 800-434-0809        
+   ON-LINE HELP: Documentation on this and all DBA programs is provided on    
+   line (Windows only) where it can be viewed or printed out.  Click on       
+   "Help" at the top of the Windows main menu and you will be presented       
+   with a Contents window.  Three clicks of the mouse will get you to most    
+   programs.  You can alternately click on the program screen and the help    
+   window to bring one in front of the other for reading and viewing the      
+   program.                                                                   
+   FUNCTION KEYS: Each standard screen button has an equivalent function      
+   key as an alternative to using the mouse -- these are listed across the    
+   bottom of the Windows main menu for reference.                             
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without Saving      CTRL+D = Delete Character            
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+RC             
+NORM           
+FILE_CNTR      
+FIELD_CNTR     
+FILE_DDF_HNDL  
+FIELD_DDF_HNDL 
+INDEX_DDF_HNDL 
+DES_FNAME      
+SUB_FIELDS     
+SUB_FIELDS_NUM 
+NEW            
+FILES_OPEN     
+CREATE_FILE    
+FN_PATH        
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+CO_HLDR        
+LOC_HNDL       
+LOC_LOCATION   
+LOC_COMP_CODE  
+LOC_FILE_NAME  
+XF$ID          
+XF$NAME        
+XF$LOCATION    
+XF$FLAGS       V
+SUB_FLD_CNTR   
+FARRAY_CNTR    
+DICT_HNDL      
+LOC_BUFF_NAME  
+DICT_BUFF_NAME 
+DICT_TYPE      
+DICT_FIELD_NAME
+DICT_ARRAY_ELE 
+XE$ID          
+XE$FILE        
+XE$NAME        
+XE$DEC         
+XE$OFFSET      
+DICT_OFFSET    
+DICT_SIZE      
+XE$DATA_TYPE   
+XE$SIZE        
+DICT_DEC       
+KEY_HNDL       
+SEG_CNTR       
+SEG_NUM        
+TEMP_KEY_FIELD 
+CNTR           
+KEY_NAME       
+XI$FLAGS       
+XI$FILE        
+KEY_FIELD      
+CNTR1          
+XI$FIELD       
+XI$NUMBER      
+KEY_NUM        r
+XI$PART        
+KEY_SEG        
+KEY_DUPS       :
+KEY_MODIFIABLE R
+KEY_ORDER      "
+RD_FIELD_NAME  
+CNTR3          
+EXTRA_CHR_HLDR 
+EXTRA_CHR_CNTR 
+EXTRA_CHR      
+FILE.OK        
+DBN            
+IS_TYP         
+IS_SZE         
+GIS_TEMP_SZE   
+KNUM_HNDL      
+DES_HNDL       
+PROG.HELP.NAME 
+CRNT.FIELD     
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   

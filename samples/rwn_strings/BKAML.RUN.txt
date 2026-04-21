@@ -1,0 +1,571 @@
+TAS324
+BKSYMSTR
+BKAPCHKF
+BKAPVEND
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+01/01/A
+BKAPCHKHA
+BKSYMSTRA
+BKAPVENDA
+AM-L  Purge AP Payment HistoryA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+ 1 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01011F0
+ 2 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01022F0
+ 3 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01033F0
+ 4 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01044F0
+ 5 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01055F0
+ 6 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01066F0
+ 7 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01077F0
+ 8 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01088F0
+ 9 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01099F0
+ 0 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01100I
+All Bank Accounts             I
+Choose Which Bank Account:FFF0
+All Bank AccountsI
+You do not have any checking accounts defined yet.I
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 HelpA
+Esc ExitA
+All A/P Payment History records within the specifiedF0
+ranges will be purged.  Do you want to do so? [Y/N] I
+00/00/00A
+BKAPCHKHA
+BKAPCHKHA
+>>>>>  Purge was terminated before completion  <<<<<A
+        Total records purged: A
+There are no A/P Payment History records.I
+Press any key to continueA
+BKAPVENDA
+BKAPVEND
+          
+          
+                                                           
+          
+   Purge From Vendor Code:                                 
+          
+         Thru Vendor Code:                                 
+          
+                                                           
+          
+   Purge For Bank Account:                                 
+          
+                                                           
+          
+    Purge From Check Date:                                 
+          
+          Thru Check Date:                                 
+          
+                                                           
+          
+  Purge From Check Number:                                 
+          
+        Thru Check Number:                                 
+          
+          
+              Protection Date:                             
+          
+                                                           
+          
+  Items dated on or after this date will not be purged.    
+          
+  You should not purge items dated in the current year     
+          
+  because you will then not have this data available for   
+          
+  1099 reporting purposes.  However if you wish to over-   
+          
+  ride this protection then enter 00/00/00 as the date.    
+          
+                         A/P Payment History Purge List
+                                                                     Page
+Vendor Code    Invoice #     Date     Invoice Amt    Discount   Amount Paid
+-----------   ----------   --------   ------------   --------   ------------
+Bank Account:                                 Check #:          Date:
+                                                                ============
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+BKAPVENDA
+ Vendors A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vendor Name                   A
+Vend Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Zip Code  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Contact Name                  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKAPVENDA
+Telephone                A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKAPVENDA
+ClassA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKAPVENDA
+Alpha A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+BKAPVENDA
+Vendor CodeF
+Vendor NameF
+StateF
+Zip CodeF
+Contact NameF
+TelephoneF
+ClassF
+Alpha SortI
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+F1 Help,F10 ProcessA
+Esc ExitA
+YNNNYC
+YNNNYF
+NNNYN$
+YNNNYF
+YNNNYF0$
+YNNNYF0$
+YNNNYF0$
+YNNNYF
+YNNNYX
+YNNNYF0$
+YNNNYX
+YNNNYF0$
+YNNNYX1d
+YNNNYF0$
+YNNNYF
+YNNNYF0$
+YNNNYF0$
+YNNNYF0$
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TOT_RECORDS    
+PAGE           
+SUB_AMTPD      
+SELECT_FROM1   
+SELECT_THRU1   
+SELECT_FROM2   
+SELECT_THRU2   
+SELECT_FROM3   
+SELECT_THRU3   
+BREAK_FIELD1   
+BREAK_FIELD2   
+PRT_WHR        
+WHICH          
+YEAR           
+PROTECT.DATE   
+PROTECT.STR    
+BKSY.COMP.NAME X
+CHK_NAME       
+CHK_ACT        
+MESSAGE        
+MCNTR          
+MCNTR2         
+BKSY.CHK.NAME  s
+BKSY.CHK.CHKACT
+OK             
+BKSY.AP.CHKACT 
+NUM.MSG        
+MSG_PTR        
+ENT.MASK       
+BKAP.CHK.VNDCOD
+BKAP.CHK.CHKACTR
+BKAP.CHK.NUM   J
+BKAP.CHK.CHKDTET
+BKAP.CHK.AMTPD 
+DATE_TIME      
+LNE.LNGTH      
+LNE.LN2        
+LLC            
+WD             
+HT             
+MCNTR3         
+MCNTR4         
+BKAP.VENDCODE  
+BKAP.CHK.INVNUM
+BKAP.CHK.INVDTEF
+BKAP.CHK.INVAMT
+BKAP.CHK.DISC  $
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+VENDF2.COL     
+VENDF2.ROW     
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+VEND_TTL1      
+VEND_USCORE    
+BKAP.VENDNAME  
+BKAP.CITY      
+BKAP.STATE     
+BKAP.ZIP       
+BKAP.CONTACT   
+BKAP.TELEPHONE N
+BKAP.CLASS     N
+CC             
+DATC           
+BKAP.SORT      
+TEMP_KEY       
+MENULIST       
+SRCH_HOW_MSG   
+FC             
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

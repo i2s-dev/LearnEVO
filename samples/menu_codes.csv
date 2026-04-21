@@ -1,0 +1,555 @@
+code,module,description,sources
+AD-A,AD,General Ledger Defaults,BKADB
+AD-B,AD,Checking Accounts Defaults,BKADC
+AD-C,AD,Accounts Payable Defaults,BKADD
+AM-A,AM,Reset Period-End Close Date,BKAMA
+AM-B,AM,Fiscal Year End Routine,BKAMB;BKAMBUT
+AM-C,AM,Create General Ledger Accounts,BKAMC
+AM-D,AM,Print GL Code and Description,BKAMD;BKGLG
+AM-E,AM,Format Standard Financial Statements,BKAMH
+AM-F,AM,Format Custom Financial Statements,BKAMI
+AM-G,AM,Consolidate Financials,BKAMJ
+AM-H,AM,Change GL Account Codes,BKAMO
+AM-I,AM,Consolidate General Ledger Detail,BKAMPA;T6AMPA
+AM-J,AM,Purge AP Vouchers,BKAMPB;ISAMJ
+AM-K,AM,Rebuild Customer/Vendor Totals,BKCVUTIL;ISAMK
+AM-L,AM,Purge AP Payment History,BKAML
+AM-N,AM,Maintain GL Fiscal Periods,ISAMN
+AM-O,AM,Archive/Purge/Restore Vendor,ISAMO
+AM-P,AM,Checking Orphans,BKAMP;ISAMP
+AM-P-F,AM,Purge Commission Transactions,BKAMPF
+AM-Q,AM,Enter GL Budgets,BKAMQ;ISAMQ
+AP-A,AP,Enter Vendors,BKAPA
+AP-B,AP,Enter Vouchers,BKAPB;T6APB
+AP-D,AP,Enter Scheduled Payment Dates,BKAPD
+AP-E,AP,Print Vouchers/Invoices Due by Date,BKAPE;t6ape
+AP-F,AP,Pick Vouchers/Invoices to Pay,BKAPF
+AP-G,AP,Print Pro Forma Check Register,BKAPG;ISTECH;t6apg
+AP-H,AP,Print Checks,BKAPHA;T6APHA
+AP-I,AP,Print Aging,BKAPI;T6API
+AP-J,AP,Print Vendor Code and Name,BKAPJ;t6apj
+AP-K,AP,Print Vendor General Info,BKAPK
+AP-L,AP,Print Vendor Purchase Info,BKAPL;t6apl
+AP-M,AP,Print Vendor Labels,BKAPM;t6apm
+AP-N,AP,Print Vendor Rolodex,BKAPN
+AP-O,AP,Enter Recurring Vouchers,BKAPO;ISAPO
+AP-P,AP,Generate Recurring Vouchers,BKAPP
+AP-Q,AP,Void AP Check,BKAPQ
+AP-R,AP,Print AP Payment History,BKAPR
+AP-S,AP,Print 1099 Forms,APS1999;APS2000;TAPS2000
+AP-U,AP,Archive/Purge Vendor,ISAPU;ISAPV
+AR-A,AR,Enter Customers,BKARA
+AR-B,AR,Enter Vouchers,BKARB;T6ARB
+AR-C,AR,Record Payments,BKARC;T6ARC
+AR-D,AR,Charge Interest on Invoices,BKARD
+AR-E,AR,Print Statements,BKARE;T6ARE
+AR-F,AR,Print Aging,BKARF;T6ARF
+AR-G,AR,Print Customer Code and Name,BKARG
+AR-H,AR,Print Customer General Info,BKARH
+AR-I,AR,Print Customer Mail Labels,BKARI;T6ARI
+AR-J,AR,Print Customer Rolodex,BKARJ;rolodex.run
+AR-K,AR,Print Sales Tax Report,BKARK
+AR-L,AR,Transfer Sales Taxes,BKARL
+AR-M,AR,Enter Customer Refund,BKARM
+AR-N,AR,Print Customer Deposits,BKARN;T6arn
+AR-P,AR,Generate Dun Letters,BKARP;T6ARP
+AR-Q,AR,View Customers,BKARA
+AR-S,AR,Accounts Receivable Defaults,BKADE
+BM-C,BM,Print Where Used,BKBMC
+BM-D,BM,Print BOM Availability,BKBMD
+BM-E,BM,Global Replace,BKBME
+BM-F,BM,Global Delete,BKBMF
+BM-G,BM,IN-B     IN-L-A     SO-Q-,AUTOBMG;BKBMG;ISSMJS
+BM-H,BM,Print BOM at Average Cost,BKBMH;BKBMH1
+BM-I,BM,Print Summarized BOM,BKBMI
+BM-J,BM,Enter Approved Substitutes,BKBMJ
+BM-J-C,BM,Enter Approved Manufacturers,BKBMJC
+BM-X,BM,BOM report,BKBMX
+CS-A,CS,Enter Salespersons,BKCSA
+CS-B,CS,Enter Vendors,BKAPA;BKCSB;BKPOP
+CS-C,CS,Print Salespersons Info,BKCSC
+CS-D,CS,Transfer Sales Commissions,BKCSD
+CS-E,CS,Print Commission Detail,BKCSE;BKCSE1
+CS-F,CS,Print Commission Summary,BKCSF
+CS-G,CS,Print Slsp1 Commission Detail,BKCSG
+CS-H,CS,Print Slsp1 Commission Summary,BKCSH
+CS-I,CS,Print Slsp2 Commission Detail,BKCSI
+CS-J,CS,Print Slsp2 Commission Summary,BKCSJ
+CS-L,CS,Print Price Code Commissions,BKINMI
+CS-N,CS,Print Contract Price Commissions,BKINMI
+CS-O,CS,Print Commission Earned Detail,BKCSOC;BKCSOI
+CS-P,CS,Print Commissions Due Summary,BKCSP
+CS-Q,CS,Commission Year End Routine,bkcsq.run
+CS-R,CS,View Salespersons Booking Info,j6crprbk
+DC-A,DC,Print Transfer Labels,J5ISDCA;J6ISDCA
+DC-D,DC,View/Print Labor Status,BKDCD;t6dcd
+DC-E,DC,Print Labor Tickets,BKDCE;T6DCE
+DC-F,DC,Print Employee Tickets,BKDCF;T6DCF
+DC-G,DC,Edit Labor Transactions,BKDCG;BKDCGMSG;CBKWOM;J5HDWOM
+DC-H,DC,Filelock on TOOL -,AUTODCH;BKDCH;UMCDCP
+DC-I,DC,View,BKDCI
+DE-A,DE,Export Data,BKDEA
+DE-B,DE,Import Inventory,BKDEB
+DE-C,DE,Import Bills of Material,BKDEC
+DE-D,DE,Import Routings,BKDED
+DE-E,DE,Import Customers,BKDEE
+DE-F,DE,Import Vendors,BKDEF
+DE-G,DE,Import Chart of Accounts,BKDEG
+DE-H,DE,Import Labor,BKDEH
+DE-H-A,DE,Import Labor,BKDEHA
+DE-H-B,DE,Import Material Issues,BKDEHB
+DE-H-C,DE,Import Finished Production,BKDEHC
+DE-H-D,DE,Import Physical Inventory Count,BKDEHD
+DE-I-A,DE,Print Inventory Errors,BKDEIA
+DE-I-B,DE,Print Bills of Material Errors,BKDEIB
+DE-I-C,DE,Print Routings Errors,BKDEIC
+DE-I-D,DE,Print Chart of Accounts Errors,BKDEID
+DE-I-E,DE,Print Labor Errors,BKDEIE
+DE-J-A,DE,Edit Imported Inventory,BKDEJA;BKINB;t6INB;t6INBC
+DE-J-C,DE,Edit Imported Routings,BKDEJC;BKROA
+DE-J-D,DE,Edit Imported Customers,BKARA
+DE-J-E,DE,Edit Imported Vendors,BKAPA;BKPOP
+DE-J-F,DE,Edit Imported Chart of Accounts,BKDEJF
+DE-J-G,DE,Edit Imported Labor,BKDEJG
+DE-J-H,DE,Imported Material Issue,BKDEJH
+DE-J-I,DE,Edit Imported WO Receipts,BKDEJI
+DE-K,DE,Global Field Change,BKDEK
+DE-L,DE,Erase Files,BKDEL
+DE-M,DE,MR-D     IN-L-,BKDEM;ISSMJS
+DE-O,DE,Export GL Data to QuickBooks,BKDEO
+DE-Q,DE,Import Open Receivables,ISDEQ
+DE-R,DE,Import Open Payables,ISDER
+DE-S,DE,Import Item Links,ISILDE
+DE-T,DE,Import FIFO Layers,ISDET
+DI-G,DI,Import Labor,BKDIG
+ED-B,ED,Import EDI Orders,BKEDB;ISEDIB;ISEDIX;NBEDIB;t6edib
+ED-C,ED,Edit EDI Orders,BKEDC
+ED-D,ED,Convert EDI Orders to Sales Orders,BKEDD;ISEDID;t6edid
+ED-E,ED,Export EDI Orders,T6EDIE;t6ediex
+ED-G,ED,Master EDI Set-up,BKEDG
+ED-H,ED,Error report,ISEDIH
+ES-A,ES,Copy RFQs,BKESA;BKPOA;BKPOA1;BKPOF;T6POA
+ES-B,ES,Print Estimates,BKESB
+ES-C,ES,Enter Quote Templates,BKESC
+ES-E,ES,Convert Estimates,BKESE
+ES-F,ES,Copy Estimates,BKESF
+ES-G,ES,Print Estimate Listing,BKESG
+ES-H,ES,Enter Material Costs,BKESH
+ES-I,ES,Print Material Costs,BKESI
+FO-C,FO,Enter Option Prices,BKFOC
+FO-D,FO,Print Option Prices,BKFOD
+FO-E,FO,Print Option Where Used,BKFOE
+GL-A,GL,Edit Budgets,BKGLA
+GL-B,GL,Add new GJ Transaction,BKGLB
+GL-D,GL,Print Journals,BKGLD
+GL-F,GL,Print Financial Statements,BKGLF
+GL-G,GL,Print GL Code and Description,BKGLG
+GL-H,GL,Print Chart of Accounts,BKGLH
+GL-I,GL,Print Check Register,BKGLI
+GL-J,GL,Reconcile Check Register,BKGLJ
+GL-K,GL,Transfer Bank Account Funds,BKGLK
+GL-M,GL,Generate Recurring GJ Transactions,BKGLM
+GL-N,GL,Print Custom Statements,BKGLN
+GL-O,GL,Print/Post GL Batches,BKGLO;t6glo
+GL-P,GL,Edit GL Batch Entries,BKGLP
+GL-Q,GL,Reverse Batch Posting,BKGLQ
+GL-R,GL,Business Status,ISBS
+GL-S,GL,View GL Journal Notes,BKGLS
+IN-A,IN,Inventory Inquiry,BKINA;lbkina.run;t6INA;t6INAC
+IN-B,IN,Enter Inventory,BKINB;ISTECH;t6INB;t6INBC
+IN-C,IN,Enter Inventory Adjustments,BKINC
+IN-D,IN,Print Reorder Report,BKIND;T6IND
+IN-E,IN,Print Inventory Transactions,BKINE
+IN-F,IN,Print Inventory Value,BKINF
+IN-G,IN,Print Inventory Labels,BKING;T6ING
+IN-H,IN,Print Inventory Listing,BKINH;t6inh
+IN-I,IN,Print Inventory General Info,BKINI
+IN-J,IN,Print Physical Check,BKINJ
+IN-K,IN,IN-L-E     SM-J-,BKINK;ISSMJS
+IN-L-A,IN,Enter Standard Costs,BKINLA;FIXSTD
+IN-L-B,IN,Enter/Assign Locations,BKINLB
+IN-L-C,IN,Enter Customer Cross-Reference,BKINLC
+IN-L-D,IN,Print Customer Cross-Reference,BKINLD
+IN-L-E,IN,Update Material Standard Costs,BKINLE
+IN-L-F,IN,Enter Material Dimensions,BKINLF
+IN-L-G,IN,Print Material Dimensions,BKINLG
+IN-L-H,IN,Edit FIFO/LIFO Buckets,BKINLH
+IN-L-I,IN,Change Inventory Costing Method,BKINLI
+IN-L-J,IN,Transfer Inventory,BKINLJ;ISINLJ
+IN-L-K,IN,Inventory Exceptions Report,BKINLK
+IN-L-L,IN,BOM report,BKINLL
+IN-L-M,IN,Multi-Transfer Inventory,ISINLM;t6isinlm
+IN-L-N,IN,Copy Item,ISINLN
+IN-L-O,IN,Inventory utilites,BKACT;ISINLO;ISINLOA
+IN-L-P,IN,Multi-Co-Transfer Inventory,ISICT;T6ISICT
+IN-L-S,IN,Rebuild Stock Status,AUTOIND
+IN-L-T,IN,Reset Inventory Cycle Codes,ISINLT
+IN-L-U,IN,Recal UOH From FIFO Layers,ISINLU
+IN-L-V,IN,Archive Obsolete Inventory -,ISINLOA
+IN-M-C,IN,Global Price Change,BKINMC
+IN-M-E,IN,Print Price Code Prices,BKINMI
+IN-M-G,IN,Print Dicount Code Prices,BKINMI
+IN-M-I,IN,Print Contract Prices,BKINMI
+IN-N-A,IN,Print Month End Inventory Costing,BKINNA
+IN-N-B,IN,Print Shipments Costing,BKINNB
+IN-N-C,IN,Print Closed Work Orders Costing,BKINNC
+IN-N-D,IN,Print Inventory Audit,BKINND;ISINND
+IN-O,IN,User Defined Inventory Transactions,BKINO;T6INO
+IS-A,IS,Item Recap,J5AVICT;J5BOMXPT;J5CRDCPY;J5CRPIMP;J5NWTICT
+IS-B,IS,Production Report,J6CFPRPT;JMAPIBL;JMMPI2;jmcrbfs
+IS-C,IS,Top N Shipped Items,J6CFTOPI
+IS-D,IS,New Customer Report,j6cfcust
+JC-A,JC,Print Job Cost Report,BKJCA;t6jca
+JC-B,JC,Print Profit Projection,BKJCB
+JC-C,JC,Print Labor Transactions,BKJCC
+JC-D,JC,Print Overhead Transactions,BKJCD
+JC-E,JC,Print Material Issues,BKJCE;ISJCE
+JC-F,JC,Print Outside Purchases,BKJCF
+JC-G,JC,Print Labor Efficiency,BKJCG
+JC-H,JC,Print Active Work Order History,BKJCH;J6HTJCH
+JC-I,JC,Print Production By Work Center,BKJCI
+JC-J,JC,Print Production By Machine,BKJCJ
+JC-K,JC,Print Production By Tool,BKJCK
+JC-L,JC,Print Job Cost Summary,BKJCL
+JC-M,JC,Print WIP Summary,BKJCM
+JC-N,JC,Print WIP Percent Completion,BKJCN
+JC-O,JC,Print Standard Labor Hours,BKJCO
+JC-P,JC,Print Materials in WIP,BKJCP
+JC-Q,JC,Print WO Receipts,BKJCQ
+JC-R,JC,Multi-Level Assembly Cost Breakdown,BKJCR
+LC-A,LC,Edit Lot Numbers,BKLCA
+LC-B,LC,Assign Lot Control,BKLCB
+LC-C,LC,Print Lot Availability,BKLCC;T6LCC
+LC-D,LC,Print Lot History,BKINO;T6INO
+LC-E,LC,Reconcile Inventory,BKLCE;t6islce
+LC-F,LC,LOT Control Exceptions,BKLCF;ISLCF
+LC-G,LC,Sales Order Lot Control,BKLCG
+LM-B,LM,Enter Item Generator Templates,BKLMB
+LM-H,LM,Purge QC Receipts,BKLMH
+LW-A,LW,Enter Work Orders,BKAWA;BKDCI;BKWOA
+LW-B,LW,Change WO Status,BKAWB;BKWOB
+LW-D,LW,Print Pick Lists,BKAWD;BKWOD
+LW-E,LW,Issue Material,BKAWG;BKDEJHA;BKWOG;ISWOG
+LW-F,LW,Enter Extra Costs,BKAWH;BKLWF;BKWOH
+LW-G,LW,Enter Finished Production,BKAWI;BKDEJIA;BKWOIP~1;NZWOI;SRWOI
+LW-H,LW,Close/Cancel Work Orders,BKAWJ
+LW-I-A,LW,Enter Work Order Bills of Material,BKAWKB
+LW-I-B,LW,Create Multi-Date Work Orders,BKAWKC;BKWOKC
+LW-I-C,LW,Create Multi-Assy Work Orders,BKAWKD;BKWOKD
+LW-I-D,LW,Swap Substitute Parts,BKAWKE;BKWOKE
+LW-J-C,LW,Print Material/Labor Issues,BKJCE;ISJCE
+LW-J-D,LW,Print Outside Purchases,BKJCF
+LW-J-E,LW,Print Job Cost Summary,BKLWJE
+LW-J-F,LW,Print Job Cost Report,BKJCA;t6jca
+LW-J-G,LW,Print Work Order Shortages,BKAWLF;BKWOLF;t6wolf
+LW-J-H,LW,Print WIP Summary,BKJCM;BKJCR
+LW-J-I,LW,Print WO Receipts,BKJCQ
+MM-K-A,MM,Print Product Classes,BKMMKA
+MM-K-C,MM,Print Customer Code and Name,BKARG
+MM-K-D,MM,Print Vendor Code and Name,BKAPJ;t6apj
+MM-L,MM,Enter Vendors,BKAPA;BKPOP
+MR-A,MR,Enter Forecast,BKMRA;BKMRADE
+MR-B,MR,Print Forecast,BKMRB
+MR-C,MR,Reset Forecast,BKMRC
+MR-D,MR,Enter MRP Parameters,BKMRD
+MR-E,MR,Print MRP Parameters,BKMRE
+MR-F,MR,Generate Material Requirements,AUTOMRF;BKMRF
+MR-G,MR,Print Material Requirements,BKMRG
+MR-H,MR,Print Order Action Report,BKMRH
+MR-I,MR,Generate Work Orders,BKMRI
+MR-J,MR,Generate Purchase Orders,BKMRJ;BKMRK
+MR-K,MR,Generate RFQ's,BKMRJ;BKMRK
+MR-L,MR,Print Planned Orders Report,BKMRL
+PI-A,PI,Frozen Inventory Report,BKPIA;BKPIB
+PI-B,PI,Frozen Inventory Report,BKPIB
+PI-C,PI,Enter Tag Counts,BKPIC
+PI-C-A,PI,Physical Inventory Exception Report,BKPICA;T6PICA
+PI-D,PI,Missing Tags Report,BKPID
+PI-E,PI,Edit Frozen Inventory Costs,BKPIE
+PI-F,PI,Physical Inventory Report,BKPIF;T6PIF
+PI-G,PI,Update Actual Inventory,BKPIF;BKPIG;T6PIF
+PI-H,PI,Purge Physical Inventory,BKPIF;BKPIH;T6PIF
+PL-D,PL,Import Employees,BKPLD
+PL-E,PL,Payroll Software Link Setup,BKPLE
+PO-A,PO,Enable UPC Numbers,BKPOA;BKPOA1;ISTECH;T6POA
+PO-B,PO,Print Purchase Orders,BKPOB;T6POB
+PO-C,PO,P/O Lot Control,BKPOC;BKPOCLOT;BKPOCSER;ISPOC;ISTECH
+PO-D,PO,View PO Receivers,BKPOA;BKPOA1;T6POA
+PO-E,PO,Copy RFQs,BKPOA;BKPOA1;T6POA
+PO-E-A,PO,Request for Quote (Universal),BKPOEA;T6POEA
+PO-F,PO,Enter Verbal RFQs,BKPOF
+PO-G,PO,Convert RFQs,BKPOG
+PO-H,PO,Enter Vendor Prices,BKPOH;t6poh
+PO-I-A,PO,Print Open Purchase Orders Listing,BKPOENG;T6POENG
+PO-I-B,PO,Print Closed Purchase Orders Listing,BKPOENG;T6POENG
+PO-I-C,PO,Print RFQ Status,BKPOIC
+PO-I-D,PO,Print Vendor Prices,BKPOID
+PO-I-E,PO,Print Receiving Report,BKPOENG;JCPOIE2;PCONRPT;T6POENG
+PO-I-F,PO,Print Received not Invoiced,BKPOENG;T6POENG
+PO-I-G,PO,Print Purchase Order Items by Due Date,BKPOIG
+PO-I-H,PO,Vendor Performance,t6poih
+PO-I-I,PO,Print Purchase Order Changes,ISPOII
+PO-I-J,PO,Print Vendor Purchase History,J6POIJ
+PO-J-A,PO,Print Receipt Travelers,BKPOJA;T6POJA
+PO-J-B,PO,Print Inventory in QC,BKPOJB
+PO-J-C,PO,Enter Inspection Buyoffs,AUTOPOJC;BKPOJC
+PO-J-D,PO,Close PO's,BKPOJD
+PO-K,PO,Close Purchase Orders,BKPOK
+PO-M,PO,Purchase Order Inquiry,BKPOM
+PO-P,PO,View Vendors,BKPOP
+PO-Q,PO,Maintain PO Delivery Dates,BKPOQ
+PO-R,PO,Print Receiving Slip,T6POB
+PO-T,PO,Print PO Stock Item Packing List,T6POB
+PR-A,PR,Edit W-2 Data,BKPRA;BKPRP;BKPRQ
+PR-B,PR,Enter Pay Info,BKPRB;BKPRD;t6prd
+PR-C,PR,Print Payroll Register,BKPRC
+PR-D,PR,Print Payroll Checks,BKPRB;BKPRD;t6prd
+PR-E,PR,Print Employee Info,BKPRE
+PR-F,PR,Maintain Tax Tables,BKPRF
+PR-G,PR,Void Payroll Checks,BKPRG
+PR-H,PR,Transfer Liabilities to AP,BKPRH
+PR-I,PR,Print Pay History,BKPRI
+PR-J,PR,Enter Time Cards,BKPRJ;BKPRJA;BKPRJB
+PR-J-A,PR,Import Time Cards,ISPRJDE
+PR-K,PR,Print/Post Time Cards,BKPRK
+PR-L-A,PR,Print Quarterly Info,BKPRLA
+PR-L-B,PR,Print QTD Earnings Register,BKPRLB
+PR-L-C,PR,Print QTD Taxable Earnings,BKPRLC
+PR-L-D,PR,Print Detail Earnings Ledger,BKPRLD
+PR-L-E,PR,Print Detail Deductions Ledger,BKPRLE
+PR-L-F,PR,Print Subject To Report,BKPRLF;T6PRLF
+PR-L-H,PR,Print 940 Report,BKPRLH
+PR-L-I,PR,Print W-2 Forms,BKPRLI;T6PRLI
+PR-L-J,PR,Print California DE6 Form,BKPRLJ
+PR-L-K,PR,Print Payroll Hours,BKPRLK
+PR-L-M,PR,Print Employer Contributions,BKPRLM
+PR-L-N,PR,Print Payroll Wages Detail,BKPRLN
+PR-L-P,PR,Print Employee Raises,BKPRLP;BKPRLQ
+PR-M,PR,Payroll Defaults,BKPRM
+PR-N,PR,Purge Payroll History,BKPRN
+PR-O,PR,Payroll Year End Routine,BKPRO
+PR-P,PR,Enter Employee Raises,BKPRP;BKPRQ
+PS-A,PS,System Users/Passwords,BKPSA
+PS-B,PS,System Security Levels,BKPSB
+PS-C,PS,Company Logon Access,BKPSC
+PS-E,PS,System Manager Security,BKPSE
+PS-F,PS,Enter Users/Passwords,BKPSF
+RM-A,RM,Enter RMA Orders,ISSRA;ISSRA2;j6btsra
+RM-C,RM,Receive RMA,ISRMD
+RM-D,RM,Process RMA,ISRMD
+RM-E,RM,RMA Reason For Return Maintenance,ISRME
+RO-A,RO,View Routings,BKROA
+RO-B,RO,Print Costed Routing,BKROB
+RO-C,RO,Work Centers,BKROC
+RO-D,RO,Enter Machines,BKROD
+RO-E,RO,Enter Tools,BKROE
+RO-F,RO,Enter QC Codes,BKROF
+RO-G,RO,Enter Scrap Codes,BKROG
+RO-H,RO,Enter Departments,BKROH
+RO-I,RO,Enter Operation Templates,BKROI
+RO-J-A,RO,Print Routings,BKROJA
+RO-J-B,RO,Print Work Centers,BKROJB
+RO-J-C,RO,Print Machines,BKROJC
+RO-J-D,RO,Print Tools,BKROJD
+RO-J-E,RO,Print QC Codes,BKROJE
+RO-J-F,RO,Print Scrap Codes,BKROJF
+RO-J-G,RO,Print Departments,BKROJG
+RO-J-H,RO,Print Operation Templates,BKROJH
+RO-K,RO,Enter Specs Templates,BKROK
+RO-L,RO,Sequence Print Control,BKROL
+SA-A,SA,Print Daily Sales/Bookings,BKSAA
+SA-B,SA,Print Profit By Invoice,BKSAB
+SA-C,SA,Print Customer Detail,BKSAC
+SA-D,SA,Print Customer Summary,BKSAD
+SA-E,SA,Print Customer Class Detail,BKSAE
+SA-G,SA,Print Customer Class Summary,BKSAG
+SA-H,SA,Print Salesperson Detail,BKSAH
+SA-I,SA,Print Salesperson Summary,BKSAI
+SA-J,SA,Print Inventory Detail,BKSAJ
+SA-L,SA,Print Item Class Detail,BKSAL
+SA-M,SA,Print User-Defined Detail,BKSAM;T6SAM
+SA-N,SA,Print User-Defined Summary,BKSAN;T6SAN;j6cfsan
+SA-O,SA,Top N Customers,J6HVRSAO;J6PETOPN;JMCRTOPN
+SC-A,SC,Edit Serial Numbers,BKSCA
+SC-B,SC,Assign Serial Control,BKSCB
+SC-C,SC,Print Serial Availability,BKSCC
+SC-D,SC,Serial Number History,BKINO;T6INO
+SC-E,SC,Reconcile Inventory,BKSCE;ISSCE
+SC-F,SC,Serial Control Exceptions,BKSCF;ISSCF
+SC-G,SC,Sales Order Serial Control,BKSCG;ISSCG
+SD-A,SD,Company Name and Address,BKADA
+SD-B,SD,Work Orders Defaults,BKMDF
+SD-C,SD,Purchase Orders Defaults,BKMDG
+SD-C-A,SD,PO Receiver Defaults,BKMDGA
+SD-E,SD,Scheduling Defaults,BKMDI
+SD-F,SD,Data Collection Defaults,BKMDJ;ISSDF
+SD-G,SD,Estimating Defaults,BKMDK
+SD-I,SD,Routings Defaults,BKMDB
+SD-M,SD,Sales Orders Defaults,BKADF;JKSDM
+SD-N,SD,Sales Commissions Defaults,BKADG
+SD-O,SD,Contact Manager Defaults,BKADH
+SD-P,SD,Customer Defaults,BKSDP
+SH-A,SH,Edit WO Start/Finish/Due Dates,BKSHA
+SH-B,SH,Manually Schedule Work Orders,BKSHB
+SH-C,SH,Manually Schedule Work Centers,BKSHC
+SH-D,SH,Manually Schedule Machines,BKSHD
+SH-E,SH,Finite Scheduling,BKSHE
+SH-F,SH,Infinite Scheduling,BKSHF
+SH-G,SH,Print Work Order Schedule,BKSHG
+SH-H,SH,Print Work Order Status,BKSHH
+SH-I,SH,Print Work Center Schedule,BKSHI;CBKSHI;CBKSHI2;CBKSHI3;J5MISHI
+SH-J,SH,Print Machine Schedule,BKSHJ
+SH-K,SH,View Work Center Load,BKSHK
+SH-L,SH,Print Work Center Load,BKSHL
+SH-M,SH,Lead Time Estimator,BKSHM
+SH-N,SH,Generate Lead Times,BKSHN
+SH-O,SH,Finite Schedule Bucket Report,BKSHO
+SH-P,SH,Lead Time Scheduling,BKSHP
+SM-D,SM,Enter Terms Table,BKAME
+SM-E,SM,Enter Tax Codes,BKAMF
+SM-F,SM,Enter Tax Groups,BKAMG
+SM-G,SM,Enter Employees,BKMMB
+SM-H,SM,Enter Shop Calendar,BKMMC
+SM-I-A,SM,Enter Lead Source Codes,BKAMLA
+SM-I-B,SM,Enter Territory Codes,BKAMLB
+SM-I-C,SM,Enter History Codes,BKAMLC
+SM-I-D,SM,Enter Account Follow-up Codes,BKAMLD
+SM-I-E,SM,Enter Vendor Follow-up Codes,BKAMLE
+SM-I-F,SM,Enter Personal Contact Follow-up Codes,BKAMLF
+SM-I-G,SM,Enter Class Codes,BKAMLG
+SM-I-H,SM,Enter Key Date Codes,BKAMLH
+SM-I-I,SM,Enter Reps and Passwords,BKAMLI
+SM-I-J,SM,Purge Account History,BKAMLJ
+SM-I-K,SM,Purge Account Follow-ups,BKAMLK
+SM-I-L,SM,Purge Vendor Contact History,BKAMLL
+SM-I-M,SM,Purge Vendor Follow-ups,BKAMLM
+SM-I-N,SM,Purge Personal Contact History,BKAMLN
+SM-I-O,SM,Purge Personal Contact Follow-ups,BKAMLO
+SM-J-A,SM,Work Order File Maintenance,BKMMF
+SM-J-H,SM,Purge Data Collection File,BKMML
+SM-J-I,SM,Purge Estimates,BKMMM
+SM-J-J,SM,Purge Closed Sales Orders,BKAMPD;ISSMJJ
+SM-J-K,SM,Purge Invoice History,BKAMPE;ISSMJJ
+SM-J-M,SM,Change Customer Codes,BKAMM
+SM-J-N,SM,Change Vendor Codes,BKAMN
+SM-J-O,SM,Rebuild Customer/Vendor Totals,BKAMK
+SM-J-P,SM,Purge AR Vouchers,BKAMPC;ISSMJJ
+SM-J-Q,SM,Bill of Material Recursion Utility,BKBMM
+SM-J-R,SM,Archive Purchase Order History,ISSMJR
+SM-J-S,SM,Purge Inventory Audit Info.,ISSMJS
+SM-J-T,SM,Archive/Restore Quotes,ISSMJJ
+SM-P-F,SM,Description Entry,ISJOBS
+SO-A,SO,View,BKSOA;BKSOA2;ISSRA;ISTECH;JKSOS1S
+SO-B,SO,Print Acknowledgements,BKSOB;BKSOBB;ISTECH;T6ALSOB;t6sob
+SO-C,SO,Print Pick Ticket,BKSOC;ISTECH;T6ALSOC;t6soc
+SO-D,SO,Print Shipping Labels,BKSOD;T6SOD;t6sodmsg
+SO-E,SO,Release Sales Orders,BKSOE;T6SOE
+SO-F,SO,Print/Reprint Invoices,BKSOF;ISTECH;T6ALSOF;T6SOF
+SO-G,SO,Post Invoices,BKSOG;BKSOGA;BKSOGSAV;ISSRGA
+SO-H,SO,Display Invoice History,BKSOH
+SO-I,SO,Customer Service Inquiry,BKSOI
+SO-J,SO,View Recurring Sales Orders,BKSOJ;BKSOJ2;t6SOJ;t6soj2
+SO-K,SO,Generate Sales Orders from Recurring SO Templates,BKSOK
+SO-L,SO,Enter/Print Note Templates,BKSOL
+SO-M,SO,Print Template Forms,BKSOM;t6som
+SO-N,SO,Manual Mat Cost/Lab Hours,AUTOSON;BKSON;ISSON
+SO-O-A,SO,Print Open Sales Order Listing,BKSOOA
+SO-O-B,SO,Print Backorder Listing,BKSOOB
+SO-O-D,SO,Print Commissions by Sales Order,BKSOOD
+SO-O-E,SO,Print Shipping Schedule,BKSOOE
+SO-O-F,SO,Print Available to Ship,BKSOOF;t6soof
+SO-O-G,SO,Print Sales Order/Work Order Schedule,BKSOOG
+SO-O-H,SO,Print Invoice Listing,BKSOOH
+SO-O-I,SO,Print Released Sales Orders,BKSOOI
+SO-O-J,SO,Print User-Defined Detail,BKSAM;T6SAM
+SO-O-K,SO,Print User-Defined Summary,BKSAN;T6SAN;j6cfsan
+SO-O-M,SO,Print Sales Order Changes,ISSOOM
+SO-O-N,SO,Print OnTime Shipping Report,ISSOON
+SO-O-O,SO,Sales Order/Work Order Exception Report,ISSOOO;ISSROO
+SO-P-A,SO,Enter Sales Quotations,BKSOA;BKSOA2;BKSOJ;BKSOJ2;ISTECH
+SO-P-B,SO,Print Sales Quotations,BKSOPB;T6ALSOPB;T6SOPB
+SO-P-C,SO,Convert Sales Quotation,BKSOPC
+SO-P-D,SO,Print User-Defined Detail,BKSAM;T6SAM
+SO-P-E,SO,Print User-Defined Summary,BKSAN;T6SAN;j6cfsan
+SO-P-F,SO,Enter Return Authorization,BKSOA;BKSOA2;BKSOJ;BKSOJ2;t6SOJ
+SO-P-H,SO,Enter RMA- Edit Existing RMA,JKSOS1S;JKSOS2S;jksos1.run;jksos2.run
+SO-P-I,SO,Enter Freight & Tracking #,BKSOPI
+SO-P-J,SO,Post Shipped Items,ISSOPJ
+SO-P-K,SO,Close Sales Quotation,ISSOPK
+SO-P-L,SO,Enter Tracking #,BKSOPI
+SO-Q,SO,Customer Service Inquiry,BKSOQ
+SO-Q-A,SO,Enter Base Prices,BKSOQA
+SO-Q-B,SO,Print Base Prices,BKSOQB
+SO-Q-C,SO,Global Price Change,BKSOQC
+SO-Q-J,SO,Generate Base Prices,BKSOQJ
+SO-R,SO,Void Invoice,BKSOGA;BKSOR;ISSRGA
+SO-S-B,SO,Print Return Authorizations,JKSOSB;T6jksosb
+SO-T,SO,View,BKSOA;BKSOA2;BKSOJ;BKSOJ2;t6SOJ
+SO-U,SO,Convert Sales Orders to Purchase Orders,CRSOPO;ISSOPO
+SO-X,SO,Mass Void Invoice,ISMASVOD
+SR-A,SR,View Service/Repair Orders,ISSRA;ISSRA2;j6btsra
+SR-B,SR,Print S/R or Quotes,ISSRB;T6ISSRB
+SR-C,SR,Convert Service/Repair Orders,BKSON;ISSRC;ISSRCMSG
+SR-D,SR,Print S/R Pick Ticket,ISSRD;T6ISSRD
+SR-E,SR,Release Service/Repair Orders,ISSRE
+SR-F,SR,Print/Reprint S/R Invoices,ISSRF;T6ISSRF
+SR-G,SR,Post Service/Repair Invoices,ISSRG
+SR-H,SR,Convert RMA Orders,ISSRH
+SR-T,SR,View Service/Repair Orders,ISSRA;ISSRA2;j6btsra
+UT-A,UT,Run a DBA Program,BKUTA
+UT-B,UT,Run a Non-DBA Program,BKUTB
+UT-C,UT,Re-Index File,BKUTC
+UT-D,UT,Edit Data Location File,BKUTD
+UT-E,UT,Set System Configuration,BKUTE
+UT-F,UT,Change DOS Color,BKUTF;BKUTMW
+UT-H,UT,Print File Layouts,BKUTH;T6UTH
+UT-I,UT,Create/Delete Company,BKUTI;ISFLOC;t6uti
+UT-J,UT,Generate DDF Files,BKUTJ
+UT-K,UT,Export Data,BKUTK
+UT-K-A,UT,Clear Data,BKUTKA;t6utka
+UT-K-B,UT,Global Field Replace,BKUTKB
+UT-K-C,UT,Edit GL Detail File,BKUTKC
+UT-K-D,UT,Recalculate GL Chart of Accounts,BKUTKD
+UT-K-E,UT,Consolidate Inventory Locations,BKUTKE
+UT-K-F,UT,Set Avg and Last Costs to Std Cost,AUTOUTKF;BKUTKF
+UT-K-G,UT,Recalculate Inventory Book Value,AUTOUTKG;BKUTKG
+UT-K-H,UT,Recalculate Average Cost from FIFO/LIFO Buckets,BKUTKH
+UT-K-I,UT,Fix Binary Zeroes,AUTOUTKI;BKUTKI
+UT-L,UT,Set Screen Color,BKUTFW
+WC-A,WC,Enter Warehouse Bin Locations,ISWCA
+WC-B,WC,Assign Warehouse Control,ISWCB
+WC-C,WC,Assign Bin Locations to Items,ISWCC;t6iswcc
+WC-D,WC,Import Bin Locations for Items,ISWCD
+WC-E,WC,Print Bin Inventory Listing,ISWCE;T6ISWCE
+WC-F,WC,Warehouse Control Exceptions Report,ISWCF;T6ISWCF
+WO-A,WO,Enter Work Orders,BKWOA;ISTECH;ISWORPT1
+WO-A-A,WO,Enter Work Orders - ECO Drawing Entry,BKWOA
+WO-B,WO,Change WO Status,BKWOB;ISWORPT2
+WO-C,WO,Special Work Order Report,J5SMRPT3
+WO-D,WO,Print Pick Lists,BKWOD
+WO-E,WO,Print Labor Cards/Labels,BKWOE;T6WOE
+WO-F,WO,Enter Labor,BKWOF
+WO-G,WO,Enter WO BOM,BKWOG;BKWOKB;ISWOG
+WO-H,WO,Enter Misc/Extra Costs,BKWOH
+WO-I,WO,Enter Finished Production,BKWOFA;BKWOI;BKWOIP~1;ISMULTIY;ISTECH
+WO-J,WO,Rebuild Work Orders,BKREBWO;BKWOJ;ISTECH
+WO-K-A,WO,Enter Work Order Routings,BKWOKA
+WO-K-B,WO,Enter WO BOM,BKWOKB
+WO-K-C,WO,Create Multi-Date Work Orders,BKWOKC
+WO-K-D,WO,Create Multi-Assy Work Orders,BKWOKD
+WO-K-E,WO,Swap Substitute Parts,BKWOKE
+WO-K-F,WO,Edit Sequence Started/Finished Dates,BKWOKF
+WO-K-G,WO,Recalculate Projected Hours,BKWOKG
+WO-K-L,WO,Quick Work Orders,NZQWO
+WO-L-A,WO,Print Work Order Status,t6wola
+WO-L-C,WO,Print Work Center Backlog,BKWOLC
+WO-L-D,WO,Print Projected Shipments,BKWOLD
+WO-L-E,WO,Print/Post Labor to Payroll,BKWOLE
+WO-L-F,WO,Print Work Order Shortage,BKWOLF;t6wolf
+WO-L-G,WO,Print Work Center by Key Component,BKWOLG
+WO-L-H,WO,Print Projected Hours Report,BKWOLH
+WO-L-I,WO,Print Allocations,BKWOLI
+WO-L-J,WO,Print Finished Work Order Report,ISWOLJ
+WO-M,WO,Batch Labor Entry,BKDCG;BKDCGMSG;CBKWOM;J5HDWOM
+WO-N,WO,Post Labor Batches,AUTODCH;BKDCH;UMCDCP
+WO-Q,WO,Convert Work Orders to Purchase Orders,CAWOPO;ISWOPO

@@ -1,0 +1,164 @@
+TASCOLOR
+BKAPDESC
+BKARINV 
+BKSYHELP
+DBAHLPID
+FIXNOTES  Split SO/SQ NotesA
+BKARDESCA
+BKESTQTA
+BKARINVA
+This utility will a assign different series of line numbers to SO and Sales Quote note lines so that, in case your SO and SQ numbers overlap, the notes will not commingle.  This utility MUST be run for ALL companies before using the revised 98.1 SO/SQ programs (even if there is no chance of the SO/SQ numbers ovrelapping!).  Running this utility more than once on the same company will not harm anything.  Ready to proceed?L
+ This utility will a assign different series of line numbersF
+ to SO and Sales Quote note lines so that, in case your SOF
+ and SQ numbers overlap, the notes will not commingle.F
+ This utility MUST be run for ALL companies before using theF
+ revised 98.1 SO/SQ programs (even if there is no chance ofF
+ the SO/SQ numbers ovrelapping!).  Running this utility moreF
+ than once on the same company will not harm anything.I
+Ready to proceed?L
+NormalBkgA
+NormalBkgA
+Records checked: A
+There are no notes. A
+Another user has the notes file open, please try again later. A
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+BKARINV.HNDL   
+BKESTQT.HNDL   
+BKARDESC.HNDL  
+NRECS          
+CUR.REC        
+NEXT.REC       
+MESSAGE        
+MSG_PTR        
+SC             
+WC             
+BC             
+BK.DESC.NUM    
+BKAR.INV.SONUM 
+BK.DESC.LINE   
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

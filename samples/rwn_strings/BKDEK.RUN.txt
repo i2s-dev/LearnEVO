@@ -1,0 +1,260 @@
+BKICMSTR
+MTICMSTR
+BKBMMSTR
+ROUTING 
+BKGLCOA 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKICEMTRA
+MTICEMTRA
+BKBMEMTRA
+BKRTEMTRA
+BKGLECOAA
+DE-K  Global Field ChangeA
+F1 HelpA
+Esc ExitA
+                A
+                A
+                 A
+ Inventory         0101IF 
+ Bills of Material 0102BF 
+ Routings          0103RF 
+ Chart of Accounts 0104FI
+FilesFFF 
+InventoryA
+Bills of MaterialA
+RoutingsA
+Chart of AccountsA
+                A
+ Type        0101TF 
+ Class       0102CF 
+ Stock UM    0103SF 
+ Price UM    0104PF 
+ Purchase UM 0105RA
+FieldsFFI
+ClassA
+Stock UMA
+Price UMA
+Purchase UMA
+                A
+ Parent Part  0101PF 
+ Component    0102CF 
+ Quantity Per 0103QA
+FieldsFFI
+Parent PartA
+ComponentA
+Quantity PerA
+                A
+ Item Number      0101PF 
+ Sequence Number  0102CF 
+ Operation Number 0103SF 
+ Type             0104TF 
+ Work Center      0105WA
+FieldsFFI
+Item NumberA
+Sequence NumberA
+Operation NumberA
+Work CenterA
+                A
+Now Working on Item Number: A
+BKICEMTRA
+MTICEMTRA
+BKICEMTRA
+Now Working on Parent Part: A
+BKBMEMTRA
+BKBMEMTRA
+Now Working on Routing for: A
+BKRTEMTRA
+BKRTEMTRA
+Now Working on GL Account: A
+BKGLECOAA
+BKGLECOA
+             
+             
+                  File                             
+             
+                                                   
+             
+       Field to Change                             
+             
+                                                   
+             
+   Replace all values?                             
+             
+                                                   
+             
+   Value to search for                             
+             
+                                                   
+             
+ Value to replace with                             
+             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+WHICH.FILE     
+WHICH.FIELD    
+TEMP.CHOICE    
+REPLACE.ALL    
+SEARCH.FOR     
+REPLACE.WITH   
+MCNTR4         
+MCNTR          
+MESSAGE        
+BKIC.PROD.CODE 
+BKIC.PROD.TYPE -
+MTIC.PROD.TYPE #
+BKIC.PROD.CLASS6
+MTIC.PROD.CLASS
+BKIC.PROD.UM   .
+MTIC.PROD.SUM  1
+MTIC.PROD.PUM  4
+BKBM.PARENT    
+BKBM.COMPONENT 
+BKBM.QTY.REQD   
+MTRO.CODE      
+MTRO.OPER      
+MTRO.OP.TEMP.NO
+MTRO.TYPE      M
+MTRO.WC        
+BKGL.ACCT      
+BKGL.GLDPT     
+BKGL.TYPE      '
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+FC             

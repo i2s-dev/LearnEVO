@@ -1,0 +1,214 @@
+ISIS    
+BKGLTRAN
+BKYSMSTR
+BKSYAP  
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYAPA
+BKYSMSTRA
+BKGLTRANF
+Pending
+DBA 2002.1 UPDATE UtilityA
+Done PriorA
+taxusaF
+CompleteF
+PendingA
+Done PriorA
+GLEREDOF
+CompleteF
+PendingI
+Done PriorA
+AR2001F
+CompleteF
+PendingA
+Done PriorA
+AP2001F
+CompleteF
+PendingI
+Done PriorA
+PS20021F
+CompleteI
+CompleteA
+Configuration complete. Since you were updating from a version prior to 2000.1 System security settings will need to be manualy set using PS-B System Security levels.A
+Configuration complete.A
+             
+             
+                                                     
+             
+   Checking TAX Systems                              
+             
+   Checking GL Entries                               
+             
+   Checking AR Settings                              
+             
+   Checking AP Settings                              
+             
+   Checking Security Settings                        
+             
+                                                     
+             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+OK             
+VALID          
+SYMST.H        
+SYAP.H         
+YSMST.H        
+ISIS.H         
+GLTRN.H        
+IS.TAX.CVT     .
+BKGL.TRN.TYPE  H
+BKYS.YN        
+BKSY.AP.RECVFLG
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+MSG_PTR        
+MESSAGE        

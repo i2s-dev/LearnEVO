@@ -1,0 +1,676 @@
+TAS32P
+BKSYMSTR
+BKYSMSTR
+BKARINV 
+BKARINVL
+BKARINVT
+BKGLTRAN
+BKARCUST
+BKICTAX 
+BKICMSTR
+MTICMSTR
+BKICLOC 
+INVTXN  
+BKGLCOA 
+BKPRSALE
+CLASS   
+BKARINVI
+BKGLCHK 
+BKPRCOMM
+TASCOLOR
+DBAFIFO 
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+BKARHINVA
+BKARHIVLA
+BKARINVA
+BKARINVLA
+BKARCUSTA
+BKAREIVTA
+BKARINVTA
+BKICMSTRA
+BKGLCOAA
+BKGLETRNA
+BKGLTEMPA
+BKGLCHKA
+BKICLOCA
+BKICTAXA
+BKPRSALEA
+BKPRCOMMA
+BKARINVIA
+MTICMSTRA
+INVTXNA
+CLASSA
+DBAFIFOA
+BKARINVA
+BKARINVLA
+BKARINVTA
+BKGLTEMPA
+BKSOFA
+BKSOFA
+BKSOGA
+SO-G  Post InvoicesA
+F1 HelpA
+Esc ExitA
+BKYSMSTRA
+BKYSMSTRI
+You have entered a date that is prior toF@
+the GL close date in the AD-A program.F@
+Please reenter the date to continue.I
+BKARINVA
+BKARINVLI
+All the invoices have been posted already.I
+BKARINVN
+BKARINVI
+There are no matching invoices in the fileF@
+which have been printed and need to be posted.I
+BKARINVA
+ Posting Invoice #:A
+ Sales Order #:A
+BKARINVLI
+ERROR: INVOICE # A
+ HAS A FREIGHT AMOUNTA
+       THAT NEEDS TO BE DISTRIBUTED TO LINEF@
+       ITEMS. THIS CAN'T BE DONE SINCE THEREF@
+       WERE NO PRODUCT WEIGHTS FOUND FOR THEF@
+       PART NUMBERS ON THIS INVOICE.F@
+       PLEASE ENTER PRODUCT WEIGHTS FOR THEF@
+       PART NUMBERS ON THIS INVOICE, THENF@
+       RE-POST SALES ORDER # A
+ THIS INVOICE WON'T BE POSTED AT THIS TIME!I
+BKICTAXA
+Unspecified CodeA
+BKICTAXF
+BKARCUSTI
+BKICLOCI
+BKICLOCA
+BKICMSTRA
+INVTXNF
+Sales Freight IncomeI
+BKPRSALEA
+BKPRSALEA
+BKPRSALEF
+Sales Commission IncomeF
+BKARINVIA
+BKICMSTRI
+BKARHIVLF
+BKARINVLA
+BKARHIVLA
+BKARINVLA
+BKARINVTA
+Deposit AppliedI
+Deposit AppliedA
+BKARINVTI
+BKAREIVTI
+BKAREIVTA
+BKAREIVTI
+BKARINVTI
+Credit Invoice-A
+Invoice - A
+BKARINVTI<
+BKAREIVTA
+BKARINVTI
+BKGLCHKA
+Retention on InvoiceF
+Retention on InvoiceI
+Sales Taxes from InvoiceF
+BKICTAXA
+BKPRSALEF
+Agent Sales CommissionF
+Agent Sales CommissionI
+BKPRCOMMI
+Agent Sales CommissionF
+Agent Sales CommissionI
+BKPRCOMMA
+BKPRSALEA
+BKPRSALEF
+Agent Sales CommissionF
+Agent Sales CommissionI
+BKPRCOMMI
+Agent Sales CommissionF
+Agent Sales CommissionI
+BKPRCOMMA
+BKPRSALEI
+Freight from InvoiceI
+BKARHINVI
+BKARINVA
+BKARHINVA
+BKARINVF
+BKICLOCI
+ ************* WARNING ****************F@
+A G/L Account was not found and you did not haveF@
+a Clearing Account in the System Master File.F@
+Because of this at least one posting during this processF@
+was out of balance.  Please enter a clearing accountF@
+right now!  Then get a Credit Sales Journal reportF@
+and find the out of balance items and fix them.  PleaseF@
+refer to your documentation for further details.I
+BKADAI
+A G/L account was not found for at least one of theF@
+posted items in this process.  Please get a Credit SalesF@
+Journal Report and using the General Journal put theF@
+amount in the correct account.  You should then fixF@
+the appropriate item (probably an Inventory G/L acct).I
+MTICMSTRI
+BKGLTEMPI<
+BKGLETRNA
+BKGLTEMPA
+BKGLCOAF@
+The date entered will be used as the invoice date andF@
+will also be the date used for posting purposes.I
+ 1 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01011F@
+ 2 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01022F@
+ 3 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01033F@
+ 4 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01044F@
+ 5 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01055F@
+ 6 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01066F@
+ 7 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01077F@
+ 8 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01088F@
+ 9 - xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx 01099I
+Choose Which Bank Account:
+You do not have any checking accounts defined yet.F@
+The checking account used in this posting willF@
+default to account number 1.  However, you shouldF@
+enter your accounts through System Maintenance.I
+Press any key to continueA
+BKSOGLOTI
+BKSOGSERI
+PRT_INVA
+BKSOAI
+The transaction date entered does not fall within theF@
+valid range.  Please enter a current year date, a dateF@
+from one year past, or a date from two years past.F@
+The current Fiscal Year Start Date is A
+BKARINVIA
+BKARINVIA
+BKPRCOMMA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+   SO# Cust Cd    Company Name                   Cust POA
+A - Sales Order NoF
+B - Customer CodeF
+C - Company NameF
+D - Customer POF
+E - Ship to CodeF
+F - Ship to NameF
+G - Job NumberA
+ Search By A
+BKARINVA
+BKARINVA
+BKARINVA
+BKARINVA
+   SO# Cust Cd    Company Name                   Ship to CodeA
+BKARINVA
+   SO# Cust Cd    Company Name                   Ship to NameA
+BKARINVA
+   SO# Cust Cd    Company Name                   Job NumberA
+BKARINVA
+         
+         
+                                                         
+         
+                                    Post Date:           
+         
+                                                         
+         
+            Post all printed invoices?  [Y/N]:           
+         
+                                                         
+         
+            Post only from Sales Order Number:           
+         
+                      Thru Sales Order Number:           
+         
+                                                         
+         
+                                                         
+         
+Press any key to continueA
+ DBA HELP                          For Phone Support call 800-434-0809        
+   ON-LINE HELP: Documentation on this and all DBA programs is provided on    
+   line (Windows only) where it can be viewed or printed out.  Click on       
+   "Help" at the top of the Windows main menu and you will be presented       
+   with a Contents window.  Three clicks of the mouse will get you to most    
+   programs.  You can alternately click on the program screen and the help    
+   window to bring one in front of the other for reading and viewing the      
+   program.                                                                   
+   FUNCTION KEYS: Each standard screen button has an equivalent function      
+   key as an alternative to using the mouse -- these are listed across the    
+   bottom of the Windows main menu for reference.                             
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without Saving      CTRL+D = Delete Character            
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+DBAFIFOA
+DBAFIFOA
+12/31/2099I
+DBAFIFOA
+DBAFIFOI
+DBAFIFOA
+DBAFIFOA
+DBAFIFOI
+12/31/2099I
+DBAFIFOA
+DBAFIFOA
+DBAFIFOI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+OFFSET         
+ALPHA1         
+TAX_TAXBLE     
+SO_NUM         
+TODAYS.DATE    
+POST.AMT       
+ENT.MASK       
+COMMISSION     
+COMMABLE.EXT   
+FIFOLIFO       
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR      
+BKYS.DATE      
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+BKAR.INV.SONUM 
+BKAR.INV.INVCD 
+BKAR.INV.NUM   
+BKAR.INV.RTS   m
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INV.SUBTOT
+BKAR.INV.TAXAMT!
+BKAR.INV.FRGHT n
+MCNTR2         
+BKAR.INV.CUSCOD
+BKAR.INVL.RTS  u
+BKAR.INVL.PEXT S
+BKAR.INVL.TXBLEd
+BKYS.YN        
+BKAR.INV.ITMZTX
+BKAR.INV.TAXRTE;
+BKAR.INVL.TXAMT
+BKIC.TAX.KEY   
+BKAR.INV.TAXKEY
+BKIC.TAX.FRGHT t
+BKAR.INV.TOTAL )
+BKAR.INV.RETEN 
+BKSY.AR.CHKACT 
+BKAR.INV.TERMNM
+BKSY.TRM.TYP   
+BKAR.OUTINV    
+BKAR.OUT.CREDIT{
+BKAR.LASTSALE  
+BKAR.GROSS.MTD 
+BKAR.GROSS.YTD 
+BKAR.COGS.MTD  
+BKAR.INV.COGS  1
+BKAR.COGS.YTD  "
+BKAR.NET.YTD   *
+BKAR.PNET.YTD  2
+BKAR.NET.MTD   
+BKAR.PNET.MTD  
+BKAR.NET.LYR   J
+BKAR.GROSS.LYR :
+BKAR.COGS.LYR  B
+BKAR.PNET.LYR  R
+BKAR.GROSS.PVARZ
+BKAR.COGS.PVAR b
+BKAR.NET.PVAR  j
+BKAR.PNET.PVAR r
+BKIC.TAX.NAME  
+BKIC.TAX.RATE  ,
+BKAR.INVL.UBO  e
+BKAR.INVL.PQTY ;
+BKAR.INVL.PCODE
+BKIC.PROD.GLS  L
+MTIC.PROD.LOT  A
+MTIC.PROD.SER  B
+BKIC.PROD.LSALEJ
+BKIC.PROD.TYPE -
+BKAR.INVL.UM.LN
+BKIC.PROD.UOH  p
+BKIC.PROD.UOSO x
+BKIC.PROD.CODE 
+BKAR.INVL.PCOGS[
+BKAR.INV.ORDDTE
+BKIC.PROD.AVGC h
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKAR.INV.LOC   v
+BKIC.LOC.UOH   
+BKIC.LOC.UOSO  !
+BKIC.PROD.TOTVL
+BKIC.PROD.USMTD
+BKIC.PROD.USYTD
+BKIC.PROD.GSMTD
+BKIC.PROD.GSYTD
+BKIC.PROD.CMTD 
+BKIC.PROD.CYTD 
+BKIC.PROD.NSMTD
+BKIC.PROD.NGMTD
+BKIC.PROD.NSYTD
+BKIC.PROD.NGYTD
+BKIC.PROD.NSLYR
+BKIC.PROD.GSLYR
+BKIC.PROD.CLYR 
+BKIC.PROD.NGLYR
+BKIC.PROD.USVAR
+BKIC.PROD.USLYR
+BKIC.PROD.GSVAR
+BKIC.PROD.CVAR 
+BKIC.PROD.NSVAR 
+BKIC.PROD.NGVAR(
+MTIT.TYPE      
+MTIT.CLASS     
+BKIC.PROD.CLASS6
+MTIT.DATE      
+MTIT.CODE      
+MTIT.QTY       
+MTIT.AVGCOST    
+MTIT.STDCST    (
+MTIC.PROD.RCOSTF
+MTIT.LOC       0
+MTIT.REF       :
+BKAR.INV.CUSNME=
+MTIT.CUST      X
+MTIT.DESC      
+BKAR.INVL.PDESC
+MTIT.DEPT      
+BKAR.INV.GLDPT a
+MTIT.INVOICE   b
+MTIT.PRICE     j
+BKAR.INVL.PPRCEC
+MTIC.PROD.WT   L
+MTIC.PROD.FRT% 
+BKGL.TRN.TYPE  H
+BKGL.ACCT      
+BKSY.AR.FREIGHT
+BKGL.GLDPT     
+BKSY.AR.FRGTDPT
+BKGL.TRN.DESC  &
+BKAR.INVL.FRGHT
+BKAR.INVL.COMPR
+BKPR.SLS.EMPNUM
+BKAR.INV.SLSP  
+BKPR.SLS.HOW   
+BKAR.INV.SLSP2 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKIC.PROD.GLSNTb
+BKIC.PROD.DPTNTl
+MTCLASS.CLASS  
+MTCLASS.LOC    
+CLASS.GLSNT    V
+CLASS.DPTNT    `
+BKIC.PROD.DPTS V
+CLASS.GLS      H
+CLASS.DPTS     R
+BKAR.GLACCT    
+BKAR.GLDPT     
+BKIC.PROD.DESC 
+BKIC.PROD.GLC  >
+BKIC.PROD.DPTC H
+CLASS.GLC      :
+CLASS.DPTC     D
+BKIC.PROD.GLA  0
+BKIC.PROD.DPTA :
+CLASS.GLA      ,
+CLASS.DPTA     6
+BKAR.INVI.SONUM
+BKAR.INVI.INVNM
+BKAR.INVI.PCODE
+BKAR.INVI.PQTY #
+BKAR.INVI.PPRCE+
+BKAR.INVI.PDISC3
+BKAR.INVL.PDISCK
+BKAR.INVI.PEXT ;
+BKAR.INVI.PCOGSC
+BKAR.INVI.EXTRML
+BKAR.INVI.COMM T
+BKAR.INVI.TAX  t
+BKAR.INVI.FRGHTd
+BKAR.INVI.COOP l
+BKAR.INVL.COOP 
+BKAR.INVL.ASD  
+BKAR.INVL.USTD m
+BKAR.INV.DEPAMT
+BKAR.INVT.NUM  
+BKAR.INV.CHKNUM
+BKAR.INVT.CODE 
+BKAR.INVT.AMTRM
+BKSY.AR.GLACT  !
+BKSY.AR.GLDPT  +
+BKAR.INVT.DATE 
+BKAR.INVT.AMT  
+BKAR.INVT.DESC &
+BKAR.INV.DESC  C
+BKAR.INVT.TYPE A
+BKAR.INVT.TERMN?
+BKAR.INVT.GLDPTB
+BKAR.INVT.SLSP F
+BKAR.INVT.SLSP2I
+BKGL.CHK.AMT   (
+BKGL.CHK.DATE  
+BKGL.CHK.TYPE  
+BKGL.CHK.NUM   
+BKGL.CHK.NAME  
+BKGL.CHK.FLAG  0
+BKGL.CHK.CHKACT
+BKSY.CHK.CHKACT
+BKSY.CHK.CHKDPT
+BKSY.TAX.GLACT Y
+BKSY.TAX.GLDPT c
+BKIC.TAX.TAXBLEL
+BKIC.TAX.NONTAX
+BKIC.TAX.COLECT
+BKIC.TAX.OUTSTDl
+BKPR.SLS.GROSS z
+BKPR.SLS.COGS  
+BKPR.SLS.WHEN  
+BKPR.SLS.COMM  
+BKPR.COMM.SLSP 
+BKPR.COMM.INVNM
+BKPR.COMM.INVDT
+BKPR.COMM.PAYDT
+BKPR.COMM.CCODE
+BKPR.COMM.AMTPD
+BKPR.COMM.COMM $
+BKPR.COMM.PD.ON,
+BKPR.SLS.CLASS 
+BKPR.SLS.RCPTS :
+BKAR.INV.INVDTE
+BKAR.INV.COMAMT
+BKAR.INV.LINV#Pe
+BKAR.INV.SHIPPR
+BKAR.INV.SHIPDT
+BKAR.INV.CCOAMT
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKGL.TRN.DATE  
+BKGL.TRN.INVC  
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.CODE  
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.ENTDTEJ
+MCNTR          
+BKSY.CHK.NAME  s
+BKSY.FISCAL.YR 
+BKPR.SLS.RATE  
+SO_FROM        
+MENULIST       
+CNTR           
+TITLE          
+TITLE1         
+SC             
+BKAR.INV.CUSORD
+BKAR.INV.SHPCOD
+BKAR.INV.SHPNME)
+BKAR.INV.JOBNUM
+PROG.HELP.NAME 
+CRNT.FIELD     
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+FIFOPART       
+FIFOQTY        
+FIFOCOST       
+FIFODATE       
+FIFO_HNDL      
+FIFO.PARTNO    
+FIFO.QTY       
+FIFO.COST      
+FIFO.RECVDATE  
+FIFO.REMAIN    #
+AVG            
+TOTCOST        
+TOTQTY         
+FIFO_HNDL      
+ERRFL          
+FIFOPART       
+FIFOPART       
+FIFOQTY        
+FIFO_HNDL      
+ERRFL          
+AVG            
+TOTQTY         
+TOTCOST        
+REST           
+BKORD          
+FIFOPART       
+FIFOQTY        
+FIFO_HNDL      
+ERRFL          
+AVG            
+TOTQTY         
+TOTCOST        
+REST           
+BKORD          

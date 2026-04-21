@@ -1,0 +1,711 @@
+TAS32J
+BKSYMSTR
+ISTAXFIL
+BKAPVEND
+BKGLCOA 
+ISTAXGRP
+TASCOLOR
+ISIS    
+The excise tax setting must be turned on in International Configuration before you may use this program. A
+ISTAXFILA
+istaxgrpA
+BKGLCOAA
+BKAPVENDA
+BKSYMSTRA
+BKSYMSTRF
+IM-I  Enter Tax In Code A
+F1 HelpA
+Esc ExitA
+Please specify a tax code. A
+This tax code already exists. A
+F1 HelpA
+F10 Save,Esc ExitA
+Tax ID number?:F
+  A Tax ID number for this tax.F
+  May be printed on forms if desired.I
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+bkapvendI
+This is not a valid vendor code. A
+BKAPVENDF
+Vendor?:F
+  This is the AP vendor to whom taxes collectedF
+  for this tax code will eventually be paid.I
+123456789 A
+Value may not be less than the last value entered.A
+Value may not be less than the last value entered.A
+123456789 A
+Value may not be less than the last value entered.A
+Value may not be less than the last value entered.A
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+Please enter a GL account. A
+bkglcoaI
+This is not a valid GL account. A
+BKGLCOAI
+bkglcoaI
+This is not a valid GL account. A
+BKGLCOAI
+BKGLCOAI
+GL Account?:F
+  For SO Taxes this will generally be the liabilityF
+  account in which sales taxes collected will accrue,F
+  prior to being transferred to AP for payment.F
+  For PO Taxes this will generally be an expenseF
+  account to which sales taxes on purchases will beF
+  charged.I
+Save this Tax In Code? L
+bkglcoaI
+BKGLCOAL
+This tax code cannot be deleted, as it is used in one or more tax groups. A
+P.O. From Range?:F
+  A dollar value to start from in aF
+  range for a tax percentage.I
+P.O. To Range?:F
+  A dollar value to finish with in aF
+  range for a tax percentage.I
+PO Tax Rate?:F
+  Tax percentage to be charged for this taxF
+  on purchase orders.I
+P.O. Tax IN Code ?:F
+  Tax IN code from 1 to 9 to set upF
+  multi-tax options by vendor.F
+  Enter a blank Tax IN code to exit.I
+Is this the EXCISE Tax Code?:F
+  One tax code may be specified to handle excise taxes.F
+  The amount of any excise tax will be built into theF
+  price of goods bought or sold.  Generally, for US taxes,F
+  you will NOT need to specify an EXCISE Tax Code.F
+  If this is the EXCISE Tax Code:  An Excise TaxF
+  Settings button will be available on this screen,F
+  for access to more detailed settings.  You will notF
+  be able to enter the SO or PO Tax Rates on the mainF
+  screen - use the detailed settings screen instead.I
+S.O. Tax IN Code ?:F
+  Tax IN code from 1 to 9 to set upF
+  multi-tax options by customer.F
+  Enter a blank Tax IN code to exit.I
+S.O. From Range?:F
+  A dollar value to start from in aF
+  range for a tax percentage.I
+S.O. To Range?:F
+  A dollar value to finish with in aF
+  range for a tax percentage.I
+SO Tax Rate?:F
+  Tax percentage to be charged for this taxF
+  on sales orders.I
+ Tax Code     Description                      Tax ID Number                
+                                                                            
+                                                                            
+ Vendor                                                                     
+ PO TAXES                            
+ SO TAXES                             
+                                     
+                                      
+ Cd From         To          Percent 
+ Cd From         To           Percent 
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+                                     
+                                      
+   GL Account              -             GL Account              -           
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+  STANDARD FUNCTION KEYS/BUTTONSF
+  ------------------------------F
+  F1  HelpF
+  F2  LookupF
+  F3  ClearF
+  F4  DeleteF
+  F5  FirstF
+  F6  LastF
+  F7  PreviousF
+  F8  NextF
+  F9  FindF
+  F10 SaveI
+BKAPVENDA
+ Vendors A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vendor Name                   A
+Vend Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Zip Code  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Contact Name                  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKAPVENDA
+Telephone                A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKAPVENDA
+ClassA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKAPVENDA
+BKAPVENDA
+Vendor CodeF
+Vendor NameF
+StateF
+Zip CodeF
+Contact NameF
+TelephoneF
+ClassI
+F1 HelpA
+Esc ExitA
+ A - Vendor CodeF
+ B - Vendor NameF
+ C - StateF
+ D - Zip CodeF
+ E - Contact NameF
+ F - TelephoneF
+ G - ClassA
+ Search Key A
+ALOIEI
+BKGLCOAA
+ GL Accounts A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKGLCOAA
+Acct Cd   A
+Description              A
+BKGLCOAA
+Description              A
+Acct Cd   A
+BKGLCOAA
+BKGLCOAA
+GL AccountF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - GL AccountF
+ B - DescriptionA
+ Search Key I
+All AccountsF
+Asset AccountsF
+Liability AccountsF
+Owners Equity AcctsF
+Income AccountsF
+Expense AccountsI
+ A - All AccountsF
+ B - Asset AccountsF
+ C - Liability AccountsF
+ D - Owners Equity AcctsF
+ E - Income AccountsF
+ F - Expense AccountsA
+ Choose Acct Type I
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+TAX SYSTEM:F
+ This Program requires the new TAX system.F
+ Please contact your system administrator to F
+ run the required Conversion routine. I
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+YNNNYChn
+YNNNYF
+NNNYN6
+YNNNYF
+YNNNYF0*
+YNNNYF0*
+YNNNYF0*
+YNNNYF
+YNNNYX
+YNNNYF0*
+YNNNYX.u
+YNNNYF0*
+YNNNYXgu
+YNNNYF0*
+YNNNYF
+YNNNYF0*
+YNNNYF0*
+YNNNYF0*
+YNNNYC
+NNNYNh
+NNNYNX
+NNNYNX
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+MCTR           
+TOTPER         
+CALTP          
+LVPO           
+LVSO           
+HAVE.GROUP     
+CHNG           
+ICOL           
+IROW           
+EXCIWINDOW     
+ENTRY.TYPE     
+EXIT.TYPE      
+HEADER0        
+HEADER1        
+HEADER2        
+HEADER3        
+HEADER4        
+PRA_TTL1       
+PRA_USCORE     
+CBK.CODE       
+NEW.REC        
+ZRET           
+MCNTR          
+DSP.EXC        
+FIRST.ENTRD    
+IN.FIRSTFLD    
+HOLD.CODE      
+PO.GLNAME      
+SO.GLNAME      
+RET.GLNAME     
+GL.ACCT        
+CHK.GLACCT     
+GL.DEPT        
+CHK.GLDEPT     
+POTAX.MSG1     
+POTAX.MSG2     
+POTAX.MSG3     
+POTAX.MSG4     
+POTAX.ON       
+WHICH          
+WHICH.CHK      
+IS.EXCISE      
+EXCISE.CODE    
+ISIS.TAX.IN    
+ISTXF.HNDL     
+ISTXG.HNDL     
+ISIS.TAX.PO    
+ISIS.TXF.TAXIN 
+ISIS.TXF.CODE  
+ISIS.TXF.GLASO 
+BKSY.TAX.GLACT Y
+ISIS.TXF.GLDSO 
+BKSY.TAX.GLDPT c
+ISIS.TXF.GLAPO A
+BKSY.PO.TAXGL  g
+ISIS.TXF.GLDPO K
+BKSY.PO.TAXDPT q
+ISIS.TXF.DESC  
+ISIS.TXF.IDNUM 2
+MESSAGE        
+MSG_PTR        
+ISIS.TXF.VNDCD (
+BKAP.VENDCODE  
+ISCT           
+ISIS.TXF.PTICD 
+ISIS.TXF.POLRNGO
+ISIS.TXF.POHRNG
+ISIS.TXF.POPERC
+ISIS.TXF.TICD  
+ISIS.TXF.SOLRNG'
+ISIS.TXF.SOHRNGo
+ISIS.TXF.SOPERC
+BKGL.ACCT      
+BKGL.GLDPT     
+BKGL.ACCTD     
+ISIS.TXG.CODE  
+ISTAX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISLP           
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+PROG.HELP.NAME 
+CRNT.FIELD     
+XYZDBAHTEXT    
+DUMMY_L        
+VENDF2.COL     
+VENDF2.ROW     
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+VEND_TTL1      
+VEND_USCORE    
+BKAP.VENDNAME  
+BKAP.CITY      
+BKAP.STATE     
+BKAP.ZIP       
+BKAP.CONTACT   
+BKAP.TELEPHONE N
+BKAP.CLASS     N
+CC             
+DATC           
+TEMP_KEY       
+MENULIST       
+GL_TYPE        
+GLF2.COL       
+GLF2.ROW       
+WHICH_ACCT     
+ACCT_LIST      
+GL_TTL1        
+GL_USCORE      
+BKGL.TYPE      '
+TEMP_KEY       
+SRCH_HOW_MSG   
+FC             
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.FRM   
+ISIS.MULTI.CURR
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     

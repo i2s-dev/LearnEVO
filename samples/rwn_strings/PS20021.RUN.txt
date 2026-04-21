@@ -1,0 +1,207 @@
+BKYSMSTR
+BKSLMSTR
+BKSLEVEL
+BKSYHELP
+DBAHLPID
+TASCOLOR
+PS20021  Security Conversion RoutineA
+BKSLMSTRA
+BKSLEVELA
+BKYSMSTRA
+Unable to open one of the system files.  Another user may be using the system.  Please try again later. A
+ERROR: Could not locate the system master record.  The security conversion will not be run. A
+The security conversion routine has already been run. A
+This routine will convert your existing security grid settings for the menuA
+ changes made with versions 2002.1 and 2002.2.A
+You should only run this routine if you are upgradingA
+ from a version prior to 2002.1 to version 2002.1 or later.A
+OK to start the security conversion routine?A
+No security levels have been defined, so this conversion routine does not need to be run. A
+PS20021  Security Conversion Routine     Security Level: A
+NNNNNNNNNNNNNNNNNNNNNF
+NNNNNNNNNNNNNNNNNNNNNF
+NNNNNNNNNNNNNNNNNNNNNF
+NNNNNNNNNNNNNNNNNNNNNA
+Error: Unable to reget BKSLEVEL record for A
+NNNNNNNNNNNNNNNNNNNNNF
+NNNNNNNNNNNNNNNNNNNNNA
+Error: Unable to reget BKSLEVEL record for A
+NNNNNNNNNNNNNNNNNNNNNI
+NNNNNNNNNNNNNNNNNNNNNA
+Error: Unable to reget BKSLEVEL record for A
+NNNNNNNNNNNNNNNNNNNNNA
+Error: Unable to reget BKSLEVEL record for A
+ERROR: Did not find the #22 BKSLEVEL record.A
+NNNNNNNNNNNNNNNNNNNNNF
+NNNNNNNNNNNNNNNNNNNNNF
+Error: Unable to reget BKSLEVEL record for A
+NNNNNNNNNNA
+NNNNNNNNNNNNNNNNA
+Error: Unable to reget BKSLEVEL record for A
+Error: Unable to reget BKSLEVEL record for A
+NNNNNNNNNNA
+NNNNNNNNNNNNNNNNNA
+Error: Unable to reget BKSLEVEL record for A
+Security conversion complete.  Please restart DBA to have these changes take effect. A
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+BKSLMSTR_HNDL  
+BKSLEVEL_HNDL  
+BKYSMSTR_HNDL  
+XMSG           
+HAVE1          
+HAVE2          
+HAVE3          
+HAVE4          
+OS1            
+OS2            
+OS3            
+OS4            
+NS1            
+NS2            
+NS3            
+NS4            
+I              
+J              
+K              
+BUFF1          
+BUFF2          
+BUFF3          
+BUFF4          
+OLM            
+OMM            
+OLD            
+OMD            
+NMM            
+NMD            
+DOFIRST        
+HAVEORIG2      
+TEMP21         
+DOSECOND       
+DOTHIRD        
+CFROM          
+BKYS.YN        
+BKSL.MSTR.LEVEL
+BKSL.MSTR.DESC 
+BKSL.MENU1.YN  
+BKSL.MENU      
+NEWSM          
+NEWSMJ         
+NEWSD          
+NEWAI          
+NEWAM          
+NEWAD          
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        
+PSTR           

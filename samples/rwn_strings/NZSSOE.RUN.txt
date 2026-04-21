@@ -1,0 +1,1923 @@
+BKSYMSTR
+BKYSMSTR
+BKARINV 
+BKARCUST
+BKARINVL
+MTICMSTR
+BKICMSTR
+BKICLOC 
+BKICTAX 
+TASCOLOR
+BKAPDESC
+BKPRSALE
+BKSYHELP
+DBAHLPID
+BKARINVT
+ISIS    
+ISTAXGRP
+MKAHIST 
+FILELOC 
+BKAPVEND
+BKCMACCT
+ISNUMBER
+ - ISTS Add-On      05/27/15A
+ISTECHL
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+AR2001  A
+ISSRINVA
+BKARINVA
+BKARHINVA
+BKARINVTA
+BKARINVLA
+BKICMSTRA
+MTICMSTRA
+BKICLOCL
+istaxgrpA
+BKICTAXA
+BKARCUSTA
+BKARDESCA
+BKPRSALE
+NZ-S  Scan Release Sales OrdersA
+F1 Help,F2 LookupA
+Esc ExitA
+BKARINVA
+F1 Help,F5 Ship ToA
+Esc ExitA
+Sales Orders cannot be released for customers on Credit Hold.I
+This Order has already been Printed and is waiting to be posted. You should not be releasing anything for this order until the previous shipment is posted.A
+This Order has already been Released. Do you want to Reset this Order?L
+BKARINVLA
+LOTSERA
+LOT   A
+LOTSERA
+   SERA
+BKARINVLA
+Do you want to continue Scanning this order?L
+BKARINVLA
+LOTSERA
+LOT   A
+LOTSERA
+   SERA
+BKARINVLA
+BKARINVLA
+BKARINVA
+Enter Lot Control information?L
+Enter Serial Control information?L
+BKARINVI
+Turn Manual Qty OnA
+Turn Manual Qty OffA
+F1 Help,F8 A
+F10 Done,Esc ExitA
+                        A
+BKICMSTRI
+BKICMSTRI
+MTICMSTRI
+That Item number does not exist in our Inventory.A
+Found by User Defined # A
+Found by UPC #          A
+Found by Item #         A
+Please scan the individual components of this kit and then manually release this part in SO-EA
+BKARINVLF`
+BKARINVLL
+This Item has already been FULLY released for this Order.A
+This Item is NOT on this Order.A
+BKARINVLF`
+You cannot enter more than what was ordered.A
+LOTSERA
+LOT   F@
+LOTSERA
+   SERF@
+BKICLOCF
+Enter Taxable Amount: A
+Since the line item extension is 0, the taxable amount must also be 0. A
+Since the line item extension is positive, the taxable amount cannot be negative. A
+Since the line item extension is negative, the taxable amount cannot be positive. A
+The taxable amount cannot exceed the line item extension. A
+BKICMSTRA
+MTICMSTRA
+BKICLOCL
+BKARINVLF`
+BKARINVLA
+BKARINVA
+BKARINVI
+BKSYMSTRL
+BKARINVA
+BKARINVA
+BKARINVA
+INVNUMA
+BKSYMSTRL
+The maximum freight amount cannot exceed 9999.99A
+F1 HelpA
+Esc ExitA
+BKARINVLF`
+BKICTAXA
+BKICTAXA
+A Sales Order line item contains an invalid inventory code.FP
+ was not found in the inventory file.A
+A Sales Order line item contains an invalid inventory code.FP
+ was not found in the inventory LOCATION file.A
+This sales order has been closed. Would you like to REOPEN it?L
+BKARINVI
+ This SO has been assigned invoice# A
+ This invoice has been printed but not yet posted.FP
+ In order to make changes to a SO which has a printedFP
+ but unposted invoice, please first use SO-F (Print Invoices)FP
+ to print the unposted invoice again, then answer 'No' whenFP
+ asked to mark the invoice as printed.  This will unmark it,FP
+ and you can then make changes to the SO.FP
+ This will prevent the making of accidental changes to theFP
+ order that would then not be reflected on the printed invoice.I
+BKARINVA
+BKARINVLI
+BKARINVLF`
+BKARINVLA
+BKARINVLI
+No invoicable lines were found for this Sales Order.I
+BKARINVFP
+No lines were found for this Sales Order.FP
+They must be entered before it can be released.I
+BKARINVFP
+This Sales Order was not found.  It mustFP
+be entered before it can be released.I
+BKARINVA
+BKARINVLA
+BKICMSTRA
+MTICMSTRA
+BKICLOCL
+BKICTAXA
+Is this Sales Order line Ready to Invoice?FP
+Y - This sales order line can be invoiced.FP
+N - This sales order line will be held.I
+BKICMSTRA
+MTICMSTRA
+BKICLOCFP
+BKSOLOTA
+BKSOSERA
+BKARINVLI
+BKARINVLF`
+BKARINVLA
+BKARINVLN
+BKARINVLF`
+BKICLOCF
+BKARINVLA
+BKARINVLA
+BKARINVLA
+BKARINVLA
+BKICMSTRI
+NSOE1A
+BKICMSTRA
+BKICLOCA
+BKICLOCI
+Warning: Qty will go negative for part A
+Warning: Not enough Qty onhand to ship part A
+ Back Ordering the rest.A
+MenuBkgA
+ Long Tracking NumberA
+MenuBkgA
+Shipping Tracking Number : A
+Shipping Company         : A
+Tracking # A
+Tracking #A
+MenuBkgA
+ Change Ship To Info A
+MenuBkgA
+Ship To Code : A
+Name         : A
+Address      : A
+             : A
+             : A
+City,State   : A
+Zip Code     : A
+Country      : A
+Attention    : A
+BKARINVA
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+BKARCUSTI
+) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this Sales Order. A
+Employee No. A
+ (one of the default salespersons as set in AR-A for customer A
+) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this Sales Order. A
+Employee No. A
+ (the default salesperson #2 as set in AR-A for customer A
+BKARCUSTF
+BKARINVI
+BKARINVL
+Turn Manual Qty OnA
+Turn Manual Qty OffA
+F1 Help,F8 A
+F10 Done,Esc ExitA
+BKICMSTRI
+BKICMSTRI
+NSOE2A
+BKICMSTRA
+BKICLOCI
+BKICLOCA
+BKICLOCF`-
+ SO No            Cust Code             Scanning:                           
+ Name                                                                       
+ Addr1                                                                      
+ Addr2                                                                      
+ Addr3                                                                      
+ Cty/St                           ,                                         
+ Zip                                    
+                  
+   Release Line      Lin  Est Ship 
+                  
+     Ship Via        
+                                   
+                  
+                     
+   Item No / Desc                  
+   Release?       
+ FOB                 
+                                   
+   Taxable?       
+ Shipper#            
+                                   
+                  
+ Ship Dt             
+                                   
+ SO Date          
+ Boxes               
+   Ship Qty       Backord Qty      
+ Last Invc        
+    Total Weight     
+                                   
+ Slsp             
+                     
+                                   
+ GL Dept          
+                     
+   Unit Price     UM   Disc%   Tax 
+ Loca             
+ Subtot              
+                                   
+ Terms            
+ Tax                 
+                                   
+                  
+ Freight             
+   Extension                       
+                  
+ Total               
+                                   
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+AR2001  A
+Due to recent changes in the AR module, it is necessary to run a conversion utility on your AR data prior to using this program.A
+These changes are being made in several stages, so it is possible that you may be asked to run this conversion more than one time, if another stage has been added since the last time you ran the AR conversion.A
+To convert your data, run program AR2001 from UT-A for each of your companies. A
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+INVNUMA
+issrinvL
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+bkarinvtI
+BKARINVTA
+BKARHINVA
+bkarhinvI
+BKARHINVA
+BKARINVA
+bkarinvI
+BKARINVA
+ISSRINVA
+issrinvI
+BKARINVA
+ISARAHINA
+ISARAINTA
+Show All Orders   FP
+Entered Orders    FP
+Released Orders   FP
+Printed not PostedI
+Open Sales Orders only?A
+BKARINVA
+ Sales Orders A
+F1 Help,F3 Change Search Key,F4 StatusA
+Esc ExitA
+Status: A
+BKARINVA
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Cust Cd   A
+SO#   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Customer Name                 A
+SO#   A
+Cust Cd   A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Cust PO#                 A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+BKARINVA
+Ship to CdA
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Ship to Name                  A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Total Amt   A
+Ord Description               A
+Job Number     A
+BKARINVA
+Job Number     A
+SO#   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Total Amt   A
+Ord Description               A
+BKARINVA
+BKARINVA
+BKARINVI
+BKARINVA
+Sales Order NoFP
+Customer CodeFP
+Customer NameFP
+Customer PO#FP
+Ship to CodeFP
+Ship to NameFP
+Job NumberI
+Open Sales Orders only?A
+BKARINVA
+Show All Orders   FP
+Entered Orders    FP
+Released Orders   FP
+Printed not PostedI
+Open Sales Orders only?A
+BKARCUSTA
+ Customers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARCUSTA
+BKARC   A
+Cust Cd   A
+Name                          A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKSOA-Y A
+BKARC   A
+Name                          A
+Cust Cd   A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Name                          A
+Cust Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Zip Code  A
+Cust Cd   A
+Name                          A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Contact Name                  A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKARCUSTA
+Telephone                A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKARCUSTA
+ClassA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKARCUSTA
+E-mail Address                          A
+Cust Code A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Alpha A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARCUSTA
+BKARCUSTI
+BKARCUSTA
+Customer Code FP
+Customer Name FP
+State         FP
+Zip Code      FP
+Contact Name  FP
+Telephone     FP
+Class         FP
+E-mail AddressFP
+Alpha SortI
+BKARCUSTA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+TAX SYSTEM:FP
+ This Program requires the new TAX system.FP
+ Please contact your system administrator to FP
+ run the required Conversion routine. I
+Multi Currency System:FP
+ This Program requires the Multi Currency systemFP
+ to be converted to the 2000.1 configuration. FP
+ Please contact your system administrator to FP
+ run the required MCSTART routine. I
+F10 PrintA
+Esc ExitA
+MenuBkgA
+ Sales Document PrintingA
+MenuBkgA
+Sales Order Number: A
+Print Labels?            A
+Print Packing Slips?     A
+Print Invoices?          A
+F10 PrintA
+F8 Save Settings,Esc ExitA
+F10 PrintA
+Esc ExitA
+BKSODA
+T6SODA
+BKSOCA
+T6SOCA
+BKSOFA
+T6SOFA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+MKAHISTA
+ISTECHSUPPORTA
+WHOAMI.DBAA
+WHOAMI.DBAA
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+This feature needs to be turned on in SD-Q before it will save your settingsA
+Save Personal settings, or System Global settings? A
+Yes = Personal Settings.A
+No  = System Global settings.A
+Settings Saved.A
+C:\ISTS\I
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+bkistek.bmpA
+fileloc.bA
+BKSYMSTRA
+NormalBkgA
+NormalBkgA
+Password  A
+        A
+This is not a valid password. A
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+NOLOC.TXTA
+Warning: BKICMSTR save aborted due to a blank being saved. BKICMSTR Prod=A
+ and MTICMSTR Prod=A
+Error:A
+..Warning: BKICMSTR save aborted due to a blank being saved. BKICMSTR Prod=A
+ and MTICMSTR Prod=A
+BKICMSTRA
+BKICMSTRA
+BKICMSTRL
+BKICMSTRA
+BKICMSTRI
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTRA
+BKICMSTR Record is locked by another user. This data may not be the most up to date.A
+BKICMSTRL
+NOLOC.TXTA
+..Warning:  Saving a blank   Prod=A
+   loc=A
+  bkic.prod.code=A
+NOLOC.TXTA
+..Warning: Binzero being saved   Prod=A
+   loc=A
+   bkic.prod.code=A
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCI
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+BKICLOCA
+ISNUMBERA
+The Record Code A
+ Was not found. Please try running T7NUMDEF.RWN to initialize the file.A
+The Name A
+ Was not found. Please try running T7NUMDEF.RWN to initialize the file.A
+WONUMA
+QCLABA
+PONUMA
+QCNUMA
+RFQNUMA
+SONUMA
+INVNUMA
+PSNUMA
+ESTNUMA
+RSONUMA
+QTNUMA
+SRNUMA
+SRPNUMA
+SRNUMA
+JOBNUMA
+APINUMA
+RAPNUMA
+CHK1NUMA
+CHK2NUMA
+CHK3NUMA
+CHK4NUMA
+CHK5NUMA
+CHK6NUMA
+CHK7NUMA
+CHK8NUMA
+CHK9NUMA
+APDEPNUMA
+TRANSNUMA
+DDNUMA
+GJNUMA
+GJTNUMA
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERI
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+YNNNYF
+NNNNNF
+YNNNNC
+YNNNYN
+YNNNNF0
+NNNYNF
+YNNNYF
+YNNNNC
+YNNNYF
+YNNNNC
+YNNNYF
+YNNNNC
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNCkk
+YNNNYC
+YNNNYF
+NNNYNU
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYXV
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+MAXL           
+RET.LOC        
+FILLED         
+HLD_REC        
+UBO_FLAG       
+HOLD_PEXT      
+HOLD_TAXAMT    
+NUM.LINES      
+OK             
+CNTR           
+CNTR1          
+LINE.PROD.RNUM 
+REC.NUM        
+HLD_PQTY       
+DIFF           
+DIFF1          
+HLD_UBO        
+TOT_UOH        
+TOT_UOSO       
+TOT_UBO        
+TOT_ORD        
+LOT_YN         
+SER_YN         
+FACTOR         
+FACTOR2        
+MAX_KIT        
+MAX_QTY        
+RE_DO          
+FORCE          
+STKERR         
+LAST_QTY       
+TBKIC.LOC.UOH  
+MCNTR2         
+MCNTR3         
+PPK            
+CFG.BUFF       
+REL.ALL        
+AUTO.BO        
+DSP.COMMENTS   
+AUTO.RCOMM     
+DSP.SHIPPED    
+CFG.END        
+SPECIAL        
+SPECIAL2       
+TEMP.SO        
+TEMP.INV       
+RETEN.PER      
+TEMP.DESC      
+THRU.DATE      
+LINE.RELEASE   
+LINE.PQTY      
+LINE.UBO       
+LINE.TXAMT     
+LINE.EXTRA     
+ARDESC.H       
+TRACKING.NUM   
+SHIP.CO        
+LINE.CNTR      
+TRACK.EXIST    
+TOT.WT         
+BOXES          
+MANUAL.ENT     
+SCAN.QTY       
+ISTS.EDATE     
+FIRST.LOOK     
+LAST.RTS       
+CHK.UOH        
+LOT.P          
+SER.P          
+ZRET           
+ISSRINV.H      
+ISIS.TAX       
+ISTXG.HNDL     
+ISTS.CFG.TRACK 
+PRSALE.H       
+OLD.RTS        
+BKAR.INV.SONUM 
+BKAR.CUSTCODE  
+BKAR.INV.CUSCOD
+BKAR.CREDIT.HLD
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+BKAR.INV.INVCD 
+BKAR.INV.RTS   m
+BKAR.INVL.INVNM
+BKAR.INVL.RTS  u
+BKAR.INVL.UBO  e
+BKAR.INVL.PQTY ;
+BKAR.INVL.PCODE
+MTIC.PROD.LOT  A
+BKAR.INVL.EXTRA
+MTIC.PROD.SER  B
+BKAR.INV.TAXAMT!
+BKAR.INV.SUBTOT
+ITEM           
+FOUND.ITEM     
+OK.ITEM        
+BKIC.PROD.CODE 
+BKIC.PROD.ISUPCA
+MTIC.PROD.SUBST$
+MTIC.PROD.CODE 
+MTIC.PROD.TYPE #
+BKAR.INVL.COOP 
+BKAR.INVL.PEXT S
+BKAR.INVL.PDISCK
+BKAR.INVL.PPRCEC
+BKAR.INVL.UM.LN
+BKIC.PROD.TYPE -
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKAR.INVL.LOC  v
+BKAR.INVL.TXBLEd
+BKYS.YN        
+BKAR.INV.TAXRTE;
+BKAR.INV.ITMZTX
+BKAR.INV.TOTAL )
+BKAR.INV.FRGHT n
+X              
+BKAR.INVL.SCCOG0
+BKAR.INV.SCCOGS}
+BKAR.INV.SHPVIA
+BKAR.INV.FOB   
+BKAR.INV.SHIPPR
+ISTS.CFG.PKINV 
+TEMP_INV_NUM   
+BKAR.INV.NUM   
+ARINV.REC      
+BKSY.AR.PEL    j
+BKSY.ARINV.NUM 
+BKAR.INV.SHIPDT
+BKAR.INV.BILCNT
+BKAR.INV.BILATN
+ISTS.CFG.FRTMAX
+BKAR.INV.TAXABL
+MCNTR          
+TAXFRT         
+FRGTPER        
+BKIC.TAX.KEY   
+BKAR.INV.TAXKEY
+BKIC.TAX.FRGHT t
+BKAR.INV.DEPAMT
+BKAR.INV.LINV#Pe
+BKAR.INVL.CNTR 
+BKAR.INV.NL    9
+BKSY.PRGS.WHR  
+BKIC.LOC.UOH   
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.PROD.EXTRA
+MTIC.PROD.OPT  
+SC             
+BK.DESC.LINE   
+BK.DESC.NOTES  
+BK.DESC.NUM    
+ORG.SHIP       
+O.REC          
+BKAR.INV.SHPCOD
+BKAR.INV.SHPNME)
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPCNT
+BKAR.INV.SHPATN
+BKAR.TAX.YN    
+BKAR.INV.ISTXKY
+BKAR.CUSTNAME  
+BKAR.ADD1      (
+BKAR.ADD2      F
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.CONTACT   
+BKAR.COUNTRY   
+BKAR.SHIPVIA   
+BKAR.SLSP.NUM  
+BKAR.INV.SLSP  
+BKAR.COMM      
+BKAR.INV.COMMPR
+BKPR.SLS.RATE  
+BKAR.INV.SLSP2 
+BKAR.INV.CUSNME=
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.INVL.ESD  
+BKAR.INVL.PDESC
+BKAR.INV.ORDDTE
+BKAR.INV.GLDPT a
+BKAR.INV.TERMD 
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           uo
+PTDN           {o
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.BMTYPR
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.GLBSDT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+CFG.BUFFER     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+CHKCWHICH      
+CHKCRETURN     
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+ARISYMSTR      
+ARIARINVT      
+ARIARHINV      
+ARIARINV       
+ARISRINV       
+ARITEMP        
+ARIRETURN      
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+CDIINVOICE     
+CDIARINVT      
+CDIARHINV      
+CDIARINV       
+CDISRINV       
+CDIRETURN      
+BKAR.INVT.NUM  
+CDIARCHIVE.H   
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+SOF2.COL       
+SOF2.ROW       
+SO.DEFSORT     
+SO.FILT        
+SO.STATUS      
+STATUS         
+SSRCH_KEY_NUM  
+SRCH_KEY_NUM   
+RETVL          
+WC             
+BC             
+SO_TTL2        
+SO_TTL1        
+SO_USCORE      
+BKAR.INV.CUSORD
+BKAR.INV.DESC  C
+BKAR.INV.JOBNUM
+CC             
+DATC           
+IS.TEMP.SO     
+TEMP_KEY       
+MENULIST       
+STEMP_KEY      
+LKUP.CUS.FROM  
+CUSTF2.COL     
+CUSTF2.ROW     
+CUST_TTL1      
+CUST_USCORE    
+BKAR.OUTINV    
+BKAR.OUT.CREDIT{
+BKAR.TELEPHONE >
+BKAR.CLASS     
+CUST_CODE      
+BKAR.CUST.YEAR Y
+BKAR.EMAIL     *
+BKAR.SORT      &
+IS.TEMP.CUST   
+TEMP_KEY       
+SRCH_HOW_MSG   
+V.OLINK        
+ISIS.HNDL      
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CURR
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+BKAR.IS.TAXGRP 
+ISIS.TXG.NAME  
+ISIS.TXG.TOTPER
+ISIS.TXG.TOFPERQ
+ISIS.TXG.FRGT  H
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+PRT.PS         
+PRT.INV        
+PRT.LBL        
+PRINT.SONUM    
+CLOSED.SO      
+PRGS.WHR       
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+CFG.LATEDAYS   
+EIMCO.SHIFT2   
+EIMCO.SHIFT3   
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+BK.DESC.DESC   _
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+CFG.NAME       
+CFG.SIZE       
+TEMP_HNDL      
+CFG.PATH       
+CFG.FULLNAME   
+ISTS.PATH      
+CFG.PROMPT     
+ISTS.PATH      
+X_HNDL         
+X.BUFF         
+TI             
+BPICT          
+TIME1          
+CO_PATH        
+LOC_HNDL       
+LOC_LOCATION   
+PSWD           
+XRVAL          
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+NCLR           
+BKICMSTR.H     
+REC.LCK.MSG    
+BKIC_JITPRG    
+BKIC_BUFF      
+BKIC_REC       
+ICLOCK         
+BKICLOC.H      
+BKICL_JITPRG   
+BKICL_BUFF     
+BKICL_REC      
+BKIC.LOC.GLWIP q
+BKIC.LOC.KEY   
+NNUMB          
+RECCODE        
+NNNAME         
+ISNUM.H        
+ARYNUM         
+IS.NUM.CODE    
+IS.NUM.NEXT    
+XNUMB          
+CHECK_OPEN_ONLY
+ASK_STRING     
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ISNUMBER.H     
+NUM_BUFF       
+NUM_REC        

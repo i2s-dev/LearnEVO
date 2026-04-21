@@ -1,0 +1,305 @@
+TAS32.
+TASCOLOR
+BKYSMSTR
+BKGLTRAN
+BKGLCOA 
+BKSYHELP
+DBAHLPID
+BKGLTRANA
+BKGLCOAA
+BKYSMSTRA
+BKYSMSTRA
+BKGLTMPA
+There has been an error opening the BKGLTMP file.  It may be damaged or missing.A
+Another user is Editing or Posting GL Batches.  Please try again later.A
+UT-K-C  Edit GL Detail FileA
+BKGLTRANA
+F1 Help,F2 LookupA
+Esc ExitA
+must have a G/L Account numberA
+F1 HelpA
+Esc ExitA
+BKGLTRANA
+BKGLTRANA
+It is potentially dangerous to change aF`
+dollar amount without correspondingF`
+adjustments to subsidiary files suchF`
+as invoice history, purchase historyF`
+and job costing.  If you are not sureF`
+what these effects might be and howF`
+to correct them, call DBA Support atF`
+800-434-0809 for assistance.F`
+Do you wish to continue? [Y/N]: I
+Do you want to save this Record [Y/N]? I
+BKGLTRANF`
+It is potentially dangerous to deleteF`
+a GL Record without correspondingF`
+adjustments to subsidiary files suchF`
+as invoice history, purchase historyF`
+and job costing.  If you are not sureF`
+what these effects might be and howF`
+to correct them, call DBA Support atF`
+800-434-0809 for assistance.F`
+Do you still want to delete thisF`
+record? [Y/N]: I
+BKGLTRANA
+BKGLTRANA
+F1 HelpA
+Esc ExitA
+ A - Account/DptF 
+ B - Date       A
+ Search Key I
+ Acct Code/Dpt
+ Number
+ D/C Amount
+ TypeA
+BKGLTRANA
+ Acct Code/Dpt
+ Number
+ D/C Amount
+ TypeA
+BKGLTRANA
+Search Date:A
+ Acct Code/Dpt
+ Number
+ D/C Amount
+ TypeA
+BKGLTRANA
+ Acct Code/Dpt
+ Number
+ D/C Amount
+ TypeA
+BKGLTRANA
+BKGLTRANI
+The GL Account entered is notF`
+valid.  Please enter it again.I
+The GL Posting Date entered isF`
+prior to GL Close Date.I
+ 1 - General Journal    01011F`
+ 2 - Cash Receipts      01022F`
+ 3 - Cash Disbursements 01033F`
+ 4 - Sales              01044F`
+ 5 - Purchases          01055F`
+ 6 - Payroll            01066F`
+ 7 - Other              01077F`
+ 8 - Work Orders        01088I
+Batch TypeF
+ D - Debit  0101DF`
+ C - Credit 0102CI
+                 
+                 
+ GL Account Code                           
+                 
+ GL Department                             
+                 
+ Post Date                                 
+                 
+ Code                                      
+                 
+ Number                                    
+                 
+ Description                               
+                 
+ Debit or Credit                           
+                 
+ Amount                                    
+                 
+ Batch Type                                
+                 
+ Entry Date                                
+                 
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+HOLD.AMT       
+POST.T         
+CNTR           
+MCNTR          
+NUM.MSG        
+OK             
+ENT.MASK       
+BKGLTMP_HNDL   
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.ACCT      
+BKGL.GLDPT     
+BKGL.TRN.DATE  
+BKYS.DATE      
+BKGL.TRN.AMT   @
+BKGL.TRN.CODE  
+BKGL.TRN.INVC  
+BKGL.TRN.DESC  &
+BKGL.TRN.DC    ?
+MESSAGE        
+MSG_PTR        
+BKGL.TRN.TYPE  H
+BKGL.TRN.ENTDTEJ
+MENULIST       
+SRCH_KEY_NUM   
+SC             
+MENU_TITLE     
+WC             
+BC             
+CC             
+SRCH.DATE      
+MC             
+AACCT          
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+EL_ARRAY_PTR   
+EL_NUM         
+EL_WDT         
+EL_CNTR        
+EL_CHR         
+EL_PWHR_HLDR   
+EL_MASK        
+EL_COL         
+EL_ROW         
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

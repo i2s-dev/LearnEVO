@@ -1,0 +1,280 @@
+TAS32"
+ISMCR   
+ISMCF   
+BKSYHELP
+DBAHLPID
+TASCOLOR
+ISMCFA
+ISMCRA
+IM-C  Enter Currency Exchange RatesA
+F1 Help,F2 LookupA
+Esc ExitA
+This Date was not found.  Would you like to create it?L
+F1 HelpA
+F10 Save,Esc ExitA
+F1 Help,F3 Clear,F4 DeleteA
+F10 Save,Esc ExitA
+You MUST enter a base currency code in IM-B First. A
+F1 Help,F2 LookupA
+Esc ExitA
+That is not a valid currency code in IM-B.A
+You cannot enter the Base Currency as a Source.A
+Save this data?L
+Delete this data?L
+You cannot delete pre-existing data. A
+Clear the screen?L
+BASE:F
+  The currency that all other currencies will be converted to.F
+  Should be set to your country's home currency.I
+SOURCE:F
+  The source currency that your customers or suppliers use.I
+RATE:F
+  The exchange rate from the Source currency to the Base currency.I
+                                                                            
+     Date                                                                   
+                                                                            
+                   Base                 Rate     1.000000                   
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                   Source               Rate                                
+                                                                            
+                                                                            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+ Multi-Currency Rates A
+F1 HelpA
+Esc ExitA
+Date    A
+SourceA
+Rate      A
+SourceA
+Rate      A
+ Multi-Currency Codes A
+F1 HelpA
+Esc ExitA
+Code    A
+Description             A
+SymbolA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+OLD.SRC        
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISIS.MCR.DATE  
+ISIS.MCR.BASE  
+ISIS.MCF.CODE  
+ISCT           
+ISIS.MCR.SOURCE
+ISIS.MCF.BASE  
+ISIS.MCR.RATE  %
+MESSAGE        
+MSG_PTR        
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+FC             
+WC             
+BC             
+SC             
+TAX_TTL1       
+TAX_USCORE     
+CC             
+DATC           
+TAX_TTL1       
+TAX_USCORE     
+ISIS.MCF.DESC  y
+ISIS.MCF.SYMBOLx
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+SRCH_HOW_MSG   
+BUTTON_LIST    
+BUTTON_CNTR    

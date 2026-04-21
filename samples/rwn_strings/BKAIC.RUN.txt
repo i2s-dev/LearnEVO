@@ -1,0 +1,690 @@
+TAS32U
+BKSYMSTR
+BKGLX   
+TASCOLOR
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+This report is not available for DOS. A
+BKGLXA
+BKGLXHI
+Active  L
+Subtotals onlyI
+All                           A
+Customer PaymentsF@
+No entry requiredI
+SalesF@
+Dr AR; Cr SalesI
+FreightF@
+Dr AR; Cr Freight IncomeI
+Sales TaxF@
+Dr AR; Cr Taxes PayableI
+Inventory ShipmentsF@
+Dr COGS; Cr InventoryI
+Inventory AdjustmentsF@
+Dr/Cr Inventory; Dr/Cr COGSI
+Purchase Receipts to Stock/QCF@
+Dr Inventory; Cr PORNII
+Work Order Receipts to StockF@
+Dr Inventory; Cr WIPI
+Stock Issues to WIPF@
+Dr WIP; Cr InventoryI
+Purchase Receipts to WIPF@
+Dr WIP; Cr PORNII
+Labor to WIPF@
+Dr WIP; Cr Absorbed WIP ExpI
+Fixed Overhead to WIPF@
+Dr WIP; Cr Absorbed WIP ExpI
+Variable Overhead to WIPF@
+Dr WIP; Cr Absorbed WIP ExpI
+Extra Costs to WIPF@
+Dr WIP; Cr Absorbed WIP ExpI
+Misc Costs to WIPF@
+Dr WIP; Cr Absorbed WIP ExpI
+Closed WO Costs VarianceF@
+Dr COGS; Cr Absorbed WIP ExpI
+Printer/ScreenA
+Posting DateA
+Posting Date RangeA
+AI-C  Period End Accounting WorksheetA
+The thru value cannot be less than the from value.A
+The date range is invalid. A
+Please select a report source. A
+Please select the level of detail. A
+Please select the transaction types to include. A
+Please select the output type. A
+Please select the type of date to use for sorting. A
+Please indicate whether printed/exported entries should be archived. A
+Please choose a different level of detail.  The "Detail and subtotals" option is not available when exporting to an ASCII file. A
+Please provide an export file name. A
+ already exists.  OK to overwrite it? A
+The export file A
+F1 HelpA
+Esc ExitA
+Posting Dates from A
+ thru A
+Entry Dates from A
+ thru A
+For ALL Posting DatesA
+For ALL Entry DatesF
+Active entriesA
+Archived entriesA
+Period End Accounting WorksheetA
+AI-C  Period End Accounting Worksheet  Progress: A
+AI-C  Period End Accounting Worksheet  Progress: A
+Trxn TypeA
+Entry DateA
+Post DateA
+DescriptionA
+Item No.A
+Unit QtyA
+Trxn AmountA
+WO PrefixA
+WO SuffixA
+PO No.A
+PO Invoice No.A
+SO Invoice No.A
+Trxn TypeA
+Total AmountA
+Processing is complete.  A
+ records were created in comma-delimited ASCII file A
+.  Field list as follows:A
+Trxn TypeA
+Entry DateA
+Post DateA
+DescriptionA
+Item No.A
+Unit QtyA
+Trxn AmountA
+WO PrefixA
+WO SuffixA
+PO No.A
+PO Invoice No.A
+SO Invoice No.A
+Processing is complete.  A
+ records were created in comma-delimited ASCII file A
+.  Field list as follows:A
+Trxn TypeA
+Total AmountA
+ transactions were printed or exported.  OK to archive these transactions now? A
+Unmarking transactions.... I
+AI-C  Period End Accounting Worksheet  Progress: A
+AI-C  Period End Accounting Worksheet  Progress: A
+Archiving transactions.... I
+AI-C  Period End Accounting Worksheet  Progress: A
+AI-C  Period End Accounting Worksheet  Progress: A
+Archiving is complete. A
+AI-C  Period End Accounting WorksheetA
+Someone else is currently using the Period End Accounting Worksheet.  Please try again later. A
+F1 HelpA
+F10 Print,Esc ExitA
+Please select a report source. A
+Esc ExitA
+ActiveFP
+ArchivedIP
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+ActiveI
+ArchivedA
+F1 HelpA
+F10 Print,Esc ExitA
+Please select a detail level. A
+Esc ExitA
+Detail onlyFP
+Detail and subtotalsFP
+Subtotals onlyIP
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+Detail onlyI
+Detail and subtotalsI
+Subtotals onlyA
+F1 HelpA
+F10 Print,Esc ExitA
+Please select a transaction type. A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+F1 HelpA
+F10 Print,Esc ExitA
+Please select an output type. A
+Esc ExitA
+Printer/ScreenFP
+ASCII Export FileIP
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+Printer/ScreenI
+ASCII Export FileA
+F1 HelpA
+F10 Print,Esc ExitA
+Please select a date type. A
+Posting Date RangeI
+Entry Date RangeL
+Esc ExitA
+Posting DateFP
+Entry DateIP
+NormalBkgA
+NormalBkgA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+Posting Date RangeI
+Entry Date RangeI
+MenuBkgA
+Posting DateI
+Entry DateI
+ REPORT SOURCE                    
+                                       
+                                  
+                                       
+                                  
+                                       
+ LEVEL OF DETAIL                  
+                                       
+                                  
+ The date ranges of the data are:      
+                                  
+ Posting Dates:         -              
+ TRANSACTION TYPES                
+ Entry Dates  :         -              
+                                  
+                                       
+                                  
+   Archive the printed/exported        
+ OUTPUT TO                        
+   entries?  (You will be able to      
+                                  
+   change your decision about          
+                                  
+   archiving once the print/export     
+ SORT BY                          
+   is complete)                        
+                                  
+                                       
+                                  
+ Export File Name                      
+                                  
+         .TXT                          
+                                                                                                                        Page:
+                                             Trxn Types:                                  Report Source:
+Transaction Type                Suggested GL Entry                 Total Amount  #Trxns
+------------------------------  ------------------------------  ---------------  ------
+Entry Dt  Post Dt Description                    Item No.             Unit Qty          Amount Work Order    PO# PO Invc#   SOInvc#
+-------- -------- ------------------------------ --------------- ------------- --------------- ---------- ------ ---------- -------
+                                                                                                     -
+                                                                               ---------------
+           Total                                                                                  #Trxns:
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+NNNYNQ
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYXu
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYCw
+NNNYN/'
+NNNYNXn
+NNNYNY'
+NNNYNX-
+YNNNYC\
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+FROM.DATE      
+THRU.DATE      
+ZRET           
+ICOL           
+IROW           
+WHICH          
+PAGE           
+RPT.DATE       
+RPT.TIME       
+CUR.DATE       
+SUB.CNTR       
+DATE.RANGE     
+RPT.TITLE      
+SUBTOT.TEXT    
+DETAIL.LEV     
+RPT.DONE       
+RPT.TYPE       
+DETLEV.TEXT    
+TEMP.CNTR      
+OLD.BKGCOLOR   
+MENUCOL        
+MENUROW        
+COLH1          
+COLH2          
+COLH3          
+GROUPH         
+GROUPD         
+GROUPUS        
+GROUPST        
+RPTTOT         
+TEMP.DATE      
+ACTIVERECS     
+BKGLXHNDL      
+BKGLXHHNDL     
+GLXHNDL        
+SOURCE.RANGE   
+TYPE.RANGE     
+RPT.SOURCE     
+SOURCE.TEXT    
+MCNTR          
+I              
+J              
+K              
+NUMTYPES       
+TYPECODE       
+TYPEDESC       
+TYPESUGG       
+TYPE.FILT      
+TYPE.TEXT      
+OUTTYPE.TEXT   
+OUTPUT.TYPE    
+EXPORTFILE     
+EXPFILENAME    
+DOARCHIVE      
+FROM.TYPE      
+THRU.TYPE      
+TOT_DET_RECORDS
+TOT_SUM_RECORDS
+PRTTYPEDESC    
+PRTTYPESUGG    
+PRTTOTAMT      
+PRTNUMTRXNS    
+PRTTOTDESC     
+RPTARR         
+DMSG           
+TOTARCH        
+DATECAPTION    
+DATE.TYPE      
+DATETYPE.TEXT  
+FIRSTENTRYDATE 
+LASTENTRYDATE  
+FIRSTPOSTDATE  
+LASTPOSTDATE   
+RECDATE        
+BKSY.COMP.NAME X
+BKGLX.POSTDATE 
+BKGLX.ENTDATE  
+BKGLX.TRXNTYPE +
+BKGLX.AMOUNT   #
+BKGLX.DESC     R
+BKGLX.PART     
+BKGLX.QUANTITY 
+BKGLX.WOPRE    .
+BKGLX.WOSUF    6
+BKGLX.PONUM    8
+BKGLX.POINVC   H
+BKGLX.SOINVC   @
+BKGLX.COMPANY  
+BKGLX.ARCHDATE 
+MESSAGE        
+CC             
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+BKYSMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+BUTTON_LIST    
+BUTTON_CNTR    
+MSG_PTR        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+PSTR           

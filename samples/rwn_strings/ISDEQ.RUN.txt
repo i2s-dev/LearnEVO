@@ -1,0 +1,459 @@
+TAS32&
+BKSYMSTR
+BKARINVT
+BKARCUST
+BKART   
+BKARTNOT
+BKARINV 
+ISTERMS 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYAR  
+ - ISTS Enhancement 09/18/15A
+ISTECHL
+BKARINVTA
+BKARINVTA
+This Utility for importing Open Receivables for a NEW company. There is DATA in your Open AR files. Do you still want to proceed?L
+BKARCUSTA
+BKSYMSTRA
+BKSYMSTRA
+ISTERMSA
+DE-Q  Import Open ReceivablesA
+BKDEQ.IMPA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+F10 Process,Esc ExitA
+BKDEQ.IMPA
+Now Working on Invoice #: A
+BKARINVTI
+Now Working on Invoice #: A
+BKARINVTI
+Have all the Open Receivables been Imported? If so, Are you ready to do the Final conversion?L
+BKARINVTA
+BKARINVTA
+BKSYARA
+BKARTA
+BKARTNOTA
+BKARDPSTA
+BKARDEPA
+BKARHINVA
+ERROR!  There was a problem assigning the next system AR transaction number.  Unable to continue processing. A
+Disc AllowedI
+Disc Allow Inv# A
+Open bal as of AR conversionI
+Imported DataI
+CompleteI
+                             * = Basic Fields
+              Name of file to import (MUST include path)           
+                                                                   
+                                                                   
+          Skip or Replace existing Invoice Num?  [S,R]             
+          Comma Delimited or Fixed Length? [C,F]                   
+                                                                   
+ Comma-delimited: Column 1 is the field number in the import file. 
+ Fixed length   : Column 1 is start position in import file.       
+                  Column 2 is the Fixed length (# of characters).  
+                                                                   
+                      *         Invoice Number                     
+                      *         Customer                           
+                      *         Date  (YYYYMMDD)                   
+                      *         Amount                             
+                                Description                        
+                      *         Terms Number                       
+                                Exchange Rate                      
+                                Currency Code                      
+                                                                   
+                                                                   
+                          Final Stage
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tas50.ovlA
+tas50.ovlIS
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+bksyarI
+BKSYARI
+BKSYARI
+bkarinvtI
+BKARINVTA
+BKSYARI
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+ISTS.EDATE     
+FILE.NAME      
+REPLACE        
+COMMA.FIXED    
+FIELD.NUMBER   
+FIELD.NUMBER2  
+CRLF           
+YYYY           
+MM             
+DD             
+TEMP.DATE      
+PART.NUM       
+TEMP.FIELD     
+TEMP.FIELD2    
+CUST.REC1      
+CNTR           
+CNTR2          
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+TOTRECS        
+TERMS.H        
+IMP_HNDL       
+S4PROGRESS     
+BKAR.INVT.NUM  
+BKAR.INVT.CODE 
+BKAR.CUSTCODE  
+BKAR.INVT.DATE 
+BKAR.INVT.AMT  
+BKAR.INVT.TYPE A
+BKAR.INVT.AMTRM
+BKAR.INVT.DESC &
+BKAR.INVT.TERMN?
+BKAR.INVT.MCRAT
+BKAR.INVT.MCCOD
+INVTHNDL       
+OLDDEPHNDL     
+NEWDEPHNDL     
+BKSYARHNDL     
+BKARTNOTHNDL   
+BKARTHNDL      
+CURCNTR        
+PCTCOMP        
+RECCHANGED     
+ZRET           
+S4DONE         
+S4RUN          
+TODAY          
+NEWTRXNNO      
+HINV.H         
+BKAR.INVT.TRXN 
+BKART.CUST     
+BKART.TRXN     
+BKART.TYPE     
+BKART.AMOUNT   
+BKART.POSTDATE #
+BKART.CNTR     '
+BKART.ENTDATE  )
+BKART.NOTE     E
+BKART.NOT.TRXN 
+BKART.NOT.CNTR 
+BKART.NOT.DESC 
+BKAR.INVT.OPEND
+BKAR.INVT.CLOSD
+BKAR.INV.NUM   
+BKAR.INV.INVCD 
+BKAR.INV.CUSCOD
+BKAR.INV.INVDTE
+BKAR.INV.TOTAL )
+BKAR.INV.ISCUR 
+BKAR.INV.TERMNM
+BKAR.INV.SHIPDT
+BKAR.INV.CUSNME=
+BKAR.CUSTNAME  
+BKAR.INV.CUSORD
+IS.TERMS.NAME  
+IS.TERMS.TYP   P
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+DATE_TYPE      
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+ZA_TEXT        
+ZA_DFLT        
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ARTSYAR        
+ARTARINVT      
+ARTRETURN      
+ARTDUPECHECK   
+ARTNODUPECHK   
+BKSY.AR.TRXN   
+MSG_PTR        
+MESSAGE        
+FC             
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           

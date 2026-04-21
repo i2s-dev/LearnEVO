@@ -1,0 +1,354 @@
+TAS32M
+WORKORD 
+WOBOM   
+BKICMSTR
+BKSBPART
+MTICMSTR
+BKICLOC 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKICLOCA
+MTICMSTRA
+BKICMSTRA
+BKSBPARTA
+WOBOMA
+WORKORDA
+LW-I-D  Swap Substitute PartsA
+AW-K-E  Swap Substitute PartsA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+WOBOMA
+F1 Help,F2 LookupA
+Esc ExitA
+BKSBPARTA
+BKSBPARTA
+BKSBPARTA
+This item is not an approved substituteF
+part.  Do you wish to continue? [Y/N]: I
+F1 HelpA
+Esc ExitA
+The quantity entered is greater than the quantity remainingF
+to be issued.  Do you wish to reenter the quantity? [Y/N]: I
+Press any key to continueA
+Work OrdersA
+WORKORDF
+WORKORDI
+WORKORDI
+WORKORDA
+WORKORDF0
+There are no such records in the A
+ file.A
+WORKORDA
+WORKORDF
+Components
+WOBOMF
+WOBOMI
+WOBOMI
+WOBOMA
+WOBOMF0
+There are no such records in the A
+ file.A
+WOBOMA
+WOBOMF
+Subtitutes
+BKSBPARTA
+BKSBPARTA
+BKSBPARTA
+BKSBPARTF
+BKSBPARTI
+BKSBPARTI
+BKSBPARTA
+BKSBPARTF0
+There are no such records in the A
+ file.A
+BKSBPARTA
+BKSBPARTF
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+MTICMSTRA
+BKICLOCA
+MTICMSTRA
+BKICLOCA
+WOBOMA
+MTICMSTRA
+BKICLOCA
+MTICMSTRA
+BKICLOCA
+WOBOMN
+WOBOMA
+WOBOMN
+WOBOMF`
+         
+         
+         Work Order Number:       -                        
+         
+                                                           
+         
+        Standard Component:                                
+         
+                                                           
+         
+                                                           
+         
+                                                           
+         
+           Substitute Part:                                
+         
+                                                           
+         
+                                                           
+         
+                                                           
+         
+ Replace Entire Qty? [Y/N]:                                
+         
+                                                           
+         
+       Quantity to Replace:                                
+         
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+WOPRE          
+WOSUF          
+TEMP.PART      
+TEMP.SUB       
+TEMP.DESC      
+REPLACE.ALL    
+REPLACE.QTY    
+TEMP.QTY       
+HLD.CUST       
+HLD.PARENT     
+LW_WO2         
+LW_WO          
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWO.WIP.STATUS-
+WOBOM.WOPRE    
+WOBOM.WOSUF    
+WOBOM.COMPCODE 
+WOBOM.TOTQTY   |
+WOBOM.QTYISSUED
+BKIC.PROD.DESC 
+BKIC.PROD.NOTE 
+BKSB.PART.PARNT
+MTWO.WIP.CODE  
+BKSB.PART.PROD 
+BKSB.PART.CUST 
+MTWO.CUSTCODE  
+BKSB.PART.SUBST(
+MESSAGE        
+NUM.MSG        
+OK             
+ENT.MASK       
+LNE.LNGTH      
+LNE.LN2        
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+MTWO.WIP.DESC  
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+WOBOM.ASSY     
+WOBOM.LINE#    
+WOBOM.COMPDESC N
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+MTIC.PROD.TYPE #
+MTIC.PROD.UOA  
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+MTWO.WIP.LOC   
+BKIC.LOC.UALLOC
+MTIC.PROD.DESC 
+WOBOM.QTYPER   l
+WOBOM.SCRAPQTY t
+WOBOM.ASSYQTY  
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+FC             

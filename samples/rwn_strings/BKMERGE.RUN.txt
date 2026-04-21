@@ -1,0 +1,286 @@
+FILELOC 
+FILEDICT
+TASCOLOR
+Sorry this program WILL NOT work in Windows
+Please run from DOS  A
+WarningA
+ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789_L
+bksymstrA
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+FILEDESA
+filelocA
+FILEDICTA
+FILEDICTA
+FILEDICTA
+FILEDICT.XFRA
+FILEKEY A
+FILEKEYA
+FILEKEYA
+FILEKEY.XFRA
+FILELOC A
+FILELOCA
+FILELOCA
+FILELOC.XFRA
+fileloc.xfrA
+No Transfer File to processesI
+Restructure DatabaseA
+Enter the FD name to copy to the XFR file: A
+***** This routine if not completely successful can delete the data file being restructured.  It could also leave some files complete and others not.  To protect against this YOU MUST MAKE A BACKUP OF ALL AFFECTED FILES AND THE DATA DICTIONARY (FILE*.B) BEFORE CONTINUING.  ***** A
+ARE YOU SURE YOU WANT TO CONTINUE? NA
+Scanning Company FilesA
+Scanning Company FilesI
+BKSYMSTRA
+BKSYMSTRF
+The Program will stop when it finds it safeI
+Working on FD: A
+Update OffsetsA
+Delete Old FD A
+Save New FD   A
+Restructure   A
+Initialize    A
+CasinitA
+InitializeA
+ARE YOU SURE YOU WANT TO INITIALIZE THE XFR FILES? NL
+FILEDICTA
+FILEDICTA
+casinitA
+FILEKEY A
+FILEKEYA
+casinitA
+FILELOC A
+FILELOCA
+casinitA
+FILEKEYA
+FILEDICTA
+FILELOCA
+ FD to Restructure: A
+There isn't enough room on the disk to Restructure the file.  You need to either delete something from your disk or move the file to another location.I
+There isn't enough internal RAM memory to complete this Restructure.  You need to make more memory available by removing TSRs or adding memory to your computer.A
+casinitA
+Internal Err - Mismatching FDsA
+$$$$TEMP.RSTA
+$$$$TEMP.RSTN
+Internal Err - Mismatching FDsA
+ Number of files remaining: A
+ Working on File: A
+ Number of records remaining out: A
+casinitA
+An error has occured while creating the new file.  The Restructure routine will stop now.  RESTORE ALL APPLICABLE FILES AND THE DATA DICTIONARY (FILE*.B).  Fix the problem and try again.A
+ Number of records remaining in:  A
+Internal Err - Mismatching FDsA
+$$$$TEMP.RSTA
+FILEKEYI
+FILEDICTI
+FILELOCA
+ File Desc A
+Press any key to continueA
+ DBA HELP                          For Phone Support call 800-434-0809        
+   ON-LINE HELP: Documentation on this and all DBA programs is provided on    
+   line (Windows only) where it can be viewed or printed out.  Click on       
+   "Help" at the top of the Windows main menu and you will be presented       
+   with a Contents window.  Three clicks of the mouse will get you to most    
+   programs.  You can alternately click on the program screen and the help    
+   window to bring one in front of the other for reading and viewing the      
+   program.                                                                   
+   FUNCTION KEYS: Each standard screen button has an equivalent function      
+   key as an alternative to using the mouse -- these are listed across the    
+   bottom of the Windows main menu for reference.                             
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without Saving      CTRL+D = Delete Character            
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+FILE_DEF       
+FD_ARRAY       
+CC_ARRAY       
+FLD_NAME       
+FLD_TYPE       
+FLD_SIZE       
+FLD_DEC        
+FLD_ARRAY      
+FLD_UPCASE     
+OLD_FLD_TYPE   
+OLD_FLD_SIZE   
+OLD_FLD_ARRAY  
+OLD_FLD_OFFSET 
+FLD_OFFSET     
+RESTRUCT_FLD   
+SIZE_HLDR      
+SIZE_HLDR1     
+INT_SIZE       
+KCNTR          
+NUM_RECS_REMAIN
+NUM_RECS_HLDR  
+FILE.CHRS      
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+TEMP_HLDR      
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DES_FNAME      
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+KEYXFR_HNDL    
+DICTXFR_HNDL   
+EXTRA_HNDL     
+EXTRA_HNDL2    
+LOCXFR_HNDL    
+XFR_LOCATION   
+NEW            
+FILES_OPEN     
+CREATE_FILE    
+PRGS.WHR       
+BKSYMSTR_HNDL  
+MESSAGE        
+LOC_BUFF_NAME  
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+LOC_REC_TYPE   
+MSG_PTR        
+CNTR           
+DICT_BUFF_NAME 
+UPDATE_FD_CNTR 
+CC_CNTR        
+FD_EXISTS      
+DICT_OFFSET    
+DICT_TYPE      
+LOC_LOCATION   
+TEMP_LOC_NAME  
+TEMP_BUFF_NAME 
+STOP           
+FD_CNTR        
+ELE_LOC        
+DICT_FIELD_NAME
+DICT_SIZE      
+DICT_ARRAY_ELE 
+FLCODE         
+A_CNTR         
+A_CNTR2        
+A_CNTR3        
+A_CNTR4        
+A_CNTR5        
+RSTR_FILES     
+WC             
+BC             
+CNTR2          
+DICT_HOFFSET   u
+DICT_HTYPE     w
+DICT_HSIZE     x
+DICT_HDEC      z
+DICT_DEC       
+DICT_HARRAY    |
+DES_HNDL       
+SC             
+IS_TYP         
+IS_SZE         
+PROG.HELP.NAME 
+CRNT.FIELD     
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+BUTTON_LIST    
+BUTTON_CNTR    
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

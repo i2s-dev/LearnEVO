@@ -1,0 +1,531 @@
+TAS32G
+TASCOLOR
+FILELOC 
+FILEDICT
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+BKSYMSTR
+ - ISTS Enhancement 01/01/03A
+NZFINDL
+FILEDICTA
+filelocA
+NovaZyg Search UtilityA
+F1 Help,F2 Display Pre Saved FiltersA
+Esc ExitA
+Create a new Set of filters?L
+Please select the name of the Pre-Saved Filters you wish to use.A
+*.PSFA
+ Forms List A
+F1 HelpA
+Esc ExitA
+Pre-Saved FiltersA
+F1 Help,F2 Display Files,F5 Configure FileA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+You cannot leave the file name blank!A
+That is not a valid FILE NAME!A
+ All    01011F
+ <>     01022F
+ >      01033F
+ <      01044F
+ >=     01055F
+ <=     01066F
+ =      01077F
+ $      01088N
+OperatorsffI
+Only works for Alpha type fieldsA
+Make this search Case Sensitive?L
+And Logic to narrow down the search. Or logic to broaden the search?L
+...Searching...I
+Total number of hits = A
+F1 HelpA
+F10 Print,Esc ExitA
+No Record Was Found During a Opening a variable fileI
+first find record was not found I
+DBA FilesA
+FILEDEFA
+INDEXDEFA
+FILEDDEFA
+MEATTRIBA
+FIELDA
+MEMORYA
+MONTHENDA
+TRANSLTEA
+No Search fields were found.A
+F1 HelpA
+Esc ExitA
+Field Name         List Order     Sort By     Search FieldA
+Home Top,End Bottom,F3 Tag List Order,F4 Tag Sort,F5 Tag SearchA
+F10 Done,Esc ExitA
+            F
+            FP
+You may only sort on fields that are in the List.A
+The maximum of 50,000 lines has been loaded. A
+There were no matches for your chosen criteria. A
+ ...Sorting... I
+ Pre-Saved Report:                                                            
+ Enter file name :                                                            
+                                                                          And 
+ Search Field        Oper  Case   Value                                   /Or 
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+                                       NovaZyg Generic Search
+File :
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+NORM           
+ISTS.EDATE     
+HITS           
+FLNAME         
+FLTYPE         
+FLSIZE         
+FLDEC          
+FLUP           
+FLOFF          
+FLELM          
+FLORDER        
+FLSEARCH       
+FLSORT         
+ORD            
+SRT            
+TNUM           
+REC.ARRAY      
+SORT.ARRAY     
+ARR.CNTR       
+SORT_STR       
+FLTNAME        
+FLCASE         
+FLAO           
+OPER           
+TYPE           
+FELEMENT       
+CLOOP          
+CVAL           
+DLOOP          
+OTYPE          
+STCNT          
+X              
+Y              
+TOTSIZ         
+TOTSIZ2        
+FIND_FIELD1    
+ACT_FILT1      
+FIND_FIELD2    
+ACT_FILT2      
+FIND_FIELD3    
+ACT_FILT3      
+FIND_FIELD4    
+ACT_FILT4      
+FIND_FIELD5    
+ACT_FILT5      
+FIND_FIELD6    
+ACT_FILT6      
+STR_OUT        
+ACT_FILT7      
+ACT_FILT8      
+SKIP           
+CREATE         
+ARRAY_OFFSET   
+PRT_WHR        
+FILENAME       
+PSFNAME        
+FILENM         
+CASE           
+HOLD_REC       
+NUM            
+TCNTR          
+NEXT.REC       
+HAVE.NEXT      
+DONE           
+IN_FILE        
+R_LINE         
+FILE_NAME      
+DICT_HNDL      
+LOC_HNDL       
+CNTR           
+DFILE.HLDR     
+DFILE.NAME     
+ZRET           
+CNTR2          
+CNTR3          
+WC             
+BC             
+SC             
+X_TTL1         
+X_USCORE       
+LOC_COMP_CODE  
+LOC_FILE_NAME  
+MESSAGE        
+OK             
+TIT_OUT        
+NUM.MSG        
+MSG_PTR        
+LL_TITLE       
+LL_TITLE1      
+LL_CNTR        
+LOC_DESCRIPTION>
+CC             
+DATC           
+FILTER_CODE    
+RETVAL         
+LOC_BUFF_NAME  
+DICT_BUFF_NAME 
+DICT_TYPE      
+DICT_ARRAY_ELE 
+DICT_FIELD_NAME
+DICT_SIZE      
+DICT_DEC       
+DICT_UPCASE     
+DICT_OFFSET    
+MCNTR          
+PAGE           
+RTVAL          
+LVAL           
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           

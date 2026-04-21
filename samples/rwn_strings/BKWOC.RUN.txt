@@ -1,0 +1,2165 @@
+BKSYMSTR
+BKYSMSTR
+ISBUILD 
+WORKORD 
+MTICMSTR
+WOROUT  
+WODATE  
+ROUTING 
+BKRTSPEC
+WOBOM   
+BKBMMSTR
+BKBMNOTE
+BKBMREMK
+ISBINLOC
+BKARINV 
+BKICMSTR
+SERIAL  
+ISSRMMS 
+BKAPDESC
+BKARCUST
+WOBOMREM
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+MKAHIST 
+ISLOG   
+BKAPVEND
+BKCMACCT
+FILELOC 
+BKICLOC 
+ISICMSTR
+ - ISTS Enhancement 02/27/19A
+ISTECHL
+89939BBA
+NOVAZYGA
+BKSYMSTRA
+BKSYMSTRA
+SERIALA
+BKYSMSTRA
+BKBMMSTRA
+ROUTINGA
+BKRTSPECA
+MTICMSTRA
+WODATEA
+BKBMNOTEA
+BKBMREMKA
+BKARINVA
+WOBOMREMA
+WOBOMA
+WOROUTA
+BKICMSTRA
+BKARCUSTA
+ISBUILDA
+issrmmsA
+iswodescA
+isicmstrA
+WORKORDA
+BKYSMSTRA
+BKWOCA
+  Print TravelersA
+  Print TravelersA
+F1 Help,F10 PrintA
+Esc ExitA
+BKWOCAA
+filter > nulA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+Esc ExitA
+F1 Help,F10 PrintA
+Esc ExitA
+The thru value cannot be less than the from value.A
+RFSCXIA
+The thru value cannot be less than the from value.A
+This must be Y or NA
+F1 Help,F10 PrintA
+F8 Save Settings,Esc ExitA
+F1 Help,F10 PrintA
+Esc ExitA
+ Y - Bill To Customer Notes F
+ S - Ship To Customer Notes F
+ B - Both                   F
+ N - None                   I
+F1 HelpA
+Esc ExitA
+mtwo_wip_wopreA
+mtwo_wip_wosufA
+todays_dateA
+mtwo_wip_codeA
+mtwo_custcodeA
+mtwo_wip_descA
+mtwo_custnameA
+mtwo_wip_projA
+mtwo_wip_cusordA
+mtic_prod_drawA
+mtic_prod_revA
+mtwo_wip_sonumA
+mtwo_wip_ddateA
+mtwo_wip_sstartA
+mtwo_wip_sfinA
+mtwo_wip_contatA
+mtwo_wip_sqtyA
+mtwo_wip_prtyA
+mtwo_wip_chgordA
+temp_bothA
+multi_titleA
+regBARA
+descIIA
+mtwo_wip_locA
+calc_wtA
+mtwo_wip_statusA
+MTIC_PROD_ACTIVA
+regSumm1A
+summ_line[1]A
+summ_item[1]A
+summ_desc[1]A
+regSumm2A
+summ_line[2]A
+summ_item[2]A
+summ_desc[2]A
+regSumm3A
+summ_line[3]A
+summ_item[3]A
+summ_desc[3]A
+regSumm4A
+summ_line[4]A
+summ_item[4]A
+summ_desc[4]A
+regSumm5A
+summ_line[5]A
+summ_item[5]A
+summ_desc[5]A
+regSumm6A
+summ_line[6]A
+summ_item[6]A
+summ_desc[6]A
+regSumm7A
+summ_line[7]A
+summ_item[7]A
+summ_desc[7]A
+regSumm8A
+summ_line[8]A
+summ_item[8]A
+summ_desc[8]A
+regSumm9A
+summ_line[9]A
+summ_item[9]A
+summ_desc[9]A
+regSumm10A
+summ_line[10]A
+summ_item[10]A
+summ_desc[10]A
+regSumm11A
+summ_line[11]A
+summ_item[11]A
+summ_desc[11]A
+spec_leftA
+spec_rightA
+instructionsA
+wodate_startA
+wodate_finishA
+wodate_qtyA
+mtwo_wip_wopreA
+mtwo_wip_wosufA
+mtwo_wip_codeA
+mtwo_wip_sstartA
+mtwo_wip_sfinA
+mtwo_wip_sqtyA
+mtwo_wip_comqtyA
+mtworo_wcA
+mtworo_operA
+mtworo_op_tempA
+prt_op_descA
+temp_sufA
+mtworo_vendA
+mtworo_vendnameA
+mtworo_leadA
+regInspectionsA
+regInspections2A
+regTypePA
+regBAR3A
+regVendA
+mtworo_longtimeA
+mtworo_esthrsA
+mtworo_std_timeA
+instructionA
+wobom_compcodeA
+wobom_compdescA
+wobom_totqtyA
+mtic_prod_locA
+wobom_lineA
+wobom_binlocA
+binlocA
+wobom_compcodeA
+wobom_umA
+tot_qtyA
+wobom_referenceA
+remarkA
+bom_remark_hdrA
+regBomBodyA
+regBomRemarkA
+regBomHdrA
+wobom_lineA
+wobom_binlocA
+tot_qty2A
+binlocA
+MTIC_PROD_REVA
+MTIC_PROD_CLASSA
+regBinLocsA
+prt_bin_textA
+print_bin[1]A
+print_bin[2]A
+print_bin[3]A
+print_bin[4]A
+print_bin[5]A
+print_bin[6]A
+print_bin[7]A
+print_bin[8]A
+MTIC_PROD_SPECS[1]A
+BKIC_PROD_NOTEA
+regDesc2A
+MTIC_PROD_SPECS[2]A
+MTIC_PROD_SPECS[3]A
+MTIC_PROD_SPECS[4]A
+MTIC_PROD_SPECS[5]A
+MTIC_PROD_SPECS[6]A
+MTIC_PROD_SPECS[7]A
+MTIC_PROD_SPECS[8]A
+MTIC_PROD_SPECS[9]A
+MTIC_PROD_SPECS[10]A
+MTIC_PROD_SPECS[11]A
+MTIC_PROD_SPECS[12]A
+regSpec1A
+regSpec2A
+regSpec3A
+regSpec4A
+regSpec5A
+regSpec6A
+regSpec7A
+regSpec8A
+regSpec9A
+regSpec10A
+regSpec11A
+regSpec12A
+QUANTITY_PERA
+mtworo_wcA
+mtworo_operA
+mtworo_op_tempA
+prt_op_descA
+mtworo_esethrsA
+mtworo_partshrA
+mtworo_timepartA
+mtworo_machnoA
+mtworo_toolA
+temp_sufA
+regMACHA
+regBAR2A
+mtwo_wip_wopreA
+mtwo_wip_wosufA
+mtworo_longtimeA
+mtworo_esthrsA
+mtworo_std_timeA
+BKWOC3OC.RTMA
+bkwoc1.rtmA
+bkwoc3.rtmA
+bkwoc2.rtmA
+bkwoc4.rtmA
+Do you want to make A
+ the default Graphical Form name for Print Travelers?A
+Warning: WO# A
+ has already been printed, and may be on the shop floor. Are you sure you want to Reprint it?A
+WORKORDA
+NZWOCSA
+WOROUTI
+WOROUTA
+WOROUTI
+WOROUTI
+WODATEI
+WODATEA
+WODATEI
+WODATEA
+WORKORDI
+WORKORDA
+WORKORDA
+WORKORDA
+regRoutingA
+ROUTINGA
+WOROUTA
+WOROUTA
+WOROUTI
+BKRTSPECA
+BKRTSPECL
+WOBOMA
+BKRTSPECI
+BKRTSPECL
+WOROUTA
+WOROUTL
+WOROUTA
+WOBOMA
+WOBOMA
+regBOMA
+regBOM2I,
+WOBOMA
+WOBOMA
+WOBOMA
+WOBOMA
+WOBOMA
+WOBOMA
+PHANTOM ASSY: A
+PHANTOM ASSY: A
+WOBOMA
+WOBOMA
+WOBOMA
+WOBOMA
+OPTIONS SELECTED:I
+OPTIONS SELECTED:A
+WOBOMA
+WOBOMA
+WOBOMA
+WOBOMA
+PHANTOM ASSY: A
+PHANTOM ASSY: A
+WOBOMA
+WOBOMA
+WORKORDA
+WORKORDI
+Default Bin:A
+Bins:A
+BKWOCA
+>>>>>  Report was terminated before completion  <<<<<A
+NZBOMA
+BKWODA
+resetA
+cmd -u > nulA
+RT#: A
+WORKORDI
+WOBOMA
+NZWOCSA
+Serial NumbersI
+SERIALA
+Make: A
+Model: A
+Serial: A
+BKARINVI
+There are no records in the primary fileI
+A matching record was not found during a related findI
+WORKORDA
+WORKORDI
+WOBOMREMA
+regsumm4I
+MTIC_PROD_SPECS[2]I
+WOROUTA
+WOROUTA
+WOROUTA
+WOBOMA
+WOBOMA
+SERIALA
+SERIALI
+Generating Serial Number A
+SERIALA
+  Print TravelersA
+Work Ord:      -                 SHOP TRAVELER                     Page:
+Item No:                             Cust:
+Desc   :                                   PO Number:
+Drawing:                   Rev:            Sales Ord:         Due Dt:
+Start Dt:           Fin Dt:                Contact  :
+Quantity:                             Job:                 Prty:    Chg Ord:
+--------------------------------------------------------------------------------
+  Specs:
+                                 INSTRUCTIONS
+                              WORK ORDER SCHEDULE
+                                 JOB SCHEDULE
+Work Ord    Item Number       Start      Finish     Sched Qty      Qty Complete
+                    Start    Finish     Sched Qty  Qty Completed
+      -
+                                   ROUTING
+================================================================================
+Seq  OP Description                  Work Center    Setup     Parts/Hr Time/Part
+--- --- ---------------------------- ------------ ------- ------------ ---------
+Material         Description                    Quantity       Loc     Filled
+---------------  ------------------------------ -------------- ------  -------
+                                                                       ________
+        Quantity       1st Article   Last Article    Accepted     Rejected
+       |             |             |             |             |
+                                                   _____________
+Seq  OP Description                  Work Center    LT   PO Number   Issue Date
+--- --- ---------------------------- ------------ ------ ---------   ----------
+                                                  LT     PO________ Date________
+        Vend:
+                ------------------------------------------------
+                               BILL OF MATERIALS
+Item Number     Description                 UM    Quantity  Reference
+--------------------------------------------------------------------------------
+Work Ord:       -                SHOP TRAVELER                     Page:
+Item No :                                  Cust Code:
+Desc    :                                  Name     :
+Job No  :                                  PO Number:
+Drawing :                   Rev:           Sales Ord:         Due Dt:
+Start Dt:           Fin Dt:                Contact  :
+Quantity:                                  Priority :     Chg Order No:
+  Specs:
+                                 INSTRUCTIONS
+                              WORK ORDER SCHEDULE
+                                 JOB SCHEDULE
+Work Ord    Item Number       Start      Finish     Sched Qty      Qty Complete
+                    Start    Finish     Sched Qty  Qty Completed
+      -
+                                   ROUTING
+================================================================================
+Seq Op  Description                  Work Center    Setup     Parts/Hr Time/Part
+--- --- ---------------------------- ------------ ------- ------------ ---------
+                                       Mach:      Tool:
+Material         Description                        Quantity   Loc     Filled
+---------------  ------------------------------ -------------- ------  -------
+                                                                       ________
+        Quantity       1st Article   Last Article    Accepted     Rejected
+       |             |             |             |             |
+                                                   _____________
+Seq  Op Description                  Work Center    LT   PO Number   Issue Date
+--- --- ---------------------------- ------------  ---   ---------   ----------
+                                                         _________   __________
+       Vend:
+                ------------------------------------------------
+                               BILL OF MATERIALS
+Item Number     Description                 UM    Quantity  Reference
+--------------------------------------------------------------------------------
+                                       Mach:      Tool:
+     Vend:
+                                        
+ Print Control Report     [Y/N]?   
+ Print in Graphics Mode  [Y/N]?:        
+ Print Linked Documents[Y/N/P/C]   
+                                        
+ Print Bar Codes         [Y/N]?:   
+ Print all not yet Printed [Y/N]?:      
+ Print BOM Remarks       [Y/N]?:   
+                                        
+ Print BOM Comments      [Y/N]?:   
+                                        
+ Print Job Schedule      [Y/N]?:   
+      Work Order From:        -         
+ Print Short Form        [Y/N]?:   
+                 Thru:        -         
+ Print Materials in Seqs [Y/N]?:   
+                                        
+ Print Bills of Material [Y/N]?:   
+       Est Start Date:                  
+ Print Machine and Tool  [Y/N]?:   
+                                        
+ Print Inspection Fields [Y/N]?:   
+                                        
+ Print Multi Routings    [Y/N]?:   
+   WO Status [SFRCIX]:                  
+ Routing Sequence order  [A/D]?:   
+                                        
+ Print Specifications    [Y/N]?:   
+      Job Number From:                  
+ Print Routing Specs     [Y/N]?:   
+                 Thru:                  
+ Print Bin Locations   [A/D/N]?:   
+                                        
+ Release Firmed Orders   [Y/N]?:   
+                                        
+ Print Extended Desc     [Y/N]?:   
+                                        
+ Print Cust Notes    [Y/N/S/B]?:   
+                                        
+ Print Pick List?        [Y/N]?:   
+                                        
+ Sort BOM by Line #      [Y/N]?:   
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+*.RTMA
+NormalBkgA
+NormalBkgA
+Graphical Form Name :  A
+            A
+Graphical Report names starting with IT6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to IBKA
+Graphical Report names starting with T6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to BKA
+Graphical Report names starting with IBK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to IT6A
+Graphical Report names starting with BK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to T6A
+Form A
+ was not found in the DBA directory.A
+ Forms List A
+F1 HelpA
+Esc ExitA
+Form Name      A
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+WORKORDA
+ Work Orders A
+F1 Help,F2 Find,F3 Change Search KeyA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKORDA
+Work OA
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+WORKORDA
+Parent Part    A
+Work Ord  A
+Stat A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Cust Cd   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Customer Name            A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+SO#   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Start DtA
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Fin Dt  A
+Job Number     A
+WORKORDA
+Fin Dt  A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Job Number     A
+WORKORDA
+Job Number     A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+WORKORDA
+WORKORDA
+WORKORDA
+WORKORDA
+WORKORDI
+WORKORDA
+Work Order NoFP
+Parent Item NoFP
+Customer CodeFP
+Customer NameFP
+Sales Order NoFP
+Job NumberI
+F1 HelpA
+Esc ExitA
+ A - Work Order NoFP
+ B - Parent Item NoFP
+ C - Customer CodeFP
+ D - Customer NameFP
+ E - Sales Order NoFP
+ F - Job NumberA
+ Search Key I
+Open Work Orders only?A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter the WO number to find.      A
+             Work OrderA
+                  0-  0A
+WORKORDA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+Rel  A
+FirmdA
+SchedA
+ClosdA
+CanclA
+IndirA
+     A
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+MKAHISTA
+BKWOAA
+ISTECHSUPPORTA
+NON EVOA
+DBA ClassicI
+ISLOGA
+EVOERPMENUA
+This feature needs to be turned on in SD-Q before it will save your settingsA
+Save Personal settings, or System Global settings? A
+Yes = Personal Settings.A
+No  = System Global settings.A
+Settings Saved.A
+ISLOGA
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+WHOAMI.DBAA
+WHOAMI.DBAA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+EVOSERVICEA
+C:\ISES\A
+C:\ISTS\I
+EVOSERVICEA
+WHOAMI.*A
+WHOAMI.DBAA
+EVOSERVICE                         A
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+fileloc.bA
+BKSYMSTRA
+NormalBkgA
+NormalBkgA
+Password  A
+        A
+This is not a valid password. A
+bkistek.bmpA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCA
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+ISBNMSTRA
+ISBNMSTRA
+ISBINLOCA
+ISBINLOCA
+MTICMSTRA
+BKICLOCA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKICLOCA
+WHCERROR.MSGA
+ERROR: SDQ Warehouse Control Setting is offA
+ERROR: Master WhC setting off for A
+ERROR: Location WhC setting off forA
+ERROR:No New Bins allowed off forA
+ while in A
+There are no bins assigned for item: A
+, would you like to assign one?A
+ISWCCA
+ Select a default Bin for item A
+ in warehouse A
+F1 HelpA
+F5 Set Default,F6 SaveA
+Bin            A
+         UOHA
+Bin DateA
+PIC DateA
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+YNNNYF
+YNNNYF0
+YNNNYF0
+YNNNYF0
+YNNNYF
+YNNNYX
+YNNNYF0
+YNNNYX^
+YNNNYF0
+YNNNYX
+YNNNYF0
+YNNNYF
+YNNNYF0
+YNNNYF0
+YNNNYF0
+YNNNYC
+NNNYNX
+YNNNY,
+NNNYN$D
+NNNYNX
+YNNNYC
+NNNYNFP
+YNNNYF
+YNNNNn
+NNNNNF
+YNNNNC
+YNNNYF
+YNNNNC
+YNNNYFP
+YNNNNCQ
+YNNNYF
+YNNNNC
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNC
+YNNNYN
+YNNNNF
+YNNNYC
+YNNNYFp
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+CFG.BUFF       
+OLD.TXT        
+PRT.BAR        
+ANSWER         
+PRT.SCHED      
+PRT.COMMENTS   
+SHORT.YN       
+PRT.MATERIALS  
+PRT.REVERSE    
+PRT.BOM        
+PRT.MACH       
+PRT.INSPEC     
+PRT.ROUT.SPECS 
+PRT.SPECS      
+PRT.MULTI.ROUT 
+PRT_NYP        
+PLDTYPE        
+BK.RTM.NAME    
+T6.RTM.NAME    
+PRT.BIN.LOCS   
+WO.STATUS      
+PRT.ARCHIVE    
+PRT.ECO        
+INCL.XREF      
+PRT.PICKLIST   
+RELEASE.FIRM   
+PRINT.LABELS   
+PRT.SEQ.IMAGE  
+PRT.EXTDESC    
+PRT.CUSTNOTES  
+SORT.BY.LINES  
+CFG.END        
+ISTS.EDATE     
+OPTICALCABLE   
+TBUFF          
+IMAGE.PRINT    
+IMAGEREG       
+PARENT.SER     
+PRTR_CHR       
+TODAYS.DATE    
+FLAG           
+WIDE_YN        
+TOT_RECORDS    
+PRT_WHR        
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+FROM1          
+THRU1          
+SELECT_FROM2   
+SELECT_THRU2   
+TEMP.PRE       
+TEMP.SUF       
+GOOD.TO.PRINT  
+TEMP.BOTH      
+TEMP.PRE2      
+TEMP.SUF2      
+OKWOP          
+OKWOS          
+INSTRUCTION    
+REMARK         
+BOM_REMARK_HDR 
+CONDENSE       
+FIRST          
+TEMP.CODE      
+PRT.BLANK      
+TOT.QTY        
+TOT.QTY2       
+ISICMSTR.H     
+DESC           
+NUM.LINES      
+WHICH          
+MCNTR2         
+PRT.OP.DESC    
+WO.REMARK      
+RMK.COUNT      
+ZRET           
+SPEC_LEFT      
+SPEC_RIGHT     
+INSTRUCTIONS   
+GROUP_COUNTER  
+MULTI.ROUT     
+PRT.BOM.OK     
+CURR.ROUT      
+NEXT.ROUT      
+MULTI.TITLE    
+OUT            
+CX_TYPE        
+REGBINLOCS     
+PRT.BIN.TEXT   
+DEFAULT.BIN    
+PRINT.BIN      
+PRT.BIN.CNTR   
+FROM.SSTART    
+THRU.SSTART    
+QUANTITY.PER   
+QTY.PER        
+LINE.NO        
+BUILD.UID      
+REGDESC2       
+REGSPEC1       
+REGSPEC2       
+REGSPEC3       
+REGSPEC4       
+REGSPEC5       
+REGSPEC6       
+REGSPEC7       
+REGSPEC8       
+REGSPEC9       
+REGSPEC10      
+REGSPEC11      
+REGSPEC12      
+SPEC.CNTR      
+SPEC.LAST      
+ARCUST.H       
+ISBUILD.H      
+REGSUMM1       
+REGSUMM2       
+REGSUMM3       
+REGSUMM4       
+REGSUMM5       
+REGSUMM6       
+REGSUMM7       
+REGSUMM8       
+REGSUMM9       
+REGSUMM10      
+REGSUMM11      
+SUMM.ITEM      
+SUMM.DESC      
+SUMM.LINE      
+SUMM.ITEM.CNTR 
+PRT.CONTROL    
+CFNAME         
+PRGS.WHR       
+BKSY.PRGS.WHR  
+MMS.H          
+WODESC.H       
+BKYS.YN        
+ISTS.CFG.WHCTRL
+REGBAR         
+REGBAR2        
+REGBAR3        
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+IS.BUILD.UID   
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+TEXT.MODE      
+REGINSPECTIONS 
+REGINSPECTIONS2
+REGTYPENORM    
+REGTYPEP       
+REGBOMREMARK   
+REGBOMBODY     
+REGBOMHDR      
+REGMACH        
+BOMWHICH       
+REGVEND        
+RTM_NAME       
+ISTS.CFG.WOCHDR
+TEMP.RTM.NAME  
+ISTS.CFG.RTMSAV
+MTWO.WIP.STATUS-
+MTWO.WIP.PROJ  
+MTWO.WIP.SSTART
+MTWO.WIP.LOCK  .
+MTWO.WIP.ASTART
+MTWO.WIP.CODE  
+MTIC.PROD.SER  B
+ROUTS          
+LOOP           
+TOT.RTS        
+R.REC          
+INSIDE         
+FMR            
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+MTWORO.OPER    
+MTWORO.NUM     
+WODATE.WOPRE   
+WODATE.WOSUF   
+WODATE.START   
+MTWORO.PRINT   w
+MTRO.CODE      
+MTRO.OPER      
+MTRO.PRINT     
+MTWORO.OPERDESCO
+MTWORO.TYPE    
+BKRT.SPEC.PART 
+BKRT.SPEC.SEQ  
+BKRT.SPEC.NOTE 
+MCNTR          
+MTWORO.INSTR   
+WOBOM.OPER     
+WOBOM.WOPRE    
+WOBOM.WOSUF    
+WOBOM.COMPCODE 
+WOBOM.ASSY     
+WOBOM.LINE#    
+WOBOM.EXTRA    
+BKBM.PROD.RTNUMV
+BKBM.PARENT    
+BKBM.PROD.LINE#
+BKBM.COMPONENT 
+ASSY_HLDR      
+BKBM.NT.PARENT 
+BKBM.NT.NOTE   
+WOBOM.OPTION   
+WOBOM.COMPDESC N
+WOBOM.TOTQTY   |
+IS.BUILD.SORT  (
+IS.BUILD.FILE  
+IS.BUILD.REC   
+BKBM.RM.PARENT 
+BKBM.RM.LINE   
+BKBM.RM.COMP   
+BKBM.RM.REMARK  
+WOBOM.ASSYDESC 0
+MORE.BINS      
+MTWO.WIP.LOC   
+MTIC.PROD.LOC  ^
+ISBIN.LOC.BIN  
+BINLOC.H       
+ISBIN.LOC.LOC  
+ISBIN.LOC.ITEM 
+MTWO.WIP.SONUM 
+MTIC.PROD.CODE 
+CNTR           
+MTIC.PROD.SPECS
+SERS           
+MTSER.CODE     
+MTSER.WO       {
+MTSER.WOSUF    V
+MTSER.SERIAL   
+MMS.LINE.ID    
+PRT.MMS        
+MTWO.WIP.SOLINE
+ISSR.MMS.SRVNUM
+ISSR.MMS.LINEID
+ISSR.MMS.MAKE  +
+ISSR.MMS.MODLE ]
+ISSR.MMS.SERIAL
+BK.DESC.NUM    
+BK.DESC.DESC   _
+BK.DESC.NOTES  
+MTWO.CUSTCODE  
+BKAR.INV.SONUM 
+BKAR.INV.CUSCOD
+BKAR.INV.SHPCOD
+BKAR.SHIPTO    
+BKAR.NOTES     
+MTWO.WIP.INSTR P
+DATE_TIME      
+WOBOM.RM.WOPRE 
+WOBOM.RM.WOSUF 
+WOBOM.RM.PARENT
+WOBOM.RM.LINE  
+WOBOM.RM.COMP  
+WOBOM.RM.LINENM*
+WOBOM.RM.REMARK,
+PB_NUMBER      
+BKIC.PROD.CODE 
+MTWO.WIP.DESC  
+MTWO.CUSTNAME  
+MTWO.WIP.CUSORD
+MTIC.PROD.DRAW h
+MTIC.PROD.REV  w
+MTWO.WIP.DDATE 
+MTWO.WIP.SFIN  
+MTWO.WIP.CONTAT
+MTWO.WIP.SQTY  
+MTWO.WIP.PRTY  
+MTWO.WIP.CHGORD!
+BKIC.PROD.UM   .
+BKIC.PROD.NOTE 
+MTWO.WIP.COMQTY%
+CALC.WT        
+MTIC.PROD.ACTIVC
+WODATE.FINISH  
+WODATE.QTY     
+MTWORO.WC      
+MTWORO.OP.TEMP#K
+MTWORO.VEND    m
+MTWORO.VENDNAMEw
+MTWORO.LEAD    
+MTWORO.LONGTIMEo
+MTWORO.ESTHRS  /
+MTWORO.STD.TIME\
+WOBOM.BINLOC   
+WOBOM.QTYPER   l
+WOBOM.UM       
+WOBOM.REFERENCE
+MTIC.PROD.CLASS
+MTWORO.ESETHRS ?
+MTWORO.PARTSHR 
+MTWORO.TIMEPART
+MTWORO.MACHNO  
+MTWORO.TOOL    
+NEED.TO.GEN    
+LCNTR          
+CVT.NUM        
+NEXT.SERIAL    
+MTSER.LOT      (
+MTSER.ONHAND   D
+MTSER.RECDATE  Q
+MTSER.LOC      L
+MTSER.POCOST   U
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.BMTYPR
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.GLBSDT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+ISTS.CFG.SOELAB
+ISTS.CFG.WOICST
+ISTS.CFG.POCBIN
+ISTS.CFG.SOEGSB
+ISTS.CFG.SOACDL
+ISTS.CFG.DCBEMP
+ISTS.CFG.TPRTNT
+ISTS.CFG.POCPLL
+ISTS.CFG.POACAL
+ISTS.CFG.RMDCWO
+ISTS.CFG.RMDGLA
+ISTS.CFG.RMDGLD
+ISTS.CFG.SOESDT
+ISTS.CFG.SOEUBO
+ISTS.CFG.SHPBIN
+ISTS.CFG.POEPRX
+ISTS.CFG.SOFSND
+ISTS.CFG.EMAILS
+ISTS.CFG.EMAILP
+ISTS.CFG.NZETYP
+ISTS.CFG.INBTLS
+ISTS.CFG.SOASPK
+ISTS.CFG.HHDCWO
+ISTS.CFG.POARSK
+ISTS.CFG.ASTART
+ISTS.CFG.INACT 
+ISTS.CFG.URNT  
+ISTS.CFG.RECYCL
+ISTS.CFG.BLSTDC
+ISTS.CFG.TRKSER
+ISTS.CFG.INKTDT
+ISTS.CFG.POCERD
+ISTS.CFG.POADYS
+ISTS.CFG.QTYADJ
+ISTS.CFG.HHFLOC
+ISTS.CFG.HHTLOC
+ISTS.CFG.POCFRT
+ISTS.CFG.DCAENG
+ISTS.CFG.MSGLVL
+ISTS.CFG.SOARCH
+ISTS.CFG.WOITXN
+ISTS.CFG.SOLEAD
+ISTS.CFG.POCPJB
+ISTS.CFG.POCPIE
+ISTS.CFG.DCIRWK
+ISTS.CFG.APHXPT
+ISTS.CFG.SOACAL
+ISTS.CFG.SOACOM
+ISTS.CFG.SOSEC 
+ISTS.CFG.NEGCST
+ISTS.CFG.QUALOC
+ISTS.CFG.SOAGPP
+ISTS.CFG.ORIGPO
+ISTS.CFG.POPROM
+ISTS.CFG.POAMFG
+ISTS.CFG.INACUD
+ISTS.CFG.ARFTD 
+ISTS.CFG.DBLKIT
+ISTS.CFG.PSTKIT
+ISTS.CFG.SOAAUD
+ISTS.CFG.DCAWC 
+ISTS.CFG.PIUID 
+ISTS.CFG.PIPSW 
+ISTS.CFG.CCDEF 
+ISTS.CFG.DCCOMP
+ISTS.CFG.INCNEG
+ISTS.CFG.WOBWO1
+ISTS.CFG.ROADEC
+ISTS.CFG.SOAMAR
+ISTS.CFG.SOAMA%
+ISTS.CFG.SOPBLW
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+DEF_FORM       
+FILE.HLDR      
+FILE.NAME      
+ZRET           
+CNTR2          
+CNTR3          
+WC             
+BC             
+SC             
+X_TTL1         
+X_USCORE       
+ZA_TEXT        
+ZA_DFLT        
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+FC             
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+BUTTON_LIST    
+BUTTON_CNTR    
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+WOF2.COL       
+WOF2.ROW       
+WO.LKUP.OPEN   
+WOM.STAT       
+WOXFIND.PRE    
+NEW.WOXPRE     
+WOXFIND.SUF    
+NEW.WOXSUF     
+WOXDIDFIND     
+SRCH_KEY_NUM   
+WO_TTL1        
+WO_USCORE      
+TEMP.REC       
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+SRCH_HOW_MSG   
+V.OLINK        
+XXWOM.STAT     
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+PSTR           
+RETATVAL       
+XATRETATVAL    
+ATSIZE         
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+CFG.LATEDAYS   
+EIMCO.SHIFT2   
+EIMCO.SHIFT3   
+ISTS.CFROM     
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.ACCT   
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+PRGNAME        
+DOING          
+LOG.REC        
+ISLOG.H        
+LOG.WHO        
+IS.LOG.WHO     
+IS.LOG.WHAT    #
+IS.LOG.DOING   2
+IS.LOG.STARTD  n
+IS.LOG.STARTT  r
+IS.LOG.COMPANY ~
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+CFG.NAME       
+CFG.SIZE       
+TEMP_HNDL      
+CFG.PATH       
+CFG.FULLNAME   
+ISTS.PATH      
+CFG.PROMPT     
+ISTS.PATH      
+FORCE          
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKAR.EMAIL     *
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+SWHO           
+X_HNDL         
+X.BUFF         
+TI             
+WHO.H          
+WBUFF          
+RVAL           
+CO_PATH        
+DPLOC_HNDL     
+LOC_LOCATION   
+PSWD           
+XRVAL          
+BPICT          
+TIME1          
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+BINMSTR.H      
+BINMSTR_LOCK   
+BINLOC_LOCK    
+MTICMSTR.H     
+BKICMSTR.H     
+BKICLOC.H      
+SET.IC.ITEM    
+SET.IC.LOC     
+CLD.TTL1       
+CLD.USCORE     
+CLD.ITEM       
+CLD.LOC        
+CLD.CFROM      
+CLD.BINLOC.REC 
+ALLOW.NEW.BINS 
+DSP.ERR.MSG    
+BKIC.PROD.DPTNTl
+BKIC.LOC.DPTSNTm
+ISBIN.LOC.DFLT 8
+ISBIN.LOC.UOH  (
+ISBIN.LOC.CDATE0
+ISBIN.LOC.VDATE4
+HOLD.LOC.REC   
+RESET_LOC      
+RESET_ITEM     
+NCLR           
+BINLOC_BUFF    
+BINLOC_REC     
+IS.PROD.WT     
+MTIC.PROD.WT   L
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     

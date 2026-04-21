@@ -1,0 +1,2526 @@
+BKYSMSTR
+BKSYMSTR
+BKFOCFG 
+BKPSUSER
+BKBMMSTR
+BKICMSTR
+MTICMSTR
+ISNOTES 
+TASCOLOR
+BKICDIM 
+BKSBMFG 
+BKBMREMK
+BKBMDIM 
+ISLINKS 
+BKBMNOTE
+BKMATCST
+BKMATRIM
+MACHINE 
+FILELOC 
+MKAHIST 
+ISFOHEAD
+ISFOLINE
+BKSYHELP
+DBAHLPID
+CLASMSTR
+BKSBVEND
+BKICREF 
+BKICLOC 
+BKAPDESC
+BKAPVEND
+BKARCUST
+BKCMACCT
+ - ISTS Enhancement 08/05/21A
+ISTECHL
+IMPORT  A
+Edit Imported Bills of MaterialA
+ESTM    A
+Enter Estimates [BOM]A
+FANDO   A
+Enter Features and OptionsA
+Enter Bills of MaterialI
+BKYSMSTRA
+BKYSMSTRA
+BKSYMSTRA
+BKSYMSTRA
+BKFOCFGA
+bkfocfgI
+FANDO   A
+No Features and Options Defaults have been set up.  Please use MD-I, Features and Options Defaults, to do so. A
+BKFOCFGA
+MTICMSTRA
+BKICMSTRA
+BKBMNOTEA
+BKBMREMKA
+BKBMDIMA
+ISFOHEADA
+ISFOLINEL
+IMPORT  A
+BKBMEMTRA
+BKBMMSTRA
+ESTM    A
+BKMATCSTA
+BKICDIMA
+MACHINEA
+BKMATRIMA
+BKSBMFGA
+ISNOTESA
+ISLINKSA
+BKPSUSERA
+ISREPLNKI
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ESTM    L
+Please note that any changes made to Bills of Material will be saved to the master copy of each Bill of Material that gets changed.  Changes made to Bills of Material here are not limited to just this estimate. A
+IMPORT  A
+F1 Help,F2 Inventory Lookup,F3 BOM Lookup,F5 Fix Invalid Parent Part#A
+Esc ExitA
+F1 Help,F2 Inventory Lookup,F3 BOM LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+Please select a parent part. A
+bkicmstrI
+This is not a valid item number. A
+FAKBMNOA
+The parent part must be type F, A, K, B, M, N, or O (finished good, assembly, selling kit, phantom, make-from, non-stock, or a feature). A
+BKICMSTRL
+mticmstrI
+ does not have a MTICMSTR record. A
+BKICMSTRL
+Subsidiary Companies cannot create new Bill of Materials.A
+You can only create Bill of Materials for items with Active Status E (Engineering).A
+BKICMSTRA
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+BKBMMSTRA
+FAKBMNOIP
+BKICMSTRA
+BKICMSTRA
+MTICMSTRIP
+IMPORT  A
+BKICMSTRA
+MTICMSTRA
+Please select the incorrect parent item number that should be replaced. A
+IMPORT  A
+" in the imported BOM file will be replaced with a new parent item number.  Please select that new parent item number now. A
+All instances of parent item number "A
+FAKBMNOI
+BKICMSTRA
+BKICMSTRA
+MTICMSTRL
+Loading BOM...I
+bkicmstrI
+ is not a valid item number.  Please correct this while editing the BOM. A
+Error: This BOM has a component whose item no., A
+BKICMSTRI
+IMPORT  A
+mticmstrI
+5BMA1A
+MTICMSTRA
+Finished GoodA
+SubassemblyA
+Selling KitA
+Phantom AssyA
+Make FromA
+Non InventoryA
+FeatureA
+IMPORT  A
+F9 Auto Assign Line Nos,F4 Delete BOMA
+Esc ExitA
+INS Add Line,ENTER Edit Line,DEL Delete LineA
+ESTM    A
+F9 Auto Assign Line Nos,F3 Copy BOM,F7 BOM Notes,F8 Matl Dimensions,F4 Delete BOMA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,F5 Remarks,F6 Matl CostsA
+F7 BOM NotesA
+Esc ExitA
+ENTER View Line,F5 Line RemarksA
+F9 Auto Assign Line Nos,F3 Copy BOM,F7 BOM Notes,F4 Delete BOMA
+Esc ExitA
+INS Add Line,ENTER Edit Line,DEL Delete Line,F5 Line RemarksA
+SF3 Copy FO BOMA
+F9 Auto Assign Line Nos,F3 Copy BOM,F7 BOM Notes,F4 Delete BOMA
+Esc ExitA
+INS Add Line,ENTER Edit Line,DEL Delete Line,F5 Line RemarksA
+BILL OF MATERIALS A
+Component      A
+Description                   A
+    Quantity PerA
+Scrap%A
+BackflushA
+IMPORT  A
+ESTM    A
+F9 Auto Assign Line Nos,F4 Delete BOM,F3 Copy BOM,F7 BOM Notes,F8 Matl DimensionsA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,F5 Remarks,F6 Matl CostsA
+BKICMSTRA
+F9 Auto Assign Line Nos,F4 Delete BOM,F3 Copy BOM,F7 BOM Notes,F8 Matl DimensionsA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,F5 Remarks,F6 Matl CostsA
+bkicdimI
+bkicdimI
+BKICDIMA
+bkicdimI
+BKICDIMA
+F9 Auto Assign Line Nos,F4 Delete BOM,F3 Copy BOM,F7 BOM Notes,F8 Matl DimensionsA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,F5 Remarks,F6 Matl CostsA
+F9 Auto Assign Line Nos,F4 Delete BOM,F3 Copy BOM,F7 BOM Notes,F8 Matl DimensionsA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,F5 Remarks,F6 Matl Costs,F2 Yield CalculatorA
+F9 Auto Assign Line Nos,F4 Delete BOM,F3 Copy BOM,F7 BOM Notes,F8 Matl DimensionsA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,F5 Remarks,F6 Matl Costs,F2 Swap Actual/GenericA
+IMPORT  A
+Checking BOM...A
+bkicmstrI
+BKICMSTRI
+mticmstrI
+5BMA2A
+MTICMSTRA
+IMPORT  A
+Subsidiary Companies cannot delete BOM components.A
+Only items with active status E (Engineering) can have BOM components deleted.A
+No BOM component active - nothing to delete. A
+Delete this component? L
+Subsidiary Companies cannot Add BOM components.A
+BOM components can only be added to items with active status E (Engineering) can be deleted.A
+This BOM has already reached the limit of A
+ components.  No more new components may be added at this point. A
+BKICMSTRA
+ - Add ComponentA
+ - Edit ComponentA
+F1 Help,F3 Option SettingsA
+Esc ExitA
+F1 Help,F3 Option SettingsA
+F10 Save,Esc ExitA
+F1 Help,F3 Feature SettingsA
+Esc ExitA
+F1 Help,F3 Feature SettingsA
+F10 Save,Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+F1 Help,F2 Lookup,F3 Option SettingsA
+Esc ExitA
+F1 Help,F2 Lookup,F3 Option SettingsA
+F10 Save,Esc ExitA
+F1 Help,F2 Lookup,F3 Feature SettingsA
+Esc ExitA
+F1 Help,F2 Lookup,F3 Feature SettingsA
+F10 Save,Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+F10 Save,Esc ExitA
+F1 Help,F3 Option SettingsA
+Esc ExitA
+F1 Help,F3 Option SettingsA
+F10 Save,Esc ExitA
+F1 Help,F3 Feature SettingsA
+Esc ExitA
+F1 Help,F3 Feature SettingsA
+F10 Save,Esc ExitA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+F10 Save,Esc ExitA
+Please specify a component item number. A
+ cannot be a component of its own Bill of Material. A
+bkicmstrI
+ is not a valid item number. A
+Component A
+Component A
+ was not found in the inventory file.  Do you want to set it up as a new item number? A
+bkicmstrI
+New item number not successfully created. A
+Selling Kits may not be components on a BOM.A
+BKICMSTRL
+Selling Kits may not have Phantom Components on a BOMA
+mticmstrI
+ has no MTICMSTR record. A
+Error: A
+BKICMSTRL
+Item A
+ has been designated Obsolete.  Use IN-B to change the status if you wish to process this item.A
+BKICMSTRL
+Item A
+ has been designated Engineering and may have some issues.A
+Item A
+ has been discontinued.A
+BKICMSTRA
+MTICMSTRL
+Error re-getting the BOM line item record! A
+ is already a component on this Bill of Material.  Is this OK? A
+BKSBMFGA
+bksbmfgI
+BKSBMFGA
+bksbmfgI
+BKSBMFGA
+BKICMSTRA
+MTICMSTRL
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Sequence number entry is required for this inventory type. A
+Save this component? L
+Please indicate whether this feature is mandatory or not required by completing the "Feature Settings" screen. A
+Please indicate the Duplicate Option Code for this feature by completing the "Feature Settings" screen. A
+Please complete the "Option Settings" screen for this component. A
+Phantom (type B) components must always be "M" type options.  Please correct this on the "Option Settings" screen. A
+IMPORT  A
+ESTM    A
+bkicdimI
+You have selected a generic material.  You may use the yield calculator to determine the actual material with the best cost per part.  When you return to the opening list of line items and highlight this line, a button will be available to call up the yield calculator. A
+BKICDIML
+Add remarks to components? L
+Cancel adding this line? L
+Exit this line without saving any changes? L
+BKICMSTRA
+MTICMSTRL
+ - Add Component - Feature SettingsA
+ - Edit Component - Feature SettingsA
+F1 HelpA
+Esc Main ScreenA
+This must be blank or XF
+This must be blank or XA
+This must be blank or XF
+This must be blank or XF
+This must be blank or XI
+ - Add ComponentA
+ - Edit ComponentA
+ - Add Component - Option SettingsA
+ - Edit Component - Option SettingsA
+F1 HelpA
+Esc Main ScreenA
+Phantom (type B) components must always be "M" type options. A
+bkicmstrI
+BKICMSTRL
+Phantom (type B) components must always be "M" type options. A
+ - Add ComponentA
+ - Edit ComponentA
+IMPORT  A
+BKBMMSTRA
+ - Copy BOMA
+F1 Help,F2 Inventory Lookup,F3 BOM LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+You may not copy from one BOM to itself. A
+bkicmstrI
+This is not a valid item number. A
+FAKBMNOA
+Only part types F, A, K, B, M, N, or O may be selected here. A
+There is no Bill of Materials for the copy-from part. A
+BKICMSTRL
+BKICMSTRA
+FAKBMNOIP
+BKICMSTRA
+BKICMSTRIP
+IMPORT  A
+BKICMSTRA
+OK to proceed with the copying? L
+The BOM from which you are copying has over A
+ components.  This is the maximum that can be loaded. A
+The resulting combined BOM will exceed A
+ lines, which is the maximum allowable.  Please choose instead a subset of the components to include in the copy operation. A
+ENTER SelectA
+ESC Process,ESC CancelA
+  Parts To CopyA
+Are all of your entries correct?L
+Do you want to abort this BOM copy?L
+The lines you have selected to copy will result in a BOM that exceeds the maximum allowable length of A
+ lines.  Please unselect some components. A
+Copying BOM...I
+.  It will not be included in this copy. A
+Error: Unable to get the BOM line item record for component A
+ cannot become a component of its own Bill of Materials.  It will not be included in this copy. A
+The BOM was successfully copied. A
+This Bill of Material has no line items - nothing to delete. A
+Delete the entire Bill of Material for item no. A
+) is a component on at least one other BOM (for item no. A
+).  Do you still wish to delete this BOM? A
+Warning:  The parent part of the BOM that is being deleted (A
+Deleting Bill of Material...A
+IMPORT  A
+IMPORT  A
+IMPORT  A
+No component record active. A
+BKICMSTRL
+ - Component RemarksA
+Esc Exit RemarksA
+F4 Delete RemarksA
+F10 Save Remarks,Esc Exit RemarksA
+Save these remarks? L
+Exit without saving any changes? L
+Delete these remarks? L
+ - BOM NotesA
+Esc Exit NotesA
+F4 Delete NotesA
+F10 Save Notes,Esc Exit NotesA
+Save these notes? L
+Exit without saving any changes? L
+Delete these notes? L
+BKBMAA
+BKINBA
+bkicmstrI
+BKICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+ESTM    A
+Would you like to enter material costs for the new item number? L
+BKESHA
+bkmatcstI
+mticmstrI
+5BMA3A
+MTICMSTRA
+BKMATCSTA
+BKICMSTRA
+MTICMSTRL
+This will renumber the lines of the BOM, in the order in which they are currently displayed.  Ready to proceed? L
+Auto Assignment of line numbers in progress, please wait...A
+.  Its line number will not be changed. A
+Error: Unable to get the BOM line item record for component A
+IMPORT  A
+IMPORT  A
+Auto Assignment of line numbers is complete. A
+BKINLFA
+A component must be highlighted in order to do material costs. A
+BKESHA
+bkicdimI
+bkicdimI
+Cannot find the dimensions for this component.  The yield calculator may not be used at this time. A
+bkicdimI
+Cannot find any actual materials, with dimensions, for this generic component.  The yield calculator may not be used at this time. A
+This is a generic material.  Would you like for the system to replace it with the actual material which offers the best cost per part? L
+BKICDIMA
+An error has occurred - invalid setting for the estimating dimensions button. A
+ - Yield CalculatorA
+ - Swap Actual for Generic MaterialA
+BKICMSTRI
+bkmatrimI
+BKMATRIMA
+F1 HelpA
+Esc Cancel ChangesA
+F1 Help,F2 LookupA
+Esc Cancel ChangesA
+F1 HelpA
+Esc Cancel ChangesA
+MACHINEA
+MACHINEA
+MACHINEI
+This is not a valid machine code. A
+MACHINEA
+BKMATRIMI
+Trim sizes have not been established for this machine. A
+BKMATRIML
+mticmstrI
+bkicmstrI
+MTICMSTRA
+BKICDIMA
+bkicdimI
+Did not find any actual materials with which to replace this generic material. A
+bkicdimI
+Error: Could not re-get the material dimensions record (BKICDIM) for the best replacement component (A
+bkicmstrI
+Error: Could not find the inventory record (BKICMSTR) for the best replacement component (A
+BKICMSTRN
+F1 HelpA
+Esc ExitA
+F1 HelpA
+F10 Save,Esc Cancel ChangesA
+F1 HelpA
+Esc ExitA
+F1 HelpA
+Esc Cancel ChangesA
+BKICDIMA
+MACHINEA
+BKMATRIMI
+FILELOCA
+BKSYMSTRA
+BKSYMSTRA
+bksymstrA
+MKAHISTA
+BKBMMSTRA
+BKBMDIMA
+BKBMREMKA
+BKBMNOTEL
+BKSYMSTRA
+Copy Item A
+ FO BOM as the BOM for Item A
+The BOM was successfully copied. A
+ Feature and Option BOMs A
+F1 HelpA
+Esc ExitA
+Description                                                 A
+               
+               
+  Parent Part                                     
+               
+  Type                                            
+               
+                                                  
+               
+               
+               
+  Line No.                                        
+               
+                                                  
+               
+  Component                                       
+               
+  Type                                            
+               
+                                                  
+               
+                                                  
+               
+  Quantity Per                   UM               
+               
+  Scrap                    Scrap Type [%/Q]       
+               
+  Sequence                                        
+               
+  Routing#                                        
+               
+  Reference                                       
+               
+                                                  
+               
+  Include when backflushing for scrap assembly?   
+               
+  Parent Part                                  
+  Type                                         
+                                               
+  YIELD CALCULATOR            
+  ORIGINAL BOM LINE                         
+                              
+                                            
+  Part Size X                 
+  Component                                 
+  Part Size Y                 
+  Type                                      
+                              
+                                            
+  Machine                     
+                                            
+  Trim Size X                 
+  Quantity                    UM            
+  Trim Size Y                 
+                              
+  Blank Size X                
+  REVISED BOM LINE                          
+  Blank Size Y                
+                                            
+                              
+  Component                                 
+  X Remnant                   
+  Type                                      
+  Y Remnant                   
+                                            
+                              
+                                            
+                              
+  Quantity                    UM            
+  Component                           Parent Part                     
+                  Ln#     Type                        Type            
+                                                                      
+                                                                      
+  FEATURE [TYPE O] COMPONENTS ONLY      
+                                        
+  OPTION TYPE                           
+    Mandatory feature                   
+    Feature not required                
+                                        
+    Allow Multi Options to be selected  
+                                        
+  DUPLICATE OPTION CODE                 
+    Display option regardless           
+    of duplicates.                      
+    Do not display, add duplicate       
+    to order.                           
+    Do not display, do not add          
+    duplicate to order.                 
+  Component                           Parent Part                     
+                  Ln#     Type                        Type            
+                                                                      
+                                                                      
+  OPTION SETTINGS                    
+    [MK] Manufactured or Kit type?   
+    Include in cost rollup?          
+    Use standard customer pricing?   
+                                     
+    Percentage pricing?              
+               Option price/percent  
+                                     
+    Add price to parent?             
+                                     
+        Option code                  
+  Parent Part                     
+                                  
+                                  
+                                  
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+  Component                         Parent Part                     
+                   Line#                                            
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+                                                                    
+     Copy-from BOM                       Copy-to BOM                        
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+     Copy-from BOM Notes [partial]                                          
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+     Copy-to BOM Notes [partial]                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+                                                                            
+       Copy BOM notes? [will overwrite those of the copy-to part]           
+       Copy the entire BOM? [if not, can choose which components to copy]   
+       Copy line item remarks? [for those components getting copied]        
+                                                                            
+              
+              
+  Parent Part                                   
+              
+                                                
+              
+                                                
+              
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+mticmstrI
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+ Inventory A
+F1 Help,F2 Find,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+CLASMSTRI
+CLASMSTRL
+ClassA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Specifications                A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+MTICMSTRA
+User Defined             A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+MTICMSTRA
+Cust Cd   A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Please only select item numbers of the following Types: A
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+CLASMSTRL
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial description.A
+ This is a case-sensitive search.  A
+   Item Description          A
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full/partial class, or theA
+ full class and full/partial part#.A
+   Class          Item NumberA
+CLASMSTRN
+BKICMSTRA
+MTICMSTRI
+Item Number    F
+Description    F
+Type           F
+2nd DescriptionF
+Category       F
+Class          F
+Specifications F
+User Defined   F
+Customer Code  F
+Alternates     I
+ N Non Inventory   F
+ R Purchased Part  F
+ M Make From       F
+ F Finished Good   F
+ A Subassembly     F
+ B Phantom AssemblyF
+ L Labor           F
+ T Outside Process F
+ K Selling Kit     F
+ O Feature         I
+Vendors Number F
+Manufacturers  F
+Customers X-RefI
+BKSBVENDI
+BKSBVENDA
+BKSBVENDA
+Vendor Item Number       A
+Item Number    A
+Description                   A
+Vendor Cd A
+BKSBVENDA
+BKSBVENDA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKSBVENDL
+BKSBMFGI
+BKSBMFGA
+BKSBMFGA
+Manuf. Item Number       A
+Item Number    A
+Description                   A
+Manuf. Name              A
+BKSBMFGA
+BKSBMFGA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKSBMFGL
+BKICREFI
+BKICREFA
+BKICREFA
+Customer X-Ref           A
+Item Number    A
+Description                   A
+Cust CodeA
+BKICREFA
+BKICREFA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKICREFL
+BKSBVENDL
+BKSBMFGL
+bkicmstrI
+BKICMSTRA
+MTICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+ ImportedA
+ Bills of Material A
+ ImportedA
+ [Type A
+ BOM for A
+BKICMSTRA
+F1 HelpA
+Esc ExitA
+Parent         A
+Parent Description            A
+Component      A
+    Qty RequiredA
+bkicmstrI
+BKICMSTRA
+bkicmstrI
+bkicmstrI
+BKICMSTRA
+Parent         A
+Component      A
+Component Description         A
+    Qty RequiredA
+ Machines A
+F1 HelpA
+Esc ExitA
+MACHINEA
+Description                   A
+Hrs Used A
+Hrs MaintA
+Work Center A
+WC Description                A
+MACHINEA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF
+ B - DescriptionA
+ Search Key A
+Item number cannot be blank. A
+BKICMSTR record for this item not in memory. A
+Note: The MTICMSTR record for this non-stock part is not available.  Only some of the stock status quantities can be reported. A
+NormalBkgA
+NormalBkgA
+ Inventory Stock Status A
+ Inventory Stock Status A
+bkiclocI
+BKICLOCL
+BKICLOCL
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+There are more than 100 locations for this part, which is the maximum that can be displayed. A
+BKICLOCA
+bkiclocI
+BKICLOCI
+Item Number    : A
+        Type: A
+Description    : A
+2nd Description: A
+               LOCATIONS              A
+(+) ON HAND          :A
+(-) On Sales Order   :A
+(-) On Back Order    :A
+(+) On Purchase Order:A
+(+) In QC Inspection :A
+(+) On Work Order    :A
+(-) Allocated        :A
+(=) Available        :A
+In Work-in-Process   :A
+   TOTAL    I
+    n/a     I
+    n/a     I
+    n/a     I
+            I
+    n/a     I
+Esc ExitA
+F7 Scroll Locations Left,F8 Scroll Locations RightA
+Esc ExitA
+Esc ExitA
+Please do not change the item number. A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+BKICLOCL
+BKICLOCA
+BKICLOCL
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCA
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+MKAHISTA
+BKWOAA
+ISTECHSUPPORTA
+WHOAMI.DBAA
+WHOAMI.DBAA
+MTICMSTRA
+Item A
+ has been designated Obsolete.  Use IN-B to change the status if you wish to process this item.A
+Item A
+ has been designated Engineering and may have some issues.A
+Item A
+ has been discontinued.A
+Do NOT proceed due to a Production or Purchasing Hold.  Contact the Quality Manager or Plant Manager or Supervisor immediately.A
+Do NOT proceed due to a Shipping Hold.  Contact the Quality Manager or Plant Manager or Supervisor immediately.A
+Item A
+ is on full stop.  Do NOT proceed.  Contact the Quality Manager or Plant Manager or Supervisor immediately.A
+Item# A
+ is in Revision Review Process.  Do NOT Proceed until the Revision Review is completed and approved.  Contact the Quality Manager, Plant Manager or Supervisor immediately.A
+Item A
+ is designated as inactive.  Notify purchasing/planning for evaluation.A
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+EVOSERVICEA
+C:\ISES\A
+C:\ISTS\I
+EVOSERVICEA
+WHOAMI.*A
+WHOAMI.DBAA
+EVOSERVICE                         A
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate or Create A
+ folder. Please contact Lynn@istechsupport.comA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+bkistek.bmpA
+NNNYNC
+NNNYNF
+NNNYNFp
+NNNYNF0
+NNNYNF
+NNNYNF
+NNNYNF
+NNNYNF
+NNNYNFP
+NNNYNF@
+YNNYNX
+YNNNYC
+YNNYNXe(
+YNNNYC
+YNNNYFP
+YNNNYCi
+YNNNYF
+YNNNYFP
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYFP
+YNNNYX
+YNNNYF
+YNNNYXX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYFP
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC
+NNNYNlc
+NNNYNX
+NNNYNX
+YNNNYC
+NNNYNF
+YNNNYF
+YNNNNr
+NNNNNF
+YNNNNCt
+YNNNYF
+YNNNNC
+YNNNYF`
+YNNNNC
+YNNNYF 
+YNNNNC
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNCF2
+YNNNYN
+YNNNNF
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+ISTS.EDATE     
+WEBLINK        
+MULTI.OP       
+SCRAP.TYPE     
+PARENT_PART    
+MAXL           
+FROM.PARENT    
+FROM.DESC1     
+FROM.DESC2     
+FROM.NOTES     
+TO.NOTES       
+COPY.BOM.NOTES 
+COPY.REMARKS   
+COPY.ENTIRE    
+WS             
+WHICH          
+ICOL           
+IROW           
+CBOM.PART      
+HAVE.FRNOTES   
+FROM.NUMLINES  
+TO.NUMLINES    
+LINES.CHOSEN   
+I              
+TOT.LINES      
+BKBMMSTR.HNDL  
+PARENT.DESC1   
+PARENT.DESC2   
+PARENT.TYPE    
+OPENWINDOW     
+MAINWINDOW     
+EDITWINDOW     
+NOTEWINDOW     
+REMKWINDOW     
+COPYWINDOW     
+FEATWINDOW     
+OPTWINDOW      
+YIELDWINDOW    
+BOM.LINES      
+CBK.PARENT     
+CBK.COMPONENT  
+ORIG.COMPONENT 
+CBK.LINENO     
+ORIG.LINENO    
+NEXT.LINENO    
+ENTRY.TYPE     
+EXIT.TYPE      
+HEADER0        
+HEADER1        
+HEADER2        
+HEADER3        
+HEADER4        
+PRA_TTL1       
+PRA_USCORE     
+BOM.RMK        
+BOM.TYPE       
+BOM.DESC       
+BOM.UM         
+TYPE.TEXT      
+NEW.REC        
+PARENT.OPT     
+OPT.YN         
+COMP.DESC1     
+COMP.DESC2     
+COMP.UM        
+COMP.TYPE      
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+ZRET           
+ZRET2          
+NEW.PART.NO    
+CALLED.BY      
+PRGS.WHR       
+BM.REC         
+TEST.BMREC     
+TEST.COMPONENT 
+HAVE.DUPE      
+OPNO.N         
+OPNO.I         
+LEFT.FIRSTFLD  
+COPY_PART      
+COPY_MARK      
+COPY_LINENUM   
+COPY_RECN      
+EDIT.MOUNTED   
+REMK.MOUNTED   
+FEAT.MOUNTED   
+OPT.MOUNTED    
+COPY.MOUNTED   
+NOTE.MOUNTED   
+YIELD.MOUNTED  
+ENTOPYN        
+ENTDUP         
+PASSED.PARENT  
+EST.MSG.DONE   
+HAVE.STD       
+CKO.OPNO       
+CKO.TYPE       
+CKO.OK         
+HAVE.FO.DFLTS  
+GOOD.PARENT    
+BAD.PARENT     
+UGLY.PARENT    
+ESTDIM.BUTT    
+CURRED.BUTT    
+BMAMOVE.TYPE   
+BLANK.X        
+BLANK.Y        
+QTY1           
+QTY2           
+PRODUCT.1      
+PRODUCT.2      
+HOLD.COMP      
+HOLD.COMP.COST1
+HOLD.COMP.COST2
+YC.ORIG.COMP   
+YC.NEW.COMP    
+YC.ORIG.DESC1  
+YC.ORIG.DESC2  
+YC.NEW.DESC1   
+YC.NEW.DESC2   
+YC.ORIG.UM     
+YC.NEW.UM      
+YC.ORIG.TYPE   
+YC.NEW.TYPE    
+YC.ORIG.QTY    
+YC.NEW.QTY     
+OPT.MK         
+OPT.ROLL       
+OPT.USEBP      
+OPT.PERPRCE    
+OPT.ADDPR      
+OPT.PRICE      
+OPT.OPCODE     
+BMREMK.H       
+BMNOTE.H       
+BMDIM.H        
+NEW.BOM        
+SAVED.BOM      
+FOLINE.H       
+FOHEAD.H       
+FOBOMS.EXIST   
+INCL.BF.SCRAP  
+ENG.RESTRICT   
+OK.TO.SAVE     
+CFROM          
+PRG.NAME       
+PRG.DESC       
+BKSY.PRGS.WHR  
+NOTES.H        
+LINKS.H        
+PSUSER.H       
+REPLNK.H       
+RWHO           
+BKPS.USER.CODE 
+BKPS.USER.SEC  !
+BKBM.COMPONENT 
+CO.CNTR        
+BKIC.PROD.CODE 
+BKIC.PROD.TYPE -
+ISTS.CFG.BMTYPR
+MTIC.PROD.CODE 
+ISTS.CFG.SUBCOS
+MTIC.PROD.ACTIVC
+BKIC.PROD.DESC 
+BKIC.PROD.NOTE 
+MTIC.PROD.OPT  
+LUFILE         
+LUID           
+BKBM.PARENT    
+IS.NOTE.ID     
+BKBM.UID       
+XUID           
+BKBM.P.TYPE    
+BKBM.C.TYPE    
+BKBM.PROD.TYPE <
+MTIC.PROD.VNAM f
+MTIC.PROD.VEND 
+WC             
+BC             
+SC             
+BKBM.PROD.LINE#
+BKBM.QTY.REQD   
+BKBM.PROD.SCRAP=
+BKBM.PROD.VEND ^
+BKIC.PROD.UM   .
+BKYS.YN        
+BKICDIM.PARTNO 
+BKICDIM.PARENT 
+BKICDIM.GENERIC.
+ISTS.CFG.SCRPQ 
+BKBM.PROD.OP   E
+BKBM.PROD.OPYN H
+BKBM.PROD.DUPOPX
+BKBM.PROD.PRICEN
+BKBM.PROD.OPDSCY
+BKBM.EXTRA     p
+BKBM.REFERENCE (
+ISTS.CFG.BMAREF
+BKSB.MFG.PARNT 
+BKSB.MFG.PROD  
+BKSB.MFG.CUST  
+BKSB.MFG.MPART A
+BKBM.PROD.RTNUMV
+BKFO.CFG.YN    
+BKBM.RM.LINE   
+BKBM.RM.COMP   
+BKBM.RM.UID    
+BKBM.DIM.LINE  
+BKBM.DIM.COMP  
+ISTS.CFG.BOMRM 
+BKFO.CFG.MANFET
+BKIC.PROD.PRICEZ
+IS.LNK.UID     
+BKBM.NT.NOTE   
+CC             
+BKBM.RM.PARENT 
+BKBM.DIM.PARENT
+BKBM.NT.PARENT 
+BKBM.RM.REMARK  
+BKMC.CODE      
+MTIC.PROD.RCOSTF
+BKMC.COST      _
+BKBM.DIM.PART.X 
+BKBM.DIM.TRIM.X4
+BKBM.DIM.PART.Y(
+BKBM.DIM.TRIM.Y<
+BKBM.DIM.MACH  0
+BKMA.TRIM.MACH 
+BKYS.GLDPT     
+BKMA.TRIM.FIRST
+BKMA.TRIM.SECND
+TMACH.MACHINE  
+BKICDIM.FIRST  
+BKICDIM.SECOND &
+BKBM.DIM.REMN.XD
+BKBM.DIM.REMN.YL
+SSYMSTR.H      
+SMKAHIST.H     
+CO.CODE        
+CO.PATH        
+CO.EXT         
+SFILELOC.H     
+SBMMSTR.H      
+SBMDIM.H       
+SBMREMK.H      
+SBMNOTE.H      
+LOC_FILE_NAME  
+LOC_COMP_CODE  
+LOC_LOCATION   
+MK.H           
+MKAHIST.REM1   )
+ISFO.HDR.PARENT(
+ISFO.HDR.DESC  ;
+ISFO.HDR.UID   
+ISFO.LIN.UID   
+ISFO.LIN.LEVEL (
+ISFO.LIN.LINEN 
+ISFO.LIN.COMP  
+ISFO.LIN.QTYREQ
+ISFO.LIN.REF   
+ISFO.LIN.TYPE  .
+ISFO.LIN.SCRAP /
+ISFO.LIN.OP    7
+ISFO.LIN.OPYN  :
+ISFO.LIN.PRICE @
+ISFO.LIN.RTNUM H
+ISFO.LIN.DUPOP J
+ISFO.LIN.OPDSC K
+ISFO.LIN.VEND  P
+BKBM.DATE1     h
+ISFO.LIN.DATE1 Z
+BKBM.DATE2     l
+ISFO.LIN.DATE2 ^
+ISFO.LIN.EXTRA \
+BKBM.REV       
+ISFO.LIN.REV   
+PSF_TTL1       
+PSF_USCORE     
+DATC           
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           s
+PTDN           y
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.GLBSDT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+ISTS.CFG.SOELAB
+ISTS.CFG.WOICST
+ISTS.CFG.POCBIN
+ISTS.CFG.SOEGSB
+ISTS.CFG.SOACDL
+ISTS.CFG.DCBEMP
+ISTS.CFG.TPRTNT
+ISTS.CFG.POCPLL
+ISTS.CFG.POACAL
+ISTS.CFG.RMDCWO
+ISTS.CFG.RMDGLA
+ISTS.CFG.RMDGLD
+ISTS.CFG.SOESDT
+ISTS.CFG.SOEUBO
+ISTS.CFG.SHPBIN
+ISTS.CFG.POEPRX
+ISTS.CFG.SOFSND
+ISTS.CFG.EMAILS
+ISTS.CFG.EMAILP
+ISTS.CFG.NZETYP
+ISTS.CFG.INBTLS
+ISTS.CFG.SOASPK
+ISTS.CFG.HHDCWO
+ISTS.CFG.POARSK
+ISTS.CFG.ASTART
+ISTS.CFG.INACT 
+ISTS.CFG.URNT  
+ISTS.CFG.RECYCL
+ISTS.CFG.BLSTDC
+ISTS.CFG.TRKSER
+ISTS.CFG.INKTDT
+ISTS.CFG.POCERD
+ISTS.CFG.POADYS
+ISTS.CFG.QTYADJ
+ISTS.CFG.HHFLOC
+ISTS.CFG.HHTLOC
+ISTS.CFG.POCFRT
+ISTS.CFG.DCAENG
+ISTS.CFG.MSGLVL
+ISTS.CFG.SOARCH
+ISTS.CFG.WOITXN
+ISTS.CFG.SOLEAD
+ISTS.CFG.POCPJB
+ISTS.CFG.POCPIE
+ISTS.CFG.DCIRWK
+ISTS.CFG.APHXPT
+ISTS.CFG.SOACAL
+ISTS.CFG.SOACOM
+ISTS.CFG.SOSEC 
+ISTS.CFG.NEGCST
+ISTS.CFG.QUALOC
+ISTS.CFG.SOAGPP
+ISTS.CFG.ORIGPO
+ISTS.CFG.POPROM
+ISTS.CFG.POAMFG
+ISTS.CFG.INACUD
+ISTS.CFG.ARFTD 
+ISTS.CFG.DBLKIT
+ISTS.CFG.PSTKIT
+ISTS.CFG.SOAAUD
+ISTS.CFG.DCAWC 
+ISTS.CFG.PIUID 
+ISTS.CFG.PIPSW 
+ISTS.CFG.CCDEF 
+ISTS.CFG.DCCOMP
+ISTS.CFG.INCNEG
+ISTS.CFG.WOBWO1
+ISTS.CFG.ROADEC
+ISTS.CFG.SOAMAR
+ISTS.CFG.SOAMA%
+ISTS.CFG.SOPBLW
+ISTS.CFG.INADTE
+ISTS.CFG.LIMSCT
+ISTS.CFG.RRFPR 
+ISTS.CFG.VACGLA
+ISTS.CFG.VACGLD
+ISTS.CFG.DCPDTE
+ISTS.CFG.DCFREQ
+ISTS.CFG.DCMLST
+ISTS.CFG.RMDACM
+ISTS.CFG.INBXFR
+ISTS.CFG.POAPOH
+ISTS.CFG.SMGEDT
+ISTS.CFG.AVATAX
+ISTS.CFG.AVAACT
+ISTS.CFG.AVAKEY
+ISTS.CFG.SOEVIA
+ISTS.CFG.POQITM
+ISTS.CFG.WONEG 
+ISTS.CFG.DCNEG 
+ISTS.CFG.SOAARN
+ISTS.CFG.AVACOD
+ISTS.CFG.AVACO 
+ISTS.CFG.DSDTES
+ISTS.CFG.SOECDL
+ISTS.CFG.SMGSYN
+ISTS.CFG.SMGBDT
+ISTS.CFG.VOIC  
+ISTS.CFG.VOWO  
+ISTS.CFG.VOPO  
+ISTS.CFG.VOSO  
+ISTS.CFG.VOAR  
+ISTS.CFG.VOAP  
+ISTS.CFG.MAXDC 
+ISTS.CFG.DCNCR 
+ISTS.CFG.NCRRMD
+ISTS.CFG.WOMPST
+ISTS.CFG.INAMRP
+ISTS.CFG.OANDA 
+ISTS.CFG.FXKEY 
+ISTS.CFG.QCCNTR
+ISTS.CFG.POAVDT
+ISTS.CFG.DCRSH 
+ISTS.CFG.ARPSWD
+ISTS.CFG.SRCOMM
+ISTS.CFG.WOLBLS
+ISTS.CFG.WOILTX
+ISTS.CFG.HIDPTH
+ISTS.CFG.DCTSWC
+ISTS.CFG.BBCOLO
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+INV_TYPE       
+INVF2.COL      
+INVF2.ROW      
+INVF2.START    
+MTIC_OPEN      
+CLASS_OPEN     
+USE_ALTS       
+TYPE_CNTR      
+TYPE_CHR       
+ALT_CODE       
+INV_M_TY       
+INV_M_LOC      
+INV_M_MAIN     
+IMXFIND.PART   
+NEW.IMXPART    
+IMXFIND.DESC   
+NEW.IMXDESC    
+IMXFIND.CLASS  
+NEW.IMXCLASS   
+IMXF.CURORD    
+CLASS.POP.DONE 
+IMXLKUPA.HNDL  
+IMXLKUPI.HNDL  
+IMX.LKUA       
+IMX.LKUI       
+IMX.ZRET       
+SRCH_KEY_NUM   
+INV_TTL1       
+INV_USCORE     
+BKIC.PROD.UOH  p
+BKIC.PROD.CAT  1
+BKIC.PROD.CLASS6
+MTIC.PROD.SUBST$
+MTIC.PROD.CUST 
+MTIC.PROD.CUSNM
+MTIC.PROD.SPECS
+SRCH_KEY_NUM2  
+TITLE          
+UNDSC          
+BKSBVEND_OPEN  
+BKSBMFG_OPEN   
+BKICREF_OPEN   
+IMA.ZRET       
+MTCLASS.M.CLASS
+TEMP_KEY       
+MENULIST       
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.VEND.VEND (
+BKSB.MFG.MANUF (
+BKIC.REF.CUSCODU
+BKIC.REF.CODE  
+BKIC.REF.PDESC 
+BKIC.REF.CUST  
+XBOM.PART      
+XBOMF2.COL     
+XBOMF2.ROW     
+XBOM.PDESC     
+XBOM.CDESC     
+XBOM.CTYPE     
+XBOM.PTYPE     
+XBOM.HNDL      
+XBOM.IMP       
+XBOM_TTL1      
+XBOM_USCORE    
+MACHINE_TTL1   
+MACHINE_USCORE 
+TMACH.DESC     
+TMACH.HRSUSED  "
+TMACH.HRSMAINT *
+TMACH.WC       
+TMACH.WCDESC   
+SRCH_HOW_MSG   
+V.OLINK        
+CLASSMF2.COL   
+CLASSMF2.ROW   
+CLASSM_TTL1    
+CLASSM_USCORE  
+MTCLASS.M.DESC 
+TEMP_KEY       
+UV.PART        
+UV.ORIG.PART   
+UV.LOC1        
+UV.LOC         
+UV.UOH         
+UV.UOSO        
+UV.UBO         
+UV.UOO         
+UV.UIQC        
+UV.UOWO        
+UV.ALLOC       
+UV.AVAIL       
+UV.WIP         
+UVT.UOH        
+UVT.UOSO       
+UVT.UBO        
+UVT.UOO        
+UVT.UIQC       
+UVT.UOWO       
+UVT.ALLOC      
+UVT.AVAIL      
+UVT.WIP        
+UV.TCOL        
+UV.COL         
+UV.CUR1        
+UVNOW          
+UVWHR          
+UV.MAXLOCS     
+UV.OPND.LOC    
+UV.LOC.REC     
+UV.NA.LOC      
+UV.HAVE.MTIC   
+UV.CNTR        
+UV.DS          
+UV.F7          
+UV.F8          
+NORM           
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.PROD.UOO  
+MTIC.PROD.UIQC 
+MTIC.PROD.UOWO 
+MTIC.PROD.UOA  
+MTIC.PROD.UIWIP
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKIC.LOC.UOH   
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+BKIC.LOC.UOO   1
+BKIC.LOC.UIQC  
+BKIC.LOC.UOWO  
+BKIC.LOC.UALLOC
+BKIC.LOC.UWIP  
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+ZA_TEXT        
+ZA_DFLT        
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+FC             
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+PSTR           
+RETATVAL       
+XATRETATVAL    
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+CFG.LATEDAYS   
+EIMCO.SHIFT2   
+EIMCO.SHIFT3   
+ISTS.CFROM     
+DCL.PERIOD.PDTE
+DCL.PERIOD.FREQ
+MKAHIST.DATE   
+MKAHIST.ACCT   
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+ITEM.TO.CHECK  
+STATUS.TO.FLAG 
+CALL.FROM      
+MICMSTR.H      
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+BK.DESC.CODE   
+BK.DESC.NOTES  
+BK.DESC.DESC   _
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+SWHO           
+CFG.PATH       
+CFG.FULLNAME   
+X_HNDL         
+X.BUFF         
+TI             
+WHO.H          
+WBUFF          
+RVAL           
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKAR.EMAIL     *
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+BPICT          
+TIME1          
+SSTRING        
+CSTRIP         
+XLOC           

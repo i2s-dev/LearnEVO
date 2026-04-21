@@ -1,0 +1,388 @@
+TAS320
+TASCOLOR
+BKSYMSTR
+BKGLTRAN
+BKGLCOA 
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+GL-Q  Reverse Batch PostingA
+BKGLTRANA
+BKGLTEMPA
+BKGLCOAA
+F1 HelpA
+Esc ExitA
+F1 Help, F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+A batch number must be entered. A
+The batch number entered is not valid.A
+Reversed entryA
+Batch reversal entryA
+This batch has already been reversed and cannot be reversed again. A
+Do you want to print the transactions to be reversed?L
+Do you wish to reverse this batch?L
+Reverse Batch PostingA
+Unposting batch A
+Batch reversal entryI
+Reversed entryI
+                   
+                   
+                                       
+                   
+    Batch to unpost                    
+                   
+                                       
+                   
+                                                                                                                     Page:
+                                                      Batch Number:
+Trans Dt Cus/Vnd Cd Reference  Description               GL Account Dept GL Description            Debit Amount  Credit Amount
+-------- ---------- ---------- ------------------------- ---------- ---- ------------------------- ------------- -------------
+                                                                         Net Transaction:
+                                                                         Net Balance: #
+                                                                                                   ============= =============
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+F1 Help,F3 ClearA
+Esc ExitA
+ A - Account/DptF@ 
+ B - Date       F@ 
+ C - Batch NumberA
+ Search Key I
+BKUTKCA
+GL TransactionsA
+Batch EntriesA
+Acct Cd    A
+  Date  A
+ Code      A
+   Number  A
+       AmountA
+Batch   A
+Acct Cd    A
+  Date  A
+ Code      A
+     NumberA
+       AmountA
+Batch   A
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+Search Date:A
+  Date  A
+Acct Cd    A
+ Code      A
+   Number  A
+       AmountA
+Batch   A
+  Date  A
+Acct Cd    A
+ Code      A
+   Number  A
+       AmountA
+Batch   A
+Batch   A
+Acct Cd    A
+  Date  A
+ Code      A
+   Number  A
+       AmountA
+Batch   A
+Acct Cd    A
+  Date  A
+ Code      A
+     NumberA
+       AmountA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+BATCH_NUM      
+BKGLTRAN_HNDL  
+BKGLTEMP_HNDL  
+BKYSMSTR_HNDL  
+BKSYMSTR_HNDL  
+BKGLCOA_HNDL   
+BKGL_HNDL      
+PAGE           
+TODAYS.DATE    
+CURRENT.TIME   
+ARPTTITLE      
+FROM.POST.DATE 
+THRU.POST.DATE 
+GL.ACCT        
+GL_GLDPT       
+GL.DEBIT.AMT   
+GL.CREDIT.AMT  
+NET.TRANS      
+GL.ACCT.ARRAY  
+GL.DEBIT.ARRAY 
+GL.CREDIT.ARRAY
+GL.ARRAY.CNTR  
+NUMBER.TRANS   
+FND.CNTR       
+TOT.RECORDS    
+CODE.HLDR      
+TOT.DEBITS     
+TOT.CREDITS    
+DATE.HLDR      
+UNPOST.CNTR    
+NET.DEBITS     
+NET.CREDITS    
+BKSY.COMP.NAME X
+BKGL.TRN.DESC  &
+BKGL.TRN.BATCH r
+BKGL.TRN.DATE  
+BKGL.TRN.DC    ?
+BKGL.TRN.ENTDTEJ
+BKGL.TRN.POST  o
+BKGL.TRN.CODE  
+BKGL.TRN.INVC  
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.ACCTD     
+BKGL.TRN.AMT   @
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+MSG_PTR        
+MESSAGE        
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+SRCH_KEY       
+FROM_WHERE     
+BKGL_HNDL      
+BATCH_RET      
+MENULIST       
+SRCH_KEY_NUM   
+MENU_TITLE     
+GL_TTL         
+GL_USCORE      
+SRCH_KEY_NUM_B 
+BKGL.TRN.TYPE  H
+SRCH.DATE      
+BUTTON_LIST    
+BUTTON_CNTR    
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

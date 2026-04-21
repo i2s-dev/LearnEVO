@@ -1,0 +1,541 @@
+BKEDMSTR
+BKARINV 
+BKARCUST
+BKYSMSTR
+BKARINVL
+BKICREF 
+BKICMSTR
+MTICMSTR
+BKEDNOTE
+BKBMMSTR
+BKPRSALE
+BKSYMSTR
+BKICPMAT
+BKSYHELP
+DBAHLPID
+TASCOLOR
+ - ISTS Add-On      04/23/04A
+ISWEBINL
+BKICPMATA
+DISCOUNTA
+BKARINVA
+BKEDIHA
+BKEDILA
+BKEDMSTRA
+BKARCUSTA
+BKEDNOTEA
+BKICREFA
+BKICMSTRA
+mticmstrA
+bkbmmstrA
+BKPRSALEA
+Unable to find a record in the EDI master file. A
+DBASO.INA
+WEBTRANS\A
+dbaso.inA
+ was not found.  Please export your sales order information to this file, then re-run this program. A
+The file A
+Ready to begin importing? L
+DE-P-I Import WEB OrdersA
+SOHEADA
+ has more than 500 line items.  You will not be able to process that order.  You should delete this WEB order and edit your import file to contain no more than 500 lines per order. A
+WEB Order #A
+CANCELA
+bkeddelA
+ could not be found in the pending sales order file, or in the pending EDI order file.  It has likely been posted, or was never received through ED-B. A
+The EDI/Sales Order with the release number of: A
+SOLINEA
+SONOTEA
+ EDI SO headers, A
+ EDI Line Items, and A
+ EDI Notes from A
+  Importing now complete.  Proceed to view/edit in ED-C. A
+You have just imported A
+Kit Consists of:I
+bkprsaleI
+) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this EDI Order. A
+Employee No. A
+ (one of the default salespersons as set in AR-A for customer A
+bkprsaleI
+Employee No. A
+ (the default salesperson as set in AD-F) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this EDI Order. A
+bkprsaleI
+) has not been set up in CS-B as a salesperson and cannot be used as a salesperson on this EDI Order. A
+Employee No. A
+ (the default salesperson #2 as set in AR-A for customer A
+BKPRSALEA
+          
+          
+                                                        
+          
+     Importing                                          
+          
+                                                        
+          
+        WEB Order #                                     
+          
+        Customer                                        
+          
+                                                        
+          
+                                                        
+          
+        Release number                                  
+          
+        Customer order                                  
+          
+                                                        
+          
+        Line number                                     
+          
+                                                        
+          
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRA
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTECH support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact ISTECH Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact ISTEC H support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+IS_XREF        
+CUSTCOD_VAL    
+ISTS.EDATE     
+GETTING.CUST   
+PROD_HLDR      
+PROD_ESD       
+PROD_QTY       
+WHAT_LINE      
+CNTR_HLDR      
+KCNTR          
+IS_KIT         
+SHIPCODE       
+PATH           
+BKARINV_HNDL   
+BKARINVL_HNDL  
+BKSYMSTR_HNDL  
+BKEDIH_HNDL    
+BKEDIL_HNDL    
+BKEDMSTR_HNDL  
+BKEDIDUN_HNDL  
+BKARCUST_HNDL  
+BKEDNOTE_HNDL  
+BKICPMAT_HNDL  
+DISCOUNT_HNDL  
+CPRICE_FOUND   
+MCNTR3         
+MCNTR4         
+CHK.QTY        
+DELETED        
+BKICREF_HNDL   
+MTICMSTR_HNDL  
+BKBMMSTR_HNDL  
+BKICMSTR_HNDL  
+IN_FILE        
+R_LINE         
+FILE_NAME      
+BKEDI.MST.PATH 
+TAG            
+SONUM          
+FIRST_PASS     
+A15_HLDR       
+A13_HLDR       
+A12_HLDR       
+A11_HLDR       
+A8_HLDR        
+A5_HLDR        
+A3_HLDR        
+L_CNTR         
+HEAD_CNTR      
+LINE_CNTR      
+NOTE_CNTR      
+RELEASE_NUM    
+BKAR.INV.SONUM 
+BKAR.INV.NL    9
+BKAR.INV.TOTAL )
+BKAR.INV.SUBTOT
+BKAR.INV.FRGHT n
+BKEDI.MST.NEXTN
+BKAR.INV.INVDTE
+BKAR.INV.CUSCOD
+BKAR.INV.TAXABL
+BKAR.TAX.YN    
+BKAR.INV.TAXKEY
+BKAR.TAX.STATE 
+BKAR.TAX.LOCAL 
+BKAR.INV.TERMNM
+BKAR.TERMS.NUM 
+BKAR.INV.PCODE 
+BKAR.PRICE.MAT 
+BKAR.INV.DCODE 
+BKAR.DISC.CODE 
+BKAR.INV.LOC   v
+BKYS.GLNUM     
+BKAR.INV.CUSNME=
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.INV.CUSCNT
+BKAR.INV.CUSATT
+BKAR.CUSTNAME  
+BKAR.ADD1      (
+BKAR.ADD2      F
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.COUNTRY   
+BKAR.CONTACT   
+BKAR.INV.SHPNME)
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPCNT
+BKAR.INV.SHPATN
+BKAR.INV.SHPVIA
+BKAR.INV.EXTRA 
+BKAR.INVL.INVNM
+BKAR.INV.TERMD 
+BKAR.INV.CUSORD
+BKAR.INV.TAXAMT!
+BKAR.INV.DESC  C
+BKAR.INV.ORDDTE
+BKAR.INV.SHIPDT
+BKAR.INV.FOB   
+BKAR.INV.RTS   m
+BKAR.INVL.CNTR 
+BKAR.INVL.PQTY ;
+BKAR.INVL.OOQTY
+BKIC.REF.CUSCODU
+BKIC.REF.CUST  
+BKAR.INVL.PCODE
+BKIC.REF.CODE  
+BKAR.INVL.EXTRA
+BKAR.INVL.PDESC
+BKIC.REF.PDESC 
+BKIC.PROD.DESC 
+BKAR.INVL.UM.LN
+BKAR.INVL.PPRCEC
+BKAR.INVL.PDISCK
+BKAR.INVL.PEXT S
+BKAR.INVL.LOC  v
+BKAR.INVL.RTS  u
+BKIC.PROD.TYPE -
+BKAR.INVL.PCOGS[
+MTIC.PROD.RCOSTF
+BKIC.PROD.NOTE 
+BKAR.INVL.TXBLEd
+BKAR.INVL.ESD  
+BKAR.INVL.ASD  
+BKEDI.NOTE.EDI 
+BKEDI.NOTE.NOTE
+BKBM.PARENT    
+BKBM.COMPONENT 
+MTIC.PROD.SUM  1
+BKIC.PROD.CODE 
+BKBM.QTY.REQD   
+BKAR.SLSP.NUM  
+BKAR.INV.SLSP  
+BKAR.COMM      
+BKAR.INV.COMMPR
+BKPR.SLS.EMPNUM
+BKPR.SLS.RATE  
+BKAR.CUSTCODE  
+BKSY.AR.SLSP   
+BKAR.INV.SLSP2 
+BKYS.YN        
+BKIC.PROD.PRICEZ
+BKIC.PMAT.EXP  
+BKIC.PMAT.PCODE
+BKIC.PMAT.CUST 
+BKIC.PMAT.RATE 
+BKIC.PMAT.QTY  k
+BKIC.PROD.AVOP 
+BKIC.PMAT.COMM1
+BKAR.INVL.COMPR
+BKIC.PMAT.COMM2m
+BKIC.PMAT.PNUM 
+BKIC.PROD.CLASS6
+BKIC.PMAT.PER  
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BKYSMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+ZA_TEXT        
+ZA_DFLT        
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+MSG_PTR        
+MESSAGE        
+MSG_TYPE       
+LOCK_TYPE      
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           

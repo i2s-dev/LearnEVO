@@ -1,0 +1,284 @@
+TASCOLOR
+BKSYMSTR
+FILELOC 
+FILEDES 
+BKSYHELP
+DBAHLPID
+filelocA
+bksymstrA
+UT-IB  Create Company - No File Changes A
+F1 HelpA
+ESC ExitA
+UT-IB  Create Company - No File Changes A
+F1 HelpA
+ESC ExitA
+Enter the two character code used to identify the companies files here.  If this is an Add it will be appended to the end of the file name and they will be placed in the appropriate sub-directory.A
+This is the sub-directory where you want the files to be located.  Leave this blank to use the default (current) sub-directory.A
+Adding file:  A
+F1 Help,F2 Display Company CodesA
+ESC ExitA
+F1 HelpA
+ESC ExitA
+F1 Help,F2 Display Company CodesA
+ESC ExitA
+BKSYMSTRA
+The company code needs to be two characters.  Please reenter a two character Company Code.A
+The company code entered: A
+ is not in this dictionary.  Please make sure you have entered the correct code.  It must exist before you can delete it.A
+The company code: A
+ is already part of this dictionary.  You can't add it again.A
+You can't delete the default (blank) company.A
+ Current Companies A
+MEATTRIBA
+FIELDA
+MEMORYA
+MONTHENDA
+TRANSLTEA
+This Company Can not be removedA
+filelocA
+Company code A
+ not foundA
+Are you Absolutely Sure ? NL
+ProcessingA
+ErrorA
+Error - in Initilizing file A
+FD NAME IS BLANKA
+CREATE NAME IS BLANKA
+filedesA
+ is not in FILEDES.B.  It needs to be there before using this program to initialize data files.A
+The FD: A
+ > NULA
+COPY A
+                     Create Company Records in Fileloc
+           
+           
+  Enter Company Code:                                  
+           
+                                                       
+           
+  Path:                                                
+           
+                   
+                   
+ This Procedure is here only to    
+                   
+ fix invalid company codes in the  
+                   
+ location file. This will not      
+                   
+ Delete any file!  Please do not   
+                   
+ Run this without guidance from    
+                   
+ Tech support!                     
+                   
+                                   
+                   
+  Company Code                     
+                   
+                                   
+                   
+     Ready to  Process             
+                   
+                                   
+                   
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+REG_AL         
+REG_AH         
+REG_BL         
+REG_BH         
+REG_CL         
+REG_CH         
+REG_DL         
+REG_DH         
+REG_SI         
+REG_DI         
+REG_DS         
+REG_ES         
+CARRY          
+ZERO           
+REG_DX         
+ADD_OR_DELETE  
+COPY.FILE      
+COMPANY_CODE   
+COMPANY_CPY_FRM
+COMPANY_PATH   
+FILE_NAME      
+FRM_FILE_NAME  
+COMPANY_NAME   
+BKSYMSTR_HNDL  
+CC_CODE        
+CC_NAME        
+CC_CNTR        
+HOLDER         
+LOC_HNDL       
+PRGS_WHR       
+BKSY.PRGS.WHR  
+LOC_FILE_NAME  
+LOC_LOCATION   
+LOC_COMP_CODE  
+CC_CUR_VAL     
+CNTR           
+BC             
+WC             
+SC             
+CC             
+FILTER_CODE    
+CONFERM        
+COMPANY        
+FILELOC_HNDL   
+CREATE_FILE    
+DELETE         
+FD_NAME        
+FD_EXT         
+LOC_HNDL2      
+FILE_LOC       
+CREATE_SPECS   
+DES_HNDL       
+LOC_BUFF_NAME  
+DES_INFORMATION
+FROM_FILE      
+TO_FILE        
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+MESSAGE        
+FC             

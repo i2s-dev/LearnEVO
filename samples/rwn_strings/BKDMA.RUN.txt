@@ -1,0 +1,705 @@
+TAS32b
+BKYSMSTR
+CLASS   
+CLASMSTR
+BKICLOCM
+BKGLCOA 
+MTICMSTR
+BKICMSTR
+BKICLOC 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKYSMSTRA
+BKICLOCA
+BKICMSTRA
+MTICMSTRA
+BKGLCOAA
+BKICLOCMA
+CLASMSTRA
+CLASSA
+BKYSMSTRL
+classI
+CLASSA
+CLASSA
+BKDMDA
+DM-A  Enter Product ClassesA
+BKDMDA
+classI
+CLASSA
+classI
+CLASSL
+     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:F
+ One of the requirements for using FIFO or LIFO costingF
+ is that the Inventory Asset GL Account be the same forF
+ all locations within a given Class of inventory parts.F
+ The same holds true for the WIP GL Account.  The Asset/WIPF
+ GL Accounts can be different for each Class, but withinF
+ each Class, the Asset GL for every location must be theF
+ same, and the WIP GL for every location must be the sameF
+ (but the Asset and WIP GLs can be different from each other).F
+ In your data, one or more Classes exist where the AssetF
+ and/or WIP GL Accounts are NOT the same at all locationsF
+ within the Class.  You must correct this in order for FIFOF
+ or LIFO Costing to work correctly.F
+ You should use DM-A (Enter Product Classes) to change the AssetF
+ and WIP GL Accounts to be the same at all locations of eachF
+ Class.I
+BKDMDA
+BKDMDA
+CLASSA
+F1 Help,F2 Lookup,F3 Clear,Home Make
+LocationA
+Esc ExitA
+F1 Help,F2 Lookup,F3 ClearA
+Esc ExitA
+CLASSA
+BKDMDA
+BKDMDA
+BKDMDA
+F1 Help,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,F3 ClearA
+Esc Exit,F10 SaveA
+BKDMDA
+F1 Help,F2 Lookup,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,F2 LookupA
+Esc Exit,F10 SaveA
+Save this Class record?L
+The Class code cannot be blank. A
+You must provide all 5 of the GL Codes because GL Posting in DD-A is turned on. A
+bkglcoaI
+bkglcoaI
+bkglcoaI
+bkglcoaI
+bkglcoaI
+One or more of the GL Accounts specified is invalid.  Please reenter. A
+ does not exist.  Do you wish to create a new Location?A
+Location A
+BKICLOCMA
+CLASMSTRA
+ does not exist.  Do you wish to create a new Class?A
+Class A
+CLASMSTRA
+CLASMSTRA
+CLASSI2
+CLASSL
+CLASSL
+CLASSA
+classI
+CLASSA
+CLASSL
+     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:F
+ One of the requirements for using FIFO or LIFO costingF
+ is that the Inventory Asset GL Account be the same forF
+ all locations within a given Class of inventory parts.F
+ The same holds true for the WIP GL Account.  The Asset/WIPF
+ GL Accounts can be different for each Class, but withinF
+ each Class, the Asset GL for every location must be theF
+ same, and the WIP GL for every location must be the sameF
+ (but the Asset and WIP GLs can be different from each other).F
+ The Class you just added/edited (A
+) has AssetA
+ and/or WIP GL Accounts that are NOT the same at all locationsF
+ within the Class.  You must correct this in order for FIFO orF
+ LIFO Costing to work correctly (your changes have been saved).F
+ You should use DM-A (Enter Product Classes) to change the AssetF
+ and WIP GL Accounts to be the same at all locations of eachF
+ Class.I
+BKDMDA
+CLASSF
+You may not delete a class record with inventory recordsF
+still associated with it. You must first reassign all ofF
+the inventory records in this class to another class beforeF
+you can remove this class record from the file.I
+CLASSA
+Delete this class?L
+CLASSA
+CLASMSTRA
+CLASSA
+CLASSA
+CLASMSTR,)
+DM-A  Enter Product Classes [Create New Location Class Records]A
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc Enter
+ClassesA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+One record for each inventory class you specified will be created for location "A
+".  Do you wish to generate these class/location records now?A
+BKICLOCMA
+BKICLOCMA
+CLASSA
+ < Press ESC to Abort > A
+CLASSA
+CLASSA
+CLASSA
+CLASSA
+CLASSA
+                        A
+There are no records in the class file that match your criteria.I
+CLASSA
+CLASMSTRA
+BKGLCOAA
+MTICMSTRA
+BKICMSTRA
+BKICLOCA
+BKICLOCMA
+CLASSA
+Update the inventory records with these changes?L
+Please wait while the inventory records in this class are updated.A
+MTICMSTRA
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+BKICLOCA
+This location does not exist.  Would you like to create it?L
+CLASMSTRA
+CLASMSTRA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOAA
+BKGLCOA
+               
+               
+                                                   
+               
+   Product Class            Location               
+               
+                                                   
+               
+   Description                                     
+               
+                                                   
+               
+   GL Asset/Exp Acct             -                 
+               
+   GL COGS Acct                  -                 
+               
+   GL Sales Acct                 -                 
+               
+   GL Non-Tax                    -                 
+               
+   GL WIP Acct                   -                 
+               
+                                                   
+               
+ COPY FROM LOCATION 
+                                                                        
+       Template Location                    Copy From Class             
+                                                 Thru Class             
+                                                                        
+ COPY TO LOCATION 
+                                                                        
+       Location To Create                   Use G/L Accounts from       
+       Class Records For                    Template Loc? [Y/N]         
+                                                                        
+ NEW G/L ACCOUNTS 
+                                                                        
+ GL Asset/Exp Acct            -       GL Sales Non-Tax            -     
+ GL COGS Acct                 -       GL WIP Acct                 -     
+ GL Sales Acct                -                                         
+                                                                        
+     Creating Inventory Class                                           
+                                                                        
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF
+ B - DescriptionA
+ Search Key A
+BKICLOCMA
+ Locations A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICLOCMA
+Code      A
+Name                          A
+StateA
+BKICLOCMA
+Name                          A
+Code      A
+StateA
+BKICLOCMA
+Code         F
+Name         I
+F1 HelpA
+Esc ExitA
+ A - CodeF
+ B - NameA
+ Search Key A
+ALOIEI
+BKGLCOAA
+ GL Accounts A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKGLCOAA
+Acct Cd   A
+Description              A
+BKGLCOAA
+Description              A
+Acct Cd   A
+BKGLCOAA
+BKGLCOAA
+GL AccountF
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - GL AccountF
+ B - DescriptionA
+ Search Key I
+All AccountsF
+Asset AccountsF
+Liability AccountsF
+Owners Equity AcctsF
+Income AccountsF
+Expense AccountsI
+ A - All AccountsF
+ B - Asset AccountsF
+ C - Liability AccountsF
+ D - Owners Equity AcctsF
+ E - Income AccountsF
+ F - Expense AccountsA
+ Choose Acct Type I
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYC
+YNNNYFP%
+NNNYNQ
+YNNNYF`'
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF`'
+YNNNYX'j
+YNNNYF
+YNNNYX}j
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF`'
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC)m
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+GL_TYPE        
+CLASS.HLD      
+GLA.ACT        
+GLA.DPT        
+GLC.ACT        
+GLC.DPT        
+GLS.ACT        
+GLS.DPT        
+GLN.ACT        
+GLN.DPT        
+GLW.ACT        
+GLW.DPT        
+NEED.ACCT      
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+CFROM          
+PASS.CLASS     
+PASS.LOC       
+FOUND.BAD      
+ORIG.ASSET     
+ORIG.WIP       
+NEW.ASSET      
+NEW.WIP        
+ORIG.CLASS     
+CLASS.REC      
+GL.OK          
+MTCLASS.CLASS  
+MTCLASS.M.CLASS
+MTCLASS.DESC   
+MTCLASS.M.DESC 
+MTCLASS.LOC    
+BKYS.YN        
+CLASS.GLA      ,
+CLASS.DPTA     6
+CLASS.GLW      d
+CLASS.DPTW     n
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+BKIC.LOCM.CODE 
+CLASS.GLC      :
+CLASS.DPTC     D
+CLASS.GLS      H
+CLASS.DPTS     R
+CLASS.GLSNT    V
+CLASS.DPTNT    `
+BKGL.ACCT      
+BKGL.GLDPT     
+MTIC.PROD.CLASS
+OLD.LOC        
+NEW.LOC        
+FROM.CLASS     
+THRU.CLASS     
+USE.OLD.GL     
+TEMP.CLASS     
+TEMP.LOC       
+TEMP.DESC      
+BKIC.PROD.CODE 
+MTIC.PROD.CODE 
+BKIC.PROD.GLA  0
+BKIC.PROD.DPTA :
+BKIC.PROD.GLC  >
+BKIC.PROD.DPTC H
+BKIC.PROD.GLS  L
+BKIC.PROD.DPTS V
+BKIC.PROD.GLSNTb
+BKIC.PROD.DPTNTl
+MTIC.PROD.GLWIP
+MTIC.PROD.WIPDP
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKIC.LOC.GLA   9
+BKIC.LOC.DPTA  C
+BKIC.LOC.GLC   G
+BKIC.LOC.DPTC  Q
+BKIC.LOC.GLS   U
+BKIC.LOC.DPTS  _
+BKIC.LOC.GLSNT c
+BKIC.LOC.DPTSNTm
+BKIC.LOC.GLWIP q
+BKIC.LOC.DPTWIP{
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+CLASSMF2.COL   
+CLASSMF2.ROW   
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+CLASSM_TTL1    
+CLASSM_USCORE  
+DATC           
+TEMP_KEY       
+MENULIST       
+LOCMF2.COL     
+LOCMF2.ROW     
+LOCM_TTL1      
+LOCM_USCORE    
+BKIC.LOCM.NAME 
+BKIC.LOCM.STATE
+TEMP_KEY       
+GL_TYPE        
+GLF2.COL       
+GLF2.ROW       
+WHICH_ACCT     
+ACCT_LIST      
+GL_TTL1        
+GL_USCORE      
+BKGL.ACCTD     
+BKGL.TYPE      '
+CC             
+TEMP_KEY       
+SRCH_HOW_MSG   
+FC             
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

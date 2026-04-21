@@ -1,0 +1,223 @@
+ROUTING 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKRTEMTRA
+DE-D  Import RoutingsA
+BKDED.IMPA
+F1 HelpA
+Esc ExitA
+BKDED.IMPA
+Now Working on Routing for: A
+BKRTEMTRI
+Now Working on Routing for: A
+BKRTEMTRI
+                            * = Basic Fields                                  
+                   Name of File to Import (with path)                         
+                                                                              
+                                                                              
+               Skip or Replace existing Part Numbers? [S,R]                   
+               Calculate Time per Part? [Y,N]                                 
+               Comma Delimited of Fixed Length? [C,F]                         
+                                                                              
+*        Part Number               Vendor                       Notes line 11 
+*        Sequence                  Vendor Cost                  Notes line 12 
+*        Operation                 Minimum Charge               Notes line 13 
+*        Sequence Type             Lead Time                    Notes line 14 
+         Description               Decimal Time/Part            Notes line 15 
+*        Work Center               Notes line 1                               
+         # Processes               Notes line 2                               
+         Time per Part             Notes line 3                               
+         Parts per Hour            Notes line 4                               
+         Setup                     Notes line 5                               
+         Use Std Time              Notes line 6                               
+         Routing Number            Notes line 7                               
+         Number of People          Notes line 8                               
+         Machine Number            Notes line 9                               
+         Tool Number               Notes line 10                              
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+FILE.NAME      
+REPLACE        
+COMMA.FIXED    
+FIELD.NUMBER   
+FIELD.NUMBER2  
+CRLF           
+TEMP.SECS      
+CALC           
+PART.NUM       
+TEMP.FIELD     
+TEMP.FIELD2    
+CUST.REC1      
+MCNTR2         
+MCNTR3         
+IMP_HNDL       
+MCNTR          
+MTRO.CODE      
+MTRO.OPER      
+MTRO.OP.TEMP.NO
+MTRO.TYPE      M
+MTRO.OPERDESC  /
+MTRO.WC        
+MTRO.NUM.PROCES
+MTRO.TIMEPART  `
+MTRO.PARTSHR   X
+MTRO.SETUPHRS  d
+MTRO.STD.TIME  
+MTRO.NUM       
+MTRO.NUM.PERSON
+MTRO.TMACHINE  i
+MTRO.TOOL      
+MTRO.VENDCODE  
+MTRO.VENDCOST  P
+MTRO.MIN.CHG   
+MTRO.LEAD      N
+MTRO.LONGTIME  
+MTRO.INSTR     p
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+MSG_PTR        
+MESSAGE        
+FC             

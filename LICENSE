@@ -1,0 +1,25 @@
+Copyright (c) 2026 i2Systems. All rights reserved.
+
+This repository and its contents (the "Work") are the confidential and
+proprietary property of i2Systems and are provided for internal use
+only.
+
+No part of the Work may be reproduced, distributed, publicly displayed,
+sublicensed, or otherwise exploited, in whole or in part, outside of
+i2Systems without the prior written permission of i2Systems.
+
+The Work includes reference material, reverse-engineering notes, and
+samples derived from third-party software (including EvoERP / Addsum
+Business Solutions products, TAS Professional runtime, Nevrona
+ReportBuilder, and Pervasive/Actian Zen data files). All third-party
+names, trademarks, and copyrights are the property of their respective
+owners. Nothing in this repository grants any rights to that
+third-party software; refer to the respective vendors' licenses for
+terms of use.
+
+THE WORK IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT
+SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES
+OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION WITH THE
+WORK OR THE USE OR OTHER DEALINGS IN THE WORK.

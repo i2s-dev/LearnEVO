@@ -1,0 +1,318 @@
+ISIS    
+BKICTAX 
+ISTAXFIL
+ISTAXGRP
+BKISTAX 
+BKARINV 
+BKARHTAX
+BKARCUST
+BKAPPO  
+BKAPVEND
+BKSYHELP
+DBAHLPID
+TASCOLOR
+ISTAXGRPA
+istaxfilA
+BKistaxA
+BKICTAXA
+BKARHINVA
+BKARHTAX
+TAXUSA  Tax Conversion Utility [United States]A
+It appears that this tax conversion utility has already been run for this company.  There is no harm in running the conversion a second time.  Do you still wish to run this conversion utility? L
+This conversion utility will prepare your data files for use of the new sales tax system that was implemented during November 1999.  This may take a long time to run, depending on how much data the current company has.  No other users should log into this company while the conversion is running.  Be sure to run this conversion for each of your companies.  Are you ready to proceed with the conversion for this company? L
+BKYSMSTRA
+BKSYMSTRA
+Other users are currently logged into this company.  Please try running this conversion again later. A
+Unable to access one of the system files.  Another user may have it locked. A
+BEGIN BALA
+BKARINV F
+BKARRINVF
+BKESTQT F
+BKEDIH  I
+BKARCUSTF
+BKARECSTI
+BKAPPO  F 
+BKAPHPO F 
+BKAPRFQ I
+BKAPVENDF@
+BKAPEVNDI
+Tax conversion successfully completed. A
+JAN. HISTI
+FEB. HISTI
+MAR. HISTI
+APR. HISTI
+MAY. HISTI
+JUN. HISTI
+JUL. HISTI
+AUG. HISTI
+SEP. HISTI
+OCT. HISTI
+NOV. HISTI
+DEC. HIST
+ File       Code       
+ BKICTAX               
+ BKARHINV              
+ BKARINV               
+ BKARRINV              
+ BKESTQT               
+ BKEDIH                
+ BKARCUST              
+ BKARECST              
+ BKAPPO                
+ BKAPHPO               
+ BKAPRFQ               
+ BKAPVEND              
+ BKAPEVND              
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ICTAX.HNDL     
+ISIS           
+ARH            
+TAXCODE        
+CAL.PER        
+PREVP          
+CHGD           
+XLOC           
+YLOC           
+BKSY.HNDL      
+BKYS.HNDL      
+XIS.TAXABLE    
+XIS.NONTAX     
+XIS.TAX        
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+HTAX.HNDL      
+IS.TAX.CVT     .
+BKIC.TAX.STATE 
+BKIC.TAX.LOCAL 
+ISIS.TXF.CODE  
+ISIS.TXF.DESC  
+BKIC.TAX.NAME  
+ISIS.TXF.VNDCD (
+BKIC.TAX.VENDORB
+ISIS.TXF.GLAPO A
+ISIS.TXF.GLDPO K
+ISIS.TXF.POHRNG
+ISIS.TXF.POPERC
+ISIS.TXF.GLASO 
+BKIC.TAX.GLACT 4
+ISIS.TXF.GLDSO 
+BKIC.TAX.GLDPT >
+ISIS.TXF.SOHRNGo
+ISIS.TXF.SOPERC
+BKIC.TAX.RATE  ,
+ISIS.TXF.IDNUM 2
+BKIC.TAX.NUMBER
+ISIS.TXF.TAXIN 
+ISIS.TXG.NAME  
+ISIS.TXG.CODE  
+ISIS.TXG.DESC  w
+ISIS.TXG.DESCF 
+ISIS.TXG.TAXON d
+ISIS.TXG.PID   m
+ISIS.TXG.FRGT  H
+BKIC.TAX.FRGHT t
+ISIS.TXG.IDC   I
+ISIS.TXG.PERCC 
+ISIS.TXG.TOTPER
+ISIS.TXG.TOFPERQ
+BKIS.TAX.CODE  
+BKIS.TAX.DATE  
+BKIS.TAX.TRFLAG
+BKIS.TAX.TAXAMT
+BKIC.TAX.OUTSTDl
+BKIS.TAX.CUST  '
+BKIS.TAX.VEND  1
+BKAR.INV.CUSCOD
+BKAR.INV.ISTXKY
+BKAR.INV.TAXKEY
+BKAR.INV.NUM   
+BKAR.TAX.INVNO 
+BKAR.TAX.CODE  
+BKAR.TAX.ID    
+BKAR.TAX.PID   !
+BKAR.TAX.AMOUNT"
+BKAR.INV.TAXAMT!
+BKAR.INV.TAXRTE;
+BKAR.INV.TOTAL )
+BKAR.INV.INVDTE
+BKIS.TAX.TAXABL
+BKIS.TAX.NONTAX
+BKIS.TAX.INVNO ;
+SOHDR_HNDL     
+I              
+SOFILE         
+SOHANDLE       
+CUST_HNDL      
+CUFILE         
+CUHANDLE       
+BKAR.CUSTCODE  
+BKAR.IS.TAXGRP *
+BKAR.TAX.STATE 
+BKAR.TAX.LOCAL 
+BKAR.IS.MCCODE 5
+POHDR_HNDL     
+POFILE         
+POHANDLE       
+BKAP.PO.VNDCOD 
+BKAP.PO.ISTXGR L
+BKAP.PO.ISBROKEZ
+VEND_HNDL      
+VEFILE         
+VEHANDLE       
+BKAP.VENDCODE  
+BKAP.IS.TAXGRP 
+BKAP.IS.MCCODE 
+BKAP.IS.DCODE  
+MTH            
+DTE.CODE       
+ISHTX.HNDL     
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+MESSAGE        

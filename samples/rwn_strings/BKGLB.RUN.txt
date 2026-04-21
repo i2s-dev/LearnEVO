@@ -1,0 +1,2093 @@
+BKYSMSTR
+TASCOLOR
+BKGLGJRN
+ISBANKS 
+BKGLGJLN
+BKGLCOA 
+BKSYMSTR
+BKAPDESC
+BKGLCHK 
+BKGLTRAN
+BKSYHELP
+DBAHLPID
+ISGLDATE
+BKSYPRTR
+BKICMSTR
+ISIS    
+ISMCF   
+ISLOG   
+BKAPVEND
+BKARCUST
+BKCMACCT
+MKAHIST 
+ISNUMBER
+ISBSF   
+ - ISTS Enhancement 11/20/15A
+ISTECHL
+ismcfA
+bkgldescA
+ISBANKSI}
+General Journal      [GJ]F
+Cash Receipts        [CR]F
+Cash Disbursements   [CD]F
+Transaction Template [TT]F
+Beginning Balance    [GJ]A
+BKGLGJLNA
+BKGLTGJLA
+BKGLGJRNA
+BKGLTGJRA
+BKGLCOAA
+bkglchkA
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+BKGLTEMPI
+BKGLBA
+GL-B  Enter/Post General Journal TransactionsA
+NormalBkgA
+WindowBkgA
+ Transaction Line Items A
+BoxBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ Transaction Line Items A
+GL-B  Enter/Post General Journal TransactionsA
+ General Journal Transactions A
+ Transaction Templates A
+F3 Print txn,F4 Print Tag Txn,F9 Copy as new txn,SF4 Change OrderA
+^P Post txn,F10 Post Tag Txn,Esc ExitA
+INS Add,ENTER Edit,DEL Delete,^O Create reverse txnA
+HOME Notes,SF8 Tag,^T List templatesA
+F3 Print txn,F9 Copy as new txn,SF4 Change OrderA
+Esc ExitA
+INS Add,ENTER Edit,DEL Delete,^O Create reverse txnA
+^T List txnA
+This transaction is currently locked by another user. A
+Trans#A
+PostedA
+LinesA
+  Date  A
+Trans Type     A
+Trans CodeA
+Dp/Ck#A
+Trans#A
+#LinesA
+  Date  A
+Trans Type     A
+Trans CodeA
+Dp/Ck#A
+  Date  A
+Trans#A
+PostedA
+LinesA
+Trans Type     A
+Trans CodeA
+Dp/Ck#A
+  Date  A
+Trans#A
+#LinesA
+Trans Type     A
+Trans CodeA
+Dp/Ck#A
+General JournalA
+Cash Receipts  A
+Cash Disburse  A
+Beginning Bal  A
+               A
+GL-B  Add new GJ TransactionA
+GL-B  Add new GJ Transaction TemplateA
+GL-B  Edit existing GJ TransactionA
+GL-B  Edit existing GJ Transaction TemplateA
+Loading transaction line items...A
+Unable to load all lines of this entry as it exceeds the limit of A
+ lines.  You may view this transaction but not save any changes to it. A
+This transaction has already been posted.  You may view it but will not be able to save any changes to it. A
+General JournalI
+Cash ReceiptsI
+Cash DisbursementsI
+Trans TemplateI
+Beginning BalanceA
+Enter a number from 1 to 5.  NOTE: if you are entering a TT type, the journal type will be automatically set to a type of GJ when creating transactions. A
+F1 Help,F2 LookupA
+F10 Save,Esc Opening ScreenA
+HOME NotesA
+F1 Help,F2 LookupA
+F10 Line Items,Esc Opening ScreenA
+HOME NotesA
+F1 HelpA
+F10 Save,Esc Opening ScreenA
+HOME NotesA
+F1 HelpA
+F10 Line Items,Esc Opening ScreenA
+HOME NotesA
+GJ Transaction TypesA
+General JournalA
+Cash ReceiptsA
+Cash DisbursementsL
+Trans TemplateA
+Beginning BalanceA
+F1 HelpA
+F10 Save,Esc Opening ScreenA
+HOME NotesA
+F1 HelpA
+F10 Line Items,Esc Opening ScreenA
+HOME NotesA
+Abandon any changes to this transaction?L
+F1 Help,F2 LookupA
+F10 Save,Esc Opening ScreenA
+HOME NotesA
+F1 Help,F2 LookupA
+F10 Line Items,Esc Opening ScreenA
+HOME NotesA
+F1 HelpA
+F10 Save,Esc Opening ScreenA
+HOME NotesA
+F1 HelpA
+F10 Line Items,Esc Opening ScreenA
+HOME NotesA
+The transaction date is not valid. A
+The transaction type is not valid. A
+General JournalA
+Cash ReceiptsA
+Cash DisbursementsA
+Trans TemplateA
+Beginning BalanceI
+BEGBALA
+BEGBALA
+      I
+The bank account is not valid. A
+BKGLCOAA
+bkglcoaI
+The GL Account for this bank account is not valid. A
+You must provide a deposit or check number for Cash Receipts and Cash Disbursements transactions. A
+Checking GJ Batch Number.  Please wait...A
+General Journal           I
+Cash Receipts Journal     I
+Cash Disbursements JournalI
+Transaction Template      I
+Beginning Balance (GJ)    A
+                          I
+GL-B  Add new GJ TransactionA
+GL-B  Edit existing GJ TransactionA
+F3 Print transactionA
+F10 Save,Esc Opening ScreenA
+INS Add,ENTER Edit,DEL DeleteA
+HOME NotesA
+F3 Print transactionA
+Esc Opening ScreenA
+INS Add,ENTER Edit,DEL DeleteA
+HOME NotesA
+ Trans No. : A
+ Trans Date: A
+ Trans Code: A
+ Dep/Chk#  : A
+ Bank      : A
+ GL: A
+Needed to balanceA
+GL Account     A
+Description              A
+Debit AmountA
+Credit AmountA
+                     A
+You may not make any changes to this transaction. A
+Delete this line item?L
+Unable to add a new line, the maximum of A
+ lines has already been reached. A
+Exit without saving any changes to the line items?L
+Saving transaction line items...L
+This transaction is out of balance.  It has been saved, but cannot be posted until it is in balance. A
+This template transaction is out of balance.  It has been saved and can be copied or reversed to an actual transaction but it will not be possible to post it until it is in balance. A
+infoF`
+Beginning BalanceA
+GL-B  Add new transaction line itemA
+GL-B  Edit existing transaction line itemA
+F1 Help F5 Default DescA
+F10 Save,Esc ExitA
+HOME NotesA
+F1 Help,F2 Lookup,F5 Default DescA
+F10 Save,Esc ExitA
+HOME NotesA
+F1 Help,F5 Default DescA
+F10 Save,Esc ExitA
+HOME NotesA
+BKGLCOAA
+F1 Help,F2 Lookup,F5 Default DescA
+F10 Save,Esc ExitA
+HOME NotesA
+F1 Help,F5 Default DescA
+F10 Save,Esc ExitA
+HOME NotesA
+This amount must be greater than zero.A
+This amount cannot exceed 99,999,999.99A
+bkglcoaI
+The GL account is not valid. A
+You cannot post to your Current Earnings account.  The Current Earnings account balance is automatically recalculated each time you run a balance sheet. A
+This account: A
+has been designated as the Retained Earnings Account.F (
+Normal General Journal entries to this account are:F (
+* To show dividends issued from corporate profits.F (
+  [Debit to R/E  and Credit Dividends Issued (O type)]F (
+* To show retained earnings appropriated for other uses.F (
+  [Debit to R/E  and Credit another O/E type account]F (
+All current year retained earnings adjustments andF (
+current earnings figures will be combined and passedF (
+to 1 Year Past when the Year End Routine is run.I
+Warning: General Journal transactions to your F (
+Accounts Receivable account will not be reflectedF (
+in the A/R subsidiary files.  It is recommendedF (
+that all A/R transactions be processed through F (
+the Accounts Receivable module.I
+Warning: General Journal transactions to your F (
+Accounts Payable account will not be reflectedF (
+in the A/P subsidiary files.  It is recommendedF (
+that all A/P transactions be processed through F (
+the Accounts Payable module.I
+You may not make Beginning Balance entries to Income or Expense accounts.  You must make a Beginning Balance entry to your Retained Earnings Account. A
+You may not make Beginning Balance entries to accounts with prior year balances. A
+Please specify whether the amount is a debit or credit. A
+This amount cannot be negative. A
+Abandon changes to this line item?L
+F1 HelpA
+Esc Line ItemsA
+If any text is entered here, it will serve as your default line item description rather than the GL account description. L
+Please first highlight the transaction that you wish to post. A
+This transaction has already been posted (or marked as ready to be posted). A
+Transaction A
+ is ready to be posted via GL-O. A
+This transaction is out of balance.  It must be in balance before you post it. A
+You cannot post to your Current Earnings account.  The Current Earnings account balance is automatically recalculated each time you run a balance sheet. A
+No line items were found for this transaction to post. A
+Please first highlight the transaction that you wish to print. A
+Please first highlight the transaction that you wish to copy. A
+This will create a new, unposted transaction based on number A
+.  Do you wish to proceed?A
+NormalBkgA
+NormalBkgA
+ Enter the desired transaction date A
+Unable to copy all lines of this entry as it exceeds the limit of A
+ lines. A
+New transaction number A
+ has been created. A
+GJTNUMA
+GJNUMA
+Please first highlight the transaction to be deleted. A
+Delete this entire transaction?L
+Deleting transaction...A
+You must enter a transaction date. A
+The Beginning Balance date should be the LAST day of the final period in your previous accounting system. A
+The Beginning Balance date cannot be in the current fiscal year.  It should be set to the LAST day of the final period in your previous accounting system. A
+This is not a valid transaction type. A
+General JournalI
+Cash ReceiptsA
+Cash DisbursementsA
+Trans TemplateI
+Beginning BalanceI
+Beginning Balance Entries:F (
+   These type of entries are used during systemF (
+   start up to enter beginning GL balances fromF (
+   your previous accounting systems.  The transactionF (
+   date should be set to the last day of the finalF (
+   period in your previous system.I
+BEGBALA
+BEGBALA
+      L
+The bank account sort number is not valid.  It must be a number from 1-99. A
+This bank account is not properly set up in AD-B (it has no name) and cannot be used. A
+BKGLCOAA
+bkglcoaI
+This bank account is not properly set up in AD-D (its GL account is not valid) and cannot be used. A
+BEGBALA
+BEGBALA
+      L
+You must provide a deposit or check number for Cash Receipts and Cash Disbursements transactions. A
+You cannot enter a negative number for a deposit or check number. A
+bkglcoaI
+This is not a valid GL account. A
+You must have a transaction number before you can enter notes.A
+GL-B  General Journal Notes For Trans#: A
+NormalBkgA
+F3 Ins Line,F4 Del Line,A
+ DownA
+F10 Save Notes,Esc Exit NotesA
+F6 Hide NoteA
+NormalBkgA
+NormalBkgA
+Inserting a line here will cause the last line of these notes to be dropped.  Do you still wish to insert the line?L
+Exit notes without saving any changes?L
+Saving notes...I
+GL-B  Enter/Post General Journal TransactionsA
+GL-B  Add new GJ TransactionA
+GL-B  Add new GJ Transaction TemplateA
+GL-B  Edit existing GJ TransactionA
+GL-B  Edit existing GJ Transaction TemplateA
+Transaction #  FP1
+Trans Date     I
+                          GENERAL JOURNAL TRANSACTIONS          Page:
+ Trans Dt   Trans#   Type   Trans Code   Dep/Chk#   Posted
+ --------   ------   ----   ----------   --------   ------
+ Acct Code  Dept  Description                 Debit Amount     Credit Amt
+ ---------- ----  -------------------------   ------------   ------------
+                  ***** Trans Totals *****
+ Notes:
+        
+        
+  Transaction Number                                          
+        
+                                                              
+        
+  Transaction Type [1-5]                                      
+        
+                                                              
+        
+  Transaction Date                                            
+        
+                                                              
+        
+  Bank Account [1-99]                                         
+        
+                                                              
+        
+  GJ Transaction Code                                         
+        
+                                                              
+        
+  Deposit/Check Number                                        
+        
+    Transaction No.                                                       
+    Transaction Type                                                      
+    Transaction Date                                                      
+                                                                          
+    Transaction Code                                                      
+    Deposit/Check#                                Needed to balance       
+    Bank Acct                                     
+       
+    Bank GL Acct                                  $                       
+                                                                          
+                                                                          
+    GL Account        Line item description       Line item amount        
+              -                                   Dr/Cr    $              
+                                                                          
+        
+        
+  Transaction Number                                          
+        
+                                                              
+        
+  Transaction Type [1-5]                                      
+        
+                                                              
+        
+  Transaction Date                                            
+        
+                                                              
+        
+  Bank Account [1-99]                                         
+        
+                                                              
+        
+  GJ Transaction Code                                         
+        
+                                                              
+        
+  Deposit/Check Number                                        
+        
+    Transaction No.                                                       
+    Transaction Type                                                      
+    Transaction Date                                                      
+                                                                          
+    Transaction Code                                                      
+    Deposit/Check#                                Needed to balance       
+    Bank Acct                                     
+       
+    Bank GL Acct                                  $                       
+    Default descrip                                                       
+                                                                          
+    GL Account       Line item description        Line item amount        
+              -                                   Dr/Cr    $              
+                                                                          
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+BKSYMSTRA
+BKSYMSTRA
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact IS Tech Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact IS Tech Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact IS Tech Support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+BKYSMSTRA
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact IS Tech Support. A
+The BKYSMSTR file has not been set-up or could not be found. A
+Unable to access the BKYSMSTR system file.  Another user may have it locked. A
+BKYSMSTRI
+The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact IS Tech Support. A
+Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact IS Tech Support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when Accounting is activated. A
+This program is only available when Accounts Receivable is activated. A
+This program is only available when Accounts Payable is activated. A
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+dbabextmI
+dbabextlA
+dbabextsA
+F1 HelpA
+Esc ExitA
+MenuBkgA
+MenuBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+MenuBkgA
+The date is not valid (00/00/00). A
+Transactions cannot be posted until the fiscal year dates are set up in AM-N.A
+Transactions with dates greater than the Future Post Date (A
+) cannot be posted.A
+A transaction with this date cannot be posted to the GL.A
+The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the six preceding fiscal years.A
+The starting date of the current fiscal year is A
+A transaction with this date cannot be posted to the GL.  The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the two preceding fiscal years.  The starting date of the current fiscal year is A
+This transaction will be posted to a prior fiscal year.  Is this OK? L
+The transaction date is prior to the Period-End Close Date. A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ISGLDATEI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgI
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+ALOIEI
+BKGLCOAA
+ GL Accounts A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKGLCOAA
+Acct Cd   A
+Description              A
+BKGLCOAA
+Description              A
+Acct Cd   A
+BKGLCOAA
+BKGLCOAA
+GL AccountFP1
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - GL AccountFP1
+ B - DescriptionA
+ Search Key I
+All AccountsFP1
+Asset AccountsFP1
+Liability AccountsFP1
+Owners Equity AcctsFP1
+Income AccountsFP1
+Expense AccountsI
+ A - All AccountsFP1
+ B - Asset AccountsFP1
+ C - Liability AccountsFP1
+ D - Owners Equity AcctsFP1
+ E - Income AccountsFP1
+ F - Expense AccountsA
+ Choose Acct Type I
+Start typing to narrow search. Use top row (not keypad) for numeric searches.L
+                                                  Click to see Imaging.A
+TAX SYSTEM:F (
+ This Program requires the new TAX system.F (
+ Please contact your system administrator to F (
+ run the required Conversion routine. I
+Multi Currency System:F (
+ This Program requires the Multi Currency systemF (
+ to be converted to the 2000.1 configuration. F (
+ Please contact your system administrator to F (
+ run the required MCSTART routine. I
+Warning: You have chosen an Accounts Payable F (
+Control account. Please verify that you do indeedF (
+want to affect this account.I
+Warning: You have chosen an Accounts ReceivableF (
+Control account. Please verify that you do indeedF (
+want to affect this account.I
+Warning: You have chosen a Purchase Order / RNI F (
+Control account. Please verify that you do indeedF (
+want to affect this account.I
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+NON EVOA
+DBA ClassicI
+ISLOGA
+EVOERPMENUA
+ISLOGA
+WHOAMI.DBAA
+WHOAMI.DBAA
+scamera.icoA
+scamera.icoA
+camera.icoA
+camera.icoA
+bkardescL
+bkapdescL
+bkqttempL
+IM.GPATH       A
+IM.GPATH       A
+MenuBkgA
+MenuBkgA
+ Links I
+IM.GPATH       A
+C:\PROGRA~1\INTERN~1\IEXPLORE.EXEA
+You need to enter an Image Link first. Please go to the Enter Inventory program and add a Image Link.A
+You need to enter a Web Site to link to. Please go to the Enter Customer or Vendor file and add a Web Site.A
+ISTECHA
+Could not find A
+Could not find Internet ExplorerA
+isoe.icoA
+isoe.icoA
+/S ISTech Mail /EA
+ISTECHA
+MAPISENDA
+umcalc.icoA
+umcalc.icoA
+CONVERTERA
+web.icoA
+web.icoA
+calc.icoA
+calc.icoA
+isforum.icoA
+isforum.icoA
+www.istechforum.comA
+C:\ISTS\I
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate A
+ folder. Please contact Lynn@istechsupport.comA
+bkistek.bmpA
+MKAHISTA
+ISTECHSUPPORTA
+The transaction date is prior to the Accounting Open Period Close Date. A
+ISNUMBERA
+The Record Code A
+ Was not found. Please try running T7NUMDEF.RWN to initialize the file.A
+The Name A
+ Was not found. Please try running T7NUMDEF.RWN to initialize the file.A
+WONUMA
+QCLABA
+PONUMA
+QCNUMA
+RFQNUMA
+SONUMA
+INVNUMA
+PSNUMA
+ESTNUMA
+RSONUMA
+QTNUMA
+SRNUMA
+SRPNUMA
+SRNUMA
+JOBNUMA
+APINUMA
+RAPNUMA
+CHK1NUMA
+CHK2NUMA
+CHK3NUMA
+CHK4NUMA
+CHK5NUMA
+CHK6NUMA
+CHK7NUMA
+CHK8NUMA
+CHK9NUMA
+APDEPNUMA
+TRANSNUMA
+DDNUMA
+GJNUMA
+GJTNUMA
+ISBANKSI
+ISNUMBERA
+MKAHISTA
+ISBSFF`
+ Select Bank AccountL
+F3 Change Search KeyA
+F3 Change Search KeyA
+Esc ExitA
+Sort#A
+DescriptionA
+Description                             A
+Sort#A
+  NumA
+DescriptionA
+The process you are running may not be able to continue if you don't choose a bank account.  Exit without selecting a bank account?L
+User Defined SortFP1
+DescriptionFP1
+Bank NumberI
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERI
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+ISNUMBERA
+NNNYNF
+YNNYNX
+YNNNYC
+YNNYNXL'
+YNNNYC{'
+YNNYNX
+YNNNYC
+YNNYNX
+YNNNYC
+NNNYNC
+NNNYNF0
+YNNYNX
+YNNNYC
+YNNYNX
+YNNYNX!O
+YNNNYCLO
+YNNYNX
+NNNYNG
+YNNNYXGv
+YNNNYC
+NNNYNv
+NNNYNF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX{
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC}
+YNNNYC
+YNNNYF
+NNNYNG
+NNNYNFp
+YNNNYFp
+NNNNNFp
+YNNNNC
+YNNNYFp
+YNNNNC'r
+YNNNYF
+YNNNNCmy
+YNNNYF
+YNNNNC7z
+YNNNYNK
+YNNNNC
+YNNNYNN
+YNNNNC
+YNNNYN
+YNNNNF 
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+BKGLCHK_HNDL   
+POST.AMT       
+DFLT_DESC      
+ISTS.EDATE     
+RTAG           
+RNUM           
+TREC           
+IX             
+PRT_TAG        
+PST_TAG        
+RET.EARN       
+LINE.ACCT      
+LINE_GLDPT     
+LINE.DESC      
+LINE.DC        
+LINE.AMOUNT    
+JCNTR          
+CNTR           
+CNTR1          
+CUR.LINE       
+TODAYS.DATE    
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+ZTRANSDT       
+ZTYPE          
+ZTYPEN         
+ZPOSTED        
+ZCVCODE        
+ZINVCHKN       
+ZNUMLNES       
+ZCHKACT        
+OPENWINDOW     
+LINESWINDOW    
+HEDITWINDOW    
+LEDITWINDOW    
+PROGWINDOW     
+PRA.LKUA       
+PRA.LKUI       
+LKUPA.HNDL     
+LKUPI.HNDL     
+CUR.SCREEN     
+CBK.TRANSNM    
+PRA_TTL1       
+PRA_USCORE     
+ENTRY.TYPE     
+EXIT.TYPE      
+NEW.TRANS      
+TRANS.DELETED  
+WCH.SCRN       
+ZRET           
+MAXL           
+PRA.FIRSTLIST  
+VIEW.ONLY      
+PAST.MAX       
+NEW.TYPE       
+SELGEN.ARR     
+CHK_NAME       
+CHKACT         
+DSP.CHKACT     
+TYPE.DESC      
+TOT.LINES      
+TOTAL.AMT      
+NEEDBAL.AMT    
+EDIT.NBAMT     
+NEEDBAL.TYPE   
+EDIT.NBTYPE    
+ACCT.DISP      
+DR.DISP        
+CR.DISP        
+NEW.LINE       
+TRXN.TYPE      
+TYPE.DESC2     
+TNUMSTR        
+TICSTR         
+SAVE.LINE      
+PRT.FROM       
+EDIT.ACCT      
+EDIT.DEPT      
+EDIT.DESC      
+EDIT.DC        
+EDIT.AMT       
+EDIT.BANK      
+EDIT.BANKGL    
+EDIT.BANKNAME  
+PRT.DC         
+PRT.ACCT       
+PRT.DEPT       
+PRT.DESC       
+PRT.DRAMT      
+PRT.CRAMT      
+PRT_WHR        
+TOT.TRANS.DR   
+TOT.TRANS.CR   
+PAGE           
+CURRENT.TIME   
+OLD.TRANS      
+TRANS_HLDR     
+GL.KEY         
+ISBANKS.H      
+IN_TT_LIST     
+REV_TRANS      
+GL.CFROM       
+CFROM          
+ISMCF.HNDL     
+GLDESC.H       
+AMOUNT         
+IN_BALANCE     
+BKGLGJRN_HNDL  
+BKGLGJLN_HNDL  
+BKGLTEMP_HNDL  
+BKGLTGJR_HNDL  
+HEADER_HNDL    
+BKGLTGJL_HNDL  
+LINE_HNDL      
+BKYS.YN        
+BKYSMSTR_HNDL  
+PRT.NOTES      
+SC             
+NORM           
+WC             
+BC             
+WIN_TITLE      
+BKGL.GJ.TRANSNM
+BKGL.GJ.POSTED 
+BKGL.GJ.NUMLNES#
+BKGL.GJ.TRANSDT
+BKGL.GJ.CVCODE 
+BKGL.GJ.INVCHKN
+CC             
+DATC           
+BKGL.GJ.CHKACT %
+IS.BANKS.SRT   
+BKGL.GJ.TYPEN  
+ANUM           
+BKGL.GJL.TRANSN
+BKGL.GJL.ACCTNM
+BKGL.GJL.GLDPT 
+BKGL.GJL.DESC  
+BKGL.GJL.DC    /
+BKGL.GJL.AMOUNT0
+IS.BANKS.DESC  
+BKGL.GJ.TYPE   
+IS.BANKS.NUM   
+ISTS.CFG.GLBSDT
+BKGL.ACCT      
+IS.BANKS.GLA   ,
+BKGL.GLDPT     
+IS.BANKS.GLD   6
+NEXT.NUM       
+BK.DESC.LINE   
+BK.DESC.NUM    
+BKGL.ACCTD     
+BKGL.CR.DR     (
+BKSY.GL.RETEARN
+BKSY.GLDPT.RET 
+BKSY.GL.RELYR  
+BKSY.GLDPT.RELY
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+ISIS.MULTI.CURR
+BKSY.AR.GLACT  !
+BKSY.AR.GLDPT  +
+BKSY.AP.GLACT  =
+BKSY.AP.GLDPT  G
+BKGL.TYPE      '
+BKGL.1YPAST    
+HOLD.BANK.RCN  
+IS.BANKS.ACTIVEw
+BKGL.CHK.CHKACT
+BKGL.CHK.DATE  
+BKGL.CHK.AMT   (
+BKGL.CHK.TYPE  
+BKGL.CHK.NUM   
+BKGL.CHK.NAME  
+BKGL.CHK.FLAG  0
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.DATE  
+BKGL.TRN.CODE  
+BKGL.TRN.INVC  
+BKGL.TRN.DESC  &
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.TYPE  H
+BKGL.TRN.ENTDTEJ
+BKGL.TRN.EXTRA N
+NUM_ITEMS      
+TOT_AMOUNT     
+DOING_WHAT     
+ONE.TIME       
+BKSY.COMP.NAME X
+NOTE.SUPPRESS  
+PRINT.NOTE     
+MEM.NOTE       
+IS.BANKS.NXTNUM:
+NOTE.CNTR      
+NOTE.LAST      
+NOTES.CHGD     
+TEMP.NOTE      
+ORIG.NOTE      
+TEMP.SUPPRESS  
+TEMP.CNTR1     
+BK.DESC.NOTES  
+BK.DESC.DESC   _
+BK.DESC.CODE   
+MENULIST       
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           p
+PTDN           v
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.BMTYPR
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+ISTS.CFG.SOELAB
+ISTS.CFG.WOICST
+ISTS.CFG.POCBIN
+ISTS.CFG.SOEGSB
+ISTS.CFG.SOACDL
+ISTS.CFG.DCBEMP
+ISTS.CFG.TPRTNT
+ISTS.CFG.POCPLL
+ISTS.CFG.POACAL
+ISTS.CFG.RMDCWO
+ISTS.CFG.RMDGLA
+ISTS.CFG.RMDGLD
+ISTS.CFG.SOEUBO
+ISTS.CFG.SHPBIN
+ISTS.CFG.POEPRX
+ISTS.CFG.SOFSND
+ISTS.CFG.EMAILS
+ISTS.CFG.EMAILP
+ISTS.CFG.NZETYP
+CFG.BUFFER     
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+SYSACCTGON     
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSITEMCLASSGL 
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.AP.DISCGL K
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+SGX.PHNDL      
+SGX.EXPHNDL    
+SGX.COL        
+SGX.ROW        
+SGX.NCH        
+SGX.CHWDT      
+SGX.TLEN       
+SGX.TWDT       
+SGX.TCOLOR     
+SGX.RET        
+SGX.CHOICE     
+SGX.CNTR       
+SGX.EXT        
+SGX.TTL        
+SGX.TITLE      
+MC             
+ZA_TEXT        
+ZA_DFLT        
+CHK_FISC_DATE  
+CHK_FISC_MSG   
+CHKF.RET       
+CHKF.FYNUM     
+WHICH.MSG      
+BKSY.FISCAL.YR 
+ASKPFY.RET     
+CHK_GLC_DATE   
+CHK_GLC_MSG    
+CHKG.RET       
+BKYS.DATE      
+BUTTON_LIST    
+BUTTON_CNTR    
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+GET.GLYPARAM   
+GET.GLYRET     
+GLDATE.H       
+ISGL.1YDATE    0
+NY.FISCAL.YR   
+ISGL.EXTRA     T
+GL.FUTURE.DATE 
+ISGL.2YDATE    `
+ISGL.3YDATE    
+ISGL.4YDATE    
+ISGL.5YDATE    
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+MSG_TYPE       
+LOCK_TYPE      
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+INC_DATE_DATE  
+INC_DATE_AMT   
+INC_DATE_WCH   
+INC_DATE_DAY   
+INC_DATE_MONTH 
+INC_DATE_YEAR  
+INC_DAY_NUM    
+INC_MONTH_NUM  
+INC_YEAR_NUM   
+INC_DATE_MAXD  
+INC_ZRET       
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+GL_TYPE        
+GLF2.COL       
+GLF2.ROW       
+WHICH_ACCT     
+ACCT_LIST      
+SRCH_KEY_NUM   
+GL_TTL1        
+GL_USCORE      
+TEMP_KEY       
+SRCH_HOW_MSG   
+BKIC.PROD.CODE 
+V.OLINK        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+GLACT          
+GLDPT          
+WARN           
+ISIS.MCF.GLAAP 
+ISIS.MCF.GLDAP 
+ISIS.MCF.GLAAR 
+ISIS.MCF.GLDAR 
+ISIS.MCF.GLAPO 
+ISIS.MCF.GLDPO 
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+PRGNAME        
+DOING          
+LOG.REC        
+ISLOG.H        
+LOG.WHO        
+IS.LOG.WHO     
+IS.LOG.WHAT    #
+IS.LOG.DOING   2
+IS.LOG.STARTD  n
+IS.LOG.STARTT  r
+IS.LOG.COMPANY ~
+ICONSTR        
+SLIDE          
+ISLIDE         
+EFOR           
+CITEM          
+FORCE          
+FULL.INFO      
+WHO            
+WBUFF          
+RVAL           
+RVALF          
+ISTS.PATH      
+XMM            
+XDD            
+XYY            
+XBUFF          
+IPICT          
+C1             
+R1             
+ITEM           
+ICOSZ          
+ISTS.PATH      
+ID             
+XFROM          
+PRT.DOC        
+PRT.TYP        
+PRT.IMG.CODE   
+PRT.NUM        
+FND.NUM        
+CUST           
+WEBCUST        
+NOT.H          
+OPH            
+IM.PRT         
+EGW.ARDESC.H   
+EGW.APDESC.H   
+EGW.QTTEMP.H   
+EGW.LINKS.H    
+CDRET          
+LINK           
+PRTLINK        
+I.GPATH        
+OLINK          
+X              
+ID             
+SITE           
+VIEWER         
+BROWS.FULLNAME 
+EPICT          
+EPARAM         
+ARAP           
+ADDRESS        
+ISTS.PATH      
+BKAP.EMAIL     
+BKAR.EMAIL     *
+BKCM.ACCT.EMAILn
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+C1             
+R1             
+ISTS.PATH      
+CPICT          
+ISTS.PATH      
+FPICT          
+ISTS.PATH      
+CFG.PATH       
+CFG.FULLNAME   
+X_HNDL         
+X.BUFF         
+TI             
+BPICT          
+TIME1          
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+CFG.SODAYS     
+CFG.LATEDAYS   
+EIMCO.SHIFT2   
+EIMCO.SHIFT3   
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+CHK_GLC_DATE   
+CHK_GLC_MSG    
+CHKG.RET       
+NNUMB          
+RECCODE        
+NNNAME         
+ISNUM.H        
+ARYNUM         
+IS.NUM.CODE    
+IS.NUM.NEXT    
+XNUMB          
+NUMB.H         
+MB.ISBSF.H     
+MB.MKAHIST.H   
+BLOOP          
+BKSY.CHK.CHKACT
+BKSY.CHK.NAME  s
+IS.BANKS.BAL   B
+BKSY.CHK.BAL   +
+BKSY.CHK.CHKDPT
+IS.BANKS.CURR  h
+BKSY.CHK.CHKCUR
+IS.BANKS.AR    y
+IS.BANKS.AP    z
+IS.BANKS.PR    {
+IS.BANKS.EXTRA 
+IS.BANKS.INC.BSx
+ISBSF.CASH.ACTSH
+ISBSF.CASH.ACT1
+ISBSF.CASH.ACT2
+ISBSF.CASH.ACT3
+ISBSF.CASH.ACT4
+ISBSF.CASH.ACT5
+ISBSF.CASH.ACT6
+ISBSF.CASH.ACT7
+ISBSF.CASH.ACT8
+ISBSF.CASH.ACT9
+SF2.COL        
+SF2.ROW        
+RET.BANK.NUM   
+BANKS.NOESC    
+DFLT.BANK.ACT  
+BANKS.FILTER   
+TOT.BANKS      
+SF2.LEN        
+SEL.GLA        
+SEL.GLD        
+BANKS_TTL1     
+BANKS_USCORE   
+TEMP_KEY       
+NCLR           
+ISNUMBER.H     
+NUM_BUFF       
+NUM_REC        

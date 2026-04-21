@@ -1,0 +1,176 @@
+BKAPPOL 
+MTICMSTR
+BKRFQ   
+BKAPPO  
+BKICMSTR
+BKSYHELP
+DBAHLPID
+BKAPQUOTA
+BKICMSTRA
+MTICMSTRA
+BKAPPOA
+BKAPHPOA
+BKAPPOLA
+BKAPHPOLA
+Processing PO Line file!A
+Processing PO Receiver Line file!A
+PCONV PATCHA
+BKAPQUOTA
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+PO.H           
+HPO.H          
+POL.H          
+HPOL.H         
+MTIC.H         
+BKIC.H         
+ENTER.PROD.PCON
+BKAP.POL.PCONV Z
+BKAP.POL.PCODE 
+BKAP.POL.PONM  
+MTIC.PROD.PCONV7
+BKAP.POL.PEXT  S
+NKAP.POL.UM.LIN
+BKAP.POL.PPRCE C
+BKAP.POL.PQTY  ;
+BKAP.POL.PDISC K
+BKAP.POL.EXTRA 
+BKRFQ.PROD     !
+BKRFQ.VEND     >
+BKAP.PO.VNDCOD 
+BKRFQ.EXP      
+BKAP.PO.ORDDTE L
+BKRFQ.PCONV    
+PRT.PROD.EXT   
+CPRICE         
+CQTY           
+CDISC          
+CUM            
+BKIC.PROD.UM   .
+MTIC.PROD.WT   L
+MTIC.PROD.CUBFTT
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   

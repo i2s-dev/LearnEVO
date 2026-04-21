@@ -1,0 +1,356 @@
+TAS32/
+BKGLGJRN
+BKGLGJLN
+BKYSMSTR
+BKSYMSTR
+BKGLCOA 
+BKGLTRAN
+BKGLCHK 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKGLGJRNA
+BKGLGJLNA
+BKGLRGJRA
+BKGLRGJLI
+BKSYMSTRA
+BKGLCHKA
+BKGLTRANA
+BKGLCOAA
+BKYSMSTRI
+GL-M  Generate Recurring GJ TransactionsA
+F1 helpA
+esc exitA
+Please enter either a Y or N here. A
+ because of a fiscal year or close date problem.  Please fix the next transaction date in GL-L.A
+Cannot generate recurring GJ #A
+ recurring transactions were generated. A
+A total of A
+No recurring transactions were found to generate. A
+Could not find the system master (BKSYSMTR) file.  Unable to proceed. A
+RECURA
+GL-M: did not find A
+ DO_GJL.  Write down this message and advise DBA support.A
+It is not recommended that you interrupt this process.  Do so only if you are in a loop of some kind.  Exit?A
+BKGLCOAA
+BKGLTRANA
+BKGLCOAA
+BKGLCHKL
+BKSYMSTRA
+GL-M: did not find A
+ in chk_dup.  Write down this message and advise DBA support. A
+Cannot find the system master (BKSYMSTR) file.  Unable to proceed. A
+Cannot lock the system master (BKSYMSTR) file.  Try again?L
+Post Directly to G/L [Y/N]:FP
+    Y - If you want the G/J entries that are to be created toFP
+        post directly, answer YesFP
+    N - If you want the G/J entries to simply be created withoutFP
+        being posted, answer No.   If you want to alter anyFP
+        of the entries before posting you will need to useFP
+        this option.I
+       This program will create a new GJ Transaction for all or selected
+       Transactions in the recurring GJ file.  The new transaction(s)
+       can be saved to the main file OR they can be posted directly.
+                 
+                 
+                                            
+                 
+         Selection Code Range               
+                 
+                                            
+                 
+                                            
+                 
+ Generate Transactions due by               
+                 
+                                            
+                 
+   Post Directly to G/L [Y/N]               
+                 
+                                            
+                 
+               Ok to Continue               
+                 
+                                            
+                 
+               
+               
+                                               
+               
+   Working on Recurring G/J Number             
+               
+                                               
+               
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+A transaction with this date cannot be posted to the GL.A
+The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the two preceding fiscal years.A
+The starting date of the current fiscal year is A
+A transaction with this date cannot be posted to the GL.  The transaction date must be in the current fiscal year, or in the fiscal year immediately following, or in one of the two preceding fiscal years.  The starting date of the current fiscal year is A
+This transaction will be posted to a prior fiscal year.  Is this OK? L
+The transaction date is prior to the GL close date in AD-B. A
+A GL Account was not found for at least one of the posted items inFP
+this process.  Missing GL Account transactions normally get postedFP
+to your Clearing Account; however, a Clearing Account has not beenFP
+set up yet and therefore this transaction is out of balance.  GoFP
+to AD-B and set up a default Clearing Account.  Go to GL-O andFP
+print out your GL batch transactions to find the missing entries,FP
+then add the missing entries through GL-P to get back in balance.I
+A GL Account was not found for at least one of the posted items inFP
+this process.  Missing GL Account transactions get posted to theFP
+default Clearing Account defined in AD-B.  Go to GL-O to get aFP
+listing of your Clearing Account entries and edit the entries forFP
+the correct GL Account(s) through GL-P.I
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ZRET           
+POST_HIST      
+HOLD_GJNUM     
+REC_NUM        
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+RECS_SAVED     
+BKGLGJRN_HNDL  
+BKGLGJLN_HNDL  
+BKGLRGJR_HNDL  
+BKGLRGJL_HNDL  
+RGLTRAN        
+OK             
+GJ_GROUP       
+GJ_FREQ        
+GJ_MAX         
+FROM_GROUP     
+THRU_GROUP     
+TRANSDT2       
+ADD.DAYS       
+TODAYS_DATE    
+GJ_DATE        
+DO_POST        
+POST.FAIL      
+POST.OTHER     
+POST.AMT       
+YEAR.PAST      
+MONTH          
+GOOD_TO_GO     
+BKGL.GJ.TRANSNM
+BKGL.GJL.TRANSN
+BKGL.GJ.TRANSDT
+BKGL.GJ.CVCODE 
+BKGL.GJ.POSTED 
+CNTR           
+BKGL.GJL.ACCTNM
+BKGL.ACCT      
+BKGL.GLDPT     
+BKGL.GJL.GLDPT 
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKGL.GJL.AMOUNT0
+BKGL.GJL.DC    /
+BKGL.CURRENT   *
+BKGL.1YPAST    
+BKGL.2YPAST    z
+HOLD.ENDBAL    
+BKGL.TYPE      '
+BKGL.TRN.DATE  
+BKGL.TRN.INVC  
+BKGL.GJ.INVCHKN
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.GJ.TYPE   
+BKSY.CHK.CHKACT
+BKGL.TRN.CODE  
+BKGL.TRN.TYPE  H
+BKGL.TRN.DESC  &
+BKGL.GJL.DESC  
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.ENTDTEJ
+BKSY.CHK.CHKDPT
+BKGL.CHK.DATE  
+BKGL.CHK.TYPE  
+BKGL.CHK.AMT   (
+BKGL.CHK.NUM   
+BKGL.CHK.NAME  
+BKGL.CHK.FLAG  0
+BKGL.CHK.CHKACT
+BKSY.GJ.NUM    
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+CHK_FISC_DATE  
+CHK_FISC_MSG   
+CHKF.RET       
+CHKF.FYNUM     
+BKSY.FISCAL.YR 
+ASKPFY.RET     
+CHK_GLC_DATE   
+CHK_GLC_MSG    
+CHKG.RET       
+BKYS.DATE      
+POSTFAIL       
+POSTOTH        
+GET.GLYPARAM   
+GET.GLYRET     
+ZA_TEXT        
+ZA_DFLT        
+INC_DATE_DATE  
+INC_DATE_AMT   
+INC_DATE_WCH   
+INC_DATE_DAY   
+INC_DATE_MONTH 
+INC_DATE_YEAR  
+INC_DAY_NUM    
+INC_MONTH_NUM  
+INC_YEAR_NUM   
+INC_DATE_MAXD  
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

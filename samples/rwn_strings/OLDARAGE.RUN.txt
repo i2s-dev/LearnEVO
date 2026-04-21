@@ -1,0 +1,965 @@
+TAS32c
+BKSYMSTR
+BKYSMSTR
+BKARCUST
+BKARINVT
+ISMCF   
+BKCMACFC
+BKCMACTF
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+ISIS    
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+AR2001  A
+BKARINVTA
+BKCMACTFA
+BKCMACFCA
+ismcfA
+BKARCUSTA
+OLDARAGE  Print AgingA
+F1 HelpA
+Esc ExitA
+Please enter a valid date here. A
+ 1 - A/R Aging    01011F 
+ 2 - A/R Listing  01022F 
+ 3 - A/R Past Due 01033A
+Which Type?vvF 
+            A
+  Past Due  A
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+The thru value cannot be less than the from value.L
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+The thru value cannot be less than the from value.A
+ 1 - Detail, Open Items Only   01011F 
+ 2 - Detail, Open & Paid Items 01022F 
+ 3 - Customer Totals Only      01033I
+What should be included?vvF 
+What should be included?vvF 
+What should be included?vvF 
+ daysA
+This date must be on or before the "age-from" date. A
+This must be either blank or "X". A
+ A - All Types  0101AF 
+ B - xxxxxxxxxx 0102BF 
+ C - xxxxxxxxxx 0103CF 
+ D - xxxxxxxxxx 0104DF 
+ E - xxxxxxxxxx 0105EF 
+ F - xxxxxxxxxx 0106FF 
+ G - xxxxxxxxxx 0107GF 
+ H - xxxxxxxxxx 0108HF 
+ I - xxxxxxxxxx 0109IF 
+ J - xxxxxxxxxx 0110JF 
+ K - xxxxxxxxxx 0111KF 
+ L - xxxxxxxxxx 1701LF 
+ M - xxxxxxxxxx 1702MF 
+ N - xxxxxxxxxx 1703NF 
+ O - xxxxxxxxxx 1704OF 
+ P - xxxxxxxxxx 1705PF 
+ Q - xxxxxxxxxx 1706QF 
+ R - xxxxxxxxxx 1707RF 
+ S - xxxxxxxxxx 1708SF 
+ T - xxxxxxxxxx 1709TF 
+ U - xxxxxxxxxx 1710UI
+Terms AvailablevvF 
+Please select what type of information should appear in the description column for each line. A
+F1 HelpA
+Esc ExitA
+Customer AgingI
+Customer Past Due AgingL
+SourceA
+ (Report in A
+ currency)A
+ (overdue items only)A
+Aging Report as of A
+Customer NameA
+DescriptionA
+TermsF
+Invc #F
+------F
+Inv DateF
+--------F
+ Age F
+-----L
+CurrentI
+ daysA
+ daysA
+ daysA
+ daysA
+ daysA
+  Current   F
+ Per Terms  F@
+  Past Due  Fp
+  Past Due  F
+  Past Due  F
++ daysA
+  Past Due  A
+bkarcustA
+There are no customers in the range specified. A
+OLDARAGE  Print Aging    Checking Customer: A
+bkarinvtI
+BKARINVTF
+.  That is the most than can be printed on any one statement. A
+The maximum of 50,000 lines has been loaded for customer A
+BKARINVTA
+bkarinvtI
+bkarinvtI
+BKARINVTF
+.  That is the most than can be printed on any one statement. A
+The maximum of 50,000 lines has been loaded for customer A
+BKARINVTA
+bkarinvtI
+bkarinvtI
+BKARINVTF
+.  That is the most than can be printed on any one statement. A
+The maximum of 50,000 lines has been loaded for customer A
+BKARINVTA
+bkarinvtI
+BKARINVTF
+bkarinvtI
+.  Invoice info: A
+An error has occurred - unable to get a BKARINVT record - customer A
+ SubtotalA
+BKARCUSTA
+bkarcustI
+                        Press ESC to Stop Printing                               A
+BKARINVTA
+all typesI
+BKARCUSTA
+BKARCUSTA
+Warning:  Transactions which have an aging less thanF 
+the number of days entered for period one will not ageF 
+properly when printing reports/statements.  It isF 
+recommended that this first aging period be left at zero.I
+F1 HelpA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKCMACTFF
+                   Age from date                           
+ AGING PERIODS 
+               Include Deposits?                           
+               
+                  Type of Report                           
+               
+                                                           
+ Greater than: 
+     Customer     Currency    Class    Print in Base or    
+               
+      Range        Range      Range    Source currency?    
+ Period  Days  
+                                              [B/S]        
+    1          
+                                                           
+    2          
+                                                           
+    3          
+           Include                                         
+    4          
+         A/R Listing for Terms Type                        
+    5          
+       Sort by Code, Name, or Alpha Sort? [C/N/A]          
+                                                           
+          If including fully-paid items, only print those  
+          dated on or after this date.                     
+                                                           
+ Description column contents   Print overdue  Include      
+   Invoice description         items only?    customer     
+   Invoice terms                              subtotals?   
+                                                           
+               Print Follow-up Notes?                      
+ From Follow-up Type Code     From Follow-up Date          
+ Thru Follow-up Type Code     Thru Follow-up Date          
+                                                                                                                          Page:
+                                              A C C O U N T S    R E C E I V A B L E
+                                                                                                                        Total
+-------------------------                         ------------ ------------ ------------ ------------ ------------  ------------
+                                                  ------------ ------------ ------------ ------------ ------------  ------------
+                                                  ============ ============ ============ ============ ============  ============
+                                    Report Total
+                                                                                        Page:
+                                              A C C O U N T S    R E C E I V A B L E
+                                                   Customer Transaction Listing
+                                              Aging Report as of:
+ Customer    Inv Date Number Description               Remaining    Original     Type        Age Cur
+ ----------  -------- ------ ------------------------- ------------ ------------ ---------- ---- ---
+                             Totals for
+                             Subtotal for
+***                                                                  ***
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. A
+The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. A
+One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. A
+This program is only available when DBA Accounting is activated. A
+This program is only available when DBA Accounts Receivable is activated. A
+This program is only available when DBA Accounts Payable is activated. A
+AR2001  A
+Due to recent changes in the AR module, it is necessary to run a conversion utility on your AR data prior to using this program.A
+These changes are being made in several stages, so it is possible that you may be asked to run this conversion more than one time, if another stage has been added since the last time you ran the AR conversion.A
+To convert your data, run program AR2001 from UT-A for each of your companies. A
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+BKARCUSTA
+ Customers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARC   A
+Cust Cd   A
+Name                          A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Name                          A
+Cust Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARC   A
+Name                          A
+Cust Cd   A
+  Invoices  A
+Credits/Dep A
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Zip Code  A
+Cust Cd   A
+Name                          A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Contact Name                  A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKARCUSTA
+Telephone                A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKARCUSTA
+ClassA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKARCUSTA
+E-mail Address                          A
+Cust Code A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Alpha A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+BKARCUSTA
+Customer Code FpA
+Customer Name FpA
+State         FpA
+Zip Code      FpA
+Contact Name  FpA
+Telephone     FpA
+Class         FpA
+E-mail AddressFpA
+Alpha SortI
+BKCMACFCA
+ Follow-up Codes A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKCMACFCA
+Description              A
+Rep  A
+BKCMACFCA
+Rep  A
+Description              A
+BKCMACFCA
+CodeFpA
+Rep CodeI
+F1 HelpA
+Esc ExitA
+ A - CodeFpA
+ B - Rep CodeA
+ Search Key A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+TAX SYSTEM:F 
+ This Program requires the new TAX system.F 
+ Please contact your system administrator to F 
+ run the required Conversion routine. I
+Multi Currency System:F 
+ This Program requires the Multi Currency systemF 
+ to be converted to the 2000.1 configuration. F 
+ Please contact your system administrator to F 
+ run the required MCSTART routine. I
+ Multi-Currency Codes A
+F1 HelpA
+Esc ExitA
+Code    A
+Description             A
+SymbolA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYC
+YNNNYF
+NNNYNW
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX/
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC1
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+FROM_CUST      
+THRU_CUST      
+FROM_CLASS     
+THRU_CLASS     
+FROM_CUR       
+THRU_CUR       
+BASE           
+FIRST          
+RPT_TYPE       
+RPT_TYPE_NUM   
+RPT_INCLUDE    
+RPT_INCL_NUM   
+TERMS_DESC     
+TERMS_NUM      
+TODAYS.DATE    
+CURRENT.TIME   
+PAGE           
+CTR            
+CNTR           
+CNTR1          
+TYPE           
+AGING          
+SUB_AGING      
+TOT_AGING      
+SUB_TOTAL      
+TOT_TOTAL      
+TOTAL          
+DAYS           
+PRT_WHR        
+BREAK.FLD      
+PRT_DEPOSIT    
+PAST_DUE_TXT   
+AAGE           
+SORT.BY        
+PRT.FOLLOW     
+FROM.FTYPE     
+THRU.FTYPE     
+FROM.FDATE     
+THRU.FDATE     
+LAST.CUST      
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+CHECK.TEXT     
+REC.ARRAY      
+SORT.ARRAY     
+ITEM.CNTR      
+SORT.CNTR      
+NUM.STMTS      
+HIST.DATE      
+OPEN.ONLY      
+ZRET           
+RPT.DATE       
+RPT.TIME       
+RPT.TITLE      
+RPT.TITLE2     
+DESC.CH        
+INUM.CH        
+IDATE.CH       
+AGE.CH         
+CAT1.CH        
+CAT2.CH        
+CAT3.CH        
+CAT4.CH        
+CAT5.CH        
+CURR.CH        
+PRT.INVNO      
+PRT.INVDATE    
+PRT.AGE        
+PRT.CURR       
+CUST.DESC      
+CUST.DESC.LEN  
+WNUM           
+NUMDAYS        
+LINE_TOTAL     
+LOOP.CNTR      
+SCRN.MSG       
+LINE.DESC      
+WHATDESC       
+WHICH.DESC     
+DESC.TYPE      
+DESCVAL        
+PRINTING.CUST  
+OVERDUE.ONLY   
+SUBTOT.DESC    
+INCL.SUBTOT    
+ISMCF.HNDL     
+MESSAGE        
+ISIS.MULTI.CURR
+BKSY.AR.AGING  0
+BKSY.TERMS     (
+BKSY.COMP.NAME X
+BKAR.CUSTCODE  
+BKAR.CUSTNAME  
+BKAR.SORT      ^
+BKAR.CLASS     
+BKAR.INVT.CODE 
+BKAR.INVT.AMTRM
+BKAR.INVT.DATE 
+BKAR.INVT.NUM  
+BKAR.INVT.DEPSTH
+BKAR.TELEPHONE >
+BKAR.INVT.DESC &
+BKAR.INVT.TERMN?
+BKAR.INVT.TYPE A
+BKAR.INVT.CHKNO
+BKAR.INVT.MCCOD
+BKAR.IS.MCCODE 5
+BKSY.TRM.MAX   0
+BKAR.INVT.MCRAT
+BKAR.INVT.AMT  
+ISIS.MCF.CODE  
+BKCM.ACFC.FCODE
+NUM.MSG        
+MSG_PTR        
+BKCM.ACTF.CODE 
+BKCM.ACTF.TYPE 
+BKCM.ACTF.DATE 
+BKCM.ACTF.REM  
+TITLESTR       
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+SYSACCTGON     
+SYSARON        
+SYSAPON        
+SYSPOSTCOGSGL  
+SYSPOSTPOGL    
+SYSPOSTADJGL   
+SYSPOSTWOGL    
+SYSITEMCLASSGL 
+SYSGLA_CLEARING
+SYSGLD_CLEARING
+SYSGLA_SALES   
+SYSGLD_SALES   
+SYSGLA_NTSALES 
+SYSGLD_NTSALES 
+SYSGLA_INVEN   
+SYSGLD_INVEN   
+SYSGLA_COGS    
+SYSGLD_COGS    
+SYSGLA_WIPINV  
+SYSGLD_WIPINV  
+SYSGLA_ABSLABOR
+SYSGLD_ABSLABOR
+SYSGLA_ABSFOH  
+SYSGLD_ABSFOH  
+SYSGLA_ABSVOH  
+SYSGLD_ABSVOH  
+WHONWARNGL     
+WHONNEED1      
+WHONNEED2      
+WHONNEED3      
+WHONNEEDGL     
+WHONNEEDAR     
+WHONNEEDAP     
+WHONNEED       
+WHONCNTR       
+WHONBADGL      
+BKYS.YN        
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKSY.GL.RETEARN
+BKSY.GL.RELYR  
+BKSY.AP.GLACT  =
+BKSY.AP.DISCGL K
+BKSY.AR.GLACT  !
+BKSY.AR.DISCGL /
+BKSY.GL.ARINTR 
+BKSY.AR.FREIGHT
+BKSY.PO.RNI    
+BKSY.PO.FREIGHTu
+BKSY.PO.TAXGL  g
+BKSY.TAX.GLACT Y
+CHKCWHICH      
+CHKCRETURN     
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+LKUP.CUS.FROM  
+CUSTF2.COL     
+CUSTF2.ROW     
+SRCH_KEY_NUM   
+CUST_TTL1      
+CUST_USCORE    
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.CONTACT   
+BKAR.OUTINV    
+BKAR.OUT.CREDIT{
+BKAR.EMAIL     b
+TEMP_KEY       
+MENULIST       
+FCODEF2.COL    
+FCODEF2.ROW    
+FCODE_TTL1     
+FCODE_USCORE   
+BKCM.ACFC.DESC 
+BKCM.ACFC.REP  
+TEMP_KEY       
+SRCH_HOW_MSG   
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.FRM   
+ISIS.TAX.PO    
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+TAX_TTL1       
+TAX_USCORE     
+ISIS.MCF.BASE  
+ISIS.MCF.DESC  y
+ISIS.MCF.SYMBOLx
+BUTTON_LIST    
+BUTTON_CNTR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        

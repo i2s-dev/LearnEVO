@@ -1,0 +1,248 @@
+ISIS    
+ISTAXGRP
+BKISTAX 
+BKARINV 
+BKARHTAX
+BKSYHELP
+DBAHLPID
+TASCOLOR
+ISTAXGRPA
+istaxfilA
+BKistaxA
+BKICTAXA
+BKARHINVA
+BKARHTAXA
+TAXINT  Tax Conversion Utility [International]A
+This Process has already been performed.A
+UNITED STATES USERS:F@
+You should NOT run this conversion utility.  Use the TAXUSAF@
+conversion utility instead.F@
+INTERNATIONAL USERS:F@
+Unless you have been using the ISIS International Module forF@
+taxes, you should use the TAXUSA conversion utility instead.I
+This conversion utility will prepare your data files for use of the new sales tax system that was implemented during November 1999.  This may take a long time to run, depending on how much data the current company has.  No other users should log into this company while the conversion is running.  Be sure to run this conversion for each of your companies.  Are you ready to proceed with the conversion for this company? L
+BKYSMSTRA
+BKSYMSTRA
+Other users are currently logged into this company.  Please try running this conversion again later. A
+Unable to access one of the system files.  Another user may have it locked. A
+Creating Tax Detail Entry.....A
+BEGIN BALA
+BEGIN BALA
+JAN. HISTI
+FEB. HISTI
+MAR. HISTI
+APR. HISTI
+MAY. HISTI
+JUN. HISTI
+JUL. HISTI
+AUG. HISTI
+SEP. HISTI
+OCT. HISTI
+NOV. HISTI
+DEC. HISTL
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+ICTAX.HNDL     
+ISIS           
+ARH            
+TAXCODE        
+CAL.PER        
+PREVP          
+OLD.REC        
+BKSY.HNDL      
+BKYS.HNDL      
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+HTAX.HNDL      
+IS.TAX.CVT     .
+MESSAGE        
+MSG_PTR        
+ISCTR          
+ISIS.TXG.CODE  
+ISCT           
+BKIS.TAX.CODE  
+BKIS.TAX.CUST  '
+BKIS.TAX.DATE  
+BKIS.TAX.TRFLAG
+BKIS.TAX.TAXABL
+ISIS.TXG.TAXBLE 
+BKIS.TAX.NONTAX
+ISIS.TXG.NONTAX
+BKIS.TAX.VEND  1
+ISIS.TXG.TAXON d
+ISIS.TXG.PERCC 
+ISIS.TXG.TOTPER
+BKIS.TAX.TAXAMT
+ISIS.TXG.OUTSTD@
+BKAR.INV.ISTXKY
+BKAR.INV.NUM   
+BKAR.TAX.INVNO 
+BKAR.TAX.CODE  
+BKAR.TAX.ID    
+ISIS.TXG.IDC   I
+BKAR.TAX.PID   !
+ISIS.TXG.PID   m
+BKAR.TAX.AMOUNT"
+BKAR.INV.TAXAMT!
+MTH            
+DTE.CODE       
+ISHTX.HNDL     
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+ZA_TEXT        
+ZA_DFLT        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

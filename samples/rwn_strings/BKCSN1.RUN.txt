@@ -1,0 +1,319 @@
+TAS32C
+BKSYMSTR
+BKICPMAT
+BKICMSTR
+BKYSMSTR
+BKARCUST
+TASCOLOR
+BKSYPRTR
+BKICMSTRA
+BKICPMATA
+BKARCUSTA
+BKSYMSTRA
+ DBA Accounting     
+    Print Contract Commission Info    
+  Sales Commissions A
+ F1-Help                                                               Esc-Menu A
+ F1-Help   F2-Display Part Numbers                                     Esc-Menu A
+ F1-Help   F2-Display Part Numbers                                     Esc-Menu A
+ F1-Help   F2-Display Customers                                        Esc-Menu A
+BKYSMSTR
+BKICPMATA
+>>>>>  Report was terminated before completion  <<<<<A
+There are no records in the primary fileI
+A matching record was not found during a related findI
+Press any key to continueA
+Press any key to continueA
+BKICMSTRA
+BKICMSTRA
+Inventory ItemsA
+BKICMSTRFP
+BKICMSTRI
+BKICMSTRI
+BKICMSTRA
+BKICMSTRF
+There are no such records in the A
+ file.A
+BKICMSTRA
+BKICMSTRFP
+CustomersA
+BKARCUSTFP
+BKARCUSTI
+BKARCUSTI
+BKARCUSTA
+BKARCUSTF
+There are no such records in the A
+ file.A
+BKARCUSTA
+BKARCUSTFP
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+                     Price Contract Commission Information
+                                                                  Page #
+Cust Code   Part Number      Part Description               Base Price  Exp Date
+----------  ---------------  ------------------------------ ----------  --------
+        Qty             Price            Disc %        Comm 1        Comm 2
+     ----------       ----------       ---------      --------      --------
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+                                               %             %             %
+               
+               
+    Print From Part Number:                     
+               
+          Thru Part Number:                     
+               
+                                                
+               
+  Print From Customer Code:                     
+               
+        Thru Customer Code:                     
+               
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+CALC_PRICE     
+PRT_START      
+PRT_STOP       
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+SELECT_FROM2   
+SELECT_THRU2   
+PRT_CHR        
+PRT_WHR        
+WIDE_YN        
+BKSY.COMP.NAME X
+MCNTR          
+BKIC.PMAT.RATE 
+BKIC.PROD.PMAT x
+BKIC.PROD.PRICEZ
+BKIC.PMAT.CUST 
+BKIC.PMAT.PCODE
+BKIC.PMAT.PNUM 
+MCNTR2         
+BKIC.PROD.CODE 
+MESSAGE        
+NUM_MSG        
+DATE_TIME      
+CHG_TIME       
+CHG_DATE       
+STDDAYS        
+STDMONTH       
+STDYEAR        
+STDAYH         
+AM_PM          
+TIME_STRG      
+ENT_FLD        
+FLD_SIZE       
+FLD_DEC        
+FLD_TYPE       
+LNE_LNGTH      
+LNE_LN2        
+ENT_MASK       
+LLC            
+WD             
+HT             
+MCNTR3         
+MCNTR4         
+LNE.LNGTH      
+LNE.LN2        
+NUM.MSG        
+ENT.MASK       
+OK             
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+BKIC.PROD.DESC 
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+BKAR.CUSTCODE  
+BKAR.CUSTNAME  
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+BKIC.PMAT.EXP  
+BKIC.PMAT.QTY  k
+BKIC.PMAT.PER  
+BKIC.PMAT.COMM1
+BKIC.PMAT.COMM2m
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRTR_WCH       
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+MSG_PTR        
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+LASER_PRINTER  
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_CLR_COLOR  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+FC             

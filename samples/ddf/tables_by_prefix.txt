@@ -1,0 +1,1098 @@
+# EvoERP database table inventory (649 tables)
+# Extracted from \I2S109-SOLIDCRM\DBAMFG$\Defaultile.ddf
+
+## AHSY (1 tables)
+  AHSYLOG
+
+## ARTT (1 tables)
+  ARTTEMP
+
+## BKAB (2 tables)
+  BKABCUST
+  BKABVEND
+
+## BKAC (1 tables)
+  BKACTRPT
+
+## BKAP (24 tables)
+  BKAPACCN
+  BKAPADSC
+  BKAPAPO
+  BKAPAPOL
+  BKAPCHKF
+  BKAPCHKH
+  BKAPDEP
+  BKAPDESC
+  BKAPEIVT
+  BKAPEVND
+  BKAPHDSC
+  BKAPHPO
+  BKAPHPOL
+  BKAPINVL
+  BKAPINVT
+  BKAPNOTE
+  BKAPPO
+  BKAPPOL
+  BKAPQUOT
+  BKAPRFQ
+  BKAPRFQL
+  BKAPRIVL
+  BKAPVEND
+  BKAPVND2
+
+## BKAR (27 tables)
+  BKARCHKF
+  BKARCHKH
+  BKARCUST
+  BKARDEP
+  BKARDESC
+  BKARDPST
+  BKARECST
+  BKAREIVT
+  BKARHDSC
+  BKARHINV
+  BKARHIVL
+  BKARHTAX
+  BKARINV
+  BKARINVI
+  BKARINVL
+  BKARINVT
+  BKARINVV
+  BKARRDSC
+  BKARRINV
+  BKARRIVL
+  BKARSHIP
+  BKARSIVL
+  BKART
+  BKARTNOT
+  BKARTXN
+  BKARTXNB
+  BKARTXNS
+
+## BKBM (10 tables)
+  BKBMAMTR
+  BKBMAVAL
+  BKBMCNFG
+  BKBMDIM
+  BKBMEMTR
+  BKBMERMK
+  BKBMMSTR
+  BKBMNOTE
+  BKBMREMK
+  BKBMSUMM
+
+## BKCM (46 tables)
+  BKCMACCC
+  BKCMACCL
+  BKCMACCN
+  BKCMACCT
+  BKCMACFC
+  BKCMACTD
+  BKCMACTF
+  BKCMACTH
+  BKCMCNTD
+  BKCMCTL1
+  BKCMCTL2
+  BKCMCTL3
+  BKCMCTL4
+  BKCMCTRL
+  BKCMCUST
+  BKCMDE
+  BKCMDTCD
+  BKCMDUN
+  BKCMDUNH
+  BKCMEACC
+  BKCMEACD
+  BKCMEACF
+  BKCMEACH
+  BKCMEACT
+  BKCMEFTM
+  BKCMFORM
+  BKCMFTME
+  BKCMHCD2
+  BKCMHCOD
+  BKCMLEAD
+  BKCMMHST
+  BKCMPCFC
+  BKCMPCNT
+  BKCMPCTF
+  BKCMPCTH
+  BKCMREP
+  BKCMSBDF
+  BKCMTEMP
+  BKCMTERR
+  BKCMTMP1
+  BKCMTMP2
+  BKCMTMP3
+  BKCMTMP4
+  BKCMVNDF
+  BKCMVNDH
+  BKCMVNFC
+
+## BKCP (2 tables)
+  BKCPEC
+  BKCPMSTR
+
+## BKDC (7 tables)
+  BKDCCFG
+  BKDCCLAB
+  BKDCHLAB
+  BKDCLAB
+  BKDCPLAB
+  BKDCSHFT
+  BKDCTLAB
+
+## BKED (6 tables)
+  BKEDIDUN
+  BKEDIH
+  BKEDIL
+  BKEDMSTR
+  BKEDNOTE
+  BKEDPOST
+
+## BKES (3 tables)
+  BKESTCFG
+  BKESTQT
+  BKESTQTL
+
+## BKFL (1 tables)
+  BKFLDHLP
+
+## BKFO (1 tables)
+  BKFOCFG
+
+## BKGL (28 tables)
+  BKGLACHK
+  BKGLAGJL
+  BKGLAGJR
+  BKGLATRN
+  BKGLCCOA
+  BKGLCHK
+  BKGLCOA
+  BKGLDESC
+  BKGLECOA
+  BKGLETRN
+  BKGLFCOA
+  BKGLFSTL
+  BKGLGJLN
+  BKGLGJRN
+  BKGLHIST
+  BKGLICC
+  BKGLRGJL
+  BKGLRGJR
+  BKGLSTMT
+  BKGLTEMP
+  BKGLTGJL
+  BKGLTGJR
+  BKGLTMP
+  BKGLTMP2
+  BKGLTMP3
+  BKGLTRAN
+  BKGLX
+  BKGLXH
+
+## BKIC (16 tables)
+  BKICALTD
+  BKICALTP
+  BKICAMTR
+  BKICAPMA
+  BKICDIM
+  BKICELOC
+  BKICEMTR
+  BKICLOC
+  BKICLOCM
+  BKICMFG
+  BKICMSTR
+  BKICPMAT
+  BKICREF
+  BKICREQ
+  BKICTAX
+  BKICVAL
+
+## BKIS (2 tables)
+  BKISHTAX
+  BKISTAX
+
+## BKLO (1 tables)
+  BKLOGON
+
+## BKMA (2 tables)
+  BKMATCST
+  BKMATRIM
+
+## BKMR (3 tables)
+  BKMRPFC
+  BKMRPPO
+  BKMRPSW
+
+## BKPC (2 tables)
+  BKPCKIT
+  BKPCPLOT
+
+## BKPI (7 tables)
+  BKPIFROZ
+  BKPILCNT
+  BKPILOT
+  BKPIMSTR
+  BKPIPHYS
+  BKPISCNT
+  BKPISER
+
+## BKPO (2 tables)
+  BKPOX
+  BKPOXH
+
+## BKPR (16 tables)
+  BKPRACOM
+  BKPRAGNT
+  BKPRBOOK
+  BKPRCOMM
+  BKPRCURP
+  BKPRFTAX
+  BKPRGLFL
+  BKPRHCOM
+  BKPRHIST
+  BKPRINFO
+  BKPRMSTR
+  BKPRSALE
+  BKPRSTFL
+  BKPRTC
+  BKPRTCFG
+  BKPRW2
+
+## BKPS (1 tables)
+  BKPSUSER
+
+## BKQC (2 tables)
+  BKQCMSTR
+  BKQCTRAN
+
+## BKQT (2 tables)
+  BKQTNOTE
+  BKQTTEMP
+
+## BKRF (2 tables)
+  BKRFQ
+  BKRFQDES
+
+## BKRT (4 tables)
+  BKRTCST
+  BKRTEMTR
+  BKRTSPEC
+  BKRTTEMP
+
+## BKSA (1 tables)
+  BKSAREPT
+
+## BKSB (3 tables)
+  BKSBMFG
+  BKSBPART
+  BKSBVEND
+
+## BKSH (1 tables)
+  BKSHORT
+
+## BKSL (2 tables)
+  BKSLEVEL
+  BKSLMSTR
+
+## BKSO (7 tables)
+  BKSOHLOT
+  BKSOHSER
+  BKSOLOCK
+  BKSONOTE
+  BKSOPO
+  BKSOX
+  BKSOXH
+
+## BKSY (8 tables)
+  BKSYAP
+  BKSYAR
+  BKSYCFG
+  BKSYHELP
+  BKSYLOG
+  BKSYMSTR
+  BKSYPRTR
+  BKSYUSER
+
+## BKUM (1 tables)
+  BKUMSRTY
+
+## BKUP (1 tables)
+  BKUPDATE
+
+## BKWO (1 tables)
+  BKWOPO
+
+## BKYS (1 tables)
+  BKYSMSTR
+
+## BOMC (1 tables)
+  BOMCHG
+
+## BUCK (1 tables)
+  BUCKETS
+
+## CALE (1 tables)
+  CALENDAR
+
+## CALT (1 tables)
+  CALTEMP
+
+## CCED (1 tables)
+  CCEDIXRF
+
+## CLAS (2 tables)
+  CLASMSTR
+  CLASS
+
+## CUST (1 tables)
+  CUSTCLAS
+
+## DBAC (1 tables)
+  DBACNAME
+
+## DBAF (1 tables)
+  DBAFIFO
+
+## DBAH (1 tables)
+  DBAHLPID
+
+## DISC (1 tables)
+  DISCOUNT
+
+## DPTM (1 tables)
+  DPTMENT
+
+## EMER (1 tables)
+  EMERSNGL
+
+## ESTC (1 tables)
+  ESTCHGS
+
+## ESTM (1 tables)
+  ESTMAT
+
+## ESTR (1 tables)
+  ESTROUT
+
+## ESTS (1 tables)
+  ESTSUM
+
+## EVOH (1 tables)
+  EVOHLPID
+
+## HELP (1 tables)
+  HELPURL
+
+## INVA (1 tables)
+  INVATXN
+
+## INVE (1 tables)
+  INVETXN
+
+## INVT (1 tables)
+  INVTXN
+
+## IS (1 tables)
+  IS2DBAR
+
+## ISAC (3 tables)
+  ISACAR
+  ISACARFU
+  ISACTION
+
+## ISAL (2 tables)
+  ISALINKS
+  ISALOT
+
+## ISAM (1 tables)
+  ISAMRPF
+
+## ISAN (2 tables)
+  ISANCR
+  ISANOTES
+
+## ISAP (15 tables)
+  ISAPACHK
+  ISAPAINL
+  ISAPAINT
+  ISAPARFL
+  ISAPARFQ
+  ISAPAVND
+  ISAPCHG
+  ISAPEX
+  ISAPHCHG
+  ISAPHQT
+  ISAPOPO
+  ISAPOPOL
+  ISAPPROJ
+  ISAPQPO
+  ISAPQTQT
+
+## ISAR (30 tables)
+  ISARACHG
+  ISARACHK
+  ISARACST
+  ISARADSC
+  ISARAHDS
+  ISARAHIL
+  ISARAHIN
+  ISARAHTX
+  ISARAINT
+  ISARAINV
+  ISARAIVI
+  ISARAIVL
+  ISARAIVV
+  ISARAT
+  ISARATNT
+  ISARATXN
+  ISARATXS
+  ISARCHG
+  ISARECHG
+  ISAREMND
+  ISAREX
+  ISARFQ
+  ISARHCHG
+  ISARICHG
+  ISARINVX
+  ISARMCHG
+  ISARQCHG
+  ISARRCHG
+  ISARSCGH
+  ISARTXNB
+
+## ISAS (1 tables)
+  ISASIGN
+
+## ISAU (1 tables)
+  ISAUTODC
+
+## ISBA (1 tables)
+  ISBANKS
+
+## ISBI (3 tables)
+  ISBILLSH
+  ISBINLOC
+  ISBINLOT
+
+## ISBM (3 tables)
+  ISBMESA
+  ISBMEST
+  ISBMTMP
+
+## ISBN (1 tables)
+  ISBNMSTR
+
+## ISBO (1 tables)
+  ISBOLMS
+
+## ISBR (3 tables)
+  ISBRANDC
+  ISBRANDS
+  ISBROKER
+
+## ISBS (1 tables)
+  ISBSF
+
+## ISBT (1 tables)
+  ISBTCSB
+
+## ISBU (1 tables)
+  ISBUILD
+
+## ISCA (3 tables)
+  ISCAR
+  ISCARFUP
+  ISCATMST
+
+## ISCC (4 tables)
+  ISCC
+  ISCCBTXN
+  ISCCICM
+  ISCCMTF
+
+## ISCH (2 tables)
+  ISCHAIN
+  ISCHAINM
+
+## ISCM (1 tables)
+  ISCMGRP
+
+## ISCO (1 tables)
+  ISCONVRT
+
+## ISCR (1 tables)
+  ISCRISLS
+
+## ISCT (1 tables)
+  ISCTREVU
+
+## ISCY (1 tables)
+  ISCYCLCD
+
+## ISDC (1 tables)
+  ISDCSER
+
+## ISDE (2 tables)
+  ISDEFECT
+  ISDEPT
+
+## ISDI (2 tables)
+  ISDIGSIG
+  ISDIV
+
+## ISDL (2 tables)
+  ISDLCK1
+  ISDLCK2
+
+## ISDR (3 tables)
+  ISDRILL
+  ISDRILLM
+  ISDROP
+
+## ISDU (1 tables)
+  ISDUTY
+
+## ISEA (1 tables)
+  ISEAB
+
+## ISEC (1 tables)
+  ISECO
+
+## ISED (1 tables)
+  ISEDINFO
+
+## ISES (10 tables)
+  ISESADTL
+  ISESAHDR
+  ISESALNE
+  ISESTAQL
+  ISESTAQT
+  ISESTASM
+  ISESTDTL
+  ISESTHDR
+  ISESTLNE
+  ISESTPO
+
+## ISFI (1 tables)
+  ISFIELDS
+
+## ISFO (5 tables)
+  ISFOBMRM
+  ISFOHEAD
+  ISFOHIST
+  ISFOLINE
+  ISFOORDL
+
+## ISFS (3 tables)
+  ISFSCLAS
+  ISFSEMP
+  ISFSINFO
+
+## ISFU (1 tables)
+  ISFUTYPE
+
+## ISFX (2 tables)
+  ISFXASST
+  ISFXATRN
+
+## ISGL (6 tables)
+  ISGLBDGT
+  ISGLCOA
+  ISGLDATE
+  ISGLFCOA
+  ISGLHDAT
+  ISGLNBGT
+
+## ISHL (1 tables)
+  ISHLOTS
+
+## ISHS (1 tables)
+  ISHSERIA
+
+## ISIC (5 tables)
+  ISICADT
+  ISICAMTR
+  ISICESA
+  ISICEST
+  ISICMSTR
+
+## ISIS (2 tables)
+  ISIS
+  ISISATAX
+
+## ISIT (2 tables)
+  ISITMCFG
+  ISITP
+
+## ISJB (1 tables)
+  ISJBSF
+
+## ISJO (1 tables)
+  ISJOB
+
+## ISLA (1 tables)
+  ISLANDF
+
+## ISLB (1 tables)
+  ISLBLMAP
+
+## ISLI (1 tables)
+  ISLINKS
+
+## ISLO (3 tables)
+  ISLOCCST
+  ISLOG
+  ISLOTS
+
+## ISLS (1 tables)
+  ISLSMAP
+
+## ISLT (1 tables)
+  ISLTYPE
+
+## ISMA (1 tables)
+  ISMACS
+
+## ISMC (2 tables)
+  ISMCF
+  ISMCR
+
+## ISMI (3 tables)
+  ISMICADT
+  ISMICESA
+  ISMICEST
+
+## ISMR (1 tables)
+  ISMRPFC
+
+## ISNC (1 tables)
+  ISNCR
+
+## ISNO (1 tables)
+  ISNOTES
+
+## ISNT (1 tables)
+  ISNTYPE
+
+## ISNU (1 tables)
+  ISNUMBER
+
+## ISOR (2 tables)
+  ISORDDSC
+  ISORDECO
+
+## ISPO (7 tables)
+  ISPOBOX
+  ISPODESC
+  ISPOHTRK
+  ISPOLOG
+  ISPOS
+  ISPOSC
+  ISPOTRK
+
+## ISPR (7 tables)
+  ISPREQ
+  ISPRESN
+  ISPRINFO
+  ISPRMSTR
+  ISPRSALE
+  ISPRTEMP
+  ISPRUDF
+
+## ISQC (5 tables)
+  ISQCAMST
+  ISQCATRN
+  ISQCMTHD
+  ISQCRSLT
+  ISQCSPEC
+
+## ISQR (1 tables)
+  ISQRYSQL
+
+## ISQS (1 tables)
+  ISQSOA
+
+## ISQT (2 tables)
+  ISQTCODE
+  ISQTINFO
+
+## ISRE (4 tables)
+  ISREMIND
+  ISREPDEF
+  ISREPLNK
+  ISREPORD
+
+## ISRF (1 tables)
+  ISRFQADS
+
+## ISRM (14 tables)
+  ISRMAAI
+  ISRMAC
+  ISRMADSC
+  ISRMAI
+  ISRMAINF
+  ISRMAINV
+  ISRMAIVL
+  ISRMDESC
+  ISRMHINF
+  ISRMINFO
+  ISRMINV
+  ISRMINVL
+  ISRMTXN
+  ISRMTXNS
+
+## ISRO (1 tables)
+  ISROUTEX
+
+## ISRT (4 tables)
+  ISRTESA
+  ISRTEST
+  ISRTLOAD
+  ISRTMS
+
+## ISSC (2 tables)
+  ISSCHED
+  ISSCOMP
+
+## ISSD (1 tables)
+  ISSDET
+
+## ISSE (10 tables)
+  ISSEDH
+  ISSEDL
+  ISSEPROC
+  ISSEQUIP
+  ISSERCNT
+  ISSERIAL
+  ISSERR
+  ISSESH
+  ISSESL
+  ISSETYPE
+
+## ISSH (3 tables)
+  ISSHIPA
+  ISSHIPCO
+  ISSHPVIA
+
+## ISSI (1 tables)
+  ISSIGN
+
+## ISSL (1 tables)
+  ISSLSFC
+
+## ISSM (1 tables)
+  ISSMTCFG
+
+## ISSN (1 tables)
+  ISSNOTES
+
+## ISSO (10 tables)
+  ISSOABOX
+  ISSOAHBX
+  ISSOAINF
+  ISSOALOT
+  ISSOASER
+  ISSOBOX
+  ISSOHBOX
+  ISSOHINF
+  ISSOINFO
+  ISSOREVU
+
+## ISSP (3 tables)
+  ISSPC
+  ISSPOH
+  ISSPOL
+
+## ISSQ (2 tables)
+  ISSQTH
+  ISSQTL
+
+## ISSR (21 tables)
+  ISSRADSC
+  ISSRAINF
+  ISSRAINV
+  ISSRAIVL
+  ISSRAMMS
+  ISSRCH
+  ISSRCL
+  ISSRDESC
+  ISSRFQH
+  ISSRFQL
+  ISSRHINF
+  ISSRINFO
+  ISSRINV
+  ISSRINVL
+  ISSRMH
+  ISSRMINV
+  ISSRMIVL
+  ISSRML
+  ISSRMMS
+  ISSRTXN
+  ISSRTXNS
+
+## ISSS (4 tables)
+  ISSSOH
+  ISSSOL
+  ISSSRH
+  ISSSRL
+
+## ISST (4 tables)
+  ISSTEQUI
+  ISSTRACK
+  ISSTTYPE
+  ISSTYPE
+
+## ISTA (2 tables)
+  ISTAXFIL
+  ISTAXGRP
+
+## ISTE (1 tables)
+  ISTERMS
+
+## ISTO (1 tables)
+  ISTOOLOG
+
+## ISTR (1 tables)
+  ISTRIGRS
+
+## ISUD (2 tables)
+  ISUDFINV
+  ISUDMSTR
+
+## ISUS (1 tables)
+  ISUSAGE
+
+## ISVA (2 tables)
+  ISVAR
+  ISVARSQL
+
+## ISVN (1 tables)
+  ISVNDADT
+
+## ISWO (8 tables)
+  ISWOCLOG
+  ISWODESC
+  ISWOEX
+  ISWOHDSC
+  ISWOHEX
+  ISWOPRIO
+  ISWOROEX
+  ISWOTRAY
+
+## ISWR (1 tables)
+  ISWROHEX
+
+## JGPI (1 tables)
+  JGPITEMS
+
+## JSPC (2 tables)
+  JSPCNLCD
+  JSPCNLSO
+
+## LANG (1 tables)
+  LANGDICT
+
+## LOT (1 tables)
+  LOT
+
+## MACH (1 tables)
+  MACHINE
+
+## MENU (1 tables)
+  MENUFILE
+
+## MKAH (1 tables)
+  MKAHIST
+
+## MKAS (1 tables)
+  MKASSIGN
+
+## MKDE (1 tables)
+  MKDEF
+
+## MKEC (1 tables)
+  MKECLASS
+
+## MKEV (1 tables)
+  MKEVENT
+
+## MKFO (1 tables)
+  MKFORM
+
+## MKIC (1 tables)
+  MKICLASS
+
+## MKTC (1 tables)
+  MKTCLASS
+
+## MKTN (1 tables)
+  MKTNOTE
+
+## MKTR (2 tables)
+  MKTRACK
+  MKTROUT
+
+## MTEX (1 tables)
+  MTEXCHG
+
+## MTIC (3 tables)
+  MTICAMTR
+  MTICEMTR
+  MTICMSTR
+
+## MTIN (1 tables)
+  MTINVDEF
+
+## MTMR (1 tables)
+  MTMRP
+
+## MWOP (1 tables)
+  MWOPTEMP
+
+## NOTE (1 tables)
+  NOTETEMP
+
+## NZIT (1 tables)
+  NZITPRE
+
+## OPQC (1 tables)
+  OPQCDESC
+
+## OUTH (1 tables)
+  OUTHPROC
+
+## OUTP (1 tables)
+  OUTPROC
+
+## PIBI (2 tables)
+  PIBINLOC
+  PIBINLOT
+
+## QCCO (1 tables)
+  QCCODES
+
+## ROCH (1 tables)
+  ROCHG
+
+## ROUT (3 tables)
+  ROUTAING
+  ROUTING
+  ROUTTEMP
+
+## SCHE (1 tables)
+  SCHEDCAL
+
+## SCHW (1 tables)
+  SCHWO
+
+## SCRA (1 tables)
+  SCRAP
+
+## SERI (2 tables)
+  SERIAL
+  SERIALH
+
+## SUMC (1 tables)
+  SUMCUST
+
+## SUMI (1 tables)
+  SUMINV
+
+## SUMP (1 tables)
+  SUMPNCUS
+
+## SUMW (1 tables)
+  SUMWC
+
+## TEMP (1 tables)
+  TEMPOLD
+
+## TEST (2 tables)
+  TESTARRA
+  TESTFILE
+
+## TOOL (1 tables)
+  TOOL
+
+## WBTR (2 tables)
+  WBTRVMEM
+  WBTRVMEMO
+
+## WCCT (1 tables)
+  WCCTL
+
+## WCTR (2 tables)
+  WCTRLOAD
+  WCTRSLOD
+
+## WOBO (4 tables)
+  WOBOM
+  WOBOMCHG
+  WOBOMHRM
+  WOBOMREM
+
+## WODA (1 tables)
+  WODATE
+
+## WOEL (1 tables)
+  WOELABOR
+
+## WOEM (1 tables)
+  WOEMAT
+
+## WOER (1 tables)
+  WOERECV
+
+## WOEX (1 tables)
+  WOEXCHG
+
+## WOHB (1 tables)
+  WOHBOM
+
+## WOHD (1 tables)
+  WOHDATE
+
+## WOHE (1 tables)
+  WOHEXCHG
+
+## WOHL (1 tables)
+  WOHLABOR
+
+## WOHM (1 tables)
+  WOHMAT
+
+## WOHR (2 tables)
+  WOHRECV
+  WOHROUT
+
+## WOLA (2 tables)
+  WOLABOR
+  WOLABRPT
+
+## WOMA (1 tables)
+  WOMAT
+
+## WORE (1 tables)
+  WORECV
+
+## WORK (6 tables)
+  WORKACHG
+  WORKCHG
+  WORKCTR
+  WORKHORD
+  WORKORD
+  WORKSORD
+
+## WORO (3 tables)
+  WOROCHG
+  WOROUT
+  WOROUTMP
+
+## WOSR (1 tables)
+  WOSROUT
+
+## XXIC (1 tables)
+  XXICMSTR
+

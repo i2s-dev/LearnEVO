@@ -1,0 +1,224 @@
+TASCOLOR
+FILELOC 
+BKSLEVEL
+BKSLMSTR
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUMA
+TASCOLOR|CMPDFLT |FDHLDR  |TASCMDH |TASCMDL |ERRMSG  |TRANSLTE|FIFO    |MEMORY  |MONTHEND|MEATTRIB|DBAMAIMN|DBAMODUL|FIELDDEF|INDEXDEF
+ DBA Software        
+        Convert Data Files         
+            Utilities A
+TASFILE.MA
+ERROR!. No system files in that directory.A
+filelocA
+BKGLCOA BA
+tasfile.mA
+BKGLCOA.BA
+ERROR!. A set of files matching the companyA
+number entered does not exist.A
+Please review instructions on convertingA
+data from older version of DBA Systems.A
+WARNING! Any data existing for this companyA
+at this location is going to be ERASED.A
+Are you sure you want to continue(Y/N)? A
+ERROR! The company you entered does notA
+exist in the Old Files location.A
+tasdict.mI
+BKSHORT A
+dbacnvt2A
+Updating security files...A
+FILELOCA
+BKPSUSERI
+BKPSUSERA
+BKPSUSERI
+BKPSUSERA
+BKSYUSERI
+BKSYUSERA
+BKSYUSERI
+BKSYUSERA
+BKSLMSTRI
+BKSLMSTRA
+BKSLMSTRI
+BKSLMSTRA
+BKSLEVELI
+BKSLEVELA
+BKSLEVELI
+BKSLEVELA
+BKSLEVELA
+BKSLMSTRA
+error reading file in old tas locationA
+Enter the path: A
+FILELOC.BA
+The dictionary files were not found.  Do you want to create a new set of files in path A
+Initializing files ...A
+initbtrvA
+   Location (Path) to Old Files:                                            
+              
+              
+ Company:     (Leave it blank for default company)  
+              
+ Location:                                          
+              
+              
+ Converting File:                                   
+              
+                                                    
+              
+ Total No of Records:                               
+              
+ Reading Record #:                                  
+              
+ Total Files Proc'd:                                
+              
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+SCRNH_1        
+OLD_FILE       
+OLD_DICT       
+LIMIT          
+OLD_LOC        
+FILE_NAME      
+FILE_NAME_HLDR 
+SIZE           
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+DICT_HNDL      
+KEY_HNDL       
+LOC_HNDL       
+KNUM_HNDL      
+EXTRA_HNDL     
+EXTRA_HNDL2    
+EXTRA_HNDL3    
+NEW_DICT       
+NEW_KEY        
+NEW_LOC        
+NEW_KNUM       
+ERRORS_FLD     
+FILE_CNTR      
+DICT.NAME      
+DICT.SCHEMA    
+DICT.OFFSET    
+DICT.TYPE      
+DICT.SIZE      
+DICT.DEC       
+DICT.UPCASE    
+DICT.HOLDER    
+DICT.KEY       
+DICT.KEYN      
+DICT.OVLY      
+DICT.SIZEH     
+DICT.ARRAY     
+DICT.DECH      
+DICT.SIZEHLD   
+DICT.OFFH      
+BTLFNAME       
+BTLSCHEMA      
+BTLMLOC        
+COMPANY        
+COCODE         
+LOCATION       
+BUFF_NAME      
+FILENAME       
+REC_SIZE       
+REC_TYPE       
+ANSWER         
+DESCRIPTION    
+FLAG           
+FILE           
+SPCL_FILES     
+WC             
+BC             
+SC             
+LOC_LOCATION   
+LOC_COMP_CODE  
+LOC_FILE_NAME  
+FILE.NAME      
+BKSLMSTR_HNDL  
+BKSLEVEL_HNDL  
+FILE_HNDL      
+BKSL.LEVEL     
+BKSL.MSTR.LEVEL
+BKSL.MSTR.DESC 
+NEW_COMP_CODE  
+CREATE_FILE    
+LOC_BUFF_NAME  
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+MESSAGE        
+MSG_PTR        

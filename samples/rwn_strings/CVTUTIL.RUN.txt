@@ -1,0 +1,291 @@
+FILELOC 
+BKYSMSTR
+ISIS    
+BKSYMSTR
+BKGLTRAN
+BKSYAP  
+BKAPPOL 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+filelocA
+BKSYMSTRA
+BKSYMSTRA
+BKSYMSTR.BA
+BKSYAPA
+BKSYMSTRA
+BKYSMSTRA
+Pending
+DBA 2002.1 UPDATE UtilityA
+Done PriorA
+GL2002A
+CVT     A
+CompleteF
+PendingI
+Done PriorA
+taxusaF
+CompleteF
+PendingL
+Not NeededA
+BKGLTRANI
+Not NeededA
+Not NeededA
+Done PriorA
+GLEREDOA
+CVT     A
+CompleteF
+PendingI
+Done PriorA
+AR2001F
+CompleteF
+PendingA
+Done PriorA
+AP2001F
+CompleteA
+BKAPHPOLF
+PatchingI
+HISTORICALA
+CompleteF
+PendingI
+Done PriorA
+PS20021A
+CVT     A
+CompleteF
+PendingI
+Done PriorA
+SBCHECKA
+BKSBVENDA
+BKSBMFGA
+SBUTILA
+CVT     A
+CompleteF
+PendingI
+BKAPHPOLI
+POLOCFIXA
+BKYSMSTRA
+BKYSMSTRF
+CompleteF
+Done PriorF
+PendingI
+Done PriorA
+LONGTIMEA
+CompleteI
+CompleteA
+Company BA
+ Configuration complete. Since you were updating from a version prior to 2000.1 System security settings will need to be manualy set using PS-B System Security levels.A
+Company BA
+ Configuration complete.A
+             
+             
+                                                     
+             
+   Checking System GL Settings                       
+             
+   Checking TAX Systems                              
+             
+   Checking GL Entries                               
+             
+   Checking AR Settings                              
+             
+   Checking AP Settings                              
+             
+   Checking Security Settings                        
+             
+   Checking Inventory Settings                       
+             
+   Checking PO Receipt Settings                      
+             
+   Checking Routing Entries                          
+             
+                                                     
+             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+OK             
+STATGL2002     
+VALID          
+SYMST.H        
+SYAP.H         
+YSMST.H        
+ISIS.H         
+GLTRN.H        
+HPOL.H         
+SKIP.GL        
+LOC_HNDL       
+X              
+CO_LOOP        
+CO_CO          
+CO_PATH        
+LOC_BUFF_NAME  
+LOC_COMP_CODE  
+LOC_LOCATION   
+BKYS.YN        
+IS.TAX.CVT     .
+BKSY.GL.RELYR  
+BKGL.TRN.TYPE  H
+BKSY.AP.RECVFLG
+BKAP.POL.RQTY  s
+BKAP.POL.IQTY  {
+BKAP.POL.INVNUMP
+BKAP.POL.INVDTEb
+BKAPPOL.H      
+BKAP.POL.PQTY  ;
+BKAP.POL.PCODE 
+ISTXG.HNDL     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCF.HNDL     
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISCT           
+ISLP           
+IS.DEC         
+IS.CVT.MTH     
+TAXC           
+TAMT           
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMBOL      
+IS.SYMPOS      
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+MSG_PTR        
+MESSAGE        

@@ -1,0 +1,483 @@
+TAS32V
+FILELOC 
+FILEDICT
+FILEKNUM
+TASCOLOR
+BKSYHELP
+DBAHLPID
+ - ISTS Enhancement 01/30/04A
+ISTECHL
+FILEDICTA
+FILELOCA
+FILEKNUMA
+DE-A  Export DataA
+ 1 - ISO format           YYYYMMDD   A
+ 2 - Standard Long Date   MM/DD/YYYY A
+F1 Help,F2 LookupA
+Esc ExitA
+Error:  File not found . . . I
+Error:  There are no fields in the Data Dictionary for this file.I
+F1 Help,F2 LookupA
+Esc ExitA
+Use a previously saved format?L
+F1 Help,F2 LookupA
+Esc ExitA
+Edit previously saved fields?L
+Output ALL fields? (answer 'No' for SELECTED fields)L
+F1 Help,F2 LookupA
+Esc ExitA
+Error:  Sort Field Not Found in Data Dictionary.I
+Error:  Sort By Field does not belong to this file.F`
+Sort must be based on a KEY field within: A
+Error:  Sort by Field is Not A Key.  This field MUSTF`
+be defined as a Key Type [YBDM] in the Data Dictionary.I
+ will be written to: A
+Records from A
+.  Do you want to continue [Y/N]? A
+Do you want to save this format for future use [Y/N]? I
+Do you want to cancel this selection andF`
+start over [Y/N]? A
+Which Array Element# 1 - A
+ Export Fields A
+FilterA
+Name           A
+ArrayA
+DecimalA
+                                A
+Do you want to remove this field?L
+ Set Filter A
+Set filter for A
+ F - Fixed Length    0101FF`
+ D - Delimited       0102DF`
+ T - Textfile        0103TF`
+ C - Common          0104CF`
+ S - Special         0105SI
+Output File Type: ffF`
+Please type the Common Delimiter: I
+Please type the Special Delimiter: I
+File ListA
+Field ListA
+Key ListA
+Error finding first record in file. This file may be blank.A
+Do you want to include column headings on exported data?L
+Do you want to view your exported data now? [Y/N]: A
+FROM: A
+THRU: A
+    DBA Filename:
+ Output Filename:                                            Output Type:
+    # of Fields:      Rec Length:       Sort By Index Field:
+ Writing Tasfile:
+ Total Records:
+ To Diskfile:
+ Records Written:
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+ESC ExitA
+Keys, Page
+Up, Page
+Down, End, or Home to view the fileA
+ Listing A
+ISTECHA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+START_UP.RUNA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+DATE_HLDR      
+YYYY           
+MM             
+DD             
+DATETYPE_CTR   
+OUT.FILE       
+OUT.TYPE       
+OUT.SORT.FIELD 
+MEM_DICT_NAME  
+MEM_DICT_ARRAY 
+MEM.DICT_OFFSET
+MEM.DICT_TYPE  
+MEM.DICT_SIZE  
+MEM.DICT_DEC   
+GARBAGE        
+MEM.SELECT.FLD 
+MEM.SELECT.NUM 
+FROM           
+THRU           
+TOT.SELECT.FLDS
+MEM.CNTR       
+MEM.CNTR2      
+MEM.CNTR3      
+MEM.CUR.LINENUM
+MEM.TOTAL.LINES
+MEM.REC.SIZE   
+MEM.DIR        
+MEM.DELT.LNNUM 
+ARRAY.NUM      
+ARRAY.FLAG     
+DICT.CSIZE     
+MEM.TYPE       
+LNE.LNGTH      
+LNE.LN2        
+NUM.MSG        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+OK             
+A.SIZE         
+A.DEC          
+A.ARRAY        
+F.NAME         
+MENU_TITLE     
+FNRO           
+SEARCH.TYPE    
+MEM.OFFSET     
+REC.OFFSET     
+SRCH.KEY.FIELD 
+CONVERT.FIELD  
+CONVERT.NFIELD 
+CONVERT.SIZE   
+OUT.FIELD.VAL  
+OUT.TEXT       
+CR             
+LF             
+QUOTE          
+COMMA          
+FILL.CHAR      
+TOT.RECS       
+OUT.RECS       
+NUM.FIELDS     
+COMMON         
+SELECT.NUM     
+SPEC.DELIMITER 
+SAVE.FILE      
+TEMP.LOC       
+OLD.FORMAT     
+DATA.OUT.TEXT  
+E_FROM         
+E_THRU         
+OUT_HNDL       
+TEMP_HNDL      
+ENTRY.TYPE     
+INSERT.LINE    
+EDIT.LINE      
+ISTS.EDATE     
+DICT_HNDL      
+LOC_HNDL       
+KNUM_HNDL      
+LOC_FILE_NAME  
+MESSAGE        
+MSG_PTR        
+DICT_OFFSET    
+DICT_BUFF_NAME 
+LOC_BUFF_NAME  
+KNUM_BUFF_NAME 
+KNUM_KEY_NAME  
+KNUM_KEY_NUMB  
+LL_CNTR        
+DICT_FIELD_NAME
+DICT_ARRAY_ELE 
+DICT_TYPE      
+DICT_SIZE      
+DICT_DEC       
+WC             
+BC             
+SC             
+PSF_TTL1       
+PSF_USCORE     
+LOC_COMP_CODE  
+LOC_DESCRIPTION>
+CC             
+DICT_DESC      !
+O.F.V          
+FRM            
+THR            
+IS_TYP         
+IS_SZE         
+BCD_DSIZE      
+BCD_ISIZE      
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BUTTON_LIST    
+BUTTON_CNTR    
+FILE_NAME      
+FILE_HNDL      
+FILE_BUFF      
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           

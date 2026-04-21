@@ -1,0 +1,637 @@
+code,help_title
+AD-A,General Ledger Defaults
+AD-B,Checking Account Defaults
+AD-C,Accounts Payable Defaults
+AM-A,Reset General Ledger Close Date
+AM-B,Fiscal Year End Routine
+AM-C,Enter General Ledger Accounts
+AM-D,Enter General Ledger Departments
+AM-E,Format Standard Financial Statements
+AM-F,Format Custom Financial Statements
+AM-G,Consolidate Financials
+AM-H,Change Account Codes
+AM-I,Consolidate Gl Detail
+AM-J,Archive Purge Ap History
+AM-K,Archive Purge Ar History
+AM-N,Maintain Gl Fiscal Periods
+AM-O,Archive Purge Vendor Data
+AM-P,Archive Purge Customer Data
+AM-Q,Enter Budget Information
+AM-R,Out Of Balance Report
+AM-S,Purge Or Archive Gl Journ
+AM-T,Archive Gl Transaction De
+AP-A,Enter Vendors
+AP-B,Enter Vouchers
+AP-C,Enter Purchase Order Invoices
+AP-D,Enter Scheduled Payment Dates
+AP-E,Print Vouchers Invoices Due By Date
+AP-F,Pick Vouchers Invoices To Pay
+AP-G,Print Pro Forma Check Register
+AP-H,Print Checks
+AP-I,Print Aging
+AP-J,Print Vendor Code And Name
+AP-K,Print Vendor General Info
+AP-M,Print Vendor Labels
+AP-N,Enter Vouchers Edit Address
+AP-O,Enter Recurring Vouchers And Templates
+AP-P,Generate Recurring Vouchers
+AP-Q,Void Ap Check
+AP-R,Print Ap Payment History
+AP-S,Print 1099 Forms
+AP-T,Check Invoice Inquiry
+AP-V,Enter Ap Deposit
+AP-X,Print Invoice Detail
+AR-A,Enter Customers
+AR-B,Enter Vouchers
+AR-C,Record Payments
+AR-D,Charge Interest On Invoices
+AR-E,Print Statements
+AR-F,Print Aging
+AR-G,Print Customer Code And Name
+AR-H,Print Customer General Info
+AR-I,Print Customer Mail Labels
+AR-K,Print Sales Tax Report
+AR-L,Transfer Sales Taxes
+AR-M,Enter Customer Refund
+AR-N,Enter Print Sales Order Deposits
+AR-P,Generate Dun Leters
+AR-Q,View Customer Information
+AR-R,Print Customer Payment History
+BM-A,Ener Bills Of Material
+BM-B,Print Bills Of Materials
+BM-C,Print Where Used
+BM-D,Print Bom Availability
+BM-E,Global Replace
+BM-F,Global Delete
+BM-G,Print Rollup Standard Costs
+BM-H,Print Bom At Average Cost
+BM-J,Enter Approved Substitutes
+BM-K,Enter Approved Vendors
+BM-L,Enter Approved Manufacturers
+BM-N,Bom Availability Tree
+BM-P,Print Bom Pick List
+BM-Q,Roll Up Where Used
+BM-R,Print Bom For Quoting
+CM-A,Enter Contact Accounts
+CM-B-B,Print Accounts Listing Labels
+CM-B-C,Print Reminders
+CM-B-F,Print Account History
+CM-C,Opportunity Dashboard
+CM-J,Change Account Code
+CM-K,Add Customers To Account File
+CM-L,Enter Form Letters
+CR-A,Assign Departments To Sales Orders
+CR-B,View Enter So Approvals
+CS-A,Enter Salespersons
+CS-B,View Salesperson Info
+CS-C,Print Salespersons Info
+CS-D,Transfer Sales Commissions
+CS-E,Print Commission Detail
+CS-F,Print Commission Summary
+CS-G,Enter Sales Rep Links
+CS-H,Import Sales Rep Links
+CS-K,Enter Price Code Commissions
+CS-L,Print Price Code Commissions
+CS-M,Enter Contract Commissions
+CS-N,Print Contract Commissions
+CS-O,Print Commissions Earned Detail
+CS-P,Print Commissions Due Summary
+CS-Q,Commission Year End Routine
+DC-A,Enter Labor Production
+DC-B,Enter Production Only
+DC-C,Enter Labor Only
+DC-D,Print Labor Status
+DC-E,Print Labor Tickets
+DC-F,Print Employee Tickets
+DC-G,Edit Labor Transactions
+DC-H,Post Labor Transactions
+DC-I,Work Order Inquiry
+DC-K,Archive Or Purge Shift Re
+DC-L,Shift Clock In Out
+DC-M,Employee Dashboard
+DC-N,Enter Holiday Shift Recor
+DE-A,Sql Query Export
+DE-B,Import Inventory
+DE-C,Import Bills Of Material
+DE-D,Import Routings
+DE-E,Import Customers
+DE-F,Import Vendors
+DE-G,Import Chart Of Accounts
+DE-H,Global Field Change
+DE-I,Erase Files
+DE-J-A,Import Post Labor
+DE-K-A,Import Post Material Issues
+DE-L-A,Import Post Work Order Receipts
+DE-M,Import Physical Inventory Counts
+DE-T,Impoer Web Storefront Ord
+DE-U,Upload Stock Balance To W
+ED-B,Import Edi Orders
+ED-C,Edit Edi Orders
+ED-D,Convert Edi Orders To Sales Orders
+ED-G,Master Edi Setup
+ED-H,Error Report
+ES-A,Enter Estimates
+ES-B,Print Customer Quotes
+ES-C,Print Internal Estimate Sheet
+ES-D,Quick Estimate
+ES-E,Convert Estimates
+ES-H,Enter Material Costs
+ES-I,Print Material Costs
+ES-K,Update Inventoiry From Pr
+ES-L,Edit Estimating Inventory
+ES-M, Estimating Inventory Inq
+FA-A,Enter Fixed Assets
+FA-B,Post Depreciation
+FA-C,List Depreciation Transactions
+FA-D,List Assets
+FA-E,Import Assets
+FO-A,Enter Features And Options
+FO-C,Enter Option Prince
+FO-D,Print Option Price
+FO-E,Print Option Where Used
+FO-G,Configure Item
+FP-B,Print Features And Options
+GL-A,View Chart Of Accounts
+GL-B,Enter Post General Journal Trxns
+GL-C,Print Gl Transactions
+GL-D,Print Journals
+GL-E,Print Detailed Trial Balance
+GL-F,Print Financial Statements
+GL-G,Print Gl Code And Description
+GL-H,Print Chart Of Accounts
+GL-I,Print Check Register
+GL-J,Reconcile Check Register
+GL-K,Transfer Bank Account Funds
+GL-L,Reconcile Credit Card Sta
+GL-N,Print Custom Financial Statements
+GL-O,Print Post General Ledger Baches
+GL-P,Edit General Ledger Batch Entries
+GL-Q,Enter Payroll Checks
+GL-R,Business Status
+GL-S,View Journal Notes
+HH-A,Scan Ship
+HH-B,Print Bar Code Labels
+HH-C,Issue Materials
+HH-D,Enter Finished Production
+HH-E,Enter Pi Tag Counts
+HH-F,Enter Labor
+HH-G,Receive Purchase Order
+HH-H,Enter Shipping Information
+HH-I,Paperless Shop Floor Tracking
+HH-J,Print Work Order Label
+HH-K,Transfer Inventory
+HH-M,Issue Scrap Component
+IM-A,International Configuration
+IM-B,Enter Multiple Currencies
+IM-C,Enter Currenct Exchange Rates
+IM-D,Enter Landed Cost Defaults
+IM-E,Enter Landed Cost Duty Codes
+IM-F,Enter Landed Cost Customs Fees
+IN-A,Inventory Inquiry
+IN-B,Enter Inventory
+IN-C,Enter Inventory Adjustments
+IN-D,Print Reorder Report
+IN-E,Print Inventory Transactions
+IN-F,Print Inventory Value
+IN-G,Print Inventory Labels
+IN-H,Print Inventory Listing
+IN-I,Print Inventory General Information
+IN-J,Print Physical Check
+IN-K,Adjust Physical Levels
+IN-L-A,Enter Standard Costs
+IN-L-B,Enter Assign Locations
+IN-L-C,Enter Customer Cross Reference
+IN-L-D,Print Customer Cross Reference
+IN-L-E,Update Materoal Standard Costs
+IN-L-F,Enter Material Dimensions
+IN-L-H,Edit Fifo Lifo Buckets
+IN-L-I,Change Costing Method
+IN-L-J,Transfer Inventory
+IN-L-K,Inventory Exception Report
+IN-L-L,Incative Bom Component Report
+IN-L-M,Batch Location Transfer
+IN-L-N,Copy Item
+IN-L-O,Inactive Inventory Utility
+IN-L-Q,Enter Inspection Test Procedure Codes
+IN-L-R,Intercompany Inventory Transfer
+IN-L-S,Rebuild Stock Status
+IN-L-T,Reset Cycle Code
+IN-L-U,Item Number Configurato
+IN-M,Summary Reorder Report
+IN-N-A,Print Month End Inventory Costing
+IN-N-B,Print Shipments Costing
+IN-N-C,Print Closed Work Orders Costing
+IN-N-D,Print Inventory To Gl Exceptions
+IN-O,User Defined Inventory Transactions
+IN-P,Print Inventory Usage
+IN-Q,Print Labels With Lot Serial Info
+JC-A,Print Job Cost Report
+JC-B,Print Profit Projection
+JC-C,Print Labor Transactions
+JC-D,Print Overhead Transactions
+JC-E,Print Material Issues
+JC-F,Print Outside Purchase
+JC-G,Print Labor Efficiency
+JC-H,Print Work Order History
+JC-I,Print Production By Work Center
+JC-J,Print Production By Machine
+JC-K,Print Production By Tool
+JC-L,Print Job Cost Summary
+JC-M,Print Wip Summary
+JC-N,Print Wip Percent Completion
+JC-O,Print Standard Labor Hours
+JC-P,Print Materials In Wip
+JC-Q,Print Work Order Receipts
+JC-R,Print Multi Level Job Cost
+JC-S,Work Order Detail Report
+LC-A,Edit Lot File
+LC-B,Assign Lot Control
+LC-C,Print Lot Availability
+LC-D,Print Lot History
+MR-A,Enter Forecast
+MR-B,Print Forecast
+MR-C,Reset Forecast
+MR-D,Enter Mrp Parameters
+MR-E,Print Mrp Parameters
+MR-F,Generate Mrp Requirements
+MR-G,Print Material Requirements
+MR-H,Print Order Action Report
+MR-I,Generate Work Orders
+MR-J,Generate Purchase Orders
+MR-K,Generare Rfqs
+MR-L,Print Planned Orders Report
+MR-N,Apply Delay Action To Pos
+PI-A,Capture Frozen Inventory
+PI-B,Frozen Inventory Report
+PI-C,Enter Tag Counts
+PI-D,Print Missing Tags
+PI-E,Edit Frozen Inventory Costs
+PI-F,Physical Inventory Report
+PI-G,Update Actual Inventory
+PI-H,Purge Physical Inventory
+PO-A,Enter Purchase Orders
+PO-B,Print Purchase Orders
+PO-C,Receive Purchase Orders
+PO-D,View Po Receivers
+PO-E,Enter Print Rfqs
+PO-F,Enter Verbal Rfqs
+PO-G,Convert Rfqs
+PO-H,Enter Vendor Prices
+PO-I-A,Print Open Purchase Orders Listing
+PO-I-B,Print Closed Purchase Orders Listing
+PO-I-C,Print Rfq Status
+PO-I-D,Print Vendor Prices
+PO-I-E,Print Receiving Report
+PO-I-F,Print Received Not Invoiced
+PO-I-G,Print Purch Order Items
+PO-I-H,Vendor Performance Report
+PO-J-A,Print Receipt Travelers
+PO-J-B,Printinventory In Qc
+PO-J-C,Enter Inspection Buyoffs
+PO-K,Close Purchase Orders
+PO-L,Assign Vendors To Items
+PO-M,Purchase Order Inquiry
+PO-P,View Vendor Information
+PO-Q,Print Receiving Slip
+PO-R,Print Receiving Slip Evo Erp 
+PO-T,Digitally Sign Purchase Order
+PR-A,Enter Employees
+PR-B,Enter Pay Info
+PR-C,Print Payroll Register
+PR-D,Print Payroll Checks
+PR-E,Print Employe Information
+PR-F,Maintain Tax Tables
+PR-G,Void Payroll Check
+PR-H,Transfer Liabilities To Ap
+PR-I,Print Pay History
+PR-J,Enter Time Cards
+PR-K,Print Post Time Cards
+PR-L-A,Print Quarterly Info
+PR-L-B,Print Qtd Earnings Register
+PR-L-C,Print Qtd Taxable Earnings
+PR-L-D,Print Detail Earnings Ledger
+PR-L-E,Print Detail Deductions Ledger
+PR-L-F,Print Subject To Report
+PR-L-G,Print 941 And Schedule B Reports
+PR-L-H,Print 940 Form
+PR-L-K,Print Payroll Hours
+PR-L-L,Print 941B Forms
+PR-L-M,Print Employer Contributions
+PR-L-N,Print Payroll Wages Detail
+PR-L-P,Print Employee Raises
+PR-L-Q,Print Employee Reviews
+PR-M,Payroll Division Defaults
+PR-N,Purge Payroll History
+PR-O,Year End Routine
+PR-P,Enter Raise Dates
+PR-Q,Enter Review Dates
+PR-R,Payroll Defaults
+PR-S,Assign Password To Employ
+PS-A,System Users Passwords
+PS-E,Evo Menu Access By User R
+PS-F,Evo Menu Access By Progra
+PS-G,Maintain Menu Access
+PS-I,Enter Digital Signers For Po
+PS-J,Enter Contract Review Signers
+QC-A,Quality Control Receiving
+QC-B,Quality Control Materials
+QC-C,Production Scrap Report
+QC-D,Quality Control Labor Rep
+QC-E,Vendor Quality Perfirmanc
+QC-F-A,Enter Ncr
+QC-F-B,Print Ncr
+QC-F-C,Disposition Ncr
+QC-F-D,Close Ncr
+QC-F-E,View Ncr
+QC-G-A,Enter Car
+QU-A,Master Inquiry
+QU-B,Calendar Drill Down
+QU-C,Calendar Summary Report
+QU-D,Business Status
+QU-E,Quick Grid Lookup
+QU-F,Query Executor
+RM-A,Enter Rma
+RM-B,Print Rma
+RM-C,Receive Rma
+RM-D,Disposition Rma
+RM-E,Enter Rma Return Codes
+RO-A,Enter Routings
+RO-B,Print Rollup Routing Costs
+RO-C,Enter Work Centers
+RO-D,Enter Machines
+RO-E,Enter Tools
+RO-F,Enter Qc Codes
+RO-G,Enter Scrap Codes
+RO-H,Enter Departments
+RO-I,Enter Operation Templates
+RO-J-A,Print Routings
+RO-J-B,Print Work Centers
+RO-J-C,Print Machines
+RO-J-D,Print Tools
+RO-J-E,Print Qc Codes
+RO-J-F,Print Scrap Codes
+RO-J-G,Print Departments
+RO-J-H,Print Operation Templates
+RO-K,Enter Specification Templates
+RO-L,Enter Sequence Print Control
+RO-M,Enter Testing Method
+RO-N,Enter Test Requirements
+RO-P,Update Processing Cost St
+SA-A,Print Daily Sales Bookings
+SA-B,Print Profiy By Invoice
+SA-C,Print Customer Detail
+SA-D,Print Customer Summary
+SA-E,Print Customer Class Detail
+SA-F-A,Chart Export Profit By Invoice
+SA-F-B,Chart Export Customer Detail Summary
+SA-F-C,Chart Export Salesperson Summary
+SA-F-D,Chart Export Item Sales Analysis
+SA-G,Print Customer Class Summary
+SA-H,Print Salesperson Detail
+SA-I,Print Salesperson Summary
+SA-J,Print Inventory Detail
+SA-L,Print Product Class
+SA-M,Print User Defined Detail
+SA-N,Print User Defined Summary
+SA-O,Top Customer Report
+SA-P,Print Sales Report
+SC-A,Edit Serial File
+SC-B,Assign Serial Control
+SC-C,Print Serial Availability
+SC-D,Print Serial History
+SC-E,Archive Serial History
+SC-F,Serial Control Exception Report
+SC-G,Enter Serial Generation Parameters
+SC-H,Serial Traceability Report
+SD-A,Company Defaults
+SD-B,Work Order Defaults
+SD-C,Purchase Order Defaults
+SD-D,Material Requirements Defaults
+SD-E,Scheduling Defaults
+SD-F,Data Collection Defaults
+SD-G,Estimating Defaults
+SD-H,Inventory Defaults
+SD-I,Routings Defaults
+SD-J,Bill Of Material Defaults
+SD-K,Lot And Serial Control Defaults
+SD-L,Features And Options Defaults
+SD-M,Sales Order Defaults
+SD-N,Sales Commission Defaults
+SD-O,Contact Manager Defaults
+SD-P,Customer Ar Defaults
+SD-Q,Master Defaults
+SD-R,Assign Next Numbers
+SD-S,Warehouse Control Defaults
+SD-T,Service Repair And Rma Defaults
+SD-U,Hand Held Defaults
+SD-V,International Defaults
+SH-A,Edit Wo Start Finish Dates
+SH-B,Manually Schedule Work Orders
+SH-C,Manually Schedile Work Centers
+SH-D,Manually Schedule Machines
+SH-E,Finite Scheduling
+SH-F,Infinte Scheduling
+SH-G,Print Work Order Schedule
+SH-H,Print Work Order Status
+SH-I,Prnt Work Center Schedule
+SH-J,Print Machine Schedule
+SH-K,View Work Center Load
+SH-L,View Or Calculate Work Ce
+SH-M,Lead Time Estimator
+SH-N,Generate Lead Times
+SH-O,Finite Schedule Bucket Report
+SH-P,Lead Time Scheduling
+SH-R,Work Center Scheduler
+SM-A,Enter Customers
+SM-B,Enter Vendors
+SM-C,Enter Item Classes
+SM-D,Enter Terms Table
+SM-E,Enter Tax Codes
+SM-F,Enter Tax Groups
+SM-G,Enter Employees
+SM-H,Enter Shop Calendar
+SM-I-A,Enter Lead Source Codes
+SM-I-B,Enter Territory Codes
+SM-I-D,Enter Reminder Types
+SM-I-F,Enter Reasons For Loss
+SM-I-G,Enter Class Codes
+SM-I-H,Enter Key Date Codes
+SM-J-A,Work Order File Maintenance
+SM-J-B,Archive Work Orders
+SM-J-C,Reconcile Inventory On Hand
+SM-J-D,Consolicate Invventory Transactions
+SM-J-E,Purge Work Orders
+SM-J-F,Purge Purchase Order History
+SM-J-H,Purge Data Collection File
+SM-J-I,Purge Estimates
+SM-J-J,Purge Closed Sales Orders
+SM-J-L,Change Part Numbers
+SM-J-M,Change Customer Codes
+SM-J-N,Change Vendor Code
+SM-J-O,Rebuild Customer Vendor Credit Info
+SM-J-P,Purge Archive Service Rma Orders
+SM-J-Q,Bom Recursion Utility
+SM-J-S,Purge Inventory Audit I
+SM-J-T,Purge Or Archive Sales 
+SM-J-U,Configure Vendor Miscel
+SM-J-V,Archive Inventory Trans
+SM-N-A,Enter Note Types
+SM-N-B,Enter System Notes
+SM-N-C,Synchronize Classic Notes To Evo
+SM-N-D,Synchronize Evo Notes To Classic
+SM-P-A,Enter Categories
+SM-P-B,Enter User Defined
+SM-P-C,Enter Scrap Codes
+SM-P-D,Enter Qc Codes
+SM-P-E,Define Inventory User Define Fields
+SM-P-F,Enter Jobs
+SM-P-G,Enter Wo Priority Codes
+SM-P-H,Enter Cycle Codes
+SM-S,Enter Evo Links
+SM-T,Enter Java Settings
+SM-U,Enter Customer Ship Via
+SM-V,Check For Updates
+SO-A,Enter Sales Orders
+SO-B,Print Acknowledgments
+SO-C,Print Packing Slips
+SO-D,Print Shipping Labels
+SO-E,Release Sales Orders
+SO-F,Print Invoices
+SO-G,Post Invoices
+SO-H,Display Invoice History
+SO-I,Customer Service Inquiry
+SO-J,Enter Recurring Sales Orders
+SO-K,Generate Recurring Sales Order
+SO-N,Convers Sales Orders To Work Orders
+SO-O-A,Print Open Sales Order Listing
+SO-O-B,Print Backorder Listing
+SO-O-C,Reprint Invoice
+SO-O-D,Print Commissions By Sales Order
+SO-O-E,Print Shipping Schedule
+SO-O-F,Print Available To Ship
+SO-O-G,Print Sales Order Work Order Schedule
+SO-O-H,Print Invoice Listing
+SO-O-I,Print Released Sales Orders
+SO-O-J,Print User Defined Detail
+SO-O-K,Print User Defined Summary
+SO-O-M,Print Changes To Sales Orders
+SO-O-N,Print Ontime Shipping Report
+SO-P-A,Enter Sales Quotations
+SO-P-B,Print Sales Quotations
+SO-P-C,Convert Sales Quotations
+SO-P-D,Sales Quotation Detail Report
+SO-P-E,Sales Quotation Summary Report
+SO-P-F,Release Blanket Order
+SO-P-I,Enter Freight Tracking Number
+SO-P-J,Post Shipped Items
+SO-P-K,Edit Posted Invoice
+SO-P-L,Print Changes To Quotes
+SO-P-M,Converted Quote Report
+SO-P-N,Convert So To Po
+SO-P-P,Edit Estimated Ship Dat
+SO-Q-A,Enter Base Prices
+SO-Q-B,Print Base Price
+SO-Q-C,Global Price Change
+SO-Q-D,Enter Price Codes
+SO-Q-E,Print Price Codes
+SO-Q-F,Enter Discount Codes
+SO-Q-G,Print Discount Codes
+SO-Q-H,Enter Contract Prices
+SO-Q-I,Print Contract Prices
+SO-Q-J,Generate Base Prices
+SO-R,Void Invoice
+SO-T,View Sales Orders
+SR-A,Enter Service Repair Order
+SR-B,Print Service Repair Order
+SR-C,Convert S R Order To Work Order
+SR-D,Print S R Packing Slip
+SR-E,Release S R Order
+SR-F,Print S R Invoice
+SR-G,Post S R Invoice
+SR-I,Void S R Invoice
+SU-A,Maintain Grid Lookups
+SU-B,Maintain Drill Down Menus
+SU-C,Forms Editor
+SU-D,Grid Maintenance
+TA-D,Maintain Database
+TA-G,Maintain Menu Access Records
+TA-M,Forms Editor
+TA-N,Program Scheduler
+TA-O,Backup Utility
+TA-Q,Change Logo Image
+TA-R,Sql Editor
+TA-S,Data Dictionary Check
+US-A,Customize Settings
+US-B,Customize Menu
+US-C,Reser Screen Size Location
+US-D,Reset Password
+US-E,Update Po Electronic Signature Info
+US-F,Enter Reminders
+US-G,Enter Triggers
+US-H,Update Contract Review Password
+UT-A,Run A Tas Program
+UT-C,Reindex File
+UT-D,Edit Data Location File
+UT-H,Print File Layouts
+UT-I,Create Delete Company
+UT-K-A,Clear Data
+UT-K-B,Global Field Replace
+UT-K-D,Recalc Gl Chart Of Accounts
+UT-K-E,Consolidate Inventory Locations
+UT-K-F,Set Avg And Last Cost To Std Cost
+UT-K-G,Recalc Inventory Book Value
+UT-K-I,Fix Binary Zeroes
+WC-A,Enter Warehouse Bin Locations
+WC-B,Assign Warehouse Control
+WC-C,Assign Bin Locations To Items
+WC-E,Print Bin Inventory Listing
+WC-F,Warehouse Control Exceptions Report
+WO-A,Enter Work Orders
+WO-B,Release Work Orders
+WO-C,Print Travelers
+WO-D,Print Pick Lists
+WO-E,Print Labor Cards Labels
+WO-F,Enter Labor
+WO-G,Issue Materials
+WO-H,Entermisc Extra Costs
+WO-I,Enter Finished Production
+WO-J,Close Cancel Orders
+WO-K-A,Enter Work Order Routings
+WO-K-B,Enter Work Order Bills Of Material
+WO-K-E,Swap Substitute Parts
+WO-K-F,Edit Sequence Started Finished Dates
+WO-K-G,Recalculate Projected Hours
+WO-K-H,Recalculate Work Order Costs
+WO-K-I,Kitting System
+WO-K-J,Synchronize Work Order To Master Bom And Routing
+WO-K-K,Edit Posted Dc Labor
+WO-K-L,Quick Work Order
+WO-K-M,Parts Requester
+WO-K-N,Stockroom Program
+WO-K-O,Enter Component Serial 
+WO-K-P,Enter Component Lot Inf
+WO-K-Q,Convert Wo To Po
+WO-K-R,Issue Scrap Component
+WO-K-S,Assign Wo To Bin
+WO-L-A,Print Work Order Status
+WO-L-B,Print Work Order Schedule
+WO-L-C,Print Work Center Backlog
+WO-L-D,Print Projected Shipments
+WO-L-E,Print Post Labor To Payroll
+WO-L-F,Print Work Order Shortages
+WO-L-G,Print Work Center By Key Component
+WO-L-H,Print Projected Vs Estimated Hours
+WO-L-I,Print Allocations
+WO-L-J,Print Work Order Comple
+WO-L-K,Print Wo Bills Of Mater
+WO-L-L,Print Wo Component Labe
+WO-L-M,Print Material Summary
+WO-L-N,Wo Bom For Purchasing
+WO-M,Batch Labor Entry
+WO-N,Post Labor Batches
+WO-O,Post Material Transactions
+WO-P,Batch Finished Production
+WO-Q,Work Order Inquiry
+WO-R,Work Order Defaults
+WO-S,Print Work Order Labels
+WO-T,Enter Rework Work Order

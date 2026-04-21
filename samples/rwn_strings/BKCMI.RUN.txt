@@ -1,0 +1,664 @@
+TAS32v
+BKSYMSTR
+BKYSMSTR
+BKCMSBDF
+BKCMACTH
+BKCMACCT
+BKCMHCOD
+BKCMHCD2
+BKARCUST
+BKCMFTME
+BKARINV 
+ESTSUM  
+BKICTAX 
+BKPRSALE
+BKCMREP 
+BKICMSTR
+BKARINVL
+BKICPMAT
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKSYPRTR
+BKCMACTHA
+BKCMACCTA
+BKCMREPA
+BKCMHCODA
+BKCMHCD2A
+BKCMSBDFA
+BKARINVA
+BKARINVLA
+BKPRSALEA
+BKICPMATA
+BKICTAXA
+BKICMSTRA
+BKCMFTMEA
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+BKARCUSTA
+BKCMSBDFA
+CM-I  Generate Service BillingsA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+The thru value cannot be less than the from value.A
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+This must be < 20.A
+F1 Help,F2 Lookup,F10 ProcessA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKCMHCD2A
+BKCMFTMEA
+BKCMFTMEI
+BKCMACTHA
+BKCMACTHA
+>>>>>  Report was terminated before completion  <<<<<A
+BKARINVA
+BKARINVA
+BKARINVI
+There are no records in the primary fileI
+A matching record was not found during a related findI
+Press any key to continueA
+BKCMHCODA
+BKCMHCODA
+History CodesA
+BKCMHCODF %
+BKCMHCODI
+BKCMHCODI
+BKCMHCODA
+BKCMHCODF
+There are no such records in the A
+ file.A
+BKCMHCODA
+BKCMHCODF %
+BKCMREPA
+BKCMREPA
+Rep'sA
+BKCMREPF %
+BKCMREPI
+BKCMREPI
+BKCMREPA
+BKCMREPF
+There are no such records in the A
+ file.A
+BKCMREPA
+BKCMREPF %
+BKCMACCTA
+BKCMACCTF
+ A - Account Code 0101AF
+ B - Company Name 0102BF
+ C - Telephone    0103CF
+ D - Zip Code     0104DF
+ E - Contact      0105EA
+Search byFFI
+Account CodesF
+Company NamesF
+TelephonesF
+Zip CodesF
+ContactsF
+BKCMACCTF %
+BKCMACCTI
+BKCMACCTI
+BKCMACCTA
+BKCMACCTF
+There are no such records in the A
+ file.A
+BKCMACCTA
+BKCMACCTF %
+ with: A
+Start A
+Company NamesA
+ContactsA
+Company NamesA
+ContactsA
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+There are no Service Billing Defaults.  PleaseF
+enter them before using this program.I
+BKSYMSTRA
+BKARINVLA
+BKARINVLA
+BKARINVLA
+BKARINVLI
+BKARINVLI
+BKARINVLI
+PREPAID TIME LEFT: A
+ MINUTESA
+PREPAID TIME LEFT:   0 MINUTESI
+BKARINVLA
+BKCMACTHI
+BKCMHCD2A
+BKCMACTHA
+BKCMACTHF
+ A - xxxxxxxxxx 0101AF
+ B - xxxxxxxxxx 0102BF
+ C - xxxxxxxxxx 0103CF
+ D - xxxxxxxxxx 0104DF
+ E - xxxxxxxxxx 0105EF
+ F - xxxxxxxxxx 0106FF
+ G - xxxxxxxxxx 0107GF
+ H - xxxxxxxxxx 0108HF
+ I - xxxxxxxxxx 0109IF
+ J - xxxxxxxxxx 0110JF
+ K - xxxxxxxxxx 1701KF
+ L - xxxxxxxxxx 1702LF
+ M - xxxxxxxxxx 1703MF
+ N - xxxxxxxxxx 1704NF
+ O - xxxxxxxxxx 1705OF
+ P - xxxxxxxxxx 1706PF
+ Q - xxxxxxxxxx 1707QF
+ R - xxxxxxxxxx 1708RF
+ S - xxxxxxxxxx 1709SF
+ T - xxxxxxxxxx 1710TI
+Terms AvailableFFA
+BKARINVLI
+BKARINVL
+                   
+                   
+     Account Code From:                 
+                   
+                  Thru:                 
+                   
+                                        
+                   
+             Date From:                 
+                   
+                  Thru:                 
+                   
+                                        
+                   
+              Rep From:                 
+                   
+                  Thru:                 
+                   
+                                        
+                   
+     History Code From:                 
+                   
+                  Thru:                 
+                   
+                                        
+                   
+      PO Field Default:                 
+                   
+    Terms Code Default:                 
+                   
+ Ready to Ship Default:                 
+                   
+                           SERVICE BILLINGS GENERATED                Page:
+   Date From:             Rep From:          Type Code From:
+        Thru:                 Thru:                    Thru:
+     SO Num    Cust Code     Cust Name                          Total
+   -------------------------------------------------------------------------
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+F1 Help,F10 ProcessA
+Esc ExitA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TOT_RECORDS    
+PRT_WHR        
+PRT_CHR        
+WIDE_YN        
+LIST           
+DISK.FILE      
+FILE.CNTR      
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+SELECT_FROM2   
+SELECT_THRU2   
+SELECT_FROM3   
+SELECT_THRU3   
+SELECT_FROM4   
+SELECT_THRU4   
+BREAK_FIELD    
+TOT.INC        
+BILLABLE       
+TOT.BILLABLE   
+NON.BILLABLE   
+FREE.TIME      
+TIME.LEFT      
+TODAYS.DATE    
+ALPHA.DATE     
+GEN.NC         
+TEMP.LOC       
+PRINT.LAST     
+ACC.TIME       
+NET.TIME       
+TEMP.TIME      
+TEMP.TIME2     
+PO.NUM         
+TERMS          
+RELEASE        
+TEMP.DEPOSIT   
+DEPOSIT        
+ITEMIZE        
+REVOLVE        
+HOLD.CODE      
+HOLD.DATE      
+HOLD.REP       
+HOLD.CD        
+HOLD.EVENT     
+WHICH          
+BKCM.ACTH.CODE 
+BKCM.ACTH.DATE 
+BKCM.ACTH.REP  
+BKCM.ACTH.CD   
+BKCM.ACCT.FTWO 
+BKCM.HCD2.HCODE
+BKCM.HCOD.HCODE
+BKCM.FTME.DESC 
+BKCM.ACTH.BILLD_
+BKCM.HCOD.ABILL'
+BKCM.ACTH.MIN  "
+BKCM.SBDF.BINC 
+BKCM.ACTH.BMIN $
+BKCM.SBDF.MINC 
+BKCM.HCD2.PCODE
+BKCM.HCD2.CCODE
+BKCM.HCD2.RCODE
+BKCM.FTME.FTIME
+BKCM.HCOD.WINDW
+OK             
+BKCM.ACTH.FLINEa
+BKCM.ACTH.REM  &
+BKAR.INV.DEPAMT
+BKAR.INV.NL    9
+BKAR.INV.TOTAL )
+BKAR.INV.SUBTOT
+BKAR.INV.TAXAMT!
+BKAR.INV.NUM   
+BKAR.INV.INVCD 
+BKAR.INV.INVDTE
+BKAR.INV.CUSCOD
+BKAR.CUSTCODE  
+BKAR.INV.CUSA1 
+BKAR.ADD1      (
+BKAR.INV.CUSNME=
+BKAR.CUSTNAME  
+BKAR.INV.CUSA2 [
+BKAR.ADD2      F
+BKAR.INV.CUSCTY
+BKAR.CITY      
+BKAR.INV.CUSST 
+BKAR.STATE     
+BKAR.INV.CUSZIP
+BKAR.ZIP       
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPCOD
+BKAR.INV.SHPNME)
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.SHIPTO    1
+MTESUM.CUSTCODEE
+BKAR.INV.SHPATN
+BKCM.ACCT.CONT1
+BKAR.INV.SHPVIA
+BKAR.INV.TERMNM
+BKAR.TERMS.NUM 
+BKAR.INV.TERMD 
+BKSY.TERMS     (
+BKAR.INV.SLSP  
+BKAR.SLSP.NUM  
+BKSY.AR.SLSP   
+BKAR.INV.ENTBY 
+BKSY.AR.ENTBY  
+BKAR.INV.CUSORD
+BKAR.INV.TAXABL
+BKAR.TAX.YN    
+BKSY.AR.TAXABL 
+BKAR.INV.TAXKEY
+BKAR.TAX.STATE 
+BKAR.TAX.LOCAL 
+BKAR.INV.TAXRTE;
+BKSY.TAX.RATE   
+BKIC.TAX.STATE 
+BKIC.TAX.LOCAL 
+BKIC.TAX.RATE  ,
+BKAR.INV.COGS  1
+BKAR.INV.DESC  C
+BKAR.INV.GLDPT a
+BKSY.AR.GLDPT  +
+BKAR.INV.LINV#Pe
+BKAR.INV.RTS   m
+BKAR.INV.FRGHT n
+BKAR.INV.LOC   v
+BKYS.GLNUM     
+BKAR.INV.ORDDTE
+BKAR.INV.ENDLNE
+BKSY.AR.PEL    j
+BKAR.INV.DCODE 
+BKAR.INV.PCODE 
+BKAR.INV.SHIPDT
+BKAR.INV.FOB   
+BKAR.INV.SLSP2 
+BKAR.INV.COMMPR
+BKAR.COMM      N
+BKPR.SLS.EMPNUM
+BKPR.SLS.RATE  
+BKAR.INV.CHKNUM
+BKAR.INV.SHIPPR
+BKAR.INV.JOBNUM
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+DATE_TIME      
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+BKCM.HCOD.DESC 
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+BKCM.REP.REP   
+BKCM.REP.FNMEMI
+BKCM.REP.LNAME 
+BKCM.ACCT.CODE 
+BKCM.ACCT.NAME 
+BKCM.ACCT.PHONE
+BKCM.ACCT.ZIP  
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+BKAR.INV.SONUM 
+BKSY.ARSO.NUM  
+BKCM.HCOD.FPARTF
+BKCM.SBDF.ICONV
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INVL.ESD  
+BKAR.INVL.PCODE
+BKAR.INVL.PDESC
+BKIC.PROD.DESC 
+BKAR.INVL.PQTY ;
+BKAR.INVL.PPRCEC
+BKAR.INVL.PDISCK
+BKAR.INVL.PEXT S
+BKAR.INVL.PCOGS[
+BKAR.INVL.TXBLEd
+BKIC.PROD.TXBLE5
+BKAR.INVL.UBO  e
+BKAR.INVL.USTD m
+BKAR.INVL.RTS  u
+BKAR.INVL.LOC  v
+BKAR.INVL.ABQTY
+BKAR.INVL.UM.LN
+BKIC.PROD.UM   .
+BKAR.INVL.COMPR
+BKAR.INVL.TXAMT
+BKCM.ACTH.EVENT
+BKCM.HCOD.BPART(
+BKIC.PROD.PRICEZ
+BKIC.PMAT.CUST 
+BKIC.PMAT.PCODE
+BKIC.PROD.CODE 
+BKIC.PMAT.EXP  
+BKIC.PMAT.PNUM 
+BKAR.PRICE.MAT 
+BKIC.PMAT.RATE 
+BKIC.PMAT.QTY  k
+BKCM.HCOD.NPART7
+BKYS.VNUM      
+BKCM.HCD2.PPART
+BKCM.HCD2.CPART
+BKCM.HCD2.RPART#
+BKCM.ACCT.FONE 
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

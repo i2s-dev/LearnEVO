@@ -1,0 +1,243 @@
+BKYSMSTR
+BKDCSHFT
+BKDCLAB 
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKDCSHFTA
+BKYSMSTRA
+SD-F  Data Collection DefaultsA
+F1 Help,F5 Shift ScheduleA
+F10 Save,A
+Esc ExitA
+bkdcplabL
+You Have Multiple Open Jobs for some Employee's.  Please close these Jobs first then try again.A
+Do you want to save this record? L
+SD-F  Data Collection DefaultsA
+F1 Help,F4 Main ScreenA
+F10 Save,A
+Esc ExitA
+Do you want to save this record? L
+BKDCSHFTA
+BKYSMSTRA
+Other users are currently logged into DBA.F`
+While others are on the system you can viewF`
+defaults, but you will not be allowed toF`
+save any changes.  To change defaults, exitF`
+this program, get all other users out ofF`
+DBA, go back into this program, make yourF`
+changes, and then save your entries byF`
+pressing the F10 key.I
+BKDCSHFTA
+BKDCSHFTF 
+ Shift Name 1:             Shift Name 2:             Shift Name 3:            
+                                                                              
+                                                                              
+ Buffer                    Buffer                    Buffer                   
+ Start                     Start                     Start                    
+                                                                              
+ Break in                  Break in                  Break in                 
+ Break out                 Break out                 Break out                
+                                                                              
+ Lunch in                  Lunch in                  Lunch in                 
+ Lunch out                 Lunch out                 Lunch out                
+                                                                              
+ Break in                  Break in                  Break in                 
+ Break out                 Break out                 Break out                
+                                                                              
+ Finish                    Finish                    Finish                   
+ Buffer                    Buffer                    Buffer                   
+            
+            
+                                                      
+            
+  Allow clocking in/out on multiple jobs ?    [Y/N]   
+            
+                                                      
+            
+                         Use full screen ?    [Y/N]   
+            
+                                                      
+            
+        Enable Employee Shift Start/Stop ?    [Y/N]   
+            
+                                                      
+            
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NO.LOCK        
+BKYS.YN        
+DCPLAB         
+OERROR         
+OPEN.EMP       
+LAB.EMP        
+LAB.POSTED     
+BKDC.SH.NAME1  
+BKDC.SH.BUFFER K
+BKDC.SH.START  W
+BKDC.SH.BRK1IN c
+BKDC.SH.BRK1OUTo
+BKDC.SH.LUNCHIN{
+BKDC.SH.LUNCHOT
+BKDC.SH.BRK2IN 
+BKDC.SH.BRK2OUT
+BKDC.SH.FIN    
+BKDC.SH.FINBUF 
+BKDC.SH.NAME2  
+BKDC.SH.NAME3  2
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

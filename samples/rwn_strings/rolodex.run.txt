@@ -1,0 +1,357 @@
+TAS32'
+BKARCUST
+TASCOLOR
+BKSYPRTR
+BKSYMSTR
+AR-J  Print Customer RolodexA
+ROLODEX IS A REGISTERED TRADEMARK OF THE ROLODEX CORP.A
+BKARCUSTA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+Esc ExitA
+F1 Help,F10 PrintA
+Esc ExitA
+The thru value cannot be less than the from value.A
+This must be A or CA
+                        Press ESC to Stop Printing                               A
+Please make sure the cards are inF
+the printer properly aligned.I
+BKARCUSTA
+BKARCUSTI
+Press any key to continueA
+BKARCUSTA
+BKARCUSTF
+              **** CUSTOMER ****
+               
+               
+      Print From Customer Code:                
+               
+            Thru Customer Code:                
+               
+                                               
+               
+     Print From Customer Class:                
+               
+           Thru Customer Class:                
+               
+                                               
+               
+      All Customers (A) or just                
+               
+      those with changes or that               
+               
+      haven't been printed                     
+               
+      before (C):                              
+               
+                                               
+               
+ Sort by Code, Name, or Alpha Sort? [C/N/A]:   
+               
+Press any key to continueA
+ DBA HELP                          For Phone Support call 800-434-0809        
+   ON-LINE HELP: Documentation on this and all DBA programs is provided on    
+   line (Windows only) where it can be viewed or printed out.  Click on       
+   "Help" at the top of the Windows main menu and you will be presented       
+   with a Contents window.  Three clicks of the mouse will get you to most    
+   programs.  You can alternately click on the program screen and the help    
+   window to bring one in front of the other for reading and viewing the      
+   program.                                                                   
+   FUNCTION KEYS: Each standard screen button has an equivalent function      
+   key as an alternative to using the mouse -- these are listed across the    
+   bottom of the Windows main menu for reference.                             
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without Saving      CTRL+D = Delete Character            
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Name                          A
+Cust Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Zip Code  A
+Cust Cd   A
+Name                          A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKARCUSTA
+Contact Name                  A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKARCUSTA
+Telephone                A
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKARCUSTA
+ClassA
+Cust Cd   A
+Name                          A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKARCUSTA
+BKARCUSTA
+F1 HelpA
+Esc ExitA
+ A - Customer CodeF
+ B - Customer NameF
+ C - StateF
+ D - Zip CodeF
+ E - Contact NameF
+ F - TelephoneF
+ G - ClassA
+ Search Key A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+PRT_WHR        
+STRTCUST       
+ENDCUST        
+FROM_CLASS     
+THRU_CLASS     
+CTR            
+WHICH          
+OK             
+ALPHA.SORT     
+WHICH_CUST     
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+BKAR.CUSTCODE  
+BKAR.NEW.CUST  z
+BKAR.CLASS     
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+BKAR.CUSTNAME  
+BKAR.ADD1      (
+BKAR.ADD2      F
+BKAR.CITY      
+BKAR.STATE     
+BKAR.ZIP       
+BKAR.COUNTRY   
+BKAR.TELEPHONE >
+BKAR.CONTACT   
+PROG.HELP.NAME 
+CRNT.FIELD     
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+PRTR_WCH       
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+PL_SHLDR       
+WC             
+BC             
+SC             
+LASER_PRINTER  
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+SRCH_KEY_NUM   
+CUST_TTL1      
+CUST_USCORE    
+TEMP_KEY       
+MENULIST       
+SRCH_HOW_MSG   

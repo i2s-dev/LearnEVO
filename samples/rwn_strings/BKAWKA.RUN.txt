@@ -1,0 +1,973 @@
+BKYSMSTR
+WORKORD 
+WOROUT  
+MTICMSTR
+WORKCTR 
+ROUTING 
+BKAPVEND
+MACHINE 
+TOOL    
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKYSMSTRA
+BKYSMSTRI
+WOROUTA
+WORKORDA
+WOROUTA
+WORKORDA
+WOBOMA
+MACHINEA
+BKAPVENDA
+WORKCTRA
+MTICMSTRA
+ROUTTEMPA
+ROUTINGA
+ (VIEW-ONLY: WILL NOT SAVE CHANGES)A
+AW-K-A  Enter Work Order RoutingsA
+F1 Help,F2 LookupA
+Esc ExitA
+WORKORDA
+workordI
+Work Order not found.A
+WOROUTI
+ROUTINGA
+ROUTINGA
+WOROUTI
+WOROUTA
+F1 Help,End New Line,PgDn Notes,F3 Clear,F4 DeleteA
+Esc ExitA
+F2 Display Lines,F5 First,F6 Last,F7 Prev,F8 NextA
+F1 Help,F2 Operation Templates,PgDn Notes,F3 Clear,F4 DeleteA
+Esc ExitA
+ L - Labor               0101LFP
+ P - Outside Processing  0102PFP
+ A - Alternate Operation 0103AI
+TypeffI
+F1 Help,Home Enter
+Times,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,F2 LookupA
+Esc ExitA
+WORKCTRA
+ Work Center   DescriptionA
+                              A
+workctrI
+This is not a valid Work CenterA
+You have choosen an Outside Process Work Center.  Please choose a different one.A
+F1 Help,Home Enter
+Times,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,F2 Lookup,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+BKAPVENDA
+bkapvendI
+Vendor code not found.A
+F1 Help,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 HelpA
+Esc ExitA
+ Surface area per part: A
+ Weight per part: A
+F1 Help,Home Enter
+Times,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,Home Enter
+Times,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 HelpA
+Esc ExitA
+ Time/Process :  A
+        A
+ Processes/Hr :  A
+            A
+ Multiply or DivideA
+ by # Processes? A
+  [M,D]A
+F1 Help,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 HelpA
+Esc ExitA
+Negative overlap must always be expressed as a positive quantity. A
+The presence of both positive and negative overlap on the same operation is not a currently supported feature. A
+F1 Help,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,Home Enter
+Times,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+F1 Help,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+MACHINEA
+F1 Help,F2 Lookup,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+MACHINEA
+F1 Help,F2 Lookup,PgDn Notes,F3 Clear,F4 DeleteA
+Esc Exit,F10 SaveA
+Enter Notes for this Routing?L
+ (VIEW-ONLY: WILL NOT SAVE CHANGES)A
+AW-K-A  Enter Work Order RoutingsA
+F1 HelpA
+Esc Main ScreenA
+Work Order Routings are set to view only.  No changes can be saved at this time. A
+Save this entry?L
+Do you wish to update the Change Order Number?L
+WORKORDI
+WOROUTF
+ROUTINGA
+MTICMSTRA
+WOROUTI
+Cannot delete: View-only mode. A
+Delete this entry?L
+WOROUTA
+WOROUTA
+MTICMSTRA
+Clear this entry?L
+ROUTINGA
+WOROUTA
+MTICMSTRA
+WORKCTRA
+BKAPVENDA
+MACHINEA
+ROUTTEMPA
+ROUTTEMPA
+ROUTINGA
+WOROUTI
+WOROUTI
+Seq Op  T Description           Work Center   Time/Pt     Parts/Hr   SetupA
+F1 HelpA
+Esc ExitA
+WOROUTI
+WOROUTA
+WOROUTI
+Cannot add new line: View-only mode. A
+WOROUTF
+MTICMSTRA
+WORKCTRA
+BKAPVENDA
+MACHINEA
+ROUTINGA
+WOROUTA
+WORKORDI
+WOROUTA
+ROUTTEMPI
+ROUTTEMPI
+ROUTTEMPI
+                                     A
+ Next Screen of Templates            A
+0120NA
+ Previous Screen of Templates        A
+0101PA
+TemplatesffI
+ROUTINGI
+WOROUTI
+ROUTTEMPA
+ROUTTEMPA
+ROUTINGI
+F1 HelpA
+Esc ExitA
+ Time per Part: A
+            A
+          Part Number      Description                               
+                                                                     
+          Sequence         Description                               
+                                                                     
+  [1]                                                                
+  [2]                                                                
+  [3]                                                                
+  [4]                                                                
+  [5]                                                                
+  [6]                                                                
+  [7]                                                                
+  [8]                                                                
+  [9]                                                                
+ [10]                                                                
+ [11]                                                                
+ [12]                                                                
+ [13]                                                                
+ [14]                                                                
+ [15]                                                                
+ Work Order No.       -                                                     
+                                                                   Line#
+ Sequence  Operation  Type  Description                     Work Center     
+                                                                            
+                                                                            
+ #Proc                     Routing#                   Vendor                
+ Time/Part                 #Persons                   Cost                  
+ Parts/Hr                  Machine                    Lead Time             
+ Setup Time                Tool                                             
+ Std Time?                                                                  
+             
+             
+ Overlap hours (delays start of next operation)                 
+             
+                                                                
+             
+ Negative overlap (start this operation after this              
+             
+  number of parts completed by prior operation)                 
+             
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+WORKORDA
+ Work Orders A
+F1 Help,F2 Find,F3 Change Search KeyA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKORDA
+Work OA
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+WORKORDA
+Parent Part    A
+Work Ord  A
+Stat A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Cust Cd   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Customer Name            A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+SO#   A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+Qty to Make A
+Start DtA
+Fin Dt  A
+Job Number     A
+WORKORDA
+Start DtA
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Fin Dt  A
+Job Number     A
+WORKORDA
+Fin Dt  A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Job Number     A
+WORKORDA
+Job Number     A
+Work Ord  A
+Stat A
+Parent Part    A
+Description                   A
+Cust Cd   A
+Customer Name            A
+SO#   A
+Qty to Make A
+Start DtA
+Fin Dt  A
+WORKORDA
+WORKORDA
+Work Order NoF@/
+Parent Item NoF@/
+Customer CodeF@/
+Customer NameF@/
+Sales Order NoF@/
+Job NumberI
+F1 HelpA
+Esc ExitA
+ A - Work Order NoF@/
+ B - Parent Item NoF@/
+ C - Customer CodeF@/
+ D - Customer NameF@/
+ E - Sales Order NoF@/
+ F - Job NumberA
+ Search Key I
+Open Work Orders only?A
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter the WO number to find.      A
+             Work OrderA
+                  0-  0A
+WORKCTRA
+ Work Centers A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+WORKCTRA
+WC Code     A
+WC Description      A
+Dpt Descrip  A
+Parent WC   A
+% UtilA
+WORKCTRA
+WC Code     A
+WC Description      A
+Dpt Descrip  A
+Parent WC   A
+% UtilA
+WORKCTRA
+Parent WC   A
+WC Code     A
+WC Description      A
+Dpt Descrip  A
+% UtilA
+WORKCTRA
+CodeF@/
+DepartmentF@/
+Parent WCI
+F1 HelpA
+Esc ExitA
+ A - CodeF@/
+ B - DepartmentF@/
+ C - Parent WCA
+ Search Key A
+BKAPVENDA
+ Vendors A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vendor Name                   A
+Vend Cd   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Zip Code  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Contact Name                  A
+Telephone                A
+ClassA
+BKAPVENDA
+Contact Name                  A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Telephone                A
+ClassA
+BKAPVENDA
+Telephone                A
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+ClassA
+BKAPVENDA
+ClassA
+Vend Cd   A
+Vendor Name                   A
+City                      A
+Zip Code  A
+Contact Name                  A
+Telephone                A
+BKAPVENDA
+BKAPVENDA
+Vendor CodeF@/
+Vendor NameF@/
+StateF@/
+Zip CodeF@/
+Contact NameF@/
+TelephoneF@/
+ClassI
+F1 HelpA
+Esc ExitA
+ A - Vendor CodeF@/
+ B - Vendor NameF@/
+ C - StateF@/
+ D - Zip CodeF@/
+ E - Contact NameF@/
+ F - TelephoneF@/
+ G - ClassA
+ Search Key A
+ Machines A
+F1 HelpA
+Esc ExitA
+MACHINEA
+Description                   A
+Hrs Used A
+Hrs MaintA
+Work Center A
+WC Description                A
+MACHINEA
+ Tools A
+F1 HelpA
+Esc ExitA
+Code           A
+Description                   A
+Dt Last MaintA
+ Operation Templates A
+F1 HelpA
+Esc ExitA
+ROUTTEMPA
+Description                   A
+ROUTTEMPA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Rel  A
+FirmdA
+SchedA
+ClosdA
+CanclA
+IndirA
+     A
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNNYC
+YNNNYF
+NNNYN!
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYXN
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYCP
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+SCRN.PRE       
+SCRN.SUF       
+TEMP.DESC      
+HOLD.LOT       
+TEMP.CODE      
+TEMP.CODE2     
+TEMP.OPER      
+LINE.OPER      
+CUR.LINE       
+LINE.OPER.TEMP 
+TOT.LINES      
+TEMP.CUR.LINE  
+SCRN.CODE      
+SCRN.DESC      
+SCRN.OPER      
+HIGHEST.SEQ    
+HOLD.TEMPS     
+HOLD.TEMPS.SEQ 
+NEW_LIST       
+OK             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+MENU_WIDTH     
+MENU_PAGE      
+TEMP.SECS      
+TEMP.NUMPROC   
+TEMP.OVLP      
+TEMP.NOVLP     
+VIEW.ONLY      
+TEMP.NUM       
+BKYS.YN        
+MTWO.WIP.WOPRE 
+MTWO.WIP.WOSUF 
+MTWORO.WOPRE   
+MTWORO.WOSUF   
+MTWORO.OPER    
+MTWO.WIP.CODE  
+MTWORO.OP.TEMP#K
+MESSAGE        
+MTWORO.TYPE    
+MTWORO.OPERDESCO
+MTWORO.WC      
+MTWC.WC        
+MTWORO.WCDESC  U
+MTWC.WCDESC    
+MTWC.OUTPROC   
+MTRO.SETUP     a
+MTWC.SETUP     U
+MTRO.LABOR     A
+MTWC.LABOR     ]
+MTRO.VOVHD     Y
+MTWC.VOVHD     u
+MTRO.FOVHD     Q
+MTWC.FOVHD     }
+MTWORO.VEND    m
+BKAP.VENDCODE  
+BKAP.VENDNAME  
+MTWORO.VENDNAMEw
+MTWORO.EOUTCST 
+MTWORO.EMCHCST 
+MTIC.PROD.CUBFTT
+MTIC.PROD.WT   L
+MTWC.COST.LB   
+MTWO.WIP.SQTY  
+MTWORO.LEAD    
+MTWC.LEAD      
+MTWORO.TIMEPART
+MTWORO.PARTSHR 
+MTWORO.TOOL    
+MTWORO.ESETCST 
+MTWORO.ELABCST 
+MTWORO.EVOHCST 
+MTWORO.EFOHCST 
+MTWORO.NUM.PERS
+MTWORO.ESETHRS ?
+MTWORO.NUM.PROCM
+MTWORO.TIME.PPRO
+MTWORO.PR.PERHRT
+MTWORO.MD.PR.HRS
+MTWORO.LONGTIMEo
+MTWORO.OVERLAP e
+MTWORO.NEGOVLP .
+MTWORO.STD.TIME\
+MTWORO.NUM     
+MTWORO.MACHNO  
+TMACH.MACHINE  
+MTOOL.TOOL     
+MTWORO.INSTR   
+MTWO.WIP.CHGORD!
+MTWORO.SQTY    
+MTWORO.DESC    
+MTWO.WIP.DESC  
+MTWORO.CODE    
+MTWORO.START   
+MTWO.WIP.SSTART
+MTWORO.FINISH  )
+MTWO.WIP.SFIN  
+MTWORO.PRIORITY
+MTWO.WIP.PRTY  
+MTWORO.FINISH2 
+MTWORO.ESTHRS  /
+MTRO.CODE      
+MTRO.OPER      
+MTWORO.MIN.CHG ]
+MTRO.MIN.CHG   
+MTWORO.OPER2   '
+BKYS.VNUM      
+LL_CNTR        
+LL_TITLE       
+LL_TITLE1      
+MTRO.OPERDESC  /
+MTWORO.STQTY   {
+MTRO.TYPE      M
+MTRO.PARTSHR   X
+MTRO.VENDCODE  
+MTRO.VENDNAME  (
+MTRO.WC        
+MTRO.WCDESC    
+MTRO.LEAD      N
+MTRO.TMACHINE  i
+MTRO.TOOL      
+MTRO.TIMEPART  `
+MTRO.SETUPHRS  d
+MTRO.NUM       
+MTRO.NUM.PERSON
+MTRO.NUM.PROCES
+MTRO.TIME.PERPR
+MTRO.MD.PROC.HR
+MTRO.PROC.PERHR
+MTRO.STD.TIME  
+MTRO.INSTR     p
+MTRO.VENDCOST  P
+MTWO.WIP.ESETUP/
+MTWO.WIP.EOUTPR?
+MTWO.WIP.ELABORG
+MTWO.WIP.EFOVHD
+MTWO.WIP.VOVHD 
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+BUTTON_LIST    
+BUTTON_CNTR    
+MSG_PTR        
+ZA_TEXT        
+ZA_DFLT        
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+WOF2.COL       
+WOF2.ROW       
+WO.LKUP.OPEN   
+WOM.STAT       
+WOXFIND.PRE    
+NEW.WOXPRE     
+WOXFIND.SUF    
+NEW.WOXSUF     
+WOXDIDFIND     
+SRCH_KEY_NUM   
+WC             
+BC             
+SC             
+WO_TTL1        
+WO_USCORE      
+MTWO.CUSTCODE  
+MTWO.CUSTNAME  
+MTWO.WIP.SONUM 
+MTWO.WIP.PROJ  
+MTWO.WIP.STATUS-
+CC             
+DATC           
+TEMP_KEY       
+MENULIST       
+CHECK_OPEN_ONLY
+WCF2.COL       
+WCF2.ROW       
+WC.LKUP.WCDESC 
+WC.LKUP.DDESC  
+WC.LKUP.PARYN  
+WC_TTL1        
+WC_USCORE      
+MTWC.DEPT      *
+MTWC.PARENT.WC 
+MTWC.%UTIL     M
+MTWC.DEPTDESC  -
+MTWC.PARENT.YN 
+TEMP_KEY       
+VENDF2.COL     
+VENDF2.ROW     
+VEND_TTL1      
+VEND_USCORE    
+BKAP.CITY      
+BKAP.STATE     
+BKAP.ZIP       
+BKAP.CONTACT   
+BKAP.TELEPHONE N
+BKAP.CLASS     N
+TEMP_KEY       
+MACHINE_TTL1   
+MACHINE_USCORE 
+TMACH.DESC     
+TMACH.HRSUSED  "
+TMACH.HRSMAINT *
+TMACH.WC       
+TMACH.WCDESC   
+TOOL_TTL1      
+TOOL_USCORE    
+MTOOL.DESC     
+MTOOL.DATE     -
+OPER_TTL1      
+OPER_USCORE    
+SRCH_HOW_MSG   
+XXWOM.STAT     
+COO_TEST       
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+ASK_STRING     
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        

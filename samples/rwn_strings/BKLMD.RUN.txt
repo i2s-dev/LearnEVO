@@ -1,0 +1,1962 @@
+TAS32w
+TASCOLOR
+BKYSMSTR
+BKSYMSTR
+BKICLOCM
+CLASMSTR
+CLASS   
+MTICMSTR
+BKICMSTR
+BKICLOC 
+BKARINVL
+BKARINV 
+BKAPPOL 
+BKAPPO  
+WORKORD 
+WOBOM   
+INVTXN  
+DBAFIFO 
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+BKSBVEND
+BKSBMFG 
+BKICREF 
+MTICMSTRA
+INVTXNA
+BKICMSTRA
+BKICLOCA
+BKICLOCMA
+CLASSA
+CLASMSTRA
+DBAFIFOA
+BKARINVA
+BKARINVLA
+BKAPPOA
+BKAPPOLA
+WORKORDA
+WOBOMA
+BKYSMSTRA
+BKYSMSTRA
+  Reconcile Inventory On-HandA
+  Reconcile Inventory On-HandA
+ASPJWIQOCL
+NRMFABLTKOA
+F1 HelpA
+Esc ExitA
+Please choose either Method A or Method B. A
+The thru value cannot be less than the from value.A
+F1 Help,F2 LookupA
+Esc ExitA
+The thru value cannot be less than the from value.A
+F1 Help,F2 LookupA
+Esc ExitA
+Please choose either Master or Transaction Level (or both).A
+THIS WILL BE DONE IN REPORT-ONLY MODE WITH NO CHANGES MADE TO THE DATA.A
+THIS WILL MAKE ANY NECESSARY CHANGES TO THE DATA!A
+Both a Master and a Transaction Level reconciliation will be performed.A
+Only the Master Level reconciliation will be performed.A
+Only the Transaction Level reconciliation will be performed.A
+For the Transaction Level, transactions will be adjusted to match the Master file on-hand amounts.A
+For the Transaction Level, the Master file on-hand amounts will be adjusted to match the transactions.A
+Ready to proceed?A
+ session is NOT in report-only mode (data may be changed), please have any other users exit this company now.  Ready to proceed?A
+Because this A
+ session is in report-only mode (data will not be changed), other users can be logged on to this company while A
+ is running.  However, for best results, you should ensure that no other users will be posting to the inventory files during this time.  Ready to proceed?A
+Because this A
+Esc ExitA
+ RECONCILE INVENTORY REPORTA
+ (Report-only mode: These changes HAVE NOT been made)A
+ (These changes HAVE BEEN made)A
+ (Co. Code: "A
+Master Level Reconciliation PerformedF@
+Master Level Reconciliation NOT PerformedF@
+Transaction Level Reconciliation Performed: Method A (make Trxns match Master)F@
+Transaction Level Reconciliation Performed: Method B (make Master match Trxns)F@
+Transaction Level Reconciliation NOT PerformedF@
+Checking for blank records in Master files...A
+Checking Location Master file (BKICLOCM)...I
+BKICLOCMI
+bkiclocmI
+BKICLOCMA
+There were no records in BKICLOCM (location master file)A
+BKICLOCMI
+Default LocationA
+BKICLOCMI
+BKICLOCMA
+No record for the default (Inventory Defaults) location in BKICLOCM; added itA
+bkiclocmI
+BKICLOCMA
+BKICLOCMA
+bkiclocmI
+BKICLOCMA
+BKICLOCMI
+BKICLOCMA
+ duplicate record(s) in the BKICLOCM fileA
+Deleted A
+Checking Class Master file (CLASMSTR)...A
+clasmstrI
+Default Class created by A
+CLASMSTRA
+CLASMSTRA
+There were no records in CLASMSTR; created a "DFLT" Class recordA
+clasmstrI
+CLASMSTRA
+CLASMSTRA
+clasmstrI
+CLASMSTRA
+CLASMSTRI
+CLASMSTRA
+ duplicate record(s) in the CLASMSTR fileA
+Deleted A
+Checking Class/Location file (CLASS)...A
+classI
+CLASSA
+CLASSA
+classI
+CLASSA
+CLASSI
+CLASSA
+ duplicate record(s) in the CLASS fileA
+Deleted A
+classI
+CLASSA
+classI
+clasmstrI
+Class created by A
+CLASMSTRA
+CLASMSTRA
+Class "A
+" in CLASS but not in CLASMSTR; created a CLASMSTR record for itA
+CLASSA
+classI
+classI
+CLASSA
+classI
+bkiclocmI
+Location added by A
+BKICLOCMA
+BKICLOCMA
+Location "A
+" in CLASS but not in BKICLOCM; created a BKICLOCM record for itA
+CLASSA
+classI
+mticmstrI
+MTICMSTRA
+mticmstrI
+Checking for stranded MTICMSTR records, on Part No.: A
+MTICMSTRA
+MTICMSTRA
+mticmstrI
+MTICMSTRL
+MTICMSTRA
+bkicmstrI
+MTICMSTRA
+No record for Part in BKICMSTR; deleted it from MTICMSTRA
+MTICMSTRL
+MTICMSTRA
+bkiclocI
+BKICLOCA
+bkiclocI
+Checking for stranded BKICLOC records, on Part No.: A
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCL
+BKICLOCA
+bkicmstrI
+BKICLOCA
+No record for Part in BKICMSTR; deleted it from BKICLOC (UOH was A
+BKICLOCL
+BKICLOCA
+BKICLOCMA
+CLASMSTRA
+CLASSA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+INVTXNA
+DBAFIFOA
+bkicmstrI
+There are no Inventory Master records.A
+Master Level reconciliation for Part No.: A
+BKICMSTRL
+BKICMSTRA
+bkicmstrI
+BKICMSTRA
+BKICMSTRA
+BKICMSTRI
+BKICMSTRA
+ duplicate BKICMSTR record(s) for this PartA
+Deleted A
+mticmstrI
+BKICMSTRA
+Invalid Type ("A
+") for this Part; changed to Type "A
+" from MTICMSTR.A
+BKICMSTRA
+Invalid Type ("A
+") for this Part; changed to "R".A
+MTICMSTRA
+mticmstrI
+BKICMSTRA
+Stock U/M was blank for this Part; changed to Selling U/M "A
+" from MTICMSTR.A
+BKICMSTRA
+Stock U/M was blank for this Part; changed to "EA".A
+MTICMSTRA
+clasmstrI
+mticmstrI
+clasmstrI
+BKICMSTRA
+Invalid Class ("A
+") for this Part; changed to Class "A
+" from MTICMSTR.A
+CLASMSTRL
+CLASMSTRA
+ reconciliationA
+Added by A
+CLASMSTRA
+CLASMSTRA
+Invalid Class ("A
+") for this Part; added it as new Class in CLASMSTR.A
+clasmstrI
+BKICMSTRA
+Class was blank for this Part; changed to first Class ("A
+") from CLASMSTR.A
+BKICMSTRA
+Class was blank for this Part; could not determine a Class to use.A
+CLASMSTRA
+MTICMSTRA
+CLASMSTRL
+BKICMSTRA
+mticmstrI
+MTICMSTRA
+classI
+MTICMSTRA
+MTICMSTRA
+MTICMSTR record for this Part was missing; created it.A
+MTICMSTRL
+MTICMSTRL
+MTICMSTRA
+mticmstrI
+MTICMSTRA
+MTICMSTRA
+MTICMSTRI
+MTICMSTRA
+ duplicate MTICMSTR record(s) for this PartA
+Deleted A
+MTICMSTRA
+MTICMSTR Class ("A
+") not same as BKICMSTR; changed to Class "A
+MTICMSTRA
+MTICMSTR Type ("A
+") not same as BKICMSTR; changed to Type "A
+MTICMSTRA
+MTICMSTR Part Description not same as BKICMSTR; changed to match BKICMSTRA
+MTICMSTRA
+Purchase Conversion Factor was 0 for this Part No.; changed to 1.00A
+MTICMSTRA
+Purchase U/M was blank for this Part No.; changed to "A
+" (BKICMSTR Stock U/M)A
+MTICMSTRA
+Selling U/M was blank for this Part No.; changed to "A
+" (BKICMSTR Stock U/M)A
+MTICMSTRA
+MRP Flag was not set for this Part No.; changed to "A
+" (MD-D Default)A
+MTICMSTRA
+bkiclocI
+BKICLOCI
+classI
+CLASSA
+ will prompt youA
+Need a CLASS record for Class "A
+", Location "A
+A CLASS record needs to be set up for Class "A
+" at Location "A
+" (Part No. is "A
+").  The next screen will allow you to do this.A
+RECO INVA
+BKLMAA
+classI
+CLASSA
+BKICLOCA
+CLASSA
+CLASSA
+CLASS record for Class "A
+"/Location "A
+" not saved! (needed to add one)A
+BKICLOCA
+ A CLASS record has been created for you using GL Codes from BKICMSTR for this PartA
+ A CLASS record has been created for you using GL Codes from BKICLOC for this PartA
+ You should check this CLASS record to be sure these are the right GL Codes!A
+ session for this Class/LocationA
+ NOTE: Any other BKICLOC records created by this A
+ will also use these GL CodesA
+CLASSA
+Created CLASS record for Class "A
+"/Location "A
+" (was missing)A
+BKICLOCA
+BKICLOCA
+No BKICLOC records for this Part; created one for location "A
+BKICLOCL
+bkiclocmI
+BKICLOCMA
+Was in BKICLOC, not BKICLOCMA
+BKICLOCMA
+BKICLOCMA
+BKICLOCM record for location "A
+" missing; added it to BKICLOCMA
+BKICLOCA
+bkiclocI
+BKICLOCL
+bkiclocI
+ process.A
+ERROR: Unable to re-get BKICLOC record. Cancelling the rest of the A
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+Deleted a duplicate BKICLOC record (UOH was A
+BKICLOCA
+BKICLOCA
+BKICLOCA
+bkiclocI
+ process.A
+ERROR: Unable to re-get BKICLOC record. Cancelling the rest of the A
+KLTBOA
+BKICMSTRA
+" Type Part had UOH of A
+ and TOTVL of A
+; changed to 0A
+BKICMSTRA
+" Type Part had UOH of A
+; changed to 0A
+BKICMSTRA
+" Type Part had TOTVL of A
+; changed to 0A
+BKICMSTRA
+" Type Part had AVG COST of A
+; changed to 0A
+BKICMSTRA
+BKICLOCA
+" Type Part had UOH of A
+ at this location; changed to 0A
+BKICLOCL
+BKICLOCA
+bkiclocI
+bkiclocI
+ process.A
+ERROR: Unable to re-get BKICLOC record. Cancelling the rest of the A
+bkiclocI
+ process.A
+ERROR: Unable to re-get BKICLOC record. Cancelling the rest of the A
+bkarinvlI
+bkarinvI
+BKARINVLA
+bkarinvlI
+bkappolI
+bkappoI
+BKAPPOLA
+bkappolI
+workordI
+WORKORDA
+workordI
+wobomI
+workordI
+WOBOMA
+wobomI
+BKICLOCA
+Units on SO this loca chgd from A
+ to match open ordersA
+BKICLOCA
+Units on BO this loca chgd from A
+ to match open ordersA
+BKICLOCA
+Units on PO this loca chgd from A
+ to match open ordersA
+BKICLOCA
+Units in QC this loca chgd from A
+ to match open ordersA
+BKICLOCA
+Units on WO this loca chgd from A
+ to match open ordersA
+BKICLOCA
+Units in WIP this loca chgd from A
+ to match open ordersA
+BKICLOCA
+Units Alloctd this loca chgd from A
+ to match open ordersA
+BKICLOCL
+BKICLOCA
+bkiclocI
+bkiclocI
+ process.A
+ERROR: Unable to re-get BKICLOC record. Cancelling the rest of the A
+BKICLOCA
+bkiclocI
+BKICMSTRA
+BKICMSTR Units OH chgd from A
+ to match BKICLOC totalA
+BKICMSTRA
+BKICMSTR Units on SO chgd from A
+ to match BKICLOC totalA
+BKICMSTRA
+BKICMSTR Units on BO chgd from A
+ to match BKICLOC totalA
+BKICMSTRA
+BKICMSTR Units on PO chgd from A
+ to match BKICLOC totalA
+BKICMSTRL
+MTICMSTRA
+MTICMSTR Units in QC chgd from A
+ to match BKICLOC totalA
+MTICMSTRA
+MTICMSTR Units on WO chgd from A
+ to match BKICLOC totalA
+MTICMSTRA
+MTICMSTR Units in WIP chgd from A
+ to match BKICLOC totalA
+MTICMSTRA
+MTICMSTR Units Alloctd chgd from A
+ to match BKICLOC totalA
+MTICMSTRL
+bkiclocI
+ process.A
+ERROR: Unable to re-get BKICLOC record. Cancelling the rest of the A
+bkiclocI
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCI
+BKICLOCA
+Part is "N" Type but had A
+ BKICLOC record(s); deleted BKICLOC record(s)A
+BKICMSTRA
+" Type Part had UOH of A
+ and TOTVL of A
+; changed to 0A
+BKICMSTRA
+" Type Part had UOH of A
+; changed to 0A
+BKICMSTRA
+" Type Part had TOTVL of A
+; changed to 0A
+BKICMSTRA
+" Type Part had AVG COST of A
+; changed to 0A
+BKICMSTRI
+BKICMSTRA
+BKICMSTR Units on SO chgd from A
+ to match open ordersA
+BKICMSTRA
+BKICMSTR Units on BO chgd from A
+ to match open ordersA
+BKICMSTRA
+BKICMSTR Units on PO chgd from A
+ to match open ordersA
+BKICMSTRL
+MTICMSTRA
+MTICMSTR Units in QC chgd from A
+ to match open ordersA
+MTICMSTRA
+MTICMSTR Units on WO chgd from A
+ to match open ordersA
+MTICMSTRA
+MTICMSTR Units in WIP chgd from A
+ to match open ordersA
+MTICMSTRA
+MTICMSTR Units Alloctd chgd from A
+ to match open ordersA
+MTICMSTRA
+BKICMSTRA
+bkicmstrI
+invtxnI
+Check INVTXN txn type & parent part  Part No.: A
+bkicmstrI
+Validating INVTXN transaction types  Part No.: A
+INVTXNA
+INVTXNA
+INVTXNI
+INVTXNL
+INVTXNA
+INVTXNL
+ASPJWIQOCA
+INVTXNI
+INVTXNL
+INVTXNI
+INVTXNA
+Deleted A
+ INVTXN record(s) with net units of A
+; INVTXN txn types were invalid.A
+INVTXNA
+Deleted A
+ INVTXN record(s) with net UOH of A
+; no matching BKICMSTR record.A
+INVTXNA
+BKICLOCMA
+CLASMSTRA
+CLASSA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+INVTXNA
+DBAFIFOA
+bkicmstrI
+There are no Inventory Master records.  Transacation Level reconciliation not performed. A
+Transaction Level reconciliation for Part No.: A
+invtxnI
+NLTKBOA
+bkiclocI
+INVTXNA
+ AdjustmentA
+INVTXNI
+INVTXNA
+This location had A
+ UOH but no transacation records; created INVTXN record.A
+BKICLOCA
+bkiclocI
+NLTKBOA
+ASPWIA
+ZXZBLANKA
+INVTXNA
+invtxnI
+ZXZBLANKA
+bkiclocI
+INVTXNL
+INVTXNA
+INVTXNA
+INVTXNI
+INVTXNL
+INVTXNA
+INVTXNL
+INVTXNI
+INVTXNA
+Deleted A
+ INVTXN record(s) with net UOH of A
+; no matching BKICLOC record.A
+INVTXNA
+ AdjustmentA
+INVTXNI
+INVTXNA
+BKICLOC UOH: A
+; INVTXN UOH: A
+; created INVTXN adj for A
+bkiclocI
+ZXZBLANKA
+INVTXNA
+ AdjustmentA
+INVTXNI
+INVTXNA
+Location had UOH of A
+ but no INVTXN records; added INVTXN entry for this qty.A
+BKICLOCA
+bkiclocI
+BKICMSTRA
+bkicmstrI
+BKICLOCMA
+CLASMSTRA
+CLASSA
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+INVTXNA
+DBAFIFOA
+invtxnI
+There are no Inventory Transaction records.  Transacation Level reconciliation not performed. A
+Transaction Level reconciliation for Part No.: A
+INVTXNA
+ASPWIA
+ZXZBLANKA
+INVTXNA
+invtxnI
+bkicmstrI
+, which has trxns with a total UOH of A
+A BKICMSTR (Inventory Master) record does not exist for part# A
+.  Would you like to create the BKICMSTR record now (if NO, you will be given the option to delete these trxns)?A
+BKDMDTBA
+BKINBA
+BKICMSTRA
+bkicmstrI
+.  Would you like to delete the trxns for this part instead?A
+You did not create the BKICMSTR record for part# A
+INVTXNA
+Part had trxns with UOH total of A
+ but no BKICMSTR record; deleted trxns.A
+BKICMSTRA
+Part has trxns with UOH total of A
+ but no matching BKICMSTR record.A
+  You did not create the BKICMSTR record, and did not delete the trxns.A
+BKICMSTRA
+Part had trxns with UOH total of A
+ but no BKICMSTR record; created BKICMSTR rec.A
+Do you wish to delete the trxns for part# A
+INVTXNI
+Deleting trxns for part# A
+INVTXNA
+INVTXNA
+invtxnI
+INVTXNA
+Part had trxns with UOH total of A
+ but no BKICMSTR record; deleted trxns.A
+BKICMSTRA
+Part has trxns with UOH total of A
+ but no matching BKICMSTR record.A
+  You did not create the BKICMSTR record, and did not delete the trxns.A
+BKICMSTRA
+Part has trxns with UOH total of A
+ but no matching BKICMSTR record.A
+ will prompt you to create BKICMSTR record or delete these trxns.A
+NLTKBOA
+ZXZBLANKA
+bkiclocI
+BKICLOCF
+BKICLOCI
+BKICLOCA
+Location had trxns with UOH of A
+ but no BKICLOC rec; added BKICLOC rec with this UOH.A
+BKICLOCA
+Location had trxns with UOH of A
+ but BKICLOC UOH was A
+; chgd BKICLOC UOH.A
+BKICLOCA
+bkiclocI
+ZXZBLANKA
+BKICLOCA
+Location had no trxns but UOH in BKICLOC was A
+; chgd BKICLOC UOH to 0.A
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICMSTRA
+INVTXNA
+invtxnI
+INVTXNA
+invtxnI
+BKICMSTRA
+bkicmstrI
+Transaction Level (second pass)  for Part No.: A
+NLTKBOA
+invtxnI
+bkiclocI
+BKICLOCA
+Location had no trxns but UOH in BKICLOC was A
+; chgd BKICLOC UOH to 0.A
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICMSTRA
+BKICMSTRA
+bkicmstrI
+No changes necessaryI
+Error opening report file A
+warningI
+BKICMSTRA
+BKICMSTRA
+CLASMSTRA
+CLASMSTRI
+BKICMSTRA
+BKICMSTRI
+BKICMSTRA
+ blank record(s) in the BKICMSTR fileA
+Deleted A
+MTICMSTRA
+MTICMSTRI
+MTICMSTRA
+ blank record(s) in the MTICMSTR fileA
+Deleted A
+BKICLOCA
+BKICLOCI
+BKICLOCA
+ blank record(s) in the BKICLOC fileA
+Deleted A
+CLASMSTRA
+CLASMSTRI
+CLASMSTRA
+ blank record(s) in the CLASMSTR fileA
+Deleted A
+CLASSA
+CLASSI
+CLASSA
+ blank record(s) in the CLASS fileA
+Deleted A
+INVTXNA
+INVTXNI
+INVTXNA
+ blank record(s) in the INVTXN fileA
+Deleted A
+DBAFIFOA
+DBAFIFOI
+DBAFIFOA
+ blank record(s) in the DBAFIFO fileA
+Deleted A
+BKICMSTRA
+MTICMSTRA
+BKICLOCA
+CLASMSTRA
+CLASSA
+INVTXNA
+DBAFIFOA
+F10 PrintA
+Esc ExitA
+Click the Print button to print this documentationA
+    Use the F10 key to print this documentationA
+Esc ExitA
+Please Read Before Proceeding                                             F
+-----------------------------                                             F
+ doesA
+What A
+--------------F
+ enables you to reconcile your inventory data files.  There A
+are 2 levels of reconciliation that can be performed:F
+You should run UT-K-I, Fix Binary Zeroes, before starting this processF
+to ensure that there are no binary zeroes in your data.F
+MASTER LEVELF
+     Synchronizes the Inventory Master (BKICMSTR, MTICMSTR), Location     F
+     Master (BKICLOCM), Location Detail (BKICLOC), Class/Location (CLASS),F
+     Class Master (CLASMSTR), and LIFO/FIFO Buckets (DBAFIFO) files to    F
+     and between each other.F
+TRANSACTION LEVELF
+     Reconciles the Inventory Master (BKICMSTR) and Location Detail       F
+     (BKICLOC) files to the Inventory Transactions (INVTXN) file.         F
+     You will be able to choose whether you want to force the TransactionsF
+     to equal the Master file data, or vice-versa.  These are the same    F
+     transactions used in the IN-E (Print Inventory Transactions) report. F
+If you run a Transaction Level, run a Master Level as wellF
+----------------------------------------------------------F
+It is highly recommended, if you wish to perform a Transaction Level F
+reconciliation, that you also perform a Master Level reconciliation at theF
+same time.  This is because the accuracy of the Transaction Level recon-  F
+ciliation is highly dependent on the accuracy of the Master Level files.  F
+The Reconciliation ReportF
+-------------------------F
+Both reconciliation Levels will generate a report detailing any changes   F
+that may have been made (you will be able to choose whether to print or   F
+display the report after the reconciliation process is complete).  The farF
+ was unable to resolve A
+left column will display an "*" for items that A
+or that need more attention on your part.  This column will also display  F
+a "$" sign for items that affect inventory value in the General Ledger.F
+You can also choose to run the reconciliation in 'report-only' mode.      F
+In this case, no changes will be made to your data.  Only a report        F
+detailing anticipated changes will be generated, so that you may preview  F
+what will be done without actually changing anything.F
+Please bear in mind, however, that when you subsequently run the recon-   F
+ciliation 'for real', the actual changes made may not exactly match the   F
+initial report.  This is because changes made later in the process are    F
+dependent upon changes made earlier in the process.  Thus problems fixed  F
+in early steps may mean that changes the report has indicated are needed  F
+in later steps are no longer necessary.  Also, some of the anticipated    F
+adjustments may look strange because they are using nubmers that have not F
+yet really been fixed in the earlier steps.F
+Another factor contributing to differences between anticipated and actual F
+changes could be the actions of other users posting inventory transactionsF
+between the time you ran the report and the time you actually made the    F
+reconciliation changes.                                                   F
+Suggested StrategyF
+------------------F
+ (never a bad idea),  A
+If you wish to back up your data before running A
+: BKICMSTR, MTICMSTR, BKICLOC, A
+the following files may get changed by A
+BKICLOCM, CLASMSTR, CLASS, DBAFIFO, and INVTXN.F
+This is an extensive process and can take some time to run, depending on  F
+how much data needs to be analyzed.  In addition it is interactive, so youF
+ encounters a situ- A
+may be prompted for information during the run if A
+ation that it cannot resolve by itself.  Such cases will be indicated on  F
+ will prompt you".A
+the "report-only" report as "A
+If you choose NOT to run in report-only mode (so that data will get       F
+ will not run if any other users are currently working in   A
+changed), A
+ does not encounter an     A
+this company.  This is done to ensure that A
+inventory transaction that has not yet completely posted to all files,    F
+ making an unwarranted adjustment.  If you run A
+thus resulting in A
+in report-only mode (where no data will get changed), you can do so while F
+other users are working with this company.  However, the report may still F
+indicate unnecessary adjustments if incomplete transactions are           F
+encountered.  In this case you should ensure that other users will be     F
+doing tasks that do not affect inventory files.F
+ might be as follows:                  A
+A suggested strategy for using A
+1. MASTER LEVEL, REPORT-ONLYF
+     Run a Master Level reconciliation, in report-only mode.  This will   F
+     give you a feel for the extent of necessary changes and you can      F
+     decide whether or not to proceed with them.                          F
+2. ACTUAL MASTER LEVEL RECONCILIATION                                     F
+     After reviewing the report, go ahead and run the Master Level recon- F
+     ciliation 'for real'.  You'll get a second report indicating the     F
+     actual changes made.F
+3. TRANSACTION LEVEL, REPORT-ONLYF
+     If you wish to run a Transaction reconciliation, go ahead and run it F
+     in report-only mode if you would like to preview the changes.        F
+4. ACTUAL TRANSACTION LEVEL RECONCILIATIONF
+     After reviewing the report, go ahead and start the 'for-real' Trans- F
+     action Level reconciliation.  If other users are on the system, and  F
+     may have affected inventory files between the time you ran the MasterF
+     Level reconciliation and now, you probably should choose to run the  F
+     Master Level reconciliation again at the same time you choose which  F
+     Transaction Level method (A or B) to use.  The Master Level recon-   F
+     ciliation will get run first (should not take as long as the first   F
+     time), followed immediately by the Transaction reconciliation.F
+It is possible to run both the Master and Transaction Levels in report-   F
+only mode at the same time.  However, the Transaction report will be more F
+meaningful if you have first run the Master Level reconciliationF
+'for real'.  You can also run Master and Transaction 'for real' at the     F
+same time.  The Master gets run first so that the Transaction Level will beF
+based on accurate data.F
+What does the Master Level reconciliation do?F
+---------------------------------------------F
+NOTE: The information in this section is provided for technical reference F
+ and can skip   A
+only.  You do not need to know it to effectively use A
+this section if desired.F
+*  Deletes any blank records in the BKICMSTR, MTICMSTR, BKICLOC, CLASMSTR,F
+   CLASS, INVTXN, and DBAFIFO files.F
+*  Checks BKICLOCM (Location Master file).  If it has no records, adds oneF
+   for the default (Inventory Defaults) location.  If there are records, but none for   F
+   the default (Inventory Defaults) location, adds one for that location.  Deletes any  F
+   duplicate BKICLOCM records.F
+*  Checks CLASMSTR (Class Master file).  If it has no records, creates    F
+   one for Class "DFLT".  Deletes any duplicate CLASMSTR records.         F
+*  Deletes any duplicate records found in CLASS (Class/Location file).    F
+   Any Classes in CLASS that do not exist in CLASMSTR are added to        F
+   CLASMSTR.  Any Locations in CLASS that do not exist in BKICLOCM are    F
+   added to BKICLOCM.F
+*  Deletes any "stranded" MTICMSTR and BKICLOC records (records without   F
+   a corresponding BKICMSTR record for that Part.)F
+The following are done for every Part within the range specified by user: F
+*  Checks important BKICMSTR (Inventory Master file) fields.  If Type is  F
+   not valid (NRMFABLTKO), checks if Type in the MTICMSTR file (Auxiliary F
+   Inventory Master) for this part is valid.  If so, changes Type in      F
+   BKICMSTR to that value.  If not, sets BKICMSTR Type to 'R'.  If the    F
+   Stock U/M in BKICMSTR is blank, sets that to be the same as MTICMSTR   F
+   Selling U/M (if that is also blank, then sets Stock U/M to 'EA').      F
+*  If the BKICMSTR Class is not valid (not found in CLASMSTR file), tries F
+   to use the MTICMSTR Class.  If that is also not valid, creates a new   F
+   record in CLASMSTR for the BKICMSTR Class.  If the BKICMSTR Class is   F
+   blank, sets BKICMSTR Class to be the first Class found in CLASMSTR     F
+   instead of creating a blank CLASMSTR record.F
+*  If the MTICMSTR record for a given Part No. is missing, creates it.    F
+   Uses Class, Type, Description, from BKICMSTR.  Sets Purchase U/M and   F
+   Selling U/M to be same as BKICMSTR Stock U/M.  Sets Active Flag to Y,  F
+   Purchase Conversion to 1.00.  Sets the MRP Flag and the Expedite/Delay F
+   Buffers to the MD-D defaults.F
+*  If Class, Type, or Desc in MTICMSTR are not the same as in BKICMSTR,   F
+   changes them in MTICMSTR.  If the MTICMSTR Purchase Conversion Factor  F
+   is zero, sets it 1.00.  If the MTICMSTR Purchase U/M or Selling U/M areF
+   blamk, makes them the same as Stock U/M from BKICMSTR.  If the MRP FlagF
+   in MTICMSTR is blank, sets it to the MD-D default setting.F
+*  Deletes any duplicate BKICMSTR and MTICMSTR records the Part may have. F
+FOR PARTS THAT ARE NOT "N" TYPE:F
+*  Checks Location records (BKICLOC) for the Part.  It the PartF
+   does not have any BKICLOC records, creates one using the Inventory DefaultsF
+   default location code; picks up GL Codes from the CLASS file  F
+   for that location.  If there is no CLASS record for the Class/Location,F
+   prompts user for GL Codes to use in creating the CLASS record.  If userF
+   fails to save the new CLASS record, creates one anyway, using GL Codes F
+   from BKICMSTR.F
+*  Makes sure that there is a matching BKICLOCM recordF
+   for each BKICLOC location for that Part.  If not, adds aF
+   BKICLOCM record.  Checks that there is a CLASS record for every      F
+   location for the part.  If not prompts user to add a CLASS record      F
+   as described in the preceding section (except here it will use  F
+   GL Codes from BKICLOC instead of BKICMSTR to create a CLASS record if  F
+   user fails to save the new CLASS record).F
+*  Deletes any duplicate BKICLOC records. F
+*  If the Part is Type K, L, T, B, or O and Units on Hand (UOH), Total    F
+   Value (TOTVL), or Average Cost (AVGC) in BKICMSTR are not zero, resets F
+   these numbers to zero.  Then, if any of the BKICLOC records for the    F
+   Part have a non-zero UOH, resets UOH for that location to zero.F
+*  Rebuilds unit counts (except UOH) for each location (BKICLOC record)   F
+   for Part from open orders within the system:  Units on SO and BackorderF
+   from open SO's, units on PO and in QC from open PO's, and units on WO, F
+   in WIP, and Allocated, from open Work Orders.  Then, checks to be sure F
+   the BKICMSTR and MTICMSTR totals for each of these unit counts equals  F
+   the sum of the BKICLOC unit counts for all locations for the Part.     F
+   If not, the BKICMSTR/MTICMSTR totals are changed.  Finally,            F
+   Units Available (AVAIL) in MTICMSTR is recalculated from the unit      F
+   totals (the exception report will NOT print a line if this last        F
+   calculation results in a change).F
+FOR "N" TYPE PARTS:F
+*  If the Part has any BKICLOC records, those are deleted.F
+*  If UOH, TOTVL, or AVGC in BKICMSTR are not zero, resets them   F
+   to zero.F
+*  Rebuilds unit counts (except UOH) for the Part in BKICMSTR and MTICMSTRF
+   from open orders within the system:  Units on SO and BackorderF
+   from open SO's, units on PO and in QC from open PO's, and units on WO, F
+   in WIP, and Allocated, from open Work Orders.  Finally,F
+   Units Available (AVAIL) in MTICMSTR is recalculated from the unit      F
+   totals (the exception report will NOT print a line if this lastF
+   calculation results in a change).F
+What does the Method A Transaction Level reconciliation do?F
+-----------------------------------------------------------F
+Use Method A to make the INVTXN (IN-E) transactions match the master      F
+inventory files.  These are the steps performed by Method A:              F
+*  Deletes any INVTXN records whose transaction type is not ASPJWIQ. Also F
+   deletes any INVTXN records where a corresponding record for the part   F
+   does not exist in BKICMSTR.F
+*  For Type RFAM parts:F
+   1. If there are no INVTXN records at all for the part, creates one for F
+      each location (BKICLOC record) where UOH for the part is not zero.  F
+   2. Adds up the INVTXN records to get a UOH total by location for part. F
+   3. If any of the location totals are non-zero, but there is no match-  F
+      ing BKICLOC record for that location, deletes the INVTXN records    F
+      for that location.F
+   4. If UOH total for location according to INVTXN does not match UOH of F
+      the BKICLOC record, creates an adjusting INVTXN entry.              F
+   5. If there are no INVTXN records for one of the BKICLOC locations,    F
+      creates a new INVTXN record.                                        F
+What does the Method B Transaction Level reconciliation do?F
+-----------------------------------------------------------F
+Use Method B to make the master inventory files match the INVTXN (IN-E)   F
+transactions.  These are the steps performed by Method B:                 F
+*  Deletes any INVTXN records whose transaction type is not ASPJWIQ.      F
+*  If a part has transactions but no BKICMSTR record, lets user choose to F
+   create the BKICMSTR record (on-the-fly, via IN-B), or delete the trxns.F
+*  Changes the BKICLOC UOH total for each location to match the trxns UOH F
+   total for every location.  Creates the BKICLOC records if needed.      F
+*  Changes UOH in BKICMSTR to match changes made to BKICLOC.              F
+*  Makes a second pass to zero out UOH (in BKICMSTR and all BKICLOC       F
+   locations) for parts that do not have any transactions.I
+                                                                                                                         Page:
+St COLUNM:
+* = Needs Further Attention           From Part Number:                    From Class:
+$ = May Affect GL Inventory Value     Thru Part Number:                    Thru Class:
+ St Lv File     Part Number     Location   Action Taken
+ -- -- -------- --------------- ---------- ----------------------------------------------------------------------------------------
+                  Perform Master Level reconciliation?              
+             Perform Transaction Level reconciliation?              
+          Use report-only mode (no data changes made)?              
+       Choose the Transaction Level reconciliation method:          
+                                                                    
+ Method A: Adjust calculated Net Units in IN-E (Print Transactions) 
+           to agree with Inventory Master file on-hand quantities.  
+                                                                    
+ Method B: Adjust Inventory Master file on-hand quantities to agree 
+           with calculated Net Units in IN-E (Print Transactions).  
+                    
+                    
+   From Part Number                  
+                    
+   Thru Part Number                  
+                    
+                                     
+                    
+ From Product Class                  
+                    
+ Thru Product Class                  
+                    
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+BKSYMSTRA
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+The BKSYMSTR file has not been set-up or could not be found. A
+Unable to access the BKSYMSTR system file.  Another user may have it locked. A
+BKSYMSTRI
+The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. A
+Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. A
+You must pass an R/N/F to this function.  Please fix in source code, and recompile. A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Other users are currently logged into this company.  You can view these default settings but will not be able to change them. A
+Another user has the system file locked.  You cannot use this program at this time. A
+Other users are logged into this company.  You cannot use this program at this time.A
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+mticmstrI
+MTICMSTRL
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+ Inventory A
+F1 Help,F2 Find,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search Key,F5 Stock StatusA
+Esc ExitA
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Description                   A
+Item Number    A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+2nd Description               A
+Item Number    A
+OH (All Loc)A
+Description                   A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+CLASMSTRI
+CLASMSTRL
+Choose the Class first, then the inventory item. A
+ClassA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+Specifications                A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+User Defined             A
+Item Number    A
+OH (All Loc)A
+Description                   A
+2nd Description               A
+ClassA
+Cust Cd   A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Cust Cd   A
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Customer Name                 A
+MTICMSTRA
+MTICMSTRA
+BKICMSTRA
+Item Number    A
+Description                   A
+OH (All Loc)A
+2nd Description               A
+ClassA
+User Defined             A
+Cust Cd   A
+Customer Name                 A
+BKICMSTRA
+BKICMSTRA
+MTICMSTRA
+BKICMSTRA
+Please only select item numbers of the following Types: A
+BKICMSTRA
+MTICMSTRA
+MTICMSTRL
+CLASMSTRL
+Esc ExitA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial item number.A
+          Item NumberA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full or partial description.A
+ This is a case-sensitive search.  A
+   Item Description          A
+dbalkuamA
+dbalkuimI
+dbalkualA
+dbalkuilA
+dbalkuasA
+dbalkuisA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+NormalBkgA
+ FINDA
+ Enter full/partial class, or theA
+ full class and full/partial part#.A
+   Class          Item NumberA
+CLASMSTRN
+BKICMSTRA
+MTICMSTRI
+Item Number    F@J
+Description    F@J
+Type           F@J
+2nd DescriptionF@J
+Category       F@J
+Class          F@J
+Specifications F@J
+User Defined   F@J
+Customer Code  F@J
+Alternates     I
+F1 HelpA
+Esc ExitA
+ A - Item NumberF@J
+ B - DescriptionF@J
+ C - TypeF@J
+ D - 2nd DescriptionF@J
+ E - CategoryF@J
+ F - ClassF@J
+ G - SpecificationsF@J
+ H - User DefinedF@J
+ I - Customer CodeF@J
+ J - AlternatesA
+ Search Key A
+ N Non Inventory   F@J
+ R Purchased Part  F@J
+ M Make From       F@J
+ F Finished Good   F@J
+ A Subassembly     F@J
+ B Phantom AssemblyF@J
+ L Labor           F@J
+ T Outside Process F@J
+ K Selling Kit     F@J
+ O Feature         I
+F1 HelpA
+Esc ExitA
+ N - Non InventoryF@J
+ R - Purchased PartF@J
+ M - Make FromF@J
+ F - Finished GoodF@J
+ A - SubassemblyF@J
+ B - Phantom AssemblyF@J
+ L - LaborF@J
+ T - Outside ProcessF@J
+ K - Selling KitF@J
+ O - FeatureA
+ Starting Type Value I
+ESC ExitA
+NormalBkgA
+NormalBkgA
+ Begin Alternate Part Search with: A
+bkicmstrA
+BKSBVENDI
+BKSBVENDA
+BKSBVENDA
+bksbvendA
+BKSBVENDL
+BKSBMFGI
+BKSBMFGA
+BKSBMFGA
+bksbmfgA
+BKSBMFGL
+BKICREFI
+BKICREFA
+BKICREFA
+bkicrefA
+BKICREFL
+No matching DBA, Vendor, Manufacturer, or Customer Cross-Reference item numbers were found matching the number you entered.  Do you want to display the DBA Inventory file beginning with the code entered?L
+BKSBVENDL
+BKSBMFGL
+bkicmstrI
+BKICMSTRA
+MTICMSTRL
+mticmstrI
+BKICMSTRA
+MTICMSTRL
+CLASMSTRA
+ Master Class List A
+F1 Help,F3 Change Search KeyA
+Esc ExitA
+CLASMSTRA
+ClassA
+Description                   A
+CLASMSTRA
+Description                   A
+ClassA
+CLASMSTRA
+ClassF@J
+DescriptionI
+F1 HelpA
+Esc ExitA
+ A - ClassF@J
+ B - DescriptionA
+ Search Key A
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Item number cannot be blank. A
+BKICMSTR record for this item not in memory. A
+Note: The MTICMSTR record for this non-stock part is not available.  Only some of the stock status quantities can be reported. A
+NormalBkgA
+NormalBkgA
+ Inventory Stock Status A
+ Inventory Stock Status A
+bkiclocI
+BKICLOCL
+BKICLOCL
+BKICLOCA
+BKICLOCA
+bkiclocI
+BKICLOCA
+There are more than 100 locations for this part, which is the maximum that can be displayed. A
+BKICLOCA
+bkiclocI
+BKICLOCI
+Item Number    : A
+        Type: A
+Description    : A
+2nd Description: A
+               LOCATIONS              A
+(+) ON HAND          :A
+(-) On Sales Order   :A
+(-) On Back Order    :A
+(+) On Purchase Order:A
+(+) In QC Inspection :A
+(+) On Work Order    :A
+(-) Allocated        :A
+(=) Available        :A
+In Work-in-Process   :A
+   TOTAL    I
+    n/a     I
+    n/a     I
+    n/a     I
+            I
+    n/a     I
+Esc ExitA
+F7 Scroll Locations Left,F8 Scroll Locations RightA
+Esc ExitA
+Esc ExitA
+Please do not change the item number. A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+            A
+BKICLOCL
+BKICLOCA
+BKICLOCA
+dbabextmA
+dbaskeymI
+dbabextlA
+dbaskeylA
+dbabextsA
+dbaskeysI
+MenuBkgA
+MenuBkgA
+NormalBkgA
+MenuBkgA
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+YNNYNXT
+YNNNYC
+YNNYNX
+YNNNYCG
+YNNNYF`H
+YNNNYC
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYXE
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYCG
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM           
+CNTR           
+COST           
+ORDER          
+TOT.UNIT       
+NET.UNIT       
+TOT.COST       
+MEMORY1        
+MEMORY2        
+MEMORY3        
+TYPE           
+TOT_RECORDS    
+PRT_WHR        
+WHICH          
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+SELECT_FROM2   
+SELECT_THRU2   
+BREAK_FIELD    
+DESC           
+TEMP.PRE       
+TEMP.SUF       
+TYPE_OK        
+QTY.I          
+QTY.A          
+QTY.J          
+QTY.P          
+QTY.W          
+QTY.S          
+QTY.Q          
+SAVE.QTY       
+MAKE.QTYOH     
+TODAYS.DATE    
+TIME.NOW       
+NET.QTY.YN     
+BKIC.LOC       
+LOCM.REC       
+LOC.REC        
+CLASM.REC      
+CLASS.REC      
+MTIC.REC       
+BKICM.REC      
+MTIC.ORIG      
+MTIC.NEXT      
+MTIT.ORIG      
+MTIT.NEXT      
+HAVE.NEXT      
+DATE_TIME      
+MM             
+PRT.MM         
+MMC            
+MCNTR          
+N.UOH          
+N.UOSO         
+N.UOO          
+N.UBO          
+N.UOWO         
+N.UOA          
+N.UIWIP        
+N.UIQC         
+MASTER         
+TRANSACT       
+RPT.ONLY       
+METHOD         
+AN.UOH         
+A.LOC          
+SRCH.LOC       
+ORIG.LOC       
+ORIG.PROD      
+REC.CHANGED    
+VITYPES        
+OLD.TYPE       
+OLD.CLASS      
+USED.MTIC      
+GET.OUT        
+CFROM          
+LOC.ACTIV      
+MTIC.ACTIV     
+CHK.PART       
+CHK.LOC        
+CHK.TYPE       
+LOC.OK         
+TEMP.UIWIP     
+N.UAVAIL       
+N.TOTVL        
+DUPE.PART      
+BKDMDRPT_HNDL  
+PRGS.WHR       
+RPTFILE        
+RPTF           
+RPTARR         
+TIME.REC       
+STR.TIME.REC   
+RPT.TITLE      
+FIRST.REC      
+P.STAT         
+P.LEV          
+P.FILE         
+P.PART         
+P.LOC          
+P.ACT          
+ZRET           
+DMDRPT_HNDL    
+ZMSG           
+ORIG.SCREEN    
+ENTRY.TYPE     
+A.ELE          
+A.COUNT        
+I              
+J              
+K              
+TXN.UOH        
+TXN.EOF        
+DEL.ALL.PROD   
+INVTXN.REC     
+ALL.DONE       
+FN.INVTXN      
+HDR_START      
+BKSY.PRGS.WHR  
+BKSY.COMP.NAME X
+BKIC.LOCM.CODE 
+BKYS.GLNUM     
+BKIC.LOCM.NAME 
+MTCLASS.M.CLASS
+MTCLASS.M.DESC 
+MTCLASS.CLASS  
+MTCLASS.LOC    
+MTCLASS.DESC   
+MTIC.PROD.CODE 
+BKIC.PROD.CODE 
+BKIC.LOC.PROD  
+BKIC.LOC.UOH   
+BKIC.LOC.CODE  
+BKIC.PROD.CLASS6
+BKIC.PROD.TYPE -
+MTIC.PROD.TYPE #
+BKIC.PROD.UM   .
+MTIC.PROD.SUM  1
+MTIC.PROD.CLASS
+MTIC.PROD.DESC 
+BKIC.PROD.DESC 
+MTIC.PROD.PUM  4
+MTIC.PROD.ACTIVC
+MTIC.PROD.MRP  ~
+BKYS.YN        
+MTIC.PROD.EXPBF
+MTIC.PROD.DELBF
+BKYS.GLDPT     
+MTIC.PROD.PCONV7
+MTIC.PROD.GLWIP
+CLASS.GLW      d
+MTIC.PROD.WIPDP
+CLASS.DPTW     n
+BKIC.PROD.UOH  p
+BKIC.LOC.UBO   )
+BKIC.PROD.UBO  p
+BKIC.LOC.UOO   1
+BKIC.PROD.UOO  
+BKIC.LOC.UOSO  !
+BKIC.PROD.UOSO x
+BKIC.LOC.UOWO  
+MTIC.PROD.UOWO 
+BKIC.LOC.UALLOC
+MTIC.PROD.UOA  
+BKIC.LOC.UWIP  
+MTIC.PROD.UIWIP
+CLASS.GLA      ,
+BKIC.PROD.GLA  0
+CLASS.GLC      :
+BKIC.PROD.GLC  >
+CLASS.GLS      H
+BKIC.PROD.GLS  L
+CLASS.GLSNT    V
+BKIC.PROD.GLSNTb
+CLASS.DPTA     6
+BKIC.PROD.DPTA :
+CLASS.DPTC     D
+BKIC.PROD.DPTC H
+CLASS.DPTS     R
+BKIC.PROD.DPTS V
+CLASS.DPTNT    `
+BKIC.PROD.DPTNTl
+BKIC.LOC.GLA   9
+BKIC.LOC.GLC   G
+BKIC.LOC.GLS   U
+BKIC.LOC.GLSNT c
+BKIC.LOC.DPTA  C
+BKIC.LOC.DPTC  Q
+BKIC.LOC.DPTS  _
+BKIC.LOC.DPTSNTm
+BKIC.LOC.GLWIP q
+BKIC.LOC.DPTWIP{
+BKIC.PROD.TOTVL
+BKIC.PROD.AVGC h
+BKAR.INVL.PCODE
+BKAR.INVL.UM.LN
+BKAR.INV.SONUM 
+BKAR.INVL.INVNM
+BKAR.INV.LOC   v
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKAP.POL.PCODE 
+BKAP.PO.NUM    
+BKAP.POL.PONM  
+BKAP.PO.CONFIRMJ
+BKAP.PO.PRTD   
+BKAP.PO.LOC    
+BKAP.POL.PQTY  ;
+BKAP.POL.QC.QTY
+MTWO.WIP.CODE  
+MTWO.WIP.STATUS-
+MTWO.WIP.LOC   
+MTWO.WIP.COMQTY%
+MTWO.WIP.SQTY  
+WOBOM.COMPCODE 
+MTWO.WIP.WOPRE 
+WOBOM.WOPRE    
+MTWO.WIP.WOSUF 
+WOBOM.WOSUF    
+WOBOM.QTYISSUED
+WOBOM.TOTQTY   |
+WOBOM.QTYPER   l
+WOBOM.SCRAPQTY t
+BKIC.LOC.UIQC  
+MTIC.PROD.UIQC 
+MTIC.PROD.AVAIL
+MTIT.CODE      
+MTIT.TYPE      
+MTIT.QTY       
+MTIT.CLASS     
+MTIT.DATE      
+MTIT.AVGCOST    
+MTIT.STDCST    (
+MTIC.PROD.RCOSTF
+MTIT.LOC       0
+MTIT.REF       :
+MTIT.DESC      
+FIFO.PARTNO    
+SC             
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+BKSYMSTR_HNDL  
+XRET           
+LOCK_TYPE      
+MSG_TYPE       
+BUTTON_LIST    
+BUTTON_CNTR    
+MESSAGE        
+MSG_PTR        
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+WC             
+BC             
+LASER_PRINTER  
+FC             
+MSG_TYPE       
+LOCK_TYPE      
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+INV_TYPE       
+INVF2.COL      
+INVF2.ROW      
+INVF2.START    
+MTIC_OPEN      
+CLASS_OPEN     
+USE_ALTS       
+TYPE_CNTR      
+TYPE_CHR       
+ALT_CODE       
+INV_M_TY       
+INV_M_LOC      
+INV_M_MAIN     
+IMXFIND.PART   
+NEW.IMXPART    
+IMXFIND.DESC   
+NEW.IMXDESC    
+IMXFIND.CLASS  
+NEW.IMXCLASS   
+IMXF.CURORD    
+CLASS.POP.DONE 
+IMXLKUPA.HNDL  
+IMXLKUPI.HNDL  
+IMX.LKUA       
+IMX.LKUI       
+IMX.ZRET       
+SRCH_KEY_NUM   
+INV_TTL1       
+INV_USCORE     
+BKIC.PROD.NOTE 
+BKIC.PROD.CAT  1
+MTIC.PROD.SUBST$
+MTIC.PROD.CUST 
+MTIC.PROD.CUSNM
+MTIC.PROD.SPECS
+TEMP_KEY       
+MENULIST       
+BKSBVEND_OPEN  
+BKSBMFG_OPEN   
+BKICREF_OPEN   
+IMA.ZRET       
+BKSB.VEND.VPART2
+BKSB.VEND.PROD 
+BKSB.MFG.MPART A
+BKSB.MFG.PROD  
+BKIC.REF.CUSCODU
+BKIC.REF.CODE  
+CLASSMF2.COL   
+CLASSMF2.ROW   
+CLASSM_TTL1    
+CLASSM_USCORE  
+TEMP_KEY       
+SRCH_HOW_MSG   
+UV.PART        
+UV.ORIG.PART   
+UV.LOC1        
+UV.LOC         
+UV.UOH         
+UV.UOSO        
+UV.UBO         
+UV.UOO         
+UV.UIQC        
+UV.UOWO        
+UV.ALLOC       
+UV.AVAIL       
+UV.WIP         
+UVT.UOH        
+UVT.UOSO       
+UVT.UBO        
+UVT.UOO        
+UVT.UIQC       
+UVT.UOWO       
+UVT.ALLOC      
+UVT.AVAIL      
+UVT.WIP        
+UV.TCOL        
+UV.COL         
+UV.CUR1        
+UVNOW          
+UVWHR          
+UV.MAXLOCS     
+UV.OPND.LOC    
+UV.LOC.REC     
+UV.NA.LOC      
+UV.HAVE.MTIC   
+UV.CNTR        
+UV.DS          
+UV.F7          
+UV.F8          
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+SSK.PHNDL      
+SSK.EXPHNDL    
+SSK.COL        
+SSK.ROW        
+SSK.NCH        
+SSK.CHWDT      
+SSK.TLEN       
+SSK.TWDT       
+SSK.TCOLOR     
+SSK.RET        
+SSK.CHOICE     
+SSK.EXT        
+SSK.TTL        
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        

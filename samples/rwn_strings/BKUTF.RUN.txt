@@ -1,0 +1,187 @@
+TASCOLOR
+UT-F  Change DOS ColorA
+Is all of the above correct? YA
+Make more changes? YL
+dbacolorA
+                        DBA Accounting Color Configuration
+            
+            
+ This program will allow you to enter the various colors 
+            
+                                                         
+            
+ Normal       Reverse      Highlight      Error          
+            
+                                                         
+            
+ Window Color (wc)          Box Color (bc)               
+            
+                                                         
+            
+ Menu Color (mc)            Choice Color (cc)            
+            
+                                                         
+            
+ Shadow Color (sc)          F Key Color (fc)             
+            
+                                                         
+            
+ Enter Color                FLIST Ecolor                 
+            
+                                                         
+            
+ Window Grey Color      (Advanced Accounting Menu)       
+            
+         Press F1 while in the field to get a display of available colors
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+  STANDARD FUNCTION KEYS/BUTTONSF
+  ------------------------------F
+  F1  HelpF
+  F2  LookupF
+  F3  ClearF
+  F4  DeleteF
+  F5  FirstF
+  F6  LastF
+  F7  PreviousF
+  F8  NextF
+  F9  FindF
+  F10 SaveI
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+NORM_PTR       
+REV_PTR        
+HIGH_PTR       
+ERR_PTR        
+WC_PTR         
+BC_PTR         
+MC_PTR         
+CC_PTR         
+SC_PTR         
+ENTER_PTR      
+DATC_PTR       
+FC_PTR         
+WG_PTR         
+NORM           
+REV            
+HIGH           
+ERR            
+WC             
+BC             
+MC             
+CC             
+SC             
+ENTER          
+DATC           
+FC             
+GC             
+COLOR_HNDL     
+DC_PTR         
+PROG.HELP.NAME 
+CRNT.FIELD     
+XYZDBAHTEXT    
+DUMMY_L        
+MESSAGE        
+MSG_PTR        
+SND_FNC_LNE_USD
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+BUTTON_LIST    
+BUTTON_CNTR    
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

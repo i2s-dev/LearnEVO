@@ -1,0 +1,331 @@
+TAS32&
+BKSYMSTR
+CALENDAR
+BKSYHELP
+DBAHLPID
+TASCOLOR
+CALENDARA
+BKSYMSTRA
+BKSYMSTRA
+SM-H  Enter Shop CalendarA
+If you will be using Finite Scheduling:A
+We recommend marking all weekends and holidays on the Shop Calendar beginning at least 6 months prior to the current date, to allow a cushion for backward scheduling, and continuing through to the end of the December that is 5 years from now.  You should mark the weekends and holidays as far into the future as you expect to be scheduling. A
+ If you will be using Finite Scheduling: F
+ We recommend marking all weekends and holidays on the F
+ Shop Calendar beginning at least 6 months prior to the F
+ current date, to allow a cushion for backward F
+ scheduling, and continuing through to the end of F
+ the December that is 5 years from now.  You should F
+ mark the weekends and holidays as far into the future F
+ as you expect to be scheduling. I
+SM-H  Enter Shop CalendarA
+CALENDARA
+F2 Lookup,HOME Mark/Unmark RangeA
+Esc ExitA
+PgDn Prev Month,PgUp Next MonthA
+F2 Lookup,F4 Delete,HOME Mark/Unmark RangeA
+Esc ExitA
+PgDn Prev Month,PgUp Next MonthA
+This must be a valid date.A
+CALENDARA
+CALENDARA
+F1 HelpA
+Esc ExitA
+F1 Help,F4 DeleteA
+Esc ExitA
+CALENDARA
+Delete this "off-day" from the shop calendar?  It will then be considered a work day. L
+CALENDARA
+CALENDARA
+The "off days" you have entered have been saved to the Shop Calendar.  Would you now like to generate a new Scheduling Calendar?  This is only necessary for finite scheduling. L
+bkcalgenA
+The "off days" you have entered have been saved to the Shop Calendar.  Would you now like to generate a new Scheduling Calendar?A
+The Scheduling Calendar should be rebuilt whenever you change the Shop Calendar.  This is only necesssary if you will be using finite scheduling.A
+If you simply wish to take a break from entering dates on the Shop Calendar, just click "No" here and you will be able to come back and continue later. A
+bkcalgenA
+CALENDARA
+CALENDARI
+SM-H  Enter Shop CalendarA
+F1 HelpA
+Esc ExitA
+Thru date cannot be less than from date. A
+1234567A
+Proceed with marking/unmarking?L
+Now working on: A
+CALENDARA
+CALENDARA
+CALENDARA
+CALENDARA
+CALENDARI
+ H - Holiday F
+ W - Weekend I
+                  
+                  
+  Date Range                              
+                  
+             thru                         
+                  
+                                          
+                  
+    [MU]  Mark or Unmark days?            
+                  
+                                          
+                  
+  Description                             
+                  
+                                          
+                  
+                                          
+                  
+    [WH]  Weekend or Holiday?             
+                  
+                                          
+                  
+    [YN]  Mark/Unmark all days in range?  
+                  
+                                          
+                  
+    [1-7] Mark/unmark which day?          
+                  
+          [Sun=1, Mon=2, ...]             
+                  
+                  
+                  
+ Sun   Mon   Tue   Wed   Thu   Fri   Sat 
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+                  
+ Date          Weekend/Holiday [WH]      
+                  
+                                         
+                  
+                                         
+                  
+ Description                             
+                  
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+ Calendar Dates A
+F1 HelpA
+Esc ExitA
+CALENDARA
+Date      A
+Description              A
+CALENDARA
+Start typing to narrow search. Use top row (not keypad) for numeric searches.A
+  Start typing to narrow search. Use top row (not keypad) for numeric searches.  A
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+DAY            
+MONTH1         
+MONTH2         
+MONTH          
+CNTR           
+CNTR2          
+HOLD.DAY       
+TEMP.DATE      
+HOLDER         
+TEMP.DATE1     
+TEMP.DATE2     
+TEMP.DATE3     
+FROM.DATE      
+THRU.DATE      
+MARK.TYPE      
+MARK.UNMARK    
+MARK.DAY       
+TEMP.DAY       
+START.DATE     
+FINISH.DATE    
+CUR.DATE       
+TEMP.DESC      
+WH             
+PRGS.WHR       
+DATE.HLDR      
+BKSY.PRGS.WHR  
+MESSAGE        
+MSG_PTR        
+MTCAL.DATE     
+MTCAL.SAT      
+MTCAL.DESC     
+OK             
+NUM.MSG        
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+INC_DATE_DATE  
+INC_DATE_AMT   
+INC_DATE_WCH   
+INC_DATE_DAY   
+INC_DATE_MONTH 
+INC_DATE_YEAR  
+INC_DAY_NUM    
+INC_MONTH_NUM  
+INC_YEAR_NUM   
+INC_DATE_MAXD  
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+WC             
+BC             
+SC             
+DATES_TTL1     
+DATES_USCORE   
+MTCAL.SUN      
+SRCH_HOW_MSG   
+BUTTON_LIST    
+BUTTON_CNTR    

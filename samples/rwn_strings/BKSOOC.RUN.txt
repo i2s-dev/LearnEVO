@@ -1,0 +1,628 @@
+TAS32E
+BKSYMSTR
+BKYSMSTR
+BKARINV 
+BKARINVL
+BKARTXN 
+BKAPDESC
+BKPRTCFG
+TASCOLOR
+BKARCUST
+BKICMSTR
+BKICTAX 
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+BKPRTCFGA
+BKARTXNSA
+BKARTXNA
+BKICLOCA
+MTICMSTRA
+BKICMSTRA
+BKARDESCA
+BKARDPSTA
+BKICTAXA
+BKARCUSTA
+BKARINVA
+BKARHIVLA
+BKARHINVA
+BKARINVTA
+BKARHINVA
+BKARHIVLA
+BKARTXNA
+BKARDESCA
+BKPRTCFGI
+SO-O-C  Reprint Invoices [Standard Forms]A
+SO-O-C  Reprint Invoices [Universal Forms]A
+SO-O-C  Reprint Invoices [Plain Paper]A
+F1 HelpA
+Esc ExitA
+DISCOUNTA
+DISCIJ
+                        Press ESC to Stop Printing                               A
+Number of Copies? A
+BKARHINVI
+BKARHINVI
+BKARHIVLI
+BKARHIVLA
+BKARHIVLA
+BKARHINVF@
+BKARHINVA
+BKARHINVI
+Continued .....F
+Continued .....I
+Please wait while the Sales Order files are checked.I
+BKARHINVI
+BKARHIVLA
+BKARHINVA
+BKARHIVLA
+ATTN: A
+ATTN: A
+There are no matching invoices in the file.I
+The record for customer A
+ was not found.A
+It must be entered before this invoice will be printed.I
+An inventory record was not found for the product A
+from S/O # A
+.   Please correct before continuing.A
+Press any key to continueA
+F1 Help,F2 LookupA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+BKARHIVLA
+***    I N V O I C E  ***I
+***    CREDIT MEMO    ***I
+  Inv# Cust Cd    Company Name                   Cust POA
+A - Invoice NoF
+B - Customer CodeF
+C - Company NameF
+D - Customer POF
+E - Ship to CodeF
+F - Ship to NameF
+G - Job NumberA
+ Search By A
+BKARHINVA
+BKARHINVA
+BKARHINVA
+BKARHINVA
+  Inv# Cust Cd    Company Name                   Ship to CodeA
+BKARHINVA
+  Inv# Cust Cd    Company Name                   Ship to NameA
+BKARHINVA
+  Inv# Cust Cd    Company Name                   Job NumberA
+BKARHINVA
+                   
+                   
+ Print only From Invoice Number:        
+                   
+            Thru Invoice Number:        
+                   
+                                        
+                   
+    Print Kit Components? [Y/N]:        
+                   
+                                        
+                   
+    Print Comments Lines? [Y/N]:        
+                   
+                                        
+                   
+         Print S/O Notes? [Y/N]:        
+                   
+                                        
+                   
+           Print Options? [Y/N]:        
+                   
+                                                 ---------------------------
+                                                   Invoice Number:
+                                                 Date of Shipment:
+                                                     Invoice Date:
+                                                             Page:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+  ORDER NO.  ORDER DATE   ACCOUNT       SLSP   PURCHASE ORDER NO.     SHIP VIA              F O B           TERMS       SHIPPER #
+====================================================================================================================================
+------------------------------------------------------------------------------------------------------------------------------------
+LINE       SHIPPED    BACKORDERED   PART NUMBER      DESCRIPTION                                    PRICE       UM   EXTENDED PRICE
+---- -------------  -------------   ---------------  ------------------------------ --------  ----------------  ---  --------------
+                                                                                                           Subtotal:
+                                                                                                          Sales Tax:
+                                                                                                              Total:
+                                                                                                            Freight:
+                                                                                                                     --------------
+                                                                                                                     ==============
+                                                                                          %
+ --------------- ------------------------------ --------------- ---------------
+  ---------------   ------------------------------   -------------------------
+                                                  ** LOT NUMBER LISTING **
+                                                 ** SERIAL NUMBER LISTING **
+ Part Number     Description                        Quantity    Lot Number
+                                                                                                       Less Deposit:
+                                                                                                     Less Retention:
+  Part Number       Description                      Serial Number
+                                                    Invoice Number:
+                                                      Invoice Date:
+                                                              Page:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+ Sales Ord No:          FOB:                 Purchase Order :
+ Order Date  :                               How Shipped    :
+ Account Code:                               Date Shipped   :
+ Salesperson :                               Shipper #      :
+ Job Number  :                               Terms          :
+                                                                                                          Subtotal:
+                                                                                                           Freight:
+                                                                                                                    ==============
+                                                                                                                    --------------
+                                                                                                         Sales Tax:
+                                                                                                         Total Due:
+                                                                                          %
+ LINE      SHIPPED    BACKORDERED  PART NUMBER      DESCRIPTION                                     PRICE       UM  EXTENDED PRICE
+                                                     ** LOT NUMBER LISTING **
+                                                   ** SERIAL NUMBER LISTING **
+ Part Number     Description                        Quantity    Lot Number
+                                                                                                     Less Deposit:
+                                                                                                   Less Retention:
+  Part Number       Description                      Serial Number
+                                                                                            % Disc
+                                                    Invoice Number:
+                                                      Invoice Date:
+                                                              Page:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+ Sales Ord No:          FOB:                 Purchase Order :
+ Order Date  :                               How Shipped    :
+ Account Code:                               Date Shipped   :
+ Salesperson :                               Shipper #      :
+ Job Number  :                               Terms          :
+                                                       Subtotal:
+                                                        Freight:
+                                                                 ==============
+                                                                 --------------
+                                                      Sales Tax:
+                                                      Total Due:
+LIN     SHIPPED     BACKORD PART#/DESC                 PRICE    UM     EXT PRICE
+                                                     ** LOT NUMBER LISTING **
+                                                   ** SERIAL NUMBER LISTING **
+ Part Number      Description                        Quantity   Lot Number
+                                                   Less Deposit:
+                                                 Less Retention:
+  Part Number       Description                      Serial Number
+                                                 ---------------------------
+                                                   Invoice Number:
+                                                 Date of Shipment:
+                                                     Invoice Date:
+                                                             Page:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+  ORDER NO.  ORDER DATE   ACCOUNT       SLSP   PURCHASE ORDER NO.     SHIP VIA              F O B           TERMS       SHIPPER #
+====================================================================================================================================
+------------------------------------------------------------------------------------------------------------------------------------
+LIN     SHIPPED     BACKORD PART#/DESC                PRICE     UM     EXT PRICE
+--- ----------- ----------- --------------- ----- ------------- --- ------------
+                                                       Subtotal:
+                                                      Sales Tax:
+                                                          Total:
+                                                        Freight:
+                                                                 --------------
+                                                                 ==============
+ ---------------  ------------------------------  ------------  ---------------
+  ---------------   ------------------------------   -------------------------
+                                                  ** LOT NUMBER LISTING **
+                                                 ** SERIAL NUMBER LISTING **
+ Part Number      Description                        Quantity   Lot Number
+                                                   Less Deposit:
+                                                 Less Retention:
+  Part Number       Description                      Serial Number
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+FORM_TYPE      
+MAX_LINES      
+OFF.SET        
+POST_HIST      
+PRTD_FLAG      
+PRTD_FLAG2     
+HLD_REC        
+INV.REC        
+INV.REC.NUM    
+INVNUM_ALPHA   
+UBO_FLAG       
+HLD_OUO        
+END_DESC       
+FRMSO          
+THRSO          
+NUM.INVOICES   
+UNIT.PRICE     
+CNTR           
+PAGE           
+OK             
+TODAYS.DATE    
+SHIP.DATE      
+NOT.INV.ONLY   
+POST.AMT       
+POST.FAIL      
+POST.OTHER     
+MONTH          
+PRT.CHR        
+CASH           
+BACKORDER_YN   
+HLD.INV.COGS   
+OFFSET2        
+PRT_KIT        
+PRT_COMMENT    
+COMMENT_NOW    
+PRT_NOTES      
+PRT_OPTIONS    
+TEMP.FREIGHT   
+FORMAT_TYPE    
+SO.NUM         
+SLSP.NUM       
+SHIPPER.NUM    
+QTY.UBO        
+QTY.SHIP       
+QTY.OUO        
+QTY.LOT        
+TEMP.INV       
+NUM.COPIES     
+PRT.ON         
+DISK.FILE      
+DISCOUNT       
+DISC           
+CUST.BILL.TO   
+CUST.SHIP.TO   
+CUST.SHIP.TO29 
+SHIP.TO.ATTN   
+SHIP.TO.ATTN29 
+SHIP.NAME29    
+LAST.SO        
+PRINT.SAME     
+PRTCOP         
+A.DEPOSIT      
+INVOICE.HOLDER 
+EXTENDED       
+DECIMALS       
+CONDENSED      
+SHQ            
+BOQ            
+SHQ.ND         
+BOQ.ND         
+A.SHQ          
+A.BOQ          
+NC.SHQ         
+NC.BOQ         
+NC.SHQ.ND      
+NC.BOQ.ND      
+NC.A.SHQ       
+NC.A.BOQ       
+NC.UNIT.PR     
+LOTQ           
+LOTQ.ND        
+A.LOTQ         
+TOQ.L          
+SHQ.L          
+BOQ.L          
+TOQ.L.ND       
+SHQ.L.ND       
+BOQ.L.ND       
+A.TOQ.L        
+A.BOQ.L        
+A.SHQ.L        
+UNIT.PRICE.L   
+TAX_TAXBLE     
+UNIT.PRICE2    
+TOTAL          
+DEPOSIT        
+RETENTION      
+TAX            
+FREIGHT        
+SUB.TOT        
+BKSY.PLAIN.INV +
+BKSY.AUTO.BO   
+BKYS.YN        
+WC             
+BC             
+BKPRT.CFG.COPY <
+BKAR.INV.NUM   
+BKAR.CUSTCODE  
+BKAR.INV.CUSCOD
+BKAR.INV.NL    9
+BKAR.INV.FRGHT n
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INVL.PCODE
+BKAR.INVL.RTS  u
+BKAR.INVL.UM.LN
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKIC.PROD.CODE 
+BKAR.INVL.PDISCK
+BKAR.INVL.PPRCEC
+BKAR.INVL.PEXT S
+BKAR.INVL.USTD m
+BKAR.INVL.TXBLEd
+BKAR.INVL.TXAMT
+BKAR.INVL.PCOGS[
+BK.DESC.NUM    
+BKAR.INV.SONUM 
+BK.DESC.LINE   
+BKAR.INV.SUBTOT
+BKAR.INV.TAXAMT!
+BKIC.TAX.KEY   
+BKAR.INV.TAXKEY
+BKAR.INV.ITMZTX
+BKIC.TAX.FRGHT t
+BKAR.INV.TAXRTE;
+BKAR.INV.TOTAL )
+BKAR.INV.DEPAMT
+BKAR.INV.RETEN 
+BKAR.INV.ENDLNE
+BKAR.INV.SHIPDT
+MCNTR2         
+MCNTR3         
+MCNTR          
+BKSY.FORM.CMPNY/
+BKSY.COMP.NAME X
+BKSY.COMP.ADD1 q
+BKSY.COMP.ADD2 
+BKSY.COMP.CSZ  
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.COUNTRY   
+BKAR.INV.SHPNME)
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPATN
+BKAR.INV.SHIPPR
+BKAR.INV.TERMD 
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+YEAR.PAST      
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR4         
+BKSY.AR.ENDDESC
+SO_FROM        
+MENULIST       
+CNTR           
+TITLE          
+TITLE1         
+SC             
+BKAR.INV.CUSNME=
+BKAR.INV.CUSORD
+BKAR.INV.SHPCOD
+BKAR.INV.JOBNUM
+BKAR.INV.INVDTE
+BKAR.INV.ORDDTE
+BKAR.INV.SLSP  
+BKAR.INV.SHPVIA
+BKAR.INV.FOB   
+BKAR.INVL.PDESC
+BK.DESC.NOTES  
+BKAR.TXN.CODE  
+BKAR.TXN.DESC  
+BKAR.TXN.LOT   =
+BKAR.TXN.SERIALL
+BKAR.TXN.QTY   5
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+FC             
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+CC             
+DATC           
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+BUTTON_LIST    
+BUTTON_CNTR    

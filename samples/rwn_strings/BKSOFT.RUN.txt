@@ -1,0 +1,750 @@
+TAS32`
+BKSYMSTR
+BKYSMSTR
+BKPRTCFG
+BKARINVL
+BKARINV 
+BKARCUST
+BKICMSTR
+MTICMSTR
+BKAPDESC
+BKICTAX 
+BKICLOC 
+BKARTXN 
+TASCOLOR
+BKSYMSTRA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRA
+BKPRTCFGA
+BKARTXNSA
+BKARTXNA
+BKICLOCA
+MTICMSTRA
+BKICMSTRA
+BKARDESCA
+BKICTAXA
+BKARCUSTA
+BKARHINVA
+BKARINVLA
+BKARINVA
+BKPRTCFGI
+ F1-Help                                                               Esc-Menu A
+DISCOUNTA
+DISCIJ
+ A - STANDARD DBA FORMAT 0101AF
+ B - GOVERNMENT CONTRACT 0102BI
+Choose Invoice Type44F
+ F1-Help   F2-Display Sales Orders                                     Esc-Menu A
+ F1-Help   F2-Display Sales Orders                                     Esc-Menu A
+                        Press ESC to Stop Printing                               A
+Send this report to the Screen, Printer, or Disk file: A
+Enter the Disk file name: A
+Number of Copies? A
+BKARINVA
+BKARINVI
+MTICMSTRA
+BKARINVLA
+BKARINVLA
+BKARINVLA
+BKARDESCI
+BKARINVI
+BKARINVA
+BKARINVA
+BKARINVA
+BKARINVF
+BKARINVLF
+BKICMSTRF
+BKARINVA
+BKARINVLI
+BKICMSTRA
+BKICLOCI
+BKARINVA
+BKARINVLI
+BKICMSTRA
+BKICLOCI
+BKARINVF
+BKARINVLF
+BKICMSTRF
+BKSYMSTRA
+BKYSMSTRA
+Post all printed invoices? [Y/N] A
+BKSOFF
+BKSOGA
+Continued .....F
+Continued .....A
+Continued .....F
+Continued .....I
+Continued .....F
+Continued .....I
+BKARHINVI
+BKARINVI
+BKARHINVI
+BKARINVI
+BKARINVA
+Please wait while the Sales Order files are checked.A
+BKARINVI
+BKARINVLA
+BKARINVA
+BKARINVLA
+ATTN: A
+ DBA Accounting      
+  Print Invoices  (Standard Forms)  
+        Sales Orders A
+ DBA Accounting      
+  Print Invoices (Universal Forms)  
+        Sales Orders A
+ DBA Accounting      
+  Print Invoices     (Plain Paper)  
+        Sales Orders A
+ DBA Accounting    
+  Print Invoices (Government Contract)  
+      Sales Orders A
+Did all of the invoices print correctly? [Y/N] A
+BKARINVA
+BKARINVI
+There are no matching invoices in the file.I
+All the invoices have been printed already.F
+If you want to reprint some you must enterF
+the beginning and ending invoice numbers.I
+The record for customer A
+ was not found.A
+It must be entered before this invoice will be printed.I
+BKARINVF
+An inventory record was not found for the product A
+from S/O # A
+.   Please correct before continuing.A
+The transaction date entered does not fall within theF
+valid range.  Please enter a current year date, a dateF
+from one year past, or a date from two years past.F
+The current Fiscal Year Start Date is A
+BKARINVA
+BKARINVA
+Sales OrdersA
+BKARINVF
+BKARINVI
+BKARINVI
+BKARINVA
+BKARINVFp#
+There are no such records in the A
+ file.A
+BKARINVA
+BKARINVF
+ with: A
+Start A
+ 0101PA
+ 0102AA
+ A - A
+ 0103BA
+ B - A
+ 0104CA
+ C - A
+ 0105DA
+ D - A
+ 0106EA
+ E - A
+ 0107FA
+ F - A
+ 0108GA
+ G - A
+ 0109HA
+ H - A
+ 0110IA
+ I - A
+ 0111JA
+ J - A
+ 0112KA
+ K - A
+ 0113LA
+ L - A
+ 0114MA
+ M - A
+ 0115NA
+next screen of A
+previous screen of A
+Print Lot Number Listing? [Y/N] A
+BKARINVA
+BKARTXNI
+BKARTXNI
+Print Serial Number Listing? [Y/N] A
+BKARTXNSA
+BKARINVA
+BKARTXNSI
+BKARTXNSI
+Press any key to continueA
+The date entered will be used as the invoice date andF
+will also be the date used for posting purposes.I
+ 1 - xxxxxxxxxxxxxxxxxxxxxxxxx 01011F
+ 2 - xxxxxxxxxxxxxxxxxxxxxxxxx 01022F
+ 3 - xxxxxxxxxxxxxxxxxxxxxxxxx 01033F
+ 4 - xxxxxxxxxxxxxxxxxxxxxxxxx 01044F
+ 5 - xxxxxxxxxxxxxxxxxxxxxxxxx 01055F
+ 6 - xxxxxxxxxxxxxxxxxxxxxxxxx 01066F
+ 7 - xxxxxxxxxxxxxxxxxxxxxxxxx 01077F
+ 8 - xxxxxxxxxxxxxxxxxxxxxxxxx 01088F
+ 9 - xxxxxxxxxxxxxxxxxxxxxxxxx 01099F
+ 0 - xxxxxxxxxxxxxxxxxxxxxxxxx 01100I
+Select Printer44F`'
+                                                   **  I N V O I C E  **
+                                                 ---------------------------
+                                                   Invoice Number:
+                                                 Date of Shipment:
+                                                     Invoice Date:
+                                                             Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  ORDER NO.  ORDER DATE   ACCOUNT       SLSP   PURCHASE ORDER NO.     SHIP VIA              F O B           TERMS       SHIPPER #
+====================================================================================================================================
+------------------------------------------------------------------------------------------------------------------------------------
+ LINE    SHIPPED     BACKORDERED   PART NUMBER      DESCRIPTION                                     PRICE      UM    EXTENDED PRICE
+ ----   ----------   -----------   ---------------  ------------------------------   --------   ------------   ---   --------------
+                                                                                                          Subtotal:
+                                                                                                         Sales Tax:
+                                                                                                             Total:
+                                                                                                           Freight:
+                                                                                                                       ------------
+                                                                                                                       ============
+                                                                                           %
+ ---------------  ------------------------------  ------------  ---------------
+  ---------------   ------------------------------   -------------------------
+                                                  ** LOT NUMBER LISTING **
+                                                 ** SERIAL NUMBER LISTING **
+ Part Number      Description                        Quantity   Lot Number
+                                                                                                      Less Deposit:
+                                                                                                    Less Retention:
+  Part Number       Description                      Serial Number
+          
+          
+                                                         
+          
+                                Invoice Date:            
+          
+                               Shipping Date:            
+          
+                                                         
+          
+   Print all Invoices Not Yet Printed? [Y/N]:            
+          
+                                                         
+          
+          Print only From Sales Order Number:            
+          
+                     Thru Sales Order Number:            
+          
+                                                         
+          
+                 Print Kit Components? [Y/N]:            
+          
+                                                         
+          
+                 Print Comments Lines? [Y/N]:            
+          
+                                                         
+          
+                      Print S/O Notes? [Y/N]:            
+          
+                                                         
+          
+                        Print Options? [Y/N]:            
+          
+                                                         
+          
+                                                       *** I N V O I C E ***
+                                                    Invoice Number:
+                                                      Invoice Date:
+                                                              Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+ Sales Ord No:          FOB:                 Purchase Order :
+ Order Date  :                               How Shipped    :
+ Account Code:                               Date Shipped   :
+ Salesperson :                               Shipper #      :
+ Job Number  :                               Terms          :
+                                                                                                         Subtotal:
+                                                                                                          Freight:
+                                                                                                                   ==============
+                                                                                                                   --------------
+                                                                                                        Sales Tax:
+                                                                                                        Total Due:
+                                                                                         %
+ LINE    SHIPPED    BACKORDERED  PART NUMBER       DESCRIPTION                                    PRICE      UM   EXTENDED PRICE
+                                                     ** LOT NUMBER LISTING **
+                                                   ** SERIAL NUMBER LISTING **
+ Part Number      Description                        Quantity   Lot Number
+                                                                                                     Less Deposit:
+                                                                                                   Less Retention:
+  Part Number       Description                      Serial Number
+                                                                            SHIPPER #
+                                                          LESS DEPOSIT:
+                                                        LESS RETENTION:
+                                                                                            % Disc
+                                                       *** I N V O I C E ***
+                                                    Invoice Number:
+                                                      Invoice Date:
+                                                              Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+ Sales Ord No:          FOB:                 Purchase Order :
+ Order Date  :                               How Shipped    :
+ Account Code:                               Date Shipped   :
+ Salesperson :                               Shipper #      :
+ Job Number  :                               Terms          :
+                                                                                                         Subtotal:
+                                                                                                          Freight:
+                                                                                                                   ==============
+                                                                                                                   --------------
+                                                                                                        Sales Tax:
+                                                                                                        Total Due:
+                                                                                         %
+ LINE   SHIPPED   BACKORDERED   PART NUMBER       DESCRIPTION                                     PRICE      UM   EXTENDED PRICE
+                                                     ** LOT NUMBER LISTING **
+ Part Number       Description                       Quantity   Lot Number
+                                                                                                     Less Deposit:
+                                                                                                   Less Retention:
+                                                                            SHIPPER #
+                                                          LESS DEPOSIT:
+                                                        LESS RETENTION:
+                                                                                            % Disc
+                                                   **  I N V O I C E  **
+                                                 ---------------------------
+                                                   Invoice Number:
+                                                 Date of Shipment:
+                                                     Invoice Date:
+                                                             Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  ORDER NO.  ORDER DATE   ACCOUNT       SLSP   PURCHASE ORDER NO.     SHIP VIA              F O B           TERMS       SHIPPER #
+====================================================================================================================================
+------------------------------------------------------------------------------------------------------------------------------------
+ LINE    SHIPPED    BACKORDERED   PART NUMBER      DESCRIPTION                                     PRICE      UM    EXTENDED PRICE
+ ----   ---------   -----------   ---------------  ------------------------------   --------   ------------   ---   --------------
+                                                                                                          Subtotal:
+                                                                                                         Sales Tax:
+                                                                                                             Total:
+                                                                                                           Freight:
+                                                                                                                       ------------
+                                                                                                                       ============
+                                                                                          %
+ ---------------   ------------------------------   ---------   ---------------
+                                                  ** LOT NUMBER LISTING **
+ Part Number       Description                       Quantity   Lot Number
+                                                                                                      Less Deposit:
+                                                                                                    Less Retention:
+                                                       *** I N V O I C E ***
+                                                    Invoice Number:
+                                                      Invoice Date:
+                                                              Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+ Sales Ord No:          FOB:                 Purchase Order :
+ Order Date  :                               How Shipped    :
+ Account Code:                               Date Shipped   :
+ Salesperson :                               Shipper #      :
+ Job Number  :                               Terms          :
+                                                        Subtotal:
+                                                         Freight:
+                                                                  ==============
+                                                                  --------------
+                                                       Sales Tax:
+                                                       Total Due:
+                                             %
+LIN  SHIPPED  BACKORD  PART #/DESC                  PRICE     UM      EXT PRICE
+                                                     ** LOT NUMBER LISTING **
+ Part Number       Description                       Quantity   Lot Number
+                                                    Less Deposit:
+                                                  Less Retention:
+                                                       *** I N V O I C E ***
+                                                    Invoice Number:
+                                                      Invoice Date:
+                                                              Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+ Sales Ord No:          FOB:                 Purchase Order :
+ Order Date  :                               How Shipped    :
+ Account Code:                               Date Shipped   :
+ Salesperson :                               Shipper #      :
+ Job Number  :                               Terms          :
+                                                        Subtotal:
+                                                         Freight:
+                                                                  ==============
+                                                                  --------------
+                                                       Sales Tax:
+                                                       Total Due:
+                                                %
+LIN   SHIPPED   BACKORD   PART#/DESC                  PRICE    UM     EXT PRICE
+                                                     ** LOT NUMBER LISTING **
+                                                   ** SERIAL NUMBER LISTING **
+ Part Number      Description                        Quantity   Lot Number
+                                                    Less Deposit:
+                                                  Less Retention:
+  Part Number       Description                      Serial Number
+                                                   **  I N V O I C E  **
+                                                 ---------------------------
+                                                   Invoice Number:
+                                                 Date of Shipment:
+                                                     Invoice Date:
+                                                             Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  ORDER NO.  ORDER DATE   ACCOUNT       SLSP   PURCHASE ORDER NO.     SHIP VIA              F O B           TERMS       SHIPPER #
+====================================================================================================================================
+------------------------------------------------------------------------------------------------------------------------------------
+LIN  SHIPPED  BACKORD  PART #/DESC                  PRICE     UM      EXT PRICE
+---  -------  -------  ---------------  ------  ------------  ---  ------------
+                                                      Subtotal:
+                                                     Sales Tax:
+                                                         Total:
+                                                       Freight:
+                                                                   ------------
+                                                                   ============
+                                             %
+ ---------------   ------------------------------   ---------   ---------------
+                                                  ** LOT NUMBER LISTING **
+ Part Number       Description                       Quantity   Lot Number
+                                                  Less Deposit:
+                                                Less Retention:
+                                                   **  I N V O I C E  **
+                                                 ---------------------------
+                                                   Invoice Number:
+                                                 Date of Shipment:
+                                                     Invoice Date:
+                                                             Page:
+ SOLD                                      SHIP
+  TO:                                       TO:
+  ORDER NO.  ORDER DATE   ACCOUNT       SLSP   PURCHASE ORDER NO.     SHIP VIA              F O B           TERMS       SHIPPER #
+====================================================================================================================================
+------------------------------------------------------------------------------------------------------------------------------------
+LIN   SHIPPED   BACKORD   PART#/DESC                  PRICE    UM     EXT PRICE
+--- ---------- ---------- ---------------  ------ ------------ --- ------------
+                                                      Subtotal:
+                                                     Sales Tax:
+                                                         Total:
+                                                       Freight:
+                                                                   ------------
+                                                                   ============
+                                                %
+ ---------------  ------------------------------  ------------  ---------------
+  ---------------   ------------------------------   -------------------------
+                                                  ** LOT NUMBER LISTING **
+                                                 ** SERIAL NUMBER LISTING **
+ Part Number      Description                        Quantity   Lot Number
+                                                  Less Deposit:
+                                                Less Retention:
+  Part Number       Description                      Serial Number
+Press any key to continueA
+BKPRTCFGA
+ PRINTER TO USE A
+F1 - Display Printers   F10 - Start PrintingA
+Copies: A
+resetA
+ For product support call DBA Tech Support at 1-800-434-0809   TAS 5.0 BETA 3 
+                                Function Keys                                 
+                                                                              
+           F1 = Help                         F6 = Get Last Record             
+           F2 = Lookup Window                F7 = Scroll Backward             
+           F3 = Clear Screen                 F8 = Scroll Forward              
+           F4 = Delete Record                F9 = Find Closest Match          
+           F5 = Get First Record            F10 = Save Record                 
+                                                                              
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without SAving      CTRL+D = Delete Character            
+                                                                              
+ Printer Name:
+ Printer Driver:              LPT#:
+ Page Width:           Total Lines:       Print lines:
+ Command Line
+ Print condensed(Y/N):   Exec CmdLine(Y/N):
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+bkprtcfgA
+Choose PrinterA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+FORM_TYPE      
+MAX_LINES      
+OFF.SET        
+POST_HIST      
+TAX_TAXBLE     
+PRTD_FLAG      
+HLD_REC        
+INV.REC        
+INV.REC.NUM    
+INVNUM_ALPHA   
+UBO_FLAG       
+HLD_OUO        
+END_DESC       
+FRMSO          
+THRSO          
+NUM.INVOICES   
+UNIT.PRICE     
+UNIT.PRICE2    
+TOTAL          
+CNTR           
+PAGE           
+OK             
+TODAYS.DATE    
+SHIP.DATE      
+NOT.INV.ONLY   
+POST.AMT       
+POST.FAIL      
+POST.OTHER     
+MONTH          
+PRT.CHR        
+CASH           
+BACKORDER_YN   
+HLD.INV.COGS   
+OFFSET2        
+PRT_KIT        
+PRT_COMMENT    
+COMMENT_NOW    
+PRT_NOTES      
+PRT_OPTIONS    
+DEPOSIT        
+RETENTION      
+TEMP.FREIGHT   
+FORMAT_TYPE    
+SO.NUM         
+SLSP.NUM       
+SHIPPER.NUM    
+QTY.UBO        
+QTY.SHIP       
+QTY.OUO        
+QTY.LOT        
+TEMP.INV       
+CUR.PRINTER    
+NUM.COPIES     
+PRT.ON         
+DISK.FILE      
+DISCOUNT       
+DISC           
+CUST.BILL.TO   
+CUST.SHIP.TO   
+SHIP.TO.ATTN   
+LAST.SO        
+BKAR.INVL.PEXT S
+BKAR.INV.TAXAMT!
+BKAR.INV.FRGHT n
+BKSY.AUTO.BO   
+BKYS.YN        
+MESSAGE        
+MCNTR          
+BKPRT.CFG.COPY <
+PRTCOP         
+BKSY.PLAIN.INV +
+BKAR.INV.SONUM 
+BKAR.INV.INVCD 
+BKAR.CUSTCODE  
+BKAR.INV.CUSCOD
+BKAR.INV.NL    9
+BKAR.INV.RTS   m
+BKAR.INV.NUM   
+BKAR.INV.LINV#Pe
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INVL.PCODE
+BKAR.INVL.RTS  u
+BKAR.INVL.UM.LN
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKIC.PROD.CODE 
+BKAR.INVL.PCOGS[
+BKIC.PROD.AVGC h
+BKIC.PROD.LSTC `
+MTIC.PROD.CODE 
+MTIC.PROD.RCOSTF
+BKIC.PROD.TYPE -
+BKAR.INVL.PDISCK
+BKAR.INVL.PPRCEC
+BKAR.INVL.USTD m
+BKAR.INVL.TXBLEd
+BKAR.INVL.TXAMT
+BK.DESC.NUM    
+BK.DESC.LINE   
+BKAR.INV.SUBTOT
+BKIC.TAX.KEY   
+BKAR.INV.TAXKEY
+BKAR.INV.ITMZTX
+BKIC.TAX.FRGHT t
+BKAR.INV.TAXRTE;
+BKAR.INV.TOTAL )
+BKAR.INV.COGS  1
+BKAR.INV.DEPAMT
+BKAR.INV.RETEN 
+BKAR.INV.ENDLNE
+BKAR.INV.SHIPDT
+BKIC.PROD.UOH  p
+BKIC.LOC.PROD  
+BKIC.LOC.CODE  
+BKAR.INV.LOC   v
+BKIC.LOC.UOH   
+BKIC.PROD.UOSO x
+BKIC.PROD.UBO  p
+BKIC.LOC.UOSO  !
+BKIC.LOC.UBO   )
+BKYS.INVNUM    
+BKSY.ARINV.NUM 
+ENT.MASK       
+NUM.MSG        
+BKSY.PRGS.WHR  
+MCNTR2         
+MCNTR3         
+BKAR.INV.SLSP  
+BKSY.FORM.CMPNY/
+BKSY.COMP.NAME X
+BKSY.COMP.ADD1 q
+BKSY.COMP.ADD2 
+BKSY.COMP.CSZ  
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPATN
+BKAR.INV.SHIPPR
+BKAR.INV.TERMD 
+YEAR.PAST      
+BKSY.FISCAL.YR 
+MENU_SRCH      
+MENU_TITLE     
+MENU_FSIZE     
+MENU_FLAG      
+MENU_CNTR      
+MENU_CODE      
+MENU_DESC      
+BKAR.INV.CUSNME=
+MENU_RNUMS     
+MENU_PAGE      
+PAGE_RNUMS     
+MENU_CNTR4     
+MENU_CNTR2     
+MENU_CNTR3     
+MENU_CNTR5     
+MENU_MORE      
+MENU_MSIZE     
+MENU_WIDTH     
+MENU_MWIDTH    
+BKAR.TXN.SONUM 
+BKAR.TXN.CODE  
+BKAR.TXN.LOT   =
+BKAR.TXN.QTY   5
+BKAR.TXN.SERIALL
+LNE.LNGTH      
+LNE.LN2        
+LLC            
+WD             
+HT             
+MCNTR4         
+BKSY.AR.ENDDESC
+BKPRT.CFG.USEPR
+BKPRT.CFG.NAME 
+BKPRT.CFG.PRTR t
+BKPRT.CFG.CMD  
+BKAR.INV.SHPNME)
+BKAR.INV.ORDDTE
+BKAR.INV.CUSORD
+BKAR.INV.SHPVIA
+BKAR.INV.FOB   
+BKAR.INVL.PDESC
+BK.DESC.NOTES  
+BKAR.TXN.DESC  
+BKAR.INV.JOBNUM
+BKAR.INV.INVDTE
+ANSWCMD        
+PRTNAME        
+PRTDRIV        
+PRTLPTN        
+PRTWDT         
+PRTMAX         
+PRTLNES        
+PRTCMDLNE      
+PRTCOND        
+SCRNSAVER      
+SPFLAG         
+BKPRT.CFG.LPTNO
+BKPRT.CFG.PWDT 
+BKPRT.CFG.PMAX 
+BKPRT.CFG.PPLNE
+BKPRT.CFG.COND 
+SC             
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+CFG_CNTR       
+CFG_CNTRL      
+CFG_HNDL       
+WC             
+BC             
+MSG_PTR        

@@ -1,0 +1,1480 @@
+TAS32H
+BKSYMSTR
+BKPRGLFL
+BKYSMSTR
+BKPRMSTR
+BKPRCURP
+BKPRINFO
+BKSYHELP
+DBAHLPID
+TASCOLOR
+FILELOC 
+MKAHIST 
+ - ISTS Enhancement 01/14/21A
+ISTECHA
+ISTPRA
+PR-L-G Print 941 & Schedule B ReportsA
+F1 HelpA
+Esc ExitA
+ISPRMSTRA
+BKSYMSTRA
+BKPRGLFLA
+BKPRHISTA
+BKPRINFOA
+BKSYMSTRA
+bkprglflI
+No divisions have been set up in PR-M. A
+BKPRGLFLA
+BKYSMSTRA
+BKYSMSTRIs
+Due to changes in Payroll security, you must run a one-time utility before you can continue with this program.  Are you ready to begin?L
+PRJCSYNCA
+PAYROLLA
+BKYSMSTRIs
+isprmstrI
+No employees have been set up in PR-A. A
+PRLGIt
+ 1 - January 1, A
+ 01011A
+ 2 - April 1, A
+   01022A
+ 3 - July 1, A
+    01033A
+ 4 - October 1, A
+ 01044A
+ Which Quarter? ffI
+Date cannot be 00/00/00A
+Month must be 01, 04, 07, or 10. A
+This must be Y or NA
+F1 HelpA
+F8 Save Settings,Esc ExitA
+F1 HelpA
+Esc ExitA
+PRLGIt
+BKPRHISTA
+There is no pay history on which to report. A
+isprmstrI
+ Errors have been found in your payroll files.F
+ Payroll history records have been found with noF
+ corresponding employee record. (Employee #A
+ The calculations may not be correct because of this.I
+BKPRHISTA
+bkprglflI
+ Errors have been found in your payroll files.F
+ Payroll history records have been found with noF
+ corresponding division record. (Division A
+ The calculations may not be correct because of this.I
+BKPRHISTA
+There are no valid employees on which to report. A
+Calculating quarterly information...A
+VOIDEDA
+BKPRHISTA
+bkprhistI
+isprmstrI
+ Errors have been found in your payroll files.F
+ Payroll history records have been found with noF
+ corresponding employee record. (Employee #A
+ The calculations may not be correct because of this.I
+BKPRHISTA
+bkprglflI
+ Errors have been found in your payroll files.F
+ Payroll history records have been found with noF
+ corresponding division record. (Division A
+ The calculations may not be correct because of this.I
+BKPRHISTA
+ISPRMSTR
+PR-L-G Print 941 & Schedule B ReportsA
+F1 Help,F3 2ND ScreenA
+Esc ExitA
+Must be greater than or equal to zero.A
+PR-L-G Print 941 & Schedule B ReportsA
+F1 Help,F3 1ST ScreenA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+Ready to print?L
+BKPRLG1.RTMA
+Would you like to reprint 941 forms without text?L
+ein3[1]A
+ein3[2]A
+ein3[3]A
+ein3[4]A
+ein3[5]A
+ein3[6]A
+ein3[7]A
+ein3[8]A
+ein3[9]A
+num_empsA
+tot_wagesA
+tot_fitA
+ss_wageA
+comb_ficaA
+ss_taxA
+comb_fica2A
+tips_taxA
+hosp_rateA
+hosp_taxA
+tot_sstaxA
+adj_totA
+ta_centsA
+ta_sicA
+ta_tips_liA
+ta_tax_whA
+ta_ss_medA
+ta_sa_fitA
+ta_sa_ss_medA
+ta_tot_adjA
+tot_taxA
+adv_eicA
+net_taxA
+tot_depositsA
+overpaymentA
+apply_opA
+send_opA
+no_ss_med_taxA
+rpt_qtr[1]A
+rpt_qtr[2]A
+rpt_qtr[3]A
+rpt_qtr[4]A
+comp_nameA
+trade_nameA
+addressA
+stateA
+regBox1A
+regBox2A
+regBox3A
+regBox4A
+regBox5A
+regBox6A
+regBox7A
+regBox8A
+regBox9A
+regBox10A
+regBox11A
+regBox12A
+regBox13A
+regBox14A
+gtot_depositsA
+cobra_amtA
+cobra_empsA
+regBox20A
+regBox21A
+regBox22A
+TWOK_TAXA
+TWOK_RATEA
+TOT_LIAB[1]A
+TOT_LIAB[2]A
+TOT_LIAB[3]A
+QTR_LIABA
+regBox15A
+tot_depositsA
+overpaymentA
+apply_opA
+send_opA
+regBox11A
+regBox12A
+regBox13A
+beg_dateA
+end_dateA
+liab_day[1]A
+liab_amt[1]A
+liab_day[2]A
+liab_amt[2]A
+liab_day[3]A
+liab_amt[3]A
+liab_day[4]A
+liab_amt[4]A
+liab_day[5]A
+liab_amt[5]A
+liab_titleA
+liab_totalA
+regTitleA
+regTotalA
+regbox1A
+Daily Tax Liability - First Month of QuarterI
+Daily Tax Liability - Second Month of QuarterA
+Daily Tax Liability - Third Month of QuarterI
+     Employer ID #:     -
+  1  Number of employees in the pay period that includes March 12
+  2  Wages and tips, plus other compensation .....................
+  3  Total income tax withheld from wages, tips and other comp....
+  4  No wages, tips and other comps subject to SS or Medicare tax (Y/N).....
+  5a Taxable social security wages....            x         %=
+  5b Taxable social security tips.....            x         %=
+  5c Taxable Medicare wages and tips..            x         %=
+  5d Taxable Income over 200k.........            x         %=
+  5e Total social security and Medicare taxes.....................
+  6  Total taxes before adjustment................................
+  7  Current quarter's fractions of cents.....................
+  8  Current quarter's sick pay...............................
+  9  Current qtr's adjustment for tips and life insurance.....
+  10 Total Taxes after adjustments................................
+1   Number of employees in the pay period that includes March 12..
+2   Total wages and tips subject, plus other compensation ........
+3   Total income tax withheld from wages, tips, and sick pay......
+4   Adjustment of withheld income tax for preceding quarters......
+5   Adjusted total of income tax withheld.........................
+6a  Taxable social security wages...             ...............6b
+6c  Taxable social security tips....             ...............6d
+7a  Taxable Medicare wages and tips.             ...............7b
+8   Total social security and Medicare taxes......................
+9   Adjustment of social security and Medicare taxes..............
+10  Adjusted total of social security and Medicare taxes..........
+11  Total taxes...................................................
+12  Advance earned income credit (EIC) payments made to employees.
+13  Net Taxes.....................................................
+14  Total deposits for quarter....................................
+15  Balance due...................................................
+16  Overpayment......................
+                X Apply to next return
+17  Monthly Summary of Federal Tax Liability
+     (a) First month    (b) Second month   (c) Third month  (d) Total for qtr
+Form 941             Employer's Quarterly Federal Tax Return
+                                                For Quarter Ending
+                                                Employer Id #:
+                  
+                  
+  Print 941's for P/R Tax Year            
+                  
+                   for Quarter            
+                  
+                  
+ Beginning Date of the Quarter            
+                  
+    Ending Date of the Quarter            
+                  
+                  
+                                          
+                  
+  Name                                    
+                  
+  Trade Name                              
+                  
+  Address                                 
+                  
+  City                                    
+                  
+  State                                   
+                  
+  ZIP Code                                
+                  
+                                          
+                  
+                  
+  Include Terminated Employees?           
+                  
+   If you have any employees who have exceeded $200,000 total YTD wages, you
+   will need to manually enter the amount over $200,000 on the next screen so
+   the additional Medicare withholding can be calculated.
+         Employer's Record of Federal Tax Liability             to
+ Daily Tax Liability - First Month of Quarter
+ 1               8              15              22              29
+ 2               9              16              23              30
+ 3              10              17              24              31
+ 4              11              18              25
+ 5              12              19              26
+ 6              13              20              27
+ 7              14              21              28
+ Total tax liability for first month of quarter:
+ Daily Tax Liability - Second Month of Quarter
+ 1               8              15              22              29
+ 2               9              16              23              30
+ 3              10              17              24              31
+ 4              11              18              25
+ 5              12              19              26
+ 6              13              20              27
+ 7              14              21              28
+ Total tax liability for second month of quarter:
+ Daily Tax Liability - Third Month of Quarter
+ 1               8              15              22              29
+ 2               9              16              23              30
+ 3              10              17              24              31
+ 4              11              18              25
+ 5              12              19              26
+ 6              13              20              27
+ 7              14              21              28
+ Total tax liability for third month of quarter:
+  13a Total deposits for quarter, incl overpayment applied.
+  14  Balance due................................................
+  15  Overpayment...........................................
+      Apply refund to next return? (Y/N)....................
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tas50.ovlA
+tas50.ovlIS
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+*.RTMA
+NormalBkgA
+NormalBkgA
+Graphical Form Name :  A
+            A
+Graphical Report names starting with IT6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to IBKA
+Graphical Report names starting with T6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to BKA
+Graphical Report names starting with IBK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to IT6A
+Graphical Report names starting with BK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to T6A
+Form A
+ was not found in the DBA directory.A
+ Forms List A
+F1 HelpA
+Esc ExitA
+Form Name      A
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+This feature needs to be turned on in SD-Q before it will save your settingsA
+Save Personal settings, or System Global settings? A
+Yes = Personal Settings.A
+No  = System Global settings.A
+Settings Saved.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+EVOSERVICEA
+C:\ISES\A
+C:\ISTS\I
+EVOSERVICEA
+WHOAMI.*A
+WHOAMI.DBAA
+EVOSERVICE                         A
+Could not locate C:\ISTS folder. You must specify an Alternate Drive to save local settings in SD-QA
+:\ISTS\A
+Could not Locate or Create A
+ folder. Please contact Lynn@istechsupport.comA
+fileloc.bA
+BKSYMSTRA
+NormalBkgA
+NormalBkgA
+Password  A
+        A
+This is not a valid password. A
+MKAHISTA
+BKWOAA
+ISTECHSUPPORTA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCA
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYX[
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYX
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYF
+YNNNYC]
+NNNYN 7
+NNNYNX
+YNNNYMm
+NNNYNJ7
+NNNYNX
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+CFG.BUFF       
+INCL.AXED.EMPS 
+COMP.NAME      
+TRADE.NAME     
+ADDRESS        
+CITY           
+STATE          
+ZIP            
+CFG.END        
+ISTS.EDATE     
+DO_FINAL_PRTR  
+SS_CUR         
+MED_CUR        
+SS_PRIOR       
+MED_PRIOR      
+MAR_DATE       
+QTR_NUM        
+PR_YEAR        
+PR_YEAR_A      
+I              
+ROUNDING       
+EIGHTH         
+FIRST_3DAY     
+COMB_FICA      
+COMB_FICA2     
+YTD            
+FICA_LMT       
+TOT_WAGES      
+TOT_FIT        
+NUM_EMPS       
+ADJUSTMENT     
+ADJ_TOT        
+SS_WAGE        
+SS_TAX         
+TOT_SSTAX      
+TIPS           
+TIPS_W         
+HOSP           
+TIPS_TAX       
+HOSP_TAX       
+HOSP_RATE      
+TWOK           
+TWOK_TAX       
+TWOK_RATE      
+ADJ_SS         
+ADJ_SSTOT      
+BACKUP         
+ADJ_BU         
+ADJ_TOT_BU     
+TOT_TAX        
+ADV_EIC        
+NET_TAX        
+TOT_DEPOSITS   
+GTOT_DEPOSITS  
+DUE            
+LIAB           
+QTR_LIAB       
+TOT_LIAB       
+APPLY_REFUND   
+BEG_DATE       
+END_DATE       
+BEG_MONTH      
+END_MONTH      
+CUR_MONTH      
+CUR_DAY        
+CUR_YEAR       
+DAY            
+PERIOD         
+SSN_WH         
+SSN_EX         
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+PRT_WHR        
+DATE_ALPHA     
+YEAR_ALPHA     
+BREAK.EMP      
+EIN            
+EIN1           
+EIN2           
+EIN3           
+TA_CENTS       
+TA_SIC         
+TA_TIPS_LI     
+TA_TAX_WH      
+TA_SS_MED      
+TA_SA_FIT      
+TA_SA_SS_MED   
+TA_TOT_ADJ     
+OVERPAYMENT    
+NO_SS_MED_TAX  
+APPLY_OP       
+SEND_OP        
+RPT_QTR        
+COBRA_AMT      
+COBRA_EMPS     
+PRINFO.H       
+REGBOX1        
+REGBOX2        
+REGBOX3        
+REGBOX4        
+REGBOX5        
+REGBOX6        
+REGBOX7        
+REGBOX8        
+REGBOX9        
+REGBOX10       
+REGBOX11       
+REGBOX12       
+REGBOX13       
+REGBOX14       
+REGBOX15       
+REGBOX20       
+REGBOX21       
+REGBOX22       
+REGTITLE       
+REGTOTAL       
+LIAB.CNTR      
+LIAB.QTR       
+LIAB.DAY.CNTR  
+LIAB.DAY       
+LIAB.AMT       
+LIAB.TOTAL     
+LAST.DAY       
+INDEX          
+ACT.DAY        
+LIAB.TITLE     
+PRGS.WHR       
+BKSY.PRGS.WHR  
+BKYS.YN        
+BKPR.GL.FICAEMP
+BKPR.GL.FICAEPL
+BKSY.COMP.NAME X
+BKSY.COMP.ADD1 q
+BKSY.COMP.CSZ  
+MESSAGE        
+BKPR.CURP.EMPNM
+BKPR.EMP.NUM   
+MSG_PTR        
+BKPR.GL.DEPT   
+BKPR.EMP.DEPT  
+BKPR.GL.FICAMEE>
+BKPR.GL.FICAMERF
+BKPR.CURP.CHKNM
+BKPR.EMP.TERM  
+BKPR.INFO.DATE ;
+BKPR.CURP.PRDTE
+BKPR.CURP.TOTPY
+BKPR.GL.UODCALC
+BKPR.GL.UODFICAn
+BKPR.CURP.UOD  
+BKPR.GL.UODMED 
+BKPR.CURP.FICWHF
+BKPR.CURP.FICEXV
+BKPR.CURP.FITWH6
+BKPR.GL.UODFIT Z
+BKPR.GL.FICALMT
+BKPR.EMP.SDATE 
+BKPR.EMP.LSTPR 
+RTM_NAME       
+MONTH.NUM      
+BKSY.COMP.ADD2 
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           
+PTDN           
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+ISTS.CFG.ORDDSC
+ISTS.CFG.EVONTS
+ISTS.CFG.BASEP 
+ISTS.CFG.WCBF  
+ISTS.CFG.CATMST
+ISTS.CFG.UDMSTR
+ISTS.CFG.WOBS  
+ISTS.CFG.EVOLNK
+ISTS.CFG.SOEDTE
+ISTS.CFG.POEDTE
+ISTS.CFG.DCOASA
+ISTS.CFG.DCOASD
+ISTS.CFG.CKSTDC
+ISTS.CFG.TOOLLU
+ISTS.CFG.POCHG 
+ISTS.CFG.BCCBOX
+ISTS.CFG.MKFROM
+ISTS.CFG.SRINFO
+ISTS.CFG.WOMAKF
+ISTS.CFG.APCHK 
+ISTS.CFG.SOCUST
+ISTS.CFG.RMAINF
+ISTS.CFG.RMAMST
+ISTS.CFG.RMASTK
+ISTS.CFG.RMAFLT
+ISTS.CFG.RMAAMT
+ISTS.CFG.LOTWO 
+ISTS.CFG.RMACDT
+ISTS.CFG.POPCRH
+ISTS.CFG.POPCOM
+ISTS.CFG.POPSLP
+ISTS.CFG.LEADHR
+ISTS.CFG.HHLBLS
+ISTS.CFG.CLDISC
+ISTS.CFG.SOENBY
+ISTS.CFG.QCRPT 
+ISTS.CFG.APBDTE
+ISTS.CFG.HHEQTY
+ISTS.CFG.HHRALL
+ISTS.CFG.MANINV
+ISTS.CFG.OQTYLN
+ISTS.CFG.SRTRAK
+ISTS.CFG.SRAWOS
+ISTS.CFG.RMAUPD
+ISTS.CFG.VIAMST
+ISTS.CFG.CRHOLD
+ISTS.CFG.WOOVER
+ISTS.CFG.SOXREF
+ISTS.CFG.WARNTY
+ISTS.CFG.DCLOGN
+ISTS.CFG.APLANG
+ISTS.CFG.LRNUM 
+ISTS.CFG.PSFSEQ
+ISTS.CFG.WOFOTH
+ISTS.CFG.POCLBL
+ISTS.CFG.GLDATE
+ISTS.CFG.GLCTRL
+ISTS.CFG.WOOPEN
+ISTS.CFG.WOPSWD
+ISTS.CFG.SOONLY
+ISTS.CFG.WOONLY
+ISTS.CFG.POONLY
+ISTS.CFG.POCLC0
+ISTS.CFG.POREV 
+ISTS.CFG.SCPMRK
+ISTS.CFG.SORTS 
+ISTS.CFG.USNGPR
+ISTS.CFG.PRPOST
+ISTS.CFG.APSTDC
+ISTS.CFG.RWOPER
+ISTS.CFG.RWWCT 
+ISTS.CFG.EPASS 
+ISTS.CFG.XDBA  
+ISTS.CFG.SODAYS
+ISTS.CFG.PPTL  
+ISTS.CFG.PRTL  
+ISTS.CFG.HHDBIN
+ISTS.CFG.SCRPQ 
+ISTS.CFG.SOASHP
+ISTS.CFG.DUPLNS
+ISTS.CFG.POPRIX
+ISTS.CFG.APPRIX
+ISTS.CFG.SOITMZ
+ISTS.CFG.WOBASE
+ISTS.CFG.SOAXRF
+ISTS.CFG.SOAUD 
+ISTS.CFG.SOAUPC
+ISTS.CFG.APCGLA
+ISTS.CFG.APCGLD
+ISTS.CFG.DCDQTY
+ISTS.CFG.POCPV 
+ISTS.CFG.POCRN 
+ISTS.CFG.WOAWN 
+ISTS.CFG.BOMRM 
+ISTS.CFG.JOBCUS
+ISTS.CFG.POSIGN
+ISTS.CFG.SUBCOS
+ISTS.CFG.LTWOSD
+ISTS.CFG.FOREC 
+ISTS.CFG.POADD 
+ISTS.CFG.EPOQTY
+ISTS.CFG.DISC99
+ISTS.CFG.POPAMT
+ISTS.CFG.ROTTY 
+ISTS.CFG.ROSTTY
+ISTS.CFG.KITPRC
+ISTS.CFG.POASLM
+ISTS.CFG.BPSOQA
+ISTS.CFG.BMGADT
+ISTS.CFG.EVOALT
+ISTS.CFG.PRCDTE
+ISTS.CFG.POCBF 
+ISTS.CFG.SEQCHK
+ISTS.CFG.MRPDAY
+ISTS.CFG.MRPDOL
+ISTS.CFG.CCUID 
+ISTS.CFG.CCPSW 
+ISTS.CFG.SONMY 
+ISTS.CFG.WOGNEG
+ISTS.CFG.ESDMSG
+ISTS.CFG.WOFTEM
+ISTS.CFG.APPVND
+ISTS.CFG.ACDCSQ
+ISTS.CFG.XCOMM 
+ISTS.CFG.DCSCRP
+ISTS.CFG.XCOMH 
+ISTS.CFG.ZPRCOM
+ISTS.CFG.DAYPAY
+ISTS.CFG.HHMAXQ
+ISTS.CFG.SRLOC 
+ISTS.CFG.FRTMAX
+ISTS.CFG.INBLS 
+ISTS.CFG.POADEL
+ISTS.CFG.COGSDP
+ISTS.CFG.WCDEPT
+ISTS.CFG.WOGDSC
+ISTS.CFG.SOESUR
+ISTS.CFG.WOGLOC
+ISTS.CFG.MRFDTE
+ISTS.CFG.WOFAMI
+ISTS.CFG.POCRC2
+ISTS.CFG.POCUCV
+ISTS.CFG.ESAFRT
+ISTS.CFG.SONENG
+ISTS.CFG.WOISER
+ISTS.CFG.SOLOT 
+ISTS.CFG.SOSER 
+ISTS.CFG.DCARUN
+ISTS.CFG.DCSQTY
+ISTS.CFG.WOSSER
+ISTS.CFG.SOAREP
+ISTS.CFG.FPLOT 
+ISTS.CFG.WOFHOL
+ISTS.CFG.WOFDEC
+ISTS.CFG.ARADTE
+ISTS.CFG.APADTE
+ISTS.CFG.DCCQTY
+ISTS.CFG.DCMACH
+ISTS.CFG.BMAREF
+ISTS.CFG.GENITM
+ISTS.CFG.LONGP 
+ISTS.CFG.HHANEG
+ISTS.CFG.HHALOT
+ISTS.CFG.HHASER
+ISTS.CFG.BMTYPR
+ISTS.CFG.SOLDYS
+ISTS.CFG.HHPOLN
+ISTS.CFG.WOSODT
+ISTS.CFG.SETQTY
+ISTS.CFG.SOINFO
+ISTS.CFG.SOADEL
+ISTS.CFG.DCHLS 
+ISTS.CFG.DCDAYS
+ISTS.CFG.POQPRC
+ISTS.CFG.SHIFT2
+ISTS.CFG.SHIFT3
+ISTS.CFG.UCC14 
+ISTS.CFG.QWOQTY
+ISTS.CFG.SOPCQT
+ISTS.CFG.GLBSDT
+ISTS.CFG.APBSDT
+ISTS.CFG.ARCSDT
+ISTS.CFG.VNDPRX
+ISTS.CFG.HHCKIT
+ISTS.CFG.VIACUS
+ISTS.CFG.VIAVND
+ISTS.CFG.SOCRTM
+ISTS.CFG.RMDSRQ
+ISTS.CFG.ESHMIC
+ISTS.CFG.SRCBOM
+ISTS.CFG.POSEC 
+ISTS.CFG.POBSIG
+ISTS.CFG.XCOMA 
+ISTS.CFG.METIN 
+ISTS.CFG.METR  
+ISTS.CFG.MTERR 
+ISTS.CFG.PRCAT1
+ISTS.CFG.PRCAT2
+ISTS.CFG.PRCAT3
+ISTS.CFG.METSOF
+ISTS.CFG.WOIWOF
+ISTS.CFG.SOACFC
+ISTS.CFG.POAVND
+ISTS.CFG.DCTIME
+ISTS.CFG.SOELOT
+ISTS.CFG.SOESER
+ISTS.CFG.SOGCFC
+ISTS.CFG.POCSER
+ISTS.CFG.DCTMSS
+ISTS.CFG.XREBSS
+ISTS.CFG.DCSYNC
+ISTS.CFG.SOACDT
+ISTS.CFG.ARLCST
+ISTS.CFG.SOSTDP
+ISTS.CFG.DCNOSC
+ISTS.CFG.DCAPW1
+ISTS.CFG.DCAPW2
+ISTS.CFG.HHCPW1
+ISTS.CFG.HHCPW2
+ISTS.CFG.SOASTN
+ISTS.CFG.SOAINC
+ISTS.CFG.WOGADD
+ISTS.CFG.POCLOT
+ISTS.CFG.WOJCLS
+ISTS.CFG.DCREWK
+ISTS.CFG.INCGL 
+ISTS.CFG.POADUE
+ISTS.CFG.WOALOC
+ISTS.CFG.SOALOC
+ISTS.CFG.USINI 
+ISTS.CFG.WOAVCK
+ISTS.CFG.SOAVCK
+ISTS.CFG.AREMD 
+ISTS.CFG.XCMSOA
+ISTS.CFG.APBVND
+ISTS.CFG.DCAHHD
+ISTS.CFG.POCSTD
+ISTS.CFG.SOAITM
+ISTS.CFG.WOIRND
+ISTS.CFG.DTERES
+ISTS.CFG.SOAATT
+ISTS.CFG.DCABRK
+ISTS.CFG.VNDEXP
+ISTS.CFG.SOCBOL
+ISTS.CFG.PRQPST
+ISTS.CFG.DCPREQ
+ISTS.CFG.SOELAB
+ISTS.CFG.WOICST
+ISTS.CFG.POCBIN
+ISTS.CFG.SOEGSB
+ISTS.CFG.SOACDL
+ISTS.CFG.DCBEMP
+ISTS.CFG.TPRTNT
+ISTS.CFG.POCPLL
+ISTS.CFG.POACAL
+ISTS.CFG.RMDCWO
+ISTS.CFG.RMDGLA
+ISTS.CFG.RMDGLD
+ISTS.CFG.SOESDT
+ISTS.CFG.SOEUBO
+ISTS.CFG.SHPBIN
+ISTS.CFG.POEPRX
+ISTS.CFG.SOFSND
+ISTS.CFG.EMAILS
+ISTS.CFG.EMAILP
+ISTS.CFG.NZETYP
+ISTS.CFG.INBTLS
+ISTS.CFG.SOASPK
+ISTS.CFG.HHDCWO
+ISTS.CFG.POARSK
+ISTS.CFG.ASTART
+ISTS.CFG.INACT 
+ISTS.CFG.URNT  
+ISTS.CFG.RECYCL
+ISTS.CFG.BLSTDC
+ISTS.CFG.TRKSER
+ISTS.CFG.INKTDT
+ISTS.CFG.POCERD
+ISTS.CFG.POADYS
+ISTS.CFG.QTYADJ
+ISTS.CFG.HHFLOC
+ISTS.CFG.HHTLOC
+ISTS.CFG.POCFRT
+ISTS.CFG.DCAENG
+ISTS.CFG.MSGLVL
+ISTS.CFG.SOARCH
+ISTS.CFG.WOITXN
+ISTS.CFG.SOLEAD
+ISTS.CFG.POCPJB
+ISTS.CFG.POCPIE
+ISTS.CFG.DCIRWK
+ISTS.CFG.APHXPT
+ISTS.CFG.SOACAL
+ISTS.CFG.SOACOM
+ISTS.CFG.SOSEC 
+ISTS.CFG.NEGCST
+ISTS.CFG.QUALOC
+ISTS.CFG.SOAGPP
+ISTS.CFG.ORIGPO
+ISTS.CFG.POPROM
+ISTS.CFG.POAMFG
+ISTS.CFG.INACUD
+ISTS.CFG.ARFTD 
+ISTS.CFG.DBLKIT
+ISTS.CFG.PSTKIT
+ISTS.CFG.SOAAUD
+ISTS.CFG.DCAWC 
+ISTS.CFG.PIUID 
+ISTS.CFG.PIPSW 
+ISTS.CFG.CCDEF 
+ISTS.CFG.DCCOMP
+ISTS.CFG.INCNEG
+ISTS.CFG.WOBWO1
+ISTS.CFG.ROADEC
+ISTS.CFG.SOAMAR
+ISTS.CFG.SOAMA%
+ISTS.CFG.SOPBLW
+ISTS.CFG.INADTE
+ISTS.CFG.LIMSCT
+ISTS.CFG.RRFPR 
+ISTS.CFG.VACGLA
+ISTS.CFG.VACGLD
+ISTS.CFG.DCPDTE
+ISTS.CFG.DCFREQ
+ISTS.CFG.DCMLST
+ISTS.CFG.RMDACM
+ISTS.CFG.INBXFR
+ISTS.CFG.POAPOH
+ISTS.CFG.SMGEDT
+ISTS.CFG.AVATAX
+ISTS.CFG.AVAACT
+ISTS.CFG.AVAKEY
+ISTS.CFG.SOEVIA
+ISTS.CFG.POQITM
+ISTS.CFG.WONEG 
+ISTS.CFG.DCNEG 
+ISTS.CFG.SOAARN
+ISTS.CFG.AVACOD
+ISTS.CFG.AVACO 
+ISTS.CFG.DSDTES
+ISTS.CFG.SOECDL
+ISTS.CFG.SMGSYN
+ISTS.CFG.SMGBDT
+ISTS.CFG.VOIC  
+ISTS.CFG.VOWO  
+ISTS.CFG.VOPO  
+ISTS.CFG.VOSO  
+ISTS.CFG.VOAR  
+ISTS.CFG.VOAP  
+ISTS.CFG.MAXDC 
+ISTS.CFG.DCNCR 
+ISTS.CFG.NCRRMD
+ISTS.CFG.WOMPST
+ISTS.CFG.INAMRP
+ISTS.CFG.OANDA 
+ISTS.CFG.FXKEY 
+CFG.BUFFER     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+DEF_FORM       
+FILE.HLDR      
+FILE.NAME      
+ZRET           
+CNTR2          
+CNTR3          
+CNTR           
+WC             
+BC             
+SC             
+X_TTL1         
+X_USCORE       
+FC             
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+BUTTON_LIST    
+BUTTON_CNTR    
+PSTR           
+RETATVAL       
+XATRETATVAL    
+ATSIZE         
+CFG.NAME       
+CFG.SIZE       
+TEMP_HNDL      
+CFG.PATH       
+CFG.FULLNAME   
+ISTS.PATH      
+CFG.PROMPT     
+ISTS.PATH      
+ZRET           
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+SWHO           
+X_HNDL         
+X.BUFF         
+TI             
+WHO.H          
+WBUFF          
+RVAL           
+CO_PATH        
+DPLOC_HNDL     
+LOC_LOCATION   
+PSWD           
+XRVAL          
+MK.H           
+SOB.LINES      
+SOC.LINES      
+SOF.LINES      
+POB.LINES      
+RESTOCK.AMT    
+GL.FUTURE.DATE 
+CFG.SODAYS     
+CFG.LATEDAYS   
+EIMCO.SHIFT2   
+EIMCO.SHIFT3   
+ISTS.CFROM     
+DCL.PERIOD.PDTE
+DCL.PERIOD.FREQ
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.ACCT   
+MKAHIST.TRACK  
+MKAHIST.EVENT  
+MKAHIST.REM2   e
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+ISCT           
+ALEN           
+NZCT           
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     

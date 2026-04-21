@@ -1,0 +1,205 @@
+TASCOLOR
+FILELOC 
+FILEDICT
+FILEKNUM
+FILEKEY 
+FILEDES 
+This program cannot be run directly but must be chained to by DBAUPDTE.RUN.L
+FILEDICTA
+FILEKEYA
+FILELOCA
+FILEKNUML
+DBA Data Dictionary Update Program [Create/Initialize Files]A
+Initializing file: A
+ Create/Init File 
+You must have a file nameA
+You must have a FD name that is in the Data Dictionary.A
+You must have records in the Data Dictionary defining this file.  Please enter these before trying to create the file.A
+TXFBDA
+This must be T, X, F, B or DA
+TXFBDA
+Must be T, X, F, B or DA
+ F2 - Display File Names A
+ F2 - Display FD Names  A
+ Files     CC A
+ File Desc A
+Creating file: A
+There are no records in the data dictionary for A
+ is in the key record but a corresponding record does not exist in the FILEDICT.B file.A
+The field A
+ is a pointer or a byte field and cannot be a key.A
+filedesA
+ File Name:
+ Extension:
+ FD Name:
+ Rec Type:
+ Path:
+ Desc:
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+RC             
+NORM           
+NORM_HLDR      
+FN_PATH        
+FN_PATH_HLDR   
+CREATE_LOC     
+DICT_FNAME     
+KEY_FNAME      
+LOC_FNAME      
+KNUM_FNAME     
+CREATE_FILE    
+CREATE_SPECS   
+CF_TITLE       
+CF_FLNAME      
+CF_FDNAME      
+CREATE_BUFF    
+CREATE_NAME    
+CF_FLCODE      
+CF_PATH        
+CF_DESC        
+CF_RTYPE       
+LOC_HNDL       
+KEY_HNDL       
+DICT_HNDL      
+KNUM_HNDL      
+SCRNH_1        
+CNTR           
+CNTR3          
+CNTR4          
+CNTR5          
+TOT_REC_SIZE   
+DISPLAY        
+FILE_OPEN      
+XFR_LOCATION   
+NEW            
+REC_HLDR       
+LOC_COMP_CODE  
+WC             
+BC             
+SC             
+LOC_BUFF_NAME  
+LOC_LOCATION   
+LOC_DESCRIPTION>
+LOC_REC_TYPE   
+LOC_FILE_NAME  
+CC             
+DICT_BUFF_NAME 
+DICT_OFFSET    
+FC             
+KEY_LOC        
+KEY_FLAGS      
+KEY_EXTND      
+PAGE_SIZE      
+STRG_KEY       
+FILE_FLAGS     
+TOT_KEYS       
+DUP_KEYS       
+RMDR           
+RMDR_HLDR      
+TRS            
+LARGEST_KEY    
+DICT_TYPE      
+DICT_SIZE      
+DICT_ARRAY_ELE 
+DICT_HOFFSET   u
+DICT_HTYPE     w
+DICT_HSIZE     x
+DICT_HDEC      z
+DICT_DEC       
+DICT_HARRAY    |
+KNUM_BUFF_NAME 
+KEY_FIELD      
+KEY_NAME       
+KEY_SEG        
+KEY_BUFF_NAME  
+KNUM_KEY_NAME  
+KNUM_KEY_NUMB  
+KEY_NUM        r
+KEY_DUPS       :
+KEY_MODIFIABLE R
+KEY_ORDER      "
+KEY_NULL       j
+ACS_BUFFER     
+ACS_HNDL       
+ACS_HEADER     
+MIN_PAGE       
+KEY_NUMKEYS    
+DES_HNDL       
+DES_FD_NAME    
+DES_INFORMATION
+LOC_REC_SIZE   
+IS_TYP         
+IS_SZE         
+BCD_DSIZE      
+BCD_ISIZE      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+MESSAGE        
+MSG_PTR        

@@ -1,0 +1,225 @@
+BKSYMSTR
+BKYSMSTR
+BKARINV 
+BKARINVT
+BKGLCOA 
+BKARCUST
+BKGLCHK 
+BKGLTRAN
+TASCOLOR
+BKARINVA
+BKGLTEMPA
+BKGLETRNA
+BKARINVTA
+BKAREIVTA
+BKGLCOAA
+BKSYMSTRA
+BKARCUSTA
+BKGLCHKA
+BKSYMSTRA
+BKYSMSTRA
+BKYSMSTRN
+Deposit on AccountA
+BKGLCHKA
+BKARCUSTA
+BKARINVTI<
+BKAREIVTA
+BKARINVTF0
+BKSOAA
+BKSOASERA
+BKSOALOTA
+BKGLTEMPI<
+BKGLETRNA
+BKGLTEMPA
+BKGLCOAI
+ ************* WARNING ****************F0
+A G/L Account was not found and you did not haveF0
+a Clearing Account in the System Master File.F0
+Because of this at least one posting during this processF0
+was out of balance.  Please enter a clearing accountF0
+right now   Then get an Other Journal reportF0
+and find the out of balance items and fix them.  PleaseF0
+refer to Program SY-E in the DBA-Accounting user manual.I
+BKSYAI
+A G/L account was not found for at least one of theF0
+posted items in this process.  Please get an OtherF0
+Journal Report and using the General Journal put theF0
+amount in the correct account.  You should then fixF0
+the appropriate item.I
+This date does not fall within theF0
+valid range.  Please enter a current year date, a dateF0
+from one year past, or a date from two years past.F0
+The current Fiscal Year Start Date is A
+Press any key to continueA
+Press any key to continueA
+ DBA HELP                          For Phone Support call 800-434-0809        
+   ON-LINE HELP: Documentation on this and all DBA programs is provided on    
+   line (Windows only) where it can be viewed or printed out.  Click on       
+   "Help" at the top of the Windows main menu and you will be presented       
+   with a Contents window.  Three clicks of the mouse will get you to most    
+   programs.  You can alternately click on the program screen and the help    
+   window to bring one in front of the other for reading and viewing the      
+   program.                                                                   
+   FUNCTION KEYS: Each standard screen button has an equivalent function      
+   key as an alternative to using the mouse -- these are listed across the    
+   bottom of the Windows main menu for reference.                             
+                                 Editing Keys                                 
+                                                                              
+     UP-ARROW = Previous Field              Ins = Insert Character at Cursor  
+   DOWN-ARROW = Next Field                  Del = Delete Character at Cursor  
+   LEFT-ARROW = Left One Character       CTRL+U = Clear Field                 
+  RIGHT-ARROW = Right One Character      CTRL+R = Restore Field               
+          ESC = Exit Without Saving      CTRL+D = Delete Character            
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+LOT_YN         
+SER_YN         
+POST.AMT       
+POST.FAIL      
+POST.OTHER     
+MONTH          
+BKAR.INV.SONUM 
+BKAR.INVT.CODE 
+BKAR.INV.CUSCOD
+BKAR.INVT.DATE 
+BKAR.INV.ORDDTE
+BKAR.INVT.NUM  
+BKAR.INV.CHKNUM
+BKAR.INVT.AMT  
+BKAR.INV.DEPAMT
+BKAR.INVT.AMTRM
+BKAR.INVT.DESC &
+BKAR.INVT.TYPE A
+BKAR.INVT.DEPSTH
+BKGL.ACCT      
+BKSY.CHK.CHKACT
+BKSY.AR.CHKACT 
+BKGL.GLDPT     
+BKSY.CHK.CHKDPT
+BKYS.GLNUM     
+BKYS.GLDPT     
+BKAR.OUT.CREDIT{
+BKGL.CHK.NUM   
+BKGL.CHK.NAME  
+BKAR.CUSTNAME  
+BKGL.CHK.AMT   (
+BKGL.CHK.TYPE  
+BKGL.CHK.DATE  
+BKGL.CHK.CHKACT
+BKYS.YN        
+MESSAGE        
+BKSY.PRGS.WHR  
+BKAR.INVT.GLDPTB
+BKSY.GL.CLRING 
+BKSY.GLDPT.CLR 
+BKGL.TRN.DATE  
+BKGL.TRN.INVC  
+BKGL.TRN.GLACCT
+BKGL.TRN.GLDPT 
+BKGL.TRN.CODE  
+BKGL.TRN.DESC  &
+BKGL.TRN.TYPE  H
+BKGL.TRN.DC    ?
+BKGL.TRN.AMT   @
+BKGL.TRN.ENTDTEJ
+NUM.MSG        
+MSG_PTR        
+YEAR.PAST      
+BKSY.FISCAL.YR 
+LNE.LNGTH      
+LNE.LN2        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+OK             
+PROG.HELP.NAME 
+CRNT.FIELD     
+DUMMY_L        
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+BUTTON_LIST    
+BUTTON_CNTR    
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    

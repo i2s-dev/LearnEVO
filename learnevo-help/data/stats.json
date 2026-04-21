@@ -1,0 +1,27 @@
+{
+  "pages": 2718,
+  "by_kind": {
+    "topic": 88,
+    "recipe": 45,
+    "module": 22,
+    "menu": 759,
+    "table": 659,
+    "form": 1109,
+    "glossary": 36
+  },
+  "tokens_in_index": 18799,
+  "nav_sections": [
+    "Getting Started",
+    "Concepts",
+    "Architecture",
+    "Modules",
+    "Recipes",
+    "Menu codes",
+    "Tables",
+    "Forms",
+    "Data",
+    "Reference",
+    "Integration",
+    "Glossary"
+  ]
+}

@@ -1,0 +1,451 @@
+TAS322
+TASCOLOR
+FILELOC 
+FILEDICT
+BKSYHELP
+DBAHLPID
+ - ISTS Enhancement 07/07/14A
+ISTECHL
+FILEDICTA
+filelocA
+NovaZyg Find & ReplaceA
+F1 Help,F2 Display FilesA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+Replace 01011F
+Adjust  01022L
+Delete  01033A
+ActionsffA
+ActionsffI
+Replacement Value:I
+Flat amount 01011F
+Percentage  01022A
+Adjust byffA
+Adjustment Value: I
+Deleting Records  A
+You have to pick a FieldA
+You can only adjust Date, Interger or Numeric values.A
+You can only adjust Interger or Numeric values.A
+This must be a positive number.I
+Press F10 to begin processing ....A
+This must be a positive number.F
+ All    01011F
+ <>     01022F
+ >      01033F
+ <      01044F
+ >=     01055F
+ <=     01066F
+ =      01077F
+ $      01088N
+OperatorsffI
+Only works for Alpha type fieldsA
+Record NumA
+  Updating record field A
+ with A
+Total number of records changed = A
+No Record Was Found During a Opening a variable fileI
+first find record was not found I
+LOADING FIELDSA
+Field ListA
+       A
+Filter Field ListA
+       A
+DBA FilesA
+FILEDEFA
+INDEXDEFA
+FILEDDEFA
+MEATTRIBA
+FIELDA
+MEMORYA
+MONTHENDA
+TRANSLTEA
+ Enter file name:                                                             
+                                                                              
+ Field To Change:                      Array #:                               
+                                                                              
+ Filter Field     Array #  Oper  Value                                        
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+                                                                              
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tas50.ovlA
+tas50.ovlIS
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+ISTECHA
+NEVERA
+CUSTOMS.ONA
+NOVAZYGA
+NOVAZYGA
+NZPAYL
+ISTECHA
+JMCHECKL
+ISTECHA
+JMUSAGEL
+ISTECHA
+NZUPCL
+ISTECHA
+NZFNRL
+ISTECHA
+GLTXNSL
+ISTECHA
+NZQEWOL
+ISTECHA
+ISDEQL
+ISTECHA
+POCONSL
+ISTECHA
+NOVAZYGA
+BKARSIVLA
+You are missing the License file. Please contact lynn@istechsupport.com.A
+STATUSA
+NOVAZYGA
+Your License File has been corrupted. Please contact lynn@istechsupport.comA
+Your Evaluation period has expired. Please contact lynn@istechsupport.com to purchase a License.A
+You have not renewed your Annual Evo - ERP License. You are no longer an authorized user of this program. Please contact lynn@istechsupport.com to Renew your License.A
+You have not renewed your ISTECH Support License. You are not entitled to run this newer version. Please contact lynn@istechsupport.com to update your License.A
+Error:   You are not licensed to run this program. Please contact www.istechsupport.com to purchase a valid license.A
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+NOVAZYGA
+NOVAZYGA
+NOVAZYGI
+START_UP.RUNA
+BBBBBBBA
+NOVAZYGA
+Ser No:A
+Exp Date:A
+Users:A
+BBBBBBBA
+NOVAZYGA
+NOVAZYG  A
+       NOVAZYGA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+YYLNC%
+YYLNC,
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+NORM           
+ISTS.EDATE     
+FLNAME         
+OPER           
+TYPE           
+FELEMENT       
+CLOOP          
+CVAL           
+OTYPE          
+OACTION        
+NACTION        
+FIND_FIELD1    
+ACT_FILT1      
+FIND_FIELD2    
+ACT_FILT2      
+FIND_FIELD3    
+ACT_FILT3      
+FIND_FIELD4    
+ACT_FILT4      
+FIND_FIELD5    
+ACT_FILT5      
+FIND_FIELD6    
+ACT_FILT6      
+SKIP           
+ARRAY_OFFSET   
+OUT_STRING     
+FILETEMP       
+FILENAME       
+FILENM         
+FLD            
+SEARCH_VAL     
+HOLD_REC       
+YES            
+ELEMENT        
+NUM            
+REPL_FIELD     
+ACT_FIELD      
+ZRET           
+DNAME          
+NEXT.REC       
+HAVE.NEXT      
+DICT_HNDL      
+LOC_HNDL       
+DELETE         
+LOC_COMP_CODE  
+LOC_FILE_NAME  
+MESSAGE        
+DICT_TYPE      
+DICT_ARRAY_ELE 
+DICT_SIZE      
+DICT_DEC       
+DICT_UPCASE     
+DICT_OFFSET    
+NUM.MSG        
+MSG_PTR        
+WC             
+BC             
+CNTR           
+DICT_FIELD_NAME
+DICT_DESC      !
+DICT_BUFF_NAME 
+LOC_BUFF_NAME  
+CC             
+DATC           
+LOC_DESCRIPTION>
+FILTER_CODE    
+RETVAL         
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+DATE_TYPE      
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+FC             
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+SERIAL         
+PRODUCT        
+APROD          
+SDATE          
+EDATE          
+PDESC          
+SCBUFF         
+SER5           
+SER6           
+XDBUFF         
+USBUFF         
+USERS          
+SF.H           
+IKEY           
+RETL           
+DISP.ERR.MSG   
+STATUS         
+XMM            
+XDD            
+EMM            
+EDD            
+SMM            
+SDD            
+XYY            
+EYY            
+SYY            
+EVOONLY        
+I              
+BIGSTR         
+CHKSUM         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+IN_FILE        
+S              
+OS             
+X              
+U              
+LIC            
+TBUFF          
+R_LINE         
+RETV           
+XXINFO         
+DCP            
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
+ISCT           
+ALEN           
+NZCT           
+BUTTON_LIST    
+BUTTON_CNTR    

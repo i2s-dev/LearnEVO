@@ -1,0 +1,268 @@
+BKAPVEND
+BKAPVND2
+BKSYHELP
+DBAHLPID
+TASCOLOR
+BKAPEVNDA
+BKAPVND2A
+DE-F  Import VendorsA
+BKDEF.IMPA
+F1 HelpA
+Esc ExitA
+This program will only accept ISO date formats (YYYYMMDD).  Please make sure that dates to be imported are in that format, or they will not come in correctly.  Ready to proceed?L
+BKDEF.IMPA
+Now Working on Vendor: A
+BKAPVND2I
+BKAPVND2I
+BKAPEVNDI
+Now Working on Vendor: A
+BKAPVND2I
+BKAPVND2I
+BKAPEVNDI
+Press any key to continueA
+                                 * = Basic Fields
+ Name of File to Import (with path):                                          
+ Skip or Replace existing Vendors? [S,R]:                                     
+ Comma Delimited or Fixed Length?  [C,F]:                                     
+                                                                              
+*        Vendor Code            Dflt GL Acct                  Notes Line 1    
+         Name                   Default GL Dept               Notes Line 2    
+         Alpha Sort             Remittance Address 1          Notes Line 3    
+         Tax ID Number          Remittance Address 2          Notes Line 4    
+         Address 1              Remittance City               Notes Line 5    
+         Address 2              Remittance State              Notes Line 6    
+         City                   Remittance Zip Code           Notes Line 7    
+         State                  Remittance Country            Notes Line 8    
+         Zip Code               Remittance Contact            Notes Line 9    
+         Country                Remittance Phone Num          Notes Line 10   
+         Contact                Fax Number 1                  Tax Group       
+         Telephone Num          Fax Number 2                  Tax In          
+         Class                  Outstanding Inv Amt           Currency        
+         Start Date             Outstanting Credits           Duty Code       
+*        Terms Number           Last Purchase Date            Email 1         
+         Save History           Last Payment Date             Email 2         
+                                                                              
+tas50.ovlA
+tas50.ovlIS
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+    DBA Software    A
+GL-AR-AP-SO-SA-CS-CM-PRI
+    DBA AccountingA
+IN-PO-BM-LW-LC-SC-FO-PII
+  DBA DistributionA
+RO-AW-JC-ES-MR-SH-DCI
+ DBA ManufacturingA
+UT-MM-MD-AM-AD-PS-AII
+DBA System ManagerA
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+YYYY           
+MM             
+DD             
+FILE.NAME      
+REPLACE        
+COMMA.FIXED    
+FIELD.NUMBER   
+FIELD.NUMBER2  
+CRLF           
+PART.NUM       
+TEMP.FIELD     
+TEMP.FIELD2    
+TEMP.DATE      
+CUST.REC1      
+IMP_HNDL       
+MCNTR2         
+MCNTR          
+BKAP.VENDCODE  
+BKAP.VENDNAME  
+BKAP.SORT      
+BKAP2.VENDCODE 
+BKAP2.ID       
+BKAP.ADD1      (
+BKAP.ADD2      d
+BKAP.CITY      
+BKAP.STATE     
+BKAP.ZIP       
+BKAP.COUNTRY   
+BKAP.CONTACT   
+BKAP.TELEPHONE N
+BKAP.CLASS     N
+BKAP.START.DATEJ
+BKAP.TERMS.NUM R
+BKAP.HIST.YN   T
+BKAP.GL.ACCT   
+BKAP.GL.DPT    
+BKAP.REM.STATE _
+BKAP.REM.ZIP   U
+MCNTR3         
+BKAP.OUTINV    
+BKAP.OUT.CREDITA
+BKAP.LASTPURCH 
+BKAP.LASTPMT   
+BKAP.NOTES     a
+BKAP.IS.TAXGRP 
+BKAP.IS.TAXIN  
+BKAP.IS.MCCODE 
+BKAP.IS.DCODE  
+BKAP.EMAIL     
+LNE.LNGTH      
+LNE.LN2        
+NUM.MSG        
+ENT.MASK       
+LLC            
+WD             
+HT             
+MCNTR4         
+MESSAGE        
+OK             
+DATE_TYPE      
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MONTH1         
+MONTH2         
+DAY1           
+DAY2           
+YEAR1          
+TESTDATE       
+DATESTR        
+RETDATE        
+DATESTR1       
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+NORM_HLDR      
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+ZA_TEXT        
+ZA_DFLT        
+MSG_PTR        
+FC             

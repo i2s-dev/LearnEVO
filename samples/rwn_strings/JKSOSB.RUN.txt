@@ -1,0 +1,1176 @@
+TAS32K
+BKYSMSTR
+BKSYMSTR
+BKESTCFG
+BKARINV 
+BKARINVL
+BKAPDESC
+ISTAXGRP
+ISMCF   
+BKARCUST
+TASCOLOR
+BKSYHELP
+DBAHLPID
+BKSYPRTR
+ISIS    
+MKAHIST 
+ - ISTS Enhancement 10/21/04L
+BKARCUSTA
+BKESTQTA
+BKESTQTLA
+BKSYMSTRA
+BKESTCFGA
+BKAPPOA
+BKARDESCA
+istaxgrpA
+ISMCFA
+BKYSMSTRA
+BKYSMSTRA
+BKSYMSTRA
+BKESTCFGA
+123456A
+SO-S-B  Print Return AuthorizationsA
+The thru value cannot be less than the from value.A
+F1 Help,F2 Lookup,F10 PrintA
+Esc ExitA
+F1 Help,F10 PrintA
+Esc ExitA
+F1 HelpA
+Esc ExitA
+regTaxFreightA
+regSalesTaxA
+regSalesTax2A
+regSalesTax3A
+regSalesTax4A
+regSalesTax5A
+regTaxFreightA
+*** RMA AUTHORIZATION ***A
+                                                      A
+                                                      IS
+ 1- Bypassing - NOT an RMA -  Quote= A
+ibksopb1.rtmA
+ibksopb2.rtmA
+ibksopb3.rtmA
+ibksopb4.rtmA
+bksopb1.rtmA
+bksopb2.rtmA
+bksopb3.rtmA
+bksopb4.rtmA
+JKSOSB4.rtm
+                              F
+                              F
+                              F
+                              F
+                              L
+bksy_comp_nameA
+bksy_comp_add1A
+bksy_comp_add2A
+bkar_inv_sonumA
+bksy_comp_cszA
+bkar_inv_orddteA
+phone2A
+bkar_inv_cusnmeA
+bkar_inv_shpnmeA
+cust_bill_to[1]A
+cust_bill_to[2]A
+cust_bill_to[3]A
+cust_bill_to[4]A
+cust_bill_to[5]A
+cust_ship_to[1]A
+cust_ship_to[2]A
+cust_ship_to[3]A
+cust_ship_to[4]A
+cust_ship_to[5]A
+ship_to_attnA
+bkar_inv_taxablA
+bkar_inv_cusordA
+bkar_inv_termdA
+bkar_inv_shpviaA
+bkar_inv_cuscodA
+bkar_inv_slspA
+bkar_inv_entbyA
+bkar_inv_locA
+bkest_cfg_endln[1]A
+bkest_cfg_endln[2]A
+bkest_cfg_endln[3]A
+bkest_cfg_endln[4]A
+bkest_cfg_endln[5]A
+sub_totA
+freightA
+totalA
+regTaxFreightA
+txtTitleA
+titleA
+isis_txg_code[1]A
+isis_txg_idc[1]A
+taxc[1]A
+regSalesTaxA
+isis_txg_code[2]A
+isis_txg_idc[2]A
+taxc[2]A
+regSalesTax2A
+isis_txg_code[3]A
+isis_txg_idc[3]A
+taxc[3]A
+regSalesTax3A
+isis_txg_code[4]A
+isis_txg_idc[4]A
+taxc[4]A
+regSalesTax4A
+isis_txg_code[5]A
+isis_txg_idc[5]A
+taxc[5]A
+regSalesTax5A
+bkar_is_mccodeA
+bksy_comp_nameA
+bksy_comp_add1A
+bksy_comp_add2A
+bkar_inv_sonumA
+bksy_comp_cszA
+bkar_inv_orddteA
+phone2A
+bkar_inv_cusnmeA
+bkar_inv_shpnmeA
+cust_bill_to[1]A
+cust_bill_to[2]A
+cust_bill_to[3]A
+cust_bill_to[4]A
+cust_bill_to[5]A
+cust_ship_to[1]A
+cust_ship_to[2]A
+cust_ship_to[3]A
+cust_ship_to[4]A
+ship_to_attnA
+bkar_inv_taxablA
+bkar_inv_cusordA
+bkar_inv_termdA
+bkar_inv_shpviaA
+bkar_inv_cuscodA
+bkar_inv_slspA
+bkar_inv_entbyA
+bkar_inv_locA
+bkest_cfg_endln[1]A
+bkest_cfg_endln[2]A
+bkest_cfg_endln[3]A
+bkest_cfg_endln[4]A
+bkest_cfg_endln[5]A
+sub_totA
+depositA
+freightA
+totalA
+txtTitleA
+titleA
+regTaxFreightA
+bkar_invl_pdescA
+bkar_invl_um_ln[1]A
+a_ordqtyA
+bkar_invl_pcodeA
+bkar_invl_pdescA
+bkar_invl_pdiscA
+unit_priceA
+bkar_invl_um_ln[2]A
+extendedA
+bkar_invl_esdA
+fldDiscA
+bk_desc_notesA
+DiscIJ
+BKESTQTLI
+BKARDESCIe
+          A
+BKESTQTIS
+2- Bypass - NOT an RMA -  Quote= A
+BKESTQTI
+>>>>>  Report was terminated before completion  <<<<<A
+SKIP A
+BYPASSED A
+resetA
+Continued....I
+                                   A
+                         IZ
+                         F
+ATTN: A
+BKESTCFGA
+There are no records in the primary fileI
+A matching record was not found during a related findI
+ RMA No A
+ R M A ORDERS A
+RMA-NoA
+Ord DateA
+ Total Amt   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Ord Description               A
+Job Number     A
+BKESTQTIS
+BKESTQTA
+ RMA No A
+ R M A ORDERS A
+RMA-NoA
+Ord DateA
+ Total Amt   A
+Cust Cd   A
+Customer Name                 A
+Cust PO#                 A
+Ship to CdA
+Ship to Name                  A
+Ord Description               A
+Job Number     A
+BKESTQTIS
+BKESTQTA
+bkest_cfg_endln[1]I
+               A
+               A
+               A
+               A
+               A
+isis_txg_code[1]I
+bkest_cfg_endln[1]I
+                    
+                    
+                                     
+                    
+     Print From RMA No.              
+                    
+           Thru RMA No.              
+                    
+                                     
+                    
+             Print Notes?            
+                    
+    Print Kit Components?            
+                    
+           Print Options?            
+                    
+   Print Tax and Freight?            
+                    
+                                     
+                    
+         Number of Copies            
+                    
+                                     
+                    
+                    
+                    
+                                     
+                    
+     Print From RMA No.              
+                    
+           Thru RMA No.              
+                    
+                                     
+                    
+             Print Notes?            
+                    
+    Print Kit Components?            
+                    
+           Print Options?            
+                    
+   Print Tax and Freight?            
+                    
+                                     
+                    
+                                                         RMA  Number:
+                                                         RMA    Date:
+                                                                Page:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+     Entered by    :                       RFQ Number:
+     RMA       Date:                       Ship Via  :
+     Account Cd    :                       Taxable   :
+     Salesperson   :                       Terms     :
+ LINE      ORDER QTY   ITEM NUMBER       DESCRIPTION                                      PRICE   UM   EXTENDED PRICE     EST SHIP
+                                                                             %
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                                       ==============
+                                                                                              Total:
+                                          Subtotal:
+                                      Less Deposit:
+                                         Sales Tax:
+                                           Freight:
+                                             Total:
+                                                            Page:
+                                                      RMA   Date:
+                                                      RMA      #:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+Ship Via        Terms      Slsp EntBy  RFQ Number                Tax  Location
+================================================================================
+================================================================================
+Lin   Quantity    Part#/Desc                  Price    UM    Ext Price  Est Ship
+--- ------------  --------------- ------ ------------- --- ------------ --------
+                                       %
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                                        ==============
+                                               Total:
+                                          Subtotal:
+                                      Less Deposit:
+                                         Sales Tax:
+                                           Freight:
+                                             Total:
+                                                    Quotation Number:
+                                                      Quotation Date:
+                                                                Page:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+     Entered by    :                       RFQ Number:
+     Quotation Date:                       Ship Via  :
+     Account Cd    :                       Taxable   :
+     Salesperson   :                       Terms     :
+LIN    QUANTITY  PART#/DESC                  PRICE     UM    EXT PRICE  EST SHIP
+                                       %
+                                            Subtotal:
+                                                        --------------
+                                           Sales Tax:
+                                             Freight:
+                                                        ==============
+                                               Total:
+                                          Subtotal:
+                                      Less Deposit:
+                                         Sales Tax:
+                                           Freight:
+                                             Total:
+                                                            Page:
+                                                        RMA Date:
+                                                         RMA   #:
+ B                                         S
+ I                                         H
+ L                                         I
+ L                                         P
+Ship Via        Terms      Slsp EntBy  RFQ Number                Tax  Location
+================================================================================
+================================================================================
+Line    Order Qty     Item Number       Description                                 Price        UM    Extended Price    Est Ship
+----  -------------   ---------------   ------------------------------ ------ ----------------   ---   --------------    --------
+                                                                            %
+                                                                                           Subtotal:
+                                                                                                       --------------
+                                                                                          Sales Tax:
+                                                                                            Freight:
+                                                                                                       ==============
+                                                                                              Total:
+                                          Subtotal:
+                                      Less Deposit:
+                                         Sales Tax:
+                                           Freight:
+                                             Total:
+dbahlpidA
+bksyhelpA
+DBAHELP.HLPA
+WINHLP32.EXEI
+ON-LINE HELPA
+For on-line Help click "Help" at the top ofA
+the Windows main menu.A
+STANDARD FUNCTION KEYS/BUTTONSA
+F1  HelpA
+F2  LookupA
+F3  ClearA
+F4  DeleteA
+F5  FirstA
+F6  LastA
+F7  PreviousA
+F8  NextA
+F9  FindA
+F10 SaveA
+tascolor.ovlA
+tascolor.ovlA
+tascolor.ovlA
+ISTS Demo A
+ISTS DEMO A
+This Demo will Stop working in the next few days. Please contact lynn@istechsupport to arange payment.A
+This Demo has expired. Please contact lynn@istechsupport to arange payment.A
+RESTOREA
+ctrl<-A
+ctrl->A
+INSERTA
+DELETEA
+*.RTMA
+NormalBkgA
+NormalBkgA
+Graphical Form Name :  A
+            A
+Graphical Report names starting with IT6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to IBKA
+Graphical Report names starting with T6 are reserved for EVO and may not function in DBA Classic.  Would you like to change your report name from A
+ to BKA
+Graphical Report names starting with IBK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to IT6A
+Graphical Report names starting with BK are reserved for DBA Classic and may not function in EVO.  Would you like to change your report name from A
+ to T6A
+Form A
+ was not found in the DBA directory.A
+ Forms List A
+F1 HelpA
+Esc ExitA
+Form Name      A
+Print in condensed mode? [Y/N] YA
+ Print Line: A
+60lnsL
+bktofA
+Too many XBTN_SAVEs without any XBTN_RSTRsI
+Too many XBTN_RSTRs without equal XBTN_SAVEsI
+dbabtlcmA
+dbabtp1mA
+dbabtp2mA
+dbabtp5mA
+dbabtrcmA
+dbagtlcmA
+dbagtp1mA
+dbagtp2mA
+dbagtp5mA
+dbagtrcmA
+dbalft1mA
+dbalft2mA
+dbalft5mA
+dbargt1mA
+dbargt2mA
+dbargt5mA
+dbablcrmA
+dbabot1mA
+dbabot2mA
+dbabot5mA
+dbabrcrmI
+dbabtlclA
+dbabtp1lA
+dbabtp2lA
+dbabtp5lA
+dbabtrclA
+dbagtlclA
+dbagtp1lA
+dbagtp2lA
+dbagtp5lA
+dbagtrclA
+dbalft1lA
+dbalft2lA
+dbalft5lA
+dbargt1lA
+dbargt2lA
+dbargt5lA
+dbablcrlA
+dbabot1lA
+dbabot2lA
+dbabot5lA
+dbabrcrlA
+dbabtlcsA
+dbabtp1sA
+dbabtp2sA
+dbabtp5sA
+dbabtrcsA
+dbagtlcsA
+dbagtp1sA
+dbagtp2sA
+dbagtp5sA
+dbagtrcsA
+dbalft1sA
+dbalft2sA
+dbalft5sA
+dbargt1sA
+dbargt2sA
+dbargt5sA
+dbablcrsA
+dbabot1sA
+dbabot2sA
+dbabot5sA
+dbabrcrsI
+ Report Listing A
+Keys,Page
+Up,Page
+Down,End,Home,Or
+MouseA
+BKPRINTA
+bksyprtrA
+bksyprtrA
+ Choose Printer A
+66lnsA
+dbalkuamA
+dbalkuimA
+dbabextmI
+dbalkualA
+dbalkuilA
+dbabextlA
+dbalkuasA
+dbalkuisA
+dbabextsA
+TAX SYSTEM:F`'
+ This Program requires the new TAX system.F`'
+ Please contact your system administrator to F`'
+ run the required Conversion routine. I
+Multi Currency System:F`'
+ This Program requires the Multi Currency systemF`'
+ to be converted to the 2000.1 configuration. F`'
+ Please contact your system administrator to F`'
+ run the required MCSTART routine. I
+tas50.ovlA
+tas50.ovlA
+tas50.ovlIS
+mkahistA
+ISTECHSUPPORTA
+48888A
+F1 Help,F10 PrintA
+Esc ExitA
+YNNNYF@Y
+YNNNYFpY
+YNNNYFpY
+YNNNYFpY
+YNNNYF@Y
+YNNNYX
+YNNNYFpY
+YNNNYX[
+YNNNYFpY
+YNNNYX
+YNNNYFpY
+YNNNYF@Y
+YNNNYFpY
+YNNNYFpY
+YNNNYFpY
+YNNNYC
+NNNYNX
+NNNYNXf
+YNNNYC
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00
+       
+TEMP00        
+TEMP00!       
+TEMP00"       
+TEMP00#       
+TEMP00$       
+TEMP00%       
+TEMP00&       
+TEMP00'       
+TEMP00(       
+TEMP00)       
+TEMP00*       
+TEMP00+       
+TEMP00,       
+TEMP00-       
+TEMP00.       
+TEMP00/       
+TEMP000       
+TEMP001       
+TEMP002       
+TEMP003       
+TEMP004       
+TEMP005       
+TEMP006       
+TEMP007       
+TEMP008       
+TEMP009       
+TEMP00:       
+TEMP00;       
+ISTS.EDATE     
+END_DESC       
+ANSWER         
+PRT_NOTES      
+TOT_RECORDS    
+PRT_WHR        
+PAGE           
+SELECT_FROM1   
+SELECT_THRU1   
+BREAK_FIELD    
+ORDERED        
+EXTENDED       
+UNIT.PRICE     
+A.ORDQTY       
+DECIMALS       
+CONDENSED      
+NC.ORDERED     
+NC.QTY.ND      
+NC.A.ORDQTY    
+LINES          
+CONT           
+SUB.TOT        
+TOTAL          
+DEPOSIT        
+PRT_OPTIONS    
+QTY.ND         
+NUM.COPIES     
+PRT.ON         
+DISK.FILE      
+DISC           
+FORM_TYPE      
+WHICH          
+PRT.TAX        
+PRT.KIT        
+TAX            
+TAX.TAXABLE    
+FREIGHT        
+ITEMIZE        
+PROFORMA       
+TITLE          
+PRTCOP         
+MCNTR          
+MCNTR2         
+MCNTR3         
+MCNTR4         
+AUNIT.PRICE    
+AEXTENDED      
+ATOTAL         
+ADEPOSIT       
+AFREIGHT       
+ASUB.TOT       
+ATAXC          
+ORGSON         
+ORGINV         
+RORDYN         
+RMARES         
+PRTORGRO       
+PRTRGARES      
+RMAFLAG        
+GROUP_COUNTER  
+AFTERPROD      
+PHONE2         
+FAX2           
+ARCUST.HNDL    
+FORM.NUM       
+TEXT.MODE      
+PRT.TTL        
+TAXBASIS       
+ZRET           
+ISTXG.HNDL     
+ISMCF.HNDL     
+BKYS.YN        
+ISIS.MULTI.CURR
+ISIS.TAX.FRM   
+TAXC           
+BKAR.INV.SONUM 
+MSGERR1        
+MSGERR2        
+BKAR.INV.EXTRA 
+BKAR.INV.FRGHT n
+RTM_NAME       
+TXTTITLE       
+FLDDISC        
+REGTAXFREIGHT  
+REGSALESTAX    
+REGSALESTAX2   
+REGSALESTAX3   
+REGSALESTAX4   
+REGSALESTAX5   
+BKEST.CFG.ENDLN9
+BKAR.INVL.INVNM
+BKAR.INVL.CNTR 
+BKAR.INVL.PQTY ;
+BKAR.INVL.UBO  e
+BKAR.INVL.PEXT S
+BKAR.INVL.PDISCK
+BKAR.INVL.PPRCEC
+BKAR.INVL.TXBLEd
+BKAR.INVL.COOP 
+BKAR.INV.ITMZTX
+BKAR.INV.TAXRTE;
+BKAR.INVL.PCODE
+BKAR.INVL.UM.LN
+BKAR.INVL.PDESC
+BK.DESC.NUM    
+BK.DESC.LINE   
+ISCT           
+ISIS.TXG.CODE  
+ISIS.TXG.TAXON d
+ISIS.TXG.FRGT  H
+ISIS.TXG.PERCC 
+TAMT           
+BKSY.FORM.CMPNY/
+BKSY.COMP.NAME X
+BKSY.COMP.ADD1 q
+BKSY.COMP.ADD2 
+BKSY.COMP.CSZ  
+BKAR.INV.ISCUR 
+IS.SYMBOL      
+IS.SYMPOS      
+IS.DEC         
+ISIS.MCF.SYMBOLx
+ISIS.MCF.SYMPOS
+ISIS.MCF.DEC   
+CUST.BILL.TO   
+CUST.SHIP.TO   
+SHIP.TO.ATTN   
+BKAR.INV.CUSA1 
+BKAR.INV.CUSA2 [
+BKAR.INV.CUSCTY
+BKAR.INV.CUSST 
+BKAR.INV.CUSZIP
+BKAR.INV.CUSCNT
+BLANKPR        
+BLANK35        
+BLANK01        
+BKAR.INV.SHPA1 G
+BKAR.INV.SHPA2 e
+BKAR.INV.SHPCTY
+BKAR.INV.SHPST 
+BKAR.INV.SHPZIP
+BKAR.INV.SHPCNT
+BKAR.INV.CUSCOD
+BKAR.TELEPHONE >
+BKAR.FAX.PHONE *
+SBKAR.INV.TERMD
+BKSY.TERMS     (
+BKAR.INV.TERMNM
+BKAR.INV.SHPATN
+BKAR.INV.ENDLNE
+MESSAGE        
+NUM.MSG        
+MSG_PTR        
+DATE_TIME      
+FNL            
+SOA_TTL1       
+SOA_USCORE     
+WC             
+BC             
+SC             
+BKAR.INV.INVCD 
+BKAR.INV.ORDDTE
+BKAR.INV.TOTAL )
+BKAR.INV.CUSNME=
+BKAR.INV.CUSORD
+BKAR.INV.SHPCOD
+BKAR.INV.SHPNME)
+BKAR.INV.DESC  C
+BKAR.INV.JOBNUM
+CC             
+DATC           
+ISIS.TXG.IDC   I
+ISIS.TXG.PID   m
+PB_NUMBER      
+BKAR.INV.TAXABL
+BKAR.INV.SHPVIA
+BKAR.INV.SLSP  
+BKAR.INV.ENTBY 
+BKAR.INV.LOC   v
+BKAR.INVL.ESD  
+BK.DESC.NOTES  
+BKAR.INV.TERMD 
+WEBLINK        
+INV_IMAGE      
+L.ICONSTR      
+L.EFOR         
+L.CITEM        
+DATE_TYPE      
+DATE_MAXD      
+PLDN           _
+PTDN           e
+CFG.START      
+ISTS.CFG.PASSWD
+ISTS.CFG.CFGLVL
+ISTS.CFG.ANARA 
+ISTS.CFG.ANAPA 
+ISTS.CFG.PRTSOA
+ISTS.CFG.CMEST 
+ISTS.CFG.CMQUOT
+ISTS.CFG.FPCHK 
+ISTS.CFG.WIPV  
+ISTS.CFG.HREP  
+ISTS.CFG.PKINV 
+ISTS.CFG.DIVOHD
+ISTS.CFG.MAKCUS
+ISTS.CFG.ACCESS
+ISTS.CFG.COORD 
+ISTS.CFG.ATOS  
+ISTS.CFG.DDNUM 
+ISTS.CFG.TRACK 
+ISTS.CFG.STDPK 
+ISTS.CFG.POCHK 
+ISTS.CFG.BURDN 
+ISTS.CFG.BURDI 
+ISTS.CFG.RAISE 
+ISTS.CFG.REVIEW
+ISTS.CFG.STDCST
+ISTS.CFG.UPLCST
+ISTS.CFG.SHPFOB
+ISTS.CFG.CHKBAL
+ISTS.CFG.CMPLOC
+ISTS.CFG.SOIOC 
+ISTS.CFG.WOGKIT
+ISTS.CFG.PRTPS 
+ISTS.CFG.PICKT 
+ISTS.CFG.DCSEQ 
+ISTS.CFG.SCRAP 
+ISTS.CFG.SOCHG 
+ISTS.CFG.SHPHST
+ISTS.CFG.SCRCMP
+ISTS.CFG.INBSOA
+ISTS.CFG.INBSOP
+ISTS.CFG.INBPOA
+ISTS.CFG.INBWOA
+ISTS.CFG.INBESA
+ISTS.CFG.INBBMA
+ISTS.CFG.INBPIC
+ISTS.CFG.SODWO 
+ISTS.CFG.WODSO 
+ISTS.CFG.WOADSC
+ISTS.CFG.SOADSC
+ISTS.CFG.POADSC
+ISTS.CFG.SOUPCH
+ISTS.CFG.SORND 
+ISTS.CFG.SORNDD
+ISTS.CFG.SODEL 
+ISTS.CFG.SODATE
+ISTS.CFG.SOOPEN
+ISTS.CFG.SOPSWD
+ISTS.CFG.ISTS  
+ISTS.CFG.REPRT 
+ISTS.CFG.CSOUT 
+ISTS.CFG.EMAIL 
+ISTS.CFG.SOCOPY
+ISTS.CFG.WOCHDR
+ISTS.CFG.JOBDEC
+ISTS.CFG.PAYRQC
+ISTS.CFG.PAYRQE
+ISTS.CFG.PAYRQF
+ISTS.CFG.ACTDEL
+ISTS.CFG.WOCALC
+ISTS.CFG.SOPRCE
+ISTS.CFG.FTDSC 
+ISTS.CFG.AUTOSL
+ISTS.CFG.AUTOPL
+ISTS.CFG.BSREF 
+ISTS.CFG.APSORT
+ISTS.CFG.ARSORT
+ISTS.CFG.DIVSET
+ISTS.CFG.BSCHKA
+ISTS.CFG.RTMSAV
+ISTS.CFG.SRBOM 
+ISTS.CFG.LNGWT 
+ISTS.CFG.BILLTO
+ISTS.CFG.POGLED
+ISTS.CFG.POGLTY
+ISTS.CFG.APCFTD
+ISTS.CFG.APCFTT
+ISTS.CFG.FPSER#
+ISTS.CFG.SCCOMF
+ISTS.CFG.LABSC$
+ISTS.CFG.WHCTRL
+ISTS.CFG.CTRLBL
+ISTS.CFG.BLNKBN
+ISTS.CFG.ECO   
+ISTS.CFG.ITP   
+ISTS.CFG.JOB   
+ISTS.CFG.SOLLOC
+ISTS.CFG.CANZWO
+ISTS.CFG.SOBLNS
+ISTS.CFG.SOCLNS
+ISTS.CFG.SOFLNS
+ISTS.CFG.POBLNS
+ISTS.CFG.SOSPEC
+ISTS.CFG.SRPART
+ISTS.CFG.GENBIN
+ISTS.CFG.DELBIN
+ISTS.CFG.ACKBO 
+ISTS.CFG.CC    
+ISTS.CFG.ECSCRN
+ISTS.CFG.INVTTL
+ISTS.CFG.CRMTTL
+ISTS.CFG.TFNAME
+ISTS.CFG.TRNSCO
+ISTS.CFG.EVOMAX
+CFG.BUFFER     
+ISTXF.HNDL     
+ISTAX.HNDL     
+ISHTX.HNDL     
+HTAX.HNDL      
+ISMCR.HNDL     
+ISDUTY.HNDL    
+ISBRK.HNDL     
+ISLDF.HNDL     
+ISCTR          
+ISLP           
+IS.CVT.MTH     
+IS.TAX.FIX     
+FRGTPER        
+TQTY           
+IS.FE          
+IS.CF          
+IS.CFF         
+IS.DTY         
+IS.EXC         
+IS.OEXC        
+IS.DTYP        
+IS.RTE         
+IS.RTE2        
+IS.LND.RTE     
+IS.SUBTOT      
+PS             
+TAXFRT         
+IS.YN          
+TITLESTR       
+IS.BASE        
+BASEC          
+IS.SYMDESC     
+PROG.HELP.NAME 
+XYZDBAHTEXT    
+DBAHELP        
+SYHELP         
+SHOW.HELP      
+XYZDBAHRET     
+HAVEFILES      
+BKSY.HELP.PATH 
+DBA.HELP.MAP   
+SND_FNC_LNE_USD
+NORM_HLDR      
+COLOR_HNDL     
+NORM           
+HIGH           
+ERR            
+REV            
+ENTER          
+PRG_HDR_NAME   
+MODULE         
+PRG_HDR_LINE   
+PRG_HDR_CV     
+DATE_TYPE      
+XMM            
+XDD            
+EMM            
+EDD            
+XYY            
+EYY            
+EDATE          
+FNC_LIST_FLD   
+FNC_LIST_FLD2  
+FNC_LIST_ESC   
+FNC_LIST_ESC2  
+FNC_CLR_COLOR  
+SAVE_LIST_FLD  
+HOLD_LIST_FLD  
+SAVE_LIST_FLD2 
+HOLD_LIST_FLD2 
+SAVE_LIST_ESC  
+HOLD_LIST_ESC  
+FNC_LIST_CNTR  
+FNC_LIST_SPACE 
+FNC_LIST_HLDR  
+BKYS.YN251     
+FNC_FRONT      
+BTN.POS        
+BTN.KEY        
+FNC_CNTR       
+K.TYPE         
+FUNC_LIST      
+FPOS           
+FPOS2          
+DEF_FORM       
+FILE.HLDR      
+FILE.NAME      
+ZRET           
+CNTR2          
+CNTR3          
+CNTR           
+X_TTL1         
+X_USCORE       
+PRTR_WCH       
+PRT_COND_MODE  
+PL_SHLDR_ON    
+PRTR_WHERE     
+PRTR_WIDTH     
+DUMMY_L        
+PL_SHLDR       
+LASER_PRINTER  
+BUTTON_LIST    
+BUTTON_CNTR    
+FC             
+GBX.PHNDL      
+GBX.COL        
+GBX.ROW        
+GBX.TLEN       
+GBX.TWDT       
+GBX.DIST       
+GBX.START      
+GBX.PRTD       
+GBX.TCOLOR     
+GBX.FILE       
+GBX.TLC        
+GBX.TP1        
+GBX.TP2        
+GBX.TP5        
+GBX.TRC        
+GBX.LFT1       
+GBX.LFT2       
+GBX.LFT5       
+GBX.RGT1       
+GBX.RGT2       
+GBX.RGT5       
+GBX.BLC        
+GBX.BOT1       
+GBX.BOT2       
+GBX.BOT5       
+GBX.BRC        
+ZA_TEXT        
+ZA_DFLT        
+PTD_WCH        
+PTD_ON         
+PTD_PFN        
+PTD_HNDL       
+PTD_BUFF       
+POST_PRG       
+POST_PRG_RUN   
+BKSYPRTR_PATH  
+BKSYPRTR_HNDL  
+BKSY.PRTR.NAME 
+BKSY.PRTR.POST 7
+BKSY.PRTR.PRUN ?
+BKSY.PRTR.EXEC 
+BKSY.PRTR.TAS  &
+BKSY.PRGS.WHR  
+BKSY.PRTR.TYPE (
+BKSY.PRTR.LPTNM'
+BKSY.PRTR.PWDT 0
+BKSY.PRTR.PMAX 2
+BKSY.PRTR.PPLNE4
+BKSY.PRTR.LASER6
+CPC_FLD        
+CPC_FLDS       
+CPC_LOC        
+PRA.LKUA       
+PRA.LKUI       
+BLUE.EXIT      
+START_COLUMN   
+START_ROW      
+CO_ICON        
+LKUPA.HNDL     
+LKUPI.HNDL     
+BUTTON_NUM     
+ISIS.HNDL      
+ISIS.TAX       
+ISIS.TAX.IN    
+ISIS.TAX.PO    
+ISIS.MULTI.CPAY
+ISIS.LANDED.COS
+ISIS.UPC       
+ISIS.RETAIL.PRI
+ISIS.COMM.PRICE
+ISIS.IMAGING   
+ISIS.AUTO.TAX  
+IS.TAX.CVT     .
+IS.TAX.FRM     +
+IS.PO.TAX      ,
+IS.TAX.IN      -
+IS.MULTI.CURR  
+IS.MULTI.CPAY  
+IS.LANDED.COST 
+IS.UPC         
+IS.RETAIL.PRICE
+IS.COMM.PRICE  
+IS.IMAGING     
+IS.AUTO.TAX.CAL0
+IS.CUR.CVT     /
+BKAR.INV.ISTXKY
+BKAR.IS.TAXGRP *
+ISIS.TXG.NAME  
+ISIS.TXG.TOTPER
+ISIS.TXG.TOFPERQ
+PSTR           
+RETATVAL       
+XRETATVAL      
+ATSIZE         
+BUFFER         
+OVL_HNDL       
+OVL_PATH       
+MK.H           
+MKAHIST.ACCT   
+MKAHIST.DATE   
+MKAHIST.REM1   )
+MKAHIST.TRACK  
+MKAHIST.REM2   e
+C.PEXT         
+C.PQTY         
+R.UPVAL        
+IS.DISC.L      
+BKAR.INVL.EXTRA
+R.PEXT         
+RUP            
+ML_ARRAY_PTR   
+ML_NUM         
+ML_WDT         
+ML_CNTR        
+ML_PWHR_HLDR   
+ML_OLD_FORM    
+ML_CENTER_VERT 
+ML_COL         
+ML_ROW         
+ML_MSG_HLDR    
+NBUFF          
+EBUFF          
+KEY            
+CTNUM          
+TOGL           
+I1             
+I2             
+I4             
+ISCT           
+ALEN           
+NZCT           
