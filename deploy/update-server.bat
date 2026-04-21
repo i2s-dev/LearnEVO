@@ -1,7 +1,7 @@
 @echo off
 REM =======================================================================
 REM  Load the evo-help image from tar and (re)start the container.
-REM  This is the ONLY script that needs to run on i2s111-CTDC4.
+REM  This is the ONLY script that needs to run on i2s-odin.
 REM
 REM  Place this file, docker-compose.yml, and evo-help.tar all in the
 REM  SAME folder (e.g. C:\deploy\evo-help\). Then double-click, or:

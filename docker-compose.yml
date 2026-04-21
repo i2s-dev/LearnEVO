@@ -1,4 +1,4 @@
-# Deploy target: i2s111-CTDC4 (Docker-only server, no git, no Python).
+# Deploy target: i2s-odin (Docker-only server, no git, no Python).
 #
 # This compose file references an image that is loaded from a tar file
 # via `docker load -i evo-help.tar`. There is no `build:` step here —

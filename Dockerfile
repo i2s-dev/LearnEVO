@@ -1,12 +1,12 @@
 # Self-contained image for the LearnEVO help viewer.
 #
-# Used for the i2s111-CTDC4 deploy where the server has Docker but no
+# Used for the i2s-odin deploy where the server has Docker but no
 # git and no Python. Everything the viewer needs is baked in; updates
 # are shipped by rebuilding the image here, saving to a tar file, and
 # copying that one file to the server.
 #
 #   Build:    deploy/build-image.bat        (on the workstation)
-#   Deploy:   deploy/update-server.bat      (on i2s111-CTDC4)
+#   Deploy:   deploy/update-server.bat      (on i2s-odin)
 FROM python:3.12-alpine
 
 WORKDIR /app/learnevo-help

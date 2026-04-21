@@ -1,7 +1,7 @@
 @echo off
 REM =======================================================================
 REM  Build the evo-help Docker image on this workstation and save it to
-REM  a tar file ready to ship to i2s111-CTDC4.
+REM  a tar file ready to ship to i2s-odin.
 REM
 REM  Produces:  deploy\evo-help.tar   (~65 MB; not checked into git)
 REM
@@ -33,7 +33,7 @@ if errorlevel 1 goto :build_failed
 echo.
 echo ============================================================
 echo  Done.
-echo  Copy these three files to C:\deploy\evo-help\ on i2s111-CTDC4
+echo  Copy these three files to C:\deploy\evo-help\ on i2s-odin
 echo  (they must all end up in the SAME folder):
 echo    deploy\evo-help.tar
 echo    docker-compose.yml

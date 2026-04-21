@@ -1,4 +1,4 @@
-# Deploy — LearnEVO help viewer → `i2s111-CTDC4`
+# Deploy — LearnEVO help viewer → `i2s-odin`
 
 This folder contains everything needed to run the help viewer on a
 Docker-only Windows server that has **no git and no Python** — just
@@ -26,7 +26,7 @@ deploy\build-image.bat
 This runs `learnevo-help\build.py` to regenerate content, builds the
 Docker image, and saves it to `deploy\evo-help.tar` (≈ 65 MB, gitignored).
 
-### Copy to the server (`i2s111-CTDC4`)
+### Copy to the server (`i2s-odin`)
 
 Create `C:\deploy\evo-help\` on the server (SMB, RDP, or any transfer)
 and drop in these three files:
@@ -58,7 +58,7 @@ New-NetFirewallRule -DisplayName "LearnEVO Help" -Direction Inbound ^
 Anyone on the LAN can now hit:
 
 ```
-http://i2s111-ctdc4:8765/
+http://i2s-odin:8765/
 ```
 
 `docker-compose.yml` sets `restart: unless-stopped`, so the container
