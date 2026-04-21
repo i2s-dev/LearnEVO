@@ -12,6 +12,9 @@ setlocal
 cd /d "%~dp0\.."
 
 echo.
+echo  Repo root: %cd%
+echo.
+
 echo [1/3] Regenerating help content from docs/ ...
 python learnevo-help\build.py
 if errorlevel 1 goto :build_failed
@@ -30,15 +33,18 @@ if errorlevel 1 goto :build_failed
 echo.
 echo ============================================================
 echo  Done.
-echo  Ship these to i2s111-CTDC4 (first time only needs all 3;
-echo  every update after that is just evo-help.tar):
+echo  Copy these three files to C:\deploy\evo-help\ on i2s111-CTDC4
+echo  (they must all end up in the SAME folder):
 echo    deploy\evo-help.tar
 echo    docker-compose.yml
 echo    deploy\update-server.bat
 echo ============================================================
+echo.
+pause
 goto :eof
 
 :build_failed
 echo.
 echo  *** BUILD FAILED ***
+pause
 exit /b 1
