@@ -1,0 +1,8 @@
+# Only learnevo-help/server.py is COPYed into the image; everything
+# else is bind-mounted at runtime. We still trim the build context so
+# `docker build` doesn't send 100MB of samples to the daemon each time.
+.git/
+samples/
+docs/
+research/
+scripts/

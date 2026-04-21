@@ -1,14 +1,20 @@
 """
 Start the LearnEVO help server.
 
-- Picks the first free port starting at 8765 (so accidental duplicates
-  never share the port and start returning empty responses).
-- Binds to 127.0.0.1 only (not exposed on the LAN).
-- Opens the browser automatically.
-- Prints a clean banner with the URL.
-- Ctrl+C to stop.
+Defaults (local dev, unchanged):
+- Binds to 127.0.0.1 only, picks the first free port at/after 8765,
+  opens your browser.
+
+Container / LAN deploy overrides via env vars:
+- HOST=0.0.0.0        bind on all interfaces
+- PORT=8765           pin a fixed port (no free-port scan)
+- NO_BROWSER=1        skip the automatic browser launch (also auto-
+                      skipped whenever HOST is not 127.0.0.1)
+
+Ctrl+C to stop.
 """
 import http.server
+import os
 import socket
 import socketserver
 import sys
@@ -18,11 +24,11 @@ import webbrowser
 from pathlib import Path
 
 
-def find_free_port(start=8765, end=8800):
+def find_free_port(host, start=8765, end=8800):
     for port in range(start, end + 1):
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:
-            s.bind(("127.0.0.1", port))
+            s.bind((host, port))
             s.close()
             return port
         except OSError:
@@ -50,33 +56,42 @@ class QuietHandler(http.server.SimpleHTTPRequestHandler):
 
 def main():
     here = Path(__file__).parent.resolve()
-    import os
     os.chdir(here)
 
-    try:
-        port = find_free_port()
-    except RuntimeError as e:
-        print(f"Error: {e}", file=sys.stderr)
-        sys.exit(1)
+    host = os.environ.get("HOST", "127.0.0.1")
+    port_env = os.environ.get("PORT")
+    no_browser = os.environ.get("NO_BROWSER") or host != "127.0.0.1"
 
-    url = f"http://localhost:{port}"
+    if port_env:
+        try:
+            port = int(port_env)
+        except ValueError:
+            print(f"Error: PORT={port_env!r} is not an integer", file=sys.stderr)
+            sys.exit(1)
+    else:
+        try:
+            port = find_free_port(host)
+        except RuntimeError as e:
+            print(f"Error: {e}", file=sys.stderr)
+            sys.exit(1)
+
+    display_host = "localhost" if host == "127.0.0.1" else host
+    url = f"http://{display_host}:{port}"
     print(f"""
  ============================================================
   LearnEVO Help
-  Serving on {url}
-  Opening your browser in 1 second...
+  Serving on {url}   (bind {host}:{port})
   Press Ctrl+C to stop the server.
  ============================================================
 """)
 
-    # Open the browser after a short delay so the server has a moment.
-    def open_browser():
-        time.sleep(1.0)
-        webbrowser.open(url)
+    if not no_browser:
+        def open_browser():
+            time.sleep(1.0)
+            webbrowser.open(url)
+        threading.Thread(target=open_browser, daemon=True).start()
 
-    threading.Thread(target=open_browser, daemon=True).start()
-
-    with socketserver.TCPServer(("127.0.0.1", port), QuietHandler) as httpd:
+    with socketserver.ThreadingTCPServer((host, port), QuietHandler) as httpd:
         httpd.allow_reuse_address = True
         try:
             httpd.serve_forever()
