@@ -7,6 +7,13 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 - **UI forms**: 68 (prefixes `T7WO`, `T6WO`, `BKWO`)
 - **Menu operations**: 31
 
+## Narrative / vendor help
+
+**→ [help-content.md](help-content.md)** — consolidated write-up of
+all 52 help topics from `EvoHELP.CHM` (overview + WO-A through WO-T +
+every WO-K-\* and WO-L-\* sub-program, with life-cycle diagram,
+status-code table, save-time processing, and cross-links).
+
 ## Menu operations
 
 | Code | Operation | Legacy module file(s) |
