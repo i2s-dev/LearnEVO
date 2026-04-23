@@ -57,7 +57,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [AP — Accounts Payable](03-modules/ap-accounts-payable/README.md) (19 / 33 / 26)
 - [IN — Inventory](03-modules/in-inventory/README.md) (40 / 67 / 19)
 - [SO — Sales Orders](03-modules/so-sales-orders/README.md) (48 / 69 / 7)
-- [PO — Purchase Orders](03-modules/po-purchase-orders/README.md) (29 / 41 / 8)
+- [PO — Purchase Orders](03-modules/po-purchase-orders/README.md) (29 / 41 / 8) — + [help-content.md](03-modules/po-purchase-orders/help-content.md) *(27 CHM topics)*
 - [WO — Work Orders](03-modules/wo-work-orders/README.md) (31 / 68 / 30) — + [help-content.md](03-modules/wo-work-orders/help-content.md) *(52 CHM topics)*
 - [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28)
 - [BM — Bill of Materials](03-modules/bm-bill-of-materials/README.md) (10 / 16 / 10)

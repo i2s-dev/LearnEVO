@@ -7,6 +7,17 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 - **UI forms**: 41 (prefixes `T7PO`, `T6PO`, `BKPO`)
 - **Menu operations**: 29
 
+## Narrative / vendor help
+
+**→ [help-content.md](help-content.md)** — consolidated write-up of
+all 27 help topics from `EvoHELP.CHM` (overview + PO-A through PO-T,
+26 programs). Includes the life-cycle programs, RFQ system (PO-E /
+PO-F / PO-G), vendor-data programs (PO-H / PO-L / PO-P), the eight
+PO-I-\* reports, the three-step QC inspection flow (PO-J-A / B / C),
+and the inquiry / date-maintenance / receiving-slip / e-sign
+utilities. Cross-links to WO, JC, AP, IN, MR modules and to the
+related System Overview sections.
+
 ## Menu operations
 
 | Code | Operation | Legacy module file(s) |
