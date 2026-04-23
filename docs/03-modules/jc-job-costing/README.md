@@ -7,6 +7,14 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 - **UI forms**: 14 (prefixes `T7JC`, `T6JC`)
 - **Menu operations**: 18
 
+## Narrative / vendor help
+
+**→ [help-content.md](help-content.md)** — consolidated write-up of
+all 20 help topics from `EvoHELP.CHM` (overview + JC-A through JC-S),
+with the common-selection-ribbon pattern extracted once and each
+report annotated with source tables, accuracy gotchas, and
+cross-links into WO, GL, BM, and the System Overview close checklist.
+
 ## Menu operations
 
 | Code | Operation | Legacy module file(s) |

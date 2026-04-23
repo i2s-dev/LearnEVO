@@ -65,7 +65,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [PR — Payroll](03-modules/pr-payroll/README.md) (29 / 40 / 16)
 - [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7)
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
-- [JC — Job Costing](03-modules/jc-job-costing/README.md) (18 / 14 / 2)
+- [JC — Job Costing](03-modules/jc-job-costing/README.md) (18 / 14 / 2) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)*
 - [CS — Commission System](03-modules/cs-commission-system/README.md) (16 / 12 / 16)
 - [ES — Estimating](03-modules/es-estimating/README.md) (8 / 7 / 4)
 - [SR — Service / Repair](03-modules/sr-service-repair/README.md) (9 / 12 / 0)
