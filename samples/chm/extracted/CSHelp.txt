@@ -1,0 +1,12 @@
+.topic 2160
+ES-K Convert Production Inventory to Estimating
+.topic 6000
+SM-V Check for and Install Updates
+
+Purpose of Program
+
+This program is similar to Check for Updates but it would be run by an administrator because in addition to checking the website to see if update files are available, it also includes an option to install the updates that are available.
+
+General Program Operation
+
+When the program loads, the current version will be displayed and you will be advised whether you are on the latest major update and then whether patches are availablr for the version you are on.  If updates are available, a list will identify the programs that are affected by the updates.  If you would like do download and install them, click Install Patches and the desired programs will be installed.  There is no need to have users exit the system to load patches using this program but depending on the program, some may not be loaded until you exit Evo-ERP and log back in.

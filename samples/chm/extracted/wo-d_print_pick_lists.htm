@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>WO-D Print Pick Lists</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="pick list,pick list work orders,WO-D &nbsp;Print Pick Lists">
+   <meta name="description" content="WO-D Print Pick Lists">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">WO-D Print Pick Lists</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Work Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">WO-D Print Pick Lists</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="wo-c_print_travelers.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="wo-e_print_labor_cards_labels.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">WO-D &nbsp;Print Pick Lists</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to get a listing of the components that must be pulled from stock for a work order or range of work orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If a component is repeated in several places within the work order bill of material, it will be consolidated into a single quantity for stock picking purposes. &nbsp;The bill of material printed on the shop traveler (the printing of which can be suppressed) does not consolidate components in this manner.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The pick list prints the quantities remaining to be issued, not the original quantity required. &nbsp;Therefore you can print a pick list midway through a work order and it will be restricted to components that have not yet been issued.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">A range of work orders by work order number or by job number can be consolidated into a single pick list.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The pick list shows the component item number, description, quantity, unit of measure, bin location, and offers an entry column for recording quantities, lot numbers, serial numbers, etc.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Consolidated Pick List</span></p>
+<p><span style="font-size: 11pt;">If you choose to print a consolidate pick list for a product structure with multiple levels in the bill of material, the printed pick list will </span><span style="font-size: 11pt; text-decoration: underline;">not</span><span style="font-size: 11pt;"> include any work order parent parts within the work order range selected. &nbsp;Only the components of the work orders selected will print on the pick list. &nbsp;Otherwise you would have both subassemblies (parent parts on lower level work orders) and components mixed together, which would not only be confusing, but it would be in a sense double inventory since the subassemblies and their components, once assembled, are the same thing. &nbsp;Therefore the consolidated pick list is confined to components only.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">In some situations the range of work orders is limited to one or two levels down the product structure, in which case there may be lower level subassemblies that are already completed that may be desirable to be shown on the pick list. &nbsp;The consolidate pick list contains a section at the end titled </span><span style="font-size: 11pt; font-style: italic;">Parent Assemblies Outside the WO Selection Range</span><span style="font-size: 11pt;">. &nbsp;Any parent parts that are on lower level work orders, but are outside the work order range selected, will be listed in this section.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter a from/thru range of work order numbers by entering the work order number or selecting work orders from a lookup window via the F2 key. &nbsp;You may also select a range of work orders by a from/thru range of job numbers.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you want the range of work orders consolidated into a single pick list, check the </span><span style="font-size: 11pt; font-style: italic;">Consolidated Pick List?</span><span style="font-size: 11pt;"> checkbox.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can sort the pick list by item number or by bin location, and you can have the second line of product description printed or not.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can choose to have approved substitute parts, defined in </span><span style="font-size: 11pt;"><a href="bm-j_enter_approved_substitutes.htm" class="topiclink">BM-J &nbsp;Enter Approved Substitutes</a></span><span style="font-size: 11pt;">, print underneath each standard component. &nbsp;If the standard component is not available, the substitute would be used. &nbsp;You can also limit by component type, RoHS status, suppress or include items with a 0 quantity required and include the current on hand quantity of components in addition to the required quantity. &nbsp;You can print a blank line between items to make it easier to hand write a quantity issued, print all, Default or No Bin Locations and include linked documents.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

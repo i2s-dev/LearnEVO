@@ -1,0 +1,200 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>TA-N Program Scheduler</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="">
+   <meta name="description" content="TA-N Program Scheduler">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">TA-N Program Scheduler</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; TAS Utility Programs&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">TA-N Program Scheduler</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ta-m_forms_editor.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ta-o_backup_utility.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">TA-N Program Scheduler</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Description</span></p>
+<p><span style="font-size: 11pt;">Use this program to define programs and parameters to run on a pre-scheduled unattended basis.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">To set up the service, &nbsp;log into the server as administrator and launch Evo-ERP by right click and Run as Administrator. &nbsp;Once you are logged into Evo-ERP with elevated credentials, this program will have an option to Setup Evo Service. &nbsp;It will automatically select 32 or 64 bit as appropriate. &nbsp;You can also enter an outbound email &quot;Send From&quot; for email notification of &nbsp;unattended program operation or the <a href="us-g_enter_triggers.htm" class="topiclink">US-G Enter Triggers</a>. &nbsp;Once you have the service running, when installing updates you must either install the update on the server where the service is running because the Update process will stop and restart the service, or manually stop it before starting to install an update from a different workstation.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">To add a program to the schedule, click Add and enter the Name,Description and actual program name. &nbsp;If the program requires parameters to be passed, enter them, then indicate the company for which the program should run. &nbsp;Enter the frequency (daily, weekly, monthly or yearly) and next occurrence. &nbsp;if you want it to run multiple times per day, select Once and enter a time in minutes for the recurrence. &nbsp;Finally enter the path and filename for the Log File that will confirm that the program has run and optionally enter an email address for notification when the program runs.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Programs Currently Supported</span></p>
+<p><span style="font-size: 11pt;">The programs listed below can be run in unattended mode based on configuration settings specified and, in some cases with a passed parameter. &nbsp;To establish the settings, load the program once at UT-A, enter the desired from/through ranges and click Save Settings and indicate that you are saving for unattended access. &nbsp;Once the settings are saved, when the program is run, it will run without prompting for user input.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Program Name &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Function &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Parameter to Enter</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">T7AUTOREBSS.RWN &nbsp; &nbsp; &nbsp; &nbsp;Rebuild Inventory Stock Status (IN-L-S) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;None</span></p>
+<p><span style="font-size: 11pt;">T7MRF.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Generate MRP (MR-F) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOMRF</span></p>
+<p><span style="font-size: 11pt;">T7INLE.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Update Material Standard Cost (IN-L-E) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOINLE</span></p>
+<p><span style="font-size: 11pt;">T7BMG.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Standard Cost Rollup (BM-G) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOBMG</span></p>
+<p><span style="font-size: 11pt;">T7SMJC.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Reconcile Inventory (SM-J-C) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOSMJC</span></p>
+<p><span style="font-size: 11pt;">T7UTKG.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Recalculate Book Value (UT-K-G) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOUTKG</span></p>
+<p><span style="font-size: 11pt;">T7UTKF.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Reset Average Cost to Standard Cost (UT-K-F) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOUTKF</span></p>
+<p><span style="font-size: 11pt;">T7AUTODCH.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Post Data Collection Labor (DC-H) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;None</span></p>
+<p><span style="font-size: 11pt;">T7WOLA.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Print Work Order Status (WO-L-A) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOWOLA</span></p>
+<p><span style="font-size: 11pt;">T7REBWO.RWN &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Rebuild Work Order Cost (WO-K-H) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;AUTOREBWO</span></p>
+<p>N/A &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Backuo Utility (TA-O) &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;Configured and scheduled at <a href="ta-o_backup_utility.htm" class="topiclink">TA-O Backup Utility</a></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Log Files</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">The Service writes to EvoSERVICE.LOG in the DBAMFG or EvoERP folder with the date, time and program name launched. The individual programs also write to the same Log file listing start, processing and close date and time and company run for. If you enter an email address when setting up a task in TAS-N then you will get an email from the service notifying you that the program launched but you need to check the log file manually to see if it finished. </span></p>
+<p>&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

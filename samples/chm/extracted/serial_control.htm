@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Serial Control</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="serial control">
+   <meta name="description" content="Serial Control">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Serial Control</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Serial Control&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Serial Control</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="lc-f-lot_traceability_report.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sc-a_edit_serial_file.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Serial Control Overview</span></p>
+<p><span style="font-size: 16pt; font-weight: bold;">&nbsp;</span></p>
+<p><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Serial Control</span><span style="font-size: 11pt;"> module provides a means of recording and tracking items by serial number all through the purchasing, manufacturing, and shipping cycle. &nbsp;For each user-assigned serial number the serial control file records the purchase order or work order from which the serial number originated, the cost, an optional expiration date, and a notes section.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Inventory items are individually designated to require serial control. &nbsp;If so, whenever that item number is received through purchasing, issued to work orders, completed, adjusted, or shipped, a serial number will be requested for each unit.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Complete serial number traceability is achieved via the </span><span style="font-size: 11pt; font-style: italic;">Serial History</span><span style="font-size: 11pt;"> report, which provides serial number transaction history via a range of transaction types and other selection criteria and the </span><span style="font-size: 11pt; font-style: italic;">Serial Traceability Report</span><span style="font-size: 11pt;"> which shows all activity.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Serial Availability</span><span style="font-size: 11pt;"> report shows the available inventory by the serial numbers on hand.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 16pt; font-weight: bold;">How to Use Serial Control</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purchase Order Receiving</span></p>
+<p><span style="font-size: 11pt;">Purchased item serial numbers can originate during </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt;">. &nbsp;If you are receiving items to QC, the Serial Number assignment occurs at </span><span style="font-size: 11pt;"><a href="po-j-c_enter_inspection_buyoffs.htm" class="topiclink">PO-J-C Enter Inspection Buyoffs</a></span><span style="font-size: 11pt;">. &nbsp;After a transaction is fully received and posted, a serial control screen will be presented for any received items that are coded to require serial control.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The purchase order number, vendor, item number, description, and date fields automatically display information from the purchase order. &nbsp;The cursor is located in the </span><span style="font-size: 11pt; font-style: italic;">Serial Number</span><span style="font-size: 11pt;"> field. &nbsp;Enter a serial number. &nbsp;If it is a new serial number, the program will indicate that the serial number is not on file and will ask you if you wish to add it. &nbsp;If yes, it will create an entry in the serial file for the new serial number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You will then be asked if you want to enter notes. &nbsp;If yes, you can enter free form notes to be stored against this serial number, as well as an optional expiration date, which might be useful with shelf life controlled items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After saving each record the PO serial control screen will continue presenting itself until a serial number has been entered for each unit received.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Issuing or Backflushing Materials to Work Orders</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Materials are issued to work orders individually or as kits through </span><span style="font-size: 11pt;"><a href="wo-g_issue_materials.htm" class="topiclink">WO-G &nbsp;Issue Materials</a></span><span style="font-size: 11pt;">. &nbsp;Materials can also be backflushed after-the-fact through </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;">. &nbsp;In all four programs, serial control is handled identically.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If a component coded to require serial control is issued either individually, through a kit issue, or through a backflush, the cursor will stop at the </span><span style="font-size: 11pt; font-style: italic;">Serial Number </span><span style="font-size: 11pt;">field and a message will ask for a serial number. &nbsp;You may view and select from available serial numbers for this component by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> icon (or press F2). &nbsp;If you enter a new serial number or make an incorrect entry, you will receive a message indicating the serial number is not on file, do you wish to add it? &nbsp;If yes, it will create a new serial number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You will not be allowed to leave the </span><span style="font-size: 11pt; font-style: italic;">Serial Number</span><span style="font-size: 11pt;"> field until you've entered a serial number for each unit issued.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enter Finished Production</span></p>
+<p><span style="font-size: 11pt;">Finished production is entered through </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;">. &nbsp;If the item number being manufactured is coded to require serial control, the cursor will stop at the </span><span style="font-size: 11pt; font-style: italic;">Serial Number</span><span style="font-size: 11pt;"> field. &nbsp;Enter a serial number or select one by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> icon (or press F2).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you enter a new serial number, you will receive a message indicating the serial number is not on file, do you wish to add it? &nbsp;If yes, it will create a new serial number in the serial file. &nbsp;After entering the serial number, you will be asked if you wish to enter notes. &nbsp;If yes, you can enter free form notes in a pop-up window along with an optional expiration date, which can be useful with perishable type items. &nbsp;Once the notes are entered, the record will be saved. &nbsp;The screen will continue presenting itself until a serial number is entered for each unit.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Automatic Serial Number Generation</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you have entered parameters for automatic generation of Serial Numbers at </span><span style="font-size: 11pt;"><a href="sc-g_enter_serial_generation_parameters.htm" class="topiclink">SC-G Enter Serial Generation Parameters</a></span><span style="font-size: 11pt;"> then when you click the &quot;Auto Generate&quot; button, the program will display the next serial number in the series. &nbsp;You can accept it or change it, enter an expiration date if applicable, and then click process and the program will generate all the serial numbers needed and save the last number used back to the Serial Parameters file. &nbsp;If any serial number that it is trying to create already exists, the number will be skipped and the next available number will be used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sales Order Entry</span></p>
+<p><span style="font-size: 11pt;">Serial numbers can be assigned within </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;This feature can be useful if you are pre-assigning serial numbers in advance or if you are using the instant invoice capability.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">To assign serial numbers with sales order entry, you &nbsp;need to enable the default in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;"> on the Setup II Tab for Ask for Serial info when adding SO Lines.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When the sales order line is saved, if the item is coded to require serial control, depending on the default setting, you will be asked if you wish to assign serial number information at this time or the Lot Control window will come up without asking.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The sales order number, customer, item number, description, and date &nbsp;fields automatically display information from the sales order. &nbsp;The cursor is located in the </span><span style="font-size: 11pt; font-style: italic;">Serial Number</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a serial number. &nbsp;You may select a serial number for this item number from a pop-up window by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> icon (or press F2). &nbsp;If you do a lookup, a list of available serial numbers will appear and you may select (tag) as many as needed by clicking on them. &nbsp;When you have finished with the selection, click Save.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you enter a new serial number or make an incorrect entry, you will receive a message indicating the serial number is not on file, do you wish to add it? &nbsp;If yes, it will create a new record in the serial number file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You will then be asked if you want to enter notes. &nbsp;If yes, you can enter free form notes to be stored against this serial number, as well as an optional expiration date, which might be useful with perishable items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After saving the record the screen will continue presenting itself until it receives a serial number for each unit.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Releasing Sales Orders</span></p>
+<p><span style="font-size: 11pt;">When you release sales orders through </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;">, the program will check for any items coded for serial control. &nbsp;If you have not already assigned serial numbers within the sales order (see above), you will be asked if you wish to assign serial control.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you answer yes, the entry procedure is identical to that described in the previous section.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice Posting</span></p>
+<p><span style="font-size: 11pt;">Inventory is reduced and serial numbers are depleted when invoices are posted through </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G &nbsp;Post Invoices</a></span><span style="font-size: 11pt;">. &nbsp;After invoices are fully posted, the program will check for any items that are coded for serial control that did not have serial numbers fully assigned either in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A, Enter Sales Orders</a></span><span style="font-size: 11pt;">, or </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E, Release Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;The same serial control entry window will be presented for any shipped items that are coded to require serial control, and the entry steps are identical to those described in the </span><span style="font-size: 11pt; font-style: italic;">Sales Order Entry </span><span style="font-size: 11pt;">section above.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adjust Physical Levels</span></p>
+<p><span style="font-size: 11pt;">Inventory levels can be adjusted </span><span style="font-size: 11pt;"><a href="in-k_adjust_physical_levels.htm" class="topiclink">IN-K &nbsp;Adjust Physical Levels</a></span><span style="font-size: 11pt;">. &nbsp;In theory the on-hand inventory for an item coded for serial control should agree with the sum total of all its serial number quantities.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you change a physical count for an item coded for serial control, you will receive a warning that this could cause a discrepancy between the on-hand quantity and the serial file quantity.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">It is better to adjust inventory for serial control items through </span><span style="font-size: 11pt;"><a href="in-l-j_transfer_inventory.htm" class="topiclink">IN-C &nbsp;Enter Inventory Adjustments</a></span><span style="font-size: 11pt;"> so that both the on-hand and serial quantities get adjusted at the same time (see below).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Inventory Adjustments</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Inventory can be adjusted through </span><span style="font-size: 11pt;"><a href="in-l-j_transfer_inventory.htm" class="topiclink">IN-C &nbsp;Enter Inventory Adjustments</a></span><span style="font-size: 11pt;">. &nbsp;This program is only used for minor adjustments that are not performed through purchase orders, work orders, or sales orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Whenever inventory is adjusted for an item that requires serial control, a pop-up window will request entry of a serial number. &nbsp;The window will continue presenting itself until a serial number is entered for each unit being adjusted.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

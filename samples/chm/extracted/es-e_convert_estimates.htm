@@ -1,0 +1,179 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>ES-E Convert Estimates</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="">
+   <meta name="description" content="ES-E Convert Estimates">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">ES-E Convert Estimates</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Estimating&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">ES-E Convert Estimates</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="es-d_quick_estimate.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="es-h_enter_material_costs.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">ES-E Convert Estimates (Evo-ERP)</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to convert estimates into sales orders and/or work orders. &nbsp;The program will also add any new inventory items associated with the quoted item's product structure into the production inventory file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Quote Number</span><span style="font-size: 11pt;"> of the estimate to be converted or select one from a pop-up window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button). &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Item number </span><span style="font-size: 11pt;">will display for reference purposes.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Indicate whether the estimate is to be converted into a sales order, a work order or both. The next available sales order and work order numbers will be displayed. &nbsp;You can manually assign your own order numbers, if desired. &nbsp;If the estimate was originally entered against a prospect in the Contact Manager who is not yet a customer, you will be prompted that the program will create an entry for them in the customer file as part of the Estimate conversion process. &nbsp;If the Estimate was created in </span><span style="font-size: 11pt;"><a href="es-d_quick_estimate.htm" class="topiclink">ES-D Quick Estimate</a></span><span style="font-size: 11pt;"> and not associated with a customer, you can enter the customer at this time. &nbsp;You are also prompted &nbsp;for the customer PO and Warehouse Location and whether to save the Estimate number with the custoemr PO.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The line items from the estimate will be displayed and you can indicate the quantity of each to convert. &nbsp;The price as entered in the Estimate for that quantity break will be displayed but can be changed. &nbsp;If converting to Sales Order, you need to enter the Estimated Ship Date; if converting to Work Order, you need the Work Order Estimated Start and Finished date. &nbsp;Process and the orders will be created.</span></p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

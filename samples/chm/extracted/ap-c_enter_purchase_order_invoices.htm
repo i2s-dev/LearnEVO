@@ -1,0 +1,271 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>AP-C Enter Purchase Order Invoices</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="AP-C &nbsp;Enter Purchase Order Invoices">
+   <meta name="description" content="AP-C Enter Purchase Order Invoices">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">AP-C Enter Purchase Order Invoices</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Accounting &gt; Accounts Payable&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">AP-C Enter Purchase Order Invoices</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ap-b_enter_vouchers.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ap-d_enter_scheduled_payment_dates.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">AP-C &nbsp;Enter Purchase Order Invoices</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to enter vendor invoices that pertain to purchase orders entered through the </span><span style="font-size: 11pt; font-style: italic;">Purchase Orders</span><span style="font-size: 11pt;"> module.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Before invoices can be entered through this program, items or services must first be received through </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt;"> and, if received to inspection, bought off using </span><span style="font-size: 11pt;"><a href="po-j-c_enter_inspection_buyoffs.htm" class="topiclink">PO-J-C &nbsp;Enter Inspection Buyoffs</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The program lets you compare purchase order prices with your vendor invoice prices. &nbsp;If purchase order prices are incorrect, they can be changed from within this program, and the inventory last cost and average cost will be updated if the items were purchased for stock and any job costs will be changed accordingly if the original PO receipt was to a work order.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Once all items on a purchase order are fully received and invoiced, the program will prompt to close the purchase order, which deletes the record from the open purchase order file and marks the receivers as closed in the history file.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program will allow processing of items on multiple purchase orders from the same vendor on the same invoice. &nbsp;However, if multi-currency processing is enabled, only purchase orders in the specified currency will be available for processing. &nbsp;Similarly, if PO Tax groups is enabled, only purchase orders assigned to the specified tax group will be available for processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Multi-Currency Processing</span></p>
+<p><span style="font-size: 11pt;">If you have multi-currency processing enabled in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, the purchase orders that get processed in this program can be coded for transacting in a foreign currency (</span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">). &nbsp;The currency code was assigned to the PO during purchase order entry.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">That means that the vendor you are paying will be paid in the </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;"> specified in the purchase order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> processing will be as follows. &nbsp;The source currency's </span><span style="font-size: 11pt; font-style: italic;">PO's Rec&iexcl;&brvbar;d not Invoiced</span><span style="font-size: 11pt;"> account will be debited (in </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">) for the purchase order amount being paid. &nbsp;Any freight will be converted to </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> at the current rate maintained in </span><span style="font-size: 11pt;"><a href="im-c_enter_currenct_exchange_rates.htm" class="topiclink">IM-C &nbsp;Enter Currency Exchange Rates</a></span><span style="font-size: 11pt;"> and will be debited to </span><span style="font-size: 11pt; font-style: italic;">Freight-in</span><span style="font-size: 11pt;"> expense. &nbsp;Any sales tax will be converted to base currency at the current exchange rate and will be posted to your default </span><span style="font-size: 11pt; font-style: italic;">Sales Tax </span><span style="font-size: 11pt;">account. &nbsp;If a currency conversion was made for freight or sales tax, a balancing entry will be made to this currency&iexcl;&brvbar;s </span><span style="font-size: 11pt; font-style: italic;">F/E Gain/Loss-Trxns</span><span style="font-size: 11pt;"> account.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purchase Order Deposit Processing</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If there are any deposits linked to POs selected, then AP-C will allow you to select the deposit, indicate how much of the deposit should be used on this invoice (in case there are partial receipts, you can use the deposit in separate payments). &nbsp; You will also be asked whether the invoice amount entered is a gross amount or the net to be paid to the vendor after the deposits are applied. &nbsp;You will then have the net invoice amount plus the deposit available to apply to lines. &nbsp;When you save, the GL posting will be the total line amount debit to PO/RNI, Deposit amount credit AP Deposits, Net invoice amount credit AP and debit to tax and freight as usual. &nbsp;Only the net invoice will pass to AP.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">VENDOR FIELDS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO Number (Optional)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If the invoice is for a single PO, enter the PO Number to ensure the selection of the correct vendor and PO lines.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Code</span></p>
+<p><span style="font-size: 11pt;">The vendor code for the invoice.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Vendor Name</span></p>
+<p><span style="font-size: 11pt;">The name of the vendor on the purchase &nbsp;order. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Telephone</span></p>
+<p><span style="font-size: 11pt;">The vendor telephone number. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Currency</span></p>
+<p><span style="font-size: 11pt;">The default currency for this vendor (if multi-currency processing is set to Y in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;"> ). &nbsp;This field can be changed if this invoice should be processed in a different currency; however only purchase orders assigned to the currency specified will be available for processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Tax Group</span></p>
+<p><span style="font-size: 11pt;">The default tax authority for this vendor (if PO Tax Groups is set to Y in </span><span style="font-size: 11pt;"><a href="sd-d_material_requirements_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;">). &nbsp;This field can be changed if this invoice should be processed to a different tax authority; however only purchase orders assigned to the Tax Group specified will be available for processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">INVOICING FIELDS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Post COD or Invoice</span></p>
+<p><span style="font-size: 11pt;">You can enter a COD transaction, which will bypass </span><span style="font-size: 11pt; font-style: italic;">Accounts Payable, </span><span style="font-size: 11pt;">create a manual check entry, and optionally print a check, or you can enter a vendor invoice, which goes to </span><span style="font-size: 11pt; font-style: italic;">Accounts Payable</span><span style="font-size: 11pt;"> for future payment.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice Date</span></p>
+<p><span style="font-size: 11pt;">The date of the vendor invoice. &nbsp;This will be the aging date used within </span><span style="font-size: 11pt; font-style: italic;">Accounts Payable</span><span style="font-size: 11pt;">. &nbsp;You will get a warning message if you enter a date not in the current calendar year.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">GL Posting Date</span></p>
+<p><span style="font-size: 11pt;">This defaults to the current system date. If, for any reason, you wish to post the invoice to another date, you can override the default date. &nbsp;This is the date that will post to the </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> and controls when the invoice will appear on the </span><span style="font-size: 11pt; font-style: italic;">AP Aging</span><span style="font-size: 11pt;">. &nbsp;It also controls what receipts will be available for processing for payments. &nbsp;Only receipts dated on or prior to the GL Post date will be available to be invoiced. &nbsp;You can not book the payable before receiving the items. &nbsp;When </span><span style="font-size: 11pt;"><a href="ap-i_print_aging.htm" class="topiclink">AP-I &nbsp;Print Aging</a></span><span style="font-size: 11pt;"> is run, the age of the invoice is based on the Invoice Date but whether or not it is included on the aging as of a certain date is based on the GL Post date. &nbsp;You will not be able to post to a closed period, to a date prior to the invoice date, and you will get a warning message if you enter a date not in the current calendar year.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice Number</span></p>
+<p><span style="font-size: 11pt;">The vendor's invoice number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice Amount</span></p>
+<p><span style="font-size: 11pt;">The amount of the invoice to be distributed among PO line items. &nbsp;It can either be entered as the invoice total including tax and freight or a subtotal amount excluding tax and freight.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Filter from PO#</span></p>
+<p><span style="font-size: 11pt;">The first PO that has items on this invoice</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Thru PO#</span></p>
+<p><span style="font-size: 11pt;">The last PO that has items on this invoice (defaults to the Filter From PO#)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check Number</span></p>
+<p><span style="font-size: 11pt;">The check number (COD only).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">LINE ITEM FIELDS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO #</span></p>
+<p><span style="font-size: 11pt;">The Purchase Order number of the item being processed. &nbsp;This is a reference field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Received By</span></p>
+<p><span style="font-size: 11pt;">The person who processed the receipt. &nbsp;This is a reference field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item</span></p>
+<p><span style="font-size: 11pt;">The item number of the item or service. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Description</span></p>
+<p><span style="font-size: 11pt;">The description that accompanies the item number on the purchase order. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">UM</span></p>
+<p><span style="font-size: 11pt;">The unit of measure of the item purchased. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Conv</span></p>
+<p><span style="font-size: 11pt;">The unit of measure conversion factor of the item purchased. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Disc%</span></p>
+<p><span style="font-size: 11pt;">The discount percentage, if a discount applies to the cost. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Qty</span></p>
+<p><span style="font-size: 11pt;">This is the amount actually being invoiced. &nbsp;This is an entry field. &nbsp;The default value is the quantity received against the line. &nbsp;The program will not allow invoicing a quantity greater than the received quantity.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Price</span></p>
+<p><span style="font-size: 11pt;">The invoice unit cost. &nbsp;The default value will be the line item cost from the purchase order, but it can be overridden if incorrect. &nbsp;This will cause the inventory last cost, average cost, and any job costing to be properly corrected.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Extension</span></p>
+<p><span style="font-size: 11pt;">The extended value of the </span><span style="font-size: 11pt; font-style: italic;">Invoice Qty</span><span style="font-size: 11pt;"> multiplied by the unit cost (discounted as applicable). &nbsp;You can enter the extension and the unit cost will be recalculated.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">TOTAL FIELDS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Payment Terms</span></p>
+<p><span style="font-size: 11pt;">The payment terms code defaults to the terms code assigned to the first purchase order with lines selected for processing, but it can be changed, if desired. &nbsp;The payment terms determine when the invoice is due for payment.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice Amount</span></p>
+<p><span style="font-size: 11pt;">The invoice total before tax and freight are added. &nbsp;This is an information field only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Freight</span></p>
+<p><span style="font-size: 11pt;">The freight charge on the vendor invoice. &nbsp;This is an entry field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Tax</span></p>
+<p><span style="font-size: 11pt;">The amount of sales tax. &nbsp;This will be automatically calculated if sales tax was specified on the purchase order, or you can manually enter a tax amount or override the calculated tax amount.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Misc Charges</span></p>
+<p><span style="font-size: 11pt;">The amount of miscellaneous charges on the invoice and the GL account they are to be applied to.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Total</span></p>
+<p><span style="font-size: 11pt;">The grand total of the vendor invoice, including the goods or services, sales tax, and freight. &nbsp;This is an information field only.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Schedule Date</span></p>
+<p><span style="font-size: 11pt;">The date the invoice is scheduled to be paid, if you wish to enter something different than the due date per terms.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">If the invoice applies to only a single purchase order, enter the PO Number and the cursor will automatically enter the vendor, currency and tax information from the PO and advance to the COD/Invoice field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you do not have the purchase order number or the invoice includes multiple purchase orders, enter the vendor code that the invoice is from or select a vendor from the pop-up window by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button. &nbsp;The vendor name and telephone number will automatically be displayed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If multi-currency is enabled, the currency will default to the vendor default currency as specified in </span><span style="font-size: 11pt;"><a href="ap-j_print_vendor_code_and_name.htm" class="topiclink">AP-A &nbsp;Enter Vendors</a></span><span style="font-size: 11pt;">; you may change it if the invoice is in a different currency. &nbsp;Only those purchase orders in the specified currency will be presented for processing.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If PO Sales Tax by tax groups is enabled, the tax group will default to the vendor default tax group as specified in </span><span style="font-size: 11pt;"><a href="ap-j_print_vendor_code_and_name.htm" class="topiclink">AP-A &nbsp;Enter Vendors</a></span><span style="font-size: 11pt;">; you may change it if the invoice is subject to a different tax jurisdiction. &nbsp;Only those purchase orders assigned to the specified tax group will be presented for processing.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The cursor moves to the right side of the screen, where you are asked if this is a COD transaction or an AP invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next enter the date of the invoice. &nbsp;This is the date that will be used for aging purposes. &nbsp;The date you enter will repeat in the </span><span style="font-size: 11pt; font-style: italic;">G/L Posting Date</span><span style="font-size: 11pt;"> field where it can be changed if you want to post the transaction to a different period. &nbsp;For example, you might receive a vendor invoice after a month is already closed. &nbsp;The invoice date must &nbsp;be entered as is for aging purposes, but you could post the entry to the current month for GL purposes. &nbsp;When running </span><span style="font-size: 11pt;"><a href="ap-i_print_aging.htm" class="topiclink">AP-I &nbsp;Print Aging</a></span><span style="font-size: 11pt;">, the age of the invoice is determined by the invoice date but whether or not it is included on an aging as of a given date is determined by the GL Post date. &nbsp;For example, you receive an invoice dated October 27 on November 3. &nbsp;If you enter the invoice with an invoice date of October 27 but a GL Post date of November 3 then an AP Aging printed as of October 31 will not include the invoice because you have not recognized receipt of it yet. &nbsp;An AP Aging printed as of November 3 will include the invoice and it will already be considered 7 days old based on the invoice date.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the Invoice number. &nbsp;If it is an AP Invoice, enter the invoice amount. &nbsp;If it is a COD, enter the check amount and check number, then select the bank account from the pop-up window.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the from and thru range of purchase orders included on the invoice to limit the list of items that will be available for processing.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are then presented with a window displaying the available receipts from this vendor. &nbsp;The list is presented in PO Number order subsorted by receiver number but can be re-sorted in date order by clicking the </span><span style="font-size: 11pt; font-style: italic;">Sort by Date </span><span style="font-size: 11pt;">button on the bottom of the screen. &nbsp;Each receipt listed includes the receipt date, PO Number, Item number, Quantity received, price and extension. &nbsp;Only receipts dated on or after the GL Post date entered and on purchase orders matching the currency and tax group entered (as applicable) will be available for processing. &nbsp;If not all expected receivers are displayed, click the </span><span style="font-size: 11pt; font-style: italic;">View All</span><span style="font-size: 11pt;"> button to see all potential receipts displayed including Invoice Numbers and dates and any other indications why the receipt is not available to be invoiced.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Highlight a line and press &lt;Enter&gt; or click on it and you will be asked if you want to edit the line item prices &amp; quantities. &nbsp;If you indicate yes, the selected line will be presented in the editing area in the bottom area of the screen. &nbsp;The cursor pauses at the </span><span style="font-size: 11pt; font-style: italic;">Invoice Qty</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Cost</span><span style="font-size: 11pt;"> fields. &nbsp;You can change these values to bring the purchase order quantities and costs into conformance with the vendor's invoice; however you can not enter an invoice to pay for a quantity greater than the quantity received. &nbsp;If there are rounding differences between the system calculation and the vendor invoice, you can enter the extension and the program will divide by the quantity to arrive at a unit cost. &nbsp; When this invoice entry is finally saved, any price differences will cause the last cost, and average cost to be updated, or, if the original PO receipt was to a work order, the job costs will be revised.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you answer No to edit line item prices and quantities, the line will be tagged to be processed as is. &nbsp;Once all desired lines have been selected, press </span><span style="font-size: 11pt; font-style: italic;">Esc</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">F10</span><span style="font-size: 11pt;"> or click the </span><span style="font-size: 11pt; font-style: italic;">Done</span><span style="font-size: 11pt;"> button.</span><span style="font-size: 11pt; font-style: italic;"> </span><span style="font-size: 11pt;">If there is a balance of the invoice amount remaining, you will be asked if you want to apply the balance to tax and freight. &nbsp;If you answer No to applying the balance to tax and freight, then you are asked if you want to cancel adding the invoice, as the entire invoice amount must be accounted for by line items, tax, and/or freight. &nbsp;If yes, the cursor moves on to the Terms field where the payment terms of the first purchase order processed will be displayed. &nbsp;This can be changed to agree with the payment terms on the vendor invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next, the cursor advances to the Freight field and finally the Tax. &nbsp;The tax will be calculated based on the default percentage and taxable status of the lines in the PO or, if Track PO Taxes using tax groups is set to Y in </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;">, the tax will be calculated based on the appropriate tax group. &nbsp;It can be overridden to match the invoice. &nbsp;Once all information has been entered, you are asked if you want to post this invoice. &nbsp;If you answer Y, the invoice will be saved and processed. &nbsp;If N, you are returned back to the first screen to start over and nothing is saved.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When the invoice is saved, the vendor credit or invoice balances are updated, the transaction is posted to the </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Purchases Journal</span><span style="font-size: 11pt;">, and the PO line item quantities and dollars invoiced and received not invoiced are updated. &nbsp;If it is an invoice transaction, the invoice is added to the AP transaction files; if it is a COD, it prompts whether to print the check, adds a check to the check register and records the check in the AP payment history file. &nbsp;If the PO is received and invoiced in full, you will be prompted to close the PO.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Processing the return of parts to a vendor</span></p>
+<p><span style="font-size: 11pt;">If a parts are received to inventory, then rejected and returned to the vendor, the return needs to be processed through </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt;"> as a negative quantity. &nbsp;If the vendor sends you a separate debit memo for the returned parts, enter it as a negative invoice and select the negative quantity line(s) as any other invoice and save. &nbsp;A credit for the amount will be available in accounts payable to net against other invoices the next time a check is processed for the vendor.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If a separate debit memo is not received, you can select the negative receipts along with positive receipts when entering a positive invoice to result in a reduced invoice amount. &nbsp;Or if you have canceling positive and negative receipts, you can enter a zero dollar invoice to clear them against each other. &nbsp;Whenever combining positive and negative receipts, you must select the negative receipts first, then apply them against the positive ones. &nbsp;You can not combine positive and negative receipts to apply to a net negative invoice. &nbsp;A negative invoice can have only negative receipts applied to it.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reversing an Invoice</span></p>
+<p><span style="font-size: 11pt;">If a you enter an existing invoice number for a vendor, you will be prompted that the invoice already exists, do you want to reverse it? &nbsp;If you respond Y then all lines on the invoice will be returned to RNI status, the invoice will be deleted, and reversing GL postings dated the same as the original GL Post Date will be made. &nbsp;If the accounting period of the original invoice posting date is now closed, you will be so advised and no reversal will be processed.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

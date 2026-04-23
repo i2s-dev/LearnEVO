@@ -1,0 +1,188 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>PI-F Physical Inventory Report</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="physical inventory report,PI-F &nbsp;Physical Inventory Report">
+   <meta name="description" content="PI-F Physical Inventory Report">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">PI-F Physical Inventory Report</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Physical Inventory&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">PI-F Physical Inventory Report</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="pi-e_edit_frozen_inventory_costs.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="pi-g_update_actual_inventory.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">PI-F &nbsp;Physical Inventory Report</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to get a printout of your physical inventory. &nbsp;The report can be run in summary, which provides a count and cost summary for each item number, or in detail, which lists the information collected on each numbered tag. &nbsp;It can also be run as an uncounted parts exception report.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">At the end of the report are totals showing the current inventory value, the physical inventory value, and the difference between the two.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Normally this report provides the final review of the physical inventory before </span><span style="font-size: 11pt;"><a href="pi-g_update_actual_inventory.htm" class="topiclink">PI-G &nbsp;Update Actual Inventory</a></span><span style="font-size: 11pt;"> is run.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Year</span><span style="font-size: 11pt;"> and the </span><span style="font-size: 11pt; font-style: italic;">Phys Inv No</span><span style="font-size: 11pt;">. &nbsp;These fields default to the latest physical inventory on file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">In the </span><span style="font-size: 11pt; font-style: italic;">Report Type</span><span style="font-size: 11pt;"> section choose whether you want the standard physical inventory report or an uncounted parts exception report. &nbsp;Uncounted parts are items that were frozen with units showing on-hand, but have not received a tag record. &nbsp;Most likely there is no on-hand quantity and therefore zero quantity tag records need to be entered for these items in a Type 1 inventory. &nbsp;Physical Inventory Value report includes the total value of counted items, frozen items and the value of the adjustment.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a </span><span style="font-size: 11pt; font-style: italic;">P</span><span style="font-size: 11pt;"> if you want the report sorted by item number and a </span><span style="font-size: 11pt; font-style: italic;">C</span><span style="font-size: 11pt;"> if you want it sorted by item class.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter an </span><span style="font-size: 11pt; font-style: italic;">F</span><span style="font-size: 11pt;"> if you want unposted parts to be printed at frozen cost or enter a </span><span style="font-size: 11pt; font-style: italic;">C</span><span style="font-size: 11pt;"> if you want them printed at current average cost. &nbsp;Items already posted through </span><span style="font-size: 11pt;"><a href="pi-g_update_actual_inventory.htm" class="topiclink">PI-G &nbsp;Update Actual Inventory</a></span><span style="font-size: 11pt;"> will always print at frozen cost. &nbsp;If you are on FIFO or LIFO costing, items will always print and post at current average cost to avoid discrepancies between the average cost and the calculated costs of the FIFO/LIFO cost buckets.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> if you want tag detail printed, </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> if not, and an </span><span style="font-size: 11pt; font-style: italic;">L</span><span style="font-size: 11pt;"> if you want the detail confined only to lot and serial controlled items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> if you want detail of corrections made to lot and serial items printed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Finally, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> if you want uncounted parts included on the report. &nbsp;If uncounted items have no quantity on-hand, a zero quantity tag record should be entered.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After completing the selection criteria, you are presented with a </span><span style="font-size: 11pt; font-style: italic;">Locations</span><span style="font-size: 11pt;"> listing that allows you to tag which </span><span style="font-size: 11pt; font-style: italic;">Locations</span><span style="font-size: 11pt;"> are to be included on the report. &nbsp;After tagging the appropriate </span><span style="font-size: 11pt; font-style: italic;">Locations</span><span style="font-size: 11pt;">, click on the </span><span style="font-size: 11pt; font-style: italic;">Go</span><span style="font-size: 11pt;"> button to begin printing.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

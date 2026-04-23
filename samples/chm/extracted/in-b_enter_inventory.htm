@@ -1,0 +1,336 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>IN-B Enter Inventory</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="IN-B &nbsp;Enter Inventory,inventory,inventory enter">
+   <meta name="description" content="IN-B Enter Inventory">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">IN-B Enter Inventory</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Inventory&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">IN-B Enter Inventory</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="in-a_inventory_inquiry.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="in-c_enter_inventory_adjustments.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">IN-B &nbsp;Enter Inventory</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">This program provides a means of entering information on new inventory items or changing information on existing items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Audit Button</span></p>
+<p><span style="font-size: 11pt;">The Audit button (upper left in the Classic view Screen layout and next to the Notes button in the Evo view screen layout) will display a list of changes to the part, the loin ID of the user making the change, date and time, and which program was used to make the change. &nbsp;Columns listed on the standard audit grid include the item Class and Type but users can use </span><span style="font-size: 11pt;"><a href="su-a_maintain_grid_lookups.htm" class="topiclink">SU-A Maintain Grid Lookups</a></span><span style="font-size: 11pt;"> to add other columns to the ICAUDIT grid to see when other inventory fields may have been changed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item number</span></p>
+<p><span style="font-size: 11pt;">The item's item number. &nbsp;It is a 15 character alphanumeric field (upper case only). &nbsp;Single and double quotation marks and commas are not allowed but other characters such as # or - are allowed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Description</span></p>
+<p><span style="font-size: 11pt;">The description consists of two 30 character fields which allow both upper and lower case. &nbsp;The second description field is not used on all reports, so locate the most important information in the first description field.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If extra description lines are needed on sales order and purchase order documents, you may enter up to 12 lines of specifications which will print as comment lines. &nbsp;Specifications are entered in a pop-up window by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Specifications</span><span style="font-size: 11pt;"> button. &nbsp;Unlimited Notes can also be entered against an item by clicking the Notes button and different Note types can be defaulted to print on different documents and forms.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Class</span></p>
+<p><span style="font-size: 11pt;">The item class is an important field. &nbsp;Not only does it allow you to organize your products into meaningful units for reporting purposes, but the general ledger account codes for inventory accounting are established by item class. &nbsp;The item class is a four character, alphanumeric field, upper case only. &nbsp;It is a required field. &nbsp;Item classes must first be set up in </span><span style="font-size: 11pt;"><a href="sm-c_enter_item_classes.htm" class="topiclink">SM-C &nbsp;Enter Item classes</a></span><span style="font-size: 11pt; font-style: italic;">. </span><span style="font-size: 11pt;">The item class description automatically displays to the right of the item class code.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Category</span></p>
+<p><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Category</span><span style="font-size: 11pt;"> field is a user defined field which allows you to assign products to categories for reporting purposes. &nbsp;This is a four character alphanumeric field, upper case only. &nbsp;Both the category and item class fields allow you to organize your products into groups without having to rely on the item number for meaning. &nbsp;You can control whether the user must select the Category from a predefined list in </span><span style="font-size: 11pt;"><a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a> and you can predefine a list of categories to select from at <a href="sm-p-a_enter_categories.htm" class="topiclink">SM-P-A Enter Categories</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">User Defined Sort Field</span></p>
+<p><span style="font-size: 11pt;">As its name suggests, this is whatever you want it to be. &nbsp;It is an index field and can be used as a filter on a number of reports. &nbsp;You can control whether the user must select the User Defined from a predefined list in </span><span style="font-size: 11pt;"><a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a> and you can establish the list at <a href="sm-p-b_enter_user_defined.htm" class="topiclink">SM-P-B Enter User Defined</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Part Type</span></p>
+<p><span style="font-size: 11pt;">Ten part types are allowed, as described below.</span></p>
+<p style="text-indent: -22px; margin: 8px 0px 0px 24px;"><span style="font-size: 11pt;">N = </span><span style="font-size: 11pt; font-style: italic;">Non Inventory</span><span style="font-size: 11pt;">: non-inventory items such as engineering charges, shop supplies, etc. The system will not maintain stock balances for N type items. &nbsp;If an item is designated as type N, you will then be prompted whether this should be designated as a Service and Repair item and, if so, whether Make, Model and Serial Number can be entered or are required. &nbsp;You will also be prompted whether a type N part is a placeholder part for multi-yield work order processing in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> and whether the item is a Surcharge part which enables automatic updating to current base price in </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;"> so that commodity or fuel surcharges are automatically priced at the time of shipment.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">R = </span><span style="font-size: 11pt; font-style: italic;">Regular:</span><span style="font-size: 11pt;"> purchased parts used as components in manufactured items or purchased for resale.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">M = </span><span style="font-size: 11pt; font-style: italic;">Make from</span><span style="font-size: 11pt;">: a &quot;Make from&quot; is an item that receives an outside &nbsp;process such that it becomes a different item number than the &nbsp;item without the process. &nbsp;For example, a part could sit on the shelf non-plated. &nbsp;Some of the parts could be sent out for plating. &nbsp;When the parts come back they should have a different item number to differentiate between the plated and non-plated parts. &nbsp;The &quot;Make from&quot; will have a bill of material consisting of the raw part(s) (in this example the non-plated part). &nbsp;When a purchase order is placed for a &quot;Make from&quot;, upon PO receiving the program will relieve inventory of the components and will update inventory for the &quot;Make from.&quot; &nbsp; The program calculates an actual cost consisting of the outside processing cost plus the cost of the manufactured part's bill of material components. &nbsp;The use of &quot;Make froms&quot; eliminates the need for issuing work orders to handle the outside processing costing and inventory properly.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">F = </span><span style="font-size: 11pt; font-style: italic;">Finished Good</span><span style="font-size: 11pt;">: top level manufactured items that are generally not used in other assemblies.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">A = </span><span style="font-size: 11pt; font-style: italic;">Subassembly</span><span style="font-size: 11pt;">: manufactured items that go into higher level assemblies. &nbsp;Subassemblies are manufactured with their own work orders and can be sold or issued to higher level assemblies.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">B = </span><span style="font-size: 11pt; font-style: italic;">Phantom Assembly</span><span style="font-size: 11pt;">: an assembly that is never manufactured or stocked. &nbsp;A phantom is a item number that represents a kit of items. &nbsp;A phantom may be included in a bill of material, effectively bringing in all its components by use of one number. &nbsp;When a work order is created, the phantom's components are automatically included with the manufactured assembly's components. &nbsp;Phantoms make it easy to include common sets of parts within bills without having to enter each component. &nbsp;Work orders are not allowed for phantom assemblies.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">L = </span><span style="font-size: 11pt; font-style: italic;">Labor:</span><span style="font-size: 11pt;"> Labor can be set up with &nbsp;item numbers and can be included in bills of material. &nbsp;Each category of labor (welding, setup, assembly, etc.) can be set up with its own item number, if you wish. &nbsp;The program will maintain a standard cost on labor, but it will not keep on-hand balances.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">T = </span><span style="font-size: 11pt; font-style: italic;">Outside Processing</span><span style="font-size: 11pt;">: Item numbers can be set up for services such as plating, painting, and heat treating and can be included in bills of material and used in purchase orders.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">K = </span><span style="font-size: 11pt; font-style: italic;">Selling Kit:</span><span style="font-size: 11pt;"> a item number which represents a kit of parts. &nbsp;Selling kits are used within sales orders to order and invoice a set of parts via one item number. &nbsp;Selling kits are never manufactured or stocked.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">O = </span><span style="font-size: 11pt; font-style: italic;">Feature:</span><span style="font-size: 11pt;"> O type items refer to &quot;Features&quot; used by the </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> module. &nbsp;A feature is never purchased or manufactured. &nbsp;A feature represents a group of options (such as colors, fabrics, finishes, etc.) that is automatically presented in a pop-up window during sales order entry for selection. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> capability allows custom bills of material to be created within order entry. &nbsp;The options selected are automatically passed over to the work order system via the </span><span style="font-size: 11pt; font-style: italic;">Convert Sales Orders to Work Orders</span><span style="font-size: 11pt;"> function.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Active?</span></p>
+<p><span style="font-size: 11pt;">This field is used as a selection criterion in certain reports and programs. &nbsp;It allows you to include or exclude inactive items and prevents activity for obsolete items or quality hold items. &nbsp;Allowable values are Y (Active), N (Inactive), O (Obsolete), D (Discontinued), E (Engineering), P (Production &amp; Purchasing Hold), S (Shipping Hold) or Q (Full Quality Hold). &nbsp;All activity and transaction types are allowed for Active and Inactive status but Inactive can be excluded from some reports and by default a warning can pop up in various programs indicating that an item is designated inactive. &nbsp;Obsolete items are for historical reference only. &nbsp;Once an item status is changed to Obsolete, it can not be bought, sold, made, or have any on-hand quantity without changing the status back to Active or Inactive. &nbsp;Discontinued status is for items that can be consumed to deplete existing stock but should not be replenished. &nbsp;Shipments and Issues to Work Order are allowed but purchases and creation of Work Orders to make more are not. &nbsp;Engineering status is intended for items under Engineering development and not yet approved or released for general sale. &nbsp;Orders and transactions are allowed for Engineering items but a warning will be presented indicating that the item is an Engineering item and still under review. &nbsp;Production Hold prevents processing of work orders, entering of purchase Orders and forces Purchase Order Receipt to a Quality Hold Location. &nbsp;Status S prevents Packing Slips, releasing sales orders and processing invoices. &nbsp;Status Q is a combination of P and S and prevents all activity. &nbsp;Changing an item to status P,S or Q will generate a transfer of any on hand stock to a Quality Hold warehouse location defined in <a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a>.  </span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you want to limit access to make changes to items released for Production, then you can assign users Security Code E (Engineer) in </span><span style="font-size: 11pt;"><a href="ps-a_system_users_passwords.htm" class="topiclink">PS-A &nbsp;System Users/Passwords</a></span><span style="font-size: 11pt;"> which limits those users to only creating and editing items with Active Status E.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When changing an item status to O, the program will check to be sure there are no items on Sales Order, Work Order, Purchase Order, or quantity on hand before allowing the change. &nbsp;When saving the item, if the change to Obsolete can not be made, a list of reasons preventing the change will be presented.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Taxable?</span></p>
+<p><span style="font-size: 11pt;">If this item is </span><span style="font-size: 11pt; text-decoration: underline;">never</span><span style="font-size: 11pt;"> subject to sales tax, enter an N in this field. &nbsp;If so, tax will never be charged on the item within sales orders and purchase orders. &nbsp;If you set this field to Y and you enter a sales order or purchase order where the customer or vendor is coded as taxable, then the default setting for this item will be taxable; however, you can override the default if necessary.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you have items that you buy and re-sell, you may buy them non-taxable and sell them as taxable. &nbsp;If so, set this field to Y for sales order purposes and suppress sales tax processing within purchase orders by setting up the vendor as non-taxable.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Stock UM</span></p>
+<p><span style="font-size: 11pt;">The unit of measure the item is stocked in, such as EA, LBS, FT, etc. This is a three character alphanumeric field, upper case only, and is user defined.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Price UM</span></p>
+<p><span style="font-size: 11pt;">The unit of measure the item is sold in, as used by the </span><span style="font-size: 11pt; font-style: italic;">Sales Orders</span><span style="font-size: 11pt;"> module. &nbsp;This is a user defined field, except for values of M (per 1000) or C or H (per 100), which allow you to establish your selling price on a per 1000 or per 100 basis. &nbsp;You may also use LOT and MIN for a Lot or Minimum charge in which case the Sales Order will not calculate an extended price based on line item quantity. &nbsp;Otherwise, you may use any value, such as EA, FT, LBS, etc. but it is for reference only and does not perform any type of conversion. &nbsp;This is a three character, alphanumeric field, upper case only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purch UM</span></p>
+<p><span style="font-size: 11pt;">The unit of measure the item is purchased in. &nbsp;This is user defined, with the exception of the following values, which are listed on the screen if you click </span><span style="font-size: 11pt; font-style: italic;">Help</span><span style="font-size: 11pt;"> or press F1. &nbsp; If you use a value other than one listed here, and the Stock UM is different, you must define the conversion factor to be used by PO processing (See PO Conv Factor below). &nbsp; This is a three character, alphanumeric field, upper case only.</span></p>
+<p style="text-indent: -22px; margin: 8px 0px 0px 24px;"><span style="font-size: 11pt;">M = per thousand. &nbsp;(PO quantity)/1000 x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">H or C = per 100. &nbsp;(PO quantity)/100 x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">LOT = lot charge. &nbsp;Prices the item on a lot charge (flat fee), regardless of quantity.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">LB = per pound. &nbsp;(PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Weight</span><span style="font-size: 11pt;"> field) x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">CWT = per 100 weight. &nbsp;(PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Weight</span><span style="font-size: 11pt;"> field)/100 x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">SF = per square foot. &nbsp;(PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field) x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">MSF = per 1000 square feet. &nbsp;(PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field)/1000 x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">BF = per board foot. (PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field) x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">MBF = per 1000 board foot. &nbsp;(PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field)/1000 x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">LF = per linear foot. (PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field) x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">CLF = per 100 linear feet. (PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field)/100 x (PO price)</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">MLF = per 1000 linear feet. (PO quantity) x (value in the inventory </span><span style="font-size: 11pt; font-style: italic;">Foot Factor</span><span style="font-size: 11pt;"> field)/1000 x (PO price)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">For example, rivets purchased by the thousand (M) and stocked by each (EA) could have a Purchase Order for 10,000 UM=M, PO Price $10 and the PO extension will be $100 (10 thousands @ $10 per M). PO Receiving will place 10,000 rivets into stock @ $0.001 each.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Steel bar purchased by LB and stocked by FT would have the PO entered for 100 FT @ $1.00/LB. The inventory weight field needs to be the Pounds per Foot and will be used as a conversion factor but it is invisible to the user making for a potentially confusing PO because the extended amount is not the product of price times quantity due to the internal conversion factor.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Another approach is to use the PO Conv Factor (see below) in which case the PO is entered fully in the purchase UM and the conversion occurs at PO-C. In this example, the PO would be placed for 100 LB of steel bar @ $1.00/pound, extension $100. PO Conv Factor is a multiplier. A factor of 3 means that each LB of steel will yield 3 feet so when PO is received, 300 Feet will go into stock @ $0.3333 per foot.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Duty Code</span></p>
+<p><span style="font-size: 11pt;">If Landed Cost is turned on in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;"> then parts that will have customs and duty charges applied are assigned a 3 character Duty Code. &nbsp;Vendors are also assigned a different 3 character code and the combined 6 character string for a given item &amp; vendor combination determines the Duty fees.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">RTM Group</span></p>
+<p style="margin: 7px 0px 0px 0px;"><span style="font-size: 11pt;">If you have specific label formats for certain items (perhaps containing Lot or Serial Numbers or different size labels), you can create an RTM print group setting which is a single character. For example, if you have items assigned to RTM Print Group &quot;A&quot; then you would edit the RTM for the form (such as T6ING1.RTM for the Label) and add the changes for this group and save the RTM as T6ING1A.RTM where the name is the same as the standard RTM plus the character of the RTM group. The print programs know to use the special form if it exists.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Base Price</span></p>
+<p><span style="font-size: 11pt;">The Selling price of the item for customers with no special discounted pricing. &nbsp;Access to this can be disabled in </span><span style="font-size: 11pt;"><a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a></span><span style="font-size: 11pt;"> in which case Base Price would be entered using </span><span style="font-size: 11pt;"><a href="so-q-a_enter_base_prices.htm" class="topiclink">SO-Q-A &nbsp;Enter Base Prices</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Type R Comp Date</span></p>
+<p><span style="font-size: 11pt;">If this is a purchased item (type R) this is the date of the last time standard cost was entered in <a href="in-l-a_enter_standard_costs.htm" class="topiclink">IN-L-A Enter Standard Costs</a> or the last purchase receipt date saved by running <a href="in-l-e_update_materoal_standard_costs.htm" class="topiclink">IN-L-E Update Material Standard Costs</a> and choosing Last Cost, whichever is later. &nbsp;For assemblies and Make From parts it is the earliest standard cost rollup date of the purchased components in the BOM of the assembly. &nbsp;It can be edited here but will be updated by <a href="bm-g_print_rollup_standard_costs.htm" class="topiclink">BM-G Print/Rollup Standard Costs</a> for assemblies and <a href="in-l-a_enter_standard_costs.htm" class="topiclink">IN-L-A Enter Standard Costs</a> or  <a href="in-l-e_update_materoal_standard_costs.htm" class="topiclink">IN-L-E Update Material Standard Costs</a> for purchased items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">BP Last Changed</span></p>
+<p><span style="font-size: 11pt;">This is the date the Base Price was last changed, either here or in <a href="so-q-a_enter_base_prices.htm" class="topiclink">SO-Q-A Enter Base Prices</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Primary Vendor</span></p>
+<p><span style="font-size: 11pt;">If this is a purchased part, you may enter your primary vendor's 10 character vendor code in this field. &nbsp;The vendor description will automatically display to the right of the vendor code. &nbsp;The primary vendor is referenced on the </span><span style="font-size: 11pt; font-style: italic;">Reorder Report</span><span style="font-size: 11pt;"> and is the default vendor used by the </span><span style="font-size: 11pt;"><a href="mr-j_generate_purchase_orders.htm" class="topiclink">MR-J &nbsp;Generate Purchase Orders</a></span><span style="font-size: 11pt;"> program. &nbsp;When you designate a primary vendor, a record for that vendor is automatically made (if one does not already exist) &nbsp;in the approved vendor file used by </span><span style="font-size: 11pt;"><a href="po-l_assign_vendors_to_items.htm" class="topiclink">PO-L &nbsp;Assign Vendors to Items</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Customer</span></p>
+<p><span style="font-size: 11pt;">If this item is made for one customer only, you may enter the customer code. &nbsp;This field is for reporting purposes only. &nbsp;The code must be a valid entry in the customer file. &nbsp;The customer name will automatically display to the right of the customer code.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ITP#</span></p>
+<p><span style="font-size: 11pt;">ITP stands for Inspection and Test Procedure. &nbsp;Setting the Print ITP to Y and setting the Items default for Use ITP for Work Orders will print the ITP number and description on the Shop Traveler. &nbsp; &nbsp;ITP numbers and descriptions are entered at <a href="in-l-q_enter_inspection_test_procedure_codes.htm" class="topiclink">IN-L-Q Enter Inspection/Test Procedure Codes</a> </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Tool</span></p>
+<p><span style="font-size: 11pt;">If there is a primary tool used to make this item it can be entered here</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO Class Code</span></p>
+<p><span style="font-size: 11pt;">If a value is entered here, work orders for this item created by WO-A will be assigned this class.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">2D Barcode</span></p>
+<p><span style="font-size: 11pt;">Clicking this button opens a screen where a 2D QR Bar Code for an item can be defined, containing various data fields, control characters and plain text. &nbsp;These bar codes can print on inventory labels generated by <a href="wo-s_print_work_order_labels.htm" class="topiclink">WO-S Print Work Order Labels</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reorder Level</span></p>
+<p><span style="font-size: 11pt;">The reorder level for the item. &nbsp;Items that have dipped below reorder level due to any combination of sales, purchasing, and manufacturing activities can be highlighted for attention via the </span><span style="font-size: 11pt; font-style: italic;">Reorder Report</span><span style="font-size: 11pt;">. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Material Requirements</span><span style="font-size: 11pt;"> module uses the reorder level as the minimum amount to keep on hand.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Minimum Order Qty</span></p>
+<p><span style="font-size: 11pt;">The minimum amount to order when purchase orders or work orders are to be generated. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Material Requirements</span><span style="font-size: 11pt;"> module uses the reorder amount as a minimum quantity for suggested purchase orders and work orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO Conv Mult.</span></p>
+<p><span style="font-size: 11pt;">If the purchase unit of measure is different than your stocking unit of measure, the conversion multiplier automatically converts the item from the purchase unit of measure to the stocking unit of measure during purchase order receiving. &nbsp;For example, if you buy an item by the yard, but stock it by the foot, your purchase unit of measure would be YD, your stocking unit of measure would be FT, and the conversion multiplier would be 3.00000.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">NOTE:</span><span style="font-size: 11pt;"> </span><span style="font-size: 11pt; text-decoration: underline;">Only</span><span style="font-size: 11pt;"> enter a conversion multiplier if the </span><span style="font-size: 11pt; font-style: italic;">Stock UM</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> are different </span><span style="font-size: 11pt; text-decoration: underline;">and</span><span style="font-size: 11pt;"> if the </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> is </span><span style="font-size: 11pt; text-decoration: underline;">not</span><span style="font-size: 11pt;"> one of the pre-defined values listed under </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> above.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Lead Time [days]</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The number of days it takes to receive a purchase item or manufacture a product from order date or start date through receiving date or finish date. &nbsp;This is used as a reference by the </span><span style="font-size: 11pt; font-style: italic;">MRP</span><span style="font-size: 11pt;"> module to determine start dates for purchase orders and work orders. &nbsp;This is calendar days for purchased parts and shop days (per the shop calendar as entered in </span><span style="font-size: 11pt;"><a href="sm-h_enter_shop_calendar.htm" class="topiclink">SM-H &nbsp;Enter Shop Calendar)</a></span><span style="font-size: 11pt;"> for manufactured parts. &nbsp;For manufactured parts, it only reflects the number of days to make a typical production run quantity of this level of the Bill of Materials, assuming all components are available.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receive to QC</span></p>
+<p><span style="font-size: 11pt;">Enter a Y if you want to force this item to be received into QC in </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C Receive Purchase Orders</a></span><span style="font-size: 11pt;"> regardless of the choice made by receiving when processing the receipt.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reset &amp; Counter</span></p>
+<p><span style="font-size: 11pt;">If the Inventory default for Reset Receive to QC is enabled you can click the Reset checkbox and indicate the number of consecutive good receipts must be made before the Receipt to QC is waived. </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Weight</span></p>
+<p><span style="font-size: 11pt;">The weight of the item. &nbsp;This is used to calculate the total packing slip weight. &nbsp;If the </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> is LB or CWT and the </span><span style="font-size: 11pt; font-style: italic;">Stock UM</span><span style="font-size: 11pt;"> is something different, this value is used within purchase order entry to calculate the purchase price (see </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> above for these price formulas).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Foot Factor</span></p>
+<p><span style="font-size: 11pt;">This can be used to record cubic or linear feet of the item. &nbsp;In a future version this will be used to calculate the total cubic feet for an order on the packing list (not currently available). &nbsp;This information can be helpful in calculating container loads for shipping. &nbsp;If the </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> is SF, MSF, BF, MBF, LF, CLF, or MLF and the </span><span style="font-size: 11pt; font-style: italic;">Stock UM</span><span style="font-size: 11pt;"> is something different, this value is used within purchase order entry to calculate the purchase price (see </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> above for these price formulas.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Std Pack</span></p>
+<p><span style="font-size: 11pt;">The number of items per carton, sack, etc. &nbsp;This can be used as a Purchase Increment by </span><span style="font-size: 11pt;"><a href="mr-j_generate_purchase_orders.htm" class="topiclink">MR-J &nbsp;Generate Purchase Orders</a></span><span style="font-size: 11pt;"> if this capability is turned on in </span><span style="font-size: 11pt;"><a href="sd-d_material_requirements_defaults.htm" class="topiclink">SD-D Material Requirements Defaults</a></span><span style="font-size: 11pt;">. &nbsp;It should be entered in increments of the Purchase UM so if you have an item you stock by EA and purchase in boxes of 100, the Stock UM would be EA, Purch UM would be BOX, PO Conv would be 100 and Std Pack would be 1 meaning increments of 1 box. &nbsp;Then if MRP determined that you need 452 pieces, the PO generated in MR-J would round up to 5 BOX quantity.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Freight Percent</span></p>
+<p><span style="font-size: 11pt;">If you wish to get a freight factor into the average cost of an item, you can enter a freight percentage in this field. &nbsp;Whenever the item gets received through purchase order receiving, its cost will be increased by the amount of the percentage entered here. &nbsp;For example, if you feel an item has a 20% freight cost, enter 20.00 in this field. &nbsp;Freight costs accounted for in this manner are absorbed into your inventory instead of being expensed. &nbsp;You would most likely enter a freight percentage only on selected inventory items where freight is a significant portion of the cost.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Warehouse Control?</span></p>
+<p><span style="font-size: 11pt;">If Multiple Bin Warehouse Control has been turned on globally in </span><span style="font-size: 11pt;"><a href="sd-s_warehouse_control_defaults.htm" class="topiclink">SD-S Warehouse Control Defaults</a></span><span style="font-size: 11pt;"> then it can be further controlled here by item or in </span><span style="font-size: 11pt;"><a href="wc-b_assign_warehouse_control.htm" class="topiclink">WC-B Assign Warehouse Control</a></span><span style="font-size: 11pt;"> by both Item and Warehouse Location. &nbsp;Y means that Multiple Bin Locations are available but quantity by Bin will not be tracked. &nbsp;Q means that quantity by bin will also be maintained.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Cycle Code</span></p>
+<p><span style="font-size: 11pt;">The cycle code is a user defined code that is used as a selection criterion when running </span><span style="font-size: 11pt;"><a href="in-j_print_physical_check.htm" class="topiclink">IN-J &nbsp;Print Physical Check</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A &nbsp;Capture Frozen Inventory</a></span><span style="font-size: 11pt;"> for inventory counting. As an example, you may decide to count the &quot;1's&quot; monthly, the &quot;2's&quot; quarterly, and the &quot;3's&quot; annually.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Commissions</span></p>
+<p><span style="font-size: 11pt;">Enter N if you want this item to be exempt from Sales Commissions processed through Sales Orders. &nbsp; If you do not use Commissions at all, this setting does not matter. &nbsp; It is intended for companies that do use Sales Commission processing to exclude exception items (such as Tooling or a Restocking Charge) from commission calculations.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Drawing #</span></p>
+<p><span style="font-size: 11pt;">The drawing number of the item. &nbsp;This will print on the shop traveler. &nbsp;It is also included as an invisible field in the Purchase Order and can be made visible to print on the PO. &nbsp;If ECO Tracking is turned on in the </span><span style="font-size: 11pt;"><a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a></span><span style="font-size: 11pt;"> then a Lookup icon will be available to see prior revision history of an item and enter a new ECO and Revision. &nbsp;The current Drawing and Revision level will display on the screen but the history is available for review.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Revision Level</span></p>
+<p><span style="font-size: 11pt;">The current engineering revision level of the item. &nbsp;This will print on the shop traveler. &nbsp; It is also included as an invisible field in the Purchase Order and can be made visible to print on the PO.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">UPC</span></p>
+<p><span style="font-size: 11pt;">If UPC Control is turned on in <a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a> then UPC numbers can be generated and will be displayed here</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Bin Location</span></p>
+<p><span style="font-size: 11pt;">The physical location of the item. &nbsp;This will print on the packing list, Physical Inventory count sheet, and on the work order pick list. &nbsp;This is a 10 character, alphanumeric field, upper case only. &nbsp;If Warehouse Control is turned on, then multiple bin locations per item are allowed and this field is only a reference and should designate the primary default Bin Location</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Lot Control?</span></p>
+<p><span style="font-size: 11pt;">If this item number is subject to lot control, enter a Y in this field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Serial Control?</span></p>
+<p><span style="font-size: 11pt;">If this item number is subject to serial control, enter a Y in this field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Shipping Lead Time</span></p>
+<p><span style="font-size: 11pt;">If this is populated then <a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A Enter Sales Orders</a> will use &quot;Today&quot; plus this value to generate the Estimated Ship date. &nbsp;In the case of a multiple line order, the greatest Lead time will apply to all lines.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Approved Vendors in PO?</span></p>
+<p><span style="font-size: 11pt;">If this is a purchased part that is subject to approved vendors, you can specify the level of control in this field. &nbsp;If you enter 0 or leave the field blank, you can freely purchase the item from any vendor without controls &nbsp;If you enter a 1, you will receive a warning during PO entry if you try to purchase the item from a non-approved vendor. &nbsp;If you enter a 2, you will not be allowed to purchase the item from a non-approved vendor.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Vendors for this item can be specified by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Vendors</span><span style="font-size: 11pt;"> button or via </span><span style="font-size: 11pt;"><a href="po-l_assign_vendors_to_items.htm" class="topiclink">PO-L &nbsp;Assign Vendors to Items</a></span><span style="font-size: 11pt;">. A default for this field can be set in </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;">. &nbsp;When the item number record gets created, it will assign the default value unless you override it in this field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">For more information on the use of approved vendors, see </span><span style="font-size: 11pt;"><a href="how_to_use_approved_vendors_and_manufacturers.htm" class="topiclink">How to Use Approved Vendors and Manufacturers</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Work Order Material</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then any purchase order for this item will require a Work Order number. &nbsp;This would be used for a generic type part number used for one time only purchases directly to a work order for material that would never maintain an on hand quantity or average cost because you would be averaging different things together.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Refurbished Item #</span></p>
+<p><span style="font-size: 11pt;">If this item is something that may be returned and refurbished and resold as refurbished, enter the item number of the refurbished version of this item. &nbsp;This is used in the Service and Repair module.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 16pt; font-weight: bold;">Additional Entry Screens</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">Links</span><span style="font-size: 11pt; font-style: italic;"> </span><span style="font-size: 11pt; font-weight: bold;">Button</span></p>
+<p><span style="font-size: 11pt;">Enter a path and file name to an image file that can be linked to this item, such as a PDF or JPG drawing, Word document, or any other file. &nbsp;If many files are stored in the same folder, a global path can be saved and then each link in that folder need only enter the file name. &nbsp;A link can be associated with a particular Routing sequence.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Any file type can be listed as the Image Link and it will be opened by Internet Explorer or the application specified when the on screen camera icon is clicked. &nbsp;Applications are identified by a code such as WORD or AUTOCAD which is then connected to the path and executable file for the application.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Link Printing Settings</span></p>
+<p><span style="font-size: 11pt;">Each linked file can be designated to print either as an embedded thumbnail or as a linked document and whether to be included when the item is a Parent, Component, or Both on various RTM based documents such as Shop Traveler, Estimate, Purchase Order, RFQ, Quote, Acknowledgement, Invoice, Packing Slip, and labels. &nbsp;Thumbnail formats include standard graphic formats BMP, JPG, GIF, and also Tiff Images (*.tif, *.tiff), GFI Fax Images (*.fax), SGI Images (*.bw,*.rgb,*.rgba,*.sgi), Autodesk Image Files (*.cel,*.pic), Truevision Images (*.tga, *.vst, *.icb, *.vda, *.win), ZSoft Paintbrush Images (*.pcx,*.pcc), Word 5.x Screen Capture Files (*.scr), Kodak Photo-CD images (*.pcd), Portable pixel/gray map images (*.ppm,*.pgm,*.pbm), Dr. Halo images (*.cut, *.pal), SGI Wavefront images (*.rla, *.rpf), Photoshop images (*.psd, *.pdd), Paintshop Pro images (*.psp), Windows MetaFile images (*.WMF).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">File formats that can print as linked documents include any format that Windows can print directly. &nbsp; When RTM forms are emailed, linked document files (up to 10 per item per RTM) are included as additional attachments to the email.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">Specs</span><span style="font-size: 11pt; font-weight: bold;"> Button &nbsp;(Specifications)</span></p>
+<p><span style="font-size: 11pt;">This is a free format notepad for maintaining extra description or specifications on the item. &nbsp;These specifications will optionally print on acknowledgments, packing lists, invoices, and purchase orders, and automatically print on shop travelers. &nbsp;To enter specifications click the </span><span style="font-size: 11pt; font-style: italic;">Specs</span><span style="font-size: 11pt;"> button.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">Std Cost</span><span style="font-size: 11pt; font-weight: bold;"> Button (Standard Costs)</span></p>
+<p><span style="font-size: 11pt;">As a convenience, standard costs for the item can be entered by clicking the </span><span style="font-size: 11pt; font-style: italic;">Std Costs</span><span style="font-size: 11pt;"> button. &nbsp;You will be presented with a screen identical to that found in </span><span style="font-size: 11pt;"><a href="in-l-a_enter_standard_costs.htm" class="topiclink">IN-L-A &nbsp;Enter Standard Costs</a></span><span style="font-size: 11pt;"> &nbsp;Refer to that program for details. &nbsp;For more information on using standard costs, see </span><span style="font-size: 11pt;"><a href="how_to_use_standard_costs.htm" class="topiclink">How to Use Standard Costs</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">MRP</span><span style="font-size: 11pt; font-weight: bold;"> Button (MRP Parameters)</span></p>
+<p><span style="font-size: 11pt;">As a convenience, MRP parameters for the item can be entered by clicking the </span><span style="font-size: 11pt; font-style: italic;">MRP</span><span style="font-size: 11pt;"> button. &nbsp;You will be presented a screen identical to that of </span><span style="font-size: 11pt;"><a href="mr-d_enter_mrp_parameters.htm" class="topiclink">MR-D &nbsp;Enter MRP Parameters</a></span><span style="font-size: 11pt;">. &nbsp;Refer to that program for details.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">Vendors</span><span style="font-size: 11pt; font-weight: bold;"> Button (Vendors and Vendor Item numbers)</span></p>
+<p><span style="font-size: 11pt;">As a convenience, vendors and vendor item numbers for the item can be entered by clicking the </span><span style="font-size: 11pt; font-style: italic;">Vendors</span><span style="font-size: 11pt;"> button. &nbsp;You will be presented with a screen identical to that of </span><span style="font-size: 11pt;"><a href="po-l_assign_vendors_to_items.htm" class="topiclink">PO-L &nbsp;Assign Vendors to Items</a></span><span style="font-size: 11pt;">. &nbsp;Refer to that program for details. &nbsp;For more information on using approved vendors, see </span><span style="font-size: 11pt;"><a href="how_to_use_approved_vendors_and_manufacturers.htm" class="topiclink">How to Use Approved Vendors and Manufacturers</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">Manufacturers</span><span style="font-size: 11pt; font-weight: bold;"> Button (Manufacturers and Manufacturer Item numbers)</span></p>
+<p><span style="font-size: 11pt;">As a convenience, manufactures and manufacturer item numbers for the item can be entered by clicking the </span><span style="font-size: 11pt; font-style: italic;">Manufacturers</span><span style="font-size: 11pt;"> button. &nbsp;You will be presented with a screen identical to that of </span><span style="font-size: 11pt;"><a href="bm-l_enter_approved_manufacturers.htm" class="topiclink">BM-L &nbsp;Enter Approved Manufacturers</a></span><span style="font-size: 11pt;">. &nbsp;Refer to that program for details. &nbsp;For more information on using approved manufacturers, see </span><span style="font-size: 11pt;"><a href="how_to_use_approved_vendors_and_manufacturers.htm" class="topiclink">How to Use Approved Vendors and Manufacturers</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">Cmp Button</span><span style="font-size: 11pt; font-weight: bold;">  </span></p>
+<p><span style="font-size: 11pt;">This button brings up a screen where compliance to various certifications is designated. &nbsp;The Compliance to Conflict Free Material, &nbsp;ROHS, ROHS3, REACH and CA Prop 65 can all be set to Yen, No, Pending or Exempt. &nbsp;You can also specify whether RoHS Documentation and Certificate of Conformance are required.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold;">U-Def Button</span><span style="font-size: 11pt; font-weight: bold;">  </span></p>
+<p><span style="font-size: 11pt;">This button brings up the screen with User Defined fields as defined in <a href="sm-p-e_define_inventory_user_define_fields.htm" class="topiclink">SM-P-E Define Inventory User Defined Fields</a> &nbsp; </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">International Fields</span></p>
+<p><span style="font-size: 11pt;">You will be given access to the following fields based on settings in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt; font-style: italic;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Tax-In</span></p>
+<p><span style="font-size: 11pt;">If the item is subject to an excise tax in which a tax is embedded in its selling or purchase price, set this field to Y. &nbsp;Upon invoice posting or purchase order receiving, this will cause the tax to be backed out of the price for </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;">, sales analysis, and tax reporting purposes. &nbsp;See </span><span style="font-size: 11pt;"><a href="im-g_enter_tax-in_codes.htm" class="topiclink">IM-G &nbsp;Enter Tax-In Codes</a></span><span style="font-size: 11pt;"> for more details.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Duty Code</span></p>
+<p><span style="font-size: 11pt;">This is the 3-character code that comprises the second half of the 6-character code used in </span><span style="font-size: 11pt;"><a href="im-e_enter_landed_cost_duty_codes.htm" class="topiclink">IM-E &nbsp;Enter Landed Cost Duty Codes</a></span><span style="font-size: 11pt;"> to establish a duty rate for landed cost processing. &nbsp;In essence it represents the Item Classification Rate specific to this item when imported from a particular country.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 16pt; font-weight: bold;">General Program Operation</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adding an Inventory Record</span></p>
+<p><span style="font-size: 11pt;">Before entering new item numbers, you should first create item classes through </span><span style="font-size: 11pt;"><a href="sm-c_enter_item_classes.htm" class="topiclink">SM-C &nbsp;Enter Item classes</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the various fields on the screen as required. &nbsp;Refer to </span><span style="font-size: 11pt; font-style: italic;">Field Explanations</span><span style="font-size: 11pt;"> above for details. &nbsp;At a minimum you must enter the </span><span style="font-size: 11pt; font-style: italic;">Item number</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">Class</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">Part Type</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">Stock UM</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">Price UM</span><span style="font-size: 11pt;">, and </span><span style="font-size: 11pt; font-style: italic;">Purch UM</span><span style="font-size: 11pt;"> fields before you will be permitted to save the record. &nbsp;.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Click the </span><span style="font-size: 11pt; font-style: italic;">Save</span><span style="font-size: 11pt;"> button to save the record (or press Alt-S).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Deleting an Inventory Item</span></p>
+<p><span style="font-size: 11pt;">You may not delete an inventory item if it has an on-hand quantity, open orders, if it is in a bill of material, if it has a routing, or if it is part of an active or non-purged physical inventory. &nbsp;To delete an item, use the Lookup or F2 to select the item, display the record on the screen and press &lt;Enter&gt;, then click the Delete button. &nbsp;If it can not be deleted, a list of the reasons why will be presented.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

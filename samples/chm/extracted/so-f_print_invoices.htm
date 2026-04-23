@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SO-F Print Invoices</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="invoice printing,SO-F &nbsp;Print Invoices">
+   <meta name="description" content="SO-F Print Invoices">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SO-F Print Invoices</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Sales &gt; Sales Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SO-F Print Invoices</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="so-e_release_sales_orders.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="so-g_post_invoices.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SO-F &nbsp;Print Invoices</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">After entering and releasing sales order line items, all the released items with ship quantities on that sales order are ready to invoice. &nbsp;You must print the invoice (whether to the screen, printer, email or to a file) before you can post it in </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G &nbsp;Post Invoices</a></span><span style="font-size: 11pt;">. &nbsp;Until the invoice gets posted, you can continue to reprint it and you can also allow new items to be entered on the original sales order.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program will print the invoices on the format selected in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Only those sales order items with ship quantities and </span><span style="font-size: 11pt; font-style: italic;">Release?</span><span style="font-size: 11pt;"> flags set to Y will be printed. &nbsp;Items on backorder and items with a </span><span style="font-size: 11pt; font-style: italic;">Release?</span><span style="font-size: 11pt;"> flag of N will not print on the invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After printing, the program allows you to mark whether invoices have been successfully printed so that they don't accidentally get printed twice in a later batch and so that changes can't be made to the sales order until the invoice has been posted or unmarked as being printed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program can be used for printing new (unposted) invoices and for reprinting previously posted invoices. &nbsp;In reprint mode you can also print invoices for vouchers entered through </span><span style="font-size: 11pt;"><a href="ar-b_enter_vouchers.htm" class="topiclink">AR-B &nbsp;Enter Vouchers</a></span><span style="font-size: 11pt;"> and finance charges generated through </span><span style="font-size: 11pt;"><a href="ar-d_charge_interest_on_invoices.htm" class="topiclink">AR-D &nbsp;Charge Interest on Invoices</a></span><span style="font-size: 11pt;">, should you need hard copies.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">You are first asked if you wish to print new (unposted) invoices or reprint previously posted invoices. &nbsp;If you select reprint mode, you will also be able to get hard copy printouts of vouchers and finance charges entered in the Accounts Receivable module.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you are printing new invoices, the first field asks </span><span style="font-size: 11pt; font-style: italic;">Print Invoice Date same as Ship Date?</span><span style="font-size: 11pt;"> &nbsp;If you answer Y, the program skips the </span><span style="font-size: 11pt; font-style: italic;">Invoice Date</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Ship Date</span><span style="font-size: 11pt;"> fields and automatically prints the invoice date equal to the </span><span style="font-size: 11pt; font-style: italic;">Ship Date</span><span style="font-size: 11pt;"> that was specified during </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;If no </span><span style="font-size: 11pt; font-style: italic;">Ship Date</span><span style="font-size: 11pt;"> was entered in </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt;"><a href="so-c_print_packing_slips.htm" class="topiclink">SO-C &nbsp;Print Packing Slips</a></span><span style="font-size: 11pt;">, the program will use the Estimated Ship Date of the first line of the order for both the ship date and invoice date. &nbsp;If you answer N, the cursor advances to the </span><span style="font-size: 11pt; font-style: italic;">Invoice Date</span><span style="font-size: 11pt;"> field where you can specify the </span><span style="font-size: 11pt; font-style: italic;">Invoice Date</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Ship Date</span><span style="font-size: 11pt;"> that pertain to this batch of invoices. &nbsp;You can override the </span><span style="font-size: 11pt; font-style: italic;">Ship Date</span><span style="font-size: 11pt;"> if it differs from the </span><span style="font-size: 11pt; font-style: italic;">Invoice Date</span><span style="font-size: 11pt;">. &nbsp;The Invoice Date that prints on the invoice will be the posting date of the invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next you are asked to </span><span style="font-size: 11pt; font-style: italic;">Print all SO's not yet Printed?</span><span style="font-size: 11pt;"> &nbsp;This allows batch printing of all released sales orders not yet marked as printed. &nbsp;If you want to print a single invoice, or if you want to print previously printed invoices, enter an N so that you can specify a range of sales order numbers to print. &nbsp;If you do not enter any limits, ALL released sales orders not yet marked as printed will be printed. &nbsp;See further below for an explanation as to how invoices are marked or un-marked as being printed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are asked if you want kit components printed. &nbsp;Press &lt;Enter&gt; to accept the Y default.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Next you are asked if you want to print comments after shipped items. &nbsp;The default is N. &nbsp;Generally, once an item has already shipped, you don't want the item's comments to print anymore. &nbsp;This prompt is only for the rare occasion when you want comments to print that are not attached to an open item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Next you can specify whether the sales order notes are to be printed. &nbsp;If you are using </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> you can indicate whether the options are to be printed or not. &nbsp;You can also indicate whether to print linked documents.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You are then asked if you want the report sent to the screen, the printer, email, or, with text formats, to a disk file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">As the invoices are being processed, if the program encounters an order with a deposit linked to it from </span><span style="font-size: 11pt;"><a href="ar-n_enter_print_sales_order_deposits.htm" class="topiclink">AR-N &nbsp;Enter/Print Sales Order Deposits</a></span><span style="font-size: 11pt;">, you will be prompted to enter the amount of the available deposit to be applied to this invoice.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Marking Invoices as Printed</span></p>
+<p><span style="font-size: 11pt;">After printing is completed, you are asked </span><span style="font-size: 11pt; font-style: italic;">Mark these Invoices as Printed?</span><span style="font-size: 11pt;"> &nbsp;If you answer Y, the invoices are marked as printed and can then be posted through </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G &nbsp;Post Invoices</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Unmarking Printed Invoices</span></p>
+<p><span style="font-size: 11pt;">Once an invoice is marked as printed, no further changes can be made to the sales order until the invoice is printed. &nbsp;This prevents some other user from accidentally changing a sales order between the time the invoice was printed and then posted. &nbsp;Otherwise the printed invoice could actually disagree with the posted information.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If after printing an invoice you want to make changes to the sales order, reprint the invoice again (use the </span><span style="font-size: 11pt; font-style: italic;">List</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">Screen</span><span style="font-size: 11pt;"> option if you don't need to physically print it again) and this time answer N to the </span><span style="font-size: 11pt; font-style: italic;">Mark these Invoices as Printed?</span><span style="font-size: 11pt;"> question. &nbsp;This will actually unmark the invoice and restore it to non-printed status.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After reviewing your printed invoices and verifying them for accuracy, you can proceed to </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G &nbsp;Post Invoices</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reprinting Posted Invoices</span></p>
+<p><span style="font-size: 11pt;">If you select reprinting posted invoices, you will be prompted for the invoice number(s). &nbsp;Enter a single number or a from/through range of invoice numbers. &nbsp;You are prompted whether to include Kit components, Comment lines, Notes and Options. &nbsp;Finally, indicate whether Sales Order Invoices, AR Vouchers and/or Finance Charge invoices within the range specified should be included. &nbsp;Be aware that if the original Sales Order Invoice included lines that were fully backordered (0 ship qty) these lines will not be shown on a reprint because nothing was saved in the posted invoice file for 0 quantity lines unless the &quot;Create 0 Qty SO Lines during Post?&quot; default is set to Y in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">DEF-M Sales Order Defaults (Evo-ERP)</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

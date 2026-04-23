@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>AP-V Enter AP Deposit</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="">
+   <meta name="description" content="AP-V Enter AP Deposit">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">AP-V Enter AP Deposit</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Accounting &gt; Accounts Payable&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">AP-V Enter AP Deposit</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ap-t_check_invoice_inquiry.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ap-x_print_invoice_detail.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">AP-V Enter AP Deposit</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">This program is used to enter a deposit and optionally attach it to a Purchase Order, similar to AR-N on the Accounts Receivable side. &nbsp;This creates an open voucher in Accounts Payable that can be picked to pay the same as any other to generate the check (or ePay) to send to the vendor with the exception that you cannot make a partial payment. &nbsp;If you are going to be making multiple payments to a vendor for deposits, they need to be entered separately.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">The GL posting when creating the Deposit in AP-V is a Credit to Accounts Payable and a debit to the new default account defined in AD-A for AP Deposits. &nbsp;This would typically be an Asset account such as &quot;Prepaid Inventory&quot;. &nbsp;The Deposit entry also creates an entry in BKAPDEP that is linked to the BKAPINVT record by the Deposit Number. &nbsp;Once a Deposit has been entered, it can be edited to the extent that it can be assigned to a different PO or, if not originally attached to a PO, it can later be attached to one, or it can be deleted which will back it out reversing the original transaction.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">Since the voucher in AP is also tagged with a Deposit Number, when the deposit to the vendor is actually paid, the check posting program marks the original invoice record as paid (as with any other voucher) and creates a new record that is identical but with a &quot;-D&quot; appended to the invoice number and saves as a Credit. &nbsp;Similar to AR, the value of this credit is not in the Accounts Payable account so AP Aging now has an option to include or exclude deposits. &nbsp;If you are reconciling the Aging balance to the GL, you need to exclude deposits.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">If the deposit is not associated with a PO, then when you receive the vendor invoice, enter it as a total amount including the deposit. &nbsp;Then when you pick to pay, take the invoice and credit and process a payment for the net amount. &nbsp;The check processing will credit cash for the net check amount, credit the deposit account for the deposit amount and debit AP for the gross invoice amount.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">If the deposit is linked to a PO, then AP-C will allow you to select the deposit, indicate how much of the deposit should be used on this invoice (in case there are partial receipts, you can use the deposit in separate payments). &nbsp; You will also be asked whether the invoice amount entered is a gross amount or the net to be paid to the vendor after the deposits are applied. &nbsp;You will then have the net invoice amount plus the deposit available to apply to lines. &nbsp;When you save, the GL posting will be the total line amount debit to PO/RNI, Deposit amount credit AP Deposits, Net invoice amount credit AP and debit to tax and freight as usual. &nbsp;Only the net invoice will pass to AP so the ultimate payment processing in this case is no different than any other.</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Vendor</span></p>
+<p><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Vendor</span><span style="font-size: 11pt;"> field is the Vendor Code the deposit is being entered for.</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Deposit Date</span></p>
+<p><span style="font-size: 11pt;">The transaction date.</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Link to PO#</span></p>
+<p><span style="font-size: 11pt;">The Purchase Order the deposit is being entered for. &nbsp;This can be left blank for a Deposit on Account.</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Deposit Amount</span></p>
+<p><span style="font-size: 11pt;">The amount of the Deposit.</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p><span style="font-size: 11pt;">Before using this program for the first time, go to </span><span style="font-size: 11pt;"><a href="ad-a_general_ledger_defaults.htm" class="topiclink">AD-A &nbsp;General Ledger Defaults</a></span><span style="font-size: 11pt;"> and define the default AP Deposit account. &nbsp;If you use multiple currencies, you will need to use </span><span style="font-size: 11pt;"><a href="im-b_enter_multiple_currencies.htm" class="topiclink">IM-B &nbsp;Enter Multiple Currencies</a></span><span style="font-size: 11pt;"> to enter a Deposit account and control and cinversion accounts for each currency.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">To add a deposit, click Add New and enter the Vendor Code, date, Purchase Order (as applicable) and amount. This creates an open voucher in Accounts Payable that can be picked to pay the same as any other to generate the check (or ePay) to send to the vendor with the exception that you cannot make a partial payment. &nbsp;If you are going to be making multiple payments to a vendor for deposits, they need to be entered separately. &nbsp;Save the deposit and an entry will be saved to Accounts Payable that can be picked and paid.</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

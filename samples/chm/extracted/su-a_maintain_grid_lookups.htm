@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SU-A Maintain Grid Lookups</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="SU-A Maintain Grid Lookups">
+   <meta name="description" content="SU-A Maintain Grid Lookups">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SU-A Maintain Grid Lookups</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Queries &amp; Reports &gt; Setup Queries &amp; Reports&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SU-A Maintain Grid Lookups</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="qu-f_query_executor.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="su-b_maintain_drill_down_menus.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SU-A Maintain Grid Lookups</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to modify the columns, files and indexes used on the grids displayed by Drill Downs.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Program Operation</span></p>
+<p><span style="font-size: 11pt;">The grid maintenance program consists of three parts, the grid name, the field data, and the Index keys. &nbsp;The grid name the name of the grid to be used by lookups or by drill downs. The FD name is the name of the File you will be looking at. &nbsp;Select from the drop down list of available names. The form name is always WBKLOOKUP.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Security level is a value of 1 thru 999 and defaults to 999. If you have a grid that displays payroll information, or other sensitive information you need to set this field to a much lower value then 999. The security assumes 1 has access to everything and 999 is limited. Defining levels in between is up to you and will control which user has access to which grids. The &#58933;tart at end?field is a flag to tell the lookup to start the by highlighting the last valid record in the file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The Field data section consists of the data fields you want to see in the grid. You need to supply a column header, and then select a field from the drop down list of available fields, and the third column is for the sub string search. &nbsp;Sub string searches will only work on alphanumeric fields and you may only specify up to 6 fields per grid.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The Key data are the indexes or sort orders for the grid. Again you specify the column header of sort name, then the index key name from a drop down list, and the match fld name in case the index is a compound index, would be the first field of that key. In most cases it is just the same as the key name. This allows you to sort the grids in the ways you find most useful and allows for the fast find for that index.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">To delete a grid just bring one up for editing and then press the delete button.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Copying a grid, is accomplished by bringing up an existing grid, and answering 'yes’ to would you like to create a copy of this grid. It will then blank out the grid and FD names. Type in the new name of the grid you want to create, and it will tell you this grid name does not exist and ask you if you want to create a new one. Answer no and specify the FD name. &nbsp;Then you can edit the field and key data and save it when you are done.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">User Defined Functions</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">User Defined Functions (UDF) allow you to add fields to Lookup Grids using SU-A for calculated values or for data fields in files other than the primary file opened by the grid. &nbsp; A simple UDF contains up to 5 sections. &nbsp;Define variables, Open file, Find correct record, perform calculation, return results.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Template UDF</span></p>
+<p><span style="font-size: 11pt;">Create a text file using Notepad named UDF1.SRC (or use whatever number is the next available if you already have UDF#.SRC files for other functions) that contains the following. &nbsp;The number in the file name UDF#.SRC must match the number in the line func UDF# and the number entered on the SU-A screen as described below. &nbsp;Lines in the UDF beginning with // are comment lines. &nbsp;Any </span><span style="font-size: 11pt; color: #0000ff;">blue</span><span style="font-size: 11pt;"> text is something that you would replace depending on the specifics of the UDF you are creating.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">//This is a Template UDF containing sample lines for the various sections of a UDF</span></p>
+<p><span style="font-size: 11pt;">//This first line defined the UDF by a number. &nbsp;Every UDF must have a unique number</span></p>
+<p style="text-indent: 48px;"><span style="font-size: 11pt;">func UDF</span><span style="font-size: 11pt; font-weight: bold; color: #0000ff;">1</span></p>
+<p><span style="font-size: 11pt;">//This next line is used if you will be performing any sort of calculation and need a field defined to store //the results. The example given is a 9 place number with 2 decimal. &nbsp;The size includes the decimals plus //the decimal point itself. &nbsp;You can define multiple variables.</span></p>
+<p style="text-indent: 48px;"><span style="font-size: 11pt;">Define</span><span style="font-size: 11pt; color: #0000ff;"> variablename </span><span style="font-size: 11pt;">type N size</span><span style="font-size: 11pt; color: #0000ff;"> </span><span style="font-size: 11pt; font-weight: bold; color: #0000ff;">9</span><span style="font-size: 11pt; color: #0000ff;"> </span><span style="font-size: 11pt;">dec </span><span style="font-size: 11pt; font-weight: bold; color: #0000ff;">2</span></p>
+<p><span style="font-size: 11pt;">//This next line is only needed if you need to open a file that the grid has not already opened. &nbsp;You are //defining a File Handle, or Alias for the program to use to open the file. &nbsp;Replace filehandle.h with the //name you want to use for your file</span></p>
+<p> <span style="font-size: 11pt;">define </span><span style="font-size: 11pt; color: #0000ff;">filehandle.h</span><span style="font-size: 11pt;"> type I size 5</span></p>
+<p><span style="font-size: 11pt;">//Check to see if the file is already open so you only open it once, then open it</span></p>
+<p> <span style="font-size: 11pt;">if </span><span style="font-size: 11pt; color: #0000ff;">filehandle.h</span><span style="font-size: 11pt;">=0</span></p>
+<p> <span style="font-size: 11pt;">open </span><span style="font-size: 11pt; color: #0000ff;">filename</span><span style="font-size: 11pt;"> fnum </span><span style="font-size: 11pt; color: #0000ff;">filehandle.h</span><span style="font-size: 11pt;"> lock N</span></p>
+<p> <span style="font-size: 11pt;">endif</span></p>
+<p><span style="font-size: 11pt;">//Now find the correct record in the file. &nbsp;Index tells the program which index to use on the new file and //field is the field in the primary file that links to the index in the new file.</span></p>
+<p> <span style="font-size: 11pt;">Findv M fnum </span><span style="font-size: 11pt; color: #0000ff;">filehandle.h </span><span style="font-size: 11pt;">key</span><span style="font-size: 11pt; color: #0000ff;"> index </span><span style="font-size: 11pt;">val</span><span style="font-size: 11pt; color: #0000ff;"> field</span></p>
+<p><span style="font-size: 11pt;">//Now perform any necessary calculation</span></p>
+<p> <span style="font-size: 11pt; color: #0000ff;">variablename</span><span style="font-size: 11pt;"> = </span><span style="font-size: 11pt; color: #0000ff;">calculation</span></p>
+<p><span style="font-size: 11pt;">//Finally, return the results which will typically be the Variable calculated or a field in the other file that //was opened</span></p>
+<p> <span style="font-size: 11pt;">ret </span><span style="font-size: 11pt; color: #0000ff;">variablename</span></p>
+<p><span style="font-size: 11pt;">//or</span></p>
+<p> <span style="font-size: 11pt;">ret </span><span style="font-size: 11pt; color: #0000ff;">fieldfromfile</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Adding a UDF to a Grid</span></p>
+<p><span style="font-size: 11pt;">When you are on a lookup grid screen, the name of the grid is on the lower left corner.</span></p>
+<p><span style="font-size: 11pt;">In Queries - SU-A for the appropriate grid, add a column for the UDF with the Data field named UDF#() where the # is the UDF number. &nbsp;The program will automatically populate the UDF column with U. &nbsp;Enter type A for an Alpha field or N for Numeric and the size you want the column to be.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Sample UDFs</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">// UDF1 will get the Cust PO for Shipments grid</span></p>
+<p><span style="font-size: 11pt;">func UDF1</span></p>
+<p><span style="font-size: 11pt;">define invhead.h type I size 5  </span></p>
+<p><span style="font-size: 11pt;">// File handle to open BKARHINV</span></p>
+<p><span style="font-size: 11pt;">if sohead.h = 0</span></p>
+<p><span style="font-size: 11pt;"> &nbsp;openv 'bkarhinv' fnum invhead.h lock N  </span></p>
+<p><span style="font-size: 11pt;">// this will open the file once</span></p>
+<p><span style="font-size: 11pt;">endif</span></p>
+<p><span style="font-size: 11pt;">findv M fnum invhead.h key bkar.inv.num val bkar.invl.invnm  </span></p>
+<p><span style="font-size: 11pt;">// this finds the correct record</span></p>
+<p><span style="font-size: 11pt;">// return the value</span></p>
+<p><span style="font-size: 11pt;">ret bkar.inv.cusord</span></p>
+<p><span style="font-size: 11pt;">&nbsp;</span></p>
+<p><span style="font-size: 11pt;">*************************************************************************************</span></p>
+<p><span style="font-size: 11pt;">&nbsp;</span></p>
+<p><span style="font-size: 11pt;">The UDF below will calculate the Net Discounted price of a shipment if there is a discount on the line.</span></p>
+<p><span style="font-size: 11pt;">&nbsp;</span></p>
+<p><span style="font-size: 11pt;">// UDF2 calculates discounted unit price</span></p>
+<p><span style="font-size: 11pt;">func UDF2</span></p>
+<p><span style="font-size: 11pt;">define discprice type n size 13 dec 4</span></p>
+<p><span style="font-size: 11pt;">discprice=bkar.invl.pprce * (1-(bkar.invl.pdisc/100))</span></p>
+<p><span style="font-size: 11pt;">ret discprice</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">************************************************************************************</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">This UDF is extremely simple. &nbsp;It is getting a field from a different file that is already open and on the correct record</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">// UDF3 will get the SO Number from the Sales Order header</span></p>
+<p><span style="font-size: 11pt;">func UDF3</span></p>
+<p><span style="font-size: 11pt;">ret BKAR.INV.SONUM</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">*************************************************************************************</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">This UDF assumes a previous UDF was already called by another column on the grid and has already defined the file handle</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">// UDF4 assumes UDF1 was called and running uses same file handle. &nbsp;It returns the Invoice total</span></p>
+<p><span style="font-size: 11pt;">func UDF4</span></p>
+<p><span style="font-size: 11pt;">findv M fnum invhead.h key bkar.inv.invnum val bkar.invl.invnm</span></p>
+<p><span style="font-size: 11pt;">ret bkar.inv.total</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">*************************************************************************************</span></p>
+<p><span style="font-size: 11pt;">This UDF needs to convert a text field to a numeric value to find the associated record in the other file</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">// UDF5 will get the Invoice number for the PO Receiver grid</span></p>
+<p><span style="font-size: 11pt;">func UDF5</span></p>
+<p><span style="font-size: 11pt;">define apinv.h type I size 5</span></p>
+<p><span style="font-size: 11pt;">if apinv.h = 0</span></p>
+<p><span style="font-size: 11pt;"> &nbsp;openv 'MKICLASS' fnum apinv.h lock N</span></p>
+<p><span style="font-size: 11pt;">endif</span></p>
+<p><span style="font-size: 11pt;">findv M fnum apinv.h key mkeclass.num val val(bkap.pol.invnum)</span></p>
+<p><span style="font-size: 11pt;">ret mkeclass.desc</span></p>
+<p style="margin: 0px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

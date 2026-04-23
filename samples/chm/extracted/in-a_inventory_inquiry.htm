@@ -1,0 +1,185 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>IN-A Inventory Inquiry</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="IN-A &nbsp;Inventory Inquiry,inventory inquiry">
+   <meta name="description" content="IN-A Inventory Inquiry">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">IN-A Inventory Inquiry</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Inventory&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">IN-A Inventory Inquiry</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="how_to_use_approved_vendors_and_manufacturers.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="in-b_enter_inventory.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">IN-A &nbsp;Inventory Inquiry</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">This program provides an all purpose inquiry on a specific inventory item. &nbsp;Data fields displayed include product type, stock unit of measure, category, item class, last cost, average cost, standard cost, inventory value, base price, selling unit of measure, purchase unit of measure and conversion factor, lead time, reorder level, reorder amount, revision level, drawing number, and stock location. &nbsp;Inventory status is displayed for on hand, on sales order, on back order, on purchase order, on work order, allocated, and in work-in-process quantities.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">From the inquiry screen, you can click on buttons to view open and closed sales orders, purchase orders, work orders, and allocations. &nbsp;Vendors, Manufacturers and Customers and their associated item numbers are available as are the Bill of Materials and Where Used (one level each direction). &nbsp;Transaction history and monthly usage summary for the past year is also available.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">A second screen displays inventory status within location, if multiple warehouses or plants are used.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When &lt;Enter&gt; is pressed after the item number is entered, the program rebuilds the inventory stock status fields from scratch from the open sales order, work order, and purchase order files.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Multi-Currency &amp; Landed Cost Processing</span></p>
+<p><span style="font-size: 11pt;">If you are have multi-currency processing enabled in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, be aware that the </span><span style="font-size: 11pt; font-style: italic;">Last </span><span style="font-size: 11pt;">and </span><span style="font-size: 11pt; font-style: italic;">Average</span><span style="font-size: 11pt;"> costs of purchased items that are shown in IN-A, </span><span style="font-size: 11pt; font-style: italic;">Inventory Inquiry, </span><span style="font-size: 11pt;">will reflect foreign currency fluctuations that can vary from transaction to transaction.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Also be aware that if landed cost processing is being used, the </span><span style="font-size: 11pt; font-style: italic;">Last </span><span style="font-size: 11pt;">and </span><span style="font-size: 11pt; font-style: italic;">Average</span><span style="font-size: 11pt;"> costs will be increased by landed costs such as duty charges, brokerage fees, and freight.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter a item number or select one from a pop-up window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button). &nbsp;You can search either by the item number, description, item class, or alternate. &nbsp;The search by </span><span style="font-size: 11pt; font-style: italic;">Alternate</span><span style="font-size: 11pt;"> allows you to enter a vendor or manufacturer's item number. &nbsp;The program will search the vendor and manufacturer cross-reference files and will pull in your item number equivalent. &nbsp;All field information will be displayed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Click on buttons to view open or closed sales orders, purchase orders, work orders, allocations, and work-in-process, and also to review stock status by location, specifications, Approved Manufacturers and Vendors, &nbsp;BOM, Where Used, Routing, Customer Cross-reference number, transaction listing or monthly usage summary for the past year. &nbsp;Usage is defined as the total of type I (Issue to Work Order), J (Purchase to Work Order) and S (Shipment) transactions. &nbsp;Adjustments are not included. &nbsp;If you click the BOM or Where Used button and then double click or press Enter on a component or parent in the resulting display, another IN-A screen will open for that item, allowing you to drill down into BOMs or drill up through them.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

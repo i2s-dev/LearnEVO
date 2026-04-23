@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Features &amp; Options</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="features &amp; options">
+   <meta name="description" content="Features &amp; Options">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Features &amp; Options</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Features &amp; Options&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Features &amp; Options</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="configuring_items.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="setting_up_features_and_options.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Features &amp; Options Overview</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> module provides a means of selecting a series of options from within a product through the sales order entry or sales quotations programs. &nbsp;Once a series of options has been selected, the options may be passed over to the work order system and will produce a custom bill of material for the manufacture of the item. &nbsp;The option system may also be used to configure selling kits within sales order entry.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This options capability is ideal for products that have more options than a item numbering scheme can accommodate. &nbsp;An office desk, for example, could be available with different types of wood, different sized desk tops, rounded or square edges, left or right return, two or three drawer pedestals, half or full height modesty panels, etc. &nbsp;It can be very difficult, if not impossible, to devise a item numbering scheme that can accommodate every mathematical combination of options.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> module allows you to define an inventory type </span><span style="font-size: 11pt; font-style: italic;">O</span><span style="font-size: 11pt;"> item (which we refer to as a </span><span style="font-size: 11pt; font-style: italic;">Feature</span><span style="font-size: 11pt;">) in the product&iexcl;&brvbar;s bill of material wherever there are multiple options for a particular feature. &nbsp;For example, if a desk is available in six different colors, you could create an inventory type </span><span style="font-size: 11pt; font-style: italic;">O</span><span style="font-size: 11pt;"> item in the inventory file with the product code “COLOR.” &nbsp;You could then create a bill of material for the COLOR feature which would contain all the actual color options available. &nbsp;In the bill of material for the desk you would enter the feature COLOR instead of indicating specific colors.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When entering a sales order for the desk, the system will automatically display all the color options in a window. &nbsp;You may then select a specific color, which will feed into the sales order as a line item following the desk. &nbsp;You may define any number of these features within a product, and you can have features within features and within options. &nbsp;Features can be defined in the bill of material as mandatory, meaning that an option must be selected, or non-required, meaning that the feature may be skipped.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can attach prices to options directly within the bill of material, or you can specify that the customer’s standard pricing (price code, contract, or base price) be used. &nbsp;Pricing can also be set up to be a percentage charge against the price of the parent product. &nbsp;You can specify whether the price is to be separately itemized or if it is to be added to the price of the parent product.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are not limited to one choice per feature. &nbsp;For example, if 10 desks are ordered, you may select five desks with a black color option and five desks with a white color option.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Once the options are selected and the sales order is saved, you may run </span><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;">. &nbsp;A work order will automatically be created for the parent product in either the </span><span style="font-size: 11pt; font-style: italic;">Work Orders</span><span style="font-size: 11pt;"> modules. &nbsp;All manufacturing type options that were selected in the sales order, including any comments or changed descriptions, will be passed over to the work order bill of materials, thus creating a custom bill of materials. &nbsp;At that point inventory is immediately allocated for all materials in the work order bill of material.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt;">The Features &amp; Options module is ideal for custom manufacturers. &nbsp;Not only does it solve the item numbering and pricing dilemma, but it reduces ordering mistakes, sales order and work order processing time, facilitates materials planning, and increases turnaround time in the shop.</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 16pt; font-weight: bold;">Setting up Features &amp; Options</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Step 1 - Set up Features in Inventory</span></p>
+<p><span style="font-size: 11pt;">An</span><span style="font-size: 11pt; font-style: italic;"> O </span><span style="font-size: 11pt;">type inventory item is a item number that represents a group or set of options. &nbsp;We refer to this as a </span><span style="font-size: 11pt; font-style: italic;">Feature</span><span style="font-size: 11pt;">. &nbsp;A feature is not a tangible item and is never stocked or ordered. &nbsp;It can also be thought of as a &quot;Decision point&quot; or node in the configuration flowchart. &nbsp;A bill of material is created for the feature in which the components themselves represent the actual options. &nbsp;We will refer to this as an </span><span style="font-size: 11pt; font-style: italic;">Option Bill</span><span style="font-size: 11pt;">. &nbsp;As an example, an </span><span style="font-size: 11pt; font-style: italic;">O</span><span style="font-size: 11pt;"> type item could be setup for a feature using the product code &quot;COLOR.&quot; &nbsp;An option bill could then be entered for COLOR in which all the actual color options are entered as components. &nbsp;Create an </span><span style="font-size: 11pt; font-style: italic;">O</span><span style="font-size: 11pt;"> type item for all features that will be needed for your product line.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Step 2 - Create Option Bills of Material</span></p>
+<p><span style="font-size: 11pt;">After </span><span style="font-size: 11pt; font-style: italic;">O</span><span style="font-size: 11pt;"> type inventory items are created for all the </span><span style="font-size: 11pt; font-style: italic;">Features</span><span style="font-size: 11pt;"> needed, you may create </span><span style="font-size: 11pt; font-style: italic;">Option Bills of Material</span><span style="font-size: 11pt;"> through </span><span style="font-size: 11pt;"><a href="fo-a_enter_features_and_options.htm" class="topiclink">FO-A &nbsp;Enter Features and Options</a></span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt;"><a href="bm-a_ener_bills_of_material.htm" class="topiclink">BM-A &nbsp;Enter Bills of Material.</a></span><span style="font-size: 11pt;"> &nbsp;Enter the O type feature as the </span><span style="font-size: 11pt; font-style: italic;">Parent Product</span><span style="font-size: 11pt;"> and the actual options as components.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Step 3 - Add Features to Parent Bills of Material</span></p>
+<p><span style="font-size: 11pt;">Wherever a finished good or subassembly parent product has a set of options within its bill of material, add a </span><span style="font-size: 11pt; font-style: italic;">Feature </span><span style="font-size: 11pt;">(</span><span style="font-size: 11pt; font-style: italic;">O</span><span style="font-size: 11pt;"> type item) as a bill of material component instead of the specific options. &nbsp;During sales order entry the options within that feature will be presented in a pop-up window for selection.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Step 4 - Review FO-B, Print Features and Options</span></p>
+<p><span style="font-size: 11pt;">You can print out the features and options for any parent product through </span><span style="font-size: 11pt;"><a href="fp-b_print_features_and_options.htm" class="topiclink">FO-B &nbsp;Print Features and Options</a></span><span style="font-size: 11pt;">. &nbsp;If you answer yes to </span><span style="font-size: 11pt; font-style: italic;">Print the Subassemblies?</span><span style="font-size: 11pt;"> you will see all levels of the product structure. &nbsp;This report is limited to features and options only and does not include the standard components.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Step 5 - Test Options in SO-A, Enter Sales Orders</span></p>
+<p><span style="font-size: 11pt;">The best way to verify if your features and options are setup properly is to enter a sales order in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;You can enter an order for the item or items you wish to test. &nbsp;You can press &lt;Esc&gt; and not save the order, thus allowing you to test as many products as you wish without creating live sales orders. &nbsp;You can also use </span><span style="font-size: 11pt;"><a href="so-p-a_enter_sales_quotations.htm" class="topiclink">SO-P-A &nbsp;Enter Sales Quotations</a></span><span style="font-size: 11pt;"> (which has identical functionality as SO-A), for testing purposes.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Features and Options Defaults</span></p>
+<p><span style="font-size: 11pt;">Defaults are established in </span><span style="font-size: 11pt;"><a href="sd-l_features_and_options_defaults.htm" class="topiclink">SD-L &nbsp;Features and Options Defaults</a></span><span style="font-size: 11pt;">. &nbsp;These defaults are standard settings for various prompts used during features and options entry and allow you to tailor the system to your needs. &nbsp;All default settings can be overridden during actual features and options entry. &nbsp;Defaults must be entered before the system will allow you to use </span><span style="font-size: 11pt;"><a href="fo-a_enter_features_and_options.htm" class="topiclink">FO-A &nbsp;Enter Features and Options</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

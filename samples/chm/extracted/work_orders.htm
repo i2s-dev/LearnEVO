@@ -1,0 +1,205 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>WORK ORDERS</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="WORK ORDERS">
+   <meta name="description" content="WORK ORDERS">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">WORK ORDERS</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Work Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">WORK ORDERS</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="file_names.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="wo-a_enter_work_orders.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">WORK ORDERS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WORK ORDERS OVERVIEW</span></p>
+<p><span style="font-size: 11pt;">Actual manufacturing takes place in the </span><span style="font-size: 11pt; font-style: italic;">Work Orders</span><span style="font-size: 11pt;"> module. Work orders are generated automatically from either sales orders or estimates, can be generated by MRP or are entered manually.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Work orders can be for specific customers or for stock. &nbsp;Work orders can have multiple start and finish dates, or a program is available which converts each set of dates into a separate work order.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">All work orders go through the following sequence of events although not all steps are necessary for all companies.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ENTER WORK ORDERS</span></p>
+<p><span style="font-size: 11pt;">Work orders are manually created or edited through this program. &nbsp;Start and finish dates are assigned, the order is designated for a customer or for stock, any special instructions are provided, and estimated costs (based on current standard costs) are calculated. &nbsp;As production occurs, actual costs are posted to this screen for comparison with estimated costs.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ENTER WORK ORDER ROUTINGS</span></p>
+<p><span style="font-size: 11pt;">The parent product’s routing from the </span><span style="font-size: 11pt; font-style: italic;">Routings</span><span style="font-size: 11pt;"> module is copied into the work order routing file when the work order is created. &nbsp;The work order routing can be modified for this one order without affecting the item's standard routing. &nbsp;If no standard routing exits, you can enter a work order routing from scratch. &nbsp;Any changes made to the routing will be reflected in the cost rollup performed in the work order entry screen. &nbsp;As production occurs, actual labor hours are posted to this file for comparison with estimated hours. &nbsp;Once the work order routing is created, a backlog of labor hours is created against each applicable work center. &nbsp;A work order routing is not mandatory in order to use </span><span style="font-size: 11pt; font-style: italic;">Work &nbsp;Orders</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ENTER WORK ORDER BILLS OF MATERIAL</span></p>
+<p><span style="font-size: 11pt;">The parent product’s bill of material from the </span><span style="font-size: 11pt; font-style: italic;">Bills of Material</span><span style="font-size: 11pt;"> module is copied into a work order bill of material file. &nbsp;Components may be modified, deleted, or added for this one order without affecting the standard bill of material. &nbsp;This feature is ideal for custom manufacturing where products are subject to options. &nbsp;If there is no bill of material, you may enter one from scratch. &nbsp;As materials are issued to or purchased for the work order, they are posted to this file for comparison with estimated quantities. &nbsp;A work order bill of material is not mandatory in order to use work orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">RELEASE WORK ORDERS</span></p>
+<p><span style="font-size: 11pt;">When work orders are ready for production to begin, they are released through this program, which creates an actual start date in the work order file and produces an optional shortage report. &nbsp;If not needed, this step can be skipped by specifying in </span><span style="font-size: 11pt;"><a href="sd-b_work_order_defaults.htm" class="topiclink">SD-B &nbsp;Work &nbsp;Orders Defaults</a></span><span style="font-size: 11pt;"> that all work orders be released when first entered.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PRINT TRAVELERS &amp; PICK LISTS</span></p>
+<p><span style="font-size: 11pt;">A shop traveler may be printed at any time. &nbsp;Each traveler consists of a header, work order schedule, job schedule, routing, and bill of materials. &nbsp;A pick list can be printed for use in pulling components from stock.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PRINT LABOR CARDS/LABELS</span></p>
+<p><span style="font-size: 11pt;">The system produces two documents for recording daily labor: a 3 x 5 labor ticket, or a 1x 3-1/2 label which can be affixed to a daily time card. &nbsp;Collecting labor is not a requirement for using the work order system. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Data Collection</span><span style="font-size: 11pt;"> module provides an alternative means of collecting labor in which the employees can use the computer as a time clock and report their own labor directly via bar code or keypad date entry.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ENTER LABOR</span></p>
+<p><span style="font-size: 11pt;">Labor and setup are recorded so that work orders can be costed at either actual rates from the payroll file or standard rates from the work centers. &nbsp;Fixed and variable overhead can be specified to be costed as a percentage of labor or as a fixed hourly rate. &nbsp;Labor can be entered via </span><span style="font-size: 11pt;"><a href="wo-m_batch_labor_entry.htm" class="topiclink">WO-M &nbsp;Batch Labor Entry</a></span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt;"><a href="wo-f_enter_labor.htm" class="topiclink">WO-F &nbsp;Enter Labor</a></span><span style="font-size: 11pt;">, or the </span><span style="font-size: 11pt;"><a href="data_collection.htm" class="topiclink">Data Collection</a></span><span style="font-size: 11pt;"> module.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ISSUE MATERIALS</span></p>
+<p><span style="font-size: 11pt;">Materials may be issued to work orders from stock, either individually or as complete sets of the work order bill of material. </span><span style="font-size: 11pt;"><a href="wo-g_issue_materials.htm" class="topiclink">WO-G &nbsp;Issue Materials</a></span><span style="font-size: 11pt;"> updates the work order header and work order bill of materials files so that real time work order status is available on the screen and via reports.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ENTER MISC/EXTRA COSTS</span></p>
+<p><span style="font-size: 11pt;">If you are using the Estimating module and you have specified miscellaneous costs against specific routing sequences (such as for tooling) or extra charges (for items such as engineering, packaging, etc.) within your estimate, this program provides the means of entering actual miscellaneous and extra costs and descriptions directly to the work order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">ENTER FINISHED PRODUCTION</span></p>
+<p><span style="font-size: 11pt;">Finished goods or subassemblies are received into stock so that they are available for shipment or for use in other assemblies. &nbsp;Partial completions can be entered. &nbsp;Finished goods can be entered into inventory at standard cost or actual cost, which is then used as the cost of goods sold or a cost to be rolled up into the next level assembly.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">CLOSE/CANCEL ORDERS</span></p>
+<p><span style="font-size: 11pt;">Completed work orders are formally closed so that no further transactions can be conducted. &nbsp;Eventually closed orders will be moved to the archive files using </span><span style="font-size: 11pt;"><a href="sm-j-b_archive_work_orders.htm" class="topiclink">SM-J-B Archive Work Orders</a></span><span style="font-size: 11pt;">. &nbsp;You can also use this program to cancel work orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WORK ORDER REPORTS</span></p>
+<p><span style="font-size: 11pt;">A variety of reports help track and monitor the manufacturing process. &nbsp;Work order status may be tracked through the </span><span style="font-size: 11pt; font-style: italic;">Work Order Status</span><span style="font-size: 11pt;"> report, and work orders may be listed and prioritized in the </span><span style="font-size: 11pt; font-style: italic;">Work Order Schedule</span><span style="font-size: 11pt;">. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Work Center Backlog</span><span style="font-size: 11pt;"> report provides a prioritized listing of all remaining routing sequences for each work center. &nbsp;A dollar projection of estimated shipments is made through the </span><span style="font-size: 11pt; font-style: italic;">Projected Shipments</span><span style="font-size: 11pt;"> report, and direct labor for each employee may be listed for review and optionally posted to </span><span style="font-size: 11pt; font-style: italic;">Payroll</span><span style="font-size: 11pt;"> via </span><span style="font-size: 11pt;"><a href="wo-l-e_print_post_labor_to_payroll.htm" class="topiclink">WO-L-E Print/Post Labor to Payroll</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Work &nbsp;Orders</span><span style="font-size: 11pt;"> module is designed to work equally well for job shops, make-to-inventory manufacturers, and custom (make-to-order) manufacturers.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If your products are subject to options, the </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> module allows various product options to be selected from windows within order entry. &nbsp;These options are automatically passed over to work orders via </span><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;">, thereby creating custom bills of materials on-the-fly.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

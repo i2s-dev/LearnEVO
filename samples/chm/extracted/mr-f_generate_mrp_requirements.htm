@@ -1,0 +1,189 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>MR-F Generate Material Requirements</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="generate material requirements,material requirements program,MR-F &nbsp;Generate Material Requirements,MRP generation">
+   <meta name="description" content="MR-F Generate Material Requirements">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">MR-F Generate Material Requirements</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Material Requirements&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">MR-F Generate Material Requirements</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="mr-e_print_mrp_parameters.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="mr-g_print_material_requirements.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">MR-F &nbsp;Generate Material Requirements</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to generate the material requirements down through all levels of the bills of material, and to produce suggested work orders and purchase orders and to issue expedite and delay messages on existing orders. &nbsp; MRP can be generated for all inventory locations or a group of locations can be selected, excluding others.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The program begins by identifying existing material requirements needed by sales orders, forecasts, and work order bills of material. &nbsp;It then compares requirements with existing work orders, purchase orders, and inventory. &nbsp;Wherever shortages are encountered, work orders and purchase orders are suggested (referred to as </span><span style="font-size: 11pt; font-style: italic;">Planned</span><span style="font-size: 11pt;"> orders). &nbsp;Wherever finish dates and expected receiving dates are to be moved up or moved back, expedite and delay messages are issued.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">As work orders get suggested, new requirements are created by the planned work orders’ bills of material. &nbsp;Again, work orders and purchase orders are suggested. &nbsp;This process continues down through all levels of the bills of material.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After the material requirements are generated, you can then use the remaining Material Requirements programs: </span><span style="font-size: 11pt;"><a href="mr-g_print_material_requirements.htm" class="topiclink">MR-G, Print Material Requirements</a></span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt;"><a href="mr-h_print_order_action_report.htm" class="topiclink">MR-H, Print Order Action</a></span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt;"><a href="mr-i_generate_work_orders.htm" class="topiclink">MR-I, Generate Work Orders</a></span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt;"><a href="mr-j_generate_purchase_orders.htm" class="topiclink">MR-J, Generate Purchase Orders</a></span><span style="font-size: 11pt;">, and </span><span style="font-size: 11pt;"><a href="mr-k_generare_rfqs.htm" class="topiclink">MR-K, Generate RFQ's</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The frequency of running this program depends on how often requirements change. &nbsp;Some companies run it every day, some once a week. &nbsp;The program does a complete generation from scratch each time.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">To limit the program to necessary requirements, you can optionally exclude forecasts, sales orders, and scheduled work orders (S types) from the generation, and you can limit the generation up through a particular estimated ship date. &nbsp;Limiting the MRP generation can significantly reduce the run time of the program.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Indicate whether forecasts are to be included in the MRP generation.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next, Indicate whether sales orders are to be included in the MRP generation. &nbsp;If so, you can limit the range of sales orders to be included by entering an estimated ship date that limits the MRP generation to sales order requirements up through that date.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Indicate whether scheduled (S-type) work orders are to be included in the MRP generation.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can then specify which inventory types are to be included. &nbsp;Types R, F, A, and M are always included, but you can optionally include or exclude types N (non-stock), L (labor), or T (outside processing).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next, select location(s) to be included and click Go or press F10 to begin.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are then asked if you want to begin the MRP generation. &nbsp;Enter a Y and the MRP generation will begin. &nbsp;This program can take hours to run, so it is best run during off hours. &nbsp;You can stop the MRP generation at any time by pressing &lt;Esc&gt; (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Exit</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You will see the following messages as each phase of the program is run: &quot;please wait while the MRP files are initialized&quot;, &quot;please wait while the MRP flags are reset&quot;, &quot;please wait while the sales orders are searched&quot;, &quot;please wait while the purchase orders are searched&quot;, &quot;please wait while the work orders are searched&quot;, &quot;please wait while the work orders bills of materials are searched&quot;, &quot;please wait while the forecasts are searched&quot;, &quot;please wait while the MRP is generated.&quot; &nbsp;When the program is completed you are returned to the </span><span style="font-size: 11pt; font-style: italic;">Material Requirements</span><span style="font-size: 11pt;"> menu.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Shortening MRP Generation Time</span></p>
+<p style="margin: 0px 0px 8px 0px;"><span style="font-size: 11pt;">If you have not set up any reorder levels or reorder amounts on your inventory items, many more MRP records will be created as the program responds to each individual requirement. &nbsp;This would be o.k. for a job shop that purchases material to each order, but for a make-to-inventory company or a company that has common raw materials across multiple products this is not advisable. &nbsp;Establishing reorder levels and reorder amounts will reduce the number of MRP records and will shorten generation time.;</span></p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

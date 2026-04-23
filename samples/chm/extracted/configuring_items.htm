@@ -1,0 +1,137 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Configuring Items</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="">
+   <meta name="description" content="Configuring Items">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+
+html {
+  overflow-x: auto; overflow-y: scroll;
+}
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Configuring Items</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">There are several different ways that items can be defined with different configurations. &nbsp;The Features and Options module is suitable if the configuration can be pre-defined as a selection of choices structured in a Bill of Materials with options defined as node points with available selections below them. &nbsp;However if the selection of choices is more &quot;free form&quot; and it is difficult to construct a Bill of Materials containing all possible choices there are other methods available.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">The <a href="estimaing.htm" class="topiclink">Estimating</a> module allows you to have multiple different Bills of Material and Routings for the same part so if you have a product line that is generally a custom build from a standard core product with optional features added, you can use the Estimating to create the Bill of Materials and Routing copied from the standard or copied from a prior similar estimate and then modifying as needed for this particular requirement. &nbsp;Using the Estimating module also allows the cost rollup and subsequent price quotation to reflect the specific configuration defined.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">Another option is to add components on the fly when entering a Sales Order. &nbsp;When entering an order, if you enter a line after an item and place an &quot;M&quot; as the line number the program will treat that line as a manufactured component of the parent part above it. &nbsp;When running <a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N Convert Sales Orders to Work Orders</a> the lines with &quot;M&quot; line number designation will be passed to the work order BOM as components to be included in the manufacture of the item along with the components on the standard BOM.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt;">Finally, we have the option to create new parts copied from a template at order entry. &nbsp;This example was developed for a cushion manufacturer but could be used for other products. &nbsp;The concept is that there are standard products that can be made of different materials. &nbsp;There are core part numbers defined in the system that define the product and there are part numbers defined in the system for the material. &nbsp;In <a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A Enter Sales Orders</a> the part number is entered as CORE-MATERIAL and if that particular combination of making that core part from that material has never been made before the inventory item will be created, the BOM and routing copied from the CORE part with the exception that the first line of the Bill of Material will be replaced with the same quantity of the MATERIAL item number.</span></p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

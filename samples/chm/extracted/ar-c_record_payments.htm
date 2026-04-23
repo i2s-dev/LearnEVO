@@ -1,0 +1,241 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>AR-C Record Payments</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="AR-C &nbsp;Record Payments,customer payment processing,payments,payments customer,Record Payments">
+   <meta name="description" content="AR-C Record Payments">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">AR-C Record Payments</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Sales &gt; Accounts Receivable&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">AR-C Record Payments</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ar-b_enter_vouchers.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ar-d_charge_interest_on_invoices.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">AR-C Record Payments</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to record payments made by customers, to apply outstanding credits, or to record NSF (insufficient funds) checks. &nbsp;You can enter prepayments, take discounts on invoices paid, or apply outstanding credits toward invoices. &nbsp;You can also enter partial payments on your invoices or spread a payment over several invoices any way you choose including splitting a single payment across multiple customers.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Multi-Currency Processing</span></p>
+<p><span style="font-size: 11pt;">If you have multi-currency processing enabled in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, you can invoice and receive customer payments in foreign currencies. </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> posting is as follows.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If the </span><span style="font-size: 11pt; font-style: italic;">Pay </span><span style="font-size: 11pt;">option in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;"> is set to N, a credit (in </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">) is made to the </span><span style="font-size: 11pt; font-style: italic;">AR Control Account</span><span style="font-size: 11pt;">. &nbsp;The offsetting debit (in </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">) is made to this currency's </span><span style="font-size: 11pt; font-style: italic;">Bank Account</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the </span><span style="font-size: 11pt; font-style: italic;">Pay </span><span style="font-size: 11pt;">option in IM-A set to Y, there are two GL transactions. &nbsp;The first one is the same as in the paragraph above. &nbsp;The second is a currency conversion transaction whereby the amount of the payment is converted to your </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> using the exchange rate maintained in </span><span style="font-size: 11pt;"><a href="im-c_enter_currenct_exchange_rates.htm" class="topiclink">IM-C &nbsp;Enter Currency Exchange Rates</a></span><span style="font-size: 11pt;">. &nbsp;This </span><span style="font-size: 11pt; font-style: italic;">base currency </span><span style="font-size: 11pt;">amount is then credited to this currency's </span><span style="font-size: 11pt; font-style: italic;">F/E Gain/Loss-Trxns</span><span style="font-size: 11pt;"> account and the offsetting amount is debited to this currency's </span><span style="font-size: 11pt; font-style: italic;">F/E Gain/Loss-Conversions</span><span style="font-size: 11pt;"> account. &nbsp;Thus, the gain or loss is recognized at the time of transaction rather than when the </span><span style="font-size: 11pt; font-style: italic;">Convert to Base Currency</span><span style="font-size: 11pt;"> routine is run.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Credit Card Processing</span></p>
+<p><span style="font-size: 11pt;">If you have installed X-Charge or Payment Innovators credit card processing software and entered the credit card processing path and login information in </span><span style="font-size: 11pt;"><a href="sd-p_customer_ar_defaults.htm" class="topiclink">SD-P Customer/AR Defaults</a></span><span style="font-size: 11pt;">, then once the customer has been selected and the cursor advanced to the Date field, a Credit Card button will appear in the lower left corner. &nbsp;Click the button and a window will open showing the customer credit card information (which can be edited if they want to use a different card or do not have a card on file and it is a one time charge). &nbsp;Verify the card information and enter the payment amount and click process. &nbsp;If the charge is approved, the approval code prefixed by V (Visa), M (MasterCard), A (American Express) or D (Discover) will be entered as the Check number and you can then enter a Deposit code and process the payment normally.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Importing Remittance Advice</span></p>
+<p><span style="font-size: 11pt;">If you have a customer with a large number of invoices paid on a single check and can get the remittance advice digitally the payment detail can be imported. &nbsp;The data source needs to be a comma delimited file with the invoice number in the first column, net amount paid in the second and any discount taken in the third column. &nbsp;There can be no $ or comma formatting in the amounts.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Customer Code</span></p>
+<p><span style="font-size: 11pt;">The code of the customer making the payment.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt; font-style: italic;">The fields below are filled in automatically from the Customer file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Customer Name</span></p>
+<p><span style="font-size: 11pt;">The customer's name, from the customer file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Telephone</span></p>
+<p><span style="font-size: 11pt;">The customer's telephone number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Last Sale</span></p>
+<p><span style="font-size: 11pt;">The date of the last sale to this customer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Last Payment</span></p>
+<p><span style="font-size: 11pt;">The date of the last payment made by this customer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Outstanding Amounts</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Credits</span></p>
+<p><span style="font-size: 11pt;">The total dollar amount in outstanding credits for this customer, if any.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Out Deposits</span></p>
+<p><span style="font-size: 11pt;">The total dollar amount in outstanding deposits for this customer, if any.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Out Invoices</span></p>
+<p><span style="font-size: 11pt;">The total dollar amount in outstanding invoices toward which payment may be applied.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PAYMENT FIELDS</span></p>
+<p><span style="font-size: 11pt;">You will enter the actual payment information in the following fields.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Payment Date</span></p>
+<p><span style="font-size: 11pt;">Enter the date payment was received.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check Amount</span></p>
+<p><span style="font-size: 11pt;">Enter the amount of the check here. &nbsp;If this is an NSF check, enter this as a negative amount. &nbsp;To apply credit to invoices when no actual cash is received, enter $0.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check Number</span></p>
+<p><span style="font-size: 11pt;">The check number. &nbsp;This is a twenty character alpha-numeric field. &nbsp;If you are entering a credit card payment or wire transfer or other payment that is not a true check with a check number, enter a unique reference such as a date code. &nbsp;Do not use the same number repeatedly as this reference is used to identify the transaction in the case of a reversal.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Deposit Number</span></p>
+<p><span style="font-size: 11pt;">The deposit number, which is a user defined number used to identify the deposit to clear it from the check register through </span><span style="font-size: 11pt;"><a href="gl-j_reconcile_check_register.htm" class="topiclink">GL-J &nbsp;Reconcile Check Register</a></span><span style="font-size: 11pt;">. &nbsp;This is a six digit numeric field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">The first step in recording payments is to enter the code of the customer making the payment. &nbsp;You can enter the customer code or select one from a lookup window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The customer code you choose is then placed in the </span><span style="font-size: 11pt; font-style: italic;">Customer Code</span><span style="font-size: 11pt;"> field. &nbsp;Press &nbsp;&lt;Enter&gt; and the customer name, telephone number, and outstanding credits or invoices are displayed. &nbsp;Enter the payment date, check amount, the check number (required) and the deposit number (required). &nbsp;This information will be used during check reconciliation (</span><span style="font-size: 11pt;"><a href="gl-j_reconcile_check_register.htm" class="topiclink">GL-J &nbsp;Reconcile Check Register</a></span><span style="font-size: 11pt;">) to identify that the check has cleared the bank.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the customer has prepaid the invoice and you now want to apply customer credits, then enter 0 for the payment amount. &nbsp;The program allows this only if there is an outstanding credit amount. &nbsp;You must still enter a check and deposit number but you can use any number as no entry will be made to the check register since the cash amount entered was $0</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">NOTE: &nbsp;If this program is used to record an NSF check returned from the bank or to correct an erroneous entry, enter the amount as a negative number, i.e., -100.00, etc.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p><span style="font-size: 11pt;">After you enter the deposit number you are asked if you want to use all unapplied credits.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Answering Y automatically selects all existing credits for use in payment of invoices.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you answer N, you must select which credits you want to use.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Next you must choose which invoices to pay. &nbsp;You are asked if you want to apply payment to all outstanding invoices, oldest first:</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you answer Y, the program will automatically allow any discounts if paid within the early payment discount time frame. &nbsp;As many invoices as possible will be paid until the payment amount is exhausted. &nbsp;You will also be able to change previously recorded payments if you use this option.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Choosing an Individual Invoice for Payment</span></p>
+<p><span style="font-size: 11pt;">Your other option is to record individual payments or partial payments on individual invoices. &nbsp;All outstanding invoices and unapplied credits for this customer are displayed in a window on screen two.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Highlight the invoice to which you want to apply payment, and press &lt;Enter&gt; or click on it. &nbsp;An entry window will open near the bottom of your screen, showing the invoice number, description and amount, with a space to enter your customer's discount and the amount you wish to apply toward the invoice.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Your cursor is placed in the </span><span style="font-size: 11pt; font-style: italic;">Discount </span><span style="font-size: 11pt;">field. &nbsp;Enter the discount (if one applies), then enter the amount you wish to apply to this invoice. &nbsp;This amount can be all or any part of your total of payments and unapplied credits. &nbsp;Repeat this operation with any other invoices to which you wish to apply payment until you have used all the funds you wish to use.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you want to change a line item which is out of the entry window, select the invoice and press &lt;Enter&gt; or click on it. &nbsp;This will place it in the entry window for editing. &nbsp;Either change the discount or amount paid, or, if you no longer want to apply payment against the invoice, enter zeros in the </span><span style="font-size: 11pt; font-style: italic;">Discount</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Applied</span><span style="font-size: 11pt;"> fields. &nbsp;You can also press &lt;Ctrl&gt; and U simultaneously to clear an entry field.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">To mark this transaction as complete and save your choices, press &lt;Esc&gt;. &nbsp;At this point if there is any payment amount remaining &nbsp;you will be asked if you wish to apply it to open items, &nbsp;If you answer N, you are asked if you wish to post the payment. &nbsp;Answer Y and you are asked if the unapplied portion should be posted to a different customer. &nbsp;If Y, you will be returned to the first screen to enter the customer code for the next customer and continue applying the payment. &nbsp;If N, you will be asked if the balance should be saved as a Deposit. &nbsp;If Y, it will post to the GL crediting the Customer Deposit liability account and make an entry to the customer account as Deposit on Account. &nbsp;If N, it will post to the GL crediting Accounts Receivable and make an entry to the customer account as &quot;Unapplied credit&quot;.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you answer Y when asked if all of the entries are correct, you will be shown a list of bank accounts (if you have more than one), one of which you must choose to record your deposit. &nbsp;Your payment transaction is then saved and the customer, check register, and </span><span style="font-size: 11pt; font-style: italic;">Accounts Receivable</span><span style="font-size: 11pt;"> files will be updated. &nbsp;You are then returned to the </span><span style="font-size: 11pt; font-style: italic;">Customer Code</span><span style="font-size: 11pt;"> field to begin another payment record.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">During processing AR-C adds a deposit to the check register and updates the credit and invoice balances and the last payment date in the customer file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Recording a Deposit</span></p>
+<p><span style="font-size: 11pt;">Deposits are defined as advance payments for orders that are not yet invoiced. &nbsp;You can enter deposits directly through </span><span style="font-size: 11pt;"><a href="ar-n_enter_print_sales_order_deposits.htm" class="topiclink">AR-N &nbsp;Enter/Print Sales Order Deposits</a></span><span style="font-size: 11pt;"> or through this program. &nbsp;If you enter the deposit through AR-N, you may designate it as belonging to a particular sales order so that it will automatically be applied to the invoice(s) that get generated from that sales order. &nbsp;If you enter the deposit through this program, you will have to manually apply the deposit to the eventual invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Before entering a deposit, make sure you have a GL account specified for </span><span style="font-size: 11pt; font-style: italic;">Customer Deposits</span><span style="font-size: 11pt;"> in </span><span style="font-size: 11pt;"><a href="ad-a_general_ledger_defaults.htm" class="topiclink">AD-A &nbsp;General Ledger Defaults</a></span><span style="font-size: 11pt;">. &nbsp;Deposits get posted to that account so that the dollars are kept separately from </span><span style="font-size: 11pt; font-style: italic;">Accounts Receivable</span><span style="font-size: 11pt;">. &nbsp;The default deposit account is a liability account, for technically you are holding someone else's money until an invoice materializes.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">To record a deposit, enter the customer code, the date, the check amount, the check number, and the deposit number (bank deposit number). &nbsp;When the window comes up with the open invoices, don't apply any money. &nbsp;Press &lt;Esc&gt;, &nbsp; you will be asked if you wish to apply it to open items. &nbsp;Answer N, you are asked if you wish to post the payment. &nbsp;Answer Y and you are asked if the unapplied portion should be posted as a Deposit. &nbsp;If Y, it will post to the GL crediting the Customer Deposit liability account and make an entry to the customer account as Deposit on Account. &nbsp;If N, it will post to the GL crediting Accounts Receivable and make an entry to the customer account as Unapplied credit&quot;.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">For a listing of outstanding deposits by customer, go to </span><span style="font-size: 11pt;"><a href="ar-n_enter_print_sales_order_deposits.htm" class="topiclink">AR-N &nbsp;Enter/Print Sales Order Deposits</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Entering a Reversal or NSF Check</span></p>
+<p><span style="font-size: 11pt;">Reversal of a payment entered in error or entry of an NSF Check are both entered as negative amounts. &nbsp;The only difference between the way the program processes them is that a Reversal is always posted to the same date as the original entry while an NSF check can be posted to the date you are notified by the bank that the check did not clear. &nbsp;In either case, the amount entered is verified against the check number entered and, provided it matches, the original invoices paid by the check are returned to the open Accounts Receivable. &nbsp;If there are multiple entries for the customer with the same check number, you will be prompted for the original payment date in an effort to find a unique match. &nbsp;If no unique match can be identified or the amounts do not match, you will be asked to use a different check number and if no match for the check number is found at all, a new voucher entry will be made rather than reversing prior entries. &nbsp;Commissions processed by the original payment will not be reversed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Importing Remittance Advice</span></p>
+<p><span style="font-size: 11pt;">Once you have entered the information on the first screen and the list of invoices to be selected is shown there is an Import Payments button. &nbsp;Click it, browse to the payment file and select it. &nbsp;Once the payments are applied the screen will &nbsp;show the applied funds and notify if there are any exceptions. &nbsp;An exception would occur if the payment amount does not match the invoice amount or if there is an invoice number in the remittance that does not match an open invoice for the customer. &nbsp;If there are exceptions you can get the detail by pressing the Exceptions button and then you can edit the entries as needed and save as if it had been manually entered.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

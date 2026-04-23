@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SO-R Void Invoice</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="invoice,invoice void,SO-R &nbsp;Void Invoice">
+   <meta name="description" content="SO-R Void Invoice">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SO-R Void Invoice</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Sales &gt; Sales Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SO-R Void Invoice</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="so-q-j_generate_base_prices.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="so-s-mass_release_sales_orders.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SO-R &nbsp;Void Invoice</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to reverse an invoice that was posted in error. &nbsp;The program first returns the line items on the invoice to the original sales order, if it still exists. &nbsp;If the sales order is closed, the program will reopen it. &nbsp;If the sales order has already been closed and purged from the sales order file, the program will create a new sales order and will restore both the header and line item information to the new sales order. &nbsp;Once the sales order has been restored, it is available for additional editing, releasing, and invoicing, or it can be deleted if no longer needed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After the sales order information has been restored, the program then posts the reverse invoice to all the same files that are updated by </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G &nbsp;Post Invoices</a></span><span style="font-size: 11pt;">. &nbsp;A hard copy of the reversal can be printed using </span><span style="font-size: 11pt;"><a href="so-f_print_invoices.htm" class="topiclink">SO-F &nbsp;Print Invoices</a></span><span style="font-size: 11pt;"> in reprint mode.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The void invoice process provides a complete audit trail because both the original and the reverse invoice’s postings are maintained in all the pertinent files.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter the invoice number of the invoice you want to void in the </span><span style="font-size: 11pt; font-style: italic;">Inv#</span><span style="font-size: 11pt;"> field, or select one from a lookup window by pressing F2 (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Display Lines</span><span style="font-size: 11pt;"> button). &nbsp;The other fields on the screen (name and address, dates, amounts, etc.) will be filled in automatically and contain invoice detail that will help you confirm that you are voiding the correct invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Void Date</span><span style="font-size: 11pt;">. &nbsp;This will be the date of all the reverse postings that will be made to the General Ledger and all the related system files that get updated by invoice posting. &nbsp;You are then asked </span><span style="font-size: 11pt; font-style: italic;">Are you sure you want to void this invoice?</span><span style="font-size: 11pt;"> &nbsp;If you enter a Y, processing will begin. &nbsp;At this stage all the reversed items are returned to the original sales order, if it still exists, or, if it has been purged, it returns the line items and header information to a new sales order.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you enter an N to </span><span style="font-size: 11pt; font-style: italic;">Are you sure you want to void this invoice?,</span><span style="font-size: 11pt;"> the screen is cleared of information and you can re-enter the </span><span style="font-size: 11pt; font-style: italic;">Inv#</span><span style="font-size: 11pt;"> or you can press &lt;Esc&gt; (or click on the </span><span style="font-size: 11pt; font-style: italic;">Exit</span><span style="font-size: 11pt;"> button) to exit the program.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After the sales order information is restored, the reverse invoice is then posted to all the same files that get updated by </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G &nbsp;Post Invoices</a></span><span style="font-size: 11pt;"> and the void invoice process is completed.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

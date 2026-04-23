@@ -1,0 +1,347 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>IN-L-R Intercompany Inventory Transfer</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="IN-L-R Intercompany Inventory Transfer">
+   <meta name="description" content="IN-L-R Intercompany Inventory Transfer">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">IN-L-R Intercompany Inventory Transfer</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Inventory&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">IN-L-R Intercompany Inventory Transfer</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="in-l-q_enter_inspection_test_procedure_codes.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="in-l-s_rebuild_stock_status.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">IN-L-R Intercompany Inventory Transfer</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to transfer inventory between companies. &nbsp;The program always uses a common intermediary &quot;In Transit&quot; company as defined in </span><span style="font-size: 11pt;"><a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a></span><span style="font-size: 11pt;">. &nbsp;Outgoing transfers are processed as transfers out of a company into the &quot;In Transit&quot; company and receipts are processed as transfers out of the &quot;In Transit&quot; company and into the inventory of the receiving company.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Initial Setup</span></p>
+<p><span style="font-size: 11pt;">There is some setup that needs to be done before the program can be used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">1. &nbsp;Item Classes must be consistent in all companies so that if new Items are transferred to (and therefore created in) a company, the item classes will exist and make the correct GL Postings.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">2. &nbsp;A new company must be created to serve as the Transfer Company. &nbsp;For purposes of this instruction, it will be called &quot;TC&quot;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">3. &nbsp;In each of the live companies that will be making transfers, go to </span><span style="font-size: 11pt;"><a href="sd-h_inventory_defaults.htm" class="topiclink">SD-H Inventory Defaults</a></span><span style="font-size: 11pt;">, Items, and designate BTC as the Transfer Company.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">4. &nbsp;In the transfer company, go to </span><span style="font-size: 11pt;"><a href="ad-a_general_ledger_defaults.htm" class="topiclink">AD-A &nbsp;General Ledger Defaults</a></span><span style="font-size: 11pt;"> and enter as the GL Account for Inventory the GL Account that all companies will use to carry the Intercompany Transaction value. Create the GL Account in AM-C as needed in the Transfer company and all other companies.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">5. &nbsp;If Multiple Currencies are used, the Currency Designations set up in </span><span style="font-size: 11pt;"><a href="im-b_enter_multiple_currencies.htm" class="topiclink">IM-B &nbsp;Enter Multiple Currencies</a></span><span style="font-size: 11pt;"> must be consistent for all companies. &nbsp;Companies may have different currency defined as BASE but (for example) all companies must call US Dollars the same thing. &nbsp;You can not have one company have US and another US$. &nbsp;Also if any company uses multiple currency, all companies must have multiple currency set up and the Base Currency of all companies processing transfers must exist as either Base or Source in all other companies.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt; font-weight: bold;">To run the program and initiate a new Transfer:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">1.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">You are first asked if you are receiving a transfer. &nbsp;Say No and you can initiate a new transfer.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">2.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter the company the parts are going to.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">3.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter the Warehouse Location within the originating company that the parts are coming from, the transfer date and indicate whether or not to print the transfer document and whether to include image links.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">4.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">A blank list of parts will be displayed. &nbsp;Press Enter to get to the entry field. &nbsp;Enter the part number and quantity to be transferred. &nbsp;To enter more than one item to transfer, press the down arrow on the keyboard to get to a blank line at the bottom of the list.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">5.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">When the list is complete, click DONE to process the transfer and (optionally) print the transfer ticket.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">To receive a transfer:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">1.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Say Y to Receiving a transfer.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">2.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter the transfer number. &nbsp;You can do a lookup of available transfers.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">3.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter the transfer Date</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">4.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter the Warehouse Location in the destination company to receive the items to.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">5.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Confirm the date and indicate whether you want to print the confirming document.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">6.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">The list of items on the transfer ticket will be displayed. &nbsp;If there are no discrepancies, click DONE and the transfer will process and print the confirming transfer ticket and close the transfer.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">If there are discrepancies:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">1.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">If something listed on the ticket is missing or the quantity is incorrect, select the item and change the quantity to 0 or the actual quantity received and process the transfer.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">2.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">If something was received that is not on the list at all, add an item to the transfer the same way items are added to a new transfer. &nbsp;Press the down arrow on the keyboard to get to a blank line at the bottom of the list and enter the item and quantity.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Transaction posting:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">1.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Outgoing transfer will post in the sending company and credit Inventory according to the item class of the parts being transferred and debit the Intercompany Transfer account defined in the AD-A Inventory setting in the Transfer company. &nbsp;INVTXN records will be T type and have a negative quantity in the sending company and T type with a positive quantity in the Transfer Company.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">2.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Receipt transfer will post in the receiving company debiting inventory according to the item class of the item being received and credit the Intercompany Transfer account defined in the AD-A Inventory setting in the Transfer company. &nbsp;INVTXN records will be T type and have a positive quantity in the receiving company and T type with a negative quantity in the Transfer Company.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">3.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">No GL Postings will occur in the Transfer company</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">4.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">If the base currency of the two companies involved in the transfer is not the same, the inventory will be revalued upon receipt using the currency conversion table in the receiving company.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

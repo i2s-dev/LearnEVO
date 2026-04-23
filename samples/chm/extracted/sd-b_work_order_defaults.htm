@@ -1,0 +1,360 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SD-B Work Order Defaults</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="SD-B Work Order Defaults">
+   <meta name="description" content="SD-B Work Order Defaults">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SD-B Work Order Defaults</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; System Defaults&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SD-B Work Order Defaults</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sd-a_company_defaults.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sd-c_purchase_order_defaults.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SD-B Work Order Defaults</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to establish various set up parameters used by the </span><span style="font-size: 11pt; font-style: italic;">Work &nbsp;Orders</span><span style="font-size: 11pt;"> module.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations Setup Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Work Order Status Code</span></p>
+<p><span style="font-size: 11pt;">Each work order is assigned a status code when it is created. &nbsp;Status code </span><span style="font-size: 11pt; font-style: italic;">F</span><span style="font-size: 11pt;"> is the most common default setting. &nbsp;The values are:</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">S = Scheduled. &nbsp;The work order is scheduled for the future and no labor and materials have been allocated.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">F = Firmed. &nbsp;Labor and material are allocated.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">R = Released. &nbsp;Labor and material are allocated and the work order is released to the shop floor with an actual start date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default Priority Code [1/2/3]</span></p>
+<p><span style="font-size: 11pt;">Each work order is given a priority code for scheduling purposes. &nbsp;Open work orders will be sorted by scheduled finish date within priority code on certain reports. This field sets the default priority code. &nbsp;Priority code </span><span style="font-size: 11pt; font-style: italic;">2</span><span style="font-size: 11pt;"> is the most commonly used default.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default Class Code</span></p>
+<p><span style="font-size: 11pt;">This is a user-defined classification code for any purpose you may have. &nbsp;It is used as a filter on various reports. &nbsp;It is a one character alphanumeric field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">View only in Enter WO Bills of Mat?</span></p>
+<p><span style="font-size: 11pt;">Set this field to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> if you don't want users to have the ability to make changes to the work order bill of material after it is created. &nbsp;They will be able to view bill of material detail, but will not be able to edit the screen.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">View only in Enter WO Routings?</span></p>
+<p><span style="font-size: 11pt;">Set this field to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> if you don't want users to have the ability to make changes to the work order routing after it is created. &nbsp;They will be able to view routing detail, but will not be able to edit the screen.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Editing of Desc in WO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the item description in WO-A can not be modified.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO Types that Affect Bus Status</span></p>
+<p><span style="font-size: 11pt;">Indicate whether Status S or I Work Orders should be included in the Business Status WIP total.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow WO for Make From Items</span></p>
+<p><span style="font-size: 11pt;">Indicate whether Work Orders should be allowed for Make-From items</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Disable Recalc Est Cost in WO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then WO-A will not recalculate Estimated cost, thus always retaining the original estimate of cost for a job.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Material Burden &amp; Burden Item #</span></p>
+<p><span style="font-size: 11pt;">This sets up a type N part to be used as a placeholder for the material burden transactions generated when issuing burdened materials to work orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Show Open or Open/Closed WO in WO-A (O/B)</span></p>
+<p><span style="font-size: 11pt;">B or Blank will display all work orders in the WO-A Opening list. &nbsp;O will limit to Open Work Orders only. &nbsp;Note that setting this to O will slow the program load because the closed work orders need to be filtered from the list.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Reopen Closed/Canceled WO (Y/N/P)</span></p>
+<p><span style="font-size: 11pt;">If Y or Blank, anybody with access to </span><span style="font-size: 11pt;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span><span style="font-size: 11pt;"> &nbsp;can reopen Closed or Canceled Work Orders. &nbsp;If N they can not be reopened and if P, a Password (as entered on the next line) is required.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Edit of Component Description in WO-G (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If Y then WO-G will save an edited description of items issued to work orders. &nbsp;This can be useful if generic part numbers are used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Work Order Default Location</span></p>
+<p><span style="font-size: 11pt;">If a value is entered here, then rather than the master Inventory Default location, Work Orders entered at </span><span style="font-size: 11pt;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span><span style="font-size: 11pt;"> will be assigned to the location defined here.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Calculate Labor from Bill of Material</span></p>
+<p><span style="font-size: 11pt;">This is set to Y then the DBA Classic version of Convert Estimate to WO will allow BOM Labor items tied to routing sequences to populate the routing sequence time.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-B Limit to 1 Work Order</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then ranges of work orders can not be processsed in <a href="wo-b_release_work_orders.htm" class="topiclink">WO-B Release Work Orders</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-K-M Limit Scrap Type to (FMLV)</span></p>
+<p><span style="font-size: 11pt;">If this is set to F, M, L or V then only Scrap Codes &nbsp;then ranges of work orders can</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-K-M Require Reason Code</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, <a href="wo-k-m_parts_requester.htm" class="topiclink">WO-K-M Parts Requester</a> will require a Reason (Scrap) Code </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Explanations - Processing Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Labor Prompt in Kit Issues?</span></p>
+<p><span style="font-size: 11pt;">You can include labor item numbers (inventory type L) as part of kit issues in order to charge the work order the standard labor defined in the work order bill of material. &nbsp;If you enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> in this field, labor will automatically be part of kit issues within </span><span style="font-size: 11pt;"><a href="wo-g_issue_materials.htm" class="topiclink">WO-G &nbsp;Issue Materials</a></span><span style="font-size: 11pt;"> and when backflushing materials in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production.</a></span><span style="font-size: 11pt;"> &nbsp; If you enter </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> to this default, a pop-up window will ask you if you wish to include the labor, giving you the opportunity to answer no and report the labor separately for a simple form of labor job costing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Backflush in Enter Finished Prod? (Y/N/A/B)</span></p>
+<p><span style="font-size: 11pt;">If you wish to use backflushing of bill of material components in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;">, enter a</span><span style="font-size: 11pt; font-style: italic;"> Y</span><span style="font-size: 11pt;"> here so that a pop-up window will ask if you want to backflush the components. &nbsp;If you enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">, the window will not be presented and backflushing cannot be performed. &nbsp;If you enter an </span><span style="font-size: 11pt; font-style: italic;">A</span><span style="font-size: 11pt;"> here, you are indicating that you ALWAYS want backflushing to be performed. &nbsp;No window will pop up to ask if backflushing is to be performed; it will always be done. &nbsp;A </span><span style="font-size: 11pt; font-style: italic;">B</span><span style="font-size: 11pt;"> in this field means to always backflush but only backflush the quantity needed to bring the component quantity issued up to the quantity needed for the number of assemblies produced. &nbsp;This feature enables mixing issuing components manually (perhaps for high dollar items that should be carefully tracked) and backflushing the needed quantity of other components.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Close WO in Enter Finished Prod?</span></p>
+<p><span style="font-size: 11pt;">Normally work order closing is a separate step performed in </span><span style="font-size: 11pt;"><a href="wo-j_close_cancel_orders.htm" class="topiclink">WO-J &nbsp;Close/Cancel Orders</a></span><span style="font-size: 11pt;">. &nbsp;You can have a pop-up window present the option of closing the work order during </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> by entering a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> in this field. &nbsp;If you answer </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">, the window will not be presented and you will have to close the work order as a separate step. &nbsp;If you have set the Process WIP Variance in WO-J to Y, you will not be able to set this to Y.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Std Cost in Ent Fin Prod?</span></p>
+<p><span style="font-size: 11pt;">When entering completed production through </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;">, you have a choice of putting the items into finished goods inventory at standard cost, or at an automatically calculated or manually entered actual cost. &nbsp;If you want to always enter finished goods at standard cost, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">. &nbsp;If you ever want to use actual costs, enter N.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Actual Costs in Labor Entry?</span></p>
+<p><span style="font-size: 11pt;">If set to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, the system will use labor rates from the employee file for job costing in the </span><span style="font-size: 11pt; font-style: italic;">Work &nbsp;Orders</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Job Costing</span><span style="font-size: 11pt;"> modules. &nbsp;If set to </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">, the system will use standard labor rates from the work centers the labor takes place in.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Post Overhead as % of Labor?</span></p>
+<p><span style="font-size: 11pt;">If set to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, the overhead rates (fixed and variable overhead) for each work center will be calculated as a percentage of labor (rather than as an hourly rate) and will be applied accordingly to each dollar of labor entered in the </span><span style="font-size: 11pt; font-style: italic;">Work &nbsp;Orders </span><span style="font-size: 11pt;">module. &nbsp;If set to </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">, the overhead rates defined in the work centers are hourly rates that will be applied to each hour of labor reported.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Divide Labor Cost by # Jobs Worked</span></p>
+<p><span style="font-size: 11pt;">If an employee is working two work orders at the same time, by entering a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> to this default you can have the employee's labor cost divided in half (or thirds, or fourths, etc.). &nbsp;If you enter </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">, each work order will be charged the full labor rate. &nbsp;This default affects both </span><span style="font-size: 11pt;"><a href="wo-f_enter_labor.htm" class="topiclink">WO-F &nbsp;Enter Labor</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="dc-a_enter_labor_production.htm" class="topiclink">DC-A &nbsp;Enter Labor/Production</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="dc-c_enter_labor_only.htm" class="topiclink">DC-C &nbsp;Enter Labor Only</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Lead Time Scheduling (F/B/N)?</span></p>
+<p><span style="font-size: 11pt;">Set this field to F for forward Lead Time Scheduling, B for Backward Lead Time Scheduling or N to use the lead time from the inventory master rather than the calculated lead time when creating work orders. &nbsp;See </span><span style="font-size: 11pt;"><a href="how_lead_time_scheduling_works.htm" class="topiclink">How Lead Time Scheduling Works</a></span><span style="font-size: 11pt;"> for additional information.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Backflush by Sequence in Enter Labor?</span></p>
+<p><span style="font-size: 11pt;">If you plan on using the backflush by routing sequence feature in which bill of material components are tied to specific sequences, enter a </span><span style="font-size: 11pt; font-style: italic;">Y </span><span style="font-size: 11pt;">in this field and you will be prompted for backflushing of components via a pop-up window during </span><span style="font-size: 11pt;"><a href="wo-f_enter_labor.htm" class="topiclink">WO-F &nbsp;Enter Labor</a></span><span style="font-size: 11pt;"> and can backflush materials by sequence when posting labor using </span><span style="font-size: 11pt;"><a href="wo-n_post_labor_batches.htm" class="topiclink">WO-N &nbsp;Post Labor Batches</a></span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt;"><a href="dc-h_post_labor_transactions.htm" class="topiclink">DC-H &nbsp;Post Labor Transactions.</a></span><span style="font-size: 11pt;"> &nbsp;If you do not plan on using this feature, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Projected or Estimate $ and Hours (P/E)?</span></p>
+<p><span style="font-size: 11pt;">Enter a P in this field if you want to use </span><span style="font-size: 11pt;"><a href="wo-k-g_recalculate_projected_hours.htm" class="topiclink">WO-K-G Recalculate Projected Hours</a></span><span style="font-size: 11pt;"> to recalculate work order labor hours after labor has been entered. &nbsp;Leave blank or enter E if you do not want to allow use of this program.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-G Setting for Kit Issues (N,Y,L)</span></p>
+<p><span style="font-size: 11pt;">This predefines the Kit Issue setting on the WO-G screen to N, Y or K.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check Comps at Finished Production</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then at </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="wo-j_close_cancel_orders.htm" class="topiclink">WO-J &nbsp;Close/Cancel Orders</a></span><span style="font-size: 11pt;">, you will be warned if sufficient components have not been issued to the work order to support the number of assemblies completed. &nbsp;If it is set to L then Labor parts will be ignored as the actual quantity issued may be less than the BOM quantity.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Specify Comp Loc in WO-G/WO-I</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the Inventory Location for components being issued or backflushed to Work Orders can be specified as something different than the Work Order Location for each component. &nbsp;If K then one location can be specified for all components of a kit issue. &nbsp;If N then the components will pull from the work order location.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check if Qty per Seq &gt; WO Qty (Y/N/W)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then entering a quantity complete against a labor sequence greater than the WO quantity will not be allowed. &nbsp;If it is set to W, a warning will pop up but the entry will be allowed. &nbsp;N means do not check.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reduce WO balance by FP Scrap (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the quantity entered as scrap in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> will also be added to the Work Order Quantity Completed so that the balance to be completed on the work order as used by MRP, Inventory Inquiry and other programs will be reduced by the scrap quantity.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow WO Dates to update SO (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then when a WO finish date is changed in </span><span style="font-size: 11pt;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span><span style="font-size: 11pt;"> or any of the scheduling module programs that change Work Order dates, you will be prompted to also update the corresponding Sales Order Estimated Ship Date for Work Orders converted from Sales Orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Process FP Scrap Serial Number in WO-I (Y/N)</span></p>
+<p><span style="font-size: 11pt;">Indicate whether or not you want finished production items scrapped in WO-I to be assigned a serial number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reduce WO Balance by Lab scrap in WO-F (Y/N)</span></p>
+<p><span style="font-size: 11pt;">Indicate whether the net quantity to be made on the work order should be reduced when a part is scrapped in WO-F</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Process WIP Variance in WO-J</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, then when closing work orders at </span><span style="font-size: 11pt;"><a href="wo-j_close_cancel_orders.htm" class="topiclink">WO-J &nbsp;Close/Cancel Orders</a></span><span style="font-size: 11pt;"> any variance posting will be distributed to on-hand inventory if it exists up to the work order quantity. &nbsp;If there is insufficient on-hand stock, the remaining residual cost will post to WIP Variance. &nbsp;If this is set to Y then the Close WO at Enter Finished Production setting will be set to N.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Divide Overhead by Number of Jobs Worked</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then if employees are simultaneously working on multiple work orders, the Overhead cost will be divided by the number of jobs.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Divide Setup by Number of Jobs Worked</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then if employees are simultaneously working on multiple work orders, the Setup cost will be divided by the number of jobs.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Include FP Scrap in cost of good parts (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">If this is set to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, the cost of any assemblies entered as scrap in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> will be amortized among the good parts completed. &nbsp;If </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> a separate transaction will be posted for the scrap. </span><span style="font-size: 11pt; font-style: italic;">A</span><span style="font-size: 11pt;"> means Ask which way the costs should be processed each time scrap is entered. &nbsp;In any case, a Receipt transaction record with a scrap code will be generated for the scrap assemblies and, if any backflushing of materials is turned on the materials for the scrapped assemblies will also be pulled.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Remove Scrap $ in WO-F (Y/N)</span></p>
+<p><span style="font-size: 11pt;">Indicate whether the cost of an item scrapped in WO-F should be removed from the Work Order or left behind to ultimately be rolled into the eventual cost of the good parts.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Process Paperless in Seq/Batch</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt;">Indicate whether labor and test reporting in </span><span style="font-size: 11pt;"><a href="hh-i_paperless_shop_floor_tracking.htm" class="topiclink">HH-I Paperless Shop Floor Tracking</a></span><span style="font-size: 11pt;"> is to be tracked strictly by Work Order and Sequence or if more detailed tracking by smaller batches within a work order is required.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enter Reg/OT hours together in WO-F</span></p>
+<p><span style="font-size: 11pt;">Indicate whether WO-F will enter both Regular and Overtime hours together in a single entry.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Use WO Number as Lot Number in WO-P (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">Indicate whether the Work Order number should automatically be assigned as the Lot Number when performing Enter Finished Production. &nbsp;N or Blank means that a Lot Number needs to be manually entered. &nbsp;Y means that the Work Order Number will be used and the operator will not be prompted and A indicates that there will be a prompt but the WO number will be the suggested entry that can be overridden.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Dec Entry # Jobs Worked</span></p>
+<p><span style="font-size: 11pt;">If this is Y, then the Number of Jobs worked can be entered as a decimal number to force the calculation to allocate costs disproportionally</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Control Over-Issues in WO-G (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">Indicate Y to prevent issuing more of a component than the BOM requires, N or blank to allow overissues and A to Ask when issuing more than required.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Markup to Calculate Scrap %</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the scrap percentage of components entered in </span><span style="font-size: 11pt;"><a href="bm-a_ener_bills_of_material.htm" class="topiclink">BM-A &nbsp;Enter Bills of Material</a></span><span style="font-size: 11pt;"> will be used as a markup (percent of base quantity required) in the calculation when Work Orders are generated. &nbsp;If blank or N, it will use a Margin calculation (percent of total needed). &nbsp;Thus if the total quantity of a component required for a work order was 100 pieces and a 20% scrap was indicated, if Markup was indicated, the scrap quantity would be 20 (20% of the base quantity). &nbsp;If Margin was used, the scrap quantity would be 25 (20% of the total quantity of 125 issued).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Display Base Price in WO-I (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the base price of the item being manufactured will be displayed as a reference in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 16pt; font-weight: bold;">Field Explanations &nbsp;- Processing II Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Display WO Number when Saving New WO (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the WOrk Order number assigned to a new work order will be displayed when saving in </span><span style="font-size: 11pt;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check Quantities per Sequence (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then labor reporting will compare the sequence start quantity with the quantity reported as complete.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent WO-G from taking Inventory negative (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then regardless of quantity entered on the screen, the actuual issue quantity will not take inventory negative.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Apply full overhead to team labor (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then </span><span style="font-size: 11pt;"><a href="wo-f_enter_labor.htm" class="topiclink">WO-F &nbsp;Enter Labor</a></span><span style="font-size: 11pt;"> will apply the full work center overhead to each member of a team when team based labor is reported.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Link Work Center Dept to GL Dept(Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the Absorbed Labor and Overhead postings made in </span><span style="font-size: 11pt;"><a href="wo-f_enter_labor.htm" class="topiclink">WO-F &nbsp;Enter Labor</a></span><span style="font-size: 11pt;"> or using Data Collection wpost to the default GL Account and the Department based on the Work Center Depart,ment</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Pull Comps from Dflt Location regardless of WO Loc (Y/N/S) (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is blank or N then components will pull from the Work Order Location. &nbsp;If it is Y then components will pull from the Default Location regardless of the work order Location and a setting of S means that Service/Repair work orders will pull from the Default Location.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prompt for user password in WO-F (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then users must re-enter their password to enter labor.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent re-using Serial Number for the same item in WO-I (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the same serial number can not be entered more than once for an item even if the current on-hand is zero (as in the case of a return or repair)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">AutoGen of Serial Numbers in WO-S and process in WO_I (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then WO-S Label printing will generate the serial numbers for finished items whenthe labels are printed and WO_I will then use those Serial Numbers for hte finished production.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Process FP Scrap Lot No in WO-I, WO-F, DC-H &nbsp;(Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then Lot Controlled items scrapped in WO-I, WO-F and DC will require assignment of a Lot number</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Allow Holiday Hours for regular WO in WO-F (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then Holiday Labor can be entered against a Released Work Order, not only a Indirect Work Order</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Limit Num of Decimal Places for WO-F (0,1,2)</span></p>
+<p><span style="font-size: 11pt;">Enter the number of decimal places for the hours entered in WO-F</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow More QTY than needed in QWO (Y,N,W)</span></p>
+<p><span style="font-size: 11pt;">If this is set to N then the Quick Work Order will prevent creating a work order that will put more parts into stock than are on Sales Order. &nbsp;If W it will Warn and blank or Y does not check</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Finished Production to post Standard Labor for Employee #</span></p>
+<p><span style="font-size: 11pt;">If an employee number is entered here, then </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> will use that employee number, the Routing time standard and the quantity complete being reported to post labor and overhead to the work order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Limit WO-J to closing 1 Work Order</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then </span><span style="font-size: 11pt;"><a href="wo-j_close_cancel_orders.htm" class="topiclink">WO-J &nbsp;Close/Cancel Orders</a></span><span style="font-size: 11pt;"> can not be run for a range of work orders</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-A Prevent WO Qty &lt; Vendor Min Qty for O/P Oper (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then a work order can not be created in WO-A for a quantity less than any vendor minimum for outside process operation. &nbsp;If it is set to A the user will be warned if the quantity is less and asked if they want to continue.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Round to next Int Qty for Comps with same MR-D setting</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then kit issues and backflushing of components with the &quot;Round MRP Quantities to the next whole number&quot; will also round up material issues to the next integer quantity</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Stock Room Management for Posting Part Request</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then pulling components using <a href="wo-k-i_kitting_system.htm" class="topiclink">WO-K-I Kitting System</a> will require a separate supervisor review and posting using <a href="de-k-a_import_post_material_issues.htm" class="topiclink">DE-K Import &amp; Post Material Issues</a>. &nbsp;If it is blank or N then saving the component issue in <a href="wo-k-i_kitting_system.htm" class="topiclink">WO-K-I Kitting System</a> will post the material issuye transactions.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-I Prevent Changing Actual Unit Cost (Y/N/W)</span></p>
+<p><span style="font-size: 11pt;">If set to Y the operator can not modify the calculated unit cost generated by <a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I Enter Finished Production</a>. &nbsp;W provides a warning but allows change and N or Blank do not check.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WOF/WOKK/WOM Update WO Actual Start Date (Y/N/W/A)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y and labor is entered with a date prior to the WO Actual Start Date, the WO Actual Start Date will be changed to match the labor date. &nbsp;W provides a Warning and A asks if the change should be made.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Track Lot/Serial or Both for Serialized parents </span></p>
+<p><span style="font-size: 11pt;">If set to S then serialized Components can be mapped to specific serialized parents. &nbsp;L means that Lot Controlled components can be mapped to serialized parents and B means both. &nbsp;Use of this feature requires that serial numbers of parent parts on work orders be preassigned using <a href="wo-s_print_work_order_labels.htm" class="topiclink">WO-S Print Work Order Labels</a> and the mapping of the component Lot and Serial Numbers to the parent serial number is performed at <a href="wo-k-o_enter_component_serial_.htm" class="topiclink">WO-K-O Enter Component Serial Numbers</a> and <a href="wo-k-p_enter_component_lot_inf.htm" class="topiclink">WO-K-P Enter Component Lot Information</a> </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WO-I Create BKARTXNS records to assign Serial # to SO </span></p>
+<p><span style="font-size: 11pt;">If set to Y, <a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I Enter Finished Production</a> will assign the Serial numbers produced to the Sales Order line associated with the Work Order eliminating the requirement to re-enter the serial numbers when releasing the order for invoicing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent WO-I and WO-P from posting negative unit cost </span></p>
+<p><span style="font-size: 11pt;">If set to Y then when the final receipt for a work order is processed and the net unit cost ends up a negative value because prior receipts have taken more cost out of the work order than actual costs were put in, recalculate the unit cost as total actual cost in the work order divided by total quantity of parts made and post the production using that value. &nbsp;Closing the work order will then make a WIP Variance posting for the difference.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Disable Kit program from double validating part numbers </span></p>
+<p><span style="font-size: 11pt;">If set to Y then <a href="wo-k-i_kitting_system.htm" class="topiclink">WO-K-I Kitting System</a> will only require a single scan of component part numbers rather than a validation scan of a pick list as well as the item bin</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Save in the Kit program will also post material issues </span></p>
+<p><span style="font-size: 11pt;">If set to Y then <a href="wo-k-i_kitting_system.htm" class="topiclink">WO-K-I Kitting System</a> will post the material issues on save rather than require a review and posting in <a href="de-k-a_import_post_material_issues.htm" class="topiclink">DE-K Import &amp; Post Material Issues</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WOI/WOP Backflush Prevent OH Negative</span></p>
+<p><span style="font-size: 11pt;">If set to Y then backflushing components will halt the finished production process if there is insufficient stock on hand.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WOF/DCA/DCB Backflush Prevent OH Negative </span></p>
+<p><span style="font-size: 11pt;">If set to Y when backflushing components a warning will pop up if there is insufficient stock of a component and it will not be issued.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">WOM Autopost Labor Records  </span></p>
+<p><span style="font-size: 11pt;">If set to Y, saving a record in <a href="wo-m_batch_labor_entry.htm" class="topiclink">WO-M Batch Labor Entry</a> will post immediately. &nbsp;If A, the user will be prompted and blank or N it will not post.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 14pt; font-weight: bold;">Field Explanations &nbsp;- Printing Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print BOM Remarks? - Traveler</span></p>
+<p><span style="font-size: 11pt;">If </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, any remarks attached to bill of material components will print underneath the component in the bill of material section of the shop traveler.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print BOM Comments? - Traveler</span></p>
+<p><span style="font-size: 11pt;">If </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, any comments added to the work order bill of material will print underneath the component in the bill of material section of the shop traveler.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Job Schedule? - Traveler</span></p>
+<p><span style="font-size: 11pt;">If there are multiple work orders sharing the same work order prefix and you want them printed in the header section of the shop traveler, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> in this field. &nbsp;These would represent related work orders that are to be completed as a group. &nbsp;If this information is not needed, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Short Form? - Traveler</span></p>
+<p><span style="font-size: 11pt;">Enter a </span><span style="font-size: 11pt; font-style: italic;">Y </span><span style="font-size: 11pt;">if you want the short format traveler, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> if you prefer the long format traveler.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Bill of Mat? - Traveler</span></p>
+<p><span style="font-size: 11pt;">If you don't want the bill of materials printed on the shop traveler, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> in this field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Mat in Seqs? - Traveler</span></p>
+<p><span style="font-size: 11pt;">If work order bills of material components are tied to specific routing sequences and you want them printed on the shop traveler within the sequences in which they are used or consumed, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> in this field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Machine and Tool - Traveler</span></p>
+<p><span style="font-size: 11pt;">If you are assigning machines and tools in your routings and want them printed on shop travelers, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">. &nbsp;If you don't use machines and tools, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Inspection Fields - Traveler</span></p>
+<p><span style="font-size: 11pt;">Optional inspection fields can print on the shop traveler which allow entry of sign-offs for </span><span style="font-size: 11pt; font-style: italic;">quantity, first article, last article, accepted, rejected</span><span style="font-size: 11pt;">. &nbsp;If you don't want these fields, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Multi Routings? - Traveler</span></p>
+<p><span style="font-size: 11pt;">In </span><span style="font-size: 11pt;"><a href="ro-a_enter_routings.htm" class="topiclink">RO-A &nbsp;Enter Routings</a></span><span style="font-size: 11pt;"> you can specify different sequences to print on different routing numbers. &nbsp;When you print the shop traveler it will produce multiple routings within the same work order number instead of a single routing. &nbsp;If you intend to use this feature, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> in this field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Routing Seqs Order (A/D)</span></p>
+<p><span style="font-size: 11pt;">When printing graphical format travelers using </span><span style="font-size: 11pt;"><a href="wo-c_print_travelers.htm" class="topiclink">WO-C &nbsp;Print Travelers</a></span><span style="font-size: 11pt;"> you can specify whether the routing sequences print in ascending or descending order. &nbsp;Most shops will choose ascending order; however descending is offered for those who wish to use the traveler as a &#58966;ear-off?labor ticket.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Short Header on Travelers</span></p>
+<p><span style="font-size: 11pt;">If this is Y then multi-page travelers will have an abbreviated Heading section on pages after the first page.</span></p>
+<p>&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

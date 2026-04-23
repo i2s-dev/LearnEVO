@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>EDI</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="EDI">
+   <meta name="description" content="EDI">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">EDI</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; Data Exchange &gt; EDI&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">EDI</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="de-m_import_physical_inventory_counts.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ed-b_import_edi_orders.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">EDI</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">EDI Overview</span></p>
+<p><span style="font-size: 11pt;">The EDI module that allows you to receive customer orders and send out customer invoices via EDI (Electronic Data Interchange). &nbsp;Due to the nature of EDI in which requirements can vary greatly from business partner to business partner, it is not possible to offer an EDI module that meets every company's exact requirements. &nbsp;Some customization will almost certainly be required by third party programmers to make EDI work for your company. &nbsp;The EDI module serves as a good foundation for most EDI requirements that even with custom programming included is far less costly than starting from scratch with a completely customized solution. You need to have any incoming orders converted to a format that matches the EVOSO.IN file that the ED-B program can read and create outgoing invoices and ASN's to the format required by your trading partner. &nbsp;A data map is available at </span><span style="font-size: 11pt; text-decoration: underline;"><a href="http://www.istechsupport.com/dl/edimap.zip" target="_blank" class="weblink">http://www.istechsupport.com/dl/edimap.zip</a></span><span style="font-size: 11pt;">. &nbsp;One resource with experience in this process is USI EDI who can be contacted at </span><span style="font-size: 11pt; text-decoration: underline;"><a href="mailto:usisales@usiedi.com" class="weblink">usisales@usiedi.com</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Setting up EDI</span></p>
+<p><span style="font-size: 11pt;">Go into </span><span style="font-size: 11pt;"><a href="ed-g_master_edi_setup.htm" class="topiclink">ED-G &nbsp;Master EDI Set-up</a></span><span style="font-size: 11pt;"> and first enter a path that will be your folder for the data transfer such as a subfolder under the EvoERP folder named EDI. &nbsp;Create a subfolder under that folder named Trensfer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Your </span><span style="font-size: 11pt; font-style: italic;">Company ID Number</span><span style="font-size: 11pt;"> is normally your 9 digit Dun's number, but it can be any number. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Next EDI Import Number</span><span style="font-size: 11pt;"> is just a counter that keeps track of each import file -- you can give it a starting number of 1.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receiving EDI Sales Orders</span></p>
+<p><span style="font-size: 11pt;">At this point you can begin receiving EDI orders. &nbsp;Use whatever tool you have selected to create the EVOSO.IN file, run </span><span style="font-size: 11pt;"><a href="ed-b_import_edi_orders.htm" class="topiclink">ED-B &nbsp;Import EDI Orders</a></span><span style="font-size: 11pt;">, which imports any orders that have not yet been imported. &nbsp;At this point the orders are in a temporary file rather than in the sales order file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Next, run </span><span style="font-size: 11pt;"><a href="ed-h_error_report.htm" class="topiclink">ED-H Error Report</a></span><span style="font-size: 11pt;"> to verify the incoming data. &nbsp;If any errors need to be corrected, run </span><span style="font-size: 11pt;"><a href="ed-c_edit_edi_orders.htm" class="topiclink">ED-C &nbsp;Edit EDI Orders</a></span><span style="font-size: 11pt;">, which is a program virtually identical to </span><span style="font-size: 11pt; font-style: italic;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A Enter Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;With this program you can edit orders if any changes or additions are required. &nbsp;Once the order has been reviewed and edited to your satisfaction, you can save it and convert it immediately to a sales order, or at a later time you can run </span><span style="font-size: 11pt;"><a href="ed-d_convert_edi_orders_to_sales_orders.htm" class="topiclink">ED-D &nbsp;Convert EDI Orders to Sales Orders</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">This completes the process of getting the EDI order into the sales order system.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sending EDI Invoices</span></p>
+<p><span style="font-size: 11pt;">Once an EDI customer's sales order gets invoiced and posted, you can use ODBC to connect to the database to generate whatever outgoing labels, ASN, Invoice and other documentation your trading partner requires. &nbsp;Once again, USI EDI has this experience.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

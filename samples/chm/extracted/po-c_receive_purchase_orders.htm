@@ -1,0 +1,248 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>PO-C Receive Purchase Orders</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="PO-C &nbsp;Receive Purchase Orders,receive purchase orders">
+   <meta name="description" content="PO-C Receive Purchase Orders">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">PO-C Receive Purchase Orders</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Purchase Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">PO-C Receive Purchase Orders</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="po-b_print_purchase_orders.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="po-d_view_po_receivers.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">PO-C &nbsp;Receive Purchase Orders</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to record receipt of purchase orders. &nbsp;This process adds items to your inventory units on hand. &nbsp;If a work order is specified on the line item, the units and costs bypass on-hand inventory and go directly to work-in-process.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the PO is a service order, the costs go directly to work-in-process. &nbsp;No on-hand or work-in-process quantities are affected. &nbsp;Depending on default settings, the program allows you to change PO costs directly without having to modify the original PO, and it allows you to receive more than the PO quantity.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you are using multiple inventory locations and you want to receive goods to a particular location, you must have specified that location on the purchase order before receiving the order. &nbsp;You can receive items either to QC inspection or directly to inventory or work-in-process.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can also return purchased items to the vendor by indicating a negative quantity received. &nbsp;This will remove parts from stock or a work order and put them back on PO and make the appropriate reversing accounting entries.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When a PO is received, the Last Cost is updated and, if so specified in </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C Purchase Order Defaults</a></span><span style="font-size: 11pt;"> the vendor specific pricing as seen in </span><span style="font-size: 11pt;"><a href="po-h_enter_vendor_prices.htm" class="topiclink">PO-H &nbsp;Enter Vendor Prices</a></span><span style="font-size: 11pt;"> for the vendor on the PO can also be updated.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Multi-Currency Processing</span></p>
+<p><span style="font-size: 11pt;">If you have multi-currency processing enabled in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, you can place purchase orders with vendors in foreign currencies.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If a foreign currency is specified in the Currency field in the purchase order header, the program will convert each line item's cost from </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;"> to </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> (using the closest historical exchange rate) when posting to the </span><span style="font-size: 11pt; font-style: italic;">Inventory</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">WIP</span><span style="font-size: 11pt;"> general ledger accounts and when calculating the </span><span style="font-size: 11pt; font-style: italic;">Last</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Average</span><span style="font-size: 11pt;"> cost. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">PO's Received not Invoiced</span><span style="font-size: 11pt;"> general ledger account is posted to in the </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">. &nbsp;The difference between </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;"> postings will be posted to the </span><span style="font-size: 11pt; font-style: italic;">F/E Transactions</span><span style="font-size: 11pt;"> account set up in </span><span style="font-size: 11pt;"><a href="im-c_enter_currenct_exchange_rates.htm" class="topiclink">IM-C &nbsp;Enter Currency Exchange Rates</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Landed Cost Processing</span></p>
+<p><span style="font-size: 11pt;">When receiving the purchase order, you can enter a customs broker in the </span><span style="font-size: 11pt; font-style: italic;">Customs Broker</span><span style="font-size: 11pt;"> field. &nbsp;The program will then add the brokerage fees as set up in </span><span style="font-size: 11pt;"><a href="im-f_enter_landed_cost_customs_fees.htm" class="topiclink">IM-F &nbsp;Enter Landed Cost Customs Fees</a></span><span style="font-size: 11pt;"> to the inventory cost of the item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The program will also take the duty code assigned to the vendor in </span><span style="font-size: 11pt;"><a href="ap-j_print_vendor_code_and_name.htm" class="topiclink">AP-A &nbsp;Enter Vendors</a></span><span style="font-size: 11pt;"> and combine it with the duty code assigned to each item in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> and will calculate a duty fee that will be added to the inventory cost of each item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">These landed cost entries to inventory are all made in </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO FIELDS</span></p>
+<p><span style="font-size: 11pt;">The following fields are based on information entered on the PO.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purchase Ord (Required)</span></p>
+<p><span style="font-size: 11pt;">The number of the PO being received. &nbsp;The word </span><span style="font-size: 11pt; font-style: italic;">Purchase </span><span style="font-size: 11pt;">or </span><span style="font-size: 11pt; font-style: italic;">Service</span><span style="font-size: 11pt;"> will display to the right of this field, depending on the purchase order type.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Vendor Name</span></p>
+<p><span style="font-size: 11pt;">The name of the vendor entered on the PO.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receipt Date</span></p>
+<p><span style="font-size: 11pt;">The date the items or services were physically received.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receive Into</span></p>
+<p><span style="font-size: 11pt;">Choose from one of the following two options, displayed in a pop-up window. &nbsp;This determines whether the items are to be received directly to inventory or to QC Inspection. &nbsp;If they go to QC inspection, they will have to be released to inventory through </span><span style="font-size: 11pt;"><a href="po-j-c_enter_inspection_buyoffs.htm" class="topiclink">PO-J-C &nbsp;Enter Inspection Buyoffs</a></span><span style="font-size: 11pt;">. &nbsp;Once the setting is entered here for the PO, individual lines can be changed as they are received.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">I - Inventory</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Q - QC Inspection</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Packing Slip</span></p>
+<p><span style="font-size: 11pt;">The vendor's packing slip number. &nbsp;This is an optional cross-reference for tracking purposes. &nbsp;If the </span><span style="font-size: 11pt; font-style: italic;">Require Pack Slip Info?</span><span style="font-size: 11pt;"> field in </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;"> is set to Y, you will be required to make an entry in this field; otherwise it is optional.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Employee Number</span></p>
+<p><span style="font-size: 11pt;">The employee number of the receiving person as entered in </span><span style="font-size: 11pt;"><a href="sm-g_enter_employees.htm" class="topiclink">SM-G Enter Employees</a></span><span style="font-size: 11pt;">. &nbsp;This is an optional field and can be left blank.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Customs Broker</span></p>
+<p><span style="font-size: 11pt;">If you have Landed Costs enabled in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, you are given access to this field. &nbsp;You can enter a customs broker previously set up through </span><span style="font-size: 11pt;"><a href="im-f_enter_landed_cost_customs_fees.htm" class="topiclink">IM-F &nbsp;Enter Landed Cost Customs Fees</a></span><span style="font-size: 11pt;">. &nbsp;See Landed Cost Processing above for details.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receive all Lines?</span></p>
+<p><span style="font-size: 11pt;">If all the remaining lines in the PO are to be received, answer Y to this prompt and all the lines will be marked as fully received. &nbsp;Afterward you can still process selected lines for any exceptions. &nbsp;If you will be doing a partial receipt and don't want all the lines marked as received, answer N.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Recv thru Due Date</span></p>
+<p><span style="font-size: 11pt;">If you had answered Y to Receive all Lines?, the cursor advances to this field. &nbsp;If you wish to restrict the items received up through a particular due date, you can specify the date in this field and only lines up through this date will be marked as received. &nbsp;This is helpful when processing scheduled or blanket orders with a range of PO due dates.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Display Comment Lines?</span></p>
+<p><span style="font-size: 11pt;">The PO line items display in a pop-up window. &nbsp;With this prompt you can control whether comment lines will be included in the display or not.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Display Fully Recd Lines?</span></p>
+<p><span style="font-size: 11pt;">The PO line items display in a pop-up window. &nbsp;With this prompt you can limit the display only to lines with quantities remaining to be received, or you can show all lines, including fully received lines. &nbsp; To return items on a fully received line to the vendor by entering a negative quantity against it, you must have this set to Y.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Qty this Receipt</span></p>
+<p><span style="font-size: 11pt;">The actual quantity received according to your count.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Packing Slip Qty</span></p>
+<p><span style="font-size: 11pt;">This is the quantity as shown on your vendor's packing slip. &nbsp;This is for tracking purposes and allows you to record any discrepancy between your count and the vendor's count. &nbsp;This field is optional and may be left blank.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Unit Cost</span></p>
+<p><span style="font-size: 11pt;">Access to the unit cost field is controlled by </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;">. &nbsp;Receiving can have no access, view only, or the ability to change the unit cost when receiving.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">DISPLAY FIELDS</span></p>
+<p><span style="font-size: 11pt;">The following fields on the screen are for display only and cannot be entered: Lin, Item number, Description, Quantity Ordered, UM, Due Date, Work Order, Sequence, and Recvd to Date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter the Purchase Ord number or find your PO in a lookup window by pressing the F2 key (or clicking on the Lookup button). &nbsp; The vendor name entered on the PO will be displayed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the Receipt Date, which is the date the items were physically received. &nbsp;It defaults to today's date, but can be overridden. &nbsp;A pop-up window will prompt you as to whether you want the items received to inventory or to QC inspection. &nbsp;If you receive into QC inspection, the items will be transferred to inventory at a later time through </span><span style="font-size: 11pt;"><a href="po-j-c_enter_inspection_buyoffs.htm" class="topiclink">PO-J-C &nbsp;Enter Inspection Buyoffs</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you have the </span><span style="font-size: 11pt; font-style: italic;">Require Pack Slip Info?</span><span style="font-size: 11pt;"> field in </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;"> set to Y, you will be required to make an entry in this field; otherwise it is optional. &nbsp;The employee number of the person processing the receipt is also optional.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Full Receipt</span></p>
+<p><span style="font-size: 11pt;">If the PO is to be fully received, answer Y to Receive all Lines? &nbsp;This will mark all lines as fully received and eliminates having to process each line individually. &nbsp;You will see all the lines displayed in a pop-up window, with the remaining quantities shown in the This Receipt column. &nbsp;If everything looks correct, you can press F10 (or click on the Save button) to begin processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">During processing the PO is marked as fully received, posts to the General Ledger and the Purchases journal, and updates the inventory file records of units on hand, units on purchase order or in work-in-process, average cost and last cost, last receipt date, and average days to receive. &nbsp;The inventory location file is updated for units on purchase order and units on hand or in-work-in-process for the specified Location.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Partial Receipt</span></p>
+<p><span style="font-size: 11pt;">When only part of an order is received, you can process individual lines as needed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The Receive all Lines? prompt can be used for partial receipts as well as full receipts. &nbsp;For example, if you have a scheduled or blanket PO covering many deliveries over the next months or year, you often will receive a segment of the PO scheduled for a particular due date. &nbsp;You can answer Y to Receive all Lines?, but then limit the lines received through a particular due date by entering a date in the Recv thru Due Date field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Another case might be that the vast majority of lines are to be fully received, but only one or two lines are received with short or zero quantities. &nbsp;You can go ahead and answer Y to Receive all Lines?, mark the entire order as received, then from the pop-up display of the lines highlight the exceptions, receive them individually, then press F10 (or click on the Save button) and process the order. &nbsp;This can save a lot of time versus receiving all lines individually. &nbsp;While you're still in the header section of the screen you can control what displays in the pop-up window that shows all your line items. &nbsp;On a long PO you might not need to see all the comment lines, or you might want to only see lines with items left to be received. &nbsp;These can be controlled by the </span><span style="font-size: 11pt; font-style: italic;">Display Comment Lines?</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Display Fully Recd Lines?</span><span style="font-size: 11pt;"> prompts. &nbsp;Defaults can be set for these fields through </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Once you complete the header fields, you can begin receiving the individual line items. &nbsp;If you had answered Y to </span><span style="font-size: 11pt; font-style: italic;">Receive all Lines?</span><span style="font-size: 11pt;">, all the lines will automatically be displayed in a pop-up window with the Remaining quantity equal to the This Receipt quantity. &nbsp;You can highlight any line item, press &lt;Enter&gt; and receive that line item individually, if any changes are to be made. &nbsp;You can bring back the line item display window at any time by pressing F2.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you had answered N to </span><span style="font-size: 11pt; font-style: italic;">Receive all Lines?</span><span style="font-size: 11pt;">, the same window of line items will be displayed but the Quantity This Receipt for all lines will be set to 0. &nbsp;Highlight the desired line and press &lt;Enter&gt; or double click and the line with a quantity to be received will automatically be brought into the line item area of the screen. &nbsp;A variety of fields related to this line item are displayed for reference purposes. &nbsp; Enter the quantity received. &nbsp;You can also enter a Packing Slip Qty if desired. &nbsp;You can also change whether each line is to be received to Inventory or QC.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If receiving has access to the unit cost (vendor price) field, the price from the PO defaults to the Unit Cost field. &nbsp;If there is no change in price, press &lt;Enter&gt;. &nbsp;If the price has changed, or you know the price for the first time, enter the price in the Unit Cost field and the PO will be updated with this new cost automatically.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">As each line item is received, you will be returned to the window listing all available lines. &nbsp;Once all desired lines have been received, press ESC or click Save and you will be asked if all entries are correct. &nbsp;If yes, your entries will be batch processed and the screen will clear.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">At any point while receiving individual line items you can view your PO lines in a display window by pressing F2 (or clicking on the Display Lines button). &nbsp;You can highlight and press &lt;Enter&gt; on any line item, thus allowing you to move around to different line items as needed. &nbsp;The line item display window also allows you to review your entries prior to processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Receive PO's allows you to over-receive beyond the PO quantity, which is common with certain commodity type products. </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;"> has a setting for Percentage of Over Receipts Allowed. &nbsp;If the over receipt exceeds the percentage specified, a warning message will be presented. &nbsp;You can also enter a negative quantity to reflect returned items or to correct for entry mistakes.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">When a partial receipt gets processed, it marks the PO as partially received, updates the dollars and quantity received and not invoiced, updates the same inventory and inventory location fields as does a full receipt, posts the receipt to the Purchases Journal, and updates the inventory, work order, and location files.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Closing Purchase Orders</span></p>
+<p><span style="font-size: 11pt;">If you are using Accounts Payable, the PO will ultimately get closed when it is fully invoiced through </span><span style="font-size: 11pt;"><a href="ap-c_enter_purchase_order_invoices.htm" class="topiclink">AP-C &nbsp;Enter Purchase Order Invoices</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you are not using Accounts Payable, PO's are closed during Receive Purchase Orders when all line items are fully received. &nbsp;When a purchase order is closed through receiving, the receivers in the purchase order history file are marked as closed and the purchase order is deleted from the open purchase order file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you wish to close a PO that has not been fully received, such as when a PO gets canceled or is being closed short, you can close it in </span><span style="font-size: 11pt;"><a href="po-k_close_purchase_orders.htm" class="topiclink">PO-K &nbsp;Close Purchase Orders</a></span><span style="font-size: 11pt;">. &nbsp;A closed PO can be reopened from </span><span style="font-size: 11pt;"><a href="po-d_view_po_receivers.htm" class="topiclink">PO-D &nbsp;View PO Receivers</a></span><span style="font-size: 11pt;"> if the default setting in </span><span style="font-size: 11pt;"><a href="sd-c_purchase_order_defaults.htm" class="topiclink">SD-C &nbsp;Purchase Orders Defaults</a></span><span style="font-size: 11pt;"> allows reopening closed purchase orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receiving Make-Froms</span></p>
+<p><span style="font-size: 11pt;">Refer to Using Make-Froms in </span><span style="font-size: 11pt;"><a href="po-a_enter_purchase_orders.htm" class="topiclink">PO-A &nbsp;Enter Purchase Orders</a></span><span style="font-size: 11pt;"> for an explanation of what Make-Froms are and how they are used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">When Make-Froms are received, when you save the receipt of the Make-From item, the program will prompt to receive the item's components proportionally. If you reply Yes, the components will be processed proportionally to the parent quantity received. &nbsp;If No, then you can manually edit the component quantities. &nbsp;Because they are negative quantities, the receipt deducts them from inventory. &nbsp;When the Make-From is added to inventory, PO-C adds its PO unit cost to the cost of the component(s) so that the total cost for the Make-From accurately reflects both the service rendered to it as well as the cost of the components that went into it.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receiving Make-Froms</span></p>
+<p><span style="font-size: 11pt;">Refer to Purchasing Phantoms in </span><span style="font-size: 11pt;"><a href="po-a_enter_purchase_orders.htm" class="topiclink">Purchase Orders</a></span><span style="font-size: 11pt;"> for an explanation of using Phantoms to purchase a kit of items. &nbsp;When a Phantom is received, the components will be received to stock with a cost based on distributing the cost of the phantom parent across the components proportionally based on component standard cost. </span></p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

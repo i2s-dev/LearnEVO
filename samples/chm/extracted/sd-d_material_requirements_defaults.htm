@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SD-D Material Requirements Defaults</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="SD-D Material Requirements Defaults Evo-ERP">
+   <meta name="description" content="SD-D Material Requirements Defaults">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SD-D Material Requirements Defaults</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; System Defaults&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SD-D Material Requirements Defaults</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sd-c_purchase_order_defaults.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sd-e_scheduling_defaults.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-family: Calibri; font-weight: bold;">DEF-D Material Requirements Defaults (Evo-ERP)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">MRP Gen POs in STDPK sizes</span></p>
+<p><span style="font-size: 11pt;">This determines whether or not Purchase Orders generated by </span><span style="font-size: 11pt;"><a href="mr-j_generate_purchase_orders.htm" class="topiclink">MR-J &nbsp;Generate Purchase Orders</a></span><span style="font-size: 11pt;"> will round up to the next increment of Standard Pack as defined for the item in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Include in MRP Generation?</span></p>
+<p><span style="font-size: 11pt;">If set to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, whenever new items are created in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;">, the </span><span style="font-size: 11pt; font-style: italic;">Include in MRP Generation?</span><span style="font-size: 11pt;"> switch will be set to</span><span style="font-size: 11pt; font-style: italic;"> Y</span><span style="font-size: 11pt;">, which means this inventory item will be included in the MR-F, </span><span style="font-size: 11pt; font-style: italic;">Generate Material Requirements</span><span style="font-size: 11pt;">, program's calculations. &nbsp;Almost always this default is set to</span><span style="font-size: 11pt; font-style: italic;"> Y</span><span style="font-size: 11pt;">. &nbsp;Individual items can be excluded from the MRP Generation through </span><span style="font-size: 11pt;"><a href="mr-d_enter_mrp_parameters.htm" class="topiclink">MR-D &nbsp;Enter MRP Parameters</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Expedite Buffer (Days)</span></p>
+<p><span style="font-size: 11pt;">This field controls the EXPEDITE message issued by the MRP program. &nbsp;An EXPEDITE message is issued whenever enough material is on work order or purchase order, but is scheduled to arrive after it is actually needed. &nbsp;The expedite buffer refers to the number of days within which an order can arrive and be considered late, as opposed to being Pegged to a later requirement.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Expedite Sensitivity (Days)</span></p>
+<p><span style="font-size: 11pt;">Most MRP dates are loosely planned, meaning that they are not so precise that an item arriving one or even a few days late actually needs attention. &nbsp;You can reduce these unnecessary EXPEDITE messages through use of the </span><span style="font-size: 11pt; font-style: italic;">Expedite Sensitivity</span><span style="font-size: 11pt;"> setting. &nbsp;Any requirement whose number of days late is equal to or less than the </span><span style="font-size: 11pt; font-style: italic;">Expedite Sensitivity</span><span style="font-size: 11pt;"> number of days will not receive an EXPEDITE message on any reports.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Delay Buffer (Days)</span></p>
+<p><span style="font-size: 11pt;">This field controls the DELAY message issued by the MRP program. &nbsp;A DELAY message is issued whenever material on work order or purchase order is scheduled to arrive earlier than it is actually needed. &nbsp;The delay buffer refers to the number of days beyond which an early arrival will get a DELAY message.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Delay Sensitivity (Days)</span></p>
+<p><span style="font-size: 11pt;">This field controls the printing of DELAY messages. &nbsp;It should be set equal to the number of days an item can arrive early before it needs attention.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Round MRP Quantities to the next whole number (Y/N)?</span></p>
+<p><span style="font-size: 11pt;">Certain items by their physical nature cannot be ordered fractional quantities. &nbsp;For example, sheet steel may have to be ordered in complete sheets. &nbsp;By setting this field to Y, the MRP program will always round the suggested order quantity to the next whole number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Lead time for WO Start Date</span></p>
+<p><span style="font-size: 11pt;">If a value is entered here then </span><span style="font-size: 11pt;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F &nbsp;Generate Material Requirements</a></span><span style="font-size: 11pt;"> will add that number of days to the lead time of manufactured items to determine the start date of planned work orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Include Forecast in Stock Status</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the &quot;Available&quot; quantity in </span><span style="font-size: 11pt;"><a href="in-a_inventory_inquiry.htm" class="topiclink">IN-A &nbsp;Inventory Inquiry</a></span><span style="font-size: 11pt;"> will reflect the Forecast as entered in </span><span style="font-size: 11pt;"><a href="mr-a_enter_forecast.htm" class="topiclink">MR-A &nbsp;Enter Forecast</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Combine items within { &nbsp; } Days up to ${ &nbsp; }</span></p>
+<p><span style="font-size: 11pt;">If these fields are populated then multiple BUY requirements for the same item within the specified number of days and up to the specified dollar limit will be combined to a single BUY on the date of the first requirement.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Sequence Start Date as Need Date in MR-F</span></p>
+<p style="margin: 0px 0px 13px 0px;"><span style="font-size: 11pt;">If this is set to Y then for BOM Components linked to routing sequences, then the MR-F need date will be the sequence start date rather than the Work Order start date.</span></p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

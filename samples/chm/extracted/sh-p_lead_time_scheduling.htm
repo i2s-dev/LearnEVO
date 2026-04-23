@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SH-P Lead Time Scheduling</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="SH-P Cumulative Process Time Scheduling">
+   <meta name="description" content="SH-P Lead Time Scheduling">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SH-P Lead Time Scheduling</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Scheduling&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SH-P Lead Time Scheduling</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sh-o_finite_schedule_bucket_report.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sh-r_work_center_scheduler.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SH-P Lead Time Scheduling</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program is used to reschedule work orders either forward (calculate </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> based on </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">) or backwards (calculate </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> based on </span><span style="font-size: 11pt; font-style: italic;">Finish Date </span><span style="font-size: 11pt;">or</span><span style="font-size: 11pt; font-style: italic;"> Due Date</span><span style="font-size: 11pt;">) by using the Routing time standards, Work Center Queue Times, Outside Processing Lead times and the Shop Calendar. &nbsp;While </span><span style="font-size: 11pt;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;"> can use the same Lead Time scheduling logic to originally establish work order dates, this program can be used to reschedule existing work orders when conditions change such as queue times or work center shift hours.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">You can limit the work orders to be scheduled by clearing </span><span style="font-size: 11pt; font-style: italic;">Status Codes</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Priority Codes</span><span style="font-size: 11pt;"> in the first two fields.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can further limit the work orders to be scheduled by entering from/thru ranges of work order numbers, </span><span style="font-size: 11pt; font-style: italic;">Start Dates</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">Finish Dates</span><span style="font-size: 11pt;">, and work order </span><span style="font-size: 11pt; font-style: italic;">Class Codes</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You will next be prompted whether to use Forward or Backward scheduling with the default as set in </span><span style="font-size: 11pt;"><a href="sd-b_work_order_defaults.htm" class="topiclink">SD-B &nbsp;Work Orders Defaults</a></span><span style="font-size: 11pt;">. &nbsp;If Backward is chosen, indicate whether to reschedule based on current </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;">. &nbsp;All remaining sequences for the work orders within the selected ranges will be scheduled. &nbsp;If backward scheduling is selected and there are not enough available days before the desired completion date, the program will schedule forward from today and determine the earliest possible Finish Date and give a message indicating that not all finish dates could be met.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Dependent Scheduling</span></p>
+<p><span style="font-size: 11pt;">If you are using Backwards Lead Time scheduling, you can have lower level subassemblies scheduled based on higher assembly need dates provided the subassembly work orders have been generated using &quot;Create Multi-Assembly Work Orders&quot; in </span><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;"> or by running </span><span style="font-size: 11pt;"><a href="wo-k-d_create_multi-assy_work_orders.htm" class="topiclink">WO-K-D &nbsp;Create Multi-Assy Work Orders</a></span><span style="font-size: 11pt;">. &nbsp;This option will set the finish date of the subassembly work order to match the start date of the higher level work order.</span></p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

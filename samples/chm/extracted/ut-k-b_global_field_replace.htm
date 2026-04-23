@@ -1,0 +1,193 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>UT-K-B Global Field Replace</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="global field replace,UT-K-B &nbsp;Global Field Replace">
+   <meta name="description" content="UT-K-B Global Field Replace">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">UT-K-B Global Field Replace</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; Utilities&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">UT-K-B Global Field Replace</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ut-k-a_clear_data.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ut-k-d_recalc_gl_chart_of_accounts.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">UT-K-B &nbsp;Global Field Replace</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to globally change the value of a given field within a file or delete entries across all records within a file based on up to 6 filters using other fields within the file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">MAKE A BACKUP FIRST. &nbsp;This is a utility program that will affect many data records. &nbsp;With a backup you can always restore the data if for any reason the program does not produce the desired results.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">GET EVERYONE OFF THE SYSTEM: Get all users off the system before running this program.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">File Name</span><span style="font-size: 11pt;">. &nbsp;You can select a file from a lookup by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Display Files</span><span style="font-size: 11pt;"> button or (or press F2). &nbsp;See </span><span style="font-size: 11pt;"><a href="file_names.htm" class="topiclink">File Names</a></span><span style="font-size: 11pt;"> for a listing of file names and descriptions.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Choose an action - Replace (update a field value to a new value), Adjust (increment a numeric field by a flat amount or percent) or Delete (Delete the entire record, not clear a value in a field.)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you chose Replace or Adjust, a lookup window automatically displays with a list of all the available fields within this file. &nbsp;Select the field you wish to change by highlighting it, then click on it or press &lt;Enter&gt;. &nbsp;The field name is now displayed in the </span><span style="font-size: 11pt; font-style: italic;">Field name</span><span style="font-size: 11pt;"> picked field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If the field had a number in brackets to the right of the field name when displayed in the lookup window, this means the field is an array. &nbsp;An array means that the field is composed of several elements. &nbsp;For example, in the Item master file (MTICMSTR) the Standard cost field MTIC.PROD.RCOST consists of fifteen array elements representing the various component s of standard cost.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If the field is an array field, enter the array element to be changed in the </span><span style="font-size: 11pt; font-style: italic;">Array element number</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">For REPLACE Action</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the new value that will replace existing values in the </span><span style="font-size: 11pt; font-style: italic;">Replace with value</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">For ADJUST Action</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the adjustment value</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">For all actions, next enter the filters on the selected or other fields in the file that control which records should be updated. &nbsp;Available operators are =, &lt;, &lt;=, &gt;, &gt;=,All and $ which means &quot;Contains Substring&quot;</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Enter up to 6 filters and if entering fewer than 6, make sure you have fully entered the last filter and the cursor is on the next line ready to enter the next filter. &nbsp;Then press F10 to begin processing. &nbsp;When the processing is complete, you will be advised of the number of records affected.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

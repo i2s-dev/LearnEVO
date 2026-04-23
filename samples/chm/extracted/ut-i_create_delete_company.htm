@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>UT-I Create/Delete Company</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="create/delete company,delete company,UT-I &nbsp;Create/Delete Company">
+   <meta name="description" content="UT-I Create/Delete Company">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">UT-I Create/Delete Company</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; Utilities&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">UT-I Create/Delete Company</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ut-h_print_file_layouts.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ut-k-a_clear_data.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">UT-I &nbsp;Create/Delete Company</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to create additional companies or to delete an existing company. &nbsp;The program can copy all the files from a source company to the target (new) company or it can create a complete set of empty data files if you want to start entering data from scratch.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">IMPORTANT: </span><span style="font-size: 11pt;">If you are using both Evo-ERP and DBA Classic, always use Evo-ERP to create and delete companies so that both sets of data dictionaries are updated.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">IF YOU PLAN ON ONLY USING ONE COMPANY, YOU DO NOT NEED TO CREATE ONE; The system comes with empty data files for the default company already installed and it is ready for you to begin entering data. &nbsp;You can also use </span><span style="font-size: 11pt;"><a href="ut-k-a_clear_data.htm" class="topiclink">UT-K-A &nbsp;Clear Data</a></span><span style="font-size: 11pt;"> to initialize (clear) any data files in the default company.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Creating a New Company</span></p>
+<p><span style="font-size: 11pt;">First indicate that you are creating a new company by entering a </span><span style="font-size: 11pt; font-style: italic;">C</span><span style="font-size: 11pt;"> in the first field.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Company Code</span><span style="font-size: 11pt;"> for the new company. &nbsp;For example, if you want to number the company as company 2, enter a 2. &nbsp;This is a two character, alphanumeric field.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter Y in the </span><span style="font-size: 11pt; font-style: italic;">Copy from another company?</span><span style="font-size: 11pt;"> field if you want to copy data over from another company. &nbsp;If you plan on using the same </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> chart of accounts as that of another company, for example, you could copy its data files and then using </span><span style="font-size: 11pt;"><a href="ut-k-a_clear_data.htm" class="topiclink">UT-K-A &nbsp;Clear Data</a></span><span style="font-size: 11pt;"> you could remove all the transaction detail but keep selected master files without having to re-enter all that information.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you are copying data from another company, enter that company's one or two character company code in the </span><span style="font-size: 11pt; font-style: italic;">Copy from</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Company Name</span><span style="font-size: 11pt;">. &nbsp;This is the name that will appear in the selection window when using the </span><span style="font-size: 11pt; font-style: italic;">Change Company</span><span style="font-size: 11pt;"> function on the master menus and in </span><span style="font-size: 11pt;"><a href="sd-a_company_defaults.htm" class="topiclink">SD-A &nbsp;Company Defaults</a></span><span style="font-size: 11pt;"> and &nbsp;on printed forms such as invoices.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Path.</span><span style="font-size: 11pt;"> &nbsp;The program automatically inserts a path into this field pointing to a directory one level down from the current EVOERP folder for the new company. &nbsp;The program uses the new company's company code as the name for the new subdirectory. &nbsp;You can change the subdirectory name if you wish. &nbsp;It is not necessary to preface the path with a drive letter. &nbsp;For example, if your company is currently in EVOERP and you are creating a company with a company code of 88, you would see the following in the </span><span style="font-size: 11pt; font-style: italic;">Path</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">88\</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">When you press &lt;Enter&gt; processing will begin.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Processing</span></p>
+<p><span style="font-size: 11pt;">The program will first create the subdirectory specified for the new company. &nbsp;If you are copying from another company and specified that all the files were to be copied, it will then make a complete copy of all the files from the source company to the target company. &nbsp;It will add the specified company code as extensions on the end of the new company's file names.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you did not specify to copy from another company, the program creates an entire set of initialized (empty) data files with no default settings.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">In all cases the program finishes by inserting the new company name in </span><span style="font-size: 11pt;"><a href="sd-a_company_defaults.htm" class="topiclink">SD-A &nbsp;Company Defaults</a></span><span style="font-size: 11pt;"> so that it will appear on master menus and reports.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Deleting a Company</span></p>
+<p><span style="font-size: 11pt;">To delete an existing company enter a </span><span style="font-size: 11pt; font-style: italic;">D</span><span style="font-size: 11pt;"> in the first field. &nbsp;Then enter the company code in the </span><span style="font-size: 11pt; font-style: italic;">Company Code</span><span style="font-size: 11pt;"> field. &nbsp;You are then given a warning that the data files will be erased and are asked if you are sure you want to delete the company. &nbsp;If you indicate yes, all the files in the company's subdirectory will be erased and all data file locations for the company will be removed from the data dictionary location file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Special Processing</span></p>
+<p><span style="font-size: 11pt;">If you press F3 before processing, you will enable the option to update the data dictionary only. &nbsp;This allows you to add or remove company entries from the data dictionary without actually creating or deleting the data files themselves.</span></p>
+<p style="margin: 8px 0px 8px 0px;"><span style="font-size: 11pt;">If you press F4 before processing you will enable the option to create missing data files only without adding a company to the data dictionary.</span></p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

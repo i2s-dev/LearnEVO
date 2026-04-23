@@ -1,0 +1,202 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SO-E Release Sales Orders</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="sales order release,SO-E &nbsp;Release Sales Orders">
+   <meta name="description" content="SO-E Release Sales Orders">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SO-E Release Sales Orders</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Sales &gt; Sales Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SO-E Release Sales Orders</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="so-d_print_shipping_labels.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="so-f_print_invoices.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SO-E &nbsp;Release Sales Orders</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to release line items for invoicing or for selective printing on packing lists. &nbsp;When doing so the program will check stock and will automatically backorder items that are not available to ship. &nbsp;Order quantities and backorder quantities can be overridden.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When items are released, the </span><span style="font-size: 11pt; font-style: italic;">Ready to Invoice?</span><span style="font-size: 11pt;"> flag in the sales order header is set to Y and each of the released line item's </span><span style="font-size: 11pt; font-style: italic;">Release?</span><span style="font-size: 11pt;"> flag is set to Y. &nbsp;Any items flagged in this manner will be included in packing slips and invoices. &nbsp;(Packing slips can be specified to ignore release flags if you want to print all items on the sales order). &nbsp;You can accomplish the same thing by making these changes directly within the sales order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter the number of the sales order you want to release, or press F2 (or click on the </span><span style="font-size: 11pt; font-style: italic;">Lookup </span><span style="font-size: 11pt;">button) to choose from a list of open sales orders. &nbsp;The header information pertaining to that sales order will be automatically displayed. &nbsp;A </span><span style="font-size: 11pt; font-style: italic;">Ship To</span><span style="font-size: 11pt;"> button will be displayed and if you click it, you can review and edit the Ship To address which can be useful if an order has multiple shipments to different destinations. &nbsp;You are next asked </span><span style="font-size: 11pt; font-style: italic;">Release all Lines?</span><span style="font-size: 11pt;"> &nbsp;If you indicate yes, the cursor will move to the </span><span style="font-size: 11pt; font-style: italic;">Include Backorders?</span><span style="font-size: 11pt;"> prompt. &nbsp;If you want backorder amounts moved into the </span><span style="font-size: 11pt; font-style: italic;">Ship Qty</span><span style="font-size: 11pt;"> field and therefore included in the release, check the option. &nbsp;If backorder amounts are not to be released, leave the checkbox blank. &nbsp;The cursor then moves to the </span><span style="font-size: 11pt; font-style: italic;">Release thru Est Date</span><span style="font-size: 11pt;"> field. &nbsp;If you want to release items up through a specific </span><span style="font-size: 11pt; font-style: italic;">Estimated Ship Date</span><span style="font-size: 11pt;">, enter the appropriate date. &nbsp;This date range feature is useful when releasing scheduled or blanket orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are next asked </span><span style="font-size: 11pt; font-style: italic;">Display Comment Lines?</span><span style="font-size: 11pt;"> &nbsp;If you indicate yes, comment lines will be displayed in both the entry area and in the display window. &nbsp;If you don't want the comment lines displayed, leave the checkbox blank.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you want any comment lines following a released line item to be automatically released with it, check the box for </span><span style="font-size: 11pt; font-style: italic;">Auto Release Comments?</span><span style="font-size: 11pt;"> &nbsp;If you want to see line items that have been completely shipped, check the box to </span><span style="font-size: 11pt; font-style: italic;">Display Shipped Lines?</span><span style="font-size: 11pt;"> &nbsp;Otherwise, completely shipped lines will not be included in the display window. &nbsp;Click the Release button and the lines will be displayed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Line Item Entry Area</span></p>
+<p><span style="font-size: 11pt;">The line items within the data range selected will be displayed. &nbsp;Check the </span><span style="font-size: 11pt; font-style: italic;">Release?</span><span style="font-size: 11pt;"> box to release lines. &nbsp; To make any changes to released or backordered quantities, highlight the line and click Edit. &nbsp;Enter the quantity to be shipped in the Ship Qty field. &nbsp;Any remaining items on the line will be moved to the Backorder. &nbsp;Depending on the Release Qtys Greater than On Hand setting in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M &nbsp;Sales Orders Defaults</a></span><span style="font-size: 11pt;">, the system will check available stock and warn or prohibit release and move parts to backorder accordingly. &nbsp;Save the line to return to the list of lines to edit another.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you had not checked the box for </span><span style="font-size: 11pt; font-style: italic;">Auto Release Comments?,</span><span style="font-size: 11pt;"> you can manually release any comment lines following each line item that you want printed on the packing slip or invoice. &nbsp; Once all lines and quantities are correct, click Save</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Entering Shipping Information</span></p>
+<p><span style="font-size: 11pt;">The cursor moves to the </span><span style="font-size: 11pt; font-style: italic;">Ship Via</span><span style="font-size: 11pt;"> field. &nbsp;If the method of shipment has changed since the sales order was originally entered, enter the correct shipping method, which prints on packing slips and invoices. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Shipper Number</span><span style="font-size: 11pt;"> is automatically assigned by the system, but can be overridden. &nbsp;You can set the next shipper number in </span><span style="font-size: 11pt;"><a href="sd-r_assign_next_numbers.htm" class="topiclink">SD-R Assign Next Numbers</a></span><span style="font-size: 11pt;">. &nbsp;If the Set Invoice same as Pack Slip is set to Y in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;">, the next invoice number will automatically be assigned as both the invoice and Shipper number.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Ship Date</span><span style="font-size: 11pt;"> (optional). &nbsp;If left blank, invoices will still be assigned a ship date when printed through SO-F, Print Invoices. &nbsp;Enter any </span><span style="font-size: 11pt; font-style: italic;">Freight</span><span style="font-size: 11pt;">, if applicable. &nbsp;The screen will then clear and the cursor returns to the </span><span style="font-size: 11pt; font-style: italic;">SO# </span><span style="font-size: 11pt;">field. &nbsp;If the </span><span style="font-size: 11pt; font-style: italic;">Enter Ship Tracking # in SO-E?</span><span style="font-size: 11pt;"> is set to Y in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;"> you will be prompted for a tracking number (up to 40 characters) and freight carrier which can print on the pack slip and invoice.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">To exit this program, press &lt;Esc&gt; while in the blank </span><span style="font-size: 11pt; font-style: italic;">SO#</span><span style="font-size: 11pt;"> field and you will be returned to the </span><span style="font-size: 11pt; font-style: italic;">Sales Orders</span><span style="font-size: 11pt;"> menu. &nbsp;You can now print and post invoices for any items on hand that you have released or you can print packing slips limited to just the items that are released.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Features &amp; Options</span></p>
+<p><span style="font-size: 11pt;">If you are using the </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> module, you can release a partial quantity on a &nbsp;parent product without having to individually release all its options.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When you release a partial quantity, you are asked if you want to change all the options proportionately. &nbsp;If you indicate yes, all the option quantities will be changed in succession in direct proportion to the change made to the parent product.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Selling Kits</span></p>
+<p><span style="font-size: 11pt;">If the order includes a type K Selling Kit, you can release a partial quantity on a &nbsp;parent product without having to individually release all its components.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When you release a partial quantity, you are asked if you want to change all the components proportionately. &nbsp;If you indicate yes, all the component quantities will be changed in succession in direct proportion to the change made to the parent product.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Retention Billing</span></p>
+<p><span style="font-size: 11pt;">The system supports the automatic creation of retention invoices for industries such as construction where this is a common requirement.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">First you must set the </span><span style="font-size: 11pt; font-style: italic;">Prompt for Retention Billing?</span><span style="font-size: 11pt;"> to Y in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;">. &nbsp;In the same program you must enter a item number for retention that provides a standard item number and description for retention invoices. &nbsp;Set the item number up first in IN-B, Enter Inventory, as a non-inventory item. &nbsp;Also in AD-A enter a GL asset account for </span><span style="font-size: 11pt; font-style: italic;">Retention</span><span style="font-size: 11pt;">. &nbsp;This GL account would be located adjacent to your Accounts Receivable GL account.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After a sales order is released and saved, you will be asked </span><span style="font-size: 11pt; font-style: italic;">Do you wish to bill for retention? </span><span style="font-size: 11pt;">If Y, you will be asked to enter a retention percentage. &nbsp;Fifteen percent would be entered as &quot;15.00.&quot;</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After entering the percentage, you are asked if you want to invoice the retention immediately. &nbsp;If you indicate yes, the program will create a sales order for the retention amount with the </span><span style="font-size: 11pt; font-style: italic;">Ready to Invoice?</span><span style="font-size: 11pt;"> flag set to Y so that it could be printed and invoiced immediately. &nbsp;If you indicate no, a sales order for the retention amount will be created with its </span><span style="font-size: 11pt; font-style: italic;">Ready to Invoice? </span><span style="font-size: 11pt;">flag set to N so that it could be released and invoiced at a later time.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The originating sales order, when released and printed, will include an amount in the bottom section next to sales tax and freight which says </span><span style="font-size: 11pt; font-style: italic;">Less Retention</span><span style="font-size: 11pt;">. &nbsp;The amount of retention will be deducted from the invoice amount.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The newly created sales order for the retention amount uses the default retention item number defined in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;"> as its one line item, followed by a comment line which says </span><span style="font-size: 11pt; font-style: italic;">Retention from Invoice (number)</span><span style="font-size: 11pt;"> as a cross reference. &nbsp;The header area is a repeat of the originating sales order's header.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When the originating sales order gets invoiced, it gets two postings in addition to the standard postings. &nbsp;The default Accounts Receivable account gets credited by the retention amount, and the default </span><span style="font-size: 11pt; font-style: italic;">Retention</span><span style="font-size: 11pt;"> GL account (as specified in the item class of the Retention item number defined in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;">) gets debited by the retention amount.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When the retention sales order gets invoiced, </span><span style="font-size: 11pt; font-style: italic;">Accounts Receivable</span><span style="font-size: 11pt;"> gets debited, and the </span><span style="font-size: 11pt; font-style: italic;">Retention </span><span style="font-size: 11pt;">account gets credited, bringing it back down to zero.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

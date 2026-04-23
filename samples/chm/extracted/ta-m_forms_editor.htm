@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>TA-M Forms Editor</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="TAS-K Forms Editor">
+   <meta name="description" content="TA-M Forms Editor">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">TA-M Forms Editor</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; TAS Utility Programs&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">TA-M Forms Editor</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ta-h_maintain_menu-end_user.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ta-n_program_scheduler.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">TA-M Forms Editor</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Description</span></p>
+<p><span style="font-size: 11pt;">This program allows you to modify any of the EN, IEN, T6or IT6RTM form or report layouts.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Click File - Open and select the RTM you wish to edit. &nbsp;It will open in the editing screen. &nbsp;Each object is defined with properties such as font, color, size, Visible, etc. which can be changed. &nbsp;It is generally recommended to make objects invisible rather than delete them.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Important Editing Tips</span></p>
+<p><span style="font-size: 11pt;">Each RTM typically consists of a main report and subreports which can be accessed by clicking th appropriate Tab on the bottom of the screen. &nbsp;As an example, for the Sales Order Acknowledgement, the main header of the order is on the main screen but the line items are in the ppReport1SubReport1. &nbsp;If you are editing any subreport, make sure you click back to the main report before saving the RTM.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You can not edit the DBA Classic BK?RTM files with this editor. &nbsp;You can, however, open them do if you have logos or text already developed in DBA Classic RTMs you can open them and copy the text and then open the T6 RTM and paste. &nbsp;Just be sure you do not save the BK?RTM with the T6 editor.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">It is a good idea to Save As a different RTM name and enter the new name on the print screen for the program in question when prompted until you are sure you have what you want, then Save As the original name.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Every standard RTM file provided has a backup copy of the same name with an RTX extension in the RTX subfolder so if all else fails, you can copy the RTX to RTM and start over.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adding Text</span></p>
+<p><span style="font-size: 11pt;">Click the A in the top left toolbar and click on the form. &nbsp;A text object will be created. &nbsp;Drag it to the desired position and on the left side of the screen where it says Caption, change the text to the actual text desired. &nbsp;Under Font and color, change as desired.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adding Data Fields</span></p>
+<p><span style="font-size: 11pt;">Click the A in the right toolbar (it has a little box attached to it indicating it is a data field) and click on the form. &nbsp;A data object will be created. &nbsp;Drag it to the desired position. and on the left side of the screen where it says Data, double click and a Data Dictionary window will open. &nbsp;Find the desired file and field. &nbsp;Under Font and Appearance, change as desired. &nbsp;Note that the editor will allow the selection of any field from any file but the actual print program will only find the data if the file selected is opened by the program in question.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adding Static Images</span></p>
+<p><span style="font-size: 11pt;">Click the picture (4 items to the right of the A) in the top left toolbar and click on the form. &nbsp;A box will be displayed. &nbsp;Drag and stretch the box to the desired size and location, then right click inside it and select Picture. &nbsp;Browse and find the desired image file. &nbsp;Then right click again, click MaintainAspectRatio, then one more Right Click and click Stretch and the image will stretch or shrink to fit the box.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adding Static Bar Code Objects</span></p>
+<p><span style="font-size: 11pt;">Click the bar code (5 items to the right of the A) in the top left toolbar and click on the form. &nbsp;A box will be displayed. &nbsp;On the left list of propertied, click the Data under Other and change the text to whatever text you want to display in bar code form. &nbsp;You can also select the bar code format, bar width, etc.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Adding Data Bar Code Objects</span></p>
+<p><span style="font-size: 11pt;">Click the bar code (4 items to the right of the A) in the top right toolbar and click on the form. &nbsp;A box will be displayed. &nbsp;On the left list of propertied, click the Datafield under Data and select the field you want to display in bar code form from the data dictionary lookup. &nbsp;You can also select the bar code format, bar width, etc.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 32px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 32px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

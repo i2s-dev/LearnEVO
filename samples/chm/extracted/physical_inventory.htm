@@ -1,0 +1,336 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Physical Inventory</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="physical inventory">
+   <meta name="description" content="Physical Inventory">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Physical Inventory</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Physical Inventory&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Physical Inventory</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="fo-g_configure_item.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="pi-a_capture_frozen_inventory.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">PHYSICAL INVENTORY</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Physical Inventory Overview</span></p>
+<p><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Physical Inventory</span><span style="font-size: 11pt;"> module provides an organized means for taking a physical inventory, increasing accuracy and minimizing disruption to operations.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The Physical Inventory module is a powerful module but it is necessary to understand what it does and does not do. The PI module is designed to reconcile on-hand quantity of inventory counted with the on-hand quantity per the data base and make adjusting transactions. &nbsp;It is not designed to be used to edit unit costs of on-hand inventory so you need to get inventory unit costs as accurate as possible before using the PI module. </span><span style="font-size: 11pt; font-weight: bold;">The PI module is looking at on-hand inventory; it does not include Work In Process</span><span style="font-size: 11pt;">. It will prompt for Lot and Serial numbers for parts under Lot or Serial number control. The references to programs in this document refer to the menu choice. For example, PI-A refers to menu choice A on the PI menu button, Capture Frozen Inventory.</span></p>
+<p style="margin: 7px 0px 0px 0px;"><span style="font-size: 11pt;">In a nutshell, the inventory is processed as follows: </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A</a></span><span style="font-size: 11pt;"> takes a snapshot of the on-hand quantities and costs. Items are counted and counts are entered manually or imported using </span><span style="font-size: 11pt;"><a href="pi-c_enter_tag_counts.htm" class="topiclink">PI-C</a></span><span style="font-size: 11pt;">. </span><span style="font-size: 11pt;"><a href="pi-f_physical_inventory_report.htm" class="topiclink">PI-F</a></span><span style="font-size: 11pt;"> gives reports comparing the &quot;frozen&quot; on-hand and value to the counted. </span><span style="font-size: 11pt;"><a href="pi-g_update_actual_inventory.htm" class="topiclink">PI-G</a></span><span style="font-size: 11pt;"> then posts transactions for the difference between frozen and counted quantity for each part number. If FIFO or LIFO costing is not used, then once counting is complete, other users can process inventory related transactions while the counts are being entered in </span><span style="font-size: 11pt;"><a href="pi-c_enter_tag_counts.htm" class="topiclink">PI-C</a></span><span style="font-size: 11pt;"> because the PI module is isolated and is only comparing the counts to the frozen snapshot. Whatever happens after the snapshot is taken is immaterial to the PI results. For example, if the snapshot showed 10 widgets on hand and the count came up with 12, then the adjustment would be for +2 regardless of the on-hand quantity at the time the adjustment is posted.</span></p>
+<p style="margin: 7px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ahead of Time:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">1.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">There are some Inventory Location related issues that have been fixed with the recent updates as well as improvements to </span><span style="font-size: 11pt;"><a href="sm-j-c_reconcile_inventory_on_hand.htm" class="topiclink">SM-J-C</a></span><span style="font-size: 11pt;">, so updating to the current version is recommended both for the act of taking the Physical and to keep things in line when you go back to work.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">2.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Use </span><span style="font-size: 11pt;"><a href="in-l-k_inventory_exception_report.htm" class="topiclink">IN-L-K</a></span><span style="font-size: 11pt;"> to identify any items with inaccurate unit costs and correct them by adjusting the incorrectly costed parts out of stock and then enter a positive adjustment to put them back in at the correct cost.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">3.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">If you have multiple warehouse Locations, </span><span style="font-size: 11pt;"><a href="ut-k-e_consolidate_inventory_locations.htm" class="topiclink">UT-K-E</a></span><span style="font-size: 11pt;"> will allow you to select the one(s) you want to keep and consolidate the others.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">4.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Run </span><span style="font-size: 11pt;"><a href="sm-j-c_reconcile_inventory_on_hand.htm" class="topiclink">SM-J-C</a></span><span style="font-size: 11pt;"> both Master Level and Transaction level. &nbsp;Transaction Level method A is recommended but do it a day or 2 before you run PI-A so the date of those transactions is prior to the date of the inventory adjustment transactions that </span><span style="font-size: 11pt;"><a href="pi-g_update_actual_inventory.htm" class="topiclink">PI-G</a></span><span style="font-size: 11pt;"> will ultimately generate.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">5.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Run </span><span style="font-size: 11pt;"><a href="ut-k-g_recalc_inventory_book_value.htm" class="topiclink">UT-K-G</a></span><span style="font-size: 11pt;"> to get the Book Value consistent with the extended inventory value.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">6.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">For any customer shipments that have physically left the building, make sure the invoices are posted in </span><span style="font-size: 11pt;"><a href="so-g_post_invoices.htm" class="topiclink">SO-G</a></span><span style="font-size: 11pt;"> before running </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A</a></span><span style="font-size: 11pt;">.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">7.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">For any PO Receipts that have arrived in-house and will be counted, receive the PO in the system before running </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A</a></span><span style="font-size: 11pt;">.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">8.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Complete as many work orders as possible to minimize the potential impact of components in WIP, particularly if you backflush components.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">9.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">For items issued to Work Orders, if you use </span><span style="font-size: 11pt;"><a href="wo-g_issue_materials.htm" class="topiclink">WO-G</a></span><span style="font-size: 11pt;"> to issue, make sure the issue has been processed.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">10.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Do a practice run by running </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A</a></span><span style="font-size: 11pt;"> for a small range of parts or a single class or category. &nbsp;Go through the entire process of counting, entering tags, running reports and posting the results so that if questions do arise, you can contact support for help.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">On Inventory Day</span></p>
+<p>&nbsp;</p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">1.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Get all users out of the system to run </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A</a></span><span style="font-size: 11pt;">. &nbsp;You can enter a prior date but be advised that the snapshot is of the current inventory status, not a recreation of prior on-hand quantities regardless of the date entered. When you run </span><span style="font-size: 11pt;"><a href="pi-a_capture_frozen_inventory.htm" class="topiclink">PI-A</a></span><span style="font-size: 11pt;">, you must select either a Type 1 or Type 2 inventory. The difference between the two is the way uncounted parts are treated. If the snapshot shows an on-hand quantity and no count is entered, for a Type 1 inventory, no correction will be made as it is assumed to be a partial inventory and the part was simply not counted. If the snapshot shows an on-hand quantity and no count is entered, for a Type 2 inventory an adjustment will be made zeroing out the on-hand quantity as the assumption is that a Type 2 is a complete inventory and all items are counted. If no count is entered, then there are none and the on-hand should be zeroed out. &nbsp;For a year-end inventory when everything is to be counted, use Type 2.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">2.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">You can use the </span><span style="font-size: 11pt;"><a href="pi-b_frozen_inventory_report.htm" class="topiclink">PI-B</a></span><span style="font-size: 11pt;"> report as a count sheet or you can purchase pre-numbered 2 part tags from an office supply store (such as Office Depot catalog #504568). If you do not use pre-numbered tags, then you can use any sequence of numbers as &quot;Tag Numbers&quot;. Once you have counted your inventory, if you are not using FIFO or LIFO costing then all other users can go back to work and ship and receive inventory while you enter the counts and analyze the information.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">3.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">For any material or components out at vendors as components of Make-Froms, get count verifications from the vendors so the counts can be entered.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">4.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">If you backflush components at Finished Production then any components on the shop floor in WIP need to be counted as if they were still in the stockroom. &nbsp;If you issue Materials using </span><span style="font-size: 11pt;"><a href="wo-g_issue_materials.htm" class="topiclink">WO-G</a></span><span style="font-size: 11pt;"> and the beginning of the Work Order then materials and components on the shop floor in WIP can be ignored.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">5.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Counts are entered using </span><span style="font-size: 11pt;"><a href="pi-c_enter_tag_counts.htm" class="topiclink">PI-C</a></span><span style="font-size: 11pt;">, Enter Tag Counts, either individually or imported. A part can have more than one tag entered and the program will add the quantities together. If a part is subject to Lot or Serial Control, a separate tag count must be entered for each lot or serial number. Tags can include Bin Location and the employee number of the counter (both are optional). &nbsp;If a part is found during the counting process that does not already exist in the inventory file, use </span><span style="font-size: 11pt;"><a href="pi-c_enter_tag_counts.htm" class="topiclink">PI-C</a></span><span style="font-size: 11pt;"> to create it when the tag is entered. Do not use </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B</a></span><span style="font-size: 11pt;"> to create the part first.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">6.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Once all the counts are entered, </span><span style="font-size: 11pt;"><a href="pi-f_physical_inventory_report.htm" class="topiclink">PI-F</a></span><span style="font-size: 11pt;"> gives the frozen quantities and value, the counted quantities and value and the difference. </span><span style="font-size: 11pt;"><a href="pi-f_physical_inventory_report.htm" class="topiclink">PI-F</a></span><span style="font-size: 11pt;"> also offers a Physical Inventory Value report including the total counted and frozen value, and the difference subtotaled by product class and by GL Account.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:24px; padding:0px;"><p><span style="font-size: 11pt;">7.</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="pi-g_update_actual_inventory.htm" class="topiclink">PI-G</a></span><span style="font-size: 11pt;"> posts the transactions for the difference between frozen and counted value and optionally makes GL postings as well. It will make a separate GL posting for every part number so you my well want to answer N to the GL posting and make a lump sum journal entry for the total vale of the correction.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

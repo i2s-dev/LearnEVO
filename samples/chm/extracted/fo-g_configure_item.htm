@@ -1,0 +1,190 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>FO-G Configure item</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="FO-F Features &amp; ptions Defaults">
+   <meta name="description" content="FO-G Configure item">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">FO-G Configure item</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Features &amp; Options&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">FO-G Configure item</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="fo-e_print_option_where_used.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="physical_inventory.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">FO-G Configure item</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to define the configuration of a specific item with specific options selected from an assembly defined with Features and Options choices. &nbsp;Once the configuration has been defined, the item can be converted to Sales Order, Work Order, Sales Quotation, Vendor RFQ, Purchase Order or copied to a new configuration which can then be modified.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Configuring an item</span></p>
+<p><span style="font-size: 11pt;">Click the Add New button (plus sign on the green circle on the top toolbar) to start a new configuration. &nbsp;Enter the top assembly item number. &nbsp;Then enter a Description of this particular configuration, and as applicable the customer, vendor, and RFQ number. &nbsp;Leave the Status field blank. &nbsp;Then click the Options button in the lower left and you will get a message BOM Template copied. &nbsp;The program has now copied the complete Bill of Materials for this assembly for all levels to a template file to be used for the configuration selection.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Click Options and you will be taken to a tree view of the options in the BOM. &nbsp;You can traverse the tree making the desired selections by clicking the appropriate checkbox. &nbsp;Options on the top include Display Options (opening view by default), Display All which includes the entire BOM, Display Selections which only shows the selected items and Display Open Options which displays those entries yet to be selected. &nbsp;The Reset button clears all choices so you can start over.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">At any time, you can click Save and Exit so you can partially configure an item and come back later and finish it. &nbsp;The exception to this is when this configurator has been called by </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> in which case the Save and Exit button will not be enabled until all selections have been made.</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Converting a Configured Item</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Click the Convert button and you can select convert to Sales Quote, Sales Order, Work Order, Vendor RFQ or Purchase Order. &nbsp;A future release will also have the ability to convert to a permanent part number so if a specific configuration is popular, it can become a firm part number without Feature and Option choices. &nbsp;Select one or more conversion types and click Go. &nbsp;If you click more than one type, it will process them sequentially.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If the status of a configuration on the opening list is &quot;Completed&quot; meaning all the selection has been done or &quot;Cvt to&quot; meaning it has previously been converted, if you double click on it, the Convert button will be available. &nbsp;If the option selection has not been completed, the Convert button will not be available.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Converting to Sales Quote or Sales Order</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you convert to a Sales Quote or Sales Order, you will be prompted for a Quantity, Warehouse Location, Customer Code and ship date. &nbsp;Complete this information and click Go and you will be prompted whether to create a new order/quote or add lines to an existing one. &nbsp;If you choose to add to an existing order, you will be presented a list of Sales Orders for that customer that you can add these lines to. &nbsp;You will then be presented with a list of the line items that will be passed to the order which can be edited as to price, description and quantity. &nbsp;Once the lines are as desired, click exit and you will be prompted to generate the order/quote or save the choices for later.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Converting to a Work Order</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you convert to a work order, you will be prompted for Quantity, Warehouse Location, Customer and Due Date. &nbsp; Click Go and the program will create work orders for the appropriate quantities of all levels of subassemblies with the appropriate selections of the features and Options.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Converting to Vendor RFQ or Purchase Order</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you convert to an RFQ or Purchase Order, you will be prompted for a Quantity, Warehouse Location, Vendor Code and due date . &nbsp;Complete this information and click Go and you will be prompted whether to create a new order/RFQ or add lines to an existing one. &nbsp;If you choose to add to an existing order, you will be presented a list of Purchase Orders for that vendor that you can add these lines to. &nbsp;You will then be presented with a list of the line items that will be passed to the order which can be edited as to price, description and quantity. &nbsp;Once the lines are as desired, click exit and you will be prompted to generate the order/quote or save the choices for later.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,220 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>MR-D Enter MRP Parameters</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="MR-D &nbsp;Enter MRP Parameters,MRP parameters">
+   <meta name="description" content="MR-D Enter MRP Parameters">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">MR-D Enter MRP Parameters</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Material Requirements&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">MR-D Enter MRP Parameters</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="mr-c_reset_forecast.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="mr-e_print_mrp_parameters.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">MR-D &nbsp;Enter MRP Parameters</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to maintain MRP parameters on inventory items. &nbsp;MRP parameters refer to the specific fields which are used by the MRP program when it performs the MRP supply and demand calculation.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Defaults for these parameters can be set up through </span><span style="font-size: 11pt;"><a href="sd-d_material_requirements_defaults.htm" class="topiclink">SD-D &nbsp;Material Requirements Defaults</a></span><span style="font-size: 11pt;">. &nbsp;As you create new item numbers through </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> the default values will be automatically assigned to them. &nbsp;If your inventory already exists, the defaults will not retroactively be applied to existing &nbsp;item numbers. &nbsp;You must modify the record using this program for each existing item number to be included in the MRP generation.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You can use this program to set MRP parameters for a single item or for ranges of items. &nbsp;The fields can also be maintained through </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> but this screen allows for editing of the parameters by a planner who may not need access to be able to create new part numbers.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item number, Description</span></p>
+<p><span style="font-size: 11pt;">The inventory item number and description of the item, maintained through </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;">. &nbsp;You cannot change the description from within this program.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Type</span></p>
+<p><span style="font-size: 11pt;">The inventory type code, maintained through </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;">. &nbsp;This field is for display purposes only and cannot be changed within this program.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Include in MRP Generation?</span></p>
+<p><span style="font-size: 11pt;">If yes, the item number will be included in the MRP generation and work orders and/or purchase orders will be suggested and expedite and delay messages will be issued. &nbsp;If no, the MRP generation will ignore this item number. &nbsp;Sometimes items such as rivets, oil, labels, etc. are bought in bulk and are not necessary to include in the MRP program.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reorder Level</span></p>
+<p><span style="font-size: 11pt;">The minimum inventory on-hand quantity you want to keep at all times (also called &quot;Safety Stock&quot;). &nbsp;The MRP program will suggest work orders or purchase orders necessary to keep inventory at this reorder level. &nbsp;The reorder level is set at an amount that insures that shortages will not occur, which is a function of how much is normally needed, how long does it take to get new stock in from production or through purchasing, and how much safety stock is to be included to cover unexpected requirements. &nbsp;If you do not wish to carry inventory on an item and you want MRP to suggest orders only when a requirement exists, set the reorder level to zero.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reorder Amount</span></p>
+<p><span style="font-size: 11pt;">When a work order or purchase order gets suggested, the MRP program will use this amount as the minimum order quantity. &nbsp;If more than the reorder amount is needed, MRP will use the exact amount required unless the default setting is turned on to use the Standard Pack quantity as the order increment. &nbsp; The reorder amount is usually an economical order quantity that reflects factors such as vendor minimums, better price level, frequency of orders, carrying cost of inventory, etc. &nbsp; If you do not wish to carry inventory on an item and you want MRP to suggest order quantities equivalent to just what is needed, then set the reorder amount to zero.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Lead Time</span></p>
+<p><span style="font-size: 11pt;">With manufactured items this is the number of manufacturing days it takes to start and finish a work order for the item. &nbsp;With purchased parts this is the number of calendar days it takes from ordering from the vendor to receipt of the item. &nbsp;The MRP program uses the </span><span style="font-size: 11pt; font-style: italic;">Lead Time</span><span style="font-size: 11pt;"> field to determine the start date for work orders and the order date for purchase orders, thus ensuring that items get ordered early enough to arrive when needed. &nbsp; Manufacturing lead times will vary as the plant gets busier or slower. &nbsp;These lead times can be changed manually or the </span><span style="font-size: 11pt;"><a href="sh-n_generate_lead_times.htm" class="topiclink">SH-N &nbsp;Generate Lead Times</a></span><span style="font-size: 11pt;"> program (in the Scheduling module) can recalculate manufacturing lead times across a range of items using a formula that reflects current plant capacity. &nbsp;Lead times for purchased parts are maintained manually.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Planner Code</span></p>
+<p><span style="font-size: 11pt;">Each item can be assigned a Planner Code and the various MRP reports can be filtered by this code so each Planner can run reports limited to his or her items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Round MRP quantities to the next whole number?</span></p>
+<p><span style="font-size: 11pt;">Certain items by their physical nature cannot be ordered fractional quantities. &nbsp;For example, sheet steel may have to be ordered in complete sheets. &nbsp;By setting this field to Y, the MRP program will always round the suggested order quantity to the next whole number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Expedite Buffer (Days)</span></p>
+<p><span style="font-size: 11pt;">This field controls the EXPEDITE message issued by the MRP program. &nbsp;An EXPEDITE message is issued whenever enough material is on work order or purchase order, but is scheduled to arrive after it is actually needed. &nbsp; It alerts you to move up the finish date or expected receiving date so that the material will arrive on time. &nbsp;The expedite buffer refers to the number of days within which an order can arrive and be considered late, as opposed to being considered pegged to a later requirement.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">For example, if a shortage occurs on March 1st and the expedite buffer is set for 20 days and &nbsp;the shortage is met by a purchase order arriving March 19th, then the system will not issue a BUY message (suggested purchase order) and will instead issue an EXPEDITE message. &nbsp;If, on the other hand, the purchase order was due to arrive March 21st, it would fall outside the expedite buffer and the MRP program will assume it is designated for a later requirement. &nbsp;It will then issue a BUY message and a recommended PO quantity and order date.  </span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If work order dates are frequently changed, existing work orders at the lower levels, such as for subassemblies, are likely to require date changes as well, which is where the EXPEDITE and DELAY messages can be helpful to insure that schedules stay coordinated.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">There are not specific guidelines for setting expedite buffers; it varies with the volatility of date changes, what type of reorder levels are maintained, if you build to order or to stock, etc. &nbsp;In general, the longer you set the buffer, the fewer planned orders will be suggested. &nbsp;You might start with a setting of 30-60 days, evaluate the EXPEDITE messages that result, then adjust the buffers to your needs.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Expedite Sensitivity (Days)</span></p>
+<p><span style="font-size: 11pt;">Most MRP dates are loosely planned, meaning that they are not so precise that an item arriving one or even a few days late actually needs attention. &nbsp;You can reduce these unnecessary EXPEDITE messages through use of the </span><span style="font-size: 11pt; font-style: italic;">Expedite Sensitivity</span><span style="font-size: 11pt;"> setting. &nbsp;Any requirement whose number of days late is equal to or less than the </span><span style="font-size: 11pt; font-style: italic;">Expedite Sensitivity</span><span style="font-size: 11pt;"> number of days will not receive an EXPEDITE message on any reports.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Delay Buffer (Days)</span></p>
+<p><span style="font-size: 11pt;">Unlike the </span><span style="font-size: 11pt; font-style: italic;">Expedite Buffer</span><span style="font-size: 11pt;">, which controls how the MRP program handles late arrivals, the </span><span style="font-size: 11pt; font-style: italic;">Delay Buffer</span><span style="font-size: 11pt;"> controls how early arrivals are handled. &nbsp;Any order due to arrive within the delay buffer period prior to a requirement is assumed by the MRP program to be designated for that requirement and will receive a DELAY action message on reports. &nbsp;Any order that arrives prior to the delay buffer period is assumed to be for some other requirement and will receive a REVIEW action message.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">DELAY messages alert you when orders arrive earlier than needed so that you can reschedule them and reduce unneeded inventory.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You will have to experiment to see which setting best fits your needs. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Delay Buffer</span><span style="font-size: 11pt;"> works in tandem with the </span><span style="font-size: 11pt; font-style: italic;">Delay Sensitivity</span><span style="font-size: 11pt;"> setting (see next). &nbsp;You might start with a setting of 30-60 days and then adjust it to suit your needs as you gain experience. &nbsp;The shorter you set the buffer, the more REVIEW messages you will receive.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Delay Sensitivity (Days)</span></p>
+<p><span style="font-size: 11pt;">This field controls the printing of DELAY messages. &nbsp;It should be set equal to the number of days an item can arrive early before it needs attention.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">For example, if your policy is that items can arrive up to 10 days early without it causing any problems, you can set the Delay Sensitivity for 10 days. &nbsp;Only if an item arrives 11 days earlier than needed will you receive a DELAY or REVIEW action message.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Before using this program, make sure your default values are set up in </span><span style="font-size: 11pt;"><a href="sd-d_material_requirements_defaults.htm" class="topiclink">SD-D &nbsp;Material Requirements Defaults</a></span><span style="font-size: 11pt; font-style: italic;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The opening screen asks you if you are going to change parameters individually, meaning for a single item, or for specified ranges of items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Entering parameters for a single item</span></p>
+<p><span style="font-size: 11pt;">Enter a </span><span style="font-size: 11pt; font-style: italic;">Item number</span><span style="font-size: 11pt;"> or select one from a lookup window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Indicate whether the item is to included or not in the MRP generation, then enter the reorder level, reorder amount, lead time, rounding control, expedite buffer, and delay buffer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You will be asked to save the record or you can save the record from any point on the screen by clicking on the </span><span style="font-size: 11pt; font-style: italic;">Save </span><span style="font-size: 11pt;">button (or press F10).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you are doing a series of entries, you can or click on the </span><span style="font-size: 11pt; font-style: italic;">Next</span><span style="font-size: 11pt;"> button (or press F8) while in the </span><span style="font-size: 11pt; font-style: italic;">Item number</span><span style="font-size: 11pt;"> field to automatically advance to the next sequential item number without having to key the item number in each time.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Entering parameters for ranges of items</span></p>
+<p><span style="font-size: 11pt;">First you are taken to a screen where you can specify which items are to be included in your selection range. &nbsp;You can enter from/thru ranges by item number, category, class, and planner code, and you can further limit the range to specific inventory types.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">You are then taken to another screen where you can enter MRP parameters for the range of items selected. &nbsp;To the right of each parameter is a </span><span style="font-size: 11pt; font-style: italic;">Change?</span><span style="font-size: 11pt;"> Field which lets you control which parameters are to be changed. &nbsp;For any parameters you wish to leave as they are, enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> in this field. &nbsp;For Reorder Level and Reorder Amount, if you enter a C rather than a value, you will be prompted to enter the number of months usage to use to calculate the new value. &nbsp;The program will then take the previous 365 days usage, divide by 12 to get a monthly average, then multiply by the number of months specified to generate a new value based on actual usage.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

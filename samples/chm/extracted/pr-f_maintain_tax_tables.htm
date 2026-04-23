@@ -1,0 +1,196 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>PR-F Maintain Tax Tables</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="PR-F &nbsp;Maintain Tax Tables,tax tables,tax tables maintain">
+   <meta name="description" content="PR-F Maintain Tax Tables">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">PR-F Maintain Tax Tables</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Payroll&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">PR-F Maintain Tax Tables</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="pr-e_print_employe_information.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="payroll_tax_calculation_by_state.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">PR-F &nbsp;Maintain Tax Tables</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to enter or maintain a set of tax tables for the states that have an income tax and for federal taxes. &nbsp;An updated set of state tax tables is provided that includes various state tables, with separate records for single, married, and single head of household status each December for the following year and updates are provided as needed during the year as states or the federal government release changes to the withholding amounts. &nbsp;Some states have payroll withholding calculations that are not well suited to a table so the logic is embedded within the calculations in </span><span style="font-size: 11pt;"><a href="pr-b_enter_pay_info.htm" class="topiclink">PR-B &nbsp;Enter Pay Info</a></span><span style="font-size: 11pt;"> or is a combination of the tables and the program. &nbsp;If yours is such a state, then you need to be sure you install the most updated version of the payroll programs as well as the tax tables each year. &nbsp;A list of states and whether the calculation is in the table or the program or both is provided at </span><span style="font-size: 11pt;"><a href="payroll_tax_calculation_by_state.htm" class="topiclink">Payroll Tax Calculation by State</a></span><span style="font-size: 11pt;">. &nbsp;Regardless of how you get the updates to the tax rates, the FICA and Medicare rates and limits are stored in the Payroll Division file and must be updated by the user in </span><span style="font-size: 11pt;"><a href="pr-m_payroll_division_defaults.htm" class="topiclink">PR-M &nbsp;Payroll Defaults</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Field Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Tax code</span></p>
+<p><span style="font-size: 11pt;">A 3 character alphanumeric field which usually designates the state and marital status for the table. &nbsp;For example, WVS represents West Virginia Single tax rates. &nbsp;Federal tax tables are stored under USO, USM and USS.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Description</span></p>
+<p><span style="font-size: 11pt;">The tax description of the contents of the tax table.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PAY AMOUNT FIELDS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">From</span></p>
+<p><span style="font-size: 11pt;">The lower limit of a tax bracket.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">To</span></p>
+<p><span style="font-size: 11pt;">The upper limit of a tax bracket.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">TAX WITHHOLDING FIELDS</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Tax Amount</span></p>
+<p><span style="font-size: 11pt;">The minimum tax for a tax bracket.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Plus Column</span></p>
+<p><span style="font-size: 11pt;">The extra percentage of income to be added to the minimum tax in order to increase the tax evenly within a tax bracket.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Excess over column</span></p>
+<p><span style="font-size: 11pt;">The lower limit for calculation of the percentage tax. &nbsp;This is the same amount displayed in the </span><span style="font-size: 11pt; font-style: italic;">From</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Before using these tables, verify that the one(s) you need to use reflect the current tax structure of your state. &nbsp;Much of the actual tax calculation occurs within the </span><span style="font-size: 11pt;"><a href="pr-b_enter_pay_info.htm" class="topiclink">PR-B &nbsp;Enter Pay Info</a></span><span style="font-size: 11pt;"> program; if there are inaccuracies, you may need a software update. &nbsp;If so, contact IS Tech Support at 866-516-3282. &nbsp;See </span><span style="font-size: 11pt;"><a href="payroll_tax_calculation_by_state.htm" class="topiclink">Payroll Tax Calculation by State</a></span><span style="font-size: 11pt;"> to determine whether your state is controlled by the tables, the program, or both.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program only needs to be used when and if tax changes occur. &nbsp;If these changes affect the amounts only and not the internal calculations, you can adjust these amounts within this program. &nbsp;Check the screen display against your most recent state tax tables to see if the tax amounts are correct. &nbsp;These tables are associated with fields in </span><span style="font-size: 11pt;"><a href="pr-a_enter_employees.htm" class="topiclink">PR-A &nbsp;Enter Employees</a></span><span style="font-size: 11pt;">, and </span><span style="font-size: 11pt;"><a href="pr-b_enter_pay_info.htm" class="topiclink">PR-B &nbsp;Enter Pay Info</a></span><span style="font-size: 11pt;">, based on the </span><span style="font-size: 11pt; font-style: italic;">State</span><span style="font-size: 11pt;"> field entry in </span><span style="font-size: 11pt;"><a href="pr-m_payroll_division_defaults.htm" class="topiclink">PR-M &nbsp;Payroll Defaults</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 32px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 32px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SH-N Generate Lead Times</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="generate lead times,lead times,lead times generate,SH-N &nbsp;Generate Lead Times">
+   <meta name="description" content="SH-N Generate Lead Times">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SH-N Generate Lead Times</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Scheduling&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SH-N Generate Lead Times</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sh-m_lead_time_estimator.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sh-o_finite_schedule_bucket_report.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SH-N &nbsp;Generate Lead Times</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to update the </span><span style="font-size: 11pt; font-style: italic;">Lead Time</span><span style="font-size: 11pt;"> fields in the inventory master records of all or selected ranges of manufactured items. &nbsp;In the MRP module these lead times determine the start dates that MRP assigns to suggested work orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Lead Time</span><span style="font-size: 11pt;"> field, which can be viewed through </span><span style="font-size: 11pt;"><a href="in-a_inventory_inquiry.htm" class="topiclink">IN-A &nbsp;Inventory Inquiry</a></span><span style="font-size: 11pt;">, also serves as a reference on various screens and reports.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The program calculates the projected total run time days (using item's </span><span style="font-size: 11pt; font-style: italic;">Lot Size</span><span style="font-size: 11pt;"> as the quantity), which includes production run time, outside processing lead time, and any work center average queue time. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Lot Size</span><span style="font-size: 11pt;"> can be entered via the standard cost screen in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;">, through </span><span style="font-size: 11pt;"><a href="in-l-a_enter_standard_costs.htm" class="topiclink">IN-L-A &nbsp;Enter Standard Costs</a></span><span style="font-size: 11pt;">, or via </span><span style="font-size: 11pt;"><a href="ro-a_enter_routings.htm" class="topiclink">RO-A &nbsp;Enter Routings</a></span><span style="font-size: 11pt;">. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Lot Size</span><span style="font-size: 11pt;"> represents the typical production quantity for this item.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Work center queue time represents an estimate as to how much contention (waiting time) there may be at each work center. &nbsp;The program uses the </span><span style="font-size: 11pt; font-style: italic;">Average Queue Time</span><span style="font-size: 11pt;"> field in each work center, which can be entered through </span><span style="font-size: 11pt;"><a href="ro-n_enter_test_requirements.htm" class="topiclink">RO-C &nbsp;Enter Work Centers</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When the program finishes its calculations it produces a report which lists any lead time changes that were made.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">You can limit the items subject to the lead time recalculation by entering from/thru ranges of item numbers, types (F-finished goods, A-subassemblies, M-manufactured items), item classes, categories, and cycle codes. &nbsp;Lookups are available on the item number and item class fields by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button). &nbsp;If you want all manufactured items' lead times recalculated, press &lt;Enter&gt; through all the fields. &nbsp;The final prompt asks if you wish to print a report. &nbsp;If yes, you will receive a report that lists items whose lead times were recalculated, showing the old lead time and the new lead time.</span></p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

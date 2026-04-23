@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Using a Sales Order System</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="Using a Sales Order System">
+   <meta name="description" content="Using a Sales Order System">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Using a Sales Order System</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Sales &gt; Sales Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Using a Sales Order System</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sales_orders.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="so-a_enter_sales_orders.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Using a Sales Order System</span></p>
+<p><span style="font-size: 11pt;">The simplest transaction for a sales and inventory accounting system is taking an order for which all items are in stock, printing the invoice and shipping the items. &nbsp;However, complicating factors inevitably arise. &nbsp;What do you do when an ordered item is out of stock? &nbsp;How quickly can you get manufacturing orders in production? &nbsp;Can you add items to an open sales order if you receive a call from your customer requesting additions to an earlier order? &nbsp;How are special product options handled?</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The sales order system is a collection of programs that provides you with powerful yet easy to use methods of integrating your inventory, manufacturing, and sales operations. &nbsp;The sales order system contains the following basic elements:</span></p>
+<p style="text-indent: -22px; margin: 8px 0px 0px 24px;"><span style="font-size: 11pt;">Backorder tracking</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">Instant invoice capability</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">Multiple invoices against a single sales order</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">Automatic conversion to production work orders</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">Features &amp; Options capability</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">A sales order is a record of a customer order which can have multiple delivery invoices applied against it. &nbsp;It serves as a record of invoiced and shipped products, and can also serve as a record of inventory out of stock and backordered. &nbsp;The sections below will introduce you to these various sales order features.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Backorder Tracking</span></p>
+<p><span style="font-size: 11pt;">The sales order quantity for an item can be in the </span><span style="font-size: 11pt; font-style: italic;">Ship</span><span style="font-size: 11pt;"> column or in the </span><span style="font-size: 11pt; font-style: italic;">Backorder </span><span style="font-size: 11pt;">column. &nbsp;Units in the ship column have not yet been shipped, while units in the backorder column are items that failed to make a shipment and were backordered.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The backorder column is primarily for tracking purposes and distinguishes backorders from open orders. &nbsp;A backorder listing is available through </span><span style="font-size: 11pt;"><a href="so-o-b_print_backorder_listing.htm" class="topiclink">SO-O-B, Print Backorder</a></span><span style="font-size: 11pt; font-style: italic;"> List</span><span style="font-size: 11pt;">, and </span><span style="font-size: 11pt; font-style: italic;">On Backorder</span><span style="font-size: 11pt;"> is a status field within the inventory system.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Instant Invoice Capability</span></p>
+<p><span style="font-size: 11pt;">If you set the </span><span style="font-size: 11pt; font-style: italic;">Ready to Invoice?</span><span style="font-size: 11pt;"> flag to Y when entering a sales order, the program checks stock on all line items and places all available units in the ship column and all items without stock in the backorder column. &nbsp;All lines are flagged by the program as ready to invoice. &nbsp;You can then go directly to the print invoice program and bypass the release sales orders function.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The instant invoice capability can be useful for point-of-sale situations or for spare parts type orders that are to be shipped out of stock.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Multiple Invoicing and Adding to an Existing Sales Order</span></p>
+<p><span style="font-size: 11pt;">An open sales order is any customer order that has at least one open item that has not been posted. &nbsp;In order to allow you to recall a sales order for alteration or review, a sales order number is automatically assigned or manually assigned by the user. &nbsp; New line items can be added to an open sales order. &nbsp;You can also delete or change items that are on the order if they have not yet been invoiced. &nbsp;When all goods are invoiced on the sales order, the sales order is closed and you can no longer add line items or make any changes to it. &nbsp;The ability to add line items to an open sales order gives you a convenient and flexible way to record your customer orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Pricing</span></p>
+<p><span style="font-size: 11pt;">A complete pricing system is available for use by the </span><span style="font-size: 11pt; font-style: italic;">Sales Orders</span><span style="font-size: 11pt;"> module. &nbsp;The pricing system includes a base price, up to 999 price lists with ten quantity price breaks per item, discount tables with multiple discount levels by item class, and contract pricing for specific items for specific customers.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Automatic Conversion to Production Work Orders</span></p>
+<p><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;"> converts sales orders directly to production work orders in the </span><span style="font-size: 11pt; font-style: italic;">Work Orders</span><span style="font-size: 11pt;"> modules. &nbsp;The program will run through the sales order line items and will produce a work order for each item that is a finished good, subassembly, or manufactured item. &nbsp;Multiple shipping dates per item can be accommodated. &nbsp;For make-to-order manufacturers this conversion capability eliminates the tedious work of entering one order in the accounting system and the same order in the manufacturing system. &nbsp;It allows you to enter multiple items on the same sales order, yet it produces individual work orders for each item in a format (shop traveler) that is useful for the production department.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Features &amp; Options Capability</span></p>
+<p><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> is a module which allows bills of material to be designed to accommodate multiple options within products. &nbsp;During sales order entry options are presented in windows for selection. &nbsp;As each option is selected, it feeds into the sales order underneath the parent product. &nbsp;Options may be defined within options, and you can specify option prices to be itemized or to be added to the price of the parent product.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After the options are selected and the sales order is saved, the sales order can be converted to a work order, during which all the options are passed over to the work order's bill of material where they are combined with the parent product’s standard components.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> allow custom bills of material to be built on-the-fly within sales order entry and is a useful tool for custom manufacturers whose products are subject to a variety of options. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Features &amp; Options</span><span style="font-size: 11pt;"> capability eliminates complex item numbering, results in more accurate ordering and pricing, and gets orders to the factory floor more quickly.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

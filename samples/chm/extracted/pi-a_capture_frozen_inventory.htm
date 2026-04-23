@@ -1,0 +1,195 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>PI-A Capture Frozen Inventory</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="capture frozen inventory,PI-A &nbsp;Capture Frozen Inventory">
+   <meta name="description" content="PI-A Capture Frozen Inventory">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">PI-A Capture Frozen Inventory</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Items &gt; Physical Inventory&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">PI-A Capture Frozen Inventory</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="physical_inventory.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="pi-b_frozen_inventory_report.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">PI-A &nbsp;Capture Frozen Inventory</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to capture your current inventory counts and costs into a separate holding file. &nbsp;This file will ultimately be compared with the physical inventory counts and the actual inventory and General Ledger will be corrected for any discrepancies. &nbsp;Once this program is run, operations should cease until all the physical counts are completed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can freeze the entire inventory if you are conducting a complete physical inventory or you can limit the items to be frozen if you wish to conduct a partial inventory or perform cycle counting.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Each physical inventory stays on file indefinitely until purged through </span><span style="font-size: 11pt;"><a href="pi-h_purge_physical_inventory.htm" class="topiclink">PI-H &nbsp;Purge Physical Inventory</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">When you start the program you are presented with an information screen that suggests some programs and reports that should be run before actually conducting a physical inventory. &nbsp;These programs and reports can find potential problem areas in the inventory that are best cleaned up prior to conducting a physical.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Creating a New Physical Inventory</span></p>
+<p><span style="font-size: 11pt;">To create a new physical inventory, enter the </span><span style="font-size: 11pt; font-style: italic;">Year</span><span style="font-size: 11pt;"> and the </span><span style="font-size: 11pt; font-style: italic;">Physical Inventory No</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Freeze Date</span><span style="font-size: 11pt;"> defaults to today’s date, but can be overridden. &nbsp;However, be aware that regardless of the date entered, the costs and quantities frozen are a “snapshot” of the inventory as it exists at the moment the capture is executed. &nbsp;It does not back out transactions to arrive at a prior date on hand quantity.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The Count Type refers to whether or not all items with on-hand quantity within the ranges of cycle codes, part numbers, etc. will be counted. &nbsp;If everything that is on-hand within the ranges selected will be counted and you want the program to zero out any item not counted, choose Type 2. &nbsp;If you wish to count only certain items and have the program ignore uncounted items and make no adjustment, choose Type 1.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can limit the items to be frozen by restricting the inventory to a particular </span><span style="font-size: 11pt; font-style: italic;">Cycle Code</span><span style="font-size: 11pt;"> or by entering from/thru ranges of item numbers, item classes, category and GL asset accounts.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Once you have completed the last field or at any point on the screen when the </span><span style="font-size: 11pt; font-style: italic;">Process </span><span style="font-size: 11pt;">button is clicked, you are taken to a screen which allows you to choose which Locations are to be included in the physical inventory. &nbsp;If you want all Locations included, click on the </span><span style="font-size: 11pt; font-style: italic;">Tag All</span><span style="font-size: 11pt;"> button. &nbsp;You can tag an individual Location by double clicking on it or by highlighting it and clicking on the </span><span style="font-size: 11pt; font-style: italic;">Tag One</span><span style="font-size: 11pt;"> button.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Once you have tagged the Locations to be included, click the </span><span style="font-size: 11pt; font-style: italic;">Go</span><span style="font-size: 11pt;"> button. &nbsp;You are then asked if you are ready to begin capturing the frozen inventory. &nbsp;Click </span><span style="font-size: 11pt; font-style: italic;">Yes</span><span style="font-size: 11pt;"> or press &lt;Enter&gt; and processing will begin.  </span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When finished you are asked if you want to print the frozen inventory report. &nbsp;You can do so now or you can click </span><span style="font-size: 11pt; font-style: italic;">No</span><span style="font-size: 11pt;"> and print the report later through </span><span style="font-size: 11pt;"><a href="pi-b_frozen_inventory_report.htm" class="topiclink">PI-B &nbsp;Frozen Inventory Report</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Changing an Existing Physical Inventory</span></p>
+<p><span style="font-size: 11pt;">You can change an existing physical inventory if you wish to change the items or locations that are to be included.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">To do, enter the year and number of the physical inventory to be changed, or select one from a lookup by clicking on the lookup button.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can then change any of the filter ranges, if applicable. &nbsp;When you are completed with the screen (or after clicking the </span><span style="font-size: 11pt; font-style: italic;">Process </span><span style="font-size: 11pt;">button), you are informed that this is an existing physical inventory.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are then presented with the Location tagging screen. &nbsp;Tag or untag Locations as desired. &nbsp;If you tag a Location that has already had tags entered through </span><span style="font-size: 11pt;"><a href="pi-c_enter_tag_counts.htm" class="topiclink">PI-C &nbsp;Enter Tag Counts</a></span><span style="font-size: 11pt;">, you will be given the option of deleting those tag records, or leaving them intact so that they do not have to be re-entered.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When you are finished tagging Locations, click on the </span><span style="font-size: 11pt; font-style: italic;">Go</span><span style="font-size: 11pt;"> button. &nbsp;You are then asked if you wish to proceed with capturing the frozen inventory. &nbsp;If you do so, the inventory will be re-frozen with completely new records replacing the existing ones.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-family: Calibri;">&nbsp;</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

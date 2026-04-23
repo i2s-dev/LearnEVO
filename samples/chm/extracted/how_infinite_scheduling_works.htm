@@ -1,0 +1,255 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>How Infinite Scheduling Works</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="HOW INFINITE SCHEDULING WORKS,infinite scheduling,infinite scheduling how it works">
+   <meta name="description" content="How Infinite Scheduling Works">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">How Infinite Scheduling Works</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Scheduling&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">How Infinite Scheduling Works</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="how_finite_scheduling_works.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="how_lead_time_scheduling_works.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">How Infinite Scheduling Works</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Infinite Scheduling Program Operation</span></p>
+<p><span style="font-size: 11pt;">Infinite scheduling is performed through </span><span style="font-size: 11pt;"><a href="sh-f_infinte_scheduling.htm" class="topiclink">SH-F &nbsp;Infinite Scheduling</a></span><span style="font-size: 11pt;">. &nbsp;Infinite scheduling assigns </span><span style="font-size: 11pt; font-style: italic;">Start Dates</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Finish Dates</span><span style="font-size: 11pt;"> to work order sequences without regard to work center capacity. &nbsp;It is called Infinite scheduling because it assumes work order capacity is infinite, or unlimited. &nbsp; Infinite scheduling does not change the work order </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">. &nbsp;These dates are manually entered or changed. &nbsp;The program assigns sequence dates as follows.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The first thing the program does is calculate the </span><span style="font-size: 11pt; font-style: italic;">number of days available for production</span><span style="font-size: 11pt;">. &nbsp;The formula is:</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">(finish date) - (start date or today's date [whichever one is later]) - (any non-workdays as defined in the shop calendar) - (any routing lead times for outside processing sequences) = </span><span style="font-size: 11pt; font-style: italic;">number of days available for production</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">A </span><span style="font-size: 11pt; font-style: italic;">percentage of total production time</span><span style="font-size: 11pt;"> is calculated for each direct labor sequence based on the this formula:</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">(total production time for all sequences) / (total remaining production time this sequence) = </span><span style="font-size: 11pt; font-style: italic;">% of total production time</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The above two results are then multiplied together to calculate </span><span style="font-size: 11pt; font-style: italic;">this sequence share of available production days</span><span style="font-size: 11pt;"> as follows:</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">(number of days available for production) x (% of total production time) = </span><span style="font-size: 11pt; font-style: italic;">this sequence share of available production days</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The program then assigns a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> to each sequence. &nbsp;If production has not begun yet, the first sequence is assigned a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> equal to the work order </span><span style="font-size: 11pt; font-style: italic;">Start Date </span><span style="font-size: 11pt;">as long as the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> is today or later. &nbsp;If the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> is already passed, it assigns today's date as the sequence </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If production has already started, those sequences that are completed or partially completed will receive none or little </span><span style="font-size: 11pt; font-style: italic;">percentage of total production time</span><span style="font-size: 11pt;"> (see above) and therefore the first </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> gets assigned correctly to the currently active sequence.  </span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the sequence is a direct labor sequence, its </span><span style="font-size: 11pt; font-style: italic;">this sequence share of available production days</span><span style="font-size: 11pt;"> is added to the sequence </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">, which determines this sequence's </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> (skipping over any non-workdays defined on the shop calendar). &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> of this sequence becomes the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> of the next sequence.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the sequence is an outside processing sequence, the sequence </span><span style="font-size: 11pt; font-style: italic;">Lead Time</span><span style="font-size: 11pt;"> (which is always expressed in days) is added to the sequence </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">, which determines this sequence's </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> (skipping over any non-workdays defined on the shop calendar). The </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> of this sequence becomes the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> of the next sequence.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Each sequence is scheduled in succession as described above. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> of the last sequence always equals the work order </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Unlike finite scheduling where there are usually gaps between one sequence's </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> and the next sequence </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> (due to contention for that work center capacity), with infinite scheduling the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> for one sequence is always the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> for the next sequence.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">How to Use Infinite Scheduling</span></p>
+<p><span style="font-size: 11pt;">The term Infinite scheduling is misleading, because work center capacity (which is not infinite) is very much a factor when using this method of scheduling. &nbsp;What it refers to is that when the sequences are scheduled to the work centers, the program assigns start and finish dates to work order sequences without regard for other work orders that are contending for that work center capacity. &nbsp;In a sense the program is assuming infinite work order capacity (or, more accurately, is ignoring it), which is where the term &quot;infinite scheduling&quot; comes from.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Work Order Start &amp; Finish Dates Are Manually Assigned</span></p>
+<p><span style="font-size: 11pt;">When you assign the initial work order </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">, you should attempt to assign realistic dates, meaning those that you believe can be met either with existing capacity, or, if necessary, by adding overtime or taking other measures. &nbsp;These initial dates are based on your feel for what the factory can deliver, or they may be dictated by your customer as a condition in giving you the order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After you create your work orders, you run </span><span style="font-size: 11pt;"><a href="sh-f_infinte_scheduling.htm" class="topiclink">SH-F &nbsp;Infinite Scheduling</a></span><span style="font-size: 11pt;">. &nbsp;You then study your work centers using </span><span style="font-size: 11pt;"><a href="sh-i_prnt_work_center_schedule.htm" class="topiclink">SH-I Print Work Center Schedule</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="sh-r_work_center_scheduler.htm" class="topiclink">SH-R Work Center Scheduler</a></span><span style="font-size: 11pt;"> to see if you have the capacity to meet the commitments you've made. &nbsp;If you've overloaded all or some of your work centers, then you must respond by adding overtime, personnel, plant capacity, or, if you cannot expand your capacity, you must reschedule work order finish dates as required.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sequence Dates are Time Windows</span></p>
+<p><span style="font-size: 11pt; font-style: italic;">Infinite scheduling</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">finite scheduling</span><span style="font-size: 11pt;"> both work within the limits of available work center capacity. &nbsp;The difference is that </span><span style="font-size: 11pt; font-style: italic;">finite scheduling</span><span style="font-size: 11pt;"> calculates and sets work order finish dates, whereas with </span><span style="font-size: 11pt; font-style: italic;">infinite scheduling</span><span style="font-size: 11pt;"> these dates are set by you, the scheduler. </span><span style="font-size: 11pt; font-style: italic;">Finite scheduling</span><span style="font-size: 11pt;"> is much more precise in that it provides routing sequence start and finish dates that correspond to estimated run time, whereas the sequence dates assigned by the </span><span style="font-size: 11pt; font-style: italic;">infinite scheduling</span><span style="font-size: 11pt;"> program do not. &nbsp;Instead, the start and finish date ranges provided by </span><span style="font-size: 11pt; font-style: italic;">infinite scheduling</span><span style="font-size: 11pt;"> function as &quot;time windows&quot; within which you should complete the sequence.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Because sequence start and finish dates are time windows, your production foremen have leeway as to which work orders to run on any given day when following </span><span style="font-size: 11pt;"><a href="sh-i_prnt_work_center_schedule.htm" class="topiclink">SH-I &nbsp;Print Work Center Schedule</a></span><span style="font-size: 11pt;">. &nbsp;As long as a sequence is completed within its time window, the overall work order is still on schedule.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">The Finish Date Functions as the Due Date</span></p>
+<p><span style="font-size: 11pt;">Unlike with finite scheduling, the work order </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;"> is not important with infinite scheduling. &nbsp;Because the work order </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> does not get changed by the infinite scheduling program, it essentially functions as the due date. &nbsp;With infinite scheduling usually the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> and the </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;"> are entered with the same date and the </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;"> field serves as a reference only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Scheduling Works Hand-in-Hand with MRP</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Scheduling works hand-in-hand with the </span><span style="font-size: 11pt; font-style: italic;">Material Requirements</span><span style="font-size: 11pt;"> module, especially if you have products with multiple levels in their bills of material. &nbsp;Every time you reschedule your work orders, those changes may affect other purchase orders or work orders that are interdependent upon each other. &nbsp;These changes may trigger the </span><span style="font-size: 11pt;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F &nbsp;Generate Material Requirements</a></span><span style="font-size: 11pt;"> program to produce various EXPEDITE and DELAY messages to advise you of situations where material won't arrive when needed or arrives too early due to scheduling changes you've made.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Be aware that infinite scheduling only schedules work orders. &nbsp;Purchase orders, which must be synchronized with work orders to see that material arrives when needed, are scheduled solely by </span><span style="font-size: 11pt;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F, Generate Material Requirements</a></span><span style="font-size: 11pt;">. &nbsp;So in most situations infinite scheduling and MRP will both be utilized, except for companies with single level products and simple material requirements (such as some machine shops, for example).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Typically you will evolve into a cycle of using infinite scheduling and MRP together. &nbsp;You will run the infinite scheduling program, evaluate your work centers, make changes to work order dates and work center capacity, then run MRP to see the effect of those date changes on other orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">Parent-Child W/C Scheduling is Not Supported</span></p>
+<p><span style="font-size: 11pt;">Infinite scheduling does not offer parent-child work center scheduling like finite scheduling does. &nbsp;Therefore, when you set up a work center that is comprised of several interchangeable machines or workstations, you must set it up as a single work center. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Total Hours/Day</span><span style="font-size: 11pt;"> (as entered in </span><span style="font-size: 11pt;"><a href="ro-n_enter_test_requirements.htm" class="topiclink">RO-C &nbsp;Enter Work Centers</a></span><span style="font-size: 11pt;">), should be equal to the combined daily hours/day of all the machines or workstations.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you want to manually assign this type of work center to specific machines, you can so through </span><span style="font-size: 11pt;"><a href="sh-d_manually_schedule_machines.htm" class="topiclink">SH-D &nbsp;Manually Schedule Machines</a></span><span style="font-size: 11pt;">. &nbsp;These machines are not work centers, but are machines set up through </span><span style="font-size: 11pt;"><a href="ro-j-b_print_work_centers.htm" class="topiclink">RO-D &nbsp;Enter Machines</a></span><span style="font-size: 11pt;">. &nbsp;You can use </span><span style="font-size: 11pt;"><a href="sh-j_print_machine_schedule.htm" class="topiclink">SH-J &nbsp;Print Machine Schedule</a></span><span style="font-size: 11pt;"> for a daily dispatch report to the shop.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">In summary, with infinite scheduling you manually assign work order start and finish dates, run the scheduling program, then study your work centers to see if you can meet your schedule. &nbsp;If not, you must expand your capacity or move out due dates until the schedule fits your factory's ability to meet it.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Programs Used with Infinite Scheduling</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The following are the programs that are most commonly used in conjunction with infinite scheduling.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sm-h_enter_shop_calendar.htm" class="topiclink">SM-H &nbsp;Enter Shop Calendar</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Use this program to mark weekends and holidays as non-workdays so that those days will be skipped by the infinite scheduling program when it assigns routing start and finish dates.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="ro-n_enter_test_requirements.htm" class="topiclink">RO-C &nbsp;Enter Work Centers</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Use this program to initially set up your work centers and to change the </span><span style="font-size: 11pt; font-style: italic;">Total Hours/Day</span><span style="font-size: 11pt;"> field whenever the work center capacity changes. You can also change work center parameters at any time through SH-C, </span><span style="font-size: 11pt; font-style: italic;">Manually Schedule Work Centers.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can use this program to change the work order </span><span style="font-size: 11pt; font-style: italic;">Quantity to Make</span><span style="font-size: 11pt;">, scheduled S</span><span style="font-size: 11pt; font-style: italic;">tart Date</span><span style="font-size: 11pt;">, scheduled </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">, or </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;">.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-a_edit_wo_start_finish_dates.htm" class="topiclink">SH-A &nbsp;Edit WO Start/Finish/Due Dates</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Use this program to make changes to work orders' scheduled </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt; font-style: italic;">Finish Date,</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">Due Date.</span><span style="font-size: 11pt;"> &nbsp;This is an alternative to using WO-A, </span><span style="font-size: 11pt; font-style: italic;">Enter Work Orders</span><span style="font-size: 11pt;">, for the same purpose.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-b_manually_schedule_work_orders.htm" class="topiclink">SH-B &nbsp;Manually Schedule Work Orders</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Much like SH-A (see above), you can use this program to make changes to work orders' scheduled </span><span style="font-size: 11pt; font-style: italic;">Start Date, Finished Date, </span><span style="font-size: 11pt;">or </span><span style="font-size: 11pt; font-style: italic;">Due Date.</span><span style="font-size: 11pt;"> &nbsp;This is another alternative to using WO-A, </span><span style="font-size: 11pt; font-style: italic;">Enter Work Orders</span><span style="font-size: 11pt;">, for the same purpose. &nbsp;This program also serves as an inquiry into the status of work order routing sequences.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-c_manually_schedile_work_centers.htm" class="topiclink">SH-C &nbsp;Manually Schedule Work Centers</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can use this program as an alternative to RO-C, </span><span style="font-size: 11pt; font-style: italic;">Enter Work Centers</span><span style="font-size: 11pt;">, for changing work center parameters such as </span><span style="font-size: 11pt; font-style: italic;">Total Hours/Day</span><span style="font-size: 11pt;">.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-d_manually_schedule_machines.htm" class="topiclink">SH-D &nbsp;Manually Schedule Machines</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you have work centers comprised of interchangeable machines and wish to manually assign work order sequences to specific machines, you can so through this program. &nbsp;Machines are entered in RO-D, </span><span style="font-size: 11pt; font-style: italic;">Enter Machines</span><span style="font-size: 11pt;">.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-f_infinte_scheduling.htm" class="topiclink">SH-F &nbsp;Infinite Scheduling</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This is the infinite scheduling program. &nbsp;See the </span><span style="font-size: 11pt; font-style: italic;">Infinite Scheduling Program Operation</span><span style="font-size: 11pt;"> section above for details.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-g_print_work_order_schedule.htm" class="topiclink">SH-G &nbsp;Print Work Order Schedule</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This report provides a listing of all your open work orders sorted either by scheduled </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> or scheduled </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-h_print_work_order_status.htm" class="topiclink">SH-H &nbsp;Print Work Order Status</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This report can be used to see the status of each work order, broken out by its routing sequences. &nbsp;You can see which sequences are late and how many days late they are.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-i_prnt_work_center_schedule.htm" class="topiclink">SH-I &nbsp;Print Work Center Schedule</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This report is most typically used as a daily dispatch report by the shop foreman as guide to which work orders are to be worked on next within each work center.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-j_print_machine_schedule.htm" class="topiclink">SH-J &nbsp;Print Machine Schedule</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you've assigned routing sequences to specific machines (see SH-D, </span><span style="font-size: 11pt; font-style: italic;">Manually Schedule Machines</span><span style="font-size: 11pt;">, above), you can use this report as a daily dispatch report for the shop.</span></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F &nbsp;Generate Material Requirements</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program takes the current work order schedule and produces various EXPEDITE and DELAY messages to advise you of situations where material won't arrive when needed or arrives too early due to scheduling changes you've made. &nbsp;The program also suggests new work orders and purchase orders that may be needed.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="mr-h_print_order_action_report.htm" class="topiclink">MR-H &nbsp;Print Order Action Report</a></span></p>
+<p><span style="font-size: 11pt;">This report can be used to get listings of the EXPEDITE and DELAY recommendations made by MR-F, </span><span style="font-size: 11pt; font-style: italic;">Generate Material Requirements</span><span style="font-size: 11pt;">, that you can use to change work order start and finish dates accordingly.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 32px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 32px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

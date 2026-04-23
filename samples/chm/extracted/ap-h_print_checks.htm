@@ -1,0 +1,186 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>AP-H Print Checks</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="AP-H &nbsp;Print Checks,check printing">
+   <meta name="description" content="AP-H Print Checks">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">AP-H Print Checks</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Accounting &gt; Accounts Payable&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">AP-H Print Checks</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="ap-g_print_pro_forma_check_register.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="ap-i_print_aging.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">AP-H &nbsp;Print Checks</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">This program will print the invoices/vouchers in the AP check register. &nbsp;You should run </span><span style="font-size: 11pt;"><a href="ap-g_print_pro_forma_check_register.htm" class="topiclink">AP-G, Print Pro Forma Check Register</a></span><span style="font-size: 11pt;">, before running this program, to make sure that all the entries are correct.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Multi-Currency Processing</span></p>
+<p><span style="font-size: 11pt;">If you have multi-currency processing enabled in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, you can print checks to vendors in foreign currencies. </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> posting is as follows.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If the </span><span style="font-size: 11pt; font-style: italic;">Pay </span><span style="font-size: 11pt;">option in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;"> is set to N, a debit (in </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">) is made to the </span><span style="font-size: 11pt; font-style: italic;">AP Control Account</span><span style="font-size: 11pt;">. &nbsp;The offsetting credit (in </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">) is made to this currency's </span><span style="font-size: 11pt; font-style: italic;">Bank Account</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the </span><span style="font-size: 11pt; font-style: italic;">Pay </span><span style="font-size: 11pt;">option in IM-A set to Y, there are two GL transactions. &nbsp;The first one is the same as in the paragraph above. &nbsp;The second is a currency conversion transaction whereby the amount of the payment is converted to your </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> using the exchange rate maintained in </span><span style="font-size: 11pt;"><a href="im-c_enter_currenct_exchange_rates.htm" class="topiclink">IM-C &nbsp;Enter Currency Exchange Rates</a></span><span style="font-size: 11pt;">. &nbsp;This </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> amount is then debited to this currency's </span><span style="font-size: 11pt; font-style: italic;">F/E Gain/Loss-Trxns</span><span style="font-size: 11pt;"> account and the offsetting amount is credited to this currency's </span><span style="font-size: 11pt; font-style: italic;">F/E Gain/Loss-Conversions</span><span style="font-size: 11pt;"> account. Thus, the gain or loss is made at the time of transaction rather than when the </span><span style="font-size: 11pt; font-style: italic;">Convert to Base Currency</span><span style="font-size: 11pt;"> routine is run.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">The displayed bank account is the one selected in </span><span style="font-size: 11pt;"><a href="ap-g_print_pro_forma_check_register.htm" class="topiclink">AP-G &nbsp;Print Pro Forma Check Register</a></span><span style="font-size: 11pt;">. &nbsp;If you have not already printed the proforma check register, you can do so at this time.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can change the beginning check number; this field defaults to the value in </span><span style="font-size: 11pt;"><a href="ad-b_checking_account_defaults.htm" class="topiclink">AD-B &nbsp;Checking Accounts Defaults</a></span><span style="font-size: 11pt;">. &nbsp;The check date will default to the current date, but you are allowed to change it.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">NOTE: &nbsp;If any invoices selected to be paid are dated later than the check date entered, they will be skipped. &nbsp;The program will not allow payment of an item before it exists.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can filter the checks to be printed by vendor allowing you to (for example) print a check for a single vendor after a large check run has been selected without deselecting the rest of the check run.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">After all the checks have printed, you will be presented with a screen listing all the checks including check number, vendor and amount. &nbsp; &nbsp;If all checks printed correctly, click Tag All and they will post. &nbsp; If not all checks printed correctly (such as in the case of a printer jam) then you can tag the checks that did print correctly to post only those. &nbsp;When you post AP checks, the credit and invoice balances are updated in the vendor file, the AP pro forma check register is emptied, AP Payment History is updated, the check transactions post to the </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> and the </span><span style="font-size: 11pt; font-style: italic;">Cash Disbursements</span><span style="font-size: 11pt;"> journal, the checks are added to the GL check register file (to be reconciled with the bank statement), and the next check number is updated in </span><span style="font-size: 11pt;"><a href="ad-b_checking_account_defaults.htm" class="topiclink">AD-B &nbsp;Checking Accounts Defaults</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-family: Calibri;">&nbsp;</span></p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

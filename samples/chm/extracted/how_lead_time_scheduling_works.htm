@@ -1,0 +1,226 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>How Lead Time Scheduling Works</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="HOW CUMULATIVE PROCESS SCHEDULING WORKS">
+   <meta name="description" content="How Lead Time Scheduling Works">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">How Lead Time Scheduling Works</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Scheduling&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">How Lead Time Scheduling Works</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="how_infinite_scheduling_works.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="how_manual_scheduling_works.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">How Lead Time Scheduling Works</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Lead Time Scheduling Program Operation</span></p>
+<p><span style="font-size: 11pt;">Lead &nbsp;Time Scheduling is performed through </span><span style="font-size: 11pt;"><a href="sh-p_lead_time_scheduling.htm" class="topiclink">SH-P Lead Time Scheduling</a></span><span style="font-size: 11pt;">. &nbsp;You can also use Lead Time Scheduling when creating Work Orders in </span><span style="font-size: 11pt;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span><span style="font-size: 11pt;">, </span><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt;"><a href="es-e_convert_estimates.htm" class="topiclink">ES-E &nbsp;Convert Estimates</a></span><span style="font-size: 11pt;"> if you have set the default in </span><span style="font-size: 11pt;"><a href="sd-b_work_order_defaults.htm" class="topiclink">SD-B &nbsp;Work Orders Defaults</a></span><span style="font-size: 11pt;"> to use lead time scheduling when creating Work Orders. &nbsp;Lead Time scheduling assigns </span><span style="font-size: 11pt; font-style: italic;">Start Dates</span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt; font-style: italic;">Finish Dates</span><span style="font-size: 11pt;"> to work order sequences sequentially either forward (generate a finish date based on start date plus process time) or backwards (generate a start date based on due date and process time). &nbsp;The program assigns sequence dates as follows.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The first thing the program does is calculate the </span><span style="font-size: 11pt; font-style: italic;">number of days required for production</span><span style="font-size: 11pt;">. &nbsp;The formula is:</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">(Sequence Quantity to be made) x (Time per part) + Setup Time + Positive Overlap + Work Center Queue Time </span><span style="font-size: 11pt; font-style: italic;">{for all Labor sequences}</span><span style="font-size: 11pt;"> + Outside Process Sequence Lead Time </span><span style="font-size: 11pt; font-style: italic;">{for all Outside Processing sequences}</span><span style="font-size: 11pt;"> &nbsp;= </span><span style="font-size: 11pt; font-style: italic;">number of days required for production</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The number of production days required for a given labor sequence takes the Work Center shift hours and percent utilization into account.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The program then prompts whether to use forward or backward scheduling. &nbsp;If backward scheduling is chosen, it next prompts whether to schedule based on the current estimated </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> or the </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;">.Next, for backward scheduling, the available production days between today and the specified </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> is compared to the number of days required for production. &nbsp;If there are not enough days to schedule the remaining sequences of the work order, the earliest possible </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> is suggested along with a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> of today. &nbsp;Otherwise, a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> is calculated based on the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> specified and the number of production days required. &nbsp;If a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> is specified, the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> is calculated based on the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> and the number of production days required. &nbsp;All the date calculations performed will take the non-production days specified on the Shop Calendar into account. &nbsp;Once the Work Order Start and Finish Dates have been specified, each sequence is assigned Start and Finish Dates based on the quantity to be made and the time per part, plus any setup time, overlap and queue times.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the sequence is an outside processing sequence, the sequence </span><span style="font-size: 11pt; font-style: italic;">Lead Time</span><span style="font-size: 11pt;"> (which is always expressed in days) is added to the sequence </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">, which determines this sequence's </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> (skipping over any non-workdays defined on the shop calendar). The </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> of this sequence becomes the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> of the next sequence.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Each sequence is scheduled in succession as described above. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> of the last sequence always equals the work order </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Unlike finite scheduling where there are usually gaps between one sequence's </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> and the next sequence's </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> (due to contention for that work center’s capacity), with lead time scheduling the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> for one sequence is always the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> for the next sequence. &nbsp;The Queue Time represents the estimated contention but is included in the total days a sequence is scheduled for a given work center. &nbsp;Queue times are entered in </span><span style="font-size: 11pt;"><a href="ro-n_enter_test_requirements.htm" class="topiclink">RO-C &nbsp;Enter Work Centers</a></span><span style="font-size: 11pt;"> for Priority 1, 2 and 3 which relates to the Priority of the Work Order being scheduled.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">How to Use Lead Time Scheduling</span></p>
+<p><span style="font-size: 11pt;">Lead Time Scheduling is most often used as a tool to establish realistic start and finish dates when creating work orders but it can also be used to reschedule work orders after they have been created, especially when conditions change such as Work Center Queue Times or shift hours. &nbsp;If the Use Lead Time Scheduling is set to F or B (Forward or Backward) in </span><span style="font-size: 11pt;"><a href="sd-b_work_order_defaults.htm" class="topiclink">SD-B &nbsp;Work Orders Defaults</a></span><span style="font-size: 11pt;"> then the programs that create Work Orders will use this lead time calculation logic rather than the fixed lead time specified in the inventory master when creating work orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold; color: #7f7f7f;">Backward or Forward Scheduling can be Performed</span></p>
+<p><span style="font-size: 11pt;">When you assign the initial work order </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">, the program will calculate the other, either forward or backward. &nbsp;If the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> entered does not allow for enough time to complete all the sequences, a later </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> will be suggested based on a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> of today.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After you create your work orders, you can study your work centers (via </span><span style="font-size: 11pt;"><a href="sh-i_prnt_work_center_schedule.htm" class="topiclink">SH-I &nbsp;Print Work Center Schedule</a></span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt;"><a href="sh-r_work_center_scheduler.htm" class="topiclink">SH-R Work Center Scheduler</a></span><span style="font-size: 11pt;"> to see if you have the capacity to meet the commitments you've made. &nbsp;If you've overloaded all or some of your work centers, then you must respond by adding overtime, personnel, plant capacity, or, if you cannot expand your capacity, you must reschedule work order dates as required.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold; color: #7f7f7f;">Sequence Dates are Time Windows</span></p>
+<p><span style="font-size: 11pt;">Because sequence start and finish dates are time windows, your production foremen have leeway as to which work orders to run on any given day when following </span><span style="font-size: 11pt;"><a href="sh-i_prnt_work_center_schedule.htm" class="topiclink">SH-I &nbsp;Print Work Center Schedule</a></span><span style="font-size: 11pt;">. &nbsp;As long as a sequence is completed within its time window, the overall work order is still on schedule.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold; color: #7f7f7f;">The Finish Date may not equal the Due Date</span></p>
+<p><span style="font-size: 11pt;">In lead time scheduling, the Finish Date and Due Date may not be the same. &nbsp;If forward scheduling, the estimated finish date may be before or after the due date. &nbsp;If backward scheduling, the finish date and due date will be the same unless a new finish date was calculated because there were not enough production days available to meet the due date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic; font-weight: bold; color: #7f7f7f;">Scheduling Works Hand-in-Hand with MRP</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Scheduling works hand-in-hand with the </span><span style="font-size: 11pt; font-style: italic;">Material Requirements</span><span style="font-size: 11pt;"> module, especially if you have products with multiple levels in their bills of material. &nbsp;Every time you reschedule your work orders, those changes may affect other purchase orders or work orders that are interdependent upon each other. &nbsp;These changes may trigger the </span><span style="font-size: 11pt;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F &nbsp;Generate Material Requirements</a></span><span style="font-size: 11pt;"> program to produce various EXPEDITE and DELAY messages to advise you of situations where material won't arrive when needed or arrives too early due to scheduling changes you've made.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Be aware that lead time scheduling only schedules work orders. &nbsp;Purchase orders, which must be synchronized with work orders to see that material arrives when needed, are scheduled solely by </span><span style="font-size: 11pt;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F, Generate Material Requirements</a></span><span style="font-size: 11pt;">. &nbsp;So in most situations lead time scheduling and MRP will both be utilized, except for companies with single level products and simple material requirements (such as some machine shops, for example).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Typically you will evolve into a cycle of using lead time scheduling and MRP together. &nbsp;You will use the scheduling program, evaluate your work centers, make and needed changes to work order dates and work center capacity, then run MRP to see the effect of those date changes on other orders.</span></p>
+<p><span style="font-size: 11pt; font-style: italic; font-weight: bold; color: #7f7f7f;">Parent-Child W/C Scheduling is Not Supported</span></p>
+<p><span style="font-size: 11pt;">Lead time scheduling does not offer parent-child work center scheduling like finite scheduling does. &nbsp;Therefore, when you set up a work center that is comprised of several interchangeable machines or workstations, you must set it up as a single work center. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Total Hours/Day</span><span style="font-size: 11pt;"> (as entered in </span><span style="font-size: 11pt;"><a href="ro-n_enter_test_requirements.htm" class="topiclink">RO-C &nbsp;Enter Work Centers</a></span><span style="font-size: 11pt;">), should be equal to the combined daily hours/day of all the machines or workstations and the Total Shift Hours should be the number of hours per day the work center is staffed (typically 8, 16 or 24 and never more than 24).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you want to manually assign this type of work center to specific machines, you can do so through </span><span style="font-size: 11pt;"><a href="sh-d_manually_schedule_machines.htm" class="topiclink">SH-D &nbsp;Manually Schedule Machines</a></span><span style="font-size: 11pt;">. &nbsp;These machines are not work centers, but are machines set up through </span><span style="font-size: 11pt;"><a href="ro-j-b_print_work_centers.htm" class="topiclink">RO-D &nbsp;Enter Machines</a></span><span style="font-size: 11pt;">. &nbsp;You can use </span><span style="font-size: 11pt;"><a href="sh-j_print_machine_schedule.htm" class="topiclink">SH-J &nbsp;Print Machine Schedule</a></span><span style="font-size: 11pt;"> for a daily dispatch report to the shop.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Programs Used with Lead Time Scheduling</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The following are the programs that are most commonly used in conjunction with lead time scheduling.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sm-h_enter_shop_calendar.htm" class="topiclink">SM-H &nbsp;Enter Shop Calendar</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Use this program to mark weekends and holidays as non-workdays so that those days will be skipped by the scheduling program when it assigns routing start and finish dates. &nbsp;The shop calendar MUST be entered before the Work Order Default setting to use Lead Time Scheduling is set to Y.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="ro-n_enter_test_requirements.htm" class="topiclink">RO-C &nbsp;Enter Work Centers</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Use this program to initially set up your work centers and to change the </span><span style="font-size: 11pt; font-style: italic;">Total Hours/Day</span><span style="font-size: 11pt;"> field whenever the work center capacity changes and edit Queue times as load conditions change. &nbsp;Only the Average Queue time is used. You can also change work center parameters other than the Queue time at any time through </span><span style="font-size: 11pt;"><a href="sh-c_manually_schedile_work_centers.htm" class="topiclink">SH-C &nbsp;Manually Schedule Work Centers</a></span><span style="font-size: 11pt; font-style: italic;">.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="wo-a_enter_work_orders.htm" class="topiclink">WO-A &nbsp;Enter Work Orders</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can use this program to change the work order </span><span style="font-size: 11pt; font-style: italic;">Quantity to Make</span><span style="font-size: 11pt;">, scheduled S</span><span style="font-size: 11pt; font-style: italic;">tart Date</span><span style="font-size: 11pt;">, scheduled </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">, or </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;">. &nbsp;If the Quantity to Make is changed, you must specify whether to retain the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> and recalculate a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> or retain the </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> and recalculate </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">. &nbsp;If the work order is already started, then the </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;"> will be recalculated. &nbsp;If you do not change the quantity and change either the scheduled </span><span style="font-size: 11pt; font-style: italic;">Start</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">, the other will be recalculated.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-d_manually_schedule_machines.htm" class="topiclink">SH-D &nbsp;Manually Schedule Machines</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you have work centers comprised of interchangeable machines and wish to manually assign work order sequences to specific machines, you can so through this program. &nbsp;Machines are entered in </span><span style="font-size: 11pt;"><a href="ro-j-b_print_work_centers.htm" class="topiclink">RO-D, Enter Machines</a></span><span style="font-size: 11pt;">.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-g_print_work_order_schedule.htm" class="topiclink">SH-G &nbsp;Print Work Order Schedule</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This report provides a listing of all your open work orders sorted either by scheduled </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> or scheduled </span><span style="font-size: 11pt; font-style: italic;">Finish Date</span><span style="font-size: 11pt;">.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-h_print_work_order_status.htm" class="topiclink">SH-H &nbsp;Print Work Order Status</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This report can be used to see the status of each work order, broken out by its routing sequences. &nbsp;You can see which sequences are late and how many days late they are.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-i_prnt_work_center_schedule.htm" class="topiclink">SH-I &nbsp;Print Work Center Schedule</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This report is most typically used as a daily dispatch report by the shop foreman as guide to which work orders are to be worked on next within each work center.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-j_print_machine_schedule.htm" class="topiclink">SH-J &nbsp;Print Machine Schedule</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you've assigned routing sequences to specific machines (see SH-D, </span><span style="font-size: 11pt; font-style: italic;">Manually Schedule Machines</span><span style="font-size: 11pt;">, above), you can use this report as a daily dispatch report for the shop.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="sh-p_lead_time_scheduling.htm" class="topiclink">SH-P Lead Time Scheduling</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This is the lead time scheduling program. &nbsp;See the </span><span style="font-size: 11pt; font-style: italic;">Lead Time Scheduling Program Operation</span><span style="font-size: 11pt;"> section above for details.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;"><a href="sh-r_work_center_scheduler.htm" class="topiclink">SH-R Work Center Scheduler</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This is the graphical scheduling tool displaying the operations by work center in a Gantt Chart type layout.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F &nbsp;Generate Material Requirements</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program takes the current work order schedule and produces various EXPEDITE and DELAY messages to advise you of situations where material won't arrive when needed or arrives too early due to scheduling changes you've made. &nbsp;The program also suggests new work orders and purchase orders that may be needed.</span></p>
+<p><span style="font-size: 11pt; font-style: italic;"><a href="mr-h_print_order_action_report.htm" class="topiclink">MR-H &nbsp;Print Order Action Report</a></span></p>
+<p><span style="font-size: 11pt;">This report can be used to get listings of the EXPEDITE and DELAY recommendations made by MR-F, </span><span style="font-size: 11pt; font-style: italic;">Generate Material Requirements</span><span style="font-size: 11pt;">, that you can use to change work order start and finish dates accordingly.</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

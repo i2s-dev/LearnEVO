@@ -26,6 +26,8 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 
 ### 00 — Overview
 - [What EvoERP is, at a glance](00-overview/what-is-evoerp.md)
+- [System Overview — vendor's 11-part tour (install, companies, cadence, archiving)](00-overview/system-overview.md) — *verified, from EvoHELP.CHM*
+- [Evo-ERP Tools — Tools menu utilities (Users, Size, Google Calendar, Notes Search)](00-overview/evo-erp-tools.md) — *verified, from EvoHELP.CHM*
 - [EvoHELP.CHM — authoritative topic index](00-overview/help-system.md) — *verified, 779 topics*
 - [Master index — every operation, one table (menu + help + forms)](00-overview/master-index.md) — *verified, 759 ops*
 
@@ -34,6 +36,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Security, login, and company selection](01-architecture/security-and-login.md) — *draft*
 - [Java integration via `EvoPVT.jar` + `ISJAVA` task queue](01-architecture/java-integration.md) — *verified*
 - [Supporting subsystems (Notes, Scheduler, Service, DC, Links, FNO, Update, …)](01-architecture/subsystems.md) — *draft*
+- [Connecting external software to the EVO database (ODBC, DSN, bitness)](01-architecture/external-odbc-connections.md) — *verified*
 
 ### 02 — File formats
 - [File format catalog (all extensions seen in EVO)](02-file-formats/catalog.md)
@@ -73,6 +76,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 
 ### 04 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
+- [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*
 
 ### 05 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*

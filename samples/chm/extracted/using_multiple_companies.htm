@@ -1,0 +1,206 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Using Multiple Companies</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="USING MULTIPLE COMPANIES">
+   <meta name="description" content="Using Multiple Companies">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Using Multiple Companies</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Overview&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Using Multiple Companies</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="setting_up_printing.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="odbc_data_connection.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Using Multiple Companies</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The number of companies you can maintain within your system is for all practical purposes unlimited, with over 1200 logical possibilities for company code designations. &nbsp;The user-defined company code is a two character, alphanumeric code.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Each company has its own set of data files, but only one set of programs is required and is shared by all the companies. &nbsp;Each user can perform transactions in only one company at a time.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The default company, which does not have a company code (and is therefore often referred to as the default or Blank company) is located in the DEFAULT subdirectory. &nbsp;Additional companies are located is separate subdirectories.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Data files for the default company in DBAMFG all end with an extension of </span><span style="font-size: 11pt; font-weight: bold;">*.B</span><span style="font-size: 11pt;">. &nbsp;Data files for additional companies in the other subdirectories end with the same &quot;B&quot; extension followed by the two-character company code. &nbsp;For example, the data files that are included with the sample company 99, </span><span style="font-size: 11pt; font-style: italic;">Evolution Enterprises</span><span style="font-size: 11pt;">, are located in a subdirectory named TESTDATA and have an extension of </span><span style="font-size: 11pt; font-weight: bold;">*.B99</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Default Company for Single Company</span></p>
+<p><span style="font-size: 11pt;">If you only have a single company, it is best to use the default or Blank company rather than create an additional company. &nbsp;The default company already exists when you install your system and is the company that you are in when first starting the system.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Some users mistakenly think that they must create a new company in order to start with empty files for system implementation. &nbsp;This is not necessary, for the only data in the default company are a handful of GL accounts in the chart of accounts that can be cleared using UT-K-A, </span><span style="font-size: 11pt; font-style: italic;">Clear Data</span><span style="font-size: 11pt;"> (see further below), or can be deleted manually through AM-C, </span><span style="font-size: 11pt; font-style: italic;">Enter General Ledger Accounts</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use UT-I if You Need Additional Companies</span></p>
+<p><span style="font-size: 11pt;">When installed the system provides you with the default (blank) company in the DBAMFG subdirectory, which you should use as your primary company, and with company 99, </span><span style="font-size: 11pt; font-style: italic;">The Manufacturing Answer,</span><span style="font-size: 11pt;"> which is located in the TESTDATA subdirectory one level down from DBAMFG.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you need one of more additional companies, they are created through </span><span style="font-size: 11pt;"><a href="ut-i_create_delete_company.htm" class="topiclink">UT-I &nbsp;Create/Delete Company</a></span><span style="font-size: 11pt;">. &nbsp;UT-I creates a subdirectory for the new company and sets up the locations in the data dictionary to enable the </span><span style="font-size: 11pt; font-style: italic;">Change Company</span><span style="font-size: 11pt;"> function (see below) to find the new company's data files. &nbsp;UT-I allows you to copy the data from one company to another, or it allows you to start with a set of initialized (empty) data files. &nbsp;If you copy data from another company but only want to retain master file data and not transactions, you can selectively clear transaction data using </span><span style="font-size: 11pt;"><a href="ut-k-a_clear_data.htm" class="topiclink">UT-K-A &nbsp;Clear Data</a></span><span style="font-size: 11pt;"> (see further below).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Sometimes additional companies are created for temporary purposes such as for training or experimentation when first learning the system. &nbsp;You can always create a temporary company through UT-I (copying your actual data if you wish) and then experiment all you want without affecting your real company data. &nbsp;Once you are finished using the temporary company, run UT-I again, this time using its delete function to delete the temporary company.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Changing Companies</span></p>
+<p><span style="font-size: 11pt;">To change companies, click on </span><span style="font-size: 11pt; font-style: italic;">File </span><span style="font-size: 11pt;">in the upper left corner of the Windows menu, then on </span><span style="font-size: 11pt; font-style: italic;">Change Company</span><span style="font-size: 11pt;">. &nbsp;You will be presented with a list of companies in a window. &nbsp;Click on your choice and then click </span><span style="font-size: 11pt; font-style: italic;">OK</span><span style="font-size: 11pt;">. &nbsp;The current company name is always displayed on the &nbsp;banner at the bottom of the screen.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Using UT-K-A to Clear Files</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;"><a href="ut-k-a_clear_data.htm" class="topiclink">UT-K-A &nbsp;Clear Data</a></span><span style="font-size: 11pt;"> is a program that can selectively clear various sets of data files of either transaction data (leaving master file data intact) or of all data. &nbsp;This program is typically used on system start-up in one of two ways:</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">One, you have a single company and are installing it in the default (blank) company and you want to clear out the handful of GL accounts that come with the system or any other data that may have been entered by people experimenting with the system before implementation started. &nbsp;In this case you would have UT-K-A delete all data in the default company so you can start with completely clean files.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Two, you have two or more companies that share some common master file data, such as the same GL chart of accounts. &nbsp;You enter this data in the default company first and then use UT-I, </span><span style="font-size: 11pt; font-style: italic;">Create/Delete Company</span><span style="font-size: 11pt;">, to create the second company, in the process specifying that all the files from the default company are to be copied over to the second company. &nbsp;You can then use UT-K-A in the second company to clear out any transaction data that may have occurred, but retain the master files such as the chart of accounts. &nbsp;This process eliminates needless double entry.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Running UT-K-A, Clear Data</span></p>
+<p><span style="font-size: 11pt;">When you start the program you are presented with an entry screen with a choice of the following six data categories (file groupings):</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">General Ledger Chart of Accounts</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Accounts Receivable Customers</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Accounts Payable Vendors</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Inventory Items</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Payroll Employees</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Manufacturing Systems</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Opposite each data category enter a </span><span style="font-size: 11pt; font-style: italic;">C</span><span style="font-size: 11pt;"> if you want to keep the master file data, but you want to clear all transactions (such as GL detail entries, aging detail, sales information, etc.) &nbsp;Enter a </span><span style="font-size: 11pt; font-style: italic;">D </span><span style="font-size: 11pt;">if you want to clear all data completely, and enter an </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> if you want to leave the data category untouched.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">UT-K-A can take considerable time to run, depending on the sizes of the files being cleared.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Start-up Preferences for Company &amp; Menu</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you are using multiple companies you can set up each user with the start-up company and start-up menu of his choice. &nbsp;If a particular user tends to work primarily in company two rather than in the default company, he can be set up to bypass the default company and go directly to company two when starting the system. &nbsp;He can also be set up to always start at a particular menu.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">These preferences are set up through </span><span style="font-size: 11pt;"><a href="password_security.htm" class="topiclink">PS-A &nbsp;System Users/Passwords</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="ps-g_maintain_menu_access.htm" class="topiclink">PS-G Maintain Menu Access</a></span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

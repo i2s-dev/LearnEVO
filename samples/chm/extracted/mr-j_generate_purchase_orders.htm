@@ -1,0 +1,194 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>MR-J Generate Purchase Orders</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="generate purchase orders,MR-J &nbsp;Generate Purchase Orders,purchase orders,purchase orders generate">
+   <meta name="description" content="MR-J Generate Purchase Orders">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">MR-J Generate Purchase Orders</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Material Requirements&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">MR-J Generate Purchase Orders</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="mr-i_generate_work_orders.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="mr-k_generare_rfqs.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">MR-J &nbsp;Generate Purchase Orders</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to automatically convert suggested purchase orders to actual purchase orders. &nbsp;This eliminates the need for manually entering purchase orders. &nbsp;It can also be used to group purchases by vendor and date range and generate a report of suggested purchase orders for manual entry.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Purchase orders can be automatically converted as a batch, or a review function allows each suggested purchase to be viewed and edited before being converted. &nbsp;The review function is especially useful with purchase orders because you may wish to override the vendor (MRP always suggests the primary vendor) and buy from someone else.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Within vendor all items selected for conversion are grouped into a single purchase order and are given the same receiving due date, regardless of the MRP suggested receiving date. &nbsp;Because of this you should select items for conversion in groups of date ranges.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">For example, let's say you want to purchase all items needed for MRP due dates from February 1-8. &nbsp;Some items will have a four week lead time, some three weeks, some two weeks, etc. &nbsp; Start with the items with a four week lead time. &nbsp;Generate PO’s by entering a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> range of 12/28/XX thru 1/3/XX (4-5 weeks prior to the due date) and a </span><span style="font-size: 11pt; font-style: italic;">Due Date</span><span style="font-size: 11pt;"> range of 2/1/XX thru 2/8/XX. &nbsp;Any MRP BUY records that are to be ordered within the start date range that are needed within the due date range will be selected for purchase order generation. &nbsp;Set the </span><span style="font-size: 11pt; font-style: italic;">Purchase Order Date Default</span><span style="font-size: 11pt;"> to 12/28/XX and the </span><span style="font-size: 11pt; font-style: italic;">Due Date Default </span><span style="font-size: 11pt;">to 2/1/XX prior to generating the PO's. &nbsp;This tells you to send the PO's out on 12/28/XX and all line items on the PO's will have due dates of 2/1/XX.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Continuing our example, after generating the first date range, now generate another, this time for the three week lead time items. &nbsp;Keep the due dates the same, but now enter a </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;"> range of 1/4/XX thru 1/11/XX. &nbsp;This will generate all the three week lead time items. &nbsp;Your </span><span style="font-size: 11pt; font-style: italic;">Purchase Order Date Default</span><span style="font-size: 11pt;"> will be set to 1/4/XX and the </span><span style="font-size: 11pt; font-style: italic;">Due Date Default </span><span style="font-size: 11pt;">will remain at 2/1/XX. &nbsp;This tells you to send this batch of PO's out on 1/4/XX, with all line items having due dates of 2/1/XX. &nbsp;Continue in this manner with the two week lead time items and then the one week lead time items.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Using this program requires some planning. &nbsp;Unlike work orders, which always are for one item only, purchase orders can contain many line items, and purchased parts have a variety of different lead times. &nbsp;Therefore you have to devise a batch purchasing method similar to that described above, where batches of PO's are generated according to lead time/due date combinations. &nbsp;For some companies, thinking in terms of weekly batches makes sense, for others monthly batches are appropriate, for others semi-weekly or even daily batches are better. &nbsp;Running this program in report only mode allows for evaluating different methods without actually placing the purchase orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">This program is not suitable for entering scheduled or blanket orders, which should be manually entered. &nbsp;Once entered, though, they are reflected in the MRP generation and, assuming all your requirements are covered, will not generate any suggested purchase orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">You can limit the items selected for conversion by entering a from/thru range of item numbers. &nbsp;You can select item numbers from a lookup window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a range of start dates. &nbsp;These refer to the MRP </span><span style="font-size: 11pt; font-style: italic;">Start Date</span><span style="font-size: 11pt;">, which is the date the purchase order should be placed in order to receive the item on time for when it is needed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a range of due dates. &nbsp;These refer to the MRP </span><span style="font-size: 11pt; font-style: italic;">Requirement Date</span><span style="font-size: 11pt;">, which is when the item is needed. &nbsp;You should enter a fairly tight range of dates because all items selected are going to be grouped on a common purchase order by vendor and will all be given the same receiving date, which will override the MRP requirement date.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can further limit the selection by entering from/thru ranges of item classes, inventory categories, and vendor codes.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you only want a report of suggested purchase orders, answer Y to Generate a Report Only. &nbsp;Otherwise, the purchase orders will be generated and you will get a report listing them. &nbsp;If you are using multiple locations, you can enter the </span><span style="font-size: 11pt; font-style: italic;">Location </span><span style="font-size: 11pt;">for which this batch of purchase orders are to be received. &nbsp;If you are not using multiple locations, leave this field blank.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the </span><span style="font-size: 11pt; font-style: italic;">Purchase Order Date Default</span><span style="font-size: 11pt;">, which will be the order date of the purchase order. &nbsp;You should set this date early enough to encompass the longest lead time of any item that will be on the purchase order.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next enter the </span><span style="font-size: 11pt; font-style: italic;">Due Date Default</span><span style="font-size: 11pt;">. &nbsp;All items grouped on the purchase order will be assigned this receiving date, regardless of what the MRP requirement date is. &nbsp;Therefore, you would normally use the earliest requirement date in the selection range the due date so that no item on the purchase order will arrive after its MRP requirement date.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are next asked if you want to automatically generate the purchase orders or allow for a review. &nbsp;If you enter an </span><span style="font-size: 11pt; font-style: italic;">A</span><span style="font-size: 11pt;"> for automatic generation, the program will create the purchase orders as a batch and will use the MRP suggested quantities, the default purchase order date and default due date, and the primary vendor specified in each item's inventory master record.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you enter an </span><span style="font-size: 11pt; font-style: italic;">R</span><span style="font-size: 11pt;"> for review, each item will be displayed in a pop-up window for review. &nbsp;The MRP start date (suggested purchase order date) and MRP requirement date are displayed for reference. &nbsp;The purchase order default order date and due date are shown for comparison and can be changed if required. &nbsp;You can override the quantity and the vendor. &nbsp;Vendors can be selected from a lookup window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You must continue this process until all items within the selection range have been reviewed. &nbsp;The program will then generate the purchase orders. &nbsp;All items with a common vendor and common purchase order date will be consolidated into a single purchase order for that vendor and, if the default is so set in </span><span style="font-size: 11pt;"><a href="sd-d_material_requirements_defaults.htm" class="topiclink">SD-D Material Requirements Defaults</a></span><span style="font-size: 11pt;">, the quantity will be rounded up to the next increment of Standard Pack as defined for the item in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

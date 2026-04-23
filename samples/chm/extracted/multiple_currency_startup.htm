@@ -1,0 +1,251 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Multiple Currency Startup</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="Multiple Currency Startup">
+   <meta name="description" content="Multiple Currency Startup">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Multiple Currency Startup</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; International Module&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Multiple Currency Startup</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="international_module.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="im-a_international_configuration.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Multiple Currency Startup</span></p>
+<p>&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">When you set the </span><span style="font-size: 11pt; font-style: italic;">Multi-Currency</span><span style="font-size: 11pt;"> field to </span><span style="font-size: 11pt; font-style: italic;">Y </span><span style="font-size: 11pt;">in </span><span style="font-size: 11pt;"><a href="im-a_international_configuration.htm" class="topiclink">IM-A &nbsp;International Configuration</a></span><span style="font-size: 11pt;">, the entire system is set for multiple currency processing. &nbsp;Many programs will not let you use them until you get your system properly set up for multiple currency processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">System setup includes the following:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Create appropriate </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> accounts</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter currency codes</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter currency exchange rates</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Enter currency checking accounts</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Assign currencies to vendors (initially the program assigns all to </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Assign currencies to customers (initially the program assigns all to </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">)</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;">Assign the </span><span style="font-size: 11pt; font-style: italic;">Currency</span><span style="font-size: 11pt;"> field in all open and closed sales orders, purchase orders, vouchers, and AP checks to </span><span style="font-size: 11pt; font-style: italic;">base currency</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">All of this can be done via a single startup program named MCSTART. &nbsp;You must run this program before you can begin multi-currency processing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">MCSTART &nbsp;Multi-Currency Startup Program</span></p>
+<p><span style="font-size: 11pt;">Before you run this program, you should study </span><span style="font-size: 11pt;"><a href="im-b_enter_multiple_currencies.htm" class="topiclink">IM-B &nbsp;Enter Multiple Currencies</a></span><span style="font-size: 11pt;"> and set up the various GL accounts that will be needed for the multi-currency system.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">To run the multi-currency startup program, go to </span><span style="font-size: 11pt;"><a href="ut-a_run_a_tas_program.htm" class="topiclink">UT-A &nbsp;Run a TAS Program</a></span><span style="font-size: 11pt;"> and type MCSTART and press &lt;Enter&gt;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The first thing the program will do is take you to </span><span style="font-size: 11pt;"><a href="im-b_enter_multiple_currencies.htm" class="topiclink">IM-B &nbsp;Enter Multiple Currencies</a></span><span style="font-size: 11pt;">, where you can set up the various currencies you will be using. &nbsp;You can set up a minimum of one currency and return to IM-B later if you want to add the rest. &nbsp;At a minimum you must set up your </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After escaping from that program, MCSTART automatically takes you to </span><span style="font-size: 11pt;"><a href="im-c_enter_currenct_exchange_rates.htm" class="topiclink">IM-C &nbsp;Enter Currency Exchange Rates</a></span><span style="font-size: 11pt;"> where you can enter current exchange rates for each of your currencies.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After escaping from that program, MCSTART automatically takes you to </span><span style="font-size: 11pt;"><a href="ad-b_checking_account_defaults.htm" class="topiclink">AD-B &nbsp;Checking Accounts Defaults</a></span><span style="font-size: 11pt;"> where you can set up bank accounts for each of your currencies. &nbsp;Each bank account must be assigned to a currency, so when you create a new bank account, make sure you have its currency set up beforehand.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After escaping from that program MCSTART takes you to a listing of vendors. &nbsp;The program assigns all vendors a default of </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">. &nbsp;You can then select just those vendors that transact in foreign currency and change them from </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> to </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After completing vendor currency assignments, MCSTART takes you to a listing of customers. &nbsp;The program assigns all customers a default of </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">. &nbsp;You can then select just those customers that transact in foreign currency and change them from </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;"> to </span><span style="font-size: 11pt; font-style: italic;">source currency.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After completing customer currency assignments, MCSTART asks you, as a first time multi-currency user, if you wish to assign the </span><span style="font-size: 11pt; font-style: italic;">Currency</span><span style="font-size: 11pt;"> field in all your open, and closed, and historical sales orders, purchase orders, vouchers, and AP checks to base currency. &nbsp;You should do so, because at the time all these items were entered you were on a single currency system, which was your </span><span style="font-size: 11pt; font-style: italic;">base currency</span><span style="font-size: 11pt;">. &nbsp;If you wish to change any open sales orders, purchase orders, and vouchers to </span><span style="font-size: 11pt; font-style: italic;">source currency</span><span style="font-size: 11pt;">, you will have to manually change their </span><span style="font-size: 11pt; font-style: italic;">Currency</span><span style="font-size: 11pt;"> fields and adjust the amounts on the line items.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">After this last routine is finished processing, you will be told that the multiple currency conversion is complete.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

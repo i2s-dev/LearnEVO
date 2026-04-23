@@ -1,0 +1,181 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>AM-B Fiscal Year End Routine</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="AM-B &nbsp;Fiscal Year End Routine,fiscal year end routine">
+   <meta name="description" content="AM-B Fiscal Year End Routine">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">AM-B Fiscal Year End Routine</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Accounting &gt; Accounting Maintenance&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">AM-B Fiscal Year End Routine</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="am-a_reset_general_ledger_close_date.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="am-c_enter_general_ledger_accounts.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">AM-B &nbsp;Fiscal Year End Routine</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">This program is run at fiscal year end and prepares the </span><span style="font-size: 11pt; font-style: italic;">General Ledger</span><span style="font-size: 11pt;"> to receive postings in the new fiscal year via </span><span style="font-size: 11pt;"><a href="gl-o_print_post_general_ledger_baches.htm" class="topiclink">GL-O &nbsp;Print/Post General Ledger Batches</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The program moves the current year GL chart of accounts balances (as viewed in </span><span style="font-size: 11pt;"><a href="gl-a_view_chart_of_accounts.htm" class="topiclink">GL-A &nbsp;View Chart of Accounts</a></span><span style="font-size: 11pt;">) one year back, opens up balances for the new fiscal year, updates the beginning balances in all asset, liability and owners equity accounts, clears the beginning balances in all income and expense accounts, and creates year end entries in your </span><span style="font-size: 11pt; font-style: italic;">Retained Earnings</span><span style="font-size: 11pt;"> account.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Running this program does not mean you have to &quot;close&quot; your fiscal year. &nbsp;You can make an unlimited number of adjusting entries to last year at any time during the new fiscal year limited by the Open Period Start Date entered in </span><span style="font-size: 11pt;"><a href="am-a_reset_general_ledger_close_date.htm" class="topiclink">AM-A Reset General Ledger Close Date</a></span><span style="font-size: 11pt;">. &nbsp;We therefore suggest that you run this program on the first day of your new fiscal year.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">If you change your fiscal year</span></p>
+<p><span style="font-size: 11pt;">If you change your fiscal year start date, you need to run </span><span style="font-size: 11pt;"><a href="am-n_maintain_gl_fiscal_periods.htm" class="topiclink">AM-N Maintain GL Fiscal Periods</a></span><span style="font-size: 11pt;"> to define the dates for the Short year and run this program on the first day of the new fiscal year using the new start date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">A warning will be presented if the program perceives that you are running the routine less than one year since your last fiscal year end, which could indicate that you may be running the program twice. &nbsp;After reading the message, click </span><span style="font-size: 11pt; font-style: italic;">Yes </span><span style="font-size: 11pt;">to continue and processing will begin and you will be presented with a screen to confirm or change the start dates of the months for the new year. &nbsp;Once processing is complete, a set of YE transactions is ready for posting in </span><span style="font-size: 11pt;"><a href="gl-o_print_post_general_ledger_baches.htm" class="topiclink">GL-O &nbsp;Print/Post General Ledger Batches</a></span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

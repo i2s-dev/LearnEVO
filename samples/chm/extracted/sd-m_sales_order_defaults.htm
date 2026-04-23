@@ -1,0 +1,438 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SD-M Sales Order Defaults</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="SD-M Sales Order Defaults Evo-ERP">
+   <meta name="description" content="SD-M Sales Order Defaults">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SD-M Sales Order Defaults</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; System Defaults&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SD-M Sales Order Defaults</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sd-l_features_and_options_defaults.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sd-n_sales_commission_defaults.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SD-M Sales Order Defaults</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Descriptions - Setup 1 Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ready to Ship Default</span></p>
+<p><span style="font-size: 11pt;">If you take advantage of the ready-to-ship feature in the sales order system, you will be able to generate instant invoices for any items that have on-hand inventory without having to use </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;This default sets the </span><span style="font-size: 11pt; font-style: italic;">Rdy?</span><span style="font-size: 11pt;"> flag in the sales order header. &nbsp;The default can be overridden within sales order entry on any given order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Entered by</span></p>
+<p><span style="font-size: 11pt;">If you have one person who enters the majority of your sales orders, enter the name/initials of the person in this field. &nbsp;If several people enter orders, leave this field blank.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default Ship Via</span></p>
+<p><span style="font-size: 11pt;">Type in the method you normally use to ship your orders. &nbsp;You can override this default when entering a sales order. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">Ship Via</span><span style="font-size: 11pt;"> field in </span><span style="font-size: 11pt;"><a href="ar-a_enter_customers.htm" class="topiclink">AR-A &nbsp;Enter Customers</a></span><span style="font-size: 11pt;"> overrides this default.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default FOB</span></p>
+<p><span style="font-size: 11pt;">If all your sales orders use the same FOB designation, enter the default here. &nbsp;This default can be overridden when entering a sales order. &nbsp;The </span><span style="font-size: 11pt; font-style: italic;">FOB </span><span style="font-size: 11pt;">field in </span><span style="font-size: 11pt;"><a href="ar-a_enter_customers.htm" class="topiclink">AR-A &nbsp;Enter Customers</a></span><span style="font-size: 11pt;"> overrides this default.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Turn the Credit Limit Message off?</span></p>
+<p><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> can display a message in the sales order program to notify you if your customer exceeds his credit limit or is on credit hold. &nbsp;The program checks the credit hold as soon as the Bill To customer code is entered and checks the credit limit as each line item is entered. &nbsp; If you don't want to see this message during the sales order entry process, enter </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> here. &nbsp;If you want to see the message, enter </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prompt for Taxable Line Item Amt?</span></p>
+<p><span style="font-size: 11pt;">If you are in an industry (such as construction) where the tax is not always applied to the full amount of the invoice line item, you can answer </span><span style="font-size: 11pt; font-style: italic;">Y </span><span style="font-size: 11pt;">to this prompt and the taxable amount will display in a pop-up window during sales order entry. &nbsp;You can then accept or override the taxable amount. &nbsp; In most industries this default is N and lines are either taxable or non-taxable in their entirety. &nbsp;An order can consist of both taxable and nontaxable lines with this default set to N.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prompt for Itemized Sales Tax?</span></p>
+<p><span style="font-size: 11pt;">In some industries (such as construction) the sales tax is often not itemized and is instead included as part of the line item price. &nbsp;The tax must still be tracked and paid, however. &nbsp;If you answer Y to this prompt, whenever a sales order is saved you will be asked if you want to itemize sales tax. &nbsp;If you say no, the tax will not be itemized at the bottom of the invoice. &nbsp;When the invoice is posted, the sales (income) amount will be reduced by the amount of the sales tax, and the sales tax liability will be posted to your default sales tax GL account and will post to the tax authority file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prompt for Retention Billing?</span></p>
+<p><span style="font-size: 11pt;">Retention billing is common in certain industries such as construction. If you answer </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> to this prompt, whenever you release a sales order for invoicing </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;"> you will be asked if you wish to bill for retention. &nbsp;If you indicate yes, you will be asked to enter a percentage. &nbsp;The program will then create a separate sales order for the retention amount and will handle all the GL postings properly. &nbsp;For more information, see </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E, Release Sales Orders</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Retention Part No</span></p>
+<p><span style="font-size: 11pt;">If you answer Y to the </span><span style="font-size: 11pt; font-style: italic;">Prompt for Retention Billing?</span><span style="font-size: 11pt;"> prompt, enter a item number that will be used by the system on the retention invoice. &nbsp;This item number should be set up in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B, Enter Inventory</a></span><span style="font-size: 11pt;">, as a non-inventory item (Type N), and should be given a general description that is appropriate when appearing on invoices.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Suppress Non-Tax Warning Message?</span></p>
+<p><span style="font-size: 11pt;">Normally if you do not enter a </span><span style="font-size: 11pt; font-style: italic;">Tax Group</span><span style="font-size: 11pt;"> on a sales order, the program gives you a warning that alerts you to this fact. &nbsp;Many manufacturing companies do not process sales taxes at all and find this warning an annoyance. &nbsp;If you enter a Y in this field, the warning will be suppressed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Entry to Location</span></p>
+<p><span style="font-size: 11pt;">This option allows you to control the entry of </span><span style="font-size: 11pt; font-style: italic;">Locations </span><span style="font-size: 11pt;">(warehouses) in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;See </span><span style="font-size: 11pt;"><a href="how_to_use_multiple_locations.htm" class="topiclink">How to Use Multiple Locations</a></span><span style="font-size: 11pt;"> for more information on using </span><span style="font-size: 11pt; font-style: italic;">Locations. &nbsp; Y</span><span style="font-size: 11pt;">ou should set this default to </span><span style="font-size: 11pt; font-style: italic;">R</span><span style="font-size: 11pt;"> (for required).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Entry to Department</span></p>
+<p><span style="font-size: 11pt;">This option allows you to control the entry of GL </span><span style="font-size: 11pt; font-style: italic;">Departments </span><span style="font-size: 11pt;">in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;See </span><span style="font-size: 11pt;"><a href="am-g_consolidate_financials.htm" class="topiclink">AM-D &nbsp;Enter General Ledger Departments</a></span><span style="font-size: 11pt;"> for more information on using GL </span><span style="font-size: 11pt; font-style: italic;">Departments.</span><span style="font-size: 11pt;"> &nbsp;If your company does not use departmental accounting (the majority of companies do not), you should set this default to </span><span style="font-size: 11pt; font-style: italic;">N </span><span style="font-size: 11pt;">so that in SO-A the user will </span><span style="font-size: 11pt; font-style: italic;">not</span><span style="font-size: 11pt;"> have access to the </span><span style="font-size: 11pt; font-style: italic;">Department</span><span style="font-size: 11pt;"> field in the sales order header screen. &nbsp;If you use departmental accounting, you can set this default to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt; font-style: italic;">R</span><span style="font-size: 11pt;">. &nbsp;If set to </span><span style="font-size: 11pt; font-style: italic;">Y,</span><span style="font-size: 11pt;"> the user will have access to the </span><span style="font-size: 11pt; font-style: italic;">Department</span><span style="font-size: 11pt;"> field in SO-A; however, entry of a department code is not required and the field can be left blank. &nbsp;If set to </span><span style="font-size: 11pt; font-style: italic;">R</span><span style="font-size: 11pt;"> (for required), the user must enter a department code and cannot leave the field blank.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Attach Notes from ARA</span></p>
+<p><span style="font-size: 11pt;">If you choose to disable the Sales Order feature to pull customer notes entered in AR-A into sales orders, set to N. &nbsp;Blank or Y means that the feature is enabled.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sales Document Printing</span></p>
+<p><span style="font-size: 11pt;">If you choose to disable the capability to print sales documents such as Acknowledgement, Invoice and Packing Slip in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> set to N. &nbsp;Blank or Y means the feature is enabled.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Calc BO on Available to Ship</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, then </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> the determination of whether an item is sent to Backorder will consider Units On Hand less Units on Sales Order and Backorder from other orders rather than strictly On Hand. &nbsp;This prevents multiple orders from thinking there is sufficient stock on hand &nbsp;when there is only enough for the first one. &nbsp;This logic also applies to </span><span style="font-size: 11pt;"><a href="so-s-mass_release_sales_orders.htm" class="topiclink">SO-S Mass Release Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;A W setting in this field will generate a Warning only in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> but still allow entry of the order without backordering the item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check for Existing PO in SOA</span></p>
+<p><span style="font-size: 11pt;">A value of N turns off the checking for duplicate customer PO number when entering sales orders in SO-A.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Ship-To code for FOB in SO-A</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> will pull the FOB information from the Ship-To customer record rather than the Bill-To customer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Track Changes to Sales Orders (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, then changes to Sales Order lines (Quantity, price, discount, ship or due dates) will be tracked as they are made and the change history can be viewed by clicking the HIST button in the line item section of </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">, or in the Bookings Report in </span><span style="font-size: 11pt;"><a href="sa-a_print_daily_sales_bookings.htm" class="topiclink">SA-A &nbsp;Print Daily Sales/Bookings</a></span><span style="font-size: 11pt;"> or </span><span style="font-size: 11pt;"><a href="so-o-m_print_changes_to_sales_orders.htm" class="topiclink">SO-O-M Print Changes to sales Orders</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Editing of Desc in SO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the item description in SO-A can not be modified.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Up Charges in Discounts (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then you will have access to a third digit in the line item screen discount percentage in SO-A to enter a minus sign for a negative discount to be used as an upcharge</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Round Prices (U)p or (N)earest 0-4 Decimals</span></p>
+<p><span style="font-size: 11pt;">If this enabled, discounted prices in SO-A will round either up or to the nearest number of decimal places specified.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Deleting of Sales Order in SO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, the Delete SO Button in SO-A is removed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow 00/00/00 Ship Dates in SO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, SO-A will allow blank estimated ship dates and SO-N will require that a date be entered at the time of conversion and MRP will ignore Sales Order Lines with blank dates. &nbsp;For use with blanket orders where the shipping schedule is unknown.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Reopen Closed SO in SO-A (Y/N/P/V)</span></p>
+<p><span style="font-size: 11pt;">If this is blank or Y, the program reopens a closed Sales Order to view it. &nbsp;If it is N then closed Sales Orders can not be viewed, if it is V they can be viewed but not reopened and if it is P then the password specified is required to reopen them.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Copying of Sales Order &amp; Quotes (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the Copy button in SO-A and SO-P-A is not available</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow entry of prices in SO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is N then the SO-A screen will skip over the price and Discount fields, preventing the order entry person from changing the price from the standard Base Price/Price Code and Discount pricing that pulls into the order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Control Ship to based on Bill To</span></p>
+<p><span style="font-size: 11pt;">If this is Y, then when entering a Sales Order, once a Bill To customer has been entered, the Ship To lookup will be limited to those Ship To addresses assigned to that Bill To in </span><span style="font-size: 11pt;"><a href="ar-a_enter_customers.htm" class="topiclink">AR-A Enter Customers</a></span><span style="font-size: 11pt;">. &nbsp;Further, if you have only the Ship To information, you can leave the Bill To blank and when the Ship To code is entered, the Bill To information will pull in.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Force Job Tracking in SO/PO/WO (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then all SO, WO and PO will require a Job number. &nbsp;If blank or N, the Job Number is optional</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow editing of Line Locations in SO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then you will be able to edit the Warehouse Location by Line Item in <a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A Enter Sales Orders</a>. &nbsp;If set to S you can edit the location when shipping in <a href="so-e_release_sales_orders.htm" class="topiclink">SO-E Release Sales Orders</a>. &nbsp;B allows editing in both programs and N or Blank prevents editing.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Force Order Description in SO/PO (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the Order Description can not be left blank.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sales Order Default Location</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If a value is entered here, Sales Orders will default to the value entered rather than the master Inventory Default Location</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Descriptions - Setup 2 Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prompt for Specifications in SO-A?</span></p>
+<p><span style="font-size: 11pt;">If N, the item specifications will not be pulled into Sales Orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ask for Book Date when editing SO-A</span></p>
+<p><span style="font-size: 11pt;">If this is Y, then when a change is made to a sales order, the user will be prompted for the effective date of the change which will be reflected on the Business Status and Changes to Sales Orders report.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Add new cust in order entry?</span></p>
+<p><span style="font-size: 11pt;">If this is Y then SO-A will not be allowed to create a new customer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable add'l SO Class Discount</span></p>
+<p><span style="font-size: 11pt;">Enter Y to have </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> recalculate the applicable discount per line based on the value breaks entered into </span><span style="font-size: 11pt;"><a href="so-q-f_enter_discount_codes.htm" class="topiclink">SO-Q-F &nbsp;Enter Discount Codes</a></span><span style="font-size: 11pt;"> as applied to the order subtotal per item class when the order is saved. &nbsp;Enter A to ask when saving and N or blank will not recalculate.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Set new SO Ent by to Username (Evo-ERP only)</span></p>
+<p><span style="font-size: 11pt;">Enter Y to have </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> pull in the first 5 characters of the username of the person entering a sales order into the &quot;Entered By&quot; field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Exclude Cust X-Ref in SO-A</span></p>
+<p><span style="font-size: 11pt;">Enter Y to prevent the Customer Cross Reference number from pulling into Sales Orders as a comment line.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Open or Open /Closed SO (O/B)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">Enter O if you want the opening list in SO-A to only display Open Sales Orders. &nbsp;Blank or B will include Open and Closed orders.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Ready to Post in SO-P-I</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y, then if an invoice number has already been assigned to a sales order, </span><span style="font-size: 11pt;"><a href="so-p-i_enter_freight_tracking_number.htm" class="topiclink">SO-P-I Enter Freight &amp; Tracking #</a></span><span style="font-size: 11pt;"> will have the option to set the invoice as ready to post.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check for Open Invoice in SO-A greater than XXX days</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If a number of days is entered, then SO-A will pop up a warning when entering a new order for a customer if they have any open invoices older than that number of days.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default Salesperson</span></p>
+<p><span style="font-size: 11pt;">You can use this field if you have one salesperson that handles a majority of your sales. &nbsp;The salesperson number must be set up in </span><span style="font-size: 11pt;"><a href="cs-a_enter_salespersons.htm" class="topiclink">CS-A &nbsp;Enter Salespersons</a></span><span style="font-size: 11pt;">. &nbsp;If you have a specific salesperson associated with a set of customers, you should assign the salesperson number in </span><span style="font-size: 11pt;"><a href="ar-a_enter_customers.htm" class="topiclink">AR-A &nbsp;Enter Customers</a></span><span style="font-size: 11pt;">. &nbsp;You can override either default salesperson assignment when entering a sales order.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Ship-To for Price and Discount Code</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y then if Price Code or Discount Codes have been established for a Ship-To customer, they will be used in Sales Orders and override codes entered in the Bill To ..</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Duplicate SO Lines (Y/N/W)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y then sales order entry will not be able to enter two identical lines (same part, quantity, price and delivery date) into the same sales order. &nbsp;W will warn but allow, and N or Blank will not check.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item No for Itemized Disc (Type N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">The part number entered here will be used in Sales Orders if a Discount codes has been established in </span><span style="font-size: 11pt;"><a href="so-q-f_enter_discount_codes.htm" class="topiclink">SO-Q-F &nbsp;Enter Discount Codes</a></span><span style="font-size: 11pt;"> as an Itemized Discount meaning that it is included on the order as a separate negative line item.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Alt Item - Cust X-Ref (123N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If the item number entered for a line in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> is not a standard item number in the inventory database, this setting enables a search on the Customer Cross Reference number as entered in </span><span style="font-size: 11pt;"><a href="in-l-c_enter_customer_cross_reference.htm" class="topiclink">IN-L-C &nbsp;Enter Customer Cross-Reference</a></span><span style="font-size: 11pt;"> as an alternate. &nbsp;Enter 1, 2 or 3 to designate the order of searching alternates (see the next two settings) or N if you do not want to include customer cross reference as an option.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Alt Item - User Defined (123N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If the item number entered for a line in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> is not a standard item number in the inventory database, this setting enables a search on the User Defined Field as entered in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> as an alternate. &nbsp;Enter 1, 2 or 3 to designate the order of searching alternates (see the previous and next settings) or N if you do not want to include User Defined field as an option.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Alt Item - UPC (123N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If the item number entered for a line in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> is not a standard item number in the inventory database, this setting enables a search on the UPC number as entered in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> as an alternate. &nbsp;Enter 1, 2 or 3 to designate the order of searching alternates (see the previous and next settings) or N if you do not want to include UPC as an option.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Maximum Freight Amount $9,999.99 (Y/N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If your freight charge will never exceed $9,999.99 then set this to Y and if a mistake is made entering a larger freight amount, it will not be allowed. &nbsp;Otherwise, freight amounts up to $99,999.99 are allowed but if it is a mistake, the invoice can not be voided.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ask for Lot info when adding SO Lines (Y/N/A/R) (Evo-ERP only)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y, Lot information can be entered in SO-A when lines are entered. &nbsp;N prevents Lot info, A will ask and R means the Lot info is required to be entered in SO-A.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ask for Serial info when adding SO Lines (Y/N/A/R) (Evo-ERP only)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y, Serial Number information can be entered in SO-A when lines are entered. &nbsp;N prevents Serial Info info, A will ask and R means the Serial Number info is required to be entered in SO-A.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Edit of SLSP in SO-A</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y then order entry can not change the Sales Rep assigned to the order.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Check for Open-late Inv&gt;XXX days per terms</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to a number of days then SO-A will pop up a warning if any open invoice is later than that number of days past the due date per terms.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Deletion of SO Lines with Work Orders in SO-A</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y then Sales Order lines that have been converted to Work Order can not be deleted.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use UCC</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If a number is enteredhere, it will become the incremental counter for UCC code for shipments</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item Number for Medical Excise Tax</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">Enter a Non-Inventory part number here to enable the calculation of Medical Excise Tax</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Medical Excise Tax Rate</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">Enter the appropriate rate</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ask for Lot info when releasing SO Lines (Y/N/A/R)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y you will be able to enter Lot Control information in </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;If N, you can not, A will Ask and R will Require.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ask for Serial info when releasing SO Lines (Y/N/A/R)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y you will be able to enter Serial Control information in </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;If N, you can not, A will Ask and R will Require.</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Set Default to True when changing all line dates (Y/N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y then the default to the &quot;Do you want to change all lines with this date&quot; when changing dates on lines will be Y</span></p>
+<p style="margin: 16px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SOC/SOF Always use Standard Pack (Y/N)</span></p>
+<p style="margin: 4px 0px 0px 0px;"><span style="font-size: 11pt;">If this is set to Y then the quantity shown on </span><span style="font-size: 11pt;"><a href="so-c_print_packing_slips.htm" class="topiclink">SO-C &nbsp;Print Packing Slips</a></span><span style="font-size: 11pt;"> and </span><span style="font-size: 11pt;"><a href="so-f_print_invoices.htm" class="topiclink">SO-F &nbsp;Print Invoices</a></span><span style="font-size: 11pt;"> will be the line quantity based on Standard Pack and the invoice price will be multiplied out to display a Stadnard Pack price.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Auto Line Numbers in SO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then lines in Sales Orders will be automatically numbered.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Auto Line Number Starting Number</span></p>
+<p><span style="font-size: 11pt;">If a value i entered here, it will be used as the starting number rather than 1</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Auto Line Number Increment</span></p>
+<p><span style="font-size: 11pt;">If a value i entered here, it will be used as the line number increment rather than 1</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 16pt; font-weight: bold;">Field Descriptions - Setup III Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Order if it Exceeds Credit Limit</span><br>
+<span style="font-size: 11pt;">If this is Y then entering an order that puts a customer over their credit limit will be prevented rather than just displaying a warning </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Always use Today as Ship Date in SO-E</span><br>
+<span style="font-size: 11pt;">If this is set to Y then <a href="so-e_release_sales_orders.htm" class="topiclink">SO-E Release Sales Orders</a> will use today (system date of the local machine) as Ship Date and the user can not change it.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-E/HH-D Default Shipping Bin</span><br>
+<span style="font-size: 11pt;">If this is populated with a Bin then <a href="so-e_release_sales_orders.htm" class="topiclink">SO-E Release Sales Orders</a> and <a href="hh-d_enter_finished_production.htm" class="topiclink">HH-D Enter Finished Production</a> will use it as the default bin for all items</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-B,C,F,PB Separately email</span><br>
+<span style="font-size: 11pt;">If this is set to Y then all emailed sales documents will be sent in separate PDFs rather than grouping to a single PDF per customer</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Use Standard Pack to Enter Quantity</span><br>
+<span style="font-size: 11pt;">If this is set to Y then orders must be entered in an even multiple of Standard Pack. &nbsp;If set to W, a warning will be given but the non-standard quantity can be entered.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Archive Sales Orders when they are marked closed</span><br>
+<span style="font-size: 11pt;">If this is set to Y then the final invoice posting of an order will archive the order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Use Shipping Lead Time to update other SO Lines</span><br>
+<span style="font-size: 11pt;">If this is set to Y then the longest shipping lead time on an order will control the estimated ship date of all lines</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A/SOPC Use Shop Calendar for Ship Lead Time</span><br>
+<span style="font-size: 11pt;">If this is set to Y then non-work days in the shop calendar will be taken into account when calculating the Est Ship Date using the item Ship Lead Time</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Suppress commission popup when changing reps</span><br>
+<span style="font-size: 11pt;">If this is set to Y then changing a rep on an order will not pop up the message to change the line commissions</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable SO-A Entry Security</span><br>
+<span style="font-size: 11pt;">If this is set to Y then security levels can be used to prevent users from editing the SO of another user</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Display Line item Cost, Profit % by line and Total</span><br>
+<span style="font-size: 11pt;">If this is set to Y then the line and total profit and % margin will be displayed at order entry based on the item standard cost.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Pull in Line User-Defined Info (Y/N/Desc)</span><br>
+<span style="font-size: 11pt;">If this is set to Y the item User Defined will pull into the order as a comment line. &nbsp;If it is set to Desc the field will be preceded by UD: </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A/P-A Warn if Gross Profit is Below Margin (Y/N/K)</span><br>
+<span style="font-size: 11pt;">If this is set to Y a line entered with a margin less than the value defined in the next setting will prompt a warning. &nbsp;If set to K the calculation will be Markup rather than Margin</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A/SO-P-A Gross Profit Margin/Markup %</span><br>
+<span style="font-size: 11pt;">Enter the value to be used for the profit calculation. &nbsp;25% would be entered as 25, not 0.25</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-P-B Prompt for Win Likelihood</span><br>
+<span style="font-size: 11pt;">If this is set to Y then printing a Quote will prompt for the Win Likelihood on a scale of 1-9 (1 being unlikely and 9 being likely) to be used as the Quote Status by the <a href="cm-c_opportunity_dashboard.htm" class="topiclink">CM-C Opportunity Dashboard</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Avalara Tax System</span><br>
+<span style="font-size: 11pt;">If this is set to Y then you need an account with Avalara to process and track Sales Tax and enter the Account Number, Key and your default Item Tax Code (per the Avatax item list)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-E Retain Original Ship Via Code</span><br>
+<span style="font-size: 11pt;">If this is set to Y then changing a Ship Via Code when releasing an order will apply to this shipment only and not change the order for subsequent shipments</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Autonumber Lines after Inserting SO Lines</span><span style="font-size: 11pt;"> </span><br>
+<span style="font-size: 11pt;">If this is set to Y then inserting lines in an order will renumber the subsequent lines.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-E Move all unshipped lines to Backorder</span><span style="font-size: 11pt;"> </span><br>
+<span style="font-size: 11pt;">If this is set to Y then when a partial order is released for shipment all remaining lines will be moved to backorder</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Prevent Access to Released Orders</span><span style="font-size: 11pt;"> </span><br>
+<span style="font-size: 11pt;">If this is set to Y then once an order has been released it can not be edited without unreleasing it.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 16pt; font-weight: bold;">Field Descriptions - Processing Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Release Qtys &nbsp;&gt; On Hand</span></p>
+<p><span style="font-size: 11pt;">There are 3 levels of control for restricting </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;"> to the available on-hand inventory. &nbsp;Enter a </span><span style="font-size: 11pt; font-style: italic;">0</span><span style="font-size: 11pt;"> if you want no restrictions on release quantities; enter a </span><span style="font-size: 11pt; font-style: italic;">1</span><span style="font-size: 11pt;"> if you want to be warned if there is insufficient on-hand stock to make the shipment and enter a </span><span style="font-size: 11pt; font-style: italic;">2</span><span style="font-size: 11pt;"> if you want to prohibit releasing a Sales Order with insufficient stock on-hand.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Increment WO Suffix in SO-N by</span></p>
+<p><span style="font-size: 11pt;">When Work orders are generated from Sales orders using </span><span style="font-size: 11pt;"><a href="so-n_convers_sales_orders_to_work_orders.htm" class="topiclink">SO-N &nbsp;Convert Sales Orders to Work Orders</a></span><span style="font-size: 11pt;">, the Work Order prefix number will equal the sales order number and the Work Order generated for each Sales Order line gets a different work order suffix. &nbsp;If you will be generating multiple level work orders, you may want to allow for an increment other than 1 between the suffixes so that lower level work orders deriving from the same parent part can easily be grouped together.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enter Ship Tracking Number in SO-E</span></p>
+<p><span style="font-size: 11pt;">This establishes whether or not a window will pop up in SO-E to enter a long shipment tracking number and freight carrier.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Set Pack Slip Same as Invoice</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, then when releasing sales orders in </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;"> the same number (the Next Invoice Number) will be assigned to the order for both the Invoice and Pack Slip number. &nbsp;This eliminates having 2 sets of numbers and also enables reprinting a pack slip after the invoice has posted because it can pull from the posted invoice file for the data since it is a one-to-one relationship.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Warn if Pack Slip has been printed (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then printing a packing slip in </span><span style="font-size: 11pt;"><a href="so-c_print_packing_slips.htm" class="topiclink">SO-C &nbsp;Print Packing Slips</a></span><span style="font-size: 11pt;"> sets a &quot;Printed&quot; flag so if you try to print it again, you get a warning, thus preventing inadvertent duplication of shipments. &nbsp;Once the invoice for the shipment is posted, the flag is cleared so the next shipment can be processed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Pick Tickets in SO-C (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then </span><span style="font-size: 11pt;"><a href="so-c_print_packing_slips.htm" class="topiclink">SO-C &nbsp;Print Packing Slips</a></span><span style="font-size: 11pt;"> will prompt whether to print a Pick Ticket or Packing Slip. &nbsp;This is designed to allow printing a Pick Ticket to pull parts and get them ready for shipment without pulling a packing slip number. &nbsp;A Pick Ticket lists all lines on the order and does not pull or save a Pack Slip (Shipper) number. &nbsp;A Packing Slip can list all lines or only released lines and assigns a packing slip number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Track On Time Shipping (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then as invoices are posted, the actual compared to Estimated Ship Date and Customer Due Date will be stored in a file which can be accessed using the new SO-O-N On Time Delivery Report.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow SO Dates to update WO (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then when a SO ship date is changed in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">, you will be prompted to also update the corresponding Work Order Estimated Finish Date for Work Orders converted from Sales Orders.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Warn at ship if pmt is required SO-C (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then when a Packing slip is printed for a Sales Order with a payment term that has Max Days Til Due of 0, a reminder message will pop up that this is an order that requires prepayment or COD paperwork so the shipping department doesn't ship the order without taking appropriate action.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Warn at ship if pmt is required SO-E (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then when a Sales Order with a payment term that has Max Days Til Due of 0 is released in SO-E, a reminder message will pop up that this is an order that requires prepayment or COD paperwork so the shipping department doesn't ship the order without taking appropriate action.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Warn at ship if pmt is required SO-C (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then when an Invoice is printed for a Sales Order with a payment term that has Max Days Til Due of 0, a reminder message will pop up that this is an order that requires prepayment or COD paperwork so the shipping department doesn't ship the order without taking appropriate action.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Changing Invoice # in SO-E</span></p>
+<p><span style="font-size: 11pt;">Enter Y to allow manual changing of the invoice number to be assigned when releasing Sales Orders. &nbsp;Any number manually assigned will still be verified to ensure it is not a previously used invoice number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Create 0 Qty SO Lines during post</span></p>
+<p><span style="font-size: 11pt;">Enter Y to have fully backordered lines post a record to the Invoice Line item file</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Treat 99.99% discount as 100%</span></p>
+<p><span style="font-size: 11pt;">Enter Y to have a 99.99% Sales Order discount calculate 100% Discount and $0 price</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Pull in Kit Comp Prices</span></p>
+<p><span style="font-size: 11pt;">Enter Y if you want kit components to be priced individually rather than a single price at the parent level for the Kit as a whole</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-Q-A Disable Base Price Passdown to Subsidiary (Y./N)</span></p>
+<p><span style="font-size: 11pt;">Enter Y to prevent changes to Base Price frm passing down to subsidiary companies and enable entry of Base Price at the Subsidiary level</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Use Order, Current date for Pricing</span></p>
+<p><span style="font-size: 11pt;">Enter O to use the Order Date to determine effective pricing or C to use the current calendar date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-N Multi-Yield Part Number</span></p>
+<p><span style="font-size: 11pt;">If this is populated with a part number then SO-N will have an option to create a Multi-Yield Work Order. &nbsp;It will combine all items on the order to a single work order so they can be manufactured together, then WO-I will process as a Multi-Yield Work Order and complete the items based on the SO Lines.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Automatically update Surcharge prices in SO-E (Y/N/A)?</span></p>
+<p><span style="font-size: 11pt;">Enter Y to have Sales Order Items defined as &quot;Surcharge&quot; items in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> have their unit cost updated to match current Base Price in </span><span style="font-size: 11pt;"><a href="so-e_release_sales_orders.htm" class="topiclink">SO-E &nbsp;Release Sales Orders</a></span><span style="font-size: 11pt;">, A to be prompted to reprice them or N to not make any changes.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent SO-N for items with Active Status E (Y/N)?</span></p>
+<p><span style="font-size: 11pt;">Enter Y to prevent converting Sales Orders to Work Order for items designated Active Status E (Engineering)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enter Additional SO Info (Header/Line/Both)?</span></p>
+<p><span style="font-size: 11pt;">Enter H to have one screen of additional information per Sales Order, L for one screen per line or B for both header and line info. &nbsp;The additional info screen allows for up to 20 additional alpha fields and 5 dates per item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Disable Option to Delete Quote in SO-P-C?</span></p>
+<p><span style="font-size: 11pt;">If set to Y, </span><span style="font-size: 11pt;"><a href="so-p-c_convert_sales_quotations.htm" class="topiclink">SO-P-C &nbsp;Convert Sales Quotations</a></span><span style="font-size: 11pt;"> will not have hte option to delete the quote after converting tro sales order</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">New Sales Order Consume Existing Forecasting for the month</span></p>
+<p><span style="font-size: 11pt;">If set to Y then Sales Orders entered will consume forecast in the same month as the Estiomated Ship Date until the monthly forecast is 0.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Posting Invoices Consumes Forecasting?</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, Sales Invoice Posting will consume Forecast, oldest first. &nbsp;This setting and the prior one for Sales Orders consuming forecast are mutually exclusive.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Prevent SO Qty &lt; Vendor Min Qty for OP Operation</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, Orders can not be entered for a quantity less than Vendor minimum quantity for outside process operation.</span></p>
+<p>&nbsp;<br>
+<span style="font-size: 11pt; font-weight: bold;">SO-A Auto-Create type XXXXXX-XXXXXX Items </span></p>
+<p><span style="font-size: 11pt;">If this set to Y and a part number is entered on a line in a format XXXXX-XXXXX (String - String) that does not exist in the item master but each of the text strings do exist as parts, a new item will be created, copying the inventory record, BOM and Routing from the item that matches the first string and adding the description of the second item as the second description line of the new item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-A Add Evo Note for Date Change</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then when editing an existing order and changing ship date you will be prompted to enter a note explaining the reason for the change.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Bill of Lading in SO-C?</span></p>
+<p><span style="font-size: 11pt;">If this is se to Y then <a href="so-c_print_packing_slips.htm" class="topiclink">SO-C Print Packing Slips</a> will prompt whether to print a Bill of Lading</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-E Disable Generate Serials Button</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then <a href="so-e_release_sales_orders.htm" class="topiclink">SO-E Release Sales Orders</a> will not allow autogeneration of Serial Numbers</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Descriptions &nbsp;- Printing Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Acknowledgment Print Format No.</span></p>
+<p><span style="font-size: 11pt;">The format identification number is located in parenthesis to the right of the description. &nbsp;Highlight the format you want and click on it or press &lt;Enter&gt;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Packing Slip Print Format Number</span></p>
+<p><span style="font-size: 11pt;">The format identification number is located in parenthesis to the right of the description. &nbsp;Highlight the format you want and click on it or press &lt;Enter&gt;. &nbsp; &nbsp; &nbsp;  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice Print Format Number</span></p>
+<p><span style="font-size: 11pt;">The format identification number is located in parenthesis to the right of the description. &nbsp;Highlight the format you want and click on it or press &lt;Enter&gt;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sales Quote Print Format Number</span></p>
+<p><span style="font-size: 11pt;">The format identification number is located in parenthesis to the right of the description. &nbsp;Highlight the format you want and click on it or press &lt;Enter&gt;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Co. Name &amp; Address on Forms?</span></p>
+<p><span style="font-size: 11pt;">Enter </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> if you want your company name and address (as defined in </span><span style="font-size: 11pt;"><a href="sd-a_company_defaults.htm" class="topiclink">SD-A &nbsp;Company Defaults</a></span><span style="font-size: 11pt;">) to print in the upper left corner on acknowledgments, invoices, packing slips, and sales quotations.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Discount Column on Forms?</span></p>
+<p><span style="font-size: 11pt;">If you want the </span><span style="font-size: 11pt; font-style: italic;">Discount</span><span style="font-size: 11pt;"> &nbsp;heading and column to print on forms, enter a </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">. &nbsp;If your company doesn't offer discounts or you do not want the discounts explicitly printed on the forms, enter N and the discount heading and column will not print.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Decimalized Quantities on Forms?</span></p>
+<p><span style="font-size: 11pt;">The program features two decimal places on all inventory quantities, including quantities shipped, and backordered on invoices, acknowledgments, packing slips, and sales quotations. &nbsp;If you never need decimalized quantities on these order documents, enter a </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;"> in this field and the decimals will be suppressed on the printouts.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Title on:</span></p>
+<p><span style="font-size: 11pt;">This option allows you to control whether the forms title (the main title in the upper right corner of each form) will print on acknowledgments, packing slips, invoices, or sales quotations. &nbsp;Even through the universal form can be used for all forms, some companies print special information (such as terms and conditions) on the back of some forms, some have different numbers of copies on multi-part forms, and some color code different sheets within multi-copy laser forms. &nbsp;Suppressing the title allows the title to be pre-printed so that different forms are readily identifiable when pulled from the shelf to be used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Max No Lines in Body of Ack, Pack Slip, Invoices</span></p>
+<p><span style="font-size: 11pt;">Indicate the number of Item, Description or Note lines allowed in the body of forms before a page feed command is passed to the print program. &nbsp;This would only be used for pre-printed forms that had footer type information printed on all pages of the form rather than printed by the program on the last page only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Alternate Title for Invoice</span></p>
+<p><span style="font-size: 11pt;">If you would like the word INVOICE to be something different when sales invoices are printed, then indicate the alternate word(s) here</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">SO-C Cert of Compliance RTM</span></p>
+<p><span style="font-size: 11pt;">If a value is entered here, then SO-C will print a second copy as a C of C using the specified RTM</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Ending Lines?</span></p>
+<p><span style="font-size: 11pt;">If you want to set your default to include ending lines (see below), then enter </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> here. &nbsp;If you answer 'yes', you will see a prompt when you are saving the sales order that will allow you to choose if you want to print these lines or not. &nbsp;Ending lines can be used for any type of message that you want printed in the lower left corner of the invoice, acknowledgment, or sales quotation. &nbsp;If you don't want to use the ending lines, enter N.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sales Order Ending Lines</span></p>
+<p><span style="font-size: 11pt;">You may include up to 5 description lines at the end of any invoice. &nbsp;If you answered </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> to the </span><span style="font-size: 11pt; font-style: italic;">Print Ending Lines?</span><span style="font-size: 11pt;"> field above, </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;"> will ask if you want to include these lines on each sales order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Sales Quote Ending Lines</span></p>
+<p><span style="font-size: 11pt;">If you answered </span><span style="font-size: 11pt; font-style: italic;">Y </span><span style="font-size: 11pt;">to the </span><span style="font-size: 11pt; font-style: italic;">Print Ending Lines?</span><span style="font-size: 11pt;"> field above, </span><span style="font-size: 11pt;"><a href="so-p-a_enter_sales_quotations.htm" class="topiclink">SO-P-A &nbsp;Enter Sales Quotations</a></span><span style="font-size: 11pt;"> will ask if you want to include these lines on each sales order.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Medical Excise Tax as a Tax Code in SO-F?</span></p>
+<p><span style="font-size: 11pt;">If you set this to Y and have the Medical Excise Tax item defined, the amount of the Tax will print in the Sales Tax region of the invoice rather than as a line item.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">SO-E Print SO/WO Labels after Releasing?</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then after releasing Sales Orders you will be prompted to print labels for the order.</span></p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

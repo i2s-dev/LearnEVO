@@ -1,0 +1,289 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Importing Master Files</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="importing master files,Importing Master Files (DE-A thru DE-L)">
+   <meta name="description" content="Importing Master Files">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Importing Master Files</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; Data Exchange&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Importing Master Files</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="de-a_sql_query_export.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="de-b_import_inventory.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Importing Master Files and Startup Data</span></p>
+<p><span style="font-size: 11pt;">The </span><span style="font-size: 11pt; font-style: italic;">Data Exchange </span><span style="font-size: 11pt;">module allows you to import master file data from your existing accounting system, thus greatly reducing the need for re-keying information by hand. &nbsp;You can import data into the following master files: customers, vendors, inventory, bills of material, routings, and GL chart of accounts. &nbsp;You can also import start-up data including open AR &amp; AP Aging, starting inventory on-hand balances and GL Transaction detail.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You must be able to export your accounting master files into an ASCII text format, either comma delimited or fixed length. &nbsp;Most accounting systems have a data export capability that can do this.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The data import design prevents bad data from getting into the permanent files. &nbsp;Data is first imported into temporary holding files where they can be edited for errors. &nbsp;A transfer program then moves the data from the temporary files to the permanent files. &nbsp;Only valid records are transferred. &nbsp;  </span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The data import is a three step process. &nbsp;In step one you import your data into the temporary files. &nbsp;In step two you edit the data for any changes or additions that might be needed. &nbsp;In step three you transfer the data to the permanent files. &nbsp;Each of the master file import submenus has the same options to choose from and they operate in the same manner.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Step 1 - IMPORT DATA INTO TEMPORARY FILES</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Create Import File Headers (Option A on each menu)</span></p>
+<p><span style="font-size: 11pt;">First, you need to determine what data you can actually extract from your existing system that can be imported. &nbsp;Each of the master file import menu starts with a program that lists the available fields that can be imported along with the actual data field name, the type (alpha, numeric, date) and size including number of decimal places for numeric fields. &nbsp;Required fields are pre-selected. &nbsp; Click the check box next to the fields that your are going to have available for import in the column order in which you want them to appear in the import file. &nbsp;You will see that the preselected fields already have column numbers. &nbsp;Once you have selected all the columns you plan to import, click Save and you will be prompted to create the import file. &nbsp;The path and file name will be displayed and it will always be located in a folder under the program application folder named IMPORT. &nbsp;The file created is a CSV file with column headings corresponding to the fields selected in the order in which they were selected. </span><span style="font-size: 11pt; font-weight: bold;">DO NOT CHANGE THE ORDER OF THE COLUMNS IN THIS FILE</span><span style="font-size: 11pt;">. &nbsp;Open the file in Excel or any other spreadsheet program that can read CSV files and populate the columns with your exported data by copying from spreadsheet to spreadsheet or using functions such as VLookup.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">When you are ready to import, save the file as CSV using the original name in the original location (IMPORT folder under the Evo-ERP program folder)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Run Import Programs (Option B on each menu)</span></p>
+<p><span style="font-size: 11pt;">The import programs all function identically. &nbsp;They already know the location, file name and column order of the import file so the only user input required is the date format (a number of different formats are available but you do need to specify a single format for all date fields in the import file) and whether to replace or skip existing records (in the case of doing the import in multiple passes). &nbsp;Click the import button and your data will be imported and upon completion you will be advised of the number of records loaded, replaced and skipped.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Erase Files Program</span></p>
+<p><span style="font-size: 11pt;">If for any reason any of your imports goes so badly that you want to start over, you can erase any of the temporary files and start over again by running </span><span style="font-size: 11pt;"><a href="de-i_erase_files.htm" class="topiclink">DE-I, Erase Files</a></span><span style="font-size: 11pt;">. &nbsp;Simply enter </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> next to each file to be erased. &nbsp;After entering Y or N next to each file, you are asked &nbsp;if you want to begin the program. &nbsp;If you answer yes, the appropriate temporary files will be erased.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">STEP 2 - EDIT THE DATA</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Error Reports (Option C on each menu)</span></p>
+<p><span style="font-size: 11pt;">Now that your data has been imported &nbsp;into the temporary master files, you should run error reports to check for missing or invalid fields needed by the master files.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The error reports will list all records that need to be edited, as well as any missing or invalid values needed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Edit Programs (Option D on each menu)</span></p>
+<p><span style="font-size: 11pt;">You can edit individual records one-by-one through the edit programs. &nbsp;These screens are identical to the master file entry screens within the system, except that they access the temporary data rather than permanent records.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">For details on field explanations and general program operation, study the following:</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="bm-a_ener_bills_of_material.htm" class="topiclink">BM-A &nbsp;Enter Bills of Material</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="ro-a_enter_routings.htm" class="topiclink">RO-A &nbsp;Enter Routings</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="ar-a_enter_customers.htm" class="topiclink">AR-A &nbsp;Enter Customers</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="ap-j_print_vendor_code_and_name.htm" class="topiclink">AP-A &nbsp;Enter Vendors</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:middle; width:22px; padding:0px;"><p><span style="font-size: 11pt;">&middot;</span></p>
+</td>
+<td style="vertical-align:middle; padding:0px;"><p><span style="font-size: 11pt;"><a href="am-c_enter_general_ledger_accounts.htm" class="topiclink">AM-C &nbsp;Enter General Ledger Accounts</a></span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">At a minimum you must edit the missing or invalid fields listed on the error reports. &nbsp;You can also add or change any other fields at this point, or you can wait until the temporary files are transferred and make further changes within the permanent files.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Global Field Change (DE-H)</span></p>
+<p><span style="font-size: 11pt;">This program can be very useful for entering or changing field values globally across many records. &nbsp;For example, in your accounting system a purchased item might be coded with an inventory type P while in this system, the inventory type code for purchased items is an R. &nbsp;Rather than have to individually change every inventory record, you can use the global field change program to change all records with a type P to a type R The program only changes critical fields listed on the error reports.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">First you are presented with a choice of four files with which the program can be used. &nbsp;Highlight the file you want to work with and press &lt;Enter&gt;.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next you are presented with a &nbsp;window listing the critical fields within that file that can be globally changed. &nbsp;Highlight the field you want to work with and press &lt;Enter&gt;.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you want to superimpose a field value on all records in the file, answer Y to </span><span style="font-size: 11pt; font-style: italic;">Replace all values? </span><span style="font-size: 11pt;">For example, you might want all items to have a selling unit of measure of EA. The cursor then moves to the</span><span style="font-size: 11pt; font-style: italic;"> Value to replace with? </span><span style="font-size: 11pt;">field. &nbsp;You would enter “EA” and press &lt;Enter&gt;. &nbsp;The program will then superimpose the value “EA” in the selling unit of measure field for all records within the file.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">If you want to replace a particular value only within specific records, answer N. &nbsp;You are then asked for the value to search for. &nbsp;In our inventory </span><span style="font-size: 11pt; font-style: italic;">Type </span><span style="font-size: 11pt;">example, you would enter a P. Enter the value to replace with, which in &nbsp;our example would be an R. The program will then automatically replace all P values in the inventory type field with an R.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Erase Files Program</span></p>
+<p><span style="font-size: 11pt;">If for any reason any of your imports do not initially go well on the first try, you can erase any of the temporary files and start over again by running </span><span style="font-size: 11pt;"><a href="de-i_erase_files.htm" class="topiclink">DE-I, Erase Files</a></span><span style="font-size: 11pt;">. &nbsp;Simply enter Y next to each file to be erased. &nbsp;After entering Y or N next to each file, you are asked if you want to begin the program. &nbsp;If you indicate yes, the appropriate temporary files will be erased.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">STEP 3 - TRANSFER DATA TO PERMANENT FILES (Option E on each &nbsp;menu)</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The final step is to transfer the temporary data to the permanent master files. &nbsp;Only records without missing or invalid fields will be transferred by the program. &nbsp;Run the appropriate error reports before running this program to make sure all records to be transferred are without errors.</span></p>
+<p><span style="font-size: 11pt;">Enter a Y next to each file you wish to transfer. &nbsp;If you want an error report which lists any records that did not transfer, enter Y to </span><span style="font-size: 11pt; font-style: italic;">Print Errors Report? </span><span style="font-size: 11pt;">The program will then begin the transfer.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">The transfer completes the import process and insures that only good records get into the permanent files. &nbsp;Some types of data validate based on others so the following order is recommended for a new startup:</span></p>
+<p><span style="font-size: 11pt;">&nbsp;</span></p>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:top; width:22px; padding:0px;"><p><span style="font-size: 11pt; font-family: 'Arial Unicode MS', 'Lucida Sans Unicode', 'Arial';">&#8226;</span></p>
+</td>
+<td style="vertical-align:top; padding:0px;"><p><span style="font-size: 11pt;">Chart of Accounts, Customers and Vendors do not validate on anything so they can be transferred first.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:top; width:22px; padding:0px;"><p><span style="font-size: 11pt; font-family: 'Arial Unicode MS', 'Lucida Sans Unicode', 'Arial';">&#8226;</span></p>
+</td>
+<td style="vertical-align:top; padding:0px;"><p><span style="font-size: 11pt;">Inventory validates Vendor and Customer codes so it should not be transferred until Customers and Vendors have been processed</span></p>
+</td>
+</tr>
+</table>
+</div>
+<div style="text-align: left; text-indent: 0px; padding: 0px 0px 0px 0px; margin: 0px 0px 0px 0px;"><table cellspacing="0" cellpadding="0" border="0" style="border:none; border-spacing:0px;">
+<tr style="text-align:left;vertical-align:top;">
+<td style="vertical-align:top; width:22px; padding:0px;"><p><span style="font-size: 11pt; font-family: 'Arial Unicode MS', 'Lucida Sans Unicode', 'Arial';">&#8226;</span></p>
+</td>
+<td style="vertical-align:top; padding:0px;"><p><span style="font-size: 11pt;">Bills of Material and Routings validate against Inventory so they should be processed last.</span></p>
+</td>
+</tr>
+</table>
+</div>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">NOTE: When you are importing data from multiple files into one file, do not run this program until all your data has been imported and gathered together. &nbsp;You cannot transfer data in segments into the permanent data files.</span></p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

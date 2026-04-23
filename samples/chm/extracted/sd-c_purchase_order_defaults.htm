@@ -1,0 +1,351 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SD-C Purchase Order Defaults</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="SD-C Purchase Order Defaults">
+   <meta name="description" content="SD-C Purchase Order Defaults">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SD-C Purchase Order Defaults</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; System Defaults&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SD-C Purchase Order Defaults</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sd-b_work_order_defaults.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sd-d_material_requirements_defaults.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SD-C Purchase Order Defaults (Evo-ERP)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 13pt; font-weight: bold;">Field Descriptions - Setup Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default Entered by</span></p>
+<p><span style="font-size: 11pt;">If one person generates the majority of your purchase orders, type in that person's initials. &nbsp;Otherwise, you can leave this field blank. &nbsp;You can override this default when entering a purchase order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default Ship Via</span></p>
+<p><span style="font-size: 11pt;">Type in the method you normally use for shipping. &nbsp;You can override this default when entering a purchase order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Service POs?</span></p>
+<p><span style="font-size: 11pt;">This option determines whether or not the window asking if a PO is Purchase or Service will pop up in </span><span style="font-size: 11pt;"><a href="po-a_enter_purchase_orders.htm" class="topiclink">PO-A &nbsp;Enter Purchase Orders</a></span><span style="font-size: 11pt;">. &nbsp;If this is set to N, the window will not appear and all purchase orders will be Purchase type.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Track PO Taxes using Tax Groups?</span></p>
+<p><span style="font-size: 11pt;">If this is set to N, then any taxable PO will be charged the default PO Tax rate (see next field) and the tax will be expensed to the default account assigned in </span><span style="font-size: 11pt;"><a href="ad-a_general_ledger_defaults.htm" class="topiclink">AD-A &nbsp;General Ledger Defaults</a></span><span style="font-size: 11pt;">. &nbsp;If it is set to Y, then Vendors can be assigned to Tax Groups and PO taxes will be tracked accordingly and posted to the account defined in </span><span style="font-size: 11pt;"><a href="sm-e_enter_tax_codes.htm" class="topiclink">SM-E &nbsp;Enter Tax Codes</a></span><span style="font-size: 11pt;"> for PO Taxes and tracked by tax group. &nbsp;United States customers would generally set this to N.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Default PO Tax Rate</span></p>
+<p><span style="font-size: 11pt;">The default percentage used to calculate the tax on taxable PO's if PO Tax Groups is set to N (see above).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Copy in customer PO's from Work Orders as comment lines?</span></p>
+<p><span style="font-size: 11pt;">If within a purchase order line item you specify a work order number and this default is set to </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;">, you will be asked if you wish to copy in your customer's purchase order number from the work order to a comment line for this purchased item, providing a cross-reference. &nbsp;If you do not need such a cross-reference, set this default to </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Entry to (Y/N/Require)?</span></p>
+<p><span style="font-size: 11pt; font-weight: bold;">Location</span><span style="font-size: 11pt;"> &nbsp;- Controls whether entry of a Location is required, or if Blank Location is allowed, or if no Location can be entered (only blank Location is valid)</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">GL Department</span><span style="font-size: 11pt;"> &nbsp;- Controls whether entry of a GL Department is required, or if Blank Department is allowed, or if no Department can be entered.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Closed PO's to be Reopened?</span></p>
+<p><span style="font-size: 11pt;">If Y, </span><span style="font-size: 11pt;"><a href="po-d_view_po_receivers.htm" class="topiclink">PO-D &nbsp;View PO Receivers</a></span><span style="font-size: 11pt; color: #008000;"> </span><span style="font-size: 11pt;">can be used to select a closed PO and reopen it</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Rep Code for V.P. Report</span></p>
+<p><span style="font-size: 11pt;">If a code is entered in this field, then you will be able to have the </span><span style="font-size: 11pt;"><a href="po-i-h_vendor_performance_report.htm" class="topiclink">PO-I-H &nbsp;Vendor Performance Report</a></span><span style="font-size: 11pt;"> save the vendor ratings as History records.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Editing of Desc in PO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the item description in PO-A can not be modified.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable Auto Line Numbers in PO-A</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then lines of Purchase Orders will automatically be numbered.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow PO to Edit GL Acct (A,D,B,N)</span></p>
+<p><span style="font-size: 11pt;">If this is A then PO-A can edit the GL Account the line will post to. &nbsp;If it is D, the GL Department only can be edited. &nbsp;B allows editing of both account and department and N allows editing of neither.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item Types for GL Edit</span></p>
+<p><span style="font-size: 11pt;">Indicate which inventory types the editing of GL information will be allowed. &nbsp;Typically you may want to allow editing for type N (Non-Inventory) only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable APC Frt &amp; Tax Distribution (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then AP-C will redistribute tax and freight among the GL Accounts of the items purchased rather than the default Tax and Freight accounts</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item Types for Distrib</span></p>
+<p><span style="font-size: 11pt;">Indicate which inventory types the distribution of Freight and Tax costs will be allowed. &nbsp;Typically you may want to allow distribution for type N (Non-Inventory) only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Ask for Book Date when editing PO</span></p>
+<p><span style="font-size: 11pt;">Indicate whether changes to PO should be saved with a date other than the current system date for Business Status Booked Orders totals.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Track Changes to Purchase Orders</span></p>
+<p><span style="font-size: 11pt;">Indicate Y if changes to Purchase Orders should be tracked.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Inventory Label after Receiving PO (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">Indicate Y to automatically print labels for items received and enter A(Ask) to prompt whether labels should be printed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Update PO Rev &amp; Date when saving PO</span></p>
+<p><span style="font-size: 11pt;">Indicate Y if you want to update the incremental Rev counter and change date each time a PO is saved.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">AP-C Price Change update PO Price (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">Indicate whether AP-C price change should update the PO Line item price (Yes/No/Ask)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Enter Digital Signature (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then you will be prompted to enter the digital signature authorization when saving a PO in </span><span style="font-size: 11pt;"><a href="po-a_enter_purchase_orders.htm" class="topiclink">PO-A &nbsp;Enter Purchase Orders</a></span><span style="font-size: 11pt;">. &nbsp;If it is A then you will be asked iof you want to enter the authorization and if N or blank, no approval will be available in PO-A.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A to use Std, Last, Min Price (S/L/M/N)</span></p>
+<p><span style="font-size: 11pt;">If this is S then PO-A will pull in the Standard cost, if it is L the Last Cost or if it is M then it will look back 6 months and pull in the minimum price.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Disable Delete Button in PO-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the ability to Delete PO's in PO-A is disabled.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Allow Edit of Vendor Start Date in AP-A (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this N then manual editing of Vendor Start Date is prohibited.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-Q Allow Entry to Price (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y, then users with access to </span><span style="font-size: 11pt;"><a href="po-q_print_receiving_slip.htm" class="topiclink">PO-Q Maintain PO Delivery Dates</a></span><span style="font-size: 11pt;"> will also be able to edit PO prices.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Prevent Creating Vendors (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then a user in </span><span style="font-size: 11pt;"><a href="po-a_enter_purchase_orders.htm" class="topiclink">PO-A &nbsp;Enter Purchase Orders</a></span><span style="font-size: 11pt;"> can not create a new vendor on the fly.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Invoice PO Receipts through AP (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then PO Invoices are matched to PO Receipts as invoices are entered using <a href="ap-c_enter_purchase_order_invoices.htm" class="topiclink">AP-C Enter Purchase Order Invoices</a>. &nbsp;If set to N then POs will close upon final receipt.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">AP-C/PO-K Save original PO when closing PO (Y/N)</span></p>
+<p><span style="font-size: 11pt;">If this set to Y then when a PO is closed and deleted from the Open PO file, an archive copy of the original PO will be saved in an archive file.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A to use Vendor pricing for type R &amp; M items[Y/N/A]</span></p>
+<p><span style="font-size: 11pt;">If this set to Y then PO-A is required to use Vendor pricing and if no Vendor Pricing is entered, the PO line will not be allowed. &nbsp;N or blank means Vendor pricing &nbsp;is not required but will be used if it has been entered. &nbsp;A will Ask. </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-Q Allow Entry to Quantity</span></p>
+<p><span style="font-size: 11pt;">If this set to Y then &nbsp;PO-Q Edit Receipt Dates will also be able to edit line quantities.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Descriptions - Processing Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Require Pack Slip Info?</span></p>
+<p><span style="font-size: 11pt;">This sets a default for this field in the header section of </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt; font-style: italic;">. </span><span style="font-size: 11pt;">If Y, then a pack slip number will be required for all receipts. &nbsp;If N, it is optional.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receive Into</span></p>
+<p><span style="font-size: 11pt;">This sets a default for this prompt in the header section of </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt;">. &nbsp;You are presented with a choice (via a pop-up window) of receiving directly into </span><span style="font-size: 11pt; font-style: italic;">Inventory</span><span style="font-size: 11pt;"> or into </span><span style="font-size: 11pt; font-style: italic;">QC Inspection</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receive all Lines?</span></p>
+<p><span style="font-size: 11pt;">This sets a default for this prompt in the header section of </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt; font-style: italic;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Display Comment Lines?</span></p>
+<p><span style="font-size: 11pt;">This sets a default for this prompt in the header section of </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt; font-style: italic;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Display Fully Rec'd Lines?</span></p>
+<p><span style="font-size: 11pt;">This sets a default for this prompt in the header section of </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Force PO to use approved vendors?</span></p>
+<p><span style="font-size: 11pt;">This option sets the default for the </span><span style="font-size: 11pt; font-style: italic;">Approved Vendors in PO?</span><span style="font-size: 11pt;"> field in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;"> and also controls how approved vendors are handled during purchase order entry. &nbsp;You are given three choices.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">If you do not wish to use approved vendors, meaning that you can purchase from any vendor without restriction, enter an X in the </span><span style="font-size: 11pt; font-style: italic;">Do not check vendor approval status</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">If you want a warning when using an unapproved vendor, but with the ability to go ahead and use an unapproved vendor, enter an X in the </span><span style="font-size: 11pt; font-style: italic;">Warn if unapproved but allow use</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="text-indent: -22px; margin: 13px 0px 0px 24px;"><span style="font-size: 11pt;">If you want only approved vendors to be used, enter an X in the </span><span style="font-size: 11pt; font-style: italic;">Prohibit use of unapproved vendors</span><span style="font-size: 11pt;"> field.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt;">Be aware that any of the above defaults can be overridden at the item number level via the </span><span style="font-size: 11pt; font-style: italic;">Approved Vendors in PO?</span><span style="font-size: 11pt;"> field in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Require entry of Scrap Code</span></p>
+<p><span style="font-size: 11pt;">Determines whether items rejected in </span><span style="font-size: 11pt;"><a href="po-j-c_enter_inspection_buyoffs.htm" class="topiclink">PO-J-C &nbsp;Enter Inspection Buyoffs</a></span><span style="font-size: 11pt;"> require entry of a scrap code</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Require entry of QC Code</span></p>
+<p><span style="font-size: 11pt;">Determines whether items accepted &quot;Use as Is&quot; in </span><span style="font-size: 11pt;"><a href="po-j-c_enter_inspection_buyoffs.htm" class="topiclink">PO-J-C &nbsp;Enter Inspection Buyoffs</a></span><span style="font-size: 11pt;"> require a QC Code</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Access to Prices on Receivers</span></p>
+<p><span style="font-size: 11pt;">There are 3 levels of access. &nbsp;0 or blank allows receiving to view and change prices; 1 is view only and 2 removes the unit price field from the receiving screen.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Percentage of Over Receipts Allowed</span></p>
+<p><span style="font-size: 11pt;">If a purchase order line is received more than the over receipt percentage specified, a warning message will be presented.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Update Vendor Last Cost in PO-C</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then PO-C will update the Vendor Pricing as seen in </span><span style="font-size: 11pt;"><a href="po-h_enter_vendor_prices.htm" class="topiclink">PO-H &nbsp;Enter Vendor Prices</a></span><span style="font-size: 11pt;"> with the PO price unless a record already exists for that vendor and item with quantity break pricing established. &nbsp;If no record exists, it will be created and if a record exists without quantity breaks, it will be updated with the PO Price.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Check Stock Receiving Make From Comps</span></p>
+<p><span style="font-size: 11pt;">Indicate whether on-hand stock level should be checked for components of Make From parts. &nbsp;I means Ignore (do not check), W means check and provide a warning but allow the receipt to proceed, and P means Prevent the receipt if component stock level would go negative.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C to Print QC Traveler</span></p>
+<p><span style="font-size: 11pt;">Indicate whether you want the </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span><span style="font-size: 11pt;"> to prompt to print the QC Traveler when parts are received to QC. &nbsp;N or blank, it will never print the traveler, Y will always chain to </span><span style="font-size: 11pt;"><a href="po-j-a_print_receipt_travelers.htm" class="topiclink">PO-J-A &nbsp;Print Receipt Travelers</a></span><span style="font-size: 11pt;"> and A (Ask) will prompt whether or not to print the traveler.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Update Last Cost if Cost is $0.00</span></p>
+<p><span style="font-size: 11pt;">Indicate N if you do not want PO-C to update the Last Cost for inventory items received at $0.00 (such as samples from a new vendor)</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Receive Non-Inventory Items at PO Price</span></p>
+<p><span style="font-size: 11pt;">If you are set for Standard Cost but do not want Non-Inventory items such as supplies processed at standard cost and post a Purchase Price Variance, enter Y. &nbsp;This can be overridden at the Item level if there are certain Non-Inventory items that do have a standard cost and should post a PPV.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C to Update Primary Vendor</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the Primary vendor for items will be updated to the vendor on the PO whenever a PO is received in </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C to Display Receiver Number on Save</span></p>
+<p><span style="font-size: 11pt;">If this is Y then the receiver number will be displayed whenever a PO receipt is saved in </span><span style="font-size: 11pt;"><a href="po-c_receive_purchase_orders.htm" class="topiclink">PO-C &nbsp;Receive Purchase Orders</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Default for Change Dates</span></p>
+<p><span style="font-size: 11pt;">Indicate whether the default answer to change all lines on a PO with a date should be Y or N</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Disable Price Check for Qty Changes</span></p>
+<p><span style="font-size: 11pt;">If this is Y, then changing a quantity on a PO Line will not recheck for quantity break pricing</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C to issue WO Comps for Service POs (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">If this is Y then any components associated with the Work Order Sequence on a Service PO will be issued to the work order whenthe PO is received. &nbsp;If set to A (Ask) there will be a prompt and if set to blank or N there will be no issue.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Update Unit Cost if Cost is $0</span></p>
+<p><span style="font-size: 11pt;">If this is N then Last Cost will not be changed by a receipt at $0</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Update Unit Cost and Vendor if less $</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then receiving a PO at a cost lower than Last Cost will update the Last Cost and also change the Primary Vendor to the vendor on the PO</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Recal Vendor Price for item on multi line (Y,N,A)</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then vendor pricing for a blanket PO will take the total quantity into account</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Enable PO-A Entry Security</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then security levels can be used to prevent buyers from editing the PO of another buyer</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Auto-Generate Serial Numbers when receiving</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y and the serial generation parameters have been defined in </span><span style="font-size: 11pt;"><a href="sc-g_enter_serial_generation_parameters.htm" class="topiclink">SC-G Enter Serial Generation Parameters</a></span><span style="font-size: 11pt;"> then PO Receiving will automatically generate the needed serial numbers.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Auto-Generate Lot Numbers when receiving</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y &nbsp;then PO Receiving will automatically generate the needed lot numbers using the PO Number and an incremental counter for each item.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Warn if PO Due Date &gt; WO Due Date</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y and a Work Order number is specified in the PO line, the program will compare the PO Line Est Receipt date with the WO Due date and provide a warning if the PO will not be received in time for the Work Order</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C 'E' Status Items Receive at PO Price if STDC=0</span></p>
+<p><span style="font-size: 11pt;">If the costing method is Standard and a part with Active Status 'E' and 0 Standard Cost is received, the PO Price will be used as the cost of the receipt.  </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Descriptions - Processing II Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Default Item Receiving Bin</span></p>
+<p><span style="font-size: 11pt;">If this is populated then all PO Receipts will default to the Bin entered (such as a Staging area) and can then be transferred to the final Bin Location when they are moved to the stockroom.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Print Lot Labels Upon Receipt</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then labels for Lot Controlled items will be printed when they are received. &nbsp;If set to A, the user will be prompted to print the labels.</span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">PO-A Use Shop Calendar for Due Date</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then the Shop Calendar will be used to prevent a Due Date on a weekend or holiday not on the shop calendar </span></p>
+<p>&nbsp;</p>
+<p><span style="font-size: 11pt; font-weight: bold;">PO-E Use for Purchase Requisition</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then <a href="po-e_enter_print_rfqs.htm" class="topiclink">PO-E Enter/Print RFQ's</a> will pull in part pricing the same as PO-A so the document can be used as an internal requisition form rather than a Vendor RFQ</span></p>
+<p><span style="font-size: 11pt; font-weight: bold;">&nbsp;</span></p>
+<p><span style="font-size: 11pt; font-weight: bold;">PO-B, E Separately email Multiple PO/RFQs </span></p>
+<p><span style="font-size: 11pt;">If this is set to Y them multiple items being emailed to a vendor at the same time will be separated into multiple PDFs rather than a single multiple page PDF</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Risk Assessment Screen Access</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then when saving a PO in PO-A, a screen will come up for the entry of risk assessment information pertaining to the PO and items on it.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C/HH-G Prevent PO Receipt X days</span></p>
+<p><span style="font-size: 11pt;">If a vealue is entered here then PO Receipt will not be allowed more than the specified number of days early based on the line Estimated Receipt date</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Warn if PO Due Date &gt; WO Due Date</span></p>
+<p><span style="font-size: 11pt;">If this is set to Y then when entering a PO Line tied to a work order, if the PO line receipt date is later than the Work Order due date a warning will pop up and you will be prompted to flag the PO as Rush or Expedite (see next setting).</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Prior Due Days to flag PO as Expedite</span></p>
+<p><span style="font-size: 11pt;">If a value is entered here then if the PO Estimated Receipt date is greater than this number of days past the Work Order due date it will be flagged as &quot;Rush&quot; by default. &nbsp;If it is late but not greater than this number of days it will be flagged as &quot;Expedite&quot;. &nbsp;If a PO is flagged as Rush or Expedite then it is so designated when printed in <a href="po-b_print_purchase_orders.htm" class="topiclink">PO-B Print Purchase Orders</a> ond color coded red or yellow on <a href="po-i-g_print_purch_order_items.htm" class="topiclink">PO-I-G Print Purch Order Items by Due Date</a></span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C Freight Distribution Item Number</span></p>
+<p><span style="font-size: 11pt;">If this field is populated then PO-C will have an option to enter a freight vendor and freight amount and the amount of the freight will be distributed to the lines being received proportioned by weight and a PO to the freight vendor specified for the amount of the freight cost will be created and received so the freight invoice can be applied using <a href="ap-c_enter_purchase_order_invoices.htm" class="topiclink">AP-C Enter Purchase Order Invoices</a> </span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C to Print Inventory in QC (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">If this field is Y (Yes) or A (Ask) then when items are received to QC the <a href="po-j-b_printinventory_in_qc.htm" class="topiclink">PO-J-B Print Inventory in QC</a> program will be called to print a list of them</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-C to Print Receiving Report (Y/N/A)</span></p>
+<p><span style="font-size: 11pt;">If this field is Y (Yes) or A (Ask) then when items are received to stock the <a href="po-i-e_print_receiving_report.htm" class="topiclink">PO-I-E Print Receiving Report</a> will be called to print a list of them</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A/IN-D Promise date for Unconfirmed PO</span></p>
+<p><span style="font-size: 11pt;">This will use the specified date (such as something several years in the future) as the Promise date when PO's are created in PO-A or IN-D to make it obvious they have not been confirmed by the vendor.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Suppress prompt for multiple Mfg</span></p>
+<p><span style="font-size: 11pt;">If this field is Y (Yes) all approved manufacturers will pull into the PO</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Chg Due Dates without new Approvals</span></p>
+<p><span style="font-size: 11pt;">If this set to Y then the electronic signature to a PO will not be cleared if only dates are changed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO-A Prevent for Vend with Expired Review</span></p>
+<p><span style="font-size: 11pt;">If this set to Y then a PO can not be entered for a vendor whose Quality Review date has passed</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 14pt; font-weight: bold;">Field Descriptions - Printing Tab</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Co. Name/Address on forms?</span></p>
+<p><span style="font-size: 11pt;">If you are printing PO's and RFQ's on plain paper or on forms without your name and address printed on them, answer Y to this prompt and your company name and address, as entered through </span><span style="font-size: 11pt;"><a href="sd-a_company_defaults.htm" class="topiclink">SD-A &nbsp;Company Defaults</a></span><span style="font-size: 11pt;">, will print in the upper left hand corner of the forms.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">RFQ Print Format Number</span></p>
+<p><span style="font-size: 11pt;">You are offered two print format choices in a lookup window. &nbsp;Highlight the format you want and click on it or press &lt;Enter&gt;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Title on RFQ?</span></p>
+<p><span style="font-size: 11pt;">This option allows you to control whether the forms title REQUEST FOR QUOTE? will print or not. &nbsp;Suppressing the title allows the title to be pre-printed so that different forms are readily identifiable when pulled from the shelf to be used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO Print Format Number</span></p>
+<p><span style="font-size: 11pt;">You are offered four print format choices in a lookup window. &nbsp;Formats 1-4 are graphical formats. &nbsp;Formats 1 and 3 offer a </span><span style="font-size: 11pt; font-style: italic;">Condensed</span><span style="font-size: 11pt;"> print format, which prints one line per line item using a small font. &nbsp;Formats 2 and 4 print two lines per line item using a larger, easier-to-read font. &nbsp;Highlight the format you want and click on it or press &lt;Enter&gt;.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print Title on PO?</span></p>
+<p><span style="font-size: 11pt;">This option allows you to control whether the forms title PURCHASE ORDER will print or not. &nbsp;Suppressing the title allows the title to be pre-printed so that different forms are readily identifiable when pulled from the shelf to be used.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Print PO Ending Lines?</span></p>
+<p><span style="font-size: 11pt;">If you want your printed purchase orders to include ending lines (see below), then enter </span><span style="font-size: 11pt; font-style: italic;">Y</span><span style="font-size: 11pt;"> here. &nbsp;If you answer yes, you will see a prompt when you are saving the purchase order that will allow you to choose if you want to print these lines or not. &nbsp;Ending lines can be used for any type of message you want printed in the lower left corner of your purchase orders. &nbsp;If you don't want to use ending lines, enter </span><span style="font-size: 11pt; font-style: italic;">N</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">PO Ending lines</span></p>
+<p><span style="font-size: 11pt;">You may include up to 5 description lines at the end of any purchase order. &nbsp;If you have answered Y to the </span><span style="font-size: 11pt; font-style: italic;">Print PO Ending Lines </span><span style="font-size: 11pt;">question above, </span><span style="font-size: 11pt;"><a href="po-a_enter_purchase_orders.htm" class="topiclink">PO-A &nbsp;Enter Purchase Orders</a></span><span style="font-size: 11pt;"> will then ask if you want to include the lines as each purchase order is saved.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Max No Lines in Body of PO</span></p>
+<p><span style="font-size: 11pt;">Indicate the number of Item, Description or Note lines allowed in the body of a PO before a page feed command is passed to the print program. &nbsp;This would </span><span style="font-size: 11pt; font-weight: bold;">ONLY</span><span style="font-size: 11pt;"> be used for pre-printed forms that had footer type information printed on all pages of the form rather than printed by the program on the last page only.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Prevent Printing PO not Digitally Signed</span></p>
+<p><span style="font-size: 11pt;">If PO Digital Signature is turned on, setting this to Y completely prevents printing unapproved POs.</span></p>
+<p style="margin: 13px 0px 13px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

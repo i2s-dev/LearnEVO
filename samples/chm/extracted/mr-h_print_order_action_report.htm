@@ -1,0 +1,208 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>MR-H Print Order Action Report</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="MR-H &nbsp;Print Order Action Report,order action report">
+   <meta name="description" content="MR-H Print Order Action Report">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">MR-H Print Order Action Report</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Manufacturing &gt; Material Requirements&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">MR-H Print Order Action Report</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="mr-g_print_material_requirements.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="mr-i_generate_work_orders.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">MR-H &nbsp;Print Order Action Report</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to get a listing of MRP transactions that contain action &nbsp;messages to be performed. &nbsp;Action messages are MAKE, BUY, EXPEDITE, DELAY, or REVIEW</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The report also shows the orders each transaction is Pegged to, meaning the work order, sales order, or forecast that actually caused the requirement.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Column Heading Explanations</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Item number</span></p>
+<p><span style="font-size: 11pt;">The item number of the inventory item that needs some action performed.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Description</span></p>
+<p><span style="font-size: 11pt;">The item's inventory description.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Order No</span></p>
+<p><span style="font-size: 11pt;">The work order number or purchase order number that needs some action performed. &nbsp;Planned (suggested) purchase orders are identified with the word BUY. &nbsp;Planned work orders are identified with a temporary number (regenerated each time </span><span style="font-size: 11pt;"><a href="mr-f_generate_mrp_requirements.htm" class="topiclink">MR-F &nbsp;Generate Material Requirements</a></span><span style="font-size: 11pt;"> is run) that has a prefix of &quot;PL&quot; followed by an up to five digit sequentially assigned number.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Start Dt</span></p>
+<p><span style="font-size: 11pt;">The current scheduled start date of an existing work order, or the suggested start date of a suggested (planned) work order. &nbsp;On an existing purchase order, this is the order date. &nbsp;On a suggested purchase order, this is the suggested purchase order date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Due Dt</span></p>
+<p><span style="font-size: 11pt;">The current finish date of an existing work order, or the suggested finish date of a suggested (planned) work order. &nbsp;On an existing purchase order, this is the receiving due date; on a suggested purchase order this is the suggested receiving date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Quantity</span></p>
+<p><span style="font-size: 11pt;">The work order or purchase order quantity. &nbsp;For suggested (planned) work orders or purchase orders, this is the suggested quantity to make or buy.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Action</span></p>
+<p><span style="font-size: 11pt;">The action to be performed, which is either MAKE, BUY, EXPEDITE, DELAY or REVIEW.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Pegged to</span></p>
+<p><span style="font-size: 11pt;">This column is used to identify the transaction that produced the requirement. &nbsp;If it is an existing work order number (easily identified by the fact that it has a 6-digit prefix and 3-digit suffix) then it means that there is a work order for which this item is allocated in the work order's bill of material.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the number begins with a prefix of &quot;PL&quot; followed by an up to 5-digit number, it is a planned (suggested) work order that does not yet exist.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the number is a single number, it is a sales order number.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If the word FORECAST is printed, it is a &nbsp;forecasted requirement that does not yet exist.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Vendor</span></p>
+<p><span style="font-size: 11pt;">For existing purchase orders, this is the vendor code of the vendor with whom this purchase order was placed. &nbsp;On planned (suggested) purchase orders this is the primary vendor for the item entered in </span><span style="font-size: 11pt;"><a href="in-b_enter_inventory.htm" class="topiclink">IN-B &nbsp;Enter Inventory</a></span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Req Dt</span></p>
+<p><span style="font-size: 11pt;">The required date of the </span><span style="font-size: 11pt; font-style: italic;">Pegged to</span><span style="font-size: 11pt;"> item. &nbsp;In the case of work orders, this is the work order start date. &nbsp;In the case of sales orders, this is the estimated ship date. &nbsp;In the case of forecasts, this is the forecast date.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Quantity</span></p>
+<p><span style="font-size: 11pt;">The quantity of the </span><span style="font-size: 11pt; font-style: italic;">Pegged to </span><span style="font-size: 11pt;">work order, sales order, or forecast.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p><span style="font-size: 11pt;">Enter the action type codes you want included in the report. &nbsp;The values are: M=Make, B=Buy, E=Expedite, D=Delay. &nbsp;If you press &lt;Enter&gt;, all codes are selected.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You can list the Order Action for all components at all levels through the BOM of an assembly by answering Y to Print BOM Components in which case you only enter the top assembly item number. &nbsp;Otherwise, enter from/thru ranges of item number, start date, finish date, item class, and category. &nbsp;Item numbers can be selected from a lookup window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">For purchased parts you might want to restrict the report to a particular vendor so you can group your purchases together. &nbsp;If so, enter a from/thru range of vendor codes, or select vendor codes from a lookup window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+<p style="margin: 13px 0px 0px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

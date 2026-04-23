@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>SO-N Convert Sales Orders to Work Orders</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="sales orders,sales orders converting to work orders,SO-N &nbsp;Convert Sales Orders to Work Orders">
+   <meta name="description" content="SO-N Convert Sales Orders to Work Orders">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">SO-N Convert Sales Orders to Work Orders</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   Sales &gt; Sales Orders&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">SO-N Convert Sales Orders to Work Orders</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="so-k_generate_recurring_sales_order.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="so-o-a_print_open_sales_order_listing.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">SO-N &nbsp;Convert Sales Orders to Work Orders</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">Purpose of Program</span></p>
+<p><span style="font-size: 11pt;">Use this program to generate work orders automatically from line items entered in </span><span style="font-size: 11pt;"><a href="so-a_enter_sales_orders.htm" class="topiclink">SO-A &nbsp;Enter Sales Orders</a></span><span style="font-size: 11pt;">. &nbsp;This eliminates the double entry that would be involved in entering both a sales order and a work order.</span></p>
+<p style="margin: 13px 0px 0px 0px;"><span style="font-size: 11pt; font-weight: bold;">General Program Operation</span></p>
+<p>&nbsp;</p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Create a Multi-Yield Work Order?</span><span style="font-size: 11pt;"> &nbsp;This option will only be available if a Multi-Yield placeholder part number has been entered in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M Sales Order Defaults</a></span><span style="font-size: 11pt;"> as the &quot;SO-N Multi-Yield Part Number&quot;. &nbsp;If this has been enabled and you respond Y to Create Multi Yield Work order then all the lines on the Sales Order regardless of part number will be combined to a single work order for the Multi Yield placeholder part number. &nbsp;All components of all the line items will be added to the work order Bill of Materials and the Routing for the Multi-Yield part number will be used for the work order. &nbsp;When the Work Order is processed in </span><span style="font-size: 11pt;"><a href="wo-i_enter_finished_production.htm" class="topiclink">WO-I &nbsp;Enter Finished Production</a></span><span style="font-size: 11pt;"> the program will automatically present a list of the items on the sales order during the Multi-Yield processing.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Type in the sales order number, or select the sales order from a pop-up window by pressing the F2 key (or clicking on the </span><span style="font-size: 11pt; font-style: italic;">Lookup</span><span style="font-size: 11pt;"> button).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If an item was entered on multiple lines with different due dates, you have a choice as to how you want it converted to a work order. &nbsp;You are asked </span><span style="font-size: 11pt; font-style: italic;">Combine Duplicate Items into Single Work Orders?</span><span style="font-size: 11pt;"> &nbsp;Enter Y if you want the sales order lines consolidated into a single work order with multiple delivery dates. &nbsp;Enter an N if you want a separate work order created for each sales order estimated ship date.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">You are then asked </span><span style="font-size: 11pt; font-style: italic;">Prompt for Work Order Quantity?</span><span style="font-size: 11pt;"> &nbsp;If you check the box, then when creating the work orders, the program will present a pop-up window for each item on the sales order that will show current inventory status for the item.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">Next, you are asked </span><span style="font-size: 11pt; font-style: italic;">Use Inventory Lead Time for Start Date?</span><span style="font-size: 11pt;"> &nbsp;If no, the program will prompt for a date to use as the start date for the work orders that get generated. &nbsp;If yes, it will use the inventory lead time to determine a start date. &nbsp;If you have set the default for &quot;Use Lead Time Scheduling&quot; to either F (Forward) or B (Backward) in </span><span style="font-size: 11pt;"><a href="sd-b_work_order_defaults.htm" class="topiclink">SD-B &nbsp;Work Orders Defaults</a></span><span style="font-size: 11pt;"> this program will always use backward scheduling to generate a start date based on the order quantity and routing time standards (see </span><span style="font-size: 11pt;"><a href="how_lead_time_scheduling_works.htm" class="topiclink">How Lead Time Scheduling Works</a></span><span style="font-size: 11pt;">).</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The next prompt asks </span><span style="font-size: 11pt; font-style: italic;">Use Shop Calendar to Determine Start Date?</span><span style="font-size: 11pt;"> &nbsp;If Y, the program will make sure that the start date is moved back until it falls on a valid date on the shop calendar and the number of days of lead time will take the shop calendar active work days into account. &nbsp;If you are using Lead Time Scheduling, this will always be Y.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Create Work Orders for Kit Components?</span><span style="font-size: 11pt;"> &nbsp;If Y, then components of Selling Kits which are type A or F will have Work Orders generated.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Include Non-Inventory Items?</span><span style="font-size: 11pt;"> &nbsp;Some people use type N Non-Inventory items for warranty or tooling which do need work orders; others use them exclusively for restock charges and the like which do not require Work Orders.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Create Multi-Assembly Orders</span><span style="font-size: 11pt;">? &nbsp;If Y, then for the lower level components in the BOM, the program will automatically call </span><span style="font-size: 11pt;"><a href="wo-k-d_create_multi-assy_work_orders.htm" class="topiclink">WO-K-D &nbsp;Create Multi-Assy Work Orders</a></span><span style="font-size: 11pt;"> to create the exploded lower level assembly work orders needed.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Generate WO for SO Lines not yet generated?</span><span style="font-size: 11pt;"> &nbsp;If set to Y then only newly added SO Lines that have not already been converted will get Work Orders generated.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Match WO Suffix to SO Line Number?</span><span style="font-size: 11pt;"> &nbsp;If this is set to Y then the SO Line Number and WO Suffix will be matched. &nbsp;Using this setting conflicts with the &quot;Create Multi-Assembly Orders&quot; so they should not both be set to Y. &nbsp;If a work order already exists with the number that would be created by matching the suffix to the line number, the line will be skipped.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Use Cust Due Date or Est Ship Date as WO Due Date</span><span style="font-size: 11pt;">? &nbsp;If C, then the line item Customer Due Date will become the Work Order Due Date. &nbsp;If E, the Estimated Ship Date will be used.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Increment Work Order Suffix by {20}?</span><span style="font-size: 11pt;"> &nbsp;Enter the value by which you want the Work Order suffix to increment as each line of the sales order is processed. &nbsp;This will allow better grouping of work orders; for example all suffixes through 19 are associated with Line 1 of the Sales Order and its subassemblies, Work Order suffixes 20-39 are associated with Sales Order line 2, etc. &nbsp;This increment can be given a default value in </span><span style="font-size: 11pt;"><a href="sd-m_sales_order_defaults.htm" class="topiclink">SD-M &nbsp;Sales Orders Defaults</a></span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Work Order Status for S/R WOs?</span><span style="font-size: 11pt;"> &nbsp;If the program is being called by the Service/Repair module, you can specify a different status for the WO than the normal default.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Include Back Order Qty (Y/N/O)?</span><span style="font-size: 11pt;"> &nbsp;This controls whether backordered items should have work orders created (Yes/No/Only)</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt; font-style: italic;">Offset Finish Date by Days?</span><span style="font-size: 11pt;"> &nbsp;This allows you to enter a number of days prior to the Estimated Ship Date that the Work Order Estimated Finish Date should be set to.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you entered N to use Inventory lead time for start date you will be prompted for a work order start date. &nbsp;Next if you answered Y to prompt for work order quantity you are presented with a review window for each item to be converted. &nbsp;In the window you are asked </span><span style="font-size: 11pt; font-style: italic;">Please Enter the Quantity to Convert</span><span style="font-size: 11pt;">. &nbsp;In that field will be the quantity from the sales order, but you can override it if you want a different quantity. &nbsp;Also displayed in the window are inventory status fields for on-hand, on sales order, on backorder, on purchase order, allocated, and in work-in-process to help you make your order quantity decision. &nbsp;If you decide to skip a given item and make no work order, change the quantity to 0 and no work order will be generated.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">If you had answered N to </span><span style="font-size: 11pt; font-style: italic;">Prompt for Work Order Quantity?,</span><span style="font-size: 11pt;"> the program will immediately start creating work orders using the exact quantities entered on the sales order(s). &nbsp; Work orders will be created for inventory items coded type &quot;F&quot; (finished good) and &quot;A&quot; (assembly). &nbsp;The program will use each line item's estimated ship date as the work order finish date.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">As each line has its work order generated, if the </span><span style="font-size: 11pt; font-style: italic;">Create Multi-Assembly Work orders?</span><span style="font-size: 11pt;"> had been selected, then the same screen as seen in </span><span style="font-size: 11pt;"><a href="wo-k-d_create_multi-assy_work_orders.htm" class="topiclink">WO-K-D &nbsp;Create Multi-Assy Work Orders</a></span><span style="font-size: 11pt;"> will be presented for each sales order line.</span></p>
+<p style="margin: 8px 0px 0px 0px;"><span style="font-size: 11pt;">The work orders created through this program use the sales order number as the work order prefix number for cross-reference purposes. &nbsp;The first line item converted gets a work order suffix of &quot;-001&quot;, the next will get a suffix based on the increment specified and so on. &nbsp;Through the common prefix we know these work orders are linked to a common sales order. &nbsp; All work orders linked to a common work order prefix optionally print on the shop traveler in a section titled</span><span style="font-size: 11pt; font-style: italic;"> Job Schedule</span><span style="font-size: 11pt;">.</span></p>
+<p style="margin: 8px 0px 8px 0px;">&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+

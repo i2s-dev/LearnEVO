@@ -1,0 +1,191 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+   <title>Using Evo Notes</title>
+   <meta name="generator" content="Help & Manual">
+   <meta name="keywords" content="">
+   <meta name="description" content="Using Evo Notes">
+   <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+   
+   <meta http-equiv="X-UA-Compatible" content="IE=8" />
+   <link type="text/css" href="default.css" rel="stylesheet">
+   <link type="text/css" href="custom.css" rel="stylesheet">
+   <script type="text/javascript" src="nsh.js"></script>
+
+<script type="text/javascript">   
+// Toggle Toggler 
+
+var toggleCount=false;
+var switchState;
+
+function toggleToggles() {
+
+    if (!toggleCount) {
+     toggleCount = true;
+     HMToggleExpandAll(true);
+     switchState = true;
+     }
+   
+     else if (switchState) {
+        HMToggleExpandAll(false);
+        switchState = false;
+        }
+        
+     else  {
+        HMToggleExpandAll(true);
+        switchState = true;
+        } 
+    }
+</script>
+   
+<!-- non-scrolling headers for CHM and browser-based help, local styles-->
+<style type="text/css" media="screen"> 
+html, body { margin:0; 
+   padding:0; 
+   overflow: hidden; 
+   background: #FFFFFF; 
+  }
+ 
+div#printheader { 
+   display: none;
+   padding-bottom: 10px;
+   }
+   #idheader { 
+      width:100%; 
+      height:auto; 
+      padding: 0; 
+      margin: 0; 
+} 
+    #idheaderbg  {
+    background: #6F6F6F; 
+}
+   #callout-table, #overview-table {display:block; position:relative; top:0; left:0;}
+   #callout-icon {display:block; position:absolute; top:-11px; left:-11px;}
+   #callout-icon-flag {display:block; position:absolute; top:-11px; left:-8px;}
+   #callout-table a {text-decoration: none; color: blue;}
+   #callout-table a:visited {text-decoration: none; color: blue;}
+   #overview-table a {text-decoration: none; color: black;}
+   #overview-table a:visited {text-decoration: none; color: black;}
+   #callout-table a:hover, #overview-table a:hover {text-decoration: underline;}
+   p.help-url { margin: 20px 0 5px 0; text-align: center; font-size: 80%; text-decoration: none }
+   .sync-toc { color: #ffffff; font-size: 8pt; font-weight: bold; display: none; }
+   .sync-toc a { color: #ffffff; text-decoration: none; font-weight: bold;}
+   .sync-toc a:visited { color: #ffffff; }
+   .sync-toc a:hover { text-decoration: underline; }
+   </style>
+<!--[if lt IE 7]>
+<style type="text/css">
+  #idcontent {padding: 0px;} 
+  #innerdiv {padding: 10px 5px 5px 10px ;} 
+</style> 
+<![endif]-->
+<noscript>
+<style type="text/css">
+html, body { overflow: auto; }
+</style> 
+</noscript>
+<style type="text/css" media="print">
+span.f_Heading1 { color: black; }
+#idheader, #printheader img { display:none; }
+#printheader { display: block; margin-top: 20px; }
+#idcontent { margin-top: 10px; }
+</style>   
+
+   <script type="text/javascript" src="jquery.js"></script>
+   <script type="text/javascript" src="helpman_settings.js"></script>
+   <script type="text/javascript" src="helpman_topicinit.js"></script>
+
+
+</head>
+<body>
+<!--ZOOMSTOP-->
+
+
+<div id="printheader"><h1 class="p_Heading1"><span class="f_Heading1">Using Evo Notes</span></h1>
+</div> 
+<div id="idheader">
+<div id="idheaderbg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" 
+       style="margin: 0px; background: url(header_bg.jpg);">
+
+  <tr valign="bottom">
+    <td align="left" valign="bottom" class="topichead">
+   
+   <p class="crumbs" id="idnav"><b>Navigation:</b>&nbsp;
+   
+   System Manager &gt; System Maintenance&nbsp;&gt;</p>
+   <h1 class="p_Heading1"><span class="f_Heading1">Using Evo Notes</span></h1>
+
+    </td>
+    <td align="right" width="120" valign="middle" class="topichead" id="idnav">
+    
+     <a href="sm-k-evo_user_settings.htm"
+        onmouseover="document.images.prev.src='btn_prev_h.gif'" 
+        onmouseout="document.images.prev.src='btn_prev_n.gif'"
+        ><img name=prev src="btn_prev_n.gif" border=0 alt="Previous page"
+        ></a><a href="evoerp_help_file.htm"
+        onmouseover="document.images.main.src='btn_home_h.gif'" 
+        onmouseout="document.images.main.src='btn_home_n.gif'"><img name=main src="btn_home_n.gif" border=0 alt="Return to chapter overview"
+        ></a><a href="sm-n-a_enter_note_types.htm"
+        onmouseover="document.images.next.src='btn_next_h.gif'" 
+        onmouseout="document.images.next.src='btn_next_n.gif'"><img name=next src="btn_next_n.gif" border=0 alt="Next page"
+        ></a>
+    </td>
+  </tr>
+  <tr><td colspan="2" style="height: 3px; background: url(header_bg_shadow.gif)"></td></tr>
+</table>
+</div>
+
+<!-- The following code displays Expand All/Collapse All links  below the header in topics containing toggles -->
+  
+
+</div>  
+
+
+
+<div id="idcontent"><div id="innerdiv"> 
+<!--ZOOMRESTART-->
+<p><span style="font-size: 16pt; font-weight: bold;">Using Evo Notes</span></p>
+<p>&nbsp;</p>
+<p>Notes in Evo-ERP allow the entry of memo style notes of unlimited length associated with any data object in the system - part numbers, customers, specific orders, even specific order line items. &nbsp;These Notes can be designated a specific type and depending on type can print on various documents. &nbsp;The printing of these Notes requires that the “Enable Evo Notes System” in SD-A be set to Y but the entry of notes is independent of this setting.</p>
+<p style="margin: 0px 0px 0px 24px;">&nbsp;</p>
+<p><span style="font-size: 12pt; font-weight: bold;">Note Types</span></p>
+<p>The system is preset with four Note Types - CSN (Classic Synchronized Note), CSH (Classic Synchronized Hidden Note), STD (Standard Note) and HID (Hidden Note), INT (Internal Note which can never print on a document) and PRD (Paperless Product Notes used by <a href="hh-l_multi-user_paperless_shop_floor.htm" class="topiclink">HH-L Multi-user Paperless Shop Floor)</a>. &nbsp;You can add as many other types as you like at <a href="sm-n-a_enter_note_types.htm" class="topiclink">SM-N-A</a>. &nbsp;If you have a mixed network with some users running DBA Classic and others running Evo-ERP then for notes associated with Customers, Vendors, Work Orders, Purchase Orders and Sales Orders, you should use CSN and CSH types for any notes that you want DBA Classic users to be able to see. &nbsp;Also, if you have “Enable Evo Notes System” set to N then the CSN notes will be the only ones that can be printed.</p>
+<p style="margin: 0px 0px 0px 24px;">&nbsp;</p>
+<p><span style="font-size: 12pt; font-weight: bold;">Notes Databases</span></p>
+<p>The Evo Notes are all stored in the ISNOTES file for each company</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 12pt; font-weight: bold;">Printing Notes</span></p>
+<p>When the Evo Notes system is enabled in <a href="sd-a_company_defaults.htm" class="topiclink">SD-A</a>, then when printing documents such as Invoices, a window will pop up prompting for selection of which associated Notes to print.</p>
+<p>Once you place a checkmark in the box to indicate that you want Notes associated with the Sales Order to print, a second window opens where the type of Note to be printed can be chosen. &nbsp;These selections can be saved so that you do not need to make the selection again in the future. &nbsp;So you can create a Note Type called PMT for payment instructions and attach a PMT Note to a customer and then select the PMT Note type for invoices but not Packing Slips and the note would print on the Invoices for any customer that has a PMT Note type. &nbsp;Or attach a Note Type SHP to a particular Ship Via code and all packing slips for orders assigned to that Ship Via could print the note.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 12pt; font-weight: bold;">“EN” RTMs for Notes</span></p>
+<p>The RTMs that print the Evo Notes are all named “EN…” or “IEN…” for the International forms. &nbsp;The Evo Notes sections of the RTMs are separate subreports and contain a field called Note Title and one called IS.NOTE.NOTE. &nbsp; The Note Title contains the Note type and where it came from (associated with part number, customer, etc.) and can be made invisible if you do not want to print this information. &nbsp;If you currently do not have the Evo Notes System enabled, then your forms printing will call “T6…” or “IT6…” RTMs which do not have the subreports for the notes. &nbsp;If you have customized your T6 RTMs, you will have to use the RTM Editor to make those same customizations to the corresponding “EN” RTM before you can enable the Evo Notes System and print the Evo Notes. &nbsp;You can not simply rename a “T6” RTM to “EN” because it does not have the Note subreports.</p>
+<p>&nbsp;</p>
+<p><span style="font-size: 12pt; font-weight: bold;">Note Alerts</span></p>
+<p>When you are entering a Note, there is a check box that can be clicked to make the note an Alert. &nbsp;If you make a Note an Alert, then whenever the data element the Note is associated with is accessed using a new Windows style program, an Alert window will pop up indicating that there is an Alert Note associated with the data.</p>
+<p>&nbsp;</p>
+
+<!--ZOOMSTOP-->
+</div></div>
+<script type="text/javascript">
+
+var lastSlashPos = document.URL.lastIndexOf("/") > document.URL.lastIndexOf("\\") ? document.URL.lastIndexOf("/") : document.URL.lastIndexOf("\\");
+if( document.URL.substring(lastSlashPos + 1, lastSlashPos + 4).toLowerCase() != "~hh" )
+{
+ if (document.all) setTimeout(function() {nsrInit();},20); 
+    else nsrInit();
+ } 
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
