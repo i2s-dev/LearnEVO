@@ -7,6 +7,17 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 - **UI forms**: 18 (prefixes `T7MR`, `T6MR`, `BKMR`)
 - **Menu operations**: 12
 
+## Narrative / vendor help
+
+**→ [help-content.md](help-content.md)** — consolidated write-up of
+all 14 help topics from `EvoHELP.CHM` (overview + MR-A through MR-N,
+13 programs). Hoists the Buffer / Sensitivity / Action-message model
+into a shared "Core concepts" section, then walks through forecasts
+(MR-A/B/C), parameters (MR-D/E), the MR-F generation engine, the MR-G
+/ MR-H / MR-L reporting trio, and the MR-I / MR-J / MR-K / MR-N
+conversion programs. Includes MR-J's lead-time-batching worked
+example. Cross-linked to WO, PO, SO, IN, BM, SH modules.
+
 ## Menu operations
 
 | Code | Operation | Legacy module file(s) |

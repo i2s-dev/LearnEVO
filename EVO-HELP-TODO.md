@@ -30,11 +30,11 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Month End Accounting
   - [x] File Names
 
-- [ ] **Manufacturing** 🟡 — 3 of 8 subtopics.
+- [ ] **Manufacturing** 🟡 — 4 of 8 subtopics.
   - [x] Work Orders (WO-*) ✅ — [docs/03-modules/wo-work-orders/help-content.md](docs/03-modules/wo-work-orders/help-content.md) *(52 CHM topics consolidated)*
   - [x] Job Costing (JC-*) ✅ — [docs/03-modules/jc-job-costing/help-content.md](docs/03-modules/jc-job-costing/help-content.md) *(20 CHM topics consolidated)*
   - [x] Purchase Orders (PO-*) ✅ — [docs/03-modules/po-purchase-orders/help-content.md](docs/03-modules/po-purchase-orders/help-content.md) *(27 CHM topics consolidated)*
-  - [ ] Material Requirements (MR-*, MRP)
+  - [x] Material Requirements (MR-*, MRP) ✅ — [docs/03-modules/mr-mrp/help-content.md](docs/03-modules/mr-mrp/help-content.md) *(14 CHM topics consolidated)*
   - [ ] Scheduling (SH-*)
   - [ ] Data Collection (DC-*)
   - [ ] Estimating (ES-*)

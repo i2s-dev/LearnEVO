@@ -61,7 +61,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [WO — Work Orders](03-modules/wo-work-orders/README.md) (31 / 68 / 30) — + [help-content.md](03-modules/wo-work-orders/help-content.md) *(52 CHM topics)*
 - [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28)
 - [BM — Bill of Materials](03-modules/bm-bill-of-materials/README.md) (10 / 16 / 10)
-- [MR — MRP](03-modules/mr-mrp/README.md) (12 / 18 / 4)
+- [MR — MRP](03-modules/mr-mrp/README.md) (12 / 18 / 4) — + [help-content.md](03-modules/mr-mrp/help-content.md) *(14 CHM topics)*
 - [PR — Payroll](03-modules/pr-payroll/README.md) (29 / 40 / 16)
 - [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7)
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
