@@ -63,7 +63,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [BM — Bill of Materials](03-modules/bm-bill-of-materials/README.md) (10 / 16 / 10)
 - [MR — MRP](03-modules/mr-mrp/README.md) (12 / 18 / 4) — + [help-content.md](03-modules/mr-mrp/help-content.md) *(14 CHM topics)*
 - [PR — Payroll](03-modules/pr-payroll/README.md) (29 / 40 / 16)
-- [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7)
+- [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7) — + [help-content.md](03-modules/dc-data-collection/help-content.md) *(14 CHM topics)*
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
 - [JC — Job Costing](03-modules/jc-job-costing/README.md) (18 / 14 / 2) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)*
 - [CS — Commission System](03-modules/cs-commission-system/README.md) (16 / 12 / 16)

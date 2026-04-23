@@ -7,6 +7,17 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 - **UI forms**: 26 (prefixes `T7DC`, `T6DC`, `EVODC`)
 - **Menu operations**: 7
 
+## Narrative / vendor help
+
+**→ [help-content.md](help-content.md)** — consolidated write-up of
+all 14 help topics from `EvoHELP.CHM` (overview + DC-A through DC-N,
+13 programs — no DC-J). Hoists the three-modes model (Labor+Production
+/ Production Only / Labor Only), shift/buffer/lunch handling, and
+the multi-WO auto-close/reopen behavior into a shared "Design model"
+section, then documents each program's specific behavior + setup-flag
+tie-ins. Cross-linked to WO, SH, JC, PR modules and into the shop-
+floor hardware / barcode setup notes.
+
 ## Menu operations
 
 | Code | Operation | Legacy module file(s) |
