@@ -30,12 +30,12 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Month End Accounting
   - [x] File Names
 
-- [ ] **Manufacturing** 🟡 — 4 of 8 subtopics.
+- [ ] **Manufacturing** 🟡 — 5 of 8 subtopics.
   - [x] Work Orders (WO-*) ✅ — [docs/03-modules/wo-work-orders/help-content.md](docs/03-modules/wo-work-orders/help-content.md) *(52 CHM topics consolidated)*
   - [x] Job Costing (JC-*) ✅ — [docs/03-modules/jc-job-costing/help-content.md](docs/03-modules/jc-job-costing/help-content.md) *(20 CHM topics consolidated)*
   - [x] Purchase Orders (PO-*) ✅ — [docs/03-modules/po-purchase-orders/help-content.md](docs/03-modules/po-purchase-orders/help-content.md) *(27 CHM topics consolidated)*
   - [x] Material Requirements (MR-*, MRP) ✅ — [docs/03-modules/mr-mrp/help-content.md](docs/03-modules/mr-mrp/help-content.md) *(14 CHM topics consolidated)*
-  - [ ] Scheduling (SH-*)
+  - [x] Scheduling (SH-*) ✅ — [docs/03-modules/sh-shipping/help-content.md](docs/03-modules/sh-shipping/help-content.md) *(22 CHM topics consolidated)* · *folder name is a legacy mislabel; module is Scheduling*
   - [ ] Data Collection (DC-*)
   - [ ] Estimating (ES-*)
   - [ ] Quality (QC)

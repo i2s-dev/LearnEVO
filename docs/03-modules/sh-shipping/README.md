@@ -1,11 +1,29 @@
-# Shipping (SH)
+# Scheduling (SH)
 
 Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+
+> **Note:** folder name `sh-shipping/` is a legacy auto-classification
+> artifact — the SH module is actually **Scheduling** (per the vendor
+> help file's *Manufacturing → Scheduling* category and every one of
+> the menu operations below). Folder name retained to avoid breaking
+> URLs; contents and title corrected.
 
 - **Module code**: `SH`
 - **Tables**: 1 (prefixes `BKSH`)
 - **UI forms**: 15 (prefixes `T7SH`, `T6SH`)
 - **Menu operations**: 16
+
+## Narrative / vendor help
+
+**→ [help-content.md](help-content.md)** — consolidated write-up of
+all 22 help topics from `EvoHELP.CHM` (overview + 4 method
+explanations — Finite / Infinite / Lead Time / Manual — + SH-A
+through SH-R, 17 programs). Hoists shared vocabulary (shop calendar,
+shop date, critical ratio, contention, buckets, parent-child WCs,
+scheduling units, overlap) into a single "Shared vocabulary" section
+so per-method sections stay focused on how they differ. Includes the
+finite-scheduling 5-step setup walk-through, the dependent-scheduling
+cascade for multi-assembly WOs, and cross-links into WO, MR, JC, DC.
 
 ## Menu operations
 

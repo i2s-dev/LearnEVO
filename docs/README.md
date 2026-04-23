@@ -70,7 +70,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [ES — Estimating](03-modules/es-estimating/README.md) (8 / 7 / 4)
 - [SR — Service / Repair](03-modules/sr-service-repair/README.md) (9 / 12 / 0)
 - [PI — Physical Inventory](03-modules/pi-physical-inventory/README.md) (9 / 10 / 7)
-- [SH — Shipping](03-modules/sh-shipping/README.md) (16 / 15 / 1)
+- [SH — Scheduling](03-modules/sh-shipping/README.md) (16 / 15 / 1) — + [help-content.md](03-modules/sh-shipping/help-content.md) *(22 CHM topics)* · *folder name `sh-shipping/` is a legacy mislabel; module is Scheduling*
 - [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6)
 - [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10)
 
