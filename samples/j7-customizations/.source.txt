@@ -1,0 +1,1 @@
+Copied from \\i2s109-solidcrm\DBAMFG$\J7*.DFM on 2026-06-01 (read-only). These are i2 Systems site-specific EvoERP customization modules.
