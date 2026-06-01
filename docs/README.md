@@ -93,18 +93,23 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [AM — Accounting Maintenance](03-modules/am-accounting-maintenance/help-content.md) *(18 CHM topics)*
 - [AD — Accounting Defaults](03-modules/ad-accounting-defaults/help-content.md) *(3 CHM topics)*
 - [US — Settings](03-modules/us-settings/help-content.md) *(8 CHM topics: US-A through US-H)*
+- [MM-Support — Main Menu (Support) Programs](03-modules/mm-support/help-content.md) *(3 CHM topics: Check for Updates, Send Files, Send Screen Print)*
+- [MM-File — Main Menu (File) Programs](03-modules/mm-file/help-content.md) *(2 CHM topics: Maintain Database, Report Editor)*
 
-### 04 — Data dictionary
+### 05 — Glossary
+- [Glossary — EvoERP terminology reference](05-glossary/glossary.md) — *verified, from EvoHELP.CHM*
+
+### 06 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
 - [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*
 
-### 05 — Reports (ReportBuilder .RTM)
+### 07 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*
 
-### 06 — Menu system
+### 08 — Menu system
 - [Menu system overview — 554 codes across 38 modules](06-menu-system/overview.md) — *verified*
 
-### 07 — Runtime & boot sequence
+### 09 — Runtime & boot sequence
 - [How EVO starts up (StartEvo.exe → tp7runtime.exe → EvoERPmenu.rwn)](07-runtime-boot/boot-sequence.md) — *draft*
 
 ---

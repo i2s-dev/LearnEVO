@@ -116,14 +116,16 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] US-H Update Contract Review Password ✅
   All consolidated into [docs/03-modules/us-settings/help-content.md](docs/03-modules/us-settings/help-content.md)
 
-- [ ] **Main Menu (Support) Programs** ⬜ — 3 subtopics.
-  - [ ] Check for Updates
-  - [ ] Send Files
-  - [ ] Send Screen Print
+- [x] **Main Menu (Support) Programs** ✅ — 3 subtopics consolidated.
+  - [x] Check for Updates ✅
+  - [x] Send Files ✅
+  - [x] Send Screen Print ✅
+  All consolidated into [docs/03-modules/mm-support/help-content.md](docs/03-modules/mm-support/help-content.md)
 
-- [ ] **Main Menu (File) Programs** ⬜ — 2 subtopics.
-  - [ ] Maintain Database
-  - [ ] Report Editor
+- [x] **Main Menu (File) Programs** ✅ — 2 subtopics consolidated.
+  - [x] Maintain Database ✅
+  - [x] Report Editor ✅
+  All consolidated into [docs/03-modules/mm-file/help-content.md](docs/03-modules/mm-file/help-content.md)
 
 - [x] **Evo-ERP Tools** ✅ — 4 subtopics consolidated into
       [docs/00-overview/evo-erp-tools.md](docs/00-overview/evo-erp-tools.md).
@@ -132,7 +134,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Google Calendar
   - [x] Evo Notes Search
 
-- [ ] **Glossary** ⬜ — single terminology reference page.
+- [x] **Glossary** ✅ — consolidated into [docs/05-glossary/glossary.md](docs/05-glossary/glossary.md)
 
 ---
 
@@ -159,12 +161,15 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   Accounts Receivable already has
   [docs/03-modules/ar-accounts-receivable/](docs/03-modules/ar-accounts-receivable/)) —
   merge rather than duplicate.
-- **Completed as of 2026-06-01:** System Overview, Manufacturing (all 8 subtopics),
+- **Completed as of 2026-06-01:** All 14 CHM top-level categories are now documented.
+  System Overview, Manufacturing (all 8 subtopics),
   Items (all 8 subtopics), Sales (7 of 8 subtopics — RMA has no CHM source content),
   Queries & Reports, Hand Held Data Collection (15 CHM topics), Evo-ERP Tools,
   System Manager (6 of 7 subtopics — TAS Utility Programs has no dedicated CHM files; covered within UT-A),
   Accounting (all 5 subtopics: GL 18 topics, AP 21 topics, FA 6 topics, AM 18 topics, AD 3 topics),
   Payroll (35 CHM topics: PR-A through PR-S, PR-L-A through PR-L-Q, state tax calc, year-end, defaults),
-  Settings (8 CHM topics: US-A through US-H).
-  Remaining: Main Menu (Support) Programs,
-  Main Menu (File) Programs, Glossary.
+  Settings (8 CHM topics: US-A through US-H),
+  Main Menu (Support) Programs (3 subtopics: Check for Updates, Send Files, Send Screen Print),
+  Main Menu (File) Programs (2 subtopics: Maintain Database, Report Editor),
+  Glossary.
+  The only gap across all categories is RMA (Sales), which had no CHM source content in the extracted files.
