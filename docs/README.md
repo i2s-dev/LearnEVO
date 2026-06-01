@@ -73,6 +73,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [SH — Scheduling](03-modules/sh-shipping/README.md) (16 / 15 / 1) — + [help-content.md](03-modules/sh-shipping/help-content.md) *(22 CHM topics)* · *folder name `sh-shipping/` is a legacy mislabel; module is Scheduling*
 - [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6)
 - [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10)
+- [SM — Data Maintenance: Archive & Purge schedule (all modules)](03-modules/sm-system-manager/data-maintenance-archiving.md) — *verified, from ISTech PDF*
 
 ### 04 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
