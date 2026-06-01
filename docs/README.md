@@ -53,10 +53,11 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Plaintext SRC deep-dive — reading the 7 legacy sources](03-modules/src-deep-dive.md) — *verified*
 
 **Per-module deep-dive pages** (each joins menu codes + schema + UI forms):
-- [AR — Accounts Receivable](03-modules/ar-accounts-receivable/README.md) (17 menu / 24 forms / 29 tables)
+- [AR — Accounts Receivable](03-modules/ar-accounts-receivable/README.md) (17 menu / 24 forms / 29 tables) — + [help-content.md](03-modules/ar-accounts-receivable/help-content.md)
 - [AP — Accounts Payable](03-modules/ap-accounts-payable/README.md) (19 / 33 / 26)
 - [IN — Inventory](03-modules/in-inventory/README.md) (40 / 67 / 19) — + [help-content.md](03-modules/in-inventory/help-content.md) *(38 CHM topics)*
-- [SO — Sales Orders](03-modules/so-sales-orders/README.md) (48 / 69 / 7)
+- [SO — Sales Orders](03-modules/so-sales-orders/README.md) (48 / 69 / 7) — + [help-content.md](03-modules/so-sales-orders/help-content.md)
+- [SA — Sales Analysis](03-modules/sa-sales-analysis/README.md) — + [help-content.md](03-modules/sa-sales-analysis/help-content.md)
 - [PO — Purchase Orders](03-modules/po-purchase-orders/README.md) (29 / 41 / 8) — + [help-content.md](03-modules/po-purchase-orders/help-content.md) *(27 CHM topics)*
 - [WO — Work Orders](03-modules/wo-work-orders/README.md) (31 / 68 / 30) — + [help-content.md](03-modules/wo-work-orders/help-content.md) *(52 CHM topics)*
 - [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28)
@@ -70,13 +71,15 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7) — + [help-content.md](03-modules/dc-data-collection/help-content.md) *(14 CHM topics)*
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
 - [JC — Job Costing](03-modules/jc-job-costing/README.md) (18 / 14 / 2) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)*
-- [CS — Commission System](03-modules/cs-commission-system/README.md) (16 / 12 / 16)
+- [CS — Commission System](03-modules/cs-commission-system/README.md) (16 / 12 / 16) — + [help-content.md](03-modules/cs-commission-system/help-content.md)
+- [CM — Contact Manager](03-modules/cm-contact-manager/README.md) — + [help-content.md](03-modules/cm-contact-manager/help-content.md)
 - [ES — Estimating](03-modules/es-estimating/README.md) (8 / 7 / 4) — + [help-content.md](03-modules/es-estimating/help-content.md) *(10 CHM topics)*
-- [SR — Service / Repair](03-modules/sr-service-repair/README.md) (9 / 12 / 0)
+- [SR — Service / Repair](03-modules/sr-service-repair/README.md) (9 / 12 / 0) — + [help-content.md](03-modules/sr-service-repair/help-content.md)
 - [PI — Physical Inventory](03-modules/pi-physical-inventory/README.md) (9 / 10 / 7) — + [help-content.md](03-modules/pi-physical-inventory/help-content.md) *(8 CHM topics)*
 - [WC — Warehouse Control](03-modules/wc-warehouse-control/README.md) — + [help-content.md](03-modules/wc-warehouse-control/help-content.md) *(5 CHM topics)*
 - [SH — Scheduling](03-modules/sh-shipping/README.md) (16 / 15 / 1) — + [help-content.md](03-modules/sh-shipping/help-content.md) *(22 CHM topics)* · *folder name `sh-shipping/` is a legacy mislabel; module is Scheduling*
 - [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6)
+- [CR — Contract Review](03-modules/cr-contract-review/README.md) — + [help-content.md](03-modules/cr-contract-review/help-content.md)
 - [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10)
 - [SM — Data Maintenance: Archive & Purge schedule (all modules)](03-modules/sm-system-manager/data-maintenance-archiving.md) — *verified, from ISTech PDF*
 

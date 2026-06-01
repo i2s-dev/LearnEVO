@@ -30,7 +30,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Month End Accounting
   - [x] File Names
 
-- [x] **Manufacturing** ✅ — 8 of 8 subtopics.
+- [x] **Manufacturing** ✅ — 8 subtopics consolidated.
   - [x] Work Orders (WO-*) ✅ — [docs/03-modules/wo-work-orders/help-content.md](docs/03-modules/wo-work-orders/help-content.md) *(52 CHM topics consolidated)*
   - [x] Job Costing (JC-*) ✅ — [docs/03-modules/jc-job-costing/help-content.md](docs/03-modules/jc-job-costing/help-content.md) *(20 CHM topics consolidated)*
   - [x] Purchase Orders (PO-*) ✅ — [docs/03-modules/po-purchase-orders/help-content.md](docs/03-modules/po-purchase-orders/help-content.md) *(27 CHM topics consolidated)*
@@ -50,15 +50,15 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Physical Inventory (PI-*) ✅ — docs/03-modules/pi-physical-inventory/help-content.md (8 CHM topics)
   - [x] Warehouse Control (WC-*) ✅ — docs/03-modules/wc-warehouse-control/help-content.md (5 CHM topics)
 
-- [ ] **Sales** ⬜ — 8 subtopics.
-  - [ ] Sales Orders (SO-*)
-  - [ ] Service and Repair (SR-*)
-  - [ ] RMA
-  - [ ] Sales Analysis (SA-*)
-  - [ ] Sales Commissions (CS-*)
-  - [ ] Contact Manager (CM-*)
-  - [ ] Accounts Receivable (AR-*)
-  - [ ] Contract Review
+- [x] **Sales** ✅ — 7 subtopics consolidated (no RMA CHM content found).
+  - [x] Sales Orders (SO-*) ✅ — [docs/03-modules/so-sales-orders/help-content.md](docs/03-modules/so-sales-orders/help-content.md) *(51 CHM topics consolidated)*
+  - [x] Service and Repair (SR-*) ✅ — [docs/03-modules/sr-service-repair/help-content.md](docs/03-modules/sr-service-repair/help-content.md) *(8 CHM topics consolidated)*
+  - [ ] RMA ⬜ — no CHM source content found in extracted files
+  - [x] Sales Analysis (SA-*) ✅ — [docs/03-modules/sa-sales-analysis/help-content.md](docs/03-modules/sa-sales-analysis/help-content.md) *(18 CHM topics consolidated)*
+  - [x] Sales Commissions (CS-*) ✅ — [docs/03-modules/cs-commission-system/help-content.md](docs/03-modules/cs-commission-system/help-content.md) *(15 CHM topics consolidated)*
+  - [x] Contact Manager (CM-*) ✅ — [docs/03-modules/cm-contact-manager/help-content.md](docs/03-modules/cm-contact-manager/help-content.md) *(8 CHM topics consolidated)*
+  - [x] Accounts Receivable (AR-*) ✅ — [docs/03-modules/ar-accounts-receivable/help-content.md](docs/03-modules/ar-accounts-receivable/help-content.md) *(16 CHM topics consolidated)*
+  - [x] Contract Review (CR-*) ✅ — [docs/03-modules/cr-contract-review/help-content.md](docs/03-modules/cr-contract-review/help-content.md) *(2 CHM topics consolidated)*
 
 - [ ] **Queries & Reports** ⬜ — 2 subtopics.
   - [ ] Queries
@@ -156,3 +156,8 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   Accounts Receivable already has
   [docs/03-modules/ar-accounts-receivable/](docs/03-modules/ar-accounts-receivable/)) —
   merge rather than duplicate.
+- **Completed as of 2026-06-01:** System Overview, Manufacturing (all 8 subtopics),
+  Items (all 8 subtopics), Sales (7 of 8 subtopics — RMA has no CHM source content),
+  Evo-ERP Tools. Remaining: Queries & Reports, Hand Held Data Collection, System Manager,
+  Accounting, Payroll, Settings, Main Menu (Support) Programs, Main Menu (File) Programs,
+  Glossary.
