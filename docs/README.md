@@ -80,6 +80,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [SH — Scheduling](03-modules/sh-shipping/README.md) (16 / 15 / 1) — + [help-content.md](03-modules/sh-shipping/help-content.md) *(22 CHM topics)* · *folder name `sh-shipping/` is a legacy mislabel; module is Scheduling*
 - [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6)
 - [CR — Contract Review](03-modules/cr-contract-review/README.md) — + [help-content.md](03-modules/cr-contract-review/help-content.md)
+- [QU — Queries & Reports](03-modules/qu-queries/help-content.md) *(7 CHM topics: overview + QU-A through QU-F)*
 - [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10)
 - [SM — Data Maintenance: Archive & Purge schedule (all modules)](03-modules/sm-system-manager/data-maintenance-archiving.md) — *verified, from ISTech PDF*
 

@@ -60,9 +60,9 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Accounts Receivable (AR-*) ✅ — [docs/03-modules/ar-accounts-receivable/help-content.md](docs/03-modules/ar-accounts-receivable/help-content.md) *(16 CHM topics consolidated)*
   - [x] Contract Review (CR-*) ✅ — [docs/03-modules/cr-contract-review/help-content.md](docs/03-modules/cr-contract-review/help-content.md) *(2 CHM topics consolidated)*
 
-- [ ] **Queries & Reports** ⬜ — 2 subtopics.
-  - [ ] Queries
-  - [ ] Setup Queries & Reports
+- [x] **Queries & Reports** ✅ — 2 subtopics consolidated.
+  - [x] Queries (QU-*) ✅ — [docs/03-modules/qu-queries/help-content.md](docs/03-modules/qu-queries/help-content.md) *(7 CHM topics: overview + QU-A through QU-F)*
+  - [x] Setup Queries & Reports ✅ — covered in QU-F (Query Executor) above
 
 - [ ] **Hand Held Data Collection** ⬜ — 14 subtopics (HH-A … HH-M + Paperless Shop Floor overview).
   - [ ] How to Use Paperless Shop Floor Tracking
