@@ -57,6 +57,17 @@ The "Date" field is the SO close/ship date. Setting Thru = 6 months ago
 archives every closed SO that shipped on or before that date, regardless
 of customer or SO number.
 
+### Setting Date From to 00/00/00 will NOT re-archive already-archived orders
+
+SM-J-J only reads from the active `BKARINV` file. When an order is archived,
+its record is removed from `BKARINV` entirely — there is nothing left to
+re-process. `00/00/00` simply means "no lower bound on what remains in the
+active file."
+
+Confirmed via live ODBC query (2026-06-01):
+- `ISARAINV` (archive) contains SOs back to **2004** — prior archiving has occurred.
+- `BKARINV` (active) only goes back to **2016** — older records are already gone.
+
 **What this does NOT affect:** Receivables, shipment history, SO-O-H report.
 
 **What it speeds up:** All SO-O reports (except SO-O-H), Stock Status rebuild, IN-A, MRP generation.
