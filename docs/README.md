@@ -81,6 +81,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6)
 - [CR — Contract Review](03-modules/cr-contract-review/README.md) — + [help-content.md](03-modules/cr-contract-review/help-content.md)
 - [QU — Queries & Reports](03-modules/qu-queries/help-content.md) *(7 CHM topics: overview + QU-A through QU-F)*
+- [HH — Hand Held Data Collection](03-modules/hh-handheld/help-content.md) *(15 CHM topics: Paperless Shop Floor + HH-A through HH-M)*
 - [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10)
 - [SM — Data Maintenance: Archive & Purge schedule (all modules)](03-modules/sm-system-manager/data-maintenance-archiving.md) — *verified, from ISTech PDF*
 

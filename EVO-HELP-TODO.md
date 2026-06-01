@@ -64,21 +64,22 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Queries (QU-*) ✅ — [docs/03-modules/qu-queries/help-content.md](docs/03-modules/qu-queries/help-content.md) *(7 CHM topics: overview + QU-A through QU-F)*
   - [x] Setup Queries & Reports ✅ — covered in QU-F (Query Executor) above
 
-- [ ] **Hand Held Data Collection** ⬜ — 14 subtopics (HH-A … HH-M + Paperless Shop Floor overview).
-  - [ ] How to Use Paperless Shop Floor Tracking
-  - [ ] HH-A Scan & Ship
-  - [ ] HH-B Print Bar Code Labels
-  - [ ] HH-C Issue Materials
-  - [ ] HH-D Enter Finished Production
-  - [ ] HH-E Enter PI Tag Counts
-  - [ ] HH-F Enter Labor
-  - [ ] HH-G Receive Purchase Order
-  - [ ] HH-H Enter Shipping Information
-  - [ ] HH-I Paperless Shop Floor Tracking
-  - [ ] HH-J Print Work Order Label
-  - [ ] HH-K Transfer Inventory
-  - [ ] HH-L Multi-user Paperless Shop Floor
-  - [ ] HH-M Issue Scrap Component
+- [x] **Hand Held Data Collection** ✅ — 15 CHM topics consolidated.
+  - [x] How to Use Paperless Shop Floor Tracking ✅
+  - [x] HH-A Scan & Ship ✅
+  - [x] HH-B Print Bar Code Labels ✅
+  - [x] HH-C Issue Materials ✅
+  - [x] HH-D Enter Finished Production ✅
+  - [x] HH-E Enter PI Tag Counts ✅
+  - [x] HH-F Enter Labor ✅
+  - [x] HH-G Receive Purchase Order ✅
+  - [x] HH-H Enter Shipping Information ✅
+  - [x] HH-I Paperless Shop Floor Tracking ✅
+  - [x] HH-J Print Work Order Label ✅
+  - [x] HH-K Transfer Inventory ✅
+  - [x] HH-L Multi-user Paperless Shop Floor ✅
+  - [x] HH-M Issue Scrap Component ✅
+  All consolidated into [docs/03-modules/hh-handheld/help-content.md](docs/03-modules/hh-handheld/help-content.md)
 
 - [ ] **System Manager** ⬜ — 7 subtopics.
   - [ ] Utilities (UT-*)
@@ -158,6 +159,6 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   merge rather than duplicate.
 - **Completed as of 2026-06-01:** System Overview, Manufacturing (all 8 subtopics),
   Items (all 8 subtopics), Sales (7 of 8 subtopics — RMA has no CHM source content),
-  Evo-ERP Tools. Remaining: Queries & Reports, Hand Held Data Collection, System Manager,
-  Accounting, Payroll, Settings, Main Menu (Support) Programs, Main Menu (File) Programs,
-  Glossary.
+  Queries & Reports, Hand Held Data Collection (15 CHM topics), Evo-ERP Tools.
+  Remaining: System Manager, Accounting, Payroll, Settings, Main Menu (Support) Programs,
+  Main Menu (File) Programs, Glossary.
