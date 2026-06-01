@@ -67,7 +67,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [SC — Serial Control](03-modules/sc-serial-control/README.md) — + [help-content.md](03-modules/sc-serial-control/help-content.md) *(8 CHM topics)*
 - [FO — Features & Options](03-modules/fo-features-options/README.md) — + [help-content.md](03-modules/fo-features-options/help-content.md) *(5 CHM topics)*
 - [MR — MRP](03-modules/mr-mrp/README.md) (12 / 18 / 4) — + [help-content.md](03-modules/mr-mrp/help-content.md) *(14 CHM topics)*
-- [PR — Payroll](03-modules/pr-payroll/README.md) (29 / 40 / 16)
+- [PR — Payroll](03-modules/pr-payroll/README.md) (29 / 40 / 16) — + [help-content.md](03-modules/pr-payroll/help-content.md) *(35 CHM topics)*
 - [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7) — + [help-content.md](03-modules/dc-data-collection/help-content.md) *(14 CHM topics)*
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
 - [JC — Job Costing](03-modules/jc-job-costing/README.md) (18 / 14 / 2) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)*
