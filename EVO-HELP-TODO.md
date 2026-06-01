@@ -30,25 +30,25 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Month End Accounting
   - [x] File Names
 
-- [ ] **Manufacturing** 🟡 — 6 of 8 subtopics.
+- [x] **Manufacturing** ✅ — 8 of 8 subtopics.
   - [x] Work Orders (WO-*) ✅ — [docs/03-modules/wo-work-orders/help-content.md](docs/03-modules/wo-work-orders/help-content.md) *(52 CHM topics consolidated)*
   - [x] Job Costing (JC-*) ✅ — [docs/03-modules/jc-job-costing/help-content.md](docs/03-modules/jc-job-costing/help-content.md) *(20 CHM topics consolidated)*
   - [x] Purchase Orders (PO-*) ✅ — [docs/03-modules/po-purchase-orders/help-content.md](docs/03-modules/po-purchase-orders/help-content.md) *(27 CHM topics consolidated)*
   - [x] Material Requirements (MR-*, MRP) ✅ — [docs/03-modules/mr-mrp/help-content.md](docs/03-modules/mr-mrp/help-content.md) *(14 CHM topics consolidated)*
   - [x] Scheduling (SH-*) ✅ — [docs/03-modules/sh-shipping/help-content.md](docs/03-modules/sh-shipping/help-content.md) *(22 CHM topics consolidated)* · *folder name is a legacy mislabel; module is Scheduling*
   - [x] Data Collection (DC-*) ✅ — [docs/03-modules/dc-data-collection/help-content.md](docs/03-modules/dc-data-collection/help-content.md) *(14 CHM topics consolidated)*
-  - [ ] Estimating (ES-*)
-  - [ ] Quality (QC)
+  - [x] Estimating (ES-*) ✅ — [docs/03-modules/es-estimating/help-content.md](docs/03-modules/es-estimating/help-content.md) *(10 CHM topics consolidated)*
+  - [x] Quality (QC) ✅ — [docs/03-modules/qc-quality-control/help-content.md](docs/03-modules/qc-quality-control/help-content.md)
 
-- [ ] **Items** ⬜ — 8 subtopics.
-  - [ ] Inventory (IN-*)
-  - [ ] Routings (RO-*)
-  - [ ] Bills of Material (BM-*)
-  - [ ] Lot Control
-  - [ ] Serial Control
-  - [ ] Features & Options
-  - [ ] Physical Inventory (PI-*)
-  - [ ] Warehouse Control
+- [x] **Items** ✅ — 8 subtopics consolidated.
+  - [x] Inventory (IN-*) ✅ — docs/03-modules/in-inventory/help-content.md (38 CHM topics)
+  - [x] Routings (RO-*) ✅ — docs/03-modules/ro-routings/help-content.md (22 CHM topics)
+  - [x] Bills of Material (BM-*) ✅ — docs/03-modules/bm-bill-of-materials/help-content.md (16 CHM topics)
+  - [x] Lot Control (LC-*) ✅ — docs/03-modules/lc-lot-control/help-content.md (6 CHM topics)
+  - [x] Serial Control (SC-*) ✅ — docs/03-modules/sc-serial-control/help-content.md (8 CHM topics)
+  - [x] Features & Options (FO-*) ✅ — docs/03-modules/fo-features-options/help-content.md (5 CHM topics)
+  - [x] Physical Inventory (PI-*) ✅ — docs/03-modules/pi-physical-inventory/help-content.md (8 CHM topics)
+  - [x] Warehouse Control (WC-*) ✅ — docs/03-modules/wc-warehouse-control/help-content.md (5 CHM topics)
 
 - [ ] **Sales** ⬜ — 8 subtopics.
   - [ ] Sales Orders (SO-*)
