@@ -105,15 +105,16 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] PR-M/PR-R Defaults ✅
   All consolidated into [docs/03-modules/pr-payroll/help-content.md](docs/03-modules/pr-payroll/help-content.md) *(35 CHM topics)*
 
-- [ ] **Settings** ⬜ — 8 subtopics (US-A … US-H).
-  - [ ] US-A Customize Settings
-  - [ ] US-B Customize Menu
-  - [ ] US-C Reset Screen Size/Location
-  - [ ] US-D Reset Password
-  - [ ] US-E Update PO Electronic Signature Info
-  - [ ] US-F Enter Reminders
-  - [ ] US-G Enter Triggers
-  - [ ] US-H Update Contract Review Password
+- [x] **Settings** ✅ — 8 subtopics consolidated.
+  - [x] US-A Customize Settings ✅
+  - [x] US-B Customize Menu ✅
+  - [x] US-C Reset Screen Size/Location ✅
+  - [x] US-D Reset Password ✅
+  - [x] US-E Update PO Electronic Signature Info ✅
+  - [x] US-F Enter Reminders ✅
+  - [x] US-G Enter Triggers ✅
+  - [x] US-H Update Contract Review Password ✅
+  All consolidated into [docs/03-modules/us-settings/help-content.md](docs/03-modules/us-settings/help-content.md)
 
 - [ ] **Main Menu (Support) Programs** ⬜ — 3 subtopics.
   - [ ] Check for Updates
@@ -163,6 +164,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   Queries & Reports, Hand Held Data Collection (15 CHM topics), Evo-ERP Tools,
   System Manager (6 of 7 subtopics — TAS Utility Programs has no dedicated CHM files; covered within UT-A),
   Accounting (all 5 subtopics: GL 18 topics, AP 21 topics, FA 6 topics, AM 18 topics, AD 3 topics),
-  Payroll (35 CHM topics: PR-A through PR-S, PR-L-A through PR-L-Q, state tax calc, year-end, defaults).
-  Remaining: Settings, Main Menu (Support) Programs,
+  Payroll (35 CHM topics: PR-A through PR-S, PR-L-A through PR-L-Q, state tax calc, year-end, defaults),
+  Settings (8 CHM topics: US-A through US-H).
+  Remaining: Main Menu (Support) Programs,
   Main Menu (File) Programs, Glossary.

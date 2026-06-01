@@ -92,6 +92,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [FA — Fixed Assets](03-modules/fa-fixed-assets/help-content.md) *(6 CHM topics)*
 - [AM — Accounting Maintenance](03-modules/am-accounting-maintenance/help-content.md) *(18 CHM topics)*
 - [AD — Accounting Defaults](03-modules/ad-accounting-defaults/help-content.md) *(3 CHM topics)*
+- [US — Settings](03-modules/us-settings/help-content.md) *(8 CHM topics: US-A through US-H)*
 
 ### 04 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
