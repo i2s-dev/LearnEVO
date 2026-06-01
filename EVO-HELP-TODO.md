@@ -81,14 +81,14 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] HH-M Issue Scrap Component ✅
   All consolidated into [docs/03-modules/hh-handheld/help-content.md](docs/03-modules/hh-handheld/help-content.md)
 
-- [ ] **System Manager** ⬜ — 7 subtopics.
-  - [ ] Utilities (UT-*)
-  - [ ] System Maintenance (SM-*)
-  - [ ] System Defaults (SD-*)
-  - [ ] International Module
-  - [ ] Password Security (PS-*)
-  - [ ] Data Exchange (DE-*)
-  - [ ] TAS Utility Programs
+- [x] **System Manager** ✅ — 6 subtopics consolidated (TAS Utility Programs: no dedicated CHM files found; covered within UT-A).
+  - [x] Utilities (UT-*) ✅ — [docs/03-modules/ut-utilities/help-content.md](docs/03-modules/ut-utilities/help-content.md) *(12 CHM topics)*
+  - [x] System Maintenance (SM-*) ✅ — [docs/03-modules/sm-system-manager/help-content.md](docs/03-modules/sm-system-manager/help-content.md) *(56 CHM topics)*
+  - [x] System Defaults (SD-*) ✅ — [docs/03-modules/sd-system-defaults/help-content.md](docs/03-modules/sd-system-defaults/help-content.md) *(22 CHM topics)*
+  - [x] International Module ✅ — [docs/03-modules/im-international/help-content.md](docs/03-modules/im-international/help-content.md) *(3 CHM topics)*
+  - [x] Password Security (PS-*) ✅ — [docs/03-modules/ps-password-security/help-content.md](docs/03-modules/ps-password-security/help-content.md) *(7 CHM topics)*
+  - [x] Data Exchange (DE-*) ✅ — [docs/03-modules/de-data-exchange/help-content.md](docs/03-modules/de-data-exchange/help-content.md) *(15 CHM topics)*
+  - [ ] TAS Utility Programs ⬜ — no dedicated CHM files found; UT-A (Run a TAS Program) is the closest reference
 
 - [ ] **Accounting** ⬜ — 5 subtopics.
   - [ ] General Ledger (GL-*)
@@ -159,6 +159,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   merge rather than duplicate.
 - **Completed as of 2026-06-01:** System Overview, Manufacturing (all 8 subtopics),
   Items (all 8 subtopics), Sales (7 of 8 subtopics — RMA has no CHM source content),
-  Queries & Reports, Hand Held Data Collection (15 CHM topics), Evo-ERP Tools.
-  Remaining: System Manager, Accounting, Payroll, Settings, Main Menu (Support) Programs,
+  Queries & Reports, Hand Held Data Collection (15 CHM topics), Evo-ERP Tools,
+  System Manager (6 of 7 subtopics — TAS Utility Programs has no dedicated CHM files; covered within UT-A).
+  Remaining: Accounting, Payroll, Settings, Main Menu (Support) Programs,
   Main Menu (File) Programs, Glossary.

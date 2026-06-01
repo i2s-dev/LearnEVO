@@ -82,8 +82,13 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [CR — Contract Review](03-modules/cr-contract-review/README.md) — + [help-content.md](03-modules/cr-contract-review/help-content.md)
 - [QU — Queries & Reports](03-modules/qu-queries/help-content.md) *(7 CHM topics: overview + QU-A through QU-F)*
 - [HH — Hand Held Data Collection](03-modules/hh-handheld/help-content.md) *(15 CHM topics: Paperless Shop Floor + HH-A through HH-M)*
-- [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10)
+- [SM — System Manager / Setup](03-modules/sm-system-manager/README.md) (34 / 109 / 10) — + [help-content.md](03-modules/sm-system-manager/help-content.md) *(56 CHM topics)*
 - [SM — Data Maintenance: Archive & Purge schedule (all modules)](03-modules/sm-system-manager/data-maintenance-archiving.md) — *verified, from ISTech PDF*
+- [UT — Utilities](03-modules/ut-utilities/help-content.md) *(12 CHM topics)*
+- [SD — System Defaults](03-modules/sd-system-defaults/help-content.md) *(22 CHM topics)*
+- [PS — Password Security](03-modules/ps-password-security/help-content.md) *(7 CHM topics)*
+- [DE — Data Exchange](03-modules/de-data-exchange/help-content.md) *(15 CHM topics)*
+- [IM — International Module](03-modules/im-international/help-content.md) *(3 CHM topics)*
 
 ### 04 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
