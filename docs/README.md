@@ -99,6 +99,12 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 ### 05 — Glossary
 - [Glossary — EvoERP terminology reference](05-glossary/glossary.md) — *verified, from EvoHELP.CHM*
 
+### 05b — Customizations
+- [J7* customization modules — i2 Systems / customer-specific EvoERP extensions (37 modules, 109 files)](customizations/j7-customizations.md) — *partial (DFM analysis; RWN logic encrypted)*
+
+### 05c — Module Map
+- [EvoERP module interdependency map — 40 modules, tier classification, Mermaid dependency graph, key data flows](06-module-map/module-map.md) — *derived from CHM cross-references*
+
 ### 06 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
 - [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*

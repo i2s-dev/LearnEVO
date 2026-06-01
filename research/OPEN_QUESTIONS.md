@@ -161,9 +161,10 @@ to resolve fully:
   reads from lives in the TAS program. Only partial without decrypted
   RWNs.
 
-- **Build an "EVO everything" SVG diagram** of module ↔ table ↔ form
-  dependencies, sourced from the CSVs we now have. A visualization
-  pass, not a research pass.
+- ~~**Build an "EVO everything" SVG diagram**~~ **DONE (2026-06-01).**
+  Module interdependency map with Mermaid directed graph, 40-module
+  tier table, and key data flow narratives at
+  [docs/06-module-map/module-map.md](../docs/06-module-map/module-map.md).
 
 ---
 
