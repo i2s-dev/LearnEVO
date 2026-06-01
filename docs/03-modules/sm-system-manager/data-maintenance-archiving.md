@@ -36,19 +36,55 @@ Purging **permanently deletes** records. Never purge without a verified backup.
 
 ---
 
-## Immediate Action: Archive Closed Sales Orders ≥ 6 Months Old
+## Archiving Closed Sales Orders — Step-by-Step (SM-J-J)
 
-Per the PDF recommendation and the team request, the priority task is:
+Navigate to **SM → J → J** in EVO. The screen is titled
+"SM-J-J Archive/Restore Sales Orders".
 
-1. In EVO, navigate to **SM-J-J** (System Manager → J → J).
-2. Choose **Archive** (not Purge).
-3. Set the cutoff date to **6 months ago** (i.e., on or before 2025-12-01 as of today 2026-06-01).
-4. Run the archive.
-5. Verify: archived orders are accessible via **SO-T**.
+| Field | Value to Enter |
+|---|---|
+| Archive / Restore / Purge | `A` |
+| SO Number From | *(leave blank — all SOs)* |
+| SO Number Thru | *(leave blank — all SOs)* |
+| Date From | `00/00/00` *(no lower bound)* |
+| Date Thru | Date 6 months ago, e.g. `12/01/25` |
+| Customer From | *(leave blank — all customers)* |
+| Customer Thru | *(leave blank — all customers)* |
+
+Click **Process**.
+
+The "Date" field is the SO close/ship date. Setting Thru = 6 months ago
+archives every closed SO that shipped on or before that date, regardless
+of customer or SO number.
 
 **What this does NOT affect:** Receivables, shipment history, SO-O-H report.
 
 **What it speeds up:** All SO-O reports (except SO-O-H), Stock Status rebuild, IN-A, MRP generation.
+
+### Known INVCD status codes (from live DB query, 2026-06-01)
+
+| Code | Meaning |
+|---|---|
+| `Y` | Fully invoiced and closed — primary archive target |
+| `N` | Closed without invoice (cancelled / no-charge) |
+| `X` | Cancelled |
+| *(blank)* | Open order |
+
+### Test candidate — SO 70677
+
+Confirmed via live ODBC query against `BKARINV` on 2026-06-01:
+
+| Field | Value |
+|---|---|
+| SO Number | **70677** |
+| Invoice Number | 88320 |
+| Customer | SPECIFICATION LIGHTING SALES (5A03) |
+| Ship / Invoice Date | 2025-08-11 (~10 months old) |
+| Status | `Y` |
+
+After running SM-J-J, verify the archive worked:
+1. Go to **SO-T** and search for SO 70677 — it should appear.
+2. Confirm it is **gone** from the normal SO-O active lookup.
 
 ---
 
@@ -74,6 +110,29 @@ Closed Work Orders should be archived on the same schedule:
 - **AP/AR by Vendor/Customer (AM-O / AM-P)** archives the entire master record — all
   invoices, payments, and POs/SOs for that entity. Confirm no active relationship exists
   before running.
+
+---
+
+## Physical Archive File Locations (Sales Orders)
+
+All files live in `\\i2s109-solidcrm\DBAMFG$\` alongside the active files —
+there is no separate archive subfolder.
+
+| File | Contents |
+|---|---|
+| `ISARAINV.B` | Archived closed SO headers |
+| `ISARAIVL.B` | Archived closed SO lines |
+| `ISARADSC.B` | Archived closed SO notes |
+| `ISARAHIN.B` | Archived invoice headers |
+| `ISARAHIL.B` | Archived invoice lines |
+| `ISARAHDS.B` | Archived invoice notes |
+| `ISSOABOX.B` | Archived shipping detail |
+| `ISSOAHBX.B` | Archived invoice box allocation |
+| `ISSOALOT.B` | Archived invoice lot control |
+| `ISSOASER.B` | Archived invoice serial control |
+
+Naming pattern: active table `BKARINV` → archive equivalent `ISARAINV`
+(prefix shifts from `BK` to `IS`, `A` inserted to denote archive).
 
 ---
 
