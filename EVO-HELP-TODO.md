@@ -90,12 +90,12 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
   - [x] Data Exchange (DE-*) ✅ — [docs/03-modules/de-data-exchange/help-content.md](docs/03-modules/de-data-exchange/help-content.md) *(15 CHM topics)*
   - [ ] TAS Utility Programs ⬜ — no dedicated CHM files found; UT-A (Run a TAS Program) is the closest reference
 
-- [ ] **Accounting** ⬜ — 5 subtopics.
-  - [ ] General Ledger (GL-*)
-  - [ ] Accounts Payable (AP-*)
-  - [ ] Fixed Assets
-  - [ ] Accounting Maintenance (AM-*)
-  - [ ] Accounting Defaults (AD-*)
+- [x] **Accounting** ✅ — 5 subtopics consolidated.
+  - [x] General Ledger (GL-*) ✅ — [docs/03-modules/gl-general-ledger/help-content.md](docs/03-modules/gl-general-ledger/help-content.md) *(18 CHM topics)*
+  - [x] Accounts Payable (AP-*) ✅ — [docs/03-modules/ap-accounts-payable/help-content.md](docs/03-modules/ap-accounts-payable/help-content.md) *(21 CHM topics)*
+  - [x] Fixed Assets (FA-*) ✅ — [docs/03-modules/fa-fixed-assets/help-content.md](docs/03-modules/fa-fixed-assets/help-content.md) *(6 CHM topics)*
+  - [x] Accounting Maintenance (AM-*) ✅ — [docs/03-modules/am-accounting-maintenance/help-content.md](docs/03-modules/am-accounting-maintenance/help-content.md) *(18 CHM topics)*
+  - [x] Accounting Defaults (AD-*) ✅ — [docs/03-modules/ad-accounting-defaults/help-content.md](docs/03-modules/ad-accounting-defaults/help-content.md) *(3 CHM topics)*
 
 - [ ] **Payroll** ⬜ — ~34 subtopics (PR-A through PR-S + quarterly/year-end routines + state-specific tax calc).
   - [ ] PR-A through PR-S (core programs)
@@ -160,6 +160,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
 - **Completed as of 2026-06-01:** System Overview, Manufacturing (all 8 subtopics),
   Items (all 8 subtopics), Sales (7 of 8 subtopics — RMA has no CHM source content),
   Queries & Reports, Hand Held Data Collection (15 CHM topics), Evo-ERP Tools,
-  System Manager (6 of 7 subtopics — TAS Utility Programs has no dedicated CHM files; covered within UT-A).
-  Remaining: Accounting, Payroll, Settings, Main Menu (Support) Programs,
+  System Manager (6 of 7 subtopics — TAS Utility Programs has no dedicated CHM files; covered within UT-A),
+  Accounting (all 5 subtopics: GL 18 topics, AP 21 topics, FA 6 topics, AM 18 topics, AD 3 topics).
+  Remaining: Payroll, Settings, Main Menu (Support) Programs,
   Main Menu (File) Programs, Glossary.

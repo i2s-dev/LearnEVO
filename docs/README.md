@@ -54,13 +54,13 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 
 **Per-module deep-dive pages** (each joins menu codes + schema + UI forms):
 - [AR — Accounts Receivable](03-modules/ar-accounts-receivable/README.md) (17 menu / 24 forms / 29 tables) — + [help-content.md](03-modules/ar-accounts-receivable/help-content.md)
-- [AP — Accounts Payable](03-modules/ap-accounts-payable/README.md) (19 / 33 / 26)
+- [AP — Accounts Payable](03-modules/ap-accounts-payable/README.md) (19 / 33 / 26) — + [help-content.md](03-modules/ap-accounts-payable/help-content.md) *(21 CHM topics)*
 - [IN — Inventory](03-modules/in-inventory/README.md) (40 / 67 / 19) — + [help-content.md](03-modules/in-inventory/help-content.md) *(38 CHM topics)*
 - [SO — Sales Orders](03-modules/so-sales-orders/README.md) (48 / 69 / 7) — + [help-content.md](03-modules/so-sales-orders/help-content.md)
 - [SA — Sales Analysis](03-modules/sa-sales-analysis/README.md) — + [help-content.md](03-modules/sa-sales-analysis/help-content.md)
 - [PO — Purchase Orders](03-modules/po-purchase-orders/README.md) (29 / 41 / 8) — + [help-content.md](03-modules/po-purchase-orders/help-content.md) *(27 CHM topics)*
 - [WO — Work Orders](03-modules/wo-work-orders/README.md) (31 / 68 / 30) — + [help-content.md](03-modules/wo-work-orders/help-content.md) *(52 CHM topics)*
-- [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28)
+- [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28) — + [help-content.md](03-modules/gl-general-ledger/help-content.md) *(18 CHM topics)*
 - [BM — Bill of Materials](03-modules/bm-bill-of-materials/README.md) (10 / 16 / 10) — + [help-content.md](03-modules/bm-bill-of-materials/help-content.md) *(16 CHM topics)*
 - [RO — Routings](03-modules/ro-routings/README.md) — + [help-content.md](03-modules/ro-routings/help-content.md) *(22 CHM topics)*
 - [LC — Lot Control](03-modules/lc-lot-control/README.md) — + [help-content.md](03-modules/lc-lot-control/help-content.md) *(6 CHM topics)*
@@ -89,6 +89,9 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [PS — Password Security](03-modules/ps-password-security/help-content.md) *(7 CHM topics)*
 - [DE — Data Exchange](03-modules/de-data-exchange/help-content.md) *(15 CHM topics)*
 - [IM — International Module](03-modules/im-international/help-content.md) *(3 CHM topics)*
+- [FA — Fixed Assets](03-modules/fa-fixed-assets/help-content.md) *(6 CHM topics)*
+- [AM — Accounting Maintenance](03-modules/am-accounting-maintenance/help-content.md) *(18 CHM topics)*
+- [AD — Accounting Defaults](03-modules/ad-accounting-defaults/help-content.md) *(3 CHM topics)*
 
 ### 04 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
