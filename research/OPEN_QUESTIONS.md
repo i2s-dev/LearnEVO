@@ -115,14 +115,29 @@ to resolve fully:
    the files, a database table for the `<record-key, filename>`
    mapping. Not confirmed by table-name inspection.
 
-10. **`BKARHINV/BKARHINV.BI2`** — appears to be a company `I2`
-    overflow / split file. But the parent `BKARHINV.B22`/`.B` etc.
-    exist in normal positions, so this `BKARHINV/` subdir is unusual.
-    Exact purpose TBD.
+10. ~~**`BKARHINV/BKARHINV.BI2`**~~ **RESOLVED (2026-06-01).**
+    The `BKARHINV/` subdirectory is a stale 2020 maintenance artifact.
+    Full multi-company layout confirmed:
+    - Each company's live Btrieve data lives in its own subdirectory:
+      `DBAMFG$\I2\` (748 `.BI2` files, active), `DBAMFG$\22\` (frozen
+      since 2/2020), `DBAMFG$\AB\`, `DBAMFG$\AT\`, `DBAMFG$\CA\`, etc.
+    - The live AR Invoice History for company I2 is
+      `DBAMFG$\I2\BKARHINV.BI2` (256 MB, updated 5/29/2026).
+    - In March 2020 a rebuild operation left behind:
+      `DBAMFG$\I2\BKARHINV.BI2.old` (154 MB, 3/18/2020) and a copy in
+      `DBAMFG$\BKARHINV\BKARHINV.BI2` (154 MB, 3/25/2020). Both are
+      orphaned backups — never cleaned up.
+    - Company 22 (`BKARHINV.B22`, 74 MB, last written 2/8/2020) is
+      an inactive/archived company.
 
-11. **The 205 help-only menu codes.** Operations documented in the
-    CHM but with no matching readable `.RUN`/`.RWN` string. List in
-    `samples/master_index.csv`.
+11. ~~**The 205 help-only menu codes.**~~ **RESOLVED (2026-06-01).**
+    All 205 codes are in encrypted `.RWN` programs — their logic is
+    inaccessible without RWN decryption, but their *documentation* is
+    now complete: every one is covered by the CHM consolidation pass
+    (all 14 categories, ~700+ topics). Breakdown by module: SM 26,
+    WO 21, HH 12, QC 11, SD 11, SO 10, BM 8, CM 8, TA 8, US 8,
+    and 28 other modules with 1–6 codes each. These programs work
+    correctly at runtime — they are simply opaque to static analysis.
 
 12. **Customization forms (`J7*`).** 20+ customer-specific
     customization modules (`J7AIJCG`, `J7BEFWebInv`, `J7CCCutSheet`,
