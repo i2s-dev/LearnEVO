@@ -131,7 +131,82 @@ pick a different approach — or ask.
 
 ---
 
-## 7. Launcher scripts (.bat / .ps1) — keep them current
+## 7. ANALYZE command
+
+When the user types **ANALYZE** into the chat, execute the following loop immediately and autonomously — no further prompting needed:
+
+1. **Read `EVO-DECOMPILE-TODO.md`** in full. Identify every item that is either:
+   - Not yet started (⬜), or
+   - Started but below C: 90/100
+
+2. **Prioritize work in this order:**
+   a. Untouched areas (⬜, no work done at all) — broadest coverage gain first
+   b. Lowest-confidence started items (🔄 or ✅ with C: < 50) — biggest relative gains
+   c. Items in the 50–74 range — push toward 75+
+   d. Items in the 75–89 range — push toward 90+
+
+3. **For each item worked:**
+   - Study the relevant EVO files (copy to `samples/` first if from a read-only path)
+   - Document findings in the appropriate `docs/` file
+   - Update confidence rating and checkbox in `EVO-DECOMPILE-TODO.md`
+   - Update `docs/README.md` index if a new doc is created
+   - Update `research/OPEN_QUESTIONS.md` if a question is answered or a new one surfaces
+
+4. **Keep going** until blocked by encryption (§14 items requiring RWN decryption) or a
+   genuine decision point. Do not stop between topics to ask.
+
+5. **Session-end:** update `EVO-DECOMPILE-TODO.md` with all new confidence ratings and
+   checked boxes, then give a one-paragraph summary of what changed.
+
+---
+
+## 8. Final deliverable documents
+
+Two master documents must be built up over time and kept current as research progresses.
+These are the end-state products that define "done."
+
+### 8.1 PROJECT-STRUCTURE.md
+
+A single file at the workspace root that catalogs **every path and file within the EvoERP
+install and network share** and explains:
+- What each file is (type, format, purpose)
+- Which module or subsystem owns it
+- How it relates to other files (e.g., T7INA.RWN ↔ T7INA.DFM, RTM ↔ SRC caller, .B ↔ DDF)
+- Which database tables it reads or writes (where known)
+- Generation (BK\*, T6\*, T7\*, EVO\*, J7\*, etc.)
+
+Organized hierarchically: top-level directories → subdirectories → individual files.
+Cross-references use relative paths. Status column: `confirmed | inferred | unknown`.
+
+Update this document every session as new files are discovered or relationships confirmed.
+
+### 8.2 HELP-RESOURCES.md
+
+A comprehensive, searchable knowledge base — the EvoHELP.CHM on steroids. Its purpose:
+**allow a user (or a user + Claude) to answer abstract "how do I…" questions about EVO**
+without needing to know exact menu codes or table names in advance.
+
+Structure:
+- **Keyword index** — every significant term in EVO (table names, field names, menu codes,
+  module names, business concepts) with a one-line definition and pointer to deeper docs
+- **How-to recipes** — step-by-step answers to common tasks (e.g., "How do I add a new
+  column to a report and print it?", "How do I create a new vendor?", "How do I close the
+  month?")
+- **Concept explanations** — what is a Work Order, what is a Routing, what is MRP, etc.
+- **Table quick-reference** — one-liner per table: what it stores, primary key, which module
+- **Field lookup** — given a field name (e.g., BKAP_CHK_INVNUM), explain what it means and
+  where it appears in the UI
+- **Error / symptom index** — if something goes wrong or looks wrong, what to check
+
+Write in plain English. Abstract questions are the target audience: a user who knows what
+they want to accomplish but does not know which menu, table, or file is involved.
+
+Keep this document updated as each module and workflow is documented. It is the
+user-facing summary of everything in `docs/`.
+
+---
+
+## 9. Launcher scripts (.bat / .ps1) — keep them current
 
 The user launches tools in this workspace via `.bat` files (e.g.
 `RUN.bat`, `learnevo-help\launch.bat`). Whenever I change how a tool
