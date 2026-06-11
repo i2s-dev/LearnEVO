@@ -289,6 +289,16 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ Primary key confirmed for each of 659 tables (from INDEX.DDF)
 - [ ] ⬜ Foreign key relationships mapped across module boundaries
 
+### 4.4a ISTS.CFG.* Configuration Keys
+- [x] ✅ Key namespace confirmed: `ISTS.CFG.*` strings in all program binaries map to BKYSMSTR/BKSYMSTR fields — **C: 72/100**
+- [x] ✅ **535 unique keys** cataloged from grep across 2,575 rwn_strings files — **C: 78/100**
+- [x] ✅ Functional categories identified: Access/Security, AP, AR, SO (70+ keys), PO (80+ keys), WO (44+ keys), DC, Inventory/Costing, Reporting, EDI, Credit Card, EvoNotes, Ship-Via — **C: 68/100**
+- [x] ✅ Prevalence distribution documented (9 global keys in 400+ files; 276 module-specific in 1–9 files) — **C: 75/100**
+- [x] ✅ Full key directory documented in `docs/05-configuration/ists-cfg-keys.md` — **C: 68/100**
+- [ ] ⬜ Complete YN[N] ↔ ISTS.CFG.* mapping (only 3 confirmed so far: YN[38], YN[228], YN[229])
+- [ ] ⬜ All 535 keys mapped to their BKYSMSTR/BKSYMSTR field with confirmed meaning
+- [ ] ⬜ Keys that control module-enable/disable confirmed (module licensing gates)
+
 ### 4.4 Key Individual Tables (minimum needed for 90% goal)
 - [x] ✅ `BKARCUST` — AR Customer master: 106 fields documented in `docs/04-data-dictionary/tier1-tables.md` — **C: 68/100**
 - [x] ✅ `BKICMSTR` — Inventory Item master: 64 fields documented — **C: 68/100**
@@ -397,8 +407,12 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.5 Purchase Orders (PO)
 - [x] ✅ Menu codes listed (29 operations) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7PO\*.DFM) — **C: 70/100**
-- [ ] ⬜ PO entry → receipt → AP voucher chain traced
-- [ ] ⬜ All BKPO\* tables with fields documented
+- [x] ✅ Key PO forms read from network share: T7POA (232 KB — full header+lines), T7POB (print options), T7POJC (receiving+QC), T7POH (RFQ/5-level pricing), T7POM (multi-tab inquiry) — **C: 70/100**
+- [x] ✅ 5-level vendor price breaks confirmed in T7POH — **C: 72/100**
+- [x] ✅ RoHS / NCR tracking on received items confirmed (T7POJC) — **C: 68/100**
+- [x] ✅ Digital signature support on printed POs confirmed — **C: 65/100**
+- [ ] ⬜ PO entry → receipt → AP voucher chain traced end-to-end
+- [ ] ⬜ All BKPO\*/BKAP\* tables with fields documented
 
 ### 7.6 Work Orders (WO)
 - [x] ✅ Menu codes listed (31 operations) — **C: 72/100**
@@ -439,11 +453,13 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.11 Payroll (PR)
 - [x] ✅ Menu codes listed (29 operations) — **C: 65/100**
-- [x] ✅ Tables: BKPR\* (16 tables); BKPRMSTR (384 fields — largest practical table) — **C: 50/100**
+- [x] ✅ Tables: BKPR\* (16 tables); BKPRMSTR (384 fields — largest practical table) — **C: 55/100**
+- [x] ✅ Key forms read: T7PRA (W-4/employee tax setup), T7PRB (current payroll batch entry), T7PRF (11-bracket tax tables), T7PRE (direct deposit) — **C: 62/100**
+- [x] ✅ Tax table structure documented: 11-bracket tiers per tax code in BKPRFTAX — **C: 65/100**
+- [x] ✅ Array-based payroll entry confirmed (batch employee processing, 7 unlimited deduction types) — **C: 62/100**
 - [ ] ⬜ BKPRMSTR all 384 fields documented with meaning
-- [ ] ⬜ Payroll calculation cycle traced
-- [ ] ⬜ W-2 / 1099 generation traced
-- [ ] ⬜ Tax table structure documented
+- [ ] ⬜ Payroll calculation cycle traced (T7PRB → check run → BKPRHIST)
+- [ ] ⬜ W-2 / 1099 generation traced (T7PRS identified)
 
 ### 7.12 Data Collection (DC)
 - [x] ✅ Menu codes listed — **C: 65/100**
@@ -483,7 +499,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 - [ ] ⬜ **AB** — purpose unclear; no deep doc
 - [ ] ⬜ **AC** — purpose unclear; no deep doc
-- [ ] ⬜ **AM** — Asset Management (17 ops) — forms inventoried only
+- [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
 - [ ] ⬜ **AD** — purpose unclear; no deep doc
 - [ ] ⬜ **CM** — Customer Management / CRM — forms inventoried only
 - [ ] ⬜ **CP** — purpose unclear; no deep doc
@@ -514,12 +530,12 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **RF** — purpose unclear; no deep doc
 - [ ] ⬜ **RM** — Return Material — forms inventoried only
 - [ ] ⬜ **RT** — purpose unclear; no deep doc
-- [ ] ⬜ **SA** — Sales Analysis (13 ops) — forms inventoried only
+- [x] 🔄 **SA** — Sales Analysis (13 ops) — 6 forms inventoried; purpose confirmed (reads BKARINV/BKARINVL/BKARCUST for sales reporting) — **C: 45/100**
 - [ ] ⬜ **SB** — purpose unclear; no deep doc
 - [ ] ⬜ **SD** — Standard Data (12 ops) — forms inventoried only
 - [ ] ⬜ **SH** — Shipping (16 ops) — forms inventoried only
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
-- [ ] ⬜ **SM** — System Maintenance (34 ops, 3rd largest) — forms inventoried only
+- [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 8 forms read (class setup, GL override, customer shipping prefs, WO setup/end); T7SMP*/T7SMN* (printer/system params) not yet read — **C: 62/100**
 - [ ] ⬜ **SR** — Service / Repair — forms inventoried only
 - [ ] ⬜ **SU** — Setup — forms inventoried only
 - [ ] ⬜ **SY** — System — forms inventoried only

@@ -43,6 +43,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [.SRC — TAS Pro 4GL source language](02-file-formats/src-tas-pro-language.md) — *draft*
 - [.DFM — Delphi form format (plaintext)](02-file-formats/dfm-delphi-forms.md) — *draft*
 - [.DCY / .RWN — compiled proprietary binaries](02-file-formats/dcy-rwn-binaries.md) — *partially decrypted*
+- [RWN/RUN string dumps — analysis technique + ISTS.CFG extraction (2,575 files)](02-file-formats/rwn-strings-analysis.md) — *verified*
 - [.DCY / .RWN — decryption findings (Twofish-CFB, block-0 cracked)](02-file-formats/decryption-findings.md) — *partial, key not recovered*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*
 - [.IMP / .UPD / .XPT / others](02-file-formats/other-formats.md) — *verified*
@@ -105,9 +106,14 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 ### 05c — Module Map
 - [EvoERP module interdependency map — 40 modules, tier classification, Mermaid dependency graph, key data flows](06-module-map/module-map.md) — *derived from CHM cross-references*
 
+### 05d — Configuration Keys
+- [ISTS.CFG.* key directory — 535 unique configuration parameter keys from rwn_strings](05-configuration/ists-cfg-keys.md) — *partial, 535 keys cataloged*
+
 ### 06 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
 - [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*
+- [Tier 1 tables — 12 core tables fully documented (AHSYLOG, BKARCUST, BKARINV, BKAPVEND, BKGLCOA, WORKORD, BKSYMSTR, etc.)](04-data-dictionary/tier1-tables.md) — *partial*
+- [Tier 2 tables — BKSLEVEL (SOLVED), BKPRGLFL (SOLVED), BKAPPO, BKAPPOL, WO detail tables, payroll, BKYSMSTR YN flags](04-data-dictionary/tier2-tables.md) — *partial*
 
 ### 07 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*

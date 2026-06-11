@@ -82,16 +82,41 @@ It is effectively the GL administration module.
 
 **DFM files confirmed:** 50+ forms — the largest single module by form count.
 
-**What it does:** Global configuration and setup for all modules. Likely contains:
+**What it does:** Global configuration and setup for all modules:
 - Company defaults (address, GL accounts, terms, tax codes)
 - User setup (creates AHSYLOG records)
 - Printer configuration
 - System parameters (values written to BKSYMSTR / BKYSMSTR)
-- Ship-via codes, payment terms, tax groups, etc.
+- Ship-via codes, payment terms, tax groups, item class GL overrides
+- Shipping account preferences per customer
 
-**Likely tables:** BKSYMSTR (286 fields), BKYSMSTR (195+ YN flags), AHSYLOG, BKLOGON, BKSYPRTR, BKSYUSER, BKSYCFG, and many IS\* lookup tables.
+**Forms read from network share:**
 
-**Confidence: 50/100** — Form count and module role confirmed; specific SM form content not yet read from network share.
+| DFM | Purpose | Key fields / tables |
+|-----|---------|---------------------|
+| T7SMC.DFM | Item Class List master | Class Code, Description → MTCLASS |
+| T7SMCA.DFM | Item Class maintenance (edit mode) | Class, Description → MTCLASS |
+| T7SMCB.DFM | Class GL Override Setup | Item Class + Location → GL account overrides (Inv Asset, COGS, WIP, Labor, OH) → BKIC |
+| T7SMCC.DFM | Item Class List (grid browse) | Class, Description → MTCLASS |
+| T7SMU.DFM | Customer shipping preferences | Customer, Ship Via, Account#, Billing Type (C/T/B), Insurance, Third Party → Customer Master, Ship Via codes |
+| T7SMT.DFM | Terms/shipper setup | Customer, Ship Via, Priority, Account, Inactive, Bill Type → shipping term tables |
+| T7SMTset.DFM | Work order setup phase | WO#, Customer, Drawing, Revision, Employee, Operation, Machine → WORKORD, WOBOM |
+| T7SMTend.DFM | Work order completion/serial scan | WO#, Employee, Machine, Operation, Serial scan → WORKORD, WO serial tables |
+
+**Key finding — class GL overrides (T7SMCB):** EvoERP supports per-class, per-location GL account
+overrides. Each item class × location combination can have independent GL accounts for:
+inventory asset, inventory expense, COGS, taxable sales, non-taxable sales, WIP inventory asset,
+absorbed labor, absorbed fixed OH, absorbed variable OH, and material burden. This is the mechanism
+for multi-location or multi-product-line accounting separation.
+
+**Remaining unread SM forms:** T7SMP* (printer config), T7SMN* (network/system parameters — likely
+writes BKSYMSTR/BKYSMSTR), T7SME (core entry), T7SMG–T7SMJ (terms/tax/shipper detail).
+
+**Primary tables:** BKSYMSTR (286 fields), BKYSMSTR (195+ YN flags), AHSYLOG, BKLOGON, BKSYPRTR,
+BKSYUSER, BKSYCFG, MTCLASS, BKIC (class-GL overrides), IS\* lookup tables.
+
+**Confidence: 62/100** — 8 forms read from network share; class/GL override structure confirmed;
+printer and system-parameter forms not yet read.
 
 ---
 
@@ -283,9 +308,36 @@ It is effectively the GL administration module.
 
 **DFM files confirmed:** T7PRA.DFM + 49 more forms (50 total) — second-largest module by form count.
 
-**Primary tables:** BKPRMSTR (246+ fields — payroll master), BKPRHIST (127 fields), BKPRW2 (196+ fields), BKPRGLFL (664 fields — GL posting config), BKPRBOOK, BKPRCOMM, BKPRCURP, BKPRFTAX, BKPRHCOM, BKPRINFO, BKPRSALE, BKPRSTFL, BKPRTC, BKPRTCFG.
+**Forms read from network share:**
 
-**Confidence: 52/100** — Form count and table family confirmed; payroll logic not traced.
+| DFM | Size | Purpose | Key fields |
+|-----|------|---------|------------|
+| T7PRA.DFM | 380 KB | Employee W-4 / tax withholding setup | Employee#, W-4 config (Two-job, Dependent deduction, Other income, Additional WH per period), QTD/YTD FIT/FICA/State/SDI/WC → BKPRMSTR (employee master) |
+| T7PRB.DFM | 265 KB | Current payroll entry (batch) | Employee array (REC/NAME/NUM/DIV/LPAY/HOURS/GROSS/NET), Check type, Regular/OT/Vacation/Special pay hours+rates, FIT/FUTA/FICA/State/SUTA/SDI/WC deductions, 7 unlimited OD deduction types → BKPRCURP |
+| T7PRE.DFM | 41 KB | Direct deposit setup | Employee range (from-emp, thru-emp), terminated employee option → BKPRMSTR direct deposit fields |
+| T7PRF.DFM | 158 KB | Federal/state tax withholding tables | Tax code, Description, Amount per allowance, 11 tax bracket tiers (START[1-11], THRU[1-11], AMT[1-11]) → BKPRFTAX (tax table master) |
+| T7PRD.DFM | 75 KB | Check printing/processing | — |
+| T7PRI.DFM | 44 KB | Employee profile/maintenance | — |
+| T7PRK.DFM | 66 KB | Payroll accruals (vacation/sick) | — |
+| T7PRM.DFM | 282 KB | Payroll master lists/inquiries | — |
+| T7PRO.DFM | 33 KB | Payroll period-end close | — |
+| T7PRP.DFM | 79 KB | Payroll period setup | — |
+| T7PRQ.DFM | 75 KB | Quarterly reports (941/SUTA) | — |
+| T7PRS.DFM | 43 KB | W-2 annual reporting | — |
+
+**Key findings from DFM analysis:**
+- **T7PRF is complex**: 11-bracket tax calculation — handles federal, state, local, and custom
+  tax calculations in a single table structure; not a simple flat-rate system.
+- **T7PRB uses arrays**: Employee entries are array-based (tagged employee list), supporting
+  batch payroll entry for multiple employees simultaneously.
+- **7 unlimited deduction types** in current pay record — flexible enough to handle unusual
+  pre/post-tax deduction structures.
+- **QTD/YTD tracking** is embedded in the employee master (BKPRMSTR), not a separate audit table.
+
+**Primary tables:** BKPRMSTR (246+ fields — payroll master), BKPRHIST (127 fields), BKPRW2 (196+ fields), BKPRGLFL (664 fields — GL posting config, SOLVED), BKPRBOOK, BKPRCOMM, BKPRCURP (current payroll), BKPRFTAX (tax tables), BKPRHCOM, BKPRINFO, BKPRSALE, BKPRSTFL, BKPRTC, BKPRTCFG.
+
+**Confidence: 62/100** — Key forms (T7PRA, T7PRB, T7PRF, T7PRE) read from network share; payroll
+cycle workflow understood at high level; detailed GL posting logic in BKPRGLFL not fully decoded.
 
 ---
 
@@ -293,9 +345,36 @@ It is effectively the GL administration module.
 
 **DFM files confirmed:** T7POA.DFM + 39 more forms (40 total)
 
-**Primary tables:** BKAPPO (57 fields — PO header), BKAPPOL (38 fields — PO lines), plus BKAPRFQ/BKAPRFQL (RFQ tables), BKAPQUOT (quotes), BKAPHPO/BKAPHPOL (history PO).
+**Forms read from network share:**
 
-**Confidence: 60/100** — Form count confirmed; BKAPPO/BKAPPOL schemas extracted this session.
+| DFM | Size | Purpose | Key fields |
+|-----|------|---------|------------|
+| T7POA.DFM | 232 KB | PO header entry (main form) | Vendor code/name/addr, Ship-to (vendor or customer), Description, Terms, FOB, Currency, Location, GL dept, Tax, Order date, Confirmation dates, Ship via, Subtotal/Tax/Total → BKAPPO |
+| T7POA (lines) | — | Line item entry (tab within T7POA) | Product/location/job, Line code, Description, Qty, Price, ERD/ARD, UOM, Pct/Discount/Extended, GL account/dept, Long desc, Rev/ECO/Drawing, WO#/Op → BKAPPOL |
+| T7POB.DFM | 65 KB | PO printing/report options | PO range, Vendor range, Print all unprinted, Print archive original, Consolidated, ECO/revisions, Make-from, Hidden notes, 2nd desc, Approved vendor, Linked docs, System PO note, Excl zero bal, PO status (ORIGINAL/CURRENT/REWORK), Digital signature, Footer copy lines |
+| T7POA2.DFM | 201 KB | PO line extended entry | Product integration, location, job, line number, qty, price, extended, receipt dates → BKAPPOL, BKAPPODTL |
+| T7POJC.DFM | 99 KB | PO receiving + QC inspection | Receiver line qty, Buyoff/rejected/use-as-is/scrap qty, Employee, Accepted bin location, Use-as-is bin, QC hold, Defect reason, Sample size, PO line/packing slip/vendor/item refs, WO#, RoHS, NCR flags, Qty in NCR, Mfr part#, Receiver#, RUSH/REWORK/NO WORK flags → BKRECV, BKRECVLN, BKQC |
+| T7POH.DFM | 119 KB | Vendor RFQ / price quote management | Vendor, PUM, Lead time, Expiration date, Conversion factor, 5 quantity break levels (QTY[1-5]), 5 costs (COST[1-5]), Min qty/cost, Last changed date/by, Archive original price, Keep price, Archive/purge/restore → BKRFQ |
+| T7POM.DFM | 206 KB | PO inquiry (multi-tab analysis) | Vendor code, Item#, PO#, WO#, Job#, Base price, Date ranges; Tabs: PO inquiry / WOs outside process / WOs / POs / Receipts / SO by Customer / On SO and BO |
+
+**Key findings from DFM analysis:**
+- **T7POA (232 KB)** is the largest PO form — dual ship-to address (can ship to vendor OR customer
+  directly), production integration on lines (WO#, operation, revision, ECO, drawing).
+- **5-level vendor price breaks** (T7POH): quantity discount tiers with archiving/versioning — EVO
+  tracks price history and supports restoring archived vendor quotes.
+- **RoHS and NCR tracking** on received items (T7POJC): compliance-ready receiving workflow with
+  Non-Conformance Report linkage.
+- **PO status trifecta** (T7POB): ORIGINAL / CURRENT / REWORK — prints of POs carry version context.
+- **Receiving spans 4+ forms**: T7POJC (main), T7POIG, T7POIH, T7POII, T7POIL (sub-forms) —
+  complex multi-step receiving and inspection workflow.
+- **Digital signature support** on printed POs (T7POB: Y/N/Ask).
+
+**Primary tables:** BKAPPO (57 fields — PO header), BKAPPOL (38 fields — PO lines), BKAPRFQ/BKAPRFQL
+(RFQ with 5-level pricing), BKAPQUOT (quotes), BKAPHPO/BKAPHPOL (history PO), BKRECV/BKRECVLN
+(receiving), BKRFQ (vendor quotes).
+
+**Confidence: 70/100** — Key forms read from network share; PO header and line schemas extracted;
+receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully decoded.
 
 ---
 
