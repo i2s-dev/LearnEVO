@@ -307,8 +307,8 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `BKSOX` / `BKSOXH` — Sales Order extract: 25 fields documented — **C: 65/100**
 - [ ] ⬜ `BKPO????` — Purchase Order tables — all fields (BKAPPO + BKAPPOL identified but not field-level documented)
 - [ ] ⬜ `BKPRMSTR` — Payroll master (384 fields) — all fields
-- [ ] ⬜ `BKSLEVEL` — (422 fields, second-largest) — purpose and all fields
-- [ ] ⬜ `BKPRGLFL` — (664 fields, largest) — purpose and all fields
+- [x] ✅ `BKSLEVEL` — **SOLVED: Security level permission matrix** (14 menus × 20 options = 422 fields; links AHSYLOG.AHSY_USER_LEVL to allowed operations) — **C: 68/100**
+- [x] ✅ `BKPRGLFL` — **SOLVED: Payroll GL posting config** (664 fields: 20 user deductions × GL accounts/limits/pct + 30 tax vendors) — **C: 62/100**
 - [ ] ⬜ `ISJAVA` table — locate actual table name in DDF and document all fields
 
 ---
@@ -831,21 +831,37 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
-| Database Schema (field meaning) | **48** | 88 | **40** ↑ | 2026-06-11 |
-| Security / Login | 65 | 85 | 20 | 2026-06-11 |
+| Database Schema (field meaning) | **58** | 88 | **30** ↑ | 2026-06-11 |
+| Security / Login | **72** | 85 | **13** ↑ | 2026-06-11 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **72** | 85 | **13** ↑ | 2026-06-11 |
 | Module: AP | **78** | 85 | **7** ↑ | 2026-06-11 |
 | Module: IN/Inventory | **68** | 85 | **17** ↑ | 2026-06-11 |
 | Module: SO | **65** | 85 | **20** ↑ | 2026-06-11 |
-| Module: PO | 60 | 85 | 25 | 2026-06-11 |
-| Module: WO | **72** | 85 | **13** ↑ | 2026-06-11 |
-| Module: GL | **65** | 85 | **20** ↑ | 2026-06-11 |
+| Module: PO | **65** | 85 | **20** ↑ | 2026-06-11 |
+| Module: WO | **75** | 85 | **10** ↑ | 2026-06-11 |
+| Module: GL | **70** | 85 | **15** ↑ | 2026-06-11 |
 | Module: BM/MRP | **72** | 80 | **8** ↑ | 2026-06-11 |
 | Module: RO/Routing | **75** | 85 | **10** ↑ | 2026-06-11 |
 | Module: DC/Data Collection | **78** | 82 | **4** ↑ | 2026-06-11 |
-| Module: PR/Payroll | 50 | 80 | 30 | 2026-06-11 |
-| Modules: Remaining ~35 | 35 | 75 | 40 ⚠️ | 2026-06-11 |
+| Module: PR/Payroll | **55** | 80 | **25** ↑ | 2026-06-11 |
+| Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
+| Module: CM/CRM | **60** | 80 | **20** ↑ NEW | 2026-06-11 |
+| Module: DE/Data Exchange | **65** | 80 | **15** ↑ NEW | 2026-06-11 |
+| Module: CS/Customer Service | **55** | 80 | **25** ↑ NEW | 2026-06-11 |
+| Module: JC/Job Costing | **52** | 75 | **23** NEW | 2026-06-11 |
+| Module: SC/Scheduling | **42** | 75 | **33** NEW | 2026-06-11 |
+| Module: QC/Quality Control | **48** | 75 | **27** NEW | 2026-06-11 |
+| Module: WC/Work Center | **55** | 78 | **23** NEW | 2026-06-11 |
+| Module: SH/Shipping | **45** | 75 | **30** NEW | 2026-06-11 |
+| Module: LC/Lot Control | **42** | 75 | **33** NEW | 2026-06-11 |
+| Module: SR/Service Repair | **42** | 75 | **33** NEW | 2026-06-11 |
+| Module: FA/Fixed Assets | **48** | 75 | **27** NEW | 2026-06-11 |
+| Module: PI/Physical Inventory | **52** | 78 | **26** NEW | 2026-06-11 |
+| Module: ED/EDI | **50** | 75 | **25** NEW | 2026-06-11 |
+| Module: ES/Estimating | **48** | 75 | **27** NEW | 2026-06-11 |
+| Modules: SM/UT/SD/HH/SA/others | 38 | 70 | 32 | 2026-06-11 |
+| RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
 | Platform Subsystems | 65 | 82 | 17 | 2026-06-11 |
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
