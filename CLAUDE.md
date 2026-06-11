@@ -160,7 +160,34 @@ When the user types **ANALYZE** into the chat, execute the following loop immedi
 
 ---
 
-## 8. Final deliverable documents
+## 8. Confidence ratings — mandatory on every EVO answer
+
+**Every single response about EvoERP or this project must end with a confidence rating.**
+No exceptions. This applies to:
+- Any question about how EVO works
+- Any explanation of a module, table, field, or workflow
+- Any claim about a file format, data flow, or behavior
+- Any "how do I" answer
+- Any guess or inference about the system
+- Even short factual answers (e.g., "The AP vendor table is BKAPVEND")
+
+**Format:** Append to the end of every answer:
+
+> **Confidence: XX/100** — one sentence explaining what is verified vs. inferred vs. unknown.
+
+Use the same 0–100 scale as `EVO-DECOMPILE-TODO.md`:
+- 90–100: Fully verified from file bytes / source code / confirmed schema
+- 70–89: Mostly verified; minor gaps or unconfirmed edge cases
+- 50–69: Solid foundation with confirmed facts; significant unknowns remain
+- 30–49: Key facts confirmed; core logic or schema incomplete
+- 10–29: Surface-level only — structure identified, content opaque
+- 0–9: Essentially unknown
+
+If a response covers multiple topics with different confidence levels, give the **lowest** rating that applies and call out which part is the weakest.
+
+---
+
+## 9. Final deliverable documents
 
 Two master documents must be built up over time and kept current as research progresses.
 These are the end-state products that define "done."
