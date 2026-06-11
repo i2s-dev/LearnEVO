@@ -54,6 +54,8 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Plaintext SRC deep-dive — reading the 7 legacy sources](03-modules/src-deep-dive.md) — *verified*
 - [AR + SO form analysis — complete workflow forms for AR (T7ARA-I) and SO (T7SOA-G)](03-modules/ar-so-form-analysis.md) — *partial*
 - [GL + WO form analysis — 24 GL forms, WO lifecycle (68 forms), journal types, WO status codes](03-modules/gl-wo-form-analysis.md) — *partial*
+- [BM + IN form analysis — BOM status/type codes, 16 BM forms, 67+ IN forms confirmed](03-modules/bm-in-form-analysis.md) — *partial*
+- [AP check printing workflow — complete step-by-step from Bkaph.SRC + Bkapha.SRC](03-modules/ap-check-workflow.md) — *verified*
 - [Undocumented modules — 20+ modules with DFM-confirmed forms (AM, FA, JC, SA, SH, SM, PR, PO, etc.)](03-modules/undocumented-modules.md) — *partial*
 
 **Per-module deep-dive pages** (each joins menu codes + schema + UI forms):

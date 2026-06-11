@@ -381,20 +381,25 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.2 Accounts Payable (AP)
 - [x] ✅ Menu codes listed (AP-A through AP-U) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7AP\*.DFM) — **C: 70/100**
-- [x] ✅ Tables: BKAP\* (24 tables) — **C: 55/100**
-- [x] ✅ Source files: Bkaph.SRC, Bkapha.SRC analyzed — **C: 65/100**
-- [ ] ⬜ Voucher entry workflow fully traced
-- [ ] ⬜ Check printing workflow traced (AP-M through AP-P)
-- [ ] ⬜ BKAPCUST all fields with meaning
+- [x] ✅ Tables: BKAP\* (24 tables) — **C: 60/100**
+- [x] ✅ Source files: Bkaph.SRC, Bkapha.SRC analyzed — **C: 82/100**
+- [x] ✅ **Check printing workflow fully traced** (AP-H): select→check#→date→print→GL post(CD)→invoice update→BKAPCHKH→BKGLCHK — **C: 82/100**
+- [x] ✅ GL posting type confirmed: "CD" (Cash Disbursement) — **C: 88/100**
+- [x] ✅ BKAPCHKF (temp run file) and BKAPCHKH (permanent history) documented — **C: 78/100**
+- [x] ✅ 1099 tracking mechanism confirmed: BKAPVEND 1099 code + BKAPINVT TYPE="P" — **C: 70/100**
+- [ ] ⬜ Voucher entry workflow fully traced (AP-B main form logic)
+- [ ] ⬜ BKAPVEND all fields documented with meaning
 
 ### 7.3 Inventory (IN)
 - [x] ✅ Menu codes listed (40 operations) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7IN\*.DFM) — **C: 70/100**
-- [x] ✅ Tables: BKIC\* (16 tables), MTICMSTR identified — **C: 55/100**
-- [ ] ⬜ Item master (BKICMSTR) all fields documented
-- [ ] ⬜ FIFO/LIFO/average cost layer logic traced
+- [x] ✅ Tables: BKIC\* (16 tables), MTICMSTR identified — **C: 58/100**
+- [x] ✅ BKICMSTR all 62 fields documented with meaning in tier1-tables.md: product code/desc, type, class, category, UOM (stock/purchase/price), costs, QOH, reorder, lead time, GL accounts (asset/COGS/scrap/non-tax), absorbed labor/setup/ops/material/fixed OH/variable OH, UPC, MTD/YTD sales — **C: 72/100**
+- [x] ✅ Supplemental item master form set confirmed: allocation, components, forecast, pricing, specs, UDF, usage, WIP — **C: 65/100**
+- [x] ✅ 16+ location/bin forms (T7INL* series) confirmed — **C: 60/100**
+- [ ] ⬜ FIFO/LIFO/average cost layer logic traced (INVTXN / BKICVAL tables)
 - [ ] ⬜ Physical inventory workflow (PI module) traced end-to-end
-- [ ] ⬜ Lot tracking / serial number tracking documented (if present)
+- [ ] ⬜ Lot tracking / serial number tracking workflow confirmed
 
 ### 7.4 Sales Orders (SO)
 - [x] ✅ Menu codes listed (48 operations — largest module) — **C: 72/100**
@@ -443,10 +448,15 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.8 Bill of Materials (BM)
 - [x] ✅ Menu codes listed — **C: 65/100**
-- [x] ✅ Tables: BKBM\* (10 tables) — **C: 50/100**
+- [x] ✅ Tables: BKBM\* (10 tables) — **C: 60/100**
 - [x] ✅ BOM Tree analysis tool documented (BOMTREE.RWN) — **C: 60/100**
-- [ ] ⬜ Multi-level BOM explosion logic traced
+- [x] ✅ 4 core forms read: T7BMA (master entry, 15 remarks/component), T7BMB (print with status codes Y/N/O/D/E/P/S/Q/R), T7BMC (multi-level print, "up to X levels"), T7BMD (availability + shortages) — **C: 62/100**
+- [x] ✅ Item type codes confirmed: R/F/A/M/N/L/B/T/K/O (10 types) — **C: 75/100**
+- [x] ✅ Item status codes confirmed: Y/N/O/D/E/P/S/Q/R (9 status values) — **C: 75/100**
+- [x] ✅ Multi-level BOM explosion confirmed (T7BMC: "print up to X levels") — **C: 65/100**
+- [x] ✅ RoHS compliance flag on BOM components confirmed — **C: 72/100**
 - [ ] ⬜ All BKBM\* tables with fields documented
+- [ ] ⬜ Phantom assembly logic confirmed (BKBMAMTR purpose)
 
 ### 7.9 MRP / Manufacturing Requirements Planning (MR)
 - [x] ✅ Menu codes listed (12 operations) — **C: 65/100**

@@ -270,7 +270,29 @@ File: `BKICMSTR.B` | Module: IN | Fields: 64
 | 39 | BKIC_PROD_LSTCST | DATE | Last cost change date |
 | 40 | BKIC_PROD_LSTRCV | DATE | Last receipt date |
 | 41 | BKIC_PROD_LSTSLS | DATE | Last sale date |
-| 42–64 | (additional fields) | | Costing method, lot/serial tracking, duty code, profit%, additional GL accounts |
+| 41 | BKIC_PROD_GLA | STRING | GL Account — Inventory Asset |
+| 42 | BKIC_PROD_DPTA | STRING | GL Dept — Inventory Asset |
+| 43 | BKIC_PROD_GLC | STRING | GL Account — COGS |
+| 44 | BKIC_PROD_DPTC | STRING | GL Dept — COGS |
+| 45 | BKIC_PROD_GLS | STRING | GL Account — Scrap |
+| 46 | BKIC_PROD_DPTS | STRING | GL Dept — Scrap |
+| 47 | BKIC_PROD_PRICE | FLOAT | Base selling price (4 dec) |
+| 48 | BKIC_PROD_GLSNT | STRING | GL Account — Non-Tax Sales |
+| 49 | BKIC_PROD_DPTNT | STRING | GL Dept — Non-Tax Sales |
+| 50 | BKIC_PROD_UBO | FLOAT | Units on Backorder |
+| 51 | BKIC_PROD_PMAT | UBINARY | Preferred material flag |
+| 52 | BKIC_PROD_MANUF | STRING | Manufacturer |
+| 53 | BKIC_PROD_NOTE | STRING | Notes |
+| 54 | BKIC_PROD_AVLAB | FLOAT | Absorbed Labor cost |
+| 55 | BKIC_PROD_AVSET | FLOAT | Absorbed Setup cost |
+| 56 | BKIC_PROD_AVOP | FLOAT | Absorbed Operations cost |
+| 57 | BKIC_PROD_AVMAT | FLOAT | Absorbed Material cost |
+| 58 | BKIC_PROD_AVFO | FLOAT | Absorbed Fixed Overhead |
+| 59 | BKIC_PROD_AVVO | FLOAT | Absorbed Variable Overhead |
+| 60 | BKIC_PROD_EXTRA | STRING | Extra/User-defined fields |
+| 61 | BKIC_PROD_TAXIN | STRING | Tax include flag |
+| 62 | BKIC_PROD_ISUPC | STRING | UPC Code |
+| 63–64 | (RLVL, RAMT) | FLOAT | Reorder level, Reorder amount (renamed in DDF variant) |
 
 ---
 
