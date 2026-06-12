@@ -1,0 +1,191 @@
+!This program cannot be run in DOS mode.
+.text
+`.rdata
+@.data
+.rsrc
+_^H[]
+t;j\V
+VWj\S
+uKj:S
+Yt}hH
+HHtpHHtl
+DSUVWh
+btHHt.
+eYt,F
+?=t"U
+8"uF@
+SS@SSPVSS
+t#SSUP
+t$$VSS
+_^][YY
+SVWUj
+t.;t$$t(
+VC20XC00U
+WWWWj
+t/WWUPj
+_^][Y
+t-Ht!Ht
+^}%95
+SVWj 
+SVWj 
+Y;5$%
+Wj@Y3
+VWuBhD
+PWPSS
+PWPSS
+QQSVW3
+uFWWj
+"WWSh
+tMWWS
++ttHHtd
+wDVSU
+cmd.exe
+command.com
+COMSPEC
+ (8PX
+700WP
+`h````
+ppxxxx
+(null)
+GAIsProcessorFeaturePresent
+KERNEL32
+e+000
+runtime error 
+TLOSS error
+SING error
+DOMAIN error
+R6028
+- unable to initialize heap
+R6027
+- not enough space for lowio initialization
+R6026
+- not enough space for stdio initialization
+R6025
+- pure virtual function call
+R6024
+- not enough space for _onexit/atexit table
+R6019
+- unable to open console device
+R6018
+- unexpected heap error
+R6017
+- unexpected multithread lock error
+R6016
+- not enough space for thread data
+abnormal program termination
+R6009
+- not enough space for environment
+R6008
+- not enough space for arguments
+R6002
+- floating point not loaded
+Microsoft Visual C++ Runtime Library
+Runtime Error!
+Program: 
+<program name unknown>
+GetLastActivePopup
+GetActiveWindow
+MessageBoxA
+user32.dll
+1#QNAN
+1#INF
+1#IND
+1#SNAN
+GetTempPathA
+GetStdHandle
+GetModuleFileNameA
+Sleep
+SetConsoleCursorInfo
+SetConsoleCursorPosition
+SetConsoleTextAttribute
+GetTickCount
+KERNEL32.dll
+timeGetTime
+WINMM.dll
+ExitProcess
+TerminateProcess
+GetCurrentProcess
+GetCommandLineA
+GetVersion
+GetLastError
+GetFileAttributesA
+HeapFree
+CloseHandle
+SetFilePointer
+SetHandleCount
+GetFileType
+GetStartupInfoA
+WriteFile
+ReadFile
+GetProcAddress
+GetModuleHandleA
+UnhandledExceptionFilter
+FreeEnvironmentStringsA
+FreeEnvironmentStringsW
+WideCharToMultiByte
+GetEnvironmentStrings
+GetEnvironmentStringsW
+HeapDestroy
+HeapCreate
+VirtualFree
+RtlUnwind
+HeapAlloc
+GetExitCodeProcess
+WaitForSingleObject
+CreateProcessA
+VirtualAlloc
+HeapReAlloc
+SetStdHandle
+FlushFileBuffers
+CreateFileA
+MultiByteToWideChar
+GetStringTypeA
+GetStringTypeW
+GetCPInfo
+GetACP
+GetOEMCP
+LoadLibraryA
+CompareStringA
+CompareStringW
+SetEnvironmentVariableA
+SetEndOfFile
+LCMapStringA
+LCMapStringW
+RCheliFUNs
+%s%s%s%s%s%s%s%s
+if not exist 
+ mkdir 
+%s%s%s%s%s
+if not exist 
+ mkdir 
+attrib +h 
+%s%s%s%s
+%s%s%s
+@echo off
+%s%s%s%s%s%s%s%s%s%s%s%s%s
+%s%s%s%s%s
+Error #bdembed1 -- Quiting
+ bytes
+ del 
+if exist 
+%s%s%s%s%s%s%s%s
+ del 
+if exist 
+%s%s%s%s%s%s%s%s
+ del 
+if exist 
+%s%s%s%s%s%s%s%s
+% .16g
+\a.txt
+ >nul
+z?aUY
+zc%C1
+-64OS
+;;793
+DFDHERGDCV
+DFDHERGGZV
+$i+2}
+NW4ba
+8],VM
+NW4bM
+8b0vo

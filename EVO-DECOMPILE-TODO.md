@@ -97,11 +97,19 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ All 1,265 `.RUN` + 1,115 `.RWN` source files (logic content — blocked by encryption; see §14)
 
 ### 2.2 `.RWN` — TAS Pro 7 Compiled Program
-- [x] ✅ Format: encrypted/compressed binary; license-bound decoder in tp7runtime.exe — **C: 65/100**
+- [x] ✅ Format: Twofish-CFB encrypted binary; decoder in tp7runtime.exe — **C: 80/100**
 - [x] ✅ High entropy from offset 0; no readable strings in first 4 KB — **C: 90/100**
 - [x] ✅ Paired with same-basename `.DFM` (layout ↔ logic) — **C: 90/100**
-- [ ] ⬜ Encryption algorithm identified (suspected Twofish-CFB, not confirmed — see §14)
-- [ ] ⬜ Any `.RWN` successfully decrypted and read as bytecode
+- [x] ✅ Encryption algorithm: standard Twofish, CFB mode, 192-bit key, SHA1 key derivation — **C: 88/100**
+  - Passphrase: `'mabufoju'` (hardcoded in tp7runtime.exe at file offset 0x75D154)
+  - Key: SHA1('mabufoju')[0:20] + 4 zero bytes = 24-byte (192-bit) key
+  - Q-box tables verified to match NIST Twofish spec exactly (file offsets 0x7740A8, 0x7741A8)
+  - Validation block: first 8 bytes of .RWN; pass when decrypted pt[0:4] == pt[4:8]
+  - All 20+ scanned .RWN files have constant ct[0:4]^ct[4:8] = 0x3E0A37C5 (keystream is deterministic)
+- [x] 🔄 Initial IV (block_buf) still unknown — **C: 45/100** (see §14 and BROKEN.md B-004)
+  - Constructor allocates block_buf via GetMem; Init call chain never zeroes it
+  - IV=zeros gives wrong XOR 0xCE14BE8C ≠ 0x3E0A37C5; requires debugger observation to resolve
+- [ ] ⬜ Any `.RWN` successfully decrypted and read as bytecode (blocked on IV — see §14)
 - [ ] ⬜ Bytecode instruction set documented
 
 ### 2.3 `.RUN` — TAS Pro 6 Compiled Program
@@ -731,16 +739,24 @@ These are end-to-end process traces. Currently 0 workflow recipes are fully docu
 
 These are the primary obstacles to reaching 90%+ confidence on module logic.
 
-- [x] 🔄 `.RWN` / `.DCY` encryption investigated — **C: 25/100**
-  - High entropy from offset 0; no magic bytes; license-bound key suspected
-  - Twofish-CFB suspected but not confirmed
-  - Block-0 partially analyzed; key not recovered
-  - [ ] ⬜ Identify encryption algorithm (static analysis of tp7runtime.exe decrypt routine)
-  - [ ] ⬜ Locate key derivation code in tp7runtime.exe (filename-based? license-serial-based? fixed?)
-  - [ ] ⬜ Decrypt one `.DCY` file and confirm structure
-  - [ ] ⬜ Decrypt one `.RWN` file and read bytecode
-  - [ ] ⬜ Build automated decryptor for all `.RWN` files
-  - [ ] ⬜ Build automated decryptor for all `.DCY` files
+- [x] 🔄 `.RWN` / `.DCY` encryption investigated — **C: 65/100**
+  - [x] ✅ Encryption algorithm: standard Twofish, CFB streaming mode — **C: 92/100**
+  - [x] ✅ Key derivation: SHA1(passphrase)[0:20] + 4 zeros → 192-bit key — **C: 90/100**
+  - [x] ✅ Passphrase: `'mabufoju'` hardcoded in tp7runtime.exe (file 0x75D154 / VA 0xB5DD54) — **C: 90/100**
+  - [x] ✅ Q-box tables (q0 at file 0x7740A8, q1 at 0x7741A8) verified against NIST Twofish spec — **C: 95/100**
+  - [x] ✅ Validation structure: first 8 bytes of .RWN; decrypt → check pt[0:4]==pt[4:8] — **C: 88/100**
+  - [x] ✅ `twofish_pure.py` passes NIST 192-bit test vector with non-zero key — **C: 95/100**
+  - [x] ✅ 20+ .RWN files scanned; all have ct[0:4]^ct[4:8] = 0x3E0A37C5 (deterministic keystream) — **C: 90/100**
+  - [x] ✅ DCPcrypt TDCP_blockcipher constructor traced: GetMem allocates block_buf without zeroing — **C: 88/100**
+  - [x] ✅ Init call chain traced: TDCP_cipher.Init → Twofish.Init — neither touches block_buf — **C: 85/100**
+  - [x] ✅ Post-validation: block_buf holds keystream after 8-byte decrypt → main load uses OFB-like mode — **C: 75/100**
+  - [x] 🔄 **BLOCKER: initial IV (block_buf) unknown** — **C: 0/100** (see BROKEN.md B-004)
+    - block_buf = uninitialized heap; IV=zeros → XOR 0xCE14BE8C ≠ required 0x3E0A37C5
+    - Resolution: debugger breakpoint at mode2_handler entry (file 0x34DF50); read [cipher+0x3C]
+  - [ ] ⬜ `scripts/rwn_decrypt.py` — automated decryptor (once IV known)
+  - [ ] ⬜ Decrypt one `.RWN` file and read bytecode (blocked on IV)
+  - [ ] ⬜ Decrypt one `.DCY` file and confirm structure (same encryption, same blocker)
+  - [ ] ⬜ Build automated decryptors for all `.RWN` / `.DCY` files (once IV known)
 - [ ] ⬜ `ENCRYPTSTR` algorithm reverse-engineered (password hashing, string crypto in TAS)
 - [ ] ⬜ `WHOAMI.DBA` 35-byte format decoded
 - [ ] ⬜ `CHMHELP.EVO` 35-byte format decoded
@@ -904,7 +920,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | 65 | 80 | 15 | 2026-06-11 |
 | Business Workflows | **62** | 85 | **23** ↑ | 2026-06-11 |
-| Encryption / RWN Decryption | 20 | 60 | 40 ⚠️ | 2026-06-11 |
+| Encryption / RWN Decryption | 65 | 95 | 30 ⚠️ | 2026-06-12 |
 | Per-Table Narrative Docs | **48** | 88 | **40** ↑ | 2026-06-11 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
 | HELP-RESOURCES.md | **65** | 90 | **25** ↑ | 2026-06-11 |

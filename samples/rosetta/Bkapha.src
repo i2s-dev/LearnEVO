@@ -1,0 +1,1279 @@
+***Program name:
+;bkapha.src
+***Program desc:
+;THIS PROGRAM WILL PRINT THE A/P CHECKS (LASER FORMAT)
+;
+;       Copyright DBA Software, Inc. 1992-1999 All Rights Reserved
+;   Portions Copyright 1985-1995 Business Tools, Inc.  All Rights Reserved
+;  This source code is CONFIDENTIAL PROPRIETARY information of DBA Software, Inc.
+
+***History
+;BKAPHA.EDT  14:11:54  02/29/1996
+;BKAPHA.src
+;Cvtd from TAS-Pro 3.0 edt to 5.0 src on 03/11/96 at 01:06 p
+
+***Modification summary
+;3/1/99 msg.chk.post replacing chk.post
+;       replace chk_fiscal with new fiscal checking
+;5/24/99  Fix for problem of vendor address of previous check printing
+;         on voided checks with over 13 vouchers on them
+;9/23/99 Lock file BKAPCHKF - see also AP-E, AP-F and AP-G and AP-H 
+;10/8/99  "    "      "   - same as BKAPH
+;1/18/00 AGL added multi currency to check printing
+;02/10/00 FMZ Remove top margin setting.
+;05/28/00 FMZ Same fix as ZLD 05/04/00 for 6.0 compiling (remove #'s)
+;6/22/00  AGL Fixed multi currency to check printing
+;6/27/00  AGL find first record in the chk file with matching curr.
+;10/02/00 MAC Fixed the void check print bug with multi currency.
+;01/03/01 AGL Allow the user to change the RTM at print time. RTM_VALID
+;2/27/00  AGL changed box to single line
+;7/03/01  AGL symstr record was being cleared before last check was being posted.
+;
+#UDX  ;allow both UDFs and UDCs in this program
+#LIB DBA  ;access the TAS Routines library
+#lib windows
+#lib lookups
+#lib maglib
+#lib IM
+#lib APH
+#inc ISDEF
+#INC HELPSCRN
+#TDATA 256000
+SETUP_COLOR   ;use the color values in TASCOLOR.OVL
+;
+    ;
+    define zret,first type l
+    define tCHK.NUM  type N size 6 dec 0 array 5000
+    define CHK.VEND type A size 10 array 5000
+    define CHK.VNAME type A size 30 array 5000
+    define CHK.AMT type n size 12 dec 2 array 5000
+    define CHK.sel type a size 1 array 5000
+    define chk.cntr type n size 5 dec 0
+    define sel.cntr,sel.tcntr type i size 5
+    define sel.ttl1, sel.ttl2, sel.ttl3, sel.ttl4, sel.ttl5, sel.ttl6, sel.ttl7 type a size 50
+    define sel.actv,i,loop type i size 5
+
+    define REC.POS type R
+    define chkf.rec type R size 10 array 5000
+    define chkf.chk type N size 6 array 5000
+
+    define rec.pos2 type r size 10
+    ;FMZ 2/10/00 define nTopMarg type n size 1 dec 0
+    define CTR type n size 2
+    define CHK.ACCT.num type i size 1 && ZLD 5/4/00 remove # and add .num (appears however to be unused)
+    define CHK.ACCTNME type A size 10
+    define BEG.CHK.num type N size 6 && ZLD 5/4/00 remove # and add .num (also in all places used in program - uncommented)
+    define CHK.DATE type d size 8
+    define CHK.NUM type n size 6 
+    define TOT.AMT type N size 12 dec 2
+    define HOLD.TOT.AMT type N size 12 dec 2
+    define TOT.TOT type N size 12 dec 2
+    define TOT.DAMT type N size 6 dec 2
+    define TOT.RAMT type N size 12 dec 2
+    define LNES type i size 2
+    define VCODHLDR type A size 10
+    define chk.amt.dol type A size 12
+    define OK type A size 1
+    define TODAYS.DATE type d size 8
+    define LINE.DESC type A size 25
+    define POST.AMT type N size 11 dec 2
+    define POST.FAIL type i size 1
+    define POST.OTHER type i size 1
+    define MONTH type n size 2
+    define OUT.INV type n size 12 dec 2
+    define OUT.CRD type n size 12 dec 2
+    define PRT.WHR type A size 1
+    define NUM type A size 20 array 30
+    define DOLLAR.ALPHA type A size 12
+    define TMP.FLD type A size 3
+    define REP type A size 40
+    define REP1 type A size 100
+    define REP2 type A size 100
+    define REP3 type A size 69
+    define SINGLE.CHR type A size 2
+    define SINGLE.NUM type n size 2
+    define ALPHA.MILLS type A size 40
+    define ALPHA.THOUS type A size 40
+    define ALPHA.HUNDS type A size 40
+    define PRT.ADD1 type A size 30
+    define PRT.ADD2 type A size 40
+    define PRT.CSZ type a size 40
+    define prt.country type a size 30
+    define PRT.CITY type A size 15
+    define PRT.STATE type A size 2
+    define PRT.ZIP type A size 10
+    define LENGTH type n size 3
+    define SCRN.INVNUM type A size 10 array 14
+    define SCRN.DATE type d size 8 array 14
+    define SCRN.DESC type A size 25 array 14
+    define SCRN.TOT.AMT type n size 11 dec 2 array 14
+    define SCRN.DISC type n size 7 dec 2 array 14
+    define SCRN.AMTPD type n size 11 dec 2 array 14
+    define CUR.PRINTER type i size 2
+    define PRT.ON type A size 1
+    define DISK.FILE type A size 40
+    define MCNTR type i size 5
+    define MCNTR2 type i size 5
+    define MCNTR3 type i size 5
+    define MCNTR4 type i size 5
+    define num.zero type n size 5 dec 0
+
+    define chkf type I size 5
+
+    xfer fmem 4 from 28 to CUR.PRINTER nchr 2
+    NUM[1]="one"
+    NUM[2]="two"
+    NUM[3]="three"
+    NUM[4]="four"
+    NUM[5]="five"
+    NUM[6]="six"
+    NUM[7]="seven"
+    NUM[8]="eight"
+    NUM[9]="nine"
+    NUM[10]="ten"
+    NUM[11]="eleven"
+    NUM[12]="twelve"
+    NUM[13]="thirteen"
+    NUM[14]="fourteen"
+    NUM[15]="fifteen"
+    NUM[16]="sixteen"
+    NUM[17]="seventeen"
+    NUM[18]="eighteen"
+    NUM[19]="nineteen"
+    NUM[20]="twenty"
+    NUM[21]="thirty"
+    NUM[22]="forty"
+    NUM[23]="fifty"
+    NUM[24]="sixty"
+    NUM[25]="seventy"
+    NUM[26]="eighty"
+    NUM[27]="ninety"
+    TODAYS.DATE=date()
+    open BKAPINVT lock R
+    open BKGLCHK lock R
+    open BKGLTEMP lock R
+    open BKGLCOA lock N
+    openv 'ismcf' fnum ismcf.hndl lock N
+    openv 'ismcr' fnum ismcr.hndl lock N
+    open BKSYMSTR lock R
+    open BKAPVEND lock R
+    open BKAPCHKH lock R
+    ;AjM 9/23/99 
+    trap rlck goto CHKF_ERR
+    open BKAPCHKF lock f err CHKF_ERR
+    chkf=fnum("BKAPCHKF")
+    {
+      CHKF_ERR:
+        msg 'Cannot lock file BKAPCHKF.B'+trim(co(),'t')+'.  Another user may be using this program or AP-E, F or G. ' windows 'W'
+        quit
+    }
+    trap rlck dflt
+    ;
+
+    ;AllenL ISIS MC
+    isis_get
+    define iscur type a size 3
+
+    setact bkapchkf file bkapchkf
+
+    ;Delete any BKAPCHKF records
+    ;  with a blank vendor code at the outset.
+    prg_hdr "AP-H  Print Checks"
+    saves
+    msg 'Checking AP Check Run File...' nowait
+    num.zero = 0
+    while .t.
+       find F srch bkap.chk.vndcod
+       if flerr(fnum('bkapchkf')) <> 0
+          exit
+       endif
+       if bkap.chk.vndcod = ''
+          del bkapchkf nocnf
+          num.zero = num.zero + 1
+       else
+          exit
+       endif
+    endw
+    if num.zero > 0
+       msg 'Please note: There were '+trim(trim(str(num.zero),'L'),'T')+' entries in the AP Check Run file without a vendor code. These entries have been deleted to ensure proper operation.' windows 'info'
+    endif
+    clr BKAPCHKF buff
+    redsp
+
+    find F srch BKSY.ARINV.NUM  err EXIT NLOCK
+    clr BKSYMSTR rec
+
+    open BKYSMSTR lock N
+    find F srch BKYS.WONUM
+    clr BKYSMSTR rec
+
+    open BKPRTCFG ext "b"+ "" lock N
+    find F srch BKPRT.CFG.KEY  err NO.PRTCFG
+
+NO.PRTCFG:
+    clr BKPRTCFG rec
+    mount APCHOOSE type S
+    prg_hdr "AP-H  Print Checks [Laser Forms]"
+    fnc_list "F1 Help","Esc Exit"
+    trap F1 GOSUB SHOWHELP
+    trap ESC goto EXIT1
+
+START:
+    find F srch BKAP.CHK.VNDCOD  err NO.CHKS NLOCK
+
+    ;AllenL ISIS MC
+    bkap.vendcode =  BKAP.CHK.VNDCOD
+    find M srch bkap.vendcode
+
+    if BKAP.CHK.CHKACT=0 do
+       if zask("Warning: You have not printed the Pro-Forma Check Register. It is suggested that you do so prior to printing and posting the checks. This allows you to verify your entries. Do you want to print the Pro-Forma Check Register now?", .t.)
+          ;AjM 10/8/99 adding this so we don't log bkapchkf in bkapg
+          close bkapchkf
+          chain bksy.prgs.whr*"BKAPG"
+          open BKAPCHKF lock f err CHKF_ERR
+          quit
+       else
+          gosub ENT_CHKACT
+       endif
+    else
+        ;IM Code AGL 10/12/99
+        if isis.multi.curr = .t.
+          ;AllenL ISIS MC force bank accnt lookup. 
+          gosub ENT_CHKACT
+        else
+          CHKACT=BKAP.CHK.CHKACT
+          CHK_NAME=BKSY.CHK.NAME[CHKACT]
+        endif
+        ;
+    endif
+
+ENT_CHKNUM:
+    CHK.NUM=BKSY.CHK.NUM[CHKACT]
+    enter CHK.NUM upar GET_CHKACT noclickoff
+    BEG.CHK.num=CHK.NUM
+    CHK.DATE=TODAYS.DATE
+
+    ;AGL 1/18/00
+    findv M fnum ismcf.hndl key code val BKSY.CHK.chkcur[CHKACT]
+    iscur      = isis.mcf.code
+    is.symbol  = isis.mcf.symbol
+    is.sympos  = isis.mcf.sympos
+    is.dec     = isis.mcf.dec
+    is.symdesc = isis.mcf.symdsc
+
+
+ENT.DATE:
+    ;AJF 3/1/99 - new fiscal year/close functions
+    enter CHK.DATE vld (chk_fiscal_fnc(chk.date) .a. chk_glclose(chk.date)) noclickoff
+
+    ;FMZ 2/10/00 nTopMarg = val(bkys.yn[249])
+
+    TODAYS.DATE=CHK.DATE  
+
+    trap ESC goto EXIT
+    trap PG_BRK dflt
+
+    ;FMZ 8/2/98 Printing note.  Format number in AD-C is always #1 for
+    ;  laser checks whether DOS or WIN.  We don't have to worry about
+
+    ;  setting TEXT.MODE variable here as both DOS and WIN have their
+    ;  own independent printing sections.
+
+    ;pdm 4/11/98 - New RB printing
+    ;
+    if Windows() goto Print_Win
+
+EXIT:
+    trap PG_BRK ignr
+    PRTR_SETUP 'F'
+
+continue:
+    TOT.AMT=0
+    TOT.DAMT=0
+    TOT.RAMT=0
+    TOT.TOT=0
+    check_tag
+;    if zask("Did the check print properly?", .t.)
+       goto UPDATE.CHK
+;    endif
+
+EXIT1:
+    quit
+
+NO.VEND:
+    trap PG_BRK ignr
+    pon S
+    MESSAGE[1]="Vendor "+BKAP.CHK.VNDCOD+" was not found.  Please reenter "
+    MESSAGE[2]="and then rerun this program again.   "
+    NUM.MSG=2
+    msg_list msg_ptr,num.msg
+    quit
+
+UPDATE.CHK:
+    if sel.tcntr <= 0
+      goto exit1
+    endif
+    equ_xmt MONTH fld TODAYS.DATE
+    MONTH=MONTH + 1
+    ;CHK.NUM=BEG.CHK.num - 1
+    trap PG_BRK ignr
+    pon S
+    saves3 2
+    ;AGL 2/27/00 changed box to single line
+    window at 23,16 len 5 wdt 36 box 's'
+    pmsg "Processing Vendor: " at 2,2
+    find F srch BKAP.CHK.KEYF
+    ;AGL 6/27/00 find first record in the chk file with matching curr.
+    if isis.multi.curr = .t.
+      while .t.
+       if iscur <> bkap.chk.iscur
+         find N srch BKAPCHKF  err exit1 
+       else
+         exit
+       endif
+      endw
+    endif
+
+UP.CHK1:
+    ;AGL 6/22/00
+    if isis.multi.curr = .t.
+      while .t.
+       if iscur <> bkap.chk.iscur
+         find N srch BKAPCHKF  err exit1 
+       else
+         exit
+       endif
+      endw
+    endif
+    ;
+    VCODHLDR=BKAP.CHK.VNDCOD
+
+    ;AGL 6/4/01 ckeck if this Vendor was tagged as an ok check.
+    for(loop;1;x-1;1)
+      if chk.vend[loop] = VCODHLDR
+        if chk.sel[loop] <> chr(251)
+         find N srch BKAPCHKF  err exit1
+         ;msg "BAD VENDOR "+chk.vend[loop] windows 'i'
+         goto up.chk1
+        else
+          ;msg "OK VENDOR "+chk.vend[loop] windows 'i'
+          chk.num = tchk.num[loop] - 1
+          fexit
+        endif
+      endif
+    next
+
+    TOT.AMT=0
+    HOLD.TOT.AMT=0
+    TOT.DAMT=0
+    OUT.INV=0
+    OUT.CRD=0
+    ; Determine from the number of invoices paid per check
+    ; the number to add to the current check number to get
+    ; the check with an amount printed for this vendor.
+    rcn BKAPCHKF rcn REC.POS get
+    MCNTR=0
+    MCNTR2=0
+    while BKAP.CHK.VNDCOD=VCODHLDR
+
+        ;AGL 6/22/00
+        if isis.multi.curr = .t.
+          if iscur <> bkap.chk.iscur
+            find N srch BKAPCHKF  err exit1
+            loop
+          endif
+        endif
+        ;
+
+        MCNTR=MCNTR + 1
+        HOLD.TOT.AMT=HOLD.TOT.AMT + BKAP.CHK.AMTPD
+        ;FMZ 10/26/98 Because the max number of items allowed on one
+        ;  check recently changed from 14 to 13 in WIN, we need to also
+        ;  limit to 13 here in the posting or else, if a check had
+        ;  exactly 13 items, was throwing off the check counter in AD-C
+        ;  and putting the wrong check number in AP check history records
+        ;  for all checks after the void stub (with no record of the
+        ;  void stub).
+        if windows()
+           if MCNTR=13 do
+              MCNTR2=MCNTR2 + 1
+              MCNTR=0
+           endif
+        else
+           if MCNTR=14 do
+              MCNTR2=MCNTR2 + 1
+              MCNTR=0
+           endif
+        endif
+        ;end FMZ 10/26/98
+        find N srch BKAPCHKF  err UP.CHKN
+    endw
+UP.CHKN:
+    MCNTR2=MCNTR2 + 1
+    MCNTR3=MCNTR2 - 1
+    if MCNTR3>0 do
+        for(MCNTR4;1;MCNTR3;1)
+            BKGL.CHK.DATE=TODAYS.DATE
+            BKGL.CHK.NUM=CHK.NUM+MCNTR4
+            BKGL.CHK.TYPE="C"
+            BKGL.CHK.AMT=0
+            BKGL.CHK.NAME=VCODHLDR + " Voided ChkStub"
+            ;                  10    +  123456789112345  = 25 chrs
+            BKGL.CHK.CHKACT=CHKACT
+            if BKGL.CHK.NUM=0 then BKGL.CHK.NUM=BKGL.CHK.DATE
+            save BKGLCHK nocnf
+        next
+    endif
+    rcn BKAPCHKF rcn REC.POS set
+    CHK.NUM=CHK.NUM+MCNTR2
+    find R srch BKAP.VENDCODE rel BKAP.CHK.VNDCOD
+    pmsg BKAP.VENDCODE at 22,2
+UP.CHK1A:
+    BKAP.INVT.CODE=BKAP.VENDCODE
+    BKAP.INVT.NUM=BKAP.CHK.INVNUM
+    BKAP.INVT.DATE=BKAP.CHK.INVDTE
+    find M srch BKAP.INVT.KEY  err UP.CHK1B
+    BKAP.INVT.AMTRM=BKAP.INVT.AMTRM - (BKAP.CHK.AMTPD + BKAP.CHK.DISC)
+UP.CHK1B:
+    TOT.AMT=TOT.AMT + BKAP.CHK.AMTPD
+    TOT.DAMT=TOT.DAMT + BKAP.CHK.DISC
+    ;AGL 3/15/00
+    if BKAP.CHK.AMTPD>0 then OUT.INV=OUT.INV + is_mc_cvt(bkap.chk.iscur,bkap.is.mccode,bkap.invt.DATE,(BKAP.CHK.AMTPD + BKAP.CHK.DISC))
+    if BKAP.CHK.AMTPD<0 then OUT.CRD=OUT.CRD + is_mc_cvt(bkap.chk.iscur,bkap.is.mccode,bkap.invt.DATE,BKAP.CHK.AMTPD)
+    ;AGL 2/14/00
+    if isis.multi.curr = .t.
+      zret=is_curr_ctrl("AP",bkap.chk.iscur)
+    else
+      BKGL.ACCT=BKSY.AP.GLACT
+      BKGL.GLDPT=BKSY.AP.GLDPT
+    endif
+    POST.AMT=BKAP.CHK.AMTPD + BKAP.CHK.DISC
+    BKGL.TRN.DESC=BKAP.CHK.DESC
+    if HOLD.TOT.AMT>0 then gosub POST.TO.GL
+    if BKAP.CHK.DISC<>0 do
+        BKGL.ACCT=BKSY.AP.DISCGL
+        BKGL.GLDPT=BKSY.AP.DISCDPT
+        if isis.multi.curr = .t.
+          is.rte=bkap.invt.mcrat
+          POST.AMT=(BKAP.CHK.DISC * is.rte) * -1
+        else
+          POST.AMT=BKAP.CHK.DISC * -1
+        endif
+        BKGL.TRN.DESC="Discount Taken"
+        if HOLD.TOT.AMT>0 then gosub POST.TO.GL
+    endif
+
+;AllenL ISIS MC
+    if isis.multi.curr = .t.
+       findv M fnum ismcf.hndl key code val bkap.chk.iscur
+       if BKAP.CHK.DISC<>0 do
+          BKGL.ACCT= isis.mcf.glabs
+          BKGL.GLDPT= isis.mcf.gldbs
+          POST.AMT=((BKAP.CHK.DISC * is.rte) - BKAP.CHK.DISC)
+          BKGL.TRN.DESC="F/E Discount Taken"
+          if HOLD.TOT.AMT>0 then gosub POST.TO.GL
+       endif
+    endif
+
+    BKAP.INVT.CODE=BKAP.VENDCODE
+    BKAP.INVT.NUM=BKAP.CHK.INVNUM
+    BKAP.INVT.DATE=BKAP.CHK.INVDTE
+    find M srch BKAP.INVT.KEY  err UP.CHK2
+    BKAP.INVT.AMTRM=BKAP.INVT.AMTRM - (BKAP.CHK.AMTPD + BKAP.CHK.DISC)
+
+    ;AGL 11/22/99
+    if isis.multi.curr = .t.
+      is.rte = isis_mcrate(BKAP.CHK.INVDTE,bkap.chk.iscur)
+      ;store the exchange rate for futur ref.
+      bkap.invt.mcrat = is.rte
+      bkap.invt.mccod = bkap.chk.iscur
+    endif
+
+    save BKAPINVT nocnf
+UP.CHK2:
+    BKAP.CHK.NUM=CHK.NUM
+    BKAP.CHK.CHKDTE=CHK.DATE
+
+    ;FMZ 7/8/97 don't do noclr, this means that the 1st record gets
+    ;  overwritten by the next, and so on, eventually the only record that
+    ;  gets saved in BKAPCHKH is the last one.  Also will have to preserve
+    ;  the BKAPCHKF record number prior to the save/clear so that we can
+    ;  go back and delete it after the save.
+    ;
+    ;save BKAPCHKH nocnf noclr
+
+    rcn BKAPCHKF rcn REC.POS2 get
+    ;AGL 6/28/01
+    if isis.multi.curr = .t.
+     if iscur = bkap.chk.iscur 
+       BKAP.CHK.CHKACT=CHKACT
+       save BKAPCHKH nocnf
+     endif
+    else
+     BKAP.CHK.CHKACT=CHKACT
+     save BKAPCHKH nocnf
+    endif
+    ;
+    ;now reget record in BKAPCHKF
+    rcn BKAPCHKF rcn REC.POS2 set
+    ;end FMZ 7/8/97
+
+    del BKAPCHKF nocnf
+    find N srch BKAPCHKF err UP.CHK3A
+    ;AGL 6/22/00
+    if isis.multi.curr = .t.
+      while .t.
+       if iscur <> bkap.chk.iscur
+         find N srch BKAPCHKF  err UP.CHK3A
+       else
+         exit
+       endif
+      endw
+    endif
+    ;
+    if BKAP.CHK.VNDCOD<>VCODHLDR goto UP.CHK3
+    goto UP.CHK1A
+UP.CHK3A:
+    BKAP.CHK.VNDCOD=""
+UP.CHK3:
+    VCODHLDR=BKAP.CHK.VNDCOD
+    BKGL.ACCT=BKSY.CHK.CHKACT[CHKACT]
+    BKGL.GLDPT=BKSY.CHK.CHKDPT[CHKACT]
+    POST.AMT=TOT.AMT * -1
+    BKAP.CHK.INVNUM=str(CHK.NUM,10,0)
+    BKGL.TRN.DESC=BKAP.VENDNAME
+    BKAP.CHK.VNDCOD=BKAP.VENDCODE
+
+    if HOLD.TOT.AMT>0 then gosub POST.TO.GL
+;AllenL ISIS MC  
+    if isis.multi.cpay = .t.
+       findv M fnum ismcf.hndl key code val iscur
+;       msg isis.mcf.base windows 'i'
+;       msg isis.mcf.code windows 'i'
+       if isis.mcf.base = "Y"
+         goto base_skip
+       endif
+       BKGL.ACCT= isis.mcf.glais
+       BKGL.GLDPT= isis.mcf.gldis
+       is.rte=isis_mcrate(todays.date,iscur)
+
+;       msg "tot.amt = "+tot.amt windows 'i'
+;       msg "is.rte = "+is.rte windows 'i'
+;       msg "bkap.chk.iscur = "+bkap.chk.iscur windows 'i'
+;       msg "find = "+flerr(ismcf.hndl) windows 'i'
+
+       POST.AMT=((TOT.AMT * is.rte) - TOT.AMT) * -1
+       BKGL.TRN.DESC="F/E Gain/Loss "+BKAP.VENDNAME
+       if HOLD.TOT.AMT>0 then gosub POST.TO.GL
+
+       ;Now post to the TRANS acct.
+       BKGL.ACCT= isis.mcf.glabs
+       BKGL.GLDPT= isis.mcf.gldbs
+       POST.AMT=((TOT.AMT * is.rte) - TOT.AMT) 
+       BKGL.TRN.DESC="F/E "+BKAP.VENDNAME
+       if HOLD.TOT.AMT>0 then gosub POST.TO.GL
+       base_skip:
+    endif 
+
+    BKGL.CHK.DATE=TODAYS.DATE
+    BKGL.CHK.NUM=CHK.NUM
+    BKGL.CHK.TYPE="C"
+    BKGL.CHK.AMT=TOT.AMT
+    BKGL.CHK.NAME=BKAP.VENDNAME
+    BKGL.CHK.CHKACT=CHKACT
+    if BKGL.CHK.NUM=0 then BKGL.CHK.NUM=BKGL.CHK.DATE
+    save BKGLCHK nocnf
+    clr BKAPINVT buff
+    BKAP.INVT.CODE=BKAP.VENDCODE
+    BKAP.INVT.DATE=TODAYS.DATE
+    BKAP.INVT.NUM="CHK#"+str(CHK.NUM,6,0)
+    BKAP.INVT.AMT=TOT.AMT
+    BKAP.INVT.AMTRM=0
+    BKAP.INVT.DESC="Payment"
+    BKAP.INVT.TYPE="P"
+    BKAP.INVT.TERMN=1
+
+    ;AGL 11/22/99
+    if isis.multi.curr = .t.
+      is.rte = isis_mcrate(TODAYS.DATE,iscur)
+      ;store the exchange rate for futur ref.
+      bkap.invt.mcrat = is.rte
+      bkap.invt.mccod = iscur
+    endif
+
+    save BKAPINVT nocnf
+    BKAP.LASTPMT=TODAYS.DATE
+    BKAP.OUTINV=BKAP.OUTINV - OUT.INV
+    BKAP.OUT.CREDIT=BKAP.OUT.CREDIT + OUT.CRD
+    save BKAPVEND nocnf
+
+    find F srch BKSY.ARINV.NUM
+ ; msg "Chk.NUM to SYMSTR ="+CHK.NUM windows 'i'
+    BKSY.CHK.NUM[CHKACT]=CHK.NUM + 1
+    ;AGL 7/03/01 symstr record was being cleared before last check was being posted.
+    save BKSYMSTR nocnf noclr
+
+    BKAP.CHK.VNDCOD=VCODHLDR
+    if BKAP.CHK.VNDCOD<>"" do
+        BKAP.CHK.INVNUM=""
+        find G srch BKAP.CHK.VNDCOD  NLOCK
+        goto UP.CHK1
+    endif
+    zret=msg.chk.post(post.fail,post.other)  &&AJF 3/1/99
+
+    quit
+NO.CHKS:
+    trap PG_BRK ignr
+    pon S
+    MESSAGE[1]="There are no checks in the file to be printed."
+    MESSAGE[2]="Please run Pick Vouchers/Invoices To Pay first."
+    NUM.MSG=2
+    msg_list msg_ptr,num.msg
+    quit
+
+POST.TO.GL:
+    if POST.AMT=0 ret
+    if POST.AMT=-0 ret
+    ;AGL 2/14/00 bug list APH10
+    ;if BKAP.INVT.GLDPT<>"" then BKGL.GLDPT=BKAP.INVT.GLDPT
+    find M srch BKGL.KEY  err POST.GL.1
+    goto POST.GL.2
+POST.GL.1:
+    POST.OTHER=1
+    BKGL.ACCT=BKSY.GL.CLRING
+    BKGL.GLDPT=BKSY.GLDPT.CLR
+    find M srch BKGL.KEY  err POST.GL.1A
+    goto POST.GL.2
+POST.GL.1A:
+    POST.FAIL=1
+    ret
+POST.GL.2:
+    BKGL.TRN.TYPE="CD"
+    BKGL.TRN.DATE=TODAYS.DATE
+    ;AGL 9/26/00 Use the Check number as the reference to all GL postings.
+    ;BKGL.TRN.INVC=BKAP.CHK.INVNUM
+    BKGL.TRN.INVC=CHK.NUM
+    ;
+    BKGL.TRN.GLACCT=BKGL.ACCT
+    BKGL.TRN.GLDPT=BKGL.GLDPT
+    BKGL.TRN.CODE=BKAP.CHK.VNDCOD
+    BKGL.TRN.DC="D"
+    BKGL.TRN.ENTDTE=date()
+    if POST.AMT<0 then BKGL.TRN.DC="C"
+    BKGL.TRN.AMT = ABS(POST.AMT)
+    save BKGLTEMP nocnf
+    clr BKGLCOA buff
+    ret
+    ;
+    ;THE FOLLOWING WILL CONVERT THE CHECK AMOUNT TO AN ALPHA STATEMENT
+;THE FOLLOWING WILL CONVERT THE CHECK AMOUNT TO AN ALPHA STATEMENT
+GET.ALPHA:
+    REP2 =  ""
+    format TOT.RAMT recv DOLLAR.ALPHA nocma nofd
+    TMP.FLD=MID(DOLLAR.ALPHA,1,3)
+    if TMP.FLD=  "" goto CHK.THOUS
+    gosub PARSE.AMT
+    ALPHA.MILLS =  REP * " million"
+    REP2 =  ALPHA.MILLS
+CHK.THOUS:
+    TMP.FLD=MID(DOLLAR.ALPHA,4,3)
+    if TMP.FLD="" .o. val(tmp.fld)=0 goto CHK.HUNDS
+    gosub PARSE.AMT
+    ALPHA.THOUS =  REP * " thousand"
+    if REP2<>  "" then REP2 =  REP2 * " " + ALPHA.THOUS
+    if REP2=  "" then REP2 =  ALPHA.THOUS
+CHK.HUNDS:
+    TMP.FLD=MID(DOLLAR.ALPHA,7,3)
+    if TMP.FLD=  "" goto CHK.CENTS
+    gosub PARSE.AMT
+    ALPHA.HUNDS =  REP
+    if REP2<>  "" then REP2 =  REP2 * " " + ALPHA.HUNDS
+    if REP2=  "" then REP2 =  ALPHA.HUNDS
+CHK.CENTS:
+    SINGLE.CHR=MID(DOLLAR.ALPHA,11,2)
+    if isis.multi.curr = .t.
+      if TOT.RAMT>=  1 then REP2 =  REP2 * " and " + SINGLE.CHR + "/100 " + is.symdesc
+      if TOT.RAMT<  1 then REP2 =  " " + SINGLE.CHR + "/100 " + is.symdesc
+    else
+      if TOT.RAMT>=  1 then REP2 =  REP2 * " and " + SINGLE.CHR + "/100  dollars"
+      if TOT.RAMT<  1 then REP2 =  " " + SINGLE.CHR + "/100 dollars"
+    endif
+    ret
+PARSE.AMT:
+    REP =  ""
+    REP1 =  ""
+    SINGLE.CHR=MID(TMP.FLD,1,1)
+    SINGLE.NUM =  SINGLE.CHR
+    if SINGLE.NUM<>  0 then REP =  NUM[SINGLE.NUM] * " hundred"
+    SINGLE.CHR=MID(TMP.FLD,2,2)
+    SINGLE.NUM =  SINGLE.CHR
+    if SINGLE.NUM=  0 goto PARSE.AMT2
+    if SINGLE.NUM<=  20 then REP1 =  NUM[SINGLE.NUM]
+    if SINGLE.NUM>  20
+        SINGLE.CHR=MID(TMP.FLD,2,1)
+        SINGLE.NUM =  SINGLE.CHR
+        SINGLE.NUM =  SINGLE.NUM + 18
+        REP1 =  NUM[SINGLE.NUM]
+        SINGLE.CHR=MID(TMP.FLD,3,1)
+        SINGLE.NUM =  SINGLE.CHR
+        if SINGLE.NUM>  0 then REP1 =  REP1 * "-" + NUM[SINGLE.NUM]
+    endif
+PARSE.AMT2:
+    if REP1=  "" ret
+    if REP<>  "" then REP =  REP * " " + REP1
+    if REP=  "" then REP =  REP1
+    ret
+
+GET_CHKACT:
+    if .n. zask("The A/P Pro-forma Check Register was printed with "+CHK_NAME*" as the chosen bank account. Are you sure you want to change the bank account for printing and posting the A/P Checks?", .t.)
+       goto ENT_CHKNUM
+    endif
+    gosub ENT_CHKACT
+    goto ENT_CHKNUM
+
+ENT_CHKACT:
+    ; Choose the Checking Account.
+    define CHK_NAME type A size 30
+    define CHKACT type i size 2
+    bksy.ap.chkact = sel.chkact(bksy.ap.chkact,0,0,.t.)
+    CHKACT=BKSY.AP.CHKACT
+    CHK_NAME=BKSY.CHK.NAME[CHKACT]
+    ; Update each Pro-Forma record for the Checking Account chosen.
+    find F srch BKAP.CHK.KEYF  err ENT_CHK_Z
+UPD.CHKR:
+    ;AGL 6/22/00
+    if isis.multi.curr = .t.
+     if iscur = bkap.chk.iscur 
+       BKAP.CHK.CHKACT=CHKACT
+       save BKAPCHKF nocnf
+     endif
+    else
+     BKAP.CHK.CHKACT=CHKACT
+     save BKAPCHKF nocnf
+    endif
+    find N srch BKAPCHKF  err ENT_CHK_Z
+    goto UPD.CHKR
+ENT_CHK_Z:
+    ret
+
+{
+   cmd set_scrn_value
+         PRT.ADD1=BKAP.ADD1[1]  
+         PRT.ADD2=BKAP.ADD2[1]
+         prt.csz = bkap.city[1]*' '+bkap.state+' '+bkap.zip
+         prt.country = bkap.country[1]
+
+         if BKAP.ADD1[2]>"" do
+            PRT.ADD1=BKAP.ADD1[2]
+            PRT.ADD2=BKAP.ADD2[2]
+            prt.csz = bkap.city[2]*' '+bkap.rem.state+' '+bkap.rem.zip
+            prt.country = bkap.country[2]
+         endif
+         if PRT.ADD2="" do
+            prt.add2 = prt.csz
+            prt.csz  = prt.country
+            prt.country = ''
+         endif
+      ret
+}
+
+
+;***************  WINDOWS PRINTING  ******************************
+
+Print_Win:
+    define x type I size 5
+    x=1
+    ;
+    ;pdm 4/11/98 - New RB printing routines.
+    ;rather than try to make the new stuff fit the old I'm just putting new
+    ;code here.
+    ;
+    define vendname type a size 25
+    pset wdt 132 tlnes 66 plnes 60
+
+    ;AGL 01/03/01 Allow the user to change the RTM at print time. RTM_VALID
+    define rtm_name type a size 12
+    if bkys.yn[48] = '1' then  rtm_name = 'bkapha1.rtm'
+    if bkys.yn[48] = '4' then  rtm_name = 'bkapha2.rtm'
+    if bkys.yn[48] = '5' then  rtm_name = 'bkapha3.rtm'
+    RTM_VALID
+    ;
+    mount PRTINVB2 type R pto x
+
+    ;rb4 - 3/21/99
+    setup_print_buff pb_num 1 fldlst 'chk_date','tot_tot','tot_damt','tot_ramt','chk_amt_dol','bkap_vendname','prt_add1','prt_add2','prt_csz','vendname','rep2','chk_num','prt_country'
+
+    setup_print_buff pb_num 2 fldlst 'bkap_chk_invnum','bkap_chk_invdte','line_desc','tot_amt','bkap_chk_disc','bkap_chk_amtpd' link_to 1
+
+    setup_print_buff pb_num 3 fldlst 'bkap_chk_invnum','bkap_chk_invdte','line_desc','tot_amt','bkap_chk_disc','bkap_chk_amtpd' link_to 1
+
+    ;
+    ;NOTE:  We need to put new code in here for margin control.
+    ;
+
+    if print_cancel() goto exit1
+
+    find F srch BKAP.CHK.KEYF  err NO.CHKS NLOCK
+    ;AGL 6/27/00 find first record in the chk file with matching curr.
+    if isis.multi.curr = .t.
+      while .t.
+       if iscur <> bkap.chk.iscur
+         find N srch BKAPCHKF  err wfinish NLOCK
+       else
+         exit
+       endif
+      endw
+    endif
+    VCODHLDR=BKAP.CHK.VNDCOD
+    find R srch BKAP.VENDCODE rel BKAP.CHK.VNDCOD  err NO.VEND NLOCK
+    lnes=0 | tot.amt=0 | tot.damt=0 | tot.ramt=0
+win.START1:
+    ;AGL 2/28/00
+    if isis.multi.curr = .t.
+      if iscur <> bkap.chk.iscur then goto win.GET.NCUR
+    endif
+    TOT.AMT=BKAP.CHK.DISC+BKAP.CHK.AMTPD
+    TOT.DAMT=TOT.DAMT+BKAP.CHK.DISC
+    TOT.RAMT=TOT.RAMT+BKAP.CHK.AMTPD
+    TOT.TOT=TOT.TOT+TOT.AMT
+    LINE.DESC=BKAP.CHK.DESC
+    ;AGL 06/04/01 save the apchkf rec numb for use with the tagging.
+    rcn BKAPCHKF rcn chkf.rec[x] get
+    chkf.chk[x]=chk.num
+    x=x+1
+    ;
+    LNES=LNES+1
+    SCRN.INVNUM[LNES]=BKAP.CHK.INVNUM
+    SCRN.DATE[LNES]=BKAP.CHK.INVDTE
+    SCRN.DESC[LNES]=LINE.DESC
+    SCRN.TOT.AMT[LNES]=TOT.AMT
+    SCRN.DISC[LNES]=BKAP.CHK.DISC
+    SCRN.AMTPD[LNES]=BKAP.CHK.AMTPD
+    if LNES=13 do
+       ;5/25/99 code below commented out  5/24/99 change.  AjM
+       Set_scrn_value
+        ;
+        ;5/24/99 needed these here so the vendor name from the previous check
+        ;        isn't printed, rather than the current vendor   
+        ;        AjM
+        ;PRT.ADD1=BKAP.ADD1[1]
+        ;PRT.ADD2=BKAP.ADD2[1]
+        ;
+
+
+        chk.amt.dol="VOID"
+        rep2 = " **** VOID ****               **** VOID ****           **** VOID **** "
+        gosub prt_chk
+        ;
+    endif
+
+
+win.GET.NXT:
+    find N srch BKAPCHKF  err win.NO.MORE1 NLOCK
+    if BKAP.CHK.VNDCOD<>VCODHLDR goto win.NO.MORE
+    goto win.START1
+
+
+WIN.GET.NCUR:
+    ;10/02/00 MAC Changed the following lines to return the
+    ;             check with matching currency.
+      
+      while .t.
+       if iscur <> bkap.chk.iscur
+         find N srch BKAPCHKF  err WIN.NO.MORE1 NLOCK
+       else
+         exit
+       endif
+      endw
+        
+    if BKAP.CHK.VNDCOD<>VCODHLDR goto win.NO.MORE
+    goto win.START1
+
+win.NO.MORE1:
+    BKAP.CHK.VNDCOD=""
+win.NO.MORE:
+    VCODHLDR=BKAP.CHK.VNDCOD
+    ;
+    ; No Check Printed for Credits Amounts [<=(0)].
+    if TOT.RAMT<=0 do
+        ;
+        chk.amt.dol="VOID"
+        rep2=" **** VOID ****               **** VOID ****           **** VOID **** "
+    endif
+    ; Normal Print Check routine.
+    if TOT.RAMT>0 do
+        ;
+        if isis.multi.curr = .t.
+          format TOT.RAMT nofd
+        else
+          format TOT.RAMT recv chk.amt.dol
+          fill chk.amt.dol lead chr "$"
+        endif
+        gosub GET.ALPHA ;returns with alpha in REP2.
+        rep2='Pay '+rep2
+    endif
+    Set_scrn_value && 5/25/99 replacing code below AjM.
+
+    gosub prt_chk
+    ;
+    if VCODHLDR=""
+        wfinish:
+        ;we're done.
+
+        ;rb4 - 3/21/99
+        win_print rtm_name
+        ;
+
+        goto continue
+    endif
+
+    ;10/02/00 MAC Added the following loop to advance to the next
+    ;             check with matching currency.
+    if isis.multi.curr = .t.
+        while .t.
+           if iscur <> bkap.chk.iscur
+             find N srch BKAPCHKF err wfinish NLOCK
+             VCODHLDR=BKAP.CHK.VNDCOD
+           else         
+             exit
+           endif
+         endw
+    ;
+    endif
+
+    BKAP.CHK.VNDCOD=VCODHLDR
+    BKAP.CHK.INVNUM=""
+    find G srch BKAP.CHK.VNDCOD NLOCK
+    find R srch BKAP.VENDCODE rel BKAP.CHK.VNDCOD  err NO.VEND NLOCK
+
+    TOT.AMT=0
+    TOT.DAMT=0
+    TOT.RAMT=0
+    TOT.TOT=0
+    LNES=0
+    goto win.START1
+
+
+prt_chk:         
+    ;
+    ;here's where the actual information will be 'printed' in the Windows
+    ;version.  This will keep everything in a nice format.
+    ;
+    ;rb4 - 3/21/99
+
+    ;AGL 1/18/00
+    if isis.multi.curr = .t.
+       chk.amt.dol = iif(is.sympos="F",is.symbol*trim(str(tot.ramt,15,is.dec),'L'),trim(str(tot.ramt,15,is.dec),'L')*is.symbol)
+    endif
+     output_print_data pb_num 1 fldlst chk.date,tot.tot,tot.damt,tot.ramt,chk.amt.dol,bkap.vendname,prt.add1,prt.add2,prt.csz,prt.country,rep2,chk.num,prt.country
+
+    ;pfmt 2 thru 9 bookmark
+    ;pfmt 11 bookmark
+    for(cntr;1;lnes;1)
+        bkap.chk.invnum=scrn.invnum[cntr]
+        bkap.chk.invdte=scrn.date[cntr]
+        line.desc=scrn.desc[cntr]
+        tot.amt=scrn.tot.amt[cntr]
+        bkap.chk.disc=scrn.disc[cntr]
+        bkap.chk.amtpd=scrn.amtpd[cntr]
+
+        ;rb4 - 03/21/99
+        output_print_data pb_num 2 fldlst bkap.chk.invnum,bkap.chk.invdte,line.desc,tot.amt,bkap.chk.disc,bkap.chk.amtpd
+        ;pfmt 1 bookmark
+
+    next
+    for(cntr;1;lnes;1)
+        bkap.chk.invnum=scrn.invnum[cntr]
+        bkap.chk.invdte=scrn.date[cntr]
+        line.desc=scrn.desc[cntr]
+        tot.amt=scrn.tot.amt[cntr]
+        bkap.chk.disc=scrn.disc[cntr]
+        bkap.chk.amtpd=scrn.amtpd[cntr]
+
+
+        ;rb4 - 03/21/99
+        output_print_data pb_num 3 fldlst bkap.chk.invnum,bkap.chk.invdte,line.desc,tot.amt,bkap.chk.disc,bkap.chk.amtpd
+        ;pfmt 10 bookmark
+
+    next
+    ;
+    ;
+    updta SCRN.INVNUM, scrn.date, scrn.desc, scrn.tot.amt, scrn.disc, scrn.amtpd clr times 14
+    CHK.NUM=CHK.NUM+1
+    lnes=0
+    ret
+
+
+;End of Prg
+\R5PRTINVB
+ 26NONE          NONE          E255100151LY 54                                                  55 51                                                                                                                                                                 52 54                                                                                !
+Page Header --------------------------------------------------------------------Page Header --------------------------------------------------------------------Page Header --------------------------------------------------------------------Page Header ---ú
+Block 1 Header -----------------------------------------------------------------Block 1 Header -----------------------------------------------------------------Block 1 Header -----------------------------------------------------------------Block 1 Header ý
+Block 1 Body -------------------------------------------------------------------Block 1 Body -------------------------------------------------------------------Block 1 Body -------------------------------------------------------------------Block 1 Body --þ
+      
+                  TOTALS ->          
+                                                     
+        
+        
+        
+        
+        
+
+REFERENCE   DATE   DESCRIPTION                  AMOUNT    DISCOUNT  NET AMOUNT
+CHECK #     DATE                                  GROSS   DISCOUNT  CHECK AMOUNT
+
+
+
+
+
+
+
+
+
+
+
+
+
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+       
+
+
+
+
+
+
+CHECK #     DATE  VENDOR                          GROSS   DISCOUNT  CHECK AMOUNT
+            
+
+
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -ÿ
+Report Total -------------------------------------------------------------------Report Total -------------------------------------------------------------------Report Total -------------------------------------------------------------------Report Total --û
+Report End ---------------------------------------------------------------------Report End ---------------------------------------------------------------------Report End ---------------------------------------------------------------------Report End ----ü
+\COLOR
+  0  1  3  1255
+  1  4 51  1255
+  0 52 54  1255
+  1 55100  1255
+\FIELDS
+BKAP.CHK.INVNUM  0  1  4  2 0 0   10    0    0ABKAPCHKF
+BKAP.CHK.INVDTE  0 11  4  2 0 0    8    0    0DBKAPCHKF
+LINE.DESC        0 20  4  2 0 0   25    0    0AMEMORY
+TOT.AMT          0 46  4  2 2 0   11    0    0NMEMORY
+BKAP.CHK.DISC    0 59  4  2 2 0    8    0    0NBKAPCHKF
+BKAP.CHK.AMTPD   0 69  4  2 2 0   12    0    0NBKAPCHKF
+CHK.NUM          0  1  5  0 0 0    6    0    0NMEMORY
+CHK.DATE         0  9  5  1 0 0    8    0    0SMEMORY
+TOT.TOT          0 46  5  1 2 0   11    0    0NMEMORY
+TOT.DAMT         0 60  5  1 2 0    6    0    0NMEMORY
+TOT.RAMT         0 69  5  1 2 0   11    0    0NMEMORY
+CHK.DATE         0 49  6  1 0 0    8    0    0SMEMORY
+CHK.NUM          0 60  6  0 0      6    0    0NMEMORY
+CHK.AMT.DOL      0 68  6  1 0 0   12    0    0AMEMORY
+BKAP.VENDNAME    0  9  7  1 0     30    0    0ABKAPVEND                                        R
+PRT.ADD1            9  8  1 0     30    0    0ADEFINED                                         R
+PRT.ADD2            9  9  1 0     40    0    0ADEFINED                                         R
+PRT.CSZ          0  9 10  1 0     40    0    0ADEFINED                                         R
+PRT.COUNTRY         9 11  0 0     30    0    0ADEFINED                                         R
+SCRN.INVNUM      0  1 28  0 0 0   10    1   14AMEMORY
+SCRN.DATE        0 11 28  0 0 0    8    1   14SMEMORY
+SCRN.DESC        0 20 28  0 0 0   25    1   14AMEMORY
+SCRN.TOT.AMT     0 46 28  0 2 0   11    1   14NMEMORY
+SCRN.DISC        0 59 28  0 2 0    7    1   14NMEMORY
+SCRN.AMTPD       0 69 28  0 2 0   11    1   14NMEMORY
+SCRN.INVNUM      0  1 29  0 0 0   10    2   14AMEMORY
+SCRN.DATE        0 11 29  0 0 0    8    2   14SMEMORY
+SCRN.DESC        0 20 29  0 0 0   25    2   14AMEMORY
+SCRN.TOT.AMT     0 46 29  0 2 0   11    2   14NMEMORY
+SCRN.DISC        0 59 29  0 2 0    7    2   14NMEMORY
+SCRN.AMTPD       0 69 29  0 2 0   11    2   14NMEMORY
+SCRN.INVNUM      0  1 30  0 0 0   10    3   14AMEMORY
+SCRN.DATE        0 11 30  0 0 0    8    3   14SMEMORY
+SCRN.DESC        0 20 30  0 0 0   25    3   14AMEMORY
+SCRN.TOT.AMT     0 46 30  0 2 0   11    3   14NMEMORY
+SCRN.DISC        0 59 30  0 2 0    7    3   14NMEMORY
+SCRN.AMTPD       0 69 30  0 2 0   11    3   14NMEMORY
+SCRN.INVNUM      0  1 31  0 0 0   10    4   14AMEMORY
+SCRN.DATE        0 11 31  0 0 0    8    4   14SMEMORY
+SCRN.DESC        0 20 31  0 0 0   25    4   14AMEMORY
+SCRN.TOT.AMT     0 46 31  0 2 0   11    4   14NMEMORY
+SCRN.DISC        0 59 31  0 2 0    7    4   14NMEMORY
+SCRN.AMTPD       0 69 31  0 2 0   11    4   14NMEMORY
+SCRN.INVNUM      0  1 32  0 0 0   10    5   14AMEMORY
+SCRN.DATE        0 11 32  0 0 0    8    5   14SMEMORY
+SCRN.DESC        0 20 32  0 0 0   25    5   14AMEMORY
+SCRN.TOT.AMT     0 46 32  0 2 0   11    5   14NMEMORY
+SCRN.DISC        0 59 32  0 2 0    7    5   14NMEMORY
+SCRN.AMTPD       0 69 32  0 2 0   11    5   14NMEMORY
+SCRN.INVNUM      0  1 33  0 0 0   10    6   14AMEMORY
+SCRN.DATE        0 11 33  0 0 0    8    6   14SMEMORY
+SCRN.DESC        0 20 33  0 0 0   25    6   14AMEMORY
+SCRN.TOT.AMT     0 46 33  0 2 0   11    6   14NMEMORY
+SCRN.DISC        0 59 33  0 2 0    7    6   14NMEMORY
+SCRN.AMTPD       0 69 33  0 2 0   11    6   14NMEMORY
+SCRN.INVNUM      0  1 34  0 0 0   10    7   14AMEMORY
+SCRN.DATE        0 11 34  0 0 0    8    7   14SMEMORY
+SCRN.DESC        0 20 34  0 0 0   25    7   14AMEMORY
+SCRN.TOT.AMT     0 46 34  0 2 0   11    7   14NMEMORY
+SCRN.DISC        0 59 34  0 2 0    7    7   14NMEMORY
+SCRN.AMTPD       0 69 34  0 2 0   11    7   14NMEMORY
+SCRN.INVNUM      0  1 35  0 0 0   10    8   14AMEMORY
+SCRN.DATE        0 11 35  0 0 0    8    8   14SMEMORY
+SCRN.DESC        0 20 35  0 0 0   25    8   14AMEMORY
+SCRN.TOT.AMT     0 46 35  0 2 0   11    8   14NMEMORY
+SCRN.DISC        0 59 35  0 2 0    7    8   14NMEMORY
+SCRN.AMTPD       0 69 35  0 2 0   11    8   14NMEMORY
+SCRN.INVNUM      0  1 36  0 0 0   10    9   14AMEMORY
+SCRN.DATE        0 11 36  0 0 0    8    9   14SMEMORY
+SCRN.DESC        0 20 36  0 0 0   25    9   14AMEMORY
+SCRN.TOT.AMT     0 46 36  0 2 0   11    9   14NMEMORY
+SCRN.DISC        0 59 36  0 2 0    7    9   14NMEMORY
+SCRN.AMTPD       0 69 36  0 2 0   11    9   14NMEMORY
+SCRN.INVNUM      0  1 37  0 0 0   10   10   14AMEMORY
+SCRN.DATE        0 11 37  0 0 0    8   10   14SMEMORY
+SCRN.DESC        0 20 37  0 0 0   25   10   14AMEMORY
+SCRN.TOT.AMT     0 46 37  0 2 0   11   10   14NMEMORY
+SCRN.DISC        0 59 37  0 2 0    7   10   14NMEMORY
+SCRN.AMTPD       0 69 37  0 2 0   11   10   14NMEMORY
+SCRN.INVNUM      0  1 38  0 0 0   10   11   14AMEMORY
+SCRN.DATE        0 11 38  0 0 0    8   11   14SMEMORY
+SCRN.DESC        0 20 38  0 0 0   25   11   14AMEMORY
+SCRN.TOT.AMT     0 46 38  0 2 0   11   11   14NMEMORY
+SCRN.DISC        0 59 38  0 2 0    7   11   14NMEMORY
+SCRN.AMTPD       0 69 38  0 2 0   11   11   14NMEMORY
+SCRN.INVNUM      0  1 39  0 0 0   10   12   14AMEMORY
+SCRN.DATE        0 11 39  0 0 0    8   12   14SMEMORY
+SCRN.DESC        0 20 39  0 0 0   25   12   14AMEMORY
+SCRN.TOT.AMT     0 46 39  0 2 0   11   12   14NMEMORY
+SCRN.DISC        0 59 39  0 2 0    7   12   14NMEMORY
+SCRN.AMTPD       0 69 39  0 2 0   11   12   14NMEMORY
+SCRN.INVNUM      0  1 40  0 0 0   10   13   14AMEMORY
+SCRN.DATE        0 11 40  0 0 0    8   13   14SMEMORY
+SCRN.DESC        0 20 40  0 0 0   25   13   14AMEMORY
+SCRN.TOT.AMT     0 46 40  0 2 0   11   13   14NMEMORY
+SCRN.DISC        0 59 40  0 2 0    7   13   14NMEMORY
+SCRN.AMTPD       0 69 40  0 2 0   11   13   14NMEMORY
+SCRN.INVNUM      0  1 41  0 0 0   10   14   14AMEMORY
+SCRN.DATE        0 11 41  0 0 0    8   14   14SMEMORY
+SCRN.DESC        0 20 41  0 0 0   25   14   14AMEMORY
+SCRN.TOT.AMT     0 46 41  0 2 0   11   14   14NMEMORY
+SCRN.DISC        0 59 41  0 2 0    7   14   14NMEMORY
+SCRN.AMTPD       0 69 41  0 2 0   11   14   14NMEMORY
+CHK.NUM          0  1 49  0 0 0    6    0    0NMEMORY
+CHK.DATE         0  9 49  0 0 0    8    0    0SMEMORY
+PRT_ONLY           19 49  0 0     25    0    0X                                                Xmid(bkap.vendname,1,25)
+TOT.TOT          0 46 49  0 2 0   11    0    0NMEMORY
+TOT.DAMT         0 60 49  0 2 0    6    0    0NMEMORY
+TOT.RAMT         0 69 49  0 2 0   11    0    0NMEMORY
+CHK.NUM          0  1 50  1 1      6    0    0NMEMORY
+\FILES
+BKAPCHKFBKAPCHKF  4
+BKAPVENDBKAPVEND  1
+\INCLUDE
+\KEY
+
+\EXP_BLK
+\IF_PRT
+\\
+\R5PRTINVB2
+ 26NONE          NONE          E255100151LY 17                                                  55 51                                                                                                                                                                 52 54                                                                                !
+Page Header --------------------------------------------------------------------Page Header --------------------------------------------------------------------Page Header --------------------------------------------------------------------Page Header ---ú
+Block 1 Header -----------------------------------------------------------------Block 1 Header -----------------------------------------------------------------Block 1 Header -----------------------------------------------------------------Block 1 Header ý
+Block 1 Body -------------------------------------------------------------------Block 1 Body -------------------------------------------------------------------Block 1 Body -------------------------------------------------------------------Block 1 Body --þ
+      
+                  TOTALS ->          
+                                                     
+
+        
+        
+        
+        
+            
+      
+        
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -ÿ
+Report Total -------------------------------------------------------------------Report Total -------------------------------------------------------------------Report Total -------------------------------------------------------------------Report Total --û
+Report End ---------------------------------------------------------------------Report End ---------------------------------------------------------------------Report End ---------------------------------------------------------------------Report End ----ü
+\COLOR
+  0  1  3  1255
+  1  4 14  1255
+  0 15 17  1255
+  1 18100  1255
+\FIELDS
+BKAP.CHK.INVNUM  0  1  4  2 0 0   10    0    0ABKAPCHKF
+BKAP.CHK.INVDTE  0 11  4  2 0 0    8    0    0DBKAPCHKF
+LINE.DESC        0 20  4  2 0 0   25    0    0AMEMORY
+TOT.AMT          0 46  4  2 2 0   11    0    0NMEMORY
+BKAP.CHK.DISC    0 59  4  2 2 0    8    0    0NBKAPCHKF
+BKAP.CHK.AMTPD   0 69  4  2 2 0   12    0    0NBKAPCHKF
+CHK.NUM          0  1  5  0 0 0    6    0    0NMEMORY
+CHK.DATE         0  9  5  0 0 0    8    0    0SMEMORY
+TOT.TOT          0 46  5  1 2 0   11    0    0NMEMORY
+TOT.DAMT         0 60  5  1 2 0    6    0    0NMEMORY
+TOT.RAMT         0 69  5  1 2 0   11    0    0NMEMORY
+CHK.DATE         0 49  6  1 0 0    8    0    0SMEMORY
+CHK.NUM          0 60  6  1 0      6    0    0NMEMORY
+CHK.AMT.DOL      0 68  6  1 0 0   12    0    0AMEMORY
+REP2             0  1  7  1 0    100    0    0ADEFINED                                         R
+BKAP.VENDNAME    0  9  8  1 0     30    0    0ABKAPVEND                                        R
+PRT.ADD1            9  9  1 0     30    0    0ADEFINED                                         R
+PRT.ADD2            9 10  1 0     40    0    0ADEFINED                                         R
+PRT.CSZ          0  9 11  1 0     40    0    0ADEFINED                                         R
+CHK.NUM          0  1 12  0 0 0    6    0    0NMEMORY
+CHK.DATE         0  9 12  0 0 0    8    0    0SMEMORY
+VENDNAME           19 12  1 0     25    0    0AMEMORY                                          R
+TOT.TOT          0 46 12  0 2 0   11    0    0NMEMORY
+TOT.DAMT         0 60 12  0 2 0    6    0    0NMEMORY
+TOT.RAMT         0 69 12  0 2 0   11    0    0NMEMORY
+BKAP.CHK.INVNUM  0  1 13  3 0     10    0    0ABKAPCHKF
+BKAP.CHK.INVDTE  0 11 13  3 0      8    0    0DBKAPCHKF
+LINE.DESC        0 20 13  3 0     25    0    0AMEMORY
+TOT.AMT          0 46 13  3 2     11    0    0NMEMORY
+BKAP.CHK.DISC    0 59 13  3 2      8    0    0NBKAPCHKF
+BKAP.CHK.AMTPD   0 69 13  3 2     12    0    0NBKAPCHKF
+PRT.COUNTRY      0  9 14  0 0     30    0    0ADEFINED                                         R
+\FILES
+BKAPCHKFBKAPCHKF  8
+BKAPVENDBKAPVEND  1
+\INCLUDE
+\KEY
+
+\EXP_BLK
+\IF_PRT
+\\
+\S5APCHOOSE
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+
+
+
+                      ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+                      ³                                  ³
+                      ³  Bank Account                    ³
+                      ³    ³
+                      ³                                  ³
+                      ³  Beginning Check No.       ³
+                      ³            Check Date    ³
+                      ³                                  ³
+                      ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1 25 80
+\FIELDS
+CHK_NAME         0 26  8  0  0 0   30    0    0A RGMEMORY  NNN    0
+CHK.NUM          0 50 10  0  0 0    6    0    0N RGDEFINED NN     6
+CHK.DATE         0 48 11  0  0 0    8    0    0S RGMEMORY  NNN    0
+\FILES
+\INCLUDE
+\KEY
+\\

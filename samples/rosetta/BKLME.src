@@ -1,0 +1,914 @@
+***Program name:
+;BKLME.SRC
+;
+;       Copyright DBA Software, Inc. 1992-1999 All Rights Reserved
+;   Portions Copyright 1985-1995 Business Tools, Inc.  All Rights Reserved
+; This source code is CONFIDENTIAL PROPRIETARY information of DBA Software, Inc.
+
+***Program desc:
+;
+***History
+;Cvtd from TAS-Pro 3.0 edt to 5.0 src on 07/06/97 at 11:50 a
+;
+;Changed from BKMMG.src to BKDME.src on 12/30/99
+;Changed from bkdme.src to bklme.src on 3/30/00
+***Chained to from:
+;
+***Modification summary
+;12/14/99 AjM This program has international date problems.
+;3/20/00  AjM taking out double borders and opening bkysmstr and bksymstr
+;             with functions.
+;3/31/00  AjM Changing program name, and making the prg_hdrs variable so
+;             they are easier to change.
+;4/6/00   AjM integrated 3/30/00 version with this one
+;9/28/00  AGL added types O&C and fixed avg costing calcs
+;07/03/01 AGL do not consolidate lot or serial info.
+;
+#UDX  ;allow both UDFs and UDCs in this program
+#LIB DBA
+#LIB lookups
+#LIB WINDOWS
+#inc isdef
+#INC HELPSCRN
+Setup_color
+Color Array Norm
+;
+    ;
+    ;>> Added BKIC.PROD.NOTE to report header --
+    ;>> Added alternate product description look-up --
+    ;
+    define SORT.DATE type A size 2 array 3
+    define DATE.S type d size 8
+    define DATE.SORT type n size 8
+    define CNTR type n size 2
+    define SELECT_THRU1 type A size 15
+    define ORDER type A size 10
+    define TOT.UNIT type n size 12 dec 2
+    define NET.UNIT type n size 12 dec 2
+    define TOT.COST type n size 12 dec 4
+    define MEMORY1 type A size 15 array 2
+    define MEMORY2 type A size 12
+    define MEMORY3 type A size 30
+    define TYPE type A size 9
+    define TOT_RECORDS type n size 8
+    define PRT_WHR type A size 1
+    define which type A size 1
+    define PAGE type n size 5
+    define SELECT_FROM1 type A size 15
+    define SELECT_THRU1 type A size 15
+    define SELECT_FROM2 type d size 8
+    define SELECT_THRU2 type d size 8
+    define BREAK_FIELD type A size 15 array 3
+    define DESC type A size 30 array 2
+    define TEMP.PRE type A size 6
+    define TEMP.SUF type A size 3
+    define TYPE_OK type n size 1
+    define MEM.LOC type A size 4 array 2
+    define SORT.T type A size 13
+    ;9/28/00  AGL added types O&C and fixed avg costing calcs
+    define QTY.I type n size 12 dec 2 ARRAY 2
+    define QTY.A type n size 12 dec 2 ARRAY 2
+    define QTY.J type n size 12 dec 2 ARRAY 2
+    define QTY.P type n size 12 dec 2 ARRAY 2
+    define QTY.W type n size 12 dec 2 ARRAY 2
+    define QTY.S type n size 12 dec 2 ARRAY 2
+    define QTY.Q type n size 12 dec 2 ARRAY 2
+    define QTY.O type n size 12 dec 2 ARRAY 2
+    define QTY.C type n size 12 dec 2 ARRAY 2
+    define COST.I type n size 10 dec 4 ARRAY 2
+    define COST.A type n size 10 dec 4 ARRAY 2
+    define COST.J type n size 10 dec 4 ARRAY 2
+    define COST.P type n size 10 dec 4 ARRAY 2
+    define COST.W type n size 10 dec 4 ARRAY 2
+    define COST.S type n size 10 dec 4 ARRAY 2
+    define COST.Q type n size 10 dec 4 ARRAY 2
+    define COST.O type n size 10 dec 4 ARRAY 2
+    define COST.C type n size 10 dec 4 ARRAY 2
+    ;
+    define SAVE.QTY type n size 12 dec 2
+    define MAKE.QTYOH type A size 1
+    define TODAYS.DATE type d size 8
+    define NET.QTY.YN type A size 1
+    define BKIC.LOC type R size 4
+
+    ;3/30/00 new define
+    define hdr_start type a size 8
+    ;
+    for(isct;1;2;1)
+      QTY.A[isct]=0
+      QTY.P[isct]=0
+      QTY.W[isct]=0
+      QTY.J[isct]=0
+      QTY.I[isct]=0
+      QTY.S[isct]=0
+      QTY.Q[isct]=0
+      QTY.O[isct]=0
+      QTY.C[isct]=0
+      COST.A[isct]=0
+      COST.P[isct]=0
+      COST.W[isct]=0
+      COST.J[isct]=0
+      COST.I[isct]=0
+      COST.S[isct]=0
+      COST.Q[isct]=0
+      COST.O[isct]=0
+      COST.C[isct]=0
+    next
+    ;
+    open MTICMSTR lock N
+    open INVTXN lock N
+    open BKAPVEND lock N
+    open BKICMSTR lock N
+
+    ;3/20/00 new functions.
+    ;open BKSYMSTR lock N
+    ;find F srch BKSY.ARINV.NUM
+    ;clr BKSYMSTR rec
+    if .n. open_symstr("N") then quit
+    ;
+
+    ;3/30/00 AjM setting Hdr_start
+    hdr_start = "LM-E"
+    ;
+    trap ESC GOTO EXIT3
+    ;
+    mount SELECT type S
+    PRG_HDR hdr_start*"  Consolidate Inventory Transactions"
+START:
+    enter select_from1 pre SETUP_INV('F') upar START UP
+    enter select_thru1 pre SETUP_INV('T') dflt select_from1 UP vld select_thru1>=select_from1 vldm 'The thru value cannot be less than the from value.'
+        {
+        func SETUP_INV which
+            fnc_list "F1 Help,F2 Lookup,F10 Process","Esc Exit"
+            if which = 'F' DO
+                trap F2 GOSUB DSP_PROD1
+            else
+                trap F2 GOSUB DSP_PROD2
+            endif
+            ret .t.
+        }
+
+    enter SELECT_FROM2 pre general2_pre()
+    enter SELECT_THRU2 pre general2_pre() dflt SELECT_FROM2 vld select_thru2>=select_from2 vldm 'The thru value cannot be less than the from value.'
+
+    if TYPE="" THEN TYPE = "ASPJWIQOC"
+    enter TYPE mask "ASPJWIQOC" help HELP.TYPE pre general2_pre() UP
+
+process:
+    fnc_list 'F1 Help','Esc Exit'
+    trap f2,f10 dflt
+    ;
+    if TYPE="" THEN TYPE = "ASPJWIQOC"
+    ;
+    trap RSRCH gosub DO_RELATED
+    ;AGL 6/21/01 change todays.date to deflt to thru select date.
+    if TODAYS.DATE=0 then TODAYS.DATE=SELECT_THRU2
+    enter TODAYS.DATE NOCLICKOFF
+    if TODAYS.DATE=0 
+     TODAYS.DATE=date()
+     if .n. zask("You will consolidate all transactions from the date specified thru to today. Do you wish to continue?",.t.)
+       quit
+     endif
+    endif
+    ;
+    if TYPE="" THEN TYPE = "ASPJWIQOC"
+    ;MESSAGE[1]="Do you wish to set Starting InvTxn Qty equal to O/H Qty? [Y/N]:"
+    ;NUM.MSG=1
+    ;ENT.MASK="YN"
+    OK="N"
+    MAKE.QTYOH=OK
+    ;if MAKE.QTYOH="N" do
+        ;MESSAGE[1]="Do you wish to update O/H qty with the Inv Transactions NetQty? [Y/N]:"
+        ;NUM.MSG=1
+        ;ENT.MASK="YN"
+        OK = "N"
+        NET.QTY.YN=OK
+    ;endif
+    ;
+    BKIC.PROD.CODE=SELECT_FROM1
+    find G srch BKIC.PROD.CODE  err NO_RECS
+    ;
+    trap INT goto ABORT_RPT
+    define PRT_WHR type A size 1
+    define PRT_CHR type A size 1
+    define WIDE_YN type A size 1
+    define LIST type A size 1
+    define DISK.FILE type A size 40
+    define FILE.CNTR type A size 4
+    BREAK_FIELD[1]=BKIC.PROD.CODE
+    DESC[1]=BKIC.PROD.DESC
+    DESC[2]=BKIC.PROD.NOTE
+VIEW:
+    ;
+    ;3/20/00 we don't save to this and we will change the open to a function
+    ;open BKYSMSTR lock R
+    ;find F srch BKYS.WONUM
+    ;clr BKYSMSTR rec
+    if .n. open_ysmstr("N") then quit
+    ;
+
+    define FILE.CNTR type A size 4
+
+    trap INT goto ABORT_RPT
+    trap PG_BRK ignr
+    define LIST type A size 1
+    define DISK.FILE type A size 40
+    mount MINVR type R pto L
+    if print_cancel() GOTO FINISH
+    prtr_setup 'w'
+    ;
+    PRT_WHR=pwhr()
+    trap PG_BRK gosub PRT_TOF
+    gosub PRT_TOF
+    TOT_RECORDS=0
+    TOT.COST=0
+    BREAK_FIELD[1]=BKIC.PROD.CODE
+    DESC[1]=BKIC.PROD.DESC
+    DESC[2]=BKIC.PROD.NOTE
+    find R srch MTIT.CODE rel BKIC.PROD.CODE  err FIND_NEXT2 NOCLR
+    find R srch MTIC.PROD.CODE rel BKIC.PROD.CODE  err FIND_NEXT2 NOCLR
+PRT_BKIC:
+    if SELECT_FROM1<>"" then if BKIC.PROD.CODE<SELECT_FROM1 goto FIND_NEXT2
+    if SELECT_THRU1<>"" then if BKIC.PROD.CODE>SELECT_THRU1 goto FINISH
+
+PRT_DETAIL:
+    ;AGL 07/03/01 do not consolidate lot or serial info.
+    if mtit.lot <> "" goto find_next
+    if mtit.serial <> "" goto find_next
+    ;
+    if MTIT.CODE<>BKIC.PROD.CODE goto CHK_BREAK
+    if SELECT_FROM2<>0 then if MTIT.DATE<SELECT_FROM2 goto NUNIT
+    if SELECT_THRU2<>0 then if MTIT.DATE>SELECT_THRU2 goto NUNIT
+    TYPE_OK=0
+    TYPE_OK=loc(MTIT.TYPE,TYPE,1,,)
+    if TYPE_OK=0 goto FIND_NEXT
+    format MTIT.WOSUF recv TEMP.SUF nocma nofd neg L
+    format MTIT.WOPRE recv TEMP.PRE nocma nofd neg L
+    ORDER=TEMP.PRE * "-" * TEMP.SUF
+    ORDER=just(ORDER,"L")
+    if MTIT.TYPE="A" then MEMORY1[1]="ADJUSTMT"
+    if MTIT.TYPE="S" then MEMORY1[1]="SHIPMENT"
+    if MTIT.TYPE="P" then MEMORY1[1]="PO RECPT"
+    if MTIT.TYPE="J" then MEMORY1[1]="PO JOBRC"
+    if MTIT.TYPE="W" then MEMORY1[1]="WO RECPT"
+    if MTIT.TYPE="I" then MEMORY1[1]="WO ISSUE"
+    if MTIT.TYPE="Q" then MEMORY1[1]="QC RECPT"
+    if MTIT.TYPE="O" then MEMORY1[1]="OUT PROC"
+    if MTIT.TYPE="C" then MEMORY1[1]="$ CHANGE"
+    MEMORY1[1]="DELETED"
+    isct = iif(mtit.qty < 0,2,1)
+    if MTIT.TYPE="A" do
+        MEMORY2=" "
+        NET.UNIT=NET.UNIT + MTIT.QTY
+        QTY.A[isct]=QTY.A[isct] + MTIT.QTY
+        COST.A[isct]=COST.A[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="S" do
+        MEMORY2=MTIT.INVOICE
+        NET.UNIT=NET.UNIT - MTIT.QTY
+        QTY.S[isct]=QTY.S[isct] + MTIT.QTY
+        COST.S[isct]=COST.S[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="P" do
+        MEMORY2=MTIT.PO
+        MTIT.AVGCOST=MTIT.PRICE
+        NET.UNIT=NET.UNIT + MTIT.QTY
+        QTY.P[isct]=QTY.P[isct] + MTIT.QTY
+        COST.P[isct]=COST.P[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="J" do
+        MEMORY2=MTIT.PO
+        MTIT.AVGCOST=MTIT.PRICE
+        NET.UNIT=NET.UNIT + MTIT.QTY
+        QTY.J[isct]=QTY.J[isct] + MTIT.QTY
+        COST.J[isct]=COST.J[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="W" do
+        MEMORY2=ORDER
+        NET.UNIT=NET.UNIT + MTIT.QTY
+        QTY.W[isct]=QTY.W[isct] + MTIT.QTY
+        COST.W[isct]=COST.W[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="I" do
+        MEMORY2=ORDER
+        MTIT.AVGCOST=MTIT.AVGCOST / MTIT.QTY
+        NET.UNIT=NET.UNIT - MTIT.QTY
+        QTY.I[isct]=QTY.I[isct] + MTIT.QTY
+        COST.I[isct]=COST.I[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="Q" do
+        MEMORY2=ORDER
+        MTIT.AVGCOST=MTIT.AVGCOST / MTIT.QTY
+        QTY.Q[isct]=QTY.Q[isct] + MTIT.QTY
+        COST.C[isct]=COST.C[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="O" do
+        MEMORY2=ORDER
+        MTIT.AVGCOST=MTIT.AVGCOST / MTIT.QTY
+        QTY.O[isct]=QTY.O[isct] + MTIT.QTY
+        COST.O[isct]=COST.O[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    if MTIT.TYPE="C" do
+        MEMORY2=ORDER
+        QTY.C[isct]=QTY.C[isct] + MTIT.QTY
+        COST.C[isct]=COST.C[isct] + (MTIT.AVGCOST * MTIT.QTY)
+    endif
+    MEMORY3=MTIT.REF
+    MEMORY2=just(MEMORY2,"L")
+    pfmt 12
+    CNTR=CNTR + 1
+    TOT.UNIT=TOT.UNIT + MTIT.QTY
+;    COST=COST + (MTIT.AVGCOST * MTIT.QTY)
+    TOT_RECORDS=TOT_RECORDS + 1
+    del INVTXN nocnf
+FIND_NEXT:
+    find N srch INVTXN  err CHK_BREAK
+    goto PRT_DETAIL
+FIND_NEXT2:
+    find N srch BKICMSTR  err FINISH
+    find R srch MTIT.CODE rel BKIC.PROD.CODE  err FIND_NEXT2 NOCLR
+    find R srch MTIC.PROD.CODE rel BKIC.PROD.CODE  err FIND_NEXT2 NOCLR
+    BREAK_FIELD[1]=BKIC.PROD.CODE
+    DESC[1]=BKIC.PROD.DESC
+    DESC[2]=BKIC.PROD.NOTE
+    goto PRT_BKIC
+ABORT_RPT:
+    pmsg "" ptw D
+    pmsg "" ptw D
+    pmsg ">>>>>  Report was terminated before completion  <<<<<" ptw D
+    pmsg "" ptw D
+    pmsg "" ptw D
+PRE.FINISH:
+    rcn BKICMSTR rcn BKIC.LOC get
+    SAVE.QTY=0
+;    if TOT.UNIT<>0 then TOT.COST=COST / TOT.UNIT
+    if MAKE.QTYOH<>"Y" do
+        clr INVTXN buff
+        format MTIT.WOSUF recv TEMP.SUF nocma nofd neg L
+        format MTIT.WOPRE recv TEMP.PRE nocma nofd neg L
+        SAVE.QTY=0
+        pblnk 1
+        for(isct;1;2;1)
+        for(MCNTR;1;9;1)
+            clr INVTXN buff
+            SAVE.QTY=0
+            if MCNTR=1 do
+                MTIT.TYPE="A"
+                MTIT.QTY=QTY.A[isct]
+                SAVE.QTY=QTY.A[isct]
+                MTIT.AVGCOST=(COST.A[isct]/QTY.A[isct])
+            endif
+            if MCNTR=2 do
+                MTIT.TYPE="P"
+                MTIT.QTY=QTY.P[isct]
+                SAVE.QTY=QTY.P[isct]
+                MTIT.AVGCOST=(COST.P[isct]/QTY.P[isct])
+            endif
+            if MCNTR=3 do
+                MTIT.TYPE="W"
+                MTIT.QTY=QTY.W[isct]
+                SAVE.QTY=QTY.W[isct]
+                MTIT.AVGCOST=(COST.W[isct]/QTY.W[isct])
+            endif
+            if MCNTR=4 do
+                MTIT.TYPE="J"
+                MTIT.QTY=QTY.J[isct]
+                SAVE.QTY=QTY.J[isct]
+                MTIT.AVGCOST=(COST.J[isct]/QTY.J[isct])
+            endif
+            if MCNTR=5 do
+                MTIT.TYPE="I"
+                MTIT.QTY=QTY.I[isct]
+                SAVE.QTY=QTY.I[isct]
+                MTIT.AVGCOST=(COST.I[isct]/QTY.I[isct])
+            endif
+            if MCNTR=6 do
+                MTIT.TYPE="S"
+                MTIT.QTY=QTY.S[isct]
+                SAVE.QTY=QTY.S[isct]
+                MTIT.AVGCOST=(COST.S[isct]/QTY.S[isct])
+            endif
+            if MCNTR=7 do
+                MTIT.TYPE="Q"
+                MTIT.QTY=QTY.Q[isct]
+                SAVE.QTY=QTY.Q[isct]
+                MTIT.AVGCOST=(COST.Q[isct]/QTY.Q[isct])
+            endif
+            if MCNTR=8 do
+                MTIT.TYPE="O"
+                MTIT.QTY=QTY.O[isct]
+                SAVE.QTY=QTY.O[isct]
+                MTIT.AVGCOST=(COST.O[isct]/QTY.O[isct])
+            endif
+            if MCNTR=9 do
+                MTIT.TYPE="C"
+                MTIT.QTY=QTY.C[isct]
+                SAVE.QTY=QTY.C[isct]
+                MTIT.AVGCOST=(COST.C[isct]/QTY.C[isct])
+            endif
+            if MTIT.TYPE="A" then MEMORY1[1]="ADJUSTMT"
+            if MTIT.TYPE="S" then MEMORY1[1]="SHIPMENT"
+            if MTIT.TYPE="P" then MEMORY1[1]="PO RECPT"
+            if MTIT.TYPE="J" then MEMORY1[1]="PO JOBRC"
+            if MTIT.TYPE="W" then MEMORY1[1]="WO RECPT"
+            if MTIT.TYPE="I" then MEMORY1[1]="WO ISSUE"
+            if MTIT.TYPE="Q" then MEMORY1[1]="QC RECPT"
+            if MTIT.TYPE="O" then MEMORY1[1]="OUT PROC"
+            if MTIT.TYPE="C" then MEMORY1[1]="$ CHANGE"
+            rcn BKICMSTR rcn BKIC.LOC set
+            MTIT.REF="Consolidate Inv Transactions"
+            MTIT.CODE=BKIC.PROD.CODE
+            ;MTIT.AVGCOST=TOT.COST
+            ;AGL 9/28/00
+            TOT.COST = mtit.avgcost*mtit.qty
+            ;
+            MTIT.STDCST=MTIC.PROD.RCOST[13]
+            MTIT.DATE=TODAYS.DATE
+            MTIT.CUST=BKSY.COMP.NAME
+            MTIT.DESC="Consolidate Inv Transactions"
+            MTIT.WOPRE=0
+            MTIT.WOSUF=0
+            MTIT.DEPT=BKIC.PROD.DPTA
+            MTIT.CLASS=BKIC.PROD.CLASS
+            MTIT.PRICE=0
+            MTIT.LOC=BKYS.GLNUM[5]
+            MTIT.LOT=""
+            if SAVE.QTY<>0 do
+                ORDER=TEMP.PRE * "-" * TEMP.SUF
+                ORDER=just(ORDER,"L")
+                MEMORY2=ORDER
+                MEMORY3=MTIT.REF
+                MEMORY2=just(MEMORY2,"L")
+                pfmt 12 ptw D
+                save INVTXN nocnf
+            endif
+        next
+        next
+    endif
+
+    ;FMZ 4/17/99 Aparently now NET.QTY.YN is always forced to be N so this
+    ;  section of code would never get hit anyway.
+    if NET.QTY.YN="Y" do
+        rcn BKICMSTR rcn BKIC.LOC set
+        BKIC.PROD.UOH=NET.UNIT
+
+        ;FMZ 4/17/99 Commented
+        ;BKIC.PROD.TOTVL=BKIC.PROD.UOH * BKIC.PROD.AVGC
+        ;end FMZ 4/17/99
+
+        save BKICMSTR nocnf
+    else
+        rcn BKICMSTR rcn BKIC.LOC set
+        MTIT.REF="Set Beg InvTxn Qty to O/H Qty"
+        MTIT.TYPE="A"
+        MTIT.QTY=BKIC.PROD.UOH
+        MTIT.CODE=BREAK_FIELD[2]
+        MTIT.AVGCOST=BKIC.PROD.AVGC
+        MTIT.STDCST=MTIC.PROD.RCOST[13]
+        MTIT.DATE=TODAYS.DATE
+        MTIT.CUST=BKSY.COMP.NAME
+        MTIT.DESC="Consolidate Inv Transactions"
+        MTIT.WOPRE=0
+        MTIT.WOSUF=0
+        MTIT.DEPT=BKIC.PROD.DPTA
+        MTIT.CLASS=BKIC.PROD.CLASS
+        MTIT.PRICE=0
+        MTIT.LOC=BKYS.GLNUM[5]
+        MTIT.LOT=""
+        ORDER=TEMP.PRE * "-" * TEMP.SUF
+        ORDER=just(ORDER,"L")
+        MEMORY2=ORDER
+        MEMORY3=MTIT.REF
+        MEMORY2=just(MEMORY2,"L")
+        pblnk 1
+        pfmt 12 ptw D
+        save INVTXN nocnf
+    endif
+    pblnk 1
+    pfmt 13
+    pblnk 1
+;    COST=0
+    if BKIC.LOC<>"" then rcn BKICMSTR rcn BKIC.LOC set
+    NET.UNIT=0
+    TOT.UNIT=0
+    TOT.COST=0
+    for(isct;1;2;1)
+      QTY.A[isct]=0
+      QTY.P[isct]=0
+      QTY.W[isct]=0
+      QTY.J[isct]=0
+      QTY.I[isct]=0
+      QTY.S[isct]=0
+      QTY.Q[isct]=0
+      QTY.O[isct]=0
+      QTY.C[isct]=0
+      COST.A[isct]=0
+      COST.P[isct]=0
+      COST.W[isct]=0
+      COST.J[isct]=0
+      COST.I[isct]=0
+      COST.S[isct]=0
+      COST.Q[isct]=0
+      COST.O[isct]=0
+      COST.C[isct]=0
+    next
+    ;
+FINISH:
+    trap PG_BRK dflt
+    ;ptof
+EXIT:
+    ;if LIST<>"V" goto EXIT2
+    ;xfer from DISK.FILE tmem 2 to 1 nchr 8
+    ;run "VIEWIT"
+EXIT2:
+    prtr_setup 'r'
+EXIT3:
+    Quit
+DO_RELATED:
+    trap RSRCH dflt
+    trap RSRCH gosub DO_RELATED
+    ret
+PRT_TOF:
+    for(MCNTR;1;11;1)
+        pfmt MCNTR ptw D
+    next
+    ret
+CHK_BREAK:
+    trap INT ignr
+    rcn BKICMSTR rcn BKIC.LOC get
+    SAVE.QTY=0
+;    if TOT.UNIT<>0 then TOT.COST=COST / TOT.UNIT
+    clr INVTXN buff
+    if MAKE.QTYOH<>"Y" do
+        format MTIT.WOSUF recv TEMP.SUF nocma nofd neg L
+        format MTIT.WOPRE recv TEMP.PRE nocma nofd neg L
+        SAVE.QTY=0
+        pblnk 1
+        for(isct;1;2;1)
+        for(MCNTR;1;9;1)
+            clr INVTXN buff
+            SAVE.QTY=0
+            if MCNTR=1 do
+                MTIT.TYPE="A"
+                MTIT.QTY=QTY.A[isct]
+                SAVE.QTY=QTY.A[isct]
+                MTIT.AVGCOST=(COST.A[isct]/QTY.A[isct])
+            endif
+            if MCNTR=2 do
+                MTIT.TYPE="P"
+                MTIT.QTY=QTY.P[isct]
+                SAVE.QTY=QTY.P[isct]
+                MTIT.AVGCOST=(COST.P[isct]/QTY.P[isct])
+            endif
+            if MCNTR=3 do
+                MTIT.TYPE="W"
+                MTIT.QTY=QTY.W[isct]
+                SAVE.QTY=QTY.W[isct]
+                MTIT.AVGCOST=(COST.W[isct]/QTY.W[isct])
+            endif
+            if MCNTR=4 do
+                MTIT.TYPE="J"
+                MTIT.QTY=QTY.J[isct]
+                SAVE.QTY=QTY.J[isct]
+                MTIT.AVGCOST=(COST.J[isct]/QTY.J[isct])
+            endif
+            if MCNTR=5 do
+                MTIT.TYPE="I"
+                MTIT.QTY=QTY.I[isct]
+                SAVE.QTY=QTY.I[isct]
+                MTIT.AVGCOST=(COST.I[isct]/QTY.I[isct])
+            endif
+            if MCNTR=6 do
+                MTIT.TYPE="S"
+                MTIT.QTY=QTY.S[isct]
+                SAVE.QTY=QTY.S[isct]
+                MTIT.AVGCOST=(COST.S[isct]/QTY.S[isct])
+            endif
+            if MCNTR=7 do
+                MTIT.TYPE="Q"
+                MTIT.QTY=QTY.Q[isct]
+                SAVE.QTY=QTY.Q[isct]
+                MTIT.AVGCOST=(COST.Q[isct]/QTY.Q[isct])
+            endif
+            if MCNTR=8 do
+                MTIT.TYPE="O"
+                MTIT.QTY=QTY.O[isct]
+                SAVE.QTY=QTY.O[isct]
+                MTIT.AVGCOST=(COST.O[isct]/QTY.O[isct])
+            endif
+            if MCNTR=9 do
+                MTIT.TYPE="C"
+                MTIT.QTY=QTY.C[isct]
+                SAVE.QTY=QTY.C[isct]
+                MTIT.AVGCOST=(COST.C[isct]/QTY.C[isct])
+            endif
+            if MTIT.TYPE="A" then MEMORY1[1]="ADJUSTMT"
+            if MTIT.TYPE="S" then MEMORY1[1]="SHIPMENT"
+            if MTIT.TYPE="P" then MEMORY1[1]="PO RECPT"
+            if MTIT.TYPE="J" then MEMORY1[1]="PO JOBRC"
+            if MTIT.TYPE="W" then MEMORY1[1]="WO RECPT"
+            if MTIT.TYPE="I" then MEMORY1[1]="WO ISSUE"
+            if MTIT.TYPE="Q" then MEMORY1[1]="QC RECPT"
+            if MTIT.TYPE="O" then MEMORY1[1]="OUT PROC"
+            if MTIT.TYPE="C" then MEMORY1[1]="$ CHANGE"
+            rcn BKICMSTR rcn BKIC.LOC set
+            MTIT.REF="Consolidate Inv Transactions"
+            MTIT.CODE=BKIC.PROD.CODE
+            ;MTIT.AVGCOST=TOT.COST
+            ;AGL 9/28/00
+            TOT.COST = mtit.avgcost*mtit.qty
+            ;
+            MTIT.STDCST=MTIC.PROD.RCOST[13]
+            MTIT.DATE=TODAYS.DATE
+            MTIT.CUST=BKSY.COMP.NAME
+            MTIT.DESC="Consolidate Inv Transactions"
+            MTIT.WOPRE=0
+            MTIT.WOSUF=0
+            MTIT.DEPT=BKIC.PROD.DPTA
+            MTIT.CLASS=BKIC.PROD.CLASS
+            MTIT.PRICE=0
+            MTIT.LOC=BKYS.GLNUM[5]
+            MTIT.LOT=""
+            if SAVE.QTY<>0 do
+                ORDER=TEMP.PRE * "-" * TEMP.SUF
+                ORDER=just(ORDER,"L")
+                MEMORY2=ORDER
+                MEMORY3=MTIT.REF
+                MEMORY2=just(MEMORY2,"L")
+                pfmt 12 ptw D
+                save INVTXN nocnf
+            endif
+        next
+        next
+    endif
+    pblnk 1
+    pfmt 13
+    pblnk 1
+;    COST=0
+    if BKIC.LOC<>"" then rcn BKICMSTR rcn BKIC.LOC set
+    NET.UNIT=0
+    TOT.UNIT=0
+    TOT.COST=0
+    for(isct;1;2;1)
+      QTY.A[isct]=0
+      QTY.P[isct]=0
+      QTY.W[isct]=0
+      QTY.J[isct]=0
+      QTY.I[isct]=0
+      QTY.S[isct]=0
+      QTY.Q[isct]=0
+      QTY.O[isct]=0
+      QTY.C[isct]=0
+      COST.A[isct]=0
+      COST.P[isct]=0
+      COST.W[isct]=0
+      COST.J[isct]=0
+      COST.I[isct]=0
+      COST.S[isct]=0
+      COST.Q[isct]=0
+      COST.O[isct]=0
+      COST.C[isct]=0
+    next
+    ;
+    TOT_RECORDS=0
+    trap INT goto PRE.FINISH
+    goto FIND_NEXT2
+NO_RECS:
+    MESSAGE[1]="There are no records in the primary file"
+    NUM.MSG=1
+    MSG_LIST MSG_PTR,NUM.MSG
+    goto EXIT3
+NO_RFIND:
+    MESSAGE[1]="A matching record was not found during a related find"
+    NUM.MSG=1
+    MSG_LIST MSG_PTR,NUM.MSG
+    ret
+GET_DATE:
+    define DATE_TIME type A size 54
+    define CHG_TIME type t size 8
+    define CHG_DATE type d size 10
+    define STDDAYS type A size 12
+    define STDMONTH type A size 12
+    define STDYEAR type A size 6
+    define STDAYH type A size 4
+    define AM_PM type A size 2
+    define TIME_STRG type A size 10
+    PAGE=PAGE + 1
+    time CHG_TIME get
+    CHG_DATE=date()
+    AM_PM="AM"
+    if CHG_TIME>43199 do
+        AM_PM="PM"
+        if CHG_TIME>46799 then CHG_TIME=CHG_TIME - 43200
+    endif
+    equ_mid TIME_STRG fld CHG_TIME start 1 nchr 8
+    equ_day STDDAYS fld CHG_DATE
+    equ_xmt STDMONTH fld CHG_DATE
+
+    ;AjM 12/14/99 fixing international date problems.
+    ;equ_mid STDAYH fld CHG_DATE start 4 nchr 2
+    stdayh = mid(str(dom(chg_date)),lchr(str(dom(chg_date)),'l')-1,2)
+    ;equ_mid STDYEAR fld CHG_DATE start 7 nchr 4
+    stdyear = year(chg_date)
+    ;
+
+    DATE_TIME=STDDAYS * " " + STDMONTH * " " + STDAYH * ", " + STDYEAR * "   " + TIME_STRG * " " +AM_PM
+    DATE_TIME=just(DATE_TIME,"C")
+    ret
+
+HELP.TYPE:
+    MESSAGE[1] = " A - Adjustments       "
+    MESSAGE[2] = " S - Shipments         "
+    MESSAGE[3] = " P - Purchase Receipts to Stock"
+    MESSAGE[4] = " J - Purchase Receipts to WIP"
+    MESSAGE[5] = " W - Work Order Receipts to Stock"
+    MESSAGE[6] = " I - Stock Issues to WIP"
+    MESSAGE[7] = " Q - Purchase Receipts to QC"
+    NUM.MSG = 7
+    MSG_LIST MSG_PTR,NUM.MSG
+    ret
+NUNIT:
+    if MTIT.TYPE="A" then MEMORY1[1]="ADJUSTMT"
+    if MTIT.TYPE="S" then MEMORY1[1]="SHIPMENT"
+    if MTIT.TYPE="P" then MEMORY1[1]="PO RECPT"
+    if MTIT.TYPE="J" then MEMORY1[1]="PO JOBRC"
+    if MTIT.TYPE="W" then MEMORY1[1]="WO RECPT"
+    if MTIT.TYPE="I" then MEMORY1[1]="WO ISSUE"
+    if MTIT.TYPE="Q" then MEMORY1[1]="QC RECPT"
+    if MTIT.TYPE="A" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    if MTIT.TYPE="S" do
+        NET.UNIT = NET.UNIT - MTIT.QTY
+    endif
+    if MTIT.TYPE="P" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    if MTIT.TYPE="J" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    if MTIT.TYPE="W" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    if MTIT.TYPE="I" do
+        NET.UNIT=NET.UNIT - MTIT.QTY
+    endif
+    if MTIT.TYPE="Q" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    if MTIT.TYPE="O" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    if MTIT.TYPE="C" do
+        NET.UNIT=NET.UNIT + MTIT.QTY
+    endif
+    pfmt 12
+    CNTR=CNTR + 1
+    TOT.UNIT=TOT.UNIT + MTIT.QTY
+;    COST=COST + (MTIT.AVGCOST * MTIT.QTY)
+    TOT_RECORDS=TOT_RECORDS + 1
+    goto FIND_NEXT
+DSP_PROD1:
+    inv_menu
+    trap f2 gosub dsp_prod1
+    ifna bkicmstr ret
+    SELECT_FROM1=BKIC.PROD.CODE
+    ret
+
+DSP_PROD2:
+    inv_menu
+    trap f2 gosub dsp_prod2
+    ifna bkicmstr ret
+    SELECT_thru1 = BKIC.PROD.CODE
+    ret
+
+;
+
+
+
+
+;End of Prg
+\R5MINVR
+ 31NONE          NONE          E255100151LY 54                                                  55 51                                                                                                                                                                 52 54                                                                                !
+Page Header --------------------------------------------------------------------Page Header --------------------------------------------------------------------Page Header --------------------------------------------------------------------Page Header ---ú
+Block 1 Header -----------------------------------------------------------------Block 1 Header -----------------------------------------------------------------Block 1 Header -----------------------------------------------------------------Block 1 Header ý
+Block 1 Body -------------------------------------------------------------------Block 1 Body -------------------------------------------------------------------Block 1 Body -------------------------------------------------------------------Block 1 Body --þ
+
+                       CONSOLIDATE INVENTORY TRANSACTIONS REPORT
+                                 
+              
+
+From Item Number:    Thru:            Page: 
+  From Txns Date:           Thru: 
+Consolidate Date: 
+
+Date     T      Quantity       Cost   Customer/Vendor
+--------------------------------------------------------------------------------
+     
+   Net Units:       Avg Cost   Total Records: 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total ------------------------------------------------------------------Block 1 Total -ÿ
+Report Total -------------------------------------------------------------------Report Total -------------------------------------------------------------------Report Total -------------------------------------------------------------------Report Total --û
+Report End ---------------------------------------------------------------------Report End ---------------------------------------------------------------------Report End ---------------------------------------------------------------------Report End ----ü
+\COLOR
+  0  1  3  1255
+  1  4 51  1255
+  0 52 54  1255
+  1 55100  1255
+\FIELDS
+BKSY.COMP.NAME   0 34  6  0 0 0   25    0    0ABKSYMSTR
+DATE_TIME        0 15  7  0 0 0   54    0    0AMEMORY
+SELECT_FROM1     0 19  9  0 0 0   15    0    0AMEMORY
+SELECT_THRU1     0 43  9  0 0 0   15    0    0AMEMORY
+PAGE             0 75  9  0 0 0    5    0    0NMEMORY
+SELECT_FROM2     0 19 10  0 0 0    8    0    0SMEMORY
+SELECT_THRU2     0 43 10  0 0 0    8    0    0SMEMORY
+TODAYS.DATE      0 19 11  0 0 0    8    0    0SMEMORY
+MEMORY1          0 12 13  0 0 0   15    2    2AMEMORY
+MTIT.DATE        0  1 15  0 0 0    8    0    0DINVTXN
+MTIT.TYPE        0 10 15  0 0 0    1    0    0AINVTXN
+BKIC.PROD.CODE   0 12 15  0 0 0   15    0    0ABKICMSTR
+MTIT.QTY         0 28 15  0 2 0   12    0    0NINVTXN
+MTIT.AVGCOST     0 41 15  0 4 0   12    0    0NINVTXN
+MEMORY3          0 54 15  0 0 0   27    0    0AMEMORY
+NET.UNIT         0 15 16  0 2 0   11    0    0NMEMORY
+TOT.COST         0 41 16  0 4 0   11    0    0NMEMORY
+TOT_RECORDS      0 69 16  0 0 0    8    0    0NMEMORY
+\FILES
+BKSYMSTRBKSYMSTR  1
+INVTXN  INVTXN    4
+BKICMSTRBKICMSTR  1
+\INCLUDE
+\KEY
+
+\EXP_BLK
+\IF_PRT
+\\
+\S5SELECT
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+
+
+
+
+                   ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+                   ³                                     ³
+                   ³  Enter Item Number   ³
+                   ³               Thru   ³
+                   ³                                     ³
+                   ³    Enter From Date          ³
+                   ³          Thru Date          ³
+                   ³                                     ³
+                   ³         Enter Type           ³
+                   ³                                     ³
+                   ³ Consolidation Date          ³
+                   ³                                     ³
+                   ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1100 80
+\FIELDS
+SELECT_FROM1     0 42  8  0  0 0   15    0    0A RGMEMORY  NNN    0
+SELECT_THRU1     0 42  9  0  0 0   15    0    0A RGMEMORY  NNN    0
+SELECT_FROM2     0 42 11  0  0 0    8    0    0S RGMEMORY  NNN    0
+SELECT_THRU2     0 42 12  0  0 0    8    0    0S RGMEMORY  NNN    0
+TYPE             0 42 14  0  0 0    7    0    0A RGMEMORY  NNN    0
+TODAYS.DATE      0 42 16  0  0 0    8    0    0S RGMEMORY  NNN    0
+\FILES
+\INCLUDE
+\KEY
+\\
+ 
