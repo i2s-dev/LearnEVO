@@ -878,7 +878,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Boot Sequence | 68 | 85 | 17 | 2026-06-11 |
 | File Formats — SRC | 80 | 90 | 10 | 2026-06-11 |
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
-| File Formats — RWN/DCY | 25 | 70 | 45 ⚠️ | 2026-06-11 |
+| File Formats — RWN/DCY | 72 | 90 | 18 ⚠️ | 2026-06-12 |
 | File Formats — RTM | 78 | 88 | 10 | 2026-06-11 |
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
@@ -927,17 +927,41 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 ### Critical Path to 90% Goal
 
-The biggest gaps blocking the 90% target, in order of impact:
+**Key finding (2026-06-12):** Only **7 `.SRC` files** exist on the network share — all are TAS
+Pro 6 era holdovers already analyzed. The entire TAS Pro 7 program logic (1,124 `.RWN` files)
+exists only as encrypted binary. There is no plaintext source code for any current module.
+This makes `.RWN` decryption the **single highest-leverage unlock** in the project.
 
-1. **Per-table field meaning documentation** (gap: 73) — 659 tables × full field semantics
-2. **Business workflow recipes** (gap: 80) — no end-to-end processes yet documented
-3. **RWN/DCY decryption** (gap: 45) — blocks all module logic; highest leverage single unlock
-4. **Remaining ~35 modules** (gap: 40) — DE, SM, AM, FA, JC, SA, SH, CS, etc.
-5. **TAS 4GL language gaps** (gap: 17) — operators, full grammar, scope rules
-6. **Security model detail** (gap: 23) — access flag mapping, password algorithm
-7. **Module logic for core 7** (gaps: 20–30 each) — AR, AP, IN, SO, PO, WO, GL
+Priority order — in sequence, each unblocks the next:
+
+| # | Task | Blocked by | Who | Impact |
+|---|------|-----------|-----|--------|
+| **1** | **Debugger session**: run `tp7runtime.exe` under x64dbg; breakpoint at file offset `0x34DF50`; read `[EAX+0x3C]` (16 bytes = block_buf IV) when it hits | Requires interactive debugger | **User — one session** | Unlocks #2, #3, #4 |
+| **2** | Write `rwn_decrypt.py` and decrypt all 1,124 `.RWN` files | #1 | Me | All module logic readable |
+| **3** | Decode `.DCY` files (same encryption): menu tree, login flow, compiled schema | #1 | Me | Menu system, boot flow |
+| **4** | Map `.RWN` bytecode instruction set via Rosetta Stone (compare known `.RUN` against decrypted `.RWN` equivalents) | #2 | Me — weeks | Full logic traceability |
+| **5** | Per-table field meaning documentation (659 tables × full field semantics) | None — unblocked now | Me | Database understanding |
+| **6** | Module-by-module logic from decoded `.RWN` (AR, AP, IN, SO, PO, WO, GL, + 35 others) | #2 | Me | Module confidence to 85+ |
+| **7** | Business workflow recipes (end-to-end traces: SO→ship→invoice, WO lifecycle, AP check run, etc.) | #6 | Me | Operational understanding |
+| **8** | Analyze 1,273 `.RUN` files (TAS Pro 6, unencrypted compiled format — partial window into legacy logic) | None — unblocked now | Me | Legacy module coverage |
+| **9** | Reverse-engineer `ENCRYPTSTR`/`DECRYPTSTR` (password hashing + string crypto in `tp7runtime.exe`) | None — unblocked | Me | Security model complete |
+| **10** | Decode `WHOAMI.DBA` (35 bytes), `CHMHELP.EVO` (35 bytes), fill remaining `.INI` keys | None — unblocked | Me | Infrastructure gaps |
+| **11** | Map all 554 menu codes → implementing file → `.DFM` form → tables | #2 (for RWN-backed codes) | Me | Navigation complete |
+| **12** | TAS 4GL language gaps (full grammar, operators, scope rules, all built-ins) | #2 | Me | Language spec complete |
+| **13** | Security model detail (AHSY_USER_ACCES mapping, password algorithm, WHOAMI validation) | #2, #9 | Me | Security complete |
+| **14** | Per-form narrative docs (1,109 forms × field labels, purpose, linked tables) | None — unblocked | Me | UI reference complete |
+| **15** | Per-report docs (899 RTM files × data fields, parameters, output columns) | None — unblocked | Me | Reporting reference |
+
+**Biggest gaps blocking the 90% target, by area:**
+
+1. **RWN decryption** — 1,124 programs with zero readable logic until IV is solved
+2. **Per-table field meaning** — 659 tables × semantics = largest volume task
+3. **Business workflow recipes** — no end-to-end processes yet documented
+4. **~35 undocumented modules** — DE, SM, FA, JC, SA, SH, CS, SC, QC, LC, SR, etc.
+5. **Bytecode format** — needed to interpret decrypted `.RWN` content
+6. **Security model detail** — access flags, password algorithm, WHOAMI validation
 
 ---
 
-*Last updated: 2026-06-11*
+*Last updated: 2026-06-12*
 *Document location: `EVO-DECOMPILE-TODO.md` at workspace root*
