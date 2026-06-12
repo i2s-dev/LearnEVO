@@ -233,7 +233,41 @@ user-facing summary of everything in `docs/`.
 
 ---
 
-## 9. Launcher scripts (.bat / .ps1) — keep them current
+## 10. Decompilation work — what is and is NOT currently unblocked
+
+Before doing ANY decompilation or reverse-engineering work, read `DECOMPILE-INSTRUCTIONS.md`
+at the repo root. It contains the full research state, confirmed cipher identity, candidate
+passphrase, and the single current blocker. The short version:
+
+**CURRENTLY UNBLOCKED — do these:**
+- Read, grep, and document any `.SRC` file (TAS Pro 7 source — plain text)
+- Read, hex-dump, and analyze any `.RUN` file (TAS Pro 6 compiled — unencrypted)
+- Rosetta Stone opcode mapping: correlate `.SRC` source constructs with `.RUN` binary
+- Read and document `.DCY` (data dictionary), `.DFM` (forms), `.RTM` (report templates)
+- Read and document `.B` / Btrieve data structure via `.DDF` files
+- Study `tp7runtime.exe` in read-only mode (hex dump, string search, disassembly)
+- Update `docs/`, `PROJECT-STRUCTURE.md`, `HELP-RESOURCES.md`, `EVO-DECOMPILE-TODO.md`
+
+**CURRENTLY BLOCKED — do NOT attempt until the blocker is resolved:**
+- Decrypting any `.RWN` file (requires validating the Twofish passphrase candidate first)
+- Disassembling `.RWN` bytecode (blocked on decryption)
+- Writing `rwn_decrypt.py` or `batch_decompile.ps1` (blocked on key confirmation)
+- Any task described in `DECOMPILE-INSTRUCTIONS.md` whose status is "NOT YET DONE" or
+  whose precondition is "blocked on Twofish library"
+
+**The blocker:** Python `pycryptodome` does not include Twofish. The candidate passphrase
+("An error has occurred during conversion of this field from alpha to the appropriate binary
+form.") cannot be tested without either (a) a working Twofish library or (b) an x64dbg
+runtime memory dump as described in Method B of `DECOMPILE-INSTRUCTIONS.md`. If the user
+has not resolved the blocker, acknowledge it and pivot to unblocked work instead of
+attempting blocked tasks anyway.
+
+Do NOT write stub scripts, placeholder decryptors, or "TODO" code for the blocked path —
+that creates false progress. Only write real, runnable code.
+
+---
+
+## 11. Launcher scripts (.bat / .ps1) — keep them current
 
 The user launches tools in this workspace via `.bat` files (e.g.
 `RUN.bat`, `learnevo-help\launch.bat`). Whenever I change how a tool
