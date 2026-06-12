@@ -315,18 +315,19 @@ appropriate binary form."** extracted from the global pointer chain [0xB8B0CC]�
 3. Auto-analyze: accept defaults. This will take several minutes on a 33 MB binary.
 
 **All key addresses are confirmed:**
+*(raw = VA − 0x400C00 for CODE section; VA − 0x400E00 for DATA section)*
 | Address (VA) | Address (raw) | What it is |
 |---|---|---|
-| 0x00742654 | 0x342654 | RWN header decrypt + validation function |
-| 0x0074E374 | 0x34D374 | Main decrypt loop (0x2000-byte chunks) |
-| 0x0074E1F8 | 0x34D1F8 | InitStr (SHA1 → cipher.Init) |
-| 0x0074EB50 | 0x34DB50 | mode=2 cipher operation (Twofish block decrypt) |
-| 0x0074F2A8 | 0x34E6A8 | TDCP_twofish VMT (class confirmed) |
-| 0x00750818 | 0x350018 | TDCP_twofish constructor (VMT slot 11) |
-| 0x00B5C8B9 | 0x75BCBA | TAS32 validation (ADD EAX,0xC5; MOV ECX,5; CALL compare) |
-| 0x00B5DE90 | 0x75D290 | "TAS32" string (5 raw bytes) |
-| 0x00563D84 | — (DATA) | Delphi AnsiString: "An error has occurred..." |
-| 0x00B8B0CC | 0x78A2CC | Global pointer → [0xB6F454] → 0x00563D84 |
+| 0x00742654 | 0x00341A54 | RWN header decrypt + validation function |
+| 0x0074E374 | 0x0034D774 | Main decrypt loop (0x2000-byte chunks) |
+| 0x0074E1F8 | 0x0034D5F8 | InitStr (SHA1 → cipher.Init) |
+| 0x0074EB50 | 0x0034DF50 | mode=2 cipher operation (Twofish block decrypt) |
+| 0x0074F2A8 | 0x0034E6A8 | TDCP_twofish VMT (class confirmed) |
+| 0x00750818 | 0x0034FC18 | TDCP_twofish constructor (VMT slot 11) |
+| 0x00B5C8BA | 0x0075BCBA | TAS32 validation (ADD EAX,0xC5; MOV ECX,5; CALL compare) |
+| 0x00B5DE90 | 0x0075D290 | "TAS32" string (5 raw bytes) |
+| 0x00563D84 | 0x00163184 | Delphi AnsiString: "An error has occurred..." (CODE section) |
+| 0x00B8B0CC | 0x0078A2CC | Global pointer → [0xB6F454] → 0x00563D84 (DATA section) |
 
 **In Ghidra:** go to `0x742654`. Decompiler pane will show the InitStr call and the
 passphrase argument. Verify it resolves to the "An error has..." string. Also check whether
@@ -409,12 +410,15 @@ This approach has been fully executed. Summary of what was searched and found no
 - The "passphrase" is not passed to InitStr at all, and Init is called directly with raw bytes
   from a region not yet searched (e.g., a global constant array, a resource section)
 
-**Remaining avenues NOT yet tried:**
-1. Raw 16-byte windows as 3DES key (DES-EDE2 / 128-bit mode) — `MOV ECX, 0x10` at raw
-   0x75B7EC suggests 16-byte key mode; with k3=k1 this covers different key space than 24-byte
-2. The CODE section raw bytes as 24-byte keys (not just printable strings) — this is ~7.5M windows
-3. Ghidra decompiler — read the actual InitStr/Init call arguments in context to find key
-4. Runtime memory dump via x64dbg — break after decryption, read the key from cipher object
+**⚠️ Remaining avenues — STATUS REVISED (2026-06-12):**
+Avenues 1 and 2 below are now superseded by the Twofish discovery. The cipher is Twofish,
+not 3DES, so 3DES-targeted brute-force is irrelevant. Avenues 3 and 4 remain valid:
+
+1. ~~Raw 16-byte windows as 3DES key~~ — **OBSOLETE** (cipher is Twofish, not 3DES)
+2. ~~CODE section raw bytes as 24-byte 3DES keys~~ — **OBSOLETE** (same reason)
+3. **Ghidra decompiler** — confirm passphrase argument to InitStr; disassemble 0x74eb50 (mode=2)
+4. **Runtime memory dump via x64dbg** — break inside 0x742654 after InitStr returns; read key
+   bytes from TDCP_twofish cipher object at [EBX + key_offset]; 16–32 bytes → test immediately
 
 **DCPcrypt key derivation detail (confirmed from TDCP_3des.Init disassembly at raw 0x724504):**
 DCPcrypt's `InitStr(keystr)` calls SHA1(keystr) → 20 bytes, then calls `cipher.Init(key, keybits, NULL)`.
