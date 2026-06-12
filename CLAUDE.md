@@ -235,35 +235,17 @@ user-facing summary of everything in `docs/`.
 
 ## 10. Decompilation work — what is and is NOT currently unblocked
 
-Before doing ANY decompilation or reverse-engineering work, read `DECOMPILE-INSTRUCTIONS.md`
-at the repo root. It contains the full research state, confirmed cipher identity, candidate
-passphrase, and the single current blocker. The short version:
+**At the start of every session, read `START-HERE-DOCUMENTATION-PROGRESS.md`.**
+That document is the authoritative record of what is unblocked, what is blocked, the
+current blocker, how to resolve it, and the highest-value next tasks. It supersedes any
+older summary you may have in context.
 
-**CURRENTLY UNBLOCKED — do these:**
-- Read, grep, and document any `.SRC` file (TAS Pro 7 source — plain text)
-- Read, hex-dump, and analyze any `.RUN` file (TAS Pro 6 compiled — unencrypted)
-- Rosetta Stone opcode mapping: correlate `.SRC` source constructs with `.RUN` binary
-- Read and document `.DCY` (data dictionary), `.DFM` (forms), `.RTM` (report templates)
-- Read and document `.B` / Btrieve data structure via `.DDF` files
-- Study `tp7runtime.exe` in read-only mode (hex dump, string search, disassembly)
-- Update `docs/`, `PROJECT-STRUCTURE.md`, `HELP-RESOURCES.md`, `EVO-DECOMPILE-TODO.md`
-
-**CURRENTLY BLOCKED — do NOT attempt until the blocker is resolved:**
-- Decrypting any `.RWN` file (requires validating the Twofish passphrase candidate first)
-- Disassembling `.RWN` bytecode (blocked on decryption)
-- Writing `rwn_decrypt.py` or `batch_decompile.ps1` (blocked on key confirmation)
-- Any task described in `DECOMPILE-INSTRUCTIONS.md` whose status is "NOT YET DONE" or
-  whose precondition is "blocked on Twofish library"
-
-**The blocker:** Python `pycryptodome` does not include Twofish. The candidate passphrase
-("An error has occurred during conversion of this field from alpha to the appropriate binary
-form.") cannot be tested without either (a) a working Twofish library or (b) an x64dbg
-runtime memory dump as described in Method B of `DECOMPILE-INSTRUCTIONS.md`. If the user
-has not resolved the blocker, acknowledge it and pivot to unblocked work instead of
-attempting blocked tasks anyway.
-
-Do NOT write stub scripts, placeholder decryptors, or "TODO" code for the blocked path —
-that creates false progress. Only write real, runnable code.
+Short version:
+- **Unblocked:** `.SRC`, `.RUN`, `.DCY`, `.DFM`, `.RTM`, `.B` analysis; Rosetta Stone
+  opcode mapping; all documentation updates
+- **Blocked:** any `.RWN` decryption or disassembly — cipher is confirmed (Twofish) but
+  passphrase validation requires a Python Twofish library that is not yet installed
+- Do NOT write stub or placeholder code for blocked tasks — it creates false progress
 
 ---
 
