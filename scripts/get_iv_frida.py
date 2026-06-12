@@ -2,105 +2,96 @@
 """
 scripts/get_iv_frida.py
 
-Automatically extracts the initial IV (block_buf) from tp7runtime.exe by
-hooking mode2_handler (the CFB/OFB decrypt entry point) at its first call.
+Extracts block_buf (the initial IV) from a running or freshly-spawned
+tp7runtime.exe by hooking mode2_handler (file offset 0x34DF50, RVA 0x34EB50).
 
-HOW IT WORKS
-    1. Launches tp7runtime.exe under Frida instrumentation.
-    2. Hooks mode2_handler at RVA 0x34EB50 (VA 0x74EB50).
-    3. On first call, EAX = cipher object; reads [EAX+0x3C] (16 bytes) = block_buf = IV.
-    4. Prints the IV hex string and saves it to scripts/iv_bytes.bin.
-    5. verify_iv.py can then cross-check against known .RWN files.
-    6. rwn_decrypt.py can then batch-decrypt all 1,124 .RWN and .DCY files.
+BEHAVIOUR
+    1. If tp7runtime.exe is ALREADY running: attaches to it.
+       Navigate to any EVO module after this script starts — that loads an
+       .RWN file and fires the hook.
+    2. If tp7runtime.exe is NOT running: spawns it with EvoERPmenu.RWN.
+       EVO will open normally.  Log in and navigate to any module.
 
-INSTALL
+    Either way, the hook fires the first time mode2_handler is called and
+    saves the 16-byte IV to scripts/iv_bytes.bin.  The script then exits.
+
+REQUIREMENTS
     pip install frida-tools
-
-    (frida-tools bundles frida; no C compiler needed. Requires Python 3.7+.)
 
 USAGE
     python scripts/get_iv_frida.py
 
-    The script spawns tp7runtime.exe with suwin7.rwn, captures the IV, then
-    prints it.  Close the tp7runtime.exe window after the IV is printed (or
-    it will close automatically when Frida terminates it).
+    The script prints instructions once the hook is armed.
+    You do NOT need to keep watching it — just use EVO normally.
 
-NOTES
-    - If you get a "failed to spawn" error, try running from an elevated
-      (Admin) PowerShell prompt.
-    - tp7runtime.exe must be at C:\\ISTS\\tp7runtime.exe.
-    - suwin7.rwn must exist at C:\\ISTS\\suwin7.rwn (verified present).
-
-BACKGROUND
-    Cipher: Twofish-CFB/OFB (DCPcrypt TDCP_twofish).
-    Key: SHA1('mabufoju')[0:20] + 0x00*4 = 24-byte (192-bit) key.
-    block_buf: uninitialized heap memory at cipher+0x3C.  The constructor
-    calls GetMem but never zeroes it; the Init chain never touches it.
-    Value is fixed for a given runtime session (heap state is deterministic
-    at startup), so one debugger run is sufficient for all files.
-
-    See docs/02-file-formats/decryption-findings.md and BROKEN.md B-004.
+KEY ADDRESSES (confirmed from disassembly)
+    mode2_handler  file offset 0x34DF50  RVA 0x34EB50
+    block_buf      cipher+0x3C           16 bytes = IV
 """
 
 import sys
 import os
+import subprocess
 import time
 
-# ---------------------------------------------------------------------------
-# Configuration
-# ---------------------------------------------------------------------------
-TARGET_EXE   = r"C:\ISTS\tp7runtime.exe"
-TARGET_ARG   = r"C:\ISTS\suwin7.rwn"
-IV_OUT       = os.path.join(os.path.dirname(os.path.abspath(__file__)), "iv_bytes.bin")
-TIMEOUT_SEC  = 45   # give tp7runtime up to 45 s to hit mode2_handler
+_here    = os.path.dirname(os.path.abspath(__file__))
+IV_OUT   = os.path.join(_here, 'iv_bytes.bin')
 
-# mode2_handler: file offset 0x34DF50 (VA 0x74EB50 = ImageBase 0x400000 + RVA 0x34EB50)
+TARGET_EXE = r'C:\ISTS\tp7runtime.exe'
+TARGET_RWN = r'\\i2s109-solidcrm\DBAMFG$\EvoERPmenu.RWN'
+
+# mode2_handler RVA (= preferred VA 0x74EB50 - preferred ImageBase 0x400000)
 MODE2_RVA         = 0x34EB50
-BLOCK_BUF_OFFSET  = 0x3C  # offset of block_buf inside the cipher object (EAX)
+BLOCK_BUF_OFFSET  = 0x3C
 IV_SIZE           = 16
 
-# ---------------------------------------------------------------------------
-# Frida JavaScript payload (injected into tp7runtime.exe)
-# ---------------------------------------------------------------------------
+# Wait up to 10 minutes — time for login + navigation
+TIMEOUT_SEC = 600
+
 _JS = """
 'use strict';
+var captured = false;
 
-var MODE2_RVA        = 0x34EB50;
-var BLOCK_BUF_OFFSET = 0x3C;
-var IV_SIZE          = 16;
-var captured         = false;
-
-var base = Module.findBaseAddress('tp7runtime.exe');
-if (!base) {
-    send({ type: 'error', msg: 'tp7runtime.exe module not found in the target process.' });
+var mod = Process.findModuleByName('tp7runtime.exe');
+if (!mod) {
+    send({ type: 'error', msg: 'tp7runtime.exe module not found in process.' });
 } else {
-    var target = base.add(MODE2_RVA);
-    send({ type: 'info', msg: 'Hooked mode2_handler at ' + target +
-          ' (base=' + base + ', rva=0x' + MODE2_RVA.toString(16) + ')' });
+    var target = mod.base.add(0x34EB50);
+    send({ type: 'info', msg: 'Hook armed at ' + target +
+          ' (base ' + mod.base + ', RVA 0x34EB50)' });
 
     Interceptor.attach(target, {
         onEnter: function(args) {
             if (captured) return;
             captured = true;
-
-            // Delphi register calling convention: EAX = Self (cipher object)
-            var self_ptr  = ptr(this.context.eax.toString());
-            var blockBuf  = self_ptr.add(BLOCK_BUF_OFFSET);
-
-            var raw   = blockBuf.readByteArray(IV_SIZE);
-            var bytes = Array.from(new Uint8Array(raw));
-
-            send({ type: 'iv',
-                   eax:   this.context.eax.toString(),
-                   bytes: bytes });
+            try {
+                var eax = this.context.eax;
+                var buf = ptr(eax).add(0x3C).readByteArray(16);
+                send({ type: 'iv',
+                       eax:   eax.toString(),
+                       bytes: Array.from(new Uint8Array(buf)) });
+            } catch(e) {
+                send({ type: 'error', msg: 'Hook callback: ' + e.message });
+            }
         }
     });
 }
 """
 
-# ---------------------------------------------------------------------------
-# Driver
-# ---------------------------------------------------------------------------
+
+def _find_tp7_pid():
+    """Return PID of a running tp7runtime.exe, or None."""
+    try:
+        out = subprocess.check_output(
+            ['powershell', '-NoProfile', '-Command',
+             'Get-Process | Where-Object {$_.Name -eq "tp7runtime"} '
+             '| Select-Object -First 1 -ExpandProperty Id'],
+            stderr=subprocess.DEVNULL, text=True).strip()
+        return int(out) if out else None
+    except Exception:
+        return None
+
+
 def main():
     try:
         import frida
@@ -108,66 +99,86 @@ def main():
         print("ERROR: frida not installed.  Run:  pip install frida-tools")
         sys.exit(1)
 
-    iv_found = [None]
+    iv_found  = [None]
+    pid_used  = [None]
+    spawned   = [False]
 
     def on_message(message, data):
         if message['type'] == 'error':
-            print(f"[Frida runtime error] {message.get('description', message)}")
+            desc = message.get('description', str(message))
+            print(f"\n[Frida error] {desc}")
             return
-        payload = message.get('payload') or {}
-        kind    = payload.get('type')
+        p    = message.get('payload') or {}
+        kind = p.get('type')
         if kind == 'info':
-            print(f"[*] {payload['msg']}")
+            print(f"[*] {p['msg']}")
         elif kind == 'error':
-            print(f"[!] {payload['msg']}")
+            print(f"[!] {p['msg']}")
         elif kind == 'iv':
-            blist   = payload['bytes']
+            blist   = p['bytes']
             hex_str = ' '.join(f'{b:02x}' for b in blist)
             py_lit  = 'bytes([' + ', '.join(f'0x{b:02x}' for b in blist) + '])'
             print()
             print("=" * 54)
-            print("  IV (block_buf) EXTRACTED")
+            print("  IV (block_buf) CAPTURED")
             print("=" * 54)
-            print(f"  Cipher object (EAX) : {payload['eax']}")
-            print(f"  block_buf (IV)      : {hex_str}")
+            print(f"  EAX (cipher obj) : {p['eax']}")
+            print(f"  block_buf (IV)   : {hex_str}")
             print()
             print(f"  Python literal: {py_lit}")
             print("=" * 54)
-
             with open(IV_OUT, 'wb') as f:
                 f.write(bytes(blist))
-            print(f"\n  Saved to: {IV_OUT}")
-            print("  Run:  python scripts/verify_iv.py   (cross-check)")
-            print("  Run:  python scripts/rwn_decrypt.py  (batch decrypt)")
+            print(f"\n  Saved → {IV_OUT}")
+            print("  Next: python scripts/verify_iv.py")
             iv_found[0] = bytes(blist)
 
-    print(f"[*] Launching tp7runtime.exe under Frida ...")
-    print(f"[*] Target  : {TARGET_EXE}")
-    print(f"[*] Argument: {TARGET_ARG}")
-    print(f"[*] Waiting for mode2_handler (up to {TIMEOUT_SEC}s) ...")
+    # --- Find or spawn tp7runtime.exe ---
+    existing_pid = _find_tp7_pid()
+
+    if existing_pid:
+        print(f"[*] Found running tp7runtime.exe  PID {existing_pid}")
+        print("[*] Attaching (will not disturb your EVO session) ...")
+        try:
+            session = frida.attach(existing_pid)
+        except Exception as e:
+            print(f"[!] Attach failed: {e}")
+            print("    Try running from an elevated (Administrator) prompt.")
+            sys.exit(1)
+        pid_used[0] = existing_pid
+    else:
+        print("[*] tp7runtime.exe is not running — spawning it now.")
+        print(f"[*] EVO will open.  Log in and navigate to any module.")
+        try:
+            pid       = frida.spawn([TARGET_EXE, TARGET_RWN], cwd=r'C:\ISTS')
+            session   = frida.attach(pid)
+            spawned[0] = True
+            pid_used[0] = pid
+        except Exception as e:
+            print(f"[!] Spawn failed: {e}")
+            print("    Try running from an elevated (Administrator) prompt.")
+            sys.exit(1)
+
+    script = session.create_script(_JS)
+    script.on('message', on_message)
+    script.load()
+
+    if spawned[0]:
+        frida.resume(pid_used[0])
+
+    print()
+    print("Hook is ARMED.  Waiting for mode2_handler ...")
+    print("  → If you attached to a running EVO: open any module now.")
+    print("  → If EVO just launched: log in and open any module.")
+    print(f"  → Timeout in {TIMEOUT_SEC//60} minutes.  Press Ctrl+C to abort.")
     print()
 
-    try:
-        pid = frida.spawn([TARGET_EXE, TARGET_ARG])
-    except Exception as e:
-        print(f"[!] Failed to spawn: {e}")
-        print("    Try running this script from an elevated (Administrator) prompt.")
-        sys.exit(1)
-
-    try:
-        session = frida.attach(pid)
-        script  = session.create_script(_JS)
-        script.on('message', on_message)
-        script.load()
-        frida.resume(pid)
-    except Exception as e:
-        print(f"[!] Failed to inject: {e}")
-        frida.kill(pid)
-        sys.exit(1)
-
     deadline = time.time() + TIMEOUT_SEC
-    while iv_found[0] is None and time.time() < deadline:
-        time.sleep(0.2)
+    try:
+        while iv_found[0] is None and time.time() < deadline:
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        print("\n[*] Aborted by user.")
 
     try:
         session.detach()
@@ -175,17 +186,10 @@ def main():
         pass
 
     if iv_found[0] is None:
-        print(f"\n[!] Timeout: mode2_handler was not called within {TIMEOUT_SEC} seconds.")
-        print("    Possible causes:")
-        print("    - suwin7.rwn is missing or corrupt")
-        print("    - tp7runtime.exe crashed before loading the .RWN")
-        print("    - RVA is wrong for this build of tp7runtime.exe")
-        print()
-        print("    Fallback: use scripts/x64dbg_get_iv.txt instead.")
+        remaining = max(0, int(deadline - time.time()))
+        print(f"\n[!] Timeout: mode2_handler was not called within {TIMEOUT_SEC}s.")
+        print("    Fallback: use scripts/x64dbg_get_iv.txt for manual extraction.")
         sys.exit(1)
-    else:
-        print()
-        print("[*] Done.  tp7runtime.exe may still be running; close it manually.")
 
 
 if __name__ == '__main__':
