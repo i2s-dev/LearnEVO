@@ -1,0 +1,122 @@
+# x64dbg Instructions — Extract block_buf (IV) from tp7runtime.exe
+#
+# Use this if you cannot run get_iv_frida.py (no Frida installed).
+# Takes about 2 minutes if you follow these steps exactly.
+#
+# Background:
+#   mode2_handler entry: VA 0x74EB50 (file offset 0x34DF50)
+#   At entry: EAX = cipher object (TDCP_twofish instance)
+#   block_buf = [EAX + 0x3C], 16 bytes = the initial IV we need
+#
+# =============================================================
+# STEP 1: Install x64dbg (free, no installer needed)
+# =============================================================
+#   https://x64dbg.com/   →   Download x64dbg.zip
+#   Extract anywhere, run x64dbg.exe (or x32dbg.exe for 32-bit)
+#
+# =============================================================
+# STEP 2: Launch tp7runtime.exe under x64dbg
+# =============================================================
+#   File → Open
+#   Executable: C:\ISTS\tp7runtime.exe
+#   Arguments:  C:\ISTS\suwin7.rwn
+#   Click "Open"
+#
+#   x64dbg stops at the system breakpoint (entry point).
+#   This is normal — DO NOT press Run yet.
+#
+# =============================================================
+# STEP 3: Set a breakpoint at mode2_handler
+# =============================================================
+#   In the Command Bar at the bottom of x64dbg, type:
+#
+#       bp 0x74EB50
+#
+#   Press Enter.  You should see it added to the Breakpoints tab.
+#
+# =============================================================
+# STEP 4: Run the program
+# =============================================================
+#   Press F9 (Run) or click the Run button.
+#   tp7runtime.exe will launch and load suwin7.rwn.
+#   x64dbg will stop at VA 0x74EB50 (mode2_handler entry).
+#
+#   If it does NOT stop: the RWN file may have failed to load.
+#   Check the Log tab for errors.
+#
+# =============================================================
+# STEP 5: Read the IV from [EAX + 0x3C]
+# =============================================================
+#   When stopped at the breakpoint:
+#
+#   OPTION A — Command Bar (quickest):
+#       Type each of these in the Command Bar and press Enter:
+#
+#           log "EAX = {eax}"
+#           log "block_buf[0..3]  = {[eax+0x3C]:x} {[eax+0x3D]:x} {[eax+0x3E]:x} {[eax+0x3F]:x}"
+#           log "block_buf[4..7]  = {[eax+0x40]:x} {[eax+0x41]:x} {[eax+0x42]:x} {[eax+0x43]:x}"
+#           log "block_buf[8..11] = {[eax+0x44]:x} {[eax+0x45]:x} {[eax+0x46]:x} {[eax+0x47]:x}"
+#           log "block_buf[12..15]= {[eax+0x48]:x} {[eax+0x49]:x} {[eax+0x4A]:x} {[eax+0x4B]:x}"
+#
+#       Read the 16 bytes from the Log tab.
+#
+#   OPTION B — Dump window (most visual):
+#       In the Command Bar type:
+#           d eax+0x3C
+#       This navigates the Dump (hex view) panel to [EAX+0x3C].
+#       Read the 16 bytes starting at that address.
+#
+#   OPTION C — Script tab (automated log):
+#       Plugins → Script → New Script, paste:
+#
+#           bphws 0x74EB50, "x"
+#           run
+#           log "=== block_buf (IV) ==="
+#           var p
+#           mov p, eax
+#           add p, 0x3C
+#           log "bytes: {[p]:x} {[p+1]:x} {[p+2]:x} {[p+3]:x} {[p+4]:x} {[p+5]:x} {[p+6]:x} {[p+7]:x}"
+#           log "       {[p+8]:x} {[p+9]:x} {[p+A]:x} {[p+B]:x} {[p+C]:x} {[p+D]:x} {[p+E]:x} {[p+F]:x}"
+#           ret
+#
+#       Run the script (F9 in Script tab).
+#
+# =============================================================
+# STEP 6: Write the 16 bytes to scripts/iv_bytes.bin
+# =============================================================
+#   Open Python and run (substituting the actual bytes you read):
+#
+#       python -c "
+#       iv = bytes([0xXX, 0xXX, 0xXX, 0xXX,   # bytes 0-3
+#                   0xXX, 0xXX, 0xXX, 0xXX,   # bytes 4-7
+#                   0xXX, 0xXX, 0xXX, 0xXX,   # bytes 8-11
+#                   0xXX, 0xXX, 0xXX, 0xXX])  # bytes 12-15
+#       open('scripts/iv_bytes.bin', 'wb').write(iv)
+#       print('Written.')
+#       "
+#
+#   Then run:
+#       python scripts/verify_iv.py    (checks against known .RWN files)
+#       python scripts/rwn_decrypt.py  (batch decrypts all .RWN files)
+#
+# =============================================================
+# EXPECTED RESULT
+# =============================================================
+#   After decryption, verify_iv.py will confirm:
+#     OFB mode: validation passed for T7INA.RWN (or similar)
+#
+#   If validation FAILS for both OFB and CFB:
+#     - The IV might have been overwritten between allocation and mode2_handler
+#     - Try setting the breakpoint at the CONSTRUCTOR entry instead:
+#         bp 0x74EE30    (TDCP_blockcipher constructor, file offset 0x34E230)
+#       and reading [EAX+0x3C] there (immediately after GetMem, before any use)
+#
+# =============================================================
+# KEY ADDRESSES FOR REFERENCE
+# =============================================================
+#   mode2_handler        VA 0x74EB50  file offset 0x34DF50  ← PRIMARY BREAKPOINT
+#   TDCP_blockcipher ctor VA 0x74EE30  file offset 0x34E230  ← FALLBACK BREAKPOINT
+#   EncryptBlock          VA 0x750248  file offset 0x34F648
+#   passphrase 'mabufoju' VA 0xB5DD54  file offset 0x75D154
+#   q0 table              VA 0xB74CA8  file offset 0x7740A8
+#   q1 table              VA 0xB74DA8  file offset 0x7741A8

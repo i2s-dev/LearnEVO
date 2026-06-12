@@ -170,6 +170,19 @@ verify the IV once it is retrieved from the debugger:
 | Script | Status | Purpose |
 |--------|--------|---------|
 | `scripts/twofish_pure.py` | ✅ Working | Pure Python Twofish; passes NIST 192-bit test vector |
+| `scripts/get_iv_frida.py` | ✅ Ready | **Primary IV extractor** — Frida hook on mode2_handler; saves iv_bytes.bin |
+| `scripts/x64dbg_get_iv.txt` | ✅ Ready | Manual fallback — step-by-step x64dbg instructions |
+| `scripts/verify_iv.py` | ✅ Ready | Cross-checks iv_bytes.bin against RWN validation constraint |
+| `scripts/rwn_decrypt.py` | ✅ Ready | Batch OFB/CFB decryptor — reads iv_bytes.bin, decrypts all .RWN/.DCY |
 | `scripts/rwn_validate.py` | 🔄 Passphrase fixed | Validates RWN first 8 bytes; IV still wrong |
 | `scripts/rwn_scan.py` | 🔄 Passphrase fixed | Broad-spectrum scan for decrypted content |
-| `scripts/rwn_decrypt.py` | ❌ Not yet written | Full decryptor — write after IV is known |
+
+### One-time workflow (run in this order after getting Frida)
+
+```
+pip install frida-tools
+python scripts/get_iv_frida.py          # extracts iv_bytes.bin
+python scripts/verify_iv.py             # confirms IV is correct
+python scripts/rwn_decrypt.py --validate-only --limit 20   # spot-check 20 files
+python scripts/rwn_decrypt.py           # full batch decrypt → samples/rwn_decrypted/
+```
