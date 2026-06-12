@@ -1,7 +1,9 @@
 # `.DCY` and `.RWN` — Compiled / Proprietary Binaries
 
-Status: open-questions. Both formats appear to be **encrypted or
-compressed with no recognizable magic number**.
+Status: **cipher confirmed; passphrase confirmed; IV is the last blocker.**
+See [`decryption-findings.md`](decryption-findings.md) for the full research log.
+
+Last updated: 2026-06-12
 
 ## `.DCY` — Data Dictionary
 
@@ -63,10 +65,24 @@ the **data/schema dictionary** the program uses; the `.RWN` holds the
 5. See if `EvoPVT.jar` contains Java-side parsers for either format —
    unzipping a JAR is safe, and it might literally ship a decoder.
 
+## Confirmed cipher details (2026-06-12)
+
+- **Cipher:** Twofish, 128-bit block, **192-bit key**, **CFB mode**
+- **Passphrase:** `mabufoju` — hardcoded in `tp7runtime.exe` at file offset `0x75D154`
+- **Key:** `SHA1('mabufoju')[0:20]` + `\x00\x00\x00\x00` = 24 bytes
+- **Key is fixed** — not per-file, not per-license, not per-user. Same key for every `.RWN` and `.DCY` on this installation.
+- **Validation:** first 8 bytes of each `.RWN`; decrypted plaintext must have pt[0:4] == pt[4:8]
+- **File count:** 1,124 `.RWN` at share root + 3 in `DFM\`; 1,273 `.RUN` (unencrypted)
+
+## Remaining unknown
+
+The only unknown is the **initial IV** (`block_buf` at cipher+0x3C) — uninitialized heap
+memory in the Delphi allocator. A debugger session reading `[EAX+0x3C]` at the first
+`EncryptBlock` call (`tp7runtime.exe` file offset `0x34DF50`) resolves this completely.
+
 ## Things still open
 
-- Is `.DCY` the same format as TAS Pro 6's old `.DCT`? Or a new one?
-- Are the per-file keys derived from the file name? From the license?
-  From the user seat (`WHOAMI.DBA`)?
-- Does the runtime mmap the files (constant random access) or read them
-  whole into memory once?
+- Full decryption (blocked on IV — see above)
+- `.DCY` internal structure after decryption (hypothesis: Delphi VCL form text for forms,
+  compiled schema for data dictionary files)
+- Does the runtime mmap files or read whole into memory?

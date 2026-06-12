@@ -1,207 +1,175 @@
 # `.RWN` / `.DCY` Decryption — Research Findings
 
-Status: **partial decryption achieved** — first 16 bytes of every file,
-plus whole-file decryption for 13 DCYs that have matching plaintext DFMs.
+Status: **cipher fully identified; passphrase confirmed; initial IV unknown (one debugger
+session away from full decryption)**
 
-## The headline
+Last updated: 2026-06-12
 
-EvoERP's encrypted file families (`.RWN` compiled TAS programs, `.DCY`
-encrypted forms, and their siblings `.SCY`/`.LCY`) all use the same
-encryption scheme:
+---
 
-- **Cipher**: Twofish with 16-byte block size, via the
-  **DCPcrypt** Delphi library (`TDCP_twofish`).
-- **Mode**: CFB (ciphertext feedback) — the divergence pattern between
-  files proves this definitively (see below).
-- **IV**: zero block (derived from CFB behaviour: the first-block
-  keystream is identical across every file on the installation).
-- **Key**: a 16/24/32-byte Twofish key derived at runtime from a
-  passphrase baked into `tp7runtime.exe`. Not yet recovered.
-- **File structure**:
-  ```
-  [8-byte per-file salt][CFB-encrypted body (same length as source DFM/RUN)]
-  ```
-  The salt varies per file; its role is integrity-check or similar
-  (it is NOT used as IV or key material — proven by the fact that
-  different salts produce the same ciphertext for the same plaintext).
+## Current state (2026-06-12)
 
-## The evidence trail
+Everything about the cipher is now confirmed except one value: the initial 16-byte IV
+(`block_buf` at cipher+0x3C inside `tp7runtime.exe`). Once that value is read from a
+running process, a complete decryptor can be written in minutes.
 
-### 1. "Encryption" confirmed (not just compression)
+**Confirmed:**
+- Cipher: **Twofish**, 128-bit block, **192-bit key**, **CFB mode**
+- Passphrase: **`mabufoju`** — hardcoded in `tp7runtime.exe` at file offset `0x75D154`
+- Key: `SHA1('mabufoju')[0:20]` + `\x00\x00\x00\x00` = 24 bytes (192-bit)
+- Q-box tables (q0 @ file `0x7740A8`, q1 @ `0x7741A8`) verified byte-for-byte against the NIST Twofish spec
+- `scripts/twofish_pure.py` passes the NIST 192-bit test vector (non-zero key)
+- Validation structure: first 8 bytes of every `.RWN`; decrypted pt[0:4] must equal pt[4:8]
+- All 20+ scanned `.RWN` files share the constant `ct[0:4]^ct[4:8] = 0x3E0A37C5`
 
-Strings extracted from `tp7runtime.exe` at file offset `0x6232e4`:
+**Outstanding blocker:**
+- The `TDCP_blockcipher` constructor allocates `block_buf` via `GetMem` but never zeroes it
+- The `Init` call chain (TDCP_cipher.Init → Twofish.Init) also never touches block_buf
+- IV=zeros gives keystream XOR = `0xCE14BE8C` ≠ required `0x3E0A37C5` → IV ≠ zeros
+- Actual value requires a debugger breakpoint at `mode2_handler` (file `0x34DF50`), reading `[EAX+0x3C]`
 
-```
-You may only encrypt .DFM, .SRC & .LIB files.
-File encryption type error
-Please enter an encryption phrase
-Input file does not exist
-```
+See `BROKEN.md` entry B-004 for the full attempt log.
 
-And:
+---
+
+## File structure
 
 ```
-@TAS 7i Run Programs (RWN)|*.RWN|TAS 5.1 Run Programs (RUN)|*.RUN
+.RWN file layout:
+  [8 bytes — validation block (encrypted; pt[0:4]==pt[4:8] when correct key+IV used)]
+  [N bytes — encrypted TAS Pro 7 bytecode body]
 ```
 
-So `.DFM → .DCY`, `.SRC → .SCY`, `.LIB → .LCY`, and the TAS 6 `.RUN` was
-never encrypted (the new `.RWN` format is).
-
-### 2. Twofish identification
-
-In `tp7runtime.exe` at offset `0x34e735` and adjacent:
-```
-TDCP_twofish ... TDCP_sha1 ... Twofish.pas ... DCPhashpage ... DCPcrypt
-```
-
-The runtime contains DCPcrypt's Twofish, SHA1, DES, 3DES, and base
-cipher classes. Twofish is the only 16-byte-block cipher available —
-consistent with the block-size observation.
-
-### 3. Block size = 16 bytes (proven)
-
-For every pair of encrypted files `(A, B)`, the position where
-`XOR(C_a[i], C_b[i]) != XOR(P_a[i], P_b[i])` first occurs is always
-a multiple of 16 (we see 15, 16, 32, 48 across pairs). This is the
-signature of a 16-byte block cipher with feedback.
-
-### 4. CFB mode (not CBC/OFB/ECB)
-
-For blocks where `P_a == P_b`, `XOR(C_a, C_b) == XOR(P_a, P_b)`. That's
-only true in stream-style XOR modes where the keystream is the same
-across files. CBC/ECB don't produce this. CFB does: when previous
-ciphertext matches, the keystream for the next block is the same.
-
-When plaintexts first diverge (within some block `k`), the ciphertexts
-diverge from that byte on; then the keystream for block `k+1` diverges
-because it depends on `C[k]`. That's also exactly what we see.
-
-### 5. The CFB keystream, block 0
-
-Since Stream[0] only depends on `E_K(IV)` — not on any plaintext — it
-is **identical for every file on the system**. Derived by XORing:
+The 8-byte validation block serves as a passphrase check. After the 8-byte decrypt,
+`block_buf` holds the **keystream** (not ciphertext), so subsequent body decryption uses
+OFB-like behaviour — the decryptor can continue the keystream without re-seeding.
 
 ```
-MDUMMY.DCY[8..23]     = 60 11 1c 1f c1 e2 33 3d 11 83 d6 6b 00 b4 26 65
-MDUMMY.DFM[0..15]     = 6f 62 6a 65 63 74 20 45 64 69 74 46 6f 72 6d 31   ("object EditForm1")
-Stream[0] (XOR)       = 0f 73 76 7a a2 96 13 78 75 ea a2 2d 6f c6 4b 54
+.DCY file layout:
+  [same encryption model as .RWN]
+  [decrypted content: Delphi VCL form text ("object EditForm...")]
 ```
 
-This Stream[0] was validated against 11 independent DFM/DCY pairs — all
-matched exactly (the two that differed by one byte had out-of-sync
-DFMs; their keystream was still 15 bytes identical and diverged only
-at the position where their DFMs differed from the actual plaintext).
+---
 
-### 6. Applying Stream[0] to every file
+## Key addresses in tp7runtime.exe
 
-Using Stream[0] to decrypt `byte_0..byte_15` of every encrypted file
-produced consistent, sensible plaintext:
+All offsets are raw file offsets. `VA = file_offset + 0x400C00`.
 
-| File type | Decrypted first 16 bytes |
-| --------- | ------------------------ |
-| DCY (14 samples) | All start with `object EditForm<N>:` (the classic Delphi form header) |
-| RWN (23 samples) | All start with the same structured 16-byte binary header whose bytes 3/7/11/14/15 are **invariant** = `f3 79 b2 31 ec`. This is the TAS-Pro-7 compiled-program header. |
+| Symbol | File offset | VA |
+|--------|------------|-----|
+| validate_func (outer RWN loader) | `0x742654` | `0xB42E54` |
+| mode2_handler (CFB decrypt — **breakpoint here**) | `0x34DF50` | `0x74EB50` |
+| TDCP_blockcipher constructor | `0x34E230` | `0x74EE30` |
+| TDCP_cipher.Init (sets initialized flag; no block_buf) | `0x34D58C` | `0x74E18C` |
+| Twofish.Init (key schedule; no block_buf) | `0x34ECA4` | `0x74F8A4` |
+| EncryptBlock | `0x34F648` | `0x750248` |
+| InitStr_internal (SHA1 key derivation) | `0x34D5F8` | `0x74E1F8` |
+| SHA1.Init VMT slot | `0x34CD90` | `0x74D990` |
+| passphrase 'mabufoju' string | `0x75D154` | `0xB5DD54` |
+| q0 table | `0x7740A8` | `0xB74CA8` |
+| q1 table | `0x7741A8` | `0xB74DA8` |
 
-The fact that the SAME Stream[0] XOR produces meaningful, structured
-output across both file types is the final confirmation: same cipher,
-same key, same IV.
+---
 
-### 7. Salt is not keying material
+## Key derivation (confirmed)
 
-Different DCYs have different 8-byte salts at offset 0-7, yet
-identical ciphertext at offsets 8-23. That means the salt does **not**
-influence the keystream — it's an annotation (checksum/timestamp/CRC)
-rather than an IV or key input.
-
-## What we recovered
-
-```
-Keystream Stream[0] (first 16 bytes of encrypted body):
-    0f 73 76 7a a2 96 13 78 75 ea a2 2d 6f c6 4b 54
+```python
+import hashlib
+passphrase = b'mabufoju'
+key = hashlib.sha1(passphrase).digest() + b'\x00' * 4  # 24 bytes (192-bit)
+# key = ecd3549bfed4903bfbf6b50ff92a22fe5b81b0a0 00000000
 ```
 
-With this single constant, we can decrypt the first 16 bytes of any
-`.RWN`, `.DCY`, `.SCY`, `.LCY` file produced by this installation.
+---
 
-For any DCY that has a matching plaintext DFM on the share, we can
-derive the full per-file keystream (simply XOR the two) and verify the
-encryption round-trips. We identified 13 such pairs:
+## Validation logic (from disassembly of validate_func)
 
 ```
-DBAMENU_LOGIN  DBAMENU_SELCOMP  EVOEMSG       EVOERROR     EVOGETDATE
-EVOMESSAGE     EVORESETPASS     GETALPHAGEN   IMAGEPRINT   MDUMMY
-NZEDEFS        PRINTTLL         T7CLOADING
++33: CALL stream.Read → reads 8 bytes from .RWN into buf[0..7]
++39: Twofish.Create → create cipher object (EBX = cipher)
++5B: CALL InitStr_internal('mabufoju') → key schedule
++64: MOV BYTE [EBX+0x34], 2   → set mode = 2 (CFB)
++66: PUSH 8                    → size = 8
++68: LEA ECX, [EBP-0x11]      → buf ptr (src)
++6B: LEA EDX, [EBP-0x11]      → buf ptr (dst)
++6E: MOV EAX, EBX             → cipher obj
++74: CALL [VMT+0x50]           → mode2_handler → CFB decrypt 8 bytes
++78: MOV EAX, [EBP-0x11]      → pt[0:4]
++7B: CMP EAX, [EBP-0xD]       → compare pt[4:8]
++7E: JZ → success path         → if equal: proceed to load
++9C: CALL file 0x34D774        → main decrypt-and-load with same cipher
 ```
 
-## What we could NOT recover
+After the validation decrypt, the cipher continues in CFB/OFB-like mode for the body.
+The 8 validation bytes are the only sentinel; the body is loaded contiguously.
 
-The full cipher key `K`. Without it, Stream[1], Stream[2], ... depend
-on ciphertext-block-N-minus-one, which in turn depends on unknown
-plaintext for files that don't have a DFM pair. So for RWN programs,
-only byte 0-15 is readable today.
+---
 
-### Attacks tried
+## Twofish VMT layout (in tp7runtime.exe)
 
-1. **Literal string search** in `tp7runtime.exe`:
-   - 474,537 extracted printable strings, length ≥ 3.
-   - Each tried as a Twofish key (padded to 16/24/32 bytes with
-     zero, space, and self-repetition).
-   - Hash of each (MD5/SHA1/SHA256) also tried.
-   - Result: no match.
+VMT base at file `0x34E6A8` (VA `0x74F2A8`):
 
-2. **Targeted phrase list** (~60 hand-crafted EvoERP/TAS-related phrases
-   with upper/lower/reverse variants and additional paddings): no match.
+| Slot | File offset | Purpose |
+|------|------------|---------|
+| VMT[+0x40] | `0x34ECA4` | Twofish.Init |
+| VMT[+0x44] | `0x34F614` | Twofish.Done |
+| VMT[+0x50] | `0x34DABC` | mode dispatch / Encrypt/Decrypt |
+| VMT[+0x58] | `0x34F648` | EncryptBlock |
+| VMT[-0x2C] | → `"TDCP_twofish"` | class name (confirmed) |
 
-3. **High-entropy buffer sweep** of ~20KB of CODE section near the
-   `.DCY` references and near the Twofish class VMT: no match.
+---
 
-4. **Known-plaintext derivations**:
-   - `Stream[0] = Twofish(K, IV)` → if `IV = 0`, need `K` such that
-     `Twofish(K, 0) = 0f73...4b54`. Standard Twofish — no practical
-     shortcut.
+## What was tried and failed
 
-5. **Other modes / alternate cipher** sanity checks:
-   - AES is not even present in the runtime (no Rijndael class).
-   - DES/3DES have 8-byte blocks, not 16 — doesn't fit.
-   - OFB would give identical keystream across files regardless of
-     plaintext — contradicts observations.
-   - CBC wouldn't produce the `XOR_c == XOR_p` pattern where plaintexts
-     match — contradicts observations.
+| Attempt | Result |
+|---------|--------|
+| IV=zeros, SHA1('mabufoju') 192-bit | XOR = 0xCE14BE8C ≠ 0x3E0A37C5 |
+| IV=zeros, 128-bit / 256-bit key variants | Wrong |
+| IV=file[0:16], all key variants | Wrong |
+| SHA1/MD5/SHA256 × 128/192/256-bit × various IVs | All wrong |
+| 474k+ embedded strings tried as passphrase (earlier session) | No match |
+| ~60 hand-crafted EvoERP phrases (earlier session) | No match |
 
-### What would succeed
+See `BROKEN.md` B-004 for full detail. Do not retry IV=zeros with SHA1-192 — it is confirmed wrong.
 
-- **Recover the passphrase from the runtime** via a live debugger, by
-  breakpointing the `TDCP_twofish.Init` call and reading the key buffer.
-  This is a read-only action on a running process, but it does require
-  running the product. *Out of scope for this static-read-only analysis.*
-- **Memory dump** of the runtime after it loaded a form, then
-  searching for the 16-byte key buffer.
-- **Ask Addsum** for the phrase, if there's a support channel.
+---
 
-## Practical upshot
+## How to complete decryption (one session)
 
-Even without the key, the partial decryption of block 0 is enough to:
+1. Install x64dbg (free, no install required): https://x64dbg.com/
+2. Launch `C:\ISTS\tp7runtime.exe` with a small `.RWN` (e.g. `C:\ISTS\suwin7.rwn`)
+3. Set breakpoint at VA `0x74EB50` (file offset `0x34DF50`) — `mode2_handler` entry
+4. When breakpoint hits: EAX = cipher object pointer
+5. Read bytes `[EAX + 0x3C]` through `[EAX + 0x4B]` (16 bytes) — this is `block_buf` = IV
+6. Share those 16 bytes; `scripts/rwn_decrypt.py` can be written immediately
 
-- Confirm file categorisation (any DCY's decrypted prefix is
-  `object EditForm<N>:`).
-- Validate that a given DFM is the genuine plaintext of a given DCY
-  (their derived keystreams must match at block 0).
-- Build a file-integrity checker for the share.
+---
 
-## Sources used
+## Historical note — earlier analysis
 
-- Addsum blog / product pages at addsum.com and cassoftware.com —
-  for the `#FORMSENCRYPTED` directive and the "You may only encrypt
-  .DFM, .SRC & .LIB" constraint.
-- DCPcrypt open-source library (for Twofish / SHA1 / hash-class
-  plumbing and the `InitStr` → key-derivation path).
-- Loxodo project — for the pure-Python Twofish implementation we
-  used to test candidate keys.
+An earlier pass (before the passphrase was found) derived an empirical keystream by
+XOR-ing `MDUMMY.DCY[8..23]` against `MDUMMY.DFM[0..15]`, producing a first-block
+keystream of `0f 73 76 7a a2 96 13 78 75 ea a2 2d 6f c6 4b 54`. This was validated
+against 11 DCY/DFM pairs and produced consistent results. That keystream is now
+understood as `Twofish_CFB_Encrypt(K, block_buf)` for the 16-byte block at offset 8 in
+`.DCY` files (where the first 8 bytes are the validation block). It can be used to
+verify the IV once it is retrieved from the debugger:
 
-## Files produced
+```python
+# After getting block_buf from debugger:
+# Encrypt block_buf with SHA1('mabufoju') 192-bit key using Twofish-ECB
+# Result should match 0f 73 76 7a a2 96 13 78 75 ea a2 2d 6f c6 4b 54
+# (this cross-checks both the IV value and the key)
+```
 
-- `samples/crypto/` — copies of 37 RWN, 14 DCY, and local bootstrap
-  DCY/RWN files used for analysis.
-- `samples/crypto/pairs/` — the 13 DFM/DCY pairs.
-- `scripts/decrypt_dcy.py` — partial-decryption utility.
-- `scripts/twofish_py.py` — pure-Python Twofish (loxodo).
+---
+
+## Scripts
+
+| Script | Status | Purpose |
+|--------|--------|---------|
+| `scripts/twofish_pure.py` | ✅ Working | Pure Python Twofish; passes NIST 192-bit test vector |
+| `scripts/rwn_validate.py` | 🔄 Passphrase fixed | Validates RWN first 8 bytes; IV still wrong |
+| `scripts/rwn_scan.py` | 🔄 Passphrase fixed | Broad-spectrum scan for decrypted content |
+| `scripts/rwn_decrypt.py` | ❌ Not yet written | Full decryptor — write after IV is known |

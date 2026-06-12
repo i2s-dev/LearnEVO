@@ -5,6 +5,22 @@ If anything here is ambiguous, stop and ask. Do not guess.
 
 ---
 
+## 0. BROKEN.md — mandatory first read every session
+
+**ALWAYS read `BROKEN.md` at the repo root before doing anything in this workspace.**
+This document logs every bug found and every fix attempted (successful or not).
+
+Rules:
+- Every bug or mistake encountered **must** be logged in `BROKEN.md`. No exceptions.
+- Log: symptom, root cause, every attempt (whether it worked or not), date, and a lesson.
+- Newest entries go on top. When fixed, mark status ✅ FIXED.
+- **Never retry a fix already listed as "didn't work"** without explicit reasoning for why a
+  different outcome is expected now.
+- Before attempting any fix, re-read the relevant `BROKEN.md` entry. If you are about to
+  retry something already listed as failed, stop and pick a different approach — or ask.
+
+---
+
 ## 1. Scope — where I may and may NOT act
 
 **READ-ONLY (never write, edit, delete, rename, move, create, or overwrite):**
@@ -240,16 +256,46 @@ That document is the authoritative record of what is unblocked, what is blocked,
 current blocker, how to resolve it, and the highest-value next tasks. It supersedes any
 older summary you may have in context.
 
-Short version:
-- **Unblocked:** `.SRC`, `.RUN`, `.DCY`, `.DFM`, `.RTM`, `.B` analysis; Rosetta Stone
-  opcode mapping; all documentation updates
-- **Blocked:** any `.RWN` decryption or disassembly — cipher is confirmed (Twofish) but
-  passphrase validation requires a Python Twofish library that is not yet installed
+Short version (as of 2026-06-12):
+- **Unblocked:** `.RUN`, `.DFM`, `.RTM`, `.B` analysis; Rosetta Stone opcode mapping;
+  all documentation updates; per-table field docs; module logic from forms+reports
+- **Blocked:** any `.RWN` / `.DCY` decryption — cipher is Twofish-CFB, passphrase is
+  `mabufoju`, key derivation is SHA1+4zeros (192-bit) — but the initial IV (`block_buf`)
+  is uninitialized heap and requires one debugger session to recover
+- **Note:** Only 7 `.SRC` files exist on the network share; all TAS Pro 7 logic is
+  binary-only in `.RWN` files
 - Do NOT write stub or placeholder code for blocked tasks — it creates false progress
 
 ---
 
-## 11. Launcher scripts (.bat / .ps1) — keep them current
+## 11. Living documents — keep these current every session
+
+The following documents must be updated whenever relevant findings are made. They are
+not one-time artifacts; they are the running record of the project. Update them in the
+same session as the work that generates the findings — do not defer.
+
+| Document | What it tracks | Update trigger |
+|----------|---------------|----------------|
+| `BROKEN.md` | Every bug, mistake, and failed fix — **mandatory read at session start** | Any bug encountered or fix attempted |
+| `BUGS.md` | learnevo-help browser bugs and launcher fixes | Any UI/server bug or launcher change |
+| `START-HERE-DOCUMENTATION-PROGRESS.md` | Current blocker, what is/isn't unblocked, research snapshot | Any change to what is blocked or unblocked |
+| `EVO-DECOMPILE-TODO.md` | Confidence ratings and checklist for every analysis area | Any finding that changes a confidence rating |
+| `research/OPEN_QUESTIONS.md` | Unresolved questions; answers when resolved | Any question answered or newly discovered |
+| `PROJECT-STRUCTURE.md` | Catalog of every EvoERP file and its purpose | Any new file discovered or relationship confirmed |
+| `HELP-RESOURCES.md` | User-facing knowledge base: tables, fields, recipes | Any module, table, or workflow documented |
+| `docs/02-file-formats/decryption-findings.md` | RWN/DCY cipher reverse-engineering — all confirmed facts and failed attempts | Any cipher/key/IV finding |
+| `docs/README.md` | Index of all docs in `docs/` | Any new doc created |
+
+Rules:
+- Update confidence ratings in `EVO-DECOMPILE-TODO.md` when findings change them.
+- Mark questions resolved in `OPEN_QUESTIONS.md` inline with the answer and date.
+- Update `START-HERE-DOCUMENTATION-PROGRESS.md` whenever the blocker changes.
+- Update `decryption-findings.md` immediately after any cipher/key/IV finding, successful or not.
+- Never let `BROKEN.md` get behind — log every attempt before it is forgotten.
+
+---
+
+## 12. Launcher scripts (.bat / .ps1) — keep them current
 
 The user launches tools in this workspace via `.bat` files (e.g.
 `RUN.bat`, `learnevo-help\launch.bat`). Whenever I change how a tool

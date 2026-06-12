@@ -77,13 +77,24 @@ are the few remaining gaps after the bulk autonomous pass.
 These items **require a running system or access to encrypted files**
 to resolve fully:
 
-1. **Decrypt `.RWN` / `.DCY`.** Would need either:
-   - A key extracted from `tp7runtime.exe` (requires careful reverse
-     engineering), or
-   - A running trace that captures the decryption call.
+1. **Decrypt `.RWN` / `.DCY` — last blocker is the IV.**
 
-   Impact if resolved: we could read every compiled program's logic
-   without running it, close most "how does XX-Y actually work" gaps.
+   **Status (2026-06-12):** Cipher = Twofish-CFB (confirmed). Passphrase =
+   `mabufoju` (confirmed at file offset `0x75D154`). Key = SHA1 digest (20 bytes) +
+   4 zeros = 192-bit (confirmed). `twofish_pure.py` passes NIST 192-bit test vector.
+
+   The **only remaining unknown** is the initial IV (`block_buf`, 16 bytes at
+   cipher+0x3C). The TDCP_blockcipher constructor allocates this with `GetMem` but
+   never zeroes it; the Init call chain also never touches it. IV=zeros was tested
+   and produces the wrong keystream XOR (0xCE14BE8C ≠ 0x3E0A37C5).
+
+   **Resolution:** one debugger session. Set a breakpoint at `tp7runtime.exe` file
+   offset `0x34DF50` (VA `0x74EB50`), the entry of `mode2_handler`. When it hits,
+   EAX = cipher object; read `[EAX + 0x3C]` (16 bytes). See `BROKEN.md` B-004 and
+   `docs/02-file-formats/decryption-findings.md` for full detail.
+
+   **Impact if resolved:** all 1,124 `.RWN` programs and all `.DCY` files become
+   readable; closes most "how does XX-Y actually work" gaps.
 
 2. **Exact ACCES_1..20 → module mapping** in the security model.
    Easiest path: watch a running `Enter Users` (`SM-?`) screen save a
