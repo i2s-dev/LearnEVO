@@ -181,14 +181,37 @@ inventory asset, inventory expense, COGS, taxable sales, non-taxable sales, WIP 
 absorbed labor, absorbed fixed OH, absorbed variable OH, and material burden. This is the mechanism
 for multi-location or multi-product-line accounting separation.
 
-**Remaining unread SM forms:** T7SMP* (printer config), T7SMN* (network/system parameters — likely
-writes BKSYMSTR/BKYSMSTR), T7SME (core entry), T7SMG–T7SMJ (terms/tax/shipper detail).
+**Additional forms read from network share (2026-06-15):**
 
-**Primary tables:** BKSYMSTR (286 fields), BKYSMSTR (195+ YN flags), AHSYLOG, BKLOGON, BKSYPRTR,
-BKSYUSER, BKSYCFG, MTCLASS, BKIC (class-GL overrides), IS\* lookup tables.
+| DFM | Size | Purpose | Key fields |
+|-----|------|---------|------------|
+| T7SMK.DFM | 273 KB | **Evo User Settings** — per-user preference panel (writes EvoSettings.INI). Options: Toolbar, Language, Sounds, Default Print Path, "Check for Reminders every X minutes" | evo.cfg.toolbar, evo.cfg.lang, evo.cfg.sounds, defprintpath, evo.cfg.remind, remmin |
+| T7SMF.DFM | 107 KB | **Tax Group Setup** — defines multi-component tax groups. Array fields for up to N tax codes per group: ISIS.TXG.CODE[1..N], ISIS.TXG.DESCF (description), ISIS.TXG.PERCC (rate), ISIS.TXG.TAXON (tax-on flag), ISIS.TXG.FRGT (freight taxable flag) → ISIS.TXG table |
+| T7SME.DFM | 67 KB | **Tax Code Entry** — individual tax codes with GL and vendor. Fields: ISIS.TXF.CODE, ISIS.TXF.DESC, ISIS.TXF.IDNUM (ID# for state/fed filing), ISIS.TXF.VNDCD + BKAP.VENDNAME (AP vendor for tax remittance!), ISIS.TXF.SOPERC[1] (SO tax rate), SO Taxes/PO Taxes/GL Account → ISIS.TXF table |
+| T7SMO.DFM | 63 KB | **Ship-Via Carrier Setup** — carrier master records. Fields: ship via code, name, description, notes (2 lines), telephone, **carrier home page URL**, **tracking URL** (for customer self-tracking), vendor range → IS ship-via table |
+| T7SMD.DFM | 53 KB | **Payment Terms Entry** — IS.TERMS.NAME/NUM/DESC/AMT, `due.on.rcpt` flag (Net 30, 2% 10 days, etc.) → IS.TERMS table |
+| T7SMG.DFM | 96 KB | **Employee Report** — print employee list with filters: Employee range, Month (for birthday reports), Include Terminated, Print Contacts, Label/Birthday Report options |
+| T7SMJM.DFM | 80 KB | **SM-JM Customer Code Merge** — merges old customer code into new; OLD_PART, CUSTNAME, ADD1, ADD2 — customer record consolidation utility |
+| T7SMJN.DFM | 73 KB | **SM-JN Vendor Code Merge** — same as SM-JM for vendors: oldcode, VENDNAME, ADD1, ADD2 |
+| T7SMJC.DFM | 81 KB | **SM-JC Job Costing Setup** — configures JC module parameters: MASTER, TRANSACT, RPT.ONLY, METHOD options |
+| T7SMJB.DFM | 61 KB | **SM-JB Job Archive** — archive/cancel job records with options: ARCH.CANCEL, include archived, include exceptions |
+| T7SMGA.DFM | 75 KB | **Employee Contact Maintenance** — emp.name, contact title, contact name, employee code |
+| T7SMPJ.DFM | 57 KB | **SM-P-J UL Code Entry** — UL Code (Underwriters Laboratories or user-defined link), Description, Image Link File |
+| T7SMPF.DFM | 56 KB | **Job Number Master** — IS.JOB.NUMB, IS.JOB.DESC, IS.JOB.CUST (customer), IS.JOB.VEND (vendor). Job/contract/project tracking codes used across SO/WO/PO. |
+| T7SMPH.DFM | 50 KB | **Maintenance Cycle Setup** — IS.CYCLE.CODE, Description, Frequency (Days). Defines preventive maintenance cycles for equipment. |
+| T7SMSD.DFM | 52 KB | **AP Invoice Document Linking** — BKAP.INVT.DESC, Invoice.Link, Inv.num. Links scanned document files to AP invoice records. |
 
-**Confidence: 62/100** — 8 forms read from network share; class/GL override structure confirmed;
-printer and system-parameter forms not yet read.
+**Key findings from second SM read pass:**
+- **SM-K is "Evo User Settings"** — confirms this writes `EvoSettings.INI` per user (not per company)
+- **Tax system uses two tables:** ISIS.TXF (individual tax codes, with AP vendor for remittance) and ISIS.TXG (tax groups combining multiple TXF codes per line item)
+- **Ship-Via includes tracking URL** — carriers can have a tracking URL template stored in SM-O
+- **Job number master (IS.JOB.*)** explains the "Job Number" filter seen across JC, WO, and PO modules — jobs are SM-managed reference codes
+- **Customer/Vendor merge** (SM-JM/JN) is a database utility to consolidate duplicate records
+- **Maintenance cycles** (SM-PH, IS.CYCLE.*) suggests EVO has a preventive maintenance scheduling feature
+
+**Primary tables:** BKSYMSTR (286 fields), BKYSMSTR (195+ YN flags), AHSYLOG, BKLOGON, BKSYPRTR, BKSYUSER, BKSYCFG, MTCLASS, BKIC (class-GL overrides), ISIS.TXF (tax codes), ISIS.TXG (tax groups), IS.TERMS (payment terms), IS.JOB.* (job number master), IS.CYCLE.* (maintenance cycles)
+
+**Confidence: 72/100** — 23+ forms now read from network share; tax/terms/ship-via/job-number/user-settings structure confirmed; BKSYMSTR/BKYSMSTR (global system parameters, 481+ fields) not yet fully decoded.
 
 ---
 

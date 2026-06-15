@@ -579,7 +579,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **SD** — Standard Data (12 ops) — forms inventoried only
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
-- [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 8 forms read (class setup, GL override, customer shipping prefs, WO setup/end); T7SMP*/T7SMN* (printer/system params) not yet read — **C: 62/100**
+- [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms read; SM-K (user prefs→EvoSettings.INI), SM-E/F (tax code ISIS.TXF + tax group ISIS.TXG with vendor remittance), SM-O (ship-via with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (job# master IS.JOB.*), SM-PH (maintenance cycles IS.CYCLE.*), SM-JM/JN (customer/vendor merge), SM-JC (JC setup), SM-SD (AP invoice document link); BKSYMSTR/BKYSMSTR not fully decoded — **C: 72/100**
 - [x] 🔄 **SR** — Service / Repair — 7 DFM files read; SR-K (equipment master ISSR.MMS.* — make/model/serial/IN-OUT dates/motor/WO#), SR-I (AR invoice browse), SR-E (invoice address edit, BKAR.INV.*); SO integration confirmed; T7SRA not found on share — **C: 58/100**
 - [ ] ⬜ **SU** — Setup — forms inventoried only
 - [ ] ⬜ **SY** — System — forms inventoried only
