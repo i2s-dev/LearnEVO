@@ -41,10 +41,10 @@ Every DFM was parsed with `scripts/parse_dfm.py` +
 | **T7-ES**    | 7  | Estimating |
 | **T7-JS**    | 7  | Job Shop |
 | **T7-LC**    | 7  | Labor Capture? |
-| **T7-CC**    | 6  | Cycle Count |
+| **T7-CC**    | 6  | Credit Card Processing ⚠️ (NOT Cycle Count — confirmed 2026-06-15) |
 | **T7-PS**    | 6  | Payroll Setup? |
 | **T7-SA**    | 6  | Sales Analysis |
-| **T7-SP**    | 6  | Ship Packing? |
+| **T7-SP**    | 6  | Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — confirmed 2026-06-15) |
 | **T6-IS**    | 9  | Information System (TAS 6 era remnants) |
 | **PLATFORM-EVO**  | 53 | Platform (EvoMenu, EvoFilters, EvoNotes, EvoService…) |
 | **PLATFORM-WTAS** | 14 | Generic TAS-shipped windows |

@@ -41,6 +41,13 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Enable serial tracking on an item | SC-B | [Serial Control](#serial-control-sc) |
 | Schedule WOs across work centers | SH-A / SH-B | [Shop Scheduling](#shop-scheduling-sh) |
 | Print a WO dispatch report | SH-I | [Shop Scheduling](#shop-scheduling-sh) |
+| Run a Top N Customers report | SA-O | [Sales Analysis](#sales-analysis-sa) |
+| Report on actual profit margin by ship date | SA-Q | [Sales Analysis](#sales-analysis-sa) |
+| Analyze sales by product class/category | SA-P | [Sales Analysis](#sales-analysis-sa) |
+| Enter a customer credit card on file | CC-P | [Credit Card Processing](#credit-card-processing-cc) |
+| Reconcile CC charges to invoices | CC Invoice List (ccr1) | [Credit Card Processing](#credit-card-processing-cc) |
+| Record inspection errors on a WO | SP/SPC main entry | [Statistical Process Control](#statistical-process-control-sp--spc) |
+| View real-time defect rate dashboard | SPC Live Grid | [Statistical Process Control](#statistical-process-control-sp--spc) |
 
 ---
 
@@ -556,6 +563,83 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 (T7SOC hub form), not SH. SH = Shop floor scheduling only.
 
 **Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling algorithm inaccessible (in RWN).
+
+---
+
+### Sales Analysis (SA)
+
+**What it does:** Produces sales performance reports and margin analysis across customers, items, salespersons, product classes, and currencies. Uses a dedicated BKSA.* aggregation table (separate from live AR invoice data).
+
+**Menu codes:** SA (13 operations in menu)
+
+**Key operations:**
+- **SA-A — Currency Analysis:** Filter and analyze sales by currency pair. Fields: from_cur, thru_cur, inc.change (include currency exchange difference). Used for multi-currency revenue reporting.
+- **SA-M / SA-N — Salesperson Reports:** Analyze sales by salesperson/rep. Reads BKSA.NAME, BKSA.TITLE, BASE — pre-summarized salesperson performance data.
+- **SA-O — Top N Sales Report:** Ranks customers by sales volume. Filter by customer range and date range. Classic "top 10 customers" report.
+- **SA-P — Class/Category Analysis:** Analyze sales by item product class (from.class/thru.class) and category (from.cat). Useful for product line performance analysis.
+- **SA-Q — Actual Margin Report:** Profit/loss analysis by ship date range (from.shipdt/thru.shipdt) and actual WO finish date (thru.afin). The WO actual-finish integration means margin is tied to completed job costs, not just invoiced amounts.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| BKSA.* | Sales analysis aggregation — pre-summarized performance data with NAME, TITLE, BASE fields |
+| BKARINV | AR Invoice header — source data for SA calculations |
+| BKARCUST | Customer master — customer name/class lookup |
+
+**Important distinction:** SA uses a dedicated BKSA.* table, not just a live query on BKARINV. This means SA data must be refreshed/rebuilt from AR history — there is likely a "build SA data" operation that populates BKSA from invoice history before reports are run.
+
+**Confidence: 55/100** — All 6 DFMs read; BKSA.* table confirmed; SA-O "Top N" and SA-Q "Actual Margin" verified by caption; aggregation/rebuild trigger unknown; BKSA field schema not decoded.
+
+---
+
+### Credit Card Processing (CC)
+
+**What it does:** Stores customer credit card information (masked), records CC charges against invoices and purchase orders, imports CC transaction files from CSV, and produces CC invoice reconciliation reports.
+
+**Menu codes:** CC (6 operations confirmed from DFM count)
+
+**Key operations:**
+- **CC-P — Credit Card Entry:** Enter or view a customer's credit card. Stores masked card number (IS.CC.MASKED), cardholder name (IS.CC.CARDNAME), expiry date (IS.CC.EXP in MMYY format), billing ZIP (IS.CC.ZIP), and charge amount. Displays "* Expired *" flag for expired cards.
+- **CC-PO — CC Charges on POs:** Link credit card payments to purchase orders (ccnum, ccamount, CCYY, CCMM). Vendors can be paid by credit card through the PO workflow.
+- **CC Invoice List (ccr1) — Reconciliation Report:** List all credit card invoices by date range and payment terms range. Used for statement reconciliation.
+- **CC Import (CC-DE) — CSV Import:** Import CC transactions from a CSV file (bank statement download). Fields: file.name, COMMA.FIXED.STR (fixed vs. comma-delimited flag), FIELD.NUMBER2[1-2] (field position mapping).
+- **CC Item/WO Range Filters:** CC charges can be analyzed by item number range or Work Order/location, enabling cost allocation to specific jobs.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| IS.CC.* | Credit card records — masked card #, cardholder name, expiry, billing ZIP |
+
+**Security note:** IS.CC.MASKED stores only the masked (tokenized) card number, not the raw PAN. Compliance-aware storage.
+
+**Confidence: 65/100** — All 6 DFMs read; CC data model confirmed; masked storage architecture confirmed; IS.CC field count and AR/PO integration join keys not decoded.
+
+---
+
+### Statistical Process Control (SP / SPC)
+
+**What it does:** Records quality inspection errors during manufacturing (by inspector, WO, item, drawing), provides a real-time error dashboard, and produces defect-rate reports including PPM (Parts Per Million) analysis.
+
+**Menu codes:** SP (6 forms confirmed from DFM count)
+
+**Key operations:**
+- **SPC Main Entry (T7SPC) — Scan/Inspection Record:** Inspector enters defects found during WO inspection. Fields: Inspector #, Employee (SCAN.EMP), Work Order (SCAN.WO), Work Order Item, Work Order Qty, Customer, Drawing number, error type (IS.SERR.ERROR), and process (IS.SERR.PROCESS). The SORTKEY field suggests inspection records are sequenced.
+- **SPC Live Grid — Real-Time Error Dashboard:** Caption='Top Real Time Errors'. Grid columns: ATYPE (error type), ADETAIL (error detail), ACODE (error code), ACOUNT (count). Live view of current defect rates across active WOs.
+- **SPC Live Report — Auto-Refresh Report:** Filter by error type, detail, and date range. "Refresh Every" field = configurable auto-refresh interval (seconds). Designed for shop-floor monitor display.
+- **SPC Report (SPCREP/SPCREP2) — WO Inspection Report:** Filter by WO range, parent part range, employee range, and date range. Standard after-the-fact quality analysis.
+- **SPC PPM Report (SPCREPPPM) — Parts Per Million Defect Rate:** WO/part/date range with "Sides From/Thru" range. PPM = (defects / opportunities) × 1,000,000. The "Sides" field is specific to PCB/electronics manufacturing (front side, back side of a circuit board).
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| IS.SERR.* | Scan/inspection error records — error type, process, WO, employee, qty |
+
+**Industry context:** The "Sides" field in the PPM report (PCB front/back) strongly indicates i2 Systems is an electronics/PCB manufacturer. SPC PPM measurement by board side is standard in electronics contract manufacturing.
+
+**Confidence: 60/100** — All 6 DFMs read; IS.SERR.* table confirmed; real-time dashboard and PPM report verified by caption; IS.SERR field schema and process taxonomy not decoded; menu code placement not confirmed.
 
 ---
 

@@ -544,12 +544,13 @@ Target for "understood" = C: 75+ on all items below.
 The following modules have menu codes and forms inventoried but no deep logic documentation:
 
 - [ ] ⬜ **AB** — purpose unclear; no deep doc
-- [ ] ⬜ **AC** — purpose unclear; no deep doc
+- [x] 🔄 **AC** — Activity Control (WO actual dates) — 3 DFMs read; ACDATE (WODATE.START/FINISH/QTY, parent.wonum/top.wonum/deleted.wonum WO hierarchy), ACRDTYPE (action record disposition codes: ac.rd.type/reason/dispo), ACTION (IS.ACTION.TYPE/DESC action type master); primary tables WODATE.*, IS.ACTION.* — **C: 45/100**
 - [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
 - [ ] ⬜ **AD** — purpose unclear; no deep doc
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — purpose unclear; no deep doc
 - [ ] ⬜ **CR** — Credit / Collections — forms inventoried only
+- [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [ ] ⬜ **DE** — Data Entry (33 ops, 2nd largest) — forms inventoried only
 - [ ] ⬜ **DI** — purpose unclear; no deep doc
@@ -576,12 +577,13 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **RF** — purpose unclear; no deep doc
 - [ ] ⬜ **RM** — Return Material — forms inventoried only
 - [ ] ⬜ **RT** — purpose unclear; no deep doc
-- [x] 🔄 **SA** — Sales Analysis (13 ops) — 6 forms inventoried; purpose confirmed (reads BKARINV/BKARINVL/BKARCUST for sales reporting) — **C: 45/100**
+- [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
 - [ ] ⬜ **SB** — purpose unclear; no deep doc
 - [ ] ⬜ **SD** — Standard Data (12 ops) — forms inventoried only
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms read; SM-K (user prefs→EvoSettings.INI), SM-E/F (tax code ISIS.TXF + tax group ISIS.TXG with vendor remittance), SM-O (ship-via with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (job# master IS.JOB.*), SM-PH (maintenance cycles IS.CYCLE.*), SM-JM/JN (customer/vendor merge), SM-JC (JC setup), SM-SD (AP invoice document link); BKSYMSTR/BKYSMSTR not fully decoded — **C: 72/100**
+- [x] 🔄 **SP** — Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — CORRECTED) — all 6 DFMs read; SPC main entry (Inspector #/Employee/WO/Item/Qty/Customer/Drawing → IS.SERR.ERROR/PROCESS), SPCLIVEGRID (Caption='Top Real Time Errors'; ATYPE/ADETAIL/ACODE/ACOUNT), SPCLIVEREP (auto-refresh live report), SPCREP/SPCREP2 (WO/Part/Employee/Date range reports), SPCREPPPM (PPM defect rate with Sides range — PCB/electronics context); primary table IS.SERR.* — **C: 60/100**
 - [x] 🔄 **SR** — Service / Repair — 7 DFM files read; SR-K (equipment master ISSR.MMS.* — make/model/serial/IN-OUT dates/motor/WO#), SR-I (AR invoice browse), SR-E (invoice address edit, BKAR.INV.*); SO integration confirmed; T7SRA not found on share — **C: 58/100**
 - [ ] ⬜ **SU** — Setup — forms inventoried only
 - [ ] ⬜ **SY** — System — forms inventoried only

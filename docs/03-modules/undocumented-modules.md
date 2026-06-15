@@ -628,6 +628,124 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 ---
 
+---
+
+## SA — Sales Analysis
+
+**DFM files confirmed:** T7SAA.DFM, T7SAM.DFM, T7SAN.DFM, T7SAO.DFM, T7SAP.DFM, T7SAQ.DFM (6 total)
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7SAA.DFM | Currency analysis filter | from_cur, thru_cur, inc.change (include change flag) |
+| T7SAM.DFM | Salesperson/rep filter | BKSA.NAME, BKSA.TITLE, BASE |
+| T7SAN.DFM | Salesperson/rep filter (alt view) | BKSA.NAME, BKSA.TITLE, BASE |
+| T7SAO.DFM | Top N Sales Report | Caption='Top N Sales Report'; customer range, date range |
+| T7SAP.DFM | Class/category analysis | from.class, thru.class, from.cat, thru.cat |
+| T7SAQ.DFM | Actual Margin Report | Caption='Actual Margin Report'; from.shipdt, thru.shipdt, thru.afin (actual finish date) |
+
+**Key findings:**
+- **Dedicated BKSA.* table** — SA is not just a query on BKARINV. It has its own aggregation table (`BKSA.NAME`, `BKSA.TITLE`, `BASE`) that stores pre-computed or summarized sales data. This is significant: SA results are persisted, not calculated on the fly.
+- **Multi-currency support** — SA-A filters by currency pair with an "include change" option. Multi-currency analysis is built in.
+- **Salesperson analysis** (SA-M/N) — BKSA records have a NAME and TITLE, suggesting this table stores salesperson performance summaries.
+- **Top N Sales** (SA-O) — classic "who are our top N customers" report with customer/date range.
+- **Actual Margin** (SA-Q) — uses `thru.afin` (actual finish date), tying margin calculations to WO completion dates, not just ship dates. Confirms SA integrates with WO module for job cost margin.
+- **Class/Category analysis** (SA-P) — analyze sales performance by product class and category.
+
+**Primary tables:** BKSA.* (sales analysis summary), BKARINV (AR invoices — range source), BKARCUST (customer)
+
+**Confidence: 55/100** — All 6 DFMs read; form purposes clear; BKSA.* table existence confirmed but field schema not decoded; exact aggregation trigger (post-invoice? batch?) unknown.
+
+---
+
+## AC — Activity Control (WO Actual Dates)
+
+**DFM files confirmed:** T7ACDATE.DFM, T7ACRDTYPE.DFM, T7ACTION.DFM (3 total)
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7ACDATE.DFM | WO actual start/finish date entry | WODATE.START, WODATE.FINISH, WODATE.QTY, parent.wonum, top.wonum, deleted.wonum |
+| T7ACRDTYPE.DFM | Action/record disposition type codes | ac.rd.reason, ac.rd.type, ac.rd.dispo, AC.RD.TYPE, AC.RD.REASON |
+| T7ACTION.DFM | Action type master | IS.ACTION.TYPE, IS.ACTION.DESC |
+
+**Key findings:**
+- **WO hierarchy tracking** — T7ACDATE stores parent.wonum and top.wonum alongside the entry WO. EVO supports multi-level WO trees (sub-WOs rolled up to top-level); AC records actual dates at each node.
+- **deleted.wonum** — a "deleted WO" reference in the date entry form suggests AC also handles cleanup/voidance of WO activity records.
+- **WODATE.* table** — distinct from the WO header (BKWOMSTR) and line (BKWODTL) tables; stores actual vs. planned start/finish dates and quantities.
+- **Action type master** (T7ACTION) — IS.ACTION.TYPE/DESC is a generic code table used across modules (CRM, Service/Repair, or shop floor) to categorize actions taken.
+- **ACRD disposition codes** (T7ACRDTYPE) — ac.rd.type/reason/dispo = action record disposition types. Likely used in Service/Repair or QC return workflows (reason for action, disposition taken).
+
+**Primary tables:** WODATE.* (WO actual date records), IS.ACTION.* (action type master), AC.RD.* (action record disposition types)
+
+**Confidence: 45/100** — 3 DFMs read; WODATE.* table confirmed; AC module's exact menu placement and full scope unclear; IS.ACTION.* may be shared with CM/SR modules.
+
+---
+
+## CC — Credit Card Processing ⚠️ NAME CORRECTION
+
+**Previously listed as:** Cycle Count (INCORRECT)
+**Correct module name:** Credit Card Processing
+
+**DFM files confirmed:** T7CCP.DFM, T7CCPO.DFM, T7ccr1.DFM, T7CCCITM.DFM, T7CCCWOT.DFM, T7CCDE.DFM (6 total)
+
+**Evidence for correction:** T7CCP Caption='Credit Card Info', fields IS.CC.MASKED/IS.CC.ZIP/IS.CC.CARDNAME/IS.CC.EXP; T7ccr1 Caption='Credit Card Invoice List'; T7CCDE Caption='CC Import'.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7CCP.DFM | Credit card entry/storage | IS.CC.MASKED (masked card #), IS.CC.ZIP, IS.CC.CARDNAME, IS.CC.EXP (MMYY), ccamount; "Expired" flag |
+| T7CCPO.DFM | Credit card charges on POs | ccnum, ccamount, cczip, CCYY, CCMM (split expiry) |
+| T7ccr1.DFM | Credit card invoice list report | Caption='Credit Card Invoice List'; Fromdate, thrudate, Fromterms, thruterms |
+| T7CCCITM.DFM | Item range filter (for CC reports) | from.item (item range) |
+| T7CCCWOT.DFM | WO/location filter (for CC reports) | from.wonum, LOCATION |
+| T7CCDE.DFM | CC data import from CSV | Caption='CC Import'; file.name, COMMA.FIXED.STR, FIELD.NUMBER2[1-2] |
+
+**Key findings:**
+- **Masked card storage** — IS.CC.MASKED stores the masked card number (not raw PAN), IS.CC.CARDNAME = cardholder name, IS.CC.EXP = expiry, IS.CC.ZIP = billing zip. The "Expired" flag field suggests expiry validation is built in.
+- **PO integration** — T7CCPO links credit card charges to purchase orders (ccnum, ccamount on PO). Vendors can be paid by credit card through the PO module.
+- **Invoice list report** — T7ccr1 reports CC invoices by date range and terms — used for reconciliation.
+- **CSV import** (T7CCDE) — CC transactions can be imported from a CSV file (bank statement download workflow).
+- **WO/Item range filters** — CC charges can be analyzed by WO or item range, suggesting CC costs are allocated to jobs/WOs for cost accounting.
+
+**Primary tables:** IS.CC.* (credit card records — masked)
+
+**Confidence: 65/100** — All 6 DFMs read; CC data model confirmed; masked storage confirmed; exact IS.CC field count and AR/AP integration pathway not fully decoded.
+
+---
+
+## SP — Statistical Process Control (SPC)
+
+**DFM files confirmed:** T7SPC.DFM, T7SPCLIVEGRID.DFM, T7SPCLIVEREP.DFM, T7SPCREP.DFM, T7SPCREP2.DFM, T7SPCREPPPM.DFM (6 total)
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7SPC.DFM | Inspector scan/error entry (178 KB) | SORTKEY, SCAN.EMP, SCAN.WO, IS.SERR.ERROR, IS.SERR.PROCESS; Inspector #, Employee, Work Order, Work Order Item, Work Order Qty, Customer, Drawing |
+| T7SPCLIVEGRID.DFM | Real-time error dashboard | Caption='Top Real Time Errors'; ATYPE, ADETAIL, ACODE, ACOUNT |
+| T7SPCLIVEREP.DFM | Live error report (auto-refresh) | Types/Details/Date range; "Refresh Every" (interval field) |
+| T7SPCREP.DFM | WO inspection report | from.wonum, thru.wonum, from.item, thru.item, From.EMP; WO/Part/Employee/Date range |
+| T7SPCREP2.DFM | Inspection report (variant) | Same range structure as SPCREP |
+| T7SPCREPPPM.DFM | PPM (Parts Per Million) defect report | from.wonum, thru.wonum, from.item, thru.item, from.date, "Sides From" range |
+
+**Key findings:**
+- **Inspection-driven SPC** — EvoERP's SPC implementation is structured around an inspector scanning Work Orders for errors/defects. Not traditional control chart SPC — it's defect-rate tracking at the WO level.
+- **IS.SERR.* table** — "Scan Error" records. Each record ties an error type (IS.SERR.ERROR) to a process (IS.SERR.PROCESS), WO, employee, and item.
+- **Real-time dashboard** (SPCLIVEGRID) — "Top Real Time Errors" grid with ATYPE/ADETAIL/ACODE/ACOUNT fields. Live feed of current error rates, refreshable (SPCLIVEREP "Refresh Every" field).
+- **PPM reporting** (SPCREPPPM) — Parts Per Million defect rate by WO/part/date with "Sides" range (suggests PCB manufacturing context: boards have two sides — a very specific quality metric for electronics/PCB shops).
+- **Drawing number** field in main entry form — inspectors reference engineering drawings during inspection.
+- **WO-centric** — all reports filter by WO number range, confirming SPC data is collected at the WO/job level.
+
+**Primary tables:** IS.SERR.* (scan/inspection error records)
+
+**Confidence: 60/100** — All 6 DFMs read; module purpose clear; IS.SERR.* table confirmed; PPM "Sides" field strongly suggests PCB/electronics customer; exact IS.SERR field count and process taxonomy not decoded.
+
+---
+
 *Last updated: 2026-06-15*
 *Source: DFM files read from \\I2S109-SOLIDCRM\DBAMFG$\, CHM help topics from samples\chm\extracted\*
 
@@ -639,3 +757,5 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 | SH | Shipping | **Shop Scheduling** | T7SHA Caption='SH-A'; MTWO.WIP.* and MTWORO.* fields; work center capacity |
 | WC | Work Center | **Warehouse Control** | T7WCA Caption='Location/Bin/Description'; ISBN.MSTR fields; "Duplicates" bin button |
 | SR | (Sales Reports in DFM inventory) | **Service/Repair** | T7SRK fields ISSR.MMS.MAKE/MODEL/SERIAL; "IN Date"/"OUT Date"/"S/R Number"/"Motor" |
+| CC | Cycle Count | **Credit Card Processing** | T7CCP Caption='Credit Card Info'; IS.CC.MASKED/CARDNAME/EXP fields; T7ccr1 Caption='Credit Card Invoice List' |
+| SP | Ship Packing? | **Statistical Process Control (SPC)** | T7SPC Caption has 'Inspector #', 'Work Order:'; IS.SERR.ERROR/PROCESS fields; T7SPCREPPPM='PPM defect report' |
