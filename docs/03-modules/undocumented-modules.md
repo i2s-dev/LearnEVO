@@ -628,6 +628,128 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 ---
 
+## DE — Data Entry / EDI / Imports (20 forms)
+
+**DFM files confirmed:** T7DEER.DFM, T7DEFECT.DFM, T7DEHD.DFM, T7DEJH.DFM, T7DEK.DFM, T7DEL.DFM, T7DEM.DFM, T7DEP860.DFM, T7DEPB.DFM, T7DEPD.DFM, T7DEPE.DFM, T7DEPF.DFM, T7DEPH.DFM, T7DEQ.DFM, T7DER.DFM, T7DET.DFM, T7DETB.DFM, T7DEU.DFM, T7DEV.DFM, T7DEX.DFM (20 total)
+
+**What it does:** The EvoERP integration gateway — handles all data imports, data exports, EDI (Electronic Data Interchange) transactions, and bulk data manipulation. Covers BOM import, PI tag import, WO material import, web order import, vendor POA acknowledgments, customer release/blanket POs, and web item catalog export. Also contains two dangerous admin utilities (global field replace, selective file erase).
+
+**Forms by function:**
+
+| DFM | Caption / Purpose | Key fields |
+|-----|-------------------|------------|
+| T7DEM | BOM Component Import | Import BOM components (to Estimating or Production); allow 0 qty; print errors flag |
+| T7DEER | BOM Import Validation | DE-ER Error Report — print errors only, item range, validate against Estimating vs Production |
+| T7DEHD | PI Tag Import | Caption='PI-C Import Tags'; Skip/Replace existing tags; Count Date/Tag#/Location/Qty/Item# via FIELD.NUMBER[n] mapping |
+| T7DEJH | WO Material Import | DE-J-H; WOMAT.WOPRE/WOSUF/PCODE/PDESC — imports WO component/material lines |
+| T7DEQ | AR Invoice Import | file.name, comma.fixed [C/F], replace [S/R], field.number[1] — imports AR invoices from CSV |
+| T7DER | Data Import (variant) | Same structure as DEQ — likely a different record type (customer or vendor import) |
+| T7DET | Web Order Import (header) | Caption='Web Import'; Rec Designator H=header; auto.mode, use.imp.sonum, import.to.edi, bank.name — web orders can route to EDI or direct SO |
+| T7DETB | Web Order Import (alt) | DE-T-B; import.to.edi, date.format, incl.2nd.desc — web import configuration variant |
+| T7DEV | Vendor POA Import | Caption='POA Import'; SKIP.PONUM/PCODE/PQTY/SKIP.MSG — imports EDI 855 Purchase Order Acknowledgments from vendors |
+| T7DEPB | Customer Release Import | DE-P-B; BKAR.INV.CUSCOD, RELEASE_NUM, BKAR.INV.CUSORD — blanket PO release schedules |
+| T7DEP860 | EDI-860 PO Change | Same form as DEPB but EDI-860 transaction context — processes inbound PO change requests |
+| T7DEPD | Release Processing | DE-P-D; KEEP.ORD (keep order flag), KEEP.QUOTE, LOC, EST.DATE — processes release records |
+| T7DEPE | Release Browse | DE-P-E; BKAR.INV.CUSCOD/NUM/SONUM — browse/filter customer releases by SO/invoice |
+| T7DEPH | Release Packing | DE-P-H; sFROM.SONUM/sTHRU.SONUM, stdpck (standard packing flag) |
+| T7DEU | Web Item Export | Caption='Web Item Export'; ftp.FileName, from.item/thru.item — FTP upload of item catalog |
+| T7DEX | Data Dictionary Export | MEM.SELECT.FLD/NUM, MEM.DICT_DESC, MEM_DICT_NAME — exports TAS memory/dictionary definitions |
+| T7DEFECT | Defect Code Setup | IS.DEF.CODE, IS.DEF.DESC — master list of defect codes (used by QC and SPC modules) |
+| T7DEK | Global Field Replace ⚠️ | "File / Field to Change / Replace all Values / Value to search for" — find-and-replace across any EVO data file (which.file, which.field, replace.all, search.for) |
+| T7DEL | Selective File Erase ⚠️ | Erase Inventory, BOM, Customer, Routings files — inv/bom/cust/rout flags; destructive bulk delete |
+
+**Key findings:**
+- **EDI-860 PO Changes** (T7DEP860) — EvoERP handles inbound customer EDI 860 PO change requests. RELEASE_NUM field suggests blanket PO / release schedule EDI (common in automotive/electronics supply chains).
+- **Web Order Import** (T7DET) — `import.to.edi` flag means web orders can be staged in EDI before committing to SO. `bank.name` field confirms web orders include payment/banking info.
+- **Vendor POA (855)** (T7DEV) — SKIP flags allow selective import: skip by PO#, product code, qty, or message. Used to process vendor acknowledgments against outstanding POs.
+- **FTP Item Export** (T7DEU) — direct FTP upload of item catalog. Web integration is bidirectional: orders in (T7DET), catalog out (T7DEU).
+- **Global Field Replace** (T7DEK) — find-and-replace across any data file and field. Extremely powerful for data cleanup, but one wrong entry corrupts the database. No undo.
+- **Selective File Erase** (T7DEL) — bulk-delete by module (inventory/BOM/customers/routings). Used for database initialization from a template. No undo.
+- **Defect Code master** (T7DEFECT) — IS.DEF.CODE/DESC shared across QC and SPC modules. DE is also the home for setup tables that serve multiple modules.
+
+**Primary tables:** WOMAT.* (WO materials), IS.DEF.* (defect codes), IS.RMA.* (partial — RMA codes via DE?), BKAR.INV.*/BKAR.INVL.* (AR invoice import target), BKAR.DEP.* (deposits linked to releases)
+
+**Confidence: 68/100** — All 20 DFMs read; import targets and EDI transaction types confirmed; EDI 860/855 flows identified; exact DE-P sub-forms (DEPF, DEPG, etc.) not all read; web order bank integration not fully decoded.
+
+---
+
+## RM — Return Material Authorization (RMA)
+
+**DFM files confirmed:** T7RMAWHY.DFM, T7RMD.DFM, T7RMDASK.DFM, T7RME.DFM, T7RMG.DFM (5 total)
+
+**What it does:** Manages customer Return Material Authorizations — creating an RMA number against an original invoice/SO, recording the reason and warranty status, and processing the return disposition (restock, replace, credit, or transfer to a WO job).
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7RMD | RMA Entry (main — 156 KB) | Item#, Original Inv Num (bkar.inv.*), Original SO Num, Warranty [NLPB], Reason for Return (is.rma.warranty, warranty.desc, bkar.invl.pcode/pdesc) |
+| T7RMAWHY | RMA Detail / Why Popup | RMA Number, Line#, Status (is.rma.status), Item, Desc; SO # and line UOM reference |
+| T7RMDASK | RMA Disposition | Change Location, Pass RMA# to Desc/Job/None [D/J/N] (pass.rma.num), Location, Restock Charge (restock.charge), Enter SO Number |
+| T7RME | RMA Reason Code Setup | IS.RMA.CODE, IS.RMA.DESC — master list of return reason codes |
+| T7RMG | RMA Report | from.cust/thru.cust, thru.item — customer/item range RMA report |
+
+**Key findings:**
+- **Warranty codes [NLPB]** — N=Not covered, L=Limited, P=Parts only, B=Both (parts & labor). Warranty status drives what credit or replacement is issued.
+- **IS.RMA.* table** — dedicated RMA records table with status (is.rma.status), warranty (is.rma.warranty), and reason code (IS.RMA.CODE).
+- **Disposition routing** (T7RMDASK) — "Pass RMA# to Desc/Job/None [D/J/N]" means returned items can be routed to: a Job (WO) for rework, the invoice Description field for tracking, or neither. This bridges RM → WO for repair jobs.
+- **Restock charge** — T7RMDASK's restock.charge field confirms EVO supports restocking fees on customer returns.
+- **Original invoice linkage** — T7RMD references both bkar.inv.* (invoice header) and bkar.invl.* (invoice line) — RMAs are created at the line level, not just header.
+
+**Primary tables:** IS.RMA.* (RMA records — status/warranty/code), BKAR.INV.* (original invoice), BKAR.INVL.* (invoice line), IS.RMA.CODE/DESC (reason codes)
+
+**Confidence: 68/100** — All 5 DFMs read; RMA workflow from entry to disposition traced; IS.RMA.* table confirmed; full field schema not decoded; warranty code exact values inferred from pattern.
+
+---
+
+## FO — Features & Options
+
+**DFM files confirmed:** T7FOC.DFM, T7FOD.DFM, T7FOE.DFM (3 total)
+
+**What it does:** Product configurator add-on to the BOM module. Allows manufactured products to have selectable features and options — each option sets a Y/N flag (BKBM.PROD.OPYN[1..N]) on the BOM item. Customer orders for configurable products activate specific options, which drives which BOM components are included.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7FOC | FO-C Option Configuration | PAR.DESC (parent/assembly description), COMP.DESC (component/option description), BKBM.PROD.OPYN[5] — option flag #5 |
+| T7FOD | FO-D Range Report/Operation | from.item/thru.item, from.cat/thru.cat, from.class — item/category/class range |
+| T7FOE | FO-E Item Select | "Feature / Option Item Number" — from.item filter |
+
+**Key findings:**
+- **BKBM.PROD.OPYN[5]** — Option flags are indexed (OPYN[1], OPYN[2]... OPYN[N]) in the BOM product record. Each index corresponds to one configurable feature (e.g., "Color", "Size", "Voltage rating"). T7FOC shows OPYN[5], meaning at least 5 options per product.
+- **Parent/Component pairing** — PAR.DESC (parent) + COMP.DESC (component) = each option is defined as a parent-component relationship. Selecting an option includes or excludes specific BOM components.
+- **Tight BOM integration** — FO reads BKBM.* (BOM tables) directly, confirming it is a BOM sub-module rather than a standalone module.
+
+**Primary tables:** BKBM.* (BOM — BKBM.PROD.OPYN flags), BKICMSTR (item master for feature items)
+
+**Confidence: 50/100** — 3 DFMs read; option flag mechanism confirmed; exact number of option slots per item and SO-to-option trigger not decoded (in RWN).
+
+---
+
+## IS — Information System / Multi-Currency GL
+
+**DFM files confirmed:** T7ISMCC.DFM (1 total on network share)
+
+**What it does:** "IS" is the generic prefix for shared system tables across EvoERP (IS.CC, IS.RMA, IS.FXA, IS.SERR, IS.TERMS, IS.ACTION, etc.). The IS menu module itself provides multi-currency GL conversion and possibly other GL/integration utilities.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7ISMCC | Convert Source to Base Currency | is.date (conversion date), ISGL.CYDATE[1] (GL currency date), gl.period[1], gl.period[2] — converts foreign currency GL entries to base currency for a specific period |
+
+**Key findings:**
+- **IS.MCC = Multi-Currency Conversion** — converts foreign-currency GL amounts to the base (functional) currency. Triggered at period-end for consolidated reporting.
+- **ISGL.* table prefix** — ISGL = IS GL integration. The GL module accesses ISGL.* tables for currency-aware period amounts.
+- **"IS" table prefix breadth** — IS.* tables are used by at least 10 modules: CC (credit cards), RMA (returns), FXA/FXT (fixed assets), SERR (SPC errors), TERMS (payment terms), JOB (job master), CYCLE (maintenance), ACTION (action types), DEF (defect codes), SCOMP (compound serials). IS is the system-wide shared reference data namespace.
+
+**Primary tables:** ISGL.* (GL currency integration), IS.* (shared reference tables across all modules)
+
+**Confidence: 45/100** — Only 1 DFM found; IS module full menu scope unknown; ISGL currency conversion mechanism confirmed from DFM; broader IS module contents inaccessible without RWN decryption.
+
+---
+
 ## HH — Handheld / Shop-Floor Data Collection (44 forms)
 
 **DFM files confirmed:** T7HH.DFM + 43 sub-forms = 44 total

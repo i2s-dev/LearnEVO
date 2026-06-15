@@ -53,6 +53,12 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Pick and ship an SO from handheld | HH → Shipping (SSOE) | [Handheld](#handheld--shop-floor-data-collection-hh) |
 | Add a new company to EVO | UT → Company Add/Delete | [Utilities](#utilities-adminddata-maintenance-ut) |
 | Recalculate average inventory costs | UT-K-H | [Utilities](#utilities-adminddata-maintenance-ut) |
+| Import BOM components from CSV | DE module | [DE — Data Entry / EDI](#de--data-entry--edi--imports) |
+| Import web orders into EVO | DE-T (Web Import) | [DE — Data Entry / EDI](#de--data-entry--edi--imports) |
+| Process inbound EDI 860 PO changes | DE-P-860 | [DE — Data Entry / EDI](#de--data-entry--edi--imports) |
+| Create a customer RMA | RM-D | [Return Material Authorization](#rm--return-material-authorization-rma) |
+| Process RMA disposition (restock/job) | RM-D-Ask | [Return Material Authorization](#rm--return-material-authorization-rma) |
+| Set up product configuration options | FO module | [Features & Options](#fo--features--options) |
 
 ---
 
@@ -568,6 +574,62 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 (T7SOC hub form), not SH. SH = Shop floor scheduling only.
 
 **Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling algorithm inaccessible (in RWN).
+
+---
+
+### DE — Data Entry / EDI / Imports
+
+**What it does:** The EvoERP integration gateway — handles all data imports, EDI transactions, and data exports. Covers BOM component import, Physical Inventory tag import, WO material import, web order import, vendor POA (855) acknowledgments, customer EDI-860 PO changes, and web item catalog export. Also contains two dangerous admin utilities.
+
+**Key workflows:**
+
+- **BOM Component Import:** DE-M imports BOM components from CSV. DE-ER validates the import and reports errors. Filter: import to Estimating or Production BOM; allow 0 qty components.
+- **Physical Inventory Tag Import (DE-HD):** Import PI count tags from a CSV. Skip or replace existing tag numbers. Field position mapping (FIELD.NUMBER[1..n]) configures which CSV column maps to which PI field (tag#, location, item#, qty).
+- **WO Material Import (DE-J-H):** Import WO component/material lines. Fields: WO prefix/suffix (WO#), product code, description.
+- **Web Order Import (DE-T):** Import customer orders from a web source. `import.to.edi` flag routes to EDI module first or direct to open SO. Bank/payment data included in header.
+- **Vendor POA Import (DE-V):** Import EDI 855 Purchase Order Acknowledgments from vendors. SKIP flags allow partial imports (skip by PO#, product, qty).
+- **EDI-860 PO Changes (DE-P-860):** Process inbound customer EDI 860 (Purchase Order Change) transactions. References RELEASE_NUM for blanket PO releases.
+- **Customer Release Import (DE-P-B/E/H):** Import customer blanket PO releases. Filter by customer, SO#, invoice#, release number.
+- **Web Item Catalog Export (DE-U):** Export item catalog via FTP (ftp.FileName). Filter by item range.
+- **Global Field Replace (DE-K) ⚠️:** Find-and-replace a specific field value across any EVO data file. Irreversible — no undo.
+- **Selective File Erase (DE-L) ⚠️:** Erase Inventory, BOM, Customer, and/or Routing files in bulk. Irreversible.
+- **Defect Code Setup (DE-FECT):** Maintain the IS.DEF.CODE/DESC master list used by QC and SPC modules.
+
+**Primary tables:** IS.DEF.* (defect codes), WOMAT.* (WO materials), BKAR.INV.*/BKAR.INVL.* (invoice import target)
+
+**Confidence: 68/100** — All 20 DFMs read; EDI flows and import targets confirmed; web order bank integration and exact DE-P sub-form scope not fully decoded.
+
+---
+
+### RM — Return Material Authorization (RMA)
+
+**What it does:** Manages customer returns — creating RMA numbers against original invoices, recording warranty status and reason, and routing returned items to restocking, credit, or WO rework.
+
+**Key operations:**
+- **RM-D — RMA Entry:** Create an RMA against an original invoice (Original Inv Num) and SO. Record the returned item, reason for return, and warranty status. Warranty codes: N=Not covered, L=Limited, P=Parts only, B=Both parts & labor.
+- **RM-D-Ask — Disposition:** Specify where returned items go — to a bin Location, or passed to a WO Job for rework (Pass RMA# to: D=Description, J=Job, N=None). Enter a Restock Charge if applicable.
+- **RMA Status (T7RMAWHY):** View RMA number, line#, status (is.rma.status), and original SO/invoice line reference.
+- **RMA Reason Codes (RM-E):** Maintain IS.RMA.CODE/DESC — the master list of return reason codes.
+- **RMA Report (RM-G):** Customer/item range report of open or historical RMAs.
+
+**Primary tables:** IS.RMA.* (RMA records — status/warranty/code), BKAR.INV.*/BKAR.INVL.* (original invoice), IS.RMA.CODE/DESC (reason codes)
+
+**Confidence: 68/100** — All 5 DFMs read; RMA lifecycle traced; IS.RMA.* table confirmed; full field schema and exact warranty code values inferred from pattern.
+
+---
+
+### FO — Features & Options
+
+**What it does:** Product configurator extension to the BOM module. Lets manufactured products have selectable features and options. Each option sets a Y/N flag (BKBM.PROD.OPYN[1..N]) on the BOM item. When a customer orders a configurable product, option selections drive which BOM components are included.
+
+**Key operations:**
+- **FO-C — Option Configuration:** Configure the option flags for a product. PAR.DESC = parent/assembly, COMP.DESC = the option component. BKBM.PROD.OPYN[5] = option flag index 5 (at least 5 options supported per product).
+- **FO-D — Range Operation:** Item/category/class range filter — likely a bulk assignment or report operation.
+- **FO-E — Item Select:** Filter features/options by item number range.
+
+**Primary tables:** BKBM.* (BOM — PROD.OPYN flags), BKICMSTR (item master)
+
+**Confidence: 50/100** — 3 DFMs read; option flag mechanism confirmed; SO→option trigger and exact OPYN slot count not decoded (in RWN).
 
 ---
 

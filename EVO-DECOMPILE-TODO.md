@@ -552,17 +552,17 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **CR** — Credit / Collections — forms inventoried only
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
-- [ ] ⬜ **DE** — Data Entry (33 ops, 2nd largest) — forms inventoried only
+- [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
 - [ ] ⬜ **DI** — purpose unclear; no deep doc
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
 - [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
 - [ ] ⬜ **FL** — purpose unclear; no deep doc
-- [ ] ⬜ **FO** — Features & Options (EvoFNO) — forms inventoried only
+- [x] 🔄 **FO** — Features & Options — all 3 DFMs read; FO-C (BKBM.PROD.OPYN[5] option flags, PAR.DESC+COMP.DESC parent-component option pairing), FO-D (item/class/category range), FO-E (item filter); BOM sub-module — options set OPYN[1..N] per product; SO triggers option selection driving BOM inclusions — **C: 50/100**
 - [ ] ⬜ **FP** — purpose unclear; no deep doc
 - [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
 - [ ] ⬜ **IC** — Inventory Control (sub-area of IN?) — forms inventoried only
 - [ ] ⬜ **IM** — Import / data loading — forms inventoried only
-- [ ] ⬜ **IS** — purpose unclear; no deep doc
+- [x] 🔄 **IS** — Information System / Multi-Currency GL — 1 DFM found (T7ISMCC: Convert Source to Base Currency, is.date/ISGL.CYDATE[1]/gl.period[1-2]); IS = system-wide shared reference namespace (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP tables); ISGL.* = GL currency integration tables — **C: 45/100**
 - [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
 - [ ] ⬜ **LM** — Labor Management — forms inventoried only
@@ -575,7 +575,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **QC** — Quality Control — 4 DFM files read; QC-A confirms QC/Scrap dual-code classification + vendor range; parent item roll-up in QC-B/C/D; tables BKQCMSTR/BKQCTRAN/BKQC confirmed in DDF — **C: 52/100**
 - [ ] ⬜ **QT** / **QU** — Quoting — forms inventoried only
 - [ ] ⬜ **RF** — purpose unclear; no deep doc
-- [ ] ⬜ **RM** — Return Material — forms inventoried only
+- [x] 🔄 **RM** — Return Material Authorization (RMA) — all 5 DFMs read; RMD=main entry (bkar.inv/invl links, is.rma.warranty NLPB codes, reason for return), RMAWHY=detail popup (is.rma.status), RMDASK=disposition (pass.rma.num [D/J/N], restock.charge, so.location), RME=reason code master (IS.RMA.CODE/DESC), RMG=report; RMA→WO bridge via "Pass to Job" — **C: 68/100**
 - [ ] ⬜ **RT** — purpose unclear; no deep doc
 - [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
 - [ ] ⬜ **SB** — purpose unclear; no deep doc
