@@ -559,7 +559,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **FL** — purpose unclear; no deep doc
 - [ ] ⬜ **FO** — Features & Options (EvoFNO) — forms inventoried only
 - [ ] ⬜ **FP** — purpose unclear; no deep doc
-- [ ] ⬜ **HH** — Handheld / Data Collection terminals — forms inventoried only
+- [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
 - [ ] ⬜ **IC** — Inventory Control (sub-area of IN?) — forms inventoried only
 - [ ] ⬜ **IM** — Import / data loading — forms inventoried only
 - [ ] ⬜ **IS** — purpose unclear; no deep doc
@@ -591,7 +591,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **UM** — User Maintenance — forms inventoried only
 - [ ] ⬜ **UP** — Update / patch — forms inventoried only
 - [ ] ⬜ **US** — User Settings — forms inventoried only
-- [ ] ⬜ **UT** — Utilities (20 ops) — forms inventoried only
+- [x] 🔄 **UT** — Utilities (admin/data maintenance) — all 8 DFMs read; UTH (file layout report), t7uti (company add/delete: company_code/name/path/copy.file/cdelete), UTKA (data clear/reset: CLR.COA/CUST/VEND/INVN — DESTRUCTIVE), UTKD (fiscal year: fycur/fy1yp/fy2yp/fy3yp), UTKE (location cleanup — DESTRUCTIVE), UTKF/UTKG (item rebuild F and G variants), UTKH (average cost recalculate by inc.type[1-4]); most ops irreversible — **C: 60/100**
 - [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
 - [ ] ⬜ **YS** — purpose unclear; no deep doc
 

@@ -48,6 +48,11 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Reconcile CC charges to invoices | CC Invoice List (ccr1) | [Credit Card Processing](#credit-card-processing-cc) |
 | Record inspection errors on a WO | SP/SPC main entry | [Statistical Process Control](#statistical-process-control-sp--spc) |
 | View real-time defect rate dashboard | SPC Live Grid | [Statistical Process Control](#statistical-process-control-sp--spc) |
+| Receive a PO via barcode scanner | HH → Receive PO | [Handheld](#handheld--shop-floor-data-collection-hh) |
+| Issue materials to a WO from scanner | HH → Issue Material | [Handheld](#handheld--shop-floor-data-collection-hh) |
+| Pick and ship an SO from handheld | HH → Shipping (SSOE) | [Handheld](#handheld--shop-floor-data-collection-hh) |
+| Add a new company to EVO | UT → Company Add/Delete | [Utilities](#utilities-adminddata-maintenance-ut) |
+| Recalculate average inventory costs | UT-K-H | [Utilities](#utilities-adminddata-maintenance-ut) |
 
 ---
 
@@ -563,6 +568,56 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 (T7SOC hub form), not SH. SH = Shop floor scheduling only.
 
 **Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling algorithm inaccessible (in RWN).
+
+---
+
+### Handheld / Shop-Floor Data Collection (HH)
+
+**What it does:** Provides a scanner-optimized interface for shop-floor terminals and handheld barcode devices. Supports PO receiving, WO material issue and completion, SO picking and shipping, inventory bin transfers, DC labor scanning, and physical inventory counts — all via barcode scan entry.
+
+**DFM count:** 44 forms
+
+**Key workflows:**
+
+- **PO Receiving** — Scan item barcodes to receive against a PO. Assign received qty to bin location (HHPOCBIN), lot (HHPOCLot), or serial (HHPOCSER). Vendor/item alerts popup if configured. RCVD_QTY auto-increments with each scan.
+- **Issue Materials to WO** (t7hhwog) — Scan components to issue against a WO. Option to print component labels at issue time (RTM_NAME, prt.per.comp, Label.qty). Lot (HHWOLOT) and serial (hhwoser) sub-forms handle tracked items.
+- **Finish Production** (t7hhwop) — Report WO completion. Prompts for issue date, filters by WO status (FRXI = Released/Completed/In-Process/On-Hold), confirms final quantity.
+- **Scrap Reporting** (HHWOSCRAP) — Record WO scrap quantities from scanner; prints scrap labels immediately.
+- **SO Picking/Shipping** (T7HHSSOE) — Scan items into boxes (curr.boxnum tracks current carton). 5-step verification chain: SSOE → ssoeLabels → ssoeLverify → SSOEVerify → SSOESVerify before release. Bin/Lot/Serial variants handle tracked SO lines.
+- **Bin Transfer** (t7hhinlj) — Move inventory from one bin (from.loc) to another (to.loc). Lot and serial variants update MTLOT/MTSER records in parallel.
+- **Physical Count** (T7HHPIC / t7hhpictags) — Enter PI tag counts from handheld. Same tag structure as desktop PI-C: CountDate, qtr, year, location. Tag detail captures countqty + lotno + serialno.
+- **DC Labor Scan** (T7HHDCA) — Clock in/out at a work center operation: scan WO# (scan.wo), employee ID (scan.emp), and operation code (OPER).
+
+**Large Screen Lookups mode** — Every major HH form has a `large.lookups` flag that switches to a larger-font, touch-friendly layout for kiosk screens.
+
+**Item type filter codes** (HH-N picking): RFAMNLBTKO = Raw, Finished, Assembly, Manufactured, Non-stock, Labor, Bought, Tool, Kit, Other.
+
+**Credit hold enforcement** — HH-N SO picking filter includes `incl.crhold` flag, so the handheld can refuse to show SOs for customers on credit hold.
+
+**Primary tables:** BKAR.INV.* (SO), BKWOMSTR/BKWODTL (WO), BKRECV/BKRECVLN (PO receiving), MTLOT.* (lots), MTSER.* (serials), ISBN.MSTR (bins), BKPH.* (PI count tags)
+
+**Confidence: 68/100** — 20 of 44 DFMs read; all functional areas identified; offline sync mechanism and exact WO join keys not decoded.
+
+---
+
+### Utilities — Admin/Data Maintenance (UT)
+
+**What it does:** Administrative toolkit for EvoERP system maintenance. Covers adding/removing companies, bulk data clear/reset (for initial setup), fiscal year configuration, unused-record cleanup, and inventory cost recalculation. **Most operations are permanent and irreversible.**
+
+**Menu codes:** UT (20 operations in menu)
+
+**Key operations:**
+- **Company Add/Delete (t7uti):** Add a new company to EvoERP's multi-company setup. Specify company_code, company_name, path. copy.file initializes by copying an existing company's file structure. The cdelete flag removes a company entirely.
+- **Data Clear/Reset (UT-K-A):** Selective module-by-module data wipe. Flags: CLR.COA (chart of accounts), CLR.CUST (customers), CLR.VEND (vendors), CLR.INVN (inventory). Option: delete ALL data ("D") or transactions only ("C"). Caption explicitly warns this clears "General Ledger (and BKSYMSTR)". Used for: new company setup from a template, end-of-demo cleanup.
+- **Fiscal Year Setup (UT-K-D):** Configure fiscal year start dates for up to 5 periods: fycur (current), fy1yp (last year), fy2yp, fy3yp, fy4yp. Must be correct before any period-end GL close.
+- **Location Cleanup (UT-K-E):** Deletes all warehouse bin/location codes not currently tagged as active. Reassigns orphaned inventory records to a new master location code (new.code). Caption: "not reversable... may take a long time." Run after a bin master reorganization.
+- **Item Utilities F & G (UT-K-F, UT-K-G):** Two item-range rebuild passes filtered by item number and class. Likely rebuild on-hand quantities or cost layers (exact operation not confirmed from form alone).
+- **Average Cost Recalculate (UT-K-H):** Recalculates Average Cost in inventory records. Filtered by inventory type flags (inc.type[1-4] = by item type) and item/class range. Run after physical inventory adjustments or initial data load when cost layers are out of sync.
+- **File Layout Report (UT-H):** Prints the data file structure (field names, types, sizes) for a range of EVO data files (from.file to thru.file). Useful for data export/mapping work.
+
+**Primary tables:** BKSYMSTR (company/global settings), BKYSMSTR (YN flags), BKARCUST/BKAPVEND/BKICMSTR (cleared by UTKA), BKIC.LOCM/ISBN.MSTR (location cleanup), BKICOST (cost layers)
+
+**Confidence: 60/100** — All 8 DFMs read; destructive operations documented; UT-K-F/G exact purpose not confirmed; full 20-operation menu scope not decoded.
 
 ---
 

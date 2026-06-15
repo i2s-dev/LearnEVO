@@ -628,6 +628,92 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 ---
 
+## HH — Handheld / Shop-Floor Data Collection (44 forms)
+
+**DFM files confirmed:** T7HH.DFM + 43 sub-forms = 44 total
+
+**What it does:** Provides a compact, scanner-friendly interface for all major ERP functions from handheld terminals and shop-floor kiosks. Mirrors the full desktop ERP workflow but optimized for barcode scan entry — minimal keystrokes, large text, optional Large Screen Lookups mode.
+
+**Sub-module breakdown by function area:**
+
+| Sub-area | Forms | Purpose |
+|----------|-------|---------|
+| PO Receiving | t7hhpoc, T7HHPOCBIN, T7HHPOCLot, T7HHPOCNotes, T7HHPOCSER | Receive POs via scanner; assign to bin/lot/serial; notes; vendor/item alerts |
+| WO Operations | t7hhwog, t7hhwop, T7HHWOSCRAP, T7HHWOLabel, T7HHWOLOT, t7hhwoser, T7HHWOLookup, T7HHWOIProcess, T7HHWOIBIN | Issue materials to WO, finish production, report scrap, print WO labels, lot/serial entry on WO |
+| SO Picking/Shipping | T7HHSSOE, t7hhssoeLabels, t7hhssoeLverify, T7HHSSOEVerify, T7HHSSOESVerify, T7HHSOBIN, T7HHSOLOT, T7HHSOSER, T7HHSOLookup, T7HHSODD | Pick SO lines, scan-pack into boxes (curr.boxnum), print packing slips, shipping confirmation |
+| Inventory | T7HHItemLU, t7hhINGA, t7hhinlj, T7HHINLJLot, T7HHINLJSer, t7hhinbins | Item lookup (with substitutes MTIC.PROD.SUBST[1]), bin transfer (from.loc/to.loc) with lot/serial, print inventory labels |
+| DC / Labor | T7HHDCA, t7hhdcb, t7hhdcc | Operation scanning — clock-in/clock-out at work center (scan.wo, scan.emp, OPER) |
+| Physical Inventory | T7HHPIC, t7hhpictags | PI-C tag count entry from handheld — CountDate, qtr, year, location, countqty, lotno, serialno |
+| Notifications | T7HHALERTMSG | Vendor/item alert messages shown during receiving (Enable Vendor Alerts, Enable Item Alerts) |
+| Navigation | T7HH, T7HHProcess | Main HH menu; PROCESS DATA — batch-process collected scan data |
+| Filters/Config | T7HHN, T7HHNREL, T7HHN2, T7HHNDTE | HH-N SO picking filters — credit hold, released, backorder, kit components, date limits, item type codes (RFAMNLBTKO) |
+
+**Key DFM findings:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| t7hhpoc | Receive PO (main) | vendor.alerts, item.alerts, large.lookups, RCVD_QTY, item — scan item to receive |
+| T7HHSSOE | Shipping (pack) | scan.qty.char, scan.item, curr.boxnum, print.ps — box-level packing |
+| t7hhwog | Issue Material to WO | RTM_NAME, prt.per.comp, Label.qty, showPrtBox — print component labels on issue |
+| t7hhwop | Finish Production | final.qty.dflt, prompt.date, wo.status (FRXI filter), large.lookups — WO completion scan |
+| T7HHDCA | DC / Operation Scan | scan.wo, scan.emp, OPER — time-card scan at work center |
+| T7HHN | SO Picking filter | incl.crhold, incl.released, incl.zero.dates, limit.days, limit.date — controls what SOs appear in pick list |
+| T7HHItemLU | Item Lookup | MTIC.PROD.SUBST[1], MTIC.PROD.DESC — finds substitutes during pick |
+| t7hhinlj | Transfer Inventory | from.loc, to.loc, from.dflt.bin — bin-to-bin transfer |
+| T7HHINLJLot/Ser | Transfer w/ lot/serial | lot.qty, mtlot.onhand, inp.lot; ser.qty, inp.ser |
+| T7HHPIC | PI Tag Count (HH) | CountDate, qtr, year, location — links to PI-C desktop workflow |
+| t7hhpictags | PI Tag Count detail | countqty, lotno, serialno — scan lots and serials into count tag |
+| T7HHWOLabel | WO Label config | sfrom.oper.fin/sthru.oper.fin (operation finish sequence), fin.class (finished item class), nfin.class (semi-finished class) |
+| T7HHWOSCRAP | Report Scrap | RTM_NAME, prt.labels — scrap reporting with label printing |
+| t7hhwoser | Serial # on WO | scrap.code, inp.serial, filter.by.loc — serial entry for WO completion or scrap |
+| T7HHSOLookup | SO Lookup | BKAR.INV.SONUM, BKAR.INV.CUSCOD, BKAR.INV.CUSNME — SO search in HH |
+| T7HHProcess | Batch Process | "PROCESS DATA" — uploads collected offline HH scans to the live database |
+
+**Key findings:**
+- **Large Screen Lookups mode** (large.lookups) — all major HH forms have this flag, suggesting a dual UI mode: small-screen handheld vs. large touch-screen kiosk.
+- **Item type filter** [RFAMNLBTKO] in HH-N — same type codes used in inventory module: R=Raw, F=Finished, A=Assembly, M=Manufactured, N=Non-stock, L=Labor, B=Bought, T=Tool, K=Kit, O=Other.
+- **Lot + serial tracking at every touchpoint** — every function that moves material (issue, receive, transfer, ship) has dedicated Lot and Serial variants. Lot/serial control is end-to-end.
+- **Scrap reporting with labels** — T7HHWOSCRAP prints RTM-format labels directly at scrap time, supporting barcode-driven audit trails.
+- **5-form shipping workflow**: SSOE (scan pack) → ssoeLabels → ssoeLverify → SSOEVerify → SSOESVerify — staged verification before release.
+- **HH-N picking filter** includes credit hold filter (incl.crhold) — HH terminal enforces credit-hold logic at pick time.
+
+**Primary tables:** BKAR.INV.* (SO data), BKWOMSTR/BKWODTL (WO), BKAPPOL/BKRECV (PO receiving), MTLOT.* (lots), MTSER.* (serials), ISBN.MSTR (bins), BKPH.* (physical count tags)
+
+**Confidence: 68/100** — 20 of 44 DFMs read directly; function areas identified from captions and field names; exact table join keys and network/offline sync mechanism not decoded.
+
+---
+
+## UT — Utilities (Admin/Data Maintenance)
+
+**DFM files confirmed:** T7UTH.DFM, t7uti.DFM, T7UTKA.DFM, T7UTKD.DFM, T7UTKE.DFM, T7UTKF.DFM, T7UTKG.DFM, T7UTKH.DFM (8 total)
+
+**What it does:** Administrative utilities for EvoERP system maintenance — adding/removing companies, clearing/resetting data, configuring fiscal years, cleaning up unused records, and recalculating inventory costs. **Most operations are irreversible — intended for system administrators only.**
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields | Warning |
+|-----|---------|------------|---------|
+| T7UTH | File Layout Report | from.file, thru.file, LOC_BUFF_NAME, LOC_FILE_NAME — prints schema of EVO data files by name range | Low |
+| t7uti | Company Add/Delete | company_code, company_name, company_path, copy.file, cdelete — multi-company management | **High** |
+| T7UTKA | Data Clear / Reset | CLR.COA, CLR.CUST, CLR.VEND, CLR.INVN — delete ALL data or transactions only per module; includes GL + BKSYMSTR | **Destructive** |
+| T7UTKD | Fiscal Year Setup | fycur, fy1yp, fy2yp, fy3yp, fy4yp — configure up to 4 historical fiscal years + current | Medium |
+| T7UTKE | Location Cleanup | new.code, LOCATION — deletes unused warehouse locations; Caption: "not reversable... may take a long time" | **Destructive** |
+| T7UTKF | Item Utility F | from.item, thru.item, from.class — item/class range rebuild (variant F) | Medium |
+| T7UTKG | Item Utility G | from.item, thru.item, from.class — item/class range rebuild (variant G) | Medium |
+| T7UTKH | Average Cost Recalculate | inc.type[1-4] (by inventory type), from.item, thru.item — Caption: "recalculate Average Cost in inventory records" | Medium |
+
+**Key findings:**
+- **Multi-company management** (t7uti) — Add a new company by specifying code, name, and path. copy.file suggests initialization by copying an existing company's file structure. cdelete flag handles deletion.
+- **Data clear (T7UTKA)** — most dangerous utility: selective module-by-module data wipe. CLR.COA/CLR.CUST/CLR.VEND/CLR.INVN are separate flags. Used to clone a company template, then clear test data before go-live.
+- **Fiscal year (T7UTKD)** — supports 4 historical years + current = 5 total. Critical for GL period-end processing.
+- **Location cleanup (T7UTKE)** — removes all unused bin/location codes. The "new master location code" field reassigns orphaned inventory to a default bin.
+- **Average cost recalculate (T7UTKH)** — separated by inventory item types (inc.type[1-4]). Needed after physical inventory adjustments or initial data load.
+- **UT-K-F and UT-K-G** — two item-range utilities with identical field structure (item/class range); likely handle different phases of an item rebuild (exact distinction unconfirmed).
+
+**Primary tables:** BKSYMSTR (company settings), BKARCUST/BKAPVEND/BKICMSTR (cleared by UTKA), BKIC.LOCM/ISBN.MSTR (location cleanup), BKICOST/BKICMSTR (average cost)
+
+**Confidence: 60/100** — All 8 DFMs read; destructive operations documented; fiscal year and average cost recalc confirmed; UT-K-F/G exact purpose not confirmed.
+
 ---
 
 ## SA — Sales Analysis
