@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-15 (session 3)
+Last updated: 2026-06-15 (session 4)
 
 ---
 
@@ -44,11 +44,11 @@ files) is binary-only.
 
 | Blocked task | Status |
 |-------------|---------|
-| Decrypt any `.RWN` or `.DCY` file | **DONE** — 1,144/1,145 files OK; CSV summary in `samples/rwn_decrypted/` |
+| Decrypt any `.RWN` or `.DCY` file | **DONE** — RWN: 1,144/1,145 OK; DCY: 41/48 OK (7 suwin*.dcy use different format) |
 | Disassemble `.RWN` bytecode | Unblocked but no clear structure yet — TAS Pro 7 bytecode is uniform (expected) |
-| Write `rwn_decrypt.py` or batch decryptor | **DONE** — `scripts/rwn_decrypt.py` |
-| Read module logic for any of the 1,124 `.RWN` programs | Unblocked — requires DCY IV for field names; bytecode dense |
-| `.DCY` data dictionary decryption | Still blocked — IV_dcy not yet captured (same Frida method, different XOR filter) |
+| Write `rwn_decrypt.py` or batch decryptor | **DONE** — `scripts/rwn_decrypt.py` (RWN) + `scripts/dcy_decrypt.py` (DCY) |
+| Read module logic for any of the 1,124 `.RWN` programs | Unblocked — DCY binary format not yet parsed; bytecode dense |
+| `.DCY` data dictionary decryption | **DONE** — IV_dcy = `cd 47 af 18 e0 d1 c3 8c f1 d8 a0 67 fc 3d da 28`; 41/48 OK |
 
 ---
 
@@ -114,7 +114,7 @@ See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 | `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool; see run-tas6-bytecode.md |
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
 | TAS Pro 7 `.RWN` bytecode | 🔄 Started | 8/100 | Confirmed correct decryption; uniform bytes = externalized strings; opcodes unknown |
-| `.DCY` data dictionary | 🔄 Partial | 65/100 | RWN IV confirmed; DCY uses different IV (not yet captured) |
+| `.DCY` data dictionary | 🔄 Partial | 82/100 | IV confirmed; 41/48 files decrypt; binary format not yet parsed |
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
 | Database schema | ✅ Done | 92/100 | 659 tables, 24,113 fields extracted |
@@ -142,9 +142,10 @@ See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 
 ## 7. Highest-value next tasks (in priority order)
 
-1. **Capture DCY IV** — run `scripts/get_iv_frida.py` while opening a DCY-loading event
-   in EVO (e.g., navigate within a module). Use `--xor 0x09553584` filter for DCY.
-   Unlocks: `.DCY` data dictionary → field names → meaningful RWN analysis.
+1. **Parse DCY binary format** — decrypted DCY files are in `samples/dcy_decrypted/`.
+   Reverse-engineer the binary structure to extract table names, field names, field types.
+   Start with `DBAMENU_LOGIN.DCY.dec` (2,234 bytes, smallest) then `DUMMY.DCY.dec`.
+   Unlocks: field name resolution for all 659 tables → meaningful RWN bytecode analysis.
 
 2. **BKMRF 3-way compile diff** — diff `BKMRF.org2` vs `BKMRF.TEST` vs `BKMRF.RUN` to
    isolate stable bytes (opcodes) from variable bytes (addresses). High confidence gain.

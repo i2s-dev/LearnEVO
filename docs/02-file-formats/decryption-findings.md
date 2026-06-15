@@ -1,6 +1,6 @@
 # `.RWN` / `.DCY` Decryption — Research Findings
 
-Status: **FULLY SOLVED — IV confirmed; batch decrypt running**
+Status: **FULLY SOLVED — RWN IV confirmed; DCY IV confirmed 2026-06-15; both batch decryptors working**
 
 Last updated: 2026-06-15
 
@@ -40,6 +40,40 @@ Captured via `get_iv_frida.py` v5: hooked `EncryptBlock` (RVA 0x350248) in
   Disassembly of validate_func offset +0x7D: `74 10` JZ → success; failure calls
   `cipher.Done()` + error handler. Modules only load if pt[0:4] == pt[4:8].
 
+---
+
+## DCY IV — CONFIRMED 2026-06-15
+
+```
+IV_dcy = cd 47 af 18 e0 d1 c3 8c f1 d8 a0 67 fc 3d da 28
+K0_dcy = Encrypt(IV_dcy)[0:4]^[4:8] = 0x0955DC84  PASS
+```
+
+Captured via `get_iv_dcy_spawn.py`: Frida `spawn(['C:\ISTS\evoerp.exe'])` launches EVO
+suspended, hook installed before first instruction, then resumed. DCY files are loaded
+**before the login screen** — before any user interaction. Attach-after-launch approaches
+(WMI, manual) always missed the window; spawn is the only reliable method.
+
+Verification: `verify_iv_dcy.py` on `DBAMENU_FLEX.DCY` →
+`PT[0:4] = PT[4:8] = 0x640B07C9` PASS.
+
+Batch result: **41/48 OK**. The 7 failures are all `suwin6.dcy` / `suwin7.dcy`
+(duplicated across subdirectories), which appear to be TAS 6-era utility DCY files using
+a different IV or format. All 41 EVO-era `.DCY` files decrypt correctly.
+
+Key discovery: The XOR constant for `.DCY` validation is **`0x0955DC84`**
+(not `0x09553584` as previously noted — that was a transcription error; the actual value
+is confirmed directly from raw header bytes of 41 files).
+
+Batch decryptor: `scripts/dcy_decrypt.py`. Output: `samples/dcy_decrypted/`.
+IV stored: `scripts/iv_dcy_bytes.bin`.
+
+**The decrypted DCY content is a compiled binary format** — field names and table
+definitions are embedded but require reverse-engineering the binary structure to extract.
+The binary structure analysis is the next unblocked task.
+
+---
+
 **CONFIRMED DEAD ENDS — do not retry:**
 - `.DCY` and `.RWN` files use **DIFFERENT IVs**.
   Proof: MDUMMY.DCY has ct[0:4]^ct[4:8] = 0x09553584; all .RWN = 0x3E0A37C5.
@@ -53,6 +87,8 @@ Captured via `get_iv_frida.py` v5: hooked `EncryptBlock` (RVA 0x350248) in
   XOR check. See BROKEN.md B-006.
 - **Child gating on evoerp.exe never fires.** Module windows are NOT separate
   tp7runtime.exe children spawned via CreateProcess in a Frida-interceptable way.
+- **Attach-after-launch (WMI) misses DCY.** DCY files load before the login screen
+  appears; WMI's 1-second poll latency is too slow. Spawn is required.
 
 **Current approach — EncryptBlock hook with XOR filter (v5):**
 `scripts/get_iv_frida.py` (v5) hooks **EncryptBlock** (RVA 0x350248) instead of
