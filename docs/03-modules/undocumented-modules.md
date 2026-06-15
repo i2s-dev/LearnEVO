@@ -37,9 +37,22 @@ It is effectively the GL administration module.
 - **FA-A — Enter Fixed Assets:** Records asset details including cost basis, useful life, depreciation method.
 - **FA-B — Post Depreciation:** Creates and posts depreciation journal entries by asset to GL.
 
-**Likely tables:** BKFA\* (not yet found in DDF — may use IS\* prefix or a small table set)
+**Forms read from network share:**
 
-**Confidence: 48/100** — DFM files confirmed on network share; CHM help confirms two operations; table names not yet located in DDF.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| FA-A | T7FAA.DFM | **Asset Master Entry** — add/edit fixed assets. Fields: Asset Number, Type, Description (2 lines), Cost Basis, Residual Value, Useful Life, Depreciation Method, Asset Account (GL), Accum Dep Account (GL). Tables: IS.FXA.NUMBER/TYPE/DESC/CSTBAS/RESVAL/LIFE/METH |
+| FA-B | T7FAB.DFM | **Post Depreciation** — reviews and posts depreciation entries. Fields: Asset Number, Amount, Percent, Post Date, Net Asset Value, Accumulated Dep Account (debit/credit), Dep Expense Account (debit/credit), "Ready to Post" flag. Tables: IS.FXT.AMOUNT/NETAVAL/ACDEPA/ACDEPD/DEPEXPA/DEPEXPD |
+| FA-E | T7FAE.DFM | **Export Assets** — exports fixed asset data (COMMA.FIXED.STR = comma or fixed-width format; file.name = output file) |
+
+**Key findings:**
+- Table prefix **IS.FXA.*** = IS Fixed Asset record (asset master)
+- Table prefix **IS.FXT.*** = IS Fixed Asset Transaction (depreciation entries)
+- Both depreciation debit and credit accounts are tracked (ACDEPA/D, DEPEXPA/D) — confirms standard double-entry journal structure for depreciation posting
+- "Ready to Post" flag in FA-B = batch-style depreciation: calculate first, then review, then post
+- FA is a small but self-contained GL sub-module — reads only IS.FXA.*/IS.FXT.*
+
+**Confidence: 75/100** — All 3 DFM files read from network share; table structure confirmed (IS.FXA.* + IS.FXT.*); depreciation posting workflow confirmed; specific depreciation method codes not documented.
 
 ---
 
@@ -197,16 +210,34 @@ printer and system-parameter forms not yet read.
 
 ---
 
-## CS — Customer Service / Salespersons
+## CS — Commission / Salesperson Management
 
-**Confirmed from CHM:**
-- **CS-A — Enter Salespersons:** Creates and maintains salesperson master records. Salespersons can be employees or outside agents. Records: salesperson code, name, commission rate structure.
+**DFM files confirmed (12 total):** T7CSA.DFM, T7CSB.DFM, T7CSC.DFM, T7CSD.DFM, T7CSDE.DFM, T7CSDO.DFM, T7CSDX.DFM, T7CSE.DFM, T7CSF.DFM, T7CSI.DFM, T7CSO.DFM, T7CSP.DFM
 
-**DFM files confirmed:** T7CSA.DFM + 11 more forms
+**What it does:** Tracks salesperson records and commission calculations. Salespersons can be employees (linked by SEMPNUM) or outside agents (linked to AP via BKPR.AGNT.CODE vendor code).
 
-**Likely tables:** BKPRSALE (salesperson/commission table already identified in AR strings)
+| Code | DFM | What it does |
+|------|-----|-------------|
+| CS-A | T7CSA.DFM | **Enter Salespersons** — create/edit salesperson records. Fields: Salesperson Number, Class, Vendor Code (for outside agents — links to AP), Commission Rate, First Name/MI, Last Name, HOW (commission calculation method), WHEN (payment timing), SLSP GL Account (commission expense account). Tables: BKPR.SLS.* |
+| CS-B | T7CSB.DFM | **View Salesperson Info** — dashboard showing Quota, COGS, Comm Due, Comm Paid, Receipts. Tracks commission paid by period: BKPR.SLS.PAID[1-7] (7 periods). |
+| CS-C | T7CSC.DFM | **Print Salespersons Info** — salesperson info report |
+| CS-D/DO/DX | T7CSD.DFM, T7CSDO.DFM, T7CSDX.DFM | **Transfer Sales Commissions** — moves commission from pending to payable. Fields: BKPR.COMM.SLSP (salesperson), BKPR.COMM.CCODE (customer code), BKPR.COMM.INVNM (invoice number), BKPR.COMM.INVDT (invoice date). Three DFM variants = different transfer states or steps. |
+| CS-DE | T7CSDE.DFM | **Rep Link Import** — imports salesperson/representative linkage data |
+| CS-E | T7CSE.DFM | **Print Commission Detail** — itemized commission by salesperson. Filter: Item range + Salesperson range. |
+| CS-F/P | T7CSF.DFM, T7CSP.DFM | **Print Commission Summary** — summary commission report. Filter: Salesperson range + Invoice Date range. |
+| CS-I | T7CSI.DFM | **Evo Master Inquiry** — general lookup by Customer Code, Item Number, SO Number, Invoice Number. Shared inquiry form. |
+| CS-O | T7CSO.DFM | **Commission report color config** — color coding by salesperson class (Class 1/2/3 with different colors); salesperson range filter; "-- ITEM DETAILS --" section (itemized view). |
 
-**Confidence: 55/100** — CS-A confirmed from CHM; form count confirmed; remaining CS operations not yet documented.
+**Key module facts:**
+- Commission HOW (calculation method) and WHEN (payment trigger) are per-salesperson parameters
+- Outside agents are linked via AP vendor code — commission appears as an AP payable when due
+- BKPR.COMM.* = commission transaction table (links commissions to specific invoices)
+- 7 paid-commission period buckets (BKPR.SLS.PAID[1-7]) — tracks commission history per period
+- Color-coded commission reports (CS-O) enable at-a-glance salesperson performance view
+
+**Primary tables:** BKPRSALE (salesperson master — confirmed via BKPR.SLS.* field prefix), BKPRCOMM (commission transactions — BKPR.COMM.* prefix)
+
+**Confidence: 70/100** — All 12 DFM files read from network share; full commission workflow confirmed; HOW/WHEN codes and commission transfer logic inaccessible (in RWN).
 
 ---
 

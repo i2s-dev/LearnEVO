@@ -548,11 +548,11 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — purpose unclear; no deep doc
 - [ ] ⬜ **CR** — Credit / Collections — forms inventoried only
-- [ ] ⬜ **CS** — Customer Service (16 ops) — forms inventoried only
+- [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [ ] ⬜ **DE** — Data Entry (33 ops, 2nd largest) — forms inventoried only
 - [ ] ⬜ **DI** — purpose unclear; no deep doc
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
-- [ ] ⬜ **FA** — Fixed Assets — forms inventoried only
+- [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
 - [ ] ⬜ **FL** — purpose unclear; no deep doc
 - [ ] ⬜ **FO** — Features & Options (EvoFNO) — forms inventoried only
 - [ ] ⬜ **FP** — purpose unclear; no deep doc
@@ -916,7 +916,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
 | Module: DE/Data Exchange | **65** | 80 | **15** ↑ NEW | 2026-06-11 |
-| Module: CS/Customer Service | **55** | 80 | **25** ↑ NEW | 2026-06-11 |
+| Module: CS/Commission+Salesperson | **70** | 80 | **10** ↑ +15 | 2026-06-15 |
 | Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
 | Module: SC/Serial Control ⚠️ | **72** | 80 | **8** ↑ +30 | 2026-06-15 |
 | Module: QC/Quality Control | **52** | 75 | **23** ↑ +4 | 2026-06-15 |
@@ -924,7 +924,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
 | Module: LC/Lot Control | **72** | 78 | **6** ↑ +30 | 2026-06-15 |
 | Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
-| Module: FA/Fixed Assets | **48** | 75 | **27** NEW | 2026-06-11 |
+| Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **52** | 78 | **26** NEW | 2026-06-11 |
 | Module: ED/EDI | **50** | 75 | **25** NEW | 2026-06-11 |
 | Module: ES/Estimating | **48** | 75 | **27** NEW | 2026-06-11 |
