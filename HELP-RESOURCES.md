@@ -53,6 +53,13 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Pick and ship an SO from handheld | HH → Shipping (SSOE) | [Handheld](#handheld--shop-floor-data-collection-hh) |
 | Add a new company to EVO | UT → Company Add/Delete | [Utilities](#utilities-adminddata-maintenance-ut) |
 | Recalculate average inventory costs | UT-K-H | [Utilities](#utilities-adminddata-maintenance-ut) |
+| Set up currency exchange rates | IM module (IMC) | [Import Management / Landed Cost](#im--import-management--landed-cost) |
+| Set up duty rates for imported goods | IM module (IME) | [Import Management / Landed Cost](#im--import-management--landed-cost) |
+| Set up customs broker fees | IM module (IMF) | [Import Management / Landed Cost](#im--import-management--landed-cost) |
+| Create/edit a user account | PS-A | [Program Security](#ps--program-security--user-access) |
+| View which programs a user can access | PS-E / PSEITM | [Program Security](#ps--program-security--user-access) |
+| Set up automated CRM follow-up alerts | US-G | [User Services / Triggers](#us--user-services--trigger-notifications) |
+| Create an RFQ from an estimate | RF module | [RF — Request for Quote](#rf--request-for-quote-rfq-from-estimating) |
 | Import BOM components from CSV | DE module | [DE — Data Entry / EDI](#de--data-entry--edi--imports) |
 | Import web orders into EVO | DE-T (Web Import) | [DE — Data Entry / EDI](#de--data-entry--edi--imports) |
 | Process inbound EDI 860 PO changes | DE-P-860 | [DE — Data Entry / EDI](#de--data-entry--edi--imports) |
@@ -574,6 +581,61 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 (T7SOC hub form), not SH. SH = Shop floor scheduling only.
 
 **Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling algorithm inaccessible (in RWN).
+
+---
+
+### IM — Import Management / Landed Cost
+
+**What it does:** Manages foreign currency setup and landed cost configuration. Used by companies that import goods and need to calculate the true delivered cost including import duties, freight, and customs broker fees.
+
+**Key operations:**
+- **Currency Factor Setup (IM-B):** Define currencies — code, description, base currency flag, and symbol. ISIS.MCF.* is the master list of all currencies EvoERP knows about.
+- **Exchange Rate Entry (IM-C):** Enter dated exchange rates. ISIS.MCR.SOURCE[1..n] allows multiple rate sources per date (bank rate, spot rate, etc.). Rates are date-keyed for historical accuracy.
+- **Landed Cost GL Accounts (IM-D):** Configure which GL accounts receive duty charges (ISIS.LND.GLADT), deferred duty (ISIS.LND.GLDDT), freight (ISIS.LND.GLAFR), and deferred freight (ISIS.LND.GLDFR).
+- **Duty Rate Codes (IM-E):** Assign duty percentages by vendor-keyed code. The first 3 characters of the duty code = the vendor code, enabling per-vendor duty rate assignments.
+- **Customs Broker Setup (IM-F):** Define customs brokers — code, flat fee, percentage rate, and type. Multiple brokers supported.
+
+**Primary tables:** ISIS.MCF.* (currency factors), ISIS.MCR.* (exchange rates), ISIS.LND.* (landed cost GL), ISIS.DUTY.* (duty codes), ISIS.BRK.* (broker fees)
+
+**Note:** The ISIS prefix is shared with SM module (ISIS.TXF/TXG = tax codes). "ISIS" = IS International System — the EvoERP namespace for all international compliance and currency tables.
+
+**Confidence: 70/100** — All 5 DFMs read; full landed cost schema confirmed; PO/receiving integration for applying landed cost to receipts not decoded.
+
+---
+
+### PS — Program Security / User Access
+
+**What it does:** Manages user accounts and program-level access control. Separate from the AHSYLOG system login table — PS provides granular, per-program permission assignments with named security codes.
+
+**Key operations:**
+- **PS-A — User Setup:** Create or edit a user account. Fields: User Name (BKPS.USER.CODE), Security Level, Security Code [A/P/1/2/C/V/U/E] (8 named access tiers), Default Start Company, Employee/Rep linkage. The seccode controls what parts of EVO the user can access.
+- **PS-E — User Security Report:** Print the security assignments for a user name range. Used for security audits.
+- **Program Access List (PSEITM):** The list of programs (menu operations) a specific user is allowed to run. PROGRAM_NUM, PROGRAM_NME = each EVO menu operation identified by number and name.
+- **PS-F — Access-to-Program Report:** Print all users who have access to a specific program name. Inverse of PS-E.
+- **PS-K — Approve Vendor:** Authorize an AP vendor — ap.vend, bkap.vendname. Access to vendor approval may require PS security level.
+
+**Dual user system:** EvoERP has two user tables:
+1. **AHSYLOG** — system-level: login, 20 module-access flags (AHSY_USER_ACCES_1..20), starting menu
+2. **BKPS.USER.*** — program-level: per-operation whitelist controlled by PS module
+
+**Primary tables:** BKPS.USER.* (user accounts), program access list (BKPS.PROG.* or similar)
+
+**Confidence: 60/100** — All 6 DFMs read; dual user system confirmed; security code [A/P/1/2/C/V/U/E] exact values not decoded; program number mapping not decoded (in RWN).
+
+---
+
+### US — User Services / Trigger Notifications
+
+**What it does:** Manages automated follow-up triggers — alerts that fire a notification to a user or contact N days before a key date. Used for CRM follow-ups, service renewal alerts, and scheduled reminders.
+
+**Key operations:**
+- **US-G — Trigger Setup:** Define a trigger — Trigger Code, User to Trigger (internal user), Last Date/Time fired (audit trail), Days Pre (how many days before the reference date to fire). Notification target: IS.TRIG.CONTACT (contact name), IS.TRIG.EMAIL (email), IS.TRIG.EFLAG (whether to send email vs. in-app alert).
+
+**Integration:** IS.TRIG.CONTACT and EMAIL suggest triggers are linked to CRM contacts (BKCM.ACCN.*) or SR service records. "Days Pre" + CRM key dates (BKCM.ACTD.*) = automated follow-up scheduling (e.g., "alert sales rep 14 days before contract expiry").
+
+**Primary tables:** IS.TRIG.* (trigger records — code/contact/email/days/last-fired)
+
+**Confidence: 45/100** — 1 DFM read; trigger mechanism confirmed; full integration points and trigger type taxonomy not decoded.
 
 ---
 

@@ -628,6 +628,179 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 ---
 
+## IM — Import Management / Landed Cost
+
+**DFM files confirmed:** T7IMB.DFM, T7IMC.DFM, T7IMD.DFM, T7IME.DFM, T7IMF.DFM (5 total)
+
+**What it does:** Manages currency exchange rates, foreign currency setup, and **landed cost** configuration (duty rates, customs broker fees, freight GL accounts). Used by companies that import goods and need to calculate the true landed cost including duties, freight, and brokerage fees.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7IMB (140 KB) | Currency Factor Master | ISIS.MCF.CODE (currency code), ISIS.MCF.DESC (description), ISIS.MCF.BASE (base currency flag), ISIS.MCF.SYMBOL (currency symbol) |
+| T7IMC | Currency Exchange Rates | ISIS.MCR.DATE (rate date), ISIS.MCR.BASE (base currency), ISIS.MCR.SOURCE[1..n] (source exchange rates by date) |
+| T7IMD | Landed Cost GL Accounts | ISIS.LND.GLADT (duty GL account), ISIS.LND.GLDDT (deferred duty GL), ISIS.LND.GLAFR (freight GL), ISIS.LND.GLDFR (deferred freight GL) |
+| T7IME | Import Duty Codes | ISIS.DUTY.DCODE (duty code — first 3 chars = vendor), ISIS.DUTY.PERC (duty percentage); Caption: "first 3 characters of Duty Code represent the Vendor" |
+| T7IMF | Customs Broker Setup | ISIS.BRK.CODE (broker code), ISIS.BRK.FLAT (flat fee), ISIS.BRK.PERC (percentage), ISIS.BRK.TYPE (broker type) |
+
+**Key findings:**
+- **ISIS.* table prefix** — IM uses the ISIS (IS International System?) namespace for all its tables: ISIS.MCF (Multi-Currency Factor), ISIS.MCR (Multi-Currency Rate), ISIS.LND (Landed cost), ISIS.DUTY (Duty codes), ISIS.BRK (Broker). Note: ISIS.TXF and ISIS.TXG (tax codes from SM module) also use this prefix — confirming ISIS is a shared international/compliance namespace.
+- **Vendor-specific duty codes** — The first 3 characters of DUTY.DCODE = the vendor code. Duty rates are assigned per vendor, enabling different duty treatment for goods from different suppliers/countries.
+- **Landed cost GL separation** — Separate GL accounts for actual vs. deferred duty and freight (GLADT vs. GLDDT; GLAFR vs. GLDFR). Deferred accounts allow cost recognition timing flexibility.
+- **Currency exchange rates** (ISIS.MCR.SOURCE[1..n]) — Multiple source rates per date, suggesting EVO can track rates from different providers (bank, spot market, etc.) and select which to use.
+- **T7IMB is 140 KB** — the largest IM form. Likely has many currency codes with full master-record editing; the size suggests it handles the complete currency master with extensive field configuration.
+
+**Primary tables:** ISIS.MCF.* (currency factor master), ISIS.MCR.* (exchange rates), ISIS.LND.* (landed cost GL), ISIS.DUTY.* (duty codes), ISIS.BRK.* (broker fees)
+
+**Confidence: 70/100** — All 5 DFMs read; full landed cost and multi-currency setup schema confirmed; actual PO/receiving integration for landed cost not decoded (in RWN).
+
+---
+
+## PS — Program Security / User Access
+
+**DFM files confirmed:** T7PSA.DFM, T7PSE.DFM, T7PSEGRP.DFM, T7PSEITM.DFM, T7PSF.DFM, T7PSK.DFM (6 total)
+
+**What it does:** Manages user accounts, security levels, and per-program access control. Separate from the AHSYLOG system-level access flags — PS provides a program-by-program granular permission system with named security codes.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7PSA | User Account Setup | BKPS.USER.CODE (user code), seclevel (security level), seccode [A/P/1/2/C/V/U/E] (security code), company (default start company), employee/rep linkage |
+| T7PSE | User Security Report | User name From/Thru range — prints per-user security assignments |
+| T7PSEGRP | Button Group Config | BUTTON_NUM, BUTTON_NAME — configures named button groups for access control |
+| T7PSEITM | Program Access List | PROGRAM_NUM, PROGRAM_DESC, PROGRAM_NME, PROGRAM_SORT — list of programs a user is permitted to access |
+| T7PSF | Access-to-Program Report | PROGNAME — print all users who have access to a specific program |
+| T7PSK | Approve Vendor | app.vend, from.vend, bkap.vendname — AP vendor approval workflow |
+
+**Key findings:**
+- **Security code values [A/P/1/2/C/V/U/E]** — 8 named access tiers. Likely: A=All access, P=Payroll, 1/2=approval levels, C=Cost/View, V=View-only, U=User entry, E=Export. Exact meaning not decoded from DFM alone.
+- **BKPS.USER.CODE table** — a dedicated PS user table separate from AHSYLOG (the main system login table). EVO has two user record systems: AHSYLOG (login + 20 module-level flags) and BKPS.* (program-level granular permissions).
+- **Program-level access** (PSEITM) — PROGRAM_NUM/PROGRAM_NME means each EVO menu program has an assigned number/name. Users are granted access to specific program numbers — a whitelist model.
+- **Employee/Rep linkage** in PSA — users can be linked to a Payroll employee or commission rep, enabling activity tracking by person.
+- **T7PSK "Approve Vendor"** — may be a PS-K sub-operation for approving AP vendors as part of a purchasing security workflow (e.g., only PS-authorized users can approve new vendors).
+
+**Primary tables:** BKPS.USER.* (user accounts — code/level/seccode), BKPS.PROG.* or similar (program access list)
+
+**Confidence: 60/100** — All 6 DFMs read; dual user-system architecture confirmed; security code values inferred but not decoded; program-level permission list mechanics not decoded (in RWN).
+
+---
+
+## IC — Inventory Control Utilities
+
+**DFM files confirmed:** T7IC2EST.DFM (1 total)
+
+**What it does:** IC provides utility operations for the Inventory module. T7IC2EST is the only confirmed DFM: it copies production BOM inventory data to the Estimating module.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7IC2EST | Copy Production → Estimating | Caption='Copy Production to Estimate Inventory'; no bound fields — a simple trigger with Inventory: (target) + Go/Exit buttons |
+
+**Key findings:**
+- **IC2EST bridge** — copies the production BOM inventory into the Estimating (ES) module. This populates the estimating module with current item/BOM data so estimate BOMs can start from production reality rather than from scratch.
+- **One-way copy** — "Copy Production to Estimate" is directional (production → estimate, not the reverse).
+- **Single DFM** suggests IC may be a small module with primarily RWN-implemented operations.
+
+**Primary tables:** BKICMSTR (inventory master — source), IS.EST.* or similar (estimating inventory — target)
+
+**Confidence: 35/100** — 1 DFM read; IC2EST bridge purpose confirmed from caption; IC module's broader scope (other IC menu ops) not decoded.
+
+---
+
+## SD — Standard Data
+
+**DFM files confirmed:** T7SDET.DFM (1 total)
+
+**What it does:** SD stores standard code/detail records — a generic lookup/reference table (IS.SDET.*) used across modules for standardized entries.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7SDET | Standard Detail Entry | IS.SDET.DETAIL (detail text), IS.SDET.TYPE (type code) — a type-keyed detail lookup |
+
+**Key findings:**
+- **IS.SDET.* table** — stores standard detail strings, keyed by type. Similar in concept to reason codes — a module-agnostic code/description lookup. SD-ET = "Standard Data - Edit Type" or "SD Entry".
+- **12 menu operations** suggests SD has significant breadth beyond this one DFM — most operations are in RWN.
+
+**Primary tables:** IS.SDET.* (standard detail records — type + detail text)
+
+**Confidence: 30/100** — 1 DFM read; IS.SDET.* table confirmed; module full scope not decoded.
+
+---
+
+## QT — Quoting / Service Quote Misc.
+
+**DFM files confirmed:** T7QTINFO.DFM (1 total)
+
+**What it does:** QT handles quote-related operations. T7QTINFO specifically stores miscellaneous date information for Service/Repair (SR) quotes, using the ISSR.INFO.* table.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7QTinfo | Quote Misc. Information | ISSR.INFO.DATE[1..5] (indexed date fields for SR/service quote); Caption='Quote Misc. Information' |
+
+**Key findings:**
+- **ISSR.INFO.* = Service/Repair info table** — the ISSR prefix belongs to the SR (Service/Repair) module. QT operates on SR data. This suggests QT is a quoting sub-module for the SR module (customer quotes for service/repair work), not a standalone general quoting module.
+- **Multiple indexed dates** (DATE[1]/[2]/[3]/[5]) — a service quote tracks several dates (quote date, promised date, ship date, completion date, etc.).
+
+**Primary tables:** ISSR.INFO.* (service/repair quote info)
+
+**Confidence: 35/100** — 1 DFM read; service quote linkage confirmed; full QT module scope and remaining date field meanings not decoded.
+
+---
+
+## RF — Request for Quote (RFQ from Estimating)
+
+**DFM files confirmed:** T7RFQ.DFM (1 total)
+
+**What it does:** RF generates Request for Quote documents from Estimating data — linking estimate numbers to vendor RFQs.
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7RFQ | RFQ from Estimate | aenum (estimate number), is.est.orddesc (estimate order description), LIST.PART/LIST.DESC — tag individual items or groups; Process button |
+
+**Key findings:**
+- **"aenum" = estimate number** — RF pulls from the ES (Estimating) module's data. An estimate generates one or more RFQs to vendors for components.
+- **Tag Individual / Tag Groups** — allows selective RFQ generation: tag specific parts individually or tag a group of parts.
+- **is.est.orddesc** = IS Estimating order description — RF accesses IS.EST.* tables.
+
+**Primary tables:** IS.EST.* (estimating — source), BKAPRFQ/BKAPRFQL (vendor RFQ — destination, also used by PO module)
+
+**Confidence: 40/100** — 1 DFM read; ES→RFQ link confirmed; full RF workflow not decoded.
+
+---
+
+## US — User Services / Trigger Notifications
+
+**DFM files confirmed:** T7USG.DFM (1 total)
+
+**What it does:** US manages the trigger-based notification system — automated follow-up alerts that fire when certain conditions are met (days before a date, CRM key dates, etc.).
+
+**Forms read from network share:**
+
+| DFM | Purpose | Key fields |
+|-----|---------|------------|
+| T7USG | Trigger/Notification Setup | IS.TRIG.NOTE (trigger note text), IS.TRIG.CONTACT (contact to notify), IS.TRIG.EMAIL (email address), IS.TRIG.EFLAG (email flag); Caption fields: "Trigger Code / User to Trigger / Last Date / Last Time / Days Pre" |
+
+**Key findings:**
+- **IS.TRIG.* table** — trigger records define: Trigger Code, which User to notify, the Last triggered Date/Time (audit), and Days Pre (how many days before an event to fire).
+- **IS.TRIG.CONTACT + IS.TRIG.EMAIL** — triggers can notify a specific contact person by email. EFLAG = whether to send email vs. in-app notification.
+- **"Days Pre"** — the trigger fires N days before a reference date (likely from CRM key dates BKCM.ACTD.* or SR service due dates).
+- **Linkage to CRM/SR** — IS.TRIG contacts and email addresses suggest triggers are CRM-driven: follow up with a contact X days before their contract renewal, service due date, etc.
+
+**Primary tables:** IS.TRIG.* (trigger records — code/contact/email/days)
+
+**Confidence: 45/100** — 1 DFM read; trigger notification mechanism confirmed; full trigger type taxonomy and integration points not decoded.
+
+---
+
 ## DE — Data Entry / EDI / Imports (20 forms)
 
 **DFM files confirmed:** T7DEER.DFM, T7DEFECT.DFM, T7DEHD.DFM, T7DEJH.DFM, T7DEK.DFM, T7DEL.DFM, T7DEM.DFM, T7DEP860.DFM, T7DEPB.DFM, T7DEPD.DFM, T7DEPE.DFM, T7DEPF.DFM, T7DEPH.DFM, T7DEQ.DFM, T7DER.DFM, T7DET.DFM, T7DETB.DFM, T7DEU.DFM, T7DEV.DFM, T7DEX.DFM (20 total)

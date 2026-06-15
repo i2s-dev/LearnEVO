@@ -560,8 +560,8 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **FO** — Features & Options — all 3 DFMs read; FO-C (BKBM.PROD.OPYN[5] option flags, PAR.DESC+COMP.DESC parent-component option pairing), FO-D (item/class/category range), FO-E (item filter); BOM sub-module — options set OPYN[1..N] per product; SO triggers option selection driving BOM inclusions — **C: 50/100**
 - [ ] ⬜ **FP** — purpose unclear; no deep doc
 - [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
-- [ ] ⬜ **IC** — Inventory Control (sub-area of IN?) — forms inventoried only
-- [ ] ⬜ **IM** — Import / data loading — forms inventoried only
+- [x] 🔄 **IC** — Inventory Control utility — 1 DFM read (IC2EST: Caption='Copy Production to Estimate Inventory' — one-way bridge copies production BOM data into ES estimating module); IC broader scope in RWN — **C: 35/100**
+- [x] 🔄 **IM** — Import Management / Landed Cost — all 5 DFMs read; IMB (ISIS.MCF.* currency master: code/desc/base/symbol), IMC (ISIS.MCR.* exchange rates: date/base/SOURCE[1..n]), IMD (ISIS.LND.* landed cost GL accounts: duty/freight/deferred variants), IME (ISIS.DUTY.* duty codes: first 3 chars=vendor, percentage), IMF (ISIS.BRK.* customs broker: code/flat/perc/type); full landed cost and multi-currency infrastructure — **C: 70/100**
 - [x] 🔄 **IS** — Information System / Multi-Currency GL — 1 DFM found (T7ISMCC: Convert Source to Base Currency, is.date/ISGL.CYDATE[1]/gl.period[1-2]); IS = system-wide shared reference namespace (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP tables); ISGL.* = GL currency integration tables — **C: 45/100**
 - [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
@@ -571,15 +571,16 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **MM** — Main Menu / Master Maintenance — forms inventoried only
 - [ ] ⬜ **PC** — Production Control — forms inventoried only
 - [ ] ⬜ **PL** — Planning — forms inventoried only
-- [ ] ⬜ **PS** — Product Structure / BOM variant — forms inventoried only
+- [x] 🔄 **PS** — Program Security / User Access — all 6 DFMs read; PSA (BKPS.USER.CODE user setup: seclevel, seccode [A/P/1/2/C/V/U/E], company, employee/rep), PSE (user security report), PSEITM (program access list: PROGRAM_NUM/NME), PSF (access-to-program report), PSEGRP (button group config), PSK (approve vendor: bkap.vendname); dual user system with AHSYLOG (module-level) + BKPS (program-level) — **C: 60/100**
 - [x] 🔄 **QC** — Quality Control — 4 DFM files read; QC-A confirms QC/Scrap dual-code classification + vendor range; parent item roll-up in QC-B/C/D; tables BKQCMSTR/BKQCTRAN/BKQC confirmed in DDF — **C: 52/100**
-- [ ] ⬜ **QT** / **QU** — Quoting — forms inventoried only
-- [ ] ⬜ **RF** — purpose unclear; no deep doc
+- [x] 🔄 **QT** — Service Quote (linked to SR module) — 1 DFM read (QTINFO: 'Quote Misc. Information'; ISSR.INFO.DATE[1..5] indexed dates — ISSR prefix confirms SR module linkage; service quotes track multiple date milestones) — **C: 35/100**
+- [ ] ⬜ **QU** — purpose unclear; no DFMs found
+- [x] 🔄 **RF** — Request for Quote (from Estimating) — 1 DFM read (T7RFQ: 'Description/Estimate/Tag Individual/Tag Groups'; aenum=estimate#, is.est.orddesc, LIST.PART/DESC — generates vendor RFQs from estimate data); ES→RFQ bridge; uses BKAPRFQL destination — **C: 40/100**
 - [x] 🔄 **RM** — Return Material Authorization (RMA) — all 5 DFMs read; RMD=main entry (bkar.inv/invl links, is.rma.warranty NLPB codes, reason for return), RMAWHY=detail popup (is.rma.status), RMDASK=disposition (pass.rma.num [D/J/N], restock.charge, so.location), RME=reason code master (IS.RMA.CODE/DESC), RMG=report; RMA→WO bridge via "Pass to Job" — **C: 68/100**
 - [ ] ⬜ **RT** — purpose unclear; no deep doc
 - [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
 - [ ] ⬜ **SB** — purpose unclear; no deep doc
-- [ ] ⬜ **SD** — Standard Data (12 ops) — forms inventoried only
+- [x] 🔄 **SD** — Standard Data — 1 DFM read (SDET: IS.SDET.DETAIL + IS.SDET.TYPE — type-keyed standard detail lookup table used across modules); broader SD scope in RWN — **C: 30/100**
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms read; SM-K (user prefs→EvoSettings.INI), SM-E/F (tax code ISIS.TXF + tax group ISIS.TXG with vendor remittance), SM-O (ship-via with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (job# master IS.JOB.*), SM-PH (maintenance cycles IS.CYCLE.*), SM-JM/JN (customer/vendor merge), SM-JC (JC setup), SM-SD (AP invoice document link); BKSYMSTR/BKYSMSTR not fully decoded — **C: 72/100**
@@ -590,7 +591,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **TA** — purpose unclear; no deep doc
 - [ ] ⬜ **UM** — User Maintenance — forms inventoried only
 - [ ] ⬜ **UP** — Update / patch — forms inventoried only
-- [ ] ⬜ **US** — User Settings — forms inventoried only
+- [x] 🔄 **US** — User Services / Trigger Notifications — 1 DFM read (USG: IS.TRIG.NOTE/CONTACT/EMAIL/EFLAG; 'Trigger Code/User to Trigger/Last Date/Last Time/Days Pre' — automated follow-up alerts firing N days before a reference date; email notification with IS.TRIG.CONTACT/EMAIL); CRM/SR key-date integration likely — **C: 45/100**
 - [x] 🔄 **UT** — Utilities (admin/data maintenance) — all 8 DFMs read; UTH (file layout report), t7uti (company add/delete: company_code/name/path/copy.file/cdelete), UTKA (data clear/reset: CLR.COA/CUST/VEND/INVN — DESTRUCTIVE), UTKD (fiscal year: fycur/fy1yp/fy2yp/fy3yp), UTKE (location cleanup — DESTRUCTIVE), UTKF/UTKG (item rebuild F and G variants), UTKH (average cost recalculate by inc.type[1-4]); most ops irreversible — **C: 60/100**
 - [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
 - [ ] ⬜ **YS** — purpose unclear; no deep doc
