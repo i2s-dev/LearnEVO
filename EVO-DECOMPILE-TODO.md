@@ -569,7 +569,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **PC** — Production Control — forms inventoried only
 - [ ] ⬜ **PL** — Planning — forms inventoried only
 - [ ] ⬜ **PS** — Product Structure / BOM variant — forms inventoried only
-- [ ] ⬜ **QC** — Quality Control — forms inventoried only
+- [x] 🔄 **QC** — Quality Control — 4 DFM files read; QC-A confirms QC/Scrap dual-code classification + vendor range; parent item roll-up in QC-B/C/D; tables BKQCMSTR/BKQCTRAN/BKQC confirmed in DDF — **C: 52/100**
 - [ ] ⬜ **QT** / **QU** — Quoting — forms inventoried only
 - [ ] ⬜ **RF** — purpose unclear; no deep doc
 - [ ] ⬜ **RM** — Return Material — forms inventoried only
@@ -580,7 +580,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 8 forms read (class setup, GL override, customer shipping prefs, WO setup/end); T7SMP*/T7SMN* (printer/system params) not yet read — **C: 62/100**
-- [ ] ⬜ **SR** — Service / Repair — forms inventoried only
+- [x] 🔄 **SR** — Service / Repair — 7 DFM files read; SR-K (equipment master ISSR.MMS.* — make/model/serial/IN-OUT dates/motor/WO#), SR-I (AR invoice browse), SR-E (invoice address edit, BKAR.INV.*); SO integration confirmed; T7SRA not found on share — **C: 58/100**
 - [ ] ⬜ **SU** — Setup — forms inventoried only
 - [ ] ⬜ **SY** — System — forms inventoried only
 - [ ] ⬜ **TA** — purpose unclear; no deep doc
@@ -588,7 +588,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **UP** — Update / patch — forms inventoried only
 - [ ] ⬜ **US** — User Settings — forms inventoried only
 - [ ] ⬜ **UT** — Utilities (20 ops) — forms inventoried only
-- [ ] ⬜ **WC** — Work Center — forms inventoried only
+- [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
 - [ ] ⬜ **YS** — purpose unclear; no deep doc
 
 ---
@@ -919,11 +919,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CS/Customer Service | **55** | 80 | **25** ↑ NEW | 2026-06-11 |
 | Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
 | Module: SC/Serial Control ⚠️ | **72** | 80 | **8** ↑ +30 | 2026-06-15 |
-| Module: QC/Quality Control | **48** | 75 | **27** NEW | 2026-06-11 |
-| Module: WC/Work Center | **55** | 78 | **23** NEW | 2026-06-11 |
+| Module: QC/Quality Control | **52** | 75 | **23** ↑ +4 | 2026-06-15 |
+| Module: WC/Warehouse Control ⚠️ | **72** | 80 | **8** ↑ +17 | 2026-06-15 |
 | Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
 | Module: LC/Lot Control | **42** | 75 | **33** NEW | 2026-06-11 |
-| Module: SR/Service Repair | **42** | 75 | **33** NEW | 2026-06-11 |
+| Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
 | Module: FA/Fixed Assets | **48** | 75 | **27** NEW | 2026-06-11 |
 | Module: PI/Physical Inventory | **52** | 78 | **26** NEW | 2026-06-11 |
 | Module: ED/EDI | **50** | 75 | **25** NEW | 2026-06-11 |

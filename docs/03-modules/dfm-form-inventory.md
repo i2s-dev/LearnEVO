@@ -30,10 +30,10 @@ Every DFM was parsed with `scripts/parse_dfm.py` +
 | **T7-QC**    | 15 | Quality Control |
 | **T7-SH**    | 15 | Shop Scheduling ⚠️ (NOT Shipping — confirmed 2026-06-15) |
 | **T7-JC**    | 14 | Job Costing |
-| **T7-WC**    | 13 | Work Centers |
+| **T7-WC**    | 13 | Warehouse Control ⚠️ (NOT Work Centers — bin/location management; confirmed 2026-06-15) |
 | **T7-CM**    | 12 | Customer Master / Config |
 | **T7-CS**    | 12 | Cost System |
-| **T7-SR**    | 12 | Sales Reports |
+| **T7-SR**    | 12 | Service / Repair ⚠️ (NOT Sales Reports — equipment master ISSR.MMS.*; confirmed 2026-06-15) |
 | **T7-PI**    | 10 | Physical Inventory |
 | **T7-RE**    | 10 | Reports |
 | **T7-EV**    | 9  | Evolution utilities |

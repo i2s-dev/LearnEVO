@@ -265,37 +265,83 @@ This module manages serial number assignment, tracking, and lifecycle for serial
 
 ## QC — Quality Control
 
-**DFM files confirmed:** T7QCA.DFM + 11 more forms (12 total), including test specifications and results forms.
+**DFM files found on share (4 of ~12):** T7QCA.DFM, T7QCB.DFM, T7QCC.DFM, T7QCD.DFM
 
-**What it does:** Receiving inspection and quality tracking. Items can be placed in QC hold at receipt (inventory transaction type Q = QC Receipt). Test specifications define what to check; results are recorded per lot/receipt.
+The remaining ~8 DFM files are not present on the network share.
 
-**Likely tables:** BKQCMSTR (QC master — already in DDF), BKQCTRAN (QC transactions — already in DDF)
+**What it does:** Quality control reporting and analysis. Items can be placed on QC hold at receipt (inventory transaction type Q = QC Receipt). QC codes track defect types; scrap codes track disposition/scrap reasons.
 
-**Confidence: 48/100** — Form count and types confirmed; BKQCMSTR/BKQCTRAN confirmed in DDF; workflow not traced.
+**Forms found:**
+
+| Code | DFM | What it does |
+|------|-----|-------------|
+| QC-A | T7QCA.DFM | **QC/Scrap Report filter** — Date Range, Item Number range, Item Class range, Vendor range, QC/Scrap Code range. Toggle: Use QC Codes vs. Use Scrap Codes. |
+| QC-B | T7QCB.DFM | Report filter: Date Range, Parent Item Number range — parent item QC analysis |
+| QC-C | T7QCB.DFM | Report filter: Date Range, Parent Item Number range — variant |
+| QC-D | T7QCD.DFM | Report filter: Date Range, Parent Item Number range — variant |
+
+**Key finding:** QC module uses two separate defect classification systems — QC Codes and Scrap Codes — selectable per report. Vendor range confirms QC is tied to the receiving/purchasing workflow. Parent Item range in QC-B/C/D enables roll-up of defects by parent assembly.
+
+**Primary tables:** BKQCMSTR (QC master), BKQCTRAN (QC transactions), BKQC (QC receiving record — per T7POJC.DFM analysis)
+
+**Confidence: 52/100** — 4 of ~12 DFM files read from network share; QC/scrap dual-classification confirmed; BKQCMSTR/BKQCTRAN tables confirmed in DDF; test specification and results entry forms not yet found.
 
 ---
 
 ## SR — Service / Repair
 
-**DFM files confirmed:** T7SRA.DFM + 10 more forms (11 total)
+**DFM files confirmed (6 found on share; T7SRA.DFM not present):** T7SRB.DFM, T7SRD.DFM, T7SRE.DFM, T7SRF.DFM, T7SRG.DFM, T7SRK.DFM + T7SRI.DFM (7 total found)
 
-**What it does:** Service order management — tracking repair/service work for customers. Similar to work orders but for customer-owned equipment or warranty service.
+**What it does:** Service/Repair order management for customer-owned equipment. Tracks equipment specs (make, model, serial, motor), service IN/OUT dates, WO linkage, and invoicing.
 
-**Note:** T7SOA.DFM (Sales Orders) has a "SR Type" tab and "Print S/R" button, suggesting SO and SR modules are tightly integrated — service requests may originate from the SO screen.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| SR-B | T7SRB.DFM | **SR order print options** — Print Notes, Print Hidden Notes, PLDTYPE (delivery type) |
+| SR-D | T7SRD.DFM | **SR order print options variant** — Print Notes, Hidden Notes, Kit, Comment options |
+| SR-E | T7SRE.DFM | **Invoice address edit** — customer address fields from BKAR.INV (city, state, zip, customer PO) for SR order invoicing |
+| (shared) | T7SRF.DFM | **Invoice print options** — Caption='SO-F' (shared with SO module); Print Pack Slip, Report Type, Kit, Comment options |
+| SR-G | T7SRG.DFM | **SR/Invoice range** — invoice number range, SO number range for SR inquiry |
+| SR-I | T7SRI.DFM | **Invoice browse** — date-based AR invoice lookup: Invoice Date, Order Date, Ship Date, Customer Code/Name |
+| SR-K | T7SRK.DFM | **Equipment Master (SR Machine Master)** — registers equipment for service. Fields: Item Number, Description, Make, Model, Serial Number, Invoice Number, S/R Number, Line#, IN Date (received for service), OUT Date (returned), Manufacture Date, Motor, WO Number, Category, Comment. Table: ISSR.MMS.* |
 
-**Confidence: 42/100** — Form count confirmed; SR/SO integration observed in T7SOA.DFM.
+**Key module facts:**
+- Equipment tracked in ISSR.MMS.* table (IS Service/Repair Machine/Motor Specs)
+- Fields "IN Date" and "OUT Date" = when equipment was received/returned from service
+- "Motor" field — confirms this handles motor/mechanical equipment service
+- SR orders link back to AR invoices (BKAR.INV.*) — SR work is billed through the AR module
+- SO integration: T7SOA.DFM has "SR Type" tab and "Print S/R" button — SR orders can originate from a Sales Order
+- T7SRA.DFM (SR-A, main entry form) was not found on the network share — may be in the encrypted RWN-only tier or removed
+
+**Primary tables:** ISSR.MMS.* (machine/equipment master for service), BKAR.INV.* (AR invoices for SR billing)
+
+**Confidence: 58/100** — 7 of ~11 DFM files read; equipment master table ISSR.MMS.* confirmed; SR-to-AR invoice integration confirmed; main entry form T7SRA not found; full SR order lifecycle not traced.
 
 ---
 
-## WC — Work Center
+## WC — Warehouse Control ⚠️ NAME CORRECTION
 
-**DFM files confirmed:** T7WCA.DFM + 11 more forms (12 total)
+**Previously labeled "Work Center" — INCORRECT. WC = Warehouse Control (bin/location management).**
 
-**What it does:** Work center master maintenance — defines the production resources (machine groups, labor areas) used in routing operations and scheduling. Each work center has capacity, efficiency, and cost rate settings.
+This module manages warehouse bin and location master records for inventory placement.
 
-**Primary tables:** WORKCTR (work center master — already confirmed)
+**DFM files confirmed (8 found):** T7WCA.DFM, T7WCB.DFM, T7WCC.DFM, T7WCD.DFM, T7WCE.DFM, T7WCF.DFM, T7WCG.DFM, T7WCH.DFM
 
-**Confidence: 55/100** — Form count confirmed; WORKCTR table confirmed; capacity/cost fields not extracted.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| WC-A | T7WCA.DFM | **Bin/Location Master Maintenance** — Add/Edit/Delete bin records. Fields: Location (warehouse), Bin code, Description, Name. Toolbar button: "Duplicates" (check and remove duplicate master bins). Tables: ISBN.MSTR (bin master), bkic.locm (location master). |
+| — | T7WCB.DFM | Item/class/category range filter for bin reports |
+| WC-C | T7WCC.DFM | **Serial Numbers by Bin** — view serialized inventory at a specific bin location. Uses MTSER.SERIAL, MTSER.ONHAND, MTSER.BIN fields. |
+| WC-D | T7WCD.DFM | **Bulk Bin Assignment** — assigns items to bin locations. Options: Skip or Replace existing assignments [S/R], Warehouse (Location), Bin, Default Bin (Y/N), Item Number, Bin Description. |
+| WC-E | T7WCE.DFM | Item range/type filter for bin inventory report |
+| WC-F | T7WCF.DFM | Item range/type filter for bin inventory report |
+| WC-G | T7WCG.DFM | Item range/type filter for bin inventory report |
+| WC-H | T7WCH.DFM | **Location browser** — filters by location code; displays bkic.locm.name, location, bin range |
+
+**Note on Work Centers:** WORKCTR (work center master for production routing) is accessed via the WO and SH modules (MTWC.* in SH-B/SH-C). The WC module code here is unrelated to production work centers — it is warehouse/bin control.
+
+**Primary tables:** ISBN.MSTR (IS Bin Number master — bin/location records), BKIC.LOCM (inventory location master), MTSER (serial master — for serial-by-bin view)
+
+**Confidence: 72/100** — All 8 found DFM files read from network share; purpose confirmed from form captions and field names; ISBN.MSTR table identified as bin master; bulk bin assignment workflow confirmed.
 
 ---
 
@@ -470,3 +516,5 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 |--------|------------------|--------------|----------|
 | SC | Scheduling/Capacity Planning | **Serial Control** | T7SCA Caption='SC-A Edit Serial Numbers'; MTSER fields; IS.SERC.* config |
 | SH | Shipping | **Shop Scheduling** | T7SHA Caption='SH-A'; MTWO.WIP.* and MTWORO.* fields; work center capacity |
+| WC | Work Center | **Warehouse Control** | T7WCA Caption='Location/Bin/Description'; ISBN.MSTR fields; "Duplicates" bin button |
+| SR | (Sales Reports in DFM inventory) | **Service/Repair** | T7SRK fields ISSR.MMS.MAKE/MODEL/SERIAL; "IN Date"/"OUT Date"/"S/R Number"/"Motor" |
