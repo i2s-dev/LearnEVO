@@ -508,10 +508,16 @@ Target for "understood" = C: 75+ on all items below.
 - [ ] ⬜ Full DC workflow (scanner → table entry → WO update) traced
 - [ ] ⬜ All BKDC\* tables with fields documented
 
-### 7.13 Scheduling / Capacity (SC)
-- [x] ✅ Menu codes listed — **C: 60/100**
-- [ ] ⬜ Full scheduling algorithm documented
-- [ ] ⬜ Capacity planning tables identified and fields documented
+### 7.13 Serial Control (SC) ⚠️ NAME CORRECTED — was "Scheduling/Capacity"
+- [x] ✅ Menu codes listed — **C: 68/100**
+- [x] ✅ All 9 DFM files read from network share — **C: 72/100**
+- [x] ✅ SC-A: Edit Serial Numbers (MTSER table) — serial record view/edit — **C: 75/100**
+- [x] ✅ SC-B: Assign Serial Control on items (MTIC.PROD.SER flag) — **C: 72/100**
+- [x] ✅ SC-G: Serial format setup (total length, numeric start position, last number) — **C: 72/100**
+- [x] ✅ T7SCOMP: Compound serial numbers (IS.SCOMP.*) — **C: 65/100**
+- [x] ✅ Primary tables: MTSER (serial master), IS.SERC.* (config), IS.SCOMP.* (compound) — **C: 72/100**
+- [ ] ⬜ MTSER all fields documented with meaning
+- [ ] ⬜ Serial number lifecycle (receive → track → ship → close) fully traced
 
 ### 7.14 Physical Inventory (PI)
 - [x] ✅ Menu codes listed — **C: 65/100**
@@ -554,7 +560,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **IC** — Inventory Control (sub-area of IN?) — forms inventoried only
 - [ ] ⬜ **IM** — Import / data loading — forms inventoried only
 - [ ] ⬜ **IS** — purpose unclear; no deep doc
-- [ ] ⬜ **JC** — Job Costing (18 ops) — forms inventoried only
+- [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
 - [ ] ⬜ **LC** — Lot Control — forms inventoried only
 - [ ] ⬜ **LM** — Labor Management — forms inventoried only
 - [ ] ⬜ **LO** — purpose unclear; no deep doc
@@ -571,7 +577,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **SA** — Sales Analysis (13 ops) — 6 forms inventoried; purpose confirmed (reads BKARINV/BKARINVL/BKARCUST for sales reporting) — **C: 45/100**
 - [ ] ⬜ **SB** — purpose unclear; no deep doc
 - [ ] ⬜ **SD** — Standard Data (12 ops) — forms inventoried only
-- [ ] ⬜ **SH** — Shipping (16 ops) — forms inventoried only
+- [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 8 forms read (class setup, GL override, customer shipping prefs, WO setup/end); T7SMP*/T7SMN* (printer/system params) not yet read — **C: 62/100**
 - [ ] ⬜ **SR** — Service / Repair — forms inventoried only
@@ -911,11 +917,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CM/CRM | **60** | 80 | **20** ↑ NEW | 2026-06-11 |
 | Module: DE/Data Exchange | **65** | 80 | **15** ↑ NEW | 2026-06-11 |
 | Module: CS/Customer Service | **55** | 80 | **25** ↑ NEW | 2026-06-11 |
-| Module: JC/Job Costing | **52** | 75 | **23** NEW | 2026-06-11 |
-| Module: SC/Scheduling | **42** | 75 | **33** NEW | 2026-06-11 |
+| Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
+| Module: SC/Serial Control ⚠️ | **72** | 80 | **8** ↑ +30 | 2026-06-15 |
 | Module: QC/Quality Control | **48** | 75 | **27** NEW | 2026-06-11 |
 | Module: WC/Work Center | **55** | 78 | **23** NEW | 2026-06-11 |
-| Module: SH/Shipping | **45** | 75 | **30** NEW | 2026-06-11 |
+| Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
 | Module: LC/Lot Control | **42** | 75 | **33** NEW | 2026-06-11 |
 | Module: SR/Service Repair | **42** | 75 | **33** NEW | 2026-06-11 |
 | Module: FA/Fixed Assets | **48** | 75 | **27** NEW | 2026-06-11 |

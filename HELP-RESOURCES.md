@@ -35,6 +35,12 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Set up a routing | RO-A | [Routing](#routing-ro) |
 | Build a BOM | BM module | [Bill of Materials](#bill-of-materials-bm) |
 | View system defaults | AD-A (GL Defaults) | [System Defaults](#system-defaults) |
+| Analyze WO job costs vs. estimates | JC-A | [Job Costing](#job-costing-jc) |
+| See materials still open in WIP | JC-P | [Job Costing](#job-costing-jc) |
+| Track a serialized item | SC-A | [Serial Control](#serial-control-sc) |
+| Enable serial tracking on an item | SC-B | [Serial Control](#serial-control-sc) |
+| Schedule WOs across work centers | SH-A / SH-B | [Shop Scheduling](#shop-scheduling-sh) |
+| Print a WO dispatch report | SH-I | [Shop Scheduling](#shop-scheduling-sh) |
 
 ---
 
@@ -447,6 +453,109 @@ and approve variances, post adjustments.
 **Primary tables:** BKES\* (3 tables)
 
 **Confidence: 35/100** — Tables identified; no source or DFM analysis done.
+
+---
+
+### Job Costing (JC)
+
+**What it does:** Reporting and analysis module that compares estimated vs. actual costs for work
+orders. Reads WO labor/operation data; creates no records of its own.
+
+**Menu codes:** JC-A through JC-S (14 report forms + shared engine)
+
+**Key operations:**
+- **JC-A — Print Job Cost Report:** Cost variance by WO. Filter by WO range, status (Firmed/Released/
+  Closed/Cancelled/Indirect), item range, customer range, job range. Options: G&A Cost%,
+  Summary vs. Detail, Composite (roll up sub-WOs), Include Component Descriptions, Include WO Notes.
+- **JC-E — Parent/Child Cost Roll-up:** Filters by Parent Item range for multi-level WO cost
+  analysis. Supports both Active and Archived WOs.
+- **JC-N — Cost Calculation Options:** Chooses the cost basis — Current Month, Historical, or
+  Proposed (what-if). Also controls cost breakout detail (`ISCOST.BREAKOUT`).
+- **JC-P — Print Materials in WIP:** Lists all material issued to WOs that are not yet closed.
+  Used to verify WIP inventory balance.
+
+**JC Engine (T7JCENG.DFM):** All JC reports share a common engine dialog. Parameters: Report
+Type, Sort/Subtotal By, Level of Detail, WO Status, WO Source (Active/Archived), Labor Type
+(Regular/OT/Doubletime/Sick/Vacation/Holiday), Shift (1st/2nd/3rd), Include Run+Setup or Both,
+Multiple Setup (Include Once). Ranges: WO, Work Center, Item, Tool, Employee, Machine, Labor Date,
+Job, Sequence, Scrap Code, QC Code, Rework Code, Department, WO Actual Finish Date.
+
+**Primary tables:** WORKORD, WO labor/operation tables (WOPROC, WOSCRAP, WOREMATR),
+ISCALC.* (cost calculation config), ISCOST.* (cost breakout config)
+
+**Confidence: 68/100** — All 14 DFM files read; form purposes confirmed; cost formula logic inaccessible (in RWN).
+
+---
+
+### Serial Control (SC)
+
+**What it does:** Manages serial number assignment, tracking, and lifecycle for serialized inventory
+items. Distinct from Lot Control (LC) — serial tracking is one-unit-per-serial.
+
+**Menu codes:** SC-A through SC-H (9 forms)
+
+**Key operations:**
+- **SC-A — Edit Serial Numbers:** View/edit individual serial records. Fields: Serial Number,
+  On-Hand, Date Received, WO#, Exp Date, Location, Cost, SO#, Bin, Invoice#, Customer, Ship Date.
+  Primary table: MTSER.
+- **SC-B — Assign Serial Control:** Configure which inventory items are serial-tracked by setting
+  the MTIC.PROD.SER flag. Shows item type, description, and note.
+- **SC-C / SC-C2 — Serial Browse / Print Availability:** Browse/report serial inventory; SC-C2 has
+  option to include zero-on-hand serials (ISPRT.ZEROS).
+- **SC-E — Archive/Unarchive:** Archive or restore serial records by item and serial number range.
+- **SC-F — Serial Control Exceptions:** Shows serials with anomalous state.
+- **SC-G — Serial Format Setup:** Defines the serial numbering scheme per item or item class:
+  Total Length, Starting Position of Numeric portion, Last Number Used. Tables: IS.SERC.*.
+- **T7SCOMP — Compound Serials:** Manages compound/composite serial structures where one finished
+  serial is composed of multiple component serials. Tables: IS.SCOMP.DETAIL, IS.SCOMP.COMPND.
+
+**Primary tables:** MTSER (serial master — one record per serial unit), MTIC.PROD.SER (item-level
+serial flag), IS.SERC.* (serial format configuration), IS.SCOMP.* (compound serial definitions)
+
+**Confidence: 72/100** — All 9 DFM files read from network share; all form purposes confirmed from captions and field names.
+
+---
+
+### Shop Scheduling (SH)
+
+**What it does:** Finite-capacity scheduling of work orders across work centers on the shop floor.
+This module is the dispatch and scheduling layer on top of WO — it does NOT create work orders,
+it schedules and monitors their execution.
+
+**Menu codes:** SH-A through SH-P (15 forms)
+
+**Key operations:**
+- **SH-A — WO Scheduling Grid:** Main WIP work order browse. Shows WO#, Item, Description,
+  Customer, Scheduled Start, Scheduled Finish, Due Date, Priority, Class, Lead Time. Filter by
+  Status (Scheduled/Firmed/Released), Priority (1/2/3), Item Class/Category range. Table: MTWO.WIP.*
+- **SH-B — WO Operation Scheduling:** Drill-down to individual routing operations. Fields:
+  Operation, Work Center, Assigned WC (may differ from standard WC), Start/Finish dates, Status,
+  Qty Started, Qty Complete, Contention, Overlap Hours, Negative Overlap, Queue, Labor Type
+  (Regular/Outside Process), Vendor (for outside ops), Lead Time. Table: MTWORO.*
+- **SH-C — Work Center Browser:** View work centers with Dept, Dept Description, Outside Process
+  flag, and Hours/Week capacity. Table: MTWC.*
+- **SH-E — Change Due Date:** Quick edit of WO due date and priority from the scheduling view.
+- **SH-I — Dispatch Report:** Comprehensive scheduling report with color coding. Options: WO
+  status/class/priority filters, work center range, start/finish date range, customer range,
+  planner code range, starting weekly date, Recalculate Time Remaining, Limit to WOs with All
+  Available Components, Print BOM Components (type FRAM), Print Purchase Orders (SPAN/ASIS).
+  Color-codes elapsed start dates and priority changes.
+- **SH-P — Report Color Setup:** Configures colors for the SH-I dispatch report.
+
+**Key concepts:**
+- WO statuses in SH: Scheduled, Firmed, Released (same as WO module statuses)
+- Contention field (MTWORO.CONTNTN): flags operations where work center is over-capacity
+- Overlap / Negative Overlap: SH supports operation overlapping (starting an op before the prior
+  finishes) and negative overlap (gap between ops). These are scheduling efficiency parameters.
+- Planner Code: allows routing WOs to different schedulers/planners by range
+
+**Primary tables:** MTWO.WIP.* (WIP work order header data), MTWORO.* (WO routing operations),
+MTWC.* (work center master: capacity, department, outside-process flag)
+
+**Note:** Physical carrier shipping (carrier selection, BOL, tracking) is part of the SO module
+(T7SOC hub form), not SH. SH = Shop floor scheduling only.
+
+**Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling algorithm inaccessible (in RWN).
 
 ---
 

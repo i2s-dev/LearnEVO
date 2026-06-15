@@ -45,14 +45,46 @@ It is effectively the GL administration module.
 
 ## JC — Job Costing
 
-**DFM files confirmed:** T7JCA.DFM, T7JCB.DFM, T7JCE.DFM, T7JCENG.DFM, T7JCF.DFM, T7JCH.DFM, T7JCL.DFM, T7JCM.DFM, T7JCN.DFM, T7JCP.DFM, T7JCQ.DFM, T7JCR.DFM, T7JCRM.DFM, T7JCJCS.DFM (14 forms)
+**DFM files confirmed (14 total):** T7JCA.DFM, T7JCB.DFM, T7JCE.DFM, T7JCENG.DFM, T7JCF.DFM, T7JCH.DFM, T7JCL.DFM, T7JCM.DFM, T7JCN.DFM, T7JCP.DFM, T7JCQ.DFM, T7JCR.DFM, T7JCRM.DFM, T7JCJCS.DFM
 
 **From CHM help content:**
 - **JC-A — Print Job Cost Report:** Cost and profit analysis per work order with variance reporting (estimated vs. actual labor, material, overhead, outside).
 
-**Relationship to WO:** JC module reads WORKORD and related WO\* tables; it provides reporting and analysis on top of work order costs rather than creating new records.
+**DFM analysis — full form inventory:**
 
-**Confidence: 52/100** — 14 DFM files confirmed; CHM gives JC-A purpose. Full module scope unclear.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| JC-A | T7JCA.DFM | **Print Job Cost Report** — filter by WO range, status, item range, customer range, job range. Options: G&A Cost%, Summary vs. Detail, Composite Report, Component Desc, Include WO Notes, Rebuild WO. |
+| — | T7JCB.DFM | Report filter: Job range, WO range, WO status, customer range — likely JC-B report |
+| JC-E | T7JCE.DFM | Active/Archive WOs, WO range, WO status, **Parent Item range**, Job range — parent/child WO cost roll-up |
+| — | T7JCF.DFM | WO cost report filter (WO range, status, item range, job range) — likely JC-F |
+| — | T7JCH.DFM | WO cost by operation — WO status, item range, **Scheduled Finish Date range**, Sequence Number range |
+| JC-L | T7JCL.DFM | WO status filter — labor/cost report |
+| JC-M | T7JCM.DFM | WO status filter — cost summary |
+| JC-N | T7JCN.DFM | **Cost Calculation Options** — `ISCALC.HOW.C` (Current Month), `ISCALC.HOW.H` (Historical), `ISCALC.HOW.P` (Proposed); `ISCOST.BREAKOUT` (cost breakout detail); date ranges (last month thru / current month thru) |
+| JC-P | T7JCP.DFM | **Print Materials in WIP** — reports all material issued to WOs but not yet completed |
+| JC-Q | T7JCQ.DFM | WO status filter — labor/cost report |
+| JC-R | T7JCR.DFM | WO status filter — cost report |
+| — | T7JCRM.DFM | Sub-form (results grid) |
+| JC-S | T7JCJCS.DFM | WO status filter — cost report |
+| (engine) | T7JCENG.DFM | **JC Report Engine** — shared filter/engine dialog used by all JC reports. Parameters: Report Type, Sort/Subtotal By, Level of Detail; WO Status (Firmed/Released/Closed/Cancelled/Indirect), WO Source (Active/Archived), Labor Type (Regular/OT/Doubletime/Sick/Vacation/Holiday), Shift (1st/2nd/3rd), Multiple Setup (Include Once); ranges for WO, Work Center, Item, Tool, Employee, Machine, Labor Date, Job, Sequence, Scrap Code, QC Code, Rework Code, Dept Code, WO Actual Finish Date. |
+
+**Key module facts:**
+- JC is a **reporting-only module** — reads WO data, creates no records
+- JC-N cost calculation modes: Current, Historical, Proposed — enables what-if cost analysis
+- JC-E handles multi-level WO cost roll-up via parent item range filter
+- JC-P (Materials in WIP) is key reconciliation: shows materials consumed but WO not yet closed
+- T7JCENG is the universal engine dialog shared by all JC print operations
+- WO statuses: Firmed, Released, Closed, Cancelled, Indirect; Sources: Active, Archived
+- Labor types: Regular, OT, Doubletime, Sick, Vacation, Holiday (6 types)
+- Shifts: 1st, 2nd, 3rd
+- Tool and machine range filters confirm EVO tracks tool/machine usage on WO operations
+
+**Relationship to WO:** JC reads WORKORD and WO labor/operation tables. It provides variance analysis (estimated vs. actual) for labor, material, overhead, and outside processing.
+
+**Primary tables:** WORKORD, WO labor/operation tables (WOPROC, WOSCRAP, WOREMATR), ISCALC.* (cost calculation config), ISCOST.* (cost breakout config)
+
+**Confidence: 68/100** — All 14 DFM files read from network share; form purposes confirmed from captions; JC Engine parameters fully extracted; specific cost formula logic inaccessible (in RWN).
 
 ---
 
@@ -66,15 +98,42 @@ It is effectively the GL administration module.
 
 ---
 
-## SH — Shipping
+## SH — Shop Scheduling ⚠️ NAME CORRECTION
 
-**DFM files confirmed:** 13+ forms including bill-of-lading, manifests, and shipment tracking.
+**Previously labeled "Shipping" — INCORRECT. SH = Shop (floor) Scheduling.**
 
-**What it does:** Manages outbound shipments — links sales orders to carrier/tracking, produces bills of lading (BOL), packing manifests, and shipping labels.
+This module manages finite-capacity scheduling of work orders across work centers on the shop floor.
 
-**Likely tables:** BKARSHIP (ship-to addresses already confirmed), likely BKSH\* or IS\* shipping tables.
+**DFM files confirmed (15+ total):** T7SHA.DFM, T7SHB.DFM, T7SHC.DFM, T7SHE.DFM, T7SHF.DFM, T7SHG.DFM, T7SHH.DFM, T7SHI.DFM, T7SHJ.DFM, T7SHM.DFM, T7SHN.DFM, T7SHO.DFM, T7SHP.DFM + T7SHIPRTM.DFM, T7SHOWLINEHIST.DFM
 
-**Confidence: 45/100** — DFM count and naming confirmed; no CHM content or source analyzed.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| SH-A | T7SHA.DFM | **WO Scheduling Grid** — main WO browse showing WIP work orders. Fields: WO#/prefix/suffix, Item, Description, Customer, Sched Start, Sched Finish, Due Date, Priority, Class, Lead Time. Filter: Status (Scheduled/Firmed/Released), Priority (1/2/3), Item Class/Category range. Tables: MTWO.WIP.* |
+| SH-B | T7SHB.DFM | **WO Operation Scheduling** — drill-down to WO routing operations. Fields: Operation, Work Center, Assigned WC, Start/Finish dates, Status, Qty Started, Qty Complete, Contention, Overlap Hours, Neg Overlap, Queue, Labor Type, Vendor, Lead Time. Tables: MTWORO.* (WO routing operations), MTWC.* |
+| SH-C | T7SHC.DFM | **Work Center browser** — displays MTWC.WCDESC, MTWC.DEPT, MTWC.DEPTDESC, IS.OUTPROC (outside process flag), MTWC.HRSWEEK (weekly capacity hours) |
+| SH-E | T7SHE.DFM | **Change Due Date / Priority** — quick WO due date edit (MTWO.WIP.DDATE) |
+| SH-F | T7SHF.DFM | **Priority filter/view** — WO priority management |
+| SH-G | T7SHG.DFM | WO status filter (Scheduled/Firmed/Released/Closed/Cancelled) |
+| SH-H | T7SHH.DFM | WO range with start/finished date filter |
+| SH-I | T7SHI.DFM | **Dispatch Report** — comprehensive scheduling report. Options: WO status, class, priority, work center range, start/finish date range, customer range, planner code range, starting weekly date. Color coding: elapsed start date color, background color, priority change color. Options: Recalculate Time Remaining, Limit to WOs with Available Components, Print BOM Components (type FRAM), Print Purchase Orders (SPAN/ASIS). Sort by options. |
+| SH-J | T7SHJ.DFM | Status/filter view (similar to SH-G) |
+| SH-M | T7SHM.DFM | Item range query (BKIC.PROD.DESC, QUANTITY, SDATE) |
+| SH-N | T7SHN.DFM | Type filter (E.TYPE[1/2]), print report |
+| SH-O | T7SHO.DFM | Inquiry/browse form |
+| SH-P | T7SHP.DFM | **Report Color Configuration** — sets colors for Priority Change, Elapsed Start Date, Background (for SH-I report) |
+| (sub) | T7SHIPRTM.DFM | User/RTM template selector sub-form (shared) |
+| (sub) | T7SHOWLINEHIST.DFM | SO line price history sub-form (ISAR.CHG.* — before/after price, discount) — likely shared with SO module |
+
+**Key module facts:**
+- Primary tables: MTWO.WIP.* (WIP work order data), MTWORO.* (WO routing operations), MTWC.* (work center master: capacity hours/week, dept, outside-process flag)
+- WO statuses in this module: Scheduled, Firmed, Released, Closed, Cancelled
+- SH is the scheduling/dispatch layer on top of WO — it does not create work orders, it schedules and monitors their execution
+- Outside-process operations (MTWC.IS.OUTPROC) are tracked in work center records
+- The SH-B contention/overlap fields suggest finite-capacity scheduling with overlapping operations
+
+**Note on naming:** The "SH" prefix may stand for "SHop" or "SHedule". The DFM inventory doc previously labeled this "Shipping" — that was incorrect. Physical carrier/shipping is handled within SO module (ship-confirm forms T7SOx).
+
+**Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling function confirmed from field names and captions; underlying scheduling algorithm inaccessible (in RWN).
 
 ---
 
@@ -166,15 +225,29 @@ printer and system-parameter forms not yet read.
 
 ---
 
-## SC — Scheduling / Capacity Planning
+## SC — Serial Control ⚠️ NAME CORRECTION
 
-**DFM files confirmed:** T7SCA.DFM + 7 more forms (8 total)
+**Previously labeled "Scheduling/Capacity Planning" — INCORRECT. SC = Serial Control.**
 
-**What it does:** Shop scheduling and capacity planning. Likely reads WORKORD and WORKCTR to show capacity loading by work center and assist in scheduling work order operations across the production calendar.
+This module manages serial number assignment, tracking, and lifecycle for serialized inventory items.
 
-**Likely tables:** WORKORD, WORKCTR, CALENDAR, SCHEDCAL, WOROUT (for routing/operation data)
+**DFM files confirmed (9 total):** T7SCA.DFM, T7SCB.DFM, T7SCC.DFM, T7SCC2.DFM, T7SCE.DFM, T7SCF.DFM, T7SCG.DFM, T7SCH.DFM, T7SCOMP.DFM
 
-**Confidence: 40/100** — Form count confirmed; purpose inferred from module name and ERP context.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| SC-A | T7SCA.DFM | **Edit Serial Numbers** — view/edit individual serial records. Fields: Serial Number, On-Hand, Date Received, WO#, Exp Date, Location, Cost, SO#, Bin, Invoice#, Customer, Ship Date. Primary table: MTSER. |
+| SC-B | T7SCB.DFM | **Assign Serial Control** — configure which inventory items are serial-tracked. Flags: MTIC.PROD.SER (serial flag). Also shows BKIC.PROD.DESC (product description) and BKIC.PROD.NOTE, BKIC.PROD.TYPE. |
+| SC-C | T7SCC.DFM | Serial browse/inquiry by item (range filter) |
+| SC-C2 | T7SCC2.DFM | **Print Serial Availability** — availability report (includes ISPRT.ZEROS = option to print zero-on-hand serials) |
+| SC-E | T7SCE.DFM | **Archive/Unarchive** serial items by item number and serial number range |
+| SC-F | T7SCF.DFM | **Serial Control Exceptions** — serials with anomalous state |
+| SC-G | T7SCG.DFM | **Serial Number Format Setup** — defines the serial numbering scheme: Item, Item Class, Total Length, Starting Position of Numeric Portion, Last Number Used. Tables: IS.SERC.ITEM, IS.SERC.CLASS, IS.SERC.TOTAL, IS.SERC.SPOS |
+| SC-H | T7SCH.DFM | Serial history/inquiry |
+| (sub) | T7SCOMP.DFM | **Compound Serial Numbers** — tracks compound/composite serial structures. Tables: IS.SCOMP.DETAIL, IS.SCOMP.COMPND, IS.SCOMP.VIS |
+
+**Primary tables:** MTSER (serial master — one record per serial unit), MTIC.PROD.SER (serial tracking flag on items), IS.SERC.* (serial configuration), IS.SCOMP.* (compound serial definitions)
+
+**Confidence: 72/100** — All 9 DFM files read from network share; purpose confirmed from form captions and field names; MTSER table access pattern confirmed; business logic inferred from labels.
 
 ---
 
@@ -388,5 +461,12 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 ---
 
-*Last updated: 2026-06-11*
+*Last updated: 2026-06-15*
 *Source: DFM files read from \\I2S109-SOLIDCRM\DBAMFG$\, CHM help topics from samples\chm\extracted\*
+
+## Module Name Corrections (2026-06-15)
+
+| Module | Was documented as | Correct name | Evidence |
+|--------|------------------|--------------|----------|
+| SC | Scheduling/Capacity Planning | **Serial Control** | T7SCA Caption='SC-A Edit Serial Numbers'; MTSER fields; IS.SERC.* config |
+| SH | Shipping | **Shop Scheduling** | T7SHA Caption='SH-A'; MTWO.WIP.* and MTWORO.* fields; work center capacity |

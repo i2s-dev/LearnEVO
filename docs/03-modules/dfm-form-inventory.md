@@ -28,7 +28,7 @@ Every DFM was parsed with `scripts/parse_dfm.py` +
 | **T7-BM**    | 16 | Bill of Materials |
 | **T7-AM**    | 15 | Asset Management / Alt Master |
 | **T7-QC**    | 15 | Quality Control |
-| **T7-SH**    | 15 | Shipping |
+| **T7-SH**    | 15 | Shop Scheduling ⚠️ (NOT Shipping — confirmed 2026-06-15) |
 | **T7-JC**    | 14 | Job Costing |
 | **T7-WC**    | 13 | Work Centers |
 | **T7-CM**    | 12 | Customer Master / Config |
@@ -37,7 +37,7 @@ Every DFM was parsed with `scripts/parse_dfm.py` +
 | **T7-PI**    | 10 | Physical Inventory |
 | **T7-RE**    | 10 | Reports |
 | **T7-EV**    | 9  | Evolution utilities |
-| **T7-SC**    | 9  | Scheduler? |
+| **T7-SC**    | 9  | Serial Control ⚠️ (NOT Scheduler — confirmed 2026-06-15) |
 | **T7-ES**    | 7  | Estimating |
 | **T7-JS**    | 7  | Job Shop |
 | **T7-LC**    | 7  | Labor Capture? |
