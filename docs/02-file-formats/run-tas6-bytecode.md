@@ -97,6 +97,20 @@ Size = header[0x18] (1440 bytes in BKAWLB). Immediately follows the table slot a
 Starts at offset 0x6C0 in BKAWLB. Dense binary instruction stream. No section boundary
 between code and string data — strings are embedded inline as PUSH_VALUE instructions.
 
+### First instruction — fixed runtime init
+
+**Every** TAS Pro 6 `.RUN` file (all 4 tested: BKAWLB.RUN, BKMRF.org2, BKMRF.TEST,
+BKMRF.RUN) starts with exactly:
+
+```
+4b 00 09 00 00 00 00
+```
+
+This is a fixed **runtime initialization instruction**. `4b` is the opcode, `00 09 00 00 00`
+is a 5-byte arg (or `09 00 00 00` = LE 4-byte arg = 9, with `00` trailing).
+Header field [0x10] = 10 in every tested file; arg value 9 = header[0x10] - 1.
+Likely encodes the TAS Pro runtime API version (9 → runtime version 10).
+
 ### Byte Distribution (BKAWLB.RUN, full file)
 
 | Byte | Count | %    | Note |
@@ -122,7 +136,31 @@ All arguments are little-endian.
 | `0x0F` | OP_0F | `0x00` | Appears after PUSH_ADDR; purpose unknown |
 | `0x4B` | CALL? | `0x00 ADDR4` | Appears for function-call-like constructs |
 | `0x49` | PUSH_VAR? | `0x00 0x00 ADDR4` | Appears before string concat (e.g., prg.name + string) |
-| `0x35` | FIELD_REF? | `ADDR4` | Appears in string pool area |
+| `0x35` | FIELD_REF? | `ADDR4` | Repeating with stride 53 at BKMRF code start; likely field/record init |
+| `0x1F` | OP_1F? | `0x00 0x35 ADDR4` | Combines with `0x35` in init loop |
+| `0x37` | OP_37? | `0x00 0x0A ADDR4` | After `0x35` init loop; different pattern |
+| `0x06` | OP_06? | `0x00 0x06 ADDR4` | Alternates with `0x0F 0x0A ADDR4` in array init |
+| `0x43` | OP_43? | various | Second most frequent non-zero byte (~2%); role unclear |
+| `0xFF` | END_EXPR? | — | Appears at end of binary expression blobs; may be expression terminator |
+| `0xFD` | EXPR_HDR? | — | Appears at START of binary expression blobs |
+
+**Byte frequency summary (stable opcodes from 3-way compile diff, BKMRF variants):**
+
+| Byte | Role | Approx % in code section |
+|------|------|--------------------------|
+| `0x00` | address padding / arg bytes | 51% |
+| `0x20` | possibly SPACE literal or common opcode | 3.5% |
+| `0x46` | LOAD_VAR | 2.7% |
+| `0x41` | PUSH_VALUE | 2.2% |
+| `0x43` | unknown (OP_43?) | 2.0% |
+| `0xFF` | end-of-expr marker? | 1.6% |
+| `0x4E` | ARRAY_IDX | 1.5% |
+| `0x30` | probably numeric literal `0` | 1.2% |
+| `0x01` | probably numeric literal `1` | 1.2% |
+| `0x0A` | PUSH_ADDR | 1.0% |
+| `0x0F` | OP_0F | 0.85% |
+| `0x49` | PUSH_VAR? | 0.82% |
+| `0xFD` | expr-header? | 0.82% |
 
 ### PUSH_VALUE detail (`0x41`)
 
@@ -134,6 +172,15 @@ Used for BOTH plain string literals AND compiled expression blobs. The data can 
 - Printable ASCII: a literal string from source (e.g., `'AW-L-B'`, `'Sort by'`)
 - Binary: a compiled sub-expression (e.g., form layout spec, mask definition)
   Binary blobs often start with `fd` and end with `ff`.
+
+**Important:** Some `41 00 LL LL` matches are FALSE POSITIVES — the `41 00` bytes at that
+offset are NOT a PUSH_VALUE instruction; they coincidentally form that pattern within other
+instruction data. The 256-byte "string" at BKMRF.org2 0x24C3 is an example: it is part of
+larger instruction stream, not a string push.
+
+**Strings appear in EXECUTION ORDER** — confirmed from BKMRF.org2: first string `'NLT'` at
+offset 0x35CD matches source line 98 (`opt.types = 'NLT'`); immediately followed by 9 table
+names matching the `open` statements in lines 131-139.
 
 String sequence in BKAWLB matches source code in order:
 ```
