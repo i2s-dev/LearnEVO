@@ -42,13 +42,13 @@ files) is binary-only.
 
 ## 3. What we CANNOT do yet (blocked)
 
-| Blocked task | Blocker |
+| Blocked task | Status |
 |-------------|---------|
-| Decrypt any `.RWN` or `.DCY` file | Initial IV (block_buf) unknown — requires debugger |
-| Disassemble `.RWN` bytecode | Blocked on decryption |
-| Write `rwn_decrypt.py` or batch decryptor | Blocked on IV |
-| Read module logic for any of the 1,124 `.RWN` programs | Blocked on decryption |
-| Write stub or placeholder code for the `.RWN` path | Forbidden — creates false progress |
+| Decrypt any `.RWN` or `.DCY` file | **UNBLOCKED** — IV confirmed 2026-06-15 |
+| Disassemble `.RWN` bytecode | Unblocked — decrypt first, then study bytecode |
+| Write `rwn_decrypt.py` or batch decryptor | **DONE** — `scripts/rwn_decrypt.py` |
+| Read module logic for any of the 1,124 `.RWN` programs | Unblocked (pending decrypt batch) |
+| `.DCY` data dictionary decryption | Partially blocked — IV_dcy not yet captured |
 
 ---
 
@@ -108,12 +108,12 @@ See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 | Key derivation | ✅ Confirmed | 90/100 | SHA1 + 4 zeros = 192-bit |
 | Validation structure | ✅ Confirmed | 88/100 | pt[0:4]==pt[4:8], XOR constant 0x3E0A37C5 |
 | twofish_pure.py implementation | ✅ Done | 95/100 | Passes NIST 192-bit test vector |
-| Initial IV (block_buf) | ❌ Blocked | 0/100 | Uninitialized heap; requires debugger |
-| `.RWN` decryptor script | ❌ Blocked | — | Blocked on IV |
+| Initial IV (block_buf) | ✅ Confirmed | 100/100 | IV = `9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e` |
+| `.RWN` decryptor script | ✅ Done | — | `scripts/rwn_decrypt.py` — batch running |
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
 | `.RUN` header structure | 🔄 Partial | 85/100 | Magic + string sections confirmed |
 | `.RUN` opcode table | ❌ Not started | 0/100 | 7 Rosetta Stone pairs ready |
-| `.DCY` data dictionary | ❌ Blocked | 60/100 | Same encryption as .RWN; blocked on IV |
+| `.DCY` data dictionary | 🔄 Partial | 65/100 | RWN IV confirmed; DCY uses different IV (not yet captured) |
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
 | Database schema | ✅ Done | 92/100 | 659 tables, 24,113 fields extracted |

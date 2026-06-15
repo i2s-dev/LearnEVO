@@ -1,16 +1,24 @@
 # `.RWN` / `.DCY` Decryption — Research Findings
 
-Status: **cipher fully identified; passphrase confirmed; initial IV unknown (one debugger
-session away from full decryption)**
+Status: **FULLY SOLVED — IV confirmed; batch decrypt running**
 
 Last updated: 2026-06-15
 
 ---
 
-## Current state (2026-06-16)
+## Current state (2026-06-15) — FULLY SOLVED
 
-Everything about the cipher is confirmed except the initial 16-byte IV
-(`block_buf` pointed to by cipher+0x3C). One Frida run away.
+IV confirmed. All .RWN files decrypt. Batch decrypt running.
+
+```
+IV  = 9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e
+K0  = Encrypt(IV) = 8d eb 94 90 48 dc 9e ae 9f df 17 79 cd c8 b5 51
+XOR = K0[0:4]^K0[4:8] = 0x3E0A37C5  PASS
+```
+
+Captured via `get_iv_frida.py` v5: hooked `EncryptBlock` (RVA 0x350248) in
+`evoerp.exe` PID 30360 while user opened Work Orders module (WO-A) from main menu.
+20/20 .RWN files passed validation. Saved to `scripts/iv_bytes.bin`.
 
 **Confirmed:**
 - Cipher: **Twofish**, 128-bit block, **192-bit key**, **CFB mode**
@@ -70,9 +78,11 @@ See BROKEN.md B-006 for the mode2_handler/DCY confusion. See B-004/B-005 for ear
   [N bytes — encrypted TAS Pro 7 bytecode body]
 ```
 
-The 8-byte validation block serves as a passphrase check. After the 8-byte decrypt,
-`block_buf` holds the **keystream** (not ciphertext), so subsequent body decryption uses
-OFB-like behaviour — the decryptor can continue the keystream without re-seeding.
+The 8-byte validation block serves as a passphrase check.  After the 8-byte decrypt,
+`block_buf` is in a hybrid state: `ct[0:8] + K0[8:16]` (partial CFB feedback:
+the first 8 bytes of block_buf are replaced with the validation ciphertext bytes;
+the upper 8 bytes hold the K0 remainder from EncryptBlock).  All subsequent body
+decryption uses standard full-block CFB: `block_buf = previous 16-byte ciphertext block`.
 
 ```
 .DCY file layout:

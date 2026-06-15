@@ -120,7 +120,7 @@ x64dbg) while a real module .RWN is being loaded by a real tp7runtime.exe child 
 ## Bug B-004 — .RWN Twofish CFB initial IV (block_buf) unknown — decryption incomplete
 
 **Date:** 2026-06-12
-**Status:** 🔄 OPEN — blocked; requires debugger observation
+**Status:** ✅ FIXED — 2026-06-15
 
 **Symptom:**
 Attempting to decrypt the first 8 bytes of a `.RWN` file to validate the passphrase
@@ -172,21 +172,21 @@ whatever was last written to that heap address by an earlier free.
 **Do NOT retry** the IV=zeros + SHA1-192 combination — it gives 0xCE14BE8C and the NIST
 test confirms twofish_pure.py is correct, so the implementation is not the problem.
 
-**Remaining path to resolution:**
-The only known method is to **observe block_buf under a debugger** when tp7runtime.exe
-reaches the first `EncryptBlock` call inside `mode2_handler` (file 0x34DF50):
-- Set a breakpoint at file offset 0x34DF50 (+0 = entry of mode2_handler)
-- Or at the `CALL EncryptBlock` instruction inside it
-- Read EAX (= cipher pointer) → read [EAX+0x3C] (16 bytes) = the actual block_buf/IV
+**RESOLUTION (2026-06-15):**
+IV captured via `get_iv_frida.py` v5 (EncryptBlock hook + XOR filter).
+User opened Work Orders module (WO-A) from the EVO main menu.
 
-Alternative: instrument a DCPcrypt Twofish rebuild with the exact same initialization
-sequence (no SetIV, no Reset) and observe what Delphi's memory manager leaves in the
-buffer under the same conditions.
+    IV = 9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e
+    K0 = Encrypt(IV) = 8d eb 94 90 48 dc 9e ae 9f df 17 79 cd c8 b5 51
+    K0[0:4]^K0[4:8] = 0x3E0A37C5  PASS
 
-**Lesson:** DCPcrypt's `TDCP_blockcipher` base class design allows using a cipher in
+Validation against 20 .RWN files: all pass pt[0:4]==pt[4:8]. ✓
+Full batch decrypt (1,124 files): running. Saved to scripts/iv_bytes.bin.
+
+**Lesson:** DCPcrypt's `TDCP_blockcipher` base class allows using a cipher in
 streaming mode before any IV is explicitly set — block_buf is never zeroed by the
 constructor or by `Init`. Any code relying on "IV defaults to zero" is wrong for this
-implementation.
+implementation. The IV can only be captured at runtime (Frida onLeave EncryptBlock).
 
 ---
 
