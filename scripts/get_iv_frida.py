@@ -1,42 +1,53 @@
 #!/usr/bin/env python3
 """
-scripts/get_iv_frida.py  (v4 -- WMI process-creation monitor)
+scripts/get_iv_frida.py  (v5 -- hook EncryptBlock, filter by XOR constant)
 
 WHY THIS APPROACH
-  Child gating on evoerp.exe failed because the module windows are NOT
-  spawned as tp7runtime.exe children -- they spawn as additional evoerp.exe
-  processes (or via a mechanism Frida's child gating does not intercept).
+  mode2_handler is called for BOTH .RWN and .DCY file decryption.
+  .DCY files use a different IV than .RWN files, so hooking mode2_handler
+  and reading block_buf captures whichever file type happened to load first.
+  Earlier attempts captured a .DCY IV because the user opened a sub-screen
+  that loaded a .DCY data-dictionary file, not a .RWN module program.
 
-  This version uses a PowerShell WMI __InstanceCreationEvent watcher running
-  in a background thread.  When any new evoerp.exe or tp7runtime.exe process
-  appears, it is detected within ~1 second and Frida attaches to it
-  immediately -- well before mode2_handler fires (~several seconds in).
+  This version hooks EncryptBlock (the Twofish ECB primitive called by
+  mode2_handler).  After EncryptBlock executes in-place on block_buf, the
+  output K = Encrypt(IV) is in memory.  We check K[0:4] XOR K[4:8]:
+
+    - RWN validation: K[0:4]^K[4:8] = 0x3E0A37C5  (constant across all 20+ .RWN)
+    - DCY / other:   different XOR value
+
+  The first EncryptBlock call whose output satisfies the XOR constraint is
+  the RWN validation decrypt.  IV = Decrypt(K) is computed in Python.
+
+KEY ADDRESSES
+  EncryptBlock   RVA 0x350248  file 0x34F648  VA(preferred) 0x750248
+  mode2_handler  RVA 0x34EB50  file 0x34DF50  (still hooked for diagnostics)
 
 USAGE
-  1. Make sure EVO is running (main menu visible).
+  1. EVO must be running (main menu visible -- no module windows needed).
   2. Run:  python scripts/get_iv_frida.py
      Wait for the "ARMED" banner.
-  3. Open any module from the EVO main menu (Work Orders, Inventory, etc.).
-     A new process window will open; the hook fires when it decrypts its RWN.
+  3. Open any module from the EVO main menu
+     (Work Orders, Inventory, Sales Orders, AP, AR, GL, etc.).
+     A NEW module window opens and decrypts its .RWN file -- this fires
+     the hook with the correct K.
      -- OR --
-     Navigate within an already-open module to any sub-screen.  Each
-     sub-screen load triggers mode2_handler in the same process.
+     If a module window is already open, CLOSE it and REOPEN it.
   4. IV is saved to scripts/iv_bytes.bin.
   5. Run: python scripts/verify_iv.py
 
-KEY ADDRESSES
-  mode2_handler  RVA 0x34EB50  (same in evoerp.exe and tp7runtime.exe)
-  block_buf      cipher+0x3C   16-byte inline array (initial IV)
-
-PROCESS NAMES TO WATCH
-  evoerp.exe    -- main EVO process AND module sub-windows
-  tp7runtime.exe -- alternative name for same binary; some installs use it
+WHAT TO AVOID
+  Do NOT open sub-menus WITHIN an already-open module before the IV is
+  captured.  Sub-menu navigation loads .DCY files (data dictionaries)
+  which have a different IV.  The hook will correctly ignore these (XOR
+  filter), but the first RWN load is still needed.
 """
 
 import sys
 import os
 import subprocess
 import threading
+import hashlib
 import time
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
@@ -44,96 +55,56 @@ sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 _here   = os.path.dirname(os.path.abspath(__file__))
 IV_OUT  = os.path.join(_here, 'iv_bytes.bin')
 
-TIMEOUT_SEC   = 600   # 10 minutes
-WATCH_NAMES   = ('evoerp', 'tp7runtime')   # without .exe
+TIMEOUT_SEC   = 600
+WATCH_NAMES   = ('evoerp', 'tp7runtime')
+EXP_XOR       = 0x3E0A37C5   # K[0:4]^K[4:8] for any .RWN validation decrypt
 
+# EncryptBlock: EAX=cipher, EDX=src (block_buf ptr), ECX=dst (same ptr, in-place)
+# After return: memory at original EDX contains K = Encrypt(original block_buf)
 _JS = r"""
 'use strict';
 var captured = false;
+var EXP_XOR  = 0x3E0A37C5;
 
-function armHook(modName) {
+function le32(arr, off) {
+    return ((arr[off] | (arr[off+1]<<8) | (arr[off+2]<<16) | (arr[off+3]<<24)) >>> 0);
+}
+
+function armEncryptBlock(modName) {
     var mod = Process.findModuleByName(modName);
     if (!mod) return false;
 
-    var target = mod.base.add(0x34EB50);
-    send({ type: 'info',
-           msg: 'hook armed in ' + modName + ' (PID ' + Process.id + ') @ ' + target });
+    // EncryptBlock RVA 0x350248
+    var eb_target = mod.base.add(0x350248);
+    send({ type: 'info', msg: 'EncryptBlock hook @ ' + eb_target +
+           ' in ' + modName + ' (base=' + mod.base + ')' });
 
-    Interceptor.attach(target, {
+    Interceptor.attach(eb_target, {
         onEnter: function(args) {
+            // Save src pointer (EDX) -- block_buf ptr, encrypted in-place
+            this.src = this.context.edx;
+        },
+        onLeave: function(retval) {
             if (captured) return;
-            captured = true;
             try {
-                var eax = this.context.eax;
-                // block_buf: 16-byte inline array at cipher+0x3C
-                var iv_bytes = Array.from(
-                    new Uint8Array(ptr(eax).add(0x3C).readByteArray(16)));
-                // Also read raw u32 for dereference diagnostic
-                var u32 = ptr(eax).add(0x3C).readU32();
-                var deref = null;
-                try {
-                    if (u32 > 0x10000 && u32 < 0x7fff0000) {
-                        deref = Array.from(
-                            new Uint8Array(ptr(u32).readByteArray(16)));
-                    }
-                } catch(e2) {}
-                send({ type: 'iv', pid: Process.id, eax: eax.toString(),
-                       ptr_val: u32.toString(16),
-                       direct: iv_bytes, deref: deref });
+                // Memory at this.src now contains K = Encrypt(original_block_buf)
+                var K = new Uint8Array(this.src.readByteArray(16));
+                var xor4 = le32(K, 0) ^ le32(K, 4);
+                if (xor4 !== EXP_XOR) return;   // not a .RWN validation decrypt
+                captured = true;
+                send({ type: 'K',
+                       K:    Array.from(K),
+                       xor4: xor4.toString(16) });
             } catch(e) {
-                send({ type: 'error', msg: 'onEnter: ' + e.message });
+                // pointer may have been freed -- ignore
             }
         }
     });
     return true;
 }
 
-armHook('evoerp.exe') || armHook('tp7runtime.exe');
+armEncryptBlock('evoerp.exe') || armEncryptBlock('tp7runtime.exe');
 """
-
-
-# ---------------------------------------------------------------------------
-# Helpers
-# ---------------------------------------------------------------------------
-
-def _find_pids(name):
-    try:
-        out = subprocess.check_output(
-            ['powershell', '-NoProfile', '-Command',
-             f'Get-Process | Where-Object {{$_.Name -eq "{name}"}} '
-             f'| Select-Object -ExpandProperty Id'],
-            stderr=subprocess.DEVNULL, text=True).strip()
-        return [int(x) for x in out.split() if x] if out else []
-    except Exception:
-        return []
-
-
-def _all_evo_pids():
-    pids = {}
-    for name in WATCH_NAMES:
-        for pid in _find_pids(name):
-            pids[pid] = name
-    return pids
-
-
-def _attach_and_hook(pid, name, on_message_fn):
-    """Attach Frida to pid and arm the mode2_handler hook."""
-    import frida
-    try:
-        sess  = frida.attach(pid)
-        sc    = sess.create_script(_JS)
-        sc.on('message', on_message_fn)
-        sc.load()
-        print(f"[*] Hook armed in {name} PID {pid}")
-        return sess
-    except Exception as e:
-        print(f"[!] Could not hook PID {pid} ({name}): {e}")
-        return None
-
-
-# ---------------------------------------------------------------------------
-# WMI monitor -- runs in a background thread
-# ---------------------------------------------------------------------------
 
 _WMI_PS = r"""
 $names = @('evoerp.exe','tp7runtime.exe')
@@ -154,6 +125,152 @@ while ($true) {
 """
 
 
+def _find_pids(name):
+    try:
+        out = subprocess.check_output(
+            ['powershell', '-NoProfile', '-Command',
+             f'Get-Process | Where-Object {{$_.Name -eq "{name}"}} '
+             f'| Select-Object -ExpandProperty Id'],
+            stderr=subprocess.DEVNULL, text=True).strip()
+        return [int(x) for x in out.split() if x] if out else []
+    except Exception:
+        return []
+
+
+def _all_evo_pids():
+    result = {}
+    for name in WATCH_NAMES:
+        for pid in _find_pids(name):
+            result[pid] = name
+    return result
+
+
+def main():
+    try:
+        import frida
+    except ImportError:
+        print("ERROR: frida not installed.  Run:  pip install frida-tools")
+        sys.exit(1)
+
+    iv_found  = [None]
+    sessions  = []
+    hooked    = set()
+
+    def on_message(message, data):
+        if message['type'] == 'error':
+            print(f"\n[Frida] {message.get('description', str(message))}")
+            return
+        p    = message.get('payload') or {}
+        kind = p.get('type', '')
+        if kind == 'info':
+            print(f"[*] {p['msg']}")
+        elif kind == 'error':
+            print(f"[!] {p['msg']}")
+        elif kind == 'K':
+            # K = Encrypt(IV).  Compute IV = Decrypt(K).
+            K = bytes(p['K'])
+            print()
+            print("=" * 60)
+            print("  EncryptBlock fired with XOR = 0x3E0A37C5 -- RWN IV!")
+            print("=" * 60)
+            print(f"  K = Encrypt(IV) : {K.hex(' ')}")
+
+            # Compute IV = Decrypt(K) using twofish_pure
+            import sys as _sys
+            _sys.path.insert(0, _here)
+            from twofish_pure import Twofish
+            import struct
+            _key = hashlib.sha1(b'mabufoju').digest() + b'\x00' * 4
+            tf   = Twofish(_key)
+            IV   = tf.decrypt(K)
+            K2   = tf.encrypt(IV)
+            xor4 = struct.unpack_from('<I',K2,0)[0] ^ struct.unpack_from('<I',K2,4)[0]
+
+            print(f"  IV = Decrypt(K) : {IV.hex(' ')}")
+            print(f"  Verify Enc(IV) XOR = 0x{xor4:08X}  (exp 0x{EXP_XOR:08X})")
+            ok = (xor4 == EXP_XOR)
+            print(f"  --> {'PASS -- IV is correct!' if ok else 'FAIL (false positive, retrying)'}")
+            print("=" * 60)
+
+            if ok:
+                with open(IV_OUT, 'wb') as f:
+                    f.write(IV)
+                print(f"\n  Saved --> {IV_OUT}")
+                print("  Next: python scripts/verify_iv.py")
+                iv_found[0] = IV
+            else:
+                print("  (rare false positive; hook remains armed for next call)")
+
+    device = frida.get_local_device()
+
+    def hook_pid(pid, name):
+        if pid in hooked:
+            return
+        hooked.add(pid)
+        print(f"[*] Arming EncryptBlock hook in {name} PID {pid}")
+        try:
+            sess  = device.attach(pid)
+            sc    = sess.create_script(_JS)
+            sc.on('message', on_message)
+            sc.load()
+            sessions.append(sess)
+        except Exception as e:
+            print(f"    Attach failed for PID {pid}: {e}")
+
+    def on_new_process(pid, ppid, name):
+        print(f"\n[WMI] New {name} PID {pid}  PPID {ppid}")
+        time.sleep(0.3)
+        hook_pid(pid, name)
+
+    existing = _all_evo_pids()
+    if not existing:
+        print("[!] No EVO process found.  Start EVO first.")
+        sys.exit(1)
+
+    for pid, name in existing.items():
+        print(f"[*] Found {name}.exe PID {pid}")
+        hook_pid(pid, name + '.exe')
+
+    print("[*] Starting WMI process-creation monitor ...")
+    wmi_th = threading.Thread(target=_wmi_thread, args=(on_new_process,), daemon=True)
+    wmi_th.start()
+
+    print()
+    print("=" * 60)
+    print("  ARMED.")
+    print()
+    print("  To capture the IV, open a MODULE from the EVO main menu.")
+    print("  Examples: Work Orders, Inventory, Sales Orders, AP, AR.")
+    print()
+    print("  Any module window opening decrypts a .RWN file --")
+    print("  this fires EncryptBlock with the RWN IV.")
+    print()
+    print("  If a module is already open: CLOSE it and REOPEN it.")
+    print()
+    print(f"  Timeout: {TIMEOUT_SEC // 60} min.  Ctrl+C to abort.")
+    print("=" * 60)
+    print()
+
+    deadline = time.time() + TIMEOUT_SEC
+    try:
+        while iv_found[0] is None and time.time() < deadline:
+            time.sleep(0.5)
+    except KeyboardInterrupt:
+        print("\n[*] Aborted.")
+
+    for sess in sessions:
+        try:
+            sess.detach()
+        except Exception:
+            pass
+
+    if iv_found[0] is None:
+        print(f"\n[!] Timeout: EncryptBlock with XOR=0x3E0A37C5 not seen.")
+        print("    Make sure a new .RWN module window was opened (not a sub-screen).")
+        print("    Fallback: scripts/x64dbg_get_iv.txt")
+        sys.exit(1)
+
+
 def _wmi_thread(callback):
     proc = subprocess.Popen(
         ['powershell', '-NoProfile', '-Command', _WMI_PS],
@@ -167,130 +284,10 @@ def _wmi_thread(callback):
         if '|' in line:
             parts = line.split('|', 2)
             try:
-                pid  = int(parts[0])
-                ppid = int(parts[1])
-                name = parts[2] if len(parts) > 2 else '?'
-                callback(pid, ppid, name)
+                callback(int(parts[0]), int(parts[1]),
+                         parts[2] if len(parts) > 2 else '?')
             except ValueError:
                 pass
-
-
-# ---------------------------------------------------------------------------
-# Main
-# ---------------------------------------------------------------------------
-
-def main():
-    try:
-        import frida
-    except ImportError:
-        print("ERROR: frida not installed.  Run:  pip install frida-tools")
-        sys.exit(1)
-
-    iv_found = [None]
-    sessions = []
-    hooked   = set()
-
-    def on_message(message, data):
-        if message['type'] == 'error':
-            print(f"\n[Frida] {message.get('description', str(message))}")
-            return
-        p    = message.get('payload') or {}
-        kind = p.get('type', '')
-        if kind == 'info':
-            print(f"[*] {p['msg']}")
-        elif kind == 'error':
-            print(f"[!] {p['msg']}")
-        elif kind == 'iv':
-            d16  = bytes(p['direct'])
-            dr16 = bytes(p['deref']) if p.get('deref') else None
-            print()
-            print("=" * 60)
-            print("  mode2_handler FIRED -- IV CAPTURED")
-            print("=" * 60)
-            print(f"  PID (caught in) : {p['pid']}")
-            print(f"  EAX cipher obj  : {p['eax']}")
-            print(f"  cipher+0x3C u32 : 0x{p['ptr_val']}")
-            print(f"  direct [0:16]   : {d16.hex(' ')}")
-            if dr16:
-                print(f"  deref  [0:16]   : {dr16.hex(' ')}")
-            print("=" * 60)
-            with open(IV_OUT, 'wb') as f:
-                f.write(d16)
-            print(f"\n  Saved direct --> {IV_OUT}")
-            if dr16:
-                dp = IV_OUT.replace('.bin', '_deref.bin')
-                with open(dp, 'wb') as f:
-                    f.write(dr16)
-                print(f"  Saved deref  --> {dp}")
-            print("  Next: python scripts/verify_iv.py")
-            iv_found[0] = d16
-
-    def hook_pid(pid, name):
-        if pid in hooked:
-            return
-        hooked.add(pid)
-        print(f"[*] New process detected: {name} PID {pid}")
-        # Small delay to let the process finish loading its own DLLs
-        time.sleep(0.2)
-        sess = _attach_and_hook(pid, name, on_message)
-        if sess:
-            sessions.append(sess)
-
-    def on_new_process(pid, ppid, name):
-        print(f"\n[WMI] New {name} spotted: PID {pid}  PPID {ppid}")
-        hook_pid(pid, name)
-
-    # --- Arm on all already-running EVO processes ---
-    existing = _all_evo_pids()
-    if not existing:
-        print("[!] No evoerp.exe or tp7runtime.exe found.")
-        print("    Start EVO, then run this script.")
-        sys.exit(1)
-
-    for pid, name in existing.items():
-        print(f"[*] Found existing {name}.exe PID {pid}")
-        hook_pid(pid, name + '.exe')
-
-    # --- Start WMI watcher for NEW processes ---
-    print("[*] Starting WMI process-creation monitor ...")
-    wmi_th = threading.Thread(target=_wmi_thread,
-                              args=(on_new_process,), daemon=True)
-    wmi_th.start()
-
-    print()
-    print("=" * 60)
-    print("  ARMED.  Two ways to trigger the capture:")
-    print()
-    print("  A) Open any module from the EVO main menu")
-    print("     (Work Orders, Inventory, Sales Orders, etc.)")
-    print("     The new process that appears will be hooked.")
-    print()
-    print("  B) In an already-open module, navigate to any")
-    print("     sub-screen (open a work order, drill into a")
-    print("     record, open an entry form, etc.).")
-    print("     That loads a new .RWN in the same process.")
-    print()
-    print(f"  Timeout: {TIMEOUT_SEC // 60} min.  Ctrl+C to abort.")
-    print("=" * 60)
-    print()
-
-    deadline = time.time() + TIMEOUT_SEC
-    try:
-        while iv_found[0] is None and time.time() < deadline:
-            time.sleep(0.5)
-    except KeyboardInterrupt:
-        print("\n[*] Aborted by user.")
-
-    for sess in sessions:
-        try:
-            sess.detach()
-        except Exception:
-            pass
-
-    if iv_found[0] is None:
-        print(f"\n[!] Timeout: mode2_handler did not fire within {TIMEOUT_SEC}s.")
-        print("    Fallback: see scripts/x64dbg_get_iv.txt")
-        sys.exit(1)
 
 
 if __name__ == '__main__':

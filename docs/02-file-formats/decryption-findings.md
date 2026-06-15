@@ -7,10 +7,10 @@ Last updated: 2026-06-15
 
 ---
 
-## Current state (2026-06-15)
+## Current state (2026-06-16)
 
 Everything about the cipher is confirmed except the initial 16-byte IV
-(`block_buf` at cipher+0x3C inside `tp7runtime.exe`). One debugger session away.
+(`block_buf` pointed to by cipher+0x3C). One Frida run away.
 
 **Confirmed:**
 - Cipher: **Twofish**, 128-bit block, **192-bit key**, **CFB mode**
@@ -21,28 +21,44 @@ Everything about the cipher is confirmed except the initial 16-byte IV
 - Validation: first 8 bytes of every `.RWN`; decrypted pt[0:4] must equal pt[4:8]
 - All 20+ scanned `.RWN` files share `ct[0:4]^ct[4:8] = 0x3E0A37C5` ✓
 - mode2_handler entry bytes at file 0x34DF50: `55 8b ec 83 c4 f4 53 56 57` ✓
-- block_buf is a **16-byte INLINE array** at cipher+0x3C (not a pointer; first 4 bytes
-  look like a heap address but are the IV bytes themselves)
+- block_buf is a **heap-allocated 16-byte buffer accessed via pointer**.
+  cipher+0x3C stores a 4-byte pointer P (Delphi dynamic array / GetMem).
+  The actual IV data is at *P (i.e., deref the pointer).
+  `MOV EAX, [EBX+0x3C]` at mode2_handler byte 166 loads P; EncryptBlock is then
+  called with EAX as both src and dst — encrypting *P in-place.
+  Confirmed: direct bytes at cipher+0x3C = `78 28 e0 05 ...` (heap pointer 0x05E02878,
+  not IV data). Deref = `0e 6f bf f6 53 a2 8a 70 d1 02 87 4c 6b 18 25 ad` (a DCY IV).
+- validate_func (file 0x742654) DOES gate body loading on validation.
+  Disassembly of validate_func offset +0x7D: `74 10` JZ → success; failure calls
+  `cipher.Done()` + error handler. Modules only load if pt[0:4] == pt[4:8].
 
-**CONFIRMED DEAD END — do not retry:**
+**CONFIRMED DEAD ENDS — do not retry:**
 - `.DCY` and `.RWN` files use **DIFFERENT IVs**.
   Proof: MDUMMY.DCY has ct[0:4]^ct[4:8] = 0x09553584; all .RWN = 0x3E0A37C5.
   The empirical keystream `0f73767aa296137875eaa22d6fc64b54` from MDUMMY.DCY XOR
   mDummy.DFM is the .DCY keystream Encrypt(IV_dcy) — useless for .RWN decryption.
   See BROKEN.md B-005 for full attempt log.
+- **mode2_handler fires for .DCY loads too.** Hooking mode2_handler and reading the
+  block_buf deref will capture whichever file type loads first. When the user opened
+  a WO sub-screen (Work Orders search menu), a .DCY data-dictionary file was loaded,
+  not a .RWN — so the captured deref was IV_dcy = `0e 6f bf f6...`. This fails the
+  XOR check. See BROKEN.md B-006.
+- **Child gating on evoerp.exe never fires.** Module windows are NOT separate
+  tp7runtime.exe children spawned via CreateProcess in a Frida-interceptable way.
 
-**Outstanding blocker:**
-- `block_buf` is heap garbage, never zeroed; IV ≠ zeros (`0xCE14BE8C` ≠ `0x3E0A37C5`)
-- Actual value requires observing block_buf at the FIRST call to mode2_handler
-  in a tp7runtime.exe child process that is loading a real .RWN module file
+**Current approach — EncryptBlock hook with XOR filter (v5):**
+`scripts/get_iv_frida.py` (v5) hooks **EncryptBlock** (RVA 0x350248) instead of
+mode2_handler. At onEnter the src pointer (EDX = block_buf ptr) is saved. At onLeave
+the memory at that address contains K = Encrypt(original_block_buf). We check
+K[0:4]^K[4:8] == 0x3E0A37C5. Only .RWN validation decrypts produce this constant;
+.DCY and body blocks do not. IV = Decrypt(K) is computed immediately in Python.
 
-**Current approach — Frida child gating:**
-`scripts/get_iv_frida.py` (v3) attaches to evoerp.exe and enables child gating.
-When the user closes a module window (e.g. WO-A) and reopens it, Frida pauses the
-new tp7runtime.exe child before it runs a single instruction, injects the
-mode2_handler hook, then resumes it. IV is captured on the first decrypt call.
+**User instruction for v5:** Open any MODULE from the EVO main menu (Work Orders,
+Inventory, Sales Orders, AP, AR, GL, etc.). A new module window decrypts its .RWN
+file and fires EncryptBlock with the correct K. Do NOT navigate sub-menus within an
+already-open module — those load .DCY files (different IV, hook correctly ignores).
 
-See `BROKEN.md` entry B-004/B-005 for the full attempt log.
+See BROKEN.md B-006 for the mode2_handler/DCY confusion. See B-004/B-005 for earlier.
 
 ---
 
@@ -146,6 +162,8 @@ VMT base at file `0x34E6A8` (VA `0x74F2A8`):
 | ~60 hand-crafted EvoERP phrases (earlier session) | No match |
 | Analytical: derive IV from MDUMMY.DCY XOR mDummy.DFM (all OFB/CFB variants) | Dead end — .DCY uses different IV from .RWN |
 | Frida spawn tp7runtime.exe with suwin7.rwn | mode2_handler never fires; process exits before RWN load |
+| Frida hook mode2_handler in evoerp.exe, capture block_buf deref | Captured IV_dcy (sub-screen loaded .DCY, not .RWN); deref fails XOR check |
+| Child gating on evoerp.exe | Module windows are not tp7runtime.exe children in a Frida-interceptable sense |
 
 See `BROKEN.md` B-004/B-005 for full detail. Do NOT retry: IV=zeros/SHA1-192; analytical DCY derivation.
 
@@ -186,7 +204,7 @@ verify the IV once it is retrieved from the debugger:
 | Script | Status | Purpose |
 |--------|--------|---------|
 | `scripts/twofish_pure.py` | ✅ Working | Pure Python Twofish; passes NIST 192-bit test vector |
-| `scripts/get_iv_frida.py` | ✅ v3 Ready | **Primary IV extractor** — child gating on evoerp.exe; close+reopen module window |
+| `scripts/get_iv_frida.py` | ✅ v5 Ready | **Primary IV extractor** — hooks EncryptBlock, XOR-filters for RWN; open any module window |
 | `scripts/x64dbg_get_iv.txt` | ✅ Ready | Manual fallback — step-by-step x64dbg instructions |
 | `scripts/verify_iv.py` | ✅ Ready | Cross-checks iv_bytes.bin against RWN validation constraint |
 | `scripts/rwn_decrypt.py` | ✅ Ready | Batch OFB/CFB decryptor — reads iv_bytes.bin, decrypts all .RWN/.DCY |

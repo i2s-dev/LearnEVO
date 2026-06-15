@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-12
+Last updated: 2026-06-15
 
 ---
 
@@ -70,16 +70,32 @@ and can only be observed at runtime.
 - Python twofish_pure.py passes NIST 192-bit test vector ✓
 - IV=zeros tested → keystream XOR = 0xCE14BE8C ≠ 0x3E0A37C5 → **IV is not zeros**
 
-**How to resolve — one debugger session:**
-1. Install x64dbg (free): https://x64dbg.com/
-2. Launch `tp7runtime.exe` with a small `.RWN` (e.g. `suwin7.rwn`, 8.6 KB from `C:\ISTS\`)
-3. Set breakpoint at **file offset `0x34DF50`** (= VA `0x74EB50`): this is `mode2_handler`,
-   called when the cipher first processes data in CFB mode
-4. When breakpoint hits, EAX = cipher object pointer
-5. Read 16 bytes at `[EAX + 0x3C]` — that is `block_buf`, the actual IV
-6. Share those 16 bytes; `rwn_decrypt.py` can be written and tested immediately
+**How to resolve — Frida (preferred, no install needed):**
 
-See `BROKEN.md` entry B-004 for full context and prior attempts.
+`scripts/get_iv_frida.py` (v5) implements a self-filtering approach:
+1. Run EVO (main menu visible)
+2. Run: `python scripts/get_iv_frida.py` — wait for ARMED banner
+3. Open any MODULE from the EVO main menu (Work Orders, Inventory, etc.)
+   — NOT a sub-menu within an already-open module (those load .DCY, not .RWN)
+4. IV is extracted and saved to `scripts/iv_bytes.bin` automatically
+5. Run: `python scripts/verify_iv.py`
+
+**Key detail:** v5 hooks `EncryptBlock` (RVA 0x350248), not `mode2_handler`. After
+EncryptBlock executes in-place on block_buf, K = Encrypt(block_buf) is in memory.
+Only .RWN validation decrypts produce K[0:4]^K[4:8] = 0x3E0A37C5. .DCY loads (wrong
+XOR) are automatically ignored. IV = Decrypt(K) computed in Python. Self-verifying.
+
+**Fallback — x64dbg:**
+1. Install x64dbg (free): https://x64dbg.com/
+2. Attach to running evoerp.exe
+3. Set breakpoint at VA `0xFAEB50` (mode2_handler, loaded evoerp.exe base 0xC60000)
+   — or compute: module_base + 0x34EB50
+4. Open a module window from EVO main menu
+5. When breakpoint hits: EBX = cipher obj; read [EBX+0x3C] (4 bytes) = heap ptr P;
+   read *P for 16 bytes = actual block_buf IV
+6. Share those 16 bytes hex; `scripts/verify_iv.py --hex "xx xx..."` checks them
+
+See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 
 ---
 
