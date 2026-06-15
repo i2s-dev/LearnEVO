@@ -522,7 +522,8 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.14 Physical Inventory (PI)
 - [x] ✅ Menu codes listed — **C: 65/100**
 - [x] ✅ Tables: BKPI\* (7 tables) — **C: 55/100**
-- [ ] ⬜ PI count cycle (freeze → count → reconcile) fully traced
+- [x] ✅ PI-A (Capture Frozen Inventory: YEAR/QTR/FDATE/COUNTTYPE), PI-B (print count sheets), PI-C (Enter Tag Counts: BKPH.TAGNUM/LOC/EMPNAME/CODE/LOT), PI-D (Missing Tags) — **C: 62/100**
+- [ ] ⬜ Variance calculation and posting steps (remaining PI forms)
 
 ### 7.15 Labor / Time & Attendance (LW / LA)
 - [x] ✅ Menu codes listed — **C: 62/100**
@@ -536,7 +537,8 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.17 Estimating (ES)
 - [x] ✅ Tables: BKES\* (3 tables) — **C: 45/100**
-- [ ] ⬜ Estimating-to-quote-to-order workflow traced
+- [x] ✅ ES-D (Print Customer Quotes), ES-E (Convert Estimates: ISTO.WO + ISTO.SO — converts to WO or SO), ES-B/C (print/range options) — **C: 58/100**
+- [ ] ⬜ ES-A (main entry form) not found on share; BKES.* table fields not yet extracted
 
 ### 7.18 Remaining Modules (not yet deeply documented)
 The following modules have menu codes and forms inventoried but no deep logic documentation:
@@ -925,9 +927,9 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: LC/Lot Control | **72** | 78 | **6** ↑ +30 | 2026-06-15 |
 | Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
-| Module: PI/Physical Inventory | **52** | 78 | **26** NEW | 2026-06-11 |
+| Module: PI/Physical Inventory | **62** | 78 | **16** ↑ +10 | 2026-06-15 |
 | Module: ED/EDI | **50** | 75 | **25** NEW | 2026-06-11 |
-| Module: ES/Estimating | **48** | 75 | **27** NEW | 2026-06-11 |
+| Module: ES/Estimating | **58** | 75 | **17** ↑ +10 | 2026-06-15 |
 | Modules: SM/UT/SD/HH/SA/others | 38 | 70 | 32 | 2026-06-11 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |

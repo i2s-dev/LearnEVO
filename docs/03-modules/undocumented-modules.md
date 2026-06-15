@@ -459,13 +459,29 @@ This module manages warehouse bin and location master records for inventory plac
 
 ## PI — Physical Inventory
 
-**DFM files confirmed:** T7PIA.DFM + 9 more forms (10 total)
+**DFM files found (4 of ~10):** T7PIA.DFM, T7PIB.DFM, T7PIC.DFM, T7PID.DFM
 
-**What it does:** Periodic physical count cycle — freeze inventory, enter counts, calculate variances, approve and post adjustments.
+**What it does:** Periodic physical inventory count cycle — freeze inventory, print tags, enter tag counts, identify missing tags, calculate variances, and post adjustments.
 
-**Primary tables:** BKPI\* (7 tables)
+| Code | DFM | What it does |
+|------|-----|-------------|
+| PI-A | T7PIA.DFM | **Capture Frozen Inventory** — takes an inventory snapshot (freeze). Fields: YEAR, QTR (quarter), FDATE (freeze date), COUNTTYPE1. This is step 1 of the PI cycle. |
+| PI-B | T7PIB.DFM | **Frozen Inventory Report** — prints the count sheets for physical counters. Fields: YEAR, QTR, LSYN, PRT.DESC2. |
+| PI-C | T7PIC.DFM | **Enter Tag Counts** — data entry for physical count results by tag. Fields: Part Number, Tag Number, Location, UM, Count Qty, Lot Number, Serial Number. Tables: BKPH.TAGNUM, BKPH.LOC, BKPH.EMPNAME, BKPH.CODE, BKPH.LOT (physical tag/count table). |
+| PI-D | T7PID.DFM | **Missing Tags Report** — lists tags that have not yet been submitted. Fields: YEAR, QTR, stagnum (starting tag number). |
 
-**Confidence: 52/100** — Form count confirmed; cycle steps from CHM; table family confirmed.
+**PI workflow (confirmed from form captions):**
+1. PI-A: Freeze inventory (snapshot all quantities)
+2. PI-B: Print frozen inventory report (count sheets)
+3. PI-C: Enter tag counts (record actual counts)
+4. PI-D: Missing tags report (check completion)
+5. (remaining forms): variance calculation, variance report, post adjustments
+
+**Key finding:** "Tags" are physical counting slips attached to inventory. BKPH.TAGNUM = tag-based counting, BKPH.EMPNAME = employee who counted each tag.
+
+**Primary tables:** BKPH.* (physical count/harvest — tag-based count records), BKPI.* (PI master — 7 tables confirmed in DDF)
+
+**Confidence: 62/100** — 4 DFM files read; PI cycle steps 1-4 confirmed; BKPH.* table confirmed; variance calculation and posting forms not yet read.
 
 ---
 
@@ -494,12 +510,25 @@ This module manages warehouse bin and location master records for inventory plac
 
 ## ES — Estimating
 
+**DFM files found (3 of 7):** T7ESB.DFM, T7ESC.DFM, T7ESD.DFM, T7ESE.DFM (4 found)
+
 **Confirmed from CHM:**
-- **ES-A — Enter Estimates:** Creates cost estimates with multiple lines and quantities per line. Pre-sales quoting system.
+- **ES-A — Enter Estimates:** Creates cost estimates with multiple lines and quantities per line. Pre-sales quoting system. (T7ESA.DFM not found on network share)
 
-**Primary tables:** BKES\* (3 tables)
+**Additional forms read from network share:**
 
-**Confidence: 48/100** — ES-A confirmed from CHM; BKES\* confirmed in DDF.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| ES-B | T7ESB.DFM | **Print/options** for estimate — ISPRT.NOTES (print notes), ISPRT.HID.NOTES, PLDTYPE |
+| ES-C | T7ESC.DFM | **Range filter** for estimates (SELECT_FROM1/THRU1, ISPRINT.REPT11) |
+| ES-D | T7ESD.DFM | **Print Customer Quotes** — filter by quote number range (sFROM.QTNUM, sTHRU.QTNUM) + customer range |
+| ES-E | T7ESE.DFM | **Convert Estimates** — converts an estimate to a WO or SO. Fields: SO.NUM, ISTO.WO (convert to Work Order flag), ISTO.SO (convert to Sales Order flag). This is the estimate-to-order handoff. |
+
+**Key finding:** ES-E (Convert Estimates) is the bridge from pre-sales to production. An estimate can be converted directly to a WO (for manufacturing) or to an SO (for sales order entry). This is the "quote-to-order" or "estimate-to-manufacture" workflow trigger.
+
+**Primary tables:** BKES.* (3 tables confirmed in DDF — quote header, lines, and likely status)
+
+**Confidence: 58/100** — 4 DFM files read; ES-E estimate conversion workflow confirmed (ISTO.WO + ISTO.SO); ES-D confirms estimates are customer-facing quotes; BKES.* table structure not yet extracted.
 
 ---
 
