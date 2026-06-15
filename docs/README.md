@@ -44,7 +44,8 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [.DFM — Delphi form format (plaintext)](02-file-formats/dfm-delphi-forms.md) — *draft*
 - [.DCY / .RWN — compiled proprietary binaries](02-file-formats/dcy-rwn-binaries.md) — *partially decrypted*
 - [RWN/RUN string dumps — analysis technique + ISTS.CFG extraction (2,575 files)](02-file-formats/rwn-strings-analysis.md) — *verified*
-- [.DCY / .RWN — decryption findings (Twofish-CFB, block-0 cracked)](02-file-formats/decryption-findings.md) — *partial, key not recovered*
+- [.DCY / .RWN — decryption findings (Twofish-CFB, IV confirmed 2026-06-15)](02-file-formats/decryption-findings.md) — *FULLY SOLVED — 1144/1145 files decrypt*
+- [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — file structure + key opcodes*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*
 - [.IMP / .UPD / .XPT / others](02-file-formats/other-formats.md) — *verified*
 

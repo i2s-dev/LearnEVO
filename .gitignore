@@ -23,3 +23,6 @@ _served.css
 # Built Docker image tarballs (rebuilt via deploy/build-image.bat)
 deploy/*.tar
 deploy/*.tar.gz
+
+# Derived/large binary outputs — regenerate with scripts/rwn_decrypt.py
+samples/rwn_decrypted/*.dec

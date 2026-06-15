@@ -106,17 +106,27 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Q-box tables verified to match NIST Twofish spec exactly (file offsets 0x7740A8, 0x7741A8)
   - Validation block: first 8 bytes of .RWN; pass when decrypted pt[0:4] == pt[4:8]
   - All 20+ scanned .RWN files have constant ct[0:4]^ct[4:8] = 0x3E0A37C5 (keystream is deterministic)
-- [x] 🔄 Initial IV (block_buf) still unknown — **C: 45/100** (see §14 and BROKEN.md B-004)
-  - Constructor allocates block_buf via GetMem; Init call chain never zeroes it
-  - IV=zeros gives wrong XOR 0xCE14BE8C ≠ 0x3E0A37C5; requires debugger observation to resolve
-- [ ] ⬜ Any `.RWN` successfully decrypted and read as bytecode (blocked on IV — see §14)
-- [ ] ⬜ Bytecode instruction set documented
+- [x] ✅ Initial IV (block_buf) confirmed — **C: 100/100** (see decryption-findings.md, BROKEN.md B-004/B-006)
+  - IV = `9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e` (captured via Frida EncryptBlock hook)
+  - All 1,144/1,145 `.RWN` files decrypt successfully; 1 failure = `t6ine1.RWN` (Delphi binary form misnamed)
+- [x] ✅ Batch decrypt complete — **C: 99/100** (1,144 OK, `samples/rwn_decrypted/decrypt_summary.csv`)
+- [x] 🔄 Bytecode instruction set — **C: 15/100** (TAS Pro 6 opcodes partially mapped; TAS Pro 7 encoding different)
+  - Confirmed: TAS Pro 7 decrypted body is correct (uniform bytes = no embedded strings, no padding)
+  - TAS Pro 7 uses a different opcode format — no inline `41 00` string pushes found
+  - See `docs/02-file-formats/run-tas6-bytecode.md` for TAS Pro 6 findings; TAS Pro 7 analysis pending
 
 ### 2.3 `.RUN` — TAS Pro 6 Compiled Program
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
 - [x] ✅ 554 menu codes extracted from `.RUN` string dump — **C: 88/100**
 - [x] ✅ Still in active use for legacy BK\* / T6\* modules — **C: 80/100**
-- [ ] ⬜ Binary structure fully documented (header, offset table, bytecode section, string pool)
+- [x] ✅ File structure confirmed: header / table-name slots / variable storage / code+string pool — **C: 72/100**
+  - Magic "TAS32" at offset 0x35; version byte at 0x3A; table names at 0x80 (16-byte slots)
+  - Variable storage: zero-initialized block, size = header[0x18]
+  - See `docs/02-file-formats/run-tas6-bytecode.md`
+- [x] 🔄 Bytecode instruction set — **C: 22/100** (partial; key opcodes 0x41/0x46/0x4E identified)
+  - Opcode `41 00 LL LL data` = PUSH_VALUE (string literal or compiled expression)
+  - Table names embedded as inline strings (runtime does string-based table lookup, not slot index)
+  - 7 SRC+RUN Rosetta Stone pairs ready; BKMRF 3-way compile diff planned
 - [ ] ⬜ All readable logic extracted from `.RUN` string sections
 
 ### 2.4 `.DFM` — Delphi Form Layout

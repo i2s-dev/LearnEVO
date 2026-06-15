@@ -44,11 +44,11 @@ files) is binary-only.
 
 | Blocked task | Status |
 |-------------|---------|
-| Decrypt any `.RWN` or `.DCY` file | **UNBLOCKED** — IV confirmed 2026-06-15 |
-| Disassemble `.RWN` bytecode | Unblocked — decrypt first, then study bytecode |
+| Decrypt any `.RWN` or `.DCY` file | **DONE** — 1,144/1,145 files OK; CSV summary in `samples/rwn_decrypted/` |
+| Disassemble `.RWN` bytecode | Unblocked but no clear structure yet — TAS Pro 7 bytecode is uniform (expected) |
 | Write `rwn_decrypt.py` or batch decryptor | **DONE** — `scripts/rwn_decrypt.py` |
-| Read module logic for any of the 1,124 `.RWN` programs | Unblocked (pending decrypt batch) |
-| `.DCY` data dictionary decryption | Partially blocked — IV_dcy not yet captured |
+| Read module logic for any of the 1,124 `.RWN` programs | Unblocked — requires DCY IV for field names; bytecode dense |
+| `.DCY` data dictionary decryption | Still blocked — IV_dcy not yet captured (same Frida method, different XOR filter) |
 
 ---
 
@@ -109,10 +109,11 @@ See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 | Validation structure | ✅ Confirmed | 88/100 | pt[0:4]==pt[4:8], XOR constant 0x3E0A37C5 |
 | twofish_pure.py implementation | ✅ Done | 95/100 | Passes NIST 192-bit test vector |
 | Initial IV (block_buf) | ✅ Confirmed | 100/100 | IV = `9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e` |
-| `.RWN` decryptor script | ✅ Done | — | `scripts/rwn_decrypt.py` — batch running |
+| `.RWN` decryptor script | ✅ Done | — | 1,144/1,145 OK; `samples/rwn_decrypted/decrypt_summary.csv` |
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
-| `.RUN` header structure | 🔄 Partial | 85/100 | Magic + string sections confirmed |
-| `.RUN` opcode table | ❌ Not started | 0/100 | 7 Rosetta Stone pairs ready |
+| `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool; see run-tas6-bytecode.md |
+| `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
+| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 8/100 | Confirmed correct decryption; uniform bytes = externalized strings; opcodes unknown |
 | `.DCY` data dictionary | 🔄 Partial | 65/100 | RWN IV confirmed; DCY uses different IV (not yet captured) |
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
@@ -141,19 +142,21 @@ See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 
 ## 7. Highest-value next tasks (in priority order)
 
-1. **Debugger session for IV** — user runs x64dbg, reads [EAX+0x3C] at mode2_handler
-   entry (file 0x34DF50). This is the single action that unblocks the most.
-   *(Claude cannot do this — requires user interaction with a running process.)*
+1. **Capture DCY IV** — run `scripts/get_iv_frida.py` while opening a DCY-loading event
+   in EVO (e.g., navigate within a module). Use `--xor 0x09553584` filter for DCY.
+   Unlocks: `.DCY` data dictionary → field names → meaningful RWN analysis.
 
-2. **`.RUN` opcode mapping** — 7 Rosetta Stone pairs in `samples/rosetta/`; start with
-   `BKAWLB.SRC` + `BKAWLB.RUN` (smallest pair); map `proc`/`return` first, then
-   `open`/`close`, then `if`/`endif`. Unblocked; high value even before RWN decryption.
+2. **BKMRF 3-way compile diff** — diff `BKMRF.org2` vs `BKMRF.TEST` vs `BKMRF.RUN` to
+   isolate stable bytes (opcodes) from variable bytes (addresses). High confidence gain.
 
-3. **Per-table field meaning documentation** — 659 tables, most without narrative docs.
+3. **`.RUN` opcode mapping (continued)** — continue from BKAWLB analysis; map
+   `if`/`goto`/`proc`/`return` constructs. Use `scripts/tas6_analyze.py`.
+
+4. **Per-table field meaning documentation** — 659 tables, most without narrative docs.
    Start with Tier 1 tables in `EVO-DECOMPILE-TODO.md §16`. Fully unblocked.
 
-4. **Module documentation** — Read `.DFM` forms and `.RTM` reports for undocumented
+5. **Module documentation** — Read `.DFM` forms and `.RTM` reports for undocumented
    modules (DE, FA, JC, SC, SH, LC, SR, QC, etc.). Fully unblocked.
 
-5. **Business workflow recipes** — Document end-to-end processes (SO→ship→invoice,
+6. **Business workflow recipes** — Document end-to-end processes (SO→ship→invoice,
    WO lifecycle, AP check run, etc.) in `docs/` and `HELP-RESOURCES.md`. Unblocked.

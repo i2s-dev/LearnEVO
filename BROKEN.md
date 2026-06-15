@@ -11,7 +11,7 @@ without explicit reasoning for why a different outcome is expected now.
 ## Bug B-006 — mode2_handler hook captures DCY IV (sub-screen sub-menu loads .DCY, not .RWN)
 
 **Date:** 2026-06-15
-**Status:** 🔄 OPEN — root cause understood; v5 approach addresses it
+**Status:** ✅ FIXED — v5 EncryptBlock hook with XOR filter captures RWN IV correctly; user opened WO-A from main menu; IV confirmed 2026-06-15
 
 **Symptom:**
 mode2_handler hook (in evoerp.exe PID 30360) fired when user opened the Work Orders
@@ -61,7 +61,7 @@ MODULE-LEVEL .RWN load, not from sub-screen navigation.
 ## Bug B-005 — Frida spawn approach fails; DCY/RWN use different IVs (dead-end analytical path)
 
 **Date:** 2026-06-15
-**Status:** 🔄 OPEN — resolved dead ends; child-gating approach now ready
+**Status:** ✅ SUPERSEDED — IV confirmed via v5 approach; DCY still needs its own IV (XOR=0x09553584)
 
 **Symptom:**
 All Frida-based attempts to capture block_buf via spawning tp7runtime.exe with suwin7.rwn
