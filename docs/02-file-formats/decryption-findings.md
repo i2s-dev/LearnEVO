@@ -3,32 +3,46 @@
 Status: **cipher fully identified; passphrase confirmed; initial IV unknown (one debugger
 session away from full decryption)**
 
-Last updated: 2026-06-12
+Last updated: 2026-06-15
 
 ---
 
-## Current state (2026-06-12)
+## Current state (2026-06-15)
 
-Everything about the cipher is now confirmed except one value: the initial 16-byte IV
-(`block_buf` at cipher+0x3C inside `tp7runtime.exe`). Once that value is read from a
-running process, a complete decryptor can be written in minutes.
+Everything about the cipher is confirmed except the initial 16-byte IV
+(`block_buf` at cipher+0x3C inside `tp7runtime.exe`). One debugger session away.
 
 **Confirmed:**
 - Cipher: **Twofish**, 128-bit block, **192-bit key**, **CFB mode**
-- Passphrase: **`mabufoju`** — hardcoded in `tp7runtime.exe` at file offset `0x75D154`
+- Passphrase: **`mabufoju`** — hardcoded at file offset `0x75D154`
 - Key: `SHA1('mabufoju')[0:20]` + `\x00\x00\x00\x00` = 24 bytes (192-bit)
-- Q-box tables (q0 @ file `0x7740A8`, q1 @ `0x7741A8`) verified byte-for-byte against the NIST Twofish spec
-- `scripts/twofish_pure.py` passes the NIST 192-bit test vector (non-zero key)
-- Validation structure: first 8 bytes of every `.RWN`; decrypted pt[0:4] must equal pt[4:8]
-- All 20+ scanned `.RWN` files share the constant `ct[0:4]^ct[4:8] = 0x3E0A37C5`
+- Q-box tables (q0 @ file `0x7740A8`, q1 @ `0x7741A8`) verified byte-for-byte vs NIST spec
+- `scripts/twofish_pure.py` passes the NIST 192-bit test vector ✓
+- Validation: first 8 bytes of every `.RWN`; decrypted pt[0:4] must equal pt[4:8]
+- All 20+ scanned `.RWN` files share `ct[0:4]^ct[4:8] = 0x3E0A37C5` ✓
+- mode2_handler entry bytes at file 0x34DF50: `55 8b ec 83 c4 f4 53 56 57` ✓
+- block_buf is a **16-byte INLINE array** at cipher+0x3C (not a pointer; first 4 bytes
+  look like a heap address but are the IV bytes themselves)
+
+**CONFIRMED DEAD END — do not retry:**
+- `.DCY` and `.RWN` files use **DIFFERENT IVs**.
+  Proof: MDUMMY.DCY has ct[0:4]^ct[4:8] = 0x09553584; all .RWN = 0x3E0A37C5.
+  The empirical keystream `0f73767aa296137875eaa22d6fc64b54` from MDUMMY.DCY XOR
+  mDummy.DFM is the .DCY keystream Encrypt(IV_dcy) — useless for .RWN decryption.
+  See BROKEN.md B-005 for full attempt log.
 
 **Outstanding blocker:**
-- The `TDCP_blockcipher` constructor allocates `block_buf` via `GetMem` but never zeroes it
-- The `Init` call chain (TDCP_cipher.Init → Twofish.Init) also never touches block_buf
-- IV=zeros gives keystream XOR = `0xCE14BE8C` ≠ required `0x3E0A37C5` → IV ≠ zeros
-- Actual value requires a debugger breakpoint at `mode2_handler` (file `0x34DF50`), reading `[EAX+0x3C]`
+- `block_buf` is heap garbage, never zeroed; IV ≠ zeros (`0xCE14BE8C` ≠ `0x3E0A37C5`)
+- Actual value requires observing block_buf at the FIRST call to mode2_handler
+  in a tp7runtime.exe child process that is loading a real .RWN module file
 
-See `BROKEN.md` entry B-004 for the full attempt log.
+**Current approach — Frida child gating:**
+`scripts/get_iv_frida.py` (v3) attaches to evoerp.exe and enables child gating.
+When the user closes a module window (e.g. WO-A) and reopens it, Frida pauses the
+new tp7runtime.exe child before it runs a single instruction, injects the
+mode2_handler hook, then resumes it. IV is captured on the first decrypt call.
+
+See `BROKEN.md` entry B-004/B-005 for the full attempt log.
 
 ---
 
@@ -130,8 +144,10 @@ VMT base at file `0x34E6A8` (VA `0x74F2A8`):
 | SHA1/MD5/SHA256 × 128/192/256-bit × various IVs | All wrong |
 | 474k+ embedded strings tried as passphrase (earlier session) | No match |
 | ~60 hand-crafted EvoERP phrases (earlier session) | No match |
+| Analytical: derive IV from MDUMMY.DCY XOR mDummy.DFM (all OFB/CFB variants) | Dead end — .DCY uses different IV from .RWN |
+| Frida spawn tp7runtime.exe with suwin7.rwn | mode2_handler never fires; process exits before RWN load |
 
-See `BROKEN.md` B-004 for full detail. Do not retry IV=zeros with SHA1-192 — it is confirmed wrong.
+See `BROKEN.md` B-004/B-005 for full detail. Do NOT retry: IV=zeros/SHA1-192; analytical DCY derivation.
 
 ---
 
@@ -170,7 +186,7 @@ verify the IV once it is retrieved from the debugger:
 | Script | Status | Purpose |
 |--------|--------|---------|
 | `scripts/twofish_pure.py` | ✅ Working | Pure Python Twofish; passes NIST 192-bit test vector |
-| `scripts/get_iv_frida.py` | ✅ Ready | **Primary IV extractor** — Frida hook on mode2_handler; saves iv_bytes.bin |
+| `scripts/get_iv_frida.py` | ✅ v3 Ready | **Primary IV extractor** — child gating on evoerp.exe; close+reopen module window |
 | `scripts/x64dbg_get_iv.txt` | ✅ Ready | Manual fallback — step-by-step x64dbg instructions |
 | `scripts/verify_iv.py` | ✅ Ready | Cross-checks iv_bytes.bin against RWN validation constraint |
 | `scripts/rwn_decrypt.py` | ✅ Ready | Batch OFB/CFB decryptor — reads iv_bytes.bin, decrypts all .RWN/.DCY |

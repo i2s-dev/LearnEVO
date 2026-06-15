@@ -1,32 +1,46 @@
 #!/usr/bin/env python3
 """
-scripts/get_iv_frida.py
+scripts/get_iv_frida.py  (v3 -- child gating)
 
-Extracts block_buf (the initial IV) from a running or freshly-spawned
-tp7runtime.exe by hooking mode2_handler (file offset 0x34DF50, RVA 0x34EB50).
+WHY THIS APPROACH
+  Previous attempts to spawn tp7runtime.exe directly failed: the process
+  fires the Twofish constructor 3 times (TAS runtime init) but exits via a
+  single-instance check BEFORE loading any .RWN file, so mode2_handler
+  never fires.
 
-BEHAVIOUR
-    1. If tp7runtime.exe is ALREADY running: attaches to it.
-       Navigate to any EVO module after this script starts — that loads an
-       .RWN file and fires the hook.
-    2. If tp7runtime.exe is NOT running: spawns it with EvoERPmenu.RWN.
-       EVO will open normally.  Log in and navigate to any module.
-
-    Either way, the hook fires the first time mode2_handler is called and
-    saves the 16-byte IV to scripts/iv_bytes.bin.  The script then exits.
-
-REQUIREMENTS
-    pip install frida-tools
+  Child gating solves this: we attach to the *already-running* evoerp.exe
+  and ask Frida to pause every child process it spawns.  When the user
+  closes a module window (WO-A, etc.) and reopens it, evoerp.exe calls
+  CreateProcess to start a new tp7runtime.exe.  Frida pauses that child
+  before it executes a single instruction, we inject the mode2_handler
+  hook, then resume it.  The hook fires when the child decrypts its
+  module .RWN file -- capturing the initial block_buf (= IV).
 
 USAGE
-    python scripts/get_iv_frida.py
+  1. Make sure EVO is running normally (evoerp.exe + at least one module
+     window like WO-A).
+  2. Run:  python scripts/get_iv_frida.py
+  3. In EVO, close a module window (e.g. WO-A).
+  4. Reopen that module from the EVO menu.
+  5. The hook fires and writes scripts/iv_bytes.bin.
+  6. Run:  python scripts/verify_iv.py
 
-    The script prints instructions once the hook is armed.
-    You do NOT need to keep watching it — just use EVO normally.
+KEY ADDRESSES (tp7runtime.exe / evoerp.exe -- byte-for-byte identical)
+  mode2_handler   RVA 0x34EB50  file 0x34DF50
+  block_buf       cipher+0x3C   16-byte inline array (initial IV)
+  mode byte       cipher+0x34   set to 2 (CFB) by validate_func
 
-KEY ADDRESSES (confirmed from disassembly)
-    mode2_handler  file offset 0x34DF50  RVA 0x34EB50
-    block_buf      cipher+0x3C           16 bytes = IV
+NOTE ON block_buf
+  block_buf is a 16-byte inline array inside the TDCP_blockcipher object at
+  object_offset 0x3C.  It is allocated by GetMem but never zeroed, so its
+  initial value is heap garbage that is deterministic on this installation
+  (proven by all .RWN files sharing ct[0:4]^ct[4:8] = 0x3E0A37C5, meaning
+  every compiled .RWN used the same IV at compile time and that IV recurs
+  at runtime when the same process startup conditions are met).
+
+  IMPORTANT: .DCY and .RWN files use DIFFERENT IVs.  Do not attempt to
+  derive the .RWN IV from MDUMMY.DCY/DFM analysis -- that path is a dead
+  end (verified exhaustively; see BROKEN.md).
 """
 
 import sys
@@ -34,31 +48,25 @@ import os
 import subprocess
 import time
 
-_here    = os.path.dirname(os.path.abspath(__file__))
-IV_OUT   = os.path.join(_here, 'iv_bytes.bin')
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-TARGET_EXE = r'C:\ISTS\tp7runtime.exe'
-TARGET_RWN = r'\\i2s109-solidcrm\DBAMFG$\EvoERPmenu.RWN'
+_here  = os.path.dirname(os.path.abspath(__file__))
+IV_OUT = os.path.join(_here, 'iv_bytes.bin')
 
-# mode2_handler RVA (= preferred VA 0x74EB50 - preferred ImageBase 0x400000)
-MODE2_RVA         = 0x34EB50
-BLOCK_BUF_OFFSET  = 0x3C
-IV_SIZE           = 16
+TIMEOUT_SEC = 600  # 10 minutes
 
-# Wait up to 10 minutes — time for login + navigation
-TIMEOUT_SEC = 600
-
-_JS = """
+_JS = r"""
 'use strict';
 var captured = false;
 
-var mod = Process.findModuleByName('tp7runtime.exe');
-if (!mod) {
-    send({ type: 'error', msg: 'tp7runtime.exe module not found in process.' });
-} else {
+function armHook(modName) {
+    var mod = Process.findModuleByName(modName);
+    if (!mod) return false;
+
     var target = mod.base.add(0x34EB50);
-    send({ type: 'info', msg: 'Hook armed at ' + target +
-          ' (base ' + mod.base + ', RVA 0x34EB50)' });
+    send({ type: 'info',
+           msg: 'hook armed in ' + modName + ' @ ' + target +
+                ' (base=' + mod.base + ')' });
 
     Interceptor.attach(target, {
         onEnter: function(args) {
@@ -66,30 +74,53 @@ if (!mod) {
             captured = true;
             try {
                 var eax = this.context.eax;
+
+                // block_buf is a 16-byte inline array at cipher+0x3C.
                 var buf = ptr(eax).add(0x3C).readByteArray(16);
-                send({ type: 'iv',
-                       eax:   eax.toString(),
-                       bytes: Array.from(new Uint8Array(buf)) });
+                var iv_arr = Array.from(new Uint8Array(buf));
+
+                // Also attempt pointer dereference in case this build
+                // uses a dynamic array at that field.
+                var u32 = ptr(eax).add(0x3C).readU32();
+                var deref = null;
+                try {
+                    if (u32 > 0x10000 && u32 < 0x7fff0000) {
+                        deref = Array.from(
+                            new Uint8Array(ptr(u32).readByteArray(16)));
+                    }
+                } catch(e2) {}
+
+                send({
+                    type:    'iv',
+                    eax:     eax.toString(),
+                    ptr_val: u32.toString(16),
+                    direct:  iv_arr,
+                    deref:   deref
+                });
             } catch(e) {
-                send({ type: 'error', msg: 'Hook callback: ' + e.message });
+                send({ type: 'error', msg: 'onEnter: ' + e.message });
             }
         }
     });
+    return true;
 }
+
+// The main process may be evoerp.exe; children are tp7runtime.exe.
+armHook('evoerp.exe') || armHook('tp7runtime.exe');
 """
 
 
-def _find_tp7_pid():
-    """Return PID of a running tp7runtime.exe, or None."""
+def _find_pids(name):
+    """Return list of PIDs matching the given process name (no .exe)."""
     try:
         out = subprocess.check_output(
             ['powershell', '-NoProfile', '-Command',
-             'Get-Process | Where-Object {$_.Name -eq "tp7runtime"} '
-             '| Select-Object -First 1 -ExpandProperty Id'],
+             f'Get-Process | Where-Object {{$_.Name -eq "{name}"}} '
+             f'| Select-Object -ExpandProperty Id'],
             stderr=subprocess.DEVNULL, text=True).strip()
-        return int(out) if out else None
+        return [int(x) for x in out.split() if x] if out else []
     except Exception:
-        return None
+        return []
 
 
 def main():
@@ -100,77 +131,102 @@ def main():
         sys.exit(1)
 
     iv_found  = [None]
-    pid_used  = [None]
-    spawned   = [False]
+    sessions  = []
 
     def on_message(message, data):
         if message['type'] == 'error':
-            desc = message.get('description', str(message))
-            print(f"\n[Frida error] {desc}")
+            print(f"\n[Frida] {message.get('description', str(message))}")
             return
         p    = message.get('payload') or {}
-        kind = p.get('type')
+        kind = p.get('type', '')
         if kind == 'info':
             print(f"[*] {p['msg']}")
         elif kind == 'error':
             print(f"[!] {p['msg']}")
         elif kind == 'iv':
-            blist   = p['bytes']
-            hex_str = ' '.join(f'{b:02x}' for b in blist)
-            py_lit  = 'bytes([' + ', '.join(f'0x{b:02x}' for b in blist) + '])'
+            d16  = bytes(p['direct'])
+            dr16 = bytes(p['deref']) if p.get('deref') else None
             print()
-            print("=" * 54)
-            print("  IV (block_buf) CAPTURED")
-            print("=" * 54)
+            print("=" * 60)
+            print("  mode2_handler FIRED -- IV CAPTURED")
+            print("=" * 60)
             print(f"  EAX (cipher obj) : {p['eax']}")
-            print(f"  block_buf (IV)   : {hex_str}")
-            print()
-            print(f"  Python literal: {py_lit}")
-            print("=" * 54)
+            print(f"  cipher+0x3C u32  : 0x{p['ptr_val']}")
+            print(f"  direct [0:16]    : {d16.hex(' ')}")
+            if dr16:
+                print(f"  deref  [0:16]    : {dr16.hex(' ')}")
+            print("=" * 60)
             with open(IV_OUT, 'wb') as f:
-                f.write(bytes(blist))
-            print(f"\n  Saved → {IV_OUT}")
+                f.write(d16)
+            print(f"\n  Saved direct --> {IV_OUT}")
+            if dr16:
+                dr_path = IV_OUT.replace('.bin', '_deref.bin')
+                with open(dr_path, 'wb') as f:
+                    f.write(dr16)
+                print(f"  Saved deref  --> {dr_path}")
             print("  Next: python scripts/verify_iv.py")
-            iv_found[0] = bytes(blist)
+            iv_found[0] = d16
 
-    # --- Find or spawn tp7runtime.exe ---
-    existing_pid = _find_tp7_pid()
+    device = frida.get_local_device()
 
-    if existing_pid:
-        print(f"[*] Found running tp7runtime.exe  PID {existing_pid}")
-        print("[*] Attaching (will not disturb your EVO session) ...")
+    # Arm hook on each existing tp7runtime.exe child process.
+    # These won't re-fire mode2_handler for .RWN files already loaded,
+    # but will catch any future dynamic .RWN loads in those processes.
+    for pid in _find_pids('tp7runtime'):
+        print(f"[*] Arming on existing tp7runtime.exe PID {pid}")
         try:
-            session = frida.attach(existing_pid)
+            sess = device.attach(pid)
+            sc   = sess.create_script(_JS)
+            sc.on('message', on_message)
+            sc.load()
+            sessions.append(sess)
         except Exception as e:
-            print(f"[!] Attach failed: {e}")
-            print("    Try running from an elevated (Administrator) prompt.")
-            sys.exit(1)
-        pid_used[0] = existing_pid
-    else:
-        print("[*] tp7runtime.exe is not running — spawning it now.")
-        print(f"[*] EVO will open.  Log in and navigate to any module.")
+            print(f"    Could not attach to PID {pid}: {e}")
+
+    # Enable child gating on evoerp.exe.
+    evo_pids = _find_pids('evoerp')
+    if not evo_pids:
+        print("[!] evoerp.exe not found.  Start EVO first, then run this script.")
+        sys.exit(1)
+
+    evo_pid = evo_pids[0]
+    print(f"[*] Attaching to evoerp.exe PID {evo_pid} for child gating ...")
+    try:
+        evo_sess = device.attach(evo_pid)
+        evo_sess.enable_child_gating()
+        sessions.append(evo_sess)
+        print("[*] Child gating ENABLED on evoerp.exe")
+    except Exception as e:
+        print(f"[!] Child gating failed: {e}")
+        print("    Try running from an elevated (Administrator) prompt.")
+
+    def on_child_added(child):
+        print(f"\n[*] Child spawned: PID {child.pid}  ({child.path})")
         try:
-            pid       = frida.spawn([TARGET_EXE, TARGET_RWN], cwd=r'C:\ISTS')
-            session   = frida.attach(pid)
-            spawned[0] = True
-            pid_used[0] = pid
+            ch_sess = device.attach(child.pid)
+            sc      = ch_sess.create_script(_JS)
+            sc.on('message', on_message)
+            sc.load()
+            sessions.append(ch_sess)
+            print(f"[*] Hook armed in child PID {child.pid}")
         except Exception as e:
-            print(f"[!] Spawn failed: {e}")
-            print("    Try running from an elevated (Administrator) prompt.")
-            sys.exit(1)
+            print(f"[!] Child hook failed for PID {child.pid}: {e}")
+        finally:
+            try:
+                device.resume(child.pid)
+            except Exception:
+                pass
 
-    script = session.create_script(_JS)
-    script.on('message', on_message)
-    script.load()
-
-    if spawned[0]:
-        frida.resume(pid_used[0])
+    device.on('child-added', on_child_added)
 
     print()
-    print("Hook is ARMED.  Waiting for mode2_handler ...")
-    print("  → If you attached to a running EVO: open any module now.")
-    print("  → If EVO just launched: log in and open any module.")
-    print(f"  → Timeout in {TIMEOUT_SEC//60} minutes.  Press Ctrl+C to abort.")
+    print("ARMED.  Steps to capture the IV:")
+    print("  1. In EVO, CLOSE a module window (WO-A, WO-B, WO-C, etc.).")
+    print("  2. Reopen that same module from the EVO main menu.")
+    print("  3. Frida pauses the new tp7runtime.exe child before any code runs,")
+    print("     injects the hook, then resumes it.")
+    print("  4. mode2_handler fires when the module .RWN is decrypted.")
+    print(f"  Timeout: {TIMEOUT_SEC // 60} min.  Ctrl+C to abort.")
     print()
 
     deadline = time.time() + TIMEOUT_SEC
@@ -180,14 +236,15 @@ def main():
     except KeyboardInterrupt:
         print("\n[*] Aborted by user.")
 
-    try:
-        session.detach()
-    except Exception:
-        pass
+    device.off('child-added', on_child_added)
+    for sess in sessions:
+        try:
+            sess.detach()
+        except Exception:
+            pass
 
     if iv_found[0] is None:
-        remaining = max(0, int(deadline - time.time()))
-        print(f"\n[!] Timeout: mode2_handler was not called within {TIMEOUT_SEC}s.")
+        print(f"\n[!] Timeout: mode2_handler did not fire within {TIMEOUT_SEC}s.")
         print("    Fallback: use scripts/x64dbg_get_iv.txt for manual extraction.")
         sys.exit(1)
 

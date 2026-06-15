@@ -8,6 +8,65 @@ without explicit reasoning for why a different outcome is expected now.
 
 ---
 
+## Bug B-005 — Frida spawn approach fails; DCY/RWN use different IVs (dead-end analytical path)
+
+**Date:** 2026-06-15
+**Status:** 🔄 OPEN — resolved dead ends; child-gating approach now ready
+
+**Symptom:**
+All Frida-based attempts to capture block_buf via spawning tp7runtime.exe with suwin7.rwn
+failed: Twofish constructor fired 3 times but mode2_handler (file 0x34DF50) never fired.
+Separately, all analytical IV derivation attempts from MDUMMY.DCY/mDummy.DFM produced IV
+candidates that failed both the XOR constraint (0x3E0A37C5) and the DCY/DFM plaintext check.
+
+**Root causes identified:**
+
+1. **Spawned tp7runtime exits before RWN loading.** When spawning tp7runtime.exe with
+   suwin7.rwn, the TAS Pro 7 runtime performs initialization (including creating internal
+   cipher objects — explaining the 3x constructor fires) before it loads any .RWN file.
+   During this init phase, a single-instance check detects the running evoerp.exe and exits
+   the process. The RWN load (and hence mode2_handler) never happens.
+   - Confirmed by: no mode2_handler callback despite the constructor firing; user observed
+     only a brief taskbar flash with no EVO window appearing.
+
+2. **DCY and RWN files use DIFFERENT IVs.** Extensive analytical analysis proved:
+   - MDUMMY.DCY validation constant: ct[0:4]^ct[4:8] = 0x09553584
+   - All .RWN files validation constant: ct[0:4]^ct[4:8] = 0x3E0A37C5
+   - 0x09553584 != 0x3E0A37C5 => Encrypt(IV_dcy)[0:4]^[4:8] != Encrypt(IV_rwn)[0:4]^[4:8]
+   - => DCY and RWN files were encrypted with different IVs
+   - The empirical keystream 0f73767aa29613787... from MDUMMY.DCY XOR mDummy.DFM is the
+     .DCY IV keystream, completely unrelated to the .RWN IV.
+   - All 4 analytical approaches tried (Decrypt(K1), Decrypt^2(empirical), OFB variations,
+     candidate-search from T7INA.RWN) failed for the same fundamental reason.
+
+**What was tried (all failed — DO NOT RETRY):**
+
+| Date | Attempt | Outcome |
+|------|---------|---------|
+| 2026-06-15 | Frida spawn tp7runtime.exe + suwin7.rwn, hook mode2_handler | mode2_handler never fires |
+| 2026-06-15 | Analytical: K1=DCY[16:32]^DFM[8:24]; K0=Decrypt(K1); IV=Decrypt(K0) | K0[8:16] contradiction |
+| 2026-06-15 | Analytical: IV=Decrypt^2(empirical_ks1) | XOR = 0x793D09BB != 0x3E0A37C5 |
+| 2026-06-15 | OFB alignment fix: decrypt full DCY from byte 0, body=pt[8:] | Still fails: DCY IV != RWN IV |
+| 2026-06-15 | All OFB/CFB variants with correct block alignment | None satisfy both constraints |
+
+**Confirmed good facts from this investigation:**
+- mode2_handler bytes confirmed correct at file 0x34DF50: 55 8b ec 83 c4 f4 53 56 57 (PUSH EBP; MOV EBP,ESP; ADD ESP,-12; PUSH EBX,ESI,EDI)
+- RVA 0x34EB50 is verified as the correct hook point for both tp7runtime.exe and evoerp.exe
+- block_buf is a 16-byte INLINE array at cipher+0x3C (not a pointer), first 4 bytes look like a heap address but are just the IV bytes themselves
+
+**Current approach: child gating (not yet run)**
+`get_iv_frida.py` (v3) now uses `session.enable_child_gating()` on the running evoerp.exe.
+When the user closes and reopens a module window, evoerp.exe spawns a new tp7runtime.exe
+child; Frida pauses it before any code runs, injects the hook, then resumes it.
+This bypasses the single-instance check because the process is spawned BY evoerp.exe in the
+normal way (evoerp.exe being the "instance" that already owns the session).
+
+**Lesson:** Never try to derive the RWN IV from DCY/DFM analysis — the two file types use
+different IVs. The ONLY path to the RWN IV is dynamic extraction (Frida child gating or
+x64dbg) while a real module .RWN is being loaded by a real tp7runtime.exe child process.
+
+---
+
 ## Bug B-004 — .RWN Twofish CFB initial IV (block_buf) unknown — decryption incomplete
 
 **Date:** 2026-06-12

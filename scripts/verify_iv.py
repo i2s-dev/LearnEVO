@@ -31,11 +31,13 @@ import os
 import hashlib
 import struct
 
+sys.stdout.reconfigure(encoding='utf-8', errors='replace')
+
 # Make sure twofish_pure is importable from this script's directory
 _here = os.path.dirname(os.path.abspath(__file__))
 if _here not in sys.path:
     sys.path.insert(0, _here)
-from twofish_pure import Twofish, ofb_decrypt, cfb_decrypt
+from twofish_pure import Twofish
 
 # ---------------------------------------------------------------------------
 # Key (confirmed by disassembly)
@@ -54,8 +56,10 @@ _TEST_RWNS = [
 # XOR: C5 37 0A 3E → LE value 0x3E0A37C5 ✓
 _KNOWN_XOR = 0x3E0A37C5
 
-# Empirical ks1 from DCY/DFM XOR analysis (used for cross-check, may or may not match
-# depending on whether DCY byte 0 is the validation block or an unencrypted header)
+# Empirical keystream from MDUMMY.DCY XOR mDummy.DFM.
+# NOTE: .DCY and .RWN files use DIFFERENT IVs.  This value is the first
+# keystream block for the .DCY IV, NOT the .RWN IV.  A mismatch here is
+# expected and does NOT indicate a wrong IV for .RWN decryption.
 _EMPIRICAL_KS1 = bytes.fromhex('0f73767aa296137875eaa22d6fc64b54')
 
 
@@ -94,14 +98,14 @@ def verify(iv: bytes):
     print(f"ks1 = Encrypt(IV) = {ks1.hex(' ')}")
     print(f"ks1[0:4] ^ ks1[4:8] = 0x{xor4:08X}  (expected 0x{_KNOWN_XOR:08X})")
     xor_ok = (xor4 == _KNOWN_XOR)
-    print(f"  → {'PASS ✓' if xor_ok else 'FAIL ✗  (IV is wrong, or XOR constant is wrong)'}")
+    print(f"  -> {'PASS' if xor_ok else 'FAIL  (IV is wrong, or XOR constant is wrong)'}")
     print()
 
     # 2. Empirical ks1 cross-check
     emp_match = (ks1 == _EMPIRICAL_KS1)
     print(f"Empirical ks1 (from DCY/DFM XOR): {_EMPIRICAL_KS1.hex(' ')}")
     print(f"Computed  ks1 (Encrypt(IV))      : {ks1.hex(' ')}")
-    print(f"  → {'MATCH ✓' if emp_match else 'no match (expected if DCY validation offset differs)'}")
+    print(f"  -> {'MATCH' if emp_match else 'no match (expected: DCY and RWN use different IVs)'}")
     print()
 
     # 3. Test against RWN files
@@ -134,7 +138,7 @@ def verify(iv: bytes):
         print(f"    ct[0:8]  = {ct8.hex(' ')}")
         print(f"    ct XOR   = 0x{ct_xor:08X}  (all files share 0x{_KNOWN_XOR:08X})")
         print(f"    pt[0:8]  = {pt.hex(' ')}")
-        print(f"    pt[0:4] == pt[4:8]: {'YES → valid ✓' if passed else 'NO  → invalid ✗'}")
+        print(f"    pt[0:4] == pt[4:8]: {'YES -> VALID' if passed else 'NO  -> INVALID'}")
         print()
 
     if not any_file_tested:
