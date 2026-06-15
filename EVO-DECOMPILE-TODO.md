@@ -553,7 +553,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
-- [ ] ⬜ **DI** — purpose unclear; no deep doc
+- [x] 🔄 **DI** — Digital Signatures — T7DIGSIG.DFM (131KB) confirmed: Caption='Enter Digital Signatures'; PO#/Vendor/Name/Description/Terms + EMAIL.TAG/NAME/LEVEL/ADDRESS for email routing of PO approvals; T7DigSigChgPSWD = change digital signature password; PO approval workflow with email routing — **C: 50/100**
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
 - [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
 - [ ] ⬜ **FL** — purpose unclear; no deep doc
@@ -920,7 +920,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: PR/Payroll | **55** | 80 | **25** ↑ | 2026-06-11 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
-| Module: DE/Data Exchange | **65** | 80 | **15** ↑ NEW | 2026-06-11 |
+| Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
 | Module: CS/Commission+Salesperson | **70** | 80 | **10** ↑ +15 | 2026-06-15 |
 | Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
 | Module: SC/Serial Control ⚠️ | **72** | 80 | **8** ↑ +30 | 2026-06-15 |
@@ -931,9 +931,26 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **62** | 78 | **16** ↑ +10 | 2026-06-15 |
-| Module: ED/EDI | **50** | 75 | **25** NEW | 2026-06-11 |
 | Module: ES/Estimating | **58** | 75 | **17** ↑ +10 | 2026-06-15 |
-| Modules: SM/UT/SD/HH/SA/others | 38 | 70 | 32 | 2026-06-11 |
+| Module: SA/Sales Analysis | **55** | 75 | **20** NEW | 2026-06-15 |
+| Module: AC/Activity Control | **45** | 70 | **25** NEW | 2026-06-15 |
+| Module: CC/Credit Card ⚠️ | **65** | 78 | **13** NEW | 2026-06-15 |
+| Module: SP/SPC ⚠️ | **60** | 75 | **15** NEW | 2026-06-15 |
+| Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
+| Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
+| Module: RM/RMA | **68** | 78 | **10** NEW | 2026-06-15 |
+| Module: FO/Features Options | **50** | 70 | **20** NEW | 2026-06-15 |
+| Module: IS/InfoSystem | **45** | 65 | **20** NEW | 2026-06-15 |
+| Module: IM/Landed Cost | **70** | 80 | **10** NEW | 2026-06-15 |
+| Module: PS/Program Security | **60** | 75 | **15** NEW | 2026-06-15 |
+| Module: QU/Query Tools | **50** | 70 | **20** NEW | 2026-06-15 |
+| Module: SU/Setup UI | **50** | 70 | **20** NEW | 2026-06-15 |
+| Module: TA/TAS Admin | **55** | 72 | **17** NEW | 2026-06-15 |
+| Module: DI/Digital Signatures | **50** | 70 | **20** NEW | 2026-06-15 |
+| Module: AD/Accounting Defaults | **40** | 65 | **25** NEW | 2026-06-15 |
+| Module: CR/SO Approvals | **40** | 65 | **25** NEW | 2026-06-15 |
+| Module: US/Triggers | **45** | 65 | **20** NEW | 2026-06-15 |
+| Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
 | Platform Subsystems | 65 | 82 | 17 | 2026-06-11 |
@@ -944,7 +961,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Encryption / RWN Decryption | 65 | 95 | 30 ⚠️ | 2026-06-12 |
 | Per-Table Narrative Docs | **48** | 88 | **40** ↑ | 2026-06-11 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
-| HELP-RESOURCES.md | **65** | 90 | **25** ↑ | 2026-06-11 |
+| HELP-RESOURCES.md | **75** | 90 | **15** ↑ +10 | 2026-06-15 |
 
 ### Critical Path to 90% Goal
 
@@ -978,7 +995,7 @@ Priority order — in sequence, each unblocks the next:
 1. **RWN decryption** — 1,124 programs with zero readable logic until IV is solved
 2. **Per-table field meaning** — 659 tables × semantics = largest volume task
 3. **Business workflow recipes** — no end-to-end processes yet documented
-4. **~35 undocumented modules** — DE, SM, FA, JC, SA, SH, CS, SC, QC, LC, SR, etc.
+4. **~16 still-opaque modules** — AB, CP, EX, FL, LM, MA, MM, PC, PL, RT, SB, SL, SY, UM, UP, YS — no DFMs, no CHM; require RWN decryption or live instance access. (35+ others now documented via DFM analysis.)
 5. **Bytecode format** — needed to interpret decrypted `.RWN` content
 6. **Security model detail** — access flags, password algorithm, WHOAMI validation
 

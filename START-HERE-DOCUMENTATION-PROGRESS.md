@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-15
+Last updated: 2026-06-15 (session 3)
 
 ---
 
@@ -118,10 +118,10 @@ See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
 | Database schema | ✅ Done | 92/100 | 659 tables, 24,113 fields extracted |
-| Module documentation | 🔄 Partial | 65/100 | Core modules documented; 35+ shallow |
+| Module documentation | 🔄 Partial | 72/100 | 50+ modules now documented from DFM+CHM; 16 still opaque (no DFMs, no CHM) |
 | `PROJECT-STRUCTURE.md` | 🔄 In progress | 72/100 | Updated each session |
-| `HELP-RESOURCES.md` | 🔄 In progress | 65/100 | Updated each session |
-| `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated 2026-06-12 |
+| `HELP-RESOURCES.md` | 🔄 In progress | 75/100 | Updated 2026-06-15 — 25+ module sections added |
+| `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated 2026-06-15 |
 
 ---
 
