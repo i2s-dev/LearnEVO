@@ -1140,3 +1140,78 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 | SR | (Sales Reports in DFM inventory) | **Service/Repair** | T7SRK fields ISSR.MMS.MAKE/MODEL/SERIAL; "IN Date"/"OUT Date"/"S/R Number"/"Motor" |
 | CC | Cycle Count | **Credit Card Processing** | T7CCP Caption='Credit Card Info'; IS.CC.MASKED/CARDNAME/EXP fields; T7ccr1 Caption='Credit Card Invoice List' |
 | SP | Ship Packing? | **Statistical Process Control (SPC)** | T7SPC Caption has 'Inspector #', 'Work Order:'; IS.SERR.ERROR/PROCESS fields; T7SPCREPPPM='PPM defect report' |
+
+## CHM-Identified Modules (no DFMs — in RWN)
+
+The following modules have no T7* DFM files on the network share. Their operations were identified from EvoHELP.CHM topic filenames.
+
+### AD — Accounting Defaults
+
+**Operations confirmed from CHM:**
+- AD-A — General Ledger Defaults
+- AD-B — Checking Account Defaults
+- AD-C — Accounts Payable Defaults
+
+**Purpose:** System-level default configuration for GL, bank accounts, and AP. Likely sets the default GL accounts, AP payment terms, and bank routing information used across all modules. **Confidence: 40/100**
+
+---
+
+### CR — Customer Revenue / SO Department Approvals
+
+**Operations confirmed from CHM:**
+- CR-A — Assign Departments to Sales Orders
+- CR-B — View/Enter SO Approvals
+
+**Purpose:** Manages SO-level workflows — assigning departments to sales orders and the approval process (view or enter approvals for SOs before they're released). **Confidence: 40/100**
+
+---
+
+### FP — Features & Options Print
+
+**Operations confirmed from CHM:**
+- FP-B — Print Features and Options
+
+**Purpose:** Print sub-module for the FO (Features & Options) module — generates a printed features/options sheet from the configured BOM option flags. **Confidence: 35/100**
+
+---
+
+### QU — Query / Inquiry Tools
+
+**Operations confirmed from CHM:**
+- QU-A — Master Inquiry
+- QU-B — Calendar Drill Down
+- QU-C — Calendar Summary Report
+- QU-D — Business Status
+- QU-E — Quick Grid Lookup
+- QU-F — Query Executor
+
+**Purpose:** EvoERP's built-in business intelligence and query layer. QU-A=Master Inquiry (cross-module record lookups), QU-B/C=calendar-based scheduling views, QU-D=executive dashboard (Business Status), QU-E=grid-based lookup tool, QU-F=free-form query executor (likely TAS SQL or filter builder). **Confidence: 50/100**
+
+---
+
+### SU — Setup / UI Configuration
+
+**Operations confirmed from CHM:**
+- SU-A — Maintain Grid Lookups
+- SU-B — Maintain Drill Down Menus
+- SU-C — Forms Editor
+- SU-D — Grid Maintenance
+
+**Purpose:** Configures EvoERP's UI layer. SU-A defines the columns/filters that appear in grid lookup screens. SU-B configures drill-down menu trees. SU-C = the forms editor (modify form layouts at runtime — similar to TA-M). SU-D = grid column maintenance. **Confidence: 50/100**
+
+---
+
+### TA — TAS / System Administration
+
+**Operations confirmed from CHM:**
+- TA-D — Maintain Database
+- TA-G — Maintain Menu Access Records
+- TA-H — Maintain Menu End User
+- TA-M — Forms Editor
+- TA-N — Program Scheduler
+- TA-O — Backup Utility
+- TA-Q — Change Logo Image
+- TA-R — SQL Editor
+- TA-S — Data Dictionary Check
+
+**Purpose:** The most powerful admin module in EvoERP. TA provides direct access to the underlying database (TA-D), full menu access control (TA-G=system level, TA-H=end-user level), a program scheduler (TA-N), backup utility (TA-O), a SQL editor (TA-R), and data dictionary integrity check (TA-S). TA-Q changes the company logo image. **⚠️ Reserved for system administrators — operations here can affect all users and all data.** **Confidence: 55/100**
