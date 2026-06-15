@@ -545,7 +545,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **AC** — purpose unclear; no deep doc
 - [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
 - [ ] ⬜ **AD** — purpose unclear; no deep doc
-- [ ] ⬜ **CM** — Customer Management / CRM — forms inventoried only
+- [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — purpose unclear; no deep doc
 - [ ] ⬜ **CR** — Credit / Collections — forms inventoried only
 - [ ] ⬜ **CS** — Customer Service (16 ops) — forms inventoried only
@@ -561,7 +561,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **IM** — Import / data loading — forms inventoried only
 - [ ] ⬜ **IS** — purpose unclear; no deep doc
 - [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
-- [ ] ⬜ **LC** — Lot Control — forms inventoried only
+- [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
 - [ ] ⬜ **LM** — Labor Management — forms inventoried only
 - [ ] ⬜ **LO** — purpose unclear; no deep doc
 - [ ] ⬜ **MA** — purpose unclear; no deep doc
@@ -914,7 +914,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: DC/Data Collection | **78** | 82 | **4** ↑ | 2026-06-11 |
 | Module: PR/Payroll | **55** | 80 | **25** ↑ | 2026-06-11 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
-| Module: CM/CRM | **60** | 80 | **20** ↑ NEW | 2026-06-11 |
+| Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
 | Module: DE/Data Exchange | **65** | 80 | **15** ↑ NEW | 2026-06-11 |
 | Module: CS/Customer Service | **55** | 80 | **25** ↑ NEW | 2026-06-11 |
 | Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
@@ -922,7 +922,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: QC/Quality Control | **52** | 75 | **23** ↑ +4 | 2026-06-15 |
 | Module: WC/Warehouse Control ⚠️ | **72** | 80 | **8** ↑ +17 | 2026-06-15 |
 | Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
-| Module: LC/Lot Control | **42** | 75 | **33** NEW | 2026-06-11 |
+| Module: LC/Lot Control | **72** | 78 | **6** ↑ +30 | 2026-06-15 |
 | Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
 | Module: FA/Fixed Assets | **48** | 75 | **27** NEW | 2026-06-11 |
 | Module: PI/Physical Inventory | **52** | 78 | **26** NEW | 2026-06-11 |

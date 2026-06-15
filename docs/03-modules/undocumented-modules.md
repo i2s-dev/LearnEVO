@@ -221,7 +221,25 @@ printer and system-parameter forms not yet read.
 
 **Primary tables:** BKCMACCT (contact accounts), BKCMCUST (CRM customer link), BKCMREP (rep assignments), BKCMDUN / BKCMDUNH (dun letters / history), BKCMTERR (territories), BKCMLEAD (lead sources), BKCMMHST (message history), BKCMVNDH / BKCMVNFC / BKCMVNDF (vendor history/follow-up/contacts), BKCMCTL1–4 (control tables), BKCMTEMP (templates).
 
-**Confidence: 60/100** — CM-A confirmed from CHM; BKCM\* table family (46 tables) confirmed in DDF; form count confirmed.
+**T7CMA.DFM (167KB) key fields confirmed from network share:**
+- Bridges BKAR.* (AR customer master) with BKCM.* (CRM-specific data)
+- Standard AR fields: customer code/name/address/phone/fax/country, salesperson 1 & 2, ship via, terms, discount code, price code, tax group, taxable flag
+- CRM-specific: Territory, Lead Source, Start Date, SIC Code, Remarks
+- CRM account classes: BKCM.ACCL.CLASS (multiple classes per account)
+- Key Dates: BKCM.ACTD.DATE + BKCM.ACTD.DCODE (user-defined date events, e.g. "Next Review", "Contract Expiry")
+- Follow-Up reminders: IS.REM.DATE
+
+**T7CMACON.DFM — Contact emails:**
+- Up to 9 email addresses per contact: BKCM.ACCN.EMAIL[1-9]
+- Email routing: "Include: Ack, PkSlip" — controls which documents auto-route to which email
+
+**T7CMCON.DFM — Contact records:**
+- Per-contact: BKCM.ACCN.CODE (contact code), BKCM.ACCN.CON (contact name), BKCM.ACCN.TITLE (position/title), BKCM.ACCN.PRIM (primary contact flag)
+
+**T7CMBB.DFM — CRM mailing list report:**
+- Filter by SIC Code, Territory, Zip Code range — generates contact/prospect lists
+
+**Confidence: 65/100** — T7CMA + 4 sub-forms read from network share; contact structure confirmed (9 emails/contact); CRM-AR bridge confirmed; BKCM.* table family confirmed in DDF.
 
 ---
 
@@ -253,13 +271,33 @@ This module manages serial number assignment, tracking, and lifecycle for serial
 
 ## LC — Lot Control
 
-**DFM files confirmed:** T7LCA.DFM + 6 more forms (7 total)
+**DFM files confirmed (6 found):** T7LCA.DFM, T7LCB.DFM, T7LCC.DFM, T7LCE.DFM, T7LCF.DFM, T7LCG.DFM
 
-**What it does:** Lot number tracking for inventory items. Assigns lot numbers at receipt, tracks lot quantities through production and shipment.
+**What it does:** Lot number tracking for inventory items. Assigns lot numbers at receipt, tracks lot quantities through production and shipment. Structurally identical to SC (Serial Control) but at lot-quantity level rather than individual-unit level.
 
-**Primary tables:** LOT (lot master), and lot fields in BKICMSTR, INVTXN.
+| Code | DFM | What it does |
+|------|-----|-------------|
+| LC-A | T7LCA.DFM | **Edit Lot Numbers** — view/edit individual lot records. Fields: MTLOT.LOT (lot number), MTLOT.ONHAND (qty on hand), MTLOT.RECDATE (receipt date), MTLOT.WO (associated WO#). Primary table: MTLOT. |
+| LC-B | T7LCB.DFM | **Assign Lot Control** — configure which inventory items are lot-tracked via MTIC.PROD.LOT flag. Shows BKIC.PROD.DESC (description), BKIC.PROD.NOTE, BKIC.PROD.TYPE. Parallel to SC-B for serials. |
+| LC-C | T7LCC.DFM | Lot browse/inquiry with allocation print option (`prt.allocs`). Filter by item and lot ranges. |
+| LC-E | T7LCE.DFM | Item/class/category range filter for lot reports |
+| LC-F | T7LCF.DFM | **Lot status inquiry** — filter by item + lot number. Report options: Summary, Details, All. |
+| LC-G | T7LCG.DFM | **Archive/Unarchive lots** — by item range + expiry date range (`from.expdate`, `thru.expdate`). Expiry date confirms lot tracking is used for perishable/dated materials. |
 
-**Confidence: 42/100** — Form count confirmed; purpose inferred from name.
+**SC vs LC comparison:**
+
+| Feature | SC (Serial Control) | LC (Lot Control) |
+|---------|-------------------|-----------------|
+| Granularity | One record per unit | One record per lot (multiple units) |
+| Main table | MTSER | MTLOT |
+| Item flag | MTIC.PROD.SER | MTIC.PROD.LOT |
+| Expiry tracking | MTSER.EXPDATE | LC-G has expiry date filter |
+| Archive form | SC-E | LC-G |
+| Assign form | SC-B | LC-B |
+
+**Primary tables:** MTLOT (lot master — one record per lot), MTIC.PROD.LOT (item-level lot tracking flag)
+
+**Confidence: 72/100** — All 6 found DFM files read; lot lifecycle confirmed; MTLOT table fields confirmed; expiry date support confirmed.
 
 ---
 
