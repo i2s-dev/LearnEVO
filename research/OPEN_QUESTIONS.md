@@ -77,15 +77,18 @@ are the few remaining gaps after the bulk autonomous pass.
 These items **require a running system or access to encrypted files**
 to resolve fully:
 
-~~1. **Decrypt `.RWN` / `.DCY` — last blocker is the IV.**~~ **RESOLVED 2026-06-15.**
+~~1. **Decrypt `.RWN` / `.DCY` — last blocker is the IV.**~~ **FULLY RESOLVED 2026-06-16.**
 
-   IV = `9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e` (captured via Frida
-   EncryptBlock hook, XOR-filtered). All 1,144/1,145 `.RWN` files decrypt correctly.
-   `scripts/rwn_decrypt.py` is the batch decryptor; `samples/rwn_decrypted/` has output.
-   See `docs/02-file-formats/decryption-findings.md` for full detail.
+   Cipher: Twofish-192-CFB-128. No external IV file needed — P_initial = Encrypt_K(zeros)
+   is computed deterministically from the key. Keys captured live via Frida (2026-06-16):
+   - RWN: K_B = `a898d21e2fd6ca294026e5d633d9047f91f7ed35` + 4 zeros
+   - DCY: K_D = `691e8041ab265b4e6ee052ccc946dba4caac60da` + 4 zeros
+   Body P_start = K0 = Encrypt_K(P_initial) — assembly-proven via DCPcrypt partial-block behavior.
+   Decryptors: `scripts/rwn_decrypt.py` (5/5 samples OK) and `scripts/dcy_decrypt.py` (41/48 OK).
+   Note: "mabufoju" passphrase was WRONG; old IV `9cda...` was an artifact of the wrong key.
+   See `docs/02-file-formats/decryption-findings.md` and BROKEN.md B-007 for full detail.
 
-   **Remaining sub-question:** DCY IV (different from RWN IV; XOR = 0x09553584).
-   Same Frida approach, different filter constant. Unlocks `.DCY` data dictionaries.
+   **New open sub-question:** 7 `suwin*.DCY` files fail K_D decryption → see item #13 below.
 
 2. **Exact ACCES_1..20 → module mapping** in the security model.
    Easiest path: watch a running `Enter Users` (`SM-?`) screen save a
@@ -95,8 +98,9 @@ to resolve fully:
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a
    built-in key. Not decoded.
 
-4. **Menu tree storage format.** Is the EVO menu tree a DB table, or
-   inside `EVOERPMENU.DCY`? If DB: can be dumped. If DCY: gated on #1.
+4. **Menu tree storage format.** `EVOERPMENU.DCY` is now decryptable (K_D, 1,466,302 bytes,
+   decrypts to `[text]` type). Binary format not yet parsed — structure unknown. The menu
+   tree is almost certainly inside this file, but field layout has not been reverse-engineered.
 
 5. **`WHOAMI.DBA` format** (35 bytes). Per-workstation identity token.
    Purpose is clear (identifies the seat for locking + license), but
@@ -140,6 +144,14 @@ to resolve fully:
     WO 21, HH 12, QC 11, SD 11, SO 10, BM 8, CM 8, TA 8, US 8,
     and 28 other modules with 1–6 codes each. These programs work
     correctly at runtime — they are simply opaque to static analysis.
+
+13. **`suwin*.DCY` format (7 files).** All 7 `suwin*.DCY` files fail K_D decryption
+    (`pt[0:4] != pt[4:8]`). The remaining keys K_A and K_C are candidates. K_A fired
+    at EVO startup (before any module load), making it a plausible suwin key. K_C purpose
+    is unknown. Try: attempt K_A and K_C against `suwin6.dcy` and `suwin7.dcy`; if both fail,
+    these files may use a third (uncaptured) key or a completely different format/cipher.
+    (Captured live 2026-06-16: K_A = `d97f05679438037073c30628734764020859f77e`,
+    K_C = `fdc2883f6d6537dd667270406d0a4c85969295ac`)
 
 12. **Customization forms (`J7*`).** 20+ customer-specific
     customization modules (`J7AIJCG`, `J7BEFWebInv`, `J7CCCutSheet`,

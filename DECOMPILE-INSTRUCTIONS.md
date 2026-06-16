@@ -1,13 +1,15 @@
 # DECOMPILE-INSTRUCTIONS.md
 
-Status: active-research | Last updated: 2026-06-12
+Status: **CIPHER FULLY SOLVED** | Last updated: 2026-06-16
 
-> **DOCUMENT CONFIDENCE: 78/100**
+> **DOCUMENT CONFIDENCE: 100/100 (cipher) / 30/100 (bytecode — not yet disassembled)**
 >
-> **⚠️ MAJOR CORRECTION (2026-06-12): Cipher is TDCP_twofish, NOT TDCP_3des.**
-> All prior testing assumed 3DES for the .RWN decrypt path. That was wrong. Sections below
-> updated accordingly. TDCP_3des is present in tp7runtime.exe but used in OTHER code paths,
-> not the RWN header validation or main decrypt loop.
+> **✅ CIPHER FULLY SOLVED 2026-06-16 — Keys captured live via Frida; Python decryptors verified.**
+> All prior speculative analysis (passphrase candidates, IV captures, mode guessing) is now
+> superseded. Use `scripts/rwn_decrypt.py` and `scripts/dcy_decrypt.py` directly.
+>
+> **⚠️ Historical note (2026-06-12): Cipher is TDCP_twofish, NOT TDCP_3des.**
+> Kept for reference. TDCP_3des is present in tp7runtime.exe but used in OTHER code paths.
 >
 > What is verified (high confidence):
 > - .RUN file format header structure (magic bytes, "TAS32q" marker, file table at 0x80) — confirmed by direct hex inspection
@@ -279,34 +281,46 @@ Offset  Size  Content
   global [0x74f25c] = VMT 0x74F2A8 = **TDCP_twofish** (class name confirmed from VMT[-0x2C]).
   TDCP_3des (VMT at raw 0x00723694) is present but used in different code paths (0x124B70, 0x31DAC0).
 
-**Encryption model (revised, high confidence):**
+**Encryption model — FULLY CONFIRMED 2026-06-16:**
 ```
 File layout:
-  [0x00–0x07]  8-byte header value (per-file; purpose: IV candidate or validation checksum)
-  [0x08–0x0F]  Unencrypted header metadata (byte[11]=0x89, byte[15]=0x01)
-  [0x10–EOF]   Twofish-encrypted content (mode=2 via cipher.VMT[+0x50])
+  [0x00–0x07]  8-byte validation header (CT; PT = first 4 bytes repeated twice if key is correct)
+  [0x08–EOF]   Encrypted body (CFB-128 Twofish; see decryption algorithm below)
 
-Key derivation (DCPcrypt InitStr pattern, confirmed from code):
-  SHA1(passphrase) → 20 bytes; FillChar(key_buf, 0) then Move(sha1, buf, 20)
-  Key = SHA1(passphrase)[0:20] + zero padding (NOT cycling)
-  Twofish keybits = 160 (may internally use 128 or 192 — needs testing)
-  Passphrase candidate: "An error has occurred during conversion of this field
-    from alpha to the appropriate binary form."  (from global chain [0xB8B0CC])
+Key derivation (confirmed by live Frida capture):
+  SHA1(runtime_passphrase)[0:20] + 4 zero bytes = 24-byte (192-bit) key
+  IV param always 0 → P_initial = Encrypt_K(all-zeros block)
+  Body P_start = K0 = Encrypt_K(P_initial)  [assembly-proven: partial-block CFB omits feedback]
+  Passphrase "mabufoju" was WRONG — raw keys below are all that is needed
+
+Confirmed keys (live Frida capture, 2026-06-16):
+  K_B (RWN) = a898d21e2fd6ca294026e5d633d9047f91f7ed35 + 00000000
+  K_D (DCY) = 691e8041ab265b4e6ee052ccc946dba4caac60da + 00000000
+  K_A       = d97f05679438037073c30628734764020859f77e + 00000000  (purpose unknown)
+  K_C       = fdc2883f6d6537dd667270406d0a4c85969295ac + 00000000  (purpose unknown)
 ```
 
-**Known plaintext anchor (use this to validate any candidate key):**
+**Decryption scripts (ready to use):**
+- `scripts/rwn_decrypt.py` — decrypts .RWN files using K_B; 5/5 local samples verified
+- `scripts/dcy_decrypt.py` — decrypts .DCY files using K_D; 41/48 network share files OK
+- `scripts/twofish_pure.py` — pure Python Twofish; passes NIST 192-bit test vector
+
+**Known plaintext anchor (for future key validation):**
 - File T7INA.RWN, bytes at file offset 0xD5–0xD9: `81 BC 08 E9 3F`
-- These must decrypt to `54 41 53 33 32` ("TAS32")
+- These decrypt to `54 41 53 33 32` ("TAS32")
 - In the decrypted content buffer: TAS32 is at offset 0xC5 (confirmed from code at raw 0x75BCBA)
 
 ---
 
-### Method A: Ghidra analysis of tp7runtime.exe — confirm passphrase and mode
+### Method A: Ghidra analysis of tp7runtime.exe — (SUPERSEDED)
 
-The encryption algorithm is **Twofish (DCPcrypt TDCP_twofish)**. The leading candidate
-passphrase is **"An error has occurred during conversion of this field from alpha to the
-appropriate binary form."** extracted from the global pointer chain [0xB8B0CC]→[0xB6F454]→
-0x00563D84. Ghidra can confirm this is the value actually passed to InitStr at runtime.
+**This method is no longer needed.** The cipher is confirmed Twofish-192-CFB-128; the keys
+K_B and K_D were captured live via Frida on 2026-06-16. Decryptor scripts are working.
+Ghidra analysis was the planned path for confirming the passphrase; since the passphrase
+"An error has occurred..." was wrong and the actual passphrase is runtime-initialized,
+static analysis via Ghidra would not have resolved the blocker anyway.
+
+The section below is kept for historical reference only.
 
 **Setup:**
 1. Download Ghidra from https://ghidra-sre.org/ (NSA open-source reverse engineering tool).
@@ -522,27 +536,26 @@ Preserve the original directory structure under `decompiled/DBAMFG$/`.
 | Task | Status | Notes |
 |------|--------|-------|
 | .RUN header mapped | Partial | Magic, file table confirmed. Bytecode start not yet pinpointed. |
-| .RUN opcode table | Not started | Needs Rosetta Stone analysis against 7 pairs |
-| .RWN header mapped | Partial | First 16 bytes understood; encrypted content starts byte 16 |
-| .RWN encryption algorithm | **CONFIRMED (CORRECTED)** | **Twofish (TDCP_twofish) — NOT 3DES** |
-| TDCP_twofish VMT + class name | **CONFIRMED** | VA 0x74F2A8, raw 0x34E6A8; class name verified from VMT[-0x2C] |
-| TDCP_3des present but not used for RWN | **CONFIRMED** | VMT raw 0x00723694; used at 0x124B70 and 0x31DAC0 only |
+| .RUN opcode table | Started (C:22) | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
+| .RWN file structure | **CONFIRMED** | Bytes 0–7: validation header; bytes 8+: CFB-128 body |
+| .RWN encryption algorithm | **SOLVED 2026-06-16** | Twofish-192-CFB-128; keys K_B/K_D captured live |
+| .RWN decryptor | **DONE** | `scripts/rwn_decrypt.py` — 5/5 samples verified |
+| .DCY decryptor | **DONE** | `scripts/dcy_decrypt.py` — 41/48 network DCY files OK |
+| Twofish Python library | **DONE** | `scripts/twofish_pure.py` — NIST 192-bit test vector passes |
+| Cipher mode = CFB-128 | **CONFIRMED** | Assembly-proven: mode2_handler (0x74EB50) full-block path has feedback update |
+| Body P_start = K0 | **CONFIRMED** | Assembly-proven: partial-block path omits feedback → block_buf = K0 |
+| Key derivation | **CONFIRMED** | SHA1(passphrase)[0:20] + 4 zeros; IV param always 0 |
+| Live keys K_A/K_B/K_C/K_D | **CONFIRMED** | Captured via Frida 2026-06-16; K_B=RWN, K_D=DCY |
+| "mabufoju" passphrase | **WRONG** | Not the runtime passphrase; actual passphrase unknown but not needed |
+| suwin*.DCY (7 files) | **OPEN** | K_D fails; K_A or K_C may be the key — not yet tested |
+| K_A / K_C purposes | **UNKNOWN** | Captured live; which file types they encrypt not yet identified |
+| .DCY binary format | **NOT STARTED** | Decrypted files in `samples/dcy_decrypted/`; field layout unknown |
+| TDCP_twofish VMT + class name | **CONFIRMED** | VA 0x74F2A8, raw 0x34E6A8 |
 | AES ruled out | **CONFIRMED** | AES S-box absent from tp7runtime.exe |
-| XOR ruled out | **CONFIRMED** | Tested 3 XOR key schemes; none match TAS32 at offset 0xC5 |
-| TAS32 at decrypted offset 0xC5 | **CONFIRMED** | VA 0xB5C8B9: ADD EAX,0xC5; MOV ECX,5; CALL 0x45a4c4 (3 instances) |
-| Decrypt function (header validate) | **CONFIRMED** | raw 0x742654 — creates Twofish, calls InitStr, does header check |
-| Main decrypt loop | **CONFIRMED** | Function 0x74e374 — 0x2000-byte chunks via mode=2 Twofish |
-| Mode dispatch | **CONFIRMED** | VMT[+0x50] mode=2 → 0x74eb50; mode=1 → 0x74e9ac (CFB-8) |
-| Function 0x74eb50 (mode=2) | Not disassembled | Likely CBC block mode; needs Ghidra or disasm |
-| Candidate passphrase identified | **CONFIRMED** | "An error has occurred..." from global chain [0xB8B0CC] |
-| InitStr key derivation | **CONFIRMED** | SHA1(pass)[0:20] + zero pad; NOT cycling — confirmed from code |
-| Passphrase tested with Twofish | **NOT YET DONE** | pycryptodome lacks Twofish; need library or x64dbg |
-| Printable-string 3DES search (obsolete) | Superseded | All those tests used 3DES — irrelevant now that cipher is Twofish |
-| Ghidra static analysis | **Next priority** | Confirm passphrase + disassemble 0x74eb50 (mode=2) |
-| x64dbg runtime dump | Fallback | Break in 0x742654 after InitStr call; read key bytes from cipher object |
-| .RWN master key / passphrase | **Candidate found** | "An error has..." — untested; validation blocked on Twofish library |
-| Decryptor script | Not written | Template written; blocked on Twofish Python library |
-| Disassembler script | Not written | Blocked on opcode table |
+| XOR ruled out | **CONFIRMED** | Three XOR schemes tested; none match TAS32 at offset 0xC5 |
+| TAS32 at decrypted offset 0xC5 | **CONFIRMED** | VA 0xB5C8B9: ADD EAX,0xC5; MOV ECX,5; CALL 0x45a4c4 |
+| .RWN bytecode disassembler | Not started | .RWN files now decryptable; opcode table needed first |
+| Ghidra static analysis | Not needed | Key is confirmed live; Ghidra no longer blocking |
 
 ---
 
@@ -601,22 +614,22 @@ Key globals confirmed in DATA section:
 
 ---
 
-## Confidence ratings
+## Confidence ratings (updated 2026-06-16)
 
 - .RUN file table structure: **92/100** — directly verified from hex + source comparison
 - .RUN magic "TAS32q" location: **100/100** — confirmed at offset 0x39
 - .RUN bytecode section location: **30/100** — known to follow file table; exact offset unmapped
-- .RWN bytes 0–7 = per-file nonce/IV: **65/100** — varies per file (good); but Twofish block = 16 bytes so 8-byte IV is half-block; purpose TBD
-- .RWN byte[11]=0x89, byte[15]=0x01 as format marker: **95/100** — confirmed across 8 files
-- .RWN encryption algorithm = Twofish (DCPcrypt): **92/100** — VMT class name confirmed; minor uncertainty on mode=2 behavior
-- .RWN cipher is NOT 3DES for RWN path: **95/100** — TDCP_3des VMT distinct from TDCP_twofish VMT; code path unambiguous
+- .RUN opcode table: **22/100** — 3 opcodes identified; most still unknown
+- .RWN validation header (bytes 0–7): **100/100** — confirmed: PT = CT XOR K0[0:8]; PT[0:4]==PT[4:8]
+- .RWN byte[11]=0x89, byte[15]=0x01 as format marker: **95/100** — confirmed across 8 files (historical; now irrelevant to decryption)
+- .RWN cipher = Twofish-192-CFB-128: **100/100** — live capture + Python decryption verified
+- RWN key K_B: **100/100** — `a898d21e2fd6ca294026e5d633d9047f91f7ed35` + 4 zeros; 5/5 samples pass
+- DCY key K_D: **100/100** — `691e8041ab265b4e6ee052ccc946dba4caac60da` + 4 zeros; 41/48 DCY files pass
+- Body P_start = K0: **100/100** — assembly-proven via partial-block CFB path in mode2_handler (0x74EB50)
+- Key derivation = SHA1 + 4 zeros: **100/100** — confirmed from InitStr disassembly + live key_bits=160
+- "mabufoju" passphrase: **WRONG** — present in binary but not the runtime passphrase
+- Old IV `9cda...`: **WRONG** — was Decrypt_K_wrong(K0) using wrong key; obsolete
 - AES ruled out: **100/100** — S-box absent from entire binary
 - XOR ruled out: **100/100** — three XOR schemes tested, none produce TAS32 at offset 0xC5
-- TAS32 at decrypted offset 0xC5: **96/100** — confirmed (ADD EAX, 0xC5 + MOV ECX, 5 + CALL compare), three instances; VA 0xB5C8B9
-- Decrypt function at VA 0x742654: **90/100** — Twofish creation, InitStr call, and header validate all observed
-- Main decrypt loop at 0x74e374: **90/100** — 0x2000-byte chunked VMT[+0x50] mode=2 calls confirmed
-- Mode=2 → 0x74eb50 (cipher block mode): **88/100** — dispatch chain confirmed; internal behavior of 0x74eb50 not yet disassembled
-- Candidate passphrase "An error has...": **55/100** — confirmed as the static value at global chain destination; uncertain whether it is runtime-modified before use
-- InitStr key derivation = SHA1 + zero pad (not cycling): **88/100** — confirmed from TDCP_3des.Init disassembly; Twofish Init likely identical pattern
-- Passphrase produces TAS32 at 0xC5: **0/100** — not yet tested (blocked on Twofish Python library)
-- DCPcrypt SHA1 key derivation applies to Twofish too: **80/100** — InitStr is shared infrastructure; both TDCP_3des and TDCP_twofish call the same InitStr at 0x74e1f8
+- TAS32 at decrypted offset 0xC5: **100/100** — confirmed via decryption of T7INA.RWN ✓
+- suwin*.DCY key: **0/100** — K_A/K_C not yet tested against these 7 files

@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-16 (session 5)
+Last updated: 2026-06-16 (session 5 — cipher solved; batch decryptors rebuilt; assembly proof of P_start=K0)
 
 ---
 
@@ -84,25 +84,30 @@ Current decryption scripts:
 
 | Area | Status | Confidence | Notes |
 |------|--------|-----------|-------|
-| `.RWN` cipher identified | ✅ Done | 95/100 | Twofish-CFB, VMT + q-boxes confirmed |
-| Passphrase | ✅ Confirmed | 90/100 | 'mabufoju' at file offset 0x75D154 |
-| Key derivation | ✅ Confirmed | 90/100 | SHA1 + 4 zeros = 192-bit |
-| Validation structure | ✅ Confirmed | 88/100 | pt[0:4]==pt[4:8], XOR constant 0x3E0A37C5 |
-| twofish_pure.py implementation | ✅ Done | 95/100 | Passes NIST 192-bit test vector |
-| Initial IV (block_buf) | ✅ Confirmed | 100/100 | IV = `9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e` |
-| `.RWN` decryptor script | ✅ Done | — | 1,144/1,145 OK; `samples/rwn_decrypted/decrypt_summary.csv` |
+| `.RWN` / `.DCY` cipher | ✅ SOLVED | 100/100 | Twofish-192-CFB; assembly-proven 2026-06-16 |
+| RWN key K_B | ✅ Confirmed | 100/100 | `a898d21e2fd6ca294026e5d633d9047f91f7ed35` (live Frida) |
+| DCY key K_D | ✅ Confirmed | 100/100 | `691e8041ab265b4e6ee052ccc946dba4caac60da` (live Frida) |
+| Passphrase "mabufoju" | ❌ WRONG | — | Never the runtime passphrase; actual passphrase unknown but keys are captured |
+| Key derivation | ✅ Confirmed | 100/100 | SHA1(passphrase)[0:20] + 4 zeros = 192-bit; IV param always 0 |
+| Body P_start = K0 | ✅ Confirmed | 100/100 | Assembly-proven: DCPcrypt partial-block = no feedback update → block_buf stays K0 |
+| Validation structure | ✅ Confirmed | 100/100 | pt[0:4]==pt[4:8]; K0 XOR filter: RWN=0x3E0A37C5, DCY=0x0955DC84 |
+| `twofish_pure.py` | ✅ Done | 95/100 | Passes NIST 192-bit test vector |
+| `.RWN` decryptor | ✅ Done | 99/100 | `scripts/rwn_decrypt.py` — K_B key, no IV file; 5/5 samples verified |
+| `.DCY` decryptor | ✅ Done | 99/100 | `scripts/dcy_decrypt.py` — K_D key, no IV file; 41/48 OK (7 suwin* different format) |
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
-| `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool; see run-tas6-bytecode.md |
+| `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool |
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
-| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 8/100 | Confirmed correct decryption; uniform bytes = externalized strings; opcodes unknown |
-| `.DCY` data dictionary | 🔄 Partial | 82/100 | IV confirmed; 41/48 files decrypt; binary format not yet parsed |
+| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 15/100 | Files decrypt correctly; no opcode mappings yet |
+| `.DCY` binary format | ⬜ Not started | 0/100 | Decrypted files in `samples/dcy_decrypted/`; structure unknown |
+| `suwin*.DCY` format | ⬜ Unknown | 0/100 | 7 files; K_D fails; possibly use K_A or K_C |
+| K_A / K_C key purposes | ⬜ Unknown | 0/100 | Captured live; which file types they encrypt is unknown |
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
 | Database schema | ✅ Done | 92/100 | 659 tables, 24,113 fields extracted |
-| Module documentation | 🔄 Partial | 72/100 | 50+ modules now documented from DFM+CHM; 16 still opaque (no DFMs, no CHM) |
+| Module documentation | 🔄 Partial | 72/100 | 50+ modules documented from DFM+CHM; 16 still opaque |
 | `PROJECT-STRUCTURE.md` | 🔄 In progress | 72/100 | Updated each session |
-| `HELP-RESOURCES.md` | 🔄 In progress | 75/100 | Updated 2026-06-15 — 25+ module sections added |
-| `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated 2026-06-15 |
+| `HELP-RESOURCES.md` | 🔄 In progress | 75/100 | Updated 2026-06-15 — 25+ module sections |
+| `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated 2026-06-16 |
 
 ---
 
@@ -123,22 +128,26 @@ Current decryption scripts:
 
 ## 7. Highest-value next tasks (in priority order)
 
-1. **Parse DCY binary format** — decrypted DCY files are in `samples/dcy_decrypted/`.
+1. **Parse DCY binary format** — decrypted DCY files in `samples/dcy_decrypted/` (regenerated 2026-06-16 with K_D).
    Reverse-engineer the binary structure to extract table names, field names, field types.
-   Start with `DBAMENU_LOGIN.DCY.dec` (2,234 bytes, smallest) then `DUMMY.DCY.dec`.
+   Start with `DBAMENU_LOGIN.DCY.dec` (1,453 bytes, smallest) then `DUMMY.DCY.dec`.
    Unlocks: field name resolution for all 659 tables → meaningful RWN bytecode analysis.
 
-2. **BKMRF 3-way compile diff** — diff `BKMRF.org2` vs `BKMRF.TEST` vs `BKMRF.RUN` to
-   isolate stable bytes (opcodes) from variable bytes (addresses). High confidence gain.
+2. **Identify K_A / K_C purposes** — try K_A and K_C against `suwin*.DCY` (7 files).
+   Also watch what files EVO opens at startup (Frida file-open hook) — K_A fired at boot.
 
-3. **`.RUN` opcode mapping (continued)** — continue from BKAWLB analysis; map
+3. **`.RWN` bytecode disassembly** — now fully decryptable. Start with `MDUMMY.RWN` or smallest
+   T7 file. Use BKMRF 3-way compile diff (BKMRF.org2 vs BKMRF.TEST vs BKMRF.RUN) to isolate
+   stable bytes (opcodes) from variable bytes (addresses). Build opcode table.
+
+4. **`.RUN` opcode mapping (continued)** — continue from BKAWLB analysis; map
    `if`/`goto`/`proc`/`return` constructs. Use `scripts/tas6_analyze.py`.
 
-4. **Per-table field meaning documentation** — 659 tables, most without narrative docs.
+5. **Per-table field meaning documentation** — 659 tables, most without narrative docs.
    Start with Tier 1 tables in `EVO-DECOMPILE-TODO.md §16`. Fully unblocked.
 
-5. **Module documentation** — Read `.DFM` forms and `.RTM` reports for undocumented
+6. **Module documentation** — Read `.DFM` forms and `.RTM` reports for undocumented
    modules (DE, FA, JC, SC, SH, LC, SR, QC, etc.). Fully unblocked.
 
-6. **Business workflow recipes** — Document end-to-end processes (SO→ship→invoice,
+7. **Business workflow recipes** — Document end-to-end processes (SO→ship→invoice,
    WO lifecycle, AP check run, etc.) in `docs/` and `HELP-RESOURCES.md`. Unblocked.

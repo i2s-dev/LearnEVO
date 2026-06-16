@@ -292,7 +292,9 @@ runs, the block_buf memory is NOT the clean first-page-from-OS zero memory; it c
 whatever was last written to that heap address by an earlier free.
 
 **Confirmed facts (all verified by disassembly):**
-- Passphrase: `'mabufoju'` — hardcoded at file 0x75D154 / VA 0xB5DD54 ✓
+- ~~Passphrase: `'mabufoju'` — hardcoded at file 0x75D154 / VA 0xB5DD54~~
+  **⚠️ WRONG (2026-06-16): "mabufoju" is NOT the runtime passphrase. See B-007.**
+  String exists in binary but is not used as cipher passphrase. Actual key = K_B (live Frida).
 - Hash: SHA1 — `TDCP_sha1` class name confirmed via VMT at file 0x34BAE4 ✓
 - 192-bit key: SHA1 digest (20 bytes) + 4 zero bytes ✓
 - Mode: CFB (mode=2 written to cipher+0x34 in validate_func) ✓
@@ -320,18 +322,26 @@ test confirms twofish_pure.py is correct, so the implementation is not the probl
 **RESOLUTION (2026-06-15):**
 IV captured via `get_iv_frida.py` v5 (EncryptBlock hook + XOR filter).
 User opened Work Orders module (WO-A) from the EVO main menu.
+K0 (live EncryptBlock output) confirmed:
 
-    IV = 9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e
-    K0 = Encrypt(IV) = 8d eb 94 90 48 dc 9e ae 9f df 17 79 cd c8 b5 51
+    K0 = 8d eb 94 90 48 dc 9e ae 9f df 17 79 cd c8 b5 51
     K0[0:4]^K0[4:8] = 0x3E0A37C5  PASS
 
 Validation against 20 .RWN files: all pass pt[0:4]==pt[4:8]. ✓
 Full batch decrypt (1,124 files): running. Saved to scripts/iv_bytes.bin.
 
-**Lesson:** DCPcrypt's `TDCP_blockcipher` base class allows using a cipher in
-streaming mode before any IV is explicitly set — block_buf is never zeroed by the
-constructor or by `Init`. Any code relying on "IV defaults to zero" is wrong for this
-implementation. The IV can only be captured at runtime (Frida onLeave EncryptBlock).
+**⚠️ CORRECTION (2026-06-16) — IV `9cda...` was WRONG:**
+The original resolution recorded `IV = 9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e`.
+This was computed as `Decrypt_K_wrong(K0)` using `key=sha1("mabufoju")+4zeros` (the wrong
+key). The EncryptBlock hook correctly captured `K0 = 8deb9490...`, but the Python script
+then backcalculated IV = `Decrypt(K0)` with the wrong key — yielding `9cda...`.
+Correct approach (confirmed 2026-06-16): P_initial = Encrypt_K_B(zeros) is deterministic
+from K_B; no external IV file is needed at all. `scripts/iv_bytes.bin` is obsolete.
+The "mabufoju passphrase confirmed" fact listed above was also WRONG — see B-007.
+
+**Lesson:** DCPcrypt's `TDCP_blockcipher` base class sets P = Encrypt_K(zeros) when
+IV param = 0. No IV capture needed — P_initial is fully deterministic once the key
+is known. Capture the key (not the IV) via Frida.
 
 ---
 
