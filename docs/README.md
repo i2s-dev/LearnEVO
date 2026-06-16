@@ -43,9 +43,11 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [.SRC — TAS Pro 4GL source language](02-file-formats/src-tas-pro-language.md) — *draft*
 - [.DFM — Delphi form format (plaintext)](02-file-formats/dfm-delphi-forms.md) — *draft*
 - [.DCY / .RWN — compiled proprietary binaries](02-file-formats/dcy-rwn-binaries.md) — *partially decrypted*
+- [.RWN binary format — internal structure (header, proc/var tables, string pool, dispatch table)](02-file-formats/rwn-binary-format.md) — *verified, 2026-06-16*
 - [RWN/RUN string dumps — analysis technique + ISTS.CFG extraction (2,575 files)](02-file-formats/rwn-strings-analysis.md) — *verified*
 - [.DCY / .RWN — decryption findings (Twofish-CFB, IV confirmed 2026-06-15)](02-file-formats/decryption-findings.md) — *FULLY SOLVED — 1144/1145 files decrypt*
 - [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — file structure + key opcodes*
+- [TAS Pro 7 data infrastructure modules (wtasdmgr, wtasdatam, wtasinit — FILEDICT system)](02-file-formats/tas-data-infrastructure.md) — *verified, 2026-06-16*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*
 - [.IMP / .UPD / .XPT / others](02-file-formats/other-formats.md) — *verified*
 
@@ -57,6 +59,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [GL + WO form analysis — 24 GL forms, WO lifecycle (68 forms), journal types, WO status codes](03-modules/gl-wo-form-analysis.md) — *partial*
 - [BM + IN form analysis — BOM status/type codes, 16 BM forms, 67+ IN forms confirmed](03-modules/bm-in-form-analysis.md) — *partial*
 - [AP check printing workflow — complete step-by-step from Bkaph.SRC + Bkapha.SRC](03-modules/ap-check-workflow.md) — *verified*
+- [Module ↔ Database cross-reference — which RWN opens which tables, ownership matrix](03-modules/module-db-cross-reference.md) — *verified, 2026-06-16*
 - [Undocumented modules — 20+ modules with DFM-confirmed forms (AM, FA, JC, SA, SH, SM, PR, PO, etc.)](03-modules/undocumented-modules.md) — *partial*
 
 **Per-module deep-dive pages** (each joins menu codes + schema + UI forms):
@@ -120,6 +123,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*
 - [Tier 1 tables — 12 core tables fully documented (AHSYLOG, BKARCUST, BKARINV, BKAPVEND, BKGLCOA, WORKORD, BKSYMSTR, etc.)](04-data-dictionary/tier1-tables.md) — *partial*
 - [Tier 2 tables — BKSLEVEL (SOLVED), BKPRGLFL (SOLVED), BKAPPO, BKAPPOL, WO detail tables, payroll, BKYSMSTR YN flags](04-data-dictionary/tier2-tables.md) — *partial*
+- [Variable-to-field name map — TAS program variable names (BKIC.PROD.*, BKAR.*, BKAP.*) mapped to DB fields](04-data-dictionary/variable-field-map.md) — *verified, 2026-06-16*
 - [Primary keys — 200+ tables with primary key fields from INDEX.DDF](04-data-dictionary/primary-keys.md) — *partial*
 
 ### 07 — Reports (ReportBuilder .RTM)

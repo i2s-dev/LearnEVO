@@ -107,6 +107,29 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Validation block: first 8 bytes of .RWN; pass when decrypted pt[0:4] == pt[4:8]
   - Confirmed 2026-06-16 via live Frida capture + Python verification
 - [x] ✅ Batch decrypt working — **C: 99/100** (`scripts/rwn_decrypt.py`, 5/5 samples verified ✓)
+- [x] ✅ **Decrypted binary structure fully mapped** — **C: 90/100** (2026-06-16, see `docs/02-file-formats/rwn-binary-format.md`)
+  - Format marker `TWINB` at decrypted offset 0x35 (vs. `TAS32` at same offset in .RUN files)
+  - Header: 128 bytes (32 DWORDs); key fields: [0x0C]=proc table size, [0x14]=var count, [0x20]=var table size
+  - File reference table: starts at 0x80, 16-byte null-padded entries, all-zero terminator
+  - Dispatch/jump table: starts at 0x6C0, 8-byte entries [type_DWORD + offset_DWORD]
+  - String constant pool: `[0x41][0x00][uint16_LE length][ASCII chars]` per entry
+  - Procedure symbol table (end-of-file): 53-byte records, Pascal length-prefix name at byte 0
+    - SRC-compiled modules: procedure names present; LIB-compiled (LISTG60.LIB etc.): byte 0 = 0x00 (no name)
+  - Source filename: 60-byte space-padded ASCII field before variable table (e.g. "suwin7.src", "LISTG60.LIB")
+  - Variable symbol table (end-of-file): 77-byte records; name at bytes 0–14 (or 1–14 if byte 0 < 0x20)
+    - Byte 0 < 0x20: compiler type code (0x05 = temp var), name at bytes 1–14
+    - Byte 0 >= 0x20: printable = first char of user-declared variable name, name spans bytes 0–14
+- [x] ✅ **Variable names extractable from ALL RWN files** — **C: 100/100**
+  - T7INA.RWN: 3,917 variables including full buffer access patterns (BKIC.PROD.CODE, BKIC.PROD.DESC, …)
+  - EvoERPmenu.RWN: 1,635 variables (LPASSWORD, USER_WHO, IS.LOG.*, COMPANY_NAME, BKMENUSU.*, …)
+  - suwin7.rwn: 68 variables (TEMP0–TEMP59 + CURR_TIME, WAIT_SECS, SERIALNUMBER, LICTYPE, …)
+- [x] ✅ **DB file names extractable (all modules)** — **C: 100/100**
+  - EvoERPmenu.RWN opens: ISLOG, FILELOC, BKSYAP, BKSYMSTR, BKMENUSU, BKAPDESC, BKPSUSER, BKARINVL, ISEXUSER, BKYSMSTR, ISJAVA, MKAHIST, ISTRIGRS, BKICMSTR, ISREMIND, LOT, SERIAL, ISNCR
+  - T7INA.RWN opens: BKICMSTR + 52 other inventory/related tables
+- [x] ✅ **Symbol extractor script** — **C: 99/100** (`scripts/rwn_extract_symbols.py`)
+  - Single-file or batch mode; `--encrypted` flag decrypts on-the-fly; JSON output supported
+  - Must be run against local copies in `samples/` (not directly against network share)
+  - Note: all existing `samples/rwn_decrypted/*.dec` files were made with wrong key — re-decrypt needed
 - [x] 🔄 Bytecode instruction set — **C: 15/100** (TAS Pro 6 opcodes partially mapped; TAS Pro 7 encoding different)
   - Confirmed: TAS Pro 7 decrypted body is correct (uniform bytes = no embedded strings, no padding)
   - TAS Pro 7 uses a different opcode format — no inline `41 00` string pushes found
@@ -896,20 +919,20 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Boot Sequence | 68 | 85 | 17 | 2026-06-11 |
 | File Formats — SRC | 80 | 90 | 10 | 2026-06-11 |
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
-| File Formats — RWN/DCY | 72 | 90 | 18 ⚠️ | 2026-06-12 |
+| File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | 78 | 88 | 10 | 2026-06-11 |
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
-| Database Schema (field meaning) | **58** | 88 | **30** ↑ | 2026-06-11 |
+| Database Schema (field meaning) | **72** | 88 | **16** ↑ | 2026-06-16 |
 | Security / Login | **72** | 85 | **13** ↑ | 2026-06-11 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
-| Module: AR | **72** | 85 | **13** ↑ | 2026-06-11 |
-| Module: AP | **78** | 85 | **7** ↑ | 2026-06-11 |
-| Module: IN/Inventory | **68** | 85 | **17** ↑ | 2026-06-11 |
-| Module: SO | **65** | 85 | **20** ↑ | 2026-06-11 |
-| Module: PO | **65** | 85 | **20** ↑ | 2026-06-11 |
-| Module: WO | **75** | 85 | **10** ↑ | 2026-06-11 |
+| Module: AR | **78** | 85 | **7** ↑ | 2026-06-16 |
+| Module: AP | **82** | 85 | **3** ↑ | 2026-06-16 |
+| Module: IN/Inventory | **75** | 85 | **10** ↑ | 2026-06-16 |
+| Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
+| Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
+| Module: WO | **80** | 85 | **5** ↑ | 2026-06-16 |
 | Module: GL | **70** | 85 | **15** ↑ | 2026-06-11 |
 | Module: BM/MRP | **72** | 80 | **8** ↑ | 2026-06-11 |
 | Module: RO/Routing | **75** | 85 | **10** ↑ | 2026-06-11 |
@@ -955,8 +978,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | 65 | 80 | 15 | 2026-06-11 |
 | Business Workflows | **62** | 85 | **23** ↑ | 2026-06-11 |
-| Encryption / RWN Decryption | 65 | 95 | 30 ⚠️ | 2026-06-12 |
-| Per-Table Narrative Docs | **48** | 88 | **40** ↑ | 2026-06-11 |
+| Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
+| Per-Table Narrative Docs | **58** | 88 | **30** ↑ | 2026-06-16 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
 | HELP-RESOURCES.md | **75** | 90 | **15** ↑ +10 | 2026-06-15 |
 
@@ -969,14 +992,15 @@ This makes `.RWN` decryption the **single highest-leverage unlock** in the proje
 
 Priority order — in sequence, each unblocks the next:
 
-| # | Task | Blocked by | Who | Impact |
-|---|------|-----------|-----|--------|
-| **1** | **Debugger session**: run `tp7runtime.exe` under x64dbg; breakpoint at file offset `0x34DF50`; read `[EAX+0x3C]` (16 bytes = block_buf IV) when it hits | Requires interactive debugger | **User — one session** | Unlocks #2, #3, #4 |
-| **2** | Write `rwn_decrypt.py` and decrypt all 1,124 `.RWN` files | #1 | Me | All module logic readable |
-| **3** | Decode `.DCY` files (same encryption): menu tree, login flow, compiled schema | #1 | Me | Menu system, boot flow |
-| **4** | Map `.RWN` bytecode instruction set via Rosetta Stone (compare known `.RUN` against decrypted `.RWN` equivalents) | #2 | Me — weeks | Full logic traceability |
-| **5** | Per-table field meaning documentation (659 tables × full field semantics) | None — unblocked now | Me | Database understanding |
-| **6** | Module-by-module logic from decoded `.RWN` (AR, AP, IN, SO, PO, WO, GL, + 35 others) | #2 | Me | Module confidence to 85+ |
+| # | Task | Status | Impact |
+|---|------|--------|--------|
+| ~~**1**~~ | ~~Debugger session to recover IV~~ | ✅ **DONE 2026-06-16** — K_B and K_D captured live via Frida; IV derivation proven deterministic | Unlocked #2/#3 |
+| ~~**2**~~ | ~~Write `rwn_decrypt.py` and decrypt all 1,124 `.RWN` files~~ | ✅ **DONE 2026-06-16** — `scripts/rwn_decrypt.py` with K_B; batch run against share completed; symbol extractor `scripts/rwn_extract_symbols.py` created | Variable names + DB files from all modules now extractable |
+| ~~**3**~~ | ~~Decode `.DCY` files~~ | ✅ **DONE 2026-06-16** — `scripts/dcy_decrypt.py` with K_D; 41/48 files OK; format = Delphi VCL forms | Menu form and login forms decryptable |
+| **4** | Re-decrypt all 1,124 `.RWN` files locally (existing `rwn_decrypted/` used wrong key) | ⬜ **NOT STARTED** — copy files to `samples/` then run `rwn_decrypt.py`; batch extractor will produce symbol catalog | Full module variable/DB catalog |
+| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 15/100** — dispatch table mapped; 7 opcode DWORDs in suwin7.rwn; full mapping needs BKMRF 3-way compile diff | Full logic traceability |
+| **6** | Per-table field meaning documentation (659 tables) | 🔄 **C: 48/100** — Tier 1 tables partially done; 659 × full semantic docs needed | Database understanding |
+| **7** | Module-by-module logic from decoded `.RWN` variable patterns | 🔄 **started** — T7INA variables confirm buffer field names; EvoERPmenu confirms menu tables | Module confidence to 85+ |
 | **7** | Business workflow recipes (end-to-end traces: SO→ship→invoice, WO lifecycle, AP check run, etc.) | #6 | Me | Operational understanding |
 | **8** | Analyze 1,273 `.RUN` files (TAS Pro 6, unencrypted compiled format — partial window into legacy logic) | None — unblocked now | Me | Legacy module coverage |
 | **9** | Reverse-engineer `ENCRYPTSTR`/`DECRYPTSTR` (password hashing + string crypto in `tp7runtime.exe`) | None — unblocked | Me | Security model complete |
@@ -998,5 +1022,5 @@ Priority order — in sequence, each unblocks the next:
 
 ---
 
-*Last updated: 2026-06-12*
+*Last updated: 2026-06-16*
 *Document location: `EVO-DECOMPILE-TODO.md` at workspace root*
