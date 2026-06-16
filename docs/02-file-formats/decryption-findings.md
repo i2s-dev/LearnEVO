@@ -97,14 +97,34 @@ K_B = bytes.fromhex('a898d21e2fd6ca294026e5d633d9047f91f7ed35')
 plaintext = decrypt_evo_file(raw_rwn, K_B)
 ```
 
-### Critical detail — body P_start = K0, not P_initial
+### Critical detail — body P_start = K0 (assembly-confirmed 2026-06-16)
 
-After reading the 8-byte validation header (which uses K0[0:8] as keystream), the body
-CFB-128 stream does NOT continue where the partial block left off. Instead it starts fresh
-with P = K0. Confirmed: `Decrypt_KD(emp_ks0) = K0` (Python test, 2026-06-16).
+**Mechanism (from `mode2_handler` disassembly, file 0x34DF50):**
 
-This means validate_func/body_load effectively re-arm the cipher state at K0 before
-processing the body — not a standard CFB-128 continuation of the partial 8-byte header block.
+DCPcrypt's CFB mode has two separate code paths depending on block completeness:
+
+- **Full 16-byte block** (body): after XOR, executes `Move(CT[0:16] → block_buf)` — CFB feedback update.
+- **Partial block** (8-byte validation header): `EncryptBlock(P_initial → K0)` runs, then XOR, but **no** `Move(CT → block_buf)` is executed.
+
+Relevant assembly (partial-block path, `0x74EBF6`–`0x74EC27`):
+```
+0x74EBF6  mov eax, [ebx+0x3c]  ; block_buf ptr (P_initial on first call)
+0x74EC01  call [esi+0x58]       ; EncryptBlock(P in-place) → block_buf = K0
+0x74EC13  call 0x403544         ; Move(CT[0:8] → output[0:8])
+0x74EC27  call 0x74f18c         ; XorBuf(output[0:8] ^= K0[0:8], 8)
+                                 ; <- NO Move(CT → block_buf) here
+```
+
+Full-block path (body loop, `0x74EBD1`):
+```
+0x74EBD1  call 0x403544         ; Move(CT[0:16] → block_buf) <- feedback update ONLY for full blocks
+```
+
+**Result:** After the 8-byte partial validation block, `block_buf = K0`. No code resets or re-arms it.
+When `body_load` (0x74E374) calls `mode2_handler` for the body chunks, the same cipher object
+is used with `block_buf` still = K0. So body block 1 keystream = `Encrypt(K0)`.
+
+This is standard DCPcrypt partial-block CFB behavior, not a special re-arming. Confidence: **100/100**.
 
 ---
 
