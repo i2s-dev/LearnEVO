@@ -1,0 +1,49 @@
+path,status,size_bytes,content_sniff,error,pt_len
+\\i2s109-solidcrm\DBAMFG$\    1   suwin6.dcy,FAIL,32876,-,Validation failed: pt[0:4]=17cd5179 != pt[4:8]=4107fd78,
+\\i2s109-solidcrm\DBAMFG$\    1   suwin7.dcy,FAIL,3527,-,Validation failed: pt[0:4]=a4fef06d != pt[4:8]=91e96864,
+\\i2s109-solidcrm\DBAMFG$\.F.     suwin6.dcy,FAIL,32876,-,Validation failed: pt[0:4]=17cd5179 != pt[4:8]=4107fd78,
+\\i2s109-solidcrm\DBAMFG$\.F.     suwin7.dcy,FAIL,3527,-,Validation failed: pt[0:4]=a4fef06d != pt[4:8]=91e96864,
+\\i2s109-solidcrm\DBAMFG$\DBAMENU_FLEX.DCY,OK,1125464,dcy_hdr_0xc9070b64,,1125464
+\\i2s109-solidcrm\DBAMFG$\DBAMENU_LOGIN.DCY,OK,2234,dcy_hdr_0xf8c84928,,2234
+\\i2s109-solidcrm\DBAMFG$\DBAMENU_RUNPRG.DCY,OK,1453,dcy_hdr_0x14792fd0,,1453
+\\i2s109-solidcrm\DBAMFG$\DBAMENU_SELCOMP.DCY,OK,1567,dcy_hdr_0x958714b2,,1567
+\\i2s109-solidcrm\DBAMFG$\DUMMY.DCY,OK,5764,dcy_hdr_0x200610ba,,5764
+\\i2s109-solidcrm\DBAMFG$\EVOCHANGEPASS.DCY,OK,13999,dcy_hdr_0xbd5cce4c,,13999
+\\i2s109-solidcrm\DBAMFG$\EVODC.DCY,OK,745884,dcy_hdr_0x389c2c4a,,745884
+\\i2s109-solidcrm\DBAMFG$\EVODCEMSG.DCY,OK,8273,dcy_hdr_0x7d5206d4,,8273
+\\i2s109-solidcrm\DBAMFG$\EVODCMENU2.DCY,OK,89450,dcy_hdr_0xc61e57fe,,89450
+\\i2s109-solidcrm\DBAMFG$\EVODCMESSAGE.DCY,OK,8140,dcy_hdr_0x58e5cdf3,,8140
+\\i2s109-solidcrm\DBAMFG$\EVODC_LOGIN.DCY,OK,17570,dcy_hdr_0x4fec2e30,,17570
+\\i2s109-solidcrm\DBAMFG$\EVOEMSG.DCY,OK,7978,dcy_hdr_0xdcaaa5cc,,7978
+\\i2s109-solidcrm\DBAMFG$\EVOERPBACKUP.DCY,OK,39899,dcy_hdr_0x11337be3,,39899
+\\i2s109-solidcrm\DBAMFG$\EVOERPMENU.DCY,OK,1466302,dcy_hdr_0x876292c6,,1466302
+\\i2s109-solidcrm\DBAMFG$\EVOERPSCHED.DCY,OK,12877,dcy_hdr_0x235ebf66,,12877
+\\i2s109-solidcrm\DBAMFG$\EVOERROR.DCY,OK,125704,dcy_hdr_0x41e21a3a,,125704
+\\i2s109-solidcrm\DBAMFG$\EVOEXPIRE.DCY,OK,25876,dcy_hdr_0xbdd139bd,,25876
+\\i2s109-solidcrm\DBAMFG$\EVOGETDATE.DCY,OK,36469,dcy_hdr_0x603bbcda,,36469
+\\i2s109-solidcrm\DBAMFG$\EVOLOGO.DCY,OK,8325,dcy_hdr_0x5a5aad50,,8325
+\\i2s109-solidcrm\DBAMFG$\EVOMENU_LOGIN.DCY,OK,17547,dcy_hdr_0x19abe169,,17547
+\\i2s109-solidcrm\DBAMFG$\EVOMENU_RUNPRG.DCY,OK,7551,dcy_hdr_0x43cf437e,,7551
+\\i2s109-solidcrm\DBAMFG$\EVOMENU_SELCOMP.DCY,OK,7671,dcy_hdr_0x69546287,,7671
+\\i2s109-solidcrm\DBAMFG$\EVOMESSAGE.DCY,OK,8116,dcy_hdr_0xc5a0dc52,,8116
+\\i2s109-solidcrm\DBAMFG$\EVORESETPASS.DCY,OK,12998,dcy_hdr_0xb2d2509f,,12998
+\\i2s109-solidcrm\DBAMFG$\EVOUSERS.DCY,OK,27027,dcy_hdr_0x23d7aefd,,27027
+\\i2s109-solidcrm\DBAMFG$\EVOVIEW.DCY,OK,821043,dcy_hdr_0xb4f4d1c0,,821043
+\\i2s109-solidcrm\DBAMFG$\GETALPHAGEN.DCY,OK,11057,dcy_hdr_0x30d3f29f,,11057
+\\i2s109-solidcrm\DBAMFG$\IMAGEPRINT.DCY,OK,6833,dcy_hdr_0x94c47e97,,6833
+\\i2s109-solidcrm\DBAMFG$\ISABOUT.DCY,OK,136471,dcy_hdr_0x437972e4,,136471
+\\i2s109-solidcrm\DBAMFG$\ISDCABOUT.DCY,OK,579318,dcy_hdr_0x876d3297,,579318
+\\i2s109-solidcrm\DBAMFG$\ISSPLASH.DCY,OK,140858,dcy_hdr_0xc6953efd,,140858
+\\i2s109-solidcrm\DBAMFG$\MDUMMY.DCY,OK,5678,dcy_hdr_0xd484de56,,5678
+\\i2s109-solidcrm\DBAMFG$\NZEDEFS.DCY,OK,24835,dcy_hdr_0x37e583f9,,24835
+\\i2s109-solidcrm\DBAMFG$\NZEMAILTLL.DCY,OK,109432,dcy_hdr_0xe02b0171,,109432
+\\i2s109-solidcrm\DBAMFG$\PRINTTLL.DCY,OK,46111,dcy_hdr_0xe51cb850,,46111
+\\i2s109-solidcrm\DBAMFG$\PRINTTLLPSWD.DCY,OK,7205,dcy_hdr_0x9e0ef1b4,,7205
+\\i2s109-solidcrm\DBAMFG$\suwin6.dcy,FAIL,32876,-,Validation failed: pt[0:4]=17cd5179 != pt[4:8]=4107fd78,
+\\i2s109-solidcrm\DBAMFG$\suwin7.dcy,FAIL,3527,-,Validation failed: pt[0:4]=a4fef06d != pt[4:8]=91e96864,
+\\i2s109-solidcrm\DBAMFG$\T7CLOADING.DCY,OK,6555,dcy_hdr_0x6d32c629,,6555
+\\i2s109-solidcrm\DBAMFG$\T7JAVARUN.DCY,OK,10356,dcy_hdr_0x9c9cd712,,10356
+\\i2s109-solidcrm\DBAMFG$\T7POPGET.DCY,OK,18217,dcy_hdr_0xbd7d6231,,18217
+\\i2s109-solidcrm\DBAMFG$\WBKLOOKUP.DCY,OK,23708,dcy_hdr_0x7b7d6c06,,23708
+\\i2s109-solidcrm\DBAMFG$\WBKLUGRID.DCY,OK,48200,dcy_hdr_0x3160f6a6,,48200
+\\i2s109-solidcrm\DBAMFG$\Default\suwin6.dcy,FAIL,32876,-,Validation failed: pt[0:4]=17cd5179 != pt[4:8]=4107fd78,

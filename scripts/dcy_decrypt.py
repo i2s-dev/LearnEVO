@@ -4,32 +4,42 @@ scripts/dcy_decrypt.py
 
 Batch decryptor for EvoERP .DCY (data dictionary) files.
 
-Same Twofish-CFB cipher as .RWN, but different IV.
+CIPHER PARAMETERS (confirmed 2026-06-16 via live Frida capture + Python verification)
+---------------------------------------------------------------------------------------
+  Algorithm  : Twofish-192, CFB-128 mode
+  Key        : K_D = 691e8041ab265b4e6ee052ccc946dba4caac60da (raw 20 bytes)
+               K_D_192 = K_D + 00000000 (24 bytes)
+  IV param   : always 0  →  P_initial = Encrypt_K(all-zeros block)
+  Body P_start: K0 = Encrypt_K(P_initial)  — NOT P_initial itself
+  Validation : header_pt[0:4] == header_pt[4:8]
 
-IV_dcy = cd 47 af 18 e0 d1 c3 8c f1 d8 a0 67 fc 3d da 28
-         (captured 2026-06-15 via Frida spawn hook on evoerp.exe)
-         Verified: Twofish_ECB_Encrypt(key, IV_dcy)[0:4]^[4:8] = 0x0955DC84
-         Matches all 41 of 41 "standard" .DCY files on the share.
+Verified: K_D decrypts MDUMMY.DCY → "object EditForm1: TEditForm1..." ✓
+
+Per-file decryption (see docs/02-file-formats/decryption-findings.md):
+  tf        = Twofish(K_D_192)
+  P_initial = tf.encrypt(bytes(16))
+  K0        = tf.encrypt(P_initial)
+  header_pt = header_ct XOR K0[0:8]
+  assert header_pt[0:4] == header_pt[4:8]
+  P = K0
+  for each 16-byte body block:
+      K = tf.encrypt(P)
+      pt_block = ct_block XOR K
+      P = ct_block  (CFB-128 feedback)
+
+Note on suwin*.DCY files: 7 of 48 files use a different format (unknown key/IV).
+They will fail validation — this is expected.
 
 USAGE
 -----
-    # Decrypt all .DCY files:
-    python scripts/dcy_decrypt.py
-
-    # Validate only (no output files written):
-    python scripts/dcy_decrypt.py --validate-only
-
-    # Single file:
-    python scripts/dcy_decrypt.py --file "\\\\server\\share\\DBAMFG$\\DBAMENU_FLEX.DCY"
-
-    # Custom IV:
-    python scripts/dcy_decrypt.py --iv-hex "cd 47 af 18 e0 d1 c3 8c f1 d8 a0 67 fc 3d da 28"
-
-    # Output directory (default: samples/dcy_decrypted/):
-    python scripts/dcy_decrypt.py --out-dir samples/dcy_decrypted
+    python scripts/dcy_decrypt.py                      # all .DCY files from share
+    python scripts/dcy_decrypt.py --validate-only      # check only, no output
+    python scripts/dcy_decrypt.py --limit 10           # spot-check
+    python scripts/dcy_decrypt.py --file PATH.DCY      # single file
+    python scripts/dcy_decrypt.py --out-dir DIR        # override output dir
 """
 
-import sys, os, hashlib, struct, csv, argparse, time
+import sys, os, struct, csv, argparse, time
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
@@ -38,55 +48,63 @@ _repo = os.path.dirname(_here)
 sys.path.insert(0, _here)
 from twofish_pure import Twofish
 
-_KEY         = hashlib.sha1(b'mabufoju').digest() + b'\x00' * 4
+# ---------------------------------------------------------------------------
+# Key constants (confirmed 2026-06-16)
+# ---------------------------------------------------------------------------
+_K_D_RAW  = bytes.fromhex('691e8041ab265b4e6ee052ccc946dba4caac60da')
+_KEY      = _K_D_RAW + b'\x00' * 4    # 24 bytes (192-bit Twofish key)
+
 _DCY_ROOTS   = [r'\\i2s109-solidcrm\DBAMFG$']
 _DEFAULT_OUT = os.path.join(_repo, 'samples', 'dcy_decrypted')
-_DEFAULT_IV  = os.path.join(_here, 'iv_dcy_bytes.bin')
-_KNOWN_XOR   = 0x0955DC84
+_KNOWN_XOR   = 0x0955DC84    # le32(K0,0) XOR le32(K0,4) for K_D
 
 
 def _le32(b, off):
     return struct.unpack_from('<I', b, off)[0]
 
 
-def decrypt_dcy(data: bytes, iv: bytes, key: bytes = _KEY) -> tuple:
+# ---------------------------------------------------------------------------
+# Core decryption
+# ---------------------------------------------------------------------------
+
+def decrypt_dcy(data: bytes, key: bytes = _KEY) -> tuple:
     """
-    Decrypt a .DCY file's raw bytes.
-    Same CFB structure as .RWN (8-byte validation block then body).
-    Returns (ok, plaintext, error_msg).
+    Decrypt a .DCY file.  Returns (ok, plaintext, error_msg).
     """
     if len(data) < 8:
         return False, None, f'File too small ({len(data)} bytes)'
 
     tf = Twofish(key)
+    P_initial = tf.encrypt(bytes(16))     # Encrypt_K(zeros)
+    K0        = tf.encrypt(P_initial)     # header keystream
 
-    # Validation block
-    ct_val = data[0:8]
-    K0     = tf.encrypt(iv)
-    pt_val = bytes(a ^ b for a, b in zip(ct_val, K0[:8]))
-
-    if pt_val[:4] != pt_val[4:]:
+    # Validate 8-byte header
+    header_ct = data[0:8]
+    header_pt = bytes(a ^ b for a, b in zip(header_ct, K0[:8]))
+    if header_pt[:4] != header_pt[4:]:
         return False, None, (
-            f'Validation failed: pt[0:4]={pt_val[:4].hex()} != pt[4:8]={pt_val[4:].hex()}'
+            f'Validation failed: pt[0:4]={header_pt[:4].hex()} '
+            f'!= pt[4:8]={header_pt[4:].hex()}'
         )
 
-    # CFB state after partial validation block
-    block_buf = ct_val + K0[8:16]
+    # Body — CFB-128, P starts at K0
+    P      = K0
+    body   = data[8:]
+    result = bytearray()
+    for i in range(0, len(body), 16):
+        blk = body[i:i+16]
+        K   = tf.encrypt(P)
+        result.extend(a ^ b for a, b in zip(blk, K[:len(blk)]))
+        if len(blk) == 16:
+            P = blk    # CFB-128: feedback = ciphertext block
 
-    # Body
-    body_ct = data[8:]
-    body_pt = bytearray()
-    for i in range(0, len(body_ct), 16):
-        chunk = body_ct[i:i+16]
-        K = tf.encrypt(block_buf)
-        body_pt.extend(a ^ b for a, b in zip(chunk, K[:len(chunk)]))
-        if len(chunk) == 16:
-            block_buf = chunk
-        else:
-            block_buf = chunk + block_buf[len(chunk):]
+    plaintext = header_pt + bytes(result)
+    return True, plaintext, ''
 
-    return True, pt_val + bytes(body_pt), ''
 
+# ---------------------------------------------------------------------------
+# File discovery
+# ---------------------------------------------------------------------------
 
 def _find_dcy(roots, limit=None):
     found = []
@@ -105,56 +123,58 @@ def _find_dcy(roots, limit=None):
 def _sniff(pt: bytes) -> str:
     if len(pt) < 8:
         return 'too_short'
-    printable = sum(1 for b in pt[:128] if 0x20 <= b < 0x7F or b in (9,10,13))
+    printable = sum(1 for b in pt[:128] if 0x20 <= b < 0x7F or b in (9, 10, 13))
     if printable > 100:
         return 'text'
-    # Look for TAS data dictionary magic
-    if pt[0:4] == pt[4:8]:  # validation pattern visible in PT
+    try:
+        head = pt[:256].decode('latin-1')
+        if 'object ' in head or 'TForm' in head or 'TEdit' in head:
+            return 'delphi_form'
+    except Exception:
+        pass
+    if pt[0:4] == pt[4:8]:
         return f'dcy_hdr_0x{pt[0:4].hex()}'
     return f'binary_0x{pt[0]:02x}{pt[1]:02x}'
 
 
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
 def main():
-    ap = argparse.ArgumentParser(description='EvoERP .DCY batch decryptor')
+    ap = argparse.ArgumentParser(description='EvoERP .DCY batch decryptor (K_D key, P_start=K0)')
     ap.add_argument('--validate-only', action='store_true')
     ap.add_argument('--limit', type=int, default=None)
     ap.add_argument('--file', default=None)
     ap.add_argument('--out-dir', default=_DEFAULT_OUT)
-    ap.add_argument('--iv-hex', default=None)
+    ap.add_argument('--roots', nargs='+', default=_DCY_ROOTS)
     args = ap.parse_args()
 
-    # Load IV
-    if args.iv_hex:
-        iv = bytes.fromhex(args.iv_hex.replace(' ', ''))
-    elif os.path.isfile(_DEFAULT_IV):
-        iv = open(_DEFAULT_IV, 'rb').read()
-    else:
-        print(f'ERROR: {_DEFAULT_IV} not found.  Run get_iv_dcy_spawn.py first.')
-        sys.exit(1)
-
-    if len(iv) != 16:
-        print(f'ERROR: IV must be 16 bytes, got {len(iv)}'); sys.exit(1)
-
-    # Sanity check
-    tf0 = Twofish(_KEY)
-    K0  = tf0.encrypt(iv)
-    xor4 = _le32(K0, 0) ^ _le32(K0, 4)
+    # Confirm K0 constant at startup
+    tf0    = Twofish(_KEY)
+    P_init = tf0.encrypt(bytes(16))
+    K0     = tf0.encrypt(P_init)
+    xor4   = _le32(K0, 0) ^ _le32(K0, 4)
     if xor4 == _KNOWN_XOR:
-        print(f'IV verified (XOR = 0x{xor4:08X})  OK')
+        print(f'K_D verified: K0 XOR = 0x{xor4:08X}  OK')
     else:
-        print(f'WARNING: IV XOR = 0x{xor4:08X}, expected 0x{_KNOWN_XOR:08X} -- may be wrong')
-    print(f'IV: {iv.hex(" ")}')
+        print(f'WARNING: K0 XOR = 0x{xor4:08X}, expected 0x{_KNOWN_XOR:08X}')
+    print(f'K_D raw: {_K_D_RAW.hex()}')
+    print(f'K0:      {K0.hex()}')
     print()
 
     # Collect files
     if args.file:
         files = [args.file]
     else:
-        print(f'Searching {_DCY_ROOTS} ...')
-        files = _find_dcy(_DCY_ROOTS, limit=args.limit)
+        roots = args.roots
+        print(f'Searching {roots} ...')
+        files = _find_dcy(roots, limit=args.limit)
         if not files:
             print('No .DCY files found.'); sys.exit(1)
         print(f'Found {len(files)} .DCY files')
+        if args.limit:
+            print(f'(limited to {args.limit})')
     print()
 
     if not args.validate_only:
@@ -175,7 +195,7 @@ def main():
             fail_count += 1
             continue
 
-        ok, pt, err = decrypt_dcy(data, iv)
+        ok, pt, err = decrypt_dcy(data)
         if ok:
             sniff = _sniff(pt)
             print(f'[{idx:3d}/{n}] OK    {bn}  ({len(data):,} B)  [{sniff}]')
@@ -195,7 +215,7 @@ def main():
     print('=' * 60)
     print(f'  Processed : {n}')
     print(f'  OK        : {ok_count}')
-    print(f'  FAIL      : {fail_count}')
+    print(f'  FAIL      : {fail_count}  (suwin*.DCY use different format — expected)')
     print(f'  Time      : {elapsed:.1f}s')
     if not args.validate_only and ok_count:
         print(f'  Output    : {args.out_dir}')

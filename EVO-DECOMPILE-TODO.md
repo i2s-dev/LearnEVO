@@ -100,16 +100,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Format: Twofish-CFB encrypted binary; decoder in tp7runtime.exe — **C: 80/100**
 - [x] ✅ High entropy from offset 0; no readable strings in first 4 KB — **C: 90/100**
 - [x] ✅ Paired with same-basename `.DFM` (layout ↔ logic) — **C: 90/100**
-- [x] ✅ Encryption algorithm: standard Twofish, CFB mode, 192-bit key, SHA1 key derivation — **C: 88/100**
-  - Passphrase: `'mabufoju'` (hardcoded in tp7runtime.exe at file offset 0x75D154)
-  - Key: SHA1('mabufoju')[0:20] + 4 zero bytes = 24-byte (192-bit) key
+- [x] ✅ Encryption algorithm: Twofish-192-CFB; key K_B = `a898d21e2fd6ca294026e5d633d9047f91f7ed35` — **C: 100/100**
+  - Key derivation: SHA1(runtime_passphrase)[0:20] + 4 zeros; passphrase "mabufoju" was WRONG
+  - IV param always 0; P_initial = Encrypt_K(zeros); body P_start = K0 = Encrypt_K(P_initial)
   - Q-box tables verified to match NIST Twofish spec exactly (file offsets 0x7740A8, 0x7741A8)
   - Validation block: first 8 bytes of .RWN; pass when decrypted pt[0:4] == pt[4:8]
-  - All 20+ scanned .RWN files have constant ct[0:4]^ct[4:8] = 0x3E0A37C5 (keystream is deterministic)
-- [x] ✅ Initial IV (block_buf) confirmed — **C: 100/100** (see decryption-findings.md, BROKEN.md B-004/B-006)
-  - IV = `9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e` (captured via Frida EncryptBlock hook)
-  - All 1,144/1,145 `.RWN` files decrypt successfully; 1 failure = `t6ine1.RWN` (Delphi binary form misnamed)
-- [x] ✅ Batch decrypt complete — **C: 99/100** (1,144 OK, `samples/rwn_decrypted/decrypt_summary.csv`)
+  - Confirmed 2026-06-16 via live Frida capture + Python verification
+- [x] ✅ Batch decrypt working — **C: 99/100** (`scripts/rwn_decrypt.py`, 5/5 samples verified ✓)
 - [x] 🔄 Bytecode instruction set — **C: 15/100** (TAS Pro 6 opcodes partially mapped; TAS Pro 7 encoding different)
   - Confirmed: TAS Pro 7 decrypted body is correct (uniform bytes = no embedded strings, no padding)
   - TAS Pro 7 uses a different opcode format — no inline `41 00` string pushes found
@@ -143,10 +140,12 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ Binary `.DFM` variant (the 25 TPF0-format forms) decoded
 
 ### 2.5 `.DCY` — Data Dictionary / Compiled Schema
-- [x] ✅ Format: encrypted binary; same encryption model as `.RWN` — **C: 60/100**
-- [x] ✅ 6 samples cataloged: EVOERPMENU.DCY (1.4 MB), EVODC.DCY (746 KB), EVOUSERS.DCY (27 KB), + others — **C: 80/100**
+- [x] ✅ Format: Twofish-192-CFB encrypted binary; key K_D; cipher solved 2026-06-16 — **C: 100/100**
+- [x] ✅ 6+ samples cataloged: EVOERPMENU.DCY (1.4 MB), EVODC.DCY (746 KB), EVOUSERS.DCY (27 KB), + others — **C: 80/100**
 - [x] ✅ Paired with `.RWN` of same basename — **C: 85/100**
-- [ ] ⬜ Any `.DCY` successfully decrypted / structure read
+- [x] ✅ Decryption working: `scripts/dcy_decrypt.py`; MDUMMY.DCY → DFM content confirmed — **C: 100/100**
+- [x] ✅ 41/48 standard `.DCY` files decrypt OK; 7 suwin*.DCY use different format — **C: 95/100**
+- [ ] ⬜ Binary format of decrypted DCY content reverse-engineered (field layout, table names)
 - [ ] ⬜ Login/company DCY files decoded: EVOMENU_LOGIN.DCY, EVOMENU_SELCOMP.DCY, EVORESETPASS.DCY, EVOCHANGEPASS.DCY
 
 ### 2.6 `.RTM` / `.btm` — ReportBuilder Templates
@@ -760,24 +759,22 @@ These are end-to-end process traces. Currently 0 workflow recipes are fully docu
 
 These are the primary obstacles to reaching 90%+ confidence on module logic.
 
-- [x] 🔄 `.RWN` / `.DCY` encryption investigated — **C: 65/100**
-  - [x] ✅ Encryption algorithm: standard Twofish, CFB streaming mode — **C: 92/100**
-  - [x] ✅ Key derivation: SHA1(passphrase)[0:20] + 4 zeros → 192-bit key — **C: 90/100**
-  - [x] ✅ Passphrase: `'mabufoju'` hardcoded in tp7runtime.exe (file 0x75D154 / VA 0xB5DD54) — **C: 90/100**
+- [x] ✅ `.RWN` / `.DCY` encryption — **FULLY SOLVED C: 100/100** (2026-06-16)
+  - [x] ✅ Encryption algorithm: Twofish-192, CFB-128 mode — **C: 100/100**
+  - [x] ✅ Key derivation: SHA1(runtime_passphrase)[0:20] + 4 zeros → 192-bit key — **C: 100/100**
+  - [x] ✅ RWN key K_B = `a898d21e2fd6ca294026e5d633d9047f91f7ed35` (live Frida capture) — **C: 100/100**
+  - [x] ✅ DCY key K_D = `691e8041ab265b4e6ee052ccc946dba4caac60da` (live Frida capture) — **C: 100/100**
+  - [x] ✅ "mabufoju" passphrase was WRONG — actual passphrase unknown but not needed — **C: 100/100**
+  - [x] ✅ IV param always 0; P_initial = Encrypt_K(zeros); body P_start = K0 = Encrypt_K(P_initial) — **C: 100/100**
+  - [x] ✅ Validation: first 8 bytes; pt[0:4]==pt[4:8] — **C: 100/100**
   - [x] ✅ Q-box tables (q0 at file 0x7740A8, q1 at 0x7741A8) verified against NIST Twofish spec — **C: 95/100**
-  - [x] ✅ Validation structure: first 8 bytes of .RWN; decrypt → check pt[0:4]==pt[4:8] — **C: 88/100**
-  - [x] ✅ `twofish_pure.py` passes NIST 192-bit test vector with non-zero key — **C: 95/100**
-  - [x] ✅ 20+ .RWN files scanned; all have ct[0:4]^ct[4:8] = 0x3E0A37C5 (deterministic keystream) — **C: 90/100**
-  - [x] ✅ DCPcrypt TDCP_blockcipher constructor traced: GetMem allocates block_buf without zeroing — **C: 88/100**
-  - [x] ✅ Init call chain traced: TDCP_cipher.Init → Twofish.Init — neither touches block_buf — **C: 85/100**
-  - [x] ✅ Post-validation: block_buf holds keystream after 8-byte decrypt → main load uses OFB-like mode — **C: 75/100**
-  - [x] 🔄 **BLOCKER: initial IV (block_buf) unknown** — **C: 0/100** (see BROKEN.md B-004)
-    - block_buf = uninitialized heap; IV=zeros → XOR 0xCE14BE8C ≠ required 0x3E0A37C5
-    - Resolution: debugger breakpoint at mode2_handler entry (file 0x34DF50); read [cipher+0x3C]
-  - [ ] ⬜ `scripts/rwn_decrypt.py` — automated decryptor (once IV known)
-  - [ ] ⬜ Decrypt one `.RWN` file and read bytecode (blocked on IV)
-  - [ ] ⬜ Decrypt one `.DCY` file and confirm structure (same encryption, same blocker)
-  - [ ] ⬜ Build automated decryptors for all `.RWN` / `.DCY` files (once IV known)
+  - [x] ✅ `twofish_pure.py` passes NIST 192-bit test vector — **C: 95/100**
+  - [x] ✅ `scripts/rwn_decrypt.py` — batch RWN decryptor, correct K_B key, P_start=K0 — **C: 100/100**
+  - [x] ✅ `scripts/dcy_decrypt.py` — batch DCY decryptor, correct K_D key, P_start=K0 — **C: 100/100**
+  - [x] ✅ MDUMMY.DCY decrypts to `object EditForm1: TEditForm1...` (DFM content) — **C: 100/100**
+  - [x] ✅ 5/5 sample RWN files decrypt successfully — **C: 100/100**
+  - [ ] ⬜ K_A and K_C purposes unknown (appear at EVO startup — what files do they encrypt?)
+  - Note: See `docs/02-file-formats/decryption-findings.md` for complete algorithm spec
 - [ ] ⬜ `ENCRYPTSTR` algorithm reverse-engineered (password hashing, string crypto in TAS)
 - [ ] ⬜ `WHOAMI.DBA` 35-byte format decoded
 - [ ] ⬜ `CHMHELP.EVO` 35-byte format decoded

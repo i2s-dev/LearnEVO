@@ -8,6 +8,151 @@ without explicit reasoning for why a different outcome is expected now.
 
 ---
 
+## Bug B-007 — DCY body decryption fails: empirical keystream not reproducible from IV_dcy via CFB-128
+
+**Date:** 2026-06-15
+**Status:** ✅ FIXED 2026-06-16
+
+**ROOT CAUSE (three compounded errors):**
+1. **Wrong passphrase**: "mabufoju" was never the runtime passphrase. The actual runtime keys are SHA1 hashes of an unknown (runtime-initialized) passphrase — never found as a static string in the binary. sha1("mabufoju") ≠ any live key.
+2. **Wrong cipher key for DCY**: All prior analysis used sha1("mabufoju") + 4 zeros. The actual DCY key is K_D = `691e8041ab265b4e6ee052ccc946dba4caac60da` + 4 zeros (192-bit). The actual RWN key is K_B = `a898d21e2fd6ca294026e5d633d9047f91f7ed35` + 4 zeros (192-bit).
+3. **Wrong body P_start**: Body CFB-128 decryption starts with P = K0 = Encrypt_K(P_initial), NOT with P_initial. After decrypting the 8-byte validation header (which uses K0[0:8]), the cipher resets/starts fresh for the body with P_body = K0.
+
+**SOLUTION (confirmed, MDUMMY.DCY decrypts to valid DFM):**
+```
+K_D_192 = bytes.fromhex('691e8041ab265b4e6ee052ccc946dba4caac60da') + b'\x00'*4
+tf = Twofish(K_D_192)
+P_init = tf.encrypt(bytes(16))        # = 83fcde64a3f87b20076b10a9a4fc8a7f
+K0     = tf.encrypt(P_init)           # = ab3c1a7a2fe04f7322f10dfda5ea3636
+# validate header: raw[0:8] XOR K0[0:8] => d484de56 d484de56 (PT[0:4]==PT[4:8]) PASS
+# body CFB-128 starting at P = K0:
+P = K0
+for each 16-byte body block b:
+    K = tf.encrypt(P)
+    PT = b XOR K
+    P = b  # feedback = ciphertext
+```
+Body decrypts to: `object EditForm1: TEditForm1\r\n  Left = 0\r\n  Hint = 'C:\taspro7\DBA7\mDummy.DFM'...` ✓
+
+**KEY PARAMETERS (confirmed 2026-06-16 via live Frida capture + decryption test):**
+| Parameter | Value |
+|-----------|-------|
+| Key size | 160-bit (20 bytes = SHA1 output) + 4 zero bytes = 192-bit |
+| DCY key (K_D) | `691e8041ab265b4e6ee052ccc946dba4caac60da` + `00000000` |
+| RWN key (K_B) | `a898d21e2fd6ca294026e5d633d9047f91f7ed35` + `00000000` |
+| DCY P_initial | `83fcde64a3f87b20076b10a9a4fc8a7f` (= Encrypt_KD(zeros)) |
+| DCY K0 | `ab3c1a7a2fe04f7322f10dfda5ea3636` (= Encrypt_KD(P_initial)) |
+| RWN P_initial (= IV_rwn) | `0e6fbff653a28a70d102874c6b1825ad` (= Encrypt_KB(zeros)) |
+| Header | first 8 bytes: PT = CT XOR K0[0:8]; passes if PT[0:4]==PT[4:8] |
+| Body P_start | K0 (NOT P_initial) |
+| Body mode | CFB-128; P[n+1] = CT[n] |
+| IV param to SetKey | always 0 (push 0 confirmed in cipher_init disassembly) |
+
+**LESSON:** Never trust static string searches for runtime-initialized passphrase. Use Frida to capture live key bytes. Also: when body decryption fails but header validation passes, suspect the cipher state between header and body.
+
+**Symptom:**
+MDUMMY.DCY body (bytes [8:]) XOR mDummy.DFM produces valid DFM plaintext for all 354 blocks
+("object EditForm1: TEditForm1\r\n  Left = 0\r\n  Hint = 'C:\TASPRO7\DBA7\mDummy.DFM'..." ✓).
+But the empirical keystream cannot be reproduced from IV_dcy using ANY tested cipher mode or
+derivation.
+
+Expected (from mode2_handler disassembly = standard CFB-128):
+- After 8-byte partial-block validation: block_buf = Encrypt(IV_dcy) = K0_dcy = `ab3c1a7a2fe04f73...`
+- Body block 0 keystream = Encrypt(K0_dcy) = `4b0a6173cb477524...`
+
+Actual (empirical):
+- Body block 0 keystream = `0f73767aa296137875eaa22d6fc64b54`
+- Back-derived initial block_buf = X = Decrypt(emp_ks0) = `7a3dd882c134e5fb254a87b2f5f79625`
+- X ≠ K0_dcy; X not found anywhere in evoerp.exe binary; not reachable from IV_dcy via Enc^n or Dec^n
+
+**What is confirmed (cumulative through 2026-06-15):**
+1. Python Twofish is correct: Encrypt(Decrypt(x)) = x ✓; NIST round-trip ✓
+2. IV_dcy = `cd47af18e0d1c38cf1d8a067fc3dda28` is correct (41/48 DCY validation ✓)
+3. mode2_handler = standard CFB-128 (full disassembly ✓); block_size = 16 (from constructor ✓)
+4. vtable[0x50] dispatch: mode_byte=2 → mode2_handler (0x74EB50) ✓
+5. validate_func uses ONE cipher object for both validation and body ✓
+6. mDummy.DFM IS the correct plaintext (7 blocks incl. embedded path `C:\TASPRO7\DBA7\mDummy.DFM`) ✓
+7. **cipher object layout:** cipher+0x30=init_flag, cipher+0x34=mode_byte, cipher+0x38=buffer1_ptr,
+   cipher+0x3C=P (block_buf ptr), cipher+0x40=Q_ptr, cipher+0x44=block_size(16), cipher+0x48=subkeys
+8. **vtable layout (base 0x74F2A8):** [0x38]=GetKeySize→256, [0x40]=SetKey(0x74F8A4),
+   [0x44]=Reset(0x750214), [0x48]=InitVector(0x74E5E4), [0x4C]=Encrypt(0x74E674),
+   [0x50]=Decrypt dispatcher(0x74E6BC), [0x54]=returns 128, [0x58]=EncryptBlock(0x750248)
+9. **vtable[0x48] = InitVector (0x74E5E4):** if initialized, does `Move(buffer1 → P, 16)`.
+   This is the ONLY place that sets P from a buffer. Called at end of SetKey.
+10. **SetKey tail (0x7501B7):** when IV param=0 → FillChar(buffer1, 16, 0) → EncryptBlock(zeros→buffer1)
+    → InitVector → P = Encrypt_K(zeros) = `0d2924fa81973034fcfbe7cf51734675` (≠ IV_dcy)
+11. **cipher_init (0x74E1F8):** ALWAYS pushes 0 as IV param to SetKey (verified two branches at
+    0x74E24D and 0x74E265 — both `6a 00` = PUSH 0). Therefore after cipher_init: P = Encrypt_K(zeros).
+12. **"stream reader" = SHA1 context:** VMT[0x40]=SHA1_Init (sets H0..H4 = 0x67452301/EF/98/10/C3),
+    VMT[0x44]=SHA1_GetDigest (writes 20-byte hash to caller's buffer), VMT[0x48]=SHA1_Reset,
+    VMT[0x4C]=SHA1_Update (hashes length × data)
+13. **SetStream (0x74EFBC):** calls 0x40613C(global_obj)=AnsiString.Length and
+    0x40633C(global_obj)=data_ptr on global_obj, then SHA1_Update(ctx, data_ptr, length) —
+    hashes the content of the global passphrase object
+14. **Global passphrase [0xb8b0cc]:** static value in file = 0x007EECC4, but this is
+    runtime-initialized BSS (static bytes at that file offset are code, not a string).
+    Actual content is determined at startup and requires Frida to capture.
+15. **0x405f14 = IntfSetRef:** replaces [ebp+8] in validate_func with *[0xb8b0cc] (the global
+    passphrase object). Since this is runtime-initialized, cipher_init may use a different
+    passphrase than we assume.
+
+**THE CORE CONTRADICTION:**
+- Static analysis: cipher_init pushes IV=0 → P = Encrypt_K(zeros) = `0d2924fa...`
+- Empirical: P_initial must = IV_dcy = `cd47af18...` (required for 41/48 file validation)
+- Encrypt_K(zeros) ≠ IV_dcy with key=SHA1("mabufoju")+4z — contradiction
+- EITHER the global passphrase ≠ "mabufoju" (so key AND Encrypt(zeros) are different),
+  OR something after cipher_init sets P to IV_dcy
+
+**Key transition test:**
+- For CFB-128: Encrypt(CT[n]) should = K[n+1] for all blocks
+- Direct test: `Encrypt(CT[0]) = 39203483...` ≠ `emp_K[1] = 961467fe...` — FAIL
+- OFB: `Encrypt(K[0]) = 607bfa59...` ≠ `emp_K[1]` — FAIL
+- All 353 block transitions: 0 matches for CFB, OFB, PT-fb, K-fb, or Enc/Dec of any known value
+
+**What was tried (all failed — DO NOT RETRY):**
+
+| Date | Attempt | Outcome |
+|------|---------|---------|
+| 2026-06-15 | CFB-128 from X (empirical initial state) | Block 0 OK, ALL 353 subsequent transitions fail |
+| 2026-06-15 | OFB from X | Same — 0 hits after block 0 |
+| 2026-06-15 | CFB-64 (seg_size=8, P updated only 8 bytes) | 23/5670 match — fails |
+| 2026-06-15 | CFB-8 (seg_size=1, shift register) | 1/64 match — fails |
+| 2026-06-15 | Enc(K0_dcy) as body K0 | `4b0a6173...` ≠ emp_ks0 |
+| 2026-06-15 | 11x encrypt/decrypt chain from IV_dcy | No match with X or emp_ks0 |
+| 2026-06-15 | Search evoerp.exe binary for X and emp_ks0 | Not found — not hardcoded |
+| 2026-06-15 | Various IV candidates (val_PT, CT_val, zeros, combinations) | All fail to produce emp_ks0 |
+| 2026-06-15 | Model B: P_initial = Encrypt(zeros) for validation | val_PT = fdbfa3a1... ≠ d484de56... FAIL |
+| 2026-06-15 | IV_rwn as body-cipher initial IV | Encrypt(IV_rwn) = 8deb9490... ≠ emp_ks0 FAIL |
+
+**Runtime module layout discovery (2026-06-16, frida_probe.py):**
+- **qtintf70.dll** loads at 0x400000 (size 0x3EB000) — takes evoerp.exe's preferred base
+- **evoerp.exe** loads at 0x840000 (size 0x1FDD000) — relocated from preferred 0x400000
+- All static VAs (DELTA=0x400C00) must be adjusted: runtime_VA = static_VA + 0x440000
+- This is SESSION-VARIABLE — delta depends on load order; always compute dynamically in Frida
+- **0x74F8A4 showed mapped=False** in the early-attach probe: the DLL page wasn't accessible yet
+- Prior session B-006 hooks worked because evoerp.exe was at 0x400000 in that session (no qtintf70 conflict)
+- **Fix applied**: frida_capture_key_and_iv.py now uses `Process.findModuleByName('evoerp.exe').base - 0x400000` at runtime instead of any hardcoded delta
+
+| Date | Attempt | Outcome |
+|------|---------|---------|
+| 2026-06-16 | frida_probe.py reveals module layout | DISCOVERY: evoerp.exe at 0x840000, hook addresses were wrong |
+| 2026-06-16 | frida_capture_key_and_iv.py v_old (hooks at static VAs) | Hooks installed but never fired — wrong addresses |
+| 2026-06-16 | frida_capture_key_and_iv.py with dynamic reloc (first attempt) | Hooks fire but crash: "TypeError: not a function" — Array.from / .padStart not in this Frida's JS engine |
+| 2026-06-16 | Rewrite hex helper without Array.from/Uint8Array/padStart; wrap all onEnter in try/catch | Still "not a function" — ptr(NativePointer) is the culprit |
+| 2026-06-16 | Remove ptr() wrapping on context registers (they are already NativePointers); use parseInt() instead of .toInt32() on ecx | Still "not a function" — toInt()/readHexAt() still had wrong pattern |
+| 2026-06-16 | Complete rewrite using ONLY patterns from working get_iv_frida.py: mod.base.add(RVA), NativePointer.readByteArray(), NativePointer.add().readU32(), Array.from/new Uint8Array; no Memory.readU8, no ptr() on NativePointers, no custom hex loop | Awaiting test |
+| 2026-06-16 | frida_capture_key_and_iv.py updated with dynamic base | Script rewritten; awaiting live test |
+
+**Next steps (in priority order):**
+1. **Run updated frida_capture_key_and_iv.py** — dynamic address resolution now correct.
+   Launch EVO, log in, open any module. Should see SetKey + mode2 + EncryptBlock output.
+2. **From capture:** get actual key bytes (confirm ≠ sha1("mabufoju")), IV param passed to SetKey,
+   and P value at mode2_handler entry. These three values resolve the core contradiction.
+3. If key ≠ sha1("mabufoju")+4z → the global passphrase ≠ "mabufoju" → recompute and retest body.
+4. If key = sha1("mabufoju")+4z but P ≠ IV_dcy → something after cipher_init sets P (missed code path).
+
+---
+
 ## Bug B-006 — mode2_handler hook captures DCY IV (sub-screen sub-menu loads .DCY, not .RWN)
 
 **Date:** 2026-06-15

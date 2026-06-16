@@ -2,59 +2,40 @@
 """
 scripts/rwn_decrypt.py
 
-Batch decryptor for EvoERP .RWN (and optionally .DCY) files.
+Batch decryptor for EvoERP .RWN (TAS Pro 7 compiled program) files.
 
-CIPHER SCHEME (confirmed by disassembly of mode2_handler at file 0x34DF50)
----------------------------------------------------------------------------
-Twofish-CFB with 192-bit key and uninitialized heap IV.  Slightly unusual
-CFB because the .RWN header has an 8-byte validation block (partial block),
-which shifts the CFB state before the body begins.
+CIPHER PARAMETERS (confirmed 2026-06-16 via live Frida capture + Python verification)
+---------------------------------------------------------------------------------------
+  Algorithm  : Twofish-192, CFB-128 mode
+  Key        : K_B = a898d21e2fd6ca294026e5d633d9047f91f7ed35 (raw 20 bytes)
+               K_B_192 = K_B + 00000000 (24 bytes)
+  IV param   : always 0  →  P_initial = Encrypt_K(all-zeros block)
+  Body P_start: K0 = Encrypt_K(P_initial)  — NOT P_initial itself
+  Validation : header_pt[0:4] == header_pt[4:8]
 
-Key derivation (confirmed at file 0x75D154):
-    key = SHA1('mabufoju')[0:20] + b'\\x00' * 4    # 24 bytes (192-bit)
-
-Per-file decryption:
-  1. ct[0:8]  = validation block (stored as ciphertext in file)
-     K0       = Twofish_ECB_Encrypt(key, IV)
-     pt[0:8]  = ct[0:8] XOR K0[0:8]
-     check:   pt[0:4] == pt[4:8]  (EVO integrity check)
-
-  2. After validation, CFB state is the MIX of partial feedback:
-     block_buf = ct[0:8] + K0[8:16]
-     (first 8 bytes of block_buf replaced with ciphertext; upper half unchanged)
-
-  3. Body (16-byte blocks, or partial last block):
-     K_n      = Twofish_ECB_Encrypt(key, block_buf)
-     pt_n     = ct_n XOR K_n[:len(ct_n)]
-     block_buf = ct_n  (full CFB: next block_buf = current ciphertext)
+Per-file decryption (see docs/02-file-formats/decryption-findings.md):
+  tf       = Twofish(K_B_192)
+  P_initial = tf.encrypt(bytes(16))       # Encrypt_K(zeros)
+  K0        = tf.encrypt(P_initial)       # header keystream
+  header_pt = header_ct XOR K0[0:8]
+  assert header_pt[0:4] == header_pt[4:8]
+  P = K0                                  # body starts here
+  for each 16-byte body block:
+      K = tf.encrypt(P)
+      pt_block = ct_block XOR K
+      P = ct_block  (CFB-128 feedback)
 
 USAGE
 -----
-    # Decrypt all .RWN files from the network share:
-    python scripts/rwn_decrypt.py
-
-    # Dry-run validation (no output files written):
-    python scripts/rwn_decrypt.py --validate-only
-
-    # Limit to N files (for spot-checking):
-    python scripts/rwn_decrypt.py --limit 20
-
-    # Decrypt a single file:
-    python scripts/rwn_decrypt.py --file "\\\\server\\share\\DBAMFG$\\T7INA.RWN"
-
-    # Specify custom IV (overrides iv_bytes.bin):
-    python scripts/rwn_decrypt.py --iv-hex "9c da c3 45 a5 f0 1c 2c 96 57 92 d9 0b 1a bc 1e"
-
-    # Output directory (default: samples/rwn_decrypted/):
-    python scripts/rwn_decrypt.py --out-dir samples/rwn_decrypted
-
-Decrypted files are written with the same filename + '.dec' extension.
-A summary CSV (decrypt_summary.csv) is written to the output directory.
+    python scripts/rwn_decrypt.py                      # all .RWN files from share
+    python scripts/rwn_decrypt.py --validate-only      # check only, no output
+    python scripts/rwn_decrypt.py --limit 20           # spot-check
+    python scripts/rwn_decrypt.py --file PATH.RWN      # single file
+    python scripts/rwn_decrypt.py --out-dir DIR        # override output dir
 """
 
 import sys
 import os
-import hashlib
 import struct
 import csv
 import argparse
@@ -63,83 +44,64 @@ import multiprocessing
 
 sys.stdout.reconfigure(encoding='utf-8', errors='replace')
 
-_here  = os.path.dirname(os.path.abspath(__file__))
-_repo  = os.path.dirname(_here)
+_here = os.path.dirname(os.path.abspath(__file__))
+_repo = os.path.dirname(_here)
 sys.path.insert(0, _here)
 
 from twofish_pure import Twofish
 
 # ---------------------------------------------------------------------------
-# Constants
+# Key constants (confirmed 2026-06-16)
 # ---------------------------------------------------------------------------
-_KEY = hashlib.sha1(b'mabufoju').digest() + b'\x00' * 4   # 24 bytes (192-bit)
+_K_B_RAW = bytes.fromhex('a898d21e2fd6ca294026e5d633d9047f91f7ed35')
+_KEY     = _K_B_RAW + b'\x00' * 4    # 24 bytes (192-bit Twofish key)
 
-_RWN_ROOTS = [
-    r'\\i2s109-solidcrm\DBAMFG$',
-    r'C:\ISTS',
-]
+_RWN_ROOTS   = [r'\\i2s109-solidcrm\DBAMFG$', r'C:\ISTS']
+_DEFAULT_OUT = os.path.join(_repo, 'samples', 'rwn_decrypted')
+_KNOWN_XOR   = 0x3E0A37C5    # le32(K0,0) XOR le32(K0,4) for K_B
 
-_DEFAULT_OUT  = os.path.join(_repo, 'samples', 'rwn_decrypted')
-_DEFAULT_IV   = os.path.join(_here, 'iv_bytes.bin')
-_KNOWN_XOR    = 0x3E0A37C5
-
-
-# ---------------------------------------------------------------------------
-# Core decryption logic
-# ---------------------------------------------------------------------------
 
 def _le32(b, off):
     return struct.unpack_from('<I', b, off)[0]
 
 
-def decrypt_rwn(data: bytes, iv: bytes, key: bytes = _KEY) -> tuple:
-    """
-    Decrypt a .RWN file's raw bytes.
+# ---------------------------------------------------------------------------
+# Core decryption (no external IV file needed)
+# ---------------------------------------------------------------------------
 
-    Returns (ok, plaintext, error_msg).
-      ok        -- True if validation passed
-      plaintext -- bytes (validation block + decrypted body), or None on failure
-      error_msg -- description of failure, or '' on success
+def decrypt_rwn(data: bytes, key: bytes = _KEY) -> tuple:
+    """
+    Decrypt a .RWN file.  Returns (ok, plaintext, error_msg).
+    Raises no exceptions — all errors returned as (False, None, msg).
     """
     if len(data) < 8:
         return False, None, f'File too small ({len(data)} bytes)'
 
     tf = Twofish(key)
+    P_initial = tf.encrypt(bytes(16))     # Encrypt_K(zeros)
+    K0        = tf.encrypt(P_initial)     # header keystream
 
-    # --- Validation block (8 bytes) ---
-    ct_val  = data[0:8]
-    K0      = tf.encrypt(iv)
-    pt_val  = bytes(a ^ b for a, b in zip(ct_val, K0[:8]))
-
-    if pt_val[:4] != pt_val[4:]:
+    # Validate 8-byte header
+    header_ct = data[0:8]
+    header_pt = bytes(a ^ b for a, b in zip(header_ct, K0[:8]))
+    if header_pt[:4] != header_pt[4:]:
         return False, None, (
-            f'Validation failed: pt[0:4]={pt_val[:4].hex()} '
-            f'!= pt[4:8]={pt_val[4:].hex()}'
+            f'Validation failed: pt[0:4]={header_pt[:4].hex()} '
+            f'!= pt[4:8]={header_pt[4:].hex()}'
         )
 
-    # --- CFB state after partial validation block ---
-    # mode2_handler: EncryptBlock in-place -> block_buf = K0
-    # Then copies ct[0:8] back into block_buf[0:8] (CFB partial-block feedback)
-    block_buf = ct_val + K0[8:16]
+    # Body — CFB-128, P starts at K0 (not P_initial)
+    P      = K0
+    body   = data[8:]
+    result = bytearray()
+    for i in range(0, len(body), 16):
+        blk = body[i:i+16]
+        K   = tf.encrypt(P)
+        result.extend(a ^ b for a, b in zip(blk, K[:len(blk)]))
+        if len(blk) == 16:
+            P = blk    # CFB-128: feedback = ciphertext block
 
-    # --- Body (rest of file) ---
-    body_ct  = data[8:]
-    body_pt  = bytearray()
-
-    for i in range(0, len(body_ct), 16):
-        chunk = body_ct[i : i + 16]
-        K = tf.encrypt(block_buf)
-        pt_chunk = bytes(a ^ b for a, b in zip(chunk, K[:len(chunk)]))
-        body_pt.extend(pt_chunk)
-
-        # CFB feedback: block_buf <- ciphertext chunk
-        if len(chunk) == 16:
-            block_buf = chunk
-        else:
-            # Partial last block: copy chunk bytes, leave upper bytes unchanged
-            block_buf = chunk + block_buf[len(chunk):]
-
-    plaintext = pt_val + bytes(body_pt)
+    plaintext = header_pt + bytes(result)
     return True, plaintext, ''
 
 
@@ -162,13 +124,12 @@ def _find_rwn_files(roots, limit=None):
 
 
 # ---------------------------------------------------------------------------
-# Sniff plaintext type
+# Content sniff
 # ---------------------------------------------------------------------------
 _TEXT_CHARS = set(range(0x20, 0x7F)) | {0x09, 0x0A, 0x0D}
 
 
 def _sniff(pt: bytes) -> str:
-    """Return a short label describing the decrypted content."""
     if len(pt) < 8:
         return 'too_short'
     printable = sum(1 for b in pt[:128] if b in _TEXT_CHARS)
@@ -178,7 +139,6 @@ def _sniff(pt: bytes) -> str:
         return 'tas6_magic'
     if pt[0:3] == b'TAS':
         return 'TAS_header'
-    # Look for common string patterns in first 256 bytes
     try:
         head = pt[:256].decode('latin-1')
         if 'object ' in head or 'TForm' in head or 'TPanel' in head:
@@ -189,30 +149,18 @@ def _sniff(pt: bytes) -> str:
 
 
 # ---------------------------------------------------------------------------
-# Main
+# Worker (multiprocessing)
 # ---------------------------------------------------------------------------
 
-def _print_result(idx, total, r):
-    fpath, status, size, sniff, err, pt_len = r
-    basename = os.path.basename(fpath)
-    if status == 'OK':
-        print(f'[{idx:4d}/{total}] OK    {basename}  ({size:,} B -> {pt_len:,} pt)  [{sniff}]')
-    else:
-        print(f'[{idx:4d}/{total}] {status:<5} {basename}: {err}')
-
-
 def _worker(task):
-    """Multiprocessing worker: (fpath, iv, out_dir, validate_only) -> result tuple."""
-    fpath, iv_hex, out_dir, validate_only = task
-    iv = bytes.fromhex(iv_hex)
+    fpath, out_dir, validate_only = task
     basename = os.path.basename(fpath)
     try:
         data = open(fpath, 'rb').read()
     except Exception as e:
         return (fpath, 'READ_ERROR', 0, '-', str(e), None)
-
     size = len(data)
-    ok, pt, err = decrypt_rwn(data, iv)
+    ok, pt, err = decrypt_rwn(data)
     if ok:
         sniff = _sniff(pt)
         if not validate_only:
@@ -224,48 +172,42 @@ def _worker(task):
         return (fpath, 'FAIL', size, '-', err, None)
 
 
+def _print_result(idx, total, r):
+    fpath, status, size, sniff, err, pt_len = r
+    basename = os.path.basename(fpath)
+    if status == 'OK':
+        print(f'[{idx:4d}/{total}] OK    {basename}  ({size:,} B -> {pt_len:,} pt)  [{sniff}]')
+    else:
+        print(f'[{idx:4d}/{total}] {status:<10} {basename}: {err}')
+
+
+# ---------------------------------------------------------------------------
+# Main
+# ---------------------------------------------------------------------------
+
 def main():
-    ap = argparse.ArgumentParser(description='EvoERP .RWN batch decryptor')
+    ap = argparse.ArgumentParser(description='EvoERP .RWN batch decryptor (K_B key, P_start=K0)')
     ap.add_argument('--validate-only', action='store_true',
-                    help='Check validation only; do not write decrypted files')
-    ap.add_argument('--limit', type=int, default=None,
-                    help='Process at most N files')
-    ap.add_argument('--file', default=None,
-                    help='Decrypt a single file (ignores --limit and search roots)')
-    ap.add_argument('--out-dir', default=_DEFAULT_OUT,
-                    help='Output directory (default: samples/rwn_decrypted/)')
-    ap.add_argument('--iv-hex', default=None,
-                    help='IV as hex string (overrides iv_bytes.bin)')
-    ap.add_argument('--roots', nargs='+', default=_RWN_ROOTS,
-                    help='Search roots for .RWN files')
-    ap.add_argument('--jobs', type=int, default=max(1, multiprocessing.cpu_count() - 1),
-                    help='Parallel worker processes (default: cpu_count-1)')
+                    help='Validate only; do not write decrypted files')
+    ap.add_argument('--limit', type=int, default=None)
+    ap.add_argument('--file', default=None, help='Decrypt a single file')
+    ap.add_argument('--out-dir', default=_DEFAULT_OUT)
+    ap.add_argument('--roots', nargs='+', default=_RWN_ROOTS)
+    ap.add_argument('--jobs', type=int,
+                    default=max(1, multiprocessing.cpu_count() - 1))
     args = ap.parse_args()
 
-    # Load IV
-    if args.iv_hex:
-        iv = bytes.fromhex(args.iv_hex.replace(' ', ''))
-    elif os.path.isfile(_DEFAULT_IV):
-        iv = open(_DEFAULT_IV, 'rb').read()
+    # Confirm K0 constant at startup
+    tf0 = Twofish(_KEY)
+    P_init = tf0.encrypt(bytes(16))
+    K0     = tf0.encrypt(P_init)
+    xor4   = _le32(K0, 0) ^ _le32(K0, 4)
+    if xor4 == _KNOWN_XOR:
+        print(f'K_B verified: K0 XOR = 0x{xor4:08X}  OK')
     else:
-        print(f'ERROR: IV file not found: {_DEFAULT_IV}')
-        print('Run scripts/get_iv_frida.py first.')
-        sys.exit(1)
-
-    if len(iv) != 16:
-        print(f'ERROR: IV must be 16 bytes, got {len(iv)}.')
-        sys.exit(1)
-
-    # Quick sanity: verify IV constraint
-    tf0  = Twofish(_KEY)
-    K0   = tf0.encrypt(iv)
-    xor4 = _le32(K0, 0) ^ _le32(K0, 4)
-    if xor4 != _KNOWN_XOR:
-        print(f'WARNING: IV XOR check failed (0x{xor4:08X} != 0x{_KNOWN_XOR:08X})')
-        print('IV may be wrong; continuing anyway.')
-    else:
-        print(f'IV verified: XOR = 0x{xor4:08X}  OK')
-    print(f'IV: {iv.hex(" ")}')
+        print(f'WARNING: K0 XOR = 0x{xor4:08X}, expected 0x{_KNOWN_XOR:08X}')
+    print(f'K_B raw: {_K_B_RAW.hex()}')
+    print(f'K0:      {K0.hex()}')
     print()
 
     # Collect files
@@ -282,14 +224,11 @@ def main():
             print(f'(limited to {args.limit})')
     print()
 
-    # Output dir
     if not args.validate_only:
         os.makedirs(args.out_dir, exist_ok=True)
 
-    jobs      = min(args.jobs, len(files))
-    iv_hex    = iv.hex()
-    tasks     = [(f, iv_hex, args.out_dir, args.validate_only) for f in files]
-
+    jobs  = min(args.jobs, len(files))
+    tasks = [(f, args.out_dir, args.validate_only) for f in files]
     print(f'Workers: {jobs}')
     print()
 
@@ -297,10 +236,9 @@ def main():
     ok_count   = 0
     fail_count = 0
     t0         = time.time()
+    n          = len(files)
 
-    n = len(files)
     if jobs == 1:
-        # Single-process (easier debugging)
         for idx, task in enumerate(tasks, 1):
             r = _worker(task)
             _print_result(idx, n, r)
@@ -320,11 +258,9 @@ def main():
                     fail_count += 1
 
     elapsed = time.time() - t0
-
-    # Summary
     print()
     print('=' * 70)
-    print(f'  Processed : {len(files)}')
+    print(f'  Processed : {n}')
     print(f'  OK        : {ok_count}')
     print(f'  FAIL      : {fail_count}')
     print(f'  Time      : {elapsed:.1f}s')
@@ -332,12 +268,6 @@ def main():
         print(f'  Output    : {args.out_dir}')
     print('=' * 70)
 
-    if fail_count and ok_count == 0:
-        print()
-        print('All files FAILED validation.  The IV is likely wrong.')
-        print('Re-run scripts/get_iv_frida.py to capture a fresh IV.')
-
-    # Write CSV
     if not args.validate_only:
         csv_path = os.path.join(args.out_dir, 'decrypt_summary.csv')
         with open(csv_path, 'w', newline='', encoding='utf-8') as f:

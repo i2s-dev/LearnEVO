@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-15 (session 4)
+Last updated: 2026-06-16 (session 5)
 
 ---
 
@@ -13,14 +13,22 @@ Last updated: 2026-06-15 (session 4)
 We are reverse-engineering **EvoERP**, a manufacturing ERP built on TAS Professional 7
 (`tp7runtime.exe`). The vendor has granted explicit permission to decompile. EvoERP has
 two compiled-program formats: `.RUN` (TAS Pro 6, unencrypted) and `.RWN` (TAS Pro 7,
-encrypted). The `.RWN` cipher is **Twofish-CFB** (DCPcrypt `TDCP_twofish`), the passphrase
-is confirmed as **`mabufoju`**, the 192-bit key derivation is confirmed (SHA1 digest + 4
-zero bytes), and a working pure-Python Twofish implementation passes NIST test vectors.
-The one remaining blocker is the **initial IV** (the `block_buf` value at cipher+0x3C when
-`tp7runtime.exe` first calls `EncryptBlock`) — it is uninitialized heap memory and cannot
-be determined without a debugger session. **There are only 7 `.SRC` files on the network
-share** (all TAS Pro 6 era, all already analyzed). The entire TAS Pro 7 logic (1,124 `.RWN`
-files) is binary-only.
+encrypted). The `.RWN` and `.DCY` cipher is **Twofish-CFB-128**.
+
+**ALL CIPHER PARAMETERS CONFIRMED 2026-06-16 (live Frida capture + Python verification):**
+- Algorithm: Twofish-192, CFB-128 mode
+- Key size: SHA1(passphrase)[0:20] + 4 zero bytes = 24-byte (192-bit) key
+- IV param: always 0 → P_initial = Encrypt_K(all-zeros block)
+- Body P_start: K0 = Encrypt_K(P_initial) — NOT P_initial itself
+- DCY key (K_D): `691e8041ab265b4e6ee052ccc946dba4caac60da` + `00000000`
+- RWN key (K_B): `a898d21e2fd6ca294026e5d633d9047f91f7ed35` + `00000000`
+- The passphrase "mabufoju" was WRONG — actual passphrase unknown but not needed
+- Decryption verified: MDUMMY.DCY → `object EditForm1: TEditForm1\r\n...` ✓
+
+**There are only 7 `.SRC` files on the network share** (all TAS Pro 6 era, all already
+analyzed). The entire TAS Pro 7 logic (1,124 `.RWN` files) is binary-only and now
+fully decryptable. Next priority: build batch decryptors using the correct keys and
+begin disassembling `.RWN` bytecode.
 
 ---
 
@@ -44,58 +52,31 @@ files) is binary-only.
 
 | Blocked task | Status |
 |-------------|---------|
-| Decrypt any `.RWN` or `.DCY` file | **DONE** — RWN: 1,144/1,145 OK; DCY: 41/48 OK (7 suwin*.dcy use different format) |
-| Disassemble `.RWN` bytecode | Unblocked but no clear structure yet — TAS Pro 7 bytecode is uniform (expected) |
-| Write `rwn_decrypt.py` or batch decryptor | **DONE** — `scripts/rwn_decrypt.py` (RWN) + `scripts/dcy_decrypt.py` (DCY) |
-| Read module logic for any of the 1,124 `.RWN` programs | Unblocked — DCY binary format not yet parsed; bytecode dense |
-| `.DCY` data dictionary decryption | **DONE** — IV_dcy = `cd 47 af 18 e0 d1 c3 8c f1 d8 a0 67 fc 3d da 28`; 41/48 OK |
+| Decrypt any `.RWN` or `.DCY` file | **DONE** — cipher fully solved 2026-06-16; `rwn_decrypt.py` + `dcy_decrypt.py` use correct K_B/K_D keys |
+| Disassemble `.RWN` bytecode | Unblocked — TAS Pro 7 bytecode structure not yet mapped; uniform opaque bytes expected |
+| Read module logic for any of the 1,124 `.RWN` programs | Unblocked — bytecode disassembly + DCY format parsing needed first |
+| `.DCY` data dictionary binary structure | **Partially done** — decryption works; binary field layout not yet reverse-engineered |
+| Identify K_A / K_C key purposes | Unknown — captured live but which file types use them is not yet known |
 
 ---
 
-## 4. The current blocker — and how to resolve it
+## 4. Current state — NO HARD BLOCKER
 
-**Blocker:** The initial value of `block_buf` (cipher+0x3C, 16 bytes) is unknown.
-`tp7runtime.exe`'s TDCP_blockcipher constructor allocates this buffer via `GetMem` but
-never zeroes it. The `Init` call chain (TDCP_cipher.Init → Twofish.Init) also never
-touches it. The value when `EncryptBlock` is first called depends on prior heap state
-and can only be observed at runtime.
+**As of 2026-06-16, all cipher work is complete.** No active decryption blocker exists.
 
-**What we know (all confirmed by disassembly):**
-- Cipher: Twofish (TDCP_twofish from DCPcrypt) — VMT confirmed, q-box tables verified ✓
-- Passphrase: **`mabufoju`** — hardcoded at tp7runtime.exe file offset `0x75D154` ✓
-- Key: SHA1('mabufoju')[0:20] + `\x00\x00\x00\x00` = 24-byte (192-bit) key ✓
-- Mode: CFB (mode=2 written to cipher+0x34 in validate_func) ✓
-- Validation: first 8 bytes of every `.RWN`; pass when decrypted pt[0:4] == pt[4:8] ✓
-- All 20+ scanned `.RWN` files have constant ct[0:4]^ct[4:8] = 0x3E0A37C5 ✓
-- Python twofish_pure.py passes NIST 192-bit test vector ✓
-- IV=zeros tested → keystream XOR = 0xCE14BE8C ≠ 0x3E0A37C5 → **IV is not zeros**
+What was the blocker (historical, for reference):
+- Needed: `block_buf` heap value (IV) to decrypt .RWN and .DCY files
+- Solution: live Frida capture via `scripts/frida_capture_key_and_iv.py`
+- Discovery: IV param is always 0; keys are SHA1(runtime_passphrase) not "mabufoju";
+  body P_start = K0 = Encrypt_K(P_initial), not P_initial itself
+- See BROKEN.md B-007 for full history
 
-**How to resolve — Frida (preferred, no install needed):**
+Current decryption scripts:
+- `scripts/rwn_decrypt.py` — uses K_B (`a898d21e...`), P_start=K0, no IV file needed
+- `scripts/dcy_decrypt.py` — uses K_D (`691e8041...`), P_start=K0, no IV file needed
+- Both verified 2026-06-16: `python scripts/dcy_decrypt.py --validate-only` → 41/48 OK ✓
 
-`scripts/get_iv_frida.py` (v5) implements a self-filtering approach:
-1. Run EVO (main menu visible)
-2. Run: `python scripts/get_iv_frida.py` — wait for ARMED banner
-3. Open any MODULE from the EVO main menu (Work Orders, Inventory, etc.)
-   — NOT a sub-menu within an already-open module (those load .DCY, not .RWN)
-4. IV is extracted and saved to `scripts/iv_bytes.bin` automatically
-5. Run: `python scripts/verify_iv.py`
-
-**Key detail:** v5 hooks `EncryptBlock` (RVA 0x350248), not `mode2_handler`. After
-EncryptBlock executes in-place on block_buf, K = Encrypt(block_buf) is in memory.
-Only .RWN validation decrypts produce K[0:4]^K[4:8] = 0x3E0A37C5. .DCY loads (wrong
-XOR) are automatically ignored. IV = Decrypt(K) computed in Python. Self-verifying.
-
-**Fallback — x64dbg:**
-1. Install x64dbg (free): https://x64dbg.com/
-2. Attach to running evoerp.exe
-3. Set breakpoint at VA `0xFAEB50` (mode2_handler, loaded evoerp.exe base 0xC60000)
-   — or compute: module_base + 0x34EB50
-4. Open a module window from EVO main menu
-5. When breakpoint hits: EBX = cipher obj; read [EBX+0x3C] (4 bytes) = heap ptr P;
-   read *P for 16 bytes = actual block_buf IV
-6. Share those 16 bytes hex; `scripts/verify_iv.py --hex "xx xx..."` checks them
-
-See BROKEN.md B-004, B-005, B-006 for all prior attempts and dead ends.
+**Highest-value next work: parse DCY binary format** (see §7 below).
 
 ---
 
