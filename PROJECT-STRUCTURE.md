@@ -750,5 +750,28 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 ---
 
-*Last updated: 2026-06-11 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, and catalog.md. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+---
+
+## Pass 12 — New Tables (2026-06-17)
+
+| Table | Module | Purpose | Status |
+|-------|--------|---------|--------|
+| BKGLSTMT | GL-F (T7GLF) | GL statement templates — named financial report layouts (P&L, Balance Sheet, etc.) | inferred |
+| BKGLFSTL | GL-N (T7GLN) | GL financial statement line definitions — user-defined row format for BKGLSTMT reports | inferred |
+| BKGLGJRN | GL-B (T7GLB) | GL general journal headers — batch/journal header records for manual journal entries | inferred |
+| BKGLGJLN | GL-B (T7GLB) | GL general journal lines — individual debit/credit lines within a journal entry | inferred |
+| BKPRCURP | PR (T7PRB) | PR current period data — YTD and period-to-date amounts per employee | inferred |
+| BKPRFTAX | PR (T7PRA) | PR federal tax tables — federal and state withholding rate schedules | inferred |
+| BKPRGLFL | PR (T7PRB) | PR GL flags/accounts — maps each payroll expense type to its GL account code | inferred |
+| BKPRINFO | PR (T7PRB) | PR employee additional info — supplemental employee fields beyond BKPRMSTR | inferred |
+| BKPRTC | PR (T7PRK) | PR time card records — individual time entries per employee per job/operation | inferred |
+| BKARINVI | TC (T7TCC) | AR invoice inventory — links AR invoices to inventory transaction records | inferred |
+| BKART | TC (T7TCC) | AR transaction short log — condensed transaction record for AP/AR quick lookup | inferred |
+| ISCHAINM | CH (T7CHAIN) | Chain/multi-location master — location codes, names, relationships for multi-site EVO | inferred |
+| ISDROP | DR (T7DROPDOWN) | Dropdown list master — user-configurable picklist options for configurable fields | inferred |
+| ISCTREVU | CR (T7CTREVU) | Contract review — SO approval workflow state (department, password, status) | confirmed |
+
+---
+
+*Last updated: 2026-06-17 — built from menu_to_form.csv, master_index.csv, tables.txt,
+schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–12. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*

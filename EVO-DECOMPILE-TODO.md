@@ -966,11 +966,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
 | Module: WO | **80** | 85 | **5** ↑ | 2026-06-16 |
-| Module: GL | **82** | 85 | **3** ↑ +4 | 2026-06-17 |
+| Module: GL | **85** | 88 | **3** ↑ +3 | 2026-06-17 |
 | Module: BM/MRP | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
 | Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
-| Module: PR/Payroll | **55** | 80 | **25** ↑ | 2026-06-11 |
+| Module: PR/Payroll | **62** | 80 | **18** ↑ +7 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
 | Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
@@ -1028,6 +1028,13 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: ES/Estimating | **58** | 72 | **14** ↑ | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **55** | 70 | **15** NEW | 2026-06-17 |
 | Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
+| Module: TC/Treasury Control | **52** | 70 | **18** NEW | 2026-06-17 |
+| Module: SC/Cycle Count | **58** | 72 | **14** NEW | 2026-06-17 |
+| Module: CH/Multi-Location Chain | **45** | 65 | **20** NEW | 2026-06-17 |
+| Module: KI/Kit Assembly | **50** | 70 | **20** NEW | 2026-06-17 |
+| Module: MA/AR Deposit Apply | **52** | 68 | **16** NEW | 2026-06-17 |
+| Module: TE/NACHA+ACH | **48** | 65 | **17** NEW | 2026-06-17 |
+| Module: PA/Paperless DC | **45** | 68 | **23** NEW | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |

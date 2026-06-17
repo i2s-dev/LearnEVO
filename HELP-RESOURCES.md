@@ -1532,10 +1532,103 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISUSAGE | ISUSAGE.B | IN | Usage tracking | Item usage tracking (consumption history by customer/period) |
 | BKSHORT | BKSHORT.B | WO/SO | Short supply | Short supply records — items insufficient for open WO/SO orders |
 | LANGDICT | LANGDICT.B | System | Language dict | Multi-language UI label translations (ML module) |
+| BKGLSTMT | BKGLSTMT.B | GL | GL statement templates | Named financial report layouts (P&L, Balance Sheet, custom) |
+| BKGLFSTL | BKGLFSTL.B | GL | Financial stmt lines | User-defined row format definitions for BKGLSTMT reports |
+| BKGLGJRN | BKGLGJRN.B | GL | GL journal headers | Batch/journal header records for manual general journal entries |
+| BKGLGJLN | BKGLGJLN.B | GL | GL journal lines | Individual debit/credit lines within a GL journal entry |
+| BKPRCURP | BKPRCURP.B | PR | PR current period | YTD and current-period payroll amounts per employee |
+| BKPRFTAX | BKPRFTAX.B | PR | PR federal tax tables | Federal and state withholding rate schedules |
+| BKPRGLFL | BKPRGLFL.B | PR | PR GL flags | Maps each payroll expense type to its target GL account |
+| BKPRINFO | BKPRINFO.B | PR | PR employee extra | Supplemental employee fields beyond the main BKPRMSTR record |
+| BKPRTC | BKPRTC.B | PR | PR time cards | Individual time-card entries (employee × job × operation) |
+| BKARINVI | BKARINVI.B | AR | AR inv-inventory link | Links AR invoices to the inventory transaction records they generated |
+| BKART | BKART.B | AR/TC | AR transaction log | Condensed AR/AP transaction short log for rapid lookup |
+| ISCHAINM | ISCHAINM.B | CH | Chain master | Multi-location chain master — codes, names, relationships |
+| ISDROP | ISDROP.B | DR | Dropdown lists | User-configurable picklist options for configurable fields |
+| ISCTREVU | ISCTREVU.B | CR | Contract review | SO approval workflow state (department/password/status records) |
 
 ---
 
-## KEYWORD / TERM GLOSSARY
+## MODULE QUICK REFERENCE — Pass 12 Additions
+
+### SC — Cycle Count / Serial Control
+**What it does:** Performs partial physical inventory by location, category, or item class — without shutting down the full warehouse. Complement to the PI module for continuous accuracy.
+
+**When to use SC vs. PI:**
+- SC = regular spot-counts by location or class (ongoing)
+- PI = full warehouse freeze, blind count, and post (annual or semi-annual)
+
+**Key tables:** BKICLOC (inventory by location), BKICLOCM (location master), ISBINLOC (bin assignments), ISCATMST (category master), INVTXN (inventory transaction postings)
+
+**Menu path:** Look for **SC** codes in the Inventory or Warehouse menus.
+
+**Files:** T7SCF (main count entry), T7SCC (with AR adjustment), T7SCH (count history), T7SCA (adjustments), T7SCG (by category), T7SCOMP (company-level)
+
+---
+
+### GL Sub-Modules
+**How GL is organized — each screen is a separate RWN:**
+
+| Sub-module | Function | Key tables |
+|-----------|---------|-----------|
+| **T7GLB** (GL-B) | General journal entry — manual debit/credit batches | BKGLGJRN, BKGLGJLN |
+| **T7GLE** (GL-E) | Direct transaction posting | BKGLTRAN, BKGLCOA |
+| **T7GLF** (GL-F) | Financial statements — generate P&L, Balance Sheet | BKGLSTMT, BKGLCOA |
+| **T7GLN** (GL-N) | Budget maintenance — define budget by account/period | BKGLFSTL, BKGLCOA |
+| **T7GLL** (GL-L) | Check listing — AP check register posted to GL | BKAPCHKF, BKGLCHK |
+| **T7GLC** (GL-C) | Period close — close accounting period | BKGLTRAN, BKGLCOA |
+| **T7GLT** (GL-T) | Trial balance — all accounts with debit/credit totals | BKGLCHK, BKGLTRAN |
+| **T7GLESPEED** | Speed / fast GL entry — abbreviated posting for high-volume shops | BKGLTRAN, BKGLCOA |
+
+**Tip:** GL financial statements (T7GLF) use BKGLSTMT (layout templates) which reference BKGLFSTL (line definitions). You define the format once, then run it for any period.
+
+---
+
+### PR Extended Tables
+**Additional tables confirmed in Pass 12:**
+
+| Table | Purpose |
+|-------|---------|
+| BKPRCURP | Current-period employee accumulators (YTD gross, taxes, deductions) |
+| BKPRFTAX | Federal/state tax rate tables — updated annually per IRS Pub 15 |
+| BKPRGLFL | GL account mapping for each payroll expense type |
+| BKPRINFO | Extra employee demographics (emergency contact, notes) |
+| BKPRTC | Time card entries — import path from DC terminal to payroll |
+| BKPRAGNT | Payroll agency/garnishment records (union dues, child support, levies) |
+
+---
+
+### TC — Treasury Control (T7TCC)
+**What it does:** Bank reconciliation and cash management — handles AP check posting (BKAPCHKF), AR deposit application (BKARDEP), AR invoice matching (BKARINVI), and the resulting GL check transactions (BKGLCHK). The module that clears checks and marks deposits as applied.
+
+---
+
+### KI — Kit Assembly (T7KIT)
+**What it does:** Builds a kit item from its components. Pulls components from BKICLOC (by location), builds the parent kit item, and posts the inventory adjustment. Uses BKPRMSTR for labor if the kit build includes labor operations.
+
+---
+
+### MA — AR Deposit Application (T7MAPDEPO)
+**What it does:** Maps/applies customer deposits to open AR invoices. Uses BKARDEP (deposit master), BKARINV (invoice header), BKARINVL (invoice lines), BKARINVT (invoice tax). This is the "apply cash receipts" step after deposits are entered.
+
+---
+
+### TE — NACHA/ACH Testing (T7TESTNACHA)
+**What it does:** Generates and validates NACHA-format ACH files for electronic payment (direct deposit or AR collection). Uses ISBANKS (bank account master) and BKGLCHK (check history). A utility module for testing ACH transmission before live payroll or customer payment runs.
+
+---
+
+### CH — Multi-Location Chain (T7CHAIN / T7CHAINM)
+**What it does:** Manages multi-location chain relationships. ISCHAINM holds the chain master — location codes, names, and which locations share customer/vendor data. Used in companies running EVO across multiple sites.
+
+---
+
+### DD — Data Dictionary Check (T7DDCHECK)
+**What it does:** Admin utility that validates the Pervasive Btrieve data dictionary (FILEDICT, FILEKEY) for consistency. Checks that DDF file/field/key definitions match the actual `.B` data files. Run after any schema change or data migration.
+
+---
+
+### KEYWORD / TERM GLOSSARY
 
 | Term | Definition |
 |------|-----------|

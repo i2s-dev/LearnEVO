@@ -1427,3 +1427,160 @@ New families identified from rwn_symbols.json DB fingerprint analysis.
 | BKEDMSTR | T7DEPB (ED/DE) | T7DEPD, T7DEPE |
 | ISBANKS | T7MDEFAULTS (MD) | T7SRF, WBKLOOKUP |
 | ISNUMBER | T7MDEFAULTS (MD) | T7SOA, T7SRD |
+
+---
+
+## Pass 12 — GL sub-modules, SC, PR, misc single-file discoveries
+
+---
+
+### GL Sub-Module Breakdown (22 files, 2,914 total procs)
+
+Confirmed function per GL sub-module from DB fingerprints:
+
+| Module | Procs | Key tables | Inferred function |
+|--------|-------|-----------|-------------------|
+| T7GLB | 215 | BKGLGJRN, BKGLGJLN, BKGLCHK | GL general journal entry (GL-B) |
+| T7GLE | 191 | BKGLTRAN, BKGLCOA | GL entry (direct transaction posting) |
+| T7GLF | 189 | BKGLSTMT, BKGLCOA | GL financial statements (GL-F) |
+| T7GLN | 182 | BKGLFSTL, BKGLCOA | GL new/maintain budget (GL-N, uses statement layouts) |
+| T7GLJ | 171 | BKGLCHK, BKGLTRAN | GL journal review (GL-J) |
+| T7GLL | 166 | BKAPCHKF, BKGLCHK, BKGLTRAN | GL check listing / AP check register |
+| T7GLO | 165 | BKGLTRAN, BKGLCOA | GL overview / open transactions |
+| T7GLESPEED | 164 | BKGLTRAN, BKGLCOA | GL speed/fast entry (abbreviated posting) |
+| T7GLE2 | 156 | BKGLTRAN, BKARINVL | GL entry variant 2 (with AR invoice lines) |
+| T7GLD | 132 | BKGLTRAN, BKGLCOA | GL department entry (GL-D) |
+| T7GLC | 129 | BKGLTRAN, BKGLCOA | GL close (period close function) |
+| T7GLT | 120 | BKGLCHK, BKGLTRAN, BKGLCOA | GL trial balance |
+
+**New GL tables:** BKGLSTMT (GL statement templates), BKGLFSTL (GL financial statement layouts — user-defined financial report formats), BKGLGJRN (GL general journal header), BKGLGJLN (GL general journal lines)
+
+---
+
+### SC — Cycle Count / Serial Control (9 files, 741 procs)
+
+**Purpose:** Stock count / cycle count — partial physical inventory by item class, location, or category. Complement to the full PI (Physical Inventory) module. Also handles serial number control per stock location.
+
+- T7SCF (131 procs): Main cycle count entry (BKICLOC, BKICLOCM) — count items in a location
+- T7SCC (121 procs): SC with AR transaction link (BKARTXN) — adjustments post to AR
+- T7SCH (113 procs): SC history (BKARINV) — count history report
+- T7SCA (78 procs): SC adjustments (BKICLOC, BKARINV)
+- T7SCB/SCE (59/88 procs): Sub-screens (BKICLOCM)
+- T7SCOMP (54 procs): SC company-level variant
+- T7SCG (92 procs): SC class/category filter entry
+
+**Tables used:** BKICLOC, BKICLOCM, INVTXN, ISBINLOC, ISCATMST, BKARCUST, CLASMSTR
+
+---
+
+### PR Extended Tables (42 files, 4,297 procs)
+
+Building on existing PR documentation with newly confirmed tables:
+
+| Table | Purpose | Key modules |
+|-------|---------|-------------|
+| BKPRCURP | PR current period data — YTD and current-period amounts per employee | T7PRB, T7PRD, T7PRG, T7PRK |
+| BKPRFTAX | PR federal tax tables — tax rate schedules | T7PRB, T7PRA |
+| BKPRGLFL | PR GL flags/accounts — maps each payroll expense type to GL accounts | All PR modules |
+| BKPRINFO | PR employee additional info — supplemental fields beyond BKPRMSTR | T7PRB, T7PRA, T7PRD, T7PRLO |
+| BKPRTC | PR time card records — individual time card entries | T7PRK (time card entry module) |
+| BKPRAGNT | PR agent/agency records — payroll agency links (garnishments, union dues) | T7NZEMAIL |
+| BKDCLAB | DC labor records — DC terminal labor entries imported into PR via T7PRK | T7PRK, T7WC, T7DC |
+
+---
+
+### Miscellaneous Single-File Module Discoveries
+
+#### CH — Chain / Multi-Location (T7CHAIN / T7CHAINM)
+Chain master module. ISCHAINM = chain/multi-location master records. Allows EVO to manage multiple business locations under one company code, sharing customer/vendor data. Procs: DRILLM.ONSTART, DRILLM.ONCLOSE.
+
+**New table:** ISCHAINM (chain/multi-location master — location codes, names, relationships)
+
+---
+
+#### TC — Treasury Control (T7TCC, 119 procs)
+Multi-function treasury control: AP checks (BKAPCHKF), AR deposits (BKARDEP), AR inventory invoices (BKARINVI), AR transactions (BKART), GL check history (BKGLCHK). Likely implements the bank reconciliation and cash management functions.
+
+**New tables:** BKARINVI (AR invoice inventory — links AR invoices to inventory transactions), BKART (AR transaction short-form records — condensed transaction log)
+
+---
+
+#### TE — Test NACHA / ACH (T7TESTNACHA, 103 procs)
+ACH (Automated Clearing House / NACHA standard) electronic payment testing module. Uses ISBANKS (bank account master), BKGLCHK (check history) — generates or validates NACHA-format direct deposit files for payroll or AR collections.
+
+---
+
+#### MA — Map Deposits / AR Deposit Application (T7MAPDEPO, 97 procs)
+AR deposit mapping: applies customer deposits (BKARDEP) to open invoices (BKARINV, BKARINVL, BKARINVT). This is the "apply cash" function.
+
+---
+
+#### DD — Data Dictionary Check (T7DDCHECK, 92 procs)
+Admin utility: FILEDICT, FILEKEY — validates the Btrieve data dictionary (DDF files) for consistency. Checks file/field/key definitions.
+
+---
+
+#### VS — Visual Scheduler (T7VSCHED, 94 procs)
+Interactive visual scheduling display. Uses BKARINV, BKARINVL — likely shows upcoming SO delivery dates on a calendar/Gantt view. Procs: TINGS.CLICK, ED.ONSTART, KUP_TLL.
+
+---
+
+#### KI — Kit Assembly (T7KIT, 153 procs)
+Kit building / assembly module (KI = Kit). Uses BKICLOC (inventory locations), BKICMSTR, BKPRMSTR (labor). Builds kits from components into a parent item — assembly posting that reduces component quantities and creates parent item stock.
+
+---
+
+#### QS — Quick Search Sales Orders (T7QSOA / T7QSOALINES, 142 procs)
+Quick search overlay for Sales Order browsing. T7QSOA: opens BKARCUST, BKARINV, BKARINVL, BKICPMAT, BKPRSALE — customer+SO fast lookup. T7QSOALINES: line-level browse. ISQSOA = saved QS access state.
+
+---
+
+#### NU — Number Definitions (T7NUMDEF, 38 procs)
+Manages all auto-increment number sequences. Uses ISNUMBER (number sequence definitions), ISBANKS (bank account numbering), BKESTCFG (estimate numbering), BKSYAP (AP numbering). One record per entity type (SO#, WO#, PO#, invoice#, check#, etc.).
+
+---
+
+#### GD — Grid/Drill Master (T7GDM, 31 procs)
+Admin tool: manages drill-down menu definitions (ISDRILLM) and lookup grid layouts (BKLUGRID). The SU-B menu function that configures the drill-down menus.
+
+---
+
+#### DR — Dropdown Menus (T7DROPDOWN / T7DRAG, 53 procs)
+User-configurable dropdown list manager. ISDROP = dropdown option master. Allows ERP admins to define custom picklists for configurable fields.
+
+---
+
+#### BI — Bin Setup (T7BINSET, 102 procs)
+Bin location setup + counts (BI = Bin). Bridges WC (Warehouse Control) and PI (Physical Inventory): uses BKPIFROZ, BKPILOT, BKPIPHYS, BKPISER alongside BKICLOC, BKICLOCM. Allows counting by bin location as part of physical inventory.
+
+---
+
+#### PA — Paperless DC (T7PAPERLESS, 205 procs)
+Paperless manufacturing workflow: uses BKDCLAB, BKGLTRAN, BKGLX — DC labor posted without paper travelers. Large module (205 procs) suggesting full DC paperless form suite.
+
+---
+
+#### EW — External Work Cost? (T7EWC, 68 procs)
+Uses BKMATCST, BKRTCST, BKSBMFG, BKICTAX, BKPRSALE. Context: estimating/costing with sub-contract manufacturing. Likely "External Work Cost" calculation linking sub-contracted operations to estimate cost records.
+
+---
+
+### Pass-12 Table Ownership Additions
+
+| Table | Owner module | Also used by |
+|-------|-------------|-------------|
+| BKGLSTMT | T7GLF (GL) | — |
+| BKGLFSTL | T7GLN (GL) | — |
+| BKGLGJRN | T7GLB (GL) | T7AME |
+| BKGLGJLN | T7GLB (GL) | T7AME |
+| BKPRCURP | T7PRB (PR) | T7PRD, T7PRK, T7PRLO |
+| BKPRFTAX | T7PRB (PR) | T7PRA |
+| BKPRGLFL | T7PRB (PR) | T7PRLI, T7PRA, T7PRK |
+| BKPRINFO | T7PRB (PR) | T7PRA, T7PRD |
+| BKPRTC | T7PRK (PR) | — |
+| BKARINVI | T7TCC (TC) | T7AME |
+| BKART | T7TCC (TC) | T7DEQ, T7DET |
+| ISCHAINM | T7CHAIN (CH) | T7CHAINM |
+| ISDROP | T7DROPDOWN (DR) | — |
+| ISCTREVU | T7CTREVU (CR) | — |
+
