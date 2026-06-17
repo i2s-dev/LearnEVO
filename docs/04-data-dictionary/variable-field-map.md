@@ -510,6 +510,128 @@ Source: T7ROA.RWN (MTRO.* and LIST.CYC.* variables)
 
 ---
 
+## MTMRP — Multi-Company MRP Working Table
+
+Source: T7AUTOMRF.RWN (MTMRP.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| MTMRP.PARTNO | Part number |
+| MTMRP.KEY | MRP record key |
+| MTMRP.DATE | Planned order date |
+| MTMRP.QTY | Planned order quantity |
+| MTMRP.ONHAND | On-hand quantity at planning time |
+| MTMRP.PEGTO | Pegged-to demand order (traceability) |
+| MTMRP.ORDER | Firmed/released order reference |
+| MTMRP.STARTDT | Planned start date |
+
+**Summary:** MTMRP is the multi-company MRP scratch table — populated during an MRP run with planned orders, on-hand snapshots, and pegging links before orders are firmed or released. The `MT` prefix indicates this is a cross-company shared table (same schema used across all company codes).
+
+---
+
+## BKBOLHDR — Bill of Lading Header
+
+Source: T7BOL.RWN (LOAD.*, SEAL.*, TRAILER.*, DRIVER.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| LOAD.NUMBER | Load/BOL number |
+| SEAL.NUMBER | Trailer seal number |
+| TRAILER.NUMBER | Trailer identifier |
+| AUTHOR.NUMBER | Authorization number |
+| CONTROL.NUMBER | BOL control number |
+| PICKUP.TIME | Scheduled pickup time |
+| DRIVER.ARRIVED | Driver arrival timestamp |
+| LOADING.START | Loading start timestamp |
+| LOADING.END | Loading completion timestamp |
+| DRIVER.DEPARTED | Driver departure timestamp |
+
+**Summary:** BOL header tracks all carrier/logistics data for an outbound shipment — trailer, seal, authorization, and the complete driver timing sequence.
+
+---
+
+## ISACTION — Action Items
+
+Source: T7ACTION.RWN (IS.ACTION.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| IS.ACTION.TYPE | Action type code |
+| IS.ACTION.DESC | Action description |
+| IS.ACTION.MISC | Miscellaneous field |
+
+---
+
+## ACRDTYPE — Activity Control Record Types
+
+Source: T7ACRDTYPE.RWN (AC.RD.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| AC.RD.TYPE | Record type code |
+| AC.RD.REASON | Reason code |
+| AC.RD.DISPO | Disposition code (rework / scrap / use-as-is) |
+| AC.RD.EXTRA1 | Extra field 1 |
+| AC.RD.EXTRA2 | Extra field 2 |
+
+---
+
+## BKSBPART — Alternate / Substitute Parts
+
+Source: T7ALTPART.RWN (BKSBPART DB file)
+
+**Summary:** Links a primary item code to acceptable substitute items. Used in SO and WO when a primary item is out of stock. Primary key is likely BKSBPART.CODE (primary item) + BKSBPART.SUB (substitute item). Full field list blocked (RWN LIB-compiled).
+
+---
+
+## ISCHAINM — Multi-Company Chain Master
+
+Source: T7CHAIN.RWN + T7CHAINM.RWN (ISCHAINM DB file)
+
+**Summary:** Defines multi-company "chains" — groups of EVO company databases linked for intercompany transactions. One home company + linked subsidiaries/affiliates. Field names blocked (EVO.LIB).
+
+---
+
+## WCTRLOAD — Work Center Capacity Load
+
+Source: T7VSCHED.RWN (WCTRLOAD DB file)
+
+**Summary:** Work center capacity load table — aggregates WO operations scheduled to each work center by date bucket. Used by the Visual Scheduler (T7VSCHED) to display loading vs. capacity. Related to WORKCTR (work center master).
+
+---
+
+## ISQSOA — Quick Sales Order Staging
+
+Source: T7QSOA.RWN (ISQSOA DB file)
+
+**Summary:** Staging table for the Quick SO entry workflow. Holds in-progress quick orders before they are committed to BKARINV/BKARINVL.
+
+---
+
+## ISUDFINV — User-Defined Invoice Fields
+
+Source: T7UDFINV.RWN (ISUDFINV DB file)
+
+**Summary:** Stores custom field definitions added to AR invoices. Per-site extension mechanism without modifying core BKARINV schema.
+
+---
+
+## ISWOEX — Work Order Extensions
+
+Source: T7PAPERLESS.RWN (ISWOEX DB file)
+
+**Summary:** IS WO Extensions — per-operation dispatch status, operator notes, and scan data for the Paperless Shop Floor system. Extends WORKORD/WOROUT without modifying core WO tables.
+
+---
+
+## ISFUTYPE — Follow-Up Type Codes
+
+Source: T7CARFUP.RWN (ISFUTYPE DB file)
+
+**Summary:** Follow-up type code master for Corrective Action Requests (CARs). Defines categories of follow-up actions (e.g., verification visit, re-inspection, closure). Links to AC module ACRDTYPE.
+
+---
+
 ## Notes on naming convention
 
 TAS Pro 7 maps database records to named buffer variables. The pattern is:

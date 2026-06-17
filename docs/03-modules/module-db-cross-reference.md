@@ -319,6 +319,272 @@ T7FOA/T7FOB: ISTS.SRC stubs (same pattern as T7AUTOWOLA — 663 vars of EVO.CFG.
 
 ---
 
+---
+
+### Activity Control (T7AC) — NCR / Action Items
+
+**T7ACTION.RWN** (EVO.LIB, procs=53, vars=1183) — action item entry
+**T7ACRDTYPE.RWN** (EVO.LIB, procs=58, vars=1240) — record type codes
+**T7ACDET.RWN** (ISTECH.LIB, procs=18, vars=815) — AC detail records
+**T7ACDATE.RWN** (LISTG60.LIB, procs=64, vars=1376) — WO date tracking
+
+**Key tables:** ISACTION (action items), ACRDTYPE (record/reason types), ACDETAIL (AC detail)
+
+**Key variables (T7ACTION):**
+`IS.ACTION.TYPE` — action type code
+`IS.ACTION.DESC` — action description
+`IS.ACTION.MISC` — miscellaneous field
+
+**Key variables (T7ACRDTYPE):**
+`AC.RD.TYPE` — record type code
+`AC.RD.REASON` — reason code
+`AC.RD.DISPO` — disposition code (what happens to the part: rework/scrap/use-as-is)
+`AC.RD.EXTRA1/2` — extra fields
+
+**Key variables (T7ACDATE):**
+`WODATE.WOPRE/WOSUF` — WO prefix/suffix
+`WODATE.START/FINISH` — scheduled start/finish dates
+`WODATE.QTY` — scheduled quantity
+`WODATE.PARPRE/PARSUF` — parent WO prefix/suffix
+`WODATE.TOPPRE/TOPSUF` — top-level WO
+`WODATE.DELPRE` — delete prefix (for cascade)
+
+**Summary:** AC is the Non-Conformance Report (NCR) and action item tracking module. An NCR is raised when a product fails quality inspection; the AC module records the disposition (rework, scrap, use-as-is), reason code, and tracks follow-up actions via ISACTION.
+
+---
+
+### Bill of Lading (T7BOL)
+
+**T7BOL.RWN** (LISTG60.LIB, procs=178, vars=2227) — BOL entry and print
+**T7BOLMSO.RWN** (LISTG60.LIB, procs=174, vars=2137) — SO-linked BOL edit
+
+**Key tables:** BKARINV (AR invoices/SOs for shipment), BKARINVL (lines), BKARCUST
+
+**Key BOL variables (T7BOL):**
+`LOAD.NUMBER` — load reference number
+`SEAL.NUMBER` — trailer seal number
+`TRAILER.NUMBER` — trailer identifier
+`AUTHOR.NUMBER` — authorization number
+`CONTROL.NUMBER` — BOL control number
+`PICKUP.TIME` — scheduled pickup time
+`DRIVER.ARRIVED` — driver arrival timestamp
+`LOADING.START/END` — loading start/end times
+`DRIVER.DEPARTED` — departure timestamp
+
+**Key SO-BOL variables (T7BOLMSO):**
+`BILLING.LINE` — billing line on BOL
+`EDIT.DESC` — item description
+`EDIT.PQTY` — packed quantity
+`EDIT.ITEM` — item code
+`EDIT.SSONUM` — source SO number
+`EDIT.PACKS` — number of packages
+`EDIT.CLASS` — freight class (LTL classification)
+`EDIT.WEIGHT` — shipment weight
+`EDIT.UNITS` — units of measure
+`EDIT.HM` — hazardous materials flag
+
+**Summary:** T7BOL generates Bills of Lading for outbound shipments. It links to the SO/invoice records and records carrier, load, seal, and timing data. T7BOLMSO provides editing of individual line items on the BOL.
+
+---
+
+### Contract Review / SO Approval (T7CTREVU)
+
+**T7CTREVU.RWN** (LISTG60.LIB, procs=96, vars=1447) — contract review with password protection
+**T7CTREVUADMIN.RWN** (T7CTRevuAdmin.SRC stub) — admin access variant
+
+**Key tables:** BKARINV (SO/invoices for review), BKGLTRAN
+
+**Key variables:**
+`ENTER.PSWD/CONF.PSWD` — password entry/confirmation fields
+`CT.DEPT` — department code for review
+`CT.ADMIN` — admin flag
+`CT.EMPNAME` — approving employee name
+`SFROM.SONUM/STHRU.SONUM` — SO number range to review
+`FROM.ORDDTE/THRU.ORDDTE` — order date range
+
+**Summary:** The CR/CT module provides password-protected SO approval workflows. Managers must enter a password to approve orders in the selected SO/date range. This corresponds to the "Contract Review" functionality in the menu system (CR module code).
+
+---
+
+### Data Sync Stubs (T7DS*) — Multi-Company Sync Architecture
+
+All 25 T7DS* files are SRC stubs with only `STUB` as the variable and the same core DB file set. Each corresponds to one EvoERP module:
+
+T7DSAP (AP), T7DSAR (AR), T7DSBOM (BOM), T7DSCK (Check), T7DSCM (CM), T7DSCO (??), T7DSCS (CS/Commissions), T7DSDC (DC), T7DSEST (Estimating), T7DSFO (FO), T7DSGEN (General), T7DSGL (GL), T7DSHH (HH/Handheld), T7DSIC (IC/Inventory), T7DSIM (IM), T7DSMRP (MRP), T7DSPO (PO), T7DSPR (Payroll), T7DSQC (QC), T7DSRMA (RMA), T7DSRO (Routing), T7DSSH (SH/Scheduling), T7DSSO (SO), T7DSWC (WC), T7DSWO (WO)
+
+**DB files:** All share the same base set (BKARINV, BKARCUST, BKAPPO, BKAPVEND, BKGLTRAN, BKGLX, BKICMSTR, BKSYAR) + module-specific additions.
+
+**Architecture:** These are the data synchronization layer for multi-company EvoERP installations. The shared BKSYAR (AP system parameters) confirms these interact with inter-company AP transactions. Each stub pre-opens the relevant module tables for the sync process.
+
+---
+
+### Automation Modules (T7AU*) — Automated Processing
+
+**T7AUTODCH.RWN** (ISTECH.LIB, procs=183, vars=2696) — DC labor automation/validation
+**T7AUTOMRF.RWN** (EVO.LIB, procs=132, vars=1889) — MRP firm order automation
+**T7AUTOREBSS.RWN** (ISTECH2.LIB, procs=79, vars=2004) — back-order re-scheduling
+
+**T7AUTOMRF key variables (MTMRP.*):**
+
+| Variable | Meaning |
+|----------|---------|
+| MTMRP.PARTNO | Part number |
+| MTMRP.KEY | MRP record key |
+| MTMRP.DATE | Planned order date |
+| MTMRP.QTY | Planned order quantity |
+| MTMRP.ONHAND | On-hand at planning time |
+| MTMRP.PEGTO | Pegged-to order (demand trace) |
+| MTMRP.ORDER | Firmed order reference |
+| MTMRP.STARTDT | Planned start date |
+
+**Summary:** MTMRP is the multi-company MRP working table — used during MRP calculation runs to store planned orders with pegging info before they are firmed or released.
+
+---
+
+### Kitting (T7KIT)
+
+**T7KIT.RWN** (EVO.LIB, procs=153) — kit assembly
+**Key tables:** BKICMSTR, MTICMSTR, WOBOM, WOMAT, WORKORD, WOROUT, BKICLOC, LOT, ISBINLOC
+**Summary:** Kitting creates pre-assembled kit sub-WOs. Opens the full WO material tables alongside inventory and bin locations to stage kit components for WO consumption. LOT table confirms lot-tracked component support.
+
+---
+
+### Work Center Entry (T7EWC)
+
+**T7EWC.RWN** (LISTG60.LIB, procs=68) — work center master maintenance
+**Key tables:** WORKCTR (work center master), WORKORD, WOROUT, ROUTING
+**Summary:** Creates and edits WORKCTR records. ROUTING confirms routing operations reference these work centers.
+
+---
+
+### Cash Receipts / Deposit Mapping (T7TCC, T7MAPDEPO)
+
+**T7TCC.RWN** (LISTG60.LIB, procs=119) — cash receipts entry
+**T7MAPDEPO.RWN** (LISTG60.LIB, procs=97) — deposit-to-invoice mapping
+**Key tables:** ISTERMS, ISBANKS, BKARDEP, ISARDEPL, BKARCUST, BKARINV, BKARINVL, BKARINVT, BKGLCOA, BKGLCHK, BKART, BKAPCHKF, BKARINVI
+**Summary:** T7TCC enters cash receipts against ISBANKS/BKARDEP. T7MAPDEPO maps deposits to AR invoices via ISARDEPL. Together: enter receipt → map to invoices → post to GL. This is the cash receipts workflow.
+
+---
+
+### Grid / Drill-Down Manager (T7GDM, T7QGRID)
+
+**T7GDM.RWN** (NZLICE.LIB, procs=31) — lookup grid + drill-down config
+**T7QGRID.RWN** (LISTG60.LIB, procs=62) — Quick Grid Lookup UI
+**Key tables:** BKLUGRID (lookup grid definitions), ISDRILLM (IS drill-down master), BKPSUSER, ISACCESS
+**Summary:** UI infrastructure. BKLUGRID stores column layouts for all browse grids; ISDRILLM defines drill-down menus. Backs QU-E (Quick Grid Lookup) and SU-A/SU-B (Maintain Grid/Drill-Down) menu ops.
+
+---
+
+### Module Defaults — Central Configuration (T7MDEFAULTS, T7MDEFBANKS, T7MDEFNDC)
+
+**T7MDEFAULTS.RWN** (ISTECH.LIB, procs=435) — central module defaults (largest config module)
+**T7MDEFBANKS.RWN** (LISTG60.LIB, procs=79) — bank account defaults
+**T7MDEFNDC.RWN** (ISTECH.LIB, procs=252) — non-default config
+**Key tables:** BKSYMSTR, BKYSMSTR, MTICMSTR, CLASMSTR, ISBANKS, ISCC, ISBINLOC, BKSYAP, BKESTCFG, BKFOCFG, BKCPMSTR, BKCMCNTD
+**Summary:** At 435 procs, T7MDEFAULTS is one of the largest modules in EVO — covers all company-level defaults: inventory classes (CLASMSTR), banking (ISBANKS), CC (ISCC), bin locations (ISBINLOC), and module config tables (BKESTCFG = Estimating defaults, BKFOCFG = FO defaults).
+
+---
+
+### Visual Scheduler (T7VSCHED)
+
+**T7VSCHED.RWN** (EVO.LIB, procs=94) — visual production scheduling board
+**Key tables:** WORKORD, WOROUT, WCTRLOAD, BKICMSTR, BKARINV, BKARINVL, FILELOC
+**Summary:** Visual scheduling board for work center capacity. WCTRLOAD aggregates WO operations into capacity buckets per work center. Displays capacity-loaded production schedule from open WOs + SO demand.
+
+---
+
+### Alternate Parts / Substitutes (T7ALTPART)
+
+**T7ALTPART.RWN** (LISTG60.LIB, procs=104) — alternate/substitute item maintenance
+**Key tables:** BKSBPART (substitute part master), BKICMSTR
+**Summary:** BKSBPART links a primary item code to acceptable substitute items. Used in SO and WO to offer or auto-substitute components when primary item is out of stock.
+
+---
+
+### Bin Setup / Warehouse Locations (T7BINSET)
+
+**T7BINSET.RWN** (LISTG60.LIB, procs=102) — bin and location configuration
+**Key tables:** BKICLOC, MTICMSTR, ISBNMSTR, ISBINLOC, BKPIPHYS, BKPIFROZ
+**Summary:** Configures warehouse bin/location structure. ISBNMSTR = bin master, ISBINLOC = bin-to-item assignments. Integration with BKPIPHYS/BKPIFROZ confirms bins are used in PI freeze/count cycles.
+
+---
+
+### Quick SO Entry (T7QSOA)
+
+**T7QSOA.RWN** (EVO.LIB, procs=72) — rapid sales order entry
+**T7QSOALINES.RWN** (LISTG60.LIB, procs=70) — QSO line items
+**Key tables:** BKARCUST, ISQSOA, BKARINVL, BKARINV, BKICMSTR, MTICMSTR, BKICLOC, BKICPMAT
+**Summary:** Quick SO entry bypasses the full T7SOA workflow. ISQSOA is the quick-order staging table. BKICPMAT live price lookup included. Used for fast phone/counter orders.
+
+---
+
+### Multi-Company Chain Management (T7CHAIN, T7CHAINM)
+
+**T7CHAIN.RWN** (EVO.LIB, procs=62) — chain entry
+**T7CHAINM.RWN** (EVO.LIB, procs=40) — chain manager
+**Key tables:** ISCHAINM, BKPSUSER, BKSYMSTR, FILEDICT
+**Summary:** Links multiple company databases into a "chain" for inter-company transactions. ISCHAINM = chain master. Architecture: one company is the "home"; others are in the chain for intercompany PO/AR flows.
+
+---
+
+### Corrective Action Request Follow-Up (T7CARFUP)
+
+**T7CARFUP.RWN** (EVO.LIB, procs=53) — CAR follow-up tracking
+**Key tables:** ISFUTYPE
+**Summary:** Tracks follow-up actions on Corrective Action Requests. ISFUTYPE = follow-up type codes. Linked to the AC (NCR) module.
+
+---
+
+### Paperless Shop Floor / WO Dispatch (T7PAPERLESS)
+
+**T7PAPERLESS.RWN** (LISTG60.LIB, procs=205) — paperless WO dispatch
+**Key tables:** WORKORD, MTICMSTR, WOROUT, ROUTING, BKICLOC, ISBINLOC, ISWOEX
+**Summary:** Paperless Shop Floor dispatch for PC terminals (see HH module for handheld variant). ISWOEX = IS WO Extensions (operator notes, dispatch status per operation). Dispatches WO operations without paper traveler documents.
+
+---
+
+### Service/Repair Type Code Setup
+
+6 modules managing type-code master tables for the SR module, all using ISSTYPE as the primary table:
+
+| Module | Table | Purpose |
+|--------|-------|---------|
+| T7SERR.RWN | ISSTYPE | Service error types |
+| T7SETYPE.RWN | ISSETYPE | Service event types |
+| T7SEPROC.RWN | ISSEPROC | Service process types |
+| T7STTYPE.RWN | ISSTYPE | Service ticket types |
+| T7STEQUIP.RWN | ISSTYPE | Equipment types |
+| T7STYPE.RWN | ISSTYPE | Service types (generic) |
+
+All are 52-proc EVO.LIB CRUD screens over SR reference tables.
+
+---
+
+### User-Defined Invoice Fields (T7UDFINV)
+
+**T7UDFINV.RWN** (LISTG60.LIB, procs=16)
+**Key tables:** ISUDFINV
+**Summary:** Custom field definitions for AR invoices. ISUDFINV stores the field definitions. Allows per-site custom invoice data without core table changes.
+
+---
+
+### NACHA / ACH Payment Files (T7TESTNACHA)
+
+**T7TESTNACHA.RWN** (LISTG60.LIB, procs=103)
+**Key tables:** ISBANKS, BKGLCHK, BKAPVEND
+**Summary:** Generates and validates NACHA ACH payment files for AP check runs. ISBANKS provides routing numbers, BKGLCHK = GL check register.
+
+---
+
+### DBA ↔ EVO Migration Utilities (T7DBA2EVO, T7EVO2DBA)
+
+**T7DBA2EVO.RWN** (NZLICE.LIB, procs=36) — DBA Manufacturing → EvoERP
+**T7EVO2DBA.RWN** (EVO.LIB, procs=51) — EvoERP → DBA Manufacturing
+**Key tables (both):** BKARCUST, BKAPVEND, WORKORD, BKICMSTR, ISNOTES, BKARINV, BKAPPO
+**Summary:** Data migration between DBA Manufacturing (EVO's predecessor) and EvoERP. Used during upgrades and for sites running both systems in parallel.
+
+---
+
 ## Module table ownership matrix
 
 Quick reference — which module is the PRIMARY owner of each core table:

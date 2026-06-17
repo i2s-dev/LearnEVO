@@ -566,12 +566,12 @@ Target for "understood" = C: 75+ on all items below.
 The following modules have menu codes and forms inventoried but no deep logic documentation:
 
 - [ ] ⬜ **AB** — purpose unclear; no deep doc
-- [x] 🔄 **AC** — Activity Control (WO actual dates) — 3 DFMs read; ACDATE (WODATE.START/FINISH/QTY, parent.wonum/top.wonum/deleted.wonum WO hierarchy), ACRDTYPE (action record disposition codes: ac.rd.type/reason/dispo), ACTION (IS.ACTION.TYPE/DESC action type master); primary tables WODATE.*, IS.ACTION.* — **C: 45/100**
+- [x] 🔄 **AC** — Activity Control / NCR tracking — 3 DFMs + 4 RWN modules (T7ACTION/ACRDTYPE/ACDET/ACDATE); ACDATE (WODATE.START/FINISH/QTY, PARPRE/PARSUF/TOPPRE/TOPSUF WO hierarchy, DELPRE cascade delete); ACRDTYPE (AC.RD.TYPE/REASON/DISPO disposition codes: rework/scrap/use-as-is); T7ACTION (IS.ACTION.TYPE/DESC/MISC action items); T7ACDET (AC.DET.ID/LINE/PART detail records); primary tables WODATE/ISACTION/ACRDTYPE/ACDETAIL — **C: 60/100**
 - [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
 - [x] 🔄 **AD** — Accounting Defaults — CHM confirmed: AD-A=GL Defaults, AD-B=Checking Account Defaults, AD-C=AP Defaults; system-level GL/bank/AP configuration (no DFMs found — in RWN) — **C: 40/100**
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — purpose unclear; no deep doc
-- [x] 🔄 **CR** — Customer Revenue / SO Department Approvals — CHM confirmed: CR-A='Assign Departments to Sales Orders', CR-B='View/Enter SO Approvals'; CR manages SO-level approval workflow and department assignment (no DFMs — in RWN) — **C: 40/100**
+- [x] 🔄 **CR** — Contract Review / SO Approval — CHM confirmed: CR-A='Assign Departments to Sales Orders', CR-B='View/Enter SO Approvals'; T7CTREVU (96 procs): ENTER.PSWD/CONF.PSWD password entry, CT.DEPT/CT.ADMIN department+admin flags, CT.EMPNAME approving employee, SFROM.SONUM/STHRU.SONUM SO range, FROM/THRU.ORDDTE date range; T7CTREVUADMIN = admin variant stub; password-protected SO approval — **C: 55/100**
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
@@ -584,7 +584,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
 - [x] 🔄 **IC** — Inventory Control utility — 1 DFM read (IC2EST: Caption='Copy Production to Estimate Inventory' — one-way bridge copies production BOM data into ES estimating module); IC broader scope in RWN — **C: 35/100**
 - [x] 🔄 **IM** — Import Management / Landed Cost — all 5 DFMs read; IMB (ISIS.MCF.* currency master: code/desc/base/symbol), IMC (ISIS.MCR.* exchange rates: date/base/SOURCE[1..n]), IMD (ISIS.LND.* landed cost GL accounts: duty/freight/deferred variants), IME (ISIS.DUTY.* duty codes: first 3 chars=vendor, percentage), IMF (ISIS.BRK.* customs broker: code/flat/perc/type); full landed cost and multi-currency infrastructure — **C: 70/100**
-- [x] 🔄 **IS** — Information System / Multi-Currency GL — 1 DFM found (T7ISMCC: Convert Source to Base Currency, is.date/ISGL.CYDATE[1]/gl.period[1-2]); IS = system-wide shared reference namespace (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP tables); ISGL.* = GL currency integration tables — **C: 45/100**
+- [x] 🔄 **IS** — InfoSystem / Multi-Currency GL — T7ISMCC (ISTECH.LIB, 82 procs): ISGL.CYDATE (current year GL date), ISGL.1YDATE–6YDATE (6 years back), ISGL.FYDATE (fiscal year date) — multi-company GL fiscal date synchronization; T7ISASER (DBA.LIB, 12 procs): WOPRE/WOSUF + MTWO.WIP.* — old-era WO serial number assignment; IS namespace = shared extension tables (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP) — **C: 60/100**
 - [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
 - [ ] ⬜ **LM** — Labor Management — forms inventoried only
@@ -617,6 +617,11 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **UT** — Utilities (admin/data maintenance) — all 8 DFMs read; UTH (file layout report), t7uti (company add/delete: company_code/name/path/copy.file/cdelete), UTKA (data clear/reset: CLR.COA/CUST/VEND/INVN — DESTRUCTIVE), UTKD (fiscal year: fycur/fy1yp/fy2yp/fy3yp), UTKE (location cleanup — DESTRUCTIVE), UTKF/UTKG (item rebuild F and G variants), UTKH (average cost recalculate by inc.type[1-4]); most ops irreversible — **C: 60/100**
 - [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
 - [ ] ⬜ **YS** — purpose unclear; no deep doc
+
+**Subsystems (not menu modules — discovered via RWN analysis):**
+- [x] 🔄 **BO** — Bill of Lading (T7BOL: 178 procs, T7BOLMSO: 174 procs); LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER/AUTHOR.NUMBER/CONTROL.NUMBER; DRIVER.ARRIVED/LOADING.START/END/DRIVER.DEPARTED timestamps; T7BOLMSO: EDIT.CLASS/WEIGHT/PACKS/HM (LTL freight fields); integrated with BKARINV/SO for outbound shipments — **C: 58/100**
+- [x] 🔄 **DS** — Data Sync stubs (25 files: T7DSAP/AR/BOM/CK/CM/CO/CS/DC/EST/FO/GEN/GL/HH/IC/IM/MRP/PO/PR/QC/RMA/RO/SH/SO/WC/WO); all are SRC stubs with single STUB variable; all share same core DB set + BKSYAR; one stub per module for multi-company data synchronization — **C: 42/100** (architecture known; sync logic is in RWN, blocked)
+- [x] 🔄 **AU** — Automation modules (T7AUTODCH: 183 procs DC labor validation; T7AUTOMRF: 132 procs MRP auto-firm, MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT; T7AUTOREBSS: 79 procs back-order re-BSS); automation/batch-processing layer that runs background ERP operations — **C: 48/100**
 
 ---
 
@@ -953,14 +958,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: PI/Physical Inventory | **75** | 78 | **3** ↑ | 2026-06-17 |
 | Module: ES/Estimating | **58** | 75 | **17** ↑ +10 | 2026-06-15 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
-| Module: AC/Activity Control | **45** | 70 | **25** NEW | 2026-06-15 |
+| Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **65** | 78 | **13** NEW | 2026-06-15 |
 | Module: SP/SPC ⚠️ | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
 | Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: RM/RMA | **68** | 78 | **10** NEW | 2026-06-15 |
 | Module: FO/Features Options | **65** | 70 | **5** ↑ | 2026-06-17 |
-| Module: IS/InfoSystem | **45** | 65 | **20** NEW | 2026-06-15 |
+| Module: IS/InfoSystem | **60** | 65 | **5** ↑ +15 | 2026-06-17 |
 | Module: IM/Landed Cost | **70** | 80 | **10** NEW | 2026-06-15 |
 | Module: PS/Program Security | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: QU/Query Tools | **50** | 70 | **20** NEW | 2026-06-15 |
@@ -968,8 +973,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: TA/TAS Admin | **55** | 72 | **17** NEW | 2026-06-15 |
 | Module: DI/Digital Signatures | **50** | 70 | **20** NEW | 2026-06-15 |
 | Module: AD/Accounting Defaults | **40** | 65 | **25** NEW | 2026-06-15 |
-| Module: CR/SO Approvals | **40** | 65 | **25** NEW | 2026-06-15 |
+| Module: CR/SO Approvals | **55** | 65 | **10** ↑ +15 | 2026-06-17 |
 | Module: US/Triggers | **45** | 65 | **20** NEW | 2026-06-15 |
+| Subsystem: BO/Bill of Lading | **58** | 72 | **14** NEW | 2026-06-17 |
+| Subsystem: DS/Data Sync stubs | **42** | 65 | **23** NEW | 2026-06-17 |
+| Subsystem: AU/Automation | **48** | 68 | **20** NEW | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
