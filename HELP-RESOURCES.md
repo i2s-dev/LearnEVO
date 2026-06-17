@@ -822,9 +822,265 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 
 ---
 
-## SYSTEM & ADMINISTRATION
+### CRM / Contact Manager (CM)
 
-### Users & Security
+**What it does:** Manages customer and prospect contacts, accounts, territories, and marketing activities. Bridges AR (customers) and a dedicated CRM account database. Up to 9 email addresses per contact, account classes, territories, SIC/lead-source codes.
+
+**Menu codes:** CM (6 forms confirmed)
+
+**Key operations:**
+- **CM-A — CRM Account Master (T7CMA):** Create/edit CRM accounts. Fields: account name, address, territory (BKCMTERR), SIC code, lead source, account class, key contacts with EMAIL[1..9].
+- **CRM-AR Bridge:** CRM accounts link to AR customers via BKCMACCN. Same account can exist in both systems; changes sync through T7CMCVTN/T7CMCVTF conversion forms.
+- **Contact merge (T7CMBB):** Merge duplicate CRM contact records.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| BKCMACCN | CRM Account — company name, address, key fields |
+| BKCMACCC | CRM Account Class — A/B/C/custom classification |
+| BKCMACCT | CRM Account Type |
+| BKCMLEAD | CRM Lead Source codes |
+| BKCMTERR | CRM Territory codes |
+
+**Confidence: 65/100** — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9-email field, territory, and SIC confirmed; full BKCM* table family (46 tables) not exhaustively cataloged.
+
+---
+
+### Commission / Salesperson Management (CS)
+
+**What it does:** Tracks salesperson setup (rates, commission method, GL accounts), commission due and paid per invoice, transfers, and commission reports.
+
+**Menu codes:** CS (12 forms confirmed)
+
+**Key operations:**
+- **CS-A — Salesperson Master:** Fields: BKPR.SLS.RATE (commission %), BKPR.SLS.HOW (calculation method), BKPR.SLS.WHEN (when earned: invoice/payment), BKPR.SLS.CLASS, BKPR.SLS.GL (GL account), BKPR.SLS.AGENT (linked AP vendor for outside reps).
+- **CS-B — Commission Record:** Tracks BKPR.COMM.QUOTA, BKPR.COMM.COGS (cost of goods), commission due, and commission paid[1-7] (7 payment buckets).
+- **CS-D — Transfer Commissions:** Moves earned commissions between periods. Fields: BKPR.COMM.SLSP, BKPR.COMM.CCODE, BKPR.COMM.INVNM, BKPR.COMM.INVDT.
+- **CS-E/F — Reports:** Detail and summary commission reports by period.
+- **Outside agents** are linked to AP vendors (BKPR.SLS.AGENT → BKAPVEND) for check payment.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| BKPRSALE | Salesperson/commission master |
+| BKPRAGNT | Outside agent (AP vendor link) |
+
+**Confidence: 70/100** — All 12 DFMs read; commission calculation method, outside agent link, and 7-payment-bucket structure confirmed; commission calculation formula details in encrypted RWN.
+
+---
+
+### Lot Control (LC)
+
+**What it does:** Assigns lot numbers to items, tracks lot usage through SO/WO/PO, and provides lot-level traceability. Parallel to SC (Serial Control) for lot-tracked items.
+
+**Menu codes:** LC (7 forms found)
+
+**Key operations:**
+- **LC-A — Lot Master (T7LCA):** View and edit MTLOT lot records.
+- **LC-B — Assign Lot Control:** Sets MTIC.PROD.LOT flag on item master — marks item as lot-tracked.
+- **LC-G — Archive:** Archive expired lots by expiry date range.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| MTLOT | Lot master — lot numbers, item, qty, dates |
+| MTIC.PROD.LOT | Flag in item master enabling lot tracking |
+
+**Confidence: 72/100** — All 6 found DFMs read; LC-A/B/G workflow confirmed; lot lifecycle (receive→track→ship→close) not fully traced.
+
+---
+
+### Quality Control (QC)
+
+**What it does:** Records incoming inspection results (pass/fail/scrap) on PO receipts and WO outputs. Tracks QC/scrap codes per vendor range.
+
+**Menu codes:** QC (18 files in RWN analysis)
+
+**Key operations:**
+- **QC-A — Main Entry:** QC code + scrap code dual-classification; vendor range filter for incoming inspection.
+- **QC-B/C/D — Reports:** Parent item roll-up reports across QC/scrap records.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| BKQCMSTR | QC master records |
+| BKQCTRAN | QC transaction log |
+
+**Confidence: 52/100** — 4 DFM files read; QC/scrap dual-code and vendor-range confirmed; QC-B/C/D form logic not deeply decoded.
+
+---
+
+### Warehouse Control (WC)
+
+**What it does:** Manages bin/shelf locations, bulk bin assignment, and browsing items by physical bin. Note: WC = Warehouse Control, NOT Work Centers.
+
+**Menu codes:** WC (8 forms read)
+
+**Key operations:**
+- **WC-A — Bin Master (CRUD):** Create/edit bin records in ISBN.MSTR (bin master table).
+- **WC-C — Serials by Bin:** View serial numbers currently in a specific bin (MTSER table).
+- **WC-D — Bulk Bin Assignment:** Mass-assign items to bins (Skip/Replace mode for existing).
+- **WC-H — Location Browser:** Browse all bin assignments.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| ISBN.MSTR | Bin master — bin code, description, location |
+| BKIC.LOCM | Item-to-bin assignment |
+| MTSER | Serial numbers by bin (also used by SC module) |
+
+**Confidence: 72/100** — All 8 DFMs read; bin CRUD, serial-by-bin, bulk assign confirmed; multi-bin/zone hierarchy not traced.
+
+---
+
+### Accounting Maintenance (AM)
+
+**What it does:** GL period control, account history, account entry, department copy/delete, and financial statement format management. Note: AM = Accounting Maintenance, NOT Asset Management.
+
+**Menu codes:** AM (15 files in RWN analysis)
+
+**Key operations:**
+- **GL Period Control:** Open/close accounting periods; sets the fiscal year calendar.
+- **Account History View/Edit:** Browse GL account balance history across periods.
+- **Department Copy/Delete:** Mass-copy or delete department-level GL configurations.
+- **Financial Statement Format:** Defines how accounts group into income statement / balance sheet formats.
+
+**Primary tables:** BKGLCOA (GL Chart of Accounts), ISGLDATE (GL date per company/module), ISGLCOA (GL COA extension — multi-year history and budget).
+
+**Confidence: 75/100** — 5 forms read; period control, account history, dept copy/delete confirmed; financial statement format structure details in encrypted RWN.
+
+---
+
+### Fixed Assets (FA)
+
+**What it does:** Tracks fixed assets (equipment, property) with depreciation schedules and GL posting.
+
+**Menu codes:** FA (3 forms confirmed)
+
+**Key operations:**
+- **FA-A — Asset Master (T7FAA):** IS.FXA.* fields: asset cost, residual value, useful life, depreciation method (SL/DB/etc.), GL accounts (asset account, accumulated depreciation, depreciation expense).
+- **FA-B — Post Depreciation (T7FAB):** IS.FXT.* fields: posts calculated depreciation with a "Ready-to-Post" approval flag before GL entry.
+- **FA-E — Export (T7FAE):** Exports asset register.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| IS.FXA.* | Fixed asset master — cost, method, life, GL accounts |
+| IS.FXT.* | Depreciation transactions — period amounts, posting status |
+
+**Confidence: 75/100** — All 3 DFMs read; cost/residual/life/method/GL fields confirmed; depreciation calculation formula (SL vs. declining-balance) details in RWN.
+
+---
+
+### Activity Control / NCR (AC)
+
+**What it does:** Non-Conformance Report (NCR) tracking — records manufacturing defects, assigns disposition codes (rework/scrap/use-as-is), and tracks corrective actions linked to work orders.
+
+**Menu codes:** AC (4 RWN modules confirmed)
+
+**Key operations:**
+- **T7ACRDTYPE — Disposition Codes:** AC.RD.TYPE (type code), AC.RD.REASON (reason text), AC.RD.DISPO (disposition: rework/scrap/use-as-is), EXTRA1/EXTRA2 (user-defined fields).
+- **T7ACTION — Action Items:** IS.ACTION.TYPE/DESC/MISC — action item tracking for corrective actions.
+- **T7ACDET — NCR Detail Records:** AC.DET.ID, AC.DET.LINE, AC.DET.PART — detail lines per NCR.
+- **T7ACDATE — WO Date Hierarchy:** WODATE.START/FINISH/QTY, PARPRE/PARSUF/TOPPRE/TOPSUF (parent/top WO hierarchy prefixes/suffixes), DELPRE (cascade delete prefix). Links NCRs to specific WO operations.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| WODATE | WO operation dates — start/finish/qty per operation |
+| ISACTION | Action items — type, description, misc |
+| ACRDTYPE | Disposition code master — type/reason/dispo codes |
+| ACDETAIL | NCR detail lines |
+
+**Confidence: 60/100** — 3 DFMs + 4 RWN modules decoded; WO hierarchy (parent/top prefix) and disposition codes confirmed; NCR full lifecycle not traced.
+
+---
+
+### System Maintenance (SM)
+
+**What it does:** The largest maintenance module (34 operations). Configures system-wide settings: user preferences, tax rates, ship-via methods, payment terms, job numbers, company setup, CRM masters, and SMT/PCB machine configuration.
+
+**Menu codes:** SM (34 ops — 3rd largest module)
+
+**Key operations:**
+- **SM-K — User Preferences:** Writes to EvoSettings.INI and ISNUMBER (number format preference).
+- **SM-E/F — Tax Setup:** ISIS.TXF (tax rates) + ISIS.TXG (tax groups).
+- **SM-O — Ship Via:** ISSHPVIA with carrier tracking URL field.
+- **SM-D — Payment Terms:** IS.TERMS (standard payment terms like Net30, 2/10Net30).
+- **SM-PF — Job Number:** ISJOB (next job cost number counter).
+- **SM-PH — Cycle Codes:** IS.CYCLE (production cycle codes).
+- **SM sub-modules:**
+  - T7SMI* (CRM masters): BKCMLEAD, BKCMTERR, BKCMACFC, BKCMACCC, BKCMDTCD
+  - T7SMP* (catalog/UDF/job): ISCATMST, ISUDMSTR, ISJOB
+  - T7SMTEND/T7SMTSET (SMT/PCB integration): ISSMTCFG, MACHINE, ISSERIAL, WOBOM — configures surface mount technology placement machines
+
+**Primary tables:** BKSYMSTR, BKYSMSTR, ISSHPVIA, ISIS.TXF/TXG, IS.TERMS, ISJOB, IS.CYCLE, ISSMTCFG, MACHINE
+
+**Confidence: 80/100** — 23+ forms + full T7SM* sub-module family decoded; SMT/PCB integration confirmed; BKSYMSTR/BKYSMSTR not exhaustively decoded.
+
+---
+
+### Service / Repair (SR)
+
+**What it does:** Manages service and repair jobs — equipment master, service quotes, work order linkage, and AR invoicing for service work.
+
+**Menu codes:** SR (13 files in RWN analysis)
+
+**Key operations:**
+- **SR-K — Equipment Master:** ISSR.MMS.* fields: make, model, serial number, IN/OUT dates, motor data, linked WO#.
+- **SR-I — AR Invoice Browse:** Browse AR invoices linked to service records.
+- **SR-E — Invoice Address Edit:** BKAR.INV.* fields — billing address adjustments for service jobs.
+- **Service quotes:** QT module (T7QTINFO: ISSR.INFO.DATE[1..5] milestone dates) links to SR.
+
+**Primary tables:**
+
+| Table | Purpose |
+|-------|---------|
+| ISSR.MMS.* | Service equipment master — make/model/serial/dates/WO link |
+| IS.SERR.* | SPC/inspection error records (shared with SP module) |
+
+**Confidence: 58/100** — 7 DFM files read; equipment master, AR invoice link, and service quote date milestones confirmed; main SR-A form not found on share.
+
+---
+
+### Multi-Yield Work Orders (MU)
+
+**What it does:** Records multiple output part numbers from a single work order (co-products and by-products). 150 procs — significant manufacturing-cost module.
+
+**Key operation:** T7MULTIYIELD opens WORKORD + WOROUT + WOBOM + WORECV + INVTXN + ISBINLOC + BKARINVL. One WO produces multiple different finished items; each is received as a separate WORECV/INVTXN entry.
+
+**Primary tables:** WORKORD, WOROUT, WOBOM, WORECV, INVTXN, ISBINLOC, MTICMSTR, BKARINVL
+
+**Confidence: 45/100** — DB fingerprint confirmed; full multi-yield entry form details in encrypted RWN.
+
+---
+
+### Field Service (FS)
+
+**What it does:** Optional Field Service add-on module — tracks service classes, field service information records, and assigns employees to service classes.
+
+**Key tables:** ISFSCLAS (class master), ISFSINFO (FS info records), ISPRINFO (PR employee profile data), BKPRSALE (salesperson/employee)
+
+**Confidence: 45/100** — DB fingerprint confirmed; no DFM forms found for this module; no CHM entries = possibly not licensed in this installation.
+
+---
+
+### Global Finance / AR Charges (GF)
+
+**What it does:** Applies extra charges to AR invoices beyond standard line items (e.g., freight charges, service fees, surcharges). Includes customer-item pricing matrix entry and invoice charge viewer.
+
+**Key tables:** ISARCHG (IS AR extra charges), BKICPMAT (IC pricing matrix), BKARCUST, BKARINV, BKARINVL
+
+**Confidence: 45/100** — DB fingerprint confirmed; no DFM forms found; charge structure details in encrypted RWN.
+
+---
 
 **How users are stored:** `AHSYLOG` table. One record per user.
 
@@ -1002,6 +1258,43 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | WORKCHG | WORKCHG.B | WO | WO change log | Before/after: priority, status, dates, qty |
 | WORKORD | WORKORD.B | WO | WO master | WO# (PK), part, qty, dates, status, priority, estimated/actual costs |
 | WOROUT | WOROUT.B | WO | WO production output | Parts received/completed per operation |
+| ACDETAIL | ACDETAIL.B | AC | NCR detail lines | AC.DET.ID, AC.DET.LINE, AC.DET.PART |
+| ACRDTYPE | ACRDTYPE.B | AC | NCR disposition codes | TYPE, REASON, DISPO (rework/scrap/use-as-is), EXTRA1/2 |
+| BKARTXN | BKARTXN.B | AR | AR transaction log | AR activity/posting history |
+| BKCMACCC | BKCMACCC.B | CM | CRM account classifications | A/B/C/custom classification codes |
+| BKCMACCN | BKCMACCN.B | CM | CRM account master | Company, address, territory, contacts, EMAIL[1..9] |
+| BKCMLEAD | BKCMLEAD.B | CM | CRM lead sources | Lead source codes and descriptions |
+| BKCMTERR | BKCMTERR.B | CM | CRM territories | Territory codes and names |
+| BKICTAX | BKICTAX.B | IN | IC tax codes | Item-level tax classification for invoicing |
+| BKPRSALE | BKPRSALE.B | CS | Salesperson master | Commission rate, method, GL account, agent-vendor link |
+| FILEDES | FILEDES.B | System | File descriptions | Purpose strings for each registered Btrieve file |
+| ISBINLOC | ISBINLOC.B | WC | Bin locations | Bin location master (distinct from BKICLOC item bins) |
+| ISBINLOT | ISBINLOT.B | IN/WO | Bin-lot cross-ref | Which lot numbers are in which bins |
+| ISBUILD | ISBUILD.B | BM | Build records | Kit/BOM build operation records |
+| ISACCESS | ISACCESS.B | Security | Module access | License/module access control — which modules are enabled |
+| ISACTION | ISACTION.B | AC | Action items | Corrective action tracking (type/desc/misc) |
+| ISAPCHG | ISAPCHG.B | AP | AP extra charges | Additional charges on AP invoices (parallel to ISARCHG) |
+| ISARCHG | ISARCHG.B | AR | AR extra charges | Additional charges added to AR invoices beyond line items |
+| ISDEPT | ISDEPT.B | HR | Departments | Department master — codes, names, GL accounts |
+| ISFSINFO | ISFSINFO.B | FS | Field service info | Field service call/information records |
+| ISFSCLAS | ISFSCLAS.B | FS | FS class master | Field service class definitions |
+| ISGLCOA | ISGLCOA.B | GL | GL COA extension | Multi-year history + budget data per GL account |
+| ISGLDATE | ISGLDATE.B | GL | GL period dates | Current GL period dates per company and module |
+| ISICMSTR | ISICMSTR.B | IN | IS item master | Secondary/extension item master (alternate item config) |
+| ISMCF | ISMCF.B | IM | Multi-currency config | Foreign exchange configuration (base currency, conversion rules) |
+| ISMCR | ISMCR.B | IM | Exchange rates | Currency exchange rate history by date |
+| ISREMIND | ISREMIND.B | CRM | Reminders | Reminder/follow-up records — date, contact, trigger type |
+| ISREPDEF | ISREPDEF.B | Reports | Report defaults | Saved report parameter defaults per user/report |
+| ISREPORD | ISREPORD.B | AR | Repeat orders | Standing/recurring AR order records |
+| ISREPLNK | ISREPLNK.B | System | Replace links | Record-link replacement tracking |
+| ISSEPROC | ISSEPROC.B | SR | SE process codes | Service error process codes (SR module support) |
+| ISSERIAL | ISSERIAL.B | SC | Active serials | Active serial number tracking (complement to SERIAL master) |
+| ISSHIPCO | ISSHIPCO.B | SM | Shipping carriers | Shipping company/carrier master — codes, names, contacts |
+| ISSMTCFG | ISSMTCFG.B | SM | SMT machine config | Surface mount technology machine configuration (PCB assembly) |
+| ISSETYPE | ISSETYPE.B | SR | SE type codes | Service error category/type codes |
+| ISSTYPE | ISSTYPE.B | SR | Shared type codes | Shared service/storage/equipment type code table |
+| ISPRINFO | ISPRINFO.B | PR | Employee PR info | Payroll employee profile/additional info records |
+| WODATE | WODATE.B | WO | WO operation dates | Operation dates per WO — START/FINISH/QTY, parent/top hierarchy |
 
 ---
 
@@ -1051,5 +1344,5 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 
 ---
 
-*Last updated: 2026-06-11. Built from SRC analysis, schema extraction, CHM decompilation,
-and DFM parsing. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+*Last updated: 2026-06-17. Built from SRC analysis, schema extraction, CHM decompilation,
+DFM parsing, and RWN symbol extraction (rwn_symbols.json — 1,122 modules). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
