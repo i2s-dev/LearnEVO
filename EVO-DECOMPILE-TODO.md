@@ -907,10 +907,10 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [ ] ⬜ All remaining WO\* (30 tables)
 - [ ] ⬜ All remaining BKPR\* (16 tables) including BKPRMSTR (384 fields)
 - [ ] ⬜ All remaining BKBM\* (10 tables)
-- [ ] ⬜ All remaining BKCM\* (46 tables)
+- [x] 🔄 All remaining BKCM\* (46 tables) — top 5 field-documented (BKCMACCN 154, BKCMCUST 106, BKCMMHST 72, BKCMACCT 41, BKCMREP 14); 41 smaller tables identified but not field-extracted — **C: 55/100**
 - [ ] ⬜ All remaining BKSO\* (7 tables)
 - [ ] ⬜ All remaining BKDC\* (7 tables)
-- [ ] ⬜ All remaining IS\* tables
+- [x] 🔄 All remaining IS\* tables — ISLBLMAP (102 fields, label→RTM mapping), IS2DBAR (109 fields, barcode config), ISSCHED (24), ISNOTES (13) fully documented; ~240 IS\* fields remaining — **C: 48/100**
 - [ ] ⬜ BKSLEVEL (422 fields — second largest)
 - [ ] ⬜ BKPRGLFL (664 fields — largest)
 

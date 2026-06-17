@@ -863,17 +863,28 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 - **CRM-AR Bridge:** CRM accounts link to AR customers via BKCMACCN. Same account can exist in both systems; changes sync through T7CMCVTN/T7CMCVTF conversion forms.
 - **Contact merge (T7CMBB):** Merge duplicate CRM contact records.
 
-**Primary tables:**
+**Primary tables (46 total):**
 
-| Table | Purpose |
-|-------|---------|
-| BKCMACCN | CRM Account — company name, address, key fields |
-| BKCMACCC | CRM Account Class — A/B/C/custom classification |
-| BKCMACCT | CRM Account Type |
-| BKCMLEAD | CRM Lead Source codes |
-| BKCMTERR | CRM Territory codes |
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMACCN | 154 | Account contact names — 10 contacts per account (name, title, phone, email) |
+| BKCMCUST | 106 | CM customer view — mirrors BKARCUST field names for CRM context |
+| BKCMMHST | 72 | Marketing history — activity codes, dates, 9 classification codes per entry |
+| BKCMACCT | 41 | CM account master — name, address, contacts (non-AR prospects) |
+| BKCMDE | 41 | CM data exchange / EDI variant |
+| BKCMEACT | 41 | CM e-commerce account |
+| BKCMDUN | 36 | Dun & Bradstreet integration |
+| BKCMPCNT | 24 | CM prospect contact |
+| BKCMREP | 14 | CM sales rep — rep code, name, employee#, password, permissions (VIEW/CHANGE/GWARN/AADD) |
+| BKCMACCC | 11 | Account class — A/B/C/custom classification |
+| BKCMLEAD | 11 | Lead source codes |
+| BKCMTERR | 11 | Sales territory codes |
+| BKCMCNTD | 12 | Contact detail |
+| + 33 others | — | Additional CRM history, flags, history, e-commerce tables |
 
-**Confidence: 65/100** — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9-email field, territory, and SIC confirmed; full BKCM* table family (46 tables) not exhaustively cataloged.
+**Key insight:** BKCMREP has its own password field (BKCM_REP_PSWD, 10 chars) separate from the main AHSYLOG login. CM reps can be restricted to VIEW only or blocked from certain account changes.
+
+**Confidence: 72/100** — Top 5 BKCM* tables fully field-documented; CRM-AR bridge confirmed; rep permission flags confirmed; 41 smaller tables identified but not field-extracted.
 
 ---
 
@@ -1954,8 +1965,14 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 | **ISSCHED** | Scheduler task table — program to run, company, date/time, recurrence, 10 parameters, email notification | IS_SCHED_NAME | 24 |
 | **BKRTCST** | Routing cost/quote snapshot — parts-per-hour + setup times by work center, keyed by quote+part+op | BKRT_QUOTE + BKRT_CODE + BKRT_OPER | 24 |
 | **BKRTSPEC** | Routing special notes — 4 note lines per operation | BKRT_SPEC_PART + BKRT_SPEC_SEQ + BKRT_SPEC_LINE | 7 |
+| **ISLBLMAP** | Label definition/mapping — links item+variant to an .RTM template; 30 color-customizable field slots; customer/vendor-specific label support | IS_LABEL_ITEM + IS_LABEL_NUM | 102 |
+| **IS2DBAR** | 2D barcode field config — which data fields appear in 2D barcodes per item, in what order, and on which document types (40 document-print flags) | IS2D_BAR_CODE + IS2D_BAR_ITEM + IS2D_BAR_ORDER | 109 |
+| **BKCMACCN** | CM contact names — up to 10 contacts per CRM account (name, title, phone, email) | BKCM_ACCN_CODE | 154 |
+| **BKCMCUST** | CM customer view — mirrors BKARCUST field layout; used by Contact Manager when accessing AR customer data | BKAR_CUSTCODE | 106 |
+| **BKCMMHST** | CM marketing history — activity date, description, 9 classification codes per entry | BKCM_MHST_MCODE | 72 |
+| **BKCMREP** | CM sales rep — code, name, employee link, rep-level password, VIEW/CHANGE/GWARN/AADD permission flags | BKCM_REP_REP | 14 |
 
 ---
 
-*Last updated: 2026-06-17 (Pass 19). Built from SRC analysis, schema extraction, CHM decompilation,
-DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), and full DCY decryption pass (41 files). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+*Last updated: 2026-06-17 (Pass 22). Built from SRC analysis, schema extraction, CHM decompilation,
+DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), and BKCM*/IS* schema extraction. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
