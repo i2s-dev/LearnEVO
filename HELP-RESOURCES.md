@@ -1246,6 +1246,93 @@ Configuration interface for the EvoERP Java integration layer (EvoPVT.jar). Uses
 
 ---
 
+### PI — Physical Inventory
+
+Periodic physical inventory process. Three phases: freeze → count → post.
+
+**Phase 1 — Freeze:** Lock current inventory quantities into BKPIFROZ/PIBINLOC/PIBINLOT snapshot. Creates a BKPIMSTR record for this PI run.
+
+**Phase 2 — Count:** Enter counted quantities into:
+- BKPIPHYS — per item per location
+- BKPILOT — per lot
+- BKPISER — per serial number
+Hand-held device entry via T7DEHD opens the same PI tables.
+
+**Phase 3 — Post:** T7PIB/T7PICA compares counts to the frozen snapshot, calculates variances, posts adjustment transactions to BKGLTRAN (GL) and INVTXN (inventory).
+
+**Use case examples:**
+- "How do I start a physical inventory count?" → PI-A (main form), freeze inventory, print count tags, enter counts, post.
+- "How do I handle a partial count (cycle count)?" → Use bin/location filter in the count entry form.
+- "What GL account gets the inventory adjustment?" → Configured in system defaults (BKSYMSTR) as the inventory adjustment GL account.
+
+**Confidence: 52/100** — Module family confirmed from DB fingerprints; 7 PI tables confirmed; phase sequence inferred from table roles; exact form fields not decoded.
+
+---
+
+### JC — Job Cost
+
+Tracks detailed cost against customer jobs, separate from standard WO cost tracking. Used for project-based manufacturing and service jobs.
+
+**Key sub-modules:**
+- T7JCA — Job Cost admin/setup
+- T7JCENG — Engineering/routing: attaches routing specs (BKRTSPEC) and labor standards to the job
+- T7JCM — Job Cost master entry: main data-entry form (customer, item, labor, materials)
+- T7JCB/E/N/P — Cost detail sub-screens (material projections, sub-contract, WIP)
+- T7JCF — QC integration: links quality transactions to job cost
+- T7JCL/Q/R — Job cost list, query, reports
+
+**Key tables:** BKSBPART (sub-contracted parts), BKSBMFG (sub-contracted manufacturing), BKPRMSTR (payroll/employee for labor cost), BKQCTRAN (QC results per job)
+
+**Use case examples:**
+- "How do I create a job cost estimate?" → JC-A sets up the job; JC-E enters cost roll-up.
+- "How do I link a WO to a Job Cost record?" → Job number field on WO entry (ISJOB table).
+- "How do I view sub-contract costs for a job?" → BKSBPART/BKSBMFG records accessed via T7JCB.
+
+**Confidence: 68/100** — DFM forms read + DB fingerprints confirmed; detailed field semantics from DFM analysis.
+
+---
+
+### ES — Estimating / Quoting
+
+Creates cost estimates for customer RFQs. Estimates can be converted to Sales Orders or Work Orders.
+
+**Key sub-modules:**
+- T7ESD — Estimate defaults (BKESTCFG: markup percentages, numbering)
+- T7ESB / T7ESE — Main estimate entry forms (customer, items, qty, customer PO#)
+- T7ESC / T7ESH / T7ESI — Cost detail: BKMATCST (material), BKRFQ (vendor quotes), BKRTCST (routing/labor cost)
+- T7EST — Estimate templates (create standard estimates)
+
+**Estimate → Order conversion:** From a completed estimate, the user can generate a SO (converts to BKARINV/BKARINVL) or a WO (converts to WORKORD/WOBOM). The ISESTDTL table holds estimate detail lines; ESTSUM holds rolled-up totals.
+
+**Use case examples:**
+- "How do I create a quote for a customer?" → ES-B (main entry), add line items with part numbers, costs auto-populate from BKICMSTR/BKRTCST.
+- "How do I convert an estimate to a Sales Order?" → From the estimate form, use the SO conversion function.
+- "How do I get vendor pricing into an estimate?" → RF module (RFQ from Estimates) generates vendor RFQs that feed back into BKRFQ.
+
+**Confidence: 58/100** — DFM forms + DB fingerprints; conversion workflow inferred; exact BKESTCFG fields not decoded.
+
+---
+
+### SA — Sales Analysis
+
+Reporting and analysis of sales performance. Separate from standard AR invoicing — uses aggregated/summarized data (BKSAREPT saved templates).
+
+**Key sub-modules:**
+- T7SAM / T7SAN — Main sales analysis reports with currency filter (from_cur/thru_cur)
+- T7SAO — Top-N Sales Report
+- Additional variants for: actual margin, salesperson performance, customer ranking, class/category filters
+
+**Integration:** Uses BKARCUST, BKARINV, BKARINVL (AR invoice data), BKPRSALE (salesperson), BKCMLEAD/BKCMTERR (CRM territory/lead), ISRMAI (RMA auto-invoices for return deductions), ISMCF/ISMCR (multi-currency conversion).
+
+**Use case examples:**
+- "What are my top 10 customers by sales?" → SA-O (Top N Report)
+- "What is the actual margin on shipped orders?" → SA-Q (Actual Margin Report: from/thru ship date)
+- "How do I see sales by territory?" → BKCMTERR filter in SA reports.
+
+**Confidence: 58/100** — DFM forms read in prior passes + DB fingerprints; aggregation method (live AR query vs. pre-built BKSA.* summary table) not fully confirmed.
+
+---
+
 ## REPORTING ENGINE
 
 ### How Reports Work
@@ -1398,6 +1485,53 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISTRIGRS | ISTRIGRS.B | AD | Trigger actions | Automated trigger rules for Advanced DC events |
 | SCHEDCAL | SCHEDCAL.B | Scheduler | Scheduler calendar | Schedule calendar used by T7SHE (shop scheduling due-date changes) and T7SMH |
 | ISLINKS | ISLINKS.B | System | EvoLinks attachments | Document attachment cross-reference — record key → linked document path/filename (EvoLinks.RWN, 156 procs) |
+| BKPIMSTR | BKPIMSTR.B | PI | PI run master | Physical inventory run/session master — one record per PI freeze cycle |
+| BKPILOT | BKPILOT.B | PI | PI lot counts | Physical inventory lot count records (lot, location, counted qty) |
+| BKPIPHYS | BKPIPHYS.B | PI | PI physical counts | Physical count records (item, location, count qty) |
+| BKPISER | BKPISER.B | PI | PI serial counts | Physical inventory serial number count records (found/missing status) |
+| BKPIFROZ | BKPIFROZ.B | PI | PI frozen snapshot | Inventory snapshot taken at PI freeze time — baseline for variance calculation |
+| PIBINLOC | PIBINLOC.B | PI | PI bin location | Frozen bin-location records at PI start |
+| PIBINLOT | PIBINLOT.B | PI | PI bin lot | Frozen bin-lot records at PI start |
+| BKESTCFG | BKESTCFG.B | ES | Estimate config | Estimate module settings (method, markup defaults, numbering) |
+| BKMATCST | BKMATCST.B | ES | Material cost | Estimate line-level material cost + pricing detail records |
+| BKRFQ | BKRFQ.B | ES/RF | RFQ master | Request for Quote master — vendor RFQ records tied to estimates |
+| BKRTCST | BKRTCST.B | ES | Routing cost | Routing cost detail per estimate operation (labor/machine rates) |
+| ESTSUM | ESTSUM.B | ES | Estimate summary | Rolled-up cost/price totals per estimate |
+| BKICPMAT | BKICPMAT.B | IN/ES | IC purchase material | Item-level purchase material category/config |
+| BKICREF | BKICREF.B | IN | IC cross-reference | Item cross-reference (alternate part numbers, customer/vendor part#) |
+| BKSBPART | BKSBPART.B | JC/PO | Sub-contract parts | Components sourced from outside-process / sub-contract vendors |
+| BKSBMFG | BKSBMFG.B | JC/MR | Sub-contract mfg | Sub-contracted manufacturing operation records |
+| BKMENUSU | BKMENUSU.B | PS | Menu user settings | Per-user menu/toolbar layout and saved configuration |
+| BKPSUSER | BKPSUSER.B | PS | PS user settings | Per-user personal settings (printer preferences, column layouts) |
+| BKSAREPT | BKSAREPT.B | SA | SA report templates | Sales analysis saved report template definitions |
+| ISAREX | ISAREX.B | AR/SA | AR extras | Extended AR customer/invoice additional information |
+| ISRMAC | ISRMAC.B | RM | RMA credit | RMA credit note records (return merchandise credit authorizations) |
+| ISRMAI | ISRMAI.B | RM/SA | RMA invoice | RMA auto-invoice/return material invoice records |
+| ISFOHEAD | ISFOHEAD.B | FO | FO header | Field/forecast order header (order#, customer, dates, status) |
+| ISFOLINE | ISFOLINE.B | FO | FO lines | Field/forecast order line items (product, qty, price) |
+| ISFOORDL | ISFOORDL.B | FO | FO order list | Multi-field/forecast order management list |
+| ISBANKS | ISBANKS.B | System | Bank accounts | Bank account master (account codes, bank names, GL accounts) |
+| ISNUMBER | ISNUMBER.B | System | Number sequences | Auto-increment number sequence definitions (counters per entity type) |
+| BKDCCFG | BKDCCFG.B | DC | DC configuration | Data collection terminal/station configuration settings |
+| BKDCLAB | BKDCLAB.B | DC | DC labor records | Data collection labor entry records from DC terminals |
+| BKEDMSTR | BKEDMSTR.B | EDI | EDI master | EDI trading partner / transaction set master |
+| BKGLX | BKGLX.B | GL | GL extended | GL extended transaction data (supplemental GL fields) |
+| BKGLGJRN | BKGLGJRN.B | GL | GL journal header | GL general journal header records |
+| BKGLGJLN | BKGLGJLN.B | GL | GL journal lines | GL general journal line entries |
+| BKBMNOTE | BKBMNOTE.B | BM | BOM notes | Text notes attached to BOM components |
+| BKBMREMK | BKBMREMK.B | BM | BOM remarks | Structured remarks on BOM components |
+| BKQCMSTR | BKQCMSTR.B | QC | QC master | QC test/inspection master records |
+| BKQCTRAN | BKQCTRAN.B | QC | QC transactions | QC inspection transaction records (pass/fail per inspection) |
+| WORECV | WORECV.B | WO | WO receipts | WO production receipt records (parts received/completed per op) |
+| WOBOMREM | WOBOMREM.B | WO | WO BOM remarks | Remarks attached to WO BOM components |
+| OUTPROC | OUTPROC.B | WO/RO | Outside process | Outside processing operation records (WO ops sent to external vendors) |
+| ISNCR | ISNCR.B | QC/AC | NCR records | Non-conformance report records linked to QC/AC module |
+| ISTAXGRP | ISTAXGRP.B | System | Tax groups | Tax group/nexus definitions (state, county, city tax combinations) |
+| ISTERMS | ISTERMS.B | System | Payment terms | Payment terms definitions (net-days, discount %, EOM flag) |
+| ISSOBOX | ISSOBOX.B | SO | SO box | SO packing/box assignments for multi-box shipments |
+| ISUSAGE | ISUSAGE.B | IN | Usage tracking | Item usage tracking (consumption history by customer/period) |
+| BKSHORT | BKSHORT.B | WO/SO | Short supply | Short supply records — items insufficient for open WO/SO orders |
+| LANGDICT | LANGDICT.B | System | Language dict | Multi-language UI label translations (ML module) |
 
 ---
 
