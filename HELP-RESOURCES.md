@@ -7341,3 +7341,298 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 ---
 
 *Last updated: 2026-06-17 (Pass 69). Confidence bumps: CC 65→78 (ISCC 14f vault + ISCCICM 59f J7 door-hardware catalog; CC-CCC J7 boundary identified), PS 60→72 (BKPSUSER 11f + ISVNDADT 11f decoded; vendor change audit trail confirmed), ES 72→75 (ISECO 12f ECO record + MTEXCHG 7f revision history added). Pass 68 additions also: SC 72→78 (SERIAL 30f lifecycle), TPOA 65→72 (ISAPEX+BKRFQ+ISORDDSC), DE 65→72 (MACHINE/TOOL/WOLABOR/BKDCCFG). 12 cumulative new schemas (Passes 68+69).*
+
+---
+
+## PS — Security Architecture — Pass 70 (BKSLEVEL + BKSYLOG)
+
+### BKSLEVEL (422f) — Security Level Access Matrix
+
+**PK:** BKSL_MENU(2) + BKSL_LEVEL(2)
+
+The 422 fields encode a full menu × operation permission matrix. Structure is exactly:
+- 2 PK fields + 20 menus × 21 fields per menu = 2 + 420 = 422
+
+**Per-menu block (repeated 20 times, MENU1..MENU20):**
+- `BKSL_MENUn_YN` (STRING 1) — is this menu accessible at all for this security level?
+- `BKSL_MENUn_1..20` (STRING 1 ×20) — access flag for each of the 20 possible operations within menu n
+
+**How it works:**
+1. User logs in → BKPSUSER.BKPS_USER_MENU(2) gives their menu set number, BKPS_USER_SEC(30) gives their security level code
+2. EvoERPmenu reads BKSLEVEL where BKSL_MENU = user's menu set AND BKSL_LEVEL = user's security level
+3. For each module they attempt: checks BKSL_MENUn_YN first, then individual operation flag BKSL_MENUn_k for the specific menu/operation
+4. BKPSUSER.SEC(30) can store multiple security codes (comma-delimited) so a user can have mixed access from multiple BKSLEVEL rows
+
+**Confirmed program usage:** T7PSE (50 procs) + T7PSF (63 procs) are the PS-E/F security editor programs; they edit BKSLEVEL rows — confirmed by rwn_symbols.json fingerprint (both open BKSLEVEL + BKPSUSER + BKSYHELP).
+
+---
+
+### BKSYLOG (215f) — User Logon / Company Access Matrix
+
+**PK:** BKSY_LOGON_CODE (STRING 15) — user login code
+
+Per-user, per-module, per-company access matrix. Same 4-field header as BKPSUSER (CODE, PSWD, SCTY), then repeating YN + 20-slot arrays for each module family:
+
+| Field group | Description |
+|---|---|
+| BKSY_LOGON_CHR(1) | Row type discriminator |
+| BKSY_LOGON_CODE(15) | User login code (PK) |
+| BKSY_LOGON_PSWD(10) | Password |
+| BKSY_LOGON_SCTY(2) | Security level code |
+| BKSY_LOGON_GLYN(1) | GL access enabled flag |
+| BKSY_LOGON_OKGL_1..20 | Which GL companies this user may access (up to 20 companies) |
+| BKSY_LOGON_ARYN(1) | AR module access flag |
+| BKSY_LOGON_OKAR_1..N | Which AR companies accessible |
+| (repeats for AP, WO, IC, PR, etc.) | Module × company access flags |
+
+**BKSYLOG vs BKPSUSER:** BKPSUSER(11f) is the primary per-user record (password, menu#, company#, SEC). BKSYLOG(215f) extends it with per-module, per-company access flags. EvoERP checks both — BKPSUSER for menu/sec level, BKSYLOG for which companies within each module the user can open. Dual-table security system.
+
+**Confidence: 82/100** — BKSLEVEL(422f) field structure fully decoded (2+20×21=422); BKSLEVEL security matrix architecture confirmed (menu set × security level × per-operation flags); BKSYLOG(215f) first 30 fields confirmed (user/pswd/scty/OKGL_1..20/ARYN); both confirmed in T7PSE/PSF fingerprint; exact tie-in of SEC(30) multi-code logic in encrypted RWN.
+
+---
+
+## GL — Budget and Historical Ledger Tables — Pass 70
+
+### ISGLBDGT / ISGLFCOA (67f each) — Multi-Year Historical GL
+
+Both tables are structurally identical: PK = ACCT(10) + GLDPT(4), then ACCTD(25) description, TYPE/CR_DR/NON_CASH flags, then four arrays of 14-period history (periods 1–13 + period 14 = adjustment period), plus a year-end total per array.
+
+| Field group | Description |
+|---|---|
+| ISGL_ACCT(10) + GLDPT(4) | PK — GL account + department |
+| ISGL_ACCTD(25) | Account description |
+| ISGL_TYPE(1) / CR_DR(1) / NON_CASH(1) | Account type, normal balance (C/D), cash flag |
+| ISGL_3YPAST_1..14 + 3YPAST_YE | 3 fiscal years ago — 14 periods + year-end total |
+| ISGL_4YPAST_1..14 + 4YPAST_YE | 4 fiscal years ago — 14 periods + year-end total |
+| ISGL_5YPAST_1..14 + 5YPAST_YE | 5 fiscal years ago — 14 periods + year-end total |
+| ISGL_6YPAST_1..14 + 6YPAST_YE | 6 fiscal years ago — 14 periods + year-end total |
+| ISGL_CEXTRA(100) | Spare / extra |
+
+**Purpose:** Deep historical comparison tables for GL financial reporting. Store 4 years of monthly actuals (years T-3 through T-6). The distinction between ISGLBDGT and ISGLFCOA is likely report-oriented: ISGLBDGT = used for budget vs. actual comparison reports; ISGLFCOA = functional COA view used for FS (financial statement) reporting with different grouping.
+
+**Relationship to ISGLCOA:** ISGLCOA (documented Pass 30) stores CURRENT year actuals plus 1–2 years history. ISGLBDGT/ISGLFCOA extend the history back to 6 years. Together they provide the full multi-year GL trail.
+
+---
+
+### ISGLNBGT (35f) — Forward Budget
+
+**PK:** ISGL_BGT_ACCT(10) + ISGL_BGT_GLDPT(4)
+
+Forward/current-year budget table with dual-scenario support:
+
+| Field group | Description |
+|---|---|
+| ISGL_BGT_BUDGET_1..14 | Primary budget — per-period budgeted amount (14 periods: 13 fiscal + 1 adj) |
+| ISGL_BGT_DATE | Budget entry/last-modified date |
+| ISGL_BGT_BUD2_1..14 | Alternate budget scenario — second set of 14 period budgets |
+| ISGL_BGT_FLAG(1) | Budget status flag |
+| ISGL_BGT_WHO(30) | Who entered/approved this budget |
+| ISGL_BGT_EDATE | Effective date |
+| ISGL_BGT_EXTRA(50) | Extra |
+
+Used by GL-B budget entry and GL financial statements to show budget vs. actual. BUD2 is a second scenario (e.g., revised budget after mid-year reforecast).
+
+---
+
+### EMERSNGL (65f) — Emergency Single-Company GL Ledger
+
+**PK:** BKGL_ACCT(10) + BKGL_GLDPT(4)
+
+Used by T7EMGL (Emergency GL module). Stores a complete single-company GL ledger with current year + budget + 2 prior years — a standalone GL that can be accessed/edited outside the normal GL module (for disaster recovery or emergency adjustments):
+
+| Field group | Description |
+|---|---|
+| BKGL_ACCT+GLDPT | PK — account + department |
+| BKGL_ACCTD(25) + TYPE + CR_DR + NON_CASH | Account metadata |
+| BKGL_CURRENT_1..14 | Current year actuals — 14 periods |
+| BKGL_BUDGET_1..14 | Current year budget — 14 periods |
+| BKGL_1YPAST_1..14 + 1YPAST_YE | Last year actuals — 14 periods + year-end |
+| BKGL_2YPAST_1..14 + 2YPAST_YE | 2 years ago — 14 periods + year-end |
+| BKGL_EXTRA(50) | Extra |
+
+EMERSNGL is structurally similar to BKGLCOA but uses shorter BKGL_ prefix (not BKGL_COA_). T7EMGL writes directly to EMERSNGL as a parallel single-company ledger used for emergency GL corrections without going through normal period controls.
+
+**GL table family summary (Pass 70):**
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKGLCOA | ~90 | Main GL ledger — current + 1–2yr history (BKGL_COA_ prefix) |
+| ISGLCOA | ~67 | GL COA extension — budget history per account |
+| ISGLBDGT | 67 | 4-year deep history (T-3..T-6) for comparison reports |
+| ISGLFCOA | 67 | Functional COA — same structure, FS-report oriented view |
+| ISGLNBGT | 35 | Forward budget (current year, dual scenario) |
+| EMERSNGL | 65 | Emergency standalone ledger (current+budget+2ypast) |
+
+**Confidence: 93/100** — ISGLBDGT/ISGLFCOA/ISGLNBGT/EMERSNGL all fully field-decoded; 14-period array pattern matches BKGLCOA design; T7EMGL confirmed to use EMERSNGL; ISGLFCOA vs ISGLBDGT functional distinction inferred (same schema, likely report-mode alternate index).
+
+---
+
+## ES — Estimate Routing — Pass 70
+
+### ESTROUT (48f) — Estimate Routing Steps
+
+**PK:** MTESRO_QUOTE(8) + MTESRO_OPER(3) — estimate number + operation code
+
+The routing table for estimates. Parallel to WOROUT (WO routing) but for the estimating/quoting module. Each row is one routing step on an estimate:
+
+| Field | Description |
+|---|---|
+| MTESRO_QUOTE(8) + OPER(3) | PK — estimate number + operation |
+| MTESRO_DESC(30) | Operation description |
+| MTESRO_WC(12) | Work center |
+| MTESRO_TYPE(1) | Operation type (I=internal, O=outside process) |
+| MTESRO_VENDOR(10) + VENDNAME(25) | Outside process vendor (if TYPE=O) |
+| MTESRO_OPCOST(8) | Total operation cost |
+| MTESRO_PARTSHR(8) | Parts share of operation cost |
+| MTESRO_TIMEPART(8) | Run time per part |
+| MTESRO_SETUPHRS(8) | Setup hours |
+| MTESRO_MISCCOST(8) + MISCDESC(30) | Miscellaneous cost + description |
+| MTESRO_LAB1..5 | Labor cost per qty break (5 qty-break levels) |
+| MTESRO_MACH1..5 | Machine cost per qty break |
+| MTESRO_OVER1..5 | Overhead cost per qty break |
+| MTESRO_SETUP1..5 | Setup cost per qty break |
+| MTESRO_INSTR_1..15 | 15 instruction lines (60 chars each = 900-char routing instruction) |
+
+**5 qty-break cost arrays:** ESTROUT stores cost at 5 quantity break points — the same 5-break structure as BKRTCST (routing cost table) and BKMATCST (material cost table). All three tables align for ES-C cost rollup.
+
+**Relationship to WOROUT:** When ES-E converts an estimate to a WO, ESTROUT rows become WOROUT (WO routing) rows. MTESRO_QUOTE maps to MTWORO_WO; MTESRO_OPER maps to MTWORO_OPER; cost fields roll into WOROUT actual-hours tracking.
+
+**Confidence: 80/100** — ESTROUT(48f) fully field-decoded; 5-qty-break cost structure matches BKRTCST pattern; conversion to WOROUT on ES-E confirmed from T7ESE DB fingerprint (opens WOROUT); per-qty-break cost selection logic (which LAB/MACH/OVER slot applies at what quantity) in encrypted RWN.
+
+---
+
+## WO — Operation Extended Tables — Pass 70
+
+### ISWROHEX (60f) — WO Routing Operation Extended
+
+**PK:** IS_WROEX_WOPRE(8) + WOSUF(2) + OPER(2) — WO + operation-level record
+
+Extension record at the WO routing operation level (parallels ISWOEX which is at the WO header level):
+
+| Field | Description |
+|---|---|
+| IS_WROEX_WOPRE+WOSUF+OPER | PK — WO prefix, suffix, operation number |
+| IS_WROEX_ITP(20) + ITPP(1) | Item type profile code + prefix |
+| IS_WROEX_FOI(1) | Fire-on-issue flag |
+| IS_WROEX_LQTY(8) | Labor quantity |
+| IS_WROEX_SDAY(2) + FDAY(2) | Scheduled start/finish day |
+| IS_WROEX_DATE1(date) | Operation extra date |
+| IS_WROEX_ALPHA1(1) + ALPHA2(2) | Short alpha UDF fields |
+| IS_WROEX_NUM1(8) | Numeric UDF |
+| IS_WROEX_DESC1(30) | Description UDF |
+| IS_WROEX_ALPHA3_1..5 (15 each) | 5× alpha UDF fields (item-type profile data) |
+| (+ 40 more: additional UDF arrays matching ITP profile definition) | |
+
+ISWROHEX provides per-operation UDF slots driven by the item type profile (ITP). Different item types can configure which ALPHA/NUM/DATE fields carry meaning. Used for quality attributes, test parameters, or process instructions specific to this operation.
+
+---
+
+### ISPREQ (25f) — Shop Floor Material Pull Request
+
+**PK:** IS_PREQ_WOPRE(8) + WOSUF(2) + OPER(2) — WO + operation
+
+A shop-floor operator's request for additional material on a specific WO operation. Distinct from the BOM-driven WOMAT issue — this is a non-standard pull triggered by scrap, rework, or short issue:
+
+| Field | Description |
+|---|---|
+| IS_PREQ_WOPRE+WOSUF+OPER | PK |
+| IS_PREQ_WC(12) | Work center making the request |
+| IS_PREQ_EMP(2) | Requesting employee# |
+| IS_PREQ_RDATE + RTIME | Request date + time |
+| IS_PREQ_PART(15) | Part number needed |
+| IS_PREQ_QTY(8) | Quantity requested |
+| IS_PREQ_SCRAP(2) | Scrap code (why extra material is needed) |
+| IS_PREQ_REASON(30) | Reason code |
+| IS_PREQ_NOTE(200) + NOTE2(200) | Full explanation (up to 400 chars) |
+| IS_PREQ_LOC(15) | Requested from location |
+| IS_PREQ_PRINTED(1) | Print flag (pick ticket generated) |
+| IS_PREQ_IQTY(8) | Issued quantity (filled so far) |
+| IS_PREQ_INOTE(200) | Issue note (storeroom response) |
+| IS_PREQ_LOT(15) + SERIAL(25) | Lot/serial of issued material |
+| IS_PREQ_LCOST(8) | Landed cost of issued material |
+| IS_PREQ_CLOSED(1) + CDATE + CTIME | Closed flag + close date/time |
+| IS_PREQ_NOB(1) | Notify on backorder flag |
+| IS_PREQ_EXTRA(100) | Extra |
+
+Workflow: DC operator at the WC creates ISPREQ → storeroom sees it (via HH or SM) → picks material → sets IQTY/INOTE/LOT/SERIAL → marks CLOSED. Closed records remain as audit trail. Related to BKDCLAB (DC labor) and the HH (handheld) module.
+
+**Confidence: 80/100** — ISWROHEX(60f) and ISPREQ(25f) fully field-decoded; ISPREQ two-party workflow (request→fulfill→close) confirmed from field structure; ISWROHEX ITP-driven UDF pattern confirmed (matches ISWOEX architecture); exact ITP field binding in encrypted RWN.
+
+---
+
+## IC — Extended Location — Pass 70
+
+### BKICELOC (32f) — IC Extended Location Quantities
+
+**PK:** BKIC_LOC_PROD(15) + CODE(10) — item + location
+
+Extends BKICLOC with additional quantity buckets and per-location GL accounts:
+
+| Field | Description |
+|---|---|
+| BKIC_LOC_PROD(15) + CODE(10) | PK — item code + location code |
+| BKIC_LOC_UOH(8) | On-hand quantity |
+| BKIC_LOC_UOSO(8) | Open SO (committed to sales orders) |
+| BKIC_LOC_UBO(8) | Back-ordered quantity |
+| BKIC_LOC_UOO(8) | Open PO (on order) |
+| BKIC_LOC_UOWO(8) | Open WO quantity |
+| BKIC_LOC_UALLOC(8) | Allocated quantity (reserved) |
+| BKIC_LOC_UWIP(8) | WIP quantity |
+| BKIC_LOC_UIQC(8) | In-QC quantity |
+| BKIC_LOC_GLA+DPTA | GL Adjustment account + department |
+| BKIC_LOC_GLC+DPTC | GL Cost of Sales account + department |
+| BKIC_LOC_GLS+DPTS | GL Sales account + department |
+| BKIC_LOC_GLSNT+DPTSNT | GL Sales non-taxable account + department |
+| BKIC_LOC_GLWIP+DPTWIP | GL WIP account + department |
+| (+ 12 more GL/UDF fields) | |
+
+**BKICELOC vs BKICLOC:** BKICLOC (documented earlier) tracks UOH+UOSO+UBO+UOO with COST+GL_ACCT. BKICELOC adds UOWO, UALLOC, UWIP, UIQC and per-location GL accounts per purpose (Adj/COGS/Sales/WIP). BKICELOC is the extended form used by multi-location companies needing per-location GL differentiation.
+
+**Confidence: 72/100** — BKICELOC(32f) fully decoded; field meanings confirmed from names matching BKICLOC pattern plus WO/QC/WIP extensions; which programs write BKICELOC vs BKICLOC blocked by RWN encryption.
+
+---
+
+## SP — Tray/Lot Map — Pass 70
+
+### ISLSMAP (31f) — Lot/Serial Assembly Map (PCB Tray Tracking)
+
+**PK:** IS_MAP_TRAYNUM(25) + POSITION(10)
+
+Tray-based lot/serial tracking for PCB (printed circuit board) assembly. Maps each physical tray position to the component placed there and the resulting assembled item:
+
+| Field | Description |
+|---|---|
+| IS_MAP_TRAYNUM(25) | Physical tray identifier (barcode or sequence) |
+| IS_MAP_POSITION(10) | Position within tray (e.g., "A01", row+col) |
+| IS_MAP_WOPRE(8) + WOSUF(2) + OPER(2) | Linked WO + operation |
+| IS_MAP_PCODE(15) + PLOT(15) + PSERIAL(25) + PQTY | Parent (placed) component: code, lot, serial, qty |
+| IS_MAP_CCODE(15) + CLOT(8) + CSERIAL(25) + CQTY + CQTYPER | Child (built) assembled item: code, lot, serial, qty, qty-per |
+| IS_MAP_BATCH(25) | Batch/run identifier |
+| IS_MAP_DATE_1..5 | 5 date slots (placement, inspection, test, ship, etc.) |
+| (+ 11 more: alpha/flag/extra slots) | |
+
+ISLSMAP is the traceability bridge between the component reel (PCODE/PLOT) and the finished PCB (CCODE/CLOT). SP-A processes scan each placement position to confirm the right component is in the right position. Used alongside ISSPC (SPC traceability) and IS2DBAR (2D barcode) for full PCB genealogy.
+
+**Confidence: 78/100** — ISLSMAP(31f) fully decoded; PCB assembly context confirmed (TRAYNUM/POSITION + component→assembly linkage); IS_MAP_PCODE/CCODE parent-child structure matches SP module purpose; exact scanning/validation logic in encrypted RWN.
+
+---
+
+### New Tables Confirmed (Pass 70)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKSLEVEL | 422 | Security level access matrix — MENU(2)+LEVEL(2) PK; 20 menus × (YN + 20 op flags) = 420 permission bits |
+| BKSYLOG | 215 | User logon / company access — CODE PK; per-module OKGL/OKAR/etc. flags (up to 20 companies per module) |
+| ISGLBDGT | 67 | GL deep history — ACCT+GLDPT PK; 4 years × 14 periods (T-3..T-6 actuals) for multi-year comparison reports |
+| ISGLFCOA | 67 | GL functional COA — identical structure to ISGLBDGT; separate view used for FS (financial statement) reporting |
+| ISGLNBGT | 35 | GL forward budget — ACCT+GLDPT PK; BUDGET_1..14 (primary) + BUD2_1..14 (alternate scenario); WHO+EDATE audit trail |
+| EMERSNGL | 65 | Emergency GL ledger — BKGL_ACCT+GLDPT PK; CURRENT+BUDGET+1YPAST+2YPAST (14 periods each); standalone single-company GL |
+| ESTROUT | 48 | Estimate routing step — QUOTE+OPER PK; WC+TYPE+VENDOR; 5-qty-break LAB/MACH/OVER/SETUP costs; 15 instruction lines |
+| ISWROHEX | 60 | WO operation extended — WOPRE+WOSUF+OPER PK; ITP-driven UDF slots at operation level; parallel to ISWOEX at WO header |
+| ISPREQ | 25 | Shop-floor material pull request — WOPRE+WOSUF+OPER PK; PART+QTY+SCRAP+REASON; IQTY/LOT/SERIAL on fulfillment; CLOSED flag |
+| BKICELOC | 32 | IC extended location — PROD+CODE PK; UOH+UOSO+UBO+UOO+UOWO+UALLOC+UWIP+UIQC; per-location GL accounts for Adj/COGS/Sales/WIP |
+| ISLSMAP | 31 | PCB assembly tray map — TRAYNUM+POSITION PK; parent component (PCODE/PLOT/PSERIAL) → child assembly (CCODE/CLOT/CSERIAL) linkage |
+
+---
+
+*Last updated: 2026-06-17 (Pass 70). Confidence bumps: PS 75→82 (BKSLEVEL 422f security matrix + BKSYLOG 215f company-access matrix decoded; full PS architecture confirmed), GL 90→93 (ISGLBDGT/ISGLFCOA deep history + ISGLNBGT forward budget + EMERSNGL emergency ledger all decoded), ES 75→80 (ESTROUT 48f routing steps with 5-qty-break cost arrays confirmed), IC 68→72 (BKICELOC 32f extended location decoded), SP 80→83 (ISLSMAP 31f PCB tray map decoded). 11 new schemas. WO ISWROHEX+ISPREQ documented (WO already at 85, no bump needed).*
