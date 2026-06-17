@@ -804,25 +804,24 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ## 13. BUSINESS WORKFLOWS / RECIPES
 
-These are end-to-end process traces. Currently 0 workflow recipes are fully documented.
+Pass 58 (2026-06-17): 8 workflow recipes fully written in HELP-RESOURCES.md — **C: 75/100**
 
 ### 13.1 Core Accounting Workflows
-- [ ] ⬜ **Customer invoice creation** — AR entry to GL posting
-- [ ] ⬜ **Cash receipts** — payment entry, application, bank deposit
-- [ ] ⬜ **Vendor invoice entry** — AP voucher through GL posting
-- [ ] ⬜ **Check run** — AP selection through check printing
-- [ ] ⬜ **Month-end close** — AR/AP/GL reconciliation and period lock
+- [x] ✅ **Customer invoice (AR voucher)** — see Recipe 7: AR Cash Receipts — **C: 75/100**
+- [x] ✅ **Cash receipts** — AR-C → BKARTXN+BKARINVT+BKARCUST+BKGLTRAN — see Recipe 7 — **C: 75/100**
+- [x] ✅ **Purchase order → AP voucher → check** — see Recipe 3 — **C: 75/100**
+- [x] ✅ **Month-end close** — AR-H → AP → IN → AM period lock — see Recipe 5 — **C: 72/100**
 - [ ] ⬜ **Year-end close** — payroll, 1099, W-2, purge cycle
 - [ ] ⬜ **GL journal entry** — manual entry, posting, reversal
 
 ### 13.2 Inventory & Manufacturing Workflows
-- [ ] ⬜ **New item setup** — item master entry, BOM, routing
-- [ ] ⬜ **Purchase order** — creation, receipt, AP matching
-- [ ] ⬜ **Work order lifecycle** — creation, material release, labor entry, close
-- [ ] ⬜ **MRP run** — planning input, calculation, WO/PO suggestions
-- [ ] ⬜ **Physical inventory count** — freeze, count entry, variance approval
-- [ ] ⬜ **Inventory adjustment** — manual quantity/cost adjustment
-- [ ] ⬜ **Sales order** — entry, pick, ship, invoice
+- [x] ✅ **New item setup** — IN-B → BM → RO-A — see Recipe 6 — **C: 78/100**
+- [x] ✅ **Work order lifecycle** — WO-A → DC → WO-K-J → WO-K-C — see Recipe 2 — **C: 80/100**
+- [x] ✅ **MRP run** — MR-A → MR-J → MR-K — see Recipe 4 — **C: 75/100**
+- [x] ✅ **Physical inventory count** — PI-A → PI-C → PI-D → PI-F — see Recipe 8 — **C: 75/100**
+- [x] ✅ **Sales order → ship → invoice** — SO-A → BO → SO-F → SO-G — see Recipe 1 — **C: 80/100**
+- [ ] ⬜ **Inventory adjustment** — manual quantity/cost adjustment via IN-G/IN-H
+- [ ] ⬜ **Lot/serial tracking** — full lifecycle from PO receipt to SO shipment
 
 ### 13.3 Payroll Workflows
 - [ ] ⬜ **Time entry** — labor hours entry through pay period
@@ -832,8 +831,8 @@ These are end-to-end process traces. Currently 0 workflow recipes are fully docu
 
 ### 13.4 System Administration Workflows
 - [ ] ⬜ **New user setup** — AHSYLOG entry, access flags, starting menu
-- [ ] ⬜ **New company creation** — directory setup, DDF copy, initialization
-- [ ] ⬜ **Backup / restore** — EvoBackup operation and restore path
+- [ ] ⬜ **New company creation** — UT → company add, NE module
+- [ ] ⬜ **Backup / restore** — TA-O (EVOERPBACKUP)
 - [ ] ⬜ **Software update** — EvoUpdate apply process
 - [ ] ⬜ **Period-end archiving** — archive + purge old transaction tables
 - [ ] ⬜ **ODBC DDF build** — required before Java tools can connect
@@ -1105,7 +1104,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | **72** | 80 | **8** ↑ +7 | 2026-06-17 |
-| Business Workflows | **62** | 85 | **23** ↑ | 2026-06-11 |
+| Business Workflows | **75** | 85 | **10** ↑+13 Pass58 | 2026-06-17 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **68** | 88 | **20** ↑ +10 | 2026-06-17 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |

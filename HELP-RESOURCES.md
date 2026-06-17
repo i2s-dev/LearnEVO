@@ -66,6 +66,309 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Create a customer RMA | RM-D | [Return Material Authorization](#rm--return-material-authorization-rma) |
 | Process RMA disposition (restock/job) | RM-D-Ask | [Return Material Authorization](#rm--return-material-authorization-rma) |
 | Set up product configuration options | FO module | [Features & Options](#fo--features--options) |
+| Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
+| Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
+| Follow PO from entry to check | PO-A → PO-E → AP-B → AP-H | [Recipe 3: PO to Check](#recipe-3-purchase-order--receive--ap-voucher--check) |
+| Run MRP and firm planned orders | MR-A → MR-J → MR-K | [Recipe 4: MRP Run](#recipe-4-mrp-run-plan--firm--release) |
+| Close the accounting period | AR-H → AP close → IN → AM | [Recipe 5: Month-End Close](#recipe-5-month-end-close) |
+| Set up a brand-new part number | IN-B → BM → RO-A | [Recipe 6: New Item Setup](#recipe-6-new-item-setup) |
+| Record a customer payment | AR-C | [Recipe 7: AR Cash Receipts](#recipe-7-ar-cash-receipts-customer-payment) |
+| Run a physical inventory | PI-A → PI-C → PI-D → PI-F | [Recipe 8: Physical Inventory](#recipe-8-physical-inventory-count) |
+
+---
+
+## BUSINESS WORKFLOW RECIPES
+
+Step-by-step traces of common end-to-end processes. These answer "how does X work from start to finish?" Each recipe names the exact menu codes, tables written, and GL impact.
+
+---
+
+### Recipe 1: Sales Order → Ship → Invoice → Post
+
+**Trigger:** Customer places an order.
+
+```
+1. SO-A (T7SOA): Enter Sales Order
+   - Creates BKARINV row (BKAR_INV_SONUM PK, BKAR_INV_STATUS='O' open)
+   - Creates BKARINVL rows (one per line item): item code, qty, price, ESD
+   - If lot-tracked item: LOT table updated when line is entered
+   - If CC on file: ISCC consulted for pre-auth
+
+2. SO-D (T7SOD): Print Pick Ticket
+   - Reads BKARINV + BKARINVL; prints picking doc; no table writes
+   - Optionally reserves bin quantities (BKICLOC on-hand check)
+
+3. BO module (T7BOL): Bill of Lading
+   - Writes ISSOBOX (one row per shipping box: SONUM+LINE+BOX PK, weights/dims/UCC)
+   - Reads ISSHIPCO for carrier tracking URL template
+   - Reads BKARINV + BKARINVL for contents
+
+4. SO-F (T7SOF): Print Invoice
+   - Reads BKARINV/BKARINVL; prints invoice for customer; no table writes
+   - Tax calculated from ISTAXGRP + ISTAXFIL (9-bracket rate table)
+
+5. SO-G (T7SOG): Post Invoice
+   - BKARINV BKAR_INV_STATUS → 'I' (invoiced)
+   - INVTXN: one row per inventory transaction (qty out, cost, lot/serial)
+   - BKICLOC: on-hand decremented per location
+   - LOT/SERIAL: on-hand reduced if lot/serial tracked
+   - BKGLTRAN: AR debit + revenue/COGS credits (one GL line per account)
+   - BKGLX: GL extension if multi-department split
+   - DBAFIFO: FIFO cost layer consumed
+   - BKARTXN: AR transaction row (type=invoice)
+   - ISTRIGRS polled: sends email notifications if configured
+```
+
+**Key tables written:** BKARINV, BKARINVL, INVTXN, BKICLOC, BKGLTRAN, BKARTXN, ISSOBOX
+
+---
+
+### Recipe 2: Work Order Lifecycle (Create → Close)
+
+**Trigger:** MRP or manual order for manufactured item.
+
+```
+1. WO-A (T7WOA): Create Work Order
+   - Creates WORKORD row (MTWO_WIP_WOPRE+WOSUF PK, STATUS='O' open)
+   - Copies BOM → WOBOM (required components with QTYPER, REF, VEND)
+   - Copies ROUTING → WOROUT (planned operations with ESTHRS, WC, costs)
+   - Sets MTWO_WIP_SQTY (start qty), dates (start/due), priority
+
+2. WO-B (T7WOB): Release / Pick Materials
+   - WORKORD STATUS → 'R' (released)
+   - WOBOM QTYISSUED updated as picks are confirmed
+   - INVTXN: issue transactions (qty negative, type=WO issue)
+   - BKICLOC: on-hand decremented; ISBINLOC bin-level decremented
+
+3. DC / WO-K-K (labor entry): Record Labor
+   - BKDCLAB: staging row per labor ticket (LAB_POSTED='N')
+   - T7AUTODCH (nightly) or manual post: validates BKDCLAB → WOLABOR + WOROUT
+   - WOLABOR: one row per posted labor transaction (DATE+EMP+WOPRE+OPER PK)
+   - WOROUT: MTWORO_ACTHRS, MTWORO_QTYCOM updated
+
+4. WO-K-J (T7WOKJ): Receive Completed Units
+   - WORECV: receipt row (qty received, date, unit cost)
+   - INVTXN: receipt transaction (qty positive, type=WO receipt)
+   - BKICLOC: on-hand incremented
+   - LOT/SERIAL: new lot/serial assigned if tracked
+   - DBAFIFO: new cost layer added
+
+5. WO-K-C (T7WOKC): Close Work Order
+   - WORKORD STATUS → 'C' (closed)
+   - WOEXCHG: variance written if actual vs. standard cost differ
+   - BKGLTRAN: WIP cleared, variance posted to GL
+   - WOBOM QTYISSUED final; WOMAT (actual issues) reconciled
+```
+
+**Key tables written:** WORKORD, WOBOM, WOROUT, WOLABOR, BKDCLAB, INVTXN, BKICLOC, WORECV, WOMAT, BKGLTRAN, DBAFIFO
+
+---
+
+### Recipe 3: Purchase Order → Receive → AP Voucher → Check
+
+**Trigger:** Need to buy materials or services from a vendor.
+
+```
+1. PO-A (T7POA): Create Purchase Order
+   - Creates BKAPPO row (BKAP_PO_NUM PK, STATUS='O' open)
+   - Creates BKAPPOL rows (one per line: item, qty, price, due date)
+   - BKAPVEND: vendor terms/GL accounts looked up; cached in BKAPPO
+   - BKICLOC: PO quantity added to "on order"
+
+2. PO-C (T7POC): Print PO
+   - Reads BKAPPO/BKAPPOL; prints PO document; no table writes
+
+3. PO-E (T7POE): Receive PO (Receiving dock)
+   - BKAPINVT: receipt row per PO line received
+   - BKAPPOL: BKAP_POL_RECVQTY updated
+   - INVTXN: receipt transaction (qty positive, type=PO receipt)
+   - BKICLOC: on-hand incremented
+   - BKQCMSTR + BKQCTRAN: if QC required, inspection record created
+   - LOT: if lot-tracked, LOT row created (VENDOR, RECDATE, RECQTY, POCOST)
+
+4. AP-B (T7APB): Enter AP Voucher
+   - Creates BKAPDESC row (vendor invoice: VNDCOD+INVNM PK)
+   - BKAPPOL: BKAP_POL_VOUCHERED flag set
+   - BKGLTRAN: accrued liability debit (received-not-vouched cleared)
+   - ISTRIGRS: PO approval email if ISDIGSIG approval required
+
+5. AP-H (T7APH): Print/Post Checks
+   - Selects BKAPDESC rows due for payment
+   - Creates BKAPCHKF: check line (INVAMT, AMTPD, DISC, CHKACT, CHKDTE)
+   - BKGLCHK: check register entry
+   - BKGLTRAN: AP liability debited, cash credited
+   - BKAPDESC: BKAP_DESC_STATUS → 'P' (paid)
+```
+
+**Key tables written:** BKAPPO, BKAPPOL, BKAPINVT, INVTXN, BKICLOC, BKAPDESC, BKGLTRAN, BKAPCHKF, BKGLCHK
+
+---
+
+### Recipe 4: MRP Run (Plan → Firm → Release)
+
+**Trigger:** Need to generate suggested WOs and POs to meet demand.
+
+```
+1. MR-A (T7MRA): Run MRP Calculation
+   - Reads demand: BKARINVL (open SO lines) + WORKORD (open WOs needing parts)
+   - Explodes BOM (BKBMMSTR) for each demand record
+   - Checks supply: BKICLOC on-hand + BKAPPOL on-order + WORKORD WIP receipts
+   - Writes MTMRP: one row per planned order (PARTNO, KEY, DATE, QTY, ONHAND, PEGTO, ORDER)
+   - BKMRPFC: firm orders (already released WOs/POs) — not overwritten by MRP
+
+2. MR-J (T7MRJ): Review Planned Orders
+   - Reads MTMRP; displays exception messages (late, over-stock, etc.)
+   - No table writes; user reviews and selects orders to firm
+
+3. MR-K / T7AUTOMRF (T7MRK or auto): Firm Planned Orders
+   - For each selected MTMRP row:
+     - If make item: creates WORKORD + WOBOM + WOROUT (copies from BOM/ROUTING)
+     - If buy item: creates BKAPPO + BKAPPOL
+   - MTMRP row deleted (planned → firmed)
+   - BKMRPFC: updated with new firm order reference
+```
+
+**Key tables written:** MTMRP, WORKORD, WOBOM, WOROUT, BKAPPO, BKAPPOL, BKMRPFC
+
+---
+
+### Recipe 5: Month-End Close
+
+**Trigger:** End of accounting period. Must be done in order.
+
+```
+Step 1 — AR Close:
+  AR-G: Print statements (reads BKARTXN, no writes)
+  AR-H: Age receivables (reads BKARCUST+BKARTXN; updates BKARCUST aging buckets)
+  Verify AR trial balance (AR report vs. GL AR account balance)
+
+Step 2 — AP Close:
+  AP-I: AP aging report (reads BKAPDESC)
+  Verify AP trial balance (AP report vs. GL AP account balance)
+  All PO receipts vouched (BKAPINVT fully matched to BKAPDESC)
+
+Step 3 — Inventory Close:
+  IN-N: Print inventory valuation report
+  If needed: UT-K-H (recalculate average costs) — BKICLOC + MTICMSTR unit costs
+  Post any adjustments via IN-G or IN-H
+
+Step 4 — GL Period Lock:
+  AM (Accounting Maintenance) → Period Control: set period end date
+  ISGLDATE: period dates updated (BKGL_DATE_GLDT*)
+  Once locked, prior-period postings rejected
+
+Step 5 — Reconciliation:
+  GL-A trial balance vs. AR/AP/IC subsidiary ledgers
+  BKGLCOA balances vs. sum of BKGLTRAN for the period
+```
+
+**Key tables read:** BKARTXN, BKARCUST, BKAPDESC, BKICLOC, MTICMSTR, BKGLCOA, BKGLTRAN
+**Key tables written:** BKARCUST (aging), ISGLDATE (period lock)
+
+---
+
+### Recipe 6: New Item Setup
+
+**Trigger:** Adding a new manufactured or purchased item.
+
+```
+1. IN-B (T7INB): Enter Item Master
+   - Creates BKICMSTR row: PROD_CODE(15) PK, PROD_TYPE (R/N/B/M/etc.), description, UOM
+   - Creates MTICMSTR row: extended item data (costs, class, MRP flags)
+   - Optionally creates BKICLOC rows per stocking location
+
+2. BM entry (T7BMA / T7BMG): Build Bill of Materials (if manufactured)
+   - Creates BKBMMSTR rows: PARENT+COMP PK, QTYPER, SCRAP, OPER, TYPE
+   - BKBMNOTE: optional component notes
+   - T7BMG: phantom handling (TYPE='P' components are transparent to MRP)
+
+3. RO-A (T7ROA): Enter Routing (if manufactured)
+   - Creates ROUTING rows: CODE+OPER PK, WC, TIMEPART, SETUPHRS, costs per operation
+   - T7ROA reads BKRTTEMP for operation templates (saves re-keying)
+
+4. Set MRP Flags (IN-B or MTICMSTR fields):
+   - BKIC_PROD_LOT: enable lot tracking
+   - BKIC_PROD_SER: enable serial tracking
+   - MTIC_ planning fields: safety stock, min qty, reorder point, lead time, MRP flag
+
+5. Set Pricing (GF-PRICE or IN-B):
+   - BKICMSTR: list price, standard cost
+   - BKICPMAT: optional customer-specific price breaks (RATE_1..10 + QTY_1..10)
+```
+
+**Key tables written:** BKICMSTR, MTICMSTR, BKICLOC, BKBMMSTR, ROUTING, BKICPMAT (optional)
+
+---
+
+### Recipe 7: AR Cash Receipts (Customer Payment)
+
+**Trigger:** Customer sends a check or EFT payment.
+
+```
+1. AR-C (T7ARC): Record Payment
+   - Reads BKARINVT: open invoices for customer
+   - Creates BKARTXN: payment transaction (type=payment, AMOUNT, DATE, CHECK)
+   - Applies to BKARINVT rows: clears open invoices
+   - BKARCUST: open balance decremented
+   - BKGLTRAN: cash debit + AR credit
+   - BKARDEP: if customer deposit, creates deposit record
+   - BKGLCHK: if check, check register updated
+
+2. AR-C (split/NSF handling):
+   - NSF (bounced check): negative amount reversal recreates BKARINVT open rows
+   - Split payment: multiple BKARTXN rows per batch
+
+3. AR-T (T7ART): Print Deposit Slip
+   - Reads BKARTXN batch; prints deposit for bank
+   - No table writes
+
+4. Reconciliation:
+   - BKGLCHK check register vs. bank statement
+   - AR aging (BKARCUST aging buckets) updated on AR-H run
+```
+
+**Key tables written:** BKARTXN, BKARINVT, BKARCUST, BKGLTRAN, BKARDEP (if deposit), BKGLCHK
+
+---
+
+### Recipe 8: Physical Inventory Count
+
+**Trigger:** Annual or cycle count of physical inventory.
+
+```
+1. PI-A (T7PIA): Freeze Inventory
+   - Creates BKPIMSTR: count header (YEAR+QTR PK)
+   - Creates BKPIFROZ: snapshot of BKICLOC on-hand at freeze moment
+   - Generates BKPILOT (lot snapshot) and BKPISER (serial snapshot)
+   - BKPIFROZ.INPST: items that posted after freeze flagged
+
+2. PI-B (T7PIB): Print Count Sheets / Tags
+   - Reads BKPIFROZ; prints count sheets grouped by location
+   - Tags optionally include barcode for scanner entry
+
+3. PI-C (T7PIC): Enter Count Results
+   - Creates BKPIPHYS: actual counted qty per TAGNUM
+   - Fields: ACTQTY, EMPNAME, LOT, SERIAL, BIN
+   - Multiple entries allowed per tag (different counters)
+
+4. PI-D (T7PID): Print Variance Report
+   - Reads BKPIFROZ (frozen qty) vs. BKPIPHYS (counted qty)
+   - Shows +/- variance per item/location; no table writes
+   - User reviews and approves variances
+
+5. PI-F (T7PIF): Post Adjustments
+   - For each variance: creates BKGLTRAN (inventory adjustment + offset account)
+   - Updates BKICLOC: on-hand qty corrected
+   - MTICMSTR: average cost recalculated if cost changed
+   - DBAFIFO: FIFO layers adjusted
+   - BKPIMSTR: count closed (status → posted)
+```
+
+**Key tables written:** BKPIMSTR, BKPIFROZ, BKPILOT, BKPISER, BKPIPHYS, BKICLOC, BKGLTRAN, DBAFIFO
+
+---
+
+*Business Workflows section — **Confidence: 75/100** — 8 workflow recipes written; table write sequences confirmed from DB fingerprints (RWN symbols) and DDF schema cross-reference; exact field-level validation logic and error handling in encrypted RWN.*
 
 ---
 
