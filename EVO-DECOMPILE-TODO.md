@@ -992,12 +992,12 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Database Schema (field meaning) | **78** | 88 | **10** ↑ | 2026-06-17 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
-| Module: AR | **85** | 88 | **3** ↑+5 | 2026-06-17 |
-| Module: AP | **90** | 90 | **0** ↑ Pass71 | 2026-06-17 |
+| Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
+| Module: AP | **92** | 92 | **0** ✅ ↑+2 Pass74 | 2026-06-17 |
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
-| Module: WO | **90** | 90 | **0** ✅ ↑+3 Pass73 | 2026-06-17 |
+| Module: WO | **91** | 90 | **0** ✅ ↑+1 Pass74 | 2026-06-17 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
 | Module: BM/MRP | **85** | 85 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
@@ -1010,7 +1010,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CS/Commission+Salesperson | **80** | 85 | **5** ↑+10 Pass57 | 2026-06-17 |
 | Module: JC/Job Costing | **78** | 82 | **4** ↑+6 Pass47 | 2026-06-17 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
-| Module: QC/Quality Control | **78** | 82 | **4** ↑ Pass66 | 2026-06-17 |
+| Module: QC/Quality Control | **81** | 82 | **1** ↑+3 Pass74 | 2026-06-17 |
 | Module: QT/Service Quote | **72** | 75 | **3** ↑+12 Pass60 | 2026-06-17 |
 | Module: IC/Inventory Utility | **78** | 72 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
@@ -1018,7 +1018,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **82** | 85 | **3** ↑ Pass65 | 2026-06-17 |
-| Module: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
+| Module: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
 | Module: MA/AR Deposits | **70** | 75 | **5** ↑ Pass50 | 2026-06-17 |
 | Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 | 2026-06-17 |
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+7 Pass62 | 2026-06-17 |
@@ -1052,7 +1052,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: EDII/EDI Invoice Import | **72** | 75 | **3** ↑+12 Pass61 | 2026-06-17 |
 | Subsystem: LG/LGS Custom | **70** | 70 | **0** ✅ ↑+8 Pass64 | 2026-06-17 |
 | Subsystem: JS/Reporting Bridges | **68** | 70 | **2** ↑ | 2026-06-17 |
-| Subsystem: BS/Business Score | **72** | 72 | **0** ✅ | 2026-06-17 |
+| Subsystem: BS/Business Score | **78** | 78 | **0** ✅ ↑+6 Pass74 | 2026-06-17 |
 | Subsystem: AD/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |
 | Subsystem: IT/Item Serial Config | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
 | Module: SD/Standard Detail | **68** | 68 | **0** ✅ | 2026-06-17 |
@@ -1071,7 +1071,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FP/FO Print | **55** | 55 | **0** ✅ ↑+13 Pass64 | 2026-06-17 |
 | Module: RF/RFQ | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
-| Subsystem: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
+| Subsystem: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+3 Pass62 | 2026-06-17 |
 | Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
 | Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 (dup of row above) | 2026-06-17 |

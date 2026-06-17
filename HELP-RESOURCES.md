@@ -8546,3 +8546,240 @@ Records which patches/updates have been applied per company. Prevents TA-D from 
 ---
 
 *Last updated: 2026-06-17 (Pass 73). WO three-tier archive architecture confirmed: live (WORKORD/WOBOM/WOLABOR etc.) + estimate (WOEMAT/WOELABOR/WOERECV) + history (WORKHORD/WOHBOM/WOHLABOR etc.); WORKACHG(25f) WO header change audit completes the WO change-audit family (4 tables: header+BOM+routing+history); MK Marketing Automation module decoded (6 tables: MKDEF+MKTRACK+MKTROUT+MKEVENT+MKFORM+MKASSIGN); PR family complete: BKPRHIST(127f) payroll history + BKPRW2(384f) W2 view + BKPRACOM/BKPRHCOM(12f) commission detail; DISCOUNT confirmed as BKICPMAT alt-index. 35 new schemas. Confidence bumps: WO 87→90, PR 87→90, MK new 72.*
+
+---
+
+## AR — Invoice Archive, Recurring, and Customer Views — Pass 74
+
+### BKARHINV (84f) / BKARHIVL (28f) — AR Invoice History Archive
+
+Identical BKAR_INV_*/BKAR_INVL_* field prefix and 84f/28f structure as BKARINV/BKARINVL. BKARHINV and BKARHIVL are the closed/paid AR invoice archive — after payment and period close, invoices from BKARINV move here. Used by MA-C, AR-F, and SA (Sales Analysis) history reports. Standard AR invoice architecture: live (BKARINV/BKARINVL) + history (BKARHINV/BKARHIVL).
+
+---
+
+### BKARRINV (84f) / BKARRIVL (28f) — AR Recurring Invoice Templates
+
+Same 84f/28f structure as BKARINV/BKARINVL. BKARRINV holds template invoices that are periodically cloned into real BKARINV records. Recurring invoices (e.g., monthly maintenance fees) are set up once in BKARRINV and copied by the AR recurring billing process.
+
+---
+
+### BKARECST (106f) / BKARSHIP (106f) — BKARCUST Alternate-Index Views
+
+Both 106f with BKAR_CUSTCODE as the leading key field — identical structure to BKARCUST (AR customer master). BKARECST = estimated cost view of BKARCUST (sorted for cost analysis); BKARSHIP = ship-to view of BKARCUST (sorted for shipping lookup). Standard Btrieve alternate-index pattern: same physical data, different key sort.
+
+---
+
+### BKAREIVT (24f) — AR Aging Summary with Period Breakdown
+
+**PK:** BKAR_INVT_CODE(10) + DATE + NUM
+
+Aging summary per customer per period:
+- BKAB_PERIOD (LOGICAL, 1792 bytes) — **period-bucket array**: 1792 ÷ 8 = 224 logical bits, likely holds 14 periods × 8 aging buckets as bit flags or small floats
+- BKAR_INVT_AMT / AMTRM — total amount / amount remaining
+- BKAR_INVT_TERMN, TYPE, GLDPT — terms number, transaction type, GL dept
+- + 14 more fields (amounts by aging bucket, department allocations)
+
+Used by AR aging reports and dunning — the PERIOD field stores the breakdown by period bucket.
+
+---
+
+### BKARDESC / BKARHDSC (5f each) — AR Description Note Lines
+
+BK_DESC_ standard prefix: CODE(15)+NUM(float)+LINE(2)+NOTES(70)+DESC(25). Standard 5-field description note pattern:
+- BKARDESC = active AR invoice description lines
+- BKARHDSC = history AR invoice description lines
+
+Per-invoice extended text blocks (free-form notes attached to invoice header). Same BK_DESC_ pattern used across AP (BKAPADSC/BKAPHDSC), QT (BKQTNOTE/BKQTTEMP), and RF (BKRFQDES).
+
+---
+
+## AP — PO Views, Notes, Deposits, and GL Distribution — Pass 74
+
+### BKAPAPO (58f) / BKAPHPO (57f) — AP Open / History PO Views
+
+Alternate-index views of BKAPPO (AP purchase order header, 57f):
+- **BKAPAPO (58f)** — open POs only; one extra field (AHSY_USER_ACCES_5 INTEGER 256) which is a security filter embedded in the DDF index definition
+- **BKAPHPO (57f)** — historical/closed POs; identical structure to BKAPPO
+
+Programs that need only open POs use BKAPAPO (filtered by default); programs that need all-time PO history use BKAPHPO.
+
+---
+
+### BKAPNOTE (12f) — AP Vendor Notes
+
+**PK:** BKAP_NOTE_SRCH1(10) + SRCH2(10) + DATE
+
+Free-form notes attached to AP vendor or PO records:
+- SRCH1 = vendor code; SRCH2 = PO# or invoice# (secondary search key)
+- BKAP_NOTE_ENTBY(10) — entered by user
+- BKAP_NOTE_NOTES_1..6 (76 chars × 6 = 456 chars per note record)
+- + 2 more fields (type/flag)
+
+---
+
+### BKAPDEP (6f) — AR Customer Deposit
+
+**PK:** BKAR_DEP_DEPNO (float)
+- BKAR_DEP_CUST(10) — customer code
+- BKAR_DEP_DATE — deposit date
+- BKAR_DEP_SO(float) — linked sales order
+- BKAR_DEP_SR(1) — SO/SR flag
+- BKAR_DEP_EXTRA(50)
+
+Customer advance payment / deposit against an open SO or SR order. Despite the BKAP- table name prefix, BKAR_DEP_ fields confirm this is the AR deposit table used by MA module (AR-A deposits, MA-A prepayments).
+
+---
+
+### BKAPADSC / BKAPHDSC (5f each) — AP PO Description Notes
+
+BK_DESC_ standard 5-field pattern: CODE+NUM+LINE+NOTES(70)+DESC(25). Same as BKARDESC for AR:
+- BKAPADSC = active AP PO description notes
+- BKAPHDSC = historical AP PO description notes
+
+---
+
+### BKAPRIVL (390f) — AP Invoice GL Distribution Lines
+
+**PK:** BKAP_INVL_CODE(10) + NUM(10) + DATE
+
+390 fields! This is the AP invoice GL distribution/allocation table — for multi-line GL splits on a single AP invoice:
+- BKAP_INVL_DESC(25) + TERMD(10) + TERMN(2) + TYPED(10) + TYPEN(2) — description + terms + type
+- BKAP_INVL_TAMT + TDC(1) — total amount + debit/credit flag
+- + 380 more fields: GL account/dept pairs per distribution line (up to ~20 GL splits × ~19 fields each = 380)
+
+BKAPRIVL stores how each AP invoice is distributed across multiple GL accounts, departments, and cost centers. The base BKAPINVT (19f) holds the summary; BKAPRIVL holds the detail GL allocation.
+
+---
+
+## WO — Routing 4-Tier Architecture — Pass 74
+
+### WO Routing Table Family (Extended)
+
+Four variants of the 81-field MTWORO_ routing record:
+
+| Table | Tier | Purpose |
+|---|---|---|
+| WOROUT (81f) | Live | Active WO routing operations |
+| WOROUTMP (81f) | Template | Routing from standard template (before WO-specific modifications) |
+| WOSROUT (81f) | Saved/Standard | Saved WO template routing (linked to WORKSORD) |
+| WOHROUT (81f) | History | Closed WO routing archive |
+
+WOROUTMP is the intermediate state: when a WO is created from a standard routing, WOROUTMP captures the routing as originally planned. Any deviations (WOROCHG) are then applied to WOROUT.
+
+### WOBOMHRM (7f) — WO BOM Horizontal Remark
+
+**PK:** WOBOM_RM_WOPRE + WOSUF + PARENT(15) + LINE(2) + COMP(15) + LINENM(2)
+
+One-line (30-char) short remark per BOM component line on a WO — the compact counterpart to ISFOBMRM's 704-char extended remarks.
+
+---
+
+## QC — Inspection Results and Archive Views — Pass 74
+
+### ISQCRSLT (57f) — SPC Inspection Result Record
+
+**PK:** ISQC_SPC_LRNUM (float) — unique result record number
+
+Full QC/SPC inspection result per lot/serial/operation:
+- ISQC_SPC_CODE(15) + OPER(2) — item code + operation
+- ISQC_SPC_LOT(15) + SERIAL(25) + BATCH(25) — lot/serial/batch identifiers
+- ISQC_SPC_WOPRE + WOSUF — linked WO
+- ISQC_SPC_CNTR(2) + LOTQTY — counter + lot quantity
+- + 47 more: likely RESULT_1..N measured values + PASS/FAIL flags + DATE/EMP + SPEC references
+
+Used by QC-A through QC-D inspection modules to record actual measured values against specs defined in ISQCSPEC.
+
+---
+
+### ISQCAMST (14f) / ISQCATRN (21f) — QC Archive Views
+
+BKQC_* prefix = same as BKQCMSTR(14f)/BKQCTRAN(21f). ISQCAMST and ISQCATRN are Btrieve alternate-index views (IS* prefix = alternate key) of the QC master and transaction tables, providing different sort orders for reporting.
+
+---
+
+## PI — Physical Inventory Count Tables — Pass 74
+
+### BKPILCNT (10f) — Physical Inventory Lot Count
+
+**PK:** BKPI_LOT_YEAR(4) + QTR(2) + CODE(15) + LOT(15)
+
+Per-lot count record for the physical inventory (PI module):
+- BKPI_LOT_QTY — counted quantity
+- BKPI_LOT_TAG(float) — count tag number
+- BKPI_LOT_LOC(10) + BIN(15) — location and bin
+- BKPI_LOT_SERQTY — serial quantity within lot
+- BKPI_LOT_PSTD(1) — posted flag
+
+---
+
+### BKPISCNT (10f) — Physical Inventory Serial Count
+
+**PK:** BKPI_SER_YEAR(4) + QTR(2) + CODE(15) + SERIAL(25)
+
+Per-serial-number count for PI (serial-controlled items):
+- BKPI_SER_QTY — counted quantity (always 0 or 1 for serial-controlled)
+- BKPI_SER_TAG(float) — count tag
+- BKPI_SER_LOC(10) + LOTNO(15) + BIN(15) — location + lot + bin
+- BKPI_SER_PSTD(1) — posted flag
+
+PI count architecture: BKPICNT (standard items, documented) + BKPILCNT (lot-controlled) + BKPISCNT (serial-controlled) = three-table PI count family covering all item types.
+
+---
+
+## BS — Business Scorecard Period Data — Pass 74
+
+### ISJBSF (143f) — Business Scorecard Financial Snapshot
+
+**PK:** ISBSF_STARTDATE + ISBSF_ENDDATE
+
+Period-range financial KPI snapshot with 143 fields covering every EvoERP module:
+- **AR:** AR_BAL, AR_BILL (billings), AR_RECP (receipts), AR_DISC, AR_COGS
+- **AP:** AP_BAL, AP_PAYA (payables), AP_PAYM (payments)
+- + 133 more: GL balances, WO labor/material/overhead costs, IC turnover, SO/PO totals, PR wages, etc.
+
+ISJBSF is the BS (Business Scorecard) module's per-period rollup table. BS-A collects KPIs from all live modules into ISJBSF for trend analysis and management dashboards. Each row captures a complete financial picture for one time period (START + END dates as PK).
+
+---
+
+## BO — BOL Manifest Alt-Index — Pass 74
+
+### ISBOLMS (22f) — Bill of Lading Manifest (Alt-Index View)
+
+ISSO_BOX_ prefix = same as ISSOBOX (BO/BOL module, 22f). ISBOLMS is a Btrieve alternate-index of ISSOBOX providing a different sort (possibly by INVNUM or CODE rather than SONUM+LINE+BOX). ISSOBOX/ISBOLMS: SONUM+LINE+BOX PK; CODE+QTY+LOT+SERIAL+TEMP+EXTRA(150)+INVNUM+12 more.
+
+---
+
+### New Tables Confirmed (Pass 74)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKARHINV | 84 | AR invoice history archive (paid invoices — BKARINV mirror) |
+| BKARHIVL | 28 | AR invoice history line archive (BKARINVL mirror) |
+| BKARRINV | 84 | AR recurring invoice template header |
+| BKARRIVL | 28 | AR recurring invoice template lines |
+| BKARECST | 106 | BKARCUST alt-index for cost analysis |
+| BKARSHIP | 106 | BKARCUST alt-index for ship-to lookup |
+| BKAREIVT | 24 | AR aging summary — CUST+DATE PK; PERIOD array (1792b) + amounts |
+| BKARDESC | 5 | AR active invoice description notes (BK_DESC_ pattern) |
+| BKARHDSC | 5 | AR history invoice description notes |
+| BKAPAPO | 58 | AP open POs view — BKAPPO + security filter field |
+| BKAPHPO | 57 | AP historical closed POs view — BKAPPO mirror |
+| BKAPNOTE | 12 | AP vendor notes — SRCH1+SRCH2+DATE PK; 6×NOTES(76) |
+| BKAPDEP | 6 | AR customer deposit — DEPNO PK; CUST+DATE+SO+SR flag |
+| BKAPADSC | 5 | AP active PO description notes (BK_DESC_ pattern) |
+| BKAPHDSC | 5 | AP history PO description notes |
+| BKAPRIVL | 390 | AP invoice GL distribution — CODE+NUM+DATE PK; multi-GL-split allocation |
+| WOSROUT | 81 | WO saved routing (linked to WORKSORD template WOs) |
+| WOROUTMP | 81 | WO routing template (pre-modification state) |
+| WOBOMHRM | 7 | WO BOM short remark — WOPRE+WOSUF+PARENT+LINE+COMP PK; REMARK(30) |
+| ISQCRSLT | 57 | QC SPC inspection results — LRNUM PK; CODE+OPER+LOT+SERIAL+measured values |
+| ISQCAMST | 14 | QC receiving master archive view (BKQCMSTR alt-index) |
+| ISQCATRN | 21 | QC transaction archive view (BKQCTRAN alt-index) |
+| BKPILCNT | 10 | PI lot count — YEAR+QTR+CODE+LOT PK; QTY+TAG+LOC+BIN |
+| BKPISCNT | 10 | PI serial count — YEAR+QTR+CODE+SERIAL PK; QTY+TAG+LOC+LOT+BIN |
+| ISJBSF | 143 | Business Scorecard period snapshot — START+END PK; AR/AP/GL/WO/IC KPIs |
+| ISBOLMS | 22 | BOL manifest alt-index view of ISSOBOX |
+
+---
+
+*Last updated: 2026-06-17 (Pass 74). AR archive family complete: BKARHINV/BKARHIVL (paid invoice archive) + BKARRINV/BKARRIVL (recurring templates) + BKARECST/BKARSHIP (BKARCUST alt-indexes) + BKAREIVT (aging summary). AP extended: BKAPAPO/BKAPHPO (open/history PO views) + BKAPNOTE(12f) + BKAPDEP(6f AR deposit) + BKAPRIVL(390f GL distribution). WO routing: 4-tier confirmed (WOROUT + WOROUTMP + WOSROUT + WOHROUT); WOBOMHRM(7f) BOM remark. QC: ISQCRSLT(57f) SPC inspection results. PI: BKPILCNT+BKPISCNT lot/serial count pair. ISJBSF(143f) Business Scorecard KPI table decoded. 26 new schemas. Confidence bumps: AR 85→88 (archive family complete), AP 90→92 (GL distribution + open/history views), WO 90→91 (routing 4-tier), QC 78→81 (ISQCRSLT), PI 72→76 (lot/serial count pair), BS 72→78 (ISJBSF KPI table).*
