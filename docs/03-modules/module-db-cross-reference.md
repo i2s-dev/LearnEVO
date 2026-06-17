@@ -1118,3 +1118,95 @@ Related: `T7BROWSER.RWN` (4 procs) — HTML browser window embedded in EvoERP UI
 | BKARTXN | t7lgssoe (LG) | — |
 | FILEDES | T7NEWINIT (NE) | T7FNR |
 | LOT | T7CUTSHEET2 (CU) | T7SMJC, T7WOKA |
+| ISSCHED | EvoScheduler | EvoSched, EVOSERVICE, evoremind |
+| SCHEDCAL | T7SHE (SH-E) | T7SMH |
+| ISLINKS | EvoLinks | T7SMSB, T7SMSC, T7SMTEND |
+
+---
+
+## Pass 10 — Additional Subsystems (2026-06-17)
+
+### BS Business Score/Summary — T7BS
+
+**Purpose:** Business Intelligence dashboard — 162 procs. Combines GL (BKGLTRAN, ISGLDATE, BKSYMSTR) + WO (WORKORD, WOMAT, WOLABOR) + item (MTICMSTR, BKICMSTR). Primary table ISBSF = IS Business Score File — cross-module business performance summary.
+
+**New tables:** ISBSF (IS Business Score/Summary — cross-module KPI aggregation)
+
+---
+
+### Advanced Data Collection (AD) — T7ADCA
+
+**Purpose:** Advanced/main Data Collection module — 290 procs (largest DC module). Opens BKDCLAB + WORKORD + BKPRMSTR + BKDCSHFT + ISWOEX + EIMCOLST. Full automatic data collection entry module for shop floor; ISWOEX = WO extension data.
+
+**New tables:** EIMCOLST (EIM Column List — column configuration for EIM/DC integration)
+
+---
+
+### Request for Quote from Estimates (RF) — T7RFQ
+
+**Purpose:** Generates vendor RFQs from estimate data — 103 procs. Bridges ES (Estimating) and PO modules for vendor price solicitation. Opens ISESTDTL (estimate line items) + BKMRPPO (MRP PO recommendations) + BKBMMSTR + BKICMSTR + BKAPVEND + BKAPPO + BKSBVEND.
+
+**New tables:** ISESTDTL (IS Estimate Detail — estimate line items), BKMRPPO (BK MRP PO — MRP-generated PO recommendations), BKSBVEND (BK Sub-contract Vendor — sub-contracting vendor table)
+
+---
+
+### Item Serial Counter Configuration (IT) — T7ITMCFG
+
+**Purpose:** Configures serial number generation counters per item — 66 procs. Opens ISSERCNT (serial number counter master) + BKICMSTR. Sets up how serial numbers are auto-generated for each serialized item.
+
+**New tables:** ISSERCNT (IS Serial Count — serial number counter/sequence control per item)
+
+---
+
+### Standard Detail Codes (SD) — T7SDET
+
+**Purpose:** Standard Detail maintenance — 58 procs. Opens ISSDET (standard detail records) + ISSTYPE. Maintains type-value code pairs used across modules (flexible code-value lookup system).
+
+**New tables:** ISSDET (IS Standard Detail — type/detail code pairs; paired with ISSTYPE)
+
+---
+
+### Emergency GL Account Maintenance (EM) — T7EMGL
+
+**Purpose:** Emergency GL account maintenance utility — 62 procs. Opens BKGLCOA (Chart of Accounts). Provides raw edit mode for GL accounts bypassing normal workflow restrictions.
+
+---
+
+### Reminder System (EvoRemind) — evoremind.RWN
+
+**Purpose:** CRM/transaction reminder system — 46 procs. Opens ISREMIND + BKYSMSTR + BKSYUSER + ISTRIGRS + BKPSUSER + BKAPPOL + BKICMSTR + BKAPPO + BKARINVL. Reminders link to active PO lines, AR lines, and items.
+
+**New tables:** BKSYUSER (BK SY User — additional session/user table, complement to BKLOGON), ISTRIGRS (IS Trigger Results — automated trigger execution log)
+
+---
+
+### Lookup Grid Configuration (GT) — t7gtemp
+
+**Purpose:** Grid template / lookup grid configuration — 27 procs. Opens BKLUGRID (BK Lookup Grid config) + BKPSUSER.
+
+**New tables:** BKLUGRID (BK Lookup Grid — lookup grid column/layout configuration)
+
+---
+
+### Java Integration Setup (JA) — T7JAVASET / T7JAVARUN
+
+**Purpose:** Java integration configuration and launcher.
+- T7JAVASET (57 procs): FILELOC + ISACCESS + LANGDICT + BKSYMSTR — configures EvoPVT.jar; checks ISACCESS for Java module license.
+- T7JAVARUN (11 procs): BKICMSTR + MKAHIST — lightweight launcher for Java tasks.
+
+---
+
+### Pass-10 Table Ownership Additions
+
+| Table | Owner module | Also used by |
+|-------|-------------|-------------|
+| ISBSF | T7BS (BS) | — |
+| EIMCOLST | T7ADCA (AD) | — |
+| ISESTDTL | T7RFQ (RF) | — |
+| BKMRPPO | T7RFQ (RF) | — |
+| BKSBVEND | T7RFQ (RF) | — |
+| ISSERCNT | T7ITMCFG (IT) | — |
+| ISSDET | T7SDET (SD) | — |
+| BKSYUSER | evoremind | — |
+| ISTRIGRS | evoremind | — |
+| BKLUGRID | t7gtemp (GT) | — |

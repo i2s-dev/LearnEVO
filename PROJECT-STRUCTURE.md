@@ -523,6 +523,16 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | ISSCHED | ISSCHED.B | IS Scheduler — EvoScheduler job table (confirmed by EvoSched.RWN + EvoScheduler.RWN + EVOSERVICE.RWN) |
 | SCHEDCAL | SCHEDCAL.B | Schedule Calendar — calendar used by shop scheduling due-date changes (T7SHE) |
 | ISLINKS | ISLINKS.B | IS Links — document attachment cross-reference: maps record keys to linked document filenames |
+| ISBSF | ISBSF.B | IS Business Score File — cross-module KPI/business performance aggregation |
+| EIMCOLST | EIMCOLST.B | EIM Column List — column configuration for EIM/DC integration |
+| ISESTDTL | ISESTDTL.B | IS Estimate Detail — line items from estimate records |
+| BKMRPPO | BKMRPPO.B | BK MRP PO — MRP-generated purchase order recommendations |
+| BKSBVEND | BKSBVEND.B | BK Sub-contract Vendor — sub-contracting vendor table |
+| ISSERCNT | ISSERCNT.B | IS Serial Count — serial number counter/sequence control per item |
+| ISSDET | ISSDET.B | IS Standard Detail — type/detail code pairs (used with ISSTYPE) |
+| BKSYUSER | BKSYUSER.B | BK SY User — additional session/user tracking table |
+| ISTRIGRS | ISTRIGRS.B | IS Trigger Results — automated trigger execution/result log |
+| BKLUGRID | BKLUGRID.B | BK Lookup Grid — lookup grid column layout configuration |
 
 ---
 

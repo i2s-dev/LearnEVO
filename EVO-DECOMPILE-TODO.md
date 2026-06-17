@@ -597,12 +597,12 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **QC** — Quality Control — 4 DFM files read; QC-A confirms QC/Scrap dual-code classification + vendor range; parent item roll-up in QC-B/C/D; tables BKQCMSTR/BKQCTRAN/BKQC confirmed in DDF — **C: 52/100**
 - [x] 🔄 **QT** — Service Quote (linked to SR module) — 1 DFM read (QTINFO: 'Quote Misc. Information'; ISSR.INFO.DATE[1..5] indexed dates — ISSR prefix confirms SR module linkage; service quotes track multiple date milestones) — **C: 35/100**
 - [x] 🔄 **QU** — Query / Inquiry Tools — CHM confirmed 6 ops: QU-A=Master Inquiry, QU-B=Calendar Drill Down, QU-C=Calendar Summary Report, QU-D=Business Status, QU-E=Quick Grid Lookup, QU-F=Query Executor; EvoERP's built-in query and business intelligence layer (no DFMs — in RWN) — **C: 50/100**
-- [x] 🔄 **RF** — Request for Quote (from Estimating) — 1 DFM read (T7RFQ: 'Description/Estimate/Tag Individual/Tag Groups'; aenum=estimate#, is.est.orddesc, LIST.PART/DESC — generates vendor RFQs from estimate data); ES→RFQ bridge; uses BKAPRFQL destination — **C: 40/100**
+- [x] 🔄 **RF** — Request for Quote (from Estimating) — 1 DFM read; T7RFQ: 103 procs, ISESTDTL+BKMRPPO+BKBMMSTR+BKICMSTR+BKAPVEND+BKAPPO+BKSBVEND; generates vendor RFQs from estimate data; bridges ES (Estimating) and PO — **C: 50/100**
 - [x] 🔄 **RM** — Return Material Authorization (RMA) — all 5 DFMs read; RMD=main entry (bkar.inv/invl links, is.rma.warranty NLPB codes, reason for return), RMAWHY=detail popup (is.rma.status), RMDASK=disposition (pass.rma.num [D/J/N], restock.charge, so.location), RME=reason code master (IS.RMA.CODE/DESC), RMG=report; RMA→WO bridge via "Pass to Job" — **C: 68/100**
 - [ ] ⬜ **RT** — purpose unclear; no deep doc
 - [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
 - [ ] ⬜ **SB** — purpose unclear; no deep doc
-- [x] 🔄 **SD** — Standard Data — 1 DFM read (SDET: IS.SDET.DETAIL + IS.SDET.TYPE — type-keyed standard detail lookup table used across modules); broader SD scope in RWN — **C: 30/100**
+- [x] 🔄 **SD** — Standard Data — 1 DFM read (SDET: IS.SDET.DETAIL + IS.SDET.TYPE); T7SDET: 58 procs, ISSDET+ISSTYPE — type/detail code pair maintenance for cross-module lookup codes — **C: 42/100**
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms + full T7SM* sub-module family decoded; SM-K (user prefs→EvoSettings.INI/ISNUMBER), SM-E/F (tax ISIS.TXF+ISIS.TXG), SM-O (ship-via ISSHPVIA with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (ISJOB job#), SM-PH (IS.CYCLE), SM-JM/JN (merge), SM-JC (JC setup), SM-SD (AP doc link); T7SMI* (CRM masters: BKCMLEAD/BKCMTERR/BKCMACFC/BKCMACCC/BKCMDTCD), T7SMP* (ISCATMST/ISUDMSTR/ISJOB), T7SMT/SMU (ISSHPVIA), T7SMTEND/SMTSET (SMT/PCB: ISSMTCFG/MACHINE); BKSYMSTR/BKYSMSTR not fully decoded — **C: 80/100**
@@ -641,6 +641,10 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **XC** — CC Cross-Reference Utility (T7XCUTIL: 29 procs, BKCMACCT+ISCC+LANGDICT); credit card record reconciliation across CRM and billing — **C: 38/100**
 - [x] 🔄 **LG** — LGS Customer Module (t7lgssoe: 170 procs + T7LGSSOEVerify: 41 procs); customer-specific customization (similar to J7* but LGS prefix); processes AR invoices with tax/customs via BKARTXN+BKICTAX; "SOE" likely = Statement of Entry — **C: 35/100**
 - [x] 🔄 **JS** — JS Integration / Reporting Bridges (7 modules: jsettings, jsql, jsacc, jsaIc, jsaPBI, jsaSRS, jsoi); settings + SQL tool + data bridges for Power BI and SQL Reporting Services external reporting — **C: 42/100**
+- [x] 🔄 **BS** — Business Score/Summary Dashboard (T7BS: 162 procs, ISBSF+BKGLTRAN+ISGLDATE+WORKORD+WOMAT+WOLABOR+MTICMSTR); cross-module KPI aggregation — **C: 42/100**
+- [x] 🔄 **AD (ADCA)** — Advanced Data Collection (T7ADCA: 290 procs — largest DC module; BKDCLAB+WORKORD+BKPRMSTR+BKDCSHFT+ISWOEX+EIMCOLST); full automatic DC entry for shop floor — **C: 48/100**
+- [x] 🔄 **IT** — Item Serial Counter Config (T7ITMCFG: 66 procs, ISSERCNT+BKICMSTR); configures serial number generation counters per item — **C: 40/100**
+- [x] 🔄 **EM** — Emergency GL Maintenance (T7EMGL: 62 procs, BKGLCOA); raw GL account edit mode — **C: 38/100**
 
 ---
 
@@ -674,7 +678,8 @@ The following modules have menu codes and forms inventoried but no deep logic do
 ### 9.2 EvoScheduler
 - [x] ✅ Files: EvoScheduler.RWN, EvoSched.RWN, EvoSchedSetup.RWN — **C: 70/100**
 - [x] ✅ Scheduler job table = **ISSCHED** — confirmed 2026-06-17 from DB fingerprints (EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN all open ISSCHED); SCHEDCAL used by shop scheduling module
-- [ ] ⬜ Schedule table all fields documented
+- [x] ✅ EvoRemind (evoremind.RWN: 46 procs) opens ISREMIND+BKYSMSTR+BKSYUSER+ISTRIGRS+BKPSUSER+BKAPPOL — links reminders to PO/AR transactions; ISTRIGRS = trigger result log
+- [ ] ⬜ ISSCHED all fields documented
 - [ ] ⬜ Job execution mechanism traced (how scheduler triggers a program)
 
 ### 9.3 EvoService (Windows Service)
@@ -1010,6 +1015,12 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: EDII/EDI Invoice Import | **45** | 65 | **20** NEW | 2026-06-17 |
 | Subsystem: LG/LGS Custom | **35** | 55 | **20** NEW | 2026-06-17 |
 | Subsystem: JS/Reporting Bridges | **42** | 60 | **18** NEW | 2026-06-17 |
+| Subsystem: BS/Business Score | **42** | 65 | **23** NEW | 2026-06-17 |
+| Subsystem: AD/Advanced DC | **48** | 65 | **17** NEW | 2026-06-17 |
+| Subsystem: IT/Item Serial Config | **40** | 60 | **20** NEW | 2026-06-17 |
+| Module: SD/Standard Detail | **42** | 60 | **18** ↑ +12 | 2026-06-17 |
+| Module: RF/RFQ | **50** | 68 | **18** ↑ +10 | 2026-06-17 |
+| Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
