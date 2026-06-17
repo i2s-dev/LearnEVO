@@ -4869,4 +4869,196 @@ Used by T7JCENG (engineering routing specs). Provides short work instructions at
 
 ---
 
-*Last updated: 2026-06-17 (Pass 47). JC: 30+ programs mapped — no JC-specific tables; cost analysis runs on WORKORD/WOBOM/WOMAT/WOLABOR/WORECV/WOROUT/BKGLTRAN. 10 new tables: WOEXCHG/OUTPROC/ISNCR/BKSHORT/ISICMSTR/ISCYCLCD/BKQCMSTR/BKQCTRAN/IS2DBAR/BKRTSPEC. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## HH — HANDHELD / SHOP-FLOOR DATA COLLECTION — Pass 48
+
+### Overview: 30+ Programs Across 9 Sub-Areas
+
+| Program | Procs | Sub-area | Operation |
+|---|---|---|---|
+| T7HH | 46 | Launch | Main HH menu / device connection |
+| T7HHDCA | 167 | DC Labor | Shop floor labor scan: WO+operation+clock in/out |
+| T7HHDCA1 | 82 | DC Labor | DC labor entry variant 1 |
+| T7HHDCB/C | 5 each | DC Labor | DC labor stubs (same DB as HHDCA) |
+| T7HHWOG | 201 | WO Ops | WO goods issue (pull materials from inventory to WO) |
+| T7HHWOI | 212 | WO Ops | WO complete / goods receipt (receive finished parts) |
+| T7HHWOP | 135 | WO Ops | WO operation complete (finish routing step) |
+| T7HHWOSCRAP | 151 | WO Ops | WO scrap recording |
+| T7HHWOLABEL | 150 | WO Ops | WO label printing (2D barcode) |
+| T7HHWOLOOKUP | 39 | WO Ops | WO lookup by number |
+| T7HHWOLOT | 80 | WO Lot/Ser | WO lot tracking |
+| T7HHWOSER | 88 | WO Lot/Ser | WO serial number tracking |
+| T7HHSSOE | 267 | SO Ship | SO shipping verification chain (5-form flow) |
+| T7HHSSOEVERIFY | 44 | SO Ship | SO pre-ship verification |
+| T7HHNREL | 129 | SO Ship | SO release / notification |
+| T7HHSODD | 80 | SO Ship | SO document + compliance (BKICREF+ISAREX) |
+| T7HHSOLOOKUP | 39 | SO Ship | SO lookup |
+| T7HHSOLOT | 51 | SO Lot/Ser | SO lot picking |
+| T7HHSOSER | 56 | SO Lot/Ser | SO serial number picking |
+| T7HHSOBIN | 55 | SO Ship | SO bin-level shipping |
+| T7HHPOC | 262 | PO Recv | PO receiving |
+| T7HHPOCBIN | 202 | PO Recv | PO receiving with bin assignment |
+| T7HHPOCLS | 5 | PO Recv | PO receiving stub |
+| T7HHINGA | 150 | Inventory | Inventory receipt / goods arrival |
+| T7HHINBINS | 48 | Inventory | Inventory bin moves |
+| T7HHINLJ | 114 | Inventory | Inventory location transfer |
+| T7HHPIC | 105 | PI Count | Physical inventory count (handheld tag count) |
+| T7HHN | 117 | Inquiry | Item/WO inquiry |
+| T7HHSROE | 5 | SR | Service/Repair stub |
+| T7HHH | 65 | Misc | AR/GL integration utility |
+| T7HHO | 79 | Misc | Inventory location report |
+
+**HH data flows:**
+- DC Labor: T7HHDCA → BKDCLAB → (T7PRK imports to BKPRTC for payroll)
+- WO Goods Issue: T7HHWOG → WOMAT + INVTXN + BKICLOC (materials moved to WO)
+- WO Complete: T7HHWOI → WORECV + INVTXN + BKGLTRAN (finished output received)
+- SO Shipping: T7HHSSOE → ISSOBOX (box packing) → BKARTXN (shipment record) → BKARINV (invoice)
+- PO Receiving: T7HHPOC → BKAPPO+BKAPPOL + QC check (BKQCMSTR)
+
+---
+
+### BKDCLAB (50f) — DC Labor Record
+
+One record per clock-in event per WO operation. Core table for shop floor time tracking:
+
+- LAB_DATE(4) + LAB_EMP(2) + LAB_WOPRE(8) + LAB_WOSUF(2) + LAB_OPER(2) — composite PK
+- LAB_POSTED(1) — posted to WO/GL flag
+- LAB_SHIFT(2) — shift number (1/2/3, references BKDCSHFT)
+- LAB_START(4) + FINISH(4) — clock-in + clock-out TIME fields
+- LAB_PARTS(8) — quantity completed this session
+- LAB_SCRAPPED(8) — quantity scrapped
+- LAB_NOJOBS(2) — number of pieces/jobs
+- LAB_RUNHRS(8) + SETUPHRS(8) — computed run + setup hours
+- LAB_REGOVER(1) — R=regular, O=overtime
+- LAB_APPROVAL(1) — supervisor approval flag
+- LAB_ADT_SUPER(100) + ADT_IN(100) + ADT_OUT(100) — audit trail: supervisor + in/out details
+- LAB_SCRAPCD_1..5(2) — up to 5 scrap reason codes per transaction
+- LAB_SCRAPQTY_1..5(8) — scrap quantity per reason code
+- LAB_JCNUM(12) — Job Costing number (links to JC module cost allocation)
+- LAB_CYCLE_HR/MIN/SEC(2) — cycle time measured in H:M:S
+- LAB_CYCLE_PARTS(8) — parts per cycle (for cycle time calculation)
+- LAB_CYCLE_NOTE(255) — cycle time notes
+- LAB_GEN_DATE_1/2(4) + ALPHA_1/2(30) + NUM_1/2(8) + FLAG_1..5(1) — user-defined custom fields
+- LAB_ESSDATE(4) + DATE1(4) + DATE2(4) — ESS + date range fields
+- LAB_EXTRA(50)
+
+LAB_JCNUM links each shop floor scan to job costing — confirming that JC uses BKDCLAB as its actual-labor input. The 5-code scrap structure enables defect categorization per transaction.
+
+---
+
+### BKDCSHFT (34f) — Shift Schedule Configuration
+
+Singleton table — one row for the entire company's 3-shift schedule:
+
+- BKDC_SH_NAME1/2/3(25) — shift names
+- BKDC_SH_BUFFER_1/2/3(4) — buffer time at shift start (grace period before OT)
+- BKDC_SH_START_1/2/3(4) — shift start times
+- BKDC_SH_BRK1IN_1..3(4) + BRK1OUT_1..3(4) — break 1 in+out per shift
+- BKDC_SH_LUNCHIN_1..3(4) + LUNCHOT_1..3(4) — lunch in+out per shift
+- BKDC_SH_BRK2IN_1..3(4) + BRK2OUT_1..3(4) — break 2 in+out per shift
+- BKDC_SH_FIN_1/2/3(4) — shift end times
+- BKDC_SH_FINBUF_1/2/3(4) — buffer at shift end (OT threshold)
+- BKDC_SH_EXTRA(50)
+
+All TIME fields. The system subtracts break/lunch periods from raw START→FINISH duration to compute net productive hours in BKDCLAB.RUNHRS.
+
+---
+
+### BKDCCFG (7f) — DC System Configuration
+
+Singleton configuration table:
+
+- BKDC_CFG_IDLEP(8) + IDLES(2) — idle time thresholds (period + shift)
+- BKDC_CFG_BANKP(8) + BANKS(2) — bank time config
+- BKDC_CFG_IMPPTH(60) — import file path (for batch handheld import)
+- BKDC_CFG_EXPPTH(60) — export file path
+- BKDC_CFG_JOBTME(60) — job time config file path
+
+---
+
+### ISSOBOX (22f) — SO Shipping Box / Package
+
+Tracks what is packed into each shipping box on an SO:
+
+- ISSO_BOX_SONUM(8) + LINE(8) + BOX(2) — SO + line + box number (PK)
+- ISSO_BOX_CODE(15) — item code packed
+- ISSO_BOX_QTY(8) — quantity in this box
+- ISSO_BOX_LOT(15) + SERIAL(25) — lot + serial number
+- ISSO_BOX_TEMP(1) — temporary/staged flag
+- ISSO_BOX_INVNUM(8) + SHIPPR(8) + SHPCOD(10) — invoice + shipping priority + code
+- ISSO_BOX_WEIGHT(8) — box weight
+- ISSO_BOX_SKID(2) — skid/pallet number
+- ISSO_BOX_DATE(4) — packing date
+- ISSO_BOX_WOPRE(8) + WOSUF(2) — linked WO (for make-to-order shipments)
+- ISSO_BOX_UCC(30) — UCC-128 carton barcode
+- ISSO_BOX_HT/LG/WD(8) — box dimensions (height/length/width)
+- ISSO_BOX_TRACK(40) — carrier tracking number (filled in during shipment scan)
+
+T7HHSSOE (267-proc SO shipping chain) populates ISSOBOX as items are scanned; TRACK is filled when the label is printed.
+
+---
+
+### BKARTXN (14f) — AR Shipment Transaction
+
+Shipment record linking SO lines to actual items/lots/serials shipped:
+
+- BKAR_TXN_SONUM(8) + CODE(15) + LINE(8) — SO + item + line (PK)
+- BKAR_TXN_DESC(30) — item description
+- BKAR_TXN_QTY(8) — quantity shipped
+- BKAR_TXN_LOT(15) + SERIAL(25) — lot + serial number shipped
+- BKAR_TXN_DATE(4) — shipment date
+- BKAR_TXN_STOCK(15) — stock item used (may differ from ordered item via substitution)
+- BKAR_TXN_LOC(10) + BIN(15) — warehouse location + bin shipped from
+- BKAR_TXN_TMPSO(40) — temporary SO reference
+- BKAR_TXN_SRNUM(8) — service record number (SR module link)
+- BKAR_TXN_EXTRA(50)
+
+---
+
+### BKICREF (8f) — Customer Item Cross-Reference
+
+Maps internal item codes to customer-specific part numbers:
+
+- BKIC_REF_CUST(10) + CODE(15) — customer + internal item code (PK)
+- BKIC_REF_PDESC(30) — internal item description
+- BKIC_REF_CUSNME(30) — customer's name for this item
+- BKIC_REF_CUSCOD(25) — customer's part number
+- BKIC_REF_DESC(30) + DESC2(30) — customer's description (2 lines)
+- BKIC_REF_EXTRA(50)
+
+Used by T7HHSODD and QT module to show customer-facing part numbers on shipment documents.
+
+---
+
+### ISAREX (51f) — AR Customer Extended / Compliance
+
+Extended customer record for compliance, certifications, and custom fields:
+
+- ISAREX_CUST(10) — customer code (PK, FK → BKARCUST)
+- ISAREX_LONGNAME(60) — extended customer name (beyond BKARCUST 30-char limit)
+- ISAREX_RS_EXPDT/UPDT/SGNDT(4) — resolution expiry/update/signed dates
+- ISAREX_RS_WHO(15) — resolution contact
+- ISAREX_RS_FORM(60) + CRT_FORM(60) — resolution + certificate form file paths
+- ISAREX_NUM_1..5 + NUM2_1..N (8 each) — many numeric custom fields
+- +37 more (compliance flags, additional certification fields)
+
+Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, conflict mineral certifications, and customer-specific compliance requirements.
+
+---
+
+### New Tables Confirmed (Pass 48)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKDCLAB | 50 | DC labor record — DATE+EMP+WOPRE+OPER PK; START/FINISH times + PARTS+SCRAP+RUNHRS; 5 scrap codes; JCNUM JC link |
+| BKDCSHFT | 34 | 3-shift schedule — per-shift: NAME+BUFFER+START+2×BREAK+LUNCH+FINISH times |
+| BKDCCFG | 7 | DC system config — import/export paths, idle/bank time thresholds |
+| ISSOBOX | 22 | SO shipping box — SONUM+LINE+BOX PK; QTY+LOT+SERIAL+WEIGHT+UCC+TRACK |
+| BKARTXN | 14 | AR shipment transaction — SONUM+CODE+LINE PK; QTY+LOT+SERIAL+LOC+BIN |
+| BKICREF | 8 | Customer item cross-reference — CUST+CODE PK; CUSNME+CUSCOD (customer part numbers) |
+| ISAREX | 51 | AR customer extended/compliance — CUST PK; LONGNAME+certifications+custom fields |
+
+---
+
+*Last updated: 2026-06-17 (Pass 48). HH: 30+ programs fully mapped across 9 sub-areas. BKDCLAB(50f) complete — LAB_JCNUM link to JC confirmed. BKDCSHFT(34f) full 3-shift schedule. BKDCCFG(7f). ISSOBOX(22f) with TRACK tracking number. BKARTXN(14f). BKICREF(8f). ISAREX(51f). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

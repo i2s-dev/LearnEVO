@@ -603,7 +603,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **FL** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **FO** — Features & Options — 5 programs: T7FOA/B(5p stubs), T7FOC(60p BKBMMSTR+BKICMSTR — option entry), T7FOD(103p item+class range filter), T7FOE(86p item filter); BKFOCFG(18f: MANFET+YN_1..15+OPCODE) is the FO config table; BKBM.PROD.OPYN[N] flags control option activation per product — **C: 65/100**
 - [x] 🔄 **FP** — Features & Options Print — CHM confirmed: FP-B='Print Features and Options'; no T7FP* programs in rwn_symbols.json (1,122 searched); likely RTM-only report template triggered from FO module; print sub-module with no standalone RWN — **C: 42/100**
-- [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
+- [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO; Pass 48: 30+ T7HH* programs fully mapped across 9 sub-areas; BKDCLAB(50f) complete: DATE+EMP+WOPRE+OPER PK, START/FINISH+PARTS+SCRAP+RUNHRS+5 scrap codes+LAB_JCNUM(12)→JC link; BKDCSHFT(34f): 3-shift schedule with 2 breaks+lunch per shift; BKDCCFG(7f); ISSOBOX(22f): SONUM+LINE+BOX PK, UCC+TRACK+dimensions; BKARTXN(14f): AR shipment with LOT+SERIAL+LOC+BIN; BKICREF(8f): customer part xref; ISAREX(51f): AR compliance/certifications — **C: 80/100**
 - [x] 🔄 **IC** — Inventory Control utility — T7IC2EST (6 procs, BKICMSTR+MTICMSTR): one-way bridge copies production inventory to ES estimating module; accessed as IC-A "Copy Production to Estimate Inventory"; no other IC programs found; not a general inventory module — **C: 55/100**
 - [x] 🔄 **IM** — Import Management / Landed Cost — all 5 DFMs read; IMB (ISIS.MCF.* currency master: code/desc/base/symbol), IMC (ISIS.MCR.* exchange rates: date/base/SOURCE[1..n]), IMD (ISIS.LND.* landed cost GL accounts: duty/freight/deferred variants), IME (ISIS.DUTY.* duty codes: first 3 chars=vendor, percentage), IMF (ISIS.BRK.* customs broker: code/flat/perc/type); full landed cost and multi-currency infrastructure; Pass 46: all 5 T7IM* programs mapped, ISLANDF(6f duty/freight/customs GL), ISDUTY(2f DCODE+PERC), ISBROKER(4f CODE+FLAT+PERC+TYPE) fully extracted — **C: 78/100**
 - [x] 🔄 **IS** — InfoSystem / Multi-Currency GL — T7ISMCC (ISTECH.LIB, 82 procs): ISGL.CYDATE (current year GL date), ISGL.1YDATE–6YDATE (6 years back), ISGL.FYDATE (fiscal year date) — multi-company GL fiscal date synchronization; T7ISASER (DBA.LIB, 12 procs): WOPRE/WOSUF + MTWO.WIP.* — old-era WO serial number assignment; IS namespace = shared extension tables (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP) — **C: 60/100**
@@ -1000,7 +1000,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: GL | **90** | 92 | **2** ↑+3 | 2026-06-17 |
 | Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
-| Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
+| Module: DC/Data Collection | **85** | 85 | **0** ✅ Pass48 | 2026-06-17 |
 | Module: PR/Payroll | **82** | 88 | **6** ↑+12 Pass46 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **72** | 80 | **8** ↑ | 2026-06-17 |
@@ -1023,7 +1023,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **72** | 78 | **6** ↑ | 2026-06-17 |
 | Module: SP/SPC ⚠️ | **68** | 75 | **8** ↑ | 2026-06-17 |
-| Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
+| Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
 | Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: RM/RMA | **78** | 82 | **4** ↑+10 | 2026-06-17 |
 | Module: FO/Features Options | **65** | 70 | **5** ↑ | 2026-06-17 |
