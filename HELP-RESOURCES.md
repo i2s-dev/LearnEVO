@@ -5324,3 +5324,105 @@ The CRM module maintains a separate company/prospect database bridged to AR via 
 ---
 
 *Last updated: 2026-06-17 (Pass 50). ES: 11 programs mapped; BKMATCST(25f) 10-break material cost + BKRTCST(24f) routing cost per operation + BKMRPFC(9f) MRP forecast extracted; ESTSUM confirmed = DDF name for ISESTASM(213f). MA: 5 programs mapped; BKARDEP(6f)+BKARTNOT(3f)+BKARINVV(77f 10-GL-split voucher)+BKARINVI(16f finance charge) extracted; ISARDEPL not in DDF. CM: BKCMACCT(41f) full CRM account master. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+
+---
+
+## SM — System Maintenance (additional programs: Rebuild/Recalculate family)
+
+The T7SMJ* family are data rebuild and recalculate programs — they touch the widest table sets of any SM programs. Run by administrators when data becomes inconsistent.
+
+### T7SMJ* Rebuild Programs
+
+| Program | Procs | Tables (key) | Operation |
+|---|---|---|---|
+| T7SMJA | 86 | BKDCLAB | DC labor data rebuild |
+| T7SMJB | 140 | BKDCLAB | DC labor full rebuild (larger) |
+| T7SMJC | 212 | BKARINV+BKBMMSTR+BKGLTRAN | JC job costing setup — creates JC GL structure |
+| T7SMJD | 138 | BKICLOC+BKICMSTR | Inventory location balance rebuild |
+| T7SMJF/G/I | 73/82/82 | BKARINV+BKBMMSTR | AR/SO data rebuild variants |
+| T7SMJH | 51 | BKDCLAB+BKARINVL | DC labor + AR line rebuild |
+| T7SMJJ/K | 84/15 | BKARTXN+BKARINV+BKARHTAX | AR transaction + tax history rebuild |
+| T7SMJL | 459 | BKBMDIM+BKARINVI+82 more | LARGEST REBUILD — comprehensive data rebuild touching BOM dimensions, finance charges, and 82+ tables |
+| T7SMJM | 224 | BKARDEP+BKARINVV | Deposit/voucher data rebuild |
+| T7SMJN | 158 | BKAPINVL+BKAPVND2 | AP invoice line + vendor-2 rebuild |
+| T7SMJO/P | 92/15 | 52+ tables including BKARINV | Comprehensive AR + inventory rebuild |
+| T7SMJQ/S/T | 98/62/15 | BKCMHCOD+BKARDEP+BKARINV | CRM history code + AR rebuild |
+| T7SMJR | 97 | BKSYMSTR | System defaults rebuild |
+| T7SMJV | 117 | BKPRCURP+BKPRGLFL+BKPRMSTR | Payroll current period + GL rates rebuild |
+
+### T7SMP* Programs
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7SMPA/B | 53 | SM-PA/B — AR sub-operations (large table set, BKCMHCOD+BKARDEP) |
+| T7SMPF | 64 | SM-PF — AR rebuild variant |
+| T7SMPH | 88 | SM-PH — AR rebuild with BKARDEP |
+| T7SMPI | 53 | SM-PI — defect code maintenance (ISDEFECT) |
+| T7SMPJ | 92 | SM-PJ — UL listing maintenance (ISICUL — not in DDF) |
+
+### SM Support Tables (from T7SMI* CRM masters + T7SMJ*)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKCMHCOD | 9 | CRM history code — HCODE(2) PK; DESC(25)+WINDW(1)+RATE(8)+UM(3)+ABILL(1 auto-bill flag)+BPART(15 billable part)+NPART(15 non-billable part); CRM interaction type with optional billing |
+| BKCMACFC | 3 | CRM follow-up code — FCODE(3) PK + DESC(25) + REP(5 default rep) |
+| BKCMACCC | 2 | CRM account class code — CCODE(5) PK + DESC(25); account tier/rating |
+| BKCMDTCD | 2 | CRM detail code — DCODE(2) PK + DESC(25) |
+| ISCATMST | 3 | Item category master — CODE(4) PK + DESC(60) + EXTRA(100); item grouping above class level |
+| CLASMSTR | 2 | Class master (minimal) — CLASS(4) PK + DESC(30); item class lookup |
+| CLASS | 24 | Item class with GL accounts — CLASS(4)+LOC(10) PK; GLA/DPTA/GLC/DPTC/GLS/DPTS/GLWIP per location; allows per-location GL override per item class |
+| ISNUMBER | 52 | Next number sequences — CODE(10) PK; NEXT_1..51(8×51); each CODE row holds 51 sequential counters for different document types (SO, PO, WO, etc.) per company |
+| BKSYAP | 11 | AP system config/counters — RECVNUM(8 next receipt#)+REOPEN(1)+RQSCRAP(1)+RQREWRK(1)+RECVFLG(1)+PONUM(8 next PO#)+QCRECV(8)+RFQNUM(8) + 3 more; single-row table per company |
+| CALTEMP | 2 | Calendar template — SHP_DATE(8)+SLSH_DATE(4); shipping date calculation utility |
+
+---
+
+## UT — Utilities (admin/data maintenance)
+
+**Module purpose:** Administrative tools that operate outside normal ERP flows. Most operations are irreversible — data clear (UTKA), location cleanup (UTKE), and company delete (UTI) are fully destructive. UTK* programs rebuild index integrity and recalculate balances when data gets inconsistent.
+
+### UT Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7UTH | 109 | UT-H file layout report — dumps table layout from FILEDICT+FILEKEY; useful for schema documentation |
+| T7UTI | 101 | UT-I company add/delete — opens BKPSUSER+BKSYAP+BKSYMSTR+BKICLOCM; creates or removes a company (DESTRUCTIVE for delete) |
+| T7UTKA | 74 | UT-KA data clear/reset — wipes COA/CUST/VEND/INVN (DESTRUCTIVE); opens BKICLOC+BKICTAX+BKPRGLFL+23 more |
+| T7UTKD | 91 | UT-KD fiscal year setup — sets fycur/fy1yp..fy3yp; opens BKGLTRAN+BKYSMSTR+BKSYMSTR |
+| T7UTKE | 238 | UT-KE location cleanup — LARGEST UT PROGRAM; removes stale location records (DESTRUCTIVE); opens BKARTXN+BKARINV+45+ more tables |
+| T7UTKF | 116 | UT-KF item rebuild F — rebuilds MRP/PI balances; opens BKMRPFC+BKPIFROZ+BKBMMSTR+28 more |
+| T7UTKG | 145 | UT-KG item rebuild G — rebuilds inventory item balance; opens BKICLOC+BKICMSTR+13 more |
+| T7UTKH | 135 | UT-KH average cost recalculate — recalculates per-item average cost from BKICLOC+CLASS+11 more |
+| T7FNR | 104 | TA-D file navigator — browse all FILEDICT definitions; opens FILEDICT+FILELOC+ISDRILL |
+
+**All UTK* operations are data-integrity tools — they correct corrupted indices and recalculated totals but do not change business records. UTKA and UTKE are genuinely destructive (they delete data).**
+
+### UT Tables (additional)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKSYAP | 11 | AP system counters — next receipt#/PO#/QC#/RFQ# + behavioral flags (also used by UTI) |
+| CLASS | 24 | Item class GL map — CLASS+LOC PK; full GL account set per class per location |
+| CLASMSTR | 2 | Class description lookup — CLASS PK + DESC |
+| ISCATMST | 3 | Item category — CODE(4) PK + DESC + EXTRA |
+
+---
+
+### New Tables Confirmed (Pass 51)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKCMHCOD | 9 | CRM history/interaction type — HCODE(2) PK; rate+billable part codes |
+| BKCMACFC | 3 | CRM follow-up code — FCODE(3) PK + DESC + default rep |
+| BKCMACCC | 2 | CRM account class — CCODE(5) PK + DESC |
+| BKCMDTCD | 2 | CRM detail code — DCODE(2) PK + DESC |
+| ISCATMST | 3 | Item category master — CODE(4) PK + DESC(60) + EXTRA(100) |
+| CLASMSTR | 2 | Item class lookup — CLASS(4) PK + DESC(30) |
+| CLASS | 24 | Item class GL accounts — CLASS+LOC PK; full GL set per location |
+| ISNUMBER | 52 | Next document number sequences — CODE(10) PK + 51 counter slots |
+| BKSYAP | 11 | AP system config — next receipt/PO/QC/RFQ numbers + flags |
+| CALTEMP | 2 | Calendar template — SHP_DATE + SLSH_DATE |
+
+---
+
+*Last updated: 2026-06-17 (Pass 51). SM: T7SMJA-V rebuild family (14 programs) mapped; T7SMP* family (5 programs) mapped; BKCMHCOD(9f)+BKCMACFC(3f)+BKCMACCC(2f)+BKCMDTCD(2f)+ISCATMST(3f)+CLASMSTR(2f)+CLASS(24f)+ISNUMBER(52f)+BKSYAP(11f)+CALTEMP(2f) extracted. UT: 9 programs fully mapped; UTK* rebuild/recalculate family confirmed. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
