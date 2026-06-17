@@ -1210,3 +1210,220 @@ Related: `T7BROWSER.RWN` (4 procs) — HTML browser window embedded in EvoERP UI
 | BKSYUSER | evoremind | — |
 | ISTRIGRS | evoremind | — |
 | BKLUGRID | t7gtemp (GT) | — |
+
+---
+
+## Pass 11 — SA, JC, ES, PI, BO, PS, RM, FO, DE, MD, WBKLOOKUP
+
+New families identified from rwn_symbols.json DB fingerprint analysis.
+
+---
+
+### Sales Analysis (SA) — T7SAM / T7SAN / T7SAO + 12 others (15 files total)
+
+**Purpose:** Sales reporting and analysis — trends, sales rep performance, customer profitability. 15 files, ~1,110 procs.
+- T7SAM (238 procs, 35 DBs): Uses BKSAREPT (SA report definitions), BKCMLEAD, BKCMTERR, BKPRSALE, BKICREF, ISAREX, ISBUILD, ISRMAI, ISSRINFO, ISMCF, ISMCR.
+- T7SAN (220 procs, 31 DBs): Similar to T7SAM (report variant).
+- T7SAO: Summary/overview variant.
+
+**Key proc names** (T7SAM): SMSTR, T.CLICK, ONSTART, KUP_TLL, LBAR, LOGIN, ONDISP, LANG, ONCLOSE, NEXTPAGE.PRE, RT_TYPE, AR.CLICK — confirms interactive browsing form.
+
+**New tables:** BKSAREPT (SA report templates/saved report definitions), ISAREX (AR extras — extended AR info), ISRMAI (RMA invoice/auto-invoice records)
+
+---
+
+### Job Cost (JC) — T7JCENG / T7JCA / T7JCM + 11 others (22 files total)
+
+**Purpose:** Job Cost module — project-level cost tracking against customer jobs, separate from standard WO cost. 22 files, ~2,033 procs.
+- T7JCENG (211 procs): Engineering/routing side of JC. Uses BKRTSPEC, BKPRMSTR — job cost linked to routing specs and payroll.
+- T7JCA (163 procs): JC admin/setup. Uses BKPSUSER (personal settings).
+- T7JCM (188 procs): JC master entry — main form. Uses BKPRMSTR, BKARINVL, BKICLOCM.
+- T7JCR (167 procs): JC reports.
+- T7JCB / T7JCE / T7JCN / T7JCP / T7JCH (119–153 procs each): JC sub-screens. All use BKSBPART (sub-contracted parts) and BKMRPFC.
+- T7JCF (137 procs): Uses BKQCTRAN — JC quality transaction linkage.
+- T7JCL / T7JCQ (138 procs each): JC list/query screens.
+- T7JCRM (62 procs): JC return/RMA sub-screen.
+
+**New tables:** BKSBPART (sub-contracted parts — components sourced from outside processes), BKSBMFG (sub-contracted manufacturing records)
+
+---
+
+### Estimating (ES) — T7ESB / T7ESE / T7EST + 8 others (11 files total)
+
+**Purpose:** Quoting and estimating module — build cost estimates for customer RFQs, generate WOs/SOs from estimates. 11 files, ~1,063 procs.
+- T7ESB (213 procs): Main estimate entry form. Uses BKICREF, BKPRSALE, BKPSUSER, ISORDECO, ISECO — can link estimate to ECOs and orders.
+- T7ESE (194 procs): Estimate entry variant 2.
+- T7EST (163 procs): Estimate templates (uses BKESTCFG — estimate config table).
+- T7ESD (162 procs): Estimate defaults/setup (uses BKESTCFG, BKCMACCT).
+- T7ESC (124 procs): Estimate cost (uses BKMATCST, BKRFQ, BKRTCST — material cost, RFQ vendor quotes, routing cost).
+- T7ESH / T7ESI (60/94 procs): Estimate header/items sub-forms (BKMATCST, BKRFQ, BKRTCST, BKICPMAT).
+
+**New tables:**
+- BKESTCFG — estimate configuration settings (method, markup defaults, numbering)
+- BKMATCST — material cost records per estimate line (cost + pricing detail)
+- BKRFQ — RFQ master (vendor RFQ records tied to estimates)
+- BKRTCST — routing cost records (labor/machine cost detail per estimate)
+- ESTSUM — estimate summary totals (rolled-up cost/price per estimate)
+- BKICPMAT — IC purchase material (item-level purchase material category or config)
+
+---
+
+### Physical Inventory (PI) — T7PIA / T7PIC / T7PIF + 6 others (9 files total)
+
+**Purpose:** Periodic physical inventory count process — freeze inventory, record counts by location/lot/serial, post adjustments. 9 files, ~1,056 procs.
+- T7PIA (159 procs): Main PI entry form — freeze/count cycle.
+- T7PIC (152 procs): PI count entry variant.
+- T7PIF (137 procs): PI freeze/finalize.
+- T7PIB / T7PICA (114/97 procs): PI posting (uses BKGLTRAN, BKGLX) — posts count variances to GL.
+- T7PID / T7PIE (98/76 procs): PI discrepancy and adjustment entry.
+- T7PIG (155 procs): PI report/print.
+- T7PIH (68 procs): PI history review.
+
+**New tables:**
+- BKPIMSTR — PI master (one record per PI run: start date, status — Open/Posted)
+- BKPILOT — PI lot count records (lot#, counted qty, location)
+- BKPIPHYS — PI physical count records (item, location, count qty)
+- BKPISER — PI serial number count records (serial#, item, found/not-found)
+- BKPIFROZ — PI frozen snapshot (inventory snapshot taken at freeze time; baseline for variance calc)
+- PIBINLOC — PI bin location records (duplicate of BKICLOC frozen at PI start)
+- PIBINLOT — PI bin lot records (duplicate of ISBINLOT frozen at PI start)
+
+---
+
+### Bill of Lading (BO) — T7BOL / T7BOLMSO (3 files)
+
+**Purpose:** Bill of Lading (shipping document) generation for customer shipments. 3 files, ~432 procs.
+- T7BOL (178 procs): Main BOL entry — generates shipping document from SO/AR invoice. Uses BKARCUST, BKARINV, BKARINVL, ISAREX, ISACCESS.
+- T7BOLMSO (174 procs): BOL from multiple SOs variant. Uses BKPRMSTR (for carrier/truck details?).
+- T7BOMSCRAPFIX (80 procs): Utility to fix BOM scrap rates — unrelated name, uses BKBMMSTR only.
+
+---
+
+### Personal Settings (PS) — T7PSF / T7PSA / T7PSK / T7PSE (5 files total)
+
+**Purpose:** Per-user personal settings — printer defaults, menu customization, column preferences. 5 files, ~300 procs.
+- T7PSF (63 procs): Main PS form. Uses BKMENUSU (menu user settings), procs include MENULINES, T7TLL, CLEANUP — confirms menu/toolbar personalization.
+- T7PSA / T7PSK (90/96 procs): PS admin and setup screens.
+- T7PSE (50 procs): Uses BKMENUSU, BKCMACCT — personal settings with CRM account type filtering.
+
+**New tables:** BKMENUSU (menu user settings — saved menu layout per user), BKPSUSER (PS user settings — printer/preference records per user)
+
+---
+
+### Return Merchandise Authorization (RM) — T7RMD / T7RME / T7RMG + 3 others (6 files)
+
+**Purpose:** RMA (Return Merchandise Authorization) processing — customer returns, credit notes, inventory receipt of returned goods. 6 files, ~427 procs.
+- T7RMD (216 procs): Main RMA entry — large form. Uses BKARCUST, BKARINV, BKARINVL, BKARINVT, BKARTXN, BKICLOC, BKICLOCM, BKPRSALE.
+- T7RMG (132 procs): RMA management/list view.
+- T7RME (54 procs): RMA entry sub-form.
+
+**New tables:** ISRMAC (RMA credit note records), ISRMAI (RMA auto-invoice / return invoice records)
+
+---
+
+### Field Order (FO) — T7FOD / T7FOE / T7FOA + 2 others (5 files)
+
+**Purpose:** Field Order (FO) — customer field service/repair orders distinct from standard SOs. Creates service orders with BOM and labor components. 5 files, ~259 procs.
+- T7FOD (103 procs): Main FO entry (uses BKBMMSTR, BKICLOCM, CLASMSTR).
+- T7FOE (86 procs): FO entry variant.
+- T7FOC (60 procs): FO completion/close.
+
+**New tables:**
+- ISFOHEAD — FO header (order#, customer, dates, status)
+- ISFOLINE — FO line items (product, qty, price)
+- ISFOORDL — FO order list (multi-FO management)
+- ISFOHIST — FO history records
+- ISFOBMRM — FO BOM remark
+
+---
+
+### Data Entry / DC Terminal Stubs (DE) — T7DExx family (64 files)
+
+**Purpose:** Mixed family of two distinct sub-groups:
+
+**Sub-group 1: DC terminal entry stubs** (T7DEBA..DEBE, T7DECA..DECE, T7DEDA..DEDE, etc.)
+- 5-proc stub modules: STUB.ONOPENFILES, STUB.ONSTART, STUB.ONDISPLAY, STUB.ONCLOSE, TIMER.CALL
+- All open BKDCCFG (DC config) + BKDCLAB + BKGLTRAN + BKGLX
+- Pattern: T7DE + [screen-letter][company-letter] — one stub per company per DC screen
+- Purpose: per-company/per-station DC terminal entry points calling into ISTECH.LIB
+
+**Sub-group 2: EDI processing modules (T7DEP*)** — Uses BKEDMSTR, BKEDIDUN
+- T7DEPB (111 procs): EDI PO processing. Proc names: EVO_CFG, DITSTART, YMSTR, SMSTR
+- T7DEPD (132 procs): EDI invoice (uses BKEDNOTE)
+- T7DEPE (114 procs): EDI ASN/acknowledgment
+- T7DEPF (104 procs): EDI transmit
+- T7DEPH (116 procs): EDI PO release (uses BKICPMAT)
+- T7DEP860 (82 procs): EDI 850/860 PO transaction
+- T7DEM (92 procs): EDI manufacturing sub (uses BKSBVEND, BKDCLAB)
+
+**Sub-group 3: Data entry/detail screens (T7DET, T7DEQ, etc.)**
+- T7DET (178 procs): Main detail entry — BKAPCHKF, BKARDEP, BKART → AR deposit/check detail
+- T7DEX (82 procs): Export/extract — procs include KEY_FLDS, NI_FLDS, EY_FLDS → data export utility
+- T7DEHD (131 procs): PI hand-held entry — BKPIMSTR, BKPILOT, BKPIPHYS, BKPISER
+- T7DEER (132 procs): DC labor entry/report — BKDCLAB, BKGLCOA
+- T7DEJH (147 procs): GL date/period entry — ISGLDATE
+
+**New tables:** BKDCCFG (DC configuration), BKDCLAB (DC labor records), BKEDMSTR (EDI master), BKEDIDUN (EDI data elements), BKEDNOTE (EDI notes), BKEDPOST (EDI post log)
+
+---
+
+### Module Defaults (MD) — T7MDEFAULTS / T7MDEFNDC / T7MDEFBANKS (3 files)
+
+**Purpose:** System-wide module defaults setup — sets defaults per module for all users. 3 files, ~766 procs.
+- T7MDEFAULTS (435 procs, 42 DBs): The main "set all module defaults" form. Touches every major subsystem's config table including ISBANKS (bank master), ISBNMSTR, ISCC (credit card), ISEXUSER (external/web user), ISNUMBER (number sequence definitions), ISSERCNT (serial counter).
+- T7MDEFNDC (252 procs, 29 DBs): NDC (non-default company?) variant. Uses BKESTCFG, BKFOCFG, BKSYAP (system AP config), BKCMCNTD, BKCPMSTR.
+- T7MDEFBANKS (79 procs): Bank-specific defaults.
+
+**New tables:** ISBANKS (bank account master), ISBNMSTR (bank name master), ISCC (credit card master), ISEXUSER (external/web user access), ISNUMBER (number sequence definitions — auto-increment configs), BKFOCFG (FO config), BKSYAP (system AP configuration)
+
+---
+
+### Universal Lookup Framework (WBKLOOKUP) — 413 procs / 76 DBs
+
+**Purpose:** The F3 lookup framework used by ALL data-entry forms in EVO. When a user presses F3 in any field, this module opens and displays a configurable list from any table. It reads from 76 different tables — essentially every major table in the system.
+
+**Key proc names:** LOSE (.CLOSE), .START, ERS (filters), DATA, .DISP, ANGE (.CHANGE), .ONCLOSE, _VIEW, .CLICK, _DRILL, TING (sorting), LFUNC (lookup function)
+
+**Unique tables in WBKLOOKUP (not in typical modules):**
+- FILEDFLD, FILEDICT, FILEKEY, FILEKNUM — file dictionary metadata (used for dynamic field-lookup configuration)
+- BKLUGRID — reads user's saved grid layout for this lookup
+- ISQSOA — quick search SO access
+- ISDRILLM — drill-down definition master
+- BKSBPART, BKSBMFG — sub-contractor parts/manufacturing
+- BKQCMSTR, BKQCTRAN — QC master/transaction tables accessible via F3
+
+---
+
+### Pass-11 Table Ownership Additions
+
+| Table | Owner module | Also used by |
+|-------|-------------|-------------|
+| BKSAREPT | T7SAM/T7SAN (SA) | — |
+| ISAREX | T7SAM (SA) | T7BOL, T7SRB |
+| ISRMAI | T7SAM (SA) | T7SRF, T7RMD |
+| BKSBPART | T7JCB (JC) | WBKLOOKUP, T7SMJL |
+| BKSBMFG | T7JCH (JC) | T7MRG, T7MRH, WBKLOOKUP |
+| BKESTCFG | T7EST/T7ESD (ES) | T7MDEFNDC |
+| BKMATCST | T7ESC (ES) | T7ESH, T7ESI |
+| BKRFQ | T7ESC (ES) | T7SOA, T7SMJL |
+| BKRTCST | T7ESC (ES) | T7ESH |
+| ESTSUM | T7ESB/T7ESH (ES) | T7SMJL |
+| BKICPMAT | T7ESH (ES) | T7SOA, T7WOA, T7SMJL |
+| BKPIMSTR | T7PIA (PI) | T7DEHD |
+| BKPILOT | T7PIA (PI) | T7DEHD, T7SMJL |
+| BKPIPHYS | T7PIA (PI) | T7DEHD |
+| BKPISER | T7PIA (PI) | T7DEHD |
+| BKPIFROZ | T7PIF (PI) | T7DEHD, T7PID, T7PIE, T7PIB |
+| PIBINLOC | T7PIA (PI) | T7SMJL |
+| PIBINLOT | T7PIA (PI) | T7SMJL |
+| ISFOHEAD | T7FOD (FO) | WBKLOOKUP |
+| ISFOLINE | T7FOD (FO) | WBKLOOKUP, T7SMJL |
+| ISFOORDL | T7FOD (FO) | WBKLOOKUP, T7SMJL |
+| BKMENUSU | T7PSF (PS) | T7PSE |
+| BKPSUSER | T7PSA (PS) | T7ESB, T7JCA, T7MDEFAULTS |
+| ISRMAC | T7RMD (RM) | — |
+| BKDCCFG | T7DExx stubs (DC) | T7DCPSF, T7DCA |
+| BKDCLAB | T7DCA (DC) | T7DEER, T7DEM |
+| BKEDMSTR | T7DEPB (ED/DE) | T7DEPD, T7DEPE |
+| ISBANKS | T7MDEFAULTS (MD) | T7SRF, WBKLOOKUP |
+| ISNUMBER | T7MDEFAULTS (MD) | T7SOA, T7SRD |

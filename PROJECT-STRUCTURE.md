@@ -533,6 +533,83 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | BKSYUSER | BKSYUSER.B | BK SY User — additional session/user tracking table |
 | ISTRIGRS | ISTRIGRS.B | IS Trigger Results — automated trigger execution/result log |
 | BKLUGRID | BKLUGRID.B | BK Lookup Grid — lookup grid column layout configuration |
+| BKPIMSTR | BKPIMSTR.B | BK PI Master — physical inventory run master (one record per PI session) |
+| BKPILOT | BKPILOT.B | BK PI Lot — PI lot count records (lot, location, counted qty) |
+| BKPIPHYS | BKPIPHYS.B | BK PI Physical — PI physical count records (item, location, count qty) |
+| BKPISER | BKPISER.B | BK PI Serial — PI serial count records (serial#, item, found/missing) |
+| BKPIFROZ | BKPIFROZ.B | BK PI Frozen — PI inventory snapshot at freeze time (baseline for variance) |
+| PIBINLOC | PIBINLOC.B | PI Bin Location — frozen bin-location records at PI start |
+| PIBINLOT | PIBINLOT.B | PI Bin Lot — frozen bin-lot records at PI start |
+| BKESTCFG | BKESTCFG.B | BK Estimate Config — estimate module settings (method, markup, numbering) |
+| BKMATCST | BKMATCST.B | BK Material Cost — estimate line-level material cost + pricing detail |
+| BKRFQ | BKRFQ.B | BK RFQ — Request for Quote master (vendor RFQ records tied to estimates) |
+| BKRTCST | BKRTCST.B | BK Routing Cost — routing cost detail (labor/machine cost per estimate operation) |
+| BKICPMAT | BKICPMAT.B | BK IC Purchase Material — item-level purchase material category/config |
+| BKICREF | BKICREF.B | BK IC Reference — item cross-reference (alt part numbers, customer/vendor part#) |
+| BKICVAL | BKICVAL.B | BK IC Values — item valuation extension (additional costing/pricing data) |
+| BKICDIM | BKICDIM.B | BK IC Dimension — item physical dimensions (size, weight for shipping) |
+| BKBMDIM | BKBMDIM.B | BK BOM Dimension — BOM component dimension overrides |
+| BKBMNOTE | BKBMNOTE.B | BK BOM Note — text notes attached to BOM components |
+| BKBMREMK | BKBMREMK.B | BK BOM Remark — structured remarks on BOM components |
+| BKSBPART | BKSBPART.B | BK Sub-contract Part — components sourced from outside process/subcontract vendors |
+| BKSBMFG | BKSBMFG.B | BK Sub-contract Mfg — subcontracted manufacturing operation records |
+| BKMENUSU | BKMENUSU.B | BK Menu User — per-user menu/toolbar layout settings |
+| BKPSUSER | BKPSUSER.B | BK PS User — per-user personal settings (printer, column, preference records) |
+| BKSAREPT | BKSAREPT.B | BK SA Report — sales analysis saved report template definitions |
+| BKDCCFG | BKDCCFG.B | BK DC Config — data collection terminal/station configuration |
+| BKDCLAB | BKDCLAB.B | BK DC Labor — data collection labor entry records (raw labor from DC terminals) |
+| BKEDMSTR | BKEDMSTR.B | BK EDI Master — EDI trading partner / transaction set master |
+| BKEDIDUN | BKEDIDUN.B | BK EDI Data Element — EDI data element definitions and mappings |
+| BKEDNOTE | BKEDNOTE.B | BK EDI Note — EDI transaction notes / audit comments |
+| BKEDPOST | BKEDPOST.B | BK EDI Post — EDI posting log (transaction transmission history) |
+| BKGLX | BKGLX.B | BK GL Extended — GL extended transaction data (supplemental GL fields) |
+| BKGLGJRN | BKGLGJRN.B | BK GL GJ Journal — GL general journal header records |
+| BKGLGJLN | BKGLGJLN.B | BK GL GJ Line — GL general journal line entries |
+| BKGLFSTL | BKGLFSTL.B | BK GL Financial Statement Layout — user-defined financial statement layouts |
+| ISGLNBGT | ISGLNBGT.B | IS GL New Budget — new/revised GL budget entries (separate from BKGLCOA budgets) |
+| ISAREX | ISAREX.B | IS AR Extra — extended AR customer/invoice additional data |
+| ISARINVX | ISARINVX.B | IS AR Invoice Extra — invoice-level extra fields and overrides |
+| BKARDEP | BKARDEP.B | BK AR Deposit — AR customer deposit records |
+| BKARDEP | BKARDEP.B | BK AR Deposit — AR customer deposit records |
+| BKARINVT | BKARINVT.B | BK AR Invoice Transaction — AR invoice transaction/posting history |
+| BKART | BKART.B | BK AR Transaction — short-form AR transaction records |
+| ISRMAC | ISRMAC.B | IS RMA Credit — RMA credit note records (return merchandise credit authorization) |
+| ISRMAI | ISRMAI.B | IS RMA Invoice — RMA auto-invoice records (return material invoice generation) |
+| ISFOHEAD | ISFOHEAD.B | IS FO Header — field order header (order#, customer, dates, status) |
+| ISFOLINE | ISFOLINE.B | IS FO Line — field order line items (product, qty, price) |
+| ISFOORDL | ISFOORDL.B | IS FO Order List — multi-field order management list |
+| ISBANKS | ISBANKS.B | IS Banks — bank account master (account codes, bank names, GL accounts) |
+| ISBNMSTR | ISBNMSTR.B | IS Bank Name Master — bank name/routing reference |
+| ISNUMBER | ISNUMBER.B | IS Number — auto-increment number sequence definitions (counters per entity type) |
+| BKFOCFG | BKFOCFG.B | BK FO Config — field order module configuration settings |
+| BKSYAP | BKSYAP.B | BK SY AP — system-level AP configuration (AP defaults, aging, terms defaults) |
+| QCCODES | QCCODES.B | QC Codes — quality control code master (defect codes, disposition codes) |
+| BKQCMSTR | BKQCMSTR.B | BK QC Master — QC test/inspection master records |
+| BKQCTRAN | BKQCTRAN.B | BK QC Transaction — QC inspection transaction records (pass/fail per inspection) |
+| ISQCMTHD | ISQCMTHD.B | IS QC Method — QC inspection method definitions |
+| ISQCSPEC | ISQCSPEC.B | IS QC Specification — QC product specification records |
+| WORECV | WORECV.B | WO Receive — WO production receipt records (parts received/completed per op) |
+| WOBOMREM | WOBOMREM.B | WO BOM Remark — remarks attached to WO BOM components |
+| WOEXCHG | WOEXCHG.B | WO Exchange — WO part/material exchange/substitution records |
+| ISNCR | ISNCR.B | IS NCR — non-conformance report records (linked to QC/AC module) |
+| ISDEFECT | ISDEFECT.B | IS Defect — defect tracking records |
+| OUTPROC | OUTPROC.B | Outside Process — outside processing operation records (WO ops sent to external vendors) |
+| SCHWO | SCHWO.B | Scheduled WO — scheduled work order records (linked to shop scheduling) |
+| WCCTL | WCCTL.B | WC Control — warehouse control operation control records |
+| WCTRLOAD | WCTRLOAD.B | WC TR Load — warehouse control transaction loading records |
+| ISTERMS | ISTERMS.B | IS Terms — payment terms definitions (net-days, discount %, EOM flag) |
+| ISTAXGRP | ISTAXGRP.B | IS Tax Group — tax group/nexus definitions (state, county, city tax combos) |
+| ISTAXFIL | ISTAXFIL.B | IS Tax File — tax filing records |
+| ISSHPVIA | ISSHPVIA.B | IS Ship Via — shipping via/method codes (UPS, FedEx, common carrier, etc.) |
+| ISSOBOX | ISSOBOX.B | IS SO Box — SO packing/box assignments for multi-box shipments |
+| ISRTLOAD | ISRTLOAD.B | IS Routing Load — routing load balancing data |
+| ISORDECO | ISORDECO.B | IS Order ECO — engineering change orders linked to specific customer orders |
+| ISECO | ISECO.B | IS ECO — engineering change order master |
+| ISUSAGE | ISUSAGE.B | IS Usage — item usage tracking (consumption history by customer/period) |
+| BKSHORT | BKSHORT.B | BK Short — short supply records (items short on WO/SO orders) |
+| MKECLASS | MKECLASS.B | MK/Mkt E-Class — marketing/external classification codes |
+| LANGDICT | LANGDICT.B | Language Dictionary — multi-language label translations for UI fields |
+| TASCOLOR | TASCOLOR.B | TAS Color — user-defined color scheme settings |
 
 ---
 

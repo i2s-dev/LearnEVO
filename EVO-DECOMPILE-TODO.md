@@ -619,6 +619,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **YS** — purpose unclear; no deep doc
 
 **Subsystems (not menu modules — discovered via RWN analysis):**
+- [x] 🔄 **PI** — Physical Inventory (9 files, 1,056 procs) — **NEWLY DOCUMENTED Pass 11** — T7PIA/T7PIC/T7PIF = main count entry; T7PIB/T7PICA = PI posting to GL (uses BKGLTRAN+BKGLX); T7PID/T7PIE = discrepancy entry; T7PIG = report; T7DEHD = handheld PI entry; PI tables confirmed: BKPIMSTR (run master), BKPILOT (lot counts), BKPIPHYS (physical counts), BKPISER (serial counts), BKPIFROZ (frozen snapshot), PIBINLOC/PIBINLOT (frozen bin records); freeze→count→post cycle inferred — **C: 52/100**
 - [x] 🔄 **BO** — Bill of Lading (T7BOL: 178 procs, T7BOLMSO: 174 procs); LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER/AUTHOR.NUMBER/CONTROL.NUMBER; DRIVER.ARRIVED/LOADING.START/END/DRIVER.DEPARTED timestamps; T7BOLMSO: EDIT.CLASS/WEIGHT/PACKS/HM (LTL freight fields); integrated with BKARINV/SO for outbound shipments — **C: 58/100**
 - [x] 🔄 **DS** — Data Sync stubs (25 files: T7DSAP/AR/BOM/CK/CM/CO/CS/DC/EST/FO/GEN/GL/HH/IC/IM/MRP/PO/PR/QC/RMA/RO/SH/SO/WC/WO); all are SRC stubs with single STUB variable; all share same core DB set + BKSYAR; one stub per module for multi-company data synchronization — **C: 42/100** (architecture known; sync logic is in RWN, blocked)
 - [x] 🔄 **AU** — Automation modules (T7AUTODCH: 183 procs DC labor validation; T7AUTOMRF: 132 procs MRP auto-firm, MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT; T7AUTOREBSS: 79 procs back-order re-BSS; T7AUTOFX: 21 procs auto foreign-exchange rate update via ISMCF+ISJAVA+ISMCR); automation/batch layer for background ERP operations — **C: 52/100**
@@ -1021,6 +1022,12 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SD/Standard Detail | **42** | 60 | **18** ↑ +12 | 2026-06-17 |
 | Module: RF/RFQ | **50** | 68 | **18** ↑ +10 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
+| Subsystem: PI/Physical Inventory | **52** | 68 | **16** NEW | 2026-06-17 |
+| Module: SA/Sales Analysis | **58** | 72 | **14** ↑ +3 | 2026-06-17 |
+| Module: JC/Job Cost | **68** | 78 | **10** ↑ | 2026-06-17 |
+| Module: ES/Estimating | **58** | 72 | **14** ↑ | 2026-06-17 |
+| Platform: WBKLOOKUP/Lookup Framework | **55** | 70 | **15** NEW | 2026-06-17 |
+| Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
