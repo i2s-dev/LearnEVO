@@ -481,6 +481,21 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | BKCPEC | BKCPEC.B | Compliance/customs data |
 | ESTSUM | ESTSUM.B | Estimate Summary — estimating rollup records |
 | CLASS | CLASS.B | Class master (short alias of CLASMSTR) |
+| ISSMTCFG | ISSMTCFG.B | IS SMT Config — surface mount technology machine config (PCB assembly) |
+| ISSERIAL | ISSERIAL.B | IS Serial — active serial number tracking (complement to SERIAL master) |
+| ISUDMSTR | ISUDMSTR.B | IS UD Master — user-defined field type definitions |
+| ISJOB | ISJOB.B | IS Job master — job cost number master |
+| ISORDDSC | ISORDDSC.B | IS Order Discount codes |
+| ISSHPVIA | ISSHPVIA.B | IS Ship Via — freight carrier/shipping method codes |
+| BKCMLEAD | BKCMLEAD.B | CRM Lead Source codes |
+| BKCMTERR | BKCMTERR.B | CRM Territory codes |
+| BKCMACFC | BKCMACFC.B | CRM Account Financial Category |
+| BKCMDTCD | BKCMDTCD.B | CRM Document Type codes |
+| ISGLCOA | ISGLCOA.B | IS GL COA — extension to chart of accounts (multi-year history/budget) |
+| ISGLDATE | ISGLDATE.B | IS GL Date — current GL period dates per company/module |
+| BKGLTRAN | BKGLTRAN.B | GL transaction register — all posted GL entries |
+| MACHINE | MACHINE.B | Machine master — specific machines within work centers |
+| TOOL | TOOL.B | Tool master — cutting tools, fixtures, jigs per routing operation |
 
 ---
 

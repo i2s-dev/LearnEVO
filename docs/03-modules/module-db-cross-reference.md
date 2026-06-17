@@ -776,6 +776,67 @@ T7POJ* = Quality inspection performed when receiving PO items.
 
 ---
 
+---
+
+### SM Sub-Module Families — Reference Data Setup
+
+The T7SM* sub-modules are the SM (System Manager) setup screens for reference data.
+Each 52-53 proc EVO.LIB screen is a CRUD UI over one master table:
+
+| Module | Table | Content |
+|--------|-------|---------|
+| T7SMIA | BKCMLEAD | CRM Lead Source codes |
+| T7SMIB | BKCMTERR | CRM Territory codes |
+| T7SMIC | BKCMACFC | CRM Account Financial Category |
+| T7SMID | BKCMACCC | CRM Account Contact Category |
+| T7SMIE | BKCMDTCD | CRM Document Type codes |
+| T7SMIF | ISCATMST | IS Category Master |
+| T7SMPA | ISCATMST | Category (alternate view) |
+| T7SMPB | ISUDMSTR | User-Defined Master field definitions |
+| T7SMPF | ISJOB | IS Job master (job cost numbers) |
+| T7SMCA | CLASMSTR + BKGLCOA | Class master with GL account mapping |
+| T7SMCB | CLASMSTR | Class master simple |
+| T7SMT | ISSHPVIA | Ship Via / freight carrier codes |
+| T7SMU | ISSHPVIA + BKARCUST | Ship Via with customer defaults |
+| T7SMW | ISORDDSC | Order Discount codes |
+| T7SMK | ISNUMBER + LANGDICT | Auto-number counters + language |
+| T7SMNA | ISNTYPE + ISNOTES | EvoNotes note type setup |
+
+**New tables confirmed:** ISUDMSTR (IS UD Master — user-defined field type definitions), ISJOB (IS Job master — job cost numbers), ISORDDSC (IS Order Discount codes), ISSHPVIA (IS Ship Via — carrier/method codes), BKCMLEAD (CRM lead sources), BKCMTERR (CRM territories), BKCMACFC/BKCMACCC (CRM categories), BKCMDTCD (CRM doc type codes).
+
+---
+
+### SMT — Surface Mount Technology Integration (T7SMTEND, T7SMTSET)
+
+**T7SMTEND.RWN** (LISTG60.LIB, procs=97) — SMT run end
+**T7SMTSET.RWN** (LISTG60.LIB, procs=128) — SMT setup
+
+**Key tables:** ISSMTCFG, MACHINE, WORKORD, WOBOM, BKICMSTR, ISLINKS, ISSERIAL
+
+**Summary:** EvoERP includes an SMT (Surface Mount Technology) integration module for PCB assembly manufacturers. T7SMTSET configures the SMT machine (ISSMTCFG = machine program / component placement config). T7SMTEND records run completion, linking back to WORKORD + WOBOM (WO BOM for PCB assembly). MACHINE = the pick-and-place machine. ISSERIAL tracks assembled PCB serial numbers.
+
+This is a highly specialized module for electronics/PCB contract manufacturers — rare ERP capability confirming EvoERP's electronics industry penetration.
+
+---
+
+### GL Journal Entry Sub-Modules (T7GLO, T7GLE, T7GLS, T7GLP)
+
+**T7GLO.RWN** (EVO.LIB, procs=165) — GL journal entry (main)
+**T7GLE/T7GLE2/T7GLESPEED.RWN** (LISTG60.LIB) — GL entry variants (191/156/164 procs)
+**T7GLP.RWN** (ISTECH.LIB, procs=87) — GL posting
+**T7GLS.RWN** (EVO.LIB, procs=78) — GL journal summary/notes
+
+**Key tables:** BKGLTRAN, BKGLCOA, BKSYMSTR, BKYSMSTR, ISGLCOA, ISGLDATE, BKARCUST, BKAPVEND
+
+**New tables confirmed:**
+- `ISGLCOA` — IS GL COA (extension to chart of accounts — multi-year account history or budget data)
+- `ISGLDATE` — IS GL Date (current GL period/year-end dates per company/module)
+- `BKGLTRAN` = core GL transaction register
+
+**Summary:** T7GLO = main GL journal entry; T7GLE/GLESPEED = alternative/fast entry UIs; T7GLP = posting GL transactions to BKGLTRAN; T7GLS = GL journal with notes. All read ISGLDATE for current period validation. ISGLCOA extends BKGLCOA with additional per-account historical data.
+
+---
+
 ## Module table ownership matrix
 
 Quick reference — which module is the PRIMARY owner of each core table:

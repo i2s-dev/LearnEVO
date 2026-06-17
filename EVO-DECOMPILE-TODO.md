@@ -605,7 +605,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **SD** — Standard Data — 1 DFM read (SDET: IS.SDET.DETAIL + IS.SDET.TYPE — type-keyed standard detail lookup table used across modules); broader SD scope in RWN — **C: 30/100**
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [ ] ⬜ **SL** — purpose unclear; no deep doc
-- [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms read; SM-K (user prefs→EvoSettings.INI), SM-E/F (tax code ISIS.TXF + tax group ISIS.TXG with vendor remittance), SM-O (ship-via with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (job# master IS.JOB.*), SM-PH (maintenance cycles IS.CYCLE.*), SM-JM/JN (customer/vendor merge), SM-JC (JC setup), SM-SD (AP invoice document link); BKSYMSTR/BKYSMSTR not fully decoded — **C: 72/100**
+- [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms + full T7SM* sub-module family decoded; SM-K (user prefs→EvoSettings.INI/ISNUMBER), SM-E/F (tax ISIS.TXF+ISIS.TXG), SM-O (ship-via ISSHPVIA with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (ISJOB job#), SM-PH (IS.CYCLE), SM-JM/JN (merge), SM-JC (JC setup), SM-SD (AP doc link); T7SMI* (CRM masters: BKCMLEAD/BKCMTERR/BKCMACFC/BKCMACCC/BKCMDTCD), T7SMP* (ISCATMST/ISUDMSTR/ISJOB), T7SMT/SMU (ISSHPVIA), T7SMTEND/SMTSET (SMT/PCB: ISSMTCFG/MACHINE); BKSYMSTR/BKYSMSTR not fully decoded — **C: 80/100**
 - [x] 🔄 **SP** — Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — CORRECTED) — all 6 DFMs read; SPC main entry (Inspector #/Employee/WO/Item/Qty/Customer/Drawing → IS.SERR.ERROR/PROCESS), SPCLIVEGRID (Caption='Top Real Time Errors'; ATYPE/ADETAIL/ACODE/ACOUNT), SPCLIVEREP (auto-refresh live report), SPCREP/SPCREP2 (WO/Part/Employee/Date range reports), SPCREPPPM (PPM defect rate with Sides range — PCB/electronics context); primary table IS.SERR.* — **C: 60/100**
 - [x] 🔄 **SR** — Service / Repair — 7 DFM files read; SR-K (equipment master ISSR.MMS.* — make/model/serial/IN-OUT dates/motor/WO#), SR-I (AR invoice browse), SR-E (invoice address edit, BKAR.INV.*); SO integration confirmed; T7SRA not found on share — **C: 58/100**
 - [x] 🔄 **SU** — Setup / UI Configuration — CHM confirmed 4 ops: SU-A=Maintain Grid Lookups, SU-B=Maintain Drill Down Menus, SU-C=Forms Editor, SU-D=Grid Maintenance; configures EvoERP's UI layer (grid columns, drill-down menus, form layouts) — **C: 50/100**
@@ -939,7 +939,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
 | Module: WO | **80** | 85 | **5** ↑ | 2026-06-16 |
-| Module: GL | **78** | 85 | **7** ↑ | 2026-06-17 |
+| Module: GL | **82** | 85 | **3** ↑ +4 | 2026-06-17 |
 | Module: BM/MRP | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
 | Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
@@ -985,7 +985,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Platform Subsystems | **72** | 82 | **10** ↑ +7 | 2026-06-17 |
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
-| Customizations (J7\*) | 65 | 80 | 15 | 2026-06-11 |
+| Customizations (J7\*) | **72** | 80 | **8** ↑ +7 | 2026-06-17 |
 | Business Workflows | **62** | 85 | **23** ↑ | 2026-06-11 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **58** | 88 | **30** ↑ | 2026-06-16 |
