@@ -2537,4 +2537,216 @@ production inventory (BKICMSTR) data into the estimating module (MTICMSTR). Acce
 
 ---
 
-*Last updated: 2026-06-17 (Pass 33). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-33 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 34 Additions
+
+### SD — Standard Detail Codes
+
+T7SDET (58 procs) — maintains ISSDET + ISSTYPE (service detail code pairs). Also opens ISNCR
+(confirms SD codes are used in NCR defect classification) and ISMCR (multi-currency). SD codes
+are used as classifiers in service orders (SR), NCR records (QC), and probably service schedule.
+
+- **ISSDET** (4f): IS_SDET_TYPE + IS_SDET_DETAIL + IS_SDET_WHO + IS_SDET_SUB — type/detail pair
+- **ISSTYPE** (3f): IS_SDET_TYPE + IS_SDET_DESC + IS_SDET_MISC — type code + description
+
+**Confidence: 58/100** — single program confirmed; purpose from table fingerprint; ISNCR link is firm.
+
+---
+
+### SL — Sales Forecast / Shop Loading
+
+T7SLSFC (5 procs) — opens BKARINVL + BKDCLAB + BKARCUST + ISWOPRIO + WORKCTR + ROUTING.
+Despite the "sales forecast" label, this program reads work center and routing data alongside
+AR invoice demand. This is a shop-loading/capacity display: overlays demand (BKARINVL) on
+production capacity (WORKCTR+ROUTING) and DC labor (BKDCLAB), with WO priority (ISWOPRIO).
+
+**Confidence: 48/100** — single small program; purpose inferred from unusual combined table set.
+
+---
+
+### AL — Audit Log Setup + Alternate Part Maintenance
+
+Two programs share the T7AL* prefix:
+
+**T7ALOGSETUP** (43 procs): opens FILELOC + BKSYMSTR + BKPSUSER. Configures the EvoERP
+audit log — selects which Btrieve tables and events are recorded, per company/user settings.
+
+**T7ALTPART** (104 procs): opens BKSBPART + BKICMSTR + ISACCESS. Maintains alternate/substitute
+part number relationships. BKSBPART (5f): BKSB_PART_PARNT + PROD + CUST + SUBST — maps a parent
+item to substitution products, optionally per-customer.
+
+**Confidence: 52/100** — both programs identified; purposes confirmed from table fingerprint.
+
+---
+
+### ML — Multi-Language Invoice Support
+
+T7MLC (50 procs) — opens LANGDICT + BKARINV + BKARINVL + ISREPORD + BKGLTRAN + ISREPLNK +
+BKPRSALE + BKICPMAT + ISJAVA + BKEDMSTR + ISBSF. Multi-language AR invoice printing: translates
+invoice content via LANGDICT, applies customer pricing (BKICPMAT/BKPRSALE), links to EDI master
+(BKEDMSTR), and posts GL transactions (BKGLTRAN). ISJAVA integration for email/delivery.
+
+**Confidence: 55/100** — program identified; purpose from table fingerprint; specific field
+translations and language switching logic blocked by RWN encryption.
+
+---
+
+### MH — Shipping Order / Ship-Via Configuration
+
+T7MHOPE (98 procs) — opens BKCMTERR + BKARCUST + ISSHPVIA + ISSHIPCO + BKARINV + BKARINVL +
+BKICLOC + BKGLTRAN + ISREPLNK + BKPRSALE + BKICPMAT + ISJAVA + ISBSF. More than carrier config —
+this program creates shipping orders, writes BKGLTRAN GL entries, reads inventory location
+quantities (BKICLOC), and applies pricing. BKCMTERR = customer territory; ISSHPVIA = ship-via
+codes; ISSHIPCO = shipping company/carrier.
+
+**Confidence: 55/100** — program identified; purpose from table fingerprint; invoice posting
+confirmed from BKGLTRAN presence; detailed logic blocked by encryption.
+
+---
+
+### BR — Brand / CRM Classification
+
+T7BRANDS (53 procs) — primary table BKCMACCC (2f: CCODE+DESC — CRM account classification code).
+Also opens BKARINV + BKGLTRAN + DBAFIFO + ISTRIGRS + ISREMIND + LOT + SERIAL + ISNCR + BKAPPO +
+BKMRPFC + ISICMSTR. The broad table set reflects EvoERP's shared-library pattern, not all tables
+are actively used per operation. T7BROWSER (4 procs) is an HTML browser wrapper for the same area.
+
+- **BKCMACCC** (2f): 5-char classification code + 25-char description; used for CRM brand tagging
+
+**Confidence: 48/100** — program identified; purpose clear; broad DB set makes purpose harder to
+pin precisely; BKCMACCC schema confirmed.
+
+---
+
+### NE — New Company Initialization
+
+T7NEWINIT (49 procs) — opens FILELOC + FILEDES. Creates all Btrieve data files (.B) for a new
+EvoERP company. FILELOC = list of existing data files; FILEDES (not in DDF) = file description/
+template definitions used as the blueprint for what files to create.
+
+**Confidence: 55/100** — program confirmed; purpose from table fingerprint and program name.
+
+---
+
+### JO — Jobs and Departments
+
+T7JOBS (21 procs) — opens ISDEPT + WOEXCHG + CLASMSTR + ISCATMST + BKICLOCM + ISNOTES + ISNTYPE
++ WORKCTR + ISBNMSTR + ISTRIGRS + ISREMIND.
+
+Key tables:
+- **ISDEPT** (3f): IS_GF_DEPT(10) + IS_GF_DEPT_DESC(40) + IS_GF_DEPT_MISC(100) — department master
+- **WOEXCHG** (10f): MTWO_EX_WOPRE/WOSUF + DATE + PROD + DESC + CHG + CHGDESC + GLACCT + GLDPT + OP
+  — WO exchange/change charges: records cost changes to work orders with GL posting
+
+Also found T7JODPSALES (52 procs) — a "JO Display Sales" panel reading IS2DBAR + ISCYCLCD +
+BKSBPART + BKAPDESC + ISNCR — this is likely an SM drill-down panel, not the JO module itself.
+
+**Confidence: 52/100** — T7JOBS confirmed, ISDEPT and WOEXCHG schemas extracted; T7JODPSALES
+scope unclear (may belong to SM display framework).
+
+---
+
+### FN — File Navigator (Data Dictionary Browser)
+
+T7FNR (104 procs) — opens FILELOC + FILEDICT. Admin tool for browsing Btrieve data files and the
+Pervasive data dictionary. FILELOC = file locations on disk; FILEDICT = DDF field definitions.
+This is the TA-D "Data File Navigator" operation (also surfaced in TA module).
+
+**Confidence: 58/100** — program confirmed; purpose from table fingerprint and DFM read.
+
+---
+
+### XC — Credit Card Cross-Reference Utility
+
+T7XCUTIL (29 procs) — opens BKCMACCT + BKYSMSTR + ISCC. Reconciles/cross-references credit card
+records between the CRM accounting layer and EvoERP's credit card token store.
+
+- **ISCC** (14f): Credit card token store:
+  - IS_CC_CODE (10) — card record code
+  - IS_CC_TOLKEN (20) — payment processor token (obfuscated card reference)
+  - IS_CC_MASKED (24) — masked card number (e.g., `****-****-****-1234`)
+  - IS_CC_EXP (4) — expiration date
+  - IS_CC_ADDRESS/ZIP — billing address for AVS
+  - IS_CC_CARDTYPE (15) — Visa/MC/Amex etc.
+  - IS_CC_CARDNAME (25) — cardholder name
+  - IS_CC_STATUS (25) + IS_CC_STDATE — status + date
+  - IS_CC_XCTRAN (10) — transaction reference
+  - IS_CC_PROCESS (10) — processor code
+
+**Confidence: 55/100** — program confirmed; ISCC schema extracted; purpose from table fingerprint.
+
+---
+
+### IT — Item Serial/Barcode/Cycle Configuration
+
+T7ITMCFG (66 procs) — opens ISSERCNT + BKICMSTR + BKGLCOA + SERIAL + ISNCR + IS2DBAR + ISCYCLCD.
+Configures per-item serial number generation, 2D barcode printing, and cycle count classification.
+
+Key tables:
+- **ISSERCNT** (9f): IS_SERC_ITEM(15) + CLASS(4) + SPOS(pos) + LENG(length) + TOTAL(width) +
+  NUMBER(current counter) + LAST(25, last serial generated) + EXTRA + L2 — serial counter per item
+- **IS2DBAR** (109f): IS2D_BAR_CODE(10) + ITEM(15) + ORDER + CHAR(5) + FIELD(25) + DOCPR_1..15
+  (15 document print flags) + 89 more — 2D barcode format config per item/document type
+- **ISCYCLCD** (7f): IS_CYCLE_CODE(4) + DESC(30) + FREQ(frequency) + DATE + ALPHA(15) + NUM +
+  EXTRA(50) — cycle count frequency code (daily/weekly/monthly/annual)
+
+**Confidence: 62/100** — program confirmed; all three key table schemas extracted; purpose fully
+understood; specific barcode format fields (109 total) not fully decoded.
+
+---
+
+### EM — Emergency GL Maintenance
+
+T7EMGL (62 procs) — opens BKGLCOA + BKAPPOL + BKAPPO + WORKORD + WOBOM + INVTXN + BKBMMSTR +
+ISICMSTR + BKGLTRAN + LOT + SERIAL + ISNCR + ISTAXGRP + ISNUMBER + BKICLOCM + BKAPPOL.
+A power-user direct-edit tool for the GL Chart of Accounts. The broad table set exists because
+it needs to traverse GL account references across all modules to find/validate account usage.
+
+- **ISICMSTR** (41f): IS_PROD_CODE(15) + WT(weight) + ITP(20, item type pack) + EXTRA(150) +
+  CDATE + TI/HI/FOBPAL/FOBFULL (pallet TI/HI/FOB dimensions) + HT/LG/WD(box dims) + TOOL(15) +
+  SLEAD(shipping lead) + RCDATE + FLAG_1..5 + 21 more — item physical/shipping specs extension
+
+**Confidence: 50/100** — program confirmed; ISICMSTR schema extracted; purpose clear from program
+name and primary table; full GL traversal logic blocked by encryption.
+
+---
+
+### RT — Report Template Validator
+
+T7RTMVALID (20 procs) — opens BKSYHELP + DBAHLPID + ISIS + MKAHIST. Validates RTM (ReportBuilder)
+templates. Reads the help system (BKSYHELP/DBAHLPID) and audit history (MKAHIST). ISIS is the
+EvoERP import/export index. Very minimal utility — validates form structure and logs to audit trail.
+
+**Confidence: 45/100** — program confirmed; purpose inferred from name + table set; detailed
+validation logic blocked by encryption.
+
+---
+
+### FP — Features & Options Print
+
+No T7FP* programs found in rwn_symbols.json (1,122 modules searched). FP-B "Print Features and
+Options" is a print sub-module of FO (Features & Options). It is likely implemented as a single
+RTM report template (ReportBuilder) triggered from within the FO module, not a standalone RWN.
+
+**Confidence: 42/100** — CHM operation confirmed; no dedicated RWN program; likely RTM-only.
+
+---
+
+### New Tables Confirmed (Pass 34)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISCC | 14 | Credit card token store — masked number + processor token + billing address |
+| IS2DBAR | 109 | 2D barcode config per item/document — format, fields, 15 print-enable flags |
+| ISCYCLCD | 7 | Cycle count frequency codes — CODE/DESC/FREQ/DATE per cycle code |
+| ISSERCNT | 9 | Serial number counter per item — position, length, current number, last generated |
+| ISICMSTR | 41 | Item physical/shipping specs — weight, TI/HI, dimensions, tool, shipping lead |
+| ISDEPT | 3 | Department master — DEPT(10)/DESC(40)/MISC(100) |
+| BKCMACCC | 2 | CRM account classification code — CCODE(5)/DESC(25) |
+| BKSBPART | 5 | Alternate/substitute part relationships — PARNT/PROD/CUST/SUBST |
+| WOEXCHG | 10 | WO change order charges — WO ref + change amount + GL account |
+
+---
+
+*Last updated: 2026-06-17 (Pass 34). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-34 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC/SD/SL/AL/ML/MH/BR/NE/JO/FN/XC/IT/EM/RT/FP). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
