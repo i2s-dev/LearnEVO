@@ -2621,7 +2621,9 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 
 **ISTRIGRS** (25 fields) is used by T7DIGSIG to send automatic email notifications when POs require approval. Key fields: CODE(15), TRIGR(10), CONTACT(20), DAYS(trigger lead time), EMAIL(400 chars — multi-address list), ONCE flag, LDATE/LTIME (last fired), plus WO/PO/SO/CUST/VEND reference links.
 
-**Confidence: 65/100** — Three RWN programs identified; ISDIGSIG fully field-documented (89 fields confirmed); ISTRIGRS schema confirmed; business workflow inferred from DB fingerprints + DFM 131KB form.
+**Approval workflow:** T7DIGSIG reads BKAPPO to check PO amount → compares against IS_DSIG_AMT (slot amount limit) → if PO amount > threshold, routes to approvers by email via ISTRIGRS → each approver signs in using T7DIGSIG → IS_DSIG_DATE/FLAG/ADATE updated when approved → T7DIGSIG releases PO to BKAPPOL processing. T7DIGSIGPO is the PO-side entry point that triggers the signature flow. BKGLTRAN/BKGLX confirm full PO posting happens only after all required approvals.
+
+**Confidence: 72/100** — Three RWN programs identified; ISDIGSIG fully field-documented (89 fields confirmed); approval workflow traced from DB fingerprint (BKAPPO→ISDIGSIG→ISTRIGRS→BKGLTRAN); exact signature form fields in encrypted RWN.
 
 ---
 
@@ -2689,12 +2691,51 @@ These code tables are referenced by SR service orders (BKARINV type field) and S
 **What it does:** Generates shipping/freight documents for outbound SO shipments. Supports standard BOL and multi-shipment LTL (Less-than-Truckload) freight variants with box/packing details.
 
 **RWN programs:**
-- **T7BOL** (178 procs) — standard BOL; reads BKARINV+BKARCUST+ISSHPVIA+ISSHIPCO+ISSOBOX+BKARINVL+MTICMSTR+ISSRINFO+BKAPPO
-- **T7BOLMSO** (174 procs) — multi-shipment / LTL variant; reads ISSOBOX+BKPSUSER+BKPRMSTR (uses payroll employee for driver/DOT data); adds EDIT.CLASS/WEIGHT/PACKS/HM fields for LTL freight classification
+- **T7BOL** (178 procs) — standard BOL; reads BKARINV+BKARCUST+ISSHPVIA+ISSHIPCO+ISSOBOX+BKARINVL+MTICMSTR+ISSRINFO+BKAPPO+ISAREX
+- **T7BOLMSO** (174 procs) — multi-shipment / LTL variant; adds BKPSUSER+BKPRMSTR (driver/employee data) with EDIT.CLASS/WEIGHT/PACKS/HM fields for LTL freight classification
 
-**Key tables:** ISSOBOX (SO box packing), ISSHIPCO (carrier master), ISSHPVIA (ship-via codes), BKARINV (SO/invoice source). ISSOBOX (22f): SONUM+LINE+BOX (pk), CODE(item), QTY, LOT(15), SERIAL(25), TEMP(1 flag), plus weight/class/hazmat fields.
+**No dedicated BOL table** — all data is assembled from existing SO/shipping tables at print time.
 
-**Confidence: 65/100** — Both programs identified with full DB fingerprints; workflow confirmed from variable names (LOAD.NUMBER, SEAL.NUMBER, TRAILER.NUMBER, DRIVER timestamps); exact form fields in encrypted RWN.
+**ISSOBOX (22f) — SO Packing / Box Assignment**
+
+Primary key: ISSO_BOX_SONUM(8) + LINE(8) + BOX(2)
+
+| Field | Meaning |
+|---|---|
+| ISSO_BOX_CODE (15) | Item code (FK → BKICMSTR) |
+| ISSO_BOX_QTY (float) | Quantity in this box |
+| ISSO_BOX_LOT (15) | Lot number (if lot-tracked) |
+| ISSO_BOX_SERIAL (25) | Serial number (if serial-tracked) |
+| ISSO_BOX_TEMP (1) | Temporary/staging flag |
+| ISSO_BOX_INVNUM (float) | Invoice number (FK → BKARINV) |
+| ISSO_BOX_SHIPPR (float) | Shipper reference number |
+| ISSO_BOX_SHPCOD (10) | Shipping company code (FK → ISSHIPCO) |
+| ISSO_BOX_WEIGHT (float) | Box weight |
+| ISSO_BOX_SKID (2) | Skid/pallet number |
+| ISSO_BOX_DATE (date) | Packing date |
+| ISSO_BOX_WOPRE+WOSUF | Linked work order |
+| ISSO_BOX_UCC (30) | UCC-128 barcode (EDI shipping label) |
+| ISSO_BOX_HT+LG+WD (float) | Box dimensions (height/length/width) |
+| ISSO_BOX_TRACK (40) | Carrier tracking number |
+| ISSO_BOX_EXTRA (150) | Extra notes |
+
+**ISSHIPCO (16f) — Shipping Company / Carrier Master**
+
+Primary key: IS_SHIP_SHPCOD(10)
+
+| Field | Meaning |
+|---|---|
+| IS_SHIP_SHPNME (30) | Carrier name |
+| IS_SHIP_SHPDESC (60) | Description |
+| IS_SHIP_VNDCOD (10) | AP vendor code (FK → BKAPVEND) — for freight invoices |
+| IS_SHIP_NOTES_1..5 (60 each) | 5 note lines |
+| IS_SHIP_SHIPVIA (15) | Default ship-via code (FK → ISSHPVIA) |
+| IS_SHIP_EXTRA (150) | Extra notes |
+| IS_SHIP_WEB_1..5 (120 each) | 5 tracking URL templates — filled with tracking# at runtime |
+
+**BOL workflow:** SO invoice → T7BOL reads BKARINV/BKARINVL for line items → ISSOBOX for box assignments (quantity/weight/lot/serial per box) → ISSHIPCO for carrier details → ISSHPVIA for account info → prints BOL with LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER header fields; T7BOLMSO adds LTL freight class (HM hazmat, PACKS count) and driver timestamps (ARRIVED/LOADING.START/END/DEPARTED) from BKPRMSTR employee.
+
+**Confidence: 72/100** — Both programs fully identified; ISSOBOX(22f) and ISSHIPCO(16f) fully extracted; BOL workflow traced from DB fingerprint; exact printed field layout in encrypted RWN.
 
 ---
 
@@ -3247,14 +3288,68 @@ Two programs:
 - **T7CUTSHEET2** (75 procs): WOMAT + LOT + WORKORD + WOBOM + ISBINLOT + BKPSUSER — lot-tracked cut sheet
 - **T7CUTSHEET2B** (60 procs): same base without LOT; adds MKECLASS — non-lot-tracked variant
 
-Generates a material cut sheet for shop floor: lists all WO materials (WOMAT) with quantities,
-bin locations (ISBINLOT), and assigned employee (BKPSUSER). Variant B omits lot tracking.
+Generates a material cut sheet for shop floor: shows which components (WOBOM) are required for a WO, what has been issued (WOMAT), and where to pull from (ISBINLOT bin locations).
 
-**ISBINLOT** (11f): IS_BINLOT_ITEM(15) + LOC(10) + LOT(15) + BIN(15) + UOH + DATE + FLAG +
-EXTRA(50) + TMPSO(40)/TMPPO(40) (temporary SO/PO allocation) + DFLT(1) — bin-level lot
-inventory quantity, more granular than BKICLOC (which is location-level only).
+**WOBOM (24f) — WO Bill of Materials (components required)**
 
-**Confidence: 58/100** — two programs identified; ISBINLOT schema extracted; purpose confirmed.
+Primary key: WOBOM_OPER(2) + WOPRE(8) + WOSUF(2) + COMPCODE(15, derived)
+
+| Field | Meaning |
+|---|---|
+| WOBOM_ASSY (15) | Assembly item code (the parent item) |
+| WOBOM_COMPCODE (15) | Component item code |
+| WOBOM_START (date) | Need date for this component |
+| WOBOM_ASSYDESC/COMPDESC (30 each) | Assembly/component descriptions |
+| WOBOM_QTYPER (float) | Quantity per assembly |
+| WOBOM_SCRAPQTY (float) | Allowance for scrap |
+| WOBOM_TOTQTY (float) | Total required (SQTY × QTYPER + scrap) |
+| WOBOM_ASSYQTY (float) | Assembly quantity scheduled |
+| WOBOM_QTYISSUED (float) | Already issued to WO |
+| WOBOM_UM (3) | Unit of measure |
+| WOBOM_EMATCST (float) | Estimated material cost |
+| WOBOM_AMATCST (float) | Actual material cost issued |
+| WOBOM_REFERENCE (20) | BOM reference designator |
+| WOBOM_OPTION (1) | Option flag (for Features & Options) |
+| WOBOM_VEND (10) | Preferred vendor code |
+| WOBOM_BINLOC (10) | Default bin location |
+| WOBOM_UID (30) | Unique ID (for change tracking) |
+| WOBOM_REV (5) | BOM revision level |
+| WOBOM_SEQ (2) | Print/display sequence |
+| WOBOM_EXTRA (50) | Extra notes |
+
+**WOMAT (17f) — WO Material Transactions (actual issues)**
+
+Primary key: WOMAT_DATE + WOPRE(8) + WOSUF(2) + PCODE (derived)
+
+| Field | Meaning |
+|---|---|
+| WOMAT_WOPRE/WOSUF | Work order reference |
+| MTWO_PRODCODE (15) | Parent/assembly item code |
+| WOMAT_PRODDESC (30) | Assembly description |
+| WOMAT_PCODE (15) | Component code issued |
+| WOMAT_PDESC (30) | Component description |
+| WOMAT_QTYISSUED (float) | Quantity issued to WO |
+| WOMAT_QTYSCRAP (float) | Quantity scrapped |
+| WOMAT_SCRAPCD (2) | Scrap reason code |
+| WOMAT_LOT (15) | Lot number of stock issued |
+| WOMAT_SERIAL (25) | Serial number of stock issued |
+| WOMAT_KIT (1) | Kit flag |
+| WOMAT_COST (float) | Unit cost at time of issue |
+| WOMAT_REF (15) | Reference |
+| WOMAT_SCDESC (30) | Scrap description |
+| WOMAT_EXTRA (50) | Extra notes |
+
+**ISBINLOT (11f) — Bin-Level Lot Inventory**
+
+Primary key: IS_BINLOT_ITEM(15) + LOC(10) + LOT(15) + BIN(15)
+- UOH(float) — quantity on hand in this exact item+location+lot+bin
+- TMPSO(40)+TMPPO(40) — temporary allocation strings for active SO/PO
+- DFLT(1) — default bin flag; DATE; FLAG; EXTRA(50)
+More granular than BKICLOC (which tracks location-level only, not bin+lot).
+
+**Cut sheet workflow:** WO release → T7CUTSHEET2 reads WOBOM (what's needed) joined to WOMAT (what's been issued) and ISBINLOT (where to pick from) → prints a picking list showing shortage = TOTQTY − QTYISSUED, with bin location for each component. Lot-tracked variant shows which bins have the right lot.
+
+**Confidence: 72/100** — Both programs identified; WOBOM(24f)+WOMAT(17f)+ISBINLOT(11f) fully extracted from DDF; cut sheet workflow confirmed from table relationships.
 
 ---
 
