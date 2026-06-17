@@ -965,7 +965,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: IN/Inventory | **75** | 85 | **10** ↑ | 2026-06-16 |
 | Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
-| Module: WO | **80** | 85 | **5** ↑ | 2026-06-16 |
+| Module: WO | **83** | 85 | **2** ↑ +3 | 2026-06-17 |
 | Module: GL | **85** | 88 | **3** ↑ +3 | 2026-06-17 |
 | Module: BM/MRP | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
@@ -1050,7 +1050,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Customizations (J7\*) | **72** | 80 | **8** ↑ +7 | 2026-06-17 |
 | Business Workflows | **62** | 85 | **23** ↑ | 2026-06-11 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
-| Per-Table Narrative Docs | **58** | 88 | **30** ↑ | 2026-06-16 |
+| Per-Table Narrative Docs | **68** | 88 | **20** ↑ +10 | 2026-06-17 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
 | HELP-RESOURCES.md | **75** | 90 | **15** ↑ +10 | 2026-06-15 |
 

@@ -845,5 +845,52 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 ---
 
+---
+
+## Pass 17 — Cross-Module Framework Tables (2026-06-17)
+
+| Table | File | Module scope | Purpose | Status |
+|-------|------|-------------|---------|--------|
+| SERIAL | SERIAL.B | 460 modules | Serial number master — one record per tracked serial; location, status, history | confirmed |
+| ISNCR | ISNCR.B | 420 modules | Non-Conformance Report — QC flag raised on any failing transaction | confirmed |
+| DBAFIFO | DBAFIFO.B | 382 modules | DBA FIFO cost layers — FIFO inventory costing bucket per item/receipt | confirmed |
+| BKGLX | BKGLX.B | 297 modules | GL extended transaction — extended posting data per BKGLTRAN line | inferred |
+| BKICLOCM | BKICLOCM.B | 294 modules | Inventory location master — on-hand quantity per item × location | confirmed |
+| CLASS | CLASS.B | 259 modules | Item class code — current class code record (joined for filtering) | confirmed |
+| BKARINVL | BKARINVL.B | 272 modules | AR invoice lines — SO/invoice line items; most-joined transactional table | confirmed |
+| BKAPPOL | BKAPPOL.B | 266 modules | AP PO lines — PO/AP invoice line items | confirmed |
+| MKECLASS | MKECLASS.B | 202 modules | MKE class — manufacturing/engineering item class master | inferred |
+| WORKCTR | WORKCTR.B | 208 modules | Work center master — production work center definitions with capacity | confirmed |
+| BKICLOC | BKICLOC.B | 215 modules | Inventory by location — on-hand quantity per item × location | confirmed |
+| CLASMSTR | CLASMSTR.B | 136 modules | Class master — class code master with descriptions and GL accounts | confirmed |
+| BKPRMSTR | BKPRMSTR.B | 161 modules | PR employee master — one record per employee | confirmed |
+| ISTAXGRP | ISTAXGRP.B | 154 modules | Tax group master — tax group codes for tax calculation | confirmed |
+| BKGLCOA | BKGLCOA.B | 109 modules | GL Chart of Accounts — account number master | confirmed |
+| LOT | LOT.B | 119 modules | Lot master — lot number master records with quantity and status | confirmed |
+| MACHINE | MACHINE.B | 87 modules | Machine master — individual machines within a work center | confirmed |
+| TOOL | TOOL.B | 83 modules | Tool master — tooling definitions used in routing operations | inferred |
+| ISSOBOX | ISSOBOX.B | 68 modules | SO box/packing — packing box assignments for multi-box shipments | confirmed |
+| BKGLCHK | BKGLCHK.B | 41 modules | GL check — AP checks that have posted to GL | confirmed |
+| CALENDAR | CALENDAR.B | 17 modules | Shop calendar — work days and shifts per work center | confirmed |
+| IS2DBAR | IS2DBAR.B | 51 modules | 2D barcode — 2D barcode scan data for receiving and DC | inferred |
+| BKSYAR | BKSYAR.B | 115 modules | System AR config — company-level AR settings and defaults | inferred |
+| ISUDFINV | ISUDFINV.B | 83 modules | User-defined invoice fields — custom fields on AR invoices | inferred |
+| BKICREF | BKICREF.B | 63 modules | Item cross-reference — customer/vendor part # ↔ internal part # | confirmed |
+| ISDUTY | ISDUTY.B | 56 modules | Duty — import duty records for landed cost | inferred |
+| ISORDECO | ISORDECO.B | 120 modules | IS Order ECO — engineering change orders linked to orders | confirmed |
+| ISECO | ISECO.B | 49 modules | ECO master — engineering change order master records | confirmed |
+| OUTPROC | OUTPROC.B | 60 modules | Outside process — WO operations sent to external vendors | confirmed |
+| BUCKETS | BUCKETS.B | 18 modules | FIFO cost buckets — detailed FIFO bucket per item/receipt | confirmed |
+| WOBOM | WOBOM.B | WO | WO BOM — component list for a specific work order | confirmed |
+| WOLABOR | WOLABOR.B | WO | WO labor — actual labor recorded against a WO operation | confirmed |
+| WOMAT | WOMAT.B | WO | WO materials — actual material issued to a WO | confirmed |
+| WOROUT | WOROUT.B | WO | WO routing — routing operations attached to a WO | confirmed |
+| WORECV | WORECV.B | WO | WO receipts — completed assemblies received from a WO | confirmed |
+| WODATE | WODATE.B | WO | WO dates — planned/actual start, finish, and due dates per WO | confirmed |
+| WOEXCHG | WOEXCHG.B | WO | WO exchange — WO-level transfer records | inferred |
+| WOBOMREM | WOBOMREM.B | WO | WO BOM remarks — notes on WO BOM lines | inferred |
+
+---
+
 *Last updated: 2026-06-17 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–16. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–17. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*

@@ -1963,4 +1963,91 @@ accurate ship date commitments.
 | FILEKNUM | WTASDMGR | WTASDATAM |
 | BKCMACCT | NZEMAILTLL | ISSHPCAL2, ISCCREP |
 
+---
+
+## Pass 17 — WO sub-tables, cross-module framework tables, remaining EVO* modules
+
+---
+
+### WO Sub-Tables (cross-referenced from WO module documentation)
+
+The Work Order system uses many satellite tables, each holding a different aspect of a WO:
+
+| Table | Role | Modules |
+|-------|------|---------|
+| WOBOM | WO BOM — component list for a specific WO (pulled from BKBMMSTR at WO creation) | 231 modules |
+| WOLABOR | WO labor — actual labor recorded against a WO operation | 89 modules |
+| WOMAT | WO materials — actual material issued to a WO | 72 modules |
+| WOROUT | WO routing — routing operations attached to a WO | 195 modules |
+| WORECV | WO receipts — completed assemblies received from a WO | 110 modules |
+| WODATE | WO dates — planned/actual start, finish, and due dates per WO | 20 modules |
+| WOEXCHG | WO exchange — WO-level exchange/transfer records | 25 modules |
+| WOBOMREM | WO BOM remarks — freeform notes on WO BOM lines | 10 modules |
+| WORKCHG | WO changes — field-level audit trail of every WO modification | cross-module |
+
+---
+
+### Cross-Module Framework Tables (used by 60–460 modules)
+
+These are not infrastructure (they hold real business data) but are accessed widely:
+
+| Table | Usage | Role |
+|-------|-------|------|
+| SERIAL | 460 modules | Serial number master — one record per tracked serial number, current location, status, history |
+| ISNCR | 420 modules | Non-Conformance Report — raised on any transaction that fails inspection; cross-module QC flag |
+| DBAFIFO | 382 modules | DBA FIFO cost layers — a FIFO inventory costing bucket per item per receipt; used for cost calculations everywhere |
+| BKGLX | 297 modules | GL extended transaction — one record per posting line extended from BKGLTRAN; near-universal |
+| BKICLOCM | 294 modules | Inventory location master — one record per item × location; current on-hand by location |
+| CLASS | 259 modules | Item class short code — current class code field of item master; widely joined for filtering |
+| BKARINVL | 272 modules | AR invoice lines — SO/invoice line items; the most-joined transactional table |
+| BKAPPOL | 266 modules | AP PO lines — PO/AP invoice line items; second most-joined transactional table |
+| MKECLASS | 202 modules | MKE class — manufacturing/engineering class master; item routing/process class |
+| WORKCTR | 208 modules | Work center master — production work center definitions with capacity and rates |
+| BKICLOC | 215 modules | Inventory by location — on-hand quantity per item × location (the BKICLOCM complement) |
+| CLASMSTR | 136 modules | Class master — class code master records with descriptions and GL accounts |
+| BKPRMSTR | 161 modules | PR employee master — one record per employee; used everywhere PR data touches WO/DC |
+| ISTAXGRP | 154 modules | Tax group master — tax group codes for SO/PO/AR/AP tax calculation |
+| BKGLCOA | 109 modules | GL Chart of Accounts — account number master; every module that posts to GL joins this |
+| LOT | 119 modules | Lot master — lot number master records with quantity and status |
+| OUTPROC | 60 modules | Outside process — WO operations sent to external vendors (routing type L) |
+| MACHINE | 87 modules | Machine master — individual machine records within a work center |
+| TOOL | 83 modules | Tool master — tooling definitions used in routing operations |
+| ISSOBOX | 68 modules | SO box/packing — packing box assignments for multi-box shipments |
+| ISORDECO | 120 modules | IS Order ECO — engineering change orders linked to sales/work orders |
+| ISECO | 49 modules | IS ECO master — engineering change order (ECO) master records |
+| BKGLCHK | 41 modules | GL check — GL check/disbursement records (AP checks that have posted to GL) |
+| BUCKETS | 18 modules | FIFO cost buckets — detailed FIFO bucket records per item per receipt date |
+| CALENDAR | 17 modules | Shop/production calendar — work days and shift schedules |
+| IS2DBAR | 51 modules | 2D barcode data — stores 2D barcode scan data for receiving/DC |
+| BKSYAR | 115 modules | System AR config — company-level AR settings and defaults |
+| ISUDFINV | 83 modules | User-defined invoice fields — custom fields on AR invoices per company config |
+| BKICREF | 63 modules | Item cross-reference — customer/vendor part number ↔ internal part number |
+| ISDUTY | 56 modules | Duty — import duty records for landed cost calculation |
+| BKARDEP | 56 modules | AR deposits — customer deposit header records |
+| ISTAXFIL | 61 modules | Tax file — per-invoice tax filing records |
+| BKICMSTR | universal | Item master — the central inventory item record; in virtually every module |
+
+---
+
+### Remaining EVO* Standalone Modules
+
+| Module | Procs | Function |
+|--------|-------|---------|
+| EVOSERVICE | 27 | Background Windows service — runs ISSCHED job queue; the automation engine |
+| BOMTREE / EDITBOMTREE | 27 | BOM tree viewer/editor — visual hierarchical BOM display |
+| CASHFLOW | 26 | Cash flow dashboard — AR/AP projected cash positions |
+| CRMDASHBOARD | 26 | CRM dashboard — CRM activity overview display |
+| WORKCENTERLOAD | 26 | Work center load — WC capacity vs. scheduled load report |
+| PURCHITEM / PURCHVEND | 26 | Purchase item/vendor lookup screens |
+| UT7GDUPLOC/UT7GFAC/etc. | 26 | UT7G family — parameterized grid view utilities (one per named grid); all use BKLUGRID |
+| EVOERPDRILLM | 31 | Drill-down master admin — configure ISDRILLM + BKLUGRID entries |
+| EVOWKSSETUP | 38 | Workstation setup — configure local workstation options |
+| EVOSCHEDSETUP | 37 | Scheduler setup — configure scheduled job definitions |
+| EVOMOBILESETUP | 36 | Mobile/handheld setup — configure mobile device and reminder sync |
+| EVOCSI | 38 | CSI / conversion utility — data conversion or customer satisfaction interface |
+| EVOFORCEUPD | 37 | Force update — forces a database schema migration |
+| INVCHANGE | 24 | Inventory change — quick inventory adjustment utility |
+| EVOSERVICESETUP | 49 | Service setup — configure the background EVOSERVICE Windows service |
+
+
 
