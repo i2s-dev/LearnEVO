@@ -1940,5 +1940,22 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 
 ---
 
+## Table Quick-Reference Additions (Pass 20/21)
+
+| Table | Purpose | Primary Key | Fields |
+|---|---|---|---|
+| **MTICMSTR** | MT-generation inventory master (newer than BKICMSTR) — adds 10 vendors, 15 cost slots, 12 specs, 5 substitutes | MTIC_PROD_CODE | 108 |
+| **BKBMMSTR** | Bill of Materials — one row per parent+component pair; key fields QTY_REQD, PROD_SCRAP, PROD_OP | BKBM_PARENT + BKBM_COMPONENT | 26 |
+| **BKBMAVAL** | Alternate BOM — same structure as BKBMMSTR | BKBM_PARENT + BKBM_COMPONENT | 26 |
+| **BKBMAMTR** | Auto-calculated/master BOM — same structure | BKBM_PARENT + BKBM_COMPONENT | 26 |
+| **BKRTEMTR** | MT-generation routing master — one row per part+operation; includes 14 instruction lines | MTRO_CODE + MTRO_OPER | 62 |
+| **WORKCTR** | Work center master — code, description, department, hourly rates (setup/labor/machine), overhead | MTWC_WC | 47 |
+| **ISNOTES** | EvoNotes table — notes attached to any EvoERP record; IS_NOTE_ID = 48-char composite key | IS_NOTE_ID | 13 |
+| **ISSCHED** | Scheduler task table — program to run, company, date/time, recurrence, 10 parameters, email notification | IS_SCHED_NAME | 24 |
+| **BKRTCST** | Routing cost/quote snapshot — parts-per-hour + setup times by work center, keyed by quote+part+op | BKRT_QUOTE + BKRT_CODE + BKRT_OPER | 24 |
+| **BKRTSPEC** | Routing special notes — 4 note lines per operation | BKRT_SPEC_PART + BKRT_SPEC_SEQ + BKRT_SPEC_LINE | 7 |
+
+---
+
 *Last updated: 2026-06-17 (Pass 19). Built from SRC analysis, schema extraction, CHM decompilation,
 DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), and full DCY decryption pass (41 files). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
