@@ -975,22 +975,22 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
-| Database Schema (field meaning) | **72** | 88 | **16** ↑ | 2026-06-16 |
-| Security / Login | **72** | 85 | **13** ↑ | 2026-06-11 |
+| Database Schema (field meaning) | **77** | 88 | **11** ↑ | 2026-06-17 |
+| Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
-| Module: AR | **78** | 85 | **7** ↑ | 2026-06-16 |
+| Module: AR | **80** | 85 | **5** ↑ | 2026-06-17 |
 | Module: AP | **82** | 85 | **3** ↑ | 2026-06-16 |
 | Module: IN/Inventory | **75** | 85 | **10** ↑ | 2026-06-16 |
 | Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
 | Module: WO | **83** | 85 | **2** ↑ +3 | 2026-06-17 |
-| Module: GL | **85** | 88 | **3** ↑ +3 | 2026-06-17 |
+| Module: GL | **87** | 88 | **1** ↑ | 2026-06-17 |
 | Module: BM/MRP | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
 | Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
-| Module: PR/Payroll | **62** | 80 | **18** ↑ +7 | 2026-06-17 |
+| Module: PR/Payroll | **70** | 80 | **10** ↑ | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
-| Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
+| Module: CM/CRM | **72** | 80 | **8** ↑ | 2026-06-17 |
 | Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
 | Module: CS/Commission+Salesperson | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: JC/Job Costing | **72** | 75 | **3** ↑ | 2026-06-17 |
@@ -1002,7 +1002,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **75** | 78 | **3** ↑ | 2026-06-17 |
-| Module: ES/Estimating | **58** | 75 | **17** ↑ +10 | 2026-06-15 |
+| Module: MA/AR Deposits | **40** | 65 | **25** NEW | 2026-06-17 |
+| Module: ES/Estimating | **65** | 75 | **10** ↑ | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **65** | 78 | **13** NEW | 2026-06-15 |
