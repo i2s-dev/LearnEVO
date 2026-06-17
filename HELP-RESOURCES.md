@@ -4655,4 +4655,218 @@ Per-customer carrier configuration with account numbers:
 
 ---
 
-*Last updated: 2026-06-17 (Pass 46). PR module: 40+ programs mapped, BKPRMSTR(384f)/BKPRCURP(127f)/BKPRFTAX(47f)/BKPRGLFL(664f)/BKPRSALE(87f)/BKPRINFO(128f)/BKPRTC(7f)/ISPRTEMP(15f) extracted. IM landed cost: ISLANDF(6f)/ISDUTY(2f)/ISBROKER(4f). PS: BKPSUSER(11f). MH: ISSHPVIA(23f)/BKCMTERR(11f). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## JC — JOB COSTING — Pass 47
+
+### Architecture: No Proprietary Tables
+
+**Key finding:** JC has no BKJC* or ISCALC/ISCOST tables. It is a cost analysis and engineering overlay on the standard Work Order tables.
+
+JC reads: WORKORD + WOBOM + WOMAT + WOLABOR + WORECV + WOROUT + MTICMSTR + BKGLTRAN + WOEXCHG (engineering changes) + OUTPROC (outside process).
+
+| Program | Procs | Operation | Key tables |
+|---|---|---|---|
+| T7JCA | 163 | JC-A: Main entry / WO cost viewer | WORKORD+WOBOM+WOROUT+ISWOEX+WOEXCHG+MTICMSTR |
+| T7JCB | 119 | JC-B: Cost calculation | WORKORD+WOBOM+DBAFIFO+BKGLTRAN+BKMRPFC+BKSBPART |
+| T7JCC/D/I/J/K/O | 5 each | Stub sub-programs (same DB as JCB) | same as JCB |
+| T7JCE | 153 | JC-E: Parent/child cost roll-up | WORKORD+WOBOM+WOMAT+DBAFIFO+ISNCR+ISGLDATE+ISCYCLCD |
+| T7JCENG | 211 | JC-ENG: Engineering routing specs | WORKORD+WOBOM+WOROUT+BKRTSPEC+BKPRMSTR+MTICMSTR |
+| T7JCF | 137 | JC-F: QC cost integration | WORKORD+BKQCTRAN+BKAPPOL |
+| T7JCG | 5 | JC-G: Stub (same DB as JCF) | same as JCF |
+| T7JCH | 137 | JC-H: Historical cost | WORKORD+WOBOM+DBAFIFO+BKGLTRAN+BKMRPFC |
+| T7JCL | 138 | JC-L: Links/documents viewer | WORKORD+ISLINKS+ISLOG |
+| T7JCM | 188 | JC-M: Full module (WO+SO billing) | WORKORD+WOBOM+WOMAT+WOLABOR+WORECV+WORKCTR+BKARINV |
+| T7JCN | 130 | JC-N: Calculation modes + 2D barcode | WORKORD+IS2DBAR+BKMRPFC+ISNCR |
+| T7JCP | 108 | JC-P: Materials in WIP | WORKORD+WOBOM+DBAFIFO+BKGLTRAN |
+| T7JCQ | 138 | JC-Q: Query view | WORKORD+ISLINKS+ISLOG |
+| T7JCR | 167 | JC-R: Catalog cross-reference | WORKORD+ISCATMST+CLASS+BKICMSTR |
+| T7JCRM | 62 | JC-RM: RMA cost | WORKORD+BKGLTRAN+BKMRPFC |
+| T7JCS | 142 | JC-S: Billing + SO connection | WORKORD+BKARINV+BKARINVL+BKPRMSTR |
+| T7JCT | 5 | JC-T: Stub | same as JCS |
+
+**Cost calculation modes (from JC-N):** current/historical/proposed. JC compares actual WO costs (WOLABOR + WOMAT) against standard MTICMSTR costs and BKGLTRAN GL actuals.
+
+---
+
+### WOEXCHG (10f) — WO Engineering Change Cost
+
+Records cost charges from engineering changes applied to a WO (MTWO prefix = MT-era table):
+
+- MTWO_EX_WOPRE(8) + WOSUF(2) — work order (PK part 1)
+- MTWO_EX_DATE(4) — change date
+- MTWO_EX_PROD(15) — affected item
+- MTWO_EX_DESC(30) — change description
+- MTWO_EX_CHG(8) — charge amount
+- MTWO_EX_CHGDESC(30) — charge description
+- MTWO_EX_GLACCT(10) + GLDPT(4) — GL account + dept for the charge
+- MTWO_EX_OP(2) — operation number
+
+---
+
+### OUTPROC (15f) — WO Outside Process PO (MT-era)
+
+MT-era outside process link between WO operations and AP purchase orders (MTPO prefix):
+
+- MTPO_VENDOR(10) + VENDNAME(20) — outside process vendor
+- MTPO_PO(8) — purchase order number (FK → BKAPPO)
+- MTPO_WOPRE(8) + WOSUF(2) — work order reference (FK → WORKORD)
+- MTPO_DATE(4) — date
+- MTPO_OPER(2) — operation number (FK → WOROUT)
+- MTPO_PROD(15) + DESC(25) — component + description
+- MTPO_QTY(8) + COST(8) + EXTPR(8) — quantity/cost/extended price
+- MTPO_ASSY(15) + ASSYDESC(30) — assembly parent + description
+- MTPO_EXTRA(50)
+
+Modern EvoERP uses BKAPPOL.WOPRE/WOSUF fields instead; OUTPROC coexists as the MT-era legacy.
+
+---
+
+### ISNCR (35f) — Non-Conformance Report
+
+Tracks defects, rework, and corrective actions at the part/lot/serial level:
+
+- IS_NCR_NUM(8) — NCR number (PK)
+- IS_NCR_PART(15) + COMP(15) — non-conforming part + component
+- IS_NCR_LOT(15) + SERIAL(25) — lot + serial number
+- IS_NCR_CDATE(4) + WHO(15) — creation date + created by
+- IS_NCR_QTY(8) — quantity involved
+- IS_NCR_DCODE(10) + DESC(60) — defect code + description
+- IS_NCR_ICR(1) + ORIG(1) — internal correction flag + origin (R=receiving, W=WO, C=customer)
+- IS_NCR_WOPRE(8) + WOSUF(2) — linked work order
+- IS_NCR_MACH(4) + TOOL(15) + WC(12) — machine + tool + work center
+- IS_NCR_PONUM(8) — linked PO (receiving NCR)
+- IS_NCR_RMA(8) — linked RMA number
+- IS_NCR_ACTION(1) — required action code
+- IS_NCR_CAR(8) — corrective action request number
+- IS_NCR_DISP(10) + DWHO(15) + DDATE(4) — disposition code/who/date
+- IS_NCR_STATUS(1) — open/closed/pending
+- IS_NCR_SCRAP(2) + QC(2) — scrap disposition + QC disposition
+- IS_NCR_VEND(10) — vendor (receiving NCR)
+- IS_NCR_LOC(10) + CLOC(10) — location + corrective location
+- IS_NCR_PDRAW(15) + PREV(5) — parent drawing + rev (as-designed)
+- IS_NCR_CDRAW(15) + CREV(5) — component drawing + rev
+
+NCRs link to WOs (WOPRE/WOSUF), POs (PONUM), RMAs, vendors, and lots/serials — making them the quality hub that spans all transaction types.
+
+---
+
+### BKSHORT (9f) — WO Material Shortage
+
+Records material shortages per work order:
+
+- BK_SHORT_PCODE(15) — shortage item code (PK part 1)
+- BK_SHORT_WONUM(8) + WO_SUF(2) — work order (PK part 2)
+- BK_SHORT_DESC(25) — item description
+- BK_SHORT_QTYREQ(8) — quantity required
+- BK_SHORT_SHORT(8) — short quantity (QTYREQ - available)
+- BK_SHORT_DATE(4) — shortage date
+- BK_SHORT_PPCODE(15) + PPDESC(25) — parent item + description
+
+Used by T7HHWOG (handheld WO goods issue) and T7HHWOSCRAP to flag material shortages during shop floor execution.
+
+---
+
+### ISICMSTR (41f) — Item Logistics Extension
+
+Extended item master for freight/logistics properties (IS_PROD_ prefix):
+
+- IS_PROD_CODE(15) — item code (PK, FK → BKICMSTR)
+- IS_PROD_WT(8) — weight
+- IS_PROD_ITP(20) — item type (custom logistics class)
+- IS_PROD_HT(8) + LG(8) + WD(8) — height/length/width
+- IS_PROD_TI(8) + HI(8) — tier/inch + height/inch (pallet stacking)
+- IS_PROD_FOBPAL(8) — units per pallet (FOB palletized)
+- IS_PROD_FOBFULL(8) — units per full truckload
+- IS_PROD_CDATE(4) — created date
+- IS_PROD_EXTRA(150)
+- +29 more (additional packaging, compliance fields)
+
+FOBPAL/FOBFULL are used by the shipping/freight modules to optimize carrier rate calculation.
+
+---
+
+### ISCYCLCD (7f) — Cycle Count Code
+
+Defines cycle count frequency groups for physical inventory:
+
+- IS_CYCLE_CODE(4) — cycle count code (PK, e.g., "A", "B", "C")
+- IS_CYCLE_DESC(30) — description
+- IS_CYCLE_FREQ(2) — count frequency per year (e.g., 12=monthly, 4=quarterly)
+- IS_CYCLE_DATE(4) — last count date for this code
+- IS_CYCLE_ALPHA(15) — alpha custom field
+- IS_CYCLE_NUM(8) — count number
+- IS_CYCLE_EXTRA(50)
+
+Used by T7PIA (PI freeze) and T7JCE. BKICMSTR items are assigned a cycle count code; the PI module uses this to schedule when each item class needs a physical count.
+
+---
+
+### BKQCMSTR (14f) + BKQCTRAN (21f) — QC Receiving Records
+
+**BKQCMSTR** — QC master per PO receipt:
+- BKQC_VEND_CODE(10) — vendor (PK part 1)
+- BKQC_PO_NUM(8) + RECVR_NUM(8) — PO + receiver number (PK)
+- BKQC_RECV_DATE(4) — receipt date
+- BKQC_POL_ITM_NO(10) — PO line item number
+- BKQC_PKSLIP_NUM(15) + PKSLIP_QTY(8) — packing slip + qty
+- BKQC_QTY_RECVD(8) + QTY_BUYOFF(8) + QTY_REJECT(8) — received/accepted/rejected
+- BKQC_PROD_CODE(15) + UNIT_COST(8) — item + cost
+
+**BKQCTRAN** — QC transaction log:
+- BKQC_TRN_PO(8) + VEND(10) + CODE(15) + RECNUM(8) — PK
+- BKQC_TRN_GQTY/BQTY/UQTY(8) — good/bad/use-as-is quantities
+- BKQC_TRN_SCRAP(2) + REWORK(2) — disposition codes
+- BKQC_TRN_PODTE/ARDTE/BODTE(4) — PO/arrival/buyoff dates
+- +9 more (return, corrective action fields)
+
+Used by T7JCF (JC-F cost integration) and T7HHPOC (handheld PO receiving).
+
+---
+
+### IS2DBAR (109f) — 2D Barcode Configuration
+
+Defines 2D barcode label layouts for WO operations and items (109 fields):
+
+- IS2D_BAR_CODE(10) — barcode config code (PK part 1)
+- IS2D_BAR_ITEM(15) — item (PK part 2)
+- IS2D_BAR_ORDER(2) — field order
+- IS2D_BAR_CHAR(5) — character set
+- IS2D_BAR_FIELD(25) — field name to encode
+- IS2D_BAR_DOCPR_1..10(1 each) — 10 document property flags
+- +remaining field/format/print options
+
+Used by T7JCN and T7HHWOLABEL for 2D barcode printing on WO travelers and item labels.
+
+---
+
+### BKRTSPEC (7f) — Routing Specification Notes
+
+Short notes attached to routing operations per part:
+
+- BKRT_SPEC_PART(15) — part code (PK part 1, FK → BKICMSTR)
+- BKRT_SPEC_SEQ(2) + LINE(2) — sequence + line number (PK parts 2–3)
+- BKRT_SPEC_NOTE_1..4 (20 each) — 4 lines × 20 chars of specification notes
+
+Used by T7JCENG (engineering routing specs). Provides short work instructions attached to specific routing operations.
+
+---
+
+### New Tables Confirmed (Pass 47)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| WOEXCHG | 10 | WO engineering change cost — WOPRE+WOSUF+DATE PK; CHG amount + GL account |
+| OUTPROC | 15 | MT-era outside process PO — VENDOR+PO+WOPRE/WOSUF+OPER; legacy predecessor to BKAPPOL WO link |
+| ISNCR | 35 | Non-Conformance Report — NUM PK; PART+COMP+LOT+SERIAL+DCODE+DISP+CAR+links to WO/PO/RMA |
+| BKSHORT | 9 | WO material shortage — PCODE+WONUM PK; QTYREQ+SHORT+DATE |
+| ISICMSTR | 41 | Item logistics extension — CODE PK; WT+dimensions+FOBPAL+FOBFULL |
+| ISCYCLCD | 7 | Cycle count frequency codes — CODE PK; FREQ+DATE; used by PI freeze |
+| BKQCMSTR | 14 | QC receiving master — VEND+PO+RECVR PK; QTY_RECVD/BUYOFF/REJECT |
+| BKQCTRAN | 21 | QC transaction log — PO+VEND+CODE+RECNUM PK; GQTY/BQTY/UQTY+disposition |
+| IS2DBAR | 109 | 2D barcode config — CODE+ITEM PK; 10 document property flags + field list |
+| BKRTSPEC | 7 | Routing spec notes — PART+SEQ+LINE PK; 4×20 char notes |
+
+---
+
+*Last updated: 2026-06-17 (Pass 47). JC: 30+ programs mapped — no JC-specific tables; cost analysis runs on WORKORD/WOBOM/WOMAT/WOLABOR/WORECV/WOROUT/BKGLTRAN. 10 new tables: WOEXCHG/OUTPROC/ISNCR/BKSHORT/ISICMSTR/ISCYCLCD/BKQCMSTR/BKQCTRAN/IS2DBAR/BKRTSPEC. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
