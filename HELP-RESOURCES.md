@@ -3566,7 +3566,7 @@ T7IC2EST (6 procs) — opens BKICMSTR + MTICMSTR. A 6-procedure one-way bridge t
 production inventory (BKICMSTR) data into the estimating module (MTICMSTR). Accessed as IC-A
 "Copy Production to Estimate Inventory" from DFM caption. Not a general inventory module.
 
-**Confidence: 55/100** — one program and DFM read; purpose confirmed; no other IC programs found.
+**Confidence: 68/100** — one program confirmed; MTICMSTR(108f) fully extracted from DDF — 10 vendor sources (VEND/VNAM/VPC + RCOST_1..15), 5 substitutes, lot size, option codes; BKICMSTR relationship confirmed as source; no other IC programs found.
 
 ---
 
@@ -3594,7 +3594,7 @@ Despite the "sales forecast" label, this program reads work center and routing d
 AR invoice demand. This is a shop-loading/capacity display: overlays demand (BKARINVL) on
 production capacity (WORKCTR+ROUTING) and DC labor (BKDCLAB), with WO priority (ISWOPRIO).
 
-**Confidence: 48/100** — single small program; purpose inferred from unusual combined table set.
+**Confidence: 65/100** — single program confirmed; ISWOPRIO(4f) schema extracted: PRIO(1)+DESC(30)+EXTRA(100)+COLOR(float) — WO priority color display confirmed; SL is a read-only shop floor capacity display overlaying demand+capacity+labor; detailed display logic blocked by encryption.
 
 ---
 
@@ -3650,8 +3650,7 @@ are actively used per operation. T7BROWSER (4 procs) is an HTML browser wrapper 
 
 - **BKCMACCC** (2f): 5-char classification code + 25-char description; used for CRM brand tagging
 
-**Confidence: 48/100** — program identified; purpose clear; broad DB set makes purpose harder to
-pin precisely; BKCMACCC schema confirmed.
+**Confidence: 65/100** — both programs confirmed; BKCMACCC(2f) + BKCMACCN(154f: 10 contacts × name/title/phone/email + custom date/alpha slots) fully extracted from DDF; T7BROWSER = CRM contact browser confirmed from BKCMACCN use; detailed CRM logic blocked by encryption.
 
 ---
 
@@ -3742,8 +3741,7 @@ it needs to traverse GL account references across all modules to find/validate a
   CDATE + TI/HI/FOBPAL/FOBFULL (pallet TI/HI/FOB dimensions) + HT/LG/WD(box dims) + TOOL(15) +
   SLEAD(shipping lead) + RCDATE + FLAG_1..5 + 21 more — item physical/shipping specs extension
 
-**Confidence: 50/100** — program confirmed; ISICMSTR schema extracted; purpose clear from program
-name and primary table; full GL traversal logic blocked by encryption.
+**Confidence: 65/100** — program confirmed; BKGLCOA(65f) and ISICMSTR(41f) fully extracted from DDF; purpose clear from program name and primary table; full GL traversal logic blocked by encryption.
 
 ---
 
@@ -3843,7 +3841,7 @@ T7YSYN (52 procs) — opens BKYSMSTR. Maintenance program for the BKYSMSTR table
 configuration flags). Every Yes/No behavioral setting in EvoERP lives in BKYSMSTR; T7YSYN is
 the direct editor for these flags.
 
-**Confidence: 60/100** — single program; purpose fully confirmed from name and primary table.
+**Confidence: 72/100** — single program; BKYSMSTR(355f: 1 key + 354 Y/N flags) fully extracted from DDF; purpose confirmed from name + table; individual flag meanings blocked by RWN encryption.
 
 ---
 
@@ -4057,8 +4055,7 @@ Generates NACHA ACH electronic payment files from AP vendor payments and bank ac
 **Workflow:** AP payment batch → T7TESTNACHA reads BKAPVEND (routing/account) + ISBANKS
 (company bank) → creates NACHA file → records in BKGLCHK as ACH type payments.
 
-**Confidence: 60/100** — program confirmed; BKGLCHK schema extracted; NACHA workflow clear
-from table set; specific ACH record format blocked by encryption.
+**Confidence: 72/100** — program confirmed; BKGLCHK(11f) + ISBANKS(23f: NUM+SRT+DESC+GL+NXTNUM+BAL+ROUT+ACCT+CURR+TYPE+VEND+ACTIVE+AR/AP/PR flags+5 RTM codes) fully extracted; NACHA workflow confirmed; ACH record format blocked by encryption.
 
 ---
 
@@ -6611,3 +6608,166 @@ AP-H post checks (T7APH) → BKGLTRAN Cash Disbursement
 *Last updated: 2026-06-17 (Pass 52). PO: 50+ T7PO* programs fully mapped across entry/print/receive/QC/inquiry groups; full PO→receipt→AP voucher→check workflow traced. BKAPVND2(63f UDF)+BKCMVNDH(8f)+BKCMVNDF(10f)+ISICMSTR(41f) extracted; ACMASTER confirmed not in DDF. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
 
 *Last updated: 2026-06-17 (Pass 57). CS: 17 programs mapped; BKPRSALE(87f)+BKPRCOMM(12f)+BKPRAGNT(4f)+BKPRMSTR(384f)+BKPRCURP(127f)+ISREPLNK(11f) fully extracted; commission HOW/WHEN logic confirmed. LC: 7 programs mapped; LOT/MTLOT_(25f) fully extracted; lot lifecycle confirmed. GF: 5 programs mapped; BKICPMAT(85f) 10-break pricing matrix fully extracted; ISARCHG(26f) confirmed. AU: 8 programs mapped; BKDCLAB(50f)+BKDCCFG(7f) fully extracted; DC→WO posting workflow confirmed. RO: ROUTING/MTRO_(62f)+BKRTCST(24f)+BKRFQ(49f) fully extracted. AL/JO/IT confidence updates.*
+
+---
+
+---
+
+## MODULE QUICK REFERENCE — Pass 59 Additions
+
+### FS — Field Information Base (FIB Setup)
+
+Three programs under the FS prefix — all field names use `IS_FIB_*` prefix, confirming the
+underlying system is "Field Information Base" (FIB), not field service in the SR sense.
+
+| Program | Purpose | Key Tables |
+|---|---|---|
+| T7FSCLASS | FIB classification code maintenance | ISFSCLAS, ISPRINFO |
+| T7FSEMP | Employee / salesperson ↔ FIB class assignment | ISFSCLAS, BKPRSALE |
+| T7FSINFO | FIB info record maintenance (program/contract/who) | ISFSINFO, BKCMACCN |
+
+**ISFSCLAS (3f) — FIB Classification Code:**
+
+| Field | Size | Meaning |
+|---|---|---|
+| IS_FIB_CLASS | 4 | Classification code (PK) |
+| IS_FIB_GROUP | 50 | Group/category description |
+| IS_FIB_EXTRA | 50 | Extra notes |
+
+**ISFSINFO (4f) — FIB Info Record:**
+
+| Field | Size | Meaning |
+|---|---|---|
+| IS_FIB_PROGRAM | 20 | Program/module code (PK) |
+| IS_FIB_CONTRACT | 25 | Contract reference |
+| IS_FIB_MISC | 100 | Miscellaneous info |
+| IS_FIB_WHO | 50 | Responsible person |
+
+**ISPRINFO (4f) — Program/Module Info Registry:**
+`ISPR_INFO_PROG`(30) + `ISPR_INFO_DESC`(80) + `ISPR_INFO_MISC`(50) + `ISPR_INFO_TYPE`(1) —
+registers EVO program names with descriptions and type codes.
+
+**BKCMACCN (154f) — CRM Account Contacts (per customer/vendor code):**
+Primary key: `BKCM_ACCN_CODE`(10) — links to BKARCUST or BKAPVEND.
+Stores up to 10 contacts per account, each with:
+- CONT_1..10 (30 each): contact name
+- TITLE_1..10 (30 each): contact title
+- PHONE_1..10 (25 each): phone + PHLBL_1..10 (20, phone type label)
+- EMAIL_1..10 (128 each) + EMLBL_1..10 (20, email label)
+- DEAR_1..10 (25 each): salutation / greeting
+- DATE1_1..10 + DATE2_1..10 (date): two sets of 10 configurable dates + DTLBL/D2LBL (20, labels)
+- ALPH1_1..10 + ALPH2_1..10 (25 each): two sets of 10 configurable alpha slots + MSLBL/M2LBL (20, labels)
+- CON (30): primary contact name
+- PRIM (1): primary contact flag
+- EXTRA (50): overflow notes
+
+Architecture: T7FSINFO uses BKCMACCN to associate field information records with customer/vendor CRM contacts. T7BROWSER (BR module) also browses this table.
+
+**Confidence: 65/100** — three programs confirmed; ISFSCLAS(3f)+ISFSINFO(4f)+ISPRINFO(4f)+BKCMACCN(154f) fully extracted from DDF; FIB naming pattern confirmed from field prefixes; specific FIB business logic blocked by RWN encryption.
+
+---
+
+### IS — InfoSystem / Multi-Currency GL Framework
+
+Two programs:
+
+| Program | Purpose | Key Tables |
+|---|---|---|
+| T7ISMCC | Multi-company / multi-currency GL sync | ISGLDATE, ISMCF |
+| T7ISASER | WO-to-serial assignment lookup | WORKORD, SERIAL |
+
+**ISGLDATE (86f) — GL Fiscal Period-End Date Reference:**
+Stores the period-end date for each accounting period across 7 fiscal years.
+No primary key column — a singleton configuration table (one row for the company).
+
+| Field Group | Count | Meaning |
+|---|---|---|
+| ISGL_CYDATE_1..12 | 12 dates | Current year period-end dates |
+| ISGL_1YDATE_1..12 | 12 dates | Prior year 1 period-end dates |
+| ISGL_2YDATE_1..12 | 12 dates | Prior year 2 |
+| ISGL_3YDATE_1..12 | 12 dates | Prior year 3 |
+| ISGL_4YDATE_1..12 | 12 dates | Prior year 4 |
+| ISGL_5YDATE_1..12 | 12 dates | Prior year 5 |
+| ISGL_6YDATE_1..12 | 12 dates | Prior year 6 |
+| ISGL_FYDATE | 1 date | Fiscal year start date |
+| ISGL_EXTRA | 50 chars | Extra |
+
+Used by T7ISMCC to determine which transactions fall into which period when reconciling across multiple companies or currencies.
+
+**ISMCF (49f) — Multi-Currency Framework Config:**
+One row per currency code. Defines how each currency maps to GL accounts.
+
+| Field | Size | Meaning |
+|---|---|---|
+| ISIS_MCF_CODE | 3 | Currency code (PK, e.g. USD, EUR, CAD) |
+| ISIS_MCF_BASE | 1 | Base currency flag (Y = home currency) |
+| ISIS_MCF_SYMBOL | 1 | Currency symbol (e.g. $, €) |
+| ISIS_MCF_SYMPOS | 1 | Symbol position: B=before, A=after amount |
+| ISIS_MCF_DEC | 2 | Decimal places |
+| ISIS_MCF_SYMDSC | 10 | Symbol description |
+| ISIS_MCF_DESC | 25 | Currency full name |
+| ISIS_MCF_INTRES | 8 | Interest reserve rate |
+| ISIS_MCF_INTDAY | 8 | Interest days basis |
+
+GL accounts per currency (each has account + dept pair):
+`GLABK/GLDBK` = Bank AR, `GLABS/GLDBS` = Bank AP, `GLAIS/GLDIS` = Inventory,
+`GLABKX/GLDBKX` = Bank AR exchange, `GLAAPX/GLDAPX` = AP exchange,
+`GLAARX/GLDARX` = AR exchange, `GLAAR/GLDAR` = AR, `GLAAP/GLDAP` = AP,
+`GLAPO/GLDPO` = PO, `GLAPOX/GLDPOX` = PO exchange,
+`GLAARD/GLDARD` = AR discount, `GLAAPD/GLDAPD` = AP discount,
+`GLACS/GLDCS` = CS commission, `GLACSX/GLDCSX` = CS exchange.
+
+Running balance fields: `AMTBNK`/`AMTAP`/`AMTAR`/`AMTFE`/`AMTPOR`/`AMTAD`/`AMTCS`/`AMTAPD`.
+
+**Confidence: 68/100** — both programs confirmed; ISGLDATE(86f) + ISMCF(49f) fully extracted; multi-currency GL mapping architecture confirmed; specific T7ISMCC synchronization logic blocked by RWN encryption.
+
+---
+
+### DS — Data Sync
+
+22+ programs, all sharing a single staging table. This is EvoERP's data synchronization layer —
+likely bridges to an external system (SolidWorks ERP, CRMS, or similar).
+
+**Program inventory (T7DS*):**
+T7DSAP, T7DSAR, T7DSBOM, T7DSCK, T7DSCM, T7DSCO, T7DSCS, T7DSDC, T7DSEST, T7DSFO, T7DSGEN,
+T7DSGL, T7DSHH, T7DSIC, T7DSIM, T7DSMRP, T7DSPO, T7DSPR, T7DSQC, T7DSRMA, T7DSRO, T7DSSH,
+T7DSSO, T7DSWC, T7DSWO — one program per module (AP, AR, BOM, CK=check, CM=CRM, CO=company,
+CS=commissions, DC=data collection, EST=estimating, FO=features-options, GEN=general,
+GL=general ledger, HH=?, IC=inventory, IM=?, MRP, PO, PR=payroll, QC, RMA, RO=routings,
+SH=shipping, SO=sales orders, WC=work centers, WO=work orders).
+
+**ISDROP (4f) — Data Sync Drop / Dropdown Code Lookup:**
+
+| Field | Size | Meaning |
+|---|---|---|
+| IS_DROP_CODE | 10 | Operation/sync code (PK) |
+| IS_DROP_TEXT | 30 | Short text label |
+| IS_DROP_DESC | 30 | Description |
+| IS_DROP_EXTRA | 50 | Extra notes |
+
+Key architecture finding: **all T7DS* programs have only ISDROP in their DB fingerprints** (plus standard support tables BKSYHELP/ISIS/MKAHIST/etc). The actual module data tables (BKAPVEND, BKARINV, WORKORD, etc.) are NOT in the fingerprints. This means DS programs interact with those tables via unregistered DDF connections (direct Pervasive SQL or ODBC) or via TAS Pro runtime functions that bypass the named-table mechanism used for fingerprinting. The ISDROP table is a small configuration/dropdown lookup, not a data queue.
+
+DS module purpose: synchronize selected EvoERP data to/from an external system. Each T7DS* program handles one module's data export/import. The sync mechanism and target system are encrypted in the RWN.
+
+**Confidence: 45/100** — 22+ programs identified; ISDROP(4f) schema confirmed; "all DS programs = ISDROP only" fingerprint pattern confirmed; actual sync logic and target system fully blocked by encryption.
+
+---
+
+### New Tables Confirmed (Pass 59)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISFSCLAS | 3 | FIB classification codes — IS_FIB_CLASS(4) code + group + extra |
+| ISFSINFO | 4 | FIB info records — program(20) + contract(25) + misc(100) + who(50) |
+| ISPRINFO | 4 | Program/module info registry — PROG(30)+DESC(80)+MISC(50)+TYPE(1) |
+| BKCMACCN | 154 | CRM account contacts — 10 contacts per acct: name+title+phone+email+salutation+dates+alpha slots |
+| ISGLDATE | 86 | GL fiscal period-end dates — 7 years × 12 periods (CY + 1Y..6Y) + FYDATE |
+| ISMCF | 49 | Multi-currency framework — GL accounts per currency for BNK/AP/AR/INV/PO/CS/discounts |
+| ISDROP | 4 | Data sync operation code lookup — CODE(10)+TEXT(30)+DESC(30)+EXTRA(50) |
+| ISWOPRIO | 4 | WO priority codes — PRIO(1)+DESC(30)+EXTRA(100)+COLOR(float) with display color |
+| ISBANKS | 23 | Bank account master — NUM+SRT+DESC+GL+NXTNUM+BAL+ROUT(15)+ACCT(15)+CURR+TYPE+VEND+ACTIVE+AR/AP/PR+5×RTM |
+| MTICMSTR | 108 | Estimating item master — 10 vendors+names+part codes; RCOST_1..15; 5 substitutes; lot size; option codes |
+
+---
+
+*Last updated: 2026-06-17 (Pass 59). New modules: FS (3 programs, ISFSCLAS/ISFSINFO/ISPRINFO/BKCMACCN), IS (2 programs, ISGLDATE 86f + ISMCF 49f multi-currency GL), DS (22+ programs, ISDROP staging). Confidence bumps: EM 50→65, YS 60→72, IC 55→68, SL 48→65, BR 48→65, TE 60→72. 10 new table schemas extracted.*
