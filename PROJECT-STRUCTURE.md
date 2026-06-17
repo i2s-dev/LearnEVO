@@ -618,16 +618,50 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 
 ### Boot / Menu System
 
-| File | Format | Purpose |
-|------|--------|---------|
-| EvoERPmenu.rwn | RWN (encrypted) | Main menu shell — login, company select, hierarchical menu |
-| EVOERPMENU.DCY | DCY (encrypted) | Menu tree / data dictionary for main menu |
-| EVOMENU_LOGIN.DCY | DCY (encrypted) | Login form data |
-| EVOMENU_SELCOMP.DCY | DCY (encrypted) | Company selection form data |
-| EVORESETPASS.DCY | DCY (encrypted) | Password reset form data |
-| EVOCHANGEPASS.DCY | DCY (encrypted) | Password change form data |
-| suwin6.dcy / suwin7.dcy | DCY (encrypted) | Bootstrap dictionary cache (pre-loads before menu) |
-| suwin6t.rwn / suwin7t.rwn | RWN (encrypted) | Bootstrap program (pre-loads before menu) |
+| File | Format | Purpose | Status |
+|------|--------|---------|--------|
+| EvoERPmenu.rwn | RWN (encrypted) | Main menu shell — login, company select, hierarchical module menu (builds menu tree at runtime) | confirmed |
+| EVOERPMENU.DCY | DCY (encrypted) | Window frame for main ERP menu — TMainMenu + 33 TToolButtons + 8 TTASStrList (populated at runtime); module menu codes NOT stored here | confirmed |
+| DBAMENU_FLEX.DCY | DCY (encrypted) | DBA Classic (TAS Pro 6) legacy menu window — 34 toolbar buttons + 4 TTASStrList; same runtime-populated approach | confirmed |
+| EVOMENU_LOGIN.DCY | DCY (encrypted) | EvoERP login dialog — User Name / Password / View Password | confirmed |
+| EVODC_LOGIN.DCY | DCY (encrypted) | Data Collection (handheld) login dialog — "Evo ~ ERP Hand Held" | confirmed |
+| DBAMENU_LOGIN.DCY | DCY (encrypted) | DBA Classic login placeholder — 0 VCL objects; login handled by TAS Pro 6 runtime | confirmed |
+| EVOMENU_SELCOMP.DCY | DCY (encrypted) | "Choose Company" dropdown dialog | confirmed |
+| DBAMENU_SELCOMP.DCY | DCY (encrypted) | DBA Classic company selection placeholder — 0 VCL objects | confirmed |
+| EVOMENU_RUNPRG.DCY | DCY (encrypted) | "Run Program" module launcher — file browser to dispatch any .RWN by filename | confirmed |
+| DBAMENU_RUNPRG.DCY | DCY (encrypted) | DBA Classic run-program placeholder — 0 VCL objects | confirmed |
+| EVORESETPASS.DCY | DCY (encrypted) | Admin password reset — no old password required | confirmed |
+| EVOCHANGEPASS.DCY | DCY (encrypted) | User password change — requires old password | confirmed |
+| PRINTTLLPSWD.DCY | DCY (encrypted) | SDQ Settings password prompt | confirmed |
+| NZEMAILTLL.DCY | DCY (encrypted) | Email composition — To/Cc/BCC/Subject/Form/Attachment + customer+vendor contact grids | confirmed |
+| NZEDEFS.DCY | DCY (encrypted) | Email default settings — subject template, body, signature, BCC self | confirmed |
+| PRINTTLL.DCY | DCY (encrypted) | Universal print dialog — Print/Preview/Email/File; auto-email options; SDQ per-report settings | confirmed |
+| IMAGEPRINT.DCY | DCY (encrypted) | "Printing Linked Documents" progress screen (EvoLinks attachment print) | confirmed |
+| EVOMESSAGE.DCY | DCY (encrypted) | Single-line modal message box | confirmed |
+| EVODCMESSAGE.DCY | DCY (encrypted) | Single-line modal message box (DC variant) | confirmed |
+| EVOEMSG.DCY | DCY (encrypted) | Broadcast message sender — All Users or specific user | confirmed |
+| EVODCEMSG.DCY | DCY (encrypted) | Broadcast message sender (DC variant) | confirmed |
+| EVODC.DCY | DCY (encrypted) | DC main menu — Labor/Prod, Prod Only, Labor Only, Part Request, Shift In/Out, Dashboard | confirmed |
+| EVODCMENU2.DCY | DCY (encrypted) | DC secondary tile launcher — 10 configurable program slots | confirmed |
+| EVOERPSCHED.DCY | DCY (encrypted) | Scheduler task name dialog (names/selects ISSCHED tasks) | confirmed |
+| ISSPLASH.DCY | DCY (encrypted) | Startup splash screen — "Loading Evolution ~ ERP...." | confirmed |
+| ISABOUT.DCY | DCY (encrypted) | About dialog — shows EVO.VER, Build, Serial/Users/Expiration, Pervasive version | confirmed |
+| ISDCABOUT.DCY | DCY (encrypted) | DC About screen with embedded logo; confirmed copyright "© 2007 Evo ERP Inc." | confirmed |
+| EVOLOGO.DCY | DCY (encrypted) | Menu screen logo configurator — Preview / Apply / Evo Default / Joke | confirmed |
+| EVOEXPIRE.DCY | DCY (encrypted) | Annual license expiry warning — "expire in XX Days" countdown | confirmed |
+| GETALPHAGEN.DCY | DCY (encrypted) | Generic 1-field text input dialog ("Get Alpha General") — caller sets caption/label | confirmed |
+| T7POPGET.DCY | DCY (encrypted) | Generic 5-field popup with Lookup button — caller sets all labels at runtime | confirmed |
+| WBKLOOKUP.DCY | DCY (encrypted) | Standard list-picker — DataGrid + Select/Edit/Add/Delete (DBA Classic era, unchanged) | confirmed |
+| WBKLUGRID.DCY | DCY (encrypted) | Admin: configure lookup grid definitions (table, security level, sort keys, UDF) | confirmed |
+| EVOUSERS.DCY | DCY (encrypted) | Active user management — Logout / Lock / Clear / Message / User Count | confirmed |
+| T7CLOADING.DCY | DCY (encrypted) | "Loading Data" animated spinner (shown during background data fetches) | confirmed |
+| T7JAVARUN.DCY | DCY (encrypted) | "Java Evo Loading..." wait screen while EvoPVT.jar executes | confirmed |
+| EVOGETDATE.DCY | DCY (encrypted) | News/date message with "Do not show again" — dismissable release notes viewer | confirmed |
+| EVOERROR.DCY | DCY (encrypted) | File open error dialog — shown when runtime fails to open a .RWN or .DCY | confirmed |
+| EVOERPBACKUP.DCY | DCY (encrypted) | Backup configuration — Full/Company/Custom zip + Glacier cloud storage option | confirmed |
+| DUMMY.DCY / MDUMMY.DCY | DCY (encrypted) | "Evo Base Window" — TEditForm1 placeholder used as base template | confirmed |
+| suwin6.dcy / suwin7.dcy | DCY (encrypted) | Bootstrap dictionary cache — suwin6 uses K_C key; suwin7 key unknown | partial |
+| suwin6t.rwn / suwin7t.rwn | RWN (encrypted) | Bootstrap program (pre-loads before menu) | confirmed |
 
 ### Subsystem Files
 

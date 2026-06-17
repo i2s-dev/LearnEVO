@@ -58,7 +58,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ Pervasive SQL server role vs. workgroup mode documented with actual config on i2s109-solidcrm
 
 ### 1.2 Boot Sequence
-- [x] ✅ Full boot chain traced: `EvoERP.lnk → StartEvo.exe → tp7runtime.exe → EvoERPmenu.rwn → login → company → module` — **C: 72/100**
+- [x] ✅ Full boot chain traced: `EvoERP.lnk → StartEvo.exe → tp7runtime.exe → EvoERPmenu.rwn → EVOMENU_LOGIN → EVOMENU_SELCOMP → EvoERPmenu.RWN builds module tree → EVOMENU_RUNPRG dispatches to module` — **C: 90/100**
 - [x] ✅ `StartEvo.exe` role: checks runtime, reads `taspro7.ini`, spawns tp7runtime.exe — **C: 60/100**
   - Gap: exact command-line arguments passed to tp7runtime.exe not confirmed
 - [x] ✅ `taspro7.ini` keys documented: `DataDictPath`, `DfltRunPrg`, `MultiUser`, `DefaultPath`, `Titlebar`, `HelpFileName` — **C: 80/100**
@@ -164,12 +164,18 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ### 2.5 `.DCY` — Data Dictionary / Compiled Schema
 - [x] ✅ Format: Twofish-192-CFB encrypted binary; key K_D; cipher solved 2026-06-16 — **C: 100/100**
-- [x] ✅ 6+ samples cataloged: EVOERPMENU.DCY (1.4 MB), EVODC.DCY (746 KB), EVOUSERS.DCY (27 KB), + others — **C: 80/100**
+- [x] ✅ All 41 standard DCY files decrypted and cataloged (Pass 19, 2026-06-17) — **C: 95/100**
+  - Full catalog: `docs/02-file-formats/dcy-forms-catalog.md`
+  - Every DCY decrypts to a Delphi VCL TEditForm DFM — they are encrypted UI form definitions, not schema files
+  - Note: the term "data dictionary" in TAS Pro 7 means the compiled form+code bundle, NOT a database schema dictionary
 - [x] ✅ Paired with `.RWN` of same basename — **C: 85/100**
 - [x] ✅ Decryption working: `scripts/dcy_decrypt.py`; MDUMMY.DCY → DFM content confirmed — **C: 100/100**
 - [x] ✅ 41/48 standard `.DCY` files decrypt OK; 7 suwin*.DCY use different format — **C: 95/100**
-- [ ] ⬜ Binary format of decrypted DCY content reverse-engineered (field layout, table names)
-- [ ] ⬜ Login/company DCY files decoded: EVOMENU_LOGIN.DCY, EVOMENU_SELCOMP.DCY, EVORESETPASS.DCY, EVOCHANGEPASS.DCY
+- [x] ✅ Login/company DCY files decoded: EVOMENU_LOGIN (login), EVOMENU_SELCOMP (company select), EVORESETPASS (admin reset), EVOCHANGEPASS (user change) — **C: 92/100**
+- [x] ✅ Full EvoERP startup flow confirmed from DCY content: ISSPLASH → EVOMENU_LOGIN → EVOMENU_SELCOMP → EvoERPmenu.RWN builds menu → EVOMENU_RUNPRG dispatches modules — **C: 90/100**
+- [x] ✅ All shared system dialogs identified: PRINTTLL (print), NZEMAILTLL (email), WBKLOOKUP (list-picker), WBKLUGRID (grid admin), GETALPHAGEN (1-field input), T7POPGET (5-field popup), EVOMESSAGE (modal), EVOUSERS (user mgmt) — **C: 92/100**
+- [x] ✅ License model confirmed as annual subscription from EVOEXPIRE.DCY — **C: 90/100**
+- [ ] ⬜ suwin7.dcy decryption — still fails all known keys (K_A/K_B/K_C/K_D); 5th key unknown
 
 ### 2.6 `.RTM` / `.btm` — ReportBuilder Templates
 - [x] ✅ Format confirmed: TPF0 binary (Delphi binary stream, Nevrona TppReport component tree) — **C: 85/100**

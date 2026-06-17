@@ -12,6 +12,47 @@ Status: draft.
   Exp 12/31/30, 15 users) — the original customer install before i2 Systems.
 - `CHMHELP.EVO` = plain-text workstation marker: "EvoHELP now set for this computer".
 
+## Login and startup flow (confirmed from DCY decryption, 2026-06-17)
+
+EvoERP startup sequence (all forms confirmed from decrypted DCY files):
+
+1. `ISSPLASH.DCY` — "Loading Evolution ~ ERP...." splash while runtime initializes
+2. `EVOMENU_LOGIN.DCY` — Login dialog: User Name + Password (TTASStrLists hold company/user lists)
+   - Password change: `EVOCHANGEPASS.DCY` (requires old password)
+   - Admin password reset: `EVORESETPASS.DCY` (no old password required)
+3. `EVOMENU_SELCOMP.DCY` — "Choose Company" dropdown
+4. `EvoERPmenu.RWN` — builds the module menu tree at runtime into the 8 TTASStrLists in `EVOERPMENU.DCY`
+5. Module selected → `EVOMENU_RUNPRG.DCY` dispatches to the target `.RWN` by filename
+6. `EVOEXPIRE.DCY` — shown at any login if the annual license is within the warning window
+
+Data Collection login path is separate:
+- `EVODC_LOGIN.DCY` — "Evo ~ ERP Hand Held" login form
+- `EVODCMENU2.DCY` — 10-slot configurable tile menu (admin assigns programs to tiles)
+- `EVODC.DCY` — standard DC menu: Labor/Prod, Prod Only, Labor Only, Part Request, Shift In/Out, Dashboard
+
+License model: **annual subscription**. Warning shown via `EVOEXPIRE.DCY` as expiry approaches.
+
+## System-wide shared dialogs
+
+These forms are reused across all modules — they are loaded by any module that needs them:
+
+| DCY file | Purpose |
+|---|---|
+| `PRINTTLL.DCY` | Universal print dialog — Print / Preview / Email / File output; auto-email option |
+| `NZEMAILTLL.DCY` | Email composition — To/Cc/BCC/Subject/Form; customer+vendor contact grids |
+| `NZEDEFS.DCY` | Email default settings (subject template, body, signature, BCC self) |
+| `WBKLOOKUP.DCY` | Standard list-picker: Select / Edit / Add / Delete with DataGrid |
+| `WBKLUGRID.DCY` | Admin: configure lookup grids (table, form, security level, sort, UDF) |
+| `GETALPHAGEN.DCY` | Generic 1-field text input ("Get Alpha General") |
+| `T7POPGET.DCY` | Generic 5-field popup input with Lookup button |
+| `EVOMESSAGE.DCY` | Single-line message box (modal) |
+| `EVOEMSG.DCY` | Broadcast message to all users or a specific user |
+| `EVOUSERS.DCY` | Active user list — Logout / Lock logins / Clear / Message / User Count |
+| `T7CLOADING.DCY` | "Loading Data" animated spinner (shown during background data fetches) |
+| `T7JAVARUN.DCY` | "Java Evo Loading..." wait screen (shown while EvoPVT.jar task runs) |
+| `EVOERROR.DCY` | File open error dialog |
+| `IMAGEPRINT.DCY` | "Printing Linked Documents" progress (EvoLinks attachment printing) |
+
 ## DC Module menu structure (confirmed from EVODC.DCY, 2026-06-17)
 
 The Data Collection entry-point menu (EVODC.DCY = TEditForm3) exposes:

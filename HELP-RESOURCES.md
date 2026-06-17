@@ -1825,5 +1825,106 @@ SM is the largest module family and serves two distinct purposes:
 
 ---
 
-*Last updated: 2026-06-17. Built from SRC analysis, schema extraction, CHM decompilation,
-DFM parsing, and RWN symbol extraction (rwn_symbols.json — 1,122 modules). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+## EvoERP System Dialogs — How Common Operations Work
+
+### Login and startup sequence
+
+1. **Splash screen** — "Loading Evolution ~ ERP...." shown while runtime initializes.
+2. **Login dialog** (EVOMENU_LOGIN) — enter User Name and Password. "View Password" toggle available.
+3. **Company selection** (EVOMENU_SELCOMP) — pick a company from a dropdown list.
+4. **Main menu** loads — EvoERPmenu.RWN builds the full module tree at runtime; the window frame is EVOERPMENU.DCY.
+5. **Expiry warning** (EVOEXPIRE) — if the annual license is near expiry, a countdown appears ("XX Days").
+
+**Changing your own password:** Use EVOCHANGEPASS — requires old password.
+**Admin reset of a user's password:** Use EVORESETPASS — does not require old password.
+
+**Data Collection stations** use a separate path: EVODC_LOGIN → EVODCMENU2 (10-tile kiosk) or EVODC (6-button standard DC menu).
+
+### How printing works
+
+Every EvoERP report uses the same universal print dialog (PRINTTLL.DCY):
+- **Print** — send to a named printer (Setup button configures printer properties)
+- **Print Preview** — preview on-screen before printing
+- **Email** — opens NZEMAILTLL email composition form with document attached
+- **Print to File** — save output to a file (type + path fields)
+- **Number of Copies** — spinner
+- **Auto Send Email** — automatically emails without opening compose dialog; driven by contact number/primary code
+
+**SDQ Settings** require a password (PRINTTLLPSWD — "SDQ Settings Password"). SDQ = per-report saved defaults.
+
+**Printing linked documents** (files attached via EvoLinks): handled by IMAGEPRINT — shows "Printing: [filename]" progress.
+
+### How email works
+
+Email is composed in NZEMAILTLL ("Evo ~ ERP email"):
+- Fields: To, Cc, BCC, Attachment, Subject, Form (email template name)
+- Checkboxes: BCC Self, BCC Rep (auto-BCC the user's own address or assigned sales rep)
+- Customer and vendor contact grids allow selecting recipients by name
+- **Defaults** (admin-configurable in NZEDEFS): Subject template, Body template, Signature, Attachment path, BCC Self default
+
+### How lookup lists work
+
+All list-pickers throughout EvoERP use the same WBKLOOKUP form:
+- DataGrid shows records from the target table
+- Sort by any column via the "Sort List by:" dropdown
+- Actions: Select, Edit, Add New, Delete, Navigate (First/Previous/Next/Last)
+
+Admins configure lookup grids in WBKLUGRID ("Maintain Grid Lookup Data"):
+- Per-grid config: table (File Name), form to open on Select, Security Level required, Sort Keys
+- Optional UDF program (Ext. UDF) for custom filtering logic
+- Each grid can also define Links & Notes fields for inline EvoLinks access
+
+### How messaging works
+
+**Single-line message to current user:** EVOMESSAGE — modal "OK" box.
+**Broadcast to all users:** EVOEMSG or EVODCEMSG — type message, choose "All Users" or a specific user, click Send.
+**Admin user management** (EVOUSERS): see who is logged in, force-logout a user, Enable/Disable Logins (locks the system for maintenance), Clear User (clear a stuck session), send a message, view User Count.
+
+### Generic input dialogs
+
+Two reusable input popups are used throughout the system:
+- **GETALPHAGEN ("GAG")** — single-field text input; caller sets the caption and field label at runtime.
+- **T7POPGET ("POP")** — up to 5 fields with a Lookup button; caller sets all captions at runtime. Used wherever a module needs a quick multi-field modal entry without a dedicated form.
+
+### Java integration loading screen
+
+When EvoPVT.jar runs a background task (SQL export, data sync), T7JAVARUN shows "Java Evo Loading..." until the Java process completes. The TRtnTimer polls for completion and dismisses the screen automatically.
+
+### Background data load indicator
+
+T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a module is fetching a large dataset in the background.
+
+---
+
+## Keyword Index Additions (Pass 19)
+
+| Term | Definition |
+|---|---|
+| **EVOMENU_LOGIN** | EvoERP login dialog DCY — User Name + Password entry, leads to company selection |
+| **EVOMENU_SELCOMP** | Company selection dialog DCY — dropdown list of available companies |
+| **EVOMENU_RUNPRG** | Module launcher DCY — dispatches any .RWN by filename; the core of the module dispatch mechanism |
+| **EVOCHANGEPASS** | Change Password DCY — requires old password; user self-service |
+| **EVORESETPASS** | Reset Password DCY — admin resets a user's password without needing the old one |
+| **PRINTTLL** | Universal print dialog — Print/Preview/Email/File for all reports |
+| **NZEMAILTLL** | Email composition form — To/Cc/BCC/Subject/Form/Attachment |
+| **NZEDEFS** | Email default settings — subject template, body, signature |
+| **WBKLOOKUP** | Standard list-picker dialog used by all modules |
+| **WBKLUGRID** | Admin form for configuring lookup grid definitions (table, security, sort, UDF) |
+| **GETALPHAGEN (GAG)** | Generic 1-field input dialog; caption/label set by caller at runtime |
+| **T7POPGET (POP)** | Generic 5-field popup with Lookup button; used throughout for quick modal entry |
+| **EVOUSERS** | Active user management — force logout, lock logins, broadcast message, user count |
+| **EVODCMENU2** | 10-tile configurable DC kiosk launcher menu |
+| **EVOERPSCHED** | Scheduler task name dialog — names/selects a task for ISSCHED |
+| **EVOEXPIRE** | Annual license expiry warning dialog |
+| **EVOLOGO** | Menu screen logo configurator (admin) |
+| **SDQ settings** | Per-report print/save defaults; protected by PRINTTLLPSWD password |
+| **DUMMY.DCY / MDUMMY.DCY** | "Evo Base Window" placeholder — base TEditForm1 template |
+| **T7CLOADING** | Animated loading spinner shown during background data fetches |
+| **T7JAVARUN** | Wait screen shown while EvoPVT.jar executes a Java task |
+| **EVOGETDATE** | News/date message with "Do not show again" — dismissable release notes or date prompt |
+| **annual license** | EvoERP uses annual subscription licensing; EVOEXPIRE warns near expiry |
+
+---
+
+*Last updated: 2026-06-17 (Pass 19). Built from SRC analysis, schema extraction, CHM decompilation,
+DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), and full DCY decryption pass (41 files). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
