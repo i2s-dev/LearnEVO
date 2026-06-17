@@ -517,7 +517,7 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.9 MRP / Manufacturing Requirements Planning (MR)
 - [x] ✅ Menu codes listed (12 operations) — **C: 65/100**
-- [x] ✅ Tables: BKMR\* (3 tables) — **C: 45/100**
+- [x] ✅ Tables: BKMR\* (3 tables) — BKMRPFC(9f: MRP demand forecast PART+DATE+QTY+OQTY+CQTY+FLAG), BKMRPPO(16f: planned PO PART+DATE+ERD+QTY+PRICE+WOPRE/WOSUF+PLANR+CONF+EST link), BKMRPSW(2f: per-part on/off switch); all schemas extracted; MRP demand→planned-PO flow confirmed — **C: 62/100**
 - [x] ✅ Source file: BKMRF.SRC (MRP logic analyzed) — **C: 62/100**
 - [ ] ⬜ Full MRP calculation cycle traced
 - [ ] ⬜ All BKMR\* tables with fields documented
@@ -570,12 +570,12 @@ Target for "understood" = C: 75+ on all items below.
 - [ ] ⬜ Time entry → work order charge chain fully traced
 
 ### 7.16 EDI (ED)
-- [x] ✅ Tables: BKED\* (6 tables) — **C: 45/100**
+- [x] ✅ Tables: BKED\* (6 tables) — BKEDIH(84f: same structure as BKARINV — EDI-in staging header), BKEDIL(28f: same as BKARINVL — EDI-in lines), BKEDIDUN(7f: customer DUNS mapping+EDI flags), BKEDMSTR(3f: our DUNS+import path+counter), BKEDNOTE(3f: EDI notes), BKEDPOST(2f: posting log); unified invoice architecture confirmed for EDI — **C: 65/100**
 - [ ] ⬜ EDI transaction set support confirmed
 - [ ] ⬜ Inbound/outbound EDI pipeline traced
 
 ### 7.17 Estimating (ES)
-- [x] ✅ Tables: BKES\* (3 tables) — **C: 45/100**
+- [x] ✅ Tables: BKES\* (3 tables) — BKESTQT(84f: same structure as BKARINV — ES quote header), BKESTQTL(28f: same as BKARINVL — quote lines), BKESTCFG(13f: quote config NUM+STAT+CLASS+FORM+DAYS+5 footer lines+SONUM); unified invoice architecture confirmed for ES quotes — **C: 65/100**
 - [x] ✅ ES-D (Print Customer Quotes), ES-E (Convert Estimates: ISTO.WO + ISTO.SO — converts to WO or SO), ES-B/C (print/range options) — **C: 58/100**
 - [ ] ⬜ ES-A (main entry form) not found on share; BKES.* table fields not yet extracted
 
@@ -633,7 +633,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **US** — User Services / Trigger Notifications — T7USG (90 procs): ISTRIGRS primary table (25f, fully documented: CODE/TRIGR/CONTACT/DAYS/EMAIL/ONCE/LDATE/LTIME/WO-PO-SO-CUST-VEND refs + ITYPE/CLASS/CAT/PLANNER); ISREMIND (22f, fully documented: DATE/TIME/WHO/SUBJECT/CUST/VEND/ITEM/FILE/EMAIL/SENT); EvoRemind (46 procs) polls ISTRIGRS and creates ISREMIND calendar entries; US program also opens BKARCUST+BKAPVEND+WORKORD+BKARINV+BKAPPO for entity lookups — **C: 65/100**
 - [x] 🔄 **UT** — Utilities (admin/data maintenance) — all 8 DFMs read; UTH (file layout report), t7uti (company add/delete: company_code/name/path/copy.file/cdelete), UTKA (data clear/reset: CLR.COA/CUST/VEND/INVN — DESTRUCTIVE), UTKD (fiscal year: fycur/fy1yp/fy2yp/fy3yp), UTKE (location cleanup — DESTRUCTIVE), UTKF/UTKG (item rebuild F and G variants), UTKH (average cost recalculate by inc.type[1-4]); most ops irreversible — **C: 60/100**
 - [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
-- [x] 🔄 **YS** — T7YSYN.RWN (52 procs): BKYSMSTR+BKSYHELP+DBAHLPID+ISIS+MKAHIST+ISLOG — Y/N system flags editor (BKYSMSTR maintenance) — **C: 45/100**
+- [x] 🔄 **YS** — Y/N System Flags Editor (T7YSYN: 52 procs, BKYSMSTR+standard lookup tables); direct editor for all Yes/No behavioral flags stored in BKYSMSTR; purpose fully confirmed from program name + primary table — **C: 60/100**
 
 **Subsystems (not menu modules — discovered via RWN analysis):**
 - [x] 🔄 **PI** — Physical Inventory (9 files, 1,056 procs) — **NEWLY DOCUMENTED Pass 11** — T7PIA/T7PIC/T7PIF = main count entry; T7PIB/T7PICA = PI posting to GL (uses BKGLTRAN+BKGLX); T7PID/T7PIE = discrepancy entry; T7PIG = report; T7DEHD = handheld PI entry; PI tables confirmed: BKPIMSTR (run master), BKPILOT (lot counts), BKPIPHYS (physical counts), BKPISER (serial counts), BKPIFROZ (frozen snapshot), PIBINLOC/PIBINLOT (frozen bin records); freeze→count→post cycle inferred — **C: 52/100**
@@ -653,14 +653,14 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **ED (EDII)** — EDI Invoice Import (T7EDII: 183 procs, 43-table DB set); full inbound EDI→AR invoice pipeline: BKARINV+BKARINVL+ISARCHG+BKARCUST+ISTERMS+BKICPMAT+BKICLOC+CLASMSTR+BKICMSTR+MTICMSTR+BKICLOCM+BKICREQ+BKARTXN+ISSOBOX+ISTAXGRP+BKYSMSTR+BKSYMSTR+ISSHPVIA+BKICPRC+ISCOMPCOD; maps inbound 850/860 to line items, applies customer pricing, creates AR transaction; core workflow reconstructed from DB fingerprint — **C: 60/100**
 - [x] 🔄 **BR** — Brand / CRM Classification (T7BRANDS: 53 procs, primary=BKCMACCC(2f: CCODE+DESC); T7BROWSER: 4 procs HTML wrapper); broad table set reflects shared-library pattern; BKCMACCC schema confirmed; T7BRANDS also opens BKAPPO+BKMRPFC+BKARINV+DBAFIFO+ISTRIGRS+LOT+SERIAL+ISNCR — **C: 48/100**
 - [x] 🔄 **NE** — New Company Initialization (T7NEWINIT: 49 procs, FILELOC+FILEDES); creates all Btrieve .B data files for a new EvoERP company; FILELOC=existing file list, FILEDES(not in DDF)=file templates/blueprints; purpose confirmed from name+tables — **C: 55/100**
-- [x] 🔄 **CU** — WO Cut Sheet (T7CUTSHEET2: 75 procs, WOMAT+LOT+WORKORD+WOBOM+ISBINLOT+BKPSUSER); material cut sheet for shop floor with lot+bin tracking — **C: 45/100**
+- [x] 🔄 **CU** — WO Material Cut Sheet (T7CUTSHEET2: 75 procs, WOMAT+LOT+WORKORD+WOBOM+ISBINLOT+BKPSUSER; T7CUTSHEET2B: 60 procs, non-lot variant adds MKECLASS); ISBINLOT(11f)=bin-level lot qty (ITEM+LOC+LOT+BIN PK, UOH, TMPSO/TMPPO allocation strings, DFLT); 2 programs confirmed — **C: 58/100**
 - [x] 🔄 **JO** — Jobs and Departments (T7JOBS: 21 procs, ISDEPT+WOEXCHG+ISCATMST+BKICLOCM+ISNOTES+ISNTYPE+WORKCTR+ISBNMSTR+ISTRIGRS); ISDEPT(3f)=dept master, WOEXCHG(10f)=WO change order charges with GL posting; also found T7JODPSALES(52 procs, IS2DBAR+ISCYCLCD+BKSBPART) — likely SM drill-down panel, not JO module proper — **C: 52/100**
 - [x] 🔄 **FN** — File Navigator (T7FNR: 104 procs, FILELOC+FILEDICT); Btrieve file+data-dictionary browser; FILELOC=file locations, FILEDICT=DDF field definitions; admin tool — surfaces as TA-D in admin menu; purpose fully confirmed — **C: 58/100**
 - [x] 🔄 **XC** — Credit Card Cross-Reference (T7XCUTIL: 29 procs, BKCMACCT+BKYSMSTR+ISCC); ISCC(14f)=token store: CODE+TOLKEN(20)+MASKED(24)+EXP(4)+ADDRESS+ZIP+CARDTYPE(15)+CARDNAME(25)+STATUS+STDATE+XCTRAN+PROCESS; reconciles CRM accounts (BKCMACCT) with tokenized credit card records (ISCC) — **C: 55/100**
 - [x] 🔄 **LG** — LGS Customer Module — Canadian customs processing (T7LGSSOE: 170 procs + T7LGSSOEVERIFY: 41 procs); SOE = Statement of Entry (Canadian customs declaration); T7LGSSOE DB: BKARINV+BKARCUST+BKARTXN+BKICTAX+BKARINVL+BKICMSTR+MTICMSTR; uses BKICTAX (tax by jurisdiction) + BKARTXN (AR transaction log) instead of standard ISTAXGRP — cross-border duty path confirmed; T7LGSSOEVERIFY = pre-submission validation; 2 programs, purpose fully identified — **C: 52/100**
 - [x] 🔄 **JS** — JS Integration / Reporting Bridges (7 modules: T7JSETTINGS: 34 procs ISJAVA config; T7JSQL: 52 procs ad-hoc SQL via ISJAVA+ISMCR; T7JSACC: 41 procs accounting data bridge BKGLTRAN+BKGLCOA; T7JSAIC: 38 procs inventory bridge BKICMSTR+BKICLOC; T7JSAPBI: 29 procs Power BI launcher via ISJAVA task queue; T7JSASRS: 31 procs SQL Reporting Services launcher; T7JSOI: 45 procs order integration BKARINV+BKAPPO); all 7 programs identified, purpose from DB fingerprint; invoke EvoPVT.jar via ISJAVA — **C: 58/100**
 - [x] 🔄 **BS** — Business Score/Summary Dashboard (T7BS: 162 procs); ISBSF (143f, fully documented): PK=STARTDATE+ENDDATE; AR/AP/SO/PO/WO/IC KPIs + CASH_TOTA+ACT1..9 + CASH_ACTS_1..100 (100-period GL history) + WOS_SETUP/LAB/OUTP/MAT/FOH/VOH/MEXT/FP/WIPV (WO cost breakdown) + EXTRA; opens 40+ tables including all major modules; also surfaced as QU-D Business Status (EVOBS) — **C: 65/100**
-- [x] 🔄 **AD (ADCA)** — Advanced Data Collection (T7ADCA: 290 procs — largest DC module; BKDCLAB+WORKORD+BKPRMSTR+BKDCSHFT+ISWOEX+EIMCOLST); full automatic DC entry for shop floor — **C: 48/100**
+- [x] 🔄 **AD (ADCA)** — Advanced Data Collection (T7ADCA: 290 procs, 55 unique tables); full auto shop floor DC: BKDCLAB+WORKORD+BKPRMSTR+BKDCSHFT(34f, 3-shift config)+ISWOEX(63f, WO extended)+ISROUTEX(100f, routing cycle times per 10 machines)+ISWOROEX(60f, per-WO-op extension)+OPQCDESC(10f, per-op QC result)+ISWOTRAY(52f)+EIMCOLST(not in DDF); operator scans→posts BKDCLAB→updates WOLABOR/WOROUT — **C: 62/100**
 - [x] 🔄 **IT** — Item Serial/Barcode/Cycle Config (T7ITMCFG: 66 procs); opens ISSERCNT+BKICMSTR+BKGLCOA+SERIAL+ISNCR+IS2DBAR+ISCYCLCD; ISSERCNT(9f)=serial counter per item, IS2DBAR(109f)=2D barcode format config, ISCYCLCD(7f)=cycle count frequency code; all 3 schemas extracted — **C: 62/100**
 - [x] 🔄 **EM** — Emergency GL Maintenance (T7EMGL: 62 procs); opens BKGLCOA+BKAPPOL+BKAPPO+WORKORD+WOBOM+INVTXN+BKBMMSTR+ISICMSTR+BKGLTRAN+LOT+SERIAL+ISNCR+ISTAXGRP; ISICMSTR(41f) = item physical/shipping specs (WT/TI/HI/dimensions/tool/slead); broad table set for GL account cross-reference traversal — **C: 50/100**
 
@@ -1064,6 +1064,12 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **65** | 80 | **15** NEW | 2026-06-17 |
 | Module: MR/MRP Engine | **62** | 78 | **16** NEW | 2026-06-17 |
+| Tables: BKMR*/MRP Support | **62** | 72 | **10** NEW | 2026-06-17 |
+| Tables: BKED*/EDI | **65** | 72 | **7** NEW | 2026-06-17 |
+| Tables: BKES*/Estimating | **65** | 72 | **7** NEW | 2026-06-17 |
+| Module: YS/YN Flags Editor | **60** | 68 | **8** NEW | 2026-06-17 |
+| Module: CU/WO Cut Sheet | **58** | 68 | **10** NEW | 2026-06-17 |
+| Subsystem: ADCA/Advanced DC | **62** | 72 | **10** NEW | 2026-06-17 |
 | Module: TC/Treasury Control | **52** | 70 | **18** NEW | 2026-06-17 |
 | Module: SC/Cycle Count | **58** | 72 | **14** NEW | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **45** | 65 | **20** NEW | 2026-06-17 |

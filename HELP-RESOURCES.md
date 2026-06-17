@@ -2749,4 +2749,110 @@ RTM report template (ReportBuilder) triggered from within the FO module, not a s
 
 ---
 
-*Last updated: 2026-06-17 (Pass 34). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-34 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC/SD/SL/AL/ML/MH/BR/NE/JO/FN/XC/IT/EM/RT/FP). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 35 Additions
+
+### BKMR* Tables — MRP Supporting Data
+
+The MR (MRP) module uses three BKMRP* supporting tables in addition to the main MTMRP table:
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKMRPFC | 9 | MRP demand forecast — PART+DATE PK; QTY (forecasted demand), OQTY (original), CQTY (committed), FLAG, DATE1, NUM |
+| BKMRPPO | 16 | MRP planned purchase orders — UID+VEND+DATE+ERD+PART+QTY+PRICE+WOPRE/WOSUF+PLANR(4, planner)+CONF(confirm flag)+DONE+MTREC+EXTRA+EST/ESTLNE (estimate link) |
+| BKMRPSW | 2 | MRP processing switch — PART + SW(1-char flag); turns MRP on/off per item |
+
+**Relationship:** BKMRPFC feeds demand → MRP engine plans releases → BKMRPPO receives planned
+PO recommendations → planner confirms/modifies → BKMRPPO confirmed rows become real BKAPPO records.
+BKMRPSW gates which items MRP considers.
+
+---
+
+### BKED* Tables — EDI Processing (Unified Invoice Architecture Confirmed)
+
+Key finding: **BKEDIH and BKEDIL are EDI-In staging tables with identical structure to BKARINV/BKARINVL.**
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKEDIH | 84 | EDI-In invoice header — same 84 fields as BKARINV; staging area for inbound EDI invoices before posting |
+| BKEDIL | 28 | EDI-In invoice lines — same 28 fields as BKARINVL |
+| BKEDIDUN | 7 | Customer DUNS mapping — CUST(10)+DUNS(15)+EDI(enable)+EFFDT+PRODS+ADVS+SHPCD; maps customer to D-U-N-S number for EDI routing |
+| BKEDMSTR | 3 | EDI master config — NEXTN (sequence counter), DUNS (our company D-U-N-S number), PATH (66-char file path for EDI import files) |
+| BKEDNOTE | 3 | EDI notes — EDI#+SO#+NOTE(80); notes attached to an EDI transaction |
+| BKEDPOST | 2 | EDI post log — INVN+CUST; records which EDI invoices have been posted to AR |
+
+**Architecture:** Inbound EDI → parse into BKEDIH/BKEDIL → validate → post → becomes BKARINV record.
+BKEDIDUN identifies which customers are EDI-enabled and routes by D-U-N-S number.
+
+---
+
+### BKES* Tables — Estimating (Unified Invoice Architecture Confirmed)
+
+Key finding: **BKESTQT and BKESTQTL are ES Estimating quote tables with identical structure to BKARINV/BKARINVL.**
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKESTQT | 84 | Estimating quote header — same 84 fields as BKARINV; quotes use the full invoice structure |
+| BKESTQTL | 28 | Estimating quote lines — same 28 fields as BKARINVL |
+| BKESTCFG | 13 | Quote configuration — NUM+STAT+CLASS+FORM(1)+CMPY_INFO(1)+DAYS(validity days)+ENDLN_1..5(30 each, footer lines)+SONUM+EXTRA; controls quote-to-SO conversion |
+
+**Architecture:** Quote entered in ES module → BKESTQT header + BKESTQTL lines → when approved,
+converted to BKARINV SO with same field structure (no data transformation needed).
+
+---
+
+### YS — Y/N System Flags Editor
+
+T7YSYN (52 procs) — opens BKYSMSTR. Maintenance program for the BKYSMSTR table (Y/N system
+configuration flags). Every Yes/No behavioral setting in EvoERP lives in BKYSMSTR; T7YSYN is
+the direct editor for these flags.
+
+**Confidence: 60/100** — single program; purpose fully confirmed from name and primary table.
+
+---
+
+### CU — WO Material Cut Sheet
+
+Two programs:
+- **T7CUTSHEET2** (75 procs): WOMAT + LOT + WORKORD + WOBOM + ISBINLOT + BKPSUSER — lot-tracked cut sheet
+- **T7CUTSHEET2B** (60 procs): same base without LOT; adds MKECLASS — non-lot-tracked variant
+
+Generates a material cut sheet for shop floor: lists all WO materials (WOMAT) with quantities,
+bin locations (ISBINLOT), and assigned employee (BKPSUSER). Variant B omits lot tracking.
+
+**ISBINLOT** (11f): IS_BINLOT_ITEM(15) + LOC(10) + LOT(15) + BIN(15) + UOH + DATE + FLAG +
+EXTRA(50) + TMPSO(40)/TMPPO(40) (temporary SO/PO allocation) + DFLT(1) — bin-level lot
+inventory quantity, more granular than BKICLOC (which is location-level only).
+
+**Confidence: 58/100** — two programs identified; ISBINLOT schema extracted; purpose confirmed.
+
+---
+
+### AD/ADCA — Advanced Data Collection (Shop Floor Automatic DC)
+
+T7ADCA (290 procs, 55 unique tables) — the largest DC entry module. Full automatic shop floor
+data collection: real-time labor posting, routing tracking, QC inspection, and tray management.
+
+Key tables opened (unique to or important in T7ADCA):
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKDCSHFT | 34 | Shift definitions — NAME1/2/3 (3 shifts), with START/BUFFER/BRK1IN/BRK1OUT/BRK2IN/OUT/END times per shift; 3 shifts × ~11 time fields each |
+| ISROUTEX | 100 | Routing extension — IS_ROUT_CODE+OPER PK; 10 machine slots × CYCTIME/CYCHR/... fields; extended cycle times per routing operation |
+| ISWOROEX | 60 | WO Routing extension — WOPRE+WOSUF+OPER PK; ITP(item type pack), FOI(1), LQTY(labor qty), EXTRA(100), SDAY/FDAY, DATE1, ALPHA1/2, NUM1, DESC1 + 45 more custom slots |
+| ISWOEX | 63 | WO Extended fields — WOPRE+WOSUF PK; ITP(20), RF(1), EXTRA(100), MCLASS(6), MNUM, dates 1-4, INT1, NUM1 + 48 more |
+| OPQCDESC | 10 | Operation QC description — WOPRE+WOSUF+OPER PK; DESC(30)+SERIAL(25)+UID(30)+QCCODE(2)+DATE+QTY+EXTRA; QC result per WO operation |
+| ISWOTRAY | 52 | WO Tray tracking — tray number + WO/oper + started/completed/scrapped qty + 5 bin splits |
+| EIMCOLST | — | NOT IN DDF — EIM Color List (UI display config for DC labor screen) |
+
+Also opens: BKDCLAB, WORKORD, BKPRMSTR, MTICMSTR, BKICMSTR, WOROUT, ROUTING, MACHINE, WORKCTR, WOLABOR, SCRAP
+
+**ADCA Workflow:** Operator scans at work center → T7ADCA reads WORKORD + ROUTING for operation context → posts BKDCLAB labor record → updates WOLABOR/WOROUT → if QC required, creates OPQCDESC → if tray tracking, updates ISWOTRAY
+
+**Confidence: 62/100** — 290-proc program confirmed with 55 unique tables; all key table schemas
+extracted; specific DC screen field mapping blocked by RWN encryption.
+
+---
+
+*Last updated: 2026-06-17 (Pass 35). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-35 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC/SD/SL/AL/ML/MH/BR/NE/JO/FN/XC/IT/EM/RT/FP/BKMR/BKED/BKES/YS/CU/ADCA). SO/EDI/ES architecture confirmed: all use BKARINV structure. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
