@@ -4064,4 +4064,150 @@ CASHFLOW and WORKCENTERLOAD share the same DB set (BKARCUST+BKAPVEND+BKCMACCN+BK
 
 ---
 
-*Last updated: 2026-06-17 (Pass 43). LI/CH/QS/MU/PA/ML/SD/KIT/VSCHED/NE/TPOA all identified via RWN fingerprint. ISCHAINM(17f)/ISQSOA(12f)/WCTRLOAD(8f)/ISNOTES(13f) schemas extracted. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## SUPPORTING INFRASTRUCTURE TABLES + JS MODULE — Pass 44
+
+### ISGLDATE (86f) — GL Fiscal Calendar Singleton
+
+One row per company; stores period-end dates for 7 years × 12 periods.
+
+- ISGL_CYDATE_1..12 — current year 12 period-end dates
+- ISGL_1YDATE_1..12 — 1 year back × 12 periods
+- ISGL_2YDATE through 6YDATE — 2–6 years back × 12 each
+- ISGL_FYDATE — fiscal year start date
+- ISGL_EXTRA(50)
+
+Used by T7ISMCC (IS module multi-currency GL date sync) and T7BS (Business Status dashboard) for GL period arithmetic.
+
+---
+
+### ISDROP (4f) — Configurable Dropdown List Values
+
+- IS_DROP_CODE(10) — list item code (PK part 1)
+- IS_DROP_TEXT(30) — display text
+- IS_DROP_DESC(30) — description
+- IS_DROP_EXTRA(50)
+
+Maintained by T7DROPDOWN (53 procs). Provides generic configurable dropdown lists for EvoERP forms.
+
+---
+
+### ISCC (14f) — Tokenized Credit Card Storage (PCI-Safe)
+
+- IS_CC_CODE(10) — customer/record code (PK)
+- IS_CC_TOLKEN(20) — **payment processor vault token** (NOT the PAN — PCI-safe)
+- IS_CC_MASKED(24) — masked card number (e.g., XXXX-XXXX-XXXX-1234)
+- IS_CC_EXP(4) — expiry date
+- IS_CC_ADDRESS(40) + ZIP(10) — billing address (AVS)
+- IS_CC_CARDTYPE(15) — Visa/MC/Amex/etc.
+- IS_CC_CARDNAME(25) — cardholder name
+- IS_CC_STATUS(25) + STDATE(4) — authorization status + date
+- IS_CC_XCTRAN(10) — transaction cross-reference
+- IS_CC_PROCESS(10) — processor code (e.g., "AUTHORIZE" = Authorize.Net)
+- IS_CC_SORT(8) + EXTRA(100)
+
+**Key insight:** TOLKEN stores the payment processor vault token, not the raw PAN. EvoERP never stores full card numbers — this is PCI DSS-compliant tokenization.
+
+---
+
+### ISSHIPCO (16f) — Shipping Carrier Master
+
+- IS_SHIP_SHPCOD(10) — carrier code (PK)
+- IS_SHIP_SHPNME(30) + SHPDESC(60) — name + description
+- IS_SHIP_VNDCOD(10) — AP vendor (FK → BKAPVEND) — carrier billed as AP vendor
+- IS_SHIP_NOTES_1..5 (60 each) — 5 operational note lines
+- IS_SHIP_SHIPVIA(15) — default ship-via code (FK → ISSHPVIA)
+- IS_SHIP_EXTRA(150)
+- IS_SHIP_WEB_1..5 (120 each) — 5 carrier web service URLs (tracking, rating, labels, etc.)
+
+---
+
+### ISREPORD (17f) — Commission/Rep Order Record
+
+- ISREP_ORD_REPNM(2) — sales rep number (PK)
+- ISREP_ORD_SONUM(8) + INVNM(8) + INVDT(4) — order and invoice reference
+- ISREP_ORD_COMPR(8) + CMAMT(8) — commission % + amount
+- ISREP_ORD_AMT(8) + AMTRM(8) — invoice amount + remaining
+- ISREP_ORD_CBK(1) — chargeback flag
+- ISREP_ORD_PCODE(15) + CUST(10) — item + customer
+- ISREP_ORD_PAYDT(4) — payment date
+- ISREP_ORD_GLA(10) + GLD(4) — GL account + dept for commission posting
+
+Used in CS (Commission) and ML (Multi-Language) modules.
+
+---
+
+### JS — JavaScript / BI Reporting Bridge (9 programs)
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7JSETTINGS | 70 | JS connection settings — FILELOC paths |
+| T7JUPD | 27 | JS report deployment via FILELOC |
+| T7JSACC | 50 | AR account BI export |
+| T7JSAIC | 50 | Item-Customer BI export |
+| T7JSAPBI | 50 | AP Business Intelligence export |
+| T7JSASRS | 50 | AR Sales Report Summary export |
+| T7JSOI | 50 | SO Invoice BI export |
+| T7JSQL | 52 | SQL-based JS query interface |
+| T7JTREE | 52 | Tree-view BI navigation component |
+| T7JTEMP | 27 | JS template sub-routine |
+
+All T7JS* report programs share the same 64-table ISDRILL-based DB set. These programs export EvoERP data to a JavaScript-based BI layer (Sisense or similar). T7JSETTINGS configures the connection; T7JUPD deploys/updates reports.
+
+---
+
+### T7EWC — Work Center Capacity Edit
+
+**T7EWC** (68 procs, 45 tables) — opens WORKORD+WOROUT+WORKCTR+ROUTING+BKYSMSTR.
+
+EWC = Edit Work Center. Full UI (68 procs) for work center setup and/or capacity load editing. WORKCTR = work center master, ROUTING = operations. Complements T7VSCHED (visual Gantt view).
+
+---
+
+### T7BS — Business Status Dashboard
+
+**T7BS** (162 procs, 40 tables) — opens ISBSF+BKYSMSTR+ISGLDATE+BKSYMSTR+BKGLTRAN+MTICMSTR+BKICMSTR+WORKORD+WOMAT+WOLABOR.
+
+BS = Business Status KPI dashboard. ISBSF = configurable KPI field definitions. ISGLDATE provides period-end dates. Reads GL, inventory, and WO costs to compute live financial/operational KPIs. This is the QU-D program.
+
+---
+
+### T7FNR — File Navigator (TA-D)
+
+**T7FNR** (104 procs) — opens FILELOC+FILEDICT.
+
+Full-featured file registry browser: FILELOC = physical file paths, FILEDICT = field definitions. Used as TA-D "Maintain Database" tool for DBA-level file management.
+
+---
+
+### T7XCUTIL — CC Cross-Company Utility
+
+**T7XCUTIL** (29 procs) — opens BKCMACCT+BKYSMSTR+ISCC+LANGDICT+FILELOC.
+
+Cross-company credit card utility. ISCC in DB confirms CC involvement. BKCMACCT = CRM account link. Likely migrates or cross-references CC tokens between companies.
+
+---
+
+### T7JAVASET / T7JAVARUN — Java Integration
+
+**T7JAVASET** (57 procs) — FILELOC+ISACCESS+LANGDICT+BKSYMSTR — configures Java runtime paths and checks module access gates.
+**T7JAVARUN** (11 procs) — BKICMSTR+MKAHIST — triggers Java operations on item records.
+
+Java integration used for ISJAVA-dependent features (barcode generation, web connectivity, email).
+
+---
+
+### New Tables Confirmed (Pass 44)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISGLDATE | 86 | GL fiscal calendar singleton — 7 years × 12 periods + FYDATE |
+| ISDROP | 4 | Configurable dropdown values — CODE PK; TEXT+DESC+EXTRA |
+| ISCC | 14 | Tokenized CC storage — CODE PK; TOLKEN(20 vault token)+MASKED+EXP+CARDTYPE+PROCESS |
+| ISSHIPCO | 16 | Shipping carrier master — SHPCOD PK; VNDCOD+NOTES×5+WEB_1..5(120 each) |
+| ISREPORD | 17 | Commission/rep order — REPNM PK; SONUM+INVNM+COMPR+CMAMT+CBK+GLA+GLD |
+
+---
+
+*Last updated: 2026-06-17 (Pass 44). ISGLDATE(86f)/ISDROP(4f)/ISCC(14f)/ISSHIPCO(16f)/ISREPORD(17f) schemas extracted. JS module 9-program BI bridge confirmed. T7EWC/T7BS/T7FNR/T7XCUTIL/T7JAVASET fingerprints identified. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

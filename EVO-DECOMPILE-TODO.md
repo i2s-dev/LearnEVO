@@ -593,7 +593,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **CR** — Contract Review / SO Approval — T7CTREVU(96p): opens ISCTREVU+BKARINV+ISSOREVU; ISCTREVU(17f) schema extracted: EMPNME(25)+EMP PK; DEPT(25)/ADMIN(1)/LEVEL(2)/MOTPAS(10)/ACTIVE(1)/CDATE/EDATE/ADATE/ATIME/FLAG_1..5/EXTRA(100); ISSOREVU(12f, already in SR docs): SO+DEPT PK, EMPNME/EMPNUM/MOTPAS/ADATE/EDATE/APPROVE/REQUIRE; CR-A assigns departments to SOs (creates ISSOREVU records), CR-B enters approvals (reviewers per ISCTREVU); 2 programs confirmed — **C: 72/100**
-- [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
+- [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; Pass 44: ISCC(14f) fully documented: CODE(10) PK + TOLKEN(20, vault token, NOT raw PAN = PCI-compliant)+MASKED(24)+EXP(4)+ADDRESS(40)+ZIP(10)+CARDTYPE(15)+CARDNAME(25)+STATUS(25)+STDATE+XCTRAN(10)+EXTRA(100)+PROCESS(10, processor code e.g. "AUTHORIZE") — **C: 72/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
 - [x] 🔄 **DI** — Digital Signatures — T7DIGSIG.DFM (131KB) confirmed: Caption='Enter Digital Signatures'; PO#/Vendor/Name/Description/Terms + EMAIL.TAG/NAME/LEVEL/ADDRESS for email routing of PO approvals; T7DigSigChgPSWD = change digital signature password; ISDIGSIG (89f, fully documented): 10 approval slots per employee with ACTIVE/TYPE/SDATE/FDATE/TDATE/AMT/FLAG/DATE per slot + MOTCACH/POENTBY/SOENTBY/FILE/ATIME/ADATE; ISTRIGRS (25f) used for email notifications; 3 RWN programs identified — **C: 65/100**
@@ -660,11 +660,11 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **NE** — New Company Initialization (T7NEWINIT: 49 procs); creates all Btrieve .B data files for a new EvoERP company; FILELOC=existing file list, FILEDES(not in DDF)=file templates/blueprints; also reads BKAPVEND+BKARCUST+BKCMACCN+BKICMSTR to optionally seed data from existing company; Pass 43: full 15-table DB fingerprint confirmed; purpose fully established — **C: 65/100**
 - [x] 🔄 **CU** — WO Material Cut Sheet (T7CUTSHEET2: 75 procs, WOMAT+LOT+WORKORD+WOBOM+ISBINLOT+BKPSUSER; T7CUTSHEET2B: 60 procs, non-lot variant adds MKECLASS); ISBINLOT(11f)=bin-level lot qty (ITEM+LOC+LOT+BIN PK, UOH, TMPSO/TMPPO allocation strings, DFLT); 2 programs confirmed — **C: 58/100**
 - [x] 🔄 **JO** — Jobs and Departments (T7JOBS: 21 procs, ISDEPT+WOEXCHG+ISCATMST+BKICLOCM+BKARCUST+BKAPVEND+ISBNMSTR; ISDEPT(3f)=dept master, WOEXCHG(10f)=WO change orders with GL posting; T7JODPSALES(52 procs, IS2DBAR+ISCYCLCD+BKSBPART+BKAPDESC) = SM/drill-down panel; BKAPDESC(5f)=AP vendor extended notes: VNDCOD+NUM+LINE PK, NOTES(70)+DESC(25)); 2 programs confirmed — **C: 62/100**
-- [x] 🔄 **FN** — File Navigator (T7FNR: 104 procs, FILELOC+FILEDICT); Btrieve file+data-dictionary browser; FILELOC=file locations, FILEDICT=DDF field definitions; admin tool — surfaces as TA-D in admin menu; purpose fully confirmed — **C: 58/100**
-- [x] 🔄 **XC** — Credit Card Cross-Reference (T7XCUTIL: 29 procs, BKCMACCT+BKYSMSTR+ISCC); ISCC(14f)=token store: CODE+TOLKEN(20)+MASKED(24)+EXP(4)+ADDRESS+ZIP+CARDTYPE(15)+CARDNAME(25)+STATUS+STDATE+XCTRAN+PROCESS; reconciles CRM accounts (BKCMACCT) with tokenized credit card records (ISCC) — **C: 55/100**
+- [x] 🔄 **FN** — File Navigator (T7FNR: 104 procs, FILELOC+FILEDICT); Btrieve file+data-dictionary browser; FILELOC=file locations, FILEDICT=DDF field definitions; admin tool — surfaces as TA-D in admin menu; purpose fully confirmed; Pass 44: DB fingerprint re-confirmed — **C: 65/100**
+- [x] 🔄 **XC** — Credit Card Cross-Reference (T7XCUTIL: 29 procs, BKCMACCT+BKYSMSTR+ISCC+LANGDICT+FILELOC); ISCC(14f) now fully documented (see CC entry); Pass 44: SORT(8)+EXTRA(100) fields added, PCI tokenization design confirmed; LANGDICT = multi-language support for XC UI — **C: 68/100**
 - [x] 🔄 **LG** — LGS Customer Module — Canadian customs processing (T7LGSSOE: 170 procs + T7LGSSOEVERIFY: 41 procs); SOE=Statement of Entry (Canadian customs declaration); DB: BKARINV+BKARCUST+BKARINVL+BKYSMSTR+BKICMSTR+MTICMSTR+BKARTXN(14f: SONUM+CODE+QTY+LOT+SERIAL+DATE+LOC+BIN+SRNUM)+BKICTAX+BKICLOC; uses BKICTAX (state jurisdiction rates) instead of standard ISTAXGRP; BKARTXN schema extracted; T7LGSSOEVERIFY = pre-submission validation; 2 programs, purpose fully confirmed — **C: 62/100**
-- [x] 🔄 **JS** — JS Integration / Reporting Bridges (7 modules: T7JSETTINGS: 34 procs ISJAVA config; T7JSQL: 52 procs ad-hoc SQL via ISJAVA+ISMCR; T7JSACC: 41 procs accounting data bridge BKGLTRAN+BKGLCOA; T7JSAIC: 38 procs inventory bridge BKICMSTR+BKICLOC; T7JSAPBI: 29 procs Power BI launcher via ISJAVA task queue; T7JSASRS: 31 procs SQL Reporting Services launcher; T7JSOI: 45 procs order integration BKARINV+BKAPPO); all 7 programs identified, purpose from DB fingerprint; invoke EvoPVT.jar via ISJAVA — **C: 58/100**
-- [x] 🔄 **BS** — Business Score/Summary Dashboard (T7BS: 162 procs); ISBSF (143f, fully documented): PK=STARTDATE+ENDDATE; AR/AP/SO/PO/WO/IC KPIs + CASH_TOTA+ACT1..9 + CASH_ACTS_1..100 (100-period GL history) + WOS_SETUP/LAB/OUTP/MAT/FOH/VOH/MEXT/FP/WIPV (WO cost breakdown) + EXTRA; opens 40+ tables including all major modules; also surfaced as QU-D Business Status (EVOBS) — **C: 65/100**
+- [x] 🔄 **JS** — JS Integration / Reporting Bridges; Pass 44: 9+ programs identified: T7JSETTINGS(70p, FILELOC config)+T7JUPD(27p, deploy)+T7JSACC(50p, AR accounts)+T7JSAIC(50p, item-customer)+T7JSAPBI(50p, AP BI)+T7JSASRS(50p, AR sales)+T7JSOI(50p, SO invoice)+T7JSQL(52p, SQL query)+T7JTREE(52p, tree view)+T7JTEMP(27p stub); all share 64-table ISDRILL-based DB set; export EvoERP data to JS-based BI layer (Sisense/similar); T7JSETTINGS configures connection, T7JUPD deploys; purpose fully confirmed — **C: 68/100**
+- [x] 🔄 **BS** — Business Score/Summary Dashboard (T7BS: 162 procs); ISBSF (143f, fully documented): PK=STARTDATE+ENDDATE; AR/AP/SO/PO/WO/IC KPIs + CASH_TOTA+ACT1..9 + CASH_ACTS_1..100 (100-period GL history) + WOS_SETUP/LAB/OUTP/MAT/FOH/VOH/MEXT/FP/WIPV (WO cost breakdown) + EXTRA; opens 40+ tables including all major modules; Pass 44: ISGLDATE(86f) in T7BS DB set confirmed (7-year fiscal calendar for period arithmetic); ISBSF+ISGLDATE+GL set fully explains KPI calculation — **C: 72/100**
 - [x] 🔄 **AD (ADCA)** — Advanced Data Collection (T7ADCA: 290 procs, 55 unique tables); full auto shop floor DC: BKDCLAB+WORKORD+BKPRMSTR+BKDCSHFT(34f, 3-shift config)+ISWOEX(63f, WO extended)+ISROUTEX(100f, routing cycle times per 10 machines)+ISWOROEX(60f, per-WO-op extension)+OPQCDESC(10f, per-op QC result)+ISWOTRAY(52f)+EIMCOLST(not in DDF); operator scans→posts BKDCLAB→updates WOLABOR/WOROUT — **C: 62/100**
 - [x] 🔄 **IT** — Item Serial/Barcode/Cycle Config (T7ITMCFG: 66 procs); opens ISSERCNT+BKICMSTR+BKGLCOA+SERIAL+ISNCR+IS2DBAR+ISCYCLCD; ISSERCNT(9f)=serial counter per item, IS2DBAR(109f)=2D barcode format config, ISCYCLCD(7f)=cycle count frequency code; all 3 schemas extracted — **C: 62/100**
 - [x] 🔄 **CH** — Multi-Location Chain (T7CHAIN: 62 procs, ISCHAINM+BKPSUSER+BKSYMSTR+LANGDICT; T7CHAINM: 40 procs, ISCHAINM+FILEDICT); ISCHAINM(17f)=USER(15)+PARENT(12)+CHILD(12) PK + PARAM_1..10(15 each)+AUTO(1)+DATE+DESC(100)+EXTRA(100); defines parent-child company relationships for multi-company chains; 2 programs confirmed; LANGDICT in T7CHAIN confirms multi-language chain deployments — **C: 72/100**
@@ -1020,7 +1020,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: ES/Estimating | **72** | 75 | **7** ↑ | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
-| Module: CC/Credit Card ⚠️ | **65** | 78 | **13** NEW | 2026-06-15 |
+| Module: CC/Credit Card ⚠️ | **72** | 78 | **6** ↑ | 2026-06-17 |
 | Module: SP/SPC ⚠️ | **68** | 75 | **8** ↑ | 2026-06-17 |
 | Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
 | Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
@@ -1048,10 +1048,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: LI/License Access | **65** | 65 | **0** ✅ | 2026-06-17 |
 | Subsystem: EDII/EDI Invoice Import | **60** | 65 | **5** ↑+15 | 2026-06-17 |
 | Subsystem: LG/LGS Custom | **62** | 68 | **6** ↑+10 | 2026-06-17 |
-| Subsystem: JS/Reporting Bridges | **58** | 60 | **2** ↑+16 | 2026-06-17 |
-| Subsystem: BS/Business Score | **65** | 65 | **0** ✅+23 | 2026-06-17 |
-| Subsystem: AD/Advanced DC | **48** | 65 | **17** NEW | 2026-06-17 |
-| Subsystem: IT/Item Serial Config | **40** | 60 | **20** NEW | 2026-06-17 |
+| Subsystem: JS/Reporting Bridges | **68** | 70 | **2** ↑ | 2026-06-17 |
+| Subsystem: BS/Business Score | **72** | 72 | **0** ✅ | 2026-06-17 |
+| Subsystem: AD/Advanced DC | **62** | 68 | **6** ↑ | 2026-06-17 |
+| Subsystem: IT/Item Serial Config | **62** | 65 | **3** ↑ | 2026-06-17 |
 | Module: SD/Standard Detail | **68** | 68 | **0** ✅ | 2026-06-17 |
 | Module: SL/Shop Loading | **58** | 65 | **7** ↑+10 | 2026-06-17 |
 | Module: AL/Audit Log+AltPart | **62** | 68 | **6** ↑+10 | 2026-06-17 |
@@ -1060,8 +1060,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: BR/Brands | **58** | 65 | **7** ↑+10 | 2026-06-17 |
 | Module: NE/New Company Init | **65** | 65 | **0** ✅ | 2026-06-17 |
 | Module: JO/Jobs+Departments | **62** | 68 | **6** ↑+10 | 2026-06-17 |
-| Module: FN/File Navigator | **58** | 65 | **7** NEW | 2026-06-17 |
-| Module: XC/CC Cross-Ref | **55** | 65 | **10** NEW | 2026-06-17 |
+| Module: FN/File Navigator | **65** | 65 | **0** ✅ | 2026-06-17 |
+| Module: XC/CC Cross-Ref | **68** | 68 | **0** ✅ | 2026-06-17 |
 | Module: IT/Item Config | **62** | 68 | **6** NEW | 2026-06-17 |
 | Module: EM/Emergency GL | **60** | 65 | **5** ↑+10 | 2026-06-17 |
 | Module: RT/RTM Validator | **45** | 60 | **15** NEW | 2026-06-17 |
