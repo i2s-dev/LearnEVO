@@ -336,7 +336,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - BKSY\* (8 tables — System / Configuration)
 - [x] ✅ MT\* family (second-gen master tables) — **C: 55/100**
 - [x] ✅ WO\* family (30 tables — Work Orders) — **C: 65/100**
-- [x] ✅ IS\* (tax, utilities, Java integration — ISJAVA table) — **C: 60/100**
+- [x] ✅ IS\* (tax, utilities, Java integration — ISJAVA table) — **C: 68/100** (Pass 22–23: ISLBLMAP/IS2DBAR/ISUSAGE/ISAPAINL/ISALINKS/ISLINKS/ISESTASM/ISESADTL/ISMICADT/ESA/EST/ISTAXGRP all field-documented; ~200 smaller IS\* tables remain)
 - [x] ✅ AHSYLOG (security / user table) — **C: 72/100**
 - [ ] ⬜ Full per-table narrative documentation (see §16 for checklist)
 - [ ] ⬜ MT\* vs. BK\* scope difference confirmed (which company, which generation)

@@ -127,6 +127,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Tier 2 tables — BKSLEVEL (SOLVED), BKPRGLFL (SOLVED), BKAPPO, BKAPPOL, WO detail tables, payroll, BKYSMSTR YN flags](04-data-dictionary/tier2-tables.md) — *partial*
 - [Tier 3 tables — MTICMSTR (MT inventory master), BKBMMSTR (BOM), BKRTEMTR (MT routing), WORKCTR, ISNOTES, ISSCHED (scheduler), BKRTCST, BKRTSPEC](04-data-dictionary/tier3-tables.md) — *partial, 2026-06-17*
 - [Tier 4 tables — BKCM* Contact Manager family (46 tables), ISLBLMAP (label→RTM mapping, 102 fields), IS2DBAR (2D barcode config, 109 fields), BKSOLOCK, BKSOHLOT/BKSOHSER](04-data-dictionary/tier4-tables.md) — *partial, 2026-06-17*
+- [Tier 5 tables — ISUSAGE (246f, 7yr usage history), ISAPAINL (390f, AP 75-GL-line archive), ISALINKS/ISLINKS (311f, document attachments), ISESTASM (213f, MT estimate master), ISESADTL (203f), ISMICADT/ESA/EST (108f each, costing snapshots), ISTAXGRP (105f, tax groups), ISPRMSTR (384f, extended payroll master)](04-data-dictionary/tier5-tables.md) — *partial, 2026-06-17*
 - [Variable-to-field name map — TAS program variable names (BKIC.PROD.*, BKAR.*, BKAP.*) mapped to DB fields](04-data-dictionary/variable-field-map.md) — *verified, 2026-06-16*
 - [Primary keys — 200+ tables with primary key fields from INDEX.DDF](04-data-dictionary/primary-keys.md) — *partial*
 

@@ -1967,6 +1967,17 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 | **BKRTSPEC** | Routing special notes — 4 note lines per operation | BKRT_SPEC_PART + BKRT_SPEC_SEQ + BKRT_SPEC_LINE | 7 |
 | **ISLBLMAP** | Label definition/mapping — links item+variant to an .RTM template; 30 color-customizable field slots; customer/vendor-specific label support | IS_LABEL_ITEM + IS_LABEL_NUM | 102 |
 | **IS2DBAR** | 2D barcode field config — which data fields appear in 2D barcodes per item, in what order, and on which document types (40 document-print flags) | IS2D_BAR_CODE + IS2D_BAR_ITEM + IS2D_BAR_ORDER | 109 |
+| **ISUSAGE** | Item usage history — 26-period rolling qty/amount + 5 prior years (13 periods/year) per item per type; used by MRP/forecasting | ISTS_USE_CODE + ISTS_USE_TYPE | 246 |
+| **ISAPAINL** | AP invoice line archive — AP invoice header + up to 75 GL distribution lines (account + amount + D/C + dept per line) | BKAP_INVL_CODE + BKAP_INVL_NUM | 390 |
+| **ISLINKS** | Document attachment links — attach file paths/URLs to any EvoERP entity via IS_LNK_UID composite key; 100 type flag slots | IS_LNK_UID | 311 |
+| **ISALINKS** | Archived document links — identical schema to ISLINKS; stores archived/historical link records | IS_LNK_UID | 311 |
+| **ISESTASM** | MT Estimate summary — quote master with 10 qty-break pricing, full cost breakdown (material/labor/setup/OH/outside-proc/misc) per break | MTESUM_QUOTE | 213 |
+| **ISESADTL** | IS Estimate detail — line-level components per estimate, qty + cost at all 10 qty breakpoints | IS_EST_NUM + IS_EST_PART + IS_EST_LINE | 203 |
+| **ISMICADT** | MT inventory costing snapshot — actual cost detail; same 108-field schema as MTICMSTR | MTIC_PROD_CODE | 108 |
+| **ISMICESA** | MT inventory costing snapshot — estimated standard (average); same 108-field schema as MTICMSTR | MTIC_PROD_CODE | 108 |
+| **ISMICEST** | MT inventory costing snapshot — estimated standard; same 108-field schema as MTICMSTR | MTIC_PROD_CODE | 108 |
+| **ISTAXGRP** | Tax group definition — groups 9 tax codes with percentage rates, freight flags, and 12-month collected tax tracking | ISIS_TXG_NAME | 105 |
+| **ISPRMSTR** | IS extended payroll employee master — 19 user-defined deductions/earnings with QTD/YTD/limit per slot | BKPR_EMP_NUM | 384 |
 | **BKCMACCN** | CM contact names — up to 10 contacts per CRM account (name, title, phone, email) | BKCM_ACCN_CODE | 154 |
 | **BKCMCUST** | CM customer view — mirrors BKARCUST field layout; used by Contact Manager when accessing AR customer data | BKAR_CUSTCODE | 106 |
 | **BKCMMHST** | CM marketing history — activity date, description, 9 classification codes per entry | BKCM_MHST_MCODE | 72 |
