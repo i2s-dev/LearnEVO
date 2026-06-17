@@ -471,6 +471,125 @@ File: `BKSOX.B` | Module: SO | Fields: 25
 
 ---
 
-*Document generated: 2026-06-11*
+---
+
+## BKGLTRAN — GL Journal Transactions
+
+File: `BKGLTRAN.B` | Module: GL | Fields: 16
+
+The audit-trail transaction table. Every accounting posting (AR, AP, PO, WO, etc.) creates
+a BKGLTRAN record with the GL account, amount, D/C flag, and source reference.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKGL_TRN_GLACCT | STRING | 10 | GL account number (FK → BKGLCOA) |
+| 2 | BKGL_TRN_GLDPT | STRING | 4 | GL department |
+| 3 | BKGL_TRN_DATE | DATE | 4 | Transaction date |
+| 4 | BKGL_TRN_CODE | STRING | 10 | Source code (customer/vendor/item) |
+| 5 | BKGL_TRN_INVC | STRING | 10 | Invoice/reference number |
+| 6 | BKGL_TRN_DESC | STRING | 25 | Transaction description |
+| 7 | BKGL_TRN_DC | STRING | 1 | Debit/credit flag |
+| 8 | BKGL_TRN_AMT | FLOAT | 8 | Transaction amount |
+| 9 | BKGL_TRN_TYPE | STRING | 2 | Transaction type code (AR/AP/WO/etc.) |
+| 10 | BKGL_TRN_ENTDTE | DATE | 4 | Entry date (when posted to system) |
+| 11 | BKGL_TRN_EXTRA | STRING | 25 | Extra/notes |
+| 12 | BKGL_TRN_TRXN | FLOAT | 8 | Transaction sequence number |
+| 13 | BKGL_TRN_POST | STRING | 1 | Posted flag (Y=posted, N=pending) |
+| 14 | BKGL_TRN_PERIOD | UBINARY | 2 | Fiscal period number |
+| 15 | BKGL_TRN_BATCH | FLOAT | 8 | Batch number (for batch posting) |
+| 16 | BKGL_TRN_PART | STRING | 15 | Item/part number (where applicable) |
+
+**Confidence: 80/100** — All 16 fields extracted and interpreted; TYPE code values not confirmed.
+
+---
+
+## BKARINVT — AR Invoice Transactions (Payments)
+
+File: `BKARINVT.B` | Module: AR | Fields: 23
+
+The AR payment application table. Each row represents a payment applied to an invoice.
+This is the table EvoERP uses to track what's been paid, when, and by which check/deposit.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAR_INVT_CODE | STRING | 10 | Customer code (PK part 1) |
+| 2 | BKAR_INVT_DATE | DATE | 4 | Payment application date |
+| 3 | BKAR_INVT_NUM | FLOAT | 8 | Invoice number (PK part 2) |
+| 4 | BKAR_INVT_AMT | FLOAT | 8 | Invoice amount |
+| 5 | BKAR_INVT_AMTRM | FLOAT | 8 | Amount remaining (open balance) |
+| 6 | BKAR_INVT_DESC | STRING | 25 | Description |
+| 7 | BKAR_INVT_TERMN | UBINARY | 2 | Terms net days |
+| 8 | BKAR_INVT_TYPE | STRING | 1 | Transaction type (I=invoice, C=credit, D=deposit) |
+| 9 | BKAR_INVT_GLDPT | STRING | 4 | GL department |
+| 10 | BKAR_INVT_SLSP | UBINARY | 2 | Salesperson 1 |
+| 11 | BKAR_INVT_DEPST | STRING | 1 | Deposit status flag |
+| 12 | BKAR_INVT_SLSP2 | UBINARY | 2 | Salesperson 2 |
+| 13 | BKAR_INVT_EXTRA | STRING | 50 | Extra/notes |
+| 14 | BKAR_INVT_PDATE | DATE | 4 | Payment date |
+| 15 | BKAR_INVT_MCRAT | FLOAT | 8 | Multi-currency exchange rate |
+| 16 | BKAR_INVT_MCCOD | STRING | 3 | Multi-currency code |
+| 17 | BKAR_INVT_TRXN | FLOAT | 8 | Transaction sequence number |
+| 18 | BKAR_INVT_CHKNO | FLOAT | 8 | Check number that paid this invoice |
+| 19 | BKAR_INVT_DEPNO | FLOAT | 8 | Deposit number (FK → BKARDEP) |
+| 20 | BKAR_INVT_CHKAC | UBINARY | 2 | Check account (bank account) |
+| 21 | BKAR_INVT_OPEND | DATE | 4 | Open date (when invoice opened) |
+| 22 | BKAR_INVT_CLOSD | DATE | 4 | Close date (when fully paid) |
+| 23 | BKAR_INVT_NORMP | STRING | 1 | Normal payment flag (Y/N) |
+
+**Key workflow:** When AR payment is posted, a BKARINVT row is updated: AMTRM decreases
+to zero when fully paid, CLOSD is populated, and CHKNO/DEPNO link to the payment source.
+
+**Confidence: 78/100** — All 23 fields extracted and interpreted from names; TYPE code values
+not confirmed.
+
+---
+
+## BKARDEP — AR Customer Deposits
+
+File: `BKARDEP.B` | Module: AR/MA | Fields: 6
+
+Customer deposit master. Referenced by MA module (T7MAPDEPO) and linked from BKARINVT.BKAR_INVT_DEPNO.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAR_DEP_DEPNO | FLOAT | 8 | Deposit number (PK) |
+| 2 | BKAR_DEP_CUST | STRING | 10 | Customer code (FK → BKARCUST) |
+| 3 | BKAR_DEP_DATE | DATE | 4 | Deposit date |
+| 4 | BKAR_DEP_SO | FLOAT | 8 | Sales order number (FK → BKSOMSTR) |
+| 5 | BKAR_DEP_SR | STRING | 1 | Status/received flag |
+| 6 | BKAR_DEP_EXTRA | STRING | 50 | Extra/notes |
+
+**Confidence: 72/100** — All 6 fields interpreted; SR flag values not confirmed.
+
+---
+
+## BKARCHKH / BKARCHKF — AP Check History
+
+Files: `BKARCHKH.B`, `BKARCHKF.B` | Module: AP | Fields: 12 each (identical schema)
+
+Note: Despite the "AR" prefix, these use BKAP_CHK_ fields and are AP check records.
+BKARCHKH = active/history, BKARCHKF = final/cleared checks. Both store same data at
+different lifecycle stages.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAP_CHK_VNDCOD | STRING | 10 | Vendor code (FK → BKAPVEND) |
+| 2 | BKAP_CHK_INVNUM | STRING | 10 | Invoice number being paid |
+| 3 | BKAP_CHK_INVAMT | FLOAT | 8 | Invoice total amount |
+| 4 | BKAP_CHK_AMTPD | FLOAT | 8 | Amount paid by this check |
+| 5 | BKAP_CHK_DISC | FLOAT | 8 | Discount taken |
+| 6 | BKAP_CHK_TYPE | STRING | 1 | Payment type (C=check, W=wire, etc.) |
+| 7 | BKAP_CHK_DESC | STRING | 25 | Description |
+| 8 | BKAP_CHK_INVDTE | DATE | 4 | Invoice date |
+| 9 | BKAP_CHK_NUM | FLOAT | 8 | Check number |
+| 10 | BKAP_CHK_CHKACT | UBINARY | 2 | Check account (bank account) |
+| 11 | BKAP_CHK_CHKDTE | DATE | 4 | Check date |
+| 12 | BKAP_CHK_ISCUR | STRING | 3 | Currency code (multi-currency) |
+
+**Confidence: 78/100** — All 12 fields interpreted; TYPE flag values not confirmed.
+
+---
+
+*Document updated: 2026-06-17 (Pass 25)*
 *Source: `samples/ddf/schema.md` + SRC analysis + DFM analysis*
 *Confidence: 68/100 — Field names and types confirmed from DDF schema. Field meanings inferred from naming conventions and confirmed where SRC source code references the fields directly.*

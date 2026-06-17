@@ -876,28 +876,30 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
 
 One documentation page needed per table with: all fields, types, meanings, PK, FKs, which module uses it.
 
-**Status:** Schema extracted (field names + types) but narrative documentation = 0 tables complete.
+**Status:** Many tier-1 tables now documented in tier1–tier5-tables.md.
 
 ### Priority Tier 1 — Core Transaction Tables (must reach C: 80+ to hit 90% goal)
-- [ ] ⬜ BKARCUST — AR Customer master
-- [ ] ⬜ BKARINVH — AR Invoice header
-- [ ] ⬜ BKARINVL — AR Invoice detail
-- [ ] ⬜ BKARPMT — AR Payment
-- [ ] ⬜ BKAPCUST — AP Vendor master
-- [ ] ⬜ BKAPINVH — AP Invoice header
-- [ ] ⬜ BKAPINVL — AP Invoice detail (390 fields)
-- [ ] ⬜ BKAPCHKH — AP Check header
-- [ ] ⬜ BKICMSTR — Inventory Item master
-- [ ] ⬜ BKGLACCT — GL Account master
-- [ ] ⬜ BKGLJRNL — GL Journal entry
-- [ ] ⬜ WORKORD — Work Order header
-- [ ] ⬜ WORKCHG — Work Order detail / charges
-- [ ] ⬜ BKBMMSTR — BOM master
-- [ ] ⬜ BKBMCOMP — BOM components
-- [ ] ⬜ AHSYLOG — User security
-- [ ] ⬜ ISJAVA — Java task queue
-- [ ] ⬜ BKLOGON — Active sessions
-- [ ] ⬜ BKSYMSTR — System configuration
+- [x] ✅ BKARCUST — AR Customer master — tier1-tables.md **C: 82/100**
+- [x] ✅ BKARINV — AR Invoice header — tier1-tables.md **C: 78/100**
+- [x] ✅ BKARINVL — AR Invoice detail — tier1-tables.md **C: 78/100**
+- [x] ✅ BKARINVT — AR Payment application (= "BKARPMT") — tier1-tables.md **C: 78/100**
+- [x] ✅ BKARDEP — AR Customer deposits — tier1-tables.md **C: 72/100**
+- [x] ✅ BKARCHKH/F — AP Check history — tier1-tables.md **C: 78/100**
+- [x] ✅ BKAPVEND — AP Vendor master — tier1-tables.md **C: 80/100**
+- [ ] ⬜ BKAPINVH — AP Invoice header (not yet found in schema — may be BKAPINV)
+- [x] ✅ BKAPINVL — AP Invoice detail — tier1-tables.md **C: 78/100**
+- [x] ✅ BKAPCHKH — AP Check header — tier1-tables.md **C: 78/100**
+- [x] ✅ BKICMSTR — Inventory Item master — tier1-tables.md **C: 75/100**
+- [x] ✅ BKGLCOA — GL Chart of Accounts — tier1-tables.md **C: 80/100**
+- [x] ✅ BKGLTRAN — GL Journal transactions — tier1-tables.md **C: 80/100**
+- [x] ✅ WORKORD — Work Order header — tier1-tables.md **C: 80/100**
+- [x] ✅ WORKCHG — Work Order detail / charges — tier1-tables.md **C: 78/100**
+- [x] ✅ BKBMMSTR — BOM master — tier3-tables.md **C: 78/100**
+- [x] ✅ BKBMAVAL/BKBMAMTR — BOM components — tier3-tables.md **C: 75/100**
+- [x] ✅ AHSYLOG — User security — tier1-tables.md **C: 82/100**
+- [ ] ⬜ ISJAVA — Java task queue — documented in architecture but not schema-page
+- [x] ✅ BKLOGON — Active sessions — tier1-tables.md **C: 78/100**
+- [x] ✅ BKSYMSTR — System configuration — tier1-tables.md **C: 72/100**
 
 ### Priority Tier 2 — Supporting Tables
 - [ ] ⬜ All remaining BKAP\* (24 tables)
