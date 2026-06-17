@@ -521,8 +521,9 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Menu codes listed (12 operations) — **C: 65/100**
 - [x] ✅ Tables: BKMR\* (3 tables) — BKMRPFC(9f: MRP demand forecast PART+DATE+QTY+OQTY+CQTY+FLAG), BKMRPPO(16f: planned PO PART+DATE+ERD+QTY+PRICE+WOPRE/WOSUF+PLANR+CONF+EST link), BKMRPSW(2f: per-part on/off switch); all schemas extracted; MRP demand→planned-PO flow confirmed — **C: 62/100**
 - [x] ✅ Source file: BKMRF.SRC (MRP logic analyzed) — **C: 62/100**
-- [ ] ⬜ Full MRP calculation cycle traced
-- [ ] ⬜ All BKMR\* tables with fields documented
+- [x] ✅ Pass 45: All 17 T7MR* programs mapped (T7MRA through T7MRO). Full demand-to-release lifecycle: MR-A(forecast entry) → MR-F(explosion engine→MTMRP) → MR-G(firm, BKSBVEND/BKSBMFG select vendor) → MR-H(release→WORKORD+BKAPPO) → MR-I/IX(capacity scheduling with ROUTING+CALENDAR) → MR-J(PO/RFQ via BKRFQ 49f). MTMRP(13f) extracted: PARTNO+DATE PK, PEGTO(demand tracing), ACTION lifecycle. BKRFQ(49f): 10 qty/cost breakpoints, shared by both RF (estimates) and MR (MRP). CALENDAR(5f): SAT+SUN work flags. BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f): approved-source tables used by MR-G vendor selection — **C: 80/100**
+- [x] ✅ Full MRP calculation cycle traced (T7MRF explosion → MTMRP → firm/release)
+- [x] ✅ All core BKMR\*/MTMRP/support tables documented with fields
 
 ### 7.10 Routing (RO)
 - [x] ✅ Menu codes listed (19 operations) — **C: 65/100**
@@ -1075,8 +1076,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Platform: WBKLOOKUP/Lookup Framework | **55** | 70 | **15** NEW | 2026-06-17 |
 | Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **65** | 80 | **15** NEW | 2026-06-17 |
-| Module: MR/MRP Engine | **62** | 78 | **16** NEW | 2026-06-17 |
-| Tables: BKMR*/MRP Support | **62** | 72 | **10** NEW | 2026-06-17 |
+| Module: MR/MRP Engine | **80** | 85 | **5** ↑+18 Pass45 | 2026-06-17 |
+| Tables: BKMR*/MRP Support | **72** | 78 | **6** ↑+10 Pass45 | 2026-06-17 |
 | Tables: BKED*/EDI | **65** | 72 | **7** NEW | 2026-06-17 |
 | Tables: BKES*/Estimating | **65** | 72 | **7** NEW | 2026-06-17 |
 | Module: YS/YN Flags Editor | **60** | 68 | **8** NEW | 2026-06-17 |

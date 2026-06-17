@@ -4210,4 +4210,149 @@ Java integration used for ISJAVA-dependent features (barcode generation, web con
 
 ---
 
-*Last updated: 2026-06-17 (Pass 44). ISGLDATE(86f)/ISDROP(4f)/ISCC(14f)/ISSHIPCO(16f)/ISREPORD(17f) schemas extracted. JS module 9-program BI bridge confirmed. T7EWC/T7BS/T7FNR/T7XCUTIL/T7JAVASET fingerprints identified. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MR — MRP ENGINE — Pass 45
+
+### Overview: 17 Programs, Full Lifecycle
+
+MRP in EvoERP is managed by T7MRA through T7MRO (17 programs). The engine uses three phases:
+1. **Demand capture** (MR-A/B/C): enter forecasts + review SO demand
+2. **Explosion** (MR-F/G/H/I): run MRP → generate MTMRP → firm → release
+3. **Action** (MR-J/L/N): generate RFQs / POs / change notices / reports
+
+| Program | Procs | Operation | Key tables |
+|---|---|---|---|
+| T7MRA | 65 | MR-A: Demand forecast entry | BKMRPFC+BKICMSTR |
+| T7MRADE | 75 | MR-A extended (with doc attachments) | BKMRPFC+ISLINKS |
+| T7MRB | 117 | MR-B: MRP system parameters | BKMRPFC+BKSYMSTR+CLASS+CLASMSTR |
+| T7MRC | 108 | MR-C: Demand review (forecast vs SO) | BKMRPFC+BKARINVL+MTICMSTR |
+| T7MRD | 121 | MR-D: Inventory status pre-check | BKICLOC+INVTXN+BKICLOCM |
+| T7MRE | 120 | MR-E: Item-location exception report | BKICLOC+BKICLOCM+MTICMSTR |
+| **T7MRF** | **172** | **MR-F: MRP explosion engine (core run)** | **MTMRP+BKMRPFC+BKARINVL+WOBOM+BKAPPOL+BKARINV+WORKORD+BKMRPPO** |
+| T7MRG | 188 | MR-G: Firm planned orders → POs | MTMRP+BKSBVEND+BKSBMFG+BKAPPO+BKBMMSTR |
+| T7MRH | 193 | MR-H: Release/post planned orders | ISBUILD+MTMRP→WORKORD+BKAPPO via INVTXN |
+| T7MRI | 171 | MR-I: Capacity-aware scheduling | MTMRP+ROUTING+WOROUT+WORKCTR+ISICMSTR |
+| T7MRIX | 130 | MR-IX: Extended capacity scheduling | CALENDAR+WODATE+WOBOM+WORKORD+MTMRP |
+| T7MRJ | 206 | MR-J: PO/RFQ recommendations | MTMRP+BKMRPPO+BKRFQ+BKAPPO+BKSBVEND |
+| T7MRJX | 123 | MR-JX: Release planned POs | BKMRPPO→BKAPPO with ISTERMS |
+| T7MRK | 5 | MR-K: Sub-routine (stub of MR-JX) | same as MRJX |
+| T7MRL | 85 | MR-L: MRP report | MTMRP display |
+| T7MRN | 95 | MR-N: PO change notices | ISBUILD+MTMRP+BKAPPO+ISAPCHG |
+| T7MRO | 113 | MR-O: MTMRP maintenance/cleanup | ISBUILD+MTMRP+MTICMSTR |
+
+---
+
+### MRP Data Flow
+
+```
+BKMRPFC (demand forecasts)
+BKARINVL (open SO lines)         → T7MRF (explosion) → MTMRP (planned orders)
+BKICMSTR/BKICLOC (on-hand)
+WOBOM (BOM explosion)
+
+MTMRP → T7MRG (firm, uses BKSBVEND to select vendor)
+      → T7MRH (release → WORKORD + BKAPPO created)
+      → T7MRI/MRIX (capacity scheduling with ROUTING + CALENDAR)
+      → T7MRJ (PO/RFQ via BKRFQ + BKMRPPO)
+      → T7MRL (report)
+      → T7MRN (change notices via ISAPCHG)
+```
+
+---
+
+### MTMRP (13f) — MRP Planned Orders Working Table
+
+Created by T7MRF (explosion) and consumed by MRG/MRH/MRI/MRJ:
+
+- MTMRP_PARTNO(15) + DATE(4) — part + required date (PK)
+- MTMRP_QTY(8) — planned quantity
+- MTMRP_ONHAND(8) — on-hand at calculation time
+- MTMRP_PEGTO(10) — demand source link (SO#, WO#, or forecast ref)
+- MTMRP_ORDER(10) — planned order type/number
+- MTMRP_STARTDT(4) — planned start date
+- MTMRP_ACTION(10) — planner action code (RELEASE, FIRM, CANCEL, etc.)
+- MTMRP_PG_SDATE(4) + PG_FDATE(4) + PG_QTY(8) — pegging: peg start/finish/qty
+- MTMRP_LOC(10) — inventory location
+- MTMRP_EXTRA(50)
+
+PEGTO is the critical field: it traces each planned order back to the demand that drove it (an SO line, a WO requirement, or a forecast). This is MRP "pegging" — the ability to answer "why was this order created?"
+
+---
+
+### BKRFQ (49f) — Vendor Request for Quote
+
+Vendor RFQs with 10 quantity/cost breakpoints. Sources: MRP (T7MRJ), WO outside process, estimates (T7RFQ).
+
+- BKRFQ_NUM(8) — RFQ number (PK)
+- BKRFQ_EST(8) + EST_LINE(8) — link to estimate (ES module)
+- BKRFQ_PARENT(15) + OPER(2) — parent item + operation (for outside-process RFQs)
+- BKRFQ_PROD(15) — component item requested
+- BKRFQ_WOPRE(8) + WOSUF(2) — WO reference (WO-based RFQs)
+- BKRFQ_VEND(10) + VENDNAME(25) — vendor
+- BKRFQ_ISSUE(4) — issue date
+- BKRFQ_PUM(3) + PCONV(8) + LEAD(2) — unit of measure, conversion, lead time
+- BKRFQ_EXP(4) — quote expiry date
+- BKRFQ_QTY_1..10 (8 each) — 10 quantity breakpoints
+- BKRFQ_COST_1..10 (8 each) — quoted costs at each qty break
+- BKRFQ_MIN(8) + MINCST(8) — minimum order qty + cost
+- BKRFQ_LCDATE(4) + CWHO(15) + UWHO(15) — last update date/who/updater
+- BKRFQ_CQCHANGE(1) + FLAG(1) — change and status flags
+- BKRFQ_GDATE(4) + MAXDAYS(2) — guarantee date + max lead days
+- BKRFQ_ALPHA1(15) + EXTRA(50)
+
+**Key insight:** BKRFQ is used by BOTH the RF module (estimate-based RFQs via T7RFQ + ISESTDTL) AND the MR module (MRP-driven RFQs via T7MRJ). The EST link and WOPRE/WOSUF fields distinguish the two use cases.
+
+---
+
+### CALENDAR (5f) — Shop Work Calendar
+
+- MTCAL_DATE(4) — date (PK)
+- MTCAL_DESC(25) — description (holiday name, note)
+- MTCAL_SAT(1) — Saturday is a working day (Y/N)
+- MTCAL_SUN(1) — Sunday is a working day (Y/N)
+- MTCAL_YEAR(2) — year
+
+Used by T7MRIX for finite capacity scheduling — non-working days are skipped when computing planned order start/finish dates. The MT prefix confirms this is from the DBA/MT era but still in use for MRP date arithmetic.
+
+---
+
+### BKSB* — Sourced-By Tables (Approved Vendor / Manufacturer / Substitute)
+
+Three tables that define approved sources for each item. Used by T7MRG to select the preferred vendor when firming planned orders:
+
+**BKSBVEND (6f)** — Approved vendor list:
+- BKSB_VEND_PARNT(15) + PROD(15) + CUST(10) — parent item + component + customer (PK)
+- BKSB_VEND_VEND(10) — approved AP vendor code
+- BKSB_VEND_VPART(25) — vendor's own part number
+- BKSB_VEND_EXTRA(50)
+
+**BKSBMFG (6f)** — Approved manufacturer list:
+- BKSB_MFG_PARNT(15) + PROD(15) + CUST(10) — PK
+- BKSB_MFG_MANUF(25) — manufacturer name
+- BKSB_MFG_MPART(25) — manufacturer's part number
+- BKSB_MFG_EXTRA(50)
+
+**BKSBPART (5f)** — Substitute/alternate parts:
+- BKSB_PART_PARNT(15) + PROD(15) + CUST(10) — PK
+- BKSB_PART_SUBST(15) — substitute item code (FK → BKICMSTR)
+- BKSB_PART_EXTRA(50)
+
+The CUST field in all three allows customer-specific source overrides (e.g., customer A requires parts from vendor X; customer B allows vendor Y).
+
+---
+
+### New Tables Confirmed (Pass 45)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| MTMRP | 13 | MRP planned orders working table — PARTNO+DATE PK; QTY+ONHAND+PEGTO+ORDER+STARTDT+ACTION+LOC |
+| BKRFQ | 49 | Vendor RFQ — NUM PK; VEND+PARENT+PROD+WOPRE/WOSUF+10×QTY/COST breaks+EXP+LEAD |
+| CALENDAR | 5 | Shop work calendar — DATE PK; SAT+SUN work flags; used by MRP scheduling |
+| BKSBVEND | 6 | Approved vendor list — PARNT+PROD+CUST PK; VEND+VPART |
+| BKSBMFG | 6 | Approved manufacturer list — PARNT+PROD+CUST PK; MANUF+MPART |
+| BKSBPART | 5 | Substitute part list — PARNT+PROD+CUST PK; SUBST item code |
+
+---
+
+*Last updated: 2026-06-17 (Pass 45). MR module fully mapped: 17 programs, complete demand-to-release workflow, MTMRP(13f)/BKRFQ(49f)/CALENDAR(5f)/BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f) extracted. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
