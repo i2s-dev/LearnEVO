@@ -624,7 +624,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **SL** — t7slsfc.RWN (5 procs): BKARINVL+BKYSMSTR — Sales Forecast utility; accesses AR invoice lines for demand calc — **C: 30/100**
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms + full T7SM* sub-module family decoded; SM-K (user prefs→EvoSettings.INI/ISNUMBER), SM-E/F (tax ISIS.TXF+ISIS.TXG), SM-O (ship-via ISSHPVIA with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (ISJOB job#), SM-PH (IS.CYCLE), SM-JM/JN (merge), SM-JC (JC setup), SM-SD (AP doc link); T7SMI* (CRM masters: BKCMLEAD/BKCMTERR/BKCMACFC/BKCMACCC/BKCMDTCD), T7SMP* (ISCATMST/ISUDMSTR/ISJOB), T7SMT/SMU (ISSHPVIA), T7SMTEND/SMTSET (SMT/PCB: ISSMTCFG/MACHINE); BKSYMSTR/BKYSMSTR not fully decoded — **C: 80/100**
 - [x] 🔄 **SP** — Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — CORRECTED) — all 6 DFMs read; SPC main entry (Inspector #/Employee/WO/Item/Qty/Customer/Drawing → IS.SERR.ERROR/PROCESS), SPCLIVEGRID (Caption='Top Real Time Errors'; ATYPE/ADETAIL/ACODE/ACOUNT), SPCLIVEREP (auto-refresh live report), SPCREP/SPCREP2 (WO/Part/Employee/Date range reports), SPCREPPPM (PPM defect rate with Sides range — PCB/electronics context); primary table IS.SERR.* — **C: 60/100**
-- [x] 🔄 **SR** — Service / Repair — 7 DFM files read; SR-K (equipment master ISSR.MMS.* — make/model/serial/IN-OUT dates/motor/WO#), SR-I (AR invoice browse), SR-E (invoice address edit, BKAR.INV.*); SO integration confirmed; T7SRA not found on share — **C: 58/100**
+- [x] 🔄 **SR** — Service / Repair — 16 RWN programs confirmed (T7SRA-T7SRK + SRDISPACH/SRBK/SRGA/SRINFO); SR Orders ARE BKARINV records (same as SO/AR); 5 ISSR*INV views = BKARINV (0 diff), 5 ISSR*IVL views = BKARINVL (0 diff); key tables: ISSRMMS (equipment 12f), ISSRINFO (configurable 54f), ISSOREVU (approval workflow 12f), ISARINVX (AR ext 4f); T7SRGA (157 procs) is full posting to BKGLTRAN+BKGLX+BKARHTAX+BKISTAX+ISTAXGRP — **C: 72/100**
 - [x] 🔄 **SU** — Setup / UI Configuration — CHM confirmed 4 ops: SU-A=Maintain Grid Lookups, SU-B=Maintain Drill Down Menus, SU-C=Forms Editor, SU-D=Grid Maintenance; configures EvoERP's UI layer (grid columns, drill-down menus, form layouts) — **C: 50/100**
 - [ ] ⬜ **SY** — no T7 RWN/DFM files found; BKSY* tables are System config (documented)
 - [x] 🔄 **TA** — TAS / System Administration — CHM confirmed 9 ops: TA-D=Maintain Database, TA-G=Maintain Menu Access Records, TA-H=Maintain Menu End User, TA-M=Forms Editor, TA-N=Program Scheduler, TA-O=Backup Utility, TA-Q=Change Logo Image, TA-R=SQL Editor, TA-S=Data Dictionary Check; the most powerful admin module — direct DB/menu/scheduler/backup/SQL access — **C: 55/100**
@@ -912,7 +912,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [x] 🔄 All remaining BKCM\* (46 tables) — top 5 field-documented (BKCMACCN 154, BKCMCUST 106, BKCMMHST 72, BKCMACCT 41, BKCMREP 14); 41 smaller tables identified but not field-extracted — **C: 55/100**
 - [ ] ⬜ All remaining BKSO\* (7 tables)
 - [ ] ⬜ All remaining BKDC\* (7 tables)
-- [x] 🔄 All remaining IS\* tables — ISLBLMAP (102 fields, label→RTM mapping), IS2DBAR (109 fields, barcode config), ISSCHED (24), ISNOTES (13) fully documented; ~240 IS\* fields remaining — **C: 48/100**
+- [x] 🔄 All remaining IS\* tables — ISLBLMAP (102f), IS2DBAR (109f), ISSCHED (24f), ISNOTES (13f); ISSRMMS (12f, SR equip), ISSRINFO (54f, SR ext), ISSOREVU (12f, approval), ISARINVX (4f, AR ext), ISSDET (4f), ISORDECO (13f), ISNTYPE (4f), ISUDFINV (8f), BKISTAX (13f), BKARHTAX (5f), ISARTXNB (23f) fully field-documented; ~220 IS\* remaining — **C: 52/100**
 - [x] ✅ BKSLEVEL (422 fields) — 20-menu × 20-op security matrix; PK=BKSL_MENU+BKSL_LEVEL; MENU{N}_YN = quick access flag; MENU{N}_1..20 = per-op flags — **C: 82/100**
 - [x] ✅ BKPRGLFL (664 fields) — payroll GL posting config; PK=STCODE+DEPT; standard taxes (FIT/FICA/FUTA/SUTA/SIT/SDI/WC/Medicare) each with GL acct+dept+rate+limit; 20 user-defined deductions × 13 sub-fields; 20 user-defined earnings; 46 tax-output/vendor slots — **C: 82/100**
 
@@ -999,7 +999,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: WC/Warehouse Control ⚠️ | **72** | 80 | **8** ↑ +17 | 2026-06-15 |
 | Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
 | Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
-| Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
+| Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **75** | 78 | **3** ↑ | 2026-06-17 |
 | Module: MA/AR Deposits | **40** | 65 | **25** NEW | 2026-06-17 |

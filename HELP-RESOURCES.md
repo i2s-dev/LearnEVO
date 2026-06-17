@@ -1074,22 +1074,40 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 
 **What it does:** Manages service and repair jobs — equipment master, service quotes, work order linkage, and AR invoicing for service work.
 
-**Menu codes:** SR (13 files in RWN analysis)
+**Menu codes:** SR-A through SR-T (9 menu ops); 16 RWN programs total including dispatch, backflush, and info sub-screens.
+
+**KEY ARCHITECTURE FACT — SR Orders are BKARINV records:** Service Orders share the same table as AR invoices and Sales Orders. There is no BKSR* master table. The ISSR* entries in the DDF are Btrieve alternate-index views into BKARINV/BKARINVL, not separate tables.
 
 **Key operations:**
-- **SR-K — Equipment Master:** ISSR.MMS.* fields: make, model, serial number, IN/OUT dates, motor data, linked WO#.
-- **SR-I — AR Invoice Browse:** Browse AR invoices linked to service records.
-- **SR-E — Invoice Address Edit:** BKAR.INV.* fields — billing address adjustments for service jobs.
-- **Service quotes:** QT module (T7QTINFO: ISSR.INFO.DATE[1..5] milestone dates) links to SR.
+- **SR-A — View/Enter Service Orders:** Main entry (T7SRA.RWN, 15 procs). Opens ISSDET, WORKORD, ISSPC, ISSERR, BKAPVEND, BKCMACCN. Creates BKARINV records (service type).
+- **SR-K — Equipment Master:** T7SRK.RWN. ISSRMMS — make/model/serial (50 chars each), in/out dates, linked WO#.
+- **SR-E — Release/Issue Parts:** T7SRE.RWN. Issues parts from WO to service order (INVTXN, BKICLOC, WOBOM, WOROUT). Checks IS2DBAR barcode config.
+- **SR-F — Print/Reprint Invoices:** T7SRF.RWN (form caption: "SO-F" — shared with SO). Opens BKCMACCT, BKISTAX, BKARHTAX, ISSRINFO.
+- **SR-G / SR-GA — Post Service Invoices:** T7SRGA.RWN (157 procs). Posts to BKGLTRAN+BKGLX+BKARCUST+BKARINVT+BKARHTAX+ISTAXGRP. Most complex SR program.
+- **SR-I — Inquiry:** T7SRI.RWN. Browse posted service invoices; opens ISSOBOX, BKSOLOCK for ship box tracking.
+- **SR-INFO — Misc. Information:** T7SRINFO.RWN. Reads/writes ISSRINFO — configurable 20-alpha + 5-date per service record.
+- **DISPATCH — Dispatch Manager:** T7SRDISPACH.RWN. View open service orders for scheduling.
+- **SR-BK — Live Work Center / Backflush:** T7SRBK.RWN. Opens WORKORD, WOROUT, BKDCLAB, BKPRMSTR — connects service ops to WO backflush.
 
-**Primary tables:**
+**Primary SR-specific tables:**
 
-| Table | Purpose |
-|-------|---------|
-| ISSR.MMS.* | Service equipment master — make/model/serial/dates/WO link |
-| IS.SERR.* | SPC/inspection error records (shared with SP module) |
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| ISSRMMS | 12 | Equipment per service line — MAKE(50), MODLE(50), SERIAL(50), INDATE, OUTDTE, EXTRA(150) |
+| ISSRINFO | 54 | Configurable service info — 20 ALPHA + 5 DATE slots × 2 groups |
+| ISARINVX | 4 | AR invoice extension — EXTRA1(100) + EXRTA2(100) for service use |
+| ISSOREVU | 12 | SO/SR approval workflow — DEPT, EMPNME, MOTPAS (override), APPROVE/REQUIRE flags |
+| ISSRFQH | 57 | Service RFQ header — identical structure to BKAPPO (PO table) |
+| ISSRFQL | 38 | Service RFQ lines — identical structure to BKAPPOL |
+| ISSDET | 4 | Standard service details — TYPE/DETAIL codes + WHO + SUB flag |
+| ISORDECO | 13 | Order decoration — special instructions per SO/SR order + part + drawing# |
+| ISNTYPE | 4 | Note type codes — TYPE(3) + DESC(30) + security level |
+| ISUDFINV | 8 | User-defined invoice fields — maps custom names to byte offsets in BKARINV |
+| BKISTAX | 13 | Historical tax totals by code/date — TAXABL + NONTAX amounts |
+| BKARHTAX | 5 | Historical AR tax per invoice — INVNO + CODE + ID + AMOUNT |
+| ISARTXNB | 23 | AR transaction batch — SONUM + CODE + LINEID + BIN + LOC |
 
-**Confidence: 58/100** — 7 DFM files read; equipment master, AR invoice link, and service quote date milestones confirmed; main SR-A form not found on share.
+**Confidence: 72/100** — SR workflow and table set confirmed from 16 RWN db-file lists; ISSRMMS/ISSRINFO/ISSOREVU fully field-documented; per-screen business logic still encrypted in RWN.
 
 ---
 
@@ -1595,6 +1613,17 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISCHAINM | ISCHAINM.B | CH | Chain master | Multi-location chain master — codes, names, relationships |
 | ISDROP | ISDROP.B | DR | Dropdown lists | User-configurable picklist options for configurable fields |
 | ISCTREVU | ISCTREVU.B | CR | Contract review | SO approval workflow state (department/password/status records) |
+| ISSRMMS | ISSRMMS.B | SR | SR equipment master | Service order equipment: MAKE(50), MODLE(50), SERIAL(50), INDATE, OUTDTE per service line |
+| ISSRINFO | ISSRINFO.B | SR | SR extended info | Configurable service record data — 20 ALPHA_1..20 + DATE_1..5 (× 2 groups = 40 alpha + 10 dates) |
+| ISARINVX | ISARINVX.B | AR/SR | AR invoice extension | SONUM + NUM (PK) + EXTRA1(100) + EXRTA2(100) — extra text fields on AR/SR invoices |
+| ISSOREVU | ISSOREVU.B | SO/SR | SO/SR approval | Department + manager approval gate with password override for SO and SR orders |
+| ISSDET | ISSDET.B | SR | Service detail codes | TYPE(20) + DETAIL(20) + WHO(40) + SUB flag — standard service operation detail codes |
+| ISORDECO | ISORDECO.B | SO/SR | Order decoration | Special instructions per order — SONUM + PONUM + UNUM + PART + DRAW + more |
+| ISNTYPE | ISNTYPE.B | System | Note types | Note type codes — TYPE(3) + DESC(30) + security level |
+| ISUDFINV | ISUDFINV.B | System | UDF invoice fields | Maps custom field names to byte offsets in BKARINV for user-defined invoice extensions |
+| BKISTAX | BKISTAX.B | AR | Historical tax totals | TAX_CODE + DATE (PK) + TRFLAG + TAXABL + NONTAX + collected amounts |
+| BKARHTAX | BKARHTAX.B | AR | Historical AR tax | Per-invoice historical tax: INVNO + CODE + ID + PID + AMOUNT |
+| ISARTXNB | ISARTXNB.B | AR | AR transaction batch | AR transaction batch records: SONUM + CODE + LINEID + BIN + LOC
 
 ---
 
