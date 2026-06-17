@@ -1026,7 +1026,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CC/Credit Card ⚠️ | **78** | 80 | **2** ↑ Pass69 | 2026-06-17 |
 | Module: SP/SPC ⚠️ | **87** | 82 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
-| Module: UT/Utilities | **72** | 75 | **3** ↑ Pass51 | 2026-06-17 |
+| Module: UT/Utilities | **78** | 75 | **0** ✅ ↑+6 Pass79 DFM-confirmed | 2026-06-17 |
 | Module: RM/RMA | **78** | 82 | **4** ↑ Pass66 | 2026-06-17 |
 | Module: FO/Features Options | **81** | 82 | **1** ↑+3 Pass72 | 2026-06-17 |
 | Module: IS/InfoSystem | **72** | 72 | **0** ✅ ↑+4 Pass78 | 2026-06-17 |

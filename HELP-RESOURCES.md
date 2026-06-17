@@ -6951,17 +6951,19 @@ The T7SMJ* family are data rebuild and recalculate programs — they touch the w
 
 | Program | Procs | Operation |
 |---|---|---|
-| T7UTH | 109 | UT-H file layout report — dumps table layout from FILEDICT+FILEKEY; useful for schema documentation |
+| T7UTH | 109 | UT-H file layout report — dumps table layout from FILEDICT+FILEKEY (TAS Pro runtime schema); useful for internal schema documentation |
 | T7UTI | 101 | UT-I company add/delete — opens BKPSUSER+BKSYAP+BKSYMSTR+BKICLOCM; creates or removes a company (DESTRUCTIVE for delete) |
-| T7UTKA | 74 | UT-KA data clear/reset — wipes COA/CUST/VEND/INVN (DESTRUCTIVE); opens BKICLOC+BKICTAX+BKPRGLFL+23 more |
-| T7UTKD | 91 | UT-KD fiscal year setup — sets fycur/fy1yp..fy3yp; opens BKGLTRAN+BKYSMSTR+BKSYMSTR |
-| T7UTKE | 238 | UT-KE location cleanup — LARGEST UT PROGRAM; removes stale location records (DESTRUCTIVE); opens BKARTXN+BKARINV+45+ more tables |
-| T7UTKF | 116 | UT-KF item rebuild F — rebuilds MRP/PI balances; opens BKMRPFC+BKPIFROZ+BKBMMSTR+28 more |
-| T7UTKG | 145 | UT-KG item rebuild G — rebuilds inventory item balance; opens BKICLOC+BKICMSTR+13 more |
-| T7UTKH | 135 | UT-KH average cost recalculate — recalculates per-item average cost from BKICLOC+CLASS+11 more |
+| T7UTKA | 74 | UT-KA module data clear — selective data delete (enter "D" for full delete, "C" for transactions only) for GL/AR-SO/AP-PO/Manufacturing-IC/Payroll/CM; also resets GL period dates; DESTRUCTIVE |
+| T7UTKD | 91 | UT-KD GL fiscal year archive — archives GL transactions by year (current + up to 6 prior years); sets GL account range + suspense account for inter-year balancing; uses ISGLDATE + BKGLTRAN |
+| T7UTKE | 238 | UT-KE location code rename — **renames** an existing warehouse location code to a new value, updating all references across IC and AR tables (BKICLOC/BKICMSTR/BKARINV/BKARINVL etc.); NOT just cleanup — it's a full rename cascade |
+| T7UTKF | 116 | UT-KF inventory listing — prints IC item list filtered by item range + class + category + type [RFAMNLBTKO]; optional extended description; reads BKICMSTR+INVTXN+BKICLOC |
+| T7UTKG | 145 | UT-KG inventory GL account listing — prints items with their GL account assignments; filtered by item range + class + category + active status [YNODEPSQR] + type [RFAM] + GL account range |
+| T7UTKH | 135 | UT-KH inventory type report — prints items filtered by type (Purchased/Make-From/Subassembly/Finished Goods); item range + class + GL account range; toggle inactive + 2nd description line |
 | T7FNR | 104 | TA-D file navigator — browse all FILEDICT definitions; opens FILEDICT+FILELOC+ISDRILL |
 
-**All UTK* operations are data-integrity tools — they correct corrupted indices and recalculated totals but do not change business records. UTKA and UTKE are genuinely destructive (they delete data).**
+**Note on UTK* descriptions (Pass 79 correction):** Prior Pass 51 descriptions were inferred from DB fingerprint alone and several were wrong. T7UTKE renames locations (not cleanup); T7UTKF/G/H are reports (not rebuilds). Corrections confirmed from DFMs.
+
+**UTKA and UTKE are genuinely destructive.** All UTK* report programs (UTKF/G/H) are read-only listing utilities.
 
 ### UT Tables (additional)
 
