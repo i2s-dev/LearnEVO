@@ -658,16 +658,16 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 
 ### US — User Services / Trigger Notifications
 
-**What it does:** Manages automated follow-up triggers — alerts that fire a notification to a user or contact N days before a key date. Used for CRM follow-ups, service renewal alerts, and scheduled reminders.
+**What it does:** Manages automated follow-up triggers — alerts that fire N days before a key date on any linked record (SO, PO, WO, customer, vendor). Used for CRM follow-ups, service renewal alerts, scheduled reminders, and AR collection follow-up.
+
+**RWN program:** T7USG (90 procs) — the sole US program. Opens: ISTRIGRS + BKPSUSER + BKARCUST + BKAPVEND + WORKORD + BKARINV + BKAPPO + ISBNMSTR + ISITP + BKICREF + CLASMSTR + ISCATMST + ISNCR + BKCMACCN + ISLINKS.
 
 **Key operations:**
-- **US-G — Trigger Setup:** Define a trigger — Trigger Code, User to Trigger (internal user), Last Date/Time fired (audit trail), Days Pre (how many days before the reference date to fire). Notification target: IS.TRIG.CONTACT (contact name), IS.TRIG.EMAIL (email), IS.TRIG.EFLAG (whether to send email vs. in-app alert).
+- **US-G — Trigger Setup:** Define trigger rules in ISTRIGRS. Each trigger has: CODE(15) identifier, TRIGR(10) user/contact to notify, CONTACT(20) contact name, DAYS(integer) lead time before the event, EMAIL(400) destination address(es), ONCE(1) flag (fire once or recurring), LDATE/LTIME last-fired audit trail. Plus entity links: WOPRE/WOSUF (WO), PO, SO, CUST(10), VEND(10), LOC(10), and classification fields (ITYPE, CLASS, CAT, PLANNER).
 
-**Integration:** IS.TRIG.CONTACT and EMAIL suggest triggers are linked to CRM contacts (BKCM.ACCN.*) or SR service records. "Days Pre" + CRM key dates (BKCM.ACTD.*) = automated follow-up scheduling (e.g., "alert sales rep 14 days before contract expiry").
+**EvoRemind integration:** EvoRemind.RWN (46 procs) polls ISTRIGRS daily, finds records where DAYS pre-date threshold has been reached, and sends email or creates ISREMIND calendar entries. ISREMIND (22f) stores the resulting calendar reminder records with DATE, TIME, WHO, SUBJECT, CUST/VEND/ITEM refs, FILE attachment, EMAIL, and SENT audit trail.
 
-**Primary tables:** IS.TRIG.* (trigger records — code/contact/email/days/last-fired)
-
-**Confidence: 45/100** — 1 DFM read; trigger mechanism confirmed; full integration points and trigger type taxonomy not decoded.
+**Confidence: 65/100** — T7USG identified with full DB fingerprint; ISTRIGRS (25f) and ISREMIND (22f) fully field-documented; EvoRemind integration confirmed; exact trigger-firing date calculation not traced (relies on encrypted RWN).
 
 ---
 
@@ -1113,13 +1113,20 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 
 ### Multi-Yield Work Orders (MU)
 
-**What it does:** Records multiple output part numbers from a single work order (co-products and by-products). 150 procs — significant manufacturing-cost module.
+**What it does:** Records multiple co-product or by-product outputs from a single work order. Used in industries where one production run yields several distinct finished items (e.g., sawing lumber → multiple sizes, blending → multiple fill weights).
 
-**Key operation:** T7MULTIYIELD opens WORKORD + WOROUT + WOBOM + WORECV + INVTXN + ISBINLOC + BKARINVL. One WO produces multiple different finished items; each is received as a separate WORECV/INVTXN entry.
+**RWN program:** T7MULTIYIELD (150 procs) — single program. Full DB set: WORKORD + BKSYMSTR + MTICMSTR + WOROUT + BKYSMSTR + BKARINVL + BKICMSTR + BKICLOC + ISBINLOC + WOBOM + WORECV + INVTXN + WOMAT + ISWOEX + LOT + ISBINLOT + SERIAL + ISBNMSTR + ISICMSTR + BKAPPO + BKAPPOL + BKARINV + BKGLTRAN + BKGLX + DBAFIFO + ISTRIGRS + ISREMIND + ISNCR.
 
-**Primary tables:** WORKORD, WOROUT, WOBOM, WORECV, INVTXN, ISBINLOC, MTICMSTR, BKARINVL
+**Workflow:**
+1. A WO is created for the input item/process (WORKORD).
+2. Multi-Yield entry records each output item with its own WORECV (quantity received) and INVTXN (inventory transaction).
+3. Cost is split across outputs; MTICMSTR (standard cost) + DBAFIFO (FIFO cost layers) are updated per output item.
+4. ISWOEX (WO extended fields) holds supplemental multi-yield state.
+5. LOT/SERIAL/ISBINLOT/ISBINLOC track lot/serial numbers and bin locations for each output.
 
-**Confidence: 45/100** — DB fingerprint confirmed; full multi-yield entry form details in encrypted RWN.
+**Key table:** ISWOEX (WO extended) — the MU-specific extension hanging off WORKORD; exact field count not yet extracted.
+
+**Confidence: 62/100** — Single-program module with 150 procs; full DB fingerprint traced; workflow reconstructed from table set; ISWOEX schema and form fields in encrypted RWN.
 
 ---
 
@@ -1281,13 +1288,28 @@ in AHSYLOG with role, starting menu code, and 20 access flags.
 
 ---
 
-### BS — Business Score / Customer Scoring
+### BS — Business Score / Summary Dashboard
 
-Tracks customer profitability and scoring metrics. Primary table: **ISBSF** (business score fields). Accessed via T7BSA/T7BSB/T7BSC/T7BSD modules (4 program files = 4 menu code variants). Scores are likely computed from AR transaction history and stored for reporting.
+**What it does:** Real-time cross-module financial dashboard — aggregates KPIs from AR, AP, SO, PO, WO, GL, and Inventory into period-range snapshots stored in ISBSF. Surfaced as QU-D "Business Status" (EVOBS) and as a dedicated BS module with drill-through to source transactions.
 
-**Use case:** Identify highest-value or most-at-risk customers based on revenue, payment history, or custom scoring criteria.
+**RWN program:** T7BS (162 procs). Opens ISBSF + BKYSMSTR + ISGLDATE + BKSYMSTR + BKGLTRAN + MTICMSTR + BKICMSTR + WORKORD + WOMAT + WOLABOR + OUTPROC + WORECV + WOEXCHG + BKAPPOL + BKAPPO + ISICMSTR + BKARINV + BKARINVL + BKARINVT + BKAPCHKF + BKARDEP + BKAPINVT + ISBANKS + BKGLCOA + ISMCF + ISDRILL + standard boilerplate.
 
-**Confidence: 42/100** — Module identified by DB fingerprint; table confirmed; scoring algorithm and UI fields not decoded.
+**ISBSF — 143 fields** (PK: ISBSF_STARTDATE + ISBSF_ENDDATE period range):
+
+| Field group | Fields | Meaning |
+|------------|--------|---------|
+| AR | AR_BAL/BILL/RECP/DISC/COGS/DEPO | AR balance, billed, receipts, discounts, COGS, deposits |
+| AP | AP_BAL/PAYA/PAYM/DISC/ATP | AP balance, payables, payments, discounts, available-to-pay |
+| SO | SO_OPEN/BOOK/SHIP | Open SO value, booked, shipped |
+| PO | PO_OPEN/BOOK/RECP | Open PO value, booked, received |
+| WO | WO_WIPBAL/ISSU/FPVAR | WIP balance, issued materials, finish-post variance |
+| IC | IC_VALUE | Inventory value |
+| CASH | CASH_TOTA + CASH_ACT1..9 | Cash total + 9 GL cash account balances |
+| CASH_ACTS | CASH_ACTS_1..100 | 100-period GL cash account history array |
+| WOS | WOS_SETUP/LAB/OUTP/MAT/FOH/VOH/MEXT/FP/WIPV | WO standard cost breakdown (setup/labor/outside process/material/OH variants/WIP variance) |
+| EXTRA | EXTRA (100) | Free-text extra |
+
+**Confidence: 65/100** — T7BS program identified with full DB fingerprint; ISBSF (143f) fully field-documented; all module data sources confirmed; aggregation/scoring algorithm in encrypted RWN.
 
 ---
 
@@ -1608,7 +1630,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | BKSBVEND | BKSBVEND.B | RF | Sub-vendor / RFQ vendors | Vendor records specific to RFQ / sub-contracting workflow |
 | BKSYUSER | BKSYUSER.B | AD | System user extensions | Extended user configuration for Advanced DC module |
 | EIMCOLST | EIMCOLST.B | AD | EIM column state | Column visibility/state tracking for Advanced DC forms |
-| ISBSF | ISBSF.B | BS | Business score fields | Customer scoring/profitability metrics (BS module) |
+| ISBSF | ISBSF.B | BS | Business score dashboard | PK=STARTDATE+ENDDATE; 143f cross-module KPI snapshot: AR_BAL/BILL/RECP/COGS, AP_BAL/PAYA/PAYM, SO/PO/WO open+booked+shipped, IC_VALUE, CASH_TOTA+ACT1..9 (9 GL accts), CASH_ACTS_1..100 (100-period history), WOS cost breakdown |
 | ISESTDTL | ISESTDTL.B | RF | Estimate details | Line-level detail records for production estimates; source for RFQ generation |
 | ISSCHED | ISSCHED.B | Scheduler | Scheduler jobs | EvoScheduler/EvoRemind job queue — timed task records (confirmed from EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN) |
 | ISSERCNT | ISSERCNT.B | IT | Serial counters | Auto-serial number counter state per item/config |
@@ -1694,6 +1716,10 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISDROP | ISDROP.B | System | Dropdown lists | User-configurable picklist: CODE(10) + TEXT(30) + DESC(30) + EXTRA(50) |
 | ISDIGSIG | ISDIGSIG.B | DI | Digital signatures | Per-employee PO approval config — EMP(pk), MOTCACH(16), POENTBY/SOENTBY, ACTIVE_1..10 flags, TYPE_1..10 codes, SDATE/FDATE/TDATE_1..10, AMT_1..10, FLAG_1..10, FILE(256), ATIME/ADATE — 89 fields total |
 | ISARDEPL | n/a | MA | Deposit application lines | Confirmed in use by T7GETDEP and T7MAPDEPO; not registered in Pervasive DDF; tracks deposit-to-invoice application records |
+| ISREMIND | ISREMIND.B | US | Reminders | Calendar reminders — DATE/TIME/WHO/SUBJECT(100)/CUST/VEND/ITEM/DISP(1)/CO/FILE(256)/NOTIFY/EDATE/ENDDT/EMAIL(400)/SENT — 22 fields; created by EvoRemind trigger firing |
+| ISBNMSTR | ISBNMSTR.B | WC | Bin location master | LOC(10)+BIN(15) PK, DESC(60), EXTRA(100) — same table used by WC, MU, US modules |
+| ISWOEX | ISWOEX.B | MU | WO extended fields | Multi-yield WO extension table (schema not in DDF; confirmed used by T7MULTIYIELD and T7ADCA) |
+| ISITP | ISITP.B | US | Item tracking profiles | NUM(20), DESC(80), EXTRA(100) — small code table used by US trigger setup |
 
 ---
 
@@ -2192,6 +2218,18 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 These code tables are referenced by SR service orders (BKARINV type field) and SR-INFO records to classify service operations, error categories, and equipment types.
 
 **Confidence: 60/100** — All programs identified; key tables fully field-documented; role in SR workflow confirmed; no DFM forms found (these are likely popup code-entry screens or use shared UI).
+
+---
+
+### LI — License / Module Access
+
+**What it does:** Controls which EvoERP modules are licensed and enabled for this installation. The ISACCESS table is the module gate — T7LIMACC (42 procs) is the admin UI to view/edit it.
+
+**RWN program:** T7LIMACC (42 procs) — very small program; only opens ISACCESS + BKSYHELP + DBAHLPID + MKAHIST (standard help boilerplate). Single-table maintenance.
+
+**ISACCESS:** Not registered in the Pervasive DDF (same pattern as ISARDEPL, ISWOEX). Contents inferred: module code → enabled/disabled flag. Used as a license gate: EvoERPmenu.RWN checks ISACCESS before dispatching any module.
+
+**Confidence: 52/100** — Program identified; ISACCESS confirmed in use across 20+ programs but schema not in DDF; enabled/disabled flag behavior inferred from module load patterns.
 
 ---
 
