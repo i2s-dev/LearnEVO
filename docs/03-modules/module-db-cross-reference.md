@@ -866,3 +866,255 @@ Quick reference — which module is the PRIMARY owner of each core table:
 | BKCMDTCD | CS module (T7CSB) | — |
 | BKDCCFG/BKDCLAB/BKDCSHFT | DC module (T7DCA/T7ADCA) | T7DE* stubs |
 | BKBMMSTR | BM module | T7WOA, T7INA, T7SOA, T7FOC, T7POA |
+
+---
+
+## Pass 9 — Newly Discovered Subsystems (2026-06-17)
+
+### Field Service (FS) — T7FSCLASS / T7FSINFO / T7FSEMP
+
+**Purpose:** Field Service module — tracks service classes, field service information records, and employee-to-class assignments. Optional add-on; no CHM entries found in this install.
+
+| Module file | Procs | Key tables | Purpose |
+|-------------|-------|-----------|---------|
+| T7FSCLASS.RWN | 62 | ISFSCLAS, ISPRINFO | Service class master + employee info |
+| T7FSINFO.RWN | 61 | ISFSINFO | Field service information records |
+| T7FSEMP.RWN | 59 | ISFSCLAS, BKPRSALE | Employee-to-service-class assignments |
+
+**New tables:** ISFSCLAS (field service class master), ISFSINFO (FS info records), ISPRINFO (PR employee profile info)
+
+---
+
+### Global Finance / AR Charges (GF) — T7GFPRICE / T7GFV / T7GFVS / T7GFR
+
+**Purpose:** Global Finance charges system — applies extra AR charges to invoices beyond line items. GFV/GFVS browse existing charge records; GFPRICE is the pricing/charge entry form; GFR is the report.
+
+| Module file | Procs | Key tables | Purpose |
+|-------------|-------|-----------|---------|
+| T7GFPRICE.RWN | 116 | BKARCUST, BKICPMAT, BKICMSTR, MTICMSTR, ISICMSTR | Customer + item pricing/charge entry |
+| T7GFV.RWN | 82 | BKARINV, ISARCHG, BKARINVL, BKICPMAT | Invoice charge viewer |
+| T7GFVS.RWN | 81 | BKARINVL, BKARINV, BKICPMAT | Invoice lines + charges summary |
+| T7GFR.RWN | 46 | (standard tables only) | Report |
+
+**New tables:** ISARCHG (IS AR extra charges added to invoices), ISICMSTR (IS secondary item master — alternate item config)
+
+---
+
+### Reminders & Rebuild Utilities (RE family)
+
+**Purpose:** Mixed group of reminder/scheduling tools and data-integrity rebuild utilities.
+
+| Module file | Procs | Key tables | Purpose |
+|-------------|-------|-----------|---------|
+| T7RemindRpt.RWN | 125 | ISREMIND, BKARCUST, BKCMACCN | CRM/AR reminder report |
+| t7rebwo.RWN | 123 | WORKORD, WOBOM, WORECV, WOROUT, WOMAT, WOLABOR | WO data rebuild utility |
+| T7REPLNK.RWN | 67 | ISREPLNK, BKPRSALE, BKARCUST, BKICMSTR, CLASMSTR | Replace links (record-link replace tool) |
+| T7REBQC.RWN | 62 | BKICMSTR | QC data rebuild utility |
+| T7REPDEF.RWN | 52 | ISREPDEF | Saved report parameter defaults |
+| T7REINDEX.RWN | 36 | FILELOC | Btrieve file reindex utility |
+| t7redindexDD.RWN | 5 | WORKORD, WOBOM, WOMAT, WOLABOR | Data dictionary reindex (WO set) |
+| t7ResetDFM.RWN | 5 | ISREPLNK | Reset DFM form layouts to defaults |
+
+**New tables:** ISREMIND (reminder/follow-up records — date + contact + trigger), ISREPLNK (replace-link records), ISREPDEF (saved report defaults/parameters)
+
+---
+
+### Service Code Tables (SE / ST families)
+
+**Purpose:** Code/master tables supporting the SR (Service/Repair) module. All share the ISSTYPE shared-type table; SE = service error process/type codes; ST = service/storage/equipment type codes.
+
+| Module file | Procs | Key tables | Purpose |
+|-------------|-------|-----------|---------|
+| T7SEPROC.RWN | 52 | ISSEPROC | Service error process codes |
+| T7SERR.RWN | 52 | ISSTYPE | Service error type codes |
+| T7SETYPE.RWN | 52 | ISSETYPE | Service error category types |
+| T7STEQUIP.RWN | 52 | ISSTYPE | Equipment type codes |
+| T7sttype.RWN | 52 | ISSTYPE | Storage/service type codes |
+| T7STYPE.RWN | 52 | ISSTYPE | Service type master |
+| T7STOCK.RWN | 53 | BKCMACCC | CRM stock/account classification |
+
+**New tables:** ISSTYPE (shared service/storage/equipment type code table), ISSEPROC (SE process codes), ISSETYPE (SE category types)
+
+---
+
+### Warehouse Put-Away (PU) — T7PUTAWAY
+
+**Purpose:** Warehouse put-away operation — places received items into bin locations after PO receipt. 105 procs; updates item master with bin location assignments.
+
+**Key tables:** BKICMSTR, MTICMSTR (item master bin update)
+
+---
+
+### Multi-Yield Work Orders (MU) — T7MULTIYIELD
+
+**Purpose:** Multi-yield / co-products WO processing — records multiple output part numbers from a single work order (co-products and by-products). 150 procs; opens the full WO + inventory transaction chain.
+
+**Key tables:** WORKORD, WOROUT, WOBOM, WORECV, INVTXN, BKICMSTR, BKICLOC, ISBINLOC, BKARINVL, MTICMSTR, BKYSMSTR
+
+**New tables:** ISBINLOC (bin location master — distinct from BKICLOC item locations)
+
+---
+
+### Audit Log Setup (AL) — T7ALOGSETUP
+
+**Purpose:** Configures which tables and events are written to the system audit log. Opens FILELOC (all registered DB files) + BKSYMSTR (system master) + BKPSUSER (PS user list) to define what gets logged and for which users.
+
+**Key tables:** FILELOC, BKSYMSTR, BKPSUSER
+
+---
+
+### Module Access / License Control (LI) — T7LIMACC
+
+**Purpose:** License and module access control — ISACCESS table determines which EvoERP modules are enabled/licensed for this installation. 42 procs; the access-control gatekeeper for optional modules.
+
+**New tables:** ISACCESS (module access/license flags)
+
+---
+
+### Multi-Language Configuration (ML) — T7MLC
+
+**Purpose:** Multi-language/localization support for AR invoices. Opens LANGDICT (language dictionary) + BKARINV/BKARINVL + MTICMSTR + ISREPORD (repeat order records) + BKICLOC.
+
+**New tables:** ISREPORD (IS repeat/standing order records — recurring AR orders)
+
+---
+
+### Shipping Configuration (MH) — T7MHOPE
+
+**Purpose:** Shipping and carrier configuration tool — 98 procs. Opens ISSHIPCO (shipping company/carrier master), ISSHPVIA (ship-via methods), BKCMTERR (CRM territory), BKARINV/BKARINVL, ISREPORD. Configures carrier–territory–ship-via relationships for outbound shipments.
+
+**New tables:** ISSHIPCO (shipping company/carrier master — carrier names, codes, contact info)
+
+---
+
+### EDI Invoice Import (ED) — T7EDII
+
+**Purpose:** Inbound EDI invoice processing — 183 procs. Creates AR invoices from EDI data. Opens the full AR invoice chain: BKARINV + BKARINVL + BKARCUST + ISTERMS + BKICPMAT + BKICLOC + ISARCHG + CLASMSTR.
+
+**Key tables:** BKYSMSTR, MTICMSTR, BKARINV, BKARINVL, ISARCHG, BKARCUST, BKSYMSTR, ISTERMS, BKICMSTR, BKICPMAT, BKICLOC, CLASMSTR
+
+Related: `t7ediftp.RWN` (5 procs, BKEDMSTR — EDI FTP transfer); `t7edudf.RWN` (8 procs, ROUTING — EDI UDF/routing)
+
+---
+
+### Brands Master (BR) — T7BRANDS
+
+**Purpose:** Product brand master linked to CRM account classifications. 53 procs; opens BKCMACCC (CRM Account Class). Brands are stored as CRM account class codes.
+
+Related: `T7BROWSER.RWN` (4 procs) — HTML browser window embedded in EvoERP UI.
+
+---
+
+### Auto FX Currency Update (AU extension) — T7AUTOFX
+
+**Purpose:** Automated foreign exchange rate update via Java integration. Opens ISMCF (multi-currency foreign exchange config) + ISJAVA (Java task queue) + ISMCR (exchange rates). Queues a Java task to fetch/update live exchange rates.
+
+**New tables:** ISMCF (IS multi-currency foreign exchange config — base currency, conversion settings); ISMCR confirmed as exchange rate table (also used by T7IMC)
+
+---
+
+### New Company Initialization (NE) — T7NEWINIT
+
+**Purpose:** Creates and initializes all required Btrieve data files for a new company. Opens FILELOC (file registry) + FILEDES (file descriptions) to enumerate and create the full table set.
+
+**New tables:** FILEDES (file descriptions/purpose strings for each DB file in the registry)
+
+---
+
+### WO Cut Sheet / Material List (CU) — T7CUTSHEET2
+
+**Purpose:** Generates a material cut sheet for shop floor — lists WO materials with lot and bin assignments. 75 procs; opens WOMAT + LOT + WORKORD + WOBOM + ISBINLOT + BKPSUSER.
+
+**New tables:** ISBINLOT (bin + lot cross-reference — which lots are in which bins), LOT (lot master — distinct from MTLOT)
+
+---
+
+### Jobs / Department Management (JO) — t7jobs
+
+**Purpose:** HR-like job positions and department management. 21 procs; opens ISDEPT (department master) + BKARCUST + BKAPVEND + WOEXCHG + CLASMSTR + ISCATMST.
+
+**New tables:** ISDEPT (department master — dept codes, names, GL accounts)
+
+---
+
+### File Navigator / Report (FN) — T7FNR
+
+**Purpose:** Btrieve file/data dictionary browser and report. 104 procs; opens FILELOC + FILEDICT to enumerate all registered database files and their dictionary definitions. Likely a TA (System Administration) sub-tool.
+
+---
+
+### CC Cross-Reference Utility (XC) — T7XCUTIL
+
+**Purpose:** Credit card cross-reference/cleanup utility. 29 procs; opens BKCMACCT (CRM Account) + BKYSMSTR + ISCC (credit card records) + LANGDICT. Reconciles CC data across CRM and billing.
+
+---
+
+### LGS Customer Module (LG) — t7lgssoe / T7LGSSOEVerify
+
+**Purpose:** Customer-specific customization for "LGS" customer (similar to J7* pattern but with LGS prefix). Processes AR invoices with tax/customs — opens BKARINV + BKARCUST + BKARINVL + BKYSMSTR + BKICMSTR + BKARTXN + BKSYMSTR + BKICTAX + BKICLOC. "SOE" may = Statement of Entry (customs compliance).
+
+| Module file | Procs | Purpose |
+|-------------|-------|---------|
+| t7lgssoe.RWN | 170 | Main SOE invoice processing |
+| T7LGSSOEVerify.RWN | 41 | SOE data verification |
+
+**New tables:** BKICTAX (IC Tax codes — item-level tax classification), BKARTXN (AR transactions log)
+
+---
+
+### JS Integration Settings (JS family)
+
+**Purpose:** JavaScript/Java integration layer — settings, SQL access, and data bridge modules for external reporting tools (Power BI, SQL Reporting Services, etc.).
+
+| Module file | Procs | Key tables | Purpose |
+|-------------|-------|-----------|---------|
+| t7jsettings.RWN | 70 | FILELOC | JS integration settings manager |
+| T7jsql.RWN | 52 | (standard only) | Internal SQL query tool |
+| t7jsacc.RWN | 50 | (standard only) | JS Accounting data bridge |
+| t7jsaIc.RWN | 50 | (standard only) | JS Inventory Control bridge |
+| t7jsaPBI.RWN | 50 | (standard only) | JS Power BI data bridge |
+| t7jsaSRS.RWN | 50 | (standard only) | JS SQL Reporting Services bridge |
+| t7jsoi.RWN | 50 | (standard only) | JS Open Items bridge |
+
+---
+
+### AP Extra Charges (MSG utility) — T7MSG
+
+**Purpose:** Message/notification utility stub. 0 procs (stub). Opens ISBUILD + MTMRP + BKAPPO + BKAPPOL + ISAPCHG + BKAPVEND.
+
+**New tables:** ISBUILD (IS build/kit record — links to BOM build operations), ISAPCHG (IS AP extra charges — parallel to ISARCHG for AP side)
+
+---
+
+### Job File Transfer (JF) — t7jftrans
+
+**Purpose:** WO/labor job file transfer to external system. 27 procs; opens FILELOC + BKPSUSER + WOLABOR + WOROUT + BKPRMSTR + WOEXCHG. Transfers WO labor and routing data with payroll integration.
+
+---
+
+### Additional Pass-9 Module Table Ownership
+
+| Table | Owner module | Also used by |
+|-------|-------------|-------------|
+| ISFSCLAS | T7FSCLASS (FS) | T7FSEMP |
+| ISFSINFO | T7FSINFO (FS) | — |
+| ISARCHG | T7EDII (ED) | T7GFV, T7GFVS |
+| ISAPCHG | T7MSG | — |
+| ISREMIND | T7RemindRpt (RE) | — |
+| ISREPLNK | T7REPLNK (RE) | T7ResetDFM |
+| ISREPDEF | T7REPDEF (RE) | — |
+| ISSTYPE | T7SERR/T7STEQUIP/T7sttype/T7STYPE | shared code table |
+| ISSEPROC | T7SEPROC (SE) | — |
+| ISSETYPE | T7SETYPE (SE) | — |
+| ISBINLOC | T7MULTIYIELD (MU) | — |
+| ISBINLOT | T7CUTSHEET2 (CU) | — |
+| ISACCESS | T7LIMACC (LI) | — |
+| ISSHIPCO | T7MHOPE (MH) | — |
+| ISREPORD | T7MLC (ML) | T7MHOPE |
+| ISDEPT | t7jobs (JO) | — |
+| ISMCF | T7AUTOFX (AU) | — |
+| ISBUILD | T7MSG | — |
+| BKICTAX | t7lgssoe (LG) | — |
+| BKARTXN | t7lgssoe (LG) | — |
+| FILEDES | T7NEWINIT (NE) | T7FNR |
+| LOT | T7CUTSHEET2 (CU) | T7SMJC, T7WOKA |

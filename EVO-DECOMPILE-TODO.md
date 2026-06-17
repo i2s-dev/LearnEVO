@@ -326,7 +326,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ MT\* vs. BK\* scope difference confirmed (which company, which generation)
 - [ ] ⬜ BKARHINV anomaly fully resolved (sub-folder table, now documented)
 - [ ] ⬜ All 30 WO\* tables cross-referenced to Work Order module logic
-- [ ] ⬜ Primary key confirmed for each of 659 tables (from INDEX.DDF)
+- [ ] ⬜ Primary key confirmed for each of **728+** tables (from INDEX.DDF; originally 649, +55 pass 7b, +17 pass 8, +26 pass 9 = 747 minimum — see PROJECT-STRUCTURE.md Special/Misc Tables)
 - [ ] ⬜ Foreign key relationships mapped across module boundaries
 
 ### 4.4a ISTS.CFG.* Configuration Keys
@@ -621,7 +621,26 @@ The following modules have menu codes and forms inventoried but no deep logic do
 **Subsystems (not menu modules — discovered via RWN analysis):**
 - [x] 🔄 **BO** — Bill of Lading (T7BOL: 178 procs, T7BOLMSO: 174 procs); LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER/AUTHOR.NUMBER/CONTROL.NUMBER; DRIVER.ARRIVED/LOADING.START/END/DRIVER.DEPARTED timestamps; T7BOLMSO: EDIT.CLASS/WEIGHT/PACKS/HM (LTL freight fields); integrated with BKARINV/SO for outbound shipments — **C: 58/100**
 - [x] 🔄 **DS** — Data Sync stubs (25 files: T7DSAP/AR/BOM/CK/CM/CO/CS/DC/EST/FO/GEN/GL/HH/IC/IM/MRP/PO/PR/QC/RMA/RO/SH/SO/WC/WO); all are SRC stubs with single STUB variable; all share same core DB set + BKSYAR; one stub per module for multi-company data synchronization — **C: 42/100** (architecture known; sync logic is in RWN, blocked)
-- [x] 🔄 **AU** — Automation modules (T7AUTODCH: 183 procs DC labor validation; T7AUTOMRF: 132 procs MRP auto-firm, MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT; T7AUTOREBSS: 79 procs back-order re-BSS); automation/batch-processing layer that runs background ERP operations — **C: 48/100**
+- [x] 🔄 **AU** — Automation modules (T7AUTODCH: 183 procs DC labor validation; T7AUTOMRF: 132 procs MRP auto-firm, MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT; T7AUTOREBSS: 79 procs back-order re-BSS; T7AUTOFX: 21 procs auto foreign-exchange rate update via ISMCF+ISJAVA+ISMCR); automation/batch layer for background ERP operations — **C: 52/100**
+- [x] 🔄 **FS** — Field Service (T7FSCLASS: 62 procs, ISFSCLAS+ISPRINFO; T7FSINFO: 61 procs, ISFSINFO; T7FSEMP: 59 procs, ISFSCLAS+BKPRSALE); tracks service classes, field service info records, and employee-to-class assignments; optional add-on module — **C: 45/100**
+- [x] 🔄 **GF** — Global Finance / AR Charges (T7GFPRICE: 116 procs, customer+item pricing/charge entry; T7GFV/GFVS: 82/81 procs, invoice charge viewer; T7GFR: 46 procs, report); primary table ISARCHG (IS AR extra charges beyond invoice lines) — **C: 45/100**
+- [x] 🔄 **RE** — Reminders + Rebuild Utilities (T7RemindRpt: 125 procs, ISREMIND+BKARCUST — CRM/AR reminder report; T7REPLNK: 67 procs, ISREPLNK — replace links; T7REPDEF: 52 procs, ISREPDEF — saved report defaults; T7REINDEX: 36 procs, Btrieve reindex; T7REBQC/REBWO: QC+WO rebuild utilities) — **C: 48/100**
+- [x] 🔄 **SE/ST** — Service Code Tables (T7SEPROC: ISSEPROC; T7SERR+T7SETYPE: ISSTYPE/ISSETYPE; T7STEQUIP/T7sttype/T7STYPE: ISSTYPE; T7STOCK: BKCMACCC); code maintenance tables for SR Service/Repair module — **C: 42/100**
+- [x] 🔄 **PU** — Warehouse Put-Away (T7PUTAWAY: 105 procs); places received PO items into bin locations; updates BKICMSTR/MTICMSTR — **C: 42/100**
+- [x] 🔄 **MU** — Multi-Yield Work Orders (T7MULTIYIELD: 150 procs); records multiple co-product output part numbers from single WO; opens WORKORD+WOROUT+WOBOM+WORECV+INVTXN+ISBINLOC+BKARINVL — **C: 45/100**
+- [x] 🔄 **AL** — Audit Log Setup (T7ALOGSETUP: 43 procs, FILELOC+BKSYMSTR+BKPSUSER); configures which tables/events are written to system audit log — **C: 40/100**
+- [x] 🔄 **LI** — License / Module Access (T7LIMACC: 42 procs, ISACCESS); controls which EvoERP modules are licensed/enabled — **C: 40/100**
+- [x] 🔄 **ML** — Multi-Language (T7MLC: 50 procs, LANGDICT+BKARINV+BKARINVL+ISREPORD); multilingual AR invoice support — **C: 38/100**
+- [x] 🔄 **MH** — Shipping Configuration (T7MHOPE: 98 procs, ISSHIPCO+ISSHPVIA+BKCMTERR+BKARINV+ISREPORD); carrier–territory–ship-via relationship config — **C: 42/100**
+- [x] 🔄 **ED (EDII)** — EDI Invoice Import (T7EDII: 183 procs); creates AR invoices from inbound EDI with pricing+charges; opens BKARINV+BKARINVL+ISARCHG+BKARCUST+ISTERMS+BKICPMAT+BKICLOC+CLASMSTR — **C: 45/100**
+- [x] 🔄 **BR** — Brands Master (T7BRANDS: 53 procs, BKCMACCC); product brand master linked to CRM account classifications; T7BROWSER: HTML browser wrapper — **C: 40/100**
+- [x] 🔄 **NE** — New Company Init (T7NEWINIT: 49 procs, FILELOC+FILEDES); creates all Btrieve data files for a new company — **C: 42/100**
+- [x] 🔄 **CU** — WO Cut Sheet (T7CUTSHEET2: 75 procs, WOMAT+LOT+WORKORD+WOBOM+ISBINLOT+BKPSUSER); material cut sheet for shop floor with lot+bin tracking — **C: 45/100**
+- [x] 🔄 **JO** — Jobs / Departments (t7jobs: 21 procs, ISDEPT+BKARCUST+BKAPVEND+WOEXCHG+CLASMSTR+ISCATMST); HR job positions and department master — **C: 38/100**
+- [x] 🔄 **FN** — File Navigator (T7FNR: 104 procs, FILELOC+FILEDICT); Btrieve file/data-dictionary browser and report — admin tool — **C: 42/100**
+- [x] 🔄 **XC** — CC Cross-Reference Utility (T7XCUTIL: 29 procs, BKCMACCT+ISCC+LANGDICT); credit card record reconciliation across CRM and billing — **C: 38/100**
+- [x] 🔄 **LG** — LGS Customer Module (t7lgssoe: 170 procs + T7LGSSOEVerify: 41 procs); customer-specific customization (similar to J7* but LGS prefix); processes AR invoices with tax/customs via BKARTXN+BKICTAX; "SOE" likely = Statement of Entry — **C: 35/100**
+- [x] 🔄 **JS** — JS Integration / Reporting Bridges (7 modules: jsettings, jsql, jsacc, jsaIc, jsaPBI, jsaSRS, jsoi); settings + SQL tool + data bridges for Power BI and SQL Reporting Services external reporting — **C: 42/100**
 
 ---
 
@@ -978,7 +997,17 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: US/Triggers | **45** | 65 | **20** NEW | 2026-06-15 |
 | Subsystem: BO/Bill of Lading | **58** | 72 | **14** NEW | 2026-06-17 |
 | Subsystem: DS/Data Sync stubs | **42** | 65 | **23** NEW | 2026-06-17 |
-| Subsystem: AU/Automation | **48** | 68 | **20** NEW | 2026-06-17 |
+| Subsystem: AU/Automation | **52** | 68 | **16** ↑ +4 | 2026-06-17 |
+| Subsystem: FS/Field Service | **45** | 65 | **20** NEW | 2026-06-17 |
+| Subsystem: GF/AR Charges | **45** | 65 | **20** NEW | 2026-06-17 |
+| Subsystem: RE/Reminders+Rebuild | **48** | 65 | **17** NEW | 2026-06-17 |
+| Subsystem: SE+ST/Service Code Tables | **42** | 60 | **18** NEW | 2026-06-17 |
+| Subsystem: PU/Put-Away | **42** | 65 | **23** NEW | 2026-06-17 |
+| Subsystem: MU/Multi-Yield WO | **45** | 68 | **23** NEW | 2026-06-17 |
+| Subsystem: LI/License Access | **40** | 65 | **25** NEW | 2026-06-17 |
+| Subsystem: EDII/EDI Invoice Import | **45** | 65 | **20** NEW | 2026-06-17 |
+| Subsystem: LG/LGS Custom | **35** | 55 | **20** NEW | 2026-06-17 |
+| Subsystem: JS/Reporting Bridges | **42** | 60 | **18** NEW | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |

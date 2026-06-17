@@ -496,6 +496,30 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | BKGLTRAN | BKGLTRAN.B | GL transaction register — all posted GL entries |
 | MACHINE | MACHINE.B | Machine master — specific machines within work centers |
 | TOOL | TOOL.B | Tool master — cutting tools, fixtures, jigs per routing operation |
+| ISFSCLAS | ISFSCLAS.B | IS Field Service Class — service class master (Field Service module) |
+| ISFSINFO | ISFSINFO.B | IS Field Service Info — field service information/call records |
+| ISPRINFO | ISPRINFO.B | IS PR Info — payroll employee profile/info records |
+| ISARCHG | ISARCHG.B | IS AR Charge — extra charges added to AR invoices beyond line items |
+| ISAPCHG | ISAPCHG.B | IS AP Charge — extra charges on AP side (parallel to ISARCHG) |
+| ISICMSTR | ISICMSTR.B | IS IC Master — secondary/extension item master (alternate item config) |
+| ISREMIND | ISREMIND.B | IS Remind — reminder/follow-up records (date + contact + trigger type) |
+| ISREPLNK | ISREPLNK.B | IS Replace Link — record-link replacement tracking |
+| ISREPDEF | ISREPDEF.B | IS Report Defaults — saved report parameter defaults per user/report |
+| ISSTYPE | ISSTYPE.B | IS Service Type — shared service/storage/equipment type code table |
+| ISSEPROC | ISSEPROC.B | IS SE Process — service error process codes (SR module support) |
+| ISSETYPE | ISSETYPE.B | IS SE Type — service error category type codes |
+| ISBINLOC | ISBINLOC.B | IS Bin Location — bin location master (distinct from BKICLOC item locations) |
+| ISBINLOT | ISBINLOT.B | IS Bin Lot — bin + lot cross-reference (which lots are in which bins) |
+| ISACCESS | ISACCESS.B | IS Access — module access/license control (which modules are enabled) |
+| ISSHIPCO | ISSHIPCO.B | IS Ship Company — shipping company/carrier master (codes, names, contacts) |
+| ISREPORD | ISREPORD.B | IS Repeat Order — standing/recurring AR order records |
+| ISDEPT | ISDEPT.B | IS Department — department master (dept codes, names, GL accounts) |
+| ISMCF | ISMCF.B | IS Multi-Currency Foreign — foreign exchange configuration (base currency, conversion) |
+| ISBUILD | ISBUILD.B | IS Build — build/kit operation record (BOM build tracking) |
+| BKICTAX | BKICTAX.B | BK IC Tax — item-level tax classification codes |
+| BKARTXN | BKARTXN.B | BK AR Transaction — AR transaction/activity log |
+| FILEDES | FILEDES.B | File Descriptions — purpose strings for each registered DB file |
+| LOT | LOT.B | Lot master — lot records (distinct from MTLOT which is multi-company variant) |
 
 ---
 
