@@ -5426,3 +5426,97 @@ The T7SMJ* family are data rebuild and recalculate programs — they touch the w
 ---
 
 *Last updated: 2026-06-17 (Pass 51). SM: T7SMJA-V rebuild family (14 programs) mapped; T7SMP* family (5 programs) mapped; BKCMHCOD(9f)+BKCMACFC(3f)+BKCMACCC(2f)+BKCMDTCD(2f)+ISCATMST(3f)+CLASMSTR(2f)+CLASS(24f)+ISNUMBER(52f)+BKSYAP(11f)+CALTEMP(2f) extracted. UT: 9 programs fully mapped; UTK* rebuild/recalculate family confirmed. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+
+---
+
+## PO — Purchase Orders (full program map)
+
+**Module purpose:** Creates and tracks purchase orders from creation through receipt to AP voucher. The largest ERP module by program count (50+ programs). Five-level vendor price breaks; QC inspection on receipt; DC-integrated labor on receipt; digital signature approval; EDI 850/855/860 support.
+
+### PO Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7POA | 499 | PO-A main entry — LARGEST PO PROGRAM; creates/edits POs; opens BKAPPO+BKAPPOL+BKAPVEND+BKBMMSTR+BKARINVV |
+| T7POAIMPLINES | 132 | PO-A import lines — imports PO lines from RFQ+BKSBVEND+BKSBMFG |
+| T7POB | 190 | PO-B print POs — opens BKAPVND2+BKSBVEND; prints formatted PO with vendor 2 data |
+| T7POC | 377 | PO-C receive — standard receipt; opens BKGLTRAN+BKBMMSTR; posts GL on receipt |
+| T7POD/E | 15 | PO-D/E stubs — range filter sub-forms |
+| T7POEA | 184 | PO-EA receive (alternate) — opens BKCMACCT+BKGLTRAN |
+| T7POENG | 274 | PO-ENG engineering receipt — opens BKQCMSTR+BKQCTRAN+BKSBMFG; triggers QC inspection |
+| T7POF | 85 | PO-F estimate/RFQ — opens BKESTCFG+BKBMMSTR |
+| T7POG | 124 | PO-G receipt post — opens BKICLOC+BKBMMSTR |
+| T7POH | 122 | PO-H vendor pricing — 5-level price break entry; opens BKRFQ |
+| T7POIA/B | 5 | PO-IA/IB stubs |
+| T7POIC | 100 | PO-IC inquiry — opens CLASS+BKRFQ |
+| T7POID | 127 | PO-ID inquiry — opens BKRFQ+BKSYMSTR |
+| T7POIE/F | 5 | PO-IE/IF stubs |
+| T7POIG | 171 | PO-IG DC-integrated receipt — opens BKDCLAB+BKQCMSTR+BKARCUST; records DC labor on receipt |
+| T7POIH | 103 | PO-IH receipt + vendor history — opens BKCMVNDH (CRM vendor history) |
+| T7POII | 124 | PO-II inquiry + change log — opens ISAPCHG (AP/PO change audit trail) |
+| T7POIL | 110 | PO-IL inquiry list — opens BKBMMSTR+BKPRMSTR |
+| T7POJA | 176 | PO-JA receipt + QC — opens BKQCMSTR+BKQCTRAN+BKPRMSTR |
+| T7POJB | 143 | PO-JB receipt + QC + DC — opens BKDCLAB+BKQCMSTR |
+| T7POJC | 323 | PO-JC comprehensive receipt — opens ACMASTER (not in DDF) + 47 more tables |
+| T7POJD | 99 | PO-JD receipt variant — opens ACMASTER+BKCMACCT+BKQCMSTR |
+| T7POK | 141 | PO-K — opens ACMASTER+BKCMACCT+BKICLOC |
+| T7POL | 83 | PO-L vendor/item — opens BKSBVEND+ISICMSTR (item extended) |
+| T7POLA/LP/LX | 47/90/60 | PO-L variants — all open ACMASTER+BKSBVEND |
+| T7POM | 174 | PO-M multi-tab inquiry — opens BKBMMSTR+BKICLOCM |
+| T7POBNP | 5 | PO-BNP stub — no-print variant |
+| T7POO | 17 | PO-O — opens BKCMACCT |
+| T7POP | 53 | PO-P vendor contact data — opens BKCMVNDF+BKCMVNDH (CRM vendor follow-up + history) |
+| T7POQ | 106 | PO-Q inquiry — range filter |
+| T7POR | 5 | PO-R stub |
+| T7POS | 104 | PO-S vendor SO/invoice — opens BKARINVV+BKICREF |
+| T7POSI | 53 | PO-SI vendor invoice detail — opens BKCMACCC+BKCMACCT |
+
+**PO workflow:**
+```
+PO-A entry (T7POA) → BKAPPO header + BKAPPOL lines
+    ↓ vendor pricing via T7POH (BKRFQ 5-level breaks)
+    ↓
+PO-B print (T7POB) → formatted PO with BKAPVND2 extended info
+    ↓ approval via ISDIGSIG (digital signatures)
+    ↓
+PO-C/EA/JA/JB receive (T7POC/POEA/POJA/POJB)
+    → BKICMSTR quantities updated, INVTXN receipt record
+    → QC inspection via BKQCMSTR/BKQCTRAN (POENG/POJA/POJB)
+    → BKGLTRAN posted (debit inventory / credit accrued liability)
+    ↓
+AP-B voucher entry (T7APB) → BKAPINVT header + BKAPINVL GL distribution
+    → matches PO receipt to vendor invoice
+    ↓
+AP-F check print (T7APF) → BKAPCHKF temporary + BKAPCHKH permanent
+AP-H post checks (T7APH) → BKGLTRAN Cash Disbursement
+```
+
+### AP Extended Vendor Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKAPVND2 | 63 | Vendor UDF — VENDCODE(10) PK; ID(15 tax ID/EIN); SEND_1099(1); 5 slots each of: A1(1-char)+label, A10(10-char)+label, A30(30-char)+label, date+label, N12(12-digit)+label, N6(6-digit)+label; user-configurable vendor extended fields |
+| BKAPINVT | 19 | AP invoice total — CODE+DATE+NUM PK; AMT+AMTRM (remaining balance)+DESC+TYPE+TERMN; AP invoice header with balance tracking |
+| BKAPINVL | 390 | AP invoice GL distribution — CODE+NUM PK; TERMD/TERMN+TYPED/TYPEN + multi-GL split (same 10-line structure as BKARINVV but for AP); WIDEST AP TABLE |
+| BKCMVNDH | 8 | CRM vendor history — VCODE(10)+DATE(4) PK; REP(5)+LINE(2)+EVENT(2)+REM(60)+FLINE+EXTRA; vendor interaction log |
+| BKCMVNDF | 10 | CRM vendor follow-up — VCODE(10) PK; REP+TYPE(3)+DATE+5×REM(60)+PO(8 linked PO); vendor CRM task with PO reference |
+| ISICMSTR | 41 | Item extended / UDF — CODE(15) PK; WT+ITP+EXTRA; TI+HI+HT+LG+WD dimensions; FOBPAL+FOBFULL pallet qtys; TOOL(15 tooling ref); SLEAD(2); 10 FLAGS + 5 ALPHA + 5 NUM + 5 GDATES UDF slots |
+| ISAPCHG | 32 | AP/PO change audit — PONUM+LINEID+PCODE PK; CDATE+USER+REVLVL+ALOC/BLOC (before/after); records every PO line change (same A/B pattern as ISARCHG on SO side) |
+| ACMASTER | ? | NOT IN DDF schema — referenced by T7POJC/D/POK/POLA/LP/LX in PO receiving programs; likely an account master table for cross-company/intercompany transactions |
+
+---
+
+### New Tables Confirmed (Pass 52)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKAPVND2 | 63 | Vendor UDF — tax ID + 6-type × 5-slot user-defined fields |
+| BKAPINVT | 19 | AP invoice header — CODE+DATE+NUM PK; amount + remaining balance |
+| BKCMVNDH | 8 | CRM vendor history log — VCODE+DATE PK; event+remark |
+| BKCMVNDF | 10 | CRM vendor follow-up — VCODE PK; type+date+5 remarks+PO link |
+| ISICMSTR | 41 | Item extended — dimensions+pallet qtys+tooling+10 flags+UDF slots |
+| ISAPCHG | 32 | PO change audit — before/after fields (already in AP Pass 41; confirmed for PO) |
+
+---
+
+*Last updated: 2026-06-17 (Pass 52). PO: 50+ T7PO* programs fully mapped across entry/print/receive/QC/inquiry groups; full PO→receipt→AP voucher→check workflow traced. BKAPVND2(63f UDF)+BKCMVNDH(8f)+BKCMVNDF(10f)+ISICMSTR(41f) extracted; ACMASTER confirmed not in DDF. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

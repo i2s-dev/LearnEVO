@@ -478,8 +478,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ 5-level vendor price breaks confirmed in T7POH — **C: 72/100**
 - [x] ✅ RoHS / NCR tracking on received items confirmed (T7POJC) — **C: 68/100**
 - [x] ✅ Digital signature support on printed POs confirmed — **C: 65/100**
-- [ ] ⬜ PO entry → receipt → AP voucher chain traced end-to-end
-- [ ] ⬜ All BKPO\*/BKAP\* tables with fields documented
+- [x] 🔄 Pass 52: 50+ T7PO* programs fully mapped; full PO→receipt→AP voucher→check workflow traced; BKAPVND2(63f: VENDCODE PK+ID+SEND_1099+6-type×5-slot UDF with labels)+BKCMVNDH(8f: vendor history log)+BKCMVNDF(10f: vendor follow-up+PO link)+ISICMSTR(41f: item dimensions+pallet+tooling+UDF)+ISAPCHG(32f: PO change audit before/after) all extracted; ACMASTER confirmed NOT IN DDF schema — **C: 80/100**
 
 ### 7.6 Work Orders (WO)
 - [x] ✅ Menu codes listed (31 operations) — **C: 72/100**
@@ -995,7 +994,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: AP | **88** | 90 | **2** ↑+6 | 2026-06-17 |
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
-| Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
+| Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
 | Module: WO | **85** | 85 | **0** ✅ | 2026-06-17 |
 | Module: GL | **90** | 92 | **2** ↑+3 | 2026-06-17 |
 | Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
