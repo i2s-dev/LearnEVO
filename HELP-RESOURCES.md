@@ -3912,4 +3912,156 @@ CWHERE indicates which workstation or system module made the change.
 
 ---
 
-*Last updated: 2026-06-17 (Pass 42). Unified architecture now confirmed across 40+ table variants — ES, SR, and all sub-variants all use BKARINV/BKARINVL. ISESTASM(213f) confirms MT-era parallel estimate system. ISSERIAL(11f) provides serial genealogy. ISWOCLOG(32f) documents WO change audit. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## LESSER-DOCUMENTED MODULES — Pass 43
+
+### LI — Module License Access Control
+
+**T7LIMACC** (42 procs) — opens ISACCESS as primary table (not registered in DDF schema).
+- Purpose: controls which EvoERP licensed modules are active/accessible per installation.
+- ISACCESS is a file-level table (likely keyed by module code) listing enabled modules.
+- Single program, thin UI — this is an admin-only tool for module activation.
+
+---
+
+### CH — Chain / Multi-Location Links
+
+**T7CHAIN** (62 procs) + **T7CHAINM** (40 procs) — both open ISCHAINM as primary.
+
+**ISCHAINM** (17f) — chain configuration record:
+- IS_CHAIN_USER(15) + PARENT(12) + CHILD(12) — user + parent/child company (PK)
+- IS_CHAIN_PARAM_1..10 (15 each) — 10 configuration parameters for the link
+- IS_CHAIN_AUTO(1) — automatic sync flag
+- IS_CHAIN_DATE(4) — last sync date
+- IS_CHAIN_DESC(100) + EXTRA(100)
+
+CH links a parent EvoERP installation to child installations (multi-location / chain store scenario). T7CHAIN = main entry form. T7CHAINM = chain master maintenance. LANGDICT in the DB set confirms multi-language support in chain deployments.
+
+---
+
+### QS — Quick Sales Order (Web Order Staging)
+
+**T7QSOA** (72 procs) + **T7QSOALINES** (70 procs) — both open ISQSOA.
+
+**ISQSOA** (12f) — Quick SO staging record:
+- IS_QSOA_UID(40) — unique ID (PK, UUID-style)
+- IS_QSOA_CUST(10) + SHPTO(10) — customer + ship-to
+- IS_QSOA_SHPDTE(4) — ship date
+- IS_QSOA_ITEM(15) + DESC(30) + QTY(8) + PRICE(8) + DISC(8)
+- IS_QSOA_MDATE1/2(4 each) — manufacture dates
+- IS_QSOA_EXTRA(50)
+
+Full SO table set (BKARINV+BKARINVL+BKICMSTR+BKARCUST+ISTERMS+BKPRSALE+BKICPMAT+BKICREF) confirms this creates real SOs. ISQSOA is a staging/quick-entry record that pre-populates a new SO. Used for quick web/phone order entry or web order import staging.
+
+---
+
+### MU — Multi-Yield Work Order
+
+**T7MULTIYIELD** (150 procs, 43 tables) — opens full WO set: WORKORD+WOBOM+WORECV+WOROUT+INVTXN+MTICMSTR+BKICMSTR+BKICLOC+ISBINLOC+BKARINVL+more.
+
+Multi-Yield allows one WO to produce multiple output items (not just the primary BOM assembly). Used in co-products or by-product manufacturing (e.g., cutting sheet stock produces multiple parts). DB fingerprint is identical to standard WO programs (T7WOA) plus extra INVTXN/WORECV paths confirming multiple receipt postings per WO.
+
+---
+
+### PA — Paperless DC / Paperless Work Order Entry
+
+**T7PAPERLESS** (205 procs, 50 tables) — opens: WORKORD+MTICMSTR+BKICMSTR+WOROUT+ROUTING+BKICLOC+ISBINLOC+ISWOEX+WORECV+BKAPPOL+ISWOTRAY+BKDCLAB.
+
+Paperless DC = touchscreen/kiosk-based WO operation reporting without paper travelers. DB set is identical to ADCA (Advanced DC) — same tables for BKDCLAB (labor), ISWOTRAY (QC trays), WORECV (receipts). BKAPPOL in the set suggests it can trigger PO receiving from the shop floor (outside processes). Primary difference from ADCA: this is the menu-driven paperless form, ADCA is the scanner-based auto-collect version.
+
+---
+
+### ML — Multi-Language UI
+
+**T7MLC** (50 procs) — applies language translations: LANGDICT+BKARINV+BKARINVL+MTICMSTR+ISREPORD+BKICMSTR+BKICLOC+BKAPDESC.
+**T7LANG** (25 procs) — LANGDICT maintenance + BKAPVEND+BKARCUST lookups.
+
+ML uses LANGDICT (5f: ECAPT+LANG PK → LCAPT(80)+FONT(30)+EXTRA(150)) as the central translation table. T7LANG = maintain translations. T7MLC = apply translations to forms and reports (ISREPORD in DB set = report definition table). This module enables French/Spanish/etc UI captions without code changes.
+
+---
+
+### SD — Service Detail Code Maintenance
+
+**T7SDET** (58 procs) — opens ISSDET + ISSTYPE as primary tables.
+
+SD = maintenance for service detail codes used by the SR (Service/Repair) module. ISSDET (4f: IS_SDET_TYPE+DETAIL+WHO+SUB) stores detail work performed. ISSTYPE (3f: TYPE/WHO/ASSET) stores service error/type codes. T7SDET is the CRUD editor for these SR lookup tables.
+
+---
+
+### KIT — Kit Assembly
+
+**T7KIT** (153 procs, 26 tables) — opens: BKICMSTR+MTICMSTR+WOBOM+BKICLOC+BKYSMSTR+ISLINKS+WOMAT+WORKORD+WOROUT+BKPRMSTR+ISBINLOC+LOT+more.
+
+Kit assembly: creates a WO from a pre-defined kit (a named set of components). The WOBOM+WOMAT+WORKORD set confirms it builds a full WO. LOT tracking in the DB set confirms kit components can be lot-controlled. ISLINKS allows document attachments to kits. This is a shortcut for standard recurring assembly jobs.
+
+---
+
+### VSCHED — Visual Work Center Scheduler
+
+**T7VSCHED** (94 procs) — opens: BKICMSTR+FILELOC+WORKORD+WOROUT+WCTRLOAD+BKYSMSTR+BKARINV+BKARINVL.
+
+**WCTRLOAD** (8f) — work center load snapshot:
+- WC_LOAD_WC(12) + DATE(4) — work center + date (PK)
+- WC_LOAD_TOTHRS(8) — total scheduled hours
+- WC_LOAD_UDATE(4) — last update date
+- WC_LOAD_CAP(8) + UTIL(8) + LOAD(8) — capacity / utilization / load values
+- WC_LOAD_EXTRA(100)
+
+T7VSCHED = visual/Gantt-style work center capacity viewer. Reads WORKORD+WOROUT for scheduled operations, WCTRLOAD for pre-computed capacity snapshots. BKARINV/BKARINVL in set = customer demand overlay. Used for rough-cut capacity planning.
+
+---
+
+### NE — New Company Initialization
+
+**T7NEWINIT** (49 procs) — opens: FILELOC+FILEDES+BKAPVEND+BKARCUST+BKCMACCN+BKICMSTR+standard audit set.
+
+Creates a new company within an EvoERP installation: writes FILELOC (physical file path registrations) and FILEDES (file descriptions/definitions). Then populates seed data by reading from BKAPVEND/BKARCUST/BKICMSTR (optionally copies from existing company). This is the NE / new company entity initialization path.
+
+---
+
+### TPOA — PO Processing Approval Hub
+
+**TPOA** (499 procs, 61 tables) — opens: BKAPPO+BKAPVEND+BKAPDESC+BKAPPOL+MTICMSTR+BKYSMSTR+ISTERMS+ISNOTES+ISLINKS+ISAPEX+BKSYMSTR+full AP set.
+
+**ISNOTES** (13f) — generic notes/comments record:
+- IS_NOTE_ID(48) — parent record UID (PK, links to any entity)
+- IS_NOTE_TYPE(3) — note type code
+- IS_NOTE_CDATE/CTIME(4,10) + CWHO(15) — created when/who
+- IS_NOTE_EDATE/ETIME(4,10) + EWHO(15) — edited when/who
+- IS_NOTE_EXTRA(100) — note body text
+- IS_NOTE_PRIVATE(1) — private flag
+- IS_NOTE_GROUP(4) + CONTACT(30)
+
+TPOA at 499 procs is one of the largest programs — it is the full PO processing/approval hub. ISAPEX(33f) in DB confirms approval workflow gates. ISNOTES holds PO-level comment threads. ISLINKS enables document attachments to POs. At 61 tables this covers the complete AP/PO lifecycle: entry → approval → change orders → receipts → GL posting.
+
+---
+
+### Additional Standalone Reports / Tools
+
+| Program | Procs | Purpose |
+|---|---|---|
+| CASHFLOW | 26 | Cash flow drill-down report — AP vendor + AR customer balances |
+| WORKCENTERLOAD | 26 | Work center load drill-down report |
+| MACHINEVIEW | 24 | Machine view report (report shell only — no specific tables) |
+| PROJECTEDSTOCK | 23 | Projected stock report (report shell only) |
+| T7CUTSHEET2 | 75 | Cut sheet for WO material (sheet metal/panel fabrication) |
+| T7CUTSHEET2B | 60 | Cut sheet variant B — adds BKICMSTR+BKAPVEND lookups |
+| BOMTREE | unknown | BOM tree viewer |
+
+CASHFLOW and WORKCENTERLOAD share the same DB set (BKARCUST+BKAPVEND+BKCMACCN+BKICMSTR+ISLINKS+BKAPDESC) — drill-down reports using ISDRILL framework. T7CUTSHEET2/2B use WOMAT+LOT+WOBOM+ISIS for sheet material cutting instructions tied to a WO.
+
+---
+
+### New Tables Confirmed (Pass 43)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISCHAINM | 17 | Chain config — USER+PARENT+CHILD PK; PARAM_1..10 + AUTO+DATE+DESC+EXTRA |
+| ISQSOA | 12 | Quick SO staging — UID(40) PK; CUST+SHPTO+SHPDTE+ITEM+QTY+PRICE+DISC+MDATE1/2 |
+| WCTRLOAD | 8 | Work center load snapshot — WC+DATE PK; TOTHRS+CAP+UTIL+LOAD+UDATE |
+| ISNOTES | 13 | Generic notes/comments — NOTE_ID(48) PK; TYPE+CDATE+CWHO+EXTRA+PRIVATE+GROUP |
+
+---
+
+*Last updated: 2026-06-17 (Pass 43). LI/CH/QS/MU/PA/ML/SD/KIT/VSCHED/NE/TPOA all identified via RWN fingerprint. ISCHAINM(17f)/ISQSOA(12f)/WCTRLOAD(8f)/ISNOTES(13f) schemas extracted. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
