@@ -213,5 +213,20 @@ utility drops parameters in the DB and EVO TAS programs pick them up.
   active company.
 - Where the `BKARHINV` subfolder fits (it holds a single `BKARHINV.BI2`
   — probably an overflow/history partition for company I2).
-- Parse `INDEX.DDF` for primary-key / secondary-index information.
-- Parse `RELATE.DDF` for foreign-key relationships.
+- Parse `INDEX.DDF` for primary-key / secondary-index information. (Partially done — primary keys in `primary-keys.md`)
+
+## DDF metadata tables — confirmed empty (2026-06-17)
+
+All Pervasive extended metadata tables were read from `schema.json` and confirmed to contain **zero rows**:
+
+| DDF table | Purpose | Rows |
+|---|---|---|
+| `X$Relate` | Foreign key / RI relationships | **0** — no declared FK constraints |
+| `X$Proc` | Stored procedures | **0** — no stored procedures |
+| `X$Trigger` | Triggers | **0** — no database triggers |
+| `X$View` | SQL views | **0** — no defined views |
+| `X$Attrib` | Field attribute masks | **0** |
+| `X$Occurs` | Repeating field occurrences | **0** |
+| `X$Variant` | Variant type mappings | **0** |
+
+**Implication:** EvoERP enforces **all data integrity, referential constraints, and business rules in the TAS Pro application layer** — the Btrieve engine is used as a pure key-value store. There are no database-level constraints whatsoever. This is characteristic of xBase/Btrieve applications from this era.

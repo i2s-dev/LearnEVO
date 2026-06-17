@@ -1923,6 +1923,11 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 | **T7JAVARUN** | Wait screen shown while EvoPVT.jar executes a Java task |
 | **EVOGETDATE** | News/date message with "Do not show again" — dismissable release notes or date prompt |
 | **annual license** | EvoERP uses annual subscription licensing; EVOEXPIRE warns near expiry |
+| **EvoSettings.INI** | Per-workstation INI file (`C:\ISTS\EvoSettings.INI`) — stores user preferences (printer, language, sounds, reminder settings, module defaults), per-company email config (SMTP, credentials, body/signature templates), and 6 hot-button shortcuts |
+| **Hot Buttons** | 6 user-configurable toolbar shortcuts in EvoSettings.INI; each launches any .RWN module with a custom icon and tooltip |
+| **EvoorClassicScreen** | Per-module INI key that switches a module between "Evo" (modern) and "Classic" (DBA-era) UI mode |
+| **SAVE ACCESS** | Per-module INI key (0/1); when set, EvoERP remembers the last-accessed record when the user re-enters the module |
+| **No database-level constraints** | EvoERP has zero declared foreign keys, triggers, stored procedures, or views in Pervasive — all RI and business rules are enforced in TAS Pro application code |
 
 ---
 

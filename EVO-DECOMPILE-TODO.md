@@ -65,7 +65,11 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Bootstrap RWNs identified: `suwin6.dcy`, `suwin7.dcy`, `suwin6t.rwn`, `suwin7t.rwn` — **C: 55/100**
   - Gap: what these actually do before EvoERPmenu.rwn loads is not confirmed
 - [x] ✅ Per-workstation state files cataloged: `taspro7.ini`, `EvoSettings.INI`, `WHOAMI.DBA`, `CHMHELP.EVO`, `RBuilder.ini`, `DFM/`, `PDFS/` — **C: 68/100**
-- [ ] ⬜ `EvoSettings.INI` fully decoded (which modules it gates, format, all keys)
+- [x] ✅ `EvoSettings.INI` fully decoded (2026-06-17) — **C: 88/100**
+  - Sections: [Users] global prefs, [User:NAME] per-user, [EMAIL CO# X User:Y] email SMTP+templates, per-module [ARA]/[SOA] etc., [HOT BUTTONS] × 6
+  - Key flags: SAVE ACCESS, EvoorClassicScreen, Converted, OpenListXXX, Reminder, CheckForUpdates, TopMost
+  - Email creds stored in plaintext; booleans use `.T.`/`.F.` TAS Pro syntax in plain INI
+  - Full detail in `docs/01-architecture/overview.md`
 - [ ] ⬜ `StartEvo.exe` binary analyzed (exact command line, version check logic, error handling)
 - [ ] ⬜ `suwin6/7.dcy` pre-load behavior traced
 
@@ -296,9 +300,10 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Workgroup (≤5 users) vs. Client/Server (6+) licensing — **C: 82/100**
 - [x] ✅ Two ODBC engines: Transactional (EVO native) vs. Relational (external tools) — **C: 80/100**
 - [x] ✅ INDEX.DDF parsed → primary keys for ~200+ tables documented in `docs/04-data-dictionary/primary-keys.md` — **C: 72/100**
-- [ ] ⬜ RELATE.DDF fully parsed → foreign key relationships mapped
-- [ ] ⬜ TRIGGER.DDF content extracted (any server-side triggers in use?)
-- [ ] ⬜ PROC.DDF content extracted (any stored procedures in use?)
+- [x] ✅ RELATE.DDF / TRIGGER.DDF / PROC.DDF / VIEW.DDF / ATTRIB.DDF / OCCURS.DDF — all confirmed EMPTY (2026-06-17) — **C: 100/100**
+  - Zero foreign keys, zero triggers, zero stored procedures, zero views
+  - All data integrity enforced at the TAS Pro application layer only
+  - Btrieve is used as a pure key-value B-tree store with no database-level constraints
 
 ### 4.2 Schema Coverage
 - [x] ✅ **659 tables** confirmed — **C: 95/100**

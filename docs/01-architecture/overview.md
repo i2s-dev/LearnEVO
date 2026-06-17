@@ -53,6 +53,50 @@ These forms are reused across all modules — they are loaded by any module that
 | `EVOERROR.DCY` | File open error dialog |
 | `IMAGEPRINT.DCY` | "Printing Linked Documents" progress (EvoLinks attachment printing) |
 
+## EvoSettings.INI — per-workstation settings file (confirmed 2026-06-17)
+
+Location: `C:\ISTS\EvoSettings.INI` — standard Windows INI format, per workstation.
+
+**Key sections and their meaning:**
+
+`[Users]` — Global user preferences (all users on this workstation):
+| Key | Type | Meaning |
+|---|---|---|
+| `Toolbar` | 0/1 | Toolbar visible/hidden |
+| `OpenListINB`, `OpenListSOA`, etc. | 0/1 | Open browse list on module entry |
+| `Language` | string | UI language override |
+| `Sounds` | `.T.`/`.F.` | Enable sounds (uses TAS Pro boolean syntax) |
+| `DefPrinter` | string | Default printer name |
+| `DefPrintPath` | string | Default PDF/file output path |
+| `Reminder`, `Notification` | `.T.`/`.F.` | Reminder/notification system on/off |
+| `RemSeconds` | integer | Reminder check interval in seconds |
+| `QuickPrint` | string | Quick-print printer name |
+| `CheckForUpdates` | `.T.`/`.F.` | Auto-check for updates on startup |
+| `TopMost` | 0/1 | EvoERP window always-on-top |
+
+`[User:USERNAME]` — Per-user overrides (one section per user):
+| Key | Meaning |
+|---|---|
+| `AutoReStartEvoNum` | Module code to auto-open after login |
+
+`[EMAIL CO# <company> User:<username>]` — Per-user, per-company email config:
+Fields: `SMTP`, `PORT`, `SEC` (security mode), `EMAIL`, `NAME`, `USER`, `PASS`, `BCC`,
+`Subject`, `Body1`–`Body10` (multi-line body template), `Signature1`–`Signature10`,
+`Attach Path`, `EFAIL` (email-on-failure), `ECB` (CC business?), `EVB` (vendor BCC?)
+
+`[ARA]`, `[APA]`, `[INA]`, `[INB]`, `[POA]`, `[SOA]`, `[WOA]` — Per-module UI state:
+| Key | Meaning |
+|---|---|
+| `SAVE ACCESS` | 0/1 — whether to remember last-accessed record in this module |
+| `EvoorClassicScreen` | empty/value — switch between Evo (modern) and Classic (DBA-era) UI |
+| `Converted` | flag — whether the module's data has been migrated to the new format |
+
+`[HOT BUTTONS]` — 6 user-configurable toolbar shortcuts (Program N, Icon N, Hint N):
+Each button launches any `.RWN` by filename, shows a custom icon and tooltip.
+
+**Key insight:** Boolean values use TAS Pro's `.T.` / `.F.` syntax even in this plain INI file,
+consistent with xBase lineage. Email credentials are stored as plaintext in this file — no encryption.
+
 ## DC Module menu structure (confirmed from EVODC.DCY, 2026-06-17)
 
 The Data Collection entry-point menu (EVODC.DCY = TEditForm3) exposes:
