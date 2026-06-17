@@ -989,7 +989,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
-| Database Schema (field meaning) | **78** | 88 | **10** ↑ | 2026-06-17 |
+| Database Schema (field meaning) | **83** | 88 | **5** ↑+5 Pass77 100%coverage | 2026-06-17 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
@@ -1012,10 +1012,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
 | Module: QC/Quality Control | **82** | 82 | **0** ✅ ↑+1 Pass75 | 2026-06-17 |
 | Module: QT/Service Quote | **72** | 75 | **3** ↑+12 Pass60 | 2026-06-17 |
-| Module: IC/Inventory Utility | **78** | 72 | **0** ↑ Pass71 | 2026-06-17 |
+| Module: IC/Inventory Utility | **80** | 72 | **0** ✅ ↑+2 Pass77 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
-| Module: SH/Shop Scheduling ⚠️ | **82** | 85 | **3** ↑+10 Pass54 | 2026-06-17 |
-| Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
+| Module: SH/Shop Scheduling ⚠️ | **83** | 85 | **2** ↑+1 Pass77 | 2026-06-17 |
+| Module: LC/Lot Control | **81** | 78 | **0** ✅ ↑+1 Pass77 | 2026-06-17 |
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **82** | 85 | **3** ↑ Pass65 | 2026-06-17 |
 | Module: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |

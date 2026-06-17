@@ -9407,3 +9407,132 @@ These are read-only meta-tables that describe the database structure itself. DDF
 ---
 
 *Last updated: 2026-06-17 (Pass 76). Bulk alt-index catalog complete. All 133 remaining undocumented tables identified and classified: AR family (BKARINV/BKARINVL/ISARCHG/BKARTXN variants), AP family (BKAPPO/BKAPPOL/BKRFQ variants), SO/SR/SQ info (ISSRINFO variants), IC family (BKICMSTR variants), DC labor (BKDCLAB variants), BK_DESC_ note tables. New distinct tables: ISCONVRT(9f) UM conversion + ISPOTRK(7f) carrier tracking + ISPOLOG(9f) PO audit log + ISLOTS/ISHLOTS(11f) WO serial genealogy + ISMACS(11f) machine assignment + ISQRYSQL(2f) stored queries + ISVARSQL(4f) query parameters + BKAPACCN(154f) vendor contacts + BKARCHKF/H(12f) AP check reconciliation + code tables (CUSTCLAS/ISLTYPE/ISDIV/ISQTCODE) + J7 cancel module (JSPCNLCD/JSPCNLSO). X$* tables = Pervasive DDF system catalog (10 meta-tables). Schema coverage now approaches 100% of the DDF-registered tables. Confidence bumps: SO 75→82 (full ISSO*/ISSQ*/ISSRINFO alt-index family mapped), AP 92→93 (all BKAP*POL/BKAP*PO + BKARCHKF/H decoded).*
+
+---
+
+## Pass 77 — Final 16 DDF Tables (100% Coverage)
+
+### Alt-index completions (same schema as primary, different sort key)
+
+| Alt-index table | Primary table | Module | Sort key / purpose |
+|---|---|---|---|
+| **ISRTESA** (62f) | ROUTING (62f) | ES/RO | ES actual routing — sorts ROUTING by ES actual-cost order |
+| **ISRTEST** (62f) | ROUTING (62f) | ES/RO | ES estimate routing — sorts ROUTING by ES estimate order |
+| **ISQTINFO** (54f) | ISSRINFO (54f) | QT/SR | QT (service quote) extended-info sort — same 40-alpha/10-date pattern as ISSRINFO, keyed by quote number |
+| **ISANCR** (35f) | ISNCR (35f) | QC | Active NCR alt-sort — third index on ISNCR alongside ISACAR; used for real-time open NCR queue |
+| **ISISATAX** (13f) | BKISHTAX (13f) | IS/IC | IS archive historical tax alt-index — same 13-field layout as BKISHTAX; alternate sort for IS archive module |
+| **ISARAHTX** (5f) | BKARHTAX (5f) | AR | AR archive historical tax alt-index — same INVNO+CODE+ID+PID+AMOUNT; sorted by CODE for tax-code reporting |
+| **ISCCMTF** (2f) | ISCMGRP (2f) | IC/CM | Item-to-manufacturer tech-spec alt-index — same ITEM(15)+MTF(60); alternate sort of ISCMGRP |
+
+---
+
+### ISITMCFG — Item Serial/Lot Number Format Configuration
+9 fields. Defines the auto-generation format for serial or lot numbers by item and class. When EvoERP auto-generates serial/lot numbers (SR, IC, WO receipts), this table supplies the pattern and the last-used counter.
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| IS_SERC_ITEM | STRING | 15 | Item code (FK → BKICMSTR) — PK part 1 |
+| IS_SERC_CLASS | STRING | 4 | Number class/type (e.g. SER, LOT) — PK part 2 |
+| IS_SERC_SPOS | UBINARY | 2 | Start position within the generated number string |
+| IS_SERC_LENG | UBINARY | 2 | Length of the numeric increment portion |
+| IS_SERC_TOTAL | UBINARY | 2 | Total length of the complete generated number |
+| IS_SERC_NUMBER | FLOAT | 8 | Next number to use (auto-increment counter) |
+| IS_SERC_LAST | STRING | 25 | Last number generated (display/audit) |
+| IS_SERC_EXTRA | STRING | 100 | Extra |
+
+---
+
+### WCTRSLOD — Work Center Capacity Load Snapshot
+8 fields. One row per work center per date; records planned capacity, actual load hours, and utilization percentage. Used by the SH (Shop Scheduling) module for finite-capacity planning and WC throughput reporting.
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| WC_LOAD_WC | STRING | 12 | Work center code (FK → BKWCMSTR) — PK part 1 |
+| WC_LOAD_DATE | DATE | 4 | Calendar date — PK part 2 |
+| WC_LOAD_TOTHRS | FLOAT | 8 | Total hours loaded (scheduled work) |
+| WC_LOAD_UDATE | DATE | 4 | Last update date |
+| WC_LOAD_CAP | FLOAT | 8 | Capacity (available hours for this date) |
+| WC_LOAD_UTIL | FLOAT | 8 | Utilization % (TOTHRS / CAP × 100) |
+| WC_LOAD_LOAD | FLOAT | 8 | Actual load after constraint adjustments |
+| WC_LOAD_EXTRA | STRING | 150 | Extra |
+
+---
+
+### ISLOCCST — Per-Location Average Cost
+7 fields. When a site uses location-level average-cost accounting, each warehouse location carries its own average cost and book value for a part. ISLOCCST maintains that per-location cost alongside the standard per-item cost in BKICMSTR.
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| IS_LCST_PART | STRING | 15 | Part/item code (FK → BKICMSTR) — PK part 1 |
+| IS_LCST_LOC | STRING | 10 | Location code (FK → ISLOC) — PK part 2 |
+| IS_LCST_AVGC | FLOAT | 8 | Average cost at this location |
+| IS_LCST_BOOKVAL | FLOAT | 8 | Book value (qty × average cost) at this location |
+| IS_LCST_LDATE | DATE | 4 | Last cost update date |
+| IS_LCST_LTIME | INTEGER | 4 | Last cost update time |
+| IS_LCST_EXTRA | STRING | 150 | Extra |
+
+---
+
+### ISEAB — User Email Address Book
+6 fields. Personal email address book stored per EvoERP user. Supports the TAS Pro internal messaging / email-from-EVO feature so recipients can be selected without leaving the application.
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| IS_EAB_USER | STRING | 15 | EvoERP user ID (FK → BKUSRMST) — PK part 1 |
+| IS_EAB_CONTACT | STRING | 20 | Contact short name / nickname — PK part 2 |
+| IS_EAB_FNAME | STRING | 15 | First name |
+| IS_EAB_LNAME | STRING | 15 | Last name |
+| IS_EAB_EMAIL | STRING | 30 | Email address |
+| IS_EAB_EXTRA | STRING | 100 | Extra |
+
+---
+
+### ISFUTYPE — Follow-Up Type Codes
+3 fields. Lookup table for follow-up activity type codes. These codes appear on follow-up records throughout the CM (Contact Management), MK (Marketing Automation), and AC (Activities) modules — e.g. "CALL", "EMAIL", "VISIT", "DEMO".
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| IS_FUTYPE_TYPE | STRING | 10 | Type code (PK) |
+| IS_FUTYPE_DESC | STRING | 60 | Description |
+| IS_FUTYPE_EXTRA | STRING | 50 | Extra |
+
+---
+
+### ISSTEQUI / ISSTTYPE — SR Equipment Category and Service Ticket Type Codes
+3 fields each, identical structure. Used by the SR (Service/Repair) module to classify equipment categories and service ticket types.
+
+**ISSTEQUI** — equipment category definitions:
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| IS_STYPE_TYPE | STRING | 60 | Equipment category description (PK) |
+| IS_STYPE_WHO | STRING | 40 | Default responsible technician or group |
+| IS_STYPE_ASSET | STRING | 25 | Asset class code |
+
+**ISSTTYPE** — service ticket type definitions (identical layout):
+- IS_STYPE_TYPE — service ticket type description (e.g. "REPAIR", "INSTALL", "PM")
+- IS_STYPE_WHO — default assigned-to group or technician
+- IS_STYPE_ASSET — associated asset class
+
+---
+
+### ISBRANDC / ISBRANDS — Brand Code and Brand-Class Lookups
+2 fields each. Support brand-based pricing, reporting, and CRM account categorization. Field prefix BKCM_ACC_ places these in the CM (Contact/Account Management) module.
+
+**ISBRANDC** — brand code master:
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| BKCM_ACCC_CODE | STRING | 5 | Brand code (PK) — 5-char identifier |
+| BKCM_ACCC_DESC | STRING | 25 | Brand description |
+
+**ISBRANDS** — brand-to-product-class mapping:
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| BKCM_ACCL_CODE | STRING | 10 | Brand code (FK → ISBRANDC) |
+| BKCM_ACCL_CLASS | STRING | 5 | Product class code (FK → BKICCLAS or CUSTCLAS) |
+
+---
+
+*Last updated: 2026-06-17 (Pass 77). **100% DDF table coverage achieved.** Every table registered in the Pervasive schema.json is now documented. Final 16 tables: 7 alt-index completions (ISRTESA/ISRTEST/ISQTINFO/ISANCR/ISISATAX/ISARAHTX/ISCCMTF) + 9 new distinct tables (ISITMCFG serial-number config, WCTRSLOD WC load snapshot, ISLOCCST per-location average cost, ISEAB email address book, ISFUTYPE follow-up type codes, ISSTEQUI/ISSTTYPE SR equipment/ticket type codes, ISBRANDC/ISBRANDS brand lookups). Confidence bumps: Database Schema (field meaning) 78→83, SH/Shop Scheduling 82→83, IC 82→83, LC/Lot Control 80→81.*
