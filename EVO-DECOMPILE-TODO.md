@@ -1019,10 +1019,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FA/Fixed Assets | **82** | 85 | **3** ↑ Pass65 | 2026-06-17 |
 | Module: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: MA/AR Deposits | **70** | 75 | **5** ↑ Pass50 | 2026-06-17 |
-| Module: ES/Estimating | **72** | 75 | **3** ↑ Pass50 | 2026-06-17 |
+| Module: ES/Estimating | **75** | 78 | **3** ↑ Pass69 | 2026-06-17 |
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+7 Pass62 | 2026-06-17 |
 | Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
-| Module: CC/Credit Card ⚠️ | **72** | 78 | **6** ↑ | 2026-06-17 |
+| Module: CC/Credit Card ⚠️ | **78** | 80 | **2** ↑ Pass69 | 2026-06-17 |
 | Module: SP/SPC ⚠️ | **80** | 82 | **2** ↑ Pass67 | 2026-06-17 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
 | Module: UT/Utilities | **72** | 75 | **3** ↑ Pass51 | 2026-06-17 |
@@ -1030,7 +1030,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FO/Features Options | **78** | 82 | **4** ↑ Pass65 | 2026-06-17 |
 | Module: IS/InfoSystem | **68** | 72 | **4** ↑+8 Pass59 | 2026-06-17 |
 | Module: IM/Landed Cost | **78** | 82 | **4** ↑+8 Pass46 | 2026-06-17 |
-| Module: PS/Program Security | **72** | 78 | **6** ↑+12 Pass46 | 2026-06-17 |
+| Module: PS/Program Security | **75** | 78 | **3** ↑ Pass69 | 2026-06-17 |
 | Module: QU/Query Tools | **70** | 75 | **5** ↑ | 2026-06-17 |
 | Module: SU/Setup UI | **72** | 75 | **3** ↑ Pass65 | 2026-06-17 |
 | Module: TA/TAS Admin | **78** | 80 | **2** ↑ Pass66 | 2026-06-17 |
@@ -1073,7 +1073,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+3 Pass62 | 2026-06-17 |
 | Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
-| Module: ES/Estimating | **72** | 75 | **3** ↑ Pass50 (dup of row above) | 2026-06-17 |
+| Module: ES/Estimating | **75** | 78 | **3** ↑ Pass69 (dup of row above) | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **68** | 70 | **2** ↑+13 Pass62 | 2026-06-17 |
 | Module: DE/DC stubs+EDI processing | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **82** | 85 | **3** ↑ Pass51 | 2026-06-17 |

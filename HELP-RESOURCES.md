@@ -1266,7 +1266,19 @@ Primary key: IS_WOEX_WOPRE(8) + WOSUF(2). Extension record per WO for multi-yiel
 
 **Primary tables:** BKPS.USER.* (user accounts), program access list (BKPS.PROG.* or similar)
 
-**Confidence: 60/100** — All 6 DFMs read; dual user system confirmed; security code [A/P/1/2/C/V/U/E] exact values not decoded; program number mapping not decoded (in RWN).
+**BKPSUSER (11f)** — user login record (CODE PK; PSWD+SEC(30)+MCNTR+LDATE+EMP) — documented in Pass 46.
+
+**ISVNDADT (11f)** — Vendor name/amount change audit trail (PS-K). Used when a user changes a vendor name or max PO amount:
+- IS_VND_VEND(10) — vendor code (PK, FK → BKAPVEND)
+- IS_VND_ONAME(30) + NNAME(30) — old name + new name
+- IS_VND_APPROVE(1) — approval flag
+- IS_VND_DATE(4) + TIME(4) + WHO(20) — when/who approved
+- IS_VND_OMAXAMT(8) + NMAXAMT(8) — old + new max PO amount threshold
+- IS_VND_CHGDESC(30) — change description
+- IS_VND_EXTRA(100)
+PS-K creates an ISVNDADT record for every vendor name or credit limit change; the record must be approved (APPROVE='Y') before the change takes effect in BKAPVEND.
+
+**Confidence: 72/100** — BKPSUSER(11f)+ISVNDADT(11f) schemas extracted; dual user system confirmed; T7PSA(90p) user master, T7PSE(50p)+T7PSF(63p) menu security, T7PSK(96p) vendor audit all confirmed; ISEXUSER+BKMENUSU not in DDF (security data tables with no DDF registration).
 
 ---
 
@@ -1451,7 +1463,23 @@ Primary key: IS_WOEX_WOPRE(8) + WOSUF(2). Extension record per WO for multi-yiel
 
 **Security note:** IS.CC.MASKED stores only the masked (tokenized) card number, not the raw PAN. Compliance-aware storage.
 
-**Confidence: 65/100** — All 6 DFMs read; CC data model confirmed; masked storage architecture confirmed; IS.CC field count and AR/PO integration join keys not decoded.
+**J7 Customization — CC-C programs (T7CCCITM, T7CCCRNO, T7CCCWOT):**
+These three programs use **ISCCICM(59f)** — a J7-specific catalog extension table with field names that reveal door hardware manufacturing:
+- ISCC_ICM_CODE(15) + DESC(30) + DESC2(30) — item code + two descriptions
+- ISCC_ICM_FSIZE(30) — frame/door size specification
+- ISCC_ICM_CUST(60) — customer specification (longer than standard 10-char customer code = free-text field)
+- ISCC_ICM_COLLEC(120) — product collection/style name (120 chars)
+- ISCC_ICM_HINGE(25) — hinge specification
+- ISCC_ICM_SPY(25) — spy hole / peephole specification
+- ISCC_ICM_PDF(60) — PDF document path (product sheet/drawing)
+- ISCC_ICM_PNAME(60) — product name
+- ISCC_ICM_AMTPP(25) — amount per piece
+- ISCC_ICM_SOLIDF(25) — SolidWorks file path (3D model integration)
+- +47 more configurable spec/dimension fields
+
+T7CCCITM (CC-C item maintenance), T7CCCRNO (CC-C change request numbering), T7CCCWOT (CC-C WO closure) are J7 Systems customizations for door hardware catalog management — not part of stock EvoERP. BKRTSPEC+BKBMDIM+BKBMNOTE+BKBMREMK in the fingerprint confirm these programs also manage routing specs and BOM dimensions.
+
+**Confidence: 78/100** — ISCC(14f) full schema extracted (tokenized CC vault); BKPSUSER security integration confirmed; ISCCICM(59f) extracted — J7 catalog extension confirmed (door hardware: frame/hinge/spy/SolidWorks fields); CC-CCC J7 customization boundary identified.
 
 ---
 
@@ -6728,6 +6756,10 @@ ES-B print estimate report (T7ESB)
 | ESTSUM | 213 | MT-era legacy estimate assembly — MTESUM_QUOTE(8) PK; same 213-field structure as ISESTASM; predecessor generation to BKESTQT |
 | ISESTDTL | 203 | Estimate detail — IS_EST_NUM+PART+LINE PK; 10 qty-break × material/labor/overhead cost columns |
 | BKMRPFC | 9 | MRP demand forecast — PART(15)+DATE(4) PK; QTY+OQTY+CQTY (original/current)+FLAG+DATE1+NUM; feeds MRP explosion as independent demand |
+| ISECO | 12 | Engineering Change Order — PART(15)+DRAW(15)+REVLVL(5) PK; ENTDATE+ENTBY(4)+ECO(15) ECO number+CURRENT(1)+STATUS(1)+DATE+APPBY(4)+INVDISP(2, inventory disposition: use/rework/scrap)+EXTRA(100) |
+| MTEXCHG | 7 | Estimate exchange/change line — QUOTE(8)+AMT(8)+DESC(30)+COST(8)+EXTRA(50)+CODE(15)+LINE(8); revision history for estimate changes |
+
+ISECO drives part drawing revision control: each ECO records who entered/approved it, the effective revision level, and what to do with existing stock (INVDISP: 2-char disposition code). T7ESE reads ISECO to validate the revision level when converting an estimate to an SO/WO.
 
 ---
 
@@ -7295,4 +7327,17 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 68). Confidence bumps: SC 72→78 (SERIAL 30f full lifecycle schema — PO/WO/SO paths decoded), TPOA 65→72 (ISAPEX 33f + BKRFQ 49f + ISORDDSC 1f decoded; RFQ workflow confirmed), DE 65→72 (MACHINE 20f + TOOL 57f + WOLABOR 58f + BKDCCFG 7f decoded; DC shop floor asset architecture confirmed). 8 new schemas.*
+---
+
+### New Tables Confirmed (Pass 69)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISCCICM | 59 | J7 custom catalog extension — CODE+DESC PK; FSIZE(30)/COLLEC(120)/HINGE(25)/SPY(25)/PDF(60)/SOLIDF(25) confirm door hardware catalog; used by T7CCCITM/CCCRNO/CCCWOT (J7-only programs) |
+| ISECO | 12 | Engineering Change Order — PART+DRAW+REVLVL PK; ENTDATE+ENTBY+ECO+CURRENT+STATUS+APPBY+INVDISP(2 disposition)+EXTRA; controls drawing revision and inventory disposition |
+| MTEXCHG | 7 | Estimate change/exchange line — QUOTE+LINE PK; AMT+COST+CODE+DESC+EXTRA; revision history for estimate changes |
+| ISVNDADT | 11 | Vendor change audit trail — VEND PK; ONAME+NNAME+OMAXAMT+NMAXAMT (old/new); APPROVE+DATE+TIME+WHO; PS-K records here before approving vendor name/limit changes |
+
+---
+
+*Last updated: 2026-06-17 (Pass 69). Confidence bumps: CC 65→78 (ISCC 14f vault + ISCCICM 59f J7 door-hardware catalog; CC-CCC J7 boundary identified), PS 60→72 (BKPSUSER 11f + ISVNDADT 11f decoded; vendor change audit trail confirmed), ES 72→75 (ISECO 12f ECO record + MTEXCHG 7f revision history added). Pass 68 additions also: SC 72→78 (SERIAL 30f lifecycle), TPOA 65→72 (ISAPEX+BKRFQ+ISORDDSC), DE 65→72 (MACHINE/TOOL/WOLABOR/BKDCCFG). 12 cumulative new schemas (Passes 68+69).*
