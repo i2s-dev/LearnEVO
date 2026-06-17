@@ -8260,3 +8260,289 @@ Used by the WO creation subsystem to generate the next WO number within each pre
 ---
 
 *Last updated: 2026-06-17 (Pass 72). Confidence bumps: ES 80→85 (ESTMAT 18f material BOM; ES table family now complete: ESTMAT+ESTROUT+BKMATCST+BKRTCST+BKESTQT/L+ESTSUM), BM/BOM 82→85 (BOMCHG 15f + WOBOMCHG 17f change audit pair decoded), RO 85→88 (ROCHG 22f + WOROCHG 24f routing change audit pair decoded), DC 85→87 (ISDCSER 17f serial scan record), WO 85→87 (BKWOPO 16f MRP planned PO + ISTOOLOG 34f tool log), DI 72→78 (ISASIGN/ISSIGN 16f digital signature capture), FO 78→81 (ISFOBMRM 20f BOM remarks). System: ISVAR(17f) company identity decoded. 18 new schemas.*
+
+---
+
+## WO — Three-Tier Archive Architecture — Pass 73
+
+### WO Table Family: Live / Estimate / History
+
+EvoERP's Work Order system uses a **three-tier table architecture** for each sub-entity:
+
+| Sub-entity | Live (active WO) | Estimate / Planned | History (closed WO archive) |
+|---|---|---|---|
+| WO header | WORKORD (74f) | WORKSORD (74f, template WOs) | WORKHORD (74f) |
+| BOM / materials | WOBOM (24f) | WOEMAT (17f) | WOHBOM (24f) |
+| Labor transactions | WOLABOR (58f) | WOELABOR (58f) | WOHLABOR (58f) / WOLABRPT (58f) |
+| Receipts | WORECV (11f) | WOERECV (11f) | WOHRECV (11f) |
+| Routing | WOROUT (81f) | — | WOHROUT (81f) |
+| Dates/schedule | WODATE (13f) | — | WOHDATE (13f) |
+| Engineering chg costs | WOEXCHG (10f) | — | WOHEXCHG (10f) |
+
+**Pattern:** When a WO is closed/archived, all live records move to the matching WOH* table. WORKSORD holds saved/template WO headers. WOELABOR/WOEMAT/WOERECV are estimate rows that become actuals once the WO is released.
+
+**WOLABRPT** — alternate-index/report view of WOLABOR (same 58 MTWOLA_ fields, different sort key for report generation).
+
+### WORKACHG (25f) — WO Header Change Audit
+
+**PK:** WO_CHG_WOPRE + WO_CHG_WOSUF + WO_CHG_CODE (change type code)
+
+Captures changes to WO header fields (status, priority, class, description) — the fourth member of the WO change-audit family:
+
+| Change pair | Before / After |
+|---|---|
+| APRIO / BPRIO | After/before priority |
+| ASTATUS / BSTATUS | After/before status |
+| ACLASS / BCLASS | After/before WO class |
+| ADESC / BDESC | After/before description |
+| + 13 more A/B pairs | Dates, quantities, GL accounts, etc. |
+
+Full WO change audit family: **WORKACHG** (header) + **WOBOMCHG** (BOM) + **WOROCHG** (routing) — three tables covering every type of WO modification.
+
+**WO confidence: 90/100** — Three-tier archive architecture confirmed from field prefix identity; all WOH* tables confirmed as MTWO_*/WOMAT_*/MTWOLA_ prefix matches of their live counterparts; WO change-audit family complete.
+
+---
+
+## MK — Marketing Automation Module — Pass 73
+
+### Marketing Module Table Family
+
+EvoERP includes a full Marketing Automation subsystem (MK prefix) tied to the CRM (CM) module. It implements campaign-based customer outreach with sequenced events.
+
+### MKDEF (11f) — Marketing Defaults
+
+Single-row configuration:
+- MKDEF_REQUIRE(1) — require tracking flag
+- MKDEF_CALENDAR(1) — calendar integration flag
+- MKDEF_TRACK, PRICECD — default tracking/price codes
+- MKDEF_FUCODE(3) — default follow-up code
+- MKDEF_HISTORYCD(2) — default history code
+- MKDEF_TNEXTID / TCNEXTID / ENEXTID / ECNEXTID / FNEXTID — next-ID auto-counters for tracks/events/forms
+
+---
+
+### MKTRACK (4f) — Campaign Track Definition
+
+**PK:** MKTRACK_NUM (float)
+- MKTRACK_DESC(45) — campaign name
+- MKTRACK_CLASS(float) — track class (FK: MKTCLASS)
+- MKTRACK_ACTIVE(1) — active flag
+
+A "track" is a marketing campaign (e.g., "Q4 Product Launch", "New Customer Onboarding").
+
+---
+
+### MKTROUT (11f) — Campaign Route/Sequence
+
+**PK:** MKTROUT_TRACK + MKTROUT_SEQ
+
+Defines the ordered event sequence for a campaign:
+- MKTROUT_JUMP(1) — jump/branch flag
+- MKTROUT_NEXTSEQ — next step in sequence
+- MKTROUT_EVENT — event to trigger (FK: MKEVENT)
+- MKTROUT_DAYSNXT — days until next step
+- MKTROUT_FIXED(1) — fixed date vs. relative
+- MKTROUT_SALEBEG(1) + SALELEN + SALECLO(1) — sale/promotion window flags
+- MKTROUT_PRICECD — price code at this step
+
+MKTROUT defines the workflow: "send event X after N days, then jump to event Y."
+
+---
+
+### MKEVENT (12f) — Marketing Event Definition
+
+**PK:** MKEVENT_NUM (float)
+- MKEVENT_DESC(45), CLASS, MEDIA(1) — event description, class, media type (mail/email/call)
+- MKEVENT_FORM — form template (FK: MKFORM)
+- MKEVENT_FUCODE(3) — follow-up code
+- MKEVENT_REM1/2(60 each) — remarks
+- MKEVENT_SENDTO(2), GENNAME(45) — recipient code + generic name
+- MKEVENT_HISTCD(2), ACTIVE(1) — history code + active flag
+
+---
+
+### MKFORM (6f) — Marketing Form Template
+
+**PK:** MKFORM_NUM (float)
+- MKFORM_DESC(45) — form description
+- MKFORM_FILE(25) — letter/form file path
+- MKFORM_ATT(25) — attachment file path
+- MKFORM_MEDIA(1) — delivery medium
+- MKFORM_ACTIVE(1)
+
+---
+
+### MKASSIGN (6f) — Campaign Account Assignment
+
+**PK:** MKASSIGN_ACCT + TRACK
+- MKASSIGN_ACCT(10) — CM account (FK: BKCMACCT)
+- MKASSIGN_TRACK(float) — campaign track
+- MKASSIGN_NXTSEQ(2) — next sequence step
+- MKASSIGN_NXTDAT — scheduled date for next step
+- MKASSIGN_SALEND — sale/promotion end date
+- MKASSIGN_PRCODE — price code
+
+Assigns a customer account to a campaign track and tracks their position in the sequence.
+
+---
+
+### Supporting MK Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| MKTCLASS | 3 | Track class codes: NUM+CLASS+ACTIVE |
+| MKICLASS | 3 | Item/event class codes: NUM+DESC+ACTIVE |
+| MKTNOTE | 3 | Track notes: TRACK+LINE PK; TEXT(70) per line |
+
+**MK module summary:** MKTRACK defines campaigns, MKTROUT defines the event sequence, MKEVENT specifies what happens at each step, MKFORM holds the letter/email template, MKASSIGN puts customers into campaigns at a specific sequence position. The system automatically advances each customer to the next MKTROUT step on schedule.
+
+**MK confidence: 72/100** — Full 6-table architecture confirmed; campaign-route-event-form chain decoded; MKASSIGN customer enrollment confirmed; integration with BKCMACCT (CRM accounts) confirmed; event trigger mechanism (how MKTROUT fires MKEVENT on schedule) in encrypted RWN.
+
+---
+
+## PR — Payroll History, W2, and Commissions — Pass 73
+
+### BKPRHIST (127f) — Payroll Transaction History
+
+**PK:** BKPR_CURP_EMPNM + CURP_PRDTE + CURP_ACTNM + CURP_CHKNM
+
+Identical 127-field structure to BKPRCURP (active payroll period). BKPRHIST is the closed-paycheck archive — after PR-H posts and prints checks, BKPRCURP rows are archived here. Retains complete per-paycheck detail: RPHRS/RPAMT (regular), 12 OT types (OPHRS/OPAMT_1..12), vacation/sick, all 12 deductions, FIT/FICA/state/SDI/WC/medical amounts. Historical audit trail for every paycheck ever issued.
+
+---
+
+### BKPRW2 (384f) — W2 Preparation Table
+
+**PK:** BKPR_EMP_NUM (same as BKPRMSTR)
+
+Same 384-field structure as BKPRMSTR (BKPR_EMP_ prefix). BKPRW2 is the W2 reporting view/staging table — contains the same employee master data (name, SSN, address, YTD amounts) but is specifically used by the W2 printing and magnetic-media programs. The identical field count (384f) confirms this is an alternate-index view of BKPRMSTR, not a separate table.
+
+---
+
+### BKPRBOOK (87f) — Commission Book (Alternate View)
+
+Identical 87-field structure to BKPRSALE (BKPR_SLS_ prefix): 12-month QUOTA/GROSS/COGS/RCPTS arrays. BKPRBOOK is an alternate-index view of BKPRSALE optimized for a different sort order (possibly by commission class rather than by employee number).
+
+---
+
+### BKPRACOM (12f) / BKPRHCOM (12f) — Commission Records (Active/History)
+
+**PK:** BKPR_COMM_SLSP(2) + CCODE(10) + INVNM(float)
+
+Salesperson commission detail per invoice line:
+- BKPR_COMM_INVDT — invoice date
+- BKPR_COMM_PAYDT — pay date (when commission was earned/paid)
+- BKPR_COMM_AMTPD — amount paid on invoice
+- BKPR_COMM_COMM — commission amount
+- BKPR_COMM_PD_ON — paid-on amount (base for commission calculation)
+- BKPR_COMM_EXTRA(25) + ULID(float) + TDATE — notes + unique ID + transaction date
+- BKPR_COMM_PCODE(15) — product code
+
+BKPRACOM = active unpaid commissions; BKPRHCOM = history of paid commissions. Used by PR-COMM (commission payout) and CS (commission/salesperson) module.
+
+**PR confidence: 90/100** — BKPRHIST(127f) confirmed as BKPRCURP archive (identical prefix/structure); BKPRW2(384f) confirmed as BKPRMSTR W2 view; BKPRACOM/BKPRHCOM(12f) commission detail decoded; active/history pair pattern confirmed. PR table family now covers: BKPRMSTR, BKPRCURP, BKPRHIST, BKPRW2, BKPRSALE/BKPRBOOK, BKPRACOM/BKPRHCOM, BKPRFTAX, BKPRGLFL, BKPRTC, BKPRINFO, ISPRUDF, BKPRSTFL, ISPRTEMP.
+
+---
+
+## IC — Pricing: DISCOUNT as BKICPMAT Alias — Pass 73
+
+### DISCOUNT (85f) — Alternate Index of BKICPMAT
+
+DISCOUNT uses the identical BKIC_PMAT_ field prefix and 85-field structure as BKICPMAT (customer-item pricing matrix). DISCOUNT is a Btrieve alternate-index of BKICPMAT sorted by PCODE (item) rather than CUST (customer) — programs that need "all customers who have a price for this item" use DISCOUNT, while programs that need "all items this customer has a price for" use BKICPMAT.
+
+---
+
+## System — Utility Tables — Pass 73
+
+### BKCPMSTR (9f) — Check Printing Path Configuration
+
+BKCP_ prefix. Single-row configuration for the check printing (CP) subsystem:
+- CMPATH(66) — C-file (check) path
+- IMPATH(66) — I-file path
+- CFILE(20), VFILE(20), EXPATH(66), HFILE(20), EFILE(20) — additional file paths
+- LABEX(1), COMMEX(1) — lab/commission exception flags
+
+### BKCPEC (10f) — Check Printing Error/Staging
+
+**PK:** DATE + CHECKNO
+- GLACCT(10) + GLDEPT(4) — GL posting destination
+- AMOUNT(float), CHECKNO(float), DESC(25) — check details
+- ISCHK(float) — is-check flag; ERROR(5) — error code; LINE(2) — line ref; VEND(10) — vendor
+
+---
+
+### DBACNAME (3f) — DBA Company Name Lookup
+
+- CNAME_CODE(2) + CNAME_NAME(25) + CNAME_FILLER(40)
+
+Multi-company name lookup. Used at company selection (EVOMENU_SELCOMP) to display company names by 2-char code.
+
+---
+
+### BKFLDHLP (3f) — Context-Sensitive Field Help
+
+- HLP_CODE(17) — field identifier (screen + position); HLP_INDEX(2) — line number; HLP_LINE(60) — help text
+
+When a user presses F1 on a field, EvoERP looks up HLP_CODE to retrieve the multi-line help text. Editable via TA-M (Forms Editor).
+
+---
+
+### BKSLMSTR (2f) — Security Level Descriptions
+
+- BKSL_MSTR_LEVEL(2) + BKSL_MSTR_DESC(45)
+
+Human-readable names for the 2-char security level codes used in BKPSUSER and BKSLEVEL.
+
+---
+
+### BKUPDATE (4f) — Software Update Log
+
+**PK:** BKUP_COMPANY(2) + UPDATE(1)
+- BKUP_DATE — applied date; BKUPDATE_VER(15) — version string
+
+Records which patches/updates have been applied per company. Prevents TA-D from re-applying patches.
+
+---
+
+### New Tables Confirmed (Pass 73)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| WORKHORD | 74 | WO history — closed WO header archive (WORKORD mirror) |
+| WORKSORD | 74 | WO templates — saved/standard WO headers |
+| WOHBOM | 24 | WO BOM history archive |
+| WOHLABOR | 58 | WO labor history archive |
+| WOHMAT | 17 | WO material issue history archive |
+| WOHRECV | 11 | WO receipt history archive |
+| WOHROUT | 81 | WO routing history archive |
+| WOHDATE | 13 | WO schedule date history archive |
+| WOHEXCHG | 10 | WO engineering change cost history |
+| WOELABOR | 58 | WO estimated labor (pre-actual) |
+| WOEMAT | 17 | WO estimated material (pre-issue) |
+| WOERECV | 11 | WO estimated receipt |
+| WOLABRPT | 58 | WO labor report view (WOLABOR alt-index) |
+| WORKACHG | 25 | WO header change audit — WOPRE+WOSUF+CODE PK; A/B status/priority/class/desc |
+| MKDEF | 11 | Marketing defaults — config + next-ID counters |
+| MKTRACK | 4 | Campaign track definition — NUM+DESC+CLASS+ACTIVE |
+| MKTROUT | 11 | Campaign event sequence — TRACK+SEQ PK; EVENT+DAYSNXT+NEXTSEQ |
+| MKEVENT | 12 | Marketing event — NUM PK; DESC+MEDIA+FORM+FUCODE+SENDTO |
+| MKFORM | 6 | Marketing form template — NUM PK; FILE+ATT+MEDIA |
+| MKASSIGN | 6 | Customer-to-campaign assignment — ACCT+TRACK PK; NXTSEQ+NXTDAT |
+| MKTCLASS | 3 | Track class codes |
+| MKICLASS | 3 | Item/event class codes |
+| MKTNOTE | 3 | Track notes — TRACK+LINE PK; TEXT(70) |
+| BKPRHIST | 127 | Payroll history archive — closed paychecks (BKPRCURP mirror) |
+| BKPRW2 | 384 | W2 preparation view — BKPRMSTR alt-index for W2 printing |
+| BKPRBOOK | 87 | Commission book — BKPRSALE alt-index |
+| BKPRACOM | 12 | Active commissions — SLSP+CCODE+INVNM PK; COMM+AMTPD+PCODE |
+| BKPRHCOM | 12 | Commission history — same 12f as BKPRACOM |
+| DISCOUNT | 85 | BKICPMAT alt-index sorted by item code |
+| BKCPMSTR | 9 | Check printing path config — CMPATH+IMPATH+5 file paths |
+| BKCPEC | 10 | Check print staging/errors — DATE+CHECKNO+GLACCT+AMOUNT+VEND |
+| DBACNAME | 3 | Company name lookup — CODE(2)+NAME(25) |
+| BKFLDHLP | 3 | Context-sensitive field help — CODE+INDEX+LINE(60) |
+| BKSLMSTR | 2 | Security level names — LEVEL(2)+DESC(45) |
+| BKUPDATE | 4 | Patch log — COMPANY+UPDATE PK; DATE+VER(15) |
+
+---
+
+*Last updated: 2026-06-17 (Pass 73). WO three-tier archive architecture confirmed: live (WORKORD/WOBOM/WOLABOR etc.) + estimate (WOEMAT/WOELABOR/WOERECV) + history (WORKHORD/WOHBOM/WOHLABOR etc.); WORKACHG(25f) WO header change audit completes the WO change-audit family (4 tables: header+BOM+routing+history); MK Marketing Automation module decoded (6 tables: MKDEF+MKTRACK+MKTROUT+MKEVENT+MKFORM+MKASSIGN); PR family complete: BKPRHIST(127f) payroll history + BKPRW2(384f) W2 view + BKPRACOM/BKPRHCOM(12f) commission detail; DISCOUNT confirmed as BKICPMAT alt-index. 35 new schemas. Confidence bumps: WO 87→90, PR 87→90, MK new 72.*

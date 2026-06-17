@@ -997,14 +997,15 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
-| Module: WO | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
+| Module: WO | **90** | 90 | **0** ✅ ↑+3 Pass73 | 2026-06-17 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
 | Module: BM/MRP | **85** | 85 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
 | Module: DC/Data Collection | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
-| Module: PR/Payroll | **85** | 88 | **3** ↑ Pass71 | 2026-06-17 |
+| Module: PR/Payroll | **90** | 92 | **2** ↑+5 Pass73 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **82** | 85 | **3** ↑+10 Pass53 | 2026-06-17 |
+| Module: MK/Marketing Automation | **72** | 78 | **6** NEW Pass73 | 2026-06-17 |
 | Module: DE/EDI/Imports | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: CS/Commission+Salesperson | **80** | 85 | **5** ↑+10 Pass57 | 2026-06-17 |
 | Module: JC/Job Costing | **78** | 82 | **4** ↑+6 Pass47 | 2026-06-17 |
