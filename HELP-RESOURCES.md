@@ -2376,4 +2376,165 @@ All 6 data-bridge programs use only standard boilerplate DB (BKSYHELP+ISIS+MKAHI
 
 ---
 
-*Last updated: 2026-06-17 (Pass 32). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-32 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 33 Additions
+
+### QC — Quality Control (Major Expansion)
+
+**18 programs across 4 sub-areas.** Full ISO 9001-compatible quality management system.
+
+#### Sub-area QC-A through QC-D: Inspection
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7QCA | 106 | QC-A incoming inspection — item/lot/serial from vendor or customer; posts to BKQCTRAN; uses SCRAP+QCCODES |
+| T7QCB | 120 | QC-B WO material quality — checks raw materials issued to WORKORD via WOMAT |
+| T7QCC | 108 | QC-C WO receipt quality — checks completed WO receipts (WORECV) |
+| T7QCD | 117 | QC-D WO routing/labor quality — checks by work center (ROUTING+WOLABOR+BKPRMSTR) |
+
+#### Sub-area QC-F: Non-Conformance Records (NCR)
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7QCFA | 178 | NCR entry — creates ISNCR records from WO/PO/SO/RMA source; links vendor/customer/machine/tool |
+| T7QCFB | 108 | NCR with supplier quality — links ISNCR to BKSBVEND (supplier ratings) + WORECV |
+| T7QCFC | 5 | NCR sub stub |
+| T7QCFD | 53 | NCR inquiry — browse ISNCR records with ISNOTES; read-mostly |
+| T7QCFE | 5 | NCR sub stub |
+| T7QCFF | 131 | NCR closeout — closes ISNCR, updates BKICLOCM inventory, posts via BKAPPO |
+
+#### Sub-area QC-G: Corrective/Preventive Actions (CAPA)
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7QCGA | 212 | CAPA entry — creates ISCACT corrective actions linked to ISNCR; assigns ISCARDTE dates + BKPSUSER owner |
+| T7QCGB | 122 | CAPA approval — team review via ISCTEAM; ISACTION action type codes; approval workflow |
+| T7QCGC | 5 | CAPA sub stub |
+| T7QCGD | 110 | CAPA report — browse ISNCR+ISCACT+ISCTEAM; assigned-to BKPSUSER |
+
+#### Supporting programs
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7QCMTHD | 65 | QC Methods maintenance — defines ISQCMTHD test procedures (25 × 100-char method lines) |
+| T7QCRESULTS | 104 | QC Results entry — records test results in ISQCSPEC per WO/lot/SO/PO |
+| T7QCRSLT | 87 | QC Results with tray — results linked to ISWOTRAY (physical tray tracking) + ISQCMTHD |
+| T7QCSPEC | 82 | QC Specifications — defines test specs in ISQCSPEC per routing operation |
+
+#### QC Key Tables
+
+**ISNCR** — Non-Conformance Records (35 fields)
+- PK: IS_NCR_NUM (float)
+- IS_NCR_PART (15) / IS_NCR_COMP (15) — parent + component item
+- IS_NCR_LOT (15) / IS_NCR_SERIAL (25) — lot/serial of defective part
+- IS_NCR_CDATE / IS_NCR_WHO (15) — creation date + creator
+- IS_NCR_QTY — defective quantity
+- IS_NCR_DCODE (10) — defect code
+- IS_NCR_ICR (1) — ICR flag (internal change request linked)
+- IS_NCR_ORIG (1) — origin code (PO=purchased, WO=manufactured, RMA=return)
+- IS_NCR_WOPRE / IS_NCR_WOSUF — Work Order reference
+- IS_NCR_MACH (4) / IS_NCR_TOOL (15) / IS_NCR_WC (12) — machine/tool/work center
+- IS_NCR_PONUM — PO reference
+- IS_NCR_RMA — RMA number reference
+- IS_NCR_ACTION (1) — required action code
+- IS_NCR_CAR — Corrective Action Request number (FK → ISCACT)
+- IS_NCR_DISP (10) / IS_NCR_DWHO / IS_NCR_DDATE — disposition + who disposed + when
+- IS_NCR_STATUS (1) — O=open, C=closed
+- IS_NCR_SCRAP (2) / IS_NCR_QC (2) — scrap code + QC code
+- IS_NCR_VEND (10) / IS_NCR_LOC (10) — vendor + location
+- IS_NCR_PDRAW (15) / IS_NCR_PREV (5) — parent drawing + rev
+- IS_NCR_CDRAW (15) / IS_NCR_CREV (5) — component drawing + rev
+
+**ISQCSPEC** — QC Specification Results (57 fields)
+- PK: ISQC_SPC_LRNUM
+- Links to WO (WOPRE/WOSUF), operation (OPER), lot/serial/batch
+- ISQC_SPC_TSTCOD (30) — test code (FK → ISQCMTHD)
+- ISQC_SPC_NUMERC (1) — numeric test flag
+- ISQC_SPC_MIN/MAX (15 each) — acceptable range
+- ISQC_SPC_RESULT (15) — actual result
+- ISQC_SPC_PASS (1) — pass/fail
+- ISQC_SPC_TDATE / ISQC_SPC_TESTBY — test date + tester employee
+- ISQC_SPC_TNOTES_1..5 (60 each) — tester notes
+- ISQC_SPC_ADATE / ISQC_SPC_APPBY — approval date + approver
+- ISQC_SPC_ACCEPT (1) — accepted flag
+- ISQC_SPC_ANOTES_1..5 (60 each) — approver notes
+- Also links to SO/PO/invoice/receive numbers for incoming inspection results
+
+**ISQCMTHD** — QC Test Methods (44 fields)
+- PK: ISQC_MTD_TSTCOD (30) — test code
+- ISQC_MTD_DESC/DESC2 — description
+- ISQC_MTD_METHOD_1..25 (100 chars each) — full test procedure text (2,500 chars capacity)
+- ISQC_MTD_NOTES_1..10 (60 chars each) — notes
+- Revision tracking: REV/REVBY/REVDT + ENTBY/ENTDT
+
+**SCRAP** — Scrap Code Master (21 fields)
+- PK: MTSCRAP_CODE (2-char)
+- MTSCRAP_TYPE (1) — scrap type classification
+- MTSCRAP_GLACCT/GLDPT — GL account for scrap posting
+- MTSCRAP_FLAG_1..5 + ALPHA_1..5 + DATE_1..5 — configurable extra fields
+
+**QCCODES** — QC Code Lookup (2 fields)
+- PK: MTQC_CODE (2-char)
+- MTQC_DESC (30) — description only
+
+**ISBUILD** — Generic Build UID Tracker (15 fields) — NOT QC-specific; used by WO and QC-F
+- IS_BUILD_UID (40) + IS_BUILD_SORT (150) — unique ID + sort key
+- IS_BUILD_REC/FILE — physical Btrieve record pointer
+- Used as a generic indexed helper for large-table lookups
+
+**ISWOTRAY** — WO Tray Tracking (52 fields)
+- PK: IS_TRAY_NUM (25) — physical tray number
+- IS_TRAY_WOPRE/WOSUF/OPER — Work Order + operation
+- IS_TRAY_SQTY / IS_TRAY_COMQTY / IS_TRAY_SCRPQTY — started/completed/scrapped qty
+- IS_TRAY_QCREQD (1) + IS_TRAY_QCQTY — QC required flag + quantity requiring QC
+- IS_TRAY_LOC_1..5 + IS_TRAY_BIN_1..5 + IS_TRAY_BINQTY_1..5 — up to 5 bin splits per tray
+- IS_TRAY_ALPHA_1..20 + IS_TRAY_DATE_1..5 — configurable extras
+
+**ISCACT, ISCARDTE, ISCTEAM** — NOT IN DDF schema (confirmed from program usage)
+- ISCACT: Corrective Actions (created by T7QCGA)
+- ISCARDTE: Corrective Action dates (used by T7QCGA)
+- ISCTEAM: Corrective Action teams (used by T7QCGB/QCGD)
+
+#### QC Workflow
+
+```
+Inspection (QC-A/B/C/D)
+  → defect found → T7QCFA creates ISNCR record (NCR)
+  → T7QCFB links to supplier quality (BKSBVEND)
+  → disposition set (use-as-is / rework / scrap) → T7QCFF closes NCR
+  → if systemic → T7QCGA creates ISCACT Corrective Action from NCR
+  → T7QCGB assigns team (ISCTEAM) + approves actions
+  → T7QCGD reports CAPA status
+Test results path: T7QCSPEC defines specs → T7QCRESULTS/QCRSLT record actual test results → ISQCSPEC
+```
+
+**Confidence: 72/100** — 18 programs identified; all 4 sub-areas confirmed from DB fingerprints;
+key table schemas extracted; ISCACT/ISCARDTE/ISCTEAM not in DDF; per-operation UI fields
+and exact menu-code-to-program mapping gaps remain.
+
+---
+
+### QT — Service Quote Extended Info
+
+T7QTINFO (42 procs) — opens ISSRINFO (SR extended info table) + BKARINVL + ISTERMS + BKICPMAT +
+BKICREF + BKBMMSTR. Service quotes in EvoERP are SR orders in quote status. T7QTINFO provides
+extended information entry (dates, notes, terms) for service quotes using the same ISSRINFO table
+as service orders. Related to SR module, not a standalone quote engine.
+
+**Confidence: 45/100** — single program identified; purpose from table fingerprint; specific
+CHM operations not yet matched.
+
+---
+
+### IC — Inventory-to-Estimating Copy Utility
+
+T7IC2EST (6 procs) — opens BKICMSTR + MTICMSTR. A 6-procedure one-way bridge that copies
+production inventory (BKICMSTR) data into the estimating module (MTICMSTR). Accessed as IC-A
+"Copy Production to Estimate Inventory" from DFM caption. Not a general inventory module.
+
+**Confidence: 55/100** — one program and DFM read; purpose confirmed; no other IC programs found.
+
+---
+
+*Last updated: 2026-06-17 (Pass 33). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-33 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
