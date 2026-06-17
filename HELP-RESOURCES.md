@@ -4336,12 +4336,42 @@ workflow clear; detailed option/substitution logic blocked by encryption.
 **ISSCOMP** (5f): IS_SCOMP_DETAIL(20) + COMPND(30) + VIS(1) + WHO(40) + IS_SCOMP(50) — compound
 serial definitions (linking serial number to batch/compound product identifier).
 
-**Architecture:** Serial numbers are tracked in the SERIAL table across WO receipt (WORECV),
-inventory transactions (INVTXN), and AR sales (BKARINV). T7SCG manages the generation counters
-(ISSERCNT); T7SCA/SCF/SCH provide cycle counting, history, and reporting.
+**SERIAL (30f) — Central Serial Number Master:**
 
-**Confidence: 72/100** — 9 programs confirmed; ISSCOMP schema extracted; serial lifecycle
-confirmed across WO→INVTXN→AR; per-screen field detail blocked by encryption.
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| MTSER_CODE | STRING | 15 | Item code (PK part 1, FK → BKICMSTR) |
+| MTSER_SERIAL | STRING | 25 | Serial number (PK part 2) |
+| MTSER_LOT | STRING | 15 | Associated lot number |
+| MTSER_PO | FLOAT | 8 | Purchase order number (PO receipt source) |
+| MTSER_RECDOC | FLOAT | 8 | Receipt document number |
+| MTSER_VENDOR | STRING | 10 | Vendor code (FK → BKAPVEND) |
+| MTSER_RECDATE | DATE | 4 | PO receipt date |
+| MTSER_POCOST | FLOAT | 8 | PO receipt cost |
+| MTSER_SO | FLOAT | 8 | Sales order number (customer ship reference) |
+| MTSER_CUSTCODE | STRING | 10 | Customer code (FK → BKARCUST) |
+| MTSER_SHIPDATE | DATE | 4 | Date shipped to customer |
+| MTSER_SELLPRICE | FLOAT | 8 | Selling price |
+| MTSER_WO | FLOAT | 8 | Work order number (manufacturing source) |
+| MTSER_ISSDATE | DATE | 4 | WO issue/completion date |
+| MTSER_ISSCOST | FLOAT | 8 | WO completion cost |
+| MTSER_INRECDATE | DATE | 4 | Internal receipt date (WO receipt / transfer-in) |
+| MTSER_INRECCOST | FLOAT | 8 | Internal receipt cost |
+| MTSER_EXPDATE | DATE | 4 | Expiration date |
+| MTSER_WOCODE | STRING | 15 | WO part code |
+| MTSER_NOTES_1..8 | STRING | 30 | 8 × 30-char free-text notes |
+| +10 more | — | — | Additional tracking fields |
+
+The SERIAL table is EvoERP's serial lifecycle ledger: each row is one unique serialized unit. Three lifecycle paths:
+- **Purchased:** PO→RECDOC→VENDOR→RECDATE→POCOST
+- **Manufactured:** WO→ISSDATE→ISSCOST (INRECDATE=WO receipt)
+- **Sold:** SO→CUSTCODE→SHIPDATE→SELLPRICE
+
+EXPDATE supports shelf-life and warranty tracking. Multiple SERIAL rows per item code, one per serial number.
+
+**Architecture:** T7SCA assigns serials at WO receipt; T7SCF posts serial inventory transactions (INVTXN); T7SCG manages auto-generation counters (ISSERCNT); T7SCH posts serial WO receipts and SO shipments (WORECV+BKARINV); T7SCOMP handles compound/batch serial definitions (ISSCOMP).
+
+**Confidence: 78/100** — 9 programs confirmed; SERIAL(30f) full schema extracted — all three lifecycle paths (PO/WO/SO) decoded; ISSCOMP + ISSERCNT schemas confirmed; per-screen field detail blocked by encryption.
 
 ---
 
@@ -5463,6 +5493,37 @@ Creates a new company within an EvoERP installation: writes FILELOC (physical fi
 
 TPOA at 499 procs is one of the largest programs — it is the full PO processing/approval hub. ISAPEX(33f) in DB confirms approval workflow gates. ISNOTES holds PO-level comment threads. ISLINKS enables document attachments to POs. At 61 tables this covers the complete AP/PO lifecycle: entry → approval → change orders → receipts → GL posting.
 
+**ISAPEX (33f) — AP Vendor Extended Fields:**
+- ISAPEX_VEND(10) — vendor code (PK, FK → BKAPVEND)
+- ISAPEX_LONGNAME(60) — vendor long name (supplement to BKAPVEND 25-char name)
+- ISAPEX_NUM_1..5 (float×5) — 5 numeric extended fields
+- ISAPEX_NUM2_1..5 (float×5) — 5 secondary numeric fields
+- ISAPEX_FLAG_1..8 (1-char×8) — 8 single-char flags
+- +13 more (alpha, date, extra fields)
+Parallel structure to ISAREX (AR customer extended). Each vendor can store configurable numeric, flag, and text extensions. ISAPEX appears in TPOA's approval workflow — the flags likely gate purchasing approvals per vendor.
+
+**BKRFQ (49f) — Request for Quote:**
+- BKRFQ_NUM(8) — RFQ number (PK)
+- BKRFQ_EST(8) — estimate number (FK → estimating module)
+- BKRFQ_PARENT(15) — parent/assembly part code
+- BKRFQ_OPER(2) — operation number
+- BKRFQ_PROD(15) — part/product code to quote
+- BKRFQ_WOPRE(8)+WOSUF(2) — linked WO reference
+- BKRFQ_ISSUE(4) + EXP(4) — issue date + expiration date
+- BKRFQ_VEND(10) + VENDNAME(25) — vendor code + name
+- BKRFQ_PARNTDESC(30) + PRODDESC(30) — parent + product descriptions
+- BKRFQ_USE(1) — use-this-quote flag
+- BKRFQ_PUM(3) + PCONV(8) — purchasing unit of measure + conversion factor
+- BKRFQ_LEAD(2) — vendor lead time in days
+- BKRFQ_QTY_1..3 (float×3) — 3 quote quantity tiers
+- BKRFQ_PRICE_1..3 (float×3) — price per tier
+- +29 more (discount, cost, freight, notes fields)
+RFQ workflow: Buyers issue an RFQ (linked to an estimate or WO), vendors respond with tiered pricing (QTY/PRICE 1-3), and the buyer uses USE(1) to mark the winning quote before generating a PO from it.
+
+**ISORDDSC (1f):** IORD_DESC_CODE(30) — single-field order description code lookup. A list of standard order description phrases used in PO entry.
+
+**TPOA Confidence: 72/100** — 499p, 61 tables; ISAPEX(33f)+BKRFQ(49f)+ISORDDSC(1f) fully extracted; approval gate (ISAPEX), RFQ flow (BKRFQ), and PO lifecycle confirmed; internal program logic blocked by encryption.
+
 ---
 
 ### Additional Standalone Reports / Tools
@@ -6541,6 +6602,10 @@ Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, c
 | CCEDIXRF | 6 | EDI ship-to cross-reference — CUSTCODE(10)+SENDERID(15) PK; SHPTCODE(17)+SHPTZIP(10)+SHIPTO(10)+NEXT(8); maps EDI sender IDs to EvoERP ship-to codes for 850 PO matching |
 | ISEDINFO | 54 | EDI extended info — ISSR_INFO_ prefix; same 54-field configurable structure as ISSRINFO: 5 dates + 20 alpha(25) slots per group × 2 groups |
 | ISDEFECT | 3 | Defect codes — CODE(10) PK + DESC(60) + EXTRA(50); shared by DEFECT setup, BKDCLAB scrap codes, and QC NCR module |
+| BKDCCFG | 7 | DC station configuration — IDLEP/IDLES (idle period/shift); BANKP/BANKS (bank period/shift); IMPPTH/EXPPTH(60, import/export paths); JOBTME(60, job time calc script path) |
+| MACHINE | 20 | Machine master — MACHINE(4 PK)+DESC(30)+HRSUSED+HRSMAINT+DATE; NOTES_1..8(45 each); WC(12)+WCDESC(30); EXTRA(100); ACTIVE(1)+INACTDATE+INACTWHO(30)+INACTWHY(60) |
+| TOOL | 57 | Tool master — TOOL(15 PK)+DESC(30)+DATE; NOTES_1..8(45 each); PRTSMAINT+NOPARTS (parts maintenance counter); WEIGHT+HEIGHT+WIDTH+DEPTH; EJ_STROKE+NOZ_RAD (injection mold: ejector stroke + nozzle radius); +37 more tooling geometry/maintenance fields |
+| WOLABOR | 58 | WO labor (legacy/T6-era) — POSTED+DATE+EMP+WOPRE+WOSUF+OPER+TRXN PK; REGOVER+RUNHRS+NOJOBS+SETUPHRS+PARTS+REWORK+COMPLETE+SCRAPPED; QCCODE+QCDESC+SCRAPCD+SCDESC (QC+scrap classifiers); ASSY(15); +38 more. Parallel to BKDCLAB; MTWOLA_ prefix = TAS Pro 6-era labor table |
 
 ---
 
@@ -7213,4 +7278,21 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 67). Confidence bumps: SP 68→80 (ISSPC 20f + ISSERR 14f + ISSTRACK 13f all decoded; 7 programs confirmed; AOI integration and PCB component traceability confirmed). 6 new schemas: ISSPC(20f), ISSERR(14f), ISSTRACK(13f), ISSTYPE(3f), ISSETYPE(2f), ISSEPROC(2f).*
+---
+
+### New Tables Confirmed (Pass 68)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| SERIAL | 30 | Serial number lifecycle master — CODE+SERIAL PK; PO receipt (PO/RECDOC/VENDOR/RECDATE/POCOST); WO manufacture (WO/ISSDATE/ISSCOST/INRECDATE/INRECCOST); SO sale (SO/CUSTCODE/SHIPDATE/SELLPRICE); EXPDATE; 8×NOTES_1..8(30) |
+| ISAPEX | 33 | AP vendor extended fields — VEND(PK)+LONGNAME(60); NUM_1..5+NUM2_1..5 (10 numeric); FLAG_1..8 (8 flag chars); +13 more alpha/date/extra; parallel to ISAREX for customers |
+| BKRFQ | 49 | Request for Quote — RFQ#(PK)+EST+PARENT+PROD+WOPRE+WOSUF; ISSUE+EXP dates; VEND+VENDNAME; QTY_1..3+PRICE_1..3 (3 quantity tiers); LEAD time; USE(1) win flag; +29 more discount/cost/freight/note fields |
+| MACHINE | 20 | Machine master — MACHINE(4 PK)+DESC+HRSUSED+HRSMAINT+DATE; NOTES_1..8(45); WC+WCDESC; ACTIVE+INACTDATE+INACTWHO+INACTWHY |
+| TOOL | 57 | Tool master — TOOL(15 PK)+DESC+DATE; NOTES_1..8(45); PRTSMAINT+NOPARTS; dimensions (WT/HT/WD/DP); mold-specific (EJ_STROKE, NOZ_RAD); +37 more geometry/maintenance fields |
+| WOLABOR | 58 | WO labor (T6-era legacy) — POSTED+DATE+EMP+WOPRE+WOSUF+OPER+TRXN PK; RUNHRS+SETUPHRS+PARTS+SCRAPPED+REWORK; QCCODE+SCRAPCD classifiers; MTWOLA_ prefix; parallel to BKDCLAB |
+| BKDCCFG | 7 | DC station configuration — IDLEP/IDLES (idle period/shift); BANKP/BANKS (bank period/shift); IMPPTH/EXPPTH (import/export file paths); JOBTME (job time calc path) |
+| ISORDDSC | 1 | Order description codes — CODE(30 PK only); list of standard PO/order description phrases |
+
+---
+
+*Last updated: 2026-06-17 (Pass 68). Confidence bumps: SC 72→78 (SERIAL 30f full lifecycle schema — PO/WO/SO paths decoded), TPOA 65→72 (ISAPEX 33f + BKRFQ 49f + ISORDDSC 1f decoded; RFQ workflow confirmed), DE 65→72 (MACHINE 20f + TOOL 57f + WOLABOR 58f + BKDCCFG 7f decoded; DC shop floor asset architecture confirmed). 8 new schemas.*

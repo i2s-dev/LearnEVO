@@ -1075,7 +1075,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
 | Module: ES/Estimating | **72** | 75 | **3** ↑ Pass50 (dup of row above) | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **68** | 70 | **2** ↑+13 Pass62 | 2026-06-17 |
-| Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
+| Module: DE/DC stubs+EDI processing | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **82** | 85 | **3** ↑ Pass51 | 2026-06-17 |
 | Module: MR/MRP Engine | **80** | 85 | **5** ↑+18 Pass45 | 2026-06-17 |
 | Tables: BKMR*/MRP Support | **72** | 78 | **6** ↑+10 Pass45 | 2026-06-17 |
@@ -1085,13 +1085,13 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CU/WO Cut Sheet | **72** | 75 | **3** ↑+14 Pass55 | 2026-06-17 |
 | Subsystem: ADCA/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |
 | Module: TC/Treasury Control | **72** | 75 | **3** ↑ Pass65 | 2026-06-17 |
-| Module: SC/Serial Control ⚠️ (dup) | **72** | 80 | **8** ↑+14 | 2026-06-17 |
+| Module: SC/Serial Control ⚠️ (dup) | **78** | 80 | **2** ↑ Pass68 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: KI/Kit Assembly | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: MA/AR Deposit Apply | **70** | 75 | **5** ↑ Pass50 (merged with MA/AR Deposits) | 2026-06-17 |
 | Module: TE/NACHA+ACH | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
 | Module: PA/Paperless DC | **70** | 72 | **2** ↑ | 2026-06-17 |
-| Module: TPOA/PO Processing Hub | **65** | 72 | **7** ↑ | 2026-06-17 |
+| Module: TPOA/PO Processing Hub | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
 | Module: QS/Quick SO | **65** | 70 | **5** NEW | 2026-06-17 |
 | Subsystem: VSCHED/Visual Scheduler | **68** | 68 | **0** ✅ ↑+6 Pass64 | 2026-06-17 |
 | System: AUTO/Batch Automation | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
