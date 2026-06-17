@@ -22,8 +22,27 @@ All confirmed via live Frida capture (`frida_capture_key_and_iv.py`) + Python de
 |----------|----------------|---------|
 | K_B | `a898d21e2fd6ca294026e5d633d9047f91f7ed35` | **.RWN** files |
 | K_D | `691e8041ab265b4e6ee052ccc946dba4caac60da` | **.DCY** files |
-| K_A | `d97f05679438037073c30628734764020859f77e` | unknown (appears at EVO startup) |
-| K_C | `fdc2883f6d6537dd667270406d0a4c85969295ac` | unknown |
+| K_A | `d97f05679438037073c30628734764020859f77e` | unknown (appears at EVO startup; tried against all suwin files — none pass) |
+| K_C | `fdc2883f6d6537dd667270406d0a4c85969295ac` | **suwin6.dcy** (confirmed 2026-06-17) |
+
+**suwin6.dcy / K_C confirmed (2026-06-17):**
+- Validation block: `4b7650d14b7650d1` — pt[0:4] == pt[4:8] ✅
+- Decrypted content is **binary data** (not Delphi VCL text, not readable ASCII) — 32,864 bytes
+- Shannon entropy of raw file: essentially random → confirms encryption, not compression
+- Meaning: suwin6.dcy is a bootstrap DCY encrypted with key C, but the plaintext is a binary format (compiled bytecode or binary initialization tables), NOT a Delphi form text file
+
+**suwin7.dcy — still unresolved:**
+- 3,527 bytes, entropy 7.945 (fully encrypted)
+- K_A, K_B, K_C, K_D all FAIL validation → 5th key exists, or different cipher/format
+- suwin7.rwn validates with K_B (same as all .RWN files)
+
+**suwin key summary:**
+| File | Key | Format |
+|------|-----|--------|
+| suwin6.dcy | K_C | Binary (not Delphi VCL form) |
+| suwin7.dcy | unknown (5th key?) | Unknown |
+| suwin6t.rwn | K_B | Standard RWN binary |
+| suwin7.rwn | K_B | Standard RWN binary |
 
 192-bit key = raw key + `\x00\x00\x00\x00`.
 

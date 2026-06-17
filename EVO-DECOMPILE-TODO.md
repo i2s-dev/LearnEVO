@@ -673,7 +673,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ### 9.2 EvoScheduler
 - [x] ✅ Files: EvoScheduler.RWN, EvoSched.RWN, EvoSchedSetup.RWN — **C: 70/100**
-- [ ] ⬜ Scheduler job table name confirmed (not found in 659-table inventory)
+- [x] ✅ Scheduler job table = **ISSCHED** — confirmed 2026-06-17 from DB fingerprints (EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN all open ISSCHED); SCHEDCAL used by shop scheduling module
 - [ ] ⬜ Schedule table all fields documented
 - [ ] ⬜ Job execution mechanism traced (how scheduler triggers a program)
 
@@ -689,7 +689,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ### 9.5 EvoLinks (Document Attachments)
 - [x] ✅ Files: EvoLinks.RWN, EvoLinkCVT.RWN — **C: 62/100**
-- [ ] ⬜ Attachment storage schema (DB table + LinkDoc\ folder) confirmed
+- [x] ✅ Attachment storage table = **ISLINKS** — confirmed 2026-06-17 (EvoLinks.RWN opens ISLINKS as primary; ISLINKS = record-key → document filename cross-reference)
 - [ ] ⬜ DB table for link mapping identified and all fields documented
 - [ ] ⬜ Attach / view / delete workflow traced
 
@@ -821,7 +821,9 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
   - [x] ✅ `scripts/dcy_decrypt.py` — batch DCY decryptor, correct K_D key, P_start=K0 — **C: 100/100**
   - [x] ✅ MDUMMY.DCY decrypts to `object EditForm1: TEditForm1...` (DFM content) — **C: 100/100**
   - [x] ✅ 5/5 sample RWN files decrypt successfully — **C: 100/100**
-  - [ ] ⬜ K_A and K_C purposes unknown (appear at EVO startup — what files do they encrypt?)
+  - [x] 🔄 K_C = **suwin6.dcy** encryption key (confirmed 2026-06-17 — validation PASS; content is binary, not Delphi VCL text)
+  - [ ] ⬜ K_A purpose still unknown (tried against all suwin files — none pass)
+  - [ ] ⬜ suwin7.dcy — fails all 4 known keys; 5th key or different format
   - Note: See `docs/02-file-formats/decryption-findings.md` for complete algorithm spec
 - [ ] ⬜ `ENCRYPTSTR` algorithm reverse-engineered (password hashing, string crypto in TAS)
 - [ ] ⬜ `WHOAMI.DBA` 35-byte format decoded

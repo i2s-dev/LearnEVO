@@ -520,6 +520,9 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | BKARTXN | BKARTXN.B | BK AR Transaction — AR transaction/activity log |
 | FILEDES | FILEDES.B | File Descriptions — purpose strings for each registered DB file |
 | LOT | LOT.B | Lot master — lot records (distinct from MTLOT which is multi-company variant) |
+| ISSCHED | ISSCHED.B | IS Scheduler — EvoScheduler job table (confirmed by EvoSched.RWN + EvoScheduler.RWN + EVOSERVICE.RWN) |
+| SCHEDCAL | SCHEDCAL.B | Schedule Calendar — calendar used by shop scheduling due-date changes (T7SHE) |
+| ISLINKS | ISLINKS.B | IS Links — document attachment cross-reference: maps record keys to linked document filenames |
 
 ---
 

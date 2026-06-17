@@ -113,13 +113,15 @@ to resolve fully:
    with RTMs suggesting yes, but the snapshot-on-save mechanism hasn't
    been observed in action.
 
-8. **Scheduler job table.** Presumably a `BKSCHED*` or similar, but
-   we didn't find one in the 649-table inventory. Possibly named
-   differently or only populated at run time in memory.
+8. ~~**Scheduler job table.**~~ **RESOLVED 2026-06-17.**
+   Scheduler table = **ISSCHED**. Confirmed by DB fingerprint analysis:
+   `EvoRemind.RWN`, `EvoSched.RWN`, `EvoScheduler.RWN`, `EVOSERVICE.RWN` all open ISSCHED.
+   Also: `SCHEDCAL` table used by T7SHE (SH-E shop scheduling due dates) and T7SMH.
 
-9. **EvoLinks attachment storage.** Hypothesis: `LinkDoc\` folder for
-   the files, a database table for the `<record-key, filename>`
-   mapping. Not confirmed by table-name inspection.
+9. ~~**EvoLinks attachment storage.**~~ **RESOLVED 2026-06-17.**
+   Table = **ISLINKS**. `EvoLinks.RWN` (156 procs) opens ISLINKS as its PRIMARY table.
+   ISLINKS = the document attachment cross-reference (record key → linked document path/filename).
+   Secondary users: T7SMSB, T7SMSC, T7SMTEND (SM sub-modules for document linking setup).
 
 10. ~~**`BKARHINV/BKARHINV.BI2`**~~ **RESOLVED (2026-06-01).**
     The `BKARHINV/` subdirectory is a stale 2020 maintenance artifact.
@@ -145,13 +147,12 @@ to resolve fully:
     and 28 other modules with 1–6 codes each. These programs work
     correctly at runtime — they are simply opaque to static analysis.
 
-13. **`suwin*.DCY` format (7 files).** All 7 `suwin*.DCY` files fail K_D decryption
-    (`pt[0:4] != pt[4:8]`). The remaining keys K_A and K_C are candidates. K_A fired
-    at EVO startup (before any module load), making it a plausible suwin key. K_C purpose
-    is unknown. Try: attempt K_A and K_C against `suwin6.dcy` and `suwin7.dcy`; if both fail,
-    these files may use a third (uncaptured) key or a completely different format/cipher.
-    (Captured live 2026-06-16: K_A = `d97f05679438037073c30628734764020859f77e`,
-    K_C = `fdc2883f6d6537dd667270406d0a4c85969295ac`)
+13. **`suwin*.DCY` format — PARTIALLY RESOLVED 2026-06-17.**
+    - **suwin6.dcy** → validated by **K_C** (`fdc2883f6d6537dd667270406d0a4c85969295ac`). Decrypted content is binary (not Delphi VCL text). K_C = bootstrap DCY key.
+    - **suwin7.dcy** → still fails K_A, K_B, K_C, K_D. 3,527 bytes, entropy 7.945. A 5th key exists or it uses a completely different format.
+    - **suwin6t.rwn / suwin7.rwn** → both validate with K_B (standard RWN key — expected).
+    - **K_A** (`d97f05679438037073c30628734764020859f77e`) purpose remains unknown.
+    - Remaining: identify what K_A encrypts; find key for suwin7.dcy.
 
 12. **Customization forms (`J7*`).** 20+ customer-specific
     customization modules (`J7AIJCG`, `J7BEFWebInv`, `J7CCCutSheet`,
