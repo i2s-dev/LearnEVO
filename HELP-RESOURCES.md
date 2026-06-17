@@ -3094,6 +3094,21 @@ All list-pickers throughout EvoERP use the same **WBKLOOKUP** program (413 procs
 - The Drill Down button (green arrow) invokes drill navigation defined in **ISDRILLM**
 - Column layouts are stored per-user in **BKLUGRID**
 
+**Full toolbar capabilities (confirmed from WBKLOOKUP.DFM):**
+- **Change View** — switch between index/sort views of the table
+- **Drill Down / Drill Up** — navigate the ISDRILLM hierarchy (child records → parent records)
+- **Camera** — attach/view document images (EvoLinks integration)
+- **CalcTot** — calculate column totals for numeric fields in the current view
+- **doc_print** — print the lookup list
+- **Manager** — escalated manager-level access for restricted operations
+- **External Call** — invoke a custom RWN program registered for this lookup context
+- **Triggers** — view/create trigger reminders (ISTRIGRS) from any record
+- **openclose** — expand/collapse a record's linked sub-records inline
+- **Alternate** — switch to the alternate Btrieve index for this table
+- **Search** — free-text search across the visible columns
+
+Control fields: `cbIndexName` (dropdown to pick active index), `link.to` (destination form to open on Select), `Drill.To` (drill-down target definition), `showgrid` (toggle grid vs. form view), `Filter.to` (WHERE-style filter expression).
+
 **ISDRILL** (46 fields) — Saved query definitions used by QU-F and embedded lookups:
 
 | Field | Type | Size | Meaning |
@@ -3141,6 +3156,8 @@ WBKLUGRID is dual-purpose: it IS the SU-A admin tool AND it IS the BKLUGRID tabl
 | QU-D Business Status | EVOBS (128 procs) | Financial dashboard (ISBSF+BKGLTRAN) |
 | QU-E Quick Grid Lookup | T7QGRID (62 procs) | Standalone table browser |
 | QU-F Query Executor | QUERYEXECUTE (26 procs) | Runs SQL queries from DE-A definitions |
+
+**QU confidence: 74/100** — All 5 QU programs confirmed with DB fingerprints; ISDRILL(46f)/ISDRILLM(17f) fully extracted; WBKLOOKUP toolbar capabilities confirmed from DFM (11 toolbar actions); EvoBS multi-tab layout (Status+BarChart+PieChart+LineChart) + all ISBSF field bindings confirmed from DFM; CALDRILLBT calendar layout confirmed; BKLUGRID/FILEKEY/FILEDICT schema unknown (runtime-only tables).
 
 ### How messaging works
 
@@ -5686,7 +5703,31 @@ EWC = Edit Work Center. Full UI (68 procs) for work center setup and/or capacity
 
 **T7BS** (162 procs, 40 tables) — opens ISBSF+BKYSMSTR+ISGLDATE+BKSYMSTR+BKGLTRAN+MTICMSTR+BKICMSTR+WORKORD+WOMAT+WOLABOR.
 
-BS = Business Status KPI dashboard. ISBSF = configurable KPI field definitions. ISGLDATE provides period-end dates. Reads GL, inventory, and WO costs to compute live financial/operational KPIs. This is the QU-D program.
+BS = Business Status KPI dashboard. ISBSF = configurable KPI field definitions. ISGLDATE provides period-end dates. Reads GL, inventory, and WO costs to compute live financial/operational KPIs. This is the QU-D program (EVOBS).
+
+**EvoBS screen layout (confirmed from EvoBS.DFM + EvoBSCash.DFM + EvoBSWO.DFM):**
+
+The screen is a floating "stay-on-top" dashboard with 4 tabs:
+- **Status** — the main KPI grid with 8 module group boxes and a period range selector
+- **Bar Charts** — bar chart trending the selected KPI over time
+- **Pie Charts** — pie chart of module proportions
+- **Line Charts** — line chart of KPI trend (12 or 24 months)
+
+Status tab group boxes and their ISBSF fields:
+| Group | Field(s) shown | ISBSF field names |
+|---|---|---|
+| Accounts Receivable | Balance / Billings / Receipts / Discounts / COGS / Deposits | AR_BAL / AR_BILL / AR_RECP / AR_DISC / AR_COGS / AR_DEPO |
+| Accounts Payable | Balance / Payables / Payments / Discounts / Avail-to-Pay | AP_BAL / AP_PAYA / AP_PAYM / AP_DISC / AP_ATP |
+| Sales Orders | Open / Bookings / Shipments | SO_OPEN / SO_BOOK / SO_SHIP |
+| Purchase Orders | Open / Bookings / Receipts | PO_OPEN / PO_BOOK / PO_RECP |
+| Work Orders | WIP Balance / Issues / FP Variance | WO_WIPBAL / WO_ISSU / WO_FPVAR |
+| Inventory | Value | IC_VALUE |
+| Cash | Total | CASH_TOTA |
+| Period | 12-month / 24-month range pickers | `months12` / `months24` (runtime UI vars, not ISBSF fields) |
+
+Cash Detail drill-down (EvoBSCash.DFM): CASH_TOTA + CASH_ACT1..9 (9 named bank accounts) — backed by CASH_ACTS_1..100 (100 individual GL account slots).
+
+WO Detail drill-down (EvoBSWO.DFM): WO_WIPBAL + WO_ISSU + WO_FPVAR (summary); WOS_LAB / WOS_MAT / WOS_FOH / WOS_VOH / WOS_MEXT (issue cost breakdown); WOS_FP (finished production value); WOS_WIPV (WIP variance); WOS_SETUP (setup cost); WOS_OUTP (outside process cost).
 
 ---
 
@@ -7158,7 +7199,16 @@ GL accounts per currency (each has account + dept pair):
 
 Running balance fields: `AMTBNK`/`AMTAP`/`AMTAR`/`AMTFE`/`AMTPOR`/`AMTAD`/`AMTCS`/`AMTAPD`.
 
-**Confidence: 68/100** — both programs confirmed; ISGLDATE(86f) + ISMCF(49f) fully extracted; multi-currency GL mapping architecture confirmed; specific T7ISMCC synchronization logic blocked by RWN encryption.
+**T7ISMCC UI (confirmed from DFM):**
+The "Convert Source to Base Currency" screen presents a 9-row period grid:
+- **ETBcomboval** — combo box to select source company/currency being converted
+- **is.date** — as-of date for the conversion run
+- **ISGL.CYDATE[1..9]** — read-only date cells showing the GL period-end dates for periods 1–9 (sourced from ISGLDATE)
+- **gl.period[1..9]** — period-number entry for each row (which fiscal period to convert)
+
+The operator selects which company/currency to convert and specifies an as-of date; the form auto-populates period-end dates from ISGLDATE. On "Process," T7ISMCC reads ISMCF for the GL account mapping and posts exchange-rate adjustments via BKGLTRAN.
+
+**Confidence: 72/100** — both programs confirmed; ISGLDATE(86f) + ISMCF(49f) fully extracted; T7ISMCC period-selection UI confirmed from DFM (9-period grid with ETBcomboval + is.date); synchronization/posting logic blocked by RWN encryption.
 
 ---
 
