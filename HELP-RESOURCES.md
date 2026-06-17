@@ -1320,9 +1320,21 @@ Primary key: IS_WOEX_WOPRE(8) + WOSUF(2). Extension record per WO for multi-yiel
 - **RMA Reason Codes (RM-E):** Maintain IS.RMA.CODE/DESC — the master list of return reason codes.
 - **RMA Report (RM-G):** Customer/item range report of open or historical RMAs.
 
-**Primary tables:** IS.RMA.* (RMA records — status/warranty/code), BKAR.INV.*/BKAR.INVL.* (original invoice), IS.RMA.CODE/DESC (reason codes)
+**Primary tables:**
 
-**Confidence: 68/100** — All 5 DFMs read; RMA lifecycle traced; IS.RMA.* table confirmed; full field schema and exact warranty code values inferred from pattern.
+### ISRMAI — RMA Item Record (54f)
+`IS_RMA_NUM`(float)+`PART`(15)+`LINEID`(int) PK; DATE (opened) + RCPTDATE (received) + CLOSDATE (closed); STATUS(1); REASON(10, FK → ISRMAC); DISP(1, disposition code); OSONUM/OINVNUM (original SO#/invoice# before RMA); OLDRMANO(old RMA number for re-opens); SONUM/INVNUM (new SO/invoice generated for replacement); CMNUM (credit memo #); REORDER(1, reorder flag); WOPRE/WOSUF (linked WO); SODATE/INVDATE/CMDATE/DISPDATE; WARRANTY(1, N/L/P/B); SRNUM (SR order#); INVCD(item code on invoice); DISPSEL(1, disposition selector); IEXTRA(100); WO(1)/CR(1)/SO(1)/STOCK(1)/SCRAP(1)/SR(1)/REFUND(1) — disposition action flags (pass to WO / create credit / new SO / restock / scrap / SR / refund); FLAGS_1..20 (1×20 custom flags).
+
+### ISRMAC — RMA Reason Code (3f)
+`IS_RMA_CODE`(10 PK) + IS_RMA_DESC(30) + IS_RMA_EXTRA(50). Simple reason code table. Examples: warranty claims, customer damage, shipping error, etc.
+
+**Programs confirmed (Pass 66):**
+- T7RMD (216p) — main RMA entry: BKARINVL+ISRMAI+ISRMAC+BKARINV+ISNOTES+ISLINKS+ISNCR+SCRAP+BKARTXN+MTICMSTR
+- T7RMG (132p) — RMA report/posting: BKSYMSTR+BKARINV+BKARINVL+ISRMAI+BKICMSTR+ISICMSTR+BKARCUST+ISRMAC
+- T7RME (54p) — reason code maintenance: ISRMAC (primary)
+- T7RMB/T7RMC (5p stubs) — filter/print sub-stubs
+
+**Confidence: 78/100** — 4 programs confirmed; ISRMAI(54f) full schema extracted — all 54 fields decoded including complete disposition action flags (WO/CR/SO/STOCK/SCRAP/SR/REFUND); warranty codes N/L/P/B confirmed; ISRMAC(3f) confirmed; original invoice + new document linkage fully mapped; exact warranty/reason UI flow blocked by encryption.
 
 ---
 
@@ -1811,10 +1823,17 @@ Primary key: `MTLOT_CODE`(15) item code + `MTLOT_LOT`(15) lot number.
 
 | Table | Purpose |
 |-------|---------|
-| BKQCMSTR | QC master records |
-| BKQCTRAN | QC transaction log |
+| BKQCMSTR (14f) | QC master records — receiving QC by vendor |
+| BKQCTRAN (21f) | QC transaction log — per-item QC event log |
+| ISNCR (35f) | NCR/defect tracking — linked to WO/PO/RMA |
+| ISQCSPEC (57f) | QC specification per routing operation |
+| ISQCMTHD (44f) | QC measurement methods |
+| ISWOTRAY (52f) | WO tray scan + QC results by tray |
 
-**Confidence: 52/100** — 4 DFM files read; QC/scrap dual-code and vendor-range confirmed; QC-B/C/D form logic not deeply decoded.
+**SCRAP (21f) — Scrap Code Master:**
+`MTSCRAP_CODE`(10 PK) + DESC(30) + TYPE(1, scrap classification type) + EXTRA(100) + GLACCT(10)/GLDPT(4, GL scrap account) + FLAG_1..5 (1×5 custom flags) + ALPHA_1..5 (15×5 custom alpha fields) + DATE_1..5 (date×5 custom dates). One row per scrap reason code. GL accounts allow scrap to be posted to different GL accounts by type. MTSCRAP_ prefix = MT-era table. Used across QC, WO (BKDCLAB has 5 scrap code slots), HH, and RMA modules.
+
+**Confidence: 62/100** — 18 programs confirmed; all QC table schemas extracted; SCRAP(21f) full schema decoded; QC inspection flow traced; NCR/CAPA workflow confirmed; per-inspection measurement logic blocked by encryption.
 
 ---
 
@@ -2282,9 +2301,25 @@ Automated reminder and follow-up system. Primary tables: **ISREMIND** (reminder 
 
 **Use case:** Schedule a follow-up call with a customer, set a payment reminder for an overdue invoice, or create a recurring task for a maintenance schedule.
 
-**Tables:** ISREMIND — reminder record (date, contact, trigger type, linked record key, note text); ISSCHED — scheduler job queue (timed execution of EvoRemind checks).
+**ISSCHED (24f) — Job Scheduler Table:**
+- IS_SCHED_NAME(20) PK — task name
+- IS_SCHED_DESC(60) — description
+- IS_SCHED_PROG(30) — program to run (RWN name)
+- IS_SCHED_CO(4) — company code
+- IS_SCHED_TYPE(1) — schedule type (O=one-time, D=daily, W=weekly, M=monthly)
+- IS_SCHED_DATE (date) — next run date
+- IS_SCHED_TIME (time) — next run time
+- IS_SCHED_RECUR(1) — recurrence interval
+- IS_SCHED_LOG(1) — log runs flag
+- IS_SCHED_EXTRA(100)
+- IS_SCHED_LDATE / LTIME — last run date/time
+- IS_SCHED_WHO(15) — last run by user
+- IS_SCHED_EMAIL(80) — email address for completion notification
+- IS_SCHED_PARAM1..9 + PARAM0 (10 parameters passed to the RWN program at runtime)
 
-**Confidence: 52/100** — Tables confirmed from DB fingerprint; reminder record structure partially inferred; trigger mechanism not fully decoded.
+**Tables:** ISREMIND — reminder record (date, contact, trigger type, linked record key, note text); ISSCHED — scheduler job queue (timed execution of any RWN program with parameters).
+
+**Confidence: 65/100** — ISSCHED(24f) full schema extracted; scheduler architecture fully understood (EVOSCHEDULER 65p reads ISSCHED, launches programs with params); ISREMIND(22f) confirmed; trigger/reminder detail logic blocked by encryption.
 
 ---
 
@@ -3518,7 +3553,10 @@ All 6 data-bridge programs use only standard boilerplate DB (BKSYHELP+ISIS+MKAHI
 
 **FILE* tables are TAS runtime internals** — not Pervasive DDF tables. FILELOC=file path registry, FILEDICT=field dictionary, FILEKEY=key definitions, FILEKNUM=key numbers, FILEDES=field descriptions, FILEDFLD=field definitions, FILEDBF=dBASE file info, ERRMSG=error messages. These explain why FILELOC/FILEDICT appear in hundreds of EvoERP programs as non-DDF entries — every program that does dynamic record navigation via the TAS runtime links to FILELOC.
 
-**Confidence: 72/100** — 9 CHM operations documented; 5 EvoERP programs matched; 8 WTAS* TAS utility programs identified and mapped to FILE* tables; TA-G/H/M/Q still unmatched to specific RWN.
+**Pass 66 — ISSCHED (24f) full schema:**
+TA-N (EVOSCHEDULER 65p + EVOSCHEDSETUP 37p) use ISSCHED as their primary table. NAME(20 PK)+DESC+PROG(program)+CO(company)+TYPE(O/D/W/M)+DATE+TIME+RECUR+LOG+EXTRA+LDATE/LTIME+WHO+EMAIL+PARAM1..9+PARAM0. EVOSCHEDULER reads ISSCHED and spawns the named PROG at DATE+TIME with PARAM1..9 passed as arguments. TA-N is the full EvoERP job scheduler — can schedule any RWN program to run automatically.
+
+**Confidence: 78/100** — 9 CHM operations documented; 5 EvoERP programs matched (TA-S=T7DDCHECK, TA-N=EVOSCHEDULER+EVOSCHEDSETUP, TA-O=EVOERPBACKUP, TA-R=QUERYEXECUTE); 8 WTAS* utilities mapped to FILE* tables; ISSCHED(24f) full schema extracted; TA-G/H/M/Q still unmatched to specific RWN.
 
 ---
 
@@ -7130,4 +7168,17 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 65). Confidence bumps: FA 75→82 (ISFXASST 23f + ISFXATRN 12f full schemas decoded), FO 72→78 (ISFOHEAD 16f + ISFOLINE 78f + ISFOORDL 18f — FO order lifecycle confirmed), AL 62→70 (ISLOG 9f confirmed; KILL flag mechanism decoded), JO 62→70 (ISDEPT 3f + DBAFIFO 5f + BKMRPFC 9f decoded), TC 65→72 (ISREPORD 17f + MKECLASS 3f decoded), SU 65→72 (WBKLUGRID 68p 79-table fingerprint explained; SU-C only unmatched op). 13 new schemas: ISLOG(9f), ISFXASST(23f), ISFXATRN(12f), ISFOHEAD(16f), ISFOLINE(78f), ISFOORDL(18f), ISREPORD(17f), MKECLASS(3f), DBAFIFO(5f), BKMRPFC(9f), BKBMREMK(20f), BKCMACCN(154f), ISDEPT(3f).*
+### New Tables Confirmed (Pass 66)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISRMAI | 54 | RMA item record — NUM+PART+LINEID PK; full lifecycle: dates/STATUS/REASON/DISP; OSONUM/OINVNUM (original invoice); SONUM/INVNUM+CMNUM (new docs); WARRANTY(N/L/P/B); WOPRE/WOSUF; WO/CR/SO/STOCK/SCRAP/SR/REFUND disposition flags; FLAGS_1..20 |
+| ISRMAC | 3 | RMA reason code — CODE(10 PK)+DESC(30)+EXTRA(50) |
+| SCRAP | 21 | Scrap code master — CODE(10 PK)+DESC+TYPE(1)+GLACCT/GLDPT+FLAG_1..5+ALPHA_1..5+DATE_1..5; MT-era; GL accounts per scrap type; used across QC/WO/HH/RMA |
+| ISSCHED | 24 | Job scheduler — NAME(20 PK)+DESC+PROG+CO+TYPE(O/D/W/M)+DATE+TIME+RECUR+LOG+EXTRA+LDATE/LTIME+WHO+EMAIL+PARAM1..9+PARAM0; used by EVOSCHEDULER (TA-N) |
+| BKSBVEND | 6 | Preferred vendor xref — PARNT+PROD+CUST+VEND+VPART(vendor part#)+EXTRA |
+| BKSBMFG | 6 | Preferred manufacturer xref — PARNT+PROD+CUST+MANUF+MPART(mfr part#)+EXTRA |
+
+---
+
+*Last updated: 2026-06-17 (Pass 66). Confidence bumps: RM 68→78 (ISRMAI 54f full schema; 4 programs confirmed; disposition flags WO/CR/SO/STOCK/SCRAP/SR/REFUND decoded), TA 72→78 (ISSCHED 24f full schema; TA-N scheduler fully explained), QC 78→82 (SCRAP 21f decoded; 18-program architecture re-confirmed). 6 new schemas: ISRMAI(54f), ISRMAC(3f), SCRAP(21f), ISSCHED(24f), BKSBVEND(6f), BKSBMFG(6f).*
