@@ -936,12 +936,12 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: GL | **70** | 85 | **15** ↑ | 2026-06-11 |
 | Module: BM/MRP | **72** | 80 | **8** ↑ | 2026-06-11 |
 | Module: RO/Routing | **75** | 85 | **10** ↑ | 2026-06-11 |
-| Module: DC/Data Collection | **78** | 82 | **4** ↑ | 2026-06-11 |
+| Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
 | Module: PR/Payroll | **55** | 80 | **25** ↑ | 2026-06-11 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
 | Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
-| Module: CS/Commission+Salesperson | **70** | 80 | **10** ↑ +15 | 2026-06-15 |
+| Module: CS/Commission+Salesperson | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
 | Module: SC/Serial Control ⚠️ | **72** | 80 | **8** ↑ +30 | 2026-06-15 |
 | Module: QC/Quality Control | **52** | 75 | **23** ↑ +4 | 2026-06-15 |
@@ -952,14 +952,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **62** | 78 | **16** ↑ +10 | 2026-06-15 |
 | Module: ES/Estimating | **58** | 75 | **17** ↑ +10 | 2026-06-15 |
-| Module: SA/Sales Analysis | **55** | 75 | **20** NEW | 2026-06-15 |
+| Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **45** | 70 | **25** NEW | 2026-06-15 |
 | Module: CC/Credit Card ⚠️ | **65** | 78 | **13** NEW | 2026-06-15 |
 | Module: SP/SPC ⚠️ | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
 | Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: RM/RMA | **68** | 78 | **10** NEW | 2026-06-15 |
-| Module: FO/Features Options | **50** | 70 | **20** NEW | 2026-06-15 |
+| Module: FO/Features Options | **65** | 70 | **5** ↑ | 2026-06-17 |
 | Module: IS/InfoSystem | **45** | 65 | **20** NEW | 2026-06-15 |
 | Module: IM/Landed Cost | **70** | 80 | **10** NEW | 2026-06-15 |
 | Module: PS/Program Security | **60** | 75 | **15** NEW | 2026-06-15 |
@@ -1022,5 +1022,5 @@ Priority order — in sequence, each unblocks the next:
 
 ---
 
-*Last updated: 2026-06-16*
+*Last updated: 2026-06-17*
 *Document location: `EVO-DECOMPILE-TODO.md` at workspace root*

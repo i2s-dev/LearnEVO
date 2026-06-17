@@ -203,6 +203,122 @@ references confirm international import/customs support.
 
 ---
 
+### Sales Analysis (SA) — T7SAA/T7SAM/T7SAN/T7SAO.RWN
+
+**T7SAA.RWN** (LISTG60.LIB, procs=212, vars=2123) — main SA screen
+**T7SAM.RWN** (EVO.LIB, procs=238, vars=2505) — SA report manager
+**T7SAN.RWN** (EVO.LIB, procs=220, vars=2300) — SA report variant
+**T7SAO.RWN** (LISTG60.LIB, procs=169, vars=1988) — SA with CM integration
+
+T7SAB through T7SAL (except T7SAM/N/O): SRC stubs (only `STUB` variable) — security level or terminal variants
+
+**Key tables:** BKACTRPT (activity reports), BKSAREPT (SA report templates), BKARINV, BKARINVL (invoice data), BKARCUST, BKICMSTR, BKPRSALE, BKCMTERR (territories), BKCMLEAD (leads)
+
+T7SAO adds: BKCMACCC (CM contacts), BKCMACCL (CM account levels)
+
+**Key variables (T7SAA):** `FROM_CUR/THRU_CUR` (currency range), `DATE_FROM/DATE_THRU`, `FROM.SLSP.TXT/THRU.SLSP.TXT` (salesperson range), `TERR.FROM/TERR.THRU` (territory range), `SELECT_FROM3/THRU3` (filter ranges), `BASE` (base currency), `ANSWER`, `INCLUDE.TAX.FRT` (include tax/freight flag)
+
+**Key variables (T7SAM/SAN):** `BKSA.TYPE`, `BKSA.NAME`, `BKSA.RTM` (report template), `BKSA.FROM1..6/THRU1..6` (up to 6 filter range pairs per report definition) — confirms SA report templates are stored in BKSAREPT with up to 6 range filters
+
+---
+
+### Features & Options (FO) — T7FOC/T7FOD/T7FOE.RWN
+
+**T7FOC.RWN** (LISTG60.LIB, procs=60, vars=1370) — FO BOM record entry
+**T7FOD.RWN** (EVO.LIB, procs=103, vars=1479) — FO report (item range filters)
+**T7FOE.RWN** (LISTG60.LIB, procs=86, vars=1456) — FO component listing
+
+T7FOA/T7FOB: ISTS.SRC stubs (same pattern as T7AUTOWOLA — 663 vars of EVO.CFG.* keys)
+
+**Key tables:** BKBMMSTR (BOM master — FO options are BOM variants), BKICMSTR, BKICLOCM, CLASMSTR
+
+**Key BKBM.* variables (from T7FOC):**
+
+| Variable | Meaning |
+|----------|---------|
+| BKBM.KEY | BOM key (parent + line) |
+| BKBM.PARENT | Parent item code |
+| BKBM.PROD.LINE# | BOM line number |
+| BKBM.COMPONENT | Component item code |
+| BKBM.QTY.REQD | Quantity required |
+| BKBM.REFERENCE | Reference designator |
+| BKBM.PROD.TYPE | Component type (M/P/R/etc.) |
+| BKBM.PROD.SCRAP | Scrap factor |
+| BKBM.PROD.OP | Operation number |
+| BKBM.PROD.OPYN | Include in operation flag |
+| BKBM.PROD.PRICE | Component price |
+| BKBM.PROD.RTNUM | Routing number |
+
+**Summary:** FO options are implemented as BOM variants — configuring a product with options means selecting which BOM line components to include.
+
+---
+
+### Commissions / Sales Reps (CS) — T7CSA/T7CSB.RWN
+
+**T7CSA.RWN** (LISTG60.LIB, procs=99, vars=1807) — agent + salesperson master
+**T7CSB.RWN** (LISTG60.LIB, procs=138, vars=1421) — commission tracking + CM integration
+
+**Key tables:** BKPRAGNT (agent master), BKPRMSTR (price master), BKPRSALE (price book), BKCMACCC (CM contacts), BKCMDTCD (CM date codes), BKPSUSER
+
+**Key BKPR.* variables (from T7CSA):**
+
+| Variable | Meaning |
+|----------|---------|
+| BKPR.AGNT.NUM | Agent number |
+| BKPR.AGNT.CODE | Agent code |
+| BKPR.AGNT.GLACT | Agent GL account |
+| BKPR.AGNT.GLDPT | Agent GL department |
+| BKPR.SLS.EMPNUM | Salesperson employee number |
+| BKPR.SLS.CLASS | Salesperson class |
+| BKPR.SLS.RATE | Commission rate |
+| BKPR.SLS.HOW | Calculation method (gross/net/etc.) |
+| BKPR.SLS.WHEN | Payment timing (on invoice/on payment) |
+| BKPR.SLS.QUOTA | Sales quota |
+| BKPR.SLS.GROSS | Gross sales (period) |
+| BKPR.SLS.COGS | Cost of goods sold (period) |
+| BKPR.SLS.RCPTS | Receipts (period) |
+| BKPR.SLS.COMM | Commission earned |
+| BKPR.SLS.PAID | Commission paid |
+| BKPR.SLS.FNMI | First/middle name initial |
+| BKPR.SLS.LNME | Last name |
+| BKPR.SLS.EXPACT | Expense account |
+
+---
+
+### DC Activity (T7ADCA) — Data Collection Labor Entry
+
+**T7ADCA.RWN** (ISTECH.LIB, procs=290, vars=3683) — DC labor / activity entry
+
+**Note on module code:** The "AD" prefix does NOT correspond to "Accounting Defaults" in this RWN. T7ADCA appears to be an advanced/activity Data Collection program (ISTECH.LIB = same developer as the DC module). The variables and DB files all point to shop floor DC.
+
+**Key tables:** BKDCCFG (DC configuration), BKDCLAB (DC labor transactions), BKDCSHFT (DC shifts), BKSYMSTR, INVTXN, EIMCOLST (EIM column status — new table)
+
+**Key LAB.* variables:**
+
+| Variable | Meaning |
+|----------|---------|
+| LAB.DATE | Labor entry date |
+| LAB.EMP | Employee number |
+| LAB.WOPRE / LAB.WOSUF | Work order prefix / suffix |
+| LAB.WOKEY | Work order key |
+| LAB.OPER | Operation number |
+| LAB.POSTED | Posted flag |
+| LAB.SHIFT | Shift code |
+| LAB.START / LAB.FINISH | Start / finish times |
+| LAB.PARTS | Parts completed |
+| LAB.SCRAPPED | Scrap quantity |
+| LAB.NOJOBS | Number of jobs on this entry |
+| LAB.RUNHRS / LAB.SETUPHRS | Run hours / setup hours |
+| LAB.REGOVER | Regular vs. overtime flag |
+| LAB.EXTRA | Extra field |
+| LAB.APPROVAL / LAB.ADT.SUPER | Approval / audit supervisor |
+| LAB.ADT.IN / LAB.ADT.OUT | Audit in/out times |
+| LAB.ESSDATE | ESS (employee self-service) date |
+| LAB.DATE1 / LAB.DATE2 | Auxiliary dates |
+| LAB.SCRAPCD | Scrap code |
+
+---
+
 ## Module table ownership matrix
 
 Quick reference — which module is the PRIMARY owner of each core table:
@@ -224,3 +340,11 @@ Quick reference — which module is the PRIMARY owner of each core table:
 | BKQCMSTR/BKQCTRAN | QC module | T7SMJL |
 | BKPIFROZ/BKPIPHYS | PI module | T7SMJL |
 | FILELOC/FILEDICT | TAS infrastructure | wtasdmgr, wtasdatam, wtasinit |
+| BKSAREPT | SA module (T7SAM) | T7SAN |
+| BKACTRPT | SA module (T7SAM) | T7SAN |
+| BKPRAGNT | CS module (T7CSA) | T7CSB |
+| BKCMACCC | SA module (T7SAO) | T7CSB |
+| BKCMACCL | SA module (T7SAO) | — |
+| BKCMDTCD | CS module (T7CSB) | — |
+| BKDCCFG/BKDCLAB/BKDCSHFT | DC module (T7DCA/T7ADCA) | T7DE* stubs |
+| BKBMMSTR | BM module | T7WOA, T7INA, T7SOA, T7FOC, T7POA |

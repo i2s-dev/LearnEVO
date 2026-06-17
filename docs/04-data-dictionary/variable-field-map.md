@@ -300,6 +300,81 @@ Source: T7SOA.RWN (BKAR.INV.* variables)
 
 ---
 
+## BKBMMSTR — Bill of Materials
+
+Source: T7FOC.RWN (BKBM.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| BKBM.KEY | BOM record key (parent code + line number) |
+| BKBM.PARENT | Parent item/part number |
+| BKBM.PROD.LINE# | BOM line sequence number |
+| BKBM.COMPONENT | Component item code |
+| BKBM.QTY.REQD | Quantity required per parent |
+| BKBM.REFERENCE | Reference designator (PCB silkscreen etc.) |
+| BKBM.PROD.TYPE | Component type (M=manufactured, P=purchased, R=raw, S=subcontract) |
+| BKBM.PROD.SCRAP | Scrap/yield factor |
+| BKBM.PROD.OP | Operation step (routing step this component is issued at) |
+| BKBM.PROD.OPYN | Include in operation Y/N flag |
+| BKBM.PROD.PRICE | Standard component price |
+| BKBM.PROD.RTNUM | Routing number reference |
+
+---
+
+## BKPRAGNT / BKPRMSTR — Commission Agent / Sales Rep
+
+Source: T7CSA.RWN (BKPR.AGNT.* and BKPR.SLS.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| BKPR.AGNT.NUM | Agent/rep number (primary key) |
+| BKPR.AGNT.CODE | Agent code |
+| BKPR.AGNT.GLACT | GL account for commission payable |
+| BKPR.AGNT.GLDPT | GL department |
+| BKPR.SLS.EMPNUM | Salesperson employee number |
+| BKPR.SLS.CLASS | Salesperson class/tier |
+| BKPR.SLS.RATE | Commission rate (%) |
+| BKPR.SLS.HOW | Calculation method (G=gross, N=net, C=COGS) |
+| BKPR.SLS.WHEN | Payment timing (I=on invoice, P=on payment) |
+| BKPR.SLS.QUOTA | Sales quota amount |
+| BKPR.SLS.GROSS | Gross sales this period |
+| BKPR.SLS.COGS | Cost of goods this period |
+| BKPR.SLS.RCPTS | Cash receipts this period |
+| BKPR.SLS.COMM | Commission earned this period |
+| BKPR.SLS.PAID | Commission paid this period |
+| BKPR.SLS.FNMI | First name + middle initial |
+| BKPR.SLS.LNME | Last name |
+| BKPR.SLS.EXPACT | Expense account |
+
+---
+
+## BKDCLAB — DC Labor Transactions
+
+Source: T7ADCA.RWN (LAB.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| LAB.DATE | Labor transaction date |
+| LAB.EMP | Employee number |
+| LAB.WOPRE / LAB.WOSUF | Work order prefix / suffix |
+| LAB.WOKEY | Full work order key |
+| LAB.OPER | Operation number |
+| LAB.POSTED | Posted-to-WO flag |
+| LAB.SHIFT | Shift code |
+| LAB.START / LAB.FINISH | Clock-in / clock-out times |
+| LAB.PARTS | Parts completed count |
+| LAB.SCRAPPED | Scrapped quantity |
+| LAB.NOJOBS | Number of jobs on this entry |
+| LAB.RUNHRS / LAB.SETUPHRS | Run hours / setup hours |
+| LAB.REGOVER | Regular (R) or overtime (O) flag |
+| LAB.APPROVAL | Approval status |
+| LAB.ADT.SUPER | Audit supervisor code |
+| LAB.ADT.IN / LAB.ADT.OUT | Audit in/out timestamps |
+| LAB.ESSDATE | Employee self-service entry date |
+| LAB.SCRAPCD | Scrap reason code |
+
+---
+
 ## Notes on naming convention
 
 TAS Pro 7 maps database records to named buffer variables. The pattern is:
