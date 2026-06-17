@@ -596,7 +596,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
 - [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
 - [ ] ⬜ **FL** — no T7 RWN/DFM files found (DBA-era legacy)
-- [x] 🔄 **FO** — Features & Options — all 3 DFMs read; FO-C (BKBM.PROD.OPYN[5] option flags, PAR.DESC+COMP.DESC parent-component option pairing), FO-D (item/class/category range), FO-E (item filter); BOM sub-module — options set OPYN[1..N] per product; SO triggers option selection driving BOM inclusions — **C: 50/100**
+- [x] 🔄 **FO** — Features & Options — 5 programs: T7FOA/B(5p stubs), T7FOC(60p BKBMMSTR+BKICMSTR — option entry), T7FOD(103p item+class range filter), T7FOE(86p item filter); BKFOCFG(18f: MANFET+YN_1..15+OPCODE) is the FO config table; BKBM.PROD.OPYN[N] flags control option activation per product — **C: 65/100**
 - [x] 🔄 **FP** — Features & Options Print — CHM confirmed: FP-B='Print Features and Options'; no T7FP* programs in rwn_symbols.json (1,122 searched); likely RTM-only report template triggered from FO module; print sub-module with no standalone RWN — **C: 42/100**
 - [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
 - [x] 🔄 **IC** — Inventory Control utility — T7IC2EST (6 procs, BKICMSTR+MTICMSTR): one-way bridge copies production inventory to ES estimating module; accessed as IC-A "Copy Production to Estimate Inventory"; no other IC programs found; not a general inventory module — **C: 55/100**
@@ -614,7 +614,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **QC** — Quality Control — 18 programs across 4 sub-areas: (1) QC-A/B/C/D inspection (T7QCA 106p incoming, T7QCB 120p WO material, T7QCC 108p WO receipt, T7QCD 117p WO routing); (2) QC-F NCR (T7QCFA 178p entry, QCFB 108p supplier quality, QCFD 53p inquiry, QCFF 131p closeout); (3) QC-G CAPA (T7QCGA 212p corrective action entry, QCGB 122p team approval, QCGD 110p report); (4) Support (T7QCMTHD 65p methods, QCRESULTS 104p results, QCRSLT 87p tray results, QCSPEC 82p spec def); key tables: ISNCR(35f), ISQCSPEC(57f), ISQCMTHD(44f), SCRAP(21f), ISWOTRAY(52f), QCCODES(2f), ISCACT/ISCARDTE/ISCTEAM (not in DDF) — **C: 72/100**
 - [x] 🔄 **QT** — Service Quote extended info (linked to SR module) — T7QTINFO (42 procs): opens ISSRINFO+BKYSMSTR+BKARINVL+ISTERMS+BKICPMAT+BKICREF+BKBMMSTR; service quotes are SR orders in quote status using same BKARINV table; T7QTINFO = extended info entry form analogous to T7SRINFO; date milestones via ISSRINFO confirmed — **C: 45/100**
 - [x] 🔄 **QU** — Query / Inquiry Tools — CHM fully documented (6 ops); RWN programs: WBKLOOKUP (413 procs, QU-A universal lookup grid — opens BKLUGRID+ISDRILL+ISDRILLM+FILEKEY+FILEDICT), CALDRILLBT (94 procs, QU-B calendar drill-down), EVOBS (128 procs, QU-D Business Status — opens ISBSF+BKGLTRAN+MTICMSTR), T7QGRID (62 procs, QU-E Quick Grid Lookup — opens BKLUGRID+ISDRILL), QUERYEXECUTE (26 procs, QU-F SQL executor — opens ISDRILL+BKPSUSER); key tables: ISDRILL (46f, query definitions with 20 FILTER + 20 WHILE condition slots), ISDRILLM (17f, drill navigation: PARENT→CHILD with SFIELD/TFIELD mappings) — **C: 70/100**
-- [x] 🔄 **RF** — Request for Quote (from Estimating) — 1 DFM read; T7RFQ: 103 procs, ISESTDTL+BKMRPPO+BKBMMSTR+BKICMSTR+BKAPVEND+BKAPPO+BKSBVEND; generates vendor RFQs from estimate data; bridges ES (Estimating) and PO — **C: 50/100**
+- [x] 🔄 **RF** — Request for Quote (T7RFQ: 103 procs); opens ISESTDTL(203f — estimate detail, 10 qty breaks × cost cols)+BKMRPPO+BKBMMSTR+BKICMSTR+BKAPVEND+BKAPPO+BKSBVEND; bridges ES estimates to vendor quote requests; ISESTDTL schema partially extracted (203 fields, IS_EST_NUM+PART+LINE PK) — **C: 62/100**
 - [x] 🔄 **RM** — Return Material Authorization (RMA) — all 5 DFMs read; RMD=main entry (bkar.inv/invl links, is.rma.warranty NLPB codes, reason for return), RMAWHY=detail popup (is.rma.status), RMDASK=disposition (pass.rma.num [D/J/N], restock.charge, so.location), RME=reason code master (IS.RMA.CODE/DESC), RMG=report; RMA→WO bridge via "Pass to Job" — **C: 68/100**
 - [x] 🔄 **RT** — Report Template Validator (T7RTMVALID: 20 procs, BKSYHELP+DBAHLPID+ISIS+MKAHIST); validates RTM (ReportBuilder) templates by reading help system + audit history; ISIS=import/export index; purpose confirmed from program name + minimal table set — **C: 45/100**
 - [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
@@ -662,6 +662,10 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **BS** — Business Score/Summary Dashboard (T7BS: 162 procs); ISBSF (143f, fully documented): PK=STARTDATE+ENDDATE; AR/AP/SO/PO/WO/IC KPIs + CASH_TOTA+ACT1..9 + CASH_ACTS_1..100 (100-period GL history) + WOS_SETUP/LAB/OUTP/MAT/FOH/VOH/MEXT/FP/WIPV (WO cost breakdown) + EXTRA; opens 40+ tables including all major modules; also surfaced as QU-D Business Status (EVOBS) — **C: 65/100**
 - [x] 🔄 **AD (ADCA)** — Advanced Data Collection (T7ADCA: 290 procs, 55 unique tables); full auto shop floor DC: BKDCLAB+WORKORD+BKPRMSTR+BKDCSHFT(34f, 3-shift config)+ISWOEX(63f, WO extended)+ISROUTEX(100f, routing cycle times per 10 machines)+ISWOROEX(60f, per-WO-op extension)+OPQCDESC(10f, per-op QC result)+ISWOTRAY(52f)+EIMCOLST(not in DDF); operator scans→posts BKDCLAB→updates WOLABOR/WOROUT — **C: 62/100**
 - [x] 🔄 **IT** — Item Serial/Barcode/Cycle Config (T7ITMCFG: 66 procs); opens ISSERCNT+BKICMSTR+BKGLCOA+SERIAL+ISNCR+IS2DBAR+ISCYCLCD; ISSERCNT(9f)=serial counter per item, IS2DBAR(109f)=2D barcode format config, ISCYCLCD(7f)=cycle count frequency code; all 3 schemas extracted — **C: 62/100**
+- [x] 🔄 **CH** — Multi-Location Chain (T7CHAIN: 62 procs, ISCHAINM+BKPSUSER+BKSYMSTR; T7CHAINM: 40 procs, ISCHAINM+FILEDICT); ISCHAINM(17f)=USER+PARENT(12)+CHILD(12) PK + PARAM_1..10 + AUTO + DATE + DESC(100); defines parent-child company relationships for multi-company chains; 2 programs confirmed — **C: 62/100**
+- [x] 🔄 **PA** — Paperless DC / Shop Floor Control (T7PAPERLESS: 205 procs, 50 unique tables; T7PACKMENU: 5 procs stub; T7PASS: 3 procs password sub); ISBINLOC(9f)=bin-level inventory without lot (ITEM+LOC+BIN PK, UOH, DFLT, RVLVL); opens WORKORD+ROUTING+WOROUT+BKICLOC+ISBINLOC+ISWOEX+WORECV+BKAPPOL+ISWOTRAY+BKDCLAB — **C: 62/100**
+- [x] 🔄 **TE** — NACHA/ACH Electronic Payments (T7TESTNACHA: 103 procs, BKSYMSTR+ISBANKS+BKGLCHK+BKAPVEND+BKARINVL); BKGLCHK(11f)=check register: CHKACT+NUM PK, DATE+TYPE+NAME+AMT+FLAG+DATER+VEND+CUST; generates NACHA ACH files from AP vendor data — **C: 60/100**
+- [x] 🔄 **KI** — Kit Assembly (T7KIT: 153 procs, 26 unique tables); opens BKICMSTR+MTICMSTR+WOBOM+BKICLOC+BKYSMSTR+ISLINKS+WOMAT+WORKORD+WOROUT+BKPRMSTR+ISBINLOC+LOT; assembles kits from BOM components using simplified WO without routing/labor; lot+bin location tracking — **C: 65/100**
 - [x] 🔄 **EM** — Emergency GL Maintenance (T7EMGL: 62 procs); opens BKGLCOA+BKAPPOL+BKAPPO+WORKORD+WOBOM+INVTXN+BKBMMSTR+ISICMSTR+BKGLTRAN+LOT+SERIAL+ISNCR+ISTAXGRP; ISICMSTR(41f) = item physical/shipping specs (WT/TI/HI/dimensions/tool/slead); broad table set for GL account cross-reference traversal — **C: 50/100**
 
 ---
@@ -1054,7 +1058,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: EM/Emergency GL | **50** | 65 | **15** NEW | 2026-06-17 |
 | Module: RT/RTM Validator | **45** | 60 | **15** NEW | 2026-06-17 |
 | Module: FP/FO Print | **42** | 55 | **13** NEW | 2026-06-17 |
-| Module: RF/RFQ | **50** | 68 | **18** ↑ +10 | 2026-06-17 |
+| Module: RF/RFQ | **62** | 68 | **6** ↑+12 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
 | Subsystem: PI/Physical Inventory | **52** | 68 | **16** NEW | 2026-06-17 |
 | Module: SA/Sales Analysis | **58** | 72 | **14** ↑ +3 | 2026-06-17 |
@@ -1072,14 +1076,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: ADCA/Advanced DC | **62** | 72 | **10** NEW | 2026-06-17 |
 | Module: TC/Treasury Control | **52** | 70 | **18** NEW | 2026-06-17 |
 | Module: SC/Cycle Count | **58** | 72 | **14** NEW | 2026-06-17 |
-| Module: CH/Multi-Location Chain | **45** | 65 | **20** NEW | 2026-06-17 |
-| Module: KI/Kit Assembly | **50** | 70 | **20** NEW | 2026-06-17 |
+| Module: CH/Multi-Location Chain | **62** | 65 | **3** ↑+17 | 2026-06-17 |
+| Module: KI/Kit Assembly | **65** | 70 | **5** ↑+15 | 2026-06-17 |
 | Module: MA/AR Deposit Apply | **52** | 68 | **16** NEW | 2026-06-17 |
-| Module: TE/NACHA+ACH | **48** | 65 | **17** NEW | 2026-06-17 |
-| Module: PA/Paperless DC | **45** | 68 | **23** NEW | 2026-06-17 |
+| Module: TE/NACHA+ACH | **60** | 65 | **5** ↑+12 | 2026-06-17 |
+| Module: PA/Paperless DC | **62** | 68 | **6** ↑+17 | 2026-06-17 |
 | Module: TPOA/PO Processing Hub | **58** | 72 | **14** NEW | 2026-06-17 |
 | System: AUTO/Batch Automation | **62** | 68 | **6** ↑+10 | 2026-06-17 |
-| Module: FO/Features+Options | **60** | 72 | **12** ↑ +10 | 2026-06-17 |
+| Module: FO/Features+Options | **65** | 72 | **7** ↑+5 | 2026-06-17 |
 | System: Notes/EVONOTES | **58** | 70 | **12** NEW | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |

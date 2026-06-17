@@ -2855,4 +2855,149 @@ extracted; specific DC screen field mapping blocked by RWN encryption.
 
 ---
 
-*Last updated: 2026-06-17 (Pass 35). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-35 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC/SD/SL/AL/ML/MH/BR/NE/JO/FN/XC/IT/EM/RT/FP/BKMR/BKED/BKES/YS/CU/ADCA). SO/EDI/ES architecture confirmed: all use BKARINV structure. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 36 Additions
+
+### FO — Features & Options
+
+5 programs confirmed:
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7FOA | 5 | FO-A stub (FILELOC+FILEDICT — likely redirect/nav stub) |
+| T7FOB | 5 | FO-B stub (same) |
+| T7FOC | 60 | FO-C main entry — option definition: BKBMMSTR+BKICMSTR+MTICMSTR; links option codes to BOM items |
+| T7FOD | 103 | FO-D item/class/category range filter — BKICMSTR+BKICLOCM+CLASMSTR |
+| T7FOE | 86 | FO-E item filter — same tables as FOD |
+
+- **BKFOCFG** (18f): FO module config — BKFO_CFG_MANFET(1, mandatory features flag) + YN_1..15
+  (15 behavioral flags) + OPCODE(5) + EXTRA(50)
+
+**Architecture:** BKBM.PROD.OPYN[N] flags on the BOM item record control which options are
+active per product. FO-C defines the option/component pairings; FO-D/E provide range filters
+for bulk option assignment; FP-B prints them.
+
+**Confidence: 65/100** — 5 programs identified; BKFOCFG schema extracted; option-flag
+mechanism confirmed from DFM field names; detailed option-selection UI logic blocked by encryption.
+
+---
+
+### RF — Request for Quote (from Estimating)
+
+T7RFQ (103 procs) — opens ISESTDTL + MTICMSTR + BKBMMSTR + BKICMSTR + BKMRPPO + BKAPPOL +
+BKAPVEND + BKAPPO + BKSBVEND + BKYSMSTR + BKICLOCM + BKSYMSTR.
+
+Bridges ES Estimating → vendor RFQ → PO. Reads estimate detail (ISESTDTL), creates vendor quote
+requests using preferred vendors (BKSBVEND), optionally links to MRP planned POs (BKMRPPO).
+
+**ISESTDTL** (203 fields): IS_EST_NUM + PART + LINE PK; 10 quantity breakpoints (QTY_1..10);
+per-breakpoint cost buckets (MAT_1..10, and likely LAB/OVHD/SUB/TOT...) — full estimate
+rollup per quantity break with material, labor, overhead, and subcontract costs. 203 fields
+= 10 qty breaks × ~20 cost fields.
+
+**Confidence: 62/100** — program confirmed; ISESTDTL schema partially extracted (first 20 of 203f);
+10 qty-break × cost-bucket structure clear.
+
+---
+
+### CH — Multi-Location Chain
+
+Two programs:
+- **T7CHAIN** (62 procs): ISCHAINM + BKPSUSER + BKSYMSTR — chain maintenance with user assignment
+- **T7CHAINM** (40 procs): ISCHAINM + FILEDICT — chain data file maintenance
+
+**ISCHAINM** (17 fields): Multi-location chain master record:
+- IS_CHAIN_USER(15) + PARENT(12) + CHILD(12) — PK: user + parent company code + child company code
+- IS_CHAIN_PARAM_1..10 (15 each) — 10 parameters controlling chain behavior
+- IS_CHAIN_AUTO(1) — automatic chain processing flag
+- IS_CHAIN_DATE — date
+- IS_CHAIN_DESC(100) + EXTRA(100) — description and extra
+
+**Purpose:** Defines parent-child company relationships for multi-company chain setups.
+A "chain" links a user session to a parent company and one or more child companies, with
+10 configurable parameters. T7CHAINM manages the physical Btrieve files for each chain entity.
+
+**Confidence: 62/100** — 2 programs identified; ISCHAINM schema extracted; chain semantics
+(what parameters control) blocked by encryption.
+
+---
+
+### PA — Paperless DC (Shop Floor Control)
+
+Three programs:
+- **T7PAPERLESS** (205 procs, 50 unique tables): full paperless shop floor control
+- **T7PACKMENU** (5 procs, no DB): pack menu stub/launcher
+- **T7PASS** (3 procs): password sub-module
+
+T7PAPERLESS opens: WORKORD + MTICMSTR + BKICMSTR + WOROUT + ROUTING + BKICLOC + ISBINLOC +
+ISWOEX + WORECV + BKAPPOL + ISWOTRAY + BKDCLAB + ... (50 unique tables).
+
+Paperless DC allows operators to receive materials, complete operations, and record labor
+without paper travelers. Integrates: WO routing (WOROUT+ROUTING), bin location (ISBINLOC),
+tray tracking (ISWOTRAY), DC labor (BKDCLAB), WO receipts (WORECV).
+
+**ISBINLOC** (9 fields): bin-level inventory WITHOUT lot tracking:
+- ISBIN_LOC_ITEM(15) + LOC(10) + BIN(15) — PK: item + location + bin
+- ISBIN_LOC_UOH — quantity on hand per bin
+- ISBIN_LOC_CDATE / VDATE — created/validated dates
+- ISBIN_LOC_DFLT(1) — default bin flag
+- ISBIN_LOC_RVLVL(5) — revision level
+- Compare: ISBINLOT tracks per lot within a bin; ISBINLOC is the non-lot bin balance
+
+**Confidence: 62/100** — 3 programs identified; ISBINLOC schema extracted; 50-table scope
+confirms full shop floor integration; detailed screen logic blocked.
+
+---
+
+### TE — NACHA / ACH Electronic Payments
+
+T7TESTNACHA (103 procs) — opens BKSYMSTR + ISBANKS + BKGLCHK + BKAPVEND + BKARINVL.
+Generates NACHA ACH electronic payment files from AP vendor payments and bank account config.
+
+**BKGLCHK** (11 fields): GL check/payment register:
+- BKGL_CHK_CHKACT(2, checking account number) + NUM(check number) — PK
+- BKGL_CHK_DATE — payment date
+- BKGL_CHK_TYPE(1) — payment type (check/ACH/wire)
+- BKGL_CHK_NAME(25) — payee name
+- BKGL_CHK_AMT — amount
+- BKGL_CHK_FLAG(1) — reconciled/voided flag
+- BKGL_CHK_DATER — reconciliation date
+- BKGL_CHK_VEND(10) / BKGL_CHK_CUST(10) — vendor or customer reference
+
+**Workflow:** AP payment batch → T7TESTNACHA reads BKAPVEND (routing/account) + ISBANKS
+(company bank) → creates NACHA file → records in BKGLCHK as ACH type payments.
+
+**Confidence: 60/100** — program confirmed; BKGLCHK schema extracted; NACHA workflow clear
+from table set; specific ACH record format blocked by encryption.
+
+---
+
+### KI — Kit Assembly
+
+T7KIT (153 procs) — opens BKICMSTR + MTICMSTR + WOBOM + BKICLOC + BKYSMSTR + ISLINKS +
+WOMAT + WORKORD + WOROUT + BKPRMSTR + ISBINLOC + LOT + ... (26 unique tables).
+
+Assembles "kit" items by creating simplified Work Orders that combine components from
+inventory. Uses WOBOM (BOM list), WOMAT (issues materials), WORKORD+WOROUT (WO tracking),
+LOT (lot assignment), ISBINLOC (bin selection). No routing/labor tracking — kits are
+assembled directly from components without shop floor operations.
+
+**Confidence: 65/100** — program confirmed; purpose from table fingerprint; kit-from-BOM
+workflow clear; detailed option/substitution logic blocked by encryption.
+
+---
+
+### New Tables Confirmed (Pass 36)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISCHAINM | 17 | Multi-location chain master — USER+PARENT+CHILD PK; 10 params; AUTO/DATE/DESC |
+| ISBINLOC | 9 | Bin-level inventory (no lot) — ITEM+LOC+BIN PK; UOH/dates/DFLT/RVLVL |
+| BKGLCHK | 11 | GL check/payment register — CHKACT+NUM PK; TYPE/NAME/AMT/FLAG/DATER/VEND/CUST |
+| ISESTDTL | 203 | Estimate detail — 10 qty breaks × material+labor+overhead cost columns |
+| BKFOCFG | 18 | FO module config — MANFET flag + 15 YN flags + OPCODE |
+
+---
+
+*Last updated: 2026-06-17 (Pass 36). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-36 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC/SD/SL/AL/ML/MH/BR/NE/JO/FN/XC/IT/EM/RT/FP/BKMR/BKED/BKES/YS/CU/ADCA/FO/RF/CH/PA/TE/KI). SO/EDI/ES architecture: all use BKARINV structure. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
