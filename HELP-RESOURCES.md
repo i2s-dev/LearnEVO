@@ -3000,4 +3000,161 @@ workflow clear; detailed option/substitution logic blocked by encryption.
 
 ---
 
-*Last updated: 2026-06-17 (Pass 36). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-36 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA/QC/QT/IC/SD/SL/AL/ML/MH/BR/NE/JO/FN/XC/IT/EM/RT/FP/BKMR/BKED/BKES/YS/CU/ADCA/FO/RF/CH/PA/TE/KI). SO/EDI/ES architecture: all use BKARINV structure. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 37 Additions
+
+### SC — Serial Control
+
+9 programs — serial number tracking through manufacturing and sales:
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7SCA | 78 | SC-A serial cycle count entry — SERIAL+WORKORD+BKICLOC+ISBINLOC; enter count by WO and bin location |
+| T7SCB | 59 | SC-B serial list maintenance — BKICMSTR+ISTRIGRS; trigger-linked serial list |
+| T7SCC | 121 | SC-C serial count posting — BKICMSTR+SERIAL+MTICMSTR+BKARTXN; posts serial count to AR transaction |
+| T7SCD | 5 | SC-D sub-stub of SCC |
+| T7SCE | 88 | SC-E serial count by location — BKICMSTR+SERIAL+BKICLOCM; location-range serial inquiry |
+| T7SCF | 131 | SC-F serial transaction history — SERIAL+BKICMSTR+BKICLOC+INVTXN+CLASMSTR+ISCATMST; full transaction log |
+| T7SCG | 92 | SC-G serial counter maintenance — ISSERCNT+MTICMSTR+CLASMSTR; manages auto-serial generation |
+| T7SCH | 113 | SC-H serial history report — MTICMSTR+SERIAL+INVTXN+WORECV+WORKORD+BKARINV; cross-module history |
+| T7SCOMP | 54 | SC-COMP serial compound — ISSCOMP; manages compound/batch serial definitions |
+
+**ISSCOMP** (5f): IS_SCOMP_DETAIL(20) + COMPND(30) + VIS(1) + WHO(40) + IS_SCOMP(50) — compound
+serial definitions (linking serial number to batch/compound product identifier).
+
+**Architecture:** Serial numbers are tracked in the SERIAL table across WO receipt (WORECV),
+inventory transactions (INVTXN), and AR sales (BKARINV). T7SCG manages the generation counters
+(ISSERCNT); T7SCA/SCF/SCH provide cycle counting, history, and reporting.
+
+**Confidence: 72/100** — 9 programs confirmed; ISSCOMP schema extracted; serial lifecycle
+confirmed across WO→INVTXN→AR; per-screen field detail blocked by encryption.
+
+---
+
+### TC — Treasury Control
+
+T7TCC (119 procs) — the cash management and banking module. Opens:
+ISTERMS + ISBANKS + BKARINVT + BKARCUST + BKARINV + BKGLCOA + BKSYMSTR + BKYSMSTR +
+ISMCF + BKART + BKAPCHKF + BKARDEP + BKGLCHK + BKARINVI + BKPRSALE + ...
+
+**Key tables:**
+
+**BKART** (12f): AR transaction record:
+- BKART_CUST(10) + TRXN(float) — PK
+- BKART_TYPE(1) — P=payment, C=credit, etc.
+- BKART_DISC — discount taken
+- BKART_AMOUNT — transaction amount
+- BKART_POSTDATE / ENTDATE — posted / entered dates
+- BKART_TRXNLINK — cross-link to another transaction (e.g., payment → invoice)
+- BKART_INVC — invoice reference
+- BKART_CHECK — check number reference
+
+**BKAPCHKF** (12f): AP check/payment file:
+- BKAP_CHK_VNDCOD(10) + INVNUM(10) — PK
+- BKAP_CHK_INVAMT / AMTPD / DISC — invoice amount, amount paid, discount
+- BKAP_CHK_TYPE(1) — payment type
+- BKAP_CHK_NUM — check number
+- BKAP_CHK_CHKACT(2) + CHKDTE — checking account + check date
+- BKAP_CHK_ISCUR(3) — currency code
+
+**BKARINVT** (23f): AR invoice tax detail:
+- BKAR_INVT_CODE(10) + DATE + NUM — PK
+- BKAR_INVT_AMT / AMTRM — tax amount and remainder
+- BKAR_INVT_DESC(25) — tax description
+- BKAR_INVT_TYPE(1) + GLDPT(4) + SLSP(salesperson) — type/GL/salesperson
+
+**BKARINVI** (16f): AR invoice interest/finance charge lines:
+- BKAR_INVI_SONUM + INVNM + ESD + PCODE — PK
+- BKAR_INVI_PQTY / PPRCE / PDISC / PEXT / PCOGS — qty/price/discount/extension/cost
+- BKAR_INVI_ITYPE(1) — interest charge type
+- BKAR_INVI_EXTRM + COMM_1 — extended amount + commission
+
+**TC Role:** Cash flow management — AR terms configuration, bank account management, AR payment
+recording (BKART), AP check issuance (BKAPCHKF), AR deposits (BKARDEP), check reconciliation
+(BKGLCHK), invoice tax accumulation (BKARINVT), and finance charges (BKARINVI).
+
+**Confidence: 65/100** — single program confirmed with rich table set; all key TC table schemas
+extracted; detailed cash-flow workflow blocked by encryption.
+
+---
+
+### SA — Sales Analysis (Major Expansion: 13 Programs)
+
+Previously documented as 6 DFMs; now 13 programs fully identified:
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7SAA | 212 | Main SA engine — BKARINV+BKARCUST+BKARINVL+BKICMSTR+ISARCHG+ISSOBOX+BKPRSALE+ISJOB+CLASS+ISAREX |
+| T7SAB-SAL (9 stubs) | 5 each | Range filter stubs — all open same table set as SAA (report variant selectors) |
+| T7SAM | 238 | SA management report — BKSAREPT+BKACTRPT+ISBUILD+BKARINVL+BKICMSTR+ISRMAI+ISSRINFO+WORKORD+BKCMLEAD+BKCMTERR |
+| T7SAN | 220 | SA report variant N — BKSAREPT+BKACTRPT (same structure, excludes ISRMAI/ISSRINFO) |
+| T7SAO | 169 | Top N sales — BKICMSTR+BKARCUST+BKPRSALE+BKARINV+ISARCHG+BKARINVL+BKCMACCL+BKCMTERR+BKCMACCC+ISAREX |
+| T7SAP | 131 | SA by class/category — BKARINVL+BKARINV+MTICMSTR+BKICMSTR+CLASMSTR+ISCATMST |
+| T7SAQ | 95 | Actual margin — BKARINV+BKARINVL+MTICMSTR+WORKORD+WOMAT+WOBOM (uses real WO costs) |
+
+**Key new tables:**
+
+**BKSAREPT** (57f): Saved SA report definition:
+- BKSA_TYPE(8) + NAME(15) — PK (type+name)
+- BKSA_RTM(15) — ReportBuilder template file name
+- FROM1/THRU1..FROM5/THRU5 (numeric, date, string ranges) — saved filter criteria
+- 45+ additional range/filter fields
+
+**BKACTRPT** (53f): Activity report definition:
+- Same PK structure; RTM field; FROM_PART/THRU_PART/CLASS/CAT/DATE/LOC ranges
+- 41+ additional filter fields
+
+**ISJOB** (9f): Job tracking:
+- IS_JOB_NUMB(15) — job number (PK)
+- IS_JOB_DESC(30) + CUST(10) + VEND(10) — description, customer, vendor
+- IS_JOB_STATUS(1) + OPENDT + CLOSEDT — job lifecycle
+- Used in SA to group invoices under a job number
+
+**ISAREX** (51f): AR customer extended data:
+- ISAREX_CUST(10) — PK
+- ISAREX_LONGNAME(60) — long customer name
+- RS_EXPDT/UPDT/WHO/FORM/SGNDT — resale certificate tracking (expiry, update, who, form, signed)
+- CRT_FORM(60) — certificate form reference
+- NUM_1..4 + 39 more configurable fields
+
+**ISRMAI** (54f): RMA (Return Merchandise Authorization) invoice:
+- IS_RMA_NUM + PART + LINEID — PK
+- DATE + RCPTDATE + CLOSDATE — entered/received/closed dates
+- STATUS(30) + REASON(30) + DISP(40) — status, reason, disposition
+- OSONUM + OINVNUM + OLDRMANO — original SO/invoice/RMA references
+- 42+ additional fields
+
+**BKCMACCL** (2f): CRM account level — CODE(10)+CLASS(5) — maps account to level classification
+**BKCMLEAD** (2f): CRM lead source — SCODE(5)+DESC(25) — lead source lookup
+
+**Architecture:** T7SAA is the data aggregation engine reading all invoices; T7SAB-SAL provide
+report variant launchers (different filter defaults); T7SAM/SAN use BKSAREPT to run saved report
+configs; T7SAO runs top-N customer/product analysis; T7SAQ uniquely reads WORKORD+WOMAT+WOBOM
+to compute actual manufacturing cost vs. sales price for true margin analysis.
+
+**Confidence: 72/100** — 13 programs identified; all key table schemas extracted; T7SAQ
+actual-margin mechanism (WO cost → gross margin) confirmed; per-field reporting logic blocked.
+
+---
+
+### New Tables Confirmed (Pass 37)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISSCOMP | 5 | Serial compound definitions — DETAIL+COMPND+VIS+WHO+IS_SCOMP |
+| BKSAREPT | 57 | Saved SA report definitions — TYPE+NAME PK; RTM template name; range filters |
+| BKACTRPT | 53 | Activity report definitions — same structure; part/class/cat/date/loc ranges |
+| ISJOB | 9 | Job tracking — NUM/DESC/CUST/VEND/STATUS/OPENDT/CLOSEDT |
+| ISAREX | 51 | AR customer extended — resale certificates + 47 configurable fields |
+| ISRMAI | 54 | RMA invoice — NUM+PART+LINEID; dates/status/reason/disposition/original refs |
+| BKCMACCL | 2 | CRM account level code — CODE+CLASS |
+| BKCMLEAD | 2 | CRM lead source — SCODE+DESC |
+| BKART | 12 | AR transaction record — CUST+TRXN PK; TYPE/DISC/AMOUNT/dates/TRXNLINK/INVC/CHECK |
+| BKAPCHKF | 12 | AP check file — VNDCOD+INVNUM PK; amounts/TYPE/check#/account/date/currency |
+| BKARINVT | 23 | AR invoice tax by code — CODE+DATE+NUM PK; AMT/DESC/TYPE/GLDPT/SLSP |
+| BKARINVI | 16 | AR invoice interest/finance charges — SONUM+INVNM+ESD+PCODE PK; qty/price/interest type |
+
+---
+
+*Last updated: 2026-06-17 (Pass 37). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-37 module analysis (...SC/TC/SA). SO/EDI/ES architecture: all use BKARINV structure. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

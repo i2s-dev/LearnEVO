@@ -555,6 +555,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ SC-G: Serial format setup (total length, numeric start position, last number) — **C: 72/100**
 - [x] ✅ T7SCOMP: Compound serial numbers (IS.SCOMP.*) — **C: 65/100**
 - [x] ✅ Primary tables: MTSER (serial master), IS.SERC.* (config), IS.SCOMP.* (compound) — **C: 72/100**
+- [x] ✅ Pass 37 RWN confirmation — 9 programs: T7SCA(78p cycle count entry, SERIAL+WORKORD+BKICLOC+ISBINLOC), T7SCB(59p list maintenance, BKICMSTR+ISTRIGRS), T7SCC(121p count posting, BKARTXN), T7SCD(5p sub-stub), T7SCE(88p count by location, BKICLOCM), T7SCF(131p transaction history, INVTXN+CLASMSTR), T7SCG(92p counter maintenance, ISSERCNT+MTICMSTR), T7SCH(113p history report, INVTXN+WORECV+WORKORD+BKARINV), T7SCOMP(54p compound, ISSCOMP); ISSCOMP(5f: IS_SCOMP_DETAIL+COMPND+VIS+WHO+IS_SCOMP) schema extracted — **C: 72/100**
 - [ ] ⬜ MTSER all fields documented with meaning
 - [ ] ⬜ Serial number lifecycle (receive → track → ship → close) fully traced
 
@@ -617,7 +618,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **RF** — Request for Quote (T7RFQ: 103 procs); opens ISESTDTL(203f — estimate detail, 10 qty breaks × cost cols)+BKMRPPO+BKBMMSTR+BKICMSTR+BKAPVEND+BKAPPO+BKSBVEND; bridges ES estimates to vendor quote requests; ISESTDTL schema partially extracted (203 fields, IS_EST_NUM+PART+LINE PK) — **C: 62/100**
 - [x] 🔄 **RM** — Return Material Authorization (RMA) — all 5 DFMs read; RMD=main entry (bkar.inv/invl links, is.rma.warranty NLPB codes, reason for return), RMAWHY=detail popup (is.rma.status), RMDASK=disposition (pass.rma.num [D/J/N], restock.charge, so.location), RME=reason code master (IS.RMA.CODE/DESC), RMG=report; RMA→WO bridge via "Pass to Job" — **C: 68/100**
 - [x] 🔄 **RT** — Report Template Validator (T7RTMVALID: 20 procs, BKSYHELP+DBAHLPID+ISIS+MKAHIST); validates RTM (ReportBuilder) templates by reading help system + audit history; ISIS=import/export index; purpose confirmed from program name + minimal table set — **C: 45/100**
-- [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
+- [x] 🔄 **SA** — Sales Analysis (13 ops) — 13 RWN programs fully identified: T7SAA(212p main engine: BKARINV+BKARINVL+BKARCUST+BKICMSTR+ISARCHG+ISSOBOX+BKPRSALE+ISJOB+CLASS+ISAREX); T7SAB/C/D/E/G/H/I/J/L (all 5p, range filter stubs, same table set as SAA); T7SAM(238p: BKSAREPT+BKACTRPT+ISBUILD+BKARINVL+BKARINV+BKICMSTR+ISRMAI+ISSRINFO+WORKORD+BKCMLEAD+BKCMTERR); T7SAN(220p: same as SAM excluding ISRMAI); T7SAO(169p Top N: BKCMACCL+BKCMACCC+ISAREX); T7SAP(131p class range: CLASMSTR+ISCATMST); T7SAQ(95p actual margin: WORKORD+WOMAT+WOBOM — uses actual WO costs); dedicated tables: BKSAREPT(57f saved report def with RTM name), BKACTRPT(53f activity report def), ISJOB(9f job tracking: NUM/DESC/CUST/VEND/STATUS/OPENDT/CLOSEDT), ISAREX(51f AR extended: resale cert fields), ISRMAI(54f RMA invoice: NUM+PART+LINEID, STATUS/REASON/DISP/OSONUM/OINVNUM), BKCMACCL(2f account level), BKCMLEAD(2f lead source) — **C: 72/100**
 - [ ] ⬜ **SB** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **SD** — Standard Detail Codes (T7SDET: 58 procs, ISSDET+ISSTYPE+ISNCR+ISMCR); ISSDET(4f)=type/detail code pair, ISSTYPE(3f)=type description; ISNCR reference confirms SD codes used in NCR defect classification; ISMCR=multi-currency; maintains cross-module service/detail code lookup — **C: 58/100**
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
@@ -628,6 +629,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **SU** — Setup / UI Configuration — CHM confirmed 4 ops (SU-A=Maintain Grid Lookups, SU-B=Maintain Drill Down Menus, SU-C=Forms Editor, SU-D=Grid Maintenance); RWN programs: WBKLUGRID (68 procs, SU-A — opens BKLUGRID+FILELOC+FILEKNUM+FILEDICT), EVOERPDRILLM (31 procs, SU-B — opens ISDRILLM+BKLUGRID+FILELOC), T7GDM (31 procs, Grid Display Manager — opens BKLUGRID+ISDRILLM); key tables: BKLUGRID (per-user column layout saves), ISDRILLM (drill navigation map, 17f) — **C: 65/100**
 - [ ] ⬜ **SY** — no T7 RWN/DFM files found; BKSY* tables are System config (documented)
 - [x] 🔄 **TA** — TAS / System Administration — CHM confirmed 9 ops: TA-D=Maintain Database, TA-G=Maintain Menu Access Records, TA-H=Maintain Menu End User, TA-M=Forms Editor, TA-N=Program Scheduler, TA-O=Backup Utility, TA-Q=Change Logo Image, TA-R=SQL Editor, TA-S=Data Dictionary Check; 5 programs matched: TA-S=T7DDCHECK (92p, FILEDICT+FILEKEY+FILELOC), TA-N=EVOSCHEDULER (65p, ISSCHED) + EVOSCHEDSETUP (37p), TA-O=EVOERPBACKUP (76p, zipdll), TA-R=QUERYEXECUTE (26p, ISDRILL); TA-D likely T7FNR (104p, file browser); TA-G/H/M/Q unmatched — **C: 65/100**
+- [x] 🔄 **TC** — Treasury Control — T7TCC(119p) opens ISTERMS+ISBANKS+BKARINVT+BKARCUST+BKARINV+BKGLCOA+BKSYMSTR+BKYSMSTR+ISMCF+BKART+BKAPCHKF+BKARDEP+BKGLCHK+BKARINVI+BKPRSALE; new tables: BKART(12f: CUST+TRXN PK, TYPE/DISC/AMOUNT/POSTDATE/ENTDATE/TRXNLINK/INVC/CHECK/NOTE), BKAPCHKF(12f: VNDCOD+INVNUM PK, INVAMT/AMTPD/DISC/TYPE/NUM/CHKACT/CHKDTE/ISCUR), BKARINVT(23f: CODE+DATE+NUM PK, AMT/AMTRM/DESC/TERMN/TYPE/GLDPT/SLSP), BKARINVI(16f: SONUM+INVNM+ESD+PCODE PK, PQTY/PPRCE/PDISC/PEXT/PCOGS/ITYPE finance charges); TC role: cash management — AR terms, bank accounts, AR payments, AP checks, deposits, check reconciliation, invoice tax, finance charges — **C: 65/100**
 - [ ] ⬜ **UM** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **UP** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **US** — User Services / Trigger Notifications — T7USG (90 procs): ISTRIGRS primary table (25f, fully documented: CODE/TRIGR/CONTACT/DAYS/EMAIL/ONCE/LDATE/LTIME/WO-PO-SO-CUST-VEND refs + ITYPE/CLASS/CAT/PLANNER); ISREMIND (22f, fully documented: DATE/TIME/WHO/SUBJECT/CUST/VEND/ITEM/FILE/EMAIL/SENT); EvoRemind (46 procs) polls ISTRIGRS and creates ISREMIND calendar entries; US program also opens BKARCUST+BKAPVEND+WORKORD+BKARINV+BKAPPO for entity lookups — **C: 65/100**
@@ -1061,7 +1063,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: RF/RFQ | **62** | 68 | **6** ↑+12 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
 | Subsystem: PI/Physical Inventory | **52** | 68 | **16** NEW | 2026-06-17 |
-| Module: SA/Sales Analysis | **58** | 72 | **14** ↑ +3 | 2026-06-17 |
+| Module: SA/Sales Analysis | **72** | 75 | **3** ↑+14 | 2026-06-17 |
 | Module: JC/Job Cost | **68** | 78 | **10** ↑ | 2026-06-17 |
 | Module: ES/Estimating | **58** | 72 | **14** ↑ | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **55** | 70 | **15** NEW | 2026-06-17 |
@@ -1074,8 +1076,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: YS/YN Flags Editor | **60** | 68 | **8** NEW | 2026-06-17 |
 | Module: CU/WO Cut Sheet | **58** | 68 | **10** NEW | 2026-06-17 |
 | Subsystem: ADCA/Advanced DC | **62** | 72 | **10** NEW | 2026-06-17 |
-| Module: TC/Treasury Control | **52** | 70 | **18** NEW | 2026-06-17 |
-| Module: SC/Cycle Count | **58** | 72 | **14** NEW | 2026-06-17 |
+| Module: TC/Treasury Control | **65** | 70 | **5** ↑+13 | 2026-06-17 |
+| Module: SC/Serial Control ⚠️ (dup) | **72** | 80 | **8** ↑+14 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **62** | 65 | **3** ↑+17 | 2026-06-17 |
 | Module: KI/Kit Assembly | **65** | 70 | **5** ↑+15 | 2026-06-17 |
 | Module: MA/AR Deposit Apply | **52** | 68 | **16** NEW | 2026-06-17 |
