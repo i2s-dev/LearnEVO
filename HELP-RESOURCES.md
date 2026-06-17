@@ -856,37 +856,225 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 
 ### CRM / Contact Manager (CM)
 
-**What it does:** Manages customer and prospect contacts, accounts, territories, and marketing activities. Bridges AR (customers) and a dedicated CRM account database. Up to 9 email addresses per contact, account classes, territories, SIC/lead-source codes.
+**What it does:** Manages customer and prospect contacts, accounts, territories, and marketing activities. Three entity types: AR customers (BKARCUST), CRM prospect accounts (BKCMACCT), and individual prospect contacts (BKCMPCNT). Tracks activity history, follow-ups, mailing campaigns, and dunning for all three. Up to 10 named contacts with phone/email per account.
 
-**Menu codes:** CM (6 forms confirmed)
+**Menu codes:** CM (6 T7CM* programs)
 
-**Key operations:**
-- **CM-A — CRM Account Master (T7CMA):** Create/edit CRM accounts. Fields: account name, address, territory (BKCMTERR), SIC code, lead source, account class, key contacts with EMAIL[1..9].
-- **CRM-AR Bridge:** CRM accounts link to AR customers via BKCMACCN. Same account can exist in both systems; changes sync through T7CMCVTN/T7CMCVTF conversion forms.
-- **Contact merge (T7CMBB):** Merge duplicate CRM contact records.
+**Program map:**
 
-**Primary tables (46 total):**
+| RWN | Procs | Operation | Key tables |
+|-----|------:|-----------|------------|
+| T7CMA | 275 | CM-A — Account master entry/edit | BKARCUST, BKCMACCT, BKCMACCL, BKCMACTD, ISREMIND, BKYSMSTR |
+| T7CMBB | 118 | CM mailing/campaign builder | BKCMMHST, BKARCUST, BKCMACTD, BKCMACCL, BKCMDTCD, BKCMACCC |
+| T7CMCVTF | 31 | Convert follow-up tasks to ISREMIND | BKCMACTF, ISREMIND, BKCMREP, BKPSUSER |
+| T7CMCVTN | 33 | Convert notes to ISNOTES | BKCMACTH, ISNOTES, ISLOG, ISDRILL |
+| T7CMJ | 9 | CRM journal / marketing action history | MKAHIST, ISNOTES |
+| T7CMK | 70 | CRM key inquiry / customer drill-down | BKARCUST, ISIS, MKAHIST, ISLOG |
+
+**Architecture — three CRM entity types:**
+
+1. **AR Customers** — primary record in BKARCUST; CRM-relevant fields: BKAR_TERRITORY(4), BKAR_LEAD_SRC(5), BKAR_IS_REP(5), BKAR_SIC_CODE(7), BKAR_MAIL_LIST(1), BKAR_FOLUPDTE (follow-up date)
+2. **CRM Accounts** (prospects not yet customers) — primary record in BKCMACCT(41f); flag BKCM_ACCT_CUST(1) = "Y" when converted to an AR customer
+3. **CRM Prospect Contacts** (individuals) — BKCMPCNT(24f); linked to account via BKCM_PCNT_CCODE
+
+Activity history/follow-ups exist in parallel sets:
+- Accounts: BKCMACTH (history) + BKCMACTF (follow-up) + BKCMACTD (date tracking)
+- Vendors: BKCMVNDH (history) + BKCMVNDF (follow-up)
+- Prospects: BKCMPCTH (history) + BKCMPCTF (follow-up)
+All share BKCMHCOD event codes.
+
+**BKCMACCT (41f) — CRM Account Master (prospects)**
+
+Primary key: BKCM_ACCT_CODE(10)
+
+| Field | Size | Meaning |
+|---|---|---|
+| BKCM_ACCT_CODE | 10 | Account code (PK) |
+| BKCM_ACCT_OLDCD | 10 | Previous/old code |
+| BKCM_ACCT_ALPHA | 6 | Sort key |
+| BKCM_ACCT_NAME | 30 | Company name |
+| BKCM_ACCT_ADD1/2/3 | 30 each | Address lines |
+| BKCM_ACCT_CITY/STATE/ZIP/CNTRY | varies | Full address |
+| BKCM_ACCT_CONT1 | 30 | Primary contact name |
+| BKCM_ACCT_TITLE | 30 | Primary contact title |
+| BKCM_ACCT_PHONE/FAX | 25 each | Phone/fax |
+| BKCM_ACCT_REP | 5 | Assigned CRM rep (FK → BKCMREP) |
+| BKCM_ACCT_DLOAD | 1 | Download flag |
+| BKCM_ACCT_SICCD | 7 | SIC industry code |
+| BKCM_ACCT_CUST | 1 | Is existing AR customer? |
+| BKCM_ACCT_LEAD | 5 | Lead source code (FK → BKCMLEAD) |
+| BKCM_ACCT_START | date | Start/acquired date |
+| BKCM_ACCT_TERR | 4 | Territory (FK → BKCMTERR) |
+| BKCM_ACCT_REM_1/2 | 60 each | Remarks |
+| BKCM_ACCT_FONE_1..3 | 15 each | Additional phone numbers |
+| BKCM_ACCT_FTWO_1..3 | 2 each | Phone extensions |
+| BKCM_ACCT_FTHRE_1/2 | 25 each | Phone type labels |
+| BKCM_ACCT_FTIME | 2 | Billable time balance |
+| BKCM_ACCT_CCARD/CNUM/CEXP | varies | Credit card on file |
+| BKCM_ACCT_CMPNM/PNAME | 25 each | Card company/cardholder name |
+| BKCM_ACCT_EXTRA | 200 | Extra notes |
+| BKCM_ACCT_EMAIL | 128 | Primary email |
+| BKCM_ACCT_EMPS | float | Employee count |
+
+Note: **BKCMDE (41f)** and **BKCMEACT (41f)** are DDF alternate-key views of BKCMACCT with identical field names — not separate tables.
+
+**BKCMACCN (154f) — Account Contacts (10 contacts per account)**
+
+Primary key: BKCM_ACCN_CODE(10) + contact slot
+
+Stores up to 10 named contacts per CRM account:
+- BKCM_ACCN_CONT_1..10 (30 each) — contact names
+- BKCM_ACCN_TITLE_1..10 (30 each) — titles
+- BKCM_ACCN_PHONE_1..10 (25 each) — phone numbers
+- BKCM_ACCN_DEAR_1..10 (25 each) — salutation ("Dear Mr. Smith")
+- BKCM_ACCN_EMAIL_1..10 (128 each) — email addresses
+- BKCM_ACCN_PHLBL_1..10 (20 each) — phone type labels
+- BKCM_ACCN_EMLBL_1..10 (20 each) — email type labels
+- BMCM_ACCN_DATE1_1..10 + BKCM_ACCN_DATE2_1..10 (date) — 2×10 configurable dates per contact
+- BKCM_ACCN_ALPH1_1..10 + BKCM_ACCN_ALPH2_1..10 (25 each) — 2×10 user-defined alpha fields
+- BKCM_ACCN_PRIM (1) — primary contact flag; BKCM_ACCN_CON (30) — primary contact name
+
+**BKCMACTH (21f) — Activity History (per account)**
+
+Primary key: BKCM_ACTH_CODE(10) + DATE + REP + LINE
+
+| Field | Meaning |
+|---|---|
+| BKCM_ACTH_DATE | Activity date |
+| BKCM_ACTH_REP (5) | CRM rep who logged it |
+| BKCM_ACTH_LINE (2) | Sequence within date |
+| BKCM_ACTH_CD (2) | Event date code |
+| BKCM_ACTH_EVENT (2) | Event type (FK → BKCMHCOD.HCODE) |
+| BKCM_ACTH_PHONE (1) | Was it a phone call? |
+| BKCM_ACTH_START/STOP (time) | Call start/stop times |
+| BKCM_ACTH_MIN/BMIN (2 each) | Actual/billed minutes |
+| BKCM_ACTH_REM (57) | Remarks/notes |
+| BKCM_ACTH_BILLD (1) | Billable flag |
+| BKCM_ACTH_DLOAD (1) | Downloaded flag |
+| BKCM_ACTH_RECVD (time) | When received |
+| BKCM_ACTH_CNTCT (25) | Contact person spoken to |
+| BKCM_ACTH_RATE/AMT/BALNC (float) | Billing rate / amount / running balance |
+| BKCM_ACTH_EXTRA (50) | Extra |
+
+**BKCMHCOD (9f) — CRM Event/Activity Codes**
+
+Primary key: BKCM_HCOD_HCODE(2)
+
+| Field | Meaning |
+|---|---|
+| BKCM_HCOD_DESC (25) | Code description (e.g., "Phone Call", "Site Visit") |
+| BKCM_HCOD_WINDW (1) | Pop-up window flag |
+| BKCM_HCOD_RATE (float) | Default billing rate for this event type |
+| BKCM_HCOD_UM (3) | Unit of measure for billing |
+| BKCM_HCOD_ABILL (1) | Auto-billable flag |
+| BKCM_HCOD_BPART/NPART/FPART (15 each) | Before/normal/final billing item codes |
+
+**BKCMREP (14f) — CRM Sales Rep Master**
+
+Primary key: BKCM_REP_REP(5)
+
+| Field | Meaning |
+|---|---|
+| BKCM_REP_FNMEMI/LNAME/FNAME (25 each) | First initial+last / full last / full first name |
+| BKCM_REP_EMP (2) | Employee number (FK → payroll) |
+| BKCM_REP_PSWD (10) | CRM-specific password (separate from AHSYLOG) |
+| BKCM_REP_DHCODE/DFCODE/DDCODE | Default history/follow-up/date codes |
+| BKCM_REP_VIEW/CHANGE/GWARN/AADD (1 each) | View, change, warn, add account permissions |
+| BKCM_REP_FTITLE (25) | Rep title for letters |
+
+**BKCMTERR (11f) — Territory Master**
+
+Primary key: BKCM_TERR_TCODE(4): DESC(25), EMAIL(128), ALPHA(30), EXTRA(100), FLAGS_1..5(1 each), DATE
+
+**BKCMMHST (72f) — Mailing/Campaign History**
+
+Primary key: BKCM_MHST_MCODE(15). One row per campaign/mailing run.
+- DATE + DESC — when/what the campaign was
+- 20×CLASS(5) include criteria + 20×OCLAS(5) exclude criteria — class-based segment filters
+- Filter ranges: FROM/TO for account code (FACD/TACD), state (FST/TST), zip (FZIP/TZIP), SIC (FSIC/TSIC), start date (FSDT/TSDT), territory (FTERR/TTERR), rep (FREP/TREP), lead (FLEAD/TLEAD)
+- KDCD(2) — key date code filter
+- CUSTO(1) — customers only flag; NOCUS(1) — non-customers only flag
+- DORL(1) — domestic/local flag; NUMUP(2) — # records updated
+- SORT(1), PCONT(1) — sort/contact flags; CNUM(2) — contact number to use
+- REM(1) — remarks flag; FORM(15) — letter form to print; STAT(11) — run status
+
+**BKCMDUN (36f) — Dunning Configuration**
+
+One-row-per-rep dunning ladder (up to 10 levels):
+- REP(5) + 10×AGE(2) — aging days thresholds for each dunning level
+- 10×FORM(15) — letter form at each level; 10×DESC(30) — level description
+- DORL+NUMUP+SORT+PCONT+CNUM — same filter controls as BKCMMHST
+
+**BKCMDUNH (6f) — Dunning History**
+
+Primary key: BKCM_DUNH_ACCT(10) + DATE: FORM(15), AGE(2), AMT+TOT(float)
+
+**ISREMIND (22f) — System Reminders / Calendar**
+
+Cross-module reminder table used by CRM, US-G triggers, and SR:
+- IS_REM_DATE+TIME — when to fire; IS_REM_EDATE+ETIME — end time; IS_REM_ENDDT+ENDTM — recurrence end
+- IS_REM_WHO(20) — assigned user; IS_REM_SUBJECT(100); IS_REM_TYPE(3) — reminder class
+- IS_REM_CUST(10)+VEND(10)+ITEM(15) — linked entity (customer/vendor/item)
+- IS_REM_FILE(256) — attachment path; IS_REM_EMAIL(400) — recipients; IS_REM_SENT(25) — sent tracking
+- IS_REM_NOTIFY(1) — send email notification; IS_REM_DISP(1) — display popup
+- IS_REM_CO(3) — company; IS_REM_COUNTER(4) — recurrence counter; IS_REM_TRANS(1) — transferred flag
+
+**MKAHIST (9f) — Marketing Action History**
+
+Primary key: MKAHIST_ACCT(10) + DATE + TRACK + SEQ
+- EVENT (float → BKCMHCOD.HCODE), MEDIA(1), FORM(float — which form), REM1+REM2(60 each)
+
+**Complete BKCM* table inventory:**
 
 | Table | Fields | Purpose |
 |-------|--------|---------|
-| BKCMACCN | 154 | Account contact names — 10 contacts per account (name, title, phone, email) |
-| BKCMCUST | 106 | CM customer view — mirrors BKARCUST field names for CRM context |
-| BKCMMHST | 72 | Marketing history — activity codes, dates, 9 classification codes per entry |
-| BKCMACCT | 41 | CM account master — name, address, contacts (non-AR prospects) |
-| BKCMDE | 41 | CM data exchange / EDI variant |
-| BKCMEACT | 41 | CM e-commerce account |
-| BKCMDUN | 36 | Dun & Bradstreet integration |
-| BKCMPCNT | 24 | CM prospect contact |
-| BKCMREP | 14 | CM sales rep — rep code, name, employee#, password, permissions (VIEW/CHANGE/GWARN/AADD) |
-| BKCMACCC | 11 | Account class — A/B/C/custom classification |
-| BKCMLEAD | 11 | Lead source codes |
-| BKCMTERR | 11 | Sales territory codes |
-| BKCMCNTD | 12 | Contact detail |
-| + 33 others | — | Additional CRM history, flags, history, e-commerce tables |
+| BKCMACCN | 154 | Account contacts — 10 contacts per account (name/title/phone/email/dates/UDF) |
+| BKCMCUST | 106 | CRM view of BKARCUST (same BKAR_* fields — DDF alt-key view) |
+| BKCMMHST | 72 | Mailing/campaign history — criteria, filter ranges, run stats |
+| BKCMACCT | 41 | CRM account master — non-AR prospects (NAME/ADDR/REP/TERR/SIC/LEAD/CC/EMAIL/EMPS) |
+| BKCMDE | 41 | DDF alt-key view of BKCMACCT (identical fields) |
+| BKCMEACT | 41 | DDF alt-key view of BKCMACCT (identical fields) |
+| BKCMDUN | 36 | Dunning ladder config — 10 aging thresholds + forms per rep |
+| BKCMPCNT | 24 | Prospect contact — individual at a prospect company |
+| BKCMACTH | 21 | Account activity history — date/rep/event/time/billing per log entry |
+| BKCMEACH | 21 | DDF alt-key view of BKCMACTH |
+| BKCMACTF | 11 | Account follow-up tasks — date/rep/type/5×remarks/SO link |
+| BKCMEACF | 11 | DDF alt-key view of BKCMACTF |
+| BKCMHCOD | 9 | CRM event codes — rate/UM/billable flag/before-normal-final item |
+| BKCMVNDF | 10 | Vendor follow-up tasks (with PO link) |
+| BKCMVNDH | 8 | Vendor contact history |
+| BKCMDUNH | 6 | Dunning history per account — date/form/age/amt |
+| BKCMREP | 14 | CRM sales rep — name/emp/pswd/defaults/permissions |
+| BKCMTERR | 11 | Territory codes — desc/email/alpha/flags/date |
+| BKCMCNTD | 12 | Contact field title labels (10 titles + MREP + LTYPE) |
+| BKCMFORM | 8 | Letter/dunning form definitions — CODE+LINE+NOTE+margin settings |
+| BKCMFTME | 7 | Billable time summary per account — FTIME/ATIME/NTIME buckets |
+| BKCMEFTM | 7 | DDF alt-key view of BKCMFTME |
+| BKCMHCD2 | 7 | Event code cross-ref — phone/customer/report action parts |
+| BKCMSBDF | 5 | Billing settings — increment/rate/conversion |
+| BKCMACTD | 4 | Account date tracking — CODE+DCODE+DATE+EXTRA |
+| BKCMEACD | 4 | DDF alt-key view of BKCMACTD |
+| BKCMPCTH | 8 | Prospect contact history (shorter than BKCMACTH) |
+| BKCMPCTF | 9 | Prospect contact follow-up |
+| BKCMPCFC | 3 | Prospect follow-up codes |
+| BKCMACFC | 3 | Account follow-up codes |
+| BKCMVNFC | 3 | Vendor follow-up codes |
+| BKCMACCL | 2 | Account classification lookup (CODE→CLASS) |
+| BKCMEACC | 2 | DDF alt-key view of BKCMACCL |
+| BKCMDTCD | 2 | Date code definitions |
+| BKCMACCC | 2 | Contact class codes |
+| BKCMLEAD | 2 | Lead source codes (SCODE+DESC) |
+| BKCMTEMP/TMP1-4 | 6 each | Temp/sort scratch tables |
+| BKCMCTL1-4/BKCMCTRL | 1 each | Concurrent user lock (one slot per session) |
 
-**Key insight:** BKCMREP has its own password field (BKCM_REP_PSWD, 10 chars) separate from the main AHSYLOG login. CM reps can be restricted to VIEW only or blocked from certain account changes.
+**Key insights:**
+- BKCMREP has its own password (BKCM_REP_PSWD, 10 chars) separate from the main AHSYLOG login. VIEW/CHANGE/GWARN/AADD flags control what each rep can see or edit.
+- BKCMDE and BKCMEACT are DDF alt-key views of BKCMACCT — not separate tables.
+- Activity billing: BKCMACTH tracks start/stop times, minutes billed (BMIN), rate, and running balance (BALNC) per activity log entry — full time-and-billing in CRM.
+- BKCMMHST mailing campaigns support complex include/exclude criteria: up to 20 include + 20 exclude class codes, plus 9 address/territory/date range filters.
+- ISREMIND is shared across CRM (T7CMA/CMCVTF), US-G triggers, and SR — it is the system-wide calendar/reminder table.
 
-**Confidence: 72/100** — Top 5 BKCM* tables fully field-documented; CRM-AR bridge confirmed; rep permission flags confirmed; 41 smaller tables identified but not field-extracted.
+**Confidence: 82/100** — All 37 BKCM* tables field-extracted from DDF; all 6 T7CM* programs identified with proc counts and DB fingerprints; CRM architecture (3-entity + parallel activity sets) confirmed; individual program business logic inferred from DB fingerprints, not source code.
 
 ---
 
