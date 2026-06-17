@@ -6733,22 +6733,36 @@ Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, c
 
 (Disambiguation: WC = Warehouse Control bin management, **not** Work Center. Work centers are in the `WORKCTR` table used by routing and scheduling.)
 
-**Module purpose:** Manages physical bin locations within warehouse locations. Supports bin-level inventory tracking, serial-by-bin queries, and bulk bin assignment.
+**Module purpose:** Manages physical bin locations within warehouse locations. Supports bin-level inventory tracking, serial-by-bin queries, bulk bin import, and bin-location synchronization.
 
-### WC Program Map
+### WC Program Map (confirmed from DFMs — Pass 81)
 
-| Program | Procs | Operation |
-|---|---|---|
-| T7WCA | — | Bin master CRUD — create/edit/delete bins in ISBNMSTR |
-| T7WCC | — | Serials by bin — queries MTSER for serial numbers at a specific bin |
-| T7WCD | — | Bulk bin assignment — Skip/Replace mode for reassigning multiple items |
-| T7WCH | — | Location browser — browse all LOC+BIN combinations |
+| Program | Procs | Operation | Confirmed purpose |
+|---|---|---|---|
+| T7WCA | — | WC-A Bin Master | Create/edit/delete bins in ISBNMSTR (LOC+BIN+DESC) |
+| T7WCBK | ? | WC-BK Live Schedule | Floating "Live Work Center Schedule" dashboard — filters by work center, WO status, operation, category, customer, priority; auto-refreshes on timer (ISE.STATUS.2/3 filters) |
+| T7WCBinLot | ? | Bin-Lot Batch | Batch file processor for bin/lot assignments (shows Files Processed counter) |
+| T7WCC | — | WC-C Serials by Bin | Queries serial numbers located at a specific bin |
+| T7WCD | ? | WC-D Bin Location Import | Imports bin location assignments from CSV or fixed-length file; fields: Location(required), Default Bin, Item Number(required), Bin Description, Lot, Serial; Skip/Replace mode |
+| T7WCE | ? | WC-E Bin Location Report | Prints inventory-by-bin-location report filtered by item range + class + category + type + active status + bin range + cycle code; optionally includes all warehouses and lot numbers |
+| T7WCF | ? | WC-F Inventory Listing | Simplified inventory listing by warehouse — item range + class + category + type + active status; no bin-specific filters |
+| T7WCG | ? | WC-G Default Bin Assignment | Sets the default bin for items at a specific location; item range + class + category + type; writes ISBINLOC.DFLT flag |
+| T7WCH | ? | WC-H Bin Browse | Browse all bins for a location+bin range (bkic.locm.name + from.bin + thru.bin) |
+| T7WCLOCFIX | ? | WC LOC Sync | "This Utility will Update MTIC.PROD.LOC with the Default WC Bin" — syncs ISBIN.LOC.ITEM to MTICMSTR.PROD.LOC using the item's default bin |
 
-### WC Table
+### WC Table Family (confirmed from DDF)
 
 | Table | Fields | Purpose |
 |---|---|---|
-| ISBNMSTR | 4 | Bin master — LOC(10)+BIN(15) PK; DESC(60)+EXTRA(100); defines named bin positions within warehouse locations (FK LOC → BKICLOCM) |
+| BKICLOCM | 12 | Warehouse location master — LOC(10) PK, NAME(30), address fields, company flags |
+| BKICLOC | 32 | Item-by-location inventory — PROD(15)+LOC(10) PK; UOH/UOSO/UBO/UOO qty fields; all 5 cost fields; GL account |
+| ISBNMSTR | 4 | Bin master — LOC(10)+BIN(15) PK; DESC(60)+EXTRA(100); named bin positions within a location |
+| ISBINLOC | 9 | Item bin assignment — ITEM(15)+LOC(10)+BIN(15) PK; UOH(qty on hand in this bin); CDATE(count date)+VDATE(verified date); DFLT(1, default bin flag); RVLVL(5, reorder level) |
+| ISBINLOT | 11 | Bin-lot cross-reference — ITEM+LOC+LOT+BIN PK; UOH(qty in this bin for this lot); DATE; FLAG; TMPSO/TMPPO(40 each, temp SO/PO reserve pointers); DFLT |
+
+**BKICLOC hierarchy:** Location (BKICLOCM) → Item-at-location (BKICLOC) → Bin assignment (ISBINLOC) → Lot-at-bin (ISBINLOT). ISBINLOC.UOH can only equal BKICLOC.UOH when a single-bin item. Multi-bin items spread UOH across ISBINLOC rows.
+
+**Confidence: 80/100** — 10 programs confirmed from DFMs; full bin table family (ISBNMSTR+ISBINLOC+ISBINLOT+BKICLOCM+BKICLOC) extracted from DDF; all WC operation purposes confirmed; proc counts and serial/lot detail scanning logic blocked by RWN encryption.
 
 ---
 

@@ -1013,7 +1013,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: QC/Quality Control | **82** | 82 | **0** ✅ ↑+1 Pass75 | 2026-06-17 |
 | Module: QT/Service Quote | **74** | 75 | **1** ↑+2 Pass80 DFM | 2026-06-17 |
 | Module: IC/Inventory Utility | **80** | 72 | **0** ✅ ↑+2 Pass77 | 2026-06-17 |
-| Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
+| Module: WC/Warehouse Control ⚠️ | **80** | 80 | **0** ✅ ↑+5 Pass81 DFMs | 2026-06-17 |
 | Module: SH/Shop Scheduling ⚠️ | **83** | 85 | **2** ↑+1 Pass77 | 2026-06-17 |
 | Module: LC/Lot Control | **81** | 78 | **0** ✅ ↑+1 Pass77 | 2026-06-17 |
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
