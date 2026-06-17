@@ -3336,4 +3336,132 @@ details blocked by encryption.
 
 ---
 
-*Last updated: 2026-06-17 (Pass 38). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-38 module analysis (...PI/CR). Complete PI freeze-count-post cycle confirmed with all 7 BKPI* table schemas. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 39 Additions
+
+### AL — Audit Log + Alternate Parts (Expanded)
+
+2 programs:
+- **T7ALOGSETUP** (43p): Configures which tables are tracked for audit logging. Opens FILELOC (file list) + BKSYMSTR + BKPSUSER. No dedicated AL table — configures audit events per file.
+- **T7ALTPART** (104p): Alternate/substitute part maintenance. Opens BKSBPART(5f: PARNT+PROD+CUST+SUBST+EXTRA) + BKICMSTR + **ISLINKS** (document attachment). Allows alternate parts to have attached documents.
+
+**Key new table — ISLINKS** (311f): Global document/URL attachment store used across many modules:
+- IS_LNK_UID(48) — unique document identifier (PK)
+- IS_LNK_LINK(256) — document path or URL
+- IS_LNK_APP(10) — owning application/module code
+- IS_LNK_TYPES_1..9 (1 each) — 9 document type flags
+- + 299 more fields (likely 300 attachment slots or extended metadata)
+
+ISLINKS provides document linking across AL (alternate parts), BR (brands), JO (jobs+depts), and many other modules. SM-SD configures the AP document link via ISLINKS.
+
+**Confidence: 62/100** — 2 programs confirmed; BKSBPART schema extracted; ISLINKS purpose confirmed; per-field detail of remaining 299 ISLINKS fields blocked.
+
+---
+
+### BR — Brands / CRM Classification (Expanded)
+
+2 programs:
+- **T7BRANDS** (53p): Brand code maintenance — primary table BKCMACCC(2f: CCODE+DESC). Also opens BKICMSTR, BKARCUST, ISLINKS for cross-module lookups and document attachments.
+- **T7BROWSER** (4p): HTML browser wrapper — same table set, very low proc count = thin UI wrapper.
+
+**BKCMACCC** (2f, already extracted): CRM account classification code — CCODE(10) + DESC(30).
+
+Confidence: 58/100 — 2 programs, primary table confirmed; detailed brand logic blocked.
+
+---
+
+### JO — Jobs and Departments (Expanded)
+
+2 programs:
+- **T7JOBS** (21p): ISDEPT+WOEXCHG maintenance. Opens BKARCUST+BKAPVEND+CLASMSTR+ISCATMST for lookups. ISDEPT(3f: CODE+DESC+EXTRA) = department master; WOEXCHG(10f: WO change orders with GL posting).
+- **T7JODPSALES** (52p): Opens IS2DBAR+ISCYCLCD+BKSBPART+**BKAPDESC** — likely a SM/drill-down panel for item inquiry, not JO module proper.
+
+**Key new table — BKAPDESC** (5f): AP vendor extended notes:
+- BK_DESC_CODE(15) — vendor code (PK part 1, FK → BKAPVEND)
+- BK_DESC_NUM(8) — note set number (PK part 2)
+- BK_DESC_LINE(2) — line number (PK part 3)
+- BK_DESC_NOTES(70) — note text (70 chars)
+- BK_DESC_DESC(25) — short description
+
+Multi-line extended notes per AP vendor. Each vendor can have multiple BKAPDESC records.
+
+**Confidence: 62/100** — 2 programs confirmed; ISDEPT/WOEXCHG/BKAPDESC schemas extracted; per-screen logic blocked.
+
+---
+
+### LG — LGS Customer Module / Canadian Customs
+
+2 programs confirmed:
+- **T7LGSSOE** (170p): Canadian Statement of Entry (customs declaration). Opens BKARINV+BKARCUST+BKARINVL+BKICMSTR+MTICMSTR+**BKARTXN**+BKICTAX+BKICLOC. Replaces standard ISTAXGRP with BKICTAX (state/jurisdiction tax rates) for cross-border duty. BKARTXN(14f, newly extracted) = AR transaction log with lot/serial/bin detail.
+- **T7LGSSOEVERIFY** (41p): Pre-submission validation for SOE. Same core table set.
+
+BKARTXN (14f): BKAR_TXN_SONUM+CODE+DESC(30)+QTY+LOT(15)+SERIAL(25)+DATE+STOCK(15)+LINE+LOC(10)+TMPSO(40)+SRNUM+EXTRA(50)+BIN(15).
+
+**Confidence: 62/100** — both programs confirmed; BKICTAX+BKARTXN schemas extracted; SOE field layout and duty calculation blocked by encryption.
+
+---
+
+### QT — Service Quote Extended Info (Expanded)
+
+T7QTINFO (42p): Extended info entry for service quotes. Opens ISSRINFO+BKYSMSTR+BKARINVL+ISTERMS+BKICPMAT+**LANGDICT**+**BKICREF**+BKPRSALE.
+
+**Key new tables:**
+
+**LANGDICT** (5f): Multi-language translation dictionary:
+- LANG_DICT_ECAPT(80) — English caption (PK part 1)
+- LANG_DICT_LANG(3) — language code (e.g. FRE, SPA) (PK part 2)
+- LANG_DICT_LCAPT(80) — translated caption
+- LANG_DICT_FONT(30) — font for this language
+- LANG_DICT_EXTRA(150)
+
+Used by ML module (T7MLC) and QT to translate invoice/quote field labels when printing in a non-English language. Clean key/value translation: English caption → target-language caption.
+
+**BKICREF** (8f): Customer item cross-reference:
+- BKIC_REF_CUST(10) + CODE(15) — PK (customer + our part code)
+- BKIC_REF_PDESC(30) — our item description
+- BKIC_REF_CUSNME(30) — customer's name for this item
+- BKIC_REF_CUSCOD(25) — customer's own part number
+- BKIC_REF_DESC(30) + DESC2(30) — description fields
+- BKIC_REF_EXTRA(50)
+
+Maps our part numbers to each customer's own part numbers. When printing invoices/quotes to a customer, EvoERP substitutes the customer's part number/description from BKICREF.
+
+**Confidence: 60/100** — T7QTINFO confirmed; LANGDICT + BKICREF schemas extracted; service quote workflow reconstruction needs more table detail.
+
+---
+
+### SL — Shop Loading (Expanded)
+
+T7SLSFC (5p): Shop loading display — overlays AR demand on production capacity. Opens BKARINVL+BKYSMSTR+BKDCLAB+BKARCUST+ISWOPRIO(4f already extracted)+WORKCTR+ROUTING. Very thin program (5 procs) = UI panel only; data assembly logic is in the calling module.
+
+**BKDCLAB** (50f): DC Labor transaction record (partially extracted):
+- LAB_DATE + LAB_EMP — date + employee (PK part)
+- LAB_WOPRE(8) + LAB_WOSUF(2) — WO reference
+- LAB_OPER(2) — operation number
+- LAB_POSTED(1) — posted to WO flag
+- LAB_SHIFT(2) — shift number
+- LAB_START(4) + LAB_FINISH(4) — start/finish times
+- LAB_PARTS(8) — parts completed count
+- LAB_SCRAPPED(8) — scrapped quantity
+- LAB_NOJOBS(2) — job count
+- + 38 more fields (hours, rates, GL, etc.)
+
+**Confidence: 58/100** — T7SLSFC purpose and DB set confirmed; BKDCLAB partially extracted; WORKCTR+ROUTING not yet extracted.
+
+---
+
+### New Tables Confirmed (Pass 39)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISLINKS | 311 | Global document/URL attachment store — UID+LINK+APP+TYPE flags; used across many modules |
+| BKAPDESC | 5 | AP vendor extended notes — VNDCOD+NUM+LINE PK; NOTES(70)+DESC(25) |
+| LANGDICT | 5 | Multi-language translation — ECAPT+LANG PK; LCAPT(80) translated caption; FONT |
+| BKICREF | 8 | Customer item cross-reference — CUST+CODE PK; CUSNME+CUSCOD (customer's part number) |
+| ISBNMSTR | 4 | Bin master — LOC+BIN PK; DESC(60)+EXTRA(100) |
+| BKDCLAB | 50 | DC labor transaction — DATE+EMP+WOPRE PK; OPER/SHIFT/START/FINISH/PARTS/SCRAPPED |
+
+---
+
+*Last updated: 2026-06-17 (Pass 39). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-39 module analysis (...AL/BR/JO/LG/QT/SL + global tables ISLINKS/LANGDICT/BKICREF/BKDCLAB). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
