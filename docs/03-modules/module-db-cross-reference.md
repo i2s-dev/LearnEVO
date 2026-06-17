@@ -585,6 +585,197 @@ All are 52-proc EVO.LIB CRUD screens over SR reference tables.
 
 ---
 
+---
+
+### EvoDrillDown Panels (T7SMJ* family)
+
+The T7SMJ* modules are the **EvoDrillDown analysis panels** — specialized read-only drill-down views that appear when a user clicks into a record from any context in EVO. Each panel is optimized for one entity type and opens the complete set of related tables.
+
+| Module | Entity | Key tables |
+|--------|--------|-----------|
+| T7SMJA | Work Orders (full) | WORKORD, WORECV, BKDCLAB, WOEXCHG, WODATE, WOROUT, WOBOM, WOMAT, OUTPROC, WOBOMREM, WOLABOR |
+| T7SMJB | Work Orders (alt) | WORKORD, WODATE, WOBOM, WOMAT, WOLABOR, WOROUT, ISWOROEX, OUTPROC, WORECV, WOEXCHG |
+| T7SMJC | Inventory items | BKICLOCM, BKICMSTR, CLASMSTR, CLASS, MTICMSTR, BKICLOC, INVTXN, DBAFIFO |
+| T7SMJD | Inventory transactions | BKICMSTR, INVTXN, BKYSMSTR, MTICMSTR, BKICLOC |
+| T7SMJF | Purchase Orders | BKAPPO, BKAPDESC, ISNOTES, BKAPPOL |
+| T7SMJG | QC records | BKQCMSTR, BKQCTRAN, ISNOTES, ISLINKS |
+| T7SMJH | DC Labor | BKDCLAB |
+| T7SMJI | Estimates | ISESTDTL, BKARINV, BKARINVL, BKBMMSTR, ROUTING, ISNOTES |
+| T7SMJJ | SO/Invoice | BKARINV, BKARINVT, BKARINVL, BKAPDESC, ISSOBOX, BKARHTAX, ISSRINFO, ISARCHG, ISSRMMS |
+| T7SMJK | SO/Invoice (NZ locale) | Same as SMJJ |
+| T7SMJL | Master (all entities) | 459 procs, 92 tables — universal hub |
+| T7SMJM | Customers | BKARCUST, BKARINVT, BKARINVV, BKICPMAT, BKICREF, BKPRCOMM, ESTSUM, INVTXN, WORKORD, SERIAL, BKCMACCL |
+| T7SMJN | Vendors | BKAPVEND, BKCMVNDH, BKCMVNDF, BKICTAX, ISTAXFIL, ISBROKER, BKCPEC, ROUTING, BKAPINVT, BKAPCHKF, BKAPINVL |
+| T7SMJO | AR/AP combined | BKAPVEND, BKARCUST, BKAPCHKF, BKARINVT, BKARDEP, BKARINV, BKARINVL, BKARINVV, BKAPINVT |
+| T7SMJQ | Item/BOM | BKSYMSTR, BKICMSTR, BKBMMSTR |
+| T7SMJR | PO (variant) | BKAPPO, BKAPDESC, ISNOTES, BKAPPOL |
+| T7SMJS | Item (simple) | BKICMSTR, MTICMSTR |
+| T7SMJV | Payroll | BKPRCURP, BKPRMSTR, BKPRINFO, BKPRGLFL |
+
+**New tables discovered in this family:**
+- `WOEXCHG` — WO Exchange (inter-company WO transfer)
+- `ISWOROEX` — IS WO Routing Operations Extensions
+- `BKICLOCM` — IC Location Master
+- `DBAFIFO` — DBA FIFO cost layers (inventory costing)
+- `ISESTDTL` — IS Estimating Detail
+- `ISSOBOX` — IS SO Box/packing data
+- `BKARHTAX` — AR Head Tax
+- `ISSRMMS` — IS SR Maintenance Management System data
+- `BKCMVNDH/BKCMVNDF` — CM Vendor History/Footer
+- `ISBROKER` — IS Broker (customs/freight broker)
+- `BKCPEC` — Compliance/customs data
+- `BKPRCURP` — PR Current Payroll
+- `BKPRINFO` — PR Employee Info
+- `BKCMACCL` — CM Account Links
+- `ESTSUM` — Estimate Summary
+- `BKPRCOMM` — PR Commissions
+
+---
+
+---
+
+### Inventory Lookup Sub-Modules (T7INL* — 23 files)
+
+T7INL* = Inventory item lookup panels used across modules for item selection:
+
+| Module | Focus | Key new tables |
+|--------|-------|---------------|
+| T7INLA | Basic item lookup | ISICMSTR (IS IC extended data) |
+| T7INLB | Location/bin lookup | BKICLOCM, ISBINLOT |
+| T7INLC | Item cross-reference | BKICREF |
+| T7INLD | Reference lookup | BKICREF |
+| T7INLE | Item + PO + class | ISCATMST (IS Category Master), CLASS |
+
+**New tables confirmed:** BKICREF = IC item cross-reference (alternate item codes, vendor part numbers); ISICMSTR = IS IC Master extended (additional item fields beyond BKICMSTR); ISCATMST = IS Category Master; CLASS = item class table.
+
+---
+
+### SO Open Orders Sub-Modules (T7SOO* — 13 files)
+
+T7SOO* = SO Open Order processing panels. "OO" = Open Orders.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7SOOA | Open orders + WO + labor | BKARINV, BKARINVL, WORKORD, WOROUT, BKDCLAB, ISSRINFO |
+| T7SOOB/C | SO lines | BKICMSTR, BKARINVL |
+| T7SOOD | SO header | BKARINV |
+| T7SOOE | DBA-era open orders | Full SO + customer + WO |
+
+---
+
+### SO Picking / Processing Sub-Modules (T7SOP* — 13 files)
+
+T7SOP* = SO pick/pack/ship processing. "OP" = Order Processing.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7SOPA | AR charges on SO | ISARCHG |
+| T7SOPB | Picking with SR info | ISSRINFO, BKARCUST |
+| T7SOPC | Picking with decorations | ISICMSTR, BKICLOC, ISORDECO |
+| T7SOPD/E | ISTS stubs | ISORDECO |
+
+**New table:** ISORDECO = IS Order Decoration — records custom decoration/processing instructions per SO line item (e.g., engraving, custom packaging). Used in manufacturing-to-order environments.
+
+---
+
+### SO Quotation / Pricing Sub-Modules (T7SOQ* — 12 files)
+
+T7SOQ* = SO quotation and pricing lookup panels. "Q" = Quotation.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7SOQA | Pricing matrix | BKICPMAT (IC pricing matrix) |
+| T7SOQB | Item lookup | BKICMSTR |
+| T7SOQC | Item + class + price | CLASMSTR, ISCATMST, BKICPMAT |
+| T7SOQD/E | NZ locale | Same as C |
+
+---
+
+### WO Sub-Modules: Operations and BOM (T7WOK* — 19 files)
+
+T7WOK* = WO operations and kit/BOM management panels.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7WOKA | WO routing operations | WORKCTR, MACHINE, TOOL, ROUTING, ISWOROEX |
+| T7WOKB | WO BOM view | WOBOM, BKBMMSTR, BKICLOC |
+| T7WOKC | WO with dates + exchange | WODATE, WOEXCHG, ISNOTES |
+| T7WOKD | WO with extensions | ISWOEX, ISICMSTR |
+| T7WOKE | WO BOM with substitutes | BKSBPART, WOBOMREM, ISWOEX |
+
+**New tables confirmed:** MACHINE = Machine master (routing resources — specific machines within work centers); TOOL = Tool master (cutting tools, fixtures, jigs tracked per routing operation).
+
+---
+
+### WO Labor Sub-Modules (T7WOL* — 15 files)
+
+T7WOL* = WO labor entry, reporting, and payroll integration panels.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7WOLA | DBA-era WO list | Full WO set |
+| T7WOLB | WO + labor + SO | BKDCLAB, BKARINVL |
+| T7WOLC | WO + work center + PO | WORKCTR, BKAPPOL |
+| T7WOLD | WO + inventory txn | INVTXN, ISCATMST |
+| T7WOLE | WO labor → Payroll | WOLABOR, BKPRCURP, BKPRMSTR, BKCPMSTR |
+
+**T7WOLE confirms WO→PR bridge:** WOLABOR (WO labor transactions) flows to BKPRCURP (PR current payroll batch) for payroll processing. BKCPMSTR = Cost Period Master (tracks cost periods for labor absorption).
+
+---
+
+### Payroll List Sub-Modules (T7PRL* — 16 files)
+
+T7PRL* = Payroll report/list panels. All open the same core PR tables:
+- BKPRMSTR = PR employee master
+- BKPRCURP = PR current payroll batch
+- BKPRINFO = PR employee detailed info
+- BKPRGLFL = PR GL flags (deduction/tax GL accounts)
+
+Each T7PRL variant focuses on a different PR report or subset (pay period, department, GL distribution, etc.).
+
+---
+
+### Routing Operations Sub-Modules (T7ROJ* — 8 files)
+
+T7ROJ* = Routing operations maintenance and related master data.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7ROJA | Routing + SPC | WOROUT, WOBOM, ROUTING, ISSPC, BKRTSPEC |
+| T7ROJB | Work center master | WORKCTR |
+| T7ROJC | Machine master | MACHINE |
+| T7ROJD | Tool master | TOOL, MACHINE |
+| T7ROJE | QC codes master | QCCODES |
+
+**New tables confirmed:** ISSPC = IS SPC link (ties routing operations to SPC data collection — direct ERP→SPC data feed); QCCODES = QC codes master (defect classification codes, distinct from BKQCMSTR inspection records); BKRTSPEC = Routing Spec (operation specifications detail).
+
+---
+
+### PO RFQ Sub-Modules (T7POI* — 10 files)
+
+T7POI* = RFQ (Request for Quote) modules accessed from within the PO workflow.
+
+**Key tables:** BKRFQ (BK Request for Quote), BKICMSTR, BKAPVEND, BKAPPOL, BKAPPO
+
+**Summary:** Vendor RFQ workflow initiated from PO. BKRFQ = RFQ master table — stores quote requests sent to vendors for pricing. Cross-links to BKAPPOL (PO lines) when quotes are accepted and converted to POs.
+
+---
+
+### PO Receiving QC Sub-Modules (T7POJ* — 4 files)
+
+T7POJ* = Quality inspection performed when receiving PO items.
+
+| Module | Focus | Key tables |
+|--------|-------|-----------|
+| T7POJA | Receiving inspection | BKQCMSTR, BKAPPOL, BKAPPO, ISORDECO, BKQCTRAN |
+| T7POJB | Receiving QC + WO | BKQCMSTR, BKAPPO, WORKORD, BKQCTRAN |
+| T7POJC | DBA-era QC receiving | 323 procs — full QC receive |
+| T7POJD | QC by vendor | BKQCTRAN, BKAPVEND |
+
+**Summary:** Receiving QC bridges PO (BKAPPO/BKAPPOL) with QC (BKQCMSTR/BKQCTRAN). Items received on a PO are inspected; failures generate QC transactions. T7POJC at 323 procs is the full-featured version.
+
+---
+
 ## Module table ownership matrix
 
 Quick reference — which module is the PRIMARY owner of each core table:

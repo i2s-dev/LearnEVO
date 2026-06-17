@@ -687,6 +687,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ### 9.8 EvoDrillDown / Analysis Tools
 - [x] ✅ Files: EvoERPDrillM.RWN, CashFlow, CommissionRpt, BOMTree, EditBOMTree, CRM Dashboard — **C: 60/100**
+- [x] 🔄 T7SMJ* drill-down panel family decoded (18 modules, 2026-06-17): SMJA/B=WO, SMJC/D=Inventory+FIFO, SMJF/R=PO, SMJG=QC, SMJH=DC Labor, SMJI=Estimates, SMJJ/K=SO/Invoice, SMJL=Master (459 procs, 92 tables), SMJM=Customers, SMJN=Vendors, SMJO=AR/AP, SMJQ=Item/BOM, SMJS=Item, SMJV=Payroll; 16 new tables confirmed — **C: 72/100**
 - [ ] ⬜ CashFlow calculation logic documented
 - [ ] ⬜ CRM Dashboard data sources traced
 - [ ] ⬜ Commission calculation logic traced
@@ -981,7 +982,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
-| Platform Subsystems | 65 | 82 | 17 | 2026-06-11 |
+| Platform Subsystems | **72** | 82 | **10** ↑ +7 | 2026-06-17 |
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | 65 | 80 | 15 | 2026-06-11 |
