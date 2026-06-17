@@ -589,7 +589,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **AD** — Accounting Defaults — CHM fully documented (AD-A GL defaults with 20 accounts + 5 posting flags + 6 period-date controls, AD-B checking account setup with 16 fields, AD-C AP defaults with 11 behavioral flags); RWN programs: T7MDEFAULTS (435 procs, main — opens BKSYMSTR+BKYSMSTR+ISBANKS+42 more tables), T7MDEFBANKS (79 procs, AD-B bank setup — BKGLCOA+ISBANKS), T7MDEFNDC (252 procs, extended module defaults — BKSYAP+BKESTCFG+BKFOCFG+BKCPMSTR+BKCMCNTD); primary tables: BKSYMSTR (system config), BKYSMSTR (YN flags), ISBANKS (checking accounts); gap: specific BKSYMSTR field offsets for each setting — **C: 70/100**
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — no T7 RWN/DFM files found (DBA-era legacy)
-- [x] 🔄 **CR** — Contract Review / SO Approval — CHM confirmed: CR-A='Assign Departments to Sales Orders', CR-B='View/Enter SO Approvals'; T7CTREVU (96 procs): ENTER.PSWD/CONF.PSWD password entry, CT.DEPT/CT.ADMIN department+admin flags, CT.EMPNAME approving employee, SFROM.SONUM/STHRU.SONUM SO range, FROM/THRU.ORDDTE date range; T7CTREVUADMIN = admin variant stub; password-protected SO approval — **C: 55/100**
+- [x] 🔄 **CR** — Contract Review / SO Approval — T7CTREVU(96p): opens ISCTREVU+BKARINV+ISSOREVU; ISCTREVU(17f) schema extracted: EMPNME(25)+EMP PK; DEPT(25)/ADMIN(1)/LEVEL(2)/MOTPAS(10)/ACTIVE(1)/CDATE/EDATE/ADATE/ATIME/FLAG_1..5/EXTRA(100); ISSOREVU(12f, already in SR docs): SO+DEPT PK, EMPNME/EMPNUM/MOTPAS/ADATE/EDATE/APPROVE/REQUIRE; CR-A assigns departments to SOs (creates ISSOREVU records), CR-B enters approvals (reviewers per ISCTREVU); 2 programs confirmed — **C: 72/100**
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
@@ -638,7 +638,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **YS** — Y/N System Flags Editor (T7YSYN: 52 procs, BKYSMSTR+standard lookup tables); direct editor for all Yes/No behavioral flags stored in BKYSMSTR; purpose fully confirmed from program name + primary table — **C: 60/100**
 
 **Subsystems (not menu modules — discovered via RWN analysis):**
-- [x] 🔄 **PI** — Physical Inventory (9 files, 1,056 procs) — **NEWLY DOCUMENTED Pass 11** — T7PIA/T7PIC/T7PIF = main count entry; T7PIB/T7PICA = PI posting to GL (uses BKGLTRAN+BKGLX); T7PID/T7PIE = discrepancy entry; T7PIG = report; T7DEHD = handheld PI entry; PI tables confirmed: BKPIMSTR (run master), BKPILOT (lot counts), BKPIPHYS (physical counts), BKPISER (serial counts), BKPIFROZ (frozen snapshot), PIBINLOC/PIBINLOT (frozen bin records); freeze→count→post cycle inferred — **C: 52/100**
+- [x] 🔄 **PI** — Physical Inventory (9 files, 1,056 procs) — Pass 38: 8 programs fully mapped: T7PIA(159p freeze: BKPIMSTR+BKICMSTR+BKICLOC+ISCYCLCD→creates BKPIFROZ), T7PIB(114p print sheets: BKPIFROZ+BKPILOT+BKPISER), T7PIC(152p tag entry: writes BKPIPHYS, reads ISBINLOC+BKPRMSTR), T7PID(98p discrepancy: BKPIPHYS vs BKPIFROZ), T7PIE(76p adjust: BKPIFROZ+BKICMSTR), T7PICA(97p count adj variant), T7PIF(137p post: ISBUILD+MTICMSTR+BKPIPHYS+ISBINLOC→BKGLTRAN), T7PIG(155p report: BKPIMSTR+BKPIPHYS+BKPIFROZ+BKICLOC); all 7 BKPI* schemas extracted: BKPIMSTR(3f YEAR+QTR+DESC), BKPIFROZ(19f UOH+COST+GLPST/INPST+ACCTA/C+TAGS), BKPIPHYS(14f TAGNUM+ACTQTY+EMPNAME+LOT+SERIAL+BIN), BKPILOT(10f), BKPISER(10f), PIBINLOC(14f ITEM+LOC+BIN UOH+DFLT), PIBINLOT(14f with LOT+SER); freeze→count→variance→post cycle fully confirmed — **C: 72/100**
 - [x] 🔄 **BO** — Bill of Lading (T7BOL: 178 procs, T7BOLMSO: 174 procs); LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER/AUTHOR.NUMBER/CONTROL.NUMBER; DRIVER.ARRIVED/LOADING.START/END/DRIVER.DEPARTED timestamps; T7BOLMSO: EDIT.CLASS/WEIGHT/PACKS/HM (LTL freight fields); integrated with BKARINV/SO for outbound shipments; T7BOL DB: BKARINV+BKARCUST+ISSHPVIA+ISSHIPCO+ISSOBOX+BKARINVL+MTICMSTR+ISSRINFO+BKAPPO; T7BOLMSO adds BKPSUSER+BKPRMSTR for driver/employee data — **C: 65/100**
 - [x] 🔄 **DS** — Data Sync stubs (25 files: T7DSAP/AR/BOM/CK/CM/CO/CS/DC/EST/FO/GEN/GL/HH/IC/IM/MRP/PO/PR/QC/RMA/RO/SH/SO/WC/WO); all are SRC stubs with single STUB variable; all share same core DB set + BKSYAR; one stub per module for multi-company data synchronization — **C: 42/100** (architecture known; sync logic is in RWN, blocked)
 - [x] 🔄 **AU** — Automation modules (T7AUTODCH: 183 procs DC labor validation via BKDCLABR+BKDCLABO+BKDCLABH; T7AUTOMRF: 132 procs MRP auto-firm MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT→WORKORD; T7AUTOREBSS: 79 procs back-order re-BSS via BKICMSTR+BKARINV+BKARINVL; T7AUTOFX: 21 procs auto FX rate update via ISMCF+ISJAVA+ISMCR); 4 confirmed automation programs, each purpose identified from DB fingerprint — **C: 62/100**
@@ -668,7 +668,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **PA** — Paperless DC / Shop Floor Control (T7PAPERLESS: 205 procs, 50 unique tables; T7PACKMENU: 5 procs stub; T7PASS: 3 procs password sub); ISBINLOC(9f)=bin-level inventory without lot (ITEM+LOC+BIN PK, UOH, DFLT, RVLVL); opens WORKORD+ROUTING+WOROUT+BKICLOC+ISBINLOC+ISWOEX+WORECV+BKAPPOL+ISWOTRAY+BKDCLAB — **C: 62/100**
 - [x] 🔄 **TE** — NACHA/ACH Electronic Payments (T7TESTNACHA: 103 procs, BKSYMSTR+ISBANKS+BKGLCHK+BKAPVEND+BKARINVL); BKGLCHK(11f)=check register: CHKACT+NUM PK, DATE+TYPE+NAME+AMT+FLAG+DATER+VEND+CUST; generates NACHA ACH files from AP vendor data — **C: 60/100**
 - [x] 🔄 **KI** — Kit Assembly (T7KIT: 153 procs, 26 unique tables); opens BKICMSTR+MTICMSTR+WOBOM+BKICLOC+BKYSMSTR+ISLINKS+WOMAT+WORKORD+WOROUT+BKPRMSTR+ISBINLOC+LOT; assembles kits from BOM components using simplified WO without routing/labor; lot+bin location tracking — **C: 65/100**
-- [x] 🔄 **EM** — Emergency GL Maintenance (T7EMGL: 62 procs); opens BKGLCOA+BKAPPOL+BKAPPO+WORKORD+WOBOM+INVTXN+BKBMMSTR+ISICMSTR+BKGLTRAN+LOT+SERIAL+ISNCR+ISTAXGRP; ISICMSTR(41f) = item physical/shipping specs (WT/TI/HI/dimensions/tool/slead); broad table set for GL account cross-reference traversal — **C: 50/100**
+- [x] 🔄 **EM** — Emergency GL Maintenance (T7EMGL: 62 procs); opens BKGLCOA+BKAPPOL+BKAPPO+WORKORD+WOBOM+INVTXN+BKBMMSTR+ISICMSTR+BKGLTRAN+LOT+SERIAL+ISNCR+ISTAXGRP; ISICMSTR(41f) schema extracted: CODE(15) PK; WT/ITP(20)/TI/HI/FOBPAL/FOBFULL/HT/LG/WD/TOOL(15)/SLEAD(2)/FLAG_1..5 + 21 more; extends BKICMSTR with physical/shipping specs for freight + GL; broad table set confirms EM = GL account correction tool that can traverse WO/PO/AR for GL audit — **C: 60/100**
 
 ---
 
@@ -1009,7 +1009,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
-| Module: PI/Physical Inventory | **75** | 78 | **3** ↑ | 2026-06-17 |
+| Module: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: MA/AR Deposits | **62** | 65 | **3** ↑+22 | 2026-06-17 |
 | Module: ES/Estimating | **65** | 75 | **10** ↑ | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
@@ -1028,7 +1028,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: TA/TAS Admin | **65** | 72 | **7** ↑+10 | 2026-06-17 |
 | Module: DI/Digital Signatures | **65** | 70 | **5** ↑+15 | 2026-06-17 |
 | Module: AD/Accounting Defaults | **70** | 75 | **5** ↑ | 2026-06-17 |
-| Module: CR/SO Approvals | **55** | 65 | **10** ↑ +15 | 2026-06-17 |
+| Module: CR/SO Approvals | **72** | 75 | **3** ↑+17 | 2026-06-17 |
 | Module: US/Triggers | **65** | 65 | **0** ✅+20 | 2026-06-17 |
 | Subsystem: BO/Bill of Lading | **65** | 72 | **7** ↑+7 | 2026-06-17 |
 | Subsystem: DS/Data Sync stubs | **42** | 65 | **23** NEW | 2026-06-17 |
@@ -1057,12 +1057,12 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FN/File Navigator | **58** | 65 | **7** NEW | 2026-06-17 |
 | Module: XC/CC Cross-Ref | **55** | 65 | **10** NEW | 2026-06-17 |
 | Module: IT/Item Config | **62** | 68 | **6** NEW | 2026-06-17 |
-| Module: EM/Emergency GL | **50** | 65 | **15** NEW | 2026-06-17 |
+| Module: EM/Emergency GL | **60** | 65 | **5** ↑+10 | 2026-06-17 |
 | Module: RT/RTM Validator | **45** | 60 | **15** NEW | 2026-06-17 |
 | Module: FP/FO Print | **42** | 55 | **13** NEW | 2026-06-17 |
 | Module: RF/RFQ | **62** | 68 | **6** ↑+12 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
-| Subsystem: PI/Physical Inventory | **52** | 68 | **16** NEW | 2026-06-17 |
+| Subsystem: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: SA/Sales Analysis | **72** | 75 | **3** ↑+14 | 2026-06-17 |
 | Module: JC/Job Cost | **68** | 78 | **10** ↑ | 2026-06-17 |
 | Module: ES/Estimating | **58** | 72 | **14** ↑ | 2026-06-17 |

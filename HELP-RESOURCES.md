@@ -3157,4 +3157,183 @@ actual-margin mechanism (WO cost → gross margin) confirmed; per-field reportin
 
 ---
 
-*Last updated: 2026-06-17 (Pass 37). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-37 module analysis (...SC/TC/SA). SO/EDI/ES architecture: all use BKARINV structure. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 38 Additions
+
+### PI — Physical Inventory (Major Expansion: 8 Programs + All Schemas)
+
+8 programs, complete freeze→count→variance→post cycle confirmed:
+
+| Program | Procs | Purpose |
+|---|---|---|
+| T7PIA | 159 | PI-A Freeze: reads BKICMSTR+BKICLOC+ISCYCLCD, creates BKPIFROZ snapshot |
+| T7PIB | 114 | PI-B Print count sheets: reads BKPIFROZ+BKPILOT+BKPISER (frozen data only) |
+| T7PIC | 152 | PI-C Enter tag counts: writes BKPIPHYS (counted qty per tag); reads BKPIMSTR+ISBINLOC |
+| T7PID | 98 | PI-D Discrepancy view: compares BKPIPHYS vs BKPIFROZ |
+| T7PIE | 76 | PI-E Adjust/reconcile: BKPIFROZ+BKICMSTR; pre-post adjustment entry |
+| T7PICA | 97 | PI-CA Count adjustment variant: BKPIMSTR+BKPIPHYS+BKICLOC |
+| T7PIF | 137 | PI-F Post: ISBUILD+MTICMSTR+BKPIPHYS+ISBINLOC → updates inventory, GL via BKGLTRAN |
+| T7PIG | 155 | PI-G Report: BKPIMSTR+BKPIPHYS+BKPIFROZ+BKICLOC+ISBINLOC+ISBNMSTR |
+
+**PI workflow:**
+```
+PI-A Freeze → creates BKPIFROZ snapshot (UOH per item/loc/cost at freeze date)
+  ↓
+PI-B Print count sheets (from frozen data)
+  ↓
+PI-C Enter tag counts → BKPIPHYS (1 row per count tag: TAGNUM+ACTQTY+LOT+SERIAL+BIN)
+  ↓
+PI-D View discrepancies (BKPIPHYS vs BKPIFROZ)
+  ↓
+PI-E / PI-CA Enter adjustments (pre-post corrections)
+  ↓
+PI-F Post → update BKICMSTR/MTICMSTR; post to BKGLTRAN (GL adjustment)
+  ↓
+PI-G Report (variance by item/location)
+```
+
+**Table schemas:**
+
+**BKPIMSTR** (3f): PI run master — BKPI_MSTR_YEAR(4) + QTR(2) + DESC(30). One row per PI run (freeze).
+
+**BKPIFROZ** (19f): Frozen snapshot per item/location:
+- BKPH_INFO_UOH — on-hand at freeze
+- BKPH_INFO_YEAR(4) + QTR(2) + LOC(10) + PROD(15) — PK
+- BKPH_INFO_COST — standard cost at freeze
+- BKPH_INFO_GLPST(1) + INPST(1) — GL posted + inventory posted flags
+- BKPH_INFO_FDATE — freeze date
+- BKPH_INFO_LOT(1) + SER(1) — lot-tracked / serial-tracked flags
+- BKPH_INFO_PCOST + PADJ — previous cost + previous adjustment
+- BKPH_INFO_ACCTA(10)+DEPTA(4) + ACCTC(10)+DEPTC(4) — GL accounts (adjustments + cost)
+- BKPH_INFO_PUNIT — previous unit cost
+- BKPH_INFO_TAGS — number of count tags issued
+
+**BKPIPHYS** (14f): Physical count entry (one row per count tag):
+- BKPH_TAGNUM — tag number (PK)
+- BKPH_ACTQTY — actual counted quantity
+- BKPH_EMPNUM + EMPNAME(15) — counter employee
+- BKPH_COMMENT(30) + COUNTDATE — notes + date counted
+- BKPH_YEAR(4) + QTR(2) + LOC(10) + CODE(15) — run + item reference
+- BKPH_FDATE — freeze date (cross-reference)
+- BKPH_LOT(15) + SERIAL(25) + BIN(10) — lot/serial/bin detail
+
+**BKPILOT** (10f): Lot-level count summary:
+- BKPI_LOT_YEAR+QTR+CODE(15)+LOT(15)+LOC(10) — PK
+- BKPI_LOT_QTY — lot quantity from count
+- BKPI_LOT_TAG — tag number reference
+- BKPI_LOT_SERQTY — serial quantity within lot
+- BKPI_LOT_PSTD(1) — posted flag
+- BKPI_LOT_BIN(15) — bin reference
+
+**BKPISER** (10f): Serial-level count:
+- BKPI_SER_YEAR+QTR+CODE(15)+SERIAL(25) — PK
+- BKPI_SER_QTY — serial unit count
+- BKPI_SER_TAG — tag number
+- BKPI_SER_LOC(10) + LOTNO(15) — location + lot
+- BKPI_SER_PSTD(1) + BIN(15)
+
+**PIBINLOC** (14f): Bin-level frozen snapshot (without lot):
+- PIBIN_LOC_ITEM(15)+LOC(10)+BIN(15) — PK
+- PIBIN_LOC_UOH — frozen on-hand at bin level
+- PIBIN_LOC_CDATE/VDATE — created/verified dates
+- PIBIN_LOC_DFLT(1) + RVLVL(5) — default bin flag + reorder level
+- PIBIN_LOC_YEAR+QTR+FDATE+LOT(15)+SER(25) — PI run reference
+
+**PIBINLOT** (14f): Bin-level frozen snapshot with lot/serial:
+- PI_BINLOT_YR+QTR+ITEM(15)+LOC(10)+LOT(15)+BIN(15) — PK
+- PI_BINLOT_SER(25) + UOH + SQTY — serial + on-hand + serial qty
+- PI_BINLOT_PSTD(1) + FLAG(1) + DATE + NUM + EXTRA(50)
+
+**Confidence: 72/100** — 8 programs mapped, all 7 BKPI* table schemas extracted; complete
+PI workflow confirmed; per-screen field details and post GL path blocked by encryption.
+
+---
+
+### CR — Contract Review / SO Approval (Expanded)
+
+T7CTREVU (96 procs) opens: ISCTREVU + BKARINV + ISSOREVU + standard lookup tables.
+
+**ISCTREVU** (17f): Department reviewer setup — who approves SOs for which department:
+- IS_CREVU_EMPNME(25) + IS_CREVU_EMP — employee name + number (PK)
+- IS_CREVU_DEPT(25) — department (FK → department code)
+- IS_CREVU_ADMIN(1) — admin/override flag
+- IS_CREVU_LEVEL(2) — approval level code
+- IS_CREVU_MOTPAS(10) — manager override password
+- IS_CREVU_ACTIVE(1) — active/inactive
+- IS_CREVU_CDATE/EDATE/ADATE — created/effective/approved dates
+- IS_CREVU_ATIME — approval time
+- IS_CREVU_FLAG_1..5 — 5 behavior flags
+- IS_CREVU_EXTRA(100)
+
+**ISSOREVU** (12f): Per-SO approval record (already documented in SR module, reused here):
+- IS_SOVU_SONUM + IS_SOVU_DEPT — PK (one row per SO per department)
+- IS_SOVU_EMPNME + EMPNUM — reviewer employee
+- IS_SOVU_MOTPAS(10) — override password
+- IS_SOVU_ADATE/EDATE — approval/effective dates
+- IS_SOVU_APPROVE(1) + REQUIRE(1) — approval status flags
+
+**CR workflow:**
+- CR-A: Assign departments to SOs — T7CTREVU creates ISSOREVU records for the SO
+- CR-B: View/Enter SO approvals — reviewers with matching ISCTREVU dept enter approvals
+
+**Confidence: 72/100** — ISCTREVU + ISSOREVU schemas confirmed; T7CTREVU 96-proc program
+identified; SO approval workflow fully reconstructed from DB fingerprint; per-screen field
+details blocked by encryption.
+
+---
+
+### New Supporting Tables (Pass 38)
+
+**ISICMSTR** (41f): Item physical/shipping specifications (used by EM emergency GL):
+- IS_PROD_CODE(15) — part code (PK, FK → BKICMSTR)
+- IS_PROD_WT — weight
+- IS_PROD_ITP(20) — item type code
+- IS_PROD_TI / HI — tier index / height index (retail pallet specs)
+- IS_PROD_FOBPAL / FOBFULL — FOB pallet and full-truckload quantity thresholds
+- IS_PROD_HT / LG / WD — height / length / width dimensions
+- IS_PROD_TOOL(15) — tooling reference code
+- IS_PROD_SLEAD — safety lead time (days)
+- IS_PROD_FLAG_1..5 — 5 behavior flags + 21 more fields
+- Extends BKICMSTR with physical and shipping specs that affect freight and GL posting
+
+**BKARTXN** (14f): AR transaction log — detailed shipment record per SO line:
+- BKAR_TXN_SONUM — SO/invoice number (PK part)
+- BKAR_TXN_CODE(15) + DESC(30) — item code + description
+- BKAR_TXN_QTY — quantity shipped
+- BKAR_TXN_LOT(15) + SERIAL(25) — lot/serial tracking at time of ship
+- BKAR_TXN_DATE — transaction date
+- BKAR_TXN_STOCK(15) — stock location code
+- BKAR_TXN_LINE — SO line number
+- BKAR_TXN_LOC(10) — inventory location
+- BKAR_TXN_TMPSO(40) — temporary SO cross-reference
+- BKAR_TXN_SRNUM — service repair number (SR module link)
+- BKAR_TXN_BIN(15) — bin
+
+**ISWOPRIO** (4f): WO priority code master:
+- IS_WOPRIO_PRIO(1) — priority code (PK)
+- IS_WOPRIO_DESC(30) — description
+- IS_WOPRIO_EXTRA(100)
+- IS_WOPRIO_COLOR — display color code (used in SH shop scheduling dispatch)
+
+---
+
+### New Tables Confirmed (Pass 38)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKPIMSTR | 3 | PI run master — YEAR+QTR+DESC (one row per freeze event) |
+| BKPIFROZ | 19 | Frozen on-hand snapshot — PROD+LOC+YEAR+QTR; UOH, cost, GL accounts, GLPST/INPST flags |
+| BKPIPHYS | 14 | Physical count entry — TAGNUM+ACTQTY+EMPNAME+LOT+SERIAL+BIN |
+| BKPILOT | 10 | Lot-level PI count — YEAR+QTR+CODE+LOT; QTY+TAG+SERQTY+PSTD |
+| BKPISER | 10 | Serial-level PI count — YEAR+QTR+CODE+SERIAL; QTY+TAG+LOC+LOTNO+PSTD |
+| PIBINLOC | 14 | Bin-level frozen snapshot (no lot) — ITEM+LOC+BIN; UOH, dates, DFLT, RVLVL |
+| PIBINLOT | 14 | Bin-level frozen snapshot (with lot/serial) — ITEM+LOC+LOT+BIN+SER; UOH+SQTY |
+| ISCTREVU | 17 | CR department reviewer setup — EMPNME+EMP PK; DEPT/ADMIN/LEVEL/MOTPAS/ACTIVE |
+| ISICMSTR | 41 | Item physical/shipping specs — CODE PK; WT/ITP/TI/HI/FOB/HT/LG/WD/TOOL/SLEAD |
+| BKARTXN | 14 | AR transaction log — SONUM+CODE; QTY/LOT/SERIAL/DATE/LOC/BIN/SRNUM |
+| ISWOPRIO | 4 | WO priority codes — PRIO PK; DESC/EXTRA/COLOR |
+
+---
+
+*Last updated: 2026-06-17 (Pass 38). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-38 module analysis (...PI/CR). Complete PI freeze-count-post cycle confirmed with all 7 BKPI* table schemas. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
