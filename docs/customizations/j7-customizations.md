@@ -837,6 +837,68 @@ Four modules show file modification dates in 2024-2025, indicating ongoing devel
 
 ---
 
+## RWN Binary Analysis — DB File Fingerprints (2026-06-17)
+
+The following table adds DB file data from `samples/rwn_symbols.json` for J7 modules
+not previously analyzed via DFM. This extends coverage beyond form fields to actual
+database access patterns.
+
+| Module | Procs | Source | DB signature | Purpose inferred |
+|--------|-------|--------|-------------|-----------------|
+| J7AIJCG | 116 | LISTG60 | WORKORD/WOROUT/WOLABOR/BKPRMSTR | AI JCG: WO labor → GL (job cost integration) |
+| J7AIJCG2 | 118 | LISTG60 | WOLABOR/WORKORD/BKPRMSTR/WOROUT | AI JCG variant 2 |
+| J7AISAN | 201 | EVO | **BKSAREPT**/BKARINVL/BKARINV | AI Sales Analysis report (BKSAREPT table) |
+| J7AUTOAPC | 120 | LISTG60 | BKAPPOL/BKAPPO/BKAPVEND/**MKECLASS** | Auto AP Charges (MKECLASS = Make/class-based charges) |
+| J7CCCUTSHEET | 217 | DBA | WORKORD/BKICMSTR/WOBOM/WOMAT | CC customer cut sheets (WO material list) |
+| J7CCFABXFER | 135 | LISTG60 | ISBINLOT/WORKORD/WOMAT/BKICLOC | CC Fabrication Transfer (bin-lot moves) |
+| J7CCITEMSYNC | 89 | LISTG60 | BKICMSTR/ISICMSTR/**ISCCICM**/ROUTING | CC Item Sync (ISCCICM = CC item config table) |
+| J7CCPIC | 97 | LISTG60 | **BKPIMSTR**/BKPRMSTR/BKICMSTR/SERIAL | CC Physical Inventory Count (BKPIMSTR = PI master) |
+| J7CCSOLABELS | 112 | DBA | WORKORD/BKARINV/WOBOM/**ISRTMS** | CC SO Labels (ISRTMS = report routing rules) |
+| J7CJBUSAGE | 130 | LISTG60 | BKICMSTR/INVTXN/CLASMSTR/ISCATMST | CJ Usage by item class/category |
+| J7DCMATLABELS | 67 | LISTG60 | SERIAL/WORKORD/BKDCLAB/BKPRMSTR | DC material labels with serial tracking |
+| J7DCSSOE | 112 | LISTG60 | BKARINV/BKARCUST/BKARINVL/SERIAL | DCS SO Entry with serial scan |
+| J7EIMDCREV | 145 | ISTECH | BKDCLAB/WOLABOR/WORKORD/BKPRMSTR | EIM: DC labor review/variance report |
+| J7HHEBINC | 76 | COSTING | SERIAL/MTICMSTR/BKARINVL/INVTXN | HH EB Incoming inventory (mattress) |
+| J7HHEBXFER | 96 | LISTG60 | SERIAL/BKICLOCM/BKICMSTR/INVTXN | HH EB Transfer (bin/location transfer) |
+| J7HHPTSSOE | 116 | LISTG60 | BKARINV/BKARCUST/MTICMSTR/WORKORD | HH PTS SO Entry |
+| J7HHRTSSOE | 236 | ISTECH2 | BKARINV/BKARCUST/**ISSOREVU**/BKARINVL | HH RTS SO Entry with order review |
+| J7HHNORSSOE | 5 (SRC) | J7SRC | BKARINV/**ISSHIPCO**/BKAPDESC/ISSOBOX | HH NOR SO Entry |
+| J7I2SACH | 105 | LISTG60 | ISBANKS/BKGLCHK/BKAPVEND/**ISAPEX** | **i2S ACH**: i2 Systems ACH payment generator |
+| J7I2SYSTEMSOOE | 122 | LISTG60 | BKARINVL/BKARINV/BKARCUST/CLASMSTR | i2S Open Order Export |
+| J7LAPCOSO | 110 | LISTG60 | BKICMSTR/BKARINVL/BKARINV/WORKORD | LAPCO SO operations |
+| J7MCDSAREPORT | 102 | LISTG60 | BKARINV/BKARCUST | MCD Sales Analysis Report |
+| J7MPIMPORTAR | 57 | EVO | BKARCUST | MP Import AR (customer import) |
+| J7NMBINS | 66 | LISTG60 | BKICMSTR/MTICMSTR/ISLINKS/BKAPDESC | NM Bins management |
+| J7NMIMPORT | 78 | EVO | BKARCUST/BKARINV/**ISTAXGRP**/BKARINVL | NM Import with tax groups |
+| J7NMITEMRTM | 59 | LISTG60 | BKICMSTR/ISRTMS/MTICMSTR | NM Item RTM routing |
+| J7NMRTMPRINTER | 59 | EVO | ISRTMS | NM RTM Printer (report routing) |
+| J7PEDCB | 83 | LISTG60 | WORKORD/WORKCTR/WOROUT/**SCRAP** | PE DC Board (WO scrap entry) |
+| J7POAIMPLINES | 106 | LISTG60 | BKAPPO/BKICMSTR/BKAPPOL/BKICLOC | PO-A Import Lines |
+| J7POC | 56 | EVO | BKAPPO/BKAPPOL/BKSYAP | PO sub-module C |
+| J7PTRECPOLINE | 226 | LISTG60 | BKAPPOL/BKAPPO/BKAPINVT/BKYSMSTR | PT Receive PO Line (large) |
+| J7RCCONVTABLE | 64 | LISTG60 | BKICMSTR/**ISCONVRT**/MTICMSTR | RC Conversion Table (unit conversions) |
+| J7RCPITEX | 91 | LISTG60 | BKARINV/BKARINVL/ISCONVRT | RC PI Tex (invoice with conversion) |
+| J7RCSOIMPORT | 133 | LISTG60 | BKARCUST/ISSOBOX/BKARINVL/**BKSBMFG** | RC SO Import (BKSBMFG = sub-manufacturing) |
+| J7RITECPOA | 15 | EVO | ISSOBOX/BKARINVL/BKSBMFG | RITEC PO-A (BKSBMFG: outsource tracking) |
+| J7SISALES | 125 | LISTG60 | BKICMSTR/BKARCUST/BKPRSALE/**ISAREX** | SI Sales report (AR export + commissions) |
+| J7SOAIMPLINES | 120 | LISTG60 | BKARINV/BKICMSTR/BKARINVL/BKICLOC | SO-A Import Lines |
+| J7SYNCWOTOSO | 153 | LISTG60 | BKARINVL/WORKORD/BKARINV/BKICMSTR | **Sync WO to SO** (WO completion → SO update) |
+| J7TMCKANBAN | 232 | LISTG60 | BKICMSTR/BKAPVEND/BKAPPO/BKAPINVT | **TMC Kanban** (PO replenishment) |
+
+**New tables confirmed through J7 analysis:**
+- `BKPIMSTR` — Physical Inventory Master (controls PI freeze/count cycle; distinct from BKPIPHYS count data)
+- `ISRTMS` — IS RTM Summary (report template routing rules — which printer/form for each document type)
+- `BKSBMFG` — BK Sub-Manufacturing (outsourced/subcontracted manufacturing job tracking)
+- `ISCONVRT` — IS Conversion Rate (unit-of-measure conversion table)
+- `SCRAP` — Scrap tracking table (WO scrap quantities by operation)
+- `ISSOREVU` — IS SO Review (SO approval/review staging)
+- `ISAPEX` — IS AP Export (AP check/payment file export staging)
+- `ISTAXGRP` — IS Tax Group (customer/item tax group assignment)
+- `ISCCICM` — IS CC IC Master (CC customer item configuration)
+- `MKECLASS` — Make Class (manufacturing/purchasing class code)
+
+---
+
 ## Cross-References
 
 - Standard Sales Order module: [docs/03-modules/so-sales-orders/help-content.md](../03-modules/so-sales-orders/help-content.md)
