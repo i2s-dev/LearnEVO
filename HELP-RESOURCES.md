@@ -382,29 +382,99 @@ orders, forecasts) vs. supply (on-hand, open POs, open WOs) across the full BOM 
 **What it does:** Defines the manufacturing process sequence (operations) for each part —
 which work centers, machines, tools, and times are required to make the item.
 
-**Menu codes:** 19 operations
+**RWN programs (13):**
+
+| Program | Procs | Purpose |
+|---------|-------|---------|
+| T7ROA | 71 | Routing master entry/edit (ROUTING+BKRTCST+WORKCTR+ISNOTES) |
+| T7ROB | — | Routing copy |
+| T7ROC | — | Work center scheduling view (WORKCTR+DPTMENT+ROUTING+ISROUTEX) |
+| T7ROD | — | Machine routing view (MACHINE+BKMATRIM+ROUTING) |
+| T7ROE | — | Tool/machine usage (TOOL+MACHINE+ROUTING) |
+| T7ROI | — | Routing inquiry (ROUTING+WORKCTR+BKAPVEND+MACHINE+TOOL) |
+| T7ROJA | — | Routing job analysis (WORKORD+WOROUT+WOBOM+ROUTING) |
+| T7ROJH | — | Routing job history (WORKCTR+ROUTING) |
+| T7ROL | — | Routing list/report |
+| T7ROP | — | Routing PO view (ROUTING+BKAPPOL) |
+| T7ROQ | — | Routing/WO inquiry (WORKCTR+ROUTING+WOROUT+WOLABOR+MACHINE) |
+| T7CVTROIA | — | Routing conversion/import utility |
+| T7EDUDF | — | Routing UDF (user-defined field) update |
 
 **Routing structure** (from BKROA.SRC — fully analyzed):
 - A routing belongs to one part number.
 - Each routing has N operations (sequences), numbered in ascending order.
-- Each operation specifies: work center, optional machine, optional tool, optional vendor
-  (for outsourced/type-L operations), setup hours, run time per piece, scrap %.
-- Up to 4 lines of operation notes per sequence.
+- Each operation specifies: work center, optional machine, optional tool, optional vendor (outsourced/type-L operations), setup hours, run time per piece, scrap %.
+- Up to 15 lines of operation instructions per sequence.
 - Routing templates (BKRTTEMP) allow predefined operations to be selected and auto-sequenced.
 - Copy routing (F3) duplicates an existing routing onto a new part.
 
+**ROUTING table — MTRO_ prefix (62f):**
+Primary key: `MTRO_CODE`(15) item code + `MTRO_OPER`(2) operation sequence.
+
+| Field | Type/Size | Meaning |
+|-------|-----------|---------|
+| MTRO_CODE | STRING 15 | Item code (FK → BKICMSTR) |
+| MTRO_OPER | UBINARY 2 | Operation sequence number |
+| MTRO_DESC / MTRO_OPERDESC | STRING 30 | Operation description |
+| MTRO_TYPE | STRING 1 | Operation type (L=labor, S=subcontract, M=machine) |
+| MTRO_LEAD | UBINARY 2 | Lead time days for this operation |
+| MTRO_VENDCOST / MTRO_PARTSHR | FLOAT 8 | Vendor cost / parts share % |
+| MTRO_TIMEPART | TIME 4 | Time per part (run time) |
+| MTRO_SETUPHRS | TIME 4 | Setup hours |
+| MTRO_LOTSIZE | FLOAT 8 | Lot size for time calculation |
+| MTRO_INSTR_1..15 | STRING 60 | 15 instruction lines (60 chars each) |
+| MTRO_WC | STRING 12 | Work center code (FK → WORKCTR) |
+| MTRO_WCDESC | STRING 30 | Work center description (cached) |
+| MTRO_VENDCODE | STRING 10 | Vendor code for outsourced ops (FK → BKAPVEND) |
+| MTRO_VENDNAME | STRING 25 | Vendor name (cached) |
+| MTRO_LABOR | FLOAT 8 | Standard labor cost per piece |
+| MTRO_MACHINE | FLOAT 8 | Standard machine cost per piece |
+| MTRO_FOVHD / MTRO_VOVHD | FLOAT 8 | Fixed/variable overhead per piece |
+| MTRO_SETUP | FLOAT 8 | Standard setup cost |
+| MTRO_TMACHINE | STRING 4 | Machine type code |
+| MTRO_TMACHDESC | STRING 30 | Machine type description |
+| MTRO_TOOL | STRING 15 | Tool code |
+| MTRO_TOOLDESC | STRING 30 | Tool description |
+| MTRO_NUM | UBINARY 2 | Number of machines |
+| MTRO_NUM_PERSON | FLOAT 8 | Number of persons per machine |
+| MTWO_MISC_COST / MTWO_MISC_DESC | FLOAT/STRING | Misc cost + description (WO-era field name in ROUTING table) |
+| MTRO_MISC_ACOST | FLOAT 8 | Actual misc cost |
+| MTRO_OP_TEMP_NO | UBINARY 2 | Operation template number |
+| MTRO_NUM_PROCES | UBINARY 2 | Number of processes per cycle |
+| MTRO_TIME_PERPR | TIME 4 | Time per process |
+| MTRO_MD_PROC_HR | STRING 1 | Method: processes per hour flag |
+| MTRO_PROC_PERHR | FLOAT 8 | Processes per hour |
+| MTRO_STD_TIME | STRING 1 | Standard time flag |
+| MTRO_MIN_CHG | FLOAT 8 | Minimum charge |
+| MTRO_OVERLAP | UBINARY 2 | Overlap days with previous operation |
+| MTRO_PIECE_RATE | FLOAT 8 | Piece rate pay |
+| MTRO_LONGTIME | FLOAT 8 | Long-run time adjustment |
+| MTRO_PRINT | STRING 1 | Print flag |
+| MTRO_CLASS | STRING 15 | Classification code |
+| MTRO_EXTRA | STRING 150 | Extra notes |
+| MTRO_NEGOVLP | FLOAT 8 | Negative overlap (start before previous completes) |
+| MTRO_DEF_TIME | TIME 4 | Default time |
+| MTRO_R_TYPE | STRING 10 | Routing type |
+| MTRO_EST_LINE | FLOAT 8 | Estimating line# |
+| MTRO_EST_TAG | STRING 10 | Estimating tag |
+
+**DDF note:** The DDF table name is `ROUTING` but all field names use the `MTRO_` prefix. One field (`MTWO_MISC_COST`, `MTWO_MISC_DESC`) has the WO-era `MTWO_` prefix — an artifact of field reuse.
+
 **Primary tables:**
 
-| Table | Purpose |
-|-------|---------|
-| ROUTING | Routing master — operations per part |
-| WORKCTR | Work center master |
-| MACHINE | Machine master |
-| TOOL | Tool master |
-| BKRTTEMP | Operation templates |
-| BKRTSPEC | Operation notes/specs |
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| ROUTING | 62 | Routing master — operations per part (MTRO_ prefix) |
+| WORKCTR | 47 | Work center master (MTWC_ prefix) |
+| MACHINE | — | Machine master |
+| TOOL | — | Tool master |
+| BKRTTEMP | — | Operation templates |
+| BKRTSPEC | 7 | Operation notes/specs (BKRT_SPEC_* prefix) |
+| BKRTCST | 24 | Routing cost snapshot per quote/setup (10-break pricing) |
+| BKRFQ | 49 | Request for Quote per routing operation (subcontract pricing) |
+| ISROUTEX | — | Routing extension fields |
 
-**Confidence: 75/100** — BKROA.SRC fully analyzed. Table relationships confirmed. Work center / machine / tool masters identified.
+**Confidence: 85/100** — BKROA.SRC fully analyzed; ROUTING (62f) schema fully extracted from DDF; BKRTCST (24f) and BKRFQ (49f) schemas extracted; work center/machine/tool relationships confirmed from DB fingerprints.
 
 ---
 
@@ -1321,47 +1391,106 @@ Primary key: MKAHIST_ACCT(10) + DATE + TRACK + SEQ
 
 ### Commission / Salesperson Management (CS)
 
-**What it does:** Tracks salesperson setup (rates, commission method, GL accounts), commission due and paid per invoice, transfers, and commission reports.
+**What it does:** Manages salesperson commission setup, monthly performance stats, per-invoice commission ledger, commission transfers, and commission reports. Also shares the BKPRMSTR employee/payroll master with the PR (Payroll) module.
 
-**Menu codes:** CS (12 forms confirmed)
+**RWN programs (17):**
+
+| Program | Procs | Purpose |
+|---------|-------|---------|
+| T7CSA | 99 | Salesperson master setup (BKPRSALE+BKPRMSTR+BKPRAGNT) |
+| T7CSB | 138 | Commission record view/edit |
+| T7CSC | 98 | Commission transfer |
+| T7CSD | 15 | Commission display |
+| T7CSDE | 65 | Commission detail by rep+customer+item (ISREPLNK) |
+| T7CSDO | 129 | Commission processing — DO pass (BKPRCOMM+BKPRCURP) |
+| T7CSDX | 104 | Commission processing — DX pass |
+| T7CSE | 114 | Salesperson invoice report |
+| T7CSF | 105 | Commission report (BKARINV-level) |
+| T7CSI | 46 | Commission inquiry |
+| T7CSK–N | 8 ea | Report sub-panels (4 variants) |
+| T7CSO | 168 | Commission output/post (BKPRCOMM+BKPRSALE+BKAPVEND) |
+| T7CSP | 105 | Commission payment report |
+| T7CSQ | 25 | Commission query |
 
 **Key operations:**
-- **CS-A — Salesperson Master:** Fields: BKPR.SLS.RATE (commission %), BKPR.SLS.HOW (calculation method), BKPR.SLS.WHEN (when earned: invoice/payment), BKPR.SLS.CLASS, BKPR.SLS.GL (GL account), BKPR.SLS.AGENT (linked AP vendor for outside reps).
-- **CS-B — Commission Record:** Tracks BKPR.COMM.QUOTA, BKPR.COMM.COGS (cost of goods), commission due, and commission paid[1-7] (7 payment buckets).
-- **CS-D — Transfer Commissions:** Moves earned commissions between periods. Fields: BKPR.COMM.SLSP, BKPR.COMM.CCODE, BKPR.COMM.INVNM, BKPR.COMM.INVDT.
-- **CS-E/F — Reports:** Detail and summary commission reports by period.
-- **Outside agents** are linked to AP vendors (BKPR.SLS.AGENT → BKAPVEND) for check payment.
+- **CS-A — Salesperson Master:** Commission class (BKPR_SLS_CLASS_1/2), rate (BKPR_SLS_RATE_1/2), method HOW (`S`=% of sales, `G`=% of gross margin), WHEN (`I`=at invoice, `P`=at payment); linked GL account; linked AP vendor (BKPRAGNT) for outside reps.
+- **CS-B/C — Commission Record/Transfer:** BKPRCOMM per-invoice ledger; transfer moves earned commission between periods.
+- **CS-DO/DX — Commission DO/DX Pass:** Builds BKPRCURP current payroll period record; posts commissions to BKGLTRAN.
+- **CS-E/F/P — Reports:** Detail and summary commission reports by salesperson/period.
+- **CS-O — Commission Output/Post:** Writes BKPRCOMM (12f) commission due records; cuts AP checks via BKAPVEND for outside agents.
 
 **Primary tables:**
 
-| Table | Purpose |
-|-------|---------|
-| BKPRSALE | Salesperson/commission master |
-| BKPRAGNT | Outside agent (AP vendor link) |
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKPRSALE | 87 | Salesperson monthly perf stats (12×QUOTA, GROSS, COGS, RCPTS, COMM, PAID) |
+| BKPRCOMM | 12 | Per-invoice commission ledger (SLSP+CCODE+INVNM+COMM+PD_ON+PCODE) |
+| BKPRAGNT | 4 | Outside agent master: agent#, code, GL account+dept |
+| BKPRMSTR | 384 | Employee/payroll master shared with PR module (SSN, pay rates, YTD accumulators) |
+| BKPRCURP | 127 | Current payroll period record per employee (run when CS-DO executes) |
+| ISREPLNK | 11 | Rep-to-customer/item commission link (date-range, GL account override) |
 
-**Confidence: 70/100** — All 12 DFMs read; commission calculation method, outside agent link, and 7-payment-bucket structure confirmed; commission calculation formula details in encrypted RWN.
+**BKPRCOMM field reference (12f):**
+`BKPR_COMM_SLSP`(2) — salesperson# | `BKPR_COMM_CCODE`(10) — customer code | `BKPR_COMM_INVNM`(8) — invoice# | `BKPR_COMM_INVDT`/`PAYDT` — invoice/payment dates | `BKPR_COMM_AMTPD`(8) — amount paid | `BKPR_COMM_COMM`(8) — commission amount | `BKPR_COMM_PD_ON`(8) — paid-on amount | `BKPR_COMM_ULID`(8) — unique line ID | `BKPR_COMM_TDATE` — transfer date | `BKPR_COMM_PCODE`(15) — item/product code
+
+**Confidence: 80/100** — 17 programs mapped; BKPRSALE/BKPRCOMM/BKPRAGNT/BKPRMSTR/BKPRCURP/ISREPLNK schemas fully extracted from DDF; commission calculation HOW/WHEN logic confirmed from field names; exact formula and GL mapping in encrypted RWN.
 
 ---
 
 ### Lot Control (LC)
 
-**What it does:** Assigns lot numbers to items, tracks lot usage through SO/WO/PO, and provides lot-level traceability. Parallel to SC (Serial Control) for lot-tracked items.
+**What it does:** Assigns lot numbers to items, tracks lot on-hand/received/issued quantities, enforces lot expiry dates, and provides full lot traceability through SO/WO/PO. Parallel to SC (Serial Control) for lot-tracked items.
 
-**Menu codes:** LC (7 forms found)
+**RWN programs (7):**
+
+| Program | Procs | Purpose |
+|---------|-------|---------|
+| T7LCA | 71 | Lot master entry/view (LOT+MTICMSTR+BKYSMSTR+WORKORD) |
+| T7LCB | 59 | Assign lot control to items (sets lot-tracking flag in BKICMSTR) |
+| T7LCC | 125 | Lot transaction history (LOT+BKARTXN+INVTXN) |
+| T7LCD | 5 | Lot detail panel |
+| T7LCE | 124 | Lot edit/adjust (LOT+BKICLOC) |
+| T7LCF | 95 | Lot traceability — which SOs shipped a lot (BKARCUST) |
+| T7LCG | 98 | Lot archive by expiry date |
 
 **Key operations:**
-- **LC-A — Lot Master (T7LCA):** View and edit MTLOT lot records.
-- **LC-B — Assign Lot Control:** Sets MTIC.PROD.LOT flag on item master — marks item as lot-tracked.
-- **LC-G — Archive:** Archive expired lots by expiry date range.
+- **LC-A — Lot Master:** Create/view lot records; assign to received items (PO receipt → LOT row).
+- **LC-B — Assign Lot Control:** Toggle lot-tracking on/off for an item in BKICMSTR.
+- **LC-C — Transaction History:** Full trace of lot movements (receipts, issues, shipments) from BKARTXN+INVTXN.
+- **LC-E — Lot Adjust:** Correct lot on-hand quantities; updates BKICLOC bin-level inventory.
+- **LC-F — Lot Traceability:** Show which customers received a specific lot.
+- **LC-G — Archive:** Remove expired lots (past MTLOT_EXPDATE) to archive storage.
 
-**Primary tables:**
+**LOT table — MTLOT_ prefix (25f):**
+Primary key: `MTLOT_CODE`(15) item code + `MTLOT_LOT`(15) lot number.
 
-| Table | Purpose |
-|-------|---------|
-| MTLOT | Lot master — lot numbers, item, qty, dates |
-| MTIC.PROD.LOT | Flag in item master enabling lot tracking |
+| Field | Type/Size | Meaning |
+|-------|-----------|---------|
+| MTLOT_CODE | STRING 15 | Item code (FK → BKICMSTR) |
+| MTLOT_LOT | STRING 15 | Lot number |
+| MTLOT_EXPDATE | DATE 4 | Lot expiry date |
+| MTLOT_ONHAND | FLOAT 8 | Current on-hand quantity |
+| MTLOT_PO | FLOAT 8 | Qty on open PO |
+| MTLOT_RECDOC | FLOAT 8 | Receipt document# |
+| MTLOT_VENDOR | STRING 10 | Vendor code (who supplied lot) |
+| MTLOT_RECDATE | DATE 4 | Date received |
+| MTLOT_RECQTY | FLOAT 8 | Quantity received |
+| MTLOT_POCOST | FLOAT 8 | PO unit cost at receipt |
+| MTLOT_WO | FLOAT 8 | Work order# (if lot produced internally) |
+| MTLOT_INRECDATE | DATE 4 | Internal receipt date (WO completion) |
+| MTLOT_WOQTY | FLOAT 8 | WO completion quantity |
+| MTLOT_WOCOST | FLOAT 8 | WO cost |
+| MTLOT_NOTES_1..5 | STRING 45 | Five 45-char note lines |
+| MTLOT_LOC | STRING 10 | Storage location |
+| MTLOT_WOSUF | UBINARY 2 | Work order suffix |
+| MTLOT_EXTRA | STRING 50 | Extra notes |
+| MTLOT_BEGIN | FLOAT 8 | Beginning quantity (period open) |
+| MTLOT_OUT | FLOAT 8 | Quantity shipped/issued out |
+| MTLOT_MAXOUT | FLOAT 8 | Maximum issue quantity allowed |
 
-**Confidence: 72/100** — All 6 found DFMs read; LC-A/B/G workflow confirmed; lot lifecycle (receive→track→ship→close) not fully traced.
+**DDF note:** The DDF table name is `LOT` but all field names use the `MTLOT_` prefix.
+
+**Confidence: 80/100** — 7 programs mapped; LOT/MTLOT_ schema fully extracted (25f confirmed); lot lifecycle (receive via PO → store by location → trace to customer) confirmed from DB fingerprints and field structure.
 
 ---
 
@@ -1585,15 +1714,42 @@ Primary key: MKAHIST_ACCT(10) + DATE + TRACK + SEQ
 
 ### Global Finance / AR Charges (GF)
 
-**What it does:** Applies extra charges to AR invoices beyond the standard line-item structure — surcharges, freight add-ons, price adjustments. Also provides customer-item pricing matrix entry and an invoice charge viewer.
+**What it does:** Two related functions — (1) customer-item pricing matrix entry (T7GFPRICE) and (2) view/edit of extra AR invoice charges with full before/after audit trail (T7GFV/T7GFVS). Also includes a GF report and test program.
 
-**RWN programs:**
-- **T7GFPRICE** (116 procs) — entry/edit of customer-item pricing charges; reads BKARCUST, BKICPMAT, BKICMSTR, MTICMSTR
-- **T7GFV** (82 procs) — view/edit extra AR charges on invoices; reads BKARINV, ISARCHG, BKARINVL, BKARCUST
-- **T7GFVS** (81 procs) — alternate charge viewer starting from invoice lines (BKARINVL)
-- **T7GFR** (46 procs) — GF report
+**RWN programs (5):**
 
-**Key table — ISARCHG (26 fields):** Stores the before/after audit trail of changes to AR invoice charges.
+| Program | Procs | Purpose |
+|---------|-------|---------|
+| T7GFPRICE | 116 | Customer-item pricing matrix (BKICPMAT) entry/edit |
+| T7GFV | 82 | View/edit AR invoice extra charges; ISARCHG audit trail |
+| T7GFVS | 81 | Same as T7GFV, entry starts from invoice lines (BKARINVL) |
+| T7GFR | 46 | GF report |
+| T7GFTEST | 5 | Test/diagnostic stub |
+
+**Key table — BKICPMAT (85f) — Customer-Item Pricing Matrix:**
+Per-customer, per-item pricing override table with 10 price break levels, 2 commission rates per break, and promotional flags. Primary key: `BKIC_PMAT_CUST`(10) + `BKIC_PMAT_PCODE`(15) + `BKIC_PMAT_PNUM`(2).
+
+| Field group | Meaning |
+|-------------|---------|
+| BKIC_PMAT_RATE_1..10 | 10 price break rates |
+| BKIC_PMAT_QTY_1..10 | Quantity thresholds for each break |
+| BKIC_PMAT_PER_1..10 | Percentage/amount per break |
+| BKIC_PMAT_COMM1_1..10 | Commission rate 1 per break |
+| BKIC_PMAT_COMM2_1..10 | Commission rate 2 per break |
+| BKIC_PMAT_EXP | Expiration date |
+| BKIC_PMAT_SDATE/EDATE | Effective start/end dates |
+| BKIC_PMAT_DCODE(10) | Discount code |
+| BKIC_PMAT_CLASS(4) | Item class (FK → CLASMSTR) |
+| BKIC_PMAT_MIN/MINPR | Minimum qty / minimum price |
+| BKIC_PMAT_PROMO | Promotional flag |
+| BKIC_PMAT_METH(11) | Pricing method string |
+| BKIC_PMAT_OFFIN/OFFCH | Off-invoice / off-charge amounts |
+| BKIC_PMAT_SCAND/FRTAL/BILLB/SWELL/ACCRU | Trade promotion buckets |
+| BKIC_PMAT_LUMP | Lump-sum override |
+| BKIC_PMAT_PDESC(30) | Price description |
+| BKIC_PMAT_UID(40) | Unique ID / user ID |
+
+**Key table — ISARCHG (26f) — AR Invoice Charge Audit Trail:**
 
 | Field | Type/Size | Meaning |
 |-------|-----------|---------|
@@ -1615,7 +1771,7 @@ Primary key: MKAHIST_ACCT(10) + DATE + TRACK + SEQ
 | ISAR_CHG_AEXTRA / BEXTRA | STRING 150 | Before/after extra notes |
 | ISAR_CHG_UNUM | UBINARY 4 | Unique record number |
 
-**Confidence: 62/100** — Four RWN programs identified; ISARCHG fully field-documented; charge application workflow inferred from DB fingerprints; no DFM forms found.
+**Confidence: 75/100** — 5 programs mapped; BKICPMAT (85f) and ISARCHG (26f) fully field-documented from DDF; pricing break/commission structure confirmed; GF-price application logic (how BKICPMAT overrides BKICMSTR list price during SO entry) in encrypted RWN.
 
 ---
 
@@ -2819,16 +2975,58 @@ Primary key: IS_SHIP_SHPCOD(10)
 
 ### AU — Automation / Batch Processing
 
-**What it does:** Background automation programs that run on schedule via EvoScheduler — auto-validating DC labor, auto-firming MRP recommendations, back-order recalculation, and auto-updating foreign exchange rates.
+**What it does:** Background automation programs that run on schedule via EvoScheduler — auto-validating DC (Data Collection) labor tickets, auto-firming MRP planned orders, back-order recalculation, and auto-updating foreign exchange rates.
 
-**RWN programs:**
-- **T7AUTODCH** (183 procs) — DC auto-validation: validates pending BKDCLAB labor against BKDCCFG config and BKPRMSTR employee rules; resolves exceptions automatically
-- **T7AUTOMRF** (132 procs) — MRP auto-firm: reads MTMRP planned orders, firms them into WOs/POs; uses MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT fields
-- **T7AUTOREBSS** (79 procs) — back-order re-BSS: recalculates back-order status for all open items (BKICMSTR+MTICMSTR)
-- **T7AUTOFX** (21 procs) — auto FX rate update: calls ISJAVA task queue to fetch live exchange rates → writes to ISMCR; uses ISMCF (currency master) as config
-- **T7AUTODEJH / T7AUTOSMJC / T7AUTOWOLA / T7AUTOUTKG** (5 procs each) — single-function automation stubs
+**RWN programs (8):**
 
-**Confidence: 62/100** — All 8 programs identified; each automation function confirmed from DB fingerprint; AUTOMRF MRP variable list confirms field-level details; exact scheduling configuration in encrypted RWN.
+| Program | Procs | Purpose |
+|---------|-------|---------|
+| T7AUTODCH | 183 | DC auto-validate: validates BKDCLAB labor against BKDCCFG rules + BKPRMSTR employee setup |
+| T7AUTOMRF | 132 | MRP auto-firm: reads MTMRP → creates WOs/POs from planned orders |
+| T7AUTOREBSS | 79 | Back-order recalc: updates BSS (Back-order Status Summary) for all open items |
+| T7AUTOFX | 21 | FX rate update: calls ISJAVA → fetches live rates → writes ISMCR currency rates |
+| T7AUTODEJH | 5 | DC exception handler stub |
+| T7AUTOSMJC | 5 | SM job-close automation stub |
+| T7AUTOWOLA | 5 | WO labor auto-post stub |
+| T7AUTOUTKG | 5 | UTK/gauge automation stub |
+
+**Key table — BKDCLAB (50f) — Data Collection Labor Tickets:**
+Staging table for shop-floor labor entries before they post to WORKORD/WOROUT.
+Primary key: `LAB_DATE`(4) + `LAB_EMP`(2) + `LAB_WOPRE`(8) + `LAB_WOSUF`(2) + `LAB_OPER`(2).
+
+| Field | Type/Size | Meaning |
+|-------|-----------|---------|
+| LAB_DATE | DATE 4 | Labor date |
+| LAB_EMP | UBINARY 2 | Employee# (FK → BKPRMSTR) |
+| LAB_WOPRE / LAB_WOSUF | FLOAT/UBINARY | WO prefix + suffix (FK → WORKORD) |
+| LAB_OPER | UBINARY 2 | Routing operation# (FK → WOROUT) |
+| LAB_POSTED | STRING 1 | Post flag: `Y`=posted, `N`=pending |
+| LAB_SHIFT | UBINARY 2 | Shift number |
+| LAB_START / LAB_FINISH | TIME 4 | Clock in/out times |
+| LAB_PARTS | FLOAT 8 | Parts completed this ticket |
+| LAB_SCRAPPED | FLOAT 8 | Parts scrapped |
+| LAB_NOJOBS | UBINARY 2 | Number of jobs on this ticket |
+| LAB_RUNHRS / LAB_SETUPHRS | FLOAT 8 | Run hours / setup hours |
+| LAB_REGOVER | STRING 1 | Regular or overtime flag |
+| LAB_APPROVAL | STRING 1 | Supervisor approval flag |
+| LAB_ADT_SUPER/IN/OUT | STRING 100 | Audit: supervisor / badge-in / badge-out |
+| LAB_SCRAPCD_1..5 | STRING 2 | Up to 5 scrap reason codes |
+| LAB_SCRAPQTY_1..5 | FLOAT 8 | Qty scrapped per reason |
+| LAB_JCNUM | STRING 12 | Job cost number |
+| LAB_CYCLE_HR/MIN/SEC | UBINARY 2 | Cycle time components |
+| LAB_CYCLE_PARTS | FLOAT 8 | Parts per cycle |
+| LAB_CYCLE_NOTE | STRING 255 | Cycle notes |
+| LAB_GEN_DATE_1/2 | DATE 4 | Generic date fields (2) |
+| LAB_GEN_ALPHA_1/2 | STRING 30 | Generic alpha fields (2) |
+| LAB_GEN_NUM_1/2 | FLOAT 8 | Generic numeric fields (2) |
+| LAB_GEN_FLAG_1..5 | STRING 1 | Generic flags (5) |
+
+**Key table — BKDCCFG (7f) — DC Configuration:**
+`BKDC_CFG_IDLEP/IDLES` — idle program/station | `BKDC_CFG_BANKP/BANKS` — bank program/station | `BKDC_CFG_IMPPTH/EXPPTH`(60) — import/export paths | `BKDC_CFG_JOBTME`(60) — job time config path.
+
+**T7AUTODCH workflow:** Reads pending BKDCLAB rows (LAB_POSTED=`N`) → validates against BKDCCFG rules and BKPRMSTR employee setup → if valid, posts to WORKORD/WOROUT labor actuals → sets LAB_POSTED=`Y`.
+
+**Confidence: 72/100** — All 8 programs identified; BKDCLAB (50f) and BKDCCFG (7f) schemas fully extracted; DC-to-WO posting workflow confirmed from DB fingerprints; exact exception-handling logic and scheduling config in encrypted RWN.
 
 ---
 
@@ -3104,11 +3302,14 @@ Two programs share the T7AL* prefix:
 **T7ALOGSETUP** (43 procs): opens FILELOC + BKSYMSTR + BKPSUSER. Configures the EvoERP
 audit log — selects which Btrieve tables and events are recorded, per company/user settings.
 
-**T7ALTPART** (104 procs): opens BKSBPART + BKICMSTR + ISACCESS. Maintains alternate/substitute
-part number relationships. BKSBPART (5f): BKSB_PART_PARNT + PROD + CUST + SUBST — maps a parent
-item to substitution products, optionally per-customer.
+**T7ALTPART** (104 procs): opens BKSBPART + BKICMSTR + ISACCESS. Maintains alternate/substitute part number relationships.
 
-**Confidence: 52/100** — both programs identified; purposes confirmed from table fingerprint.
+**BKSBPART (5f):**
+`BKSB_PART_PARNT`(15) parent item code | `BKSB_PART_PROD`(15) substitute item code | `BKSB_PART_CUST`(10) customer code (blank = all customers) | `BKSB_PART_SUBST`(15) substitute part# | `BKSB_PART_EXTRA`(50) notes.
+
+Maps a parent item to valid substitutes, optionally restricted to a specific customer. T7ALTPART enables SO entry to suggest substitutes when the primary item is unavailable.
+
+**Confidence: 62/100** — both programs identified; BKSBPART (5f) schema fully extracted from DDF; alternate-part purpose confirmed; ISACCESS role (security check) inferred.
 
 ---
 
@@ -3171,11 +3372,11 @@ Key tables:
 - **WOEXCHG** (10f): MTWO_EX_WOPRE/WOSUF + DATE + PROD + DESC + CHG + CHGDESC + GLACCT + GLDPT + OP
   — WO exchange/change charges: records cost changes to work orders with GL posting
 
-Also found T7JODPSALES (52 procs) — a "JO Display Sales" panel reading IS2DBAR + ISCYCLCD +
-BKSBPART + BKAPDESC + ISNCR — this is likely an SM drill-down panel, not the JO module itself.
+Also found T7JODPSALES (52 procs) — a "JO Display Sales" panel reading IS2DBAR + ISCYCLCD + BKSBPART + BKAPDESC + ISNCR — this is likely an SM drill-down panel, not the JO module itself.
 
-**Confidence: 52/100** — T7JOBS confirmed, ISDEPT and WOEXCHG schemas extracted; T7JODPSALES
-scope unclear (may belong to SM display framework).
+**CLASMSTR (2f):** `MTCLASS_M_CLASS`(4) + `MTCLASS_M_DESC`(30) — item classification code master; used across IC, JO, and other modules to categorize items by class.
+
+**Confidence: 62/100** — T7JOBS confirmed; ISDEPT(3f)+WOEXCHG(10f)+CLASMSTR(2f) schemas fully extracted from DDF; T7JODPSALES scope uncertain (may belong to SM display framework rather than JO module proper).
 
 ---
 
@@ -3223,8 +3424,7 @@ Key tables:
 - **ISCYCLCD** (7f): IS_CYCLE_CODE(4) + DESC(30) + FREQ(frequency) + DATE + ALPHA(15) + NUM +
   EXTRA(50) — cycle count frequency code (daily/weekly/monthly/annual)
 
-**Confidence: 62/100** — program confirmed; all three key table schemas extracted; purpose fully
-understood; specific barcode format fields (109 total) not fully decoded.
+**Confidence: 72/100** — program confirmed; all three key table schemas (ISSERCNT/IS2DBAR/ISCYCLCD) extracted from DDF; serial counter, 2D barcode config, and cycle count classification purposes fully confirmed; the 109 IS2DBAR fields are largely document-type print flags not individually decoded.
 
 ---
 
@@ -6106,3 +6306,5 @@ AP-H post checks (T7APH) → BKGLTRAN Cash Disbursement
 ---
 
 *Last updated: 2026-06-17 (Pass 52). PO: 50+ T7PO* programs fully mapped across entry/print/receive/QC/inquiry groups; full PO→receipt→AP voucher→check workflow traced. BKAPVND2(63f UDF)+BKCMVNDH(8f)+BKCMVNDF(10f)+ISICMSTR(41f) extracted; ACMASTER confirmed not in DDF. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+
+*Last updated: 2026-06-17 (Pass 57). CS: 17 programs mapped; BKPRSALE(87f)+BKPRCOMM(12f)+BKPRAGNT(4f)+BKPRMSTR(384f)+BKPRCURP(127f)+ISREPLNK(11f) fully extracted; commission HOW/WHEN logic confirmed. LC: 7 programs mapped; LOT/MTLOT_(25f) fully extracted; lot lifecycle confirmed. GF: 5 programs mapped; BKICPMAT(85f) 10-break pricing matrix fully extracted; ISARCHG(26f) confirmed. AU: 8 programs mapped; BKDCLAB(50f)+BKDCCFG(7f) fully extracted; DC→WO posting workflow confirmed. RO: ROUTING/MTRO_(62f)+BKRTCST(24f)+BKRFQ(49f) fully extracted. AL/JO/IT confidence updates.*
