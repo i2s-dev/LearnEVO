@@ -582,12 +582,12 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.18 Remaining Modules (not yet deeply documented)
 The following modules have menu codes and forms inventoried but no deep logic documentation:
 
-- [ ] ⬜ **AB** — purpose unclear; no deep doc
+- [ ] ⬜ **AB** — no T7 RWN/DFM files found (DBA-era legacy code, unimplemented in TAS Pro 7)
 - [x] 🔄 **AC** — Activity Control / NCR tracking — 3 DFMs + 4 RWN modules (T7ACTION/ACRDTYPE/ACDET/ACDATE); ACDATE (WODATE.START/FINISH/QTY, PARPRE/PARSUF/TOPPRE/TOPSUF WO hierarchy, DELPRE cascade delete); ACRDTYPE (AC.RD.TYPE/REASON/DISPO disposition codes: rework/scrap/use-as-is); T7ACTION (IS.ACTION.TYPE/DESC/MISC action items); T7ACDET (AC.DET.ID/LINE/PART detail records); primary tables WODATE/ISACTION/ACRDTYPE/ACDETAIL — **C: 60/100**
 - [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
 - [x] 🔄 **AD** — Accounting Defaults — CHM confirmed: AD-A=GL Defaults, AD-B=Checking Account Defaults, AD-C=AP Defaults; system-level GL/bank/AP configuration (no DFMs found — in RWN) — **C: 40/100**
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
-- [ ] ⬜ **CP** — purpose unclear; no deep doc
+- [ ] ⬜ **CP** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **CR** — Contract Review / SO Approval — CHM confirmed: CR-A='Assign Departments to Sales Orders', CR-B='View/Enter SO Approvals'; T7CTREVU (96 procs): ENTER.PSWD/CONF.PSWD password entry, CT.DEPT/CT.ADMIN department+admin flags, CT.EMPNAME approving employee, SFROM.SONUM/STHRU.SONUM SO range, FROM/THRU.ORDDTE date range; T7CTREVUADMIN = admin variant stub; password-protected SO approval — **C: 55/100**
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
@@ -595,7 +595,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **DI** — Digital Signatures — T7DIGSIG.DFM (131KB) confirmed: Caption='Enter Digital Signatures'; PO#/Vendor/Name/Description/Terms + EMAIL.TAG/NAME/LEVEL/ADDRESS for email routing of PO approvals; T7DigSigChgPSWD = change digital signature password; PO approval workflow with email routing — **C: 50/100**
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
 - [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
-- [ ] ⬜ **FL** — purpose unclear; no deep doc
+- [ ] ⬜ **FL** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **FO** — Features & Options — all 3 DFMs read; FO-C (BKBM.PROD.OPYN[5] option flags, PAR.DESC+COMP.DESC parent-component option pairing), FO-D (item/class/category range), FO-E (item filter); BOM sub-module — options set OPYN[1..N] per product; SO triggers option selection driving BOM inclusions — **C: 50/100**
 - [x] 🔄 **FP** — Features & Options Print — CHM confirmed: FP-B='Print Features and Options'; print sub-module for FO (Features & Options) — **C: 35/100**
 - [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
@@ -604,36 +604,36 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **IS** — InfoSystem / Multi-Currency GL — T7ISMCC (ISTECH.LIB, 82 procs): ISGL.CYDATE (current year GL date), ISGL.1YDATE–6YDATE (6 years back), ISGL.FYDATE (fiscal year date) — multi-company GL fiscal date synchronization; T7ISASER (DBA.LIB, 12 procs): WOPRE/WOSUF + MTWO.WIP.* — old-era WO serial number assignment; IS namespace = shared extension tables (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP) — **C: 60/100**
 - [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
-- [ ] ⬜ **LM** — Labor Management — forms inventoried only
-- [ ] ⬜ **LO** — purpose unclear; no deep doc
-- [ ] ⬜ **MA** — purpose unclear; no deep doc
-- [ ] ⬜ **MM** — Main Menu / Master Maintenance — forms inventoried only
-- [ ] ⬜ **PC** — Production Control — forms inventoried only
-- [ ] ⬜ **PL** — Planning — forms inventoried only
+- [ ] ⬜ **LM** — no T7 RWN/DFM files found (DBA-era legacy)
+- [ ] ⬜ **LO** — no T7 RWN/DFM files found (DBA-era legacy)
+- [x] 🔄 **MA** — T7MAPDEPO.RWN (97 procs): BKARDEP+BKARCUST+BKARINVL+ISARDEPL+BKGLCOA+BKARINVT — AR Deposits module; handles customer deposit posting to GL — **C: 40/100**
+- [ ] ⬜ **MM** — no T7 RWN/DFM files found (DBA-era legacy)
+- [ ] ⬜ **PC** — no T7 RWN/DFM files found (DBA-era legacy)
+- [ ] ⬜ **PL** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **PS** — Program Security / User Access — all 6 DFMs read; PSA (BKPS.USER.CODE user setup: seclevel, seccode [A/P/1/2/C/V/U/E], company, employee/rep), PSE (user security report), PSEITM (program access list: PROGRAM_NUM/NME), PSF (access-to-program report), PSEGRP (button group config), PSK (approve vendor: bkap.vendname); dual user system with AHSYLOG (module-level) + BKPS (program-level) — **C: 60/100**
 - [x] 🔄 **QC** — Quality Control — 4 DFM files read; QC-A confirms QC/Scrap dual-code classification + vendor range; parent item roll-up in QC-B/C/D; tables BKQCMSTR/BKQCTRAN/BKQC confirmed in DDF — **C: 52/100**
 - [x] 🔄 **QT** — Service Quote (linked to SR module) — 1 DFM read (QTINFO: 'Quote Misc. Information'; ISSR.INFO.DATE[1..5] indexed dates — ISSR prefix confirms SR module linkage; service quotes track multiple date milestones) — **C: 35/100**
 - [x] 🔄 **QU** — Query / Inquiry Tools — CHM confirmed 6 ops: QU-A=Master Inquiry, QU-B=Calendar Drill Down, QU-C=Calendar Summary Report, QU-D=Business Status, QU-E=Quick Grid Lookup, QU-F=Query Executor; EvoERP's built-in query and business intelligence layer (no DFMs — in RWN) — **C: 50/100**
 - [x] 🔄 **RF** — Request for Quote (from Estimating) — 1 DFM read; T7RFQ: 103 procs, ISESTDTL+BKMRPPO+BKBMMSTR+BKICMSTR+BKAPVEND+BKAPPO+BKSBVEND; generates vendor RFQs from estimate data; bridges ES (Estimating) and PO — **C: 50/100**
 - [x] 🔄 **RM** — Return Material Authorization (RMA) — all 5 DFMs read; RMD=main entry (bkar.inv/invl links, is.rma.warranty NLPB codes, reason for return), RMAWHY=detail popup (is.rma.status), RMDASK=disposition (pass.rma.num [D/J/N], restock.charge, so.location), RME=reason code master (IS.RMA.CODE/DESC), RMG=report; RMA→WO bridge via "Pass to Job" — **C: 68/100**
-- [ ] ⬜ **RT** — purpose unclear; no deep doc
+- [x] 🔄 **RT** — T7RTMVALID.RWN (20 procs): BKSYHELP+DBAHLPID+ISIS+MKAHIST — Report Template Validation utility (validates RTM files, reads help system) — **C: 30/100**
 - [x] 🔄 **SA** — Sales Analysis (13 ops) — all 6 DFMs read; SA-A (currency filter: from_cur/thru_cur/inc.change), SA-M/N (BKSA.NAME/TITLE/BASE — dedicated BKSA.* aggregation table, not just BKARINV), SA-O (Top N Sales Report), SA-P (class/category range), SA-Q (Actual Margin Report: from.shipdt/thru.shipdt/thru.afin); multi-currency and WO actual-finish date integration confirmed; primary table BKSA.* — **C: 55/100**
-- [ ] ⬜ **SB** — purpose unclear; no deep doc
+- [ ] ⬜ **SB** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **SD** — Standard Data — 1 DFM read (SDET: IS.SDET.DETAIL + IS.SDET.TYPE); T7SDET: 58 procs, ISSDET+ISSTYPE — type/detail code pair maintenance for cross-module lookup codes — **C: 42/100**
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
-- [ ] ⬜ **SL** — purpose unclear; no deep doc
+- [x] 🔄 **SL** — t7slsfc.RWN (5 procs): BKARINVL+BKYSMSTR — Sales Forecast utility; accesses AR invoice lines for demand calc — **C: 30/100**
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms + full T7SM* sub-module family decoded; SM-K (user prefs→EvoSettings.INI/ISNUMBER), SM-E/F (tax ISIS.TXF+ISIS.TXG), SM-O (ship-via ISSHPVIA with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (ISJOB job#), SM-PH (IS.CYCLE), SM-JM/JN (merge), SM-JC (JC setup), SM-SD (AP doc link); T7SMI* (CRM masters: BKCMLEAD/BKCMTERR/BKCMACFC/BKCMACCC/BKCMDTCD), T7SMP* (ISCATMST/ISUDMSTR/ISJOB), T7SMT/SMU (ISSHPVIA), T7SMTEND/SMTSET (SMT/PCB: ISSMTCFG/MACHINE); BKSYMSTR/BKYSMSTR not fully decoded — **C: 80/100**
 - [x] 🔄 **SP** — Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — CORRECTED) — all 6 DFMs read; SPC main entry (Inspector #/Employee/WO/Item/Qty/Customer/Drawing → IS.SERR.ERROR/PROCESS), SPCLIVEGRID (Caption='Top Real Time Errors'; ATYPE/ADETAIL/ACODE/ACOUNT), SPCLIVEREP (auto-refresh live report), SPCREP/SPCREP2 (WO/Part/Employee/Date range reports), SPCREPPPM (PPM defect rate with Sides range — PCB/electronics context); primary table IS.SERR.* — **C: 60/100**
 - [x] 🔄 **SR** — Service / Repair — 7 DFM files read; SR-K (equipment master ISSR.MMS.* — make/model/serial/IN-OUT dates/motor/WO#), SR-I (AR invoice browse), SR-E (invoice address edit, BKAR.INV.*); SO integration confirmed; T7SRA not found on share — **C: 58/100**
 - [x] 🔄 **SU** — Setup / UI Configuration — CHM confirmed 4 ops: SU-A=Maintain Grid Lookups, SU-B=Maintain Drill Down Menus, SU-C=Forms Editor, SU-D=Grid Maintenance; configures EvoERP's UI layer (grid columns, drill-down menus, form layouts) — **C: 50/100**
-- [ ] ⬜ **SY** — System — forms inventoried only
+- [ ] ⬜ **SY** — no T7 RWN/DFM files found; BKSY* tables are System config (documented)
 - [x] 🔄 **TA** — TAS / System Administration — CHM confirmed 9 ops: TA-D=Maintain Database, TA-G=Maintain Menu Access Records, TA-H=Maintain Menu End User, TA-M=Forms Editor, TA-N=Program Scheduler, TA-O=Backup Utility, TA-Q=Change Logo Image, TA-R=SQL Editor, TA-S=Data Dictionary Check; the most powerful admin module — direct DB/menu/scheduler/backup/SQL access — **C: 55/100**
-- [ ] ⬜ **UM** — User Maintenance — forms inventoried only
-- [ ] ⬜ **UP** — Update / patch — forms inventoried only
+- [ ] ⬜ **UM** — no T7 RWN/DFM files found (DBA-era legacy)
+- [ ] ⬜ **UP** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **US** — User Services / Trigger Notifications — 1 DFM read (USG: IS.TRIG.NOTE/CONTACT/EMAIL/EFLAG; 'Trigger Code/User to Trigger/Last Date/Last Time/Days Pre' — automated follow-up alerts firing N days before a reference date; email notification with IS.TRIG.CONTACT/EMAIL); CRM/SR key-date integration likely — **C: 45/100**
 - [x] 🔄 **UT** — Utilities (admin/data maintenance) — all 8 DFMs read; UTH (file layout report), t7uti (company add/delete: company_code/name/path/copy.file/cdelete), UTKA (data clear/reset: CLR.COA/CUST/VEND/INVN — DESTRUCTIVE), UTKD (fiscal year: fycur/fy1yp/fy2yp/fy3yp), UTKE (location cleanup — DESTRUCTIVE), UTKF/UTKG (item rebuild F and G variants), UTKH (average cost recalculate by inc.type[1-4]); most ops irreversible — **C: 60/100**
 - [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
-- [ ] ⬜ **YS** — purpose unclear; no deep doc
+- [x] 🔄 **YS** — T7YSYN.RWN (52 procs): BKYSMSTR+BKSYHELP+DBAHLPID+ISIS+MKAHIST+ISLOG — Y/N system flags editor (BKYSMSTR maintenance) — **C: 45/100**
 
 **Subsystems (not menu modules — discovered via RWN analysis):**
 - [x] 🔄 **PI** — Physical Inventory (9 files, 1,056 procs) — **NEWLY DOCUMENTED Pass 11** — T7PIA/T7PIC/T7PIF = main count entry; T7PIB/T7PICA = PI posting to GL (uses BKGLTRAN+BKGLX); T7PID/T7PIE = discrepancy entry; T7PIG = report; T7DEHD = handheld PI entry; PI tables confirmed: BKPIMSTR (run master), BKPILOT (lot counts), BKPIPHYS (physical counts), BKPISER (serial counts), BKPIFROZ (frozen snapshot), PIBINLOC/PIBINLOT (frozen bin records); freeze→count→post cycle inferred — **C: 52/100**
@@ -911,8 +911,8 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [ ] ⬜ All remaining BKSO\* (7 tables)
 - [ ] ⬜ All remaining BKDC\* (7 tables)
 - [x] 🔄 All remaining IS\* tables — ISLBLMAP (102 fields, label→RTM mapping), IS2DBAR (109 fields, barcode config), ISSCHED (24), ISNOTES (13) fully documented; ~240 IS\* fields remaining — **C: 48/100**
-- [ ] ⬜ BKSLEVEL (422 fields — second largest)
-- [ ] ⬜ BKPRGLFL (664 fields — largest)
+- [x] ✅ BKSLEVEL (422 fields) — 20-menu × 20-op security matrix; PK=BKSL_MENU+BKSL_LEVEL; MENU{N}_YN = quick access flag; MENU{N}_1..20 = per-op flags — **C: 82/100**
+- [x] ✅ BKPRGLFL (664 fields) — payroll GL posting config; PK=STCODE+DEPT; standard taxes (FIT/FICA/FUTA/SUTA/SIT/SDI/WC/Medicare) each with GL acct+dept+rate+limit; 20 user-defined deductions × 13 sub-fields; 20 user-defined earnings; 46 tax-output/vendor slots — **C: 82/100**
 
 ### Priority Tier 3 — Remaining 365 misc tables
 - [ ] ⬜ All MT\* tables
