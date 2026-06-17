@@ -216,8 +216,9 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | Table | File | Purpose |
 |-------|------|---------|
 | BKARCUST | BKARCUST.B | AR Customer master (106 fields: code, name, address, GL accounts, credit, terms, salesperson, commissions, discounts, tax, contact info) |
-| BKARINV | BKARINV.B | AR Invoice header (84 fields: invoice#, customer, shipping, tax, totals, GL, COGS) |
-| BKARINVL | BKARINVL.B | AR Invoice lines (28 fields: invoice#, counter, product code, qty, price, tax, GL) |
+| BKARINV | BKARINV.B | AR Invoice header (46+ fields: invoice#, SO#, INVCD type flag, date, customer, shipping, terms, totals, NL line count, RTS release flag, GL) — unposted and posted records |
+| BKARINVL | BKARINVL.B | AR Invoice lines (28 fields: invoice#, counter, ESD, PCODE, PDESC, qty, price, disc, ext, COGS, ITYPE item type copy, TXBLE, UBO, USTD, RTS release-to-ship flag, LOC, ABQTY) |
+| BKARINVI | BKARINVI.B | SO→invoice staging cross-ref (16 fields: SONUM+INVNM key, ESD, PCODE, qty, price, disc, ext, COGS, ITYPE, extr margin, commissions, freight, coop, tax) |
 | BKARDESC | BKARDESC.B | AR Descriptions |
 | BKARSHIP | BKARSHIP.B | AR Ship-to addresses |
 | ARTTEMP | ARTTEMP.B | AR Temporary (12 fields: customer, transaction, type, amounts, dates) |
@@ -238,7 +239,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 
 | Table | File | Purpose |
 |-------|------|---------|
-| BKICMSTR | BKICMSTR.B | Item master (64 fields: product code, description, type, UOM, category, cost, pricing, GL accounts, dates, MRP settings, reorder levels) |
+| BKICMSTR | BKICMSTR.B | Item master (64 fields, 617-byte records): PROD_CODE (key,15), PROD_DESC (30), PROD_TYPE (1 char at offset 45: R=raw/purchased, N=non-stock, F=finished, A=assembly, M=misc, K=kit, B=phantom, L=labor, T=tool, O=outside-svc), UM, CAT, CLASS, costs, pricing, GL accounts, UOH, MRP switch, reorder levels. Binary Btrieve format. Located at Default\BKICMSTR.B (71680 bytes) |
 | BKICLOC | BKICLOC.B | Inventory locations |
 | BKICVAL | BKICVAL.B | Inventory valuation |
 | MTICMSTR | MTICMSTR.B | Inventory transaction master (second-gen) |

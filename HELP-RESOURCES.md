@@ -164,9 +164,21 @@ location tracking, physical counts, and inventory transactions.
 - **IN (physical count area):** Physical inventory is a separate PI module.
 
 **Item master fields (BKICMSTR — 64 fields, key subset):**
-- `BKIC_PROD_CODE` — Part number (primary key)
-- `BKIC_PROD_DESC` — Description
-- `BKIC_PROD_TYPE` — Type code
+- `BKIC_PROD_CODE` — Part number (primary key, offset 0, 15 chars)
+- `BKIC_PROD_DESC` — Description (offset 15, 30 chars)
+- `BKIC_PROD_TYPE` — Item type code (offset 45, 1 char) — **confirmed codes (live IN-A screen + SRC files):**
+  - `R` = Raw/purchased inventory — tracked, UOH maintained, posts to inventory on SO ship
+  - `N` = Non-stock — not tracked, UOH always 0, no inventory decrement on ship; still posts to AR
+  - `F` = Finished goods (manufactured, sellable end item)
+  - `A` = Assembly (manufactured from components)
+  - `M` = Manufactured / Miscellaneous
+  - `K` = Kit (sell as bundle; pulls components)
+  - `B` = Phantom (virtual BOM node — zero on-hand, skipped in MRP on-hand calc)
+  - `L` = Labor charge (non-inventory service line)
+  - `T` = Tool/fixture (tracked separately, non-inventory)
+  - `O` = Outside service (sent to vendor for processing; no routings allowed)
+  - Source: confirmed R and N from live IN-A screen (2026-06-17); others from BKMRF.SRC + BKROA.SRC analysis
+  - Items with invalid type for routings (BKROA.SRC): B, K, R, O, M
 - `BKIC_PROD_UOM` — Unit of measure (stock)
 - `BKIC_PROD_PUOM` — Purchase UOM
 - `BKIC_PROD_PRCUOM` — Price UOM
@@ -211,16 +223,34 @@ shipping, invoicing, and history.
 - **SO invoicing** — Separate step from shipping; generates AR invoice
 - **SO quotes** — QU module (quote entry → conversion to SO)
 
+**SO-G — Post Invoices (T7SAG.RWN):**
+Module opens BKARINV, BKARINVL, BKICMSTR. Posts open SO invoice lines to AR.
+- Checks `BKIC_PROD_TYPE` on each line item (via BKICMSTR lookup)
+- Per-line release gate: `BKAR_INVL_RTS` (offset 117, 1 char) — likely "Release To Ship"; if N, SO-G skips the line
+- Per-header: `BKAR_INV_RTS` (offset 621, 1 char) — same flag at header level
+- "Create 0 Qty SO Lines during post" system setting: location in BKSYCFG/BKSYAR not confirmed (those tables are too small); likely in encrypted T7SAG.RWN
+
+**Why items might not post on SO-G:**
+1. `BKAR_INVL_RTS = 'N'` — line is on hold / not released to ship. Check the Release column on the SO Detail screen.
+2. Line qty = 0 and system setting "Create 0 Qty SO Lines" = N
+3. Already posted (BKARINV record already has POSTDATE set)
+4. Item type exclusion (L=labor, B=phantom, etc.) — but R and N types DO post to AR
+
+**SO data flow:** BKARINV (open invoice header, keyed by BKAR_INV_NUM) → BKARINVL (lines, keyed by INVNM+CNTR) → posted → BKSOX/BKSOXH (posted SO invoice extract). BKARINVI is the SO-to-invoice staging cross-reference (keyed by SONUM+INVNM).
+
 **Primary tables:**
 
 | Table | Purpose |
 |-------|---------|
-| BKSOX | SO extract / invoice — 25 fields: company, invoice#, date, customer code/name, subtotal, tax, freight, deposit, retention, total, currency, SO#, customer PO, terms, ship date, shipper, job#, tax code, dates |
-| BKSOXH | SO header variant — same 25-field structure |
+| BKARINV | Open SO invoice header — 46+ fields: invoice#, SO#, INVCD (type flag), date, customer, ship-to, terms, subtotal, tax, total, NL (# lines), RTS (release flag) |
+| BKARINVL | Open SO invoice lines — 28 fields: INVNM, CNTR, ESD, PCODE (part#), PDESC, PQTY, PPRCE, PDISC, PEXT, PCOGS, ITYPE (item type), TXBLE, UBO, USTD, RTS (release flag), LOC, ABQTY |
+| BKARINVI | SO→invoice staging table — SONUM+INVNM cross-ref with ITYPE, qty, price, disc, ext |
+| BKSOX | Posted SO invoice extract — 25 fields (company, invoice#, date, customer, totals, SO#, terms, ship date) |
+| BKSOXH | Posted SO invoice history — same 25-field structure |
 | BKSONOTE | SO notes |
 | BKSOPO | SO → PO cross-reference |
 
-**Confidence: 62/100** — Menu ops and form confirmed; table field mapping from schema. Business logic (order→ship→invoice chain) not fully traced.
+**Confidence: 68/100** — Table schemas from DDF; T7SAG identified as SO-G posting module with confirmed table opens; RTS flag inferred from field existence in schema; exact posting exclusion logic is in encrypted T7SAG.RWN.
 
 ---
 

@@ -1,0 +1,3 @@
+Source: \\i2s109-solidcrm\DBAMFG$\Default\BKICMSTR.B
+Copied: 2026-06-17
+Note: Btrieve binary data file, 71680 bytes, 617-byte records. Not human-readable directly.

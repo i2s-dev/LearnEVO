@@ -341,7 +341,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ### 4.4 Key Individual Tables (minimum needed for 90% goal)
 - [x] ✅ `BKARCUST` — AR Customer master: 106 fields documented in `docs/04-data-dictionary/tier1-tables.md` — **C: 68/100**
-- [x] ✅ `BKICMSTR` — Inventory Item master: 64 fields documented — **C: 68/100**
+- [x] ✅ `BKICMSTR` — Inventory Item master: 64 fields documented; PROD_TYPE codes R/N confirmed from live IN-A screen (2026-06-17); full set RFAMNLBTKO confirmed from HH filter string — **C: 82/100**
 - [x] ✅ `BKSYMSTR` — System configuration master: 286 fields, key categories documented — **C: 62/100**
 - [x] ✅ `AHSYLOG` — User security: all 23 fields documented — **C: 68/100**
 - [x] ✅ `ISJAVA` — Java task queue: pattern confirmed; table NOT found in DDF (may be runtime-only or named differently) — **C: 55/100**
@@ -349,12 +349,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `WORKORD` — Work order master: all 74 fields documented — **C: 72/100**
 - [x] ✅ `WORKCHG` — Work order change log: all 25 fields documented — **C: 70/100**
 - [x] ✅ `BKARCUST` — all fields with meaning, PKs — documented — **C: 68/100**
-- [x] ✅ `BKICMSTR` — all fields with meaning — documented — **C: 68/100**
+- [x] ✅ `BKICMSTR` — all fields with meaning; PROD_TYPE codes confirmed (RFAMNLBTKO, R/N from live UI) — **C: 82/100**
 - [x] ✅ `BKSYMSTR` — major categories documented — **C: 62/100**
 - [x] ✅ `BKAPVEND` — AP Vendor master: 26+ fields documented — **C: 65/100**
 - [x] ✅ `BKGLCOA` — GL Chart of Accounts: 65 fields documented (replaces BKGLJRNL — that table is BKGLTRAN) — **C: 68/100**
 - [x] ✅ `WORKORD` / `WORKCHG` — Work order header + change log — documented — **C: 70/100**
 - [x] ✅ `BKSOX` / `BKSOXH` — Sales Order extract: 25 fields documented — **C: 65/100**
+- [x] ✅ `BKARINV` / `BKARINVL` / `BKARINVI` — AR invoice header/lines/staging: fields and posting flow documented; BKAR_INVL_RTS = per-line release-to-ship flag; T7SAG = SO-G Post Invoices module confirmed — **C: 68/100**
 - [ ] ⬜ `BKPO????` — Purchase Order tables — all fields (BKAPPO + BKAPPOL identified but not field-level documented)
 - [ ] ⬜ `BKPRMSTR` — Payroll master (384 fields) — all fields
 - [x] ✅ `BKSLEVEL` — **SOLVED: Security level permission matrix** (14 menus × 20 options = 422 fields; links AHSYLOG.AHSY_USER_LEVL to allowed operations) — **C: 68/100**
