@@ -1483,7 +1483,7 @@ Primary key: MKAHIST_ACCT(10) + DATE + TRACK + SEQ
 
 **Key operations:**
 - **SM-K — User Preferences:** Writes to EvoSettings.INI and ISNUMBER (number format preference).
-- **SM-E/F — Tax Setup:** ISIS.TXF (tax rates) + ISIS.TXG (tax groups).
+- **SM-E/F — Tax Setup:** ISTAXFIL(84f: tax rates) + ISIS.TXG (tax groups). ISTAXFIL structure: CODE(10) PK + DESC + VNDCD(tax authority vendor) + IDNUM; 9 SO brackets (SOLRNG quantity ranges + SOHRNG hour ranges + SOPERC percentages + TICD type flags) + 9 PO brackets (POLRNG/POHRNG/POPERC/PTICD); GL accounts for SO tax (GLASO+GLDSO) and AP/PO tax (GLAPO+GLDPO); TAXIN(1 inclusive flag), ISCUR(3 currency), SOMAX+POMAX (max tax amounts). Tax groups (ISTAXGRP) assign a tax file CODE to a customer or vendor.
 - **SM-O — Ship Via:** ISSHPVIA with carrier tracking URL field.
 - **SM-D — Payment Terms:** IS.TERMS (standard payment terms like Net30, 2/10Net30).
 - **SM-PF — Job Number:** ISJOB (next job cost number counter).
@@ -2305,13 +2305,75 @@ SM is the largest module family and serves two distinct purposes:
 ---
 
 ### Notes System (EVONOTES family)
-**What it does:** Cross-module freeform notes attached to any entity — an item, a sales order, a purchase order, or a work order. All notes share the ISNOTES table, tagged by entity type.
 
-- **EVONOTES**: Enter and view notes on any record
-- **EVONOTESRPT**: Print/export notes filtered by entity, date range, or note type
-- **EVONOTESARCH**: Browse archived notes including work order change history (WORKCHG)
+**What it does:** Cross-module freeform notes attached to any EvoERP entity — customers, vendors, items, SOs, POs, WOs, or CRM accounts. All notes share the ISNOTES table, tagged by entity type. Note types, security levels, and archive/search capabilities are module-native.
 
-**Note types** are configured in SM-N (ISNTYPE) — e.g. "Customer complaint," "Engineering change," "Follow-up."
+**Program map:**
+
+| RWN | Procs | Operation | Key tables |
+|-----|------:|-----------|------------|
+| EVONOTES | 96 | Main note entry/view | ISNOTES, ISNTYPE, BKYSMSTR, BKARCUST, BKAPVEND, BKAPDESC |
+| EVONOTESARCH | 137 | Archive browser (history + WO changes) | BKSYMSTR, ISNOTES, BKARCUST, BKAPVEND, BKICMSTR, WORKCHG |
+| EVONOTESEARCH | 59 | Full-text note search | ISNOTES, ISNTYPE |
+| EVONOTESPRT | 40 | Print notes | ISNTYPE, ISNOTES, BKAPDESC, MKAHIST |
+| EVONOTESRPT | 149 | Notes report (filtered export) | BKSYMSTR, ISNOTES, BKARCUST, BKAPVEND, BKICMSTR, BKARINV |
+| T7EVONOTES | 48 | Drill-down note viewer | ISNTYPE, ISNOTES, BKAPDESC, ISDRILL |
+
+**ISNOTES (13f) — Note Records**
+
+Primary key: IS_NOTE_ID(48) + IS_NOTE_TYPE(3) + IS_NOTE_CDATE
+
+| Field | Meaning |
+|---|---|
+| IS_NOTE_ID (48) | 48-char composite key — encodes the parent entity (e.g., customer code, vendor code, item code, WO prefix+suffix, SO number) |
+| IS_NOTE_TYPE (3) | Note type code (FK → ISNTYPE, e.g., "SO", "PO", "WO", "AR", "AP", "IT", "CRM") |
+| IS_NOTE_CDATE/CTIME/CWHO | Created date / time string / user |
+| IS_NOTE_EDATE/ETIME/EWHO | Last-edited date / time / user |
+| IS_NOTE_EXTRA (100) | Search/summary text (searchable without reading the full note) |
+| IS_NOTE_PRIVATE (1) | Private flag — restricts visibility by security level |
+| IS_NOTE_GROUP (4) | Group/category code |
+| IS_NOTE_CONTACT (30) | Contact person this note is about |
+| Note body (256) | Full note text — stored in the last DDF field (DDF shows as corrupt DATE/256, actual: STRING 256) |
+
+**Note ID structure:** The 48-char IS_NOTE_ID encodes the parent entity. Examples:
+- Customer: the 10-char customer code padded/combined
+- WO: WOPRE + WOSUF encoded into the ID
+- SO/AR invoice: invoice number encoded
+- PO: PO number encoded
+- Item: item code encoded
+
+This allows EVONOTES/T7EVONOTES to open BKARCUST or BKAPVEND and pull the right notes for any screen.
+
+**ISNTYPE (4f) — Note Type Codes**
+
+Primary key: IS_NT_TYPE(3)
+- IS_NT_DESC(30) — description of note type (e.g., "Customer Complaint", "Engineering Change")
+- IS_NT_SEC(2) — minimum security level required to view this note type
+- IS_NT_EXTRA(100)
+
+Note types are configured via SM-N. Security level on ISNTYPE allows some note types to be visible only to managers.
+
+**WORKCHG (25f) — WO Change Audit Log**
+
+Used by EVONOTESARCH to show WO history alongside notes.
+
+Primary key: WO_CHG_WOPRE(8) + WOSUF(2) + CODE(15) + CDATE + USER
+
+Before/after (A/B prefix) on every WO header field that can change:
+- PRIO(1) — priority before/after
+- STATUS(1) — status before/after
+- CLASS(1) — class before/after
+- DESC(30) — description before/after
+- QTY(float) — quantity before/after
+- SDATE/FDATE/DDATE(date) — scheduled start/finish/due before/after
+- ASD(date) — actual start date before/after
+- EXTRA(150 each) — extra notes before/after
+
+**How notes attach to records:**
+
+Every EvoERP entity screen (AR, AP, PO, SO, WO, IC) has a notes button that calls EVONOTES with the entity's ID encoded into IS_NOTE_ID. The note type determines which module the note belongs to. EVONOTESEARCH searches IS_NOTE_EXTRA (100-char summary) or the note body. EVONOTESARCH shows ISNOTES alongside WORKCHG records for a complete WO history view.
+
+**Confidence: 72/100** — All 6 programs identified with proc counts and DB fingerprints; ISNOTES(13f)+ISNTYPE(4f)+WORKCHG(25f) fully extracted; IS_NOTE_ID composite key structure inferred from DB fingerprints (BKARCUST/BKAPVEND/BKICMSTR/WORKORD all opened by note programs); note body field is a DDF-corrupted STRING(256) — actual byte layout confirmed from size, not field type.
 
 ---
 

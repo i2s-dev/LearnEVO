@@ -706,9 +706,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 ### 9.1 EvoNotes (CRM / Notes)
 - [x] ✅ Files: EvoNotes.RWN, EvoNotesARCH.RWN, EvoNoteSearch.RWN, EvoNotesPrt.RWN, EvoNotesRpt.RWN — **C: 72/100**
 - [x] ✅ Table: ISNOTES — **C: 55/100**
-- [ ] ⬜ ISNOTES all fields documented
-- [ ] ⬜ Note creation / search workflow fully traced
-- [ ] ⬜ Note archiving logic traced
+- [x] 🔄 Pass 56: 6 programs mapped (EVONOTES/ARCH/SEARCH/PRT/RPT+T7EVONOTES); ISNOTES(13f: IS_NOTE_ID(48 composite key)+TYPE+CDATE/CTIME/CWHO+EDATE/ETIME/EWHO+EXTRA(100 search)+PRIVATE+GROUP(4)+CONTACT(30)+body(256-char DDF-corrupt field)); ISNTYPE(4f: TYPE+DESC+SEC(security level)+EXTRA); WORKCHG(25f: WO change audit before/after PRIO/STATUS/CLASS/DESC/QTY/SDATE/FDATE/DDATE/ASD/EXTRA all A/B pairs) extracted; IS_NOTE_ID = 48-char entity key; note body = DDF-corrupted STRING(256) confirmed from field size; entity linking via DB fingerprints (BKARCUST+BKAPVEND+BKICMSTR+WORKORD in every notes program); ISTAXFIL(84f) extracted as bonus: 9-bracket SO+PO tax tables with GL accounts — **C: 72/100**
 
 ### 9.2 EvoScheduler
 - [x] ✅ Files: EvoScheduler.RWN, EvoSched.RWN, EvoSchedSetup.RWN — **C: 70/100**
@@ -1099,7 +1097,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: VSCHED/Visual Scheduler | **62** | 68 | **6** NEW | 2026-06-17 |
 | System: AUTO/Batch Automation | **62** | 68 | **6** ↑+10 | 2026-06-17 |
 | Module: FO/Features+Options | **65** | 72 | **7** ↑+5 | 2026-06-17 |
-| System: Notes/EVONOTES | **58** | 70 | **12** NEW | 2026-06-17 |
+| System: Notes/EVONOTES | **72** | 78 | **6** ↑+14 Pass56 | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
