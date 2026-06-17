@@ -5061,4 +5061,127 @@ Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, c
 
 ---
 
-*Last updated: 2026-06-17 (Pass 48). HH: 30+ programs fully mapped across 9 sub-areas. BKDCLAB(50f) complete — LAB_JCNUM link to JC confirmed. BKDCSHFT(34f) full 3-shift schedule. BKDCCFG(7f). ISSOBOX(22f) with TRACK tracking number. BKARTXN(14f). BKICREF(8f). ISAREX(51f). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## DE — Data Entry / EDI / Imports
+
+**Module purpose:** Import external data into EvoERP (BOMs, PO receipts, WO materials, AR invoices, web orders) and process inbound/outbound EDI transaction sets. Also hosts global field replace (DEK) and selective file erase (DEL) — both destructive.
+
+### DE Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7DEM | 92 | BOM component import — reads external BOM and creates BKBMMSTR records |
+| T7DEER | 132 | Import error report — error log for BOM/import failures (reads BKDCLAB) |
+| T7DEHD | 131 | PI tag import — imports physical inventory count tags (BKPIMSTR+BKPIFROZ+BKPIPHYS) |
+| T7DEJH | 147 | WO material import — loads WO material requirements from external file (BKICMSTR) |
+| T7DEQ | 80 | AR invoice import — imports external invoices into BKARINV+BKARINVL |
+| T7DER | 77 | AR invoice import error report — BKAPINVT |
+| T7DET | 178 | Web order import — largest DE program; imports web orders to BKARINV+BKARINVL via BKEDMSTR; sets import.to.edi flag |
+| T7DETB | 125 | Web order import batch — batch variant of T7DET |
+| T7DETD | 120 | Web order detail processing — BKAPPO+BKICLOC |
+| T7DEU | 102 | Web item FTP export — exports item catalog to FTP for web store (BKARINVL+BKICLOC) |
+| T7DEV | 138 | Vendor POA 855 — processes vendor purchase order acknowledgement (EDI 855); SKIP.PONUM/PCODE/PQTY flags; opens BKPRMSTR for employee contact |
+| T7DEP860 | 82 | EDI 860 PO change — processes inbound EDI 860 PO change orders (BKEDMSTR+BKAPPO+BKARINVL) |
+| T7DEPB | 111 | Customer releases — processes customer schedule releases (RELEASE_NUM); opens BKEDIDUN+BKEDMSTR+BKARINVV |
+| T7DEPD | 132 | Customer releases detail — release line detail with BKEDNOTE notes |
+| T7DEPE | 114 | EDI customer order processing — BKEDIDUN+BKEDMSTR+BKICREF |
+| T7DEPF | 104 | EDI PO processing — BKEDIDUN+BKEDMSTR inbound PO handler |
+| T7DEPH | 116 | EDI PO header — BKAPPOL+BKICPMAT+BKICREF |
+| T7EDII | 183 | EDI inbound processing — largest EDI program; full inbound pipeline |
+| T7EDIFTP | 5 | EDI FTP transfer — stub for FTP file movement (BKEDMSTR only) |
+| T7DEFECT | 53 | Defect code setup — CRUD for ISDEFECT defect code table |
+| T7DEK | 61 | Global field replace — directly rewrites field values across tables (DESTRUCTIVE; opens BKGLCOA + many others) |
+| T7DEL | 48 | Selective file erase — deletes records from selected tables (DESTRUCTIVE) |
+| T7DEX | 82 | Export/FTP utility — file export with FILEDICT layout |
+| T7DEIB | 47 | Batch import module — general import batch processor |
+| T7DEB*–T7DEG*, T7DEJ* | 5–18 | Multi-step batch import pipelines — each letter = one import type, A–E suffixes = 5 pipeline steps (D-step is main processor at 11–18p, others are 5p stubs) |
+
+### Key EDI Architecture Finding
+
+**BKEDIH(84f) and BKEDIL(28f) are Btrieve alternate-index views of BKARINV and BKARINVL** — field prefixes `BKAR_INV_*` and `BKAR_INVL_*` are identical to those tables. EDI invoices live in the same physical data file as AR invoices. The unified invoice architecture (BKARINV for SO+AR+SR+ES+EDI) is fully confirmed.
+
+### DE Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKEDIH | 84 | EDI invoice header — BKAR_INV_ prefix; alternate-index view of BKARINV for EDI inbound processing |
+| BKEDIL | 28 | EDI invoice line — BKAR_INVL_ prefix; alternate-index view of BKARINVL |
+| BKEDMSTR | 3 | EDI system master — NEXTN(8) next transaction#; DUNS(15) our company DUNS number; PATH(66) EDI file import/export directory |
+| BKEDNOTE | 3 | EDI note — EDI#(8)+SO#(8)+NOTE(80); exception notes on EDI transactions |
+| BKEDIDUN | 7 | Customer EDI DUNS map — CUST(10) PK; DUNS(15)+EDI(1 enabled)+EFFDT+PRODS(1)+ADVS(1 ASN flag)+SHPCD(1) |
+| CCEDIXRF | 6 | EDI ship-to cross-reference — CUSTCODE(10)+SENDERID(15) PK; SHPTCODE(17)+SHPTZIP(10)+SHIPTO(10)+NEXT(8); maps EDI sender IDs to EvoERP ship-to codes for 850 PO matching |
+| ISEDINFO | 54 | EDI extended info — ISSR_INFO_ prefix; same 54-field configurable structure as ISSRINFO: 5 dates + 20 alpha(25) slots per group × 2 groups |
+| ISDEFECT | 3 | Defect codes — CODE(10) PK + DESC(60) + EXTRA(50); shared by DEFECT setup, BKDCLAB scrap codes, and QC NCR module |
+
+---
+
+## AC — Activity Control / WO Scheduling
+
+**Module purpose:** Tracks activity items linked to work orders, vendors, and customers. Records action types, resolution dispositions, and WO scheduling dates (start/finish/hierarchy). AC overlaps with QC NCR and SH scheduling — WODATE is the key shared table.
+
+### AC Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7ACDATE | 64 | Date-based activity scheduling — WO due dates; cross-module (opens BKARCUST + BKICMSTR + BKAPVEND) |
+| T7ACDET | 18 | Activity detail entry — ACDETAIL (not in DDF schema) |
+| T7ACRDTYPE | 58 | Activity record type maintenance — ACRDTYPE (not in DDF schema); includes disposition codes (rework/scrap/use-as-is) |
+| T7ACTION | 53 | Action type code maintenance — CRUD for ISACTION table |
+| T7ACCNFIX | 28 | Account code fix utility — corrects BKCMACCN account codes; logs to ISLOG |
+
+**Architecture note:** ACDETAIL and ACRDTYPE are referenced in T7AC* program fingerprints but are **not in the Pervasive DDF schema** — they are Btrieve tables without DDF registration (or use alternate registered names). Their structure is known only from DFM analysis: ACRDTYPE holds record type + reason + disposition codes; ACDETAIL holds individual activity detail records.
+
+### AC Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| WODATE | 13 | WO scheduling dates — WOPRE+WOSUF PK; START+FINISH+QTY; PARPRE/PARSUF (immediate parent WO); TOPPRE/TOPSUF (top-level root WO); DELPRE/DELSUF (delivery/SO-linked WO); EXTRA(100)+PRIO(1) |
+| ISACTION | 3 | Action type codes — TYPE(10) PK + DESC(60) + MISC(60) |
+| ACDETAIL | ? | Activity detail records — NOT IN DDF schema; referenced by T7ACDET (18p) |
+| ACRDTYPE | ? | Activity record type + disposition codes — NOT IN DDF schema; referenced by T7ACRDTYPE (58p) |
+
+**WODATE hierarchy:** PARPRE/PARSUF = immediate parent WO (multi-level BOM sub-assembly), TOPPRE/TOPSUF = root of WO tree (top-level assembly), DELPRE/DELSUF = delivery WO (SO-linked WO for customer order). Used by MRP capacity scheduling (T7MRIX) and the SH shop scheduling module. This hierarchy enables EvoERP to schedule and track the full tree of sub-assemblies under a customer order.
+
+---
+
+## WC — Warehouse Control (bin master)
+
+(Disambiguation: WC = Warehouse Control bin management, **not** Work Center. Work centers are in the `WORKCTR` table used by routing and scheduling.)
+
+**Module purpose:** Manages physical bin locations within warehouse locations. Supports bin-level inventory tracking, serial-by-bin queries, and bulk bin assignment.
+
+### WC Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7WCA | — | Bin master CRUD — create/edit/delete bins in ISBNMSTR |
+| T7WCC | — | Serials by bin — queries MTSER for serial numbers at a specific bin |
+| T7WCD | — | Bulk bin assignment — Skip/Replace mode for reassigning multiple items |
+| T7WCH | — | Location browser — browse all LOC+BIN combinations |
+
+### WC Table
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISBNMSTR | 4 | Bin master — LOC(10)+BIN(15) PK; DESC(60)+EXTRA(100); defines named bin positions within warehouse locations (FK LOC → BKICLOCM) |
+
+---
+
+### New Tables Confirmed (Pass 49)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKEDMSTR | 3 | EDI system master — our DUNS + next transaction# + EDI file path |
+| BKEDNOTE | 3 | EDI note/exception — EDI#+SO# PK + 80-char note |
+| BKEDIDUN | 7 | Customer EDI DUNS map — CUST PK + DUNS+EDI flags+ASN flag |
+| CCEDIXRF | 6 | EDI ship-to cross-ref — CUSTCODE+SENDERID PK; maps EDI sender to EVO ship-to |
+| ISEDINFO | 54 | EDI extended info — 54-field configurable (ISSR_INFO_ prefix; same as ISSRINFO structure) |
+| ISDEFECT | 3 | Defect codes — CODE+DESC+EXTRA; shared by DE, BKDCLAB, QC |
+| WODATE | 13 | WO scheduling dates — WOPRE+WOSUF PK; full parent/top/delivery WO hierarchy |
+| ISACTION | 3 | AC action type codes — TYPE+DESC+MISC |
+| ISBNMSTR | 4 | WC bin master — LOC+BIN PK; DESC+EXTRA |
+
+---
+
+*Last updated: 2026-06-17 (Pass 49). DE: 23+ programs mapped; EDI architecture confirmed (BKEDIH/BKEDIL = BKARINV/BKARINVL alternate-index views); BKEDMSTR(3f)+BKEDNOTE(3f)+BKEDIDUN(7f)+CCEDIXRF(6f)+ISEDINFO(54f)+ISDEFECT(3f) extracted. AC: WODATE(13f) full hierarchy + ISACTION(3f); ACDETAIL/ACRDTYPE confirmed not in DDF. WC: ISBNMSTR(4f) bin master. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

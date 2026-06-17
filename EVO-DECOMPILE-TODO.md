@@ -588,7 +588,7 @@ Target for "understood" = C: 75+ on all items below.
 The following modules have menu codes and forms inventoried but no deep logic documentation:
 
 - [ ] ⬜ **AB** — no T7 RWN/DFM files found (DBA-era legacy code, unimplemented in TAS Pro 7)
-- [x] 🔄 **AC** — Activity Control / NCR tracking — 3 DFMs + 4 RWN modules (T7ACTION/ACRDTYPE/ACDET/ACDATE); ACDATE (WODATE.START/FINISH/QTY, PARPRE/PARSUF/TOPPRE/TOPSUF WO hierarchy, DELPRE cascade delete); ACRDTYPE (AC.RD.TYPE/REASON/DISPO disposition codes: rework/scrap/use-as-is); T7ACTION (IS.ACTION.TYPE/DESC/MISC action items); T7ACDET (AC.DET.ID/LINE/PART detail records); primary tables WODATE/ISACTION/ACRDTYPE/ACDETAIL — **C: 60/100**
+- [x] 🔄 **AC** — Activity Control / NCR tracking — 3 DFMs + 4 RWN modules (T7ACTION/ACRDTYPE/ACDET/ACDATE); ACDATE (WODATE.START/FINISH/QTY, PARPRE/PARSUF/TOPPRE/TOPSUF WO hierarchy, DELPRE cascade delete); ACRDTYPE (AC.RD.TYPE/REASON/DISPO disposition codes: rework/scrap/use-as-is); T7ACTION (IS.ACTION.TYPE/DESC/MISC action items); T7ACDET (AC.DET.ID/LINE/PART detail records); primary tables WODATE/ISACTION/ACRDTYPE/ACDETAIL; Pass 49: WODATE(13f: WOPRE+WOSUF PK, START+FINISH+QTY+PARPRE/PARSUF+TOPPRE/TOPSUF+DELPRE/DELSUF+PRIO) fully extracted; ISACTION(3f: TYPE+DESC+MISC) extracted; ACDETAIL+ACRDTYPE confirmed NOT IN DDF schema (Btrieve-only); T7ACCNFIX(28p) = account fix utility; T7ACDATE(64p) cross-module (BKARCUST+BKICMSTR+BKAPVEND) — **C: 68/100**
 - [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
 - [x] 🔄 **AD** — Accounting Defaults — CHM fully documented (AD-A GL defaults with 20 accounts + 5 posting flags + 6 period-date controls, AD-B checking account setup with 16 fields, AD-C AP defaults with 11 behavioral flags); RWN programs: T7MDEFAULTS (435 procs, main — opens BKSYMSTR+BKYSMSTR+ISBANKS+42 more tables), T7MDEFBANKS (79 procs, AD-B bank setup — BKGLCOA+ISBANKS), T7MDEFNDC (252 procs, extended module defaults — BKSYAP+BKESTCFG+BKFOCFG+BKCPMSTR+BKCMCNTD); primary tables: BKSYMSTR (system config), BKYSMSTR (YN flags), ISBANKS (checking accounts); gap: specific BKSYMSTR field offsets for each setting — **C: 70/100**
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
@@ -596,7 +596,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **CR** — Contract Review / SO Approval — T7CTREVU(96p): opens ISCTREVU+BKARINV+ISSOREVU; ISCTREVU(17f) schema extracted: EMPNME(25)+EMP PK; DEPT(25)/ADMIN(1)/LEVEL(2)/MOTPAS(10)/ACTIVE(1)/CDATE/EDATE/ADATE/ATIME/FLAG_1..5/EXTRA(100); ISSOREVU(12f, already in SR docs): SO+DEPT PK, EMPNME/EMPNUM/MOTPAS/ADATE/EDATE/APPROVE/REQUIRE; CR-A assigns departments to SOs (creates ISSOREVU records), CR-B enters approvals (reviewers per ISCTREVU); 2 programs confirmed — **C: 72/100**
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; Pass 44: ISCC(14f) fully documented: CODE(10) PK + TOLKEN(20, vault token, NOT raw PAN = PCI-compliant)+MASKED(24)+EXP(4)+ADDRESS(40)+ZIP(10)+CARDTYPE(15)+CARDNAME(25)+STATUS(25)+STDATE+XCTRAN(10)+EXTRA(100)+PROCESS(10, processor code e.g. "AUTHORIZE") — **C: 72/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
-- [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
+- [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE; Pass 49: 23+ T7DE*/T7EDI* programs fully mapped; KEY FINDING: BKEDIH(84f)+BKEDIL(28f)=BKARINV/BKARINVL alternate-index views (unified invoice architecture confirmed for EDI); BKEDMSTR(3f: NEXTN+DUNS+PATH)+BKEDNOTE(3f: EDI#+SO#+NOTE)+BKEDIDUN(7f: CUST+DUNS+ASN flags)+CCEDIXRF(6f: CUSTCODE+SENDERID→SHIPTO)+ISEDINFO(54f: configurable ISSR_INFO_ prefix same as ISSRINFO)+ISDEFECT(3f: CODE+DESC+EXTRA) all extracted — **C: 78/100**
 - [x] 🔄 **DI** — Digital Signatures — T7DIGSIG.DFM (131KB) confirmed: Caption='Enter Digital Signatures'; PO#/Vendor/Name/Description/Terms + EMAIL.TAG/NAME/LEVEL/ADDRESS for email routing of PO approvals; T7DigSigChgPSWD = change digital signature password; ISDIGSIG (89f, fully documented): 10 approval slots per employee with ACTIVE/TYPE/SDATE/FDATE/TDATE/AMT/FLAG/DATE per slot + MOTCACH/POENTBY/SOENTBY/FILE/ATIME/ADATE; ISTRIGRS (25f) used for email notifications; 3 RWN programs identified — **C: 65/100**
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
 - [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
@@ -638,7 +638,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **UP** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **US** — User Services / Trigger Notifications — T7USG (90 procs): ISTRIGRS primary table (25f, fully documented: CODE/TRIGR/CONTACT/DAYS/EMAIL/ONCE/LDATE/LTIME/WO-PO-SO-CUST-VEND refs + ITYPE/CLASS/CAT/PLANNER); ISREMIND (22f, fully documented: DATE/TIME/WHO/SUBJECT/CUST/VEND/ITEM/FILE/EMAIL/SENT); EvoRemind (46 procs) polls ISTRIGRS and creates ISREMIND calendar entries; US program also opens BKARCUST+BKAPVEND+WORKORD+BKARINV+BKAPPO for entity lookups — **C: 65/100**
 - [x] 🔄 **UT** — Utilities (admin/data maintenance) — all 8 DFMs read; UTH (file layout report), t7uti (company add/delete: company_code/name/path/copy.file/cdelete), UTKA (data clear/reset: CLR.COA/CUST/VEND/INVN — DESTRUCTIVE), UTKD (fiscal year: fycur/fy1yp/fy2yp/fy3yp), UTKE (location cleanup — DESTRUCTIVE), UTKF/UTKG (item rebuild F and G variants), UTKH (average cost recalculate by inc.type[1-4]); most ops irreversible — **C: 60/100**
-- [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM — **C: 72/100**
+- [x] 🔄 **WC** — Warehouse Control ⚠️ (NOT Work Center) — 8 DFM files read; WC-A (bin master CRUD, ISBN.MSTR table), WC-C (serials by bin, MTSER), WC-D (bulk bin assignment — Skip/Replace), WC-H (location browser); primary tables ISBN.MSTR, BKIC.LOCM; Pass 49: ISBNMSTR(4f: LOC(10)+BIN(15) PK, DESC(60)+EXTRA(100)) fully extracted — **C: 75/100**
 - [x] 🔄 **YS** — Y/N System Flags Editor (T7YSYN: 52 procs, BKYSMSTR+standard lookup tables); direct editor for all Yes/No behavioral flags stored in BKYSMSTR; purpose fully confirmed from program name + primary table — **C: 60/100**
 
 **Subsystems (not menu modules — discovered via RWN analysis):**
@@ -1004,14 +1004,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: PR/Payroll | **82** | 88 | **6** ↑+12 Pass46 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **72** | 80 | **8** ↑ | 2026-06-17 |
-| Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
+| Module: DE/EDI/Imports | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: CS/Commission+Salesperson | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: JC/Job Costing | **78** | 82 | **4** ↑+6 Pass47 | 2026-06-17 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
 | Module: QC/Quality Control | **78** | 80 | **2** ↑+6 Pass47 | 2026-06-17 |
 | Module: QT/Service Quote | **60** | 65 | **5** ↑+15 | 2026-06-17 |
 | Module: IC/Inventory Utility | **55** | 65 | **10** NEW | 2026-06-17 |
-| Module: WC/Warehouse Control ⚠️ | **72** | 80 | **8** ↑ +17 | 2026-06-15 |
+| Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
 | Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
 | Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
@@ -1020,7 +1020,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: MA/AR Deposits | **62** | 65 | **3** ↑+22 | 2026-06-17 |
 | Module: ES/Estimating | **72** | 75 | **7** ↑ | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
-| Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
+| Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **72** | 78 | **6** ↑ | 2026-06-17 |
 | Module: SP/SPC ⚠️ | **68** | 75 | **8** ↑ | 2026-06-17 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
