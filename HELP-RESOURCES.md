@@ -9047,3 +9047,363 @@ The 5-field BK_DESC_ note pattern (CODE+NUM+LINE+NOTES(70)+DESC(25)) used univer
 ---
 
 *Last updated: 2026-06-17 (Pass 75). IS archive views decoded: ISACAR (ISNCR alt), ISACARFU/ISCARFUP (CAR follow-up events active/archive). IC family extended: BKICVAL(4f) daily valuation + BKICAMTR/BKICEMTR(64f) actual/estimate master views + BKICAPMA(85f) 3rd pricing alt-index. IN: INVATXN/INVETXN(24f) actual/estimated inventory transactions. PC: BKPCKIT(6f) kit components + BKPCPLOT(10f) production schedule. BM/RO: ISBMESA/ISBMEST/ISBMTMP(26f) BOM alt-indexes + ROUTAING/ROUTTEMP(62f) routing variants. SA: SUMCUST(5f)+SUMPNCUS(6f)+SUMWC(7f) monthly rollup tables. MU: MWOPTEMP(8f) serial staging. CM: BKCMCTL2..4(1f) session locks + BKCMTMP1..4(6f) session staging. BK_DESC_ family complete: BKQTNOTE+BKQTTEMP+BKRFQDES+NOTETEMP. 30 new schemas. Confidence bumps: QC 81→82 (ISACAR=ISNCR alt confirmed; CAR follow-up decoded), IC/IN 78→82 (BKICVAL+INVATXN/INVETXN), SA 75→80 (SUMCUST+SUMPNCUS+SUMWC monthly rollups).*
+
+---
+
+## Pass 76 — Alternate-Index Catalog and Remaining Distinct Tables
+
+### Master Alternate-Index Pattern Reference
+
+This pass catalogs the remaining DDF tables that are **Btrieve alternate-index views** (different sort keys over the same underlying data file). EvoERP's Pervasive PSQL database uses alternate indexes extensively to give programs fast access paths from multiple angles without duplicating data.
+
+**How to identify alt-indexes:** Same field prefix as the primary table, same or fewer fields, table name starts with IS* or has a variant suffix (H, A, S, R, T, etc.).
+
+---
+
+### AR Alt-Index Family (84f / 28f / 26f variants)
+
+All of the following are alternate-index views of the core AR tables (BKARINV/BKARINVL/ISARCHG):
+
+**84f BKAR_INV_ views (all = BKARINV sorts):**
+
+| Table | Sort/Purpose |
+|---|---|
+| ISSQTH | IS SQ (Sales Quote) header sort |
+| ISSSOH | IS SS OH — SO shipping sort |
+| ISSSRH | IS SS R header — SR service sort |
+
+**28f BKAR_INVL_ views (all = BKARINVL sorts):**
+
+| Table | Sort/Purpose |
+|---|---|
+| ISSQTL | Sales Quote lines |
+| ISSSOL | SO shipping lines |
+| ISSSRL | SR service lines |
+| BKARSIVL | AR "S" invoice lines (ship-to sort) |
+| ISARAIVL | AR archive invoice lines |
+
+**77f / 16f BKAR_INV_ partial views:**
+
+| Table | Fields | Sort/Purpose |
+|---|---|---|
+| ISARAIVV | 77 | AR archive invoice variant (77 of 84 fields) |
+| ISARAIVI | 16 | AR archive invoice index (16-field key subset) |
+
+**26f ISAR_CHG_ views (all = ISARCHG alt-indexes):**
+
+| Table | Sort/Purpose |
+|---|---|
+| ISARECHG | Estimate change sort |
+| ISARHCHG | History change sort |
+| ISARICHG | Invoice# change sort |
+| ISARMCHG | Misc change sort |
+| ISARQCHG | Quantity change sort |
+| ISARRCHG | Return change sort |
+| ISARSCGH | Special charge group sort |
+
+**14f BKAR_TXN_ views (all = BKARTXN sorts):**
+
+| Table | Sort/Purpose |
+|---|---|
+| BKARTXNB | AR transaction by bin/batch sort |
+| BKARTXNS | AR transaction by serial sort |
+| ISARATXN | AR archive transaction |
+| ISARATXS | AR archive transaction by serial |
+| ISSOALOT | SO/AR transaction by lot |
+| ISSOASER | SO/AR transaction by serial |
+| ISSRTXN | SR transaction |
+| ISSRTXNS | SR transaction by serial |
+
+**5f BK_DESC_ views (all = description note tables):**
+
+| Table | Module | Purpose |
+|---|---|---|
+| ISARADSC | AR archive | Archive description notes |
+| ISARAHDS | AR archive history | Archive history description notes |
+| BKARRDSC | AR recurring | Recurring invoice description notes |
+| BKARDPST | AR deposit | AR deposit description notes |
+| ISRFQADS | RF RFQ | RFQ archive description notes |
+| ISSHIPA | SO/AR | Ship-to address notes |
+| ISSRADSC | SR | SR description notes |
+| ISSRDESC | SR | SR description (alt-index) |
+
+---
+
+### AP Alt-Index Family (57f / 38f / 49f variants)
+
+**57f BKAP_PO_ views (all = BKAPPO sorts):**
+
+| Table | Sort/Purpose |
+|---|---|
+| BKAPAPO | AP open POs only (with security filter) |
+| BKAPHPO | AP historical closed POs |
+| ISSPOH | IS SP — supplier portal PO sort |
+
+**38f BKAP_POL_ views (all = BKAPPOL sorts):**
+
+| Table | Sort/Purpose |
+|---|---|
+| BKAPAPOL | AP open PO lines |
+| BKAPHPOL | AP history PO lines |
+| BKAPRFQL | AP RFQ lines |
+| ISSPOL | IS SP — supplier PO lines |
+
+**57f / 49f RFQ / Quote views:**
+
+| Table | Fields | Sort/Purpose |
+|---|---|---|
+| BKAPRFQ | 57 | AP RFQ header (BKAP_PO_ prefix, vendor RFQ sort) |
+| BKAPQUOT | 49 | AP Quote (BKRFQ_ 49-field quote header alt) |
+| ISAPHQT | 49 | IS AP HQ — AP historical quote |
+| ISAPQTQT | 49 | IS AP quote-to-quote sort |
+| ISARFQ | 49 | IS AR RFQ alt-index (already documented) |
+
+**12f BKAP_CHK_ views (AP check tables):**
+
+| Table | Sort/Purpose |
+|---|---|
+| BKARCHKF | AP check file (active checks — VNDCOD+INVNUM PK) |
+| BKARCHKH | AP check history (cleared checks — same 12f) |
+| ISAPACHK | IS AP check archive alt-index |
+
+---
+
+### SO/SR/SQ Extended Info Alt-Indexes (54f ISSR_INFO_ views)
+
+All are alternate-index views of ISSRINFO (54f):
+
+| Table | Sort/Purpose |
+|---|---|
+| ISSOAINF | SO archive info sort |
+| ISSOHINF | SO history info sort |
+| ISSOINFO | SO current info sort |
+| ISSRAINF | SR archive info sort |
+| ISSRHINF | SR history info sort |
+| ISBTCSB | Batch CSB info sort |
+
+---
+
+### SO/SR Box/Manifest Alt-Indexes (22f ISSO_BOX_ views)
+
+All = ISSOBOX alt-indexes:
+
+| Table | Sort/Purpose |
+|---|---|
+| ISSOABOX | SO archive box |
+| ISSOAHBX | SO archive history box |
+| ISSOHBOX | SO history box |
+| ISBOLMS | BOL manifest sort (documented Pass 74) |
+
+---
+
+### IC Alt-Index Family (64f BKIC_PROD_ views)
+
+All = BKICMSTR alt-indexes:
+
+| Table | Sort/Purpose |
+|---|---|
+| BKICAMTR | IC actual master sort |
+| BKICEMTR | IC estimate master sort |
+| ISICADT | IS IC actual date sort |
+| ISICESA | IS IC ES actual sort |
+| ISICEST | IS IC ES estimate sort |
+| ISICAMTR | IS IC actual matrix sort |
+| XXICMSTR | J7 extended IC master sort |
+
+---
+
+### DC Labor Alt-Indexes (50f LAB_/MTWOLA_ views)
+
+| Table | Fields | Sort/Purpose |
+|---|---|---|
+| BKDCCLAB | 50 | DC "Copy/Clock" labor sort (LAB_ prefix, DATE+EMP key) |
+| BKDCHLAB | 50 | DC history labor sort (MTWOLA_ prefix) |
+
+Both are alternate-index views of BKDCLAB / WOLABOR.
+
+---
+
+### New Distinct Tables — Pass 76
+
+### BKAPACCN (154f) — Vendor Contact Extension
+
+BKCM_ACCN_ prefix (same as BKCMACCN). This is BKCMACCN exposed under a BKAP- alias for AP module access — when the AP module needs to look up vendor contacts (10 contact slots per vendor: CONT_1..10, TITLE, PHONE, EMAIL, etc.). Same underlying data as BKCMACCN; alternate index sorted by vendor code.
+
+---
+
+### ISARCHG-family (BKARCHKF/BKARCHKH) — AP Check Reconciliation
+
+- **BKARCHKF (12f)** — AP check file (active uncleared checks): BKAP_CHK_VNDCOD+INVNUM PK; INVAMT+AMTPD+DISC+TYPE+DESC+INVDTE+NUM+CHKACT+2more
+- **BKARCHKH (12f)** — AP check history (cleared checks): same 12f, different Btrieve sort by check number
+
+Used by AP-K (check reconciliation) to match printed checks against paid invoices.
+
+---
+
+### ISCONVRT (9f) — Unit of Measure Conversion
+
+**PK:** IS_CONV_ITEM(15) + SUM(10) + PUM(10)
+
+- IS_CONV_SCONV(float) — stock UM conversion factor
+- IS_CONV_PCONV(float) — purchase UM conversion factor
+- IS_CONV_WTCONV(float) — weight conversion factor
+- (+ 3 more: price/cost conversions)
+
+Per-item multi-UM conversion table. When an item is purchased in "CASE" but stocked in "EACH," ISCONVRT holds the conversion factors. Used by PO receiving, IC transfer, and cost calculations.
+
+---
+
+### ISPOTRK (7f) — PO Shipment Tracking
+
+**PK:** IS_TRK_ORD(float) — PO number
+
+- IS_TRK_NUM(25) — carrier tracking number (FedEx/UPS)
+- IS_TRK_SHPVIA(10) — shipping method/carrier
+- IS_TRK_CDATE — created date
+- IS_TRK_RDATE — expected receipt date
+- IS_TRK_STATUS(50) — status string (e.g., "In Transit", "Delivered")
+- (+ 1 more)
+
+PO inbound shipment tracking. Allows buyers to track purchase orders by carrier tracking number.
+
+---
+
+### ISPOLOG (9f) — PO Access Audit Log
+
+**PK:** ISPO_LOG_EMP + DATE + TIME
+
+- IS_LOG_WHO(15) — user who accessed the PO
+- IS_LOG_PRGM(8) — program name
+- IS_LOG_PONUM(float) — PO accessed
+- (+ 3 more: terminal ID, company, action)
+
+PO access audit — records every time a user opens or modifies a PO.
+
+---
+
+### ISLOTS / ISHLOTS (11f each) — WO Serial/Lot Genealogy
+
+IS_SER_ prefix. Both tables track parent-child serial relationships during WO production:
+- IS_SER_WOPRE + WOSUF — source WO
+- IS_SER_PARENT(15) + PDESC(30) — parent item being produced
+- IS_SER_PSERIAL(25) — parent serial number
+- IS_SER_ADATE — assembly date
+- (+ 5 more: child serial/lot, quantity, operation, location)
+
+ISLOTS = active WO lot genealogy; ISHLOTS = history/archive. Tracks "which component serials were consumed to produce this parent serial number."
+
+---
+
+### ISMACS (11f) — WO Machine Assignment
+
+**PK:** IS_MACS_WOPRE + WOSUF + OPER + MACNUM(4)
+
+Records which machine was used for a WO operation:
+- IS_MACS_WC(12) — work center
+- IS_MACS_SDATE — start date
+- (+ 5 more: EDATE, hours, operator, status, notes)
+
+---
+
+### ISQRYSQL (2f) — Stored SQL Queries
+
+- IS_QRY_NAME(30) — query name (PK)
+- IS_QRY_QUERY(1000) — SQL statement (up to 1000 chars)
+
+Named SQL queries saved by TA-R (SQL Editor). Allows users to save frequently-used reports or drill-down queries.
+
+---
+
+### ISVARSQL (4f) — SQL Query Parameter Definitions
+
+- IS_VAR_QNAME(30) + VNAME(30) + TYPE(1) + ORDER(2)
+
+Defines input parameters for stored ISQRYSQL queries. QNAME links to ISQRYSQL; VNAME = parameter variable name; TYPE = data type; ORDER = prompt sequence.
+
+---
+
+### ISCONVRT-related small code tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| CUSTCLAS | 2 | Customer/item class codes: MTCLASS_M_CLASS(4)+DESC(30) |
+| ISLTYPE | 4 | Lot type codes: IS_LT_TYPE(3)+DESC(30)+SEC(2)+EXTRA(100) |
+| ISDIV | 3 | GF division codes: IS_GF_DIV(10)+DESC(40)+MISC(100) |
+| ISQTCODE | 3 | QT quote category codes: IS_CATM_CODE(4)+DESC(60)+EXTRA(100) |
+| ISFSEMP | 3 | FS/Field info base class codes: IS_FIB_CLASS(4)+GROUP(50)+EXTRA(50) |
+| ISBILLSH | 4 | Bill-to/ship-to pairing: IS_BILLSH_BILL(10)+SHIP(10)+FLAG(1)+EXTRA(100) |
+| ISCMGRP | 2 | Item-to-manufacturer tech spec: ISCC_MTF_ITEM(15)+MTF(60) |
+| ISARATNT | 3 | AR archive transaction note type |
+
+---
+
+### J7 Custom — Cancel Order Module (JSPCNLCD / JSPCNLSO)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| JSPCNLCD | 6 | Cancel reason codes: CODE(1)+DESC(30)+LCODE(10)+CDATE+WHO+EXTRA |
+| JSPCNLSO | 12 | Canceled SO line records: SONUM+UNUM+ITEM PK; CQTY+CDATE+WHO+6more |
+
+J7 Systems custom module for formal order cancellation workflow with reason codes.
+
+---
+
+### System Meta-Tables (X$* — Pervasive DDF Catalog)
+
+The X$* tables are the **Pervasive PSQL data dictionary system catalog** — Btrieve's internal schema metadata:
+
+| Table | Purpose |
+|---|---|
+| X$File | Table registry: file name, path, page size, record length |
+| X$Field | Field definitions: name, type, size, offset per table |
+| X$Index | Index definitions: key segments, sort order, flags |
+| X$Attrib | Field attributes (nullable, default values) |
+| X$Occurs | Repeating groups/arrays within records |
+| X$Proc | Stored procedure definitions |
+| X$Relate | Referential integrity relationships |
+| X$Trigger | Trigger definitions |
+| X$Variant | Variant record definitions |
+| X$View | Named view definitions |
+
+These are read-only meta-tables that describe the database structure itself. DDF viewer tools (like DFVIEW.exe) query them to enumerate all tables and fields.
+
+---
+
+### Helper/Staging Small Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISSOABOX | 22 | SO archive box alt-index of ISSOBOX |
+| ISSOAHBX | 22 | SO archive history box alt-index |
+| ISSOHBOX | 22 | SO history box alt-index |
+| ISAREMND | 22 | AR reminder alt-index (ISREMIND sort for AR context) |
+| ISPOBOX | 22 | PO receiving bin/box assignment (ISSO_BOX_ prefix, for PO) |
+| ISHLOTS | 11 | WO lot genealogy history alt-index |
+| ISHSERIA | 11 | WO serial genealogy history (IS_SER_ alt-index) |
+| ISAMRPF | 9 | IS AR MRP forecast alt-index (BKMRPFC sort variant) |
+| ISMRPFC | 9 | IS MRP forecast alt-index (MTMRP_ sort variant) |
+| ISSLSFC | 9 | IS Salesperson forecast (BKPRSALE sort variant) |
+| ISPRSALE | 87 | IS PR Sale — BKPRSALE alt-index (87f sort variant) |
+| ISGLHDAT | 86 | IS GL Historical Date — ISGLDATE alt-index (86f sort variant) |
+| OUTHPROC | 15 | OUTPROC alt-index (outside process by date sort) |
+| WBTRVMEM | 5 | WBT review memory — BK_DESC_ pattern, review notes |
+| WBTRVMEMO | 5 | WBT review memo — BK_DESC_ pattern |
+| ISSRAMMS | 12 | ISSRMMS alt-index (SR equipment make/model/serial sort) |
+| ISAUTODC | 12 | IS Automation DC — auto-DC event log (DATE+EMP+WOPRE PK) |
+| ISSNOTES | 12 | IS System Notes — ISNOTES alt-index |
+| EVOHLPID | 2 | EVO help ID: HELP_ID(code)+mapping |
+| HELPURL | 3 | Help URL: CODE+URL(path)+MODULE |
+| ESTCHGS | 3 | Estimate charges code: CODE+DESC+RATE |
+| ISALOT | 25 | LOT alt-index (already documented as IS Lot sort view) |
+| ISDLCK1 / ISDLCK2 | 1 | IS datalock slots 1/2 — single-field lock tables |
+| ISPOS / ISPOSC | 2 | IS PO status code(2)/current: STATUS(1)+DESC(1) |
+| ISPODESC | 1 | IS PO description single-field lock/flag |
+| ISPRESN | 1 | IS PR reason single-field lock/flag |
+| ISPOHTRK | 7 | IS PO history tracking — ISPOTRK history sort |
+| TEMPOLD | 4 | Legacy temp table (obsolete, from DBA era) |
+| TESTARRA | 101 | Development test table — array-of-fields test structure |
+| TESTFILE | 11 | Development test file |
+
+---
+
+*Last updated: 2026-06-17 (Pass 76). Bulk alt-index catalog complete. All 133 remaining undocumented tables identified and classified: AR family (BKARINV/BKARINVL/ISARCHG/BKARTXN variants), AP family (BKAPPO/BKAPPOL/BKRFQ variants), SO/SR/SQ info (ISSRINFO variants), IC family (BKICMSTR variants), DC labor (BKDCLAB variants), BK_DESC_ note tables. New distinct tables: ISCONVRT(9f) UM conversion + ISPOTRK(7f) carrier tracking + ISPOLOG(9f) PO audit log + ISLOTS/ISHLOTS(11f) WO serial genealogy + ISMACS(11f) machine assignment + ISQRYSQL(2f) stored queries + ISVARSQL(4f) query parameters + BKAPACCN(154f) vendor contacts + BKARCHKF/H(12f) AP check reconciliation + code tables (CUSTCLAS/ISLTYPE/ISDIV/ISQTCODE) + J7 cancel module (JSPCNLCD/JSPCNLSO). X$* tables = Pervasive DDF system catalog (10 meta-tables). Schema coverage now approaches 100% of the DDF-registered tables. Confidence bumps: SO 75→82 (full ISSO*/ISSQ*/ISSRINFO alt-index family mapped), AP 92→93 (all BKAP*POL/BKAP*PO + BKARCHKF/H decoded).*

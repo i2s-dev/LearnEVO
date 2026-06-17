@@ -993,9 +993,9 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
-| Module: AP | **92** | 92 | **0** ✅ ↑+2 Pass74 | 2026-06-17 |
+| Module: AP | **93** | 92 | **0** ✅ ↑+1 Pass76 | 2026-06-17 |
 | Module: IN/Inventory | **82** | 85 | **3** ↑+5 Pass75 | 2026-06-17 |
-| Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
+| Module: SO | **82** | 85 | **3** ↑+7 Pass76 | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
 | Module: WO | **91** | 90 | **0** ✅ ↑+1 Pass74 | 2026-06-17 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
