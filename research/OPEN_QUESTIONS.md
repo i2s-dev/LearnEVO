@@ -98,16 +98,31 @@ to resolve fully:
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a
    built-in key. Not decoded.
 
-4. **Menu tree storage format.** `EVOERPMENU.DCY` is now decryptable (K_D, 1,466,302 bytes,
-   decrypts to `[text]` type). Binary format not yet parsed — structure unknown. The menu
-   tree is almost certainly inside this file, but field layout has not been reverse-engineered.
+4. ~~**Menu tree storage format.**~~ **RESOLVED 2026-06-17.**
+   `EVOERPMENU.DCY` decrypted with K_D → Delphi VCL TEditForm1 DFM, 20,868 lines.
+   **Finding:** The DCY file is the main ERP window shell only — it contains:
+   - TMainMenu with ~35 TMenuItems (top-level bar: File, Module, Tools, Size, Support, Help)
+   - TToolBar with 33 TToolButtons (the icon toolbar)
+   - 8 × TTASStrList (empty at parse time — populated at runtime)
+   - TImage, TPanel, TStatusBar, TStatusBar, TShellExe, etc.
+   **The 554+ module-level menu codes (AR-1, IN-2, etc.) are NOT stored here.**
+   They are built at runtime by EvoERPmenu.RWN dynamically. The DCY is just the window frame.
 
-5. **`WHOAMI.DBA` format** (35 bytes). Per-workstation identity token.
-   Purpose is clear (identifies the seat for locking + license), but
-   the 35-byte layout is not reverse-engineered.
+5. ~~**`WHOAMI.DBA` format**~~ **PARTIALLY RESOLVED 2026-06-17.**
+   On this system, `C:\ISTS\WHOAMI.DBA` and `\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA`
+   are both 2 bytes (CR+LF only — never initialized on this workstation).
+   The "35-byte" format in earlier notes refers to a workstation where EVO has been
+   configured. **`START_UP.DBA`** (27,083 bytes in `\\i2s109-solidcrm\DBAMFG$\`) is
+   the DBA Manufacturing era startup program (TAS Pro 6 compiled binary — analogous
+   to a .RUN file). Contains embedded registration: Ser No 75790, Exp 12/31/30,
+   15 users, "American Backplane Inc." (legacy customer, now i2 Systems).
+   Cannot decode WHOAMI.DBA format without a populated file from a configured workstation.
 
-6. **`CHMHELP.EVO`** (35 bytes). Same size as `WHOAMI.DBA` — likely a
-   similar identity-style marker. Purpose unknown.
+6. ~~**`CHMHELP.EVO`**~~ **RESOLVED 2026-06-17.**
+   35 bytes = plain ASCII text: `"EvoHELP now set for this computer\r\n"`.
+   Not a binary format — a simple marker file written when the CHM help system is
+   configured for this workstation. Written once; presence/content tells the runtime
+   that EvoHELP.CHM has been registered for this machine.
 
 7. **`.btm` vs. `.RTM` — is `.btm` automatic backup?** Filenames align
    with RTMs suggesting yes, but the snapshot-on-save mechanism hasn't
