@@ -2,6 +2,32 @@
 
 Status: draft.
 
+## Product heritage (confirmed from ISDCABOUT.DCY, 2026-06-17)
+
+- **"Evolved from DBA Classic 2004.1"** — EvoERP grew directly out of DBA Manufacturing
+  Classic version 2004.1.
+- **Copyright: "Evo ~ ERP Copyright © 2007 Evo ERP Inc."** — rebranded/launched ~2007.
+- `START_UP.DBA` on the share is the old DBA Classic boot program (TAS Pro 6 compiled),
+  containing legacy registration for "American Backplane Inc." (Ser No 75790,
+  Exp 12/31/30, 15 users) — the original customer install before i2 Systems.
+- `CHMHELP.EVO` = plain-text workstation marker: "EvoHELP now set for this computer".
+
+## DC Module menu structure (confirmed from EVODC.DCY, 2026-06-17)
+
+The Data Collection entry-point menu (EVODC.DCY = TEditForm3) exposes:
+- **Labor/Prod.** — combined labor hours + production count entry
+- **Prod. Only** — production count entry without labor tracking
+- **Labor Only** — time/labor entry without production count
+- **Part Request** — material request from an open work order
+- **Shift In/Out** — attendance/shift clock in and out
+- **Dashboard** — DC overview summary
+
+## View-Only mode (confirmed from EVOVIEW.DCY, 2026-06-17)
+
+EVOVIEW.DCY (TEditForm2) = read-only EvoERP mode. Exposes six modules:
+View Inventory, View Work Orders, View Purchase Orders, View Sales Orders,
+View Customers, View Vendors. Used for users who need read access only.
+
 ## Three-tier view
 
 ### Tier 1 — Client (`C:\ISTS\`)
