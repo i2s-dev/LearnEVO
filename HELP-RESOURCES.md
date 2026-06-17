@@ -4355,4 +4355,304 @@ The CUST field in all three allows customer-specific source overrides (e.g., cus
 
 ---
 
-*Last updated: 2026-06-17 (Pass 45). MR module fully mapped: 17 programs, complete demand-to-release workflow, MTMRP(13f)/BKRFQ(49f)/CALENDAR(5f)/BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f) extracted. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## PR — PAYROLL — Pass 46
+
+### Overview: 40+ Programs
+
+EvoERP Payroll handles full employee payroll with multi-state taxes, direct deposit, and DC labor import.
+
+| Program | Procs | Operation | Key tables |
+|---|---|---|---|
+| T7PRA | 169 | PR-A: Employee master setup | BKPRMSTR+BKPRINFO+BKPRSALE+BKPRGLFL |
+| T7PRB | 229 | PR-B: Enter current period payroll | BKPRCURP+BKPRFTAX+BKPRMSTR+BKPRGLFL |
+| T7PRC | 129 | PR-C: Calculate payroll | BKPRCURP+BKPRGLFL+BKPRMSTR |
+| T7PRD | 189 | PR-D: Post payroll to GL | BKPRCURP+BKGLTRAN+BKPRMSTR+BKPRGLFL |
+| T7PRDPST | 32 | PR-DPST: Direct deposit posting | BKPRCURP+ISBANKS+ISPRTEMP |
+| T7PRDIVFIX | 30 | PR-DIVFIX: Division correction | BKPSUSER+BKGLTRAN |
+| T7PRE | 99 | PR-E: AP check posting | BKARINV+BKGLTRAN+BKPRMSTR |
+| T7PRF | 92 | PR-F: Federal/state tax table maint | BKPRFTAX+BKPSUSER |
+| T7PRG | 134 | PR-G: Print payroll checks | BKGLCHK+BKPRCURP+BKPRGLFL+BKPRMSTR |
+| T7PRH | 121 | PR-H: Year-end / W-2 history | BKPRCURP+BKPRGLFL |
+| T7PRI | 108 | PR-I: Payroll inquiry | BKPRCURP+BKPRINFO+BKPRMSTR |
+| T7PRJ | 83 | PR-J: Time card entry | BKPRMSTR+BKPRTC |
+| T7PRK | 134 | PR-K: Import DC labor to payroll | BKDCLAB+BKPRCURP+BKPRTC+BKPRMSTR |
+| T7PRJCSYNC | 33 | PR-JCSYNC: Sync to Job Costing | BKPRINFO+BKPRMSTR |
+| T7PRLA..PRLQ | 17 each | PR-LA..LQ: Payroll report variants | BKPRCURP+BKPRGLFL+BKPRINFO |
+| T7PRM..PRS | various | PR-M..S: Period processing + reports | BKPRMSTR+BKGLTRAN |
+
+**Payroll lifecycle:**
+```
+PR-A: setup employee (BKPRMSTR + BKPRINFO)
+PR-J: enter time cards (BKPRTC)  OR  PR-K: import from DC labor (BKDCLAB)
+PR-B: enter current period (BKPRCURP) + BKPRFTAX tax bracket lookup
+PR-C: calculate (BKPRCURP + BKPRGLFL rates)
+PR-G: print checks (BKGLCHK + BKGLTRAN)
+PR-D: post to GL (BKGLTRAN payroll expense entries)
+PR-DPST: direct deposit (ISPRTEMP staging → bank ACH via ISBANKS)
+PR-H: year-end / W-2 processing
+```
+
+---
+
+### BKPRMSTR (384f) — Employee Master
+
+- BKPR_EMP_NUM(2) — employee number (PK, UBINARY)
+- BKPR_EMP_FNMI(25) + LNME(25) — first + last name
+- BKPR_EMP_ADD(30) + CSZ(25) + ST(2) + ZIP(10) + CNTRY(30) — address
+- BKPR_EMP_PHONE(15)
+- BKPR_EMP_SSN(11) — social security number
+- BKPR_EMP_SDATE(4) — hire date
+- BKPR_EMP_TERM(1) — terminated flag
+- BKPR_EMP_MS(1) — marital status (S/M)
+- BKPR_EMP_FEDEXM(2) + STEXM(2) — federal + state tax exemptions
+- BKPR_EMP_PAYTYP(1) — pay type (H=hourly, S=salary, etc.)
+- BKPR_EMP_PAYAMT_1..15 — 15 pay rate slots
+- BKPR_EMP_DEPT(4) — department code
+- BKPR_EMP_SHIFT(2) — shift assignment
+- BKPR_EMP_RHQTD/RAQTD/RHYTD/RAYTD — regular hours/amounts: QTD + YTD
+- BKPR_EMP_VHQTD/VAQTD/VHYTD/VAYTD/VDUE — vacation: QTD/YTD/due hours
+- BKPR_EMP_SHQTD/SAQTD/SHYTD/SAYTD/SDUE — sick: QTD/YTD/due hours
+- BKPR_EMP_FITQTD/FITYTD — federal income tax: QTD/YTD withheld
+- BKPR_EMP_FICQTD_1/2 / FICYTD_1/2 — FICA (1=SS, 2=Medicare): QTD/YTD
+- BKPR_EMP_STQTD/STYTD — state income tax: QTD/YTD
+- BKPR_EMP_WKQTD/WKYTD — workers comp: QTD/YTD
+- BKPR_EMP_MDAMT/MDQTD/MDYTD — medical deduction: flat amount + QTD/YTD
+- BKPR_EMP_OHQTD_1..12 / OAQTD_1..12 — 12 user-defined other deduction types: hours QTD + amounts QTD
+- BKPR_EMP_LSTPR(4) — last pay date
+- +300 more fields (additional deduction types, W-2 accumulators, benefit allocations)
+
+---
+
+### BKPRCURP (127f) — Current Period Payroll
+
+One row per employee per pay period. Created in PR-B, consumed by PR-C/G/D.
+
+- BKPR_CURP_EMPNM(2) + PRDTE(4) — employee + pay period date (PK)
+- BKPR_CURP_ACTNM(2) — payroll action number
+- BKPR_CURP_CHKNM(6) — check number
+- BKPR_CURP_TOTHR(8) + TOTPY(8) — total hours + total gross pay
+- BKPR_CURP_RPHRS(8) + RPRTE(8) + RPAMT(8) — regular: hours + rate + gross
+- BKPR_CURP_OPHRS_1..12 — overtime hours (12 overtime pay categories)
+- BKPR_CURP_OPRTE_1..12 — overtime rates by category
+- BKPR_CURP_OPAMT_1..12 — overtime amounts by category
+- BKPR_CURP_VPHRS/VPRTE/VPAMT — vacation: hours/rate/amount
+- BKPR_CURP_SPHRS/SPRTE/SPAMT — sick: hours/rate/amount
+- +remaining tax deductions and net pay fields
+
+---
+
+### BKPRFTAX (47f) — Payroll Tax Bracket Table
+
+Federal + state withholding brackets. One row per tax jurisdiction code.
+
+- BKPR_TAX_CODE(3) — tax code (PK: "FED", "CT", "NY", etc.)
+- BKPR_TAX_DESC(20) — description
+- BKPR_TAX_ALLOW(8) — per-exemption allowance amount
+- BKPR_TAX_START_1..11 — 11 bracket income start thresholds
+- BKPR_TAX_THRU_1..10 — 10 bracket end thresholds
+- BKPR_TAX_AMT_1..11 — base tax at each bracket floor
+- BKPR_TAX_PERC_1..11 — marginal rate within each bracket
+
+Tax formula: find bracket where (income - exemptions × ALLOW) falls between START_N and THRU_N; tax = AMT_N + PERC_N × (excess over START_N).
+
+---
+
+### BKPRGLFL (664f) — Payroll GL Account Mapping
+
+Per state+dept row. Maps every payroll tax type to its GL accounts and stores all payroll tax rates.
+
+- BKPR_GL_STCODE(2) + DEPT(4) — state code + department (PK)
+- BKPR_GL_FITACCT(10)/FITDPT — Federal Income Tax GL
+- BKPR_GL_FICACCT_1/2(10)/FICDPT — FICA GL (1=SS, 2=Medicare)
+- BKPR_GL_FUTACCT(10)/FUTDPT — FUTA GL
+- BKPR_GL_SUTACCT(10)/SUTDPT — SUTA GL
+- BKPR_GL_SITACCT(10)/SITDPT — State Income Tax GL
+- BKPR_GL_WCACCT(10)/WCDPT — Workers Compensation GL
+- BKPR_GL_SDIACCT(10)/SDIDPT — SDI (State Disability Insurance) GL
+- BKPR_GL_FICAEMP(8) + FICAEPL(8) + FICALMT(8) — FICA rates: employee/employer % + wage limit
+- BKPR_GL_FUTART(8) + FUTALMT(8) + FUTACRD(8) — FUTA rate / wage limit / credit
+- BKPR_GL_SUTART(8) + SUTALMT(8) — SUTA rate + wage limit
+- BKPR_GL_SDI_RTE(8) + SDI_LMT(8) — SDI rate + wage limit
+- BKPR_GL_SRTE(8) + VRTE(8) — sick + vacation accrual rates
+- BKPR_GL_PAYPER(1) — pay frequency (W=weekly, B=bi-weekly, S=semi-monthly, M=monthly)
+- BKPR_GL_WCHOW(1) — workers comp calc method
+- BKPR_GL_FICAEXP_1/2 + FICAEXD_1/2 — FICA expense GL (employer side)
+- BKPR_GL_SUTAEXP + WCEXP — SUTA + WC expense GL accounts
+- BKPR_GL_UODAMT1_1..N — user-defined other deduction amounts per bracket
+- +600 more (per-deduction-type GL mappings, 12+ user-defined deduction GL accounts)
+
+At 664 fields, BKPRGLFL is one of the widest tables in EvoERP — it encodes the entire state payroll tax configuration in a single row per state, avoiding joins during payroll calculation.
+
+---
+
+### BKPRINFO (128f) — Employee HR / Accrual Record
+
+- BKPR_INFO_NUM(2) — employee number (PK)
+- BKPR_INFO_DDEP(1) — direct deposit enrolled flag
+- BKPR_INFO_REVDT_1..6 — scheduled review dates (6 future performance reviews)
+- BKPR_INFO_RASDT_1..6 — scheduled raise dates
+- BKPR_INFO_REVNT_1..12 — review notes (12 × 60 chars)
+- BKPR_INFO_RASNT_1..12 — raise notes (12 × 60 chars)
+- BKPR_INFO_AVAC(1) + VACAC(4) + VHRS(8) — vacation accrual type + accrual anniversary date + hrs/period
+- BKPR_INFO_ASICK(1) + SICKA(4) + SHRS(8) — sick accrual type + date + hrs/period
+- BKPR_INFO_AHOW_1/2(1) + AHRS_1/2(8) — additional pay accrual methods + amounts
+- BKPR_INFO_BINFO_1/2(30) — banking routing + account numbers for direct deposit
+
+---
+
+### BKPRSALE (87f) — Sales Rep Commission Tracking
+
+Bridges the PR module to the CS (commission) system:
+
+- BKPR_SLS_EMPNUM(2) — employee number (PK)
+- BKPR_SLS_CLASS_1/2(2) — commission class codes (2 tiers)
+- BKPR_SLS_RATE_1/2(8) — commission rates per tier
+- BKPR_SLS_HOW_1/2(1) — calculation method (% gross, % GP, flat)
+- BKPR_SLS_WHEN_1/2(1) — trigger (on invoice, on cash receipt)
+- BKPR_SLS_QUOTA_1..12(8) — 12 monthly quotas
+- BKPR_SLS_GROSS_1..12(8) — actual monthly gross sales
+- BKPR_SLS_COGS_1..12(8) — actual monthly COGS
+- BKPR_SLS_RCPTS_1..12(8) — actual monthly cash receipts
+
+---
+
+### BKPRTC (7f) — Time Card
+
+- BKPR_TC_EMP(2) + DATE(4) — employee + date (PK)
+- BKPR_TC_START(4) + STOP(4) — clock-in + clock-out TIME fields
+- BKPR_TC_DEDUCT(4) — break/lunch deduction time
+- BKPR_TC_TYPE(1) — type code (R=regular, O=overtime, V=vacation)
+- BKPR_TC_EXTRA(25)
+
+T7PRK imports from BKDCLAB into BKPRTC: shop floor clock-ins become payroll time cards automatically.
+
+---
+
+### ISPRTEMP (15f) — Direct Deposit Staging Batch
+
+Staging buffer between T7PRDPST (direct deposit builder) and BKGLTRAN / bank ACH export:
+
+- ISPR_TRN_GLACCT(10) + GLDPT(4) — GL account + dept
+- ISPR_TRN_DATE(4) + ENTDTE(4) — transaction date + entry date
+- ISPR_TRN_CODE(10) — payroll transaction code
+- ISPR_TRN_DESC(25) — description
+- ISPR_TRN_DC(1) — debit/credit
+- ISPR_TRN_AMT(8) — amount
+- ISPR_TRN_TRXN(8) — transaction number
+- ISPR_TRN_POST(1) — posted to BKGLTRAN flag
+- ISPR_TRN_PERIOD(2) — GL period
+- ISPR_TRN_BATCH(8) — batch number
+
+---
+
+## IM — LANDED COST / IMPORT — Pass 46
+
+### Overview
+
+Landed cost tracks additional import charges (duties, freight, customs broker fees) against PO receipts.
+
+| Program | Procs | Operation | Key tables |
+|---|---|---|---|
+| T7IMB | 106 | IM-B: Landed cost entry (with attachments) | BKICMSTR+ISLINKS+BKSYMSTR |
+| T7IMC | 83 | IM-C: Multi-currency landed cost | ISMCF+BKICMSTR |
+| T7IMD | 68 | IM-D: Allocation formulas | ISLANDF+BKICMSTR |
+| T7IME | 54 | IM-E: Duty calculation | ISDUTY+BKICMSTR |
+| T7IMF | 56 | IM-F: Customs broker billing | ISBROKER+BKICMSTR |
+
+**Flow:** PO receipt → T7IMD allocates charges by formula (ISLANDF GL targets) → T7IME calculates tariff duties (ISDUTY rate table) → T7IMF bills customs broker fees (ISBROKER) → all post to BKGLTRAN.
+
+### ISLANDF (6f) — Landed Cost GL Account Mapping
+
+Three pairs of GL account + dept — one pair per landed cost category:
+
+- ISIS_LND_GLADT(10) + GLDDT(4) — duty/tax GL account + dept
+- ISIS_LND_GLAFR(10) + GLDFR(4) — freight GL account + dept
+- ISIS_LND_GLACF(10) + GLDCF(4) — customs/fees GL account + dept
+
+### ISDUTY (2f) — Tariff/Duty Rate Table
+
+- ISIS_DUTY_DCODE(6) — duty/tariff code (PK, e.g., HS tariff schedule number)
+- ISIS_DUTY_PERC(8) — duty rate as decimal percentage
+
+### ISBROKER (4f) — Customs Broker Fee Table
+
+- ISIS_BRK_CODE(10) — broker code (PK)
+- ISIS_BRK_FLAT(8) — flat fee per shipment
+- ISIS_BRK_PERC(8) — percentage fee (of shipment value)
+- ISIS_BRK_TYPE(1) — fee type (F=flat, P=percent, B=both)
+
+---
+
+## PS — PROGRAM SECURITY — Pass 46 (Schema)
+
+### BKPSUSER (11f) — User Security Record
+
+- BKPS_USER_CODE(15) — user login code (PK)
+- BKPS_USER_PRT(2) — default printer assignment
+- BKPS_USER_MENU(2) — assigned menu set number
+- BKPS_USER_CMPY(2) — default company code
+- BKPS_USER_MWIND(1) — multi-window mode flag
+- BKPS_USER_PSWD(10) — password (10 chars; stored plaintext or weak hash)
+- BKPS_USER_ME(1) — menu editor access flag
+- BKPS_USER_SEC(30) — security access string (controls which module codes are accessible)
+- BKPS_USER_MCNTR(2) — consecutive failed login counter (triggers lockout)
+- BKPS_USER_LDATE(4) — last successful login date
+- BKPS_USER_EMP(2) — linked employee number (FK → BKPRMSTR)
+
+SEC(30) drives per-module access control. MCNTR is reset on successful login; the lockout threshold is configured in BKSYMSTR.
+
+---
+
+## MH — SHIPPING ORDER — Supporting Tables — Pass 46
+
+### ISSHPVIA (23f) — Ship Via / Carrier Method
+
+Per-customer carrier configuration with account numbers:
+
+- IS_SHPVIA_CUST(10) + CODE(15) — customer + carrier code (PK)
+- IS_SHPVIA_PRTY(2) — sort priority
+- IS_SHPVIA_OBS(1) — obsolete flag
+- IS_SHPVIA_ACCT(25) — carrier account number (UPS/FedEx/etc.)
+- IS_SHPVIA_PHONE(25) — carrier phone
+- IS_SHPVIA_NOTES_1..10 (60 each) — 10 carrier notes lines
+- IS_SHPVIA_DATE(4) — last updated date
+- IS_SHPVIA_CNTCT(25) — carrier contact name
+- IS_SHPVIA_FLAG(1) — status flag
+- IS_SHPVIA_VEND(10) — carrier as AP vendor code (FK → BKAPVEND) for freight cost AP invoices
+- IS_SHPVIA_ALPH1/ALPH2(15) + EXTRA(100)
+
+### BKCMTERR (11f) — CRM Sales Territory
+
+- BKCM_TERR_TCODE(4) — territory code (PK)
+- BKCM_TERR_DESC(25) — description
+- BKCM_TERR_EMAIL(128) — territory notification email
+- BKCM_TERR_ALPHA(30) + EXTRA(100) — custom fields
+- BKCM_TERR_FLAGS_1..5 (1 each) — 5 single-char territory flags (automation triggers)
+- BKCM_TERR_DATE(4) — last update date
+
+---
+
+### New Tables Confirmed (Pass 46)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKPRMSTR | 384 | Employee master — EMP# PK; NAME+SSN+ADDRESS+PAYTYP+15 pay rates+all QTD/YTD tax types |
+| BKPRCURP | 127 | Current period — EMP#+DATE PK; regular+12 OT+vacation+sick hrs/rates/amounts |
+| BKPRFTAX | 47 | Tax bracket table — CODE PK; ALLOW+11 START/THRU/AMT/PERC brackets |
+| BKPRGLFL | 664 | GL mapping per state+dept — all payroll tax GL accounts + rates (FICA/FUTA/SUTA/SDI/WC) |
+| BKPRSALE | 87 | Sales rep commissions — 12-month QUOTA/GROSS/COGS/RCPTS per employee |
+| BKPRINFO | 128 | HR info — 6 review+raise dates, vacation/sick accrual, direct deposit banking |
+| BKPRTC | 7 | Time card — EMP+DATE PK; START+STOP+DEDUCT times + TYPE |
+| ISPRTEMP | 15 | Direct deposit staging — GLACCT+AMT+POST+BATCH before ACH export |
+| ISLANDF | 6 | Landed cost GL accounts — duty/freight/customs each with acct+dept |
+| ISDUTY | 2 | Tariff duty rate table — DCODE(6)+PERC |
+| ISBROKER | 4 | Customs broker — CODE+FLAT+PERC+TYPE |
+| BKPSUSER | 11 | User security — CODE PK; PSWD(10)+SEC(30)+MCNTR+LDATE+EMP link |
+| ISSHPVIA | 23 | Ship via per customer — CUST+CODE PK; ACCT+PHONE+10×NOTES+VEND |
+| BKCMTERR | 11 | CRM territory — TCODE PK; DESC+EMAIL+5×FLAGS |
+
+---
+
+*Last updated: 2026-06-17 (Pass 46). PR module: 40+ programs mapped, BKPRMSTR(384f)/BKPRCURP(127f)/BKPRFTAX(47f)/BKPRGLFL(664f)/BKPRSALE(87f)/BKPRINFO(128f)/BKPRTC(7f)/ISPRTEMP(15f) extracted. IM landed cost: ISLANDF(6f)/ISDUTY(2f)/ISBROKER(4f). PS: BKPSUSER(11f). MH: ISSHPVIA(23f)/BKCMTERR(11f). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

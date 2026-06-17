@@ -537,9 +537,9 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Key forms read: T7PRA (W-4/employee tax setup), T7PRB (current payroll batch entry), T7PRF (11-bracket tax tables), T7PRE (direct deposit) — **C: 62/100**
 - [x] ✅ Tax table structure documented: 11-bracket tiers per tax code in BKPRFTAX — **C: 65/100**
 - [x] ✅ Array-based payroll entry confirmed (batch employee processing, 7 unlimited deduction types) — **C: 62/100**
-- [ ] ⬜ BKPRMSTR all 384 fields documented with meaning
-- [ ] ⬜ Payroll calculation cycle traced (T7PRB → check run → BKPRHIST)
-- [ ] ⬜ W-2 / 1099 generation traced (T7PRS identified)
+- [x] ✅ Pass 46: All 40+ T7PR* programs mapped. Full lifecycle: PR-A(employee setup)→PR-J/K(time cards/DC labor import)→PR-B(current period BKPRCURP)→PR-C(calculate)→PR-G(print checks)→PR-D(post BKGLTRAN)→PR-DPST(direct deposit via ISPRTEMP staging). BKPRMSTR(384f) key fields: EMP# PK+NAME+SSN+ADDRESS+PAYTYP+15 rates+DEPT+SHIFT+QTD/YTD for regular/vacation/sick/FIT/FICA_1/2/state/WC/medical+12 user-defined deductions. BKPRCURP(127f): EMP#+DATE PK; regular+12 OT types+vacation+sick hrs/rates/amounts. BKPRFTAX(47f): CODE PK+11-bracket START/THRU/AMT/PERC. BKPRGLFL(664f, widest table): STATE+DEPT PK; every payroll tax GL account+rate (FICA employee/employer/limit, FUTA, SUTA, SDI, WC). BKPRSALE(87f): 12-month QUOTA/GROSS/COGS/RCPTS commission bridge. BKPRINFO(128f): 6 review+raise dates, vacation/sick accrual config, direct deposit banking. BKPRTC(7f): time card EMP+DATE+START/STOP/DEDUCT. ISPRTEMP(15f): direct deposit GL staging before ACH post — **C: 82/100**
+- [ ] ⬜ BKPRMSTR remaining 300 fields (deduction types 2–12, W-2 accumulators)
+- [ ] ⬜ W-2 / 1099 generation traced (T7PRH year-end path)
 
 ### 7.12 Data Collection (DC)
 - [x] ✅ Menu codes listed — **C: 65/100**
@@ -605,7 +605,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **FP** — Features & Options Print — CHM confirmed: FP-B='Print Features and Options'; no T7FP* programs in rwn_symbols.json (1,122 searched); likely RTM-only report template triggered from FO module; print sub-module with no standalone RWN — **C: 42/100**
 - [x] 🔄 **HH** — Handheld / Shop-Floor Data Collection (44 forms) — 20 key DFMs read; 9 sub-areas: PO Receiving (hhpoc/POCBIN/POCLot/POCSER), WO ops (wog=issue, wop=finish, WOSCRAP, WOLabel, woser), SO shipping (SSOE 5-form verification chain, SOLookup, SODD), Inventory (ItemLU/INGA labels/hhinlj transfer/INLJLot/INLJSer), DC labor scan (HHDCA=scan.wo/scan.emp/OPER), PI tag count (HHPIC/hhpictags with lot/serial), alerts, batch process; large.lookups dual-mode; item type filter RFAMNLBTKO — **C: 68/100**
 - [x] 🔄 **IC** — Inventory Control utility — T7IC2EST (6 procs, BKICMSTR+MTICMSTR): one-way bridge copies production inventory to ES estimating module; accessed as IC-A "Copy Production to Estimate Inventory"; no other IC programs found; not a general inventory module — **C: 55/100**
-- [x] 🔄 **IM** — Import Management / Landed Cost — all 5 DFMs read; IMB (ISIS.MCF.* currency master: code/desc/base/symbol), IMC (ISIS.MCR.* exchange rates: date/base/SOURCE[1..n]), IMD (ISIS.LND.* landed cost GL accounts: duty/freight/deferred variants), IME (ISIS.DUTY.* duty codes: first 3 chars=vendor, percentage), IMF (ISIS.BRK.* customs broker: code/flat/perc/type); full landed cost and multi-currency infrastructure — **C: 70/100**
+- [x] 🔄 **IM** — Import Management / Landed Cost — all 5 DFMs read; IMB (ISIS.MCF.* currency master: code/desc/base/symbol), IMC (ISIS.MCR.* exchange rates: date/base/SOURCE[1..n]), IMD (ISIS.LND.* landed cost GL accounts: duty/freight/deferred variants), IME (ISIS.DUTY.* duty codes: first 3 chars=vendor, percentage), IMF (ISIS.BRK.* customs broker: code/flat/perc/type); full landed cost and multi-currency infrastructure; Pass 46: all 5 T7IM* programs mapped, ISLANDF(6f duty/freight/customs GL), ISDUTY(2f DCODE+PERC), ISBROKER(4f CODE+FLAT+PERC+TYPE) fully extracted — **C: 78/100**
 - [x] 🔄 **IS** — InfoSystem / Multi-Currency GL — T7ISMCC (ISTECH.LIB, 82 procs): ISGL.CYDATE (current year GL date), ISGL.1YDATE–6YDATE (6 years back), ISGL.FYDATE (fiscal year date) — multi-company GL fiscal date synchronization; T7ISASER (DBA.LIB, 12 procs): WOPRE/WOSUF + MTWO.WIP.* — old-era WO serial number assignment; IS namespace = shared extension tables (IS.CC/RMA/FXA/SERR/TERMS/JOB/CYCLE/ACTION/DEF/SCOMP) — **C: 60/100**
 - [x] 🔄 **JC** — Job Costing (18 ops) — all 14 DFM files read; JC Engine parameters fully extracted; forms: JC-A (main report), JC-E (parent/child cost roll-up), JC-N (cost calculation modes: current/historical/proposed), JC-P (materials in WIP); 6 labor types, 3 shifts; primary tables WORKORD/ISCALC.*/ISCOST.* — **C: 68/100**
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
@@ -615,7 +615,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **MM** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **PC** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **PL** — no T7 RWN/DFM files found (DBA-era legacy)
-- [x] 🔄 **PS** — Program Security / User Access — all 6 DFMs read; PSA (BKPS.USER.CODE user setup: seclevel, seccode [A/P/1/2/C/V/U/E], company, employee/rep), PSE (user security report), PSEITM (program access list: PROGRAM_NUM/NME), PSF (access-to-program report), PSEGRP (button group config), PSK (approve vendor: bkap.vendname); dual user system with AHSYLOG (module-level) + BKPS (program-level) — **C: 60/100**
+- [x] 🔄 **PS** — Program Security / User Access — all 6 DFMs read; PSA (BKPS.USER.CODE user setup: seclevel, seccode [A/P/1/2/C/V/U/E], company, employee/rep), PSE (user security report), PSEITM (program access list: PROGRAM_NUM/NME), PSF (access-to-program report), PSEGRP (button group config), PSK (approve vendor: bkap.vendname); dual user system with AHSYLOG (module-level) + BKPS (program-level); Pass 46: BKPSUSER(11f) fully extracted: CODE(15)+PRT+MENU+CMPY+MWIND+PSWD(10)+ME+SEC(30)+MCNTR+LDATE+EMP link to BKPRMSTR — **C: 72/100**
 - [x] 🔄 **QC** — Quality Control — 18 programs across 4 sub-areas: (1) QC-A/B/C/D inspection (T7QCA 106p incoming, T7QCB 120p WO material, T7QCC 108p WO receipt, T7QCD 117p WO routing); (2) QC-F NCR (T7QCFA 178p entry, QCFB 108p supplier quality, QCFD 53p inquiry, QCFF 131p closeout); (3) QC-G CAPA (T7QCGA 212p corrective action entry, QCGB 122p team approval, QCGD 110p report); (4) Support (T7QCMTHD 65p methods, QCRESULTS 104p results, QCRSLT 87p tray results, QCSPEC 82p spec def); key tables: ISNCR(35f), ISQCSPEC(57f), ISQCMTHD(44f), SCRAP(21f), ISWOTRAY(52f), QCCODES(2f), ISCACT/ISCARDTE/ISCTEAM (not in DDF) — **C: 72/100**
 - [x] 🔄 **QT** — Service Quote extended info (linked to SR module) — T7QTINFO (42 procs): opens ISSRINFO+BKYSMSTR+BKARINVL+ISTERMS+BKICPMAT+LANGDICT+BKICREF+BKPRSALE; service quotes are SR orders in quote status (BKARINV); T7QTINFO = extended info entry analogous to T7SRINFO; LANGDICT(5f)=translation: ECAPT+LANG PK → LCAPT(80)+FONT(30)+EXTRA(150); BKICREF(8f)=customer part xref: CUST+CODE PK → CUSNME(30)+CUSCOD(25 customer part number)+DESC/DESC2 — both schemas extracted — **C: 60/100**
 - [x] 🔄 **QU** — Query / Inquiry Tools — CHM fully documented (6 ops); RWN programs: WBKLOOKUP (413 procs, QU-A universal lookup grid — opens BKLUGRID+ISDRILL+ISDRILLM+FILEKEY+FILEDICT), CALDRILLBT (94 procs, QU-B calendar drill-down), EVOBS (128 procs, QU-D Business Status — opens ISBSF+BKGLTRAN+MTICMSTR), T7QGRID (62 procs, QU-E Quick Grid Lookup — opens BKLUGRID+ISDRILL), QUERYEXECUTE (26 procs, QU-F SQL executor — opens ISDRILL+BKPSUSER); key tables: ISDRILL (46f, query definitions with 20 FILTER + 20 WHILE condition slots), ISDRILLM (17f, drill navigation: PARENT→CHILD with SFIELD/TFIELD mappings) — **C: 70/100**
@@ -655,7 +655,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **AL** — Audit Log + Alternate Parts (T7ALOGSETUP: 43 procs, FILELOC+BKSYMSTR+BKPSUSER — configures which files/events go to audit log; T7ALTPART: 104 procs, BKSBPART+BKICMSTR+ISLINKS — alternate/substitute part maintenance with document attachment; BKSBPART(5f)=PARNT+PROD+CUST+SUBST; ISLINKS(311f)=global doc/URL store: UID+LINK+APP+TYPES_1..9+299 more); 2 programs confirmed — **C: 62/100**
 - [x] 🔄 **LI** — License / Module Access (T7LIMACC: 42 procs, ISACCESS); controls which EvoERP modules are licensed/enabled; ISACCESS confirmed used across 20+ programs as module gate; not in DDF (not registered in Pervasive schema) — single-table maintenance program; Pass 43: T7LIMACC DB fingerprint confirmed (ISACCESS only), purpose fully established — **C: 65/100**
 - [x] 🔄 **ML** — Multi-Language Invoice Support (T7MLC: 50 procs) + T7LANG(25p); opens LANGDICT+BKARINV+BKARINVL+ISREPORD+BKGLTRAN+ISREPLNK+BKPRSALE+BKICPMAT+ISJAVA+BKEDMSTR+ISBSF; translates invoices via LANGDICT, applies pricing (BKICPMAT), posts GL (BKGLTRAN), integrates EDI (BKEDMSTR) and email (ISJAVA); T7LANG = LANGDICT maintenance; Pass 43: T7LANG DB fingerprint + T7MLC full 40-table set confirmed — **C: 68/100**
-- [x] 🔄 **MH** — Shipping Order (T7MHOPE: 98 procs); opens BKCMTERR+BKARCUST+ISSHPVIA+ISSHIPCO+BKARINV+BKARINVL+BKICLOC+BKGLTRAN+ISREPLNK+BKPRSALE+BKICPMAT+ISJAVA+ISBSF; creates shipping orders (not just config) — posts BKGLTRAN, applies pricing, carrier=ISSHIPCO/ISSHPVIA, territory=BKCMTERR — **C: 55/100**
+- [x] 🔄 **MH** — Shipping Order (T7MHOPE: 98 procs); opens BKCMTERR+BKARCUST+ISSHPVIA+ISSHIPCO+BKARINV+BKARINVL+BKICLOC+BKGLTRAN+ISREPLNK+BKPRSALE+BKICPMAT+ISJAVA+ISBSF; creates shipping orders (not just config) — posts BKGLTRAN, applies pricing, carrier=ISSHIPCO/ISSHPVIA, territory=BKCMTERR; Pass 46: ISSHPVIA(23f) extracted: CUST+CODE PK, ACCT(25) carrier account, PHONE, 10×NOTES(60), DATE, CNTCT, FLAG, VEND(10 AP vendor link), ALPH1/2+EXTRA; BKCMTERR(11f): TCODE PK+DESC+EMAIL(128)+ALPHA+EXTRA+5×FLAGS+DATE — **C: 68/100**
 - [x] 🔄 **ED (EDII)** — EDI Invoice Import (T7EDII: 183 procs, 43-table DB set); full inbound EDI→AR invoice pipeline: BKARINV+BKARINVL+ISARCHG+BKARCUST+ISTERMS+BKICPMAT+BKICLOC+CLASMSTR+BKICMSTR+MTICMSTR+BKICLOCM+BKICREQ+BKARTXN+ISSOBOX+ISTAXGRP+BKYSMSTR+BKSYMSTR+ISSHPVIA+BKICPRC+ISCOMPCOD; maps inbound 850/860 to line items, applies customer pricing, creates AR transaction; core workflow reconstructed from DB fingerprint — **C: 60/100**
 - [x] 🔄 **BR** — Brand / CRM Classification (T7BRANDS: 53 procs, primary=BKCMACCC(2f: CCODE+DESC); T7BROWSER: 4 procs HTML viewer wrapper; BKCMACCC schema confirmed; both programs open ISLINKS(311f) for document attachments; T7BRANDS also opens BKICMSTR+BKARCUST for cross-module lookups); 2 programs confirmed — **C: 58/100**
 - [x] 🔄 **NE** — New Company Initialization (T7NEWINIT: 49 procs); creates all Btrieve .B data files for a new EvoERP company; FILELOC=existing file list, FILEDES(not in DDF)=file templates/blueprints; also reads BKAPVEND+BKARCUST+BKCMACCN+BKICMSTR to optionally seed data from existing company; Pass 43: full 15-table DB fingerprint confirmed; purpose fully established — **C: 65/100**
@@ -1001,7 +1001,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
 | Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
-| Module: PR/Payroll | **70** | 80 | **10** ↑ | 2026-06-17 |
+| Module: PR/Payroll | **82** | 88 | **6** ↑+12 Pass46 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **72** | 80 | **8** ↑ | 2026-06-17 |
 | Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
@@ -1028,8 +1028,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: RM/RMA | **78** | 82 | **4** ↑+10 | 2026-06-17 |
 | Module: FO/Features Options | **65** | 70 | **5** ↑ | 2026-06-17 |
 | Module: IS/InfoSystem | **60** | 65 | **5** ↑ +15 | 2026-06-17 |
-| Module: IM/Landed Cost | **70** | 80 | **10** NEW | 2026-06-15 |
-| Module: PS/Program Security | **60** | 75 | **15** NEW | 2026-06-15 |
+| Module: IM/Landed Cost | **78** | 82 | **4** ↑+8 Pass46 | 2026-06-17 |
+| Module: PS/Program Security | **72** | 78 | **6** ↑+12 Pass46 | 2026-06-17 |
 | Module: QU/Query Tools | **70** | 75 | **5** ↑ | 2026-06-17 |
 | Module: SU/Setup UI | **65** | 70 | **5** ↑ | 2026-06-17 |
 | Module: TA/TAS Admin | **65** | 72 | **7** ↑+10 | 2026-06-17 |
@@ -1057,7 +1057,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SL/Shop Loading | **58** | 65 | **7** ↑+10 | 2026-06-17 |
 | Module: AL/Audit Log+AltPart | **62** | 68 | **6** ↑+10 | 2026-06-17 |
 | Module: ML/Multi-Language | **68** | 68 | **0** ✅ | 2026-06-17 |
-| Module: MH/Shipping Order | **55** | 65 | **10** NEW | 2026-06-17 |
+| Module: MH/Shipping Order | **68** | 72 | **4** ↑+13 Pass46 | 2026-06-17 |
 | Module: BR/Brands | **58** | 65 | **7** ↑+10 | 2026-06-17 |
 | Module: NE/New Company Init | **65** | 65 | **0** ✅ | 2026-06-17 |
 | Module: JO/Jobs+Departments | **62** | 68 | **6** ↑+10 | 2026-06-17 |
