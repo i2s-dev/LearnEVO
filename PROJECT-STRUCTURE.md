@@ -891,7 +891,23 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 | WOEXCHG | WOEXCHG.B | WO | WO exchange — WO-level transfer records | inferred |
 | WOBOMREM | WOBOMREM.B | WO | WO BOM remarks — notes on WO BOM lines | inferred |
 
+## Pass 18 — SO posting tables, infrastructure lookups, shop-floor tray (2026-06-17)
+
+| Table | File | Modules | Purpose | Status |
+|-------|------|---------|---------|--------|
+| DBAHLPID | DBAHLPID.B | 1389 | DBA Help ID — maps 8-char ref code → help topic number. Opened by every module for F1 context help. Infrastructure only; not a fingerprint table. | confirmed |
+| BKSYHELP | BKSYHELP.B | 1344 | System Help Path — single record: BKSY_HELP_PATH (70 chars) = path to EvoHELP.CHM. Infrastructure. | confirmed |
+| BKSYPRTR | BKSYPRTR.B | 35 | System Printer config — keyed by PRTR_NAME (30). Fields: EXEC (print cmd), TAS flag, LPTNM (port), TYPE, PWDT (page width), PMAX, PPLNE, LASER. Maps logical printer names to physical device commands. | confirmed |
+| BKARTNOT | BKARTNOT.B | 22 | AR Transaction Notes — keyed by TRXN#(8)+CNTR(2). Single text field DESC(30). Free-text memo lines attached to AR/SO transactions. | confirmed |
+| BKARINVV | BKARINVV.B | 44 | AR Invoice V — keyed by INVV_CODE(10)+INVV_NUM(6)+DATE. 78 fields. INVV_CHK = check#, TERMD/TERMN = terms, TYPED/TYPEN = payment type. Likely AR cash receipts / payment voucher records. | inferred |
+| ISARTXNB | ISARTXNB.B | 35 | IS AR Transaction B — keyed by SONUM+PART_CODE+LINEID. 24 fields: BIN(15), LOC(10), QTY, LOT(15), SERIAL(25), DATE, TIME. Tracks which bin/lot/serial was picked for each SO line during shipping. | confirmed |
+| ISSRINFO | ISSRINFO.B | 82 | IS SR Info — keyed by SRNUM(8)+UID(8). 55 fields: CODE(15), 5 DATE fields, multiple ALPHA/NUM generic fields. Generic service-request or shipper extended data bag. | inferred |
+| ISWOTRAY | ISWOTRAY.B | 46 | IS WO Tray — keyed by TRAY_NUM(25). 53 fields: WOPRE+WOSUF (WO), OPER, OPDESC(30), CODE(15), SQTY/COMQTY/SCRPQTY. Shop-floor tray/container tracking: which production tray is at which WO operation, with scheduled/completed/scrap qty. | confirmed |
+| ISLOCCST | ISLOCCST.B | 17 | IS Location Cost — keyed by PART(15)+LOC(10). 7 fields: AVGC (avg cost), BOOKVAL, LDATE/LTIME (last updated), EXTRA(150). Per-item-per-location average cost and book value for multi-location costing. | confirmed |
+| BKCMHCOD | BKCMHCOD.B | 16 | CM History Code — keyed by HCODE(2). 9 fields: DESC(25), WINDW, RATE, UM(3), ABILL (billable flag), BPART/NPART/FPART (base/next/final part#). Billable service/labor rate codes with associated part numbers. | inferred |
+| BKCMACCC | BKCMACCC.B | 20 | CM Account Cost Center — keyed by CCODE(5). 2 fields: DESC(25). Simple cost center code + description lookup table. | confirmed |
+
 ---
 
 *Last updated: 2026-06-17 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–17. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–18. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*

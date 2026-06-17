@@ -169,10 +169,21 @@ to resolve fully:
     - **K_A** (`d97f05679438037073c30628734764020859f77e`) purpose remains unknown.
     - Remaining: identify what K_A encrypts; find key for suwin7.dcy.
 
-12. **Customization forms (`J7*`).** 20+ customer-specific
-    customization modules (`J7AIJCG`, `J7BEFWebInv`, `J7CCCutSheet`,
-    `J7CRSOW`, `J7DCMatLabels`, etc.). We inventoried them but didn't
-    dig into any single one. They're third-party and vary by customer.
+~~12. **Customization forms (`J7*`).**~~ **RESOLVED 2026-06-17.**
+    All 50 J7 RWN modules cataloged; 16 DFMs read for form titles and field labels.
+    Key findings:
+    - i2 Systems manufactures **corrugated packaging and mattress components** (BOX,CDBD,INSERT; mattress serial labels; TRAY,PALLET)
+    - Confirmed customers: Lapco (outdoor workwear), Albertsons (grocery chain)
+    - J7CC* = Corrugated/Cut operations: CCCutSheet, CCFabXfer, CCItemSync, CCPIC (PI count), CCSOLabels, CCSHI
+    - J7HH* = Handheld: scan-to-ship mattresses, inventory adjust/transfer (EB=Edwards Brands?)
+    - J7DC* = Data collection: Print Mattress Labels (J7DCMatLabels), Shipping scan (J7DCSSOE)
+    - J7*SO* = Customer-specific SO variants: LapcoSO, i2SystemSOOE, RCSOImport, SOAImpLines
+    - J7RC* = RC customer system integration (ConvTable, Pitex, SOImport)
+    - J7NM* = NM division: Bins, Import, RTM reports
+    - J7PT* = PT system integration: RecPOLine, PTWOKI
+    - J7TMCKanban = TMC Kanban scheduling (599KB = complex)
+    - J7SyncWOtoSO = Syncs WO data back to SO (422KB)
+    - Full catalog in docs/03-modules/module-db-cross-reference.md Pass 18.
 
 ## Nice-to-have follow-ups (not blocking)
 

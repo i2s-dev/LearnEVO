@@ -1793,7 +1793,7 @@ SM is the largest module family and serves two distinct purposes:
 | **FIFO** | First-In-First-Out inventory costing method |
 | **GL distribution** | Splitting a transaction across multiple GL accounts |
 | **ISJAVA** | Task queue table for TAS → Java integration |
-| **J7\*** | i2 Systems customer-specific customization modules |
+| **J7\*** | i2 Systems customer-specific customization modules — 50 RWN files: handheld scan forms for mattress/corrugated packaging operations, web order import, customer-specific SO/PO/AP workflows. Confirmed customers: Lapco (workwear), Albertsons (grocery). |
 | **lot tracking** | Tracking inventory by lot number (LOT table) |
 | **MRP** | Material Requirements Planning — calculates what to buy/make and when (MR module) |
 | **MRP firm change** | A user-locked planned order (BKMRPFC) that survives MRP regeneration |

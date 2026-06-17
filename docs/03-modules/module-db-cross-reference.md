@@ -2051,3 +2051,85 @@ These are not infrastructure (they hold real business data) but are accessed wid
 
 
 
+
+---
+
+## Pass 18 — J7 Customization Modules (2026-06-17)
+
+J7-prefixed modules are **i2 Systems customer-specific customizations** built on top of standard EvoERP. The "J7" prefix is the i2 Systems customization namespace. 50 RWN files exist on the share.
+
+### Business context (discovered from DFM labels and item inventory)
+
+i2 Systems manufactures **custom corrugated packaging** and **mattress components**:
+- Items in BKICMSTR include: BOX (cardboard/corrugated), INSERT, BAG, TRAY, PALLET
+- "CDBD" in item descriptions = Corrugated/Cardboard (e.g. BOX,CDBD,ACCESSORY,ALBERTSCEA = cardboard accessory box for Albertsons)
+- Mattress serial number and label modules confirm mattress components production
+- Customer "Lapco" (outdoor workwear brand) and "Albertsons" (grocery chain) are confirmed customers
+
+### J7 module catalog (DFM-confirmed, 2026-06-17)
+
+| Module | Caption / Purpose | Notes |
+|--------|-------------------|-------|
+| J7ABIShipRpt | **Lapco Fulfillment Report** — SO shipment report for Lapco customer; filter by SO#/date/customer/invoice/PO | Lapco = outdoor workwear customer |
+| J7AppVend | **Approve Vendor** — Vendor approval workflow: vendor code, name, max check amount, Approved flag | AP workflow gate |
+| J7AutoAPC | **Auto Enter PO Invoices** — Batch AP PO invoice auto-entry; reuses T7APC logic | Automation of AP-C |
+| J7BEFWebInv | **Web Item Export** — Exports items to CSV/FTP for web catalog; filter by item#/type/class/active | SourceFile=T7DEU variant |
+| J7BEFWebInvAuto | Auto-run companion to J7BEFWebInv (timer-triggered batch export) | 5 procs, no tables |
+| J7CCPIC | **PI-C Enter Tag Counts** — Physical inventory cycle-count tag entry: count date, PI#, year, location, employee | CC = corrugated/cut? |
+| J7CCCutSheet | Cut sheet report — prints corrugated cut specifications | ~546KB RWN, large |
+| J7CCFABXFER | CC Fabrication Transfer — transfers fabricated corrugated items between locations/WOs | |
+| J7CCITEMSYNC | CC Item Sync — synchronizes item master records across companies or systems | |
+| J7CCSOLABELS | CC SO Labels — prints packing/shipping labels for corrugated SO shipments | ~353KB RWN |
+| J7CCSHI | CC Shipping — shipping confirmation for corrugated orders; opens 34 tables including PI, payroll, DBAFIFO | Broadest J7 table scope |
+| J7CIWebImport | **Web Import** — Imports web orders from FTP into EDI or open SO; bank acct + SO# mapping options | |
+| J7CJBUsage | **Print Inventory Usage** — Inventory usage report by class/category/date/customer | |
+| J7CRSOW | **SO-W** — SO report with backorders toggle; filter by SO#/date/customer/invoice/PO | Statement of Work variant |
+| J7DCMatLabels | **Print Mattress Labels** — Handheld scan to print mattress labels: mattress#, serial#, WO# | Confirms mattress mfg |
+| J7DCSSOE | **Shipping** (handheld) — Scan-to-ship: scans mattress serial + WO to record shipment on SO | Small 7KB RWN = stub |
+| J7DCSSOEVerify | **Sales Orders** — Verification sub-form for J7DCSSOE; shows VPART/SHIP.QTY/ORDERQTY/DESC | SourceFile=J7DCSSOE |
+| J7EBSerial | **Enter Serial Number** — Handheld scan serial numbers against item: code/desc/qty/last serial | |
+| J7EIMDCRev | **IN-H Print Inventory Listing** — DC entry reversal: list DC records by date/WO/employee, save or reverse | |
+| J7HHEBInc | **Inventory Adjustment** (handheld) — Scan to receive/increment inventory: mattress#/serial/item#/invoice# | EB = Edwards Brands? |
+| J7HHEBXFER | **Transfer Inventory** (handheld) — Scan to transfer between locations: mattress#/serial/item# | |
+| J7HHEBXferVerify | **Verify Transfer** — Confirmation sub-form for J7HHEBXFER | SourceFile=J7HHEBXfer |
+| J7HHNorSSOE | HH NOR SS Order Entry — handheld SO entry for NOR customer | Small 7KB RWN = stub |
+| J7HHLITN | HH LITN entry — handheld screen for LITN customer or operation | 44KB RWN |
+| J7HHPTSSOE | HH PTS SO Order Entry — handheld SO entry for PTS customer | 366KB RWN |
+| J7HHRTSSOE | HH RTS SO Order Entry — handheld SO entry for RTS customer | 628KB largest HH module |
+| J7I2SACH | **i2S ACH** — ACH (electronic payment) processing for i2 Systems | |
+| J7i2SystemSOOE | **i2 Systems SO Order Entry** — custom SO entry variant | 259KB RWN |
+| J7LapcoSO | **Lapco SO** — Custom SO processing for Lapco customer | |
+| J7MCDSAReport | **MCDSA Report** — reporting for MCDSA (customer/project?) | |
+| J7MPImportAR | **MP Import AR** — Imports AR transactions from an external system (MP = marketplace?) | |
+| J7NMBins | **NM Bins** — Bin management for NM customer/division | |
+| J7NMImport | **NM Import** — Data import for NM customer/division | |
+| J7NMITEMRTM | **NM Item RTM** — ReportBuilder template item report for NM | |
+| J7NMRTMPRINTER | **NM RTM Printer** — RTM print handler for NM division | |
+| J7PEDCB | **PED CB** — Circuit board / corrugated-board PED operation | |
+| J7POAIMPLINES | **PO Import Lines** — Imports PO lines from external file | |
+| J7POC | **PO-C variant** — Custom PO-C (PO receive) processing | |
+| J7PTRecPOLine | **PT Receive PO Line** — PT system PO line receiving integration | 691KB largest J7 RWN |
+| J7PTWOKI | **PT WO KI** — PT system WO kit issue | |
+| J7RCConvTable | **RC Conversion Table** — Conversion table for RC customer/system | |
+| J7RCPitex | **RC Pitex** — Pitex integration for RC customer | |
+| J7RCSOImport | **RC SO Import** — Imports SOs from RC customer system | |
+| J7RITECPOA | **RITEC POA** — RITEC system PO authorization | 125KB RWN |
+| J7SISALES | **SI Sales** — Sales report for SI customer/division | |
+| J7SOAIMPLINES | **SO Import Lines** — Imports SO lines from external file | |
+| J7SyncWOtoSO | **Sync WO to SO** — Synchronizes Work Order data back to Sales Order | 422KB RWN |
+| J7TMCKanban | **TMC Kanban** — Kanban production scheduling for TMC customer | 599KB RWN |
+| J7WOLL | **WO LL** — Work Order line list / label printing | |
+| J7AIJCG | **AIJ Job Cost GL** — Job costing GL entries for AIJ (AIJCG=AIJ + Job Cost GL?) | 310KB RWN |
+| J7AIJCG2 | **AIJ Job Cost GL 2** — Variant of J7AIJCG | 313KB RWN |
+| J7AISAN | **AISAN** — AISAN customer/system integration | 426KB RWN |
+| J7APCHECK | **AP Check** — Custom AP check printing/processing | 44KB RWN |
+
+### Pass 18 table ownership (J7 specific)
+
+| Table | Primary J7 modules | Notes |
+|-------|-------------------|-------|
+| ISARTXNB | J7CCSHI, J7HHEBINC, others | Per-SO-line bin/lot/serial shipping transaction |
+| ISWOTRAY | J7CCCutSheet, J7CCFABXFER | Shop-floor tray tracking for corrugated fabrication |
+| BKSYPRTR | Most J7 modules | Printer config — used for label printing |
+| BKARINVV | J7 AR modules | AR cash receipts / payment voucher |
+| ISLOCCST | J7CCSHI, location-aware modules | Per-item-per-location average cost |

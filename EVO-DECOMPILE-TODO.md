@@ -760,15 +760,14 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ## 12. CUSTOMIZATION MODULES (J7\*)
 
-- [x] ✅ 37 J7\* customer-specific modules inventoried — **C: 78/100**
-- [x] ✅ 109 files cataloged (DFM + RWN pairs) — **C: 78/100**
-- [x] ✅ Examples: J7AIJCG, J7BEFWebInv, J7CCCutSheet, J7CRSOW, J7DCMatLabels, J7EIMDCRev, J7HH\* — **C: 72/100**
-- [x] ✅ DFM forms analyzed (UI layouts visible) — **C: 65/100**
-- [ ] ⬜ J7\* prefix meaning confirmed (customer initials? i2 Systems internal?)
-- [ ] ⬜ Each J7 module's business purpose fully documented
-- [ ] ⬜ J7\* database tables identified (any custom tables created by J7 modules?)
-- [ ] ⬜ J7 RWN logic (blocked by encryption — see §14)
-- [ ] ⬜ J7\* modules' interaction with core EVO tables documented
+- [x] ✅ All 50 J7\* RWN modules inventoried (Pass 18, 2026-06-17) — **C: 88/100**
+- [x] ✅ 16 DFM files read; form titles and field labels extracted — **C: 88/100**
+- [x] ✅ J7\* prefix = i2 Systems customization namespace (confirmed from J7i2SystemSOOE, J7I2SACH) — **C: 90/100**
+- [x] ✅ Business context confirmed: i2 Systems = corrugated packaging + mattress components manufacturer; customers include Lapco, Albertsons — **C: 90/100**
+- [x] ✅ All 50 modules categorized by functional area (CC=corrugated, HH=handheld, DC=data collection, customer integrations) — **C: 85/100**
+- [x] ✅ Core tables used by J7 modules confirmed: BKICMSTR, BKARINV/L, BKAPPOL, ISARTXNB, ISWOTRAY — **C: 80/100**
+- [ ] ⬜ J7 RWN internal logic (blocked by encryption — see §14)
+- [ ] ⬜ Custom J7-specific tables (if any) — not yet confirmed to exist
 
 ---
 
