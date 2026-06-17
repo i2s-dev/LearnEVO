@@ -1468,15 +1468,34 @@ Primary key: IS_WOEX_WOPRE(8) + WOSUF(2). Extension record per WO for multi-yiel
 - **SPC Report (SPCREP/SPCREP2) — WO Inspection Report:** Filter by WO range, parent part range, employee range, and date range. Standard after-the-fact quality analysis.
 - **SPC PPM Report (SPCREPPPM) — Parts Per Million Defect Rate:** WO/part/date range with "Sides From/Thru" range. PPM = (defects / opportunities) × 1,000,000. The "Sides" field is specific to PCB/electronics manufacturing (front side, back side of a circuit board).
 
+**Programs confirmed (Pass 67):**
+- T7SPC (148p) — main entry: ISSERR+ISSTRACK+ISSPC+ISSTYPE+ISSDET+ISSETYPE+ISSEPROC+WORKORD+WOROUT+BKPRMSTR+WOBOM+ISSCOMP
+- T7SPCREP/SPCREP2 (105p each) — WO/part/employee reports
+- T7SPCLIVEREP (50p) — auto-refresh live report
+- T7SPCREPPPM (104p) — PPM report
+- T7SPCLIVEGRID (5p) — live dashboard stub
+- T7SPCMEMO2ALPHA (25p) — ISSPC/ISSERR data migration utility
+
 **Primary tables:**
 
-| Table | Purpose |
-|-------|---------|
-| IS.SERR.* | Scan/inspection error records — error type, process, WO, employee, qty |
+**ISSERR (14f) — SPC Error Event:**
+WOPRE+WOSUF+OPER+TIME+DATE PK; ERROR(25, defect code); PROCESS(25, process name); COUNT(int, defect count); REF(50); EXTRA(50); SERIAL(20); ADOF(STRING 1000, AOI Defect-of-Focus data) + ADIAG(STRING 1000, AOI Diagnosis) + AREWORK(STRING 1000, AOI Rework instructions). The 1000-char ADOF/ADIAG/AREWORK fields = AOI (Automated Optical Inspection) integration — machine-generated inspection data per defect.
 
-**Industry context:** The "Sides" field in the PPM report (PCB front/back) strongly indicates i2 Systems is an electronics/PCB manufacturer. SPC PPM measurement by board side is standard in electronics contract manufacturing.
+**ISSPC (20f) — SPC Inspection Record:**
+WOPRE+WOSUF+OPER+EMPNUM+DATE+TIME PK; GOOD(int, good units); REWORK(int, rework units); SIDE(1, PCB side: F/B/T); TYPE(25, defect type FK→ISSTYPE); DETAIL(25, defect detail FK→ISSDET); EXTRA; TESTR+TESTT+TESTE_1..3 (test result fields); ANOTES(notes); CUST(10, customer); PART(15, item code).
 
-**Confidence: 60/100** — All 6 DFMs read; IS.SERR.* table confirmed; real-time dashboard and PPM report verified by caption; IS.SERR field schema and process taxonomy not decoded; menu code placement not confirmed.
+**ISSTRACK (13f) — Component Traceability:**
+WOPRE+WOSUF+OPER+TIME+DATE+PROC(25) PK; PSER(20, parent/board serial); COMP(15, component item code); CSER(20, component serial number); NOTE(1000, placement details); EXTRA(50); AR(1, auto-rework flag); CLOT(15, component lot). Full component-level traceability: board serial → every component placed on it with component serial+lot. Supports IPC-1752A-style traceability for electronics manufacturing.
+
+**Supporting tables:**
+- **ISSTYPE (3f):** TYPE(PK)+WHO+ASSET — error type code master
+- **ISSETET (2f):** ERR(PK)+WHO — error code master
+- **ISSEPROC (2f):** PROC(PK)+WHO — process code master
+- **ISSDET (4f):** TYPE+DETAIL PK; WHO+SUB — error detail sub-code
+
+**Industry context:** PCB/electronics manufacturing. SIDE field = PCB front/back sides. ISSTRACK = component-level traceability for IPC compliance. ADOF/ADIAG/AREWORK = AOI machine integration.
+
+**Confidence: 80/100** — 7 programs confirmed; all SP table schemas extracted (ISSPC 20f, ISSERR 14f, ISSTRACK 13f, ISSTYPE 3f, ISSETYPE 2f, ISSEPROC 2f, ISSDET 4f); AOI integration confirmed; PCB traceability architecture fully decoded; per-operation inspection logic blocked by encryption.
 
 ---
 
@@ -7181,4 +7200,17 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 66). Confidence bumps: RM 68→78 (ISRMAI 54f full schema; 4 programs confirmed; disposition flags WO/CR/SO/STOCK/SCRAP/SR/REFUND decoded), TA 72→78 (ISSCHED 24f full schema; TA-N scheduler fully explained), QC 78→82 (SCRAP 21f decoded; 18-program architecture re-confirmed). 6 new schemas: ISRMAI(54f), ISRMAC(3f), SCRAP(21f), ISSCHED(24f), BKSBVEND(6f), BKSBMFG(6f).*
+### New Tables Confirmed (Pass 67)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISSPC | 20 | SPC inspection record — WOPRE+WOSUF+OPER+EMPNUM+DATE+TIME PK; GOOD+REWORK counts; SIDE(PCB side F/B/T); TYPE+DETAIL (defect classification); TESTR/TESTT/TESTE_1..3 test results; ANOTES; CUST+PART |
+| ISSERR | 14 | SPC error event — WOPRE+WOSUF+OPER+TIME+DATE PK; ERROR(defect code)+PROCESS; COUNT; SERIAL; ADOF(1000 AOI focus data)+ADIAG(1000 AOI diagnosis)+AREWORK(1000 AOI rework); AOI integration confirmed |
+| ISSTRACK | 13 | Component traceability — WOPRE+WOSUF+OPER+TIME+DATE+PROC PK; PSER(board serial)+COMP(part)+CSER(component serial)+NOTE(1000)+CLOT(lot)+AR(auto-rework) |
+| ISSTYPE | 3 | SPC error type code — TYPE(PK)+WHO+ASSET |
+| ISSETYPE | 2 | SPC error code — ERR(PK)+WHO |
+| ISSEPROC | 2 | SPC process code — PROC(PK)+WHO |
+
+---
+
+*Last updated: 2026-06-17 (Pass 67). Confidence bumps: SP 68→80 (ISSPC 20f + ISSERR 14f + ISSTRACK 13f all decoded; 7 programs confirmed; AOI integration and PCB component traceability confirmed). 6 new schemas: ISSPC(20f), ISSERR(14f), ISSTRACK(13f), ISSTYPE(3f), ISSETYPE(2f), ISSEPROC(2f).*
