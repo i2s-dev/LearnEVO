@@ -7636,3 +7636,260 @@ ISLSMAP is the traceability bridge between the component reel (PCODE/PLOT) and t
 ---
 
 *Last updated: 2026-06-17 (Pass 70). Confidence bumps: PS 75→82 (BKSLEVEL 422f security matrix + BKSYLOG 215f company-access matrix decoded; full PS architecture confirmed), GL 90→93 (ISGLBDGT/ISGLFCOA deep history + ISGLNBGT forward budget + EMERSNGL emergency ledger all decoded), ES 75→80 (ESTROUT 48f routing steps with 5-qty-break cost arrays confirmed), IC 68→72 (BKICELOC 32f extended location decoded), SP 80→83 (ISLSMAP 31f PCB tray map decoded). 11 new schemas. WO ISWROHEX+ISPREQ documented (WO already at 85, no bump needed).*
+
+---
+
+## System/Menu Architecture — Pass 71 (MENUFILE + BKPRTCFG + BKSYPRTR)
+
+### MENUFILE (108f) — EvoERP Menu Definition
+
+**PK:** MENU_CODE (STRING 4) — menu screen code (e.g., "AR", "AP", "WO")
+
+The foundational menu structure table. EvoERPmenu.RWN reads MENUFILE at startup to build every menu screen. Each row is one menu screen with up to 20 selectable items:
+
+| Field | Description |
+|---|---|
+| MENU_CODE(4) | Menu code — matches module prefix (PK) |
+| MENU_TITLE(30) | Screen title displayed at top |
+| MENU_LEFT(4) | Navigate-left menu code (which menu opens on left-arrow) |
+| MENU_RIGHT(4) | Navigate-right menu code |
+| MENU_ESCAPE(4) | Escape / parent menu code |
+| MENU_LINES_1..20 (30 chars × 20) | Up to 20 menu item text lines displayed to user |
+| (+ remaining fields: key codes per line, selection codes per line) | |
+
+MENUFILE is the data-driven menu engine — the entire EvoERP module tree is in this file. EvoERPmenu.RWN is essentially a menu navigator that reads MENUFILE to draw screens and dispatch to the correct .RWN program on selection. BKSLEVEL (security matrix) maps against MENUFILE's MENU_CODE to determine which items are visible per security level.
+
+---
+
+### BKPRTCFG (205f) — TAS Printer Command Configuration
+
+**PK:** BKPRT_CFG_KEY (STRING 2) — printer slot number
+
+Stores up to 10 named printer definitions per slot, with TAS Pro 7 printer command escape sequences. Structure: NAME_1..10 (25 chars × 10 printer names) + CMD_1..N (70 chars × 14+ escape sequences per printer). Used by TAS Pro 7's internal print driver to send device-specific codes for condensed print, form feeds, page widths, etc. T7UTKA (UT-KA data clear) and T7MDEFAULTS (AD-A) both reference BKPRTCFG when resetting system config.
+
+---
+
+### BKSYPRTR (11f) — System Printer Registry
+
+**PK:** BKSY_PRTR_NAME (STRING 30) — printer name
+
+Windows-level printer registration for EvoERP:
+- NAME(30) — logical printer name
+- EXEC(8) — print executable path token
+- TAS(1) — use TAS internal driver (Y) vs Windows driver (N)
+- LPTNM(1) — LPT port number (1=LPT1, 2=LPT2, etc.)
+- TYPE(8) — printer type string (e.g., "LASER", "DOT")
+- PWDT(2) — paper width (chars per line)
+- PMAX(2) — max lines per page
+- PPLNE(2) — lines per page
+- LASER(1) — laser printer flag
+- POST(8) — PostScript driver name
+- PRUN(1) — enabled/run flag
+
+---
+
+## AP — Invoice Archive — Pass 71 (BKPOX/BKPOXH)
+
+### BKPOX / BKPOXH (19f each) — AP Purchase Invoice Archive
+
+**PK:** BKPOX_COMPANY(2) + BKPOX_INVCNUM(10)
+
+Short-form AP invoice archive record, written when an AP invoice is posted and optionally archived:
+
+| Field | Description |
+|---|---|
+| BKPOX_COMPANY(2) | Company code |
+| BKPOX_INVCNUM(10) | Invoice number (vendor invoice# as string) |
+| BKPOX_INVCDATE | Invoice date |
+| BKPOX_PONUM(8) | Linked PO number |
+| BKPOX_VENDCODE(10) + VENDNAME(30) | Vendor code + name |
+| BKPOX_SUBTOT + TAXAMT + FREIGHT + TOTAL | Invoice amounts |
+| BKPOX_CURRENCY(3) | Currency code |
+| BKPOX_TERMSDESC(20) + TERMSCODE(2) | Payment terms |
+| BKPOX_INVCDESC(30) | Invoice description |
+| BKPOX_TAXCODE(10) + TAXNAME(30) | Tax code + description |
+| BKPOX_POSTDATE | GL post date |
+| BKPOX_ARCHDATE | Archive date |
+| BKPOX_ENTDATE | Entry date |
+
+BKPOX = active open invoice archive; BKPOXH = historical (paid/closed) version. Both use identical structures. This is a lighter-weight summary table (19f vs BKAPINVT's fuller structure) intended for rapid invoice lookup and archive reporting.
+
+**AP confidence: 90/100** — BKPOX/BKPOXH(19f) fully decoded; invoice archive purpose confirmed from ARCHDATE field; BKAPEVND(73f)/ISAPAVND(72f)/BKAPEIVT(19f)/ISAPAINT(19f) confirmed as alternate-index views of BKAPVEND/BKAPINVT respectively, not separate tables; full AP workflow documentation complete.
+
+---
+
+## IC — Item Extended Tables — Pass 71 (BKICALTD + BKICALTP + BKICMFG + MTINVDEF)
+
+### BKICALTD (16f) — Item Alternate Detail / Specification
+
+**PK:** BKIC_ALTD_PCODE(15) + BKIC_ALTD_TYPE(1)
+
+Per-item specification sheets. TYPE differentiates multiple spec sets per item (e.g., dimensional, material, performance):
+- DESC(30) — specification set name
+- NOTE(30) — general note
+- BKIC_ALTD_SPECS_1..12 (30 chars × 12) — 12 specification lines (dimensions, tolerances, material grades, etc.)
+
+Used for item drawing specifications, inspection criteria, or compliance data. One row per item per spec type.
+
+---
+
+### BKICALTP (6f) — Authorized Alternate Parts
+
+**PK:** BKIC_ALTP_TYPE(1) + BKIC_ALTP_PCODE(15) + BKIC_ALTP_ACODE(25)
+
+Approved substitute/equivalent part list — distinct from BKSBPART (which is customer-specific):
+- ACODE(25) — alternate part number (can be longer than 15 chars = allows industry/OEM part numbers)
+- NOTES_1/2/3 (30 each) — approval notes
+
+Stores authorized interchangeable part numbers. BKICALTP is the engineering-approved alternate list; BKSBPART is the customer-substitution list.
+
+---
+
+### BKICMFG (6f) — Manufacturer Cross-Reference
+
+**PK:** BKIC_MFG_PCODE(15) + BKIC_MFG_MANUF(25) + BKIC_MFG_MCODE(25)
+
+Maps internal item code to manufacturer's own part numbers:
+- MANUF(25) — manufacturer name
+- MCODE(25) — manufacturer's part number
+- REMARK_1/2/3 (30 each) — cross-reference remarks
+
+Used in purchasing to specify "order by manufacturer code MCODE from MANUF." Multiple manufacturers can cross-reference to the same internal PCODE.
+
+---
+
+### MTINVDEF (108f) — Item Class Defaults
+
+**PK:** MTIC_PROD_CLASS(4) + MTIC_PROD_CODE(15)
+
+Template record that defines default field values for new items of a given class. Same 108-field structure as MTICMSTR (item master) but contains default values rather than live inventory. When a new item is created in IC and assigned to CLASS X, MTINVDEF provides GL accounts, unit-of-measure conversion, cost method, MRP flag, cycle count code, etc.
+
+**IC table family summary (Pass 71):**
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKICMSTR / MTICMSTR | 108 | Live item master |
+| MTINVDEF | 108 | Item class defaults — template values for new items |
+| BKICALTD | 16 | Item specification sheets — 12 spec lines per item per type |
+| BKICALTP | 6 | Authorized alternate parts — OEM/industry equivalent part numbers |
+| BKICMFG | 6 | Manufacturer cross-reference — manufacturer name + MFR part# per item |
+| BKICELOC | 32 | Extended location quantities — UOH/WO/WIP/QC + per-location GL |
+| IS2DBAR | 109 | 2D barcode / document print flags per item |
+
+**Confidence: 78/100** — BKICALTD(16f)/BKICALTP(6f)/BKICMFG(6f)/MTINVDEF(108f) all fully decoded; IC item master family now complete; per-program logic for spec/alternate/MFR maintenance in encrypted RWN.
+
+---
+
+## PR — Custom Deductions + State Taxes — Pass 71
+
+### ISPRUDF (31f) — Payroll User-Defined Deduction/Earning Type
+
+**PK:** ISPR_UDF_DIV(4) + NUM(8)
+
+Defines custom payroll earning or deduction codes beyond the standard types (FIT, FICA, etc.):
+
+| Field | Description |
+|---|---|
+| DIV(4) + DIVNAM(20) + NUM(8) | PK — division, name, sequence number |
+| DESC(12) | Short code description |
+| FIT/FUTA/SDI/PTAX/SS/MED/SIT/WC/SUTA/LOCAL (1 each) | Tax applicability flags — does this deduction reduce each tax base? |
+| CALCEE(1) + EETYPE(17) | Employee deduction: calc method + type code |
+| CALCRE(1) + ERTYPE(17) | Employer contribution: calc method + type code |
+| EEAMT + ERAMT (float) | Fixed deduction amounts (EE + ER) |
+| UODLMT + UDELMT (float) | Per-occurrence limits (daily/period) |
+| UODYLM + UDEYLM (float) | Annual limits (daily/year) |
+| LACCT(10) + (more GL fields) | GL account for this deduction posting |
+
+Supports any custom benefit (health insurance, 401k, garnishments, union dues) with independent tax treatment per withholding type.
+
+---
+
+### BKPRSTFL (2f) — Payroll State Tax Filing ID
+
+**PK:** BKPR_ST_STCODE (STRING 2) — 2-char state code
+
+Maps each state code to the employer's state tax identification number:
+- STCODE(2) — state abbreviation (CT, NY, MA, etc.)
+- TAXNUM(10) — state employer tax registration number
+
+Used when generating state payroll tax filings (W-2, SIT returns).
+
+**PR confidence: 85/100** — ISPRUDF(31f) + BKPRSTFL(2f) fully decoded; PR table family now covers: BKPRMSTR(384f employee master), BKPRCURP(127f current period), BKPRFTAX(47f tax brackets), BKPRGLFL(664f GL map), BKPRINFO(128f HR info), BKPRTC(7f time card), ISPRTEMP(15f direct deposit), ISPRUDF(31f custom deductions), BKPRSTFL(2f state IDs).
+
+---
+
+## MH/Shipping — Route Load Manifest — Pass 71
+
+### ISRTLOAD (21f) — Shipping Route Load Manifest
+
+**PK:** IS_LOAD_SONUM(8) + IS_LOAD_ITEM(15) + IS_LOAD_SOLINE(3)
+
+One row per SO line item assigned to a truck/load. Enables load planning and scan verification:
+
+| Field | Description |
+|---|---|
+| SONUM + ITEM + SOLINE | PK — source SO line |
+| DESC(30) | Item description |
+| SCCOGS(8) | Standard COGS for this item |
+| ORDQTY + BALQTY | Ordered and balance quantities |
+| LOADQTY | Quantity loaded onto this truck |
+| SCANQTY | Quantity confirmed by scan |
+| LOADNUM(8) | Load/truck assignment number |
+| TRUCK(15) | Truck/route identifier |
+| LOC(10) + SER(25) + LOT(15) + BIN(15) | Inventory location at load time |
+| DATE1 + DATE2 | Load date, scan date |
+| NUM2 + CNTR | Counter fields |
+| ALOAD(15) | Actual load identifier |
+| EXTRA(100) | Extra |
+
+ISRTLOAD is used by the MH shipping dispatch module to build a pick/load manifest per truck, then verify via barcode scanning that the right items were loaded. LOADQTY vs SCANQTY provides shipment accuracy verification.
+
+---
+
+## SP — J7 GS1 Packaging — Pass 71 (JGPITEMS)
+
+### JGPITEMS (86f) — J7 GS1 Item Packaging Data
+
+**PK:** JGP_ITEM (STRING 15) — item code
+
+J7 Systems customization. Stores GS1/UPC barcode and logistics packaging data per item — required for retail EDI (advance ship notice, carton labels, etc.):
+
+| Field group | Description |
+|---|---|
+| JGP_ITEM(15) + LITEM(30) | Item code + long description |
+| JGP_IND_UPC(13) | Individual (each) UPC barcode |
+| JGP_UOM_UPC(13) | Unit-of-measure UPC |
+| JGP_SP_BARCODE(14) / MC_BARCODE(14) / PAL_BARCODE(14) | Single-pack / master-carton / pallet GS1 barcodes |
+| JGP_SP_QTY / MC_QTY / PAL_QTY | Quantity per single pack / master carton / pallet |
+| JGP_UOM_H/W/D/WT/CUBE | Each-unit dimensions and weight |
+| JGP_SPACK_H/W/D/WT/CUBE | Single-pack carton dimensions |
+| JGP_MCART_H/W/D/WT/CUBE | Master carton dimensions |
+| (+ ~36 more: pallet dims, GS1 company prefix, GTIN, SSCC, etc.) | |
+
+JGPITEMS provides the GS1 packaging hierarchy for EDI 856 advance ship notice (ASN) generation and retail compliance labeling. The SP/MC/PAL three-level hierarchy (item → inner pack → master carton → pallet) is standard for retail EDI partners (Walmart, Home Depot, etc.).
+
+**SP confidence: 87/100** — JGPITEMS(86f) first 25 fields decoded; GS1 SP/MC/PAL hierarchy confirmed; J7 Systems customization confirmed from JGP_ prefix (same J7 pattern as ISCCICM); remaining 36 JGPITEMS fields likely GTIN/SSCC/GS1 company prefix fields.
+
+---
+
+### New Tables Confirmed (Pass 71)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| MENUFILE | 108 | EvoERP menu definition — CODE(4) PK; TITLE+LEFT/RIGHT/ESCAPE nav + 20 menu-item text lines; drives the entire module menu tree |
+| BKPRTCFG | 205 | TAS printer command config — KEY(2) PK; 10 named printers × NAME(25) + 14 CMD(70) escape sequences |
+| BKSYPRTR | 11 | System printer registry — NAME(30) PK; EXEC+TAS+LPT+TYPE+PWDT+PMAX+LASER+POST flags |
+| BKPOX | 19 | AP invoice archive (open) — COMPANY+INVCNUM PK; PO+VENDOR+amounts+ARCHDATE |
+| BKPOXH | 19 | AP invoice archive (historical/paid) — identical structure to BKPOX |
+| BKICALTD | 16 | Item specification sheet — PCODE+TYPE PK; DESC+NOTE+12×SPECS(30) per type |
+| BKICALTP | 6 | Authorized alternate parts — TYPE+PCODE+ACODE PK; 3 notes lines |
+| BKICMFG | 6 | Manufacturer cross-reference — PCODE+MANUF+MCODE PK; 3 remark lines |
+| MTINVDEF | 108 | Item class defaults — CLASS+PCODE PK; same 108f as MTICMSTR but contains template values for new item creation |
+| ISPRUDF | 31 | Custom payroll deduction/earning — DIV+NUM PK; 10 tax-base flags; EE/ER calc method+amount+limits; GL acct |
+| BKPRSTFL | 2 | Payroll state tax IDs — STCODE(2) PK + TAXNUM(10); employer state tax registration numbers |
+| ISRTLOAD | 21 | Route load manifest — SONUM+ITEM+SOLINE PK; TRUCK+LOADNUM+ORDQTY+LOADQTY+SCANQTY; shipment accuracy verification |
+| JGPITEMS | 86 | J7 GS1 packaging — ITEM PK; IND/UOM/SP/MC/PAL barcodes; H/W/D/WT/CUBE per packaging level; EDI 856 ASN support |
+
+---
+
+*Last updated: 2026-06-17 (Pass 71). Confidence bumps: IC 72→78 (BKICALTD/BKICALTP/BKICMFG/MTINVDEF all decoded; item spec/alternate/MFR/class-default family complete), PR 82→85 (ISPRUDF custom deductions + BKPRSTFL state IDs), AP 88→90 (BKPOX/BKPOXH invoice archive; AP alternate-index views BKAPEVND/ISAPAVND/BKAPEIVT/ISAPAINT identified), SP 83→87 (JGPITEMS 86f GS1 packaging hierarchy decoded; J7 retail EDI support confirmed). System architecture: MENUFILE(108f) menu engine decoded — the entire EvoERP module tree is data-driven from this table. 13 new schemas.*

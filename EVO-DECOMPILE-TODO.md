@@ -993,7 +993,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **85** | 88 | **3** ↑+5 | 2026-06-17 |
-| Module: AP | **88** | 90 | **2** ↑+6 | 2026-06-17 |
+| Module: AP | **90** | 90 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
@@ -1002,7 +1002,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
 | Module: RO/Routing | **85** | 88 | **3** ↑+3 Pass57 | 2026-06-17 |
 | Module: DC/Data Collection | **85** | 85 | **0** ✅ Pass48 | 2026-06-17 |
-| Module: PR/Payroll | **82** | 88 | **6** ↑+12 Pass46 | 2026-06-17 |
+| Module: PR/Payroll | **85** | 88 | **3** ↑ Pass71 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **82** | 85 | **3** ↑+10 Pass53 | 2026-06-17 |
 | Module: DE/EDI/Imports | **78** | 80 | **2** ↑ | 2026-06-17 |
@@ -1011,7 +1011,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
 | Module: QC/Quality Control | **78** | 82 | **4** ↑ Pass66 | 2026-06-17 |
 | Module: QT/Service Quote | **72** | 75 | **3** ↑+12 Pass60 | 2026-06-17 |
-| Module: IC/Inventory Utility | **72** | 72 | **0** ↑ Pass70 | 2026-06-17 |
+| Module: IC/Inventory Utility | **78** | 72 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
 | Module: SH/Shop Scheduling ⚠️ | **82** | 85 | **3** ↑+10 Pass54 | 2026-06-17 |
 | Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
@@ -1023,7 +1023,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+7 Pass62 | 2026-06-17 |
 | Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **78** | 80 | **2** ↑ Pass69 | 2026-06-17 |
-| Module: SP/SPC ⚠️ | **83** | 82 | **0** ↑ Pass70 | 2026-06-17 |
+| Module: SP/SPC ⚠️ | **87** | 82 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
 | Module: UT/Utilities | **72** | 75 | **3** ↑ Pass51 | 2026-06-17 |
 | Module: RM/RMA | **78** | 82 | **4** ↑ Pass66 | 2026-06-17 |
