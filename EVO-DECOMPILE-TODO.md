@@ -585,7 +585,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ **AB** — no T7 RWN/DFM files found (DBA-era legacy code, unimplemented in TAS Pro 7)
 - [x] 🔄 **AC** — Activity Control / NCR tracking — 3 DFMs + 4 RWN modules (T7ACTION/ACRDTYPE/ACDET/ACDATE); ACDATE (WODATE.START/FINISH/QTY, PARPRE/PARSUF/TOPPRE/TOPSUF WO hierarchy, DELPRE cascade delete); ACRDTYPE (AC.RD.TYPE/REASON/DISPO disposition codes: rework/scrap/use-as-is); T7ACTION (IS.ACTION.TYPE/DESC/MISC action items); T7ACDET (AC.DET.ID/LINE/PART detail records); primary tables WODATE/ISACTION/ACRDTYPE/ACDETAIL — **C: 60/100**
 - [x] 🔄 **AM** — Accounting Maintenance (NOT Asset Management — CORRECTED) — 5 forms read (GL period control, account history, account entry, dept copy/delete, financial statement format) — **C: 75/100**
-- [x] 🔄 **AD** — Accounting Defaults — CHM confirmed: AD-A=GL Defaults, AD-B=Checking Account Defaults, AD-C=AP Defaults; system-level GL/bank/AP configuration (no DFMs found — in RWN) — **C: 40/100**
+- [x] 🔄 **AD** — Accounting Defaults — CHM fully documented (AD-A GL defaults with 20 accounts + 5 posting flags + 6 period-date controls, AD-B checking account setup with 16 fields, AD-C AP defaults with 11 behavioral flags); RWN programs: T7MDEFAULTS (435 procs, main — opens BKSYMSTR+BKYSMSTR+ISBANKS+42 more tables), T7MDEFBANKS (79 procs, AD-B bank setup — BKGLCOA+ISBANKS), T7MDEFNDC (252 procs, extended module defaults — BKSYAP+BKESTCFG+BKFOCFG+BKCPMSTR+BKCMCNTD); primary tables: BKSYMSTR (system config), BKYSMSTR (YN flags), ISBANKS (checking accounts); gap: specific BKSYMSTR field offsets for each setting — **C: 70/100**
 - [x] 🔄 **CM** — CRM/Contact Manager — T7CMA + 4 sub-forms read; CRM-AR bridge confirmed; 9 emails/contact (BKCM.ACCN.EMAIL[1-9]); contact title/primary flag; key dates (BKCM.ACTD.*); account classes; territory/SIC/lead-source; BKCM.* (46 tables) — **C: 65/100**
 - [ ] ⬜ **CP** — no T7 RWN/DFM files found (DBA-era legacy)
 - [x] 🔄 **CR** — Contract Review / SO Approval — CHM confirmed: CR-A='Assign Departments to Sales Orders', CR-B='View/Enter SO Approvals'; T7CTREVU (96 procs): ENTER.PSWD/CONF.PSWD password entry, CT.DEPT/CT.ADMIN department+admin flags, CT.EMPNAME approving employee, SFROM.SONUM/STHRU.SONUM SO range, FROM/THRU.ORDDTE date range; T7CTREVUADMIN = admin variant stub; password-protected SO approval — **C: 55/100**
@@ -1019,7 +1019,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SU/Setup UI | **50** | 70 | **20** NEW | 2026-06-15 |
 | Module: TA/TAS Admin | **55** | 72 | **17** NEW | 2026-06-15 |
 | Module: DI/Digital Signatures | **50** | 70 | **20** NEW | 2026-06-15 |
-| Module: AD/Accounting Defaults | **40** | 65 | **25** NEW | 2026-06-15 |
+| Module: AD/Accounting Defaults | **70** | 75 | **5** ↑ | 2026-06-17 |
 | Module: CR/SO Approvals | **55** | 65 | **10** ↑ +15 | 2026-06-17 |
 | Module: US/Triggers | **45** | 65 | **20** NEW | 2026-06-15 |
 | Subsystem: BO/Bill of Lading | **58** | 72 | **14** NEW | 2026-06-17 |

@@ -1181,9 +1181,33 @@ in AHSYLOG with role, starting menu code, and 20 access flags.
 - PR (payroll) optional deduction settings
 - Currency codes
 
-**Access:** AD-A (GL Defaults / Administration defaults)
+**Access:** AD-A (GL Defaults) via T7MDEFAULTS.RWN (435 procs). See Accounting Defaults (AD) section below.
 
 **Confidence: 68/100** — Field count and major categories confirmed from schema; individual field meanings inferred from naming conventions.
+
+---
+
+### Accounting Defaults (AD)
+
+**What it does:** System-wide configuration hub — sets all GL account codes for every module, controls GL posting behavior, manages checking accounts, and sets AP operational options.
+
+**Menu codes:** AD-A (GL Defaults), AD-B (Checking Accounts), AD-C (AP Defaults)
+
+**RWN programs:**
+- **T7MDEFAULTS** (435 procs) — main defaults (AD-A + AD-C); opens BKSYMSTR, BKYSMSTR, ISBANKS, MTICMSTR, CLASMSTR, BKGLCOA, ISTERMS + 35 more
+- **T7MDEFBANKS** (79 procs) — bank account setup (AD-B); opens BKGLCOA, ISBANKS, BKSYMSTR, ISMCF
+- **T7MDEFNDC** (252 procs) — extended module defaults; opens BKYSMSTR, BKSYMSTR, BKSYAP, BKESTCFG, BKFOCFG
+
+**Key operations:**
+- **AD-A — GL Defaults:** Sets posting flags (Post COGS/PO/Adj/WO transactions? Y/N), fiscal period start/end dates, Future Post Date Control (P/G), and 20+ GL account codes (AP payable, AR receivable, COGS, Inventory, WIP, Absorbed Labor/Overhead, Freight, Sales Tax, Commission, Retention, Clearing, Retained Earnings, etc.)
+- **AD-B — Checking Account Defaults:** Creates/manages up to 99 bank accounts (ISBANKS). Each has GL account code, type (checking/savings/CC), next check#, Include AP/AR/PR flags, default RTM template override, and active/inactive flag.
+- **AD-C — AP Defaults:** Controls AP-B/AP-C/AP-H behavioral options: discount calculation, default search key, >13-invoices-per-check behavior, invoice date vs. today for GL post date, check language (English/Spanish), vendor creation policy, ACH export program name, aging period definitions (5 buckets in days).
+
+**Primary tables:** BKSYMSTR (system config 286f), BKYSMSTR (YN flags), ISBANKS (checking accounts), BKSYAP (AP system config)
+
+**Note on naming:** T7ADCA.RWN is "Advanced Data Collection" (not Accounting Defaults) — different module despite the AD prefix.
+
+**Confidence: 70/100** — CHM content fully documented; RWN programs identified; primary tables known; specific BKSYMSTR field offsets per setting not yet mapped.
 
 ---
 
