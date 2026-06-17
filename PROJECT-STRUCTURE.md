@@ -426,6 +426,61 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | BKABCUST | BKABCUST.B | AB module customer data (5 fields: start date, expiry, period, warning, standalone flag) |
 | BKABVEND | BKABVEND.B | AB module vendor data (2 fields: serial, registered name) |
 | BKACTRPT | BKACTRPT.B | AC activity reports (9 fields: type, name, RTM template, part/class/cat ranges) |
+| BKPIMSTR | BKPIMSTR.B | PI Master — Physical Inventory freeze/count control record |
+| BKSBPART | BKSBPART.B | Substitute/alternate part master — maps primary item to substitutes |
+| BKSBMFG | BKSBMFG.B | Sub-manufacturing — outsourced/subcontracted job tracking |
+| BKPRCOMM | BKPRCOMM.B | PR Commissions — sales commission records |
+| BKPRCURP | BKPRCURP.B | PR Current Payroll batch — active payroll run data |
+| BKPRINFO | BKPRINFO.B | PR Employee Info — extended employee demographics |
+| BKICREF | BKICREF.B | IC Item Cross-Reference — alternate item codes / vendor part numbers |
+| BKICLOCM | BKICLOCM.B | IC Location Master — warehouse location definitions |
+| BKCMACCL | BKCMACCL.B | CM Account Links — CRM account relationship links |
+| BKCMVNDH | BKCMVNDH.B | CM Vendor History — CRM activity history for vendors |
+| BKCMVNDF | BKCMVNDF.B | CM Vendor Footer — CRM vendor detail footer |
+| BKCPEC | BKCPEC.B | Compliance/customs data (customs entry / import compliance) |
+| BKRFQ | BKRFQ.B | Request for Quote master — vendor RFQ records |
+| ISICMSTR | ISICMSTR.B | IS IC Master — extended inventory item data beyond BKICMSTR |
+| ISCATMST | ISCATMST.B | IS Category Master — item category definitions |
+| ISORDECO | ISORDECO.B | IS Order Decoration — custom decoration/processing instructions per SO line |
+| ISWOROEX | ISWOROEX.B | IS WO Routing Operations Extensions — per-operation extra data |
+| ISWOEX | ISWOEX.B | IS WO Extensions — WO dispatch status + operator notes (Paperless SF) |
+| ISWOEX (= ISWOROEX) | | See above |
+| ISQSOA | ISQSOA.B | IS Quick SO — staging table for Quick Sales Order entry |
+| ISUDFINV | ISUDFINV.B | IS UDF Invoice — user-defined fields on AR invoices |
+| ISESTDTL | ISESTDTL.B | IS Estimating Detail — estimate line detail records |
+| ISSOBOX | ISSOBOX.B | IS SO Box/Packing — packing/boxing instructions per SO |
+| ISSOREVU | ISSOREVU.B | IS SO Review — SO approval/review staging |
+| ISAREX | ISAREX.B | IS AR Export — AR invoice export staging |
+| ISAPEX | ISAPEX.B | IS AP Export — AP check/payment file export staging |
+| ISCONVRT | ISCONVRT.B | IS Conversion Rate — unit-of-measure conversion table |
+| ISRTMS | ISRTMS.B | IS RTM Summary — report template routing/printing rules |
+| ISTAXGRP | ISTAXGRP.B | IS Tax Group — customer/item tax group assignments |
+| ISFUTYPE | ISFUTYPE.B | IS Follow-Up Type — CAR follow-up type codes |
+| ISSPC | ISSPC.B | IS SPC — routing operation to SPC data feed link |
+| ISCCICM | ISCCICM.B | IS CC IC Master — CC customer item configuration |
+| ISCHAINM | ISCHAINM.B | IS Chain Master — multi-company chain definition |
+| ISQSOA | ISQSOA.B | IS Quick SO staging |
+| WCTRLOAD | WCTRLOAD.B | Work Center Load — capacity loading by date bucket |
+| WOEXCHG | WOEXCHG.B | WO Exchange — inter-company WO transfer records |
+| DBAFIFO | DBAFIFO.B | DBA FIFO cost layers — inventory costing layers (DBA-era) |
+| QCCODES | QCCODES.B | QC Codes master — defect classification codes |
+| BKRTSPEC | BKRTSPEC.B | Routing Spec — routing operation specification detail |
+| MKECLASS | MKECLASS.B | Make Class — manufacturing/purchasing class codes |
+| BKCPMSTR | BKCPMSTR.B | Cost Period Master — labor cost period tracking |
+| BKESTCFG | BKESTCFG.B | Estimating Config — module-level estimating defaults |
+| BKFOCFG | BKFOCFG.B | FO Config — Features & Options module defaults |
+| BKLUGRID | BKLUGRID.B | Lookup Grid — grid column layout definitions |
+| ISDRILLM | ISDRILLM.B | IS Drill-Down Master — drill-down menu definitions |
+| ISDROP | ISDROP.B | IS Dropdown — dropdown list definitions |
+| ISREPDEF | ISREPDEF.B | IS Report Def — report parameter defaults |
+| ISREPLNK | ISREPLNK.B | IS Report Link — report-to-menu action links |
+| ISBROKER | ISBROKER.B | IS Broker — customs/freight broker records |
+| BKPRSALE | BKPRSALE.B | PR Sale — sales commission by period (payroll) |
+| BKARHTAX | BKARHTAX.B | AR Head Tax — AR invoice head/body tax |
+| ISSRMMS | ISSRMMS.B | IS SR MMS — Service Repair maintenance management system data |
+| BKCPEC | BKCPEC.B | Compliance/customs data |
+| ESTSUM | ESTSUM.B | Estimate Summary — estimating rollup records |
+| CLASS | CLASS.B | Class master (short alias of CLASMSTR) |
 
 ---
 
