@@ -933,24 +933,24 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
 | Module: WO | **80** | 85 | **5** ↑ | 2026-06-16 |
-| Module: GL | **70** | 85 | **15** ↑ | 2026-06-11 |
-| Module: BM/MRP | **72** | 80 | **8** ↑ | 2026-06-11 |
-| Module: RO/Routing | **75** | 85 | **10** ↑ | 2026-06-11 |
+| Module: GL | **78** | 85 | **7** ↑ | 2026-06-17 |
+| Module: BM/MRP | **78** | 80 | **2** ↑ | 2026-06-17 |
+| Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
 | Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
 | Module: PR/Payroll | **55** | 80 | **25** ↑ | 2026-06-11 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **65** | 80 | **15** ↑ +5 | 2026-06-15 |
 | Module: DE/EDI/Imports | **68** | 80 | **12** ↑ | 2026-06-15 |
 | Module: CS/Commission+Salesperson | **78** | 80 | **2** ↑ | 2026-06-17 |
-| Module: JC/Job Costing | **68** | 75 | **7** ↑ +16 | 2026-06-15 |
-| Module: SC/Serial Control ⚠️ | **72** | 80 | **8** ↑ +30 | 2026-06-15 |
-| Module: QC/Quality Control | **52** | 75 | **23** ↑ +4 | 2026-06-15 |
+| Module: JC/Job Costing | **72** | 75 | **3** ↑ | 2026-06-17 |
+| Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
+| Module: QC/Quality Control | **65** | 75 | **10** ↑ | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **72** | 80 | **8** ↑ +17 | 2026-06-15 |
 | Module: SH/Shop Scheduling ⚠️ | **72** | 80 | **8** ↑ +27 | 2026-06-15 |
-| Module: LC/Lot Control | **72** | 78 | **6** ↑ +30 | 2026-06-15 |
+| Module: LC/Lot Control | **80** | 78 | **0** ✅ | 2026-06-17 |
 | Module: SR/Service Repair | **58** | 75 | **17** ↑ +16 | 2026-06-15 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
-| Module: PI/Physical Inventory | **62** | 78 | **16** ↑ +10 | 2026-06-15 |
+| Module: PI/Physical Inventory | **75** | 78 | **3** ↑ | 2026-06-17 |
 | Module: ES/Estimating | **58** | 75 | **17** ↑ +10 | 2026-06-15 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **45** | 70 | **25** NEW | 2026-06-15 |
@@ -1022,5 +1022,5 @@ Priority order — in sequence, each unblocks the next:
 
 ---
 
-*Last updated: 2026-06-17*
+*Last updated: 2026-06-17 (pass 4)*
 *Document location: `EVO-DECOMPILE-TODO.md` at workspace root*

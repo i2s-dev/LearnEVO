@@ -375,6 +375,141 @@ Source: T7ADCA.RWN (LAB.* variables)
 
 ---
 
+## LOT — Lot Control Master
+
+Source: T7LCA.RWN (MTLOT.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| MTLOT.CODE | Item code (part number this lot belongs to) |
+| MTLOT.KEY | Lot record key |
+| MTLOT.LOT | Lot number |
+| MTLOT.EXPDATE | Expiration date |
+| MTLOT.ONHAND | Quantity on hand in this lot |
+| MTLOT.PO | Purchase order number that received this lot |
+| MTLOT.RECDOC | Receiving document number |
+| MTLOT.VENDOR | Vendor code |
+| MTLOT.RECDATE | Receipt date |
+| MTLOT.RECQTY | Received quantity |
+| MTLOT.POCOST | PO cost (unit cost at receipt) |
+
+---
+
+## SERIAL — Serial Number Master
+
+Source: T7SCA.RWN (MTSER.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| MTSER.CODE | Item code (part number this serial belongs to) |
+| MTSER.KEY | Serial record key |
+| MTSER.SERIAL | Serial number |
+| MTSER.LOT | Lot number (if also lot-controlled) |
+| MTSER.PO | Purchase order number |
+| MTSER.RECDOC | Receiving document number |
+| MTSER.VENDOR | Vendor code |
+| MTSER.RECDATE | Receipt date |
+| MTSER.POCOST | PO cost at receipt |
+| MTSER.SO | Sales order number (when shipped) |
+| MTSER.CUSTCODE | Customer code (when shipped) |
+
+---
+
+## BKMRPFC — MRP Forecast
+
+Source: T7MRA.RWN (BKMRP.FC.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| BKMRP.FC.KEY | Forecast record key |
+| BKMRP.FC.PART | Item/part number |
+| BKMRP.FC.DATE | Forecast date |
+| BKMRP.FC.QTY | Forecast quantity |
+| BKMRP.FC.OQTY | Original forecast quantity |
+| BKMRP.FC.CQTY | Consumed quantity (demand already satisfied) |
+| BKMRP.FC.FLAG | Processing flag |
+| BKMRP.FC.DATE1 | Secondary date (e.g., expiry or due date) |
+| BKMRP.FC.NUM | Reference number |
+| BKMRP.FC.EXTRA | Extra/user-defined field |
+
+---
+
+## BKPIPHYS — Physical Inventory Physical Count
+
+Source: T7PIC.RWN (BKPH.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| BKPH.TAGNUM | Physical count tag number |
+| BKPH.ACTQTY | Actual counted quantity |
+| BKPH.EMPNUM | Employee number (counter) |
+| BKPH.EMPNAME | Employee name |
+| BKPH.COMMENT | Count comment |
+| BKPH.COUNTDATE | Count date |
+| BKPH.YEAR | PI year |
+| BKPH.QTR | PI quarter |
+| BKPH.LOC | Location code |
+| BKPH.CODE | Item code |
+| BKPH.FDATE | Freeze date |
+| BKPH.LOT | Lot number |
+
+---
+
+## BKGLCOA — GL Chart of Accounts
+
+Source: T7GLA.RWN (BKGL.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| BKGL.ACCT | GL account number (primary key part 1) |
+| BKGL.GLDPT | GL department code (primary key part 2) |
+| BKGL.KEY | Combined GL key |
+| BKGL.ACCTD | Account description |
+| BKGL.TYPE | Account type (A=asset, L=liability, E=equity, I=income, X=expense) |
+
+---
+
+## BKGLGJRN — GL General Journal Header
+
+Source: T7GLB.RWN (BKGL.GJ.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| BKGL.GJ.TRANSDT | Transaction date |
+| BKGL.GJ.TRANSNM | Transaction name / description |
+| BKGL.GJ.TYPE | Journal type |
+| BKGL.GJ.TYPEN | Journal type name (human-readable) |
+| BKGL.GJ.POSTED | Posted flag |
+| BKGL.GJ.CVCODE | Currency/conversion code |
+| BKGL.GJ.INVCHKN | Invoice/check number |
+| BKGL.GJ.NUMLNES | Number of journal lines |
+| BKGL.GJ.CHKACT | Check account |
+| BKGL.GJ.JOB | Job cost reference |
+| BKGL.GJ.EXTRA | Extra/user-defined field |
+
+**Related tables:** BKGLGJLN (journal lines), BKGLCHK (check register)
+
+---
+
+## ROUTING — Work Order Routing
+
+Source: T7ROA.RWN (MTRO.* and LIST.CYC.* variables)
+
+| Variable name | Meaning |
+|--------------|---------|
+| MTRO.CODE | Routing/operation code |
+| MTRO.TYPE.STR | Routing type string |
+| LIST.CYC.DATE | Cycle time capture date |
+| LIST.CYCWONUM | Work order number for cycle data |
+| LIST.CYCMACH | Machine/work center for cycle |
+| LIST.CYCHR / .CYCMIN / .CYCSEC | Cycle time in hours/minutes/seconds |
+| LIST.CYCPARTS | Parts produced in cycle |
+| LIST.CYCEMP | Employee on this cycle |
+
+**Related tables:** BKRTCST (routing costs), BKRTSPEC (routing specs), BKRTTEMP (routing templates)
+
+---
+
 ## Notes on naming convention
 
 TAS Pro 7 maps database records to named buffer variables. The pattern is:
