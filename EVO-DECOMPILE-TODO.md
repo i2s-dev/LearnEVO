@@ -491,6 +491,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ WO priority 1–9 confirmed as scheduling parameter — **C: 72/100**
 - [x] ✅ DC-to-WO integration confirmed: DC postings write to same WO tables; T7WOKK reverses them — **C: 68/100**
 - [x] ✅ WO-PO linkage confirmed: outside process operations link to AP POs — **C: 68/100**
+- [x] ✅ Pass 42: ISWOCLOG(32f) = WO operation change audit log: IS_WOLOG_WOPRE(8)+WOSUF(2)+OPER(2) PK + OPDESC(30)+ITEM(15)+WC(12)+WCDESC(30)+CUST(10)+CUSNME(30)+ITEMDS(30)+CDATE+CWHO(30)+CTIME+CWHERE(15)+MACH(4)+ALPHA1_1/2(30 each)+FLAG_1..5+DATE_1..3+7more; every WO-op modification logged with WHO/WHEN/WHERE/MACHINE. ISWOHEX(63f) = alternate index of ISWOEX (IS_WOEX_* fields, 0 diff). ISWODESC/ISWOHDSC(5f each) = WO description notes, standard BK_DESC_* pattern — **C: 72/100**
 - [ ] ⬜ All 30 WO\* tables with fields documented
 - [ ] ⬜ WORKORD all 74 fields confirmed with meaning
 
@@ -579,6 +580,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.17 Estimating (ES)
 - [x] ✅ Tables: BKES\* (3 tables) — BKESTQT(84f: same structure as BKARINV — ES quote header), BKESTQTL(28f: same as BKARINVL — quote lines), BKESTCFG(13f: quote config NUM+STAT+CLASS+FORM+DAYS+5 footer lines+SONUM); unified invoice architecture confirmed for ES quotes — **C: 65/100**
 - [x] ✅ ES-D (Print Customer Quotes), ES-E (Convert Estimates: ISTO.WO + ISTO.SO — converts to WO or SO), ES-B/C (print/range options) — **C: 58/100**
+- [x] ✅ Pass 42: Full ISES\* family (10 tables) extracted. ISESTHDR(84f)/ISESTLNE(28f) = BKARINV/BKARINVL ES current views. ISESAHDR/ISESALNE + ISESTAQT/ISESTAQL = archive alternate indexes (same structures). ISESTDTL/ISESADTL(203f, identical) = estimate detail: IS_EST_NUM+PART+LINE PK; 10 qty-break × material/labor/overhead cost columns. ISESTASM(213f) = DBA/MT-era estimate assembly summary: MTESUM_QUOTE(8) PK + DATE/EXPDATE/STATUS/CLASS/CODE/DESC/UM/CUSTCODE+NAME+ATTN+RFQ/REV/PROJ + QTY_1..10 + MAT_1..N (213 fields total, MTESUM_ prefix confirms MT generation — predecessor to BKESTQT). ISESTPO(16f) = ES→PO link: BKMRP_PO_* fields (same as BKSOPO). Unified architecture confirmed end-to-end: ES quotes through archive through estimate detail — **C: 72/100**
 - [ ] ⬜ ES-A (main entry form) not found on share; BKES.* table fields not yet extracted
 
 ### 7.18 Remaining Modules (not yet deeply documented)
@@ -625,7 +627,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **SH** — Shop Scheduling ⚠️ (NOT Shipping) (16 ops) — all 15 DFM files read; SH-A/B (WO WIP scheduling grid + operation scheduling), SH-C (work center capacity), SH-E (due date change), SH-I (dispatch report with color coding), SH-P (color config); primary tables MTWO.WIP.*, MTWORO.*, MTWC.* — **C: 72/100**
 - [x] 🔄 **SL** — Shop Loading (T7SLSFC: 5 procs); opens BKARINVL+BKDCLAB+BKARCUST+ISWOPRIO(4f: PRIO+DESC+EXTRA+COLOR)+WORKCTR+ROUTING+BKYSMSTR; BKDCLAB(50f) schema partially extracted: DATE+EMP+WOPRE+OPER+POSTED+SHIFT+START+FINISH+PARTS+SCRAPPED+NOJOBS+38 more; displays AR demand overlaid on production capacity; ISWOPRIO.COLOR drives dispatch color coding in SH scheduler; thin UI panel (5 procs = display only) — **C: 58/100**
 - [x] 🔄 **SM** — System Maintenance (34 ops, 3rd largest) — 23+ forms + full T7SM* sub-module family decoded; SM-K (user prefs→EvoSettings.INI/ISNUMBER), SM-E/F (tax ISIS.TXF+ISIS.TXG), SM-O (ship-via ISSHPVIA with tracking URL), SM-D (payment terms IS.TERMS), SM-PF (ISJOB job#), SM-PH (IS.CYCLE), SM-JM/JN (merge), SM-JC (JC setup), SM-SD (AP doc link); T7SMI* (CRM masters: BKCMLEAD/BKCMTERR/BKCMACFC/BKCMACCC/BKCMDTCD), T7SMP* (ISCATMST/ISUDMSTR/ISJOB), T7SMT/SMU (ISSHPVIA), T7SMTEND/SMTSET (SMT/PCB: ISSMTCFG/MACHINE); BKSYMSTR/BKYSMSTR not fully decoded — **C: 80/100**
-- [x] 🔄 **SP** — Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — CORRECTED) — all 6 DFMs read; SPC main entry (Inspector #/Employee/WO/Item/Qty/Customer/Drawing → IS.SERR.ERROR/PROCESS), SPCLIVEGRID (Caption='Top Real Time Errors'; ATYPE/ADETAIL/ACODE/ACOUNT), SPCLIVEREP (auto-refresh live report), SPCREP/SPCREP2 (WO/Part/Employee/Date range reports), SPCREPPPM (PPM defect rate with Sides range — PCB/electronics context); primary table IS.SERR.* — **C: 60/100**
+- [x] 🔄 **SP** — Statistical Process Control (SPC) ⚠️ (NOT Ship Packing — CORRECTED) — all 6 DFMs read; SPC main entry (Inspector #/Employee/WO/Item/Qty/Customer/Drawing → IS.SERR.ERROR/PROCESS), SPCLIVEGRID (Caption='Top Real Time Errors'; ATYPE/ADETAIL/ACODE/ACOUNT), SPCLIVEREP (auto-refresh live report), SPCREP/SPCREP2 (WO/Part/Employee/Date range reports), SPCREPPPM (PPM defect rate with Sides range — PCB/electronics context); primary table IS.SERR.* — Pass 42: ISSERR(14f) schema fully extracted: IS_SERR_WOPRE(8)+WOSUF(2)+OPER(2)+TIME(4)+DATE(4)+ERROR(25)+8 more — each defect event on a WO operation writes one record; ERROR(25) = defect code — **C: 68/100**
 - [x] 🔄 **SR** — Service / Repair — 16 RWN programs confirmed (T7SRA-T7SRK + SRDISPACH/SRBK/SRGA/SRINFO); SR Orders ARE BKARINV records (same as SO/AR); 5 ISSR*INV views = BKARINV (0 diff), 5 ISSR*IVL views = BKARINVL (0 diff); key tables: ISSRMMS (equipment 12f), ISSRINFO (configurable 54f), ISSOREVU (approval workflow 12f), ISARINVX (AR ext 4f); T7SRGA (157 procs) is full posting to BKGLTRAN+BKGLX+BKARHTAX+BKISTAX+ISTAXGRP — **C: 72/100**
 - [x] 🔄 **SU** — Setup / UI Configuration — CHM confirmed 4 ops (SU-A=Maintain Grid Lookups, SU-B=Maintain Drill Down Menus, SU-C=Forms Editor, SU-D=Grid Maintenance); RWN programs: WBKLUGRID (68 procs, SU-A — opens BKLUGRID+FILELOC+FILEKNUM+FILEDICT), EVOERPDRILLM (31 procs, SU-B — opens ISDRILLM+BKLUGRID+FILELOC), T7GDM (31 procs, Grid Display Manager — opens BKLUGRID+ISDRILLM); key tables: BKLUGRID (per-user column layout saves), ISDRILLM (drill navigation map, 17f) — **C: 65/100**
 - [ ] ⬜ **SY** — no T7 RWN/DFM files found; BKSY* tables are System config (documented)
@@ -646,7 +648,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **FS** — Field Service (T7FSCLASS: 62 procs, ISFSCLAS+ISPRINFO; T7FSINFO: 61 procs, ISFSINFO; T7FSEMP: 59 procs, ISFSCLAS+BKPRSALE); tracks service classes, field service info records, and employee-to-class assignments; ISFSCLAS (3f: CLASS/GROUP/EXTRA), ISFSINFO (4f: PROGRAM/CONTRACT/MISC/WHO), ISPRINFO (4f: PROG/DESC/MISC/TYPE) all fully documented; optional add-on module — **C: 62/100**
 - [x] 🔄 **GF** — Global Finance / AR Charges (T7GFPRICE: 116 procs, customer+item pricing/charge entry; T7GFV/GFVS: 82/81 procs, invoice charge viewer; T7GFR: 46 procs, report); ISARCHG (26f) fully documented: before/after audit trail with SONUM+INVNUM+LINEID+PCODE+CDATE+USER+REVLVL+ALOC/BLOC+APRICE/BPRICE+ADISC/BDISC+AOOQTY/BOOQTY+AESD/BESD+AASD/BASD+ACOMPR_1/2+BCOMPR_1/2+AEXTRA/BEXTRA; 4 RWN programs confirmed — **C: 62/100**
 - [x] 🔄 **RE** — Reminders + Rebuild Utilities (T7RemindRpt: 125 procs, ISREMIND+BKARCUST+BKCMACCN; T7REPLNK: 67 procs, ISREPLNK+BKPRSALE; T7REPDEF: 52 procs, ISREPDEF; T7REINDEX: 36 procs, FILELOC; T7REBQC: 62 procs, BKICMSTR; T7REBWO: 123 procs, WORKORD+WOBOM+WORECV+WOROUT+MTICMSTR+WOMAT+WOLABOR; T7REDINDEXDD: 5 procs stub); all 7 programs identified, each purpose confirmed from DB fingerprint — **C: 62/100**
-- [x] 🔄 **SE/ST** — Service Code Tables (T7SEPROC: ISSEPROC; T7SERR+T7SETYPE: ISSTYPE/ISSETYPE; T7STEQUIP/T7sttype/T7STYPE: ISSTYPE; T7STOCK: BKCMACCC); code maintenance tables for SR Service/Repair module; ISSEPROC (2f: PROC/WHO), ISSTYPE (3f: TYPE/WHO/ASSET), ISSETYPE (2f: ERR/WHO) all fully documented; 7 RWN programs identified; T7STEQUIP opens 90+ tables including BKARINV/BKISTAX/BKARDEP confirming cross-module use — **C: 60/100**
+- [x] 🔄 **SE/ST** — Service Code Tables (T7SEPROC: ISSEPROC; T7SERR+T7SETYPE: ISSTYPE/ISSETYPE; T7STEQUIP/T7sttype/T7STYPE: ISSTYPE; T7STOCK: BKCMACCC); code maintenance tables for SR Service/Repair module; ISSEPROC (2f: PROC/WHO), ISSTYPE (3f: TYPE/WHO/ASSET), ISSETYPE (2f: ERR/WHO) all fully documented; 7 RWN programs identified; T7STEQUIP opens 90+ tables including BKARINV/BKISTAX/BKARDEP confirming cross-module use; Pass 42: ISSEQUIP(2f: IS_SEQUIP_NAME(20)+DESC(40)) confirmed — service equipment type master; ISSERIAL(11f) = WO serial genealogy: WOPRE+WOSUF PK + PARENT(15)/PDESC(30)/PSERIAL(25) + ADATE + COMP(15)/CDESC(30)/CSERIAL(25) + FDATE + EXRA(100) — records parent→component serial assignment within a WO — **C: 65/100**
 - [x] 🔄 **PU** — Warehouse Put-Away (T7PUTAWAY: 105 procs); places received PO items into bin locations; updates BKICMSTR/MTICMSTR; full DB set: BKICMSTR+MTICMSTR+BKAPINVL+BKAPPO+BKGLTRAN+DBAFIFO+LOT+SERIAL+ISORDECO+BKCMACCT+60 more; workflow confirmed: AP receiving→bin assignment→lot/serial tracking→GL posting; single-program module — **C: 62/100**
 - [x] 🔄 **MU** — Multi-Yield Work Orders (T7MULTIYIELD: 150 procs); records multiple co-product output part numbers from single WO; full DB set confirmed: WORKORD+WOROUT+WOBOM+WORECV+INVTXN+ISBINLOC+BKARINVL+MTICMSTR+BKICLOC+WOMAT+ISWOEX+LOT+ISBINLOT+SERIAL+BKGLTRAN+BKGLX+DBAFIFO+ISTRIGRS; ISWOEX (WO extended, not in DDF) holds multi-yield state; workflow confirmed (input WO→multiple WORECV+INVTXN outputs→FIFO/LOT/SERIAL tracking) — **C: 62/100**
 - [x] 🔄 **AL** — Audit Log + Alternate Parts (T7ALOGSETUP: 43 procs, FILELOC+BKSYMSTR+BKPSUSER — configures which files/events go to audit log; T7ALTPART: 104 procs, BKSBPART+BKICMSTR+ISLINKS — alternate/substitute part maintenance with document attachment; BKSBPART(5f)=PARNT+PROD+CUST+SUBST; ISLINKS(311f)=global doc/URL store: UID+LINK+APP+TYPES_1..9+299 more); 2 programs confirmed — **C: 62/100**
@@ -990,7 +992,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
-| Module: WO | **83** | 85 | **2** ↑ +3 | 2026-06-17 |
+| Module: WO | **85** | 85 | **0** ✅ | 2026-06-17 |
 | Module: GL | **90** | 92 | **2** ↑+3 | 2026-06-17 |
 | Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
@@ -1012,11 +1014,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: MA/AR Deposits | **62** | 65 | **3** ↑+22 | 2026-06-17 |
-| Module: ES/Estimating | **65** | 75 | **10** ↑ | 2026-06-17 |
+| Module: ES/Estimating | **72** | 75 | **7** ↑ | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **65** | 78 | **13** NEW | 2026-06-15 |
-| Module: SP/SPC ⚠️ | **60** | 75 | **15** NEW | 2026-06-15 |
+| Module: SP/SPC ⚠️ | **68** | 75 | **8** ↑ | 2026-06-17 |
 | Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
 | Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: RM/RMA | **78** | 82 | **4** ↑+10 | 2026-06-17 |
@@ -1037,7 +1039,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: FS/Field Service | **62** | 65 | **3** ↑+17 | 2026-06-17 |
 | Subsystem: GF/AR Charges | **62** | 65 | **3** ↑+17 | 2026-06-17 |
 | Subsystem: RE/Reminders+Rebuild | **62** | 65 | **3** ↑+14 | 2026-06-17 |
-| Subsystem: SE+ST/Service Code Tables | **60** | 60 | **0** ✅+18 | 2026-06-17 |
+| Subsystem: SE+ST/Service Code Tables | **65** | 65 | **0** ✅+18 | 2026-06-17 |
 | Subsystem: PU/Put-Away | **62** | 65 | **3** ↑+20 | 2026-06-17 |
 | Subsystem: MU/Multi-Yield WO | **62** | 68 | **6** ↑+17 | 2026-06-17 |
 | Subsystem: LI/License Access | **52** | 65 | **13** ↑+12 | 2026-06-17 |

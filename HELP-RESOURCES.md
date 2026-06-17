@@ -3791,4 +3791,125 @@ and the transactions — all using the canonical BKARINV/BKARINVL/BKART structur
 
 ---
 
-*Last updated: 2026-06-17 (Pass 41). Unified transaction architecture fully mapped across 30+ table variants. BKARINV(84f)/BKARINVL(28f) structure confirmed in AR, SO, SR, EDI, ES, RMA, and all archives. AP PO family (BKAPPO/BKAPPOL) confirmed with open views + archives. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## ISES* / ISSE* / ISWO* FAMILIES — Pass 42
+
+### ISES* — ES Estimating Extension Tables (10)
+
+The unified architecture extends to ES: all estimate headers/lines use BKARINV/BKARINVL structure.
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISESTHDR | 84 | ES header (current) — BKARINV structure |
+| ISESTLNE | 28 | ES lines (current) — BKARINVL structure |
+| ISESAHDR | 84 | ES header archive — BKARINV structure |
+| ISESALNE | 28 | ES lines archive — BKARINVL structure |
+| ISESTAQT | 84 | ES archive quote header (alternate key) — BKARINV structure |
+| ISESTAQL | 28 | ES archive quote lines (alternate key) — BKARINVL structure |
+| ISESTDTL | 203 | ES estimate detail — IS_EST_NUM+PART+LINE PK; 10×qty breakpoints × material/labor/overhead costs |
+| ISESADTL | 203 | ES detail alternate index — identical ISESTDTL structure |
+| ISESTPO | 16 | ES to PO conversion link — BKMRP_PO_* fields; ties estimate to planned PO |
+
+**ISESTASM** (213f) — MT-era estimate assembly summary (pre-BKARINV era):
+- MTESUM_QUOTE(8) — quote number (PK)
+- MTESUM_DATE + EXPDATE — created/expiry dates
+- MTESUM_STATUS(1) + CLASS(4) + CODE(15) + DESC(30) + UM(3)
+- MTESUM_CUSTCODE(10) + NAME(30) + ATTN(30) — customer
+- MTESUM_RFQ(15) + REV(4) + PROJ(15) — references
+- MTESUM_QTY_1..10 — 10 quantity breakpoints (parallel to ISESTDTL)
+- MTESUM_MAT_1..N — material costs per qty break + 188 more fields
+
+This is the DBA/MTIC-era (MT generation) estimate table — a standalone 213-field record per
+quote with quantity breaks and costs. The newer ES module replaced this with BKESTQT (84f,
+BKARINV structure) + ISESTDTL (203f). ISESTASM may still be read for historical quotes.
+
+---
+
+### ISSE* — SR/SE Service Extension Tables (10)
+
+More BKARINV/BKARINVL alternate indexes in the service area:
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISSEDH | 84 | SR/SE service EDI document header — BKARINV structure |
+| ISSEDL | 28 | SR/SE service EDI document lines — BKARINVL structure |
+| ISSESH | 84 | SR/SE service SH (shipping) header — BKARINV structure |
+| ISSESL | 28 | SR/SE service SL lines — BKARINVL structure |
+| ISSERCNT | 9 | Serial counter per item (already documented in SC/IT modules) |
+| ISSEPROC | 2 | Service process code (already documented in SE/ST) |
+| ISSETYPE | 2 | Service error type code (already documented in SE/ST) |
+| ISSEQUIP | 2 | Service equipment type — IS_SEQUIP_NAME(20)+DESC(40) |
+
+**Key new tables:**
+
+**ISSERIAL** (11f) — WO serial genealogy (parent → component serial tracing):
+- IS_SER_WOPRE(8) + WOSUF(2) — WO reference (PK)
+- IS_SER_PARENT(15) + PDESC(30) + PSERIAL(25) — parent item code/description/serial#
+- IS_SER_ADATE — assignment date
+- IS_SER_COMP(15) + CDESC(30) + CSERIAL(25) — component item/description/serial#
+- IS_SER_FDATE — finish date
+- IS_SER_EXRA(100) — extra
+
+Records the relationship between parent item serial numbers and component serial numbers
+within a WO. Provides full serial genealogy traceability (parent serial → sub-assembly serials).
+
+**ISSERR** (14f) — SPC / shop floor error event:
+- IS_SERR_WOPRE(8) + WOSUF(2) + OPER(2) — WO + operation (PK)
+- IS_SERR_TIME(4) + DATE(4) — when the error occurred
+- IS_SERR_ERROR(25) — error/defect code
+- + 8 more fields (qty, inspector, notes, etc.)
+
+This is the primary table behind the SP (Statistical Process Control) module live error feed. Each defect event recorded on the shop floor creates one ISSERR row.
+
+---
+
+### ISWO* — WO Extension Family (8)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISWOEX | 63 | WO extended data (already documented in ADCA) |
+| ISWOHEX | 63 | WO header extended — identical ISWOEX structure (alternate key) |
+| ISWOROEX | 60 | WO routing operation extended (already documented) |
+| ISWOTRAY | 52 | WO tray tracking (already documented in QC) |
+| ISWOPRIO | 4 | WO priority codes (already documented) |
+| ISWODESC | 5 | WO extended descriptions — standard DESC pattern (5f) |
+| ISWOHDSC | 5 | WO header descriptions — standard DESC pattern (5f) |
+
+**ISWOCLOG** (32f) — WO operation change audit log:
+- IS_WOLOG_WOPRE(8) + WOSUF(2) + OPER(2) — WO + operation (PK)
+- IS_WOLOG_OPDESC(30) — operation description at time of change
+- IS_WOLOG_ITEM(15) + WC(12) + WCDESC(30) — item + work center
+- IS_WOLOG_CUST(10) + CUSNME(30) — customer reference
+- IS_WOLOG_CDATE + CWHO(30) + CTIME + CWHERE(15) — when / who / system location
+- IS_WOLOG_MACH(4) — machine code
+- IS_WOLOG_ALPHA1_1/2 (30 each) — 2 custom alpha fields
+- IS_WOLOG_FLAG_1..5 — 5 boolean flags
+- IS_WOLOG_DATE_1..3 — 3 date slots
+- + 7 more fields
+
+Every modification to a WO operation is logged here with full who/when/where audit trail.
+CWHERE indicates which workstation or system module made the change.
+
+---
+
+### New Tables Confirmed (Pass 42)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISESTHDR / ISESAHDR / ISESTAQT | 84 | ES header views — all BKARINV structure |
+| ISESTLNE / ISESALNE / ISESTAQL | 28 | ES line views — all BKARINVL structure |
+| ISESTASM | 213 | MT-era estimate summary — pre-BKARINV era; MTESUM_* fields |
+| ISESTPO | 16 | ES-to-PO link — BKMRP_PO_* fields |
+| ISSEDH / ISSESH | 84 | SR service EDI/SH header views — BKARINV structure |
+| ISSEDL / ISSESL | 28 | SR service EDI/SL line views — BKARINVL structure |
+| ISSEQUIP | 2 | Service equipment type — NAME(20)+DESC(40) |
+| ISSERIAL | 11 | WO serial genealogy — WOPRE+WOSUF PK; PARENT/COMP + PSERIAL/CSERIAL tracing |
+| ISSERR | 14 | SPC error event — WOPRE+WOSUF+OPER PK; TIME+DATE+ERROR code |
+| ISWOHEX | 63 | WO header extended (alternate index of ISWOEX) |
+| ISWOCLOG | 32 | WO operation change log — WOPRE+WOSUF+OPER PK; CDATE+CWHO+CTIME+CWHERE |
+| ISWODESC / ISWOHDSC | 5 | WO description notes — standard 5f DESC pattern |
+
+---
+
+*Last updated: 2026-06-17 (Pass 42). Unified architecture now confirmed across 40+ table variants — ES, SR, and all sub-variants all use BKARINV/BKARINVL. ISESTASM(213f) confirms MT-era parallel estimate system. ISSERIAL(11f) provides serial genealogy. ISWOCLOG(32f) documents WO change audit. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
