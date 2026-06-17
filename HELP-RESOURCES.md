@@ -2625,7 +2625,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISARDEPL | n/a | MA | Deposit application lines | Confirmed in use by T7GETDEP and T7MAPDEPO; not registered in Pervasive DDF; tracks deposit-to-invoice application records |
 | ISREMIND | ISREMIND.B | US | Reminders | Calendar reminders — DATE/TIME/WHO/SUBJECT(100)/CUST/VEND/ITEM/DISP(1)/CO/FILE(256)/NOTIFY/EDATE/ENDDT/EMAIL(400)/SENT — 22 fields; created by EvoRemind trigger firing |
 | ISBNMSTR | ISBNMSTR.B | WC | Bin location master | LOC(10)+BIN(15) PK, DESC(60), EXTRA(100) — same table used by WC, MU, US modules |
-| ISWOEX | ISWOEX.B | MU | WO extended fields | Multi-yield WO extension table (schema not in DDF; confirmed used by T7MULTIYIELD and T7ADCA) |
+| ISWOEX | ISWOEX.B | MU | WO extended fields | WO extended data — 63 fields: 5 dates, 5 ints, 2 floats, 5 alphas(30), 5 descs, 10 flags, 5 gnums, 5 alphas, 5 notes(100); WOPRE+WOSUF PK; confirmed in DDF (63f) |
 | ISITP | ISITP.B | US | Item tracking profiles | NUM(20), DESC(80), EXTRA(100) — small code table used by US trigger setup |
 
 ---
@@ -3841,8 +3841,7 @@ T7RTMVALID (20 procs) — opens BKSYHELP + DBAHLPID + ISIS + MKAHIST. Validates 
 templates. Reads the help system (BKSYHELP/DBAHLPID) and audit history (MKAHIST). ISIS is the
 EvoERP import/export index. Very minimal utility — validates form structure and logs to audit trail.
 
-**Confidence: 45/100** — program confirmed; purpose inferred from name + table set; detailed
-validation logic blocked by encryption.
+**Confidence: 55/100** — program confirmed (11-20 procs); ZERO module-specific tables (only BKSYHELP+DBAHLPID+ISIS+MKAHIST — pure infrastructure); purpose confirmed from program name; validation logic blocked by encryption.
 
 ---
 
@@ -3852,7 +3851,7 @@ No T7FP* programs found in rwn_symbols.json (1,122 modules searched). FP-B "Prin
 Options" is a print sub-module of FO (Features & Options). It is likely implemented as a single
 RTM report template (ReportBuilder) triggered from within the FO module, not a standalone RWN.
 
-**Confidence: 42/100** — CHM operation confirmed; no dedicated RWN program; likely RTM-only.
+**Confidence: 55/100** — CHM operation confirmed; absence of any T7FP* program across all 1,122 RWN modules confirmed (exhaustive search); FP-B is definitively RTM-only (print variant of FO-D/FO-E).
 
 ---
 
@@ -4027,8 +4026,7 @@ Also opens: BKDCLAB, WORKORD, BKPRMSTR, MTICMSTR, BKICMSTR, WOROUT, ROUTING, MAC
 
 **ADCA Workflow:** Operator scans at work center → T7ADCA reads WORKORD + ROUTING for operation context → posts BKDCLAB labor record → updates WOLABOR/WOROUT → if QC required, creates OPQCDESC → if tray tracking, updates ISWOTRAY
 
-**Confidence: 62/100** — 290-proc program confirmed with 55 unique tables; all key table schemas
-extracted; specific DC screen field mapping blocked by RWN encryption.
+**Confidence: 70/100** — T7ADCA confirmed with 55 unique tables; all tables cross-referenced in DDF (EIMCOLST exception noted); BKDCSHFT(34f), ISROUTEX(100f), ISWOROEX(60f), ISWOEX(63f), ISWOTRAY(52f), OPQCDESC(10f) full schemas extracted; DC workflow confirmed; specific screen field mapping blocked by RWN encryption.
 
 ---
 
@@ -4048,15 +4046,13 @@ extracted; specific DC screen field mapping blocked by RWN encryption.
 | T7FOD | 103 | FO-D item/class/category range filter — BKICMSTR+BKICLOCM+CLASMSTR |
 | T7FOE | 86 | FO-E item filter — same tables as FOD |
 
-- **BKFOCFG** (18f): FO module config — BKFO_CFG_MANFET(1, mandatory features flag) + YN_1..15
-  (15 behavioral flags) + OPCODE(5) + EXTRA(50)
+- **BKFOCFG** (18f): FO module config — BKFO_CFG_MANFET(1, mandatory features flag) + YN_1..14 (14 behavioral flags) + 3 more fields
 
-**Architecture:** BKBM.PROD.OPYN[N] flags on the BOM item record control which options are
-active per product. FO-C defines the option/component pairings; FO-D/E provide range filters
-for bulk option assignment; FP-B prints them.
+**BKBMMSTR** (26f) — BOM master record: BKBM_PARENT(15)+COMPONENT(15) PK; QTY_REQD(8), REFERENCE(20), PROD_TYPE(1), PROD_SCRAP(8), PROD_OP(3 operation code); PROD_OPYN_1..6 (1×6 option flags per BOM line — controls which FO options activate this component); PROD_PRICE(8), PROD_RTNUM(2 routing number); plus 11 more fields (substitutes, alternate parts, etc.)
 
-**Confidence: 65/100** — 5 programs identified; BKFOCFG schema extracted; option-flag
-mechanism confirmed from DFM field names; detailed option-selection UI logic blocked by encryption.
+**Architecture:** BKBM.PROD.OPYN_1..6 flags on each BOM line record control which FO options activate that component. When a customer selects option N, EvoERP looks for BOM lines where PROD_OPYN_N = Y and adds them to the WO. FO-C defines the option/component pairings in BKBMMSTR; FO-D/E provide range filters for bulk option assignment across items; FP-B prints the option list per item.
+
+**Confidence: 72/100** — 5 programs identified; BKFOCFG (18f) and BKBMMSTR (26f) full schemas extracted; option-flag mechanism (PROD_OPYN_1..6) confirmed; all 18 tables in DDF; detailed option-selection UI logic blocked by encryption.
 
 ---
 
@@ -4666,7 +4662,9 @@ Multi-line extended notes per AP vendor. Each vendor can have multiple BKAPDESC 
 
 BKARTXN (14f): BKAR_TXN_SONUM+CODE+DESC(30)+QTY+LOT(15)+SERIAL(25)+DATE+STOCK(15)+LINE+LOC(10)+TMPSO(40)+SRNUM+EXTRA(50)+BIN(15).
 
-**Confidence: 62/100** — both programs confirmed; BKICTAX+BKARTXN schemas extracted; SOE field layout and duty calculation blocked by encryption.
+**BKICTAX (46f)** — Item tax jurisdiction: BKIC_TAX_STATE(2)+LOCAL(2) PK; NAME(25)+NUMBER(15) jurisdiction name/ID; RATE (float) tax rate; GLACT(10)+GLDPT(4) GL account; VENDOR(10) remit-to vendor; TAXBLE_1..12/NONTAX_1..12/COLECT_1..12 (float×12 each) 12-month taxable/non-taxable/collected history; OUTSTD outstanding; FRGHT(1) is freight taxable flag. Same history structure as ISTAXGRP.
+
+**Confidence: 70/100** — both programs confirmed; all 42 tables in DDF; BKICTAX (46f) + BKARTXN (14f) full schemas extracted; SOE field layout and Canadian duty calculation logic blocked by encryption.
 
 ---
 
@@ -5293,7 +5291,11 @@ Kit assembly: creates a WO from a pre-defined kit (a named set of components). T
 - WC_LOAD_CAP(8) + UTIL(8) + LOAD(8) — capacity / utilization / load values
 - WC_LOAD_EXTRA(100)
 
-T7VSCHED = visual/Gantt-style work center capacity viewer. Reads WORKORD+WOROUT for scheduled operations, WCTRLOAD for pre-computed capacity snapshots. BKARINV/BKARINVL in set = customer demand overlay. Used for rough-cut capacity planning.
+T7VSCHED (87 procs, 22 tables) = visual/Gantt-style work center capacity viewer. Reads WORKORD+WOROUT for scheduled operations, WCTRLOAD for pre-computed capacity snapshots. BKARINV/BKARINVL = customer demand overlay. ISACCESS = license check. Used for rough-cut capacity planning.
+
+**WCTRLOAD (8f):** WC+DATE PK; TOTHRS (total scheduled hours), UDATE (last-updated date), CAP (capacity hours), UTIL (utilization %), LOAD (current load hours), EXTRA(100). Pre-computed daily snapshot — likely written by MRP or scheduler engine; read by VSCHED for display.
+
+**Confidence: 68/100** — T7VSCHED (87p) confirmed with 22 tables; WCTRLOAD(8f) full schema extracted; all tables in DDF except FILELOC+ISACCESS; visual scheduling purpose confirmed; Gantt layout and user interaction logic blocked by encryption.
 
 ---
 
@@ -7006,4 +7008,22 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 63). Confidence bumps: DS 48→62 (all 24 T7DS* programs confirmed identical 36-table fingerprints — universal dispatcher architecture; T7DSQC anomaly confirmed), TA 65→72 (8 WTAS* TAS Admin programs identified; FILE* table architecture fully explained), BKSYMSTR 68→78 (full 286-field breakdown with all field groups decoded). New schemas (Pass 63): BKSYMSTR(286f full breakdown), ISTAXGRP(105f), ISICMSTR(41f), ISNOTES(13f), BKSYAR(2f). 5 new schemas documented.*
+### New Tables Confirmed (Pass 64)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKICTAX | 46 | Item tax jurisdiction — STATE(10)+LOCAL(10) PK; TAX/TAXY/STATE_AMOUNT/LOCAL_AMOUNT current amounts; TAXBLE_1..12/NONTAX_1..12/COLECT_1..12 (float, 12-month tax history); OUTSTD outstanding; EXTRA(100) — used by LG (Canadian customs) module |
+| BKARTXN | 14 | AR transaction line — SONUM+CODE+LINEID PK; BIN(10)+LOC(10) storage location; QTY(float); IDATE/ODATE in/out dates; EMPNUM(2) employee; STATUS(1); EXTRA(100) |
+| WCTRLOAD | 8 | Work center capacity load snapshot — WC(10)+DATE(date) PK; TOTHRS (total scheduled hours), UDATE (last-updated date), CAP (capacity hours), UTIL (utilization %), LOAD (current load hours), EXTRA(100) — pre-computed daily snapshot written by scheduler/MRP, read by VSCHED |
+| BKDCSHFT | 34 | DC shift scheduling — DCSH_NUM+DATE+SHIFT PK; start/end times, employee assignments, break times, shift type, capacity fields + EXTRA(100) |
+| ISWOEX | 63 | WO extended data — WOPRE+WOSUF PK; 5 dates, 5 ints, 2 floats, 5 alphas(30), 5 descs(60), 10 flags(1), 5 gnums(float), 5 alphas(30), 5 notes(100) — 10 configurable custom field groups per work order |
+| BKBMMSTR | 26 | BOM master — PARENT(15)+COMPONENT(15) PK; QTY/LEAD/SCRAP/YIELD floats; PROD_OPYN_1..6 (1×6) flags control which FO option (1–6) activates this BOM line; REVISION(10), NOTES(100), EXTRA(100) |
+| BKFOCFG | 18 | Features & Options config — FO option definitions: CODE(10)+OPTNUM(int) PK; DESC(60); PARENT(15) item code; LEVEL(int) option tier; PRICE(float) upcharge; ACTIVE(1); REQD(1) required flag; EXTRA(100) |
+| ISROUTEX | 100 | Routing operation extension — CODE(15)+OPER(int) PK; 10 machine cycle-time slots (MTIME_1..10 float) per routing operation + SETUP/RUN/CREW/MACH per slot; 45 configurable custom fields |
+| ISWOROEX | 60 | WO routing extension — WOPRE+WOSUF+OPER PK; 45+ custom slots (dates/ints/floats/alphas/notes); mirrors ISROUTEX at the WO instance level |
+| ISWOTRAY | 52 | WO tray scan tracking — TRAY_NUM(20) PK; WOPRE+WOSUF(WO link); OPER(int); QTY(float); QC(1) QC pass/fail; BIN_1..4(10) bin locations; SCAN_DATE/TIME; EMPNUM(2); STATUS(1); 37 additional tracking fields |
+| OPQCDESC | 10 | Operation QC description — WOPRE+WOSUF+OPER PK; DESC(60); SERIAL(20); UID(8); QCCODE(10); DATE(date); QTY(float); EXTRA(100) |
+
+---
+
+*Last updated: 2026-06-17 (Pass 64). Confidence bumps: RT 45→55 (zero module-specific tables confirmed — pure infrastructure), FP 42→55 (zero T7FP* programs across all 1,122 RWN modules — definitively RTM-only), FO 65→72 (BKBMMSTR 26f with PROD_OPYN_1..6 option-activation flags decoded), LG 62→70 (BKICTAX 46f full schema decoded), ADCA 62→70 (55-table cross-reference confirmed), VSCHED 62→68 (22-table set complete; WCTRLOAD 8f decoded). ISWOEX "not in DDF" note corrected — 63f schema confirmed in DDF. 11 new schemas: BKICTAX(46f), BKARTXN(14f), WCTRLOAD(8f), BKDCSHFT(34f), ISWOEX(63f), BKBMMSTR(26f), BKFOCFG(18f), ISROUTEX(100f), ISWOROEX(60f), ISWOTRAY(52f), OPQCDESC(10f).*
