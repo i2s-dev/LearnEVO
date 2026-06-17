@@ -8783,3 +8783,267 @@ ISSO_BOX_ prefix = same as ISSOBOX (BO/BOL module, 22f). ISBOLMS is a Btrieve al
 ---
 
 *Last updated: 2026-06-17 (Pass 74). AR archive family complete: BKARHINV/BKARHIVL (paid invoice archive) + BKARRINV/BKARRIVL (recurring templates) + BKARECST/BKARSHIP (BKARCUST alt-indexes) + BKAREIVT (aging summary). AP extended: BKAPAPO/BKAPHPO (open/history PO views) + BKAPNOTE(12f) + BKAPDEP(6f AR deposit) + BKAPRIVL(390f GL distribution). WO routing: 4-tier confirmed (WOROUT + WOROUTMP + WOSROUT + WOHROUT); WOBOMHRM(7f) BOM remark. QC: ISQCRSLT(57f) SPC inspection results. PI: BKPILCNT+BKPISCNT lot/serial count pair. ISJBSF(143f) Business Scorecard KPI table decoded. 26 new schemas. Confidence bumps: AR 85→88 (archive family complete), AP 90→92 (GL distribution + open/history views), WO 90→91 (routing 4-tier), QC 78→81 (ISQCRSLT), PI 72→76 (lot/serial count pair), BS 72→78 (ISJBSF KPI table).*
+
+---
+
+## QC/AC — NCR/CAR Follow-Up Events — Pass 75
+
+### ISACAR (35f) — NCR Archive (ISNCR Alt-Index)
+
+IS_NCR_ prefix = identical structure to ISNCR (35f). ISACAR is a Btrieve alternate-index of ISNCR providing a different sort order for the NCR archive/history view.
+
+---
+
+### ISACARFU (13f) / ISCARFUP (13f) — CAR Follow-Up Events (Archive/Active)
+
+IS_CARFUP_ prefix. CAR (Corrective Action Request) follow-up event records:
+- IS_CARFUP_CAR(float) — parent CAR/NCR number
+- IS_CARFUP_DATE — follow-up date
+- IS_CARFUP_USER(15) — user who recorded it
+- IS_CARFUP_UID(30) — unique record ID
+- IS_CARFUP_TYPE(10) — follow-up type (e.g., email/phone/visit)
+- IS_CARFUP_EXTRA(50) — notes
+- IS_CARFUP_CDTE + CWHO — close date + closed by
+- (+ 5 more: additional close/status fields)
+
+ISACARFU = archive CAR follow-up events; ISCARFUP = active follow-up events. Used by QC-G (CAPA) and AC module to track milestone progress on corrective actions.
+
+---
+
+## IS — Notes and Audit System — Pass 75
+
+### ISANOTES (12f) — Timestamped Note Record
+
+**PK:** IS_NOTE_ID(48) — compound record identifier (table name + record key)
+
+Universal note/audit entry with full create/edit timestamps:
+- IS_NOTE_TYPE(3) — note type code
+- IS_NOTE_CDATE + CTIME(10) + CWHO(15) — created date/time/by
+- IS_NOTE_EDATE + ETIME(10) + EWHO(15) — last-edited date/time/by
+- (+ 4 more: content, priority, link fields)
+
+ISANOTES is the universal note-attachment system. The 48-char ID encodes the parent table and record key, so any record in EvoERP can have notes attached. Separate from ISNOTES (which uses a different primary key structure).
+
+---
+
+## IC — Valuation and Alternate Master Views — Pass 75
+
+### BKICVAL (4f) — Daily Inventory Valuation Snapshot
+
+**PK:** BKIC_VAL_CODE(15) + DATE
+
+Per-item daily closing valuation:
+- BKIC_VAL_TOTVL(float) — total dollar value (UOH × unit cost)
+- BKIC_VAL_UOH(float) — units on hand at this date
+
+Created during period-close or IC-Q "Value Inventory". Used for GL inventory reconciliation and period-end inventory value reporting.
+
+---
+
+### BKICAMTR (64f) / BKICEMTR (64f) / BKICAPMA (85f) — BKICMSTR Alt-Index Views
+
+All share the BKIC_PROD_ field prefix:
+- **BKICAMTR (64f)** — "IC Actual Master" — 64-field subset of BKICMSTR sorted for actual-cost reporting
+- **BKICEMTR (64f)** — "IC Estimate Master" — same 64-field subset, sorted for ES/MR module pricing access
+- **BKICAPMA (85f)** — "IC AP/Price Matrix Alt" — 85-field BKICPMAT alt-index (third sort order of the customer pricing matrix); joins with BKICAPMA give "all pricing for this item across all customers"
+
+---
+
+## IN — Inventory Transactions — Pass 75
+
+### INVATXN (24f) / INVETXN (24f) — Inventory Transaction Records
+
+MTIT_ prefix: both share identical 24-field structure:
+- MTIT_TYPE(1) — transaction type (R=receipt, I=issue, A=adjust, T=transfer, S=ship)
+- MTIT_CLASS(4) — item class
+- MTIT_DATE — transaction date
+- MTIT_CODE(15) — item code
+- MTIT_QTY — quantity
+- MTIT_AVGCOST — average cost at time of transaction
+- MTIT_STDCST — standard cost at time of transaction
+- MTIT_LOC(10) — location
+- (+ 16 more: lot/serial, GL account/dept, employee, WO link, document number)
+
+INVATXN = actual inventory transactions (posted); INVETXN = estimated/planned inventory movements (pre-posting or ES module usage).
+
+---
+
+## PC — Production Control / Kit Module — Pass 75
+
+### BKPCKIT (6f) — Production Kit Components
+
+- BKPC_KIT_COMP(15) — component item code
+- BKPC_KIT_QTY_R(float) — quantity required
+- BKPC_KIT_QTY_A(float) — quantity allocated
+- BKPC_KIT_QTY_S(float) — quantity shipped/used
+- BKPC_KIT_DATELM — date limit (need-by date)
+- BKPC_KIT_LOC(10) — source location
+
+Tracks component allocation within a PC production kit.
+
+---
+
+### BKPCPLOT (10f) — Production Schedule Plot
+
+**PK:** BKPC_PLOT_PROD(15) + ISDTE
+
+Production scheduling record per item:
+- BKPC_PLOT_SPDTE — scheduled ship date
+- BKPC_PLOT_QTY — planned quantity
+- BKPC_PLOT_CUST(10) — customer
+- BKPC_PLOT_INKO(float) — quantity in kit
+- BKPC_PLOT_STAT(1) — status (P=planned, R=released, C=complete)
+- BKPC_PLOT_STRTD — scheduled start date
+- (+ 2 more)
+
+The PC module provides production planning/scheduling on top of the WO and SO modules. BKPCKIT tracks component allocation; BKPCPLOT tracks the production schedule per item.
+
+---
+
+## BM — BOM Alt-Index Views and RO Routing Templates — Pass 75
+
+### ISBMESA / ISBMEST / ISBMTMP (26f each) — BOM Alternate-Index Views
+
+All BKBM_ prefix = identical 26-field structure to BKBMMSTR:
+- **ISBMESA** — BOM actual snapshot (used by BM-SA reporting — "BOM Snapshot Actual")
+- **ISBMEST** — BOM estimate snapshot (used by ES module — estimated BOM vs. actual)
+- **ISBMTMP** — BOM template (saved BOM templates for quick WO creation)
+
+All are Btrieve alternate-index views of BKBMMSTR (or its snapshot variants BKBMAMTR/BKBMEMTR) with different sort orders.
+
+---
+
+### ROUTAING / ROUTTEMP (62f each) — Routing Alt-Index Views
+
+MTRO_ prefix = identical 62-field structure to ROUTING:
+- **ROUTAING** — alternate-index of ROUTING (probably sorted by item CODE for "routing-aging" reports)
+- **ROUTTEMP** — routing template (saved standard routings before assignment to specific items)
+
+---
+
+### SERIALH (30f) — Serial Number History View
+
+MTSER_ prefix = identical to SERIAL (30f). SERIALH = "Serial History" — alternate-index of SERIAL sorted by RECDATE (or CODE without SERIAL) for historical traceability queries.
+
+---
+
+## CM — Session Lock and Temp Tables — Pass 75
+
+### BKCMCTL2 / BKCMCTL3 / BKCMCTL4 (1f each) — CM Concurrent Session Locks
+
+Single-field tables: BKCM_CTRL_USER(10). One-record lock tables — each holds the user ID of the current CM module session occupying that slot. CM-A checks these before allowing entry; multiple concurrent CM sessions are managed via CTL2/3/4 slots.
+
+---
+
+### BKCMTMP1 / BKCMTMP2 / BKCMTMP3 / BKCMTMP4 (6f each) — CM Bulk Operation Staging
+
+**Fields:** BKCMT_CODE(10) + KEYF(20) + GROUP(8) + COMP(2) + TAG(1) + ACTIVITY(5)
+
+Four identical temporary staging tables (one per concurrent CM session) used during CM module bulk operations (mass mailings, bulk assignments). Session N uses TMPn table. Cleared at session end.
+
+---
+
+## SA — Monthly Summary Rollup Tables — Pass 75
+
+### SUMCUST (5f) — Monthly Customer Sales Summary
+
+**PK:** SUMCUST_CUST(10) + YEAR(2) + MONTH(2)
+
+- SUMCUST_SALES(float) — total sales this month
+- SUMCUST_COGS(float) — total COGS this month
+
+Per-customer monthly rollup. Used by SA (Sales Analysis) module for trend reports without scanning full BKARINV transaction detail.
+
+---
+
+### SUMPNCUS (6f) — Monthly Customer-Item Sales Summary
+
+**PK:** SUMPNCUS_CUST(10) + PARTNO(15) + YEAR(2) + MONTH(2)
+
+- SUMPNCUS_SALES + SUMPNCUS_COGS — same as SUMCUST but also by part number
+
+More granular sales analysis: "how much of item X did customer Y buy in month M?"
+
+---
+
+### SUMWC (7f) — Monthly Work Center Summary
+
+**PK:** SUMWC_WORKCTR(12) + YEAR(2) + MONTH(2)
+
+- SUMWC_LABOR + SETUP + UNITS + SCRAP — monthly labor/setup hours, units produced, scrap
+
+Per-WC monthly rollup. Used by SH (Shop Scheduling) efficiency reports and JC (Job Cost) WC performance analysis.
+
+---
+
+## MU — Multi-WO Staging and Notes — Pass 75
+
+### MWOPTEMP (8f) — Multi-WO Operation Staging
+
+**PK:** MWOP_CNTR (float)
+
+Staging record for multi-yield WO (MU module) serial number assignment:
+- MWOP_WOPRE + MWOP_WOSUF — source WO
+- MWOP_SERIAL(25) — serial number being assigned
+- MWOP_QTYCOM — quantity completed
+- MWOP_STATUS(10) — staging status (Pending/Assigned/Done)
+- MWOP_EXTRA(100) — extra data
+- MWOP_SRC(2) — source indicator
+
+Used by MU-A (multi-yield receipt) to stage serial numbers across multiple parallel WO operations before posting.
+
+---
+
+## Cross-Module — Standard Description Note Family — Pass 75
+
+### BK_DESC_ Note Pattern: Remaining Members
+
+The 5-field BK_DESC_ note pattern (CODE+NUM+LINE+NOTES(70)+DESC(25)) used universally for extended text blocks. Previously documented: BKARDESC, BKARHDSC, BKAPADSC, BKAPHDSC. Additional members:
+
+| Table | Module | Purpose |
+|---|---|---|
+| BKQTNOTE | QT/Service Quote | Active quote notes |
+| BKQTTEMP | QT | Quote note templates |
+| BKRFQDES | RF/RFQ | RFQ description lines |
+| NOTETEMP | System | General note templates (cross-module) |
+
+---
+
+### New Tables Confirmed (Pass 75)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISACAR | 35 | NCR archive alt-index (ISNCR sort variant) |
+| ISACARFU | 13 | CAR follow-up archive — CAR+DATE PK; TYPE+EXTRA+CDTE |
+| ISCARFUP | 13 | CAR follow-up active — same 13f as ISACARFU |
+| ISANOTES | 12 | Timestamped note — ID(48) PK; TYPE+CDATE/CTIME/CWHO+EDATE/ETIME/EWHO |
+| ISARFQ | 49 | RFQ alt-index (BKRFQ sort variant for AR access) |
+| BKICAMTR | 64 | IC actual master alt-index (BKICMSTR 64-field subset) |
+| BKICEMTR | 64 | IC estimate master alt-index (BKICMSTR 64-field subset) |
+| BKICVAL | 4 | Daily inventory valuation — CODE+DATE PK; TOTVL+UOH |
+| BKICAPMA | 85 | BKICPMAT 3rd alt-index (item-sorted customer pricing) |
+| INVATXN | 24 | Inventory actual transactions — TYPE+DATE+CODE PK; QTY+AVGCOST+STDCST |
+| INVETXN | 24 | Inventory estimate transactions — same 24f as INVATXN |
+| BKPCKIT | 6 | Production kit components — COMP PK; QTY_R/A/S+DATELM+LOC |
+| BKPCPLOT | 10 | Production schedule plot — PROD+ISDTE PK; SPDTE+QTY+CUST+INKO+STAT |
+| ISBMESA | 26 | BOM actual snapshot alt-index (BKBMMSTR sort variant) |
+| ISBMEST | 26 | BOM estimate snapshot alt-index |
+| ISBMTMP | 26 | BOM template alt-index |
+| ROUTAING | 62 | ROUTING alt-index (aging/alternate sort) |
+| ROUTTEMP | 62 | Routing template |
+| SERIALH | 30 | SERIAL alt-index (history sort by RECDATE) |
+| ISBTCSB | 54 | ISSRINFO alt-index (SR extended info, batch CSB sort) |
+| BKCMCTL2/3/4 | 1 | CM concurrent session locks (one per slot) |
+| BKCMTMP1..4 | 6 | CM bulk operation staging tables (one per session) |
+| SUMCUST | 5 | Monthly customer sales — CUST+YEAR+MONTH PK; SALES+COGS |
+| SUMPNCUS | 6 | Monthly customer-item sales — CUST+PARTNO+YEAR+MONTH PK; SALES+COGS |
+| SUMWC | 7 | Monthly work center summary — WC+YEAR+MONTH PK; LABOR+SETUP+UNITS+SCRAP |
+| MWOPTEMP | 8 | Multi-WO serial staging — CNTR PK; WOPRE/WOSUF+SERIAL+QTY+STATUS |
+| BKQTNOTE | 5 | QT quote notes (BK_DESC_ pattern) |
+| BKQTTEMP | 5 | QT quote note templates |
+| BKRFQDES | 5 | RFQ description lines (BK_DESC_ pattern) |
+| NOTETEMP | 5 | General note templates (BK_DESC_ pattern) |
+
+---
+
+*Last updated: 2026-06-17 (Pass 75). IS archive views decoded: ISACAR (ISNCR alt), ISACARFU/ISCARFUP (CAR follow-up events active/archive). IC family extended: BKICVAL(4f) daily valuation + BKICAMTR/BKICEMTR(64f) actual/estimate master views + BKICAPMA(85f) 3rd pricing alt-index. IN: INVATXN/INVETXN(24f) actual/estimated inventory transactions. PC: BKPCKIT(6f) kit components + BKPCPLOT(10f) production schedule. BM/RO: ISBMESA/ISBMEST/ISBMTMP(26f) BOM alt-indexes + ROUTAING/ROUTTEMP(62f) routing variants. SA: SUMCUST(5f)+SUMPNCUS(6f)+SUMWC(7f) monthly rollup tables. MU: MWOPTEMP(8f) serial staging. CM: BKCMCTL2..4(1f) session locks + BKCMTMP1..4(6f) session staging. BK_DESC_ family complete: BKQTNOTE+BKQTTEMP+BKRFQDES+NOTETEMP. 30 new schemas. Confidence bumps: QC 81→82 (ISACAR=ISNCR alt confirmed; CAR follow-up decoded), IC/IN 78→82 (BKICVAL+INVATXN/INVETXN), SA 75→80 (SUMCUST+SUMPNCUS+SUMWC monthly rollups).*

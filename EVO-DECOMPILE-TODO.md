@@ -994,7 +994,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
 | Module: AP | **92** | 92 | **0** ✅ ↑+2 Pass74 | 2026-06-17 |
-| Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
+| Module: IN/Inventory | **82** | 85 | **3** ↑+5 Pass75 | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
 | Module: WO | **91** | 90 | **0** ✅ ↑+1 Pass74 | 2026-06-17 |
@@ -1010,7 +1010,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CS/Commission+Salesperson | **80** | 85 | **5** ↑+10 Pass57 | 2026-06-17 |
 | Module: JC/Job Costing | **78** | 82 | **4** ↑+6 Pass47 | 2026-06-17 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
-| Module: QC/Quality Control | **81** | 82 | **1** ↑+3 Pass74 | 2026-06-17 |
+| Module: QC/Quality Control | **82** | 82 | **0** ✅ ↑+1 Pass75 | 2026-06-17 |
 | Module: QT/Service Quote | **72** | 75 | **3** ↑+12 Pass60 | 2026-06-17 |
 | Module: IC/Inventory Utility | **78** | 72 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
@@ -1021,7 +1021,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
 | Module: MA/AR Deposits | **70** | 75 | **5** ↑ Pass50 | 2026-06-17 |
 | Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 | 2026-06-17 |
-| Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+7 Pass62 | 2026-06-17 |
+| Module: SA/Sales Analysis | **80** | 80 | **0** ✅ ↑+5 Pass75 | 2026-06-17 |
 | Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **78** | 80 | **2** ↑ Pass69 | 2026-06-17 |
 | Module: SP/SPC ⚠️ | **87** | 82 | **0** ↑ Pass71 | 2026-06-17 |
@@ -1072,7 +1072,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: RF/RFQ | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
 | Subsystem: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
-| Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+3 Pass62 | 2026-06-17 |
+| Module: SA/Sales Analysis | **80** | 80 | **0** ✅ ↑+5 Pass75 (dup row) | 2026-06-17 |
 | Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
 | Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 (dup of row above) | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **68** | 70 | **2** ↑+13 Pass62 | 2026-06-17 |
