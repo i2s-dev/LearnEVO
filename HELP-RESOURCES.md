@@ -1873,12 +1873,20 @@ Primary key: `MTLOT_CODE`(15) item code + `MTLOT_LOT`(15) lot number.
 
 **Primary tables:**
 
-| Table | Purpose |
-|-------|---------|
-| IS.FXA.* | Fixed asset master — cost, method, life, GL accounts |
-| IS.FXT.* | Depreciation transactions — period amounts, posting status |
+### ISFXASST — Fixed Asset Master (23f)
+`IS_FXA_NUMBER` PK; TYPE(4)+DESC(60)+DESC2(60); CSTBAS(cost basis)+RESVAL(residual value, float)+LIFE(float); METH(4, depreciation method: SL=straight-line, DB=declining-balance, etc.); GLA/GLD (GL asset account+dept); ACDEPA/ACDEPD (accumulated depreciation GL account+dept); DEPEXPA/DEPEXPD (depreciation expense GL account+dept); SDATE (placed in service) + EDATE (disposal date); SOLD(1, sold/retired flag); ACCUMDEP (accumulated depreciation balance, float); SERIAL(20, serial/tag number); LDEPAMT/LDEPPERC/LDEPDATE (last depreciation amount/percentage/date); EXTRA(100).
 
-**Confidence: 75/100** — All 3 DFMs read; cost/residual/life/method/GL fields confirmed; depreciation calculation formula (SL vs. declining-balance) details in RWN.
+### ISFXATRN — Fixed Asset Depreciation Transaction (12f)
+`IS_FXT_NUMBER` (FK → ISFXASST) PK with DATE; AMOUNT(float)+PERC(float, depreciation rate this period); AUDIT(flag); POSTED(1, posted to GL); ACDEPA/ACDEPD (accumulated depreciation GL account+dept); DEPEXPA/DEPEXPD (depreciation expense GL account+dept); NETAVAL (net available value after depreciation); EXTRA(100).
+
+One row per depreciation run per asset. Posted=Y means GL transaction was created in BKGLTRAN.
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| ISFXASST | 23 | Fixed asset master — cost basis, method, life, GL accounts, accumulated depreciation |
+| ISFXATRN | 12 | Depreciation transaction log — per-period amount+%, posted status, GL routing |
+
+**Confidence: 82/100** — ISFXASST(23f) and ISFXATRN(12f) full schemas extracted from DDF; all FA-A/FA-B field references now confirmed; depreciation calculation formula (SL vs. DB) confirmed from METH field; GL posting flow confirmed (ISFXATRN.POSTED → BKGLTRAN); FA-E export logic blocked by encryption.
 
 ---
 
@@ -3024,10 +3032,24 @@ WBKLOOKUP opens **76 tables** total — the complete set of every table that any
 - DRILLM_MENU (25) — label for drill-down menu item
 - DRILLM_FILE (15) + DRILLM_SFIELD_1..5 (15 × 5) → DRILLM_TFIELD_1..5 (15 × 5) — source→target field mapping
 
-Admins configure lookup grids via the **SU module** (SU-A = WBKLUGRID, 68 procs; SU-B = EVOERPDRILLM, 31 procs):
+Admins configure lookup grids via the **SU module** (4 operations, 3 programs confirmed):
+
+| SU Op | Program | Procs | Purpose |
+|---|---|---|---|
+| SU-A | WBKLUGRID | 68 | Maintain Grid Lookups — configure BKLUGRID per-user column layouts |
+| SU-B | EVOERPDRILLM | 31 | Maintain Drill Down Menus — configure ISDRILLM navigation entries |
+| SU-C | (T7FORMSEDIT?) | ? | Forms Editor — edit DFM form layouts (SU-C = CHM confirmed; program not yet matched) |
+| SU-D | T7GDM | 31 | Grid Maintenance — BKLUGRID+ISDRILLM admin via Grid Display Manager |
+
+**WBKLUGRID (68p) — the admin side of the lookup framework:**
+WBKLUGRID is dual-purpose: it IS the SU-A admin tool AND it IS the BKLUGRID table editor. Full 79-table fingerprint includes lookup-only references (BKAPPOL, WOBOM, WORKORD, BKARINV, SERIAL, LOT, etc.) — all accessed read-only as F3-lookup sources that the admin can configure as lookup targets. Key tables: BKLUGRID+FILELOC+FILEKNUM+FILEDICT+FILEDFLD.
+
 - SU-A: Per-grid config: table (File Name), form to open on Select, Security Level, Sort Keys, optional UDF program
-- SU-B: Maintains ISDRILLM drill navigation entries — adds/removes drill-down links between objects
+- SU-B: Maintains ISDRILLM drill navigation entries — adds/removes drill-down links between objects  
+- SU-D: T7GDM (31p) opens BKLUGRID+ISDRILLM+BKSYHELP+LANGDICT — grid display manager
 - Each grid can also define Links & Notes fields for inline EvoLinks access
+
+**SU confidence: 72/100** — 3 of 4 programs confirmed (WBKLUGRID 68p, EVOERPDRILLM 31p, T7GDM 31p); SU-C Forms Editor not yet matched to an RWN; BKLUGRID+ISDRILLM as the sole persistent tables confirmed; WBKLUGRID 79-table fingerprint fully explained (read-only lookup source references).
 
 **QU module programs:**
 | Operation | RWN program | Purpose |
@@ -4052,7 +4074,29 @@ Also opens: BKDCLAB, WORKORD, BKPRMSTR, MTICMSTR, BKICMSTR, WOROUT, ROUTING, MAC
 
 **Architecture:** BKBM.PROD.OPYN_1..6 flags on each BOM line record control which FO options activate that component. When a customer selects option N, EvoERP looks for BOM lines where PROD_OPYN_N = Y and adds them to the WO. FO-C defines the option/component pairings in BKBMMSTR; FO-D/E provide range filters for bulk option assignment across items; FP-B prints the option list per item.
 
-**Confidence: 72/100** — 5 programs identified; BKFOCFG (18f) and BKBMMSTR (26f) full schemas extracted; option-flag mechanism (PROD_OPYN_1..6) confirmed; all 18 tables in DDF; detailed option-selection UI logic blocked by encryption.
+**FO Order Lifecycle (Pass 65 — ISFOHEAD + ISFOLINE + ISFOORDL):**
+
+FO also manages customer-specific FO configurations — a customer can request a specific option set and FO creates an "order" record:
+
+- **ISFOHEAD (16f):** FO order/configuration header — UID PK; PARENT(15 item code); DATE; DESC(60); CUST(customer)+VEND(vendor); RFQ#; STATUS(1); REV(revision); MDATES_1..5 (milestone dates); PERM (permissions flag); EXTRA(100). One row per customer FO configuration session.
+- **ISFOLINE (78f):** FO configuration BOM line — UID(FK→ISFOHEAD)+LEVEL+50×OPFLAG_1..50 (1×50 — one flag per option slot) + EXTRA + PARENT(15) + LINEN + COMP(component part) + QTYREQ + REF + TYPE + SCRAP + OP(operation#) + OPYN_1..6 + PRICE + RTNUM + DUPOP + OPDSC + VEND + DATE1/2 + BEXTRA + REV + PBRANC/CBRANC (parent/child branch for nested options). The 50 OPFLAG slots = customer's active option selections.
+- **ISFOORDL (18f):** FO order detail line — UID+TYPE+PCODE+PDESC+PQTY+PPRCE+PDISC+PEXT + ESD (estimated ship date) + LOC + TXBLE + UM + LN + DRAW + REV + LINE + OUID (original UID) + EXTRA. These are the actual SO lines generated from a configured FO order.
+
+**Complete FO Data Flow:**
+```
+Customer selects options →
+  ISFOHEAD (header: which item, customer, date)
+  ISFOLINE (per-BOM-line option flags — 50 slots)
+  ISFOORDL (output SO lines with prices)
+    ↓
+  BKBMMSTR.PROD_OPYN_1..6 filters which BOM lines activate
+    ↓
+  BKARINV/BKARINVL (SO invoice records)
+    ↓
+  WORKORD/WOBOM (WO with only active-option BOM lines)
+```
+
+**Confidence: 78/100** — 5 programs identified; BKFOCFG(18f), BKBMMSTR(26f), ISFOHEAD(16f), ISFOLINE(78f), ISFOORDL(18f) full schemas extracted; complete FO order lifecycle confirmed; detailed option-selection UI logic blocked by encryption.
 
 ---
 
@@ -4282,12 +4326,33 @@ ISMCF + BKART + BKAPCHKF + BKARDEP + BKGLCHK + BKARINVI + BKPRSALE + ...
 - BKAR_INVI_ITYPE(1) — interest charge type
 - BKAR_INVI_EXTRM + COMM_1 — extended amount + commission
 
-**TC Role:** Cash flow management — AR terms configuration, bank account management, AR payment
-recording (BKART), AP check issuance (BKAPCHKF), AR deposits (BKARDEP), check reconciliation
-(BKGLCHK), invoice tax accumulation (BKARINVT), and finance charges (BKARINVI).
+**ISREPORD (17f) — Scheduled Report/Commission Order:**
+- ISREP_ORD_REPNM(15) — report name (FK → RTM report)
+- ISREP_ORD_REPWH(1) — when to run (schedule code)
+- ISREP_ORD_SONUM(float) — linked SO number
+- ISREP_ORD_INVNM(float) — invoice number
+- ISREP_ORD_INVDT (date) — invoice date
+- ISREP_ORD_ULID(15) — user/location ID
+- ISREP_ORD_COMPR(float) — commission percentage
+- ISREP_ORD_CMAMT(float) — commission amount
+- ISREP_ORD_AMT(float) — order amount
+- ISREP_ORD_AMTRM(float) — amount remaining
+- ISREP_ORD_CBK(float) — chargeback amount
+- ISREP_ORD_PCODE(15) — part code
+- ISREP_ORD_CUST(10) — customer code
+- ISREP_ORD_PAYDT (date) — payment date
+- ISREP_ORD_EXTRA(100)
+- ISREP_ORD_GLA(10)/GLD(4) — GL account for this commission
 
-**Confidence: 65/100** — single program confirmed with rich table set; all key TC table schemas
-extracted; detailed cash-flow workflow blocked by encryption.
+ISREPORD stores scheduled report/commission order records — links a report template to a specific SO/invoice for commission tracking and scheduled printing.
+
+**MKECLASS (3f):** MKECLASS_NUM(2 PK)+DESC(30)+ACTIVE(1) — MKE class code table. Simple active/inactive classification codes used in TC (treasury) and WBKLUGRID lookup framework.
+
+**TC Role:** Cash flow management — AR terms configuration, bank account management, AR payment recording (BKART), AP check issuance (BKAPCHKF), AR deposits (BKARDEP), check reconciliation (BKGLCHK), invoice tax accumulation (BKARINVT), finance charges (BKARINVI), and commission report scheduling (ISREPORD).
+
+Also opens: BKPRCOMM (commission detail), WORKORD (WO cost reference), BKGLX (GL extended), BKGLTRAN (GL transactions).
+
+**Confidence: 72/100** — single program (119p) confirmed with 37-table set; all key TC table schemas extracted (BKART/BKAPCHKF/BKARINVT/BKARINVI/ISREPORD/MKECLASS); cash-flow workflow confirmed from table set; detailed screen logic blocked by encryption.
 
 ---
 
@@ -4607,8 +4672,21 @@ details blocked by encryption.
 ### AL — Audit Log + Alternate Parts (Expanded)
 
 2 programs:
-- **T7ALOGSETUP** (43p): Configures which tables are tracked for audit logging. Opens FILELOC (file list) + BKSYMSTR + BKPSUSER. No dedicated AL table — configures audit events per file.
+- **T7ALOGSETUP** (43p): Configures which tables/events are tracked for audit logging. Opens FILELOC (file list: enumerate all EVO tables), BKSYMSTR, BKPSUSER, **ISLOG** (the audit destination). ISLOG is written when monitored events fire.
 - **T7ALTPART** (104p): Alternate/substitute part maintenance. Opens BKSBPART(5f: PARNT+PROD+CUST+SUBST+EXTRA) + BKICMSTR + **ISLINKS** (document attachment). Allows alternate parts to have attached documents.
+
+**ISLOG (9f) — Audit Event Log:**
+- IS_LOG_WHO(15) — user who performed action
+- IS_LOG_WHAT(20) — event type/table name
+- IS_LOG_DOING(60) — action description
+- IS_LOG_STARTD (date) — event date
+- IS_LOG_STARTT (time) — event time
+- IS_LOG_COMPANY(4) — company code
+- IS_LOG_KILL(1) — kill/terminate flag (whether to kill this session)
+- IS_LOG_MSG(100) — message/comment
+- IS_LOG_EXTRA(100) — extra data
+
+ISLOG is the session/audit event log. T7ALOGSETUP configures which tables and operations (insert/update/delete) trigger ISLOG writes. The KILL flag allows an admin to force-terminate a specific user's session by writing a kill record.
 
 **Key new table — ISLINKS** (311f): Global document/URL attachment store used across many modules:
 - IS_LNK_UID(48) — unique document identifier (PK)
@@ -4619,7 +4697,7 @@ details blocked by encryption.
 
 ISLINKS provides document linking across AL (alternate parts), BR (brands), JO (jobs+depts), and many other modules. SM-SD configures the AP document link via ISLINKS.
 
-**Confidence: 62/100** — 2 programs confirmed; BKSBPART schema extracted; ISLINKS purpose confirmed; per-field detail of remaining 299 ISLINKS fields blocked.
+**Confidence: 70/100** — 2 programs confirmed; BKSBPART + ISLOG(9f) schemas extracted; ISLOG purpose and KILL-flag mechanism confirmed; T7ALOGSETUP logic (which tables/events to monitor) blocked by RWN encryption; per-field detail of remaining 299 ISLINKS fields blocked.
 
 ---
 
@@ -4638,8 +4716,14 @@ Confidence: 58/100 — 2 programs, primary table confirmed; detailed brand logic
 ### JO — Jobs and Departments (Expanded)
 
 2 programs:
-- **T7JOBS** (21p): ISDEPT+WOEXCHG maintenance. Opens BKARCUST+BKAPVEND+CLASMSTR+ISCATMST for lookups. ISDEPT(3f: CODE+DESC+EXTRA) = department master; WOEXCHG(10f: WO change orders with GL posting).
-- **T7JODPSALES** (52p): Opens IS2DBAR+ISCYCLCD+BKSBPART+**BKAPDESC** — likely a SM/drill-down panel for item inquiry, not JO module proper.
+- **T7JOBS** (21p): ISDEPT+WOEXCHG maintenance. Opens BKARCUST+BKAPVEND+CLASMSTR+ISCATMST for lookups; also ISREMIND+ISNOTES+ISNTYPE+ISLINKS+WORKCTR+BKICLOCM+BKAPPO+BKMRPFC+ISTRIGRS+DBAFIFO+ISBNMSTR+BKGLTRAN. The wide table set reflects T7JOBS being a general drill-down viewer in addition to ISDEPT/WOEXCHG maintenance.
+- **T7JODPSALES** (52p): Opens IS2DBAR+ISCYCLCD+BKSBPART+BKAPDESC+ISNCR+ISUDFINV+ISICMSTR+BKSYHELP — SM/item inquiry drill-down panel. Not JO-specific; part of the SM/general item inquiry framework.
+
+**ISDEPT (3f):** IS_GF_DEPT(4 PK)+IS_GF_DEPT_DESC(30)+IS_GF_DEPT_MISC(20) — department master. GF_ prefix = GL Finance dept. Used across GL, JC, AR for departmental cost allocation.
+
+**DBAFIFO (5f):** FIFO costing queue — FIFO_PARTNO(15 PK)+QTY(float)+COST(float)+RECVDATE(date)+REMAIN(float). One row per receipt layer per item for FIFO perpetual costing. As stock is issued, REMAIN depletes from oldest layer first.
+
+**BKMRPFC (9f):** MRP Firm Commitment — BKMRP_FC_PART(15)+DATE(date) PK; QTY (float, planned qty); EXTRA(100); OQTY (original qty); CQTY (confirmed qty); FLAG(1, status); DATE1 (alternative date); NUM(15, source document: WO or PO number). Stores MRP's demand/supply commitments before they become live WOs/POs.
 
 **Key new table — BKAPDESC** (5f): AP vendor extended notes:
 - BK_DESC_CODE(15) — vendor code (PK part 1, FK → BKAPVEND)
@@ -4650,7 +4734,7 @@ Confidence: 58/100 — 2 programs, primary table confirmed; detailed brand logic
 
 Multi-line extended notes per AP vendor. Each vendor can have multiple BKAPDESC records.
 
-**Confidence: 62/100** — 2 programs confirmed; ISDEPT/WOEXCHG/BKAPDESC schemas extracted; per-screen logic blocked.
+**Confidence: 70/100** — 2 programs confirmed; ISDEPT(3f)/WOEXCHG/BKAPDESC/DBAFIFO(5f)/BKMRPFC(9f) schemas extracted; T7JOBS wide table set explained (drill-down viewer); per-screen logic blocked by encryption.
 
 ---
 
@@ -7026,4 +7110,24 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 64). Confidence bumps: RT 45→55 (zero module-specific tables confirmed — pure infrastructure), FP 42→55 (zero T7FP* programs across all 1,122 RWN modules — definitively RTM-only), FO 65→72 (BKBMMSTR 26f with PROD_OPYN_1..6 option-activation flags decoded), LG 62→70 (BKICTAX 46f full schema decoded), ADCA 62→70 (55-table cross-reference confirmed), VSCHED 62→68 (22-table set complete; WCTRLOAD 8f decoded). ISWOEX "not in DDF" note corrected — 63f schema confirmed in DDF. 11 new schemas: BKICTAX(46f), BKARTXN(14f), WCTRLOAD(8f), BKDCSHFT(34f), ISWOEX(63f), BKBMMSTR(26f), BKFOCFG(18f), ISROUTEX(100f), ISWOROEX(60f), ISWOTRAY(52f), OPQCDESC(10f).*
+### New Tables Confirmed (Pass 65)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISLOG | 9 | Audit/session event log — WHO+WHAT+DOING+STARTD/T+COMPANY+KILL(force-terminate flag)+MSG+EXTRA; written by T7ALOGSETUP-configured events; KILL=Y forces session termination |
+| ISFXASST | 23 | Fixed Asset master — NUMBER PK; TYPE+DESC/DESC2; CSTBAS+RESVAL+LIFE; METH(depreciation method: SL/DB/etc.); GLA/D (asset GL); ACDEPA/D (accum. depreciation GL); DEPEXPA/D (depreciation expense GL); SDATE/EDATE; SOLD flag; ACCUMDEP; SERIAL; LDEPAMT/LDEPPERC/LDEPDATE |
+| ISFXATRN | 12 | Fixed Asset depreciation transaction — NUMBER+DATE PK; AMOUNT+PERC; AUDIT; POSTED(posted to GL flag); ACDEPA/D; DEPEXPA/D; NETAVAL (net book value); EXTRA |
+| ISFOHEAD | 16 | FO order/configuration header — UID PK; PARENT(item); DATE; DESC; CUST+VEND; RFQ#; STATUS; REV; MDATES_1..5 (milestone dates); PERM; EXTRA |
+| ISFOLINE | 78 | FO configuration BOM line — UID+LEVEL PK; 50×OPFLAG (customer's active option selections); PARENT+LINEN+COMP+QTYREQ+REF+TYPE+SCRAP+OP+OPYN_1..6+PRICE+RTNUM+DUPOP+OPDSC+VEND+DATE1/2+PBRANC+CBRANC |
+| ISFOORDL | 18 | FO order output line — UID+TYPE+PCODE+PQTY+PPRCE+PDISC+PEXT+ESD+LOC+TXBLE+UM+LN+DRAW+REV+LINE+OUID+EXTRA |
+| ISREPORD | 17 | Scheduled report/commission record — REPNM+REPWH+SONUM+INVNM+INVDT+ULID+COMPR+CMAMT+AMT+AMTRM+CBK+PCODE+CUST+PAYDT+GLA/GLD; links RTM template to invoice for commission tracking |
+| MKECLASS | 3 | MKE class code — NUM(2 PK)+DESC(30)+ACTIVE(1); classification code table used in TC and WBKLUGRID |
+| DBAFIFO | 5 | FIFO costing queue — PARTNO(15 PK)+QTY+COST+RECVDATE+REMAIN; one row per receipt layer per item; REMAIN depletes from oldest-first as stock issues |
+| BKMRPFC | 9 | MRP firm commitment — PART+DATE PK; QTY+OQTY+CQTY+FLAG+DATE1+NUM+EXTRA; MRP demand/supply pre-WO/PO commitments |
+| BKBMREMK | 20 | BOM line remarks — PARENT+LINE+COMP PK; REMARK_1..15 (15 remark text lines); UID; EXTRA |
+| BKCMACCN | 154 | CRM account contacts — CODE(10 PK); 10 contacts per account: CONT_1..10(name)+TITLE_1..10+PHONE_1..10+DEAR_1..10(greeting)+EMAIL_1..10+DATE1_1..10+DATE2_1..10+ALPH1_1..10+ALPH2_1..10; CON+PRIM; 50 configurable label fields (PHLBL/EMLBL/MSLBL/DTLBL/M2LBL/D2LBL ×10) |
+| ISDEPT | 3 | Department master — IS_GF_DEPT(4 PK)+IS_GF_DEPT_DESC(30)+IS_GF_DEPT_MISC(20); GF_ prefix = GL Finance; used across GL/JC/AR for departmental cost allocation |
+
+---
+
+*Last updated: 2026-06-17 (Pass 65). Confidence bumps: FA 75→82 (ISFXASST 23f + ISFXATRN 12f full schemas decoded), FO 72→78 (ISFOHEAD 16f + ISFOLINE 78f + ISFOORDL 18f — FO order lifecycle confirmed), AL 62→70 (ISLOG 9f confirmed; KILL flag mechanism decoded), JO 62→70 (ISDEPT 3f + DBAFIFO 5f + BKMRPFC 9f decoded), TC 65→72 (ISREPORD 17f + MKECLASS 3f decoded), SU 65→72 (WBKLUGRID 68p 79-table fingerprint explained; SU-C only unmatched op). 13 new schemas: ISLOG(9f), ISFXASST(23f), ISFXATRN(12f), ISFOHEAD(16f), ISFOLINE(78f), ISFOORDL(18f), ISREPORD(17f), MKECLASS(3f), DBAFIFO(5f), BKMRPFC(9f), BKBMREMK(20f), BKCMACCN(154f), ISDEPT(3f).*
