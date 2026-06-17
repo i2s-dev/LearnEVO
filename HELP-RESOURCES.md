@@ -3653,4 +3653,142 @@ support; per-field meaning of remaining 18 fields in 26f tables needs deeper stu
 
 ---
 
-*Last updated: 2026-06-17 (Pass 40). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-40 module analysis (...GL 28-table family + BOM 10-table family). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## UNIFIED TRANSACTION ARCHITECTURE — Complete Map (Pass 41)
+
+EvoERP uses one physical table structure across all transaction types. The same 84/28-field
+invoice/lines schema is reused by SO, AR, SR, EDI, ES, RMA, and their archives.
+
+### Core Invoice Tables
+
+| Table | Fields | Scope |
+|---|---|---|
+| BKARINV | 84 | **Master** — SO, AR invoice, and EDI/ES/SR staging header |
+| BKARINVL | 28 | **Master** — SO line, AR invoice line, EDI/ES/SR line |
+
+All variant tables below point to the same physical .B file via alternate Btrieve keys.
+
+### Invoice Variants (all 84f, all BKAR_INV_* fields)
+
+| Table | Purpose |
+|---|---|
+| ISSRAINV / ISSRINV / ISSRMH / ISSRMINV / ISSRCH | SR service order — 5 alternate indexes |
+| BKEDIH | EDI-in staging header |
+| BKESTQT | ES estimating quote header |
+| ISARAHIN | AR archive invoice header (year-end closed) |
+| ISARAINV | AR archive invoice (alternate index of ISARAHIN) |
+| ISRMINV | RMA invoice (current) |
+| ISRMAINV | RMA invoice archive |
+
+### Invoice Line Variants (all 28f, all BKAR_INVL_* fields)
+
+| Table | Purpose |
+|---|---|
+| ISSRAIVL / ISSRINVL / ISSRMIVL / ISSRML / ISSRCL | SR service order lines — 5 alternate indexes |
+| BKEDIL | EDI-in staging lines |
+| BKESTQTL | ES estimating quote lines |
+| ISARAHIL | AR archive invoice lines |
+| ISRMAIVL | RMA archive invoice lines |
+| ISRMINVL | RMA invoice lines (current) |
+
+### Transaction Log Family
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKART | 12 | AR payment/credit transaction (live) |
+| ISARAT | 12 | AR transaction archive — identical BKART_* fields |
+| BKARINVT | 23 | AR invoice tax by code (live) |
+| ISARAINT | 23 | AR invoice tax archive — identical BKAR_INVT_* fields |
+| BKARTXN | 14 | AR shipment transaction log — SONUM+CODE+QTY+LOT+SERIAL+BIN |
+| ISARTXNB | 23 | AR shipment transaction batch (richer): SONUM+CODE+LINEID+BIN+LOC+QTY+LOT+SERIAL+DATE+RLEASD(1) + 13 more |
+
+### AP PO Family
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKAPPO | 57 | AP purchase order header (live) |
+| ISAPOPO | 57 | Open PO view — identical BKAP_PO_* fields |
+| ISAPARFQ | 57 | AP archive PO/RFQ header |
+| BKAPPOL | 38 | AP PO lines (live) |
+| ISAPOPOL | 38 | Open PO lines view — identical BKAP_POL_* fields |
+| ISAPARFL | 38 | AP archive PO/RFQ lines |
+| BKAPINVL | 390 | AP invoice lines (live) |
+| ISAPAINL | 390 | AP invoice lines archive — identical BKAP_INVL_* fields |
+
+### Change Audit Log Family
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISARCHG | 26 | AR/SO change audit trail — SONUM+INVNUM+LINEID+PCODE+CDATE+USER+REVLVL+ALOC/BLOC+APRICE/BPRICE+... |
+| ISARACHG | 26 | AR change archive — identical structure |
+| ISAPCHG | 32 | AP/PO change audit trail — PONUM+LINEID+PCODE+CDATE+USER+REVLVL+ALOC/BLOC+APRICE/BPRICE+... |
+| ISAPHCHG | 32 | AP change history — identical structure |
+
+### AP/AR Extended Tables
+
+**ISAPEX** (33f) — AP vendor extended data (mirror of ISAREX for AR customers):
+- ISAPEX_VEND(10) — vendor code (PK)
+- ISAPEX_LONGNAME(60) — long vendor name
+- ISAPEX_NUM_1..5 + NUM2_1..N — numeric extended fields
+- + 20 more configurable fields
+
+**ISAPQPO** (66f) — AP vendor quote pricing:
+- ISAP_QPO_PCODE(15)+PQTY+VNDCOD(10)+PPRCE+PDISC+UM(3) + 60 more — per-item vendor pricing from quotes
+
+**ISAPPROJ** (12f) — AP project linking:
+- ISAP_PROJ_FROM(3)+CUST+VEND+JOURN+INV+LINE PK — links AP transactions to customers and GL journals
+
+### RMA Table Family
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISRMAI | 54 | RMA invoice (current — NUM+PART+LINEID PK; STATUS/REASON/DISP) |
+| ISRMAAI | 54 | RMA invoice archive — identical structure |
+| ISRMINV | 84 | RMA as BKARINV (current view) |
+| ISRMAINV | 84 | RMA invoice archive (BKARINV-structure) |
+| ISRMAIVL | 28 | RMA lines archive (BKARINVL-structure) |
+| ISRMINVL | 28 | RMA lines current view |
+| ISRMINFO | 54 | RMA extended info (ISSRINFO structure) — current |
+| ISRMHINF | 54 | RMA extended info history |
+| ISRMAINF | 54 | RMA extended info archive |
+| ISRMAC | 3 | RMA reason/disposition code master — CODE(30)+DESC(60)+EXTRA |
+| ISRMTXN | 14 | RMA transaction log (BKARTXN structure) |
+| ISRMTXNS | 14 | RMA transaction summary |
+| ISRMDESC + ISRMADSC | 5 | RMA description notes — standard DESC pattern |
+
+**Architecture insight:** RMA is the most table-rich module because it archives every
+stage: the RMA record itself, the invoice it generates, the lines, the extended info,
+and the transactions — all using the canonical BKARINV/BKARINVL/BKART structures.
+
+---
+
+### New Tables Confirmed (Pass 41)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISARAHIN / ISARAINV | 84 | AR archive invoice header — BKARINV structure |
+| ISARAHIL | 28 | AR archive invoice lines — BKARINVL structure |
+| ISARAT | 12 | AR transaction archive — BKART structure |
+| ISARAINT | 23 | AR invoice tax archive — BKARINVT structure |
+| ISARTXNB | 23 | AR shipment batch — SONUM+CODE+LINEID+BIN+LOC+QTY+LOT+SERIAL+DATE+RLEASD |
+| ISAPOPO / ISAPOPOL | 57/38 | Open AP PO views — BKAPPO/BKAPPOL structure |
+| ISAPARFQ / ISAPARFL | 57/38 | AP PO/RFQ archive — BKAPPO/BKAPPOL structure |
+| ISAPAINL | 390 | AP invoice lines archive — BKAPINVL structure |
+| ISAPCHG / ISAPHCHG | 32 | AP change audit log — PONUM+LINEID+PCODE+CDATE+USER+REVLVL+before/after fields |
+| ISAPEX | 33 | AP vendor extended — VEND PK; LONGNAME + configurable num fields |
+| ISAPQPO | 66 | AP vendor quote pricing — PCODE+VNDCOD PK; price/discount |
+| ISAPPROJ | 12 | AP project link — FROM+CUST+VEND+JOURN+INV+LINE PK |
+| ISRMAAI | 54 | RMA invoice archive — identical ISRMAI structure |
+| ISRMINV / ISRMAINV | 84 | RMA invoice as BKARINV — current + archive |
+| ISRMAIVL / ISRMINVL | 28 | RMA lines as BKARINVL — archive + current |
+| ISRMINFO / ISRMHINF / ISRMAINF | 54 | RMA extended info — current / history / archive (ISSRINFO structure) |
+| ISRMAC | 3 | RMA reason/disposition code master |
+| ISRMTXN / ISRMTXNS | 14 | RMA transaction log/summary — BKARTXN structure |
+| ISARACHG | 26 | AR change log archive — ISARCHG structure |
+| ISARACHK | 12 | AR cross-reference to AP checks — BKAPCHKF structure |
+| ISARACST | 106 | AR archive customer master |
+
+---
+
+*Last updated: 2026-06-17 (Pass 41). Unified transaction architecture fully mapped across 30+ table variants. BKARINV(84f)/BKARINVL(28f) structure confirmed in AR, SO, SR, EDI, ES, RMA, and all archives. AP PO family (BKAPPO/BKAPPOL) confirmed with open views + archives. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

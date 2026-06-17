@@ -432,6 +432,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Key forms read: T7ARA (customer master — all fields), T7ARB (voucher/GL dist), T7ARC (payment application), T7ARD (finance charges), T7ARE (statements), T7ARF-I (reports) — **C: 72/100**
 - [x] ✅ AR workflow fully traced: customer → invoice → payment → statement — **C: 72/100**
 - [x] ✅ Payment application logic confirmed: credits/deposits tracked separately in BKAR.OUT.CREDIT[1-2] — **C: 68/100**
+- [x] ✅ Pass 41: Full ISAR* archive family confirmed (30 tables): ISARAHIN+ISARAINV(84f BKARINV archives), ISARAHIL(28f BKARINVL archive), ISARAT(12f BKART archive), ISARAINT(23f BKARINVT archive), ISARTXNB(23f AR shipment batch with LINEID+RLEASD), ISARACHG(26f AR change archive); ISARCHG(26f AR change log); extended: ISAREX(51f resale cert), ISARFQ; complete archive lifecycle confirmed — **C: 80/100**
 - [ ] ⬜ BKARCUST all 106 fields documented with meaning
 - [ ] ⬜ AR aging bucket calculation logic confirmed (how 30/60/90 boundaries computed)
 
@@ -444,6 +445,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ GL posting type confirmed: "CD" (Cash Disbursement) — **C: 88/100**
 - [x] ✅ BKAPCHKF (temp run file) and BKAPCHKH (permanent history) documented — **C: 78/100**
 - [x] ✅ 1099 tracking mechanism confirmed: BKAPVEND 1099 code + BKAPINVT TYPE="P" — **C: 70/100**
+- [x] ✅ Pass 41: Full ISAP* family confirmed (15 tables): ISAPOPO/ISAPOPOL(57/38f BKAPPO/BKAPPOL open views), ISAPARFQ/ISAPARFL(57/38f archive), ISAPAINL(390f BKAPINVL archive), ISAPACHK(12f BKAPCHKF archive), ISAPCHG+ISAPHCHG(32f AP change log+history: PONUM+LINEID+PCODE+before/after price/loc), ISAPEX(33f AP vendor extended: VEND PK+LONGNAME+NUM fields), ISAPQPO(66f vendor quote pricing: PCODE+VNDCOD PK), ISAPPROJ(12f project linking) — **C: 85/100**
 - [ ] ⬜ Voucher entry workflow fully traced (AP-B main form logic)
 - [ ] ⬜ BKAPVEND all fields documented with meaning
 
@@ -983,8 +985,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Database Schema (field meaning) | **78** | 88 | **10** ↑ | 2026-06-17 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
-| Module: AR | **80** | 85 | **5** ↑ | 2026-06-17 |
-| Module: AP | **82** | 85 | **3** ↑ | 2026-06-16 |
+| Module: AR | **85** | 88 | **3** ↑+5 | 2026-06-17 |
+| Module: AP | **88** | 90 | **2** ↑+6 | 2026-06-17 |
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
@@ -1017,7 +1019,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SP/SPC ⚠️ | **60** | 75 | **15** NEW | 2026-06-15 |
 | Module: HH/Handheld | **68** | 80 | **12** NEW | 2026-06-15 |
 | Module: UT/Utilities | **60** | 75 | **15** NEW | 2026-06-15 |
-| Module: RM/RMA | **68** | 78 | **10** NEW | 2026-06-15 |
+| Module: RM/RMA | **78** | 82 | **4** ↑+10 | 2026-06-17 |
 | Module: FO/Features Options | **65** | 70 | **5** ↑ | 2026-06-17 |
 | Module: IS/InfoSystem | **60** | 65 | **5** ↑ +15 | 2026-06-17 |
 | Module: IM/Landed Cost | **70** | 80 | **10** NEW | 2026-06-15 |
