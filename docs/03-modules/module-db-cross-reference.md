@@ -1817,3 +1817,150 @@ The SM-J sub-series implements an **Item Status Inquiry** screen — a single en
 | BKCPEC | T7SMJN (SM) | — |
 | BKISTAX | T7SME (SM) | T7SMF |
 
+---
+
+## Pass 16 — Standalone EVO modules: TPOA, AUTO*, EVOFNO family, DDF tools, misc
+
+---
+
+### TPOA — Comprehensive PO Processing (499 procs, root-level)
+
+TPOA.RWN lives at the DBAMFG$ root (not in a sub-folder) and is the **full-featured purchase
+order processing hub** — the broadest single module in the system with 43 distinct tables.
+It spans the complete PO lifecycle from RFQ through receipt, QC inspection, NCR, and GL posting.
+
+**Key table groups:**
+
+| Group | Tables | Role |
+|-------|--------|------|
+| PO core | BKAPPO, BKAPPOL, BKAPINVL | PO header, lines, invoice lines |
+| Vendor/sourcing | BKSBVEND, BKSBMFG, BKRFQ | Sub-vendor, sub-mfg, RFQ |
+| Items/MRP | MTICMSTR, BKICMSTR, BKICLOC, BKICLOCM | Item + inventory by location |
+| Approval | ISDIGSIG, BKSYAP | Digital signature PO approval |
+| Quality | ISNCR, LOT, SERIAL | Non-conformance report, lot/serial |
+| GL | BKGLTRAN | GL transaction posting |
+| Terms/config | ISTERMS, ISORDDSC, ISSHIPCO, ISORDECO, ISECO | Order terms, description, ECO |
+| Routing/WO | WOROUT, WORKORD, WOBOM | WO routing (outside process) |
+| Notes/reminders | ISNOTES, ISREMIND, ISTRIGRS, WORKCHG | Notes, reminders, triggers, WO changes |
+| Extended | ISAPEX, ISMCF | AP extended data, MFG config flags |
+
+**New tables:** ISAPEX (AP extended fields — supplemental AP/PO data per line), ISMCF (IS Manufacturing Config Flags — per-company manufacturing settings), WORKCHG (Work Order Change log — records every WO field change for audit trail)
+
+---
+
+### AUTO Modules — Batch/Scheduled Automation
+
+EVO has automation wrappers that run core processing modules unattended (nightly batch jobs or service-triggered):
+
+| Module | Procs | What it automates | Key tables |
+|--------|-------|------------------|-----------|
+| AUTOT7POJC | 316 | PO receipt → QC inspection → WO job cost auto-processing | BKQCMSTR, BKQCTRAN, BKAPPOL, BKAPPO, WOBOM, INVTXN, SCRAP, LOT, ISBINLOT, ISNCR |
+| AUTOT7MRF | 115 | MRP-F batch run — nightly MRP demand calculation | MTMRP, MTICMSTR, BKMRPFC, BKMRPPO, SUMPNCUS, BKMRPSW |
+
+**New tables:** SUMPNCUS (Summary by customer — MRP demand aggregation), BKMRPSW (MRP switch/run control — settings for MRP batch run), ISBINLOT (Bin lot assignments — bin-level lot location), ISGLDATE (GL date control — open/closed period flags), SCRAP (Scrap records — WO scrap transactions)
+
+---
+
+### EVOFNO Family — Features & Options Configuration (4 modules, 354 procs)
+
+The FO (Features & Options) system allows configurable product options to be defined at BOM level and selected per order. Four EVO* modules implement this:
+
+| Module | Procs | Role | Key tables |
+|--------|-------|------|-----------|
+| EVOFNO | 142 | Main F/O BOM definition — define option sets and component lines | ISFOHEAD, ISFOLINE, BKBMMSTR, BKBMREMK |
+| EVOFNOSO | 84 | F/O linked to SO — selected options on a sales order | ISFOHEAD, ISFOORDL, BKARINV, MTICMSTR |
+| EVOFNOWO | 74 | F/O linked to WO — options drive WO material requirements | ISFOHEAD, WORKORD, CALENDAR, MTICMSTR |
+| EVOFNOPO | 54 | F/O linked to PO — options on a purchase order | ISFOHEAD, ISFOORDL, BKAPPOL, MTICMSTR |
+
+**FO table roles:**
+- ISFOHEAD = F/O configuration header — the option set definition (e.g. "Color", "Size")
+- ISFOLINE = F/O component lines — the BOM lines that activate per selected option
+- ISFOORDL = F/O order-level selections — which option was chosen on a specific order
+- ISFOHIST = F/O historical records — past option selections
+- ISFOBMRM = F/O BOM remarks — notes on F/O BOM components
+
+**New tables:** ISFOHIST (F/O history — archived option selections), WORKCHG (already noted above)
+
+---
+
+### EVONOTES Family — Notes System (3 modules)
+
+| Module | Procs | Role |
+|--------|-------|------|
+| EVONOTES | 96 | Notes entry and display — add/view notes on any entity (item, SO, PO, WO) |
+| EVONOTESRPT | 149 | Notes report — print/export notes filtered by entity type, date, type code |
+| EVONOTESARCH | 137 | Notes archive — browse archived/historical notes including WO change log |
+
+All three use: ISNOTES (note text), ISNTYPE (note type master), WORKCHG (WO changes), ISFOHIST (FO history). The notes system is cross-module — the same ISNOTES table stores notes for items, SOs, POs, and WOs, distinguished by entity-type flag.
+
+---
+
+### Calendar / Reminder System
+
+| Module | Procs | Role |
+|--------|-------|------|
+| CALREM | 142 | Calendar reminders — view/manage upcoming reminders tied to CRM actions | 
+| EVOREMIND | 46 | Reminder engine — fires reminders based on ISREMIND + ISTRIGRS |
+| EVOSCHEDULER | 65 | Scheduled job runner — executes ISSCHED job queue |
+| CALDRILLBT | 94 | Calendar drill-down — calendar-view browser with TASCOLOR color coding |
+
+---
+
+### DDF Management Tools
+
+Admin utilities for managing the Pervasive Btrieve data dictionary:
+
+| Module | Procs | Role | Key tables |
+|--------|-------|------|-----------|
+| WTASDMGR | 68 | WAS Data Manager — creates/modifies DDF files | FILEDICT, FILEDBF, FILEKEY, FILEKNUM |
+| WTASDATAM | 59 | WAS Data Manager variant — schema inspection | FILEDICT, FILEKNUM, FILEKEY |
+| EVOERPUPD | 77 | EVO ERP update utility — schema migration tool | FILEDICT, FILEDBF, FILEKEY, BKLUGRID |
+| EVOPRUPD | 51 | PR update utility — payroll schema migration | FILEDICT, FILEDBF, BKLUGRID |
+
+**DDF-specific tables (Pervasive schema management):**
+- FILEDBF = file DBF column definitions
+- FILEDFLD = file default field settings
+- FILEKNUM = file key number index
+
+---
+
+### EXCOM — External Commission Reporting (52 procs)
+
+Uses BKARINV, ISREPDEF, ISREPORD, BKPRSALE. Generates external commission reports:
+- ISREPDEF = Report Definition — named report templates
+- ISREPORD = Report Order — report run queue (what to generate)
+- BKPRSALE = Salesperson master
+
+---
+
+### ISSHPCAL2 — Ship Calendar (65 procs)
+
+Calculates estimated ship dates for SO lines (BKARINVL, BKARINV) incorporating:
+sub-vendor (BKSBVEND), sub-manufacturer (BKSBMFG), item cross-reference (BKICREF),
+inventory location (BKICLOC), and CRM account (BKCMACCT). Used to give customers
+accurate ship date commitments.
+
+---
+
+### Pass-16 Table Ownership Additions
+
+| Table | Owner | Also used by |
+|-------|-------|-------------|
+| ISAPEX | TPOA | — |
+| ISMCF | TPOA | — |
+| WORKCHG | EVONOTESARCH | EVONOTESRPT, EVONOTES |
+| SUMPNCUS | AUTOT7MRF | — |
+| BKMRPSW | AUTOT7MRF | — |
+| ISBINLOT | AUTOT7POJC | — |
+| ISGLDATE | AUTOT7POJC | — |
+| SCRAP | AUTOT7POJC | T7WCB, T7DCF |
+| ISFOHIST | EVONOTESARCH | EVONOTESRPT |
+| ISFOBMRM | EVOFNO | — |
+| ISREPDEF | EXCOM | — |
+| ISREPORD | EXCOM | — |
+| FILEDBF | WTASDMGR | EVOERPUPD, EVOPRUPD |
+| FILEDFLD | WBKLUGRID | — |
+| FILEKNUM | WTASDMGR | WTASDATAM |
+| BKCMACCT | NZEMAILTLL | ISSHPCAL2, ISCCREP |
+
+

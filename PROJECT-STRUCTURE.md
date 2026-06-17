@@ -820,5 +820,30 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 ---
 
+---
+
+## Pass 16 — New Tables (2026-06-17)
+
+| Table | Module | Purpose | Status |
+|-------|--------|---------|--------|
+| ISAPEX | TPOA | AP extended fields — supplemental per-line AP/PO data | inferred |
+| ISMCF | TPOA | IS Manufacturing Config Flags — per-company manufacturing settings | inferred |
+| WORKCHG | EVONOTESARCH | Work Order Change log — field-level audit trail of every WO modification | inferred |
+| SUMPNCUS | AUTOT7MRF | Summary by customer — MRP demand aggregation table | inferred |
+| BKMRPSW | AUTOT7MRF | MRP switch/run control — settings and state for MRP batch execution | inferred |
+| ISBINLOT | AUTOT7POJC | Bin lot assignments — bin-level lot location records | inferred |
+| ISGLDATE | AUTOT7POJC | GL date control — open/closed period flags per GL period | inferred |
+| SCRAP | AUTOT7POJC | Scrap records — WO scrap transaction log | inferred |
+| ISFOHIST | EVONOTESARCH | F/O history — archived Features & Options selections | inferred |
+| ISFOBMRM | EVOFNO | F/O BOM remarks — notes on Features & Options BOM components | inferred |
+| ISREPDEF | EXCOM | Report Definition master — named external report templates | inferred |
+| ISREPORD | EXCOM | Report Order/queue — scheduled report run records | inferred |
+| FILEDBF | WTASDMGR | Pervasive DDF column definitions (file DBF schema) | confirmed |
+| FILEDFLD | WBKLUGRID | Pervasive DDF default field settings | confirmed |
+| FILEKNUM | WTASDMGR | Pervasive DDF key number index | confirmed |
+| BKCMACCT | NZEMAILTLL | BK CRM Account — CRM customer/vendor account records | inferred |
+
+---
+
 *Last updated: 2026-06-17 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–14. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–16. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*

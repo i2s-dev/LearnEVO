@@ -1037,6 +1037,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: MA/AR Deposit Apply | **52** | 68 | **16** NEW | 2026-06-17 |
 | Module: TE/NACHA+ACH | **48** | 65 | **17** NEW | 2026-06-17 |
 | Module: PA/Paperless DC | **45** | 68 | **23** NEW | 2026-06-17 |
+| Module: TPOA/PO Processing Hub | **58** | 72 | **14** NEW | 2026-06-17 |
+| System: AUTO/Batch Automation | **52** | 68 | **16** NEW | 2026-06-17 |
+| Module: FO/Features+Options | **60** | 72 | **12** ↑ +10 | 2026-06-17 |
+| System: Notes/EVONOTES | **58** | 70 | **12** NEW | 2026-06-17 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |

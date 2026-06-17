@@ -1668,6 +1668,30 @@ SM is the largest module family and serves two distinct purposes:
 
 ---
 
+### FO — Features & Options (4 EVO modules)
+**What it does:** Allows configurable product options to be defined at the BOM level and selected by customers at order entry. Example: a customer orders a pump — they can choose Color (Red/Blue/Green) and Seal Type (Standard/High-temp). Each option choice drives different component requirements.
+
+**How the flow works:**
+1. Define option sets in **EVOFNO** (ISFOHEAD + ISFOLINE) — like a mini-BOM per option
+2. When entering an SO, EvoFNOSO shows the option menu and records choices in ISFOORDL
+3. When a WO is created, EvoFNOWO adds the chosen components to the WO BOM automatically
+4. POs for option-specific components use EvoFNOPO
+
+**Key tables:** ISFOHEAD (option set header), ISFOLINE (option component lines), ISFOORDL (per-order selections), ISFOHIST (history)
+
+---
+
+### Notes System (EVONOTES family)
+**What it does:** Cross-module freeform notes attached to any entity — an item, a sales order, a purchase order, or a work order. All notes share the ISNOTES table, tagged by entity type.
+
+- **EVONOTES**: Enter and view notes on any record
+- **EVONOTESRPT**: Print/export notes filtered by entity, date range, or note type
+- **EVONOTESARCH**: Browse archived notes including work order change history (WORKCHG)
+
+**Note types** are configured in SM-N (ISNTYPE) — e.g. "Customer complaint," "Engineering change," "Follow-up."
+
+---
+
 ### MR — MRP Planning Engine (17 files)
 **Critical distinction:** BM module = define BOM structures; MR module = run MRP calculations.
 
