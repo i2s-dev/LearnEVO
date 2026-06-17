@@ -1003,7 +1003,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
 | Module: DC/Data Collection | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
 | Module: PR/Payroll | **90** | 92 | **2** ↑+5 Pass73 | 2026-06-17 |
-| Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
+| Module: AM (Accounting Maint.) | **83** | 85 | **2** ↑+8 Pass80 all DFMs | 2026-06-17 |
 | Module: CM/CRM | **82** | 85 | **3** ↑+10 Pass53 | 2026-06-17 |
 | Module: MK/Marketing Automation | **72** | 78 | **6** NEW Pass73 | 2026-06-17 |
 | Module: DE/EDI/Imports | **78** | 80 | **2** ↑ | 2026-06-17 |
@@ -1011,7 +1011,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: JC/Job Costing | **78** | 82 | **4** ↑+6 Pass47 | 2026-06-17 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
 | Module: QC/Quality Control | **82** | 82 | **0** ✅ ↑+1 Pass75 | 2026-06-17 |
-| Module: QT/Service Quote | **72** | 75 | **3** ↑+12 Pass60 | 2026-06-17 |
+| Module: QT/Service Quote | **74** | 75 | **1** ↑+2 Pass80 DFM | 2026-06-17 |
 | Module: IC/Inventory Utility | **80** | 72 | **0** ✅ ↑+2 Pass77 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **75** | 80 | **5** ↑ | 2026-06-17 |
 | Module: SH/Shop Scheduling ⚠️ | **83** | 85 | **2** ↑+1 Pass77 | 2026-06-17 |

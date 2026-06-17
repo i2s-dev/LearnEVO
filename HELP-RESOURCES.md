@@ -1910,19 +1910,32 @@ Primary key: `MTLOT_CODE`(15) item code + `MTLOT_LOT`(15) lot number.
 
 ### Accounting Maintenance (AM)
 
-**What it does:** GL period control, account history, account entry, department copy/delete, and financial statement format management. Note: AM = Accounting Maintenance, NOT Asset Management.
+**What it does:** GL period control, account history, COA maintenance, department copy, financial statement setup, archive/purge, and GL renumber. Note: AM = Accounting Maintenance, NOT Asset Management.
 
-**Menu codes:** AM (15 files in RWN analysis)
+**Menu codes:** AM (15 programs — all DFMs confirmed from network share)
 
-**Key operations:**
-- **GL Period Control:** Open/close accounting periods; sets the fiscal year calendar.
-- **Account History View/Edit:** Browse GL account balance history across periods.
-- **Department Copy/Delete:** Mass-copy or delete department-level GL configurations.
-- **Financial Statement Format:** Defines how accounts group into income statement / balance sheet formats.
+### AM Program Map (confirmed from DFMs — Pass 80)
 
-**Primary tables:** BKGLCOA (GL Chart of Accounts), ISGLDATE (GL date per company/module), ISGLCOA (GL COA extension — multi-year history and budget).
+| Program | Procs | Operation | Confirmed purpose |
+|---|---|---|---|
+| T7AMA | ? | AM-A GL Period Setup | Sets Fiscal Year Start Date, Open Period Start/End Date, Accounting Open Period — controls what periods are open for posting |
+| T7AMB | ? | AM-B GL Balance History | Views GL account period balances across current + 6 prior years (BKGL.CURRENT[1..14] + BKGL.1YPAST..6YPAST arrays) |
+| T7AMC | ? | AM-C COA Edit | Chart of Accounts editor — add/modify GL accounts; Account Type (A/L/E/I/O), Non-Cash flag, inactive flag, Period Budget amounts, Beginning Balance; uses ISGL.CYDATE[n] for period-end dates |
+| T7AMD | ? | AM-D Department Copy | Copies an existing department's GL account structure to a new department code; GL type filter (A/L/E/I/O); clear budget flag |
+| T7AME | ? | AM-E Financial Statement Setup | Largest AM form (105 fields) — configures Income Statement, Balance Sheet, and Cash Flow Statement formats; maps GL account ranges to report line groups (INC/BAL/CAS sections); defines report titles |
+| T7AMH | ? | AM-H GL Code Renumber | Imports a CSV file mapping old GL codes → new GL codes, then renames all references; also supports manual old-code → new-code renumber |
+| T7AMI | ? | AM-I GL Journal Purge | Archives/purges GL journal transactions by date range, GL account range, and journal type |
+| T7AMJ | ? | AM-J AP Vendor Archive | Purge, Archive, or Restore AP vendor records; vendor range + thru date |
+| T7AMK | ? | AM-K AR Customer Archive | Purge, Archive, or Restore AR customer records; customer range + thru date |
+| T7AMN | ? | AM-N GL Period Dates Edit | 96-field editor for GL fiscal period-end dates — fills ISGLDATE slots; one row per period per year (Current + 7 prior); this is where the fiscal calendar is defined |
+| T7AMO | ? | AM-O PO/AP Records Archive | Purge/Archive/Restore PO and AP records; vendor range, last-activity date, vendor class filter; "Delete PO Orphans (L/H/B/N)" |
+| T7AMP | ? | AM-P SO/AR Records Archive | Purge/Archive/Restore SO and AR records; customer range, customer class, last-activity date; "Delete SO Orphans (L/H/B/N)"; toggle ship-to customer inclusion |
+| T7AMQ | ? | AM-Q GL Budget Setup | 134-field budget configurator; imports prior-year actuals or current-year data as next-year budget; Factor multiplier; four modes: 1YPast / Annual Budget / Current Year / Annual for Next Year Budget |
+| T7AMS | ? | AM-S GL Journal Archive | Purge/Archive/Restore GL journals by date range + journal number range + journal type |
 
-**Confidence: 75/100** — 5 forms read; period control, account history, dept copy/delete confirmed; financial statement format structure details in encrypted RWN.
+**Primary tables:** BKGLCOA (GL Chart of Accounts), ISGLDATE (GL date editor — period-end dates), ISGLCOA (GL COA extension), BKGLTRAN (GL transactions).
+
+**Confidence: 83/100** — All 14 DFMs read from network share; all AM operations confirmed from form captions and field names; AM-E (financial statement) 105-field form structure confirmed; AM-N as the direct ISGLDATE editor confirmed; procs counts and detailed posting logic blocked by RWN encryption.
 
 ---
 
@@ -4926,7 +4939,16 @@ Maps our part numbers to each customer's own part numbers. When printing invoice
 
 Used across SO entry (default to customer's terms), AR invoicing (BKARINV references TERMS_NUM), and AP vouchers. QT pulls ISTERMS to display quote payment terms.
 
-**Confidence: 72/100** — T7QTINFO confirmed; LANGDICT(5f)+BKICREF(8f)+ISTERMS(13f) all fully extracted from DDF; quote-as-SR-order architecture confirmed; specific QT UI workflow details blocked by encryption.
+**T7QTINFO UI (confirmed from DFM — Pass 80):**
+The "Quote Misc. Information" form exposes the ISQTINFO alt-index of ISSRINFO:
+- 5 date fields: ISSR.INFO.DATE[1..5] — configurable date slots per site (e.g. "Quoted", "Promised", "Required")
+- Multiple alpha fields: ISSR.INFO.AL1..5 and more (25-char each) — configurable text slots
+- Field labels (qtDate1..5, qtAlpha1..5) are TAS Pro runtime variables that resolve to site-configured caption text at runtime
+- ISSR.INFO.CODE (15) selects which configuration record defines the slot meanings
+
+Same 40-alpha/10-date capacity as ISSRINFO; the QT version uses the ISQTINFO alternate-index for quote-number sort.
+
+**Confidence: 74/100** — T7QTINFO confirmed; LANGDICT(5f)+BKICREF(8f)+ISTERMS(13f) all fully extracted from DDF; quote-as-SR-order architecture confirmed; T7QTINFO DFM confirms ISSR.INFO.DATE[1..5]+ISSR.INFO.AL1..5 pattern from ISQTINFO alt-index; complete quote lifecycle blocked by encryption.
 
 ---
 
