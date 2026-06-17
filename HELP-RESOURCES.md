@@ -1647,7 +1647,11 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISUDFINV | ISUDFINV.B | System | UDF invoice fields | Maps custom field names to byte offsets in BKARINV for user-defined invoice extensions |
 | BKISTAX | BKISTAX.B | AR | Historical tax totals | TAX_CODE + DATE (PK) + TRFLAG + TAXABL + NONTAX + collected amounts |
 | BKARHTAX | BKARHTAX.B | AR | Historical AR tax | Per-invoice historical tax: INVNO + CODE + ID + PID + AMOUNT |
-| ISARTXNB | ISARTXNB.B | AR | AR transaction batch | AR transaction batch records: SONUM + CODE + LINEID + BIN + LOC
+| ISARTXNB | ISARTXNB.B | AR | AR transaction batch | AR transaction batch records: SONUM + CODE + LINEID + BIN + LOC |
+| ISDRILL | ISDRILL.B | QU/SU | Query definitions | Saved query: LOOKUP_FROM + LOOKUP_FILE + LOOKUP_FILTERS_1..20 (filter criteria) + LOOKUP_WHILE_1..20 (loop conditions) |
+| ISDRILLM | ISDRILLM.B | QU/SU | Drill-down map | Navigation: PARENT→CHILD with SFIELD_1..5→TFIELD_1..5 field mappings + DRILLM_MENU label |
+| BKLUGRID | BKLUGRID.B | QU/SU | Grid column layouts | Per-user saved column visibility/order for F3 lookup grids |
+| ISDROP | ISDROP.B | System | Dropdown lists | User-configurable picklist: CODE(10) + TEXT(30) + DESC(30) + EXTRA(50)
 
 ---
 
@@ -1934,17 +1938,39 @@ Email is composed in NZEMAILTLL ("Evo ~ ERP email"):
 - Customer and vendor contact grids allow selecting recipients by name
 - **Defaults** (admin-configurable in NZEDEFS): Subject template, Body template, Signature, Attachment path, BCC Self default
 
-### How lookup lists work
+### How lookup lists work (QU / SU architecture)
 
-All list-pickers throughout EvoERP use the same WBKLOOKUP form:
+All list-pickers throughout EvoERP use the same **WBKLOOKUP** program (413 procs):
 - DataGrid shows records from the target table
 - Sort by any column via the "Sort List by:" dropdown
 - Actions: Select, Edit, Add New, Delete, Navigate (First/Previous/Next/Last)
+- The Drill Down button (green arrow) invokes drill navigation defined in **ISDRILLM**
+- Column layouts are stored per-user in **BKLUGRID**
 
-Admins configure lookup grids in WBKLUGRID ("Maintain Grid Lookup Data"):
-- Per-grid config: table (File Name), form to open on Select, Security Level required, Sort Keys
-- Optional UDF program (Ext. UDF) for custom filtering logic
+**ISDRILL** (46 fields) — Saved query definitions used by QU-F and embedded lookups:
+- LOOKUP_FROM (30) + LOOKUP_FILE (15) — which context and data file
+- LOOKUP_FILTERS_1..20 (80 chars × 20) — filter criteria expressions
+- LOOKUP_WHILE_1..20 (80 chars × 20) — loop-while conditions
+- LOOKUP_COMM (150) — command/query string
+
+**ISDRILLM** (17 fields) — Drill-down navigation map:
+- DRILLM_PARENT (15) + DRILLM_CHILD (15) — source/destination objects
+- DRILLM_MENU (25) — label for drill-down menu item
+- DRILLM_FILE (15) + DRILLM_SFIELD_1..5 (15 × 5) → DRILLM_TFIELD_1..5 (15 × 5) — source→target field mapping
+
+Admins configure lookup grids via the **SU module** (SU-A = WBKLUGRID, 68 procs; SU-B = EVOERPDRILLM, 31 procs):
+- SU-A: Per-grid config: table (File Name), form to open on Select, Security Level, Sort Keys, optional UDF program
+- SU-B: Maintains ISDRILLM drill navigation entries — adds/removes drill-down links between objects
 - Each grid can also define Links & Notes fields for inline EvoLinks access
+
+**QU module programs:**
+| Operation | RWN program | Purpose |
+|---|---|---|
+| QU-A Master Inquiry | WBKLOOKUP (413 procs) | Universal lookup grid with drill-down |
+| QU-B Calendar Drill Down | CALDRILLBT (94 procs) | Calendar with order activity drill-down |
+| QU-D Business Status | EVOBS (128 procs) | Financial dashboard (ISBSF+BKGLTRAN) |
+| QU-E Quick Grid Lookup | T7QGRID (62 procs) | Standalone table browser |
+| QU-F Query Executor | QUERYEXECUTE (26 procs) | Runs SQL queries from DE-A definitions |
 
 ### How messaging works
 
