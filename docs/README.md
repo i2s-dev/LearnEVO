@@ -47,6 +47,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [RWN/RUN string dumps — analysis technique + ISTS.CFG extraction (2,575 files)](02-file-formats/rwn-strings-analysis.md) — *verified*
 - [.DCY / .RWN — decryption findings (Twofish-CFB, IV confirmed 2026-06-15)](02-file-formats/decryption-findings.md) — *FULLY SOLVED — 1144/1145 files decrypt*
 - [DCY forms catalog — all 41 decrypted DCY files: form types, UI structure, purpose](02-file-formats/dcy-forms-catalog.md) — *verified, 2026-06-17*
+- [TAS Pro 7 UI controls catalog — all 51 control types, frequencies, purpose (from 1,136 DFMs)](02-file-formats/tas-pro-7-controls.md) — *verified, 2026-06-17*
 - [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — file structure + key opcodes*
 - [TAS Pro 7 data infrastructure modules (wtasdmgr, wtasdatam, wtasinit — FILEDICT system)](02-file-formats/tas-data-infrastructure.md) — *verified, 2026-06-16*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*

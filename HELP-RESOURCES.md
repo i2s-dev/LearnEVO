@@ -1928,6 +1928,15 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 | **EvoorClassicScreen** | Per-module INI key that switches a module between "Evo" (modern) and "Classic" (DBA-era) UI mode |
 | **SAVE ACCESS** | Per-module INI key (0/1); when set, EvoERP remembers the last-accessed record when the user re-enters the module |
 | **No database-level constraints** | EvoERP has zero declared foreign keys, triggers, stored procedures, or views in Pervasive — all RI and business rules are enforced in TAS Pro application code |
+| **TTASENTER** | Core TAS Pro 7 data-entry control — single alphanumeric field; 7,504 instances across all forms; bound to TAS buffer variable |
+| **TTASNumEnter** | Numeric-only TAS Pro 7 entry field (3,994 instances) |
+| **TTASComboEnter** | TAS Pro 7 editable dropdown — type or select from list; common for code fields with lookup (3,622 instances) |
+| **TTASDateEdit** | TAS Pro 7 date entry with calendar picker (1,380 instances) |
+| **TTASDataGrid** | TAS Pro 7 data grid for tabular data (423 instances); columns defined by TTASDGColTemplate children |
+| **TShellExe** | Shell execution component — how EvoERP triggers print, email, and file-open; 850 instances across all forms |
+| **TRtnTimer** | Return/timeout timer — triggers auto-dismiss, polling, or delayed navigation; 227 instances (loading screens, Java wait, reminders) |
+| **TGlyphBtn** | Icon button — the standard EvoERP action button (Save, Exit, Browse); 4,485 instances |
+| **TTASStrList** | Runtime string list populated by TAS code; 138 instances (menu system, lookup forms) |
 
 ---
 

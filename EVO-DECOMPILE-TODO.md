@@ -161,7 +161,12 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Child controls identified: TLabel, TEdit, TButton, TPanel, TGroupBox, TDBGrid — **C: 78/100**
 - [x] ✅ DFM ↔ RWN pairing rule confirmed (same basename) — **C: 92/100**
 - [x] ✅ DFM summary CSV generated (`samples/dfm_parsed/dfm_summary.csv`) — **C: 88/100**
-- [ ] ⬜ TAS-specific control types fully cataloged (TTASEdit, TTASGrid, T7\* custom controls)
+- [x] ✅ TAS-specific control types fully cataloged (2026-06-17) — **C: 92/100**
+  - 51 unique control types across 1,136 DFM files — full catalog in `docs/02-file-formats/tas-pro-7-controls.md`
+  - 16 TEditForm variants (TEditForm1 dominates: 857/1112 = 77%)
+  - TTAS* controls: TTASENTER (7,504), TTASNumEnter (3,994), TTASComboEnter (3,622), TTASDateEdit (1,380), TTASComboBox (1,260), TTASDataGrid (423), TTASStrList (138), TTASCheckBox (1,948), TTASRadioButton (221)
+  - TShellExe (850 occurrences!) = how EVO launches print/email/file-open
+  - TRtnTimer (227) = auto-dismiss, polling, and timeout pattern throughout UI
 - [ ] ⬜ All TAS-specific control properties documented with behavior
 - [ ] ⬜ Form-to-menu-code mapping fully resolved (which DFM opens for each menu code)
 - [ ] ⬜ Binary `.DFM` variant (the 25 TPF0-format forms) decoded
