@@ -592,7 +592,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **CC** — Credit Card Processing ⚠️ (NOT Cycle Count — CORRECTED) — all 6 DFMs read; CC-P (IS.CC.MASKED/CARDNAME/EXP/ZIP — masked card storage with expiry flag), CC-PO (CC charges on POs: ccnum/ccamount/CCYY/CCMM), ccr1 (Credit Card Invoice List report by date/terms), CC-DE (CSV import); WO and item range filters confirm cost allocation to jobs; primary tables IS.CC.* — **C: 65/100**
 - [x] 🔄 **CS** — Commission/Salesperson Management — all 12 DFMs read; CS-A (BKPR.SLS.* fields: rate/HOW/WHEN/class/GL/agent-vendor), CS-B (quota/COGS/comm-due/paid[1-7]), CS-D (transfer commissions: BKPR.COMM.SLSP/CCODE/INVNM/INVDT), CS-E/F (detail+summary reports); outside agents linked to AP vendor — **C: 70/100**
 - [x] 🔄 **DE** — Data Entry / EDI / Imports (20 DFMs, 33 ops) — all 20 DFMs read; BOM component import (DEM=import, DEER=error report), PI tag import (DEHD), WO material import (DEJH), AR invoice import (DEQ/DER), web order import (DET/DETB: import.to.edi flag), vendor POA 855 (DEV: SKIP.PONUM/PCODE/PQTY), EDI-860 PO changes (DEP860), customer releases (DEPB: RELEASE_NUM), web item FTP export (DEU), defect code setup (DEFECT: IS.DEF.*); DEK=global field replace DESTRUCTIVE, DEL=selective file erase DESTRUCTIVE — **C: 68/100**
-- [x] 🔄 **DI** — Digital Signatures — T7DIGSIG.DFM (131KB) confirmed: Caption='Enter Digital Signatures'; PO#/Vendor/Name/Description/Terms + EMAIL.TAG/NAME/LEVEL/ADDRESS for email routing of PO approvals; T7DigSigChgPSWD = change digital signature password; PO approval workflow with email routing — **C: 50/100**
+- [x] 🔄 **DI** — Digital Signatures — T7DIGSIG.DFM (131KB) confirmed: Caption='Enter Digital Signatures'; PO#/Vendor/Name/Description/Terms + EMAIL.TAG/NAME/LEVEL/ADDRESS for email routing of PO approvals; T7DigSigChgPSWD = change digital signature password; ISDIGSIG (89f, fully documented): 10 approval slots per employee with ACTIVE/TYPE/SDATE/FDATE/TDATE/AMT/FLAG/DATE per slot + MOTCACH/POENTBY/SOENTBY/FILE/ATIME/ADATE; ISTRIGRS (25f) used for email notifications; 3 RWN programs identified — **C: 65/100**
 - [ ] ⬜ **EX** — Export / data exchange — forms inventoried only
 - [x] 🔄 **FA** — Fixed Assets — all 3 DFMs read; FA-A (IS.FXA.* asset master: cost/residual/life/method/GL accounts), FA-B (IS.FXT.* depreciation: post with Ready-to-Post flag), FA-E (export); IS.FXA.*/IS.FXT.* tables — **C: 75/100**
 - [ ] ⬜ **FL** — no T7 RWN/DFM files found (DBA-era legacy)
@@ -606,7 +606,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
 - [ ] ⬜ **LM** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **LO** — no T7 RWN/DFM files found (DBA-era legacy)
-- [x] 🔄 **MA** — T7MAPDEPO.RWN (97 procs): BKARDEP+BKARCUST+BKARINVL+ISARDEPL+BKGLCOA+BKARINVT — AR Deposits module; handles customer deposit posting to GL — **C: 40/100**
+- [x] 🔄 **MA** — T7MAPDEPO.RWN (97 procs): BKARDEP+BKARCUST+BKARINVL+ISARDEPL+BKGLCOA+BKARINVT — AR Deposits module; handles customer deposit posting to GL; helper programs: T7GETDEP (18 procs, retrieves available deposit balance), T7GETWEB (6 procs, web-order deposits), T7ARN (enter SO deposits), T7ARC (apply deposits at payment); ISARDEPL confirmed in use but not in DDF schema; deposit workflow fully traced (enter→apply→clear) — **C: 62/100**
 - [ ] ⬜ **MM** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **PC** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **PL** — no T7 RWN/DFM files found (DBA-era legacy)
@@ -640,11 +640,11 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **BO** — Bill of Lading (T7BOL: 178 procs, T7BOLMSO: 174 procs); LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER/AUTHOR.NUMBER/CONTROL.NUMBER; DRIVER.ARRIVED/LOADING.START/END/DRIVER.DEPARTED timestamps; T7BOLMSO: EDIT.CLASS/WEIGHT/PACKS/HM (LTL freight fields); integrated with BKARINV/SO for outbound shipments — **C: 58/100**
 - [x] 🔄 **DS** — Data Sync stubs (25 files: T7DSAP/AR/BOM/CK/CM/CO/CS/DC/EST/FO/GEN/GL/HH/IC/IM/MRP/PO/PR/QC/RMA/RO/SH/SO/WC/WO); all are SRC stubs with single STUB variable; all share same core DB set + BKSYAR; one stub per module for multi-company data synchronization — **C: 42/100** (architecture known; sync logic is in RWN, blocked)
 - [x] 🔄 **AU** — Automation modules (T7AUTODCH: 183 procs DC labor validation; T7AUTOMRF: 132 procs MRP auto-firm, MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT; T7AUTOREBSS: 79 procs back-order re-BSS; T7AUTOFX: 21 procs auto foreign-exchange rate update via ISMCF+ISJAVA+ISMCR); automation/batch layer for background ERP operations — **C: 52/100**
-- [x] 🔄 **FS** — Field Service (T7FSCLASS: 62 procs, ISFSCLAS+ISPRINFO; T7FSINFO: 61 procs, ISFSINFO; T7FSEMP: 59 procs, ISFSCLAS+BKPRSALE); tracks service classes, field service info records, and employee-to-class assignments; optional add-on module — **C: 45/100**
-- [x] 🔄 **GF** — Global Finance / AR Charges (T7GFPRICE: 116 procs, customer+item pricing/charge entry; T7GFV/GFVS: 82/81 procs, invoice charge viewer; T7GFR: 46 procs, report); primary table ISARCHG (IS AR extra charges beyond invoice lines) — **C: 45/100**
+- [x] 🔄 **FS** — Field Service (T7FSCLASS: 62 procs, ISFSCLAS+ISPRINFO; T7FSINFO: 61 procs, ISFSINFO; T7FSEMP: 59 procs, ISFSCLAS+BKPRSALE); tracks service classes, field service info records, and employee-to-class assignments; ISFSCLAS (3f: CLASS/GROUP/EXTRA), ISFSINFO (4f: PROGRAM/CONTRACT/MISC/WHO), ISPRINFO (4f: PROG/DESC/MISC/TYPE) all fully documented; optional add-on module — **C: 62/100**
+- [x] 🔄 **GF** — Global Finance / AR Charges (T7GFPRICE: 116 procs, customer+item pricing/charge entry; T7GFV/GFVS: 82/81 procs, invoice charge viewer; T7GFR: 46 procs, report); ISARCHG (26f) fully documented: before/after audit trail with SONUM+INVNUM+LINEID+PCODE+CDATE+USER+REVLVL+ALOC/BLOC+APRICE/BPRICE+ADISC/BDISC+AOOQTY/BOOQTY+AESD/BESD+AASD/BASD+ACOMPR_1/2+BCOMPR_1/2+AEXTRA/BEXTRA; 4 RWN programs confirmed — **C: 62/100**
 - [x] 🔄 **RE** — Reminders + Rebuild Utilities (T7RemindRpt: 125 procs, ISREMIND+BKARCUST — CRM/AR reminder report; T7REPLNK: 67 procs, ISREPLNK — replace links; T7REPDEF: 52 procs, ISREPDEF — saved report defaults; T7REINDEX: 36 procs, Btrieve reindex; T7REBQC/REBWO: QC+WO rebuild utilities) — **C: 48/100**
-- [x] 🔄 **SE/ST** — Service Code Tables (T7SEPROC: ISSEPROC; T7SERR+T7SETYPE: ISSTYPE/ISSETYPE; T7STEQUIP/T7sttype/T7STYPE: ISSTYPE; T7STOCK: BKCMACCC); code maintenance tables for SR Service/Repair module — **C: 42/100**
-- [x] 🔄 **PU** — Warehouse Put-Away (T7PUTAWAY: 105 procs); places received PO items into bin locations; updates BKICMSTR/MTICMSTR — **C: 42/100**
+- [x] 🔄 **SE/ST** — Service Code Tables (T7SEPROC: ISSEPROC; T7SERR+T7SETYPE: ISSTYPE/ISSETYPE; T7STEQUIP/T7sttype/T7STYPE: ISSTYPE; T7STOCK: BKCMACCC); code maintenance tables for SR Service/Repair module; ISSEPROC (2f: PROC/WHO), ISSTYPE (3f: TYPE/WHO/ASSET), ISSETYPE (2f: ERR/WHO) all fully documented; 7 RWN programs identified; T7STEQUIP opens 90+ tables including BKARINV/BKISTAX/BKARDEP confirming cross-module use — **C: 60/100**
+- [x] 🔄 **PU** — Warehouse Put-Away (T7PUTAWAY: 105 procs); places received PO items into bin locations; updates BKICMSTR/MTICMSTR; full DB set: BKICMSTR+MTICMSTR+BKAPINVL+BKAPPO+BKGLTRAN+DBAFIFO+LOT+SERIAL+ISORDECO+BKCMACCT+60 more; workflow confirmed: AP receiving→bin assignment→lot/serial tracking→GL posting; single-program module — **C: 62/100**
 - [x] 🔄 **MU** — Multi-Yield Work Orders (T7MULTIYIELD: 150 procs); records multiple co-product output part numbers from single WO; opens WORKORD+WOROUT+WOBOM+WORECV+INVTXN+ISBINLOC+BKARINVL — **C: 45/100**
 - [x] 🔄 **AL** — Audit Log Setup (T7ALOGSETUP: 43 procs, FILELOC+BKSYMSTR+BKPSUSER); configures which tables/events are written to system audit log — **C: 40/100**
 - [x] 🔄 **LI** — License / Module Access (T7LIMACC: 42 procs, ISACCESS); controls which EvoERP modules are licensed/enabled — **C: 40/100**
@@ -1002,7 +1002,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **75** | 78 | **3** ↑ | 2026-06-17 |
-| Module: MA/AR Deposits | **40** | 65 | **25** NEW | 2026-06-17 |
+| Module: MA/AR Deposits | **62** | 65 | **3** ↑+22 | 2026-06-17 |
 | Module: ES/Estimating | **65** | 75 | **10** ↑ | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **60** | 70 | **10** ↑ +15 | 2026-06-17 |
@@ -1018,18 +1018,18 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: QU/Query Tools | **70** | 75 | **5** ↑ | 2026-06-17 |
 | Module: SU/Setup UI | **65** | 70 | **5** ↑ | 2026-06-17 |
 | Module: TA/TAS Admin | **55** | 72 | **17** NEW | 2026-06-15 |
-| Module: DI/Digital Signatures | **50** | 70 | **20** NEW | 2026-06-15 |
+| Module: DI/Digital Signatures | **65** | 70 | **5** ↑+15 | 2026-06-17 |
 | Module: AD/Accounting Defaults | **70** | 75 | **5** ↑ | 2026-06-17 |
 | Module: CR/SO Approvals | **55** | 65 | **10** ↑ +15 | 2026-06-17 |
 | Module: US/Triggers | **45** | 65 | **20** NEW | 2026-06-15 |
 | Subsystem: BO/Bill of Lading | **58** | 72 | **14** NEW | 2026-06-17 |
 | Subsystem: DS/Data Sync stubs | **42** | 65 | **23** NEW | 2026-06-17 |
 | Subsystem: AU/Automation | **52** | 68 | **16** ↑ +4 | 2026-06-17 |
-| Subsystem: FS/Field Service | **45** | 65 | **20** NEW | 2026-06-17 |
-| Subsystem: GF/AR Charges | **45** | 65 | **20** NEW | 2026-06-17 |
+| Subsystem: FS/Field Service | **62** | 65 | **3** ↑+17 | 2026-06-17 |
+| Subsystem: GF/AR Charges | **62** | 65 | **3** ↑+17 | 2026-06-17 |
 | Subsystem: RE/Reminders+Rebuild | **48** | 65 | **17** NEW | 2026-06-17 |
-| Subsystem: SE+ST/Service Code Tables | **42** | 60 | **18** NEW | 2026-06-17 |
-| Subsystem: PU/Put-Away | **42** | 65 | **23** NEW | 2026-06-17 |
+| Subsystem: SE+ST/Service Code Tables | **60** | 60 | **0** ✅+18 | 2026-06-17 |
+| Subsystem: PU/Put-Away | **62** | 65 | **3** ↑+20 | 2026-06-17 |
 | Subsystem: MU/Multi-Yield WO | **45** | 68 | **23** NEW | 2026-06-17 |
 | Subsystem: LI/License Access | **40** | 65 | **25** NEW | 2026-06-17 |
 | Subsystem: EDII/EDI Invoice Import | **45** | 65 | **20** NEW | 2026-06-17 |

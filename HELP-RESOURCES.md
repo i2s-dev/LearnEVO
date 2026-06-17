@@ -1125,21 +1125,61 @@ MTWC.* (work center master: capacity, department, outside-process flag)
 
 ### Field Service (FS)
 
-**What it does:** Optional Field Service add-on module — tracks service classes, field service information records, and assigns employees to service classes.
+**What it does:** Optional add-on module for managing field service operations — tracks service class definitions, employee-to-class assignments, and field service information records. Works alongside the SR (Service/Repair) module.
 
-**Key tables:** ISFSCLAS (class master), ISFSINFO (FS info records), ISPRINFO (PR employee profile data), BKPRSALE (salesperson/employee)
+**RWN programs:**
+- **T7FSCLASS** (62 procs) — maintains ISFSCLAS (service class definitions) and reads ISPRINFO (employee profile data)
+- **T7FSEMP** (59 procs) — assigns employees (BKPRSALE) to service classes (ISFSCLAS)
+- **T7FSINFO** (61 procs) — maintains ISFSINFO (FS information records)
 
-**Confidence: 45/100** — DB fingerprint confirmed; no DFM forms found for this module; no CHM entries = possibly not licensed in this installation.
+**Key tables:**
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| ISFSCLAS | 3 | Service class master — CLASS(4), GROUP(50), EXTRA(50) |
+| ISFSINFO | 4 | FS info records — PROGRAM(20), CONTRACT(25), MISC(100), WHO(50) |
+| ISPRINFO | 4 | Employee profile info — PROG(30), DESC(80), MISC(50), TYPE(1) |
+| BKPRSALE | many | Salesperson/employee master (PR module) |
+
+**Typical use:** Define service classes (e.g., "HVAC", "ELEC"), assign techs to classes, then link FS records to SR service orders.
+
+**Confidence: 62/100** — Three RWN programs identified with full DB fingerprints; key tables field-documented; no DFM forms found (possibly not licensed in this install); no CHM entries.
 
 ---
 
 ### Global Finance / AR Charges (GF)
 
-**What it does:** Applies extra charges to AR invoices beyond standard line items (e.g., freight charges, service fees, surcharges). Includes customer-item pricing matrix entry and invoice charge viewer.
+**What it does:** Applies extra charges to AR invoices beyond the standard line-item structure — surcharges, freight add-ons, price adjustments. Also provides customer-item pricing matrix entry and an invoice charge viewer.
 
-**Key tables:** ISARCHG (IS AR extra charges), BKICPMAT (IC pricing matrix), BKARCUST, BKARINV, BKARINVL
+**RWN programs:**
+- **T7GFPRICE** (116 procs) — entry/edit of customer-item pricing charges; reads BKARCUST, BKICPMAT, BKICMSTR, MTICMSTR
+- **T7GFV** (82 procs) — view/edit extra AR charges on invoices; reads BKARINV, ISARCHG, BKARINVL, BKARCUST
+- **T7GFVS** (81 procs) — alternate charge viewer starting from invoice lines (BKARINVL)
+- **T7GFR** (46 procs) — GF report
 
-**Confidence: 45/100** — DB fingerprint confirmed; no DFM forms found; charge structure details in encrypted RWN.
+**Key table — ISARCHG (26 fields):** Stores the before/after audit trail of changes to AR invoice charges.
+
+| Field | Type/Size | Meaning |
+|-------|-----------|---------|
+| ISAR_CHG_SONUM | FLOAT 8 | Sales order / invoice number |
+| ISAR_CHG_INVNUM | FLOAT 8 | Invoice number |
+| ISAR_CHG_LINEID | FLOAT 8 | Line ID within invoice |
+| ISAR_CHG_PCODE | STRING 15 | Product/item code |
+| ISAR_CHG_CDATE | DATE 4 | Change date |
+| ISAR_CHG_USER | STRING 15 | User who made the change |
+| ISAR_CHG_REVLVL | STRING 10 | Revision level |
+| ISAR_CHG_ALOC / BLOC | STRING 10 | From-location / To-location |
+| ISAR_CHG_APRICE / BPRICE | FLOAT 8 | Before/after price |
+| ISAR_CHG_ADISC / BDISC | FLOAT 8 | Before/after discount |
+| ISAR_CHG_AOOQTY / BOOQTY | FLOAT 8 | Before/after open order qty |
+| ISAR_CHG_AESD / BESD | DATE 4 | Before/after estimated ship date |
+| ISAR_CHG_AASD / BASD | DATE 4 | Before/after actual ship date |
+| ISAR_CHG_ACOMPR_1/2 | FLOAT 8 | Before commission rates |
+| ISAR_CHG_BCOMPR_1/2 | FLOAT 8 | After commission rates |
+| ISAR_CHG_AEXTRA / BEXTRA | STRING 150 | Before/after extra notes |
+| ISAR_CHG_UNUM | UBINARY 4 | Unique record number |
+
+**Confidence: 62/100** — Four RWN programs identified; ISARCHG fully field-documented; charge application workflow inferred from DB fingerprints; no DFM forms found.
 
 ---
 
@@ -1573,7 +1613,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISSCHED | ISSCHED.B | Scheduler | Scheduler jobs | EvoScheduler/EvoRemind job queue — timed task records (confirmed from EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN) |
 | ISSERCNT | ISSERCNT.B | IT | Serial counters | Auto-serial number counter state per item/config |
 | ISSDET | ISSDET.B | SD | Standard details | Standard labor/machine time detail records per operation |
-| ISTRIGRS | ISTRIGRS.B | AD | Trigger actions | Automated trigger rules for Advanced DC events |
+| ISTRIGRS | ISTRIGRS.B | US/DI | Trigger notifications | Automated event triggers — CODE(15), TRIGR(10), CONTACT(20), DAYS, EMAIL(400), WO/PO/SO/CUST/VEND refs; fires N days before a date; used by US, DI, EvoRemind |
 | SCHEDCAL | SCHEDCAL.B | Scheduler | Scheduler calendar | Schedule calendar used by T7SHE (shop scheduling due-date changes) and T7SMH |
 | ISLINKS | ISLINKS.B | System | EvoLinks attachments | Document attachment cross-reference — record key → linked document path/filename (EvoLinks.RWN, 156 procs) |
 | BKPIMSTR | BKPIMSTR.B | PI | PI run master | Physical inventory run/session master — one record per PI freeze cycle |
@@ -1651,7 +1691,9 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISDRILL | ISDRILL.B | QU/SU | Query definitions | Saved query: LOOKUP_FROM + LOOKUP_FILE + LOOKUP_FILTERS_1..20 (filter criteria) + LOOKUP_WHILE_1..20 (loop conditions) |
 | ISDRILLM | ISDRILLM.B | QU/SU | Drill-down map | Navigation: PARENT→CHILD with SFIELD_1..5→TFIELD_1..5 field mappings + DRILLM_MENU label |
 | BKLUGRID | BKLUGRID.B | QU/SU | Grid column layouts | Per-user saved column visibility/order for F3 lookup grids |
-| ISDROP | ISDROP.B | System | Dropdown lists | User-configurable picklist: CODE(10) + TEXT(30) + DESC(30) + EXTRA(50)
+| ISDROP | ISDROP.B | System | Dropdown lists | User-configurable picklist: CODE(10) + TEXT(30) + DESC(30) + EXTRA(50) |
+| ISDIGSIG | ISDIGSIG.B | DI | Digital signatures | Per-employee PO approval config — EMP(pk), MOTCACH(16), POENTBY/SOENTBY, ACTIVE_1..10 flags, TYPE_1..10 codes, SDATE/FDATE/TDATE_1..10, AMT_1..10, FLAG_1..10, FILE(256), ATIME/ADATE — 89 fields total |
+| ISARDEPL | n/a | MA | Deposit application lines | Confirmed in use by T7GETDEP and T7MAPDEPO; not registered in Pervasive DDF; tracks deposit-to-invoice application records |
 
 ---
 
@@ -1715,7 +1757,27 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 ---
 
 ### MA — AR Deposit Application (T7MAPDEPO)
-**What it does:** Maps/applies customer deposits to open AR invoices. Uses BKARDEP (deposit master), BKARINV (invoice header), BKARINVL (invoice lines), BKARINVT (invoice tax). This is the "apply cash receipts" step after deposits are entered.
+
+**What it does:** Manages customer deposits — records prepayments and applies them against open AR invoices. The deposit is posted to GL when recorded, then reduced when applied to an invoice at shipment/invoicing.
+
+**Workflow:**
+1. **Enter deposit (AR-C or AR-N):** T7ARN (191 procs) creates the BKARDEP record — customer code, deposit amount, SO link, SR flag. GL debit = bank account; credit = AR deposit liability.
+2. **Apply deposit (MA module):** T7MAPDEPO (97 procs) matches BKARDEP records to BKARINVL lines. Creates ISARDEPL records (deposit application lines — not in DDF but confirmed by T7GETDEP/T7MAPDEPO).
+3. **Retrieval helper:** T7GETDEP (18 procs) reads BKARDEP + BKARINVT + ISARDEPL + BKARINVL to return available deposit balance.
+4. **Web deposits:** T7GETWEB (6 procs) reads BKARDEP + BKARINVT for web-order deposit retrieval.
+5. **Payment recording (AR-C):** T7ARC (228 procs) also touches BKARDEP when deposits are cleared against invoices.
+
+**Primary tables:**
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKARDEP | 6 | Deposit master — DEPNO(8), CUST(10), DATE, SO(8), SR(1 flag), EXTRA(50) |
+| ISARDEPL | unknown | Deposit application lines — not in DDF but confirmed used by T7GETDEP and T7MAPDEPO |
+| BKARINVT | many | AR payment transactions — deposit reduces invoice balance here |
+| BKARINVL | 28 | AR invoice lines — deposit is applied against specific lines |
+| BKGLCOA | 65 | GL chart of accounts — deposit posts to liability account |
+
+**Confidence: 62/100** — BKARDEP (6f) fully documented; deposit workflow confirmed across 5 programs; ISARDEPL confirmed to exist but not in DDF schema; GL posting flow inferred from BKGLCOA presence in T7MAPDEPO's DB list.
 
 ---
 
@@ -2072,5 +2134,84 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 
 ---
 
-*Last updated: 2026-06-17 (Pass 26). Built from SRC analysis, schema extraction, CHM decompilation,
-DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, and BKIC* inventory support table extraction. SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 30 Additions
+
+### DI — Digital Signatures / PO Approval Workflow
+
+**What it does:** Enforces approval gates on Purchase Orders by routing POs for digital signature approval before release. Each employee's authorization limits and approval status are tracked in ISDIGSIG.
+
+**RWN programs:**
+- **T7DIGSIG** (128 procs) — main approval entry; reads ISDIGSIG, BKAPPO, BKAPPOL, ISTRIGRS, BKPSUSER, BKARCUST, BKAPVEND; sends email notifications for pending approvals
+- **T7DIGSIGADMIN** (5 procs) — admin configuration stub
+- **T7DIGSIGPO** (5 procs) — PO-specific signature entry stub
+
+**ISDIGSIG — 89 fields** (keyed on IS_DSIG_EMP = employee# UBINARY 2):
+
+| Field group | Purpose |
+|------------|---------|
+| IS_DSIG_EMP | Employee ID (PK) |
+| IS_DSIG_MOTCACH (16) | Manager override/cache code |
+| IS_DSIG_POENTBY (2) / SOENTBY (5) | PO and SO entered-by codes |
+| IS_DSIG_ACTIVE_1..10 | Per-slot active flags — which approval slots are live for this employee |
+| IS_DSIG_TYPE_1..10 (10 each) | Approval type code per slot |
+| IS_DSIG_SDATE/FDATE/TDATE_1..10 | Start/From/Through dates for each approval slot |
+| IS_DSIG_AMT_1..10 + IS_DSIG_POAMT | Dollar amount limits per slot + PO amount threshold |
+| IS_DSIG_FLAG_1..10 | Status flags per approval slot |
+| IS_DSIG_DATE_1..10 | Most recent action date per slot |
+| IS_DSIG_FILE (256) | Document/file path attachment |
+| IS_DSIG_ATIME / ADATE | Last approval time/date |
+| IS_DSIG_EXTRA (100) | Free-text extra |
+
+**ISTRIGRS** (25 fields) is used by T7DIGSIG to send automatic email notifications when POs require approval. Key fields: CODE(15), TRIGR(10), CONTACT(20), DAYS(trigger lead time), EMAIL(400 chars — multi-address list), ONCE flag, LDATE/LTIME (last fired), plus WO/PO/SO/CUST/VEND reference links.
+
+**Confidence: 65/100** — Three RWN programs identified; ISDIGSIG fully field-documented (89 fields confirmed); ISTRIGRS schema confirmed; business workflow inferred from DB fingerprints + DFM 131KB form.
+
+---
+
+### SE / ST — Service Code Tables
+
+**What it does:** Maintains the code-table master records that support the SR (Service/Repair) module: process codes, error/type codes, event type codes, equipment types, and stock types.
+
+**RWN programs:**
+- **T7SEPROC** (52 procs) — maintains ISSEPROC (service process codes)
+- **T7SERR** (52 procs) — maintains ISSTYPE (service error/type codes)
+- **T7SETYPE** (52 procs) — maintains ISSETYPE (service event type codes)
+- **T7STEQUIP / T7STTYPE / T7STYPE** (all 52 procs) — maintain ISSTYPE variants (equipment types, storage types, shared service types)
+- **T7STOCK** (53 procs) — maintains BKCMACCC (CRM account classifications used by service stock)
+
+**Key tables (all small code masters):**
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| ISSEPROC | 2 | Service process codes — PROC(25), WHO(40) |
+| ISSTYPE | 3 | Shared service/equipment type — TYPE(60), WHO(40), ASSET(25) |
+| ISSETYPE | 2 | Service error/event type — ERR(25), WHO(40) |
+
+These code tables are referenced by SR service orders (BKARINV type field) and SR-INFO records to classify service operations, error categories, and equipment types.
+
+**Confidence: 60/100** — All programs identified; key tables fully field-documented; role in SR workflow confirmed; no DFM forms found (these are likely popup code-entry screens or use shared UI).
+
+---
+
+### PU — Warehouse Put-Away
+
+**What it does:** After PO receiving, the Put-Away module guides users to place received items into specific bin locations. Updates item inventory (BKICMSTR/MTICMSTR) and can trigger GL posting.
+
+**RWN programs:**
+- **T7PUTAWAY** (105 procs) — the main put-away program; opens BKICMSTR, MTICMSTR, BKAPINVL, BKAPPO, BKGLTRAN, DBAFIFO, LOT, SERIAL, ISORDECO, BKCMACCT
+
+**Workflow:**
+1. Received items appear from AP (BKAPINVL — AP invoice lines) and PO (BKAPPO).
+2. User selects items and assigns them to bin locations (ISLINKS or BKICLOC).
+3. Lot and serial numbers are assigned (LOT, SERIAL tables).
+4. GL posting: debit inventory account (BKGLTRAN), credit FIFO cost layer (DBAFIFO).
+5. Order decorations (ISORDECO) can trigger special handling instructions.
+
+**Confidence: 62/100** — Single RWN program with 105 procs and 60+ unique DB files identified; workflow inferred from the AP/PO/GL/LOT/SERIAL/FIFO table set; no DFM forms found for this module.
+
+---
+
+*Last updated: 2026-06-17 (Pass 30). Built from SRC analysis, schema extraction, CHM decompilation,
+DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Pass 30 module analysis (MA/DI/FS/GF/SE+ST/PU). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
