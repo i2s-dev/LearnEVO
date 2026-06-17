@@ -2251,5 +2251,129 @@ These code tables are referenced by SR service orders (BKARINV type field) and S
 
 ---
 
-*Last updated: 2026-06-17 (Pass 30). Built from SRC analysis, schema extraction, CHM decompilation,
-DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Pass 30 module analysis (MA/DI/FS/GF/SE+ST/PU). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## MODULE QUICK REFERENCE — Pass 32 Additions
+
+### BO — Bill of Lading
+
+**What it does:** Generates shipping/freight documents for outbound SO shipments. Supports standard BOL and multi-shipment LTL (Less-than-Truckload) freight variants with box/packing details.
+
+**RWN programs:**
+- **T7BOL** (178 procs) — standard BOL; reads BKARINV+BKARCUST+ISSHPVIA+ISSHIPCO+ISSOBOX+BKARINVL+MTICMSTR+ISSRINFO+BKAPPO
+- **T7BOLMSO** (174 procs) — multi-shipment / LTL variant; reads ISSOBOX+BKPSUSER+BKPRMSTR (uses payroll employee for driver/DOT data); adds EDIT.CLASS/WEIGHT/PACKS/HM fields for LTL freight classification
+
+**Key tables:** ISSOBOX (SO box packing), ISSHIPCO (carrier master), ISSHPVIA (ship-via codes), BKARINV (SO/invoice source). ISSOBOX (22f): SONUM+LINE+BOX (pk), CODE(item), QTY, LOT(15), SERIAL(25), TEMP(1 flag), plus weight/class/hazmat fields.
+
+**Confidence: 65/100** — Both programs identified with full DB fingerprints; workflow confirmed from variable names (LOAD.NUMBER, SEAL.NUMBER, TRAILER.NUMBER, DRIVER timestamps); exact form fields in encrypted RWN.
+
+---
+
+### RE — Reminders, Report Defaults, and Rebuild Utilities
+
+**What it does:** A utility family grouped under RE: reminder/follow-up reports, saved report parameter management, link replacement, and data-rebuild utilities for QC and WO tables.
+
+**RWN programs:**
+- **T7REMINDRPT** (125 procs) — reminder report; reads BKSYMSTR+ISREMIND+BKARCUST+BKCMACCN; prints calendar reminders by contact/customer/date range
+- **T7REPDEF** (52 procs) — maintains ISREPDEF (saved report defaults per user); save/restore report parameter sets
+- **T7REPLNK** (67 procs) — replace-links utility; reads ISREPLNK+BKPRSALE+BKARCUST+BKICMSTR+CLASMSTR; used when salesperson or customer codes change system-wide
+- **T7REINDEX** (36 procs) — Btrieve reindex; opens FILELOC; re-builds B-tree indexes for all registered data files
+- **T7REBQC** (62 procs) — QC rebuild; recalculates BKQCMSTR/BKQCTRAN from source records
+- **T7REBWO** (123 procs) — WO rebuild; recalculates WORKORD+WOBOM+WORECV+WOROUT+MTICMSTR+WOMAT+WOLABOR from WO source; run after data corruption or bulk import
+
+**Confidence: 62/100** — All 7 programs identified with DB fingerprints; each program's purpose confirmed from table set + naming; exact rebuild logic in encrypted RWN.
+
+---
+
+### AU — Automation / Batch Processing
+
+**What it does:** Background automation programs that run on schedule via EvoScheduler — auto-validating DC labor, auto-firming MRP recommendations, back-order recalculation, and auto-updating foreign exchange rates.
+
+**RWN programs:**
+- **T7AUTODCH** (183 procs) — DC auto-validation: validates pending BKDCLAB labor against BKDCCFG config and BKPRMSTR employee rules; resolves exceptions automatically
+- **T7AUTOMRF** (132 procs) — MRP auto-firm: reads MTMRP planned orders, firms them into WOs/POs; uses MTMRP.PARTNO/KEY/DATE/QTY/ONHAND/PEGTO/ORDER/STARTDT fields
+- **T7AUTOREBSS** (79 procs) — back-order re-BSS: recalculates back-order status for all open items (BKICMSTR+MTICMSTR)
+- **T7AUTOFX** (21 procs) — auto FX rate update: calls ISJAVA task queue to fetch live exchange rates → writes to ISMCR; uses ISMCF (currency master) as config
+- **T7AUTODEJH / T7AUTOSMJC / T7AUTOWOLA / T7AUTOUTKG** (5 procs each) — single-function automation stubs
+
+**Confidence: 62/100** — All 8 programs identified; each automation function confirmed from DB fingerprint; AUTOMRF MRP variable list confirms field-level details; exact scheduling configuration in encrypted RWN.
+
+---
+
+### EDII — EDI Invoice Import
+
+**What it does:** Creates AR invoices from inbound EDI data. Single program (T7EDII, 183 procs) that runs a complete invoice-creation pipeline — pricing, charges, GL posting, inventory, and lot/serial tracking — from an EDI transaction source.
+
+**RWN program:** T7EDII (183 procs). Full DB set: BKYSMSTR+MTICMSTR+BKARINV+BKARINVL+ISARCHG+BKARCUST+BKSYMSTR+ISTERMS+BKICMSTR+BKICPMAT+BKICLOC+CLASMSTR+ISCATMST+ISTAXGRP+ISNUMBER+BKICLOCM+BKAPPOL+BKAPPO+WORKORD+WOBOM+INVTXN+BKBMMSTR+BKMRPFC+ISICMSTR+BKGLTRAN+DBAFIFO+ISTRIGRS+ISREMIND+LOT+SERIAL+ISNCR.
+
+**Architecture:** Identical table set to manual AR invoice entry — EDI data drives the same paths: customer/item lookup, price override (BKICPMAT), tax (ISTAXGRP), GL posting (BKGLTRAN+DBAFIFO), WO connection (WORKORD+WOBOM), lot/serial (LOT+SERIAL), extra charges (ISARCHG).
+
+**Confidence: 60/100** — Single program, full DB set confirmed; invoice-creation pipeline reconstructed from table set; EDI field mapping in encrypted RWN.
+
+---
+
+### LG — LGS Customer Module (Canadian Statement of Entry)
+
+**What it does:** Customer-specific module for LGS — implements Canadian customs "Statement of Entry" (SOE) processing for cross-border AR invoices with duty/customs tax calculations.
+
+**RWN programs:**
+- **T7LGSSOE** (170 procs) — main SOE entry; uses BKARINV+BKARCUST+BKARINVL+BKARTXN+BKICTAX+BKICLOC+BKICLOCM+ISTAXGRP+INVTXN+BKGLTRAN+DBAFIFO+LOT+SERIAL
+- **T7LGSSOEVERIFY** (41 procs) — verification step: validates BKYSMSTR+BKICMSTR+BKARINVL+BKARINV+BKARTXN before posting
+
+**Key distinction from standard AR:** Uses BKICTAX (item tax by state/local jurisdiction) and BKARTXN (AR transaction log) — cross-border Canadian customs treatment rather than standard US sales tax. BKICTAX stores state+local duty rates; BKARTXN logs the customs transaction.
+
+**Confidence: 52/100** — Two programs identified with full DB fingerprints; SOE/customs role confirmed from table selection and program name; exact SOE field structure in encrypted RWN.
+
+---
+
+### JS — Java Integration / External Reporting Bridges
+
+**What it does:** Thin launcher programs that configure and invoke EvoPVT.jar for external reporting integrations — Power BI, SQL Server Reporting Services, and other external analytics/reporting tools.
+
+**RWN programs:**
+
+| Program | Procs | Purpose |
+|---------|-------|---------|
+| T7JSETTINGS | 70 | JS connection settings; reads FILELOC for paths |
+| T7JSQL | 52 | Direct SQL query bridge via Java |
+| T7JSACC | 50 | AR/AP accounting data bridge to external reporting |
+| T7JSAIC | 50 | IC (Inventory Control) data bridge |
+| T7JSAPBI | 50 | Power BI connector |
+| T7JSASRS | 50 | SQL Server Reporting Services connector |
+| T7JSOI | 50 | Order Inquiry data bridge |
+
+All 6 data-bridge programs use only standard boilerplate DB (BKSYHELP+ISIS+MKAHIST+ISLOG+ISDRILL) — the actual data extraction runs inside EvoPVT.jar, which these programs configure and launch via the ISJAVA task queue.
+
+**Confidence: 58/100** — All 7 programs identified; Power BI and SRS roles confirmed from naming; JS→Java launcher pattern confirmed by AUTOFX precedent; data schemas in Java JAR.
+
+---
+
+### TA — TAS Admin / System Administration
+
+**What it does:** The most powerful admin module — direct database maintenance, menu access control, program scheduling, backup, SQL editing, logo management, and data dictionary validation. Requires highest security level.
+
+**CHM operations and matched RWN programs:**
+
+| Menu code | Operation | Matched RWN program |
+|-----------|-----------|---------------------|
+| TA-D | Maintain Database (direct record edit) | T7FNR (104 procs, FILELOC+FILEDICT) — File Navigator/browser |
+| TA-G | Maintain Menu Access Records | uses BKMENUSU (per-user menu config) |
+| TA-H | Maintain Menu End User | user-level menu preferences |
+| TA-M | Forms Editor | DCY decrypt + form edit (T7MDEFAULTS family or dedicated) |
+| TA-N | Program Scheduler | EVOSCHEDSETUP (37 procs) + EVOSCHEDULER (65 procs, ISSCHED) |
+| TA-O | Backup Utility | EVOERPBACKUP (76 procs, FILELOC+BKSYMSTR; uses zipdll) |
+| TA-Q | Change Logo Image | small FILELOC utility (unconfirmed program name) |
+| TA-R | SQL Editor | QUERYEXECUTE (26 procs, ISDRILL+BKPSUSER) |
+| TA-S | Data Dictionary Check | T7DDCHECK (92 procs, FILEDICT+FILEKEY+FILELOC) |
+
+**Confirmed programs:**
+- **EVOERPBACKUP** (76 procs): reads FILELOC (file list) + BKSYMSTR (company/path settings); uses zipdll.dll to zip data files
+- **EVOSCHEDULER** (65 procs): manages ISSCHED job queue (24f: program, company, date/time, recurrence, 10 params, email)
+- **T7DDCHECK** (92 procs): validates DDF entries (FILEDICT+FILEKEY) against physical FILELOC data files
+- **QUERYEXECUTE** (26 procs): executes saved ISDRILL SQL queries; also surfaces as QU-F SQL Executor in Query menu
+
+**Confidence: 65/100** — 9 CHM operations documented; 5 programs matched with high confidence; TA-G/H/M/Q still unmatched to specific RWN; TA-D likely T7FNR based on table match.
+
+---
+
+*Last updated: 2026-06-17 (Pass 32). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-32 module analysis (MA/DI/FS/GF/SE+ST/PU/US/MU/LI/BS/BO/RE/AU/EDII/LG/JS/TA). SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
