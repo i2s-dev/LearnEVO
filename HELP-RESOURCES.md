@@ -1630,6 +1630,44 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 
 ## MODULE QUICK REFERENCE — Pass 13 Additions
 
+### SM — System Maintenance + Item Inquiry Hub (58 files)
+SM is the largest module family and serves two distinct purposes:
+
+**1. Setup and Maintenance screens** — cross-module code table entry:
+
+| Sub-module | What it maintains |
+|-----------|-----------------|
+| SM-C (T7SMCA/B/C) | Item class codes and location assignments |
+| SM-D (T7SMD) | Payment terms |
+| SM-E/F (T7SME/F) | Tax codes, tax groups, tax files, GL accounts |
+| SM-G/GA (T7SMG/GA) | Employee ↔ work center assignments (PR ↔ WC) |
+| SM-H (T7SMH) | Shop scheduling calendar (work days, shifts per work center) |
+| SM-IA/B/C/D/E/F | CRM code tables: lead types, territories, action codes, contact codes, discount codes, categories |
+| SM-N/NA/NF (T7SMN) | Notes type master — categories of notes |
+| SM-O (T7SMO) | Outside process + shipping company master |
+| SM-PA/B/F/H/I/J | Item code assignments: category, user-defined, GL job, cycle count, defect, count unit-level |
+| SM-SC/SD | Access control by class/category |
+| SM-T/U (T7SMT/U) | Ship-via codes + comprehensive receipt/shipping setup |
+| SM-TEND/TSET | Smart Terminal (machine/barcode terminal) configuration |
+| SM-W (T7SMW) | Order description codes |
+
+**2. Item Inquiry (SM-J series)** — enter an item number, see all its data across every module:
+- T7SMJL (459 procs) = **main panel** — complete item overview
+- T7SMJC = On-hand by location
+- T7SMJB = Open work orders using this item
+- T7SMJD = Inventory transaction history
+- T7SMJF = Open purchase orders
+- T7SMJG = QC records
+- T7SMJI = Estimates and sales order history
+- T7SMJJ = AR invoice detail
+- T7SMJN = Vendor information
+- T7SMJO = AP checks and AR deposits
+- T7SMJQ/JS/JT = Lot, serial, QC detail
+
+**How to use Item Inquiry:** Go to the SM module, enter an item number, and use the tabs/sub-screens to drill into any related transaction or document.
+
+---
+
 ### MR — MRP Planning Engine (17 files)
 **Critical distinction:** BM module = define BOM structures; MR module = run MRP calculations.
 

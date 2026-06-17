@@ -1694,3 +1694,126 @@ These should NOT be used as fingerprints for module identification; they appear 
 | BKCMACCN | ISTECH.LIB (infra) | 954 modules |
 | BKAPDESC | ISTECH.LIB (infra) | 993 modules |
 
+---
+
+## Pass 14 — SM (System Maintenance / Item Inquiry), new table discoveries
+
+---
+
+### SM — System Maintenance + Item Inquiry Hub (58 files, 5,089 procs)
+
+SM is the largest-count module family and serves two distinct roles:
+1. **Setup/maintenance screens** for cross-module code tables (terms, taxes, calendars, CRM codes, notes types, shipping, etc.)
+2. **Item Inquiry drill-down panel** (SM-J sub-series) — the "Item Status" screen showing all data related to an item across every module
+
+#### SM Setup/Maintenance sub-modules
+
+| Module | Procs | Function | Key tables |
+|--------|-------|---------|-----------|
+| T7SMCA | 193 | Item class + location assignment — assign class codes to items and locations | CLASMSTR, BKICLOCM, CLASS, BKICMSTR |
+| T7SMCB/CC | 74/75 | Item class browser variants | CLASMSTR, BKICMSTR |
+| T7SMD | 57 | Payment terms setup | ISTERMS, BKICMSTR |
+| T7SME | 84 | Tax code setup — tax groups, tax files, GL accounts, work centers, routing | ISTAXFIL, BKGLCOA, ISTAXGRP, BKISTAX, WORKCTR, ROUTING |
+| T7SMF | 77 | Tax group / tax file management | ISTAXGRP, ISTAXFIL |
+| T7SMG | 144 | Employee ↔ work center assignment (PR + WC bridge) | BKPRMSTR, BKPRINFO, ISPRCONS, BKPRSALE, WOLABOR, ISACCESS |
+| T7SMGA | 70 | Employee-routing matrix setup | ISPRCONS, BKPRINFO, BKPRMSTR, WORKCTR, ROUTING |
+| T7SMH | 116 | Shop scheduling calendar — defines work days, shifts, capacity by work center | CALENDAR, SCHEDCAL, CALTEMP, WORKCTR, ROUTING |
+| T7SMIA | 53 | CRM lead type setup | BKCMLEAD |
+| T7SMIB | 53 | CRM territory setup | BKCMTERR |
+| T7SMIC | 53 | CRM action follow-up code setup | BKCMACFC |
+| T7SMID | 53 | CRM contact code setup | BKCMACCC |
+| T7SMIE | 53 | CRM discount code setup | BKCMDTCD |
+| T7SMIF | 59 | CRM category master | ISCATMST |
+| T7SMN/SMNA | 75 | Notes type setup — define note categories | ISNTYPE, ISNOTES |
+| T7SMNF | 85 | Notes type with class/category filter | ISNTYPE, ISNOTES, CLASMSTR, ISCATMST |
+| T7SMO | 101 | Outside process / shipping company setup | ISSHIPCO, CLASMSTR, OUTPROC |
+| T7SMPA | 53 | Item category assignment | ISCATMST, ISNOTES |
+| T7SMPB | 53 | User-defined (UD) master assignment | ISUDMSTR |
+| T7SMPF | 64 | GL job code assignment | ISJOB |
+| T7SMPH | 88 | Cycle count code assignment | ISCYCLCD |
+| T7SMPI | 53 | Defect code assignment | ISDEFECT |
+| T7SMPJ | 92 | Item count unit-level setup | ISICUL, MTICMSTR |
+| T7SMSC | 77 | Class/category access control | CLASMSTR, ISCATMST, ISACCESS |
+| T7SMSD | 94 | AP invoice + class + category | BKAPINVT, CLASMSTR, ISCATMST, MKECLASS |
+| T7SMT | 71 | Ship-via code setup + items | ISSHPVIA |
+| T7SMTEND | 97 | Smart Terminal (SMT) machine-to-WO assignment | MACHINE, WORKORD, BKPRMSTR, WOROUT, ISSERIAL, ISSMTCFG |
+| T7SMTSET | 128 | Smart Terminal configuration setup | WOBOM, MACHINE, ISSMTCFG, WORKORD, MTICMSTR |
+| T7SMU | 135 | Ship-via + WO + PR + deposits — comprehensive receipt setup | ISSHPVIA, SERIAL, WOBOM, WOROUT, MTICMSTR, BKARDEP |
+| T7SMW | 62 | Order description code setup | ISORDDSC |
+
+#### SM-J Series — Item Inquiry Drill-Downs
+
+The SM-J sub-series implements an **Item Status Inquiry** screen — a single entry point (SMJL, 459 procs) that shows everything related to an inventory item across all modules:
+
+| Module | Procs | Drill-down panel | Key tables |
+|--------|-------|-----------------|-----------|
+| T7SMJL | 459 | **MAIN ITEM INQUIRY PANEL** — all item data in one view | MTICMSTR, SERIAL, BKAPPOL, BKARINVL, BKBMDIM, BKBMMSTR, BKBMNOTE |
+| T7SMJM | 224 | Item valuation — inventory costs, pricing, commissions, estimates | BKARINVT, BKARINVV, BKICPMAT, BKICREF, BKPRCOMM, ESTSUM |
+| T7SMJB | 140 | Item → open WOs (all work orders using this item) | WORKORD, WOBOM, WOMAT, WOLABOR, WOROUT |
+| T7SMJD | 138 | Item → inventory transactions (INVTXN history) | BKICMSTR, INVTXN, MTICMSTR, BKICLOC |
+| T7SMJC | 212 | Item → inventory by location (on-hand per warehouse) | BKICLOCM, BKICLOC, INVTXN, DBAFIFO |
+| T7SMJA | 86 | Item → WO receipts + DC labor | WORKORD, WORECV, BKDCLAB, WOEXCHG |
+| T7SMJI | 82 | Item → estimates + SO + BOM + routing | ISESTDTL, BKARINV, BKBMMSTR, ROUTING |
+| T7SMJJ | 84 | Item → AR invoices (full invoice detail) | BKARINV, BKARINVT, BKARINVL, BKARTXN, ISSRINFO |
+| T7SMJF | 73 | Item → open POs (purchase orders containing this item) | BKAPPO, BKAPPOL, BKARINVL |
+| T7SMJG | 82 | Item → QC transactions | BKQCMSTR, BKQCTRAN, BKARINVL |
+| T7SMJN | 158 | Item → vendor info (from CRM vendor tables + tax + broker) | BKCMVNDH, BKCMVNDF, BKICTAX, ISBROKER, BKCPEC |
+| T7SMJO | 92 | Item → AP checks + AR deposits + invoices | BKAPCHKF, BKARINVT, BKARDEP, BKARINV, BKAPINVT |
+| T7SMJQ | 98 | Item → lot + QC + outside process | BKICMSTR, BKBMMSTR, LOT, BKQCMSTR, OUTPROC |
+| T7SMJS | 62 | Item → lot/serial summary | LOT, BKQCMSTR, INVTXN, OUTPROC |
+| T7SMJT | 15 | Item → serial + lot + QC | MTICMSTR, LOT, SERIAL, BKQCMSTR |
+| T7SMJH | 51 | Item → DC labor on WO | BKDCLAB, WORKORD, WOBOM, BKBMMSTR |
+| T7SMJR | 97 | Item → open PO review | BKAPPO, BKAPPOL, ISACCESS |
+| T7SMJV | 117 | Item → PR employee records | BKPRCURP, BKPRMSTR, BKPRINFO, BKPRGLFL |
+| T7SMJK | 15 | Item → AR invoice + taxes + charges | BKARINVT, BKARINVL, BKARTXN, ISARCHG |
+| T7SMJP | 15 | Item → payment summary | BKAPCHKF, BKARINVT, BKARDEP |
+
+---
+
+### New Tables Discovered in Pass 14
+
+| Table | Module | Purpose |
+|-------|--------|---------|
+| ISMCR | SM setup screens | IS Master Category Reference — item category master code lookup |
+| ISSMTCFG | T7SMTEND | IS Smart Terminal config — machine-to-terminal binding for DC/WO entry |
+| ISNTYPE | T7SMN | IS Note type — note category master (defines valid note types) |
+| ISNOTES | T7SMN | IS Notes — note text records (cross-module, all entity types) |
+| ISSHPVIA | T7SMT | IS Ship Via — shipping method codes (UPS, FedEx, truck, etc.) |
+| ISSHIPCO | T7SMO | IS Ship Company — carrier/shipping company master |
+| ISORDDSC | T7SMW | IS Order Description — order description code master |
+| ISJOB | T7SMPF | IS Job — GL job code master (job-costing sub-accounts) |
+| ISCYCLCD | T7SMPH | IS Cycle Code — cycle count frequency codes per item class |
+| ISUDMSTR | T7SMPB | IS User-Defined Master — user-defined field set master |
+| ISICUL | T7SMPJ | IS IC Unit Level — item count unit-level (multi-UOM hierarchy) |
+| ISPRCONS | T7SMG | IS PR Constants/Consultant — PR employee constants table |
+| BKCMVNDH | T7SMJN | BK CM Vendor Header — CRM vendor notes/info header |
+| BKCMVNDF | T7SMJN | BK CM Vendor Footer — CRM vendor notes/info detail |
+| ISBROKER | T7SMJN | IS Broker — freight broker master records |
+| BKCPEC | T7SMJN | BK CP EC — CRM prospect/contact extended codes |
+| BKISTAX | T7SME | BK IS Tax — item-level tax override records |
+| ISORDDSC | T7SMW | IS Order Description — order description/reference code master |
+
+---
+
+### Pass-14 Table Ownership Additions
+
+| Table | Owner | Also used by |
+|-------|-------|-------------|
+| ISMCR | T7SMCA (SM) | T7SMIA, T7SMIB, T7SMIC, T7SMID, T7SMIE |
+| ISSMTCFG | T7SMTEND (SM) | T7SMTSET |
+| ISNTYPE | T7SMN (SM) | T7SMNA, T7SMNF |
+| ISNOTES | T7SMN (SM) | T7SMNF, T7SMO, T7SMPA, T7SMPH, T7SMT |
+| ISSHPVIA | T7SMT (SM) | T7SMU |
+| ISSHIPCO | T7SMO (SM) | — |
+| ISORDDSC | T7SMW (SM) | — |
+| ISJOB | T7SMPF (SM) | — |
+| ISCYCLCD | T7SMPH (SM) | — |
+| ISUDMSTR | T7SMPB (SM) | — |
+| ISICUL | T7SMPJ (SM) | — |
+| ISPRCONS | T7SMG (SM) | T7SMGA |
+| BKCMVNDH | T7SMJN (SM) | — |
+| BKCMVNDF | T7SMJN (SM) | — |
+| ISBROKER | T7SMJN (SM) | — |
+| BKCPEC | T7SMJN (SM) | — |
+| BKISTAX | T7SME (SM) | T7SMF |
+

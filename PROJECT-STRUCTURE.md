@@ -794,5 +794,31 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 ---
 
+---
+
+## Pass 14 — New Tables (2026-06-17)
+
+| Table | Module | Purpose | Status |
+|-------|--------|---------|--------|
+| ISMCR | SM (T7SMCA) | IS Master Category Reference — item category master code lookup | inferred |
+| ISSMTCFG | SM (T7SMTEND) | IS Smart Terminal config — machine-to-terminal binding for DC/WO entry | inferred |
+| ISNTYPE | SM (T7SMN) | IS Note type — note category master (defines valid note types) | inferred |
+| ISNOTES | SM (T7SMN) | IS Notes — cross-module note text records (all entity types) | inferred |
+| ISSHPVIA | SM (T7SMT) | IS Ship Via — shipping method codes (UPS, FedEx, truck, etc.) | confirmed |
+| ISSHIPCO | SM (T7SMO) | IS Ship Company — carrier/shipping company master | inferred |
+| ISORDDSC | SM (T7SMW) | IS Order Description — order description/reference code master | inferred |
+| ISJOB | SM (T7SMPF) | IS Job — GL job code master for job-costing sub-accounts | inferred |
+| ISCYCLCD | SM (T7SMPH) | IS Cycle Code — cycle count frequency codes assigned per item class | inferred |
+| ISUDMSTR | SM (T7SMPB) | IS User-Defined Master — user-defined field set master | inferred |
+| ISICUL | SM (T7SMPJ) | IS IC Unit Level — item count unit-level (multi-UOM hierarchy) | inferred |
+| ISPRCONS | SM (T7SMG) | IS PR Constants — PR employee constants/payroll config table | inferred |
+| BKCMVNDH | SM (T7SMJN) | BK CM Vendor Header — CRM vendor notes header | inferred |
+| BKCMVNDF | SM (T7SMJN) | BK CM Vendor Footer — CRM vendor notes detail | inferred |
+| ISBROKER | SM (T7SMJN) | IS Broker — freight broker master records | inferred |
+| BKCPEC | SM (T7SMJN) | BK CP EC — CRM prospect/contact extended codes | inferred |
+| BKISTAX | SM (T7SME) | BK IS Tax — item-level tax override records | inferred |
+
+---
+
 *Last updated: 2026-06-17 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–13. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–14. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
