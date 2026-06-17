@@ -1156,6 +1156,96 @@ in AHSYLOG with role, starting menu code, and 20 access flags.
 
 ---
 
+### BS — Business Score / Customer Scoring
+
+Tracks customer profitability and scoring metrics. Primary table: **ISBSF** (business score fields). Accessed via T7BSA/T7BSB/T7BSC/T7BSD modules (4 program files = 4 menu code variants). Scores are likely computed from AR transaction history and stored for reporting.
+
+**Use case:** Identify highest-value or most-at-risk customers based on revenue, payment history, or custom scoring criteria.
+
+**Confidence: 42/100** — Module identified by DB fingerprint; table confirmed; scoring algorithm and UI fields not decoded.
+
+---
+
+### AD — Advanced DC / Advanced Data Collection
+
+Extended Data Collection module (builds on DC shop-floor labor entry). Primary tables: **BKSYUSER** (system user extensions), **ISTRIGRS** (trigger actions for automated events). Uses T7ADA/T7ADB/T7ADC modules (3 files). Likely adds automated triggers, badge-reader integration, or advanced scheduling to standard DC labor posting.
+
+**Use case:** Set up automated triggers for labor posting, barcode/badge-reader data entry rules, or shift-based collection rules.
+
+**Confidence: 48/100** — Module identified by DB fingerprint; tables confirmed; trigger logic and UI not decoded.
+
+---
+
+### IT — Item Serial Number Configuration
+
+Extended serial number configuration module. Primary table: **ISSERCNT** (serial counter tracking). Works with existing SERIAL and ISSERIAL tables. T7ITA module (1 file found in rwn_symbols.json). Likely provides serialization rules (auto-generate serial numbers, prefix/suffix, sequence ranges) per item.
+
+**Use case:** Configure auto-serial numbering for manufactured items or purchased serialized goods.
+
+**Confidence: 40/100** — Module identified by DB fingerprint; ISSERCNT confirmed; config fields and UI not decoded.
+
+---
+
+### SD — Standard Detail / Estimate Details
+
+Stores standard production detail records. Primary table: **ISSDET** (standard detail). T7SDET module (58 procs confirmed). Works alongside ISSTYPE. Likely stores labor/machine time standards per operation for estimating and quoting.
+
+**Confidence: 42/100** — Module and table confirmed; field meanings partially inferred from naming.
+
+---
+
+### RF — RFQ from Estimates
+
+Generates Request-for-Quote (purchasing) directly from production estimates. Tables: **ISESTDTL** (estimate details), **BKMRPPO** (MRP planned POs), **BKSBVEND** (sub-vendor/RFQ vendor records). T7RFQ module (103 procs). Links the estimating workflow to vendor quoting, allowing estimate line items to generate vendor quote requests.
+
+**Use case:** From an estimate for a customer job, automatically generate RFQs to vendors for materials or outside processes needed.
+
+**Confidence: 50/100** — Module and tables confirmed; full workflow sequence not traced from source.
+
+---
+
+### EM — Emergency GL Entry
+
+Manual/emergency GL journal entry module. Table: **BKGLTRAN** (standard GL transactions). T7EMA module found in rwn_symbols.json. Allows posting of manual adjusting journal entries outside the normal AR/AP/PR posting cycle — for corrections, period-end adjustments, or inter-company entries.
+
+**Use case:** Post a manual GL entry to correct a balance or record a transaction that has no source document (e.g., depreciation, accruals outside payroll).
+
+**Confidence: 38/100** — Module identified; uses standard GL table; exact form fields not decoded.
+
+---
+
+### EvoRemind — Reminder System
+
+Automated reminder and follow-up system. Primary tables: **ISREMIND** (reminder records), **ISSCHED** (scheduler job queue). EvoRemind.RWN has 116 procs; also used by EvoService and EvoScheduler. Reminders are date/time triggered and can be linked to AR customers, AP vendors, CRM contacts, or free-form notes.
+
+**Use case:** Schedule a follow-up call with a customer, set a payment reminder for an overdue invoice, or create a recurring task for a maintenance schedule.
+
+**Tables:** ISREMIND — reminder record (date, contact, trigger type, linked record key, note text); ISSCHED — scheduler job queue (timed execution of EvoRemind checks).
+
+**Confidence: 52/100** — Tables confirmed from DB fingerprint; reminder record structure partially inferred; trigger mechanism not fully decoded.
+
+---
+
+### GT — Lookup Grid / Grid Templates
+
+Stores user-configured lookup grid layouts. Primary table: **BKLUGRID** (lookup grid definitions). Module T7GT found in rwn_symbols.json. Allows users to define and save custom column layouts for data-entry lookup dialogs (e.g., item lookup, customer lookup) so they see preferred columns.
+
+**Use case:** Customize which columns appear when you press F3 (lookup) in a data entry screen.
+
+**Confidence: 40/100** — Table confirmed; UI customization purpose inferred from table name; config fields not decoded.
+
+---
+
+### JA — Java Integration Setup
+
+Configuration interface for the EvoERP Java integration layer (EvoPVT.jar). Uses **ISJAVA** task queue table. T7JAA/T7JAB modules found. Provides setup UI for the Java bridge that enables SQL reporting and external data export (e.g., Crystal Reports via Pervasive JDBC, or web-facing dashboards).
+
+**Use case:** Configure the Java SQL helper service, set up JDBC connection parameters, or troubleshoot EvoPVT.jar task queue processing.
+
+**Confidence: 45/100** — Module identified; ISJAVA table documented from prior analysis; setup UI fields not decoded.
+
+---
+
 ## REPORTING ENGINE
 
 ### How Reports Work
@@ -1295,6 +1385,19 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISSTYPE | ISSTYPE.B | SR | Shared type codes | Shared service/storage/equipment type code table |
 | ISPRINFO | ISPRINFO.B | PR | Employee PR info | Payroll employee profile/additional info records |
 | WODATE | WODATE.B | WO | WO operation dates | Operation dates per WO — START/FINISH/QTY, parent/top hierarchy |
+| BKLUGRID | BKLUGRID.B | GT | Lookup grid config | User-saved column layout definitions for F3 lookup dialogs |
+| BKMRPPO | BKMRPPO.B | RF/MR | MRP planned POs | Planned purchase orders generated by MRP or RFQ-from-estimates |
+| BKSBVEND | BKSBVEND.B | RF | Sub-vendor / RFQ vendors | Vendor records specific to RFQ / sub-contracting workflow |
+| BKSYUSER | BKSYUSER.B | AD | System user extensions | Extended user configuration for Advanced DC module |
+| EIMCOLST | EIMCOLST.B | AD | EIM column state | Column visibility/state tracking for Advanced DC forms |
+| ISBSF | ISBSF.B | BS | Business score fields | Customer scoring/profitability metrics (BS module) |
+| ISESTDTL | ISESTDTL.B | RF | Estimate details | Line-level detail records for production estimates; source for RFQ generation |
+| ISSCHED | ISSCHED.B | Scheduler | Scheduler jobs | EvoScheduler/EvoRemind job queue — timed task records (confirmed from EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN) |
+| ISSERCNT | ISSERCNT.B | IT | Serial counters | Auto-serial number counter state per item/config |
+| ISSDET | ISSDET.B | SD | Standard details | Standard labor/machine time detail records per operation |
+| ISTRIGRS | ISTRIGRS.B | AD | Trigger actions | Automated trigger rules for Advanced DC events |
+| SCHEDCAL | SCHEDCAL.B | Scheduler | Scheduler calendar | Schedule calendar used by T7SHE (shop scheduling due-date changes) and T7SMH |
+| ISLINKS | ISLINKS.B | System | EvoLinks attachments | Document attachment cross-reference — record key → linked document path/filename (EvoLinks.RWN, 156 procs) |
 
 ---
 
