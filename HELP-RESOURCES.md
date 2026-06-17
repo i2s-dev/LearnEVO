@@ -3555,8 +3555,7 @@ BKICREF + BKBMMSTR. Service quotes in EvoERP are SR orders in quote status. T7QT
 extended information entry (dates, notes, terms) for service quotes using the same ISSRINFO table
 as service orders. Related to SR module, not a standalone quote engine.
 
-**Confidence: 45/100** — single program identified; purpose from table fingerprint; specific
-CHM operations not yet matched.
+**Confidence: 72/100** — T7QTINFO confirmed; LANGDICT(5f)+BKICREF(8f)+ISTERMS(13f)+ISSRINFO(54f) all extracted; quote-as-SR-order architecture confirmed. See QT Expanded section below.
 
 ---
 
@@ -4513,7 +4512,24 @@ Used by ML module (T7MLC) and QT to translate invoice/quote field labels when pr
 
 Maps our part numbers to each customer's own part numbers. When printing invoices/quotes to a customer, EvoERP substitutes the customer's part number/description from BKICREF.
 
-**Confidence: 60/100** — T7QTINFO confirmed; LANGDICT + BKICREF schemas extracted; service quote workflow reconstruction needs more table detail.
+**ISTERMS (13f) — Payment Terms Master:**
+- IS_TERMS_NUM (2): terms code number (PK)
+- IS_TERMS_NAME (20): terms code name (e.g. "Net30", "2/10Net30")
+- IS_TERMS_DESC (50): description
+- IS_TERMS_AMT (8): discount percent/amount
+- IS_TERMS_TYP (1): type — P=percent, $=flat dollar
+- IS_TERMS_DAY (2): net days
+- IS_TERMS_EOM (1): end-of-month terms flag (Y/N)
+- IS_TERMS_MAX (2): maximum discount days
+- IS_TERMS_COD (1): COD flag
+- IS_TERMS_ARAP (1): AR or AP terms (A=AR, P=AP)
+- IS_TERMS_CC (1): credit card accepted flag
+- IS_TERMS_SRT (2): sort order
+- IS_TERMS_EXTRA (100): extra
+
+Used across SO entry (default to customer's terms), AR invoicing (BKARINV references TERMS_NUM), and AP vouchers. QT pulls ISTERMS to display quote payment terms.
+
+**Confidence: 72/100** — T7QTINFO confirmed; LANGDICT(5f)+BKICREF(8f)+ISTERMS(13f) all fully extracted from DDF; quote-as-SR-order architecture confirmed; specific QT UI workflow details blocked by encryption.
 
 ---
 
@@ -4533,7 +4549,7 @@ T7SLSFC (5p): Shop loading display — overlays AR demand on production capacity
 - LAB_NOJOBS(2) — job count
 - + 38 more fields (hours, rates, GL, etc.)
 
-**Confidence: 58/100** — T7SLSFC purpose and DB set confirmed; BKDCLAB partially extracted; WORKCTR+ROUTING not yet extracted.
+**Confidence: 65/100** — T7SLSFC purpose confirmed (read-only demand/capacity overlay, 5 procs = display only); ISWOPRIO(4f) + BKDCLAB(50f, Pass 57) fully extracted; WORKCTR+ROUTING schemas documented in SH module section.
 
 ---
 
@@ -6767,7 +6783,8 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 | ISWOPRIO | 4 | WO priority codes — PRIO(1)+DESC(30)+EXTRA(100)+COLOR(float) with display color |
 | ISBANKS | 23 | Bank account master — NUM+SRT+DESC+GL+NXTNUM+BAL+ROUT(15)+ACCT(15)+CURR+TYPE+VEND+ACTIVE+AR/AP/PR+5×RTM |
 | MTICMSTR | 108 | Estimating item master — 10 vendors+names+part codes; RCOST_1..15; 5 substitutes; lot size; option codes |
+| ISTERMS | 13 | Payment terms master — NUM PK; NAME(20)+TYP(P/$)+DAY+EOM+AMT+COD+ARAP+CC+SRT; used by SO/AR/AP |
 
 ---
 
-*Last updated: 2026-06-17 (Pass 59). New modules: FS (3 programs, ISFSCLAS/ISFSINFO/ISPRINFO/BKCMACCN), IS (2 programs, ISGLDATE 86f + ISMCF 49f multi-currency GL), DS (22+ programs, ISDROP staging). Confidence bumps: EM 50→65, YS 60→72, IC 55→68, SL 48→65, BR 48→65, TE 60→72. 10 new table schemas extracted.*
+*Last updated: 2026-06-17 (Pass 59-60). New modules: FS (3 programs, ISFSCLAS/ISFSINFO/ISPRINFO/BKCMACCN), IS (2 programs, ISGLDATE 86f + ISMCF 49f multi-currency GL), DS (22+ programs, ISDROP staging). Confidence bumps: EM 50→65, YS 60→72, IC 55→68, SL 48→65, BR 48→65, TE 60→72, QT 45→72. 11 new table schemas extracted (including ISTERMS 13f).*
