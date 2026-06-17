@@ -2364,7 +2364,7 @@ Reporting and analysis of sales performance. Separate from standard AR invoicing
 - "What is the actual margin on shipped orders?" → SA-Q (Actual Margin Report: from/thru ship date)
 - "How do I see sales by territory?" → BKCMTERR filter in SA reports.
 
-**Confidence: 58/100** — DFM forms read in prior passes + DB fingerprints; aggregation method (live AR query vs. pre-built BKSA.* summary table) not fully confirmed.
+**Confidence: 75/100** — 13 RWN programs identified; BKSAREPT (57f) and BKACTRPT (53f) full schemas extracted; SA reads live AR invoices (no pre-aggregated table); T7SAQ actual-margin mechanism confirmed via WO cost tables.
 
 ---
 
@@ -2986,10 +2986,19 @@ All list-pickers throughout EvoERP use the same **WBKLOOKUP** program (413 procs
 - Column layouts are stored per-user in **BKLUGRID**
 
 **ISDRILL** (46 fields) — Saved query definitions used by QU-F and embedded lookups:
-- LOOKUP_FROM (30) + LOOKUP_FILE (15) — which context and data file
-- LOOKUP_FILTERS_1..20 (80 chars × 20) — filter criteria expressions
-- LOOKUP_WHILE_1..20 (80 chars × 20) — loop-while conditions
-- LOOKUP_COMM (150) — command/query string
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| LOOKUP_FROM | STRING | 30 | Source context (caller module or form name) |
+| LOOKUP_GRID | STRING | 15 | Target grid definition name (FK → BKLUGRID) |
+| LOOKUP_REC | UBINARY | 4 | Record offset/pointer for positioning |
+| LOOKUP_KEY | UBINARY | 2 | Key index to use for the target table |
+| LOOKUP_FILE | STRING | 15 | Target Btrieve table file name |
+| LOOKUP_FILTERS_1..20 | STRING×20 | 80 each | Filter condition expressions (1600 bytes total) |
+| LOOKUP_WHILE_1..20 | STRING×20 | 80 each | Loop-while conditions — stop scanning when false |
+| LOOKUP_COMM | STRING | 150 | Command/query string for complex lookups |
+
+WBKLOOKUP opens **76 tables** total — the complete set of every table that any lookup in the system can target. 70 of 76 are in the Pervasive DDF schema. Six are not: **BKLUGRID** (column-layout config per user/grid — runtime only), **FILEKEY / FILEDICT / FILEDFLD / FILEKNUM** (TAS runtime file-dictionary internals), and **FILELOC** (TAS record-navigation API table).
 
 **ISDRILLM** (17 fields) — Drill-down navigation map:
 - DRILLM_PARENT (15) + DRILLM_CHILD (15) — source/destination objects
@@ -3199,7 +3208,9 @@ These code tables are referenced by SR service orders (BKARINV type field) and S
 4. GL posting: debit inventory account (BKGLTRAN), credit FIFO cost layer (DBAFIFO).
 5. Order decorations (ISORDECO) can trigger special handling instructions.
 
-**Confidence: 62/100** — Single RWN program with 105 procs and 60+ unique DB files identified; workflow inferred from the AP/PO/GL/LOT/SERIAL/FIFO table set; no DFM forms found for this module.
+**No PU-specific tables exist** — T7PUTAWAY's 63-table fingerprint is entirely shared infrastructure: BKICMSTR/MTICMSTR (item master), BKAPPO/BKAPINVL (PO receipt source), LOT/SERIAL (traceability), BKGLTRAN/DBAFIFO (GL cost posting), BKCMACCN/BKCMACCT (CRM), ISTRIGRS/ISREMIND (notifications), ISNUMBER (auto-numbering), ISMCR (currency rates), ISNCR (NCR on defects), ISLINKS (document attachments). FILELOC appears 5× in the fingerprint — this is the TAS runtime record-navigation API table (not in DDF).
+
+**Confidence: 68/100** — 63-table fingerprint fully cross-referenced; all tables are shared infrastructure (none PU-specific); workflow confirmed from AP→bin→GL table chain; no DFM forms found, so UI field layout is inferred only.
 
 ---
 
@@ -4272,15 +4283,68 @@ Previously documented as 6 DFMs; now 13 programs fully identified:
 
 **Key new tables:**
 
-**BKSAREPT** (57f): Saved SA report definition:
-- BKSA_TYPE(8) + NAME(15) — PK (type+name)
-- BKSA_RTM(15) — ReportBuilder template file name
-- FROM1/THRU1..FROM5/THRU5 (numeric, date, string ranges) — saved filter criteria
-- 45+ additional range/filter fields
+**BKSAREPT** (57f): Saved SA report definition — PK: BKSA_TYPE(8) + BKSA_NAME(15). Stores a complete report filter state that can be recalled by name.
 
-**BKACTRPT** (53f): Activity report definition:
-- Same PK structure; RTM field; FROM_PART/THRU_PART/CLASS/CAT/DATE/LOC ranges
-- 41+ additional filter fields
+| Field group | Type | Content |
+|---|---|---|
+| BKSA_RTM | STRING 15 | ReportBuilder template file to run |
+| BKSA_FROM1/THRU1 | FLOAT 8 | Numeric range (e.g., invoice number) |
+| BKSA_FROM2/THRU2 | DATE 4 | Date range 1 (e.g., invoice date) |
+| BKSA_FROM3/THRU3 | DATE 4 | Date range 2 (e.g., ship date) |
+| BKSA_FROM4/THRU4 | FLOAT 8 | Numeric range 2 |
+| BKSA_FROM5/THRU5 | STRING 10 | Alpha range 1 (e.g., salesperson code) |
+| BKSA_FROM6/THRU6 | STRING 10 | Alpha range 2 |
+| BKSA_FROM7/THRU7 | STRING 2 | Short code range 1 |
+| BKSA_FROM8/THRU8 | STRING 2 | Short code range 2 |
+| BKSA_FROM9/THRU9 | STRING 10 | Alpha range 3 |
+| BKSA_FROM10/THRU10 | STRING 10 | Alpha range 4 |
+| BKSA_FROM11/THRU11 | STRING 30 | Long alpha range 1 (e.g., customer name) |
+| BKSA_FROM12/THRU12 | STRING 30 | Long alpha range 2 |
+| BKSA_FROM13/THRU13 | STRING 4 | Code range 1 (e.g., class) |
+| BKSA_FROM14/THRU14 | STRING 4 | Code range 2 (e.g., category) |
+| BKSA_FROM15/THRU15 | UBINARY 2 | Integer range 1 |
+| BKSA_FROM16/THRU16 | UBINARY 2 | Integer range 2 |
+| BKSA_FROM17/THRU17 | STRING 10 | Alpha range 5 |
+| BKSA_FROM18/THRU18 | STRING 15 | Part number range |
+| BKSA_FROM19/THRU19 | STRING 25 | Territory/long-code range |
+| BKSA_FROM20/THRU20 | FLOAT 8 | Numeric range 3 (e.g., amount) |
+| BKSA_BASE | STRING 1 | Base flag (e.g., base currency) |
+| BKSA_TITLE | STRING 40 | Report title text |
+| BKSA_FROM21/THRU21 | STRING 15 | Part range 2 |
+| BKSA_FROM22/THRU22 | STRING 4 | Code range 3 |
+| BKSA_FROM23/THRU23 | DATE 4 | Date range 3 |
+| BKSA_FROM24/THRU24 | FLOAT 8 | Numeric range 4 |
+| BKSA_FROM25/THRU25 | FLOAT 8 | Numeric range 5 |
+| BKSA_FROM26/THRU26 | STRING 3 | Currency code range |
+
+**BKACTRPT** (53f): Activity Control report definition — same PK structure (BKAC_TYPE + BKAC_NAME). Named filter ranges cover the AC/inventory transaction domain:
+
+| Field group | Content |
+|---|---|
+| BKAC_RTM | ReportBuilder template |
+| FROM_PART/THRU_PART | Part number range |
+| FROM_CLASS/THRU_CLASS | Item class range |
+| FROM_CAT/THRU_CAT | Category range |
+| FROM_DATE/THRU_DATE | Transaction date range |
+| FROM_LOC/THRU_LOC | Location range |
+| FROM_WOPRE/THRU_WOPRE + WOSUF | Work order range |
+| FROM_CUST/THRU_CUST | Customer code range |
+| FROM_INV/THRU_INV | Invoice number range |
+| FROM_QC/THRU_QC | QC code range |
+| FROM_PLOT/THRU_PLOT + LOT | Parent lot + lot range |
+| FROM_SER/THRU_SER | Serial number range |
+| FROM_PRICE/THRU_PRICE | Price range |
+| FROM_AVGC/THRU_AVGC | Average cost range |
+| FROM_STDC/THRU_STDC | Standard cost range |
+| FROM_DESC/THRU_DESC | Description range |
+| FROM_REF/THRU_REF | Reference range |
+| FROM_DEPT/THRU_DEPT | Department range |
+| FROM_QTY/THRU_QTY | Quantity range |
+| FROM_SCRAP/THRU_SCRAP | Scrap code range |
+| FROM_VEND/THRU_VEND | Vendor range |
+| FROM_PO/THRU_PO | PO number range |
+| FROM_TYPE/THRU_TYPE | Transaction type range |
+| BKAC_TYPE_RANGE + ITEM_RANGE | Additional filter flags |
 
 **ISJOB** (9f): Job tracking:
 - IS_JOB_NUMB(15) — job number (PK)
@@ -4310,8 +4374,7 @@ report variant launchers (different filter defaults); T7SAM/SAN use BKSAREPT to 
 configs; T7SAO runs top-N customer/product analysis; T7SAQ uniquely reads WORKORD+WOMAT+WOBOM
 to compute actual manufacturing cost vs. sales price for true margin analysis.
 
-**Confidence: 72/100** — 13 programs identified; all key table schemas extracted; T7SAQ
-actual-margin mechanism (WO cost → gross margin) confirmed; per-field reporting logic blocked.
+**Confidence: 75/100** — 13 programs identified; BKSAREPT (57f) and BKACTRPT (53f) full schemas with all 26 range-pair fields extracted; T7SAQ actual-margin mechanism confirmed; per-field reporting expressions remain in encrypted RWN.
 
 ---
 
@@ -6879,4 +6942,24 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 59-61). New modules: FS (3 programs, ISFSCLAS/ISFSINFO/ISPRINFO/BKCMACCN), IS (2 programs, ISGLDATE 86f + ISMCF 49f multi-currency GL), DS (22+ programs, ISDROP staging). Confidence bumps: EM 50→65, YS 60→72, IC 55→68, SL 48→65, BR 48→65, TE 60→72, QT 45→72, RE 62→75, RF 62→75, EDII 60→72. New schemas: ISTERMS(13f), ISREPDEF(3f), ISREPLNK(11f), WOLABOR(58f), WORECV(11f), ISESTDTL(203f fully decoded). 16 new/expanded table schemas documented.*
+---
+
+### New Tables Confirmed (Pass 62)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISIS | 23 | System feature flags — IS_TAX/IS_MULTI_CURR/IS_LANDED_COST/IS_UPC/IS_RETAIL_PRICE/IS_COMM_PRICE/IS_IMAGING/IS_DEMO/IS_MULTI_CPAY/IS_PIC_PATH/IS_TAX_FRM/IS_PO_TAX/IS_TAX_IN/IS_TAX_CVT/IS_CUR_CVT/IS_AUTO_TAX_CAL/IS_EZPAY/IS_RMA/IS_SPEC_SUP/IS_SPEC_SUPF/IS_SPEC_SUPT; 1-row module-switch table |
+| ISMCR | 22 | Multi-currency exchange rate history — ISIS_MCR_BASE(3)+DATE PK; 10 source currency slots (SOURCE_1..10, 3 chars each) + 10 exchange rates (RATE_1..10, float); daily rate snapshot per base currency |
+| ISNUMBER | 52 | Auto-number sequence allocator — IS_NUM_CODE(10) PK; IS_NUM_NEXT_1..50 (8-byte float × 50 = 50 independent counters per code); IS_NUM_EXTRA(100); single row per named sequence code holds 50 parallel counters |
+| ISNCR | 35 | Non-Conformance Report — IS_NCR_NUM PK; PART+COMP+LOT+SERIAL (affected item); CDATE+WHO (discovery); DCODE+DESC (defect code+description); ICR(1)/ORIG(1) origin flags; WO/MACH/TOOL/WC/PO/RMA references; ACTION(1)+CAR(8)+DISP(10)+DWHO+DDATE (disposition); STATUS(1)/SCRAP(2)/QC(2)/VEND/LOC; part drawing+rev (PDRAW/PREV) and component drawing+rev (CDRAW/CREV/CLOC) |
+| ISTRIGRS | 25 | Email/event trigger conditions — IS_TRIG_CODE(15)+TRIGR(10) PK; CONTACT(20) recipient; ONCE(1) fire-once flag; LDATE+LTIME last-fired; links to WO/PO/SO/CUST/VEND/LOC; DAYS ahead; ITYPE; secondary WO link (WOPRET/WOSUFT); 7 additional fields |
+| ISREMIND | 22 | User reminders/calendar items — DATE+TIME+WHO PK; SUBJECT(100); CUST/VEND/ITEM cross-refs; DISP(1) dismissed flag; CO(3) company; FILE(256) attachment; NOTIFY(1); EDATE+ETIME end date/time; ENDDT+ENDTM end recurrence; BEFTXT(15) "X days before" text; TYPE(3) calendar type; 4 more fields |
+| ISJOB | 9 | Job/project codes — IS_JOB_NUMB(15) PK; DESC(30)+CUST(10)+VEND(10); RSVD(1)+STATUS(1)+OPENDT+CLOSEDT+EXTRA(100); groups invoices under a project number for SA analysis |
+| BKCMTERR | 11 | CRM territory codes — BKCM_TERR_TCODE(4) PK; DESC(25)+EMAIL(128)+ALPHA(30)+EXTRA(100); FLAGS_1..5 (1 each) + DATE; links territory to email distribution and optional custom flags |
+| BKSAREPT | 57 | Saved SA report filter definitions — BKSA_TYPE(8)+NAME(15) PK; RTM(15) template; 26 FROM/THRU range pairs covering: invoice#/dates/ship dates/amounts/salesperson/customer codes/class/category/part/lot/territory/currency; BKSA_BASE(1)+TITLE(40) |
+| BKACTRPT | 53 | Saved Activity Control report filter definitions — BKAC_TYPE(8)+NAME(15) PK; RTM(15); named FROM/THRU range pairs: PART/CLASS/CAT/DATE/LOC/WO+SUF/CUST/INV/QC/PARENT_LOT+LOT/SERIAL/PRICE/AVGC/STDC/DESC/REF/DEPT/QTY/SCRAP/VEND/PO/TYPE; TYPE_RANGE(10)+ITEM_RANGE(8) flags |
+| ISARCHG | 26 | AR order change audit log — ISAR_CHG_SONUM+INVNUM+LINEID+PCODE PK; CDATE+USER+REVLVL audit stamp; A-prefix=before, B-prefix=after for: ALOC/BLOC (location), APRICE/BPRICE, ADISC/BDISC, AOOQTY/BOOQTY (open-order qty), AESD/BESD (estimated ship date), AASD/BASD (actual ship date), ACOMPR_1/2 / BCOMPR_1/2 (compression rates), AEXTRA/BEXTRA (extra text), UNUM (update number) |
+
+---
+
+*Last updated: 2026-06-17 (Pass 62). Confidence bumps: SA 58→75 (BKSAREPT/BKACTRPT full schemas; 13-program structure), WBKLOOKUP 55→68 (ISDRILL 46f full field table; 76-table fingerprint cross-referenced; 6 non-DDF tables identified), PU 62→68 (63-table fingerprint fully cross-referenced; no PU-specific tables). New schemas (Pass 62): ISIS(23f), ISMCR(22f), ISNUMBER(52f), ISNCR(35f), ISTRIGRS(25f), ISREMIND(22f), ISJOB(9f), BKCMTERR(11f), BKSAREPT(57f full range-pair table), BKACTRPT(53f full range-pair table), ISARCHG(26f). 11 new schemas documented.*
