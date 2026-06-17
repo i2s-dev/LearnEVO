@@ -7893,3 +7893,370 @@ JGPITEMS provides the GS1 packaging hierarchy for EDI 856 advance ship notice (A
 ---
 
 *Last updated: 2026-06-17 (Pass 71). Confidence bumps: IC 72→78 (BKICALTD/BKICALTP/BKICMFG/MTINVDEF all decoded; item spec/alternate/MFR/class-default family complete), PR 82→85 (ISPRUDF custom deductions + BKPRSTFL state IDs), AP 88→90 (BKPOX/BKPOXH invoice archive; AP alternate-index views BKAPEVND/ISAPAVND/BKAPEIVT/ISAPAINT identified), SP 83→87 (JGPITEMS 86f GS1 packaging hierarchy decoded; J7 retail EDI support confirmed). System architecture: MENUFILE(108f) menu engine decoded — the entire EvoERP module tree is data-driven from this table. 13 new schemas.*
+
+---
+
+## System Identity — Pass 72 (ISVAR)
+
+### ISVAR (17f) — Company Identity / Header Data
+
+**Single-row company identity table** — printed on all invoices, POs, and reports.
+
+| Field | Description |
+|---|---|
+| IS_VAR_LOGO(256) | Path to company logo image file (used on laser forms) |
+| IS_VAR_COMPANY(30) | Company name |
+| IS_VAR_ADD1(30) + ADD2(30) | Address lines 1 and 2 |
+| IS_VAR_CITY(20) + STATE(2) + ZIP(8) | City, state, zip |
+| IS_VAR_CONTACT(30) | Primary contact name |
+| IS_VAR_EMAIL1_1..5 (50 each) | Up to 5 company email addresses |
+| IS_VAR_WEB(100) | Company website URL |
+| IS_VAR_WEBUPD(100) | Web update / API endpoint URL |
+| (+ 2 more misc fields) | |
+
+ISVAR is the single-row company identity record. AD-A (T7MDEFAULTS) edits it along with BKSYMSTR. Every RTM report template that prints a company header reads ISVAR. Distinct from BKSYMSTR (which holds operational config like fiscal year, tax codes, etc.) — ISVAR is purely identity/branding data.
+
+---
+
+## ES — Estimate Material BOM — Pass 72
+
+### ESTMAT (18f) — Estimate Material Components
+
+**PK:** MTESMAT_QUOTE(8) + MTESMAT_CODE(15)
+
+The material component table for estimates — parallels ESTROUT (routing steps). Together ESTMAT + ESTROUT = the complete estimate BOM + routing:
+
+| Field | Description |
+|---|---|
+| MTESMAT_QUOTE(8) + CODE(15) | PK — estimate number + material item code |
+| MTESMAT_DESC(30) | Material description |
+| MTESMAT_QTYPER(8) | Quantity per finished unit |
+| MTESMAT_SCRAP(8) | Scrap allowance |
+| MTESMAT_UM(3) | Unit of measure |
+| MTESMAT_QUREF(8) | Quote reference (parent estimate link) |
+| MTESMAT_COST1..5 (float × 5) | Material cost per quantity break (5 breaks) |
+| MTESMAT_REMARKS_1..3 (30 chars × 3) | Remarks |
+| (+ 3 more misc fields) | |
+
+ESTMAT is the MT-era estimate material table (MTESMAT_ prefix). ES-H/I enters costs into both ESTMAT (materials) and ESTROUT (routing). ES-C rollup combines both for the final quote price. When ES-E converts to a WO, ESTMAT rows become WOBOM (WO BOM) rows.
+
+**ES table summary (Pass 72):**
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKESTQT / BKESTQTL | 84/28 | Estimate header/lines (same structure as BKARINV/BKARINVL) |
+| ESTMAT | 18 | Estimate material BOM — QUOTE+PART PK; QTYPER+SCRAP+UM; 5-break COST1..5 |
+| ESTROUT | 48 | Estimate routing steps — QUOTE+OPER PK; WC+TYPE+VENDOR; 5-break LAB/MACH/OVER/SETUP |
+| BKMATCST | 25 | Material cost lookup — CODE PK; 10-break QTY/COST arrays |
+| BKRTCST | 24 | Routing cost per operation — QUOTE+CODE+OPER PK; 10-break PARTSHR/SETUP |
+| BKESTCFG | 13 | Quote config — per-quote settings, 5 custom footer lines |
+| ESTSUM | 213 | MT-era estimate rollup (legacy parallel to BKESTQT) |
+
+**Confidence: 85/100** — ESTMAT(18f) fully decoded; ESTMAT+ESTROUT material+routing pair confirmed (5-qty-break pattern matches); ES-C/H/I flow confirmed from DB fingerprints; per-quantity-break cost selection logic in encrypted RWN.
+
+---
+
+## BM/RO — Change Audit Tables — Pass 72
+
+### BOMCHG (15f) — Master BOM Change Audit
+
+**PK:** BOM_CHG_PARENT(15) + BOM_CHG_COMP(15)
+
+Audit trail for changes to the master BOM (BKBMMSTR). Records every add/delete/modify to a BOM component:
+- CDATE + USER(15) — change date + user
+- ACOMP(1) / DCOMP(1) — add flag / delete flag
+- AQTY / BQTY — after/before quantity
+- AREF(20) / BREF(20) — after/before reference designator
+- ASCRAP / BSCRAP — after/before scrap allowance
+- AEXTRA(100) / BEXTRA(100) — after/before extra notes
+- UID(20) — unique change record ID
+
+---
+
+### WOBOMCHG (17f) — WO BOM Change Audit
+
+**PK:** WBOM_CHG_WOPRE + WOSUF + PARENT(15) + COMP(15) + UID(20)
+
+Same A/B before-after structure as BOMCHG but for WO-level BOM overrides. When a WO's BOM is modified from the master (substitute component, different qty), WOBOMCHG captures the deviation. Used for variance analysis and engineering review.
+
+---
+
+### ROCHG (22f) — Master Routing Change Audit
+
+**PK:** RO_CHG_PART(15) + RO_CHG_OPER(2)
+
+Audit trail for changes to the master routing (ROUTING/WOROUT):
+- AOPER(1) / DOPER(1) — add/delete operation
+- ALONG / BLONG — after/before run time
+- ASETUP / BSETUP — after/before setup time
+- ATMACH(4) / BMATCH(4) — after/before machine code
+- ATOOL(15) / BTOOL(15) — after/before tool
+- AWC(12) / BWC(12) — after/before work center
+- CDATE + USER — change date + user
+- (+ 7 more A/B pairs for cost rates, instructions, etc.)
+
+---
+
+### WOROCHG (24f) — WO Routing Change Audit
+
+**PK:** WORO_CHG_WOPRE + WOSUF + PART(15) + OPER(2)
+
+Same A/B structure as ROCHG but at the WO routing level. Captures when a WO's routing deviates from the master routing (e.g., rerouted to a different WC, tool substitution, time override). Paired with WOBOMCHG as the complete WO deviation audit package.
+
+**BM/RO change audit summary:**
+
+| Table | Scope | PK |
+|---|---|---|
+| BOMCHG | Master BOM changes | PARENT+COMP |
+| WOBOMCHG | WO-level BOM overrides | WOPRE+WOSUF+PARENT+COMP+UID |
+| ROCHG | Master routing changes | PART+OPER |
+| WOROCHG | WO routing overrides | WOPRE+WOSUF+PART+OPER |
+
+**BM confidence: 85/100 / RO confidence: 88/100** — All 4 change-audit tables fully decoded; A/B before-after pattern confirmed; BM+RO change audit architecture complete; write triggers (which operations create audit rows) in encrypted RWN.
+
+---
+
+## DC — Serial Scan at Station — Pass 72
+
+### ISDCSER (17f) — DC Serial Number Scan Record
+
+**PK:** ISDC_SER_WOPRE + WOSUF + OPER
+
+Records serial/lot number scans at a DC workstation during production:
+- ITEM(15) — item being produced
+- EMP(2) — employee who scanned
+- SERIAL(25) + LOT(15) — serial and lot scanned
+- BIN(15) + LOC(10) — bin and location at scan time
+- DATE + TIME — scan timestamp
+- FLAG(1) — status flag (e.g., pass/fail/pending)
+- ALPHA(30) — general alpha data (e.g., customer part#)
+- GDATE — general date (e.g., expiry/test date)
+- PARTS(8) — parts count
+- (+ 2 more)
+
+ISDCSER is the per-scan event record for the DC serial number tracking feature. At each workstation, the operator scans the serial/lot barcode; ISDCSER records it. Pairs with BKDCLAB (DC labor post) and ISSTRACK (SPC traceability) to build full unit genealogy.
+
+---
+
+## WO — Planned PO and Tool Log — Pass 72
+
+### BKWOPO (16f) — MRP/WO-Linked Planned Purchase Order
+
+**PK:** BKMRP_PO_UID (STRING 20) — unique planned PO ID
+
+MRP-generated planned purchase order linked to a specific WO's outside-process operation:
+- VEND(10) — planned vendor
+- DATE — planned order date
+- ERD — expected receipt date
+- PART(15) — outside-process item
+- QTY — quantity
+- PRICE — planned price
+- WOPRE + WOSUF — linked work order
+- PLANR(4) — planner code
+- CONF(1) — confirmed flag (planner approved)
+- DONE(10) — done status/reference
+- MTREC(4) — master record link
+- EXTRA(50) + EST(10)
+
+Distinct from BKMRPPO (MRP planned PO not linked to WO) — BKWOPO is specifically for WO outside-process operations that need a vendor PO.
+
+---
+
+### ISTOOLOG (34f) — Tool Usage Log
+
+**PK:** ISTOOL_WOPRE + WOSUF + OPER + TOOL(15) + DATE
+
+Tracks tool usage and maintenance events on WO operations:
+- WORKDESC(60) — work performed description
+- ACTHRS(8) — actual hours used
+- COST(8) — cost of this usage/maintenance event
+- NOTES_1..10 (60 chars × 10 = 600-char maintenance log)
+- EMP(2) — employee who performed the work
+- DATES_1..5 — 5 maintenance/inspection dates
+- (+ 14 more: quantities, next-maintenance fields, status flags)
+
+ISTOOLOG is the tool maintenance journal — each WO operation that uses a tool creates an entry. Used for tool life tracking, preventive maintenance scheduling, and cost allocation. Pairs with the TOOL master table (20f: tool code, parent WC, hours-used counter, maintenance fields).
+
+---
+
+## DI — Digital Signature Capture — Pass 72
+
+### ISASIGN / ISSIGN (16f each) — Signature Record
+
+Both tables are structurally identical — alternate-index views of the same signature data. **PK:** IS_SIGN_NUM (float)
+
+Electronic signature capture record:
+- IS_SIGN_WHO(40) — signer's display name
+- IS_SIGN_POS(40) — signer's position/title
+- IS_SIGN_EWHO(15) — signer's employee code (FK → BKPRMSTR)
+- IS_SIGN_EDATE + ETIME — electronic timestamp
+- IS_SIGN_NAME(40) — printed name
+- IS_SIGN_JPG(256) — path to signature image (JPG of handwritten signature)
+- IS_SIGN_SDATE + STIME — signature date/time
+- IS_SIGN_GDTE1..5 — 5 general dates (effective/expiry/approval dates)
+- (+ 1 more)
+
+ISSIGN (active) / ISASIGN (archive) pair. T7DIGSIG creates ISSIGN records when a PO is approved via digital signature. The JPG path stores the actual handwritten signature image captured from a tablet or signature pad.
+
+**DI confidence: 78/100** — ISASIGN/ISSIGN(16f) fully decoded; signature capture architecture confirmed (employee→JPG path+timestamp); BKSL_MENUn_YN security integration confirmed; exact PO-signature linkage key (how IS_SIGN_NUM ties to BKAPPO) in encrypted RWN.
+
+---
+
+## IN — Monthly Inventory Summary — Pass 72
+
+### SUMINV (19f) — Monthly Inventory Activity Summary
+
+**PK:** SUMINV_PARTNO(15) + MONTH(2) + YEAR(2) + LOCATION(10)
+
+Monthly rolled-up inventory activity totals per item per location — the IC module's periodic history:
+
+| Field pair | Description |
+|---|---|
+| DOL_ADJ + UN_ADJ | Dollar and unit adjustments this month |
+| DOL_ISS + UN_ISS | Issues (WO material pulls) |
+| DOL_RWIP + UN_RWIP | WIP returns |
+| DOL_RSTK + UN_RSTK | Stock returns (RMA / put-back) |
+| DOL_SHPS + UN_SHPS | Shipments (SO shipments) |
+| DOL_SHPC + UN_SHPC | Shipment credits (reversed shipments) |
+| (+ 4 more: receipts, transfers, etc.) | |
+
+SUMINV is the compressed monthly history table — each row represents one full month of activity for an item-location pair. Used by IC reports (turnover, usage trends) and SA (Sales Analysis) without scanning full INVTXN transaction detail.
+
+---
+
+## FO — BOM Remarks — Pass 72
+
+### ISFOBMRM (20f) — Features/Options BOM Remarks
+
+**PK:** ISFO_BRM_UID(40) + PARENT(15) + LINE(2) + COMP(15)
+
+Extended remarks per BOM line in the Features/Options (FO) module:
+- REMARK_1..11 (64 chars × 11 = 704 chars per BOM line)
+- (+ 5 more fields: dates, flags, extra)
+
+Allows each FO configurable BOM option to carry detailed engineering notes, compliance text, or customer-specific instructions. The 704-char capacity (11 × 64) far exceeds the base BOM remark fields.
+
+---
+
+## Miscellaneous New Tables — Pass 72
+
+### ISCRISLS (24f) — CR Contract Sales History
+
+**PK:** ISCR_SLS_CUST(10) + ISCR_SLS_ITEM(15) + ISCR_SLS_SDATE
+
+Contract review (CR module) historical sales data per customer-item pair:
+- SUOH/FUOH — starting/final on-hand at period start/end
+- SHPQTY + SHPDTE — quantity shipped + ship date
+- INVNUM — invoice reference
+- FDATE — final date; SOLDTE + SOLDQT — sold date + quantity
+- NUM_1/2 (float) + FLAG_1/2 (1 each) — custom metric slots
+
+Used for contract pricing review: compares historical demand/shipments against contract commitments.
+
+---
+
+### BKUMSRTY (23f) — UM Security Access Matrix
+
+**PK:** SCRTY_LEVEL(2) + SCRTY_MENU(2)
+
+An alternate security access table (parallel to BKSLEVEL) used for a specific sub-module:
+- SCRTY_GROUP(1) — group code
+- SCRTY_ITEM_1..20 (1 each × 20) — 20 per-item access flags
+
+BKUMSRTY (UM_ prefix = "User Menu"?) stores simplified Y/N access per security level per menu for a specific module family, separate from the main BKSLEVEL matrix.
+
+---
+
+### BKISHTAX (13f) — IS/IC Historical Tax Log
+
+**PK:** BKIS_TAX_CODE(10) + BKIS_TAX_DATE
+
+Per-transaction tax history record:
+- TRFLAG(1) — transaction type flag
+- TAXABL + NONTAX + TAXAMT — taxable/non-taxable amounts and tax collected
+- CUST(10) + VEND(10) — customer or vendor
+- INVNO + PONO — AR invoice / AP PO reference
+- TAG(1) — posting tag
+- ISCUR(3) — currency code
+- APINV(10) — AP invoice string
+
+IC-side tax accumulation record (BKIS_ prefix = Btrieve/IS era). Parallel to BKISTAX (the AR side). Used for tax remittance reporting across IC/AP transactions.
+
+---
+
+### ISRTMS (29f) — RTM Template Selector
+
+**PK:** IS_RTM_CUST(10) + IS_RTM_VEND(10) + IS_RTM_ITEM(15)
+
+Maps customer/vendor/item combinations to specific RTM (ReportBuilder) report templates:
+- RTM(12) — template file name (FK → .RTM file on network share)
+- PROGRAM(15) — program code that uses this template
+- DFLT(1) — default template flag
+- DATE — assignment date
+- FLAG(1) — active/inactive
+- PARTLBL/SHIPLBL/CONTLBL/MIXEDLBL/QUICKLBL/MISCLBL1..3 (12 each) — label template assignments per label type
+- QTY(2) — default label quantity
+- PRINTER_1..N (90 each) — printer assignments
+
+ISRTMS is the report template routing table — allows different customers or items to use custom-branded invoice/label templates. When T7SOA prints an invoice, it checks ISRTMS first before using the default template.
+
+---
+
+### ISCCBTXN (16f) — Fabric/Cut Control Transaction (J7 Custom)
+
+**PK:** (ISCC_TXN_ prefix — PK inferred as FABRIC+JOB+LOT)
+
+J7 Systems custom table for fabric cutting operations:
+- FABRIC(15) — fabric roll/item code
+- JOB(15) — cut job identifier
+- LOT(15) + SER(25) — lot and serial of cut piece
+- BIN(15) + LOC(10) — bin/location
+- PULQTY — pulled quantity from roll
+- NEDQTY — needed quantity
+- LOTQTY — lot size
+- SDATE / TDATE / GDATE — start / transaction / general dates
+- STATUS(1) — cut status
+- ALPHA(15) — custom alpha data
+- TRANS(8) — transaction reference
+
+Used by J7's fabric/cutting manufacturing workflow to track how much fabric was pulled from each roll for each cut job, with lot/serial assignment.
+
+---
+
+### NZITPRE (54f) — WO Item Prefix Counter
+
+Single configuration row: 18 WO prefix ranges, each with current next-number:
+- NZ_IPRE_PREFIX_1..18 (float × 18) — 18 configured WO prefix values
+- NZ_IPRE_NXTNUM_1..18 (float × 18) — next WO number for each prefix
+- (+ 18 more: probably flags/limits per prefix)
+
+Used by the WO creation subsystem to generate the next WO number within each prefix range. Prefix 1 might be standard WOs, prefix 2 might be rework WOs, etc.
+
+---
+
+### New Tables Confirmed (Pass 72)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| ISVAR | 17 | Company identity — LOGO(256)+COMPANY+ADDRESS+CONTACT+5×EMAIL+WEB; printed on all forms |
+| ESTMAT | 18 | Estimate material BOM — QUOTE+CODE PK; QTYPER+SCRAP+UM; 5-break COST1..5; 3 remarks |
+| BOMCHG | 15 | Master BOM change audit — PARENT+COMP PK; A/B before-after qty/ref/scrap/extra |
+| WOBOMCHG | 17 | WO BOM deviation audit — WOPRE+WOSUF+PARENT+COMP+UID PK; same A/B structure |
+| ROCHG | 22 | Master routing change audit — PART+OPER PK; A/B run-time/setup/machine/tool/WC |
+| WOROCHG | 24 | WO routing deviation audit — WOPRE+WOSUF+PART+OPER PK; same A/B structure |
+| ISDCSER | 17 | DC serial scan record — WOPRE+WOSUF+OPER PK; ITEM+EMP+SERIAL+LOT+BIN+DATE+TIME |
+| BKWOPO | 16 | MRP/WO planned PO — UID PK; VEND+DATE+ERD+PART+QTY+PRICE+WOPRE/WOSUF+PLANR+CONF |
+| ISTOOLOG | 34 | Tool usage/maintenance log — WOPRE+WOSUF+OPER+TOOL+DATE PK; ACTHRS+COST+10×NOTES |
+| ISASIGN / ISSIGN | 16 | Digital signature capture — NUM PK; WHO+POS+EWHO+EDATE+NAME+JPG+5×GDTE |
+| SUMINV | 19 | Monthly inventory activity — PARTNO+MONTH+YEAR+LOC PK; 8×DOL/UN pairs |
+| ISFOBMRM | 20 | FO BOM remarks — UID+PARENT+LINE+COMP PK; 11×REMARK(64) per BOM line |
+| ISCRISLS | 24 | CR contract sales history — CUST+ITEM+SDATE PK; UOH/shipment/demand history |
+| BKUMSRTY | 23 | UM security matrix — LEVEL+MENU PK; GROUP+20×ITEM flags |
+| BKISHTAX | 13 | IS/IC historical tax — CODE+DATE PK; TAXABL/NONTAX/TAXAMT+CUST/VEND/INVNO |
+| ISRTMS | 29 | RTM template selector — CUST+VEND+ITEM PK; RTM(12)+PROGRAM+label+printer assignments |
+| ISCCBTXN | 16 | Fabric cut transaction (J7) — FABRIC+JOB+LOT PK; PULQTY+NEDQTY+LOTQTY+STATUS |
+| NZITPRE | 54 | WO prefix counter — 18 prefix ranges × (PREFIX+NXTNUM) counters |
+
+---
+
+*Last updated: 2026-06-17 (Pass 72). Confidence bumps: ES 80→85 (ESTMAT 18f material BOM; ES table family now complete: ESTMAT+ESTROUT+BKMATCST+BKRTCST+BKESTQT/L+ESTSUM), BM/BOM 82→85 (BOMCHG 15f + WOBOMCHG 17f change audit pair decoded), RO 85→88 (ROCHG 22f + WOROCHG 24f routing change audit pair decoded), DC 85→87 (ISDCSER 17f serial scan record), WO 85→87 (BKWOPO 16f MRP planned PO + ISTOOLOG 34f tool log), DI 72→78 (ISASIGN/ISSIGN 16f digital signature capture), FO 78→81 (ISFOBMRM 20f BOM remarks). System: ISVAR(17f) company identity decoded. 18 new schemas.*

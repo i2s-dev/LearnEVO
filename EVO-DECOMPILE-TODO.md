@@ -997,11 +997,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
-| Module: WO | **85** | 85 | **0** ✅ | 2026-06-17 |
+| Module: WO | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
-| Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
-| Module: RO/Routing | **85** | 88 | **3** ↑+3 Pass57 | 2026-06-17 |
-| Module: DC/Data Collection | **85** | 85 | **0** ✅ Pass48 | 2026-06-17 |
+| Module: BM/MRP | **85** | 85 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
+| Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
+| Module: DC/Data Collection | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
 | Module: PR/Payroll | **85** | 88 | **3** ↑ Pass71 | 2026-06-17 |
 | Module: AM (Accounting Maint.) | **75** | 85 | **10** ↑ NEW | 2026-06-11 |
 | Module: CM/CRM | **82** | 85 | **3** ↑+10 Pass53 | 2026-06-17 |
@@ -1019,7 +1019,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FA/Fixed Assets | **82** | 85 | **3** ↑ Pass65 | 2026-06-17 |
 | Module: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: MA/AR Deposits | **70** | 75 | **5** ↑ Pass50 | 2026-06-17 |
-| Module: ES/Estimating | **80** | 78 | **0** ↑ Pass70 | 2026-06-17 |
+| Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 | 2026-06-17 |
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+7 Pass62 | 2026-06-17 |
 | Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **78** | 80 | **2** ↑ Pass69 | 2026-06-17 |
@@ -1027,14 +1027,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
 | Module: UT/Utilities | **72** | 75 | **3** ↑ Pass51 | 2026-06-17 |
 | Module: RM/RMA | **78** | 82 | **4** ↑ Pass66 | 2026-06-17 |
-| Module: FO/Features Options | **78** | 82 | **4** ↑ Pass65 | 2026-06-17 |
+| Module: FO/Features Options | **81** | 82 | **1** ↑+3 Pass72 | 2026-06-17 |
 | Module: IS/InfoSystem | **68** | 72 | **4** ↑+8 Pass59 | 2026-06-17 |
 | Module: IM/Landed Cost | **78** | 82 | **4** ↑+8 Pass46 | 2026-06-17 |
 | Module: PS/Program Security | **82** | 78 | **0** ↑ Pass70 | 2026-06-17 |
 | Module: QU/Query Tools | **70** | 75 | **5** ↑ | 2026-06-17 |
 | Module: SU/Setup UI | **72** | 75 | **3** ↑ Pass65 | 2026-06-17 |
 | Module: TA/TAS Admin | **78** | 80 | **2** ↑ Pass66 | 2026-06-17 |
-| Module: DI/Digital Signatures | **72** | 75 | **3** ↑+7 Pass55 | 2026-06-17 |
+| Module: DI/Digital Signatures | **78** | 80 | **2** ↑+6 Pass72 | 2026-06-17 |
 | Module: AD/Accounting Defaults | **75** | 75 | **0** ✅ ↑+5 Pass63 | 2026-06-17 |
 | Module: CR/SO Approvals | **72** | 75 | **3** ↑+17 | 2026-06-17 |
 | Module: US/Triggers | **65** | 65 | **0** ✅+20 | 2026-06-17 |
@@ -1073,7 +1073,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: SA/Sales Analysis | **75** | 75 | **0** ✅ ↑+3 Pass62 | 2026-06-17 |
 | Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
-| Module: ES/Estimating | **80** | 78 | **0** ↑ Pass70 (dup of row above) | 2026-06-17 |
+| Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 (dup of row above) | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **68** | 70 | **2** ↑+13 Pass62 | 2026-06-17 |
 | Module: DE/DC stubs+EDI processing | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **82** | 85 | **3** ↑ Pass51 | 2026-06-17 |
