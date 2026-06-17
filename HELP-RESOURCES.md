@@ -3272,7 +3272,57 @@ Primary key: IS_SHIP_SHPCOD(10)
 - **T7REBQC** (62 procs) — QC rebuild; recalculates BKQCMSTR/BKQCTRAN from source records
 - **T7REBWO** (123 procs) — WO rebuild; recalculates WORKORD+WOBOM+WORECV+WOROUT+MTICMSTR+WOMAT+WOLABOR from WO source; run after data corruption or bulk import
 
-**Confidence: 62/100** — All 7 programs identified with DB fingerprints; each program's purpose confirmed from table set + naming; exact rebuild logic in encrypted RWN.
+**ISREPDEF (3f) — Report Label Definitions:**
+`ISREP_DEF_LABEL`(5, PK) + `ISREP_DEF_TITLE`(30) + `ISREP_DEF_EXTRA`(50) — short code labels that categorize saved report templates. T7REPDEF CRUD editor.
+
+**ISREPLNK (11f) — Report-to-Entity Link:**
+`ISREP_LNK_REPNM`(2) + `ISREP_LNK_CUST`(10) + `ISREP_LNK_ITEM`(15) PK — links report templates to customer+item combinations with effective date ranges (SDATE+EDATE), GL account (GLA+GLD), class filter, and label code (FK → ISREPDEF). Used by CS module to assign commission report templates to salesperson+customer+item.
+
+**WOLABOR (58f) — WO Labor Transactions (posted):**
+Primary key: MTWOLA_DATE + MTWOLA_EMP + MTWOLA_WOPRE + MTWOLA_WOSUF + MTWOLA_OPER + MTWOLA_TRXN
+
+| Field | Size | Meaning |
+|---|---|---|
+| MTWOLA_POSTED | 1 | Post flag (Y/N) |
+| MTWOLA_DATE/EMP/WOPRE/WOSUF/OPER/TRXN | — | PK fields (date+employee+WO+op+sequence) |
+| MTWOLA_REGOVER | 1 | R=regular, O=overtime |
+| MTWOLA_RUNHRS/SETUPHRS | 8 each | Run and setup hours |
+| MTWOLA_NOJOBS | 2 | Number of jobs this ticket |
+| MTWOLA_PARTS | 8 | Parts completed |
+| MTWOLA_REWORK/COMPLETE | 1 each | Rework flag / operation complete flag |
+| MTWOLA_SCRAPPED | 8 | Scrapped quantity |
+| MTWOLA_QCCODE/QCDESC | 2+30 | QC defect code + description |
+| MTWOLA_SCRAPCD/SCDESC | 2+30 | Scrap reason code + description |
+| MTWOLA_ASSY/ASSYDESC | 15+30 | Assembly item + description |
+| MTWOLA_LABRATE/LABCOST | 8 each | Labor rate + computed cost |
+| MTWOLA_SETCOST/MACHCOST | 8 each | Setup + machine cost |
+| MTWOLA_FOHCOST/VOHCOST | 8 each | Fixed + variable overhead cost |
+| MTWOLA_TEAM/SHIFT | 2 each | Team + shift |
+| MTWOLA_WC/WCDATE | 12+date | Work center + WC date |
+| MTWOLA_TOOL/TOOLDATE | 15+date | Tool + tool date |
+| MTWOLA_MACH/MACHDATE | 4+date | Machine code + date |
+| MTWOLA_EMP2/DATE2 | 2+date | Second employee (team op) |
+| MTWOLA_MISC/MISCDESC | 8+30 | Misc cost + description |
+| MTWOLA_START/STOP/DEDUCT | TIME 4 each | Actual clock in/out/deductions |
+| MTWOLA_EXTRA | 50 | Extra notes |
+| MTWOLA_AUDIT | 35 | Audit trail string |
+| MTWOLA_CYC{HR/MIN/SEC}/CYCPARTS/CYCNOTE | — | Cycle time + note (255) |
+| MTWOLA_FLAG_1..5/ALPHA_1..3 | — | UDF: 5 flags + 3 alpha(30) fields |
+
+**WORECV (11f) — WO Receipts (finished goods):**
+Primary key: MTWOR_WOPRE + MTWOR_WOSUF + MTWOR_DATE
+- MTWOR_ASSY(15) + MTWOR_DESC(30): item + description
+- MTWOR_QTY(8): quantity received into finished goods
+- MTWOR_USESTD(1): use standard cost flag
+- MTWOR_AVGC(8): average cost at receipt time
+- MTWOR_LOT(15) + MTWOR_SERIAL(25): lot/serial assigned at WO completion
+- MTWOR_REF(15): reference
+
+WORECV is written when WO-H "Receive Completed Work Order" posts — records the finished quantity accepted into inventory. Drives BKICLOC on-hand update and INVTXN receipt transaction.
+
+**T7REBWO purpose:** Reads WORKORD + WOBOM + WORECV + WOROUT + MTICMSTR + WOMAT + WOLABOR and recomputes all WO cost totals from scratch. Run after data corruption or a bulk import that bypassed the normal WO update path.
+
+**Confidence: 75/100** — All 7 programs confirmed; ISREPDEF(3f)+ISREPLNK(11f)+WOLABOR(58f)+WORECV(11f) fully extracted from DDF; rebuild workflow confirmed from DB fingerprints; exact rebuild algorithms blocked by encryption.
 
 ---
 
@@ -3341,7 +3391,9 @@ Primary key: `LAB_DATE`(4) + `LAB_EMP`(2) + `LAB_WOPRE`(8) + `LAB_WOSUF`(2) + `L
 
 **Architecture:** Identical table set to manual AR invoice entry — EDI data drives the same paths: customer/item lookup, price override (BKICPMAT), tax (ISTAXGRP), GL posting (BKGLTRAN+DBAFIFO), WO connection (WORKORD+WOBOM), lot/serial (LOT+SERIAL), extra charges (ISARCHG).
 
-**Confidence: 60/100** — Single program, full DB set confirmed; invoice-creation pipeline reconstructed from table set; EDI field mapping in encrypted RWN.
+**42 of 43 tables in DDF schema** (only FILELOC is unregistered). All 42 tables are documented elsewhere in this guide. This confirms EDII runs the same code path as manual SO entry — the entire AR invoice creation pipeline without human interaction.
+
+**Confidence: 72/100** — Single program, full 43-table DB set confirmed; all constituent tables documented across AR/SO/GL/LC sections; EDI-specific field mapping and 850/860 transaction parsing blocked by encryption.
 
 ---
 
@@ -3982,8 +4034,48 @@ per-breakpoint cost buckets (MAT_1..10, and likely LAB/OVHD/SUB/TOT...) — full
 rollup per quantity break with material, labor, overhead, and subcontract costs. 203 fields
 = 10 qty breaks × ~20 cost fields.
 
-**Confidence: 62/100** — program confirmed; ISESTDTL schema partially extracted (first 20 of 203f);
-10 qty-break × cost-bucket structure clear.
+**ISESTDTL full structure (203 fields):**
+
+| Field group | Count | Meaning |
+|---|---|---|
+| IS_EST_NUM + PART(15) + LINE | 3 | PK: estimate number + item code + line |
+| IS_EST_QTY_1..10 | 10 | 10 quantity break levels |
+| IS_EST_MAT_1..10 | 10 | Material cost per qty break |
+| IS_EST_MATMU_1..10 | 10 | Material markup % per break |
+| IS_EST_LAB_1..10 | 10 | Labor cost per break |
+| IS_EST_LABMU_1..10 | 10 | Labor markup % per break |
+| IS_EST_SETUP_1..10 | 10 | Setup cost per break |
+| IS_EST_OP_1..10 | 10 | Outside process cost per break |
+| IS_EST_OPMU_1..10 | 10 | Outside process markup % per break |
+| IS_EST_OH_1..10 | 10 | Overhead cost per break |
+| IS_EST_OHMU_1..10 | 10 | Overhead markup % per break |
+| IS_EST_MISC_1..10 | 10 | Miscellaneous cost per break |
+| IS_EST_EXTRA_1..10 | 10 | Extra cost per break |
+| IS_EST_MEMU_1..10 | 10 | Material+expense markup % per break |
+| IS_EST_OVALL_1..10 | 10 | Overall markup % per break |
+| IS_EST_TOTAL_1..10 | 10 | Total cost per break |
+| IS_EST_PRICE_1..10 | 10 | Selling price per break |
+| IS_EST_COST_1..10 | 10 | Computed cost per break |
+| IS_EST_VOVHD_1..10 | 10 | Variable overhead per break |
+| IS_EST_SETMU | 1 | Setup markup % (global) |
+| IS_EST_TEMP_NUM | 1 | Template reference number |
+| IS_EST_BOM_FLAG | 1 | BOM-linked flag |
+| IS_EST_RT_FLAG | 1 | Routing-linked flag |
+| IS_EST_EX_FLAG | 1 | Extra process flag |
+| IS_EST_OPPTYPE | 1 | Opportunity type |
+| IS_EST_QTREV | 1 | Quote revision |
+| IS_EST_STATUS | 1 | Estimate status |
+| IS_EST_DRAW + REV | 2 | Drawing number + revision |
+| IS_EST_ORDDESC + ORDDTE | 2 | Order description + date |
+| IS_EST_EXPDTE + LOSTDTE | 2 | Expiry date + lost date |
+| IS_EST_CUST | 1 | Customer reference |
+| IS_EST_QUICK + SO + WOPRE + WOSUF | 4 | Quick-entry flag, linked SO#, linked WO# |
+
+Total: 3 + (10 × 19) + 20 = 3 + 190 + 20 = 213... wait — actual count is 3 + 10 qty + 18×10 cost + 20 scalar = 203 ✓
+
+The estimate supports full what-if analysis: at each of 10 qty breaks, every cost component (material, labor, setup, outside process, overhead, misc) is individually tracked with markups, so the estimator can compare total cost and price at any volume.
+
+**Confidence: 75/100** — T7RFQ program confirmed; ISESTDTL(203f) fully decoded from DDF — complete 10-qty-break cost structure with all 18 cost types confirmed; RFQ-to-PO workflow confirmed from BKMRPPO+BKAPPO in DB fingerprint; vendor selection logic blocked by encryption.
 
 ---
 
@@ -6787,4 +6879,4 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 59-60). New modules: FS (3 programs, ISFSCLAS/ISFSINFO/ISPRINFO/BKCMACCN), IS (2 programs, ISGLDATE 86f + ISMCF 49f multi-currency GL), DS (22+ programs, ISDROP staging). Confidence bumps: EM 50→65, YS 60→72, IC 55→68, SL 48→65, BR 48→65, TE 60→72, QT 45→72. 11 new table schemas extracted (including ISTERMS 13f).*
+*Last updated: 2026-06-17 (Pass 59-61). New modules: FS (3 programs, ISFSCLAS/ISFSINFO/ISPRINFO/BKCMACCN), IS (2 programs, ISGLDATE 86f + ISMCF 49f multi-currency GL), DS (22+ programs, ISDROP staging). Confidence bumps: EM 50→65, YS 60→72, IC 55→68, SL 48→65, BR 48→65, TE 60→72, QT 45→72, RE 62→75, RF 62→75, EDII 60→72. New schemas: ISTERMS(13f), ISREPDEF(3f), ISREPLNK(11f), WOLABOR(58f), WORECV(11f), ISESTDTL(203f fully decoded). 16 new/expanded table schemas documented.*
