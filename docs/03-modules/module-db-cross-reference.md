@@ -1584,3 +1584,113 @@ Uses BKMATCST, BKRTCST, BKSBMFG, BKICTAX, BKPRSALE. Context: estimating/costing 
 | ISDROP | T7DROPDOWN (DR) | — |
 | ISCTREVU | T7CTREVU (CR) | — |
 
+---
+
+## Pass 13 — MR (MRP Engine), GE (Generic Tools), infrastructure tables
+
+---
+
+### MR — MRP Planning Engine (17 files, 2,087 procs)
+
+**Critical distinction: BM ≠ MR**
+- **BM module** = Bill of Materials *entry and maintenance* (define BOM structure, components, yield)
+- **MR module** = MRP *calculation engine* (reads BOMs, calculates supply/demand, generates orders)
+
+The MR family implements the full Material Requirements Planning cycle: demand netting,
+BOM explosion, planned order generation, user review, and release.
+
+#### MRP Cycle — module-by-module
+
+| Module | Procs | MRP phase | Key tables |
+|--------|-------|-----------|-----------|
+| T7MRA | 65 | Item demand view / demand analysis | BKMRPFC, BKICMSTR, MKAHIST |
+| T7MRADE | 75 | MRP demand edit (firm change to a planned order) | BKMRPFC, BKICMSTR |
+| T7MRB | 117 | MRP by item class — browse planned orders by class | BKSYMSTR, BKMRPFC, BKICMSTR, CLASS |
+| T7MRC | 108 | MRP demand from SO lines | BKICMSTR, BKMRPFC, BKARINVL |
+| T7MRD | 121 | MRP by inventory location | BKICMSTR, MTICMSTR, BKICLOC, INVTXN |
+| T7MRE | 120 | MRP location master view | BKICMSTR, BKICLOCM, MTICMSTR |
+| T7MRF | 172 | MRP supply from open PO lines + WO BOM demands | BKMRPFC, BKARINVL, BKAPPOL, WOBOM |
+| T7MRG | 188 | MRP calculated order review — browse MTMRP output | MTMRP, MTICMSTR, WORKORD, BKAPPO, BKARINV, BKBMMSTR |
+| T7MRH | 193 | MRP planned builds view (with build schedule) | ISBUILD, MTMRP, MTICMSTR, BKAPPO, WORKORD |
+| T7MRI | 171 | MRP by item/location — multi-location netting | MTICMSTR, BKICLOCM, MTMRP, ISICMSTR |
+| T7MRIX | 130 | MRP WO routing output — routing linkage to planned WOs | WORKORD, WOROUT, ISICMSTR, MTMRP |
+| T7MRJ | 206 | MRP planned PO generation — creates BKMRPPO records | MTICMSTR, MTMRP, BKMRPPO, BKAPVEND |
+| T7MRJX | 123 | MRP planned PO → actual PO conversion | BKMRPPO, BKAPPO, BKAPPOL, BKSBVEND |
+| T7MRK | 5 | LIB stub (entry point per company code) | BKMRPPO, BKAPPO |
+| T7MRL | 85 | MRP summary listing / report | BKSYMSTR, MTMRP |
+| T7MRN | 95 | MRP build + AP charges integration | ISBUILD, MTMRP, BKAPPO, ISAPCHG |
+| T7MRO | 113 | MRP by class — order review filtered by class | ISBUILD, MTMRP, MTICMSTR, CLASMSTR |
+
+**MRP-specific tables (confirmed):**
+
+| Table | Role in MRP |
+|-------|------------|
+| MTMRP | MRP output — calculated planned order recommendations (buy/make qty, due date) |
+| MTICMSTR | MRP shadow item master — a snapshot of BKICMSTR used during the MRP run |
+| BKMRPFC | MRP firm changes — user edits/overrides to planned orders (firmed = won't regenerate) |
+| BKMRPPO | MRP planned purchase orders — unconfirmed buy recommendations before release |
+| ISBUILD | Build schedule — manually entered production targets input to MRP demand |
+| ISICMSTR | IS item configuration master — extended item config used in multi-location MRP |
+
+**MRP data flow:**
+1. Demand: SO lines (BKARINVL) + ISBUILD targets
+2. Supply: on-hand (BKICLOC), open POs (BKAPPOL), open WOs (WORKORD)
+3. BOM explosion: BKBMMSTR → nets component demand recursively
+4. Output: MTMRP (planned orders), filtered/browsed by T7MRG/H/I/O/B/L
+5. User firms changes: T7MRADE → BKMRPFC
+6. Release planned POs: T7MRJX → BKMRPPO → BKAPPO (actual PO)
+7. Release planned WOs: T7MRIX → WORKORD (actual WO via WO module)
+
+---
+
+### GE — Generic Utilities (5 files)
+
+Small family of generic/shared utility modules:
+
+| Module | Procs | Function | Key tables |
+|--------|-------|---------|-----------|
+| T7GENAED | 42 | Generic add/edit/delete for service/type tables | ISSTYPE |
+| T7GENGET | 10 | Generic get/lookup for service types | ISSTYPE |
+| T7GENIMP | 106 | Generic import — schema-aware CSV/data import using DDF | FILELOC, ISSERCNT, FILEKEY, ISFIELDS, FILEDICT |
+| T7GETDEP | 18 | Get AR deposit details | BKARDEP, BKARINVT, ISARDEPL, BKARINVL |
+| T7GETWEB | 6 | Web deposit retrieval (thin wrapper) | BKARDEP, BKARINVT |
+
+**T7GENIMP** is notable: it uses FILEDICT, FILEKEY, ISFIELDS (the Pervasive DDF schema tables) for dynamic schema-aware import — can import data into any table by reading the schema at runtime.
+
+**New table:** ISARDEPL = AR deposit lines — line-level detail of an AR deposit record, linking deposits to specific invoice payments.
+
+---
+
+### Infrastructure / LIB tables (universal — opened by 900–1,100 modules)
+
+These tables are opened by nearly every module via the shared ISTECH.LIB:
+
+| Table | Count | Purpose |
+|-------|-------|---------|
+| MKAHIST | 1,076/1,122 | MKA audit history — system-wide change/event log; likely "Make A History" |
+| ISLOG | 999/1,122 | IS activity log — user action audit trail |
+| BKAPDESC | 993/1,122 | AP description lookup — shared description/memo text table |
+| ISIS | 962/1,122 | IS image/icon system — UI icon mapping or general image lookup table |
+| BKCMACCN | 954/1,122 | CM account number lookup — shared account code cross-reference |
+
+These should NOT be used as fingerprints for module identification; they appear everywhere.
+
+---
+
+### Pass-13 Table Ownership Additions
+
+| Table | Owner | Also used by |
+|-------|-------|-------------|
+| MTMRP | T7MRG (MR) | T7MRH, T7MRI, T7MRIX, T7MRJ, T7MRL, T7MRN, T7MRO |
+| MTICMSTR | T7MRD (MR) | T7MRE, T7MRF, T7MRG, T7MRH, T7MRI, T7MRIX, T7MRJ, T7MRJX |
+| BKMRPFC | T7MRADE (MR) | T7MRA, T7MRB, T7MRC, T7MRF |
+| BKMRPPO | T7MRJ (MR) | T7MRJX, T7MRK |
+| ISBUILD | T7MRH (MR) | T7MRN, T7MRO |
+| ISICMSTR | T7MRI (MR) | T7MRIX |
+| ISARDEPL | T7ARN (AR) | T7GETDEP, T7MAPDEPO, T7SOGA |
+| MKAHIST | ISTECH.LIB (infra) | 1,076 modules |
+| ISLOG | ISTECH.LIB (infra) | 999 modules |
+| ISIS | ISTECH.LIB (infra) | 962 modules |
+| BKCMACCN | ISTECH.LIB (infra) | 954 modules |
+| BKAPDESC | ISTECH.LIB (infra) | 993 modules |
+

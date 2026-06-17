@@ -773,5 +773,26 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 ---
 
+---
+
+## Pass 13 — New Tables (2026-06-17)
+
+| Table | Module | Purpose | Status |
+|-------|--------|---------|--------|
+| MTMRP | MR (T7MRG) | MRP planned orders — calculated buy/make recommendations with qty + due date | inferred |
+| MTICMSTR | MR (T7MRD) | MRP shadow item master — snapshot of BKICMSTR used during MRP calculation run | inferred |
+| BKMRPFC | MR (T7MRADE) | MRP firm changes — user overrides to planned orders that survive regeneration | inferred |
+| BKMRPPO | MR (T7MRJ) | MRP planned purchase orders — unconfirmed buy suggestions before PO release | inferred |
+| ISBUILD | MR (T7MRH) | Build schedule — manually-entered production targets that feed MRP demand | inferred |
+| ISICMSTR | MR (T7MRI) | IS item configuration master — extended item config for multi-location MRP | inferred |
+| ISARDEPL | AR (T7ARN) | AR deposit lines — line-level payment application detail within a deposit record | inferred |
+| MKAHIST | ISTECH.LIB (infra) | MKA audit history — system-wide change/event log opened by nearly every module | inferred |
+| ISLOG | ISTECH.LIB (infra) | IS activity log — user action audit trail opened by nearly every module | inferred |
+| ISIS | ISTECH.LIB (infra) | IS image/icon system — UI icon or image lookup table (universal) | inferred |
+| BKCMACCN | ISTECH.LIB (infra) | CM account number lookup — shared account code cross-reference (universal) | inferred |
+| BKAPDESC | ISTECH.LIB (infra) | AP/AR description lookup — shared description text table (universal) | inferred |
+
+---
+
 *Last updated: 2026-06-17 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–12. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+schema.md, SRC analysis, catalog.md, and rwn_symbols.json DB fingerprint passes 1–13. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*

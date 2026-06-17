@@ -1028,6 +1028,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: ES/Estimating | **58** | 72 | **14** ↑ | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **55** | 70 | **15** NEW | 2026-06-17 |
 | Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
+| Module: MR/MRP Engine | **62** | 78 | **16** NEW | 2026-06-17 |
 | Module: TC/Treasury Control | **52** | 70 | **18** NEW | 2026-06-17 |
 | Module: SC/Cycle Count | **58** | 72 | **14** NEW | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **45** | 65 | **20** NEW | 2026-06-17 |
