@@ -582,7 +582,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Tables: BKES\* (3 tables) — BKESTQT(84f: same structure as BKARINV — ES quote header), BKESTQTL(28f: same as BKARINVL — quote lines), BKESTCFG(13f: quote config NUM+STAT+CLASS+FORM+DAYS+5 footer lines+SONUM); unified invoice architecture confirmed for ES quotes — **C: 65/100**
 - [x] ✅ ES-D (Print Customer Quotes), ES-E (Convert Estimates: ISTO.WO + ISTO.SO — converts to WO or SO), ES-B/C (print/range options) — **C: 58/100**
 - [x] ✅ Pass 42: Full ISES\* family (10 tables) extracted. ISESTHDR(84f)/ISESTLNE(28f) = BKARINV/BKARINVL ES current views. ISESAHDR/ISESALNE + ISESTAQT/ISESTAQL = archive alternate indexes (same structures). ISESTDTL/ISESADTL(203f, identical) = estimate detail: IS_EST_NUM+PART+LINE PK; 10 qty-break × material/labor/overhead cost columns. ISESTASM(213f) = DBA/MT-era estimate assembly summary: MTESUM_QUOTE(8) PK + DATE/EXPDATE/STATUS/CLASS/CODE/DESC/UM/CUSTCODE+NAME+ATTN+RFQ/REV/PROJ + QTY_1..10 + MAT_1..N (213 fields total, MTESUM_ prefix confirms MT generation — predecessor to BKESTQT). ISESTPO(16f) = ES→PO link: BKMRP_PO_* fields (same as BKSOPO). Unified architecture confirmed end-to-end: ES quotes through archive through estimate detail — **C: 72/100**
-- [ ] ⬜ ES-A (main entry form) not found on share; BKES.* table fields not yet extracted
+- [x] 🔄 Pass 50: T7ESA (15p) FOUND — opens BKBMMSTR+BKICMSTR+BKMRPFC+DBAFIFO; T7ESB(213p)/ESC(124p)/ESD(162p)/ESE(194p)/ESH(60p)/ESI(94p)/EST(163p) all mapped; BKMATCST(25f: CODE PK, 10×QTY_N+10×COST_N+MIN+MINCST+DATE) material cost; BKRTCST(24f: QUOTE+CODE+OPER PK, 10×PARTSHR_N+10×SETUP_N) routing cost; BKMRPFC(9f: PART+DATE PK, QTY+OQTY+CQTY+FLAG) MRP forecast demand; ESTSUM = DDF table name for ISESTASM(213f); ES-C uses BKRFQ for vendor cost — **C: 72/100**
 
 ### 7.18 Remaining Modules (not yet deeply documented)
 The following modules have menu codes and forms inventoried but no deep logic documentation:
@@ -611,7 +611,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] 🔄 **LC** — Lot Control — all 6 found DFMs read; LC-A (MTLOT table), LC-B (assigns MTIC.PROD.LOT flag), LC-G (archive with expiry date range); parallel to SC module for lots; MTLOT primary table — **C: 72/100**
 - [ ] ⬜ **LM** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **LO** — no T7 RWN/DFM files found (DBA-era legacy)
-- [x] 🔄 **MA** — T7MAPDEPO.RWN (97 procs): BKARDEP+BKARCUST+BKARINVL+ISARDEPL+BKGLCOA+BKARINVT — AR Deposits module; handles customer deposit posting to GL; helper programs: T7GETDEP (18 procs, retrieves available deposit balance), T7GETWEB (6 procs, web-order deposits), T7ARN (enter SO deposits), T7ARC (apply deposits at payment); ISARDEPL confirmed in use but not in DDF schema; deposit workflow fully traced (enter→apply→clear) — **C: 62/100**
+- [x] 🔄 **MA** — T7MAPDEPO.RWN (97 procs): BKARDEP+BKARCUST+BKARINVL+ISARDEPL+BKGLCOA+BKARINVT — AR Deposits module; handles customer deposit posting to GL; helper programs: T7GETDEP (18 procs, retrieves available deposit balance), T7GETWEB (6 procs, web-order deposits), T7ARN (enter SO deposits), T7ARC (apply deposits at payment); ISARDEPL confirmed in use but not in DDF schema; deposit workflow fully traced (enter→apply→clear); Pass 50: T7ARC(228p) confirmed = cash receipts (largest AR program); T7ARN(191p) = deposit+note entry; BKARDEP(6f: DEPNO PK+CUST+DATE+SO+SR)+BKARTNOT(3f: TRXN+CNTR+DESC)+BKARINVV(77f: CODE+NUM PK, 10-GL-split voucher with GLACT/GLDPT/DC/GLD/DAMT×10)+BKARINVI(16f: finance charge line SONUM+INVNM PK) all extracted — **C: 70/100**
 - [ ] ⬜ **MM** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **PC** — no T7 RWN/DFM files found (DBA-era legacy)
 - [ ] ⬜ **PL** — no T7 RWN/DFM files found (DBA-era legacy)
@@ -1017,8 +1017,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **75** | 80 | **5** ↑ +27 | 2026-06-15 |
 | Module: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
-| Module: MA/AR Deposits | **62** | 65 | **3** ↑+22 | 2026-06-17 |
-| Module: ES/Estimating | **72** | 75 | **7** ↑ | 2026-06-17 |
+| Module: MA/AR Deposits | **70** | 75 | **5** ↑ Pass50 | 2026-06-17 |
+| Module: ES/Estimating | **72** | 75 | **3** ↑ Pass50 | 2026-06-17 |
 | Module: SA/Sales Analysis | **68** | 75 | **7** ↑ | 2026-06-17 |
 | Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
 | Module: CC/Credit Card ⚠️ | **72** | 78 | **6** ↑ | 2026-06-17 |
@@ -1072,7 +1072,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: PI/Physical Inventory | **72** | 78 | **6** ↑+20 | 2026-06-17 |
 | Module: SA/Sales Analysis | **72** | 75 | **3** ↑+14 | 2026-06-17 |
 | Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
-| Module: ES/Estimating | **58** | 72 | **14** ↑ | 2026-06-17 |
+| Module: ES/Estimating | **72** | 75 | **3** ↑ Pass50 (dup of row above) | 2026-06-17 |
 | Platform: WBKLOOKUP/Lookup Framework | **55** | 70 | **15** NEW | 2026-06-17 |
 | Module: DE/DC stubs+EDI processing | **65** | 75 | **10** ↑ +5 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **65** | 80 | **15** NEW | 2026-06-17 |
@@ -1087,7 +1087,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SC/Serial Control ⚠️ (dup) | **72** | 80 | **8** ↑+14 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: KI/Kit Assembly | **72** | 72 | **0** ✅ | 2026-06-17 |
-| Module: MA/AR Deposit Apply | **52** | 68 | **16** NEW | 2026-06-17 |
+| Module: MA/AR Deposit Apply | **70** | 75 | **5** ↑ Pass50 (merged with MA/AR Deposits) | 2026-06-17 |
 | Module: TE/NACHA+ACH | **60** | 65 | **5** ↑+12 | 2026-06-17 |
 | Module: PA/Paperless DC | **70** | 72 | **2** ↑ | 2026-06-17 |
 | Module: TPOA/PO Processing Hub | **65** | 72 | **7** ↑ | 2026-06-17 |

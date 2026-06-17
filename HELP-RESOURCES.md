@@ -5185,3 +5185,142 @@ Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, c
 ---
 
 *Last updated: 2026-06-17 (Pass 49). DE: 23+ programs mapped; EDI architecture confirmed (BKEDIH/BKEDIL = BKARINV/BKARINVL alternate-index views); BKEDMSTR(3f)+BKEDNOTE(3f)+BKEDIDUN(7f)+CCEDIXRF(6f)+ISEDINFO(54f)+ISDEFECT(3f) extracted. AC: WODATE(13f) full hierarchy + ISACTION(3f); ACDETAIL/ACRDTYPE confirmed not in DDF. WC: ISBNMSTR(4f) bin master. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+
+---
+
+## ES — Estimating / Customer Quotes
+
+**Module purpose:** Creates customer price quotations (estimates) from BOM + routing + material costs. Estimates use the same BKARINV table as SO and AR invoices (unified invoice architecture). Converts accepted quotes to SOs or WOs via ES-E.
+
+### ES Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7ESA | 15 | ES-A main estimate entry — opens BKBMMSTR+BKICMSTR+BKMRPFC+DBAFIFO; links BOM to forecasted demand |
+| T7ESB | 213 | ES-B print estimates — largest ES program; opens BKARINV+BKPRSALE+BKPRMSTR+BKICREF+BKPSUSER |
+| T7ESC | 124 | ES-C cost calculation — applies BKMATCST material costs + BKRTCST routing costs + BKRFQ vendor quotes |
+| T7ESD | 162 | ES-D print customer quotes — opens BKESTCFG+ESTSUM; uses BKCMACCT for CRM account |
+| T7ESE | 194 | ES-E convert estimate to SO or WO — opens BKARINV+BKARINVL+BKBMMSTR+BKICLOC+BKICPMAT+BKICTAX; converts accepted quote to live SO |
+| T7ESH | 60 | ES-H cost/RFQ entry — BKMATCST+BKRFQ+BKRTCST; enters material and routing cost breakdowns |
+| T7ESI | 94 | ES-I cost summary — similar to ESH; 94p suggests more logic |
+| T7ESK | 15 | ES-K range filter stub — ESTSUM |
+| T7ESL | 15 | ES-L range filter stub — ESTSUM |
+| T7ESM | 8 | ES-M mini stub — ESTSUM |
+| T7EST | 163 | ES-T template/transfer — opens BKESTCFG+BKARINV+BKBMMSTR+BKICTAX+BKICLOCM |
+
+**ES workflow:**
+```
+ES-A entry (T7ESA) — create estimate header (BKESTQT)
+    ↓
+ES-H/I cost entry (T7ESH/ESI) — enter BKMATCST material + BKRTCST routing costs
+    ↓
+ES-D print quote (T7ESD) — output estimate to customer
+    ↓
+ES-E convert (T7ESE) — if accepted: create SO (→BKARINV) or WO (→WORKORD)
+    ↓
+ES-B print estimate report (T7ESB)
+```
+
+**Key architecture finding:** `ESTSUM` (DDF table name) is the MT-era legacy estimate summary (213 fields, MTESUM_ prefix) — same table previously documented as ISESTASM. `BKESTQT`/`BKESTQTL` are the current-era estimate header/lines (same structure as BKARINV/BKARINVL). Both generations coexist.
+
+### ES Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKESTQT | 84 | Current estimate header — BKAR_INV_ prefix; alternate-index view of BKARINV for estimates |
+| BKESTQTL | 28 | Current estimate line — BKAR_INVL_ prefix; alternate-index view of BKARINVL |
+| BKESTCFG | 13 | Quote configuration — NUM(8)+STAT(1)+CLASS(4)+FORM(1)+DAYS(2)+5×ENDLN(30)+SONUM(8); per-quote settings and 5 custom footer lines |
+| BKMATCST | 25 | Material cost table — CODE(15) PK; QTY_1..10(8×10) quantity breaks; COST_1..10(8×10) material cost per break; DATE+MIN+MINCST; per-item cost lookup used by ES-C/H/I and RF module |
+| BKRTCST | 24 | Routing cost per estimate operation — QUOTE(8)+CODE(15)+OPER(2) PK; PARTSHR_1..10(8×10) parts share per qty break; SETUP_1..10(4×10) setup time per qty break; DATE |
+| ESTSUM | 213 | MT-era legacy estimate assembly — MTESUM_QUOTE(8) PK; same 213-field structure as ISESTASM; predecessor generation to BKESTQT |
+| ISESTDTL | 203 | Estimate detail — IS_EST_NUM+PART+LINE PK; 10 qty-break × material/labor/overhead cost columns |
+| BKMRPFC | 9 | MRP demand forecast — PART(15)+DATE(4) PK; QTY+OQTY+CQTY (original/current)+FLAG+DATE1+NUM; feeds MRP explosion as independent demand |
+
+---
+
+## MA — AR Cash Receipts / Deposits
+
+**Module purpose:** Applies customer payments (cash receipts, checks, deposits) to open AR invoices. Handles both SO deposit entry (T7ARN) and final cash receipt application at invoice payment (T7ARC). Separate from AP check writing (T7APG) — MA is the AR side.
+
+### MA Program Map
+
+| Program | Procs | Operation |
+|---|---|---|
+| T7ARC | 228 | AR cash receipts — largest AR program; applies payments to invoices; opens BKARDEP+BKARINVI+BKART+BKGLCHK+BKGLTRAN; posts to GL |
+| T7ARN | 191 | AR deposit/note entry — enters SO deposits and AR transaction notes; opens BKARDEP+BKARINVV+BKARTNOT |
+| T7MAPDEPO | 97 | MA deposit posting — posts deposits from BKARDEP to BKARINV+GL; opens ISARDEPL |
+| T7GETDEP | 18 | Get deposit balance — reads BKARDEP+ISARDEPL+MKECLASS; utility called by other programs |
+| T7GETWEB | 6 | Web deposit stub — 6p; retrieves web-order deposit amount |
+
+**MA workflow:**
+```
+T7ARN — enter deposit on SO (creates BKARDEP record + BKART transaction)
+    ↓
+T7MAPDEPO — post deposit to GL (BKGLTRAN)
+    ↓
+At invoice time: T7ARC — apply deposit + any remaining payment to invoice
+    → clears BKARDEP, posts BKGLTRAN, updates BKGLCHK check register
+```
+
+### MA Tables
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKARDEP | 6 | AR deposit header — DEPNO(8) PK; CUST(10)+DATE+SO(8)+SR(1 service flag)+EXTRA(50) |
+| ISARDEPL | ? | AR deposit lines — NOT IN DDF schema; referenced by T7MAPDEPO+T7GETDEP |
+| BKART | 12 | AR transaction — CUST(10)+TRXN(8) PK; TYPE/DISC/AMOUNT/POSTDATE/ENTDATE/TRXNLINK/INVC/CHECK/NOTE (documented in TC module) |
+| BKARTNOT | 3 | AR transaction notes — TRXN(8)+CNTR(2) PK; DESC(30) — line notes on AR transactions |
+| BKARINVV | 77 | AR invoice voucher — CODE(10)+NUM(6) PK; 10 GL split lines each with GLACT(10)+GLDPT(4)+DC(1)+GLD(25)+DAMT(8); TERMD/TERMN terms; TAMT total; FRGHT+COOP+TAX+COGS amounts; SLSP×2+COMPR×2 commissions; multi-GL manual AR entry |
+| BKARINVI | 16 | AR finance charge line — SONUM(8)+INVNM(8) PK; PCODE+PQTY+PPRCE+PDISC+PEXT+PCOGS+ITYPE; finance charge or interest line attached to an invoice |
+| BKGLCHK | 11 | Check register — CHKACT(10)+NUM(8) PK; DATE+TYPE+NAME+AMT+FLAG+DATER+VEND+CUST; records check/payment details (documented in TC module) |
+
+---
+
+## CM — CRM / Contact Manager (key table)
+
+**BKCMACCT (41f)** — CRM Account Master:
+
+The CRM module maintains a separate company/prospect database bridged to AR via BKCMACCN. BKCMACCT is the account master — it holds marketing data not stored in BKARCUST.
+
+| Field | Size | Meaning |
+|---|---|---|
+| BKCM_ACCT_CODE | 10 | Account code (PK) |
+| BKCM_ACCT_OLDCD | 10 | Old code (renames) |
+| BKCM_ACCT_NAME | 30 | Company name |
+| BKCM_ACCT_ADD1/2/3 | 30×3 | Address lines |
+| BKCM_ACCT_CITY/STATE/ZIP/CNTRY | — | Geographic address |
+| BKCM_ACCT_CONT1 | 30 | Primary contact name |
+| BKCM_ACCT_TITLE | 30 | Contact title |
+| BKCM_ACCT_PHONE/FAX | 25 | Primary phone/fax |
+| BKCM_ACCT_REP | 5 | Sales rep code |
+| BKCM_ACCT_SICCD | 7 | SIC industry code |
+| BKCM_ACCT_CUST | 1 | Is AR customer flag (links to BKARCUST) |
+| BKCM_ACCT_LEAD | 5 | Lead source code (FK → BKCMLEAD) |
+| BKCM_ACCT_TERR | 4 | Territory code (FK → BKCMTERR) |
+| BKCM_ACCT_FONE_1..3 | 15×3 | Additional phone numbers |
+| BKCM_ACCT_REM_1/2 | 60×2 | Remarks |
+| BKCM_ACCT_CNUM | 25 | Credit card number (clear text — legacy; superseded by ISCC vault) |
+| BKCM_ACCT_EMAIL | 128 | Email address |
+| BKCM_ACCT_EMPS | 8 | Employee count |
+| BKCM_ACCT_EXTRA | 200 | Extra text |
+
+**Security note:** BKCM_ACCT_CNUM stores card numbers in clear text. The ISCC(14f) masked vault (Pass 44) supersedes this for PCI compliance, but old BKCMACCT records may still contain raw PANs.
+
+---
+
+### New Tables Confirmed (Pass 50)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKMATCST | 25 | ES material cost — CODE PK; 10 qty-break × cost pairs + MIN+MINCST |
+| BKRTCST | 24 | ES routing cost per operation — QUOTE+CODE+OPER PK; 10 qty-break × PARTSHR+SETUP |
+| BKMRPFC | 9 | MRP demand forecast — PART+DATE PK; QTY+OQTY+CQTY+FLAG |
+| BKARDEP | 6 | AR deposit header — DEPNO PK; CUST+DATE+SO+SR flag |
+| BKARTNOT | 3 | AR transaction notes — TRXN+CNTR PK; DESC(30) |
+| BKARINVV | 77 | AR invoice voucher — CODE+NUM PK; 10-way GL split with D/C amounts |
+| BKARINVI | 16 | AR finance charge line — SONUM+INVNM PK; single charge line per invoice |
+| BKCMACCT | 41 | CRM account master — CODE PK; full company/contact/marketing data |
+
+---
+
+*Last updated: 2026-06-17 (Pass 50). ES: 11 programs mapped; BKMATCST(25f) 10-break material cost + BKRTCST(24f) routing cost per operation + BKMRPFC(9f) MRP forecast extracted; ESTSUM confirmed = DDF name for ISESTASM(213f). MA: 5 programs mapped; BKARDEP(6f)+BKARTNOT(3f)+BKARINVV(77f 10-GL-split voucher)+BKARINVI(16f finance charge) extracted; ISARDEPL not in DDF. CM: BKCMACCT(41f) full CRM account master. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
