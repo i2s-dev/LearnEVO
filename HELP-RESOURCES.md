@@ -238,6 +238,8 @@ Module opens BKARINV, BKARINVL, BKICMSTR. Posts open SO invoice lines to AR.
 
 **SO data flow:** BKARINV (open invoice header, keyed by BKAR_INV_NUM) → BKARINVL (lines, keyed by INVNM+CNTR) → posted → BKSOX/BKSOXH (posted SO invoice extract). BKARINVI is the SO-to-invoice staging cross-reference (keyed by SONUM+INVNM).
 
+**KEY ARCHITECTURE FACT — SO table = AR table:** There is no BKSOMSTR. Sales Orders and AR Invoices share the same table — BKARINV. T7SOA.RWN operates directly on BKARINV; when an SO is shipped and posted, the record's status fields change but the row never moves. The BKSO* prefix tables are supplemental only: BKSONOTE (notes), BKSOHLOT/BKSOHSER (lot/serial history), BKSOPO (SO→PO cross-reference for special orders), BKSOX/BKSOXH (posted SO extract for reporting). If you're looking for "open sales orders," query BKARINV filtered by status — not a separate table.
+
 **Primary tables:**
 
 | Table | Purpose |
@@ -1446,7 +1448,13 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | BKGLTEMP | BKGLTEMP.B | GL | GL posting temp | Used during AP/AR/PR posting |
 | BKGLCHK | BKGLCHK.B | GL | GL check history | Posted check records |
 | BKICMSTR | BKICMSTR.B | IN | Item master | Product code (PK), description, type, UOM, cost, price, on-hand qty, reorder level, lead time, MRP switch |
-| BKICLOC | BKICLOC.B | IN | Inventory locations | Product, location (PK), qty |
+| BKICLOC | BKICLOC.B | IN | Inventory locations | Product + location (PK); UOH/UOSO/UBO/UOO/UOWO/UALLOC; per-location GL accounts for adj/cost/sales/WIP |
+| BKICLOCM | BKICLOCM.B | IN | Location master | Location code (PK), name, address, TAXGR tax group |
+| BKICPMAT | BKICPMAT.B | IN | Customer price matrix | Customer + item + entry# (PK); RATE_1..10 + QTY_1..10 (10 qty-break pricing) |
+| BKICDIM | BKICDIM.B | IN | Item dimensions | Part# (PK); FIRST/SECOND/THICK dimensions; ALLOY, TEMPER, FINISH; F_TOL/S_TOL/T_TOL tolerances; DENSITY |
+| BKICREQ | BKICREQ.B | IN | Inventory requisitions | REQ_NUM (PK); STATUS, BY, dates, TOLOCN, NOTES_1..10 |
+| MTICAMTR | MTICAMTR.B | JC/IN | MT actual cost snapshot | 108-field clone of MTICMSTR — actual cost values for variance analysis |
+| MTICEMTR | MTICEMTR.B | JC/IN | MT estimated cost snapshot | 108-field clone of MTICMSTR — estimated standard cost values |
 | BKLOGON | BKLOGON.B | Security | Active sessions | Code (PK), company, program, printer, in-use flag, security level, menu |
 | BKMRPFC | BKMRPFC.B | MR | MRP forecast | Forecasted demand input |
 | BKMRPSW | BKMRPSW.B | MR | MRP switch file | Run state tracking |
@@ -1538,7 +1546,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | BKRFQ | BKRFQ.B | ES/RF | RFQ master | Request for Quote master — vendor RFQ records tied to estimates |
 | BKRTCST | BKRTCST.B | ES | Routing cost | Routing cost detail per estimate operation (labor/machine rates) |
 | ESTSUM | ESTSUM.B | ES | Estimate summary | Rolled-up cost/price totals per estimate |
-| BKICPMAT | BKICPMAT.B | IN/ES | IC purchase material | Item-level purchase material category/config |
+| BKICPMAT | BKICPMAT.B | IN/ES | Customer price matrix | Customer + item + entry# (PK); 10 qty-break RATE/QTY arrays; overrides standard item pricing |
 | BKICREF | BKICREF.B | IN | IC cross-reference | Item cross-reference (alternate part numbers, customer/vendor part#) |
 | BKSBPART | BKSBPART.B | JC/PO | Sub-contract parts | Components sourced from outside-process / sub-contract vendors |
 | BKSBMFG | BKSBMFG.B | JC/MR | Sub-contract mfg | Sub-contracted manufacturing operation records |
@@ -1985,5 +1993,5 @@ T7CLOADING shows "Loading Data" with an animated spinner (TAnimate) whenever a m
 
 ---
 
-*Last updated: 2026-06-17 (Pass 22). Built from SRC analysis, schema extraction, CHM decompilation,
-DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), and BKCM*/IS* schema extraction. See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+*Last updated: 2026-06-17 (Pass 26). Built from SRC analysis, schema extraction, CHM decompilation,
+DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, and BKIC* inventory support table extraction. SO architecture confirmed: SO = BKARINV (no separate SO master). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*

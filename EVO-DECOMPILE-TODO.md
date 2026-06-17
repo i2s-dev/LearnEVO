@@ -905,7 +905,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [ ] ⬜ All remaining BKAP\* (24 tables)
 - [ ] ⬜ All remaining BKAR\* (27 tables)
 - [ ] ⬜ All remaining BKGL\* (28 tables)
-- [ ] ⬜ All remaining BKIC\* (16 tables)
+- [x] 🔄 All remaining BKIC\* (16 tables) — BKICLOC (32f, per-location quantities + GL accounts), BKICLOCM (12f, location master with TAXGR), BKICPMAT (85f, customer price matrix 10-break), BKICDIM (47f, dimensions/alloy/temper/finish/tolerances), BKICTAX (46f, state tax with 12-month collection), BKICREQ (41f, requisitions + 10 notes); BKICAMTR/BKICEMTR + MTICAMTR/MTICEMTR confirmed as 108-field MTICMSTR clones (actual/estimated cost snapshots); ~10 tables not yet extracted — **C: 60/100**
 - [ ] ⬜ All remaining WO\* (30 tables)
 - [ ] ⬜ All remaining BKPR\* (16 tables) including BKPRMSTR (384 fields)
 - [ ] ⬜ All remaining BKBM\* (10 tables)
@@ -975,13 +975,13 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
-| Database Schema (field meaning) | **77** | 88 | **11** ↑ | 2026-06-17 |
+| Database Schema (field meaning) | **78** | 88 | **10** ↑ | 2026-06-17 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **80** | 85 | **5** ↑ | 2026-06-17 |
 | Module: AP | **82** | 85 | **3** ↑ | 2026-06-16 |
-| Module: IN/Inventory | **75** | 85 | **10** ↑ | 2026-06-16 |
-| Module: SO | **70** | 85 | **15** ↑ | 2026-06-16 |
+| Module: IN/Inventory | **77** | 85 | **8** ↑ | 2026-06-17 |
+| Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
 | Module: WO | **83** | 85 | **2** ↑ +3 | 2026-06-17 |
 | Module: GL | **87** | 88 | **1** ↑ | 2026-06-17 |
