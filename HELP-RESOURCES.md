@@ -575,44 +575,285 @@ serial flag), IS.SERC.* (serial format configuration), IS.SCOMP.* (compound seri
 
 ### Shop Scheduling (SH)
 
-**What it does:** Finite-capacity scheduling of work orders across work centers on the shop floor.
-This module is the dispatch and scheduling layer on top of WO — it does NOT create work orders,
-it schedules and monitors their execution.
+**What it does:** Finite-capacity scheduling of work orders across work centers. SH is the dispatch and scheduling layer on top of WO — it reads WORKORD/WOROUT and writes scheduling dates, priorities, and capacity buckets. It does NOT create work orders.
 
-**Menu codes:** SH-A through SH-P (15 forms)
+**Menu codes:** SH (17 T7SH* programs)
 
-**Key operations:**
-- **SH-A — WO Scheduling Grid:** Main WIP work order browse. Shows WO#, Item, Description,
-  Customer, Scheduled Start, Scheduled Finish, Due Date, Priority, Class, Lead Time. Filter by
-  Status (Scheduled/Firmed/Released), Priority (1/2/3), Item Class/Category range. Table: MTWO.WIP.*
-- **SH-B — WO Operation Scheduling:** Drill-down to individual routing operations. Fields:
-  Operation, Work Center, Assigned WC (may differ from standard WC), Start/Finish dates, Status,
-  Qty Started, Qty Complete, Contention, Overlap Hours, Negative Overlap, Queue, Labor Type
-  (Regular/Outside Process), Vendor (for outside ops), Lead Time. Table: MTWORO.*
-- **SH-C — Work Center Browser:** View work centers with Dept, Dept Description, Outside Process
-  flag, and Hours/Week capacity. Table: MTWC.*
-- **SH-E — Change Due Date:** Quick edit of WO due date and priority from the scheduling view.
-- **SH-I — Dispatch Report:** Comprehensive scheduling report with color coding. Options: WO
-  status/class/priority filters, work center range, start/finish date range, customer range,
-  planner code range, starting weekly date, Recalculate Time Remaining, Limit to WOs with All
-  Available Components, Print BOM Components (type FRAM), Print Purchase Orders (SPAN/ASIS).
-  Color-codes elapsed start dates and priority changes.
-- **SH-P — Report Color Setup:** Configures colors for the SH-I dispatch report.
+**Program map:**
+
+| RWN | Procs | Operation | Key tables |
+|-----|------:|-----------|------------|
+| T7SHA | 94 | SH-A — WO scheduling grid (main browse) | WORKORD, BKICMSTR, MTICMSTR, BKARINVL, WOBOM, CLASMSTR |
+| T7SHB | 102 | SH-B — WO operation scheduling (routing drill-down) | WORKORD, MTICMSTR, WOROUT, WORKCTR, BKARINVL, ISARCHG |
+| T7SHC | 70 | SH-C — Work center browser | WORKCTR, WOROUT, WORKORD |
+| T7SHE | 128 | SH-E — Forward scheduler (due-date buckets) | SCHWO, WORKORD, SCHEDCAL, WORKCTR, WCCTL |
+| T7SHF | 117 | SH-F — Scheduling report | WORKORD, MTICMSTR, WOROUT, CALENDAR |
+| T7SHG | 147 | SH-G — Gantt / visual schedule | BKSYMSTR, BKICMSTR, WORKORD, MTICMSTR, BKARINVL, ISARCHG |
+| T7SHH | 139 | SH-H — Dispatch queue list | BKSYMSTR, BKICMSTR, MTICMSTR, WORKORD, WOROUT |
+| T7SHI | 169 | SH-I — MRP-integrated scheduler | BKSYMSTR, MTICMSTR, ISBUILD, WORKCTR, MTMRP, WORKORD |
+| T7SHJ | 130 | SH-J — Machine scheduling | BKSYMSTR, MACHINE, WOROUT, WORKORD, MTICMSTR, ISWOEX |
+| T7SHK | 9 | SH-K — stub | MACHINE, WOROUT, WORKORD, ISWOEX |
+| T7SHK2 | 9 | SH-K2 — stub | MACHINE, WOROUT, WORKORD, ISWOEX |
+| T7SHM | 67 | SH-M — Shop calendar maintenance | BKICMSTR, CALENDAR |
+| T7SHN | 116 | SH-N — Capacity planning (MRP) | BKSYMSTR, BKYSMSTR, BKICMSTR, MTICMSTR, ROUTING, WORKCTR |
+| T7SHO | 89 | SH-O — Open WO buckets report | BKSYMSTR, WORKORD, BUCKETS, WORKCTR |
+| T7SHP | 179 | SH-P — Print scheduling report | WORKORD, WOBOM, MTICMSTR, WOROUT, BKARINVL, BKYSMSTR |
+| ACT7SHKNOTE | 63 | SH-K notes/drill-down | ISDROP, WORKORD, WOROUT |
+| T7SHIPRTM | 79 | Ship print RTM (not SH-module) | ISEXUSER, BKPSUSER |
 
 **Key concepts:**
-- WO statuses in SH: Scheduled, Firmed, Released (same as WO module statuses)
-- Contention field (MTWORO.CONTNTN): flags operations where work center is over-capacity
-- Overlap / Negative Overlap: SH supports operation overlapping (starting an op before the prior
-  finishes) and negative overlap (gap between ops). These are scheduling efficiency parameters.
-- Planner Code: allows routing WOs to different schedulers/planners by range
+- **Critical Ratio** — SCHWO.SWO_CRATIO and BUCKETS.BUK_CRATIO: priority metric = remaining time / work remaining. <1.0 = behind schedule.
+- **Contention** — WOROUT.MTWORO_CONTNTN / SCHWO.SWO_CONTENTION: capacity load at the WC exceeds available hours.
+- **Overlap** — MTWORO_OVERLAP(2): start next operation before prior is complete (in hours). Positive = parallel. MTWORO_NEGOVLP = wait gap between ops.
+- **Shop Days** — SCHEDCAL maps calendar dates → shop day numbers (forward and backward). Scheduling uses shop-day arithmetic, not calendar math.
+- **Buckets** — BUCKETS table = one row per operation per time bucket (scheduled start → finish). Used by SH-O to report capacity loading.
+- **Machine vs WC** — MACHINE (4-char code) belongs to a WORKCTR (12-char code). Operations schedule to WCs; machine tracking adds granularity within the WC.
 
-**Primary tables:** MTWO.WIP.* (WIP work order header data), MTWORO.* (WO routing operations),
-MTWC.* (work center master: capacity, department, outside-process flag)
+**WORKORD (74f) — Work Order Header**
 
-**Note:** Physical carrier shipping (carrier selection, BOL, tracking) is part of the SO module
-(T7SOC hub form), not SH. SH = Shop floor scheduling only.
+Primary key: MTWO_WIP_WOPRE(8) + MTWO_WIP_WOSUF(2)
 
-**Confidence: 72/100** — All 15 DFM files read; MTWO/MTWORO/MTWC table access confirmed; scheduling algorithm inaccessible (in RWN).
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| MTWO_WIP_WOPRE/WOSUF | FLOAT+UBINARY | 8+2 | WO prefix + suffix (PK) |
+| MTWO_WIP_CODE | STRING | 15 | Part/item code (FK → BKICMSTR) |
+| MTWO_WIP_SQTY | FLOAT | 8 | Scheduled quantity |
+| MTWO_WIP_COMQTY | FLOAT | 8 | Completed quantity |
+| MTWO_WIP_SCRAP | FLOAT | 8 | Scrapped quantity |
+| MTWO_WIP_STATUS | STRING | 1 | Status: F=Released, R=Completed, C=Closed, S=Scheduled, I=In-Process, X=On-Hold |
+| MTWO_WIP_PRTY | STRING | 1 | Priority 1–9 (FK → ISWOPRIO) |
+| MTWO_WIP_SSTART | DATE | 4 | Scheduled start date |
+| MTWO_WIP_SFIN | DATE | 4 | Scheduled finish date |
+| MTWO_WIP_ASTART | DATE | 4 | Actual start date |
+| MTWO_WIP_AFIN | DATE | 4 | Actual finish date |
+| MTWO_WIP_DDATE | DATE | 4 | Due date |
+| MTWO_WIP_SONUM | FLOAT | 8 | Linked SO number (FK → BKARINV) |
+| MTWO_WIP_SOLINE | FLOAT | 8 | Linked SO line number |
+| MTWO_CUSTCODE | STRING | 10 | Customer code (FK → BKARCUST) |
+| MTWO_CUSTNAME | STRING | 25 | Customer name (denormalized) |
+| MTWO_WIP_CUSORD | STRING | 25 | Customer PO number |
+| MTWO_WIP_CONTAT | STRING | 25 | Contact at customer |
+| MTWO_WIP_DESC | STRING | 30 | WO description |
+| MTWO_WIP_PROJ | STRING | 15 | Project code |
+| MTWO_WIP_LOC | STRING | 10 | Production location (FK → BKICLOCM) |
+| MTWO_WIP_LOCK | STRING | 1 | Record lock flag |
+| MTWO_WIP_MULT/BLANK | STRING | 1 each | Multi-level / blank flags |
+| MTWO_WIP_INSTR_1..10 | STRING | 60 each | 10 work instruction lines |
+| MTWO_WIP_CHGORD | UBINARY | 2 | Change order count |
+| MTWO_WIP_USERCD | STRING | 1 | User category code |
+| MTWO_WIP_SCONV/QCONV | STRING | 1 each | Schedule/quantity conversion flags |
+| **Estimated costs** | | | |
+| MTWO_WIP_ESETUP/EMAT/EOUTPR/ELABOR | FLOAT | 8 each | Est. setup/material/outside/labor cost |
+| MTWO_WIP_VOVHD/EFOVHD/EOTH/EMISC/EEXTRA/EST | FLOAT | 8 each | Est. variable OH/fixed OH/other/misc/extra/total |
+| **Actual costs** | | | |
+| MTWO_WIP_ASETUP/AMAT/AOUTPR/ALABOR | FLOAT | 8 each | Actual setup/material/outside/labor cost |
+| MTWO_WIP_AVOVHD/AFOVHD/AOTH/AMISC/AEXTRA/ATOTAL | FLOAT | 8 each | Actual costs |
+| **Variances** | | | |
+| MTWO_WIP_SETUPV/MATV/OUTPRV/LABORV/VOVHDV/FOVHDV/OTHV/MISCV/EXTRAV/TOTV | FLOAT | 8 each | Variance (est − actual) per cost type |
+| MTWO_WIP_PPRCE | FLOAT | 8 | Planned price |
+| MTWO_WIP_SCHED_1/2 | STRING | 1 each | Scheduler control flags |
+| MTWO_WIP_OTHPER | FLOAT | 8 | Other cost percentage |
+
+**WOROUT (81f) — WO Routing Operations**
+
+Primary key: MTWORO_WOPRE(8) + MTWORO_WOSUF(2) + MTWORO_OPER(2)
+
+| Field | Type | Size | Meaning |
+|---|---|---|---|
+| MTWORO_WOPRE/WOSUF/OPER | FLOAT+UBINARY+UBINARY | 8+2+2 | WO + operation# (PK) |
+| MTWORO_CODE | STRING | 15 | Routing code (FK → ROUTING) |
+| MTWORO_OPER2 | UBINARY | 2 | Alternate operation# |
+| MTWORO_WC | STRING | 12 | Work center (FK → WORKCTR) |
+| MTWORO_SCHED_WC | STRING | 12 | Scheduled-to WC (may differ from standard) |
+| MTWORO_WCDESC | STRING | 30 | WC description (denormalized) |
+| MTWORO_OPERDESC | STRING | 30 | Operation description |
+| MTWORO_DESC | STRING | 30 | Additional description |
+| MTWORO_START | DATE | 4 | Scheduled start date |
+| MTWORO_FINISH | DATE | 4 | Scheduled finish date |
+| MTWORO_FINISH2 | DATE | 4 | Revised finish date |
+| MTWORO_STARTED | DATE | 4 | Actual started date |
+| MTWORO_FINISHED | DATE | 4 | Actual finished date |
+| MTWORO_PRIORITY | STRING | 1 | Operation-level priority |
+| MTWORO_DEPT | STRING | 3 | Department |
+| MTWORO_TYPE | STRING | 1 | Operation type (regular/outside) |
+| MTWORO_VEND | STRING | 10 | Outside process vendor (FK → BKAPVEND) |
+| MTWORO_VENDNAME | STRING | 30 | Vendor name (denormalized) |
+| MTWORO_PO | FLOAT | 8 | Linked AP PO number (for outside ops) |
+| MTWORO_MACHNO | STRING | 4 | Machine number (FK → MACHINE) |
+| MTWORO_TOOL | STRING | 15 | Tooling code |
+| MTWORO_ESTHRS | FLOAT | 8 | Estimated run hours |
+| MTWORO_ACTHRS | FLOAT | 8 | Actual run hours |
+| MTWORO_ESETHRS | FLOAT | 8 | Estimated setup hours |
+| MTWORO_ASETHRS | FLOAT | 8 | Actual setup hours |
+| MTWORO_ESSTHRS | TIME | 4 | Estimated standard setup time |
+| MTWORO_QTYCOM | FLOAT | 8 | Quantity completed |
+| MTWORO_STQTY | FLOAT | 8 | Quantity started |
+| MTWORO_SQTY | FLOAT | 8 | Scheduled quantity |
+| MTWORO_SCRAPPED | FLOAT | 8 | Scrapped quantity |
+| MTWORO_PARTSHR | FLOAT | 8 | Parts per hour |
+| MTWORO_TIMEPART | TIME | 4 | Time per part |
+| MTWORO_OVERLAP | UBINARY | 2 | Overlap with previous op (hours) |
+| MTWORO_NEGOVLP | FLOAT | 8 | Negative overlap / wait gap |
+| MTWORO_LEAD | UBINARY | 2 | Operation lead time (days) |
+| MTWORO_CONTNTN | FLOAT | 8 | Contention level at this WC |
+| MTWORO_LONGTIME | FLOAT | 8 | Long-time flag (ops taking > 1 day) |
+| MTWORO_PROJ | FLOAT | 8 | Project reference |
+| MTWORO_NUM | UBINARY | 2 | Sequence number |
+| MTWORO_NUM_PERS | FLOAT | 8 | Number of people required |
+| MTWORO_NUM_PROC | UBINARY | 2 | Number of concurrent processes |
+| MTWORO_TIME_PPR | TIME | 4 | Time per process run |
+| MTWORO_MD_PR_HR | STRING | 1 | Minutes or decimal per hour flag |
+| MTWORO_PR_PERHR | FLOAT | 8 | Processes per hour |
+| MTWORO_STD_TIME | STRING | 1 | Standard time flag |
+| MTWORO_MIN_CHG | FLOAT | 8 | Minimum charge |
+| MTWORO_PIECE_RT | FLOAT | 8 | Piece rate |
+| MTWORO_PRINT | STRING | 1 | Print this operation flag |
+| MTWORO_INSTR_1..15 | STRING | 60 each | 15 operation instruction lines |
+| **Estimated costs per op** | | | |
+| MTWORO_ESETCST/ELABCST/EMCHCST/EOUTCST/EFOHCST/EVOHCST | FLOAT | 8 each | Est. setup/labor/machine/outside/fixed OH/variable OH |
+| **Actual costs per op** | | | |
+| MTWORO_ASETCST/ALABCST/AMCHCST/AOUTCST/AFOHCST/AVOHCST | FLOAT | 8 each | Actual setup/labor/machine/outside/fixed OH/variable OH |
+| MTWORO_MISCCOST/MISCDESC/MISCACST | varies | — | Misc cost / description / actual |
+| MTWORO_EXTRA | STRING | 150 | Extra notes |
+
+**WORKCTR (47f) — Work Center Master**
+
+Primary key: MTWC_WC(12)
+
+| Field | Meaning |
+|---|---|
+| MTWC_WC (12) / WCDESC (30) | Work center code + description |
+| MTWC_DEPT (4) / DEPTDESC (30) | Department code + description |
+| MTWC_HRSWEEK (2) | Capacity hours per week |
+| MTWC_HRS_SHIFT (2) | Hours per shift |
+| MTWC_SETUP/LABOR/MACHINE (float) | Cost rates per hour: setup / labor / machine |
+| MTWC_VOVHD/FOVHD (float) | Variable and fixed overhead rates |
+| MTWC_EST_VOVHD (float) | Estimated variable overhead |
+| MTWC_AVGQTIME (2) | Average queue time (days) |
+| MTWC_QPR1/2/3 (2 each) | Queue priority thresholds |
+| MTWC_LEAD (2) | Default lead time (days) |
+| MTWC_OUTPROC (1) | Outside process flag |
+| MTWC_MIN_CHG (float) | Minimum charge per operation |
+| MTWC_COST_LB (float) | Cost per pound (for material-based billing) |
+| MTWC_PARENT_YN (1) / PARENT_WC (12) | Is this a parent WC? Parent WC code |
+| MTWC_LEVEL_YN (1) | Level scheduling flag |
+| MTWC_CYCLE_TIME_1..10 (2 each) | 10 cycle time slots |
+| MTWC_GDATE_1/2 (date) | 2 configurable dates |
+| MTWC_FLAGS_1..5 (1 each) | 5 configurable flags |
+| MTWC_ALPHA_1..5 (30 each) | 5 user-defined text fields |
+| MTWC_GNUM (float) | Configurable numeric field |
+| MTWC_EXTRA (100) | Extra notes |
+
+**BUCKETS (14f) — Capacity Scheduling Buckets**
+
+One row per scheduled operation per time window:
+- BUK_WC(12) + WCTYPE(1) — which work center
+- BUK_WOPRE+WOSUF+OPER — which WO operation
+- BUK_PART(15) — part being made
+- BUK_SDATE+SDATE_SHOP / BUK_FDATE+FDATE_SHOP — scheduled window (calendar + shop day)
+- BUK_CRATIO(float) — critical ratio for this bucket
+- BUK_LOCKED(1) — manually locked (won't move in auto-reschedule)
+- BUK_NUM_SUNITS(float) — scheduling units in this bucket
+- BUK_CNTN(float) — contention level
+
+**SCHWO (10f) — Scheduled WO Summary**
+
+One row per scheduled WO (scheduler's working copy):
+- SWO_WOPRE+WOSUF (PK); SWO_OPCOUNT(2) — number of ops
+- SWO_RUN_DAYS(float) — total run days; SWO_DAYS_TOGO(float) — days remaining
+- SWO_CRATIO(float) — critical ratio; SWO_CONTENTION(float) — overall contention
+- SWO_SHOP_START/FINISH/DUE(float) — shop day numbers for start/finish/due date
+
+**SCHEDCAL (6f) — Schedule Calendar Mapping**
+
+Converts calendar dates to shop day numbers for scheduling arithmetic:
+- SCH_CAL_DATE (PK) + SCH_WH_FLAG(1) — working/holiday
+- SCH_SHOP_DATE(float) — forward shop day number
+- SCH_BACK_DATE(float) — backward shop day number (for back-scheduling from due date)
+- SCH_SHOP_SLASH/BACK_SLASH(date) — equivalent calendar dates
+
+**CALENDAR (5f) — Shop Working Days**
+
+- MTCAL_DATE (PK) + MTCAL_DESC(25) — date + holiday description
+- MTCAL_SAT/SUN(1 each) — work Saturdays/Sundays flags
+- MTCAL_YEAR(2) — year number
+
+**MACHINE (20f) — Machine Master**
+
+Primary key: TMACH_MACHINE(4)
+- TMACH_DESC(30), TMACH_WC(12)+WCDESC(30) — machine desc + parent work center
+- TMACH_HRSUSED+HRSMAINT(float) — cumulative hours used / maintenance hours
+- TMACH_DATE(date) — last maintenance date
+- TMACH_NOTES_1..8(45 each) — 8 note lines
+- TMACH_EXTRA(100), TMACH_ACTIVE(1), TMACH_INACTDATE+INACTWHO(30)+INACTWHY(60) — deactivation log
+
+**ISWOPRIO (4f) — WO Priority Codes**
+
+- IS_WOPRIO_PRIO(1) PK (values "1"–"9")
+- IS_WOPRIO_DESC(30) — description (e.g., "RUSH", "NORMAL", "LOW")
+- IS_WOPRIO_EXTRA(100)
+- IS_WOPRIO_COLOR(float) — UI display color for this priority level
+
+**ISARCHG (26f) — AR Order Change Audit**
+
+Before/after log for SO line changes (used by SH-B and SH-G to track due-date changes):
+- ISAR_CHG_SONUM+INVNUM+LINEID+PCODE (PK), CDATE(date), USER(15), REVLVL(10)
+- ALOC/BLOC(10) — before/after location
+- APRICE/BPRICE, ADISC/BDISC — before/after price and discount
+- AOOQTY/BOOQTY — before/after open order qty
+- AESD/BESD (est ship date), AASD/BASD (actual ship date) — before/after dates
+- ACOMPR_1/2 + BCOMPR_1/2 — before/after commission rates
+- AEXTRA/BEXTRA(150) — before/after notes; UNUM(4) — unique entry#
+
+**MTMRP (13f) — MRP Demand (SH-I integration)**
+
+One row per item per demand date (MRP output used by forward scheduler):
+- MTMRP_PARTNO(15) + DATE (PK)
+- MTMRP_QTY(float) — required qty; MTMRP_ONHAND(float) — on-hand at planning time
+- MTMRP_PEGTO(10) — demand source (SO/WO/forecast); MTMRP_ORDER(10) — order ref
+- MTMRP_STARTDT(date) + ACTION(10) — planned action type (RELEASE/EXPEDITE/etc.)
+- MTMRP_PG_SDATE/FDATE/QTY — peg start/finish and qty
+- MTMRP_LOC(10) — location
+
+**ISWOEX (63f) — WO Extended Data**
+
+Primary key: IS_WOEX_WOPRE(8) + WOSUF(2). Extension record per WO for multi-yield and extra tracking:
+- IS_WOEX_ITP(20)+ITPP(1) — item type profile code + prefix
+- IS_WOEX_RF(1) — re-fire flag; IS_WOEX_MCLASS(6)+MNUM(float) — machine class/number
+- IS_WOEX_CDATE(date) — creation date
+- IS_WOEX_WC(12) — associated WC; IS_WOEX_CAUSE(30) — cause code
+- IS_WOEX_DATE1..5 + GDATE_1..5 (dates) — 10 configurable dates
+- IS_WOEX_INT1..5(2 each) — 5 integer UDF slots
+- IS_WOEX_NUM1/2 + GNUMS_1..5 (float) — 7 numeric UDF slots
+- IS_WOEX_ALPHA1/2(30) + ALPHA3/4/5(1) + ALPHAS_1..5(30 each) — alpha UDF fields
+- IS_WOEX_DESC1..5(30 each) — 5 description lines
+- IS_WOEX_NOTE_1..5(100 each) — 5 note lines
+- IS_WOEX_FLAGS_1..10(1 each) — 10 configurable flags
+- IS_WOEX_EXTRA(100)
+
+**Table summary:**
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| WORKORD | 74 | WO header — qty/dates/status/costs/variances (MTWO_WIP_* prefix) |
+| WOROUT | 81 | WO routing ops — WC/dates/hrs/costs/instructions per operation (MTWORO_* prefix) |
+| WORKCTR | 47 | Work center — capacity/rates/OH/hierarchy/UDF (MTWC_* prefix) |
+| ISWOEX | 63 | WO extended — multi-yield/UDF/machine/cause (IS_WOEX_* prefix) |
+| BUCKETS | 14 | Scheduling buckets — one row per op per time window; CRATIO+contention |
+| SCHWO | 10 | Scheduled WO summary — shop day numbers, critical ratio, contention |
+| MACHINE | 20 | Machine master — hours used/maint, parent WC, deactivation log |
+| ISARCHG | 26 | AR order change audit — before/after on SO line edits |
+| MTMRP | 13 | MRP demand — item/date pegged demand used by forward scheduler |
+| SCHEDCAL | 6 | Calendar → shop day mapping (forward + backward) |
+| CALENDAR | 5 | Shop working days + holiday descriptions |
+| WCCTL | 5 | WC scheduler state — current start/stop/count per WC |
+| ISBUILD | 15 | Generic sort-build utility — temp sorted result sets |
+| ISWOPRIO | 4 | WO priority codes 1–9 with descriptions and UI colors |
+| ISDROP | 4 | Generic dropdown list values |
+
+**Note:** Physical shipping (carrier, BOL, tracking) is in SO (T7SOC), not SH. SH = shop floor scheduling only. TASCOLOR (referenced by T7SHA) is not in the Pervasive DDF schema — likely a TAS Pro 7 memory or INI file for color configuration.
+
+**Confidence: 82/100** — All 17 T7SH* programs identified with proc counts and DB fingerprints; WORKORD(74f), WOROUT(81f), WORKCTR(47f), and all 10 SH-specific tables fully field-extracted from DDF; scheduling algorithm (critical ratio, buckets) inferred from field names and structure, not confirmed from source.
 
 ---
 
