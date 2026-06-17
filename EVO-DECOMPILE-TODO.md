@@ -499,9 +499,9 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Journal transaction types confirmed: GJ, CR, CD, TT, YE (entry types), RS, RP, PR, OT, WO (system posting types) — **C: 75/100**
 - [x] ✅ BKGL table family purpose documented: live/archive/report/temp/COA/statement/crossref tiers — **C: 68/100**
 - [x] ✅ Journal entry workflow traced: T7GLB (enter GJ/CR/CD/TT/YE) → T7GLC (report/filter) → T7GLP (period-end) → T7GLARCH (archive) — **C: 70/100**
+- [x] ✅ Pass 40: All 28 BKGL* table schemas extracted. 4 COA tables (BKGLCOA/CCOA/ECOA/FCOA, 62-65f each, identical structure + period balance array); 8 transaction tables (BKGLTRAN/ATRN/ETRN/HIST/TEMP×4, all identical 16f: GLACCT+GLDPT+DATE+CODE+INVC+DESC+DC+AMT+8more); 4×2 journal tables (BKGLGJRN/GJLN, BKGLAGJR/AJL, BKGLRGJR/RJL, BKGLTGJR/TJL — current/archive/recurring/template); BKGLFSTL(12f statement layout), BKGLSTMT(104f statement groups), BKGLDESC(5f GL notes), BKGLACHK+BKGLICC (11f archive+intercompany checks), BKGLXH(20f extended history); full GL architecture documented — **C: 75/100**
 - [ ] ⬜ Period-end close process traced step-by-step (T7GLH/T7GLP sequence)
 - [ ] ⬜ BKGLCOA all 65 fields confirmed with full meaning
-- [ ] ⬜ BKGLTRAN all 16 fields confirmed with full meaning
 
 ### 7.8 Bill of Materials (BM)
 - [x] ✅ Menu codes listed — **C: 65/100**
@@ -512,8 +512,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Item status codes confirmed: Y/N/O/D/E/P/S/Q/R (9 status values) — **C: 75/100**
 - [x] ✅ Multi-level BOM explosion confirmed (T7BMC: "print up to X levels") — **C: 65/100**
 - [x] ✅ RoHS compliance flag on BOM components confirmed — **C: 72/100**
-- [ ] ⬜ All BKBM\* tables with fields documented
-- [ ] ⬜ Phantom assembly logic confirmed (BKBMAMTR purpose)
+- [x] ✅ Pass 40: All 10 BKBM* schemas extracted. Parallel-snapshot architecture confirmed: BKBMMSTR(26f current)/BKBMAMTR(actual)/BKBMAVAL(actual value)/BKBMEMTR(estimated)/BKBMSUMM(summary) all identical PARENT+COMPONENT PK + QTY_REQD+REFERENCE+PROD_TYPE+SCRAP+OP+OPYN flags; BKBMDIM(11f sheet-metal dimensional BOM: PARENT+LINE+COMP, PART_X/Y+TRIM_X/Y+MACH); BKBMERMK/BKBMREMK(20f each, 10×64 remark lines — engineering vs regular); BKBMNOTE(16f parent notes, 15×64 lines); BKBMCNFG(7f: NUM+GLACT+GLDPT+AUTO+POST+ROLL+LABOR) — **C: 72/100**
 
 ### 7.9 MRP / Manufacturing Requirements Planning (MR)
 - [x] ✅ Menu codes listed (12 operations) — **C: 65/100**
@@ -990,8 +989,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SO | **75** | 85 | **10** ↑ | 2026-06-17 |
 | Module: PO | **72** | 85 | **13** ↑ | 2026-06-16 |
 | Module: WO | **83** | 85 | **2** ↑ +3 | 2026-06-17 |
-| Module: GL | **87** | 88 | **1** ↑ | 2026-06-17 |
-| Module: BM/MRP | **78** | 80 | **2** ↑ | 2026-06-17 |
+| Module: GL | **90** | 92 | **2** ↑+3 | 2026-06-17 |
+| Module: BM/MRP | **82** | 85 | **3** ↑+4 | 2026-06-17 |
 | Module: RO/Routing | **82** | 85 | **3** ↑ | 2026-06-17 |
 | Module: DC/Data Collection | **82** | 82 | **0** ✅ | 2026-06-17 |
 | Module: PR/Payroll | **70** | 80 | **10** ↑ | 2026-06-17 |

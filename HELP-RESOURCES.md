@@ -3464,4 +3464,193 @@ T7SLSFC (5p): Shop loading display — overlays AR demand on production capacity
 
 ---
 
-*Last updated: 2026-06-17 (Pass 39). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-39 module analysis (...AL/BR/JO/LG/QT/SL + global tables ISLINKS/LANGDICT/BKICREF/BKDCLAB). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
+---
+
+## GENERAL LEDGER DEEP REFERENCE — Pass 40
+
+The GL module uses a consistent family of 28 tables with four sub-families.
+
+### GL Sub-Family 1: Chart of Accounts (COA)
+
+EvoERP maintains **four parallel COAs** using the same 62–65-field structure:
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKGLCOA | 62 | Current production COA |
+| BKGLCCOA | 62 | Company/comparative COA |
+| BKGLECOA | 65 | Extended COA (multi-currency or alternate) |
+| BKGLFCOA | 65 | Forecast/forward COA |
+
+All four share: ACCT(10)+GLDPT(4) PK; ACCTD(25) description; TYPE(1) account type; CR_DR(1) normal balance; NON_CASH(1) flag; CURRENT_1..N (float×N, period balances for all open periods).
+
+### GL Sub-Family 2: Transaction Records
+
+Multiple transaction staging/archive tables — **all identical 16-field structure**:
+
+| Table | Role |
+|---|---|
+| BKGLTRAN | Live GL transactions (current period) |
+| BKGLATRN | Archive GL transactions |
+| BKGLETRN | Extended GL transactions |
+| BKGLHIST | GL history transactions |
+| BKGLTEMP / BKGLTMP / BKGLTMP2 / BKGLTMP3 | Staging tables (batch post processing) |
+
+All share: GLACCT(10)+GLDPT(4)+DATE+CODE(10)+INVC(10)+DESC(25)+DC(1, D/C)+AMT + 8 more fields.
+
+**BKGLXH** (20f) — GL extended history companion to BKGLX:
+- BKGLX_POSTDATE/ARCHDATE/ENTDATE — 3 date stamps
+- BKGLX_PART(15) + QUANTITY — item reference
+- BKGLX_AMOUNT + TRXNTYPE(1) + JOURNAL(2) + 12 more
+
+### GL Sub-Family 3: General Journal
+
+Four pairs of journal header + lines tables:
+
+| Header | Lines | Purpose |
+|---|---|---|
+| BKGLGJRN | BKGLGJLN | Current general journal |
+| BKGLAGJR | BKGLAGJL | Archive journal |
+| BKGLRGJR | BKGLRGJL | Recurring journal entries |
+| BKGLTGJR | BKGLTGJL | Template journal entries |
+
+**Journal header** (11f): DATE+TRANSN(8)+TYPE(2)+TYPEN(2)+POSTED(1)+CVCODE(10)+INVCHKN(8)+NUMLNES(2) + 3 more
+**Journal lines** (9f): TRANSN(8)+ACCTNM(10)+GLDPT(4)+DESC(25)+DC(1)+AMOUNT+JOB(15)+LINE(2)+1 more
+
+Recurring and template journals (BKGLRGJR/BKGLTGJR) allow auto-generation of repeat entries (rent, depreciation).
+
+### GL Sub-Family 4: Financial Statement Templates
+
+**BKGLFSTL** (12f): Financial statement layout line:
+- BKFS_NAME(10) — statement name (PK part 1)
+- BKFS_LINE_NUM(2) — line position (PK part 2)
+- BKFS_SGL_ACCT(10) / EGL_ACCT(10) — account range start/end
+- BKFS_TOTAL_FLD(2) — total field reference
+- BKFS_PRT_LOC(2) / PRT_DOL(1) — print location / dollar flag
+- BKFS_DESC(25) — line description
+
+**BKGLSTMT** (104f): Financial statement group definition:
+- BKGL_STB_MN_TTL(25) + GLA_MT(25) — main title + alternate title
+- GLA_F_1..4 (10 each) + GLA_T_1..4 (10 each) — 4 account range pairs
+- + 88 more fields (period selection, format flags, etc.)
+
+**BKGLDESC** (5f): GL account extended notes (same structure as BKAPDESC):
+- BK_DESC_CODE(15)+NUM(8)+LINE(2) PK; NOTES(70)+DESC(25)
+
+**Check registers:**
+- BKGLACHK (11f): Archive check register — same structure as BKGLCHK (already extracted)
+- BKGLICC (11f): Intercompany check register — same structure
+
+### GL Architecture Summary
+
+```
+COA family:    BKGLCOA/CCOA/ECOA/FCOA (4 parallel COAs)
+Transactions:  BKGLTRAN → BKGLATRN/HIST (staging → archive)
+               BKGLTEMP/TMP/TMP2/TMP3 (period-close staging)
+Journals:      BKGLGJRN/GJL (current) / AGJR/AJL (archive)
+               RGJR/RJL (recurring) / TGJR/TJL (template)
+Statements:    BKGLFSTL (layout lines) + BKGLSTMT (group definitions)
+Extended:      BKGLX (item-level extension) + BKGLXH (history)
+Notes:         BKGLDESC (multi-line GL account notes)
+Checks:        BKGLCHK (current) + BKGLACHK (archive) + BKGLICC (intercompany)
+```
+
+**Confidence: 75/100** — All 28 BKGL* table schemas extracted; full GL architecture
+confirmed; detailed financial statement builder (BKGLSTMT 104f) identified; posting
+logic in BKGLTRAN/BKGLX confirmed from prior module analysis.
+
+---
+
+## BOM (BKBM*) DEEP REFERENCE — Pass 40
+
+The Bill of Materials module uses the same **parallel-snapshot architecture** as inventory.
+
+### BOM Parallel Tables
+
+Five tables with **identical 26-field structure** (BKBMMSTR schema is the canonical form):
+
+| Table | Purpose |
+|---|---|
+| BKBMMSTR | Current production BOM |
+| BKBMAMTR | Actual cost BOM snapshot |
+| BKBMAVAL | Actual value BOM snapshot |
+| BKBMEMTR | Estimated BOM snapshot |
+| BKBMSUMM | BOM summary (indented explosion) |
+
+All share primary key: BKBM_PARENT(15) + BKBM_COMPONENT(15)
+
+**Core fields (first 8):**
+- BKBM_PARENT(15) — parent part (PK part 1)
+- BKBM_COMPONENT(15) — component part (PK part 2)
+- BKBM_QTY_REQD — quantity required per parent
+- BKBM_REFERENCE(20) — reference designator (PCB position, etc.)
+- BKBM_PROD_TYPE(1) — component type code
+- BKBM_PROD_SCRAP — scrap/yield factor
+- BKBM_PROD_OP(3) — required at operation number
+- BKBM_PROD_OPYN_1(1) — options flag 1 (first of N)
+
+### BOM Supporting Tables
+
+**BKBMDIM** (11f): Dimensional BOM for sheet material:
+- BKBM_DIM_PARENT(15)+LINE(2)+COMP(15) — PK
+- BKBM_DIM_PART_X/Y — part dimensions (width × height)
+- BKBM_DIM_MACH(4) — machine/workcenter
+- BKBM_DIM_TRIM_X/Y — trim dimensions (cutting waste)
+- + 4 more fields (nesting, efficiency, etc.)
+
+Used in sheet metal / panel manufacturing where material is cut from stock sheets.
+
+**BKBMERMK / BKBMREMK** (20f each): Component-level remarks:
+- PARENT+LINE+COMP PK
+- REMARK_1..10 (64 chars each) — 10 remark lines
+- BKBMERMK = engineering remarks (design notes); BKBMREMK = regular remarks (shop notes)
+
+**BKBMNOTE** (16f): Parent-level BOM notes:
+- BKBM_NT_PARENT(15) — parent part (PK)
+- NOTE_1..15 (64 chars each) — 15 note lines attached to the parent BOM
+
+**BKBMCNFG** (7f): BOM system configuration:
+- BKBM_CNFG_NUM — entry number
+- BKBM_CNFG_GLACT(10)+GLDPT(4) — GL account for BOM cost postings
+- BKBM_CNFG_AUTO(1) — auto-explode flag
+- BKBM_CNFG_POST(1) — auto-post to GL flag
+- BKBM_CNFG_ROLL(1) — cost roll-up flag
+- BKBM_CNFG_LABOR(1) — include labor in BOM cost flag
+
+### BOM Architecture Summary
+
+```
+BKBMMSTR (current) ←── same 26f structure ──→ BKBMAMTR/AVAL/EMTR/SUMM (snapshots)
+BKBMDIM (dimensional cuts)
+BKBMERMK (engineering notes per component)
+BKBMREMK (shop notes per component)
+BKBMNOTE (notes per parent assembly)
+BKBMCNFG (system config: GL/auto-explode/cost-roll)
+```
+
+**Confidence: 72/100** — All 10 BKBM* schemas extracted; parallel-snapshot architecture
+confirmed (mirrors BKIC* and MTIC* patterns); BKBMDIM reveals sheet-stock manufacturing
+support; per-field meaning of remaining 18 fields in 26f tables needs deeper study.
+
+---
+
+### New Tables Confirmed (Pass 40)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKGLCOA + BKGLCCOA/ECOA/FCOA | 62–65 | Chart of accounts — 4 parallel COAs; ACCT+GLDPT PK; period balances |
+| BKGLTRAN + ATRN/ETRN/HIST/TEMP×4 | 16 | GL transaction records — staging, live, archive, temp |
+| BKGLGJRN/GJLN + A/R/T variants | 9–11 | General journal headers + lines — current, archive, recurring, template |
+| BKGLFSTL | 12 | Financial statement layout — NAME+LINE PK; account range + desc |
+| BKGLSTMT | 104 | Financial statement group definition — 4 account range pairs |
+| BKGLDESC | 5 | GL account extended notes (same structure as BKAPDESC) |
+| BKGLACHK / BKGLICC | 11 | Archive + intercompany check registers |
+| BKGLXH | 20 | GL extended history — POSTDATE/ARCHDATE/ENTDATE/PART/QTY/AMT |
+| BKBMMSTR + AMTR/AVAL/EMTR/SUMM | 26 | BOM — current + 4 parallel cost snapshots; PARENT+COMPONENT PK |
+| BKBMDIM | 11 | Dimensional BOM — PARENT+LINE+COMP; X/Y part + trim dimensions |
+| BKBMERMK / BKBMREMK | 20 | BOM component remarks — PARENT+LINE+COMP; 10 × 64-char notes |
+| BKBMNOTE | 16 | BOM parent notes — PARENT PK; 15 × 64-char note lines |
+| BKBMCNFG | 7 | BOM system config — GL acct, auto-explode, post, roll-up, labor flags |
+
+---
+
+*Last updated: 2026-06-17 (Pass 40). Built from SRC analysis, schema extraction, CHM decompilation, DFM parsing, RWN symbol extraction (rwn_symbols.json — 1,122 modules), full DCY decryption pass (41 files), BKCM*/IS* schema extraction, BKIC* inventory support table extraction, and Passes 30-40 module analysis (...GL 28-table family + BOM 10-table family). See EVO-DECOMPILE-TODO.md for confidence ratings by topic.*
