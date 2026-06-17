@@ -2104,21 +2104,40 @@ in AHSYLOG with role, starting menu code, and 20 access flags.
 
 ### System Defaults
 
-**BKSYMSTR** — 286-field global configuration table. One record. Contains:
-- AR/AP/PO auto-increment invoice numbers
-- Tax rate
-- 20 payment terms (each: amounts, type, days, EOM flag, max)
-- Check bank accounts, balances, GL account names, GL department codes
-- AR/AP/PR check accounts
-- AR sales order number counter
-- Freight GL accounts
-- AR aging bucket definitions (4 buckets: days thresholds)
-- PR (payroll) optional deduction settings
-- Currency codes
+**BKSYMSTR** — 286-field global system configuration table (one record per company). Primary accessed via AD-A/AD-B/AD-C (T7MDEFAULTS/T7MDEFBANKS/T7MDEFNDC). Full field breakdown:
+
+| Field group | Fields | Content |
+|---|---|---|
+| Auto-numbers | ARINV_NUM, APINV_NUM, APPO_NUM, GJ_NUM, ARSO_NUM | Next AR invoice#, AP invoice#, PO#, GL journal#, SO# |
+| Record counters | AP_RECNUM, GJ_RECNUM, AR_RECNUM | Last-used record offsets |
+| Company | COMP_NAME(25)+ADD1+ADD2+CSZ(25 each) | Company name and address (printed on forms) |
+| Tax | TAX_RATE | Default sales tax rate |
+| 20 payment terms | TERMS_1..20 (name) + TRM_AMT/TYP/DAY/EOM/MAX/DISC per term | Inline terms table (120 fields total) |
+| AR defaults | AR_SHP_VIA(15)+AR_SLSP(2)+AR_ENTBY(5)+AR_TAXABL(1) | Default ship via, salesperson, entered-by, taxable flag |
+| AR end-of-form text | AR_ENDDESC_1..5 (30 each) | 5 lines printed at bottom of AR invoices |
+| AR flags | AR_TURNOFF(1)+AR_PEL(1) | Turnoff flag + PEL flag |
+| AP defaults | AP_SHP_VIA(15)+AP_ENTBY(2)+AP_PEL(1)+AP_ENDDESC_1..5 | AP ship via, entered-by, PEL, 5 end-of-form lines |
+| GL accounts | GL_CLRING+GLDPT_CLR, AR_GLACT+AR_GLDPT, AR_DISCGL+DISCDPT | Clearing, AR trade, AR discount accounts |
+| | AP_GLACT+AP_GLDPT, AP_DISCGL+DISCDPT | AP trade, AP discount accounts |
+| | TAX_GLACT+TAX_GLDPT, PO_TAXGL+PO_TAXDPT | Tax collected, PO tax accounts |
+| | PO_FREIGHT+PO_FRGTDPT, GL_RETEARN+GLDPT_RET | PO freight, retained earnings accounts |
+| | GL_RELYR+GLDPT_RELY, GL_ARINTR+GLDPT_ARIN | Prior-year relief, AR interest accounts |
+| | AR_FREIGHT+AR_FRGTDPT, PO_RNI+PO_RNIDPT, PO_INR+PO_INRDPT | AR freight, PO receiving, PO in-route accounts |
+| Fiscal | FISCAL_YR (DATE) + PRGS_WHR(40) | Fiscal year start date; progress report path |
+| AR interest | AR_INT_RTE (float) + AR_INT_DAY (int) | Late payment interest rate + calculation days |
+| 9 bank accounts | CHK_NUM_1..9 (next check#) + CHK_BAL_1..9 + CHK_NAME_1..9(30) | Per-bank: next check number, balance, name |
+| | CHK_CHKACT_1..9(10) + CHK_CHKDPT_1..9(4) + CHK_CHKCUR_1..9(3) | Per-bank: GL account, GL dept, currency code |
+| AR/AP/PR check index | AR_CHKACT, AP_CHKACT, PR_CHKACT (UBINARY 2) | Which bank slot (1-9) for each module |
+| Plain paper flags | PLAIN_INV, PLAIN_PO, PLAIN_STMT, PLAIN_CHKS (1 each) | Use pre-printed forms vs. plain paper |
+| | FORM_CMPNY (1) | Print company name on forms |
+| Feature flags | AUTO_BO(1), RTS_DEF(1), TAL(1) | Auto backorder, routing default, TAL module enabled |
+| Aging buckets | AR_AGING_1..5 + AP_AGING_1..5 (UBINARY 2 each) | AR and AP aging period boundaries in days |
+| PR deduction names | PR_ODNAME_1..6 (12 each) | Payroll optional deduction labels |
+| EXTRA | EXTRA (173) | Reserved |
 
 **Access:** AD-A (GL Defaults) via T7MDEFAULTS.RWN (435 procs). See Accounting Defaults (AD) section below.
 
-**Confidence: 68/100** — Field count and major categories confirmed from schema; individual field meanings inferred from naming conventions.
+**Confidence: 78/100** — Full 286-field schema extracted and all field groups decoded from naming conventions; individual field behaviors confirmed from AD module DFM forms and SM module descriptions.
 
 ---
 
@@ -3468,7 +3487,16 @@ All 6 data-bridge programs use only standard boilerplate DB (BKSYHELP+ISIS+MKAHI
 - **T7DDCHECK** (92 procs): validates DDF entries (FILEDICT+FILEKEY) against physical FILELOC data files
 - **QUERYEXECUTE** (26 procs): executes saved ISDRILL SQL queries; also surfaces as QU-F SQL Executor in Query menu
 
-**Confidence: 65/100** — 9 CHM operations documented; 5 programs matched with high confidence; TA-G/H/M/Q still unmatched to specific RWN; TA-D likely T7FNR based on table match.
+**TAS Admin low-level programs (WTAS* family):** 8 programs operate on the TAS runtime's own file dictionary (FILE* tables — not in Pervasive DDF):
+- **WTASDATAM** (59p) / **WTASDMGR** (68p): Data manager — FILELOC+FILEDICT+FILEKEY+FILEKNUM
+- **WTASFLOC** (22p) / **WTASMERGE** (16p): File location manager / Merge — all FILE* tables (FILELOC+FILEDICT+FILEKEY+FILEKNUM+FILEDES+FILEDFLD+ERRMSG+FILEDBF)
+- **WTASINIT** (21p): Initialize file tables — FILELOC+FILEDICT+FILEKNUM+FILEKEY+FILEDES
+- **WTASCVTDICT** (13p) / **WTASCVTDICTPR** (12p): Dictionary converter — full FILE* set
+- **WTASCHKINT** (8p): Integrity checker — FILELOC+FILEKEY only
+
+**FILE* tables are TAS runtime internals** — not Pervasive DDF tables. FILELOC=file path registry, FILEDICT=field dictionary, FILEKEY=key definitions, FILEKNUM=key numbers, FILEDES=field descriptions, FILEDFLD=field definitions, FILEDBF=dBASE file info, ERRMSG=error messages. These explain why FILELOC/FILEDICT appear in hundreds of EvoERP programs as non-DDF entries — every program that does dynamic record navigation via the TAS runtime links to FILELOC.
+
+**Confidence: 72/100** — 9 CHM operations documented; 5 EvoERP programs matched; 8 WTAS* TAS utility programs identified and mapped to FILE* tables; TA-G/H/M/Q still unmatched to specific RWN.
 
 ---
 
@@ -6916,11 +6944,13 @@ SH=shipping, SO=sales orders, WC=work centers, WO=work orders).
 | IS_DROP_DESC | 30 | Description |
 | IS_DROP_EXTRA | 50 | Extra notes |
 
-Key architecture finding: **all T7DS* programs have only ISDROP in their DB fingerprints** (plus standard support tables BKSYHELP/ISIS/MKAHIST/etc). The actual module data tables (BKAPVEND, BKARINV, WORKORD, etc.) are NOT in the fingerprints. This means DS programs interact with those tables via unregistered DDF connections (direct Pervasive SQL or ODBC) or via TAS Pro runtime functions that bypass the named-table mechanism used for fingerprinting. The ISDROP table is a small configuration/dropdown lookup, not a data queue.
+**Definitive architecture (Pass 63):** All 24 T7DS* programs (excluding T7DSQC which has 0 tables) have **IDENTICAL 36-table fingerprints**. Every DS stub opens the exact same set: BKAPDESC, BKAPPO, BKAPVEND, BKARCUST, BKARINV, BKCMACCN, BKGLTRAN, BKGLX, BKICMSTR, BKSYAR, BKSYHELP, CLASS, DBAFIFO, DBAHLPID, FILELOC, ISDRILL, ISDROP, ISGLDATE, ISICMSTR, ISIS, ISLINKS, ISLOG, ISMCR, ISNCR, ISNOTES, ISNTYPE, ISNUMBER, ISREMIND, ISTAXGRP, ISTRIGRS, LANGDICT, LOT, MKAHIST, MKECLASS, SERIAL, WORKORD. This is NOT per-module data access — it is a universal dispatcher: the DS stub calls a central sync engine, passing the module code as a parameter. T7DSQC = 0 tables (QC sync not yet implemented or uses a different path).
 
-DS module purpose: synchronize selected EvoERP data to/from an external system. Each T7DS* program handles one module's data export/import. The sync mechanism and target system are encrypted in the RWN.
+The 36-table common set covers: master data (BKICMSTR, BKARCUST, BKAPVEND), transactions (BKARINV, BKAPPO, BKGLTRAN), lot/serial traceability (LOT, SERIAL), multi-currency (ISMCR, ISTAXGRP), notifications (ISTRIGRS, ISREMIND, ISNOTES), and runtime infrastructure (FILELOC, ISLOG, LANGDICT, MKAHIST, ISIS).
 
-**Confidence: 45/100** — 22+ programs identified; ISDROP(4f) schema confirmed; "all DS programs = ISDROP only" fingerprint pattern confirmed; actual sync logic and target system fully blocked by encryption.
+DS module purpose: synchronize selected EvoERP data to/from an external system. Each T7DS* stub dispatches one module's sync cycle. The actual sync logic (which fields move, which direction) is encrypted in the RWN.
+
+**Confidence: 62/100** — 25 programs identified; identical 36-table fingerprint confirmed across all 24 active stubs; T7DSQC anomaly confirmed (0 tables); architectural pattern (universal dispatcher, not per-module data access) fully documented; sync target and field-level logic blocked by RWN encryption.
 
 ---
 
@@ -6962,4 +6992,18 @@ DS module purpose: synchronize selected EvoERP data to/from an external system. 
 
 ---
 
-*Last updated: 2026-06-17 (Pass 62). Confidence bumps: SA 58→75 (BKSAREPT/BKACTRPT full schemas; 13-program structure), WBKLOOKUP 55→68 (ISDRILL 46f full field table; 76-table fingerprint cross-referenced; 6 non-DDF tables identified), PU 62→68 (63-table fingerprint fully cross-referenced; no PU-specific tables). New schemas (Pass 62): ISIS(23f), ISMCR(22f), ISNUMBER(52f), ISNCR(35f), ISTRIGRS(25f), ISREMIND(22f), ISJOB(9f), BKCMTERR(11f), BKSAREPT(57f full range-pair table), BKACTRPT(53f full range-pair table), ISARCHG(26f). 11 new schemas documented.*
+---
+
+### New Tables Confirmed (Pass 63)
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKSYMSTR | 286 | System master configuration — SINGLE ROW per company; auto-numbers (ARINV/APINV/APPO/GJ/ARSO NUM), company address, 20 payment terms (inline: NAME+AMT+TYP+DAY+EOM+MAX+DISC), 9 bank accounts (CHK_NUM/BAL/NAME/GLACT/GLDPT/CUR each × 9), AR/AP/GL accounts for trade+discount+tax+freight+retained earnings+interest, AR/AP aging buckets (5 each), feature flags (AUTO_BO/RTS_DEF/TAL/PLAIN_INV/PLAIN_PO/FORM_CMPNY), PR deduction names, fiscal year start, 173-byte EXTRA |
+| ISTAXGRP | 105 | Tax group definitions — ISIS_TXG_NAME(10) PK; CODE_1..9 (10 ea) = 9 tax authority codes per group; TAXON_1..9 (Y/N taxable per authority); PID_1..9 (province/jurisdiction ID); FREIGT(1) freight taxable flag; DESC(30) group description; DESCF_1..9 (20 ea) authority labels; IDC_1..9 (15 ea) authority ID codes; PERCC_1..9 (float) percentage per authority; TOTPER total %; TAXBLE_1..12/NONTAX_1..12/COLECT_1..12 (float, 12-month taxable/non-taxable/collected history); OUTSTD outstanding tax; FRGT_1..9 freight-taxable per authority; TOFPER total freight percentage |
+| ISICMSTR | 41 | Item master product extension (IS_PROD_* prefix) — IS_PROD_CODE(15) PK; WT (weight), ITP(20 item type prefix), EXTRA(150), CDATE/RCDATE (created/received dates), TI+HI (tier/hold indicators), FOBPAL+FOBFULL (FOB pallet/full costs), HT+LG+WD (dimensions float), TOOL(15 tooling reference), SLEAD(2 supplier lead days), FLAG_1..10 (1×10), ALPHA_1..5 (30×5), NUM_1..5 (float×5), GDATES_1..5 (date×5), ADATE (approval date) |
+| ISNOTES | 13 | Universal notes store — IS_NOTE_ID(48)+TYPE(3) PK; CDATE+CTIME(10)+CWHO(15) created; EDATE+ETIME+EWHO edited; EXTRA(100) note body; PRIVATE(1) visibility flag; GROUP(4) note group code; CONTACT(30) associated contact name |
+| BKSYAR | 2 | AR transaction counter — BKSY_AR_TRXN (next AR transaction #) + BKSY_AR_DEPNO (next deposit #); 2-field status table for the AR module |
+
+---
+
+*Last updated: 2026-06-17 (Pass 63). Confidence bumps: DS 48→62 (all 24 T7DS* programs confirmed identical 36-table fingerprints — universal dispatcher architecture; T7DSQC anomaly confirmed), TA 65→72 (8 WTAS* TAS Admin programs identified; FILE* table architecture fully explained), BKSYMSTR 68→78 (full 286-field breakdown with all field groups decoded). New schemas (Pass 63): BKSYMSTR(286f full breakdown), ISTAXGRP(105f), ISICMSTR(41f), ISNOTES(13f), BKSYAR(2f). 5 new schemas documented.*
