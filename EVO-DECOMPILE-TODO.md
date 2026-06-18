@@ -992,11 +992,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Database Schema (field meaning) | **83** | 88 | **5** ↑+5 Pass77 100%coverage | 2026-06-17 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
-| Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
-| Module: AP | **93** | 92 | **0** ✅ ↑+1 Pass76 | 2026-06-17 |
+| Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
+| Module: AP | **96** | 92 | **0** ✅ ↑+3 Pass89 ISAPEX BKAP2-UDF BKAP.CHK BKQC recurring ACH/1099 | 2026-06-18 |
 | Module: IN/Inventory | **93** | 85 | **0** ✅ ↑+7 Pass87 IS.PROD.FLAGS[1..19] UDFi30 IS2D.BAR IS.ECO | 2026-06-18 |
-| Module: SO | **90** | 85 | **0** ✅ ↑+8 Pass88 BKAR.INV/INVL ISAR.CHG/TXN/INFO BKIC.PMAT full | 2026-06-18 |
-| Module: PO | **90** | 85 | **0** ✅ ↑+10 Pass88 BKAP.PO/POL BKRFQ RFQ->PO flow DPAS buyoff | 2026-06-18 |
+| Module: SO | **94** | 85 | **0** ✅ ↑+4 Pass89 serial-alloc contract-review quote-conv SO-V SO-O full | 2026-06-18 |
+| Module: PO | **93** | 85 | **0** ✅ ↑+3 Pass89 ISAP.CHG POS-module vendor-master T7POQ delivery | 2026-06-18 |
 | Module: WO | **97** | 90 | **0** ✅ ↑+3 Pass88 IS.PREQ/IS.SER/IS.TRAY/IS.WOPRIO ISSO.BOX WO-L suite | 2026-06-18 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
 | Module: BM/MRP | **90** | 88 | **0** ✅ ↑+2 Pass85 MTIC.PROD MRP fields confirmed | 2026-06-18 |
