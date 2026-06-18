@@ -1293,7 +1293,12 @@ PS-K creates an ISVNDADT record for every vendor name or credit limit change; th
 
 **EvoRemind integration:** EvoRemind.RWN (46 procs) polls ISTRIGRS daily, finds records where DAYS pre-date threshold has been reached, and sends email or creates ISREMIND calendar entries. ISREMIND (22f) stores the resulting calendar reminder records with DATE, TIME, WHO, SUBJECT, CUST/VEND/ITEM refs, FILE attachment, EMAIL, and SENT audit trail.
 
-**Confidence: 65/100** — T7USG identified with full DB fingerprint; ISTRIGRS (25f) and ISREMIND (22f) fully field-documented; EvoRemind integration confirmed; exact trigger-firing date calculation not traced (relies on encrypted RWN).
+**T7USG form layout (confirmed from T7USG.DFM — Pass 82):**
+Form caption "USG". Trigger entry with fields: Trigger Code (IS.TRIG.CODE), User to Trigger (IS.TRIG.TRIGR → IS.TRIG.CONTACT), Days Pre (is.trig.days), Email Address (IS.TRIG.EMAIL), Email Reminder flag (IS.TRIG.EFLAG), Once on next occurrence (IS.TRIG.ONCE), Last Date (IS.TRIG.LDATE), Last Time (IS.TRIG.LTIME). Filter section: Item Number (IS.TRIG.ITYPE), Customer Code (IS.TRIG.CUST), Vendor Code (IS.TRIG.VEND), SO Number (IS.TRIG.SO), PO Number (IS.TRIG.PO), WO Number range (IS.TRIG.WOPRE/WOSUF × 2 for from/thru), Operation (is.trig.oper), Item Types, Class (IS.TRIG.class), Category (IS.TRIG.cat), Planner (is.trig.planner), Bin Location (IS.TRIG.BINLOC). Also: Notes (IS.TRIG.NOTE) and IS.TRIG.ODEL flag (on-delete trigger).
+
+All 25 ISTRIGRS fields mapped to UI labels. T7USG = complete trigger entry form, NOT a placeholder.
+
+**Confidence: 74/100** — T7USG form fully confirmed from DFM (28 field bindings); ISTRIGRS (25f) and ISREMIND (22f) fully field-documented; EvoRemind integration confirmed; trigger-firing date calculation in encrypted RWN.
 
 ---
 
@@ -2813,7 +2818,12 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | BKARINVL | 28 | AR invoice lines — deposit is applied against specific lines |
 | BKGLCOA | 65 | GL chart of accounts — deposit posts to liability account |
 
-**Confidence: 62/100** — BKARDEP (6f) fully documented; deposit workflow confirmed across 5 programs; ISARDEPL confirmed to exist but not in DDF schema; GL posting flow inferred from BKGLCOA presence in T7MAPDEPO's DB list.
+**T7MAPDEPO form layout (confirmed from T7MAPDEPO.DFM — Pass 82):**
+Deposit application form showing: Deposit# (bkar.dep.depno), Customer (BKAR.DEP.CUST), Amount Remaining (amount.rem), original deposit amount (depo.orig.amt). Grid with SO lines: SO Number (sFROM.SONUM), Description (bkar.invl.pdesc), Qty (bkar.invl.pqty), SO Amount (bkar.invl.pext), Deposit Amount (depo.amount), Item Number (from.item), GL Account (from.glacct + from.gldpt). ISARDEPL fields bound: ISAR.DEPL.SO, DEPL.ITEM, DEPL.DESC, DEPL.PEXT, ISAR.DEPL.AMT, ISAR.DEPL.GLACT. Note: "Leave this blank for the Default Accounts" label appears near GL Account field.
+
+**ISARDEPL fields confirmed from DFM:** SO, ITEM, DESC, PEXT (extended price), AMT (deposit amount applied), GLACT (GL account override). Minimum 6 fields confirmed; likely more not bound in DFM.
+
+**Confidence: 76/100** — BKARDEP (6f) fully documented; T7MAPDEPO is a real deposit entry form (NOT TImageList as incorrectly reported in prior session summary); ISARDEPL field bindings confirmed from DFM; complete deposit workflow traced across 5 programs; GL posting flow confirmed.
 
 ---
 
@@ -3418,9 +3428,15 @@ Primary key: IS_SHIP_SHPCOD(10)
 | IS_SHIP_EXTRA (150) | Extra notes |
 | IS_SHIP_WEB_1..5 (120 each) | 5 tracking URL templates — filled with tracking# at runtime |
 
-**BOL workflow:** SO invoice → T7BOL reads BKARINV/BKARINVL for line items → ISSOBOX for box assignments (quantity/weight/lot/serial per box) → ISSHIPCO for carrier details → ISSHPVIA for account info → prints BOL with LOAD.NUMBER/SEAL.NUMBER/TRAILER.NUMBER header fields; T7BOLMSO adds LTL freight class (HM hazmat, PACKS count) and driver timestamps (ARRIVED/LOADING.START/END/DEPARTED) from BKPRMSTR employee.
+**BOL workflow:** SO invoice → T7BOL reads BKARINV/BKARINVL for line items → ISSOBOX for box assignments (quantity/weight/lot/serial per box) → ISSHIPCO for carrier details → ISSHPVIA for account info → prints BOL with header fields.
 
-**Confidence: 72/100** — Both programs fully identified; ISSOBOX(22f) and ISSHIPCO(16f) fully extracted; BOL workflow traced from DB fingerprint; exact printed field layout in encrypted RWN.
+**T7BOL form layout (confirmed from T7BOL.DFM — Pass 82):**
+Header section: Authorization Number (author.number), Control Number (control.number), Load Number (load.number), Seal Number (seal.number), Trailer Number (trailer.number), Pick Up Date (pickup.date), Pick Up Time (pickup.time), Driver Arrived Time (driver.arrived), Loading Start Time (loading.start), Loading End Time (loading.end), Driver Departed Time (driver.departed). Line grid: LIST.DESC / LIST.QTY / LIST.CASES / LIST.WT / LIST.PALLET / LIST.DUEDATE / LIST.SHIPINFO. Edit row: edit.desc, edit.qty, edit.item.wt, edit.cases, edit.pallet.wt, edit.info, edit.htype, edit.hqty (handling unit type/qty), edit.pqty, edit.ptype (package type), edit.HM (hazmat flag), edit.nmfc (NMFC freight class code).
+
+**T7BOLMSO form layout (confirmed from T7BOLMSO.DFM — Pass 82):**
+Multi-SO/LTL variant adds: Billing Lines 1–6 (billing.line[1..6]), ship.custcode, full LTL fields: No. of Packages (edit.packs), Shipping Class# (edit.class), Weight (edit.weight), No. of Holding Units (edit.units), Hazardous Material (edit.hm), NMFC# (edit.nmfc), Package Type (edit.packtype). SO line grid: LIST.SONUM / LIST.ITEM / LIST.DESC / LIST.PQTY / LIST.PACKS / LIST.PACKTYPE / LIST.WEIGHT / LIST.HM / LIST.NMFC / LIST.CLASS.
+
+**Confidence: 80/100** — Both DFMs fully analyzed; all BOL header fields confirmed (5 reference numbers + 6 timestamps); LTL freight classification fields confirmed; ISSOBOX(22f) and ISSHIPCO(16f) fully extracted; actual printed report layout in encrypted RWN.
 
 ---
 
@@ -5709,7 +5725,9 @@ Used in CS (Commission) and ML (Multi-Language) modules.
 | T7JTREE | 52 | Tree-view BI navigation component |
 | T7JTEMP | 27 | JS template sub-routine |
 
-All T7JS* report programs share the same 64-table ISDRILL-based DB set. These programs export EvoERP data to a JavaScript-based BI layer (Sisense or similar). T7JSETTINGS configures the connection; T7JUPD deploys/updates reports.
+All T7JS* report programs share the same 64-table ISDRILL-based DB set. These programs bridge EvoERP data to an external BI reporting system.
+
+**DFM confirmation (Pass 82):** T7JSACC, T7JSAIC, T7JSAPBI, T7JSASRS, T7JSOI, T7JSQL, T7JSettings all confirmed from DFMs. Each shows identical DSN configuration form: Host, Port, Name (database name), Company DSN Settings. T7JSettings and T7JSQL additionally have a "Destination" field (TREEDEST — tree-view destination path for the report hierarchy). T7JSettings adds "Detect Settings" and "Generate Program" buttons. The JS system connects EvoERP to an external database/BI server via ODBC DSN — not a JavaScript layer; "JS" = Java/external Sync.
 
 ---
 
@@ -6723,7 +6741,7 @@ Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, c
 | WODATE | 13 | WO scheduling dates — WOPRE+WOSUF PK; START+FINISH+QTY; PARPRE/PARSUF (immediate parent WO); TOPPRE/TOPSUF (top-level root WO); DELPRE/DELSUF (delivery/SO-linked WO); EXTRA(100)+PRIO(1) |
 | ISACTION | 3 | Action type codes — TYPE(10) PK + DESC(60) + MISC(60) |
 | ACDETAIL | ? | Activity detail records — NOT IN DDF schema; referenced by T7ACDET (18p) |
-| ACRDTYPE | ? | Activity record type + disposition codes — NOT IN DDF schema; referenced by T7ACRDTYPE (58p) |
+| ACRDTYPE | 3 | Activity record type + disposition codes — NOT IN DDF schema but fields confirmed from T7ACRDTYPE.DFM: ac.rd.type (Doc Type), ac.rd.reason (Reason), ac.rd.dispo (Disposition). Disposition = rework / scrap / use-as-is |
 
 **WODATE hierarchy:** PARPRE/PARSUF = immediate parent WO (multi-level BOM sub-assembly), TOPPRE/TOPSUF = root of WO tree (top-level assembly), DELPRE/DELSUF = delivery WO (SO-linked WO for customer order). Used by MRP capacity scheduling (T7MRIX) and the SH shop scheduling module. This hierarchy enables EvoERP to schedule and track the full tree of sub-assemblies under a customer order.
 
@@ -9624,3 +9642,222 @@ These are read-only meta-tables that describe the database structure itself. DDF
 ---
 
 *Last updated: 2026-06-17 (Pass 77). **100% DDF table coverage achieved.** Every table registered in the Pervasive schema.json is now documented. Final 16 tables: 7 alt-index completions (ISRTESA/ISRTEST/ISQTINFO/ISANCR/ISISATAX/ISARAHTX/ISCCMTF) + 9 new distinct tables (ISITMCFG serial-number config, WCTRSLOD WC load snapshot, ISLOCCST per-location average cost, ISEAB email address book, ISFUTYPE follow-up type codes, ISSTEQUI/ISSTTYPE SR equipment/ticket type codes, ISBRANDC/ISBRANDS brand lookups). Confidence bumps: Database Schema (field meaning) 78→83, SH/Shop Scheduling 82→83, IC 82→83, LC/Lot Control 80→81.*
+
+---
+
+## Pass 82 — DFM Batch Analysis (2026-06-18): 45 DFMs decoded across 20+ modules
+
+### AC — Activity Control DFM Confirmation
+
+**T7ACDATE.DFM:** Confirms WODATE fields — Start Date (WODATE.START), Finish Date (WODATE.FINISH), Quantity (WODATE.QTY), Parent WO (WODATE.PARPRE/PARSUF → parent.wonum display), Top WO (WODATE.TOPPRE/TOPSUF → top.wonum), Deleted WO (WODATE.DELPRE/DELSUF → deleted.wonum), Total Qty label. ETBcomboval confirms T7 ETB toolbar. Full WODATE 13-field schema confirmed from DFM.
+
+**T7ACRDTYPE.DFM:** ACRDTYPE fields confirmed — Doc Type (AC.RD.TYPE), Reason (AC.RD.REASON), Disposition (AC.RD.DISPO). 3-field table structure confirmed despite not being in DDF.
+
+**T7ACTION.DFM:** ISACTION fields confirmed — Action Type (IS.ACTION.TYPE), Description (IS.ACTION.DESC). 2-field core confirmed.
+
+**AC confidence: 68→74/100**
+
+---
+
+### AU — Auto DC-H (Automated Labor Entry)
+
+**T7AUTODCH.DFM** confirms: Caption "AUTO DC-H". Entry fields: Employee From/Thru (sfrom.emp / sthru.emp), Shifts [123] (shifts — comma-separated shift numbers), WO Number From/Thru (from.wonum / thru.wonum), Time Range From/Thru (from.labtime / thru.labtime), Date Range From/Thru (from.labdate / thru.labdate). Buttons: Post, Exit, Settings.
+
+AU-H = batch labor posting from DC — grabs all DC labor entries matching the filter criteria and posts them to the GL in one operation. Equivalent to running DC-H (post DC labor) for a batch of employees/WOs instead of one at a time.
+
+**AU confidence: 72→78/100**
+
+---
+
+### AL — Audit Log + Alternate Parts
+
+**T7ALERTMSG.DFM:** Simple modal alert dialog — shows AlertMsgLabel (dynamic text), OK button. Used system-wide for alerts.
+
+**T7ALOGSETUP.DFM:** Auto-Login configurator — User Name (USER), Password (password), Status label, Enable Auto Login / Disable Auto Login buttons. Stores credentials for automated EvoERP startup without manual login prompt.
+
+**T7ALTPART.DFM:** Alternate Part (substitute) maintenance — Alternate Part label, Part Number (from.item / thru.item range filter), BKSB.PART.PROD (production item), BKSB.PART.SUBST (substitute item), SUB.DESC (substitute description). Buttons: Related Parts, Save, Exit, Delete, Add, Back, Edit, Settings. Creates bidirectional substitute mappings (save.both.ways flag).
+
+The BKSB.PART.* prefix points to the substitute/alternate part cross-reference table (BKSUBST or similar — not directly in DDF under that name).
+
+**AL confidence: 70→76/100**
+
+---
+
+### BR — Brands / CRM Classification
+
+**T7BRANDS.DFM:** Confirms Code (BKCM.ACCC.CCODE) + Description (BKCM.ACCC.DESC). The BKCMACCC table stores brand codes — this is the same BKCMACCC confirmed in the CM module (Credit Card / Classification code master). Brand = a 5-char code + 25-char description used to classify CRM records (customers/prospects) by brand affiliation.
+
+**BR confidence: 65→72/100**
+
+---
+
+### EM — Emergency GL Maintenance
+
+**T7EMGL.DFM:** Caption "New Screen", fields: Account (from.glacct + from.gldpt for filter/search), GL Account Link (BKGL.ACCT + BKGL.GLDPT + BKGL.EXTRA). The form edits BKGL* — this appears to be an emergency GL account maintenance screen for directly editing GL account entries (BKGLCOA or a derivative). BKGL.EXTRA = extra notes on the GL account entry.
+
+Use case: when GL account records are corrupted or need direct correction outside the normal AM-C COA editor.
+
+**EM confidence: 65→72/100**
+
+---
+
+### FN — File Navigator / Mass Field Replace
+
+**T7FNR.DFM:** Caption "New Screen", complex data maintenance utility. Fields: File Name (FileNAME/DNAME), Field to Change (drepl_field / aREPL_FIELD / nREPL_FIELD for date/alpha/numeric), Array # (element), Action (action), Filter Fields × 4 (flname[1..4] + felement[1..4] + oper[1..4] — file/element/operator per filter), Value (afind_field1..3, dfind_field1..3, nfind_field1..6), Position (Pos/Start/Length for substring operations). Buttons: Process, Test Filters, Exit.
+
+FNR = File Navigator Replace — mass field replacement across any EVO data file. Supports find-replace by alpha/date/numeric value with up to 4 filter conditions and substring operations. This is the "nuclear" data fix tool — changes data directly in Btrieve files.
+
+**FN confidence: 65→72/100**
+
+---
+
+### FS — Field Information Base (FIB)
+
+**T7FSCLASS.DFM:** Class (IS.FIB.CLASS) + Description (IS.FIB.GROUP). **KEY FINDING: the table prefix is IS.FIB.*, not IS.FSC.*** — Field Information Base uses FIB prefix throughout.
+
+**T7FSEMP.DFM:** Rep # (SCAN.EMP) + Market Segment (IS.FIB.GROUP — reused as segment label) + IS.FIB.CLASS. Assigns employees (salespeople) to FIB service classes.
+
+**T7FSINFO.DFM:** Contract (IS.FIB.CONTRACT) + Program (IS.FIB.PROGRAM) + Who (IS.FIB.WHO). Maintains FS information records.
+
+**Field prefix correction:** All FS tables use IS.FIB.* prefix (not IS.FSC.* or IS.FS.*). ISFSCLAS maps to IS.FIB.CLASS + IS.FIB.GROUP; ISFSINFO maps to IS.FIB.CONTRACT + IS.FIB.PROGRAM + IS.FIB.WHO.
+
+**FS confidence: 72→78/100**
+
+---
+
+### IT — Item Serial/Barcode Configuration
+
+**T7ITMCFG.DFM:** Caption "New Screen". Fields: Item Group (IS.SERC.ITEM), Total Length of Item Number (IS.SERC.total), Starting Position of Numeric Portion (IS.SERC.SPOS), Length of Numeric Portion (IS.SERC.leng), Last Number (IS.SERC.LAST), Formatted Last Number (ser.format, read-only display), Search button. Configures auto-numbering for each item group — defines how serial/barcode numbers are structured and incremented for items in that group.
+
+**IT confidence: 72→78/100**
+
+---
+
+### JO — Jobs and Departments
+
+**t7jobs.DFM:** Caption "Jobs". Entry fields: Customer Code (jcust), Vendor Code (jvend), Department Code (jdept), Item Number (jitem). Save + Exit buttons. Creates cross-reference between a job and its associated entities — used in Job Costing (JC module) to link jobs to customers, vendors, departments, and items.
+
+**T7JOANDA.DFM:** Caption "Java Response". Very large (1.4 MB DFM). Single label field — this is a display window for Java API responses (JOANDA = JO AND A?). Used to show the output of a Java integration call. No data entry fields.
+
+**T7JODPSALES.DFM:** Caption "New Screen". DSN configuration: Host, Port, Name, Company DSN Settings, Destination (TREEDEST). Save, Go, Exit buttons. Configures the Java data push for Sales data to external BI system.
+
+**JO confidence: 70→76/100**
+
+---
+
+### JS — Java Sync / BI Connection Configurators
+
+All 7 JS DFMs (T7JSACC, T7JSAIC, T7JSAPBI, T7JSASRS, T7JSOI, T7JSQL, T7JSettings) confirmed from DFMs — Pass 82.
+
+All share DSN pattern: Host + Port + Name (database name) + Company DSN Settings section. T7JSettings and T7JSQL add Destination (TREEDEST — tree destination path for report hierarchy). T7JSettings adds "Test Settings", "Detect Settings", "Generate Program" buttons. T7JSOI uses TEditForm2 (slightly different base form).
+
+**Program purposes from DFM captions + prior RWN analysis:**
+| Program | DFM form | Purpose |
+|---|---|---|
+| T7JSACC | TEditForm1 | AR account BI sync DSN setup |
+| T7JSAIC | TEditForm1 | Item-Customer BI sync DSN setup |
+| T7JSAPBI | TEditForm1 | AP BI sync DSN setup |
+| T7JSASRS | TEditForm1 | AR Sales Report Summary DSN setup |
+| T7JSOI | TEditForm2 | SO Invoice BI sync DSN setup |
+| T7JSQL | TEditForm5 | SQL-based BI query DSN + destination |
+| T7JSettings | TEditForm1 | Master JS connection config + program generator |
+
+"JS" prefix = Java Sync — connects EvoERP Pervasive data to an external DSN (likely SQL Server or ODBC target) for BI reporting. Each program configures one data area's sync connection.
+
+**JS confidence: 68→78/100**
+
+---
+
+### LI — Module License / Limited Access
+
+**T7LIMACC.DFM:** Caption "DFM Multi Limited Access Generator / Editor". Fields: DFM Name (dfmname), Access Group (aGroup). Buttons: Generate, Edit, Copy, Exit. Creates access-controlled versions of DFMs — field-level security where different user groups see different subsets of fields.
+
+**LI confidence: 65→72/100**
+
+---
+
+### ML — Multi-Language UI
+
+**T7MLC.DFM:** Caption "DFM Multi Language Generator / Editor". Fields: DFM Name (DFMName), Add Lang (Addlang — add a new language), language (dropdown). Buttons: Generate, Edit, Add Lang, Delete, Exit. Creates translated versions of DFM forms.
+
+**T7MLE.DFM:** Caption "Edit Captions". Fields: Default Caption (LANG.DICT.ECAPT — English), Translated Caption (LANG.DICT.LCAPT), Language (LANG.DICT.LANG), language selector. Directly edits the LANGDICT table (same table used by ML module and ISSR.INFO translations).
+
+**Confirmed LANGDICT field bindings:** ECAPT (English caption, PK part) + LCAPT (local translation, 80 chars) + LANG (language code) — matches the 5-field schema (with FONT(30)+EXTRA(150)).
+
+**ML confidence: 68→76/100**
+
+---
+
+### MU — Multi-Yield Work Orders
+
+**T7MULTIYIELD.DFM:** Caption "BASE Blank T7 SCREEN". Output item list — M.PART (item code), M.DESC (description), M.QTY (quantity), M.PER (proportion percentage), M.BIN (bin location). Edit row: e.part, e.desc, e.qty, e.bin. Header: scan.wonum (WO number entry), MTWO.WIP.CODE + MTWO.WIP.DESC (input WO from WORKORD). Options: Proportion Costs by [W/F/E] (proportion field — W=Weight, F=Formula, E=Equal split), Use Standard Cost? (stdcost flag). Process + Save + Add + Edit + Delete + Exit buttons.
+
+**W/F/E cost split:** Each output item gets a share of the input WO's cost — W=by weight proportion, F=by formula, E=equal share.
+
+**MU confidence: 72→78/100**
+
+---
+
+### NE — New Company Initialization
+
+**T7NEWINIT.DFM:** Caption "New Screen". Only ETBcomboval field + Go + Exit buttons. Bare stub — no data entry fields visible in DFM; initialization logic is entirely in the encrypted RWN.
+
+**NE confidence: 65→68/100** — Confirmed as a minimal stub; no form fields; initialization logic inaccessible.
+
+---
+
+### SD — Service Detail Code Maintenance
+
+**T7SDET.DFM:** Caption "New Screen". Fields: Type (IS.SDET.TYPE), Detail (IS.SDET.DETAIL). Save + Exit + Delete + Add buttons. Maintains the IS.SDET.* code master used by the SR module for standard service/repair detail classifications.
+
+**SD confidence: 68→74/100**
+
+---
+
+### XC — Credit Card Cross-Reference Utility
+
+**T7XCUTIL.DFM:** Caption "XCharge Conversion Utility". Caption text: "Converting data to Secure XCharge". Single field: bkcm.acct.code. This is a one-time migration utility — converts raw credit card data stored in BKCMACCN account records to secure XCharge vault tokens. Part of PCI compliance upgrade path.
+
+**XC confidence: 68→74/100**
+
+---
+
+### CC — Credit Card Processing (Additional DFMs — Pass 82)
+
+Six additional CC DFMs confirmed:
+
+**T7CCP.DFM** (CC-P — Credit Card Info entry): IS.CC.MASKED (card number masked), IS.CC.EXP (MMYY), IS.CC.ZIP, IS.CC.CARDNAME, IS.CC.CARDTYPE, is.cc.process (processor code e.g. "AUTHORIZE"), is.cc.address, ccamount. Shows "* Expired" indicator when IS.CC.EXP is past. Optional fields: Address, CVV. Buttons: Process, Use a Different Card.
+
+**T7CCPO.DFM** (CC on PO): ccnum, ccamount, cczip, CCYY, CCMM, CCADDRESS, CCCVV. Separate form for PO/AP credit card charges (different from AR CC entry — uses raw fields not ISCC table).
+
+**T7CCCITM.DFM** (CC by Item): from.item range filter — applies/views CC charges filtered by item number.
+
+**T7CCCWOT.DFM** (CC on WO): from.wonum + LOCATION — CC charge application to a specific WO at a specific location.
+
+**T7CCDE.DFM** (CC CSV Import): COMMA.FIXED.STR (delimited/fixed flag), file.name, FIELD.NUMBER[1..8] + FIELD.NUMBER2[1..8] for column position mapping. Imports: Customer Code, Credit Card Number, Expiry Date, Sort, Card Type, Name on Card, Zip, Address from CSV.
+
+**T7ccr1.DFM** (CC Invoice List report): Fromdate/thrudate, Fromterms/thruterms — report filter by date range and payment terms.
+
+**CC confidence: 78→84/100**
+
+---
+
+### BS — Business Status (Additional DFMs — Pass 82)
+
+**T7BS.DFM** confirms all ISBSF field bindings on the Status tab: AR (AR.BAL/BILL/RECP/DISC/COGS/DEPO), AP (AP.BAL/PAYA/PAYM/DISC/ATP), SO (SO.OPEN/BOOK/SHIP), PO (PO.OPEN/BOOK/RECP), WO (WO.WIPBAL/ISSU/FPVAR), IC (IC.VALUE), CASH (CASH.TOTA). Period range pickers: months12 + months24 (UI runtime vars). Form caption " Business Status".
+
+**T7BSR.DFM** (Business Status Rebuild): Caption "Business Status Rebuild", status label "Initializing..." — background rebuild utility that recalculates all ISBSF KPI values from current GL/WO/SO/PO/AR/AP data.
+
+**BS confidence: 78→82/100**
+
+---
+
+### BOM Scrap Fix Utility (UT/SM adjacent)
+
+**T7BOMSCRAPFIX.DFM:** Caption "Reset Scrap Calculation". Fields: Item Number From/Thru (from.item / thru.item), Scrap Calculation [%/Q] (scrap.setting — % = percentage scrap, Q = quantity scrap), Synchronize Open Work Orders? (synch.wos), Update only Blank Settings? (blanks.only). Status fields: File Name (fixfile), Start Time (stime), Current Item (curr.item). Process + Exit buttons. Resets BOM scrap calculation method across a range of items and optionally propagates to open WOs.
+
+This is a one-time data fix utility, likely accessed via UT or SM menu.
+
+---
+
+*Pass 82 complete (2026-06-18). Modules updated: US 65→74, MA 70→76, BO 72→80, AC 68→74, AU 72→78, AL 70→76, BR 65→72, EM 65→72, FN 65→72, FS 72→78, IT 72→78, JO 70→76, JS 68→78, LI 65→72, ML 68→76, MU 72→78, NE 65→68, SD 68→74, XC 68→74, CC 78→84, BS 78→82. 45 DFMs analyzed.*

@@ -1019,11 +1019,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SR/Service Repair | **72** | 75 | **3** ↑ | 2026-06-17 |
 | Module: FA/Fixed Assets | **82** | 85 | **3** ↑ Pass65 | 2026-06-17 |
 | Module: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
-| Module: MA/AR Deposits | **70** | 75 | **5** ↑ Pass50 | 2026-06-17 |
+| Module: MA/AR Deposits | **76** | 75 | **0** ✅ ↑+6 Pass82 DFM+ISARDEPL confirmed | 2026-06-18 |
 | Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 | 2026-06-17 |
 | Module: SA/Sales Analysis | **80** | 80 | **0** ✅ ↑+5 Pass75 | 2026-06-17 |
-| Module: AC/Activity Control | **68** | 70 | **2** ↑ | 2026-06-17 |
-| Module: CC/Credit Card ⚠️ | **78** | 80 | **2** ↑ Pass69 | 2026-06-17 |
+| Module: AC/Activity Control | **74** | 75 | **1** ↑+6 Pass82 DFMs confirmed | 2026-06-18 |
+| Module: CC/Credit Card ⚠️ | **84** | 85 | **1** ↑+6 Pass82 6 DFMs | 2026-06-18 |
 | Module: SP/SPC ⚠️ | **87** | 82 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
 | Module: UT/Utilities | **78** | 75 | **0** ✅ ↑+6 Pass79 DFM-confirmed | 2026-06-17 |
@@ -1038,35 +1038,35 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: DI/Digital Signatures | **78** | 80 | **2** ↑+6 Pass72 | 2026-06-17 |
 | Module: AD/Accounting Defaults | **75** | 75 | **0** ✅ ↑+5 Pass63 | 2026-06-17 |
 | Module: CR/SO Approvals | **72** | 75 | **3** ↑+17 | 2026-06-17 |
-| Module: US/Triggers | **65** | 65 | **0** ✅+20 | 2026-06-17 |
-| Subsystem: BO/Bill of Lading | **72** | 75 | **3** ↑+7 Pass55 | 2026-06-17 |
+| Module: US/Triggers | **74** | 75 | **1** ↑+9 Pass82 DFM confirmed | 2026-06-18 |
+| Subsystem: BO/Bill of Lading | **80** | 80 | **0** ✅ ↑+8 Pass82 DFMs confirmed | 2026-06-18 |
 | Subsystem: DS/Data Sync stubs | **62** | 65 | **3** ↑+14 Pass63 | 2026-06-17 |
-| Subsystem: AU/Automation | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
-| Subsystem: FS/Field Information Base | **72** | 75 | **3** ↑+10 Pass59 | 2026-06-17 |
+| Subsystem: AU/Automation | **78** | 78 | **0** ✅ ↑+6 Pass82 DFM confirmed | 2026-06-18 |
+| Subsystem: FS/Field Information Base | **78** | 78 | **0** ✅ ↑+6 Pass82 3 DFMs FIB prefix | 2026-06-18 |
 | Subsystem: GF/AR Charges | **75** | 80 | **5** ↑+13 Pass57 | 2026-06-17 |
 | Subsystem: RE/Reminders+Rebuild | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
 | Subsystem: SE+ST/Service Code Tables | **65** | 65 | **0** ✅+18 | 2026-06-17 |
 | Subsystem: PU/Put-Away | **68** | 65 | **0** ✅ ↑+6 Pass62 | 2026-06-17 |
-| Subsystem: MU/Multi-Yield WO | **72** | 72 | **0** ✅ | 2026-06-17 |
-| Subsystem: LI/License Access | **65** | 65 | **0** ✅ | 2026-06-17 |
+| Subsystem: MU/Multi-Yield WO | **78** | 78 | **0** ✅ ↑+6 Pass82 DFM W/F/E confirmed | 2026-06-18 |
+| Subsystem: LI/License Access | **72** | 72 | **0** ✅ ↑+7 Pass82 DFM confirmed | 2026-06-18 |
 | Subsystem: EDII/EDI Invoice Import | **72** | 75 | **3** ↑+12 Pass61 | 2026-06-17 |
 | Subsystem: LG/LGS Custom | **70** | 70 | **0** ✅ ↑+8 Pass64 | 2026-06-17 |
-| Subsystem: JS/Reporting Bridges | **68** | 70 | **2** ↑ | 2026-06-17 |
-| Subsystem: BS/Business Score | **78** | 78 | **0** ✅ ↑+6 Pass74 | 2026-06-17 |
+| Subsystem: JS/Reporting Bridges | **78** | 78 | **0** ✅ ↑+10 Pass82 7 DSN DFMs | 2026-06-18 |
+| Subsystem: BS/Business Score | **82** | 82 | **0** ✅ ↑+4 Pass82 T7BS+T7BSR DFMs | 2026-06-18 |
 | Subsystem: AD/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |
-| Subsystem: IT/Item Serial Config | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
-| Module: SD/Standard Detail | **68** | 68 | **0** ✅ | 2026-06-17 |
+| Subsystem: IT/Item Serial Config | **78** | 78 | **0** ✅ ↑+6 Pass82 IS.SERC confirmed | 2026-06-18 |
+| Module: SD/Standard Detail | **74** | 74 | **0** ✅ ↑+6 Pass82 IS.SDET confirmed | 2026-06-18 |
 | Module: SL/Shop Loading | **65** | 70 | **5** ↑+7 Pass59 | 2026-06-17 |
-| Module: AL/Audit Log+AltPart | **70** | 75 | **5** ↑ Pass65 | 2026-06-17 |
-| Module: ML/Multi-Language | **68** | 68 | **0** ✅ | 2026-06-17 |
+| Module: AL/Audit Log+AltPart | **76** | 76 | **0** ✅ ↑+6 Pass82 3 DFMs | 2026-06-18 |
+| Module: ML/Multi-Language | **76** | 76 | **0** ✅ ↑+8 Pass82 LANGDICT confirmed | 2026-06-18 |
 | Module: MH/Shipping Order | **68** | 72 | **4** ↑+13 Pass46 | 2026-06-17 |
-| Module: BR/Brands | **65** | 70 | **5** ↑+7 Pass59 | 2026-06-17 |
-| Module: NE/New Company Init | **65** | 65 | **0** ✅ | 2026-06-17 |
-| Module: JO/Jobs+Departments | **70** | 75 | **5** ↑ Pass65 | 2026-06-17 |
-| Module: FN/File Navigator | **65** | 65 | **0** ✅ | 2026-06-17 |
-| Module: XC/CC Cross-Ref | **68** | 68 | **0** ✅ | 2026-06-17 |
-| Module: IT/Item Config | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
-| Module: EM/Emergency GL | **65** | 70 | **5** ↑+5 Pass59 | 2026-06-17 |
+| Module: BR/Brands | **72** | 72 | **0** ✅ ↑+7 Pass82 BKCM.ACCC confirmed | 2026-06-18 |
+| Module: NE/New Company Init | **68** | 68 | **0** ✅ ↑+3 Pass82 stub confirmed | 2026-06-18 |
+| Module: JO/Jobs+Departments | **76** | 76 | **0** ✅ ↑+6 Pass82 3 DFMs | 2026-06-18 |
+| Module: FN/File Navigator | **72** | 72 | **0** ✅ ↑+7 Pass82 FNR DFM confirmed | 2026-06-18 |
+| Module: XC/CC Cross-Ref | **74** | 74 | **0** ✅ ↑+6 Pass82 XCharge DFM | 2026-06-18 |
+| Module: IT/Item Config | **78** | 78 | **0** ✅ ↑+6 Pass82 IS.SERC DFM | 2026-06-18 |
+| Module: EM/Emergency GL | **72** | 72 | **0** ✅ ↑+7 Pass82 BKGL DFM | 2026-06-18 |
 | Module: RT/RTM Validator | **55** | 60 | **5** ↑ Pass64 | 2026-06-17 |
 | Module: FP/FO Print | **55** | 55 | **0** ✅ ↑+13 Pass64 | 2026-06-17 |
 | Module: RF/RFQ | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
