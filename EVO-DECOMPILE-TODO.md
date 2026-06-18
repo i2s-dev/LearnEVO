@@ -990,7 +990,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Area | Current C: | Target C: | Gap | Last Updated |
 |---|---|---|---|---|
 | System Architecture | **90** | 90 | **0** ✅ ↑+3 Pass106k ISLINKS 311-field schema confirmed (UID+LINK+APP+TYPES[100]+PCB[100]+DEF[100]+DATE+WHO+ATYPE); EvoNotes 9-table pattern confirmed (BKAPNOTE/BKBMNOTE/BKSONOTE/BKQTNOTE/ISNOTES+); ISSCHED confirmed from Pass106f; all subsystems documented | 2026-06-18 |
-| Boot Sequence | **82** | 85 | **3** ↑+14 Pass103d START_UP.DBA confirmed: FILELOC→USECOMP→validate BKSYMSTR→registration; StartEvo.exe DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; FILELOC.B: 386 tables 6 companies 3613 records | 2026-06-18 |
+| Boot Sequence | **85** | 85 | **0** ✅ ↑+3 Pass106l StartEvo.exe Pass105 confirmed in doc (DomainAuth→KillProcs→LaunchUser); CHMHELP.EVO=sentinel flag "EvoHELP now set..."; evo:// URI+license gate documented; remaining open: exact evoerp.exe argv; suwin6.dcy pre-load | 2026-06-18 |
 | File Formats — SRC | **87** | 90 | **3** ↑+7 Pass104 BKROA/BKMRF/BKDCA analyzed: all operators (.a./.o./.n./$), find modes F/G/N/M/L/P, while/endw, sorta, listf/listm, rcn, setact, ifna, 20+ built-in functions confirmed | 2026-06-18 |
 | File Formats — DFM | **90** | 90 | **0** ✅ ↑+3 Pass106k Delphi 7 confirmed from evoerp.exe string table (qtintf70.dll="70"=VCL7.0); 51 distinct control types across 1136 DFMs cataloged in tas-pro-7-controls.md; all questions resolved | 2026-06-18 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
@@ -1111,7 +1111,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | RWN String Analysis technique | **90** | 90 | **0** ✅ ↑+8 Pass106 2-technique doc: Technique1=2575 string files, Technique2=rwn_symbols.json 1122 RWN records (db_files/procs/named_vars); workflow; upgrade table | 2026-06-18 |
 | Reporting Engine | **88** | 88 | **0** ✅ ↑+6 Pass106c comprehensive module-to-RTM table (12 modules, RTM counts); TAS push-model pipeline (SETUP_REPORT_BUFF/OUTPUT_REPORT_DATA/EXEC_RB); print modes; cfg.rtm status note | 2026-06-18 |
 | Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
-| Java Integration | **85** | 88 | **3** ↑+12 Pass102 TASKS/sql/Main+ISJAVA schema; jdbc.ini; 260+ table model inventory; ISLINKS/ROUTING/WORKCTR/ISBSF/BKSYMSTR schemas | 2026-06-18 |
+| Java Integration | **88** | 88 | **0** ✅ ↑+3 Pass106l EvoPVT=JavaFX app confirmed (EvoApp+TabularView+LookupPane+SplashScreen); CsvExportTask+TextFileWriteTask+FileOpenTask tasks confirmed; PSQL 13.20.023 driver bundled in JAR; DatabaseSettings reads registry | 2026-06-18 |
 | ODBC Connectivity | **91** | 92 | **1** ↑+6 Pass105 EVOADMIN DSN confirmed (StartEvo license check); DSN table (DBA/ABI/EVOADMIN); Transactional vs. Relational API table documented | 2026-06-18 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
 | Business Workflows | **85** | 85 | **0** ✅ ↑+3 Pass106d Recipes15-16: lot/serial tracking lifecycle + new company creation | 2026-06-18 |

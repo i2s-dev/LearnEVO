@@ -1,22 +1,23 @@
 # EvoERP Boot Sequence
 
-Status: draft — traces based on `taspro7.ini`, `EvoSettings.INI`, and
-filenames; has not yet been confirmed by dynamic tracing.
+Status: partial — StartEvo.exe fully confirmed (Pass 105); runtime config verified; some
+post-login steps still inferred from file names.
 
 ## The chain, in order
 
 1. **Shortcut**: `C:\ISTS\EvoERP.lnk` (size 1,470 B). Invokes
    `C:\ISTS\StartEvo.exe` with the working directory set to `C:\ISTS`.
 
-2. **Launcher**: `C:\ISTS\StartEvo.exe` (37,216 B, Oct 2024). Its role
-   — based on the surrounding file set — is likely:
-   - Check that `tp7runtime.exe` exists and is not already running for
-     this user (the `EvoSched.RWN` and `EvoService*.RWN` present on
-     the share suggest there's a service-tier mode too).
-   - Read `C:\ISTS\taspro7.ini` for the default run-program path.
-   - Launch `tp7runtime.exe` (or the identical-size `evoerp.exe`)
-     passing the target `.rwn`.
-   - Confirming the exact argv form is a **todo** — open question.
+2. **Launcher**: `C:\ISTS\StartEvo.exe` (37,216 B, Oct 2024). **Confirmed** (Pass 105):
+   a .NET assembly with three confirmed steps:
+   - **DomainAuthenticate** — validates the Windows domain user before proceeding.
+   - **KillEvoProcesses** — terminates any stale EvoERP processes from previous sessions
+     (prevents zombie `evoerp.exe` instances from locking Btrieve files).
+   - **LaunchEvoWithUser** — launches `evoerp.exe` under the authenticated user context.
+   Also confirmed: registers the `evo://` URI scheme for deep-link launching;
+   connects to Pervasive PSQL via DSN `EVOADMIN`; runs
+   `SELECT count(*) FROM tas_menus` as the **license gate** before launching
+   (if 0 rows → abort, EvoERP not licensed for this database).
 
 3. **Runtime**: `C:\ISTS\tp7runtime.exe` (33.3 MB, Jul 2023). This is
    the TAS Professional 7 runtime engine. Reads its config from
@@ -56,17 +57,24 @@ filenames; has not yet been confirmed by dynamic tracing.
 | `taspro7.ini`            | Runtime config — paths, fonts, colors, license serial (`[Misc] Serial=670538`). |
 | `EvoSettings.INI`        | Per-machine module access toggles (e.g. `[ARA] SAVE ACCESS=1`). |
 | `WHOAMI.DBA`             | 35-byte user/terminal identity. Likely used for multi-user lock keys. |
-| `CHMHELP.EVO`            | 35-byte marker — purpose unknown. |
+| `CHMHELP.EVO`            | **Sentinel flag file** — 35-byte text file containing "EvoHELP now set for this computer\r\n". Written when EvoHELP CHM help is first configured on a workstation; presence signals setup is complete. |
 | `RBuilder.ini`           | ReportBuilder designer preferences. |
 | `DFM\`                   | Local cache of large T7 DFMs for fast load. |
 | `PDFS\`                  | Local output directory for generated PDFs. |
 
-## Questions I need to answer next
+## Open questions (Pass 106l)
 
-1. Does `StartEvo.exe` do anything besides spawn `tp7runtime.exe`?
-   (Strings analysis of the exe would tell me.)
-2. What is the exact command line passed to `tp7runtime.exe`?
-3. Does the runtime pre-load `suwin6.dcy` before any network I/O? If so,
-   it might contain a baseline data-dictionary map we can parse.
-4. How does login + company selection map to the Btrieve/DBF files on
-   the share? (Need to find `EVOUSERS` records.)
+- **Exact command line to `evoerp.exe`** — StartEvo.exe's `LaunchEvoWithUser` step
+  passes some argv to `evoerp.exe`. Likely includes the target `.rwn` path and possibly
+  user credentials. Not yet confirmed from dynamic trace.
+- **suwin6.dcy pre-load** — does the runtime load `suwin6.dcy` before any network I/O?
+  That file ships locally in `C:\ISTS` and may be a baseline data-dictionary cache.
+- **Login → Btrieve mapping** — how company selection sets the per-company Btrieve
+  file suffix (`.BI2`, `.BAT`, etc.). Likely via `EVOMENU_SELCOMP.DCY` setting a
+  global company code variable that FILELOC picks up.
+
+**Resolved (Pass 105 + 106l):**
+- StartEvo.exe role: DomainAuthenticate → KillEvoProcesses → LaunchEvoWithUser ✅
+- License gate: `SELECT count(*) FROM tas_menus` via DSN EVOADMIN ✅
+- `evo://` URI scheme registration ✅
+- `CHMHELP.EVO` = CHM setup sentinel flag ✅
