@@ -77,20 +77,64 @@ Known company codes on this installation (folder suffixes):
 The login program sets `DfltCompanyCode` in `taspro7.ini` after the
 user's selection.
 
+## Multi-layer security model (confirmed Pass 105, 2026-06-18)
+
+EvoERP has **four distinct access control layers**, applied sequentially:
+
+| Layer | Mechanism | Table / File | Scope |
+|-------|-----------|--------------|-------|
+| 1. License gate | `StartEvo.exe` queries `tas_menus` via PSQL DSN=EVOADMIN | `BKMENUSU.DBF` | Whether a program is licensed at all |
+| 2. User/module | `AHSYLOG.AHSY_USER_ACCES_1..20` flags | `AHSYLOG` | Which of 20 module groups a user can access |
+| 3. Menu access | `WBKMENUSETUP.RWN` / `BKPSUSER.SEC` | `BKPSUSER` | Which individual program codes the user's security level permits |
+| 4. Field-level | `T7LIMACC.RWN` (PS-L "Enter Field Specific Access") | unknown table | Which individual fields a user can view or edit |
+
+### Layer 2 — `AHSYLOG` module-level flags
+
+`AHSY_USER_ACCES_1..20` — 20 one-byte flags per user. Each is `'Y'`/`'N'`/`'R'` (read-only inferred). The module-to-index mapping is not yet confirmed; the 20 slots likely correspond to the ~20 nav tab module groups.
+
+`AHSY_USER_LEVL` (2 chars) links to `BKSLEVEL` — the security level permission matrix: 14 menus × 20 options = 422 fields. Each row in BKSLEVEL describes what operations a given level can perform in a given menu.
+
+### Layer 3 — `BKPSUSER` program-level access
+
+`BKPSUSER` (11 fields, confirmed Pass 46):
+
+| Field | Size | Meaning |
+|-------|------|---------|
+| `CODE` | 15 | User code (PK, links to AHSYLOG) |
+| `PSWD` | 10 | Per-program password (for sensitive programs) |
+| `PRT` | 1 | Print permission flag |
+| `MENU` | 4 | Starting menu (4-char code) |
+| `CMPY` | — | Default company |
+| `MWIND` | — | Max windows open |
+| `ME` | — | Memo flag |
+| `SEC` | 30 | Security code string (which programs allowed) |
+| `MCNTR` | — | Menu counter |
+| `LDATE` | — | Last login date |
+| `EMP` | — | Links to BKPRMSTR (employee record) |
+
+### Security administration programs (from BKMENUSU.TXT, Pass 105)
+
+| Menu code | Label | Program |
+|-----------|-------|---------|
+| PS-A / ST-H-A | System Users/Passwords | `t7psa.rwn` |
+| PS-B | DBA System Security Levels | `bkpsb.run` (legacy) |
+| PS-C | DBA Company Logon Access | `bkpsc.run` (legacy) |
+| PS-E | Evo Menu Access by User Report | `t7pse.rwn` |
+| PS-F | Evo Menu Access by Program | `t7psf.rwn` |
+| PS-G / ST-H-B / TA-G | Maintain Menu Access Records | `WBKMENUSETUP.RWN` |
+| PS-H | Configure Auto-Chain Programs | `T7CHAIN.RWN` |
+| PS-I | Enter Approved Signers for POs | `T7DIGSIGADMIN.RWN` |
+| PS-J | Enter Contract Review Signers | `T7CTREVUADMIN.RWN` |
+| PS-K | Enter Vendor Approval | `J7appvend.rwn` (J7 custom) |
+| PS-L | Enter Field Specific Access | `T7LIMACC.rwn` |
+
 ## Admin setup
 
-The `SM-*` menu operations (34 entries — see
-[06-menu-system/overview.md](../06-menu-system/overview.md)) are
-where user+company administration lives. Key operations to map to
-the AHSYLOG ACCES_1..20 columns:
-
-- `SM-???` Enter Users → `EVOUSERS.DCY` + `AHSYLOG` rows.
-- `SM-???` Change Password → `EVOCHANGEPASS.DCY`.
-- `SM-???` Reset Password → `EVORESETPASS.DCY`.
-- `SM-???` Company Setup → writes `DfltCompanyCode`-ish metadata.
-
-Specific SM-x codes are listed in the menu overview; mapping each to
-its DCY form is a follow-up.
+The security administration path is:
+- **PS-A** (`t7psa.rwn`) — Enter users, set roles, set passwords
+- **PS-G** (`WBKMENUSETUP.RWN`) — Configure which menu items each user/level can see
+- **PS-B/C** (`bkpsb.run`, `bkpsc.run`) — Legacy DBA-era level/company access (still present)
+- **PS-L** (`T7LIMACC.rwn`) — Field-specific access (granular field-level read/write control)
 
 ## Session / locking
 

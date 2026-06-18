@@ -991,7 +991,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | TAS 4GL Language | **87** | 92 | **5** ↑+12 Pass104 All arithmetic/relational/logical ops confirmed; 10 field types (+ V,O); find modes F/G/N/M/L/P; while/endw/exit; sorta/listf/listm/rcn/setact/ifna/updta/openv; 20+ functions: str/trim/mid/chr/round/ttof/ftot/flerr/fnum/co/zask/etyp | 2026-06-18 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
 | Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
-| Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
+| Security / Login | **85** | 85 | **0** ✅ ↑+7 Pass105 4-layer security model: license gate(tas_menus/StartEvo)→AHSYLOG module flags→BKPSUSER program-level→T7LIMACC field-level; all PS* admin programs mapped from BKMENUSU.TXT; BKPSUSER 11 fields confirmed; BKSLEVEL 14×20=422f confirmed | 2026-06-18 |
 | Menu System | **93** | 90 | **0** ✅ ↑+9 Pass105 BKMENUSU.DBF=xBase/CodeBase menu store (confirmed); BKMENUSU.TXT=870-line complete code→program mapping; module groups confirmed; PL=Checkmark Payroll Link; NE=New Programs (14 custom i2 items); J7 programs in standard menu confirmed | 2026-06-18 |
 | Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
 | Module: AP | **96** | 92 | **0** ✅ ↑+3 Pass89 ISAPEX BKAP2-UDF BKAP.CHK BKQC recurring ACH/1099 | 2026-06-18 |
@@ -1104,7 +1104,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Reporting Engine | **82** | 88 | **6** ↑+7 Pass101 403 RTMs module-mapped from rtm_callers.csv; 23 module groups cross-reference | 2026-06-18 |
 | Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
 | Java Integration | **85** | 88 | **3** ↑+12 Pass102 TASKS/sql/Main+ISJAVA schema; jdbc.ini; 260+ table model inventory; ISLINKS/ROUTING/WORKCTR/ISBSF/BKSYMSTR schemas | 2026-06-18 |
-| ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
+| ODBC Connectivity | **91** | 92 | **1** ↑+6 Pass105 EVOADMIN DSN confirmed (StartEvo license check); DSN table (DBA/ABI/EVOADMIN); Transactional vs. Relational API table documented | 2026-06-18 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
 | Business Workflows | **82** | 85 | **3** ↑+7 Pass97 Recipes10-14: GL-journal/period-end-archive/backup/new-user/inv-adjustment | 2026-06-18 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |

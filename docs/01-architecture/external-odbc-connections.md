@@ -152,9 +152,37 @@ publish time. `AnyCPU` is not sufficient — you need `win-x64` *or*
 | `IM002` with `DSN=DBA` in a 32-bit build             | The 32-bit DSN hasn't been set up on this machine yet. Open `SysWOW64\odbcad32.exe` and add a System DSN `DBA` pointing at `i2s109-solidcrm` / `@DBA`. |
 | Connection opens but `SELECT` returns nothing       | Probably hitting the wrong database (`@DBA` vs. `@ABI`) — check which DSN name you used. |
 
+## Known DSN names on this installation (Pass 105, 2026-06-18)
+
+| DSN name | Used by | Purpose |
+|----------|---------|---------|
+| `DBA` | External tools, Crystal Reports, Excel | Standard Pervasive ODBC access to all 659 `.B` tables via SQL. Read-write. |
+| `ABI` | Historical reporting tools | Points at the archive database (`@ABI`). |
+| `EVOADMIN` | `StartEvo.exe` (.NET launcher) | Elevated Pervasive Server DSN used for license validation. StartEvo queries: `SELECT count(*) FROM tas_menus WHERE menu_name = ? AND program_name = ?` before allowing launch. Not for external tools — connection credentials unknown. |
+
+The `EVOADMIN` DSN is set up as a **Server DSN** (format: `Server DSN=EVOADMIN;Host=<server>;Port=<port>`)
+rather than a standard ODBC DSN. It is distinct from `DBA` and requires server-side configuration
+on `i2s109-solidcrm`. Its purpose is licensing: `tas_menus` is the PSQL SQL-engine view of
+`BKMENUSU.DBF` (the xBase menu database). If a program is not in `tas_menus`, StartEvo.exe
+refuses to launch it regardless of what EVO's own security system (`AHSYLOG`) allows.
+
+## Transactional vs. Relational API
+
+Pervasive PSQL exposes two distinct access paths:
+
+| API | Description | Who uses it |
+|-----|-------------|-------------|
+| **Btrieve (Transactional)** | Record-manager API: open/find/get/insert/update/delete by key. The native `.B` file format. | `tp7runtime.exe` (TAS Pro 4GL) — all EVO internal operations |
+| **ODBC/SQL (Relational)** | SQL `SELECT`/`INSERT`/`UPDATE`/`DELETE` via ODBC driver over the same `.B` files. The DDF schema (`file.ddf`, `field.ddf`, `index.ddf`) provides the metadata. | `StartEvo.exe` (PSQL .NET driver), external reporting tools (Crystal Reports, BIRT, Excel) |
+
+Both access the same physical `.B` files. The Btrieve API is faster and handles record locking
+natively; the ODBC/SQL API is read-friendly for reporting. For write operations from external
+tools, Btrieve semantics (including the DDF-defined indexes) are enforced at the engine level —
+SQL `UPDATE` modifies the same B-tree as TAS Pro `write`.
+
 ## Related
 
 - [../04-data-dictionary/overview.md](../04-data-dictionary/overview.md)
-  — the 649 tables you can `SELECT` from once connected.
+  — the 659 tables you can `SELECT` from once connected.
 - [./security-and-login.md](./security-and-login.md) — EVO's own login
   path (separate from raw ODBC; uses `AHSYLOG`).
