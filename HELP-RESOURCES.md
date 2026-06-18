@@ -4366,23 +4366,34 @@ beyond the base cut sheet.
 T7ADCA (290 procs, 55 unique tables) — the largest DC entry module. Full automatic shop floor
 data collection: real-time labor posting, routing tracking, QC inspection, and tray management.
 
+**Note (Pass 109):** T7ADA/T7ADB/T7ADC do **not exist** on the network share — they were a false inference. The AD subsystem has exactly one program: T7ADCA. (Confirmed by exhaustive rwn_symbols.json search.)
+
 Key tables opened (unique to or important in T7ADCA):
 
 | Table | Fields | Purpose |
 |---|---|---|
-| BKDCSHFT | 34 | Shift definitions — NAME1/2/3 (3 shifts), with START/BUFFER/BRK1IN/BRK1OUT/BRK2IN/OUT/END times per shift; 3 shifts × ~11 time fields each |
+| BKDCSHFT | 34 | Shift definitions — 3-shift configuration (Pass 109: all 34 fields confirmed) |
 | ISROUTEX | 100 | Routing extension — IS_ROUT_CODE+OPER PK; 10 machine slots × CYCTIME/CYCHR/... fields; extended cycle times per routing operation |
 | ISWOROEX | 60 | WO Routing extension — WOPRE+WOSUF+OPER PK; ITP(item type pack), FOI(1), LQTY(labor qty), EXTRA(100), SDAY/FDAY, DATE1, ALPHA1/2, NUM1, DESC1 + 45 more custom slots |
 | ISWOEX | 63 | WO Extended fields — WOPRE+WOSUF PK; ITP(20), RF(1), EXTRA(100), MCLASS(6), MNUM, dates 1-4, INT1, NUM1 + 48 more |
 | OPQCDESC | 10 | Operation QC description — WOPRE+WOSUF+OPER PK; DESC(30)+SERIAL(25)+UID(30)+QCCODE(2)+DATE+QTY+EXTRA; QC result per WO operation |
 | ISWOTRAY | 52 | WO Tray tracking — tray number + WO/oper + started/completed/scrapped qty + 5 bin splits |
+| BKPRMSTR | — | Payroll employee master — ADCA is payroll-aware; employee ID at scan → BKPRMSTR lookup |
 | EIMCOLST | — | NOT IN DDF — EIM Color List (UI display config for DC labor screen) |
 
-Also opens: BKDCLAB, WORKORD, BKPRMSTR, MTICMSTR, BKICMSTR, WOROUT, ROUTING, MACHINE, WORKCTR, WOLABOR, SCRAP
+**BKDCSHFT (34 fields) — complete field list:**
+- `BKDC_SH_NAME1/2/3` (3×25) — names for the 3 shifts (e.g., "Day", "Swing", "Night")
+- Per shift (×3), 10 TIME fields: `BUFFER_n` (pre-start), `START_n`, `BRK1IN_n`, `BRK1OUT_n` (first break), `LUNCHIN_n`, `LUNCHOT_n` (lunch), `BRK2IN_n`, `BRK2OUT_n` (second break), `FIN_n` (shift end), `FINBUF_n` (post-finish buffer)
+- `BKDC_SH_EXTRA` (50) — extra notes
+Total: 3 names + 30 time fields + 1 extra = 34 fields. One row per company.
 
-**ADCA Workflow:** Operator scans at work center → T7ADCA reads WORKORD + ROUTING for operation context → posts BKDCLAB labor record → updates WOLABOR/WOROUT → if QC required, creates OPQCDESC → if tray tracking, updates ISWOTRAY
+Also opens: BKDCLAB, WORKORD, MTICMSTR, BKICMSTR, WOROUT, ROUTING, MACHINE, WORKCTR, WOLABOR, SCRAP, ISLOG (kill-flag process control)
 
-**Confidence: 70/100** — T7ADCA confirmed with 55 unique tables; all tables cross-referenced in DDF (EIMCOLST exception noted); BKDCSHFT(34f), ISROUTEX(100f), ISWOROEX(60f), ISWOEX(63f), ISWOTRAY(52f), OPQCDESC(10f) full schemas extracted; DC workflow confirmed; specific screen field mapping blocked by RWN encryption.
+**ADCA vs PA distinction:** ADCA opens BKPRMSTR (payroll) + BKDCSHFT (shifts) → scanner-driven, payroll-integrated. PA opens WOMAT + INVTXN + ISBINLOT → touchscreen-driven, material-issue capable. Neither can do what the other does.
+
+**ADCA Workflow:** Operator scans badge → T7ADCA resolves employee via BKPRMSTR → reads WORKORD + ROUTING for WO operation context → posts BKDCLAB labor record → updates WOLABOR/WOROUT → if QC required, creates OPQCDESC → if tray tracking, updates ISWOTRAY
+
+**Confidence: 72/100** — T7ADCA confirmed with 55 unique tables; BKDCSHFT all 34 fields decoded (Pass 109); all key tables fully field-documented; T7ADA/B/C confirmed non-existent; ADCA vs PA functional distinction documented; ISLOG kill-flag mechanism confirmed; specific screen field mapping blocked by RWN encryption.
 
 ---
 
@@ -4641,42 +4652,73 @@ workflow clear; detailed option/substitution logic blocked by encryption.
 **ISSCOMP** (5f): IS_SCOMP_DETAIL(20) + COMPND(30) + VIS(1) + WHO(40) + IS_SCOMP(50) — compound
 serial definitions (linking serial number to batch/compound product identifier).
 
-**SERIAL (30f) — Central Serial Number Master:**
+**SERIAL (30f) — Central Serial Number Master (Pass 109: all 30 fields confirmed from DDF):**
 
 | Field | Type | Size | Meaning |
 |---|---|---|---|
 | MTSER_CODE | STRING | 15 | Item code (PK part 1, FK → BKICMSTR) |
-| MTSER_SERIAL | STRING | 25 | Serial number (PK part 2) |
+| MTSER_SERIAL | STRING | 25 | Serial number string (PK part 2) |
 | MTSER_LOT | STRING | 15 | Associated lot number |
-| MTSER_PO | FLOAT | 8 | Purchase order number (PO receipt source) |
+| MTSER_PO | FLOAT | 8 | PO number (purchased path) |
 | MTSER_RECDOC | FLOAT | 8 | Receipt document number |
 | MTSER_VENDOR | STRING | 10 | Vendor code (FK → BKAPVEND) |
 | MTSER_RECDATE | DATE | 4 | PO receipt date |
-| MTSER_POCOST | FLOAT | 8 | PO receipt cost |
-| MTSER_SO | FLOAT | 8 | Sales order number (customer ship reference) |
+| MTSER_POCOST | FLOAT | 8 | PO receipt unit cost |
+| MTSER_SO | FLOAT | 8 | SO number (ship path) |
 | MTSER_CUSTCODE | STRING | 10 | Customer code (FK → BKARCUST) |
 | MTSER_SHIPDATE | DATE | 4 | Date shipped to customer |
 | MTSER_SELLPRICE | FLOAT | 8 | Selling price |
-| MTSER_WO | FLOAT | 8 | Work order number (manufacturing source) |
-| MTSER_ISSDATE | DATE | 4 | WO issue/completion date |
-| MTSER_ISSCOST | FLOAT | 8 | WO completion cost |
-| MTSER_INRECDATE | DATE | 4 | Internal receipt date (WO receipt / transfer-in) |
-| MTSER_INRECCOST | FLOAT | 8 | Internal receipt cost |
-| MTSER_EXPDATE | DATE | 4 | Expiration date |
+| MTSER_WO | FLOAT | 8 | WO number (manufacturing path) |
+| MTSER_WOSUF | UBINARY | 2 | WO suffix |
 | MTSER_WOCODE | STRING | 15 | WO part code |
-| MTSER_NOTES_1..8 | STRING | 30 | 8 × 30-char free-text notes |
-| +10 more | — | — | Additional tracking fields |
+| MTSER_ISSDATE | DATE | 4 | WO issue date (component issued to WO) |
+| MTSER_ISSCOST | FLOAT | 8 | Cost at WO issue |
+| MTSER_INRECDATE | DATE | 4 | Internal WO receipt date (finished good received back) |
+| MTSER_INRECCOST | FLOAT | 8 | Cost at WO completion |
+| MTSER_EXPDATE | DATE | 4 | Expiration / warranty date |
+| MTSER_NOTES_1 | STRING | 30 | Free-text note 1 |
+| MTSER_NOTES_2 | STRING | 30 | Free-text note 2 |
+| MTSER_NOTES_3 | STRING | 30 | Free-text note 3 |
+| MTSER_NOTES_4 | STRING | 30 | Free-text note 4 |
+| MTSER_NOTES_5 | STRING | 30 | Free-text note 5 |
+| MTSER_ONHAND | FLOAT | 8 | Current on-hand quantity (1=in stock, 0=shipped/consumed) |
+| MTSER_LOC | STRING | 10 | Current warehouse location |
+| MTSER_BIN | STRING | 15 | Current bin location |
+| MTSER_INV | FLOAT | 8 | AR invoice number (when invoiced on SO) |
+| MTSER_EXTRA | STRING | 50 | Extra notes |
 
-The SERIAL table is EvoERP's serial lifecycle ledger: each row is one unique serialized unit. Three lifecycle paths:
-- **Purchased:** PO→RECDOC→VENDOR→RECDATE→POCOST
-- **Manufactured:** WO→ISSDATE→ISSCOST (INRECDATE=WO receipt)
-- **Sold:** SO→CUSTCODE→SHIPDATE→SELLPRICE
+**Serial number lifecycle — fully traced from MTSER fields (Pass 109):**
 
-EXPDATE supports shelf-life and warranty tracking. Multiple SERIAL rows per item code, one per serial number.
+1. **Purchase receipt** (T7SCH / PO Receiving): RECDATE + PO + RECDOC + VENDOR + POCOST set; ONHAND → 1; LOC/BIN = receiving location.
+2. **Issued to WO as component**: ISSDATE + WO + WOSUF + WOCODE + ISSCOST set; ONHAND → 0 (consumed into WO).
+3. **WO completion / internal receipt**: INRECDATE + INRECCOST set; ONHAND → 1; LOC/BIN = finished goods location.
+4. **SO shipment**: SHIPDATE + SO + CUSTCODE + SELLPRICE + INV set; ONHAND → 0 (shipped).
+5. **Expiry tracking**: EXPDATE populated at receipt or manufacturing for shelf-life / warranty management.
 
-**Architecture:** T7SCA assigns serials at WO receipt; T7SCF posts serial inventory transactions (INVTXN); T7SCG manages auto-generation counters (ISSERCNT); T7SCH posts serial WO receipts and SO shipments (WORECV+BKARINV); T7SCOMP handles compound/batch serial definitions (ISSCOMP).
+**ISSERIAL (11f) — WO Serial Genealogy:**
+- `IS_SER_WOPRE/WOSUF` — which WO produced this relationship
+- `IS_SER_PARENT(15)` + `PDESC(30)` + `PSERIAL(25)` — the parent/output item code, desc, and serial
+- `IS_SER_ADATE` — assembly date
+- `IS_SER_COMP(15)` + `CDESC(30)` + `CSERIAL(25)` — the component item code, desc, and serial consumed
+- `IS_SER_FDATE` — finish date
+- `IS_SER_EXRA(100)` — extra
 
-**Confidence: 78/100** — 9 programs confirmed; SERIAL(30f) full schema extracted — all three lifecycle paths (PO/WO/SO) decoded; ISSCOMP + ISSERCNT schemas confirmed; per-screen field detail blocked by encryption.
+Each ISSERIAL row records: "WO WOPRE/WOSUF consumed component serial CSERIAL to produce parent serial PSERIAL." This is the serial genealogy / traceability chain — supports regulatory traceability ("which serial numbers went into unit X?").
+
+**ISSERCNT (9f) — Serial Auto-Number Config per Item:**
+- IS_SERC_ITEM(15) — item (PK)
+- IS_SERC_CLASS(4) — classification code
+- IS_SERC_SPOS(2) — start position of numeric portion within serial string
+- IS_SERC_LENG(2) — length of numeric portion
+- IS_SERC_TOTAL(2) — total serial string length
+- IS_SERC_NUMBER(8) — current next sequence number
+- IS_SERC_LAST(25) — last serial issued (text)
+- IS_SERC_L2(2) — length-2 (second numeric component, for compound format)
+- IS_SERC_EXTRA(100) — extra
+
+**Architecture:** T7SCA assigns/counts serials; T7SCB lists/maintains with trigger links; T7SCC posts count transactions; T7SCE inquires by location; T7SCF shows full serial transaction history (INVTXN); T7SCG maintains ISSERCNT auto-number counters; T7SCH posts serial WO receipts and SO shipments (cross-references WORECV+BKARINV); T7SCOMP handles compound/batch serial definitions (ISSCOMP).
+
+**Confidence: 80/100** — 9 programs confirmed; SERIAL(30f) all 30 fields decoded with lifecycle mapping (Pass 109); ISSERIAL(11f) genealogy table fully documented; ISSERCNT(9f) auto-number config documented; ISSCOMP(5f) confirmed; per-screen field binding blocked by RWN encryption.
 
 ---
 
@@ -5734,9 +5776,26 @@ Multi-Yield allows one WO to produce multiple output items (not just the primary
 
 ### PA — Paperless DC / Paperless Work Order Entry
 
-**T7PAPERLESS** (205 procs, 50 tables) — opens: WORKORD+MTICMSTR+BKICMSTR+WOROUT+ROUTING+BKICLOC+ISBINLOC+ISWOEX+WORECV+BKAPPOL+ISWOTRAY+BKDCLAB.
+**T7PAPERLESS** (205 procs, 50 tables), **T7PACKMENU** (5 procs, stub), **T7PASS** (3 procs, 45 tables — password sub).
 
-Paperless DC = touchscreen/kiosk-based WO operation reporting without paper travelers. DB set is identical to ADCA (Advanced DC) — same tables for BKDCLAB (labor), ISWOTRAY (QC trays), WORECV (receipts). BKAPPOL in the set suggests it can trigger PO receiving from the shop floor (outside processes). Primary difference from ADCA: this is the menu-driven paperless form, ADCA is the scanner-based auto-collect version.
+Paperless DC = touchscreen/kiosk-based WO operation reporting without paper travelers. Opens identical core tables to ADCA (BKDCLAB, ISWOTRAY, WORECV, WORKORD, WOROUT, ROUTING) plus several that ADCA does not open:
+
+| PA-only tables | Missing from ADCA | Implication |
+|---------------|-------------------|-------------|
+| WOMAT | BKPRMSTR | PA can post WO material issues (BOM consumption) — ADCA cannot |
+| INVTXN | BKDCSHFT | PA writes inventory transactions at posting; ADCA doesn't (uses payroll/shift timing instead) |
+| ISBINLOT | EIMCOLST | PA does bin-level lot traceability; ADCA has EIM color display config |
+| BKBMMSTR | — | PA reads BOM master directly |
+| ISACCESS | — | PA checks module-enable flag (license gate) |
+| BKYSMSTR | — | PA reads the company/system master |
+| WOBOM | — | PA opens the WO BOM detail for material pickup |
+| WODATE | — | PA tracks WO date milestones |
+
+**PA vs ADCA distinction:** ADCA is the **scanner-driven** auto-collect path (badge + barcode scan, payroll-integrated with BKPRMSTR, shift-aware via BKDCSHFT). PA is the **touchscreen/menu-driven** kiosk path (operator taps operations, posts BOM material issues via WOMAT, records INVTXN). Both post BKDCLAB labor records and use ISLOG for process-control kill-flag.
+
+**T7PASS** = shared password entry sub-program called by T7PAPERLESS (45 of PA's 50 tables appear in T7PASS — confirms it's a helper that initializes the same session context).
+
+**Confidence: 72/100** — 50-table fingerprint confirmed; PA vs ADCA distinction documented (Pass 109); WOMAT/INVTXN/ISBINLOT material-issue capability confirmed; BKAPPOL confirms outside-process PO receiving from floor; screen-level field mapping blocked by RWN encryption.
 
 ---
 
@@ -7521,13 +7580,43 @@ SH=shipping, SO=sales orders, WC=work centers, WO=work orders).
 | IS_DROP_DESC | 30 | Description |
 | IS_DROP_EXTRA | 50 | Extra notes |
 
-**Definitive architecture (Pass 63):** All 24 T7DS* programs (excluding T7DSQC which has 0 tables) have **IDENTICAL 36-table fingerprints**. Every DS stub opens the exact same set: BKAPDESC, BKAPPO, BKAPVEND, BKARCUST, BKARINV, BKCMACCN, BKGLTRAN, BKGLX, BKICMSTR, BKSYAR, BKSYHELP, CLASS, DBAFIFO, DBAHLPID, FILELOC, ISDRILL, ISDROP, ISGLDATE, ISICMSTR, ISIS, ISLINKS, ISLOG, ISMCR, ISNCR, ISNOTES, ISNTYPE, ISNUMBER, ISREMIND, ISTAXGRP, ISTRIGRS, LANGDICT, LOT, MKAHIST, MKECLASS, SERIAL, WORKORD. This is NOT per-module data access — it is a universal dispatcher: the DS stub calls a central sync engine, passing the module code as a parameter. T7DSQC = 0 tables (QC sync not yet implemented or uses a different path).
+**Definitive architecture (Pass 63/109):** All 24 T7DS* programs (excluding T7DSQC which has 0 tables) have **IDENTICAL 36-table fingerprints**. Every DS stub opens the exact same set: BKAPDESC, BKAPPO, BKAPVEND, BKARCUST, BKARINV, BKCMACCN, BKGLTRAN, BKGLX, BKICMSTR, BKSYAR, BKSYHELP, CLASS, DBAFIFO, DBAHLPID, FILELOC, ISDRILL, ISDROP, ISGLDATE, ISICMSTR, ISIS, ISLINKS, ISLOG, ISMCR, ISNCR, ISNOTES, ISNTYPE, ISNUMBER, ISREMIND, ISTAXGRP, ISTRIGRS, LANGDICT, LOT, MKAHIST, MKECLASS, SERIAL, WORKORD. This is NOT per-module data access — it is a universal dispatcher: the DS stub passes the module code to a central sync engine. T7DSQC = 0 tables (QC sync not yet implemented or uses a different path).
 
-The 36-table common set covers: master data (BKICMSTR, BKARCUST, BKAPVEND), transactions (BKARINV, BKAPPO, BKGLTRAN), lot/serial traceability (LOT, SERIAL), multi-currency (ISMCR, ISTAXGRP), notifications (ISTRIGRS, ISREMIND, ISNOTES), and runtime infrastructure (FILELOC, ISLOG, LANGDICT, MKAHIST, ISIS).
+**Why each table category appears in the fingerprint (Pass 109, field-level confirmed):**
 
-DS module purpose: synchronize selected EvoERP data to/from an external system. Each T7DS* stub dispatches one module's sync cycle. The actual sync logic (which fields move, which direction) is encrypted in the RWN.
+| Category | Tables | Purpose in DS context |
+|----------|--------|-----------------------|
+| Master data | BKICMSTR, ISICMSTR, BKARCUST, BKAPVEND, BKCMACCN | Item/customer/vendor master records — the core data being synced |
+| Transactions | BKARINV, BKAPPO, BKGLTRAN, BKGLX, BKAPDESC | AR invoices, PO headers, GL entries for sync |
+| FIFO costing | DBAFIFO (5f: PARTNO+QTY+COST+RECVDATE+REMAIN) | FIFO cost layers per part — IC valuation data for sync |
+| Lot/serial | LOT, SERIAL | Traceability records for item movements |
+| Multi-currency | ISMCR, ISTAXGRP, ISIS | Exchange rates, tax groups, system feature flags |
+| Scheduling/calendar | ISGLDATE | Fiscal period calendar — needed for date-period mapping during sync |
+| Notes/attachments | ISNOTES, ISNTYPE, ISLINKS | Notes and document links per entity |
+| Marketing | MKAHIST, MKECLASS | CRM history and event classification |
+| Notifications | ISTRIGRS, ISREMIND | Trigger/reminder records |
+| NCR | ISNCR | Non-conformance records |
+| **Process control** | **ISLOG (9f)** | **Background process tracker — DS writes a row on start (WHO/WHAT/DOING/STARTD/STARTT/COMPANY), polls IS_LOG_KILL(1) to support graceful admin-initiated termination** |
+| Help/runtime | DBAHLPID (2f: REF+MAP), BKSYHELP (1f: PATH) | Context-sensitive help topic map + CHM path |
+| Runtime infra | FILELOC, LANGDICT, BKSYAR | TAS runtime file registry, language dict, AR sequence numbers |
+| Lookups | ISDRILL, ISDROP, CLASS, ISNUMBER | Generic query/lookup tables; auto-number allocator (50 parallel counters) |
+| WO context | WORKORD | Work order reference for WO-linked sync records |
 
-**Confidence: 62/100** — 25 programs identified; identical 36-table fingerprint confirmed across all 24 active stubs; T7DSQC anomaly confirmed (0 tables); architectural pattern (universal dispatcher, not per-module data access) fully documented; sync target and field-level logic blocked by RWN encryption.
+**ISLOG — active process / kill control (9 fields):**
+- `IS_LOG_WHO(35)` — user/process that started DS
+- `IS_LOG_WHAT(15)` — module identifier (e.g., "DSAR", "DSWO")
+- `IS_LOG_DOING(60)` — current step description (progress string)
+- `IS_LOG_STARTD` + `IS_LOG_STARTT(12)` — start date + time
+- `IS_LOG_COMPANY(3)` — company code
+- `IS_LOG_KILL(1)` — **kill flag**: admin sets to `.T.` in ISLOG to gracefully terminate the running DS sync
+- `IS_LOG_MSG(200)` — status/error message
+- `IS_LOG_EXTRA(100)` — extended info
+
+This is the mechanism by which EVO admins can abort a stuck or long-running DS sync without killing the process at the OS level.
+
+DS module purpose: synchronize selected EvoERP data to/from an external system. Each T7DS* stub dispatches one module's sync cycle. The actual sync logic (which fields move, which direction, which external endpoint) is encrypted in the central sync RWN.
+
+**Confidence: 65/100** — 25 programs identified; identical 36-table fingerprint confirmed across all 24 active stubs; T7DSQC anomaly confirmed (0 tables); architectural pattern (universal dispatcher + ISLOG kill-flag process control) fully documented; all 36 fingerprint tables field-decoded (Pass 109); HH=Handheld, IM=Import/Multi-currency confirmed; sync target endpoint and field-level mapping blocked by RWN encryption.
 
 ---
 

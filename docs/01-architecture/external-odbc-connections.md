@@ -180,6 +180,61 @@ natively; the ODBC/SQL API is read-friendly for reporting. For write operations 
 tools, Btrieve semantics (including the DDF-defined indexes) are enforced at the engine level —
 SQL `UPDATE` modifies the same B-tree as TAS Pro `write`.
 
+## DSN setup parameters (what goes inside a Pervasive ODBC DSN)
+
+When creating the `DBA` DSN in `SysWOW64\odbcad32.exe` (32-bit admin), the Pervasive ODBC
+Client Interface driver prompts for:
+
+| Parameter | Value for this installation |
+|-----------|---------------------------|
+| Data Source Name | `DBA` (or `ABI` for the archive database) |
+| Server Name (Host) | `i2s109-solidcrm` |
+| Database Name | `@DBA` (the `@` prefix is Pervasive shorthand for a server-registered database — distinct from a disk path) |
+| Port | `1583` (default Pervasive TCP port; rarely changed) |
+| Driver | `Pervasive ODBC Client Interface` (for remote connections from workstations) |
+
+The connection string in code stays `DSN=DBA;` — all of the above is baked into the DSN by whoever
+ran `odbcad32.exe` at workstation setup. No parameters need to be repeated in code.
+
+`EVOADMIN` uses the **Server DSN** flavor (format: `Server DSN=EVOADMIN;Host=i2s109-solidcrm;Port=1583`)
+and is configured server-side only — not visible in the workstation ODBC admin.
+
+## Read/write capability via ODBC (Relational engine)
+
+The Pervasive Relational engine (ODBC/SQL path) supports full SQL DML:
+
+- **SELECT** — always works; primary use case for external reporting tools.
+- **INSERT / UPDATE / DELETE** — work at the engine level. SQL writes go through the same
+  Btrieve B-tree that TAS Pro uses, so indexes defined in the DDF are maintained automatically.
+  EvoERP has **no database-side constraints** (no FK, triggers, or stored procedures in Pervasive) —
+  all referential integrity is enforced in TAS Pro application code. An external SQL write
+  bypasses those application-layer rules entirely.
+
+Practical implication: external ODBC code *can* corrupt EVO data if it writes rows that
+TAS Pro would consider invalid (wrong status codes, missing cross-references, etc.). Use
+ODBC writes from external tools only for non-critical housekeeping (e.g., setting flags in
+a custom table). Never write to core transactional tables (BKARINV, BKICMSTR, etc.) from outside EVO.
+
+## Table locking behavior when EVO has records open
+
+Pervasive PSQL's Relational engine uses **read-committed isolation** for ODBC connections.
+Key behaviors:
+
+- **ODBC reads (SELECT)** see the last committed version of a record and are **never blocked**
+  by a Btrieve lock held by EVO — even if TAS Pro has the record open in an edit session.
+  Dirty reads are not possible; you see committed data only.
+
+- **ODBC writes (INSERT/UPDATE/DELETE)** can conflict with Btrieve locks. If TAS Pro holds
+  an explicit record lock (`B_SINGLE_NO_WAIT_LOCK` or similar), an ODBC UPDATE on the same
+  record returns SQLSTATE `40001` (serialization failure) or a timeout. In practice EVO holds
+  locks only for the duration of a single screen save (milliseconds), so conflicts are transient.
+
+- **File-level locks** (`B_FILE_LOCK`) are used by EVO during month-end close and some posting
+  operations. During these periods, ODBC reads may block until the file lock is released.
+
+Summary: for reporting (SELECT), ODBC reads are safe at any time. For writes, coordinate to
+avoid the narrow windows when EVO holds explicit locks.
+
 ## Related
 
 - [../04-data-dictionary/overview.md](../04-data-dictionary/overview.md)
