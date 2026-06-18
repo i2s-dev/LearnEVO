@@ -10087,3 +10087,256 @@ This is an informational viewer — Standard Cost is calculated, not entered her
 ---
 
 *Pass 83 complete (2026-06-18). Modules updated: MRP 85→88, AC 74→78, CR 72→78, PS 82→88, AD 75→82, SE/ST 65→74, SU 72→78, PU 68→76, EDII 72→76. New: CH/CHAIN, KIT, STDCST viewer. EvoScheduler ISSCHED fully confirmed. 63 DFMs total analyzed.*
+
+---
+
+## Pass 84 DFM Analysis (2026-06-18) — 107 DFMs analyzed across 18 modules
+
+### QS/Quick Sales Entry
+
+**T7QSOA.DFM:** Caption "Quick Sales Entry → Create Sales Order". Minimal form: triggers quick-entry workflow.
+**T7QSOALINES.DFM:** "New SO Line Item" entry grid. Fields: sSONUM, BKAR.INV.CUSNME, BKAR.INV.CUSCOD (customer lookup), ITEM, BKIC.PROD.DESC, PQTY (quantity), ordl.pdisc (discount %), PRICE. Simple rapid-entry Sales Order screen bypassing the full SO-A form. Confidence: 76/100.
+
+---
+
+### RT/RTM Validator
+
+**T7RTMVALID.DFM:** Caption "Select Report Format Name". Single field: `rtmvld_name`. Used system-wide when a program needs the user to choose an RTM (ReportBuilder template) by name from the list of available report templates. This is a shared helper dialog — not a standalone module. Confidence: 70/100.
+
+---
+
+### VSCHED/Visual Scheduler (update)
+
+**T7VSCHED.DFM:** Confirms full scheduler workflow:
+- WO list entry: add.item, add.qty, add.wonum, add.sstart/sfin, add.status, sadd.EstNum
+- Three action buttons: `init` (Initialize Scheduling Files + start VS), `VS` (Start Visual Scheduler to continue editing), `Post` (Post Visual Scheduler dates)
+- External DSN settings: Host, port, name (connects to `wos` = Work Order Scheduler, `wcs` = Work Center Scheduler)
+- DSN configuration panel is labeled "Company DSN Settings" — separate from the ERP database, pointing at the visual scheduler server
+
+**T7SHIPRTM.DFM:** "User | RTM Name" — per-user ship document RTM assignment using `ISEX.USER.MISC1` and `ISEX.USER.CODE`. Stores the default ship template per EVO user in the extended user table. Confidence: 78/100.
+
+---
+
+### FO/Features & Options (update)
+
+**T7FOC.DFM:** Feature/Option setup entry — "Feature | Description | Option | Description | Option price | Add Price to Parent? | Use STD Customer Pricing?". Fields: BKBM.PROD.OPYN[4] and BKBM.PROD.OPYN[5] (option flags in BOM product record), BKBM.PROD.PRICE (option price). Confirms FO pricing is stored in BOM product option fields.
+
+**T7FOD.DFM:** Report print by item/class/category range.
+**T7FOE.DFM:** Feature/option item picker by item number.
+
+Table: `BKBM.PROD.*` BOM product record contains OPYN[1..n] option flags and PRICE for feature/option pricing. Confidence: 83/100.
+
+---
+
+### SPC/Statistical Process Control (additional DFMs)
+
+**T7SPCLIVEGRID.DFM:** Caption "Top Real Time Errors". Grid fields: ATYPE, ADETAIL, ACODE, ACOUNT. Live error/defect count display — shows current defect type + detail + error code + count.
+
+**T7SPCLIVEREP.DFM:** Live SPC report generator. Fields: from.TYPE, from.DETAIL, thru.TYPE/DETAIL, from.date, top (Show Top N), refresh (Refresh Every N Mins). Auto-refreshing live report.
+
+**T7SPCREP2.DFM:** Extended SPC report with: WO#, parent part, employee, date, sequence, sides, types, details, test types, serial#, customer, test reason (P/R/B = Pass/Reject/Both), errors-only flag. Most comprehensive SPC report form.
+
+**T7SPCREPPPM.DFM:** PPM (Parts Per Million) defect rate report — filters by WO, item, date, sides, types, details, customer. "Include S/R" flag. PPM = standard quality metric for defect frequency.
+
+SPC error data stored in indexed fields ATYPE/ADETAIL/ACODE/ACOUNT. Live refresh capability confirmed. Confidence: 92/100.
+
+---
+
+### SR/Service Repair & Sales Release (update)
+
+**T7SRE.DFM:** "Release thru Est Date" — the SO/SR release form. BKAR.INV.* header fields: CUSA1/CUSA2/CUSCTY/CUSST/CUSZIP/CUSORD/RTS/TAXABL/ORDDTE/NUM/GLDPT/SLSP/LOC/TERMD. Options: Display Shipped Lines, Auto Release Comments, Display Comment Lines, Include Backorders, Release All Lines, Pull Inventory from Default Bins, Prompt to Proportionally Release Kit Comps. BKAR.INVL.ESD = estimated ship date per line.
+
+**T7SRF.DFM:** Caption "SO-F" (SO Invoice Print). All invoice print filters: invoice range, customer/class, ship date, salesperson, packslip, kit components, notes, hidden notes, options, SO Dwg/ECO/Revs. Invoice types: SO module invoices, AR voucher invoices, finance charge invoices.
+
+**T7SRG.DFM:** Post invoices — "SRG | Post All Printed Invoices? | Print the Prepost Commissions Report?" Processes invoices from sFROM.INVNUM/sTHRU.INVNUM and sFROM.SONUM/sTHRU.SONUM ranges.
+
+**T7SRGA.DFM:** Progress display during posting — shows "Posting Invoice No. | From S/R Order No. | Line Item" with BKAR.INV.NUM and BKAR.INV.SONUM fields.
+
+**T7SRI.DFM:** Invoice inquiry/list — BKAR.INV.* header fields: INVDTE, ORDDTE, SHIPDT, CUSCOD, CUSNME, full address, VOID.DATE, SONUM, SUBTOT, TAXAMT, FRGHT, DEPOSIT, RETENTION, TOTAL, SLSP, GLDPT, LOC, DESC. Complete AR invoice display.
+
+**T7SRINFO.DFM:** "S&R Misc. Information" — extra UDF fields on S/R orders. Table `ISSR.INFO.*`: DATE1–DATE5 (5 date fields), AL1–AL20 (20 alpha/text fields). 25 configurable extra fields per S/R order.
+
+**T7SRS.DFM:** "Work Center Schedule / Data Collection" combined view — shows DCD (Data Collection Detail) and SHI (Shop Item) records side by side. DCD fields: EMP, NAME, WOP, P, ITEM, TIMEIN, RUN. SHI fields: ITEM, WOPRE, CUST, P, SDATE, SQTY, DESC.
+
+**T7SRBK.DFM:** "Live Work Center Schedule" — refreshing display. FROM.LOC (location filter), timer (seconds), ISE.STATUS.2/3/4 (Firmed/Released/Complete WO status flags). Real-time WO status board at a location.
+
+New table confirmed: `ISSR.INFO.*` — 5 date + 20 alpha UDF fields per S/R order. Confidence: 82/100.
+
+---
+
+### SH/Shop Scheduling (update)
+
+**T7SHA.DFM:** WO scheduling entry — "SH-A". MTWO.WIP.WOPRE/WOSUF (WO key), MTWO.WIP.CODE (item), MTWO.WIP.DESC, MTWO.CUSTNAME, MTWO.WIP.SFIN (scheduled finish), MTWO.WIP.SSTART (scheduled start), MTWO.WIP.PRTY (priority), MTWO.WIP.DDATE (due date), MTWO.WIP.USERCD (user code). Batch mode with status/priority/class filters.
+
+**T7SHB.DFM:** WO detail schedule — individual routing operation dates. MTWORO.START/OPER/OPERDESC/WC/SCHED.WC/STQTY.
+
+**T7SHC.DFM:** Work center schedule view — MTWC.WCDESC/DEPT/DEPTDESC, MTWC.HRSWEEK, MTWC.%UTIL, MTWC.HRS.SHIFT. Shows all WOs at a work center with operation dates.
+
+**T7SHE.DFM:** Critical ratio scheduling — SWO.CRATIO (critical ratio), TDATE (target date), SPEC.ACTION.STR. Calculates/updates schedule based on critical ratio logic.
+
+**T7SHF/G/H/I/J/M/N/O/P:** Scheduling reports — filter by WO status, class, priority, customer, date ranges, work center. T7SHM = "Shop Horizon" (lead time analysis: shows PR0-PR3 lead time priority dates). T7SHN = part types + hours/day + queue times analysis. T7SHI/SHP = color-coded schedule reports with elapsed time coloring. Confidence: 88/100.
+
+---
+
+### QC/Quality Control (update)
+
+**T7QCFA.DFM:** NCR (Nonconformance Report) entry. Fields: IS.NCR.CDATE (created date), IS.NCR.PART (parent part), IS.NCR.COMP (component), IS.NCR.WHO, IS.NCR.QTY, IS.NCR.DCODE (defect code), IS.NCR.DESC (description of nonconformity), IS.NCR.ICR (inventory check required), IS.NCR.ORIG (origin: I=In-house/V=Vendor/R=Rework), IS.NCR.PDRAW/PREV/CDRAW/CREV (parent+component drawing/rev), plus WC/machine/tool/operation/vendor/PO/RMA cross-references. NCR# is sFROM.SONUM.
+
+**T7QCMTHD.DFM:** Testing method master — "Enter Testing Method". Fields: TEST.CODE, EDIT.REV, EDIT.REVDT (revision+date), EDIT.DESC/DESC2 (description), PROCEDURE (method text), NOTES.LINE. Table: ISQC.MTD.TSTCOD/DESC/DESC2 (primary key = test code).
+
+**T7QCSPEC.DFM:** Testing requirements per item/operation — "Enter Testing Requirements". Fields: ISQC.SPC.CNTR (work center), ISQC.SPC.OPER (operation), ISQC.SPC.TSTCOD (test code), test.min/max/units, test.lot (lot tracking?), test.psfail (pass/fail only). Primary key: item + work center + operation + test code.
+
+**T7QCRSLT.DFM:** Testing results entry — TEST.NUM, TEST.CODE, TEST.MIN/MAX/UNITS, TEST.RESULT, TEST.PASS. Plus QC.LOT, QC.BATCH, scan.wo (work order), MTWO.WIP.SQTY (WO start qty), lr.number (lot/run#), scan.oper, qc.serial, tdate, SCAN.TESTEMP/SCAN.APPEMP (tested by / approved by). Test results linked to WO + lot + serial.
+
+**T7QCRESULTS.DFM:** Test results report — filter by WO, item, QC report number (sfrom.qclr/sthru.qclr).
+
+New tables: `ISQC.MTD.*` (test method master), `ISQC.SPC.*` (test specification per item/WC/op), `IS.NCR.*` (nonconformance reports). Confidence: 88/100.
+
+---
+
+### CS/Commissions & Salesperson (update)
+
+**T7CSA.DFM:** Salesperson master entry. Fields: SEMPNUM (employee#), BKPR.AGNT.CODE (agent code), BKPR.SLS.RATE (commission rate), BKPR.SLS.FNMI/LNME (first/last name), BKPR.SLS.HOW (commission method), BKPR.SLS.WHEN (when commission earned), BKPR.SLS.CLASS[1] (class), BKPR.SLS.EXPACT/EXPDPT (expense GL account/dept).
+
+**T7CSB.DFM:** Salesperson performance view — "CS-B View Salespersons Info". Monthly statistics: BKPR.SLS.PAID[1..12] (commission paid per month), BKPR.SLS.COMM[1..12] (commission earned per month), BKPR.SLS.RCPTS[1..12] (receipts per month). Plus columns: Quota, COGS, Comm Due, Comm Paid, Receipts, Gross.
+
+**T7CSD.DFM:** Commission transfer — "CS-D Transfer Sales Commissions". Table: BKPR.COMM.SLSP, BKPR.COMM.CCODE (company code), BKPR.COMM.INVNM (invoice#), BKPR.COMM.INVDT (invoice date), BKPR.COMM.PAYDT (payment date), BKPR.COMM.COMM (commission amount). Filter by rep range, date range, with posting date entry.
+
+**T7CSI.DFM:** "Evo Master Inquiry" — universal entity lookup. Single-screen to search by: itemnum, custcode, sonum, invnum, Vendcode, ponum, porecp (PO receipt), wonum, wsuffix. Acts as a cross-module drill-down launcher.
+
+**T7CSE/CSF/CSP:** Commission detail/summary print reports with salesperson range, date range, cost/GP option.
+
+New tables: `BKPR.SLS.*` (12-month commission/paid/receipts arrays), `BKPR.COMM.*` (commission transaction records). Confidence: 85/100.
+
+---
+
+### PR/Payroll (update)
+
+**T7PRA.DFM:** Employee W-4 and YTD/QTD tax summary. 2020 W-4 redesign fields: BKPR.EMP.NEWW4 (use 2020 W-4 flag), BKPR.EMP.2EPJ (two equal-paying jobs), BKPR.EMP.ANDD (annual dependent deduction), BKPR.EMP.OAIWW (other annual income without withholding), BKPR.EMP.AAD (additional annual deduction), BKPR.EMP.AWPPP (additional withholding per pay period). YTD/QTD fields: BKPR.EMP.FITYTD/FITQTD (FIT), BKPR.EMP.FICYTD[1]/FICQTD[1] (FICA-SS), BKPR.EMP.FICYTD[2]/FICQTD[2] (FICA-Med), BKPR.EMP.STYTD/STQTD (state), BKPR.EMP.SDIYTD/SDIQTD (SDI), BKPR.EMP.WKYTD/WKQTD (workers comp).
+
+**T7PRB.DFM:** Payroll batch processing. Current payroll record (BKPR.CURP.*): FITWH (federal income tax), FICWH[1/2] (FICA SS/Med), SITWH (state), MDAMT/MDDPT (misc deduction amount/dept), ODAMT/ODNME (other deduction), FUTEX/FICEX/SUTEX (employer FUTA/FICA/SUTA exempt). Employee list with columns: REC.ARR, NAME.ARR, NUM.ARR, DIV.ARR, LPAY.ARR, HOURS.ARR, GROSS.ARR, NET.ARR, CHECK.TYPE, TAG.ARR.
+
+**T7PRD.DFM:** Check printing — beginning check number, bank accounts (regular + direct deposit), employee range, check date, period ending date. Options: print hourly rate, print PR stubs to PDF, print bottom stub information, print all earnings/deductions, use T6PRD2.RTM for direct deposit. Supports dual bank accounts (CHK_NAME + DDCHK.NAME).
+
+**T7PRM.DFM:** Payroll division GL setup. BKPR.GL.DEPT/DPTNME (division), BKPR.GL.STCODE (state code). Standard deduction rates: BKPR.GL.FICAEMP/FICAMEE (employee/employer FICA %), BKPR.GL.FICAEPL (FICA limit), BKPR.GL.FUTART/SUTART (FUTA/SUTA rates), BKPR.GL.SDI.RTE/LMT (SDI rate/limit). GL accounts: BKPR.GL.FITACCT (FIT liability), BKPR.GL.FICACCT[1/2] (FICA SS/Med), BKPR.GL.FUTACCT, plus dept codes for each.
+
+New table fields: `BKPR.EMP.*` — 2020 W-4 redesign fields confirmed (NEWW4, 2EPJ, ANDD, OAIWW, AAD, AWPPP). `BKPR.CURP.*` — current payroll transaction record. `BKPR.GL.*` — division-level payroll tax GL setup. Confidence: 92/100.
+
+---
+
+### ES/Estimating (update)
+
+**T7EST.DFM:** Main estimate entry — "ES-A | Enter Estimates". Ten quantity levels: IS.EST.QTY[1..10]. Margin fields: IS.EST.MATMU% (material margin), IS.EST.LABMU% (labor margin), IS.EST.OPMU% (outside process margin), IS.EST.OHMU% (overhead margin), IS.EST.OVLMU% (overall margin). Header: IS.EST.ORDDESC (order description), IS.EST.STATUS, IS.EST.DRAW/REV (drawing/rev), IS.EST.EXPDTE (expire date), IS.EST.LOSTDTE (lost date), IS.EST.QTREV (quote revision#), IS.EST.OPPTYPE (opportunity type).
+
+**T7ESE.DFM:** "ES-E Convert Estimates". Converts estimate to WO and/or SO: ISTO.WO, ISTO.SO flags. Entry: sFROM.QUOTE (source estimate#), sWO.NUM/SO.NUM (target numbers), CUST.PO, LOCATION, START.DATE/FINISH.DATE/ESD.DATE. Options: incl.est.no (put estimate# in customer PO field), ISUPD.CONTRACT (update contract price file), UCP (unit cost/price).
+
+**T7ESB/ESC/ESD:** Print estimates/quotes — filter by customer, class, quote#, job#, expiration date, status codes. Up to 10 quantity levels printable. Options: BOM detail, routing detail, kit components, extensions, ECO/drawings.
+
+New table fields: `IS.EST.*` — 10-qty levels, 5 margin types, opportunity type, lost date, quote revision tracking. Confidence: 88/100.
+
+---
+
+### FA/Fixed Assets (update)
+
+**T7FAA.DFM:** Fixed asset master — "FA-A". IS.FXA.NUMBER (asset#), IS.FXA.TYPE, IS.FXA.DESC/DESC2, IS.FXA.CSTBAS (cost basis), IS.FXA.RESVAL (residual value), IS.FXA.LIFE, IS.FXA.METH (depreciation method), IS.FXA.GLA/D (asset GL account/dept), IS.FXA.ACDEPA/D (accum depreciation account/dept), IS.FXA.DEPEXPA/D (depreciation expense account/dept), IS.FXA.SDATE (placed in service), IS.FXA.EDATE (disposed), IS.FXA.SOLD (sales price), IS.FXA.SERIAL. Also tracks: IS.FXA.ACCUMDEP (accumulated depreciation), IS.FXA.LDEPAMT/LDEPPERC/LDEPDATE (last depreciation amount/percent/date).
+
+**T7FAB.DFM:** Depreciation transaction processing. IS.FXT.NUMBER (asset#), IS.FXT.DATE (posting date), IS.FXT.AMOUNT, IS.FXT.PERC (percent), IS.FXT.NETAVAL (net asset value), IS.FXT.ACDEPA/D (accum dep account), IS.FXT.DEPEXPA/D (expense account). "Generate Recurring" option. Processes tagged asset records.
+
+**T7FAE.DFM:** Import fixed assets from file (length/delimited). Maps up to ~15 fields including asset#, type, description, cost basis, residual value, life, dates, GL accounts.
+
+Tables: `IS.FXA.*` (asset master: 22 fields confirmed), `IS.FXT.*` (depreciation transactions). Confidence: 86/100.
+
+---
+
+### SA/Sales Analysis (update)
+
+**T7SAA.DFM:** Main sales analysis — territory (bill+ship), customer, currency range. Options: print in base/source currency, bookings vs sales report, include S&R orders, print item detail.
+
+**T7SAM/SAN.DFM:** Custom report builder — "SA-M". BKSA.NAME (report name), BKSA.TITLE, BKSA.RTM (report template), SORT.TEXT (sort by). N.TOP.SALES (Top N). Range pairs: BKSA.FROM1..BKSA.THRU9 cover invoice date, ship date, customer, salesperson, item, class, territory, and other dimensions.
+
+**T7SAO.DFM:** Top N Sales — filter by customer, date (two ranges), salesperson, bill state, bill+ship territory, customer class. Options: bookings, ship-to, include vouchers, Top N count.
+
+**T7SAQ.DFM:** Actual Margin Report — MTWO.WIP.* based (uses actual WO costs). Filter by ship date and WO finish date.
+
+New confirmed: `BKSA.*` table stores saved report configurations with up to 9 FROM/THRU range pairs + RTM name. Confidence: 84/100.
+
+---
+
+### SM/System Maintenance (update)
+
+**T7SMC.DFM:** Inventory class/location GL account setup. Per class+location: edit.gla/edit.dpta (inventory asset GL/dept), edit.glc/edit.dptc (COGS), edit.glsnt/edit.dptnt (non-taxable sales), edit.gls/edit.dpts (taxable sales), edit.glvoh/edit.dptvoh (variable OH absorbed), edit.glfoh/edit.dptfoh (fixed OH absorbed), edit.glw (WIP), edit.gllab (absorbed labor), edit.glmisc (misc). Plus: MTCLASS.M.DESC (class description), BKIC.LOCM.NAME (location name), sysgla_Inven/sysgld_inven (system default inventory), sysgla_cogs (system default COGS). Confirms GL account structure is per-class, per-location — 10 GL accounts per inventory class+location combination.
+
+**T7SMD.DFM:** Terms codes. IS.TERMS.NAME/NUM/DESC, IS.TERMS.AMT (discount amount), IS.TERMS.TYP (%,$,D,C,A,P,F), IS.TERMS.DAY (discount days), IS.TERMS.MAX (max days til due), plus due.on.rcpt and epay (e-pay only) flags.
+
+**T7SME.DFM:** Tax codes. ISIS.TXF.CODE/DESC/IDNUM (tax ID#), ISIS.TXF.VNDCD (tax vendor), ISIS.TXF.SOPERC[1] (SO tax rate), ISIS.TXF.POPERC[1] (PO tax rate), ISIS.TXF.GLASO/GLDSO (SO GL account/dept), ISIS.TXF.GLAPO/GLDPO (PO GL account/dept), ISIS.TXF.SOMAX (SO max amount).
+
+**CRM Reference Tables (SM-I series):**
+| Program | Table | Key Fields | Purpose |
+|---|---|---|---|
+| T7SMIA | BKCM.LEAD | SCODE, DESC | Lead source codes |
+| T7SMIB | BKCM.TERR | TCODE, DESC, EMAIL | Sales territory codes |
+| T7SMIC | BKCM.ACFC | FCODE, DESC, REP | Activity/follow-up codes (CRM dashboard flag) |
+| T7SMID | BKCM.ACCC | CCODE, DESC | Contact category codes |
+| T7SMIE | BKCM.DTCD | DCODE, DESC | Date category codes |
+| T7SMIF | IS.CATM | CODE, DESC | Category master |
+
+The BKCM.* prefix = BK CRM module tables. These are used by the CRM/sales activity tracking features.
+
+**Archive/Purge Programs (SM-J series):**
+| Program | Purpose |
+|---|---|
+| T7SMJB | WO archive/restore/purge (by WO#, act finish date, job, customer, item; checks orphaned ISWOEX/ISWOROEX) |
+| T7SMJC | Inventory reconciliation (master + transaction level; report-only mode; transaction types ASPJWIQOCMTRG) |
+| T7SMJD | Transaction archive/consolidate (consolidation date, type filter) |
+| T7SMJE | WO purge (closed and/or cancelled WOs by WO# and finish date) |
+| T7SMJF | PO archive/purge (by PO#, vendor, date) |
+| T7SMJG | QC receiver archive/purge (by QC receiver#, date, vendor) |
+| T7SMJH | Data collection file purge (cut date) |
+
+New tables: `IS.TERMS.*` (terms codes), `ISIS.TXF.*` (tax codes with separate SO+PO rates+GL), `BKCM.LEAD/TERR/ACFC/ACCC/DTCD` (CRM reference), `IS.CATM.*` (category master). Confidence: 86/100.
+
+---
+
+### Business Status (EvoBSR/EvoBSCash/EvoBSWO)
+
+**EVOBSCASH.DFM:** "Business Status Cash Detail". Table `ISBSF.CASH.*`: ISBSF.CASH.TOTA (total cash), ISBSF.CASH.ACT1..ACT9 (9 bank account balances). Real-time cash position dashboard.
+
+**EVOBSWO.DFM:** "Business Status Work Orders". Table `ISBSF.WO.*`: ISBSF.WO.WIPBAL (WIP balance), ISBSF.WO.ISSU (issues), ISBSF.WO.FPVAR (FP/variance). Table `ISBSF.WOS.*`: ISBSF.WOS.LAB (labor), ISBSF.WOS.MAT (materials+process), ISBSF.WOS.FOH (fixed overhead), ISBSF.WOS.VOH (variable overhead), ISBSF.WOS.MEXT (misc extra), ISBSF.WOS.FP (finished production), ISBSF.WOS.WIPV (WIP variance). WO cost component dashboard.
+
+**EVOBSR.DFM:** "Business Status Rebuild" — progress display while rebuilding ISBSF.* summary tables.
+
+New tables: `ISBSF.CASH.*` (cash summary: up to 9 bank accounts), `ISBSF.WO.*` and `ISBSF.WOS.*` (WO cost component summaries). These are pre-computed summary tables rebuilt on demand.
+
+---
+
+### WBK Menu System
+
+**WBKMENUSETUP.DFM:** Full menu administration. Fields: BUTTON_CAPTION, BUTTON_IMAGE, BUTTON_NUM (buttons), ACCESS_CODE, GROUP_CAPTION, GROUP_NUM (groups), MI_MENU_LVL, MI_CAPTION, MI_FASTSELECT, MI_PROGRAMNAME, MI_IMAGE, MI_LABEL (menu items). Also: groupname, username, copyname. Operations: Add Group, Add User, Edit User, Delete User, Copy From (existing menu), Update to Latest Prg (sync program names from EVO releases), Change Prg Name. WBKMENUSETUP is the administration tool for customizing the EVO workbench menu system.
+
+**WBKMENUSUCPRG.DFM:** Change program name — FROM_PRG_NAME → TO_PRG_NAME. Used to remap legacy program names after upgrades.
+
+**WBKMENUSUNEWAC.DFM:** New access code entry — NewAC, ACCopyFrm. Creates a new menu access code by copying permissions from an existing one.
+
+The WBK menu system is EVO's custom graphical launcher (distinct from the TAS Pro 7 character menu). It stores buttons + groups + users + access codes for each user's EVO desktop.
+
+---
+
+### Custom Content (T7CUSTOMS)
+
+**T7CUSTOMS.DFM:** "Custom Content". Fields: Custom.control[1..10] (enable flags), Custom.Name[1..10] (label), Custom.Desc[1..10] (description). Configures up to 10 custom content items — EVO's extensibility hook for site-specific menu items or links. Stored in fields named `Custom.*[n]`.
+
+---
+
+### Chargeback (T7CHARGBK)
+
+**T7CHARGBK.DFM:** ISREP.ORD.* fields: INVNM (invoice#), INVDT (invoice date), REPNM (rep name), COMPR (company), CMAMT (chargeback amount), SONUM (SO#), ULID (user ID). Chargeback/debit memo tracking against orders — likely for commission adjustments when invoices are debited back. Table prefix `ISREP.ORD.*` = order-level commission reporting.
+
+---
+
+### BZ Fix Utility (T7BZFIX)
+
+**T7BZFIX.DFM:** "Records Tagged : 0". Fields: LOC_FILE_NAME, LOC_BUFF_NAME, LOC_LOCATION, TAGGED, FSEARCH. Processes tagged records in Btrieve data files — likely a Btrieve zero-byte record fixer or orphan cleanup utility.
+
+---
+
+*Pass 84 complete (2026-06-18). 107 DFMs analyzed across 18 modules. Key new tables: ISBSF.CASH/WO/WOS (Business Status), ISSR.INFO (S/R UDFs), BKCM.LEAD/TERR/ACFC/ACCC/DTCD (CRM reference), IS.TERMS, ISIS.TXF, IS.NCR, ISQC.MTD/SPC (QC), BKPR.CURP (Payroll), IS.FXA/FXT (Fixed Assets), IS.EST (Estimating), BKSA (Sales Analysis). New module confirmations: FO pricing via BKBM.PROD.OPYN[4/5], VSCHED external DSN confirmed, QS quick entry confirmed, RT/RTM Validator is a shared helper dialog. Modules updated (confidence): QS 65→76, VSCHED 68→78, RT 55→70, SPC 87→92, SR 72→82, CS 80→85, PR 90→92, QC 82→88, SH 83→88, FA 82→86, ES 85→88, SA 80→84, SM 82→86, FO 78→83.*
