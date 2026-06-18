@@ -98,7 +98,7 @@ Current decryption scripts:
 | `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool |
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
 | TAS Pro 7 `.RWN` bytecode | 🔄 Started | 15/100 | Files decrypt correctly; no opcode mappings yet |
-| `.DCY` binary format | ⬜ Not started | 0/100 | Decrypted files in `samples/dcy_decrypted/`; structure unknown |
+| `.DCY` binary format | ✅ DONE | 95/100 | **Pass 109**: 8-byte ID header + DFM content (text "object..." 37/41; binary ff0a00+classname+TPF0 4/41); all 41 forms = Delphi TEditForm definitions for launcher/utility programs; EVOUSERS/WBKLUGRID documented |
 | `suwin*.DCY` format | ⬜ Unknown | 0/100 | 7 files; K_D fails; possibly use K_A or K_C |
 | K_A / K_C key purposes | ⬜ Unknown | 0/100 | Captured live; which file types they encrypt is unknown |
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
@@ -128,10 +128,9 @@ Current decryption scripts:
 
 ## 7. Highest-value next tasks (in priority order)
 
-1. **Parse DCY binary format** — decrypted DCY files in `samples/dcy_decrypted/` (regenerated 2026-06-16 with K_D).
-   Reverse-engineer the binary structure to extract table names, field names, field types.
-   Start with `DBAMENU_LOGIN.DCY.dec` (1,453 bytes, smallest) then `DUMMY.DCY.dec`.
-   Unlocks: field name resolution for all 659 tables → meaningful RWN bytecode analysis.
+1. **✅ DONE (Pass 109) Parse DCY binary format** — all 41 DCY files decoded: 8-byte ID header + DFM content.
+   37/41 text DFM ("object EditForm..."), 4/41 binary DFM (ff0a00+classname+TPF0). All are Delphi
+   UI form definitions for launcher/utility programs. See `docs/02-file-formats/decryption-findings.md`.
 
 2. **Identify K_A / K_C purposes** — try K_A and K_C against `suwin*.DCY` (7 files).
    Also watch what files EVO opens at startup (Frida file-open hook) — K_A fired at boot.

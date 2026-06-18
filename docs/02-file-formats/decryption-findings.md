@@ -172,11 +172,64 @@ These constants are derived from K0 (which is fixed for a given key), not from t
 
 ---
 
+## DCY file content structure (Pass 109 — 2026-06-18)
+
+After decryption, every DCY file has the following layout:
+
+```
+Offset  Size  Field
+0       4     File ID (4-byte value, purpose unknown — possibly a CRC or timestamp)
+4       4     File ID repeated (identical to bytes 0-3)
+8       var   DFM content — one of two forms:
+```
+
+**Form A — Text DFM (37 of 41 files):**
+```
+Offset 8+: Standard Delphi text DFM starting with "object <ClassName>: T<ClassName>"
+```
+Content is 100% plain Delphi text DFM format — readable directly as ASCII/Latin-1.
+
+**Form B — Binary DFM (4 files: DBAMENU_LOGIN, DBAMENU_RUNPRG, DBAMENU_SELCOMP, DBAMENU_FLEX):**
+```
+Offset 8:     0xFF 0x0A 0x00       (binary-DFM format marker)
+Offset 11:    <classname>\0        (null-terminated uppercase class name, e.g. "TEDITFORM4")
+Offset 11+N:  0x30 0x10            (constant — possibly Delphi component version flag)
+Offset 13+N:  uint16-LE            (DFM content size in bytes = file_size - 28)
+Offset 15+N:  0x00 0x00            (padding)
+Offset 28:    TPF0<binary DFM>     (standard Delphi binary DFM format, see Object Pascal docs)
+```
+
+The DFM content size stored at offset 13+N exactly equals `file_size - 28` in all 4 confirmed cases.
+
+**DCY files are Delphi UI forms, NOT data dictionary files.** The name "DCY" appears to
+stand for something other than "data dictionary" — all 41 decrypted files are Delphi form
+definitions (`TEditForm1` through `TEditForm17`). They define the top-level program windows
+for the EvoERP launcher and utility programs (not for the TAS Pro 7 RWN-based modules, which
+use DFM files on the network share instead).
+
+**Notable DCY forms (Pass 109):**
+
+| DCY file | Caption | Purpose |
+|----------|---------|---------|
+| EVOERPMENU.DCY | " Evo - ERP" | Main EvoERP menu — 1.4MB, 20,868 lines; 30 toolbar slots tb1..tb30; full menu: File/Module/Tools/Size/Support/Help; TTASStrList for button/group/menu data |
+| EVOUSERS.DCY | " Evo Users" | Active-user management grid — shows ISLOG table fields (WHO/COMPANY/WHAT/DOING/STARTT/STARTD/KILL); buttons: Logout Users / Enable Logins / Disable Logins / Clear User / Message |
+| WBKLOOKUP.DCY | "Lookup: " | Core universal lookup dialog — TTASDataGrid + cbKeys (index selector); Select/Edit/AddNew/Delete buttons |
+| WBKLUGRID.DCY | "Maintain Grid Lookup Data" | Configures column layouts for BKLUGRID lookup grids; FD_* field config (header/fieldname/type/size/func/edit) + KD_* sort key config |
+| EVOERPBACKUP.DCY | (backup form) | EvoERP backup configuration form |
+| EVOERPSCHED.DCY | (scheduler form) | EvoERP task scheduler form |
+| MDUMMY.DCY | (dummy base) | Base EditForm1 template with embedded icon data |
+| DUMMY.DCY | (dummy base) | Same as MDUMMY — alternate template |
+
+**EVOUSERS confirmation:** The EvoUsers form is the admin screen for managing logged-in users.
+It displays ISLOG table fields in a grid, confirming that `IS_LOG_KILL = '.T.'` is set via
+this screen's "Logout Users" button to force a graceful session termination.
+
 ## What is NOT yet known
 
 - The plaintext passphrase(s) behind K_A, K_B, K_C, K_D — not needed for decryption
 - What K_A and K_C are used for (appeared during EVO startup/login, not during module loads)
 - Whether different file types (.RUN, old-gen) use the same cipher
+- The meaning of the 4-byte repeated File ID in the DCY header (CRC? Timestamp? Random?)
 
 ---
 
