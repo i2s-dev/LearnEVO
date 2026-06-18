@@ -1108,7 +1108,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Business Workflows | **82** | 85 | **3** ↑+7 Pass97 Recipes10-14: GL-journal/period-end-archive/backup/new-user/inv-adjustment | 2026-06-18 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **76** | 88 | **12** ↑+8 Pass96 tier7-tables.md: MTWC/MTWORO/IS.TRIG/BKRFQ/BKICPMAT/BKAP.REM/TMC/MTWO.WIP/IS.SPC/DRILLM/IS.FIB/CFFLOC/BKCM-codes/ISSR.INFO/IS.REM | 2026-06-18 |
-| PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
+| PROJECT-STRUCTURE.md | **80** | 90 | **10** ↑+8 Pass98 Pass19: 16 new tables, SH/MH/JS/GF module corrections, SM-I/J forms, SO/sched/backup DFMs | 2026-06-18 |
 | HELP-RESOURCES.md | **84** | 90 | **6** ↑+4 Pass97 Recipes10-14 GL/archive/backup/new-user/inv-adj + workflow blocks | 2026-06-18 |
 
 ### Critical Path to 90% Goal
