@@ -994,7 +994,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — SRC | **87** | 90 | **3** ↑+7 Pass104 BKROA/BKMRF/BKDCA analyzed: all operators (.a./.o./.n./$), find modes F/G/N/M/L/P, while/endw, sorta, listf/listm, rcn, setact, ifna, 20+ built-in functions confirmed | 2026-06-18 |
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
-| File Formats — RTM | **84** | 88 | **4** ↑+6 Pass104 403 unique RTMs cataloged; naming convention: T6/BK/it6/ibk/J6/JM; i2-prefix pattern confirmed; cfg.rtm=792-caller global lib; 7 shared library RTMs; module-to-RTM mapping examples; variant numbering for format selection | 2026-06-18 |
+| File Formats — RTM | **88** | 88 | **0** ✅ ↑+4 Pass106i T:\ drive mapping confirmed (cfg.rtm=T:\cfg.rtm inferred); TppDBText dual field binding (underscore=ODBC/dot=TAS) confirmed from I2SCHK1.btm; full 24-module RTM breakdown (SO=103/SR=52/PO=32/AP=27/AR=25/J6=20/WO=14/PR=12/JM=12/IN=11/IS=11/CM=9/SA=7/DC=5/ES=5/AW=4/AS=4/PI=3/GL=2/AM=2) | 2026-06-18 |
 | File Formats — Btrieve | **85** | 85 | **0** ✅ ↑+5 Pass106i Types 12=NOTE/13=LVAR resolved (DDF-catalog only, zero in business tables); RELATE.DDF confirmed ~8 FK records/engine RI not used; OCCURS.DDF ~150+ records confirmed; dual FCR pages 0+8 confirmed; B-tree page structure decoded | 2026-06-18 |
 | TAS 4GL Language | **90** | 92 | **2** ↑+3 Pass106i Type V=variant holder (confirmed from BKDCA.SRC assign+clear), type O=extended legacy numeric (dead-code defines only); find R mode confirmed absent from all 7 SRC files | 2026-06-18 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |

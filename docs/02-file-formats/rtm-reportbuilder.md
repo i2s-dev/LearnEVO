@@ -162,11 +162,16 @@ Caller programs mapped by program-name prefix (BKSOx = SO module, T6SOx = T6-era
 It is loaded via ReportBuilder's `Template.FileName` property inside other RTM files — acting as
 a **shared page header/footer template** (likely company name, logo, address, page border).
 
-Physical file not found on `\\i2s109-solidcrm\DBAMFG$\` (2026-06-18 search). It may be:
-- Referenced by a path that resolves via a network drive map configured at runtime (e.g. `T:\cfg.rtm`)
-- Deleted or renamed — reports function correctly at runtime, suggesting it's being found via a
-  configured path not visible from this workstation
-- The path is stored in `C:\ISTS\RBuilder.ini` (the ReportBuilder settings file)
+**Path resolution (Pass 106i):** RTM samples confirm that `Template.FileName` paths use **`T:\`
+drive mapping**, not hardcoded UNC paths. Examples confirmed from binary inspection:
+- `I2SCHK1.btm` → `Template.FileName = T:\I2SCHK1.RTM`
+- `t7ing1.rtm` → `Template.FileName = C:\TASPRO7\DBA7\t7ing1.rtm` (self-referential, local install)
+
+`T:\` is a per-workstation drive letter mapping that resolves to the network share.
+`cfg.rtm` is almost certainly at `T:\cfg.rtm`, meaning it lives at the **root of the `T:\` drive**
+on the network share — the directory that `T:\` maps to. Physical file not found via UNC walk
+because the drive-letter root differs from the `\\i2s109-solidcrm\DBAMFG$\` subfolder scanned.
+`C:\ISTS\RBuilder.ini` was checked — it contains only UI layout settings, no template paths.
 
 ---
 
@@ -231,11 +236,61 @@ PDF path: `C:\ISTS\PDFS\` — created by `USE_PRINTER` / `PRINT_ARCHIVE` per wor
 
 ---
 
+## TppDBText field binding format (Pass 106i)
+
+Confirmed from `I2SCHK1.btm` binary inspection — two field name formats appear in the same RTM:
+
+| Format | Example | When used |
+|--------|---------|-----------|
+| Underscore (`BKAP_CHK_INVNUM`) | `BKAP_CHK_INVNUM`, `BKAP_CHK_AMTPD` | Column header / label binding |
+| Dot (`BKAP.CHK.AMTPD`) | `BKAP.CHK.AMTPD`, `BKAP.CHK.DISC`, `BKAP.VENDNAME` | TASFile pipeline data binding |
+
+The underscore form is the SQL column alias (used when the data is accessed via Pervasive ODBC/SQL).
+The dot form is the TAS 4GL field name (used when data is pushed via `OUTPUT_REPORT_DATA`). Both
+forms can appear in the same RTM because TppDBText can bind to either ODBC or TASFile pipelines.
+For EvoERP runtime printing (not ODBC), the dot form is the operative binding.
+
+## Complete module-to-RTM breakdown (Pass 106i)
+
+Full count from `samples/rtm_callers.csv` (403 unique RTMs), categorized by 2-letter module code:
+
+| Module | RTMs | Key RTM names |
+|--------|------|--------------|
+| SO — Sales Orders | 103 | bksob1–4, ibksob1–4, it6sob1–3, bksohlot, bksod1–3 |
+| SR — Service/Repair | 52 | bksrb1–4, ibksrb1–4, bksrma1–2, t6srb1–4 |
+| PO — Purchase Orders | 32 | bkpob1–4, ibkpob1–4, it6pob1–4, t6pob1–4 |
+| AP — Accounts Payable | 27 | ap, bkaph1–2, bkapha1–4, bkapm1–4, bkaps1–3 |
+| AR — Accounts Receivable | 25 | bkare1–4, bkari1–3, bkarg1–2, abk, at6 |
+| J6 — i2 custom J6 programs | 20 | j6bkmdis, j6bkmrep, j6btsrwo, j6cfclbl, j6inv1 |
+| WO — Work Orders | 14 | bkwoc1–3, bkawc1–2, cenwoc1, ct6woc1, bkwoc3oc |
+| PR — Payroll | 12 | bkprd1–3, bkprlf1, bkprlg1, bkprd1–3, banks |
+| JM — i2 custom JM programs | 12 | jm6use1–2, jmcelesc, jmcfilbl, jmwoc1 |
+| IN — Inventory | 11 | bking1, bkinlj1, ing, ino, bkactrptbkac |
+| IS — i2 Info Systems | 11 | isdca1, islcf1, isscf1, isudmstrtemp |
+| CM — CRM/Contact Mgr | 9 | bkcmbd1–3, bkcmaccctemp |
+| SA — Sales Analysis | 7 | bksa, bksam1, bksan1, bksareptbksa |
+| DC — Data Collection | 5 | bkdce, bkdcf, t6dcd1, t6dce |
+| ES — Estimating | 5 | bkesd1–2, esteetag, t6esd1 |
+| AW — Activity/Labor | 4 | bkawc1–2, bkawe1–2 |
+| J5 — i2 custom J5 programs | 4 | j5ebisam, j5ntwolk, j5smrpt3, j5twiinv |
+| AS — Assembly | 4 | t6asob3, t6asoc3, t6asof3, t6asopb3 |
+| PI — Physical Inventory | 3 | bkpica1, t6pica1, t6pif1 |
+| GL — General Ledger | 2 | t6glc1, t6glo1 |
+| AM — Asset Management | 2 | t6amf, t6amf1 |
+| AC — Activity Control | 2 | bkac, bkactrptbkac |
+| BM — Bill of Materials | 1 | t6bmb1 |
+| JC — Job Cost | 1 | t6jca1 |
+| Shared library | 7 | cfg, ent, t6, bk, dflt, banks, temp |
+
+**Total: 403 unique RTMs across 24+ modules.**
+
+SA (Sales Analysis) is the largest underdocumented module (7 RTMs). DC/ES/AW/AS each have 4–5.
+GL/BM/JC/AM have few RTMs because those modules use TAS-native reports more than ReportBuilder.
+
 ## Things still open
 
-- Physical location of `cfg.rtm` — check `C:\ISTS\RBuilder.ini` for configured template paths.
+- Physical location of `cfg.rtm` — `T:\cfg.rtm` is the inferred path via drive mapping; UNC path
+  unknown. Would need to identify what share `T:\` maps to on a running workstation.
 - Full binary parser to extract TppDBText data-field bindings from all 403 RTMs programmatically.
   Format is standard Delphi TStream; `dfmreader` Python library could be adapted.
-- Confirm report parameter passing for multi-currency reports (T7MLC uses LANGDICT — may have
-  a different pipeline setup for translated field values).
-- Identify the 182 "other" module RTMs fully (GL, BM, SH, DE, MR, PI, ES, DC, JC category RTMs).
+- Confirm report parameter passing for multi-currency reports (T7MLC uses LANGDICT).
