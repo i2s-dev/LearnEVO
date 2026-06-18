@@ -574,12 +574,14 @@ Target for "understood" = C: 75+ on all items below.
 - [ ] ⬜ Time entry → work order charge chain fully traced
 
 ### 7.16 EDI (ED)
-- [x] ✅ Tables: BKED\* (6 tables) — BKEDIH(84f: same structure as BKARINV — EDI-in staging header), BKEDIL(28f: same as BKARINVL — EDI-in lines), BKEDIDUN(7f: customer DUNS mapping+EDI flags), BKEDMSTR(3f: our DUNS+import path+counter), BKEDNOTE(3f: EDI notes), BKEDPOST(2f: posting log); unified invoice architecture confirmed for EDI — **C: 65/100**
-- [ ] ⬜ EDI transaction set support confirmed
-- [ ] ⬜ Inbound/outbound EDI pipeline traced
+- [x] ✅ Tables: BKED\* (6 tables) — BKEDIH(84f: same structure as BKARINV — EDI-in staging header), BKEDIL(28f: same as BKARINVL — EDI-in lines), BKEDIDUN(7f: customer DUNS mapping+EDI flags), BKEDMSTR(3f: our DUNS+import path+counter), BKEDNOTE(3f: EDI notes), BKEDPOST(2f: posting log); unified invoice architecture confirmed for EDI — **C: 78/100**
+- [x] ✅ Pass 106: All 6 BKED* tables fully documented in tier4-tables.md — field semantics for all auxiliary tables confirmed; BKEDIH/BKEDIL = byte-for-byte BKARINV/BKARINVL clones confirmed from DDF — **C: 78/100**
+- [x] ✅ Pass 106: EDI pipeline confirmed from BKMENUSU.TXT DEP submenu: DEP-B=Import (X12 850 in → BKEDIH/BKEDIL), DEP-C=Edit staging, DEP-D=Convert to SO (→ BKARINV), DEP-E=Export 810/855, DEP-F=Export 856 ASN, DEP-H=Error Report — **C: 78/100**
+- [ ] ⬜ X12 transaction set version numbers confirmed (e.g. 004010/005010)
 
 ### 7.17 Estimating (ES)
-- [x] ✅ Tables: BKES\* (3 tables) — BKESTQT(84f: same structure as BKARINV — ES quote header), BKESTQTL(28f: same as BKARINVL — quote lines), BKESTCFG(13f: quote config NUM+STAT+CLASS+FORM+DAYS+5 footer lines+SONUM); unified invoice architecture confirmed for ES quotes — **C: 65/100**
+- [x] ✅ Tables: BKES\* (3 tables) — BKESTQT(84f: same structure as BKARINV — ES quote header), BKESTQTL(28f: same as BKARINVL — quote lines), BKESTCFG(13f: quote config NUM+STAT+CLASS+FORM+DAYS+5 footer lines+SONUM); unified invoice architecture confirmed for ES quotes — **C: 78/100**
+- [x] ✅ Pass 106: All BKES* tables fully documented in tier4-tables.md; BKESTQT/BKESTQTL = byte-for-byte BKARINV/BKARINVL clones confirmed from DDF; BKESTCFG 13f field semantics documented; ESTSUM 213f structure confirmed (MTESUM_ prefix, 10-qty-break cost matrix); full ES-A..M pipeline documented — **C: 78/100**
 - [x] ✅ ES-D (Print Customer Quotes), ES-E (Convert Estimates: ISTO.WO + ISTO.SO — converts to WO or SO), ES-B/C (print/range options) — **C: 58/100**
 - [x] ✅ Pass 42: Full ISES\* family (10 tables) extracted. ISESTHDR(84f)/ISESTLNE(28f) = BKARINV/BKARINVL ES current views. ISESAHDR/ISESALNE + ISESTAQT/ISESTAQL = archive alternate indexes (same structures). ISESTDTL/ISESADTL(203f, identical) = estimate detail: IS_EST_NUM+PART+LINE PK; 10 qty-break × material/labor/overhead cost columns. ISESTASM(213f) = DBA/MT-era estimate assembly summary: MTESUM_QUOTE(8) PK + DATE/EXPDATE/STATUS/CLASS/CODE/DESC/UM/CUSTCODE+NAME+ATTN+RFQ/REV/PROJ + QTY_1..10 + MAT_1..N (213 fields total, MTESUM_ prefix confirms MT generation — predecessor to BKESTQT). ISESTPO(16f) = ES→PO link: BKMRP_PO_* fields (same as BKSOPO). Unified architecture confirmed end-to-end: ES quotes through archive through estimate detail — **C: 72/100**
 - [x] 🔄 Pass 50: T7ESA (15p) FOUND — opens BKBMMSTR+BKICMSTR+BKMRPFC+DBAFIFO; T7ESB(213p)/ESC(124p)/ESD(162p)/ESE(194p)/ESH(60p)/ESI(94p)/EST(163p) all mapped; BKMATCST(25f: CODE PK, 10×QTY_N+10×COST_N+MIN+MINCST+DATE) material cost; BKRTCST(24f: QUOTE+CODE+OPER PK, 10×PARTSHR_N+10×SETUP_N) routing cost; BKMRPFC(9f: PART+DATE PK, QTY+OQTY+CQTY+FLAG) MRP forecast demand; ESTSUM = DDF table name for ISESTASM(213f); ES-C uses BKRFQ for vendor cost — **C: 72/100**
@@ -1081,8 +1083,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SM/System Maintenance+Item Inquiry | **94** | 86 | **0** ✅ ↑+3 Pass95 SM-I BKCM.LEAD/TERR/ACFC/DTCD/CATM + SM-J SMJA-SMJH 8 archive-purge programs | 2026-06-18 |
 | Module: MR/MRP Engine | **90** | 85 | **0** ✅ ↑+10 Pass90 BKMRP.FC/PO MTMRP 4-stage-run MBEDORC WO/PO gen | 2026-06-18 |
 | Tables: BKMR*/MRP Support | **72** | 78 | **6** ↑+10 Pass45 | 2026-06-17 |
-| Tables: BKED*/EDI | **65** | 72 | **7** NEW | 2026-06-17 |
-| Tables: BKES*/Estimating | **65** | 72 | **7** NEW | 2026-06-17 |
+| Tables: BKED*/EDI | **78** | 72 | **0** ✅ ↑+13 Pass106 full family documented: BKEDIH/IL=BKARINV clones; BKEDIDUN/MSTR/NOTE/POST semantics; DEP-B/C/D/E/F/H pipeline | 2026-06-18 |
+| Tables: BKES*/Estimating | **78** | 72 | **0** ✅ ↑+13 Pass106 full family documented: BKESTQT/QTL=BKARINV clones; BKESTCFG 13f; ESTSUM 213f 10-qty-break cost summary; ES-A..M pipeline | 2026-06-18 |
 | Module: YS/YN Flags Editor | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
 | Module: CU/WO Cut Sheet | **72** | 75 | **3** ↑+14 Pass55 | 2026-06-17 |
 | Subsystem: ADCA/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |

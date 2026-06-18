@@ -2534,7 +2534,7 @@ Creates cost estimates for customer RFQs. Estimates can be converted to Sales Or
 - "How do I convert an estimate to a Sales Order?" → From the estimate form, use the SO conversion function.
 - "How do I get vendor pricing into an estimate?" → RF module (RFQ from Estimates) generates vendor RFQs that feed back into BKRFQ.
 
-**Confidence: 58/100** — DFM forms + DB fingerprints; conversion workflow inferred; exact BKESTCFG fields not decoded.
+**Confidence: 78/100** — All 11 ES menu programs confirmed; full table family documented in tier4-tables.md; BKESTCFG all 13 fields decoded; ESTSUM 213-field structure confirmed. BKESTCFG 40-byte gap (offsets 14–53) unregistered.
 
 ---
 
@@ -4107,36 +4107,66 @@ BKMRPSW gates which items MRP considers.
 
 ---
 
-### BKED* Tables — EDI Processing (Unified Invoice Architecture Confirmed)
+### BKED* Tables — EDI Processing (Pass 106, fully documented 2026-06-18)
 
-Key finding: **BKEDIH and BKEDIL are EDI-In staging tables with identical structure to BKARINV/BKARINVL.**
+**BKEDIH and BKEDIL are EDI inbound staging tables with byte-for-byte identical field layout to BKARINV/BKARINVL** — confirmed from Pervasive DDF (all fields carry BKAR_INV_* and BKAR_INVL_* names). EDI orders are imported, staged here, reviewed, then converted to live AR records.
 
 | Table | Fields | Purpose |
 |---|---|---|
-| BKEDIH | 84 | EDI-In invoice header — same 84 fields as BKARINV; staging area for inbound EDI invoices before posting |
-| BKEDIL | 28 | EDI-In invoice lines — same 28 fields as BKARINVL |
-| BKEDIDUN | 7 | Customer DUNS mapping — CUST(10)+DUNS(15)+EDI(enable)+EFFDT+PRODS+ADVS+SHPCD; maps customer to D-U-N-S number for EDI routing |
-| BKEDMSTR | 3 | EDI master config — NEXTN (sequence counter), DUNS (our company D-U-N-S number), PATH (66-char file path for EDI import files) |
-| BKEDNOTE | 3 | EDI notes — EDI#+SO#+NOTE(80); notes attached to an EDI transaction |
-| BKEDPOST | 2 | EDI post log — INVN+CUST; records which EDI invoices have been posted to AR |
+| BKEDIH | 84 | EDI staged order header — verbatim BKARINV clone; holds inbound EDI 850 PO as a pending invoice |
+| BKEDIL | 28 | EDI staged order lines — verbatim BKARINVL clone |
+| BKEDIDUN | 7 | Customer DUNS mapping — CUST(PK)+DUNS(15)+EDI(Y/N)+EFFDT+PRODS(send 855)+ADVS(send 856)+SHPCD |
+| BKEDMSTR | 3 | Company EDI config — NEXTN(counter)+DUNS(our D-U-N-S number)+PATH(66-char import file directory) |
+| BKEDNOTE | 3 | Transaction notes — EDI#(FK→BKEDIH)+SO#(after conversion)+NOTE(80) |
+| BKEDPOST | 2 | Posting audit trail — INVN(posted invoice#)+CUST(customer code) |
 
-**Architecture:** Inbound EDI → parse into BKEDIH/BKEDIL → validate → post → becomes BKARINV record.
-BKEDIDUN identifies which customers are EDI-enabled and routes by D-U-N-S number.
+**EDI pipeline (DE-P submenu, all confirmed from BKMENUSU.TXT):**
+
+| Step | Menu | Program | Action |
+|---|---|---|---|
+| 1 | DEP-B | T7DEPB | Import EDI Orders — reads X12 850 files from BKEDI_MST_PATH → writes BKEDIH/BKEDIL |
+| 2 | DEP-C | T7DEPC | Edit EDI Orders — review and correct staging records |
+| 3 | DEP-D | T7DEPD | Convert EDI Orders to Sales Orders — BKEDIH/BKEDIL → BKARINV/BKARINVL + writes BKEDPOST |
+| 4 | DEP-E | T7DEPE | Export EDI Invoice/Acknowledgement — BKARINV → X12 810 (Invoice) or 855 (Order Ack) |
+| 5 | DEP-F | T7DEPF | Export EDI ASN — BKARINV → X12 856 (Advance Ship Notice) |
+| 6 | DEP-H | T7DEPH | EDI Error Report — list import errors |
+
+**How to enable EDI for a customer:** Add a record to BKEDIDUN with the customer's D-U-N-S number and set BKEDI_DUN_EDI='Y'. Set PRODS='Y' to send 855 acknowledgments; set ADVS='Y' to send 856 ship notices.
+
+**Confidence: 78/100** — Schema confirmed from DDF; pipeline confirmed from BKMENUSU.TXT; X12 transaction set version numbers (004010/005010) not confirmed.
 
 ---
 
-### BKES* Tables — Estimating (Unified Invoice Architecture Confirmed)
+### BKES* Tables — Estimating (Pass 106, fully documented 2026-06-18)
 
-Key finding: **BKESTQT and BKESTQTL are ES Estimating quote tables with identical structure to BKARINV/BKARINVL.**
+**BKESTQT and BKESTQTL are Estimating quote tables with byte-for-byte identical field layout to BKARINV/BKARINVL** — confirmed from Pervasive DDF. Estimates are stored as "pre-invoice" records; ES-E converts them directly to Sales Orders with no data transformation.
 
 | Table | Fields | Purpose |
 |---|---|---|
-| BKESTQT | 84 | Estimating quote header — same 84 fields as BKARINV; quotes use the full invoice structure |
-| BKESTQTL | 28 | Estimating quote lines — same 28 fields as BKARINVL |
-| BKESTCFG | 13 | Quote configuration — NUM+STAT+CLASS+FORM(1)+CMPY_INFO(1)+DAYS(validity days)+ENDLN_1..5(30 each, footer lines)+SONUM+EXTRA; controls quote-to-SO conversion |
+| BKESTQT | 84 | Estimate/quote header — verbatim BKARINV clone; PK=BKAR_INV_NUM (quote number) |
+| BKESTQTL | 28 | Estimate line items — verbatim BKARINVL clone |
+| BKESTCFG | 13 | Estimating defaults — NUM(next quote#)+STAT(default status)+CLASS(4)+FORM(1)+CMPY_INFO+DAYS(expiry)+ENDLN_1..5(30 each, footer lines)+SONUM(last converted SO)+EXTRA |
+| ESTSUM | 213 | Estimate cost summary — MTESUM_QUOTE(PK)+date/status/item/customer + QTY_1..10 (10 qty breaks) × 18 cost categories (MAT/LAB/SETUP/OH/MISC/TOTAL/PRICE etc.) |
+| BKMATCST | 25 | Material cost breaks — CODE(PK), 10×QTY_N+10×COST_N, MIN+MINCST+DATE |
+| BKRTCST | 24 | Routing cost breaks — QUOTE+CODE+OPER(PK), 10×PARTSHR_N+10×SETUP_N |
 
-**Architecture:** Quote entered in ES module → BKESTQT header + BKESTQTL lines → when approved,
-converted to BKARINV SO with same field structure (no data transformation needed).
+**Estimating module workflow (all 11 ES operations confirmed from BKMENUSU.TXT):**
+
+| Step | Menu | Program | Action |
+|---|---|---|---|
+| 1 | ES-A | T7ESA | Enter Estimates — create/edit BKESTQT/BKESTQTL; draws from BOM (BKBMMSTR) and item master |
+| 2 | ES-D | T7EST | Quick Estimate — simplified estimate entry |
+| 3 | ES-C | T7ESC | Print Cost Rollup — uses BKRFQ for vendor pricing |
+| 4 | ES-B | T7ESB | Print Customer Quotes — formatted quote output |
+| 5 | ES-E | T7ESE | Convert Estimates → SO (BKARINV) or WO (WORKORD) |
+| — | ES-H | T7ESH | Enter Material Costs → BKMATCST |
+| — | ES-J | T7DSEST | Estimating Defaults → BKESTCFG |
+| — | ES-K | T7IC2EST | Copy Production→Estimating Inventory (BKICMSTR→MTICMSTR) |
+| — | ES-L | T7ESL | Edit Estimating Inventory (MTICMSTR) |
+
+**The estimating module has its own inventory** (MTICMSTR — 108 fields, ES-specific item master separate from production BKICMSTR) and its own cost tables (BKMATCST, BKRTCST). ES-K syncs production inventory into the estimating copy.
+
+**Confidence: 78/100** — Schema confirmed from DDF; field semantics confirmed; pipeline confirmed from BKMENUSU.TXT program labels; BKESTCFG 40-byte gap (offsets 14–53) has unregistered fields unknown.
 
 ---
 

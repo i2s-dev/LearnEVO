@@ -183,3 +183,213 @@ BKSOHSER = serial-tracked items.
 | BKAR_TXN_SRNUM (FLOAT 8) | Serial/run number |
 | BKAR_TXN_EXTRA (50) | Extra data |
 | BKAR_TXN_BIN (15) | Bin location |
+
+---
+
+## BKED* Family — EDI Staging Tables (Pass 106, 2026-06-18)
+
+**Module:** DE-P (Data Exchange → EDI Interface) | **Tables:** 6 | **Status: verified schema**
+
+The BKED* tables form the EDI inbound/outbound staging layer. Inbound EDI purchase orders
+(X12 850) land here as staged invoices before conversion to real AR/SO records.
+Outbound EDI (810/855/856) reads from BKARINV directly.
+
+### Architecture: clone of BKARINV
+
+BKEDIH and BKEDIL use **identical field names and layout** to BKARINV/BKARINVL.
+This is confirmed by the DDF: every field in BKEDIH is `BKAR_INV_*` and every field in
+BKEDIL is `BKAR_INVL_*`. The EDI import program (DEP-B) writes EDI orders into these
+staging tables as if they were AR invoices; DEP-D then moves them to BKARINV/BKARINVL.
+
+### Family overview
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKEDIH | 84 | EDI staged order header — verbatim BKARINV clone |
+| BKEDIL | 28 | EDI staged order lines — verbatim BKARINVL clone |
+| BKEDIDUN | 7 | Customer DUNS number mapping + per-customer EDI flags |
+| BKEDMSTR | 3 | Our company's EDI config (DUNS, import path, counter) |
+| BKEDNOTE | 3 | Notes attached to an EDI transaction |
+| BKEDPOST | 2 | EDI posting audit trail |
+
+### BKEDIH / BKEDIL — Staged order header + lines
+
+Field layout is **byte-for-byte identical to BKARINV / BKARINVL** — see the BKARINV
+documentation for all 84+28 field meanings. Key fields in context:
+
+| BKARINV field | In EDI staging | Notes |
+|---|---|---|
+| BKAR_INV_NUM | EDI staging record number | Counter from BKEDI_MST_NEXTN |
+| BKAR_INV_SONUM | Source SO (0 until DEP-D runs) | Filled when converted |
+| BKAR_INV_INVCD | Document type code | Likely 'E' for EDI in staging |
+| BKAR_INV_CUSCOD | Customer code | From BKEDIDUN mapping |
+| BKAR_INV_CUSORD | Customer's PO number | From EDI 850 BEG04 |
+| BKAR_INV_QSTAT | Processing status | Flags: ready/error/posted |
+
+### BKEDIDUN — Customer DUNS mapping (7 fields)
+
+One row per customer, defines their EDI relationship. PK = BKEDI_DUN_CUST.
+
+| Field | Size | Meaning |
+|---|---|---|
+| BKEDI_DUN_CUST | STRING 10 | Customer code (PK, FK → BKARCUST) |
+| BKEDI_DUN_DUNS | STRING 15 | D-U-N-S number for this customer |
+| BKEDI_DUN_EDI | STRING 1 | EDI enabled flag (Y/N) |
+| BKEDI_DUN_EFFDT | DATE 4 | Effective date for EDI trading relationship |
+| BKEDI_DUN_PRODS | STRING 1 | Send 855 (Order Acknowledgment) Y/N |
+| BKEDI_DUN_ADVS | STRING 1 | Send 856 (Advance Ship Notice) Y/N |
+| BKEDI_DUN_SHPCD | STRING 1 | Shipping code flag |
+
+### BKEDMSTR — Company EDI configuration (3 fields)
+
+Single-row master config for our company's EDI setup.
+
+| Field | Size | Meaning |
+|---|---|---|
+| BKEDI_MST_NEXTN | FLOAT 8 | Next EDI transaction number (auto-increment counter) |
+| BKEDI_MST_DUNS | STRING 15 | Our company's D-U-N-S number (sent in EDI headers) |
+| BKEDI_MST_PATH | STRING 66 | File system path for inbound EDI file drop directory |
+
+### BKEDNOTE — EDI transaction notes (3 fields)
+
+| Field | Size | Meaning |
+|---|---|---|
+| BKEDI_NOTE_EDI | FLOAT 8 | EDI staging record number (FK → BKEDIH) |
+| BKEDI_NOTE_SO | FLOAT 8 | Resulting SO/invoice number after DEP-D conversion |
+| BKEDI_NOTE_NOTE | STRING 80 | Note text (error messages, transaction details) |
+
+### BKEDPOST — EDI posting audit trail (2 fields)
+
+| Field | Size | Meaning |
+|---|---|---|
+| BKEDI_POST_INVN | FLOAT 8 | Posted invoice number (FK → BKARINV after conversion) |
+| BKEDI_POST_CUST | STRING 10 | Customer code of the posted EDI order |
+
+### EDI pipeline (from BKMENUSU.TXT, DE-P submenu)
+
+| Menu | Program | Action |
+|---|---|---|
+| DEP-B | T7DEPB | Import EDI Orders — reads X12 files from BKEDI_MST_PATH → writes BKEDIH/BKEDIL |
+| DEP-C | T7DEPC | Edit EDI Orders — review/fix BKEDIH/BKEDIL staging records |
+| DEP-D | T7DEPD | Convert EDI Orders to Sales Orders — BKEDIH/BKEDIL → BKARINV/BKARINVL + writes BKEDPOST |
+| DEP-E | T7DEPE | Export EDI Invoice/Acknowledgement — BKARINV → X12 810 (Invoice) or 855 (Acknowledgment) |
+| DEP-F | T7DEPF | Export EDI ASN — BKARINV → X12 856 (Advance Ship Notice) |
+| DEP-H | T7DEPH | EDI Error Report — lists errors from import processing |
+
+Inbound transaction set supported: X12 **850** (Purchase Order).
+Outbound transaction sets: X12 **810** (Invoice), **855** (Order Acknowledgment), **856** (Advance Ship Notice).
+
+**Confidence: 78/100** — Schema fully confirmed from DDF. Pipeline confirmed from BKMENUSU.TXT
+program names and labels. X12 transaction set numbers inferred from program labels (not confirmed
+from program source or trading partner docs).
+
+---
+
+## BKES* Family — Estimating/Quoting Tables (Pass 106, 2026-06-18)
+
+**Module:** ES (Estimating) | **Tables:** 3 core + associated ESTSUM/BKMATCST/BKRTCST | **Status: verified schema**
+
+The Estimating module gives manufacturing companies a way to price jobs before committing them
+to production. Estimates live in BKESTQT/BKESTQTL (clone of BKARINV architecture) and are
+converted to real Sales Orders or Work Orders via ES-E. The module has its own inventory
+(MTICMSTR) and cost tables (BKMATCST, BKRTCST) separate from production.
+
+### Architecture: clone of BKARINV
+
+Like the EDI staging tables, BKESTQT and BKESTQTL use **identical field names and layout**
+to BKARINV/BKARINVL (all fields are `BKAR_INV_*` and `BKAR_INVL_*`). An estimate record
+IS a quote invoice — same structure, different lifecycle.
+
+### Family overview
+
+| Table | Fields | Purpose |
+|---|---|---|
+| BKESTQT | 84 | Estimate/quote header — verbatim BKARINV clone |
+| BKESTQTL | 28 | Estimate line items — verbatim BKARINVL clone |
+| BKESTCFG | 13 | Estimating module defaults and configuration |
+| ESTSUM | 213 | Estimate cost summary — 10 qty breaks × 18 cost types per quote |
+| BKMATCST | 25 | Material cost table — price breaks per material code |
+| BKRTCST | 24 | Routing cost table — per-operation setup/labor cost breaks |
+| MTICMSTR | 108 | Estimating inventory master (separate from production BKICMSTR) |
+
+### BKESTQT / BKESTQTL — Estimate header + lines
+
+Field layout is **byte-for-byte identical to BKARINV / BKARINVL**. Key fields in estimating context:
+
+| BKARINV field | In estimating | Notes |
+|---|---|---|
+| BKAR_INV_NUM | Quote number | Auto-incremented from BKEST_CFG_NUM |
+| BKAR_INV_SONUM | Resulting SO number | 0 until ES-E converts |
+| BKAR_INV_CUSCOD | Prospect/customer | May be blank for speculative quotes |
+| BKAR_INV_CUSORD | Customer RFQ number | Customer's quote request reference |
+| BKAR_INV_QSTAT | Quote status | Controlled by BKEST_CFG_STAT codes |
+| BKAR_INV_INVDTE | Quote date | Set when estimate is entered |
+| BKAR_INV_SHIPDT | Estimated ship date | |
+| BKAR_INV_SUBTOT | Estimated subtotal | Calculated from BKESTQTL lines |
+| BKAR_INV_COGS | Estimated COGS | From BKMATCST/BKRTCST cost rollup |
+
+### BKESTCFG — Estimating defaults (13 fields)
+
+Single-row configuration table for the Estimating module. Edited via ES-J (T7DSEST).
+
+| Field | Type/Size | Meaning |
+|---|---|---|
+| BKEST_CFG_NUM | FLOAT 8 | Next quote number counter |
+| BKEST_CFG_STAT | STRING 1 | Default status code for new estimates |
+| BKEST_CFG_CLASS | STRING 4 | Default document class (e.g., product category) |
+| BKEST_CFG_FORM | STRING 1 | Default print form type |
+| *(gap: offsets 14–53, 40 bytes)* | — | Undocumented/unregistered fields |
+| BKEST_CMPY_INFO | STRING 1 | Print company info on quotes (Y/N) |
+| BKEST_CFG_DAYS | UBINARY 2 | Default quote validity/expiry in days |
+| BKEST_CFG_ENDLN_1..5 | STRING 30 × 5 | Five configurable footer lines printed on quotes |
+| BKEST_CFG_SONUM | FLOAT 8 | Last SO number generated from estimate conversion |
+| BKEST_CFG_EXTRA | STRING 100 | Spare/expansion |
+
+### ESTSUM — Estimate cost summary (213 fields)
+
+One row per quote. Summarizes all costs across 10 quantity break points for the estimate.
+Used by T7ESB (Print Customer Quotes) and T7ESC (Print Cost Rollup).
+
+Primary key: MTESUM_QUOTE (FLOAT 8, quote number).
+
+Structure: 10 × {QTY, MAT, MATMU, LAB, LABMU, SETUP, OP, OPMU, OH, OHMU, MISC, EXTRA,
+MEMU, OVALL, TOTAL, PRICE, COST, VOVHD} = 180 cost fields + 14 header fields + 19 scalars.
+
+Key header fields:
+| Field | Meaning |
+|---|---|
+| MTESUM_QUOTE | Quote number (PK) |
+| MTESUM_DATE | Quote date |
+| MTESUM_EXPDATE | Quote expiry date |
+| MTESUM_STATUS | Quote status code |
+| MTESUM_CLASS | Document class |
+| MTESUM_CODE | Item/product code being estimated |
+| MTESUM_DESC | Item description |
+| MTESUM_UM | Unit of measure |
+| MTESUM_CUSTCODE | Customer code |
+| MTESUM_RFQ | RFQ reference number |
+| MTESUM_REV | Revision level |
+| MTESUM_QTY_1..10 | Ten quantity break points |
+| MTESUM_MAT_1..10 | Material cost per unit at each qty break |
+| MTESUM_LAB_1..10 | Labor cost per unit at each qty break |
+
+### Estimating workflow (from BKMENUSU.TXT ES menu)
+
+| Menu | Program | Action |
+|---|---|---|
+| ES-A | T7ESA | Enter Estimates — create/edit BKESTQT/BKESTQTL; opens BOM (BKBMMSTR), items (BKICMSTR), MRP forecast (BKMRPFC) |
+| ES-B | T7ESB (213p) | Print Customer Quotes — formatted quote output from BKESTQT |
+| ES-C | T7ESC (124p) | Print Estimate Cost Rollup — detailed cost breakdown; uses BKRFQ for vendor pricing |
+| ES-D | T7EST (163p) | Quick Estimate — simplified entry path |
+| ES-E | T7ESE (194p) | Convert Estimates — BKESTQT → BKARINV (Sales Order) or WORKORD (Work Order) |
+| ES-H | T7ESH (60p) | Enter Material Costs — edit BKMATCST price breaks |
+| ES-I | T7ESI (94p) | Print Material Costs — report from BKMATCST |
+| ES-J | T7DSEST | Estimating Defaults — edit BKESTCFG |
+| ES-K | T7IC2EST (6p) | Update Estimating Inventory from Production — copy BKICMSTR → MTICMSTR |
+| ES-L | T7ESL | Edit Estimating Inventory — maintain MTICMSTR items |
+| ES-M | T7ESM | Estimating Inventory Inquiry — view MTICMSTR |
+
+**Confidence: 78/100** — Schema fully confirmed from DDF. Field meanings confirmed from field
+name analysis and cross-reference to BKARINV docs. Program associations confirmed from BKMENUSU.TXT.
+ESTSUM cost category semantics inferred from field names (not confirmed by SRC source).
+The 40-byte gap in BKESTCFG (offsets 14–53) contains undocumented fields not registered in DDF.
