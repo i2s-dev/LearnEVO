@@ -9861,3 +9861,229 @@ This is a one-time data fix utility, likely accessed via UT or SM menu.
 ---
 
 *Pass 82 complete (2026-06-18). Modules updated: US 65→74, MA 70→76, BO 72→80, AC 68→74, AU 72→78, AL 70→76, BR 65→72, EM 65→72, FN 65→72, FS 72→78, IT 72→78, JO 70→76, JS 68→78, LI 65→72, ML 68→76, MU 72→78, NE 65→68, SD 68→74, XC 68→74, CC 78→84, BS 78→82. 45 DFMs analyzed.*
+
+---
+
+## Pass 83 — DFM Batch Analysis Wave 2 (2026-06-18): MRP, CR, PS, SE/ST, AC/CAR, AD, EDII, Chain, KIT/PU
+
+### MRP / BM — Material Requirements Planning (Full Program Map)
+
+18 MRP programs fully confirmed from DFMs (T7MRA through T7MRO + T7MRADE):
+
+| Program | Caption | Purpose |
+|---|---|---|
+| T7MRA | MR-A | Forecast entry — BKMRP.FC.PART + DATE + QTY + CQTY + OQTY + FLAG |
+| T7MRB | MR-B | Forecast report — filter by item/class/category/date/type [RFAMNLBTKO] |
+| T7MRC | MR-C | Forecast generation — modes: Consume/Erase/Rollover/LoadLevel; Archive/Restore |
+| T7MRD | MR-D | MRP reorder parameters — EXPEDITE buffer + DELAY buffer + Sensitivity, Reorder Level/Amount/Lead Time/Planner Code per item (with *chg change flags) |
+| T7MRE | MR-E | MRP parts report — include.mrp flag, Master/Specific location [M/S] |
+| T7MRF | MR-F (run) | 4-stage MRP calculation — Stage1(SO)→Stage2(PO)→Stage3(WO+BOM)→Stage4(Forecast); live progress display |
+| T7MRG | MR-G | MRP action report — shows expedite/delay actions vs. original dates; LASTPO filter; customer range |
+| T7MRH | MR-H | MRP work queue (hot list) — color-coded by days overdue; prior/x-day thresholds; planner/start/finish filters |
+| T7MRI | MR-I | Generate Work Orders — Auto/Review [A/R], combine per item, WO class filter [1..6], std pack qty, add customer info to WO |
+| T7MRIR | MR-I popup | Review Qty dialog — MTMRP.PARTNO + STARTDT + DATE + QTY for interactive qty approval |
+| T7MRIX | MR-I execute | WO create execute screen — ITEM/TOOL/PART/QTY/DESC × 4, wostartdate, woLOC |
+| T7MRJ | MR-J | Purchase Order recommendations — AutoEmail, REPORT.MODE, INC.SPECS, INCLAPPRMFGRS, ORDER/RECV dates |
+| T7MRJR | MR-J review | Review vendor/price before PO — MTMRP fields + BKMRP.PO.VEND + BKAP.VENDNAME + eprice |
+| T7MRJX | MR-J execute | Create POs — BKMRP.PO.VEND/ERD/QTY/PRICE/CONF/PART/DATE → BKAP.PO.NUM |
+| T7MRL | MR-L | Planned orders print — PLND.NUM + reverse lookup flag |
+| T7MRN | MR-N | Vendor consolidation — vendor range, PO $ value threshold, report-only mode |
+| T7MRO | MR-O | Order changes report — changes.only flag (items with changes since last MR-P) |
+| T7MRADE | MR-ADE | Forecast import — CSV/fixed-length field-mapping for Item Number + Date (YYYYMMDD) |
+
+**BKMRP table family (confirmed from DFMs):**
+- **BKMRP.FC** (Forecast table): PART + DATE + QTY + CQTY (consumed) + OQTY (original) + FLAG
+- **BKMRP.PO** (MRP PO planning): PART + VEND + ERD (Estimated Receipt Date) + QTY + PRICE + CONF (confirmed) + DATE
+- **MTMRP** (MRP requirements): PARTNO + STARTDT + DATE + QTY
+
+**MRP workflow summary:** MR-C generate forecast → MR-F run MRP (4-stage) → MR-G/H review action messages → MR-I generate WOs / MR-J generate POs → MR-L view planned orders.
+
+**MRP/BM confidence: 85→88/100**
+
+---
+
+### AC — Activity Control / CAR (8D Corrective Action)
+
+**KEY FINDING — 8D CAR system:** T7CAR8D.DFM reveals a complete 8D Corrective Action Report module within AC:
+
+**T7CAR8D.DFM:** Caption "CAR Actions". Fields: is.cact.CAR (CAR#), is.cact.ACTION (Action#), is.cact.CDATE (creation date), is.cact.DUEDATE, is.cact.STATUS, is.cact.REL (release/revision). IS.CTEAM.NAME (team name), IS.CTEAM.SIGNOF (sign-off), IS.CTEAM.SDATE (sign-off date). Then the 8 disciplines: D2 (problem description), D3 (immediate containment + completed/date/by), D4 (root cause + completed/date/by), D5 (planned corrective action + completed/date/by), D6 (implemented corrective action + completed/date/by), plus actions to prevent reoccurrence, Owner. Fields use prefix is.cact.d2/d3/d4/d5/d6 for each discipline + d*c (completed) + d*cd (completed date) + d*r (completed by = "Release").
+
+**New tables confirmed:**
+- **ISCACT** — Corrective Action records: CAR# + ACTION# (PK), CDATE, DUEDATE, STATUS, REL, plus D2-D6 text + completed flags
+- **ISCTEAM** — CAR team members: NAME + SIGNOF (sign-off name) + SDATE (sign-off date)
+
+**T7carfu.DFM:** CAR follow-up entry — IS.CARFUP.DATE, IS.CARFUP.USER, IS.CARFUP.TYPE (3-field table confirmed).
+**T7CARFUP.DFM:** Follow-up type code master — IS.FUTYPE.TYPE + IS.FUTYPE.DESC (matches ISFUTYPE documented in Pass 77).
+
+The **ISFUTYPE** table from Pass 77 (Follow-up type codes) is now confirmed as the lookup for IS.CARFUP.TYPE.
+
+**AC confidence: 74→78/100**
+
+---
+
+### CR — Contract Review / SO Approval
+
+**T7CTRevu.DFM (confirmed):** Caption "Setup Contract Review Departments". Fields: Password (enter.pswd + conf.pswd — for department setup security), Department (ct.dept), Admin Level (ct.admin), Mass Approval button, SO Number From/Thru (sFROM.SONUM / sTHRU.SONUM), Order Date From/Thru (from.orddte / thru.orddte), Contract Reviewer ID (ct.empname). KILL button (force approval). App SOs button (mass-approve SOs in range). Save + Reset buttons.
+
+**T7CTRevuPSWD.DFM:** Password entry popup — Contract Reviewer ID (ct.empname), Department (ct.dept), Password (enter.pswd). POPLABEL for dynamic prompt text.
+
+**CR workflow confirmed:**
+- CR-A (T7CTREVU): Admin sets up review departments — assigns reviewer IDs + passwords + admin level + mass-approval authority
+- Reviewers enter CR-B via T7CTRevuPSWD popup to authenticate, then approve assigned SOs
+- ISCTREVU table: EMPNME + EMP PK, DEPT, ADMIN, LEVEL, MOTPAS, ACTIVE, CDATE, EDATE, ADATE, ATIME, FLAGS
+- ISSOREVU table: SO + DEPT PK, EMPNME, EMPNUM, MOTPAS, ADATE, EDATE, APPROVE, REQUIRE
+
+**CR confidence: 72→78/100**
+
+---
+
+### PS — Program Security (Extended)
+
+**T7PSA.DFM:** User setup — User Name (BKPS.USER.CODE), Security Level (seclevel), Security Code [A/P/1/2/C/V/U/E] (seccode), Default Start Company, Employee/Rep (bkps.user.emp), Group (ISEX.USER.GROUP), Windows Username (ISEX.USER.WINDO), Allow Auto Login (auto.log), Velocitrack Admin (velocitrack).
+
+**KEY FINDING — ISEXUSER table:** ISEX.USER.GROUP (group membership) + ISEX.USER.WINDO (Windows username for SSO) are fields in a table with ISEX. prefix — this is likely **ISEXUSER** (extended user data, not in DDF schema or registered under a different name). This enables Windows Active Directory / SSO login and group-based permissions beyond the 20 ACCES_ flags in AHSYLOG.
+
+**T7PSK.DFM:** Approve Vendor — app.vend (approved Y/N), from.vend + bkap.vendname, max.chk.amt (**Maximum Allowable Check Amount** — an AP vendor approval limit), Unapproved.only filter. Vendors must be approved; approved vendors can have a max check amount limit.
+
+**T7PSE.DFM:** User Security Report — print by user name range (FromU/ThruU), Items/Groups filter.
+**T7PSF.DFM:** Access to Program Report — print all users with access to a specific program (PROGNAME).
+
+**PS confidence: 82→88/100**
+
+---
+
+### AD — Accounting Defaults (Master Settings — T7MDefaults)
+
+**T7MDefaults.DFM (1.4 MB):** The Evo ERP Master Default Settings mega-form. Key findings:
+
+**ISTS.CFG.* prefix confirmed** as the config table (not BKSYMSTR/BKYSMSTR). Fields:
+- ISTS.CFG.WOADSC (WO show address/description)
+- ISTS.CFG.WOBS (WO types that affect Business Status)
+- ISTS.CFG.WOMAKF (WO make flag)
+- ISTS.CFG.WOCALC (WO disable recalc estimated cost)
+- ISTS.CFG.BURDN (use material burden), ISTS.CFG.BURDI (burden item#)
+- ISTS.CFG.WOOPEN (allow reopen closed/cancelled WO [Y/N/P])
+- ISTS.CFG.WOPSWD (WO reopen password)
+- ISTS.CFG.WOONLY (WO-only mode)
+- ISTS.CFG.WOGDSC (WO goods description), ISTS.CFG.WOGKIT (WO goods kit flag)
+- ISTS.CFG.WOALOC (WO allocate), ISTS.CFG.LIMSCT (limit standard cost), ISTS.CFG.RRFPR (RFQ price)
+- Also: bkys.yn[1..202] — confirms BKYSMSTR has at least 202 YN flags (much more than assumed)
+- bkys.num[1] = BKSYMSTR numeric array, bkys.rbnum (reorder batch number)
+
+**T7MDefBanks.DFM:** Bank/checking account setup — edit.num (bank account number), edit.glacct/gldpt (GL), edit.desc (account name), edit.acct (bank acct#), edit.rout (routing#), edit.sort (user sort key), edit.bal (balance), edit.nxtnum (next check#), edit.ap/ar/pr (module flags), edit.ap.rtm/pr.rtm (check print RTM path), edit.curr (currency code), edit.type (account type), edit.nxtach (next ACH#), edit.nxtepay (next ePay#), edit.id (company ID for ACH), edit.ach.name (ACH profile name), edit.spachk (special check format), BKGL.ACCTD (GL dept).
+
+**AD confidence: 75→82/100**
+
+---
+
+### SE/ST — Service Code Tables (Full Program Map)
+
+All 6 SE/ST DFMs now confirmed:
+
+| DFM | Caption | Table | Field |
+|---|---|---|---|
+| T7SEPROC | (Type) | ISSEPROC | IS.SEPROC.PROC — service process code |
+| T7SERR | (Type) | ISSTYPE | is.stype.type — service error type |
+| T7SETYPE | (Type) | ISSETYPE | is.setype.err — service error code |
+| T7STTYPE | (Type) | ISSTYPE | is.stype.type — service ticket type |
+| T7STYPE | (Type) | ISSTYPE | is.stype.type — service order type |
+| T7STOCK | Code + Desc | BKCMACCC | BKCM.ACCC.CCODE + BKCM.ACCC.DESC — stock code (same table as Brands) |
+
+**T7STOCK uses BKCMACCC** — same table as T7BRANDS. BKCMACCC stores both brand codes and stock classification codes depending on context, or these are separate records in the same table differentiated by a type prefix.
+
+**ISSTYPE note:** T7SERR, T7STTYPE, and T7STYPE all reference IS.STYPE.TYPE — same 3-field table (TYPE/WHO/ASSET from prior DDF extraction). Context determines whether it's a service error, ticket type, or order type.
+
+**SE/ST confidence: 65→74/100**
+
+---
+
+### SU — Setup / UI Configuration (Additional)
+
+**WBKLUGRID.DFM:** Caption "Maintain Grid Lookup Data". Full grid admin form — Grid Name (tempName), FD Name (tempFD), Form Name (tempFormName), Security Level (SEC.LEVEL), Start At End flag (LUGRID_END). Field Data section: FD_COLHEADER (column header), FD_FIELDNAME (source field), FD_TOT (totaling), FD_FUNC (aggregate function), FD_TYPE, FD_SIZE. Key Data: KD_COLHEADER, KD_KEYNAME, KD_FIELDNAME. RT_ARROW (right arrow navigation). Sort Keys section. Buttons: Save, Exit, Clear, Copy, Delete.
+
+**T7gdm.DFM:** Grids & Drills Maintenance — Skip (skip), Replace (replace), Overwrite (overwrite). Options for how to handle existing grid data during maintenance operations.
+
+**SU confidence: 72→78/100**
+
+---
+
+### PU — Put-Away
+
+**T7PUTAWAY.DFM:** Caption "New Screen". Fields: Bin (enterbin), scan.item (item scan input), bkic.prod.code/desc/note (item lookup), BKIC.PROD.LRCPT (last receipt date), BKIC.PROD.UOH (unit on hand), action (put-away action code), PABBL (put-away by bin location flag), MTIC.PROD.CODE/DESC/LOC (standard cost item), UOH (current UOH), qbin (bin quantity), mtic.prod.uiqc (UIQC — unit in QC). Buttons: Put Away, Print Label, Clear, Exit.
+
+UIQC = unit quantity in QC (items in quality inspection, not yet available). The put-away workflow: scan item → system shows current bin/UOH/UIQC → operator enters destination bin → put-away posts inventory to new bin.
+
+**PU confidence: 68→76/100**
+
+---
+
+### CH/CHAIN — Program Chain (New Module)
+
+**New module identified:** EvoERP supports program chaining — one program automatically launches another. Two DFMs confirmed:
+
+**T7Chain.DFM:** Caption "Chain List". IS.CHAIN.USER (user who executes), IS.CHAIN.DESC (chain description), IS.CHAIN.AUTO ([Y/N/Ask] — auto-execute or prompt), IS.CHAIN.PARENT (parent program), IS.CHAIN.CHILD (child program). User-level chain assignments.
+
+**T7CHAINM.DFM:** Caption "Chain Master". IS.CHAIN.PARENT + IS.CHAIN.CHILD (PK), IS.CHAIN.AUTO, IS.CHAIN.DESC, IS.CHAIN.PARAM[1..5] — up to 5 parameters passed to the chained program.
+
+**ISCHAIN table confirmed:** PARENT + CHILD + AUTO + DESC + PARAM[1..5] + USER. Enables automation sequences like: post-SO automatically runs BOL, or post-WO automatically runs costing.
+
+---
+
+### EvoScheduler / ISSCHED — Full Schema Confirmed
+
+**EvoScheduler.DFM** confirms all ISSCHED fields: IS.SCHED.NAME (name, PK), IS.SCHED.DESC (description), IS.SCHED.PROG (program to run), IS.SCHED.PARAM1..8 (8 parameter slots), IS.SCHED.LOG (log file path), IS.SCHED.TYPE (occurrence type), IS.SCHED.DATE (next run date), IS.SCHED.TIME (next run time), IS.SCHED.RECUR (recur every N minutes), IS.SCHED.LDATE/LTIME (last run date/time), IS.SCHED.CO (company), IS.SCHED.EMAIL (email notification), IS.SCHED.WHO (who set up). Also CC_CODE + CC_NAME (currency code/name for scheduled runs).
+
+ISSCHED has at least 22 fields (vs. the 24f confirmed in DDF). 8-parameter support enables complex scheduled programs.
+
+---
+
+### EvoLinks / EvoNotes — Additional Field Confirmation
+
+**EvoLinks.DFM:** ISLINKS additional fields confirmed — IS.LNK.SORT (sort key), IS.LNK.DATE, IS.LNK.WHO, IS.LNK.PRIVATE (private flag), IS.LNK.PCB[100] (100-element PCB array — likely parent context block for up to 100 linked records), GEN.ID (generic ID), FILELINK (file path), ALERTS (alert flag), LEXIST (link exists flag), inventory.link.
+
+**EvoNotes.DFM:** ISNOTES additional fields — IS.NOTE.CDATE/CTIME/CWHO (created date/time/by), IS.NOTE.TYPE (note type → ISNTYPE lookup), IS.NOTE.EWHO (edited by), IS.NOTE.PRIVATE, is.note.contact (linked contact), strsearch (text search), GEN.ID.
+
+---
+
+### KIT — Kit Picking (New Module)
+
+**T7KIT.DFM:** Caption "New Screen". Kit picking workflow for work order material pulls. Fields: SCAN.WO (WO scan input), SCAN.EMP (employee), bkic.prod.code/desc/note, mtic.prod.loc (location), binloc (bin location), Work Order Qty, Customer, Drawing, Sort By, Lines Count, Time To Pull, MTIC.PROD.CYCLE (cycle time). Line grid arrays (A* prefix): APART, ADESC, ARQTY (required qty), AUOH (UOH), ALUOH (location UOH), AQTY (actual qty), ABIN (bin), ABOMNOTE, ALOT (lot#), ALOC (location), AOPER (operation#), wobom.reference, scan.item, SORTKEY, xlot. Process/scan workflow: WO → BOM explodes → operator scans each component to confirm kit pull.
+
+---
+
+### EDII — EDI Invoice Import (Additional Confirmation)
+
+**T7EDII.DFM:** Caption "ED-I-I". Fields: imp.filename (import file path), date.format (date format string), from.cust (optional customer filter). Column mapping: FIELD.NUMBER[1..6] for Customer Code, Item Number, Ship Date, PO Number, Date, and a 6th field. Fixed example format shown: "Ex: C:\EXPORT\DATA\Filename.CSV". Confirms CSV column-mapping import approach documented in Pass 61.
+
+**EDII confidence: 72→76/100**
+
+---
+
+### STDCST — Standard Cost Viewer
+
+**T7STDCST.DFM:** Confirms MTICMSTR.RCOST[1..15] with labeled meanings:
+| RCOST slot | Cost type |
+|---|---|
+| 1 | Material |
+| 2 | Fixed Overhead |
+| 3 | Labor |
+| 4 | Setup |
+| 5 | Outside Process |
+| 6 | (rolled-up) Material + Freight + Duty |
+| 7 | (rolled-up) |
+| 8 | Variable Overhead |
+| 9–15 | Additional rolled-up cost components |
+
+Also confirms: MTIC.PROD.LOTSZ (lot size), BKIC.PROD.LSTC (last cost), BKIC.PROD.AVGC (average cost), MTIC.PROD.TYPE (item type).
+
+This is an informational viewer — Standard Cost is calculated, not entered here.
+
+---
+
+### TA/TCC — Batch Check Processing
+
+**T7TCC.DFM:** Caption "New Screen". Fields: terms.num (Enter Terms to Pay), CHK_NAME[1] (Bank Account selection). Process + Exit buttons. TA-TCC = Batch Check run — selects all AP invoices matching the specified payment terms and processes checks from the specified bank account. Part of the TA (Transaction Automation) module.
+
+---
+
+*Pass 83 complete (2026-06-18). Modules updated: MRP 85→88, AC 74→78, CR 72→78, PS 82→88, AD 75→82, SE/ST 65→74, SU 72→78, PU 68→76, EDII 72→76. New: CH/CHAIN, KIT, STDCST viewer. EvoScheduler ISSCHED fully confirmed. 63 DFMs total analyzed.*

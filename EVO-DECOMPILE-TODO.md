@@ -999,7 +999,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
 | Module: WO | **91** | 90 | **0** ✅ ↑+1 Pass74 | 2026-06-17 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
-| Module: BM/MRP | **85** | 85 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
+| Module: BM/MRP | **88** | 88 | **0** ✅ ↑+3 Pass83 18 DFMs BKMRP confirmed | 2026-06-18 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
 | Module: DC/Data Collection | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
 | Module: PR/Payroll | **90** | 92 | **2** ↑+5 Pass73 | 2026-06-17 |
@@ -1022,7 +1022,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: MA/AR Deposits | **76** | 75 | **0** ✅ ↑+6 Pass82 DFM+ISARDEPL confirmed | 2026-06-18 |
 | Module: ES/Estimating | **85** | 88 | **3** ↑+5 Pass72 | 2026-06-17 |
 | Module: SA/Sales Analysis | **80** | 80 | **0** ✅ ↑+5 Pass75 | 2026-06-17 |
-| Module: AC/Activity Control | **74** | 75 | **1** ↑+6 Pass82 DFMs confirmed | 2026-06-18 |
+| Module: AC/Activity Control | **78** | 78 | **0** ✅ ↑+4 Pass83 8D CAR+ISCACT+ISCTEAM | 2026-06-18 |
 | Module: CC/Credit Card ⚠️ | **84** | 85 | **1** ↑+6 Pass82 6 DFMs | 2026-06-18 |
 | Module: SP/SPC ⚠️ | **87** | 82 | **0** ↑ Pass71 | 2026-06-17 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
@@ -1031,13 +1031,13 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FO/Features Options | **81** | 82 | **1** ↑+3 Pass72 | 2026-06-17 |
 | Module: IS/InfoSystem | **72** | 72 | **0** ✅ ↑+4 Pass78 | 2026-06-17 |
 | Module: IM/Landed Cost | **78** | 82 | **4** ↑+8 Pass46 | 2026-06-17 |
-| Module: PS/Program Security | **82** | 78 | **0** ↑ Pass70 | 2026-06-17 |
+| Module: PS/Program Security | **88** | 88 | **0** ✅ ↑+6 Pass83 ISEXUSER+max.chk.amt | 2026-06-18 |
 | Module: QU/Query Tools | **74** | 75 | **1** ↑+4 Pass78 | 2026-06-17 |
-| Module: SU/Setup UI | **72** | 75 | **3** ↑ Pass65 | 2026-06-17 |
+| Module: SU/Setup UI | **78** | 78 | **0** ✅ ↑+6 Pass83 WBKLUGRID+gdm DFMs | 2026-06-18 |
 | Module: TA/TAS Admin | **78** | 80 | **2** ↑ Pass66 | 2026-06-17 |
 | Module: DI/Digital Signatures | **78** | 80 | **2** ↑+6 Pass72 | 2026-06-17 |
-| Module: AD/Accounting Defaults | **75** | 75 | **0** ✅ ↑+5 Pass63 | 2026-06-17 |
-| Module: CR/SO Approvals | **72** | 75 | **3** ↑+17 | 2026-06-17 |
+| Module: AD/Accounting Defaults | **82** | 82 | **0** ✅ ↑+7 Pass83 ISTS.CFG+bkys.yn[202] | 2026-06-18 |
+| Module: CR/SO Approvals | **78** | 78 | **0** ✅ ↑+6 Pass83 CTRevu DFMs | 2026-06-18 |
 | Module: US/Triggers | **74** | 75 | **1** ↑+9 Pass82 DFM confirmed | 2026-06-18 |
 | Subsystem: BO/Bill of Lading | **80** | 80 | **0** ✅ ↑+8 Pass82 DFMs confirmed | 2026-06-18 |
 | Subsystem: DS/Data Sync stubs | **62** | 65 | **3** ↑+14 Pass63 | 2026-06-17 |
@@ -1045,11 +1045,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: FS/Field Information Base | **78** | 78 | **0** ✅ ↑+6 Pass82 3 DFMs FIB prefix | 2026-06-18 |
 | Subsystem: GF/AR Charges | **75** | 80 | **5** ↑+13 Pass57 | 2026-06-17 |
 | Subsystem: RE/Reminders+Rebuild | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
-| Subsystem: SE+ST/Service Code Tables | **65** | 65 | **0** ✅+18 | 2026-06-17 |
-| Subsystem: PU/Put-Away | **68** | 65 | **0** ✅ ↑+6 Pass62 | 2026-06-17 |
+| Subsystem: SE+ST/Service Code Tables | **74** | 74 | **0** ✅ ↑+9 Pass83 6 DFMs confirmed | 2026-06-18 |
+| Subsystem: PU/Put-Away | **76** | 76 | **0** ✅ ↑+8 Pass83 T7PUTAWAY DFM | 2026-06-18 |
 | Subsystem: MU/Multi-Yield WO | **78** | 78 | **0** ✅ ↑+6 Pass82 DFM W/F/E confirmed | 2026-06-18 |
 | Subsystem: LI/License Access | **72** | 72 | **0** ✅ ↑+7 Pass82 DFM confirmed | 2026-06-18 |
-| Subsystem: EDII/EDI Invoice Import | **72** | 75 | **3** ↑+12 Pass61 | 2026-06-17 |
+| Subsystem: EDII/EDI Invoice Import | **76** | 76 | **0** ✅ ↑+4 Pass83 T7EDII DFM | 2026-06-18 |
 | Subsystem: LG/LGS Custom | **70** | 70 | **0** ✅ ↑+8 Pass64 | 2026-06-17 |
 | Subsystem: JS/Reporting Bridges | **78** | 78 | **0** ✅ ↑+10 Pass82 7 DSN DFMs | 2026-06-18 |
 | Subsystem: BS/Business Score | **82** | 82 | **0** ✅ ↑+4 Pass82 T7BS+T7BSR DFMs | 2026-06-18 |
