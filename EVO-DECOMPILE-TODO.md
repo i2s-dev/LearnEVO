@@ -995,7 +995,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
 | Module: AP | **96** | 92 | **0** ✅ ↑+3 Pass89 ISAPEX BKAP2-UDF BKAP.CHK BKQC recurring ACH/1099 | 2026-06-18 |
 | Module: IN/Inventory | **95** | 85 | **0** ✅ ↑+2 Pass91 T6-IN-B 10-tab: IS.ECO/BKSB.MFG/BKSB.VEND/SPECS[12]/RCOST[14] confirmed | 2026-06-18 |
-| Module: SO | **94** | 85 | **0** ✅ ↑+4 Pass89 serial-alloc contract-review quote-conv SO-V SO-O full | 2026-06-18 |
+| Module: SO | **96** | 85 | **0** ✅ ↑+2 Pass95 FRGHT/SUBTOT/TOTAL/sobookdate/ASD/rts/recurring-SO/SOAXCOM/ISSR.INFO header+line confirmed | 2026-06-18 |
 | Module: PO | **93** | 85 | **0** ✅ ↑+3 Pass89 ISAP.CHG POS-module vendor-master T7POQ delivery | 2026-06-18 |
 | Module: WO | **97** | 90 | **0** ✅ ↑+3 Pass88 IS.PREQ/IS.SER/IS.TRAY/IS.WOPRIO ISSO.BOX WO-L suite | 2026-06-18 |
 | Module: GL | **95** | 92 | **0** ✅ ↑+2 Pass90 14-period confirmed BKGL.STC/STI fin-stmt config | 2026-06-18 |
@@ -1004,7 +1004,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: DC/Data Collection | **89** | 85 | **0** ✅ ↑+2 Pass86 EvoDCmenu/ht6 confirmed | 2026-06-18 |
 | Module: PR/Payroll | **92** | 92 | **0** ✅ ↑+2 Pass84 W-4/CURP/PRLA DFMs | 2026-06-18 |
 | Module: AM (Accounting Maint.) | **93** | 85 | **0** ✅ ↑+10 Pass90 14-period GL BKGL.STC/STI fin-stmt archive | 2026-06-18 |
-| Module: CM/CRM | **86** | 85 | **0** ✅ ↑+4 Pass85 BKCM.ACCT credit card confirmed | 2026-06-18 |
+| Module: CM/CRM | **90** | 85 | **0** ✅ ↑+4 Pass95 BKCM.LEAD/TERR/ACFC/DTCD/CATM 5 code tables fully confirmed | 2026-06-18 |
 | Module: MK/Marketing Automation | **78** | 78 | **0** ✅ ↑+6 Pass84 BKCM.LEAD/TERR/ACFC confirmed | 2026-06-18 |
 | Module: DE/EDI/Imports | **86** | 80 | **0** ✅ ↑+8 Pass86 T7DE* full suite IS.DEF/ISAP.QPO confirmed | 2026-06-18 |
 | Module: CS/Commission+Salesperson | **85** | 85 | **0** ✅ ↑+5 Pass84 BKPR.COMM/SLS monthly arrays | 2026-06-18 |
@@ -1077,7 +1077,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: ES/Estimating | **88** | 88 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
 | Platform: WBKLOOKUP/Lookup Framework | **76** | 70 | **0** ✅ ↑+8 Pass85 WBKLPRINT/HHLOOKUP | 2026-06-18 |
 | Module: DE/DC stubs+EDI processing | **86** | 75 | **0** ✅ (dup of DE/EDI -- see primary) | 2026-06-18 |
-| Module: SM/System Maintenance+Item Inquiry | **91** | 86 | **0** ✅ ↑+5 Pass90 ISIS.TXF-full BKCM-codes ISTS.CFG BKYS.YN SM-J | 2026-06-18 |
+| Module: SM/System Maintenance+Item Inquiry | **94** | 86 | **0** ✅ ↑+3 Pass95 SM-I BKCM.LEAD/TERR/ACFC/DTCD/CATM + SM-J SMJA-SMJH 8 archive-purge programs | 2026-06-18 |
 | Module: MR/MRP Engine | **90** | 85 | **0** ✅ ↑+10 Pass90 BKMRP.FC/PO MTMRP 4-stage-run MBEDORC WO/PO gen | 2026-06-18 |
 | Tables: BKMR*/MRP Support | **72** | 78 | **6** ↑+10 Pass45 | 2026-06-17 |
 | Tables: BKED*/EDI | **65** | 72 | **7** NEW | 2026-06-17 |
