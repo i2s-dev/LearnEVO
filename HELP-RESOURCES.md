@@ -66,6 +66,7 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Create a customer RMA | RM-D | [Return Material Authorization](#rm--return-material-authorization-rma) |
 | Process RMA disposition (restock/job) | RM-D-Ask | [Return Material Authorization](#rm--return-material-authorization-rma) |
 | Set up product configuration options | FO module | [Features & Options](#fo--features--options) |
+| Fix items stuck on the open order report (shipped but never posting) | SD-M → SO-G | [Recipe 9: Packaging Items Stuck on Open Order Report](#recipe-9-packaging-items-stuck-on-open-order-report) |
 | Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
 | Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
 | Follow PO from entry to check | PO-A → PO-E → AP-B → AP-H | [Recipe 3: PO to Check](#recipe-3-purchase-order--receive--ap-voucher--check) |
@@ -368,7 +369,69 @@ Step 5 — Reconciliation:
 
 ---
 
-*Business Workflows section — **Confidence: 75/100** — 8 workflow recipes written; table write sequences confirmed from DB fingerprints (RWN symbols) and DDF schema cross-reference; exact field-level validation logic and error handling in encrypted RWN.*
+---
+
+### Recipe 9: Packaging Items Stuck on Open Order Report
+
+**Trigger:** Items appear on SO-O-A Open Sales Order Listing with Qty To Ship > 0 and Qty
+Shipped = 0 indefinitely. They do not clear after running SO-G. Customer complains of
+apparent short shipments because the lines look unfulfilled.
+
+**Typical items affected:** Packaging components (boxes, inserts) and documentation (install
+guides, quickstart guides) that ship inside the finished goods box and are never individually
+scanned or released through SO-E.
+
+**Root cause:** These items have Qty Shipped = 0 because SO-E is never run against them.
+When SO-G (Post Invoices) runs, the flag **SD-M → Processing Tab → "Create 0 Qty SO Lines
+during post"** controls whether SO-G posts lines with zero ship qty. If this flag is N
+(unchecked), SO-G skips all 0-qty lines permanently — they accumulate on the open order
+report forever.
+
+**Diagnosis steps:**
+
+```
+1. SO-O-A (Print Open Sales Order Listing)
+   - Filter: Item From/Thru = the suspect part number
+   - Examine the Qty Shipped column
+   - If Qty Shipped = 0.00 on all lines → this is the issue
+
+2. SD-M (Sales Order Defaults) → Processing Tab
+   - Check the value of "Create 0 Qty SO Lines during post"
+   - If unchecked (N) → confirmed root cause
+```
+
+**Fix:**
+
+```
+Step 1 — Enable the flag (one-time system change):
+   SD-M → Processing Tab → "Create 0 Qty SO Lines during post" → check (Y)
+
+   ⚠ This is system-wide. All 0-ship-qty lines company-wide will now post
+   through SO-G. Alert accounting/ops before the next SO-G batch run.
+
+Step 2 — Clear the existing backlog:
+   SO-G (Post Invoices)
+   - Set SO Number From/Thru to cover affected orders
+   - Click Post
+
+Step 3 — Verify:
+   SO-O-A filtered to the item number
+   - If lines are gone → fix confirmed
+```
+
+**Key tables involved:**
+- `BKARINVL` — Sales Order line items (Qty Shipped field lives here)
+- `BKGLTRAN` — GL transactions created by SO-G posting
+- SD-M settings stored in the system defaults configuration table
+
+**Real-world case:** 2026-06-18, Albertsons (customer 2B13). 12 packaging/guide items
+(730-54200, 730-54117, 730-54201, 730-54116, 090-series install guides). 28 open SOs,
+475 total units stuck. Fixed by SD-M flag change + SO-G run. See full case study:
+[docs/procedures/packaging-items-stuck-on-open-order-report.md](docs/procedures/packaging-items-stuck-on-open-order-report.md)
+
+---
+
+*Business Workflows section — **Confidence: 75/100** — 9 workflow recipes written; table write sequences confirmed from DB fingerprints (RWN symbols) and DDF schema cross-reference; exact field-level validation logic and error handling in encrypted RWN.*
 
 ---
 

@@ -1035,7 +1035,7 @@ Components tied to routing sequences serve two purposes: (1) materials can optio
 
 **Allow Changing Invoice # in SO-E** — If `Y`, the invoice number to be assigned when releasing can be manually changed. Manually assigned numbers are still verified against previously used invoice numbers.
 
-**Create 0 Qty SO Lines during post** — If `Y`, fully backordered lines post a record to the Invoice Line item file.
+**Create 0 Qty SO Lines during post** — If `Y`, fully backordered lines post a record to the Invoice Line item file. **⚠ Critical flag for packaging items:** If this is `N`, any SO line with Qty Shipped = 0 (e.g., packaging components that ship inside the product without being individually released through SO-E) will never be posted or closed by SO-G — those lines accumulate on the Open Order Report indefinitely. Symptom: items appear on SO-O-A with Qty To Ship > 0 and Qty Shipped = 0 forever. Fix: set to `Y`, then run SO-G to clear the backlog. See [IT case study](../../procedures/packaging-items-stuck-on-open-order-report.md) (resolved 2026-06-18).
 
 **Treat 99.99% discount as 100%** — If `Y`, a 99.99% Sales Order discount calculates as 100% and posts a $0 price.
 

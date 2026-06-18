@@ -141,6 +141,9 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 ### 09 — Runtime & boot sequence
 - [How EVO starts up (StartEvo.exe → tp7runtime.exe → EvoERPmenu.rwn)](07-runtime-boot/boot-sequence.md) — *draft*
 
+### 10 — IT Procedures & Case Studies
+- [Packaging items stuck on open order report — SD-M "Create 0 Qty SO Lines" fix](procedures/packaging-items-stuck-on-open-order-report.md) — *verified, 2026-06-18*
+
 ---
 
 ## Legend
