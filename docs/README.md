@@ -49,6 +49,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [DCY forms catalog — all 41 decrypted DCY files: form types, UI structure, purpose](02-file-formats/dcy-forms-catalog.md) — *verified, 2026-06-17*
 - [TAS Pro 7 UI controls catalog — all 51 control types, frequencies, purpose (from 1,136 DFMs)](02-file-formats/tas-pro-7-controls.md) — *verified, 2026-06-17*
 - [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — file structure + key opcodes*
+- [.B / .mdx — Btrieve/Pervasive PSQL data file format (DDF system, page structure, type codes, company routing)](02-file-formats/btrieve-b-format.md) — *partial, 2026-06-18*
 - [TAS Pro 7 data infrastructure modules (wtasdmgr, wtasdatam, wtasinit — FILEDICT system)](02-file-formats/tas-data-infrastructure.md) — *verified, 2026-06-16*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*
 - [.IMP / .UPD / .XPT / others](02-file-formats/other-formats.md) — *verified*

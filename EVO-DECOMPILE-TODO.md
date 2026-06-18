@@ -986,7 +986,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | 78 | 88 | 10 | 2026-06-11 |
-| File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
+| File Formats — Btrieve | **80** | 85 | **5** ↑+8 Pass104 New doc: btrieve-b-format.md; DDF X$ system (7 tables, purpose, structure); .B format (FC magic, 512-byte pages, FCR header partial decode); 659 tables/24113 fields/15998 segs confirmed; 9 Btrieve DDF types; company routing via extension; OCCURS/RELATE/VIEW described | 2026-06-18 |
 | TAS 4GL Language | **87** | 92 | **5** ↑+12 Pass104 All arithmetic/relational/logical ops confirmed; 10 field types (+ V,O); find modes F/G/N/M/L/P; while/endw/exit; sorta/listf/listm/rcn/setact/ifna/updta/openv; 20+ functions: str/trim/mid/chr/round/ttof/ftot/flerr/fnum/co/zask/etyp | 2026-06-18 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
 | Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
