@@ -1,0 +1,1 @@
+//i2s109-solidcrm/DBAMFG$/FILELOC.B  -- 2793472 bytes, 3613 records, 386 logical tables x 6 companies (AT/AB/CA/I2/IT/99)

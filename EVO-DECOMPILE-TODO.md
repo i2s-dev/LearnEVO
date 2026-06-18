@@ -980,8 +980,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 | Area | Current C: | Target C: | Gap | Last Updated |
 |---|---|---|---|---|
-| System Architecture | 75 | 90 | 15 | 2026-06-11 |
-| Boot Sequence | 68 | 85 | 17 | 2026-06-11 |
+| System Architecture | **80** | 90 | **10** ↑+5 Pass103d FILELOC.B routing confirmed: 386 tables x 6 companies (AT/AB/CA/I2/IT/99); 1754 aliases; StartEvo.exe TAS_ISTS_PATH_PROGRAMS env var; S/N 75790 expires 2030 | 2026-06-18 |
+| Boot Sequence | **82** | 85 | **3** ↑+14 Pass103d START_UP.DBA confirmed: FILELOC→USECOMP→validate BKSYMSTR→registration; StartEvo.exe DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; FILELOC.B: 386 tables 6 companies 3613 records | 2026-06-18 |
 | File Formats — SRC | 80 | 90 | 10 | 2026-06-11 |
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
