@@ -160,11 +160,62 @@ Standalone "analysis" utilities:
 - `EvoCSI` — "Check Settings & Info" (likely diagnostic)
 - `EvoBS` / `EvoVIEW` — business-status / generic viewer
 
-## Things still to document
+## EvoNotes — note tables (Pass 106k)
 
-- The exact fields/tables used by EvoNotes (presumably `BKNOTE*` or
-  similar, but it's not in the `BKNOTE*` prefix we catalogued — might
-  use a dedicated `NOTES*` table, need to check the schema for it).
-- EvoScheduler's schedule table.
-- EvoLinks' attachment-storage schema (where the document path lives
-  vs. where the file lives).
+EvoNotes is NOT a single table — each module has its own `*NOTE` table:
+
+| Table | Module | Purpose |
+|-------|--------|---------|
+| `BKAPNOTE` | AP | AP vendor/transaction notes |
+| `BKBMNOTE` | BM | Bill-of-materials notes |
+| `BKEDNOTE` | ED | EDI notes |
+| `BKQTNOTE` | QT | Quote notes |
+| `BKSONOTE` | SO | Sales-order notes |
+| `ISANOTES` | IS | General IS notes |
+| `ISNOTES` | IS | General notes store |
+| `ISSNOTES` | IS | System notes |
+| `MKTNOTE` | MKT | Marketing notes |
+
+Standard schema pattern (from `BKAPNOTE` DDF):
+```
+BKAP_NOTE_SRCH1   STRING  10   — first search key (e.g., vendor code)
+BKAP_NOTE_SRCH2   STRING  10   — second search key (e.g., document number)
+BKAP_NOTE_DATE    DATE     4   — note date
+BKAP_NOTE_ENTBY   STRING  10   — entered-by user
+BKAP_NOTE_NOTES_1 STRING  76   — note text line 1
+... (additional _NOTES_N lines for continuation)
+```
+Primary key = SRCH1 + SRCH2 + DATE (composite — allows multiple notes per document).
+
+## EvoScheduler — ISSCHED (confirmed Pass 106f)
+
+Schedule table: `ISSCHED.B` (confirmed in Pass 106f). 24-field schema:
+`NAME` (PK) + `DESC` + `PROG` + `CO` + `TYPE` (O/D/W/M) + `DATE` + `TIME` +
+`RECUR` + `LOG` + `EXTRA` + `LDATE/LTIME` + `WHO` + `EMAIL` + `PARAM1..9` + `PARAM0`
+See `HELP-RESOURCES.md` §AUTO/Batch for the full details.
+
+## EvoLinks — ISLINKS schema (confirmed Pass 106k)
+
+`ISLINKS.B` — 311-field schema (DDF confirmed):
+
+| Field | Size | Meaning |
+|-------|------|---------|
+| `IS_LNK_UID` | 48 | Parent record key — the EvoERP record this document is attached to |
+| `IS_LNK_LINK` | 256 | File path / URL of the linked document |
+| `IS_LNK_APP` | 10 | Module code (e.g., `AR`, `PO`, `SO`) that owns this link |
+| `IS_LNK_TYPES_1..100` | 1×100 | Array: which of 100 document type codes apply |
+| `IS_LNK_PCB_1..100` | 1×100 | Array: "print check box" flags per type code |
+| `IS_LNK_DEF_1..100` | 1×100 | Array: default-include flags per type code |
+| `IS_LNK_GLOBAL` | 1 | Global flag: `Y` = visible to all companies |
+| `IS_LNK_OPENWITH` | 1 | Open-with behavior flag |
+| `IS_LNK_DATE` | 4 | Date document was attached |
+| `IS_LNK_WHO` | 15 | User who attached it |
+| `IS_LNK_ATYPE` | 3 | Attachment type code |
+| `IS_LNK_EXTRA` | 100 | Supplemental metadata |
+| `IS_LNK_PRIVATE` | 1 | Private flag: hides from other users |
+| `IS_LNK_SORT` | 8 (FLOAT) | Sort order within attachment list |
+
+The 100-element arrays (TYPES/PCB/DEF) are TAS `array 100` occurrences — each index
+position maps to one of up to 100 configurable document-type categories (e.g., "quote",
+"drawing", "PO confirmation"). EvoLinks stores ONE record per attached file, with the
+bitmask of applicable types in the array columns.

@@ -1,6 +1,6 @@
 # `.DFM` — Delphi Form (UI Layout)
 
-Status: draft.
+Status: verified — Delphi 7 confirmed, control types cataloged.
 
 ## Short answer
 
@@ -90,9 +90,17 @@ These are what I've seen so far — catalog will grow:
   of VCL's `TComponent.WriteComponent`). This is well-known and stable
   across Delphi 2 – Delphi XE versions. No surprises expected.
 
-## Things still to verify
+## Delphi version — confirmed (Pass 106k)
 
-- Which Delphi/VCL version the runtime embeds (hints at what controls
-  are available). The DLL list (`qtintf70.dll` = Qt 3 for Borland's
-  CLX) implies **Delphi 6–7** era. Evoerp.exe's embedded form classes
-  will confirm this if I peek at the string table later.
+**Delphi 7** is confirmed from `evoerp.exe` string table (strings `Delphi 7` and
+`idapi32.dll` appear explicitly in the binary). The "70" in `qtintf70.dll` =
+VCL 7.0. TAS Professional 7 and EvoERP were built with Borland Delphi 7
+(released 2002), which used the CLX/Qt3 widget layer via `qtintf70.dll` for
+cross-platform compatibility.
+
+**Control types confirmed:** See [`tas-pro-7-controls.md`](tas-pro-7-controls.md)
+for the complete inventory — 51 distinct control types across 1,136 DFM files,
+including 16 TEditForm variants and all TTAS* custom controls (TTASENTER,
+TTASNumEnter, TTASComboEnter, etc.).
+
+Status updated to **verified** — all key questions resolved.

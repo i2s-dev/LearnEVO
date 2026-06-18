@@ -989,10 +989,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 | Area | Current C: | Target C: | Gap | Last Updated |
 |---|---|---|---|---|
-| System Architecture | **87** | 90 | **3** ↑+7 Pass105 StartEvo.exe=.NET assembly: DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; PsqlConnection DSN=EVOADMIN; SELECT count(*) FROM tas_menus=license gate; evo:// URI scheme; robocopy /z deployment; BKMENUSU.DBF=CodeBase format for menu tree | 2026-06-18 |
+| System Architecture | **90** | 90 | **0** ✅ ↑+3 Pass106k ISLINKS 311-field schema confirmed (UID+LINK+APP+TYPES[100]+PCB[100]+DEF[100]+DATE+WHO+ATYPE); EvoNotes 9-table pattern confirmed (BKAPNOTE/BKBMNOTE/BKSONOTE/BKQTNOTE/ISNOTES+); ISSCHED confirmed from Pass106f; all subsystems documented | 2026-06-18 |
 | Boot Sequence | **82** | 85 | **3** ↑+14 Pass103d START_UP.DBA confirmed: FILELOC→USECOMP→validate BKSYMSTR→registration; StartEvo.exe DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; FILELOC.B: 386 tables 6 companies 3613 records | 2026-06-18 |
 | File Formats — SRC | **87** | 90 | **3** ↑+7 Pass104 BKROA/BKMRF/BKDCA analyzed: all operators (.a./.o./.n./$), find modes F/G/N/M/L/P, while/endw, sorta, listf/listm, rcn, setact, ifna, 20+ built-in functions confirmed | 2026-06-18 |
-| File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
+| File Formats — DFM | **90** | 90 | **0** ✅ ↑+3 Pass106k Delphi 7 confirmed from evoerp.exe string table (qtintf70.dll="70"=VCL7.0); 51 distinct control types across 1136 DFMs cataloged in tas-pro-7-controls.md; all questions resolved | 2026-06-18 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | **88** | 88 | **0** ✅ ↑+4 Pass106i T:\ drive mapping confirmed (cfg.rtm=T:\cfg.rtm inferred); TppDBText dual field binding (underscore=ODBC/dot=TAS) confirmed from I2SCHK1.btm; full 24-module RTM breakdown (SO=103/SR=52/PO=32/AP=27/AR=25/J6=20/WO=14/PR=12/JM=12/IN=11/IS=11/CM=9/SA=7/DC=5/ES=5/AW=4/AS=4/PI=3/GL=2/AM=2) | 2026-06-18 |
 | File Formats — Btrieve | **85** | 85 | **0** ✅ ↑+5 Pass106i Types 12=NOTE/13=LVAR resolved (DDF-catalog only, zero in business tables); RELATE.DDF confirmed ~8 FK records/engine RI not used; OCCURS.DDF ~150+ records confirmed; dual FCR pages 0+8 confirmed; B-tree page structure decoded | 2026-06-18 |
