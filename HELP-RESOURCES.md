@@ -12560,6 +12560,41 @@ Per-item MRP sensitivity settings stored in MTIC.PROD:
 | m.sensexp | Expedite sensitivity |
 | m.sensdly | Delay sensitivity |
 
+#### MTMRP Action Codes (Pass 106e)
+
+MTMRP.ACTION field values — what T7MRF writes, what T7MRG/T7MRH display:
+
+| Action code | Meaning | What to do |
+|---|---|---|
+| `NEW` | New planned order needed — no supply exists for this demand | Create PO (MR-J) or WO (MR-I) |
+| `DELAY` | Existing PO/WO due too early — supply will arrive before demand | Reschedule PO out (MR-N) |
+| `CANCEL` | Existing PO/WO excess — demand no longer exists | Cancel the PO/WO |
+| `EXPEDITE` | Existing PO/WO due too late — supply arrives after need date | Pull in the PO due date |
+| `RESCHEDULE` | Minor timing adjustment needed | Adjust PO/WO dates |
+| `OK` | No action needed — supply and demand aligned | Review only |
+
+MR-H color-codes these by urgency: ACT.TYPES [MBEDORC] — `M`=Make, `B`=Buy, `E`=Expedite,
+`D`=Delay, `O`=OK, `R`=Reschedule, `C`=Cancel. Color bands set by PRIOR.CL (priority) and
+XDAYS.CL (days until due date).
+
+#### BKMRPPO → BKAPPO Conversion (T7MRJ, Pass 106e)
+
+When T7MRJ (MR-J — Generate Purchase Orders) runs, it converts BKMRPPO entries to actual POs:
+
+```
+BKMRPPO.BKMRP_PO_CONF = 'Y' (confirmed by planner)
+  → T7MRJ creates BKAPPO header (assigns PO number)
+  → T7MRJ creates BKAPPOL line (item, qty, price, ERD)
+  → BKMRPPO.BKMRP_PO_DONE = 'DONE' (marks as processed)
+```
+
+Pricing source priority in T7MRJ: [C]ontract price → [B]ase vendor price → [M]inimum price.
+`one.po.per.item` flag merges all BKMRPPO rows for the same vendor+item into one PO line.
+
+**Confidence: 78/100** — Table schemas confirmed from DDF. Program list confirmed from BKMENUSU.TXT.
+Action codes inferred from field names and T7MRH parameter strings (`ACT.TYPES [MBEDORC]`).
+MRP netting algorithm inferred from program DB fingerprints — not confirmed from decrypted source.
+
 ### SM Module — System Maintenance (additional sub-programs)
 
 #### SM-C Item Class GL Mapping (T7SMC)
