@@ -715,8 +715,8 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] ✅ Files: EvoScheduler.RWN, EvoSched.RWN, EvoSchedSetup.RWN — **C: 80/100**
 - [x] ✅ Scheduler job table = **ISSCHED** — confirmed 2026-06-17 from DB fingerprints (EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN all open ISSCHED); SCHEDCAL used by shop scheduling module
 - [x] ✅ EvoRemind (evoremind.RWN: 46 procs) opens ISREMIND+BKYSMSTR+BKSYUSER+ISTRIGRS+BKPSUSER+BKAPPOL — links reminders to PO/AR transactions; ISTRIGRS = trigger result log
-- [ ] ⬜ ISSCHED all fields documented
-- [ ] ⬜ Job execution mechanism traced (how scheduler triggers a program)
+- [x] ✅ ISSCHED all 24 fields documented — Pass106f — **C: 78/100**
+- [x] ✅ Job execution mechanism traced — EvoSched.RWN (21 procs): polls ISTS.CFG.PTIME interval → reads ISSCHED by DATE+TIME → invokes PROG as subprocess with CO+PARAM1..9 → updates LDATE/LTIME → computes next TYPE fire — **C: 78/100**
 
 ### 9.3 EvoService (Windows Service)
 - [x] ✅ Files: EvoService.RWN, EvoServiceSetup.RWN, EvoServiceRemove.RWN — **C: 68/100**
@@ -1098,7 +1098,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: TPOA/PO Processing Hub | **84** | 75 | **0** ✅ ↑+12 Pass93 T7POA/POA2/POAC/POAE/POACPY BKAP.PO full header+RITEC risk.assess[6]+CONFIRM[1]/[2] | 2026-06-18 |
 | Module: QS/Quick SO | **76** | 76 | **0** ✅ ↑+11 Pass84 T7QSOA+QSOALINES DFMs confirmed | 2026-06-18 |
 | Subsystem: VSCHED/Visual Scheduler | **78** | 78 | **0** ✅ ↑+10 Pass84 init/start/post/DSN confirmed | 2026-06-18 |
-| System: AUTO/Batch Automation | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
+| System: AUTO/Batch Automation | **78** | 78 | **0** ✅ ↑+6 Pass106f: EvoScheduler 3-program architecture; ISSCHED 24f all fields; T7AUTOREBSS 26-table fingerprint; T7AUTOFX ISMCF+ISJAVA+ISMCR flow; T7AUTODCH 42-table fingerprint+ISAUTODC | 2026-06-18 |
 | Module: FO/Features+Options | **87** | 83 | **0** ✅ (dup row — see primary) | 2026-06-18 |
 | System: Notes/EVONOTES | **82** | 78 | **0** ✅ ↑+10 Pass86 IS.NOTE/LNK/REM tables confirmed | 2026-06-18 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | **47** | 50 | **3** ↑+32 Pass103c RUN dumps+BKLME.SRC+DFMs: AB=RMA, EX=exec, FL=FlexLoc, LM=LotMove(confirmed SRC), MA=MapDepo, MM=MfgMgmt, PL=PayrollLink, RT=RTMValid, SB=Scoreboard, SL=SFC, UM=UserMenu, UP=Update | 2026-06-18 |

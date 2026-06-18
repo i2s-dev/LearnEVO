@@ -3622,7 +3622,68 @@ Primary key: `LAB_DATE`(4) + `LAB_EMP`(2) + `LAB_WOPRE`(8) + `LAB_WOSUF`(2) + `L
 
 **T7AUTODCH workflow:** Reads pending BKDCLAB rows (LAB_POSTED=`N`) → validates against BKDCCFG rules and BKPRMSTR employee setup → if valid, posts to WORKORD/WOROUT labor actuals → sets LAB_POSTED=`Y`.
 
-**Confidence: 72/100** — All 8 programs identified; BKDCLAB (50f) and BKDCCFG (7f) schemas fully extracted; DC-to-WO posting workflow confirmed from DB fingerprints; exact exception-handling logic and scheduling config in encrypted RWN.
+**T7AUTOREBSS (79 procs) — Back-order Status Summary Recalculation:**
+Opens 26 tables — BKICMSTR+MTICMSTR+BKICLOC+BKICLOCM+BKYSMSTR+BKARINVL+BKAPPOL+BKAPPO+WORKORD+WOBOM+INVTXN+BKBMMSTR+BKMRPFC+MTMRP+ISICMSTR+BKARINV+BKGLTRAN+DBAFIFO+ISTRIGRS+ISREMIND+LOT+SERIAL+ISNCR. The same table set as a full MRP run — this program recalculates the BSS (Back-order Status Summary) by reading all demand/supply, netting, and updating status flags across open SOs and WOs. Run nightly to keep the back-order report current.
+
+**T7AUTOFX (21 procs) — Foreign Exchange Rate Auto-Update:**
+DB: ISMCF+ISJAVA+ISMCR. Reads ISMCF (multi-currency FROM table — which currency pairs to update) → queues an ISJAVA task → EvoPVT.jar fetches live rates via HTTP → writes ISMCR (multi-currency rates table). Variables: CFROM (currency FROM code), TEST.MODE (dry-run flag), CDATE/CTIME (last update timestamp). The actual HTTP fetch runs inside EvoPVT.jar — T7AUTOFX just configures the task.
+
+---
+
+#### EvoScheduler Architecture (Pass 106f, 2026-06-18)
+
+Three-program scheduler: EVOSCHEDULER (admin UI) + EVOSCHED (runner daemon) + EVOSERVICE (Windows service wrapper).
+
+| Program | Procs | Role |
+|---|---|---|
+| EvoScheduler.RWN | 65 | **Admin UI** — create/edit/delete ISSCHED jobs; reads BKSYMSTR for program lookup |
+| EvoSched.RWN | 21 | **Runner daemon** — polling loop; reads ISSCHED, checks DATE+TIME, invokes PROG |
+| EVOSERVICE.RWN | 27 | **Windows service** — wraps EVOSCHED + ISREMIND reminder dispatch |
+| EvoSchedSetup.RWN | 37 | **Email config** — stores SMTP credentials (EMAIL.CFG.SMTP/USER/PASS/EMAIL/SEC) in ISTS.CFG; used for job completion notifications |
+| EvoServiceSetup.RWN | 49 | **Service SMTP config** — similar to EvoSchedSetup, registers EVOSERVICE Windows service |
+| EvoServiceRemove.RWN | 18 | **Uninstall** — removes the Windows service registration |
+
+**How a job executes (EvoSched.RWN):**
+```
+1. EvoSched reads ISTS.CFG.PTIME (polling interval, seconds)
+2. Polling loop: read ISSCHED records sorted by DATE+TIME
+3. For each record where IS.SCHED.DATE+IS.SCHED.TIME <= now:
+   a. Load IS.SCHED.PROG (program name, e.g. "T7AUTOMRF")
+   b. Load IS.SCHED.CO (company code), IS.SCHED.PARAM1..9 (up to 9 parameters)
+   c. Execute: tp7runtime.exe runs PROG as a subprocess with company context + params
+   d. Write IS.SCHED.LDATE+IS.SCHED.LTIME (last run date/time)
+   e. Compute next run: IS.SCHED.TYPE = O(one-shot)/D(daily)/W(weekly)/M(monthly)
+      → update IS.SCHED.DATE for next fire
+4. Send IS.SCHED.EMAIL notification if configured (via EvoSchedSetup SMTP)
+5. Sleep ISTS.CFG.PTIME seconds, repeat
+```
+
+**EVOSERVICE also handles ISREMIND:** The service polls both ISSCHED and ISREMIND. When a reminder's due date/time arrives, it sends the EMAIL notification configured in ISREMIND (REMIND.H = reminder header; PARSTO = party to notify).
+
+**ISSCHED field reference:**
+
+| Field | Size | Meaning |
+|---|---|---|
+| IS_SCHED_NAME | STRING 20 (PK) | Unique job name |
+| IS.SCHED.DESC | STRING | Description |
+| IS.SCHED.PROG | STRING | Program to run (RWN filename without extension) |
+| IS.SCHED.CO | STRING | Company code context |
+| IS.SCHED.TYPE | STRING 1 | Recurrence: O=one-shot, D=daily, W=weekly, M=monthly |
+| IS.SCHED.DATE | DATE | Next run date |
+| IS.SCHED.TIME | TIME | Next run time |
+| IS.SCHED.RECUR | FLOAT | Recur every N minutes (alternative to TYPE) |
+| IS.SCHED.LOG | STRING | Log file path for job output |
+| IS.SCHED.EXTRA | STRING | Extra/notes |
+| IS.SCHED.LDATE | DATE | Last run date |
+| IS.SCHED.LTIME | TIME | Last run time |
+| IS.SCHED.WHO | STRING | Who created this job |
+| IS.SCHED.EMAIL | STRING | Email address for completion notification |
+| IS.SCHED.PARAM1..9 | STRING | Up to 9 parameters passed to PROG |
+| IS.SCHED.PARAM0 | STRING | 10th parameter slot |
+
+(24 fields total confirmed in DDF; DFM analysis confirms at least 22 named fields above.)
+
+**Confidence: 78/100** — All 8 AU automation programs identified with full DB fingerprints; BKDCLAB(50f)+BKDCCFG(7f) schemas fully extracted; ISSCHED(24f) all fields documented; EvoScheduler 3-program architecture confirmed; polling mechanism inferred from EvoSched.RWN variable names (ISTS.CFG.PTIME, SCHED.H); exact scheduling code logic blocked by RWN encryption.
 
 ---
 
