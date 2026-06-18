@@ -190,7 +190,26 @@ to resolve fully:
     - PL = Payroll Link (confirmed from BKPLE.SRC: "Payroll Software Link Setup")
     - DI = Data Import Labor (DI-G = BKDIG, single-entry sub-module)
     - RM = Return Material Authorization — current module code (legacy code was AB in DBA era; RM is active in EVO menu)
-    - LM = Lot Management (LM-B Item Generator Templates; LM-H Purge QC Receipts — confirmed 2 menu entries)
+    - LM = Lot/List Management (LM-B Item Generator Templates; LM-H Purge QC Receipts; **LM-E = Consolidate Inventory Transactions confirmed from BKLME.SRC**)
+
+15. ~~**Full identity of the 16 "opaque" module codes (AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS).**~~ **RESOLVED Pass 106m 2026-06-18.**
+    All 16 confirmed from DDF schema grep + share scan + BKLME.SRC read + BKMENUSU.TXT:
+    - AB = Authorization/Licensing (BKABCUST/BKABVEND: license start/exp/period; serial+registered name; T6AB*.RTM = alt billing templates)
+    - CP = Computer/Checkmark Payroll (legacy) — BKCPMSTR path config + BKCPEC AP check export records; superseded by PL
+    - EX = Execute launcher wrapper — t7exec.RUN (one file, not a business module)
+    - FL = Field Help — BKFLDHLP (HLP_CODE/INDEX/LINE — F1 context help text, not user-navigable)
+    - LM = Lot/List Management — BKLMA-BKLMI.RUN; LM-E = Consolidate Inv Txns (SRC confirmed)
+    - MA = Map Deposits + Material — T7MAPDEPO.DFM (BKAR.DEP.* apply deposits to SO); BKMATCST (10-tier qty/cost), BKMATRIM (machine trim)
+    - MM = Mfg Maintenance (TAS6 legacy) — BKMMA-BKMMN.RUN (14 ops); predecessor to DM→LM
+    - PC = Production Control (legacy) — BKPCKIT (kit components), BKPCPLOT (lot tracking with status/dates)
+    - PL = Pay Link (active in menu) — "Pay Link" group; T6PLA.RUN (Checkmark), BKPLB/C/D.RUN
+    - RT = Routing Templates (for Estimating) — BKRTCST/BKRTEMTR/BKRTSPEC/BKRTTEMP; T7RTMVALID = shared format-picker dialog
+    - SB = Spec Book / Approved Source List — BKSBMFG (mfr+mfr-part), BKSBPART (substitutes), BKSBVEND (vendor+vendor-part); keyed by parent+product+customer
+    - SL = Security Levels — BKSLEVEL (menu+level+13 flags), BKSLMSTR (level master); t7slsfc.RWN on share
+    - SY = System tables (internal prefix) — BKSYMSTR/BKYSMSTR/BKSY* managed by SM/AD; not a menu group
+    - UM = User Menu Security — BKUMSRTY (SCRTY_LEVEL/MENU/GROUP/ITEM_1..13)
+    - UP = Update Management — BKUPDATE (company/update-flag/date/version)
+    - YS = Yes/No System Parameters — T7YSYN.RWN edits BKYSMSTR (195+ YN flags)
 
 ## Nice-to-have follow-ups (not blocking)
 

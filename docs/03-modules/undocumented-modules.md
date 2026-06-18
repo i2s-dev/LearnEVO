@@ -1127,8 +1127,236 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 ---
 
-*Last updated: 2026-06-15*
+*Last updated: 2026-06-18*
 *Source: DFM files read from \\I2S109-SOLIDCRM\DBAMFG$\, CHM help topics from samples\chm\extracted\*
+
+---
+
+## Previously-Unlisted Legacy and System Modules (Pass 106m — 16 "opaque" codes)
+
+These module codes appear in the DDF table names, program files on the network share, or BKMENUSU.TXT but are not listed as active GROUPS/BUTTONS in the current menu. Most are TAS Pro 6-era legacy modules or internal system modules.
+
+**Investigation method:** DFM inspection (T7MA, T7PL, T7RT), DDF schema grep (BKCP, BKPC, BKSL, etc.), network share scan for T7*/T6*/BK* prefix files, BKLME.SRC source read, BKMENUSU.TXT grep.
+
+---
+
+### AB — Authorization / Software Licensing
+
+**Tables:** BKABCUST, BKABVEND
+
+| Table | Key fields |
+|-------|------------|
+| BKABCUST | BKAB_START (license start date), BKAB_EXP (expiration), BKAB_PERIOD (license period), BKAB_WARNING (days-before-expiry warning), BKAB_STAND_ALNE (standalone flag) |
+| BKABVEND | BKAB_SERIAL (license serial number), BKAB_REG_NAME (registered company name) |
+
+**Related files:** T6AB*.RTM — 12+ alternative/abbreviated report templates (T6ABINV, T6ABPO1, T6ABrma1, T6ABSCHK, T6ABSOB4, T6ABSPAC, T6ABSQT2, T6ABSQUT, T6ABWOC3, T6ABWOC4).
+
+**Purpose:** Built-in EvoERP software license management. BKABCUST tracks license validity (start/expiration dates, period, warning threshold); BKABVEND stores the software license serial and registered name. The T6AB*.RTM files are printed authorization/billing documents for customers/vendors — **not** standard ERP transactions. **Confidence: 55/100**
+
+---
+
+### CP — Computer Payroll / Checkmark Payroll (legacy predecessor to PL)
+
+**Tables:** BKCPMSTR, BKCPEC
+
+| Table | Key fields |
+|-------|------------|
+| BKCPMSTR | BKCP_MST_CMPATH (Checkmark install path), IMPATH (import path), CFILE (check file), VFILE (vendor file), EXPATH (export path), HFILE (header file), LABEX (label export flag), COMMEX (comment export flag), EFILE (employee file) |
+| BKCPEC | BKCP_EC_DATE, BKCP_EC_GLACCT, BKCP_EC_GLDEPT, BKCP_EC_AMOUNT, BKCP_EC_CHECKNO, BKCP_EC_DESC, BKCP_EC_ISCHK (is-check flag), BKCP_EC_ERROR, BKCP_EC_LINE, BKCP_EC_VEND |
+
+**Purpose:** The legacy AP check export module that links EvoERP to the **Checkmark payroll** external software. BKCPMSTR stores file path configuration for the Checkmark data files; BKCPEC holds export records for AP checks (date, GL account, amount, check number, vendor, error flag). This function was superseded by **PL (Pay Link)**, which uses T6PLA.RUN, BKPLB.RUN, BKPLC.RUN, BKPLD.RUN. **Confidence: 60/100**
+
+---
+
+### EX — Execute (generic launcher)
+
+**Files:** t7exec.RUN (TAS Pro 6 .RUN — one file on share)
+
+**Purpose:** A generic program launcher wrapper. Allows the menu to invoke arbitrary external programs or scripts. Not a business module. **Confidence: 35/100**
+
+---
+
+### FL — Field Help
+
+**Tables:** BKFLDHLP
+
+| Table | Fields |
+|-------|--------|
+| BKFLDHLP | HLP_CODE (field identifier), HLP_INDEX (line number), HLP_LINE (60-char help text) |
+
+**Purpose:** The TAS Pro field-level context help system. When a user presses F1 on any entry field, the runtime looks up HLP_CODE in BKFLDHLP to display multi-line help text. Not a user-navigable business module. **Confidence: 65/100**
+
+---
+
+### LM — List Maintenance (Inventory Transaction Consolidation)
+
+**Files:** BKLMA.RUN through BKLMI.RUN (9 operations), **BKLME.SRC** (readable source)
+
+**Confirmed from BKLME.SRC:** Header = `"LM-E  Consolidate Inventory Transactions"`. History comment: "Changed from BKMMG.src to BKDME.src on 12/30/99; Changed from bkdme.src to bklme.src on 3/30/00" — confirming MM→DM→LM renaming.
+
+**LM-E function (from source):** Reads INVTXN (inventory transaction) table by item code and date range. For each item, groups all transactions by type (A=Adjustments, S=Shipments, P=PO Receipts, W=WO Receipts, I=WO Issues, Q=QC Receipts, O=Outside Process, C=Cost Change, J=PO WIP Receipts), sums quantities and costs, deletes the individual records, then writes one consolidated record per type. Preserves lot/serial records (never consolidates them). Net quantity / average cost are preserved.
+
+**Purpose:** A DBA-era database maintenance utility to compact the INVTXN table by summarizing old transaction detail. Still ships on the network share but is not in the current EvoERP menu. **Confidence: 90/100** (source confirmed)
+
+---
+
+### MA — Map Deposits / Material Analysis (dual use)
+
+**Files:** T7MAPDEPO.DFM, T7MAPDEPO.RWN
+
+**DFM confirmed:** Form Caption='New Screen' (generic); fields: bkar.dep.depno (deposit number), BKAR.DEP.CUST (customer), BKAR.CUSTNAME, depo.orig.amt (original amount), amount.rem (remaining), sFROM.SONUM (SO number), from.item (item), GL account override.
+
+**Tables (from DDF):** BKMATCST (10-tier quantity/cost breakpoints, field prefix BKMC_), BKMATRIM (machine trim settings: BKMA_TRIM_MACH, BKMA_TRIM_FIRST, BKMA_TRIM_SECND).
+
+**Purpose:** T7MAPDEPO = **Apply/Map Deposits** — applies prepaid customer deposits to sales orders/invoices. Reads the BKAR.DEP.* (AR Deposit) table; allows partial application across multiple SO lines. The BKMATCST/BKMATRIM tables suggest a broader **Material** costing sub-module also uses the MA prefix (10-level quantity cost breakdowns may be used for material purchasing cost analysis). Exact relationship between deposit mapping and material tables unclear. **Confidence: 55/100**
+
+---
+
+### MM — Manufacturing Maintenance (TAS Pro 6 legacy)
+
+**Files:** BKMMA.RUN through BKMMN.RUN + BKMMKA.RUN (14 programs)
+
+**Purpose:** Predecessor to LM (List Maintenance) and DM. The BKLME.SRC history confirms that BKMMG was the original source of LM-E. MM was a TAS Pro 6-era module for inventory/manufacturing data maintenance that was progressively renamed DM → LM during 1999-2000. All files are .RUN (TAS Pro 6) — not currently in the EvoERP menu. **Confidence: 40/100** (purpose inferred from naming history)
+
+---
+
+### PC — Production Control (legacy kit/plot system)
+
+**Tables:** BKPCKIT, BKPCPLOT
+
+| Table | Key fields |
+|-------|------------|
+| BKPCKIT | BKPC_KIT_COMP (component item), KIT_QTY_R (required qty), KIT_QTY_A (available qty), KIT_QTY_S (shipped qty), KIT_DATELM (date eliminated), KIT_LOC (location) |
+| BKPCPLOT | BKPC_PLOT_PROD (product), PLOT_ISDTE (issue date), PLOT_SPDTE (ship date), PLOT_QTY (quantity), PLOT_CUST (customer), PLOT_INKO, PLOT_STAT (status), PLOT_STRTD (start date), PLOT_COMPD (complete date), PLOT_LOC (location) |
+
+**Purpose:** An older production control / kit-building system. BKPCPLOT tracks production lots (quantity, status, start/complete dates, customer) — similar to a simplified work order. BKPCKIT tracks the components required/available/shipped for each kit/plot. Likely a TAS Pro 6-era BOM execution system that was superseded by the WO (Work Order) module. **Confidence: 50/100**
+
+---
+
+### PL — Pay Link (Checkmark Payroll Integration)
+
+**Confirmed from BKMENUSU.TXT:** `"GROUPS","Pay Link","PL"` — active menu group.
+
+**Operations:**
+- PL-A: T6PLA.RUN — Run Checkmark Payroll
+- PL-B: BKPLB.RUN — Import Employee Checks
+- PL-C: BKPLC.RUN — Import Employer Vouchers
+- PL-D: BKPLD.RUN — Payroll Link Setup
+
+**Purpose:** Integrates EvoERP with external **Checkmark payroll** software. PL-A runs Checkmark directly from EvoERP's menu; PL-B/C import check and voucher data back into EvoERP for GL posting; PL-D configures the link. Successor to the older **CP** module. Note: T7PLess*.DFM files (T7PLessComps, T7PLessNotes, T7PLessWODates) are "Paperless" shop-floor sub-forms called by HH/DC modules — unrelated to PL Pay Link despite the naming coincidence. **Confidence: 72/100**
+
+---
+
+### RT — Routing Templates for Estimating
+
+**Tables:** BKRTCST, BKRTEMTR, BKRTSPEC, BKRTTEMP
+
+| Table | Key fields |
+|-------|------------|
+| BKRTCST | BKRT_QUOTE (quote number), BKRT_CODE (item), BKRT_OPER (operation#), BKRT_PARTSHR_1..10 (part share per qty tier), BKRT_SETUP_1..10 (setup times) |
+| BKRTEMTR | MTRO_CODE (item), MTRO_OPER (operation#), MTRO_DESC, MTRO_OPERDESC, MTRO_TYPE, MTRO_LEAD (lead time), MTRO_VENDCOST, MTRO_PARTSHR, MTRO_TIMEPART, MTRO_SETUPHRS, MTRO_LOTSIZE, MTRO_INSTR_1..5 (work instructions) |
+| BKRTSPEC | BKRT_SPEC_PART, BKRT_SPEC_SEQ, BKRT_SPEC_LINE, BKRT_SPEC_NOTE_1..4 |
+| BKRTTEMP | BKRT_TEMP_CODE, BKRT_TEMP_LINE, BKRT_TEMP_NOTE_1..4 |
+
+**Files:** T7RTMVALID.DFM/RWN — "Select Report Format Name" dialog (shared utility for choosing an RTM print format, not an RT-module business form).
+
+**Purpose:** Routing template tables used by the **ES (Estimating)** module to calculate labor costs for quotes. BKRTEMTR stores routing operation templates with setup hours, part-share ratios, and work instructions. BKRTCST links routing costs to specific quote numbers. BKRTSPEC/BKRTTEMP hold routing specification notes. RT = **Routing Templates** for estimating. **Confidence: 55/100**
+
+---
+
+### SB — Spec Book / Approved Source List
+
+**Tables:** BKSBMFG, BKSBPART, BKSBVEND
+
+| Table | Key fields |
+|-------|------------|
+| BKSBMFG | BKSB_MFG_PARNT (parent item), BKSB_MFG_PROD (product/component), BKSB_MFG_CUST (customer), BKSB_MFG_MANUF (manufacturer name), BKSB_MFG_MPART (mfr part#), BKSB_MFG_EXTRA |
+| BKSBPART | BKSB_PART_PARNT, BKSB_PART_PROD, BKSB_PART_CUST, BKSB_PART_SUBST (substitute part), BKSB_PART_EXTRA |
+| BKSBVEND | BKSB_VEND_PARNT, BKSB_VEND_PROD, BKSB_VEND_CUST, BKSB_VEND_VEND (vendor code), BKSB_VEND_VPART (vendor part#), BKSB_VEND_EXTRA |
+
+**Files:** BKSBMFG.XPT, BKSBVEND.XPT (export templates for manufacturer and vendor spec records).
+
+**Purpose:** Manages the **Approved Source List (ASL)** — for each parent assembly + component item + customer combination, records the approved manufacturers (with mfr part numbers), approved vendors (with vendor part numbers), and approved substitute parts. Common in electronics/PCB manufacturing where customers specify which manufacturer's version of a component is acceptable. SB = **Spec Book**. **Confidence: 65/100**
+
+---
+
+### SL — Security Levels
+
+**Tables:** BKSLEVEL, BKSLMSTR
+
+| Table | Key fields |
+|-------|------------|
+| BKSLMSTR | BKSL_MSTR_LEVEL (2-char level code), BKSL_MSTR_DESC (description) — master list of security levels |
+| BKSLEVEL | BKSL_MENU (menu group number), BKSL_LEVEL (level code), BKSL_MENU1_YN (Y/N for whole group), BKSL_MENU1_1..13 (13 per-item access flags) |
+
+**Files:** t7slsfc.RWN (one RWN on share — function unknown, encrypted).
+
+**Purpose:** Defines **security level** codes and their per-menu-item access permissions. Works alongside **PS (Password Security)** and **UM (User Menu Security)** — the three form EvoERP's layered access control: SL defines levels, UM assigns users to levels per menu, PS manages user accounts. **Confidence: 60/100**
+
+---
+
+### SY — System Tables (internal prefix)
+
+**Tables:** BKSYMSTR (286 fields), BKYSMSTR (195+ YN flags), BKSYCFG, BKSYLOG, BKSYPRTR, BKSYUSER, BKSYHELP, BKSYAP, BKSYAR
+
+**Purpose:** SY is the internal prefix for EvoERP's global system configuration tables. These tables are managed by the **SM (System Maintenance)** and **AD (Accounting Defaults)** modules in the current menu. SY may be an internal module code used programmatically (e.g., for open_symstr() / open_ysmstr() function calls in TAS source). Not visible as a separate menu group. **Confidence: 55/100**
+
+---
+
+### UM — User Menu Security
+
+**Tables:** BKUMSRTY
+
+| Table | Key fields |
+|-------|------------|
+| BKUMSRTY | SCRTY_LEVEL (security level), SCRTY_MENU (menu group number), SCRTY_GROUP (Y/N for whole group), SCRTY_ITEM_1..13 (per-item access flags) |
+
+**Purpose:** Per-menu-group access assignments for security levels. Parallel to BKSLEVEL but organized differently — BKUMSRTY is keyed by LEVEL + MENU, giving per-level per-menu access control. Works with SL (Security Levels) and PS (Password Security) to form EvoERP's three-tier access control system. UM = **User Menu** security. **Confidence: 60/100**
+
+---
+
+### UP — Update Management
+
+**Tables:** BKUPDATE
+
+| Table | Key fields |
+|-------|------------|
+| BKUPDATE | BKUP_COMPANY (company code), BKUP_UPDATE (update flag), BKUP_DATE (date applied), BKUPDATE_VER (version string) |
+
+**Purpose:** Tracks which EvoERP software updates (patches) have been applied to which companies. Each row records a company + update flag + date + version string. Used by the **EvoUpdate** system (EvoUpdate.RWN, UPDTP7.EXE) to determine which patches are already installed. UP = **Update** tracking. **Confidence: 70/100**
+
+---
+
+### YS — Yes/No System Parameters (BKYSMSTR editor)
+
+**Files:** T7YSYN.RWN (one RWN on share — encrypted)
+
+**Tables:** BKYSMSTR (195+ Yes/No flag fields)
+
+**Purpose:** T7YSYN.RWN ("YS-YN") is the program for editing BKYSMSTR — EvoERP's global Yes/No configuration parameter table. BKYSMSTR stores 195+ boolean system settings (distinct from BKSYMSTR which stores numeric/string parameters). YS is the module code for this configuration editor; it pairs with SM module (which manages BKSYMSTR). YS = **Yes/No System** parameters. **Confidence: 60/100**
+
+---
+
+### Summary Table — 16 Opaque Modules
+
+| Code | Name | Status | Primary tables / files | Confidence |
+|------|------|--------|----------------------|-----------|
+| AB | Authorization/Licensing | Legacy + active | BKABCUST, BKABVEND; T6AB*.RTM | 55 |
+| CP | Computer Payroll (legacy → PL) | Legacy | BKCPMSTR, BKCPEC | 60 |
+| EX | Execute (launcher) | Internal utility | t7exec.RUN | 35 |
+| FL | Field Help | Internal | BKFLDHLP | 65 |
+| LM | List Maintenance (Inv Txn Consolidation) | Legacy (not in menu) | BKLMA-BKLMI.RUN, BKLME.SRC | 90 |
+| MA | Map Deposits / Material | Partial (T7 era) | T7MAPDEPO.DFM; BKMATCST, BKMATRIM | 55 |
+| MM | Manufacturing Maintenance (legacy) | Legacy predecessor to LM | BKMMA-BKMMN.RUN | 40 |
+| PC | Production Control (legacy) | Legacy | BKPCKIT, BKPCPLOT | 50 |
+| PL | Pay Link (Checkmark Payroll) | Active (in menu) | T6PLA.RUN, BKPLB-BKPLD.RUN | 72 |
+| RT | Routing Templates (for ES Estimating) | Internal sub-module | BKRTCST, BKRTEMTR, BKRTSPEC, BKRTTEMP | 55 |
+| SB | Spec Book / Approved Source List | Active (has .XPT exports) | BKSBMFG, BKSBPART, BKSBVEND | 65 |
+| SL | Security Levels | Internal | BKSLEVEL, BKSLMSTR; t7slsfc.RWN | 60 |
+| SY | System Tables (internal prefix) | Internal (used by SM/AD) | BKSYMSTR, BKYSMSTR, BKSY* | 55 |
+| UM | User Menu Security | Internal | BKUMSRTY | 60 |
+| UP | Update Management | Active | BKUPDATE | 70 |
+| YS | Yes/No System Parameters | Internal sub-module | T7YSYN.RWN; BKYSMSTR | 60 |
 
 ## Module Name Corrections (2026-06-15)
 
