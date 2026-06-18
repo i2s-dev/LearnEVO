@@ -989,7 +989,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
 | TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
-| Database Schema (field meaning) | **83** | 88 | **5** ↑+5 Pass77 100%coverage | 2026-06-17 |
+| Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
@@ -1026,7 +1026,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: CC/Credit Card ⚠️ | **87** | 85 | **0** ✅ ↑+3 Pass92 IS.CC.* all 8 fields + CCYY/CCMM/CVV confirmed | 2026-06-18 |
 | Module: SP/SPC ⚠️ | **92** | 92 | **0** ✅ ↑+5 Pass84 SPCLIVEGRID/LIVEREP/REP2/REPPPM | 2026-06-18 |
 | Module: HH/Handheld | **93** | 85 | **0** ✅ ↑+13 Pass87 43 DFMs WO/SO/PO/PI/INV full handheld system | 2026-06-18 |
-| Module: UT/Utilities | **78** | 75 | **0** ✅ ↑+6 Pass79 DFM-confirmed | 2026-06-17 |
+| Module: UT/Utilities | **84** | 75 | **0** ✅ ↑+6 Pass94 UTKA-UTKH data-deletion/GL-transfer/location-rename/item-type-reports | 2026-06-18 |
 | Module: RM/RMA | **85** | 82 | **0** ✅ ↑+7 Pass86 SRMA/IS.RMA RMD disposition confirmed | 2026-06-18 |
 | Module: FO/Features Options | **87** | 83 | **0** ✅ ↑+4 Pass86 ISFO.HDR.* EvoFNO confirmed | 2026-06-18 |
 | Module: IS/InfoSystem | **72** | 72 | **0** ✅ ↑+4 Pass78 | 2026-06-17 |
@@ -1059,7 +1059,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SL/Shop Loading | **85** | 70 | **0** ✅ ↑+20 Pass93 T7SHA-SHP MTWC.*/MTWORO.*/SWO.CRATIO/RUN.DAYS fully confirmed | 2026-06-18 |
 | Module: AL/Audit Log+AltPart | **76** | 76 | **0** ✅ ↑+6 Pass82 3 DFMs | 2026-06-18 |
 | Module: ML/Multi-Language | **76** | 76 | **0** ✅ ↑+8 Pass82 LANGDICT confirmed | 2026-06-18 |
-| Module: MH/Shipping Order | **68** | 72 | **4** ↑+13 Pass46 | 2026-06-17 |
+| Module: MH/Shipping Order | **80** | 72 | **0** ✅ ↑+12 Pass94 T7BOL+BOLMSO full BOL structure confirmed | 2026-06-18 |
 | Module: BR/Brands | **72** | 72 | **0** ✅ ↑+7 Pass82 BKCM.ACCC confirmed | 2026-06-18 |
 | Module: NE/New Company Init | **68** | 68 | **0** ✅ ↑+3 Pass82 stub confirmed | 2026-06-18 |
 | Module: JO/Jobs+Departments | **76** | 76 | **0** ✅ ↑+6 Pass82 3 DFMs | 2026-06-18 |
@@ -1088,7 +1088,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: TC/Treasury Control | **80** | 75 | **0** ✅ ↑+8 Pass93 T7TCC terms.num+CHK_NAME[1] confirmed | 2026-06-18 |
 | Module: SC/Serial Control ⚠️ (dup) | **78** | 80 | **2** ↑ Pass68 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **72** | 72 | **0** ✅ | 2026-06-17 |
-| Module: KI/Kit Assembly | **72** | 72 | **0** ✅ | 2026-06-17 |
+| Module: KI/Kit Assembly | **83** | 72 | **0** ✅ ↑+11 Pass94 T7KIT BOM-component/lot/scan/bin arrays confirmed | 2026-06-18 |
 | Module: MA/AR Deposit Apply | **82** | 75 | **0** ✅ (merged with MA/AR Deposits — see primary) | 2026-06-18 |
 | Module: TE/NACHA+ACH | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
 | Module: PA/Paperless DC | **70** | 72 | **2** ↑ | 2026-06-17 |
