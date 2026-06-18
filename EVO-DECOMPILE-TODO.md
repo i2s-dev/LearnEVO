@@ -1003,7 +1003,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | **88** | 88 | **0** ✅ ↑+4 Pass106i T:\ drive mapping confirmed (cfg.rtm=T:\cfg.rtm inferred); TppDBText dual field binding (underscore=ODBC/dot=TAS) confirmed from I2SCHK1.btm; full 24-module RTM breakdown (SO=103/SR=52/PO=32/AP=27/AR=25/J6=20/WO=14/PR=12/JM=12/IN=11/IS=11/CM=9/SA=7/DC=5/ES=5/AW=4/AS=4/PI=3/GL=2/AM=2) | 2026-06-18 |
 | File Formats — Btrieve | **85** | 85 | **0** ✅ ↑+5 Pass106i Types 12=NOTE/13=LVAR resolved (DDF-catalog only, zero in business tables); RELATE.DDF confirmed ~8 FK records/engine RI not used; OCCURS.DDF ~150+ records confirmed; dual FCR pages 0+8 confirmed; B-tree page structure decoded | 2026-06-18 |
-| TAS 4GL Language | **90** | 92 | **2** ↑+3 Pass106i Type V=variant holder (confirmed from BKDCA.SRC assign+clear), type O=extended legacy numeric (dead-code defines only); find R mode confirmed absent from all 7 SRC files | 2026-06-18 |
+| TAS 4GL Language | **92** | 92 | **0** ✅ ↑+2 Pass108: `enter` full option set documented (12 options: mask/up/acr/pre/post/vld/vldm/dflt/upar/at/help/noclickoff; all confirmed from 7 SRC files); pre+vld accept either func() or bare expression; noclickoff=T7-era standard; remaining: expression precedence (unobservable from SRC) | 2026-06-18 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
 | Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
 | Security / Login | **85** | 85 | **0** ✅ ↑+7 Pass105 4-layer security model: license gate(tas_menus/StartEvo)→AHSYLOG module flags→BKPSUSER program-level→T7LIMACC field-level; all PS* admin programs mapped from BKMENUSU.TXT; BKPSUSER 11 fields confirmed; BKSLEVEL 14×20=422f confirmed | 2026-06-18 |
@@ -1125,7 +1125,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **87** | 88 | **1** ↑+4 Pass103 tier9-tables.md: 19 Java-confirmed schemas (BKSLEVEL/BKSYMSTR/ROUTING/WORKCTR/ISBSF/BKICLOC/BKBMMSTR/ISFOHEAD/ISFOLINE/ISSHIPCO/ISREMIND/CALENDAR/MACHINE/AHSYLOG/BKLOGON/etc) | 2026-06-18 |
 | PROJECT-STRUCTURE.md | **90** | 90 | **0** ✅ ↑+4 Pass106g: 45 inferred→confirmed via DDF cross-check; confidence note updated ↑+6 Pass103 AP 6→26 entries, AR 5→17, PO 0→30 (full new section), SO 1→21; 171 DFM forms cataloged | 2026-06-18 |
-| HELP-RESOURCES.md | **90** | 92 | **2** ↑+3 Pass102 Java Integration doc: EvoPVT.jar arch, ISJAVA schema, jdbc.ini, 260+ table inventory, key schemas | 2026-06-18 |
+| HELP-RESOURCES.md | **92** | 92 | **0** ✅ ↑+2 Pass108: Platform Subsystems section added (EvoService/EvoServiceSetup/EvoBackup/EvoLinks/CALREM — all programs, tables, config keys, how-to procedures); Spec Book/AVL (SB) section added (BKSBMFG/BKSBVEND/BKSBPART — PK structure, MRP enforcement); 6 QUICK LOOKUP entries added (SMTP config/backup/Glacier restore/links/reminders/AVL) | 2026-06-18 |
 
 ### Critical Path to 90% Goal
 

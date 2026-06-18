@@ -278,6 +278,27 @@ Color Array Norm
 - `Color Array Norm` selects the **Normal** color scheme for subsequent UI elements. Other variants: `Color Array Inverse` (highlighted/selected) and `Color Array High` (error/warning). These switch which row of the TASCOLOR array the runtime uses for the next painted region.
 - SETUP_COLOR appears in 5 of the 7 SRC files; the two that omit it (BKROA.SRC doesn't have it either) use legacy monochrome forms.
 
+## `enter` — complete option set (Pass 108)
+
+Confirmed from all 7 SRC files. Full reference:
+
+| Option | Example | Meaning |
+|--------|---------|---------|
+| `mask <pattern>` | `mask 'YN'` | Only characters present in the pattern string are accepted as input. Space `' '` = any character allowed in that slot. |
+| `up` | `up` | Auto-uppercase all input. |
+| `acr` | `acr` | Auto-carriage-return: advance to next field when full. |
+| `pre <expr_or_call>` | `pre pre.stat()` or `pre bkys.yn[59]='Y'` | Pre-entry hook. If result is `.f.`, field is skipped. Accepts either a function call or a bare boolean expression. |
+| `post <func()>` | `post post.incall()` | Post-entry hook. Called after the user confirms input. Return `.f.` to reject and keep cursor on field. |
+| `vld <expr_or_call>` | `vld select_thru1>=select_from1` | Validation expression or function call. Must evaluate to `.t.` for input to commit. |
+| `vldm <message>` | `vldm 'Thru cannot be < From'` | Error message shown when `vld` fails. |
+| `dflt <value>` | `dflt 1`, `dflt select_from1` | Default value (literal or variable) pre-filled when field is empty. |
+| `upar <label>` | `upar START` | Up-arrow key destination label. |
+| `at <row>,<col>` | `at 18,1` | Override screen position for this field. |
+| `help <label>` | `help HELP.TYPE` | F1 key jumps to this gosub label (context help override). |
+| `noclickoff` | `noclickoff` | Prevent mouse click from moving focus away. Standard in T7 programs. |
+
+Key: `pre` can be either `pre func()` or `pre <expression>` — both act as a gate (false = skip the field). `vld` works the same way. `vldm` is only meaningful alongside `vld`.
+
 ## Things still to document from the SRCs
 
 - The exact **GL posting sequence** from Bkaph — a complete reference implementation of how a typical post works.

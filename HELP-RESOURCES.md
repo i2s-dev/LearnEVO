@@ -66,6 +66,12 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Create a customer RMA | RM-D | [Return Material Authorization](#rm--return-material-authorization-rma) |
 | Process RMA disposition (restock/job) | RM-D-Ask | [Return Material Authorization](#rm--return-material-authorization-rma) |
 | Set up product configuration options | FO module | [Features & Options](#fo--features--options) |
+| Configure SMTP email (for alert emails from EVO) | EvoServiceSetup | [Platform Subsystems](#platform-subsystems) |
+| Schedule automatic nightly backups | EvoERPbackup | [Platform Subsystems](#platform-subsystems) |
+| Restore from an AWS Glacier backup archive | EvoERPbackup → Glacier restore | [Platform Subsystems](#platform-subsystems) |
+| Add a hyperlink attachment to a PO / SO / WO / part | EvoLinks | [Platform Subsystems](#platform-subsystems) |
+| View or enter reminders / calendar events | CALREM | [Platform Subsystems](#platform-subsystems) |
+| View / enter a Spec Book / Approved Source List (AVL/QPL) | IN-B (SB tab) | [Spec Book / AVL (SB)](#spec-book--approved-source-list-sb) |
 | Fix items stuck on the open order report (shipped but never posting) | SD-M → SO-G | [Recipe 9: Packaging Items Stuck on Open Order Report](#recipe-9-packaging-items-stuck-on-open-order-report) |
 | Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
 | Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
@@ -16403,3 +16409,98 @@ EvoERP's own PR (Payroll) module.
 *TAS 4GL: 75→87/100. File Formats — SRC: 80→87/100. Menu System: 78→84/100.*
 *Pass 105 — StartEvo.exe analyzed; BKMENUSU.DBF menu storage confirmed; complete code→program mapping.*
 *System Architecture: 80→87/100. Menu System: 84→93/100.*
+
+---
+
+## Platform Subsystems
+
+Background services and utility programs that run alongside or outside the main EvoERP session. Not invoked from the standard module menus.
+
+**Confidence: 82/100** — programs identified from RWN string analysis and DB fingerprints; configuration details confirmed from named_vars.
+
+### EvoService — Background Scheduler and Reminder Engine
+
+**Program:** `EvoService.RWN` (27 procs)
+
+Runs as a background process. Polls on the interval set in `ISTS.CFG` key `WTIME` (seconds). On each tick it:
+1. Queries `ISSCHED` (24-field scheduler table) for due jobs → dispatches them.
+2. Queries `ISREMIND` (reminder table) for overdue reminders → fires notifications.
+
+**Configuration:**
+- `ISTS.CFG.WTIME` — polling interval in seconds.
+- `ISTS.CFG.USINI` — path to user INI file.
+- SMTP settings are configured separately in EvoServiceSetup.
+
+### EvoServiceSetup — Email / SMTP Configuration
+
+**Program:** `EvoServiceSetup.RWN` (49 procs). Opens `ESETTINGS` table.
+
+Configures outgoing email (for alert notifications, reminders, and automated reports):
+- SMTP server, port, SSL flag, from-address — stored in `EMAIL.CFG.*` variables.
+- `THIRTYTWO` / `SIXTYFOUR` registry vars: detect 32-bit vs 64-bit MAPI library.
+
+**How to configure SMTP:** Run EvoServiceSetup from the EVO admin menu → enter SMTP host/port/credentials → save. Changes take effect at next EvoService poll cycle.
+
+### EvoERPbackup — Automated Backup
+
+**Program:** `EvoERPbackup.RWN` (76 procs)
+
+Three backup scope modes (selected at setup):
+- `FULLSYSTEM` — entire EvoERP data share.
+- `COMPDATA` — company-specific data files only.
+- `CUSTOM` — user-defined file list via `FILELOC` routing table.
+
+Day-of-week scheduling variables: `MON`/`TUE`/`WED`/`THU`/`FRI`/`SAT`/`SUN`.
+
+**AWS Glacier support:** Variable `GLACIERKEY` + archive type variables `GS_ARCH` / `GS_BACKUP` / `GS_NONE` — allows archiving to Amazon Glacier cold storage in addition to local backup.
+
+**How to restore from Glacier:** Use EvoERPbackup → Glacier Restore mode (GS_ARCH path). Glacier retrieval takes hours to days depending on retrieval tier.
+
+### EvoLinks — Document / URL Attachment System
+
+**Program:** `EvoLinks.RWN` (156 procs). Primary table: `ISLINKS` (311 fields).
+
+Attaches hyperlinks (files, URLs, network paths) to any EvoERP entity (PO, SO, WO, part, vendor, customer). Each link record stores:
+- `IS.LNK.OPENWITH` — application to open the link with.
+- `IS.LNK.GLOBAL` — globally visible vs. private flag.
+- `IS.LNK.PRIVATE` — private-to-user flag.
+- `IS.LNK.SORT` / `IS.LNK.ALPHA` — sort/display order.
+
+**How to add a link:** From any EvoERP transaction header, press the Links button (or use the EvoLinks menu) → enter the URL or file path → select Open-With application → save.
+
+### CALREM — Calendar Reminders
+
+**Program:** `CALREM.RWN` (142 procs). Opens: `ISREMIND`, `BKARCUST`, `BKAPVEND`, `BKICMSTR`, `BKCMACCN`.
+
+Create and view date/time reminders. Reminders can be linked to:
+- AR customers (`BKARCUST`)
+- AP vendors (`BKAPVEND`)
+- Inventory items (`BKICMSTR`)
+- CRM contacts (`BKCMACCN`)
+- Free-form (no entity link)
+
+No separate CALREMGC.RWN — Google Calendar sync, if present, is embedded in CALREM.RWN itself.
+
+**How to add a reminder:** Open CALREM from the Reminder button/menu → select entity type and link → set date/time and note → save. EvoService fires the reminder on schedule.
+
+---
+
+## Spec Book / Approved Source List (SB)
+
+**Confidence: 82/100** — DDF schema confirms field names and key structure; program assignments inferred from RWN analysis.
+
+The SB module implements an **Approved Vendor / Manufacturer List (AVL/QPL)** — sometimes called a "Spec Book" in the EvoERP UI. Common in electronics and PCB manufacturing to enforce sourcing rules.
+
+Three tables:
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKSBMFG` | 6+ | Approved manufacturers. PK: `PARNT`+`PROD`+`CUST` → `MANUF`+`MPART`. Maps a parent part + product + customer combination to approved manufacturer and manufacturer part number. |
+| `BKSBVEND` | 6+ | Approved vendors. PK: `PARNT`+`PROD`+`CUST` → `VEND`+`VPART`. Maps to approved vendor code and vendor's part number. |
+| `BKSBPART` | 5+ | Approved substitute parts. Stores approved part substitutions for a given parent part. |
+
+**How to view/edit the AVL for a part:** IN-B (Inventory Item Master) → SB tab. The SB tab shows `BKSBMFG` and `BKSBVEND` records for the selected item.
+
+**MRP / PO enforcement:** T7MRG (MRP firming) and T7POB (PO print) query the SB tables to flag or enforce sourcing rules when generating purchase orders.
+
+*Pass 108 — Platform Subsystems and Spec Book sections added; TAS 4GL `enter` options fully documented (12 options confirmed from 7 SRC files).*

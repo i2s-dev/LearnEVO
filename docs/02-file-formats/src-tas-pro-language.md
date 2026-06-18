@@ -114,40 +114,49 @@ START:
 
 ### `enter` fields and pre/post hooks
 
+`enter` binds a screen field to a variable. Full syntax:
+
 ```
+enter <variable> [option ...]
+```
+
+**Complete option set** (confirmed from all 7 SRC files, Pass 108):
+
+| Option | Syntax example | Meaning |
+|--------|---------------|---------|
+| `mask <pattern>` | `mask 'YN'`, `mask "ASPJWIQOC"` | Input mask: only characters present in the pattern string are accepted. A space `' '` in the mask means "any character allowed in that position." |
+| `up` | `up` | Auto-uppercase: convert all input to uppercase. |
+| `acr` | `acr` | Auto-carriage-return: advance to next field automatically when the field is full. |
+| `pre <expr>` | `pre pre.stat()`, `pre bkys.yn[59]='Y'` | Pre-entry hook. Accepts either a function call or a bare boolean expression. If the result is `.f.`, the field is **skipped** (cursor moves past it). |
+| `post <func()>` | `post post.incall()` | Post-entry hook: function called after the user confirms their input. Returning `.f.` rejects the entry and keeps the cursor on the field. |
+| `vld <expr>` | `vld select_thru1>=select_from1`, `vld chk.part()` | Validation: the expression (or function return) must be `.t.` for the input to commit. |
+| `vldm <message>` | `vldm 'Thru cannot be < From'` | Error message displayed when `vld` fails. If omitted, no message is shown (cursor just bounces back). |
+| `dflt <value>` | `dflt 1`, `dflt select_from1` | Default value: pre-fills the field when it is empty. Can be a literal or another variable's current value. |
+| `upar <label>` | `upar START` | Up-arrow destination: pressing the up-arrow key jumps to this program label. |
+| `at <row>,<col>` | `at 18,1` | Screen position: overrides the screen-layout coordinates for this field. |
+| `help <label>` | `help HELP.TYPE` | Context-sensitive help: pressing F1 transfers control to this gosub label instead of the default help handler. |
+| `noclickoff` | `noclickoff` | Prevents mouse clicks from moving the cursor away from this field. Standard in T7-era EVO programs. |
+
+**Notes:**
+- `pre` and `vld` both accept either a function call or an inline expression — there is no separate syntax for each form.
+- `vldm` is only meaningful when a `vld` option is present on the same `enter` statement.
+- `mask`, `up`, `acr`, `dflt`, `upar`, `at`, `help`, `noclickoff` are all independent; any subset may be combined in any order.
+- `noclickoff` appears on almost every field in T7 programs — it is the EVO standard to prevent accidental mouse-click navigation in character-based screens.
+
+**Inline function blocks** follow the `enter` statement(s) that reference them:
+
+```tas
 enter e.status[1] mask 'X ' up acr pre pre.stat() upar START
-enter INC.ALL.CLASS mask 'YN' up post post.incall() acr
-    {
-      func post.incall
-        if inc.all.class = 'Y'
-           for(mcntr;1;6;1)
-             inc.class[mcntr] = ' '
-           next
-           inc.blank.class = 'Y'
-        endif
-        ret .t.
-    }
-```
-
-`enter` defines an input field bound to a variable. Modifiers:
-- `mask '...'` — accepted characters.
-- `up` — uppercase input.
-- `acr` — accept on carriage return.
-- `pre <expr>` / `post <expr>` — pre/post hook (inline expression or
-  a function call).
-- `upar <label>` — up-arrow jumps to label `<label>`.
-
-Inline function definitions live in **`{ ... }` blocks** immediately
-after the statement that references them. Syntax:
-```
 {
-  func <name>
-    <body...>
-    ret <value>
+  func pre.stat
+    trap F1 GOSUB SHOWHELP
+    trap ESC goto EXIT2
+    fnc_list 'F1 Help','Esc Exit'
+    ret .t.
 }
 ```
-`ret .t.` returns the literal true (boolean). `.f.` is false — xBase-style
-literals.
+
+`ret .t.` — allow entry. `ret .f.` — abort / skip. `ret` alone — return from subroutine.
 
 ### Control flow
 
