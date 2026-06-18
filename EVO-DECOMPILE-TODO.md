@@ -1001,16 +1001,16 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
 | Module: BM/MRP | **90** | 88 | **0** ✅ ↑+2 Pass85 MTIC.PROD MRP fields confirmed | 2026-06-18 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
-| Module: DC/Data Collection | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
+| Module: DC/Data Collection | **89** | 85 | **0** ✅ ↑+2 Pass86 EvoDCmenu/ht6 confirmed | 2026-06-18 |
 | Module: PR/Payroll | **92** | 92 | **0** ✅ ↑+2 Pass84 W-4/CURP/PRLA DFMs | 2026-06-18 |
 | Module: AM (Accounting Maint.) | **83** | 85 | **2** ↑+8 Pass80 all DFMs | 2026-06-17 |
 | Module: CM/CRM | **86** | 85 | **0** ✅ ↑+4 Pass85 BKCM.ACCT credit card confirmed | 2026-06-18 |
 | Module: MK/Marketing Automation | **78** | 78 | **0** ✅ ↑+6 Pass84 BKCM.LEAD/TERR/ACFC confirmed | 2026-06-18 |
-| Module: DE/EDI/Imports | **78** | 80 | **2** ↑ | 2026-06-17 |
+| Module: DE/EDI/Imports | **86** | 80 | **0** ✅ ↑+8 Pass86 T7DE* full suite IS.DEF/ISAP.QPO confirmed | 2026-06-18 |
 | Module: CS/Commission+Salesperson | **85** | 85 | **0** ✅ ↑+5 Pass84 BKPR.COMM/SLS monthly arrays | 2026-06-18 |
 | Module: JC/Job Costing | **87** | 82 | **0** ✅ ↑+9 Pass85 JCA-JCS+JCENG full menu | 2026-06-18 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
-| Module: QC/Quality Control | **88** | 88 | **0** ✅ ↑+6 Pass84 IS.NCR/ISQC.MTD/SPC DFMs | 2026-06-18 |
+| Module: QC/Quality Control | **90** | 88 | **0** ✅ ↑+2 Pass86 BKQC.TRN.*/RoHS confirmed | 2026-06-18 |
 | Module: QT/Service Quote | **74** | 75 | **1** ↑+2 Pass80 DFM | 2026-06-17 |
 | Module: IC/Inventory Utility | **80** | 72 | **0** ✅ ↑+2 Pass77 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **80** | 80 | **0** ✅ ↑+5 Pass81 DFMs | 2026-06-17 |
@@ -1027,10 +1027,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SP/SPC ⚠️ | **92** | 92 | **0** ✅ ↑+5 Pass84 SPCLIVEGRID/LIVEREP/REP2/REPPPM | 2026-06-18 |
 | Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
 | Module: UT/Utilities | **78** | 75 | **0** ✅ ↑+6 Pass79 DFM-confirmed | 2026-06-17 |
-| Module: RM/RMA | **78** | 82 | **4** ↑ Pass66 | 2026-06-17 |
-| Module: FO/Features Options | **83** | 83 | **0** ✅ ↑+2 Pass84 BKBM.PROD.OPYN[4/5]+PRICE | 2026-06-18 |
+| Module: RM/RMA | **85** | 82 | **0** ✅ ↑+7 Pass86 SRMA/IS.RMA RMD disposition confirmed | 2026-06-18 |
+| Module: FO/Features Options | **87** | 83 | **0** ✅ ↑+4 Pass86 ISFO.HDR.* EvoFNO confirmed | 2026-06-18 |
 | Module: IS/InfoSystem | **72** | 72 | **0** ✅ ↑+4 Pass78 | 2026-06-17 |
-| Module: IM/Landed Cost | **78** | 82 | **4** ↑+8 Pass46 | 2026-06-17 |
+| Module: IM/Landed Cost | **88** | 82 | **0** ✅ ↑+10 Pass86 ISIS.MCF/MCR multi-currency + landed confirmed | 2026-06-18 |
 | Module: PS/Program Security | **88** | 88 | **0** ✅ ↑+6 Pass83 ISEXUSER+max.chk.amt | 2026-06-18 |
 | Module: QU/Query Tools | **74** | 75 | **1** ↑+4 Pass78 | 2026-06-17 |
 | Module: SU/Setup UI | **78** | 78 | **0** ✅ ↑+6 Pass83 WBKLUGRID+gdm DFMs | 2026-06-18 |
@@ -1043,8 +1043,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: DS/Data Sync stubs | **62** | 65 | **3** ↑+14 Pass63 | 2026-06-17 |
 | Subsystem: AU/Automation | **78** | 78 | **0** ✅ ↑+6 Pass82 DFM confirmed | 2026-06-18 |
 | Subsystem: FS/Field Information Base | **78** | 78 | **0** ✅ ↑+6 Pass82 3 DFMs FIB prefix | 2026-06-18 |
-| Subsystem: GF/AR Charges | **75** | 80 | **5** ↑+13 Pass57 | 2026-06-17 |
-| Subsystem: RE/Reminders+Rebuild | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
+| Subsystem: GF/AR Charges | **82** | 80 | **0** ✅ ↑+7 Pass86 IS.GF.DEPT/DIV GFV confirmed | 2026-06-18 |
+| Subsystem: RE/Reminders+Rebuild | **83** | 78 | **0** ✅ ↑+8 Pass86 IS.REM.* Google Calendar export | 2026-06-18 |
 | Subsystem: SE+ST/Service Code Tables | **74** | 74 | **0** ✅ ↑+9 Pass83 6 DFMs confirmed | 2026-06-18 |
 | Subsystem: PU/Put-Away | **76** | 76 | **0** ✅ ↑+8 Pass83 T7PUTAWAY DFM | 2026-06-18 |
 | Subsystem: MU/Multi-Yield WO | **78** | 78 | **0** ✅ ↑+6 Pass82 DFM W/F/E confirmed | 2026-06-18 |
@@ -1076,7 +1076,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: JC/Job Cost | **87** | 82 | **0** ✅ (dup — see primary) | 2026-06-18 |
 | Module: ES/Estimating | **88** | 88 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
 | Platform: WBKLOOKUP/Lookup Framework | **76** | 70 | **0** ✅ ↑+8 Pass85 WBKLPRINT/HHLOOKUP | 2026-06-18 |
-| Module: DE/DC stubs+EDI processing | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
+| Module: DE/DC stubs+EDI processing | **86** | 75 | **0** ✅ (dup of DE/EDI -- see primary) | 2026-06-18 |
 | Module: SM/System Maintenance+Item Inquiry | **86** | 86 | **0** ✅ ↑+4 Pass84 IS.TERMS/ISIS.TXF/BKCM.* DFMs | 2026-06-18 |
 | Module: MR/MRP Engine | **80** | 85 | **5** ↑+18 Pass45 | 2026-06-17 |
 | Tables: BKMR*/MRP Support | **72** | 78 | **6** ↑+10 Pass45 | 2026-06-17 |
@@ -1096,8 +1096,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: QS/Quick SO | **76** | 76 | **0** ✅ ↑+11 Pass84 T7QSOA+QSOALINES DFMs confirmed | 2026-06-18 |
 | Subsystem: VSCHED/Visual Scheduler | **78** | 78 | **0** ✅ ↑+10 Pass84 init/start/post/DSN confirmed | 2026-06-18 |
 | System: AUTO/Batch Automation | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
-| Module: FO/Features+Options | **83** | 83 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
-| System: Notes/EVONOTES | **72** | 78 | **6** ↑+14 Pass56 | 2026-06-17 |
+| Module: FO/Features+Options | **87** | 83 | **0** ✅ (dup row — see primary) | 2026-06-18 |
+| System: Notes/EVONOTES | **82** | 78 | **0** ✅ ↑+10 Pass86 IS.NOTE/LNK/REM tables confirmed | 2026-06-18 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
