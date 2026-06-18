@@ -1098,7 +1098,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | System: AUTO/Batch Automation | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
 | Module: FO/Features+Options | **87** | 83 | **0** ✅ (dup row — see primary) | 2026-06-18 |
 | System: Notes/EVONOTES | **82** | 78 | **0** ✅ ↑+10 Pass86 IS.NOTE/LNK/REM tables confirmed | 2026-06-18 |
-| Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
+| Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | **47** | 50 | **3** ↑+32 Pass103c RUN dumps+BKLME.SRC+DFMs: AB=RMA, EX=exec, FL=FlexLoc, LM=LotMove(confirmed SRC), MA=MapDepo, MM=MfgMgmt, PL=PayrollLink, RT=RTMValid, SB=Scoreboard, SL=SFC, UM=UserMenu, UP=Update | 2026-06-18 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | **82** | 88 | **6** ↑+7 Pass101 403 RTMs module-mapped from rtm_callers.csv; 23 module groups cross-reference | 2026-06-18 |
 | Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
