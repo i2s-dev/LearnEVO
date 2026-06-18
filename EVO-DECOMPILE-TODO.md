@@ -1011,7 +1011,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: JC/Job Costing | **87** | 82 | **0** ✅ ↑+9 Pass85 JCA-JCS+JCENG full menu | 2026-06-18 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
 | Module: QC/Quality Control | **90** | 88 | **0** ✅ ↑+2 Pass86 BKQC.TRN.*/RoHS confirmed | 2026-06-18 |
-| Module: QT/Service Quote | **74** | 75 | **1** ↑+2 Pass80 DFM | 2026-06-17 |
+| Module: QT/Service Quote | **82** | 75 | **0** ✅ ↑+8 Pass93 ISSR.INFO.DATE[5]+AL[20] confirmed | 2026-06-18 |
 | Module: IC/Inventory Utility | **80** | 72 | **0** ✅ ↑+2 Pass77 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **86** | 80 | **0** ✅ ↑+6 Pass90 WCE/F/G/H/BK/LOCfix bin-assign cycle | 2026-06-18 |
 | Module: SH/Shop Scheduling ⚠️ | **88** | 88 | **0** ✅ ↑+5 Pass84 SHA-SHP full menu DFMs | 2026-06-18 |
@@ -1038,7 +1038,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: DI/Digital Signatures | **90** | 80 | **0** ✅ ↑+12 Pass87 T7DIGSIG PO approval 5-level emp.signoff | 2026-06-18 |
 | Module: AD/Accounting Defaults | **82** | 82 | **0** ✅ ↑+7 Pass83 ISTS.CFG+bkys.yn[202] | 2026-06-18 |
 | Module: CR/SO Approvals | **78** | 78 | **0** ✅ ↑+6 Pass83 CTRevu DFMs | 2026-06-18 |
-| Module: US/Triggers | **74** | 75 | **1** ↑+9 Pass82 DFM confirmed | 2026-06-18 |
+| Module: US/Triggers | **85** | 75 | **0** ✅ ↑+11 Pass93 IS.TRIG.* all 23 fields confirmed | 2026-06-18 |
 | Subsystem: BO/Bill of Lading | **80** | 80 | **0** ✅ ↑+8 Pass82 DFMs confirmed | 2026-06-18 |
 | Subsystem: DS/Data Sync stubs | **62** | 65 | **3** ↑+14 Pass63 | 2026-06-17 |
 | Subsystem: AU/Automation | **78** | 78 | **0** ✅ ↑+6 Pass82 DFM confirmed | 2026-06-18 |
@@ -1056,7 +1056,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Subsystem: AD/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |
 | Subsystem: IT/Item Serial Config | **78** | 78 | **0** ✅ ↑+6 Pass82 IS.SERC confirmed | 2026-06-18 |
 | Module: SD/Standard Detail | **74** | 74 | **0** ✅ ↑+6 Pass82 IS.SDET confirmed | 2026-06-18 |
-| Module: SL/Shop Loading | **65** | 70 | **5** ↑+7 Pass59 | 2026-06-17 |
+| Module: SL/Shop Loading | **85** | 70 | **0** ✅ ↑+20 Pass93 T7SHA-SHP MTWC.*/MTWORO.*/SWO.CRATIO/RUN.DAYS fully confirmed | 2026-06-18 |
 | Module: AL/Audit Log+AltPart | **76** | 76 | **0** ✅ ↑+6 Pass82 3 DFMs | 2026-06-18 |
 | Module: ML/Multi-Language | **76** | 76 | **0** ✅ ↑+8 Pass82 LANGDICT confirmed | 2026-06-18 |
 | Module: MH/Shipping Order | **68** | 72 | **4** ↑+13 Pass46 | 2026-06-17 |
@@ -1069,7 +1069,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: EM/Emergency GL | **72** | 72 | **0** ✅ ↑+7 Pass82 BKGL DFM | 2026-06-18 |
 | Module: RT/RTM Validator | **70** | 70 | **0** ✅ ↑+15 Pass84 T7RTMVALID=RTM name picker confirmed | 2026-06-18 |
 | Module: FP/FO Print | **55** | 55 | **0** ✅ ↑+13 Pass64 | 2026-06-17 |
-| Module: RF/RFQ | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
+| Module: RF/RFQ | **84** | 78 | **0** ✅ ↑+9 Pass93 BKRFQ.EXP/ISSUE/QTY/COST/PROD/LCDATE confirmed | 2026-06-18 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
 | Subsystem: PI/Physical Inventory | **88** | 80 | **0** ✅ (dup — see primary) | 2026-06-18 |
 | Module: SA/Sales Analysis | **84** | 84 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
@@ -1085,14 +1085,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: YS/YN Flags Editor | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
 | Module: CU/WO Cut Sheet | **72** | 75 | **3** ↑+14 Pass55 | 2026-06-17 |
 | Subsystem: ADCA/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |
-| Module: TC/Treasury Control | **72** | 75 | **3** ↑ Pass65 | 2026-06-17 |
+| Module: TC/Treasury Control | **80** | 75 | **0** ✅ ↑+8 Pass93 T7TCC terms.num+CHK_NAME[1] confirmed | 2026-06-18 |
 | Module: SC/Serial Control ⚠️ (dup) | **78** | 80 | **2** ↑ Pass68 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: KI/Kit Assembly | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: MA/AR Deposit Apply | **82** | 75 | **0** ✅ (merged with MA/AR Deposits — see primary) | 2026-06-18 |
 | Module: TE/NACHA+ACH | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
 | Module: PA/Paperless DC | **70** | 72 | **2** ↑ | 2026-06-17 |
-| Module: TPOA/PO Processing Hub | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
+| Module: TPOA/PO Processing Hub | **84** | 75 | **0** ✅ ↑+12 Pass93 T7POA/POA2/POAC/POAE/POACPY BKAP.PO full header+RITEC risk.assess[6]+CONFIRM[1]/[2] | 2026-06-18 |
 | Module: QS/Quick SO | **76** | 76 | **0** ✅ ↑+11 Pass84 T7QSOA+QSOALINES DFMs confirmed | 2026-06-18 |
 | Subsystem: VSCHED/Visual Scheduler | **78** | 78 | **0** ✅ ↑+10 Pass84 init/start/post/DSN confirmed | 2026-06-18 |
 | System: AUTO/Batch Automation | **72** | 78 | **6** ↑+10 Pass57 | 2026-06-17 |
