@@ -995,9 +995,9 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
 | Module: AP | **93** | 92 | **0** ✅ ↑+1 Pass76 | 2026-06-17 |
 | Module: IN/Inventory | **93** | 85 | **0** ✅ ↑+7 Pass87 IS.PROD.FLAGS[1..19] UDFi30 IS2D.BAR IS.ECO | 2026-06-18 |
-| Module: SO | **82** | 85 | **3** ↑+7 Pass76 | 2026-06-17 |
-| Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
-| Module: WO | **94** | 90 | **0** ✅ ↑+3 Pass87 MTWORO/MTWOLA/WOBOM/MTWOR full schema | 2026-06-18 |
+| Module: SO | **90** | 85 | **0** ✅ ↑+8 Pass88 BKAR.INV/INVL ISAR.CHG/TXN/INFO BKIC.PMAT full | 2026-06-18 |
+| Module: PO | **90** | 85 | **0** ✅ ↑+10 Pass88 BKAP.PO/POL BKRFQ RFQ->PO flow DPAS buyoff | 2026-06-18 |
+| Module: WO | **97** | 90 | **0** ✅ ↑+3 Pass88 IS.PREQ/IS.SER/IS.TRAY/IS.WOPRIO ISSO.BOX WO-L suite | 2026-06-18 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
 | Module: BM/MRP | **90** | 88 | **0** ✅ ↑+2 Pass85 MTIC.PROD MRP fields confirmed | 2026-06-18 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
