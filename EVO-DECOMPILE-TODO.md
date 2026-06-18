@@ -1019,11 +1019,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SR/Service Repair | **88** | 82 | **0** ✅ ↑+6 Pass90 SRB/D/E/F/G/I/S full invoice+release | 2026-06-18 |
 | Module: FA/Fixed Assets | **86** | 86 | **0** ✅ ↑+4 Pass84 IS.FXA/FXT full field layout | 2026-06-18 |
 | Module: PI/Physical Inventory | **88** | 80 | **0** ✅ ↑+12 Pass85 BKPH.* PI-A/H confirmed | 2026-06-18 |
-| Module: MA/AR Deposits | **76** | 75 | **0** ✅ ↑+6 Pass82 DFM+ISARDEPL confirmed | 2026-06-18 |
+| Module: MA/AR Deposits | **82** | 75 | **0** ✅ ↑+6 Pass92 ISAR.DEPL.SO/AMT/GLACT BKAR.DEP.DEPNO/CUST confirmed | 2026-06-18 |
 | Module: ES/Estimating | **88** | 88 | **0** ✅ ↑+3 Pass84 IS.EST 10-qty+convert DFMs | 2026-06-18 |
 | Module: SA/Sales Analysis | **84** | 84 | **0** ✅ ↑+4 Pass84 BKSA confirmed top-N+margin | 2026-06-18 |
-| Module: AC/Activity Control | **78** | 78 | **0** ✅ ↑+4 Pass83 8D CAR+ISCACT+ISCTEAM | 2026-06-18 |
-| Module: CC/Credit Card ⚠️ | **84** | 85 | **1** ↑+6 Pass82 6 DFMs | 2026-06-18 |
+| Module: AC/Activity Control | **83** | 78 | **0** ✅ ↑+5 Pass92 WODATE/AC.RD/IS.ACTION all fields confirmed | 2026-06-18 |
+| Module: CC/Credit Card ⚠️ | **87** | 85 | **0** ✅ ↑+3 Pass92 IS.CC.* all 8 fields + CCYY/CCMM/CVV confirmed | 2026-06-18 |
 | Module: SP/SPC ⚠️ | **92** | 92 | **0** ✅ ↑+5 Pass84 SPCLIVEGRID/LIVEREP/REP2/REPPPM | 2026-06-18 |
 | Module: HH/Handheld | **93** | 85 | **0** ✅ ↑+13 Pass87 43 DFMs WO/SO/PO/PI/INV full handheld system | 2026-06-18 |
 | Module: UT/Utilities | **78** | 75 | **0** ✅ ↑+6 Pass79 DFM-confirmed | 2026-06-17 |
@@ -1089,7 +1089,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: SC/Serial Control ⚠️ (dup) | **78** | 80 | **2** ↑ Pass68 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: KI/Kit Assembly | **72** | 72 | **0** ✅ | 2026-06-17 |
-| Module: MA/AR Deposit Apply | **70** | 75 | **5** ↑ Pass50 (merged with MA/AR Deposits) | 2026-06-17 |
+| Module: MA/AR Deposit Apply | **82** | 75 | **0** ✅ (merged with MA/AR Deposits — see primary) | 2026-06-18 |
 | Module: TE/NACHA+ACH | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
 | Module: PA/Paperless DC | **70** | 72 | **2** ↑ | 2026-06-17 |
 | Module: TPOA/PO Processing Hub | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
