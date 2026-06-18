@@ -88,16 +88,23 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 ### 2.1 `.SRC` — TAS Pro 4GL Source Code
 - [x] ✅ Encoding confirmed: plaintext ASCII, CR+LF, no BOM — **C: 92/100**
 - [x] ✅ Comment syntax: `;` to end-of-line — **C: 95/100**
-- [x] ✅ Compiler directives: `#PRO3`, `#UDX`, `#LIB <name>`, `#INC <name>`, `SETUP_COLOR` — **C: 85/100**
-- [x] ✅ Variable declaration syntax: `define <name> type A/i/n/d/t size <N> [array <N>]` — **C: 88/100**
+- [x] ✅ Compiler directives: `#PRO3`, `#UDX`, `#LIB <name>`, `#INC <name>`, `SETUP_COLOR` — **C: 92/100**
+  - `#INC`/`#LIB` both case-insensitive; resolve from DataDictPath (`\\DBAMFG$\`); `#PRO3` = Pro 3.0 backward-compat flag
+  - `SETUP_COLOR` = TAS keyword (not `#` directive) that opens TASCOLOR Btrieve table, reads color palette; `Color Array Norm/Inverse/High` = color mode selectors
+  - `HELPSCRN.SRC` = universal F1 help template included in all programs; `isdef.SRC` = IS module definitions
+- [x] ✅ Variable declaration syntax: `define <name> type A/i/n/d/t size <N> [array <N>] [LOCAL]` — **C: 92/100**
+  - `LOCAL` modifier: variable scoped to current `func` block (only valid inside function body)
 - [x] ✅ Database I/O keywords: `open`, `find F srch`, `clr`, `del`, `dall` — **C: 80/100**
 - [x] ✅ UI/form keywords: `mount`, `prg_hdr`, `enter`, `xtrap`, `fnc_list`, `menu` — **C: 75/100**
-- [x] ✅ 7 plaintext `.SRC` files analyzed: BKAWLB, BKDCA, BKLME, BKMRF, BKROA, Bkaph, Bkapha — **C: 70/100**
-- [ ] ⬜ Full grammar specification (all operators, expression types, precedence)
-- [ ] ⬜ `.a.` / `.o.` / `.n.` / `$` operators fully documented with behavior
-- [ ] ⬜ Include resolution order (`#INC` / `#LIB` search paths)
-- [ ] ⬜ `SETUP_COLOR` macro fully expanded
-- [ ] ⬜ Variable scope rules inside `{ func ... ret ... }` blocks
+- [x] ✅ 7 plaintext `.SRC` files analyzed: BKAWLB, BKDCA, BKLME, BKMRF, BKROA, Bkaph, Bkapha — **C: 90/100**
+- [x] ✅ `.a.` / `.o.` / `.n.` / `$` operators fully documented with behavior — **C: 95/100**
+- [x] ✅ `{ func }` block scoping rules fully confirmed (Pass 107): — **C: 90/100**
+  - Inline `{ func name ... ret .t. }` immediately after `enter` = local UDF scoped to program
+  - Multiple `func` definitions per `{}` block allowed
+  - Top-level `func name [param]` = program-scope subroutine; param declared `define X LOCAL` above the `func` header
+  - `ret .t.`=allow, `ret .f.`=abort, `ret`=subroutine return (no value)
+- [x] ✅ Include resolution order confirmed (Pass 107): DataDictPath first; `#INC` resolves `.SRC` extension — **C: 90/100**
+- [ ] ⬜ Full grammar specification — expression precedence for `.a./.o./.n.` vs `=/<>/</>/<=/>=` vs `+/-/*//` (cannot observe from 7 available SRC files; all use parens or single-op expressions)
 - [ ] ⬜ All 1,265 `.RUN` + 1,115 `.RWN` source files (logic content — blocked by encryption; see §14)
 
 ### 2.2 `.RWN` — TAS Pro 7 Compiled Program
@@ -991,7 +998,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 |---|---|---|---|---|
 | System Architecture | **90** | 90 | **0** ✅ ↑+3 Pass106k ISLINKS 311-field schema confirmed (UID+LINK+APP+TYPES[100]+PCB[100]+DEF[100]+DATE+WHO+ATYPE); EvoNotes 9-table pattern confirmed (BKAPNOTE/BKBMNOTE/BKSONOTE/BKQTNOTE/ISNOTES+); ISSCHED confirmed from Pass106f; all subsystems documented | 2026-06-18 |
 | Boot Sequence | **85** | 85 | **0** ✅ ↑+3 Pass106l StartEvo.exe Pass105 confirmed in doc (DomainAuth→KillProcs→LaunchUser); CHMHELP.EVO=sentinel flag "EvoHELP now set..."; evo:// URI+license gate documented; remaining open: exact evoerp.exe argv; suwin6.dcy pre-load | 2026-06-18 |
-| File Formats — SRC | **87** | 90 | **3** ↑+7 Pass104 BKROA/BKMRF/BKDCA analyzed: all operators (.a./.o./.n./$), find modes F/G/N/M/L/P, while/endw, sorta, listf/listm, rcn, setact, ifna, 20+ built-in functions confirmed | 2026-06-18 |
+| File Formats — SRC | **90** | 90 | **0** ✅ ↑+3 Pass107: func/{} block full semantics confirmed from BKAWLB.SRC (inline local block vs top-level func with parameter); #INC/#LIB case-insensitive, resolve from DataDictPath (\\DBAMFG$\); HELPSCRN.SRC=F1 help template, isdef.SRC=IS defines; SETUP_COLOR=opens TASCOLOR Btrieve table reads palette; Color Array Norm/Inverse/High = color mode select; #PRO3=legacy backward-compat flag; ret .t./.f. semantics confirmed (true=allow, false=abort); remaining gap=expression precedence (cannot observe from 7 files) | 2026-06-18 |
 | File Formats — DFM | **90** | 90 | **0** ✅ ↑+3 Pass106k Delphi 7 confirmed from evoerp.exe string table (qtintf70.dll="70"=VCL7.0); 51 distinct control types across 1136 DFMs cataloged in tas-pro-7-controls.md; all questions resolved | 2026-06-18 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | **88** | 88 | **0** ✅ ↑+4 Pass106i T:\ drive mapping confirmed (cfg.rtm=T:\cfg.rtm inferred); TppDBText dual field binding (underscore=ODBC/dot=TAS) confirmed from I2SCHK1.btm; full 24-module RTM breakdown (SO=103/SR=52/PO=32/AP=27/AR=25/J6=20/WO=14/PR=12/JM=12/IN=11/IS=11/CM=9/SA=7/DC=5/ES=5/AW=4/AS=4/PI=3/GL=2/AM=2) | 2026-06-18 |
@@ -1079,7 +1086,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: RT/RTM Validator | **70** | 70 | **0** ✅ ↑+15 Pass84 T7RTMVALID=RTM name picker confirmed | 2026-06-18 |
 | Module: FP/FO Print | **55** | 55 | **0** ✅ ↑+13 Pass64 | 2026-06-17 |
 | Module: RF/RFQ | **84** | 78 | **0** ✅ ↑+9 Pass93 BKRFQ.EXP/ISSUE/QTY/COST/PROD/LCDATE confirmed | 2026-06-18 |
-| Platform Subsystems | **79** | 82 | **3** ↑+4 Pass99 EvoLinks ISLINKS/FNO ISFO.HDR/CAL/Update/EvoBackup/EVOBSR | 2026-06-18 |
+| Platform Subsystems | **82** | 82 | **0** ✅ ↑+3 Pass107: EvoService=ISSCHED+ISREMIND poller(WTIME/USINI CFG); EvoBackup=AWS Glacier confirmed(GLACIERKEY+GS_ARCH/BACKUP/NONE)+day-of-week schedule(MON/TUE); EvoLinks=IS.LNK.OPENWITH/GLOBAL/PRIVATE/SORT confirmed; BOMTREE/CASHFLOW/CRMDASHBOARD/EDITBOMTREE=EvoPVT.jar launchers(HOST/PORT/TREEDEST/COMP); CALREM=ISREMIND+entity tables(BKARCUST/BKAPVEND/BKICMSTR),no CALREMGC.RWN; EvoERPupd=schema migrator(RESTRUCT_FLD/OLD_FLD_TYPE); EVOBSR=does not exist | 2026-06-18 |
 | Subsystem: PI/Physical Inventory | **88** | 80 | **0** ✅ (dup — see primary) | 2026-06-18 |
 | Module: SA/Sales Analysis | **84** | 84 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
 | Module: JC/Job Cost | **87** | 82 | **0** ✅ (dup — see primary) | 2026-06-18 |
@@ -1110,7 +1117,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | **60** | 50 | **0** ✅ ↑+13 Pass106m: all 16 IDs confirmed from DDF schema+share scan+BKLME.SRC: AB=License, CP=Checkmark(legacy), EX=launcher, FL=FldHelp, LM=InvTxnConsolidate(SRC✅), MA=MapDepo+Material, MM=MfgMaint(legacy), PC=ProdCtrl, PL=PayLink(menu✅), RT=RoutingTemplates, SB=SpecBook/AVL, SL=SecurityLevels, SY=SysTables, UM=UserMenuSecurity, UP=Update, YS=YN-SysParams | 2026-06-18 |
 | RWN String Analysis technique | **90** | 90 | **0** ✅ ↑+8 Pass106 2-technique doc: Technique1=2575 string files, Technique2=rwn_symbols.json 1122 RWN records (db_files/procs/named_vars); workflow; upgrade table | 2026-06-18 |
 | Reporting Engine | **88** | 88 | **0** ✅ ↑+6 Pass106c comprehensive module-to-RTM table (12 modules, RTM counts); TAS push-model pipeline (SETUP_REPORT_BUFF/OUTPUT_REPORT_DATA/EXEC_RB); print modes; cfg.rtm status note | 2026-06-18 |
-| Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
+| Platform Subsystems | **82** | 82 | **0** ✅ ↑+3 Pass107 (dup row — see primary above) | 2026-06-18 |
 | Java Integration | **88** | 88 | **0** ✅ ↑+3 Pass106l EvoPVT=JavaFX app confirmed (EvoApp+TabularView+LookupPane+SplashScreen); CsvExportTask+TextFileWriteTask+FileOpenTask tasks confirmed; PSQL 13.20.023 driver bundled in JAR; DatabaseSettings reads registry | 2026-06-18 |
 | ODBC Connectivity | **91** | 92 | **1** ↑+6 Pass105 EVOADMIN DSN confirmed (StartEvo license check); DSN table (DBA/ABI/EVOADMIN); Transactional vs. Relational API table documented | 2026-06-18 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |

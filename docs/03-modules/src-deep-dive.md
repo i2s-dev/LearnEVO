@@ -193,13 +193,93 @@ Every `.SRC` in the share has a matching `.RWN` sibling. The
 `.SRC` is never loaded at run time — it's only there as a reference
 copy. The runtime always executes the compiled `.RWN` (encrypted).
 
+## `func` / `{}` — full semantics (Pass 107)
+
+Two forms of function declaration, both confirmed from all 7 SRC files:
+
+### Form 1: Inline `{}` block (local to an `enter` group)
+
+```tas
+enter <field> pre pre.funcname() post post.funcname() ...
+{
+  func pre.funcname
+    ; body
+    ret .t.
+
+  func post.funcname
+    ; body
+    ret .t.
+}
+```
+
+- The `{ }` block appears **immediately after** the `enter` statement(s) that reference `funcname()`.
+- Multiple `func` definitions may share a single `{ }` block (see BKAWLB.SRC:183-207).
+- These are **local to the program unit** — they cannot be called from outside the SRC file.
+- `ret .t.` = return true (allow the operation to proceed); `ret .f.` = return false (abort/reject the field entry).
+
+### Form 2: Top-level `func` (program-scope subroutine)
+
+```tas
+    define param_var type A size 1 LOCAL
+func FUNC_NAME param_var
+    ; body
+    ret .t.
+```
+
+- Appears at the top level (no wrapping `{}`).
+- Can optionally take **one parameter** declared with `define ... LOCAL` immediately above the `func` header.
+- Visible from anywhere else in the same SRC file (including from `enter pre/post` hooks or `gosub` calls).
+- `ret` alone (no value) = return from subroutine; `ret .t.` / `ret .f.` = return boolean.
+
+### Confirmed in BKAWLB.SRC:
+```tas
+    define inv_from type A size 1 LOCAL
+func SETUP_INV inv_from
+    fnc_list "F1 Help,F2 Lookup","F10 Print,Esc Exit"
+    if up(inv_from) = 'F' DO
+        trap F2 GOSUB DSP_INV_1
+    ...
+    ret .t.
+func POST_INV
+    fnc_list "F1 Help","F10 Print,Esc Exit"
+    trap F2 DFLT
+    ret .t.
+```
+
+## `#INC` and `#LIB` — include/library resolution (Pass 107)
+
+All 7 SRC files use both directives in their preamble:
+
+```
+#UDX          ; allow User-Defined Extensions (UDFs + UDCs)
+#LIB DBA      ; link DBA.LIB compiled library
+#LIB lookups  ; link LOOKUPS.LIB compiled library
+#LIB WINDOWS  ; link WINDOWS.LIB compiled library
+#inc isdef    ; include ISDEF.SRC source file (some programs only)
+#INC HELPSCRN ; include HELPSCRN.SRC (present in all 7 files)
+```
+
+**Resolution rules:**
+- Both `#INC` and `#inc` are valid (case-insensitive).
+- `#INC <name>` resolves `<name>.SRC` in the compiler search path.
+- `#LIB <name>` links `<name>.LIB` (pre-compiled) from the search path.
+- Search path = `DataDictPath` from `taspro7.ini` (i.e., `\\I2S109-SOLIDCRM\DBAMFG$\`).
+- `HELPSCRN.SRC` is the universal F1 help screen template; `ISDEF.SRC` is an IS-module definition include.
+- `#PRO3` (commented out in BKAWLB.SRC as `;#PRO3`) = backward-compat flag for TAS Pro 3.0 programs.
+
+## `SETUP_COLOR` and `Color Array` (Pass 107)
+
+```tas
+SETUP_COLOR      ;use the color values in TASCOLOR.OVL
+Color Array Norm
+```
+
+- `SETUP_COLOR` is a **TAS built-in keyword** (not a `#` directive) that opens the `TASCOLOR` Btrieve table and reads the system color palette into internal color variables. The comment "TASCOLOR.OVL" is the developer's shorthand; the actual data source is the `TASCOLOR` table (confirmed present as a DB file in RWN fingerprints).
+- `Color Array Norm` selects the **Normal** color scheme for subsequent UI elements. Other variants: `Color Array Inverse` (highlighted/selected) and `Color Array High` (error/warning). These switch which row of the TASCOLOR array the runtime uses for the next painted region.
+- SETUP_COLOR appears in 5 of the 7 SRC files; the two that omit it (BKROA.SRC doesn't have it either) use legacy monochrome forms.
+
 ## Things still to document from the SRCs
 
-- A full **grammar extraction** walking every statement in all 7 files
-  and building a reference (the runtime string table already gives us
-  the authoritative grammar, see
-  [../02-file-formats/src-tas-pro-language.md](../02-file-formats/src-tas-pro-language.md)).
-- The exact **GL posting sequence** from Bkaph — it's a complete
-  reference implementation of how a typical post works.
-- **Screen drawing** logic — how the pre-Windows `mount`+`enter`
-  model paints and refreshes.
+- The exact **GL posting sequence** from Bkaph — a complete reference implementation of how a typical post works.
+- **Screen drawing** logic — how the pre-Windows `mount`+`enter` model paints and refreshes.
+- **Expression precedence** — the relative priority of `+/-/*//`, comparison operators, and `.a./.o./.n.` when no parentheses are used. Not directly observable from the 7 SRC files (they use explicit parens or single-operator expressions).

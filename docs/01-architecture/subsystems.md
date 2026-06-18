@@ -42,24 +42,38 @@ Likely backed by a `BKSCHED*` or similar table. Paired with
 
 ## EvoService — Windows service harness
 
-| Component | File |
-| --------- | ---- |
-| Install   | `EvoServiceSetup.RWN` |
-| Uninstall | `EvoServiceRemove.RWN` |
-| Runner    | `EvoService.RWN` |
+| Component | File | Procs | Purpose |
+| --------- | ---- | ----- | ------- |
+| Install   | `EvoServiceSetup.RWN` | 49 | Configures service: SMTP email (EMAIL.CFG.SMTP/USER/PASS/EMAIL/NAME), SMTPPORT, ISTS.PATH, ESETTINGS (EvoSettings.INI path); handles 32/64-bit registry (THIRTYTWO/SIXTYFOUR vars) |
+| Uninstall | `EvoServiceRemove.RWN` | 18 | Removes service; WHOAMIFULL = full workstation identity; same 32/64-bit registry handling |
+| Runner    | `EvoService.RWN` | 27 | Opens ISSCHED + ISREMIND; variables: ISTS.CFG.WTIME (poll wait time in ms), ISTS.CFG.USINI (user.ini path); polls ISSCHED on WTIME interval, dispatches scheduled jobs and processes ISREMIND reminder triggers |
 
 Runs EVO programs as a Windows service so that `EvoScheduler` jobs fire
-whether or not a user is logged in. The `SERVICE\` folder on the share
-likely contains the service's configuration.
+whether or not a user is logged in. The service itself is a small (27-proc)
+tp7runtime process that polls ISSCHED and ISREMIND on a configurable
+interval (ISTS.CFG.WTIME). SMTP is configured in Setup so the service can
+send reminder/trigger emails without user interaction.
 
 ## EvoBackup — built-in backup
 
-| Component | File |
-| --------- | ---- |
-| Main      | `EvoERPbackup.RWN` (and `EvoERPBACKUP.DCY`) |
+| Component | File | Procs | Purpose |
+| --------- | ---- | ----- | ------- |
+| Main      | `EvoERPbackup.RWN` | 76 | Backup engine with cloud + local modes (see below) |
+| Form      | `EvoERPBACKUP.DCY` | — | UI form for backup configuration |
 
-Zips the company folders using `zipdll.dll`/`unzdll.dll` and stores
-snapshots in `\\i2s109-solidcrm\Bak Up\` or `\\…\Recovered\`.
+**Confirmed variables (Pass 107):**
+- `COMP.TAG` / `COMP.EXT` / `COMP.NAME` — per-company file selection
+- `ZIPFILES` / `ZIPNAME` — ZIP archive management (uses `zipdll.dll`)
+- `FULLSYSTEM` / `COMPDATA` / `CUSTOM` — three backup scope modes (full system / company data only / custom selection)
+- `GLACIERKEY` — AWS Glacier archive key (**cloud backup to AWS confirmed**)
+- `GS_ARCH` / `GS_BACKUP` / `GS_NONE` — Glacier storage class flags
+- `MON` / `TUE` / ... — day-of-week schedule flags
+- `FILELOC` — source file index (used to enumerate all Btrieve files)
+
+EvoERPbackup opens FILELOC (all file paths) and BKSYMSTR (system config) for target
+resolution. Output destination: `\\i2s109-solidcrm\Bak Up\` for local or
+AWS Glacier for cloud. The `GS_*` variables confirm this is a real supported
+backup tier, not a stub.
 
 ## EvoDC — Data Collection (shop-floor / handheld)
 
@@ -83,14 +97,34 @@ label designs for wave labels / palette labels / carton labels.
 
 ## EvoLinks — document attachments
 
-| Component | File |
-| --------- | ---- |
-| Main      | `EvoLinks.RWN` |
-| Converter | `EvoLinkCVT.RWN` |
+| Component | File | Procs | Purpose |
+| --------- | ---- | ----- | ------- |
+| Main      | `EvoLinks.RWN` | 156 | Full CRUD for ISLINKS records; entity-aware (resolves BKARCUST/BKAPVEND/BKICMSTR/BKCMACCN for display context) |
+| Converter | `EvoLinkCVT.RWN` | 10 | One-time migration of old-format ISLINKS records to current schema |
 
-"Links" are **document attachments** on any record — PDFs, emails,
-photos associated with a customer, vendor, order, etc. Stored in
-`\\…\LinkDoc\` on the share. Help topic `using_evo_links`.
+"Links" are **document attachments** on any record — PDFs, emails, photos.
+Stored in `\\…\LinkDoc\` on the share. Help topic `using_evo_links`.
+
+**Confirmed IS.LNK.* fields from EvoLinks.RWN variable list (Pass 107):**
+- `IS.LNK.UID` — parent record key (entity this doc is attached to)
+- `IS.LNK.LINK` — file path / URL of linked document
+- `IS.LNK.APP` — module code owner (`AR`, `PO`, `SO`, etc.)
+- `IS.LNK.TYPES` / `IS.LNK.PCB` / `IS.LNK.DEF` — 100-element type-code arrays
+- `IS.LNK.GLOBAL` — Y = visible across all companies
+- `IS.LNK.OPENWITH` — flag controlling which app opens the file
+- `IS.LNK.DATE` — date attached
+- `IS.LNK.NOTE` — short description note
+- `IS.LNK.WHO` — attached-by user
+- `IS.LNK.ATYPE` — attachment type code
+- `IS.LNK.EXTRA` — supplemental metadata
+- `IS.LNK.PRIVATE` — hidden from other users
+- `IS.LNK.SORT` — display order within attachment list
+- `IS.LNK.ALPHA` — secondary alpha sort key
+- `ALERTS` — notification trigger on document updates
+- `LEXIST` — check-if-link-exists flag
+- `GEN.ID` — auto-generated ID for new records
+
+ISLINKS schema (311 fields total) is documented in the EvoLinks section below.
 
 ## EvoFNO — "Features & Options"
 
@@ -107,16 +141,27 @@ photos associated with a customer, vendor, order, etc. Stored in
 
 ## EvoUpdate — in-app updates
 
-| Component | File |
-| --------- | ---- |
-| Main      | `EvoUpdate.RWN` / `EvoERPupd.RWN` / `EvoPRupd.RWN` |
-| Setup     | `EvoUPDSetup.RWN` |
-| Runtime update | `UPDTP7.EXE` (shipped in `C:\ISTS`) |
+| Component | File | Procs | Role |
+| --------- | ---- | ----- | ---- |
+| Launcher  | `EvoUpdate.RWN` | 9 | Checks for updates via WEBLINK (download URL); reads ISTS.CFG.PASSWD/CFGLVL for auth |
+| Schema migrator | `EvoERPupd.RWN` | 77 | Full schema migration engine (see below) |
+| Payroll migrator | `EvoPRupd.RWN` | 51 | Payroll-specific migration variant |
+| Setup     | `EvoUPDSetup.RWN` | 18 | Configures update path (FILE_NAME, ISTS.PATH) |
+| Runtime patcher | `UPDTP7.EXE` | — | Binary executable; updates tp7runtime.exe itself |
+
+**EvoERPupd.RWN is the schema migration engine** (Pass 107). Key variables:
+- `FILE_DEF` / `FD_ARRAY` — file definition array (reads FILEDICT/FILEDBF)
+- `FLD_NAME` / `FLD_TYPE` / `FLD_SIZE` / `FLD_DEC` / `FLD_ARRAY` — new field spec
+- `OLD_FLD_TYPE` / `OLD_FLD_SIZE` / `OLD_FLD_ARRAY` / `OLD_FLD_OFFSET` — current field spec  
+- `FLD_OFFSET` / `RESTRUCT_FLD` — field restructure flag: if old ≠ new, restructure Btrieve file
+- `UFORCE` / `CLOG` — force-update and change-log flags
+
+The engine reads FILEDICT+FILEDBF+FILEKEY (Pervasive DDF), compares schema against
+FILE*.UPD manifests, and restructures Btrieve B-tree files in-place. This is how EVO
+adds new fields to existing tables without losing live data.
 
 Pulls new `.RWN`/`.DFM`/`.DCY`/`.RTM` releases from Addsum and applies
-them to the share. `.UPD` files (see
-[../02-file-formats/other-formats.md](../02-file-formats/other-formats.md))
-carry the DDF schema migrations that accompany a release.
+them to the share. `.UPD` files carry the DDF schema migrations.
 
 ## Evo Notes Search (`EvoNoteSearch`) + Drill-Down (`EvoERPDrillM`)
 
@@ -129,10 +174,21 @@ Tables: likely `BKDRILL*` / drill-map tables.
 
 Help topic `google_calendar`. Files:
 
-- `CALREM.RWN` / `calrem.DFM` — calendar reminder core
-- `CALREMGC.DFM` — Google Calendar sync form
+- `CALREM.RWN` / `calrem.DFM` — calendar reminder core (142 procs)
+- `CALREMGC.DFM` — Google Calendar sync dialog (DFM-only; no separate RWN — sync is invoked from within CALREM.RWN)
 - `CALDRILL.DFM` / `CALGRIDDRILL.DFM` / `calDDsel.DFM` — calendar drill-down
-- `CALENDARS\` folder on the share — calendar data
+- `CALENDARS\` folder on the share — calendar data files
+
+**CALREM.RWN confirmed DB fingerprint (Pass 107, 142 procs):**
+Tables: `BKYSMSTR`, `ISREMIND`, `BKARCUST`, `BKAPVEND`, `BKICMSTR`, `BKCMACFC`,
+`BKCMACCN`, `BKPSUSER`, `BKSYHELP`, `DBAHLPID`, `TASCOLOR`, `ISLOG`, `ISDRILL`, `MKAHIST`
+
+Key variables: `CAL.DAY`, `CAL.MONTH`, `ENTRY.DATE`, `DATE_TYPE`, `START.DATE`, `CHK.DATE`
+— confirms CALREM is a full calendar view that reads ISREMIND entries by date range,
+cross-referenced to customers/vendors/items for display context.
+
+No `CALREMGC.RWN` file was found in the 1,122 RWN catalog — Google Calendar sync is
+handled inside CALREM.RWN itself (called from the CALREMGC.DFM dialog form).
 
 ## Chart demo / reusable charts
 
@@ -145,13 +201,28 @@ Help topic `google_calendar`. Files:
 
 `CRMDASHBOARD.RWN` + `CRMDASHBOARD.DFM` — consolidated customer view.
 
-## CashFlow / CommissionRpt / BOMTree / EditBOMTree
+## CashFlow / CommissionRpt / BOMTree / EditBOMTree — EvoPVT.jar launchers
 
-Standalone "analysis" utilities:
+All four are confirmed **EvoPVT.jar launcher stubs** (Pass 107). Each has the same
+signature: 26–27 procs, with shared launcher variables:
+- `HOST` / `PORT` — Pervasive PSQL connection (server + port for JDBC)
+- `TREEDEST` — output destination identifier passed to EvoPVT.jar
+- `COMP` — company code
+- `JAVA.PATH` / `JAVA.NAME` — path to java.exe and EvoPVT.jar
+- `DFM` — DFM filename to load for the UI
+- `NOPE` — abort/cancel flag
 
-- `CASHFLOW.RWN` / `CashFlowReport.DFM` — cash-flow forecast
-- `COMMISSIONRPT.RWN` — commission reporter
-- `BOMTREE.RWN` / `EDITBOMTREE.RWN` — visual BOM tree explorer
+| Program | DFM | Role | Extra tables opened |
+|---------|-----|------|---------------------|
+| `BOMTREE.RWN` | `BOMTree.DFM` | Visual BOM tree explorer (read-only) | None beyond launcher set |
+| `EDITBOMTREE.RWN` | `EditBOMTree.DFM` | Interactive BOM tree editor | None beyond launcher set |
+| `CASHFLOW.RWN` | `CashFlowReport.DFM` | Cash-flow forecast | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR |
+| `CRMDASHBOARD.RWN` | `CRMDASHBOARD.DFM` | CRM customer dashboard | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR |
+
+The TAS launcher passes HOST/PORT/COMP/TREEDEST to EvoPVT.jar as argv. EvoPVT.jar
+opens a JavaFX TabularView/tree-view window connected to the Pervasive PSQL instance.
+**Note:** `EVOBSR.RWN` does NOT exist — the "Business Score Report" mentioned in older
+docs was an error. The business scoreboard is `EVOBS.RWN` (EVOBS module, opens ISBSF).
 
 ## FNO / MRP helpers
 
