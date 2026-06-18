@@ -1107,9 +1107,9 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
 | Business Workflows | **75** | 85 | **10** ↑+13 Pass58 | 2026-06-17 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
-| Per-Table Narrative Docs | **68** | 88 | **20** ↑ +10 | 2026-06-17 |
+| Per-Table Narrative Docs | **76** | 88 | **12** ↑+8 Pass96 tier7-tables.md: MTWC/MTWORO/IS.TRIG/BKRFQ/BKICPMAT/BKAP.REM/TMC/MTWO.WIP/IS.SPC/DRILLM/IS.FIB/CFFLOC/BKCM-codes/ISSR.INFO/IS.REM | 2026-06-18 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
-| HELP-RESOURCES.md | **75** | 90 | **15** ↑ +10 | 2026-06-15 |
+| HELP-RESOURCES.md | **80** | 90 | **10** ↑+5 Pass93-96 SH/POA/TRIG/GF/JS/UTK/approval/BOL/KIT/SM-I/SM-J all documented | 2026-06-18 |
 
 ### Critical Path to 90% Goal
 
