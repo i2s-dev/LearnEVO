@@ -1102,14 +1102,14 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | **82** | 88 | **6** ↑+7 Pass101 403 RTMs module-mapped from rtm_callers.csv; 23 module groups cross-reference | 2026-06-18 |
 | Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
-| Java Integration | 73 | 85 | 12 | 2026-06-11 |
+| Java Integration | **85** | 88 | **3** ↑+12 Pass102 TASKS/sql/Main+ISJAVA schema; jdbc.ini; 260+ table model inventory; ISLINKS/ROUTING/WORKCTR/ISBSF/BKSYMSTR schemas | 2026-06-18 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
 | Business Workflows | **82** | 85 | **3** ↑+7 Pass97 Recipes10-14: GL-journal/period-end-archive/backup/new-user/inv-adjustment | 2026-06-18 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **83** | 88 | **5** ↑+7 Pass100 tier8-tables.md: 18 DDF-exact schemas (BKAPPO/BKAPPOL/BKGLTRAN/BKGLCOA/BKDCSHFT/WORKORD/BKICMSTR/BKARCUST/BKARINV/BKAPPOL/BKBMMSTR/etc 1240 fields) | 2026-06-18 |
 | PROJECT-STRUCTURE.md | **80** | 90 | **10** ↑+8 Pass98 Pass19: 16 new tables, SH/MH/JS/GF module corrections, SM-I/J forms, SO/sched/backup DFMs | 2026-06-18 |
-| HELP-RESOURCES.md | **87** | 90 | **3** ↑+3 Pass99 EvoLinks/FNO/CAL/T7CUSTOMS/EvoUpdate/EVOBSR/EvoMobile infra documented | 2026-06-18 |
+| HELP-RESOURCES.md | **90** | 92 | **2** ↑+3 Pass102 Java Integration doc: EvoPVT.jar arch, ISJAVA schema, jdbc.ini, 260+ table inventory, key schemas | 2026-06-18 |
 
 ### Critical Path to 90% Goal
 
