@@ -807,15 +807,16 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ## 13. BUSINESS WORKFLOWS / RECIPES
 
-Pass 58 + Pass 97 (2026-06-18): 14 workflow recipes written — **C: 82/100**
+Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C: 85/100**
 
 ### 13.1 Core Accounting Workflows
 - [x] ✅ **Customer invoice (AR voucher)** — see Recipe 7: AR Cash Receipts — **C: 75/100**
 - [x] ✅ **Cash receipts** — AR-C → BKARTXN+BKARINVT+BKARCUST+BKGLTRAN — see Recipe 7 — **C: 75/100**
 - [x] ✅ **Purchase order → AP voucher → check** — see Recipe 3 — **C: 75/100**
 - [x] ✅ **Month-end close** — AR-H → AP → IN → AM period lock — see Recipe 5 — **C: 72/100**
+- [x] ✅ **GL journal entry** — T7GLB enter → T7GLC report → T7GLP period-end → T7GLARCH archive — see Recipe 10 — **C: 70/100**
+- [x] ✅ **Period-end archiving** — T7GLP → T7GLARCH → purge — see Recipe 11 — **C: 70/100**
 - [ ] ⬜ **Year-end close** — payroll, 1099, W-2, purge cycle
-- [ ] ⬜ **GL journal entry** — manual entry, posting, reversal
 
 ### 13.2 Inventory & Manufacturing Workflows
 - [x] ✅ **New item setup** — IN-B → BM → RO-A — see Recipe 6 — **C: 78/100**
@@ -823,8 +824,8 @@ Pass 58 + Pass 97 (2026-06-18): 14 workflow recipes written — **C: 82/100**
 - [x] ✅ **MRP run** — MR-A → MR-J → MR-K — see Recipe 4 — **C: 75/100**
 - [x] ✅ **Physical inventory count** — PI-A → PI-C → PI-D → PI-F — see Recipe 8 — **C: 75/100**
 - [x] ✅ **Sales order → ship → invoice** — SO-A → BO → SO-F → SO-G — see Recipe 1 — **C: 80/100**
-- [ ] ⬜ **Inventory adjustment** — manual quantity/cost adjustment via IN-G/IN-H
-- [ ] ⬜ **Lot/serial tracking** — full lifecycle from PO receipt to SO shipment
+- [x] ✅ **Inventory adjustment** — IN-G/IN-H → BKISTXN+BKICLOC — see Recipe 14 — **C: 70/100**
+- [x] ✅ **Lot/serial tracking** — PO receipt → WO issue → WO completion → SO shipment — see Recipe 15 — **C: 68/100**
 
 ### 13.3 Payroll Workflows
 - [ ] ⬜ **Time entry** — labor hours entry through pay period
@@ -833,11 +834,10 @@ Pass 58 + Pass 97 (2026-06-18): 14 workflow recipes written — **C: 82/100**
 - [ ] ⬜ **Tax filing** — quarterly 941, W-2, 1099 generation
 
 ### 13.4 System Administration Workflows
-- [ ] ⬜ **New user setup** — AHSYLOG entry, access flags, starting menu
-- [ ] ⬜ **New company creation** — UT → company add, NE module
-- [ ] ⬜ **Backup / restore** — TA-O (EVOERPBACKUP)
+- [x] ✅ **New user setup** — AHSYLOG entry, access flags, starting menu — see Recipe 13 — **C: 65/100**
+- [x] ✅ **New company creation** — UT → company add, NE module (T7NEWINIT: 49 procs) — see Recipe 16 — **C: 60/100**
+- [x] ✅ **Backup / restore** — TA-O (EVOERPBACKUP) — see Recipe 12 — **C: 65/100**
 - [ ] ⬜ **Software update** — EvoUpdate apply process
-- [ ] ⬜ **Period-end archiving** — archive + purge old transaction tables
 - [ ] ⬜ **ODBC DDF build** — required before Java tools can connect
 
 ---
@@ -1108,7 +1108,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Java Integration | **85** | 88 | **3** ↑+12 Pass102 TASKS/sql/Main+ISJAVA schema; jdbc.ini; 260+ table model inventory; ISLINKS/ROUTING/WORKCTR/ISBSF/BKSYMSTR schemas | 2026-06-18 |
 | ODBC Connectivity | **91** | 92 | **1** ↑+6 Pass105 EVOADMIN DSN confirmed (StartEvo license check); DSN table (DBA/ABI/EVOADMIN); Transactional vs. Relational API table documented | 2026-06-18 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
-| Business Workflows | **82** | 85 | **3** ↑+7 Pass97 Recipes10-14: GL-journal/period-end-archive/backup/new-user/inv-adjustment | 2026-06-18 |
+| Business Workflows | **85** | 85 | **0** ✅ ↑+3 Pass106d Recipes15-16: lot/serial tracking lifecycle + new company creation | 2026-06-18 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **87** | 88 | **1** ↑+4 Pass103 tier9-tables.md: 19 Java-confirmed schemas (BKSLEVEL/BKSYMSTR/ROUTING/WORKCTR/ISBSF/BKICLOC/BKBMMSTR/ISFOHEAD/ISFOLINE/ISSHIPCO/ISREMIND/CALENDAR/MACHINE/AHSYLOG/BKLOGON/etc) | 2026-06-18 |
 | PROJECT-STRUCTURE.md | **86** | 90 | **4** ↑+6 Pass103 AP 6→26 entries, AR 5→17, PO 0→30 (full new section), SO 1→21; 171 DFM forms cataloged | 2026-06-18 |

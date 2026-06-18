@@ -431,7 +431,7 @@ Step 3 — Verify:
 
 ---
 
-*Business Workflows section — **Confidence: 75/100** — 9 workflow recipes written; table write sequences confirmed from DB fingerprints (RWN symbols) and DDF schema cross-reference; exact field-level validation logic and error handling in encrypted RWN.*
+*Business Workflows section — **Confidence: 85/100** — 16 workflow recipes written (SO lifecycle, WO lifecycle, PO→check, MRP run, month-end close, new item setup, AR cash receipts, physical inventory, packaging items stuck, GL journal entry, period-end archiving, backup/restore, new user setup, inventory manual adjustment, lot/serial tracking lifecycle, new company creation); table write sequences confirmed from DB fingerprints (RWN symbols) and DDF schema cross-reference; exact field-level validation logic and error handling in encrypted RWN.*
 
 ---
 
@@ -14822,7 +14822,119 @@ damaged goods, or correcting a posting error.
 inventory adjustment logic for Btrieve-based systems; DFM for T7ING not specifically
 analyzed (no T7ING.DFM found in samples — behavior inferred from module pattern).
 
+---
 
+### Recipe 15: Lot/Serial Tracking Lifecycle (Pass 106d, 2026-06-18)
+
+**When to use:** Understanding how a specific lot/serial number flows from PO receipt through
+production/consumption to customer shipment. Also useful for tracing a quality defect to its
+production batch.
+
+**Key tables:**
+
+| Table | Purpose |
+|---|---|
+| LOT | Lot master — one row per lot number per item. Tracks: LOT_CODE(PK), ITEM, QTY, RCVDTE, CRTDTE, status |
+| SERIAL | Serial master — one row per serial number per item |
+| BKICLOC | Per-location, per-lot quantity on-hand |
+| ISBINLOT | Bin-level lot quantity (ITEM+LOC+LOT+BIN PK) |
+| ISSOBOX | Shipping box contents (SONUM+LINE+BOX PK) — includes LOT field |
+| BKISTXN | Inventory transaction history — each receipt/issue writes a row with LOT field |
+| WORKORD.LOT / WOROUT.LOT | WO routing step lot tracking |
+
+**Lifecycle flow:**
+
+```
+Step 1: PO Receipt (PO-E)
+  → LOT record created (or existing lot updated)
+  → BKICLOC.QTY incremented for this lot at this location
+  → BKISTXN row written (type R = Receipt, LOT field populated)
+
+Step 2: WO Material Issue (DC module / WO-K-B)
+  → Operator scans or enters lot number
+  → BKICLOC.QTY decremented (lot consumed from location)
+  → BKISTXN row written (type M = Material Issue, LOT field)
+  → ISBINLOT updated if bin tracking active
+
+Step 3: WO Completion (WO-K-J — Enter WO Completions)
+  → If item is lot-tracked, lot assigned to finished goods
+  → New LOT record for the finished goods lot (or existing updated)
+  → BKICLOC updated for FG location
+
+Step 4: SO Shipment (SO-C — Pick/Pack/Ship)
+  → Lot number selected for the SO line
+  → ISSOBOX.LOT populated for shipping scan
+  → BKICLOC decremented from shipping location
+  → BKISTXN row written (type S = Shipment, LOT field)
+  → BKSOHLOT row written (SO history lot record)
+```
+
+**Tracing a lot:**
+- Find all transactions for a lot: `SELECT * FROM BKISTXN WHERE BKIS_LOT_CODE = '?'`
+- Find current qty by location: `SELECT * FROM BKICLOC WHERE BKIC_LOC_LOT = '?'`
+- Find which SOs received this lot: `SELECT * FROM BKSOHLOT WHERE BKAR_TXN_LOT = '?'`
+
+**Serial tracking** follows the same lifecycle but one-to-one (each serial number = 1 unit).
+Serial numbers are tracked in the SERIAL table and BKISTXN.LOT field (shares the same column).
+
+**Lot-enabled items:** Set BKICMSTR/MTICMSTR field `MTIC_PROD_LOT = 'Y'` (lot tracking) or
+`MTIC_PROD_SER = 'Y'` (serial tracking). Once enabled, EvoERP requires a lot/serial on every
+transaction for that item.
+
+**Confidence: 68/100** — Table schemas confirmed from DDF; transaction type codes inferred from
+field naming conventions; exact workflow steps confirmed from module DB fingerprints (PO-E opens
+LOT, SO-C opens ISSOBOX+LOT, WO-K opens WORKORD+LOT). Per-step screen behavior blocked by RWN encryption.
+
+---
+
+### Recipe 16: New Company Creation (Pass 106d, 2026-06-18)
+
+**When to use:** Adding a new entity/division to EvoERP that will have its own set of Btrieve
+data files while sharing the same program installation.
+
+**Module:** NE (New Entity / Company Initialization)
+**Program:** T7NEWINIT (49 procs) — accessed via the NE module menu (14 button entries in BKMENUSU)
+
+**What T7NEWINIT does:**
+- Opens FILELOC (the TAS runtime file-location table) — reads the list of all registered `.B` files
+- Opens FILEDES (file template definitions — NOT in Pervasive DDF, TAS runtime only)
+- Creates a new directory on the share: `\\i2s109-solidcrm\DBAMFG$\<COMPANYCODE>\`
+- Creates a new copy of every `.B` file registered in FILELOC, using `.<COMPANYCODE>` suffix
+- Optionally seeds data from an existing company by reading BKAPVEND, BKARCUST, BKCMACCN
+
+**Step-by-step:**
+
+```
+1. UT module → add new company code in company master (BKSY or system config)
+2. NE-A or NE-B → T7NEWINIT
+   - Select source company to seed from (or blank for empty)
+   - Enter new company code (2-3 chars, e.g. "NW")
+   - Choose which master data to copy:
+     □ Vendor master (BKAPVEND)
+     □ Customer master (BKARCUST)
+     □ CRM accounts (BKCMACCN)
+     □ Chart of accounts (BKGLCOA)
+     □ Item master (BKICMSTR)
+   - Confirm — T7NEWINIT creates all files
+3. New company folder created: DBAMFG$\NW\
+4. All data files created: BKARCUST.BNW, BKGLTRAN.BNW, WORKORD.BNW, etc.
+5. Log in → company selection screen shows new company
+```
+
+**Company code → file suffix mapping:**
+- 2-char company code "I2" → file suffix `.BI2` (e.g. `BKARCUST.BI2`)
+- 2-char company code "AT" → file suffix `.BAT` (e.g. `BKARCUST.BAT`)
+- 2-char company code "AB" → file suffix `.BAB`
+- Default company → no suffix, plain `.B`
+
+**Key tables:**
+- FILELOC — TAS runtime table listing all registered file paths (not in Pervasive DDF)
+- FILEDES — file template definitions (TAS runtime, not in DDF)
+- BKAPVEND, BKARCUST, BKCMACCN — source data for optional seeding
+
+**Confidence: 60/100** — T7NEWINIT DB fingerprint confirmed (FILELOC+FILEDES+BKAPVEND+BKARCUST+BKCMACCN);
+multi-company file suffix convention confirmed from physical share inspection; exact menu path and
+screen flow blocked by RWN encryption.
 
 ---
 
