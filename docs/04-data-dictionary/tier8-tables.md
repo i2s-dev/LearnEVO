@@ -1,0 +1,1446 @@
+# EvoERP Data Dictionary — Tier 8 Tables (DDF-exact schemas)
+
+Status: partial — extracted directly from Pervasive DDF via schema.md (2026-06-18).
+Field names are exact; meanings are inferred from name patterns unless confirmed by DFM or SRC.
+
+---
+
+## BKAPPO — AP Purchase Order Header
+
+**Module:** PO/AP | **Fields:** 57 | **File:** BKAPPO.B
+**Primary key (inferred):** BKAP_PO_NUM (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAP_PO_NUM` | FLOAT | 8 | NUM |
+| 2 | `BKAP_PO_PRTD` | STRING | 1 | PRTD |
+| 3 | `BKAP_PO_VNDCOD` | STRING | 10 | VNDCOD |
+| 4 | `BKAP_PO_VNDNME` | STRING | 30 | VNDNME |
+| 5 | `BKAP_PO_VNDA1` | STRING | 30 | VNDA1 |
+| 6 | `BKAP_PO_VNDA2` | STRING | 30 | VNDA2 |
+| 7 | `BKAP_PO_VNDCTY` | STRING | 26 | VNDCTY |
+| 8 | `BKAP_PO_VNDST` | STRING | 2 | VNDST |
+| 9 | `BKAP_PO_VNDZIP` | STRING | 10 | VNDZIP |
+| 10 | `BKAP_PO_SHPCOD` | STRING | 10 | SHPCOD |
+| 11 | `BKAP_PO_SHPNME` | STRING | 30 | SHPNME |
+| 12 | `BKAP_PO_SHPA1` | STRING | 30 | SHPA1 |
+| 13 | `BKAP_PO_SHPA2` | STRING | 30 | SHPA2 |
+| 14 | `BKAP_PO_SHPCTY` | STRING | 26 | SHPCTY |
+| 15 | `BKAP_PO_SHPST` | STRING | 2 | SHPST |
+| 16 | `BKAP_PO_SHPZIP` | STRING | 10 | SHPZIP |
+| 17 | `BKAP_PO_SHPVIA` | STRING | 15 | SHPVIA |
+| 18 | `BKAP_PO_TERMD` | STRING | 10 | TERMD |
+| 19 | `BKAP_PO_TERMNM` | UBINARY | 2 | TERMNM |
+| 20 | `BKAP_PO_ENTBY` | STRING | 2 | ENTBY |
+| 21 | `BKAP_PO_OBYCUS` | STRING | 15 | OBYCUS |
+| 22 | `BKAP_PO_TAXABLE` | STRING | 1 | TAXABLE |
+| 23 | `BKAP_PO_CONFIRM_1` | STRING | 1 | 1 |
+| 24 | `BKAP_PO_CONFIRM_2` | STRING | 1 | 2 |
+| 25 | `BKAP_PO_ORDDTE` | DATE | 4 | ORDDTE |
+| 26 | `BKAP_PO_SUBTOT` | FLOAT | 8 | SUBTOT |
+| 27 | `BKAP_PO_TAXAMT` | FLOAT | 8 | TAXAMT |
+| 28 | `BKAP_PO_TOTAL` | FLOAT | 8 | TOTAL |
+| 29 | `BKAP_PO_NL` | UBINARY | 2 | NL |
+| 30 | `BKAP_PO_TAXRTE` | FLOAT | 8 | TAXRTE |
+| 31 | `BKAP_PO_DESC` | STRING | 30 | DESC |
+| 32 | `BKAP_PO_GLDPT` | STRING | 4 | GLDPT |
+| 33 | `BKAP_PO_LOC` | STRING | 10 | LOC |
+| 34 | `BKAP_PO_ITOTAL` | FLOAT | 8 | ITOTAL |
+| 35 | `BKAP_PO_ENDLNE` | STRING | 1 | ENDLNE |
+| 36 | `BKAP_PO_FOB` | STRING | 20 | FOB |
+| 37 | `BKAP_PO_FTERMNM` | UBINARY | 2 | FTERMNM |
+| 38 | `BKAP_PO_FTERMD` | STRING | 10 | FTERMD |
+| 39 | `BKAP_PO_QCTOTAL` | FLOAT | 8 | QCTOTAL |
+| 40 | `BKAP_PO_VNDA3` | STRING | 30 | VNDA3 |
+| 41 | `BKAP_PO_VNDCNT` | STRING | 30 | VNDCNT |
+| 42 | `BKAP_PO_VNDATN` | STRING | 30 | VNDATN |
+| 43 | `BKAP_PO_SHPA3` | STRING | 30 | SHPA3 |
+| 44 | `BKAP_PO_SHPCNT` | STRING | 30 | SHPCNT |
+| 45 | `BKAP_PO_SHPATN` | STRING | 30 | SHPATN |
+| 46 | `BKAP_PO_RECNUM` | FLOAT | 8 | RECNUM |
+| 47 | `BKAP_PO_LONGPO` | STRING | 25 | LONGPO |
+| 48 | `BKAP_PO_EXTRA` | STRING | 150 | EXTRA |
+| 49 | `BKAP_PO_INVNUM` | STRING | 10 | INVNUM |
+| 50 | `BKAP_PO_ISTXGR` | STRING | 10 | ISTXGR |
+| 51 | `BKAP_PO_ISMCDT` | DATE | 4 | ISMCDT |
+| 52 | `BKAP_PO_ISBROKE` | STRING | 10 | ISBROKE |
+| 53 | `BKAP_PO_ISREV` | STRING | 1 | ISREV |
+| 54 | `BKAP_PO_ISRVDT` | DATE | 4 | ISRVDT |
+| 55 | `BKAP_PO_ISCUR` | STRING | 3 | ISCUR |
+| 56 | `BKAP_PO_PCKSLP` | STRING | 15 | PCKSLP |
+| 57 | `BKAP_PO_EMPNUM` | UBINARY | 2 | EMPNUM |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKAPPOL — AP Purchase Order Lines
+
+**Module:** PO/AP | **Fields:** 38 | **File:** BKAPPOL.B
+**Primary key (inferred):** BKAP_PO_NUM + line counter (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAP_POL_PONM` | FLOAT | 8 | PONM |
+| 2 | `BKAP_POL_CNTR` | UBINARY | 2 | CNTR |
+| 3 | `BKAP_POL_ERD` | DATE | 4 | ERD |
+| 4 | `BKAP_POL_PCODE` | STRING | 15 | PCODE |
+| 5 | `BKAP_POL_PDESC` | STRING | 30 | PDESC |
+| 6 | `BKAP_POL_PQTY` | FLOAT | 8 | PQTY |
+| 7 | `BKAP_POL_PPRCE` | FLOAT | 8 | PPRCE |
+| 8 | `BKAP_POL_PDISC` | FLOAT | 8 | PDISC |
+| 9 | `BKAP_POL_PEXT` | FLOAT | 8 | PEXT |
+| 10 | `BKAP_POL_PCOGS` | FLOAT | 8 | PCOGS |
+| 11 | `BKAP_POL_ITYPE` | STRING | 1 | ITYPE |
+| 12 | `BKAP_POL_GLA` | STRING | 10 | GLA |
+| 13 | `BKAP_POL_GLDPTA` | STRING | 4 | GLDPTA |
+| 14 | `BKAP_POL_TXBLE` | STRING | 1 | TXBLE |
+| 15 | `BKAP_POL_RQTY` | FLOAT | 8 | RQTY |
+| 16 | `BKAP_POL_IQTY` | FLOAT | 8 | IQTY |
+| 17 | `BKAP_POL_LOC` | STRING | 10 | LOC |
+| 18 | `NKAP_POL_UM_LIN_1` | STRING | 3 | NKAP_POL_UM_LIN_1 |
+| 19 | `NKAP_POL_UM_LIN_2` | STRING | 3 | NKAP_POL_UM_LIN_2 |
+| 20 | `BKAP_POL_OPER` | UBINARY | 2 | OPER |
+| 21 | `BKAP_POL_WOPRE` | FLOAT | 8 | WOPRE |
+| 22 | `BKAP_POL_WOSUF` | UBINARY | 2 | WOSUF |
+| 23 | `BKAP_POL_ARD` | DATE | 4 | ARD |
+| 24 | `BKAP_POL_EST` | FLOAT | 8 | EST |
+| 25 | `BKAP_POL_OO_QTY` | FLOAT | 8 | QTY |
+| 26 | `BKAP_POL_ITM_NO` | STRING | 9 | NO |
+| 27 | `BKAP_POL_QC_QTY` | FLOAT | 8 | QTY |
+| 28 | `BKAP_POL_BUYOFF` | FLOAT | 8 | BUYOFF |
+| 29 | `BKAP_POL_SCRAP` | FLOAT | 8 | SCRAP |
+| 30 | `BKAP_POL_PRTDIM` | STRING | 1 | PRTDIM |
+| 31 | `BKAP_POL_PARENT` | STRING | 15 | PARENT |
+| 32 | `BKAP_POL_RECNUM` | FLOAT | 8 | RECNUM |
+| 33 | `BKAP_POL_EXTRA` | STRING | 100 | EXTRA |
+| 34 | `BKAP_POL_INVNUM` | STRING | 10 | INVNUM |
+| 35 | `BKAP_POL_PCONV` | FLOAT | 8 | PCONV |
+| 36 | `BKAP_POL_INVDTE` | DATE | 4 | INVDTE |
+| 37 | `BKAP_POL_PSTDTE` | DATE | 4 | PSTDTE |
+| 38 | `BKAP_POL_PKSQTY` | FLOAT | 8 | PKSQTY |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKGLTRAN — GL Journal Transaction Lines
+
+**Module:** GL | **Fields:** 16 | **File:** BKGLTRAN.B
+**Primary key (inferred):** BKGL_TRAN_* key fields (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKGL_TRN_GLACCT` | STRING | 10 | GLACCT |
+| 2 | `BKGL_TRN_GLDPT` | STRING | 4 | GLDPT |
+| 3 | `BKGL_TRN_DATE` | DATE | 4 | DATE |
+| 4 | `BKGL_TRN_CODE` | STRING | 10 | CODE |
+| 5 | `BKGL_TRN_INVC` | STRING | 10 | INVC |
+| 6 | `BKGL_TRN_DESC` | STRING | 25 | DESC |
+| 7 | `BKGL_TRN_DC` | STRING | 1 | DC |
+| 8 | `BKGL_TRN_AMT` | FLOAT | 8 | AMT |
+| 9 | `BKGL_TRN_TYPE` | STRING | 2 | TYPE |
+| 10 | `BKGL_TRN_ENTDTE` | DATE | 4 | ENTDTE |
+| 11 | `BKGL_TRN_EXTRA` | STRING | 25 | EXTRA |
+| 12 | `BKGL_TRN_TRXN` | FLOAT | 8 | TRXN |
+| 13 | `BKGL_TRN_POST` | STRING | 1 | POST |
+| 14 | `BKGL_TRN_PERIOD` | UBINARY | 2 | PERIOD |
+| 15 | `BKGL_TRN_BATCH` | FLOAT | 8 | BATCH |
+| 16 | `BKGL_TRN_PART` | STRING | 15 | PART |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKGLCOA — GL Chart of Accounts
+
+**Module:** GL | **Fields:** 65 | **File:** BKGLCOA.B
+**Primary key (inferred):** BKGL_COA_ACCT + BKGL_COA_DEPT
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKGL_ACCT` | STRING | 10 | BKGL_ACCT |
+| 2 | `BKGL_GLDPT` | STRING | 4 | BKGL_GLDPT |
+| 3 | `BKGL_ACCTD` | STRING | 25 | BKGL_ACCTD |
+| 4 | `BKGL_TYPE` | STRING | 1 | BKGL_TYPE |
+| 5 | `BKGL_CR_DR` | STRING | 1 | DR |
+| 6 | `BKGL_NON_CASH` | STRING | 1 | CASH |
+| 7 | `BKGL_CURRENT_1` | FLOAT | 8 | 1 |
+| 8 | `BKGL_CURRENT_2` | FLOAT | 8 | 2 |
+| 9 | `BKGL_CURRENT_3` | FLOAT | 8 | 3 |
+| 10 | `BKGL_CURRENT_4` | FLOAT | 8 | 4 |
+| 11 | `BKGL_CURRENT_5` | FLOAT | 8 | 5 |
+| 12 | `BKGL_CURRENT_6` | FLOAT | 8 | 6 |
+| 13 | `BKGL_CURRENT_7` | FLOAT | 8 | 7 |
+| 14 | `BKGL_CURRENT_8` | FLOAT | 8 | 8 |
+| 15 | `BKGL_CURRENT_9` | FLOAT | 8 | 9 |
+| 16 | `BKGL_CURRENT_10` | FLOAT | 8 | 10 |
+| 17 | `BKGL_CURRENT_11` | FLOAT | 8 | 11 |
+| 18 | `BKGL_CURRENT_12` | FLOAT | 8 | 12 |
+| 19 | `BKGL_CURRENT_13` | FLOAT | 8 | 13 |
+| 20 | `BKGL_CURRENT_14` | FLOAT | 8 | 14 |
+| 21 | `BKGL_BUDGET_1` | FLOAT | 8 | 1 |
+| 22 | `BKGL_BUDGET_2` | FLOAT | 8 | 2 |
+| 23 | `BKGL_BUDGET_3` | FLOAT | 8 | 3 |
+| 24 | `BKGL_BUDGET_4` | FLOAT | 8 | 4 |
+| 25 | `BKGL_BUDGET_5` | FLOAT | 8 | 5 |
+| 26 | `BKGL_BUDGET_6` | FLOAT | 8 | 6 |
+| 27 | `BKGL_BUDGET_7` | FLOAT | 8 | 7 |
+| 28 | `BKGL_BUDGET_8` | FLOAT | 8 | 8 |
+| 29 | `BKGL_BUDGET_9` | FLOAT | 8 | 9 |
+| 30 | `BKGL_BUDGET_10` | FLOAT | 8 | 10 |
+| 31 | `BKGL_BUDGET_11` | FLOAT | 8 | 11 |
+| 32 | `BKGL_BUDGET_12` | FLOAT | 8 | 12 |
+| 33 | `BKGL_BUDGET_13` | FLOAT | 8 | 13 |
+| 34 | `BKGL_BUDGET_14` | FLOAT | 8 | 14 |
+| 35 | `BKGL_1YPAST_1` | FLOAT | 8 | BKGL_1YPAST_1 |
+| 36 | `BKGL_1YPAST_2` | FLOAT | 8 | BKGL_1YPAST_2 |
+| 37 | `BKGL_1YPAST_3` | FLOAT | 8 | BKGL_1YPAST_3 |
+| 38 | `BKGL_1YPAST_4` | FLOAT | 8 | BKGL_1YPAST_4 |
+| 39 | `BKGL_1YPAST_5` | FLOAT | 8 | BKGL_1YPAST_5 |
+| 40 | `BKGL_1YPAST_6` | FLOAT | 8 | BKGL_1YPAST_6 |
+| 41 | `BKGL_1YPAST_7` | FLOAT | 8 | BKGL_1YPAST_7 |
+| 42 | `BKGL_1YPAST_8` | FLOAT | 8 | BKGL_1YPAST_8 |
+| 43 | `BKGL_1YPAST_9` | FLOAT | 8 | BKGL_1YPAST_9 |
+| 44 | `BKGL_1YPAST_10` | FLOAT | 8 | BKGL_1YPAST_10 |
+| 45 | `BKGL_1YPAST_11` | FLOAT | 8 | BKGL_1YPAST_11 |
+| 46 | `BKGL_1YPAST_12` | FLOAT | 8 | BKGL_1YPAST_12 |
+| 47 | `BKGL_1YPAST_13` | FLOAT | 8 | BKGL_1YPAST_13 |
+| 48 | `BKGL_1YPAST_14` | FLOAT | 8 | BKGL_1YPAST_14 |
+| 49 | `BKGL_2YPAST_1` | FLOAT | 8 | BKGL_2YPAST_1 |
+| 50 | `BKGL_2YPAST_2` | FLOAT | 8 | BKGL_2YPAST_2 |
+| 51 | `BKGL_2YPAST_3` | FLOAT | 8 | BKGL_2YPAST_3 |
+| 52 | `BKGL_2YPAST_4` | FLOAT | 8 | BKGL_2YPAST_4 |
+| 53 | `BKGL_2YPAST_5` | FLOAT | 8 | BKGL_2YPAST_5 |
+| 54 | `BKGL_2YPAST_6` | FLOAT | 8 | BKGL_2YPAST_6 |
+| 55 | `BKGL_2YPAST_7` | FLOAT | 8 | BKGL_2YPAST_7 |
+| 56 | `BKGL_2YPAST_8` | FLOAT | 8 | BKGL_2YPAST_8 |
+| 57 | `BKGL_2YPAST_9` | FLOAT | 8 | BKGL_2YPAST_9 |
+| 58 | `BKGL_2YPAST_10` | FLOAT | 8 | BKGL_2YPAST_10 |
+| 59 | `BKGL_2YPAST_11` | FLOAT | 8 | BKGL_2YPAST_11 |
+| 60 | `BKGL_2YPAST_12` | FLOAT | 8 | BKGL_2YPAST_12 |
+| 61 | `BKGL_2YPAST_13` | FLOAT | 8 | BKGL_2YPAST_13 |
+| 62 | `BKGL_2YPAST_14` | FLOAT | 8 | BKGL_2YPAST_14 |
+| 63 | `BKGL_EXTRA` | STRING | 50 | BKGL_EXTRA |
+| 64 | `BKGL_1YPAST_YE` | FLOAT | 8 | BKGL_1YPAST_YE |
+| 65 | `BKGL_2YPAST_YE` | FLOAT | 8 | BKGL_2YPAST_YE |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKDCSHFT — Data Collection Shift Definitions
+
+**Module:** DC | **Fields:** 34 | **File:** BKDCSHFT.B
+**Primary key (inferred):** Shift number (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKDC_SH_NAME1` | STRING | 25 | NAME1 |
+| 2 | `BKDC_SH_NAME2` | STRING | 25 | NAME2 |
+| 3 | `BKDC_SH_NAME3` | STRING | 25 | NAME3 |
+| 4 | `BKDC_SH_BUFFER_1` | TIME | 4 | 1 |
+| 5 | `BKDC_SH_BUFFER_2` | TIME | 4 | 2 |
+| 6 | `BKDC_SH_BUFFER_3` | TIME | 4 | 3 |
+| 7 | `BKDC_SH_START_1` | TIME | 4 | 1 |
+| 8 | `BKDC_SH_START_2` | TIME | 4 | 2 |
+| 9 | `BKDC_SH_START_3` | TIME | 4 | 3 |
+| 10 | `BKDC_SH_BRK1IN_1` | TIME | 4 | BRK1IN_1 |
+| 11 | `BKDC_SH_BRK1IN_2` | TIME | 4 | BRK1IN_2 |
+| 12 | `BKDC_SH_BRK1IN_3` | TIME | 4 | BRK1IN_3 |
+| 13 | `BKDC_SH_BRK1OUT_1` | TIME | 4 | BRK1OUT_1 |
+| 14 | `BKDC_SH_BRK1OUT_2` | TIME | 4 | BRK1OUT_2 |
+| 15 | `BKDC_SH_BRK1OUT_3` | TIME | 4 | BRK1OUT_3 |
+| 16 | `BKDC_SH_LUNCHIN_1` | TIME | 4 | 1 |
+| 17 | `BKDC_SH_LUNCHIN_2` | TIME | 4 | 2 |
+| 18 | `BKDC_SH_LUNCHIN_3` | TIME | 4 | 3 |
+| 19 | `BKDC_SH_LUNCHOT_1` | TIME | 4 | 1 |
+| 20 | `BKDC_SH_LUNCHOT_2` | TIME | 4 | 2 |
+| 21 | `BKDC_SH_LUNCHOT_3` | TIME | 4 | 3 |
+| 22 | `BKDC_SH_BRK2IN_1` | TIME | 4 | BRK2IN_1 |
+| 23 | `BKDC_SH_BRK2IN_2` | TIME | 4 | BRK2IN_2 |
+| 24 | `BKDC_SH_BRK2IN_3` | TIME | 4 | BRK2IN_3 |
+| 25 | `BKDC_SH_BRK2OUT_1` | TIME | 4 | BRK2OUT_1 |
+| 26 | `BKDC_SH_BRK2OUT_2` | TIME | 4 | BRK2OUT_2 |
+| 27 | `BKDC_SH_BRK2OUT_3` | TIME | 4 | BRK2OUT_3 |
+| 28 | `BKDC_SH_FIN_1` | TIME | 4 | 1 |
+| 29 | `BKDC_SH_FIN_2` | TIME | 4 | 2 |
+| 30 | `BKDC_SH_FIN_3` | TIME | 4 | 3 |
+| 31 | `BKDC_SH_FINBUF_1` | TIME | 4 | 1 |
+| 32 | `BKDC_SH_FINBUF_2` | TIME | 4 | 2 |
+| 33 | `BKDC_SH_FINBUF_3` | TIME | 4 | 3 |
+| 34 | `BKDC_SH_EXTRA` | STRING | 50 | EXTRA |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKDCTLAB — Data Collection Temporary Labor
+
+**Module:** DC | **Fields:** 50 | **File:** BKDCTLAB.B
+**Primary key (inferred):** Composite (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `LAB_DATE` | DATE | 4 | LAB_DATE |
+| 2 | `LAB_EMP` | UBINARY | 2 | LAB_EMP |
+| 3 | `LAB_WOPRE` | FLOAT | 8 | LAB_WOPRE |
+| 4 | `LAB_WOSUF` | UBINARY | 2 | LAB_WOSUF |
+| 5 | `LAB_OPER` | UBINARY | 2 | LAB_OPER |
+| 6 | `LAB_POSTED` | STRING | 1 | LAB_POSTED |
+| 7 | `LAB_SHIFT` | UBINARY | 2 | LAB_SHIFT |
+| 8 | `LAB_START` | TIME | 4 | LAB_START |
+| 9 | `LAB_FINISH` | TIME | 4 | LAB_FINISH |
+| 10 | `LAB_PARTS` | FLOAT | 8 | LAB_PARTS |
+| 11 | `LAB_SCRAPPED` | FLOAT | 8 | LAB_SCRAPPED |
+| 12 | `LAB_NOJOBS` | UBINARY | 2 | LAB_NOJOBS |
+| 13 | `LAB_RUNHRS` | FLOAT | 8 | LAB_RUNHRS |
+| 14 | `LAB_SETUPHRS` | FLOAT | 8 | LAB_SETUPHRS |
+| 15 | `LAB_REGOVER` | STRING | 1 | LAB_REGOVER |
+| 16 | `LAB_EXTRA` | STRING | 50 | LAB_EXTRA |
+| 17 | `LAB_APPROVAL` | STRING | 1 | LAB_APPROVAL |
+| 18 | `LAB_ADT_SUPER` | STRING | 100 | LAB_ADT_SUPER |
+| 19 | `LAB_ADT_IN` | STRING | 100 | LAB_ADT_IN |
+| 20 | `LAB_ADT_OUT` | STRING | 100 | LAB_ADT_OUT |
+| 21 | `LAB_ESSDATE` | DATE | 4 | LAB_ESSDATE |
+| 22 | `LAB_DATE1` | DATE | 4 | LAB_DATE1 |
+| 23 | `LAB_DATE2` | DATE | 4 | LAB_DATE2 |
+| 24 | `LAB_SCRAPCD_1` | STRING | 2 | LAB_SCRAPCD_1 |
+| 25 | `LAB_SCRAPCD_2` | STRING | 2 | LAB_SCRAPCD_2 |
+| 26 | `LAB_SCRAPCD_3` | STRING | 2 | LAB_SCRAPCD_3 |
+| 27 | `LAB_SCRAPCD_4` | STRING | 2 | LAB_SCRAPCD_4 |
+| 28 | `LAB_SCRAPCD_5` | STRING | 2 | LAB_SCRAPCD_5 |
+| 29 | `LAB_SCRAPQTY_1` | FLOAT | 8 | LAB_SCRAPQTY_1 |
+| 30 | `LAB_SCRAPQTY_2` | FLOAT | 8 | LAB_SCRAPQTY_2 |
+| 31 | `LAB_SCRAPQTY_3` | FLOAT | 8 | LAB_SCRAPQTY_3 |
+| 32 | `LAB_SCRAPQTY_4` | FLOAT | 8 | LAB_SCRAPQTY_4 |
+| 33 | `LAB_SCRAPQTY_5` | FLOAT | 8 | LAB_SCRAPQTY_5 |
+| 34 | `LAB_JCNUM` | STRING | 12 | LAB_JCNUM |
+| 35 | `LAB_CYCLE_HR` | UBINARY | 2 | LAB_CYCLE_HR |
+| 36 | `LAB_CYCLE_MIN` | UBINARY | 2 | LAB_CYCLE_MIN |
+| 37 | `LAB_CYCLE_SEC` | UBINARY | 2 | LAB_CYCLE_SEC |
+| 38 | `LAB_CYCLE_PARTS` | FLOAT | 8 | LAB_CYCLE_PARTS |
+| 39 | `LAB_CYCLE_NOTE` | STRING | 255 | LAB_CYCLE_NOTE |
+| 40 | `LAB_GEN_DATE_1` | DATE | 4 | LAB_GEN_DATE_1 |
+| 41 | `LAB_GEN_DATE_2` | DATE | 4 | LAB_GEN_DATE_2 |
+| 42 | `LAB_GEN_ALPHA_1` | STRING | 30 | LAB_GEN_ALPHA_1 |
+| 43 | `LAB_GEN_ALPHA_2` | STRING | 30 | LAB_GEN_ALPHA_2 |
+| 44 | `LAB_GEN_NUM_1` | FLOAT | 8 | LAB_GEN_NUM_1 |
+| 45 | `LAB_GEN_NUM_2` | FLOAT | 8 | LAB_GEN_NUM_2 |
+| 46 | `LAB_GEN_FLAG_1` | STRING | 1 | LAB_GEN_FLAG_1 |
+| 47 | `LAB_GEN_FLAG_2` | STRING | 1 | LAB_GEN_FLAG_2 |
+| 48 | `LAB_GEN_FLAG_3` | STRING | 1 | LAB_GEN_FLAG_3 |
+| 49 | `LAB_GEN_FLAG_4` | STRING | 1 | LAB_GEN_FLAG_4 |
+| 50 | `LAB_GEN_FLAG_5` | STRING | 1 | LAB_GEN_FLAG_5 |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKDCPLAB — Data Collection Pending Labor
+
+**Module:** DC | **Fields:** 50 | **File:** BKDCPLAB.B
+**Primary key (inferred):** Composite (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `LAB_DATE` | DATE | 4 | LAB_DATE |
+| 2 | `LAB_EMP` | UBINARY | 2 | LAB_EMP |
+| 3 | `LAB_WOPRE` | FLOAT | 8 | LAB_WOPRE |
+| 4 | `LAB_WOSUF` | UBINARY | 2 | LAB_WOSUF |
+| 5 | `LAB_OPER` | UBINARY | 2 | LAB_OPER |
+| 6 | `LAB_POSTED` | STRING | 1 | LAB_POSTED |
+| 7 | `LAB_SHIFT` | UBINARY | 2 | LAB_SHIFT |
+| 8 | `LAB_START` | TIME | 4 | LAB_START |
+| 9 | `LAB_FINISH` | TIME | 4 | LAB_FINISH |
+| 10 | `LAB_PARTS` | FLOAT | 8 | LAB_PARTS |
+| 11 | `LAB_SCRAPPED` | FLOAT | 8 | LAB_SCRAPPED |
+| 12 | `LAB_NOJOBS` | UBINARY | 2 | LAB_NOJOBS |
+| 13 | `LAB_RUNHRS` | FLOAT | 8 | LAB_RUNHRS |
+| 14 | `LAB_SETUPHRS` | FLOAT | 8 | LAB_SETUPHRS |
+| 15 | `LAB_REGOVER` | STRING | 1 | LAB_REGOVER |
+| 16 | `LAB_EXTRA` | STRING | 50 | LAB_EXTRA |
+| 17 | `LAB_APPROVAL` | STRING | 1 | LAB_APPROVAL |
+| 18 | `LAB_ADT_SUPER` | STRING | 100 | LAB_ADT_SUPER |
+| 19 | `LAB_ADT_IN` | STRING | 100 | LAB_ADT_IN |
+| 20 | `LAB_ADT_OUT` | STRING | 100 | LAB_ADT_OUT |
+| 21 | `LAB_ESSDATE` | DATE | 4 | LAB_ESSDATE |
+| 22 | `LAB_DATE1` | DATE | 4 | LAB_DATE1 |
+| 23 | `LAB_DATE2` | DATE | 4 | LAB_DATE2 |
+| 24 | `LAB_SCRAPCD_1` | STRING | 2 | LAB_SCRAPCD_1 |
+| 25 | `LAB_SCRAPCD_2` | STRING | 2 | LAB_SCRAPCD_2 |
+| 26 | `LAB_SCRAPCD_3` | STRING | 2 | LAB_SCRAPCD_3 |
+| 27 | `LAB_SCRAPCD_4` | STRING | 2 | LAB_SCRAPCD_4 |
+| 28 | `LAB_SCRAPCD_5` | STRING | 2 | LAB_SCRAPCD_5 |
+| 29 | `LAB_SCRAPQTY_1` | FLOAT | 8 | LAB_SCRAPQTY_1 |
+| 30 | `LAB_SCRAPQTY_2` | FLOAT | 8 | LAB_SCRAPQTY_2 |
+| 31 | `LAB_SCRAPQTY_3` | FLOAT | 8 | LAB_SCRAPQTY_3 |
+| 32 | `LAB_SCRAPQTY_4` | FLOAT | 8 | LAB_SCRAPQTY_4 |
+| 33 | `LAB_SCRAPQTY_5` | FLOAT | 8 | LAB_SCRAPQTY_5 |
+| 34 | `LAB_JCNUM` | STRING | 12 | LAB_JCNUM |
+| 35 | `LAB_CYCLE_HR` | UBINARY | 2 | LAB_CYCLE_HR |
+| 36 | `LAB_CYCLE_MIN` | UBINARY | 2 | LAB_CYCLE_MIN |
+| 37 | `LAB_CYCLE_SEC` | UBINARY | 2 | LAB_CYCLE_SEC |
+| 38 | `LAB_CYCLE_PARTS` | FLOAT | 8 | LAB_CYCLE_PARTS |
+| 39 | `LAB_CYCLE_NOTE` | STRING | 255 | LAB_CYCLE_NOTE |
+| 40 | `LAB_GEN_DATE_1` | DATE | 4 | LAB_GEN_DATE_1 |
+| 41 | `LAB_GEN_DATE_2` | DATE | 4 | LAB_GEN_DATE_2 |
+| 42 | `LAB_GEN_ALPHA_1` | STRING | 30 | LAB_GEN_ALPHA_1 |
+| 43 | `LAB_GEN_ALPHA_2` | STRING | 30 | LAB_GEN_ALPHA_2 |
+| 44 | `LAB_GEN_NUM_1` | FLOAT | 8 | LAB_GEN_NUM_1 |
+| 45 | `LAB_GEN_NUM_2` | FLOAT | 8 | LAB_GEN_NUM_2 |
+| 46 | `LAB_GEN_FLAG_1` | STRING | 1 | LAB_GEN_FLAG_1 |
+| 47 | `LAB_GEN_FLAG_2` | STRING | 1 | LAB_GEN_FLAG_2 |
+| 48 | `LAB_GEN_FLAG_3` | STRING | 1 | LAB_GEN_FLAG_3 |
+| 49 | `LAB_GEN_FLAG_4` | STRING | 1 | LAB_GEN_FLAG_4 |
+| 50 | `LAB_GEN_FLAG_5` | STRING | 1 | LAB_GEN_FLAG_5 |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKARCUST — AR Customer Master
+
+**Module:** AR | **Fields:** 106 | **File:** BKARCUST.B
+**Primary key (inferred):** BKAR_CUST_CODE
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAR_CUSTCODE` | STRING | 10 | CUSTCODE |
+| 2 | `BKAR_CUSTNAME` | STRING | 30 | CUSTNAME |
+| 3 | `BKAR_ADD1` | STRING | 30 | ADD1 |
+| 4 | `BKAR_ADD2_1` | STRING | 30 | ADD2_1 |
+| 5 | `BKAR_ADD2_2` | STRING | 30 | ADD2_2 |
+| 6 | `BKAR_CITY` | STRING | 26 | CITY |
+| 7 | `BKAR_STATE` | STRING | 2 | STATE |
+| 8 | `BKAR_ZIP` | STRING | 10 | ZIP |
+| 9 | `BKAR_CONTACT_1` | STRING | 30 | 1 |
+| 10 | `BKAR_CONTACT_2` | STRING | 30 | 2 |
+| 11 | `BKAR_CONTACT_3` | STRING | 30 | 3 |
+| 12 | `BKAR_CONTACT_4` | STRING | 30 | 4 |
+| 13 | `BKAR_CONTACT_5` | STRING | 30 | 5 |
+| 14 | `BKAR_TELEPHONE_1` | STRING | 25 | 1 |
+| 15 | `BKAR_TELEPHONE_2` | STRING | 25 | 2 |
+| 16 | `BKAR_TELEPHONE_3` | STRING | 25 | 3 |
+| 17 | `BKAR_TELEPHONE_4` | STRING | 25 | 4 |
+| 18 | `BKAR_TELEPHONE_5` | STRING | 25 | 5 |
+| 19 | `BKAR_COUNTRY` | STRING | 30 | COUNTRY |
+| 20 | `BKAR_CREDITLMT` | FLOAT | 8 | CREDITLMT |
+| 21 | `BKAR_CHG_INTRST` | STRING | 1 | INTRST |
+| 22 | `BKAR_REMAINCRD` | FLOAT | 8 | REMAINCRD |
+| 23 | `BKAR_OUTINV` | FLOAT | 8 | OUTINV |
+| 24 | `BKAR_LASTSALE` | DATE | 4 | LASTSALE |
+| 25 | `BKAR_LASTPMT` | DATE | 4 | LASTPMT |
+| 26 | `BKAR_GROSS_MTD` | FLOAT | 8 | MTD |
+| 27 | `BKAR_COGS_MTD` | FLOAT | 8 | MTD |
+| 28 | `BKAR_NET_MTD` | FLOAT | 8 | MTD |
+| 29 | `BKAR_PNET_MTD` | FLOAT | 8 | MTD |
+| 30 | `BKAR_GROSS_YTD` | FLOAT | 8 | YTD |
+| 31 | `BKAR_COGS_YTD` | FLOAT | 8 | YTD |
+| 32 | `BKAR_NET_YTD` | FLOAT | 8 | YTD |
+| 33 | `BKAR_PNET_YTD` | FLOAT | 8 | YTD |
+| 34 | `BKAR_GROSS_LYR` | FLOAT | 8 | LYR |
+| 35 | `BKAR_COGS_LYR` | FLOAT | 8 | LYR |
+| 36 | `BKAR_NET_LYR` | FLOAT | 8 | LYR |
+| 37 | `BKAR_PNET_LYR` | FLOAT | 8 | LYR |
+| 38 | `BKAR_GROSS_PVAR` | FLOAT | 8 | PVAR |
+| 39 | `BKAR_COGS_PVAR` | FLOAT | 8 | PVAR |
+| 40 | `BKAR_NET_PVAR` | FLOAT | 8 | PVAR |
+| 41 | `BKAR_PNET_PVAR` | FLOAT | 8 | PVAR |
+| 42 | `BKAR_NEW_CUST` | STRING | 1 | CUST |
+| 43 | `BKAR_OUT_CREDIT_1` | FLOAT | 8 | 1 |
+| 44 | `BKAR_OUT_CREDIT_2` | FLOAT | 8 | 2 |
+| 45 | `BKAR_TAX_STATE` | STRING | 2 | STATE |
+| 46 | `BKAR_TAX_LOCAL` | STRING | 2 | LOCAL |
+| 47 | `BKAR_TAX_YN` | STRING | 1 | YN |
+| 48 | `BKAR_STATEMENT` | STRING | 1 | STATEMENT |
+| 49 | `BKAR_SLSP_NUM_1` | UBINARY | 2 | 1 |
+| 50 | `BKAR_SLSP_NUM_2` | UBINARY | 2 | 2 |
+| 51 | `BKAR_TERMS_NUM` | UBINARY | 2 | NUM |
+| 52 | `BKAR_START_DATE` | DATE | 4 | DATE |
+| 53 | `BKAR_CLASS` | STRING | 4 | CLASS |
+| 54 | `BKAR_PRICE_MAT` | UBINARY | 2 | MAT |
+| 55 | `BKAR_HIST_YN` | STRING | 1 | YN |
+| 56 | `BKAR_DISC_CODE` | STRING | 10 | CODE |
+| 57 | `BKAR_NUM_INVCS` | FLOAT | 8 | INVCS |
+| 58 | `BKAR_DAYS_TOPAY` | FLOAT | 8 | TOPAY |
+| 59 | `BKAR_NOTES_1` | STRING | 80 | 1 |
+| 60 | `BKAR_NOTES_2` | STRING | 80 | 2 |
+| 61 | `BKAR_NOTES_3` | STRING | 80 | 3 |
+| 62 | `BKAR_NOTES_4` | STRING | 80 | 4 |
+| 63 | `BKAR_NOTES_5` | STRING | 80 | 5 |
+| 64 | `BKAR_NOTES_6` | STRING | 80 | 6 |
+| 65 | `BKAR_NOTES_7` | STRING | 80 | 7 |
+| 66 | `BKAR_NOTES_8` | STRING | 80 | 8 |
+| 67 | `BKAR_NOTES_9` | STRING | 80 | 9 |
+| 68 | `BKAR_NOTES_10` | STRING | 80 | 10 |
+| 69 | `BKAR_GLACCT` | STRING | 10 | GLACCT |
+| 70 | `BKAR_GLDPT` | STRING | 4 | GLDPT |
+| 71 | `BKAR_FOB` | STRING | 15 | FOB |
+| 72 | `BKAR_SHIPTO` | STRING | 10 | SHIPTO |
+| 73 | `BKAR_SHIPVIA` | STRING | 15 | SHIPVIA |
+| 74 | `BKAR_FOLUPDTE` | DATE | 4 | FOLUPDTE |
+| 75 | `BKAR_COMM_1` | FLOAT | 8 | 1 |
+| 76 | `BKAR_COMM_2` | FLOAT | 8 | 2 |
+| 77 | `BKAR_SORT` | STRING | 6 | SORT |
+| 78 | `BKAR_COOP_RATE` | FLOAT | 8 | RATE |
+| 79 | `BKAR_COOP_AMT` | FLOAT | 8 | AMT |
+| 80 | `BKAR_TERRITORY` | STRING | 4 | TERRITORY |
+| 81 | `BKAR_LEAD_SRC` | STRING | 5 | SRC |
+| 82 | `BKAR_SIC_CODE` | STRING | 7 | CODE |
+| 83 | `BKAR_PURCH_AGMT` | STRING | 1 | AGMT |
+| 84 | `BKAR_FORECAST` | STRING | 12 | FORECAST |
+| 85 | `BKAR_CUST_YEAR` | STRING | 12 | YEAR |
+| 86 | `BKAR_QC_INFO` | STRING | 30 | INFO |
+| 87 | `BKAR_MAIL_LIST` | STRING | 1 | LIST |
+| 88 | `BKAR_CARRIER` | STRING | 15 | CARRIER |
+| 89 | `BKAR_REQD_CERTS` | STRING | 10 | CERTS |
+| 90 | `BKAR_SHP_WINDOW` | STRING | 30 | WINDOW |
+| 91 | `BKAR_RECV_HOURS` | STRING | 30 | HOURS |
+| 92 | `BKAR_SHP_TOLRNC` | STRING | 10 | TOLRNC |
+| 93 | `BKAR_RESALE_NO` | STRING | 15 | NO |
+| 94 | `BKAR_FAX_PHONE` | STRING | 25 | PHONE |
+| 95 | `BKAR_CREDIT_HLD` | STRING | 1 | HLD |
+| 96 | `BKAR_EXTRA` | STRING | 30 | EXTRA |
+| 97 | `BKAR_EMAIL_1` | STRING | 128 | 1 |
+| 98 | `BKAR_EMAIL_2` | STRING | 128 | 2 |
+| 99 | `BKAR_EMAIL_3` | STRING | 128 | 3 |
+| 100 | `BKAR_EMAIL_4` | STRING | 128 | 4 |
+| 101 | `BKAR_EMAIL_5` | STRING | 128 | 5 |
+| 102 | `BKAR_IS_TAXGRP` | STRING | 10 | TAXGRP |
+| 103 | `BKAR_IS_TAXIN` | STRING | 1 | TAXIN |
+| 104 | `BKAR_IS_MCCODE` | STRING | 3 | MCCODE |
+| 105 | `BKAR_IS_REP` | STRING | 5 | REP |
+| 106 | `BKAR_LEAD_SRC2` | STRING | 5 | SRC2 |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKARINV — AR Invoice / Sales Order Header
+
+**Module:** AR/SO | **Fields:** 84 | **File:** BKARINV.B
+**Primary key (inferred):** BKAR_INV_INVNUM
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAR_INV_NUM` | FLOAT | 8 | NUM |
+| 2 | `BKAR_INV_SONUM` | FLOAT | 8 | SONUM |
+| 3 | `BKAR_INV_INVCD` | STRING | 1 | INVCD |
+| 4 | `BKAR_INV_INVDTE` | DATE | 4 | INVDTE |
+| 5 | `BKAR_INV_CUSCOD` | STRING | 10 | CUSCOD |
+| 6 | `BKAR_INV_CUSA1` | STRING | 30 | CUSA1 |
+| 7 | `BKAR_INV_CUSNME` | STRING | 30 | CUSNME |
+| 8 | `BKAR_INV_CUSA2_1` | STRING | 30 | CUSA2_1 |
+| 9 | `BKAR_INV_CUSA2_2` | STRING | 30 | CUSA2_2 |
+| 10 | `BKAR_INV_CUSCTY` | STRING | 26 | CUSCTY |
+| 11 | `BKAR_INV_CUSST` | STRING | 2 | CUSST |
+| 12 | `BKAR_INV_CUSZIP` | STRING | 10 | CUSZIP |
+| 13 | `BKAR_INV_CUSCNT` | STRING | 30 | CUSCNT |
+| 14 | `BKAR_INV_CUSATT` | STRING | 30 | CUSATT |
+| 15 | `BKAR_INV_SHPCTY` | STRING | 26 | SHPCTY |
+| 16 | `BKAR_INV_SHPST` | STRING | 2 | SHPST |
+| 17 | `BKAR_INV_SHPZIP` | STRING | 10 | SHPZIP |
+| 18 | `BKAR_INV_SHPCOD` | STRING | 10 | SHPCOD |
+| 19 | `BKAR_INV_SHPNME` | STRING | 30 | SHPNME |
+| 20 | `BKAR_INV_SHPA1` | STRING | 30 | SHPA1 |
+| 21 | `BKAR_INV_SHPA2_1` | STRING | 30 | SHPA2_1 |
+| 22 | `BKAR_INV_SHPA2_2` | STRING | 30 | SHPA2_2 |
+| 23 | `BKAR_INV_SHPATN` | STRING | 30 | SHPATN |
+| 24 | `BKAR_INV_SHPVIA` | STRING | 15 | SHPVIA |
+| 25 | `BKAR_INV_SHPCNT` | STRING | 30 | SHPCNT |
+| 26 | `BKAR_INV_TERMD` | STRING | 10 | TERMD |
+| 27 | `BKAR_INV_TERMNM` | UBINARY | 2 | TERMNM |
+| 28 | `BKAR_INV_SLSP` | UBINARY | 2 | SLSP |
+| 29 | `BKAR_INV_ENTBY` | STRING | 5 | ENTBY |
+| 30 | `BKAR_INV_CUSORD` | STRING | 25 | CUSORD |
+| 31 | `BKAR_INV_TAXABL` | STRING | 1 | TAXABL |
+| 32 | `BKAR_INV_SUBTOT` | FLOAT | 8 | SUBTOT |
+| 33 | `BKAR_INV_TAXAMT` | FLOAT | 8 | TAXAMT |
+| 34 | `BKAR_INV_TOTAL` | FLOAT | 8 | TOTAL |
+| 35 | `BKAR_INV_COGS` | FLOAT | 8 | COGS |
+| 36 | `BKAR_INV_NL` | UBINARY | 2 | NL |
+| 37 | `BKAR_INV_TAXRTE` | FLOAT | 8 | TAXRTE |
+| 38 | `BKAR_INV_DESC` | STRING | 30 | DESC |
+| 39 | `BKAR_INV_GLDPT` | STRING | 4 | GLDPT |
+| 40 | `BKAR_INV_RTS` | STRING | 1 | RTS |
+| 41 | `BKAR_INV_FRGHT` | FLOAT | 8 | FRGHT |
+| 42 | `BKAR_INV_LOC` | STRING | 10 | LOC |
+| 43 | `BKAR_INV_TAXKEY` | STRING | 4 | TAXKEY |
+| 44 | `BKAR_INV_ORDDTE` | DATE | 4 | ORDDTE |
+| 45 | `BKAR_INV_ENDLNE` | STRING | 1 | ENDLNE |
+| 46 | `BKAR_INV_DCODE` | STRING | 10 | DCODE |
+| 47 | `BKAR_INV_PCODE` | UBINARY | 2 | PCODE |
+| 48 | `BKAR_INV_SHIPDT` | DATE | 4 | SHIPDT |
+| 49 | `BKAR_INV_FOB` | STRING | 15 | FOB |
+| 50 | `BKAR_INV_SLSP2` | UBINARY | 2 | SLSP2 |
+| 51 | `BKAR_INV_COMMPR_1` | FLOAT | 8 | 1 |
+| 52 | `BKAR_INV_COMMPR_2` | FLOAT | 8 | 2 |
+| 53 | `BKAR_INV_CHKNUM` | FLOAT | 8 | CHKNUM |
+| 54 | `BKAR_INV_DEPAMT` | FLOAT | 8 | DEPAMT |
+| 55 | `BKAR_INV_SHIPPR` | FLOAT | 8 | SHIPPR |
+| 56 | `BKAR_INV_JOBNUM` | STRING | 15 | JOBNUM |
+| 57 | `BKAR_INV_ITMZTX_1` | STRING | 1 | 1 |
+| 58 | `BKAR_INV_ITMZTX_2` | STRING | 1 | 2 |
+| 59 | `BKAR_INV_RETEN` | FLOAT | 8 | RETEN |
+| 60 | `BKAR_INV_COMAMT` | FLOAT | 8 | COMAMT |
+| 61 | `BKAR_INV_CCOAMT` | FLOAT | 8 | CCOAMT |
+| 62 | `BKAR_INV_BILCOD` | STRING | 10 | BILCOD |
+| 63 | `BKAR_INV_BILNME` | STRING | 30 | BILNME |
+| 64 | `BKAR_INV_BILA1` | STRING | 30 | BILA1 |
+| 65 | `BKAR_INV_BILA2` | STRING | 30 | BILA2 |
+| 66 | `BKAR_INV_BILA3` | STRING | 30 | BILA3 |
+| 67 | `BKAR_INV_BILCTY` | STRING | 30 | BILCTY |
+| 68 | `BKAR_INV_BILST` | STRING | 2 | BILST |
+| 69 | `BKAR_INV_BILZIP` | STRING | 10 | BILZIP |
+| 70 | `BKAR_INV_BILCNT` | STRING | 30 | BILCNT |
+| 71 | `BKAR_INV_BILATN` | STRING | 30 | BILATN |
+| 72 | `BKAR_INV_EXTRA` | STRING | 150 | EXTRA |
+| 73 | `BKAR_INV_INDATE` | DATE | 4 | INDATE |
+| 74 | `BKAR_INV_SCCOGS` | FLOAT | 8 | SCCOGS |
+| 75 | `BKAR_INV_ISTXKY` | STRING | 10 | ISTXKY |
+| 76 | `BKAR_INV_ISMCDT` | DATE | 4 | ISMCDT |
+| 77 | `BKAR_INV_ISREV` | STRING | 1 | ISREV |
+| 78 | `BKAR_INV_ISRVDT` | DATE | 4 | ISRVDT |
+| 79 | `BKAR_INV_ISCUR` | STRING | 3 | ISCUR |
+| 80 | `BKAR_INV_RELNUM` | FLOAT | 8 | RELNUM |
+| 81 | `BKAR_INV_TRACK` | STRING | 40 | TRACK |
+| 82 | `BKAR_INV_QSTAT` | STRING | 1 | QSTAT |
+| 83 | `BKAR_INV_MDATE` | DATE | 4 | MDATE |
+| 84 | `BKAR_INV_MISC` | STRING | 100 | MISC |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKARINVL — AR Invoice Lines
+
+**Module:** AR/SO | **Fields:** 28 | **File:** BKARINVL.B
+**Primary key (inferred):** BKAR_INVL_INVNUM + BKAR_INVL_CNTR
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAR_INVL_INVNM` | FLOAT | 8 | INVNM |
+| 2 | `BKAR_INVL_CNTR` | UBINARY | 2 | CNTR |
+| 3 | `BKAR_INVL_ESD` | DATE | 4 | ESD |
+| 4 | `BKAR_INVL_PCODE` | STRING | 15 | PCODE |
+| 5 | `BKAR_INVL_PDESC` | STRING | 30 | PDESC |
+| 6 | `BKAR_INVL_PQTY` | FLOAT | 8 | PQTY |
+| 7 | `BKAR_INVL_PPRCE` | FLOAT | 8 | PPRCE |
+| 8 | `BKAR_INVL_PDISC` | FLOAT | 8 | PDISC |
+| 9 | `BKAR_INVL_PEXT` | FLOAT | 8 | PEXT |
+| 10 | `BKAR_INVL_PCOGS` | FLOAT | 8 | PCOGS |
+| 11 | `BKAR_INVL_ITYPE` | STRING | 1 | ITYPE |
+| 12 | `BKAR_INVL_TXBLE` | STRING | 1 | TXBLE |
+| 13 | `BKAR_INVL_UBO` | FLOAT | 8 | UBO |
+| 14 | `BKAR_INVL_USTD` | FLOAT | 8 | USTD |
+| 15 | `BKAR_INVL_RTS` | STRING | 1 | RTS |
+| 16 | `BKAR_INVL_LOC` | STRING | 10 | LOC |
+| 17 | `BKAR_INVL_ABQTY` | FLOAT | 8 | ABQTY |
+| 18 | `BKAR_INVL_UM_LN_1` | STRING | 3 | 1 |
+| 19 | `BKAR_INVL_UM_LN_2` | STRING | 3 | 2 |
+| 20 | `BKAR_INVL_COMPR_1` | FLOAT | 8 | 1 |
+| 21 | `BKAR_INVL_COMPR_2` | FLOAT | 8 | 2 |
+| 22 | `BKAR_INVL_ASD` | DATE | 4 | ASD |
+| 23 | `BKAR_INVL_TXAMT` | FLOAT | 8 | TXAMT |
+| 24 | `BKAR_INVL_FRGHT` | FLOAT | 8 | FRGHT |
+| 25 | `BKAR_INVL_COOP` | FLOAT | 8 | COOP |
+| 26 | `BKAR_INVL_OOQTY` | FLOAT | 8 | OOQTY |
+| 27 | `BKAR_INVL_EXTRA` | STRING | 100 | EXTRA |
+| 28 | `BKAR_INVL_SCCOG` | FLOAT | 8 | SCCOG |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKAPVEND — AP Vendor Master
+
+**Module:** AP | **Fields:** 72 | **File:** BKAPVEND.B
+**Primary key (inferred):** BKAP_VEND_CODE
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAP_VENDCODE` | STRING | 10 | VENDCODE |
+| 2 | `BKAP_VENDNAME` | STRING | 30 | VENDNAME |
+| 3 | `BKAP_ADD1_1` | STRING | 30 | ADD1_1 |
+| 4 | `BKAP_ADD1_2` | STRING | 30 | ADD1_2 |
+| 5 | `BKAP_ADD2_1` | STRING | 30 | ADD2_1 |
+| 6 | `BKAP_ADD2_2` | STRING | 30 | ADD2_2 |
+| 7 | `BKAP_CITY_1` | STRING | 26 | 1 |
+| 8 | `BKAP_CITY_2` | STRING | 26 | 2 |
+| 9 | `BKAP_STATE` | STRING | 2 | STATE |
+| 10 | `BKAP_CONTACT_1` | STRING | 30 | 1 |
+| 11 | `BKAP_CONTACT_2` | STRING | 30 | 2 |
+| 12 | `BKAP_CONTACT_3` | STRING | 30 | 3 |
+| 13 | `BKAP_CONTACT_4` | STRING | 30 | 4 |
+| 14 | `BKAP_TELEPHONE_1` | STRING | 25 | 1 |
+| 15 | `BKAP_TELEPHONE_2` | STRING | 25 | 2 |
+| 16 | `BKAP_TELEPHONE_3` | STRING | 25 | 3 |
+| 17 | `BKAP_TELEPHONE_4` | STRING | 25 | 4 |
+| 18 | `BKAP_TELEPHONE_5` | STRING | 25 | 5 |
+| 19 | `BKAP_ZIP` | STRING | 10 | ZIP |
+| 20 | `BKAP_COUNTRY_1` | STRING | 30 | 1 |
+| 21 | `BKAP_COUNTRY_2` | STRING | 30 | 2 |
+| 22 | `BKAP_OUTINV` | FLOAT | 8 | OUTINV |
+| 23 | `BKAP_LASTPURCH` | DATE | 4 | LASTPURCH |
+| 24 | `BKAP_LASTPMT` | DATE | 4 | LASTPMT |
+| 25 | `BKAP_PURCH_MTD` | FLOAT | 8 | MTD |
+| 26 | `BKAP_PURCH_YTD` | FLOAT | 8 | YTD |
+| 27 | `BKAP_PURCH_LYR` | FLOAT | 8 | LYR |
+| 28 | `BKAP_PURCH_VAR` | FLOAT | 8 | VAR |
+| 29 | `BKAP_OUT_CREDIT` | FLOAT | 8 | CREDIT |
+| 30 | `BKAP_NEW_VEND` | STRING | 1 | VEND |
+| 31 | `BKAP_START_DATE` | DATE | 4 | DATE |
+| 32 | `BKAP_CLASS` | STRING | 4 | CLASS |
+| 33 | `BKAP_TERMS_NUM` | UBINARY | 2 | NUM |
+| 34 | `BKAP_HIST_YN` | STRING | 1 | YN |
+| 35 | `BKAP_REM_ZIP` | STRING | 10 | ZIP |
+| 36 | `BKAP_REM_STATE` | STRING | 2 | STATE |
+| 37 | `BKAP_NOTES_1` | STRING | 60 | 1 |
+| 38 | `BKAP_NOTES_2` | STRING | 60 | 2 |
+| 39 | `BKAP_NOTES_3` | STRING | 60 | 3 |
+| 40 | `BKAP_NOTES_4` | STRING | 60 | 4 |
+| 41 | `BKAP_NOTES_5` | STRING | 60 | 5 |
+| 42 | `BKAP_NOTES_6` | STRING | 60 | 6 |
+| 43 | `BKAP_NOTES_7` | STRING | 60 | 7 |
+| 44 | `BKAP_NOTES_8` | STRING | 60 | 8 |
+| 45 | `BKAP_NOTES_9` | STRING | 60 | 9 |
+| 46 | `BKAP_NOTES_10` | STRING | 60 | 10 |
+| 47 | `BKAP_GL_ACCT` | STRING | 10 | ACCT |
+| 48 | `BKAP_GL_DPT` | STRING | 4 | DPT |
+| 49 | `BKAP_SORT` | STRING | 6 | SORT |
+| 50 | `BKAP_SHIP_VIA` | STRING | 15 | VIA |
+| 51 | `BKAP_FOB_POINT` | STRING | 20 | POINT |
+| 52 | `BKAP_FTERMS_NUM` | UBINARY | 2 | NUM |
+| 53 | `BKAP_TAX_ID` | STRING | 20 | ID |
+| 54 | `BKAP_ADD3` | STRING | 30 | ADD3 |
+| 55 | `BKAP_EXTRA` | STRING | 150 | EXTRA |
+| 56 | `BKAP_EMAIL_1` | STRING | 128 | 1 |
+| 57 | `BKAP_EMAIL_2` | STRING | 128 | 2 |
+| 58 | `BKAP_EMAIL_3` | STRING | 128 | 3 |
+| 59 | `BKAP_EMAIL_4` | STRING | 128 | 4 |
+| 60 | `BKAP_EMAIL_5` | STRING | 128 | 5 |
+| 61 | `BKAP_DESC` | STRING | 25 | DESC |
+| 62 | `BKAP_IS_TAXGRP` | STRING | 10 | TAXGRP |
+| 63 | `BKAP_IS_TAXIN` | STRING | 1 | TAXIN |
+| 64 | `BKAP_IS_MCCODE` | STRING | 3 | MCCODE |
+| 65 | `BKAP_IS_DCODE` | STRING | 3 | DCODE |
+| 66 | `BKAP_CUST_CODE` | STRING | 15 | CODE |
+| 67 | `BKAP_CREDLIM` | FLOAT | 8 | CREDLIM |
+| 68 | `BKAP_REQQC` | STRING | 1 | REQQC |
+| 69 | `BKAP_ALPHA1` | STRING | 25 | ALPHA1 |
+| 70 | `BKAP_ALPHA2` | STRING | 25 | ALPHA2 |
+| 71 | `BKAP_DATE1` | DATE | 4 | DATE1 |
+| 72 | `BKAP_DATE2` | DATE | 4 | DATE2 |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKAPINVL — AP Invoice / Voucher Lines
+
+**Module:** AP | **Fields:** 390 | **File:** BKAPINVL.B
+**Primary key (inferred):** BKAP_INVL_* key (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAP_INVL_CODE` | STRING | 10 | CODE |
+| 2 | `BKAP_INVL_NUM` | STRING | 10 | NUM |
+| 3 | `BKAP_INVL_DATE` | DATE | 4 | DATE |
+| 4 | `BKAP_INVL_DESC` | STRING | 25 | DESC |
+| 5 | `BKAP_INVL_TERMD` | STRING | 10 | TERMD |
+| 6 | `BKAP_INVL_TERMN` | UBINARY | 2 | TERMN |
+| 7 | `BKAP_INVL_TYPED` | STRING | 10 | TYPED |
+| 8 | `BKAP_INVL_TYPEN` | UBINARY | 2 | TYPEN |
+| 9 | `BKAP_INVL_TAMT` | FLOAT | 8 | TAMT |
+| 10 | `BKAP_INVL_TDC` | STRING | 1 | TDC |
+| 11 | `BKAP_INVL_GLACT_1` | STRING | 10 | 1 |
+| 12 | `BKAP_INVL_GLACT_2` | STRING | 10 | 2 |
+| 13 | `BKAP_INVL_GLACT_3` | STRING | 10 | 3 |
+| 14 | `BKAP_INVL_GLACT_4` | STRING | 10 | 4 |
+| 15 | `BKAP_INVL_GLACT_5` | STRING | 10 | 5 |
+| 16 | `BKAP_INVL_GLACT_6` | STRING | 10 | 6 |
+| 17 | `BKAP_INVL_GLACT_7` | STRING | 10 | 7 |
+| 18 | `BKAP_INVL_GLACT_8` | STRING | 10 | 8 |
+| 19 | `BKAP_INVL_GLACT_9` | STRING | 10 | 9 |
+| 20 | `BKAP_INVL_GLACT_10` | STRING | 10 | 10 |
+| 21 | `BKAP_INVL_GLACT_11` | STRING | 10 | 11 |
+| 22 | `BKAP_INVL_GLACT_12` | STRING | 10 | 12 |
+| 23 | `BKAP_INVL_GLACT_13` | STRING | 10 | 13 |
+| 24 | `BKAP_INVL_GLACT_14` | STRING | 10 | 14 |
+| 25 | `BKAP_INVL_GLACT_15` | STRING | 10 | 15 |
+| 26 | `BKAP_INVL_GLACT_16` | STRING | 10 | 16 |
+| 27 | `BKAP_INVL_GLACT_17` | STRING | 10 | 17 |
+| 28 | `BKAP_INVL_GLACT_18` | STRING | 10 | 18 |
+| 29 | `BKAP_INVL_GLACT_19` | STRING | 10 | 19 |
+| 30 | `BKAP_INVL_GLACT_20` | STRING | 10 | 20 |
+| 31 | `BKAP_INVL_GLACT_21` | STRING | 10 | 21 |
+| 32 | `BKAP_INVL_GLACT_22` | STRING | 10 | 22 |
+| 33 | `BKAP_INVL_GLACT_23` | STRING | 10 | 23 |
+| 34 | `BKAP_INVL_GLACT_24` | STRING | 10 | 24 |
+| 35 | `BKAP_INVL_GLACT_25` | STRING | 10 | 25 |
+| 36 | `BKAP_INVL_GLACT_26` | STRING | 10 | 26 |
+| 37 | `BKAP_INVL_GLACT_27` | STRING | 10 | 27 |
+| 38 | `BKAP_INVL_GLACT_28` | STRING | 10 | 28 |
+| 39 | `BKAP_INVL_GLACT_29` | STRING | 10 | 29 |
+| 40 | `BKAP_INVL_GLACT_30` | STRING | 10 | 30 |
+| 41 | `BKAP_INVL_GLACT_31` | STRING | 10 | 31 |
+| 42 | `BKAP_INVL_GLACT_32` | STRING | 10 | 32 |
+| 43 | `BKAP_INVL_GLACT_33` | STRING | 10 | 33 |
+| 44 | `BKAP_INVL_GLACT_34` | STRING | 10 | 34 |
+| 45 | `BKAP_INVL_GLACT_35` | STRING | 10 | 35 |
+| 46 | `BKAP_INVL_GLACT_36` | STRING | 10 | 36 |
+| 47 | `BKAP_INVL_GLACT_37` | STRING | 10 | 37 |
+| 48 | `BKAP_INVL_GLACT_38` | STRING | 10 | 38 |
+| 49 | `BKAP_INVL_GLACT_39` | STRING | 10 | 39 |
+| 50 | `BKAP_INVL_GLACT_40` | STRING | 10 | 40 |
+| 51 | `BKAP_INVL_GLACT_41` | STRING | 10 | 41 |
+| 52 | `BKAP_INVL_GLACT_42` | STRING | 10 | 42 |
+| 53 | `BKAP_INVL_GLACT_43` | STRING | 10 | 43 |
+| 54 | `BKAP_INVL_GLACT_44` | STRING | 10 | 44 |
+| 55 | `BKAP_INVL_GLACT_45` | STRING | 10 | 45 |
+| 56 | `BKAP_INVL_GLACT_46` | STRING | 10 | 46 |
+| 57 | `BKAP_INVL_GLACT_47` | STRING | 10 | 47 |
+| 58 | `BKAP_INVL_GLACT_48` | STRING | 10 | 48 |
+| 59 | `BKAP_INVL_GLACT_49` | STRING | 10 | 49 |
+| 60 | `BKAP_INVL_GLACT_50` | STRING | 10 | 50 |
+| 61 | `BKAP_INVL_GLACT_51` | STRING | 10 | 51 |
+| 62 | `BKAP_INVL_GLACT_52` | STRING | 10 | 52 |
+| 63 | `BKAP_INVL_GLACT_53` | STRING | 10 | 53 |
+| 64 | `BKAP_INVL_GLACT_54` | STRING | 10 | 54 |
+| 65 | `BKAP_INVL_GLACT_55` | STRING | 10 | 55 |
+| 66 | `BKAP_INVL_GLACT_56` | STRING | 10 | 56 |
+| 67 | `BKAP_INVL_GLACT_57` | STRING | 10 | 57 |
+| 68 | `BKAP_INVL_GLACT_58` | STRING | 10 | 58 |
+| 69 | `BKAP_INVL_GLACT_59` | STRING | 10 | 59 |
+| 70 | `BKAP_INVL_GLACT_60` | STRING | 10 | 60 |
+| 71 | `BKAP_INVL_GLACT_61` | STRING | 10 | 61 |
+| 72 | `BKAP_INVL_GLACT_62` | STRING | 10 | 62 |
+| 73 | `BKAP_INVL_GLACT_63` | STRING | 10 | 63 |
+| 74 | `BKAP_INVL_GLACT_64` | STRING | 10 | 64 |
+| 75 | `BKAP_INVL_GLACT_65` | STRING | 10 | 65 |
+| 76 | `BKAP_INVL_GLACT_66` | STRING | 10 | 66 |
+| 77 | `BKAP_INVL_GLACT_67` | STRING | 10 | 67 |
+| 78 | `BKAP_INVL_GLACT_68` | STRING | 10 | 68 |
+| 79 | `BKAP_INVL_GLACT_69` | STRING | 10 | 69 |
+| 80 | `BKAP_INVL_GLACT_70` | STRING | 10 | 70 |
+| 81 | `BKAP_INVL_GLACT_71` | STRING | 10 | 71 |
+| 82 | `BKAP_INVL_GLACT_72` | STRING | 10 | 72 |
+| 83 | `BKAP_INVL_GLACT_73` | STRING | 10 | 73 |
+| 84 | `BKAP_INVL_GLACT_74` | STRING | 10 | 74 |
+| 85 | `BKAP_INVL_GLACT_75` | STRING | 10 | 75 |
+| 86 | `BKAP_INVL_GLDPT_1` | STRING | 4 | 1 |
+| 87 | `BKAP_INVL_GLDPT_2` | STRING | 4 | 2 |
+| 88 | `BKAP_INVL_GLDPT_3` | STRING | 4 | 3 |
+| 89 | `BKAP_INVL_GLDPT_4` | STRING | 4 | 4 |
+| 90 | `BKAP_INVL_GLDPT_5` | STRING | 4 | 5 |
+| 91 | `BKAP_INVL_GLDPT_6` | STRING | 4 | 6 |
+| 92 | `BKAP_INVL_GLDPT_7` | STRING | 4 | 7 |
+| 93 | `BKAP_INVL_GLDPT_8` | STRING | 4 | 8 |
+| 94 | `BKAP_INVL_GLDPT_9` | STRING | 4 | 9 |
+| 95 | `BKAP_INVL_GLDPT_10` | STRING | 4 | 10 |
+| 96 | `BKAP_INVL_GLDPT_11` | STRING | 4 | 11 |
+| 97 | `BKAP_INVL_GLDPT_12` | STRING | 4 | 12 |
+| 98 | `BKAP_INVL_GLDPT_13` | STRING | 4 | 13 |
+| 99 | `BKAP_INVL_GLDPT_14` | STRING | 4 | 14 |
+| 100 | `BKAP_INVL_GLDPT_15` | STRING | 4 | 15 |
+| 101 | `BKAP_INVL_GLDPT_16` | STRING | 4 | 16 |
+| 102 | `BKAP_INVL_GLDPT_17` | STRING | 4 | 17 |
+| 103 | `BKAP_INVL_GLDPT_18` | STRING | 4 | 18 |
+| 104 | `BKAP_INVL_GLDPT_19` | STRING | 4 | 19 |
+| 105 | `BKAP_INVL_GLDPT_20` | STRING | 4 | 20 |
+| 106 | `BKAP_INVL_GLDPT_21` | STRING | 4 | 21 |
+| 107 | `BKAP_INVL_GLDPT_22` | STRING | 4 | 22 |
+| 108 | `BKAP_INVL_GLDPT_23` | STRING | 4 | 23 |
+| 109 | `BKAP_INVL_GLDPT_24` | STRING | 4 | 24 |
+| 110 | `BKAP_INVL_GLDPT_25` | STRING | 4 | 25 |
+| 111 | `BKAP_INVL_GLDPT_26` | STRING | 4 | 26 |
+| 112 | `BKAP_INVL_GLDPT_27` | STRING | 4 | 27 |
+| 113 | `BKAP_INVL_GLDPT_28` | STRING | 4 | 28 |
+| 114 | `BKAP_INVL_GLDPT_29` | STRING | 4 | 29 |
+| 115 | `BKAP_INVL_GLDPT_30` | STRING | 4 | 30 |
+| 116 | `BKAP_INVL_GLDPT_31` | STRING | 4 | 31 |
+| 117 | `BKAP_INVL_GLDPT_32` | STRING | 4 | 32 |
+| 118 | `BKAP_INVL_GLDPT_33` | STRING | 4 | 33 |
+| 119 | `BKAP_INVL_GLDPT_34` | STRING | 4 | 34 |
+| 120 | `BKAP_INVL_GLDPT_35` | STRING | 4 | 35 |
+| 121 | `BKAP_INVL_GLDPT_36` | STRING | 4 | 36 |
+| 122 | `BKAP_INVL_GLDPT_37` | STRING | 4 | 37 |
+| 123 | `BKAP_INVL_GLDPT_38` | STRING | 4 | 38 |
+| 124 | `BKAP_INVL_GLDPT_39` | STRING | 4 | 39 |
+| 125 | `BKAP_INVL_GLDPT_40` | STRING | 4 | 40 |
+| 126 | `BKAP_INVL_GLDPT_41` | STRING | 4 | 41 |
+| 127 | `BKAP_INVL_GLDPT_42` | STRING | 4 | 42 |
+| 128 | `BKAP_INVL_GLDPT_43` | STRING | 4 | 43 |
+| 129 | `BKAP_INVL_GLDPT_44` | STRING | 4 | 44 |
+| 130 | `BKAP_INVL_GLDPT_45` | STRING | 4 | 45 |
+| 131 | `BKAP_INVL_GLDPT_46` | STRING | 4 | 46 |
+| 132 | `BKAP_INVL_GLDPT_47` | STRING | 4 | 47 |
+| 133 | `BKAP_INVL_GLDPT_48` | STRING | 4 | 48 |
+| 134 | `BKAP_INVL_GLDPT_49` | STRING | 4 | 49 |
+| 135 | `BKAP_INVL_GLDPT_50` | STRING | 4 | 50 |
+| 136 | `BKAP_INVL_GLDPT_51` | STRING | 4 | 51 |
+| 137 | `BKAP_INVL_GLDPT_52` | STRING | 4 | 52 |
+| 138 | `BKAP_INVL_GLDPT_53` | STRING | 4 | 53 |
+| 139 | `BKAP_INVL_GLDPT_54` | STRING | 4 | 54 |
+| 140 | `BKAP_INVL_GLDPT_55` | STRING | 4 | 55 |
+| 141 | `BKAP_INVL_GLDPT_56` | STRING | 4 | 56 |
+| 142 | `BKAP_INVL_GLDPT_57` | STRING | 4 | 57 |
+| 143 | `BKAP_INVL_GLDPT_58` | STRING | 4 | 58 |
+| 144 | `BKAP_INVL_GLDPT_59` | STRING | 4 | 59 |
+| 145 | `BKAP_INVL_GLDPT_60` | STRING | 4 | 60 |
+| 146 | `BKAP_INVL_GLDPT_61` | STRING | 4 | 61 |
+| 147 | `BKAP_INVL_GLDPT_62` | STRING | 4 | 62 |
+| 148 | `BKAP_INVL_GLDPT_63` | STRING | 4 | 63 |
+| 149 | `BKAP_INVL_GLDPT_64` | STRING | 4 | 64 |
+| 150 | `BKAP_INVL_GLDPT_65` | STRING | 4 | 65 |
+| 151 | `BKAP_INVL_GLDPT_66` | STRING | 4 | 66 |
+| 152 | `BKAP_INVL_GLDPT_67` | STRING | 4 | 67 |
+| 153 | `BKAP_INVL_GLDPT_68` | STRING | 4 | 68 |
+| 154 | `BKAP_INVL_GLDPT_69` | STRING | 4 | 69 |
+| 155 | `BKAP_INVL_GLDPT_70` | STRING | 4 | 70 |
+| 156 | `BKAP_INVL_GLDPT_71` | STRING | 4 | 71 |
+| 157 | `BKAP_INVL_GLDPT_72` | STRING | 4 | 72 |
+| 158 | `BKAP_INVL_GLDPT_73` | STRING | 4 | 73 |
+| 159 | `BKAP_INVL_GLDPT_74` | STRING | 4 | 74 |
+| 160 | `BKAP_INVL_GLDPT_75` | STRING | 4 | 75 |
+| 161 | `BKAP_INVL_DC_1` | STRING | 1 | 1 |
+| 162 | `BKAP_INVL_DC_2` | STRING | 1 | 2 |
+| 163 | `BKAP_INVL_DC_3` | STRING | 1 | 3 |
+| 164 | `BKAP_INVL_DC_4` | STRING | 1 | 4 |
+| 165 | `BKAP_INVL_DC_5` | STRING | 1 | 5 |
+| 166 | `BKAP_INVL_DC_6` | STRING | 1 | 6 |
+| 167 | `BKAP_INVL_DC_7` | STRING | 1 | 7 |
+| 168 | `BKAP_INVL_DC_8` | STRING | 1 | 8 |
+| 169 | `BKAP_INVL_DC_9` | STRING | 1 | 9 |
+| 170 | `BKAP_INVL_DC_10` | STRING | 1 | 10 |
+| 171 | `BKAP_INVL_DC_11` | STRING | 1 | 11 |
+| 172 | `BKAP_INVL_DC_12` | STRING | 1 | 12 |
+| 173 | `BKAP_INVL_DC_13` | STRING | 1 | 13 |
+| 174 | `BKAP_INVL_DC_14` | STRING | 1 | 14 |
+| 175 | `BKAP_INVL_DC_15` | STRING | 1 | 15 |
+| 176 | `BKAP_INVL_DC_16` | STRING | 1 | 16 |
+| 177 | `BKAP_INVL_DC_17` | STRING | 1 | 17 |
+| 178 | `BKAP_INVL_DC_18` | STRING | 1 | 18 |
+| 179 | `BKAP_INVL_DC_19` | STRING | 1 | 19 |
+| 180 | `BKAP_INVL_DC_20` | STRING | 1 | 20 |
+| 181 | `BKAP_INVL_DC_21` | STRING | 1 | 21 |
+| 182 | `BKAP_INVL_DC_22` | STRING | 1 | 22 |
+| 183 | `BKAP_INVL_DC_23` | STRING | 1 | 23 |
+| 184 | `BKAP_INVL_DC_24` | STRING | 1 | 24 |
+| 185 | `BKAP_INVL_DC_25` | STRING | 1 | 25 |
+| 186 | `BKAP_INVL_DC_26` | STRING | 1 | 26 |
+| 187 | `BKAP_INVL_DC_27` | STRING | 1 | 27 |
+| 188 | `BKAP_INVL_DC_28` | STRING | 1 | 28 |
+| 189 | `BKAP_INVL_DC_29` | STRING | 1 | 29 |
+| 190 | `BKAP_INVL_DC_30` | STRING | 1 | 30 |
+| 191 | `BKAP_INVL_DC_31` | STRING | 1 | 31 |
+| 192 | `BKAP_INVL_DC_32` | STRING | 1 | 32 |
+| 193 | `BKAP_INVL_DC_33` | STRING | 1 | 33 |
+| 194 | `BKAP_INVL_DC_34` | STRING | 1 | 34 |
+| 195 | `BKAP_INVL_DC_35` | STRING | 1 | 35 |
+| 196 | `BKAP_INVL_DC_36` | STRING | 1 | 36 |
+| 197 | `BKAP_INVL_DC_37` | STRING | 1 | 37 |
+| 198 | `BKAP_INVL_DC_38` | STRING | 1 | 38 |
+| 199 | `BKAP_INVL_DC_39` | STRING | 1 | 39 |
+| 200 | `BKAP_INVL_DC_40` | STRING | 1 | 40 |
+| 201 | `BKAP_INVL_DC_41` | STRING | 1 | 41 |
+| 202 | `BKAP_INVL_DC_42` | STRING | 1 | 42 |
+| 203 | `BKAP_INVL_DC_43` | STRING | 1 | 43 |
+| 204 | `BKAP_INVL_DC_44` | STRING | 1 | 44 |
+| 205 | `BKAP_INVL_DC_45` | STRING | 1 | 45 |
+| 206 | `BKAP_INVL_DC_46` | STRING | 1 | 46 |
+| 207 | `BKAP_INVL_DC_47` | STRING | 1 | 47 |
+| 208 | `BKAP_INVL_DC_48` | STRING | 1 | 48 |
+| 209 | `BKAP_INVL_DC_49` | STRING | 1 | 49 |
+| 210 | `BKAP_INVL_DC_50` | STRING | 1 | 50 |
+| 211 | `BKAP_INVL_DC_51` | STRING | 1 | 51 |
+| 212 | `BKAP_INVL_DC_52` | STRING | 1 | 52 |
+| 213 | `BKAP_INVL_DC_53` | STRING | 1 | 53 |
+| 214 | `BKAP_INVL_DC_54` | STRING | 1 | 54 |
+| 215 | `BKAP_INVL_DC_55` | STRING | 1 | 55 |
+| 216 | `BKAP_INVL_DC_56` | STRING | 1 | 56 |
+| 217 | `BKAP_INVL_DC_57` | STRING | 1 | 57 |
+| 218 | `BKAP_INVL_DC_58` | STRING | 1 | 58 |
+| 219 | `BKAP_INVL_DC_59` | STRING | 1 | 59 |
+| 220 | `BKAP_INVL_DC_60` | STRING | 1 | 60 |
+| 221 | `BKAP_INVL_DC_61` | STRING | 1 | 61 |
+| 222 | `BKAP_INVL_DC_62` | STRING | 1 | 62 |
+| 223 | `BKAP_INVL_DC_63` | STRING | 1 | 63 |
+| 224 | `BKAP_INVL_DC_64` | STRING | 1 | 64 |
+| 225 | `BKAP_INVL_DC_65` | STRING | 1 | 65 |
+| 226 | `BKAP_INVL_DC_66` | STRING | 1 | 66 |
+| 227 | `BKAP_INVL_DC_67` | STRING | 1 | 67 |
+| 228 | `BKAP_INVL_DC_68` | STRING | 1 | 68 |
+| 229 | `BKAP_INVL_DC_69` | STRING | 1 | 69 |
+| 230 | `BKAP_INVL_DC_70` | STRING | 1 | 70 |
+| 231 | `BKAP_INVL_DC_71` | STRING | 1 | 71 |
+| 232 | `BKAP_INVL_DC_72` | STRING | 1 | 72 |
+| 233 | `BKAP_INVL_DC_73` | STRING | 1 | 73 |
+| 234 | `BKAP_INVL_DC_74` | STRING | 1 | 74 |
+| 235 | `BKAP_INVL_DC_75` | STRING | 1 | 75 |
+| 236 | `BKAP_INVL_GLD_1` | STRING | 25 | 1 |
+| 237 | `BKAP_INVL_GLD_2` | STRING | 25 | 2 |
+| 238 | `BKAP_INVL_GLD_3` | STRING | 25 | 3 |
+| 239 | `BKAP_INVL_GLD_4` | STRING | 25 | 4 |
+| 240 | `BKAP_INVL_GLD_5` | STRING | 25 | 5 |
+| 241 | `BKAP_INVL_GLD_6` | STRING | 25 | 6 |
+| 242 | `BKAP_INVL_GLD_7` | STRING | 25 | 7 |
+| 243 | `BKAP_INVL_GLD_8` | STRING | 25 | 8 |
+| 244 | `BKAP_INVL_GLD_9` | STRING | 25 | 9 |
+| 245 | `BKAP_INVL_GLD_10` | STRING | 25 | 10 |
+| 246 | `BKAP_INVL_GLD_11` | STRING | 25 | 11 |
+| 247 | `BKAP_INVL_GLD_12` | STRING | 25 | 12 |
+| 248 | `BKAP_INVL_GLD_13` | STRING | 25 | 13 |
+| 249 | `BKAP_INVL_GLD_14` | STRING | 25 | 14 |
+| 250 | `BKAP_INVL_GLD_15` | STRING | 25 | 15 |
+| 251 | `BKAP_INVL_GLD_16` | STRING | 25 | 16 |
+| 252 | `BKAP_INVL_GLD_17` | STRING | 25 | 17 |
+| 253 | `BKAP_INVL_GLD_18` | STRING | 25 | 18 |
+| 254 | `BKAP_INVL_GLD_19` | STRING | 25 | 19 |
+| 255 | `BKAP_INVL_GLD_20` | STRING | 25 | 20 |
+| 256 | `BKAP_INVL_GLD_21` | STRING | 25 | 21 |
+| 257 | `BKAP_INVL_GLD_22` | STRING | 25 | 22 |
+| 258 | `BKAP_INVL_GLD_23` | STRING | 25 | 23 |
+| 259 | `BKAP_INVL_GLD_24` | STRING | 25 | 24 |
+| 260 | `BKAP_INVL_GLD_25` | STRING | 25 | 25 |
+| 261 | `BKAP_INVL_GLD_26` | STRING | 25 | 26 |
+| 262 | `BKAP_INVL_GLD_27` | STRING | 25 | 27 |
+| 263 | `BKAP_INVL_GLD_28` | STRING | 25 | 28 |
+| 264 | `BKAP_INVL_GLD_29` | STRING | 25 | 29 |
+| 265 | `BKAP_INVL_GLD_30` | STRING | 25 | 30 |
+| 266 | `BKAP_INVL_GLD_31` | STRING | 25 | 31 |
+| 267 | `BKAP_INVL_GLD_32` | STRING | 25 | 32 |
+| 268 | `BKAP_INVL_GLD_33` | STRING | 25 | 33 |
+| 269 | `BKAP_INVL_GLD_34` | STRING | 25 | 34 |
+| 270 | `BKAP_INVL_GLD_35` | STRING | 25 | 35 |
+| 271 | `BKAP_INVL_GLD_36` | STRING | 25 | 36 |
+| 272 | `BKAP_INVL_GLD_37` | STRING | 25 | 37 |
+| 273 | `BKAP_INVL_GLD_38` | STRING | 25 | 38 |
+| 274 | `BKAP_INVL_GLD_39` | STRING | 25 | 39 |
+| 275 | `BKAP_INVL_GLD_40` | STRING | 25 | 40 |
+| 276 | `BKAP_INVL_GLD_41` | STRING | 25 | 41 |
+| 277 | `BKAP_INVL_GLD_42` | STRING | 25 | 42 |
+| 278 | `BKAP_INVL_GLD_43` | STRING | 25 | 43 |
+| 279 | `BKAP_INVL_GLD_44` | STRING | 25 | 44 |
+| 280 | `BKAP_INVL_GLD_45` | STRING | 25 | 45 |
+| 281 | `BKAP_INVL_GLD_46` | STRING | 25 | 46 |
+| 282 | `BKAP_INVL_GLD_47` | STRING | 25 | 47 |
+| 283 | `BKAP_INVL_GLD_48` | STRING | 25 | 48 |
+| 284 | `BKAP_INVL_GLD_49` | STRING | 25 | 49 |
+| 285 | `BKAP_INVL_GLD_50` | STRING | 25 | 50 |
+| 286 | `BKAP_INVL_GLD_51` | STRING | 25 | 51 |
+| 287 | `BKAP_INVL_GLD_52` | STRING | 25 | 52 |
+| 288 | `BKAP_INVL_GLD_53` | STRING | 25 | 53 |
+| 289 | `BKAP_INVL_GLD_54` | STRING | 25 | 54 |
+| 290 | `BKAP_INVL_GLD_55` | STRING | 25 | 55 |
+| 291 | `BKAP_INVL_GLD_56` | STRING | 25 | 56 |
+| 292 | `BKAP_INVL_GLD_57` | STRING | 25 | 57 |
+| 293 | `BKAP_INVL_GLD_58` | STRING | 25 | 58 |
+| 294 | `BKAP_INVL_GLD_59` | STRING | 25 | 59 |
+| 295 | `BKAP_INVL_GLD_60` | STRING | 25 | 60 |
+| 296 | `BKAP_INVL_GLD_61` | STRING | 25 | 61 |
+| 297 | `BKAP_INVL_GLD_62` | STRING | 25 | 62 |
+| 298 | `BKAP_INVL_GLD_63` | STRING | 25 | 63 |
+| 299 | `BKAP_INVL_GLD_64` | STRING | 25 | 64 |
+| 300 | `BKAP_INVL_GLD_65` | STRING | 25 | 65 |
+| 301 | `BKAP_INVL_GLD_66` | STRING | 25 | 66 |
+| 302 | `BKAP_INVL_GLD_67` | STRING | 25 | 67 |
+| 303 | `BKAP_INVL_GLD_68` | STRING | 25 | 68 |
+| 304 | `BKAP_INVL_GLD_69` | STRING | 25 | 69 |
+| 305 | `BKAP_INVL_GLD_70` | STRING | 25 | 70 |
+| 306 | `BKAP_INVL_GLD_71` | STRING | 25 | 71 |
+| 307 | `BKAP_INVL_GLD_72` | STRING | 25 | 72 |
+| 308 | `BKAP_INVL_GLD_73` | STRING | 25 | 73 |
+| 309 | `BKAP_INVL_GLD_74` | STRING | 25 | 74 |
+| 310 | `BKAP_INVL_GLD_75` | STRING | 25 | 75 |
+| 311 | `BKAP_INVL_DAMT_1` | FLOAT | 8 | 1 |
+| 312 | `BKAP_INVL_DAMT_2` | FLOAT | 8 | 2 |
+| 313 | `BKAP_INVL_DAMT_3` | FLOAT | 8 | 3 |
+| 314 | `BKAP_INVL_DAMT_4` | FLOAT | 8 | 4 |
+| 315 | `BKAP_INVL_DAMT_5` | FLOAT | 8 | 5 |
+| 316 | `BKAP_INVL_DAMT_6` | FLOAT | 8 | 6 |
+| 317 | `BKAP_INVL_DAMT_7` | FLOAT | 8 | 7 |
+| 318 | `BKAP_INVL_DAMT_8` | FLOAT | 8 | 8 |
+| 319 | `BKAP_INVL_DAMT_9` | FLOAT | 8 | 9 |
+| 320 | `BKAP_INVL_DAMT_10` | FLOAT | 8 | 10 |
+| 321 | `BKAP_INVL_DAMT_11` | FLOAT | 8 | 11 |
+| 322 | `BKAP_INVL_DAMT_12` | FLOAT | 8 | 12 |
+| 323 | `BKAP_INVL_DAMT_13` | FLOAT | 8 | 13 |
+| 324 | `BKAP_INVL_DAMT_14` | FLOAT | 8 | 14 |
+| 325 | `BKAP_INVL_DAMT_15` | FLOAT | 8 | 15 |
+| 326 | `BKAP_INVL_DAMT_16` | FLOAT | 8 | 16 |
+| 327 | `BKAP_INVL_DAMT_17` | FLOAT | 8 | 17 |
+| 328 | `BKAP_INVL_DAMT_18` | FLOAT | 8 | 18 |
+| 329 | `BKAP_INVL_DAMT_19` | FLOAT | 8 | 19 |
+| 330 | `BKAP_INVL_DAMT_20` | FLOAT | 8 | 20 |
+| 331 | `BKAP_INVL_DAMT_21` | FLOAT | 8 | 21 |
+| 332 | `BKAP_INVL_DAMT_22` | FLOAT | 8 | 22 |
+| 333 | `BKAP_INVL_DAMT_23` | FLOAT | 8 | 23 |
+| 334 | `BKAP_INVL_DAMT_24` | FLOAT | 8 | 24 |
+| 335 | `BKAP_INVL_DAMT_25` | FLOAT | 8 | 25 |
+| 336 | `BKAP_INVL_DAMT_26` | FLOAT | 8 | 26 |
+| 337 | `BKAP_INVL_DAMT_27` | FLOAT | 8 | 27 |
+| 338 | `BKAP_INVL_DAMT_28` | FLOAT | 8 | 28 |
+| 339 | `BKAP_INVL_DAMT_29` | FLOAT | 8 | 29 |
+| 340 | `BKAP_INVL_DAMT_30` | FLOAT | 8 | 30 |
+| 341 | `BKAP_INVL_DAMT_31` | FLOAT | 8 | 31 |
+| 342 | `BKAP_INVL_DAMT_32` | FLOAT | 8 | 32 |
+| 343 | `BKAP_INVL_DAMT_33` | FLOAT | 8 | 33 |
+| 344 | `BKAP_INVL_DAMT_34` | FLOAT | 8 | 34 |
+| 345 | `BKAP_INVL_DAMT_35` | FLOAT | 8 | 35 |
+| 346 | `BKAP_INVL_DAMT_36` | FLOAT | 8 | 36 |
+| 347 | `BKAP_INVL_DAMT_37` | FLOAT | 8 | 37 |
+| 348 | `BKAP_INVL_DAMT_38` | FLOAT | 8 | 38 |
+| 349 | `BKAP_INVL_DAMT_39` | FLOAT | 8 | 39 |
+| 350 | `BKAP_INVL_DAMT_40` | FLOAT | 8 | 40 |
+| 351 | `BKAP_INVL_DAMT_41` | FLOAT | 8 | 41 |
+| 352 | `BKAP_INVL_DAMT_42` | FLOAT | 8 | 42 |
+| 353 | `BKAP_INVL_DAMT_43` | FLOAT | 8 | 43 |
+| 354 | `BKAP_INVL_DAMT_44` | FLOAT | 8 | 44 |
+| 355 | `BKAP_INVL_DAMT_45` | FLOAT | 8 | 45 |
+| 356 | `BKAP_INVL_DAMT_46` | FLOAT | 8 | 46 |
+| 357 | `BKAP_INVL_DAMT_47` | FLOAT | 8 | 47 |
+| 358 | `BKAP_INVL_DAMT_48` | FLOAT | 8 | 48 |
+| 359 | `BKAP_INVL_DAMT_49` | FLOAT | 8 | 49 |
+| 360 | `BKAP_INVL_DAMT_50` | FLOAT | 8 | 50 |
+| 361 | `BKAP_INVL_DAMT_51` | FLOAT | 8 | 51 |
+| 362 | `BKAP_INVL_DAMT_52` | FLOAT | 8 | 52 |
+| 363 | `BKAP_INVL_DAMT_53` | FLOAT | 8 | 53 |
+| 364 | `BKAP_INVL_DAMT_54` | FLOAT | 8 | 54 |
+| 365 | `BKAP_INVL_DAMT_55` | FLOAT | 8 | 55 |
+| 366 | `BKAP_INVL_DAMT_56` | FLOAT | 8 | 56 |
+| 367 | `BKAP_INVL_DAMT_57` | FLOAT | 8 | 57 |
+| 368 | `BKAP_INVL_DAMT_58` | FLOAT | 8 | 58 |
+| 369 | `BKAP_INVL_DAMT_59` | FLOAT | 8 | 59 |
+| 370 | `BKAP_INVL_DAMT_60` | FLOAT | 8 | 60 |
+| 371 | `BKAP_INVL_DAMT_61` | FLOAT | 8 | 61 |
+| 372 | `BKAP_INVL_DAMT_62` | FLOAT | 8 | 62 |
+| 373 | `BKAP_INVL_DAMT_63` | FLOAT | 8 | 63 |
+| 374 | `BKAP_INVL_DAMT_64` | FLOAT | 8 | 64 |
+| 375 | `BKAP_INVL_DAMT_65` | FLOAT | 8 | 65 |
+| 376 | `BKAP_INVL_DAMT_66` | FLOAT | 8 | 66 |
+| 377 | `BKAP_INVL_DAMT_67` | FLOAT | 8 | 67 |
+| 378 | `BKAP_INVL_DAMT_68` | FLOAT | 8 | 68 |
+| 379 | `BKAP_INVL_DAMT_69` | FLOAT | 8 | 69 |
+| 380 | `BKAP_INVL_DAMT_70` | FLOAT | 8 | 70 |
+| 381 | `BKAP_INVL_DAMT_71` | FLOAT | 8 | 71 |
+| 382 | `BKAP_INVL_DAMT_72` | FLOAT | 8 | 72 |
+| 383 | `BKAP_INVL_DAMT_73` | FLOAT | 8 | 73 |
+| 384 | `BKAP_INVL_DAMT_74` | FLOAT | 8 | 74 |
+| 385 | `BKAP_INVL_DAMT_75` | FLOAT | 8 | 75 |
+| 386 | `BKAP_INVL_APDPT` | STRING | 4 | APDPT |
+| 387 | `BKAP_INVL_CHK` | UBINARY | 2 | CHK |
+| 388 | `BKAP_INVL_EXTRA` | STRING | 50 | EXTRA |
+| 389 | `BKAP_INVL_ISCUR` | STRING | 3 | ISCUR |
+| 390 | `BKAP_INVL_JOB` | STRING | 15 | JOB |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## WORKORD — Work Order Header
+
+**Module:** WO | **Fields:** 74 | **File:** WORKORD.B
+**Primary key (inferred):** WORK_WOPRE + WORK_WOSUF
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `MTWO_WIP_WOPRE` | FLOAT | 8 | MTWO_WIP_WOPRE |
+| 2 | `MTWO_WIP_WOSUF` | UBINARY | 2 | MTWO_WIP_WOSUF |
+| 3 | `MTWO_WIP_BLANK` | STRING | 1 | MTWO_WIP_BLANK |
+| 4 | `MTWO_WIP_MULT` | STRING | 1 | MTWO_WIP_MULT |
+| 5 | `MTWO_WIP_SQTY` | FLOAT | 8 | MTWO_WIP_SQTY |
+| 6 | `MTWO_WIP_PRTY` | STRING | 1 | MTWO_WIP_PRTY |
+| 7 | `MTWO_WIP_SSTART` | DATE | 4 | MTWO_WIP_SSTART |
+| 8 | `MTWO_WIP_SFIN` | DATE | 4 | MTWO_WIP_SFIN |
+| 9 | `MTWO_WIP_ASTART` | DATE | 4 | MTWO_WIP_ASTART |
+| 10 | `MTWO_WIP_AFIN` | DATE | 4 | MTWO_WIP_AFIN |
+| 11 | `MTWO_WIP_COMQTY` | FLOAT | 8 | MTWO_WIP_COMQTY |
+| 12 | `MTWO_WIP_STATUS` | STRING | 1 | MTWO_WIP_STATUS |
+| 13 | `MTWO_WIP_LOCK` | STRING | 1 | MTWO_WIP_LOCK |
+| 14 | `MTWO_WIP_ESETUP` | FLOAT | 8 | MTWO_WIP_ESETUP |
+| 15 | `MTWO_WIP_EMAT` | FLOAT | 8 | MTWO_WIP_EMAT |
+| 16 | `MTWO_WIP_EOUTPR` | FLOAT | 8 | MTWO_WIP_EOUTPR |
+| 17 | `MTWO_WIP_ELABOR` | FLOAT | 8 | MTWO_WIP_ELABOR |
+| 18 | `MTWO_WIP_ASETUP` | FLOAT | 8 | MTWO_WIP_ASETUP |
+| 19 | `MTWO_WIP_AMAT` | FLOAT | 8 | MTWO_WIP_AMAT |
+| 20 | `MTWO_WIP_AOUTPR` | FLOAT | 8 | MTWO_WIP_AOUTPR |
+| 21 | `MTWO_WIP_ALABOR` | FLOAT | 8 | MTWO_WIP_ALABOR |
+| 22 | `MTWO_WIP_ETOT` | FLOAT | 8 | MTWO_WIP_ETOT |
+| 23 | `MTWO_WIP_ATOTAL` | FLOAT | 8 | MTWO_WIP_ATOTAL |
+| 24 | `MTWO_WIP_EST` | FLOAT | 8 | MTWO_WIP_EST |
+| 25 | `MTWO_WIP_CODE` | STRING | 15 | MTWO_WIP_CODE |
+| 26 | `MTWO_WIP_SONUM` | FLOAT | 8 | MTWO_WIP_SONUM |
+| 27 | `MTWO_WIP_SETUPV` | FLOAT | 8 | MTWO_WIP_SETUPV |
+| 28 | `MTWO_WIP_MATV` | FLOAT | 8 | MTWO_WIP_MATV |
+| 29 | `MTWO_WIP_OUTPRV` | FLOAT | 8 | MTWO_WIP_OUTPRV |
+| 30 | `MTWO_WIP_LABORV` | FLOAT | 8 | MTWO_WIP_LABORV |
+| 31 | `MTWO_WIP_CUSORD` | STRING | 25 | MTWO_WIP_CUSORD |
+| 32 | `MTWO_CUSTCODE` | STRING | 10 | MTWO_CUSTCODE |
+| 33 | `MTWO_CUSTNAME` | STRING | 25 | MTWO_CUSTNAME |
+| 34 | `MTWO_WIP_DESC` | STRING | 30 | MTWO_WIP_DESC |
+| 35 | `MTWO_WIP_PPRCE` | FLOAT | 8 | MTWO_WIP_PPRCE |
+| 36 | `MTWO_WIP_TOTV` | FLOAT | 8 | MTWO_WIP_TOTV |
+| 37 | `MTWO_WIP_INSTR_1` | STRING | 60 | MTWO_WIP_INSTR_1 |
+| 38 | `MTWO_WIP_INSTR_2` | STRING | 60 | MTWO_WIP_INSTR_2 |
+| 39 | `MTWO_WIP_INSTR_3` | STRING | 60 | MTWO_WIP_INSTR_3 |
+| 40 | `MTWO_WIP_INSTR_4` | STRING | 60 | MTWO_WIP_INSTR_4 |
+| 41 | `MTWO_WIP_INSTR_5` | STRING | 60 | MTWO_WIP_INSTR_5 |
+| 42 | `MTWO_WIP_INSTR_6` | STRING | 60 | MTWO_WIP_INSTR_6 |
+| 43 | `MTWO_WIP_INSTR_7` | STRING | 60 | MTWO_WIP_INSTR_7 |
+| 44 | `MTWO_WIP_INSTR_8` | STRING | 60 | MTWO_WIP_INSTR_8 |
+| 45 | `MTWO_WIP_INSTR_9` | STRING | 60 | MTWO_WIP_INSTR_9 |
+| 46 | `MTWO_WIP_INSTR_10` | STRING | 60 | MTWO_WIP_INSTR_10 |
+| 47 | `MTWO_WIP_SCONV` | STRING | 1 | MTWO_WIP_SCONV |
+| 48 | `MTWO_WIP_QCONV` | STRING | 1 | MTWO_WIP_QCONV |
+| 49 | `MTWO_WIP_DDATE` | DATE | 4 | MTWO_WIP_DDATE |
+| 50 | `MTWO_WIP_VOVHD` | FLOAT | 8 | MTWO_WIP_VOVHD |
+| 51 | `MTWO_WIP_AVOVHD` | FLOAT | 8 | MTWO_WIP_AVOVHD |
+| 52 | `MTWO_WIP_VOVHDV` | FLOAT | 8 | MTWO_WIP_VOVHDV |
+| 53 | `MTWO_WIP_EFOVHD` | FLOAT | 8 | MTWO_WIP_EFOVHD |
+| 54 | `MTWO_WIP_AFOVHD` | FLOAT | 8 | MTWO_WIP_AFOVHD |
+| 55 | `MTWO_WIP_FOVHDV` | FLOAT | 8 | MTWO_WIP_FOVHDV |
+| 56 | `MTWO_WIP_USERCD` | STRING | 1 | MTWO_WIP_USERCD |
+| 57 | `MTWO_WIP_PROJ` | STRING | 15 | MTWO_WIP_PROJ |
+| 58 | `MTWO_WIP_LOC` | STRING | 10 | MTWO_WIP_LOC |
+| 59 | `MTWO_WIP_CONTAT` | STRING | 25 | MTWO_WIP_CONTAT |
+| 60 | `MTWO_WIP_CHGORD` | UBINARY | 2 | MTWO_WIP_CHGORD |
+| 61 | `MTWO_WIP_EOTH` | FLOAT | 8 | MTWO_WIP_EOTH |
+| 62 | `MTWO_WIP_AOTH` | FLOAT | 8 | MTWO_WIP_AOTH |
+| 63 | `MTWO_WIP_OTHV` | FLOAT | 8 | MTWO_WIP_OTHV |
+| 64 | `MTWO_WIP_OTHPER` | FLOAT | 8 | MTWO_WIP_OTHPER |
+| 65 | `MTWO_WIP_EMISC` | FLOAT | 8 | MTWO_WIP_EMISC |
+| 66 | `MTWO_WIP_AMISC` | FLOAT | 8 | MTWO_WIP_AMISC |
+| 67 | `MTWO_WIP_MISCV` | FLOAT | 8 | MTWO_WIP_MISCV |
+| 68 | `MTWO_WIP_EEXTRA` | FLOAT | 8 | MTWO_WIP_EEXTRA |
+| 69 | `MTWO_WIP_AEXTRA` | FLOAT | 8 | MTWO_WIP_AEXTRA |
+| 70 | `MTWO_WIP_EXTRAV` | FLOAT | 8 | MTWO_WIP_EXTRAV |
+| 71 | `MTWO_WIP_SCHED_1` | STRING | 1 | MTWO_WIP_SCHED_1 |
+| 72 | `MTWO_WIP_SCHED_2` | STRING | 1 | MTWO_WIP_SCHED_2 |
+| 73 | `MTWO_WIP_SOLINE` | FLOAT | 8 | MTWO_WIP_SOLINE |
+| 74 | `MTWO_WIP_SCRAP` | FLOAT | 8 | MTWO_WIP_SCRAP |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKICMSTR — Inventory Item Master
+
+**Module:** IN | **Fields:** 64 | **File:** BKICMSTR.B
+**Primary key (inferred):** BKIC_PROD_CODE
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKIC_PROD_CODE` | STRING | 15 | CODE |
+| 2 | `BKIC_PROD_DESC` | STRING | 30 | DESC |
+| 3 | `BKIC_PROD_TYPE` | STRING | 1 | TYPE |
+| 4 | `BKIC_PROD_UM` | STRING | 3 | UM |
+| 5 | `BKIC_PROD_CAT` | STRING | 4 | CAT |
+| 6 | `BKIC_PROD_TXBLE` | STRING | 1 | TXBLE |
+| 7 | `BKIC_PROD_CLASS` | STRING | 4 | CLASS |
+| 8 | `BKIC_PROD_RLVL` | FLOAT | 8 | RLVL |
+| 9 | `BKIC_PROD_RAMT` | FLOAT | 8 | RAMT |
+| 10 | `BKIC_PROD_LSALE` | DATE | 4 | LSALE |
+| 11 | `BKIC_PROD_LORD` | DATE | 4 | LORD |
+| 12 | `BKIC_PROD_LRCPT` | DATE | 4 | LRCPT |
+| 13 | `BKIC_PROD_ADTR` | UBINARY | 2 | ADTR |
+| 14 | `BKIC_PROD_TO` | FLOAT | 8 | TO |
+| 15 | `BKIC_PROD_LSTC` | FLOAT | 8 | LSTC |
+| 16 | `BKIC_PROD_AVGC` | FLOAT | 8 | AVGC |
+| 17 | `BKIC_PROD_UOH` | FLOAT | 8 | UOH |
+| 18 | `BKIC_PROD_UOSO` | FLOAT | 8 | UOSO |
+| 19 | `BKIC_PROD_TOTVL` | FLOAT | 8 | TOTVL |
+| 20 | `BKIC_PROD_UOO` | FLOAT | 8 | UOO |
+| 21 | `BKIC_PROD_USMTD` | FLOAT | 8 | USMTD |
+| 22 | `BKIC_PROD_GSMTD` | FLOAT | 8 | GSMTD |
+| 23 | `BKIC_PROD_CMTD` | FLOAT | 8 | CMTD |
+| 24 | `BKIC_PROD_NSMTD` | FLOAT | 8 | NSMTD |
+| 25 | `BKIC_PROD_NGMTD` | FLOAT | 8 | NGMTD |
+| 26 | `BKIC_PROD_USYTD` | FLOAT | 8 | USYTD |
+| 27 | `BKIC_PROD_GSYTD` | FLOAT | 8 | GSYTD |
+| 28 | `BKIC_PROD_CYTD` | FLOAT | 8 | CYTD |
+| 29 | `BKIC_PROD_NSYTD` | FLOAT | 8 | NSYTD |
+| 30 | `BKIC_PROD_NGYTD` | FLOAT | 8 | NGYTD |
+| 31 | `BKIC_PROD_USLYR` | FLOAT | 8 | USLYR |
+| 32 | `BKIC_PROD_GSLYR` | FLOAT | 8 | GSLYR |
+| 33 | `BKIC_PROD_CLYR` | FLOAT | 8 | CLYR |
+| 34 | `BKIC_PROD_NSLYR` | FLOAT | 8 | NSLYR |
+| 35 | `BKIC_PROD_NGLYR` | FLOAT | 8 | NGLYR |
+| 36 | `BKIC_PROD_USVAR` | FLOAT | 8 | USVAR |
+| 37 | `BKIC_PROD_GSVAR` | FLOAT | 8 | GSVAR |
+| 38 | `BKIC_PROD_CVAR` | FLOAT | 8 | CVAR |
+| 39 | `BKIC_PROD_NSVAR` | FLOAT | 8 | NSVAR |
+| 40 | `BKIC_PROD_NGVAR` | FLOAT | 8 | NGVAR |
+| 41 | `BKIC_PROD_GLA` | STRING | 10 | GLA |
+| 42 | `BKIC_PROD_DPTA` | STRING | 4 | DPTA |
+| 43 | `BKIC_PROD_GLC` | STRING | 10 | GLC |
+| 44 | `BKIC_PROD_DPTC` | STRING | 4 | DPTC |
+| 45 | `BKIC_PROD_GLS` | STRING | 10 | GLS |
+| 46 | `BKIC_PROD_DPTS` | STRING | 4 | DPTS |
+| 47 | `BKIC_PROD_PRICE` | FLOAT | 8 | PRICE |
+| 48 | `BKIC_PROD_GLSNT` | STRING | 10 | GLSNT |
+| 49 | `BKIC_PROD_DPTNT` | STRING | 4 | DPTNT |
+| 50 | `BKIC_PROD_UBO` | FLOAT | 8 | UBO |
+| 51 | `BKIC_PROD_PMAT` | UBINARY | 2 | PMAT |
+| 52 | `BKIC_PROD_MANUF` | STRING | 20 | MANUF |
+| 53 | `BKIC_PROD_NOTE` | STRING | 30 | NOTE |
+| 54 | `BKIC_PROD_AVLAB` | FLOAT | 8 | AVLAB |
+| 55 | `BKIC_PROD_AVSET` | FLOAT | 8 | AVSET |
+| 56 | `BKIC_PROD_AVOP` | FLOAT | 8 | AVOP |
+| 57 | `BKIC_PROD_AVMAT` | FLOAT | 8 | AVMAT |
+| 58 | `BKIC_PROD_AVFO` | FLOAT | 8 | AVFO |
+| 59 | `BKIC_PROD_AVVO` | FLOAT | 8 | AVVO |
+| 60 | `BKIC_PROD_EXTRA` | STRING | 100 | EXTRA |
+| 61 | `BKIC_PROD_TAXIN` | STRING | 1 | TAXIN |
+| 62 | `BKIC_PROD_ISUPC` | STRING | 12 | ISUPC |
+| 63 | `BKIC_IS_DCODE` | STRING | 3 | DCODE |
+| 64 | `BKIC_PROD_LONGP` | STRING | 25 | LONGP |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+<!-- BKGLPER not found in schema.md -->
+## BKBMMSTR — Bill of Materials
+
+**Module:** BM | **Fields:** 26 | **File:** BKBMMSTR.B
+**Primary key (inferred):** BKBM_MSTR_PARENT + BKBM_MSTR_COMP
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKBM_PARENT` | STRING | 15 | BKBM_PARENT |
+| 2 | `BKBM_COMPONENT` | STRING | 15 | BKBM_COMPONENT |
+| 3 | `BKBM_QTY_REQD` | FLOAT | 8 | REQD |
+| 4 | `BKBM_REFERENCE` | STRING | 20 | BKBM_REFERENCE |
+| 5 | `BKBM_PROD_TYPE` | STRING | 1 | TYPE |
+| 6 | `BKBM_PROD_SCRAP` | FLOAT | 8 | SCRAP |
+| 7 | `BKBM_PROD_OP` | STRING | 3 | OP |
+| 8 | `BKBM_PROD_OPYN_1` | STRING | 1 | 1 |
+| 9 | `BKBM_PROD_OPYN_2` | STRING | 1 | 2 |
+| 10 | `BKBM_PROD_OPYN_3` | STRING | 1 | 3 |
+| 11 | `BKBM_PROD_OPYN_4` | STRING | 1 | 4 |
+| 12 | `BKBM_PROD_OPYN_5` | STRING | 1 | 5 |
+| 13 | `BKBM_PROD_OPYN_6` | STRING | 1 | 6 |
+| 14 | `BKBM_PROD_PRICE` | FLOAT | 8 | PRICE |
+| 15 | `BKBM_PROD_RTNUM` | UBINARY | 2 | RTNUM |
+| 16 | `BKBM_PROD_DUPOP` | STRING | 1 | DUPOP |
+| 17 | `BKBM_PROD_OPDSC` | STRING | 5 | OPDSC |
+| 18 | `BKBM_PROD_VEND` | STRING | 10 | VEND |
+| 19 | `BKBM_DATE1` | DATE | 4 | BKBM_DATE1 |
+| 20 | `BKBM_DATE2` | DATE | 4 | BKBM_DATE2 |
+| 21 | `BKBM_EXTRA` | STRING | 50 | BKBM_EXTRA |
+| 22 | `BKBM_REV` | STRING | 5 | BKBM_REV |
+| 23 | `BKBM_P_TYPE` | STRING | 10 | TYPE |
+| 24 | `BKBM_C_TYPE` | STRING | 10 | TYPE |
+| 25 | `BKBM_EST_LINE` | FLOAT | 8 | LINE |
+| 26 | `BKBM_UID` | STRING | 20 | BKBM_UID |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+<!-- BKARCCHK not found in schema.md -->
+## BKARTNOT — AR Transaction Notes
+
+**Module:** AR | **Fields:** 3 | **File:** BKARTNOT.B
+**Primary key (inferred):** BKART_TRXN + BKART_CNTR
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKART_NOT_TRXN` | FLOAT | 8 | TRXN |
+| 2 | `BKART_NOT_CNTR` | UBINARY | 2 | CNTR |
+| 3 | `BKART_NOT_DESC` | STRING | 30 | DESC |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## ARTTEMP — AR Temporary (session scratch)
+
+**Module:** AR | **Fields:** 12 | **File:** ARTTEMP.B
+**Primary key (inferred):** Composite (inferred)
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKART_CUST` | STRING | 10 | CUST |
+| 2 | `BKART_TRXN` | FLOAT | 8 | TRXN |
+| 3 | `BKART_TYPE` | STRING | 1 | TYPE |
+| 4 | `BKART_DISC` | FLOAT | 8 | DISC |
+| 5 | `BKART_AMOUNT` | FLOAT | 8 | AMOUNT |
+| 6 | `BKART_POSTDATE` | DATE | 4 | POSTDATE |
+| 7 | `BKART_CNTR` | UBINARY | 2 | CNTR |
+| 8 | `BKART_ENTDATE` | DATE | 4 | ENTDATE |
+| 9 | `BKART_TRXNLINK` | FLOAT | 8 | TRXNLINK |
+| 10 | `BKART_INVC` | FLOAT | 8 | INVC |
+| 11 | `BKART_CHECK` | FLOAT | 8 | CHECK |
+| 12 | `BKART_NOTE` | STRING | 1 | NOTE |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
+
+## BKACTRPT — AC Activity Report Templates
+
+**Module:** AC | **Fields:** 53 | **File:** BKACTRPT.B
+**Primary key (inferred):** BKAC_TYPE + BKAC_NAME
+
+| # | Field | Type | Size | Inferred Meaning |
+|---|-------|------|------|-----------------|
+| 1 | `BKAC_TYPE` | STRING | 8 | TYPE |
+| 2 | `BKAC_NAME` | STRING | 15 | NAME |
+| 3 | `BKAC_RTM` | STRING | 15 | RTM |
+| 4 | `BKAC_FROM_PART` | STRING | 15 | PART |
+| 5 | `BKAC_THRU_PART` | STRING | 15 | PART |
+| 6 | `BKAC_FROM_CLASS` | STRING | 4 | CLASS |
+| 7 | `BKAC_THRU_CLASS` | STRING | 4 | CLASS |
+| 8 | `BKAC_FROM_CAT` | STRING | 4 | CAT |
+| 9 | `BKAC_THRU_CAT` | STRING | 4 | CAT |
+| 10 | `BKAC_FROM_DATE` | DATE | 4 | DATE |
+| 11 | `BKAC_THRU_DATE` | DATE | 4 | DATE |
+| 12 | `BKAC_FROM_LOC` | STRING | 10 | LOC |
+| 13 | `BKAC_THRU_LOC` | STRING | 10 | LOC |
+| 14 | `BKAC_FROM_WOPRE` | FLOAT | 8 | WOPRE |
+| 15 | `BKAC_THRU_WOPRE` | FLOAT | 8 | WOPRE |
+| 16 | `BKAC_FROM_WOSUF` | UBINARY | 2 | WOSUF |
+| 17 | `BKAC_THRU_WOSUF` | UBINARY | 2 | WOSUF |
+| 18 | `BKAC_FROM_CUST` | STRING | 10 | CUST |
+| 19 | `BKAC_THRU_CUST` | STRING | 10 | CUST |
+| 20 | `BKAC_FROM_INV` | FLOAT | 8 | INV |
+| 21 | `BKAC_THRU_INV` | FLOAT | 8 | INV |
+| 22 | `BKAC_FROM_QC` | STRING | 2 | QC |
+| 23 | `BKAC_THRU_QC` | STRING | 2 | QC |
+| 24 | `BKAC_FROM_PLOT` | STRING | 15 | PLOT |
+| 25 | `BKAC_THRU_PLOT` | STRING | 15 | PLOT |
+| 26 | `BKAC_FROM_LOT` | STRING | 15 | LOT |
+| 27 | `BKAC_THRU_LOT` | STRING | 15 | LOT |
+| 28 | `BKAC_FROM_SER` | STRING | 25 | SER |
+| 29 | `BKAC_THRU_SER` | STRING | 25 | SER |
+| 30 | `BKAC_FROM_PRICE` | FLOAT | 8 | PRICE |
+| 31 | `BKAC_THRU_PRICE` | FLOAT | 8 | PRICE |
+| 32 | `BKAC_FROM_AVGC` | FLOAT | 8 | AVGC |
+| 33 | `BKAC_THRU_AVGC` | FLOAT | 8 | AVGC |
+| 34 | `BKAC_FROM_STDC` | FLOAT | 8 | STDC |
+| 35 | `BKAC_THRU_STDC` | FLOAT | 8 | STDC |
+| 36 | `BKAC_FROM_DESC` | STRING | 30 | DESC |
+| 37 | `BKAC_THRU_DESC` | STRING | 30 | DESC |
+| 38 | `BKAC_FROM_REF` | STRING | 30 | REF |
+| 39 | `BKAC_THRU_REF` | STRING | 30 | REF |
+| 40 | `BKAC_FROM_DEPT` | STRING | 4 | DEPT |
+| 41 | `BKAC_THRU_DEPT` | STRING | 4 | DEPT |
+| 42 | `BKAC_FROM_QTY` | FLOAT | 8 | QTY |
+| 43 | `BKAC_THRU_QTY` | FLOAT | 8 | QTY |
+| 44 | `BKAC_FROM_SCRAP` | STRING | 2 | SCRAP |
+| 45 | `BKAC_THRU_SCRAP` | STRING | 2 | SCRAP |
+| 46 | `BKAC_FROM_VEND` | STRING | 10 | VEND |
+| 47 | `BKAC_THRU_VEND` | STRING | 10 | VEND |
+| 48 | `BKAC_FROM_PO` | FLOAT | 8 | PO |
+| 49 | `BKAC_THRU_PO` | FLOAT | 8 | PO |
+| 50 | `BKAC_FROM_TYPE` | STRING | 1 | TYPE |
+| 51 | `BKAC_THRU_TYPE` | STRING | 1 | TYPE |
+| 52 | `BKAC_TYPE_RANGE` | STRING | 10 | RANGE |
+| 53 | `BKAC_ITEM_RANGE` | STRING | 8 | RANGE |
+
+**Confidence: 65/100** — Field names exact from DDF; meanings inferred from names.
+
+---
