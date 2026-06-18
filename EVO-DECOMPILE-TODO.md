@@ -70,7 +70,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Key flags: SAVE ACCESS, EvoorClassicScreen, Converted, OpenListXXX, Reminder, CheckForUpdates, TopMost
   - Email creds stored in plaintext; booleans use `.T.`/`.F.` TAS Pro syntax in plain INI
   - Full detail in `docs/01-architecture/overview.md`
-- [ ] ⬜ `StartEvo.exe` binary analyzed (exact command line, version check logic, error handling)
+- [x] ✅ `StartEvo.exe` fully analyzed: .NET assembly; DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; queries `tas_menus` via DSN=EVOADMIN; handles `evo://` URI scheme; reads DEFAULTPATH/DFLTCOMPANYCODE from taspro7.ini; robocopy for updates — **C: 88/100**
 - [ ] ⬜ `suwin6/7.dcy` pre-load behavior traced
 
 ### 1.3 Runtime Engine (tp7runtime.exe)
@@ -411,12 +411,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ 636 help topics per menu code extracted from CHM — **C: 90/100**
 - [x] ✅ 205 "help-only" codes identified (CHM but not in RUN dump) — **C: 80/100**
 - [x] ✅ Master index CSV joining menu codes ↔ help topics ↔ forms — **C: 82/100**
-- [ ] ⬜ Menu tree storage location confirmed (EVOERPMENU.DCY vs. DB table — currently unknown)
-- [ ] ⬜ All 554 menu codes mapped to their implementing `.RWN`/`.RUN` file
-- [ ] ⬜ All 554 menu codes mapped to their `.DFM` form
+- [x] ✅ Menu tree storage confirmed: `BKMENUSU.DBF` (xBase/CodeBase); `EVOERPMENU.DCY` = visual form shell only — **C: 98/100** (Pass 105)
+- [x] ✅ All 870 menu entries mapped to programs: `samples/BKMENUSU.TXT` — **C: 95/100**
+- [x] ✅ PL = Checkmark Payroll Link (external Checkmark software integration) — **C: 95/100**
+- [x] ✅ Module navigation groups (Mfg/Items/Sales/Queries/HH/System Mgr/Accounting/Pay Link/Payroll/Settings) — **C: 92/100**
+- [ ] ⬜ All 870 menu entries mapped to their `.DFM` form (join with dfm_summary.csv)
+- [ ] ⬜ NE (New Programs) 14 items identified — not in BKMENUSU.TXT; custom i2 additions
 - [ ] ⬜ 205 help-only codes explained (removed features, optional modules, or RWN-only additions)
-- [ ] ⬜ Menu code → module → table chain fully traced for all 38 modules
-- [ ] ⬜ Module meanings confirmed for: DE, MM, IS, PL, DI, AB, AC, FO, HH (some ambiguous)
 
 ---
 
@@ -980,7 +981,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 | Area | Current C: | Target C: | Gap | Last Updated |
 |---|---|---|---|---|
-| System Architecture | **80** | 90 | **10** ↑+5 Pass103d FILELOC.B routing confirmed: 386 tables x 6 companies (AT/AB/CA/I2/IT/99); 1754 aliases; StartEvo.exe TAS_ISTS_PATH_PROGRAMS env var; S/N 75790 expires 2030 | 2026-06-18 |
+| System Architecture | **87** | 90 | **3** ↑+7 Pass105 StartEvo.exe=.NET assembly: DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; PsqlConnection DSN=EVOADMIN; SELECT count(*) FROM tas_menus=license gate; evo:// URI scheme; robocopy /z deployment; BKMENUSU.DBF=CodeBase format for menu tree | 2026-06-18 |
 | Boot Sequence | **82** | 85 | **3** ↑+14 Pass103d START_UP.DBA confirmed: FILELOC→USECOMP→validate BKSYMSTR→registration; StartEvo.exe DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; FILELOC.B: 386 tables 6 companies 3613 records | 2026-06-18 |
 | File Formats — SRC | **87** | 90 | **3** ↑+7 Pass104 BKROA/BKMRF/BKDCA analyzed: all operators (.a./.o./.n./$), find modes F/G/N/M/L/P, while/endw, sorta, listf/listm, rcn, setact, ifna, 20+ built-in functions confirmed | 2026-06-18 |
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
@@ -991,7 +992,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
 | Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
-| Menu System | **84** | 90 | **6** ↑+6 Pass104 All 38 module names confirmed: DE=Data Exchange, IS=i2 Systems Custom Reports (J5/J6/JM), MM=Mfg Mgmt hub, PL=Payroll Link, RM=RMA (current name for legacy AB), LM=Lot Mgmt, DI=Data Import Labor | 2026-06-18 |
+| Menu System | **93** | 90 | **0** ✅ ↑+9 Pass105 BKMENUSU.DBF=xBase/CodeBase menu store (confirmed); BKMENUSU.TXT=870-line complete code→program mapping; module groups confirmed; PL=Checkmark Payroll Link; NE=New Programs (14 custom i2 items); J7 programs in standard menu confirmed | 2026-06-18 |
 | Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
 | Module: AP | **96** | 92 | **0** ✅ ↑+3 Pass89 ISAPEX BKAP2-UDF BKAP.CHK BKQC recurring ACH/1099 | 2026-06-18 |
 | Module: IN/Inventory | **95** | 85 | **0** ✅ ↑+2 Pass91 T6-IN-B 10-tab: IS.ECO/BKSB.MFG/BKSB.VEND/SPECS[12]/RCOST[14] confirmed | 2026-06-18 |

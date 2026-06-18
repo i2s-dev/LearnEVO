@@ -113,6 +113,44 @@ EVOVIEW.DCY (TEditForm2) = read-only EvoERP mode. Exposes six modules:
 View Inventory, View Work Orders, View Purchase Orders, View Sales Orders,
 View Customers, View Vendors. Used for users who need read access only.
 
+## StartEvo.exe — .NET launcher (confirmed 2026-06-18)
+
+`C:\ISTS\StartEvo.exe` is a **.NET assembly** (confirmed from `_CorExeMain` and PDB path
+`D:\prog\evoerp\StartEvo\obj\Release\StartEvo.pdb`). It is the true entry-point before
+`tp7runtime.exe` is involved.
+
+Key functions extracted from embedded UTF-16 strings:
+
+| Function name | Purpose |
+|---|---|
+| `DomainAuthenticateAndLaunchEvo` | Active Directory / domain auth before launching |
+| `KillEvoProcesses` | Terminates stale evoerp.exe processes on startup |
+| `LaunchEvoWithUser` | Spawns `evoerp.exe` (= `tp7runtime.exe`) under the authenticated user |
+| `RunTas` | Internal wrapper — calls the TAS runtime with arguments |
+| `GetEvoDir` | Reads `DEFAULTPATH` from `taspro7.ini` to find the share path |
+| `UpdateIniFile` | Writes back to `taspro7.ini` after user/company selection |
+| `ProcessEvoUri` | Handles `evo://` deep-link URIs (e.g. from emails or browsers) |
+| `PsqlCommand` / `PsqlConnection` | Directly queries Pervasive PSQL |
+
+**PSQL query from StartEvo.exe:**
+```sql
+SELECT count(*) FROM tas_menus WHERE menu_name = ? AND program_name = ?
+```
+DSN used: `Server DSN=EVOADMIN;Host=<server>;Port=<port>` — a Pervasive Server DSN named
+"EVOADMIN". This validates which programs a user/license is permitted to run before the
+runtime even starts. `tas_menus` is the PSQL SQL engine's view of `BKMENUSU.DBF`
+(the xBase menu database — see Menu System section).
+
+**`evo://` URI scheme:** EvoERP registers a custom Windows URI handler so links of the form
+`evo://open/<code>` can launch a specific module from outside the application (e.g. from
+an email or browser link). StartEvo.exe handles this via `ProcessEvoUri`.
+
+**Deployment:** `robocopy /z /r:10 /w:1` is embedded — used during updates to robustly
+copy new RWN/DFM/DCY files to the share with retry.
+
+**INI keys read:** `DEFAULTPATH` and `DFLTCOMPANYCODE` from `taspro7.ini` — the share
+root and the last-used company code.
+
 ## Three-tier view
 
 ### Tier 1 — Client (`C:\ISTS\`)
@@ -144,12 +182,15 @@ View Customers, View Vendors. Used for users who need read access only.
 
 ## The "company" concept
 
-`taspro7.ini` sets `DfltCompanyCode=` empty and the login program chooses
-one. Multiple companies' data likely coexist by being **prefixed** in
-the same share, or by sitting in **parallel subdirectories** from
-`DefaultPath`. The network share I saw (`\\I2S109-SOLIDCRM`) has
-`evo-ERP\ISTS\…` and other top-level dirs — these may be per-company
-drops. Confirming this is a **todo**.
+EvoERP supports multiple companies on the same installation. Company routing is handled
+at the file level (confirmed from `FILELOC.B`, Pass 103d):
+- `FILELOC.B` contains 386 table entries × up to 6 companies = 3,613 routing records
+- Each row: logical table name → physical file path (with company suffix `.BI2`, `.BAT`, etc.)
+- At login, `EVOMENU_SELCOMP.DCY` presents the company list; the runtime then loads
+  FILELOC for that company and routes all `open <TABLE>` calls to the correct physical file
+- Company codes at i2 Systems: `I2` (production), `AT`, `AB`, `CA`, `IT`, `99` (others)
+- The network share subdirectory layout (`evo-ERP\ISTS\`, `2004.1\`, etc.) reflects
+  different installation generations, not per-company separation
 
 ## Update / deployment
 

@@ -34,6 +34,22 @@ otherwise the row here is the current best summary.
 | `.ico` | 10    | Icons                             | n/a       | n/a |
 | `.csv` | 11    | CSV exports/imports               | Yes       | n/a |
 
+### Menu system files (xBase / CodeBase format)
+
+| File | Format | Purpose |
+|------|--------|---------|
+| `BKMENUSU.DBF` | xBase/dBASE DBF | **Menu tree master** — GROUPS/BUTTONS/items; read by `c4dll.dll` |
+| `BKMENUSU.CLX` | Clipper index | Index file for BKMENUSU.DBF |
+| `BKMENUSU.DBT` | Memo file | Memo fields for BKMENUSU.DBF |
+| `BKMENUSU.MDX` | Multi-index | Additional index for BKMENUSU.DBF |
+| `BKMENUSU.TXT` | CSV text export | Human-readable dump of full menu tree (870 lines) |
+| `BKMENUST.TXT` | CSV text export | Setup Wizard menu only (109 lines) |
+| `BKMENUSTC.TXT` | CSV text export | Setup Wizard (company copy) |
+| `BKMENUSTR.TXT` | CSV text export | Setup Wizard (reset copy) |
+
+These are accessed by the CodeBase 4 engine (`c4dll.dll` in `C:\ISTS\`), not by
+Pervasive/Btrieve. `StartEvo.exe` accesses them via DSN `EVOADMIN` as `tas_menus`.
+
 ### Local-only files (`C:\ISTS\`)
 
 | File               | Role |

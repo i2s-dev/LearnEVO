@@ -16052,5 +16052,45 @@ These are distinct from the standard BKXXY / T7XXY program naming convention —
 
 ---
 
+### System Architecture — StartEvo.exe and Menu Storage (Pass 105)
+
+**StartEvo.exe is a .NET assembly** (not a TAS Pro program) that runs before `tp7runtime.exe`:
+1. Authenticates via Active Directory (`DomainAuthenticateAndLaunchEvo`)
+2. Kills stale EvoERP processes (`KillEvoProcesses`)
+3. Queries Pervasive PSQL DSN `EVOADMIN` for license validation:
+   `SELECT count(*) FROM tas_menus WHERE menu_name = ? AND program_name = ?`
+4. Launches `evoerp.exe` (= `tp7runtime.exe`) under the authenticated user
+5. Handles `evo://` URI deep-links from emails or browsers
+
+**Menu storage is BKMENUSU.DBF** (xBase/dBASE format, read by CodeBase `c4dll.dll`):
+- `BKMENUSU.TXT` on the network share is a plain-text CSV export of the full menu tree
+- 870 lines covering every menu item, its label, and its program file
+- Record format: `"CODE","Label","program.rwn"` — three columns, quoted CSV
+- `tas_menus` in StartEvo's SQL is the PSQL view of this same file
+
+**Module navigation groups** (the EvoERP tab bar):
+
+| Tab | Modules |
+|-----|---------|
+| Mfg | WO, JC, PO, MR, SH, DC, ES, QC |
+| Items | IN, RO, BM, LC, SC, FO, PI, WC |
+| Sales | SO, SR, RM, SA, CS, CM, AR, CR |
+| Queries | QU, SU |
+| Hand Held | HH |
+| System Mgr | UT, SM, SD, IM, PS, DE, TAS |
+| Accounting | GL, AP, FA, AM, AD |
+| Pay Link | PL |
+| Payroll | PR |
+| Settings | US |
+
+**PL = Checkmark Payroll Link** — integrates with an external product called
+"Checkmark Payroll." PL-A launches Checkmark; PL-B/C import the resulting check and
+voucher data back into EvoERP; PL-D configures the connection. Entirely separate from
+EvoERP's own PR (Payroll) module.
+
+---
+
 *Pass 104 — TAS 4GL language comprehensively documented; all 38 EvoERP module codes confirmed.*
 *TAS 4GL: 75→87/100. File Formats — SRC: 80→87/100. Menu System: 78→84/100.*
+*Pass 105 — StartEvo.exe analyzed; BKMENUSU.DBF menu storage confirmed; complete code→program mapping.*
+*System Architecture: 80→87/100. Menu System: 84→93/100.*

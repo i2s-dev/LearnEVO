@@ -85,7 +85,7 @@ entry through transaction entry through printing/reporting.
 | **AD** | Admin Defaults              | 3   | System-wide default toggles |
 | **FO** | Form Output                 | 3   | |
 | **LM** | Lot Management              | 2   | LM-B Item Generator Templates; LM-H Purge QC Receipts |
-| **PL** | Payroll Link                | 2   | PL-D Import Employees; PL-E Payroll Software Link Setup |
+| **PL** | Checkmark Payroll Link      | 4   | PL-A Run Checkmark Payroll; PL-B/C Import Checks/Vouchers; PL-D Setup |
 | **DI** | Data Import (Labor)         | 1   | DI-G Import Labor (BKDIG); single-operation import sub-module |
 
 Total: **554 menu codes** across 38 identified modules — all module names now confirmed.
@@ -159,21 +159,81 @@ An `XX-Y` operation typically has three parallel implementations:
 Example: **AR-C (Record Payments)** is `BKARC.RUN`, `T6ARC.RUN`, and
 (implicitly) `T7ARC.RWN` / `T7ARC.DFM`.
 
-## Where this maps onto the UI
+## Where the menu tree lives — CONFIRMED (Pass 105, 2026-06-18)
 
-The user sees an EVO-branded hierarchical menu rendered by
-`EvoERPmenu.RWN` (encrypted T7) — the menu leaf selects a `T7XXY.RWN`
-module to run. The menu **tree itself** is stored in either
-`\\I2S109-SOLIDCRM\DBAMFG$\EVOERPMENU.DCY` (encrypted) or in a
-Pervasive DB table — cannot yet confirm without a running instance.
+The menu data is stored in **`BKMENUSU.DBF`** on the network share — an xBase/dBASE
+format file accessed by `tp7runtime.exe` via the embedded CodeBase 4 engine (`c4dll.dll`).
+`EVOERPMENU.DCY` is the *visual form shell* (an 8-TTASStrList UI form); the *content* comes
+from BKMENUSU.DBF at runtime.
+
+A plain-text CSV export of the full menu tree is available at:
+`\\i2s109-solidcrm\DBAMFG$\BKMENUSU.TXT` (870 lines — full menu) and
+`\\i2s109-solidcrm\DBAMFG$\BKMENUST.TXT` (109 lines — Setup Wizard only).
+Copies in `samples/BKMENUSU.TXT` and `samples/BKMENUST.TXT`.
+
+### BKMENUSU.TXT record format
+
+Three record types, all CSV with quoted fields:
+
+```
+"GROUPS","Group label","MODULE"          -- navigation tab assignment
+"BUTTONS","Module full name","MODULE",N  -- module button (N = button index)
+"CODE","&Label","program.rwn"            -- menu item → program mapping
+```
+
+### Module navigation groups
+
+| Nav tab | Modules |
+|---------|---------|
+| Mfg | WO, JC, PO, MR, SH, DC, ES, QC |
+| Items | IN, RO, BM, LC, SC, FO, PI, WC |
+| Sales | SO, SR, RM, SA, CS, CM, AR, CR |
+| Queries | QU, SU |
+| Hand Held | HH |
+| System Mgr | UT, SM, SD, IM, PS, DE, TAS |
+| Accounting | GL, AP, FA, AM, AD |
+| Pay Link | PL |
+| Payroll | PR |
+| Settings | US |
+
+### Complete menu code → program mapping
+
+The full list is in `samples/BKMENUSU.TXT`. Highlights that resolve prior unknowns:
+
+| Code | Label | Program | Note |
+|------|-------|---------|------|
+| PL-A | Run Checkmark Payroll | T6PLA.RUN | PL = **Checkmark Payroll** integration |
+| PL-B | Import Employee Checks | BKPLB.RUN | |
+| PL-C | Import Employer Vouchers | BKPLC.RUN | |
+| PL-D | Payroll Link Setup | BKPLD.RUN | |
+| DE-U | Upload Stock to Web | J7BEFWEBINV.RWN | J7 custom |
+| HH-H | Shipping Info | J7HHLITN.RWN | J7 custom |
+| WO-K-J | Synch WO BOM/Routing | j7ptwoki.rwn | J7 custom |
+| WO-L-L | WO BOM Component Labels | j7woll.rwn | J7 custom |
+| PS-K | Enter Vendor Approval | J7appvend.rwn | J7 custom |
+| TA-A | Run TAS Program | RUNPRG.INT | System menu |
+| TA-B | Change Company Code | GETCO.INT | System menu |
+| TA-C | Set Configuration | CONFIG.INT | System menu |
+| TA-S | Data Dictionary Check | T7DDCHECK.RWN | System menu |
+| NE | New Programs (14 buttons) | — | Custom i2 additions; not in TXT export |
+
+**PL = Checkmark Payroll Link** — integrates with an external payroll application
+called "Checkmark Payroll" (not EvoERP's own PR module). T6PLA.RUN launches Checkmark;
+BKPLB/C.RUN import the resulting check and voucher data back into EvoERP.
+
+### StartEvo.exe access control
+
+Before `tp7runtime.exe` starts, `StartEvo.exe` (.NET assembly) queries:
+```sql
+SELECT count(*) FROM tas_menus WHERE menu_name = ? AND program_name = ?
+```
+via DSN `EVOADMIN` (Pervasive Server DSN). `tas_menus` is the PSQL SQL-engine view of
+`BKMENUSU.DBF`. This is the license/access gate — if a program is not in `tas_menus`, it
+cannot be launched.
 
 ## Open
 
-- [ ] Confirm the menu tree lives in a DB table or in `EVOERPMENU.DCY`.
-  If the former, we can dump it. If the latter, only the decrypted
-  runtime can read it — and we saw the encryption warning in
-  `tp7runtime.exe` strings. Deferred.
-- [ ] Map each menu code to the form captured in
-  `samples/dfm_parsed/dfm_summary.csv` (T7XXY.DFM pair) — a join
-  between `menu_codes.csv` and `dfm_summary.csv`.
-- [x] Confirm the `DE`, `MM`, `IS`, `PL`, `DI`, `RM`, `LM` module meanings — all resolved (Pass 104, 2026-06-18).
+- [x] Confirm the menu tree storage — **RESOLVED**: `BKMENUSU.DBF` (xBase/CodeBase format); `EVOERPMENU.DCY` is the form shell only.
+- [x] Confirm the `DE`, `MM`, `IS`, `PL`, `DI`, `RM`, `LM` module meanings — all resolved (Pass 104–105, 2026-06-18).
+- [ ] Map each menu code to the form captured in `samples/dfm_parsed/dfm_summary.csv` (T7XXY.DFM pair) — join between `BKMENUSU.TXT` and `dfm_summary.csv`.
+- [ ] Identify NE (New Programs) 14 items — not in BKMENUSU.TXT export; likely i2-specific additions.

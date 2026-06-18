@@ -32,7 +32,7 @@ relationships to other files. Updated each ANALYZE session.
 
 ```
 C:\ISTS\
-├── StartEvo.exe          [37 KB] Launcher — checks runtime, reads taspro7.ini, spawns tp7runtime.exe
+├── StartEvo.exe          [37 KB] .NET launcher: DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; validates license via tas_menus PSQL query (DSN=EVOADMIN); handles evo:// URI scheme; reads DEFAULTPATH/DFLTCOMPANYCODE from taspro7.ini; uses robocopy for updates [confirmed 2026-06-18]
 ├── tp7runtime.exe        [33.3 MB] TAS Professional 7 engine (the interpreter)
 ├── taspro7.ini           Config: DataDictPath, DfltRunPrg, MultiUser, DefaultPath, Titlebar, HelpFileName
 ├── EvoSettings.INI       Per-workstation module access flags
@@ -857,11 +857,12 @@ All 899+ RTM files are in `DBAMFG$\` alongside their calling `.RWN` programs.
 ## FILE RELATIONSHIP MAP
 
 ```
-StartEvo.exe
+StartEvo.exe  (.NET, queries tas_menus via PSQL DSN=EVOADMIN, handles evo:// URI)
   └── tp7runtime.exe (reads taspro7.ini)
-        ├── EvoERPmenu.rwn  ←→  EVOERPMENU.DCY  (menu tree)
-        │     ├── EVOMENU_LOGIN.DCY  (login data)
-        │     └── EVOMENU_SELCOMP.DCY  (company select)
+        ├── EvoERPmenu.rwn  ←→  EVOERPMENU.DCY  (visual form shell only)
+        │     └── BKMENUSU.DBF  (xBase/CodeBase — the actual menu tree data)
+        │           ├── EVOMENU_LOGIN.DCY  (login data)
+        │           └── EVOMENU_SELCOMP.DCY  (company select)
         │
         └── [Module].RWN  ←→  [Module].DFM  (form layout)
               ├── Reads/writes  *.B  (Btrieve tables via c4dll.dll / Pervasive)

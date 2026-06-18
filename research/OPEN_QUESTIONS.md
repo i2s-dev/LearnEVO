@@ -98,15 +98,13 @@ to resolve fully:
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a
    built-in key. Not decoded.
 
-4. ~~**Menu tree storage format.**~~ **RESOLVED 2026-06-17.**
-   `EVOERPMENU.DCY` decrypted with K_D → Delphi VCL TEditForm1 DFM, 20,868 lines.
-   **Finding:** The DCY file is the main ERP window shell only — it contains:
-   - TMainMenu with ~35 TMenuItems (top-level bar: File, Module, Tools, Size, Support, Help)
-   - TToolBar with 33 TToolButtons (the icon toolbar)
-   - 8 × TTASStrList (empty at parse time — populated at runtime)
-   - TImage, TPanel, TStatusBar, TStatusBar, TShellExe, etc.
-   **The 554+ module-level menu codes (AR-1, IN-2, etc.) are NOT stored here.**
-   They are built at runtime by EvoERPmenu.RWN dynamically. The DCY is just the window frame.
+4. ~~**Menu tree storage format.**~~ **FULLY RESOLVED 2026-06-18 (Pass 105).**
+   `EVOERPMENU.DCY` is the visual window shell (TEditForm1 with 8 empty TTASStrLists).
+   **The actual menu items live in `BKMENUSU.DBF`** — an xBase/dBASE format file on the share,
+   read by `c4dll.dll` (CodeBase 4 engine). `StartEvo.exe` accesses it via PSQL DSN=EVOADMIN
+   as `tas_menus`. `BKMENUSU.TXT` is the plain-text CSV export: 870 lines with every menu
+   code, its label, and its program file. Format: `"CODE","Label","program.rwn"`.
+   **Full mapping in `samples/BKMENUSU.TXT`.**
 
 5. ~~**`WHOAMI.DBA` format**~~ **PARTIALLY RESOLVED 2026-06-17.**
    On this system, `C:\ISTS\WHOAMI.DBA` and `\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA`
