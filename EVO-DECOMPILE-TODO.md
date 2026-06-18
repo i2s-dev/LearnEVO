@@ -994,31 +994,31 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
 | Module: AP | **93** | 92 | **0** ✅ ↑+1 Pass76 | 2026-06-17 |
-| Module: IN/Inventory | **82** | 85 | **3** ↑+5 Pass75 | 2026-06-17 |
+| Module: IN/Inventory | **86** | 85 | **0** ✅ ↑+4 Pass85 ECO/SPECS/MFG/VND xref tabs | 2026-06-18 |
 | Module: SO | **82** | 85 | **3** ↑+7 Pass76 | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
 | Module: WO | **91** | 90 | **0** ✅ ↑+1 Pass74 | 2026-06-17 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
-| Module: BM/MRP | **88** | 88 | **0** ✅ ↑+3 Pass83 18 DFMs BKMRP confirmed | 2026-06-18 |
+| Module: BM/MRP | **90** | 88 | **0** ✅ ↑+2 Pass85 MTIC.PROD MRP fields confirmed | 2026-06-18 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
 | Module: DC/Data Collection | **87** | 85 | **0** ✅ ↑+2 Pass72 | 2026-06-17 |
 | Module: PR/Payroll | **92** | 92 | **0** ✅ ↑+2 Pass84 W-4/CURP/PRLA DFMs | 2026-06-18 |
 | Module: AM (Accounting Maint.) | **83** | 85 | **2** ↑+8 Pass80 all DFMs | 2026-06-17 |
-| Module: CM/CRM | **82** | 85 | **3** ↑+10 Pass53 | 2026-06-17 |
+| Module: CM/CRM | **86** | 85 | **0** ✅ ↑+4 Pass85 BKCM.ACCT credit card confirmed | 2026-06-18 |
 | Module: MK/Marketing Automation | **78** | 78 | **0** ✅ ↑+6 Pass84 BKCM.LEAD/TERR/ACFC confirmed | 2026-06-18 |
 | Module: DE/EDI/Imports | **78** | 80 | **2** ↑ | 2026-06-17 |
 | Module: CS/Commission+Salesperson | **85** | 85 | **0** ✅ ↑+5 Pass84 BKPR.COMM/SLS monthly arrays | 2026-06-18 |
-| Module: JC/Job Costing | **78** | 82 | **4** ↑+6 Pass47 | 2026-06-17 |
+| Module: JC/Job Costing | **87** | 82 | **0** ✅ ↑+9 Pass85 JCA-JCS+JCENG full menu | 2026-06-18 |
 | Module: SC/Serial Control ⚠️ | **80** | 80 | **0** ✅ | 2026-06-17 |
 | Module: QC/Quality Control | **88** | 88 | **0** ✅ ↑+6 Pass84 IS.NCR/ISQC.MTD/SPC DFMs | 2026-06-18 |
 | Module: QT/Service Quote | **74** | 75 | **1** ↑+2 Pass80 DFM | 2026-06-17 |
 | Module: IC/Inventory Utility | **80** | 72 | **0** ✅ ↑+2 Pass77 | 2026-06-17 |
 | Module: WC/Warehouse Control ⚠️ | **80** | 80 | **0** ✅ ↑+5 Pass81 DFMs | 2026-06-17 |
 | Module: SH/Shop Scheduling ⚠️ | **88** | 88 | **0** ✅ ↑+5 Pass84 SHA-SHP full menu DFMs | 2026-06-18 |
-| Module: LC/Lot Control | **81** | 78 | **0** ✅ ↑+1 Pass77 | 2026-06-17 |
+| Module: LC/Lot Control | **88** | 78 | **0** ✅ ↑+7 Pass85 MTLOT.* LC-A/G DFMs | 2026-06-18 |
 | Module: SR/Service Repair | **82** | 82 | **0** ✅ ↑+10 Pass84 SRE/F/G/I/SRINFO DFMs ISSR.INFO | 2026-06-18 |
 | Module: FA/Fixed Assets | **86** | 86 | **0** ✅ ↑+4 Pass84 IS.FXA/FXT full field layout | 2026-06-18 |
-| Module: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
+| Module: PI/Physical Inventory | **88** | 80 | **0** ✅ ↑+12 Pass85 BKPH.* PI-A/H confirmed | 2026-06-18 |
 | Module: MA/AR Deposits | **76** | 75 | **0** ✅ ↑+6 Pass82 DFM+ISARDEPL confirmed | 2026-06-18 |
 | Module: ES/Estimating | **88** | 88 | **0** ✅ ↑+3 Pass84 IS.EST 10-qty+convert DFMs | 2026-06-18 |
 | Module: SA/Sales Analysis | **84** | 84 | **0** ✅ ↑+4 Pass84 BKSA confirmed top-N+margin | 2026-06-18 |
@@ -1034,7 +1034,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: PS/Program Security | **88** | 88 | **0** ✅ ↑+6 Pass83 ISEXUSER+max.chk.amt | 2026-06-18 |
 | Module: QU/Query Tools | **74** | 75 | **1** ↑+4 Pass78 | 2026-06-17 |
 | Module: SU/Setup UI | **78** | 78 | **0** ✅ ↑+6 Pass83 WBKLUGRID+gdm DFMs | 2026-06-18 |
-| Module: TA/TAS Admin | **78** | 80 | **2** ↑ Pass66 | 2026-06-17 |
+| Module: TA/TAS Admin | **88** | 80 | **0** ✅ ↑+10 Pass85 WTAS toolkit WTASDMGR | 2026-06-18 |
 | Module: DI/Digital Signatures | **78** | 80 | **2** ↑+6 Pass72 | 2026-06-17 |
 | Module: AD/Accounting Defaults | **82** | 82 | **0** ✅ ↑+7 Pass83 ISTS.CFG+bkys.yn[202] | 2026-06-18 |
 | Module: CR/SO Approvals | **78** | 78 | **0** ✅ ↑+6 Pass83 CTRevu DFMs | 2026-06-18 |
@@ -1071,11 +1071,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: FP/FO Print | **55** | 55 | **0** ✅ ↑+13 Pass64 | 2026-06-17 |
 | Module: RF/RFQ | **75** | 78 | **3** ↑+13 Pass61 | 2026-06-17 |
 | Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
-| Subsystem: PI/Physical Inventory | **76** | 80 | **4** ↑+4 Pass74 | 2026-06-17 |
+| Subsystem: PI/Physical Inventory | **88** | 80 | **0** ✅ (dup — see primary) | 2026-06-18 |
 | Module: SA/Sales Analysis | **84** | 84 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
-| Module: JC/Job Cost | **78** | 82 | **0** (dup of above — see line 1009) | 2026-06-17 |
+| Module: JC/Job Cost | **87** | 82 | **0** ✅ (dup — see primary) | 2026-06-18 |
 | Module: ES/Estimating | **88** | 88 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
-| Platform: WBKLOOKUP/Lookup Framework | **68** | 70 | **2** ↑+13 Pass62 | 2026-06-17 |
+| Platform: WBKLOOKUP/Lookup Framework | **76** | 70 | **0** ✅ ↑+8 Pass85 WBKLPRINT/HHLOOKUP | 2026-06-18 |
 | Module: DE/DC stubs+EDI processing | **72** | 75 | **3** ↑ Pass68 | 2026-06-17 |
 | Module: SM/System Maintenance+Item Inquiry | **86** | 86 | **0** ✅ ↑+4 Pass84 IS.TERMS/ISIS.TXF/BKCM.* DFMs | 2026-06-18 |
 | Module: MR/MRP Engine | **80** | 85 | **5** ↑+18 Pass45 | 2026-06-17 |
@@ -1104,7 +1104,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Platform Subsystems | **72** | 82 | **10** ↑ +7 | 2026-06-17 |
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
-| Customizations (J7\*) | **72** | 80 | **8** ↑ +7 | 2026-06-17 |
+| Customizations (J7\*) | **82** | 80 | **0** ✅ ↑+10 Pass85 40 J7 DFMs IS.RTM confirmed | 2026-06-18 |
 | Business Workflows | **75** | 85 | **10** ↑+13 Pass58 | 2026-06-17 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **68** | 88 | **20** ↑ +10 | 2026-06-17 |

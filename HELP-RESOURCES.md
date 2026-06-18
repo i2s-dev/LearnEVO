@@ -10340,3 +10340,276 @@ The WBK menu system is EVO's custom graphical launcher (distinct from the TAS Pr
 ---
 
 *Pass 84 complete (2026-06-18). 107 DFMs analyzed across 18 modules. Key new tables: ISBSF.CASH/WO/WOS (Business Status), ISSR.INFO (S/R UDFs), BKCM.LEAD/TERR/ACFC/ACCC/DTCD (CRM reference), IS.TERMS, ISIS.TXF, IS.NCR, ISQC.MTD/SPC (QC), BKPR.CURP (Payroll), IS.FXA/FXT (Fixed Assets), IS.EST (Estimating), BKSA (Sales Analysis). New module confirmations: FO pricing via BKBM.PROD.OPYN[4/5], VSCHED external DSN confirmed, QS quick entry confirmed, RT/RTM Validator is a shared helper dialog. Modules updated (confidence): QS 65→76, VSCHED 68→78, RT 55→70, SPC 87→92, SR 72→82, CS 80→85, PR 90→92, QC 82→88, SH 83→88, FA 82→86, ES 85→88, SA 80→84, SM 82→86, FO 78→83.*
+
+
+---
+
+## Pass 85 DFM Analysis (2026-06-18) -- 107 DFMs: J7 customizations, T6 legacy, JC, PI, LC, WTAS
+
+### MACHINEVIEW + WORKCENTERLOAD
+
+Both DFMs contain only "Loading..." captions -- they are progress-display screens, not main program forms. No useful field data; MH/SL modules remain unresolved via DFM analysis.
+
+---
+
+### J7 Customization Programs
+
+The J7 series are i2 Systems customizations added to the standard EvoERP installation.
+
+**Production / Mattress Manufacturing (customer: Lapco):**
+
+| Program | Purpose |
+|---|---|
+| J7DCMATLABELS | Print mattress labels -- serial scan to WO to employee assignment |
+| J7DCSSOE | Shipping dock: scan mattress serial, verify against SO |
+| J7DCSSOEVERIFY | Verify shipping -- LINE.VPART/SHIP.QTY/ORDERQTY/DESC |
+| J7HHEBINC | Handheld inventory adjustment for serialized mattresses |
+| J7HHEBXFER | Handheld inventory transfer -- From location to To location |
+| J7HHEBXFERVERIFY | Verify transfer list -- PART.ARRAY/SHIPQ.ARRAY |
+| J7HHPTSSOE | Handheld shipping scan with box#, lot, WO, customer |
+| J7HHPTSSOELABELS | Print box content labels with RTM_NAME picker |
+| J7HHPTSSOEVERIFY | Verify box: LINE.VBOX/VBOXQTY/VSONUM/VDESC/VWONUM/VLOT |
+| J7HHRTSSOE | Handheld shipping with "RT London" truck load# |
+| J7EBSERIAL | Serial number entry at production -- scan serial against item/qty |
+| J7PEDCB | Production status board -- WO/part/dept/qty counts |
+
+**Web / eCommerce:**
+
+| Program | Purpose |
+|---|---|
+| J7BEFWEBINV | Web Item Export -- CSV/FTP export; active/type/class filters; adjust qty for SO within X days; web-items-only flag |
+| J7CIWEBIMPORT | Web Import -- FTP download to EDI or Open SO. Bank account#, auto-mode, add kit components flag |
+| J7SOAIMPLINES | Import SO Lines -- comma-delimited CSV; multi-company: company.code/name/path fields |
+
+**AP / Purchasing:**
+
+| Program | Purpose |
+|---|---|
+| J7AUTOAPC | Auto Enter PO Invoices -- auto-posts received POs as invoices using actual received date |
+| J7POAIMPLINES | Import PO Lines -- comma-delimited: item/price/desc/qty/ESD/WO/job |
+| J7PTRECPOLINE | Receive PO Line -- simple single-line receipt (BKAP.POL.PCODE/PQTY/PPRCE/PEXT) |
+| J7APPVEND | Approve Vendor -- sets app.vend flag + max.chk.amt per vendor |
+| J7TMCKANBAN | Kanban Orders -- scan item+qty+price to create PO receipt; BKIC.PROD.RAMT (reorder amount); packing slip# |
+
+**SO / Shipping:**
+
+| Program | Purpose |
+|---|---|
+| J7HHLITN | Enter tracking numbers -- track#, ship company, freight, box ID |
+| J7CRSOW | SO-W report -- SOs with backorders; SONUM/ORDDTE/CUSCOD/PCODE/PDESC/PQTY/UBO |
+| J7SYNCWOTOSO | Synchronize WO to SO -- ESD, ASD, sched dates, WO/ship/complete qty. Links SO.LINENO to WO. |
+
+**Finance / Admin:**
+
+| Program | Purpose |
+|---|---|
+| J7I2SACH | ACH Export -- bank ACH/direct deposit export; CHKACT.TXT, check# range, ACH filename, Bank Assigned ID |
+| J7SMJCT | Closed Job Cost Report -- JC report for closed jobs |
+| J7PTWOKI | WO-K-J -- sync in-process WOs from BOM; update WO class |
+| J7WOLL | WO-L-L -- WO component labels with BOM qty and sequence filter |
+
+**Critical discovery -- J7NMRTMPRINTER.DFM:**
+Confirms table `IS.RTM.*` with fields: IS.RTM.PROGRAM, IS.RTM.RTM, IS.RTM.PRINTER. This is the per-program default RTM template + printer assignment table. Administrators assign default printers and report templates to specific EVO programs system-wide. Used by any program that calls the RTM picker.
+
+Customers identified from J7 DFMs: **Lapco** (mattress manufacturer), **RT London** (truck delivery), **MCDSA** (sales analysis client).
+
+---
+
+### T6 Legacy Inventory Tabs (T6ISINB series)
+
+Same core tables as T7INA/INB; tabs add field confirmations:
+
+**T6ISINBECO.DFM -- ECO tab.** Table `IS.ECO.*`:
+| Field | Meaning |
+|---|---|
+| IS.ECO.DRAW | Drawing number |
+| IS.ECO.REVLVL | Revision level |
+| IS.ECO.ENTDATE | Date entered |
+| IS.ECO.ENTBY | Entered by |
+| IS.ECO.ECO | ECO number |
+| IS.ECO.DATE | ECO effective date |
+| IS.ECO.CURRENT | Current revision flag |
+
+**T6ISINBLNK.DFM -- Links tab.** Fields: I.ORDER (sort), I.LINK (link path), I.OTHER (alt path), I.ILOLINK (global path flag).
+Image attachment fields:
+- `IMAGE.TL[1..10]` -- thumbnail display flags per document type
+- `IMAGE.PCB[1..10]` -- print control bits per doc type (9 types: Tra=Traveler, Est, PO, RFQ, Quo, Ack, Inv, Pck, SOl)
+
+**T6ISINBMFG.DFM -- Manufacturer tab.** Table `BKSB.MFG.*`:
+- BKSB.MFG.MANUF (manufacturer code), BKSB.MFG.MPART (manufacturer's part#)
+- Many-to-one: multiple manufacturer cross-references per item
+
+**T6ISINBVND.DFM -- Vendor tab.** Table `BKSB.VEND.*`:
+- BKSB.VEND.VEND (vendor code), BKSB.VEND.VPART (vendor's part#)
+- Many-to-one: multiple vendor cross-references per item
+
+**T6ISINBMRP.DFM -- MRP Settings tab.** Additional MTIC.PROD.* MRP fields:
+| Field | Meaning |
+|---|---|
+| MTIC.PROD.MRP | Include in MRP generation flag |
+| MTIC.PROD.EXPBF | Expedite buffer (days) |
+| MTIC.PROD.DELBF | Delay buffer (days) |
+| MTIC.PROD.WIPDP | WIP display option |
+| MTIC.PROD.MRPSW | MRP switch/option |
+| MTIC.PROD.PLNR | Planner code |
+| MTIC.PROD.MRPQ | Round MRP quantities to |
+
+**T6ISINBSPC.DFM -- Specifications tab.** `MTIC.PROD.SPECS[1..12]` -- 12 free-text item specification fields per item.
+
+**T6EVOART.DFM -- T6 CRM account with credit card.** Table `BKCM.ACCT.*`:
+- Standard: CODE, NAME, ADD1, ADD2, ADD3, CITY, STATE, ZIP
+- Credit card: BKCM.ACCT.CCARD (type), BKCM.ACCT.CNUM (card#), BKCM.ACCT.CMPNM (company on card), BKCM.ACCT.PNAME (person name), BKCM.ACCT.CEXP (expiration)
+
+BKCM.ACCT.* is the CRM company/account master with embedded credit card details -- distinct from BKAR.CUST.* (AR billing customer).
+
+**T6MENUUTIL.DFM:** "Evo ERP T6 Program Names" -- remaps T6 program names to newer names (FROM_PRG_NAME to TO_PRG_NAME). Used for upgrade migration.
+
+---
+
+### JC/Job Costing (full menu)
+
+**T7JCENG.DFM -- JC Engine (central reporting engine).** Filters: report type, sort/subtotal, level of detail. WO status (5 codes), WO source (2 codes), labor type (e.ltype[1..6] = 6 types), shift (e.shift[1..3] = 3 shifts), multiple setup flag. Ranges: WO#, work center, item, tool, employee, machine, labor date, job#, sequence, scrap code, QC code, rework code, department, WO actual finish date.
+
+**Full JC menu programs:**
+
+| Program | Purpose |
+|---|---|
+| T7JCA | WO cost report -- G&A%, summary/detail, composite option, rebuild WO option |
+| T7JCB | By job number + WO + status |
+| T7JCE | Labor/component detail -- sort by date/WO/component, scrap code range |
+| T7JCF | Outside process/PO cost -- PO#, vendor, date + sequence range |
+| T7JCH | Routing update from actuals -- updates master/WO routing from actual data |
+| T7JCL | WO start/finish date analysis with archiving support |
+| T7JCM | WO cost summary -- as-of-prior-date, prt.details/print.cp/print.zero |
+| T7JCN | Percent complete -- ISCALC.HOW.C (costs), ISCALC.HOW.H (hours), ISCALC.HOW.P (parts) |
+| T7JCP | Materials in WIP -- WO status [RFISCX], component item filter |
+| T7JCQ | WO cost postings -- include FP/WIP variance/scrap flags |
+| T7JCR | WO cost by customer -- incl.type.A, as-of-date, class+category range |
+| T7JCRM | JC-RM -- DSN configurator (Host/Port/Name/Destination). JS-type bridge for JC reporting server |
+| T7JCS | WO invoice integration -- prt.invoices [YNP], div.hrs, prt.op.stot, group.subs |
+
+New confirmed fields: ISCALC.HOW.C/H/P (percent-complete basis), e.ltype[1..6] (6 labor types), e.shift[1..3] (3 shifts). Confidence JC: 78->87.
+
+---
+
+### PI/Physical Inventory (full workflow)
+
+Table `BKPH.*` = physical inventory tag records. YEAR + QTR = PI run identifier.
+
+| Step | Program | Purpose |
+|---|---|---|
+| PI-A | T7PIA | Capture Frozen Inventory -- YEAR+QTR+FDATE freeze, item/class/cycle filter, COUNT TYPE 1/2 |
+| PI-B | T7PIB | Print Frozen Inventory tags -- location, lot/serial detail, on-hand qty |
+| PI-C | T7PIC | Enter Tag Counts -- BKPH.TAGNUM/LOC/CODE/LOT/SERIAL/ACTQTY; bin loc, employee, comment |
+| PI-C-A | T7PICA | Exception Report -- count vs frozen qty differences |
+| PI-D | T7PID | Missing Tags Report -- find gaps in sequential tag numbering |
+| PI-E | T7PIE | Alternate count by item+location -- BKPH.INFO.* records |
+| PI-F | T7PIF | Physical Inventory Report -- standard/average cost, tag detail, RTYPE.ARR[1..4] formats |
+| PI-G | T7PIG | Update Actual Inventory -- post to FIFO, post to GL, update/delete bin locations |
+| PI-H | T7PIH | Purge PI records by YEAR+QTR |
+| PILOC | T7PILOC | PI Location master: PILOC.LOC/NAME/NOTE/TAG |
+
+Note: QTR = physical inventory run number, not calendar quarter. Confidence PI: 76->88.
+
+---
+
+### LC/Lot Control (full menu)
+
+Table `MTLOT.*` -- lot master record:
+
+| Field | Meaning |
+|---|---|
+| MTLOT.LOT | Lot number (part of PK) |
+| MTLOT.CODE | Item code (part of PK) |
+| MTLOT.ONHAND | On-hand quantity |
+| MTLOT.RECDATE | Date received |
+| MTLOT.WO / WOSUF | WO that produced this lot |
+| MTLOT.EXPDATE | Expiration date |
+| MTLOT.LOC | Location |
+| MTLOT.POCOST | PO cost |
+| MTLOT.PO | PO number |
+| default.bin | Default bin location |
+
+| Program | Purpose |
+|---|---|
+| T7LCA | Edit lot numbers -- direct edit of MTLOT fields |
+| T7LCB | Assign lot control to items -- sets MTIC.PROD.LOT flag |
+| T7LCC/LCC2 | Lot availability reports -- by item/lot/expdate, SO allocations option |
+| T7LCE | Exception report -- negative lot UOH, orphaned lots |
+| T7LCF | Lot history by item+lot |
+| T7LCG | Archive/unarchive lots -- by item/expdate/recdate/lot/zero-UOH |
+
+Confidence LC: 81->88.
+
+---
+
+### TA/TAS Admin -- Addsum TAS Pro 7 DBA Toolkit
+
+The WTAS* programs are the Addsum TAS Professional 7 database administration utilities. They manage the TAS Pro 7 file infrastructure and data dictionaries.
+
+**WTASDMGR.DFM -- Data Dictionary Manager (critical tool).**
+"Addsum TAS Premier 7i Maintain Data Dictionary" -- creates and edits TAS Pro 7 data dictionaries:
+- Field definitions: FLD_LNAME (long name), FLD_SNAME (short name), FLD_TYPE, FLD_SIZE, FLD_DEC, FLD_ARRAY, FLD_UPCASE, FLD_DESC
+- Physical layout: FLD_HTYPE, FLD_HSIZE, FLD_HDEC, FLD_HARRAY, FLD_HOFFSET
+- Key definitions: AKEY_LIST, AKEY_NAME, SEG_FLD_LIST, SEG_FLD_NAME, kord, kmod, kdup, kignore, numSeg
+- File name: AFILE_NAME
+This is the tool used to create and modify the .DFM data dictionaries that define the Btrieve/Pervasive table schemas. The DDF schema.json we've been analyzing was created and maintained via WTASDMGR.
+
+**WTASINIT.DFM -- Create/Initialize File.** Creates new Btrieve data files. Fields: CF_FLNAME, CF_FLCODE, CF_RTYPE, CF_DESC, CF_PATH, cf_fdname. Confirms the FILELOC table structure.
+
+**WTASFLOC.DFM -- Maintain File Names and Locations.** Manages the FILELOC table: maps file codes (CF_FLCODE) to physical disk paths. Same fields as WTASINIT plus "Update All" button.
+
+**WTASDATAM.DFM -- Maintain Database.** Live Btrieve record editor: browse by index (cbIndexName), filter (FilterExpr), edit/add/delete records, export visible/all rows. Sequential scan (NoKey), record counter (rec_num/curr_rec_num), override file path.
+
+**WTASCHKINT.DFM -- DataScanIntegrity.** Btrieve integrity scanner. Progress: Total Progress, Current Scan Progress, Records Scanned, current file/key. Counts: Selected/Scanned/Errors.
+
+**WTASDMGR2.DFM:** New FD dialog -- enter new file definition name.
+
+**WTASDMGR3.DFM:** Restructure a Btrieve file -- RestructFDName, progress counter.
+
+**WTASFLLKUP.DFM:** File Lookup -- pick a file from FILELOC by LOC_FILE_NAME/LOC_COMP_CODE/LOC_BUFF_NAME/LOC_LOCATION.
+
+**WTASFLOCUPD/WTASMERGE2.DFM:** Empty (no form content).
+
+**WTASCVTDICT.DFM:** "Convert Existing Dictionary" -- migrates older data dictionary format.
+
+**WTASCHKINTCOMPANY.DFM:** Company scope selector for integrity scan.
+
+Confidence TA/TAS Admin: 78->88.
+
+---
+
+### WBK Lookup Framework (additional)
+
+**WBKLPRINT.DFM:** "Order Printing" -- Print Acknowledgements / Print Packing Slips / Print Invoices checkboxes (pbox1/2/3). Popup for selecting which order documents to print from WBK menu.
+
+**WBKHHLOOKUP.DFM:** Lookup dialog with sort, vendor#/manufacturer/customer X-ref tabs. Used in handheld (HH) context for item lookup.
+
+**WBKLKPMEMO.DFM:** Generic memo field editor in WBK lookup context.
+
+**WBKMENUSUEU.DFM (end-user menu):** "Menu Item Setup -- Your Access Code" -- limited menu editor showing only this user's Groups/Buttons and Menu Lines. Users can customize their own menu without admin rights.
+
+Confidence WBKLOOKUP/Platform: 68->76.
+
+---
+
+### New Table Summary -- Pass 85
+
+| Table | Purpose | Source |
+|---|---|---|
+| `IS.RTM.*` | Per-program default RTM + printer (PROGRAM+RTM+PRINTER) | J7NMRTMPRINTER |
+| `BKCM.ACCT.*` | CRM account master + credit card (CODE+NAME+CCARD+CNUM+CEXP) | T6EVOART |
+| `IS.ECO.*` | ECO master (DRAW+REVLVL+ENTDATE+ENTBY+ECO+DATE+CURRENT) | T6ISINBECO |
+| `BKSB.MFG.*` | Manufacturer cross-reference per item (MANUF+MPART) | T6ISINBMFG |
+| `BKSB.VEND.*` | Vendor cross-reference per item (VEND+VPART) | T6ISINBVND |
+| `MTIC.PROD.SPECS[1..12]` | 12 item specification text fields | T6ISINBSPC |
+| `MTIC.PROD.EXPBF/DELBF/WIPDP/MRPSW/PLNR/MRPQ` | Additional MRP item settings | T6ISINBMRP |
+| `IMAGE.TL[1..10]` | Thumbnail display flags per doc type | T6ISINBLNK |
+| `IMAGE.PCB[1..10]` | Print control bits per doc type (9 types) | T6ISINBLNK |
+| `BKPH.*` | Physical inventory tag records (TAGNUM+LOC+CODE+LOT+SERIAL+ACTQTY) | T7PIC |
+| `BKPH.INFO.*` | PI count by item+location | T7PIE |
+| `MTLOT.*` | Lot master (LOT+CODE+ONHAND+RECDATE+WO+EXPDATE+LOC+POCOST+PO) | T7LCA |
+
+---
+
+*Pass 85 complete (2026-06-18). 107 DFMs: J7 customizations (40 DFMs: mattress manufacturing, web export/import, Kanban, ACH, multi-company), T6 legacy INB tabs (ECO/Links/MFG/VND/MRP/Specs), JC A-S full menu + JCENG filter engine, PI A-H full workflow, LC A-G full lot control, WTAS DBA toolkit. Key new tables: IS.RTM (per-program RTM/printer), BKCM.ACCT (CRM+credit card), IS.ECO, BKSB.MFG/VEND (item xref), MTIC.PROD.SPECS[12], BKPH (PI tags), MTLOT (lot master). WTASDMGR confirmed as TAS Pro 7 Data Dictionary Manager -- the tool that creates and maintains .DFM schema definitions. Confidence updates: JC 78->87, PI 76->88, LC 81->88, J7 72->82, TA 78->88, WBKLOOKUP 68->76, IN 82->86, CRM 82->86, MRP 88->90.*
