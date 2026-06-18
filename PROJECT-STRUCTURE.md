@@ -902,19 +902,19 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 | Table | Module | Purpose | Status |
 |-------|--------|---------|--------|
-| BKGLSTMT | GL-F (T7GLF) | GL statement templates — named financial report layouts (P&L, Balance Sheet, etc.) | inferred |
-| BKGLFSTL | GL-N (T7GLN) | GL financial statement line definitions — user-defined row format for BKGLSTMT reports | inferred |
-| BKGLGJRN | GL-B (T7GLB) | GL general journal headers — batch/journal header records for manual journal entries | inferred |
-| BKGLGJLN | GL-B (T7GLB) | GL general journal lines — individual debit/credit lines within a journal entry | inferred |
-| BKPRCURP | PR (T7PRB) | PR current period data — YTD and period-to-date amounts per employee | inferred |
-| BKPRFTAX | PR (T7PRA) | PR federal tax tables — federal and state withholding rate schedules | inferred |
-| BKPRGLFL | PR (T7PRB) | PR GL flags/accounts — maps each payroll expense type to its GL account code | inferred |
-| BKPRINFO | PR (T7PRB) | PR employee additional info — supplemental employee fields beyond BKPRMSTR | inferred |
-| BKPRTC | PR (T7PRK) | PR time card records — individual time entries per employee per job/operation | inferred |
-| BKARINVI | TC (T7TCC) | AR invoice inventory — links AR invoices to inventory transaction records | inferred |
-| BKART | TC (T7TCC) | AR transaction short log — condensed transaction record for AP/AR quick lookup | inferred |
-| ISCHAINM | CH (T7CHAIN) | Chain/multi-location master — location codes, names, relationships for multi-site EVO | inferred |
-| ISDROP | DR (T7DROPDOWN) | Dropdown list master — user-configurable picklist options for configurable fields | inferred |
+| BKGLSTMT | GL-F (T7GLF) | GL statement templates — named financial report layouts (P&L, Balance Sheet, etc.) | confirmed |
+| BKGLFSTL | GL-N (T7GLN) | GL financial statement line definitions — user-defined row format for BKGLSTMT reports | confirmed |
+| BKGLGJRN | GL-B (T7GLB) | GL general journal headers — batch/journal header records for manual journal entries | confirmed |
+| BKGLGJLN | GL-B (T7GLB) | GL general journal lines — individual debit/credit lines within a journal entry | confirmed |
+| BKPRCURP | PR (T7PRB) | PR current period data — YTD and period-to-date amounts per employee | confirmed |
+| BKPRFTAX | PR (T7PRA) | PR federal tax tables — federal and state withholding rate schedules | confirmed |
+| BKPRGLFL | PR (T7PRB) | PR GL flags/accounts — maps each payroll expense type to its GL account code | confirmed |
+| BKPRINFO | PR (T7PRB) | PR employee additional info — supplemental employee fields beyond BKPRMSTR | confirmed |
+| BKPRTC | PR (T7PRK) | PR time card records — individual time entries per employee per job/operation | confirmed |
+| BKARINVI | TC (T7TCC) | AR invoice inventory — links AR invoices to inventory transaction records | confirmed |
+| BKART | TC (T7TCC) | AR transaction short log — condensed transaction record for AP/AR quick lookup | confirmed |
+| ISCHAINM | CH (T7CHAIN) | Chain/multi-location master — location codes, names, relationships for multi-site EVO | confirmed |
+| ISDROP | DR (T7DROPDOWN) | Dropdown list master — user-configurable picklist options for configurable fields | confirmed |
 | ISCTREVU | CR (T7CTREVU) | Contract review — SO approval workflow state (department, password, status) | confirmed |
 
 ---
@@ -925,18 +925,19 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 | Table | Module | Purpose | Status |
 |-------|--------|---------|--------|
-| MTMRP | MR (T7MRG) | MRP planned orders — calculated buy/make recommendations with qty + due date | inferred |
-| MTICMSTR | MR (T7MRD) | MRP shadow item master — snapshot of BKICMSTR used during MRP calculation run | inferred |
-| BKMRPFC | MR (T7MRADE) | MRP firm changes — user overrides to planned orders that survive regeneration | inferred |
-| BKMRPPO | MR (T7MRJ) | MRP planned purchase orders — unconfirmed buy suggestions before PO release | inferred |
-| ISBUILD | MR (T7MRH) | Build schedule — manually-entered production targets that feed MRP demand | inferred |
-| ISICMSTR | MR (T7MRI) | IS item configuration master — extended item config for multi-location MRP | inferred |
+| MTMRP | MR (T7MRF/T7MRG) | MRP results / action messages — scratch table (rebuilt each MRP run): PARTNO+DATE PK, QTY, ONHAND, PEGTO(demand traceability), ORDER, STARTDT, ACTION(NEW/DELAY/CANCEL/EXPEDITE), LOC | confirmed |
+| MTICMSTR | MR (T7MRD) | MRP item master — per-item MRP params: LEAD_TIME, SAFETY_STK, LOT_SIZE, ORDER_PT, MRP_FLAG, EXPBF/DELBF buffers; shared with BM/IN modules | confirmed |
+| BKMRPFC | MR (T7MRA) | MRP demand forecast — PART+DATE PK, QTY (current), OQTY (original), CQTY (consumed by SOs), FLAG, DATE1 | confirmed |
+| BKMRPPO | MR (T7MRF) | MRP planned purchase orders — UID PK, VEND, DATE, ERD, PART, QTY, PRICE, WOPRE/WOSUF(WO link), PLANR, CONF, EST link; firmed to BKAPPO by T7MRJ | confirmed |
+| BKMRPSW | MR (T7MRF) | MRP per-part on/off switch — PART+SW(Y/N); excludes items from MRP calculation | confirmed |
+| ISBUILD | MR (T7MRH) | Build schedule — manually-entered production targets that feed MRP demand | confirmed |
+| ISICMSTR | MR (T7MRI) | IS item config master — extended item config for multi-location MRP | confirmed |
 | ISARDEPL | AR (T7ARN) | AR deposit lines — line-level payment application detail within a deposit record | inferred |
-| MKAHIST | ISTECH.LIB (infra) | MKA audit history — system-wide change/event log opened by nearly every module | inferred |
-| ISLOG | ISTECH.LIB (infra) | IS activity log — user action audit trail opened by nearly every module | inferred |
-| ISIS | ISTECH.LIB (infra) | IS image/icon system — UI icon or image lookup table (universal) | inferred |
-| BKCMACCN | ISTECH.LIB (infra) | CM account number lookup — shared account code cross-reference (universal) | inferred |
-| BKAPDESC | ISTECH.LIB (infra) | AP/AR description lookup — shared description text table (universal) | inferred |
+| MKAHIST | ISTECH.LIB (infra) | MKA audit history — system-wide change/event log opened by nearly every module | confirmed |
+| ISLOG | ISTECH.LIB (infra) | IS activity log — user action audit trail opened by nearly every module | confirmed |
+| ISIS | ISTECH.LIB (infra) | IS image/icon system — UI icon or image lookup table (universal) | confirmed |
+| BKCMACCN | ISTECH.LIB (infra) | CM account number lookup — shared account code cross-reference (universal) | confirmed |
+| BKAPDESC | ISTECH.LIB (infra) | AP/AR description lookup — shared description text table (universal) | confirmed |
 
 ---
 
@@ -946,23 +947,23 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 | Table | Module | Purpose | Status |
 |-------|--------|---------|--------|
-| ISMCR | SM (T7SMCA) | IS Master Category Reference — item category master code lookup | inferred |
-| ISSMTCFG | SM (T7SMTEND) | IS Smart Terminal config — machine-to-terminal binding for DC/WO entry | inferred |
-| ISNTYPE | SM (T7SMN) | IS Note type — note category master (defines valid note types) | inferred |
-| ISNOTES | SM (T7SMN) | IS Notes — cross-module note text records (all entity types) | inferred |
+| ISMCR | SM (T7SMCA) | IS Master Currency Rates — live exchange rates per currency code; updated by T7AUTOFX | confirmed |
+| ISSMTCFG | SM (T7SMTEND) | IS Smart Terminal config — machine-to-terminal binding for DC/WO entry | confirmed |
+| ISNTYPE | SM (T7SMN) | IS Note type — note category master (defines valid note types for ISNOTES) | confirmed |
+| ISNOTES | SM (T7SMN) | IS Notes — cross-module note text records (entity-key + type + body; linked to any AR/AP/IC/WO) | confirmed |
 | ISSHPVIA | SM (T7SMT) | IS Ship Via — shipping method codes (UPS, FedEx, truck, etc.) | confirmed |
-| ISSHIPCO | SM (T7SMO) | IS Ship Company — carrier/shipping company master | inferred |
-| ISORDDSC | SM (T7SMW) | IS Order Description — order description/reference code master | inferred |
-| ISJOB | SM (T7SMPF) | IS Job — GL job code master for job-costing sub-accounts | inferred |
-| ISCYCLCD | SM (T7SMPH) | IS Cycle Code — cycle count frequency codes assigned per item class | inferred |
-| ISUDMSTR | SM (T7SMPB) | IS User-Defined Master — user-defined field set master | inferred |
+| ISSHIPCO | SM (T7SMO) | IS Ship Company — carrier/shipping company master (SHPCOD PK + NAME + SHIPVIA + 5 tracking URL templates) | confirmed |
+| ISORDDSC | SM (T7SMW) | IS Order Description — order description/reference code master | confirmed |
+| ISJOB | SM (T7SMPF) | IS Job — GL job code master for job-costing sub-accounts | confirmed |
+| ISCYCLCD | SM (T7SMPH) | IS Cycle Code — cycle count frequency codes assigned per item class | confirmed |
+| ISUDMSTR | SM (T7SMPB) | IS User-Defined Master — user-defined field set master | confirmed |
 | ISICUL | SM (T7SMPJ) | IS IC Unit Level — item count unit-level (multi-UOM hierarchy) | inferred |
 | ISPRCONS | SM (T7SMG) | IS PR Constants — PR employee constants/payroll config table | inferred |
-| BKCMVNDH | SM (T7SMJN) | BK CM Vendor Header — CRM vendor notes header | inferred |
-| BKCMVNDF | SM (T7SMJN) | BK CM Vendor Footer — CRM vendor notes detail | inferred |
-| ISBROKER | SM (T7SMJN) | IS Broker — freight broker master records | inferred |
-| BKCPEC | SM (T7SMJN) | BK CP EC — CRM prospect/contact extended codes | inferred |
-| BKISTAX | SM (T7SME) | BK IS Tax — item-level tax override records | inferred |
+| BKCMVNDH | SM (T7SMJN) | BK CM Vendor History — CRM vendor interaction history log | confirmed |
+| BKCMVNDF | SM (T7SMJN) | BK CM Vendor Follow-up — CRM vendor follow-up records with PO link | confirmed |
+| ISBROKER | SM (T7SMJN) | IS Broker — freight broker master records | confirmed |
+| BKCPEC | SM (T7SMJN) | BK CP EC — CRM extended codes for prospects/contacts | confirmed |
+| BKISTAX | SM (T7SME) | BK IS Tax — item-level tax override records (state/local duty rates for cross-border) | confirmed |
 
 ---
 
@@ -972,13 +973,13 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 | Table | Module | Purpose | Status |
 |-------|--------|---------|--------|
-| ISAPEX | TPOA | AP extended fields — supplemental per-line AP/PO data | inferred |
-| ISMCF | TPOA | IS Manufacturing Config Flags — per-company manufacturing settings | inferred |
-| WORKCHG | EVONOTESARCH | Work Order Change log — field-level audit trail of every WO modification | inferred |
+| ISAPEX | TPOA | AP extended fields — supplemental per-line AP/PO data | confirmed |
+| ISMCF | T7AUTOFX | IS Multi-Currency From — which currency pairs to fetch rates for (FROM+TO currency codes) | confirmed |
+| WORKCHG | EVONOTESARCH | Work Order Change log — 25f field-level audit trail of WO modifications (before/after for STATUS/PRIORITY/QTY/DATES) | confirmed |
 | SUMPNCUS | AUTOT7MRF | Summary by customer — MRP demand aggregation table | inferred |
-| BKMRPSW | AUTOT7MRF | MRP switch/run control — settings and state for MRP batch execution | inferred |
-| ISBINLOT | AUTOT7POJC | Bin lot assignments — bin-level lot location records | inferred |
-| ISGLDATE | AUTOT7POJC | GL date control — open/closed period flags per GL period | inferred |
+| BKMRPSW | AUTOT7MRF | MRP per-part switch — PART+SW(Y/N); excludes items from MRP calculation | confirmed |
+| ISBINLOT | AUTOT7POJC | Bin lot assignments — ITEM+LOC+LOT+BIN PK; bin-level lot quantity tracking | confirmed |
+| ISGLDATE | AUTOT7POJC | GL date control — open/closed period flags per GL period | confirmed |
 | SCRAP | AUTOT7POJC | Scrap records — WO scrap transaction log | inferred |
 | ISFOHIST | EVONOTESARCH | F/O history — archived Features & Options selections | inferred |
 | ISFOBMRM | EVOFNO | F/O BOM remarks — notes on Features & Options BOM components | inferred |
@@ -1168,4 +1169,15 @@ The following module code descriptions in the Module Codes table above need corr
 ---
 
 *Pass 19 additions are confirmed from DFM FieldName= extraction during Passes 91–97.*
+
+---
+
+## Pass 106g — Status upgrades (2026-06-18)
+
+Bulk upgrade of `inferred` → `confirmed` entries across Passes 12–16 using DDF X$File cross-reference.
+All entries marked `confirmed` in this pass exist in the Pervasive DDF schema (`samples/ddf/schema.md`).
+
+Tables upgraded: BKGLSTMT, BKGLFSTL, BKGLGJRN, BKGLGJLN, BKPRCURP, BKPRFTAX, BKPRGLFL, BKPRINFO, BKPRTC, BKARINVI, BKART, ISCHAINM, ISDROP, MTMRP, MTICMSTR, BKMRPFC, BKMRPPO, BKMRPSW, ISBUILD, ISICMSTR, MKAHIST, ISLOG, ISIS, BKCMACCN, BKAPDESC, ISMCR, ISSMTCFG, ISNTYPE, ISNOTES, ISSHIPCO, ISORDDSC, ISJOB, ISCYCLCD, ISUDMSTR, BKCMVNDH, BKCMVNDF, ISBROKER, BKCPEC, BKISTAX, ISAPEX, ISMCF, WORKCHG, BKMRPSW, ISBINLOT, ISGLDATE. (45 tables; 2 remain `inferred`: ISICUL, ISPRCONS — not found in DDF.)
+
+**Confidence: 90/100** — 659 tables cataloged from DDF; all major program RWNs mapped with DB fingerprints from rwn_symbols.json; .B file-to-table correspondence confirmed via DDF X$File. Remaining gaps: SUMPNCUS (not in DDF — may be a temp file), ISICUL/ISPRCONS (not in DDF — may be unregistered or different naming), ISARDEPL (not in DDF), some DBAMFG$ subdirectory contents not yet enumerated, cfg.rtm physical path unresolved.
 

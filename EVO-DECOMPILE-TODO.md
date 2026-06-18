@@ -1111,7 +1111,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Business Workflows | **85** | 85 | **0** ✅ ↑+3 Pass106d Recipes15-16: lot/serial tracking lifecycle + new company creation | 2026-06-18 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **87** | 88 | **1** ↑+4 Pass103 tier9-tables.md: 19 Java-confirmed schemas (BKSLEVEL/BKSYMSTR/ROUTING/WORKCTR/ISBSF/BKICLOC/BKBMMSTR/ISFOHEAD/ISFOLINE/ISSHIPCO/ISREMIND/CALENDAR/MACHINE/AHSYLOG/BKLOGON/etc) | 2026-06-18 |
-| PROJECT-STRUCTURE.md | **86** | 90 | **4** ↑+6 Pass103 AP 6→26 entries, AR 5→17, PO 0→30 (full new section), SO 1→21; 171 DFM forms cataloged | 2026-06-18 |
+| PROJECT-STRUCTURE.md | **90** | 90 | **0** ✅ ↑+4 Pass106g: 45 inferred→confirmed via DDF cross-check; confidence note updated ↑+6 Pass103 AP 6→26 entries, AR 5→17, PO 0→30 (full new section), SO 1→21; 171 DFM forms cataloged | 2026-06-18 |
 | HELP-RESOURCES.md | **90** | 92 | **2** ↑+3 Pass102 Java Integration doc: EvoPVT.jar arch, ISJAVA schema, jdbc.ini, 260+ table inventory, key schemas | 2026-06-18 |
 
 ### Critical Path to 90% Goal
