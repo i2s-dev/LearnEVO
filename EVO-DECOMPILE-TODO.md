@@ -804,7 +804,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ## 13. BUSINESS WORKFLOWS / RECIPES
 
-Pass 58 (2026-06-17): 8 workflow recipes fully written in HELP-RESOURCES.md — **C: 75/100**
+Pass 58 + Pass 97 (2026-06-18): 14 workflow recipes written — **C: 82/100**
 
 ### 13.1 Core Accounting Workflows
 - [x] ✅ **Customer invoice (AR voucher)** — see Recipe 7: AR Cash Receipts — **C: 75/100**
@@ -1105,11 +1105,11 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
-| Business Workflows | **75** | 85 | **10** ↑+13 Pass58 | 2026-06-17 |
+| Business Workflows | **82** | 85 | **3** ↑+7 Pass97 Recipes10-14: GL-journal/period-end-archive/backup/new-user/inv-adjustment | 2026-06-18 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **76** | 88 | **12** ↑+8 Pass96 tier7-tables.md: MTWC/MTWORO/IS.TRIG/BKRFQ/BKICPMAT/BKAP.REM/TMC/MTWO.WIP/IS.SPC/DRILLM/IS.FIB/CFFLOC/BKCM-codes/ISSR.INFO/IS.REM | 2026-06-18 |
 | PROJECT-STRUCTURE.md | **72** | 90 | **18** ↑ | 2026-06-11 |
-| HELP-RESOURCES.md | **80** | 90 | **10** ↑+5 Pass93-96 SH/POA/TRIG/GF/JS/UTK/approval/BOL/KIT/SM-I/SM-J all documented | 2026-06-18 |
+| HELP-RESOURCES.md | **84** | 90 | **6** ↑+4 Pass97 Recipes10-14 GL/archive/backup/new-user/inv-adj + workflow blocks | 2026-06-18 |
 
 ### Critical Path to 90% Goal
 
