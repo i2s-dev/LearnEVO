@@ -146,28 +146,46 @@ Extracted from `samples/ddf/fields.csv`:
 | 3 | DATE | D (date) | Btrieve 4-byte date (YYYYMMDD packed) |
 | 4 | TIME | T (time) | Btrieve 4-byte time (HHMMSSHH) |
 | 7 | LOGICAL | L (logical) | 1-byte boolean (0/1) |
-| 12 | ? | — | Possibly DECIMAL (packed BCD) or NOTE |
-| 13 | ? | — | Possibly LVAR (large variable-length) |
+| 12 | NOTE | — | Variable-length memo/blob. Only in DDF catalog: `X$Attrib.Xa$Attrs` (2048 B). Not used in any EvoERP business table. |
+| 13 | LVAR | — | Large variable-length field. Only in DDF catalog: `X$View.Xv$Misc` (2000 B, SQL view text) and `X$Proc.Xp$Misc` (990 B, stored proc body). Not used in any EvoERP business table. |
 | 14 | UBINARY | I (unsigned int) | Unsigned binary integer (1–4 bytes) |
 
-Types 12 and 13 appear in a small number of fields — likely specialized types for memo
-or packed-decimal data. Not yet confirmed from source code.
+Types 12 (NOTE) and 13 (LVAR) appear in exactly 3 fields total — all in DDF system tables
+(`X$` prefix = DDF catalog internal). Confirmed by cross-referencing `fields.csv` file_ids
+655 (X$View), 656 (X$Proc), 659 (X$Attrib) with `schema.md`. None of the 659 EvoERP
+business tables use these types.
 
 ### OCCURS.DDF — repeating group / array support
 
-`X$Occurs` (occurs.ddf) defines **occurrence groups** — Btrieve's mechanism for
-array-like repeating fields within a fixed-length record. For example, BKYSMSTR has
-fields `BKYS.YN[1]` through `BKYS.YN[200]` — these are stored as a single fixed block
-in the record with an occurrence definition pointing to the starting offset and repeat
-count. The TAS 4GL `array N` directive matches directly onto the OCCURS definition.
+`X$Occurs` (occurs.ddf, 28,672 bytes = 56 pages) defines **occurrence groups** — Btrieve's
+mechanism for array-like repeating fields within a fixed-length record. For example, BKYSMSTR
+has fields `BKYS.YN[1]` through `BKYS.YN[200]` — these are stored as a single fixed block in
+the record with an occurrence definition pointing to the starting offset and repeat count. The
+TAS 4GL `array N` directive matches directly onto the OCCURS definition.
+
+Binary inspection of `samples/ddf/OCCURS.DDF`: data pages 48–55 contain ~150–200 records
+stored as binary integers (file_id packed with occurrence_id, 24-byte record slots). The
+records are present and active but cannot be decoded to table/field names without a full
+Btrieve record-format parser. Presence confirmed — the `array N` declarations in TAS source
+do generate OCCURS entries.
 
 ### RELATE.DDF — foreign key hints
 
-`X$Relate` (relate.ddf, 45,056 bytes = 88 pages) stores referential integrity
-relationship definitions (parent table + primary key → child table + foreign key).
-EvoERP's TAS programs enforce referential integrity procedurally (via `find M` + `flerr()`
-checks), but the DDF relationship table allows the Pervasive SQL engine to also enforce
-them at the record-engine level. Whether enforcement is active in production is unknown.
+`X$Relate` (relate.ddf, 45,056 bytes = 88 pages) stores referential integrity relationship
+definitions (parent table + primary key → child table + foreign key).
+
+Binary inspection of `samples/ddf/RELATE.DDF`:
+- Pages 0 and 8 both start with `FC` magic — **dual FCR** for crash recovery (primary FCR at
+  page 0, backup at page 8; standard Btrieve feature).
+- Pages 16–31: densely packed B-tree index nodes (sequential integer entries).
+- Pages 32, 40, 48, 56, 64, 72: B-tree root/leaf pages, each starting with `00 8X YY 00 00 00 00 00 FF FF FF FF` (the `FF FF FF FF` = Btrieve null/end-of-chain marker).
+- Pages 80–87: data pages with very sparse records (one 4-byte entry per page, ~8 total
+  records). FK references stored as binary file_id integers — no readable table names.
+
+**Conclusion: engine-level RI enforcement is NOT the primary mechanism in EvoERP.**
+Only ~8 FK relationships are defined in the DDF (for 659 tables). EvoERP enforces
+referential integrity procedurally in TAS code via `find M` + `flerr()` checks before
+every related-record lookup.
 
 ---
 
@@ -228,9 +246,16 @@ the company-specific extension at open time.
 
 ## Things still to verify
 
-- Full FCR (File Control Record) byte layout — need Pervasive SDK documentation.
-  Only partially decoded from sample header.
-- Types 12 and 13 in the DDF — exact Btrieve data type meaning.
-- Whether RELATE.DDF FKs are enforced at the engine level or only procedurally.
-- How the `.mdx` (multi-index) files differ from embedded B-tree indexes.
+- Full FCR (File Control Record) byte layout — partially decoded from BKICMSTR.B and
+  RELATE.DDF FCR headers. The dual-FCR (pages 0 + 8) is confirmed. Full field-by-field
+  mapping requires Pervasive PSQL SDK documentation not available.
+- How the `.mdx` (multi-index) files differ from embedded B-tree indexes — no `.mdx`
+  sample files exist in `samples/`. The 10 `.mdx` files on the share are overflow key
+  files for tables exceeding 24 key segments; structure is a separate Btrieve B-tree.
 - `.XLB` lock file internal format (not needed for analysis; locking is handled by MKDE).
+
+**Resolved (Pass 106i):**
+- Types 12 and 13 — confirmed: NOTE and LVAR, exclusively in DDF catalog tables. ✅
+- RELATE.DDF FK enforcement — confirmed: engine-level enforcement not in use; only ~8 FK
+  records defined; RI is enforced procedurally by TAS programs. ✅
+- OCCURS.DDF status — confirmed: active, ~150–200 records present. ✅

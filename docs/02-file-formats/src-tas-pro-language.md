@@ -559,6 +559,24 @@ picture remove                      ;remove all buttons/images
 ```
 Called in `pre` hooks with `state=1` and in `post` hooks with `state=0` to simulate button press visual feedback.
 
+### Extended types V and O (Pass 106i)
+
+Two types not listed in compiler error 7621 appear in `BKDCA.SRC`:
+
+| Code | Observed name | Usage | Interpretation |
+|------|--------------|-------|----------------|
+| `V` | `t.wokey` | Holds `lab.wokey` temporarily; also assigned `= 0` (numeric clear) | **Variant** — general-purpose holder that accepts any type. Acts as a typed buffer for composite or mixed-type keys. |
+| `O` | `POST.FAIL`, `POST.OTHER`, `MONTH` | Defined but never used in BKDCA.SRC | **Overpunch / legacy numeric** — possibly a packed sign-byte numeric type from older TAS versions. Dead code in this file; may be used in older BK-era programs. |
+
+Type `V` confirmed active (assigned and read at lines 627/645/770 of BKDCA.SRC).
+Type `O` confirmed declared but unused in the one SRC file where it appears.
+
+### `find R` — confirmed absent
+
+No `find R` statement was found in any of the 7 SRC files. `lock R` (read-lock on open)
+is confirmed. The `find` modes in use are: F, N, G, M, L, P only.
+Type `R` variable usage is exclusively with the `rcn` (record cursor) statement, not `find`.
+
 ## Things still to verify
 
 - How `#INC HELPSCRN` is resolved — `HELPSCRN.INC` or equivalent not found on share.
@@ -568,7 +586,4 @@ Called in `pre` hooks with `state=1` and in `post` hooks with `state=0` to simul
 - Scope rules for variables defined inside `{ }` function blocks — from observation,
   they appear to share the outer scope (e.g., `which` parameter in `func pre.scrn which`
   receives the value from the outer `enter` call, not a local copy).
-- Type `V` (variant, `t.wokey type V size 10`) and type `O` (`POST.FAIL type o size 1`) —
-  not documented in the compiler's own error message, may be internal/extended types.
-- `find R` mode — `open TABLE lock R` uses `R` as a lock mode (read-lock);
-  `find R` likely means "find by record position" but not confirmed from source.
+- Type `O` semantics — only seen as dead-code defines; behavior not observable from these files.

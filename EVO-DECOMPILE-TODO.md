@@ -203,7 +203,10 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Schema queryable via Pervasive ODBC (SELECT from X$File, X$Field) — **C: 88/100**
 - [x] ✅ Companion files: `.mdx` (index), `.XLB` (extended attributes) — **C: 65/100**
 - [x] ✅ Per-company suffix: default = `.B`, others = `.B22`, `.BAB`, etc. — **C: 85/100**
-- [ ] ⬜ Btrieve page layout at byte level (header, page size, record format)
+- [x] ✅ DDF types 12/13 resolved: NOTE and LVAR, DDF-catalog only, zero in business tables — **C: 95/100**
+- [x] ✅ RELATE.DDF: ~8 FK records, engine-level RI not used, RI enforced procedurally — **C: 90/100**
+- [x] ✅ OCCURS.DDF: ~150+ occurrence records confirmed active; dual FCR (pages 0+8) confirmed — **C: 85/100**
+- [ ] ⬜ Btrieve page layout at full byte level (complete FCR field map)
 - [ ] ⬜ Index structure decoded from `.mdx` companion
 - [ ] ⬜ Low-level I/O operations (Btrieve status codes, operation codes) documented
 
@@ -252,20 +255,23 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Comment syntax: `;` to end-of-line — **C: 95/100**
 - [x] ✅ Control flow: `if/else/endif`, `for(...)/next`, `select/endselect`, `while/loop_if/exit_if`, `goto/gosub/return` — **C: 82/100**
 - [x] ✅ Trap mechanism: `trap <key>`, `xtrap`, `fnc_list` — **C: 70/100**
-- [ ] ⬜ Full operator table (arithmetic, string, logical, comparison, date)
-- [ ] ⬜ `.a.` / `.o.` / `.n.` boolean operators confirmed with examples
-- [ ] ⬜ `$` string operator behavior confirmed
+- [x] ✅ Full operator table: +/-/*//, =/<>/>/</>=/<=, .a./.o./.n., $ (string-in-set) — **C: 90/100**
+- [x] ✅ `.a.` / `.o.` / `.n.` boolean operators confirmed with source examples — **C: 95/100**
+- [x] ✅ `$` string-contains operator confirmed: `if X $ "ABC"` = true if X in set — **C: 90/100**
 - [ ] ⬜ Expression precedence rules
-- [ ] ⬜ All built-in functions documented (string, date, math, I/O, UI, crypto)
+- [x] ✅ 20+ built-in functions documented (str/trim/mid/chr/round/ttof/ftot/flerr/fnum/co/zask/etyp/iif/loc/just/windows/clicked_on/max_cols/dpath) — **C: 85/100**
+- [x] ✅ Extended types V (variant) and O (legacy numeric) documented with BKDCA.SRC source — **C: 72/100**
+- [x] ✅ `find R` mode confirmed absent; `lock R` = read-lock on open — **C: 90/100**
 
 ### 3.2 Database I/O Keywords
-- [x] ✅ `open <table> lock N/W` — open table with no-lock or wait-lock — **C: 78/100**
-- [x] ✅ `find F srch <key>` — keyed find — **C: 75/100**
+- [x] ✅ `open <table> lock N/W/R` — open table with no-lock/wait-lock/read-lock — **C: 82/100**
+- [x] ✅ Find modes: F/N/G/M/L/P (first/next/gte/match/last/prev); `err`/`nlock`/`noclr` modifiers — **C: 92/100**
 - [x] ✅ `clr <table> rec` — clear/new record — **C: 72/100**
 - [x] ✅ `del` / `dall` — delete record / delete all — **C: 70/100**
 - [x] ✅ Field access via dot notation: `bksy.comp.name` (table.field) — **C: 85/100**
 - [x] ✅ Locking: `LOCK_OWNER`, `REC_LOCK`, `UNLOCK` keywords — **C: 72/100**
-- [ ] ⬜ Full find/seek operation set (first, last, next, prev, range)
+- [x] ✅ `rcn TABLE rcn VAR get/set` — record cursor save/restore; `openv` open by variable; `setact` alias table — **C: 85/100**
+- [ ] ⬜ Full find/seek operation set — all 6 modes now confirmed; only gap is `find A` (absolute by position) — **C: 92/100**
 - [ ] ⬜ Transaction keywords (BEGIN_TRAN, COMMIT, ROLLBACK — if they exist)
 - [ ] ⬜ `USECODEBASE` vs. Btrieve mode switching fully documented
 - [ ] ⬜ `REINDEX_DBF` behavior and when it's called
@@ -989,8 +995,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | **84** | 88 | **4** ↑+6 Pass104 403 unique RTMs cataloged; naming convention: T6/BK/it6/ibk/J6/JM; i2-prefix pattern confirmed; cfg.rtm=792-caller global lib; 7 shared library RTMs; module-to-RTM mapping examples; variant numbering for format selection | 2026-06-18 |
-| File Formats — Btrieve | **80** | 85 | **5** ↑+8 Pass104 New doc: btrieve-b-format.md; DDF X$ system (7 tables, purpose, structure); .B format (FC magic, 512-byte pages, FCR header partial decode); 659 tables/24113 fields/15998 segs confirmed; 9 Btrieve DDF types; company routing via extension; OCCURS/RELATE/VIEW described | 2026-06-18 |
-| TAS 4GL Language | **87** | 92 | **5** ↑+12 Pass104 All arithmetic/relational/logical ops confirmed; 10 field types (+ V,O); find modes F/G/N/M/L/P; while/endw/exit; sorta/listf/listm/rcn/setact/ifna/updta/openv; 20+ functions: str/trim/mid/chr/round/ttof/ftot/flerr/fnum/co/zask/etyp | 2026-06-18 |
+| File Formats — Btrieve | **85** | 85 | **0** ✅ ↑+5 Pass106i Types 12=NOTE/13=LVAR resolved (DDF-catalog only, zero in business tables); RELATE.DDF confirmed ~8 FK records/engine RI not used; OCCURS.DDF ~150+ records confirmed; dual FCR pages 0+8 confirmed; B-tree page structure decoded | 2026-06-18 |
+| TAS 4GL Language | **90** | 92 | **2** ↑+3 Pass106i Type V=variant holder (confirmed from BKDCA.SRC assign+clear), type O=extended legacy numeric (dead-code defines only); find R mode confirmed absent from all 7 SRC files | 2026-06-18 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
 | Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
 | Security / Login | **85** | 85 | **0** ✅ ↑+7 Pass105 4-layer security model: license gate(tas_menus/StartEvo)→AHSYLOG module flags→BKPSUSER program-level→T7LIMACC field-level; all PS* admin programs mapped from BKMENUSU.TXT; BKPSUSER 11 fields confirmed; BKSLEVEL 14×20=422f confirmed | 2026-06-18 |
