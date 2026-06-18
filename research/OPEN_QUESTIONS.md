@@ -185,6 +185,15 @@ to resolve fully:
     - J7SyncWOtoSO = Syncs WO data back to SO (422KB)
     - Full catalog in docs/03-modules/module-db-cross-reference.md Pass 18.
 
+14. ~~**Module codes DE, IS, MM, PL, DI, RM, LM — unconfirmed names.**~~ **RESOLVED 2026-06-18.**
+    - DE = Data Exchange (33 ops: import inventory/BOM/routings/customers/vendors/COA/labor; export to QuickBooks)
+    - IS = i2 Systems Custom Reports (J5/J6/JM-prefix programs: Item Recap, Production Report, Top-N Shipped, New Customer)
+    - MM = Manufacturing Management Reporting hub (4 menu ops reusing AP-J/AR-G/AP-A programs as reporting shortcuts)
+    - PL = Payroll Link (confirmed from BKPLE.SRC: "Payroll Software Link Setup")
+    - DI = Data Import Labor (DI-G = BKDIG, single-entry sub-module)
+    - RM = Return Material Authorization — current module code (legacy code was AB in DBA era; RM is active in EVO menu)
+    - LM = Lot Management (LM-B Item Generator Templates; LM-H Purge QC Receipts — confirmed 2 menu entries)
+
 ## Nice-to-have follow-ups (not blocking)
 
 - **Extract CHM contents fully.** Ran `hh -decompile` but it quietly

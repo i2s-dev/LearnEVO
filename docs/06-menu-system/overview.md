@@ -52,7 +52,7 @@ entry through transaction entry through printing/reporting.
 | **SO** | Sales Orders                | 48  | Largest — SO-A through SO-Z with many sub-menus |
 | **IN** | Inventory                   | 40  | Item maintenance, receipts, transfers, reports |
 | **SM** | System Manager              | 34  | Setup & administration of everything |
-| **DE** | Delivery (or "Demand Est"?) | 33  | *To confirm* — possibly Delivery planning |
+| **DE** | Data Exchange               | 33  | Import/export: inventory, BOM, routings, customers, vendors, COA, labor, QB GL export |
 | **WO** | Work Orders                 | 31  | Manufacturing order lifecycle |
 | **PO** | Purchase Orders             | 29  | |
 | **PR** | Payroll                     | 29  | Payroll processing |
@@ -79,16 +79,28 @@ entry through transaction entry through printing/reporting.
 | **ED** | EDI                         | 6   | |
 | **WC** | Work Centers                | 6   | |
 | **PS** | Payroll Setup               | 5   | |
-| **MM** | Multi-Module?               | 4   | *To confirm* |
-| **RM** | RMA (Return Merch Auth)     | 4   | |
-| **IS** | Information System?         | 4   | *To confirm* — shows up in many `IS*` files |
+| **MM** | Manufacturing Mgmt Reporting | 4  | Cross-module mfg reports; menu entries share BKAPJ/BKARG/BKAPA programs |
+| **RM** | Return Material Authorization | 4 | RM-A Enter RMA, RM-C Receive, RM-D Process, RM-E Reason Maint. Current name for legacy AB module. |
+| **IS** | i2 Systems Custom Reports   | 4   | Uses J5/J6/JM-prefix programs (i2 custom): Item Recap, Production Report, Top-N Ships, New Customer |
 | **AD** | Admin Defaults              | 3   | System-wide default toggles |
 | **FO** | Form Output                 | 3   | |
-| **LM** | Label Management            | 2   | |
-| **PL** | Plotting?                   | 2   | |
-| **DI** | Dispatch?                   | 1   | |
+| **LM** | Lot Management              | 2   | LM-B Item Generator Templates; LM-H Purge QC Receipts |
+| **PL** | Payroll Link                | 2   | PL-D Import Employees; PL-E Payroll Software Link Setup |
+| **DI** | Data Import (Labor)         | 1   | DI-G Import Labor (BKDIG); single-operation import sub-module |
 
-Total: **554 menu codes** across 38 identified modules.
+Total: **554 menu codes** across 38 identified modules — all module names now confirmed.
+
+## Module name confirmations (Pass 104)
+
+| Code | Confirmed Name | Evidence |
+|------|---------------|---------|
+| DE | Data Exchange | DE-A=Export Data; DE-B..H=Import various (Inventory/BOM/Routings/Customers/Vendors/COA/Labor); DE-O=Export to QuickBooks |
+| IS | i2 Systems Custom Reports | IS-A..D use J5/J6/JM-prefix programs — i2 Systems custom Java-based tools |
+| MM | Mfg Mgmt Reporting | MM menu entries reuse BKAPJ (print vendor), BKARG (print customer), BKAPA (enter vendors) — a reporting shortcut hub |
+| PL | Payroll Link | PL-E description = "Payroll Software Link Setup" (BKPLE source confirmed) |
+| RM | Return Material Authorization | RM-A Enter RMA; supersedes legacy AB module naming |
+| LM | Lot Management | LM-B Item Generator Templates; LM-H Purge QC Receipts |
+| DI | Data Import (Labor) | DI-G Import Labor (BKDIG); possibly "Direct Import" variant |
 
 ## Example — AP (Accounts Payable) full menu
 
@@ -164,5 +176,4 @@ Pervasive DB table — cannot yet confirm without a running instance.
 - [ ] Map each menu code to the form captured in
   `samples/dfm_parsed/dfm_summary.csv` (T7XXY.DFM pair) — a join
   between `menu_codes.csv` and `dfm_summary.csv`.
-- [ ] Confirm the `DE`, `MM`, `IS`, `PL`, `DI` module meanings by
-  reading their SRC/RUN samples.
+- [x] Confirm the `DE`, `MM`, `IS`, `PL`, `DI`, `RM`, `LM` module meanings — all resolved (Pass 104, 2026-06-18).

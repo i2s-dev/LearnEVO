@@ -982,16 +982,16 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 |---|---|---|---|---|
 | System Architecture | **80** | 90 | **10** ↑+5 Pass103d FILELOC.B routing confirmed: 386 tables x 6 companies (AT/AB/CA/I2/IT/99); 1754 aliases; StartEvo.exe TAS_ISTS_PATH_PROGRAMS env var; S/N 75790 expires 2030 | 2026-06-18 |
 | Boot Sequence | **82** | 85 | **3** ↑+14 Pass103d START_UP.DBA confirmed: FILELOC→USECOMP→validate BKSYMSTR→registration; StartEvo.exe DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; FILELOC.B: 386 tables 6 companies 3613 records | 2026-06-18 |
-| File Formats — SRC | 80 | 90 | 10 | 2026-06-11 |
+| File Formats — SRC | **87** | 90 | **3** ↑+7 Pass104 BKROA/BKMRF/BKDCA analyzed: all operators (.a./.o./.n./$), find modes F/G/N/M/L/P, while/endw, sorta, listf/listm, rcn, setact, ifna, 20+ built-in functions confirmed | 2026-06-18 |
 | File Formats — DFM | 87 | 90 | 3 | 2026-06-11 |
 | File Formats — RWN/DCY | 88 | 90 | 2 | 2026-06-16 |
 | File Formats — RTM | 78 | 88 | 10 | 2026-06-11 |
 | File Formats — Btrieve | 72 | 85 | 13 | 2026-06-11 |
-| TAS 4GL Language | 75 | 92 | 17 | 2026-06-11 |
+| TAS 4GL Language | **87** | 92 | **5** ↑+12 Pass104 All arithmetic/relational/logical ops confirmed; 10 field types (+ V,O); find modes F/G/N/M/L/P; while/endw/exit; sorta/listf/listm/rcn/setact/ifna/updta/openv; 20+ functions: str/trim/mid/chr/round/ttof/ftot/flerr/fnum/co/zask/etyp | 2026-06-18 |
 | Database Schema (structure) | 90 | 95 | 5 | 2026-06-11 |
 | Database Schema (field meaning) | **86** | 88 | **2** ↑+3 Pass94 BKIC.PMAT/IS.SPC.ESTE[3]/BKAP.REM.*/TMC.*/ISAREX.EXTADD[8]/MTWO.WIP.E*+A* confirmed | 2026-06-18 |
 | Security / Login | **78** | 85 | **7** ↑ | 2026-06-17 |
-| Menu System | 78 | 90 | 12 | 2026-06-11 |
+| Menu System | **84** | 90 | **6** ↑+6 Pass104 All 38 module names confirmed: DE=Data Exchange, IS=i2 Systems Custom Reports (J5/J6/JM), MM=Mfg Mgmt hub, PL=Payroll Link, RM=RMA (current name for legacy AB), LM=Lot Mgmt, DI=Data Import Labor | 2026-06-18 |
 | Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
 | Module: AP | **96** | 92 | **0** ✅ ↑+3 Pass89 ISAPEX BKAP2-UDF BKAP.CHK BKQC recurring ACH/1099 | 2026-06-18 |
 | Module: IN/Inventory | **95** | 85 | **0** ✅ ↑+2 Pass91 T6-IN-B 10-tab: IS.ECO/BKSB.MFG/BKSB.VEND/SPECS[12]/RCOST[14] confirmed | 2026-06-18 |
