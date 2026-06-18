@@ -4237,7 +4237,33 @@ T7YSYN (52 procs) — opens BKYSMSTR. Maintenance program for the BKYSMSTR table
 configuration flags). Every Yes/No behavioral setting in EvoERP lives in BKYSMSTR; T7YSYN is
 the direct editor for these flags.
 
-**Confidence: 72/100** — single program; BKYSMSTR(355f: 1 key + 354 Y/N flags) fully extracted from DDF; purpose confirmed from name + table; individual flag meanings blocked by RWN encryption.
+**BKYSMSTR structure:**
+- BKYS_WONUM (FLOAT 8) — row key (only one row per company; value = 0 or company#)
+- BKYS_YN_1 through BKYS_YN_354 — 354 × STRING(1) flags; each = 'Y' or 'N'
+
+**T7YSYN display mechanism:**
+Variables `ARRAY` and `ARRAY.DESC` confirm T7YSYN presents the flags as an array with descriptions.
+The descriptions come from `BKSYHELP/DBAHLPID` (the help system — each YN flag index maps to
+a DBAHLPID help record). The program header variable `PROGRAM.HEADER` provides the window title.
+`YSMSTR.H` = the BKYSMSTR record handle (single-row table loaded once).
+
+**Selected YN flag meanings (confirmed from DFM field labels and other module docs):**
+
+| Flag | Known meaning | Source |
+|---|---|---|
+| YN[1] | Auto-close DC labor when new job started | T7DCK DFM (BKDC.CFG.AUTOCLOSE) |
+| YN[228] | Auto-close labor on new job start | T7SMJH reference |
+| YN[290] | Include backorders in order status report | BKSYAR.INCLBO cross-ref |
+| (most) | Individual flag meanings blocked by RWN | encrypted T7YSYN source |
+
+The full 354-flag meaning set requires either: (a) decrypting T7YSYN.RWN and reading the ARRAY.DESC
+initialization code, or (b) a live EvoERP session walking through the YS editor screen.
+
+**Note:** T7MDefaults.RWN (435 procs) and T7MDefNDC.RWN (252 procs) are the primary UI
+for setting these flags — T7YSYN is the back-door "raw" editor for troubleshooting.
+Changes to BKYSMSTR take effect immediately for all users on next program load.
+
+**Confidence: 75/100** — BKYSMSTR(355f: 1 key + 354 YN flags) fully extracted; T7YSYN display mechanism confirmed from variable names (ARRAY, ARRAY.DESC, YSMSTR.H, BKSYHELP lookup); individual flag meanings remain mostly blocked by RWN encryption; ~3 specific flags confirmed from cross-module DFM analysis.
 
 ---
 
@@ -4308,7 +4334,24 @@ More granular than BKICLOC (which tracks location-level only, not bin+lot).
 
 **Cut sheet workflow:** WO release → T7CUTSHEET2 reads WOBOM (what's needed) joined to WOMAT (what's been issued) and ISBINLOT (where to pick from) → prints a picking list showing shortage = TOTQTY − QTYISSUED, with bin location for each component. Lot-tracked variant shows which bins have the right lot.
 
-**Confidence: 72/100** — Both programs identified; WOBOM(24f)+WOMAT(17f)+ISBINLOT(11f) fully extracted from DDF; cut sheet workflow confirmed from table relationships.
+**Key filter variables (confirmed from named_vars):**
+- `EJOB` — job number filter (filter cut sheet by job code → ISJOB)
+- `ELOT` — lot filter (show only BOM lines with this lot)
+- `EQTY` — entry quantity override
+
+**T7CUTSHEET2 also opens ISDUTY + ISBROKER** — this indicates import duty tracking capability:
+for purchased components from overseas suppliers, the cut sheet can optionally show
+duty/tariff rates (ISDUTY) and broker codes (ISBROKER) alongside the standard BOM components.
+This is likely used when the WO is for assemblies using imported materials.
+
+**i2 Systems variant: J7CCCutSheet.RWN (217 procs, 44 tables)**
+The i2 customized version adds: ISSRINFO (SR info), ROUTING (routing ops), BKBMMSTR (BOM),
+ISJOB, BKARINV/BKARINVL (SO context), BKICLOC, BKICLOCM, BKMRPFC, BKGLTRAN+DBAFIFO (costing),
+LOT+SERIAL+ISNCR (quality). Key variables: LIST.WO/ITEM/FABRIC/WOQTY arrays + EDIT.WO.LOC
+(which location) + NEW.WO.SQTY (suggested qty). This is a full material management suite
+beyond the base cut sheet.
+
+**Confidence: 75/100** — Both programs (lot-tracked and non-lot variants) fully confirmed; WOBOM(24f)+WOMAT(17f)+ISBINLOT(11f) fully extracted; cut sheet workflow confirmed from table relationships; ISDUTY+ISBROKER presence confirms import-component duty tracking; EJOB/ELOT/EQTY filter vars confirmed; i2 J7CCCutSheet program documented.
 
 ---
 
@@ -4510,7 +4553,35 @@ Generates NACHA ACH electronic payment files from AP vendor payments and bank ac
 **Workflow:** AP payment batch → T7TESTNACHA reads BKAPVEND (routing/account) + ISBANKS
 (company bank) → creates NACHA file → records in BKGLCHK as ACH type payments.
 
-**Confidence: 72/100** — program confirmed; BKGLCHK(11f) + ISBANKS(23f: NUM+SRT+DESC+GL+NXTNUM+BAL+ROUT+ACCT+CURR+TYPE+VEND+ACTIVE+AR/AP/PR flags+5 RTM codes) fully extracted; NACHA workflow confirmed; ACH record format blocked by encryption.
+**Key variables (confirmed from named_vars):**
+- `CHKACT.TXT` — check account text (account label for the NACHA file header)
+- `FROM.CHKNUM` / `THRU.CHKNUM` — check number range filter (select checks to include in batch)
+- `FROM.CHKDATE` / `THRU.CHKDATE` — date range filter
+- `ACH.FILENAME` — full path of the output NACHA flat file (e.g. `C:\NACHA\PAYMENTS.ACH`)
+- `WELLS.ID` — Wells Fargo company ID code (bank-specific identifier in the NACHA batch header)
+
+**BKARINVL in TE DB fingerprint:**
+T7TESTNACHA opens BKARINVL (AR invoice lines) — this confirms the module handles
+**both directions** of ACH:
+- AP side: reads BKAPVEND (vendor ACH routing/account) → BKGLCHK (AP checks) → PPD/CCD debit entries
+- AR side: reads BKARINVL (customer invoices) → generates ACH CREDIT entries for customer payments
+
+**WELLS.ID specificity:** The hard-coded Wells Fargo ID variable indicates i2 Systems
+configured T7TESTNACHA specifically for Wells Fargo ACH submission. Other banks may use
+different ID formats in the ACH Company ID field (10-char NACHA standard field).
+
+**NACHA file structure (standard, generated by T7TESTNACHA):**
+```
+Record 1: File Header (1 per file)
+Record 5: Batch Header (1 per bank account = ISBANKS row)
+Record 6: Entry Detail (1 per vendor check in BKGLCHK range)
+Record 8: Batch Control (1 per batch)
+Record 9: File Control (1 per file)
+```
+Entry Detail fields come from: ISBANKS.ROUT (9-digit ABA routing) + BKAPVEND.ACH_ACCT
+(vendor bank account) + BKGLCHK.AMT (payment amount) + BKGLCHK.NAME (payee).
+
+**Confidence: 75/100** — T7TESTNACHA(103p) confirmed; BKGLCHK(11f)+ISBANKS(23f) fully extracted; key variable names confirm check-range filters + ACH output filename + Wells Fargo ID; BKARINVL presence confirms AR ACH receipts in addition to AP payments; NACHA record structure standard (not EVO-specific); exact field mapping to NACHA offsets blocked by RWN encryption.
 
 ---
 

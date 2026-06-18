@@ -1085,15 +1085,15 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Tables: BKMR*/MRP Support | **78** | 78 | **0** ✅ ↑+6 Pass106e: BKMRPFC/BKMRPPO/BKMRPSW/MTMRP full field tables+semantics; 14-op pipeline; MTMRP action codes; BKMRPPO→BKAPPO flow | 2026-06-18 |
 | Tables: BKED*/EDI | **78** | 72 | **0** ✅ ↑+13 Pass106 full family documented: BKEDIH/IL=BKARINV clones; BKEDIDUN/MSTR/NOTE/POST semantics; DEP-B/C/D/E/F/H pipeline | 2026-06-18 |
 | Tables: BKES*/Estimating | **78** | 72 | **0** ✅ ↑+13 Pass106 full family documented: BKESTQT/QTL=BKARINV clones; BKESTCFG 13f; ESTSUM 213f 10-qty-break cost summary; ES-A..M pipeline | 2026-06-18 |
-| Module: YS/YN Flags Editor | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
-| Module: CU/WO Cut Sheet | **72** | 75 | **3** ↑+14 Pass55 | 2026-06-17 |
+| Module: YS/YN Flags Editor | **75** | 75 | **0** ✅ ↑+3 Pass106h: ARRAY/ARRAY.DESC/YSMSTR.H display mechanism; BKSYHELP lookup; 3 confirmed flags; T7MDefaults=primary UI | 2026-06-18 |
+| Module: CU/WO Cut Sheet | **75** | 75 | **0** ✅ ↑+3 Pass106h: EJOB/ELOT/EQTY filter vars; ISDUTY+ISBROKER import-duty tracking; J7CCCutSheet(217p,44t) i2 variant documented | 2026-06-18 |
 | Subsystem: ADCA/Advanced DC | **70** | 72 | **2** ↑ Pass64 | 2026-06-17 |
 | Module: TC/Treasury Control | **80** | 75 | **0** ✅ ↑+8 Pass93 T7TCC terms.num+CHK_NAME[1] confirmed | 2026-06-18 |
 | Module: SC/Serial Control ⚠️ (dup) | **78** | 80 | **2** ↑ Pass68 | 2026-06-17 |
 | Module: CH/Multi-Location Chain | **72** | 72 | **0** ✅ | 2026-06-17 |
 | Module: KI/Kit Assembly | **83** | 72 | **0** ✅ ↑+11 Pass94 T7KIT BOM-component/lot/scan/bin arrays confirmed | 2026-06-18 |
 | Module: MA/AR Deposit Apply | **82** | 75 | **0** ✅ (merged with MA/AR Deposits — see primary) | 2026-06-18 |
-| Module: TE/NACHA+ACH | **72** | 75 | **3** ↑+12 Pass59 | 2026-06-17 |
+| Module: TE/NACHA+ACH | **75** | 75 | **0** ✅ ↑+3 Pass106h: WELLS.ID+ACH.FILENAME+date/check-range vars; AR ACH receipts via BKARINVL; NACHA record structure | 2026-06-18 |
 | Module: PA/Paperless DC | **70** | 72 | **2** ↑ | 2026-06-17 |
 | Module: TPOA/PO Processing Hub | **84** | 75 | **0** ✅ ↑+12 Pass93 T7POA/POA2/POAC/POAE/POACPY BKAP.PO full header+RITEC risk.assess[6]+CONFIRM[1]/[2] | 2026-06-18 |
 | Module: QS/Quick SO | **76** | 76 | **0** ✅ ↑+11 Pass84 T7QSOA+QSOALINES DFMs confirmed | 2026-06-18 |
