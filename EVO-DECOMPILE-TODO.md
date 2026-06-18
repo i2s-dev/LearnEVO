@@ -994,10 +994,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **88** | 92 | **4** ↑+3 Pass74 | 2026-06-17 |
 | Module: AP | **93** | 92 | **0** ✅ ↑+1 Pass76 | 2026-06-17 |
-| Module: IN/Inventory | **86** | 85 | **0** ✅ ↑+4 Pass85 ECO/SPECS/MFG/VND xref tabs | 2026-06-18 |
+| Module: IN/Inventory | **93** | 85 | **0** ✅ ↑+7 Pass87 IS.PROD.FLAGS[1..19] UDFi30 IS2D.BAR IS.ECO | 2026-06-18 |
 | Module: SO | **82** | 85 | **3** ↑+7 Pass76 | 2026-06-17 |
 | Module: PO | **80** | 85 | **5** ↑+8 Pass52 | 2026-06-17 |
-| Module: WO | **91** | 90 | **0** ✅ ↑+1 Pass74 | 2026-06-17 |
+| Module: WO | **94** | 90 | **0** ✅ ↑+3 Pass87 MTWORO/MTWOLA/WOBOM/MTWOR full schema | 2026-06-18 |
 | Module: GL | **93** | 92 | **0** ↑+3 Pass70 | 2026-06-17 |
 | Module: BM/MRP | **90** | 88 | **0** ✅ ↑+2 Pass85 MTIC.PROD MRP fields confirmed | 2026-06-18 |
 | Module: RO/Routing | **88** | 88 | **0** ✅ ↑+3 Pass72 | 2026-06-17 |
@@ -1025,7 +1025,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: AC/Activity Control | **78** | 78 | **0** ✅ ↑+4 Pass83 8D CAR+ISCACT+ISCTEAM | 2026-06-18 |
 | Module: CC/Credit Card ⚠️ | **84** | 85 | **1** ↑+6 Pass82 6 DFMs | 2026-06-18 |
 | Module: SP/SPC ⚠️ | **92** | 92 | **0** ✅ ↑+5 Pass84 SPCLIVEGRID/LIVEREP/REP2/REPPPM | 2026-06-18 |
-| Module: HH/Handheld | **80** | 85 | **5** ↑+12 Pass48 | 2026-06-17 |
+| Module: HH/Handheld | **93** | 85 | **0** ✅ ↑+13 Pass87 43 DFMs WO/SO/PO/PI/INV full handheld system | 2026-06-18 |
 | Module: UT/Utilities | **78** | 75 | **0** ✅ ↑+6 Pass79 DFM-confirmed | 2026-06-17 |
 | Module: RM/RMA | **85** | 82 | **0** ✅ ↑+7 Pass86 SRMA/IS.RMA RMD disposition confirmed | 2026-06-18 |
 | Module: FO/Features Options | **87** | 83 | **0** ✅ ↑+4 Pass86 ISFO.HDR.* EvoFNO confirmed | 2026-06-18 |
@@ -1035,7 +1035,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: QU/Query Tools | **74** | 75 | **1** ↑+4 Pass78 | 2026-06-17 |
 | Module: SU/Setup UI | **78** | 78 | **0** ✅ ↑+6 Pass83 WBKLUGRID+gdm DFMs | 2026-06-18 |
 | Module: TA/TAS Admin | **88** | 80 | **0** ✅ ↑+10 Pass85 WTAS toolkit WTASDMGR | 2026-06-18 |
-| Module: DI/Digital Signatures | **78** | 80 | **2** ↑+6 Pass72 | 2026-06-17 |
+| Module: DI/Digital Signatures | **90** | 80 | **0** ✅ ↑+12 Pass87 T7DIGSIG PO approval 5-level emp.signoff | 2026-06-18 |
 | Module: AD/Accounting Defaults | **82** | 82 | **0** ✅ ↑+7 Pass83 ISTS.CFG+bkys.yn[202] | 2026-06-18 |
 | Module: CR/SO Approvals | **78** | 78 | **0** ✅ ↑+6 Pass83 CTRevu DFMs | 2026-06-18 |
 | Module: US/Triggers | **74** | 75 | **1** ↑+9 Pass82 DFM confirmed | 2026-06-18 |
