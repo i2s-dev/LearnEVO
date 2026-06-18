@@ -7,6 +7,53 @@ Field meanings are inferred from names unless noted. All field lists extracted f
 
 ---
 
+## BOMCHG — BOM Change Log (1 table, 15 fields)
+
+**Module:** BM (Bill of Materials) | **Purpose:** Audit trail of every BOM component add/remove/change.
+
+| Field | Meaning |
+|-------|---------|
+| BOM_CHG_PARENT | Parent part number |
+| BOM_CHG_COMP | Component part number |
+| BOM_CHG_CDATE | Change date |
+| BOM_CHG_USER | User who made the change |
+| BOM_CHG_ACOMP | Added component code |
+| BOM_CHG_DCOMP | Deleted component code |
+| BOM_CHG_AQTY | After (new) quantity |
+| BOM_CHG_BQTY | Before (old) quantity |
+| BOM_CHG_AREF | After reference designator |
+| BOM_CHG_BREF | Before reference designator |
+| BOM_CHG_ASCRAP | After scrap factor |
+| BOM_CHG_BSCRAP | Before scrap factor |
+| BOM_CHG_AEXTRA | After extra field |
+| BOM_CHG_BEXTRA | Before extra field |
+| BOM_CHG_UID | Unique change ID |
+
+**Note:** The A/B field pairs (AQTY/BQTY, AREF/BREF, ASCRAP/BSCRAP) store the after-value and before-value of each changed attribute, allowing a full before/after comparison for any BOM revision. This is the standard EvoERP audit pattern for BOM engineering changes.
+
+---
+
+## X$* — Pervasive PSQL DDF Catalog Tables (10 tables)
+
+The `X$*` tables are the **Pervasive PSQL data dictionary** (DDF) catalog — they describe the structure of all other tables and are maintained by the database engine itself, not by EvoERP code.
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| X$File | 5 | File/table catalog — Xf$Id+Name+Loc+Flags |
+| X$Field | 8 | Field catalog — Xe$Id+File+Name+DataType+Offset+Size+Scale+Dec |
+| X$Index | 5 | Index catalog — Xi$File+Field+Number+Part+Flags |
+| X$Attrib | 4 | Extended attributes |
+| X$Occurs | 7 | Array field occurrences — Xo$FileId+ParentId+Length+Offset (= OCCURS.DDF content) |
+| X$Relate | 8 | FK relationships — Xr$PId+Index+FId+FIndex (= RELATE.DDF content, ~8 records) |
+| X$Trigger | 8 | Trigger definitions — Xt$Name+Version+File+Event |
+| X$View | 4 | View definitions — Xv$Name+Version+Id+Misc |
+| X$Variant | 2 | Nullable/variant info — Xvar$FileId+Pdf |
+| X$Proc | 5 | Stored procedure catalog — Xp$Name+Ver+Id+Flags |
+
+These are read directly by the DDF extraction tools (`scripts/ddf_extract.py`) and are the source for all field/index data in `samples/ddf/schema.json` and `samples/ddf/indexes.csv`.
+
+---
+
 ## MK* — Marketing Automation Tables (11 tables)
 
 The MK module implements a **campaign management / drip-marketing system** built on top of

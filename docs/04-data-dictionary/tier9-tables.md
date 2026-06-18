@@ -507,5 +507,127 @@ set in autoT7POJC (automated PO job close) when configuring the quality checkpoi
 
 ---
 
-*Tier 9 per-table narrative docs — Java-confirmed field schemas from EvoPVT.jar class files.
-Generated Pass 103, 2026-06-18.*
+## INVTXN — Inventory Transaction Log
+
+**Module:** Cross-module (IN/SO/WO/PO/PI) | **PK:** (date+code+type — append-only) | **Fields:** 24
+
+Every inventory movement in EvoERP writes a row to INVTXN. This is the core audit trail for
+on-hand quantities, costs, and lot/serial tracking. Called by SO posting, WO receipts, PO
+receiving, PI adjustments, and manual IC adjustments.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| MTIT_TYPE | STRING | 1 | Transaction type: `R`=receive (PO), `I`=issue (to WO), `A`=adjustment, `S`=ship (SO), `P`=PI/physical, `X`=scrap |
+| MTIT_CLASS | STRING | 4 | Item class code |
+| MTIT_DATE | DATE | 4 | Transaction date |
+| MTIT_CODE | STRING | 15 | Part number / item code |
+| MTIT_QTY | FLOAT | 8 | Quantity (positive = in, negative = out) |
+| MTIT_AVGCOST | FLOAT | 8 | Average cost per unit at time of transaction |
+| MTIT_STDCST | FLOAT | 8 | Standard cost per unit at time of transaction |
+| MTIT_LOC | STRING | 10 | Location / warehouse code |
+| MTIT_REF | STRING | 30 | Reference number — the source document (SO#, PO#, WO#, etc.) |
+| MTIT_CUST | STRING | 10 | Customer code (for SO/AR transactions) |
+| MTIT_INVOICE | FLOAT | 8 | Invoice number (for SO transactions) |
+| MTIT_PRICE | FLOAT | 8 | Selling price (for SO transactions) |
+| MTIT_PO | FLOAT | 8 | PO number (for PO/AP transactions) |
+| MTIT_WOPRE | FLOAT | 8 | WO prefix (for WO-related transactions) |
+| MTIT_WOSUF | UBINARY | 2 | WO suffix |
+| MTIT_LOT | STRING | 15 | Lot number (if lot-tracked) |
+| MTIT_SERIAL | STRING | 25 | Serial number (if serial-tracked) |
+| MTIT_VENDOR | STRING | 10 | Vendor code (for PO/AP transactions) |
+| MTIT_SCRAP | STRING | 2 | Scrap reason code |
+| MTIT_QC | STRING | 2 | QC code |
+| MTIT_DEPT | STRING | 4 | Department code |
+| MTIT_DESC | STRING | 30 | Transaction description |
+| MTIT_PRODLOT | STRING | 15 | Production lot (for WO receipts — the lot assigned to finished goods) |
+| MTIT_EXTRA | STRING | 50 | Extra / overflow field |
+
+**Usage pattern:** When SO-G posts a shipment, it writes one INVTXN row per line item
+(TYPE=`S`, CODE=part, QTY=-shipped_qty, REF=SO#, CUST=customer). When WO receipts post,
+they write TYPE=`R`/`I` rows. BKICLOC on-hand is decremented/incremented, then INVTXN
+gets the corresponding audit row.
+
+---
+
+## WOLABOR — WO Labor Transaction (58 fields)
+
+**Module:** WO / DC | **PK:** (WOPRE+WOSUF+OPER+TRXN) | **Fields:** 58
+
+Each clock-in / clock-out event on a work order writes one WOLABOR row. This is the
+primary table for job-cost labor actuals. Referenced by JC module for cost analysis
+and by DC module as the source of truth for labor entry.
+
+Key fields by category:
+
+**Identity:**
+| Field | Type | Meaning |
+|-------|------|---------|
+| MTWOLA_DATE | DATE | Labor date |
+| MTWOLA_EMP | UBINARY | Employee number |
+| MTWOLA_WOPRE | FLOAT | WO prefix |
+| MTWOLA_WOSUF | UBINARY | WO suffix |
+| MTWOLA_OPER | UBINARY | Operation number |
+| MTWOLA_TRXN | UBINARY | Transaction sequence |
+| MTWOLA_POSTED | STRING(1) | Posted flag |
+| MTWOLA_REGOVER | STRING(1) | Regular (`R`) or overtime (`O`) |
+
+**Hours and quantities:**
+| Field | Meaning |
+|-------|---------|
+| MTWOLA_RUNHRS | Run hours |
+| MTWOLA_SETUPHRS | Setup hours |
+| MTWOLA_NOJOBS | Number of jobs / pieces |
+| MTWOLA_PARTS | Parts count |
+| MTWOLA_SCRAPPED | Scrapped quantity |
+| MTWOLA_COMPLETE | Complete flag (Y/N) |
+| MTWOLA_REWORK | Rework flag |
+
+**Costs (computed and stored at posting time):**
+| Field | Meaning |
+|-------|---------|
+| MTWOLA_LABRATE | Labor rate ($/hr) |
+| MTWOLA_LABCOST | Labor cost |
+| MTWOLA_SETCOST | Setup cost |
+| MTWOLA_MACHCOST | Machine cost |
+| MTWOLA_FOHCOST | Fixed overhead cost |
+| MTWOLA_VOHCOST | Variable overhead cost |
+| MTWOLA_MISC | Miscellaneous cost |
+
+**Quality:**
+| Field | Meaning |
+|-------|---------|
+| MTWOLA_QCCODE | QC reject code |
+| MTWOLA_QCDESC | QC reject description |
+| MTWOLA_SCRAPCD | Scrap code |
+| MTWOLA_SCDESC | Scrap description |
+
+**Resources assigned:**
+| Field | Meaning |
+|-------|---------|
+| MTWOLA_WC | Work center code |
+| MTWOLA_MACH | Machine code |
+| MTWOLA_TOOL | Tool code |
+| MTWOLA_SHIFT | Shift number |
+| MTWOLA_TEAM | Team ID |
+
+**Time stamps (DC time-clock integration):**
+| Field | Meaning |
+|-------|---------|
+| MTWOLA_START | Clock-in time |
+| MTWOLA_STOP | Clock-out time |
+| MTWOLA_DEDUCT | Deduction (break time) |
+
+**Cycle count tracking (per-cycle production metrics):**
+| Field | Meaning |
+|-------|---------|
+| MTWOLA_CYCHR/MIN/SEC | Cycle time (hours/minutes/seconds) |
+| MTWOLA_CYCPARTS | Parts produced per cycle |
+| MTWOLA_CYCNOTE | Cycle note (255 chars) |
+
+**Custom flags:** MTWOLA_FLAG_1..5 (5 × STRING 1) and MTWOLA_ALPHA_1..3 (3 × STRING 30)
+for customer-specific extensions.
+
+---
+
+*Tier 9 per-table narrative docs — Java-confirmed field schemas from EvoPVT.jar class files;
+DDF-confirmed schemas from Pass 108. Generated Pass 103, updated Pass 108, 2026-06-18.*
