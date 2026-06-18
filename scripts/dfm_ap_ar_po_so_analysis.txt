@@ -1,0 +1,688 @@
+DFM Analysis — AP/AR/PO/SO Module Forms
+Generated: Pass 103, 2026-06-18
+Total forms analyzed: 171
+  T7AP*: 35 files
+  T7AR*: 24 files
+  T7PO*: 41 files
+  T7SO*: 71 files
+================================================================================
+
+### T7APA.DFM
+  Components: 1
+  Captions (45): &Save, -, Address, CO, City, Class, Contact, Country, Currency, Cust at this Vnd, E&xit , ETB1, ETB2, ETB3, ETB4, ETB5, FOB, Fax, GL Expense, Information, Last Payment, Last Purchase, Name, New Screen, Outstandind Credits, Outstanding Invoices, PO, PR, Phone, Print File Lbls, RE, Remittance, Send 1099  , Settings, Ship Via, Start Date, State, TR, Tax Group, Tax ID No
+
+### T7APABANK.DFM
+  Components: 1
+  Captions (15): Account Number, Account Type [CS], Address, Bank Name, City, Contact, E&xit, E-Mail Address, Name on Account, Routing Number, State, Telephone Number, Vendor, Vendor Bank Information, Zip
+
+### t7apaC.DFM
+  Components: 1
+  Captions (63):  &Act. / Arch., &CO, &PR, &Reports, &Save, &TR, -, ACH/NACHA Vendor, Address, Bank, Bank Account No, Bank Rout No, City, Class, Contact, Convert SO to PO, Country, Currency, Cust at this Vnd, Duty Code, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, FOB, Fax, GL Expense, Inactive Vendor, Information, Last Payment, Last Purchase, Long Name, Misc Info, Misc Info 2, Name, New Screen, None, Outstanding Credits
+
+### T7APACH.DFM
+  Components: 0
+
+### T7APACON.DFM
+  Components: 1
+  Captions (4):  Customer Contact Information, Contact Name, E-Mail Address / Telephone Number, Vendor
+
+### t7apae.DFM
+  Components: 1
+  Captions (67):  &Act. / Arch., &CO, &Reports, &Save, -, ACH/NACHA Vendor, Address, Bank, Bank Account Number, Bank Routing Number, City, Class, Company Info:, Contact Name, Contacts, Convert SO to PO, Country, Credit Info, Currency, Cust at this Vnd, Duty Code, E&xit, E-Mail Address / Telephone Number, ETB1, ETB2, ETB3, ETB4, ETB5, Email, FOB, Fax, GL Expense, Inactive Vendor, Information, Last Payment, Last Purchase, Long Name, Main Contact:, Misc Info, Misc Info 2
+
+### T7APAPRC.DFM
+  Components: 1
+  Captions (5):  Check Vendor Item Pricing, Extention, Item, Price, Qty
+
+### T7APASTA.DFM
+  Components: 1
+  Captions (6):  Vendor Statistics, Gross Purchase History, Last Year, Variance, Vendor, Year to Date
+
+### T7APB.DFM
+  Components: 1
+  Captions (49): %, &Add Line, &Back, &Delete Line, &Print, &Save, -, < Enter Backout Date >, Amount, City, Country, Currency, D/C, Default Jobs, Delete &Vouch, Dept, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Edit Address, Exit Line, Frequency, GL Account, GL Post Date, Job, Maximum times, Next Date, Number, Panel1, Save Line, Schedule Date, Selection Code, State, Street, Terms, ToolBar1
+
+### T7APC.DFM
+  Components: 1
+  Captions (70): "Are you ready to Post this Invoice" default Yes, "Do you want to close this P/O as this Time?" default Yes, %, &Back, &Continue, &Date, &Item, &PO, &Post, &Recv, &Tag, &Untag, &View All, (optional), COD/Invoice [C/I]?, Check Number, City, Conv, Country, Currency, Description, Destination, Disc, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Ext, Freight, From PO Number, GL Post Date, GPathLabel, I - Invoice Amount, Including Freight, Misc. Costs, and Taxes, Invoice Amount, Invoice Date, Invoice Link, Invoice Number
+
+### T7APD.DFM
+  Components: 1
+  Captions (28): &Save, (Wednesday), AP-D Enter Scheduled Payment Dates, Amount, Credits, Date, Description, Due Date, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Invoce No, Invoices, Last, Outstanding, Panel1, Payment, Purchase, Schedule All, Schedule Pmt, Scheduled Payment Date, Telephone, ToolBar1, Vendor, Vendor Name
+
+### T7APE.DFM
+  Components: 1
+  Captions (20): &Print, Date Range From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Include invoices due prior to the , New Screen, Print the Running Total of Amount to Pay, Se&ttings, Take Discounts on Invoices whose discount date is past, Terms From, Thru, ToolBar1, Use Net date or Discount date to determine the, Vendor Class From, Vendor Currency From, Vendor From
+
+### t7apf.dfm
+  Components: 1
+  Captions (43): &E Pay, &Save, Applied, City, Country, Credits, Credits Used, Date, Description, Discount, Due to Terms, E Pay ONLY, E&xit, E-Pay Only, ETB1, ETB2, ETB3, ETB4, ETB5, Information, Invoice Amount , Invoice No, Invoices, Last Payment, Last Purchase, New Screen, Only load transactions dated, Open AP Items, Outstanding Amounts, Panel1, Remittance Address, Select Items to Pay, State, Street, Take all discounts, regardless of terms?, Tel #, Terms, This Payment, ToolBar1, Total Amount Selected for Payment, Vendor
+
+### t7apg.dfm
+  Components: 1
+  Captions (16): &Print, AP-G Print Proforma Check Register, Bank Acount Name, Bank Acount Number, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Export FileName, Pro Forma Check Register Date, Se&ttings, Sort By Vendor Code (C) or Name (N), SubSort by Date (D) or Invoice Num (I), ToolBar1
+
+### T7APH.DFM
+  Components: 1
+  Captions (37): &Print, ACH Number, AP-H  Print Checks, Bank Account Number, Bank Acount Name, Beginning Check Number, Capitalize every word in the Long $$ Amounts?, Check Date, Check Note, E Pay, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Effective Date, Exclude the word "PAY" from the Written Line, Export ACH/NACHA Program Name, Export Accts Payable to File [YNO]?, ExportLabel, Next ACH, Next Check, Next Epay, Post Checks, Print Check Invoices sorted by Invoice Number?, Print Note on the Check(s) [Y/N/A], Pro&Forma, Se&ttings, Sort By Vendor Code/Name [C/N], Tag, Thru, ToolBar1, Untag, Vendor Class From, Vendor Code From, Vendor Name From
+
+### T7APHASK.DFM
+  Components: 1
+  Captions (4): Check Note, Check Note:, E&xit, Vendor:
+
+### T7API.DFM
+  Components: 1
+  Captions (35): &Print, 1, 2, 3, 4, 5, A/P Listing, AGING PERIODS, Age from date, Class, Currency, Days, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exclude Payments in the A/P Listing Report., Include, Include AP Deposits? [YNO], Invoice description Contents, New Screen, Period, Print in Base or Source Currency?  [B/S], Se&ttings, Sort By Code, Name or Alpha Sort? [C/N/A], Start Date, Terms, Terms Type, ToolBar1, Type of report to print, Vendor, or / and
+
+### T7APINFO.DFM
+  Components: 1
+  Captions (16): &Save, Codes, Data, Dates, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Flags, New Screen, Numbers, ToolBar1, Values, Vendor
+
+### T7APJ.DFM
+  Components: 1
+  Captions (24): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Include ACH/NACHA Vendors [Y/N/O], Include Tax ID, Last Purchase Date From, New Screen, Print Active Vendors, Print Approved Vendors, Print Current or Archived Vendors, Print Inactive Vendors, Print UnApproved Vendors, Se&ttings, Sort by  Code, Name, or Alpha sort [C,N,A], Start Date From, State From, Thru, ToolBar1, Vendor Class From, Vendor From
+
+### T7APK.DFM
+  Components: 1
+  Captions (22): &Print, Alpha Sort, Code, Country, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Fax Number, From Vendor Class, From Vendor Code, Name, New Screen, Print Vendor , Se&ttings, Sort Report By, Thru Vendor Class, Thru Vendor Code , ToolBar1, or
+
+### t7apl.DFM
+  Components: 1
+  Captions (15): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, Recalculate MTD and YTD totals (Y/N)?, Se&ttings, Sort by  Code, Name, or Alpha sort [C,N,A], Thru, ToolBar1, Vendor Class From, Vendor From
+
+### T7APM.DFM
+  Components: 1
+  Captions (17): &Print, &Settings, AP-M, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Filing or Mailing Labels (F/M), Number of Labels Across, Sort By, Thru, ToolBar1, Vendor Class From, Vendor Code From, Zip Code From
+
+### T7APO.DFM
+  Components: 1
+  Captions (31): &Save, -, Amount, Clear, Currency, D/C, Dept, Description, Distribution, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Frequency, GL Account, Information, Invoice Info:, Maximum Times, New Screen, Next Date, Number, Panel1, Selection Code, Terms, ToolBar1, Total Amount, Type, Vendor, Vendor Name
+
+### T7APP.DFM
+  Components: 1
+  Captions (17): &Generate, Accounts Payable Voucher  , E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, Generate Vouchers Due By, New Screen, Selection Code Range, Thru, ToolBar1, Vendor Code, Voucher Posting Date , Working on Recurring Voucher
+
+### T7APPVND.DFM
+  Components: 0
+
+### T7APQ.DFM
+  Components: 1
+  Captions (19):  &Void, &Print, Bank Account [1-99], Check Amount, Check Date, Check Number, Check to be voided, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, ToolBar1, Vendor, Vendor Code, Vendor Name, Void this check as of
+
+### T7APR.DFM
+  Components: 1
+  Captions (22): &Print, 1099 Vendors Only?, Active (A) or Archived (D) Payments? , All Bank Accounts?, Check Date From, Check Number From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, Print 1 Check Per Page?, Print Vendor Code or Name, Print Vendor Totals Only?, Se&ttings, Sort Checks by Number, Vend, or Vend+Date [N/V/D], Sort Invoices by Date or Number [D/N], Thru, ToolBar1, Vendor From
+
+### T7APS.DFM
+  Components: 1
+  Captions (18): &Print, -, 1099 Type, Amount Range, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Federal ID Number, For Calendar Year, New Screen, Print only if Tax ID exists , ToolBar1, Vendor Class Range, Vendor Code Range, Vendor Name
+
+### T7APT.DFM
+  Components: 1
+  Captions (44): &Print, AP check info, Amount Paid, Bank Acct, Bank Details, Check Details, Check Number, Chk Amount, Chk Date, Chk type, Currency, Date, Description, Discount, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Frt Amt, GL Acct, Inv Amount, Inv Disc, Invoice Details, Invoice Number, Invoices, Name, No., PO Date, PO Lines, PO Number, Packing Slip, Packing Slip No., Tax, Thru, ToolBar1, Unpaid Inv, Vendor, Vendor Code
+
+### T7APV.DFM
+  Components: 1
+  Captions (27): &Add, &Delete, &Edit, &Print, &Report, &Save, (for AP aging ) , AP-V  Enter/Print Vendor Deposits, Currency, Deposit Amount, Deposit Date, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From Date, From Vendor Code, Link to PO#, Name, Terms, Thru Date, Thru Vendor Code, ToolBar1, Vendor
+
+### T7APX.DFM
+  Components: 1
+  Captions (15): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Invoice Date From, Invoice Number From, New Screen, Print Only Invoices without Invoice Links, Print from Archived Invoices, Thru, ToolBar1, Vendor From
+
+### T7APY.DFM
+  Components: 1
+  Captions (20): &Print, Bank Account Number, Bank Acount Name, Check Date From, Check Number From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Replace ePay with Remittance for Email Subjects, Reprint Check, Se&ttings, Sort Number, Thru, ToolBar1, Vendor Amount, Vendor Class From, Vendor Code From
+
+### T7APYB.DFM
+  Components: 1
+  Captions (28): &Process, Bank Acount Name, Bank Number, Check Date From, Check Number From, Date Format: MMDDYY, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Ex:  C:\EXPORT\DATA\Filename.CSV, Export Example:, Export Field Delimiter, Export FileName, Export Order, Include Bank Account Number, Include Check Amount, Include Check Issue Date, Include Check Number, Include Decimal in Check Amount, Include Payee Name, Pinacle, Se&ttings, Thru, ToolBar1, Use Double Quotes for Payee Name
+
+### T7APYC.DFM
+  Components: 1
+  Captions (19): &Process, &Settings, Bank Acount Name, Bank Number, Check Date From, Check Number From, Company Tax ID , E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Effective Date, Ex:  C:\EXPORT\DATA\Filename.TXT, Export FileName, NACHA, Thru, ToolBar1
+
+### T7APZA.DFM
+  Components: 1
+  Captions (22): &Print, = = = CURRENT YEAR YTD = = = , = = = LAST YEAR = = =, = = = LAST YEAR YTD = = =, Date RANGE 1 From, Date RANGE 2 From, Date RANGE 3 From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, Se&ttings, Territory, Thru, ToolBar1, Top N MTD, YTD, or LYR [M.Y,L], Top N Vendors, Vendor Class , Vendor From
+
+### T7ARA.DFM
+  Components: 1
+  Captions (115):  &Act. / Arch., # Copies, &Back, &CO, &Reports, &Save, -, 2D (PDF417) Barcode Customer [GDMOA], 2D Barcode, ASN Required?, Address, Allow Backorders, April, August, Bill, Billing Type, C&M, Charge Interest    , Charge Recycle Fee, City, Class, Company Info:, Contact Name, Contacts, Corp Ship To, Country, Credit Amount, Credit Hold, Credit Info, Cumms Reset Date, Currency, Customer, Customer Commissions, Days to Pay, December, Default GL Sales, Default SO Loc, Default Terms, Discount Code, Dock Code:
+
+### T7ARA2DB.DFM
+  Components: 1
+  Captions (14): &Add, &Delete, &Save, 2D Barcode Layout, Character(s), Description, Document , E&xit, Field Name, GridPanel, Order, ToolBar2, ToolButton1, or  ASCII
+
+### T7ARAC.DFM
+  Components: 1
+  Captions (73):  &Act. / Arch., &Back, &CO, &PR, &QU, &Reports, &SO, &Save, &TR, 2D Barcode, Address, Allow Backorders, Bill, Billing Type, BillingLabel, C&M, CR, Charge Interest, Charge Recycle Fee, City, Class, Contact, Country, Currency, Customer, Customer Commissions, Default GL Sales, Default Terms, Discount Code, E&xit, EDI Customer, ETB1, ETB2, ETB3, ETB4, ETB5, Email, Email Invoice to SLSP [C/B/N], Excise Taxable, Extended Address
+
+### T7ARACON.DFM
+  Components: 1
+  Captions (4):  Customer Contact Information, Contact Name, Customer , E-Mail Address / Telephone Number
+
+### T7ARACRE.DFM
+  Components: 1
+  Captions (12):  Customer Credit Information, Credit Amount, Credit Hold, Customer , Days to Pay, Follow-up Date, Last Dun, Last Payment, Last Sale, Out Credits, Out Deposits, Out Inv Amounts
+
+### T7ARAE.DFM
+  Components: 1
+  Captions (115):  &Act. / Arch., # Copies, &Back, &CO, &Reports, &Save, -, 2D (PDF417) Barcode Customer [GDMOA], 2D Barcode, ASN Required?, Address, Allow Backorders, April, August, Bill, Billing Type, C&M, Charge Interest    , Charge Recycle Fee, City, Class, Company Info:, Contact Name, Contacts, Corp Ship To, Country, Credit Amount, Credit Hold, Credit Info, Cumms Reset Date, Currency, Customer, Customer Commissions, Days to Pay, December, Default GL Sales, Default SO Loc, Default Terms, Discount Code, Dock Code:
+
+### T7ARAPRC.DFM
+  Components: 1
+  Captions (6):  Check Customer Item Pricing, Discount %, Extention, Item, Price, Qty
+
+### T7ARASTA.DFM
+  Components: 1
+  Captions (8):  Customer Statistics, Cost of Goods Sold, Customer , Gross Sales, Last Year, Net Sales, Variance, Year to Date
+
+### T7ARB.DFM
+  Components: 1
+  Captions (29): %, &Save, -, Amount, Commission Charge Backs, Currency, Customer, Customer Name, D/C, Default Jobs, Dept, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, GL Account, GL Post Date, Job, Number, Panel1, Terms, ToolBar1, ToolButton1, Total Amount, Type, Voucher Entry
+
+### T7ARC.DFM
+  Components: 1
+  Captions (50): &Credit Card, &PO, &Print, &Save, (Optional) , AR &Transactions, AR-C  Record Payments, Amount, Applied, Balance, Check Amount, Check Number, Credits, Currency, Customer Code, Customer Name, Deposit Number, Deposits, Description, Discount, Display Customer PO instead of Packing Slip, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exceptions, Exceptions List, Import &Payments, Invoice #, Invoice Date, Invoice Number, Invoices, Last Payment, Last Sale, NSF Check, Only load transactions Invoices dated on or before, Outstanding Amounts, Panel1
+
+### T7ARD.DFM
+  Components: 1
+  Captions (12): AR-D  Charge Interest on Invoices, Calculate Interest as of, Charge Intrest on Previous Finance Charges?, Currency, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Minimum Interest Charge, ToolBar1
+
+### T7ARE.DFM
+  Components: 1
+  Captions (30): &Print, AR-E  Print Statements [Plain Paper], Balance Forward Date, Currency, Cust Class Range, Customer Range, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enable Customer Print Groups?, Include Deposit in Balance Due?, Limit to Customers with this Print Group?, Overdue, Current, or All Accounts?, Print Accounts With Zero Balance?, Print Description / Terms / Cust PO [DTP]?, Print Items With Open Amounts Only ?, Print an Age Statement Format?, Se&ttings, Show Customer Deposit?, Show Deposits Applied or Received?, Show Payments for the last?, Sort by Cust Code, Name, Or Class[CNL]?, Statement Date, Sumarize Into a Balance Forward?, ToolBar1, Use Dollar Sign/Comma Formatting?, days
+
+### T7ARF.DFM
+  Components: 1
+  Captions (49): &Print, 1, 2, 3, 4, 5, AR Listing for Terms Type, AR-F  Print Aging, Age receivables as of, Aging Periods Greater Than, Base or Source Currency, Class, Credit hold only, Currency, Customer, Customer PO, Customer Subtotals, Days, Description, Description Column Contents?, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Export Filename (Past Due), Follow-up Date From  , Follow-up Type Code From  , From, If including fully-paid items, only print, Include, Include Deposits, Include Invoice Details, Include Packing Slips, Include Serial Numbers, Long Check #, Overdue Items Only, Period, Print Comma Formatted
+
+### T7ARG.DFM
+  Components: 1
+  Captions (29): &Print, AR-G  Print Customer Code and Name", Alpha Code, Code, Cust Class Range, Customer Range From, Days Since Last Sale to Classify , E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Incl Ship-To Customers with Active Custs?, Last Sale Date Range From, Name, Payment Terms, Print Current or Archived Customers?, Print Only Customers on Credit Hold?, Print Only Customers over Credit Limit?, Print for Active Customers?, Print for Inactive Customers?, Salesperson Range From , Se&ttings, Sort By, Start Date Range From, State Range, Thru, ToolBar1
+
+### T7ARH.DFM
+  Components: 1
+  Captions (22): -, AR-H  Print Customer General Info, Currency Range From, Cust Class Range, Customer Range From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Inactive Days, Last Sale Date Range From, Print, Print for active customers?, Print for inactive customers?, Salesperson Range, Sort By, Start Date Range From, State Range, Thru, ToolBar1
+
+### T7ARI.DFM
+  Components: 1
+  Captions (31): # days since last sale to classify , -, AR-I  Print Customer Mail Labels, Alpha Code, Code, Contact Range From, Cust Class Range, Customer Range From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Include Open AR, Include Open Credits, Include Open Deposits, Label Format, Last Sale Date Range From, Name, Print, Print for active customers?, Print for inactive customers?, Salesperson Range, Sort by, Start Date Range From, State Range, Thru, ToolBar1, Zip Code, Zip Code Range From
+
+### T7ARK.DFM
+  Components: 1
+  Captions (23): &Print, AR-K, Currency in Base/Source (B/S), E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Fully paid Invoices only (Y/N), Include monthly amounts (Y/N), Invoice Date Thru, Paid, Outstanding, Both [P/O/B], Print Invoice Date From, Print Report by Tax Groups, Print Tax Code From, Print Tax Group  From, Report Purchases/Sales (P/S), Se&ttings, Summary or Detail report (S/D), Tax Code Thru, Tax Group Thru, ToolBar1
+
+### T7ARL.DFM
+  Components: 1
+  Captions (19): AR-L  Transfer Sales Taxes, Amount Tagged, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Outstanding Amount, P&ost, Panel1, Post Date, Tag &All, Tag &Group, Tag &One, Tax Code, Tax Rate, ToolBar1
+
+### T7ARM.DFM
+  Components: 1
+  Captions (32): AR-M  Enter Customer Refund, Amount From REFUND.AMOUNT, Bank Account, Check#, City, Currency, Customer, Date, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enter Amount to refund, Invoice# , Name, Panel1, Post, Process, Refund Amount, Refund Amt, Refund Method, State, Street, Terms, To Enter Customer Name - BKAR.CUSTNAME, ToolBar1, Unapplied Credits / Deposits, Vendor, Zip Code
+
+### T7ARN.DFM
+  Components: 1
+  Captions (36):    , &Add, &Back, &Credit Card, &Delete, &Edit, &Print, &Report, &Save, (For AR Aging and Statements) , AR-N  Enter/Print Customer Deposits, Bank Account, Check Number, Currency, Customer, Deposit Date, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enter Deposit, From Customer Code, From Date, Generate Invoice, Link to SO#, Map Lines, Name, Open Deposit Amount, Orig Deposit Amount, Split Deposit, Thru Customer Code, Thru Date, ToolBar1
+
+### T7ARP.DFM
+  Components: 1
+  Captions (18): &Print, &Settings, BASE Blank T7 SCREEN, Customer Class From, Customer From, Due or Past Due Payment [D/P/B], E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Number of Days Late for Payment, Number of Days Prior to Payment, Sales Person 1 From, Sales Person 2 From, Thru, ToolBar1
+
+### T7ARR.DFM
+  Components: 1
+  Captions (21): AR-R Print AR Payment History, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Print, Print Customer Code or Name, Print From Check Date, Print From Check Number, Print From Customer Code, Print Long Check Numbers, Print all Bank Accounts?, Print in Base/Source Currency, Report on Active(A)  or Archived(D) Payments?, Se&ttings, Thru Check Date, Thru Check Number, Thru Customer Code, ToolBar1
+
+### T7ART.DFM
+  Components: 1
+  Captions (29): (MMYY), Acct Code:, Add Card, Address, Campany Address:, Card Number:, City:, Credit Card Information:, Delete Card, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Expiration Date:, List Cards, Name on Card:, Name:, New Screen, One Time Only , Processor, State:, Street 1:, Street 2:, Street 3:, Type Card:, Update Card, Zip Code:
+
+### T7ARU.DFM
+  Components: 1
+  Captions (13): &Process, As Of Date, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, Number of Days Past Due, Thru, ToolBar1
+
+### T7POA.DFM
+  Components: 1
+  Captions (68): &Save, * New, -, Address, Attention, City, Confirmed, Confirming ?, Conv. Factor, Country, Currency, Dept, Description, Disc %, Drawing Number, Due Date, E&xit , ECO Information, ECO Number, ETB1, ETB2, ETB3, ETB4, ETB5, Entered By, Estimate, FOB, Fax #, GL Account, GL Dept, Information, Internal Date, Item Number, Job #, Job Number, Line Items, Line No., Location, Name, New Screen
+
+### T7POA2.DFM
+  Components: 1
+  Captions (52): &Save, -, ALT:, Cancel, Confirmed, Conv. Factor, Date, Description, Disc %, Drawing Number, Due Date, E&xit, ECO Information, ECO Number, ETB1, ETB2, ETB3, ETB4, ETB5, Estimate, GL Account, GL Dept, Header, Internal Date, Item Number, Job Number, LineNo., Lines, Location, Name, Original Qty, PO #, PO Type, Part Number, Please Wait, Price, Processing Data, Promise Date, Quantity, Ref
+
+### T7POAC.DFM
+  Components: 1
+  Captions (65):  &Act. / Arch., &Lines, &ReOpen, &Save, * New, 1, 2, 3, 4, 5, = = = RISK ASSESSMENT = = = , Address, Are There Any Schedule Risks On This PO? [Y/N], Attention, Cancel, City, Confirming ?, Contract Number, Country, Currency, DPAS Rating, Date, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Employee, Entered By, FOB, Fax #, First Article Reports Required? [Y/N], GL Dept, Is There Any Potential Obsolence? [Y/N], Job #, Lines, Location, NADCAP Certs Required For Finishes? [Y/N]
+
+### T7POACPY.DFM
+  Components: 1
+  Captions (7): &Copy, E&xit, Est Receipt Date [Blank for Lead Time] , From Archive, New Screen, Please enter RFQ # [Blank for Next], Please enter the new Vendor code
+
+### T7POAE.DFM
+  Components: 1
+  Captions (96):  &Act. / Arch., &ReOpen, &Save, * New, -, = = = RISK ASSESSMENT = = = , ALT:, Address, Are There Any Schedule Risks On This PO? [Y/N], Attention, Cancel, City, Confirmed, Confirming ?, Contract Number, Conv. Factor, Country, Currency, DPAS Rating, Dept, Description, Disc %, Drawing Number, Due Date, E&xit, ECO Information, ECO Number, ETB1, ETB2, ETB3, ETB4, ETB5, Employee, Entered By, Estimate, FOB, Fax #, First Article Reports Required? [Y/N], GL Account, GL Dept
+
+### T7POAIMPLINES.DFM
+  Components: 1
+  Captions (32): (MM/DD/YY), *Comma Delimited Fields, Comment, Date Format, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est. Receipt Date, Import, Import Filename*, Include Approved Manufacturers, Include Second Description, Include Specifications, Include Vendor Items, Item Code, Item Description, Job Number, Name, PO Number, PO Type, POA Import, Price, Quantity, Se&ttings, Sequence, ToolBar1, Vend Code, WO Prefix, WO Suffix
+
+### T7POAPrBrk.DFM
+  Components: 1
+  Captions (6): E&xit, ExpireyDate, Item Code, Last Changed, Last Update, Verify PO Price Breaks
+
+### T7POAVITEM.DFM
+  Components: 1
+  Captions (8): E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, ToolBar1, Vendor Specific Items
+
+### T7POB.DFM
+  Components: 1
+  Captions (32): &Back, &Footer, &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enter Digital Signature (Y/N/Ask), Exclude Zero Balance Lines, Footer Copy 1, Footer Copy 2, Footer Copy 3, From, PO Number Range, PO-B, Print All POs Not Yet Printed?, Print Approved Vendor on Main PO Detail Line, Print Archived Original PO, Print Consolidated?, Print Hidden Notes?, Print Item Dwg/ECO/Revs?, Print Item Second Description, Print Linked Documents, Print Make From Components?, Print PO Status, Print System PO Note?, Se&ttings, Thru, ToolBar1, Vendor Code Range
+
+### t7poc.DFM
+  Components: 1
+  Captions (60): &Back, &Import PO, &Inventory, &Receive, &Save , *Comma Delimited Fields, -, Bin, Currency, Customs Broker?, Display &Lines, Display Comment Lines?, Display Fully Received Lines?, Due Date, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Employee Number, Import Filename*, Into, Inventory, Item Number, Job, Loc., Lot Controlled, New Screen, No Work Done , PO Freight Amount, PO Freight Vendor, PO Line, PO Type, POSubtLabel, Packing Slip Number, Packing Slip Qty, Please Wait, Processing Purchase Order, Purchase Order Number
+
+### T7POEA.DFM
+  Components: 1
+  Captions (16):  PO-E-A, &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, Print All RFQ, Print Linked Documents, Print Only RFQ Number Range, Print SO Dwg/ECO/Revs?, Se&ttings, Thru, ToolBar1
+
+### T7POENG.DFM
+  Components: 1
+  Captions (75):  Title, &Print, &User Defined, Break, Break Field, Confirmed/Unconfirmed/Both, Currency Range, Details?, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Entered By Range, From, GL Account Range, Header Filters, Include 0 Balances Lines on Open Orders?, Include Items Received into QC, Include Only Items Purchased for WOs, Include Only Items with Open WO Allocations, Include previous 12 Month Usage, Index 1, Index 10, Index 2, Index 3, Index 4, Index 5, Index 6, Index 7, Index 8, Index 9, Invoice Post Date Range, Item Class Range, Item Number Range, Job Number Range, Layout, Line Filters, Location Range
+
+### T7POF.DFM
+  Components: 1
+  Captions (40): &Save , Conv Factor, Convert to Vendor Pricing, Cost, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enter Verbal RFQs, Estimate Number, Exp Date, Issue Date, Item Number, Lead Time, Operation, PO-F, Panel1, Parent Part Number, Purch U/M, Quantity 1, Quantity 10, Quantity 2, Quantity 3, Quantity 4, Quantity 5, Quantity 6, Quantity 7, Quantity 8, Quantity 9, Quntity and Cost, RFQ Number, Se&ttings, ToolBar1, Use in Estimation?, Vendor Code, Vendor Name, Work Order Number
+
+### T7POG.DFM
+  Components: 1
+  Captions (22): &Process, Clear Quantities?, Convert Items w/o Qty?, Convert Notes?, Convert Quote Number, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Estimated Receipt Date, Keep Quote on File?, Order Date, PO-G, Pass 0$ Items to PO?, Pass RFQ# to PO Job or Desc [JDN], Se&ttings, Thru, To PO Number, ToolBar1, Work Order Number
+
+### T7POH.DFM
+  Components: 1
+  Captions (54): &Archive, &Copy, &Delete, &Last Cost, &Save, &Update, - - - COPY - - - , Archive Original Vendor Price when updating?, Archive, Purge or Restore [A/P/R], By, Conv Factor, Cost, Description, Display &Pricing, Dock To Stock, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exp Date, Exp Date From, Item Number, Item Number From, Keep Original Vendor Price, Last Changed, Last Cost 1, Last Cost 2, Last Cost 3, Last Cost 4, Last Cost 5, Last Cost PO#, Last Update, Lead Time, Min Cost, Min Quantity, Notes, PO-H, Purch U/M
+
+### T7POIC.DFM
+  Components: 1
+  Captions (20): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Estimate Number Range, From, Item Number Range, Open RFQ, PO-I-C, RFQ Date Range, RFQ Number Range, Se&ttings, Thru, ToolBar1, Use Form, Vendor Code Range, Work Order Range
+
+### T7POID.DFM
+  Components: 1
+  Captions (19): &Print, Active, Archived or Both (A,D,B), E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Expired, Current Prices or Both (E,C,B), From, Item Number Range, PO-I-D, Print Linked Documents, Print Quoted Prices, Se&ttings, Thru, ToolBar1, Use Form, Vendor Code Range
+
+### T7POIG.DFM
+  Components: 1
+  Captions (31): &Back, &Print, -, Background Color, Confirmed Line Color, Due Date From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Expedite Report Color, Item Number From, PO Number From, PO-I-G, Planner Code From, Print Confirmed Lines (C/U/A), Print Rework POs (Y/N/O), Print Vendor Copy?, Print WO Note Type, Rush Report Color, Rush/Colors, Se&ttings, Sort By , Thru, ToolBar1, Unconfirmed Line Color, Use Form, Vendor From, WO Priority 
+
+### T7POIH.DFM
+  Components: 1
+  Captions (27): &Print, Allowable days Early, Allowable days Late, Base on Item Quantities?, Base on Totals Dollars?, Calculate ON-Time Base on Numbers of Lines?, Class Range, Date Based on, Date Range, Days Based on, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Filter PO, From, Include Line Item Details?, PO Type, PO-I-H, Save Result to Vendor History?, Se&ttings, Thru, ToolBar1, Use Archive Purchase Orders?, Vendor Range
+
+### T7POII.DFM
+  Components: 1
+  Captions (17): &Print, Change Date From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item Number From, Job Number From, PO Number From, PO-I-I, Se&ttings, Sort Report By, Thru, ToolBar1, Vendor From
+
+### T7POIL.DFM
+  Components: 1
+  Captions (19): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, First Page Only, Include Received/Ready-to-Invoice POs, PO Date From, PO Number From, PO-B, Print Report Filters, Se&ttings, SigStatusLabel, Signature Status, Thru, ToolBar1, Vendor From
+
+### T7POJA.DFM
+  Components: 1
+  Captions (24): &Back, &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Expedite Days, PO Number From, PO-J-A  Print Receipt Travellers, Print Linked documents?, Print PO Comment Lines After Receiver Line Items?, Print PO Notes?, Print QC Notes?, Print Vendor Notes?, QC Receiver Number From, Receipt Date From, Rush 0 Days, Rush Days, Rush/Colors, Se&ttings, Thru, ToolBar1
+
+### T7POJB.DFM
+  Components: 1
+  Captions (34): &Back, &Print, Background Color, Calculate as of Date, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exclude Items Bought Off , Expedite Days, Expedite Report Color, From, Item Number Range, Job Number Range, PO Date Range, PO Number Range, PO Types [PS], PO-J-B, Panel1, Print Items at Standard Cost, Print Line Item Detail?, Rush 0 Days, Rush Days, Rush Report Color, Rush/Colors, Se&ttings, Sort Report By, Thru, ToolBar1, Vendor Code, Vendor Code Range, Work Order Range
+
+### T7POJC.DFM
+  Components: 1
+  Captions (49): &DR, &Inventory, &Save, Accepted, Accepted Qty  Bin, Act Receipt, Bought Off to Date, Buyoff Date, Comp Hist, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Employee, Est Receipt, Insp, Item Number, Manufacturer Part#, NCR, NO WORK DONE, PO Line Number, PO Number, PO-J-C, Packing Slip, Panel1, Print 2D Barcode Inventory Labels, QC, Qty Remaining, Qty in NCR, REWORK, RUSH, Receiver Line Qty, Receiver Number, Rejected, Rejected to Date, RoHS, Sample Size, Scrap
+
+### T7pojcqc.DFM
+  Components: 1
+  Captions (7): &Save, E&xit, Multi Scrap Codes, QC Code, Qty to Use as is, Remaining Use as is Qty, Total Use as is Qty
+
+### T7pojcsc.DFM
+  Components: 1
+  Captions (7): &Save, E&xit, Multi Scrap Codes, Qty to Scrap, Remaining Qty to Scrap, Scrap Code, Total Qty to Scrap
+
+### T7POJD.DFM
+  Components: 1
+  Captions (18): &Print, Base on Item Quantities?, Base on Totals Dollars?, Date Range, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, Include Line Item Details?, PO-J-D, Se&ttings, Thru, ToolBar1, Vendor Class Range, Vendor Range
+
+### T7POK.DFM
+  Components: 1
+  Captions (17): &Process, Close PO Date Range, Close PO Number Range, Close Vendor Code Range, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Effective Date, From, PO-K, Se&ttings, Thru, ToolBar1, Use ARD as Effective Date (Y/N)? 
+
+### T7POL.DFM
+  Components: 1
+  Captions (14):  Vendor, &Add, &Back, &Delete, &Edit, &Save, Description, E&xit, Item Number, Primary, Primary Vendor, Type, Vendor, Vendor Item Number 
+
+### T7POLA.DFM
+  Components: 1
+  Captions (18): &Print, CFG, Customer Code Range, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, Item Number Range, PO-L-A, Panel1, Parent Item Number Range, Print Approved Vendors, Thru, ToolBar1, Vendor Code Range
+
+### T7POLINEHIST.DFM
+  Components: 1
+  Captions (10): -, Current:, E&xit, ERD, GL Account, New Screen, Price, Qty, VPD, Work Order
+
+### T7POLP.DFM
+  Components: 1
+  Captions (14): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, Item Number From, PO-L-P, Se&ttings, Thru, ToolBar1, Vendor Code Range
+
+### T7POM.DFM
+  Components: 1
+  Captions (35): &Save , Allocation, Base Price, CFG, Date Range, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, In QC, Item Number, Job Number, On PO, On SO and BO, On WO, PO Inquiry, PO-M, POs, Panel1, Panel6, Purchase Order Number, Receipts, SO by Cust, Search, Sort List by, Status, Thru, ToolBar1, Vendor Code, WO Outside Process, WOs, Work Order Number
+
+### T7POMAST.DFM
+  Components: 1
+  Captions (43): &AP, &IC, &TR, ( + ) In QC Inspection, ( + ) On Purchase Order, ( + ) On Work Order, ( + ) On-Hand, ( - ) Allocation, ( - ) Forecasted, ( - ) On Back Order, ( - ) On Sales Order, ( = ) Available, Address, City, Contact, Country, Currency, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, In Work In Progress, Item Number , Last Payment, Last Purchase, Name, New Screen, Outstanding Credits, Outstanding Invoices, PO Number , Phone, QC Receiver Number, Start Date, State, TR, Terms, ToolBar1
+
+### T7POP.DFM
+  Components: 1
+  Captions (72): &Save , 1, 10, 2, 3, 4, 5, 6, 7, 8, 9, Address, Alpha Sort, CFG, Class, Contact, Contact Name, Contacts, Country, Currency, Customer at This Vendor, Description, Duty Code, E&xit, E-Mail Address / Telephone Number, ETB1, ETB2, ETB3, ETB4, ETB5, Enter, FOB, Fax, Follow-up Date, Follow-ups, Follow-ups List, Follw-up Codes, GL Expense, Gross Purchase History, History
+
+### T7POPGET.DFM
+  Components: 1
+  Captions (5): Cancel, Lookup, Ok, POP Caption, POPLABEL: 
+
+### t7POQ.DFM
+  Components: 1
+  Captions (25): &Clear All Line Confirmations, &Edit, &Save, Change to this Date for every PO Line?, Confirm, Confirm &All Lines, Confirm?, Confirming?, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Estimated Receipt/Due Date, Line, Maintain PO Delivery Dates, PO, PO Number, Price, Promise Date, Quantity, ToolBar1, ToolButton1, Vendor Code
+
+### T7POS.DFM
+  Components: 1
+  Captions (16): &Add, &Delete, &Save, Description, Discount, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item, New Screen, Price, Quantity, ToolBar1
+
+### T7POSCD.DFM
+  Components: 1
+  Captions (7): &Back, &Save, Amount Due, Amount Tendered, Cash Due, Change Due, E&xit
+
+### T7POSI.DFM
+  Components: 1
+  Captions (14): &Add, &Back, &Delete, &Save, Code, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, ToolBar1
+
+### T7POSX.DFM
+  Components: 1
+  Captions (13): &Add, &Back, &Delete, &Save, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, ToolBar1, Type
+
+### T7SOA.DFM
+  Components: 1
+  Captions (139): &Act. / Arch., &CC, &Est., &Recurring, &Save, * New, 3 Feet:, 30 Feet:, 31 Feet:, 40 Feet:, APH Market, APH Program, Acct#, Address, Attention, Auto Line Info, Backord Qty, Can Ship Early?, City, Clock In, Country, Cross Ref, Currency, Cust PO#, Cust Ref, Cust. Due Date, Cust:, Customer, Customer Location, Customer PO, Date, Description, Disc %, Discount Cd, Division, Drawing, Drawing Number, Drop Shipment?, E&xit, ECO Date
+
+### t7Soa2.DFM
+  Components: 1
+  Captions (74): &Est., &Save, 3 Feet:, 30 Feet:, 31 Feet:, 40 Feet:, Auto Line Info, Backord Qty, Cross Ref, Cust. Due Date, Cust:, Customer, Date, Description, Disc %, Drawing, Drawing Number, E&xit, ECO Date, ECO Information, ECO Number, ETB1, ETB2, ETB3, ETB4, ETB5, Est. Ship Date, Extension, FAT Date, Freight, Header, Internal Date, Item Number, Line No., Line Weight, LineCostLabel, LineGPLabel, Location, Misc 1, Misc 2
+
+### T7SOABKD.DFM
+  Components: 1
+  Captions (3): Enter Booking Date, Enter Booking Date: , OK
+
+### T7SOAC.DFM
+  Components: 1
+  Captions (69): &Act. / Arch., &CC, &Lines, &Recurring, &Save, * New, AC#, Address, Attention, Can Ship Early?, City, Clock In, Country, Currency, Cust PO#, Cust Ref, Customer, Date, Description, Discount Cd, Drop Shipment?, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Email, Entered By, Extra Data:, FOB, Freight, GL Dept, Inf&o, Issue Mat, Job, Job #, Last Inv #, Location, Material Premium
+
+### T7SOACITEM.DFM
+  Components: 1
+  Captions (9): Customer Specific Items, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Search :, ToolBar1
+
+### T7SOACPY.DFM
+  Components: 1
+  Captions (6): &Copy, E&xit, Estimated  Ship Date , From Archive, New Screen, Please enter Quote# [Blank for Next]
+
+### T7SOAE.DFM
+  Components: 1
+  Captions (139): &Act. / Arch., &CC, &Est., &Recurring, &Save, * New, 3 Feet:, 30 Feet:, 31 Feet:, 40 Feet:, APH Market, APH Program, Acct#, Address, Attention, Auto Line Info, Backord Qty, Can Ship Early?, City, Clock In, Country, Cross Ref, Currency, Cust PO#, Cust Ref, Cust. Due Date, Cust:, Customer, Customer Location, Customer PO, Date, Description, Disc %, Discount Cd, Division, Drawing, Drawing Number, Drop Shipment?, E&xit, ECO Date
+
+### T7SOAFRT.DFM
+  Components: 1
+  Captions (3): Enter Freight, Invoice freight amount:, OK
+
+### T7SOAIMPLINES.DFM
+  Components: 1
+  Captions (37): &Back, (MM/DD/YY), *Comma Delimited Fields, Company Code , Company Name, Company Path, Cust Due Date, Customer Code, Date Format, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est Ship Date, Import, Import Comments, Import Filename*, Import SO Lines, Include Kit Components, Include Make From Components, Include Second Description, Include Specifications, Item Code, Item Description, Name, PO Lines, PO Num , Price, Quantity, SO Line Location, SO Number, Se&ttings, Skip Lines with 0 Quantity [YNA], ToolBar1, Vendor Code
+
+### T7SOAPRC.DFM
+  Components: 1
+  Captions (6): &Ok, Base Price, Customer, E&xit, Item Pricing, Note:
+
+### T7SOAXCOM.DFM
+  Components: 1
+  Captions (19): &Add, &Delete, &Post, &Save, Commission %, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Label, New Screen, Not Visible, Overage %, Overage Amount, Rep #, SO Number, ToolBar1
+
+### T7SOB.DFM
+  Components: 1
+  Captions (29): &Print, Cust. Class From, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Job Number From, Print 0 Balance Lines?, Print Blanket Lines[Y/N/O], Print Freight?, Print Hidden Notes?, Print Item Rev associated with SO?, Print Kit Component?, Print Linked Documents, Print Notes?, Print Options?, Print Tax Codes for 0$?, Print Tax?, SLSP, SLSP RTM, SO Number From, SO-B, Se&ttings, Sort Lines by Item No.?, Thru, ToolBar1
+
+### T7SOBIN.DFM
+  Components: 1
+  Captions (22): &Save, Back, Bin Number, Customer, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item Number, Line Qty, Qty Allocated, Qty Left, Quantity, Remove All, SO Number, SO-BIN, Tag Bins, Thru, ToolBar1
+
+### T7SOC.DFM
+  Components: 1
+  Captions (59): &Back, &Footer, &Print, Cust. Class From, Customer    From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est. Ship Date From, Footer Copy 1, Footer Copy 2, Footer Copy 3, If Not, Override With This Ship Date, Include B/O, Invoice Date From, Item Number From, Job Number From, Page Break Character, Print Back Order Pick Ticket, Print Bin Locations (A/D), Print Blanket Order Lines?, Print C of C per Sales Order  [Y/N/O], Print Comments After Shipped Items?, Print Consolidated?, Print Designated Surcharge Items, Print Hidden Notes?, Print Item Dwg/ECO/Rev associated with SO?, Print Kit Component?, Print Linked Documents (Y/N/P/C), Print Lot Number Listings?, Print Multi Locations (Y/N/V), Print Non-Inventory Items [YNQ]?, Print Non-Released Lines?, Print Notes?, Print One C of C per Line Item [Y/N/R], Print One CofO per COO/SO [Y/N], Print One Kit per Page ?
+
+### T7SOD.DFM
+  Components: 1
+  Captions (63): &Archive , &Back, &JD Reprint, &Print, (Shipment), Batch Number, Country of Origin, Cust Routing, Delivery Note, Department, Dept Desc, Duns , E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, From, Graphical Format (RTM) to Use, Include BO in Num Labels?, Include Non-Released Lines?, Initial Number of Blank Labels?, Item Number, JD Pallet License Plate Number, John Deere, John Deere Label Type [I/M/X/S], John Deere Shipment?, Kanban ID:, MFD Date:, Misc, Number of Copies of Each Label, Packaging Type, Pallets, Print Comment Lines with Parent?, Print F&&O Lines with Parent?, Print Header or Detail Labels?, Print Labels for Posted Invoices?   , Print Linked Documents, Print Number of Columns  
+
+### T7SODDesc.DFM
+  Components: 1
+  Captions (5): DescLabel, Description, E&xit, New Screen, Num Copies
+
+### T7SODPallet.DFM
+  Components: 1
+  Captions (2): E&xit, New Screen
+
+### T7SOE.DFM
+  Components: 1
+  Captions (84): &Edit, &Save , Address, Attention, Auto Release Comments?, Auto Transfer Inventory from DFLT to SO LOC, BOL Number , Backord Qty , Billing Type, COD/PrePayment Required, Carrier Pro Number, City, Country, Customer , Customer PO, Description, Disc%, Display Comment Lines?, Display Shipped Lines?, Done, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est Ship, Exit Line, Extension, FOB, Freight, GL Dept, Gross Weight, H.Inf&o, Include Backorders?, Invoice Number, Item Number, L.In&fo, Lading Qty, Last Invoice
+
+### T7SOF.DFM
+  Components: 1
+  Captions (69):   If Not, Override With This Ship Date, &Back, &C.Inv Info, &Footer, &Print, AR Voucher Invoices?, Apply full amount of Deposits? [Y/N/A], Auto Email Invoices after Mark as Printed., Containers, Customer Class Range From, Customer Code Range From, Distribute Freight Charges evenly among SO Lines, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Finance Charge Invoices?, Footer Copy 1, Footer Copy 2, Footer Copy 3, Gross Weight, Include All Payments to show a Net Balance Due, Include Customer Code in email Attachment File Name., Invoice Date, Mark 1, Mark 2, Mark 3, Mark 4, Mark Invoices As Printed Default?, Net Weight, Number of, Print All Released SO Not Yet Printed?, Print Comments Lines?, Print Consolidated Invoice?, Print Hidden Notes?, Print Invoice Date Same as Ship Date?, Print Item Dwg/ECO/Rev assiciated with SO?, Print Item Dwg/ECO/Rev associated with Invoice?
+
+### T7SOFDEP.DFM
+  Components: 1
+  Captions (17): &Save, 123456, Amount Open :, Amount Remain:, Amount you want to apply to SO# , Date of Deposit, Deposit #, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, New Screen, Open Deposit for Customer , Open Deposits, ToolBar1
+
+### T7SOG.DFM
+  Components: 1
+  Captions (18): &Post, &Settings, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Invoice Date From, Invoice Number From, Post All Printed Invoices?, Print the Prepost CoGS Report?, Print the Prepost Commissions Report?, SO Number From, SOG COGS Report, Shipper Number From, Thru, ToolBar1
+
+### T7SOGA.DFM
+  Components: 1
+  Captions (4): From Sales Order No., Line Item, Posting Invoice No., SO-G-A Order Posting
+
+### T7SOGACHK.DFM
+  Components: 1
+  Captions (8): Cancel, Cash Terms, Customer, Deposit Number, Invoice #, OK, SO #, Total Amount 
+
+### T7SOGCG.DFM
+  Components: 0
+
+### T7SOGCM.DFM
+  Components: 0
+
+### T7SOGCogs.DFM
+  Components: 1
+  Captions (16): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Invoice Date From, Invoice Number From, Print for all Printed Invoices?, SO Number From, SOG COGS Report, Se&ttings, Shipper Number From, Thru, ToolBar1
+
+### T7SOGComm.DFM
+  Components: 1
+  Captions (16): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Invoice Date From, Invoice Number From, Print for all Printed Invoices?, SO Number From, SOG Commission Report, Se&ttings, Shipper Number From, Thru, ToolBar1
+
+### T7SOHINFO.DFM
+  Components: 1
+  Captions (30): &Save, E&xit, Line Item, Sales Header Misc. Infromation, Sales Order #, sohAlpha1, sohAlpha10, sohAlpha11, sohAlpha12, sohAlpha13, sohAlpha14, sohAlpha15, sohAlpha16, sohAlpha17, sohAlpha18, sohAlpha19, sohAlpha2, sohAlpha20, sohAlpha3, sohAlpha4, sohAlpha5, sohAlpha6, sohAlpha7, sohAlpha8, sohAlpha9, sohDate1, sohDate2, sohDate3, sohDate4, sohDate5
+
+### T7SOINFO.DFM
+  Components: 1
+  Captions (30): &Save, E&xit, Line Item, Sales Misc. Infromation, Sales Order #, soAlpha1, soAlpha10, soAlpha11, soAlpha12, soAlpha13, soAlpha14, soAlpha15, soAlpha16, soAlpha17, soAlpha18, soAlpha19, soAlpha2, soAlpha20, soAlpha3, soAlpha4, soAlpha5, soAlpha6, soAlpha7, soAlpha8, soAlpha9, soDate1, soDate2, soDate3, soDate4, soDate5
+
+### T7SOJINFO.DFM
+  Components: 1
+  Captions (7): &Save, E&xit, Frequency, Group Code, Limit, Next Invoice, Recurring Order Information
+
+### T7SOK.DFM
+  Components: 1
+  Captions (31): &Ok, &Post, &Tag/Untag, Customer, Customer Due Date, Customer PO#, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enter Order Date, Estimated Ship Date, From, Next Invoice Date, Next due date on/before, OK, P&re-Post, Print Sales Order Documents, S&earch, SO-K, SearchLabel, Selection Code, Selection Codes in Range, Sort &Order, Tag &All, Tag &Several, Tag All Templates With, Thru, ToolBar1
+
+### T7SOLINEHIST.DFM
+  Components: 1
+  Captions (10): CDD, Comm 1, Comm 2, Current:, Disc, E&xit, ESD, New Screen, Price, Qty
+
+### T7SOLINFO.DFM
+  Components: 1
+  Captions (30): &Save, E&xit, Line Item, Sales Line Misc. Infromation, Sales Order / Item#, solAlpha1, solAlpha10, solAlpha11, solAlpha12, solAlpha13, solAlpha14, solAlpha15, solAlpha16, solAlpha17, solAlpha18, solAlpha19, solAlpha2, solAlpha20, solAlpha3, solAlpha4, solAlpha5, solAlpha6, solAlpha7, solAlpha8, solAlpha9, solDate1, solDate2, solDate3, solDate4, solDate5
+
+### T7SOLOT.DFM
+  Components: 1
+  Captions (24): &Process, &Save, Back, Bin, Customer, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item Number, Line Qty, Lot Number, Qty Allocated, Qty Left, Quantity, Remove All, SO Number, SO-LOT, Tag Lots, Thru, ToolBar1
+
+### T7SON.DFM
+  Components: 1
+  Captions (41): &Process, Auto Generate Serial Numbers, Category             From, Check Vendor Min Quantity Against WO Quantity, Class                  From, Combine Duplicate Items Into Single Work Orders?, Create Multi-Assy Work Order? [Y/N/Auto], Create WO for Non-Inventory Type Items?, Create WOs for SO Blanket Line Items [YNO] , Create WOs for SO Lines not yet generated?, Create Work Orders For Kit Components?, Create Work Orders for Make From Items, Create a Multi Yield Work Order?, Dflt WO Loc, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exclude 0 Qty Components from WO BOM, From, Include Backorder Qty?, Increment Work-Order Suffix by, Match WO Suffix with SO Line Number, Offset Finish Date by Days?, Offset Start Date by Days? , Prevent Creating WOs with Lapsed Start Dates[YNWA] , Print WO Confirmation Report, Prompt for Work Order Quantity [Y/N/Available], SO Number Range, SO-N, Se&ttings, Thru, ToolBar1, Use Cust Due Date or Est Ship Date as WO Due Date, Use Default WO Location to Create WOs., Use Inventory Lead Time For Start Date?, Use Shop Calendar To Determine Start Date?, Work Order Class
+
+### t7sondte.DFM
+  Components: 1
+  Captions (2): Please Enter a Start Date, t7sondte
+
+### T7SONQTY.DFM
+  Components: 1
+  Captions (17): Allocated, Available, E&xit, Est Ship Date, In Work-in-Process, Item Num, Lead Time, Min Ord Qty, On Back Order, On Purchase Order, On Sales Order, On Work Order, On-Hand, Please Enter a Quantity to Convert, Reorder Level, S/O Num, T7SONQTY
+
+### T7SOOA.DFM
+  Components: 1
+  Captions (40): &Print, -, = = = Include on this Report = = = , Backorder Amounts?, Calculate Days to Ship?, Calculate WO Est Hours?, Comments?, Currency [Base/Src], Customer From, Customer PO From, Due Date From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est. Monthly Ship?, Incl Last WO Sequence?, Incl Only Lines with WOs?, Incl Only Lines with unstarted WOs?, Incl Only Lines without WOs?, Item Class From, Item Number From, Job Number From, Kit Components?, Line Item Detail?, Options?, Order Date From, Print Grand totals only?, SO-OA, Sales Order From, Sales Person 1 Range, Sales Person 2 Range, Se&ttings, Ship Date From, Sort Report By:, Thru, ToolBar1, Use Due Date for Monthly Ship?
+
+### T7SOOB.DFM
+  Components: 1
+  Captions (17): &Print, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Estimated Ship Date From, Item Number From, Job Number From, Print Packing Slip Number, SO-OB, Se&ttings, Sort By, Thru, ToolBar1
+
+### T7SOOD.DFM
+  Components: 1
+  Captions (17): &Print, -, Customer From, Customer Order From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Print One SO per Page?, SO Number From, SO-OA, Sales Person Range, Se&ttings, Thru, ToolBar1
+
+### T7SOOE.DFM
+  Components: 1
+  Captions (50): &Back, &Print, = = = WO FILTERS to Determine Labor Hours Remaining = = = , Cust Due Date From, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est Ship Date From, Exclude Released Lines?, Incl Last/Curr WO Seq?, Incl Unposted Labor for Last Seq Determination?, Include Customers on Credit Hold?, Include Option/Kit Comps?, Include Price Extension?, Include Remaining Labor?, Include S/R Orders?, Include UOH for all Locs?, Include all locations?, Include if WO Fin is ONLY within Ship Date Range, Include up to 5 comments, Item Category From, Item Class From, Item Number From, Item Type, Job Number From, Lead Source 2 From, Lead Source From, Machine 1 From , Machine 2 From , Machine 3 From , Print Linked documents?, Print Subtotals?, SO-O-E, Sales Order From, Se&ttings, Sort Report By:
+
+### T7SOOF.DFM
+  Components: 1
+  Captions (31): &Print, Customer, Customer Due Date, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est Ship Date, From, Include All Locations?, Include Customers on Credit Hold?, Include Items with 0 UOH?, Include Released Orders?, Include S/R Orders?, Include Sales Value?, Include items that are holding up the shipments, Item Category , Item Class, Item Number, Job Number, Limit to complete, Print Only Items that can Ship Complete?, SO-OF, Sales Order, Se&ttings, Show UOH for 2 to 4 Locations, Sort By, Thru, ToolBar1
+
+### T7SOOG.DFM
+  Components: 1
+  Captions (28): &Print, Customer Code From, Customer Name From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Estimated Ship Date From, Exclude Kit Parent SO Lines, Exclude SO Line Item Types, Include All Open Sales Order Lines, Item Number From, Job Number From, Only print SO Lines without WOs, Order Date From, SO Number From, SO-O-G, Se&ttings, Sort By, Thru, ToolBar1, WO Due Date From, WO Finished Date From, WO Status, Work Order Number From, [RFAMNLBTKO]
+
+### T7SOOH.DFM
+  Components: 1
+  Captions (25): AR Voucher Invoices?, Currency, Currency Range, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Finance Charge Invoices?, From, INVOICE TYPES TO INCLUDE, Invoice Date From, Invoice Number From, Print, Print only Drop Ship Invoices?, SO Module Invoices?, SO Number From, SO-Oh, SR Module Invoices?, Se&ttings, Sort By Invoice Number (I) or Date (D), Thru, ToolBar1
+
+### T7SOOI.DFM
+  Components: 1
+  Captions (32): &Print, -, Comments?, Currency [Base/Src], Customer From, Customer PO From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Early Monthly Ship?, Include on this Report, Item Category From, Item Class From, Item Number From, Job Number From, Kit Components?, Line Item Detail?, Options?, Print Grand totals only?, SO-OI, Sales Order From, Sales Person 1 Range, Sales Person 2 Range, Se&ttings, Ship Date From, Sort Report By:, Thru, ToolBar1, Use Ship Date?
+
+### T7SOOM.DFM
+  Components: 1
+  Captions (24): &Print, Change Date From, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Include Changes in Commissions, Include Changes in Discount, Include Changes in Due Date, Include Changes in Location, Include Changes in Price, Include Changes in Quantity, Include Changes in Ship Date, Item Number From, Job Number From, Print Archived SO Changes, SO Number From, SO-O-M, Sort Report By, Thru, ToolBar1
+
+### T7SOON.DFM
+  Components: 1
+  Captions (31): &Print, Allowable Days Early, Allowable Days Late, And, Base Elapsed Days on ESD/ASD[E/A] , Customer Class From, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exclude:  Item Cat(s), Include Kit Components, Invoice Date From, Invoice Number From, Item Category From, Item Class From, Item Number From, Job Number From, Print Late Orders Only, Print Net Early/Late Days, Print Ship Log Summary, Print Summary Only, SO Number From, SO-O-N, Se&ttings, Sort By, Thru, ToolBar1
+
+### T7SOPB.DFM
+  Components: 1
+  Captions (27): &Print, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Enter Win Likelihood [0-9], From, Mark As Printed?, Options?, Print Archived Quotes?, Print Contract Pricing Matrix [YNL], Print Hidden Notes?, Print Item Rev associated with SO?, Print Kit Components?, Print Linked Documents, Print Notes?, Print Price Code Matrix, Print System Quote Notes Last?, Print Tax Codes for 0$?, Print Tax and Freight?, Quotation Number Range, SO-P-B, Se&ttings, Thru, ToolBar1
+
+### T7SOPC.DFM
+  Components: 1
+  Captions (37): &Process, Abandon Old Quotes?, Blank to keep existing, Change Cust Due Date to, Change Est Ship Date (ESD) to, Change Est Ship Date to, Change Location?, Close after Conversion/Status Chg?, Continue, Convert Notes?, Customer P/O Number, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Keep Quote on File?, Leave this set to 0 and the next available SO Number, Location, MCLabel, New Sales Order Date, New Sales Order Number, New Status (Y/L/A/N/S/D/W/B), Pass Quote to Desc, Job, None?, Prompt For Changes?, Reason Code , SO-PC, Sales Quotation Number From, Se&ttings, Skip, Status Change Only?, Thru, ToolBar1, Unconverted Quotes Date From, Use Longest Ship Lead for ESD, blank to keep existing
+
+### T7SOPF.DFM
+  Components: 1
+  Captions (26): &Add, &Back, &Delete, &Process, &Save, Balance on Order, Comment 1, Comment 2, Comment 3, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item Number, Keep Multi Line Releases with Blanket Line, Line #, New Screen, PO Number, Part Number , Qty, Release Date, SO Number , Se&ttings, ToolBar1
+
+### T7SOPI.DFM
+  Components: 1
+  Captions (24): &Print, &Save, Cust Code, Cust Name, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Flag Order as Drop Ship, Freight Charge, Gross Weight, Invoice Number, Invoices, Lookup Limiting Filters, New Screen, Order/Invoice Date, SO Number, Ship To Customer, Shipper Number, Shipping Company, Shipping Tracking #, ToolBar1
+
+### T7SOPJ.DFM
+  Components: 1
+  Captions (4): Current Time:, File Name:, New Screen, Start Time:
+
+### T7SOPK.DFM
+  Components: 1
+  Captions (52): #, &Back, &Lines, &Save , Address, Attention, City, Country, Currency, Cust PO#, Cust Ref, Customer, Description, Discount Cd, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Edit Posted Invoices, Enter New Description, Entered By, FOB, Fax #, Freight, GL Dept, Inv Date, Inv Number, Inv Total, Job #, Location, Name, Panel1, Phone #, Price Code, Remaining, SO Date, SO Number, Ship To Code
+
+### T7SOPM.DFM
+  Components: 1
+  Captions (15): &Print, &Settings, Check Job# and Order Description?, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Order Date From, Print Unconverted, Converted, or All Quotes?  [UCA], SO-P-M, Thru, ToolBar1
+
+### T7SOPO.DFM
+  Components: 1
+  Captions (31): &Process, Auto Generate or Review? , Customer From, Default Job Number, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est. Receipt Date, Include Product Specfication?, Make PO, Offset Receipt date by, Order Date From, Pass SO Job# to PO Header/Lines/Both, Pass SO Notes, SO#, Via, FOB, Terms?, Pass the PO number to ISSOINFO?, Pass the SO Line Number to the PO?, Pass the SO Selling Price to the PO?, Pass the SO Ship To Info to the PO?, Primary Vendor From, Process SO Lines in Line or Part Order? [L/P], Purchase Order Date Default, SO Number From, SO-PO, Se&ttings, Thru, ToolBar1, Use Line Qty, or Backorder Only? [L/B], [H/L/B/N]
+
+### T7SOPOR.DFM
+  Components: 1
+  Captions (12): Description, Exp Recv Date, Item Number, OK, PO Date, Price, Quantity, Review, SO-PO Review, Sales Order, Vendor Code, Vendor Name
+
+### T7SOPP.DFM
+  Components: 1
+  Captions (14): &Process, Customer, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est Ship Date From, New Est Ship Date, SO Number From, SO-P-P, Thru, ToolBar1
+
+### T7SOQA.DFM
+  Components: 1
+  Captions (13): &Save , Base Price, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item Number, SO-QA, Thru, ToolBar1
+
+### T7SOQB.DFM
+  Components: 1
+  Captions (16): &Print, Active Status Filter [YNODEPSQR], E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Format Price/Cost with $ and Commas?, Item Category From, Item Class From, Item Number From, SO-QB, Se&ttings, Thru, ToolBar1
+
+### T7SOQC.DFM
+  Components: 1
+  Captions (25):  DIRECTION OF PRICE CHANGE,  TYPE OF PRICE CHANGE, &Process, -, Active Status Filter [YNODEPSQR], Amount of Base Price Change, Category Range, Class Range, Customer Range, Decrease Prices?, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Flat Dollar Amount Change?, Increase Prices?, Item Number Range, New Contract/Price Codes Expiration Date, Percentage Change?, SO-QC, ToolBar1, Update Contract Pricing/Price Codes ONLY?, [Enter 10% as 10.0000] 
+
+### T7SOQH.DFM
+  Components: 1
+  Captions (40): &Add, &Copy, &Delete, &Save , Base Price, Copy &All, Customer, Disc, Disc %, Discount Code, Dollar Amount, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, End Date, Expiration Date, Inv Class, Item, Minimum , Note:, Opening &List, Option for Existing Codes, Overwrite Existing Codes, Panel1, Price, Price Code, Promo, Quantity, Retail Price, SO Total Disc?, SO-QH, Slsp1 %, Slsp2 %, Start Date, Thru, ToolBar1, [Y/N/I]
+
+### T7SOQI.DFM
+  Components: 1
+  Captions (25): &Print, Customer From, Date Range From, Discount Code From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Exp. Date From, Include Last SO Date Used., Include Retail Price, Include all locations?, Item Category From, Item Class From, Item Number From, Price Code From, Primary Vendor From, SO Order Date From, Sort by Customer  , Sort by Item, T7SOQI, Thru, ToolBar1
+
+### T7SOQJ.DFM
+  Components: 1
+  Captions (19): = = = = = Inventory Filters = = = = = , Active Status Filter, Cost Basis For Calculating New Prices, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Item Category From, Item Class From, Item Number From, Process, SO-QJ, Se&ttings, Thru, ToolBar1, Use Margin instead of Markup to Calculate New Prices?, [YNODEPSQR]
+
+### T7SOQK.DFM
+  Components: 1
+  Captions (25): &Print, Active Status [YNODEPSQR], Category From, Class From, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Include Extended Item Desc?, Item Number From, Item Type [RFAMNLBTKO], Limit to Items a Customer purchased since X Date, Price Code to Print, Pricing to use for the Catalog, Primary Vendor From, Print Applicable Price Quantities and Breaks?, Print Thumbnail Images?, SO-Q-K  Print Catalog, Se&ttings, Sort by Item, Class, Category, Customer  , Thru, ToolBar1
+
+### T7SOQL.DFM
+  Components: 1
+  Captions (18): &Process, *Comma Delimited Fields, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Est Ship Date From, Import Fields, Import Filename*, Item Number, New SO Price, SO-Q-L, Se&ttings, Thru, ToolBar1
+
+### T7SOR.DFM
+  Components: 1
+  Captions (31): &Process, City, Country, Customer Code, Department, Deposit, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Freight, Invc Date, Invoice Number, Location, Name, Order Date, Retention, SO Number, SO-R, Salesman, Ship Date, State, Subtotal, Tax, ToolBar1, Total, Void Date, Zip Code
+
+### T7SORevu.DFM
+  Components: 1
+  Captions (14): &Save, Customer, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Entered By, Entered Date, KILL, SO Contract Review, SO Number, ToolBar1
+
+### T7SORevuPSWD.dfm
+  Components: 1
+  Captions (6): Contract Reviewer ID, Department:, E&xit, Enter Contract Review ID and password, POPLABEL: , Password:
+
+### T7SOS.DFM
+  Components: 1
+  Captions (18): &Release, Auto Release Comments?, Customer From, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Include Backorders?, Item Number From, Order Date From, Release All Lines?, SO Number From, SO-S, Se&ttings, Thru, ToolBar1
+
+### T7SOSER.DFM
+  Components: 1
+  Captions (23): &Save, Back, Bin, Customer, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Generate Serials, Item Number, Line Qty, Qty Allocated, Qty Left, Remove All, SO Number, SO-SERIAL, Serial Number, Tag Serials, Thru, ToolBar1
+
+### T7SOV.DFM
+  Components: 1
+  Captions (22): &Edit, &Save, Back Order Quantity, Customer /Due Date, Customer Code, Customer Name, Description, E&xit, ETB1, ETB2, ETB3, ETB4, ETB5, Estimated Ship Date, Item, Line, Maintain SO Shipping Dates, SO, SO Number, Ship Quantity, ToolBar1, ToolButton1

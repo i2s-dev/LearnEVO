@@ -1,0 +1,1072 @@
+object EditForm1: TEditForm1
+  Left = 426
+  Top = 300
+  Hint = 'C:\TASPro7\DBA7\T7ARA2DB.DFM'
+  AutoScroll = False
+  Caption = '2D Barcode Layout'
+  ClientHeight = 344
+  ClientWidth = 484
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Arial'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  Icon.Data = {
+    0000010001002020000001000800A80800001600000028000000200000004000
+    0000010008000000000080040000000000000000000000000000000000000000
+    0000DED3FF00D6D3FF00FF00FF000000FF00E7FFF700ADF7F700ADE3F700ADCF
+    F700ADBEF700F7AAF700E7AAF700CEAAF700BDAAF700ADAAF700E7FFEF00D6FB
+    EF00EFEFEF0084EFEF0063EBEF00E7E3EF0084D7EF00FFD3EF0063CBEF0084BA
+    EF0063A6EF00849EEF00EF86EF00D686EF00BD86EF009C86EF008C86EF006382
+    EF00EF61EF00CE61EF00A561EF008461EF006361EF00D6FBE700ADF7E70039E7
+    E700EFE3E700FFD3E700D6D3E70039BAE700F7AAE700398EE7003965E700423C
+    E700E738E700BD38E7008C38E7006338E700D6FBDE00FFD3DE00C6C3DE00FFFB
+    D600EFFBD600E7FBD600DEFBD600D6FBD600FFEFD60084EFD600FFE7D600FFDB
+    D600D6D7D60018D7D600FFD3D600E7D3D600B5B2D60018AAD600EF86D6001879
+    D600184DD600D61CD600AD1CD6007B1CD6004A1CD600211CD600ADF7CE0063EB
+    CE00F7AACE00A5A2CE00EF61CE00DEC3C6009492C600ADF7BD0084EFBD0039E7
+    BD00BDBEBD00F7AABD00EF86BD008482BD00E738BD00D6B2B50018B2B500188A
+    B5007371B5001865B5001841B500B518B5008C18B5006318B5003918B5001818
+    B500F7F7AD00E7F7AD00CEF7AD00BDF7AD00ADF7AD00F7E3AD0018D7AD00F7CF
+    AD00F7BEAD00F7AAAD006361AD00D61CAD0063EBA500A5A6A500CEA2A500A5A2
+    A500EF61A5005251A50084EF9C00C69A9C00EF869C0042419C00C69294003130
+    940039E78C0018B28C008C8E8C00108E8C00106D8C0010518C00E7388C001030
+    8C0021208C00B5188C0010148C008C108C006B108C0052108C0031108C00EFEF
+    8400D6EF8400BDEF84009CEF840084EF840063EB8400EFD78400EFBA8400EF9E
+    8400EF868400BD828400EF618400101084000000840018D77B00D61C7B007375
+    7300108E6B008C106B00EFEB6300CEEB6300A5EB630084EB630063EB630039E7
+    6300EFCB630018B26300EFA66300EF82630008656300EF616300AD6163000851
+    6300E738630008246300B5186300630C6300520C6300390C63005A5D5A00108E
+    5200086552008C105200630C520018D74A00D61C4A00424542009C414200E7E7
+    3900BDE739008CE7390063E7390039E73900E7BA390018B23900E78E3900E765
+    390008653900393C3900E7383900B5183900630C3900108E3100943031003130
+    31008C103100086521008C202100D6D71800ADD718007BD718004AD71800B5B2
+    18008CB2180063B2180039B21800D6AA1800B58A1800D6791800B5651800D64D
+    1800B53C1800D61C1800B51818008C8E10006B8E1000528E1000108E10008C6D
+    10008C5110008C30100084101000636508005265080021650800635108006338
+    080063240800FFFF000000FF0000FF0000008400000000000000000000000000
+    0000000000000000000000000000000000000000000000000000FFFFFF000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    00000000000000000000000000000000000000000000000000000000000000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F50000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFF59AFF5F5AF7CFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFBFF576FF599AAF59FFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFF5F5AF7CFFFF59BF59FFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFAFF57F9ABF9AFF59AFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFF7CF5AFFFFFAFBF78FFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFAFF57CFFFF9AF578FFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFAFBF59FFFFF5BFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFAFBF59FFF5BFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFF7CAFF5BF7CFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F50000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    000000000000000000000000000000000000000000000000000000000000FFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF800000018000
+    0001800000018000000180000001800000018000000180000001800000018000
+    0001800000018000000180000001800000018000000180000001800000018000
+    00018000000180000001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+  OldCreateOrder = False
+  No_Refresh = False
+  OnStart = 'i2DBarOnStart'
+  OnDisplayScreen = 'T7ARA2DB.OnDisp'
+  ScreenPos = tpScreenCenter
+  SpecifiedTop = 0
+  SpecifiedLeft = 0
+  SourceFile = 'T7ARA'
+  RememberSize = True
+  RememberSizeDate = 44945.456027974530000000
+  SourceAttached = False
+  DesignSize = (
+    484
+    344)
+  PixelsPerInch = 96
+  TextHeight = 16
+  object Panel1: TPanel
+    Left = 0
+    Top = 3
+    Width = 484
+    Height = 310
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 0
+    object EditPanel: TPanel
+      Left = 2
+      Top = 0
+      Width = 480
+      Height = 306
+      TabOrder = 1
+      Visible = False
+      object Label1: TLabel
+        Left = 67
+        Top = 25
+        Width = 65
+        Height = 16
+        Caption = 'Description'
+      end
+      object Label2: TLabel
+        Left = 67
+        Top = 58
+        Width = 32
+        Height = 16
+        Caption = 'Order'
+      end
+      object Label3: TLabel
+        Left = 67
+        Top = 94
+        Width = 71
+        Height = 16
+        Caption = 'Character(s)'
+      end
+      object Label4: TLabel
+        Left = 230
+        Top = 94
+        Width = 51
+        Height = 16
+        Caption = 'or  ASCII'
+      end
+      object Label5: TLabel
+        Left = 67
+        Top = 135
+        Width = 66
+        Height = 16
+        Caption = 'Field Name'
+      end
+      object PrintPanel: TPanel
+        Left = 1
+        Top = 168
+        Width = 478
+        Height = 110
+        TabOrder = 5
+        object Label6: TLabel
+          Left = 80
+          Top = 46
+          Width = 63
+          Height = 16
+          Caption = 'Document '
+        end
+        object PDocname: TTASComboBox
+          Left = 174
+          Top = 43
+          Width = 200
+          Height = 24
+          AutoDropDown = True
+          Style = csDropDownList
+          ItemHeight = 16
+          TabOrder = 1
+          FieldName = 'e.doc.name'
+          DropDownPrgLoc = -1
+          DispPrgLoc = -1
+          ClickPrgLoc = -1
+          ChangePrgLoc = -1
+          PrePrgLoc = -1
+          PostPrgLoc = -1
+          ValidPrgLoc = -1
+          ValidCheckOnExit = False
+          ValidUserEsc = False
+          ValidExprLoc = 0
+          ValidExprTyp = #0
+          DfltValue = 'Quote'
+          Group = 0
+          NoClickOn = False
+          NoClickOff = False
+          ItemNumber = 0
+          ReturnIsTab = True
+          SelectStart = 0
+          PreRetFalse = False
+          EntryFont.Charset = DEFAULT_CHARSET
+          EntryFont.Color = clWindowText
+          EntryFont.Height = -11
+          EntryFont.Name = 'MS Sans Serif'
+          EntryFont.Style = []
+          EntryBGColor = clWhite
+          EntryUseDflt = True
+          FldModified = False
+        end
+        object PrintGrid: TTASDataGrid
+          Left = 1
+          Top = 1
+          Width = 476
+          Height = 107
+          ColCount = 2
+          Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect]
+          TabOrder = 0
+          UpCase = False
+          StartAtEnd = False
+          PrePrgLoc = 0
+          PostPrgLoc = 0
+          Navigation.AllowInsertRow = False
+          Navigation.AllowDeleteRow = True
+          Navigation.AdvanceOnEnter = True
+          Navigation.AdvanceAtEnd = True
+          Navigation.AdvanceDirection = adLeftRight
+          Navigation.AdvanceAuto = False
+          Navigation.InsertPosition = pInsertBefore
+          Navigation.CursorWalkEditor = False
+          Navigation.AllowAddRecListF = False
+          MouseActions.ColSelect = False
+          MouseActions.RowSelect = False
+          MouseActions.DirectEdit = False
+          MouseActions.DirectComboDrop = False
+          MouseActions.CaretPositioning = False
+          PasswordChar = '*'
+          Columns = <
+            item
+              Color = clWindow
+              Width = 17
+              Alignment = taLeftJustify
+              Font.Charset = DEFAULT_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'Arial'
+              Font.Style = []
+              Editor = edDefault
+              Fixed = True
+              ReadOnly = False
+              Password = False
+              ComboItemsSort = False
+              SpinMin = 0
+              SpinMax = 0
+              SpinStep = 0
+              EditLength = 0
+              Borders = []
+              BorderPen.Color = clSilver
+              CharCase = ecNormal
+              PrePrgLoc = 0
+              PostPrgLoc = 0
+              ValidPrgLoc = 0
+              ClickPrgLoc = 0
+              ChangePrgLoc = 0
+              DecimalChrs = 2
+              FormatOnEnter = True
+              ValidCheckOnExit = False
+              ValidUserEsc = False
+              ValidExprLoc = 0
+              ValidExprTyp = #0
+              TimeFieldType = tf_5
+              ElapsedTime = False
+            end
+            item
+              Color = clWindow
+              Width = 254
+              Alignment = taLeftJustify
+              Header = 'Document'
+              Font.Charset = ANSI_CHARSET
+              Font.Color = clWindowText
+              Font.Height = -13
+              Font.Name = 'Arial'
+              Font.Style = []
+              Editor = edComboList
+              Fixed = False
+              ReadOnly = False
+              Password = False
+              ComboItemsSort = False
+              SpinMin = 0
+              SpinMax = 0
+              SpinStep = 0
+              EditLength = 0
+              Borders = []
+              BorderPen.Color = clSilver
+              FieldName = 'PG.DOC.NAME'
+              CharCase = ecNormal
+              PrePrgLoc = 0
+              PostPrgLoc = 0
+              ValidPrgLoc = 0
+              ClickPrgLoc = 0
+              ChangePrgLoc = 0
+              DecimalChrs = 2
+              FormatOnEnter = True
+              ValidCheckOnExit = False
+              ValidUserEsc = False
+              ValidExprLoc = 0
+              ValidExprTyp = #0
+              TimeFieldType = tf_5
+              ElapsedTime = False
+            end>
+          ExtraFields = <>
+          AutoNumAlign = False
+          SelectionColor = clHighlight
+          SelectionTextColor = clHighlightText
+          SelectionRectangle = False
+          FixedFont.Charset = DEFAULT_CHARSET
+          FixedFont.Color = clWindowText
+          FixedFont.Height = -13
+          FixedFont.Name = 'Arial'
+          FixedFont.Style = []
+          VAlignment = vtaTop
+          Hovering = False
+          EnhRowColMove = False
+          HintColor = clYellow
+          CurrentRow = 1
+          CurrentCol = 1
+          GridFileHandle = 0
+          GridFileKeyNum = 0
+          NoAutoUpdate = False
+          ColWidths = (
+            17
+            254)
+        end
+      end
+      object desc: TTASENTER
+        Left = 171
+        Top = 23
+        Width = 294
+        Height = 24
+        TabOrder = 0
+        Text = 'desc'
+        FieldName = 'IS2D.BAR.DESC  '
+        DispPrgLoc = -1
+        ClickPrgLoc = -1
+        ChangePrgLoc = 0
+        PrePrgLoc = -1
+        PostPrgLoc = -1
+        ValidPrgLoc = -1
+        ValidCheckOnExit = False
+        ValidUserEsc = False
+        ValidExprLoc = 0
+        ValidExprTyp = #0
+        Group = 0
+        NoClickOn = False
+        NoClickOff = False
+        ReturnIsTab = True
+        SelectStart = 0
+        PreRetFalse = False
+        EntryFont.Charset = DEFAULT_CHARSET
+        EntryFont.Color = clWindowText
+        EntryFont.Height = -11
+        EntryFont.Name = 'MS Sans Serif'
+        EntryFont.Style = []
+        EntryBGColor = clWhite
+        EntryUseDflt = True
+        FldModified = True
+      end
+      object TASENTER2: TTASENTER
+        Left = 171
+        Top = 92
+        Width = 40
+        Height = 24
+        TabOrder = 2
+        Text = 'TASENTER2'
+        FieldName = 'IS2D.BAR.CHAR  '
+        DispPrgLoc = -1
+        ClickPrgLoc = -1
+        ChangePrgLoc = 0
+        PrePrgLoc = -1
+        PostPrgLoc = -1
+        ValidPrgLoc = -1
+        ValidCheckOnExit = False
+        ValidUserEsc = False
+        ValidExprLoc = 0
+        ValidExprTyp = #0
+        Group = 0
+        NoClickOn = False
+        NoClickOff = False
+        ReturnIsTab = True
+        SelectStart = 0
+        PreRetFalse = False
+        EntryFont.Charset = DEFAULT_CHARSET
+        EntryFont.Color = clWindowText
+        EntryFont.Height = -11
+        EntryFont.Name = 'MS Sans Serif'
+        EntryFont.Style = []
+        EntryBGColor = clWhite
+        EntryUseDflt = True
+        FldModified = True
+      end
+      object ascii: TTASNumEnter
+        Left = 296
+        Top = 92
+        Width = 44
+        Height = 21
+        AutoSize = False
+        DecimalPlaces = 0
+        DisplayFormat = '0'
+        TabOrder = 3
+        FieldName = 'IS2D.BAR.ASCII '
+        DispPrgLoc = -1
+        ClickPrgLoc = -1
+        ChangePrgLoc = 0
+        PrePrgLoc = -1
+        PostPrgLoc = -1
+        ValidPrgLoc = -1
+        ValidCheckOnExit = False
+        ValidUserEsc = False
+        ValidExprLoc = 0
+        ValidExprTyp = #0
+        Group = 0
+        NoClickOn = False
+        NoClickOff = False
+        ReturnIsTab = True
+        FastSearchType = fsNum
+        PreRetFalse = False
+        EntryFont.Charset = DEFAULT_CHARSET
+        EntryFont.Color = clWindowText
+        EntryFont.Height = -11
+        EntryFont.Name = 'MS Sans Serif'
+        EntryFont.Style = []
+        EntryBGColor = clWhite
+        EntryUseDflt = True
+        ButtonWidthNum = 0
+        FldModified = False
+        GlyphKind = gkCustom
+        NumGlyphs = 2
+        ButtonWidth = 0
+      end
+      object TASENTER3: TTASENTER
+        Left = 171
+        Top = 133
+        Width = 167
+        Height = 24
+        CharCase = ecUpperCase
+        TabOrder = 4
+        Text = 'TASENTER3'
+        FieldName = 'IS2D.BAR.FIELD '
+        DispPrgLoc = -1
+        ClickPrgLoc = -1
+        ChangePrgLoc = 0
+        PrePrgLoc = -1
+        PostPrgLoc = -1
+        ValidPrgLoc = -1
+        ValidCheckOnExit = False
+        ValidUserEsc = False
+        ValidExprLoc = 0
+        ValidExprTyp = #0
+        Group = 0
+        NoClickOn = False
+        NoClickOff = False
+        ReturnIsTab = True
+        SelectStart = 0
+        PreRetFalse = False
+        EntryFont.Charset = DEFAULT_CHARSET
+        EntryFont.Color = clWindowText
+        EntryFont.Height = -11
+        EntryFont.Name = 'MS Sans Serif'
+        EntryFont.Style = []
+        EntryBGColor = clWhite
+        EntryUseDflt = True
+        FldModified = True
+      end
+      object TASNumEnter2: TTASNumEnter
+        Left = 171
+        Top = 56
+        Width = 39
+        Height = 21
+        AutoSize = False
+        DecimalPlaces = 0
+        DisplayFormat = '0'
+        TabOrder = 1
+        FieldName = 'is2d.bar.order'
+        DispPrgLoc = -1
+        ClickPrgLoc = -1
+        ChangePrgLoc = 0
+        PrePrgLoc = -1
+        PostPrgLoc = -1
+        ValidPrgLoc = -1
+        ValidCheckOnExit = False
+        ValidUserEsc = False
+        ValidExprLoc = 0
+        ValidExprTyp = #0
+        Group = 0
+        NoClickOn = False
+        NoClickOff = False
+        ReturnIsTab = True
+        FastSearchType = fsNum
+        PreRetFalse = False
+        EntryFont.Charset = DEFAULT_CHARSET
+        EntryFont.Color = clWindowText
+        EntryFont.Height = -11
+        EntryFont.Name = 'MS Sans Serif'
+        EntryFont.Style = []
+        EntryBGColor = clWhite
+        EntryUseDflt = True
+        ButtonWidthNum = 0
+        FldModified = False
+        GlyphKind = gkCustom
+        NumGlyphs = 2
+        ButtonWidth = 0
+      end
+      object ToolBar2: TToolBar
+        Left = 1
+        Top = 278
+        Width = 478
+        Height = 26
+        Align = alNone
+        ButtonHeight = 23
+        Caption = 'ToolBar2'
+        EdgeBorders = [ebLeft, ebTop, ebRight, ebBottom]
+        EdgeInner = esLowered
+        TabOrder = 6
+        object ADDPT: TSpeedButton
+          Left = 0
+          Top = 0
+          Width = 23
+          Height = 23
+          Hint = 'Add New Print Type'
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000F0F3F7F0F3F7
+            F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3
+            F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7ABB0AB6D8368426A3932
+            60273B6435576E567D837DB5B5B5F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7
+            F0F3F7608C5F198211158B00158B001D8B002C7A002C6F042868154864488F8F
+            8FF0F3F7F0F3F7F0F3F7F0F3F7F0F3F7429143029C0202A00402A004029C0202
+            97000994011C85013773002C6F04355D338F8F8FF0F3F7F0F3F7F0F3F767A068
+            08A9130AA40D019C091AB12575E59385EAA46AE38B08A9130788003773002C6F
+            04486448F0F3F7F0F3F7C0CEC01DAD2412AA230AA118019C09279D22E6EFE3FF
+            FFFFCBF4D600A80E0788000788003773002868157D837DF0F3F779B77B28B63C
+            18B12D0CBB2D02BB2616A527D8E9D8FFFFFFB4F0C500B81500A80E0BAB192385
+            012C6F04576E56F0F3F74EAC5440C75B039B188ACD97BBE8CBB8E1C4EAEDEAF8
+            F4F7E4F6EAB4F0C5CBF4D66AE38B0994012C7A003B6435F0F3F742AD4A51D374
+            039B18BFCABCFFEAFDF9EEF8ECECECF0F0F0FAF4F9FFFBFFFFFBFF85EAA4029C
+            02238501326027F0F3F74EAC5467DF8C09A022A4C0A1DCDDDADFDFDEEAE9EAEC
+            ECECEAE9EAD8E9D8DDEDDD7AE89802A0041D8B00426A39F0F3F775C77972DB91
+            34BF5824AA3C24AA3C3C9E3DD8DCD8F9EEF8B0DCBA24A22524A2251CB52905A2
+            09158B006C8467F0F3F7B6CCB65BD77272E19C25CA5D19C64F24AA3CDCDBD9FF
+            EAFDB1E5C202BB2605A11205A1120AA40D198211ABB0ABF0F3F7F0F3F765CB6C
+            80E0A45EDB8C25CA5D25AB419FBF9BBFCABC8ACD9716BA3712AA230BAB190AA4
+            0D638E61F0F3F7F0F3F7F0F3F7F0F3F753BC607FE0A16CE09B37C75E0DA42B03
+            9B1809A02216BA3718B12D0BAB19429143F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7
+            F0F3F765CB6C5DDA7772E19C63E2914AD67637C75E28B63C1AB12567A068F0F3
+            F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7B6CCB675C7794FB25842
+            AD4A4EAC5479B77BC0CEC0F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7}
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object EditPT: TSpeedButton
+          Left = 23
+          Top = 0
+          Width = 23
+          Height = 23
+          Hint = 'Edit Print Type'
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000FEFEFFFEFEFF
+            FEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFE
+            FFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFF75716E57
+            5451000000919698FEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFFFEFEFF
+            FEFEFFFEFEFFFEFEFFFEFEFFA39D98FDFEFE5193A90E1216939C9FFEFEFFFEFE
+            FFFEFEFFFEFEFFFEFEFFB7A29363493563493563493563493586796EA39D9888
+            B7C774CEE2499AB20E1216777570634935634935634935FEFEFFB7A293FDFBF9
+            E1DCD8E0D7D2DFD2CADFCEC3C3BDB84D9CB38CE0EE62BFD7499AB20E1216B3A6
+            9BCFB4A3634935FEFEFFB7A293FEFEFED2B9ABCFB4A6CDAFA0FBECE3C2A79AAC
+            A4A057A0B58CE0EE62BFD7499AB20E1216AAA198634935FEFEFFB7A293FEFEFE
+            FEFEFEFDFBF9FDF7F3FCF2ECFBECE3FAE7DBD7D0C965A6B78CE0EE62BFD7499A
+            B20E12166F6A63FEFEFFB7A293FEFEFED6C1B5D4BDB1D2B9ABFDF7F3CDAFA0CA
+            AA9AC7A594D7D0C973ACB98CE0EE6CC4D97D86863535908D90A6BAA596FEFEFE
+            FEFEFEFEFEFEFEFEFEFDFBF9FDF7F3FCF2ECFBECE3FAE7DBD7D0C97DB0BBCAB8
+            AC7385D15E6CAD353590BEA99AFEFEFEDAC8BDD8C5BAD6C1B5FEFEFED2B9ABCF
+            B4A6CDAFA0FBECE3C7A594AFA7A35E6CAD708FDF5E76D05E6CADC3AE9EFEFEFE
+            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFDFBF9FDF7F3FCF2ECFBECE3FAE7DBD0C9
+            D45E6CAD5E6CADAEB2BEC8B2A3FEFEFEDBCAC0DBCAC0DAC8BDFEFEFED6C1B5D4
+            BDB1D2B9ABFDF7F3CDAFA0CAAA9AC8AFA2D1C1B6857568FEFEFFCCB6A7FEFEFE
+            FEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFEFDFBF9FDF7F3FCF2ECFCF2
+            ECFBECE3634935FEFEFFEAAA8BEAAA8BEAAA8BE9A584E99F7AE7976EE68E62E5
+            8656E37D4AE37640E27239E27239E27239E27239C8622FFEFEFFEAAA8BFFC2A2
+            FEC09FFDBD9AFCB996FBB590FAB08BF9AB84F8A77DF6A277F59D71F5996AF395
+            65F39565CD6531FEFEFFEAAA8BEAAA8BEAAA8BEAAA8BEAA686E9A17FE89B76E7
+            946CE68E62E58758E4814EE47B46E3763EE3763EE27239FEFEFF}
+          Margin = 0
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object DeletePT: TSpeedButton
+          Left = 46
+          Top = 0
+          Width = 23
+          Height = 23
+          Hint = 'Delete Print Type'
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000F8F8F8F8F8F8
+            F8F8F80000000000005A5A5A5A5A5A525252525252292929000000000000F8F8
+            F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8212121949494FFFFFFCECECEDEDEDE94
+            8C8CA5A5A56B6B6B636363393929000000F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+            525252B5ADADEFEFEF949494C6BDBD9494949494945252526B6B6B5A5A5A2121
+            10F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8525252949494EFEFEF949494C6BDBD94
+            94949494944242426B6B6B292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+            525252949494EFEFEF949494C6BDBD9494949494944242426B6B6B2929292929
+            29F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8525252949494EFEFEF949494C6BDBD94
+            94949494944242426B6B6B292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+            525252949494EFEFEF949494C6BDBD9494949494944242426B6B6B2929292929
+            29F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8525252949494EFEFEF949494C6BDBD94
+            94949494944242426B6B6B292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+            525252949494EFEFEFA5A5A5C6C6C69494949C9C9C4A4A4A6B6B6B2929292929
+            29F8F8F8F8F8F8F8F8F8F8F8F8F8F8F85252529C9C9CD6D6D6C6BDBD9C9C9C94
+            94946B6B6B6B6B6B737373292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+            393929949494C6BDBDCECECEC6BDBDA5A5A5A5A5A5A5A5A56B6B6B4A4A4A1010
+            10F8F8F8F8F8F8F8F8F8F8F8F8000000A5A594DEDEDEC6C6C6BDB5B5BDBDBDBD
+            BDBD8C8C8C8484846B6B6B6363635A5A5A000000F8F8F8F8F8F8F8F8F8000000
+            737352D6CECEFFFFFFE7E7E7CECECEC6C6C6293939525252C6C6C69C94947B7B
+            7B000000F8F8F8F8F8F8F8F8F80000005A5A5AADA5A5EFEFEFDEDEDE4A5A4A42
+            5263848473525252B5B5B57B7B7B4A4A4A000000F8F8F8F8F8F8F8F8F8F8F8F8
+            F8F8F80000000000003939392121217B7B6B314242000000000000000000F8F8
+            F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F800
+            0000F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8}
+          ParentShowHint = False
+          ShowHint = True
+        end
+        object ToolButton1: TToolButton
+          Left = 69
+          Top = 0
+          Width = 359
+          Caption = 'ToolButton1'
+          Style = tbsSeparator
+        end
+        object SavePT: TSpeedButton
+          Left = 428
+          Top = 0
+          Width = 24
+          Height = 23
+          Hint = 'Save Print Type'
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000FFFEFDFFFEFD
+            FFFEFDFFFEFDFFFEFDFFFEFD3A3939B9B9B96D6D6D787877FFFEFDFFFEFDFFFE
+            FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD4242428383834D
+            4D4D8D8D8D6D6D6D737372FFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+            FFFEFDFFFEFD6C6C6C6A6A6A6C6C6C5D5D5D4C4C4C8989896C6C6C70706FFFFE
+            FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD6C6C6CC3C3C38F8F8F6A6A6A7B
+            7B7B7676764C4C4C8888886C6C6C6F6F6EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+            696969E0E0E0CCCCCCCCCCCCB4B4B47A7A7A7777774F4F4F5252528787876C6C
+            6C70706FFFFEFDFFFEFDFFFEFD2E2E2EE8E8E88D8D8DCDCDCDD9D9D9D9D9D985
+            85855A5A5A5F5F5F6363635050508E8E8E6C6C6C737372FFFEFD000000727272
+            D3D3D36A6A6A7A7A7AC9C9C9A8A8A86464646C6C6C7C7C7CE4E4C9E5E5E55555
+            559595956D6D6D787877000000898989707070CFCFCF8383839D9D9D7D7D7D80
+            8080828282E7E7E7DFDFAFEFEFD7E7E7E75E5E5EA1A1A16A6A6AFFFEFD535353
+            9292926E6E6EA3A3A3848484929292858585E7E7E7DCDCDCEFEFEFD4D4D4F3F3
+            F3EBEBEB636363787877FFFEFDFFFEFD6262629F9F9F9F9F9F999999858585EA
+            EAEAE1E1E1EFEFEFD9D9D9F3F3F3CBCBCBBFBFBF737372FFFEFDFFFEFDFFFEFD
+            FFFEFD6767679F9F9F666652ECECECE2E2E2F0F0F0D9D9D9F3F3F3D1D1D1BEBE
+            BE70706FFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD7B7B7BC0C0C0B2B289F1
+            F1F1DBDBDBF4F4F4D2D2D2BEBEBE6F6F6EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+            FFFEFDFFFEFDFFFEFD7A7A7AC0C0C0AFAF84F9F9F9D3D3D3BFBFBF70706FFFFE
+            FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD747474C0
+            C0C0AAAA7BBFBFBF737372FFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+            FFFEFDFFFEFDFFFEFDFFFEFDFFFEFD6C6C6C8C8C8C787877FFFEFDFFFEFDFFFE
+            FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFF
+            FEFD7F7F7EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD}
+          ParentShowHint = False
+          ShowHint = True
+          Visible = False
+        end
+        object CancelPT: TSpeedButton
+          Left = 452
+          Top = 0
+          Width = 23
+          Height = 23
+          Hint = 'Cancel Print Type'
+          Glyph.Data = {
+            36030000424D3603000000000000360000002800000010000000100000000100
+            1800000000000003000000000000000000000000000000000000CED5D9DDE2E4
+            DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4
+            E6DFE4E6DDE2E4CED5D9DBE0E28E94CA4F56B83139B00F19A70F19A70F19A70F
+            19A70F19A70F19A70F19A70F19A73139B04F56B88E94CADBE0E2DBE0E34E55B7
+            5B69E16877EE6575EE6273ED5F71ED5C6EEC596CEC566AEB5268EB4F66EA4C63
+            EA3F54DD4E55B7DBE0E3D8DDE03039AF6D7BEE5766E53E4FDA3445D53345D433
+            43D33142D23141D13040CF3647D34357DF4C63EA3A45B9D8DDE0D5DBDD0F19A7
+            707DEF4354DD4354DAC5CAF3606DDD3446D53345D45F6BDBC4C8F0404ED23445
+            D14F66EA202DB8D5DBDDD2D7DA0F19A7737FEF4657DFC5CAF3FFFFFFF3F4FD60
+            6EDE606DDDF3F4FCFFFFFFC4C8F03040CF5268EB202EB8D2D7DACED4D70F19A7
+            7681EF4859E16270E3F3F4FDFFFFFFF3F4FDF3F4FDFFFFFFF3F4FC5F6BDB3141
+            D0566AEB222FB8CED4D7CAD1D40F19A77A87F0495BE3384CDE6371E4F3F4FDFF
+            FFFFFFFFFFF3F4FD606DDD3343D33142D15C71EC2735B9CAD1D4C7CDD10F19A7
+            8697F35066E74059E36778E7F3F4FDFFFFFFFFFFFFF3F4FD6373DF3B50D7394F
+            D56983EF2A39BAC7CDD1C2C9CD0F19A78EA3F46484ED7994EEF5F7FDFFFFFFF5
+            F7FDF5F7FDFFFFFFF5F7FD758EE64F71DE7491F22B3BBAC2C9CDBFC6CA0F19A7
+            91A4F46685EECED7F9FFFFFFF5F7FD7792EC7791EAF5F7FDFFFFFFCCD5F54F71
+            DE7693F22B3BBABFC6CABAC2C50F19A792A4F56686EF6283EECDD7F87892EE52
+            77E85175E6758FE9CBD5F65C7AE35475E17894F22D3CBABAC2C5B6BEC12832AB
+            8FA0F5778DF25D7BEE5C7AED5B79EC5977EA5876E85674E75473E65371E4647F
+            EA748DF23A46B8B6BEC1B5BCC03C44AF7783E78998F48795F48493F48191F37E
+            90F37B8EF3798DF3768AF37389F37187F25F73E33C44AFB5BCC0B5BDC06E77B7
+            3C44AF2731AA0F19A70F19A70F19A70F19A70F19A70F19A70F19A70F19A72731
+            AA3C44AF6E77B7B5BDC0C3CBCFB8BFC3B3BABEB3BABEB3BABEB3BABEB3BABEB3
+            BABEB3BABEB3BABEB3BABEB3BABEB3BABEB3BABEB8BFC3C3CBCF}
+          ParentShowHint = False
+          ShowHint = True
+          Visible = False
+        end
+      end
+    end
+    object GridPanel: TPanel
+      Left = 2
+      Top = -4
+      Width = 480
+      Height = 310
+      BevelInner = bvLowered
+      BevelOuter = bvLowered
+      Caption = 'GridPanel'
+      TabOrder = 0
+      object i2dgrid: TTASDataGrid
+        Left = 2
+        Top = 2
+        Width = 476
+        Height = 306
+        Align = alClient
+        ColCount = 4
+        Options = [goFixedVertLine, goFixedHorzLine, goVertLine, goHorzLine, goRowSelect]
+        TabOrder = 0
+        UpCase = False
+        StartAtEnd = False
+        PrePrgLoc = 0
+        PostPrgLoc = 0
+        Navigation.AllowInsertRow = False
+        Navigation.AllowDeleteRow = False
+        Navigation.AdvanceOnEnter = False
+        Navigation.AdvanceAtEnd = False
+        Navigation.AdvanceDirection = adLeftRight
+        Navigation.AdvanceAuto = False
+        Navigation.InsertPosition = pInsertBefore
+        Navigation.CursorWalkEditor = False
+        Navigation.AllowAddRecListF = False
+        MouseActions.ColSelect = False
+        MouseActions.RowSelect = False
+        MouseActions.DirectEdit = False
+        MouseActions.DirectComboDrop = False
+        MouseActions.CaretPositioning = False
+        PasswordChar = '*'
+        Columns = <
+          item
+            Color = clWindow
+            Width = 46
+            Alignment = taLeftJustify
+            Header = 'Order'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -11
+            Font.Name = 'MS Sans Serif'
+            Font.Style = []
+            Editor = edDefault
+            Fixed = False
+            ReadOnly = False
+            Password = False
+            ComboItemsSort = False
+            SpinMin = 0
+            SpinMax = 0
+            SpinStep = 0
+            EditLength = 0
+            Borders = []
+            BorderPen.Color = clSilver
+            FieldName = 'IS2D.BAR.ORDER'
+            CharCase = ecNormal
+            PrePrgLoc = 0
+            PostPrgLoc = 0
+            ValidPrgLoc = 0
+            ClickPrgLoc = 0
+            ChangePrgLoc = 0
+            DecimalChrs = 2
+            FormatOnEnter = True
+            ValidCheckOnExit = False
+            ValidUserEsc = False
+            ValidExprLoc = 0
+            ValidExprTyp = #0
+            TimeFieldType = tf_5
+            ElapsedTime = False
+          end
+          item
+            Color = clWindow
+            Width = 76
+            Alignment = taLeftJustify
+            Header = 'Character(s)'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            Editor = edDefault
+            Fixed = False
+            ReadOnly = False
+            Password = False
+            ComboItemsSort = False
+            SpinMin = 0
+            SpinMax = 0
+            SpinStep = 0
+            EditLength = 0
+            Borders = []
+            BorderPen.Color = clSilver
+            FieldName = 'IS2D.BAR.CHAR'
+            CharCase = ecNormal
+            PrePrgLoc = 0
+            PostPrgLoc = 0
+            ValidPrgLoc = 0
+            ClickPrgLoc = 0
+            ChangePrgLoc = 0
+            DecimalChrs = 2
+            FormatOnEnter = True
+            ValidCheckOnExit = False
+            ValidUserEsc = False
+            ValidExprLoc = 0
+            ValidExprTyp = #0
+            TimeFieldType = tf_5
+            ElapsedTime = False
+          end
+          item
+            Color = clWindow
+            Width = 125
+            Alignment = taLeftJustify
+            Header = 'Field'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            Editor = edDefault
+            Fixed = False
+            ReadOnly = False
+            Password = False
+            ComboItemsSort = False
+            SpinMin = 0
+            SpinMax = 0
+            SpinStep = 0
+            EditLength = 0
+            Borders = []
+            BorderPen.Color = clSilver
+            FieldName = 'IS2D.BAR.FIELD'
+            CharCase = ecNormal
+            PrePrgLoc = 0
+            PostPrgLoc = 0
+            ValidPrgLoc = 0
+            ClickPrgLoc = 0
+            ChangePrgLoc = 0
+            DecimalChrs = 2
+            FormatOnEnter = True
+            ValidCheckOnExit = False
+            ValidUserEsc = False
+            ValidExprLoc = 0
+            ValidExprTyp = #0
+            TimeFieldType = tf_5
+            ElapsedTime = False
+          end
+          item
+            Color = clWindow
+            Width = 208
+            Alignment = taLeftJustify
+            Header = 'Description'
+            Font.Charset = DEFAULT_CHARSET
+            Font.Color = clWindowText
+            Font.Height = -13
+            Font.Name = 'Arial'
+            Font.Style = []
+            Editor = edDefault
+            Fixed = False
+            ReadOnly = False
+            Password = False
+            ComboItemsSort = False
+            SpinMin = 0
+            SpinMax = 0
+            SpinStep = 0
+            EditLength = 0
+            Borders = []
+            BorderPen.Color = clSilver
+            FieldName = 'IS2D.BAR.DESC'
+            CharCase = ecNormal
+            PrePrgLoc = 0
+            PostPrgLoc = 0
+            ValidPrgLoc = 0
+            ClickPrgLoc = 0
+            ChangePrgLoc = 0
+            DecimalChrs = 2
+            FormatOnEnter = True
+            ValidCheckOnExit = False
+            ValidUserEsc = False
+            ValidExprLoc = 0
+            ValidExprTyp = #0
+            TimeFieldType = tf_5
+            ElapsedTime = False
+          end>
+        ExtraFields = <>
+        AutoNumAlign = False
+        SelectionColor = clHighlight
+        SelectionTextColor = clHighlightText
+        SelectionRectangle = False
+        FixedFont.Charset = DEFAULT_CHARSET
+        FixedFont.Color = clWindowText
+        FixedFont.Height = -13
+        FixedFont.Name = 'Arial'
+        FixedFont.Style = []
+        VAlignment = vtaTop
+        Hovering = False
+        EnhRowColMove = False
+        HintColor = clYellow
+        CurrentRow = 1
+        CurrentCol = 1
+        GridFileHandle = 0
+        GridFileKeyNum = 0
+        NoAutoUpdate = False
+        ColWidths = (
+          46
+          76
+          125
+          208)
+      end
+    end
+  end
+  object btn2dAdd: TGlyphBtn
+    Left = 7
+    Top = 315
+    Width = 72
+    Height = 23
+    Anchors = []
+    Caption = '&Add'
+    TabOrder = 2
+    Visible = False
+    Glyph.Data = {
+      36030000424D3603000000000000360000002800000010000000100000000100
+      1800000000000003000000000000000000000000000000000000F0F3F7F0F3F7
+      F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3
+      F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7ABB0AB6D8368426A3932
+      60273B6435576E567D837DB5B5B5F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7
+      F0F3F7608C5F198211158B00158B001D8B002C7A002C6F042868154864488F8F
+      8FF0F3F7F0F3F7F0F3F7F0F3F7F0F3F7429143029C0202A00402A004029C0202
+      97000994011C85013773002C6F04355D338F8F8FF0F3F7F0F3F7F0F3F767A068
+      08A9130AA40D019C091AB12575E59385EAA46AE38B08A9130788003773002C6F
+      04486448F0F3F7F0F3F7C0CEC01DAD2412AA230AA118019C09279D22E6EFE3FF
+      FFFFCBF4D600A80E0788000788003773002868157D837DF0F3F779B77B28B63C
+      18B12D0CBB2D02BB2616A527D8E9D8FFFFFFB4F0C500B81500A80E0BAB192385
+      012C6F04576E56F0F3F74EAC5440C75B039B188ACD97BBE8CBB8E1C4EAEDEAF8
+      F4F7E4F6EAB4F0C5CBF4D66AE38B0994012C7A003B6435F0F3F742AD4A51D374
+      039B18BFCABCFFEAFDF9EEF8ECECECF0F0F0FAF4F9FFFBFFFFFBFF85EAA4029C
+      02238501326027F0F3F74EAC5467DF8C09A022A4C0A1DCDDDADFDFDEEAE9EAEC
+      ECECEAE9EAD8E9D8DDEDDD7AE89802A0041D8B00426A39F0F3F775C77972DB91
+      34BF5824AA3C24AA3C3C9E3DD8DCD8F9EEF8B0DCBA24A22524A2251CB52905A2
+      09158B006C8467F0F3F7B6CCB65BD77272E19C25CA5D19C64F24AA3CDCDBD9FF
+      EAFDB1E5C202BB2605A11205A1120AA40D198211ABB0ABF0F3F7F0F3F765CB6C
+      80E0A45EDB8C25CA5D25AB419FBF9BBFCABC8ACD9716BA3712AA230BAB190AA4
+      0D638E61F0F3F7F0F3F7F0F3F7F0F3F753BC607FE0A16CE09B37C75E0DA42B03
+      9B1809A02216BA3718B12D0BAB19429143F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7
+      F0F3F765CB6C5DDA7772E19C63E2914AD67637C75E28B63C1AB12567A068F0F3
+      F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7B6CCB675C7794FB25842
+      AD4A4EAC5479B77BC0CEC0F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7}
+    GlyphKind = bkCustom
+  end
+  object btn2dDelete: TGlyphBtn
+    Left = 81
+    Top = 315
+    Width = 72
+    Height = 23
+    Anchors = []
+    Caption = '&Delete'
+    TabOrder = 3
+    Visible = False
+    Glyph.Data = {
+      36030000424D3603000000000000360000002800000010000000100000000100
+      1800000000000003000000000000000000000000000000000000F8F8F8F8F8F8
+      F8F8F80000000000005A5A5A5A5A5A525252525252292929000000000000F8F8
+      F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8212121949494FFFFFFCECECEDEDEDE94
+      8C8CA5A5A56B6B6B636363393929000000F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+      525252B5ADADEFEFEF949494C6BDBD9494949494945252526B6B6B5A5A5A2121
+      10F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8525252949494EFEFEF949494C6BDBD94
+      94949494944242426B6B6B292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+      525252949494EFEFEF949494C6BDBD9494949494944242426B6B6B2929292929
+      29F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8525252949494EFEFEF949494C6BDBD94
+      94949494944242426B6B6B292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+      525252949494EFEFEF949494C6BDBD9494949494944242426B6B6B2929292929
+      29F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8525252949494EFEFEF949494C6BDBD94
+      94949494944242426B6B6B292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+      525252949494EFEFEFA5A5A5C6C6C69494949C9C9C4A4A4A6B6B6B2929292929
+      29F8F8F8F8F8F8F8F8F8F8F8F8F8F8F85252529C9C9CD6D6D6C6BDBD9C9C9C94
+      94946B6B6B6B6B6B737373292929292929F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8
+      393929949494C6BDBDCECECEC6BDBDA5A5A5A5A5A5A5A5A56B6B6B4A4A4A1010
+      10F8F8F8F8F8F8F8F8F8F8F8F8000000A5A594DEDEDEC6C6C6BDB5B5BDBDBDBD
+      BDBD8C8C8C8484846B6B6B6363635A5A5A000000F8F8F8F8F8F8F8F8F8000000
+      737352D6CECEFFFFFFE7E7E7CECECEC6C6C6293939525252C6C6C69C94947B7B
+      7B000000F8F8F8F8F8F8F8F8F80000005A5A5AADA5A5EFEFEFDEDEDE4A5A4A42
+      5263848473525252B5B5B57B7B7B4A4A4A000000F8F8F8F8F8F8F8F8F8F8F8F8
+      F8F8F80000000000003939392121217B7B6B314242000000000000000000F8F8
+      F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F800
+      0000F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8F8}
+    GlyphKind = bkCustom
+  end
+  object btn2dSave: TGlyphBtn
+    Left = 355
+    Top = 319
+    Width = 62
+    Height = 23
+    Caption = '&Save'
+    TabOrder = 1
+    Visible = False
+    Glyph.Data = {
+      36030000424D3603000000000000360000002800000010000000100000000100
+      1800000000000003000000000000000000000000000000000000FFFEFDFFFEFD
+      FFFEFDFFFEFDFFFEFDFFFEFD3A3939B9B9B96D6D6D787877FFFEFDFFFEFDFFFE
+      FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD4242428383834D
+      4D4D8D8D8D6D6D6D737372FFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+      FFFEFDFFFEFD6C6C6C6A6A6A6C6C6C5D5D5D4C4C4C8989896C6C6C70706FFFFE
+      FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD6C6C6CC3C3C38F8F8F6A6A6A7B
+      7B7B7676764C4C4C8888886C6C6C6F6F6EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+      696969E0E0E0CCCCCCCCCCCCB4B4B47A7A7A7777774F4F4F5252528787876C6C
+      6C70706FFFFEFDFFFEFDFFFEFD2E2E2EE8E8E88D8D8DCDCDCDD9D9D9D9D9D985
+      85855A5A5A5F5F5F6363635050508E8E8E6C6C6C737372FFFEFD000000727272
+      D3D3D36A6A6A7A7A7AC9C9C9A8A8A86464646C6C6C7C7C7CE4E4C9E5E5E55555
+      559595956D6D6D787877000000898989707070CFCFCF8383839D9D9D7D7D7D80
+      8080828282E7E7E7DFDFAFEFEFD7E7E7E75E5E5EA1A1A16A6A6AFFFEFD535353
+      9292926E6E6EA3A3A3848484929292858585E7E7E7DCDCDCEFEFEFD4D4D4F3F3
+      F3EBEBEB636363787877FFFEFDFFFEFD6262629F9F9F9F9F9F999999858585EA
+      EAEAE1E1E1EFEFEFD9D9D9F3F3F3CBCBCBBFBFBF737372FFFEFDFFFEFDFFFEFD
+      FFFEFD6767679F9F9F666652ECECECE2E2E2F0F0F0D9D9D9F3F3F3D1D1D1BEBE
+      BE70706FFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD7B7B7BC0C0C0B2B289F1
+      F1F1DBDBDBF4F4F4D2D2D2BEBEBE6F6F6EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+      FFFEFDFFFEFDFFFEFD7A7A7AC0C0C0AFAF84F9F9F9D3D3D3BFBFBF70706FFFFE
+      FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD747474C0
+      C0C0AAAA7BBFBFBF737372FFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+      FFFEFDFFFEFDFFFEFDFFFEFDFFFEFD6C6C6C8C8C8C787877FFFEFDFFFEFDFFFE
+      FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFF
+      FEFD7F7F7EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD}
+    GlyphKind = bkCustom
+  end
+  object btn2dExit: TGlyphBtn
+    Left = 419
+    Top = 319
+    Width = 62
+    Height = 23
+    Caption = 'E&xit'
+    ModalResult = 2
+    TabOrder = 4
+    Glyph.Data = {
+      36030000424D3603000000000000360000002800000010000000100000000100
+      1800000000000003000000000000000000000000000000000000CED5D9DDE2E4
+      DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4
+      E6DFE4E6DDE2E4CED5D9DBE0E28E94CA4F56B83139B00F19A70F19A70F19A70F
+      19A70F19A70F19A70F19A70F19A73139B04F56B88E94CADBE0E2DBE0E34E55B7
+      5B69E16877EE6575EE6273ED5F71ED5C6EEC596CEC566AEB5268EB4F66EA4C63
+      EA3F54DD4E55B7DBE0E3D8DDE03039AF6D7BEE5766E53E4FDA3445D53345D433
+      43D33142D23141D13040CF3647D34357DF4C63EA3A45B9D8DDE0D5DBDD0F19A7
+      707DEF4354DD4354DAC5CAF3606DDD3446D53345D45F6BDBC4C8F0404ED23445
+      D14F66EA202DB8D5DBDDD2D7DA0F19A7737FEF4657DFC5CAF3FFFFFFF3F4FD60
+      6EDE606DDDF3F4FCFFFFFFC4C8F03040CF5268EB202EB8D2D7DACED4D70F19A7
+      7681EF4859E16270E3F3F4FDFFFFFFF3F4FDF3F4FDFFFFFFF3F4FC5F6BDB3141
+      D0566AEB222FB8CED4D7CAD1D40F19A77A87F0495BE3384CDE6371E4F3F4FDFF
+      FFFFFFFFFFF3F4FD606DDD3343D33142D15C71EC2735B9CAD1D4C7CDD10F19A7
+      8697F35066E74059E36778E7F3F4FDFFFFFFFFFFFFF3F4FD6373DF3B50D7394F
+      D56983EF2A39BAC7CDD1C2C9CD0F19A78EA3F46484ED7994EEF5F7FDFFFFFFF5
+      F7FDF5F7FDFFFFFFF5F7FD758EE64F71DE7491F22B3BBAC2C9CDBFC6CA0F19A7
+      91A4F46685EECED7F9FFFFFFF5F7FD7792EC7791EAF5F7FDFFFFFFCCD5F54F71
+      DE7693F22B3BBABFC6CABAC2C50F19A792A4F56686EF6283EECDD7F87892EE52
+      77E85175E6758FE9CBD5F65C7AE35475E17894F22D3CBABAC2C5B6BEC12832AB
+      8FA0F5778DF25D7BEE5C7AED5B79EC5977EA5876E85674E75473E65371E4647F
+      EA748DF23A46B8B6BEC1B5BCC03C44AF7783E78998F48795F48493F48191F37E
+      90F37B8EF3798DF3768AF37389F37187F25F73E33C44AFB5BCC0B5BDC06E77B7
+      3C44AF2731AA0F19A70F19A70F19A70F19A70F19A70F19A70F19A70F19A72731
+      AA3C44AF6E77B7B5BDC0C3CBCFB8BFC3B3BABEB3BABEB3BABEB3BABEB3BABEB3
+      BABEB3BABEB3BABEB3BABEB3BABEB3BABEB3BABEB8BFC3C3CBCF}
+    GlyphKind = bkCustom
+  end
+end
