@@ -1070,7 +1070,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: RT/RTM Validator | **70** | 70 | **0** ✅ ↑+15 Pass84 T7RTMVALID=RTM name picker confirmed | 2026-06-18 |
 | Module: FP/FO Print | **55** | 55 | **0** ✅ ↑+13 Pass64 | 2026-06-17 |
 | Module: RF/RFQ | **84** | 78 | **0** ✅ ↑+9 Pass93 BKRFQ.EXP/ISSUE/QTY/COST/PROD/LCDATE confirmed | 2026-06-18 |
-| Platform Subsystems | **75** | 82 | **7** ↑ +3 | 2026-06-17 |
+| Platform Subsystems | **79** | 82 | **3** ↑+4 Pass99 EvoLinks ISLINKS/FNO ISFO.HDR/CAL/Update/EvoBackup/EVOBSR | 2026-06-18 |
 | Subsystem: PI/Physical Inventory | **88** | 80 | **0** ✅ (dup — see primary) | 2026-06-18 |
 | Module: SA/Sales Analysis | **84** | 84 | **0** ✅ (dup row — see primary entry) | 2026-06-18 |
 | Module: JC/Job Cost | **87** | 82 | **0** ✅ (dup — see primary) | 2026-06-18 |
@@ -1101,7 +1101,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | 15 | 50 | 35 | 2026-06-15 |
 | RWN String Analysis technique | **82** | 90 | **8** NEW | 2026-06-11 |
 | Reporting Engine | 75 | 88 | 13 | 2026-06-11 |
-| Platform Subsystems | **72** | 82 | **10** ↑ +7 | 2026-06-17 |
+| Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
 | Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
@@ -1109,7 +1109,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **76** | 88 | **12** ↑+8 Pass96 tier7-tables.md: MTWC/MTWORO/IS.TRIG/BKRFQ/BKICPMAT/BKAP.REM/TMC/MTWO.WIP/IS.SPC/DRILLM/IS.FIB/CFFLOC/BKCM-codes/ISSR.INFO/IS.REM | 2026-06-18 |
 | PROJECT-STRUCTURE.md | **80** | 90 | **10** ↑+8 Pass98 Pass19: 16 new tables, SH/MH/JS/GF module corrections, SM-I/J forms, SO/sched/backup DFMs | 2026-06-18 |
-| HELP-RESOURCES.md | **84** | 90 | **6** ↑+4 Pass97 Recipes10-14 GL/archive/backup/new-user/inv-adj + workflow blocks | 2026-06-18 |
+| HELP-RESOURCES.md | **87** | 90 | **3** ↑+3 Pass99 EvoLinks/FNO/CAL/T7CUSTOMS/EvoUpdate/EVOBSR/EvoMobile infra documented | 2026-06-18 |
 
 ### Critical Path to 90% Goal
 
