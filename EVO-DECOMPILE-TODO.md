@@ -1103,7 +1103,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | System: Notes/EVONOTES | **82** | 78 | **0** ✅ ↑+10 Pass86 IS.NOTE/LNK/REM tables confirmed | 2026-06-18 |
 | Modules: AB/CP/EX/FL/LM/MA/MM/PC/PL/RT/SB/SL/SY/UM/UP/YS (16 opaque) | **47** | 50 | **3** ↑+32 Pass103c RUN dumps+BKLME.SRC+DFMs: AB=RMA, EX=exec, FL=FlexLoc, LM=LotMove(confirmed SRC), MA=MapDepo, MM=MfgMgmt, PL=PayrollLink, RT=RTMValid, SB=Scoreboard, SL=SFC, UM=UserMenu, UP=Update | 2026-06-18 |
 | RWN String Analysis technique | **90** | 90 | **0** ✅ ↑+8 Pass106 2-technique doc: Technique1=2575 string files, Technique2=rwn_symbols.json 1122 RWN records (db_files/procs/named_vars); workflow; upgrade table | 2026-06-18 |
-| Reporting Engine | **82** | 88 | **6** ↑+7 Pass101 403 RTMs module-mapped from rtm_callers.csv; 23 module groups cross-reference | 2026-06-18 |
+| Reporting Engine | **88** | 88 | **0** ✅ ↑+6 Pass106c comprehensive module-to-RTM table (12 modules, RTM counts); TAS push-model pipeline (SETUP_REPORT_BUFF/OUTPUT_REPORT_DATA/EXEC_RB); print modes; cfg.rtm status note | 2026-06-18 |
 | Platform Subsystems | **79** | 82 | **3** ↑+7 Pass99 EvoLinks/FNO/CAL/Update/EvoBackup/EVOBSR DFMs confirmed | 2026-06-18 |
 | Java Integration | **85** | 88 | **3** ↑+12 Pass102 TASKS/sql/Main+ISJAVA schema; jdbc.ini; 260+ table model inventory; ISLINKS/ROUTING/WORKCTR/ISBSF/BKSYMSTR schemas | 2026-06-18 |
 | ODBC Connectivity | **91** | 92 | **1** ↑+6 Pass105 EVOADMIN DSN confirmed (StartEvo license check); DSN table (DBA/ABI/EVOADMIN); Transactional vs. Relational API table documented | 2026-06-18 |

@@ -118,20 +118,124 @@ ibkpob1.rtm .. ibkpob4.rtm  (BKPOB — same 4 for BK-era program)
 it6sob1.rtm .. it6sob3.rtm  (T6SOB — SO print, 3 layouts)
 ```
 
-### Module-to-RTM mapping examples
+### Module-to-RTM mapping (Pass 106, comprehensive)
 
-| Module | Program | RTM files |
-|--------|---------|-----------|
-| AP-H Print Checks | BKAPHA, T6APHA | `bkapha1.rtm`, `bkapha2.rtm`, `banks.rtm`, `cfg.rtm` |
-| PO-B Print PO | BKPOB, T6POB | `ibkpob1..4.rtm`, `it6pob1..4.rtm`, `bk.rtm`, `temp.rtm` |
-| SO-B Print SO | BKSOB, T6SOB | `ibksob1..4.rtm`, `it6sob1..3.rtm`, `bk.rtm`, `temp.rtm` |
-| AR-E Print Statements | BKARE, T6ARE | `abk.rtm`, `at6.rtm`, `bk.rtm`, `t6.rtm` |
-| RM (RMA) | ISSRB | `ibkrma1.rtm`, `it6rma1.rtm` |
+RTM counts derived from `samples/rtm_callers.csv` (excludes the 7 globally-shared templates).
+Caller programs mapped by program-name prefix (BKSOx = SO module, T6SOx = T6-era SO module, etc.).
+
+| Module | Unique RTMs | Example RTM files |
+|--------|-------------|-------------------|
+| SO (Sales Orders) | 82 | `bksob1..4`, `ibksob1..4`, `it6sob1..3`, `bksohlot.rtm`, `bksod1..3` |
+| i2 Systems custom (J5/J6/JM/IS*) | 50 | `j6inv1.rtm`, `jmwoc1.rtm`, `is*.rtm` |
+| SR (Service/Repair) | 28 | `ibkrma1.rtm`, `it6rma1.rtm`, `sr*.rtm` |
+| AR (Accounts Receivable) | 23 | `bkare1..4`, `bkari1..3`, `bkarg1..2`, `abk.rtm`, `at6.rtm` |
+| AP (Accounts Payable) | 22 | `bkapha1..4`, `bkaph1..2`, `bkapm1..4`, `bkaps1..3` |
+| PO (Purchase Orders) | 21 | `ibkpob1..4`, `it6pob1..4`, `bkpob*.rtm` |
+| WO (Work Orders) | 11 | `bkwoc1..2`, `cenwoc1.rtm`, `ct6woc1.rtm`, `bkawc1..2` |
+| IN (Inventory) | 7 | `ino.rtm`, `bkactrptbkac.rtm` |
+| CM (CRM/Contact Manager) | 4 | `bkcm*.rtm` |
+| PR (Payroll) | 4 | `bkprd1..3`, `bkprdpst.rtm` |
+| LC (Landed Cost) | 2 | `islcf1.rtm`, `islce1.rtm` |
+| AC (Activity Control) | 1 | `bkac.rtm` |
+| Other (GL, BM, SH, DE, MR, PI, ES, DC, JC…) | 182 | Various module-specific reports |
+
+**Total unique non-global RTMs: ~396** (403 total − 7 global shared = 396).
+
+### Module-to-RTM detailed examples
+
+| Module/Operation | Programs | RTM files called |
+|-----------------|----------|-----------------|
+| AP-H Print Checks | BKAPHA, T6APHA | `bkapha1.rtm`, `bkapha2.rtm`, `bkapha3.rtm`, `banks.rtm`, `cfg.rtm` |
+| AP-J Bank Reconciliation | BKADC | `bkaph1.rtm`, `bkapha1.rtm`, `banks.rtm`, `ap.rtm`, `cfg.rtm` |
+| AR-C Invoice Print | BKARI, T6ARI | `bkari1.rtm`, `bkari2.rtm`, `bkari3.rtm`, `cfg.rtm` |
+| AR-E Print Statements | BKARE, T6ARE | `abk.rtm`, `at6.rtm`, `bk.rtm`, `t6.rtm`, `cfg.rtm` |
+| AR-I AR Aging | BKARG, T6ARG | `cfg.rtm` (plus inline from program) |
+| PO-B Print PO | BKPOB, T6POB | `ibkpob1..4.rtm`, `it6pob1..4.rtm`, `bk.rtm`, `temp.rtm`, `cfg.rtm` |
+| SO-B Print SO | BKSOB, T6SOB | `ibksob1..4.rtm`, `it6sob1..3.rtm`, `bk.rtm`, `temp.rtm`, `cfg.rtm` |
+| WO-C Print Traveler | BKWOC, T6WOC | `cenwoc1.rtm`, `ct6woc1.rtm`, `bk.rtm`, `t6.rtm`, `cfg.rtm` |
+| RMA Print | ISSRB | `ibkrma1.rtm`, `it6rma1.rtm`, `cfg.rtm` |
+| PR Payroll | BKPRD, T6PRD | `bkprd1.rtm`, `bkprd2.rtm`, `bkprd3.rtm`, `banks.rtm`, `cfg.rtm` |
+
+### cfg.rtm — status note
+
+`cfg.rtm` is referenced by **792 of 403 unique program callers** (virtually every print operation).
+It is loaded via ReportBuilder's `Template.FileName` property inside other RTM files — acting as
+a **shared page header/footer template** (likely company name, logo, address, page border).
+
+Physical file not found on `\\i2s109-solidcrm\DBAMFG$\` (2026-06-18 search). It may be:
+- Referenced by a path that resolves via a network drive map configured at runtime (e.g. `T:\cfg.rtm`)
+- Deleted or renamed — reports function correctly at runtime, suggesting it's being found via a
+  configured path not visible from this workstation
+- The path is stored in `C:\ISTS\RBuilder.ini` (the ReportBuilder settings file)
+
+---
+
+## Report parameter passing (TAS pipeline mechanism)
+
+The TAS → ReportBuilder data flow is a **push model**:
+
+1. **Setup buffer** — TAS program sets up the data pipeline buffer:
+   ```
+   SETUP_REPORT_BUFF <buffer_name>
+   ```
+   This defines the TASFile pipeline that the RTM's `TppDataPipeline` will consume.
+
+2. **Populate buffer** — TAS loads records and calls:
+   ```
+   OUTPUT_REPORT_DATA <field_list>
+   ```
+   or
+   ```
+   UPDATE_REPORT_DATA <field_list>
+   ```
+   This pushes records into the pipeline. Each call = one row in the report.
+
+3. **Execute report** — TAS triggers rendering:
+   ```
+   RTM_FN <filename.rtm>
+   EXEC_RB
+   ```
+   ReportBuilder reads all buffered rows and renders the report.
+
+4. **Print control** — TAS sets print destination before EXEC_RB:
+   ```
+   USE_PRINTER         ; print to configured printer
+   PRINT_TO_FILE       ; print to C:\ISTS\PDFS\ (PDF archiving)
+   NOPRINTWHRDIALOG    ; suppress "Where to print?" dialog
+   PRINT_CANCEL        ; cancel any pending print job
+   PRINT_ARCHIVE       ; archive copy to PDF
+   ```
+
+**Report filters/date ranges:** Set as TAS variables before the push loop:
+- Date range: set `rpt_start_date` / `rpt_end_date` (or equivalent named vars) before
+  the first `OUTPUT_REPORT_DATA` call. The TAS program filters records in its own loop;
+  only matching records are pushed to the pipeline.
+- Sort order: TAS sorts the Btrieve record set using `sorta <key>` before iterating.
+- There is no parameterized query layer — all filtering is TAS-side before RTM rendering.
+
+**Multi-section reports** use sub-reports (TppSubReport / TppChildReport in the RTM tree).
+TAS calls `SETUP_REPORT_BUFF` multiple times with different buffer names for different sections.
+
+---
+
+## Print destination modes
+
+| TAS keyword | ReportBuilder DeviceType | Behavior |
+|-------------|--------------------------|---------|
+| `USE_PRINTER` | `Printer` | Print directly to Windows default printer |
+| `PRINT_TO_FILE` | `TextFile` | Output to `C:\ISTS\PDFS\<filename>.pdf` |
+| (default) | `Screen` | Show in ReportBuilder preview window |
+| `PRINT_ARCHIVE` | `Printer` + archive | Print AND save a PDF archive copy |
+
+PDF path: `C:\ISTS\PDFS\` — created by `USE_PRINTER` / `PRINT_ARCHIVE` per workstation.
+
+---
 
 ## Things still open
 
-- Full binary parser to diff RTMs programmatically. Format is standard Delphi TStream;
-  open-source Python readers (e.g. `dfmreader`) could be adapted if needed.
-- Confirm exact content of `cfg.rtm` — company name/address or just layout constants.
-  Requires the report designer or binary parsing.
-- Identify the ~32 other-prefix RTMs fully.
+- Physical location of `cfg.rtm` — check `C:\ISTS\RBuilder.ini` for configured template paths.
+- Full binary parser to extract TppDBText data-field bindings from all 403 RTMs programmatically.
+  Format is standard Delphi TStream; `dfmreader` Python library could be adapted.
+- Confirm report parameter passing for multi-currency reports (T7MLC uses LANGDICT — may have
+  a different pipeline setup for translated field values).
+- Identify the 182 "other" module RTMs fully (GL, BM, SH, DE, MR, PI, ES, DC, JC category RTMs).
