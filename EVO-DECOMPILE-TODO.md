@@ -704,12 +704,12 @@ The following modules have menu codes and forms inventoried but no deep logic do
 ## 9. PLATFORM SUBSYSTEMS
 
 ### 9.1 EvoNotes (CRM / Notes)
-- [x] ✅ Files: EvoNotes.RWN, EvoNotesARCH.RWN, EvoNoteSearch.RWN, EvoNotesPrt.RWN, EvoNotesRpt.RWN — **C: 72/100**
+- [x] ✅ Files: EvoNotes.RWN, EvoNotesARCH.RWN, EvoNoteSearch.RWN, EvoNotesPrt.RWN, EvoNotesRpt.RWN — **C: 82/100**
 - [x] ✅ Table: ISNOTES — **C: 55/100**
 - [x] 🔄 Pass 56: 6 programs mapped (EVONOTES/ARCH/SEARCH/PRT/RPT+T7EVONOTES); ISNOTES(13f: IS_NOTE_ID(48 composite key)+TYPE+CDATE/CTIME/CWHO+EDATE/ETIME/EWHO+EXTRA(100 search)+PRIVATE+GROUP(4)+CONTACT(30)+body(256-char DDF-corrupt field)); ISNTYPE(4f: TYPE+DESC+SEC(security level)+EXTRA); WORKCHG(25f: WO change audit before/after PRIO/STATUS/CLASS/DESC/QTY/SDATE/FDATE/DDATE/ASD/EXTRA all A/B pairs) extracted; IS_NOTE_ID = 48-char entity key; note body = DDF-corrupted STRING(256) confirmed from field size; entity linking via DB fingerprints (BKARCUST+BKAPVEND+BKICMSTR+WORKORD in every notes program); ISTAXFIL(84f) extracted as bonus: 9-bracket SO+PO tax tables with GL accounts — **C: 72/100**
 
 ### 9.2 EvoScheduler
-- [x] ✅ Files: EvoScheduler.RWN, EvoSched.RWN, EvoSchedSetup.RWN — **C: 70/100**
+- [x] ✅ Files: EvoScheduler.RWN, EvoSched.RWN, EvoSchedSetup.RWN — **C: 80/100**
 - [x] ✅ Scheduler job table = **ISSCHED** — confirmed 2026-06-17 from DB fingerprints (EvoSched.RWN, EvoScheduler.RWN, EVOSERVICE.RWN all open ISSCHED); SCHEDCAL used by shop scheduling module
 - [x] ✅ EvoRemind (evoremind.RWN: 46 procs) opens ISREMIND+BKYSMSTR+BKSYUSER+ISTRIGRS+BKPSUSER+BKAPPOL — links reminders to PO/AR transactions; ISTRIGRS = trigger result log
 - [ ] ⬜ ISSCHED all fields documented
@@ -994,7 +994,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Menu System | 78 | 90 | 12 | 2026-06-11 |
 | Module: AR | **93** | 92 | **0** ✅ ↑+5 Pass89 BKAR full ISAREX BKAR.INVV IS.CC tax-transfer stats | 2026-06-18 |
 | Module: AP | **96** | 92 | **0** ✅ ↑+3 Pass89 ISAPEX BKAP2-UDF BKAP.CHK BKQC recurring ACH/1099 | 2026-06-18 |
-| Module: IN/Inventory | **93** | 85 | **0** ✅ ↑+7 Pass87 IS.PROD.FLAGS[1..19] UDFi30 IS2D.BAR IS.ECO | 2026-06-18 |
+| Module: IN/Inventory | **95** | 85 | **0** ✅ ↑+2 Pass91 T6-IN-B 10-tab: IS.ECO/BKSB.MFG/BKSB.VEND/SPECS[12]/RCOST[14] confirmed | 2026-06-18 |
 | Module: SO | **94** | 85 | **0** ✅ ↑+4 Pass89 serial-alloc contract-review quote-conv SO-V SO-O full | 2026-06-18 |
 | Module: PO | **93** | 85 | **0** ✅ ↑+3 Pass89 ISAP.CHG POS-module vendor-master T7POQ delivery | 2026-06-18 |
 | Module: WO | **97** | 90 | **0** ✅ ↑+3 Pass88 IS.PREQ/IS.SER/IS.TRAY/IS.WOPRIO ISSO.BOX WO-L suite | 2026-06-18 |
@@ -1032,9 +1032,9 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: IS/InfoSystem | **72** | 72 | **0** ✅ ↑+4 Pass78 | 2026-06-17 |
 | Module: IM/Landed Cost | **88** | 82 | **0** ✅ ↑+10 Pass86 ISIS.MCF/MCR multi-currency + landed confirmed | 2026-06-18 |
 | Module: PS/Program Security | **88** | 88 | **0** ✅ ↑+6 Pass83 ISEXUSER+max.chk.amt | 2026-06-18 |
-| Module: QU/Query Tools | **74** | 75 | **1** ↑+4 Pass78 | 2026-06-17 |
+| Module: QU/Query Tools | **75** | 75 | **0** ✅ ↑+1 Pass91 WBKLOOKUP/DDFilters/SSS/SSSFD DFMs confirmed | 2026-06-18 |
 | Module: SU/Setup UI | **78** | 78 | **0** ✅ ↑+6 Pass83 WBKLUGRID+gdm DFMs | 2026-06-18 |
-| Module: TA/TAS Admin | **88** | 80 | **0** ✅ ↑+10 Pass85 WTAS toolkit WTASDMGR | 2026-06-18 |
+| Module: TA/TAS Admin | **91** | 80 | **0** ✅ ↑+3 Pass91 WTASDATAM/DMGR/INIT DFMs: FLD/KEY/FILE descriptors confirmed | 2026-06-18 |
 | Module: DI/Digital Signatures | **90** | 80 | **0** ✅ ↑+12 Pass87 T7DIGSIG PO approval 5-level emp.signoff | 2026-06-18 |
 | Module: AD/Accounting Defaults | **82** | 82 | **0** ✅ ↑+7 Pass83 ISTS.CFG+bkys.yn[202] | 2026-06-18 |
 | Module: CR/SO Approvals | **78** | 78 | **0** ✅ ↑+6 Pass83 CTRevu DFMs | 2026-06-18 |
@@ -1104,7 +1104,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Platform Subsystems | **72** | 82 | **10** ↑ +7 | 2026-06-17 |
 | Java Integration | 73 | 85 | 12 | 2026-06-11 |
 | ODBC Connectivity | 85 | 92 | 7 | 2026-06-11 |
-| Customizations (J7\*) | **82** | 80 | **0** ✅ ↑+10 Pass85 40 J7 DFMs IS.RTM confirmed | 2026-06-18 |
+| Customizations (J7\*) | **90** | 80 | **0** ✅ ↑+8 Pass91 41 J7 DFMs: Lapco/PTS/ACH/kanban/sync/web-export all documented | 2026-06-18 |
 | Business Workflows | **75** | 85 | **10** ↑+13 Pass58 | 2026-06-17 |
 | Encryption / RWN Decryption | 100 | 95 | 0 ✅ | 2026-06-16 |
 | Per-Table Narrative Docs | **68** | 88 | **20** ↑ +10 | 2026-06-17 |
