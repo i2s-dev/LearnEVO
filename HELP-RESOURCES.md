@@ -77,6 +77,7 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Print payroll checks and post to GL | PR-D | [Recipe 19: Payroll Check Printing](#recipe-19-payroll-check-printing-pass-110d-2026-06-19) |
 | File quarterly 941/940 or generate year-end W-2s | PR-L-G/H → PR-H → PR-O → PR-L-I | [Recipe 20: Quarterly/Annual Tax Filing](#recipe-20-quarterly-and-annual-tax-filing-pass-110d-2026-06-19) |
 | Run the full year-end close (payroll W-2/1099 + GL year-end + archive) | PR-O → PR-L-I → AP-S → GL year-end → SM-J archive | [Recipe 21: Year-End Close](#recipe-21-year-end-close-pass-112-2026-06-19) |
+| Set up Pervasive DDF so ODBC and Java tools can query EvoERP tables | Pervasive DDF Builder or TA-S | [Recipe 22: Build Pervasive DDF](#recipe-22-build-the-pervasive-ddf-required-before-odbc-java-tools-pass-112-2026-06-19) |
 | Fix items stuck on the open order report (shipped but never posting) | SD-M → SO-G | [Recipe 9: Packaging Items Stuck on Open Order Report](#recipe-9-packaging-items-stuck-on-open-order-report) |
 | Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
 | Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
@@ -15561,6 +15562,99 @@ Complete the normal month-end close for December before starting year-end:
 | Archive tables | SM-J* | BKGLATRN, BKARHINV, ISAPAINL, etc. |
 
 **Confidence: 88/100** — PR-O BKPRW2 creation + BKPRMSTR YTD reset confirmed from DDF + CHM (Pass 111d); BKGLCOA 65-field COA array structure confirmed from DDF (CURRENT/1YPAST/2YPAST columns); PR-H AP voucher creation via BKPRGLFL confirmed (Pass 111d); 1099 via BKAPVEND.TAX_ID + BKAPVND2 confirmed (Pass 111d); SM archive table names confirmed from sm/data-maintenance-archiving.md; exact GL year-end journal entries (retained earnings transfer) are in encrypted AM/GL RWN programs — mechanism inferred from BKGLCOA column structure.
+
+---
+
+### Recipe 22: Build the Pervasive DDF (Required Before ODBC/Java Tools) (Pass 112, 2026-06-19)
+
+**When to use:** The Pervasive DDF (Data Dictionary Files — FILE.DDF, FIELD.DDF, INDEX.DDF) must
+exist before ODBC connections or the Java EvoPVT.jar can query EvoERP tables. The DDF is NOT
+shipped with EvoERP; it must be built from the running Pervasive database using Pervasive
+utilities or EvoERP's own TA-S Data Dictionary Check tool.
+
+**What the DDF does:**
+- Maps Btrieve `.B` file names to SQL-style table names
+- Defines field names, types, and lengths for each table
+- Enables ODBC SELECT/INSERT/UPDATE/DELETE on Btrieve files
+- Required by `EvoPVT.jar` (jdbc.ini Host/Name/Port/Company parameters)
+- Required by any external tool using `DSN=DBA` or the Pervasive ODBC driver
+
+#### Method 1 — Pervasive DDF Builder (Pervasive utility)
+
+```
+1. Open Pervasive Control Center (PCC) on the server (i2s109-solidcrm)
+   - Path: Start → Pervasive → Pervasive Control Center
+
+2. Connect to the database: i2s109-solidcrm → Databases → DBA (or EVOADMIN)
+   - The DBA database corresponds to \\i2s109-solidcrm\DBAMFG$\
+
+3. Use DDF Builder tool:
+   - Right-click the database → Build DDF
+   - Point at the \\i2s109-solidcrm\DBAMFG$\ directory containing the .B files
+   - DDF Builder reads each .B file's internal schema and creates:
+     FILE.DDF  (table names → file paths)
+     FIELD.DDF (field definitions)
+     INDEX.DDF (key segment definitions)
+   - Output directory: \\i2s109-solidcrm\DBAMFG$\ (same folder as the .B files)
+
+4. Restart Pervasive service to pick up new DDF
+```
+
+#### Method 2 — EvoERP TA-S (Data Dictionary Check)
+
+```
+TA-S — Data Dictionary Check (T7DDCHECK.RWN, 92 procs)
+- Opens FILEDICT (DDF mapping registry in TAS runtime)
+- Opens FILEKEY, FILELOC (file location + key definitions)
+- Validates that the DDF in FILEDICT matches the physical .B files
+- Can rebuild missing or inconsistent DDF entries
+- Access via: TA module → TA-S
+
+Note: TA-S maintains the TAS-runtime DDF (FILEDICT table), not necessarily the
+Pervasive ODBC DDF (FILE.DDF/FIELD.DDF/INDEX.DDF). Both may need updating after
+schema changes.
+```
+
+#### Method 3 — Pervasive ODBC Administrator
+
+```
+1. Open Pervasive ODBC Administrator (32-bit):
+   C:\Windows\SysWOW64\odbcad32.exe  ← ALWAYS use this for EvoERP (32-bit app)
+   (NOT C:\Windows\System32\odbcad32.exe which is 64-bit)
+
+2. System DSN → Add → Pervasive ODBC Client Interface (32-bit)
+   - Data Source Name: DBA
+   - Server Name: i2s109-solidcrm
+   - Port: 1583
+   - Database: @DBA  (@ prefix = Pervasive server-side database)
+
+3. Test connection — if DDF exists, tables will be visible in the schema viewer
+
+4. If no tables appear: run DDF Builder (Method 1) first
+```
+
+**Key locations:**
+- DDF files: `\\i2s109-solidcrm\DBAMFG$\FILE.DDF`, `FIELD.DDF`, `INDEX.DDF`
+- ODBC DSN name: `DBA` (32-bit system DSN on each workstation)
+- Pervasive service: runs on `i2s109-solidcrm`, port 1583
+- Java config: `C:\ISTS\jdbc.ini` — Host=i2s109-solidcrm, Name=DBA, Port=1583
+
+**Bitness warning:** EvoERP is a 32-bit application. Always use the 32-bit ODBC admin
+(`SysWOW64\odbcad32.exe`). The 64-bit admin (`System32\odbcad32.exe`) stores DSNs in
+a different registry hive that EvoERP cannot see.
+
+**After schema changes (adding fields, new tables):**
+```
+1. Run DDF Builder to update FILE.DDF/FIELD.DDF/INDEX.DDF
+2. OR run TA-S to sync TAS runtime FILEDICT
+3. Restart any open ODBC connections to pick up schema changes
+```
+
+**Confidence: 88/100** — ODBC bitness trap confirmed (System32 vs SysWOW64 hives documented);
+DSN parameters confirmed (Host/Port/Database/Driver from ODBC setup testing); jdbc.ini parameters
+confirmed from Pass 110e Java analysis; DDF file structure (FILE.DDF/FIELD.DDF/INDEX.DDF)
+confirmed as standard Pervasive DDF format; exact TA-S behavior blocked by RWN encryption
+(FILEDICT sync mechanism inferred from T7DDCHECK DB fingerprint: FILEDICT+FILEKEY+FILELOC).
 
 ---
 

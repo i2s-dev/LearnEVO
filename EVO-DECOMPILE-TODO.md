@@ -891,7 +891,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **New company creation** — UT → company add, NE module (T7NEWINIT: 49 procs) — see Recipe 16 — **C: 60/100**
 - [x] ✅ **Backup / restore** — TA-O (EVOERPBACKUP) — see Recipe 12 — **C: 65/100**
 - [x] ✅ **Software update** — EvoUpdate pipeline traced (Pass 110e 2026-06-19) — see Platform Subsystems § EvoUpdate — **C: 75/100**
-- [ ] ⬜ **ODBC DDF build** — required before Java tools can connect
+- [x] ✅ **ODBC DDF build** — required before Java tools can connect; full procedure documented: DDF Builder method (Pervasive Control Center → DDF Builder → FILE.DDF/FIELD.DDF/INDEX.DDF), TA-S method (FILEDICT sync), ODBC Admin method (SysWOW64 32-bit admin, DSN=DBA, Host=i2s109-solidcrm, Port=1583, Database=@DBA); bitness trap documented; Recipe 22 added to HELP-RESOURCES.md (Pass 112 2026-06-19) — **C: 88/100**
 
 ---
 
