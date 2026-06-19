@@ -176,6 +176,103 @@ Primary key: `BKAR_CUSTCODE` (10)
 
 **Note:** BKARSHIP (106f) has the same field layout as BKARCUST — it is the ship-to address override table (customer's alternate shipping addresses reuse the customer master layout).
 
+## BKARINVT — AR Invoice Transaction / Open-Item Ledger (23 fields, Pass 111a 2026-06-19)
+
+Primary key: `BKAR_INVT_CODE` (customer) + `BKAR_INVT_DATE` (invoice date) + `BKAR_INVT_NUM` (invoice number)
+
+This is the **open-item AR ledger** — the live record of what each customer owes. One row per posted invoice (or credit memo). The row remains active until the invoice is fully paid (BKAR_INVT_CLOSD is set). BKAREIVT is the same table with a DDF index artifact (BKAB_PERIOD at an overlapping offset) that does not represent a real data field.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKAR_INVT_CODE` | STRING 10 | Customer code (PK 1) |
+| `BKAR_INVT_DATE` | DATE | Invoice date (PK 2) |
+| `BKAR_INVT_NUM` | FLOAT | Invoice number (PK 3) |
+| `BKAR_INVT_AMT` | FLOAT | Original invoice amount (positive = invoice, negative = credit) |
+| `BKAR_INVT_AMTRM` | FLOAT | Amount remaining unpaid (0 = fully paid) |
+| `BKAR_INVT_DESC` | STRING 25 | Invoice description |
+| `BKAR_INVT_TERMN` | UBINARY | Payment terms code (FK → payment terms table) |
+| `BKAR_INVT_TYPE` | STRING 1 | Transaction type: I=invoice, C=credit memo, D=debit adj, P=payment |
+| `BKAR_INVT_GLDPT` | STRING 4 | GL department |
+| `BKAR_INVT_SLSP` | UBINARY | Salesperson 1 code |
+| `BKAR_INVT_DEPST` | STRING 1 | Deposit posted flag |
+| `BKAR_INVT_SLSP2` | UBINARY | Salesperson 2 code |
+| `BKAR_INVT_EXTRA` | STRING 50 | Extra / user-defined |
+| `BKAR_INVT_PDATE` | DATE | Payment/posting date |
+| `BKAR_INVT_MCRAT` | FLOAT | Multi-currency exchange rate |
+| `BKAR_INVT_MCCOD` | STRING 3 | Multi-currency code |
+| `BKAR_INVT_TRXN` | FLOAT | Transaction number (sequence) |
+| `BKAR_INVT_CHKNO` | FLOAT | Check number that paid this invoice |
+| `BKAR_INVT_DEPNO` | FLOAT | Deposit number applied |
+| `BKAR_INVT_CHKAC` | UBINARY | Bank account code for the check |
+| `BKAR_INVT_OPEND` | DATE | Date opened / posted to AR |
+| `BKAR_INVT_CLOSD` | DATE | Date fully paid / closed (empty = still open) |
+| `BKAR_INVT_NORMP` | STRING 1 | Normal payment flag |
+
+---
+
+## BKART — AR Customer Transactions (12 fields)
+
+Primary key: `BKART_CUST` + `BKART_TRXN`
+
+Detailed transaction log per customer — records each payment, credit, debit, and finance charge with a link back to the source invoice.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKART_CUST` | STRING 10 | Customer code (PK 1) |
+| `BKART_TRXN` | FLOAT | Transaction number (PK 2) |
+| `BKART_TYPE` | STRING 1 | Type: I=invoice, P=payment, C=credit, D=deposit, F=finance charge |
+| `BKART_DISC` | FLOAT | Discount amount taken |
+| `BKART_AMOUNT` | FLOAT | Transaction amount |
+| `BKART_POSTDATE` | DATE | Posted date |
+| `BKART_CNTR` | UBINARY | Line counter (for multi-line transactions) |
+| `BKART_ENTDATE` | DATE | Date entered |
+| `BKART_TRXNLINK` | FLOAT | Linked transaction number (payment → invoice link) |
+| `BKART_INVC` | FLOAT | Invoice number this transaction applies to |
+| `BKART_CHECK` | FLOAT | Check number |
+| `BKART_NOTE` | STRING 1 | Has notes flag (Y = see BKARTNOT) |
+
+BKART_TRXNLINK is how AR-C (Record Payments) links a payment to one or more invoices. When a payment partially pays an invoice, BKART records the payment with a link to the invoice's BKARINVT row, and BKARINVT.BKAR_INVT_AMTRM is reduced.
+
+---
+
+## AR aging bucket calculation (confirmed logic from DDF, Pass 111a 2026-06-19)
+
+EVO does **not store** pre-computed aging buckets. The AR-F (Print Aging) program computes them at run time:
+
+1. **Source:** Scan BKARINVT rows where `BKAR_INVT_AMTRM > 0` (open balance) for the selected customer range.
+2. **Due date:** Computed from `BKAR_INVT_DATE` + payment terms days. Terms are looked up via `BKAR_INVT_TERMN` against the payment terms table (likely BKTERMS or similar — the exact table is not confirmed from DDF alone; the customer master has `BKAR_TERMS_NUM` as the FK).
+3. **Days past due:** `report_date − due_date`.
+4. **Aging buckets:** Bucketed into current / 1–30 / 31–60 / 61–90 / over 90. The exact bucket-day boundaries are parameters in T7ARF.DFM (42-field form) — the form has fields for bucket day settings, but their exact field names require DFM extraction.
+5. **Output:** BKARCUST.BKAR_OUTINV holds the customer's total outstanding balance. The aging report breaks this total into buckets for the statement or collection analysis.
+
+The BKARCUST customer statistics (BKAR_DAYS_TOPAY = average days to pay; BKAR_NUM_INVCS = invoice count) are updated when payments post via AR-C.
+
+**The BKAB\* tables** (BKABCUST 5f, BKABVEND 2f) are billing/subscription configuration tables — BKAB_PERIOD is a billing period definition used by the interest-charging and statement programs (AR-D, AR-E), not an aging bucket table.
+
+---
+
+## Table family summary
+
+| Family | Pattern | Role |
+|--------|---------|------|
+| BKARCUST / BKARECST | 106f same schema | Active customer master; BKARECST = same layout, purpose unclear (possibly cached stats view) |
+| BKARSHIP | 106f same schema | Ship-to address overrides (customer alternate addresses) |
+| BKARINV / BKARHINV / BKARRINV | 84f same schema | Open invoices / history archive / receipt copy |
+| BKARINVL / BKARHIVL / BKARRIVL / BKARSIVL | 28f same schema | Invoice lines: open / history / receipt / ship |
+| BKARINVT / BKAREIVT | 23/24f (DDF artifact) | Open-item AR ledger — source of aging |
+| BKART / BKARTNOT | 12f + 3f | Customer transaction log + notes |
+| BKARTXN / BKARTXNB / BKARTXNS | 14f same schema | Inventory transaction records for shipments |
+| BKARDESC / BKARDPST / BKARRDSC / BKARHDSC | 5f same schema | Saved line-item descriptions |
+| BKARDEP | 6f | Customer deposit records |
+| BKARCHKF / BKARCHKH | 12f same schema | Finance charge: current / history |
+| BKARINVI | 16f | Invoice staging (import/EDI intake) |
+| BKARINVV | 77f | Invoice vouchered/verified record |
+| BKARHTAX | 5f | Tax history per invoice |
+
+---
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- BKAREIVT vs BKARINVT: Both have the same PK and nearly identical fields. BKAREIVT has a spurious BKAB_PERIOD field (LOGICAL size 1792 at an overlapping offset) which is a Btrieve alternate-key index definition artifact, not a real data field. Treat BKARINVT (23f) as canonical.
+- The exact payment terms table name is unconfirmed from DDF alone. BKAR_TERMS_NUM (UBINARY in BKARCUST) and BKAR_INVT_TERMN (UBINARY in BKARINVT) both reference it. Likely BKTERMS or similar — needs live data or RWN source to confirm.
+- BKARINVV (77f) is not yet documented — field semantics unknown. It may be the "voucher-verified" copy of a posted invoice.

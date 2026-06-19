@@ -487,7 +487,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Payment application logic confirmed: credits/deposits tracked separately in BKAR.OUT.CREDIT[1-2] — **C: 68/100**
 - [x] ✅ Pass 41: Full ISAR* archive family confirmed (30 tables): ISARAHIN+ISARAINV(84f BKARINV archives), ISARAHIL(28f BKARINVL archive), ISARAT(12f BKART archive), ISARAINT(23f BKARINVT archive), ISARTXNB(23f AR shipment batch with LINEID+RLEASD), ISARACHG(26f AR change archive); ISARCHG(26f AR change log); extended: ISAREX(51f resale cert), ISARFQ; complete archive lifecycle confirmed — **C: 80/100**
 - [x] ✅ BKARCUST all 106 fields documented with meaning — docs/03-modules/ar-accounts-receivable/README.md (Pass 110e 2026-06-19) — **C: 95/100**
-- [ ] ⬜ AR aging bucket calculation logic confirmed (how 30/60/90 boundaries computed)
+- [x] ✅ AR aging bucket calculation logic confirmed: source=BKARINVT (AMTRM>0 = open); due date = BKAR_INVT_DATE + terms from BKAR_INVT_TERMN; bucket day thresholds are runtime params in T7ARF; no pre-computed bucket fields in DDF; BKART (12f) = payment transaction log; docs/03-modules/ar-accounts-receivable/README.md (Pass 111a 2026-06-19) — **C: 72/100**
 
 ### 7.2 Accounts Payable (AP)
 - [x] ✅ Menu codes listed (AP-A through AP-U) — **C: 72/100**
@@ -510,7 +510,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Supplemental item master form set confirmed: allocation, components, forecast, pricing, specs, UDF, usage, WIP — **C: 65/100**
 - [x] ✅ 16+ location/bin forms (T7INL* series) confirmed — **C: 60/100**
 - [x] ✅ FIFO/LIFO/average cost layer logic traced: BKICVAL (4f, CODE+DATE PK, TOTVL/UOH) holds cost layers; FIFO=oldest DATE first, LIFO=newest, average=skip layers use INVTXN.AVGCOST running calc; INVTXN (24f, MTIT_* prefix) is complete audit log — receipt/shipment/adjustment/WO-issue/WO-receipt all logged with cost+qty+lot+serial+ref; docs/03-modules/in-inventory/README.md (Pass 110h 2026-06-19) — **C: 78/100**
-- [ ] ⬜ Physical inventory workflow (PI module) traced end-to-end
+- [x] ✅ Physical inventory workflow (PI module) traced: PI-A freeze→PI-C tag entry→PI-G post variances→PI-H purge; all 7 BKPI* tables documented with field semantics (BKPIMSTR 3f session header, BKPIFROZ 19f frozen snapshot, BKPIPHYS 14f count tags, BKPILOT/BKPILCNT 10f lot frozen/counted, BKPISER/BKPISCNT 10f serial frozen/counted); PI-G posts INVTXN adjustments; docs/03-modules/pi-physical-inventory/README.md (Pass 111a 2026-06-19) — **C: 82/100**
 - [ ] ⬜ Lot tracking / serial number tracking workflow confirmed
 
 ### 7.4 Sales Orders (SO)
@@ -522,7 +522,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Certificate of Conformance + Country of Origin compliance docs confirmed (T7SOC RTMs) — **C: 68/100**
 - [x] ✅ 5,001-element line item arrays confirmed (supports 5,000 lines per SO) — **C: 75/100**
 - [x] ✅ All BKSO\* tables with fields documented — BKSOHLOT(14f=lot/serial ship tracking), BKSOHSER(14f=serial tracking, same layout), BKSOLOCK(5f=concurrent edit lock), BKSONOTE(5f=BK_DESC note lines), BKSOPO(16f=MRP planned PO, BKMRP prefix shared), BKSOX(25f=invoice supplemental/multi-company), BKSOXH(25f=BKSOX archive) — docs/03-modules/so-sales-orders/README.md (Pass 110e 2026-06-19) — **C: 93/100**
-- [ ] ⬜ Sales Analysis (SA module) tables and calculations
+- [x] ✅ Sales Analysis (SA module): reporting-only module (no data entry); reads BKARHINV/BKARHIVL/BKARCUST/BKICMSTR; single table BKSAREPT (57f, TYPE+NAME PK, RTM + 26 FROM/THRU filter pairs); SA-M/SA-N save configs to BKSAREPT; SA-A reads BKSOX for bookings; SA-Q uses actual WO costs; README created docs/03-modules/sa-sales-analysis/README.md (Pass 111a 2026-06-19) — **C: 82/100**
 
 ### 7.5 Purchase Orders (PO)
 - [x] ✅ Menu codes listed (29 operations) — **C: 72/100**
