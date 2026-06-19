@@ -409,7 +409,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ Keys that control module-enable/disable confirmed (module licensing gates)
 
 ### 4.4 Key Individual Tables (minimum needed for 90% goal)
-- [x] ✅ `BKARCUST` — AR Customer master: 106 fields documented in `docs/04-data-dictionary/tier1-tables.md` — **C: 68/100**
+- [x] ✅ `BKARCUST` — AR Customer master: all 106 DDF fields documented with correct names in `docs/04-data-dictionary/tier1-tables.md` (5 contacts, 5 phones, 5 emails, MTD/YTD/LYR analytics, co-op, Avalara IS* fields) — Pass 123 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKICMSTR` — Inventory Item master: 64 fields documented; PROD_TYPE codes R/N confirmed from live IN-A screen (2026-06-17); full set RFAMNLBTKO confirmed from HH filter string — **C: 82/100**
 - [x] ✅ `BKSYMSTR` — System configuration master: all 286 DDF fields organized (20-slot payment terms array, 9-slot bank account array, AR/AP/GL defaults, auto-number counters, PRGS_WHR program path); BKSYPRTR companion table confirmed — Pass 121 2026-06-19 — **C: 85/100**
 - [x] ✅ `AHSYLOG` — User security: all 23 fields documented — **C: 68/100**
@@ -417,13 +417,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `BKLOGON` — Active session: all 10 fields documented — **C: 72/100**
 - [x] ✅ `WORKORD` — Work order master: all 74 fields documented with meaning (Pass 54) — **C: 90/100**
 - [x] ✅ `WORKCHG` — Work order change log: all 25 fields documented — **C: 70/100**
-- [x] ✅ `BKARCUST` — all fields with meaning, PKs — documented — **C: 68/100**
+- [x] ✅ `BKARCUST` — all 106 fields with correct DDF names, meanings, PKs — fully documented Pass 123 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKICMSTR` — all fields with meaning; PROD_TYPE codes confirmed (RFAMNLBTKO, R/N from live UI) — **C: 82/100**
 - [x] ✅ `BKSYMSTR` — full schema: 286 fields confirmed from DDF; all embedded arrays documented (terms×20, bank×9, aging×5, ENDDESC×5, PR_ODNAME×6); BKSYPRTR printer table confirmed — Pass 121 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKAPVEND` — AP Vendor master: all 72 DDF fields documented in tier1-tables.md (dual address, 4 contacts, 5 phones, 10 notes, 5 emails, Avalara fields, CUST_CODE cross-ref, 2 UDF fields) — Pass 122 2026-06-19 — **C: 85/100**
-- [x] ✅ `BKGLCOA` — GL Chart of Accounts: 65 fields documented (replaces BKGLJRNL — that table is BKGLTRAN) — **C: 68/100**
+- [x] ✅ `BKGLCOA` — GL Chart of Accounts: all 65 DDF fields documented with correct names (BKGL_ACCT/GLDPT/ACCTD/TYPE/CR_DR/NON_CASH; CURRENT/BUDGET/1YPAST/2YPAST arrays 1–14 + YE fields) — Pass 123 2026-06-19 — **C: 87/100**
 - [x] ✅ `WORKORD` / `WORKCHG` — Work order header + change log — documented — **C: 70/100**
-- [x] ✅ `BKSOX` / `BKSOXH` — Sales Order extract: 25 fields documented — **C: 65/100**
+- [x] ✅ `BKSOX` / `BKSOXH` — Sales Order invoice extract: all 25 DDF fields documented with correct names (BKSOX_* prefix; INVCNUM/INVCDATE/CUSTCODE/totals/CURRENCY/SONUM/terms/SHIPPER-FLOAT/JOBNUM/tax/POSTDATE/ARCHDATE/ENTDATE); BKSOXH is identical structure — Pass 123 2026-06-19 — **C: 82/100**
 - [x] ✅ `BKARINV` / `BKARINVL` / `BKARINVI` — AR invoice header/lines/staging: BKARINV all 84 DDF fields documented (3-address blocks, multi-currency, Avalara, reversal chain); BKAR_INVL_RTS = per-line release-to-ship flag; T7SAG = SO-G Post Invoices module confirmed — Pass 122 2026-06-19 — **C: 82/100**
 - [x] ✅ `BKAPPO` / `BKAPPOL` — Purchase Order header (57f) and lines (38f) fully documented; PO family (active/history/archive/RFQ); WO outside-process link (BKAP_POL_WOPRE/WOSUF → WORKORD); unit conversion (PCONV); 3-way qty tracking (RQTY/IQTY/OO_QTY); docs/03-modules/ap-accounts-payable/README.md (Pass 110e 2026-06-19) — **C: 90/100**
 - [x] ✅ `BKPRMSTR` — Payroll master (384 fields) — all fields grouped and documented; BKPRCURP/BKPRHIST, BKPRINFO, BKPRSALE/BKPRBOOK, BKPRTC/BKPRTCFG also documented; docs/03-modules/pr-payroll/README.md (Pass 110f 2026-06-19) — **C: 90/100**

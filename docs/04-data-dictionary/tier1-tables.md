@@ -31,58 +31,126 @@ File: `AHSYLOG.B` | Module: Security | Fields: 23
 
 ## BKARCUST — AR Customer Master
 
-File: `BKARCUST.B` | Module: AR | Fields: 106
+File: `BKARCUST.B` | Module: AR | Fields: 106 (all confirmed from DDF — Pass 123 2026-06-19)
 
-Key fields (extracted from schema; full list in `samples/ddf/schema.md`):
+Primary key: `BKAR_CUSTCODE` (field 1).
 
 | # | Field | Type | Size | Meaning |
 |---|-------|------|------|---------|
-| 1 | BKAR_CUST_CODE | STRING | 10 | Customer code — primary key |
-| 2 | BKAR_CUST_ALPHA | STRING | 10 | Alpha sort key |
-| 3 | BKAR_CUST_NAME | STRING | 30 | Company name |
-| 4 | BKAR_CUST_ADDR1 | STRING | 30 | Address line 1 |
-| 5 | BKAR_CUST_ADDR2 | STRING | 30 | Address line 2 |
-| 6 | BKAR_CUST_ADDR3 | STRING | 30 | Address line 3 (extended) |
-| 7 | BKAR_CUST_CITY | STRING | 20 | City |
-| 8 | BKAR_CUST_STATE | STRING | 2 | State |
-| 9 | BKAR_CUST_ZIP | STRING | 10 | ZIP / postal code |
-| 10 | BKAR_CUST_COUNTRY | STRING | 20 | Country |
-| 11 | BKAR_CUST_PHONE | STRING | 20 | Main phone |
-| 12 | BKAR_CUST_FAX | STRING | 20 | Fax |
-| 13 | BKAR_CUST_EMAIL | STRING | 50 | Email |
-| 14 | BKAR_CUST_WEBSITE | STRING | 50 | Website URL |
-| 15 | BKAR_CUST_GLSALE | STRING | 8 | Default GL sales account |
-| 16 | BKAR_CUST_CLASS | STRING | 4 | Customer class code |
-| 17 | BKAR_CUST_TERRIT | STRING | 4 | Sales territory |
-| 18 | BKAR_CUST_SLSP1 | STRING | 4 | Salesperson 1 code |
-| 19 | BKAR_CUST_COMM1 | FLOAT | 8 | Salesperson 1 commission rate |
-| 20 | BKAR_CUST_SLSP2 | STRING | 4 | Salesperson 2 code |
-| 21 | BKAR_CUST_COMM2 | FLOAT | 8 | Salesperson 2 commission rate |
-| 22 | BKAR_CUST_TERMS | STRING | 2 | Payment terms code |
-| 23 | BKAR_CUST_PRICE | STRING | 4 | Price code |
-| 24 | BKAR_CUST_DISC | STRING | 4 | Discount code |
-| 25 | BKAR_CUST_TAXBLE | STRING | 1 | Taxable flag (Y/N) |
-| 26 | BKAR_CUST_TAXGRP | STRING | 4 | Tax group code |
-| 27 | BKAR_CUST_CRLMT | FLOAT | 8 | Credit limit |
-| 28 | BKAR_CUST_CHOLD | STRING | 1 | Credit hold flag |
-| 29 | BKAR_CUST_STRTDT | DATE | 4 | Customer start date |
-| 30 | BKAR_CUST_LSTPMT | DATE | 4 | Last payment date |
-| 31 | BKAR_CUST_LSTINV | DATE | 4 | Last invoice date |
-| 32 | BKAR_CUST_BKORD | STRING | 1 | Backorders allowed flag |
-| 33 | BKAR_CUST_INTCHG | STRING | 1 | Charge interest flag (Y = yes) |
-| 34 | BKAR_CUST_INTRT | FLOAT | 8 | Interest rate |
-| 35 | BKAR_CUST_SHIPTO | STRING | 4 | Default ship-to code |
-| 36 | BKAR_CUST_SHIVIA | STRING | 10 | Default ship via |
-| 37 | BKAR_CUST_FOB | STRING | 15 | FOB point |
-| 38 | BKAR_CUST_LEAD | STRING | 4 | Lead source code |
-| 39 | BKAR_CUST_GROUP | STRING | 4 | Customer group |
-| 40 | BKAR_CUST_RESALE | STRING | 15 | Resale number |
-| … | (66 more fields) | | | Contact manager, outstanding balances, notes flags, currency |
+| 1 | BKAR_CUSTCODE | STRING | 10 | Customer code — **primary key** |
+| 2 | BKAR_CUSTNAME | STRING | 30 | Company name |
+| 3 | BKAR_ADD1 | STRING | 30 | Address line 1 |
+| 4 | BKAR_ADD2_1 | STRING | 30 | Address line 2, part 1 |
+| 5 | BKAR_ADD2_2 | STRING | 30 | Address line 2, part 2 |
+| 6 | BKAR_CITY | STRING | 26 | City |
+| 7 | BKAR_STATE | STRING | 2 | State |
+| 8 | BKAR_ZIP | STRING | 10 | ZIP / postal code |
+| 9 | BKAR_CONTACT_1 | STRING | 30 | Contact name 1 |
+| 10 | BKAR_CONTACT_2 | STRING | 30 | Contact name 2 |
+| 11 | BKAR_CONTACT_3 | STRING | 30 | Contact name 3 |
+| 12 | BKAR_CONTACT_4 | STRING | 30 | Contact name 4 |
+| 13 | BKAR_CONTACT_5 | STRING | 30 | Contact name 5 |
+| 14 | BKAR_TELEPHONE_1 | STRING | 25 | Phone 1 |
+| 15 | BKAR_TELEPHONE_2 | STRING | 25 | Phone 2 |
+| 16 | BKAR_TELEPHONE_3 | STRING | 25 | Phone 3 |
+| 17 | BKAR_TELEPHONE_4 | STRING | 25 | Phone 4 |
+| 18 | BKAR_TELEPHONE_5 | STRING | 25 | Phone 5 |
+| 19 | BKAR_COUNTRY | STRING | 30 | Country |
+| 20 | BKAR_CREDITLMT | FLOAT | 8(2) | Credit limit |
+| 21 | BKAR_CHG_INTRST | STRING | 1 | Charge interest flag (Y/N) |
+| 22 | BKAR_REMAINCRD | FLOAT | 8(2) | Remaining credit (limit − outstanding) |
+| 23 | BKAR_OUTINV | FLOAT | 8(2) | Outstanding invoice balance |
+| 24 | BKAR_LASTSALE | DATE | 4 | Last sale date |
+| 25 | BKAR_LASTPMT | DATE | 4 | Last payment date |
+| 26 | BKAR_GROSS_MTD | FLOAT | 8(2) | Gross sales MTD |
+| 27 | BKAR_COGS_MTD | FLOAT | 8(2) | COGS MTD |
+| 28 | BKAR_NET_MTD | FLOAT | 8(2) | Net sales MTD |
+| 29 | BKAR_PNET_MTD | FLOAT | 8(4) | Net profit % MTD |
+| 30 | BKAR_GROSS_YTD | FLOAT | 8(2) | Gross sales YTD |
+| 31 | BKAR_COGS_YTD | FLOAT | 8(2) | COGS YTD |
+| 32 | BKAR_NET_YTD | FLOAT | 8(2) | Net sales YTD |
+| 33 | BKAR_PNET_YTD | FLOAT | 8(4) | Net profit % YTD |
+| 34 | BKAR_GROSS_LYR | FLOAT | 8(2) | Gross sales last year |
+| 35 | BKAR_COGS_LYR | FLOAT | 8(2) | COGS last year |
+| 36 | BKAR_NET_LYR | FLOAT | 8(2) | Net sales last year |
+| 37 | BKAR_PNET_LYR | FLOAT | 8(4) | Net profit % last year |
+| 38 | BKAR_GROSS_PVAR | FLOAT | 8(4) | Gross sales % variance (YTD vs LYR) |
+| 39 | BKAR_COGS_PVAR | FLOAT | 8(4) | COGS % variance |
+| 40 | BKAR_NET_PVAR | FLOAT | 8(4) | Net sales % variance |
+| 41 | BKAR_PNET_PVAR | FLOAT | 8(4) | Net profit % variance |
+| 42 | BKAR_NEW_CUST | STRING | 1 | New customer flag |
+| 43 | BKAR_OUT_CREDIT_1 | FLOAT | 8(2) | Outstanding credit memo 1 |
+| 44 | BKAR_OUT_CREDIT_2 | FLOAT | 8(2) | Outstanding credit memo 2 |
+| 45 | BKAR_TAX_STATE | STRING | 2 | Tax state code |
+| 46 | BKAR_TAX_LOCAL | STRING | 2 | Tax local code |
+| 47 | BKAR_TAX_YN | STRING | 1 | Taxable flag (Y/N) |
+| 48 | BKAR_STATEMENT | STRING | 1 | Send statement flag (Y/N) |
+| 49 | BKAR_SLSP_NUM_1 | UBINARY | 2 | Salesperson 1 number (index) |
+| 50 | BKAR_SLSP_NUM_2 | UBINARY | 2 | Salesperson 2 number (index) |
+| 51 | BKAR_TERMS_NUM | UBINARY | 2 | Terms number (index into BKSYMSTR terms array) |
+| 52 | BKAR_START_DATE | DATE | 4 | Customer start date |
+| 53 | BKAR_CLASS | STRING | 4 | Customer class code |
+| 54 | BKAR_PRICE_MAT | UBINARY | 2 | Price matrix number |
+| 55 | BKAR_HIST_YN | STRING | 1 | Keep history flag (Y/N) |
+| 56 | BKAR_DISC_CODE | STRING | 10 | Discount code |
+| 57 | BKAR_NUM_INVCS | FLOAT | 8(0) | Number of invoices (lifetime) |
+| 58 | BKAR_DAYS_TOPAY | FLOAT | 8(0) | Average days to pay |
+| 59 | BKAR_NOTES_1 | STRING | 80 | Notes line 1 |
+| 60 | BKAR_NOTES_2 | STRING | 80 | Notes line 2 |
+| 61 | BKAR_NOTES_3 | STRING | 80 | Notes line 3 |
+| 62 | BKAR_NOTES_4 | STRING | 80 | Notes line 4 |
+| 63 | BKAR_NOTES_5 | STRING | 80 | Notes line 5 |
+| 64 | BKAR_NOTES_6 | STRING | 80 | Notes line 6 |
+| 65 | BKAR_NOTES_7 | STRING | 80 | Notes line 7 |
+| 66 | BKAR_NOTES_8 | STRING | 80 | Notes line 8 |
+| 67 | BKAR_NOTES_9 | STRING | 80 | Notes line 9 |
+| 68 | BKAR_NOTES_10 | STRING | 80 | Notes line 10 |
+| 69 | BKAR_GLACCT | STRING | 10 | Default GL sales account number |
+| 70 | BKAR_GLDPT | STRING | 4 | Default GL department |
+| 71 | BKAR_FOB | STRING | 15 | Default FOB point |
+| 72 | BKAR_SHIPTO | STRING | 10 | Default ship-to code |
+| 73 | BKAR_SHIPVIA | STRING | 15 | Default ship via |
+| 74 | BKAR_FOLUPDTE | DATE | 4 | Follow-up date (CRM) |
+| 75 | BKAR_COMM_1 | FLOAT | 8(4) | Salesperson 1 commission rate |
+| 76 | BKAR_COMM_2 | FLOAT | 8(4) | Salesperson 2 commission rate |
+| 77 | BKAR_SORT | STRING | 6 | Alpha sort key |
+| 78 | BKAR_COOP_RATE | FLOAT | 8(4) | Co-op marketing rate |
+| 79 | BKAR_COOP_AMT | FLOAT | 8(2) | Co-op marketing accrued amount |
+| 80 | BKAR_TERRITORY | STRING | 4 | Sales territory code |
+| 81 | BKAR_LEAD_SRC | STRING | 5 | Lead source code |
+| 82 | BKAR_SIC_CODE | STRING | 7 | SIC industry code |
+| 83 | BKAR_PURCH_AGMT | STRING | 1 | Purchase agreement flag |
+| 84 | BKAR_FORECAST | STRING | 12 | Forecast identifier |
+| 85 | BKAR_CUST_YEAR | STRING | 12 | Customer year field |
+| 86 | BKAR_QC_INFO | STRING | 30 | QC / quality notes |
+| 87 | BKAR_MAIL_LIST | STRING | 1 | Mailing list flag |
+| 88 | BKAR_CARRIER | STRING | 15 | Default carrier |
+| 89 | BKAR_REQD_CERTS | STRING | 10 | Required certifications |
+| 90 | BKAR_SHP_WINDOW | STRING | 30 | Shipping window (text) |
+| 91 | BKAR_RECV_HOURS | STRING | 30 | Receiving hours (text) |
+| 92 | BKAR_SHP_TOLRNC | STRING | 10 | Shipping tolerance |
+| 93 | BKAR_RESALE_NO | STRING | 15 | Resale / tax exemption number |
+| 94 | BKAR_FAX_PHONE | STRING | 25 | Fax number |
+| 95 | BKAR_CREDIT_HLD | STRING | 1 | Credit hold flag (Y/N) |
+| 96 | BKAR_EXTRA | STRING | 30 | Extra / user-defined field |
+| 97 | BKAR_EMAIL_1 | STRING | 128 | Email address 1 |
+| 98 | BKAR_EMAIL_2 | STRING | 128 | Email address 2 |
+| 99 | BKAR_EMAIL_3 | STRING | 128 | Email address 3 |
+| 100 | BKAR_EMAIL_4 | STRING | 128 | Email address 4 |
+| 101 | BKAR_EMAIL_5 | STRING | 128 | Email address 5 |
+| 102 | BKAR_IS_TAXGRP | STRING | 10 | Avalara tax group code |
+| 103 | BKAR_IS_TAXIN | STRING | 1 | Avalara tax-inclusive flag |
+| 104 | BKAR_IS_MCCODE | STRING | 3 | Avalara multi-company code |
+| 105 | BKAR_IS_REP | STRING | 5 | Avalara tax representative |
+| 106 | BKAR_LEAD_SRC2 | STRING | 5 | Lead source 2 code |
 
 **Notes:**
-- BKAR_CUST_CODE is the primary key used in BKARINV, BKARCASH, and all AR transactions.
-- Outstanding balance totals are maintained on the customer record (denormalized for speed).
-- The full 106-field list is in `samples/ddf/schema.md` under `## BKARCUST`.
+- Primary key is `BKAR_CUSTCODE` (10 chars), used in BKARINV, BKARCASH, and all AR transactions.
+- Address uses a 2-part line-2 convention (ADD2_1 + ADD2_2) matching other EVO address blocks.
+- 5 contacts (`BKAR_CONTACT_1..5`) and 5 phones (`BKAR_TELEPHONE_1..5`) — same pattern as BKAPVEND.
+- Sales analytics (fields 26–41): MTD/YTD/last-year gross, COGS, net, profit%, and YTD-vs-LYR variance — all denormalized onto the customer record for fast reporting.
+- Fields 102–105 (`BKAR_IS_*`) are Avalara cloud tax integration fields (same IS* pattern as BKARINV.BKAR_INV_ISTXKY).
+- `BKAR_REMAINCRD` is a calculated/maintained field: credit limit minus outstanding balance.
 
 ---
 
@@ -428,27 +496,84 @@ File: `BKICMSTR.B` | Module: IN | Fields: 64
 
 ## BKGLCOA — GL Chart of Accounts
 
-File: `BKGLCOA.B` | Module: GL | Fields: 65
+File: `BKGLCOA.B` | Module: GL | Fields: 65 (all confirmed from DDF — Pass 123 2026-06-19)
 
-| # | Field | Type | Meaning |
-|---|-------|------|---------|
-| 1 | BKGL_COA_ACCT | STRING | Account code — PK component |
-| 2 | BKGL_COA_DEPT | STRING | Department code — PK component |
-| 3 | BKGL_COA_DESC | STRING | Account description |
-| 4 | BKGL_COA_TYPE | STRING | Account type (A=asset, L=liability, E=equity, R=revenue, X=expense) |
-| 5 | BKGL_COA_CRDR | STRING | Normal balance side (C=credit, D=debit) |
-| 6–19 | BKGL_COA_BAL1..BAL14 | FLOAT × 14 | Current period balances (periods 1–14) |
-| 20–33 | BKGL_COA_BUD1..BUD14 | FLOAT × 14 | Budget amounts (periods 1–14) |
-| 34–47 | BKGL_COA_PY1..PY14 | FLOAT × 14 | Prior-year balances (periods 1–14) |
-| 48–61 | BKGL_COA_YE1..YE4 | FLOAT × 4 | Year-end balances (4 slots) |
-| 62 | BKGL_COA_PY2BAL1 | FLOAT | 2-years-prior balance period 1 |
-| 63 | BKGL_COA_EXTRA | STRING | Extra field |
-| 64–65 | (additional) | | |
+Primary key: composite `BKGL_ACCT` + `BKGL_GLDPT`.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKGL_ACCT | STRING | 10 | Account number — **PK component** |
+| 2 | BKGL_GLDPT | STRING | 4 | Department code — **PK component** |
+| 3 | BKGL_ACCTD | STRING | 25 | Account description |
+| 4 | BKGL_TYPE | STRING | 1 | Account type (A=asset, L=liability, E=equity, R=revenue, X=expense) |
+| 5 | BKGL_CR_DR | STRING | 1 | Normal balance side (C=credit, D=debit) |
+| 6 | BKGL_NON_CASH | STRING | 1 | Non-cash account flag (Y = exclude from cash-basis reports) |
+| 7 | BKGL_CURRENT_1 | FLOAT | 8(2) | Current-year balance, period 1 |
+| 8 | BKGL_CURRENT_2 | FLOAT | 8(2) | Current-year balance, period 2 |
+| 9 | BKGL_CURRENT_3 | FLOAT | 8(2) | Current-year balance, period 3 |
+| 10 | BKGL_CURRENT_4 | FLOAT | 8(2) | Current-year balance, period 4 |
+| 11 | BKGL_CURRENT_5 | FLOAT | 8(2) | Current-year balance, period 5 |
+| 12 | BKGL_CURRENT_6 | FLOAT | 8(2) | Current-year balance, period 6 |
+| 13 | BKGL_CURRENT_7 | FLOAT | 8(2) | Current-year balance, period 7 |
+| 14 | BKGL_CURRENT_8 | FLOAT | 8(2) | Current-year balance, period 8 |
+| 15 | BKGL_CURRENT_9 | FLOAT | 8(2) | Current-year balance, period 9 |
+| 16 | BKGL_CURRENT_10 | FLOAT | 8(2) | Current-year balance, period 10 |
+| 17 | BKGL_CURRENT_11 | FLOAT | 8(2) | Current-year balance, period 11 |
+| 18 | BKGL_CURRENT_12 | FLOAT | 8(2) | Current-year balance, period 12 |
+| 19 | BKGL_CURRENT_13 | FLOAT | 8(2) | Current-year balance, period 13 (adjustment) |
+| 20 | BKGL_CURRENT_14 | FLOAT | 8(2) | Current-year balance, period 14 (adjustment) |
+| 21 | BKGL_BUDGET_1 | FLOAT | 8(2) | Budget, period 1 |
+| 22 | BKGL_BUDGET_2 | FLOAT | 8(2) | Budget, period 2 |
+| 23 | BKGL_BUDGET_3 | FLOAT | 8(2) | Budget, period 3 |
+| 24 | BKGL_BUDGET_4 | FLOAT | 8(2) | Budget, period 4 |
+| 25 | BKGL_BUDGET_5 | FLOAT | 8(2) | Budget, period 5 |
+| 26 | BKGL_BUDGET_6 | FLOAT | 8(2) | Budget, period 6 |
+| 27 | BKGL_BUDGET_7 | FLOAT | 8(2) | Budget, period 7 |
+| 28 | BKGL_BUDGET_8 | FLOAT | 8(2) | Budget, period 8 |
+| 29 | BKGL_BUDGET_9 | FLOAT | 8(2) | Budget, period 9 |
+| 30 | BKGL_BUDGET_10 | FLOAT | 8(2) | Budget, period 10 |
+| 31 | BKGL_BUDGET_11 | FLOAT | 8(2) | Budget, period 11 |
+| 32 | BKGL_BUDGET_12 | FLOAT | 8(2) | Budget, period 12 |
+| 33 | BKGL_BUDGET_13 | FLOAT | 8(2) | Budget, period 13 (adjustment) |
+| 34 | BKGL_BUDGET_14 | FLOAT | 8(2) | Budget, period 14 (adjustment) |
+| 35 | BKGL_1YPAST_1 | FLOAT | 8(2) | 1-year-prior balance, period 1 |
+| 36 | BKGL_1YPAST_2 | FLOAT | 8(2) | 1-year-prior balance, period 2 |
+| 37 | BKGL_1YPAST_3 | FLOAT | 8(2) | 1-year-prior balance, period 3 |
+| 38 | BKGL_1YPAST_4 | FLOAT | 8(2) | 1-year-prior balance, period 4 |
+| 39 | BKGL_1YPAST_5 | FLOAT | 8(2) | 1-year-prior balance, period 5 |
+| 40 | BKGL_1YPAST_6 | FLOAT | 8(2) | 1-year-prior balance, period 6 |
+| 41 | BKGL_1YPAST_7 | FLOAT | 8(2) | 1-year-prior balance, period 7 |
+| 42 | BKGL_1YPAST_8 | FLOAT | 8(2) | 1-year-prior balance, period 8 |
+| 43 | BKGL_1YPAST_9 | FLOAT | 8(2) | 1-year-prior balance, period 9 |
+| 44 | BKGL_1YPAST_10 | FLOAT | 8(2) | 1-year-prior balance, period 10 |
+| 45 | BKGL_1YPAST_11 | FLOAT | 8(2) | 1-year-prior balance, period 11 |
+| 46 | BKGL_1YPAST_12 | FLOAT | 8(2) | 1-year-prior balance, period 12 |
+| 47 | BKGL_1YPAST_13 | FLOAT | 8(2) | 1-year-prior balance, period 13 |
+| 48 | BKGL_1YPAST_14 | FLOAT | 8(2) | 1-year-prior balance, period 14 |
+| 49 | BKGL_2YPAST_1 | FLOAT | 8(2) | 2-years-prior balance, period 1 |
+| 50 | BKGL_2YPAST_2 | FLOAT | 8(2) | 2-years-prior balance, period 2 |
+| 51 | BKGL_2YPAST_3 | FLOAT | 8(2) | 2-years-prior balance, period 3 |
+| 52 | BKGL_2YPAST_4 | FLOAT | 8(2) | 2-years-prior balance, period 4 |
+| 53 | BKGL_2YPAST_5 | FLOAT | 8(2) | 2-years-prior balance, period 5 |
+| 54 | BKGL_2YPAST_6 | FLOAT | 8(2) | 2-years-prior balance, period 6 |
+| 55 | BKGL_2YPAST_7 | FLOAT | 8(2) | 2-years-prior balance, period 7 |
+| 56 | BKGL_2YPAST_8 | FLOAT | 8(2) | 2-years-prior balance, period 8 |
+| 57 | BKGL_2YPAST_9 | FLOAT | 8(2) | 2-years-prior balance, period 9 |
+| 58 | BKGL_2YPAST_10 | FLOAT | 8(2) | 2-years-prior balance, period 10 |
+| 59 | BKGL_2YPAST_11 | FLOAT | 8(2) | 2-years-prior balance, period 11 |
+| 60 | BKGL_2YPAST_12 | FLOAT | 8(2) | 2-years-prior balance, period 12 |
+| 61 | BKGL_2YPAST_13 | FLOAT | 8(2) | 2-years-prior balance, period 13 |
+| 62 | BKGL_2YPAST_14 | FLOAT | 8(2) | 2-years-prior balance, period 14 |
+| 63 | BKGL_EXTRA | STRING | 50 | Extra / user-defined field |
+| 64 | BKGL_1YPAST_YE | FLOAT | 8(2) | 1-year-prior year-end balance |
+| 65 | BKGL_2YPAST_YE | FLOAT | 8(2) | 2-years-prior year-end balance |
 
 **Notes:**
-- Period 1–12 = accounting months; periods 13–14 = adjustment periods.
-- Budget and prior-year amounts are stored inline (denormalized for fast balance sheet queries).
-- Primary key is composite: BKGL_COA_ACCT + BKGL_COA_DEPT.
+- Periods 1–12 = accounting months; periods 13–14 = adjustment/closing periods.
+- All balance, budget, and prior-year amounts are stored inline (denormalized for fast balance sheet / P&L queries).
+- `BKGL_NON_CASH` flag (field 6) — missing from prior documentation — marks accounts to exclude from cash-basis reporting.
+- Two full years of prior history (1YPAST + 2YPAST) plus two year-end snapshots (fields 64–65) support multi-year comparative reports.
+- The companion table `BKGLDESC` stores free-text description lines for accounts (BK_DESC_CODE → BKGL_ACCT).
 
 ---
 
@@ -674,39 +799,44 @@ File: `BKSYPRTR.B` | Fields: 6+ (separate table, one record per printer)
 
 ---
 
-## BKSOX — Sales Order Extract / Invoice
+## BKSOX — Sales Order Invoice Extract
 
-File: `BKSOX.B` | Module: SO | Fields: 25
+File: `BKSOX.B` | Module: SO/GL | Fields: 25 (all confirmed from DDF — Pass 123 2026-06-19)
 
-| # | Field | Type | Meaning |
-|---|-------|------|---------|
-| 1 | BKSO_X_COMP | STRING | Company code |
-| 2 | BKSO_X_INVC | FLOAT | Invoice number |
-| 3 | BKSO_X_DATE | DATE | Invoice date |
-| 4 | BKSO_X_CUST | STRING | Customer code (FK → BKARCUST) |
-| 5 | BKSO_X_NAME | STRING | Customer name (denormalized) |
-| 6 | BKSO_X_SUBTOT | FLOAT | Subtotal |
-| 7 | BKSO_X_TAX | FLOAT | Tax amount |
-| 8 | BKSO_X_FRET | FLOAT | Freight |
-| 9 | BKSO_X_DEPOS | FLOAT | Deposit applied |
-| 10 | BKSO_X_RETEN | FLOAT | Retention amount |
-| 11 | BKSO_X_TOTAL | FLOAT | Invoice total |
-| 12 | BKSO_X_CURR | STRING | Currency code |
-| 13 | BKSO_X_SONO | FLOAT | Sales order number |
-| 14 | BKSO_X_CUSTPO | STRING | Customer's PO number |
-| 15 | BKSO_X_TERMS | STRING | Terms code |
-| 16 | BKSO_X_TERMSDESC | STRING | Terms description (denormalized) |
-| 17 | BKSO_X_INVCCODE | STRING | Invoice code |
-| 18 | BKSO_X_INVCDESC | STRING | Invoice description |
-| 19 | BKSO_X_SHIPDT | DATE | Ship date |
-| 20 | BKSO_X_SHIPPER | STRING | Shipping carrier |
-| 21 | BKSO_X_JOB | STRING | Job number |
-| 22 | BKSO_X_TAXCODE | STRING | Tax code |
-| 23 | BKSO_X_TAXNAME | STRING | Tax name (denormalized) |
-| 24 | BKSO_X_PSTDT | DATE | Post date |
-| 25 | BKSO_X_ENTDT | DATE | Entry date |
+Summary extract table; one row per posted AR invoice. Used for GL posting summaries and cross-company reporting.
 
-**Note:** BKSOXH has the same 25-field structure (header variant of the same data).
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSOX_COMPANY | STRING | 2 | Company code |
+| 2 | BKSOX_INVCNUM | FLOAT | 8(0) | Invoice number (FK → BKARINV) — **PK component** |
+| 3 | BKSOX_INVCDATE | DATE | 4 | Invoice date |
+| 4 | BKSOX_CUSTCODE | STRING | 10 | Customer code (FK → BKARCUST) |
+| 5 | BKSOX_CUSTNAME | STRING | 30 | Customer name (denormalized) |
+| 6 | BKSOX_SUBTOT | FLOAT | 8(2) | Invoice subtotal |
+| 7 | BKSOX_TAXAMT | FLOAT | 8(2) | Tax amount |
+| 8 | BKSOX_FREIGHT | FLOAT | 8(2) | Freight charge |
+| 9 | BKSOX_DEPOSIT | FLOAT | 8(2) | Deposit applied |
+| 10 | BKSOX_RETEN | FLOAT | 8(2) | Retention amount |
+| 11 | BKSOX_TOTAL | FLOAT | 8(2) | Invoice total |
+| 12 | BKSOX_CURRENCY | STRING | 3 | Currency code |
+| 13 | BKSOX_SONUM | FLOAT | 8(0) | Source sales order number |
+| 14 | BKSOX_CUSTPO | STRING | 25 | Customer PO number |
+| 15 | BKSOX_TERMSCODE | UBINARY | 2 | Terms number (index into BKSYMSTR terms array) |
+| 16 | BKSOX_TERMSDESC | STRING | 20 | Terms description (denormalized) |
+| 17 | BKSOX_INVCDESC | STRING | 30 | Invoice description |
+| 18 | BKSOX_SHIPDATE | DATE | 4 | Ship date |
+| 19 | BKSOX_SHIPPER | FLOAT | 8(0) | Shipper ID number |
+| 20 | BKSOX_JOBNUM | STRING | 15 | Job number |
+| 21 | BKSOX_TAXCODE | STRING | 10 | Tax code |
+| 22 | BKSOX_TAXNAME | STRING | 30 | Tax name (denormalized) |
+| 23 | BKSOX_POSTDATE | DATE | 4 | GL post date |
+| 24 | BKSOX_ARCHDATE | DATE | 4 | Archive date |
+| 25 | BKSOX_ENTDATE | DATE | 4 | Entry date |
+
+**Notes:**
+- `BKSOX_SHIPPER` is a FLOAT (shipper ID number), not a text carrier name — the shipper name would be looked up separately.
+- Three date fields: invoice date (3), ship date (18), GL post date (23), archive date (24), and entry date (25).
+- `BKSOXH` (BKSOXH.B) is structurally **identical** (same 25 fields, same names, same sizes) — it is the historical-period archive of the same extract data.
 
 ---
 
