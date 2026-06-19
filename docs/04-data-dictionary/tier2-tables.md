@@ -947,6 +947,364 @@ File: `BKCPEC.B` | Fields: 10 | PK: DATE+GL+DEPT (likely)
 
 ---
 
+## ISIS — Global Feature License / Module Enable Flags
+
+**Pass 134 — 2026-06-19 | Source: `samples/ddf/schema.md` line 17577**
+
+File: `ISIS.B` | Fields: 23 | Single-row table (one record per company)
+
+ISIS is the master feature-flag table. One row per company database. Every major
+licensed add-on module is gated by a flag here. Programs read these flags at startup
+to decide whether to show certain options. T7BRANDS (BR module) is the primary editor
+for these flags via the IS.* vars.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_TAX | STRING 1 | Sales tax enabled |
+| IS_MULTI_CURR | STRING 1 | Multi-currency enabled |
+| IS_LANDED_COST | STRING 1 | Landed cost (IM module) enabled |
+| IS_UPC | STRING 1 | UPC barcode enabled |
+| IS_RETAIL_PRICE | STRING 1 | Retail pricing enabled |
+| IS_COMM_PRICE | STRING 1 | Commission pricing enabled |
+| IS_IMAGING | STRING 1 | Imaging / document attachment enabled |
+| IS_UPC_1 | STRING 6 | UPC code prefix 1 |
+| IS_DEMO | DATE 4 | Demo expiry date (non-zero = demo mode) |
+| IS_UPC_2 | STRING 5 | UPC code prefix 2 |
+| IS_MULTI_CPAY | STRING 1 | Multi-currency AP payment enabled |
+| IS_PIC_PATH | STRING 20 | Product picture storage path |
+| IS_TAX_FRM | STRING 1 | Tax-from flag |
+| IS_PO_TAX | STRING 1 | PO-level tax enabled |
+| IS_TAX_IN | STRING 1 | Inclusive tax mode |
+| IS_TAX_CVT | STRING 1 | Tax currency conversion flag |
+| IS_CUR_CVT | STRING 1 | Currency conversion enabled |
+| IS_AUTO_TAX_CAL | STRING 1 | Automatic tax calculation |
+| IS_EZPAY | STRING 1 | EzPay (credit card processing) enabled |
+| IS_RMA | STRING 1 | RMA module enabled |
+| IS_SPEC_SUP | STRING 1 | Special supplier flag |
+| IS_SPEC_SUPF | UBINARY 2 | Special supplier from-value |
+| IS_SPEC_SUPT | UBINARY 2 | Special supplier to-value |
+
+ISIS is read by nearly every module via the global `IS.*` var block. Confirmed readers
+include BKARCUST, BKAPVEND, BKICMSTR, T7BRANDS, T7PUTAWAY, T7MHOPE, T7AUTOMRF, T7ADCA.
+
+---
+
+## ISBANKS — Bank Account Master
+
+**Pass 134 — 2026-06-19 | Source: `samples/ddf/schema.md` line 14446**
+
+File: `ISBANKS.B` | Fields: 23 | PK: `IS_BANKS_NUM` (UBINARY 2)
+
+One row per configured bank account. ISBANKS is used by the BS Business Score module
+(T7BS reads IS_BANKS_BAL for cash position KPIs), the IS multi-currency module, and
+the TC (Treasury Control) module.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_BANKS_NUM | UBINARY 2 | Bank number / sequence (PK) |
+| IS_BANKS_SRT | UBINARY 2 | Sort order |
+| IS_BANKS_DESC | STRING 40 | Bank account description |
+| IS_BANKS_GLA | STRING 10 | GL account code for this bank |
+| IS_BANKS_GLD | STRING 4 | GL department for this bank |
+| IS_BANKS_NXTNUM | FLOAT | Next check number |
+| IS_BANKS_BAL | FLOAT | Current book balance |
+| IS_BANKS_ROUT | STRING 15 | ABA routing number |
+| IS_BANKS_ACCT | STRING 15 | Bank account number |
+| IS_BANKS_CURR | STRING 3 | Currency code → FK ISMCF |
+| IS_BANKS_TYPE | STRING 2 | Account type (CK=checking, SV=savings, etc.) |
+| IS_BANKS_VEND | STRING 10 | Associated vendor code → FK BKAPVEND |
+| IS_BANKS_ACTIVE | STRING 1 | Active flag |
+| IS_BANKS_INC_BS | STRING 1 | Include in Business Score KPI flag |
+| IS_BANKS_AR | STRING 1 | AR deposit bank flag |
+| IS_BANKS_AP | STRING 1 | AP check bank flag |
+| IS_BANKS_PR | STRING 1 | Payroll check bank flag |
+| IS_BANKS_RTM_1..5 | STRING 12 ×5 | Up to 5 report template names for this bank |
+| IS_BANKS_EXTRA | STRING 100 | Extra / notes |
+
+---
+
+## ISBSF — Business Score Framework KPI Store
+
+**Pass 134 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 14665–14811**
+
+File: `ISBSF.B` | Fields: 143 | PK: `ISBSF_STARTDATE` + `ISBSF_ENDDATE` (DATE pair)
+
+One row per time period. T7BS.RWN (the BS module writer) calculates and writes all
+values; EVOBS.RWN (the BS viewer, QU-D) reads them. This is the pre-computed KPI
+snapshot store used by the Business Status dashboard.
+
+| Field block | Fields | Meaning |
+|-------------|--------|---------|
+| ISBSF_STARTDATE / ENDDATE | 2 | Period start and end dates (PK) |
+| ISBSF_AR_BAL/BILL/RECP/DISC/COGS | 5 | AR KPIs: open balance, billings, receipts, discounts, COGS |
+| ISBSF_AP_BAL/PAYA/PAYM/DISC/ATP | 5 | AP KPIs: open balance, payables, payments, discounts, available-to-pay |
+| ISBSF_SO_OPEN/BOOK/SHIP | 3 | SO KPIs: open order backlog, bookings, shipments |
+| ISBSF_PO_OPEN/BOOK/RECP | 3 | PO KPIs: open PO value, ordered, received |
+| ISBSF_WO_WIPBAL/ISSU/FPVAR | 3 | WO KPIs: WIP balance, material issued, finished-goods variance |
+| ISBSF_IC_VALUE | 1 | Inventory on-hand value |
+| ISBSF_AR_DEPO | 1 | AR deposits on hand |
+| ISBSF_CASH_TOTA | 1 | Total cash position (sum of all bank IS_BANKS_BAL) |
+| ISBSF_CASH_ACT1..9 | 9 | Cash activity by GL account (up to 9 accounts) |
+| ISBSF_WOS_SETUP/LAB/OUTP/MAT/FOH/VOH/MEXT/FP/WIPV | 9 | WO cost breakdown: setup/labor/output/material/FOH/VOH/machine-ext/finished-part/WIP-variance |
+| ISBSF_CASH_ACTS_1..100 | 100 | 100-period rolling GL cash history (one float per period) |
+| ISBSF_EXTRA | 1 | STRING 100 extra |
+
+The 100-slot CASH_ACTS array provides a rolling history for trend charts. T7BS
+iterates ISGLDATE periods to populate them.
+
+---
+
+## ISBTCSB — Batch/Scheduled Service Record (ISSR_INFO Clone)
+
+**Pass 134 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 14813–14864**
+
+File: `ISBTCSB.B` | Fields: 54 | Schema identical to ISSRINFO (ISSR_INFO_* prefix)
+
+ISBTCSB uses the identical 54-field ISSR_INFO_* schema as ISSRINFO. The file name
+prefix "BTCSB" suggests "Batch / Time-Controlled Service Batch". Same PK structure:
+ISSR_INFO_SRNUM + ISSR_INFO_UID. Cross-reference: see ISSRINFO documentation in the
+SR/Service-Repair module docs.
+
+---
+
+## IS Warehouse / Bin Tables
+
+**Pass 134 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 14474–14510**
+
+### ISBILLSH — Bill-To / Ship-To Cross-Reference
+
+File: `ISBILLSH.B` | Fields: 4
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_BILLSH_BILL | STRING 10 | Bill-to customer code |
+| IS_BILLSH_SHIP | STRING 10 | Ship-to location code |
+| IS_BILLSH_FLAG | STRING 1 | Relationship flag |
+| IS_BILLSH_EXTRA | STRING 100 | Extra |
+
+### ISBINLOC — Bin-Level Inventory Quantity
+
+File: `ISBINLOC.B` | Fields: 9 | PK: ITEM+LOC+BIN
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| ISBIN_LOC_ITEM | STRING 15 | Item code (PK part 1) |
+| ISBIN_LOC_LOC | STRING 10 | Location code (PK part 2) |
+| ISBIN_LOC_BIN | STRING 15 | Bin code (PK part 3) |
+| ISBIN_LOC_UOH | FLOAT | Units on hand in this bin |
+| ISBIN_LOC_CDATE | DATE | Created/cycle-count date |
+| ISBIN_LOC_VDATE | DATE | Last verified date |
+| ISBIN_LOC_DFLT | STRING 1 | Default bin for this item/location |
+| ISBIN_LOC_EXTRA | STRING 100 | Extra |
+| ISBIN_LOC_RVLVL | STRING 5 | Reorder level |
+
+### ISBINLOT — Bin-Level Lot Tracking
+
+File: `ISBINLOT.B` | Fields: 10 | PK: ITEM+LOC+LOT+BIN
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_BINLOT_ITEM | STRING 15 | Item code (PK part 1) |
+| IS_BINLOT_LOC | STRING 10 | Location (PK part 2) |
+| IS_BINLOT_LOT | STRING 15 | Lot number (PK part 3) |
+| IS_BINLOT_BIN | STRING 15 | Bin (PK part 4) |
+| IS_BINLOT_UOH | FLOAT | Lot quantity in this bin |
+| IS_BINLOT_DATE | DATE | Date lot was placed in bin |
+| IS_BINLOT_FLAG | STRING 1 | Status flag |
+| IS_BINLOT_EXTRA | STRING 50 | Extra |
+| IS_BINLOT_TMPSO | STRING 40 | Temp SO reservation hold |
+| IS_BINLOT_TMPPO | STRING 40 | Temp PO receipt hold |
+
+The TMP fields hold short-term allocation strings during SO picking or PO put-away;
+cleared when the pick/receipt completes.
+
+---
+
+## MK* Family — Marketing Automation (11 tables)
+
+**Pass 134 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 24535–24659**
+
+The MK module provides campaign tracking, event sequencing, and automated follow-up
+routing. Tables use the `MK` prefix with no shared field-prefix convention (each table
+uses its own prefix). The module appears in DB fingerprints of many unrelated programs
+because MKAHIST is updated whenever a significant customer event occurs (shipment,
+CRM activity, mass mailing, etc.).
+
+### Family overview
+
+| Table | Fields | PK | Purpose |
+|-------|--------|----|---------|
+| MKAHIST | 9 | ACCT+DATE+TRACK+SEQ | Account marketing history log |
+| MKASSIGN | 6 | ACCT+TRACK | Track assignment per account |
+| MKDEF | 11 | (single row) | MK system defaults |
+| MKECLASS | 3 | NUM | Event class code |
+| MKICLASS | 3 | NUM | Item class code (same schema as MKECLASS) |
+| MKTCLASS | 3 | NUM | Track class code (same schema as MKECLASS) |
+| MKEVENT | 12 | NUM | Event definition |
+| MKFORM | 6 | NUM | Form/letter definition |
+| MKTNOTE | 3 | TRACK+LINE | Track notes text |
+| MKTRACK | 4 | NUM | Marketing track definition |
+| MKTROUT | 11 | TRACK+SEQ | Track routing / step sequence |
+
+---
+
+### MKAHIST — Account Marketing History
+
+File: `MKAHIST.B` | Fields: 9 | PK: ACCT+DATE+TRACK+SEQ
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKAHIST_ACCT | STRING 10 | Customer/account code (PK part 1) |
+| MKAHIST_DATE | DATE | Event date (PK part 2) |
+| MKAHIST_TRACK | FLOAT | Track number (PK part 3) |
+| MKAHIST_SEQ | UBINARY 2 | Sequence within track (PK part 4) |
+| MKAHIST_EVENT | FLOAT | Event code → FK MKEVENT |
+| MKAHIST_MEDIA | STRING 1 | Media channel code |
+| MKAHIST_FORM | FLOAT | Form/letter used → FK MKFORM |
+| MKAHIST_REM1..2 | STRING 60 ×2 | Remark lines |
+
+This table records every marketing touchpoint per customer. Its wide adoption in
+module fingerprints (DS, AU, MH, PU, BR, XC, etc.) confirms that EvoERP logs a
+MKAHIST record whenever a shipment, payment, or CRM interaction occurs.
+
+---
+
+### MKASSIGN — Track Assignment per Account
+
+File: `MKASSIGN.B` | Fields: 6 | PK: ACCT+TRACK
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKASSIGN_ACCT | STRING 10 | Account code (PK part 1) |
+| MKASSIGN_TRACK | FLOAT | Track number (PK part 2) |
+| MKASSIGN_NXTSEQ | UBINARY 2 | Next sequence step to execute |
+| MKASSIGN_NXTDAT | DATE | Date next step is due |
+| MKASSIGN_SALEND | DATE | Sale/campaign end date |
+| MKASSIGN_PRCODE | FLOAT | Price code override for this track |
+
+---
+
+### MKDEF — Marketing System Defaults
+
+File: `MKDEF.B` | Fields: 11 | Single-row config
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKDEF_REQUIRE | STRING 1 | Require track assignment flag |
+| MKDEF_CALENDAR | STRING 1 | Use calendar for due dates flag |
+| MKDEF_TRACK | FLOAT | Default track number |
+| MKDEF_PRICECD | FLOAT | Default price code |
+| MKDEF_FUCODE | STRING 3 | Default follow-up code |
+| MKDEF_HISTORYCD | STRING 2 | Default history code |
+| MKDEF_TNEXTID | FLOAT | Next track ID auto-number |
+| MKDEF_TCNEXTID | FLOAT | Next track-class ID auto-number |
+| MKDEF_ENEXTID | FLOAT | Next event ID auto-number |
+| MKDEF_ECNEXTID | FLOAT | Next event-class ID auto-number |
+| MKDEF_FNEXTID | FLOAT | Next form ID auto-number |
+
+---
+
+### MKEVENT — Marketing Event Definition
+
+File: `MKEVENT.B` | Fields: 12 | PK: `MKEVENT_NUM` (FLOAT)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKEVENT_NUM | FLOAT | Event number (PK) |
+| MKEVENT_DESC | STRING 45 | Description |
+| MKEVENT_CLASS | FLOAT | Event class → FK MKECLASS |
+| MKEVENT_MEDIA | STRING 1 | Media channel code |
+| MKEVENT_FORM | FLOAT | Form to send → FK MKFORM |
+| MKEVENT_FUCODE | STRING 3 | Follow-up code |
+| MKEVENT_REM1..2 | STRING 60 ×2 | Remarks |
+| MKEVENT_SENDTO | UBINARY 2 | Send-to flag (contact slot) |
+| MKEVENT_GENNAME | STRING 45 | Generic name for merge |
+| MKEVENT_HISTCD | STRING 2 | CRM history code → FK BKCMHCOD |
+| MKEVENT_ACTIVE | STRING 1 | Active flag |
+
+---
+
+### MKFORM — Marketing Form / Letter Definition
+
+File: `MKFORM.B` | Fields: 6 | PK: `MKFORM_NUM` (FLOAT)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKFORM_NUM | FLOAT | Form number (PK) |
+| MKFORM_DESC | STRING 45 | Description |
+| MKFORM_FILE | STRING 25 | File name for the letter template |
+| MKFORM_ATT | STRING 25 | Attachment file name |
+| MKFORM_MEDIA | STRING 1 | Media channel (M=mail, E=email, F=fax) |
+| MKFORM_ACTIVE | STRING 1 | Active flag |
+
+---
+
+### MKTRACK — Marketing Track Definition
+
+File: `MKTRACK.B` | Fields: 4 | PK: `MKTRACK_NUM` (FLOAT)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKTRACK_NUM | FLOAT | Track number (PK) |
+| MKTRACK_DESC | STRING 45 | Track description |
+| MKTRACK_CLASS | FLOAT | Track class → FK MKTCLASS |
+| MKTRACK_ACTIVE | STRING 1 | Active flag |
+
+**MKTNOTE** (3f) — notes on a track: TRACK(FLOAT PK part1) + LINE(UBINARY2 PK part2) + MKNOTE_TEXT(STRING 70).
+
+---
+
+### MKTROUT — Track Routing / Step Sequence
+
+File: `MKTROUT.B` | Fields: 11 | PK: TRACK+SEQ
+
+Defines the ordered steps in a marketing track. Each step specifies which event to
+execute, when to do it, and where to branch next.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MKTROUT_TRACK | FLOAT | Track number (PK part 1) |
+| MKTROUT_SEQ | UBINARY 2 | Step sequence (PK part 2) |
+| MKTROUT_JUMP | STRING 1 | Branch flag |
+| MKTROUT_NEXTSEQ | UBINARY 2 | Next sequence on success |
+| MKTROUT_EVENT | FLOAT | Event to execute → FK MKEVENT |
+| MKTROUT_DAYSNXT | UBINARY 2 | Days until next step |
+| MKTROUT_FIXED | STRING 1 | Fixed date flag |
+| MKTROUT_SALEBEG | STRING 1 | Sale-begin trigger flag |
+| MKTROUT_SALELEN | UBINARY 2 | Sale duration (days) |
+| MKTROUT_SALECLO | STRING 1 | Sale-close trigger flag |
+| MKTROUT_PRICECD | FLOAT | Price code override for this step |
+
+---
+
+### Class Code Tables (×3, identical schema)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| MKECLASS | 3 | Event class: NUM(FLOAT PK) + DESC(45) + ACTIVE(1) |
+| MKICLASS | 3 | Item class: NUM + DESC + ACTIVE (MKECLASS_* prefix — identical schema) |
+| MKTCLASS | 3 | Track class: NUM + CLASS(45) + ACTIVE |
+
+---
+
+### MK* Architecture Summary
+
+```
+MKDEF (defaults)
+MKECLASS/MKICLASS/MKTCLASS (class codes)
+MKEVENT ──► MKFORM (event definition links to letter/form)
+MKTRACK ──► MKTROUT (track definition → step sequence → events)
+         └──► MKTNOTE (track notes)
+MKASSIGN ── per-account track enrollment (ACCT+TRACK PK)
+MKAHIST  ── per-account event history (ACCT+DATE+TRACK+SEQ PK)
+```
+
+Marketing flow: define events (MKEVENT) → group into tracks (MKTRACK + MKTROUT
+routing) → assign tracks to accounts (MKASSIGN) → each event execution logs to
+MKAHIST. Account-wide touchpoints (ship, pay, CRM) also log directly to MKAHIST.
+
+---
+
 *Last updated: 2026-06-19*
 *Source: `samples/ddf/schema.md` (field extraction), `samples/ddf/tables.txt` (table inventory)*
-*Confidence: 80/100 — All field names confirmed from DDF; field meanings inferred from naming conventions; no BKCM SRC source available to confirm internal logic.*
+*Confidence: 82/100 — All field names confirmed from DDF; field meanings inferred from field names and module fingerprint analysis; no MK SRC source available for logic confirmation.*
