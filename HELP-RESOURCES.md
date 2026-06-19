@@ -72,6 +72,10 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Add a hyperlink attachment to a PO / SO / WO / part | EvoLinks | [Platform Subsystems](#platform-subsystems) |
 | View or enter reminders / calendar events | CALREM | [Platform Subsystems](#platform-subsystems) |
 | View / enter a Spec Book / Approved Source List (AVL/QPL) | IN-B (SB tab) | [Spec Book / AVL (SB)](#spec-book--approved-source-list-sb) |
+| Collect employee labor hours into payroll (shop-floor or time cards) | WO-L-E or PR-J → PR-K | [Recipe 17: Payroll Time Entry](#recipe-17-payroll--time-entry-labor-hours-collection-pass-110d-2026-06-19) |
+| Calculate payroll and verify before printing checks | PR-B → PR-C | [Recipe 18: Payroll Calculation and Register](#recipe-18-payroll-calculation-and-register-pass-110d-2026-06-19) |
+| Print payroll checks and post to GL | PR-D | [Recipe 19: Payroll Check Printing](#recipe-19-payroll-check-printing-pass-110d-2026-06-19) |
+| File quarterly 941/940 or generate year-end W-2s | PR-L-G/H → PR-H → PR-O → PR-L-I | [Recipe 20: Quarterly/Annual Tax Filing](#recipe-20-quarterly-and-annual-tax-filing-pass-110d-2026-06-19) |
 | Fix items stuck on the open order report (shipped but never posting) | SD-M → SO-G | [Recipe 9: Packaging Items Stuck on Open Order Report](#recipe-9-packaging-items-stuck-on-open-order-report) |
 | Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
 | Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
@@ -15197,6 +15201,239 @@ data files while sharing the same program installation.
 **Confidence: 60/100** — T7NEWINIT DB fingerprint confirmed (FILELOC+FILEDES+BKAPVEND+BKARCUST+BKCMACCN);
 multi-company file suffix convention confirmed from physical share inspection; exact menu path and
 screen flow blocked by RWN encryption.
+
+---
+
+### Recipe 17: Payroll — Time Entry (Labor Hours Collection) (Pass 110d, 2026-06-19)
+
+**When to use:** Collecting employee work hours into the payroll system each pay period.
+Two paths exist: Data Collection / Work Order labor (for shop-floor workers) and direct
+time card entry (for office/salaried workers).
+
+**Path A — Shop-Floor DC → WO Labor → Payroll:**
+
+```
+1. DC or WO-F Enter Labor / WO-M Batch Labor Entry
+   - Labor posted to WOLABOR (WO labor charges: DATE+EMP+WOPRE+WOSUF+OPER+TRXN PK)
+   - Also posted to BKDCLAB (DC labor table: DATE+EMP+WOPRE+WOSUF+OPER PK)
+   - Fields: RUNHRS, SETUPHRS, LABRATE, LABCOST per employee per WO/operation
+
+2. WO-L-E — Print/Post Labor to Payroll
+   - Reads WOLABOR records not yet transferred (POSTED flag = N)
+   - Sums hours per employee per pay period
+   - Inserts/updates records in BKPRCURP (current payroll period: 127 fields)
+   - Sets POSTED = Y on source WOLABOR records
+   - Prints a transfer register for verification
+   - This replaces manual PR-J entry for shop-floor employees
+```
+
+**Path B — Time Card Entry (office / direct):**
+
+```
+1. PR-J — Enter Time Cards
+   - Enter employee number, date, start/stop times, type (R=regular, O=overtime, D=double)
+   - Three time formats: AM/PM, 24-hour, decimal (configured per division in PR-M)
+   - System calculates total hours after lunch/break deduction
+   - Entries held in time card staging (not yet in BKPRCURP)
+
+2. PR-K — Print/Post Time Cards
+   a. First run: print only (no post) — review for errors
+   b. Return to PR-J if corrections needed
+   c. Second run: print + post
+      - Hours inserted into BKPRCURP for each employee
+      - Regular, overtime, double-time columns populated separately
+```
+
+**Key tables read:** WOLABOR, BKDCLAB, BKPRMSTR
+**Key tables written:** BKPRCURP (labor hours), WOLABOR (POSTED flag)
+
+**Confidence: 80/100** — PR-J/K/WO-L-E steps confirmed from CHM; BKPRCURP and WOLABOR
+schemas confirmed from DDF; exact staging table for PR-J time cards not confirmed (may be
+BKPRCURP directly or an intermediate table, blocked by RWN encryption).
+
+---
+
+### Recipe 18: Payroll Calculation and Register (Pass 110d, 2026-06-19)
+
+**When to use:** After all labor hours are in BKPRCURP (via Recipe 17), run the payroll
+calculation to compute gross pay, deductions, and net pay. Run before printing checks.
+
+```
+1. Prerequisite — hours must be in BKPRCURP:
+   - Either from WO-L-E (shop-floor path) or PR-J/PR-K (time card path)
+   - Or entered directly in PR-B
+
+2. PR-B — Enter Pay Info
+   - Opening screen: list of employees with P column:
+     C = record not yet processed for payment
+     P = record processed for payment
+     D = Direct Deposit | M = printed check
+   - Tag employees for this payroll run:
+     [Tag All] = all active employees
+     [Tag Division] = specific division only (use for multi-division shops)
+     [Tag/Untag One] = individual employee
+   - For each tagged employee [Pay One]:
+     a. Hours screen: regular/overtime/holiday/vacation/sick hours shown (pre-populated from
+        WO-L-E or PR-K); review and adjust if needed
+     b. Pay calculation:
+        - Gross pay = hours × rates (from BKPRMSTR: regular/overtime/holiday rates)
+        - Standard deductions: FIT, FICA-SS, FICA-Med, SIT, SDI, WC (from PR-F tax tables
+          and PR-M division defaults)
+        - User-defined deductions: up to 15 per division; pre-tax / post-tax configurable
+        - Net pay = gross − all deductions
+     c. Set OK to save? = Y → Save (F10)
+     d. System moves to next tagged employee automatically
+   - Results written to BKPRCURP (127 fields: all pay components, deductions, net pay)
+
+3. PR-C — Print Payroll Register (verify before printing checks)
+   - Reads BKPRCURP; no writes
+   - Prints every employee's hours, gross pay, each deduction, net pay, pay type (D/M)
+   - Prints totals for all employees
+   - Review carefully — this is the last opportunity to correct before checks print
+   - Return to PR-B to change any employee record before proceeding
+```
+
+**Key tables read:** BKPRCURP, BKPRMSTR, PR tax tables (BKPRTAXS or similar — exact name
+blocked by encryption)
+**Key tables written:** BKPRCURP (pay amounts, deductions, net pay fields)
+
+**Payroll division note:** Shops with multiple divisions (e.g., different states, different
+pay periods) process each division separately in PR-B. Run PR-B once per division using
+[Tag Division].
+
+**Confidence: 78/100** — PR-B/C program descriptions confirmed from CHM; calculation logic
+(gross→deductions→net) confirmed; BKPRMSTR (384f) and BKPRCURP (127f) schemas confirmed
+from DDF; internal calculation path (which fields drive which deductions) blocked by RWN
+encryption.
+
+---
+
+### Recipe 19: Payroll Check Printing (Pass 110d, 2026-06-19)
+
+**When to use:** After verifying the payroll register from Recipe 18, print and post
+the payroll checks. This is the final, irreversible step of a payroll run.
+
+```
+1. Prerequisite: PR-C register reviewed and approved; BKPRCURP records verified.
+
+2. PR-D — Print Payroll Checks
+   a. Select bank account (from ISBANKS — payroll checking account configured in AD-B)
+   b. Verify/confirm beginning check number (ISBANKS.NXTNUM — next available check #)
+   c. Confirm check date (defaults to today; also sets pay period end date)
+
+   Direct Deposit employees processed first:
+   - Prints pay stubs to plain paper (not actual checks)
+   - Asks if stubs printed correctly → Y = post
+   - Updates next Direct Deposit reference in SD-R
+   
+   Printed check employees:
+   - Switch printer if checks are in different tray
+   - Prints actual checks (pin-feed or laser, per AD-B default)
+   - Asks if checks printed correctly → Y = post all checks
+
+   When posting confirmed (Y):
+   - BKPRCURP records cleared (payroll period file reset)
+   - Each check written to GL check register (BKGLCHK: CHKACT+NUM PK + DATE/TYPE/NAME/AMT/FLAG)
+   - Employee pay history updated in BKPRMSTR (LAST PAID date, cumulative YTD/QTD amounts)
+   - Current taxes withheld added to outstanding tax liability totals (held in BKPRMSTR per
+     employee + division totals in BKPRCURP → BKPRGLFL GL accounts)
+   - ISBANKS.NXTNUM incremented for next payroll
+   - Payroll history record saved (source for PR-I Print Pay History and PR-L-* reports)
+
+3. If a check prints incorrectly → PR-G — Void Payroll Check
+   - Enter employee number, select check from history list
+   - Reverses all PR-D postings: removes check from BKGLCHK, subtracts from pay history,
+     posts offsetting GL entries
+   - Caution: if taxes already transferred to AP via PR-H, must reverse PR-H entries manually
+```
+
+**Key tables read:** BKPRCURP, BKPRMSTR, ISBANKS
+**Key tables written:** BKGLCHK (check register), BKPRMSTR (YTD/QTD history, LAST PAID),
+ISBANKS (NXTNUM), BKGLTRAN (GL journal entries for payroll posting), payroll history table
+
+**Confidence: 82/100** — PR-D program flow confirmed from CHM; ISBANKS (23f) schema confirmed
+(NXTNUM field confirmed); BKGLCHK (11f) schema confirmed; BKGLTRAN confirmed as GL target;
+exact payroll history table name (BKPRHIST or similar) not in DDF schema — may be blocked by
+encryption or use a different naming convention.
+
+---
+
+### Recipe 20: Quarterly and Annual Tax Filing (Pass 110d, 2026-06-19)
+
+**When to use:** End of each calendar quarter for 941/940 filing; year-end for W-2 generation
+and payroll year-end close.
+
+#### Part A — Quarterly Reports (run each quarter)
+
+```
+1. PR-L-A — Print Quarterly Info
+   - Summary of all employee payroll activity for the quarter
+   - Compare to FICA/FIT liability balances before paying
+
+2. PR-L-C — Print QTD Taxable Earnings
+   - Taxable earnings by type for each employee
+   - Useful for FICA wage-base tracking (Social Security wage base limit)
+
+3. PR-L-G — Print 941 and Schedule B Reports
+   - IRS Form 941: Employer's Quarterly Federal Tax Return
+   - Schedule B: per-payroll date deposit detail
+   - Source: QTD FIT + FICA withheld from employee records + employer FICA match
+   - Use this report to fill out the actual IRS Form 941
+
+4. PR-L-H — Print 940 Forms
+   - IRS Form 940: Employer's Annual Federal Unemployment (FUTA) Tax Return
+   - Typically filed once per year but amounts computed quarterly
+   - FUTA wages tracked separately (subject only up to $7,000/employee/year)
+
+5. PR-H — Transfer Liabilities to AP
+   - After running the 941, transfer the tax liabilities to AP for payment
+   - Reads outstanding withholding totals from BKPRMSTR/BKPRCURP (per division)
+   - Creates AP vouchers: one per tax type (FIT, FICA, SIT, FUTA, SUTA, SDI, WC,
+     user-defined deductions) using vendor codes configured in AP-A
+   - Debit: payroll liability GL accounts (from BKPRGLFL)
+   - Credit: AP account (from AD-A GL defaults)
+   - After transfer, outstanding liability amounts reset
+   - Run AP check cycle (AP-E → AP-H) to pay the tax vendors
+   - Run quarterly for FIT/FICA; run monthly if depositing on monthly schedule
+```
+
+#### Part B — Year-End Close (run before first payroll of new year)
+
+```
+6. PR-L-I — Print W-2 Forms
+   - Source: BKPRW2 (W-2 data file created by PR-O)
+   - Must run PR-O first to create BKPRW2
+
+7. PR-O — Year End Routine
+   - Creates BKPRW2.B* — copy of every employee's master payroll record with YTD amounts
+   - Resets all employee QTD and YTD pay fields to zero (BKPRMSTR)
+   - Must run before first payroll of new calendar year
+   - Generates W-2 data file as part of the routine
+
+8. PR-L-I — Print W-2 Forms (again, after PR-O)
+   - Reads BKPRW2; prints IRS Form W-2 for each employee
+   - Includes: wages, FIT withheld, FICA-SS, FICA-Med, SIT, SDI, user-defined deductions
+     that are W-2 reportable (configured per deduction in PR-M)
+
+9. PR-L-N — Print Payroll Wages Detail / PR-L-F — Print Subject to Report
+   - Cross-check: verify total wages match W-2 totals and 941 amounts
+   - PR-L-F: shows wages subject to each tax type (useful for state SUI/SDI reporting)
+```
+
+**Key tables read:** BKPRMSTR (QTD/YTD totals), BKPRGLFL (GL config), BKGLTRAN
+**Key tables written:**
+- PR-H: BKAPDESC (AP invoices for tax payments), BKGLTRAN (GL debit liability accounts)
+- PR-O: BKPRW2 (W-2 data file), BKPRMSTR (QTD/YTD reset to zero)
+
+**1099 note:** Contractor/vendor 1099 forms are not generated through the PR module —
+they come from the AP module. Use AP-J (1099 report) which reads BKAP1099 or similar
+table tracking 1099-eligible AP payments.
+
+**Confidence: 82/100** — PR-H, PR-O, PR-L-A/C/G/H/I/N/F programs confirmed from CHM with
+field-level detail; PR-H AP voucher creation path confirmed; BKPRW2 table named in PR-O
+CHM text; BKPRGLFL (664f) GL config schema confirmed from DDF; internal QTD/YTD field
+mapping within BKPRMSTR (384f) not individually named — count confirmed, field meanings
+inferred from CHM context.
 
 ---
 

@@ -151,10 +151,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Single-file or batch mode; `--encrypted` flag decrypts on-the-fly; JSON output supported
   - Must be run against local copies in `samples/` (not directly against network share)
   - Note: all existing `samples/rwn_decrypted/*.dec` files were made with wrong key — re-decrypt needed
-- [x] 🔄 Bytecode instruction set — **C: 60/100** (17 opcodes; form lifecycle semantics confirmed from 10-program ordering analysis)
-  - Dispatch table = program instructions: `[op][00][00][sub] + [pool_offset]` (8 bytes each)
-  - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant — holds for all 25 programs analyzed
-  - Pool immediately follows dispatch; typed values: 0x41=string/blob (var-len), 0x46=var_ref (val=var_idx×77), 0x43=pool_ptr, 0x52/0x4E/etc.=5-byte numeric
+- [x] 🔄 Bytecode instruction set — **C: 63/100** (17 opcodes; form lifecycle semantics confirmed from 10-program ordering analysis; 2026-06-19 refinements)
+  - Dispatch table = program instructions: `[op][00][b2][sub] + [pool_offset_LE4]` (8 bytes each)
+    - b2 is usually 0x00; **exception: op=0x57 EXECUTE_FORM has b2=0xFE** (main form) or b2=0x00 (sub-form in t7nest)
+  - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant — holds for all 1122 programs extracted
+  - **Pool detection**: scan 8-byte blocks from DISP_START+8; first block where byte[0]=0x41 = pool_start. May need to skip 0x00 no-op blocks. Confirmed for all 4 small programs.
+  - Pool immediately follows dispatch; first entry always 0x41 = DFM filename: `[0x41][0x00][len_LE2][name_ascii]`
+  - Typed pool values: 0x41=string/blob (var-len), 0x46=var_ref (val=var_idx×77), 0x43=pool_ptr, 0x52/0x4E/etc.=5-byte numeric
   - Compound blobs: 0x41 blobs starting with 0xFD contain sub-typed argument fields, end with 0xFF
   - **CONFIRMED 0x20 = CREATE FORM / BIND HANDLER**: First occurrence → DFM filename string (TForm.Create). Subsequent 0x20s bind event handler procs. Confirmed from 10-program ordering analysis.
   - **CONFIRMED 0x57 = EXECUTE FORM**: Universal. Enters form event loop (TForm.ShowModal). In suwin7 it is the LAST instruction after 31 license-check ops. In T7MSG (no procs) it creates+executes in one shot.
@@ -163,7 +166,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - **0x42 = GOSUB/CALL**: sub=0x04; calls named procs. 0x0F = ASSIGN: sub=0x0A; sets properties/vars.
   - **0x40/0x71 = EXIT PROGRAM**: Both terminate the program; 0x71 sub=0x05, 0x40 sub=0x36.
   - 17 distinct opcodes fully documented in `docs/02-file-formats/rwn-binary-format.md`
-  - `.dec` files in `samples/rwn_decrypted/` regenerated 2026-06-19 (1145/1146 OK)
+  - `.dec` files in `samples/rwn_decrypted/` regenerated 2026-06-19 (1145/1146 OK); 1122 with pool extracted
 
 ### 2.3 `.RUN` — TAS Pro 6 Compiled Program
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
@@ -199,10 +202,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - TShellExe (850 occurrences!) = how EVO launches print/email/file-open
   - TRtnTimer (227) = auto-dismiss, polling, and timeout pattern throughout UI
 - [ ] ⬜ All TAS-specific control properties documented with behavior
-- [x] 🔄 Form-to-menu-code mapping — **C: 70/100** (program known for all 870 codes; DFM names not yet mapped)
+- [x] ✅ Form-to-menu-code mapping — **C: 82/100** (2026-06-19: DFM names extracted from all 1122 decrypted RWNs via pool scan)
   - Complete code → program → DB table mapping in `docs/06-menu-system/code-program-mapping.md`
   - 726/870 entries have DB table info from decrypted RWN symbol data; 83% coverage
-  - DFM name per menu code still requires parsing 0x20 MOUNT instructions in each RWN
+  - DFM name extraction: scans pool section (DISP_START+8, first 0x41 block = first pool entry = DFM filename); extracted all 1122 programs in `samples/rwn_dfm_map.json`
+  - 814/1122 standard (prog.DFM == prog name); 193 → STUB.DFM (J7* i2 customizations); 115 truly non-standard (e.g. T7ADCA→T7DCA.DFM, T7INAC→T7INA.DFM, T7POS→T7QSOA.DFM, T7FIX.DFM for fix utilities)
+  - Menu→DFM join: 734/870 resolved (84%); 136 not in dec dir (BK*/T6* or group entries)
+  - Instruction count stats: median=2722, max=20367 (T7SOA), min=2; 885/1122 have >1000 instructions
 - [ ] ⬜ Binary `.DFM` variant (the 25 TPF0-format forms) decoded
 
 ### 2.5 `.DCY` — Data Dictionary / Compiled Schema
@@ -266,15 +272,18 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ All FILE\*.UPD files parsed and delta-compared to current schema
 
 ### 2.11 `.DBA` — Identity / Seat Token
-- [x] ✅ File identified: `WHOAMI.DBA` (35 bytes, per-workstation) — **C: 65/100**
-- [ ] ⬜ Byte layout decoded (what each of the 35 bytes means)
-- [ ] ⬜ How WHOAMI.DBA is generated (install-time? first-run? server-assigned?)
-- [ ] ⬜ How tp7runtime.exe reads/validates WHOAMI.DBA
+- [x] ✅ File identified: `WHOAMI.DBA`, per-workstation — **C: 45/100**
+  - Local copy is 2 bytes (CRLF only) — stub/uninitialized on this workstation; reported size of 35 bytes was incorrect
+  - Prior documentation listing "35 bytes" appears to be based on CHMHELP.EVO, not WHOAMI.DBA
+- [ ] ⬜ Byte layout decoded — cannot decode without a populated copy
+- [ ] ⬜ How WHOAMI.DBA is generated and validated by tp7runtime.exe
 
 ### 2.12 `.EVO` — Unknown Marker File
-- [x] ✅ File identified: `CHMHELP.EVO` (35 bytes); same size as WHOAMI.DBA — **C: 40/100**
-- [ ] ⬜ Purpose confirmed (hypothesis: "CHM help present" presence marker)
-- [ ] ⬜ Byte content decoded
+- [x] ✅ `CHMHELP.EVO` fully decoded (2026-06-19) — **C: 95/100**
+  - Content: plaintext ASCII "EvoHELP now set for this computer.\r\n" (35 bytes)
+  - Purpose: presence marker — written by StartEvo/install when EvoHELP.CHM is registered for this workstation
+  - tp7runtime.exe checks for this file to enable the F1 contextual help system
+  - Not binary; just a text confirmation note
 
 ### 2.13 `.CHM` — Windows HTML Help
 - [x] ✅ `EvoHELP.CHM` successfully decompiled with `hh.exe -decompile` — **C: 92/100**
@@ -813,9 +822,9 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] ✅ Mail & localization: SMTP sender + resource-bundle i18n — **C: 65/100**
 - [x] ✅ `ISJAVA` table: TAS writes task ID + params; Java polls, executes, writes result — **C: 72/100**
 - [ ] ⬜ All ISJAVA task command IDs documented with their action
-- [ ] ⬜ ISJAVA all fields documented
-- [ ] ⬜ Java connection parameters source confirmed (taspro7.ini vs. registry vs. .properties file)
-- [ ] ⬜ All JavaFX command-line sub-tasks enumerated
+- [x] ✅ ISJAVA schema: IS_JAVA_UID(PK) + IS_JAVA_DATE + IS_JAVA_PARAM_1..N (dynamic-count params); TAS vars: IS.JAVA.UID / IS.JAVA.PARAM / IS.JAVA.DATE / JAVA.PATH / JAVA.H; table is TAS runtime-only (not in DDF) — **C: 75/100**
+- [x] ✅ Java connection parameters: **jdbc.ini** text file (NOT registry); keys: Host, Name, Port, Company, Tree Destination; WinRegistry used only for Java path lookup — **C: 92/100**
+- [x] ✅ JavaFX sub-tasks enumerated: CsvExportTask, TextFileWriteTask, FileOpenTask, TabularView$ExportTask — **C: 80/100**
 - [ ] ⬜ CSV export logic fully traced (which data pipelines, column mapping)
 
 ---
@@ -871,10 +880,10 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **Lot/serial tracking** — PO receipt → WO issue → WO completion → SO shipment — see Recipe 15 — **C: 68/100**
 
 ### 13.3 Payroll Workflows
-- [ ] ⬜ **Time entry** — labor hours entry through pay period
-- [ ] ⬜ **Payroll calculation** — gross to net, deductions
-- [ ] ⬜ **Check printing** — direct deposit, live checks
-- [ ] ⬜ **Tax filing** — quarterly 941, W-2, 1099 generation
+- [x] ✅ **Time entry** — DC/WO-L-E path (WOLABOR→BKPRCURP) + PR-J/PR-K time card path — see Recipe 17 — **C: 80/100**
+- [x] ✅ **Payroll calculation** — PR-B (gross→deductions→net, tag by division) → PR-C register — see Recipe 18 — **C: 78/100**
+- [x] ✅ **Check printing** — PR-D (direct deposit stubs + live checks, BKGLCHK+BKPRMSTR+BKGLTRAN) → PR-G void — see Recipe 19 — **C: 82/100**
+- [x] ✅ **Tax filing** — PR-L-A/C/G/H quarterly + PR-H liabilities→AP + PR-O year-end + PR-L-I W-2 — see Recipe 20 — **C: 82/100**
 
 ### 13.4 System Administration Workflows
 - [x] ✅ **New user setup** — AHSYLOG entry, access flags, starting menu — see Recipe 13 — **C: 65/100**
@@ -991,7 +1000,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 - [x] ✅ All 1,109 forms inventoried (name, size, control count) — **C: 85/100**
 - [x] ✅ DFM summary CSV (`samples/dfm_parsed/dfm_summary.csv`) — **C: 82/100**
-- [ ] ⬜ Form-to-menu-code mapping complete (which DFM opens for each menu code)
+- [x] ✅ Form-to-menu-code mapping: DFM column added to code-program-mapping.md (2026-06-19) — 723/870 codes resolved (83%); 9 are .RUN legacy; 12 RWN not yet decrypted; 147 are navigation groups — **C: 83/100**
 - [ ] ⬜ Form-to-table mapping (which tables does each form read/write)
 - [ ] ⬜ Per-form narrative documentation (field labels + purpose) for all 1,109 forms
 

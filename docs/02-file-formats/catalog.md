@@ -65,8 +65,8 @@ Pervasive/Btrieve. `StartEvo.exe` accesses them via DSN `EVOADMIN` as `tas_menus
 | `zipdll.dll` / `unzdll.dll` | ZIP compression — used by backup/update flows. |
 | `taspro7.ini`      | TAS Pro 7 configuration (paths, colors, fonts). |
 | `EvoSettings.INI`  | Per-machine app settings (AR/AP access flags). |
-| `WHOAMI.DBA`       | Per-machine identity (35 bytes — user/terminal tag). *open-question* |
-| `CHMHELP.EVO`      | 35-byte marker — purpose unknown. *open-question* |
+| `WHOAMI.DBA`       | Per-machine identity file — stub (2 bytes CRLF) on this workstation; byte layout unknown. *open-question* |
+| `CHMHELP.EVO`      | **Decoded (2026-06-19):** plaintext "EvoHELP now set for this computer.\r\n" (35 bytes). Presence marker written when EvoHELP.CHM is installed; tp7runtime.exe checks this before enabling F1 help. |
 | `DFM\`             | Local cache of the large T7 form files (`T7ARA`, `T7INA`, etc.) so they load fast. |
 | `PDFS\`            | Local PDF staging directory. |
 
