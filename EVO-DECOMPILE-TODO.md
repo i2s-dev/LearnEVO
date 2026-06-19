@@ -868,7 +868,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **Month-end close** — AR-H → AP → IN → AM period lock — see Recipe 5 — **C: 72/100**
 - [x] ✅ **GL journal entry** — T7GLB enter → T7GLC report → T7GLP period-end → T7GLARCH archive — see Recipe 10 — **C: 70/100**
 - [x] ✅ **Period-end archiving** — T7GLP → T7GLARCH → purge — see Recipe 11 — **C: 70/100**
-- [ ] ⬜ **Year-end close** — payroll, 1099, W-2, purge cycle
+- [x] ✅ **Year-end close** — full sequence traced: PR-O (BKPRMSTR→BKPRW2 + YTD zero + BKPRSALE→BKPRBOOK) → PR-L-I W-2 print → AP-S 1099 (BKAPVEND.TAX_ID + BKAPVND2) → AM GL year-end shift (BKGLCOA CURRENT→1YPAST→2YPAST) → SM-J* archive; Recipe 21 added to HELP-RESOURCES.md (Pass 112 2026-06-19) — **C: 88/100**
 
 ### 13.2 Inventory & Manufacturing Workflows
 - [x] ✅ **New item setup** — IN-B → BM → RO-A — see Recipe 6 — **C: 78/100**
@@ -917,8 +917,8 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
   - [ ] ⬜ suwin7.dcy — fails all 4 known keys; 5th key or different format
   - Note: See `docs/02-file-formats/decryption-findings.md` for complete algorithm spec
 - [ ] ⬜ `ENCRYPTSTR` algorithm reverse-engineered (password hashing, string crypto in TAS)
-- [ ] ⬜ `WHOAMI.DBA` 35-byte format decoded
-- [ ] ⬜ `CHMHELP.EVO` 35-byte format decoded
+- [x] ✅ `WHOAMI.DBA` decoded: 2 bytes (0x0D 0x0A only = bare CRLF); file existence is the flag, content is empty; samples/WHOAMI.DBA (Pass 112 2026-06-19) — **C: 100/100**
+- [x] ✅ `CHMHELP.EVO` decoded: 35-byte text sentinel — "EvoHELP now set for this computer\r\n"; written by StartEvo.exe after CHM installation; presence signals CHM is installed and configured; samples/CHMHELP.EVO (Pass 112 2026-06-19) — **C: 100/100**
 - [ ] ⬜ Menu tree format inside `EVOERPMENU.DCY` decoded (once decryption solved)
 - [ ] ⬜ `.RUN` (TAS Pro 6) binary structure fully decoded (bytecode, not just strings)
 
@@ -955,7 +955,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [x] ✅ BKARDEP — AR Customer deposits — tier1-tables.md **C: 72/100**
 - [x] ✅ BKARCHKH/F — AP Check history — tier1-tables.md **C: 78/100**
 - [x] ✅ BKAPVEND — AP Vendor master — tier1-tables.md **C: 80/100**
-- [ ] ⬜ BKAPINVH — AP Invoice header (not yet found in schema — may be BKAPINV)
+- [x] ✅ BKAPINVH — Confirmed NOT in DDF schema (grep of schema.md returns no match); AP voucher header data is the first 10 fields of BKAPINVL (390f total); no separate header table exists (Pass 112 2026-06-19) — **C: 95/100**
 - [x] ✅ BKAPINVL — AP Invoice detail — tier1-tables.md **C: 78/100**
 - [x] ✅ BKAPCHKH — AP Check header — tier1-tables.md **C: 78/100**
 - [x] ✅ BKICMSTR — Inventory Item master — tier1-tables.md **C: 75/100**

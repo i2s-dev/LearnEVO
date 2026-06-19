@@ -76,6 +76,7 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Calculate payroll and verify before printing checks | PR-B → PR-C | [Recipe 18: Payroll Calculation and Register](#recipe-18-payroll-calculation-and-register-pass-110d-2026-06-19) |
 | Print payroll checks and post to GL | PR-D | [Recipe 19: Payroll Check Printing](#recipe-19-payroll-check-printing-pass-110d-2026-06-19) |
 | File quarterly 941/940 or generate year-end W-2s | PR-L-G/H → PR-H → PR-O → PR-L-I | [Recipe 20: Quarterly/Annual Tax Filing](#recipe-20-quarterly-and-annual-tax-filing-pass-110d-2026-06-19) |
+| Run the full year-end close (payroll W-2/1099 + GL year-end + archive) | PR-O → PR-L-I → AP-S → GL year-end → SM-J archive | [Recipe 21: Year-End Close](#recipe-21-year-end-close-pass-112-2026-06-19) |
 | Fix items stuck on the open order report (shipped but never posting) | SD-M → SO-G | [Recipe 9: Packaging Items Stuck on Open Order Report](#recipe-9-packaging-items-stuck-on-open-order-report) |
 | Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
 | Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
@@ -2347,16 +2348,11 @@ in AHSYLOG with role, starting menu code, and 20 access flags.
 
 ### Year-End Close
 
-**Standard sequence:**
-1. Print all year-end reports (AR/AP aging, GL trial balance, payroll YTD)
-2. Generate W-2 forms (PR module)
-3. Generate 1099 forms (AP-S)
-4. Close payroll year
-5. GL year-end close (carries forward retained earnings, zeros income/expense accounts)
-6. Archive and purge old transaction history (built-in archiving tools)
-7. Set new budget figures for next year
+See [Recipe 21: Year-End Close](#recipe-21-year-end-close-pass-112-2026-06-19) for the complete step-by-step sequence with table operations.
 
-**Confidence: 48/100** — Workflow from CHM; specific GL year-end table operations not traced.
+**Summary:** Payroll year-end (PR-O → BKPRW2 + YTD zero) → W-2 print (PR-L-I) → 1099 (AP-S) → GL year-end shift (CURRENT → 1YPAST → 2YPAST in BKGLCOA) → archive BKGLTRAN → set new budget.
+
+**Confidence: 88/100** — PR-O BKPRW2 creation + BKPRMSTR YTD reset confirmed from DDF + CHM; GL COA year-end column structure confirmed from DDF (BKGLCOA 65 fields); archive mechanism confirmed from SM data-maintenance docs; 1099 path through BKAPVEND.TAX_ID + AP-S confirmed.
 
 ---
 
@@ -15460,6 +15456,111 @@ field-level detail; PR-H AP voucher creation path confirmed; BKPRW2 table named 
 CHM text; BKPRGLFL (664f) GL config schema confirmed from DDF; internal QTD/YTD field
 mapping within BKPRMSTR (384f) not individually named — count confirmed, field meanings
 inferred from CHM context.
+
+---
+
+### Recipe 21: Year-End Close (Pass 112, 2026-06-19)
+
+**When to use:** Once per calendar year — after the last payroll of the year but before the first payroll of the new year. This is a multi-module sequence; order matters.
+
+#### Phase 1 — Final Monthly Close First
+
+Complete the normal month-end close for December before starting year-end:
+- AR-H, AP aging, IN valuation, GL period lock (AM period control)
+- All outstanding AP vouchers entered and posted
+- All PO receipts fully vouchered against BKAPINVT
+
+#### Phase 2 — Payroll Year-End
+
+```
+1. PR-L-A — Print Quarterly Summary (final Q4 report)
+   - Verify QTD FIT/FICA totals against liability balances
+
+2. PR-L-G — Print 941 / Schedule B
+   - Q4 payroll tax deposit reconciliation
+
+3. PR-H — Transfer Tax Liabilities to AP
+   - Creates BKAPINVL + BKAPINVT vouchers for outstanding tax liabilities
+   - One AP voucher per tax type (FIT, FICA, FUTA, SUTA, SIT, SDI, WC, user-defined)
+   - GL debit: payroll liability accounts (from BKPRGLFL)
+   - GL credit: AP control account
+   - Run AP check cycle (AP-E → AP-H) to pay the tax vendors
+
+4. PR-O — Year End Routine  *** CRITICAL — do this before any new-year payroll ***
+   - Copies BKPRMSTR → BKPRW2 (W-2 snapshot): all employee records with final YTD amounts
+   - Resets BKPRMSTR QTD and YTD pay fields to zero for the new year
+   - Rolls BKPRSALE → BKPRBOOK (prior-year sales/commission history)
+   - BKPRW2 schema is identical to BKPRMSTR (384 fields, same BKPR_* prefix)
+
+5. PR-A — Edit W-2 Data (optional corrections)
+   - Edits BKPRW2 records if any corrections needed before printing
+   - Box mapping: BKPR_WFITYTD → Box 2 (FIT withheld),
+     BKPR_WFICAYTD → Box 4 (SS withheld),
+     BKPR_WMEDYTD → Box 6 (Medicare withheld),
+     BKPR_WSITYTD → Box 17 (state income tax)
+
+6. PR-L-I — Print W-2 Forms
+   - Source: BKPRW2 (must run PR-O first)
+   - Reads BKPRW2 for each employee; formats IRS Form W-2
+   - Includes wages, FIT, FICA-SS, FICA-Med, state, user-defined W-2-reportable deductions
+```
+
+#### Phase 3 — 1099 Processing (AP Module)
+
+```
+7. AP-S — Print 1099 Forms
+   - Source: BKAPVEND (TAX_ID field) + BKAPVND2 (63f: 10-slot 1099 box amounts)
+   - Reads BKAP_INVT records with TYPE="P" (1099-eligible payments) for the calendar year
+   - Vendors with BKAPVEND.TAX_ID populated and 1099-eligible payments summed
+   - Prints IRS Form 1099-MISC / 1099-NEC by vendor
+   - Threshold: payments ≥ $600 (per IRS rules, enforced by AP-S filter)
+```
+
+#### Phase 4 — GL Year-End Close
+
+```
+8. AM (Accounting Maintenance) — Year-End GL Shift
+   - Shifts BKGLCOA period balances forward by one year:
+     Before: CURRENT_1..14, 1YPAST_1..14, 2YPAST_1..14
+     After:  CURRENT_1..14 → zeroed/retained earnings, old CURRENT → 1YPAST, old 1YPAST → 2YPAST
+   - Retained earnings: net income (sum of income − expense CURRENT balances) transferred to
+     equity account; income/expense accounts zeroed for new year
+   - BKGLCOA 65-field schema: CURRENT/BUDGET/1YPAST/2YPAST arrays each have 14 period columns
+     plus a YE (year-end total) column
+
+9. GL-O — Post Journal Batches (if any year-end adjusting entries remain)
+   - Post any final GJR journal batches before closing
+   - BKGLGJRN (header 11f) + BKGLGJLN (lines 9f) → BKGLTRAN (16f)
+```
+
+#### Phase 5 — Archive and Purge
+
+```
+10. SM-J-* — Data Maintenance: Archive and Purge
+    - Run per-module archiving per the SM Data Maintenance schedule
+    - BKGLTRAN prior-year transactions → BKGLATRN archive
+    - BKARINV closed invoices → BKARHINV (AR history)
+    - BKAPINVL paid vouchers → ISAPAINL archive
+    - BKMENUSU-driven archive menus per module
+    - Frees Btrieve file space; data remains queryable via archive tables
+
+11. Set New Year Budget (optional)
+    - GL-A or AM → enter BUDGET_1..14 values in BKGLCOA for the new fiscal year
+    - Budget figures can be imported from spreadsheet or manually entered per account
+```
+
+**Key tables written:**
+| Table | Written by | What changes |
+|-------|-----------|-------------|
+| BKPRW2 | PR-O | Year-end W-2 snapshot (copy of BKPRMSTR at close) |
+| BKPRMSTR | PR-O | QTD/YTD fields zeroed for new year |
+| BKPRSALE → BKPRBOOK | PR-O | Prior-year sales/commission history rolled |
+| BKAPINVL + BKAPINVT | PR-H | AP vouchers for payroll tax liabilities |
+| BKGLTRAN | PR-H, GL-O | GL journal entries for liability transfer + adjusting entries |
+| BKGLCOA | AM year-end | CURRENT → 1YPAST shift; income/expense accounts zeroed |
+| Archive tables | SM-J* | BKGLATRN, BKARHINV, ISAPAINL, etc. |
+
+**Confidence: 88/100** — PR-O BKPRW2 creation + BKPRMSTR YTD reset confirmed from DDF + CHM (Pass 111d); BKGLCOA 65-field COA array structure confirmed from DDF (CURRENT/1YPAST/2YPAST columns); PR-H AP voucher creation via BKPRGLFL confirmed (Pass 111d); 1099 via BKAPVEND.TAX_ID + BKAPVND2 confirmed (Pass 111d); SM archive table names confirmed from sm/data-maintenance-archiving.md; exact GL year-end journal entries (retained earnings transfer) are in encrypted AM/GL RWN programs — mechanism inferred from BKGLCOA column structure.
 
 ---
 

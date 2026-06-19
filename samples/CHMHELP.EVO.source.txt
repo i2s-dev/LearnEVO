@@ -1,0 +1,5 @@
+Source: C:\ISTS\CHMHELP.EVO
+Copied: 2026-06-19 (Pass 112)
+Size: 35 bytes
+Content (ASCII): "EvoHELP now set for this computer\r\n"
+Purpose: CHM installation sentinel — StartEvo.exe writes this file after EvoHELP.CHM is installed on the workstation. Its presence signals that the CHM help system is configured. Referenced in StartEvo.exe string table analysis (Pass 105/Pass 63).

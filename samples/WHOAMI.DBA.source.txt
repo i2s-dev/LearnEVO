@@ -1,0 +1,5 @@
+Source: C:\ISTS\WHOAMI.DBA
+Copied: 2026-06-19 (Pass 112)
+Size: 2 bytes
+Content: 0x0D 0x0A (bare CRLF)
+Purpose: Workstation identity sentinel — file presence signals this is the active EvoERP workstation. Content is empty (only a CRLF terminator).
