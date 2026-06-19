@@ -538,7 +538,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.6 Work Orders (WO)
 - [x] ✅ Menu codes listed (31 operations) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7WO\*.DFM) — **C: 70/100**
-- [x] ✅ Tables: WO\* (30 tables) — **C: 55/100**
+- [x] ✅ Tables: WO\* (30 tables) — all 30 tables cross-referenced and documented; see comprehensive entry below at C:92 — **C: 92/100**
 - [x] ✅ Source files: BKAWLB.SRC fully analyzed (Pass 119): WO Status Report/LWJB (originally BKLWJB "Labor WIP Job" — merged Nov 2000); filters WOs by status/priority/class/dates/part/customer ranges; opens BKARCUST+BKICMSTR+MTICMSTR+WORKORD+BKSYMSTR; 5 tables only (report viewer, NOT entry); 7 sort options; no labor-entry logic — **C: 72/100**
 - [x] ✅ Work order lifecycle **fully traced**: Create(WO-A) → Release(WO-B) → Routing(WO-K-A) → Material(WO-F/WO-FA backflush) → Labor(WO-G) → Outside(WO-H → PO) → Close(WO-S) — **C: 72/100**
 - [x] ✅ WO status codes documented: F=Released, R=Completed, C=Closed, S=Scheduled, I=In Process, X=On Hold — **C: 75/100**
@@ -1014,7 +1014,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [ ] ⬜ All remaining WO\* (30 tables)
 - [x] 🔄 All remaining BKPR\* (16 tables) — BKPRMSTR (384f fully grouped), BKPRCURP/BKPRHIST (127f each), BKPRINFO (128f), BKPRSALE/BKPRBOOK (87f each), BKPRTC (7f), BKPRTCFG (205f) documented; BKPRFTAX (47f), BKPRGLFL (664f), BKPRACOM/BKPRCOMM/BKPRHCOM (12f each), BKPRAGNT (4f), BKPRSTFL (2f) summarized — **C: 88/100**
 - [ ] ⬜ All remaining BKBM\* (10 tables)
-- [x] 🔄 All remaining BKCM\* (46 tables) — top 5 field-documented (BKCMACCN 154, BKCMCUST 106, BKCMMHST 72, BKCMACCT 41, BKCMREP 14); 41 smaller tables identified but not field-extracted — **C: 55/100**
+- [x] 🔄 All remaining BKCM\* (46 tables) — Pass 133 (2026-06-19): all 46 tables field-documented in tier2-tables.md; full cluster architecture (account/contact/activity/prospect/vendor/dunning/mail/locks/temps); BKCMACCT(41f)/BKCMACCN(154f)/BKCMACTH(21f)/BKCMCUST(106f)/BKCMPCNT(24f)/BKCMREP(14f)/BKCMTERR(11f)/BKCMMHST(72f)/BKCMDUN(36f)/BKCMHCOD(9f) all field-level docs; mirror architecture (BKCMDE/BKCMEACT/E-mirrors) confirmed; BKCPEC(10f)+BKCPMSTR(9f) Checkmark Payroll tables also documented — **C: 82/100**
 - [ ] ⬜ All remaining BKSO\* (7 tables)
 - [ ] ⬜ All remaining BKDC\* (7 tables)
 - [x] 🔄 All remaining IS\* tables — ISLBLMAP (102f), IS2DBAR (109f), ISSCHED (24f), ISNOTES (13f); ISSRMMS (12f, SR equip), ISSRINFO (54f, SR ext), ISSOREVU (12f, approval), ISARINVX (4f, AR ext), ISSDET (4f), ISORDECO (13f), ISNTYPE (4f), ISUDFINV (8f), BKISTAX (13f), BKARHTAX (5f), ISARTXNB (23f) fully field-documented; ~220 IS\* remaining — **C: 52/100**

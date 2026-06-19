@@ -422,3 +422,531 @@ WOBOMCHG, WOBOMHRM, WOBOMREM, WODAT, WOELABOR, WOEMAT, WOERECV, WOEXCHG, WOHDATE
 *Last updated: 2026-06-11*
 *Source: `samples/ddf/schema.md` (field extraction), `samples/ddf/tables.txt` (table inventory)*
 *Confidence: 62/100 — Field names confirmed from DDF; field meanings inferred from naming conventions and cross-referenced against SRC source code where available.*
+
+---
+
+## BKCM* Family — CRM / Contact Manager (46 tables)
+
+**Pass 133 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 3236–4227**
+
+EvoERP's Contact Manager (CM) module manages accounts, prospects, vendors, activity
+history, mass mailings, dunning letters, and CRM-to-AR bridging. 46 tables organized
+in 8 functional clusters. Field-prefix is `BKCM_` except for BKCMCUST which reuses
+the `BKAR_*` prefix (it is a CRM-resident copy of BKARCUST).
+
+### Cluster overview
+
+| Cluster | Tables | Purpose |
+|---------|--------|---------|
+| Account core | BKCMACCT / BKCMDE / BKCMEACT | Account master + 2 edit mirrors |
+| Account contact config | BKCMACCN / BKCMCNTD | Per-account 10-slot contacts + display labels |
+| AR customer bridge | BKCMCUST | Filtered copy of BKARCUST for CRM lookup |
+| Activity tracking | BKCMACTH/ACTF/ACTD + E-mirrors | History, follow-ups, date entries (account) |
+| Prospect sub-module | BKCMPCNT / PCTF / PCTH | Prospect contacts + follow-ups + history |
+| Vendor CRM | BKCMVNDH / VNDF | Vendor activity history + follow-ups |
+| Mass mail / dunning | BKCMMHST / DUN / DUNH / FORM | Mailing list definition + collection letters |
+| Code / lookup tables | BKCMREP/TERR/ACCC/ACCL/etc. | Rep, territory, class, activity code lookups |
+| Concurrent locks | BKCMCTL1-4 / BKCMCTRL | One-field edit-lock semaphores (×5) |
+| Temp/work tables | BKCMTEMP / TMP1-4 | In-flight query scratch (×5, all identical) |
+
+---
+
+### BKCMACCT — CRM Account Master
+
+File: `BKCMACCT.B` | Fields: 41 | PK: `BKCM_ACCT_CODE` (STRING 15)
+
+The central account record for the CRM module. One row per company tracked.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_ACCT_CODE | STRING 15 | Account code (PK) |
+| BKCM_ACCT_OLDCD | STRING 15 | Old/alternate code |
+| BKCM_ACCT_ALPHA | STRING 10 | Sort key |
+| BKCM_ACCT_NAME | STRING 40 | Company name |
+| BKCM_ACCT_ADD1..3 | STRING 40 ×3 | Address lines 1–3 |
+| BKCM_ACCT_CITY | STRING 25 | City |
+| BKCM_ACCT_STATE | STRING 3 | State |
+| BKCM_ACCT_ZIP | STRING 12 | ZIP / postal code |
+| BKCM_ACCT_CNTRY | STRING 20 | Country |
+| BKCM_ACCT_CONT1 | STRING 25 | Primary contact name |
+| BKCM_ACCT_TITLE | STRING 20 | Primary contact title |
+| BKCM_ACCT_PHONE | STRING 15 | Main phone |
+| BKCM_ACCT_FAX | STRING 15 | Fax |
+| BKCM_ACCT_REP | STRING 4 | Assigned CRM rep → FK BKCMREP |
+| BKCM_ACCT_DLOAD | STRING 1 | Download flag |
+| BKCM_ACCT_SICCD | STRING 8 | SIC industry code |
+| BKCM_ACCT_CUST | STRING 15 | Linked AR customer code → FK BKCMCUST |
+| BKCM_ACCT_LEAD | STRING 4 | Lead source → FK BKCMLEAD |
+| BKCM_ACCT_START | STRING 8 | Start / first-contact date |
+| BKCM_ACCT_TERR | STRING 4 | Territory code → FK BKCMTERR |
+| BKCM_ACCT_REM_1..2 | STRING 60 ×2 | Remark lines 1–2 |
+| BKCM_ACCT_FONE_1..3 | STRING 15 ×3 | Additional phone 1–3 |
+| BKCM_ACCT_FTWO_1..3 | STRING 15 ×3 | Additional phone labels 1–3 |
+| BKCM_ACCT_FTHRE_1..2 | STRING 15 ×2 | Additional phone label extension 1–2 |
+| BKCM_ACCT_FTIME | STRING 15 | Time zone or office hours |
+| BKCM_ACCT_CCARD | STRING 2 | Credit card type |
+| BKCM_ACCT_CNUM | STRING 20 | Credit card number |
+| BKCM_ACCT_CEXP | STRING 6 | Credit card expiry |
+| BKCM_ACCT_CMPNM | STRING 30 | Card company name |
+| BKCM_ACCT_PNAME | STRING 25 | Card holder name |
+| BKCM_ACCT_EXTRA | STRING 200 | User-defined extra data |
+| BKCM_ACCT_EMAIL | STRING 128 | Primary email |
+| BKCM_ACCT_EMPS | STRING 6 | Employee count |
+
+**BKCMDE** (41f) — byte-for-byte identical schema; used as data-entry staging buffer.
+**BKCMEACT** (41f) — byte-for-byte identical schema; "E" (edit) in-progress buffer.
+
+---
+
+### BKCMACCN — Per-Account Contact Configuration
+
+File: `BKCMACCN.B` | Fields: 154 | PK: `BKCM_ACCN_CODE` (STRING 15)
+
+Stores 10 contact slots per account with full labeling for phone, email, date, and
+alpha fields. The label arrays (PHLBL/EMLBL/MSLBL/DTLBL/etc.) let each account
+customize what each slot represents.
+
+| Field block | Fields | Meaning |
+|-------------|--------|---------|
+| BKCM_ACCN_CODE | 1 | Account code PK → FK BKCMACCT |
+| BKCM_ACCN_CONT_1..10 | 10 | Contact name per slot |
+| BKCM_ACCN_TITLE_1..10 | 10 | Contact title per slot |
+| BKCM_ACCN_PHONE_1..10 | 10 | Phone per slot |
+| BKCM_ACCN_DEAR_1..10 | 10 | Salutation per slot |
+| BKCM_ACCN_EXTRA | 1 | STRING 50 extra |
+| BKCM_ACCN_EMAIL_1..10 | 10 | Email (STRING 128) per slot |
+| BKCM_ACCN_DATE1_1..10 | 10 | Date field 1 per slot |
+| BKCM_ACCN_DATE2_1..10 | 10 | Date field 2 per slot |
+| BKCM_ACCN_ALPH1_1..10 | 10 | Alpha field 1 per slot |
+| BKCM_ACCN_ALPH2_1..10 | 10 | Alpha field 2 per slot |
+| BKCM_ACCN_CON | 1 | Active contact slot# |
+| BKCM_ACCN_PRIM | 1 | Primary contact flag |
+| BKCM_ACCN_PHLBL_1..10 | 10 | Phone slot labels (user-defined) |
+| BKCM_ACCN_EMLBL_1..10 | 10 | Email slot labels |
+| BKCM_ACCN_MSLBL_1..10 | 10 | Mail-slot labels |
+| BKCM_ACCN_DTLBL_1..10 | 10 | Date-1 slot labels |
+| BKCM_ACCN_M2LBL_1..10 | 10 | Mail-slot-2 labels |
+| BKCM_ACCN_D2LBL_1..10 | 10 | Date-2 slot labels |
+| **Total** | **154** | |
+
+---
+
+### BKCMCUST — AR Customer Bridge (CRM Copy)
+
+File: `BKCMCUST.B` | Fields: 106 | PK: `BKAR_CUST_CODE` (STRING 15)
+
+This table uses the `BKAR_*` field prefix — it is a filtered subset of BKARCUST
+(AR customer master) maintained inside the CRM module for fast CRM-side lookups.
+Field layout matches BKARCUST fields 1–106 exactly; provides address, contacts,
+financials, and credit info without a cross-module join.
+
+Cross-reference: → `docs/04-data-dictionary/tier1-tables.md` BKAR* family for
+full BKARCUST field documentation.
+
+---
+
+### BKCMACTH — Account Activity History
+
+File: `BKCMACTH.B` | Fields: 21 | PK: CODE+DATE+REP+LINE (composite)
+
+One row per activity log entry against an account.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_ACTH_CODE | STRING 15 | Account code (PK part 1) |
+| BKCM_ACTH_DATE | STRING 8 | Activity date (PK part 2) |
+| BKCM_ACTH_REP | STRING 4 | Rep code (PK part 3) |
+| BKCM_ACTH_LINE | UBINARY 2 | Line within date/rep (PK part 4) |
+| BKCM_ACTH_CD | STRING 4 | Activity code → FK BKCMHCOD |
+| BKCM_ACTH_EVENT | STRING 1 | Event type flag |
+| BKCM_ACTH_PHONE | STRING 1 | Phone-call flag |
+| BKCM_ACTH_START | STRING 8 | Start time (HHMMSS) |
+| BKCM_ACTH_STOP | STRING 8 | Stop time |
+| BKCM_ACTH_MIN | FLOAT | Duration in minutes |
+| BKCM_ACTH_BMIN | FLOAT | Billable minutes |
+| BKCM_ACTH_REM | STRING 57 | Remark |
+| BKCM_ACTH_BILLD | STRING 1 | Billed flag |
+| BKCM_ACTH_DLOAD | STRING 1 | Download flag |
+| BKCM_ACTH_FLINE | STRING 1 | First-line flag |
+| BKCM_ACTH_RECVD | STRING 8 | Received time |
+| BKCM_ACTH_CNTCT | STRING 25 | Contact name at time of event |
+| BKCM_ACTH_RATE | FLOAT | Billing rate |
+| BKCM_ACTH_AMT | FLOAT | Amount charged |
+| BKCM_ACTH_BALNC | FLOAT | Running balance |
+| BKCM_ACTH_EXTRA | STRING 50 | Extra |
+
+**BKCMEACH** (21f) — identical schema; "E" (edit) in-progress buffer for BKCMACTH.
+
+---
+
+### BKCMACTF — Account Activity Follow-Up
+
+File: `BKCMACTF.B` | Fields: 11 | PK: CODE+REP+TYPE+DATE
+
+Scheduled future activities (call-backs, appointments) linked to an account.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_ACTF_CODE | STRING 15 | Account code (PK part 1) |
+| BKCM_ACTF_REP | STRING 4 | Rep (PK part 2) |
+| BKCM_ACTF_TYPE | STRING 4 | Follow-up type code (PK part 3) |
+| BKCM_ACTF_DATE | STRING 8 | Scheduled date (PK part 4) |
+| BKCM_ACTF_REM_1..5 | STRING 60 ×5 | Remark lines 1–5 |
+| BKCM_ACTF_DLOAD | STRING 1 | Download flag |
+| BKCM_ACTF_SO | FLOAT | Linked SO reference |
+
+**BKCMEACF** (11f) — identical schema; "E" edit mirror.
+
+---
+
+### BKCMACTD — Account Activity Date Detail
+
+File: `BKCMACTD.B` | Fields: 4 | PK: CODE+DCODE+DATE
+
+Links specific date-coded milestones to accounts (e.g., renewal date, audit date).
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_ACTD_CODE | STRING 15 | Account code (PK part 1) |
+| BKCM_ACTD_DCODE | STRING 4 | Date category code → FK BKCMDTCD (PK part 2) |
+| BKCM_ACTD_DATE | STRING 8 | Date value (PK part 3) |
+| BKCM_ACTD_EXTRA | STRING 100 | Notes / extra data |
+
+**BKCMEACD** (4f) — identical schema; "E" edit mirror.
+
+---
+
+### BKCMPCNT — Prospect Contact Master
+
+File: `BKCMPCNT.B` | Fields: 24 | PK: `BKCM_PCNT_CCODE` (STRING 15)
+
+Parallel to BKCMACCT but for prospects (not yet converted to accounts or customers).
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_PCNT_CCODE | STRING 15 | Prospect code (PK) |
+| BKCM_PCNT_REP | STRING 4 | Assigned rep |
+| BKCM_PCNT_ALPHA | STRING 10 | Sort key |
+| BKCM_PCNT_NAME | STRING 40 | Company/contact name |
+| BKCM_PCNT_ADD1..3 | STRING 40 ×3 | Address lines |
+| BKCM_PCNT_CITY | STRING 25 | City |
+| BKCM_PCNT_STATE | STRING 3 | State |
+| BKCM_PCNT_ZIP | STRING 12 | ZIP |
+| BKCM_PCNT_CNTRY | STRING 20 | Country |
+| BKCM_PCNT_CONT | STRING 25 | Contact name |
+| BKCM_PCNT_TITLE | STRING 20 | Contact title |
+| BKCM_PCNT_PHONE | STRING 15 | Phone |
+| BKCM_PCNT_FAX | STRING 15 | Fax |
+| BKCM_PCNT_CLASS | STRING 4 | Class code → FK BKCMACCC |
+| BKCM_PCNT_SDATE | STRING 8 | Start/first-contact date |
+| BKCM_PCNT_REM_1..4 | STRING 60 ×4 | Remark lines 1–4 |
+| BKCM_PCNT_EXTRA | STRING 100 | Extra |
+| BKCM_PCNT_WPHON | STRING 15 | Work phone (alternate) |
+| BKCM_PCNT_EMAIL | STRING 40 | Email |
+
+**BKCMPCTF** (9f) — prospect follow-up: CCODE+REP+TYPE+DATE PK + REM_1..5.
+**BKCMPCTH** (8f) — prospect contact history: CCODE+DATE+REP+LINE PK + EVENT + REM(60) + FLINE + EXTRA(50).
+**BKCMPCFC** (3f) — prospect follow-up code: FCODE + DESC + REP.
+
+---
+
+### BKCMREP — CRM Sales Rep Master
+
+File: `BKCMREP.B` | Fields: 14 | PK: `BKCM_REP_REP` (STRING 4)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_REP_REP | STRING 4 | Rep code (PK) |
+| BKCM_REP_FNMEMI | STRING 25 | First name / middle initial |
+| BKCM_REP_LNAME | STRING 25 | Last name |
+| BKCM_REP_EMP | UBINARY 2 | Linked employee number → FK payroll/HR |
+| BKCM_REP_PSWD | STRING 8 | Rep login password |
+| BKCM_REP_DHCODE | STRING 4 | Default history code → FK BKCMHCOD |
+| BKCM_REP_DFCODE | STRING 4 | Default follow-up code → FK BKCMACFC |
+| BKCM_REP_DDCODE | STRING 4 | Default date code → FK BKCMDTCD |
+| BKCM_REP_VIEW | STRING 1 | View-all-accounts permission flag |
+| BKCM_REP_CHANGE | STRING 1 | Change permission flag |
+| BKCM_REP_GWARN | STRING 1 | Warn-before-global-change flag |
+| BKCM_REP_AADD | STRING 1 | Allow-add permission flag |
+| BKCM_REP_FNAME | STRING 30 | Full name display |
+| BKCM_REP_FTITLE | STRING 30 | Rep title |
+
+---
+
+### BKCMTERR — Territory Master
+
+File: `BKCMTERR.B` | Fields: 11 | PK: `BKCM_TERR_TCODE` (STRING 4)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_TERR_TCODE | STRING 4 | Territory code (PK) |
+| BKCM_TERR_DESC | STRING 30 | Description |
+| BKCM_TERR_EMAIL | STRING 128 | Territory manager email |
+| BKCM_TERR_ALPHA | STRING 30 | Sort key |
+| BKCM_TERR_EXTRA | STRING 100 | Extra |
+| BKCM_TERR_FLAGS_1..5 | STRING 1 ×5 | User-defined flags |
+| BKCM_TERR_DATE | STRING 8 | Last update date |
+
+---
+
+### BKCMMHST — Mass Mail History / List Definition
+
+File: `BKCMMHST.B` | Fields: 72 | PK: `BKCM_MHST_MCODE` (STRING 10)
+
+Defines and tracks mail campaigns. Each row is a named mailing run with its full
+selection criteria (class, date range, geography, territory, rep) and result counts.
+
+| Field block | Fields | Meaning |
+|-------------|--------|---------|
+| BKCM_MHST_MCODE | 1 | Campaign code (PK) |
+| BKCM_MHST_DESC | 1 | Description |
+| BKCM_MHST_MDATE | 1 | Mailing date |
+| BKCM_MHST_CLASS_1..20 | 20 | Account class filter: up to 20 class codes |
+| BKCM_MHST_KDCD | 1 | Key date code filter |
+| BKCM_MHST_FKDAT / TKDAT | 2 | Key date range FROM/TO |
+| BKCM_MHST_FACD / TACD | 2 | Account code range FROM/TO |
+| BKCM_MHST_FST / TST | 2 | State range FROM/TO |
+| BKCM_MHST_FZIP / TZIP | 2 | ZIP range FROM/TO |
+| BKCM_MHST_FSIC / TSIC | 2 | SIC code range FROM/TO |
+| BKCM_MHST_CUSTO | 1 | Customers-only flag |
+| BKCM_MHST_FLEAD / TLEAD | 2 | Lead source range FROM/TO |
+| BKCM_MHST_FSDT / TSDT | 2 | Start date range FROM/TO |
+| BKCM_MHST_FTERR / TTERR | 2 | Territory range FROM/TO |
+| BKCM_MHST_FREP / TREP | 2 | Rep range FROM/TO |
+| BKCM_MHST_PCONT | 1 | Print contacts flag |
+| BKCM_MHST_CNUM | 1 | Contact slot number to use |
+| BKCM_MHST_DORL | 1 | Detail or list mode flag |
+| BKCM_MHST_NUMUP | 1 | Number-up (labels per page) |
+| BKCM_MHST_OCLAS_1..20 | 20 | Old/previous class filter array |
+| BKCM_MHST_STAT | 1 | Campaign status |
+| BKCM_MHST_NOCUS | 1 | Non-customer-only flag |
+| BKCM_MHST_SORT | 1 | Sort order code |
+| BKCM_MHST_REM | 1 | Remark |
+| BKCM_MHST_FORM | 1 | Default form/letter → FK BKCMFORM |
+| **Total** | **72** | |
+
+---
+
+### BKCMDUN — Dunning Letter Configuration
+
+File: `BKCMDUN.B` | Fields: 36 | PK: `BKCM_DUN_REP` (STRING 4)
+
+Per-rep aging thresholds and form assignments for collection letter runs.
+
+| Field block | Fields | Meaning |
+|-------------|--------|---------|
+| BKCM_DUN_REP | 1 | Rep code (PK) |
+| BKCM_DUN_AGE_1..10 | 10 | Age breakpoints (days overdue) |
+| BKCM_DUN_FORM_1..10 | 10 | Form code for each age tier → FK BKCMFORM |
+| BKCM_DUN_DESC_1..10 | 10 | Description for each tier |
+| BKCM_DUN_DORL | 1 | Detail or list print flag |
+| BKCM_DUN_NUMUP | 1 | Labels per page |
+| BKCM_DUN_SORT | 1 | Sort order |
+| BKCM_DUN_PCONT | 1 | Print contacts flag |
+| BKCM_DUN_CNUM | 1 | Contact slot# for address |
+
+**BKCMDUNH** (6f) — dunning history: ACCT+DATE PK + FORM + AGE + AMT + TOT.
+
+---
+
+### BKCMFORM — Letter / Form Content
+
+File: `BKCMFORM.B` | Fields: 8 | PK: CODE+LINE
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_FORM_CODE | STRING 8 | Form code (PK part 1) |
+| BKCM_FORM_LINE | UBINARY 2 | Line number (PK part 2) |
+| BKCM_FORM_NOTE | STRING 78 | Body text for this line |
+| BKCM_FORM_DESC | STRING 30 | Short description (header lines) |
+| BKCM_FORM_LEFT | STRING 2 | Left margin |
+| BKCM_FORM_LNSPG | STRING 2 | Lines per page |
+| BKCM_FORM_START | STRING 2 | Starting line |
+| BKCM_FORM_DUN | STRING 1 | Dunning letter flag |
+
+---
+
+### BKCMHCOD — Activity / History Code Master
+
+File: `BKCMHCOD.B` | Fields: 9 | PK: `BKCM_HCOD_HCODE` (STRING 4)
+
+Defines billable activity types. The ABILL/BPART/NPART/FPART fields govern
+multi-part billing splits.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_HCOD_HCODE | STRING 4 | History code (PK) |
+| BKCM_HCOD_DESC | STRING 30 | Description |
+| BKCM_HCOD_WINDW | STRING 1 | Window type (popup form code) |
+| BKCM_HCOD_RATE | FLOAT | Default billing rate |
+| BKCM_HCOD_UM | STRING 4 | Unit of measure |
+| BKCM_HCOD_ABILL | STRING 1 | Auto-bill flag |
+| BKCM_HCOD_BPART | FLOAT | Billing-part multiplier |
+| BKCM_HCOD_NPART | FLOAT | Non-billable part |
+| BKCM_HCOD_FPART | FLOAT | Flat-fee part |
+
+**BKCMHCD2** (7f) — history code extension: HCODE + PCODE+CCODE+RCODE + PPART+CPART+RPART (billing code splits by part type).
+
+---
+
+### BKCMEFTM / BKCMFTME — Employee and Firm Time Tables
+
+Both files: 7 fields | PK: CODE+FTIME
+
+Track time-balance accounts for reps or the firm — likely used for service-billing
+or scheduling allocation.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCM_EFTM_CODE | STRING 4 | Rep/entity code (PK part 1) |
+| BKCM_EFTM_FTIME | STRING 8 | Time slot (PK part 2) |
+| BKCM_EFTM_DESC | STRING 30 | Description |
+| BKCM_EFTM_BALNC | FLOAT | Balance (hours or dollars) |
+| BKCM_EFTM_LASTP | STRING 8 | Last-posted date |
+| BKCM_EFTM_ATIME | FLOAT | Accumulated time |
+| BKCM_EFTM_NTIME | FLOAT | New / pending time |
+
+BKCMFTME has the identical field layout; likely BKCMEFTM = employee time,
+BKCMFTME = firm-level time.
+
+---
+
+### Vendor CRM Tables
+
+**BKCMVNDF** (10f) — vendor follow-up: VCODE+REP+TYPE+DATE PK + REM_1..5(STRING 60) + PO(FLOAT).
+Mirrors BKCMACTF but for vendor relationships; PO float links to a purchase order.
+
+**BKCMVNDH** (8f) — vendor contact history: VCODE+DATE+REP+LINE PK + EVENT + REM(60) + FLINE + EXTRA(50).
+Mirrors BKCMACTH but for vendor CRM records.
+
+**BKCMVNFC** (3f) — vendor follow-up code: FCODE + DESC + REP.
+Mirrors BKCMACFC for the vendor sub-module.
+
+---
+
+### Lookup / Code Tables (small)
+
+| Table | Fields | PK | Purpose |
+|-------|--------|----|---------|
+| BKCMACCC | 2 | CCODE | Account class code (CCODE+DESC) |
+| BKCMACCL | 2 | CODE+CLASS | Account class link (assigns a class to an account) |
+| BKCMEACC | 2 | CODE+CLASS | Edit mirror of BKCMACCL (identical schema) |
+| BKCMACFC | 3 | FCODE | Account follow-up code (FCODE+DESC+REP) |
+| BKCMDTCD | 2 | DCODE | Date category code (DCODE+DESC) → used in BKCMACTD |
+| BKCMLEAD | 2 | SCODE | Lead source code (SCODE+DESC) |
+| BKCMSBDF | 5 | (single) | Service billing defaults (BINC/MINC/ICONV/NCHG/DHOLD) |
+| BKCMCNTD | 12 | TTLE1 | Contact-slot display labels (9 TITLE_* + MREP + LTYPE) |
+
+---
+
+### Concurrent Edit Lock Tables (×5)
+
+| Table | Fields | Lock field |
+|-------|--------|------------|
+| BKCMCTL1 | 1 | CTRL_USER |
+| BKCMCTL2 | 1 | CTRL_USER |
+| BKCMCTL3 | 1 | CTRL_USER |
+| BKCMCTL4 | 1 | CTRL_USER |
+| BKCMCTRL | 1 | CTRL_USER |
+
+Each is a single-field table holding the username of whoever currently has exclusive
+write access to the corresponding CRM sub-view. Cleared on session exit.
+
+---
+
+### Temp / Work Tables (×5)
+
+| Table | Fields | Schema |
+|-------|--------|--------|
+| BKCMTEMP | 6 | CODE+KEYF+GROUP+COMP+TAG+ACTIVITY |
+| BKCMTMP1 | 6 | identical |
+| BKCMTMP2 | 6 | identical |
+| BKCMTMP3 | 6 | identical |
+| BKCMTMP4 | 6 | identical |
+
+Used for concurrent search/filter queries; one slot per user session. The TAG and
+ACTIVITY fields index into the current result set for paging or mail-merge output.
+
+---
+
+### BKCM* Architecture Summary
+
+```
+BKCMACCT ──► BKCMACCN (10-slot contacts)
+     │
+     ├──► BKCMACTH / BKCMACTF / BKCMACTD (activity log/follow-up/dates)
+     │         each has E-mirror (BKCMEACH/BKCMEACF/BKCMEACD) for in-progress edits
+     │
+     ├──► BKCMCUST (BKAR_* fields — bridge to AR customer master BKARCUST)
+     │
+     └──► BKCMACCL / BKCMEACC (class assignments → BKCMACCC)
+
+BKCMPCNT ──► BKCMPCTF / BKCMPCTH  (prospect follow-up / history)
+             └──► BKCMPCFC (prospect follow-up codes)
+
+BKCMREP ──► (assigns accounts/prospects, controls view/change permissions)
+
+BKCMTERR ──► (geographic grouping of accounts)
+
+BKCMMHST ──► BKCMFORM ──► BKCMDUN ──► BKCMDUNH  (mail campaigns → letters → aging)
+
+BKCMHCOD ──► BKCMHCD2  (activity codes + billing split details)
+
+BKCMVNDH / BKCMVNDF  (vendor CRM — parallel to account activity tables)
+
+BKCMCTL1-4 / BKCMCTRL  (edit locks — one per concurrent user)
+BKCMTEMP / TMP1-4      (query scratch — one per concurrent user)
+```
+
+**Mirror architecture:** `BKCMDE`, `BKCMEACT`, `BKCMEACH`, `BKCMEACF`, `BKCMEACD`,
+`BKCMEACC` are all in-progress edit buffers for their non-E counterparts. The pattern
+is: copy master record to E-table → user edits E-table → commit writes E→master and
+clears E. This prevents dirty reads during concurrent edits.
+
+---
+
+## BKCP* Family — Checkmark Payroll Link (2 tables)
+
+**Pass 133 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 4228–4256**
+
+Two tables discovered at DDF lines 4228–4256, adjacent to BKCM*. These belong to the
+CP (Checkmark Payroll) integration module, not the CM CRM module.
+
+### BKCPMSTR — Checkmark Payroll Integration Config
+
+File: `BKCPMSTR.B` | Fields: 9 | PK: (single-row config)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCP_CMPATH | STRING 80 | Checkmark payroll data path |
+| BKCP_IMPATH | STRING 80 | Import path |
+| BKCP_CFILE | STRING 12 | Company file name in Checkmark |
+| BKCP_VFILE | STRING 12 | Vendor/payee file name |
+| BKCP_EXPATH | STRING 80 | Export path |
+| BKCP_HFILE | STRING 12 | History file name |
+| BKCP_LABEX | STRING 80 | Labor export path |
+| BKCP_COMMEX | STRING 80 | Commission export path |
+| BKCP_EFILE | STRING 12 | Employee file name in Checkmark |
+
+### BKCPEC — Checkmark Payroll Error / Exception Log
+
+File: `BKCPEC.B` | Fields: 10 | PK: DATE+GL+DEPT (likely)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKCP_EC_DATE | STRING 8 | Entry date |
+| BKCP_EC_GL | STRING 10 | GL account code |
+| BKCP_EC_DEPT | STRING 10 | Department code |
+| BKCP_EC_AMOUNT | FLOAT | Dollar amount |
+| BKCP_EC_CHECKNO | STRING 15 | Check number |
+| BKCP_EC_DESC | STRING 30 | Description |
+| BKCP_EC_ISCHK | STRING 1 | Is-check flag |
+| BKCP_EC_ERROR | STRING 60 | Error message |
+| BKCP_EC_LINE | UBINARY 2 | Line number |
+| BKCP_EC_VEND | STRING 15 | Vendor code |
+
+---
+
+*Last updated: 2026-06-19*
+*Source: `samples/ddf/schema.md` (field extraction), `samples/ddf/tables.txt` (table inventory)*
+*Confidence: 80/100 — All field names confirmed from DDF; field meanings inferred from naming conventions; no BKCM SRC source available to confirm internal logic.*
