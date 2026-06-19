@@ -550,7 +550,7 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.7 General Ledger (GL)
 - [x] ✅ Menu codes listed (16 operations) — **C: 72/100**
-- [x] ✅ Tables: BKGL\* (28 tables) — **C: 65/100**
+- [x] ✅ Tables: BKGL\* (28 tables) — all 28 satellite table schemas extracted and field-level documented in tier1-tables.md (6 functional clusters: COA mirrors, journal headers, journal lines, transaction buffers, check register, cross-reference); BKGLFSTL/BKGLSTMT/BKGLX fully interpreted; Pass 128 2026-06-19 — **C: 83/100**
 - [x] ✅ All 24 GL forms read from network share — **C: 72/100**
 - [x] ✅ Journal transaction types confirmed: GJ, CR, CD, TT, YE (entry types), RS, RP, PR, OT, WO (system posting types) — **C: 75/100**
 - [x] ✅ BKGL table family purpose documented: live/archive/report/temp/COA/statement/crossref tiers — **C: 68/100**

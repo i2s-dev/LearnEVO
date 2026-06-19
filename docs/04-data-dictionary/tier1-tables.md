@@ -1793,3 +1793,262 @@ BKARDESC = AR description lines; BKARDPST = drop-ship description; BKARHDSC = hi
 *Document updated: 2026-06-19 (Pass 126)*
 *Source: `samples/ddf/schema.md` + SRC analysis + DFM analysis*
 *Confidence: 68/100 — Field names and types confirmed from DDF schema. Field meanings inferred from naming conventions and confirmed where SRC source code references the fields directly.*
+
+---
+
+---
+
+## BKGL* Family — GL Satellite Tables
+
+All confirmed from DDF — Pass 128 2026-06-19.
+
+### Structural Overview
+
+The BKGL* family (28 tables total) organizes into six functional clusters:
+
+| Cluster | Tables | Schema | Purpose |
+|---------|--------|--------|---------|
+| COA mirrors | BKGLCOA / BKGLECOA / BKGLFCOA / BKGLCCOA | 65f / 65f / 65f / 62f | Per-company Chart of Accounts |
+| Journal headers | BKGLGJRN / BKGLAGJR / BKGLRGJR / BKGLTGJR | 11f each (identical) | Journal entry records (live / archive / recurring / temp) |
+| Journal lines | BKGLGJLN / BKGLAGJL / BKGLRGJL / BKGLTGJL | 9f each (identical) | Journal entry detail lines |
+| Transactions | BKGLTRAN / BKGLATRN / BKGLHIST / BKGLETRN / BKGLTEMP / BKGLTMP / BKGLTMP2 / BKGLTMP3 | 16f each (identical) | GL audit-trail transactions (live / archive / history / E-co / work tables) |
+| Check register | BKGLCHK / BKGLACHK / BKGLICC | 11f / 11f / 11f | Bank clearing checks (BKGL_CHK_* prefix) |
+| Cross-reference | BKGLX / BKGLXH | 20f each (identical) | Inventory/WO/PO/SO → GL costing bridge |
+| Statement design | BKGLFSTL / BKGLSTMT / BKGLDESC | 12f / 104f / 5f | Financial statement layout and notes |
+
+---
+
+### COA Mirror Architecture
+
+BKGLCOA (main, already documented) is mirrored three times for multi-company deployments:
+
+| Table | Fields | Prefix | Notes |
+|-------|--------|--------|-------|
+| BKGLCOA | 65 | `BKGL_` | Master COA |
+| BKGLECOA | 65 | `BKGL_` | "E" company — identical schema, same prefix |
+| BKGLFCOA | 65 | `BKGL_` | "F" company — identical schema, same prefix |
+| BKGLCCOA | 62 | `BKGLC_` | "C" company — 3 fields fewer (no EXTRA, no 1YPAST_YE, no 2YPAST_YE) |
+
+Note: BKGLECOA and BKGLFCOA share the same `BKGL_` field-name prefix as the master BKGLCOA, making them indistinguishable by field names alone — the table name (file) differentiates them.
+
+---
+
+### Journal Header Tables (11f each, identical schema)
+
+All four tables share the BKGL_GJ_* prefix:
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKGL_GJ_TRANSDT | DATE | 4 | Transaction date (PK part 1) |
+| 2 | BKGL_GJ_TRANSNM | FLOAT | 8 | Transaction number (PK part 2) |
+| 3 | BKGL_GJ_TYPE | STRING | 2 | Journal type (AR/AP/WO/GL etc.) |
+| 4 | BKGL_GJ_TYPEN | UBINARY | 2 | Type number |
+| 5 | BKGL_GJ_POSTED | STRING | 1 | Posted flag (Y/N) |
+| 6 | BKGL_GJ_CVCODE | STRING | 10 | Customer/vendor code |
+| 7 | BKGL_GJ_INVCHKN | FLOAT | 8 | Invoice or check number |
+| 8 | BKGL_GJ_NUMLNES | UBINARY | 2 | Number of detail lines |
+| 9 | BKGL_GJ_CHKACT | UBINARY | 2 | Check/bank account number |
+| 10 | BKGL_GJ_JOB | STRING | 15 | Job/WO number |
+| 11 | BKGL_GJ_EXTRA | STRING | 50 | Extra/notes |
+
+BKGLGJRN = live; BKGLAGJR = archived; BKGLRGJR = recurring template; BKGLTGJR = temp during posting.
+
+---
+
+### Journal Line Tables (9f each, identical schema)
+
+All four tables share the BKGL_GJL_* prefix:
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKGL_GJL_TRANSN | FLOAT | 8 | Transaction number (FK → BKGLGJRN, PK part 1) |
+| 2 | BKGL_GJL_ACCTNM | STRING | 10 | GL account number (FK → BKGLCOA) |
+| 3 | BKGL_GJL_GLDPT | STRING | 4 | GL department |
+| 4 | BKGL_GJL_DESC | STRING | 25 | Line description |
+| 5 | BKGL_GJL_DC | STRING | 1 | Debit/credit flag |
+| 6 | BKGL_GJL_AMOUNT | FLOAT | 8 | Line amount |
+| 7 | BKGL_GJL_JOB | STRING | 15 | Job/WO number |
+| 8 | BKGL_GJL_LINE | UBINARY | 2 | Line number (PK part 2) |
+| 9 | BKGL_GJL_EXTRA | STRING | 50 | Extra/notes |
+
+BKGLGJLN = live; BKGLAGJL = archived; BKGLRGJL = recurring template lines; BKGLTGJL = temp posting lines.
+
+---
+
+### Transaction Table Cluster (16f each, identical schema)
+
+BKGLTRAN (already documented) plus seven mirrors — all use BKGL_TRN_* prefix, byte-for-byte identical. The same 16-field schema appears in:
+
+| Table | Role |
+|-------|------|
+| BKGLTRAN | Live/active GL transactions |
+| BKGLATRN | Archived GL transactions (year-end close) |
+| BKGLHIST | GL transaction history (prior-period read-only) |
+| BKGLETRN | "E" company GL transactions |
+| BKGLTEMP | Temp table for GL processing |
+| BKGLTMP | Work buffer 1 (used during period-end) |
+| BKGLTMP2 | Work buffer 2 |
+| BKGLTMP3 | Work buffer 3 |
+
+---
+
+### Check Register Tables (BKGLCHK / BKGLACHK)
+
+Files: `BKGLCHK.B`, `BKGLACHK.B` | Fields: 11 each (identical) | Prefix: `BKAP_CHK_`
+
+Despite residing in the GL namespace, these use the AP check prefix. BKGLCHK = current/uncleared checks; BKGLACHK = archived/cleared checks.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAP_CHK_CHKACT | UBINARY | 2 | Bank account number (PK part 1) |
+| 2 | BKAP_CHK_NUM | FLOAT | 8 | Check number (PK part 2) |
+| 3 | BKAP_CHK_DATE | DATE | 4 | Check date |
+| 4 | BKAP_CHK_TYPE | STRING | 1 | Check type (C=check, W=wire, etc.) |
+| 5 | BKAP_CHK_NAME | STRING | 25 | Payee name |
+| 6 | BKAP_CHK_AMT | FLOAT | 8 | Check amount |
+| 7 | BKAP_CHK_FLAG | STRING | 1 | Status flag (cleared, void, etc.) |
+| 8 | BKAP_CHK_EXTRA | STRING | 25 | Extra/notes |
+| 9 | BKAP_CHK_DATER | DATE | 4 | Reconciliation/cleared date |
+| 10 | BKAP_CHK_VEND | STRING | 10 | Vendor code (FK → BKAPVEND) |
+| 11 | BKAP_CHK_CUST | STRING | 10 | Customer code (FK → BKARCUST) |
+
+---
+
+### BKGLICC — Inter-Company Check Clearing
+
+File: `BKGLICC.B` | Module: GL | Fields: 11 | Prefix: `BKGL_CHK_`
+
+Inter-company clearing check register. Same 11-field structure as BKGLCHK but uses `BKGL_CHK_` prefix (not `BKAP_CHK_`) and has a larger EXTRA field (100 bytes vs 25):
+
+| # | Field | Type | Size | Difference from BKGLCHK |
+|---|-------|------|------|------------------------|
+| 1 | BKGL_CHK_CHKACT | UBINARY | 2 | — |
+| 2 | BKGL_CHK_NUM | FLOAT | 8 | — |
+| 3 | BKGL_CHK_DATE | DATE | 4 | — |
+| 4 | BKGL_CHK_TYPE | STRING | 1 | — |
+| 5 | BKGL_CHK_NAME | STRING | 25 | — |
+| 6 | BKGL_CHK_AMT | FLOAT | 8 | — |
+| 7 | BKGL_CHK_FLAG | STRING | 1 | — |
+| 8 | BKGL_CHK_EXTRA | STRING | 100 | **100 bytes** (vs 25 in BKGLCHK) |
+| 9 | BKGL_CHK_DATER | DATE | 4 | — |
+| 10 | BKGL_CHK_VEND | STRING | 10 | — |
+| 11 | BKGL_CHK_CUST | STRING | 10 | — |
+
+---
+
+### BKGLFSTL — Financial Statement Line Definition
+
+File: `BKGLFSTL.B` | Module: GL | Fields: 12 | Prefix: `BKFS_`
+
+Defines the lines of user-designed financial statements (Balance Sheet, P&L, etc.). Each row specifies one line in a report: the account range it covers, how to aggregate it, and where on the page to print.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKFS_NAME | STRING | 10 | Statement name (PK part 1) |
+| 2 | BKFS_LINE_NUM | UBINARY | 2 | Line number (PK part 2) |
+| 3 | BKFS_SGL_ACCT | STRING | 10 | Start GL account (range begin) |
+| 4 | BKFS_EGL_ACCT | STRING | 10 | End GL account (range end) |
+| 5 | BKFS_TOTAL_FLD | UBINARY | 2 | Total/subtotal field number |
+| 6 | BKFS_PRT_LOC | UBINARY | 2 | Print location (column) |
+| 7 | BKFS_PRT_DOL | STRING | 1 | Print dollar sign flag |
+| 8 | BKFS_DESC | STRING | 25 | Line description label |
+| 9 | BKFS_PRT_AMT | STRING | 1 | Print amount flag |
+| 10 | BKFS_OP | STRING | 2 | Operator (add/subtract this line into total) |
+| 11 | BKFS_CALC_BASE | UBINARY | 2 | Calculation base (which total to reference) |
+| 12 | BKFS_NDC | STRING | 1 | Normal D/C polarity flag |
+
+---
+
+### BKGLSTMT — Financial Statement Layout Template
+
+File: `BKGLSTMT.B` | Module: GL | Fields: 104 | Prefix: `BKGL_STB_` / `BKGL_STI_` / `BKGL_STC_`
+
+Single-record configuration table that defines the column ranges and titles for the three standard GL financial statements. Organized into three sections:
+
+- **STB** (Balance Sheet) — fields 1–34: main title, up to 4 account ranges (F/T = from/to) with 4 titles each, for assets/liabilities/other
+- **STI** (Income Statement) — fields 35–71: main title, income/cost/expense/other sections each with account ranges and titles
+- **STC** (Cash Flow Statement) — fields 72–104: main title, operating/investing/financing sections
+
+This table holds the "column headers and account-grouping ranges" that frame each financial report. BKGLFSTL holds the individual line rows within those frames.
+
+---
+
+### BKGLX / BKGLXH — GL Cross-Reference (Inventory Costing Bridge)
+
+Files: `BKGLX.B`, `BKGLXH.B` | Module: GL/IC/WO | Fields: 20 each (identical) | Prefix: `BKGLX_`
+
+The GL cross-reference table links inventory/manufacturing transactions back to the GL posting. Unique among GL tables — it carries part numbers, quantities, WO references, PO numbers, and SO invoice numbers alongside GL amounts, enabling drilldown from a GL account balance to its originating transactions.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKGLX_POSTDATE | DATE | 4 | GL posting date |
+| 2 | BKGLX_ARCHDATE | DATE | 4 | Archive date |
+| 3 | BKGLX_ENTDATE | DATE | 4 | Entry/transaction date |
+| 4 | BKGLX_PART | STRING | 15 | Item/part number (FK → BKICMSTR) |
+| 5 | BKGLX_QUANTITY | FLOAT | 8 | Quantity transacted |
+| 6 | BKGLX_AMOUNT | FLOAT | 8 | Dollar amount |
+| 7 | BKGLX_TRXNTYPE | STRING | 1 | Transaction type code |
+| 8 | BKGLX_JOURNAL | STRING | 2 | Source journal (AR/AP/WO/IC etc.) |
+| 9 | BKGLX_WOPRE | FLOAT | 8 | Work order prefix number |
+| 10 | BKGLX_WOSUF | UBINARY | 2 | Work order suffix |
+| 11 | BKGLX_PONUM | FLOAT | 8 | PO number (FK → BKAPPO) |
+| 12 | BKGLX_SOINVC | FLOAT | 8 | SO invoice number (FK → BKARINV) |
+| 13 | BKGLX_POINVC | STRING | 10 | PO invoice number |
+| 14 | BKGLX_DESC | STRING | 30 | Description |
+| 15 | BKGLX_TRXN | FLOAT | 8 | Transaction sequence number |
+| 16 | BKGLX_BATCH | FLOAT | 8 | Batch number |
+| 17 | BKGLX_POST | STRING | 1 | Posted flag |
+| 18 | BKGLX_COMPANY | STRING | 2 | Company code |
+| 19 | BKGLX_ICLASS | STRING | 4 | Inventory class |
+| 20 | BKGLX_CCLASS | STRING | 4 | Cost class |
+
+BKGLX = current/active; BKGLXH = history (same schema).
+
+---
+
+### BKGLDESC — GL Description Notes
+
+File: `BKGLDESC.B` | Module: GL | Fields: 5
+
+Standard BK_DESC_* 5-field pattern (CODE/NUM/LINE/NOTES/DESC). GL-specific free-text note lines attached to GL accounts or transactions.
+
+---
+
+**BKGL* Family Summary Table** (Pass 128 2026-06-19):
+
+| Table | Fields | Role | Mirror / Notes |
+|-------|--------|------|----------------|
+| BKGLCOA | 65 | Chart of Accounts (main) | — |
+| BKGLECOA | 65 | COA "E" company | BKGLCOA (identical schema, same BKGL_ prefix) |
+| BKGLFCOA | 65 | COA "F" company | BKGLCOA (identical schema, same BKGL_ prefix) |
+| BKGLCCOA | 62 | COA "C" company | BKGLCOA minus EXTRA+YE fields; BKGLC_ prefix |
+| BKGLGJRN | 11 | Journal headers (live) | — |
+| BKGLAGJR | 11 | Journal headers (archive) | BKGLGJRN (identical) |
+| BKGLRGJR | 11 | Journal headers (recurring) | BKGLGJRN (identical) |
+| BKGLTGJR | 11 | Journal headers (temp) | BKGLGJRN (identical) |
+| BKGLGJLN | 9 | Journal lines (live) | — |
+| BKGLAGJL | 9 | Journal lines (archive) | BKGLGJLN (identical) |
+| BKGLRGJL | 9 | Journal lines (recurring) | BKGLGJLN (identical) |
+| BKGLTGJL | 9 | Journal lines (temp) | BKGLGJLN (identical) |
+| BKGLTRAN | 16 | GL transactions (live) | — |
+| BKGLATRN | 16 | GL transactions (archive) | BKGLTRAN (identical) |
+| BKGLHIST | 16 | GL transactions (history) | BKGLTRAN (identical) |
+| BKGLETRN | 16 | GL transactions ("E" company) | BKGLTRAN (identical) |
+| BKGLTEMP | 16 | GL transactions (temp) | BKGLTRAN (identical) |
+| BKGLTMP | 16 | GL transactions (work buffer 1) | BKGLTRAN (identical) |
+| BKGLTMP2 | 16 | GL transactions (work buffer 2) | BKGLTRAN (identical) |
+| BKGLTMP3 | 16 | GL transactions (work buffer 3) | BKGLTRAN (identical) |
+| BKGLCHK | 11 | Check register (live) | BKAP_CHK_* prefix |
+| BKGLACHK | 11 | Check register (archive) | BKGLCHK (identical) |
+| BKGLICC | 11 | Inter-company check clearing | BKGL_CHK_* prefix; EXTRA=100 bytes |
+| BKGLFSTL | 12 | Financial statement line defs | BKFS_* prefix |
+| BKGLSTMT | 104 | Financial statement layout template | STB_/STI_/STC_* sections |
+| BKGLDESC | 5 | GL description notes | BK_DESC_* pattern |
+| BKGLX | 20 | GL cross-reference / costing bridge | BKGLX_* prefix; links IC/WO/PO/SO |
+| BKGLXH | 20 | GL cross-reference history | BKGLX (identical) |
+
+---
+
+*Document updated: 2026-06-19 (Pass 128)*
+*Source: `samples/ddf/schema.md`*
+*Confidence: 82/100 — All 28 table schemas extracted from DDF; field meanings interpreted from naming conventions; journal type codes and BKGLSTMT section mapping not confirmed against live data.*
