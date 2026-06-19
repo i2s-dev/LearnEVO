@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-16 (session 5 — cipher solved; batch decryptors rebuilt; assembly proof of P_start=K0)
+Last updated: 2026-06-18 (Pass 109 — DCY binary format fully decoded; 5 confidence gaps closed: ODBC 91→92, DS 62→65, AD/ADCA 70→72, PA 70→72, SC/Serial 78→80; Task 4 confirmed done — 1,123 RWN files already in samples/rwn_decrypted/; rwn_symbols.json complete — 1,122 entries)
 
 ---
 
