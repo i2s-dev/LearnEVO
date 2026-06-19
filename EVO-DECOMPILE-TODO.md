@@ -199,7 +199,10 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - TShellExe (850 occurrences!) = how EVO launches print/email/file-open
   - TRtnTimer (227) = auto-dismiss, polling, and timeout pattern throughout UI
 - [ ] ⬜ All TAS-specific control properties documented with behavior
-- [ ] ⬜ Form-to-menu-code mapping fully resolved (which DFM opens for each menu code)
+- [x] 🔄 Form-to-menu-code mapping — **C: 70/100** (program known for all 870 codes; DFM names not yet mapped)
+  - Complete code → program → DB table mapping in `docs/06-menu-system/code-program-mapping.md`
+  - 726/870 entries have DB table info from decrypted RWN symbol data; 83% coverage
+  - DFM name per menu code still requires parsing 0x20 MOUNT instructions in each RWN
 - [ ] ⬜ Binary `.DFM` variant (the 25 TPF0-format forms) decoded
 
 ### 2.5 `.DCY` — Data Dictionary / Compiled Schema
