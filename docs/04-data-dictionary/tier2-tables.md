@@ -1308,3 +1308,257 @@ MKAHIST. Account-wide touchpoints (ship, pay, CRM) also log directly to MKAHIST.
 *Last updated: 2026-06-19*
 *Source: `samples/ddf/schema.md` (field extraction), `samples/ddf/tables.txt` (table inventory)*
 *Confidence: 82/100 — All field names confirmed from DDF; field meanings inferred from field names and module fingerprint analysis; no MK SRC source available for logic confirmation.*
+
+---
+
+## IS* Supplement — QC/CAPA, Chain, BM Estimating, CR Approval, Conversion
+
+**Pass 135 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 14513–15195**
+
+---
+
+### ISCAR — Corrective Action Report (NCR Schema)
+
+File: `ISCAR.B` | Fields: 35 | PK: `IS_NCR_NUM` (FLOAT)
+
+**Important:** ISCAR uses the identical `IS_NCR_*` field prefix as ISNCR and has the
+same 35-field layout. The distinction: ISNCR holds active Non-Conformance Records;
+ISCAR holds Corrective Action Requests (CAR) formally created from an NCR.
+
+Fields are identical to ISNCR (previously documented in QC module). Key fields:
+IS_NCR_NUM (PK), IS_NCR_PART, IS_NCR_COMP, IS_NCR_LOT, IS_NCR_SERIAL, IS_NCR_CDATE,
+IS_NCR_WHO, IS_NCR_QTY, IS_NCR_DCODE, IS_NCR_DESC, IS_NCR_ICR (internal CR flag),
+IS_NCR_ORIG (origin flag), IS_NCR_WOPRE/WOSUF/MACH/TOOL/WC (WO/work-center context),
+IS_NCR_PONUM, IS_NCR_RMA, IS_NCR_ACTION, IS_NCR_CAR (→ FK back to NCR?),
+IS_NCR_DISP/DWHO/DDATE (disposition), IS_NCR_STATUS/SCRAP/QC/VEND/LOC, IS_NCR_EXTRA,
+IS_NCR_PDRAW/PREV/CDRAW/CREV/CLOC (parent/child drawing revision tracking).
+
+---
+
+### ISCARFUP — Corrective Action Follow-Up Dates
+
+File: `ISCARFUP.B` | Fields: 13 | PK: `IS_CARFUP_CAR` (FLOAT)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_CARFUP_CAR | FLOAT | CAR number (PK) → FK ISCAR |
+| IS_CARFUP_DATE | DATE | Follow-up date |
+| IS_CARFUP_USER | STRING 15 | Assigned-to user |
+| IS_CARFUP_UID | STRING 30 | Unique identifier / task description |
+| IS_CARFUP_TYPE | STRING 10 | Follow-up type code |
+| IS_CARFUP_EXTRA | STRING 50 | Extra |
+| IS_CARFUP_CDTE | DATE | Completed date |
+| IS_CARFUP_CWHO | STRING 15 | Completed by |
+| IS_CARFUP_GDTE1..5 | DATE ×5 | Goal/milestone dates 1–5 |
+
+---
+
+### ISCHAIN / ISCHAINM — Multi-Location Chain Dispatch Tables
+
+Files: `ISCHAIN.B` / `ISCHAINM.B` | Fields: 17 each | PK: USER+PARENT+CHILD
+
+Both files share the identical `IS_CHAIN_*` schema. ISCHAIN = active chain dispatch;
+ISCHAINM = chain master / template. Used by the CH (Multi-Location Chain) module.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_CHAIN_USER | STRING 15 | User or owner (PK part 1) |
+| IS_CHAIN_PARENT | STRING 12 | Source company code (PK part 2) |
+| IS_CHAIN_CHILD | STRING 12 | Target company code (PK part 3) |
+| IS_CHAIN_PARAM_1..10 | STRING 15 ×10 | Dispatch parameters (context-dependent per chain type) |
+| IS_CHAIN_AUTO | STRING 1 | Auto-dispatch flag |
+| IS_CHAIN_DATE | DATE | Chain execution date |
+| IS_CHAIN_DESC | STRING 100 | Description |
+| IS_CHAIN_EXTRA | STRING 100 | Extra |
+
+The PARAM_1..10 fields carry the inter-company transaction parameters (item code,
+quantity, PO/SO number, etc.) passed from parent to child company during chain
+dispatch.
+
+---
+
+### ISBMESA / ISBMEST / ISBMTMP — BM Estimating BOM Mirrors
+
+Files: `ISBMESA.B` / `ISBMEST.B` / `ISBMTMP.B` | Fields: 26 each
+Schema identical to BKBMMSTR (BOM master) — uses `BKBM_*` prefix.
+
+| Table | Role |
+|-------|------|
+| ISBMEST | Active estimating BOM (working copy used during ES quote) |
+| ISBMESA | Estimating BOM archive (saved quote BOM) |
+| ISBMTMP | Estimating BOM temp (in-progress edit buffer) |
+
+All 26 fields identical to BKBMMSTR:
+BKBM_PARENT + BKBM_COMPONENT (PK pair); BKBM_QTY_REQD, BKBM_REFERENCE,
+BKBM_PROD_TYPE, BKBM_PROD_SCRAP, BKBM_PROD_OP (operation), BKBM_PROD_OPYN_1..6,
+BKBM_PROD_PRICE, BKBM_PROD_RTNUM (routing#), BKBM_PROD_DUPOP, BKBM_PROD_OPDSC,
+BKBM_PROD_VEND (outside-process vendor), BKBM_DATE1/2, BKBM_EXTRA,
+BKBM_REV (revision), BKBM_P_TYPE/C_TYPE (parent/component item type),
+BKBM_EST_LINE (FK to ISESADTL estimating line), BKBM_UID.
+
+Cross-reference: → `docs/04-data-dictionary/tier1-tables.md` BKBM* family.
+
+---
+
+### ISCRISLS — CR/SO Approval Sales Data
+
+File: `ISCRISLS.B` | Fields: 24 | PK: `ISCR_SLS_CUST` + `ISCR_SLS_ITEM`
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| ISCR_SLS_CUST | STRING 10 | Customer code (PK part 1) |
+| ISCR_SLS_ITEM | STRING 15 | Item code (PK part 2) |
+| ISCR_SLS_SDATE | DATE | Snapshot date |
+| ISCR_SLS_SUOH | FLOAT | Units on hand at snapshot |
+| ISCR_SLS_SHPQTY | FLOAT | Quantity shipped |
+| ISCR_SLS_SHPDTE | DATE | Last ship date |
+| ISCR_SLS_INVNUM | FLOAT | Invoice number |
+| ISCR_SLS_FDATE | DATE | Future/forecast date |
+| ISCR_SLS_FUOH | FLOAT | Future on-hand quantity |
+| ISCR_SLS_SOLDTE | DATE | Sold date |
+| ISCR_SLS_SOLDQT | FLOAT | Sold quantity |
+| ISCR_SLS_NUM_1..2 | FLOAT ×2 | Numeric fields 1–2 |
+| ISCR_SLS_FLAG_1..5 | STRING 1 ×5 | User flags 1–5 |
+| ISCR_SLS_ALPHA_1..2 | STRING 30 ×2 | Alpha fields 1–2 |
+| ISCR_SLS_EXTRA | STRING 50 | Extra |
+| ISCR_SLS_ASOFDT | DATE | As-of date (inventory snapshot) |
+| ISCR_SLS_ASOFOH | FLOAT | As-of on-hand quantity |
+| ISCR_SLS_ASOFLG | STRING 1 | As-of flag |
+
+Used by the CR (Contract Review / SO Approvals) module to track sales history data
+per customer+item for the contract review decision.
+
+---
+
+### ISCTREVU — Contract Review Employee
+
+File: `ISCTREVU.B` | Fields: 17 | PK: `IS_CREVU_EMPNME` (implicit — employee name key)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_CREVU_EMPNME | STRING 25 | Employee name (PK) |
+| IS_CREVU_EMP | UBINARY 2 | Employee number → FK BKPRMSTR |
+| IS_CREVU_DEPT | STRING 25 | Department |
+| IS_CREVU_ADMIN | STRING 1 | Admin reviewer flag |
+| IS_CREVU_LEVEL | STRING 2 | Review authority level |
+| IS_CREVU_MOTPAS | STRING 10 | Motion password (electronic signature) |
+| IS_CREVU_ACTIVE | STRING 1 | Active flag |
+| IS_CREVU_CDATE | DATE | Created date |
+| IS_CREVU_EDATE | DATE | Expiry date |
+| IS_CREVU_ADATE | DATE | Last approval date |
+| IS_CREVU_ATIME | TIME | Last approval time |
+| IS_CREVU_FLAG_1..5 | STRING 1 ×5 | User flags 1–5 |
+| IS_CREVU_EXTRA | STRING 100 | Extra |
+
+ISCTREVU defines which employees can approve SOs via the CR module. MOTPAS =
+electronic signature challenge (password required to approve). LEVEL governs which
+SOs the reviewer can approve (dollar-limit based).
+
+Cross-reference: ISSOREVU (the per-SO approval record) uses ISCTREVU employees as
+approvers. Both documented together in `docs/03-modules/` CR module notes.
+
+---
+
+### ISCONVRT — Unit of Measure Conversion Table
+
+File: `ISCONVRT.B` | Fields: 9 | PK: `IS_CONV_ITEM` + `IS_CONV_SUM` + `IS_CONV_PUM`
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_CONV_ITEM | STRING 15 | Item code (PK part 1) |
+| IS_CONV_SUM | STRING 10 | Stocking UOM (PK part 2) |
+| IS_CONV_PUM | STRING 10 | Purchasing UOM (PK part 3) |
+| IS_CONV_SCONV | FLOAT | Stock conversion factor |
+| IS_CONV_PCONV | FLOAT | Purchase conversion factor |
+| IS_CONV_WTCONV | FLOAT | Weight conversion factor |
+| IS_CONV_DESC | STRING 90 | Description |
+| IS_CONV_DATE | DATE | Last updated date |
+| IS_CONV_EXTRA | STRING 100 | Extra |
+
+Per-item stocking↔purchasing unit conversion. Used by receiving (PO module) and
+material issue (WO module) when SUM ≠ PUM.
+
+---
+
+### ISCATMST — Category Master
+
+File: `ISCATMST.B` | Fields: 3 | PK: `IS_CATM_CODE` (STRING 4)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_CATM_CODE | STRING 4 | Category code (PK) |
+| IS_CATM_DESC | STRING 60 | Description |
+| IS_CATM_EXTRA | STRING 100 | Extra |
+
+Shared category code table referenced by multiple modules (JO module confirmed:
+ISCATMST appears in T7JOBS fingerprint). Provides user-defined category groupings
+for items, departments, or jobs.
+
+---
+
+### ISCYCLCD — Cycle Count Frequency Code
+
+File: `ISCYCLCD.B` | Fields: 7 | PK: `IS_CYCLE_CODE` (STRING 4)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_CYCLE_CODE | STRING 4 | Cycle count code (PK) |
+| IS_CYCLE_DESC | STRING 30 | Description |
+| IS_CYCLE_FREQ | UBINARY 2 | Frequency in days |
+| IS_CYCLE_DATE | DATE | Last cycle count date |
+| IS_CYCLE_ALPHA | STRING 15 | Alpha category |
+| IS_CYCLE_NUM | FLOAT | Numeric parameter |
+| IS_CYCLE_EXTRA | STRING 50 | Extra |
+
+Assigns cycle count frequencies to items. Used by PI (Physical Inventory) and
+WC (Warehouse Control) modules. FREQ = days between counts; DATE = last count date
+used to calculate when next count is due.
+
+---
+
+### ISBOLMS — BOL Manifest (ISSOBOX Schema Clone)
+
+File: `ISBOLMS.B` | Fields: 22 | PK: SONUM+LINE+BOX
+
+ISBOLMS uses the identical `ISSO_BOX_*` field schema as ISSOBOX (22 fields). The
+naming difference: ISSOBOX = standard SO packing box record; ISBOLMS = BOL manifest
+version (used when generating Bill of Lading to group boxes across SOs).
+
+Fields: SONUM+LINE+BOX PK; CODE/QTY/LOT/SERIAL/TEMP/EXTRA; INVNUM/SHIPPR/SHPCOD/
+WEIGHT/SKID/DATE; WOPRE/WOSUF (WO link); UCC(30); HT/LG/WD (dims); TRACK(40).
+
+Cross-reference: ISSOBOX (22f) documented in SO module. ISBOLMS and ISSOBOX
+are parallel schemas serving the same data at BOL-manifest time.
+
+---
+
+### ISBRANDC / ISBRANDS — Brand Category and Class Tables
+
+**ISBRANDC** (2f): BKCM_ACCC_CCODE(5) + BKCM_ACCC_DESC(25) — brand category code
+(uses BKCM_ACCC_* prefix from the CRM class code schema).
+
+**ISBRANDS** (2f): BKCM_ACCL_CODE(10) + BKCM_ACCL_CLASS(5) — brand class link
+(assigns a class to an account/brand; uses BKCM_ACCL_* prefix).
+
+Both use CRM field prefixes even though they live in the IS* namespace; they are the
+operational brand tables accessed by T7BRANDS (BR module).
+
+---
+
+### i2 Systems Custom Tables (CC* prefix)
+
+These tables are specific to i2 Systems manufacturing operations and do not exist in
+a standard EvoERP installation:
+
+**ISCCICM** (10+ fields) — Cut Cloth / Corrugated Item Master:
+CODE(15 PK) + DESC(30) + DESC2(30) + FSIZE(30 fabric size) + CUST(60) + COLLEC(120) +
+HINGE(25) + SPY(25) + PDF(60) + PNAME(60). Stores fabric specifications for
+corrugated/mattress component items.
+
+**ISCCBTXN** (16f) — Cut Cloth transaction log:
+FABRIC(15)+JOB(15)+LOT(15)+SER(25)+BIN(15)+LOC(10) PK-like fields; PULQTY/NEDQTY/LOTQTY;
+SDATE/TDATE/STATUS/ALPHA/GDATE/TRANS/EXTRA. Records pull and cut transactions for
+fabric-based components.
+
+**ISCCMTF** / **ISCMGRP** (2f each, identical) — CC MTF (Manufacturing Transfer Form):
+ITEM(15) + MTF(60). Maps items to their manufacturing transfer form template.
