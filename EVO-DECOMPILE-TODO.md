@@ -823,7 +823,10 @@ The following modules have menu codes and forms inventoried but no deep logic do
   - Calculation logic is NOT in the RWN — it lives in the EvoPVT.jar Java layer (HOST/PORT → Pervasive JDBC)
   - CashFlow: TREEDEST → CashFlow drill-down tree; CommissionRpt: TREEDEST → commission report tree
   - docs: `docs/01-architecture/subsystems.md` (CashFlow/CommissionRpt section, Pass 113 update)
-- [ ] ⬜ CRM Dashboard data sources traced (CRMDASHBOARD.RWN — same EvoPVT.jar launcher pattern; CRM-specific TREEDEST)
+- [x] ✅ CRM Dashboard confirmed as EvoPVT.jar launcher (Pass 113 2026-06-19) — **C: 78/100**
+  - CRMDASHBOARD.RWN: 26 procs; vars HOST/NAME/PORT/TREEDEST/COMP/NOPE/DUMMY_L/DFM/RVAL/ISTS.EDATE
+  - Extra DBs vs CashFlow: LANGDICT+ISLOG+FILELOC (adds logging and multi-language support)
+  - Same pattern as CashFlow/CommissionRpt/BOMTree: TAS launcher passes HOST+PORT+COMP+TREEDEST to EvoPVT.jar; Java layer renders the CRM dashboard view
 
 ### 9.9 Google Calendar Integration
 - [x] ✅ Files: CALREM.RWN, CALREMGC.DFM — **C: 55/100**
@@ -911,6 +914,11 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **Payroll calculation** — PR-B (gross→deductions→net, tag by division) → PR-C register — see Recipe 18 — **C: 78/100**
 - [x] ✅ **Check printing** — PR-D (direct deposit stubs + live checks, BKGLCHK+BKPRMSTR+BKGLTRAN) → PR-G void — see Recipe 19 — **C: 82/100**
 - [x] ✅ **Tax filing** — PR-L-A/C/G/H quarterly + PR-H liabilities→AP + PR-O year-end + PR-L-I W-2 — see Recipe 20 — **C: 82/100**
+
+### 13.5 Master Record Setup Recipes (Pass 113)
+- [x] ✅ **Add a new customer** — AR-A → BKARCUST (106f); TERMS/SALESPERSON/CLASS/TAXGRP/CREDIT_LIMIT/RESALE key fields; Recipe 23 in HELP-RESOURCES.md — **C: 90/100**
+- [x] ✅ **Add a new vendor** — AP-A → BKAPVEND (72f); TERMS/TAX_ID/1099-type/BANK fields; 1099 workflow; Recipe 24 in HELP-RESOURCES.md — **C: 90/100**
+- [x] ✅ **Receive a purchase order** — PO-J (T7POJC) → BKAPPOL/BKAPINVL/BKAPINVT; QC/lot/serial/bin capture; DBAFIFO cost layer; Recipe 25 in HELP-RESOURCES.md — **C: 82/100**
 
 ### 13.4 System Administration Workflows
 - [x] ✅ **New user setup** — AHSYLOG entry, access flags, starting menu — see Recipe 13 — **C: 65/100**

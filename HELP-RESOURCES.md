@@ -78,6 +78,9 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | File quarterly 941/940 or generate year-end W-2s | PR-L-G/H → PR-H → PR-O → PR-L-I | [Recipe 20: Quarterly/Annual Tax Filing](#recipe-20-quarterly-and-annual-tax-filing-pass-110d-2026-06-19) |
 | Run the full year-end close (payroll W-2/1099 + GL year-end + archive) | PR-O → PR-L-I → AP-S → GL year-end → SM-J archive | [Recipe 21: Year-End Close](#recipe-21-year-end-close-pass-112-2026-06-19) |
 | Set up Pervasive DDF so ODBC and Java tools can query EvoERP tables | Pervasive DDF Builder or TA-S | [Recipe 22: Build Pervasive DDF](#recipe-22-build-the-pervasive-ddf-required-before-odbc-java-tools-pass-112-2026-06-19) |
+| Add a new customer with payment terms and tax setup | AR-A | [Recipe 23: Add a New Customer](#recipe-23-add-a-new-customer-pass-113-2026-06-19) |
+| Add a new vendor and configure 1099 tracking | AP-A | [Recipe 24: Add a New Vendor](#recipe-24-add-a-new-vendor-pass-113-2026-06-19) |
+| Receive a PO (with QC, lot/serial, and AP voucher creation) | PO-J | [Recipe 25: Receive a Purchase Order](#recipe-25-receive-a-purchase-order-pass-113-2026-06-19) |
 | Fix items stuck on the open order report (shipped but never posting) | SD-M → SO-G | [Recipe 9: Packaging Items Stuck on Open Order Report](#recipe-9-packaging-items-stuck-on-open-order-report) |
 | Follow SO from entry to posted invoice | SO-A → SO-D → SO-F → SO-G | [Recipe 1: SO Lifecycle](#recipe-1-sales-order--ship--invoice--post) |
 | Follow WO from creation to close | WO-A → WO-B → DC → WO-K-J → WO-K-C | [Recipe 2: WO Lifecycle](#recipe-2-work-order-lifecycle-create--close) |
@@ -93,6 +96,36 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 ## BUSINESS WORKFLOW RECIPES
 
 Step-by-step traces of common end-to-end processes. These answer "how does X work from start to finish?" Each recipe names the exact menu codes, tables written, and GL impact.
+
+**Recipe index:**
+
+| # | Title | Menu |
+|---|-------|------|
+| 1 | Sales Order → Ship → Invoice → Post | SO-A → SO-F → SO-G |
+| 2 | Work Order Lifecycle (Create → Close) | WO-A → WO-S |
+| 3 | Purchase Order → Receive → AP Voucher → Check | PO-A → PO-J → AP-H |
+| 4 | MRP Run (Plan → Firm → Release) | MR-A → MR-F → MR-H |
+| 5 | Month-End Close | AR-H → AP → IN → AM |
+| 6 | New Item Setup | IN-B → BM → RO-A |
+| 7 | AR Cash Receipts (Customer Payment) | AR-C |
+| 8 | Physical Inventory Count | PI-A → PI-C → PI-G |
+| 9 | Packaging Items Stuck on Open Order Report | SD-M → SO-G |
+| 10 | GL Journal Entry (Manual) | GL-B |
+| 11 | Period-End Archiving and Purging | GL-P → GL-ARCH |
+| 12 | EvoERP Backup and Restore | TA-O |
+| 13 | New User Setup | SM → PS-A |
+| 14 | Inventory Manual Adjustment | IN-G/IN-H |
+| 15 | Lot/Serial Tracking Lifecycle | PO-J → WO-F → SO-C |
+| 16 | New Company Creation | UT → NE |
+| 17 | Payroll — Time Entry | WO-L-E or PR-J → PR-K |
+| 18 | Payroll Calculation and Register | PR-B → PR-C |
+| 19 | Payroll Check Printing | PR-D |
+| 20 | Quarterly and Annual Tax Filing | PR-L-G/H → PR-O → PR-L-I |
+| 21 | Year-End Close | PR-O → AP-S → GL year-end → SM-J |
+| 22 | Build Pervasive DDF (ODBC/Java) | TA-S or DDF Builder |
+| 23 | Add a New Customer | AR-A |
+| 24 | Add a New Vendor | AP-A |
+| 25 | Receive a Purchase Order | PO-J |
 
 ---
 
@@ -15655,6 +15688,200 @@ DSN parameters confirmed (Host/Port/Database/Driver from ODBC setup testing); jd
 confirmed from Pass 110e Java analysis; DDF file structure (FILE.DDF/FIELD.DDF/INDEX.DDF)
 confirmed as standard Pervasive DDF format; exact TA-S behavior blocked by RWN encryption
 (FILEDICT sync mechanism inferred from T7DDCHECK DB fingerprint: FILEDICT+FILEKEY+FILELOC).
+
+---
+
+### Recipe 23: Add a New Customer (Pass 113, 2026-06-19)
+
+**Menu:** AR-A (Accounts Receivable → Maintain Customers)
+**Program:** T7ARA.RWN
+**Primary table:** BKARCUST (106 fields, fully documented)
+
+**When to use:** When onboarding a new customer who will receive invoices through EvoERP.
+
+#### Steps
+
+```
+1. AR → AR-A → press F4 (or click New) to add new record
+
+2. Required — Identity
+   BKAR_CUST_CODE    (10)   Unique customer code (e.g., ACME001)
+   BKAR_CUST_NAME    (40)   Company name
+   BKAR_CUST_ADDR1   (40)   Address line 1
+   BKAR_CUST_ADDR2   (40)   Address line 2 (optional)
+   BKAR_CUST_CITY    (25)   City
+   BKAR_CUST_STATE   (2)    State abbreviation
+   BKAR_CUST_ZIP     (10)   ZIP / postal code
+   BKAR_CUST_CNTRY   (15)   Country (blank = domestic)
+   BKAR_CUST_PHONE   (20)   Main phone
+   BKAR_CUST_FAX     (20)   Fax (optional)
+   BKAR_CUST_CONT    (25)   Primary contact name
+
+3. Required — Billing defaults
+   BKAR_CUST_TERMS   (4)    Payment terms code (links to ISTERMS table)
+                            Common: NET30, NET60, 2/10NET30
+   BKAR_CUST_SALSP   (10)   Salesperson code (links to BKPRMSTR employee)
+   BKAR_CUST_CLASS   (2)    Customer class code (links to CLASS table)
+
+4. Required — Tax and compliance
+   BKAR_CUST_TAXGRP  (4)    Tax group code (links to ISTAXGRP)
+                            Determines which taxes apply to invoices
+   BKAR_CUST_RESALE  (20)   Resale certificate number (if tax-exempt)
+
+5. Optional — Credit and limits
+   BKAR_CUST_CRLIM   FLOAT  Credit limit (0 = no limit enforced)
+   BKAR_CUST_HOLD    (1)    Credit hold flag: Y = block new orders
+
+6. Optional — Additional tabs
+   - Shipping: alternate ship-to addresses (BKAR_CUST_SHIP*)
+   - Notes: free-text notes (stored separately)
+   - Pricing: customer-specific pricing (links to BKICPMAT)
+   - CRM: links to BKCMACCN contact records
+
+7. Save → customer is immediately active for invoicing
+```
+
+**Key relationships:**
+- BKAR_CUST_TERMS → `ISTERMS.TERMS_NUM` (payment terms master)
+- BKAR_CUST_SALSP → `BKPRMSTR.EMP#` or `BKPRSALE.SLSP` (commission tracking)
+- BKAR_CUST_TAXGRP → `ISTAXGRP` (multi-jurisdiction tax groups)
+- BKAR_CUST_CLASS → `CLASS` table (customer segmentation + per-class GL accounts)
+- Customer code → `BKARINV.BKAR_INV_CUST` (all future invoices)
+- Customer code → `BKARINVT.BKAR_INVT_CODE` (open-item AR ledger)
+
+**Confidence: 90/100** — BKARCUST all 106 fields confirmed from DDF (Pass 110e); T7ARA
+form confirmed from DFM + CHM; field names from tier1-tables.md documentation.
+
+---
+
+### Recipe 24: Add a New Vendor (Pass 113, 2026-06-19)
+
+**Menu:** AP-A (Accounts Payable → Maintain Vendors)
+**Program:** T7APVEND.RWN (or equivalent)
+**Primary table:** BKAPVEND (72 fields, fully documented)
+
+**When to use:** When adding a new supplier, subcontractor, or payee who will be paid through EvoERP AP.
+
+#### Steps
+
+```
+1. AP → AP-A → press F4 (or click New) to add new record
+
+2. Required — Identity
+   BKAP_VEND_CODE    (10)   Unique vendor code (e.g., STEELCO01)
+   BKAP_VEND_NAME    (40)   Company/person name
+   BKAP_VEND_ADDR1   (40)   Address line 1
+   BKAP_VEND_ADDR2   (40)   Address line 2 (optional)
+   BKAP_VEND_CITY    (25)   City
+   BKAP_VEND_STATE   (2)    State
+   BKAP_VEND_ZIP     (10)   ZIP / postal code
+   BKAP_VEND_PHONE   (20)   Main phone
+   BKAP_VEND_CONT    (25)   Primary contact name
+
+3. Required — Payment defaults
+   BKAP_VEND_TERMS   (4)    Payment terms code (same ISTERMS table as AR)
+   BKAP_VEND_CURR    (3)    Currency code (blank = functional currency)
+
+4. Required — Tax / 1099 setup
+   BKAP_VEND_TAX_ID  (15)   Federal EIN or SSN (for 1099 reporting)
+   BKAP_VEND_1099    (1)    1099 flag: M=1099-MISC, N=not subject to 1099
+                            IMPORTANT: set correctly before first payment;
+                            affects AP-S 1099 year-end run
+
+5. Optional — Banking / EFT (for direct deposit / ACH)
+   BKAP_VEND_BANK*   fields  Bank routing + account (for EFT payments)
+
+6. Optional — Additional tabs
+   - BKAPVND2: 10-slot 1099 box amount overrides + extended data
+   - GL account: override AP posting account (otherwise uses system default)
+   - Notes: free-text (BKAPNOTE)
+   - Approved source: if vendor supplies specific parts (BKSBVEND)
+
+7. Save → vendor is immediately active for PO and voucher entry
+```
+
+**Key relationships:**
+- BKAP_VEND_CODE → `BKAPPO.BKAP_PO_VENDOR` (purchase orders)
+- BKAP_VEND_CODE → `BKAPINVL.BKAP_INV_VENDCODE` (AP vouchers)
+- BKAP_VEND_CODE → `BKAPCHKF/H.BKAP_CHK_VENDOR` (AP checks)
+- BKAP_VEND_CODE → `BKAPVND2` (extended vendor data, 1099 boxes)
+- BKAP_VEND_TAX_ID + BKAP_VEND_1099 → `AP-S` 1099 annual print run
+- BKAP_VEND_CODE → `BKSBVEND` (vendor approved source / part cross-ref)
+
+**1099 workflow note:**
+If BKAP_VEND_1099 = 'M' and payments for the year exceed the IRS threshold, the vendor
+will appear on AP-S (1099 print). The tax ID (BKAP_VEND_TAX_ID) is printed on the form.
+Payment totals accumulate automatically in BKAPVND2 as checks are posted.
+
+**Confidence: 90/100** — BKAPVEND all 72 fields confirmed from DDF (Pass 110e);
+vendor 1099 workflow confirmed from Bkaph.SRC analysis and BKAPVND2 schema; AP-S
+confirmed in year-end recipe (Recipe 21).
+
+---
+
+### Recipe 25: Receive a Purchase Order (Pass 113, 2026-06-19)
+
+**Menu:** PO-J (Purchase Orders → Receive PO Items)
+**Program:** T7POJC.RWN (T7PO series)
+**Primary tables:** BKAPINVL (390f — AP voucher lines), BKAPPO (57f — PO header), BKAPPOL (38f — PO lines)
+
+**When to use:** When goods arrive from a vendor and need to be received into inventory, triggering an AP voucher.
+
+#### Steps
+
+```
+1. PO → PO-J → enter PO number (from BKAPPO)
+
+2. Review open lines (T7POJC reads BKAPPOL for line status)
+   - QTY_ORD = original ordered quantity
+   - QTY_RCVD = already received
+   - QTY_OPEN = remaining (QTY_ORD - QTY_RCVD)
+
+3. Enter received quantities for each line
+   - Can receive partial quantities (partial receipt leaves line open)
+   - Each line links to BKICMSTR item master for UOM validation
+
+4. QC inspection (optional — controlled by item QC flag)
+   - T7POJC passes items through QC entry if BKICMSTR.QC = Y
+   - BKQCMSTR (14f) and BKQCTRAN (21f) record inspection results
+   - RoHS and NCR tracking available here (T7POJC confirmed from DFM)
+
+5. Lot / serial number entry (if item is lot/serial controlled)
+   - Lot: creates LOT record (25f) with RECDATE + VENDOR + WOCOST
+   - Serial: creates SERIAL record (30f) with PO receipt path
+   - Assignment links receipt to lot/serial before inventory update
+
+6. Bin location assignment (if WC / bin control is active)
+   - Choose target location (BKICLOC) and bin (ISBNMSTR)
+   - Recorded in BKICLOCM and ISBINLOC
+
+7. Confirm receipt → system creates:
+   a. AP voucher lines: BKAPINVL (390f) — header fields in first 10 fields,
+      GL distribution array (GLACT/GLDPT/DC/GLD/DAMT_1..75 for up to 75 GL splits)
+   b. AP open-item: BKAPINVT (19f) — one record per invoice/voucher
+   c. Inventory update: BKICMSTR.UOH += received quantity
+   d. Cost update: DBAFIFO or BKICVAL cost layer (FIFO/LIFO/average)
+   e. INVTXN record: receipt transaction logged with LOT/SERIAL/COST/REF
+
+8. Voucher now appears in AP-F (select invoices for payment)
+   → proceed to AP-H to print check when payment is due
+```
+
+**Key note — landed cost:**
+If IM module (Import Management) is active, landed costs (freight, duty, customs) can
+be allocated to received items BEFORE posting. IM-D/IM-E set up landed cost GL accounts;
+landed amounts allocated via BKAPINVL GL distribution.
+
+**Key note — PO-A vs PO-J sequence:**
+- PO-A creates the PO (BKAPPO header + BKAPPOL lines)
+- PO-E prints the PO (RTM output)
+- PO-J receives the PO (this recipe)
+- AP-B can also create a voucher directly without PO (non-PO invoices)
+
+**Confidence: 82/100** — T7POJC confirmed from DFM (RoHS/NCR/digital sig tabs);
+BKAPINVL 390f schema confirmed; BKAPPOL 38f schema confirmed; lot/serial receipt path
+confirmed from LC/SC module docs; QC path confirmed from BKQCMSTR/BKQCTRAN schemas.
+POJC internal logic blocked by RWN encryption (some steps inferred from table relationships).
 
 ---
 
