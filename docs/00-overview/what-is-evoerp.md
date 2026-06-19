@@ -29,9 +29,11 @@ Data lives in server-side **Btrieve** / **CodeBase DBF** files on
 │  BK*.SRC → *.RUN (Pro 6)                                 │
 │  T7*.SRC → *.RWN (Pro 7)                                 │
 ├─────────────────────────────────────────────────────────┤
-│  Runtime — TAS Professional 7                           │
-│  tp7runtime.exe  (EXE is 33.3 MB)                       │
-│  + qtintf70.dll (Qt/CLX), c4dll.dll (CodeBase DBF)      │
+│  Runtime — TAS Professional 7 ("Tas Premier 7i")        │
+│  tp7runtime.exe v7.1.9.1, 31.8 MB (Addsum Business 2004-2014) │
+│  + qtintf70.dll (Borland Qt2.x CLX bridge v7.0.4.258)  │
+│  + c4dll.dll (Sequiter CodeBase for .DBF/.CDX)          │
+│  + quricol32.dll (Quricol QR barcode library)           │
 ├─────────────────────────────────────────────────────────┤
 │  Reports — Nevrona ReportBuilder                         │
 │  RBDsgnr.exe, *.RTM templates, PDFS\*.pdf output         │

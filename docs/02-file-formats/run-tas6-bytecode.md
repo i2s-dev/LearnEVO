@@ -143,8 +143,17 @@ Total runtime storage = 1110 bytes; 45 × 7 = 315 bytes for descriptor table.
 **runtime_base varies** (NOT always 0x0460):
 - Programs with var_size=1440, table_count=30: runtime_base=0x0460=1120 (BKAWLB, BKLME)
 - Programs with var_size=2640, table_count=55: runtime_base=0x02D0=720 (BKMRF, BKDCA, BKAPH, BKAPHA, BKROA)
-- Formula: `runtime_base = var_size - (num_user_vars × 7)` where the zero-init area holds SYSTEM/LIBRARY variables not listed in the descriptor table. The descriptor table covers ONLY user-declared variables.
+- The zero-init area (0..runtime_base-1) holds SYSTEM/LIBRARY variables not listed in the descriptor table.
 - runtime_base is NOT directly stored in a header field (no header field matches across all 6 programs tested).
+
+**b2 field caveat:** b2 encodes the variable's INTERNAL RUNTIME ALLOCATION SIZE, which does NOT
+naively map to `source_type_size + 1`. The runtime may allocate a fixed-size "descriptor block" for
+many different source types. Confirmed from BKAWLB analysis: many variables of different source types
+(A25, A15, A11, I1, I5, D8, T8) all have b2=10 — they share the same internal allocation size.
+Type_tag → source type mapping is NOT yet decoded.
+
+**Source var ordering:** the descriptor table order does NOT follow source declaration order. Library
+variables and internal variables may be interleaved. The params (cfrom, prg.name) do appear first.
 
 ### Instruction Address Semantics for Var References
 

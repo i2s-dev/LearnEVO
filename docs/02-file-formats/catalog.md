@@ -55,13 +55,13 @@ Pervasive/Btrieve. `StartEvo.exe` accesses them via DSN `EVOADMIN` as `tas_menus
 | File               | Role |
 | ------------------ | ---- |
 | `StartEvo.exe`     | Launcher — spawns TP7 runtime against network menu. |
-| `evoerp.exe` / `tp7runtime.exe` | TAS Pro 7 runtime engine (identical size; `evoerp.exe` is a renamed copy). |
+| `evoerp.exe` / `tp7runtime.exe` | **Tas Premier 7i runtime v7.1.9.1** by Addsum Business Software (2004-2014). 31.8 MB x86 PE32. `evoerp.exe` is a renamed copy. |
 | `RBDsgnr.exe`      | Nevrona ReportBuilder designer (edits `.RTM` files). |
 | `EvoPVT.jar`       | Java helper — purpose not yet investigated (*open-question*). |
 | `PV.EXE`           | 2005 TAS PostView / print viewer (*todo*). |
-| `c4dll.dll`        | **CodeBase 4** DBF engine DLL (xBase/dBase compat layer). |
-| `qtintf70.dll`     | Qt 3 interface DLL — supports legacy UI widgets. |
-| `quricol32.dll`    | QR code rendering (for barcode/QR-enabled forms). |
+| `c4dll.dll`        | **CodeBase v1.0.0.1** by Sequiter Software Inc. — reads BKMENUSU.DBF + CDX indexes (dBASE/FoxPro engine). |
+| `qtintf70.dll`     | **Borland Delphi-Qt2.x Interface Library v7.0.4.258** — CLX/Qt UI bridge enabling Delphi VCL on Qt 2.x. |
+| `quricol32.dll`    | **Quricol QR Barcode Library** by Serhiy Perevoznyk — QR barcode generation for shipping labels and forms. |
 | `zipdll.dll` / `unzdll.dll` | ZIP compression — used by backup/update flows. |
 | `taspro7.ini`      | TAS Pro 7 configuration (paths, colors, fonts). |
 | `EvoSettings.INI`  | Per-machine app settings (AR/AP access flags). |

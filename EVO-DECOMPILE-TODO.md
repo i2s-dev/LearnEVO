@@ -77,8 +77,18 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Identified as TAS Professional 7 by Computer Keyes / Business Tools — **C: 90/100**
 - [x] ✅ 33.3 MB executable; embeds Qt 3/CLX UI layer (`qtintf70.dll`) + CodeBase data engine (`c4dll.dll`) — **C: 85/100**
 - [x] ✅ Keyword list extracted from embedded strings (`tp7runtime.keywords.txt`) — **C: 88/100**
-- [ ] ⬜ Runtime version number and build date confirmed
-- [ ] ⬜ All DLLs loaded by tp7runtime.exe cataloged with purpose
+- [x] ✅ Runtime version number and build date confirmed — **C: 95/100**
+  - FileVersion: 7.1.9.1; ProductVersion: "7i"; ProductName: "Tas Premier 7i runtime"
+  - CompanyName: Addsum Business Software, Inc.; Copyright: 2004-2014
+  - PE timestamp 1992 is spoofed/reset; actual build 2004-2014 era
+- [x] ✅ All DLLs loaded by tp7runtime.exe cataloged with purpose — **C: 90/100**
+  - qtintf70.dll: Borland Delphi-Qt2.x Interface Library v7.0.4.258 (Borland CLX/Qt UI bridge)
+  - C4DLL.DLL: CodeBase v1.0.0.1 by Sequiter Software (dBASE/DBF/CDX engine for BKMENUSU.DBF)
+  - quricol32.dll: Quricol QR Barcode Library by Serhiy Perevoznyk (barcode printing)
+  - odbc32.dll, odbccp32.dll: ODBC for Pervasive SQL connectivity
+  - Tapi32.dll: Windows Telephony API (dial-out features in ERP)
+  - avifil32.dll, msvfw32.dll: AVI/video playback (help videos or embedded tutorials?)
+  - 49 total DLL imports; all standard Windows libraries + above 4 third-party DLLs
 - [ ] ⬜ Error-code table (runtime error messages ↔ numeric codes)
 
 ---
