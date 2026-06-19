@@ -1311,6 +1311,197 @@ MKAHIST. Account-wide touchpoints (ship, pay, CRM) also log directly to MKAHIST.
 
 ---
 
+## FO Extended + Fixed Assets + GL History + Serial Genealogy — Pass 137
+
+**Pass 137 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 16602–17300**
+
+---
+
+### FO Module — Full Table Set
+
+The ISFO* family is now fully resolved (7 tables). The FO (First-Off / First-Article
+Inspection) module manages pre-production quality inspection of BOM assemblies.
+
+**ISFOHIST** (15f, `ISFO_HIST_*`): FO event history.
+UID(40)+WHO+DATE+TIME+STATUS(40)+PART(15)+CVTTO(4 doc type)+CVTNO(FLOAT doc#)+CITEM(15)+
+QTY+LOC+CV(10)+DDATE+PRICE+EXTRA.
+CVTTO/CVTNO record the conversion of the FO result to a downstream document (PO, SO, WO).
+
+**ISFOLINE** (78f, `ISFO_LIN_*`): FO BOM line with 50 operation-flag slots.
+UID(40 FK)+LEVEL + **50×OPFLAG_1..50** (1 char each) + EXTRA(150) + PARENT(15)+LINEN+
+COMP(15)+QTYREQ+REF(20)+TYPE+SCRAP+OP+6×OPYN+PRICE+RTNUM+DUPOP+OPDSC+VEND+DATE1/2+
+BEXTRA(50)+REV+PBRANC+CBRANC(branch refs).
+50 single-char inspection flags per BOM component = up to 50 quality check checkboxes
+(pass/fail/NA per inspection criteria). PBRANC/CBRANC = parent/component BOM branch.
+
+**ISFOORDL** (18f, `ISFO_ORDL_*`): Order line generated from FO approval.
+UID(40)+TYPE(6)+PCODE(15)+PDESC+PQTY+PPRCE+PDISC+PEXT+ESD+LOC+TXBLE+UM+LN(3)+DRAW+REV+
+LINE+OUID(FLOAT)+EXTRA. Written when a First-Off approval spawns a PO or SO line.
+
+**Summary of FO module tables:**
+
+| Table | f | Role |
+|-------|---|------|
+| ISFOHEAD | 16 | Inspection header (item, dates, status, RFQ) |
+| ISFOBMRM | 20 | BOM component remarks (15 remark slots each) |
+| ISFOLINE | 78 | BOM component line with 50 op-flag checkboxes |
+| ISFOHIST | 15 | Event history + document conversion log |
+| ISFOORDL | 18 | Order line spawned from FO approval |
+
+---
+
+### Fixed Assets Module (FX)
+
+**ISFXASST** (23f, `IS_FXA_*`): Fixed asset master record.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_FXA_NUMBER | FLOAT | Asset number (PK) |
+| IS_FXA_TYPE / DESC / DESC2 | STRING | Asset type (30), descriptions |
+| IS_FXA_CSTBAS | FLOAT | Cost basis (purchase price) |
+| IS_FXA_RESVAL | FLOAT | Residual / salvage value |
+| IS_FXA_LIFE | FLOAT | Useful life (years) |
+| IS_FXA_METH | STRING 30 | Depreciation method |
+| IS_FXA_GLA / GLD | STRING | Asset GL account + dept |
+| IS_FXA_ACDEPA / ACDEPD | STRING | Accumulated depreciation GL acct + dept |
+| IS_FXA_DEPEXPA / DEPEXPD | STRING | Depreciation expense GL acct + dept |
+| IS_FXA_SDATE / EDATE | DATE | Service start / end dates |
+| IS_FXA_SOLD | FLOAT | Proceeds from sale |
+| IS_FXA_ACCUMDEP | FLOAT | Accumulated depreciation to date |
+| IS_FXA_SERIAL | STRING 30 | Asset serial number |
+| IS_FXA_LDEPAMT / LDEPPERC / LDEPDATE | FLOAT / FLOAT / DATE | Last depreciation: amount, percent, date |
+| IS_FXA_EXTRA | STRING 100 | Extra |
+
+Three GL account+department pairs: asset account, accumulated depreciation account,
+depreciation expense account. Standard double-entry fixed-asset bookkeeping in one row.
+
+**ISFXATRN** (12f, `IS_FXT_*`): Depreciation/transaction history per asset.
+NUMBER(FK→ISFXASST)+DATE+AMOUNT+PERC+AUDIT(25)+POSTED(1)+ACDEPA+ACDEPD+DEPEXPA+DEPEXPD+
+NETAVAL+EXTRA. One row per depreciation posting event.
+
+---
+
+### GL History Extension — ISGL* Family
+
+BKGLCOA stores 2 years of period history (CURRENT_1..14 + 1YPAST_1..14 + 2YPAST_1..14).
+The ISGL* extension tables add years 3–6, giving **up to 7 years of GL history total**.
+
+**ISGLCOA / ISGLBDGT / ISGLFCOA** (67f each, identical `ISGL_*` schema):
+
+| Field | Meaning |
+|-------|---------|
+| ISGL_ACCT + ISGL_GLDPT | PK — matches BKGLCOA |
+| ISGL_ACCTD / TYPE / CR_DR / NON_CASH | Account header (same as BKGLCOA) |
+| ISGL_3YPAST_1..14 + 3YPAST_YE | Year −3: 14 period amounts + year-end total |
+| ISGL_4YPAST_1..14 + 4YPAST_YE | Year −4 |
+| ISGL_5YPAST_1..14 + 5YPAST_YE | Year −5 |
+| ISGL_6YPAST_1..14 + 6YPAST_YE | Year −6 |
+| ISGL_CEXTRA | STRING 100 — extra |
+
+Three variants:
+- **ISGLCOA** — actual historical period balances (years 3–6)
+- **ISGLBDGT** — budget amounts for years 3–6
+- **ISGLFCOA** — future / forecast COA (likely next year's plan or foreign company COA)
+
+**GL COA total history depth:** BKGLCOA (years 0–2) + ISGLCOA (years 3–6) = 7 years of actuals.
+
+---
+
+### GL Period Date Tables
+
+**ISGLDATE / ISGLHDAT** (86f each, identical `ISGL_*` schema): Period end date calendar.
+
+One row per company (singleton). Stores all fiscal period end dates across 7 years:
+CYDATE_1..12 (current year, 12 periods) + 1YDATE_1..12 through 6YDATE_1..12 (6 past years)
++ ISGL_FYDATE (fiscal year start date) + ISGL_EXTRA.
+
+Total: 84 fiscal period end dates + 1 FY start = complete fiscal calendar for GL navigation.
+ISGLDATE = active dates; ISGLHDAT = historical dates (saved before year-end rollover).
+
+Cross-reference: T7BS.RWN reads ISGLDATE to resolve period numbers into calendar dates.
+
+---
+
+### ISGLNBGT — GL Next/New Budget
+
+File: `ISGLNBGT.B` | Fields: 35 | PK: `ISGL_BGT_ACCT` + `ISGL_BGT_GLDPT`
+
+| Field | Meaning |
+|-------|---------|
+| ISGL_BGT_ACCT + GLDPT | PK |
+| ISGL_BGT_BUDGET_1..14 | Next period budget (14 periods) |
+| ISGL_BGT_DATE | Budget date |
+| ISGL_BGT_BUD2_1..14 | Second/alternate budget set (14 periods) |
+| ISGL_BGT_FLAG | Budget status flag |
+| ISGL_BGT_WHO | Who set this budget |
+| ISGL_BGT_EDATE | Effective date |
+| ISGL_BGT_EXTRA | Extra |
+
+Two parallel budget sets (BUDGET and BUD2) per account for next-year planning. Separate
+from BKGLCOA.BUDGET_1..14 (current-year budget). The GL module uses both when generating
+budget vs. actual reports.
+
+---
+
+### i2 Systems Fiber/FS Tables
+
+**ISFSCLAS / ISFSEMP** (3f each, `IS_FIB_*`): Fiber class and employee codes.
+IS_FIB_CLASS(4)+IS_FIB_GROUP(50)+IS_FIB_EXTRA(50). Used by i2 Systems fiber/fabric
+manufacturing operations. ISFSCLAS = fabric/fiber classification codes;
+ISFSEMP = employee fiber classification assignments.
+
+**ISFSINFO** (4f, `IS_FIB_*`): Fiber/FS program header.
+IS_FIB_PROGRAM(20)+IS_FIB_CONTRACT(25)+IS_FIB_MISC(100)+IS_FIB_WHO(50). i2-specific.
+
+**ISFUTYPE** (3f, `IS_FUTYPE_*`): Follow-up type code.
+TYPE(10)+DESC(60)+EXTRA(50). Codes used by ISCARFUP (IS_CARFUP_TYPE field).
+
+---
+
+### ISHLOTS / ISHSERIA — Serial Assembly Genealogy
+
+Both files: 11 fields, identical `IS_SER_*` schema.
+PK: WOPRE + WOSUF.
+
+| Field | Meaning |
+|-------|---------|
+| IS_SER_WOPRE / WOSUF | WO prefix + suffix (PK) |
+| IS_SER_PARENT | Parent assembly item code |
+| IS_SER_PDESC | Parent item description |
+| IS_SER_PSERIAL | Parent serial number |
+| IS_SER_ADATE | Assembly date |
+| IS_SER_COMP | Component item code |
+| IS_SER_CDESC | Component description |
+| IS_SER_CSERIAL | Component serial number |
+| IS_SER_FDATE | Final/completion date |
+| IS_SER_EXRA | Extra (note: typo in field name — `EXRA` not `EXTRA`) |
+
+These tables record the serial genealogy: which component serial number (CSERIAL) was
+consumed to build which parent assembly serial number (PSERIAL) on which WO at ADATE.
+Critical for traceability — if a component is recalled, ISHLOTS identifies all parent
+assemblies that used it.
+
+ISHLOTS = active genealogy records; ISHSERIA = archived serial genealogy.
+
+---
+
+### ISICADT — Inventory Item Audit Snapshot
+
+File: `ISICADT.B` | Fields: 18+ | Prefix: `BKIC_PROD_*` (BKICMSTR field names)
+
+ISICADT uses the `BKIC_PROD_*` field names from BKICMSTR. It is an audit snapshot
+copy of the inventory item master — a point-in-time record of item master data used
+for inventory auditing and reconciliation:
+
+CODE(15)+DESC(30)+TYPE+UM+CAT(4)+TXBLE+CLASS(4)+RLVL(reorder level)+RAMT(reorder qty)+
+LSALE+LORD+LRCPT+ADTR(audit trail ref)+TO(turnover)+LSTC(last cost)+AVGC(avg cost)+
+UOH(on-hand)+UOSO(on SO)+...
+
+Likely written at period-end or physical inventory time to record what the system
+showed, for later comparison against actual counts or auditor requests.
+
+---
+
 ## ES* Estimating Module — Pass 136
 
 **Pass 136 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 15525–16602**
