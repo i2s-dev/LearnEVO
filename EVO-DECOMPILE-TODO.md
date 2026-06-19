@@ -387,7 +387,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - BKPR\* (16 tables — Payroll)
   - BKSO\* (7 tables — Sales Orders)
   - BKSY\* (8 tables — System / Configuration)
-- [x] ✅ MT\* family (second-gen master tables) — **C: 55/100**
+- [x] ✅ MT\* family (second-gen master tables) — all 6 DDF-registered MT* tables extracted and documented in tier1-tables.md; MTICMSTR/MTICAMTR/MTICEMTR/MTINVDEF all 108f identical (CLASS+CODE PK; 10 vendors, 15 rcosts, 12 specs, 5 substitutes, MRP/GL/QC flags); MTEXCHG 7f multi-currency rates (EXCHG_CODE+LINE PK); MTMRP 13f MRP scratch (13th field MTMRP_LOC for multi-location confirmed in DDF); Pass 131 2026-06-19 — **C: 82/100**
 - [x] ✅ WO\* family (30 tables — Work Orders) — all cross-referenced + WORKORD fully documented — **C: 92/100**
 - [x] ✅ IS\* (tax, utilities, Java integration — ISJAVA table) — **C: 68/100** (Pass 22–23: ISLBLMAP/IS2DBAR/ISUSAGE/ISAPAINL/ISALINKS/ISLINKS/ISESTASM/ISESADTL/ISMICADT/ESA/EST/ISTAXGRP all field-documented; ~200 smaller IS\* tables remain)
 - [x] ✅ AHSYLOG (security / user table) — **C: 72/100**
@@ -573,7 +573,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.9 MRP / Manufacturing Requirements Planning (MR)
 - [x] ✅ Menu codes listed (12 operations) — **C: 65/100**
 - [x] ✅ Tables: BKMR\* (3 tables) — BKMRPFC(9f: MRP demand forecast PART+DATE+QTY+OQTY+CQTY+FLAG), BKMRPPO(16f: planned PO PART+DATE+ERD+QTY+PRICE+WOPRE/WOSUF+PLANR+CONF+EST link), BKMRPSW(2f: per-part on/off switch); all schemas extracted; MRP demand→planned-PO flow confirmed — **C: 78/100** (Pass106e: full field semantics+action codes+data flow in tier4-tables.md)
-- [x] ✅ Source file: BKMRF.SRC fully re-analyzed (Pass 119): DO.SO/DO.PO/DO.WO/DO.WOBOM/DO.FC/DO.RLEVEL demand loading procedures confirmed; 4-stage MRP engine (START.MRP 1-4) confirmed; MTMRP 12 field names confirmed (PARTNO/DATE/KEY/ORDER/ACTION/PEGTO/QTY/PG.SDATE/PG.FDATE/STARTDT/PG.QTY/ONHAND); MTIC.PROD.MRP/TYPE/MRPSW flags confirmed; BKMRPSW 2f confirmed (PART+SW='Z'); BKICLOC opened for reorder level check — **C: 78/100**
+- [x] ✅ Source file: BKMRF.SRC fully re-analyzed (Pass 119): DO.SO/DO.PO/DO.WO/DO.WOBOM/DO.FC/DO.RLEVEL demand loading procedures confirmed; 4-stage MRP engine (START.MRP 1-4) confirmed; MTMRP 12 field names confirmed from SRC (PARTNO/DATE/KEY/ORDER/ACTION/PEGTO/QTY/PG.SDATE/PG.FDATE/STARTDT/PG.QTY/ONHAND); DDF confirms 13f — MTMRP_LOC(10) is the 13th (multi-location MRP, Pass 131); MTIC.PROD.MRP/TYPE/MRPSW flags confirmed; BKMRPSW 2f confirmed (PART+SW='Z'); BKICLOC opened for reorder level check — **C: 78/100**
 - [x] ✅ Pass 45: All 17 T7MR* programs mapped (T7MRA through T7MRO). Full demand-to-release lifecycle: MR-A(forecast entry) → MR-F(explosion engine→MTMRP) → MR-G(firm, BKSBVEND/BKSBMFG select vendor) → MR-H(release→WORKORD+BKAPPO) → MR-I/IX(capacity scheduling with ROUTING+CALENDAR) → MR-J(PO/RFQ via BKRFQ 49f). MTMRP(13f) extracted: PARTNO+DATE PK, PEGTO(demand tracing), ACTION lifecycle. BKRFQ(49f): 10 qty/cost breakpoints, shared by both RF (estimates) and MR (MRP). CALENDAR(5f): SAT+SUN work flags. BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f): approved-source tables used by MR-G vendor selection — **C: 80/100**
 - [x] ✅ Full MRP calculation cycle traced (T7MRF explosion → MTMRP → firm/release)
 - [x] ✅ All core BKMR\*/MTMRP/support tables documented with fields; full field tables + MRP data flow diagram added to docs/03-modules/mr-mrp/README.md (Pass 110h 2026-06-19) — **C: 88/100**

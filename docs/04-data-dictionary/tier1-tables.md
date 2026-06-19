@@ -2495,3 +2495,157 @@ BKPISER = frozen serial list at freeze time; BKPISCNT = actuals entered during c
 *Document updated: 2026-06-19 (Pass 130)*
 *Source: `samples/ddf/schema.md`*
 *Confidence: 80/100 — All schemas confirmed from DDF; variance-posting logic confirmed from PI module workflow docs (Pass 111a); BKPH_INFO_TAGS count role inferred from PI-A program analysis.*
+
+---
+
+---
+
+## MT* Family — Multi-Class Catalog Tables
+
+All confirmed from DDF — Pass 131 2026-06-19.
+
+### Structural Overview
+
+The MT* family (6 DDF tables) is the multi-class / multi-company catalog layer that sits above the single-company BK* operational tables. MTICMSTR is the primary catalog; the other three IC tables are mirrors or templates; MTEXCHG holds multi-currency rates; MTMRP is the MRP planning scratch table.
+
+| Table | Fields | Role |
+|-------|--------|------|
+| MTICMSTR | 108 | Multi-class item master — primary catalog (CLASS+CODE PK) |
+| MTICAMTR | 108 | Multi-company archive mirror (identical schema) |
+| MTICEMTR | 108 | Edit/temp mirror for multi-class IC changes (identical schema) |
+| MTINVDEF | 108 | Item creation defaults template (identical schema, CLASS="DFLT" role) |
+| MTEXCHG | 7 | Multi-currency exchange rate table |
+| MTMRP | 13 | MRP planning work table (temp scratch, cleared between runs) |
+
+---
+
+### MTICMSTR Cluster — Multi-Class Item Master (108f, 4 identical tables)
+
+MTICMSTR, MTICAMTR, MTICEMTR, and MTINVDEF all share the exact same 108-field schema (confirmed — MTICAMTR and MTINVDEF are byte-for-byte identical to MTICMSTR via DDF offset/type check). PK = CLASS + CODE.
+
+**MTICMSTR vs BKICMSTR distinction:** BKICMSTR is single-company operational (64f, CODE PK — no CLASS, no weight/draw/vendor arrays). MTICMSTR is the multi-class catalog (108f, CLASS+CODE PK, adds weight/lead/drawing, 10 vendors, 15 received costs, 12 spec lines, 5 substitutes, MRP/QC flags). BKICMSTR.UOH etc. are transactional; MTICMSTR.STDC/RCOST_* etc. are catalog-level.
+
+Full 108-field table (condensed — arrays collapsed):
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | MTIC_PROD_CLASS | STRING | 4 | Item class (PK part 1 — groups items by type/family) |
+| 2 | MTIC_PROD_CODE | STRING | 15 | Item/part code (PK part 2) |
+| 3 | MTIC_PROD_DESC | STRING | 30 | Description |
+| 4 | MTIC_PROD_SUM | STRING | 3 | Sales unit of measure (stocking UOM for sales) |
+| 5 | MTIC_PROD_PUM | STRING | 3 | Purchase unit of measure |
+| 6 | MTIC_PROD_PCONV | FLOAT | 8 | Purchase-to-stock unit conversion factor (5 dec) |
+| 7 | MTIC_PROD_CYCLE | STRING | 1 | Cycle count flag |
+| 8 | MTIC_PROD_ABC | STRING | 1 | ABC classification (A/B/C) |
+| 9 | MTIC_PROD_LOT | STRING | 1 | Lot tracking flag (Y=lot tracked) |
+| 10 | MTIC_PROD_SER | STRING | 1 | Serial tracking flag (Y=serial tracked) |
+| 11 | MTIC_PROD_ACTIV | STRING | 1 | Active flag (Y=active) |
+| 12 | MTIC_PROD_STDPK | FLOAT | 8 | Standard pack quantity |
+| 13 | MTIC_PROD_WT | FLOAT | 8 | Unit weight (6 dec) |
+| 14 | MTIC_PROD_CUBFT | FLOAT | 8 | Cubic feet per unit (4 dec) |
+| 15 | MTIC_PROD_LEAD | UBINARY | 2 | Lead time (days) |
+| 16 | MTIC_PROD_LOC | STRING | 10 | Default warehouse location |
+| 17 | MTIC_PROD_DRAW | STRING | 15 | Drawing number |
+| 18 | MTIC_PROD_REV | STRING | 5 | Drawing revision |
+| 19 | MTIC_PROD_COST | STRING | 1 | Cost method override (A=avg, S=standard, F=FIFO, L=LIFO) |
+| 20 | MTIC_PROD_ESTCD | STRING | 1 | Estimating code (used by ES module) |
+| 21 | MTIC_PROD_MRP | STRING | 1 | MRP planning flag (Y=include in MRP) |
+| 22 | MTIC_PROD_GLINV | STRING | 10 | GL inventory account |
+| 23 | MTIC_PROD_INVDP | STRING | 4 | GL inventory department |
+| 24 | MTIC_PROD_GLWIP | STRING | 10 | GL WIP account |
+| 25 | MTIC_PROD_WIPDP | STRING | 4 | GL WIP department |
+| 26–37 | MTIC_PROD_SPECS_1..12 | STRING(30) | — | 12 specification lines (30 chars each) |
+| 38 | MTIC_PROD_UOWO | FLOAT | 8 | Units on WO (2 dec) — WO quantity committed |
+| 39 | MTIC_PROD_UOA | FLOAT | 8 | Units on allocation (2 dec) |
+| 40 | MTIC_PROD_COMM | FLOAT | 8 | Commission percentage (4 dec) |
+| 41 | MTIC_PROD_STDC | FLOAT | 8 | Standard cost (6 dec) |
+| 42 | MTIC_PROD_TYPE | STRING | 1 | Item type (R/F/A/M/N/L/B/T/K/O) |
+| 43–47 | MTIC_PROD_SUBST_1..5 | STRING(25) | — | 5 substitute part codes |
+| 48 | MTIC_PROD_FRT | FLOAT | 8 | Freight cost per unit (6 dec) |
+| 49 | MTIC_PROD_MRPSW | STRING | 1 | MRP on/off switch (per BKMRPSW) |
+| 50 | MTIC_PROD_UIWIP | FLOAT | 8 | Units in WIP (2 dec) |
+| 51 | MTIC_PROD_AVAIL | FLOAT | 8 | Available quantity (2 dec, computed) |
+| 52 | MTIC_PROD_OPTPR | UBINARY | 2 | Options/pricing level |
+| 53 | MTIC_PROD_CUST | STRING | 10 | Customer code (for customer-specific items) |
+| 54 | MTIC_PROD_CUSNM | STRING | 30 | Customer name |
+| 55 | MTIC_PROD_CLDES | STRING | 30 | Class description |
+| 56–65 | MTIC_PROD_VEND_1..10 | STRING(10) | — | 10 approved vendor codes |
+| 66–75 | MTIC_PROD_VNAM_1..10 | STRING(30) | — | 10 vendor names |
+| 76–84 | MTIC_PROD_VPC_1..9 | STRING(20) | — | 9 vendor part codes |
+| 85–99 | MTIC_PROD_RCOST_1..15 | FLOAT(8,6dec) | — | 15 received cost slots (purchase cost history) |
+| 100 | MTIC_PROD_OPT | STRING | 1 | Options flag |
+| 101 | MTIC_PROD_LOTSZ | FLOAT | 8 | Lot size (reorder quantity) |
+| 102 | MTIC_PROD_OPTCS | STRING | 1 | Options cost flag |
+| 103 | MTIC_PROD_OPTCD | STRING | 5 | Options code |
+| 104 | MTIC_PROD_UIQC | FLOAT | 8 | Units in QC inspection (2 dec) |
+| 105 | MTIC_PROD_EXPBF | UBINARY | 2 | Explode backflush level |
+| 106 | MTIC_PROD_DELBF | UBINARY | 2 | Delete backflush level |
+| 107 | MTIC_PROD_CUM | STRING | 3 | Cumulative UOM code |
+| 108 | MTIC_PROD_LONGP | STRING | 25 | Long part number / customer part number |
+
+**Mirror roles:**
+- MTICMSTR — primary multi-class catalog (read by most modules)
+- MTICAMTR — multi-company archive (populated when a company closes or archives items)
+- MTICEMTR — edit temp (used during IC-A save to stage changes before commit)
+- MTINVDEF — item defaults template (used when creating a new MTICMSTR record to supply default CLASS/values; "DFLT" class records are the factory defaults)
+
+---
+
+### MTEXCHG — Multi-Currency Exchange Rates (7f)
+
+One record per currency / date combination.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | EXCHG_QUOTE | FLOAT | 8 | Exchange rate quoted (base-to-foreign multiplier) |
+| 2 | EXCHG_AMT | FLOAT | 8 | Exchange amount (6 dec) |
+| 3 | EXCHG_DESC | STRING | 30 | Currency description (e.g., "Canadian Dollar") |
+| 4 | EXCHG_COST | FLOAT | 8 | Cost rate (buying rate, 6 dec) |
+| 5 | EXCHG_EXTRA | STRING | 50 | Extra/notes |
+| 6 | EXCHG_CODE | STRING | 15 | Currency code (ISO-3 or internal; PK part 1) |
+| 7 | EXCHG_LINE | FLOAT | 8 | Line/sequence number (PK part 2 — allows multiple rates per currency) |
+
+BKSO/BKAR/BKAP invoice tables have a CURRENCY(3) field; the runtime multiplies EXCHG_QUOTE to convert amounts. EXCHG_LINE allows date-effective rates (each rate change is a new record).
+
+---
+
+### MTMRP — MRP Planning Work Table (13f)
+
+Scratch table; cleared and rebuilt each time MRP runs (MR-A). One record per planning event per part. Confirmed from BKMRF.SRC analysis (Pass 119) — field 13 (LOC) was not in the original 12-field count but IS in the DDF.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | MTMRP_PARTNO | STRING | 15 | Part code (PK part 1) |
+| 2 | MTMRP_DATE | DATE | 4 | Demand/supply date (PK part 2) |
+| 3 | MTMRP_QTY | FLOAT | 8 | Net quantity required (2 dec; negative=supply) |
+| 4 | MTMRP_ONHAND | FLOAT | 8 | On-hand at this date (running projected balance) |
+| 5 | MTMRP_PEGTO | STRING | 10 | Peg-to reference (parent WO/SO that drives this demand) |
+| 6 | MTMRP_ORDER | STRING | 10 | Planned order reference number |
+| 7 | MTMRP_STARTDT | DATE | 4 | Planned order start date |
+| 8 | MTMRP_ACTION | STRING | 10 | MRP action code (ORDER/RESCHEDULE/CANCEL/RELEASE/etc.) |
+| 9 | MTMRP_PG_SDATE | DATE | 4 | Pegged demand start date |
+| 10 | MTMRP_PG_FDATE | DATE | 4 | Pegged demand finish date |
+| 11 | MTMRP_PG_QTY | FLOAT | 8 | Pegged demand quantity (2 dec) |
+| 12 | MTMRP_EXTRA | STRING | 50 | Extra/notes |
+| 13 | MTMRP_LOC | STRING | 10 | Location code (for multi-location MRP) |
+
+**Correction from prior analysis:** BKMRF.SRC analysis (Pass 119) confirmed 12 fields by name inspection. The DDF shows 13 fields — MTMRP_LOC is the 13th, added to support multi-location MRP. The BKMRF source likely uses `MTMRP_LOC` but was not explicitly called out in the Pass 119 name list.
+
+---
+
+**MT\* Family Summary Table** (Pass 131 2026-06-19):
+
+| Table | Fields | Role | Mirror |
+|-------|--------|------|--------|
+| MTICMSTR | 108 | Multi-class item catalog (primary) | — |
+| MTICAMTR | 108 | Multi-company archive | MTICMSTR (identical) |
+| MTICEMTR | 108 | Edit/temp staging | MTICMSTR (identical) |
+| MTINVDEF | 108 | Item creation defaults template | MTICMSTR (identical schema) |
+| MTEXCHG | 7 | Multi-currency exchange rates | — |
+| MTMRP | 13 | MRP planning scratch table | — |
+
+---
+
+*Document updated: 2026-06-19 (Pass 131)*
+*Source: `samples/ddf/schema.md` (lines 24661–25142)*
+*Confidence: 82/100 — All schemas confirmed from DDF; MTEXCHG field semantics inferred from names + multi-currency context; MTINVDEF role as defaults template inferred from name; MTMRP LOC field confirmed in DDF but not yet seen in BKMRF.SRC.*
