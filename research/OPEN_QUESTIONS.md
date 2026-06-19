@@ -254,20 +254,19 @@ to resolve fully:
 17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
     - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has
       instructions interleaved with inline data records (0x41-tagged strings/blobs).
+    - **Resolved sub-questions (2026-06-19):**
+      - **Var descriptor entry format CONFIRMED**: exactly 7 bytes per entry. `[type_tag:1][0x00:1][storage_size:1][runtime_offset_LE4:4]`. 45 entries for BKAWLB, cumulative offsets hold across all 45 entries.
+      - **runtime_base NOT universal**: 0x0460 for var_size=1440/table_count=30 programs; 0x02D0 for var_size=2640/table_count=55. Header field that encodes it: not yet identified.
+      - **Instruction addr semantics**: addr = runtime_base + cumulative_runtime_offset. Array elements: addr = first_element_addr + n×element_size (no per-element descriptor entries).
     - **Still open:**
-      - **Var descriptor entry format**: entries begin at var_section[0x0460]. First 7 bytes of each entry
-        look like a 7-byte instruction record: `[type_tag:1][0x00:1][storage_size:1][runtime_offset_LE4:4]`.
-        But what do bytes [7..end] of each entry encode? (entry size = full runtime storage = e.g. 97 bytes)
       - **BKMRF/BKDCA pre-instruction data block**: preamble=11780 for BKMRF; instructions confirmed at
         abs=0x3C4A (offset=+11786 from code_start). What is the preamble value encoding exactly?
         Is it the byte count of the data block? Does the data block contain form layout or string pool?
       - **Opcode semantics**: 0x4B=VAR_INIT (first instr), 0x3B=BRANCH, 0x0F=ASSIGN (cross-confirmed
         from .RWN analysis). 0x20, 0xC1, 0x0E, 0xC0, 0x49, 0x45, 0x48, 0x1F, 0x13, 0x06 = unknown.
         Next step: align BKAWLB source statements against instruction stream at code_start+2.
-      - **Type tag to TAS Pro source type mapping**: 0x4B, 0x71, 0x3B, 0x0F, 0x1F, 0x13, 0x06 — what are
-        the corresponding TAS Pro 6 types (A=alpha, a=alpha-array, I=integer, D=date, N=numeric, etc.)?
-      - **runtime_base=0x0460 — is it universal?** Is the 0x0460 threshold (1120 zero bytes) the same
-        for all .RUN programs, or does it vary? Check against BKMRF/BKDCA/BKLME.
+      - **Type tag to TAS Pro source type mapping**: 0x4B, 0x71, 0x3B, 0x0F, 0x1F, 0x13, 0x06, 0x0E, 0x21, 0x1C, 0x73, 0x49, 0x37, 0xC0 — what are the corresponding TAS Pro 6 variable types?
+      - **runtime_base formula**: which header field encodes the runtime_base threshold?
 
 ## Nice-to-have follow-ups (not blocking)
 

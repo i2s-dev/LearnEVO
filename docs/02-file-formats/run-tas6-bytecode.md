@@ -112,37 +112,60 @@ var_section offset  Contents
                     vars with runtime_offset >= 0x0460.
 ```
 
-### Var Descriptor Entries (confirmed from BKAWLB)
+### Var Descriptor Entries (confirmed from BKAWLB — 45 entries, 7 bytes each)
 
-Each entry is exactly as many bytes as the variable's **runtime storage size**. The entry
-is located at the runtime address of the variable (= its offset in the var section).
-Instructions reference variables by pointing to their descriptor entry's var_section offset.
+Entries are EXACTLY 7 bytes each (verified: all 45 cumulative offsets hold). Format:
 
-Confirmed entry sequence for BKAWLB (var descriptors start at var_section[0x0460], file 0x06C0):
+```
+Byte  Field           Notes
+[0]   type_tag        Variable type code (e.g. 0x4B=alpha, 0x71=?, 0x3B=?, 0x0F=?, 0x1F=?)
+[1]   0x00            Always zero (padding)
+[2]   b2              Runtime storage size in bytes for this variable
+[3-6] runtime_offset  LE4 = sum of all previous b2 values = byte offset in runtime var pool
+```
 
-| Entry offset | Entry size | Bytes | Notes |
-|---|---|---|---|
-| var_section[0x0460] | 9 | `4B 00 09 00 00 00 00 71 00` | var[0], type_tag=0x4B, runtime_offset=0 |
-| var_section[0x0469] | 5 | `05 09 00 00 00` | var[1], type_tag=0x05, runtime_offset=9 |
-| var_section[0x046E] | 97 | `3B 00 14 0E 00 00 00 ...` | var[2], type_tag=0x3B, runtime_offset=14 |
-| var_section[0x04CF] | 97 | ... | var[3], runtime_offset=0x6B |
-| var_section[0x0530] | 97 | ... | var[4], runtime_offset=0xCC |
-| var_section[0x0591] | 97 | ... | var[5], runtime_offset=0x12D |
+Confirmed entry sequence for BKAWLB (45 entries starting at var_section[0x0460], abs file 0x06C0):
 
-**Key observations:**
-- Entry[0]: first 7 bytes = `4B 00 09 00 00 00 00` (7-byte record: tag=0x4B, pad=0x00, runtime_storage_size=0x09, runtime_offset_LE4=0x0000000). Final 2 bytes are start of next entry.
-- Entries[2..5]: each 97=0x61 bytes — these correspond to e.status[] array elements (each 97 bytes → 1 char + metadata = large for small type, likely a full field descriptor including display info).
-- The stride of 97 bytes for array elements was confirmed by matching BKAWLB.SRC `e.status[1..4] = 'X'` assignments where instructions reference consecutive 97-byte-spaced addresses.
+| Entry# | Desc pos | Hex | type | b2 | off | Cumulative |
+|--------|----------|-----|------|----|-----|------------|
+| 0 | desc+0x0000 | `4B 00 09 00 00 00 00` | 0x4B | 9 | 0 | param cfrom (a size 8) |
+| 1 | desc+0x0007 | `71 00 05 09 00 00 00` | 0x71 | 5 | 9 | param prg.name (a size ?) |
+| 2 | desc+0x000E | `3B 00 14 0E 00 00 00` | 0x3B | 20 | 14 | var 3 (size 20) |
+| 3 | desc+0x0015 | `0F 00 0A 22 00 00 00` | 0x0F | 10 | 34 | var 4 (size 10) |
+| 4 | desc+0x001C | `1F 00 35 2C 00 00 00` | 0x1F | 53 | 44 | var 5 (size 53) |
+| 5..8 | desc+0x0023.. | type=0x1F b2=53 | 0x1F | 53 | 97,150,203,256 | vars 6..9 |
+| 38 | desc+0x0103 | `0E 00 61 B1 02 00 00` | 0x0E | 97 | 689 | array element (b2=97) |
+| 38..41 | desc+0x0103.. | type=0x0E b2=97 | 0x0E | 97 | 786,883,980 | array elements |
+| 44 | desc+0x0134 | `37 00 0A 4C 04 00 00` | 0x37 | 10 | 1100 | last var |
+
+Total runtime storage = 1110 bytes; 45 × 7 = 315 bytes for descriptor table.
+
+**runtime_base varies** (NOT always 0x0460):
+- Programs with var_size=1440, table_count=30: runtime_base=0x0460=1120 (BKAWLB, BKLME)
+- Programs with var_size=2640, table_count=55: runtime_base=0x02D0=720 (BKMRF, BKDCA, BKAPH, BKAPHA, BKROA)
+- Formula: `runtime_base = var_size - (num_user_vars × 7)` where the zero-init area holds SYSTEM/LIBRARY variables not listed in the descriptor table. The descriptor table covers ONLY user-declared variables.
+- runtime_base is NOT directly stored in a header field (no header field matches across all 6 programs tested).
 
 ### Instruction Address Semantics for Var References
 
-An instruction with `addr < code_start` is a **var section reference**:
+For var-section instructions, `addr` = the variable's **runtime address** = runtime_base + its runtime_offset:
+
 ```
-addr = var_section-relative offset of the variable's descriptor entry
-     = runtime address of that variable within the loaded var section
+addr = runtime_base + cumulative sum of all preceding variables' b2 values
 ```
 
-For BKAWLB: `addr = 0x0460` → variable whose descriptor is at var_section[0x0460] → var[0].
+Example (BKAWLB):
+```
+var[0] (cfrom, off=0):    addr = 0x0460 + 0   = 0x0460  → instruction [i0]
+var[1] (prg.name, off=9): addr = 0x0460 + 9   = 0x0469  → instruction [i1]
+var[2] (off=14):          addr = 0x0460 + 14  = 0x046E  → instruction [i2, i3]
+```
+
+For **array elements**, the addr is computed directly by the compiler as:
+```
+addr = addr_of_first_element + n × element_size
+```
+Instructions [i4..i7] reference addrs 0x04CF, 0x0530, 0x0591, 0x05F2 = 0x046E + 97, 194, 291, 388 (stride 97 = b2 of the instruction, matching element size). These hit positions within the runtime pool that are NOT at descriptor entry boundaries — the runtime computes element locations via stride, not by separate descriptor entries per element.
 
 ---
 

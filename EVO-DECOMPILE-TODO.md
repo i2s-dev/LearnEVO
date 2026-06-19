@@ -164,14 +164,14 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Var section: [0..0x045F] = zero-initialized runtime storage; [0x0460..] = var descriptor table
   - code_start = 0x80 + N×16 + var_size; 2-byte preamble precedes instruction stream
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 35/100** (7-byte fixed instruction format confirmed)
+- [x] 🔄 Bytecode instruction set — **C: 42/100** (7-byte fixed instruction + var descriptor format confirmed)
   - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
-  - Var descriptor table at var_section[0x0460] (file 0x06C0 for BKAWLB); each entry = runtime var size
-  - 13 opcodes identified in instruction stream: 0x4B,0x20,0xC1,0x0E,0xC0,0x49,0x3B,0x0F,0x45,0x48,0x1F,0x13,0x06
-  - Code section also contains inline data records (0x41-tagged strings); addr refs into code section point to these
-  - BKMRF preamble=11780 → large data block precedes instruction stream; instructions confirmed at abs=0x3C4A
-  - Opcode semantics still mostly unknown; 0x3B=BRANCH, 0x0F=ASSIGN cross-confirmed from .RWN analysis
-  - 7 SRC+RUN Rosetta Stone pairs available; BKMRF 3-way compile diff planned for next pass
+  - Var descriptor: 7-byte fixed entries `[type_tag][0x00][storage_size][runtime_offset_LE4]` at var_section[runtime_base]
+  - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640); zero area = system/lib vars not in descriptor
+  - Instruction addr = runtime_base + cumulative_offset; array elements: first_addr + n×element_size
+  - 45 user vars confirmed for BKAWLB; total runtime storage = 1110 bytes (all within zero-init area)
+  - 13+ opcodes identified; semantics mostly unknown; 0x3B=BRANCH, 0x0F=ASSIGN cross-confirmed from .RWN
+  - BKMRF preamble=11780 → large data block precedes instructions; confirmed at abs=0x3C4A
 - [ ] ⬜ All readable logic extracted from `.RUN` string sections
 
 ### 2.4 `.DFM` — Delphi Form Layout
