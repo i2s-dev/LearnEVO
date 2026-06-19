@@ -432,6 +432,85 @@ Stores 10 named time-card types (NAME_1..10 at 25 chars each), each with a corre
 
 ---
 
+## Year-end and W-2 workflow (confirmed from DDF schema + menu analysis, Pass 111d 2026-06-19)
+
+### PR-O: Year End Routine (BKPRO)
+
+T7PRO.DFM has only 1 field (a confirmation screen). The year-end routine:
+1. Copies `BKPRMSTR` → `BKPRW2` (full 384-field snapshot of each employee's YTD accumulators)
+2. Rolls BKPRSALE → BKPRBOOK (prior year commission data)
+3. Zeros out YTD accumulators in BKPRMSTR for the new year (QTD totals become prior-year baseline)
+4. Advances `BKPR_EMP_YEAR` + `BKPR_EMP_QTR` in BKPRMSTR
+
+BKPRW2 is thereafter independent from BKPRMSTR — year-end adjustments to W-2 amounts do not affect the employee master.
+
+### PR-A: Edit W-2 Data (BKPRA, BKPRP, BKPRQ)
+
+Edits individual BKPRW2 rows. Key W-2 fields in BKPRW2:
+
+| W-2 Box | BKPRW2 field(s) | Content |
+|---------|-----------------|---------|
+| Box 1: Wages, tips | `BKPR_EMP_RAYTD` | Regular wages YTD |
+| Box 2: Federal income tax | `BKPR_EMP_FITYTD` | FIT withheld YTD |
+| Box 3/5: SS/Medicare wages | `BKPR_EMP_FICYTD_1/2` | FICA employee YTD |
+| Box 4/6: SS/Medicare tax | `BKPR_EMP_FICYTD_1/2` | FICA withheld |
+| Box 16/17: State wages/tax | `BKPR_EMP_STYTD` | State income tax YTD |
+| Box 12: Coded amounts | `BKPR_EMP_PAYAMT_1..15` | 15 user-coded deduction amounts |
+| Workers comp | `BKPR_EMP_WKYTD` | WC YTD |
+| Other deductions | `BKPR_EMP_OHYTD_1..12` | 12 custom deduction YTDs |
+| Employee address | `BKPR_EMP_ADD/CSZ/ST/ZIP/CNTRY` | Copied from BKPRMSTR at year-end |
+| SSN | `BKPR_EMP_SSN` | Required on W-2 |
+| Medical | `BKPR_EMP_MDYTD` | Medical deduction YTD |
+
+### PR-L-I: Print W-2 Forms (BKPRLI)
+
+Reads BKPRW2 and prints IRS Form W-2 for each active employee. T7PRLI.DFM is a stub (0 fields = parameter-less or runs as a report). Output is formatted to IRS standard W-2 layout.
+
+### PR-L-H: Print 940 Report (BKPRLH)
+
+T7PRLH.DFM has 54 fields and 112 controls — a rich date-range report form. Reads BKPRMSTR/BKPRCURP for FUTA tax totals per employee per quarter; produces IRS Form 940 FUTA computation.
+
+### 1099 Generation (AP-S)
+
+1099 reporting is in the AP module (not PR):
+- `BKAPVEND.BKAP_TAX_ID` — vendor EIN (STRING 20, field 53)
+- `BKAPVND2` (63f) — extended 1099 box amounts: `BKAP2_SEND_1099` flag + box type + 10 amount slots × 5 entries each
+- `AP-S: Print 1099 Forms` (APS1999/APS2000/TAPS2000) reads BKAPVEND + BKAPVND2 + BKAPINVT YTD payment totals
+
+### PR-H: Transfer Liabilities to AP (BKPRH)
+
+T7PRH.DFM has 82 fields and 117 controls — one of the most complex PR forms. It creates AP vouchers for payroll tax and benefit liabilities:
+- Reads per-pay-period tax liabilities: FIT, FICA employee + employer, state, SUTA, FUTA, workers comp
+- Reads user-defined deduction (UOD) remittances: health insurance, 401k, FSA, etc.
+- Creates BKAPINVL/BKAPINVT rows for each remittance payee (vendors set up in BKAPVEND)
+- GL accounts come from BKPRGLFL (664f) — the per-state/department payroll GL matrix
+
+### Full year-end sequence
+
+```
+Throughout year:
+  PR-B / PR-C / PR-G / PR-D (regular payroll cycle)
+  PR-J / PR-K (time cards → payroll)
+  PR-H (periodic liability remittances to AP)
+
+Quarter-end:
+  PR-L-A: Quarterly earnings register
+  PR-L-B/C/D/E: QTD detailed reports
+  PR-L-H: 940 FUTA report
+
+Year-end:
+  PR-A: Edit W-2 overrides in BKPRW2 (if needed before PR-O)
+  PR-O: Year End Routine
+    → Copy BKPRMSTR → BKPRW2 (freeze W-2 data)
+    → Roll BKPRSALE → BKPRBOOK
+    → Zero BKPRMSTR YTD fields
+  PR-A: Edit BKPRW2 (post-copy corrections)
+  PR-L-I: Print W-2 Forms (reads BKPRW2)
+  AP-S: Print 1099 Forms (reads BKAPVEND + BKAPVND2)
+```
+
+---
+
 ## Notes & open questions
 
 - **BKPRMSTR record size = 3,389 bytes** (BANKA ends at offset 3372 + 17 = 3389). Very large row — each employee is almost 3.5 KB.
