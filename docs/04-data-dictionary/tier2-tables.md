@@ -2010,3 +2010,294 @@ fabric-based components.
 
 **ISCCMTF** / **ISCMGRP** (2f each, identical) — CC MTF (Manufacturing Transfer Form):
 ITEM(15) + MTF(60). Maps items to their manufacturing transfer form template.
+
+---
+
+## Pass 138 — IC Extension, Business Scorecard, Links, NCR, Payroll (DDF lines 17298–19635)
+
+### IC Item Master Snapshot / Extension Family
+
+**ISICADT** (64f, `BKIC_PROD_*`) — IC item master audit snapshot. Full copy of BKICPROD
+with a `BKIC_IS_DCODE` (3ch) discriminator. Captures CODE, DESC, TYPE, UM, CAT, TXBLE,
+CLASS, reorder levels, last-sale/order/receipt dates, MTD/YTD/LYR usage quantities (unit
+sales, gross sales, cost, net sales, net gross), 3 GL account pairs (asset+dept,
+COGS+dept, scrap/net+dept), PRICE, UBO, PMAT, MANUF, NOTE, 6 avg cost components (lab,
+setup, op, mat, FOH, VOH), EXTRA(100), TAXIN, ISUPC, LONGP. Confirmed 64 fields.
+
+**ISICAMTR** / **ISICMSTR** (41f each, `IS_PROD_*`) — IC item master attribute extension.
+Stores physical properties and UDFs that don't fit in BKICPROD: WT (weight 6-dec),
+ITP(20), EXTRA(150), CDATE, TI/HI (tick/hit integers), FOBPAL/FOBFULL, HT/LG/WD
+(dimensions 3), TOOL(15), SLEAD (safety lead days), RCDATE, 10 FLAG chars, 5 ALPHA
+strings (30ch each), 5 NUM floats, 5 GDATE dates, ADATE. Both tables are schema-identical.
+
+**ISICESA** / **ISICEST** (64f each, `BKIC_PROD_*`) — IC item master snapshots for the
+Estimating module (Archive and Current). Schema-identical to ISICADT.
+
+**ISMICADT** / **ISMICESA** / **ISMICEST** (108f each, `MTIC_PROD_*`) — Multi-company
+IC item master snapshots. Extends the BKICPROD schema with a leading CLASS(4) field plus:
+12 SPECS strings (30ch), 10 VEND+VNAM+VPC (vendor codes, names, vendor part codes), 15
+RCOST floats (replacement costs), 5 SUBST items (substitutes), LOTSZ, OPT/OPTCS/OPTCD
+(option codes), UIQC (qty in QC), EXPBF/DELBF (expire/delete buffers), CUM(3), LONGP.
+All three schema-identical. Confirmed 108 fields.
+
+### IS System Configuration
+
+**ISIS** (23f) — IS module configuration singleton (one record). Flags: IS_TAX,
+IS_MULTI_CURR, IS_LANDED_COST, IS_UPC, IS_RETAIL_PRICE, IS_COMM_PRICE, IS_IMAGING,
+IS_MULTI_CPAY, IS_TAX_FRM, IS_PO_TAX, IS_TAX_IN, IS_TAX_CVT, IS_CUR_CVT,
+IS_AUTO_TAX_CAL, IS_EZPAY, IS_RMA, IS_SPEC_SUP. Also stores UPC_1(6)/UPC_2(5) prefix
+segments, IS_DEMO (demo expiry date), IS_PIC_PATH(20), IS_SPEC_SUPF/SUPT (UBINARYs).
+This table controls which optional IS modules are active.
+
+**ISISATAX** (13f, `BKIS_TAX_*`) — Sales/use tax audit trail. Per-transaction record:
+TAX_CODE(10), TAX_DATE, TRFLAG, taxable/non-taxable/tax amounts, customer, vendor,
+invoice#, PO#, tag, currency code, AP invoice#.
+
+### Item Configuration and ITP
+
+**ISITMCFG** (9f, `IS_SERC_*`) — Per-item serial/lot number auto-generation configuration.
+KEY: ITEM(15) + CLASS(4). Fields: start position, length string, total width, next number
+float, last number string(25), EXTRA(100), L2. Controls how serial/lot numbers are
+generated for each item.
+
+**ISITP** (3f, `IS_ITP_*`) — Inspection/Test Plan master. KEY: ITP_NUM(20). Fields:
+ITP_DESC(80), ITP_EXTRA(100). Defines inspection plans by number; plans are referenced
+from ISICAMTR.IS_PROD_ITP.
+
+### Business Scorecard
+
+**ISJBSF** (143f, `ISBSF_*`) — Business scorecard / management KPI snapshot. Key:
+STARTDATE + ENDDATE (period boundaries). Captures cross-module summary metrics:
+- AR: balance, billings, receipts, discounts, COGS, deposits
+- AP: balance, payables, payments, discounts, ATP
+- SO: open, booked, shipped values
+- PO: open, booked, received values
+- WO: WIP balance, issues, FP variances; 9 cost component summaries
+  (setup/labor/output/material/FOH/VOH/misc ext/FP/WIP variance)
+- IC: inventory value
+- Cash: CASH_TOTA + 9 CASH_ACT slots (monthly accounts) + 100 CASH_ACTS slots
+  (annual trend — 100 periods × 1 account each)
+- EXTRA(100)
+
+Architecture note: the 100 CASH_ACTS fields allow storing a full 100-period cash flow
+trend (e.g. 8+ years of monthly data) in a single record per account group.
+
+### Job Master
+
+**ISJOB** (9f, `IS_JOB_*`) — Job/project master. KEY: JOB_NUMB(15). Fields: DESC(30),
+CUST(10), VEND(10), RSVD(1), STATUS(1), OPENDT, CLOSEDT, EXTRA(100). Lightweight
+project tracker linking a job number to a customer or vendor.
+
+### Landed Cost
+
+**ISLANDF** (6f, `ISIS_LND_*`) — Landed cost freight GL account configuration. Three GL
+account+dept pairs: appraise (GLA/GLD), freight (GLAFR/GLDFR), customs-freight
+(GLACF/GLDCF). No key field visible — likely a single-record config table.
+
+### Label Management
+
+**ISLBLMAP** (102f, `IS_LABEL_*`) — Label template mapping. KEY: ITEM(15) + NUM(15).
+Fields: DESC(30), DFLT(1), OBS(1), CDATE/EDATE (effective dates), CUST(10), VEND(10),
+RTM(12) — the ReportBuilder .RTM filename for this label template. Then: 30 NTYPE slots
+(3ch each — note types to include), 30 FCOLOR + 30 BCOLOR slots (10ch each — foreground
+and background color names per print zone), FLAG(1), EXTRA(100).
+This table defines which label template to use per item (optionally filtered by
+customer/vendor), and controls print formatting by note type.
+
+### Document Attachment System
+
+**ISLINKS** (311f, `IS_LNK_*`) — Cross-module document/URL attachment store.
+KEY: UID(48) — a 48-char identifier (application code + record key). Fields:
+- LINK(256) — file path or URL
+- APP(10) — application module code
+- TYPES_1..100 — 100 single-char type flags (document type classification)
+- PCB_1..100 — 100 single-char PCB flags (permission/control bits)
+- DEF_1..100 — 100 single-char DEF flags (default/filter flags)
+- GLOBAL(1), OPENWITH(1), DATE, WHO(15), ATYPE(3), EXTRA(100), PRIVATE(1), SORT float
+
+The 100-slot type/PCB/DEF arrays allow extremely flexible classification and access
+control for each attachment. IS_LNK_UID format: `<APP><RECORD-KEY>` zero-padded to 48
+chars, enabling lookup of all attachments for any ERP record.
+
+**ISLTYPE** (4f, `IS_LT_*`) — Link type code master. TYPE(3), DESC(30), SEC (security
+level), EXTRA(100).
+
+### Location Costing
+
+**ISLOCCST** (7f, `IS_LCST_*`) — Per-location average cost tracking. KEY: PART(15) +
+LOC(10). Stores AVGC (average cost 4-dec), BOOKVAL (book value 4-dec), LDATE/LTIME
+(last update timestamp), EXTRA(150).
+
+### Activity Logging
+
+**ISLOG** (9f, `IS_LOG_*`) — User activity log. Fields: WHO(35), WHAT(15),
+DOING(60), STARTD, STARTT(12), COMPANY(3), KILL(1), MSG(200), EXTRA(100). Records
+who did what when; KILL flag marks entries flagged for deletion.
+
+### Lot/Serial Tray Mapping
+
+**ISLOTS** (11f, `IS_SER_*`) — Serial assembly genealogy (schema identical to
+ISHLOTS/ISHSERIA). KEY: WOPRE + WOSUF + PARENT(15) + COMP(15) + PSERIAL(25). Fields:
+same IS_SER_* structure. NOTE: DDF typo confirmed — field 11 is `IS_SER_EXRA` not
+`IS_SER_EXTRA`.
+
+**ISLSMAP** (31f, `IS_MAP_*`) — Lot/serial tray position map. KEY: TRAYNUM(25) +
+POSITION(10). Links a tray slot to a WO operation: WOPRE/WOSUF/OPER, then parent
+part+lot+serial+qty and child part+lot+serial+qty+qty-per. Also: BATCH(25), 5 dates,
+5 alpha fields (25ch), 5 flags, EXTRA(100). Used for tracking component assembly
+placement on a physical tray or pallet.
+
+### Machine Scheduling
+
+**ISMACS** (11f, `IS_MACS_*`) — WO machine scheduling record. KEY: WOPRE + WOSUF +
+OPER + MACNUM(4). Fields: WC(12), SDATE/STIME (scheduled start), FDATE/FTIME
+(scheduled finish), EXTRA(100), TREM (time remaining float). Tracks machine assignment
+per WO operation.
+
+### Multi-Currency
+
+**ISMCF** (49f, `ISIS_MCF_*`) — Multi-currency forex configuration per currency code.
+KEY: CODE(3). Fields: BASE(1) flag, then 7 GL account+dept pairs: Bank (BK), Sales (BS),
+Interest (IS), BankX (BKX), APX, ARX — plus standalone GL pairs for AR/AP/PO/CS
+(cash settlement). Financial fields: AMTBNK/AMTAP/AMTAR/AMTFE (current balances),
+AMTPOR, AMTAD, AMTCS, AMTAPD. Currency: SYMBOL(1), SYMPOS(1), DEC (decimal places),
+SYMDSC(10). Interest: INTRES (rate 3-dec), INTDAY. Confirmed 49 fields.
+
+**ISMCR** (22f, `ISIS_MCR_*`) — Multi-currency exchange rate history. KEY: BASE(3) +
+DATE. Stores 10 source currency codes (SOURCE_1..10, 3ch each) and 10 corresponding
+rates (RATE_1..10, float 6-dec). One record per base currency per date.
+
+### MRP Forecast
+
+**ISMRPFC** (9f, `BKMRP_FC_*`) — MRP demand forecast. KEY: FC_PART(15) + FC_DATE.
+Fields: QTY (planned demand), EXTRA(25), OQTY (original qty), CQTY (current qty),
+FLAG(1), DATE1 (alternate date), NUM (sequence#). Feeds into MRP net requirements
+calculation.
+
+### NCR / Nonconformance
+
+**ISNCR** (35f, `IS_NCR_*`) — Nonconformance Report. KEY: NCR_NUM (float auto-number).
+Fields: PART(15), COMP(15) (component that failed), LOT(15), SERIAL(25), CDATE, WHO(15),
+QTY, DCODE(10) (defect code), DESC(60), ICR(1) (internal corrective action required),
+ORIG(1) (origin code), WOPRE/WOSUF, MACH(4), TOOL(15), WC(12), PONUM, RMA#, ACTION(1),
+CAR# (corrective action request link), DISP(10) (disposition code), DWHO(15)/DDATE
+(disposer), STATUS(1), SCRAP(2)/QC(2) codes, VEND(10), LOC(10), EXTRA(50), PDRAW/PREV
+(parent drawing/rev), CDRAW/CREV (component drawing/rev), CLOC. Confirmed 35 fields.
+
+This table is the origin point for CAR/CAPA tracking — NCR.CAR → ISCAR.IS_NCR_NUM.
+
+### Notes System
+
+**ISNOTES** (13f, `IS_NOTE_*`) — Cross-module notes/memos store. KEY: NOTE_ID(48) + TYPE.
+Fields: CDATE/CTIME(10)/CWHO(15) (creator), EDATE/ETIME(10)/EWHO(15) (last editor),
+EXTRA(100), PRIVATE(1), GROUP(4), CONTACT(30). Field 13 has corrupt DDF metadata
+(`BKAP_INVL_GLACT_48`, Date type, 256-byte size) — this is a DDF encoding artifact; the
+actual field stores the note text blob. IS_NOTE_ID uses the same 48-char UID format as
+ISLINKS (app + record key).
+
+**ISNTYPE** (4f, `IS_NT_*`) — Note type code master. TYPE(3), DESC(30), SEC
+(security level), EXTRA(100).
+
+### Auto-Numbering
+
+**ISNUMBER** (52f, `IS_NUM_*`) — Next-number sequence registry. KEY: CODE(10).
+Stores 50 independent next-number slots (NEXT_1..50, float 0-dec) + EXTRA(100).
+One record per document type (e.g. "NCR", "CAR", "ECO"). The 50 slots allow
+multi-company or multi-division sequence sets within a single record.
+
+### Order / PO Support
+
+**ISORDDSC** / **ISPODESC** (1f each) — Order and PO description code masters.
+Single field: IORD_DESC_CODE(30). Simple lookup tables for standard order descriptions.
+
+**ISORDECO** (13f, `IS_OECO_*`) — Order-to-ECO cross-reference. KEY: SONUM + PONUM +
+UNUM. Fields: PART(15), DRAW(15), REVLVL(5), ECO(15), WOPRE/WOSUF, ENTDATE, EXTRA(100),
+TMPO(40). Links sales orders and POs to Engineering Change Orders. NOTE: field 13 has
+corrupt DDF metadata (`BKAP_INVL_GLACT_56`, Date/256/dec5) — same encoding artifact as
+ISNOTES.
+
+**ISPOBOX** (22f, `ISSO_BOX_*`) — PO pack box contents (schema mirrors ISBOLMS/SO boxes).
+KEY: SONUM + LINE + BOX. Fields: CODE(15), QTY, LOT(15), SERIAL(25), TEMP(1), EXTRA(150),
+INVNUM, SHIPPR, SHPCOD(10), WEIGHT, SKID, DATE, WOPRE/WOSUF, UCC(30), HT/LG/WD, TRACK(40).
+PO-side packing list tracking.
+
+**ISPOHTRK** / **ISPOTRK** (7f each, `IS_TRK_*`) — Shipment tracking records (identical
+schema). KEY: TRK_ORD (order#). Fields: TRK_NUM(25) (tracking number), SHPVIA(10) (carrier),
+CDATE (created), RDATE (received), STATUS(50), EXTRA(100). ISPOHTRK = PO inbound
+receiving; ISPOTRK = PO outbound shipment.
+
+**ISPOLOG** (9f, `ISPO_LOG_*`) — PO change/audit log. KEY: EMP + DATE + TIME.
+Fields: WHO(15), PRGM(8), PONUM, NAME(50), REASON(50), EXTRA(100).
+
+**ISPOS** (2f, `BKCM_ACCL_*`) — PO account class master. CODE(10) + CLASS(5).
+**ISPOSC** (2f, `BKCM_ACCC_*`) — PO account class code master. CCODE(5) + DESC(25).
+
+### Production Requisition
+
+**ISPREQ** (25f, `IS_PREQ_*`) — WO production material requisition. KEY: WOPRE + WOSUF +
+OPER + WC + EMP. Fields: RDATE (required date), PART(15), QTY(4-dec), SCRAP(2) code,
+REASON(30), NOTE(200), NOTE2(200), LOC(15), PRINTED(1), IQTY (issued qty, 4-dec),
+INOTE(200) (issue note), LOT(15), SERIAL(25), LCOST (landed cost), CLOSED(1)/CDATE,
+NOB(1), EXTRA(100), RTIME/CTIME (request/close timestamps). Records material pull
+requests generated from WO routing operations.
+
+**ISPRESN** (1f) — Production reason code (single REASON field 30ch).
+
+### Program Registry
+
+**ISPRINFO** (4f, `ISPR_INFO_*`) — Program information registry. KEY: PROG(30).
+Fields: DESC(80), MISC(50), TYPE(1). Metadata registry of TAS Pro programs/modules.
+
+### Payroll
+
+**ISPRMSTR** (384f, `BKPR_EMP_*`) — Payroll employee master. One of the largest tables
+in EvoERP. KEY: EMP_NUM (UBINARY). Key fields:
+- Demographics: FNMI(25), LNME(25), ADD, CSZ, ST, ZIP, CNTRY, PHONE, SSN(11), BDAY
+- Employment: SDATE (start), TERM(1) (terminated flag), SHIFT, BENDTE, EMAIL(128)
+- Pay: PAYTYP(1), 15 PAYAMT rates (float 4-dec), 2 federal exemptions
+- Hours by pay class (12 periods × 3 sets = 36 slots each): regular/actual/vacation/sick
+  OT hours (OHQTD_1-12, OAQTD_1-12, OHYTD_1-12, OAYTD_1-12)
+- Taxes QTD/YTD: FIT, FICA, 2 FIC codes, state, workers comp, Medicare, other
+- SDI: SDIQTD/SDIYTD/SDIEXM
+- State: STEXM/STEXMA/STEXMN
+- UOD (user-defined deductions): 20 deductions × 4 arrays = UODQTD_1-20/UODYTD_1-20/
+  UODAMT_1-20 (per-period amount)/UODLMT_1-20 (per-period limit)/UODYLM_1-20
+  (annual limit)/UDELMT_1-20 (one-time limit) — 120 float fields
+- UDE (user-defined earnings): identical 20-slot structure with UDAMT/UDEQTD/UDEYTD/
+  UDELMT/UDEYLM/UDEAMT arrays — 120 more float fields
+- 15 expense GL accounts + depts (EXPACT_1-15 + EXPDPT_1-15)
+- W/C rates: WCEE/WCER (employee/employer workers comp rates)
+- Vacation/sick: VRTE, SRTE, VCAP, SCAP
+- Additional: DEPT, LOCCOD, EIC/EICAMT, YEAR, QTR, bank routing+account (BANKR(9)/BANKA(17))
+
+Total record size: 3,389+ bytes (field 384 BANKA ends at offset 3,389).
+
+**ISPRSALE** (87f, `BKPR_SLS_*`) — Sales rep commission tracking. KEY: EMPNUM.
+Fields: 2 commission classes with rates/calculation methods (HOW: % or flat, WHEN:
+invoice/receipt), 12-period arrays for quota, gross sales, COGS, cash receipts, earned
+commission, paid commission. Also: name (FNMI/LNME), expense GL account+dept,
+EXTRA(100), EMAIL(128). Total 87 fields.
+
+**ISPRTEMP** (15f, `ISPR_TRN_*`) — Payroll GL transaction staging buffer. Fields:
+GLACCT(10), GLDPT(4), DATE, CODE(10) (payroll code), INVC(10) (invoice/check ref),
+DESC(25), DC(1) (debit/credit), AMT, TYPE(2), ENTDTE, EXTRA(25), TRXN (transaction#),
+POST(1), PERIOD, BATCH. Payroll journal entries held pending GL post.
+
+**ISPRUDF** (31f, `ISPR_UDF_*`) — Payroll user-defined deduction/earning definition.
+KEY: UDF_DIV(4) + UDF_NUM. Defines the rules for each of the 20 UOD/UDE slots:
+DIVNAM(20), DESC(12), 9 tax-inclusion flags (FIT/FUTA/SDI/PTAX/SS/MED/SIT/WC/SUTA/LOCAL),
+2 calculation types for EE + ER (CALCEE/CALCRE, EETYPE/ERTYPE — calculation formulas),
+EE/ER amounts, per-period and annual limits, 2 GL account+dept pairs (liability/expense),
+VEND(10) (vendor for remittance), TAXOUT, EXTRA(100).
+
+### QC Receiving Inspection
+
+**ISQCAMST** (14f, `BKQC_*`) — QC receiving inspection master record. KEY: VEND_CODE +
+RECV_DATE + PO_NUM + RECVR_NUM + POL_ITM_NO. Fields: PKSLIP_NUM(15), QTY_RECVD/BUYOFF/
+REJECT, PKSLIP_QTY, PROD_CODE(15), UNIT_COST(4-dec), EXTRA(25), OUT_DATE.
+
+**ISQCATRN** (20f, `BKQC_TRN_*`) — QC receiving inspection transaction detail. KEY:
+TRN_PO + TRN_VEND + TRN_CODE + TRN_RECNUM. Fields: GQTY/BQTY/UQTY (good/buyoff/under
+qtys), SCRAP(2)/REWORK(2) codes, PO/AR/BO dates, EMPNUM, RECVNM, FAULT(1)/BROKEN(1)
+flags, FIXQTY, POQTY, INVCD(1) (invoice code), FLAG(1). Detail line for each inspection
+disposition decision.
