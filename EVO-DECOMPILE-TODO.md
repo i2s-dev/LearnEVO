@@ -141,10 +141,12 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Single-file or batch mode; `--encrypted` flag decrypts on-the-fly; JSON output supported
   - Must be run against local copies in `samples/` (not directly against network share)
   - Note: all existing `samples/rwn_decrypted/*.dec` files were made with wrong key — re-decrypt needed
-- [x] 🔄 Bytecode instruction set — **C: 15/100** (TAS Pro 6 opcodes partially mapped; TAS Pro 7 encoding different)
-  - Confirmed: TAS Pro 7 decrypted body is correct (uniform bytes = no embedded strings, no padding)
-  - TAS Pro 7 uses a different opcode format — no inline `41 00` string pushes found
-  - See `docs/02-file-formats/run-tas6-bytecode.md` for TAS Pro 6 findings; TAS Pro 7 analysis pending
+- [x] 🔄 Bytecode instruction set — **C: 35/100** (pool/data section decoded; variable refs + pool pointers confirmed)
+  - Dispatch table = program instructions: `[op][00][00][sub] + [pool_offset]` (8 bytes each)
+  - Pool immediately follows dispatch; typed values: 0x41=string/blob (var-len), 0x46=var_ref (val=var_idx×77), 0x43=pool_ptr, 0x52/0x4E/etc.=5-byte numeric
+  - Compound blobs: 0x41 blobs starting with 0xFD contain sub-typed argument fields, end with 0xFF
+  - Opcodes identified in suwin7.rwn: 0x20=MOUNT(form), 0x0F=ASSIGN?, 0x42=GOSUB?, 0x3B=GOTO/BRANCH?
+  - See `docs/02-file-formats/rwn-binary-format.md` — pool section and confirmed facts updated 2026-06-19
 
 ### 2.3 `.RUN` — TAS Pro 6 Compiled Program
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
@@ -1145,7 +1147,7 @@ Priority order — in sequence, each unblocks the next:
 | ~~**2**~~ | ~~Write `rwn_decrypt.py` and decrypt all 1,124 `.RWN` files~~ | ✅ **DONE 2026-06-16** — `scripts/rwn_decrypt.py` with K_B; batch run against share completed; symbol extractor `scripts/rwn_extract_symbols.py` created | Variable names + DB files from all modules now extractable |
 | ~~**3**~~ | ~~Decode `.DCY` files~~ | ✅ **DONE 2026-06-16** — `scripts/dcy_decrypt.py` with K_D; 41/48 files OK; format = Delphi VCL forms | Menu form and login forms decryptable |
 | ~~**4**~~ | ~~Re-decrypt all 1,124 `.RWN` files locally~~ | ✅ **DONE** — `samples/rwn_decrypted/` contains 1,123 `.dec` files; validated by file ID pattern (bytes 0-3==4-7); `rwn_symbols.json` built from these (1,122 entries) | Module variable/DB catalog complete |
-| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 15/100** — dispatch table mapped; 7 opcode DWORDs in suwin7.rwn; full mapping needs BKMRF 3-way compile diff | Full logic traceability |
+| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 35/100** — pool/data section decoded; 0x46=var_ref (val=var_idx×77), 0x43=pool_ptr confirmed; compound blobs with FD/FF structure decoded; opcode roles partially inferred | Full logic traceability |
 | **6** | Per-table field meaning documentation (659 tables) | 🔄 **C: 48/100** — Tier 1 tables partially done; 659 × full semantic docs needed | Database understanding |
 | **7** | Module-by-module logic from decoded `.RWN` variable patterns | 🔄 **started** — T7INA variables confirm buffer field names; EvoERPmenu confirms menu tables | Module confidence to 85+ |
 | **7** | Business workflow recipes (end-to-end traces: SO→ship→invoice, WO lifecycle, AP check run, etc.) | #6 | Me | Operational understanding |

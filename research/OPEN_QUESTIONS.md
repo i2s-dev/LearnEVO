@@ -211,6 +211,32 @@ to resolve fully:
     - UP = Update Management — BKUPDATE (company/update-flag/date/version)
     - YS = Yes/No System Parameters — T7YSYN.RWN edits BKYSMSTR (195+ YN flags)
 
+16. **RWN bytecode pool type system — PARTIALLY RESOLVED Pass 110 2026-06-19.**
+    Pool type system decoded from `suwin7.rwn` (34-instruction license-check program):
+    - `0x41` = variable-length entry: `[41][00][len16][data]`. If data starts with `0xFD` it is a
+      **compound blob** (argument block for one or more instructions). Printable-ASCII data = string constant.
+    - `0x46` (F) = **variable reference**: `[46][val32_LE]` where `val32 = var_index × 77`.
+      Confirmed: 4774/77=62 → SERIALNUMBER, 4851/77=63 → SNVALUE, 4697/77=61 → WAIT_SECS, 4620/77=60 → CURR_TIME.
+    - `0x43` (C) = **pool pointer**: `[43][val32_LE]` where `val32` = byte offset from pool section start.
+      Confirmed: C=0x33 → STR "DEMO", C=0x173 → STR "lblUserSerialNum", C=0x187 → STR "Caption".
+    - `0x52` (R), `0x4E` (N), `0x4D` (M), `0x4C` (L), `0x49` (I), `0x44` (D), `0x53` (S) = fixed 5-byte numeric.
+    - `0xFD` = compound blob begin marker (1 byte). `0xFF` = end-of-blob sentinel (1 byte).
+    - Header[0x18] = 4620 = 60 × 77 = byte offset of first user-declared (non-TEMP) variable; TAS Pro 7
+      always allocates exactly 60 TEMP variables (TEMP0–TEMP59) before user-declared variables.
+    - Multiple dispatch entries point to different byte offsets within the same blob (each reads its own sub-field).
+
+    **Still open sub-questions:**
+    - What do the bytes immediately after the `0xFD` marker encode? (Values 0x00, 0x9A, 0x4D observed; 0x9A in
+      blobs involving SNVALUE comparisons — may be a sub-opcode or argument-count byte.)
+    - Exact semantics of opcodes 0x0F, 0x42, 0x3B? (Inferred as ASSIGN, GOSUB/CALL, GOTO/branch — not confirmed.)
+    - Why do opcodes 0x43, 0x45, 0x57 appear only once in suwin7.rwn? (Too few examples to characterize.)
+    - Does `0x43` (C) type always encode a pool-section byte offset, or can it be a direct integer in some
+      contexts? (All C values in suwin7.rwn are valid pool offsets, but sample size = 1 program.)
+    - Does T7INA.RWN also have exactly 60 TEMP variables? Header[0x18]=4620 in both suwin7 and T7INA —
+      is 60 TEMP vars a TAS Pro 7 compiler invariant?
+    - Multi-program opcode comparison needed: run `rwn_dispatch_compare.py` across ≥5 programs to find
+      opcodes that appear in all programs (likely control-flow: GOTO, GOSUB, RETURN, END).
+
 ## Nice-to-have follow-ups (not blocking)
 
 - **Extract CHM contents fully.** Ran `hh -decompile` but it quietly

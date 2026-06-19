@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-18 (Pass 109 — DCY binary format fully decoded; 5 confidence gaps closed: ODBC 91→92, DS 62→65, AD/ADCA 70→72, PA 70→72, SC/Serial 78→80; Task 4 confirmed done — 1,123 RWN files already in samples/rwn_decrypted/; rwn_symbols.json complete — 1,122 entries)
+Last updated: 2026-06-19 (Pass 110 — RWN bytecode pool type system decoded from suwin7.rwn; F-type=var_ref (val/77=var_index) and C-type=pool_ptr confirmed; compound blob structure mapped; Header[0x18]=60×77=first non-TEMP var offset; RWN bytecode confidence C:15→35/100)
 
 ---
 
@@ -97,7 +97,7 @@ Current decryption scripts:
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
 | `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool |
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
-| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 15/100 | Files decrypt correctly; no opcode mappings yet |
+| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 35/100 | Pool type system decoded (F=var_ref, C=pool_ptr, compound blobs); 6 opcode roles inferred; opcode semantics need multi-program comparison |
 | `.DCY` binary format | ✅ DONE | 95/100 | **Pass 109**: 8-byte ID header + DFM content (text "object..." 37/41; binary ff0a00+classname+TPF0 4/41); all 41 forms = Delphi TEditForm definitions for launcher/utility programs; EVOUSERS/WBKLUGRID documented |
 | `suwin*.DCY` format | ⬜ Unknown | 0/100 | 7 files; K_D fails; possibly use K_A or K_C |
 | K_A / K_C key purposes | ⬜ Unknown | 0/100 | Captured live; which file types they encrypt is unknown |
@@ -135,9 +135,11 @@ Current decryption scripts:
 2. **Identify K_A / K_C purposes** — try K_A and K_C against `suwin*.DCY` (7 files).
    Also watch what files EVO opens at startup (Frida file-open hook) — K_A fired at boot.
 
-3. **`.RWN` bytecode disassembly** — now fully decryptable. Start with `MDUMMY.RWN` or smallest
-   T7 file. Use BKMRF 3-way compile diff (BKMRF.org2 vs BKMRF.TEST vs BKMRF.RUN) to isolate
-   stable bytes (opcodes) from variable bytes (addresses). Build opcode table.
+3. **`.RWN` bytecode disassembly** (C:35/100, Pass 110) — pool type system decoded; compound blob
+   structure confirmed; F-type=var_ref, C-type=pool_ptr proven from suwin7.rwn.
+   **Next:** run `rwn_dispatch_compare.py` across ≥5 programs to find common opcodes (control-flow
+   invariants). Cross-reference BKMRF 3-way compile diff (BKMRF.org2 vs BKMRF.TEST vs BKMRF.RUN)
+   to isolate stable opcode bytes from variable address bytes. Target: C:50/100.
 
 4. **`.RUN` opcode mapping (continued)** — continue from BKAWLB analysis; map
    `if`/`goto`/`proc`/`return` constructs. Use `scripts/tas6_analyze.py`.

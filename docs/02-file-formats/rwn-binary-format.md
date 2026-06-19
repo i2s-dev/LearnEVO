@@ -1,7 +1,7 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, bytecode opcodes C:15/100
-Last updated: 2026-06-16
+Status: partial — header confirmed, symbol tables confirmed, pool/data section decoded C:35/100
+Last updated: 2026-06-19
 
 ---
 
@@ -48,9 +48,8 @@ Offset      Size                    Content
 0x080       var×16 bytes            File reference table (16-byte null-padded entries)
 var         1×16 bytes              Table terminator (all-zero entry)
 var         padding to align        Zero padding
-0x6C0*      hdr[0x00] bytes         Dispatch / jump table (8-byte entries)
-var         var                     String constant pool
-var         var                     Bytecode instructions
+0x6C0*      hdr[0x00] bytes         Dispatch / instruction table (8-byte entries)
+var         var                     Pool / data section (typed values + compound blobs)
 end-proc    hdr[0x0C] bytes         Procedure symbol table (53-byte records)
 end-proc    60 bytes                Source filename (space-padded to 60 bytes)
 end-src     hdr[0x20] bytes         Variable symbol table (77-byte records)
@@ -70,7 +69,7 @@ end-src     hdr[0x20] bytes         Variable symbol table (77-byte records)
 | 0x0C   | 0x0000_009F = 159   | 0x0000_48E0 = 18,656 | Procedure table size (bytes); = proc_count × 53 |
 | 0x10   | 0x0000_0000 = 0     | 0x0000_0000 = 0       | Unknown (always 0?) |
 | 0x14   | 0x0000_0044 = 68    | 0x0000_0F4D = 3,917   | **Variable count** |
-| 0x18   | 0x0000_120C = 4,620 | 0x0000_120C = 4,620   | Unknown (same in both — likely a compiler version constant) |
+| 0x18   | 0x0000_120C = 4,620 | 0x0000_120C = 4,620   | Byte offset of first non-TEMP variable (= 60 × 77 — TAS Pro 7 always allocates 60 TEMP vars?) |
 | 0x1C   | 0x0000_003C = 60    | 0x0000_003C = 60      | Source filename block size = 60 (always) |
 | 0x20   | 0x0000_1474 = 5,236 | 0x0004_9A29 = 301,609 | **Variable table size** (= var_count × 77) |
 | 0x24   | 0x0000_FFFF         | 0x0007_D000           | Unknown |
@@ -112,40 +111,117 @@ ISREMIND, LOT, SERIAL, ISNCR.
 
 ---
 
-## Dispatch Table (offset 0x6C0)
+## Dispatch / Instruction Table (offset 0x6C0)
 
-Structure: 8-byte entries, `[4-byte DWORD A] [4-byte DWORD B]`.
-DWORD B increases monotonically — likely byte offsets into the bytecode/data section.
-DWORD A encodes an opcode byte (in byte 0) + type/flag bytes.
+Each entry is 8 bytes: `[4-byte instruction word] [4-byte pool_offset]`.
 
-**Observed first-DWORD values in suwin7.rwn:**
+**Instruction word encoding** (little-endian on disk = `[op][00][00][sub]`):
+- Byte 0: opcode
+- Byte 1–2: always 0x00 0x00
+- Byte 3: sub-type / argument count (role not fully understood)
 
-| DWORD A (little-endian) | Opcode byte (byte 0) | Count | Meaning (unconfirmed) |
-|-------------------------|---------------------|-------|----------------------|
-| 0x0A00_000F             | 0x0F                | 13    | Unknown opcode 0x0F  |
-| 0x1400_003B             | 0x3B                | 6     | Unknown opcode 0x3B  |
-| 0x0400_0042             | 0x42                | 9     | Unknown opcode 0x42  |
-| 0x0500_0020             | 0x20                | 3     | Unknown opcode 0x20  |
-| 0x0900_0043             | 0x43                | 1     | Unknown opcode 0x43  |
-| 0x0400_0045             | 0x45                | 1     | Unknown opcode 0x45  |
-| 0x05FE_0057             | 0x57                | 1     | Unknown opcode 0x57  |
+**pool_offset**: byte offset into the pool/data section immediately following the dispatch table.
+Most dispatch entries' pool_offset points to a specific byte offset within a compound "blob" in the pool.
+Multiple consecutive dispatch entries often reference different offsets within the **same** blob,
+collectively encoding the arguments for one high-level TAS Pro 7 statement.
+
+Null terminator: `00 00 00 00  00 00 00 00`
+
+**Observed opcodes in suwin7.rwn (34 total entries):**
+
+| Opcode | sub_byte | Count | Likely meaning |
+|--------|----------|-------|----------------|
+| 0x0F   | 0x0A     | 13    | ASSIGN / property-set |
+| 0x42   | 0x04     | 9     | GOSUB / CALL procedure |
+| 0x3B   | 0x14     | 6     | GOTO / conditional branch |
+| 0x20   | 0x05     | 3     | MOUNT form (d[0] → 'SUWIN7.DFM') |
+| 0x43   | 0x09     | 1     | Unknown |
+| 0x45   | 0x04     | 1     | Unknown (possibly ENTER / input) |
+| 0x57   | 0x05     | 1     | Unknown (possibly WAIT — refs WAIT_SECS) |
 
 ---
 
-## String Constant Pool
+## Pool / Data Section
 
-Follows immediately after the dispatch table. Format:
+Immediately follows the dispatch table (at `0x6C0 + hdr[0x00]`).
 
+### Typed pool values
+
+The pool is a flat byte array of **typed values**. Each value begins with a 1-byte type code:
+
+| Type byte | ASCII | Size | Encoding | Meaning |
+|-----------|-------|------|----------|---------|
+| 0x41      | A     | variable | `[41][00][len16_LE][data]` | String or binary blob |
+| 0x52      | R     | 5 bytes  | `[52][value32_LE]`  | Real/numeric constant |
+| 0x53      | S     | 5 bytes  | `[53][value32_LE]`  | (string ref?) |
+| 0x46      | F     | 5 bytes  | `[46][var_table_offset32_LE]` | Variable reference (= var_index × 77) |
+| 0x43      | C     | 5 bytes  | `[43][pool_offset32_LE]`     | Pool pointer (byte offset into pool section) |
+| 0x4E      | N     | 5 bytes  | `[4E][value32_LE]`  | Numeric constant |
+| 0x4D      | M     | 5 bytes  | `[4D][value32_LE]`  | (type M?) |
+| 0x4C      | L     | 5 bytes  | `[4C][value32_LE]`  | Logical value |
+| 0x44      | D     | 5 bytes  | `[44][value32_LE]`  | Date? |
+| 0x49      | I     | 5 bytes  | `[49][value32_LE]`  | Integer |
+| 0xFF      | —     | 1 byte   | sentinel only       | End-of-blob sentinel |
+| 0xFD      | —     | 1 byte   | marker only         | Begin-of-blob marker |
+
+### Critical: type 0x46 (F) = variable reference
+
+`F_value / 77 = variable_index`. The 0x46 type byte followed by `(var_index * 77)` as a LE32
+references the variable at that index in the variable symbol table.
+
+**Confirmed from suwin7.rwn:**
+- `46 A6 12 00 00` = 0x12A6 = 4774 = 62 × 77 → var[62] = SERIALNUMBER
+- `46 F3 12 00 00` = 0x12F3 = 4851 = 63 × 77 → var[63] = SNVALUE
+- `46 59 12 00 00` = 0x1259 = 4697 = 61 × 77 → var[61] = WAIT_SECS
+- `46 0C 12 00 00` = 0x120C = 4620 = 60 × 77 → var[60] = CURR_TIME
+- `46 4D 00 00 00` = 0x004D = 77  =  1 × 77 → var[1]  = TEMP1
+- `46 00 00 00 00` = 0x0000 = 0   =  0 × 77 → var[0]  = TEMP0
+
+### Critical: type 0x43 (C) = pool pointer
+
+The LE32 value is a **byte offset into the pool section** referencing another pool entry.
+
+**Confirmed from suwin7.rwn:**
+- `43 33 00 00 00` = pool[0x0033] → STR "DEMO"
+- `43 5B 00 00 00` = pool[0x005B] → VALR(0)
+- `43 80 00 00 00` = pool[0x0080] → VALR(800,000)
+- `43 85 00 00 00` = pool[0x0085] → VALR(900,000)
+- `43 73 01 00 00` = pool[0x0173] → STR "lblUserSerialNum"
+- `43 87 01 00 00` = pool[0x0187] → STR "Caption"
+- `43 AE 01 00 00` = pool[0x01AE] → STR "DEMO" (second 'DEMO' pool entry)
+
+### Compound blob structure
+
+Most pool 0x41-type entries that contain binary (non-printable) data are **compound argument blobs**.
+These blobs encode the arguments for one or more dispatch table instructions.
+
+Blob layout (data bytes, after the `41 00 len16` header):
 ```
-[type_byte=0x41] [0x00] [uint16 LE length] [ASCII chars]
+FD          begin-of-blob marker
+[1+ metadata bytes]   flags, arg-count, or unknown
+[0x46 F entries]      variable references (= var_index × 77)
+[0x43 C entries]      pool pointers (arguments by reference)
+[0x4E/0x52/etc.]      inline numeric constants
+FF          end-of-blob sentinel
 ```
 
-Each entry is variable-length. `0x41` = the type marker for string constants.
+Multiple dispatch entries point to different byte offsets WITHIN the same blob,
+each reading the specific sub-field relevant to its operation.
 
-**Example from suwin7.rwn:**
-- `41 00 0A 00 "SUWIN7.DFM"` → 10-char string
-- `41 00 21 00 "THISSHOULDREALLYFUCKRICKATKISONUPA"` → 33-char string (developer comment)
-- `41 00 04 00 "DEMO"` → 4-char string
+**Blob example — e[3] from suwin7.rwn:**
+```
+FD 00 00 00 00 00 07 46 A6 12 00 00 43 33 00 00 00 00 00 00 00 00 00 FF 00
+                  ^        SERIALNUMBER        ^   pool→'DEMO'          ^sentinel
+                  |
+                  d[5](op0x42,sub4) and d[6](op0x3B,sub0x14) point into here
+```
+Semantic: evaluates `SERIALNUMBER` against the string "DEMO" — likely `IF SERIALNUMBER = 'DEMO' THEN ...`
+
+**Known semantics from suwin7.rwn blob analysis:**
+- Blob with F=SERIALNUMBER + C→'DEMO': validates serial number is "DEMO"
+- Blob with F=SNVALUE × 2 + C→VALR(800000) + C→VALR(900000): countdown timer comparison
+- Blob with C→'lblUserSerialNum' + C→'Caption': sets `lblUserSerialNum.Caption` UI property
+- Blob with C→'lblUserLicType' + C→'Caption': sets `lblUserLicType.Caption` UI property
 
 ---
 
@@ -244,7 +320,13 @@ Variable count for T7INA.RWN: **3,917 variables** (DWORD[0x14] = 0x0F4D).
 | Procedure names are plaintext in binary | 100/100 | Direct observation |
 | Variable names are plaintext in binary | 100/100 | Direct observation |
 | Dispatch table starts at 0x6C0 | 80/100 | Both examined files; may be derived from file table size |
-| Header[0x00] = dispatch table size | 80/100 | suwin7: header[0x00]=280, 0x6C0+280=0x7D8=string pool start |
+| Header[0x00] = dispatch table size | 80/100 | suwin7: header[0x00]=280, 0x6C0+280=0x7D8=pool start |
+| Pool type 0x46 (F) = variable reference, value = var_index × 77 | 95/100 | suwin7: 6 F-values all exact multiples of 77; mapped to named vars SERIALNUMBER, SNVALUE, CURR_TIME, WAIT_SECS |
+| Pool type 0x43 (C) = pool pointer (byte offset into pool) | 90/100 | suwin7: 7 C-values confirmed to point to pool entry starts ('DEMO', 'lblUserSerialNum', 'Caption', VALR constants) |
+| Compound blobs use FD=begin-marker, FF=end-sentinel | 85/100 | All binary BLOBs in suwin7 follow this pattern; FD never appears as data type byte |
+| Dispatch entries reference byte offsets within compound blobs | 85/100 | Multiple dispatch entries shown pointing to different sub-field offsets in the same blob |
+| Pool type 0x41 (A) = string/blob, format [41][00][len16][data] | 95/100 | All strings confirmed; non-printable blobs parse cleanly with same format |
+| Pool fixed-width types (R,N,M,L,D,I,S,C,F) = 5 bytes [type][value32_LE] | 80/100 | VALR entries confirmed; others inferred from consistent spacing |
 | TAS32 (old hypothesis) present in decrypted RWN | WRONG | Old analysis used sha1("mabufoju") key; TAS32 not present with correct key K_B |
 
 ---

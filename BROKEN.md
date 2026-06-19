@@ -8,6 +8,27 @@ without explicit reasoning for why a different outcome is expected now.
 
 ---
 
+## Bug B-009 — UnicodeEncodeError in RWN analysis scripts on Windows console
+
+**Date:** 2026-06-19
+**Status:** ✅ FIXED (Pass 110 — lesson only; scripts are scratchpad-only)
+
+**Symptom:** `rwn_decode_pool.py` and `rwn_varmap.py` crashed with
+`UnicodeEncodeError: 'charmap' codec can't encode character '←'` (←) and
+`'→'` (→). The final summary sections of both scripts errored, though all
+critical data had already printed before the crash.
+
+**Root cause:** Windows console default encoding is `cp1252`, which cannot encode
+Unicode arrows U+2190 (←) and U+2192 (→) used in print strings for display.
+
+**Fix:** Replace all Unicode special characters in print/f-string literals with plain-ASCII
+alternatives (`"<--"`, `"->"`, `"=>"`) in any script that runs in a Windows terminal.
+
+**Lesson:** Windows `cmd`/PowerShell consoles default to `cp1252`. Never use Unicode
+arrows, boxes, or other non-ASCII characters in `print()` statements in analysis scripts.
+
+---
+
 ## Bug B-008 — T7USG.DFM and T7MAPDEPO.DFM incorrectly described as TImageList
 
 **Date:** 2026-06-18
