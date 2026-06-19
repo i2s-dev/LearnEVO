@@ -561,7 +561,7 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.8 Bill of Materials (BM)
 - [x] ✅ Menu codes listed — **C: 65/100**
-- [x] ✅ Tables: BKBM\* (10 tables) — **C: 60/100**
+- [x] ✅ Tables: BKBM\* (10 tables) — all 10 schemas extracted and field-level documented in tier1-tables.md; 5-table core schema cluster (BKBMMSTR/AMTR/EMTR/AVAL/SUMM all 26f identical), remarks/notes/dim/cnfg satellites fully interpreted; BKBMDIM (sheet cut dimensions) confirmed; BKBMCNFG flags documented; Pass 129 2026-06-19 — **C: 80/100**
 - [x] ✅ BOM Tree analysis tool documented (BOMTREE.RWN) — **C: 60/100**
 - [x] ✅ 4 core forms read: T7BMA (master entry, 15 remarks/component), T7BMB (print with status codes Y/N/O/D/E/P/S/Q/R), T7BMC (multi-level print, "up to X levels"), T7BMD (availability + shortages) — **C: 62/100**
 - [x] ✅ Item type codes confirmed: R/F/A/M/N/L/B/T/K/O (10 types) — **C: 75/100**

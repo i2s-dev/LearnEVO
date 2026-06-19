@@ -2052,3 +2052,155 @@ Standard BK_DESC_* 5-field pattern (CODE/NUM/LINE/NOTES/DESC). GL-specific free-
 *Document updated: 2026-06-19 (Pass 128)*
 *Source: `samples/ddf/schema.md`*
 *Confidence: 82/100 — All 28 table schemas extracted from DDF; field meanings interpreted from naming conventions; journal type codes and BKGLSTMT section mapping not confirmed against live data.*
+
+---
+
+---
+
+## BKBM* Family — Bill of Materials Satellite Tables
+
+All confirmed from DDF — Pass 129 2026-06-19.
+
+### Structural Overview
+
+The BKBM* family (10 tables) revolves around one core BOM line schema shared by 5 tables, with 3 satellite annotation tables and 2 utility tables:
+
+| Table | Fields | Role |
+|-------|--------|------|
+| BKBMMSTR | 26 | BOM master (main company) |
+| BKBMAMTR | 26 | BOM master "A" company mirror |
+| BKBMEMTR | 26 | BOM master "E" company mirror |
+| BKBMAVAL | 26 | Alternate/validated BOM lines |
+| BKBMSUMM | 26 | Rolled-up/exploded BOM summary (MRP/WO use) |
+| BKBMREMK | 20 | BOM component remarks (main) |
+| BKBMERMK | 20 | BOM component remarks "E" company mirror |
+| BKBMNOTE | 16 | BOM assembly-level notes |
+| BKBMDIM | 11 | BOM component cut dimensions (sheet/material nesting) |
+| BKBMCNFG | 7 | BOM module configuration |
+
+---
+
+### Core BOM Line Schema (26f — shared by BKBMMSTR / BKBMAMTR / BKBMEMTR / BKBMAVAL / BKBMSUMM)
+
+All five tables are byte-for-byte identical in schema. The 2-byte gap between PARENT (size 15, offset 0) and COMPONENT (offset 17) is a structural TAS Pro 7 record-layout pad — treat PARENT as a 17-byte slot.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKBM_PARENT | STRING | 15 | Parent item code (FK → BKICMSTR, PK part 1) |
+| 2 | BKBM_COMPONENT | STRING | 15 | Component item code (FK → BKICMSTR, PK part 2) |
+| 3 | BKBM_QTY_REQD | FLOAT | 8 | Quantity required per parent assembly (8 dec places) |
+| 4 | BKBM_REFERENCE | STRING | 20 | Reference designator (PCB ref-des, drawing callout, etc.) |
+| 5 | BKBM_PROD_TYPE | STRING | 1 | Component type flag (see item type codes) |
+| 6 | BKBM_PROD_SCRAP | FLOAT | 8 | Scrap factor % (added to qty when exploded) |
+| 7 | BKBM_PROD_OP | STRING | 3 | Routing operation code where this component is consumed |
+| 8 | BKBM_PROD_OPYN_1 | STRING | 1 | Operation 1 include flag (Y/N) |
+| 9 | BKBM_PROD_OPYN_2 | STRING | 1 | Operation 2 include flag |
+| 10 | BKBM_PROD_OPYN_3 | STRING | 1 | Operation 3 include flag |
+| 11 | BKBM_PROD_OPYN_4 | STRING | 1 | Operation 4 include flag |
+| 12 | BKBM_PROD_OPYN_5 | STRING | 1 | Operation 5 include flag |
+| 13 | BKBM_PROD_OPYN_6 | STRING | 1 | Operation 6 include flag |
+| 14 | BKBM_PROD_PRICE | FLOAT | 8 | Component unit price (for cost roll-up override) |
+| 15 | BKBM_PROD_RTNUM | UBINARY | 2 | Routing number reference |
+| 16 | BKBM_PROD_DUPOP | STRING | 1 | Duplicate-operation flag |
+| 17 | BKBM_PROD_OPDSC | STRING | 5 | Operation description short code |
+| 18 | BKBM_PROD_VEND | STRING | 10 | Preferred vendor for this component (FK → BKAPVEND) |
+| 19 | BKBM_DATE1 | DATE | 4 | Effective-from date |
+| 20 | BKBM_DATE2 | DATE | 4 | Effective-to date (obsolete after this date) |
+| 21 | BKBM_EXTRA | STRING | 50 | Extra/notes |
+| 22 | BKBM_REV | STRING | 5 | BOM revision level |
+| 23 | BKBM_P_TYPE | STRING | 10 | Parent item type classification |
+| 24 | BKBM_C_TYPE | STRING | 10 | Component item type classification |
+| 25 | BKBM_EST_LINE | FLOAT | 8 | Estimating line number (sequence for cost estimating) |
+| 26 | BKBM_UID | STRING | 20 | User ID of last editor |
+
+**Table roles:**
+- **BKBMMSTR** — active BOM (main company); what WO explosion reads
+- **BKBMAMTR** — "A" company BOM mirror for multi-company deployments
+- **BKBMEMTR** — "E" company BOM mirror
+- **BKBMAVAL** — alternate/validated BOM variant; used when a component substitution has been approved
+- **BKBMSUMM** — single-level roll-up used by MRP and WO explosion; accumulates total qty across multi-level tree
+
+---
+
+### BKBMREMK / BKBMERMK — BOM Component Remarks (20f each, identical)
+
+Per-component extended remarks. One row per component+line_number, supporting 15 × 64-character remark lines. PK = PARENT + LINE + COMP (3-key composite). BKBMERMK = "E" company mirror.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKBM_RM_PARENT | STRING | 15 | Parent item code (PK part 1) |
+| 2 | BKBM_RM_LINE | UBINARY | 2 | Line number (PK part 2) |
+| 3 | BKBM_RM_COMP | STRING | 15 | Component item code (PK part 3) |
+| 4–18 | BKBM_RM_REMARK_1..15 | STRING | 64 each | 15 remark lines (total 960 bytes of text) |
+| 19 | BKBM_RM_UID | STRING | 20 | User ID of last editor |
+| 20 | BKBM_RM_EXTRA | STRING | 50 | Extra/notes |
+
+---
+
+### BKBMNOTE — BOM Assembly Notes (16f)
+
+Assembly-level notes keyed by PARENT only (not per-component). Supports 15 × 64-character note lines per assembly item.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKBM_NT_PARENT | STRING | 15 | Parent item code (PK) |
+| 2–16 | BKBM_NT_NOTE_1..15 | STRING | 64 each | 15 note lines (total 960 bytes) |
+
+---
+
+### BKBMDIM — BOM Component Cut Dimensions (11f)
+
+Sheet/material nesting dimensions for components that come from sheet stock (metal, laminate, PCB substrate, etc.). Stores the X/Y cut dimensions, the machine/saw code, and the trim allowance and remnant return dimensions.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKBM_DIM_PARENT | STRING | 15 | Parent item code (PK part 1) |
+| 2 | BKBM_DIM_LINE | UBINARY | 2 | Line number (PK part 2) |
+| 3 | BKBM_DIM_COMP | STRING | 15 | Component item code (PK part 3) |
+| 4 | BKBM_DIM_PART_X | FLOAT | 8 | Part dimension X (width/length, 4 dec) |
+| 5 | BKBM_DIM_PART_Y | FLOAT | 8 | Part dimension Y (height/width, 4 dec) |
+| 6 | BKBM_DIM_MACH | STRING | 4 | Machine/saw code for this cut |
+| 7 | BKBM_DIM_TRIM_X | FLOAT | 8 | Trim allowance X (kerf + handling, 2 dec) |
+| 8 | BKBM_DIM_TRIM_Y | FLOAT | 8 | Trim allowance Y |
+| 9 | BKBM_DIM_REMN_X | FLOAT | 8 | Remnant returned X dimension (4 dec) |
+| 10 | BKBM_DIM_REMN_Y | FLOAT | 8 | Remnant returned Y dimension |
+| 11 | BKBM_DIM_EXTRA | STRING | 50 | Extra/notes |
+
+---
+
+### BKBMCNFG — BOM Configuration (7f)
+
+Single-record table (keyed by NUM) holding BOM module-level defaults: which GL account to charge, whether to auto-post, whether to roll costs, whether to include labor in cost roll.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKBM_CNFG_NUM | FLOAT | 8 | Configuration record number (PK, typically 1) |
+| 2 | BKBM_CNFG_GLACT | STRING | 10 | Default GL account for BOM postings |
+| 3 | BKBM_CNFG_GLDPT | STRING | 4 | Default GL department |
+| 4 | BKBM_CNFG_AUTO | STRING | 1 | Auto-post flag (Y/N) |
+| 5 | BKBM_CNFG_POST | STRING | 1 | Post-to-GL flag |
+| 6 | BKBM_CNFG_ROLL | STRING | 1 | Cost roll-up enable flag |
+| 7 | BKBM_CNFG_LABOR | STRING | 1 | Include labor in cost roll flag |
+
+---
+
+**BKBM* Family Summary Table** (Pass 129 2026-06-19):
+
+| Table | Fields | Role | Mirror |
+|-------|--------|------|--------|
+| BKBMMSTR | 26 | BOM component lines (main) | — |
+| BKBMAMTR | 26 | BOM lines "A" company | BKBMMSTR (identical) |
+| BKBMEMTR | 26 | BOM lines "E" company | BKBMMSTR (identical) |
+| BKBMAVAL | 26 | Alternate/validated BOM lines | BKBMMSTR (identical schema, different lifecycle) |
+| BKBMSUMM | 26 | Rolled-up BOM for MRP/WO explosion | BKBMMSTR (identical schema, summarized content) |
+| BKBMREMK | 20 | Component remarks (main) | — |
+| BKBMERMK | 20 | Component remarks "E" company | BKBMREMK (identical) |
+| BKBMNOTE | 16 | Assembly-level notes | — |
+| BKBMDIM | 11 | Sheet cut dimensions | — |
+| BKBMCNFG | 7 | BOM module configuration | — |
+
+---
+
+*Document updated: 2026-06-19 (Pass 129)*
+*Source: `samples/ddf/schema.md`*
+*Confidence: 80/100 — All 10 table schemas extracted from DDF; core BOM line fields interpreted from names + cross-reference with BM form analysis; PROD_OPYN_1..6 semantics inferred (which routing op uses this component); DUPOP and CNFG flag values not confirmed against live data.*
