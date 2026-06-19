@@ -251,6 +251,24 @@ to resolve fully:
     - **evoDCs first instruction**: 0x20 → A[6]:460c12000000 (binary blob, not DFM string). This may be a dynamic form or a NULL form creation — needs further investigation.
     - Next step to reach C:70+: decode the 0x20 BIND HANDLER arguments (pool offset → what structure? proc index? event name?); confirm 0x30 as RETURN; identify 0x43/0x45/0x49 from t7nest context.
 
+17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
+    - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has
+      instructions interleaved with inline data records (0x41-tagged strings/blobs).
+    - **Still open:**
+      - **Var descriptor entry format**: entries begin at var_section[0x0460]. First 7 bytes of each entry
+        look like a 7-byte instruction record: `[type_tag:1][0x00:1][storage_size:1][runtime_offset_LE4:4]`.
+        But what do bytes [7..end] of each entry encode? (entry size = full runtime storage = e.g. 97 bytes)
+      - **BKMRF/BKDCA pre-instruction data block**: preamble=11780 for BKMRF; instructions confirmed at
+        abs=0x3C4A (offset=+11786 from code_start). What is the preamble value encoding exactly?
+        Is it the byte count of the data block? Does the data block contain form layout or string pool?
+      - **Opcode semantics**: 0x4B=VAR_INIT (first instr), 0x3B=BRANCH, 0x0F=ASSIGN (cross-confirmed
+        from .RWN analysis). 0x20, 0xC1, 0x0E, 0xC0, 0x49, 0x45, 0x48, 0x1F, 0x13, 0x06 = unknown.
+        Next step: align BKAWLB source statements against instruction stream at code_start+2.
+      - **Type tag to TAS Pro source type mapping**: 0x4B, 0x71, 0x3B, 0x0F, 0x1F, 0x13, 0x06 — what are
+        the corresponding TAS Pro 6 types (A=alpha, a=alpha-array, I=integer, D=date, N=numeric, etc.)?
+      - **runtime_base=0x0460 — is it universal?** Is the 0x0460 threshold (1120 zero bytes) the same
+        for all .RUN programs, or does it vary? Check against BKMRF/BKDCA/BKLME.
+
 ## Nice-to-have follow-ups (not blocking)
 
 - **Extract CHM contents fully.** Ran `hh -decompile` but it quietly

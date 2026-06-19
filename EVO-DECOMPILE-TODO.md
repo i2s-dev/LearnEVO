@@ -159,14 +159,19 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
 - [x] ✅ 554 menu codes extracted from `.RUN` string dump — **C: 88/100**
 - [x] ✅ Still in active use for legacy BK\* / T6\* modules — **C: 80/100**
-- [x] ✅ File structure confirmed: header / table-name slots / variable storage / code+string pool — **C: 72/100**
+- [x] ✅ File structure confirmed: header / table-name slots / var section / code section — **C: 78/100**
   - Magic "TAS32" at offset 0x35; version byte at 0x3A; table names at 0x80 (16-byte slots)
-  - Variable storage: zero-initialized block, size = header[0x18]
+  - Var section: [0..0x045F] = zero-initialized runtime storage; [0x0460..] = var descriptor table
+  - code_start = 0x80 + N×16 + var_size; 2-byte preamble precedes instruction stream
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 22/100** (partial; key opcodes 0x41/0x46/0x4E identified)
-  - Opcode `41 00 LL LL data` = PUSH_VALUE (string literal or compiled expression)
-  - Table names embedded as inline strings (runtime does string-based table lookup, not slot index)
-  - 7 SRC+RUN Rosetta Stone pairs ready; BKMRF 3-way compile diff planned
+- [x] 🔄 Bytecode instruction set — **C: 35/100** (7-byte fixed instruction format confirmed)
+  - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
+  - Var descriptor table at var_section[0x0460] (file 0x06C0 for BKAWLB); each entry = runtime var size
+  - 13 opcodes identified in instruction stream: 0x4B,0x20,0xC1,0x0E,0xC0,0x49,0x3B,0x0F,0x45,0x48,0x1F,0x13,0x06
+  - Code section also contains inline data records (0x41-tagged strings); addr refs into code section point to these
+  - BKMRF preamble=11780 → large data block precedes instruction stream; instructions confirmed at abs=0x3C4A
+  - Opcode semantics still mostly unknown; 0x3B=BRANCH, 0x0F=ASSIGN cross-confirmed from .RWN analysis
+  - 7 SRC+RUN Rosetta Stone pairs available; BKMRF 3-way compile diff planned for next pass
 - [ ] ⬜ All readable logic extracted from `.RUN` string sections
 
 ### 2.4 `.DFM` — Delphi Form Layout
