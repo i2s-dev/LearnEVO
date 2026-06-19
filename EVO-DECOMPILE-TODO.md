@@ -428,7 +428,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `BKPRMSTR` — Payroll master (384 fields) — all fields grouped and documented; BKPRCURP/BKPRHIST, BKPRINFO, BKPRSALE/BKPRBOOK, BKPRTC/BKPRTCFG also documented; docs/03-modules/pr-payroll/README.md (Pass 110f 2026-06-19) — **C: 90/100**
 - [x] ✅ `BKSLEVEL` — **SOLVED: Security level permission matrix** (14 menus × 20 options = 422 fields; links AHSYLOG.AHSY_USER_LEVL to allowed operations) — **C: 68/100**
 - [x] ✅ `BKPRGLFL` — **SOLVED: Payroll GL posting config** (664 fields: 20 user deductions × GL accounts/limits/pct + 30 tax vendors) — **C: 62/100**
-- [ ] ⬜ `ISJAVA` table — locate actual table name in DDF and document all fields
+- [x] ✅ `ISJAVA` table — confirmed NOT in DDF (TAS runtime-only, not registered in Pervasive schema); schema known from Java decompilation: IS_JAVA_UID(PK)+IS_JAVA_DATE+IS_JAVA_PARAM_1..N; documented in architecture section — **C: 75/100**
 
 ---
 
@@ -511,7 +511,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ 16+ location/bin forms (T7INL* series) confirmed — **C: 60/100**
 - [x] ✅ FIFO/LIFO/average cost layer logic traced: BKICVAL (4f, CODE+DATE PK, TOTVL/UOH) holds cost layers; FIFO=oldest DATE first, LIFO=newest, average=skip layers use INVTXN.AVGCOST running calc; INVTXN (24f, MTIT_* prefix) is complete audit log — receipt/shipment/adjustment/WO-issue/WO-receipt all logged with cost+qty+lot+serial+ref; docs/03-modules/in-inventory/README.md (Pass 110h 2026-06-19) — **C: 78/100**
 - [x] ✅ Physical inventory workflow (PI module) traced: PI-A freeze→PI-C tag entry→PI-G post variances→PI-H purge; all 7 BKPI* tables documented with field semantics (BKPIMSTR 3f session header, BKPIFROZ 19f frozen snapshot, BKPIPHYS 14f count tags, BKPILOT/BKPILCNT 10f lot frozen/counted, BKPISER/BKPISCNT 10f serial frozen/counted); PI-G posts INVTXN adjustments; docs/03-modules/pi-physical-inventory/README.md (Pass 111a 2026-06-19) — **C: 82/100**
-- [ ] ⬜ Lot tracking / serial number tracking workflow confirmed
+- [x] ✅ Lot tracking / serial number tracking workflow confirmed: LOT (25f, MTLOT_CODE+LOT PK) = lot master with PO/WO origin, EXPDATE, ONHAND, RECQTY, POCOST/WOCOST, 5 notes, BEGIN/OUT/MAXOUT for weight tracking; SERIAL/SERIALH (30f each, MTSER_CODE+SERIAL PK) = per-unit biography: receipt→WO issue→WO completion→ship; SERIAL→SERIALH on shipment; all movements logged in INVTXN; READMEs created in lc-lot-control/ and sc-serial-control/ (Pass 111b 2026-06-19) — **C: 88/100**
 
 ### 7.4 Sales Orders (SO)
 - [x] ✅ Menu codes listed (48 operations — largest module) — **C: 72/100**
@@ -599,8 +599,8 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Tables: BKDC\* (7 tables) — **C: 55/100**
 - [x] ✅ Source file: BKDCA.SRC analyzed — **C: 65/100**
 - [x] ✅ Handheld forms: T7HH\*, label tables BKDC\* — **C: 60/100**
-- [ ] ⬜ Full DC workflow (scanner → table entry → WO update) traced
-- [ ] ⬜ All BKDC\* tables with fields documented
+- [x] ✅ Full DC workflow traced: scanner input→BKDCCLAB→DC-G review/approval→DC-H post to BKDCLAB→WORKORD update→BKDCPLAB→archive BKDCHLAB; all LAB_* tables share 50f schema; docs/03-modules/dc-data-collection/README.md (Pass 111b 2026-06-19) — **C: 78/100**
+- [x] ✅ All BKDC\* tables documented: BKDCCFG(7f config), BKDCSHFT(34f 3-shift schedule), BKDCCLAB/BKDCLAB/BKDCPLAB/BKDCHLAB/BKDCTLAB(all 50f same schema: LAB_DATE+EMP+WO+OPER PK; START/FINISH times; PARTS/SCRAPCD/SCRAPQTY; CYCLE_HR/MIN/SEC; audit+generic fields) — **C: 78/100**
 
 ### 7.13 Serial Control (SC) ⚠️ NAME CORRECTED — was "Scheduling/Capacity"
 - [x] ✅ Menu codes listed — **C: 68/100**
@@ -618,7 +618,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Menu codes listed — **C: 65/100**
 - [x] ✅ Tables: BKPI\* (7 tables) — **C: 55/100**
 - [x] ✅ PI-A (Capture Frozen Inventory: YEAR/QTR/FDATE/COUNTTYPE), PI-B (print count sheets), PI-C (Enter Tag Counts: BKPH.TAGNUM/LOC/EMPNAME/CODE/LOT), PI-D (Missing Tags) — **C: 62/100**
-- [ ] ⬜ Variance calculation and posting steps (remaining PI forms)
+- [x] ✅ Variance calculation and posting steps confirmed: PI-G compares BKPIPHYS.BKPH_ACTQTY to BKPIFROZ.BKPH_INFO_UOH; delta posted as INVTXN adjustment; BKICMSTR.UOH updated; BKPIFROZ.BKPH_INFO_GLPST+INPST set to Y; lot/serial variants use BKPILCNT vs BKPILOT and BKPISCNT vs BKPISER; docs/03-modules/pi-physical-inventory/README.md (Pass 111a 2026-06-19) — **C: 82/100**
 
 ### 7.15 Labor / Time & Attendance (LW / LA)
 - [x] ✅ Menu codes listed — **C: 62/100**
