@@ -387,13 +387,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - BKSO\* (7 tables — Sales Orders)
   - BKSY\* (8 tables — System / Configuration)
 - [x] ✅ MT\* family (second-gen master tables) — **C: 55/100**
-- [x] ✅ WO\* family (30 tables — Work Orders) — **C: 65/100**
+- [x] ✅ WO\* family (30 tables — Work Orders) — all cross-referenced + WORKORD fully documented — **C: 92/100**
 - [x] ✅ IS\* (tax, utilities, Java integration — ISJAVA table) — **C: 68/100** (Pass 22–23: ISLBLMAP/IS2DBAR/ISUSAGE/ISAPAINL/ISALINKS/ISLINKS/ISESTASM/ISESADTL/ISMICADT/ESA/EST/ISTAXGRP all field-documented; ~200 smaller IS\* tables remain)
 - [x] ✅ AHSYLOG (security / user table) — **C: 72/100**
 - [ ] ⬜ Full per-table narrative documentation (see §16 for checklist)
 - [ ] ⬜ MT\* vs. BK\* scope difference confirmed (which company, which generation)
 - [ ] ⬜ BKARHINV anomaly fully resolved (sub-folder table, now documented)
-- [ ] ⬜ All 30 WO\* tables cross-referenced to Work Order module logic
+- [x] ✅ All 30 WO\* tables cross-referenced to Work Order module logic — functional groups (master/BOM/routing/labor/material/receipt/scheduling/audit/WC), naming convention (E=estimated/pending, H=history), WORKCTR + ROUTING templates fully documented; docs/03-modules/wo-work-orders/README.md (Pass 110e 2026-06-19) — **C: 92/100**
 - [ ] ⬜ Primary key confirmed for each of **728+** tables (from INDEX.DDF; originally 649, +55 pass 7b, +17 pass 8, +26 pass 9 = 747 minimum — see PROJECT-STRUCTURE.md Special/Misc Tables)
 - [ ] ⬜ Foreign key relationships mapped across module boundaries
 
@@ -424,8 +424,8 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `WORKORD` / `WORKCHG` — Work order header + change log — documented — **C: 70/100**
 - [x] ✅ `BKSOX` / `BKSOXH` — Sales Order extract: 25 fields documented — **C: 65/100**
 - [x] ✅ `BKARINV` / `BKARINVL` / `BKARINVI` — AR invoice header/lines/staging: fields and posting flow documented; BKAR_INVL_RTS = per-line release-to-ship flag; T7SAG = SO-G Post Invoices module confirmed — **C: 68/100**
-- [ ] ⬜ `BKPO????` — Purchase Order tables — all fields (BKAPPO + BKAPPOL identified but not field-level documented)
-- [ ] ⬜ `BKPRMSTR` — Payroll master (384 fields) — all fields
+- [x] ✅ `BKAPPO` / `BKAPPOL` — Purchase Order header (57f) and lines (38f) fully documented; PO family (active/history/archive/RFQ); WO outside-process link (BKAP_POL_WOPRE/WOSUF → WORKORD); unit conversion (PCONV); 3-way qty tracking (RQTY/IQTY/OO_QTY); docs/03-modules/ap-accounts-payable/README.md (Pass 110e 2026-06-19) — **C: 90/100**
+- [x] ✅ `BKPRMSTR` — Payroll master (384 fields) — all fields grouped and documented; BKPRCURP/BKPRHIST, BKPRINFO, BKPRSALE/BKPRBOOK, BKPRTC/BKPRTCFG also documented; docs/03-modules/pr-payroll/README.md (Pass 110f 2026-06-19) — **C: 90/100**
 - [x] ✅ `BKSLEVEL` — **SOLVED: Security level permission matrix** (14 menus × 20 options = 422 fields; links AHSYLOG.AHSY_USER_LEVL to allowed operations) — **C: 68/100**
 - [x] ✅ `BKPRGLFL` — **SOLVED: Payroll GL posting config** (664 fields: 20 user deductions × GL accounts/limits/pct + 30 tax vendors) — **C: 62/100**
 - [ ] ⬜ `ISJAVA` table — locate actual table name in DDF and document all fields
@@ -521,7 +521,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Order → shipping → invoice chain traced: T7SOA → T7SOE → T7SOC → T7SOF — **C: 70/100**
 - [x] ✅ Certificate of Conformance + Country of Origin compliance docs confirmed (T7SOC RTMs) — **C: 68/100**
 - [x] ✅ 5,001-element line item arrays confirmed (supports 5,000 lines per SO) — **C: 75/100**
-- [ ] ⬜ All BKSO\* tables with fields documented (BKSO, BKSOL, BKSOSH, BKSOHLOT, BKSOHSER, BKSOLOCK, BKSONOTE)
+- [x] ✅ All BKSO\* tables with fields documented — BKSOHLOT(14f=lot/serial ship tracking), BKSOHSER(14f=serial tracking, same layout), BKSOLOCK(5f=concurrent edit lock), BKSONOTE(5f=BK_DESC note lines), BKSOPO(16f=MRP planned PO, BKMRP prefix shared), BKSOX(25f=invoice supplemental/multi-company), BKSOXH(25f=BKSOX archive) — docs/03-modules/so-sales-orders/README.md (Pass 110e 2026-06-19) — **C: 93/100**
 - [ ] ⬜ Sales Analysis (SA module) tables and calculations
 
 ### 7.5 Purchase Orders (PO)
@@ -544,7 +544,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ DC-to-WO integration confirmed: DC postings write to same WO tables; T7WOKK reverses them — **C: 68/100**
 - [x] ✅ WO-PO linkage confirmed: outside process operations link to AP POs — **C: 68/100**
 - [x] ✅ Pass 42: ISWOCLOG(32f) = WO operation change audit log: IS_WOLOG_WOPRE(8)+WOSUF(2)+OPER(2) PK + OPDESC(30)+ITEM(15)+WC(12)+WCDESC(30)+CUST(10)+CUSNME(30)+ITEMDS(30)+CDATE+CWHO(30)+CTIME+CWHERE(15)+MACH(4)+ALPHA1_1/2(30 each)+FLAG_1..5+DATE_1..3+7more; every WO-op modification logged with WHO/WHEN/WHERE/MACHINE. ISWOHEX(63f) = alternate index of ISWOEX (IS_WOEX_* fields, 0 diff). ISWODESC/ISWOHDSC(5f each) = WO description notes, standard BK_DESC_* pattern — **C: 72/100**
-- [ ] ⬜ All 30 WO\* tables with fields documented
+- [x] ✅ All 30 WO\* tables with fields documented — full functional cross-reference in README, all groups: 3 WO masters, 5 BOM, 5 routing, 4 labor, 3 material, 3 receipt, 2 date, 2 extra-charge, 2 audit, 1 WC; plus ROUTING(62f)+ROUTTEMP(62f) routing templates — **C: 92/100** (Pass 110e 2026-06-19)
 - [x] ✅ WORKORD all 74 fields confirmed with meaning — 7-category cost structure (Setup/Mat/OutProc/Labor/VarOH/FixOH/Misc) × E/A/Variance; 32-byte DDF gap noted; docs/03-modules/wo-work-orders/README.md (Pass 110e 2026-06-19) — **C: 90/100**
 
 ### 7.7 General Ledger (GL)
@@ -585,12 +585,12 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.11 Payroll (PR)
 - [x] ✅ Menu codes listed (29 operations) — **C: 65/100**
-- [x] ✅ Tables: BKPR\* (16 tables); BKPRMSTR (384 fields — largest practical table) — **C: 55/100**
+- [x] ✅ Tables: BKPR\* (16 tables); BKPRMSTR (384 fields) fully field-grouped; all 16 tables documented to varying depth — **C: 88/100**
 - [x] ✅ Key forms read: T7PRA (W-4/employee tax setup), T7PRB (current payroll batch entry), T7PRF (11-bracket tax tables), T7PRE (direct deposit) — **C: 62/100**
 - [x] ✅ Tax table structure documented: 11-bracket tiers per tax code in BKPRFTAX — **C: 65/100**
 - [x] ✅ Array-based payroll entry confirmed (batch employee processing, 7 unlimited deduction types) — **C: 62/100**
 - [x] ✅ Pass 46: All 40+ T7PR* programs mapped. Full lifecycle: PR-A(employee setup)→PR-J/K(time cards/DC labor import)→PR-B(current period BKPRCURP)→PR-C(calculate)→PR-G(print checks)→PR-D(post BKGLTRAN)→PR-DPST(direct deposit via ISPRTEMP staging). BKPRMSTR(384f) key fields: EMP# PK+NAME+SSN+ADDRESS+PAYTYP+15 rates+DEPT+SHIFT+QTD/YTD for regular/vacation/sick/FIT/FICA_1/2/state/WC/medical+12 user-defined deductions. BKPRCURP(127f): EMP#+DATE PK; regular+12 OT types+vacation+sick hrs/rates/amounts. BKPRFTAX(47f): CODE PK+11-bracket START/THRU/AMT/PERC. BKPRGLFL(664f, widest table): STATE+DEPT PK; every payroll tax GL account+rate (FICA employee/employer/limit, FUTA, SUTA, SDI, WC). BKPRSALE(87f): 12-month QUOTA/GROSS/COGS/RCPTS commission bridge. BKPRINFO(128f): 6 review+raise dates, vacation/sick accrual config, direct deposit banking. BKPRTC(7f): time card EMP+DATE+START/STOP/DEDUCT. ISPRTEMP(15f): direct deposit GL staging before ACH post — **C: 82/100**
-- [ ] ⬜ BKPRMSTR remaining 300 fields (deduction types 2–12, W-2 accumulators)
+- [x] ✅ BKPRMSTR all 384 fields fully documented by group (Pass 110f 2026-06-19) — **C: 90/100**
 - [ ] ⬜ W-2 / 1099 generation traced (T7PRH year-end path)
 
 ### 7.12 Data Collection (DC)
@@ -976,7 +976,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [ ] ⬜ All remaining BKGL\* (28 tables)
 - [x] 🔄 All remaining BKIC\* (16 tables) — BKICLOC (32f, per-location quantities + GL accounts), BKICLOCM (12f, location master with TAXGR), BKICPMAT (85f, customer price matrix 10-break), BKICDIM (47f, dimensions/alloy/temper/finish/tolerances), BKICTAX (46f, state tax with 12-month collection), BKICREQ (41f, requisitions + 10 notes); BKICAMTR/BKICEMTR + MTICAMTR/MTICEMTR confirmed as 108-field MTICMSTR clones (actual/estimated cost snapshots); ~10 tables not yet extracted — **C: 60/100**
 - [ ] ⬜ All remaining WO\* (30 tables)
-- [ ] ⬜ All remaining BKPR\* (16 tables) including BKPRMSTR (384 fields)
+- [x] 🔄 All remaining BKPR\* (16 tables) — BKPRMSTR (384f fully grouped), BKPRCURP/BKPRHIST (127f each), BKPRINFO (128f), BKPRSALE/BKPRBOOK (87f each), BKPRTC (7f), BKPRTCFG (205f) documented; BKPRFTAX (47f), BKPRGLFL (664f), BKPRACOM/BKPRCOMM/BKPRHCOM (12f each), BKPRAGNT (4f), BKPRSTFL (2f) summarized — **C: 88/100**
 - [ ] ⬜ All remaining BKBM\* (10 tables)
 - [x] 🔄 All remaining BKCM\* (46 tables) — top 5 field-documented (BKCMACCN 154, BKCMCUST 106, BKCMMHST 72, BKCMACCT 41, BKCMREP 14); 41 smaller tables identified but not field-extracted — **C: 55/100**
 - [ ] ⬜ All remaining BKSO\* (7 tables)
