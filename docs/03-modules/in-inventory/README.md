@@ -150,6 +150,42 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **MTICEMTR** | `MTICEMTR.B` | 108 | `MTIC_PROD_CLASS`, `MTIC_PROD_CODE`, `MTIC_PROD_DESC` |
 | **MTICMSTR** | `MTICMSTR.B` | 108 | `MTIC_PROD_CLASS`, `MTIC_PROD_CODE`, `MTIC_PROD_DESC` |
 
+## MT* vs BK* scope — confirmed from DDF field analysis (Pass 110g 2026-06-19)
+
+There are two parallel item master families in the IN module:
+
+| Prefix | Tables | Fields | PK structure | Purpose |
+|--------|--------|--------|--------------|---------|
+| **BKIC*** | BKICMSTR, BKICAMTR, BKICEMTR | 64 each | `BKIC_PROD_CODE` only | Single-company item master — keyed by flat part number, 64 operational fields |
+| **MTIC*** | MTICMSTR, MTICAMTR, MTICEMTR, MTINVDEF | 108 each | `MTIC_PROD_CLASS` + `MTIC_PROD_CODE` | Multi-class/multi-company item catalog — adds product CLASS as first key, 108 fields including all BKIC fields plus vendor list (10 slots), cost rollup snapshots, and lot size |
+
+**Interpretation:** The MTIC* tables support a broader multi-division or multi-company product catalog where the same part code can exist in multiple product classes. They are wider (108 vs 64 fields) and include additional data for cost accounting snapshots and vendor management.
+
+**MTIC* table roles:**
+
+| Table | Purpose |
+|-------|---------|
+| **MTICMSTR** | Multi-class item master — the active catalog record (108f) |
+| **MTICAMTR** | Point-in-time snapshot of MTICMSTR when actual costs were rolled up (108f, identical schema) |
+| **MTICEMTR** | Point-in-time snapshot of MTICMSTR when estimated costs were rolled up (108f, identical schema) |
+| **MTINVDEF** | Inventory creation defaults — template used when entering a new item (108f, identical schema) |
+
+**BKIC* table roles:**
+
+| Table | Purpose |
+|-------|---------|
+| **BKICMSTR** | Company-specific item master (64f) — operational data, on-hand quantities via BKICLOC |
+| **BKICAMTR** | Actual cost snapshot of BKICMSTR (64f, identical schema) |
+| **BKICEMTR** | Estimated cost snapshot of BKICMSTR (64f, identical schema) |
+
+**Design note:** The snapshot pattern (AMTR = actual, EMTR = estimated) allows variance analysis: compare BKICMSTR vs BKICAMTR (current vs. last actual rollup) or BKICEMTR (current vs. last estimated rollup). The MTIC* snapshots serve the same purpose for the multi-class catalog. These snapshots are populated by IN-L-A (Enter Standard Costs) and IN-L-E (Update Material Standard Costs).
+
+**MTEXCHG** (7f, `EXCHG_QUOTE`/`EXCHG_AMT`/`EXCHG_DESC`/`EXCHG_COST`/`EXCHG_EXTRA`/`EXCHG_CODE`/`EXCHG_LINE`) — Multi-currency exchange rate table. Likely used by the MU (multi-currency) module. `EXCHG_CODE` (15 chars) is the currency code; `EXCHG_AMT` (6 dec places) is the exchange rate.
+
+**MTMRP** (13f) — MRP calculation work table. Used by the MR (MRP) module. Fields: `MTMRP_PARTNO`, `MTMRP_DATE`, `MTMRP_QTY`, `MTMRP_ONHAND`, `MTMRP_PEGTO` (pegged-to demand order), `MTMRP_ORDER` (supply order), `MTMRP_STARTDT`, `MTMRP_ACTION`, `MTMRP_PG_SDATE/FDATE/QTY` (pegging start/finish dates and qty), `MTMRP_EXTRA`, `MTMRP_LOC`. This stores the MRP explosion results and demand-supply pegging before the planned orders are released.
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- BKICMSTR (64f) vs MTICMSTR (108f): The 44-field difference includes fields like `MTIC_PROD_CLASS` PK, 10 vendor slots (VEND_1..10, VNAM_1..10, VPC_1..9), 15 replacement costs (RCOST_1..15), lot size (LOTSZ), optional features (OPT/OPTCS/OPTCD), cumulative scheduling (CUM), and long part# (LONGP).
+- MTINVDEF (108f identical schema to MTICMSTR) acts as the "factory default" template — when a user creates a new item, the system copies default values from MTINVDEF to pre-populate fields.
+- Relationship between BKIC* and MTIC* items: unclear whether every BKIC item has a corresponding MTIC record, or if they are independent catalogs. Without RWN source code, the sync/copy logic cannot be confirmed.

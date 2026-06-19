@@ -177,6 +177,40 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKSYUSER** | `BKSYUSER.B` | 5 | `BKSY_USER_CHR`, `BKSY_USER_CODE`, `BKSY_USER_PSWD` |
 | **BKYSMSTR** | `BKYSMSTR.B` | 355 | `BKYS_WONUM`, `BKYS_YN_1`, `BKYS_YN_2` |
 
+## BKLOGON — Active Session Table (10 fields, confirmed from DDF schema.md line 6438, Pass 110g 2026-06-19)
+
+Primary key: `BKLOGON_CODE` (STRING 15)
+
+BKLOGON is NOT in the SM module's 10 DDF-listed tables — it is a standalone session-state table created/managed by the runtime during login. One row per active session.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKLOGON_CODE` | STRING | 15 | User login code (PK) |
+| `BKLOGON_PSWD` | STRING | 10 | Password (session copy, not persisted) |
+| `BKLOGON_CMPY` | STRING | 2 | Current company code |
+| `BKLOGON_PROG` | STRING | 8 | Currently executing program/module (e.g. "BKPRA") |
+| `BKLOGON_PRINTER` | UBINARY | 2 | Current printer number |
+| `BKLOGON_INUSE` | STRING | 1 | In-use flag (Y = logged in and active) |
+| `BKLOGON_SCRTY` | STRING | 2 | Security level code (links to AHSYLOG) |
+| `BKLOGON_MENU` | UBINARY | 2 | Current main menu position |
+| `BKLOGON_SUBMENU` | UBINARY | 2 | Current submenu position |
+| `BKLOGON_CURPRT` | UBINARY | 2 | Last-selected printer (differs from PRINTER if user changed) |
+
+**Design notes:**
+- BKLOGON tracks live session state — where each user is in the menu system, what they're running, and what printer they're using.
+- When a user logs in, the runtime writes BKLOGON_CODE + BKLOGON_CMPY + sets BKLOGON_INUSE = Y.
+- `BKLOGON_PROG` updates as the user navigates — this allows admin to see what all active users are currently running.
+- `BKLOGON_SCRTY` duplicates the security level from AHSYLOG — likely for fast lookups without joining.
+- **Multi-user conflict detection:** Other sessions can check BKLOGON to see who has a module open (e.g., to warn "Another user is running PR-B") without needing Btrieve record locks.
+- The `BKLOGON_PRINTER` / `BKLOGON_CURPRT` split suggests: PRINTER = default printer from user setup, CURPRT = printer currently selected in the session (may differ after user changes mid-session).
+
+**Related tables:**
+- **AHSYLOG** (23f) — Permanent user accounts: security level, starting menu, module access flags
+- **BKSYUSER** (5f) — Simplified user lookup: code, password, extra
+- **BKSYLOG** (215f) — System configuration (company defaults, not session state)
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- `BKLOGON_SCRTY` (2 chars) vs `AHSYLOG.AHSY_USER_LEVL` — exact format of the security level code needs confirmation.
+- It is unclear whether BKLOGON supports multiple simultaneous sessions per user code (same user logged in from two workstations). If the PK is CODE alone, only one session per user is possible.
+- `BKLOGON_PROG` is 8 chars — matches the module file name format (e.g. BKPRA = 5 chars; T7SMJB = 6 chars). Max 8 chars accommodates the longest known names.

@@ -391,7 +391,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ IS\* (tax, utilities, Java integration — ISJAVA table) — **C: 68/100** (Pass 22–23: ISLBLMAP/IS2DBAR/ISUSAGE/ISAPAINL/ISALINKS/ISLINKS/ISESTASM/ISESADTL/ISMICADT/ESA/EST/ISTAXGRP all field-documented; ~200 smaller IS\* tables remain)
 - [x] ✅ AHSYLOG (security / user table) — **C: 72/100**
 - [ ] ⬜ Full per-table narrative documentation (see §16 for checklist)
-- [ ] ⬜ MT\* vs. BK\* scope difference confirmed (which company, which generation)
+- [x] ✅ MT\* vs. BK\* scope difference **CONFIRMED**: BK\* = single-company operational data (BKICMSTR 64f, code-only PK); MT\* = multi-class catalog (MTICMSTR 108f, CLASS+CODE PK, 44 extra fields); MTMRP=MRP work table; MTEXCHG=multi-currency rates; MTINVDEF=creation defaults template; docs/03-modules/in-inventory/README.md (Pass 110g 2026-06-19) — **C: 75/100**
 - [ ] ⬜ BKARHINV anomaly fully resolved (sub-folder table, now documented)
 - [x] ✅ All 30 WO\* tables cross-referenced to Work Order module logic — functional groups (master/BOM/routing/labor/material/receipt/scheduling/audit/WC), naming convention (E=estimated/pending, H=history), WORKCTR + ROUTING templates fully documented; docs/03-modules/wo-work-orders/README.md (Pass 110e 2026-06-19) — **C: 92/100**
 - [ ] ⬜ Primary key confirmed for each of **728+** tables (from INDEX.DDF; originally 649, +55 pass 7b, +17 pass 8, +26 pass 9 = 747 minimum — see PROJECT-STRUCTURE.md Special/Misc Tables)
@@ -446,7 +446,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ Password hashing algorithm reverse-engineered
 - [ ] ⬜ `AHSY_USER_CTRL` flag values and their meaning
 - [ ] ⬜ Multi-user locking: exact lock contention behavior (wait vs. skip vs. error)
-- [ ] ⬜ `BKLOGON` all fields documented (session start time, workstation ID, etc.)
+- [x] ✅ `BKLOGON` all 10 fields documented (CODE/PSWD/CMPY/PROG/PRINTER/INUSE/SCRTY/MENU/SUBMENU/CURPRT); session tracking, multi-user conflict detection, menu navigation state; docs/03-modules/sm-system-manager/README.md (Pass 110g 2026-06-19) — **C: 82/100**
 - [ ] ⬜ How WHOAMI.DBA ties into session/license validation
 
 ---
