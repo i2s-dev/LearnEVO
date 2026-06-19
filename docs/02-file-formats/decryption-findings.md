@@ -25,11 +25,16 @@ All confirmed via live Frida capture (`frida_capture_key_and_iv.py`) + Python de
 | K_A | `d97f05679438037073c30628734764020859f77e` | unknown (appears at EVO startup; tried against all suwin files — none pass) |
 | K_C | `fdc2883f6d6537dd667270406d0a4c85969295ac` | **suwin6.dcy** (confirmed 2026-06-17) |
 
-**suwin6.dcy / K_C confirmed (2026-06-17):**
+**suwin6.dcy / K_C confirmed (2026-06-17, verified Pass 112 2026-06-19):**
 - Validation block: `4b7650d14b7650d1` — pt[0:4] == pt[4:8] ✅
-- Decrypted content is **binary data** (not Delphi VCL text, not readable ASCII) — 32,864 bytes
-- Shannon entropy of raw file: essentially random → confirms encryption, not compression
-- Meaning: suwin6.dcy is a bootstrap DCY encrypted with key C, but the plaintext is a binary format (compiled bytecode or binary initialization tables), NOT a Delphi form text file
+- Decrypted content: **32,864 bytes of compiled TAS Pro 7 bytecode** — NOT a Delphi VCL form
+- Shannon entropy of decrypted plaintext: **7.9939 bits/byte** (near maximum; no string literals found)
+- String extraction (5+ printable chars): 0 recognizable words, table names, or TAS Pro keywords
+- Confirmed sub-type: DCY Type B (TAS Pro 7 compiled bytecode) vs DCY Type A (Delphi DFM form)
+  - Type A: encrypted with K_D; decrypts to `object FormName: TFormClass...` (ASCII DFM)
+  - Type B: encrypted with K_C; decrypts to pure compiled opcodes (same as .RWN body)
+- The pre-load logic cannot be traced without a TAS Pro 7 bytecode disassembler
+- samples/suwin6_decrypted.bin — the decrypted binary (32,864 bytes)
 
 **suwin7.dcy — still unresolved:**
 - 3,527 bytes, entropy 7.945 (fully encrypted)

@@ -71,7 +71,8 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Email creds stored in plaintext; booleans use `.T.`/`.F.` TAS Pro syntax in plain INI
   - Full detail in `docs/01-architecture/overview.md`
 - [x] ✅ `StartEvo.exe` fully analyzed: .NET assembly; DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; queries `tas_menus` via DSN=EVOADMIN; handles `evo://` URI scheme; reads DEFAULTPATH/DFLTCOMPANYCODE from taspro7.ini; robocopy for updates — **C: 88/100**
-- [ ] ⬜ `suwin6/7.dcy` pre-load behavior traced
+- [x] ✅ `suwin6.dcy` format decoded: NOT a Delphi DFM form — it is TAS Pro 7 compiled bytecode (32,864 bytes, Shannon entropy 7.99 bits/byte, no ASCII string literals, validated with K_C key at offset 0). DCY files have two sub-types: Type A = Delphi DFM form (standard, decrypted with K_D), Type B = compiled TAS Pro 7 bytecode (suwin6.dcy, decrypted with K_C). Pre-load behavior itself cannot be traced without a TAS Pro 7 bytecode disassembler. (Pass 112 2026-06-19) — **C: 60/100** (format confirmed, logic opaque)
+- [ ] ⬜ `suwin7.dcy` — fails all 4 known keys; format unknown
 
 ### 1.3 Runtime Engine (tp7runtime.exe)
 - [x] ✅ Identified as TAS Professional 7 by Computer Keyes / Business Tools — **C: 90/100**
