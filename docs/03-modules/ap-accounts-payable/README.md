@@ -157,6 +157,116 @@ Primary key: `BKAP_VENDCODE` (10)
 
 **Related table — BKAPVND2 (63 fields):** Contains 1099 reporting extensions (SEND_1099 flag, box amounts A1–A10 × 5 entries each with labels and dates). One record per vendor. FK: `BKAP2_VENDCODE`.
 
+## BKAPPO — Purchase Order Header (57 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `BKAP_PO_NUM` (FLOAT 8)
+
+**PO table family:** BKAPPO (active) / BKAPHPO (history, same schema) / BKAPAPO (archive, 58f) / BKAPRFQ (Request for Quote, same 57f schema). Line-level: BKAPPOL (active) / BKAPHPOL (history) / BKAPAPOL (archive) / BKAPRFQL (RFQ lines).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | `BKAP_PO_NUM` | FLOAT | 8 | PO number (PK — numeric sequence stored as float) |
+| 2 | `BKAP_PO_PRTD` | STRING | 1 | Printed flag (indexed for report queries) |
+| 3 | `BKAP_PO_VNDCOD` | STRING | 10 | Vendor code (FK → BKAPVEND) |
+| 4 | `BKAP_PO_VNDNME` | STRING | 30 | Vendor name (denormalized) |
+| 5–7 | `BKAP_PO_VNDA1/2/3` | STRING | 30 | Vendor address lines 1–3 |
+| 8 | `BKAP_PO_VNDCTY` | STRING | 26 | Vendor city |
+| 9 | `BKAP_PO_VNDST` | STRING | 2 | Vendor state |
+| 10 | `BKAP_PO_VNDZIP` | STRING | 10 | Vendor ZIP |
+| 11 | `BKAP_PO_SHPCOD` | STRING | 10 | Ship-to location code |
+| 12 | `BKAP_PO_SHPNME` | STRING | 30 | Ship-to name |
+| 13–15 | `BKAP_PO_SHPA1/2/3` | STRING | 30 | Ship-to address lines 1–3 |
+| 16 | `BKAP_PO_SHPCTY` | STRING | 26 | Ship-to city |
+| 17 | `BKAP_PO_SHPST` | STRING | 2 | Ship-to state |
+| 18 | `BKAP_PO_SHPZIP` | STRING | 10 | Ship-to ZIP |
+| 19 | `BKAP_PO_SHPVIA` | STRING | 15 | Ship via method |
+| 20 | `BKAP_PO_TERMD` | STRING | 10 | Payment terms description |
+| 21 | `BKAP_PO_TERMNM` | UBINARY | 2 | Payment terms code (FK → terms table) |
+| 22 | `BKAP_PO_ENTBY` | STRING | 2 | Entered by (user code) |
+| 23 | `BKAP_PO_OBYCUS` | STRING | 15 | Ordered by customer ref (customer PO#) |
+| 24 | `BKAP_PO_TAXABLE` | STRING | 1 | Taxable flag |
+| 25–26 | `BKAP_PO_CONFIRM_1/2` | STRING | 1 | Confirmation flags 1–2 |
+| 27 | `BKAP_PO_ORDDTE` | DATE | 4 | Order date |
+| 28 | `BKAP_PO_SUBTOT` | FLOAT | 8 | Subtotal (before tax) |
+| 29 | `BKAP_PO_TAXAMT` | FLOAT | 8 | Tax amount |
+| 30 | `BKAP_PO_TOTAL` | FLOAT | 8 | PO total |
+| 31 | `BKAP_PO_NL` | UBINARY | 2 | Number of lines |
+| 32 | `BKAP_PO_TAXRTE` | FLOAT | 8 | Tax rate (%) |
+| 33 | `BKAP_PO_DESC` | STRING | 30 | PO description / note |
+| 34 | `BKAP_PO_GLDPT` | STRING | 4 | GL department |
+| 35 | `BKAP_PO_LOC` | STRING | 10 | Receiving location code |
+| 36 | `BKAP_PO_ITOTAL` | FLOAT | 8 | Invoiced total to date |
+| 37 | `BKAP_PO_ENDLNE` | STRING | 1 | End-of-lines flag |
+| 38 | `BKAP_PO_FOB` | STRING | 20 | FOB point |
+| 39 | `BKAP_PO_FTERMNM` | UBINARY | 2 | Freight terms code |
+| 40 | `BKAP_PO_FTERMD` | STRING | 10 | Freight terms description |
+| 41 | `BKAP_PO_QCTOTAL` | FLOAT | 8 | QC-passed quantity total |
+| 42–43 | `BKAP_PO_VNDCNT/VNDATN` | STRING | 30 | Vendor contact name / attention |
+| 44–45 | `BKAP_PO_SHPCNT/SHPATN` | STRING | 30 | Ship-to contact / attention |
+| 46 | `BKAP_PO_RECNUM` | FLOAT | 8 | Record number (internal sequence) |
+| 47 | `BKAP_PO_LONGPO` | STRING | 25 | Long PO number (customer-side PO reference) |
+| 48 | `BKAP_PO_EXTRA` | STRING | 150 | User-defined extra field |
+| 49 | `BKAP_PO_INVNUM` | STRING | 10 | AP invoice number (linked after receipt) |
+| 50 | `BKAP_PO_ISTXGR` | STRING | 10 | AvaTax group code |
+| 51 | `BKAP_PO_ISMCDT` | DATE | 4 | Multi-currency date |
+| 52 | `BKAP_PO_ISBROKE` | STRING | 10 | Broker/agent code |
+| 53 | `BKAP_PO_ISREV` | STRING | 1 | Revision flag |
+| 54 | `BKAP_PO_ISRVDT` | DATE | 4 | Revision date |
+| 55 | `BKAP_PO_ISCUR` | STRING | 3 | Currency code (multi-currency) |
+| 56 | `BKAP_PO_PCKSLP` | STRING | 15 | Packing slip number |
+| 57 | `BKAP_PO_EMPNUM` | UBINARY | 2 | Employee number (buyer) |
+
+## BKAPPOL — Purchase Order Lines (38 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `BKAP_POL_PONM` (FLOAT 8) + `BKAP_POL_CNTR` (UBINARY 2)
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | `BKAP_POL_PONM` | FLOAT | 8 | PO number (FK → BKAPPO.BKAP_PO_NUM) |
+| 2 | `BKAP_POL_CNTR` | UBINARY | 2 | Line counter (PK part 2) |
+| 3 | `BKAP_POL_ERD` | DATE | 4 | Expected receipt date (indexed) |
+| 4 | `BKAP_POL_PCODE` | STRING | 15 | Part/item code (FK → inventory) |
+| 5 | `BKAP_POL_PDESC` | STRING | 30 | Part description (denormalized) |
+| 6 | `BKAP_POL_PQTY` | FLOAT | 8 | Ordered quantity |
+| 7 | `BKAP_POL_PPRCE` | FLOAT | 8 | Unit price |
+| 8 | `BKAP_POL_PDISC` | FLOAT | 8 | Discount % |
+| 9 | `BKAP_POL_PEXT` | FLOAT | 8 | Extended amount (qty × price × (1−disc)) |
+| 10 | `BKAP_POL_PCOGS` | FLOAT | 8 | COGS amount |
+| 11 | `BKAP_POL_ITYPE` | STRING | 1 | Item type code |
+| 12 | `BKAP_POL_GLA` | STRING | 10 | GL account override for this line |
+| 13 | `BKAP_POL_GLDPTA` | STRING | 4 | GL department override |
+| 14 | `BKAP_POL_TXBLE` | STRING | 1 | Line taxable flag |
+| 15 | `BKAP_POL_RQTY` | FLOAT | 8 | Received quantity to date |
+| 16 | `BKAP_POL_IQTY` | FLOAT | 8 | Invoiced quantity to date |
+| 17 | `BKAP_POL_LOC` | STRING | 10 | Receiving location |
+| 18–19 | `NKAP_POL_UM_LIN_1/2` | STRING | 3 | Unit of measure (purchase / stocking) |
+| 20 | `BKAP_POL_OPER` | UBINARY | 2 | WO operation number (for outside process lines) |
+| 21 | `BKAP_POL_WOPRE` | FLOAT | 8 | WO number (FK → WORKORD — outside process link) |
+| 22 | `BKAP_POL_WOSUF` | UBINARY | 2 | WO suffix |
+| 23 | `BKAP_POL_ARD` | DATE | 4 | Actual receipt date |
+| 24 | `BKAP_POL_EST` | FLOAT | 8 | Estimate number (FK → Estimating) |
+| 25 | `BKAP_POL_OO_QTY` | FLOAT | 8 | On-order quantity remaining |
+| 26 | `BKAP_POL_ITM_NO` | STRING | 9 | Vendor's item number |
+| 27 | `BKAP_POL_QC_QTY` | FLOAT | 8 | QC-passed quantity |
+| 28 | `BKAP_POL_BUYOFF` | FLOAT | 8 | Buyer-approved quantity |
+| 29 | `BKAP_POL_SCRAP` | FLOAT | 8 | Scrapped quantity |
+| 30 | `BKAP_POL_PRTDIM` | STRING | 1 | Printed dimension flag |
+| 31 | `BKAP_POL_PARENT` | STRING | 15 | Parent assembly part code (for component PO lines) |
+| 32 | `BKAP_POL_RECNUM` | FLOAT | 8 | Record number (internal) |
+| 33 | `BKAP_POL_EXTRA` | STRING | 100 | User-defined extra field |
+| 34 | `BKAP_POL_INVNUM` | STRING | 10 | Voucher/invoice number |
+| 35 | `BKAP_POL_PCONV` | FLOAT | 8 | Purchase-to-stock unit conversion factor |
+| 36 | `BKAP_POL_INVDTE` | DATE | 4 | Invoice date |
+| 37 | `BKAP_POL_PSTDTE` | DATE | 4 | Post date |
+| 38 | `BKAP_POL_PKSQTY` | FLOAT | 8 | Packing slip quantity |
+
+**Design notes:**
+- BKAP_POL_WOPRE/WOSUF links a PO line to a WO routing operation — this is how outside processing is tracked: a WO operation of type O triggers a PO line; when the PO is received, the operation is marked complete.
+- BKAP_POL_PCONV allows purchasing in different units than stocking (e.g., buy by the roll, stock by the foot).
+- BKAP_POL_RQTY vs BKAP_POL_IQTY vs BKAP_POL_OO_QTY tracks the three-way split: received (in warehouse) / invoiced (AP voucher matched) / still on order.
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- BKAPAPO (58f) has one extra field vs BKAPPO (57f) — field not identified; likely an archive timestamp or purge flag.
+- BKAPRFQ / BKAPRFQL: Request for Quote tables use same schema as BKAPPO/BKAPPOL — RFQs and POs share structure, distinguished by document type routing in the program.
+- BKAPINVL (390f): The AP voucher/invoice lines table has far more fields than BKAPPOL — it likely stores all the GL distribution detail after posting.

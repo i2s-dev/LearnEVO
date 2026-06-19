@@ -148,6 +148,77 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKSOX** | `BKSOX.B` | 25 | `BKSOX_COMPANY`, `BKSOX_INVCNUM`, `BKSOX_INVCDATE` |
 | **BKSOXH** | `BKSOXH.B` | 25 | `BKSOX_COMPANY`, `BKSOX_INVCNUM`, `BKSOX_INVCDATE` |
 
+## BKSO\* Table Documentation (Pass 110e 2026-06-19)
+
+**Note:** The primary SO/Invoice data lives in BKARINV (header) and BKARINVL (lines), documented in the AR module. The BKSO\* tables are supplementary.
+
+### BKSOHLOT — SO Shipment Lot Tracking (14f)
+Tracks lot assignments for SO shipments. One record per lot number assigned to a shipped SO line.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKAR_TXN_SONUM` | FLOAT | 8 | SO / invoice number (PK part 1) |
+| `BKAR_TXN_CODE` | STRING | 15 | Item code (PK part 2) |
+| `BKAR_TXN_DESC` | STRING | 30 | Item description |
+| `BKAR_TXN_QTY` | FLOAT | 8 | Quantity shipped from this lot |
+| `BKAR_TXN_LOT` | STRING | 15 | Lot number |
+| `BKAR_TXN_SERIAL` | STRING | 25 | Serial number (if dual lot+serial) |
+| `BKAR_TXN_DATE` | DATE | 4 | Ship date |
+| `BKAR_TXN_STOCK` | STRING | 15 | Stock location |
+| `BKAR_TXN_LINE` | FLOAT | 8 | SO line number |
+| `BKAR_TXN_LOC` | STRING | 10 | Bin/location code |
+| `BKAR_TXN_TMPSO` | STRING | 40 | Temp SO reference string |
+| `BKAR_TXN_SRNUM` | FLOAT | 8 | Ship receipt number |
+| `BKAR_TXN_EXTRA` | STRING | 50 | Extra field |
+| `BKAR_TXN_BIN` | STRING | 15 | Bin code |
+
+### BKSOHSER — SO Shipment Serial Tracking (14f)
+Identical structure to BKSOHLOT. Tracks serial number assignments for SO shipments. Uses `BKAR_TXN_SERIAL` as the serial number field.
+
+### BKSOLOCK — SO Line Edit Lock (5f)
+Prevents concurrent edits on the same SO line.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSO_LOCK_REC` | STRING | 10 | Record key (SO number or item code) |
+| `BKSO_LOCK_ITEM` | STRING | 25 | Item / line being locked |
+| `BKSO_LOCK_DATE` | DATE | 4 | Lock date |
+| `BKSO_LOCK_TIME` | TIME | 4 | Lock time |
+| `BKSO_LOCK_WHO` | STRING | 25 | User holding the lock |
+
+### BKSONOTE — SO Note Lines (5f)
+Standard EVO description-line table. Same BK_DESC_* layout used in AP/AR notes.
+PK: `BK_DESC_CODE`(15) + `BK_DESC_NUM`(float) + `BK_DESC_LINE`(uint). Fields: NOTES(70), DESC(25).
+
+### BKSOPO — MRP Planned Purchase Orders (16f)
+Shared with MRP module (BKMRP prefix). MRP writes planned POs here; SO module reads them for SO-to-PO cross-reference.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKMRP_PO_UID` | STRING | 20 | Unique planned order ID (PK) |
+| `BKMRP_PO_VEND` | STRING | 10 | Planned vendor code |
+| `BKMRP_PO_DATE` | DATE | 4 | Order date |
+| `BKMRP_PO_ERD` | DATE | 4 | Expected receipt date |
+| `BKMRP_PO_PART` | STRING | 15 | Part number to purchase |
+| `BKMRP_PO_QTY` | FLOAT | 8 | Planned quantity |
+| `BKMRP_PO_PRICE` | FLOAT | 8 | Planned unit price |
+| `BKMRP_PO_WOPRE/SUF` | FLOAT+UINT | 10 | Linked WO prefix + suffix |
+| `BKMRP_PO_PLANR` | STRING | 4 | Planner code |
+| `BKMRP_PO_CONF` | STRING | 1 | Confirmed flag (Y = firmed PO) |
+| `BKMRP_PO_DONE` | STRING | 10 | Done / received marker |
+| `BKMRP_PO_MTREC` | UBINARY | 4 | Master record pointer |
+| `BKMRP_PO_EXTRA` | STRING | 50 | Extra field |
+| `BKMRP_PO_EST` | STRING | 10 | Estimate number reference |
+| `BKMRP_PO_ESTLNE` | FLOAT | 8 | Estimate line number |
+
+### BKSOX — SO Invoice Supplemental Record (25f)
+Per-invoice summary/metadata used for cross-module reporting and multi-company scenarios.
+PK: `BKSOX_COMPANY`(2) + `BKSOX_INVCNUM`(float) + `BKSOX_INVCDATE`(date).
+Key fields: CUSTCODE/NAME, SUBTOT/TAXAMT/FREIGHT/DEPOSIT/RETEN/TOTAL ($ totals), CURRENCY(3), SONUM, CUSTPO(25), TERMSCODE+DESC, INVCDESC(30), SHIPDATE, SHIPPER, JOBNUM(15), TAXCODE+TAXNAME, POSTDATE, ARCHDATE, ENTDATE.
+
+### BKSOXH — SO Invoice Supplemental History (25f)
+Identical structure to BKSOX. Stores archived/closed invoice supplemental records.
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*

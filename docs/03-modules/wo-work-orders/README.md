@@ -123,9 +123,65 @@ status-code table, save-time processing, and cross-links).
 | `t7woprio.DFM` |  | 0 | 1 | 0 |
 | `t7woprio2.DFM` |  | 0 | 1 | 0 |
 
-## Database tables (30)
+## Database tables (30 + 2 routing templates)
 
 Full field details are in `../../../samples/ddf/schema.md` (see per-table heading).
+
+### Naming convention
+
+EvoERP uses a consistent 3-tier naming pattern across all WO transaction tables:
+
+| Prefix | Tier | Meaning |
+|--------|------|---------|
+| (none / `WO*`) | Active | Current / live data |
+| `WOE*` | Estimated | Pre-posting estimated values or edited-but-not-posted |
+| `WOH*` | History | Archived / closed WO data |
+
+Routing tables follow a similar pattern: `WOROUT` (active), `WOHROUT` (history), `WOROUTMP` (temporary/scheduling working copy), `WOSROUT` (scheduled routing).
+
+### Functional cross-reference (all 30 WO tables)
+
+| Group | Table | F | Purpose | PK fields |
+|-------|-------|---|---------|-----------|
+| **WO Master** | `WORKORD` | 74 | Active WO header — qty, dates, status, 7-category E/A costs, instructions | WOPRE+WOSUF |
+| | `WORKHORD` | 74 | History/closed WO master — identical schema to WORKORD | WOPRE+WOSUF |
+| | `WORKSORD` | 74 | Scheduled WO master — identical schema, used by MRP scheduling | WOPRE+WOSUF |
+| **BOM** | `WOBOM` | 24 | Active WO BOM — component list with QTYPER, scrap, qty issued, E/A material cost | OPER+WOPRE+WOSUF+COMPCODE |
+| | `WOHBOM` | 24 | History BOM — identical schema to WOBOM | OPER+WOPRE+WOSUF+COMPCODE |
+| | `WOBOMCHG` | 17 | BOM change audit log — A/B pairs for comp add/delete, qty, reference, scrap | WOPRE+WOSUF+PARENT+COMP+UID |
+| | `WOBOMHRM` | 7 | BOM remark lines — per-component text remarks | WOPRE+WOSUF+PARENT+LINE+COMP |
+| | `WOBOMREM` | 7 | BOM remark archive — identical schema to WOBOMHRM | WOPRE+WOSUF+PARENT+LINE+COMP |
+| **Routing** | `WOROUT` | 81 | Active WO routing — per-operation with WC, vendor, E/A costs (setup/labor/machine/OH), 15×60-char instructions, scheduling fields | WOPRE+WOSUF+OPER |
+| | `WOHROUT` | 81 | History routing — identical schema to WOROUT | WOPRE+WOSUF+OPER |
+| | `WOROUTMP` | 81 | Routing temp/working copy — used during scheduling or MRP recalculation | WOPRE+WOSUF+OPER |
+| | `WOSROUT` | 81 | Scheduled routing — identical schema, holds MRP-committed schedule | WOPRE+WOSUF+OPER |
+| | `WOROCHG` | 24 | Routing change audit — A/B pairs for long-time, setup, machine, tool, WC, standard-date, num-persons | WOPRE+WOSUF+PART+OPER |
+| **Labor** | `WOLABOR` | 58 | Active labor transactions — emp+date+oper, run/setup hrs, parts, scrap, QC, machine, tool, WC, cycle-time | POSTED+DATE+EMP+WOPRE+WOSUF+OPER+TRXN |
+| | `WOELABOR` | 58 | Estimated/edited labor — identical schema to WOLABOR | same |
+| | `WOHLABOR` | 58 | History labor — identical schema | same |
+| | `WOLABRPT` | 58 | Labor report staging — identical schema, used for payroll/report generation | same |
+| **Material** | `WOMAT` | 17 | Active material issues — qty issued, scrap, lot, serial, prod code, cost | DATE+WOPRE+WOSUF |
+| | `WOEMAT` | 17 | Estimated material — identical schema to WOMAT | same |
+| | `WOHMAT` | 17 | History material — identical schema | same |
+| **Receipts** | `WORECV` | 11 | WO completion receipts to stock — assy, qty, avg cost, lot, serial | WOPRE+WOSUF+DATE |
+| | `WOERECV` | 11 | Estimated/edited receipts — identical schema to WORECV | same |
+| | `WOHRECV` | 11 | History receipts — identical schema | same |
+| **Scheduling** | `WODATE` | 13 | WO date windows — start/finish dates, qty, parent/top/delivery WO refs (hierarchy for multi-level MRP) | WOPRE+WOSUF |
+| | `WOHDATE` | 13 | History date windows — identical schema to WODATE | WOPRE+WOSUF |
+| **Extra charges** | `WOEXCHG` | 10 | WO extra charge transactions — misc adjustments with GL acct, charge desc, operation | WOPRE+WOSUF+DATE |
+| | `WOHEXCHG` | 10 | History extra charges — identical schema | WOPRE+WOSUF+DATE |
+| **Change audit** | `WORKACHG` | 25 | WO assembly change log — A/B pairs for priority, status, class, description, qty, start/finish/due dates | WOPRE+WOSUF+CODE+CDATE |
+| | `WORKCHG` | 25 | WO change log (duplicate schema to WORKACHG — likely split by change type) | same |
+| **Work Centers** | `WORKCTR` | 47 | Work center master — WC code, dept, hours/week, labor/machine/OH rates, queue times, cycle times, parent-child hierarchy | MTWC_WC |
+
+### Related routing template tables (not WO-prefixed)
+
+| Table | F | Purpose |
+|-------|---|---------|
+| `ROUTING` | 62 | Standard routing template per part+operation — defines WC, times, costs before WO creation; 15×60 instruction lines |
+| `ROUTTEMP` | 62 | Routing template working copy — identical schema to ROUTING; used during routing edits or MRP explosion |
+
+### Raw DDF table list
 
 | Table | File on disk | Fields | Key fields (first 3) |
 | ----- | ------------ | -----: | -------------------- |
@@ -237,6 +293,103 @@ Note: The WO prefix is stored as a FLOAT (not a string). This is a TAS Pro conve
 
 **Cost structure summary:** WO tracks 7 cost categories: Setup, Material, Outside Processing, Labor, Variable Overhead, Fixed Overhead, Other, Misc, Extra — each with Estimated, Actual, and Variance. Total = ATOTAL. Variance = ETOT − ATOTAL.
 
+## WORKCTR — Work Center Master (47 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `MTWC_WC` (12)
+
+| Field(s) | Type | Size | Meaning |
+|----------|------|------|---------|
+| `MTWC_WC` | STRING | 12 | Work center code (PK) |
+| `MTWC_WCDESC` | STRING | 30 | Work center description |
+| `MTWC_DEPT` | STRING | 4 | Department code |
+| `MTWC_DEPTDESC` | STRING | 30 | Department description (denormalized) |
+| `MTWC_HRSWEEK` | UBINARY | 2 | Available hours per week |
+| `MTWC_SETUP` | FLOAT | 8 | Standard setup rate ($/hr) |
+| `MTWC_LABOR` | FLOAT | 8 | Standard labor rate ($/hr) |
+| `MTWC_MACHINE` | FLOAT | 8 | Standard machine rate ($/hr) |
+| `MTWC_AVGQTIME` | UBINARY | 2 | Average queue time (days) |
+| `MTWC_QPR1/2/3` | UBINARY×3 | 2 | Queue priority thresholds 1–3 |
+| `MTWC_VOVHD` | FLOAT | 8 | Variable overhead rate ($/hr) |
+| `MTWC_FOVHD` | FLOAT | 8 | Fixed overhead rate ($/hr) |
+| `MTWC_LEAD` | UBINARY | 2 | Lead time (days) |
+| `MTWC_OUTPROC` | STRING | 1 | Outside processing flag (Y=vendor operation) |
+| `MTWC_EST_VOVHD` | FLOAT | 8 | Estimated variable overhead rate |
+| `MTWC_HRS_SHIFT` | UBINARY | 2 | Hours per shift |
+| `MTWC_MIN_CHG` | FLOAT | 8 | Minimum charge per operation |
+| `MTWC_COST_LB` | FLOAT | 8 | Cost per lb (for weight-based billing) |
+| `MTWC_EXTRA` | STRING | 100 | User-defined extra field |
+| `MTWC_PARENT_YN` | STRING | 1 | Is parent work center flag |
+| `MTWC_PARENT_WC` | STRING | 12 | Parent work center code (group hierarchy) |
+| `MTWC_LEVEL_YN` | STRING | 1 | Level flag |
+| `MTWC_CYCLE_TIME_1..10` | UBINARY×10 | 2 | Cycle time per shift (10 shifts) |
+| `MTWC_GDATE_1/2` | DATE×2 | 4 | Generic date fields 1–2 |
+| `MTWC_FLAGS_1..5` | STRING×5 | 1 | User-defined flags 1–5 |
+| `MTWC_GNUM` | FLOAT | 8 | Generic number field |
+| `MTWC_ALPHA_1..5` | STRING×5 | 30 | User-defined alpha fields 1–5 |
+
+**Design notes:** Parent-child WC hierarchy (PARENT_WC) allows grouping multiple WCs under a department head. CYCLE_TIME_1..10 holds per-shift capacity in minutes. OUTPROC=Y means this WC is an outside vendor operation; the routing will reference a vendor (MTRO_VENDCODE in ROUTING).
+
+## ROUTING — Part Routing Template (62 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `MTRO_CODE` (15) + `MTRO_OPER` (UBINARY 2)
+
+This is the *standard routing library*, not a WO-specific routing. When a WO is created, the routing is copied from ROUTING → WOROUT. ROUTING records are defined at the part level; WOROUT records are copies per WO instance.
+
+| Field(s) | Type | Size | Meaning |
+|----------|------|------|---------|
+| `MTRO_CODE` | STRING | 15 | Part/item code (PK part 1) |
+| `MTRO_OPER` | UBINARY | 2 | Operation sequence number (PK part 2) |
+| `MTRO_DESC` | STRING | 30 | Part description (denormalized) |
+| `MTRO_OPERDESC` | STRING | 30 | Operation description |
+| `MTRO_TYPE` | STRING | 1 | Operation type (L=Labor, M=Machine, O=Outside) |
+| `MTRO_LEAD` | UBINARY | 2 | Operation lead time (days) |
+| `MTRO_VENDCOST` | FLOAT | 8 | Outside vendor cost per unit |
+| `MTRO_PARTSHR` | FLOAT | 8 | Parts per hour |
+| `MTRO_TIMEPART` | TIME | 4 | Time per part (TIME field) |
+| `MTRO_SETUPHRS` | TIME | 4 | Setup hours |
+| `MTRO_LOTSIZE` | FLOAT | 8 | Standard lot size |
+| `MTRO_INSTR_1..15` | STRING×15 | 60 | Work instructions (15 × 60 char = 900 chars) |
+| `MTRO_WC` | STRING | 12 | Work center code |
+| `MTRO_WCDESC` | STRING | 30 | Work center description (denormalized) |
+| `MTRO_VENDCODE` | STRING | 10 | Outside vendor code |
+| `MTRO_VENDNAME` | STRING | 25 | Outside vendor name (denormalized) |
+| `MTRO_LABOR` | FLOAT | 8 | Labor rate ($/hr) |
+| `MTRO_MACHINE` | FLOAT | 8 | Machine rate ($/hr) |
+| `MTRO_FOVHD` | FLOAT | 8 | Fixed overhead rate |
+| `MTRO_VOVHD` | FLOAT | 8 | Variable overhead rate |
+| `MTRO_SETUP` | FLOAT | 8 | Setup rate ($/hr) |
+| `MTRO_TMACHINE` | STRING | 4 | Machine code |
+| `MTRO_TMACHDESC` | STRING | 30 | Machine description |
+| `MTRO_TOOL` | STRING | 15 | Tool code |
+| `MTRO_TOOLDESC` | STRING | 30 | Tool description |
+| `MTRO_NUM` | UBINARY | 2 | Number of machines |
+| `MTRO_NUM_PERSON` | FLOAT | 8 | Number of persons |
+| `MTWO_MISC_COST` | FLOAT | 8 | Misc cost per operation |
+| `MTWO_MISC_DESC` | STRING | 30 | Misc cost description |
+| `MTRO_MISC_ACOST` | FLOAT | 8 | Actual misc cost |
+| `MTRO_OP_TEMP_NO` | UBINARY | 2 | Operation template number |
+| `MTRO_NUM_PROCES` | UBINARY | 2 | Number of processes |
+| `MTRO_TIME_PERPR` | TIME | 4 | Time per process |
+| `MTRO_MD_PROC_HR` | STRING | 1 | Mode: processes per hour vs time per process |
+| `MTRO_PROC_PERHR` | FLOAT | 8 | Processes per hour |
+| `MTRO_STD_TIME` | STRING | 1 | Standard time mode flag |
+| `MTRO_MIN_CHG` | FLOAT | 8 | Minimum charge |
+| `MTRO_OVERLAP` | UBINARY | 2 | Overlap with next operation (%) |
+| `MTRO_PIECE_RATE` | FLOAT | 8 | Piece rate ($/piece) |
+| `MTRO_LONGTIME` | FLOAT | 8 | Long run time (hours, high precision) |
+| `MTRO_PRINT` | STRING | 1 | Print flag |
+| `MTRO_CLASS` | STRING | 15 | Operation class code |
+| `MTRO_EXTRA` | STRING | 150 | User-defined extra field |
+| `MTRO_NEGOVLP` | FLOAT | 8 | Negative overlap (queue time before this op) |
+| `MTRO_DEF_TIME` | TIME | 4 | Default time |
+| `MTRO_R_TYPE` | STRING | 10 | Routing type code |
+| `MTRO_EST_LINE` | FLOAT | 8 | Estimate line number (FK → Estimating) |
+| `MTRO_EST_TAG` | STRING | 10 | Estimate tag |
+
+**Design notes:** ROUTTEMP has identical schema — used as a scratch copy during routing edits. The WO routing (WOROUT) is a copy of ROUTING stamped at WO creation time; subsequent changes to ROUTING do not retroactively affect open WOs.
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- WORKACHG vs WORKCHG: both have identical 25-field schema with WO_CHG_ prefix. Likely split between assembly-level changes (WORKACHG) and general WO header changes (WORKCHG), but the actual split criterion is not confirmed from schema alone — would need RWN source to verify.
+- WORKSORD: identical 74-field schema to WORKORD. Likely MRP-generated "scheduled" WO proposals that haven't been formally released; confirmed from the module name pattern but not from RWN logic.
+- WOELABOR: identical schema to WOLABOR. The "E" prefix here likely means "entered but not posted" (pending labor) rather than "estimated."

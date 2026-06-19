@@ -509,7 +509,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ BKICMSTR all 62 fields documented with meaning in tier1-tables.md: product code/desc, type, class, category, UOM (stock/purchase/price), costs, QOH, reorder, lead time, GL accounts (asset/COGS/scrap/non-tax), absorbed labor/setup/ops/material/fixed OH/variable OH, UPC, MTD/YTD sales — **C: 72/100**
 - [x] ✅ Supplemental item master form set confirmed: allocation, components, forecast, pricing, specs, UDF, usage, WIP — **C: 65/100**
 - [x] ✅ 16+ location/bin forms (T7INL* series) confirmed — **C: 60/100**
-- [ ] ⬜ FIFO/LIFO/average cost layer logic traced (INVTXN / BKICVAL tables)
+- [x] ✅ FIFO/LIFO/average cost layer logic traced: BKICVAL (4f, CODE+DATE PK, TOTVL/UOH) holds cost layers; FIFO=oldest DATE first, LIFO=newest, average=skip layers use INVTXN.AVGCOST running calc; INVTXN (24f, MTIT_* prefix) is complete audit log — receipt/shipment/adjustment/WO-issue/WO-receipt all logged with cost+qty+lot+serial+ref; docs/03-modules/in-inventory/README.md (Pass 110h 2026-06-19) — **C: 78/100**
 - [ ] ⬜ Physical inventory workflow (PI module) traced end-to-end
 - [ ] ⬜ Lot tracking / serial number tracking workflow confirmed
 
@@ -575,7 +575,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Source file: BKMRF.SRC (MRP logic analyzed) — **C: 62/100**
 - [x] ✅ Pass 45: All 17 T7MR* programs mapped (T7MRA through T7MRO). Full demand-to-release lifecycle: MR-A(forecast entry) → MR-F(explosion engine→MTMRP) → MR-G(firm, BKSBVEND/BKSBMFG select vendor) → MR-H(release→WORKORD+BKAPPO) → MR-I/IX(capacity scheduling with ROUTING+CALENDAR) → MR-J(PO/RFQ via BKRFQ 49f). MTMRP(13f) extracted: PARTNO+DATE PK, PEGTO(demand tracing), ACTION lifecycle. BKRFQ(49f): 10 qty/cost breakpoints, shared by both RF (estimates) and MR (MRP). CALENDAR(5f): SAT+SUN work flags. BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f): approved-source tables used by MR-G vendor selection — **C: 80/100**
 - [x] ✅ Full MRP calculation cycle traced (T7MRF explosion → MTMRP → firm/release)
-- [x] ✅ All core BKMR\*/MTMRP/support tables documented with fields
+- [x] ✅ All core BKMR\*/MTMRP/support tables documented with fields; full field tables + MRP data flow diagram added to docs/03-modules/mr-mrp/README.md (Pass 110h 2026-06-19) — **C: 88/100**
 
 ### 7.10 Routing (RO)
 - [x] ✅ Menu codes listed (19 operations) — **C: 65/100**

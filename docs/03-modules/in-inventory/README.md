@@ -150,6 +150,70 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **MTICEMTR** | `MTICEMTR.B` | 108 | `MTIC_PROD_CLASS`, `MTIC_PROD_CODE`, `MTIC_PROD_DESC` |
 | **MTICMSTR** | `MTICMSTR.B` | 108 | `MTIC_PROD_CLASS`, `MTIC_PROD_CODE`, `MTIC_PROD_DESC` |
 
+## BKICVAL — FIFO/LIFO Cost Layer Table (4 fields, confirmed from DDF schema.md line 6393, Pass 110h 2026-06-19)
+
+Primary key: `BKIC_VAL_CODE` (STRING 15) + `BKIC_VAL_DATE` (DATE)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKIC_VAL_CODE` | STRING 15 | Part code (PK part 1) |
+| `BKIC_VAL_DATE` | DATE | Receipt date for this cost layer (PK part 2) |
+| `BKIC_VAL_TOTVL` | FLOAT (2 dec) | Total dollar value remaining in this layer |
+| `BKIC_VAL_UOH` | FLOAT (2 dec) | Units on hand remaining in this layer |
+
+**FIFO/LIFO costing mechanics:**
+- Each inventory receipt creates a new BKICVAL row with CODE + receipt DATE + total value + qty
+- Effective cost per unit for a layer = TOTVL / UOH
+- **FIFO:** consume the row with the **oldest** DATE first; decrement UOH; if UOH reaches 0, delete row and move to next oldest
+- **LIFO:** consume the row with the **newest** DATE first
+- **Average cost:** does not use BKICVAL layers for costing; computes running weighted average from INVTXN.AVGCOST instead
+- The user selects FIFO, LIFO, or average via IN-L-I (Change Inventory Costing Method); BKICVAL is populated for FIFO/LIFO items
+- IN-L-U (Recalculate UOH From FIFO Layers) reconciles BKICVAL against actual transactions
+
+---
+
+## INVTXN — Inventory Transaction Log (24 fields, confirmed from DDF schema.md line 11702, Pass 110h 2026-06-19)
+
+Primary key: `MTIT_TYPE` + `MTIT_CLASS` + `MTIT_DATE` + `MTIT_CODE`
+
+Uses `MTIT_*` field prefix (same MT* pattern as MTICMSTR — multi-class transaction).
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `MTIT_TYPE` | STRING | 1 | Transaction type: R=receipt, S=shipment, A=adjustment, W=WO issue, etc. |
+| `MTIT_CLASS` | STRING | 4 | Product class (aligns with MTIC_PROD_CLASS) |
+| `MTIT_DATE` | DATE | 4 | Transaction date |
+| `MTIT_CODE` | STRING | 15 | Part code |
+| `MTIT_QTY` | FLOAT | 8 | Quantity moved (positive=in, negative=out) |
+| `MTIT_AVGCOST` | FLOAT | 8 | Weighted average cost at time of transaction |
+| `MTIT_STDCST` | FLOAT | 8 | Standard cost at time of transaction |
+| `MTIT_LOC` | STRING | 10 | Warehouse location |
+| `MTIT_REF` | STRING | 30 | Reference number (SO#, PO#, WO#, or free text) |
+| `MTIT_CUST` | STRING | 10 | Customer (for sales shipments) |
+| `MTIT_INVOICE` | FLOAT | 8 | Invoice number |
+| `MTIT_PRICE` | FLOAT | 8 | Selling price (for SO shipments) |
+| `MTIT_PO` | FLOAT | 8 | PO number (for receipts) |
+| `MTIT_WOPRE` | FLOAT | 8 | Work order prefix (for WO issues/receipts) |
+| `MTIT_WOSUF` | UBINARY | 2 | Work order suffix |
+| `MTIT_LOT` | STRING | 15 | Lot number (for lot-tracked items) |
+| `MTIT_SERIAL` | STRING | 25 | Serial number (for serial-tracked items) |
+| `MTIT_VENDOR` | STRING | 10 | Vendor (for PO receipts) |
+| `MTIT_SCRAP` | STRING | 2 | Scrap reason code |
+| `MTIT_QC` | STRING | 2 | Quality control code |
+| `MTIT_DEPT` | STRING | 4 | Department |
+| `MTIT_DESC` | STRING | 30 | Description |
+| `MTIT_PRODLOT` | STRING | 15 | Production lot |
+| `MTIT_EXTRA` | STRING | 50 | Extra / user-defined |
+
+**Design notes:**
+- INVTXN is the complete audit trail of every inventory movement — receipts, shipments, adjustments, WO issues, and WO completions all write here.
+- For FIFO/LIFO costing, BKICVAL maintains the actual cost layers; INVTXN preserves the historical record of what was consumed and at what cost.
+- `MTIT_AVGCOST` is updated by the system each time inventory is received, recalculating the running weighted average (total value on hand ÷ total units on hand).
+- The lot and serial fields link to lot tracking (BKICLOC LOT field) and serial tracking systems.
+- INVTXN is printed by IN-E (Print Inventory Transactions) and IN-N-D (Print Inventory Audit).
+
+---
+
 ## MT* vs BK* scope — confirmed from DDF field analysis (Pass 110g 2026-06-19)
 
 There are two parallel item master families in the IN module:

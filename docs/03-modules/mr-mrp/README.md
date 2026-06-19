@@ -69,6 +69,109 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKMRPSW** | `BKMRPSW.B` | 2 | `BKMRP_SW_PART`, `BKMRP_SW_SW` |
 | **MTMRP** | `MTMRP.B` | 13 | `MTMRP_PARTNO`, `MTMRP_DATE`, `MTMRP_QTY` |
 
+## Table documentation (confirmed from DDF schema.md, Pass 110h 2026-06-19)
+
+### BKMRPFC — Forecast (9 fields)
+
+Primary key: `BKMRP_FC_PART` (STRING 15) + `BKMRP_FC_DATE` (DATE)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKMRP_FC_PART` | STRING 15 | Part number (PK 1) |
+| `BKMRP_FC_DATE` | DATE | Forecast period start date (PK 2) |
+| `BKMRP_FC_QTY` | FLOAT | Forecasted demand quantity |
+| `BKMRP_FC_EXTRA` | STRING 25 | Extra / notes |
+| `BKMRP_FC_OQTY` | FLOAT | Original forecast quantity (before any edits) |
+| `BKMRP_FC_CQTY` | FLOAT | Consumed quantity (actual demand that has consumed the forecast) |
+| `BKMRP_FC_FLAG` | STRING 1 | Status flag |
+| `BKMRP_FC_DATE1` | DATE | Alternate date |
+| `BKMRP_FC_NUM` | FLOAT | Sequence number |
+
+Populated by MR-A (Enter Forecast). Consumed by MR-F (Generate MRP) — forecast demand reduces OQTY as actual sales orders are booked against it.
+
+---
+
+### BKMRPPO — MRP Planned Purchase Orders (16 fields)
+
+Primary key: `BKMRP_PO_UID` (STRING 20)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKMRP_PO_UID` | STRING 20 | Unique planned PO ID (PK) |
+| `BKMRP_PO_VEND` | STRING 10 | Suggested vendor (from MTICMSTR preferred vendor list) |
+| `BKMRP_PO_DATE` | DATE | Suggested order date |
+| `BKMRP_PO_ERD` | DATE | Expected receipt date (order date + lead time) |
+| `BKMRP_PO_PART` | STRING 15 | Part number |
+| `BKMRP_PO_QTY` | FLOAT | Suggested order quantity |
+| `BKMRP_PO_PRICE` | FLOAT | Suggested price (from vendor price file) |
+| `BKMRP_PO_WOPRE` | FLOAT | Work order prefix (pegged-to WO demand) |
+| `BKMRP_PO_WOSUF` | UBINARY | Work order suffix |
+| `BKMRP_PO_PLANR` | STRING 4 | Planner/buyer code |
+| `BKMRP_PO_CONF` | STRING 1 | Confirmed flag (Y = user confirmed, proceed to create real PO) |
+| `BKMRP_PO_DONE` | STRING 10 | Done/released marker |
+| `BKMRP_PO_MTREC` | UBINARY 4 | Master record reference |
+| `BKMRP_PO_EXTRA` | STRING 50 | Extra |
+| `BKMRP_PO_EST` | STRING 10 | Estimate reference |
+| `BKMRP_PO_ESTLNE` | FLOAT | Estimate line number |
+
+Populated by MR-F. Released to actual POs via MR-J (Generate Purchase Orders) when CONF = Y.
+
+---
+
+### BKMRPSW — MRP Item Switch (2 fields)
+
+Primary key: `BKMRP_SW_PART` (STRING 15)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKMRP_SW_PART` | STRING 15 | Part number (PK) |
+| `BKMRP_SW_SW` | STRING 1 | MRP switch: Y = include this part in MRP run, N = exclude |
+
+One row per part. Overrides the `MTIC_PROD_MRPSW` flag on the item master for the current MRP run. Allows temporary exclusion of items without changing the item master.
+
+---
+
+### MTMRP — MRP Explosion Work Table (13 fields)
+
+Primary key: `MTMRP_PARTNO` (STRING 15) + `MTMRP_DATE` (DATE)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `MTMRP_PARTNO` | STRING 15 | Part number |
+| `MTMRP_DATE` | DATE | Need date (when the demand is required) |
+| `MTMRP_QTY` | FLOAT | Net requirement quantity |
+| `MTMRP_ONHAND` | FLOAT | Projected on-hand at need date |
+| `MTMRP_PEGTO` | STRING 10 | Pegged-to demand source (SO#, WO#, forecast) |
+| `MTMRP_ORDER` | STRING 10 | Supply order number (planned WO or planned PO) |
+| `MTMRP_STARTDT` | DATE | Planned order start date (need date minus lead time) |
+| `MTMRP_ACTION` | STRING 10 | Action message: NEW, CANCEL, EXPEDITE, DEFER, etc. |
+| `MTMRP_PG_SDATE` | DATE | Peg start date |
+| `MTMRP_PG_FDATE` | DATE | Peg finish date |
+| `MTMRP_PG_QTY` | FLOAT | Pegged quantity |
+| `MTMRP_EXTRA` | STRING 50 | Extra |
+| `MTMRP_LOC` | STRING 10 | Warehouse location |
+
+Populated by MR-F (Generate Material Requirements). Cleared and rebuilt each MRP run. Drives MR-G (Print MRP), MR-H (Order Action Report), MR-L (Planned Orders Report). Row is consumed by MR-I (Generate Work Orders) and MR-J (Generate Purchase Orders).
+
+---
+
+## MRP data flow summary
+
+```
+BKMRPFC (forecasts) ──┐
+WORKORD (WO demand)  ──┤
+BKSOX   (SO demand)  ──┤──► MR-F generates ──► MTMRP (planned orders)
+BKAPPOL (PO supply)  ──┤
+BKICLOC (on-hand)    ──┘
+                                                  │
+                                    ┌─────────────┴──────────────┐
+                                    ▼                             ▼
+                               MR-I → WORKORD           MR-J → BKMRPPO
+                                (planned WOs)           (planned POs)
+```
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- MRP "buffer" sensitivity: T7MRD (52-field MRP parameters form) contains sensitivity settings — the exact buffer/sensitivity field names need extraction to confirm how MTMRP action messages (EXPEDITE/DEFER thresholds) are calculated.
+- BKMRPSW per-part override: relationship to `MTIC_PROD_MRPSW` flag in the item master — unclear whether SW=Y means "run MRP" (include) or SW=Y means "switch off" (exclude). Context suggests SW=Y = include.
+- BKMRPPO CONF field: once confirmed, MR-J creates a real BKAPPO/BKAPPOL record. The BKMRPPO row may then be deleted or marked DONE.
