@@ -387,6 +387,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - BKPR\* (16 tables — Payroll)
   - BKSO\* (7 tables — Sales Orders)
   - BKSY\* (8 tables — System / Configuration)
+- [x] ✅ BKSY\* family (8 tables + BKUMSRTY) — all schemas extracted and documented in tier1-tables.md; BKSYLOG 215f per-user module permission matrix (CHR+CODE PK; 9 module × 21f each = GLYN/ARYN/SOYN/APYN/POYN/ICYN/PRYN/SYYN/OKLM+20 OK_N flags each); BKUMSRTY 23f security level template (LEVEL+MENU PK, SCRTY_ITEM_1..20); BKSYPRTR 11f printers; BKSYAP 11f AP working state; BKSYAR 2f AR counters; BKSYCFG 4f module on/off; BKSYHELP 1f help path; BKSYUSER 5f legacy user record; Pass 132 2026-06-19 — **C: 80/100**
 - [x] ✅ MT\* family (second-gen master tables) — all 6 DDF-registered MT* tables extracted and documented in tier1-tables.md; MTICMSTR/MTICAMTR/MTICEMTR/MTINVDEF all 108f identical (CLASS+CODE PK; 10 vendors, 15 rcosts, 12 specs, 5 substitutes, MRP/GL/QC flags); MTEXCHG 7f multi-currency rates (EXCHG_CODE+LINE PK); MTMRP 13f MRP scratch (13th field MTMRP_LOC for multi-location confirmed in DDF); Pass 131 2026-06-19 — **C: 82/100**
 - [x] ✅ WO\* family (30 tables — Work Orders) — all cross-referenced + WORKORD fully documented — **C: 92/100**
 - [x] ✅ IS\* (tax, utilities, Java integration — ISJAVA table) — **C: 68/100** (Pass 22–23: ISLBLMAP/IS2DBAR/ISUSAGE/ISAPAINL/ISALINKS/ISLINKS/ISESTASM/ISESADTL/ISMICADT/ESA/EST/ISTAXGRP all field-documented; ~200 smaller IS\* tables remain)

@@ -2649,3 +2649,193 @@ Scratch table; cleared and rebuilt each time MRP runs (MR-A). One record per pla
 *Document updated: 2026-06-19 (Pass 131)*
 *Source: `samples/ddf/schema.md` (lines 24661–25142)*
 *Confidence: 82/100 — All schemas confirmed from DDF; MTEXCHG field semantics inferred from names + multi-currency context; MTINVDEF role as defaults template inferred from name; MTMRP LOC field confirmed in DDF but not yet seen in BKMRF.SRC.*
+
+---
+
+---
+
+## BKSY* Family — System Configuration and Security Satellite Tables
+
+All confirmed from DDF — Pass 132 2026-06-19.
+
+### Structural Overview
+
+The BKSY* family (8 tables) is the system-manager cluster: global configuration, per-user security permissions, printer setup, and module-state counters. BKSYMSTR is the primary multi-field config table; BKSYLOG is the per-user module permission matrix (the most functionally important table here).
+
+| Table | Fields | Role |
+|-------|--------|------|
+| BKSYMSTR | 286 | System configuration master (already documented — C:85) |
+| BKSYLOG | 215 | Per-user module permission matrix |
+| BKSYPRTR | 11 | Printer configuration records |
+| BKSYAP | 11 | AP module working-state counters |
+| BKSYAR | 2 | AR module working-state counters |
+| BKSYCFG | 4 | Module on/off configuration flags |
+| BKSYHELP | 1 | Help file path |
+| BKSYUSER | 5 | Legacy user credential record |
+
+Also documented here: **BKUMSRTY** (23f) — security level template table, closely related to BKSYLOG.
+
+---
+
+### BKSYLOG — Per-User Module Permission Matrix (215f)
+
+The most important BKSY* table. One record per user. PK = CHR + CODE. Stores the full per-user module permission state: which modules the user can access (YN flags) and which specific operations within each module (OK_N flags, 20 slots per module).
+
+Structure: user credentials (4f) + 9 module blocks × 21f each (1 module-YN + 20 per-op flags) + OKLM + 2 custom module blocks.
+
+| Fields | Type | Size | Meaning |
+|--------|------|------|---------|
+| BKSY_LOGON_CHR | STRING | 1 | Record type (PK part 1 — 'Y'=active user, etc.) |
+| BKSY_LOGON_CODE | STRING | 15 | User code (PK part 2, FK → AHSYLOG.WHO) |
+| BKSY_LOGON_PSWD | STRING | 10 | Password (encrypted) |
+| BKSY_LOGON_SCTY | STRING | 2 | Security level code (FK → BKUMSRTY.SCRTY_LEVEL) |
+| BKSY_LOGON_GLYN | STRING | 1 | GL module access Y/N |
+| BKSY_LOGON_OKGL_1..20 | STRING(1) × 20 | — | GL per-operation grants (20 ops) |
+| BKSY_LOGON_ARYN | STRING | 1 | AR module access Y/N |
+| BKSY_LOGON_OKAR_1..20 | STRING(1) × 20 | — | AR per-operation grants (20 ops) |
+| BKSY_LOGON_SOYN | STRING | 1 | SO module access Y/N |
+| BKSY_LOGON_OKSO_1..20 | STRING(1) × 20 | — | SO per-operation grants (20 ops) |
+| BKSY_LOGON_APYN | STRING | 1 | AP module access Y/N |
+| BKSY_LOGON_OKAP_1..20 | STRING(1) × 20 | — | AP per-operation grants (20 ops) |
+| BKSY_LOGON_POYN | STRING | 1 | PO module access Y/N |
+| BKSY_LOGON_OKPO_1..20 | STRING(1) × 20 | — | PO per-operation grants (20 ops) |
+| BKSY_LOGON_ICYN | STRING | 1 | IC/Inventory module access Y/N |
+| BKSY_LOGON_OKIC_1..20 | STRING(1) × 20 | — | IC per-operation grants (20 ops) |
+| BKSY_LOGON_PRYN | STRING | 1 | PR/Payroll module access Y/N |
+| BKSY_LOGON_OKPR_1..20 | STRING(1) × 20 | — | PR per-operation grants (20 ops) |
+| BKSY_LOGON_SYYN | STRING | 1 | SY/System module access Y/N |
+| BKSY_LOGON_OKSY_1..20 | STRING(1) × 20 | — | SY per-operation grants (20 ops) |
+| BKSY_LOGON_OKLM | STRING | 1 | Lock manager access Y/N |
+| BKSY_LOGON_O1YN | STRING | 1 | "Other module 1" access Y/N |
+| BKSY_LOGON_OTH1_1..20 | STRING(1) × 20 | — | Other-1 per-operation grants (20 ops, 1 char each) |
+| BKSY_LOGON_O2YN | STRING | 1 | "Other module 2" access Y/N |
+| BKSY_LOGON_OTH2_1..20 | STRING(2) × 20 | — | Other-2 per-operation grants (20 ops, 2 chars each) |
+
+**Security model:** BKUMSRTY provides the role template (SCRTY_LEVEL + menu → 20 item flags). When a user is created, their BKUMSRTY template is copied into BKSYLOG. Each login checks BKSYLOG to determine per-operation access. BKSLEVEL (422f matrix) is the older generation; BKSYLOG is the active runtime permission store.
+
+---
+
+### BKUMSRTY — Security Level Template (23f)
+
+One record per security level × menu group combination. Defines which operations are permitted for a given role.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | SCRTY_LEVEL | STRING | 2 | Security level code (PK part 1, FK → BKSY_LOGON_SCTY) |
+| 2 | SCRTY_MENU | UBINARY | 2 | Menu number (PK part 2) |
+| 3 | SCRTY_GROUP | STRING | 1 | Menu group code |
+| 4–23 | SCRTY_ITEM_1..20 | STRING(1) × 20 | — | Per-operation permit flags for this level+menu |
+
+When a user logs in with SCTY="10", the runtime finds all BKUMSRTY records for SCRTY_LEVEL="10" and uses them as the initial grant set.
+
+---
+
+### BKSYPRTR — Printer Configuration (11f)
+
+One record per configured printer. PK = BKSY_PRTR_NAME.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_PRTR_NAME | STRING | 30 | Printer name (PK) |
+| 2 | BKSY_PRTR_EXEC | STRING | 8 | Print executable/command code |
+| 3 | BKSY_PRTR_TAS | STRING | 1 | TAS-managed printer flag |
+| 4 | BKSY_PRTR_LPTNM | UBINARY | 1 | LPT port number |
+| 5 | BKSY_PRTR_TYPE | STRING | 8 | Printer type code |
+| 6 | BKSY_PRTR_PWDT | UBINARY | 2 | Page width |
+| 7 | BKSY_PRTR_PMAX | UBINARY | 2 | Max pages |
+| 8 | BKSY_PRTR_PPLNE | UBINARY | 2 | Lines per page |
+| 9 | BKSY_PRTR_LASER | STRING | 1 | Laser printer flag (Y=laser, N=dot-matrix) |
+| 10 | BKSY_PRTR_POST | STRING | 8 | PostScript mode |
+| 11 | BKSY_PRTR_PRUN | STRING | 1 | Print run flag |
+
+---
+
+### BKSYAP — AP Module Working State (11f)
+
+Single-record state table for AP module working counters and defaults. Read/written by PO receipt programs.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_AP_RECVNUM | FLOAT | 8 | Receipt counter (next receipt number) |
+| 2 | BKSY_AP_REOPEN | STRING | 1 | Reopen PO flag |
+| 3 | BKSY_AP_RQSCRAP | STRING | 1 | Require scrap reason on short receive |
+| 4 | BKSY_AP_RQREWRK | STRING | 1 | Require rework reason |
+| 5 | BKSY_AP_RECVFLG | STRING | 1 | Receipt flag (processing state) |
+| 6 | BKSY_AP_PONUM | FLOAT | 8 | Current PO number being received |
+| 7 | BKSY_AP_QCRECV | FLOAT | 8 | QC receipt counter |
+| 8 | BKSY_AP_RFQNUM | FLOAT | 8 | RFQ counter |
+| 9 | BKSY_AP_VPRICE | UBINARY | 2 | Vendor price verification mode |
+| 10 | BKSY_AP_PERCOVR | FLOAT | 8 | Price-over-tolerance percentage (3 dec) |
+| 11 | BKSY_AP_CONVDTE | DATE | 4 | Conversion date (multi-currency rate date) |
+
+---
+
+### BKSYAR — AR Module Working State (2f)
+
+Minimal state table for AR working counters.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_AR_TRXN | FLOAT | 8 | AR transaction counter (next transaction number) |
+| 2 | BKSY_AR_DEPNO | FLOAT | 8 | Deposit number counter (next deposit number) |
+
+---
+
+### BKSYCFG — Module On/Off Configuration (4f)
+
+Single-record configuration controlling which functional areas are enabled.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_CFG_ACCTG | STRING | 1 | Accounting module enabled (Y/N) |
+| 2 | BKSY_CFG_SALES | STRING | 1 | Sales module enabled (Y/N) |
+| 3 | BKSY_CFG_LITEWO | STRING | 1 | Lite work order mode (Y=simplified WO without full routing) |
+| 4 | BKSY_CFG_ADVWO | STRING | 1 | Advanced work order mode (Y=full routing + scheduling) |
+
+---
+
+### BKSYHELP — Help Path (1f)
+
+Single-record, single-field configuration.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_HELP_PATH | STRING | 70 | Path to EvoHELP.CHM file |
+
+---
+
+### BKSYUSER — Legacy User Credential Record (5f)
+
+Older-generation user record. Contains user code, password, security level, and default company — predates BKSYLOG's per-module expansion. Still read by legacy code.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_USER_CHR | STRING | 1 | Record type (PK part 1) |
+| 2 | BKSY_USER_CODE | STRING | 15 | User code (PK part 2) |
+| 3 | BKSY_USER_PSWD | STRING | 10 | Password (encrypted) |
+| 4 | BKSY_USER_SCTY | STRING | 2 | Security level code |
+| 5 | BKSY_USER_COMP | STRING | 2 | Default company code |
+
+**Relationship to BKSYLOG:** BKSYUSER = early precursor (5 fields). BKSYLOG = full expansion (215 fields). Both use the same CHR+CODE PK pattern.
+
+---
+
+**BKSY* Family Summary Table** (Pass 132 2026-06-19):
+
+| Table | Fields | Role |
+|-------|--------|------|
+| BKSYMSTR | 286 | System config master (documented Pass 121) |
+| BKSYLOG | 215 | Per-user module permission matrix (CHR+CODE PK) |
+| BKUMSRTY | 23 | Security level template (role → operation grants) |
+| BKSYPRTR | 11 | Printer configuration records |
+| BKSYAP | 11 | AP module working state + receipt counters |
+| BKSYAR | 2 | AR module working state (transaction + deposit counters) |
+| BKSYCFG | 4 | Module on/off flags (ACCTG/SALES/LITEWO/ADVWO) |
+| BKSYHELP | 1 | Help file path |
+| BKSYUSER | 5 | Legacy user credential record (precedes BKSYLOG) |
+
+---
+
+*Document updated: 2026-06-19 (Pass 132)*
+*Source: `samples/ddf/schema.md` (lines 10032–10633)*
+*Confidence: 82/100 — All schemas confirmed from DDF; BKSYLOG security model interpretation (BKUMSRTY templates → BKSYLOG per-user grants) inferred from field names and security architecture; individual OK_N slot assignments (which GL operation maps to OKGL_1, etc.) unknown without RWN analysis.*
