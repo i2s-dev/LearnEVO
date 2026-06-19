@@ -597,7 +597,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.12 Data Collection (DC)
 - [x] ✅ Menu codes listed — **C: 65/100**
 - [x] ✅ Files: EvoDC\*.RWN, EvoDCmenu.RWN, EvoDCsetup.RWN cataloged — **C: 70/100**
-- [x] ✅ Tables: BKDC\* (7 tables) — **C: 55/100**
+- [x] ✅ Tables: BKDC\* (7 tables) — all 7 schemas extracted and field-level documented in tier1-tables.md; 5-table identical 50-field LAB_* cluster (BKDCCLAB/BKDCLAB/BKDCPLAB/BKDCHLAB/BKDCTLAB); BKDCSHFT 34f (3-shift × 10 time boundaries); BKDCCFG 7f (timeouts + paths); full pipeline lifecycle documented; Pass 130 2026-06-19 — **C: 82/100**
 - [x] ✅ Source file: BKDCA.SRC fully analyzed (938 lines): DC entry variants DCA/DCB/DCC confirmed; BKYS.YN[228]=alternate screen/BKYS.YN[229]=auto-close confirmed; WOLABOR 17 field names (DATE/EMP/WOPRE/WOSUF/WOKEY/OPER/POSTED/SHIFT/START/FINISH/PARTS/SCRAPPED/NOJOBS/RUNHRS/SETUPHRS/REGOVER/EXTRA) confirmed from source; BKDCSHFT 4-field-per-shift structure (BUFFER/START/FIN/FINBUF) confirmed; BKDCLAB→BKDCPLAB→BKDCTLAB migration logic confirmed (Pass 118 2026-06-19) — **C: 82/100**
 - [x] ✅ Handheld forms: T7HH\*, label tables BKDC\* — **C: 60/100**
 - [x] ✅ Full DC workflow traced: scanner input→BKDCCLAB→DC-G review/approval→DC-H post to BKDCLAB→WORKORD update→BKDCPLAB→archive BKDCHLAB; all LAB_* tables share 50f schema; docs/03-modules/dc-data-collection/README.md (Pass 111b 2026-06-19) — **C: 78/100**
@@ -617,7 +617,7 @@ Target for "understood" = C: 75+ on all items below.
 
 ### 7.14 Physical Inventory (PI)
 - [x] ✅ Menu codes listed — **C: 65/100**
-- [x] ✅ Tables: BKPI\* (7 tables) — **C: 55/100**
+- [x] ✅ Tables: BKPI\* (7 tables) — all 7 schemas extracted and field-level documented in tier1-tables.md; BKPIMSTR 3f session header; BKPIFROZ 19f frozen snapshot (dual GL account pairs for adj/clearing, LOT/SER tracking flags); BKPIPHYS 14f count tags; BKPILOT/BKPILCNT 10f identical lot mirror pair; BKPISER/BKPISCNT 10f identical serial mirror pair; variance post flow documented; Pass 130 2026-06-19 — **C: 82/100**
 - [x] ✅ PI-A (Capture Frozen Inventory: YEAR/QTR/FDATE/COUNTTYPE), PI-B (print count sheets), PI-C (Enter Tag Counts: BKPH.TAGNUM/LOC/EMPNAME/CODE/LOT), PI-D (Missing Tags) — **C: 62/100**
 - [x] ✅ Variance calculation and posting steps confirmed: PI-G compares BKPIPHYS.BKPH_ACTQTY to BKPIFROZ.BKPH_INFO_UOH; delta posted as INVTXN adjustment; BKICMSTR.UOH updated; BKPIFROZ.BKPH_INFO_GLPST+INPST set to Y; lot/serial variants use BKPILCNT vs BKPILOT and BKPISCNT vs BKPISER; docs/03-modules/pi-physical-inventory/README.md (Pass 111a 2026-06-19) — **C: 82/100**
 

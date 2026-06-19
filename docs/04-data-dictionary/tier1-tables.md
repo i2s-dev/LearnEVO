@@ -2204,3 +2204,294 @@ Single-record table (keyed by NUM) holding BOM module-level defaults: which GL a
 *Document updated: 2026-06-19 (Pass 129)*
 *Source: `samples/ddf/schema.md`*
 *Confidence: 80/100 — All 10 table schemas extracted from DDF; core BOM line fields interpreted from names + cross-reference with BM form analysis; PROD_OPYN_1..6 semantics inferred (which routing op uses this component); DUPOP and CNFG flag values not confirmed against live data.*
+
+---
+
+---
+
+## BKDC* Family — Data Collection Satellite Tables
+
+All confirmed from DDF — Pass 130 2026-06-19.
+
+### Structural Overview
+
+The BKDC* family (7 tables) breaks into two clusters: the labor record lifecycle pipeline (5 identical-schema tables) and two configuration tables:
+
+| Table | Fields | Role |
+|-------|--------|------|
+| BKDCCLAB | 50 | Scanned/unposted labor records (fresh from terminal) |
+| BKDCLAB | 50 | Active/posted labor (DC-G approved) |
+| BKDCPLAB | 50 | Pending batch-post labor |
+| BKDCHLAB | 50 | Historical/archived labor |
+| BKDCTLAB | 50 | Temp labor work file (processing buffer) |
+| BKDCSHFT | 34 | Shift schedule (3-shift time boundaries) |
+| BKDCCFG | 7 | DC module configuration |
+
+---
+
+### DC Labor Schema (50f — shared by BKDCCLAB / BKDCLAB / BKDCPLAB / BKDCHLAB / BKDCTLAB)
+
+All five tables are byte-for-byte identical. PK = DATE + EMP + WOPRE + WOSUF + OPER (5-key composite). The `LAB_POSTED` flag determines which pipeline stage a record is in.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | LAB_DATE | DATE | 4 | Work date (PK part 1) |
+| 2 | LAB_EMP | UBINARY | 2 | Employee number (PK part 2, FK → BKPRMSTR) |
+| 3 | LAB_WOPRE | FLOAT | 8 | Work order prefix number (PK part 3) |
+| 4 | LAB_WOSUF | UBINARY | 2 | Work order suffix (PK part 4) |
+| 5 | LAB_OPER | UBINARY | 2 | Routing operation number (PK part 5) |
+| 6 | LAB_POSTED | STRING | 1 | Posted flag (Y=posted to WORKORD, N=pending) |
+| 7 | LAB_SHIFT | UBINARY | 2 | Shift number (1/2/3, FK → BKDCSHFT) |
+| 8 | LAB_START | TIME | 4 | Shift start time |
+| 9 | LAB_FINISH | TIME | 4 | Shift finish time |
+| 10 | LAB_PARTS | FLOAT | 8 | Parts completed this transaction |
+| 11 | LAB_SCRAPPED | FLOAT | 8 | Total parts scrapped |
+| 12 | LAB_NOJOBS | UBINARY | 2 | Number of concurrent jobs/setups (for multi-WO setup) |
+| 13 | LAB_RUNHRS | FLOAT | 8 | Run hours charged |
+| 14 | LAB_SETUPHRS | FLOAT | 8 | Setup hours charged |
+| 15 | LAB_REGOVER | STRING | 1 | Regular/overtime flag (R=regular, O=overtime) |
+| 16 | LAB_EXTRA | STRING | 50 | Extra/notes |
+| 17 | LAB_APPROVAL | STRING | 1 | Supervisor approval status flag |
+| 18 | LAB_ADT_SUPER | STRING | 100 | Audit: supervisor name (for approval trail) |
+| 19 | LAB_ADT_IN | STRING | 100 | Audit: time-in text |
+| 20 | LAB_ADT_OUT | STRING | 100 | Audit: time-out text |
+| 21 | LAB_ESSDATE | DATE | 4 | Early/scheduled start date |
+| 22 | LAB_DATE1 | DATE | 4 | Generic date UDF 1 |
+| 23 | LAB_DATE2 | DATE | 4 | Generic date UDF 2 |
+| 24 | LAB_SCRAPCD_1 | STRING | 2 | Scrap reason code 1 |
+| 25 | LAB_SCRAPCD_2 | STRING | 2 | Scrap reason code 2 |
+| 26 | LAB_SCRAPCD_3 | STRING | 2 | Scrap reason code 3 |
+| 27 | LAB_SCRAPCD_4 | STRING | 2 | Scrap reason code 4 |
+| 28 | LAB_SCRAPCD_5 | STRING | 2 | Scrap reason code 5 |
+| 29 | LAB_SCRAPQTY_1 | FLOAT | 8 | Qty scrapped against reason code 1 |
+| 30 | LAB_SCRAPQTY_2 | FLOAT | 8 | Qty scrapped against reason code 2 |
+| 31 | LAB_SCRAPQTY_3 | FLOAT | 8 | Qty scrapped against reason code 3 |
+| 32 | LAB_SCRAPQTY_4 | FLOAT | 8 | Qty scrapped against reason code 4 |
+| 33 | LAB_SCRAPQTY_5 | FLOAT | 8 | Qty scrapped against reason code 5 |
+| 34 | LAB_JCNUM | STRING | 12 | Job Costing number (FK to JC module) |
+| 35 | LAB_CYCLE_HR | UBINARY | 2 | Cycle time hours component |
+| 36 | LAB_CYCLE_MIN | UBINARY | 2 | Cycle time minutes component |
+| 37 | LAB_CYCLE_SEC | UBINARY | 2 | Cycle time seconds component |
+| 38 | LAB_CYCLE_PARTS | FLOAT | 8 | Parts per cycle (1 dec) |
+| 39 | LAB_CYCLE_NOTE | STRING | 255 | Cycle time note (AOI/SPC result text) |
+| 40 | LAB_GEN_DATE_1 | DATE | 4 | Generic date UDF 3 |
+| 41 | LAB_GEN_DATE_2 | DATE | 4 | Generic date UDF 4 |
+| 42 | LAB_GEN_ALPHA_1 | STRING | 30 | Generic alpha UDF 1 |
+| 43 | LAB_GEN_ALPHA_2 | STRING | 30 | Generic alpha UDF 2 |
+| 44 | LAB_GEN_NUM_1 | FLOAT | 8 | Generic numeric UDF 1 |
+| 45 | LAB_GEN_NUM_2 | FLOAT | 8 | Generic numeric UDF 2 |
+| 46 | LAB_GEN_FLAG_1 | STRING | 1 | Generic flag UDF 1 |
+| 47 | LAB_GEN_FLAG_2 | STRING | 1 | Generic flag UDF 2 |
+| 48 | LAB_GEN_FLAG_3 | STRING | 1 | Generic flag UDF 3 |
+| 49 | LAB_GEN_FLAG_4 | STRING | 1 | Generic flag UDF 4 |
+| 50 | LAB_GEN_FLAG_5 | STRING | 1 | Generic flag UDF 5 |
+
+**Pipeline flow:** Scanner → BKDCCLAB (raw) → DC-G review → LAB_APPROVAL=Y → DC-H post → BKDCLAB (active, LAB_POSTED=N) → batch post → BKDCPLAB (pending) → WORKORD cost update → BKDCHLAB (history). BKDCTLAB is the temp work file used during the DC-H batch posting pass.
+
+---
+
+### BKDCSHFT — Shift Schedule (34f)
+
+Single-record table (no PK key field — entire table is one configuration record) defining the time boundaries for 3 shifts. Each shift has 10 TIME fields: buffer, start, 2 breaks, lunch, end, end-buffer.
+
+| Fields | Type | Per Shift | Meaning |
+|--------|------|-----------|---------|
+| BKDC_SH_NAME1/2/3 | STRING(25) | one per shift | Shift name (Day / Swing / Night) |
+| BKDC_SH_BUFFER_1/2/3 | TIME | one per shift | Pre-shift buffer window |
+| BKDC_SH_START_1/2/3 | TIME | one per shift | Official shift start time |
+| BKDC_SH_BRK1IN_1/2/3 | TIME | one per shift | Break 1 start |
+| BKDC_SH_BRK1OUT_1/2/3 | TIME | one per shift | Break 1 end |
+| BKDC_SH_LUNCHIN_1/2/3 | TIME | one per shift | Lunch start |
+| BKDC_SH_LUNCHOT_1/2/3 | TIME | one per shift | Lunch end |
+| BKDC_SH_BRK2IN_1/2/3 | TIME | one per shift | Break 2 start |
+| BKDC_SH_BRK2OUT_1/2/3 | TIME | one per shift | Break 2 end |
+| BKDC_SH_FIN_1/2/3 | TIME | one per shift | Official shift end time |
+| BKDC_SH_FINBUF_1/2/3 | TIME | one per shift | Post-shift buffer window (holds scan clock open) |
+| BKDC_SH_EXTRA | STRING(50) | one total | Extra/notes |
+
+Layout: 3 names + 10 time fields × 3 shifts + 1 extra = 34 fields.
+
+---
+
+### BKDCCFG — DC Configuration (7f)
+
+Single-record configuration table for DC module timeouts and file paths.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKDC_CFG_IDLEP | FLOAT | 8 | Idle timeout period (minutes before scanner auto-logs off) |
+| 2 | BKDC_CFG_IDLES | UBINARY | 2 | Idle timeout seconds (fractional component) |
+| 3 | BKDC_CFG_BANKP | FLOAT | 8 | Bank/screen timeout period |
+| 4 | BKDC_CFG_BANKS | UBINARY | 2 | Bank timeout seconds |
+| 5 | BKDC_CFG_IMPPTH | STRING | 60 | Import path (handheld sync / barcode scan file import) |
+| 6 | BKDC_CFG_EXPPTH | STRING | 60 | Export path (data export to handheld) |
+| 7 | BKDC_CFG_JOBTME | STRING | 60 | Job timer path |
+
+---
+
+**BKDC* Family Summary Table** (Pass 130 2026-06-19):
+
+| Table | Fields | Role | Mirror |
+|-------|--------|------|--------|
+| BKDCCLAB | 50 | Raw scanned labor (unposted, from terminal) | — |
+| BKDCLAB | 50 | Active posted labor | BKDCCLAB (identical) |
+| BKDCPLAB | 50 | Pending batch-post labor | BKDCCLAB (identical) |
+| BKDCHLAB | 50 | Historical/archived labor | BKDCCLAB (identical) |
+| BKDCTLAB | 50 | Temp labor work file | BKDCCLAB (identical) |
+| BKDCSHFT | 34 | Shift schedule (3 shifts × 10 time boundaries) | — |
+| BKDCCFG | 7 | DC configuration (timeouts + paths) | — |
+
+---
+
+*Document updated: 2026-06-19 (Pass 130)*
+*Source: `samples/ddf/schema.md` + T7DCA SRC analysis*
+*Confidence: 82/100 — All schemas confirmed from DDF; pipeline stage roles confirmed from BKDCA.SRC analysis (Pass 118); LAB_REGOVER/APPROVAL flag values inferred from names.*
+
+---
+
+---
+
+## BKPI* Family — Physical Inventory Satellite Tables
+
+All confirmed from DDF — Pass 130 2026-06-19.
+
+### Structural Overview
+
+The BKPI* family (7 tables) supports the freeze → count → compare → post cycle:
+
+| Table | Fields | Role |
+|-------|--------|------|
+| BKPIMSTR | 3 | PI session header (YEAR+QTR key) |
+| BKPIFROZ | 19 | Frozen inventory snapshot per item/location |
+| BKPIPHYS | 14 | Physical count tags (actual counted quantities) |
+| BKPILOT | 10 | Frozen lot inventory snapshot |
+| BKPILCNT | 10 | Lot count entries (actual lot counts) |
+| BKPISER | 10 | Frozen serial inventory snapshot |
+| BKPISCNT | 10 | Serial count entries (actual serial counts) |
+
+---
+
+### BKPIMSTR — PI Session Header (3f)
+
+One record per physical inventory session. PK = YEAR + QTR.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKPI_MSTR_YEAR | STRING | 4 | Fiscal year (4-digit string, PK part 1) |
+| 2 | BKPI_MSTR_QTR | STRING | 2 | Quarter (PK part 2) |
+| 3 | BKPI_MSTR_DESC | STRING | 30 | Session description |
+
+---
+
+### BKPIFROZ — Frozen Inventory Snapshot (19f)
+
+Created by PI-A (freeze). One record per item/location at the moment of freeze. This is the baseline the count is compared against.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKPH_INFO_UOH | FLOAT | 8 | Units on hand at freeze (2 dec) |
+| 2 | BKPH_INFO_YEAR | STRING | 4 | PI session year (PK part 1) |
+| 3 | BKPH_INFO_QTR | STRING | 2 | PI session quarter (PK part 2) |
+| 4 | BKPH_INFO_LOC | STRING | 10 | Location code (PK part 3) |
+| 5 | BKPH_INFO_PROD | STRING | 15 | Item/part code (PK part 4) |
+| 6 | BKPH_INFO_COST | FLOAT | 8 | Unit cost at freeze (6 dec) |
+| 7 | BKPH_INFO_GLPST | STRING | 1 | GL posted flag (Y=variance posted to GL) |
+| 8 | BKPH_INFO_INPST | STRING | 1 | Inventory posted flag (Y=BKICMSTR.UOH updated) |
+| 9 | BKPH_INFO_FDATE | DATE | 4 | Freeze date |
+| 10 | BKPH_INFO_LOT | STRING | 1 | Has-lot flag (Y=lot tracking for this item) |
+| 11 | BKPH_INFO_SER | STRING | 1 | Has-serial flag (Y=serial tracking for this item) |
+| 12 | BKPH_INFO_PCOST | FLOAT | 8 | Prior period unit cost (6 dec) |
+| 13 | BKPH_INFO_PADJ | FLOAT | 8 | Prior period cost adjustment |
+| 14 | BKPH_INFO_ACCTA | STRING | 10 | GL variance account (adjustment debit) |
+| 15 | BKPH_INFO_DEPTA | STRING | 4 | GL variance department |
+| 16 | BKPH_INFO_ACCTC | STRING | 10 | GL clearing account (offset credit) |
+| 17 | BKPH_INFO_DEPTC | STRING | 4 | GL clearing department |
+| 18 | BKPH_INFO_PUNIT | FLOAT | 8 | Prior period unit cost (alternate slot) |
+| 19 | BKPH_INFO_TAGS | UBINARY | 2 | Number of count tags issued for this item |
+
+---
+
+### BKPIPHYS — Physical Count Tags (14f)
+
+Created by PI-C (enter tag counts). One record per physical count tag. A tag is a physical paper form tied to a specific location-item that a counter fills in.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKPH_TAGNUM | FLOAT | 8 | Tag number (PK — sequential from BKPIMSTR.BKPI_MSTR_TAGS) |
+| 2 | BKPH_ACTQTY | FLOAT | 8 | Actual quantity counted (2 dec) |
+| 3 | BKPH_EMPNUM | UBINARY | 2 | Counter employee number |
+| 4 | BKPH_EMPNAME | STRING | 15 | Counter employee name |
+| 5 | BKPH_COMMENT | STRING | 30 | Tag comment |
+| 6 | BKPH_COUNTDATE | DATE | 4 | Date counted |
+| 7 | BKPH_YEAR | STRING | 4 | PI session year |
+| 8 | BKPH_QTR | STRING | 2 | PI session quarter |
+| 9 | BKPH_LOC | STRING | 10 | Location code (FK → BKICLOC) |
+| 10 | BKPH_CODE | STRING | 15 | Item/part code (FK → BKICMSTR) |
+| 11 | BKPH_FDATE | DATE | 4 | Freeze date (from BKPIFROZ, for linking) |
+| 12 | BKPH_LOT | STRING | 15 | Lot number (if lot-tracked) |
+| 13 | BKPH_SERIAL | STRING | 25 | Serial number (if serial-tracked) |
+| 14 | BKPH_BIN | STRING | 10 | Bin location (if bin-tracking enabled) |
+
+**Variance calculation:** PI-G compares BKPIPHYS.BKPH_ACTQTY (counted) to BKPIFROZ.BKPH_INFO_UOH (frozen). Delta is posted as INVTXN adjustment, BKICMSTR.UOH updated, BKPIFROZ.BKPH_INFO_GLPST+INPST set to Y.
+
+---
+
+### Lot Count Tables (10f each, identical schema)
+
+BKPILOT (frozen lot snapshot) and BKPILCNT (actual lot count) share the same 10-field schema with BKPI_LOT_* prefix:
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKPI_LOT_YEAR | STRING | 4 | PI session year (PK part 1) |
+| 2 | BKPI_LOT_QTR | STRING | 2 | PI session quarter (PK part 2) |
+| 3 | BKPI_LOT_CODE | STRING | 15 | Item/part code (PK part 3) |
+| 4 | BKPI_LOT_LOT | STRING | 15 | Lot number (PK part 4) |
+| 5 | BKPI_LOT_QTY | FLOAT | 8 | Quantity (frozen or counted, 2 dec) |
+| 6 | BKPI_LOT_TAG | FLOAT | 8 | Associated count tag number |
+| 7 | BKPI_LOT_LOC | STRING | 10 | Location code |
+| 8 | BKPI_LOT_SERQTY | FLOAT | 8 | Serial quantity within this lot |
+| 9 | BKPI_LOT_PSTD | STRING | 1 | Posted flag |
+| 10 | BKPI_LOT_BIN | STRING | 15 | Bin location |
+
+BKPILOT = frozen quantity per lot at freeze time; BKPILCNT = actual quantity counted per lot.
+
+---
+
+### Serial Count Tables (10f each, identical schema)
+
+BKPISER (frozen serial snapshot) and BKPISCNT (actual serial count) share the same 10-field schema with BKPI_SER_* prefix:
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKPI_SER_YEAR | STRING | 4 | PI session year (PK part 1) |
+| 2 | BKPI_SER_QTR | STRING | 2 | PI session quarter (PK part 2) |
+| 3 | BKPI_SER_CODE | STRING | 15 | Item/part code (PK part 3) |
+| 4 | BKPI_SER_SERIAL | STRING | 25 | Serial number (PK part 4) |
+| 5 | BKPI_SER_QTY | FLOAT | 8 | Quantity (1 for most serials, 2 dec) |
+| 6 | BKPI_SER_TAG | FLOAT | 8 | Associated count tag number |
+| 7 | BKPI_SER_LOC | STRING | 10 | Location code |
+| 8 | BKPI_SER_LOTNO | STRING | 15 | Lot number (for lot-and-serial tracked items) |
+| 9 | BKPI_SER_PSTD | STRING | 1 | Posted flag |
+| 10 | BKPI_SER_BIN | STRING | 15 | Bin location |
+
+BKPISER = frozen serial list at freeze time; BKPISCNT = actuals entered during count.
+
+---
+
+**BKPI* Family Summary Table** (Pass 130 2026-06-19):
+
+| Table | Fields | Prefix | Role | Mirror |
+|-------|--------|--------|------|--------|
+| BKPIMSTR | 3 | BKPI_MSTR_* | PI session header | — |
+| BKPIFROZ | 19 | BKPH_INFO_* | Frozen item inventory snapshot | — |
+| BKPIPHYS | 14 | BKPH_* | Physical count tag entries | — |
+| BKPILOT | 10 | BKPI_LOT_* | Frozen lot snapshot | — |
+| BKPILCNT | 10 | BKPI_LOT_* | Lot count entries | BKPILOT (identical) |
+| BKPISER | 10 | BKPI_SER_* | Frozen serial snapshot | — |
+| BKPISCNT | 10 | BKPI_SER_* | Serial count entries | BKPISER (identical) |
+
+---
+
+*Document updated: 2026-06-19 (Pass 130)*
+*Source: `samples/ddf/schema.md`*
+*Confidence: 80/100 — All schemas confirmed from DDF; variance-posting logic confirmed from PI module workflow docs (Pass 111a); BKPH_INFO_TAGS count role inferred from PI-A program analysis.*
