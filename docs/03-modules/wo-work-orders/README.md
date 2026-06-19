@@ -160,6 +160,83 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **WOROUTMP** | `WOROUTMP.B` | 81 | `MTWORO_WOPRE`, `MTWORO_WOSUF`, `MTWORO_OPER` |
 | **WOSROUT** | `WOSROUT.B` | 81 | `MTWORO_WOPRE`, `MTWORO_WOSUF`, `MTWORO_OPER` |
 
+## WORKORD — Work Order Master (74 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `MTWO_WIP_WOPRE` (FLOAT 8) + `MTWO_WIP_WOSUF` (UBINARY 2)
+
+Note: The WO prefix is stored as a FLOAT (not a string). This is a TAS Pro convention — WO numbers are numeric sequences stored as floats for sort performance.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | `MTWO_WIP_WOPRE` | FLOAT | 8 | WO prefix / number (PK part 1) |
+| 2 | `MTWO_WIP_WOSUF` | UBINARY | 2 | WO suffix (PK part 2; 0 = main WO, 1+ = sub-WOs) |
+| 3 | `MTWO_WIP_BLANK` | STRING | 1 | Blank / spacer flag |
+| 4 | `MTWO_WIP_MULT` | STRING | 1 | Multiple-issue flag |
+| 5 | `MTWO_WIP_SQTY` | FLOAT | 8 | Scheduled quantity to produce |
+| 6 | `MTWO_WIP_PRTY` | STRING | 1 | Priority code (1=high … 9=low) |
+| 7 | `MTWO_WIP_SSTART` | DATE | 4 | Scheduled start date |
+| 8 | `MTWO_WIP_SFIN` | DATE | 4 | Scheduled finish date |
+| 9 | `MTWO_WIP_ASTART` | DATE | 4 | Actual start date |
+| 10 | `MTWO_WIP_AFIN` | DATE | 4 | Actual finish date |
+| 11 | `MTWO_WIP_COMQTY` | FLOAT | 8 | Completed quantity |
+| 12 | `MTWO_WIP_STATUS` | STRING | 1 | Status: R=Released, C=Closed, H=Hold, I=In-Process, X=Cancelled |
+| 13 | `MTWO_WIP_LOCK` | STRING | 1 | Edit lock flag |
+| 14 | `MTWO_WIP_ESETUP` | FLOAT | 8 | Estimated setup cost |
+| 15 | `MTWO_WIP_EMAT` | FLOAT | 8 | Estimated material cost |
+| 16 | `MTWO_WIP_EOUTPR` | FLOAT | 8 | Estimated outside processing cost |
+| 17 | `MTWO_WIP_ELABOR` | FLOAT | 8 | Estimated labor cost |
+| 18 | `MTWO_WIP_ASETUP` | FLOAT | 8 | Actual setup cost |
+| 19 | `MTWO_WIP_AMAT` | FLOAT | 8 | Actual material cost |
+| 20 | `MTWO_WIP_AOUTPR` | FLOAT | 8 | Actual outside processing cost |
+| 21 | `MTWO_WIP_ALABOR` | FLOAT | 8 | Actual labor cost |
+| 22 | `MTWO_WIP_ETOT` | FLOAT | 8 | Estimated total cost |
+| 23 | `MTWO_WIP_ATOTAL` | FLOAT | 8 | Actual total cost |
+| 24 | `MTWO_WIP_EST` | FLOAT | 8 | Estimate number (FK → Estimating module) |
+| 25 | `MTWO_WIP_CODE` | STRING | 15 | Item / part code being produced |
+| 26 | `MTWO_WIP_SONUM` | FLOAT | 8 | Linked SO number |
+| 27 | `MTWO_WIP_SETUPV` | FLOAT | 8 | Setup cost variance (est − actual) |
+| 28 | `MTWO_WIP_MATV` | FLOAT | 8 | Material cost variance |
+| 29 | `MTWO_WIP_OUTPRV` | FLOAT | 8 | Outside processing cost variance |
+| 30 | `MTWO_WIP_LABORV` | FLOAT | 8 | Labor cost variance |
+| *(gap)* | *(unregistered 32 bytes)* | — | — | 4 unregistered fields (offset 190–221) |
+| 31 | `MTWO_WIP_CUSORD` | STRING | 25 | Customer PO / order reference |
+| 32 | `MTWO_CUSTCODE` | STRING | 10 | Customer code |
+| 33 | `MTWO_CUSTNAME` | STRING | 25 | Customer name (denormalized) |
+| 34 | `MTWO_WIP_DESC` | STRING | 30 | WO description |
+| 35 | `MTWO_WIP_PPRCE` | FLOAT | 8 | Sell price per unit |
+| 36 | `MTWO_WIP_TOTV` | FLOAT | 8 | Total cost variance |
+| 37–46 | `MTWO_WIP_INSTR_1..10` | STRING | 60 | Work instructions (10 × 60 char = 600 chars) |
+| 47 | `MTWO_WIP_SCONV` | STRING | 1 | Schedule conversion flag |
+| 48 | `MTWO_WIP_QCONV` | STRING | 1 | Quantity conversion flag |
+| 49 | `MTWO_WIP_DDATE` | DATE | 4 | Customer due date |
+| 50 | `MTWO_WIP_VOVHD` | FLOAT | 8 | Estimated variable overhead |
+| 51 | `MTWO_WIP_AVOVHD` | FLOAT | 8 | Actual variable overhead |
+| 52 | `MTWO_WIP_VOVHDV` | FLOAT | 8 | Variable overhead variance |
+| 53 | `MTWO_WIP_EFOVHD` | FLOAT | 8 | Estimated fixed overhead |
+| 54 | `MTWO_WIP_AFOVHD` | FLOAT | 8 | Actual fixed overhead |
+| 55 | `MTWO_WIP_FOVHDV` | FLOAT | 8 | Fixed overhead variance |
+| 56 | `MTWO_WIP_USERCD` | STRING | 1 | User-defined code |
+| 57 | `MTWO_WIP_PROJ` | STRING | 15 | Project code (Job Cost integration) |
+| 58 | `MTWO_WIP_LOC` | STRING | 10 | Production location |
+| 59 | `MTWO_WIP_CONTAT` | STRING | 25 | Customer contact name |
+| 60 | `MTWO_WIP_CHGORD` | UBINARY | 2 | Change order counter |
+| 61 | `MTWO_WIP_EOTH` | FLOAT | 8 | Estimated other cost |
+| 62 | `MTWO_WIP_AOTH` | FLOAT | 8 | Actual other cost |
+| 63 | `MTWO_WIP_OTHV` | FLOAT | 8 | Other cost variance |
+| 64 | `MTWO_WIP_OTHPER` | FLOAT | 8 | Other cost percentage |
+| 65 | `MTWO_WIP_EMISC` | FLOAT | 8 | Estimated miscellaneous cost |
+| 66 | `MTWO_WIP_AMISC` | FLOAT | 8 | Actual miscellaneous cost |
+| 67 | `MTWO_WIP_MISCV` | FLOAT | 8 | Misc cost variance |
+| 68 | `MTWO_WIP_EEXTRA` | FLOAT | 8 | Estimated extra cost |
+| 69 | `MTWO_WIP_AEXTRA` | FLOAT | 8 | Actual extra cost |
+| 70 | `MTWO_WIP_EXTRAV` | FLOAT | 8 | Extra cost variance |
+| 71 | `MTWO_WIP_SCHED_1` | STRING | 1 | Schedule flag 1 |
+| 72 | `MTWO_WIP_SCHED_2` | STRING | 1 | Schedule flag 2 |
+| 73 | `MTWO_WIP_SOLINE` | FLOAT | 8 | SO line number |
+| 74 | `MTWO_WIP_SCRAP` | FLOAT | 8 | Scrap quantity |
+
+**Cost structure summary:** WO tracks 7 cost categories: Setup, Material, Outside Processing, Labor, Variable Overhead, Fixed Overhead, Other, Misc, Extra — each with Estimated, Actual, and Variance. Total = ATOTAL. Variance = ETOT − ATOTAL.
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*

@@ -2955,16 +2955,42 @@ SM is the largest module family and serves two distinct purposes:
 
 ---
 
-### FO — Features & Options (4 EVO modules)
-**What it does:** Allows configurable product options to be defined at the BOM level and selected by customers at order entry. Example: a customer orders a pump — they can choose Color (Red/Blue/Green) and Seal Type (Standard/High-temp). Each option choice drives different component requirements.
+### FO — Features & Options / Product Configurator (4 EVO modules)
 
-**How the flow works:**
-1. Define option sets in **EVOFNO** (ISFOHEAD + ISFOLINE) — like a mini-BOM per option
-2. When entering an SO, EvoFNOSO shows the option menu and records choices in ISFOORDL
-3. When a WO is created, EvoFNOWO adds the chosen components to the WO BOM automatically
-4. POs for option-specific components use EvoFNOPO
+**What it does:** A **customer-specific product configurator and quotation module**. Used when products can be built in multiple configurations (selected features, custom components, variable pricing). Generates a configurable document (ISFOHEAD/ISFOLINE) that then converts to a Sales Order, Work Order, or Purchase Order.
 
-**Key tables:** ISFOHEAD (option set header), ISFOLINE (option component lines), ISFOORDL (per-order selections), ISFOHIST (history)
+**Programs:**
+
+| Program | Procs | Role |
+|---------|------:|------|
+| `EvoFNO.RWN` | 142 | Main configurator — create/edit F&O documents, manage options, convert |
+| `EvoFNOSO.RWN` | 84 | Convert F&O → Sales Order (BKARINV/BKARINVL) |
+| `EvoFNOWO.RWN` | 74 | Convert F&O → Work Order (WORKORD + WO BOM/routing) |
+| `EvoFNOPO.RWN` | 54 | Convert F&O → Purchase Order (BKAPPOL/BKAPPO; checks BKSBVEND/BKSBMFG) |
+
+**Table structure (confirmed from named_vars, Pass 110e, 2026-06-19):**
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `ISFOHEAD` | 12+ | F&O document header: UID, PARENT, DATE, DESC, CUST, VEND, RFQ, STATUS, REV, MDATES, PERM, EXTRA |
+| `ISFOLINE` | 20+ | Internal BOM/routing lines: LEVEL, COMP, QTYREQ, OP, OPYN, RTNUM, SCRAP, TYPE, VEND, DATE1/2, REV, PBRANC/CBRANC |
+| `ISFOORDL` | 16+ | Customer-visible order lines: PCODE, PDESC, PQTY, PPRCE, PDISC, PEXT (extended $), ESD, LOC, TXBLE, UM, LN, DRAW, REV, LINE, OUID |
+| `ISFOBMRM` | 7+ | BOM remarks for F&O lines (mirrors BKBMREMK structure) |
+| `ISFOHIST` | 15+ | Audit history: WHO, DATE, TIME, STATUS, PART, CVTTO (converted-to type), CVTNO (order number after conversion), CITEM, QTY, LOC, CV, DDATE, PRICE |
+
+**The two line types explained:**
+- **ISFOLINE** — the *internal* BOM/routing structure (how the product is built): component, quantity required, operation, routing step, option flag (OPYN), scrap %, branch codes.
+- **ISFOORDL** — the *customer-facing* order lines (what the customer is buying and at what price): part code, description, quantity, unit price, discount, extended price, ESD.
+
+**Conversion workflow:**
+1. Create F&O document in EvoFNO — enter customer (CUST), link to an RFQ (RFQ), define order lines (ISFOORDL) and BOM structure (ISFOLINE).
+2. Set STATUS and REV as the quote evolves (full revision history in ISFOHIST).
+3. Convert: EvoFNOSO creates an SO from ISFOORDL data; EvoFNOWO creates a WO with BOM derived from ISFOLINE; EvoFNOPO creates a PO (also cross-checks the Spec Book for approved vendors).
+4. ISFOHIST records each conversion: CVTTO = "SO"/"WO"/"PO", CVTNO = the created order number.
+
+**Context block vars (SOCB, WOCB, POCB, NICB, SQCB, RQCB)** — when EvoFNO is called from an existing SO/WO/PO/requisition, the caller passes its context; EvoFNO returns the configured options back to the calling program.
+
+**How to access:** From the FO menu (access code FO), or triggered from SO/WO/PO entry screens when a configurable item is added.
 
 ---
 
@@ -15557,7 +15583,44 @@ standard cost component label system.
 
 ### EvoUpdate Infrastructure
 
-**EvoERPupd.DFM / EvoForceUpd.DFM** — Update engine forms:
+**Full update pipeline (confirmed from rwn_symbols.json, Pass 110e, 2026-06-19):**
+
+| Program | Procs | Role |
+|---------|------:|------|
+| `EvoUpdate.RWN` | 9 | Entry point — reads full ISTS.CFG buffer, validates admin password, delegates to EvoERPupd/EvoPRupd |
+| `EvoUPDSetup.RWN` | 18 | Configure update path (FILE_NAME = server path to update package), validate serial |
+| `EvoERPupd.RWN` | 77 | Main schema migration engine — ERP tables |
+| `EvoPRupd.RWN` | 51 | Payroll schema migration engine |
+| `UPDTP7.EXE` | — | Binary patcher (role unclear; likely patches EVO .RWN files themselves) |
+
+**EvoERPupd schema migration engine (77 procs):**
+
+Opens FILEDICT + FILEDBF + FILEKEY — EvoERP's own internal schema registry (separate from Pervasive DDF). Together these define: table field definitions (FILEDICT), dBASE-format table catalog (FILEDBF), and index/key definitions (FILEKEY).
+
+Key migration variables:
+- `FILE_DEF` / `FILE.CHRS` — field definition descriptor
+- `CREATE_FILE` — flag to create a new table
+- `FROM_FILE` / `TO_FILE` — source and destination files during record migration
+- `DO_FILE` — process this file in the update loop
+- `UPDATE_FD` / `UPDATE_FD_CNTR` — update field definitions; counter
+- `UPDT_CNTR` — total update operations counter
+- `RSTR_FILES` — restore files on failure/rollback
+- `ISTS.CFG.EPASS` — encrypted update password (update packages may be locked)
+
+Also opens BKLUGRID (updates grid/lookup column definitions), ISDRILLM (updates drill-down module definitions), and a large set of ERP data tables (BKBMMSTR, BKICMSTR, BKARINV, WORKORD, WOBOM, WOLABOR, etc.) — meaning updates can **read existing data records** and transform them as part of the schema migration.
+
+**Summary of the update flow:**
+1. Admin launches EvoUpdate → EvoUPDSetup configures the update server path.
+2. EvoERPupd reads FILE*.UPD manifests → for each file in the update:
+   a. Reads current schema from FILEDICT/FILEDBF/FILEKEY.
+   b. Creates new table structure (CREATE_FILE).
+   c. Copies records FROM_FILE → TO_FILE with field mapping.
+   d. Updates BKLUGRID and ISDRILLM to match new field names.
+   e. Updates ISTS.CFG.* entries to new default values.
+3. EvoPRupd does the same for Payroll tables.
+4. `Evocnvtb.RWN` (separate) finalizes: syncs Btrieve DDF with the new .B file structure.
+
+**EvoERPupd.DFM / EvoForceUpd.DFM** — Update engine UI forms:
 - Uforce = force update flag (bypass version check)
 - Clog = create log file flag
 - FD Name / FileName = data dictionary field name + update file name
@@ -16757,15 +16820,25 @@ Runs as a background process. Polls on the interval set in `ISTS.CFG` key `WTIME
 - `ISTS.CFG.USINI` — path to user INI file.
 - SMTP settings are configured separately in EvoServiceSetup.
 
-### EvoServiceSetup — Email / SMTP Configuration
+### EvoServiceSetup — Service Install + Email / SMTP Configuration
 
 **Program:** `EvoServiceSetup.RWN` (49 procs). Opens `ESETTINGS` table.
 
-Configures outgoing email (for alert notifications, reminders, and automated reports):
-- SMTP server, port, SSL flag, from-address — stored in `EMAIL.CFG.*` variables.
-- `THIRTYTWO` / `SIXTYFOUR` registry vars: detect 32-bit vs 64-bit MAPI library.
+Does two things:
 
-**How to configure SMTP:** Run EvoServiceSetup from the EVO admin menu → enter SMTP host/port/credentials → save. Changes take effect at next EvoService poll cycle.
+**1. Registers the Windows Service:**
+- `THIRTYTWO` / `SIXTYFOUR` — named vars holding the 32-bit and 64-bit Windows service registration paths respectively. The installer picks the path matching the OS bitness and writes the EvoService entry to the Windows Service Control Manager.
+- `ISTS.CFG.USINI` — writes the path to the user INI file so EvoService can locate it at runtime.
+- `EvoServiceRemove.RWN` (18 procs) uses the same `THIRTYTWO`/`SIXTYFOUR` vars to uninstall.
+
+**2. Configures outgoing email (for alert notifications, reminders, and automated reports):**
+- `EMAIL.CFG.SMTP` — SMTP server hostname.
+- `EMAIL.CFG.PORT` — SMTP port (commonly 25 or 587).
+- `EMAIL.CFG.USER` / `EMAIL.CFG.PASS` — SMTP credentials.
+- `EMAIL.CFG.SEC` — security/TLS flag.
+- `ESETTINGS` — general email enable/disable toggle (persisted to ESETTINGS table).
+
+**How to configure SMTP:** Run EvoServiceSetup from the EVO admin menu → enter SMTP host/port/credentials → save. Changes take effect at next EvoService poll cycle. To uninstall the service, run EvoServiceRemove from the same menu.
 
 ### EvoERPbackup — Automated Backup
 
@@ -16786,13 +16859,54 @@ Day-of-week scheduling variables: `MON`/`TUE`/`WED`/`THU`/`FRI`/`SAT`/`SUN`.
 
 **Program:** `EvoLinks.RWN` (156 procs). Primary table: `ISLINKS` (311 fields).
 
-Attaches hyperlinks (files, URLs, network paths) to any EvoERP entity (PO, SO, WO, part, vendor, customer). Each link record stores:
-- `IS.LNK.OPENWITH` — application to open the link with.
-- `IS.LNK.GLOBAL` — globally visible vs. private flag.
-- `IS.LNK.PRIVATE` — private-to-user flag.
-- `IS.LNK.SORT` / `IS.LNK.ALPHA` — sort/display order.
+Attaches hyperlinks (files, URLs, network paths) to any EvoERP entity (PO, SO, WO, part, vendor, customer, etc.).
 
-**How to add a link:** From any EvoERP transaction header, press the Links button (or use the EvoLinks menu) → enter the URL or file path → select Open-With application → save.
+**ISLINKS field semantics (from TAS named_vars, Pass 110e, 2026-06-19):**
+
+| TAS variable | Purpose |
+|---|---|
+| `IS.LNK.UID` | Unique link record ID (PK) |
+| `IS.LNK.LINK` | The link target — file path, URL, or UNC path |
+| `IS.LNK.APP` | Which EvoERP application/module owns this link |
+| `IS.LNK.TYPES` | Link type code (file, URL, email, etc.) |
+| `IS.LNK.PCB` | Parent Context Block — array of up to 100 parent record keys; links one document to multiple records simultaneously |
+| `IS.LNK.DEF` | Default link flag (used when multiple links exist for one record) |
+| `IS.LNK.GLOBAL` | Globally visible (all users can see) vs. user-private |
+| `IS.LNK.OPENWITH` | Application to launch when user opens the link |
+| `IS.LNK.DATE` | Date link was attached |
+| `IS.LNK.NOTE` | Free-text note/description for the link |
+| `IS.LNK.WHO` | User who created the link |
+| `IS.LNK.ATYPE` | Attachment type (e.g., document, image, thumbnail) |
+| `IS.LNK.EXTRA` | Extra metadata field |
+| `IS.LNK.PRIVATE` | Private-to-user flag (overrides GLOBAL for the creating user) |
+| `IS.LNK.SORT` | Sort order among multiple links on one record |
+| `IS.LNK.ALPHA` | Alpha/display key for sorting |
+| `FILELINK` | Resolved local file path (after path translation) |
+| `LEXIST` | Flag: link target exists on disk (validated at open time) |
+| `GEN.ID` | Generic entity ID — the key of the owning record (e.g., PO number, SO number) |
+| `INVENTORY.LINK` | Set when the link belongs to an inventory item |
+
+**Entity attachment — supporting tables opened by EvoLinks:**
+- `BKAPVEND` — AP vendor master (vendor-linked documents)
+- `BKARCUST` — AR customer master (customer-linked documents)
+- `BKCMACCN` — CRM account (CRM contact documents)
+- `BKAPDESC` — AP description codes (AP-linked documents)
+- `BKYSMSTR` / `BKICMSTR` — Item / inventory master (part documents)
+- `BKPSUSER` — User table (for WHO lookup)
+- `FILELOC` — File location routing (for translating server paths)
+- `ISACCESS` / `ISLOG` — Security / audit trail
+
+**Thumbnail / component document links (eBOM / engineering doc integration):**
+- `E.DOC.NAME` — Engineering document name
+- `E.THUMB.LINK` — Thumbnail image link for engineering document
+- `E.PARENT.COMP` — Parent component (part number) for engineering doc
+- `PG.DOC.NAME` — Purchasing / general document name
+- `PG.THUMB.LINK` — Thumbnail image link for purchasing document
+- `PG.PARENT.COMP` — Parent component for purchasing doc
+
+These vars suggest EvoLinks supports a two-tier document system: **engineering docs** (`E.*`) and **purchasing/general docs** (`PG.*`), each with thumbnail previews and parent-component links.
+
+**How to add a link:** From any EvoERP transaction header, press the Links button (or use the EvoLinks menu) → enter the URL or file path → select Open-With application → save. The `IS.LNK.PCB` array means one file can be attached to multiple records in one operation.
 
 ### CALREM — Calendar Reminders
 

@@ -94,6 +94,88 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKARTXNB** | `BKARTXNB.B` | 14 | `BKAR_TXN_SONUM`, `BKAR_TXN_CODE`, `BKAR_TXN_DESC` |
 | **BKARTXNS** | `BKARTXNS.B` | 14 | `BKAR_TXN_SONUM`, `BKAR_TXN_CODE`, `BKAR_TXN_DESC` |
 
+## BKARCUST — Customer Master (106 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `BKAR_CUSTCODE` (10)
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | `BKAR_CUSTCODE` | STRING | 10 | Customer code (PK) |
+| 2 | `BKAR_CUSTNAME` | STRING | 30 | Customer name |
+| 3 | `BKAR_ADD1` | STRING | 30 | Address line 1 |
+| 4 | `BKAR_ADD2_1` | STRING | 30 | Address line 2 (billing) |
+| 5 | `BKAR_ADD2_2` | STRING | 30 | Address line 2 (shipping) |
+| 6 | `BKAR_CITY` | STRING | 26 | City |
+| 7 | `BKAR_STATE` | STRING | 2 | State code |
+| 8 | `BKAR_ZIP` | STRING | 10 | ZIP/postal code |
+| 9–13 | `BKAR_CONTACT_1..5` | STRING | 30 | Contacts 1–5 |
+| 14–18 | `BKAR_TELEPHONE_1..5` | STRING | 25 | Phone numbers 1–5 |
+| 19 | `BKAR_COUNTRY` | STRING | 30 | Country |
+| 20 | `BKAR_CREDITLMT` | FLOAT | 8 | Credit limit ($) |
+| 21 | `BKAR_CHG_INTRST` | STRING | 1 | Charge interest flag (Y/N) |
+| 22 | `BKAR_REMAINCRD` | FLOAT | 8 | Remaining credit available ($) |
+| 23 | `BKAR_OUTINV` | FLOAT | 8 | Outstanding invoice balance ($) |
+| 24 | `BKAR_LASTSALE` | DATE | 4 | Date of last sale |
+| 25 | `BKAR_LASTPMT` | DATE | 4 | Date of last payment |
+| 26 | `BKAR_GROSS_MTD` | FLOAT | 8 | Gross sales month-to-date |
+| 27 | `BKAR_COGS_MTD` | FLOAT | 8 | Cost of goods sold MTD |
+| 28 | `BKAR_NET_MTD` | FLOAT | 8 | Net sales MTD |
+| 29 | `BKAR_PNET_MTD` | FLOAT | 8 | Prior-period net MTD |
+| 30–33 | `BKAR_GROSS/COGS/NET/PNET_YTD` | FLOAT | 8 | Year-to-date equivalents |
+| 34–37 | `BKAR_GROSS/COGS/NET/PNET_LYR` | FLOAT | 8 | Last-year equivalents |
+| 38–41 | `BKAR_GROSS/COGS/NET/PNET_PVAR` | FLOAT | 8 | Prior-year variance |
+| 42 | `BKAR_NEW_CUST` | STRING | 1 | New customer flag |
+| 43–44 | `BKAR_OUT_CREDIT_1/2` | FLOAT | 8 | Outstanding credit memos (2 buckets) |
+| 45 | `BKAR_TAX_STATE` | STRING | 2 | State tax code |
+| 46 | `BKAR_TAX_LOCAL` | STRING | 2 | Local tax code |
+| 47 | `BKAR_TAX_YN` | STRING | 1 | Taxable flag (Y/N) |
+| 48 | `BKAR_STATEMENT` | STRING | 1 | Send statements flag |
+| 49–50 | `BKAR_SLSP_NUM_1/2` | UBINARY | 2 | Salesperson 1 + 2 codes |
+| 51 | `BKAR_TERMS_NUM` | UBINARY | 2 | Payment terms code (FK → terms table) |
+| 52 | `BKAR_START_DATE` | DATE | 4 | Account open date |
+| 53 | `BKAR_CLASS` | STRING | 4 | Customer class code |
+| 54 | `BKAR_PRICE_MAT` | UBINARY | 2 | Price matrix code |
+| 55 | `BKAR_HIST_YN` | STRING | 1 | Keep history flag |
+| 56 | `BKAR_DISC_CODE` | STRING | 10 | Discount code |
+| 57 | `BKAR_NUM_INVCS` | FLOAT | 8 | Total number of invoices |
+| 58 | `BKAR_DAYS_TOPAY` | FLOAT | 8 | Average days to pay |
+| 59–68 | `BKAR_NOTES_1..10` | STRING | 80 | Internal notes (10 × 80 char = 800 chars) |
+| 69 | `BKAR_GLACCT` | STRING | 10 | GL sales account |
+| 70 | `BKAR_GLDPT` | STRING | 4 | GL sales department |
+| 71 | `BKAR_FOB` | STRING | 15 | FOB point |
+| 72 | `BKAR_SHIPTO` | STRING | 10 | Default ship-to code |
+| 73 | `BKAR_SHIPVIA` | STRING | 15 | Default ship method |
+| 74 | `BKAR_FOLUPDTE` | DATE | 4 | Follow-up date (CRM) |
+| 75–76 | `BKAR_COMM_1/2` | FLOAT | 8 | Commission rates for salesperson 1 + 2 |
+| 77 | `BKAR_SORT` | STRING | 6 | Sort key |
+| 78 | `BKAR_COOP_RATE` | FLOAT | 8 | Co-op advertising rate |
+| 79 | `BKAR_COOP_AMT` | FLOAT | 8 | Co-op advertising accrual amount |
+| 80 | `BKAR_TERRITORY` | STRING | 4 | Sales territory code |
+| 81 | `BKAR_LEAD_SRC` | STRING | 5 | Lead source code |
+| 82 | `BKAR_SIC_CODE` | STRING | 7 | SIC (Standard Industry Classification) code |
+| 83 | `BKAR_PURCH_AGMT` | STRING | 1 | Purchase agreement flag |
+| 84 | `BKAR_FORECAST` | STRING | 12 | Forecast amount (text — 12 chars) |
+| 85 | `BKAR_CUST_YEAR` | STRING | 12 | Customer fiscal year info |
+| 86 | `BKAR_QC_INFO` | STRING | 30 | Quality control info / cert requirements note |
+| 87 | `BKAR_MAIL_LIST` | STRING | 1 | Mail list flag |
+| 88 | `BKAR_CARRIER` | STRING | 15 | Preferred carrier |
+| 89 | `BKAR_REQD_CERTS` | STRING | 10 | Required certifications code |
+| 90 | `BKAR_SHP_WINDOW` | STRING | 30 | Ship window (delivery window text) |
+| 91 | `BKAR_RECV_HOURS` | STRING | 30 | Receiving hours |
+| 92 | `BKAR_SHP_TOLRNC` | STRING | 10 | Shipment quantity tolerance |
+| 93 | `BKAR_RESALE_NO` | STRING | 15 | Resale tax exemption number |
+| 94 | `BKAR_FAX_PHONE` | STRING | 25 | Fax number |
+| 95 | `BKAR_CREDIT_HLD` | STRING | 1 | Credit hold flag (Y/N) |
+| 96 | `BKAR_EXTRA` | STRING | 30 | Extra/user-defined field |
+| 97–101 | `BKAR_EMAIL_1..5` | STRING | 128 | Email addresses 1–5 |
+| 102 | `BKAR_IS_TAXGRP` | STRING | 10 | AvaTax / tax group code |
+| 103 | `BKAR_IS_TAXIN` | STRING | 1 | Tax-inclusive pricing flag |
+| 104 | `BKAR_IS_MCCODE` | STRING | 3 | Multi-currency code |
+| 105 | `BKAR_IS_REP` | STRING | 5 | IS representative code |
+| 106 | `BKAR_LEAD_SRC2` | STRING | 5 | Secondary lead source code |
+
+**Note:** BKARSHIP (106f) has the same field layout as BKARCUST — it is the ship-to address override table (customer's alternate shipping addresses reuse the customer master layout).
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*

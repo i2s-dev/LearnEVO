@@ -268,7 +268,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 ### 2.10 `.UPD` — Schema Migration Manifest
 - [x] ✅ Format: Btrieve DDF; mirrors Pervasive system catalog tables (FILE\*.UPD) — **C: 75/100**
 - [x] ✅ Purpose: schema-migration snapshots used by EvoUpdate subsystem — **C: 70/100**
-- [ ] ⬜ Full update pipeline traced (how EvoUpdate applies .UPD patches to live tables)
+- [x] ✅ Full update pipeline traced — EvoUpdate→EvoUPDSetup→EvoERPupd (FILEDICT/FILEDBF/FILEKEY schema registry; FROM_FILE→TO_FILE migration; UPDATE_FD; RSTR_FILES rollback; updates BKLUGRID+ISDRILLM+ISTS.CFG)→EvoPRupd→Evocnvtb (DDF sync) — Pass 110e 2026-06-19 — **C: 75/100**
 - [ ] ⬜ All FILE\*.UPD files parsed and delta-compared to current schema
 
 ### 2.11 `.DBA` — Identity / Seat Token
@@ -486,7 +486,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ AR workflow fully traced: customer → invoice → payment → statement — **C: 72/100**
 - [x] ✅ Payment application logic confirmed: credits/deposits tracked separately in BKAR.OUT.CREDIT[1-2] — **C: 68/100**
 - [x] ✅ Pass 41: Full ISAR* archive family confirmed (30 tables): ISARAHIN+ISARAINV(84f BKARINV archives), ISARAHIL(28f BKARINVL archive), ISARAT(12f BKART archive), ISARAINT(23f BKARINVT archive), ISARTXNB(23f AR shipment batch with LINEID+RLEASD), ISARACHG(26f AR change archive); ISARCHG(26f AR change log); extended: ISAREX(51f resale cert), ISARFQ; complete archive lifecycle confirmed — **C: 80/100**
-- [ ] ⬜ BKARCUST all 106 fields documented with meaning
+- [x] ✅ BKARCUST all 106 fields documented with meaning — docs/03-modules/ar-accounts-receivable/README.md (Pass 110e 2026-06-19) — **C: 95/100**
 - [ ] ⬜ AR aging bucket calculation logic confirmed (how 30/60/90 boundaries computed)
 
 ### 7.2 Accounts Payable (AP)
@@ -500,7 +500,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ 1099 tracking mechanism confirmed: BKAPVEND 1099 code + BKAPINVT TYPE="P" — **C: 70/100**
 - [x] ✅ Pass 41: Full ISAP* family confirmed (15 tables): ISAPOPO/ISAPOPOL(57/38f BKAPPO/BKAPPOL open views), ISAPARFQ/ISAPARFL(57/38f archive), ISAPAINL(390f BKAPINVL archive), ISAPACHK(12f BKAPCHKF archive), ISAPCHG+ISAPHCHG(32f AP change log+history: PONUM+LINEID+PCODE+before/after price/loc), ISAPEX(33f AP vendor extended: VEND PK+LONGNAME+NUM fields), ISAPQPO(66f vendor quote pricing: PCODE+VNDCOD PK), ISAPPROJ(12f project linking) — **C: 85/100**
 - [ ] ⬜ Voucher entry workflow fully traced (AP-B main form logic)
-- [ ] ⬜ BKAPVEND all fields documented with meaning
+- [x] ✅ BKAPVEND all 72 fields documented with meaning — docs/03-modules/ap-accounts-payable/README.md (Pass 110e 2026-06-19) — **C: 95/100**
 
 ### 7.3 Inventory (IN)
 - [x] ✅ Menu codes listed (40 operations) — **C: 72/100**
@@ -545,7 +545,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ WO-PO linkage confirmed: outside process operations link to AP POs — **C: 68/100**
 - [x] ✅ Pass 42: ISWOCLOG(32f) = WO operation change audit log: IS_WOLOG_WOPRE(8)+WOSUF(2)+OPER(2) PK + OPDESC(30)+ITEM(15)+WC(12)+WCDESC(30)+CUST(10)+CUSNME(30)+ITEMDS(30)+CDATE+CWHO(30)+CTIME+CWHERE(15)+MACH(4)+ALPHA1_1/2(30 each)+FLAG_1..5+DATE_1..3+7more; every WO-op modification logged with WHO/WHEN/WHERE/MACHINE. ISWOHEX(63f) = alternate index of ISWOEX (IS_WOEX_* fields, 0 diff). ISWODESC/ISWOHDSC(5f each) = WO description notes, standard BK_DESC_* pattern — **C: 72/100**
 - [ ] ⬜ All 30 WO\* tables with fields documented
-- [ ] ⬜ WORKORD all 74 fields confirmed with meaning
+- [x] ✅ WORKORD all 74 fields confirmed with meaning — 7-category cost structure (Setup/Mat/OutProc/Labor/VarOH/FixOH/Misc) × E/A/Variance; 32-byte DDF gap noted; docs/03-modules/wo-work-orders/README.md (Pass 110e 2026-06-19) — **C: 90/100**
 
 ### 7.7 General Ledger (GL)
 - [x] ✅ Menu codes listed (16 operations) — **C: 72/100**
@@ -556,7 +556,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Journal entry workflow traced: T7GLB (enter GJ/CR/CD/TT/YE) → T7GLC (report/filter) → T7GLP (period-end) → T7GLARCH (archive) — **C: 70/100**
 - [x] ✅ Pass 40: All 28 BKGL* table schemas extracted. 4 COA tables (BKGLCOA/CCOA/ECOA/FCOA, 62-65f each, identical structure + period balance array); 8 transaction tables (BKGLTRAN/ATRN/ETRN/HIST/TEMP×4, all identical 16f: GLACCT+GLDPT+DATE+CODE+INVC+DESC+DC+AMT+8more); 4×2 journal tables (BKGLGJRN/GJLN, BKGLAGJR/AJL, BKGLRGJR/RJL, BKGLTGJR/TJL — current/archive/recurring/template); BKGLFSTL(12f statement layout), BKGLSTMT(104f statement groups), BKGLDESC(5f GL notes), BKGLACHK+BKGLICC (11f archive+intercompany checks), BKGLXH(20f extended history); full GL architecture documented — **C: 75/100**
 - [ ] ⬜ Period-end close process traced step-by-step (T7GLH/T7GLP sequence)
-- [ ] ⬜ BKGLCOA all 65 fields confirmed with full meaning
+- [x] ✅ BKGLCOA all 65 fields confirmed with full meaning — 14-period × 4-dataset design (CURRENT/BUDGET/1YPAST/2YPAST) fully documented; docs/03-modules/gl-general-ledger/README.md (Pass 110e 2026-06-19) — **C: 97/100**
 
 ### 7.8 Bill of Materials (BM)
 - [x] ✅ Menu codes listed — **C: 65/100**
@@ -772,7 +772,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ### 9.3 EvoService (Windows Service)
 - [x] ✅ Files: EvoService.RWN, EvoServiceSetup.RWN, EvoServiceRemove.RWN — **C: 68/100**
-- [ ] ⬜ Service registration mechanism traced
+- [x] ✅ Service registration mechanism traced — THIRTYTWO/SIXTYFOUR named_vars hold 32/64-bit service install paths; EvoServiceSetup writes SCM entry + ISTS.CFG.USINI; EvoServiceRemove uninstalls via same vars — **C: 78/100**
 - [ ] ⬜ Service ↔ Scheduler interaction documented
 
 ### 9.4 EvoBackup
@@ -783,18 +783,18 @@ The following modules have menu codes and forms inventoried but no deep logic do
 ### 9.5 EvoLinks (Document Attachments)
 - [x] ✅ Files: EvoLinks.RWN, EvoLinkCVT.RWN — **C: 62/100**
 - [x] ✅ Attachment storage table = **ISLINKS** — confirmed 2026-06-17 (EvoLinks.RWN opens ISLINKS as primary; ISLINKS = record-key → document filename cross-reference)
-- [ ] ⬜ DB table for link mapping identified and all fields documented
-- [ ] ⬜ Attach / view / delete workflow traced
+- [x] ✅ DB table for link mapping identified and all fields documented — IS.LNK.UID/LINK/APP/TYPES/PCB/DEF/GLOBAL/OPENWITH/DATE/NOTE/WHO/ATYPE/EXTRA/PRIVATE/SORT/ALPHA + FILELINK/LEXIST/GEN.ID/INVENTORY.LINK + E/PG thumbnail/component vars (Pass 110e, 2026-06-19) — **C: 75/100**
+- [x] ✅ Attach / view / delete workflow traced — GEN.ID=owning record key; IS.LNK.PCB[100]=multi-record attach; BKAPVEND/BKARCUST/BKCMACCN/BKAPDESC entity lookups; BKYSMSTR/BKICMSTR for parts; FILELOC for path translation; two-tier doc system (E.*=engineering, PG.*=purchasing) with thumbnail support — **C: 72/100**
 
-### 9.6 EvoFNO (Features & Options Configurator)
+### 9.6 EvoFNO (Features & Options / Product Configurator)
 - [x] ✅ Files: EvoFNO.RWN, EvoFNOSO.RWN, EvoFNOPO.RWN, EvoFNOWO.RWN — **C: 62/100**
-- [ ] ⬜ FNO table structure documented
-- [ ] ⬜ FNO interaction with SO/PO/WO modules traced
+- [x] ✅ FNO table structure documented — ISFOHEAD (header: UID/CUST/VEND/RFQ/STATUS/REV/MDATES) + ISFOLINE (BOM lines: LEVEL/COMP/QTYREQ/OP/OPYN/RTNUM/SCRAP/TYPE) + ISFOORDL (customer order lines: PCODE/PDESC/PQTY/PPRCE/PDISC/PEXT/ESD) + ISFOBMRM (remarks) + ISFOHIST (conversion audit) — **C: 78/100**
+- [x] ✅ FNO interaction with SO/PO/WO modules traced — EvoFNOSO: BKARINV/BKARINVL (P.SO/ITEM/LINE context); EvoFNOPO: BKAPPOL/BKAPPO + BKSBVEND/BKSBMFG cross-check; EvoFNOWO: WORKORD+WOBOM+WOROUT+ROUTING+WORKCTR+CALENDAR; all 3 log to ISFOHIST.CVTTO/CVTNO — **C: 78/100**
 
 ### 9.7 EvoUpdate (In-App Patching)
 - [x] ✅ Files: EvoUpdate.RWN, EvoERPupd.RWN, EvoPRupd.RWN, EvoUPDSetup.RWN, UPDTP7.EXE — **C: 70/100**
 - [x] ✅ Update mechanism: reads FILE\*.UPD manifests, applies schema migrations — **C: 65/100**
-- [ ] ⬜ Full update pipeline traced step-by-step
+- [x] ✅ Full update pipeline traced — EvoUpdate(entry)→EvoUPDSetup(path)→EvoERPupd(77p; FILEDICT/FILEDBF/FILEKEY schema registry; FROM_FILE→TO_FILE migration; UPDATE_FD field defs; RSTR_FILES rollback; updates BKLUGRID+ISDRILLM+ISTS.CFG)→EvoPRupd(payroll)→Evocnvtb(DDF sync) — **C: 75/100**
 - [ ] ⬜ UPDTP7.EXE role (binary patcher?) documented
 
 ### 9.8 EvoDrillDown / Analysis Tools
@@ -889,7 +889,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **New user setup** — AHSYLOG entry, access flags, starting menu — see Recipe 13 — **C: 65/100**
 - [x] ✅ **New company creation** — UT → company add, NE module (T7NEWINIT: 49 procs) — see Recipe 16 — **C: 60/100**
 - [x] ✅ **Backup / restore** — TA-O (EVOERPBACKUP) — see Recipe 12 — **C: 65/100**
-- [ ] ⬜ **Software update** — EvoUpdate apply process
+- [x] ✅ **Software update** — EvoUpdate pipeline traced (Pass 110e 2026-06-19) — see Platform Subsystems § EvoUpdate — **C: 75/100**
 - [ ] ⬜ **ODBC DDF build** — required before Java tools can connect
 
 ---

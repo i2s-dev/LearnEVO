@@ -102,6 +102,61 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKAPVEND** | `BKAPVEND.B` | 72 | `BKAP_VENDCODE`, `BKAP_VENDNAME`, `BKAP_ADD1_1` |
 | **BKAPVND2** | `BKAPVND2.B` | 63 | `BKAP2_VENDCODE`, `BKAP2_ID`, `BKAP2_SEND_1099` |
 
+## BKAPVEND — Vendor Master (72 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `BKAP_VENDCODE` (10)
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | `BKAP_VENDCODE` | STRING | 10 | Vendor code (PK) |
+| 2 | `BKAP_VENDNAME` | STRING | 30 | Vendor name |
+| 3–4 | `BKAP_ADD1_1/2` | STRING | 30 | Address line 1 (billing / shipping) |
+| 5–6 | `BKAP_ADD2_1/2` | STRING | 30 | Address line 2 (billing / shipping) |
+| 7–8 | `BKAP_CITY_1/2` | STRING | 26 | City (billing / shipping) |
+| 9 | `BKAP_STATE` | STRING | 2 | State |
+| 10–13 | `BKAP_CONTACT_1..4` | STRING | 30 | Contacts 1–4 |
+| 14–18 | `BKAP_TELEPHONE_1..5` | STRING | 25 | Phone numbers 1–5 |
+| 19 | `BKAP_ZIP` | STRING | 10 | ZIP/postal code |
+| 20–21 | `BKAP_COUNTRY_1/2` | STRING | 30 | Country (billing / shipping) |
+| 22 | `BKAP_OUTINV` | FLOAT | 8 | Outstanding invoice balance ($) |
+| 23 | `BKAP_LASTPURCH` | DATE | 4 | Date of last purchase |
+| 24 | `BKAP_LASTPMT` | DATE | 4 | Date of last payment |
+| 25 | `BKAP_PURCH_MTD` | FLOAT | 8 | Purchases month-to-date |
+| 26 | `BKAP_PURCH_YTD` | FLOAT | 8 | Purchases year-to-date |
+| 27 | `BKAP_PURCH_LYR` | FLOAT | 8 | Purchases last year |
+| 28 | `BKAP_PURCH_VAR` | FLOAT | 8 | Purchase variance (YTD vs LYR) |
+| 29 | `BKAP_OUT_CREDIT` | FLOAT | 8 | Outstanding credit memos ($) |
+| 30 | `BKAP_NEW_VEND` | STRING | 1 | New vendor flag |
+| 31 | `BKAP_START_DATE` | DATE | 4 | Account open date |
+| 32 | `BKAP_CLASS` | STRING | 4 | Vendor class code |
+| 33 | `BKAP_TERMS_NUM` | UBINARY | 2 | Payment terms code |
+| 34 | `BKAP_HIST_YN` | STRING | 1 | Keep purchase history flag |
+| 35 | `BKAP_REM_ZIP` | STRING | 10 | Remit-to ZIP |
+| 36 | `BKAP_REM_STATE` | STRING | 2 | Remit-to state |
+| 37–46 | `BKAP_NOTES_1..10` | STRING | 60 | Internal notes (10 × 60 char = 600 chars) |
+| 47 | `BKAP_GL_ACCT` | STRING | 10 | GL AP control account |
+| 48 | `BKAP_GL_DPT` | STRING | 4 | GL AP department |
+| 49 | `BKAP_SORT` | STRING | 6 | Sort key |
+| 50 | `BKAP_SHIP_VIA` | STRING | 15 | Default ship method |
+| 51 | `BKAP_FOB_POINT` | STRING | 20 | FOB point |
+| 52 | `BKAP_FTERMS_NUM` | UBINARY | 2 | Freight terms code |
+| 53 | `BKAP_TAX_ID` | STRING | 20 | Tax ID / EIN (for 1099 reporting) |
+| 54 | `BKAP_ADD3` | STRING | 30 | Address line 3 |
+| 55 | `BKAP_EXTRA` | STRING | 150 | Extra/user-defined field (150 chars) |
+| 56–60 | `BKAP_EMAIL_1..5` | STRING | 128 | Email addresses 1–5 |
+| 61 | `BKAP_DESC` | STRING | 25 | Vendor description / category |
+| 62 | `BKAP_IS_TAXGRP` | STRING | 10 | AvaTax / tax group code |
+| 63 | `BKAP_IS_TAXIN` | STRING | 1 | Tax-inclusive pricing flag |
+| 64 | `BKAP_IS_MCCODE` | STRING | 3 | Multi-currency code |
+| 65 | `BKAP_IS_DCODE` | STRING | 3 | Discount code |
+| 66 | `BKAP_CUST_CODE` | STRING | 15 | AR customer code if this vendor is also a customer |
+| 67 | `BKAP_CREDLIM` | FLOAT | 8 | Credit limit with this vendor |
+| 68 | `BKAP_REQQC` | STRING | 1 | Require QC inspection on receipts flag |
+| 69–70 | `BKAP_ALPHA1/2` | STRING | 25 | Alpha search keys 1 + 2 |
+| 71–72 | `BKAP_DATE1/2` | DATE | 4 | User-defined date fields 1 + 2 |
+
+**Related table — BKAPVND2 (63 fields):** Contains 1099 reporting extensions (SEND_1099 flag, box amounts A1–A10 × 5 entries each with labels and dates). One record per vendor. FK: `BKAP2_VENDCODE`.
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*

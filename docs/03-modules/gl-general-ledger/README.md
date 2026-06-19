@@ -92,6 +92,32 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKGLX** | `BKGLX.B` | 20 | `BKGLX_POSTDATE`, `BKGLX_ARCHDATE`, `BKGLX_ENTDATE` |
 | **BKGLXH** | `BKGLXH.B` | 20 | `BKGLX_POSTDATE`, `BKGLX_ARCHDATE`, `BKGLX_ENTDATE` |
 
+## BKGLCOA — Chart of Accounts (65 fields, confirmed from DDF, Pass 110e 2026-06-19)
+
+Primary key: `BKGL_ACCT` (10) + `BKGL_GLDPT` (4)
+
+**Design pattern:** 14-period financial data stored directly in the account record, not in a separate transaction table. Each account carries current-year, budget, 1-year-prior, and 2-year-prior balances for all 14 periods (12 months + 2 adjustment periods), plus the prior year-end balances.
+
+| Field(s) | Type | Size | Meaning |
+|----------|------|------|---------|
+| `BKGL_ACCT` | STRING | 10 | GL account code (PK part 1) |
+| `BKGL_GLDPT` | STRING | 4 | GL department (PK part 2) |
+| `BKGL_ACCTD` | STRING | 25 | Account description |
+| `BKGL_TYPE` | STRING | 1 | Account type: A=Asset, L=Liability, E=Equity, R=Revenue, C=Cost/Expense |
+| `BKGL_CR_DR` | STRING | 1 | Normal balance: C=Credit, D=Debit |
+| `BKGL_NON_CASH` | STRING | 1 | Non-cash account flag (depreciation, etc.) |
+| `BKGL_CURRENT_1..14` | FLOAT×14 | 8 | Current year period balances (periods 1–12 + 2 adjusting) |
+| `BKGL_BUDGET_1..14` | FLOAT×14 | 8 | Budget amounts per period |
+| `BKGL_1YPAST_1..14` | FLOAT×14 | 8 | Prior year period actuals |
+| `BKGL_2YPAST_1..14` | FLOAT×14 | 8 | Two years ago period actuals |
+| `BKGL_EXTRA` | STRING | 50 | User-defined extra field |
+| `BKGL_1YPAST_YE` | FLOAT | 8 | Prior year year-end balance |
+| `BKGL_2YPAST_YE` | FLOAT | 8 | Two-years-ago year-end balance |
+
+**Period numbering:** Periods 1–12 = fiscal months; periods 13–14 = adjusting/closing entries. EvoERP supports 14-period fiscal years (12 regular + 2 closing periods).
+
+**Notes:** The trial balance, income statement, and balance sheet are all derived directly from BKGLCOA by summing CURRENT_1..N for the selected date range. Transaction detail lives in BKGLTRAN. Variance calculations compare CURRENT vs BUDGET or CURRENT vs 1YPAST.
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*
