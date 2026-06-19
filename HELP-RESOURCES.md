@@ -531,13 +531,16 @@ Step 3 — Verify:
 - **AP-E — Print Vouchers Due:** Aging report of unpaid invoices.
 - **AP-H / AP-H-A — Print Checks:** The check printing process works as follows:
   1. A check run file (BKAPCHKF) is built first (separate step — select which invoices to pay)
-  2. AP-H prints continuous-form checks; AP-H-A prints laser checks using RTM templates
-     (BKAPHA1.RTM, BKAPHA2.RTM, BKAPHA3.RTM)
+  2. Format is controlled by **BKYS.YN[48]** (set in AD-C):
+     - Values 1, 4, or 5 → laser format → AP-H chains to BKAPHA (program path via BKSY.PRGS.WHR)
+     - Values 2 or 3 → continuous/dot-matrix format → AP-H stays in BKAPH
+     - BKAPHA uses RTM templates (BKAPHA1.RTM, BKAPHA2.RTM, BKAPHA3.RTM); supports C/S/S and S/S/C check layouts
   3. After printing, the program posts to GL (debit AP control, credit bank account),
      updates vendor last-payment date, reduces outstanding invoice amounts,
      and deletes records from BKAPCHKF
   4. Checks with zero or negative totals are automatically voided
   5. Check amounts are converted to alpha text ("five thousand dollars") by GET.ALPHA routine
+  6. Multi-currency checks print with exchange rate applied; gain/loss posts to separate GL account
 - **AP-P — Generate Recurring Vouchers:** Batch-create repeating invoices.
 - **AP-S — 1099 Forms:** Year-specific programs (APS1999, APS2000, TAPS2000 etc.).
 
@@ -925,28 +928,51 @@ handheld devices. Records employee clock-in/out, parts made, and scrap.
 3. Clock-in: creates open (type O) record with start time and shift
 4. Clock-out: closes record with finish time, calculates run hours
 5. Employee reports parts made and scrapped
-6. Auto-close feature: if employee starts a new job while previous is open, previous
-   is automatically closed (if YN[228]='Y')
+6. Auto-close feature: if a new job starts while a previous is still open, previous is
+   automatically closed with a system-generated record (enabled by BKYS.YN[229]='Y')
 7. On exit (F9): pending labor moves from BKDCTLAB → BKDCPLAB for batch GL posting
 
-**Shift configuration:** 3 shifts defined in BKDCSHFT (start/finish times per shift).
+**DC entry variants** (controlled by `cfrom` parameter passed from menu):
+- **DC-A** (cfrom=DCA): Full entry — WO, Seq#, Start time, Finish time, Parts, Scrap, Run hours
+- **DC-B** (cfrom=DCB): Barcode/scan mode — WO, Seq#, Parts, Scrap only (no clock times)
+- **DC-C** (cfrom=DCC): Time-entry only — WO, Seq#, Start, Finish, Run hours (no parts/scrap)
+
+**Screen configuration flags (BKYS.YN array):**
+- YN[20]='Y' — barcode mode: sets EXTRA='B' on posted part records
+- YN[228]='Y' — use alternate screen form BKDCAF (vs standard BKDCA)
+- YN[229]='Y' — auto-close enabled: system closes open jobs automatically on new job start
+
+**Shift configuration:** 3 shifts in BKDCSHFT; each has BUFFER, START, FIN, FINBUF time fields.
 
 **Labor types:**
 - P = Production (parts made)
 - S = Setup
 - A = Auto-close (system-generated close of previous job)
 
-**Status codes:** O = Open (clocked in), C = Closed (clocked out), P = Posted (GL posted), N = New
+**Status codes (lab.posted field):**
+- O = Open (clocked in, in-progress)
+- C = Closed (clocked out, ready to flush)
+- P = Pending post (in BKDCPLAB, awaiting batch GL post)
+- N = New (transitional during auto-close)
+- Y = Posted (final state after GL posting via T7AUTODCH)
+
+**WOLABOR field names confirmed from source** (17 of 58 total):
+DATE, EMP, WOPRE, WOSUF, WOKEY, OPER, POSTED, SHIFT, START, FINISH, PARTS, SCRAPPED,
+NOJOBS, RUNHRS, SETUPHRS, REGOVER (A/1 = reg vs overtime), EXTRA (A/50 = misc flags)
 
 **Primary tables:**
 
 | Table | Purpose |
 |-------|---------|
-| BKDCSHFT | Shift definitions (3 shifts × start/finish time) |
-| BKDCTLAB | DC temporary labor — in-progress entries (type O = open, C = closed) |
-| BKDCPLAB | DC pending labor — awaiting batch GL post |
+| BKDCSHFT | Shift definitions (3 shifts × BUFFER/START/FIN/FINBUF time fields) |
+| BKDCTLAB | DC temporary labor — current session entries (same 50f schema as BKDCLAB) |
+| BKDCPLAB | DC permanent labor — awaiting batch GL post (same 50f schema) |
+| BKDCLAB | DC labor staging — records moved here first; MOVE_LAB copies to BKDCPLAB |
+| WOLABOR | WO labor transactions (posted) — final destination after T7AUTODCH processing |
 
-**Confidence: 78/100** — BKDCA.SRC fully analyzed. Complete workflow documented.
+**Confidence: 82/100** — BKDCA.SRC fully analyzed (938 lines); DC variants, YN flags, and
+WOLABOR field names all confirmed from source. Minor gaps: SETUPHRS/REGOVER full semantics
+and BKDCAF alternate screen field layout not verified.
 
 ---
 
