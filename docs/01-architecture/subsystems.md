@@ -54,6 +54,28 @@ tp7runtime process that polls ISSCHED and ISREMIND on a configurable
 interval (ISTS.CFG.WTIME). SMTP is configured in Setup so the service can
 send reminder/trigger emails without user interaction.
 
+**Service ↔ Scheduler confirmed interaction (Pass 113, 2026-06-19):**
+
+EvoService.RWN is the **single program** that drives BOTH scheduler execution and reminder dispatch:
+- Opens `ISSCHED` (scheduled jobs) + `ISREMIND` (reminders) — both tables in same service run
+- `SCHED.H` = current ISSCHED record handle (scheduled job being processed)
+- `REMIND.H` = current ISREMIND record handle (reminder entry being dispatched)
+- `REMREC` / `REMCNTR` = reminder record + loop counter (iterates through pending reminders)
+- `PARSTO` = "params store" — holds IS.SCHED.PARAM1..9 values when spawning a job subprocess
+- `A.RET` / `A.RET2` = return values from spawned programs (checked for error handling)
+- `ISTS.CFG.WTIME` = poll interval in milliseconds (configured at setup time)
+
+EvoSched.RWN (21 procs) is a lightweight standalone variant used for **testing** — opens ISSCHED only (no ISREMIND), polls via ISTS.CFG.PTIME. It is NOT the production service runner.
+
+| Component | Opens | Role |
+|-----------|-------|------|
+| EvoService.RWN | ISSCHED + ISREMIND | Production service: fires scheduled jobs AND reminder notifications |
+| EvoSched.RWN | ISSCHED only | Test runner: fires scheduled jobs only (no reminders) |
+| EvoScheduler.RWN (TA-N) | ISSCHED + FILELOC + BKSYMSTR | Admin UI: create/edit/delete ISSCHED job records |
+| EvoSchedSetup.RWN | ISREMIND + ISIS + ISLOG | Setup: configures poll interval, email SMTP, ISTS.PATH |
+| EvoServiceSetup.RWN | LANGDICT only | Service install: SCM registration, 32/64-bit registry path |
+| EvoServiceRemove.RWN | LANGDICT only | Service uninstall: SCM deregistration |
+
 ## EvoBackup — built-in backup
 
 | Component | File | Procs | Purpose |
@@ -147,7 +169,7 @@ ISLINKS schema (311 fields total) is documented in the EvoLinks section below.
 | Schema migrator | `EvoERPupd.RWN` | 77 | Full schema migration engine (see below) |
 | Payroll migrator | `EvoPRupd.RWN` | 51 | Payroll-specific migration variant |
 | Setup     | `EvoUPDSetup.RWN` | 18 | Configures update path (FILE_NAME, ISTS.PATH) |
-| Runtime patcher | `UPDTP7.EXE` | — | Binary executable; updates tp7runtime.exe itself |
+| Runtime patcher | `UPDTP7.EXE` | — | Binary executable; patches tp7runtime.exe and related TP7 runtime files (see below) |
 
 **EvoERPupd.RWN is the schema migration engine** (Pass 107). Key variables:
 - `FILE_DEF` / `FD_ARRAY` — file definition array (reads FILEDICT/FILEDBF)
@@ -162,6 +184,17 @@ adds new fields to existing tables without losing live data.
 
 Pulls new `.RWN`/`.DFM`/`.DCY`/`.RTM` releases from Addsum and applies
 them to the share. `.UPD` files carry the DDF schema migrations.
+
+**UPDTP7.EXE — TP7 runtime patcher (Pass 113, 2026-06-19):**
+- 32-bit Visual C++ Win32 executable, 85,680 bytes total
+- PE code sections end at offset 0xF000; **24,240-byte encrypted overlay** follows
+- Overlay bytes start `4A 02 02 02...` — high-frequency 0x02 bytes + scattered strings; cipher not decoded
+- The overlay contains the embedded patch payload (replacement runtime files or binary patches)
+- Generates a batch script at runtime (`@echo off`, `if not exist X mkdir X`, `attrib +h X`) to create a hidden working directory in %TEMP%
+- Uses `CreateProcessA` to launch the generated batch + patched files; `GetTempPathA` for staging area
+- Error sentinel: `"Error #bdembed1 -- Quiting"` — "bdembed" = binary/BD embed; fatal if extraction fails
+- Two obfuscated directory-name strings in overlay: `DFDHERGDCV` and `DFDHERGGZV` (appear to be encoded temp folder names)
+- **Role distinction:** EvoERPupd.RWN handles *Btrieve schema migrations* (table restructures); UPDTP7.EXE handles *tp7runtime.exe binary patching* (replaces the executable itself)
 
 ## Evo Notes Search (`EvoNoteSearch`) + Drill-Down (`EvoERPDrillM`)
 
@@ -216,7 +249,8 @@ signature: 26–27 procs, with shared launcher variables:
 |---------|-----|------|---------------------|
 | `BOMTREE.RWN` | `BOMTree.DFM` | Visual BOM tree explorer (read-only) | None beyond launcher set |
 | `EDITBOMTREE.RWN` | `EditBOMTree.DFM` | Interactive BOM tree editor | None beyond launcher set |
-| `CASHFLOW.RWN` | `CashFlowReport.DFM` | Cash-flow forecast | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR |
+| `CASHFLOW.RWN` | `CashFlowReport.DFM` | Cash-flow forecast | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR, ISLINKS, BKAPDESC |
+| `COMMISSIONRPT.RWN` | — | Commission report viewer | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR, ISLINKS, BKAPDESC |
 | `CRMDASHBOARD.RWN` | `CRMDASHBOARD.DFM` | CRM customer dashboard | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR |
 
 The TAS launcher passes HOST/PORT/COMP/TREEDEST to EvoPVT.jar as argv. EvoPVT.jar

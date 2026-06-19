@@ -774,12 +774,22 @@ The following modules have menu codes and forms inventoried but no deep logic do
 ### 9.3 EvoService (Windows Service)
 - [x] ✅ Files: EvoService.RWN, EvoServiceSetup.RWN, EvoServiceRemove.RWN — **C: 68/100**
 - [x] ✅ Service registration mechanism traced — THIRTYTWO/SIXTYFOUR named_vars hold 32/64-bit service install paths; EvoServiceSetup writes SCM entry + ISTS.CFG.USINI; EvoServiceRemove uninstalls via same vars — **C: 78/100**
-- [ ] ⬜ Service ↔ Scheduler interaction documented
+- [x] ✅ Service ↔ Scheduler interaction confirmed (Pass 113 2026-06-19) — **C: 82/100**
+  - EvoService.RWN (27 procs): opens ISSCHED + ISREMIND; drives BOTH scheduled jobs AND reminder notifications
+  - SCHED.H/REMIND.H = record handles; REMREC/REMCNTR = reminder loop; PARSTO = subprocess param storage; A.RET/A.RET2 = return codes
+  - ISTS.CFG.WTIME = poll interval (ms); EvoSched.RWN (21 procs) = test variant (ISSCHED only, no ISREMIND)
+  - EvoScheduler.RWN (65 procs, TA-N) = admin UI for CRUD on ISSCHED records; uses FILELOC to enumerate available programs
 
 ### 9.4 EvoBackup
 - [x] ✅ Files: EvoERPbackup.RWN; uses zipdll/unzdll — **C: 65/100**
-- [ ] ⬜ Backup target paths and file selection logic documented
-- [ ] ⬜ Restore procedure documented
+- [x] ✅ Backup target paths and file selection logic confirmed (Pass 113 2026-06-19) — **C: 80/100**
+  - Source files: FILELOC registry enumerates all Btrieve .B data files; per-company via COMP.TAG/COMP.EXT/COMP.NAME
+  - Three scope modes: FULLSYSTEM (all companies), COMPDATA (current company), CUSTOM (CSTFILELIST)
+  - Output: ZIP archive (ZIPNAME) via zipdll; BKSYMSTR provides company name for archive labeling; ISLOG logs backup run
+  - Local target: `\\i2s109-solidcrm\Bak Up\`; cloud: AWS Glacier via GLACIERKEY (GS_ARCH/GS_BACKUP/GS_NONE flags)
+  - MON/TUE/... flags support scheduled day-of-week automation; ISACCESS checks module license
+  - docs: `docs/01-architecture/subsystems.md` (EvoBackup section)
+- [ ] ⬜ Restore procedure documented — no EvoERPrestore.RWN found in 1122-program catalog; restore may be manual ZIP extraction
 
 ### 9.5 EvoLinks (Document Attachments)
 - [x] ✅ Files: EvoLinks.RWN, EvoLinkCVT.RWN — **C: 62/100**
@@ -796,19 +806,35 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] ✅ Files: EvoUpdate.RWN, EvoERPupd.RWN, EvoPRupd.RWN, EvoUPDSetup.RWN, UPDTP7.EXE — **C: 70/100**
 - [x] ✅ Update mechanism: reads FILE\*.UPD manifests, applies schema migrations — **C: 65/100**
 - [x] ✅ Full update pipeline traced — EvoUpdate(entry)→EvoUPDSetup(path)→EvoERPupd(77p; FILEDICT/FILEDBF/FILEKEY schema registry; FROM_FILE→TO_FILE migration; UPDATE_FD field defs; RSTR_FILES rollback; updates BKLUGRID+ISDRILLM+ISTS.CFG)→EvoPRupd(payroll)→Evocnvtb(DDF sync) — **C: 75/100**
-- [ ] ⬜ UPDTP7.EXE role (binary patcher?) documented
+- [x] ✅ UPDTP7.EXE role confirmed (Pass 113 2026-06-19) — **C: 68/100**
+  - 32-bit VC++ Win32 executable, 85,680 bytes; 24,240-byte encrypted overlay at offset 0xF000
+  - Generates batch script (@echo off / mkdir / attrib +h) to create hidden temp working dir
+  - Uses CreateProcessA to apply patch; error "Error #bdembed1 -- Quiting" confirms "BD embed" architecture
+  - Overlaid encoded strings DFDHERGDCV/DFDHERGGZV = obfuscated temp folder names (cipher unknown)
+  - Role: patches tp7runtime.exe binary itself; distinct from EvoERPupd.RWN (schema migrations)
+  - Gap: overlay cipher/encoding not decoded; exact patch mechanism unknown without debugging session
 
 ### 9.8 EvoDrillDown / Analysis Tools
 - [x] ✅ Files: EvoERPDrillM.RWN, CashFlow, CommissionRpt, BOMTree, EditBOMTree, CRM Dashboard — **C: 60/100**
 - [x] 🔄 T7SMJ* drill-down panel family decoded (18 modules, 2026-06-17): SMJA/B=WO, SMJC/D=Inventory+FIFO, SMJF/R=PO, SMJG=QC, SMJH=DC Labor, SMJI=Estimates, SMJJ/K=SO/Invoice, SMJL=Master (459 procs, 92 tables), SMJM=Customers, SMJN=Vendors, SMJO=AR/AP, SMJQ=Item/BOM, SMJS=Item, SMJV=Payroll; 16 new tables confirmed — **C: 72/100**
-- [ ] ⬜ CashFlow calculation logic documented
-- [ ] ⬜ CRM Dashboard data sources traced
-- [ ] ⬜ Commission calculation logic traced
+- [x] ✅ CashFlow + CommissionRpt confirmed as EvoPVT.jar launcher stubs (Pass 113 2026-06-19) — **C: 78/100**
+  - Both have identical DB fingerprint: BKPSUSER+ISDRILL+BKAPVEND+BKARCUST+BKCMACCN+BKICMSTR+ISLINKS+BKAPDESC
+  - Both have identical vars: HOST/NAME/PORT/TREEDEST/COMP/NOPE/DUMMY_L/DFM
+  - Calculation logic is NOT in the RWN — it lives in the EvoPVT.jar Java layer (HOST/PORT → Pervasive JDBC)
+  - CashFlow: TREEDEST → CashFlow drill-down tree; CommissionRpt: TREEDEST → commission report tree
+  - docs: `docs/01-architecture/subsystems.md` (CashFlow/CommissionRpt section, Pass 113 update)
+- [ ] ⬜ CRM Dashboard data sources traced (CRMDASHBOARD.RWN — same EvoPVT.jar launcher pattern; CRM-specific TREEDEST)
 
 ### 9.9 Google Calendar Integration
 - [x] ✅ Files: CALREM.RWN, CALREMGC.DFM — **C: 55/100**
-- [ ] ⬜ OAuth / API credential storage traced
-- [ ] ⬜ Calendar sync logic documented
+- [x] ✅ Calendar sync logic confirmed from DB fingerprint (Pass 113 2026-06-19) — **C: 65/100**
+  - CALREM.RWN (142 procs): opens BKYSMSTR+ISREMIND+BKARCUST+BKAPVEND+BKICMSTR+BKCMACFC+BKCMACCN+BKPSUSER+ISLOG
+  - ISREMIND = primary data source (syncs EvoERP reminders → Google Calendar events)
+  - Date handling vars: ISTS.EDATE/ENTRY.DATE/DATE_TYPE/MM/DD/YY/START.DATE/CHK.DATE (calendar date construction)
+  - BKARCUST+BKAPVEND+BKCMACCN = entity context for event subject/description
+  - CALREMGC.DFM = Google Calendar sync dialog (no separate CALREMGC.RWN; sync runs inside CALREM.RWN)
+  - BKYSMSTR flag controls whether Google Calendar sync is enabled globally
+- [ ] ⬜ OAuth / API credential storage traced — inferred: EvoSettings.INI [CALENDAR] section (similar to [EMAIL] sections); no explicit OAUTH/TOKEN vars visible in named_vars; requires tracing CALREM.RWN bytecode
 
 ---
 
