@@ -1311,6 +1311,263 @@ MKAHIST. Account-wide touchpoints (ship, pay, CRM) also log directly to MKAHIST.
 
 ---
 
+## ES* Estimating Module — Pass 136
+
+**Pass 136 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 15525–16602**
+
+The ES (Estimating/Quoting) module stores quotes using a mirror-of-BKARINV architecture:
+quote headers reuse the full `BKAR_INV_*` schema, quote lines reuse `BKAR_INVL_*`, and
+a separate `IS_EST_*` cost-breakdown layer stores 10-quantity-break pricing.
+
+---
+
+### ISESTASM — Estimating Assembly Summary (Quote Master)
+
+File: `ISESTASM.B` | Fields: 213 | PK: `MTESUM_QUOTE` (FLOAT) | Prefix: `MTESUM_*`
+
+The top-level quote record. One row per quote (MTESUM_QUOTE). Key groups:
+
+| Field group | Fields | Meaning |
+|-------------|--------|---------|
+| Header | QUOTE, DATE, EXPDATE, STATUS, CLASS(4), CODE(15 item), DESC, UM | Quote identity |
+| Customer | CUSTCODE(10), NAME(30), ATTN(30) | Customer for this quote |
+| Quote ref | RFQ(15), REV(4), PROJ(15) | RFQ reference, revision, project |
+| 10-break QTY | QTY_1..10 | The 10 quantity break levels |
+| 10-break costs | MAT+MATMU, LAB+LABMU, SETUP, OP+OPMU, OH+OHMU, MISC ×10 | Cost + markup per break |
+| Summary | OVALL_1..10, TOTAL_1..10, PRICE_1..10, COST_1..10, VOVHD_1..10 | Rolled-up totals + selling prices |
+| Notes | NOTES_1..10 (60 chars each) | Per-break notes/comments |
+| Control | ENTBY(15), LOC(10), TEMP_NUM, BOM_FLAG, RT_FLAG, EX_FLAG | BOM/routing/extra loaded flags |
+| Dates | CDATE, FIN_DATE, L_O_DATE | Created, finished, L/O date |
+| Sales | SLSP_NUM_1/2, COMM_RTE_1/2 | Salesperson + commission rates |
+| Misc | OPPTYPE(2), QTREV(9), EXTRA2(100), LEAD_SRC(4), LEADTIME(30) | |
+
+---
+
+### ISESADTL / ISESTDTL — Estimating Detail (Per-Part Cost Breakdown)
+
+Files: `ISESADTL.B` / `ISESTDTL.B` | Fields: 203 each | Prefix: `IS_EST_*`
+PK: `IS_EST_NUM` + `IS_EST_PART` + `IS_EST_LINE`
+
+ISESADTL = active estimate detail; ISESTDTL = working/in-progress copy. Both identical.
+
+One row per BOM component (PART) per estimating quote (NUM) per line (LINE). Stores
+the full cost breakdown across 10 quantity breaks for that component:
+
+- IS_EST_QTY_1..10 — qty break levels
+- IS_EST_MAT_1..10 / MATMU_1..10 — material cost + markup
+- IS_EST_LAB_1..10 / LABMU_1..10 — labor cost + markup
+- IS_EST_SETUP_1..10 / SETMU — setup cost + single markup
+- IS_EST_OP_1..10 / OPMU_1..10 — outside process cost + markup
+- IS_EST_OH_1..10 / OHMU_1..10 — overhead + markup
+- IS_EST_MISC_1..10 — miscellaneous costs
+- IS_EST_EXTRA_1..10 — extra cost fields
+- IS_EST_MEMU_1..10 — ME (material extra) markup
+- IS_EST_VOVHD_1..10 — variable overhead
+- IS_EST_OVALL_1..10 — overall rolled cost
+- IS_EST_TOTAL_1..10 — total per break
+- IS_EST_PRICE_1..10 — selling price per break
+- IS_EST_COST_1..10 — cost per break
+
+Control fields: BOM_FLAG/RT_FLAG/EX_FLAG (BOM/routing/extra loaded), OPPTYPE, QTREV,
+STATUS, DRAW/REV, ORDDESC/ORDDTE/EXPDTE/LOSTDTE, CUST, QUICK (quick-quote),
+SO (→ linked SO#), WOPRE/WOSUF (→ linked WO#), TEMP_NUM, EXTRA2.
+
+FK: IS_EST_LINE → ISBMEST/ISBMESA (BOM estimating mirrors).
+
+---
+
+### ISESAHDR / ISESTHDR / ISESTAQT — Estimating Quote Headers
+
+Files: `ISESAHDR.B` / `ISESTHDR.B` / `ISESTAQT.B` | Fields: 84 each
+Prefix: `BKAR_INV_*` (verbatim BKARINV schema)
+
+Three clones of the BKARINV invoice header:
+- ISESAHDR — saved/archived quote header
+- ISESTHDR — historical quote header
+- ISESTAQT — active/current quote template
+
+All 84 fields are verbatim BKARINV: NUM, SONUM, INVCD, INVDTE, CUSCOD, customer/ship-to
+address, TERMD/TERMNM, SLSP, ENTBY, CUSORD, TAXABL, SUBTOT/TAXAMT/TOTAL/COGS, FRGHT,
+LOC, ORDDTE, DCODE, PCODE, SHIPDT, FOB, commission fields, billing address, EXTRA(150),
+ISCUR, RELNUM, TRACK, QSTAT, MDATE, MISC.
+
+This design means estimates can be converted to invoices by copying the quote header
+directly into BKARINV — the schemas share identical field offsets.
+
+---
+
+### ISESALNE / ISESTLNE / ISESTAQL — Estimating Quote Lines
+
+Files: `ISESALNE.B` / `ISESTLNE.B` / `ISESTAQL.B` | Fields: 28 each
+Prefix: `BKAR_INVL_*` (verbatim BKARINVL schema)
+
+Three clones of the BKARINVL invoice line. Same logic as the header clones:
+- ISESALNE — saved/archived quote lines
+- ISESTLNE — historical quote lines
+- ISESTAQL — active quote template lines
+
+28 fields: INVNM+CNTR PK, ESD (estimate ship date), PCODE+PDESC, PQTY+PPRCE+PDISC
++PEXT+PCOGS, ITYPE, TXBLE, UBO/USTD, RTS, LOC, ABQTY, UM_LN_1/2, COMPR_1/2, ASD,
+TXAMT, FRGHT, COOP, OOQTY, EXTRA, SCCOG.
+
+---
+
+### ISESTPO — Estimate-to-PO Bridge
+
+File: `ISESTPO.B` | Fields: 16 | PK: `BKMRP_PO_UID` (STRING 20) | Prefix: `BKMRP_PO_*`
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKMRP_PO_UID | STRING 20 | Unique ID (PK) |
+| BKMRP_PO_VEND | STRING 10 | Vendor code |
+| BKMRP_PO_DATE | DATE | PO creation date |
+| BKMRP_PO_ERD | DATE | Expected receipt date |
+| BKMRP_PO_PART | STRING 15 | Item code |
+| BKMRP_PO_QTY | FLOAT | Quantity |
+| BKMRP_PO_PRICE | FLOAT | Unit price |
+| BKMRP_PO_WOPRE/WOSUF | FLOAT+USHORT | Linked work order |
+| BKMRP_PO_PLANR | STRING 4 | Planner code |
+| BKMRP_PO_CONF | STRING 1 | Confirmed flag |
+| BKMRP_PO_DONE | STRING 10 | Done/status |
+| BKMRP_PO_MTREC | UBINARY 4 | MT record pointer |
+| BKMRP_PO_EXTRA | STRING 50 | Extra |
+| BKMRP_PO_EST | STRING 10 | FK to estimate number |
+| BKMRP_PO_ESTLNE | FLOAT | FK to estimate line |
+
+Uses BKMRP_PO_* prefix — it is a planned PO created from an estimating quote, bridging
+the ES module to the MRP/PO workflow. EST+ESTLNE link back to the originating quote.
+
+---
+
+### ES* Table Architecture Summary
+
+```
+ISESTASM (quote master, MTESUM_*)
+  └─ ISESADTL/ISESTDTL (detail per component, IS_EST_*, 203f)
+     └─ ISBMEST/ISBMESA (BOM estimating mirrors, BKBM_*, 26f)
+ISESAHDR/ISESTHDR/ISESTAQT (headers, BKAR_INV_*, 84f)
+ISESALNE/ISESTLNE/ISESTAQL (lines, BKAR_INVL_*, 28f)
+ISESTPO (estimate-to-PO, BKMRP_PO_*, 16f)
+```
+
+---
+
+## Platform Tables — Pass 136
+
+---
+
+### ISDCSER — Data Collection Serial Tracking
+
+File: `ISDCSER.B` | Fields: 17 | PK: WOPRE + WOSUF + OPER | Prefix: `ISDC_SER_*`
+
+WOPRE(F)+WOSUF+OPER PK; ITEM(15)+EMP; SERIAL(25)+LOT(15)+BIN(15)+LOC(10);
+DATE+FLAG+ALPHA(30)+GDATE+TIME; PARTS+QTY+EXTRA(100).
+
+Records serial number assignments at each WO operation during shop-floor data
+collection (ADCA/PA modules). One row per serialized item produced at a DC event.
+
+---
+
+### ISDEFECT — Defect Code Master
+
+File: `ISDEFECT.B` | Fields: 3 | PK: `IS_DEF_CODE` (STRING 10)
+
+CODE(10) + DESC(60) + EXTRA(50). Defect codes referenced by IS_NCR_DCODE in ISNCR/ISCAR.
+
+---
+
+### ISDEPT / ISDIV — Department and Division Masters
+
+Both use `IS_GF_*` prefix. 3 fields each: code(10) + desc(40) + misc(100).
+Shared dimension codes used by payroll, G/L, and HR modules.
+
+---
+
+### ISDLCK1 / ISDLCK2 — Singleton Lock Sentinels
+
+1 field each (`BUBBA` STRING 10). Programs acquire an exclusive Btrieve lock on the
+single record to serialize concurrent access to a shared resource. Two independent
+lock objects for two independent critical sections.
+
+---
+
+### ISDRILL / ISDRILLM — Drill-Down Navigation Tables
+
+**ISDRILL** (46f, `LOOKUP_*` prefix): Defines a drill-through lookup.
+FROM(30)+GRID(15)+REC+KEY+FILE(15)+20×FILTERS(80)+COMM(150)+20×WHILE(80).
+
+**ISDRILLM** (17f, `DRILLM_*` prefix): Maps source→target field pairs for drill-through.
+PARENT(15)+CHILD(15)+MENU(25)+FILE+5×SFIELD(15)+5×TFIELD(15)+KEY+PFILE+EXTAR(150).
+
+Together these drive EvoERP's context-sensitive drill-down navigation from any field
+to a related record in another module. Opened by T7EMGL and other modules.
+
+---
+
+### ISDROP — User-Defined Drop-Down Codes
+
+File: `ISDROP.B` | Fields: 4. CODE(10)+TEXT(30)+DESC(30)+EXTRA(50).
+Generic configurable drop-down list entries; multiple lists distinguished by CODE prefix.
+
+---
+
+### ISDUTY — Landed Cost Duty Rate
+
+File: `ISDUTY.B` | Fields: 2. ISIS_DUTY_DCODE(6)+ISIS_DUTY_PERC(FLOAT 3dp).
+Duty rate by tariff code; used by landed cost module (ISIS.IS_LANDED_COST flag).
+
+---
+
+### ISEAB — Employee Email Address Book
+
+File: `ISEAB.B` | Fields: 6. USER(15)+CONTACT(20)+FNAME(15)+LNAME(15)+EMAIL(30)+EXTRA(100).
+Per-user email contacts for internal notifications.
+
+---
+
+### ISECO — Engineering Change Order
+
+File: `ISECO.B` | Fields: 12 | PK: PART + DRAW + REVLVL
+
+PART(15)+DRAW(15)+REVLVL(5) PK; ENTDATE+ENTBY(4)+ECO#(15)+CURRENT(1)+STATUS(1)
++DATE+APPBY(4)+INVDISP(2)+EXTRA(100). CURRENT flag marks active revision;
+INVDISP = inventory disposition for old stock on ECO implementation.
+
+---
+
+### ISEDINFO — SR-Info Clone (EDI/batch context)
+
+File: `ISEDINFO.B` | Fields: 54 | Prefix: `ISSR_INFO_*`
+
+Identical schema to ISSRINFO: SRNUM+UID+CODE+5×DATE+20×ALPHA(25)+EXTRA+5×DATE2+20×AL.
+Used as an EDI or batch service transaction info store, reusing the SR Info layout.
+
+---
+
+### ISFIELDS — User-Defined Field Registry
+
+File: `ISFIELDS.B` | Fields: 7 | PK: FD + FIELD
+
+IS_FLDS_FD(8 table name)+FIELD(15)+DESC(40)+NUM(USHORT)+EXTRA(50)+ANUM+REQUIRE(1).
+Maps table/field names to user-friendly descriptions and requirement flags; supports
+EvoERP's UDF (User-Defined Fields) labeling system.
+
+---
+
+### ISFOHEAD / ISFOBMRM — First-Off / First-Article Inspection
+
+**ISFOHEAD** (16f, `ISFO_HDR_*`): Inspection header.
+UID(40 PK)+PARENT(15 item)+DATE+DESC(30)+CUST+VEND+RFQ(20)+STATUS(15)+REV(5)+5×MDATES+PERM+EXTRA(150).
+
+**ISFOBMRM** (20f, `ISFO_BRM_*`): Per-component BOM remarks.
+UID(40 FK)+PARENT(15)+LINE(USHORT)+COMP(15 component)+15×REMARK(64 each)+EXTRA(100).
+
+ISFOHEAD captures the First-Article Inspection event; ISFOBMRM records the inspection
+result for each BOM component (15 inspection remark fields per component). This is the
+FO (First Off) module — used before production begins on a new part or revision.
+
+---
+
 ## IS* Supplement — QC/CAPA, Chain, BM Estimating, CR Approval, Conversion
 
 **Pass 135 — 2026-06-19 | Source: `samples/ddf/schema.md` lines 14513–15195**
