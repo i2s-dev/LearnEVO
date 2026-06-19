@@ -1,0 +1,2433 @@
+***Program name:
+;bkroa.src
+
+;       Copyright DBA Software, Inc. 1992-1999 All Rights Reserved
+;   Portions Copyright 1985-1995 Business Tools, Inc.  All Rights Reserved
+; This source code is CONFIDENTIAL PROPRIETARY information of DBA Software, Inc.
+
+***Program desc:
+;
+***History
+;Cvtd from TAS-Pro 3.0 edt to 5.0 src on 03/06/96 at 11:42 a
+;
+;
+***Chained to from:
+;
+***Modification summary
+;12/30/99 changes reflecting AM module changes.
+;1/3/00   Changes reflecting AM module changes.
+;1/20/00  Further AM module changes
+;
+#UDX  ;allow both UDFs and UDCs in this program
+#LIB LOOKUPS   ;access the DBA Routines library
+#LIB DBA   ;access the DBA Routines library
+#lib windows
+;FMZ 8/17/99 added MAGLIB
+#lib maglib
+#inc helpscrn
+#TDATA 256000
+SETUP_COLOR   ;use the color values in TASCOLOR.OVL
+
+;08/18/99 FMZ Possible resource consumption problems here.  Adding RSCRs
+;             to free up screen resources, and converting lookup icons
+;             to more stable MAGLIB method.
+;10/12/99 FMZ Some screen handling problems with Notes/Specs screens.
+;             Making separate buttons for Notes and Specs from the main
+;             screen (ROA14).
+;             Copy routing now offers option to copy the specs too (ROA7).
+
+
+;FMZ 1/19/99 Now called from DE-J-C to edit imported routings.
+;  If this is the case, parameter cfrom will be an alpha 8 field
+;  with 'BKDEJC' in it.
+;AGL 7/13/00 BUG Fix ROA13,18,19,21 
+
+define cfrom type a size 8
+param cfrom
+
+
+DO_DEFINES:
+    define TEMP.CODE type A size 15
+    define TEMP.DESC type A size 30
+    define temp.rec type R size 10
+    define TEMP.REC2 type A size 4
+    define TEMP.CODE2 type A size 15
+    define HOLD.LOT type n size 9
+    define TEMP.OPER type A size 3
+    define LINE.OPER type i size 3 array 1000
+    define CUR.LINE type i size 3
+    define TOT.LINES type i size 3
+    define TEMP.CUR.LINE type i size 3
+    define SCRN.CODE type A size 15
+    define SCRN.DESC type A size 30
+    define SCRN.OPER type i size 3
+    define HIGHEST.SEQ type i size 3
+    define HOLD.SEQ type i size 5 array 1000
+    define HOLD.OP  type i size 3 array 1000
+    define HOLD.DESC type A size 30 array 1000
+    define ENT.CODE type A size 15
+    define MEM.NOTE1 type A size 20 array 100
+    define MEM.NOTE2 type A size 20 array 100
+    define MEM.NOTE3 type A size 20 array 100
+    define MEM.NOTE4 type A size 20 array 100
+    define NOTE.LINE type i size 3
+    define NCNTR type i size 3
+    define NCNTR1 type i size 3
+    define TEMP.CNTR type i size 3
+    define TEMP.CNTR1 type i size 3
+    define TEMP.CNTR2 type i size 3
+    define MENU_WIDTH type i size 2
+    define MENU_PAGE type i size 2
+    define new_list type l
+    define OK type A size 1
+    define temp.secs type n size 12 dec 2
+    define temp.numproc type n size 12 dec 2
+    define d.opdesc type a size 20
+    define zret type l
+
+    ;FMZ 8/17/99 these 2 lines are new
+    define icol, irow type i size 5 array 20
+    define which type i size 5
+
+    define MCNTR type i size 5
+    define MCNTR2 type i size 5
+    define MCNTR3 type i size 5
+    define MCNTR4 type i size 5
+    define op_titlea, op_titleb, op_title, op_title1, op_title2 type a size 50
+    define tot.templ type i size 5
+    define op.max, op.cntr, seq.cntr, seq.orig type i size 5
+
+    ;FMZ 8/17/99 commented next 4
+    ;define pra.lkua, pra.lkui type a size 12
+    ;define lkupa.hndl type i size 5
+    ;define lkupi.hndl,icon.col,icon.row type i size 5 array 25
+    ;define cur.screen, wch.scrn type a size 1
+
+    define i type i size 5
+
+    ;FMZ 10/12/99
+    define copy.specs, new.has.specs type l
+
+    ;FMZ 8/17/99 commented
+    ;if windows()
+    ;   ;Determine which BMP images to use
+    ;   if which_size() = 2
+    ;      pra.lkua = 'dbalkuam'
+    ;      pra.lkui = 'dbalkuim'
+    ;   else_if which_size() = 3
+    ;      pra.lkua = 'dbalkual'
+    ;      pra.lkui = 'dbalkuil'
+    ;   else
+    ;      pra.lkua = 'dbalkuas'
+    ;      pra.lkui = 'dbalkuis'
+    ;   endif
+    ;endif
+
+    ;FMZ 8/17/99 chgd all these from using icon.col and icon.row arrays
+    ;part#
+    icol[1] = 9
+    irow[1] = 3
+    ;operation
+    icol[2] = 9
+    irow[2] = 6
+    ;work center
+    icol[3] = 50
+    irow[3] = 6
+    ;machine
+    icol[4] = 14
+    irow[4] = 19
+    ;tool
+    icol[5] = 14
+    irow[5] = 21
+    ;vendor
+    icol[6] = 62
+    irow[6] = 12
+
+    ;This is the max # of operation templates the routings generator
+    ;  can support.  The actual size of the arrays has to be one more
+    ;  than this maximum because we will be using the SORTA command on
+    ;  them.
+    op.max = 999
+
+OPEN_FILES:
+    open BKYSMSTR lock N
+    open BKRTSPEC lock R
+    open BKRTTEMP lock N
+    open TOOL lock N
+    open MACHINE lock N
+    open BKAPVEND lock N
+    open WORKCTR lock N
+    open BKICMSTR lock N
+    open MTICMSTR lock r
+    open ROUTTEMP lock N
+    if cfrom = 'BKDEJC'
+       open BKRTEMTR lock R
+       setact ROUTING file BKRTEMTR
+    else
+       open ROUTING lock R
+       setact routing file routing
+    endif
+
+    find F srch BKYS.WONUM  err EXIT
+    clr BKYSMSTR rec
+
+MOUNT_SCRS:
+    if windows()
+       mount ENTROUT type S
+    else
+       mount DOSROA type S
+    endif
+    if cfrom = 'BKDEJC'
+       prg_hdr 'DE-J-C  Edit Imported Routings'
+    else
+       PRG_HDR "RO-A  Enter Routings"
+    endif
+
+    ;FMZ 8/17/99 new
+    picture remove
+    mag_start
+    zret=button_ref()
+     {
+      func button_ref
+         for(mcntr;1;6;1)
+           zret=magbutton(icol[mcntr],irow[mcntr],mcntr,0)
+         next
+      ret .t.
+     }
+
+
+    ;FMZ 8/17/99 removed
+    ;cur.screen = 'M'
+    ;zret = ALLPIC.DSP(cur.screen)
+
+START:
+    enter SCRN.CODE pre pre.scrn(1) post post.scrn(1) UP vld chk.part() upar START noclickoff
+    {
+      func pre.scrn which
+        if clicked_on() then ret .t.
+        if .n. windows()
+           clrlne at 1,24
+        endif
+        xtrap chg ignr
+        trap ESC goto EXIT
+        trap F2 GOSUB DSP_INV_1
+        trap F1 GOSUB SOAHELP
+        zret=magbutton(icol[which],irow[which],which,1)
+        fnc_list "F1 Help,F2 Lookup","Esc Exit",'',''
+        ret .t.
+
+      func post.scrn which
+        zret=magbutton(icol[which],irow[which],which,0)
+        fnc_list "F1 Help","Esc Exit",'',''
+        trap F2 DFLT
+        ret .t.
+
+      DSP_INV_1:
+        ;By passing 2 params as non-zero we are signaling we want
+        ;  a drop-down menu.  Pass as col,row.
+        INV_MENU ' ',icol[which],irow[which]+1
+        zret=button_ref()
+        ifna BKICMSTR
+           ret
+        endif
+        SCRN.CODE = BKIC.PROD.CODE
+        ret
+    }
+
+ENT.DESC:
+    enter SCRN.DESC pre pre.sdesc() post post.sdesc() upar START noclickoff
+    {
+      func pre.sdesc
+        if clicked_on() then ret .t.
+        ;Copying not available for imported routings
+        if cfrom = 'BKDEJC'
+           Fnc_list "F1 Help,F4 Delete Routing","Esc Exit",'',''
+           trap F3 ignr
+        else
+           Fnc_list "F1 Help,F3 CopyÿRouting,F4 Delete Routing","Esc Exit",'',''
+           trap F3 goto G.COPY
+        endif
+        trap F4 goto G.DEL
+        ret .t.
+
+      func post.sdesc
+        trap F3,F4 ignr
+        Fnc_list "F1 Help","Esc Exit",'',''
+        ret .t.
+    }
+
+ENT.LOTSZ:
+    enter HOLD.LOT noclickoff vld chk.lotsz() upar LOTSZ.UP
+    {
+      LOTSZ.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.lotsz()
+              goto ENT.LOTSZ
+           endif
+        endif
+        goto ENT.DESC
+    }
+
+    ;This will load the operation numbers of any existing ROUTING records
+    ;  for the part into array LINE.OPER[] and set TOT.LINES to the
+    ;  total number of ROUTING records found.  TOT.LINES will be 0 if
+    ;  part currently does not have a routing.
+    gosub LOAD_OPS
+
+    ;If this will be a new routing, ask now if they want to use the
+    ;  routing generator.
+    ;This will not be available for editing imported routings.
+    if cfrom = 'BKDEJC'
+    else
+       if tot.lines = 0
+          if zask('A routing has not yet been set up for this part.  Would you like to use the Routing Generator to help you quickly accomplish this? ', .t.)
+             gosub CHOS.TEMP
+             zret=button_ref()
+             if tot.lines > 0
+                ;If they actually did set it up, display in opening list.
+                cur.line=1
+                clr ROUTING buff
+                new_list = .t.
+             else
+                cur.line=1
+             endif
+          endif
+       endif
+    endif
+
+;****************************************************************************
+;Once you are past this point you can not return to the above 3 entry fields.
+
+ENT.OPER:
+    if new_list
+       goto list_lines
+    endif
+
+    zret=button_ref()
+
+    scrn.oper=line.oper[cur.line]
+    scrn r
+
+ENT.OPER2:
+    enter SCRN.OPER upar OPER.UP pre pre.oper() post post.oper() vld chk.oper() noclickoff
+    {
+      func pre.oper
+        if clicked_on() then ret .t.
+        xtrap chg ignr  ;FMZ 10/12/99
+        trap ESC goto NEXT.ROUT
+        trap HOME gosub DO.TIME
+        trap f5 goto first_line
+        trap f6 goto last_line
+        trap f7 goto lines.dwn
+        trap f8 goto lines.up
+        trap f2 goto list_lines
+        trap end goto new_line
+        fnc_list "F1 Help,End New Line,Home Enter Times","Esc Exit",'F2 Display Lines,F5 First,F6 Last,F7 Prev,F8 Next',''
+        ret .t.
+
+      func post.oper
+        trap f5,f6,f7,f8 ignr
+        trap END dflt
+        trap F2 dflt
+        if .n. windows()
+           clrlne at 1,24
+        endif
+        fnc_list "F1 Help,Home Enter Times","Esc Exit",'',''
+        ret .t.
+
+      OPER.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.oper()
+              goto ENT.OPER2
+           endif
+        endif
+        goto ENT.OPER
+    }
+
+ENT.TEMPNO:
+    enter MTRO.OP.TEMP.NO dflt scrn.oper pre pre.opt(2) post post.opt(2) vld chk.opt() upar TEMPNO.UP noclickoff
+    {
+      func pre.opt which
+        if clicked_on() then ret .t.
+        trap F2 gosub DSP_TEMP
+        trap F3 goto CLR_RECS
+        trap F4 goto DEL_RECS
+        trap F10 goto SAVE_RECS
+        trap PG_DN gosub PAGE.TWO
+        trap pg_up gosub strt.notes  ;FMZ 10/12/99, also added to fnc_list
+        zret=magbutton(icol[which],irow[which],which,1)
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,F2 Operation Templates,Home EnterÿTimes',''
+        ret .t.
+
+      func post.opt which
+        trap F2 dflt
+        zret=magbutton(icol[which],irow[which],which,0)
+        ;FMZ 10/12/99 Add PgUp
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,Home EnterÿTimes',''
+        ret .t.
+
+      DSP_TEMP:
+        oper_menu
+        MTRO.OP.TEMP.NO = MTRO.OPER
+        MTRO.OPER     = SCRN.OPER
+
+        if cfrom = 'BKDEJC'
+           setact ROUTING file BKRTEMTR
+        else
+           setact ROUTING file ROUTING
+        endif
+
+        MTRO.CODE=TEMP.CODE
+        MTRO.DESC=TEMP.DESC
+
+        if SCRN.OPER<>0
+           zret=button_ref()
+           ret
+        endif
+        if BKYS.VNUM[3]=0 then BKYS.VNUM[3]=1
+        if BKYS.YN[38]="Y" do
+           if MTRO.OP.TEMP.NO>HIGHEST.SEQ then SCRN.OPER=MTRO.OP.TEMP.NO
+           if MTRO.OP.TEMP.NO<=HIGHEST.SEQ then SCRN.OPER=HIGHEST.SEQ + BKYS.VNUM[3]
+        endif
+        if BKYS.YN[38]<>"Y" do
+           SCRN.OPER=HIGHEST.SEQ + BKYS.VNUM[3]
+        endif
+        zret=button_ref()
+        ret
+
+      TEMPNO.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.opt()
+              goto ENT.TEMPNO
+           endif
+        endif
+        goto ENT.OPER2
+    }
+
+ENT.TYPE:
+    gosub ENT_TYPE
+
+ENT.OPERD2:
+    enter MTRO.OPERDESC pre pre.opdesc() upar ENT.TEMPNO noclickoff
+    {
+      func pre.opdesc
+        ;FMZ 10/12/99 Add PgUp
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,Home EnterÿTimes',''
+        ret .t.
+    }
+
+ENT.WORK:
+    enter MTRO.WC up pre pre.wc(3) post post.wc(3) vld chk.wc() upar WC.UP noclickoff
+    {
+      func pre.wc which
+        if clicked_on() then ret .t.
+        zret=magbutton(icol[which],irow[which],which,1)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,F2 Lookup,Home EnterÿTimes',''
+        trap F2 gosub DSP_WORK
+        ret .t.
+
+      func post.wc which
+        zret=magbutton(icol[which],irow[which],which,0)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,Home EnterÿTimes',''
+        trap F2 ignr
+        ret .t.
+
+      DSP_WORK:
+        ;By passing 2 params as non-zero we are signaling we want
+        ;  a drop-down menu.  Pass as col,row.
+        WC_MENU icol[which],irow[which]+1
+        zret=button_ref()
+        ifna WORKCTR
+           ret
+        endif
+        mtro.wc = mtwc.wc
+        ret
+
+      WC.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.wc()
+              goto ENT.WORK
+           endif
+        endif
+        goto ENT.OPERD2
+    }
+
+ENT.ROUTNM:
+    enter MTRO.NUM dflt 1 upar ENT.WORK noclickoff
+
+    if MTRO.TYPE="L"
+       goto ENT.NUMPRC
+    endif
+
+ENT.VEND:
+    enter MTRO.VENDCODE pre pre.vend(6) post post.vend(6) vld chk.vend() upar VEND.UP noclickoff
+    {
+      func pre.vend which
+        if clicked_on() then ret .t.
+        if mtro.type = 'L'
+           ret .f.
+        endif
+        zret=magbutton(icol[which],irow[which],which,1)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,F2 Lookup',''
+        trap HOME ignr
+        trap F2 gosub DSP_VEND
+        ret .t.
+
+      func post.vend which
+        zret=magbutton(icol[which],irow[which],which,0)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help',''
+        trap F2 ignr
+        ret .t.
+
+      DSP_VEND:
+        ;By passing 2 params as non-zero we are signaling we want
+        ;  a drop-down menu.  Pass as col,row.
+        VEND_MENU icol[which]-10,irow[which]+1
+        zret=button_ref()
+        ifna BKAPVEND
+           ret
+        endif
+        mtro.vendcode = bkap.vendcode
+        ret
+
+      VEND.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.vend()
+              goto ENT.VEND
+           endif
+        endif
+        goto ENT.ROUTNM
+    }
+
+ENT.VNDCST:
+    if MTRO.TYPE="L" goto ENT.ROUTNM
+    if MTRO.VENDCOST<>0 goto ENT.VNCST2
+    saves
+    xtrap_si_udc
+    fnc_list "F1 Help","",'',''
+
+    if MTWC.OUTPROC="S"
+       window at 18,22 len 3 wdt 37 box 's'
+       pmsg " Surface area per part: " at 1,1 NOCR
+    else_if MTWC.OUTPROC="W"
+       window at 18,22 len 3 wdt 31 box 's'
+       pmsg " Weight per part: " at 1,1 NOCR
+    endif
+
+    if MTRO.MACHINE<>0 goto ENT.MCHCST
+    if MTWC.OUTPROC="S" then MTRO.MACHINE=MTIC.PROD.CUBFT
+    if MTWC.OUTPROC="W" then MTRO.MACHINE=MTIC.PROD.WT
+
+ENT.MCHCST:
+    if MTWC.OUTPROC="S" then enter MTRO.MACHINE upar ENT.MCHCST at 25,1 noclickoff
+    if MTWC.OUTPROC="W" then enter MTRO.MACHINE upar ENT.MCHCST at 19,1 noclickoff
+    redsp
+    ;FMZ 8/17/99
+    rscr
+    xtrap_rstr_udc
+    zret=button_ref()
+    if MTWC.OUTPROC="Y" then MTRO.VENDCOST=MTWC.COST.LB * MTIC.PROD.WT
+    if MTWC.OUTPROC<>"Y" then MTRO.VENDCOST=MTWC.COST.LB * MTRO.MACHINE
+
+ENT.VNCST2:
+    enter MTRO.VENDCOST upar ENT.VEND noclickoff
+    enter MTRO.MIN.CHG noclickoff
+    if MTRO.LEAD=0 then MTRO.LEAD=MTWC.LEAD
+    enter MTRO.LEAD noclickoff
+    MTRO.TIMEPART=0
+    MTRO.PARTSHR=0
+    MTRO.TMACHDESC=""
+    MTRO.TMACHINE=""
+    MTRO.LOTSIZE=0
+    MTRO.TOOLDESC=""
+    MTRO.TOOL=""
+    MTRO.SETUP=0
+    MTRO.LABOR=0
+    MTRO.VOVHD=0
+    MTRO.FOVHD=0
+    MTRO.WCDESC=''
+    MTRO.NUM.PERSON=0
+    MTRO.SETUPHRS=0
+    if MTRO.TYPE="P" goto SAVE_RECS
+
+ENT.NUMPRC:
+    enter MTRO.NUM.PROCES dflt 1 pre pre.np() post post.np() upar ENT.VNDCST noclickoff
+    {
+      func pre.np
+        if clicked_on() then ret .t.
+        trap HOME gosub DO.TIME
+        trap PG_DN gosub PAGE.TWO
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,Home EnterÿTimes',''
+        ret .t.
+
+      func post.np
+        trap HOME ignr
+        ;FMZ 10/12/99 add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help',''
+        ret .t.
+    }
+
+    if MTRO.NUM.PROCES=0 then MTRO.NUM.PROCES=1
+    if MTRO.NUM.PROCES=1 goto ENT.PRTSHR
+
+ENT.NUMPC2:
+    saves
+    xtrap_si_udc
+    fnc_list "F1 Help","",'',''
+    window at 40,16 len 8 wdt 33 box 's'
+    pmsg " Time/Process :  ",ccr(),"        ",ccf() at 1,1 nocr
+    pmsg " Processes/Hr :  ",ccr(),"            ",ccf() at 1,3 nocr
+    pmsg " Multiply or Divide" at 1,5 nocr
+    pmsg " by # Processes? ",ccr()," ",ccf(),"  [M,D]" at 1,6 nocr
+    pmsg ccr(),MTRO.TIME.PERPR,ccf() at 18,1 nocr
+    pmsg ccr(),MTRO.PROC.PERHR,ccf() at 18,3 nocr
+    pmsg ccr(),MTRO.MD.PROC.HR,ccf() at 18,6 nocr
+
+ENT.TMPRC:
+    enter MTRO.TIME.PERPR upar ENT.TMPRC at 18,1 noclickoff
+    temp.secs = round(ttof(MTRO.TIME.PERPR))
+    if MTRO.TIME.PERPR<>0 then MTRO.PROC.PERHR=3600.00 / temp.secs
+    enter MTRO.PROC.PERHR upar ENT.TMPRC at 18,3 noclickoff
+    if MTRO.PROC.PERHR<>0 do
+        if MTRO.TIME.PERPR=0 then MTRO.TIME.PERPR=ftot(3600.00 / MTRO.PROC.PERHR)
+    endif
+    if MTRO.MD.PROC.HR="" then MTRO.MD.PROC.HR=BKYS.YN[36]
+    enter MTRO.MD.PROC.HR mask "MD" up at 18,6 noclickoff
+    redsp
+    ;FMZ 8/17/99
+    rscr
+    xtrap_rstr_udc
+    zret=button_ref()
+
+    if MTRO.MD.PROC.HR="M" do
+        temp.numproc = mtro.num.proces
+        MTRO.PARTSHR=MTRO.PROC.PERHR * temp.numproc
+        MTRO.TIMEPART=ftot(3600.00 / MTRO.PARTSHR)
+    endif
+    if MTRO.MD.PROC.HR="D" do
+        temp.numproc = mtro.num.proces
+        MTRO.PARTSHR=MTRO.PROC.PERHR / temp.numproc
+        MTRO.TIMEPART=ftot(3600.00 / MTRO.PARTSHR)
+    endif
+
+ENT.PRTSHR:
+    if BKYS.YN[66]="Y" goto ENT.LNGTME
+
+ENT.PRTHR2:
+    enter MTRO.TIMEPART upar ENT.NUMPRC noclickoff
+    temp.secs = round(ttof(MTRO.TIMEPART))
+    if MTRO.TIMEPART<>0
+       MTRO.PARTSHR = 3600.00 / temp.secs
+    endif
+    enter MTRO.PARTSHR noclickoff
+    if MTRO.PARTSHR<>0 do
+        if mtro.timepart=0 then MTRO.TIMEPART = ftot(3600.00 / MTRO.PARTSHR)
+    endif
+    if MTRO.TIMEPART<>0 then MTRO.LONGTIME=0
+    if MTRO.PARTSHR<>0 then MTRO.LONGTIME=0
+
+ENT.SETUP:
+    enter MTRO.SETUPHRS noclickoff
+
+    ;BKYS.YN[59] is the MD-D setting to "prompt for overlap on routings"
+
+ENT.POVLP:
+    enter MTRO.OVERLAP pre bkys.yn[59]='Y' vld chk.ovlp() noclickoff
+
+ENT.NOVLP:
+    enter MTRO.NEGOVLP pre bkys.yn[59]='Y' vld chk.ovlp() noclickoff
+
+ENT.STDTIM:
+    if MTRO.STD.TIME="" then MTRO.STD.TIME=BKYS.YN[37]
+    if MTRO.STD.TIME="" then MTRO.STD.TIME="N"
+    enter MTRO.STD.TIME mask "YN" up noclickoff
+    if MTRO.NUM=0 then MTRO.NUM=1
+
+
+
+ENT.LOTSIZ:
+    HOLD.LOT=MTRO.LOTSIZE
+
+ENT.PERSON:
+    enter MTRO.NUM.PERSON dflt 1 upar ENT.STDTIM noclickoff
+
+ENT.TMACH:
+    enter MTRO.TMACHINE pre pre.mach(4) post post.mach(4) vld chk.mach() upar MACH.UP noclickoff
+    {
+      func pre.mach which
+        if clicked_on() then ret .t.
+        zret=magbutton(icol[which],irow[which],which,1)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,F2 Lookup',''
+        trap F2 gosub DSP_MACH
+        ret .t.
+
+      func post.mach which
+        zret=magbutton(icol[which],irow[which],which,0)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help',''
+        trap F2 ignr
+        ret .t.
+
+      DSP_MACH:
+        MACHINE_MENU
+        zret=button_ref()
+        ifna MACHINE
+           ret
+        endif
+        MTRO.TMACHINE=TMACH.MACHINE
+        ret
+
+      MACH.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.mach()
+              goto ENT.TMACH
+           endif
+        endif
+        goto ENT.PERSON
+    }
+
+ENT.TOOL:
+    enter MTRO.TOOL pre pre.tool(5) post post.tool(5) vld chk.tool() upar TOOL.UP noclickoff
+    {
+      func pre.tool which
+        if clicked_on() then ret .t.
+        zret=magbutton(icol[which],irow[which],which,1)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help,F2 Lookup',''
+        trap F2 gosub DSP_TOOL
+        ret .t.
+
+      func post.tool which
+        zret=magbutton(icol[which],irow[which],which,0)
+        ;FMZ 10/12/99 Add pgup
+        fnc_list "F3 Clear,F4 Delete,PgDn Notes,PgUp Specs","F10 Save,Esc Exit",'F1 Help',''
+        trap F2 ignr
+        ret .t.
+
+      DSP_TOOL:
+        TOOL_MENU
+        zret=button_ref()
+        ifna TOOL
+           ret
+        endif
+        MTRO.TOOL=MTOOL.TOOL
+        ret
+
+      TOOL.UP:
+        ;We have to do it this way because in DOS, UPAR out of the entry
+        ;  field does not hit the VLD routine.
+        if .n. windows()
+           if .n. chk.mach()
+              goto ENT.TOOL
+           endif
+        endif
+        goto ENT.TMACH
+    }
+
+    goto SAVE_RECS
+
+;********************************************************************
+;FMZ 10/12/99 Changes in this section.  Removed ability to go from notes
+;sub-screen to specs sub-screen.
+;This is the section that does notes (called as gosub)
+PAGE.TWO:
+    saves
+    xtrap_si_udc
+    picture remove
+
+PAGE.TWON:
+    trap F10 goto PAGE.TWOZ
+    trap ESC goto PAGE.TWOZ
+
+    mount NOTES type S
+    if cfrom = 'BKDEJC'
+       prg_hdr 'DE-J-C  Edit Imported Routings'
+    else
+       PRG_HDR "RO-A  Enter Routings"
+    endif
+    fnc_list "F1 Help","Esc Main Screen",'',''
+
+PAGE_TWOA:
+    enter MTRO.INSTR[1] upar PAGE_TWOA noclickoff
+    enter MTRO.INSTR[2] noclickoff
+    enter MTRO.INSTR[3] noclickoff
+    enter MTRO.INSTR[4] noclickoff
+    enter MTRO.INSTR[5] noclickoff
+    enter MTRO.INSTR[6] noclickoff
+    enter MTRO.INSTR[7] noclickoff
+    enter MTRO.INSTR[8] noclickoff
+    enter MTRO.INSTR[9] noclickoff
+    enter MTRO.INSTR[10] noclickoff
+    enter MTRO.INSTR[11] noclickoff
+    enter MTRO.INSTR[12] noclickoff
+    enter MTRO.INSTR[13] noclickoff
+    enter MTRO.INSTR[14] noclickoff
+    enter MTRO.INSTR[15] noclickoff
+
+PAGE.TWOZ:
+    if windows()
+       mount ENTROUT type S
+    else
+       mount DOSROA type S
+    endif
+    redsp
+    xtrap_rstr_udc
+    zret=button_ref()
+    ret
+
+;End of notes section
+;**********************************************************************
+
+
+SAVE_RECS:
+    if zask("Do you want to save this Record?", .t.)
+       ok='Y'
+    else
+       ok='N'
+    endif
+    ;end FMZ 10/23/97
+    ;
+    if OK<>"Y" goto ENT.OPER
+    LINE.OPER[CUR.LINE]=MTRO.OPER
+    gosub SCROLL.UP
+    MTRO.CODE=SCRN.CODE
+    MTRO.DESC=SCRN.DESC
+    MTRO.LOTSIZE=HOLD.LOT
+    TEMP.CODE=MTRO.CODE
+    TEMP.DESC=MTRO.DESC
+    trap FERR goto DUP.KEY
+
+    if cfrom = 'BKDEJC'
+       save BKRTEMTR nocnf
+    else
+       save ROUTING nocnf
+    endif
+    trap FERR dflt
+    clr MTICMSTR buff
+    clr WORKCTR buff
+    clr BKAPVEND buff
+    clr MACHINE buff
+    clr TOOL buff
+    MTRO.CODE=TEMP.CODE
+    MTRO.DESC=TEMP.DESC
+    MTRO.LOTSIZE=HOLD.LOT
+    TEMP.CODE=""
+    TEMP.DESC=""
+    SCRN.OPER=0
+    if CUR.LINE>TOT.LINES then TOT.LINES=TOT.LINES + 1
+    if LINE.OPER[CUR.LINE]<>0 do
+        MTRO.CODE=SCRN.CODE
+        MTRO.OPER=LINE.OPER[CUR.LINE]
+        find M srch MTRO.KEY
+        SCRN.OPER=MTRO.OPER
+    endif
+    goto ENT.OPER
+
+DEL_RECS:
+    if cfrom = 'BKDEJC'
+       ifna BKRTEMTR goto ENT.OPER
+    else
+       ifna ROUTING goto ENT.OPER
+    endif
+    ;
+    if zask("Do you want to delete this Record?", .t.)
+       ok='Y'
+    else
+       ok='N'
+    endif
+    ;end FMZ 10/23/97
+    ;
+    if OK<>"Y" goto ENT.OPER
+
+    if cfrom = 'BKDEJC'
+       del BKRTEMTR nocnf
+    else
+       del ROUTING nocnf
+    endif
+
+    gosub DEL.SPEC
+    gosub DEL.LINE
+    clr MTICMSTR buff
+    clr WORKCTR buff
+    clr BKAPVEND buff
+    clr MACHINE buff
+    clr TOOL buff
+    gosub zero_rcost
+    goto ENT.OPER
+
+CLR_RECS:
+    if zask("Do you want to clear this Record?", .t.)
+       ok='Y'
+    else
+       ok='N'
+    endif
+    ;end FMZ 10/23/97
+    ;
+    if OK<>"Y" goto ENT.OPER
+
+    if cfrom = 'BKDEJC'
+       clr BKRTEMTR buff
+    else
+       clr ROUTING buff
+    endif
+
+    clr MTICMSTR buff
+    clr WORKCTR buff
+    clr BKAPVEND buff
+    clr MACHINE buff
+    clr TOOL buff
+    goto ENT.OPER
+
+EXIT:
+    quit
+
+DSP_NOTE:
+    ent.code=''
+    template_menu
+    ifna bkrttemp
+       ret
+    endif
+    ENT.CODE=BKRT.TEMP.CODE
+    ret
+
+ENT_TYPE:
+    MCNTR=1
+    MESSAGE[1]=" L - Labor               0101L"
+    MESSAGE[2]=" P - Outside Processing  0102P"
+    MESSAGE[3]=" A - Alternate Operation 0103A"
+    for(MCNTR4;1;3;1)
+        equ_mid OK fld MESSAGE[MCNTR4] start 2 nchr 1
+        if MTRO.TYPE=OK then MCNTR=MCNTR4
+    next
+    menu at 14,8 len 5 wdt 27 cpc 0 fld MESSAGE cntr MCNTR nch 3 mcw 25 esc ENT_TYPE ttl "Type"
+    equ_mid MTRO.TYPE fld MESSAGE[MCNTR] start 2 nchr 1
+    ret
+
+DUP.KEY:
+    MESSAGE[1]=" The Operation Number entered already "
+    MESSAGE[2]=" exists for this Item Number."
+    MESSAGE[3]=" Please reenter or change."
+    NUM.MSG=3
+    msg_list msg_ptr,num.msg
+    gosub SCROLL.DWN
+    if cfrom = 'BKDEJC'
+       clr BKRTEMTR buff
+    else
+       clr ROUTING buff
+    endif
+    goto ENT.OPER
+
+;********************************************************************
+;This section allows copying one part's routing to another part.
+;FMZ 10/12/99 Add option to also copy the routing specs.  This is a GOTO.
+
+G.COPY:
+    ;Note: The ability to copy a routing is not available for imported
+    ;  routings so the G.COPY section code has not been changed for BKDEJC.
+    if .n. zask("Copy all of the operations for this part to another?", .t.)
+       goto ENT.DESC
+    endif
+
+    saves
+    xtrap_si_udc
+    picture remove
+
+    mount COPYROUT type S
+    PRG_HDR "RO-A  Enter Routings [Copy]"
+    fnc_list "F1 Help,F2 Lookup","Esc Exit"
+
+    ;FMZ 10/12/99 Seems like these should be GOTO, could cause stack
+    ;problems as GOSUB
+    ;trap INT gosub G.COPY.Z
+    ;trap ESC gosub G.COPY.Z
+    trap ESC, INT goto G.COPY.Z
+
+    ;FMZ 10/12/99 Dangerous command trap FERR goto G.COPY.3
+
+    TEMP.CODE=""
+    TEMP.DESC=""
+    TEMP.CODE2=MTRO.CODE
+
+G.COPY.1:
+    enter TEMP.CODE pre SETUP_INV() post POST_INV() UP noclickoff
+    {
+      func SETUP_INV
+ fnc_list "F1 Help,F2 Lookup","Esc Exit",'',''
+ trap F2 GOSUB DSP_INV_2
+ ret .t.
+
+      func POST_INV
+ fnc_list "F1 Help","Esc Exit",'',''
+ trap F2 DFLT
+ ret .t.
+
+      DSP_INV_2:
+ INV_MENU
+ ifna BKICMSTR
+    ret
+ endif
+ TEMP.CODE = BKIC.PROD.CODE
+ ret
+    }
+
+    ;Validate the copy-to part#
+    mtic.prod.code=temp.code
+    find M srch MTIC.PROD.CODE
+    if flerr(fnum('mticmstr'))<>0
+       msg 'This is not a valid item number. ' windows 'w'
+       goto G.COPY.1
+    endif
+    TEMP.DESC=MTIC.PROD.DESC
+    trap F2 dflt
+    fnc_list "F1 Help","Esc Exit"
+    enter TEMP.DESC upar G.COPY.1 noclickoff
+
+    ;FMZ 8/19/98 Need to get to the first operation of the copy-from
+    ;  part, in operation order.
+    ;find G srch MTRO.CODE  err G.COPY.Z
+    mtro.code = temp.code2
+    mtro.oper = 0
+    find G srch MTRO.KEY
+    if flerr(fnum('routing')) <> 0 .o. mtro.code <> temp.code2
+       msg 'Did not find routing for part '+temp.code2 windows 'info'
+       clr ROUTING buff
+       mtro.code = temp.code2
+       goto G.COPY.Z
+    endif
+    ;end FMZ 8/19/98
+
+    ;FMZ 10/12/99 If old part has specs, ask user if wants to copy them too.
+    bkrt.spec.part=temp.code2
+    find M srch bkrt.spec.part nlock
+    if flerr(fnum('bkrtspec'))<>0
+       copy.specs=.f.
+    else
+       ;See if new part has specs
+       bkrt.spec.part=temp.code
+       find M srch bkrt.spec.part nlock
+       if flerr(fnum('bkrtspec'))<>0
+          new.has.specs=.f.
+       else
+          new.has.specs=.t.
+       endif
+
+       if new.has.specs=.f.
+          if zask('Should the routing specifications for item no. '+temp.code2*' also be copied? ', .t.)
+             copy.specs=.t.
+          else
+             copy.specs=.f.
+          endif
+       else
+          if zask('The part being copied TO ('+temp.code*') already has routing specifications.  Would you like to fully replace these with the routing specifications for the part being copied FROM ('+temp.code2*')? ', .f.)
+             copy.specs=.t.
+          else
+             copy.specs=.f.
+          endif
+       endif
+    endif
+    ;end FMZ 10/12/99
+
+    pbox s at 24,14 len 3 wdt 33
+
+G.COPY.2:
+    rcn ROUTING rcn TEMP.REC get
+    clr ROUTING rec
+    MTRO.CODE=TEMP.CODE
+    MTRO.DESC=TEMP.DESC
+    pmsg "Now copying Operation No: ",MTRO.OPER," " at 26,15 ptw S
+    ;
+    ;FMZ 3/15/98 Ben fixed this.  If the part being copied to already had
+    ;  an operation that was on the part being copied from, would get
+    ;  a duplicate key error.
+    find M srch MTRO.KEY noclr
+    if flerr(fnum('routing')) <> 0
+       ;Only save if operation does not exist on new part
+       save ROUTING nocnf
+    endif
+    ;end FMZ 3/15/98
+    ;
+G.COPY.3:
+    rcn ROUTING rcn TEMP.REC set
+    find N srch ROUTING  err G.COPY.4
+    if MTRO.CODE=TEMP.CODE2 goto G.COPY.2
+
+G.COPY.4:
+    MTRO.CODE=TEMP.CODE
+    MTRO.OPER=0
+    SCRN.CODE=TEMP.CODE
+    SCRN.DESC=TEMP.DESC
+    find G srch MTRO.KEY  err G.COPY.SPEC  ;FMZ 10/12/99 chgd from err G.COPY.Z
+    clr ROUTING buff
+
+G.COPY.SPEC:
+    ;FMZ 10/12/99 New label, code for copying specs.
+    if copy.specs=.t.
+       if new.has.specs=.t.
+          ;Copy-to part# already has specs, delete them.
+          while .t.
+             bkrt.spec.part=temp.code
+             find M srch bkrt.spec.part
+             if flerr(fnum('bkrtspec'))<>0
+                exit
+             endif
+             del BKRTSPEC nocnf
+          endw
+       endif
+
+       ;Now do the copying.
+       ;First, get to first record for copy-from part specs.
+       bkrt.spec.part=temp.code2
+       bkrt.spec.seq=0
+       bkrt.spec.line=0
+       find G srch bkrt.spec.key
+       if flerr(fnum('bkrtspec'))<>0 .o. bkrt.spec.part<>temp.code2
+          msg 'Error: No routing specifications were copied. ' windows 'w'
+          goto G.COPY.Z
+       endif
+
+       while .t.
+          rcn BKRTSPEC rcn TEMP.REC get
+          clr BKRTSPEC rec
+          bkrt.spec.part=temp.code
+          pmsg "Now copying Specs: ",bkrt.spec.seq,' ',bkrt.spec.line," " at 26,15 ptw S
+          save BKRTSPEC nocnf
+
+          rcn BKRTSPEC rcn TEMP.REC set
+          find N srch BKRTSPEC
+          if flerr(fnum('bkrtspec'))<>0 .o. bkrt.spec.part<>temp.code2
+             exit
+          endif
+       endw
+    endif
+    ;end FMZ 10/12/99
+
+G.COPY.Z:
+    ;AGL 7/13/00 BUG ROA19 was fixed by FMZ on 10/12/99
+    xtrap_rstr_udc
+    redsp
+    if windows()
+       mount ENTROUT type S
+    else
+       mount DOSROA type S
+    endif
+    PRG_HDR "RO-A  Enter Routings"
+    fnc_list "F1 Help,F3 CopyÿRouting,F4 Delete,PgDn Notes","Esc Exit"
+    zret=button_ref()
+    goto ENT.DESC
+
+;End of copy routing section.
+;******************************************************************
+
+G.DEL:
+    if zask("Do you want to Delete all of the Operations for this Item Number?", .t.)
+       ok='Y'
+    else
+       ok='N'
+    endif
+    ;end FMZ 10/23/97
+    ;
+    if OK<>"Y" goto START
+    TEMP.CODE=MTRO.CODE
+    find G srch MTRO.CODE  err G.DEL.Z
+    while MTRO.CODE=TEMP.CODE
+        if cfrom = 'BKDEJC'
+           del BKRTEMTR nocnf
+           find N srch BKRTEMTR  err G.DEL.Z
+        else
+           del ROUTING nocnf
+           find N srch ROUTING  err G.DEL.Z
+        endif
+    endw
+
+G.DEL.Z:
+    clr MTICMSTR buff
+    clr WORKCTR buff
+    clr BKAPVEND buff
+    clr MACHINE buff
+    clr TOOL buff
+    if cfrom = 'BKDEJC'
+       clr BKRTEMTR buff
+    else
+       clr ROUTING buff
+    endif
+    gosub zero_rcost
+    goto START
+
+;AGL 7/3/01 zero out rcost[1,3,4,5,6]
+ZERO_RCOST:
+    MTRO.CODE=SCRN.CODE
+    MTRO.OPER=0
+    find G srch MTRO.KEY
+    if MTRO.CODE<>SCRN.CODE
+      mtic.prod.code=SCRN.CODE
+      find M srch MTIC.PROD.CODE
+      mtic.prod.rcost[1] = 0
+      mtic.prod.rcost[3] = 0
+      mtic.prod.rcost[4] = 0
+      mtic.prod.rcost[5] = 0
+      mtic.prod.rcost[6] = 0
+      save MTICMSTR nocnf
+    endif
+    ret
+;
+BEG.OPER:
+    find F srch MTRO.KEY
+    ret
+END.OPER:
+    find L srch MTRO.KEY
+    ret
+PREV.OPER:
+    find G srch MTRO.KEY  err SERCH.RET
+    if cfrom = 'BKDEJC'
+       find P srch BKRTEMTR  err SERCH.RET
+    else
+       find P srch ROUTING  err SERCH.RET
+    endif
+    ret
+NEXT.OPER:
+    find G srch MTRO.KEY  err SERCH.RET
+    if cfrom = 'BKDEJC'
+       find N srch BKRTEMTR  err SERCH.RET
+    else
+       find N srch ROUTING  err SERCH.RET
+    endif
+    ret
+GEN.OPER:
+    find G srch MTRO.KEY  err SERCH.RET
+    ret
+SERCH.RET:
+    ret
+SCROLL.UP:
+    if MTRO.OPER>HIGHEST.SEQ then HIGHEST.SEQ=MTRO.OPER
+    CUR.LINE=CUR.LINE + 1
+    ret
+SCROLL.DWN:
+    CUR.LINE=CUR.LINE - 1
+    MTRO.CODE=SCRN.CODE
+    MTRO.OPER=LINE.OPER[CUR.LINE]
+    find M srch MTRO.KEY  err LINES.DWNZ
+    ret
+
+;********************************************************************
+
+LOAD_OPS:
+    updta LINE.OPER clr
+    new_list = .t.
+    CUR.LINE=0
+    tot.lines=0
+
+    ;See if we have a routing set up for this part
+    MTRO.CODE=SCRN.CODE
+    MTRO.OPER=0
+    find G srch MTRO.KEY nlock
+    if cfrom = 'BKDEJC'
+       ;Technically this should never happen since if importing we only
+       ;  allow editing of existing routings.
+       if flerr(fnum('BKRTEMTR')) <> 0 .o. mtro.code <> scrn.code
+          cur.line = 1
+          new_list = .f.
+          clr BKRTEMTR buff
+          ret
+       endif
+    else
+       if flerr(fnum('ROUTING')) <> 0 .o. mtro.code <> scrn.code
+          ;AGL 06/18/01 problem with the first line of ROA cur.line needs to be 1 not 0
+          cur.line = 1
+          new_list = .f.
+          clr ROUTING buff
+          ret
+       endif
+    endif
+
+    while mtro.code = scrn.code
+       TOT.LINES = TOT.LINES + 1
+       cur.line  = cur.line+1
+       LINE.OPER[CUR.LINE] = MTRO.OPER
+
+       if cfrom = 'BKDEJC'
+          find N srch BKRTEMTR nlock
+          if flerr(fnum('BKRTEMTR')) <> 0
+             exit
+          endif
+       else
+          find N srch ROUTING nlock
+          if flerr(fnum('ROUTING')) <> 0
+             exit
+          endif
+       endif
+    endw
+
+    cur.line=1
+    if cfrom = 'BKDEJC'
+       clr BKRTEMTR buff
+    else
+       clr ROUTING buff
+    endif
+    ret
+
+;********************************************************************
+
+
+LINES.UP:
+    if CUR.LINE>TOT.LINES
+        bell
+        goto ent.oper
+    else_if cur.line=tot.lines
+        if cfrom = 'BKDEJC'
+           clr bkrtemtr buff
+        else
+           clr routing
+        endif
+        cur.line=tot.lines+1
+        goto ent.oper
+    endif
+    gosub SCROLL.UP
+lines.up2:
+    MTRO.CODE=SCRN.CODE
+    MTRO.OPER=LINE.OPER[CUR.LINE]
+    SCRN.OPER=LINE.OPER[CUR.LINE]
+    find M srch MTRO.KEY  err LINES.UPZ
+LINES.UPZ:
+    if CUR.LINE>TOT.LINES
+       if cfrom = 'BKDEJC'
+          clr BKRTEMTR buff
+       else
+          clr ROUTING buff
+       endif
+    endif
+    goto ENT.OPER
+
+LINES.DWN:
+    if CUR.LINE=1 then bell
+    if CUR.LINE=1 goto ENT.OPER
+    gosub SCROLL.DWN
+LINES.DWNZ:
+    SCRN.OPER=MTRO.OPER
+    goto ENT.OPER
+
+list_lines:
+    if tot.lines=0
+        bell
+        goto ent.oper
+    endif
+    define ll_cntr type i
+    define ll_title,ll_title1 type a size 80
+    setline ll_title  with 'Seq  Op T Description          Work Center  Time/Pt      Parts/Hr Setup'
+    setline ll_title1 with 'ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ'
+    xtrap_si_udc
+    saves
+    picture remove
+    fnc_list 'F1 Help','Esc Exit',''
+    window at 1,5 len 18 wdt max_cols() box 's'
+
+    if cfrom = 'BKDEJC'
+       clr bkrtemtr
+       listf MTRO.OPER,MTRO.OP.TEMP.NO,MTRO.TYPE,dsp.opdesc(),MTRO.WC,MTRO.TIMEPART,MTRO.PARTSHR,MTRO.SETUPHRS start scrn.code,0! while scrn.code=MTRO.CODE key MTRO.KEY file bkrtemtr noadd noshift fline ll_title,ll_title1 cbf ' '
+    else
+       clr routing
+       listf MTRO.OPER,MTRO.OP.TEMP.NO,MTRO.TYPE,dsp.opdesc(),MTRO.WC,MTRO.TIMEPART,MTRO.PARTSHR,MTRO.SETUPHRS start scrn.code,0! while scrn.code=MTRO.CODE key MTRO.KEY file routing noadd noshift fline ll_title,ll_title1 cbf ' '
+    endif
+    {
+      func dsp.opdesc
+        d.opdesc = mid(mtro.operdesc,1,20)
+        ret d.opdesc
+    }
+
+    redsp
+    ;FMZ 8/17/99
+    rscr
+    zret=button_ref()
+    xtrap_rstr_udc
+    if cfrom = 'BKDEJC'
+       ifna bkrtemtr
+           if new_list then cur.line=tot.lines+1
+       else
+           for(ll_cntr;1;tot.lines;1)
+               fexit_if line.oper[ll_cntr]=mtro.oper
+           next
+           cur.line=ll_cntr
+       endif
+    else
+       ifna routing
+           if new_list then cur.line=tot.lines+1
+       else
+           for(ll_cntr;1;tot.lines;1)
+               fexit_if line.oper[ll_cntr]=mtro.oper
+           next
+           cur.line=ll_cntr
+       endif
+    endif
+    new_list=.f.
+    goto ent.oper
+
+first_line:
+    if tot.lines=0
+        bell
+        goto ent.oper
+    endif
+    cur.line=1
+    gosub get_rec
+    goto ent.oper
+
+last_line:
+    if tot.lines=0
+        bell
+        goto ent.oper
+    endif
+    cur.line=tot.lines
+    gosub get_rec
+    goto ent.oper
+
+new_line:
+    cur.line=tot.lines+1
+    if cfrom = 'BKDEJC'
+       clr bkrtemtr
+    else
+       clr routing
+    endif
+    goto ent.oper
+
+get_rec:
+    MTRO.CODE=SCRN.CODE
+    MTRO.OPER=LINE.OPER[CUR.LINE]
+    find M srch MTRO.KEY err no_err
+    ret
+
+NEXT.ROUT:
+    HOLD.LOT=0
+    HIGHEST.SEQ=0
+    TEMP.CODE=""
+    TEMP.DESC=""
+    SCRN.CODE=""
+    SCRN.DESC=""
+    SCRN.OPER=0
+    TOT.LINES=0
+    CUR.LINE=0
+    updta LINE.OPER clr
+    clr MTICMSTR buff
+    clr WORKCTR buff
+    clr BKAPVEND buff
+    clr MACHINE buff
+    clr TOOL buff
+    if cfrom = 'BKDEJC'
+       clr BKRTEMTR buff
+    else
+       clr ROUTING buff
+    endif
+    goto MOUNT_SCRS
+
+DEL.LINE:
+    SCRN.OPER=0
+    if CUR.LINE=TOT.LINES ret
+    for(MCNTR;CUR.LINE;999;1)
+        MCNTR2=MCNTR + 1
+        LINE.OPER[MCNTR]=LINE.OPER[MCNTR2]
+    next
+    LINE.OPER[1000]=0
+    TOT.LINES=TOT.LINES - 1
+    MTRO.CODE=SCRN.CODE
+    MTRO.OPER=LINE.OPER[CUR.LINE]
+    SCRN.OPER=LINE.OPER[CUR.LINE]
+    find M srch MTRO.KEY  err DEL.LINE2
+
+DEL.LINE2:
+    if CUR.LINE=TOT.LINES
+       if cfrom = 'BKDEJC'
+          clr BKRTEMTR buff
+       else
+          clr ROUTING buff
+       endif
+    endif
+    ret
+
+DEL.SPEC:
+    ;We will not delete specs if editing imported routings
+    if cfrom ='BKDEJC'
+    else
+       BKRT.SPEC.PART=SCRN.CODE
+       BKRT.SPEC.SEQ=SCRN.OPER
+       BKRT.SPEC.LINE=0
+       find G srch BKRT.SPEC.KEY  err DEL.SPEC2
+       if BKRT.SPEC.PART<>SCRN.CODE goto DEL.SPEC2
+       if BKRT.SPEC.SEQ<>SCRN.OPER goto DEL.SPEC2
+       del BKRTSPEC nocnf
+       goto DEL.SPEC
+    endif
+
+DEL.SPEC2:
+    ret
+
+;*******************************************************************
+;This subroutine allows user to check off needed operation templates
+;  to quickly build a complete routing.  Called as a GOSUB.
+;Not available if editing imported routings.
+
+CHOS.TEMP:
+    saves
+    picture remove
+    xtrap_si_udc
+    fnc_list '','F10 Save,Esc Exit','',''
+    trap F10 goto OP_SAVE
+    updta HOLD.SEQ, HOLD.OP, HOLD.DESC clr
+    scrn L
+    setact ROUTING file ROUTTEMP
+    find F srch MTRO.OPER  err CHOS.TEMPZ
+    tot.templ = 1
+
+    while .t.
+       hold.seq[tot.templ] = 0
+       hold.op[tot.templ]  = mtro.oper
+       hold.desc[tot.templ]= mtro.operdesc
+       find N srch ROUTTEMP
+       if flerr(fnum('routtemp')) <> 0
+   exit
+       endif
+       tot.templ = tot.templ + 1
+       if tot.templ > op.max
+   exit
+       endif
+    endw
+
+    clr ROUTTEMP buff
+    scrn r
+
+    if .n. windows()
+       clrlne at 1,24
+    endif
+
+    window at 18,5 len 18 wdt 45 box 's' shd 'r' scolor sc bcolor bc wcolor wc ttl ' Routing Generator: Select needed Ops ' ttlw 'l'
+    op.cntr = 1
+    seq.cntr= 1
+
+    OP_LIST:
+    setline op_titlea with 'Choose Ops in the order in which they'
+    setline op_titleb with 'should appear in the new routing.'
+    setline op_title  with ' '
+    setline op_title1 with 'Order',' ',' Op',' ','Description                   '
+    setline op_title2 with 'ÄÄÄÄÄ',' ','ÄÄÄ',' ','ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ'
+    listm hold.seq,' ',hold.op,' ',hold.desc actv tot.templ maxa op.max cntr op.cntr ccolor cc NOSHIFT noadd ENTER op_sel() use_traps fline op_titlea, op_titleb, op_title, op_title1, op_title2 blnes 1
+    if .n. zask("Exit without choosing any operation templates?", .f.)
+       op.cntr = 1
+       goto OP_LIST
+    else
+       goto CHOS.TEMPZ
+    endif
+
+      {
+ func op_sel
+          ;This gets executed only when user hits ENTER to tag or untag.
+          ;disallow deletions or additions
+          if etyp() <> 'C'
+             ret .f.
+          endif
+   if hold.seq[op.cntr] = 0
+      ;Item had not previously been selected
+      hold.seq[op.cntr] = seq.cntr
+      seq.cntr = seq.cntr + 1
+   else
+      ;Item had previously been selected
+      if zask('Un-select this operation template?',.f.)
+  ;Will need to decrement every other previously selected
+  ;  op that has a seq > than this one.
+  seq.orig = hold.seq[op.cntr]
+  hold.seq[op.cntr] = 0
+  seq.cntr = seq.cntr - 1
+  for(mcntr;1;op.max;1)
+    if hold.seq[mcntr] > seq.orig
+       hold.seq[mcntr] = hold.seq[mcntr] - 1
+    endif
+  next
+  RDLIST
+      endif
+   endif
+   ret .t.
+
+ OP_SAVE:
+   ;First have to sort the arrays in selection order.
+   seq.cntr = 0
+   sorta hold.seq[seq.cntr] move hold.seq[seq.cntr],hold.op[seq.cntr],hold.desc[seq.cntr] num op.max cntr seq.cntr
+
+   ;Then save entries to the routing file.
+   seq.cntr = 0
+   for(mcntr;1;op.max;1)
+     if hold.seq[mcntr] <> 0
+  seq.cntr = seq.cntr + 1
+  MTRO.OPER=hold.op[mcntr]
+                find M srch MTRO.OPER
+                setact ROUTING file ROUTING
+                MTRO.OP.TEMP.NO=MTRO.OPER
+
+  ;Note:
+  ;BKYS.VNUM[3] is set in MD-B and indicates the default
+  ;  amount to increment each new seq by.  Here we will
+  ;  us it as a multiplier.
+  ;BKYS.YN[38] is also set in MD-B and if Y means we should
+  ;  use the template# as the seq#.
+
+  if BKYS.VNUM[3]=0
+     BKYS.VNUM[3]=1
+  endif
+  if BKYS.YN[38]="Y" do
+     MTRO.OPER=MTRO.OP.TEMP.NO
+  else
+     MTRO.OPER = seq.cntr * BKYS.VNUM[3]
+                endif
+  LINE.OPER[seq.cntr]=MTRO.OPER
+                MTRO.CODE=SCRN.CODE
+                MTRO.DESC=SCRN.DESC
+                MTRO.LOTSIZE=HOLD.LOT
+                gosub SCROLL.UP
+                save ROUTING nocnf
+                TOT.LINES=TOT.LINES + 1
+                setact ROUTING file ROUTTEMP
+     endif
+   next
+      }
+
+CHOS.TEMPZ:
+    clr ROUTTEMP buff
+    setact ROUTING file ROUTING
+    redsp
+    ;FMZ 8/17/99
+    rscr
+    zret=button_ref()
+    xtrap_rstr_udc
+    ret
+
+;End routings generator subroutine.
+;*********************************************************************
+
+
+DO.TIME:
+    if MTRO.TYPE="" ret
+    if MTRO.TYPE="P" ret
+    if MTRO.WC="" ret
+    pops
+    goto ENT.NUMPC2
+
+;***********************************************************************
+;Routine for editing routing specifications.  Not available if editing
+;  imported routings.  Called as gosub.
+;FMZ 10/12/99 Some changes this section.
+
+STRT.NOTES:
+    ;FMZ 10/12/99 The Specs button is available on the main screen even
+    ;  if importing (too lazy), so reject here if necessary.
+    if cfrom='BKDEJC'
+       msg 'Specifications are not accessible while editing imported routings. ' windows 'i'
+       ret
+    endif
+
+    updta MEM.NOTE1 clr
+    updta MEM.NOTE2 clr
+    updta MEM.NOTE3 clr
+    updta MEM.NOTE4 clr
+
+    saves
+    xtrap_si_udc
+    picture remove
+
+    mount SNOTES type S
+    PRG_HDR "RO-A  Enter Routings"
+
+LOAD_RECS:
+    BKRT.SPEC.PART=SCRN.CODE
+    BKRT.SPEC.SEQ=SCRN.OPER
+    BKRT.SPEC.LINE=0
+    find G srch BKRT.SPEC.KEY  err DO_NOTES
+    while BKRT.SPEC.PART=SCRN.CODE
+        if BKRT.SPEC.SEQ=SCRN.OPER do
+            MEM.NOTE1[BKRT.SPEC.LINE]=BKRT.SPEC.NOTE[1]
+            MEM.NOTE2[BKRT.SPEC.LINE]=BKRT.SPEC.NOTE[2]
+            MEM.NOTE3[BKRT.SPEC.LINE]=BKRT.SPEC.NOTE[3]
+            MEM.NOTE4[BKRT.SPEC.LINE]=BKRT.SPEC.NOTE[4]
+            NOTE.LINE=BKRT.SPEC.LINE
+        endif
+        find N srch BKRTSPEC  err DO_NOTES
+    endw
+    goto DO_NOTES
+
+SAVE_NRECS:
+    if zask("Do you want to save this Record?", .t.)
+       ok='Y'
+    else
+       ok='N'
+    endif
+    ;end FMZ 10/23/97
+    ;
+    if OK<>"Y" goto CLR_NRECS2
+    BKRT.SPEC.PART=SCRN.CODE
+    BKRT.SPEC.SEQ=SCRN.OPER
+    BKRT.SPEC.LINE=1
+    ifdup BKRT.SPEC.KEY do
+        find M srch BKRT.SPEC.KEY
+        while BKRT.SPEC.PART=SCRN.CODE
+            if BKRT.SPEC.SEQ=SCRN.OPER then del BKRTSPEC nocnf
+            find N srch BKRTSPEC  err SAVE_NRCS2
+        endw
+    endif
+SAVE_NRCS2:
+    clr BKRTSPEC buff
+    if MEM.NOTE1[NOTE.LINE]="" do
+        if MEM.NOTE2[NOTE.LINE]="" do
+            if MEM.NOTE3[NOTE.LINE]="" do
+                if MEM.NOTE4[NOTE.LINE]="" then NOTE.LINE=NOTE.LINE - 1
+            endif
+        endif
+    endif
+    for(TEMP.CNTR;1;NOTE.LINE;1)
+        BKRT.SPEC.PART=SCRN.CODE
+        BKRT.SPEC.SEQ=SCRN.OPER
+        BKRT.SPEC.LINE=TEMP.CNTR
+        BKRT.SPEC.NOTE[1]=MEM.NOTE1[TEMP.CNTR]
+        BKRT.SPEC.NOTE[2]=MEM.NOTE2[TEMP.CNTR]
+        BKRT.SPEC.NOTE[3]=MEM.NOTE3[TEMP.CNTR]
+        BKRT.SPEC.NOTE[4]=MEM.NOTE4[TEMP.CNTR]
+        save BKRTSPEC nocnf
+    next
+    NOTE.LINE=0
+    NCNTR=0
+    updta MEM.NOTE1 clr times 100
+    updta MEM.NOTE2 clr times 100
+    updta MEM.NOTE3 clr times 100
+    updta MEM.NOTE4 clr times 100
+    for(TEMP.CNTR;1;19;1)
+        TEMP.CNTR1=TEMP.CNTR + 4
+        pmsg "                                                                                " at 1,TEMP.CNTR1
+    next
+CLR_NRECS2:
+    clr BKRTSPEC buff
+    NOTE.LINE=0
+    updta MEM.NOTE1 clr times 100
+    updta MEM.NOTE2 clr times 100
+    updta MEM.NOTE3 clr times 100
+    updta MEM.NOTE4 clr times 100
+    goto NOTE.Z
+
+DO_NOTES:
+    trap ESC goto NOTE.Z
+    trap PG_UP goto PGUP.NOTES
+    trap PG_DN goto PGDN.NOTES
+    trap F4 goto DEL.NOTE
+    trap HOME goto HOME.NOTE
+    trap END goto END.NOTE
+    trap F3 goto INS.NOTE
+    trap F10 goto SAVE_NRECS
+    fnc_list "F1 Help,F3 InsertÿLine,F4 Delete","F10 Save,Esc Exit"
+    NCNTR=1
+    NCNTR1=6
+    if NOTE.LINE=0 then NOTE.LINE=1
+    for(TEMP.CNTR;1;18;1)
+        TEMP.CNTR1=TEMP.CNTR + 5
+        pmsg MEM.NOTE1[TEMP.CNTR] at 1,TEMP.CNTR1
+        pmsg MEM.NOTE2[TEMP.CNTR] at 21,TEMP.CNTR1
+        pmsg MEM.NOTE3[TEMP.CNTR] at 41,TEMP.CNTR1
+        pmsg MEM.NOTE4[TEMP.CNTR] at 61,TEMP.CNTR1
+    next
+    trap DNAR goto NOTE.1A
+NOTE.1:
+    fnc_list "F1 Help,F2 CopyÿSpecÿTemplates,F3 InsÿLine,F4 Delete","F10 Save,Esc Exit"
+    trap F2 goto INS.TEMP
+    pmsg MEM.NOTE1[NCNTR] at 1,NCNTR1
+    pmsg MEM.NOTE2[NCNTR] at 21,NCNTR1
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    pmsg MEM.NOTE4[NCNTR] at 61,NCNTR1
+    enter MEM.NOTE1[NCNTR] upar NOTE.2 acr at 1,NCNTR1 noclickoff
+NOTE.1.2:
+    pmsg MEM.NOTE1[NCNTR] at 1,NCNTR1
+    pmsg MEM.NOTE2[NCNTR] at 21,NCNTR1
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    pmsg MEM.NOTE4[NCNTR] at 61,NCNTR1
+    trap F2 dflt
+    fnc_list "F1 Help,F3 InsertÿLine,F4 Delete","F10 Save,Esc Exit"
+    enter MEM.NOTE2[NCNTR] upar NOTE.1 acr at 21,NCNTR1 noclickoff
+NOTE.1.3:
+    pmsg MEM.NOTE1[NCNTR] at 1,NCNTR1
+    pmsg MEM.NOTE2[NCNTR] at 21,NCNTR1
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    pmsg MEM.NOTE4[NCNTR] at 61,NCNTR1
+    enter MEM.NOTE3[NCNTR] upar NOTE.1.2 acr at 41,NCNTR1 noclickoff
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    enter MEM.NOTE4[NCNTR] upar NOTE.1.3 acr at 61,NCNTR1 noclickoff
+NOTE.1A:
+    if NCNTR=100 do
+        bell
+        goto NOTE.1
+    endif
+    pmsg MEM.NOTE1[NCNTR] at 1,NCNTR1
+    pmsg MEM.NOTE2[NCNTR] at 21,NCNTR1
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    pmsg MEM.NOTE4[NCNTR] at 61,NCNTR1
+    if NCNTR=NOTE.LINE do
+        NOTE.LINE=NOTE.LINE + 1
+    endif
+    NCNTR=NCNTR + 1
+    NCNTR1=NCNTR1 + 1
+    if NCNTR1=24 goto NEXT.PAGE
+    goto NOTE.1
+NOTE.2:
+    if NCNTR=1 do
+        bell
+        goto NOTE.1
+    endif
+    pmsg MEM.NOTE1[NCNTR] at 1,NCNTR1
+    pmsg MEM.NOTE2[NCNTR] at 21,NCNTR1
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    pmsg MEM.NOTE4[NCNTR] at 61,NCNTR1
+    NCNTR=NCNTR - 1
+    NCNTR1=NCNTR1 - 1
+    if NCNTR1=5 goto PREV.PAGE
+    goto NOTE.1
+NEXT.PAGE:
+    scroll at 1,6 len 18 wdt 80 num 1 UP
+    NCNTR1=23
+    goto NOTE.1
+PREV.PAGE:
+    scroll at 1,6 len 18 wdt 80 num 1 DN
+    NCNTR1=6
+    goto NOTE.1
+PGUP.NOTES:
+    TEMP.CNTR=NCNTR - NCNTR1 - 11
+    if TEMP.CNTR<1 then TEMP.CNTR=1
+    for(TEMP.CNTR1;6;23;1)
+        NCNTR=TEMP.CNTR1 + TEMP.CNTR - 6
+        pmsg MEM.NOTE1[NCNTR] at 1,TEMP.CNTR1
+        pmsg MEM.NOTE2[NCNTR] at 21,TEMP.CNTR1
+        pmsg MEM.NOTE3[NCNTR] at 41,TEMP.CNTR1
+        pmsg MEM.NOTE4[NCNTR] at 61,TEMP.CNTR1
+        if MEM.NOTE1[NCNTR]="" then pmsg "                    " at 1,TEMP.CNTR1
+        if MEM.NOTE2[NCNTR]="" then pmsg "                    " at 21,TEMP.CNTR1
+        if MEM.NOTE3[NCNTR]="" then pmsg "                    " at 41,TEMP.CNTR1
+        if MEM.NOTE4[NCNTR]="" then pmsg "                    " at 61,TEMP.CNTR1
+    next
+    NCNTR=TEMP.CNTR + NCNTR1 - 6
+    goto NOTE.1
+PGDN.NOTES:
+    TEMP.CNTR=NCNTR - NCNTR1 + 23
+    if TEMP.CNTR>80 then TEMP.CNTR=80
+    for(TEMP.CNTR1;6;23;1)
+        NCNTR=TEMP.CNTR1 + TEMP.CNTR - 6
+        pmsg MEM.NOTE1[NCNTR] at 1,TEMP.CNTR1
+        pmsg MEM.NOTE2[NCNTR] at 21,TEMP.CNTR1
+        pmsg MEM.NOTE3[NCNTR] at 41,TEMP.CNTR1
+        pmsg MEM.NOTE4[NCNTR] at 61,TEMP.CNTR1
+        if MEM.NOTE1[NCNTR]="" then pmsg "                    " at 1,TEMP.CNTR1
+        if MEM.NOTE2[NCNTR]="" then pmsg "                    " at 21,TEMP.CNTR1
+        if MEM.NOTE3[NCNTR]="" then pmsg "                    " at 41,TEMP.CNTR1
+        if MEM.NOTE4[NCNTR]="" then pmsg "                    " at 61,TEMP.CNTR1
+    next
+    NCNTR=TEMP.CNTR + NCNTR1 - 6
+    goto NOTE.1
+DEL.NOTE:
+    for(TEMP.CNTR;NCNTR;99;1)
+        TEMP.CNTR1=TEMP.CNTR + 1
+        MEM.NOTE1[TEMP.CNTR]=MEM.NOTE1[TEMP.CNTR1]
+        MEM.NOTE2[TEMP.CNTR]=MEM.NOTE2[TEMP.CNTR1]
+        MEM.NOTE3[TEMP.CNTR]=MEM.NOTE3[TEMP.CNTR1]
+        MEM.NOTE4[TEMP.CNTR]=MEM.NOTE4[TEMP.CNTR1]
+    next
+    MEM.NOTE1[100]=""
+    MEM.NOTE2[100]=""
+    MEM.NOTE3[100]=""
+    MEM.NOTE4[100]=""
+    TEMP.CNTR=NCNTR - NCNTR1 + 6
+    for(TEMP.CNTR1;6;23;1)
+        TEMP.CNTR2=TEMP.CNTR + TEMP.CNTR1 - 6
+        pmsg MEM.NOTE1[TEMP.CNTR2] at 1,TEMP.CNTR1
+        pmsg MEM.NOTE2[TEMP.CNTR2] at 21,TEMP.CNTR1
+        pmsg MEM.NOTE3[TEMP.CNTR2] at 41,TEMP.CNTR1
+        pmsg MEM.NOTE4[TEMP.CNTR2] at 61,TEMP.CNTR1
+    next
+    NCNTR=TEMP.CNTR + NCNTR1 - 6
+    if NOTE.LINE>NCNTR then NOTE.LINE=NOTE.LINE - 1
+    goto NOTE.1
+INS.NOTE:
+    MCNTR=NOTE.LINE + 1
+    for(TEMP.CNTR;MCNTR;NCNTR;-1)
+        TEMP.CNTR1=TEMP.CNTR - 1
+        if TEMP.CNTR1>0 do
+            MEM.NOTE1[TEMP.CNTR]=MEM.NOTE1[TEMP.CNTR1]
+            MEM.NOTE2[TEMP.CNTR]=MEM.NOTE2[TEMP.CNTR1]
+            MEM.NOTE3[TEMP.CNTR]=MEM.NOTE3[TEMP.CNTR1]
+            MEM.NOTE4[TEMP.CNTR]=MEM.NOTE4[TEMP.CNTR1]
+        endif
+    next
+    MEM.NOTE1[NCNTR]=""
+    MEM.NOTE2[NCNTR]=""
+    MEM.NOTE3[NCNTR]=""
+    MEM.NOTE4[NCNTR]=""
+    TEMP.CNTR=NCNTR - NCNTR1 + 6
+    for(TEMP.CNTR1;6;23;1)
+        TEMP.CNTR2=TEMP.CNTR + TEMP.CNTR1 - 6
+        pmsg MEM.NOTE1[TEMP.CNTR2] at 1,TEMP.CNTR1
+        pmsg MEM.NOTE2[TEMP.CNTR2] at 21,TEMP.CNTR1
+        pmsg MEM.NOTE3[TEMP.CNTR2] at 41,TEMP.CNTR1
+        pmsg MEM.NOTE4[TEMP.CNTR2] at 61,TEMP.CNTR1
+    next
+    NCNTR=TEMP.CNTR + NCNTR1 - 6
+    NOTE.LINE=NOTE.LINE + 1
+    goto NOTE.1
+HOME.NOTE:
+    for(TEMP.CNTR;6;23;1)
+        TEMP.CNTR1=TEMP.CNTR - 5
+        pmsg MEM.NOTE1[TEMP.CNTR1] at 1,TEMP.CNTR
+        pmsg MEM.NOTE2[TEMP.CNTR1] at 21,TEMP.CNTR
+        pmsg MEM.NOTE3[TEMP.CNTR1] at 41,TEMP.CNTR
+        pmsg MEM.NOTE4[TEMP.CNTR1] at 61,TEMP.CNTR
+        if MEM.NOTE1[TEMP.CNTR1]="" then pmsg "                    " at 1,TEMP.CNTR
+        if MEM.NOTE2[TEMP.CNTR1]="" then pmsg "                    " at 21,TEMP.CNTR
+        if MEM.NOTE3[TEMP.CNTR1]="" then pmsg "                    " at 41,TEMP.CNTR
+        if MEM.NOTE4[TEMP.CNTR1]="" then pmsg "                    " at 61,TEMP.CNTR
+    next
+    NCNTR=1
+    NCNTR1=6
+    goto NOTE.1
+END.NOTE:
+    for(TEMP.CNTR;6;23;1)
+        TEMP.CNTR1=TEMP.CNTR + 77
+        pmsg MEM.NOTE1[TEMP.CNTR1] at 1,TEMP.CNTR
+        pmsg MEM.NOTE2[TEMP.CNTR1] at 21,TEMP.CNTR
+        pmsg MEM.NOTE3[TEMP.CNTR1] at 41,TEMP.CNTR
+        pmsg MEM.NOTE4[TEMP.CNTR1] at 61,TEMP.CNTR
+        if MEM.NOTE1[TEMP.CNTR1]="" then pmsg "                    " at 1,TEMP.CNTR
+        if MEM.NOTE2[TEMP.CNTR1]="" then pmsg "                    " at 21,TEMP.CNTR
+        if MEM.NOTE3[TEMP.CNTR1]="" then pmsg "                    " at 41,TEMP.CNTR
+        if MEM.NOTE4[TEMP.CNTR1]="" then pmsg "                    " at 61,TEMP.CNTR
+    next
+    NCNTR=100
+    NCNTR1=23
+    goto NOTE.1
+
+NOTE.Z:
+    if windows()
+       mount ENTROUT type S
+    else
+       mount DOSROA type S
+    endif
+    redsp
+    xtrap_rstr_udc
+    zret=button_ref()
+    ret
+
+INS.TEMP:
+    if NOTE.LINE=100 do
+        bell
+        goto INS.TEMP.Z
+    endif
+    gosub DSP_NOTE
+    trap F2 gosub INS.TEMP
+    if ENT.CODE="" goto INS.TEMP.Z
+    clr BKRTTEMP buff
+    BKRT.TEMP.CODE=ENT.CODE
+    BKRT.TEMP.LINE=0
+    find G srch BKRT.TEMP.KEY  err INS.TEMP.Z
+INS.TEMP.A:
+    if BKRT.TEMP.CODE<>ENT.CODE goto INS.TEMP.Z
+    MCNTR=NOTE.LINE + 1
+    for(TEMP.CNTR;MCNTR;NCNTR;-1)
+        TEMP.CNTR1=TEMP.CNTR - 1
+        if TEMP.CNTR1>0 do
+            MEM.NOTE1[TEMP.CNTR]=MEM.NOTE1[TEMP.CNTR1]
+            MEM.NOTE2[TEMP.CNTR]=MEM.NOTE2[TEMP.CNTR1]
+            MEM.NOTE3[TEMP.CNTR]=MEM.NOTE3[TEMP.CNTR1]
+            MEM.NOTE4[TEMP.CNTR]=MEM.NOTE4[TEMP.CNTR1]
+        endif
+    next
+    MEM.NOTE1[NCNTR]=""
+    MEM.NOTE2[NCNTR]=""
+    MEM.NOTE3[NCNTR]=""
+    MEM.NOTE4[NCNTR]=""
+    TEMP.CNTR=NCNTR - NCNTR1 + 6
+    for(TEMP.CNTR1;6;23;1)
+        TEMP.CNTR2=TEMP.CNTR + TEMP.CNTR1 - 6
+        pmsg MEM.NOTE1[TEMP.CNTR2] at 1,TEMP.CNTR1
+        pmsg MEM.NOTE2[TEMP.CNTR2] at 21,TEMP.CNTR1
+        pmsg MEM.NOTE3[TEMP.CNTR2] at 41,TEMP.CNTR1
+        pmsg MEM.NOTE4[TEMP.CNTR2] at 61,TEMP.CNTR1
+    next
+    NCNTR=TEMP.CNTR + NCNTR1 - 6
+    NOTE.LINE=NOTE.LINE + 1
+    MEM.NOTE1[NCNTR]=BKRT.TEMP.NOTE[1]
+    MEM.NOTE2[NCNTR]=BKRT.TEMP.NOTE[2]
+    MEM.NOTE3[NCNTR]=BKRT.TEMP.NOTE[3]
+    MEM.NOTE4[NCNTR]=BKRT.TEMP.NOTE[4]
+    pmsg MEM.NOTE1[NCNTR] at 1,NCNTR1
+    pmsg MEM.NOTE2[NCNTR] at 21,NCNTR1
+    pmsg MEM.NOTE3[NCNTR] at 41,NCNTR1
+    pmsg MEM.NOTE4[NCNTR] at 61,NCNTR1
+    NCNTR=NCNTR + 1
+    NCNTR1=NCNTR1 + 1
+    if NCNTR1=24 do
+        scroll at 1,6 len 18 wdt 80 num 1 UP
+        NCNTR1=23
+    endif
+    find N srch BKRTTEMP  err INS.TEMP.Z
+    if NOTE.LINE=100 do
+        bell
+        goto INS.TEMP.Z
+    endif
+    goto INS.TEMP.A
+INS.TEMP.Z:
+    goto NOTE.1
+
+;End specifications editing routine.
+;**********************************************************************
+
+
+;FMZ 10/12/99 some minor changes this section for button/screen control,
+;  added a labed to ESC to.
+ENT.LNGTME:
+    saves
+    xtrap_si_udc
+    trap ESC goto ENT.LTIMEX
+    fnc_list "F1 Help","Esc Exit",'',''
+    window at 46,20 len 3 wdt 31 box 's'
+    pmsg " Time per Part: ",ccr(),"            ",cch() at 1,1 NOCR
+    pmsg ccr(),MTRO.LONGTIME,cch() at 17,1 NOCR
+
+ENT.LTIME:
+    enter MTRO.LONGTIME upar ENT.LTIME at 17,1 noclickoff
+
+ENT.LTIMEX:
+    redsp
+    xtrap_rstr_udc
+    ;FMZ 8/17/99
+    zret=button_ref()
+    rscr
+    if MTRO.LONGTIME=0 goto ENT.PRTHR2
+    MTRO.TIMEPART=0
+    MTRO.PARTSHR=0
+    goto ENT.SETUP
+
+;**********************************************************************
+
+SOAHELP:
+  ;We have to call the help screen this way because that subroutine does
+  ;  a save screen which will wipe out any help pictures.
+  gosub SHOWHELP
+
+  ;Redislpay any pictures.
+  zret=button_ref()
+
+  ret
+
+;**********************************************************************
+func chk.part
+  if scrn.code = ''
+     msg 'Please select a item number. ' windows 'warn'
+     novldmsg
+     ret .f.
+  endif
+
+  MTRO.CODE=SCRN.CODE
+  mtic.prod.code = mtro.code
+  find M srch MTIC.PROD.CODE
+  if flerr(fnum('mticmstr')) <> 0
+     msg 'This is not a valid item number. ' windows 'warn'
+     novldmsg
+     ret .f.
+  endif
+
+  ;AGL 7/13/00 ROA21
+  if MTIC.PROD.TYPE $ "BKROM"
+    msg 'This part does not have valid Type for Routings' windows 'w'
+    novldmsg
+    ret .f.
+  endif
+
+  ;If editing imported routings, only allow to edit those that are in
+  ;  the import file.
+  if cfrom = 'BKDEJC'
+     mtro.code = scrn.code
+     find M srch mtro.code
+     if flerr(fnum('BKRTEMTR')) <> 0
+        msg 'You may only edit routings that are in the imported routings file. ' windows 'warn'
+        novldmsg
+        ret .f.
+     endif
+  endif
+
+  SCRN.DESC=MTIC.PROD.DESC
+  HOLD.LOT=MTIC.PROD.LOTSZ
+  ret .t.
+
+func chk.lotsz
+  if cfrom = 'BKDEJC'
+     if hold.lot <> mtic.prod.lotsz
+        msg 'You may not change the lot size when editing imported routings. ' windows 'info'
+        hold.lot = mtic.prod.lotsz
+        novldmsg
+        ret .f.
+     endif
+  else
+     if HOLD.LOT<>MTIC.PROD.LOTSZ do
+        MTIC.PROD.LOTSZ=HOLD.LOT
+        save MTICMSTR nocnf noclr unlock
+     endif
+  endif
+  ret .t.
+
+func chk.oper
+  ;AGL 7/13/00 ROA13,18 check if lastkey was the f2 key. bizzar bug.
+  if scrn.oper = 0 .a. lstchr() <> 316
+     msg 'This cannot be blank. ' windows 'warn'
+     novldmsg
+     ret .f.
+  endif
+  MTRO.OPER=SCRN.OPER
+  ret .t.
+
+func chk.opt
+  if MTRO.OP.TEMP.NO=0
+     msg 'This cannot be blank. ' windows 'warn'
+     novldmsg
+     ret .f.
+  endif
+  ret .t.
+
+func chk.wc
+  MTRO.WCDESC=""
+  mtwc.wc = mtro.wc
+  find M srch MTWC.WC
+  if flerr(fnum('workctr')) <> 0
+     msg 'This is not a valid Work Center. ' windows 'warn'
+     novldmsg
+     ret .f.
+  endif
+  if MTWC.OUTPROC<>"N" .a. MTRO.TYPE="L"
+     msg "This is an Outside Process Work Center. " windows 'warn'
+     novldmsg
+     ret .f.
+  endif
+
+  MTRO.SETUP=MTWC.SETUP
+  MTRO.LABOR=MTWC.LABOR
+  MTRO.VOVHD=MTWC.VOVHD
+  MTRO.FOVHD=MTWC.FOVHD
+  MTRO.WCDESC=MTWC.WCDESC
+  if MTWC.OUTPROC <> "N"
+     if MTRO.MIN.CHG=0
+        MTRO.MIN.CHG=MTWC.MIN.CHG
+     endif
+  endif
+  ret .t.
+
+func chk.vend
+  if MTRO.VENDCODE<>""
+     bkap.vendcode = mtro.vendcode
+     find M srch BKAP.VENDCODE
+     if flerr(fnum('bkapvend')) <> 0
+        msg 'This is not a valid vendor. ' windows 'warn'
+        novldmsg
+        ret .f.
+     endif
+     if BKAP.VENDNAME<>"" then MTRO.VENDNAME=BKAP.VENDNAME
+  else
+     mtro.vendname = ''
+  endif
+  ret .t.
+
+func chk.ovlp
+  if mtro.negovlp < 0
+     msg 'Backward overlap must always be expressed as a positive quantity. ' windows 'info'
+     novldmsg
+     ret .f.
+  endif
+  if mtro.overlap > 0 .a. mtro.negovlp > 0
+     msg 'The presence of both forward and backward overlap on the same operation is not a currently supported feature. ' windows 'info'
+     novldmsg
+     ret .f.
+  endif
+  ret .t.
+
+func chk.mach
+  if MTRO.TMACHINE<>""
+     tmach.machine = mtro.tmachine
+     find M srch TMACH.MACHINE
+     if flerr(fnum('machine')) <> 0
+        msg 'This is not a valid machine. ' windows 'warn'
+        novldmsg
+        ret .f.
+     endif
+     if TMACH.DESC<>"" then MTRO.TMACHDESC=TMACH.DESC
+  else
+     mtro.tmachdesc = ''
+  endif
+  ret .t.
+
+func chk.tool
+  if MTRO.TOOL<>""
+     mtool.tool = mtro.tool
+     find M srch MTOOL.TOOL
+     if flerr(fnum('tool')) <> 0
+        msg 'This is not a valid tool code. ' windows 'warn'
+        novldmsg
+        ret .f.
+     endif
+     if MTOOL.DESC<>"" then MTRO.TOOLDESC=MTOOL.DESC
+  else
+     mtro.tooldesc = mtool.desc
+  endif
+  ret .t.
+
+
+
+;End of Prg
+\S5ENTROUT
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ Part       Lot Size  ³
+ ³ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ³
+ ³ Seq       Description                        Work Center    Rout#  Line ³
+ ³ Oper                    ³
+ ³ Type                                            ³
+ ³ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ³
+ ³ #Processes  Time/Part   Parts/Hour   Setup    ³ OUTSIDE PROCESSING         ³
+ ³                ³                            ³
+ ³                                               ³ Vendor                     ³
+ ³ OVERLAP                                       ³                  ³
+ ³   Forward            [hours]              ³   ³
+ ³   Backward   [parts]              ³                            ³
+ ³                                               ³ Cost           ³
+ ³ Std Time?                                    ³ Min Charge           ³
+ ³ #Persons                                 ³ Lead Time               ³
+ ³                                               ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ³
+ ³ Machine                                  ³
+ ³                                                                            ³
+ ³ Tool                              ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1  8 80
+  1  9  1 10 80
+  1 11  1 25 80
+\FIELDS
+SCRN.CODE        0 11  3  0  0 0   15    0    0A RGMEMORY  NNN    0
+SCRN.DESC        0 27  3  0  0 0   30    0    0A RGMEMORY  NNN    0
+HOLD.LOT         0 69  3  0  0 0    9    0    0N RGMEMORY  NNN    0
+SCRN.OPER        0 11  5  0  0 0    3    0    0INRGDEFINED NN     3
+MTRO.OP.TEMP.NO  0 11  6  0  0 0    3    0    0INRGROUTING NN     3
+MTRO.OPERDESC    0 17  6  0  0 0   30    0    0ANRGROUTING NN    30
+MTRO.WC          0 52  6  0  0 0   12    0    0AYRGROUTING NN    12
+MTRO.NUM         0 68  6  0  0 0    3    0    0INRGROUTING NN     3
+CUR.LINE         0 75  6 20  0 0    3    0    0INRGDEFINED NN     3
+MTRO.TYPE        0 11  7  0  0 0    1    0    0AYRGROUTING NN     1
+DISP_ONLY        0 52  7 20  0 0   26    0    0XNXGMEMORY  NN    26        ==Amid(mtro.wcdesc,1,26)
+MTRO.NUM.PROCES  0  4 10  0  0 0    3    0    0INRGROUTING NN     3
+MTRO.TIMEPART    0 16 10  0  0 0    8    0    0TNRGROUTING NN     8
+MTRO.PARTSHR     0 26 10  0  0 2   12    0    0NNRGROUTING NN    12
+MTRO.SETUPHRS    0 41 10  0  0 0    8    0    0TNRGROUTING NN     8
+MTRO.VENDCODE    0 52 12  0  0 0   10    0    0AYRGROUTING NN    10
+MTRO.OVERLAP     0 16 13  0  0 0    4    0    0INRGROUTING NN     4
+MTRO.VENDNAME    0 52 13 20  0 0   25    0    0AYRGROUTING NN    25
+MTRO.NEGOVLP     0 16 14  0  0 2   12    0    0NNRGROUTING NN    12
+MTRO.VENDCOST    0 63 15  0  0 6   12    0    0NNRGROUTING NN    12
+MTRO.STD.TIME    0 16 16  0  0 0    1    0    0AYRGROUTING NN     1
+MTRO.MIN.CHG     0 63 16  0  0 2    6    0    0NNRGROUTING NN     6
+MTRO.NUM.PERSON  0 16 17  0  0 2    5    0    0NNRGROUTING NN     5
+MTRO.LEAD        0 63 17  0  0 0    3    0    0INRGROUTING NN     3
+MTRO.TMACHINE    0 16 19  0  0 0    4    0    0AYRGROUTING NN     4
+MTRO.TMACHDESC   0 21 19 20  0 0   30    0    0AYRGROUTING NN    30
+MTRO.TOOL        0 16 21  0  0 0   15    0    0AYRGROUTING NN    15
+DISP_ONLY        0 32 21 20  0 0   26    0    0XNXGMEMORY  NN    26        ==Amid(mtro.tooldesc,1,26)
+\FILES
+ROUTING ROUTING  22
+\INCLUDE
+\KEY
+\\
+\S5DOSROA
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+ ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+ ³ Part       Lot Size  ³
+ ³ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ³
+ ³ Seq       Description                        Work Center    Rout#  Line ³
+ ³ Oper                    ³
+ ³ Type                                            ³
+ ³ ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ³
+ ³ #Processes  Time/Part   Parts/Hour   Setup    ³ OUTSIDE PROCESSING         ³
+ ³                ³                            ³
+ ³                                               ³ Vendor                     ³
+ ³ OVERLAP                                       ³                  ³
+ ³   Forward            [hours]              ³   ³
+ ³   Backward   [parts]              ³                            ³
+ ³                                               ³ Cost           ³
+ ³ Std Time?                                    ³ Min Charge           ³
+ ³ #Persons                                 ³ Lead Time               ³
+ ³                                               ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ ³
+ ³ Machine                                  ³
+ ³                                                                            ³
+ ³ Tool                              ³
+ ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1 25 80
+\FIELDS
+SCRN.CODE        0 11  3  0  0 0   15    0    0A RGMEMORY  NNN    0
+SCRN.DESC        0 27  3  0  0 0   30    0    0A RGMEMORY  NNN    0
+HOLD.LOT         0 69  3  0  0 0    9    0    0N RGMEMORY  NNN    0
+SCRN.OPER        0 11  5  0  0 0    3    0    0INRGDEFINED NN     3
+MTRO.OP.TEMP.NO  0 11  6  0  0 0    3    0    0INRGROUTING NN     3
+MTRO.OPERDESC    0 17  6  0  0 0   30    0    0ANRGROUTING NN    30
+MTRO.WC          0 52  6  0  0 0   12    0    0AYRGROUTING NN    12
+MTRO.NUM         0 68  6  0  0 0    3    0    0INRGROUTING NN     3
+CUR.LINE         0 75  6  0  0 0    3    0    0INRGDEFINED NN     3
+MTRO.TYPE        0 11  7  0  0 0    1    0    0AYRGROUTING NN     1
+DISP_ONLY        0 52  7  0  0 0   26    0    0XNXGMEMORY  NN    26        ==Amid(mtro.wcdesc,1,26)
+MTRO.NUM.PROCES  0  4 10  0  0 0    3    0    0INRGROUTING NN     3
+MTRO.TIMEPART    0 16 10  0  0 0    8    0    0TNRGROUTING NN     8
+MTRO.PARTSHR     0 26 10  0  0 2   12    0    0NNRGROUTING NN    12
+MTRO.SETUPHRS    0 41 10  0  0 0    8    0    0TNRGROUTING NN     8
+MTRO.VENDCODE    0 52 12  0  0 0   10    0    0AYRGROUTING NN    10
+MTRO.OVERLAP     0 16 13  0  0 0    4    0    0INRGROUTING NN     4
+MTRO.VENDNAME    0 52 13  0  0 0   25    0    0AYRGROUTING NN    25
+MTRO.NEGOVLP     0 16 14  0  0 2   12    0    0NNRGROUTING NN    12
+MTRO.VENDCOST    0 63 15  0  0 6   12    0    0NNRGROUTING NN    12
+MTRO.STD.TIME    0 16 16  0  0 0    1    0    0AYRGROUTING NN     1
+MTRO.MIN.CHG     0 63 16  0  0 2    6    0    0NNRGROUTING NN     6
+MTRO.NUM.PERSON  0 16 17  0  0 2    5    0    0NNRGROUTING NN     5
+MTRO.LEAD        0 63 17  0  0 0    3    0    0INRGROUTING NN     3
+MTRO.TMACHINE    0 16 19  0  0 0    4    0    0AYRGROUTING NN     4
+MTRO.TMACHDESC   0 21 19  0  0 0   30    0    0AYRGROUTING NN    30
+MTRO.TOOL        0 16 21  0  0 0   15    0    0AYRGROUTING NN    15
+DISP_ONLY        0 32 21  0  0 0   26    0    0XNXGMEMORY  NN    26        ==Amid(mtro.tooldesc,1,26)
+\FILES
+ROUTING ROUTING  22
+\INCLUDE
+\KEY
+\\
+\S5COPYROUT
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+
+
+
+
+
+            ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+            ³ Copy to Item Number                  ³
+            ³         Description   ³
+	    ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1 25 80
+\FIELDS
+TEMP.CODE        0 36  8  0  0 0   15    0    0A RGMEMORY  NNN    0
+TEMP.DESC        0 36  9  0  0 0   30    0    0A RGMEMORY  NNN    0
+\FILES
+\INCLUDE
+\KEY
+\\
+\S5NOTES
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+     ÉÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ»
+     º          Item Number       Description                              º
+     º                        º
+     º          Sequence          Description                              º
+     º                                    º
+     ºÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄº
+     º  [1]    º
+     º  [2]    º
+     º  [3]    º
+     º  [4]    º
+     º  [5]    º
+     º  [6]    º
+     º  [7]    º
+     º  [8]    º
+     º  [9]    º
+     º [10]    º
+     º [11]    º
+     º [12]    º
+     º [13]    º
+     º [14]    º
+     º [15]    º
+     ÈÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ¼
+\COLOR
+  1  1  1 25 80
+\FIELDS
+MTRO.CODE        0 17  4  0  0 0   15    0    0AYRGROUTING NNN    0
+MTRO.DESC        0 34  4  0  0 0   30    0    0AYRGROUTING NNN    0
+MTRO.OPER        0 17  6  0  0 0    3    0    0INRGROUTING NNN    0
+MTRO.OPERDESC    0 34  6  0  0 0   30    0    0ANRGROUTING NNN    0
+MTRO.INSTR       0 12  8  0  0 0   60    1   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12  9  0  0 0   60    2   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 10  0  0 0   60    3   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 11  0  0 0   60    4   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 12  0  0 0   60    5   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 13  0  0 0   60    6   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 14  0  0 0   60    7   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 15  0  0 0   60    8   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 16  0  0 0   60    9   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 17  0  0 0   60   10   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 18  0  0 0   60   11   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 19  0  0 0   60   12   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 20  0  0 0   60   13   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 21  0  0 0   60   14   15ANRGROUTING NNN    0
+MTRO.INSTR       0 12 22  0  0 0   60   15   15ANRGROUTING NNN    0
+\FILES
+ROUTING ROUTING  19
+\INCLUDE
+\KEY
+\\
+\S5SNOTES
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+  Item Number:  Current Line:
+  Sequence:    Desc:        Total Lines: 
+ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+Field 1:            Field 2:            Field 3:            Field 4:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍ
+\COLOR
+  1  1  1 25 80
+\FIELDS
+SCRN.CODE        0 15  2  0  0 0   15    0    0A RGMEMORY  NNN    0
+SCRN.DESC        0 31  2  0  0 0   30    0    0A RGMEMORY  NNN    0
+SCRN.DESC        0 31  2  0  0 0   30    0    0A RGMEMORY  NNN    0
+NCNTR            0 75  2  0  0 0    3    0    0N RGMEMORY  NNN    0
+NCNTR            0 75  2  0  0 0    3    0    0N RGMEMORY  NNN    0
+SCRN.OPER        0 15  3  0  0 0    3    0    0N RGMEMORY  NNN    0
+SCRN.OPER        0 15  3  0  0 0    3    0    0N RGMEMORY  NNN    0
+MTRO.OPERDESC    0 25  3  0  0 0   30    0    0ANRGROUTING NNN    0
+MTRO.OPERDESC    0 25  3  0  0 0   30    0    0ANRGROUTING NNN    0
+NOTE.LINE        0 75  3  0  0 0    3    0    0N RGMEMORY  NNN    0
+\FILES
+ROUTING ROUTING   2
+\INCLUDE
+\KEY
+\\
+ 

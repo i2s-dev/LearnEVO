@@ -573,14 +573,14 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.9 MRP / Manufacturing Requirements Planning (MR)
 - [x] ✅ Menu codes listed (12 operations) — **C: 65/100**
 - [x] ✅ Tables: BKMR\* (3 tables) — BKMRPFC(9f: MRP demand forecast PART+DATE+QTY+OQTY+CQTY+FLAG), BKMRPPO(16f: planned PO PART+DATE+ERD+QTY+PRICE+WOPRE/WOSUF+PLANR+CONF+EST link), BKMRPSW(2f: per-part on/off switch); all schemas extracted; MRP demand→planned-PO flow confirmed — **C: 78/100** (Pass106e: full field semantics+action codes+data flow in tier4-tables.md)
-- [x] ✅ Source file: BKMRF.SRC (MRP logic analyzed) — **C: 62/100**
+- [x] ✅ Source file: BKMRF.SRC fully re-analyzed (Pass 119): DO.SO/DO.PO/DO.WO/DO.WOBOM/DO.FC/DO.RLEVEL demand loading procedures confirmed; 4-stage MRP engine (START.MRP 1-4) confirmed; MTMRP 12 field names confirmed (PARTNO/DATE/KEY/ORDER/ACTION/PEGTO/QTY/PG.SDATE/PG.FDATE/STARTDT/PG.QTY/ONHAND); MTIC.PROD.MRP/TYPE/MRPSW flags confirmed; BKMRPSW 2f confirmed (PART+SW='Z'); BKICLOC opened for reorder level check — **C: 78/100**
 - [x] ✅ Pass 45: All 17 T7MR* programs mapped (T7MRA through T7MRO). Full demand-to-release lifecycle: MR-A(forecast entry) → MR-F(explosion engine→MTMRP) → MR-G(firm, BKSBVEND/BKSBMFG select vendor) → MR-H(release→WORKORD+BKAPPO) → MR-I/IX(capacity scheduling with ROUTING+CALENDAR) → MR-J(PO/RFQ via BKRFQ 49f). MTMRP(13f) extracted: PARTNO+DATE PK, PEGTO(demand tracing), ACTION lifecycle. BKRFQ(49f): 10 qty/cost breakpoints, shared by both RF (estimates) and MR (MRP). CALENDAR(5f): SAT+SUN work flags. BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f): approved-source tables used by MR-G vendor selection — **C: 80/100**
 - [x] ✅ Full MRP calculation cycle traced (T7MRF explosion → MTMRP → firm/release)
 - [x] ✅ All core BKMR\*/MTMRP/support tables documented with fields; full field tables + MRP data flow diagram added to docs/03-modules/mr-mrp/README.md (Pass 110h 2026-06-19) — **C: 88/100**
 
 ### 7.10 Routing (RO)
 - [x] ✅ Menu codes listed (19 operations) — **C: 65/100**
-- [x] ✅ Source file: BKROA.SRC analyzed — **C: 60/100**
+- [x] ✅ Source file: BKROA.SRC fully re-analyzed (Pass 119): ROUTING table opened + ~20 field names confirmed from entry procedures (DESC/LOTSZ/TYPE/ROUTNM/VEND/VNDCST/MCHCST/NUMPRC/TMPRC/PRTSHR/SETUP/POVLP/NOVLP/STDTIM/LOTSIZ/PERSON/TMACH/TOOL); BKRTEMTR confirmed (EDI import routing staging — used instead of ROUTING when cfrom='BKDEJC'); G.COPY.SPEC confirms routing spec copy path — **C: 75/100**
 - [x] ✅ Pass 57: ROUTING/MTRO_(62f) fully extracted: CODE+OPER PK, TYPE/LEAD/PARTSHR/TIMEPART/SETUPHRS/LOTSIZE, 15×INSTR, WC+WCDESC, VENDCODE+VENDNAME, LABOR/MACHINE/FOVHD/VOVHD/SETUP costs, TMACHINE/TOOL, NUM/NUM_PERSON, OVERLAP/NEGOVLP, PIECE_RATE, LONGTIME, PRINT, CLASS, EXTRA(150), DEF_TIME, R_TYPE, EST_LINE/EST_TAG; BKRTCST(24f)=routing cost snapshot 10-break; BKRFQ(49f)=vendor RFQ per operation (subcontract quotes); 13 T7RO* programs mapped — **C: 85/100**
 - [x] ✅ Routing → WO link: ROUTING template → WOROUT copy (MTWORO_ fields mirror MTRO_ fields)
 
@@ -1119,7 +1119,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: UT/Utilities | **84** | 75 | **0** ✅ ↑+6 Pass94 UTKA-UTKH data-deletion/GL-transfer/location-rename/item-type-reports | 2026-06-18 |
 | Module: RM/RMA | **85** | 82 | **0** ✅ ↑+7 Pass86 SRMA/IS.RMA RMD disposition confirmed | 2026-06-18 |
 | Module: FO/Features Options | **87** | 83 | **0** ✅ ↑+4 Pass86 ISFO.HDR.* EvoFNO confirmed | 2026-06-18 |
-| Module: IS/InfoSystem | **72** | 72 | **0** ✅ ↑+4 Pass78 | 2026-06-17 |
+| Module: IS/InfoSystem | **75** | 72 | **0** ✅ ↑+3 Pass114 ISGLDATE(86f)+ISMCF(49f) fully extracted; T7ISMCC+T7ISASER confirmed | 2026-06-19 |
 | Module: IM/Landed Cost | **88** | 82 | **0** ✅ ↑+10 Pass86 ISIS.MCF/MCR multi-currency + landed confirmed | 2026-06-18 |
 | Module: PS/Program Security | **88** | 88 | **0** ✅ ↑+6 Pass83 ISEXUSER+max.chk.amt | 2026-06-18 |
 | Module: QU/Query Tools | **75** | 75 | **0** ✅ ↑+1 Pass91 WBKLOOKUP/DDFilters/SSS/SSSFD DFMs confirmed | 2026-06-18 |

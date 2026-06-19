@@ -764,30 +764,52 @@ orders, forecasts) vs. supply (on-hand, open POs, open WOs) across the full BOM 
 
 **Menu codes:** 12 operations
 
-**MRP calculation stages** (from BKMRF.SRC — fully analyzed):
-1. **Demand loading:** Scan BKARINVL for open SO line items → create negative requirements
-2. **Supply loading — POs:** Scan BKAPPOL for open POs → create positive supply records
-3. **Supply loading — WOs:** Scan WORKORD for S/F/R status WOs → create supply records
-4. **BOM explosion:** For each required parent item, explode BOM (BKBMMSTR) to components.
-   Phantom parts (type P) are exploded inline. Scrap/yield factors applied.
-5. **Reorder levels:** Check BKICMSTR reorder levels; generate planned orders below minimum.
-6. **Action codes:** Assign Expedite/Delay/Review based on planned date vs. need date.
+**MRP calculation stages** (from BKMRF.SRC — re-analyzed Pass 119):
+1. **Demand loading (DO.SO):** Scan BKARINVL for open SO demand → write negative MTMRP records
+2. **Supply loading — WOs (DO.WO):** Scan WORKORD for open WOs → write positive MTMRP records
+3. **Supply loading — POs (DO.PO):** Scan BKAPPOL for open POs → write positive MTMRP records
+4. **WO BOM explosion (DO.WOBOM):** For each WO, explode WOBOM → component MTMRP demand
+5. **Forecast loading (DO.FC):** Scan BKMRPFC → write projected-demand MTMRP records
+6. **Reorder level check (DO.RLEVEL):** Scan BKICLOC → trigger planned orders at reorder level
+7. **MRP engine Stage 1/2 (START.MRP/2):** Per-part loop: scan MTMRP, accumulate running ONHAND;
+   if ONHAND < reorder level call CREATE.PLN() to add a planned order
+8. **MRP engine Stage 3 (START.MRP3):** Assign BKMRPSW record per part (loop control)
+9. **Action assignment Stage 4 (START.MRP4):** Assign EXPEDITE/DELAY/REVIEW messages after all
+   orders are in MTMRP (more accurate than mid-run assignment)
 
-**Key MRP fields in BKICMSTR:**
-- `BKIC_PROD_MRPSW` — MRP planning switch ('Y' = include in MRP)
-- `BKIC_PROD_REODR` — Reorder level (minimum stock trigger)
-- `BKIC_PROD_MINOQ` — Minimum order quantity
-- `BKIC_PROD_LTDAYS` — Lead time in days (used for planned order date calculation)
+Note: 2001-01-01 JVH refactor eliminated multi-pass Stage 4 by looping per-part in Stages 1–3.
+
+**MTICMSTR fields confirmed in BKMRF.SRC:**
+- MTIC.PROD.MRP = 'Y' — scan filter: only process MRP-enabled items
+- MTIC.PROD.TYPE — item type ('B'=buyout, 'F','A','M','N' = other types); type 'B' uses QOH=0 (always generate orders)
+- MTIC.PROD.MRPSW ≠ 'N' — rounding switch: if 'N', don't round ONHAND to whole units
+
+**BKICMSTR fields confirmed in BKMRF.SRC:**
+- BKIC.PROD.UOH — on-hand quantity (starting ONHAND value for MRP run)
+- BKIC.PROD.RLVL — reorder level (if UOH < RLVL, generate planned order at reorder-level pass)
+
+**MTMRP confirmed fields (12f — from source):**
+PARTNO(15) + DATE(PK composite with KEY), KEY, ORDER(10, e.g. 'REORDLVL'),
+ACTION(10, 'EXPEDITE'/'DELAY'/'REVIEW'), PEGTO(10, demand source reference),
+QTY(float), PG.SDATE(date, pegged start), PG.FDATE(date, pegged finish),
+STARTDT(date, planned start), PG.QTY(float, pegged qty), ONHAND(float, running balance)
+
+**BKMRPSW confirmed fields (2f):**
+PART(15, part number key), SW(1, status flag: 'Z' = processed)
 
 **Primary tables:**
 
 | Table | Purpose |
 |-------|---------|
-| MTMRP | MRP output — planned order recommendations (type PO or WO) |
+| MTMRP | MRP work table — demand/supply/planned orders per part |
 | BKMRPFC | MRP forecast input (projected demand beyond open SOs) |
-| BKMRPSW | MRP switch file (tracks which run is in progress) |
+| BKMRPSW | MRP switch/control file (per-part loop state during run) |
+| BKICLOC | Location inventory (reorder level check at location level) |
+| WOBOM | WO BOM (component demand from in-progress WOs) |
 
-**Confidence: 72/100** — BKMRF.SRC fully analyzed and documented. Algorithm completely understood. Output table (MTMRP) identified but field-level detail not extracted.
+**Confidence: 78/100** — BKMRF.SRC fully re-analyzed (Pass 119); all 4 MRP stages and
+demand/supply sources confirmed from source; MTMRP 12 field names confirmed; MTICMSTR and
+BKICMSTR MRP-specific fields confirmed. Minor gap: DO.WSBOM procedure (work schedule BOM?) purpose unclear.
 
 ---
 
@@ -882,13 +904,25 @@ Primary key: `MTRO_CODE`(15) item code + `MTRO_OPER`(2) operation sequence.
 | WORKCTR | 47 | Work center master (MTWC_ prefix) |
 | MACHINE | — | Machine master |
 | TOOL | — | Tool master |
-| BKRTTEMP | — | Operation templates |
+| BKRTTEMP | — | Operation templates (template library for reusable operations) |
+| BKRTEMTR | — | Routing template transactions — used instead of ROUTING when called from DE-J-C (EDI import edit path) |
+| ROUTTEMP | — | Routing edit workspace (transient edit buffer; not permanent) |
 | BKRTSPEC | 7 | Operation notes/specs (BKRT_SPEC_* prefix) |
 | BKRTCST | 24 | Routing cost snapshot per quote/setup (10-break pricing) |
 | BKRFQ | 49 | Request for Quote per routing operation (subcontract pricing) |
 | ISROUTEX | — | Routing extension fields |
 
-**Confidence: 85/100** — BKROA.SRC fully analyzed; ROUTING (62f) schema fully extracted from DDF; BKRTCST (24f) and BKRFQ (49f) schemas extracted; work center/machine/tool relationships confirmed from DB fingerprints.
+**DE-J-C call path:** When BKROA.SRC is chained from DE-J-C (EDI import routing editor), it opens
+BKRTEMTR instead of ROUTING and uses `setact ROUTING file BKRTEMTR` — same entry logic but against
+the EDI-imported routing staging table, not the live ROUTING table.
+
+**Copy routing (F3 / G.COPY):** Duplicates all ROUTING records from source part to target part.
+G.COPY.SPEC option: additionally copies all BKRTSPEC (specs/notes) records.
+
+**Confidence: 87/100** — BKROA.SRC re-analyzed (Pass 119); ROUTING (62f) schema confirmed from
+DDF; BKRTEMTR (EDI import staging) and ROUTTEMP (edit buffer) confirmed from source; DE-J-C
+call path and G.COPY.SPEC behavior confirmed; all ~20 entry-procedure field names map to MTRO_
+DDF names.
 
 ---
 
