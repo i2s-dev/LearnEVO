@@ -3274,7 +3274,28 @@ Control fields: `cbIndexName` (dropdown to pick active index), `link.to` (destin
 | LOOKUP_WHILE_1..20 | STRING×20 | 80 each | Loop-while conditions — stop scanning when false |
 | LOOKUP_COMM | STRING | 150 | Command/query string for complex lookups |
 
-WBKLOOKUP opens **76 tables** total — the complete set of every table that any lookup in the system can target. 70 of 76 are in the Pervasive DDF schema. Six are not: **BKLUGRID** (column-layout config per user/grid — runtime only), **FILEKEY / FILEDICT / FILEDFLD / FILEKNUM** (TAS runtime file-dictionary internals), and **FILELOC** (TAS record-navigation API table).
+WBKLOOKUP opens **76 tables** total — the complete set of every table that any lookup in the system can target. 70 of 76 are in the Pervasive DDF schema. Six are runtime-only; **BKLUGRID schema extracted from EvoERPDrillM LUGRID_* vars (Pass 115, 2026-06-19):**
+
+**BKLUGRID** — Grid column layout configuration (14 fields confirmed):
+| Field | Inferred Meaning |
+|---|---|
+| LUGRID_NAME | Grid identifier / name |
+| LUGRID_FDNAME | Field name (column maps to this Btrieve field) |
+| LUGRID_FORM | Form name associated with this grid entry |
+| LUGRID_KEYFLD | Key field for sorting/navigation |
+| LUGRID_KDATA | Key data value |
+| LUGRID_DATA | Column data / content |
+| LUGRID_TEXT | Display text / column header |
+| LUGRID_EXTPARM | Extended parameters |
+| LUGRID_EXTRA | Extra / misc config |
+| LUGRID_EXTUDF | Extended UDF hook |
+| LUGRID_END | End-of-record marker |
+| LUGRID_PROT | Protected flag (read-only column?) |
+| LUGRID_DELFLAG | Deleted flag |
+| LUGRID_HNDL | File handle (runtime, may not be stored field) |
+
+**FILEKEY / FILEDICT / FILEDFLD / FILEKNUM** — TAS runtime file-dictionary internals (field names from KEY_*/DICT_*/KNUM_* vars in EvoERPDrillM).  
+**FILELOC** — TAS record-navigation API table (LOC_* vars).
 
 **ISDRILLM** (17 fields) — Drill-down navigation map:
 - DRILLM_PARENT (15) + DRILLM_CHILD (15) — source/destination objects
