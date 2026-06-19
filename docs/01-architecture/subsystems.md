@@ -234,16 +234,17 @@ handled inside CALREM.RWN itself (called from the CALREMGC.DFM dialog form).
 
 `CRMDASHBOARD.RWN` + `CRMDASHBOARD.DFM` — consolidated customer view.
 
-## CashFlow / CommissionRpt / BOMTree / EditBOMTree — EvoPVT.jar launchers
+## CashFlow / CommissionRpt / BOMTree / EditBOMTree / QUERYEXECUTE — EvoPVT.jar launchers
 
-All four are confirmed **EvoPVT.jar launcher stubs** (Pass 107). Each has the same
-signature: 26–27 procs, with shared launcher variables:
+All confirmed **EvoPVT.jar launcher stubs**. Each has the same signature: 26–27 procs,
+with shared launcher variables:
 - `HOST` / `PORT` — Pervasive PSQL connection (server + port for JDBC)
+- `NAME` — connection name
 - `TREEDEST` — output destination identifier passed to EvoPVT.jar
 - `COMP` — company code
-- `JAVA.PATH` / `JAVA.NAME` — path to java.exe and EvoPVT.jar
 - `DFM` — DFM filename to load for the UI
-- `NOPE` — abort/cancel flag
+- `NOPE` / `DUMMY_L` — abort/cancel flags
+- `RVAL` / `ISTS.EDATE` — return value / effective date (used by QUERYEXECUTE)
 
 | Program | DFM | Role | Extra tables opened |
 |---------|-----|------|---------------------|
@@ -252,11 +253,26 @@ signature: 26–27 procs, with shared launcher variables:
 | `CASHFLOW.RWN` | `CashFlowReport.DFM` | Cash-flow forecast | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR, ISLINKS, BKAPDESC |
 | `COMMISSIONRPT.RWN` | — | Commission report viewer | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR, ISLINKS, BKAPDESC |
 | `CRMDASHBOARD.RWN` | `CRMDASHBOARD.DFM` | CRM customer dashboard | BKARCUST, BKAPVEND, BKCMACCN, BKICMSTR |
+| `QUERYEXECUTE.RWN` | — | QU-F SQL query executor | ISDRILL, BKPSUSER (Pass 114) |
 
 The TAS launcher passes HOST/PORT/COMP/TREEDEST to EvoPVT.jar as argv. EvoPVT.jar
 opens a JavaFX TabularView/tree-view window connected to the Pervasive PSQL instance.
+**QUERYEXECUTE.RWN** (Pass 114, 2026-06-19): QU-F "SQL Executor" is NOT a native TAS
+Pro 7 SQL evaluator — it is the same Java bridge pattern as CashFlow/CommissionRpt.
+All SQL execution happens inside EvoPVT.jar; TAS Pro 7 only sets the HOST/PORT/TREEDEST
+vars and launches the JVM. ISDRILL+BKPSUSER = drill-down config + access control check.
+
 **Note:** `EVOBSR.RWN` does NOT exist — the "Business Score Report" mentioned in older
 docs was an error. The business scoreboard is `EVOBS.RWN` (EVOBS module, opens ISBSF).
+
+**T7BS.RWN vs EVOBS.RWN — writer/viewer split (Pass 114, 2026-06-19):**
+- `T7BS.RWN` (162 procs, BS module) — KPI **writer**: queries 40+ tables across all modules
+  and populates `ISBSF` with KPI snapshot (STARTDATE/ENDDATE + AR.BAL/BILL/RECP/DISC/COGS +
+  AP.BAL/PAYA/PAYM + CASH_TOTA + 100-period GL history + WO cost breakdown). Opens ISBANKS
+  for cash balances; ISGLDATE for period-date arithmetic (7-year window).
+- `EVOBS.RWN` (128 procs, QU-D) — KPI **viewer**: reads ISBSF + supplements with live
+  BKGLTRAN+MTICMSTR lookups for the display grid. Does not write ISBSF.
+- BS module (menu BS-*) drives T7BS to recalculate; QU-D (EVOBS) is the read-only inquiry view.
 
 ## FNO / MRP helpers
 

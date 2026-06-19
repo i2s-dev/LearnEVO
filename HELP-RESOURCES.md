@@ -3307,9 +3307,9 @@ WBKLUGRID is dual-purpose: it IS the SU-A admin tool AND it IS the BKLUGRID tabl
 | QU-B Calendar Drill Down | CALDRILLBT (94 procs) | Calendar with order activity drill-down |
 | QU-D Business Status | EVOBS (128 procs) | Financial dashboard (ISBSF+BKGLTRAN) |
 | QU-E Quick Grid Lookup | T7QGRID (62 procs) | Standalone table browser |
-| QU-F Query Executor | QUERYEXECUTE (26 procs) | Runs SQL queries from DE-A definitions |
+| QU-F Query Executor | QUERYEXECUTE (26 procs) | **EvoPVT.jar launcher** — SQL execution happens in Java layer (Pass 114) |
 
-**QU confidence: 74/100** — All 5 QU programs confirmed with DB fingerprints; ISDRILL(46f)/ISDRILLM(17f) fully extracted; WBKLOOKUP toolbar capabilities confirmed from DFM (11 toolbar actions); EvoBS multi-tab layout (Status+BarChart+PieChart+LineChart) + all ISBSF field bindings confirmed from DFM; CALDRILLBT calendar layout confirmed; BKLUGRID/FILEKEY/FILEDICT schema unknown (runtime-only tables).
+**QU confidence: 75/100** — All 5 QU programs confirmed with DB fingerprints; ISDRILL(46f)/ISDRILLM(17f) fully extracted; WBKLOOKUP toolbar capabilities confirmed from DFM (11 toolbar actions); EvoBS multi-tab layout (Status+BarChart+PieChart+LineChart) + all ISBSF field bindings confirmed from DFM; CALDRILLBT calendar layout confirmed (date vars: ISTS.EDATE/ENTRY.DATE/DATE_TYPE/MM/DD/YY); QUERYEXECUTE confirmed as EvoPVT.jar launcher stub (same HOST/NAME/PORT/TREEDEST vars as CashFlow/CommissionRpt); BKLUGRID/FILEKEY/FILEDICT schema unknown (runtime-only tables).
 
 ### How messaging works
 
@@ -6093,7 +6093,11 @@ EWC = Edit Work Center. Full UI (68 procs) for work center setup and/or capacity
 
 **T7BS** (162 procs, 40 tables) — opens ISBSF+BKYSMSTR+ISGLDATE+BKSYMSTR+BKGLTRAN+MTICMSTR+BKICMSTR+WORKORD+WOMAT+WOLABOR.
 
-BS = Business Status KPI dashboard. ISBSF = configurable KPI field definitions. ISGLDATE provides period-end dates. Reads GL, inventory, and WO costs to compute live financial/operational KPIs. This is the QU-D program (EVOBS).
+BS = Business Status KPI dashboard. **Writer/viewer split (Pass 114, 2026-06-19):**
+- **T7BS.RWN** (162 procs) = KPI **writer** — queries 40+ tables and populates ISBSF with the snapshot. Opens ISBANKS for cash balance; ISGLDATE for period-end date arithmetic. Procedure vars confirm per-field reads: ISBSF.AR.BAL/BILL/RECP/DISC/COGS + ISBSF.AP.BAL/PAYA/PAYM.
+- **EVOBS.RWN** (128 procs, menu QU-D) = KPI **viewer** — reads ISBSF + supplements with live BKGLTRAN+MTICMSTR for on-screen display. Does NOT write ISBSF.
+
+T7BS is driven from the BS module menu (BS-A recalculate); EVOBS is the read-only inquiry view.
 
 **EvoBS screen layout (confirmed from EvoBS.DFM + EvoBSCash.DFM + EvoBSWO.DFM):**
 
