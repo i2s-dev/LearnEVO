@@ -493,7 +493,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.2 Accounts Payable (AP)
 - [x] ✅ Menu codes listed (AP-A through AP-U) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7AP\*.DFM) — **C: 70/100**
-- [x] ✅ Tables: BKAP\* (24 tables) — **C: 60/100**
+- [x] ✅ Tables: BKAP\* (24 tables) — all satellite tables documented (BKAP* family summary, PO lifecycle variants, BKAPINVL 390f, BKAPINVT 19f, BKAPNOTE, BKAPACCN 154f, BKAPEVND 73f, description tables) — Pass 125 2026-06-19 — **C: 83/100**
 - [x] ✅ Source files: Bkaph.SRC, Bkapha.SRC analyzed: BKYS.YN[48] format selector confirmed (1/4/5=laser→chain to BKAPHA via BKSY.PRGS.WHR; 2/3=dot-matrix→stay in BKAPH); both programs identical structure with multi-currency+RTM_VALID+BKAPCHKF locking; check batch array tCHK.NUM up to 5000 entries (Pass 118 2026-06-19) — **C: 84/100**
 - [x] ✅ **Check printing workflow fully traced** (AP-H): select→check#→date→print→GL post(CD)→invoice update→BKAPCHKH→BKGLCHK — **C: 82/100**
 - [x] ✅ GL posting type confirmed: "CD" (Cash Disbursement) — **C: 88/100**

@@ -377,26 +377,46 @@ Primary key: `BKAP_VENDCODE` (field 1). Note: DDF field names use `BKAP_VENDXXX`
 
 ## BKAPINVL — AP Invoice / Voucher
 
-File: `BKAPINVL.B` | Module: AP | Fields: 36+
+File: `BKAPINVL.B` | Module: AP | Fields: 390 (all confirmed from DDF — Pass 125 2026-06-19)
 
-This is a flat table (single table for both header and lines, unlike AR which splits to BKARINV + BKARINVL).
+Flat AP voucher record: header + inline GL distribution block (up to 75 GL lines). `BKAPRIVL` is **identical** (receipt-invoice lines for 3-way match). Unlike AR (which uses separate BKARINV header + BKARINVL lines), AP vouchers embed all distribution lines in one record.
 
-| # | Field | Type | Meaning |
-|---|-------|------|---------|
-| 1 | BKAP_INVL_VEND | STRING | Vendor code (FK → BKAPVEND) |
-| 2 | BKAP_INVL_INVC | STRING | Invoice number (from vendor's invoice) |
-| 3 | BKAP_INVL_DATE | DATE | Invoice date |
-| 4 | BKAP_INVL_PSTDT | DATE | Post date |
-| 5 | BKAP_INVL_DUEDT | DATE | Due date |
-| 6 | BKAP_INVL_DESC | STRING | Description |
-| 7 | BKAP_INVL_TERMS | STRING | Terms code |
-| 8 | BKAP_INVL_TYPE | STRING | Type (A=voucher, B=credit, etc.) |
-| 9 | BKAP_INVL_AMT | FLOAT | Total amount |
-| 10 | BKAP_INVL_DISC | FLOAT | Discount amount available |
-| 11 | BKAP_INVL_PAID | FLOAT | Amount paid |
-| 12 | BKAP_INVL_BAL | FLOAT | Remaining balance |
-| 13–38 | BKAP_INVL_GL1..GL26 | STRING × 26 | GL distribution accounts (up to 26 per voucher) |
-| 39+ | (dept, amount for each GL account) | | |
+**Header (fields 1–10):**
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAP_INVL_CODE | STRING | 10 | Vendor code (FK → BKAPVEND) — **PK component** |
+| 2 | BKAP_INVL_NUM | STRING | 10 | Vendor's invoice number — **PK component** |
+| 3 | BKAP_INVL_DATE | DATE | 4 | Invoice date |
+| 4 | BKAP_INVL_DESC | STRING | 25 | Description |
+| 5 | BKAP_INVL_TERMD | STRING | 10 | Terms description (denormalized) |
+| 6 | BKAP_INVL_TERMN | UBINARY | 2 | Terms number (index into BKSYMSTR terms array) |
+| 7 | BKAP_INVL_TYPED | STRING | 10 | Type description |
+| 8 | BKAP_INVL_TYPEN | UBINARY | 2 | Type number |
+| 9 | BKAP_INVL_TAMT | FLOAT | 8(2) | Total amount |
+| 10 | BKAP_INVL_TDC | STRING | 1 | Total debit/credit flag |
+
+**GL Distribution Block (fields 11–385) — 75 slots, each with 5 sub-fields:**
+
+| Group | Fields | Meaning |
+|-------|--------|---------|
+| BKAP_INVL_GLACT_1..75 | 11–85 | GL account number for slot N |
+| BKAP_INVL_GLDPT_1..75 | 86–160 | GL department for slot N |
+| (DC flags, 75) | 161–235 | Debit/credit indicator for slot N |
+| (AMT array, 75) | 236–310 | Amount for slot N |
+| BKAP_INVL_DAMT_1..75 | 311–385 | Distribution amount (confirmed field name) |
+
+**Footer (fields 386–390):**
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 386 | BKAP_INVL_APDPT | STRING | 4 | AP department |
+| 387 | BKAP_INVL_CHK | UBINARY | 2 | Check number (when paid) |
+| 388 | BKAP_INVL_EXTRA | STRING | 50 | Extra / user-defined |
+| 389 | BKAP_INVL_ISCUR | STRING | 3 | Multi-currency code |
+| 390 | BKAP_INVL_JOB | STRING | 15 | Job number |
+
+**Note:** `BKAPRIVL` is byte-for-byte identical to BKAPINVL — it stores AP receipt lines (goods received note) for 3-way match (RFQ → PO → receipt → invoice).
 
 ---
 
@@ -421,7 +441,172 @@ File: `BKAPCHKH.B` | Module: AP | Fields: 12
 
 ---
 
-## BKICMSTR — Inventory Item Master
+## BKAP* Family — AP Satellite Tables
+
+All confirmed from DDF — Pass 125 2026-06-19. These tables support BKAPVEND and the AP transaction lifecycle.
+
+### PO Archive Variants (same 57-field BKAP_PO_* structure)
+
+BKAPPO (active), BKAPAPO (open PO archive, 58f = +1 access control field), BKAPHPO (historical, 57f), and BKAPRFQ (RFQ, 57f) all share the same `BKAP_PO_*` field set:
+
+| # | Key Field | Type | Meaning |
+|---|-----------|------|---------|
+| 1 | BKAP_PO_NUM | FLOAT | PO number — **primary key** |
+| 2 | BKAP_PO_PRTD | STRING | Printed flag |
+| 3 | BKAP_PO_VNDCOD | STRING | Vendor code (FK → BKAPVEND) |
+| 4 | BKAP_PO_VNDNME | STRING | Vendor name (denormalized) |
+| 5–8 | BKAP_PO_VNDA1/2/3/VNDCTY | STRING | Vendor address 3 lines + city |
+| 9 | BKAP_PO_VNDST | STRING | Vendor state |
+| 10 | BKAP_PO_VNDZIP | STRING | Vendor ZIP |
+| 11–16 | BKAP_PO_SHP* | STRING | Ship-to address block (code+name+addr+city+st+zip) |
+| 17 | BKAP_PO_SHPVIA | STRING | Ship via |
+| 18 | BKAP_PO_TERMD | STRING | Terms description |
+| 19 | BKAP_PO_TERMNM | UBINARY | Terms number |
+| 20 | BKAP_PO_ENTBY | STRING | Entered-by user |
+| 21 | BKAP_PO_OBYCUS | STRING | Order by customer (if job-related) |
+| 22 | BKAP_PO_TAXABLE | STRING | Taxable flag |
+| 23–24 | BKAP_PO_CONFIRM_1/2 | STRING | Confirmation flags |
+| 25 | BKAP_PO_ORDDTE | DATE | Order date |
+| 26–28 | BKAP_PO_SUBTOT/TAXAMT/TOTAL | FLOAT | PO subtotal, tax, total |
+| 29 | BKAP_PO_NL | UBINARY | Number of lines |
+| 30 | BKAP_PO_TAXRTE | FLOAT | Tax rate |
+| 31 | BKAP_PO_DESC | STRING | Description |
+| 32 | BKAP_PO_GLDPT | STRING | GL department |
+| 33 | BKAP_PO_LOC | STRING | Location code |
+| 34 | BKAP_PO_ITOTAL | FLOAT | Invoice total |
+| 35 | BKAP_PO_ENDLNE | STRING | End-of-line flag |
+| 36 | BKAP_PO_FOB | STRING | FOB point |
+| 37–38 | BKAP_PO_FTERMNM/FTERMD | UBINARY/STRING | Freight terms |
+| 39 | BKAP_PO_QCTOTAL | FLOAT | QC total |
+| 40–45 | BKAP_PO_VNDCNT/VNDATN/SHPA3/SHPCNT/SHPATN | STRING | Extended address contacts |
+| 46 | BKAP_PO_RECNUM | FLOAT | Receipt number |
+| 47 | BKAP_PO_LONGPO | STRING | Long PO description |
+| 48 | BKAP_PO_EXTRA | STRING | Extra 150 chars |
+| 49 | BKAP_PO_INVNUM | STRING | Invoice number |
+| 50–54 | BKAP_PO_IS* | STRING/DATE | Avalara: ISTXGR, ISMCDT, ISBROKE, ISREV, ISRVDT |
+| 55 | BKAP_PO_ISCUR | STRING | Multi-currency code |
+| 56 | BKAP_PO_PCKSLP | STRING | Packing slip number |
+| 57 | BKAP_PO_EMPNUM | UBINARY | Employee number |
+
+**PO Lines Variants** — BKAPPOL, BKAPAPOL, BKAPHPOL, BKAPRFQL all 38-field identical `BKAP_POL_*` structure: PONM (PO number) + CNTR (line counter) as PK, then ERD (expected receipt date), PCODE (part), PDESC, PQTY (ordered qty), IQTY (received qty), OO_QTY (outstanding), PONM_LINK, COST, GLACT, GLDPT, WO links, UOM, etc.
+
+---
+
+### BKAPINVT / BKAPEIVT — AP Invoice Transaction Ledger
+
+Files: `BKAPINVT.B` / `BKAPEIVT.B` | Module: AP | Fields: 19 each (identical)
+
+Running ledger of AP transactions per vendor — one row per invoice/credit/payment event. BKAPINVT = current; BKAPEIVT = expanded/EI variant (same structure).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAP_INVT_CODE | STRING | 10 | Vendor code — **PK component** |
+| 2 | BKAP_INVT_DATE | DATE | 4 | Transaction date |
+| 3 | BKAP_INVT_NUM | STRING | 10 | Invoice/reference number — **PK component** |
+| 4 | BKAP_INVT_AMT | FLOAT | 8(2) | Invoice amount |
+| 5 | BKAP_INVT_AMTRM | FLOAT | 8(2) | Amount remaining (balance) |
+| 6 | BKAP_INVT_DESC | STRING | 25 | Description |
+| 7 | BKAP_INVT_TYPE | STRING | 1 | Transaction type |
+| 8 | BKAP_INVT_TERMN | UBINARY | 2 | Terms number |
+| 9 | BKAP_INVT_GLDPT | STRING | 4 | GL department |
+| 10 | BKAP_INVT_SDATE | DATE | 4 | Statement date |
+| 11 | BKAP_INVT_EXTRA | STRING | 50 | Extra / user-defined |
+| 12 | BKAP_INVT_PDATE | DATE | 4 | Payment date |
+| 13 | BKAP_INVT_MCRAT | FLOAT | 8(6) | Multi-currency exchange rate |
+| 14 | BKAP_INVT_MCCOD | STRING | 3 | Multi-currency code |
+| 15 | BKAP_INVT_TAX | FLOAT | 8(2) | Tax amount |
+| 16 | BKAP_INVT_FRT | FLOAT | 8(2) | Freight amount |
+| 17 | BKAP_INVT_DEPNO | FLOAT | 8(0) | Deposit number |
+| 18 | BKAP_INVT_CHKNO | FLOAT | 8(0) | Check number |
+| 19 | BKAP_INVT_CHKAC | UBINARY | 2 | Check bank account number |
+
+---
+
+### BKAPNOTE — Vendor Notes
+
+File: `BKAPNOTE.B` | Module: AP | Fields: 12
+
+Timestamped note records for vendors (indexed by two search keys).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAP_NOTE_SRCH1 | STRING | 10 | Search key 1 (vendor code) — **PK component** |
+| 2 | BKAP_NOTE_SRCH2 | STRING | 10 | Search key 2 (topic/category) |
+| 3 | BKAP_NOTE_DATE | DATE | 4 | Note date |
+| 4 | BKAP_NOTE_ENTBY | STRING | 10 | Entered-by user |
+| 5–12 | BKAP_NOTE_NOTES_1..8 | STRING×8 | 76 | Note lines 1–8 (76 chars each) |
+
+---
+
+### BKAPEVND — Extended Vendor
+
+File: `BKAPEVND.B` | Module: AP | Fields: 73
+
+Extended vendor record using `BKAP_VEND*` prefix. Likely multi-company "E" mirror of BKAPVEND or extended address/contact block.
+
+Primary key: `BKAP_VENDCODE` (field 1). Structure mirrors BKAPVEND with two address blocks (ADD1_1/1_2 and ADD2_1/2) and additional contact/tax fields.
+
+---
+
+### BKAPACCN — Vendor Contacts
+
+File: `BKAPACCN.B` | Module: AP/CRM | Fields: 154
+
+Uses `BKCM_ACCN_*` prefix (Contact Manager namespace). Stores 10 contact slots per vendor — same architecture as BKARCUST contacts but vendor-facing.
+
+| Group | Fields | Meaning |
+|-------|--------|---------|
+| BKCM_ACCN_CODE | 1 | Vendor/account code — **primary key** |
+| BKCM_ACCN_CONT_1..10 | 2–11 | Contact name (10 contacts) |
+| BKCM_ACCN_TITLE_1..10 | 12–21 | Contact title |
+| BKCM_ACCN_PHONE_1..10 | 22–31 | Contact phone |
+| BKCM_ACCN_DEAR_1..10 | 32–41 | Contact salutation |
+| BKCM_ACCN_EMAIL_1..10 | 42–51 | Contact email |
+| (label + UDF fields) | 52–154 | PHLBL, EMLBL, MSLBL, DTLBL, M2LBL, D2LBL per contact + alpha/date UDFs |
+
+---
+
+### BKAP* Description Tables (all 5-field BK_DESC_* pattern)
+
+`BKAPADSC`, `BKAPDESC`, `BKAPHDSC` — all identical 5-field pattern:
+
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | BK_DESC_CODE | AP entity code (vendor/PO number) |
+| 2 | BK_DESC_NUM | Record number |
+| 3 | BK_DESC_LINE | Line counter |
+| 4 | BK_DESC_NOTES | Note text (70 chars) |
+| 5 | BK_DESC_DESC | Short description (25 chars) |
+
+---
+
+**BKAP* Family Summary Table** (Pass 125 2026-06-19):
+
+| Table | Fields | Role | Structural Mirror |
+|-------|--------|------|------------------|
+| BKAPVEND | 72 | Vendor master | — |
+| BKAPEVND | 73 | Extended vendor | BKAPVEND variant |
+| BKAPACCN | 154 | Vendor contacts (10 slots) | — |
+| BKAPPO | 57 | Purchase orders (active) | — |
+| BKAPAPO | 58 | PO open archive (+1 field) | BKAPPO |
+| BKAPHPO | 57 | PO historical archive | BKAPPO |
+| BKAPRFQ | 57 | Request for quotation | BKAPPO |
+| BKAPPOL | 38 | PO lines (active) | — |
+| BKAPAPOL | 38 | PO lines open archive | BKAPPOL |
+| BKAPHPOL | 38 | PO lines historical | BKAPPOL |
+| BKAPRFQL | 38 | RFQ lines | BKAPPOL |
+| BKAPINVL | 390 | AP voucher (10 hdr + 75 GL dist × 5 + 5 ftr) | — |
+| BKAPRIVL | 390 | Receipt-invoice lines (3-way match) | BKAPINVL |
+| BKAPINVT | 19 | AP invoice transaction ledger | — |
+| BKAPEIVT | 19 | AP invoice transaction (EI variant) | BKAPINVT |
+| BKAPCHKH | 12 | Check header | — |
+| BKAPCHKF | 12 | Check footer/detail | BKAPCHKH |
+| BKAPNOTE | 12 | Vendor notes (8 lines × 76 chars) | — |
+| BKAPDEP | 6 | Deposits (shared with BKARDEP) | BKARDEP identical |
+| BKAPADSC/BKAPDESC/BKAPHDSC | 5 | Description note lines | BK_DESC_* pattern |
+| BKAPQUOT | 49 | Quote (BKRFQ_ prefix) | — |
+
+--- — Inventory Item Master
 
 File: `BKICMSTR.B` | Module: IN | Fields: 64 (all confirmed from DDF — Pass 124 2026-06-19)
 
