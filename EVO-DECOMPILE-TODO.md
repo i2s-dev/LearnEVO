@@ -517,7 +517,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.4 Sales Orders (SO)
 - [x] ✅ Menu codes listed (48 operations — largest module) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7SO\*.DFM) — **C: 70/100**
-- [x] ✅ Tables: BKSO\* (7 tables identified) — **C: 55/100**
+- [x] ✅ Tables: BKSO\* (7 tables) + **key architecture: SO uses BKARINV/BKARINVL directly** (no separate BKSOMSTR/BKSODET); BKSO* are satellite-only tables; BKSOHLOT/BKSOHSER = BKARTXN mirrors; BKSOLOCK/BKSONOTE/BKSOPO/BKSOX/BKSOXH all documented in tier1-tables.md — Pass 127 2026-06-19 — **C: 87/100**
 - [x] ✅ Key forms read: T7SOA (full header+lines, 5001-element line arrays), T7SOB (print), T7SOC (pick→pack→ship→invoice hub), T7SOD (line status), T7SOE (release), T7SOF (invoice print), T7SOG (COGS) — **C: 72/100**
 - [x] ✅ Order → shipping → invoice chain traced: T7SOA → T7SOE → T7SOC → T7SOF — **C: 70/100**
 - [x] ✅ Certificate of Conformance + Country of Origin compliance docs confirmed (T7SOC RTMs) — **C: 68/100**

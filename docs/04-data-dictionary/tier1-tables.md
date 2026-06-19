@@ -1340,6 +1340,100 @@ Summary extract table; one row per posted AR invoice. Used for GL posting summar
 
 ---
 
+## BKSO* Family — SO Satellite Tables
+
+All confirmed from DDF + rwn_symbols.json — Pass 127 2026-06-19.
+
+### Critical Architecture: SO Uses BKARINV/BKARINVL Directly
+
+There is **no separate BKSOMSTR or BKSODET** table. The Sales Order module stores open orders in `BKARINV` (header) and `BKARINVL` (detail lines) — the same tables used by the AR module. The `BKAR_INV_INVCD` field distinguishes the document lifecycle stage; `BKAR_INV_RTS` = "release to ship" flag. An SO becomes an AR invoice when it is posted.
+
+This was confirmed by inspecting T7SOB, T7SOC, T7SOF, T7SOJ, T7SOR, T7SOS etc. from rwn_symbols.json — every SO program opens BKARINV and BKARINVL as its primary tables; no BKSOMSTR appears in any db_files list.
+
+The BKSO* tables are all **satellite support** tables:
+
+---
+
+### BKSOHLOT / BKSOHSER — SO Lot/Serial Holding
+
+Files: `BKSOHLOT.B`, `BKSOHSER.B` | Module: SO/IN | Fields: 14 each (identical)
+
+Pre-pick lot and serial number staging for open SO lines — populated during pick/pack and cleared on invoice post. Both tables use the `BKAR_TXN_*` prefix and are **byte-for-byte identical to BKARTXN**. BKSOHLOT = lot tracking; BKSOHSER = serial number tracking.
+
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | BKAR_TXN_SONUM | SO number — **PK component** |
+| 2 | BKAR_TXN_CODE | Part code — **PK component** |
+| 3 | BKAR_TXN_DESC | Part description |
+| 4–14 | (same as BKARTXN) | See BKARTXN table above |
+
+---
+
+### BKSOLOCK — SO Record Lock
+
+File: `BKSOLOCK.B` | Module: SO | Fields: 5
+
+Pessimistic record-lock table for open SO headers. Prevents two users from editing the same order simultaneously.
+
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | BKSO_LOCK_REC | STRING | SO/invoice number being locked — **PK** |
+| 2 | BKSO_LOCK_ITEM | STRING | Item or field being locked (25 chars) |
+| 3 | BKSO_LOCK_DATE | DATE | Lock date |
+| 4 | BKSO_LOCK_TIME | TIME | Lock time |
+| 5 | BKSO_LOCK_WHO | STRING | User who holds the lock (25 chars) |
+
+---
+
+### BKSONOTE — SO Order Notes
+
+File: `BKSONOTE.B` | Module: SO | Fields: 5
+
+Order-level notes on SOs, using the standard BK_DESC_* pattern. Same 5-field structure as BKAPDESC/BKARDESC.
+
+---
+
+### BKSOPO — MRP-Planned PO Linked to SO
+
+File: `BKSOPO.B` | Module: SO/MRP | Fields: 16
+
+Uses `BKMRP_PO_*` prefix. Stores MRP-generated planned purchase orders that are pegged to specific SO lines. Links demand (SO) to supply (PO) for outside-process or buy components.
+
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | BKMRP_PO_UID | STRING | Planned order UID (unique ID) — **PK** |
+| 2 | BKMRP_PO_VEND | STRING | Vendor code (FK → BKAPVEND) |
+| 3 | BKMRP_PO_DATE | DATE | Plan date |
+| 4 | BKMRP_PO_ERD | DATE | Expected receipt date |
+| 5 | BKMRP_PO_PART | STRING | Part code |
+| 6 | BKMRP_PO_QTY | FLOAT | Planned quantity |
+| 7 | BKMRP_PO_PRICE | FLOAT | Unit price |
+| 8 | BKMRP_PO_WOPRE | FLOAT | WO prefix (FK → WORKORD) |
+| 9 | BKMRP_PO_WOSUF | UBINARY | WO suffix |
+| 10 | BKMRP_PO_PLANR | STRING | Planner code (4 chars) |
+| 11 | BKMRP_PO_CONF | STRING | Confirmed flag |
+| 12 | BKMRP_PO_DONE | STRING | Done/completed flag (10 chars) |
+| 13 | BKMRP_PO_MTREC | UBINARY | MT record link |
+| 14 | BKMRP_PO_EXTRA | STRING | Extra 50 chars |
+| 15 | BKMRP_PO_EST | STRING | Estimate number (FK → ISESTCFG) |
+| 16 | BKMRP_PO_ESTLNE | FLOAT | Estimate line number |
+
+---
+
+**BKSO* Family Summary Table** (Pass 127 2026-06-19):
+
+| Table | Fields | Role | Mirror |
+|-------|--------|------|--------|
+| (BKARINV) | 84 | **SO header** — same table as AR invoice | shared with AR |
+| (BKARINVL) | 28 | **SO detail lines** — same table as AR lines | shared with AR |
+| BKSOHLOT | 14 | Pre-pick lot staging for open SO lines | BKARTXN (identical) |
+| BKSOHSER | 14 | Pre-pick serial staging for open SO lines | BKARTXN (identical) |
+| BKSOLOCK | 5 | SO record locking | — |
+| BKSONOTE | 5 | SO order notes | BK_DESC_* pattern |
+| BKSOPO | 16 | MRP-planned PO pegged to SO (BKMRP_PO_ prefix) | — |
+| BKSOX | 25 | SO invoice extract (denormalized GL summary) | — |
+| BKSOXH | 25 | SO invoice extract history | BKSOX (identical) |
+
 ---
 
 ## BKGLTRAN — GL Journal Transactions
