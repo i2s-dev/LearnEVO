@@ -623,7 +623,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.15 Labor / Time & Attendance (LW / LA)
 - [x] ✅ Menu codes listed — **C: 62/100**
 - [x] ✅ Source file: BKLME.SRC analyzed — **C: 60/100**
-- [ ] ⬜ Time entry → work order charge chain fully traced
+- [x] ✅ Time entry → WO charge chain fully traced: 3 paths — (1) DC path: BKDCCLAB→DC-G approve→DC-H post→WOLABOR+WORKORD costs+BKGLTRAN; (2) WO-G direct: T7WOG→WOLABOR+WORKORD+BKGLTRAN; (3) PR-J time cards: BKPRTC→PR-K→BKPRCURP+BKPRMSTR YTD (payroll only, no WOLABOR); PR-J-A imports BKDCLAB→BKPRTC for paycheck generation from same DC event; LW module = WO+JC menu alias using same tables; docs/03-modules/lw-labor-wip/README.md created (Pass 111d 2026-06-19) — **C: 82/100**
 
 ### 7.16 EDI (ED)
 - [x] ✅ Tables: BKED\* (6 tables) — BKEDIH(84f: same structure as BKARINV — EDI-in staging header), BKEDIL(28f: same as BKARINVL — EDI-in lines), BKEDIDUN(7f: customer DUNS mapping+EDI flags), BKEDMSTR(3f: our DUNS+import path+counter), BKEDNOTE(3f: EDI notes), BKEDPOST(2f: posting log); unified invoice architecture confirmed for EDI — **C: 78/100**

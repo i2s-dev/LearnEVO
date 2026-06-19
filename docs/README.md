@@ -84,6 +84,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7) — + [help-content.md](03-modules/dc-data-collection/help-content.md) *(14 CHM topics)*
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
 - [JC — Job Costing](03-modules/jc-job-costing/README.md) (18 / 14 / 2) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)*
+- [LW — Labor/WIP/Job Cost](03-modules/lw-labor-wip/README.md) (19 menu ops / shared WO tables) — *verified, 2026-06-19 · WO+JC menu alias; 3-path time entry chain documented*
 - [CS — Commission System](03-modules/cs-commission-system/README.md) (16 / 12 / 16) — + [help-content.md](03-modules/cs-commission-system/help-content.md)
 - [CM — Contact Manager](03-modules/cm-contact-manager/README.md) — + [help-content.md](03-modules/cm-contact-manager/help-content.md)
 - [ES — Estimating](03-modules/es-estimating/README.md) (8 / 7 / 4) — + [help-content.md](03-modules/es-estimating/help-content.md) *(10 CHM topics)*
