@@ -401,11 +401,11 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 ### 4.4a ISTS.CFG.* Configuration Keys
 - [x] ✅ Key namespace confirmed: `ISTS.CFG.*` strings in all program binaries map to BKYSMSTR/BKSYMSTR fields — **C: 72/100**
 - [x] ✅ **535 unique keys** cataloged from grep across 2,575 rwn_strings files — **C: 78/100**
-- [x] ✅ Functional categories identified: Access/Security, AP, AR, SO (70+ keys), PO (80+ keys), WO (44+ keys), DC, Inventory/Costing, Reporting, EDI, Credit Card, EvoNotes, Ship-Via — **C: 68/100**
+- [x] ✅ **495 keys confirmed from T7YSYN symbol table** (most authoritative — these have actual editor fields in BKYSMSTR editor); organized by module prefix: SO=75, PO=52, WO=39, DC=35, IN=20, AP=15, HH=15, AR=8, SR=8, RM=12, PR=10, VO=6, AV=5, EV=4, CC=4 — Pass 120 2026-06-19 — **C: 75/100**
+- [x] ✅ Full key directory rebuilt with 495 keys in `docs/05-configuration/ists-cfg-keys.md`; VO* void-permissions group and HH* hand-held group newly documented; Avalara (AV*) and RMA (RM*) subsystems confirmed — **C: 75/100**
 - [x] ✅ Prevalence distribution documented (9 global keys in 400+ files; 276 module-specific in 1–9 files) — **C: 75/100**
-- [x] ✅ Full key directory documented in `docs/05-configuration/ists-cfg-keys.md` — **C: 68/100**
-- [ ] ⬜ Complete YN[N] ↔ ISTS.CFG.* mapping (only 3 confirmed so far: YN[38], YN[228], YN[229])
-- [ ] ⬜ All 535 keys mapped to their BKYSMSTR/BKSYMSTR field with confirmed meaning
+- [ ] ⬜ Complete YN[N] ↔ ISTS.CFG.* mapping (9 confirmed so far: YN[20], YN[36], YN[37], YN[38]=WOCALC, YN[48], YN[59], YN[66], YN[228]=DCSEQ, YN[229]=DCSYNC)
+- [ ] ⬜ All 495 keys mapped to their BKYSMSTR/BKSYMSTR field with confirmed meaning
 - [ ] ⬜ Keys that control module-enable/disable confirmed (module licensing gates)
 
 ### 4.4 Key Individual Tables (minimum needed for 90% goal)
