@@ -538,7 +538,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Menu codes listed (31 operations) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7WO\*.DFM) — **C: 70/100**
 - [x] ✅ Tables: WO\* (30 tables) — **C: 55/100**
-- [x] ✅ Source files: BKAWLB.SRC (Work Order labor logic analyzed) — **C: 62/100**
+- [x] ✅ Source files: BKAWLB.SRC fully analyzed (Pass 119): WO Status Report/LWJB (originally BKLWJB "Labor WIP Job" — merged Nov 2000); filters WOs by status/priority/class/dates/part/customer ranges; opens BKARCUST+BKICMSTR+MTICMSTR+WORKORD+BKSYMSTR; 5 tables only (report viewer, NOT entry); 7 sort options; no labor-entry logic — **C: 72/100**
 - [x] ✅ Work order lifecycle **fully traced**: Create(WO-A) → Release(WO-B) → Routing(WO-K-A) → Material(WO-F/WO-FA backflush) → Labor(WO-G) → Outside(WO-H → PO) → Close(WO-S) — **C: 72/100**
 - [x] ✅ WO status codes documented: F=Released, R=Completed, C=Closed, S=Scheduled, I=In Process, X=On Hold — **C: 75/100**
 - [x] ✅ WO priority 1–9 confirmed as scheduling parameter — **C: 72/100**
@@ -1123,7 +1123,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 | Module: IM/Landed Cost | **88** | 82 | **0** ✅ ↑+10 Pass86 ISIS.MCF/MCR multi-currency + landed confirmed | 2026-06-18 |
 | Module: PS/Program Security | **88** | 88 | **0** ✅ ↑+6 Pass83 ISEXUSER+max.chk.amt | 2026-06-18 |
 | Module: QU/Query Tools | **75** | 75 | **0** ✅ ↑+1 Pass91 WBKLOOKUP/DDFilters/SSS/SSSFD DFMs confirmed | 2026-06-18 |
-| Module: SU/Setup UI | **78** | 78 | **0** ✅ ↑+6 Pass83 WBKLUGRID+gdm DFMs | 2026-06-18 |
+| Module: SU/Setup UI | **80** | 78 | **0** ✅ ↑+2 Pass119 11 YN flags confirmed from source (YN[20/36/37/38/48/59/66/228/229/290]+YN[1]); YN[228] doc corrected | 2026-06-19 |
 | Module: TA/TAS Admin | **91** | 80 | **0** ✅ ↑+3 Pass91 WTASDATAM/DMGR/INIT DFMs: FLD/KEY/FILE descriptors confirmed | 2026-06-18 |
 | Module: DI/Digital Signatures | **90** | 80 | **0** ✅ ↑+12 Pass87 T7DIGSIG PO approval 5-level emp.signoff | 2026-06-18 |
 | Module: AD/Accounting Defaults | **82** | 82 | **0** ✅ ↑+7 Pass83 ISTS.CFG+bkys.yn[202] | 2026-06-18 |

@@ -4394,14 +4394,26 @@ The descriptions come from `BKSYHELP/DBAHLPID` (the help system — each YN flag
 a DBAHLPID help record). The program header variable `PROGRAM.HEADER` provides the window title.
 `YSMSTR.H` = the BKYSMSTR record handle (single-row table loaded once).
 
-**Selected YN flag meanings (confirmed from DFM field labels and other module docs):**
+**Selected YN flag meanings (confirmed from source files and DFM field labels):**
 
 | Flag | Known meaning | Source |
 |---|---|---|
 | YN[1] | Auto-close DC labor when new job started | T7DCK DFM (BKDC.CFG.AUTOCLOSE) |
-| YN[228] | Auto-close labor on new job start | T7SMJH reference |
+| YN[20] | DC barcode mode: sets EXTRA='B' on labor records when parts > 0 | BKDCA.SRC line 708 |
+| YN[36] | Routing default: MTRO.MD.PROC.HR (processes-per-hour method flag) | BKROA.SRC line 609 |
+| YN[37] | Routing default: MTRO.STD.TIME (standard time flag) | BKROA.SRC line 656 |
+| YN[38] | MD-B routing: 'Y'=use template# as sequence#; 'N'=increment counter | BKROA.SRC lines 392/1582 |
+| YN[48] | AP check print format: 1/4/5=laser (chain to BKAPHA); 2/3=dot-matrix | Bkaph.src line 60 |
+| YN[59] | MD-D routing: 'Y'=prompt for OVERLAP and NEGOVLP during RO-A entry | BKROA.SRC line 647 |
+| YN[66] | Routing: 'Y'=show long-run time field (LONGTIME) in routing entry | BKROA.SRC line 629 |
+| YN[228] | DC: 'Y'=use alternate screen BKDCAF; 'N'=use standard BKDCA screen | BKDCA.SRC line 194 |
+| YN[229] | DC auto-close: 'Y'=auto-close open job when employee starts a new job | BKDCA.SRC line 228 |
 | YN[290] | Include backorders in order status report | BKSYAR.INCLBO cross-ref |
-| (most) | Individual flag meanings blocked by RWN | encrypted T7YSYN source |
+| (most) | Individual flag meanings blocked by RWN encryption | encrypted T7YSYN source |
+
+**⚠️ Correction:** YN[228] was previously documented as "Auto-close labor" — this is wrong.
+YN[228] = alternate screen selector (BKDCAF vs BKDCA). YN[229] = auto-close. Confirmed from
+BKDCA.SRC source, Pass 118.
 
 The full 354-flag meaning set requires either: (a) decrypting T7YSYN.RWN and reading the ARRAY.DESC
 initialization code, or (b) a live EvoERP session walking through the YS editor screen.
@@ -4410,7 +4422,10 @@ initialization code, or (b) a live EvoERP session walking through the YS editor 
 for setting these flags — T7YSYN is the back-door "raw" editor for troubleshooting.
 Changes to BKYSMSTR take effect immediately for all users on next program load.
 
-**Confidence: 75/100** — BKYSMSTR(355f: 1 key + 354 YN flags) fully extracted; T7YSYN display mechanism confirmed from variable names (ARRAY, ARRAY.DESC, YSMSTR.H, BKSYHELP lookup); individual flag meanings remain mostly blocked by RWN encryption; ~3 specific flags confirmed from cross-module DFM analysis.
+**Confidence: 80/100** — BKYSMSTR(355f: 1 key + 354 YN flags) fully extracted; T7YSYN display
+mechanism confirmed; 11 specific flags now confirmed from source code (BKDCA.SRC, BKROA.SRC,
+Bkaph.src) + DFM analysis; corrected YN[228] documentation (was wrong); most flags still opaque
+without RWN decryption.
 
 ---
 
