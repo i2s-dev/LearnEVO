@@ -88,33 +88,104 @@ Key fields (extracted from schema; full list in `samples/ddf/schema.md`):
 
 ## BKARINV — AR Invoice Header
 
-File: `BKARINV.B` | Module: AR | Fields: 84
+File: `BKARINV.B` | Module: AR | Fields: 84 (all confirmed from DDF — Pass 122 2026-06-19)
 
-Key fields:
+Primary key: `BKAR_INV_NUM` (field 1, FLOAT auto-increment from `BKSYMSTR.BKSY_ARINV_NUM`).
 
-| # | Field | Type | Meaning |
-|---|-------|------|---------|
-| 1 | BKAR_INV_NUM | FLOAT | Invoice number — primary key (auto-increment from BKSYMSTR) |
-| 2 | BKAR_INV_CUST | STRING | Customer code (FK → BKARCUST) |
-| 3 | BKAR_INV_DATE | DATE | Invoice date |
-| 4 | BKAR_INV_PSTDT | DATE | Post date |
-| 5 | BKAR_INV_DUEDT | DATE | Due date (calculated from terms) |
-| 6 | BKAR_INV_TYPE | STRING | Transaction type (I=invoice, C=credit memo, etc.) |
-| 7 | BKAR_INV_TERMS | STRING | Terms code |
-| 8 | BKAR_INV_SUBTOT | FLOAT | Subtotal (before tax/freight) |
-| 9 | BKAR_INV_TAX | FLOAT | Tax amount |
-| 10 | BKAR_INV_FRET | FLOAT | Freight amount |
-| 11 | BKAR_INV_TOTAL | FLOAT | Invoice total |
-| 12 | BKAR_INV_PAID | FLOAT | Amount paid to date |
-| 13 | BKAR_INV_BAL | FLOAT | Remaining balance |
-| 14 | BKAR_INV_GLSALE | STRING | GL sales account |
-| 15 | BKAR_INV_GLDEPT | STRING | GL department |
-| 16 | BKAR_INV_COGS | FLOAT | Cost of goods sold amount |
-| 17 | BKAR_INV_SONO | FLOAT | SO number link |
-| 18 | BKAR_INV_SHIP | STRING | Ship-to code |
-| 19 | BKAR_INV_SHIVIA | STRING | Ship via |
-| 20 | BKAR_INV_TRCKNO | STRING | Tracking number |
-| … | (64 more fields) | | Discount, retention, deposit, currency, salesperson, tax group, archive flags |
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAR_INV_NUM | FLOAT | 8 | Invoice number — **primary key** |
+| 2 | BKAR_INV_SONUM | FLOAT | 8 | Sales order number (FK → BKSOX/SO) |
+| 3 | BKAR_INV_INVCD | STRING | 1 | Invoice code / type flag |
+| 4 | BKAR_INV_INVDTE | DATE | 4 | Invoice date |
+| 5 | BKAR_INV_CUSCOD | STRING | 10 | Customer code (FK → BKARCUST) |
+| 6 | BKAR_INV_CUSA1 | STRING | 30 | Customer address line 1 (denormalized at invoice time) |
+| 7 | BKAR_INV_CUSNME | STRING | 30 | Customer name (denormalized) |
+| 8 | BKAR_INV_CUSA2_1 | STRING | 30 | Customer address line 2, part 1 |
+| 9 | BKAR_INV_CUSA2_2 | STRING | 30 | Customer address line 2, part 2 |
+| 10 | BKAR_INV_CUSCTY | STRING | 26 | Customer city |
+| 11 | BKAR_INV_CUSST | STRING | 2 | Customer state |
+| 12 | BKAR_INV_CUSZIP | STRING | 10 | Customer ZIP |
+| 13 | BKAR_INV_CUSCNT | STRING | 30 | Customer country |
+| 14 | BKAR_INV_CUSATT | STRING | 30 | Customer attention/contact |
+| 15 | BKAR_INV_SHPCTY | STRING | 26 | Ship-to city |
+| 16 | BKAR_INV_SHPST | STRING | 2 | Ship-to state |
+| 17 | BKAR_INV_SHPZIP | STRING | 10 | Ship-to ZIP |
+| 18 | BKAR_INV_SHPCOD | STRING | 10 | Ship-to code |
+| 19 | BKAR_INV_SHPNME | STRING | 30 | Ship-to name |
+| 20 | BKAR_INV_SHPA1 | STRING | 30 | Ship-to address line 1 |
+| 21 | BKAR_INV_SHPA2_1 | STRING | 30 | Ship-to address line 2, part 1 |
+| 22 | BKAR_INV_SHPA2_2 | STRING | 30 | Ship-to address line 2, part 2 |
+| 23 | BKAR_INV_SHPATN | STRING | 30 | Ship-to attention |
+| 24 | BKAR_INV_SHPVIA | STRING | 15 | Ship-via code |
+| 25 | BKAR_INV_SHPCNT | STRING | 30 | Ship-to country |
+| 26 | BKAR_INV_TERMD | STRING | 10 | Terms description |
+| 27 | BKAR_INV_TERMNM | UBINARY | 2 | Terms number (index into BKSYMSTR terms array) |
+| 28 | BKAR_INV_SLSP | UBINARY | 2 | Salesperson 1 number |
+| 29 | BKAR_INV_ENTBY | STRING | 5 | Entered-by code |
+| 30 | BKAR_INV_CUSORD | STRING | 25 | Customer PO / order number |
+| 31 | BKAR_INV_TAXABL | STRING | 1 | Taxable flag |
+| 32 | BKAR_INV_SUBTOT | FLOAT | 8(2) | Subtotal (before tax/freight) |
+| 33 | BKAR_INV_TAXAMT | FLOAT | 8(2) | Tax amount |
+| 34 | BKAR_INV_TOTAL | FLOAT | 8(2) | Invoice total |
+| 35 | BKAR_INV_COGS | FLOAT | 8(2) | Cost of goods sold |
+| 36 | BKAR_INV_NL | UBINARY | 2 | Number of line items |
+| 37 | BKAR_INV_TAXRTE | FLOAT | 8(4) | Tax rate |
+| 38 | BKAR_INV_DESC | STRING | 30 | Invoice description |
+| 39 | BKAR_INV_GLDPT | STRING | 4 | GL department |
+| 40 | BKAR_INV_RTS | STRING | 1 | Release-to-ship flag |
+| 41 | BKAR_INV_FRGHT | FLOAT | 8(2) | Freight amount |
+| 42 | BKAR_INV_LOC | STRING | 10 | Ship-from location code |
+| 43 | BKAR_INV_TAXKEY | STRING | 4 | Tax key code |
+| 44 | BKAR_INV_ORDDTE | DATE | 4 | Order date |
+| 45 | BKAR_INV_ENDLNE | STRING | 1 | End-of-document line flag |
+| 46 | BKAR_INV_DCODE | STRING | 10 | Discount code |
+| 47 | BKAR_INV_PCODE | UBINARY | 2 | Price code |
+| 48 | BKAR_INV_SHIPDT | DATE | 4 | Ship date |
+| 49 | BKAR_INV_FOB | STRING | 15 | FOB point |
+| 50 | BKAR_INV_SLSP2 | UBINARY | 2 | Salesperson 2 number |
+| 51 | BKAR_INV_COMMPR_1 | FLOAT | 8(4) | Commission percentage (SP1) |
+| 52 | BKAR_INV_COMMPR_2 | FLOAT | 8(4) | Commission percentage (SP2) |
+| 53 | BKAR_INV_CHKNUM | FLOAT | 8 | Check number (payment applied) |
+| 54 | BKAR_INV_DEPAMT | FLOAT | 8(2) | Deposit amount applied |
+| 55 | BKAR_INV_SHIPPR | FLOAT | 8 | Shipper/carrier number |
+| 56 | BKAR_INV_JOBNUM | STRING | 15 | Job number (FK → ISJOB) |
+| 57 | BKAR_INV_ITMZTX_1 | STRING | 1 | Item zero-tax flag 1 |
+| 58 | BKAR_INV_ITMZTX_2 | STRING | 1 | Item zero-tax flag 2 |
+| 59 | BKAR_INV_RETEN | FLOAT | 8(2) | Retention (holdback) amount |
+| 60 | BKAR_INV_COMAMT | FLOAT | 8(2) | Commission amount |
+| 61 | BKAR_INV_CCOAMT | FLOAT | 8(2) | CC operation / surcharge amount |
+| 62 | BKAR_INV_BILCOD | STRING | 10 | Bill-to code |
+| 63 | BKAR_INV_BILNME | STRING | 30 | Bill-to name |
+| 64 | BKAR_INV_BILA1 | STRING | 30 | Bill-to address line 1 |
+| 65 | BKAR_INV_BILA2 | STRING | 30 | Bill-to address line 2 |
+| 66 | BKAR_INV_BILA3 | STRING | 30 | Bill-to address line 3 |
+| 67 | BKAR_INV_BILCTY | STRING | 30 | Bill-to city |
+| 68 | BKAR_INV_BILST | STRING | 2 | Bill-to state |
+| 69 | BKAR_INV_BILZIP | STRING | 10 | Bill-to ZIP |
+| 70 | BKAR_INV_BILCNT | STRING | 30 | Bill-to country |
+| 71 | BKAR_INV_BILATN | STRING | 30 | Bill-to attention |
+| 72 | BKAR_INV_EXTRA | STRING | 150 | Overflow / extra |
+| 73 | BKAR_INV_INDATE | DATE | 4 | Creation/entry date |
+| 74 | BKAR_INV_SCCOGS | FLOAT | 8(2) | Surcharge COGS amount |
+| 75 | BKAR_INV_ISTXKY | STRING | 10 | Avalara tax key |
+| 76 | BKAR_INV_ISMCDT | DATE | 4 | Multi-currency exchange date |
+| 77 | BKAR_INV_ISREV | STRING | 1 | Reverse invoice flag |
+| 78 | BKAR_INV_ISRVDT | DATE | 4 | Reverse date |
+| 79 | BKAR_INV_ISCUR | STRING | 3 | Currency code (multi-currency) |
+| 80 | BKAR_INV_RELNUM | FLOAT | 8 | Related invoice number (original for reversals) |
+| 81 | BKAR_INV_TRACK | STRING | 40 | Tracking number (carrier) |
+| 82 | BKAR_INV_QSTAT | STRING | 1 | Quote status flag |
+| 83 | BKAR_INV_MDATE | DATE | 4 | Last modification date |
+| 84 | BKAR_INV_MISC | STRING | 100 | Miscellaneous / user-defined |
+
+**Address structure:** Three complete address blocks per record — Customer (bill), Ship-to, and Bill-to (when different from Customer). All denormalized at invoice creation time.
+
+**Multi-currency:** ISCUR (currency code), ISMCDT (exchange rate date).
+
+**Avalara:** ISTXKY field matches Avalara transaction key for tax verification.
+
+**Reversals:** ISREV flag + ISRVDT date + RELNUM (original invoice number) support credit memo/reversal chain.
 
 ---
 
@@ -147,33 +218,92 @@ File: `BKARINVL.B` | Module: AR | Fields: 28
 
 ## BKAPVEND — AP Vendor Master
 
-File: `BKAPVEND.B` | Module: AP | Fields: 26+
+File: `BKAPVEND.B` | Module: AP | Fields: 72 (confirmed from DDF — Pass 122 2026-06-19)
 
-| # | Field | Type | Meaning |
-|---|-------|------|---------|
-| 1 | BKAP_VEND_CODE | STRING | Vendor code — primary key |
-| 2 | BKAP_VEND_ALPHA | STRING | Alpha sort key |
-| 3 | BKAP_VEND_NAME | STRING | Vendor company name |
-| 4 | BKAP_VEND_ADDR1 | STRING | Address line 1 |
-| 5 | BKAP_VEND_ADDR2 | STRING | Address line 2 |
-| 6 | BKAP_VEND_CITY | STRING | City |
-| 7 | BKAP_VEND_STATE | STRING | State |
-| 8 | BKAP_VEND_ZIP | STRING | ZIP code |
-| 9 | BKAP_VEND_PHONE | STRING | Phone |
-| 10 | BKAP_VEND_FAX | STRING | Fax |
-| 11 | BKAP_VEND_TERMS | STRING | Payment terms code |
-| 12 | BKAP_VEND_GLAP | STRING | Default GL AP account |
-| 13 | BKAP_VEND_LSTPMT | DATE | Last payment date |
-| 14 | BKAP_VEND_LSTPMA | FLOAT | Last payment amount |
-| 15 | BKAP_VEND_YTDPUR | FLOAT | Year-to-date purchases |
-| 16 | BKAP_VEND_OUTINV | FLOAT | Outstanding invoice balance |
-| 17 | BKAP_VEND_OUTCRD | FLOAT | Outstanding credits |
-| 18 | BKAP_VEND_1099 | STRING | 1099 type code |
-| 19 | BKAP_VEND_TAXID | STRING | Tax ID / EIN for 1099 |
-| 20 | BKAP_VEND_CONT | STRING | Contact name |
-| 21–26 | (additional fields) | | Discount, currency, notes flags, class |
+Primary key: `BKAP_VENDCODE` (field 1). Note: DDF field names use `BKAP_VENDXXX` not `BKAP_VEND_XXX`.
 
-**Note:** AP uses "VEND" not "CUST" for vendor records. There is no BKAPCUST — vendors are BKAPVEND.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAP_VENDCODE | STRING | 10 | Vendor code — **primary key** |
+| 2 | BKAP_VENDNAME | STRING | 30 | Vendor company name |
+| 3 | BKAP_ADD1_1 | STRING | 30 | Address line 1 (main) |
+| 4 | BKAP_ADD1_2 | STRING | 30 | Address line 1 (remit-to) |
+| 5 | BKAP_ADD2_1 | STRING | 30 | Address line 2 (main) |
+| 6 | BKAP_ADD2_2 | STRING | 30 | Address line 2 (remit-to) |
+| 7 | BKAP_CITY_1 | STRING | 26 | City (main) |
+| 8 | BKAP_CITY_2 | STRING | 26 | City (remit-to) |
+| 9 | BKAP_STATE | STRING | 2 | State |
+| 10 | BKAP_CONTACT_1 | STRING | 30 | Contact 1 name |
+| 11 | BKAP_CONTACT_2 | STRING | 30 | Contact 2 name |
+| 12 | BKAP_CONTACT_3 | STRING | 30 | Contact 3 name |
+| 13 | BKAP_CONTACT_4 | STRING | 30 | Contact 4 name |
+| 14 | BKAP_TELEPHONE_1 | STRING | 25 | Phone 1 |
+| 15 | BKAP_TELEPHONE_2 | STRING | 25 | Phone 2 |
+| 16 | BKAP_TELEPHONE_3 | STRING | 25 | Phone 3 |
+| 17 | BKAP_TELEPHONE_4 | STRING | 25 | Phone 4 |
+| 18 | BKAP_TELEPHONE_5 | STRING | 25 | Phone 5 |
+| 19 | BKAP_ZIP | STRING | 10 | ZIP code |
+| 20 | BKAP_COUNTRY_1 | STRING | 30 | Country (main) |
+| 21 | BKAP_COUNTRY_2 | STRING | 30 | Country (remit-to) |
+| 22 | BKAP_OUTINV | FLOAT | 8(2) | Outstanding invoice balance |
+| 23 | BKAP_LASTPURCH | DATE | 4 | Last purchase date |
+| 24 | BKAP_LASTPMT | DATE | 4 | Last payment date |
+| 25 | BKAP_PURCH_MTD | FLOAT | 8(2) | Purchases month-to-date |
+| 26 | BKAP_PURCH_YTD | FLOAT | 8(2) | Purchases year-to-date |
+| 27 | BKAP_PURCH_LYR | FLOAT | 8(2) | Purchases last year |
+| 28 | BKAP_PURCH_VAR | FLOAT | 8(4) | Purchase variance |
+| 29 | BKAP_OUT_CREDIT | FLOAT | 8(2) | Outstanding credit balance |
+| 30 | BKAP_NEW_VEND | STRING | 1 | New vendor flag |
+| 31 | BKAP_START_DATE | DATE | 4 | Vendor start date |
+| 32 | BKAP_CLASS | STRING | 4 | Vendor classification code |
+| 33 | BKAP_TERMS_NUM | UBINARY | 2 | Payment terms index (1–20, into BKSYMSTR terms array) |
+| 34 | BKAP_HIST_YN | STRING | 1 | Maintain purchase history flag |
+| 35 | BKAP_REM_ZIP | STRING | 10 | Remit-to ZIP |
+| 36 | BKAP_REM_STATE | STRING | 2 | Remit-to state |
+| 37 | BKAP_NOTES_1 | STRING | 60 | Vendor note line 1 |
+| 38 | BKAP_NOTES_2 | STRING | 60 | Vendor note line 2 |
+| 39 | BKAP_NOTES_3 | STRING | 60 | Vendor note line 3 |
+| 40 | BKAP_NOTES_4 | STRING | 60 | Vendor note line 4 |
+| 41 | BKAP_NOTES_5 | STRING | 60 | Vendor note line 5 |
+| 42 | BKAP_NOTES_6 | STRING | 60 | Vendor note line 6 |
+| 43 | BKAP_NOTES_7 | STRING | 60 | Vendor note line 7 |
+| 44 | BKAP_NOTES_8 | STRING | 60 | Vendor note line 8 |
+| 45 | BKAP_NOTES_9 | STRING | 60 | Vendor note line 9 |
+| 46 | BKAP_NOTES_10 | STRING | 60 | Vendor note line 10 |
+| 47 | BKAP_GL_ACCT | STRING | 10 | Vendor-specific AP GL account override |
+| 48 | BKAP_GL_DPT | STRING | 4 | Vendor-specific AP GL dept override |
+| 49 | BKAP_SORT | STRING | 6 | Sort key |
+| 50 | BKAP_SHIP_VIA | STRING | 15 | Default ship-via code |
+| 51 | BKAP_FOB_POINT | STRING | 20 | Default FOB point |
+| 52 | BKAP_FTERMS_NUM | UBINARY | 2 | Freight terms index |
+| 53 | BKAP_TAX_ID | STRING | 20 | Tax ID / EIN (for 1099 reporting) |
+| 54 | BKAP_ADD3 | STRING | 30 | Address line 3 |
+| 55 | BKAP_EXTRA | STRING | 150 | Overflow / extra config |
+| 56 | BKAP_EMAIL_1 | STRING | 128 | Email address 1 |
+| 57 | BKAP_EMAIL_2 | STRING | 128 | Email address 2 |
+| 58 | BKAP_EMAIL_3 | STRING | 128 | Email address 3 |
+| 59 | BKAP_EMAIL_4 | STRING | 128 | Email address 4 |
+| 60 | BKAP_EMAIL_5 | STRING | 128 | Email address 5 |
+| 61 | BKAP_DESC | STRING | 25 | Vendor short description |
+| 62 | BKAP_IS_TAXGRP | STRING | 10 | Avalara tax group code |
+| 63 | BKAP_IS_TAXIN | STRING | 1 | Tax inclusive flag |
+| 64 | BKAP_IS_MCCODE | STRING | 3 | Multi-currency code |
+| 65 | BKAP_IS_DCODE | STRING | 3 | Discount code |
+| 66 | BKAP_CUST_CODE | STRING | 15 | Linked customer code (FK → BKARCUST) — vendor-customer cross-reference |
+| 67 | BKAP_CREDLIM | FLOAT | 8(2) | Credit limit |
+| 68 | BKAP_REQQC | STRING | 1 | Require QC inspection flag |
+| 69 | BKAP_ALPHA1 | STRING | 25 | User-defined alpha field 1 |
+| 70 | BKAP_ALPHA2 | STRING | 25 | User-defined alpha field 2 |
+| 71 | BKAP_DATE1 | DATE | 4 | User-defined date field 1 |
+| 72 | BKAP_DATE2 | DATE | 4 | User-defined date field 2 |
+
+**Key notes:**
+- Dual address fields (_1/_2) = main address / remit-to address on the same record
+- `BKAP_TERMS_NUM` is an integer index (1–20) into `BKSYMSTR.BKSY_TERMS_N` array
+- `BKAP_CUST_CODE` links the vendor to a matching BKARCUST record — used when the same entity is both vendor and customer
+- `BKAP_IS_TAXGRP` / `BKAP_IS_TAXIN` = Avalara integration fields (consistent with ISTS.CFG.AVA* keys)
+- `BKAP_REQQC` = requires QC receipt inspection — integrates with BKQCRECV
+- 10 notes lines (600 chars total), 5 email addresses, 2 UDF alpha + 2 UDF date fields
 
 ---
 

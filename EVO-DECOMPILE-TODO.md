@@ -420,11 +420,11 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `BKARCUST` — all fields with meaning, PKs — documented — **C: 68/100**
 - [x] ✅ `BKICMSTR` — all fields with meaning; PROD_TYPE codes confirmed (RFAMNLBTKO, R/N from live UI) — **C: 82/100**
 - [x] ✅ `BKSYMSTR` — full schema: 286 fields confirmed from DDF; all embedded arrays documented (terms×20, bank×9, aging×5, ENDDESC×5, PR_ODNAME×6); BKSYPRTR printer table confirmed — Pass 121 2026-06-19 — **C: 85/100**
-- [x] ✅ `BKAPVEND` — AP Vendor master: 26+ fields documented — **C: 65/100**
+- [x] ✅ `BKAPVEND` — AP Vendor master: all 72 DDF fields documented in tier1-tables.md (dual address, 4 contacts, 5 phones, 10 notes, 5 emails, Avalara fields, CUST_CODE cross-ref, 2 UDF fields) — Pass 122 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKGLCOA` — GL Chart of Accounts: 65 fields documented (replaces BKGLJRNL — that table is BKGLTRAN) — **C: 68/100**
 - [x] ✅ `WORKORD` / `WORKCHG` — Work order header + change log — documented — **C: 70/100**
 - [x] ✅ `BKSOX` / `BKSOXH` — Sales Order extract: 25 fields documented — **C: 65/100**
-- [x] ✅ `BKARINV` / `BKARINVL` / `BKARINVI` — AR invoice header/lines/staging: fields and posting flow documented; BKAR_INVL_RTS = per-line release-to-ship flag; T7SAG = SO-G Post Invoices module confirmed — **C: 68/100**
+- [x] ✅ `BKARINV` / `BKARINVL` / `BKARINVI` — AR invoice header/lines/staging: BKARINV all 84 DDF fields documented (3-address blocks, multi-currency, Avalara, reversal chain); BKAR_INVL_RTS = per-line release-to-ship flag; T7SAG = SO-G Post Invoices module confirmed — Pass 122 2026-06-19 — **C: 82/100**
 - [x] ✅ `BKAPPO` / `BKAPPOL` — Purchase Order header (57f) and lines (38f) fully documented; PO family (active/history/archive/RFQ); WO outside-process link (BKAP_POL_WOPRE/WOSUF → WORKORD); unit conversion (PCONV); 3-way qty tracking (RQTY/IQTY/OO_QTY); docs/03-modules/ap-accounts-payable/README.md (Pass 110e 2026-06-19) — **C: 90/100**
 - [x] ✅ `BKPRMSTR` — Payroll master (384 fields) — all fields grouped and documented; BKPRCURP/BKPRHIST, BKPRINFO, BKPRSALE/BKPRBOOK, BKPRTC/BKPRTCFG also documented; docs/03-modules/pr-payroll/README.md (Pass 110f 2026-06-19) — **C: 90/100**
 - [x] ✅ `BKSLEVEL` — **SOLVED: Security level permission matrix** (14 menus × 20 options = 422 fields; links AHSYLOG.AHSY_USER_LEVL to allowed operations) — **C: 68/100**
