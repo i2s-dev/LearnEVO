@@ -11,7 +11,7 @@ without explicit reasoning for why a different outcome is expected now.
 ## Bug B-010 — All samples/rwn_decrypted/*.dec files have garbled bodies (stale batch run)
 
 **Date:** 2026-06-19
-**Status:** ⚠️ KNOWN ISSUE — workaround in place; re-run `scripts/rwn_decrypt.py` to fix
+**Status:** ✅ FIXED 2026-06-19 — re-ran `scripts/rwn_decrypt.py`; 1145/1146 OK, 1 FAIL (unknown)
 
 **Symptom:** When parsing .dec files from `samples/rwn_decrypted/`, `h[0]` returns values
 like `0x6F41ED01` (~1.86 billion) — clearly not a valid dispatch table size. All 1,144 .dec

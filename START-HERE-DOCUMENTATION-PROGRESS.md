@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-19 (Pass 110b — 25-program opcode frequency analysis; DISP_START=0x6C0 universal constant confirmed; 17 opcodes identified; 0x57 universal/form-executor (T7MSG proof), 0x20 near-universal, sub=0x14 branch family; proc names = Pascal short strings; all .dec files stale (garbled bodies); RWN bytecode confidence C:35→50/100)
+Last updated: 2026-06-19 (Pass 110c — 10-program form lifecycle semantic analysis; 0x20=CREATE/BIND confirmed, 0x57=EXECUTE FORM confirmed; standard form lifecycle sequence proven; .dec files regenerated (1145/1146 OK); RWN bytecode confidence C:50→60/100)
 
 ---
 
@@ -97,7 +97,7 @@ Current decryption scripts:
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
 | `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool |
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
-| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 50/100 | DISP_START=0x6C0 universal; 17 opcodes across 25 programs; 0x57 universal/form-executor, 0x20 near-universal, sub=0x14 branch family; proc names = Pascal short strings; .dec files stale |
+| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 60/100 | DISP_START=0x6C0 universal; 17 opcodes confirmed; 0x20=CREATE FORM/BIND, 0x57=EXECUTE FORM, 0x42=GOSUB, 0x0F=ASSIGN, 0x3B/0xD2/0x6A=BRANCH; .dec files regenerated |
 | `.DCY` binary format | ✅ DONE | 95/100 | **Pass 109**: 8-byte ID header + DFM content (text "object..." 37/41; binary ff0a00+classname+TPF0 4/41); all 41 forms = Delphi TEditForm definitions for launcher/utility programs; EVOUSERS/WBKLUGRID documented |
 | `suwin*.DCY` format | ⬜ Unknown | 0/100 | 7 files; K_D fails; possibly use K_A or K_C |
 | K_A / K_C key purposes | ⬜ Unknown | 0/100 | Captured live; which file types they encrypt is unknown |

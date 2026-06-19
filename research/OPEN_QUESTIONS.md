@@ -244,7 +244,12 @@ to resolve fully:
       contexts? (All C values in suwin7.rwn are valid pool offsets, but sample size = 1 program.)
     - Does T7INA.RWN also have exactly 60 TEMP variables? Header[0x18]=4620 in both suwin7 and T7INA —
       is 60 TEMP vars a TAS Pro 7 compiler invariant? (t7slsfc also confirmed via 663-var header — 60 TEMP + 603 user)
-    - Next step to reach C:60+: cross-reference BKMRF (3-way SRC+RUN+RWN Rosetta Stone) to confirm opcode identities; especially: does BKMRF.RUN opcode for conditional branch match 0x3B or 0xD2 in BKMRF.RWN?
+    **Pass 110c additions (10-program form lifecycle analysis, 2026-06-19):**
+    - **0x20 vs 0x57 RESOLVED**: 0x20 = CREATE FORM (first use → DFM string = TForm.Create) / BIND HANDLER (subsequent uses). 0x57 = EXECUTE FORM (ShowModal — enter event loop). Standard sequence: `[0x20→DFM][0x20→handler...][0x57→DFM][0x40/0x71→EXIT]`. T7MSG exception: uses 0x57 alone (0 procs, so Create+ShowModal collapsed).
+    - **0x40/0x71 = EXIT PROGRAM**: Both are terminal opcodes. 0x40 sub=0x36 appears in T7MSG and t7pass. 0x71 sub=0x05 appears in T7askbut. Semantics identical; variant may encode a return code.
+    - **0x4B = unknown terminal** (t7b, T7BROWSER last instruction; refs N:1162627398). Possibly TIMER_START or WAIT_FOR_EVENT.
+    - **evoDCs first instruction**: 0x20 → A[6]:460c12000000 (binary blob, not DFM string). This may be a dynamic form or a NULL form creation — needs further investigation.
+    - Next step to reach C:70+: decode the 0x20 BIND HANDLER arguments (pool offset → what structure? proc index? event name?); confirm 0x30 as RETURN; identify 0x43/0x45/0x49 from t7nest context.
 
 ## Nice-to-have follow-ups (not blocking)
 

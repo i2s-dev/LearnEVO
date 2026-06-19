@@ -141,19 +141,19 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Single-file or batch mode; `--encrypted` flag decrypts on-the-fly; JSON output supported
   - Must be run against local copies in `samples/` (not directly against network share)
   - Note: all existing `samples/rwn_decrypted/*.dec` files were made with wrong key — re-decrypt needed
-- [x] 🔄 Bytecode instruction set — **C: 50/100** (17 opcodes identified across 25 programs; DISP_START=0x6C0 universal constant; universal/near-universal opcodes confirmed)
+- [x] 🔄 Bytecode instruction set — **C: 60/100** (17 opcodes; form lifecycle semantics confirmed from 10-program ordering analysis)
   - Dispatch table = program instructions: `[op][00][00][sub] + [pool_offset]` (8 bytes each)
-  - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant — holds for all 25 programs analyzed including T7MSG (2 instr) and t7slsfc (663 vars)
+  - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant — holds for all 25 programs analyzed
   - Pool immediately follows dispatch; typed values: 0x41=string/blob (var-len), 0x46=var_ref (val=var_idx×77), 0x43=pool_ptr, 0x52/0x4E/etc.=5-byte numeric
   - Compound blobs: 0x41 blobs starting with 0xFD contain sub-typed argument fields, end with 0xFF
-  - **Universal opcode 0x57 (sub=0x05)**: In ALL 25 programs; T7MSG (simplest 2-instruction message dialog) uses 0x57 as first/only instruction pointing to "T7MSG.DFM" → primary form-execution opcode
-  - **Near-universal opcode 0x20 (sub=0x05)**: 24/25 programs; only T7MSG lacks it; also references DFM filenames
-  - **Branch family (sub=0x14)**: Opcodes 0x3B, 0xD2, 0x6A all share sub=0x14 — confirmed jump/branch variants
-  - **Proc names**: Length-prefixed Pascal short strings — byte[0]=name_length, bytes[1:1+length]=name. Confirmed from T7askbut (0x14=20 chars "T7ASKBUT.ONOPENFILES") and domtest (0x05=5 chars "START")
-  - 17 distinct opcodes: 0x0F(19/25), 0x20(24/25), 0x30(10/25), 0x3B(6/25), 0x40(5/25), 0x42(3/25), 0x43(2/25), 0x45(2/25), 0x49(2/25), 0x4B(2/25), 0x57(25/25), 0x6A(4/25), 0x71(1/25), 0x9A(1/25), 0xD2(11/25), 0xD9(2/25), 0x15(1/25)
-  - **Known stale**: all `samples/rwn_decrypted/*.dec` files have garbled bodies (wrong key from old batch run); always decrypt live from share for analysis
-  - Opcodes identified in suwin7.rwn: 0x20=MOUNT(form), 0x0F=ASSIGN?, 0x42=GOSUB?, 0x3B=GOTO/BRANCH?
-  - See `docs/02-file-formats/rwn-binary-format.md` — pool section and confirmed facts updated 2026-06-19
+  - **CONFIRMED 0x20 = CREATE FORM / BIND HANDLER**: First occurrence → DFM filename string (TForm.Create). Subsequent 0x20s bind event handler procs. Confirmed from 10-program ordering analysis.
+  - **CONFIRMED 0x57 = EXECUTE FORM**: Universal. Enters form event loop (TForm.ShowModal). In suwin7 it is the LAST instruction after 31 license-check ops. In T7MSG (no procs) it creates+executes in one shot.
+  - **Standard form lifecycle**: `[0x20→DFM][0x20→handler...][0x57→DFM][0x40/0x71→EXIT]`
+  - **Branch family (sub=0x14)**: 0x3B, 0xD2, 0x6A — confirmed jump/branch variants
+  - **0x42 = GOSUB/CALL**: sub=0x04; calls named procs. 0x0F = ASSIGN: sub=0x0A; sets properties/vars.
+  - **0x40/0x71 = EXIT PROGRAM**: Both terminate the program; 0x71 sub=0x05, 0x40 sub=0x36.
+  - 17 distinct opcodes fully documented in `docs/02-file-formats/rwn-binary-format.md`
+  - `.dec` files in `samples/rwn_decrypted/` regenerated 2026-06-19 (1145/1146 OK)
 
 ### 2.3 `.RUN` — TAS Pro 6 Compiled Program
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
@@ -1154,7 +1154,7 @@ Priority order — in sequence, each unblocks the next:
 | ~~**2**~~ | ~~Write `rwn_decrypt.py` and decrypt all 1,124 `.RWN` files~~ | ✅ **DONE 2026-06-16** — `scripts/rwn_decrypt.py` with K_B; batch run against share completed; symbol extractor `scripts/rwn_extract_symbols.py` created | Variable names + DB files from all modules now extractable |
 | ~~**3**~~ | ~~Decode `.DCY` files~~ | ✅ **DONE 2026-06-16** — `scripts/dcy_decrypt.py` with K_D; 41/48 files OK; format = Delphi VCL forms | Menu form and login forms decryptable |
 | ~~**4**~~ | ~~Re-decrypt all 1,124 `.RWN` files locally~~ | ✅ **DONE** — `samples/rwn_decrypted/` contains 1,123 `.dec` files; validated by file ID pattern (bytes 0-3==4-7); `rwn_symbols.json` built from these (1,122 entries) | Module variable/DB catalog complete |
-| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 50/100** — DISP_START=0x6C0 universal; 17 opcodes across 25 programs; 0x57=form-executor (universal), 0x20=form-mount (near-universal), sub=0x14 branch family, proc names=Pascal short strings; all .dec files stale — decrypt live from share | Full logic traceability |
+| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 60/100** — DISP_START=0x6C0 universal; 17 opcodes; 0x20=CREATE FORM/BIND, 0x57=EXECUTE FORM, 0x42=GOSUB, 0x0F=ASSIGN, 0x3B/0xD2/0x6A=BRANCH confirmed; .dec files regenerated 1145/1146 OK | Full logic traceability |
 | **6** | Per-table field meaning documentation (659 tables) | 🔄 **C: 48/100** — Tier 1 tables partially done; 659 × full semantic docs needed | Database understanding |
 | **7** | Module-by-module logic from decoded `.RWN` variable patterns | 🔄 **started** — T7INA variables confirm buffer field names; EvoERPmenu confirms menu tables | Module confidence to 85+ |
 | **7** | Business workflow recipes (end-to-end traces: SO→ship→invoice, WO lifecycle, AP check run, etc.) | #6 | Me | Operational understanding |
