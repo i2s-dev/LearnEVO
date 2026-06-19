@@ -265,8 +265,122 @@ Primary key: `BKAP_POL_PONM` (FLOAT 8) + `BKAP_POL_CNTR` (UBINARY 2)
 - BKAP_POL_PCONV allows purchasing in different units than stocking (e.g., buy by the roll, stock by the foot).
 - BKAP_POL_RQTY vs BKAP_POL_IQTY vs BKAP_POL_OO_QTY tracks the three-way split: received (in warehouse) / invoiced (AP voucher matched) / still on order.
 
+## BKAPINVT — AP Open-Item Ledger (19 fields, confirmed from DDF schema.md, Pass 111c 2026-06-19)
+
+Primary key: `BKAP_INVT_CODE` (vendor code) + `BKAP_INVT_DATE` (invoice date) + `BKAP_INVT_NUM` (invoice number)
+
+Mirrors BKARINVT in AR — one row per open (unpaid) AP voucher. Rows are removed when the voucher is fully paid.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKAP_INVT_CODE` | STRING | 10 | Vendor code (PK 1 — FK → BKAPVEND) |
+| `BKAP_INVT_DATE` | DATE | 4 | Invoice date (PK 2) |
+| `BKAP_INVT_NUM` | STRING | 10 | Invoice/voucher number (PK 3) |
+| `BKAP_INVT_AMT` | FLOAT | 8 | Original invoice amount |
+| `BKAP_INVT_AMTRM` | FLOAT | 8 | Amount remaining (unpaid balance; 0 = fully paid) |
+| `BKAP_INVT_TYPE` | STRING | 1 | Transaction type: I=Invoice, C=Credit memo, D=Debit memo, P=Payment |
+| `BKAP_INVT_TERMN` | UBINARY | 2 | Payment terms code (FK → terms table) |
+| `BKAP_INVT_SDATE` | DATE | 4 | Scheduled payment date (set by AP-D) |
+| `BKAP_INVT_TAX` | FLOAT | 8 | Tax amount on this voucher |
+| `BKAP_INVT_FRT` | FLOAT | 8 | Freight amount on this voucher |
+| `BKAP_INVT_DEPNO` | FLOAT | 8 | Deposit number (if pre-payment) |
+| `BKAP_INVT_CHKNO` | FLOAT | 8 | Check number that paid this voucher |
+| `BKAP_INVT_CHKAC` | UBINARY | 2 | Check/bank account used for payment |
+
+**Notes:**
+- BKAPEIVT (also 19f, same schema) is the archive counterpart — paid/closed vouchers move here.
+- AMTRM > 0 = outstanding; AMTRM = 0 = paid. Aging is computed at runtime: due date = INVT_DATE + terms, bucket by days past due.
+- SDATE is the AP-D "scheduled payment date" — the user can set this manually or via pick list (AP-F); AP-H uses it to select which vouchers to pay.
+
+---
+
+## BKAPINVL — AP Voucher GL Distribution (390 fields, confirmed from DDF schema.md, Pass 111c 2026-06-19)
+
+Primary key: `BKAP_INVL_CODE` (vendor) + `BKAP_INVL_NUM` (invoice#) + `BKAP_INVL_DATE` (invoice date)
+
+One row per AP voucher. Stores the voucher header **and** up to **75 GL distribution lines** as flat parallel arrays. This is the denormalized design that avoids a child table for GL coding.
+
+**Record structure:** 390 fields, ~3,738 bytes per row.
+
+### Header fields (10)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKAP_INVL_CODE` | STRING 10 | Vendor code (PK 1) |
+| `BKAP_INVL_NUM` | STRING 10 | Invoice/voucher number (PK 2) |
+| `BKAP_INVL_DATE` | DATE | Invoice date (PK 3) |
+| `BKAP_INVL_DESC` | STRING 25 | Voucher description |
+| `BKAP_INVL_TERMD` | STRING 10 | Payment terms description |
+| `BKAP_INVL_TERMN` | UBINARY 2 | Payment terms code |
+| `BKAP_INVL_TYPED` | STRING 10 | Transaction type description |
+| `BKAP_INVL_TYPEN` | UBINARY 2 | Transaction type code |
+| `BKAP_INVL_TAMT` | FLOAT | Total invoice amount |
+| `BKAP_INVL_TDC` | STRING 1 | Overall debit/credit flag |
+
+### GL distribution arrays (75 lines × 5 fields = 375 fields)
+
+For each distribution line N (N = 1..75):
+
+| Array | Type | Meaning |
+|-------|------|---------|
+| `BKAP_INVL_GLACT_N` | STRING 10 | GL account code for line N |
+| `BKAP_INVL_GLDPT_N` | STRING 4 | GL department for line N |
+| `BKAP_INVL_DC_N` | STRING 1 | Debit (D) or Credit (C) for line N |
+| `BKAP_INVL_GLD_N` | STRING 25 | Description for line N |
+| `BKAP_INVL_DAMT_N` | FLOAT | Dollar amount for line N |
+
+Arrays are stored non-interleaved: all 75 GLACT values contiguous, then all 75 GLDPT values, then DC, GLD, DAMT.
+
+### Trailer fields (5)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKAP_INVL_APDPT` | STRING 4 | AP department (GL offset for AP control account) |
+| `BKAP_INVL_CHK` | UBINARY 2 | Check/bank account number |
+| `BKAP_INVL_EXTRA` | STRING 50 | User-defined extra |
+| `BKAP_INVL_ISCUR` | STRING 3 | Currency code (multi-currency) |
+| `BKAP_INVL_JOB` | STRING 15 | Job cost number (FK → JC module) |
+
+**BKAPRIVL** (390f, identical schema) is the recurring-voucher line table — recurring voucher templates (BKAPO headers) store their GL distribution in BKAPRIVL using the same layout.
+
+---
+
+## AP voucher entry workflow (AP-B)
+
+```
+AP-B: Enter Vouchers
+  → Entry: vendor code, invoice#, date, amount, description, terms
+  → GL distribution: up to 75 lines (account + dept + D/C + description + amount)
+  → Write BKAPINVL row (voucher + full GL coding)
+  → Write BKAPINVT row (open-item; AMTRM = full amount)
+  → Update BKAPVEND.OUTINV += invoice amount
+
+AP-D: Enter Scheduled Payment Dates
+  → Set BKAPINVT.SDATE for one or many vouchers
+
+AP-F: Pick Vouchers to Pay
+  → Mark selected BKAPINVT rows (SDATE set / payment flag)
+
+AP-G: Print Pro Forma Check Register
+  → Preview of checks to be written (no data change)
+
+AP-H: Print Checks
+  → For each picked voucher:
+    → Print check against BKAPINVT rows
+    → Write BKAPCHKH row (check history)
+    → Update BKAPINVT.AMTRM -= payment amount
+    → When AMTRM = 0: remove from BKAPINVT → BKAPEIVT (archive)
+    → Post GL: Debit BKAPINVL.GLACT_N lines, Credit AP control account
+    → Write BKGLTRAN rows (one per GL line)
+    → Update BKGLCOA period balances
+    → Update BKAPVEND.OUTINV -= payment amount
+```
+
+---
+
 ## Notes & open questions
 
 - BKAPAPO (58f) has one extra field vs BKAPPO (57f) — field not identified; likely an archive timestamp or purge flag.
 - BKAPRFQ / BKAPRFQL: Request for Quote tables use same schema as BKAPPO/BKAPPOL — RFQs and POs share structure, distinguished by document type routing in the program.
-- BKAPINVL (390f): The AP voucher/invoice lines table has far more fields than BKAPPOL — it likely stores all the GL distribution detail after posting.
+- BKAPCHKF vs BKAPCHKH: Both are 12f check tables (VNDCOD + INVNUM + INVAMT PK). CHK**F** is likely "check file" (current) and CHK**H** is history; or F = front-end staging, H = history. Purpose distinction not confirmed.
+- BKAPNOTE (12f): AP note table — SRCH1/SRCH2/DATE PK suggests a searchable note log linked to vendors or vouchers; exact use not yet traced.

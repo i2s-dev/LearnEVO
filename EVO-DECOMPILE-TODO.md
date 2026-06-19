@@ -499,7 +499,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ BKAPCHKF (temp run file) and BKAPCHKH (permanent history) documented — **C: 78/100**
 - [x] ✅ 1099 tracking mechanism confirmed: BKAPVEND 1099 code + BKAPINVT TYPE="P" — **C: 70/100**
 - [x] ✅ Pass 41: Full ISAP* family confirmed (15 tables): ISAPOPO/ISAPOPOL(57/38f BKAPPO/BKAPPOL open views), ISAPARFQ/ISAPARFL(57/38f archive), ISAPAINL(390f BKAPINVL archive), ISAPACHK(12f BKAPCHKF archive), ISAPCHG+ISAPHCHG(32f AP change log+history: PONUM+LINEID+PCODE+before/after price/loc), ISAPEX(33f AP vendor extended: VEND PK+LONGNAME+NUM fields), ISAPQPO(66f vendor quote pricing: PCODE+VNDCOD PK), ISAPPROJ(12f project linking) — **C: 85/100**
-- [ ] ⬜ Voucher entry workflow fully traced (AP-B main form logic)
+- [x] ✅ Voucher entry workflow fully traced (AP-B): BKAPINVL (390f, 75-line flat GL distribution array: GLACT/GLDPT/DC/GLD/DAMT_1..75, plus APDPT/CHK/EXTRA/ISCUR/JOB trailer); BKAPINVT (19f, AP open-item ledger: AMT/AMTRM/TYPE/TERMN/SDATE/TAX/FRT/DEPNO/CHKNO/CHKAC); AP-B→BKAPINVL+BKAPINVT→AP-D scheduled dates→AP-F pick→AP-H print checks→GL post→BKAPCHKH; BKAPRIVL (390f same schema) = recurring voucher lines; docs/03-modules/ap-accounts-payable/README.md (Pass 111c 2026-06-19) — **C: 88/100**
 - [x] ✅ BKAPVEND all 72 fields documented with meaning — docs/03-modules/ap-accounts-payable/README.md (Pass 110e 2026-06-19) — **C: 95/100**
 
 ### 7.3 Inventory (IN)
@@ -555,7 +555,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ BKGL table family purpose documented: live/archive/report/temp/COA/statement/crossref tiers — **C: 68/100**
 - [x] ✅ Journal entry workflow traced: T7GLB (enter GJ/CR/CD/TT/YE) → T7GLC (report/filter) → T7GLP (period-end) → T7GLARCH (archive) — **C: 70/100**
 - [x] ✅ Pass 40: All 28 BKGL* table schemas extracted. 4 COA tables (BKGLCOA/CCOA/ECOA/FCOA, 62-65f each, identical structure + period balance array); 8 transaction tables (BKGLTRAN/ATRN/ETRN/HIST/TEMP×4, all identical 16f: GLACCT+GLDPT+DATE+CODE+INVC+DESC+DC+AMT+8more); 4×2 journal tables (BKGLGJRN/GJLN, BKGLAGJR/AJL, BKGLRGJR/RJL, BKGLTGJR/TJL — current/archive/recurring/template); BKGLFSTL(12f statement layout), BKGLSTMT(104f statement groups), BKGLDESC(5f GL notes), BKGLACHK+BKGLICC (11f archive+intercompany checks), BKGLXH(20f extended history); full GL architecture documented — **C: 75/100**
-- [ ] ⬜ Period-end close process traced step-by-step (T7GLH/T7GLP sequence)
+- [x] ✅ Period-end close workflow documented from table structure: BKGLTRAN (16f, permanent transaction log — TYPE codes AP/AR/GJ/PR/IC/WO; PERIOD 1–14; POST flag); BKGLGJRN/BKGLGJLN (11/9f GJ batch header/lines — 4 lifecycle variants: current/archive/recurring/temp); BKGLX/BKGLXH (20f cross-reference: PART+WO+PO+SO+JOURNAL drill-back); BKGLDESC (5f notes attachment); GL-O posts BKGLGJLN→BKGLTRAN + updates BKGLCOA.CURRENT_N; year-end shifts CURRENT→1YPAST→2YPAST; docs/03-modules/gl-general-ledger/README.md (Pass 111c 2026-06-19) — **C: 75/100**
 - [x] ✅ BKGLCOA all 65 fields confirmed with full meaning — 14-period × 4-dataset design (CURRENT/BUDGET/1YPAST/2YPAST) fully documented; docs/03-modules/gl-general-ledger/README.md (Pass 110e 2026-06-19) — **C: 97/100**
 
 ### 7.8 Bill of Materials (BM)

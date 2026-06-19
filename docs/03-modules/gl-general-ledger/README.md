@@ -118,6 +118,212 @@ Primary key: `BKGL_ACCT` (10) + `BKGL_GLDPT` (4)
 
 **Notes:** The trial balance, income statement, and balance sheet are all derived directly from BKGLCOA by summing CURRENT_1..N for the selected date range. Transaction detail lives in BKGLTRAN. Variance calculations compare CURRENT vs BUDGET or CURRENT vs 1YPAST.
 
+## BKGLTRAN — GL Transaction Journal (16 fields, confirmed from DDF schema.md, Pass 111c 2026-06-19)
+
+Primary key: `BKGL_TRN_GLACCT` + `BKGL_TRN_GLDPT` + `BKGL_TRN_DATE` (composite — not unique; table is a detail log)
+
+The permanent record of every GL posting. All sub-ledger modules (AR, AP, IC, WO, PR) write rows here when they post. GL-O also writes rows from manually-entered General Journal batches.
+
+**Identical 16-field schema shared by:** BKGLTRAN (current), BKGLATRN (archive), BKGLHIST (history), BKGLETRN (extended/errors — purpose unknown), BKGLTEMP / BKGLTMP / BKGLTMP2 / BKGLTMP3 (temporary work tables during GL-O batch posting).
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKGL_TRN_GLACCT` | STRING 10 | GL account code |
+| `BKGL_TRN_GLDPT` | STRING 4 | GL department |
+| `BKGL_TRN_DATE` | DATE | Transaction date |
+| `BKGL_TRN_CODE` | STRING 10 | Source entity code (vendor, customer, employee, etc.) |
+| `BKGL_TRN_INVC` | STRING 10 | Invoice or document number |
+| `BKGL_TRN_DESC` | STRING 25 | Description |
+| `BKGL_TRN_DC` | STRING 1 | Debit (D) or Credit (C) |
+| `BKGL_TRN_AMT` | FLOAT | Transaction amount |
+| `BKGL_TRN_TYPE` | STRING 2 | Journal/source type: AP, AR, GJ, PR, IC, WO, PO, etc. |
+| `BKGL_TRN_ENTDTE` | DATE | Entry date (when entered, may differ from transaction date) |
+| `BKGL_TRN_EXTRA` | STRING 25 | Extra / user-defined |
+| `BKGL_TRN_TRXN` | FLOAT | Transaction sequence number |
+| `BKGL_TRN_POST` | STRING 1 | Posted flag (Y = posted to COA balances) |
+| `BKGL_TRN_PERIOD` | UBINARY 2 | Fiscal period number (1–14) |
+| `BKGL_TRN_BATCH` | FLOAT | Batch number (GL-O batch reference) |
+| `BKGL_TRN_PART` | STRING 15 | Part/item code (for inventory-related GL entries) |
+
+**Notes:**
+- BKGLTRAN rows are the transaction detail; BKGLCOA accumulates the period totals. The trial balance is read from BKGLCOA, but BKGLTRAN provides the drill-down detail.
+- POST flag distinguishes batches staged in BKGLTEMP (not yet posted) from committed entries in BKGLTRAN.
+- TYPE codes identify the originating sub-ledger: `AP`=Accounts Payable, `AR`=Accounts Receivable, `GJ`=General Journal, `PR`=Payroll, `IC`=Inventory, `WO`=Work Orders.
+- BKGLATRN is the prior-year archive (GL period-end close copies and clears BKGLTRAN → BKGLATRN).
+
+---
+
+## General Journal (GJ) table family
+
+Manual journal entries (GL-B, GL-P) are staged as GJ batches before posting to BKGLTRAN via GL-O.
+
+**Header tables (11 fields each — all identical schema):**
+
+| Table | Role |
+|-------|------|
+| **BKGLGJRN** | Current GJ batch headers (active, unposted) |
+| **BKGLAGJR** | Archived GJ headers (posted/completed) |
+| **BKGLRGJR** | Recurring GJ templates (GL-M generates from these) |
+| **BKGLTGJR** | Temporary GJ work table during GL-O processing |
+
+GJ header fields:
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKGL_GJ_TRANSDT` | DATE | Transaction date |
+| `BKGL_GJ_TRANSNM` | FLOAT | Transaction/batch number (PK) |
+| `BKGL_GJ_TYPE` | STRING 2 | Journal type: GJ, AP, AR, etc. |
+| `BKGL_GJ_TYPEN` | UBINARY 2 | Type number |
+| `BKGL_GJ_POSTED` | STRING 1 | Posted flag |
+| `BKGL_GJ_CVCODE` | STRING 10 | Customer/vendor/entity code |
+| `BKGL_GJ_INVCHKN` | FLOAT | Invoice or check number |
+| `BKGL_GJ_NUMLNES` | UBINARY 2 | Number of lines in this batch |
+| `BKGL_GJ_CHKACT` | UBINARY 2 | Check account number |
+| `BKGL_GJ_JOB` | STRING 15 | Job cost number |
+| `BKGL_GJ_EXTRA` | STRING 50 | Extra / user-defined |
+
+**Line tables (9 fields each — all identical schema):**
+
+| Table | Role |
+|-------|------|
+| **BKGLGJLN** | Current GJ batch lines |
+| **BKGLAGJL** | Archived GJ lines |
+| **BKGLRGJL** | Recurring GJ template lines |
+| **BKGLTGJL** | Temporary GJ lines during GL-O |
+
+GJ line fields:
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKGL_GJL_TRANSN` | FLOAT | FK → GJ header TRANSNM |
+| `BKGL_GJL_ACCTNM` | STRING 10 | GL account code |
+| `BKGL_GJL_GLDPT` | STRING 4 | GL department |
+| `BKGL_GJL_DESC` | STRING 25 | Line description |
+| `BKGL_GJL_DC` | STRING 1 | Debit (D) or Credit (C) |
+| `BKGL_GJL_AMOUNT` | FLOAT | Line amount |
+| `BKGL_GJL_JOB` | STRING 15 | Job cost number |
+| `BKGL_GJL_LINE` | UBINARY 2 | Line number within batch |
+| `BKGL_GJL_EXTRA` | STRING 50 | Extra / user-defined |
+
+---
+
+## BKGLX / BKGLXH — Extended GL Cross-Reference (20 fields, confirmed from DDF schema.md, Pass 111c 2026-06-19)
+
+BKGLX = current; BKGLXH = history. Both identical 20-field schema.
+
+Not keyed on GL account — keyed on dates + part code. This is a cross-reference table that lets you find all GL activity for a given part number, WO, PO, or SO, regardless of which account it posted to.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKGLX_POSTDATE` | DATE | Posting date |
+| `BKGLX_ARCHDATE` | DATE | Archive date |
+| `BKGLX_ENTDATE` | DATE | Entry date |
+| `BKGLX_PART` | STRING 15 | Part/item code |
+| `BKGLX_QUANTITY` | FLOAT | Quantity (for inventory transactions) |
+| `BKGLX_AMOUNT` | FLOAT | Dollar amount |
+| `BKGLX_TRXNTYPE` | STRING 1 | Transaction type code |
+| `BKGLX_JOURNAL` | STRING 2 | Source journal type (AP, AR, WO, etc.) |
+| `BKGLX_WOPRE` | FLOAT | Work order prefix |
+| `BKGLX_WOSUF` | UBINARY 2 | Work order suffix |
+| `BKGLX_PONUM` | FLOAT | Purchase order number |
+| `BKGLX_SOINVC` | FLOAT | Sales order invoice number |
+| `BKGLX_POINVC` | STRING 10 | AP invoice number (from PO receipt) |
+| `BKGLX_DESC` | STRING 30 | Description |
+| `BKGLX_TRXN` | FLOAT | Transaction sequence number |
+| `BKGLX_BATCH` | FLOAT | Batch number |
+| `BKGLX_POST` | STRING 1 | Posted flag |
+| `BKGLX_COMPANY` | STRING 2 | Company code (multi-company) |
+| `BKGLX_ICLASS` | STRING 4 | Item class (product line grouping) |
+| `BKGLX_CCLASS` | STRING 4 | Cost class |
+
+**Purpose:** BKGLX is the "drill-back" cross-reference — given a part number, you can find all GL activity (what it cost to make, what it sold for, what it was purchased for) without scanning all of BKGLTRAN. BKGLXH is the history archive.
+
+---
+
+## BKGLDESC — GL Notes/Description Table (5 fields)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BK_DESC_CODE` | STRING 15 | Entity code (vendor, customer, account, etc.) |
+| `BK_DESC_NUM` | FLOAT | Document number |
+| `BK_DESC_LINE` | UBINARY 2 | Line number (PK part 3) |
+| `BK_DESC_NOTES` | STRING 70 | Notes text |
+| `BK_DESC_DESC` | STRING 25 | Short description |
+
+Likely a multi-line notes attachment table for GL journal entries — the same 5-field schema also appears as BKAPADSC, BKAPDESC, BKAPHDSC in the AP module, suggesting it is a shared notes pattern.
+
+---
+
+## GL posting workflow
+
+```
+Sub-ledger posts (AR, AP, IC, WO, PR, PO):
+  → Each module writes BKGLTRAN rows directly on posting
+  → Updates BKGLCOA.CURRENT_N (period N) += amount
+  → Also writes BKGLX row if part-based transaction
+
+Manual General Journal (GL-B / GL-P):
+  → Create/edit GJ batch: BKGLGJRN header + BKGLGJLN lines
+  → Debits must equal credits (balanced batch check)
+  → POSTED = N until GL-O runs
+
+GL-O: Print/Post GL Batches
+  → Copy BKGLGJLN → BKGLTEMP for validation
+  → On confirm: write BKGLTRAN rows (one per GJ line)
+  → Update BKGLCOA.CURRENT_N += amount
+  → Move BKGLGJRN/BKGLGJLN → BKGLAGJR/BKGLAGJL (archived)
+
+GL-M: Generate Recurring GJ Transactions
+  → Read BKGLRGJR/BKGLRGJL templates
+  → Create new BKGLGJRN/BKGLGJLN batch (date-stamped)
+  → Ready for GL-O posting
+
+Period-end close (GL-P/GL-O cycle):
+  → Enter adjusting entries in periods 13–14 (BKGLCOA.CURRENT_13/14)
+  → Print financials (GL-F reads BKGLCOA directly)
+  → Year-end close: copy CURRENT_1..14 → 1YPAST_1..14 (shifting 1YPAST → 2YPAST)
+  → Zero out CURRENT_1..14 for revenue/expense accounts
+  → Carry balance-sheet accounts forward
+  → Archive BKGLTRAN → BKGLATRN
+```
+
+---
+
+## GL table family summary
+
+| Table | Fields | Role |
+|-------|-------:|------|
+| **BKGLCOA** | 65 | Chart of accounts — period balances (current + 2 prior years) |
+| **BKGLECOA** | 65 | Extended COA (same schema — possibly multi-company or EE company) |
+| **BKGLFCOA** | 65 | Financial COA (same schema — possibly mapped for financial statements) |
+| **BKGLCCOA** | 62 | Consolidated COA (3 fewer fields — purpose TBD) |
+| **BKGLTRAN** | 16 | GL transaction journal — permanent record |
+| **BKGLATRN** | 16 | Archive transactions (prior year) |
+| **BKGLHIST** | 16 | History transactions (2+ years old) |
+| **BKGLETRN** | 16 | Extended/error transaction staging — purpose TBD |
+| **BKGLTEMP/BKGLTMP/BKGLTMP2/BKGLTMP3** | 16 | Temp tables during GL-O batch posting |
+| **BKGLGJRN** | 11 | General journal batch headers (active) |
+| **BKGLGJLN** | 9 | General journal batch lines (active) |
+| **BKGLAGJR** | 11 | Archived GJ headers |
+| **BKGLAGJL** | 9 | Archived GJ lines |
+| **BKGLRGJR** | 11 | Recurring GJ templates (headers) |
+| **BKGLRGJL** | 9 | Recurring GJ templates (lines) |
+| **BKGLTGJR** | 11 | Temporary GJ headers during GL-O |
+| **BKGLTGJL** | 9 | Temporary GJ lines during GL-O |
+| **BKGLX** | 20 | Extended cross-reference (part/WO/PO/SO → GL) |
+| **BKGLXH** | 20 | Extended cross-reference history |
+| **BKGLDESC** | 5 | GL notes attachment table |
+| **BKGLFSTL** | 12 | Financial statement layout lines |
+| **BKGLSTMT** | 104 | Statement definition/template (104f — large) |
+| **BKGLCHK** | 11 | Check register (current) |
+| **BKGLACHK** | 11 | Check register (archive) |
+| **BKGLICC** | 11 | Intercompany check register — purpose TBD |
+
+---
+
 ## Notes & open questions
 
-- *(populated per-module manually as deeper reading happens.)*
+- BKGLECOA / BKGLFCOA: Both have the same 65-field schema as BKGLCOA. One likely tracks the consolidated/entity company (EE); the other may be a financial-statement mapping layer. Not confirmed without RWN source.
+- BKGLCCOA (62f) — 3 fields fewer than BKGLCOA. The missing fields are unknown; possibly the two year-end balance fields and one other.
+- BKGLSTMT (104f): Large statement definition table — likely the custom financial statement layout used by GL-N. Schema not yet read.
+- BKGLFSTL (12f): Financial statement layout lines — BKFS_NAME + LINE_NUM + SGL_ACCT as key. Likely the row definitions for GL-F printed statements.
