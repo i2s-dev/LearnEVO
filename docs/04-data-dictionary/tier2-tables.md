@@ -2301,3 +2301,228 @@ TRN_PO + TRN_VEND + TRN_CODE + TRN_RECNUM. Fields: GQTY/BQTY/UQTY (good/buyoff/u
 qtys), SCRAP(2)/REWORK(2) codes, PO/AR/BO dates, EMPNUM, RECVNM, FAULT(1)/BROKEN(1)
 flags, FIXQTY, POQTY, INVCD(1) (invoice code), FLAG(1). Detail line for each inspection
 disposition decision.
+
+---
+
+## Pass 139 — IS* tables: Reporting, RMA, Routing, Scheduling, SE/Service, Shipping (DDF lines 19929–21379)
+
+### Reporting Support
+
+**ISREPDEF** (3f, `ISREP_DEF_*`) — Report label/title definition. KEY: LABEL(5). Fields:
+TITLE(30), EXTRA(50). Minimal lookup table mapping a 5-char code to a report display title.
+
+**ISREPLNK** (11f, `ISREP_LNK_*`) — Report-to-customer/item/class link. KEY: REPNM(UBINARY
+2)+CUST(10)+ITEM(15)+CLASS(4). Fields: EXTRA(100), DATE, SDATE/EDATE (date range), LABEL(5),
+GLA(10), GLD(4). Links a report number to a customer+item+class combination with effective
+date range and GL account/dept override.
+
+**ISREPORD** (17f, `ISREP_ORD_*`) — Report order tracking. KEY: REPNM(UBINARY)+REPWH(1).
+Fields: SONUM+INVNM+INVDT, ULID(4-dec), COMPR(4-dec), CMAMT+AMT+AMTRM (commission+amount+
+amount remaining), CBK(1), PCODE(15), CUST, PAYDT, EXTRA(100), GLA+GLD. Tracks which SO/
+invoice a report represents, with commission percentage and payment date.
+
+### RFQ Support
+
+**ISRFQADS** (5f, `BK_DESC_*`) — RFQ address/description lines. Same BK_DESC_* schema used
+by many description-line tables: CODE(15)+NUM+LINE+NOTES(70)+DESC(25). Stores multi-line
+text blocks keyed on a code+number+line counter.
+
+### RMA (Return Merchandise Authorization) Family
+
+EvoERP's RMA system is a large family of closely related tables. Key architectural pattern:
+each document type has a current version and an archived (AI/history) version with identical
+schema. Invoice header/line snapshots use BKAR_INV_*/BKAR_INVL_* prefixes (full clones of
+the AR invoice schema).
+
+**ISRMAAI** (54f, `IS_RMA_*`) — RMA line item, archived. KEY: NUM(float)+PART(15)+LINEID.
+Fields: DATE/RCPTDATE/CLOSDATE, STATUS(30), REASON(30), DISP(40), original SO/INV/OLDRMANO
+cross-refs (OSONUM/OINVNUM/OLDRMANO), replacement SO/INV/CM cross-refs (SONUM/INVNUM/CMNUM),
+REORDER(1), WO (WOPRE+WOSUF), SODATE/INVDATE/CMDATE/DISPDATE, WARRANTY(1), SRNUM (SR link),
+INVCD(1), DISPSEL(UBINARY), IEXTRA(150), 7 named one-char disposition flags
+(WO/CR/SO/STOCK/SCRAP/SR/REFUND), FLAGS_1..20. Archive of closed RMA lines with complete
+disposition history. Note: FLAGS_1..20 provide 20 user-defined extension flags.
+
+**ISRMAC** (3f, `IS_RMA_*`) — RMA reason code master. KEY: CODE(30). DESC(60)+EXTRA(100).
+Simple lookup for RMA return-reason codes.
+
+**ISRMADSC** / **ISRMDESC** (5f each, `BK_DESC_*`) — RMA description lines. Both use the
+standard BK_DESC_* schema (CODE+NUM+LINE+NOTES+DESC). Long-form text for RMA documents.
+
+**ISRMAI** (54f, `IS_RMA_*`) — RMA line item, current (schema identical to ISRMAAI).
+Active (open) RMA lines; ISRMAAI holds the archived version after closure.
+
+**ISRMAINF** / **ISRMHINF** / **ISRMINFO** (54f each, `ISSR_INFO_*`) — RMA extended info
+(active, historical, module-info variants). Schema identical to ISSRINFO/ISQTINFO pattern:
+KEY: SRNUM+UID. CODE(15), 5+5 dates (DATE_1..5 + DATE1..5), 20+20 alphas ×25ch (ALPHA_1..20
++ AL1..20), EXTRA(100). Total record ~1,171 bytes. Three separate tables maintain the same
+flexible UDF structure per RMA number for active, historical, and module-level data.
+
+**ISRMAINV** / **ISRMINV** (84f each, `BKAR_INV_*`) — RMA invoice header snapshot (active
+and current variants). Full clone of the AR invoice header: customer/ship-to addresses,
+terms, salesperson, totals (subtot/tax/total/COGS), freight, department, all IS extension
+fields (currency ISCUR, tax key ISTXKY, revision ISREV/ISRVDT, release RELNUM, tracking,
+QC status QSTAT, misc). ~1,332+ bytes. The IS-prefixed fields within BKAR_INV_* schema
+confirm these are captured at the IS module layer.
+
+**ISRMAIVL** / **ISRMINVL** (28f each, `BKAR_INVL_*`) — RMA invoice line snapshots (active
+and archived). Full clone of AR invoice line: item code+desc+qty+price+disc+ext+COGS, item
+type+taxable+UBO+USTD, RTS(1), location, ABQTY, UM, commission rates, dates, tax amount,
+freight+coop+OOQTY, extra, SCCOG. ~312 bytes.
+
+**ISRMTXN** / **ISRMTXNS** (14f each, `BKAR_TXN_*`) — RMA transaction (current and staged).
+KEY: SONUM. Fields: CODE(15)+DESC(30)+QTY+LOT(15)+SERIAL(25)+DATE+STOCK(15)+LINE+LOC(10)+
+TMPSO(40)+SRNUM+EXTRA(50)+BIN(15). Inventory transaction record for each RMA item movement
+(receipt back to stock, scrap, reroute to WO, etc.).
+
+### Routing Extended and Snapshot Tables
+
+**ISROUTEX** (100f, `IS_ROUT_*`) — Routing extended data per operation. KEY: CODE(15)+OPER.
+Contains 5 parallel cycle-tracking arrays:
+- Cycle time: CYCTIME_1..10 (UBINARY), CYCHR_1..5, CYCMIN_1..5, CYCSEC_1..5
+- Cycle production: CYCPART_1..5 (float, 1-dec = parts/cycle)
+- Cycle notes: CYCNOTE_1..5 (255ch each = 1,275 chars total)
+- Cycle assignment: CYCEMP_1..5 (employee UBINARY), EMPNAME_1..5 (80ch each = 400 chars)
+- Cycle WO: WOPRE_1..5 + WOSUF_1..5 (WO references per cycle slot)
+- Cycle dates: CYCDATE_1..5, CYCMACH_1..5 (4ch machine codes)
+- 15 FLAGS (single-char), 10 ALPHA_N×30ch, 5 NUM_N (float, 2-dec), EXTRA(100)
+- TIMEREQ(1), CALCREQ(1)
+Total record ~2,338 bytes. Captures detailed cycle-time study data for 5 independent cycles
+on a single routing operation, with employee, WO, note, and machine per cycle.
+
+**ISRTESA** / **ISRTEST** (62f each, `MTRO_*`) — Routing operation snapshot (estimate and
+test/template variants). KEY: CODE(15)+OPER. Full clone of BKROUT operation: desc+operdesc,
+type(1), lead, vendcost(6-dec), partshr, timepart/setuphrs (TIME), lotsize, 15 instruction
+lines ×60ch (900 chars), WC(12)+wcdesc(30), vendcode(10)+vendname(25), rates for
+labor/machine/fovhd/vovhd/setup (4-dec each), tmachine(4)+tmachdesc(30), tool(15)+tooldesc(30),
+num(UBINARY), num_person, misc_cost+misc_desc(30), misc_acost, op_temp_no, num_proces,
+time_perpr (TIME), md_proc_hr(1), proc_perhr, std_time(1), min_chg, overlap(UBINARY),
+piece_rate, longtime(7-dec), print(1), class(15), extra(150), negovlp, def_time (TIME),
+r_type(10), est_line, est_tag(10). ~1,514+ bytes. ISRTESA = estimate routing snapshot;
+ISRTEST = routing test/template (schema identical).
+
+### Shipping and Load Manifest
+
+**ISRTLOAD** (21f, `IS_LOAD_*`) — Shipping load manifest. KEY: SONUM. ITEM(15)+DESC(30)+
+SOLINE(3)+SCCOGS+ORDQTY+BALQTY+LOADQTY+SCANQTY+LOADNUM+TRUCK(15)+LOC(10)+SER(25)+LOT(15)+
+BIN(15)+DATE1/DATE2+NUM2+CNTR+ALOAD(15)+EXTRA(100). Tracks qty ordered vs loaded vs scanned
+onto a truck (LOADNUM) per SO line and serial/lot/bin combination.
+
+**ISRTMS** (29f, `IS_RTM_*`) — Report-template/label mapping. KEY: CUST(10)+VEND(10)+ITEM(15).
+RTM(12, label template filename)+PROGRAM(15)+DESC(30)+DFLT(1)+DATE+FLAG(1). Label name
+fields: PARTLBL/SHIPLBL/CONTLBL/MIXEDLBL/QUICKLBL/MISCLBL1-3 (all 12-char template names
+for different label types). QTY(UBINARY)+EXTRA(100)+PRINTER_1..10 (10 printer path strings,
+90ch each = 900 chars total). Maps item/customer/vendor to specific label template file names
+and printer paths for up to 10 different label printers.
+
+### Job Scheduler
+
+**ISSCHED** (24f, `IS_SCHED_*`) — EVO job scheduler task definition. KEY: NAME(50). Fields:
+DESC(256), PROG(256), CO(3), TYPE(1), DATE+TIME (next run schedule), RECUR(float, interval),
+LOG(256, last run output), EXTRA(100), LDATE/LTIME (last-run datetime), WHO(15),
+EMAIL(128), PARAM1..PARAM9+PARAM0 (10 parameter slots ×256ch each = 2,560 chars). Total
+record ~3,649 bytes. Stores task name, the EVO program to run (PROG), schedule (next
+date+time + recurrence interval), last-run log, and 10 arbitrary program parameters.
+PARAM0 appears to be the 10th parameter (zero-indexed last). This is EVO's internal cron/task
+scheduler — no external scheduler required.
+
+### Compound and Service Detail
+
+**ISSCOMP** (5f, `IS_SCOMP_*`) — Compound/complexity detail. DETAIL(20)+COMPND(30)+VIS(1)+
+WHO(40)+SCOMP(50). Tracks compound items or visual complexity assignments per detail code.
+
+**ISSDET** (4f, `IS_SDET_*`) — Service/schedule detail type. TYPE(20)+DETAIL(20)+WHO(40)+
+SUB(1). Detail-type classification for service scheduling.
+
+### SE (Service/Estimate) Document Family
+
+The SE family is structurally parallel to the RMA family, using the same BKAR_INV_*/BKAR_INVL_*
+AR invoice clones for document headers and lines.
+
+**ISSEDH** / **ISSESH** (84f each, `BKAR_INV_*`) — SE Document/Session header. Full AR
+invoice header clone (same 84f schema as ISRMAINV/ISRMINV). ISSEDH = SE document header;
+ISSESH = SE session header. Both use the full BKAR_INV_* field set including all IS extension
+fields (ISCUR, ISTXKY, ISREV, ISRVDT, RELNUM, TRACK, QSTAT, MISC).
+
+**ISSEDL** / **ISSESL** (28f each, `BKAR_INVL_*`) — SE Document/Session lines. Full AR
+invoice line clone (same 28f schema as ISRMAIVL/ISRMINVL). SE document lines and SE session
+lines respectively.
+
+**ISSEPROC** (2f, `IS_SEPROC_*`) — SE process access. PROC(25)+WHO(40). Maps a process name
+to a username — access control or log for SE processes.
+
+**ISSEQUIP** (2f, `IS_SEQUIP_*`) — Service equipment master. NAME(20)+DESC(40). Minimal
+lookup for equipment names used in service records.
+
+**ISSETYPE** (2f, `IS_SETYPE_*`) — SE error type. ERR(25)+WHO(40). Error type classification
+for SE error tracking.
+
+### Serial Number Management
+
+**ISSERCNT** (9f, `IS_SERC_*`) — Serial number auto-counter. KEY: ITEM(15)+CLASS(4). Fields:
+SPOS(UBINARY, start position in serial string), LENG(2, length of numeric portion), TOTAL
+(UBINARY, total serial length), NUMBER(float, current counter value), LAST(25, last serial
+issued), EXTRA(100), L2(UBINARY). Drives auto-generation of serial numbers per item/class
+using a configurable position+length format within the serial string.
+
+**ISSERIAL** (11f, `IS_SER_*`) — Serial BOM component tree. KEY: WOPRE+WOSUF+PARENT(15)+
+COMP(15). Fields: PDESC(30), PSERIAL(25), ADATE (assembly date), CDESC(30), CSERIAL(25),
+FDATE (finish/final date), IS_SER_EXRA(100). Records which serial-numbered component was
+assembled into which serial-numbered parent item on which WO, with assembly date and final
+date. Note: field name `IS_SER_EXRA` is a confirmed DDF typo (see ISLOTS, ISHLOTS).
+
+**ISSERR** (14f, `IS_SERR_*`) — Shop floor error log. KEY: WOPRE+WOSUF+OPER+TIME+DATE.
+Fields: ERROR(25), PROCESS(25), COUNT(UBINARY), REF(50), EXTRA(50), SERIAL(20), ADOF(1000,
+Description of Failure text), ADIAG(1000, Diagnosis text), AREWORK(1000, Rework instructions
+text). Total record ~3,228+ bytes. Each record stores a complete failure report for a WO
+operation: what failed (ADOF=1KB), diagnosis (ADIAG=1KB), and rework plan (AREWORK=1KB).
+The most text-intensive table in the IS family.
+
+### Shipping Carrier Configuration
+
+**ISSHIPA** (5f, `IS_SHPA_*`) — Shipping API credentials. KEY: CODE(10). USER(30)+PASS(30)+
+TOKEN(30)+EXTRA(50). Stores carrier-API login credentials (username, password, API token) per
+carrier code. Likely used for UPS/FedEx/etc. web-service rate shopping.
+
+**ISSHIPCO** (16f, `IS_SHIP_*`) — Shipping company extended master. KEY: SHPCOD(10). SHPNME(30)+
+SHPDESC(60)+VNDCOD(10)+5 NOTES×60ch (300 chars)+SHIPVIA(15)+EXTRA(150)+5 WEB_N×120ch (600 chars
+of web endpoint URLs). Augments the base shipping-company master with vendor link, notes, and
+web API endpoint URLs.
+
+**ISSHPVIA** (23f, `IS_SHPVIA_*`) — Customer-specific ship-via setup. KEY: CUST(10)+CODE(15).
+PRTY(UBINARY)+OBS(1)+ACCT(25, carrier account#)+PHONE(25)+10 NOTES×60ch (600 chars)+DATE+
+CNTCT(25)+FLAG(1)+VEND(10)+ALPH1/2×15+EXTRA(100). Per-customer carrier account credentials
+with contact info and 10 notes lines. Enables billing shipments to customer's own carrier
+account.
+
+### Digital Signature
+
+**ISSIGN** (16f, `IS_SIGN_*`) — Digital signature record. KEY: NUM(float). WHO(40)+POS(40,
+position/title)+EWHO(15, employee code)+EDATE/ETIME+NAME(40)+JPG(256, file path to signature
+JPEG image)+SDATE/STIME+5 GDTE1..5 (general dates)+EXTRA(50). Stores signature metadata and
+a path to the scanned/captured JPEG image. Used for electronic approval workflows (POs, QC
+sign-offs, etc.).
+
+### Sales Forecast
+
+**ISSLSFC** (9f, `BKMRP_FC_*`) — Sales module forecast entries. KEY: PART(15)+DATE. QTY+
+EXTRA(25)+OQTY (original qty)+CQTY (committed qty)+FLAG(1)+DATE1+NUM. Uses the BKMRP_FC_*
+prefix (same as ISMRPFC), indicating shared MRP forecast schema. Tracks forecast qty vs
+committed qty per item per date — feeds into MRP demand planning from the sales side.
+
+### SMT (Surface Mount Technology) Assembly
+
+**ISSMTCFG** (15f, `IS_SMT_*`) — SMT machine reel configuration. KEY: WOPRE+WOSUF+OPER(3).
+MACHINE(4)+DATE+TIME+EMP(4)+COMP(15, component/part)+LOT(15)+CURRENT(1)+REEL(UBINARY)+
+EXTRA(50)+CNTR(UBINARY)+CAP(UBINARY)+RQTY(float, 4-dec). Tracks which component reel is
+loaded on which SMT machine for a given WO operation, with lot, employee, and reel capacity.
+Supports SMT pick-and-place traceability.
+
+### Structured Notes (Extended)
+
+**ISSNOTES** (9f, `IS_NOTE_*`) — Structured note record with dual-author tracking. KEY:
+ID(48, UID matching ISLINKS/ISNOTES format)+TYPE(3). Fields: CDATE/CTIME(STRING 10)/CWHO(15)
+(created: date + time-string + employee), EDATE/ETIME(STRING 10)/EWHO(15) (last-edited),
+EXTRA(100). Note: CTIME and ETIME are STRING(10) rather than TIME type — stored as formatted
+time text. Offset gap at 51–62 (12 bytes) between TYPE and CDATE suggests possible reserved
+padding. Provides an audit trail of who created and last edited each note record, keyed on
+the same 48-char UID system used throughout IS modules.
