@@ -159,17 +159,24 @@ Null terminator: `00 00 00 00  00 00 00 00`
 - sub=0x15: return/end operations (0x30)
 - sub=0x36: program exit (0x40)
 
-**CONFIRMED — 0x20 vs 0x57 semantic distinction (Pass 110c, 2026-06-19):**
+**CONFIRMED — 0x20 vs 0x57 semantic distinction (Pass 110c/110d, 2026-06-19):**
 - 0x20 = CREATE/BIND: first occurrence loads DFM (TForm.Create); subsequent occurrences bind event handlers
 - 0x57 = EXECUTE: enters the form's event loop (TForm.ShowModal); LAST substantive operation in most programs
 - T7MSG exception: uses 0x57 alone because it has no event handlers to bind — MOUNT+EXECUTE collapsed into one step
 - Sequence in a typical TAS Pro 7 program:
   ```
-  [0]  0x20 → DFM_NAME     # Create form from .DFM file
-  [1+] 0x20 → handler_info  # Bind event handlers (one per proc)
-  [n]  0x57 → DFM_NAME     # Execute form (ShowModal / run event loop)
-  [n+1] 0x40 or 0x71       # Program exit
+  [0]  0x20 poff=0        # Create form: pool[0] = DFM_NAME string
+  [1+] 0x20 poff=9xN      # Bind event handlers — poff is DIRECT VALUE (not pool offset)
+  [n]  0x57 poff=0        # Execute form (ShowModal) — pool[0] = DFM_NAME again
+  [n+1] 0x40/0x71 poff=X  # Program exit — poff is DIRECT VALUE (exit code/address)
   ```
+- **poff interpretation by opcode family:**
+  - Data opcodes (0x0F ASSIGN, 0x42 GOSUB, 0x9A READFILE): poff IS a pool byte offset → typed entry
+  - Form opcodes (0x20 BIND, 0x57 EXECUTE): poff=0 IS a pool offset (DFM name); poff≠0 is a DIRECT VALUE
+  - Exit opcodes (0x40, 0x71): poff is always a DIRECT VALUE (exit code or address)
+- **Pool alignment**: 9-byte aligned. When poff IS a pool offset, it is always a multiple of 9.
+  The string entry format is: `[0x41][0x00][len_lo][len_hi][char0..char4]` (9 bytes) + continuation
+  blocks of 9 bytes each for remaining characters.
 
 ---
 
