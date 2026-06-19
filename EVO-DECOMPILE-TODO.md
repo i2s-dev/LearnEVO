@@ -411,7 +411,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 ### 4.4 Key Individual Tables (minimum needed for 90% goal)
 - [x] ✅ `BKARCUST` — AR Customer master: 106 fields documented in `docs/04-data-dictionary/tier1-tables.md` — **C: 68/100**
 - [x] ✅ `BKICMSTR` — Inventory Item master: 64 fields documented; PROD_TYPE codes R/N confirmed from live IN-A screen (2026-06-17); full set RFAMNLBTKO confirmed from HH filter string — **C: 82/100**
-- [x] ✅ `BKSYMSTR` — System configuration master: 286 fields, key categories documented — **C: 62/100**
+- [x] ✅ `BKSYMSTR` — System configuration master: all 286 DDF fields organized (20-slot payment terms array, 9-slot bank account array, AR/AP/GL defaults, auto-number counters, PRGS_WHR program path); BKSYPRTR companion table confirmed — Pass 121 2026-06-19 — **C: 85/100**
 - [x] ✅ `AHSYLOG` — User security: all 23 fields documented — **C: 68/100**
 - [x] ✅ `ISJAVA` — Java task queue: pattern confirmed; table NOT found in DDF (may be runtime-only or named differently) — **C: 55/100**
 - [x] ✅ `BKLOGON` — Active session: all 10 fields documented — **C: 72/100**
@@ -419,7 +419,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `WORKCHG` — Work order change log: all 25 fields documented — **C: 70/100**
 - [x] ✅ `BKARCUST` — all fields with meaning, PKs — documented — **C: 68/100**
 - [x] ✅ `BKICMSTR` — all fields with meaning; PROD_TYPE codes confirmed (RFAMNLBTKO, R/N from live UI) — **C: 82/100**
-- [x] ✅ `BKSYMSTR` — major categories documented — **C: 62/100**
+- [x] ✅ `BKSYMSTR` — full schema: 286 fields confirmed from DDF; all embedded arrays documented (terms×20, bank×9, aging×5, ENDDESC×5, PR_ODNAME×6); BKSYPRTR printer table confirmed — Pass 121 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKAPVEND` — AP Vendor master: 26+ fields documented — **C: 65/100**
 - [x] ✅ `BKGLCOA` — GL Chart of Accounts: 65 fields documented (replaces BKGLJRNL — that table is BKGLTRAN) — **C: 68/100**
 - [x] ✅ `WORKORD` / `WORKCHG` — Work order header + change log — documented — **C: 70/100**

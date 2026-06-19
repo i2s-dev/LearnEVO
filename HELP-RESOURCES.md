@@ -2397,7 +2397,7 @@ in AHSYLOG with role, starting menu code, and 20 access flags.
 
 **Access:** AD-A (GL Defaults) via T7MDEFAULTS.RWN (435 procs). See Accounting Defaults (AD) section below.
 
-**Confidence: 78/100** — Full 286-field schema extracted and all field groups decoded from naming conventions; individual field behaviors confirmed from AD module DFM forms and SM module descriptions.
+**Confidence: 85/100** — All 286 DDF fields confirmed from samples/ddf/schema.md; embedded arrays fully documented (20-slot terms, 9-slot bank, 5-slot aging, BKSYPRTR printer table confirmed); tier1-tables.md updated Pass 121.
 
 ---
 

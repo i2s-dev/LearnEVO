@@ -411,27 +411,136 @@ File: `BKLOGON.B` | Module: Security | Fields: 10
 
 ## BKSYMSTR — System Master Configuration
 
-File: `BKSYMSTR.B` | Module: System | Fields: 286
+File: `BKSYMSTR.B` | Module: System | Fields: 286 | Companion: BKSYPRTR.B
 
-This is a single-record global configuration table. One record exists per company.
-Field names follow `BKSY_*` prefix convention.
+Single-record per-company global config table. All 286 DDF fields confirmed from
+`samples/ddf/schema.md`. Field name prefix `BKSY_`. Programs access as `BKSY.*` variable.
 
-Key configuration areas (from schema field names):
-- **AR/AP/PO counters:** Next invoice number, next PO number (auto-increment)
-- **Tax:** Default tax rate
-- **Terms (20 slots):** Each term has: amount, type, days, EOM flag, maximum
-- **Check accounts (per bank):** Account balance, name, GL account, GL department
-- **AR/AP/PR check accounts:** Separate bank account assignments per module
-- **AR SO counter:** Next sales order number
-- **Freight GL accounts:** Default freight income and expense accounts
-- **Aging buckets:** 4 bucket definitions (days threshold per bucket)
-- **PR optional deductions:** Payroll deduction setup
-- **Record numbers:** Various auto-increment sequence counters
-- **Discount rates:** Default discount percentages
-- **PO accounts:** Default GL accounts for PO receipts
-- **Currency codes:** Multi-currency rate tables
+The 286 fields are organized as **embedded arrays** (not separate records) —
+the single BKSYMSTR record holds multiple data slots via array suffixes (_1.._N).
 
-*(Full 286-field list in `samples/ddf/schema.md` under `## BKSYMSTR`)*
+### Field groups
+
+| Group | DDF fields | Description |
+|-------|-----------|-------------|
+| Auto-number counters | 1–4, 223, 251–253 | Next invoice/PO/GJ/SO/record numbers |
+| Tax defaults | 5, 159–160 | Default tax rate + GL accounts |
+| Payment terms array (20×7=140) | 6–125, 255–274 | 20 terms slots, 7 fields each |
+| Company identity | 126–129 | Name + 3 address lines |
+| AR defaults | 130–140, 173–174, 226–227, 235–239, 220 | Ship-via, GL, aging, interest |
+| AP defaults | 141–148, 153–158, 240–244, 221 | Entries, GL, aging buckets |
+| GL defaults | 149–172 | Clearing, retained earnings, fiscal year, AR interest |
+| PO defaults | 161–164, 228–229, 275–276 | Tax, freight, RNI, INR GL accounts |
+| Bank accounts array (9×6=54) | 175–219, 278–286 | 9 banks: num/bal/name/act/dept/currency |
+| Payroll | 222, 245–250 | PR check account + 6 deduction names |
+| System paths | 167, (HELP_PATH) | Program path prefix, help path |
+| Presentation flags | 230–234 | Plain invoice/PO/stmt/checks, form company |
+| Misc | 224–225, 254, 277 | AUTO_BO, RTS_DEF, TAL, EXTRA(173b) |
+
+### Key fields (individual, not array elements)
+
+| Field | DDF# | Type | Meaning |
+|-------|------|------|---------|
+| BKSY_ARINV_NUM | 1 | FLOAT | Next AR invoice number (auto-increment) |
+| BKSY_APINV_NUM | 2 | FLOAT | Next AP invoice number |
+| BKSY_APPO_NUM | 3 | FLOAT | Next AP/PO number |
+| BKSY_GJ_NUM | 4 | FLOAT | Next GJ transaction number |
+| BKSY_TAX_RATE | 5 | FLOAT(2) | Default sales tax rate |
+| BKSY_COMP_NAME | 126 | STRING(25) | Company name |
+| BKSY_COMP_ADD1 | 127 | STRING(25) | Company address line 1 |
+| BKSY_COMP_ADD2 | 128 | STRING(25) | Company address line 2 |
+| BKSY_COMP_CSZ | 129 | STRING(25) | Company city/state/zip |
+| BKSY_AR_SHP_VIA | 130 | STRING(15) | AR default ship-via code |
+| BKSY_AR_SLSP | 131 | UBINARY | AR default salesperson |
+| BKSY_AR_ENTBY | 132 | STRING(5) | AR default entered-by |
+| BKSY_AR_TAXABL | 133 | STRING(1) | AR default taxable flag |
+| BKSY_AR_TURNOFF | 139 | STRING(1) | AR feature turnoff flag |
+| BKSY_AR_PEL | 140 | STRING(1) | AR PEL flag |
+| BKSY_AR_GLACT | 151 | STRING(10) | AR GL account |
+| BKSY_AR_GLDPT | 152 | STRING(4) | AR GL department |
+| BKSY_AR_DISCGL | 153 | STRING(10) | AR discount GL account |
+| BKSY_AR_DISCDPT | 154 | STRING(4) | AR discount GL dept |
+| BKSY_AP_GLACT | 155 | STRING(10) | AP GL account |
+| BKSY_AP_GLDPT | 156 | STRING(4) | AP GL department |
+| BKSY_AP_DISCGL | 157 | STRING(10) | AP discount GL account |
+| BKSY_AP_DISCDPT | 158 | STRING(4) | AP discount GL dept |
+| BKSY_TAX_GLACT | 159 | STRING(10) | Tax GL account |
+| BKSY_TAX_GLDPT | 160 | STRING(4) | Tax GL department |
+| BKSY_PO_TAXGL | 161 | STRING(10) | PO tax GL account |
+| BKSY_PO_TAXDPT | 162 | STRING(4) | PO tax GL dept |
+| BKSY_PO_FREIGHT | 163 | STRING(10) | PO freight GL account |
+| BKSY_PO_FRGTDPT | 164 | STRING(4) | PO freight GL dept |
+| BKSY_GL_RETEARN | 165 | STRING(10) | Retained earnings GL |
+| BKSY_GLDPT_RET | 166 | STRING(4) | Retained earnings GL dept |
+| BKSY_PRGS_WHR | 167 | STRING(40) | **Program path prefix** — used to chain sub-programs (e.g., BKAPHA) |
+| BKSY_FISCAL_YR | 168 | DATE | Fiscal year start date |
+| BKSY_GL_RELYR | 169 | STRING(10) | GL related year account |
+| BKSY_GLDPT_RELY | 170 | STRING(4) | GL related year dept |
+| BKSY_GL_ARINTR | 171 | STRING(10) | AR interest income GL |
+| BKSY_GLDPT_ARIN | 172 | STRING(4) | AR interest income GL dept |
+| BKSY_AR_INT_RTE | 173 | FLOAT(2) | AR interest rate |
+| BKSY_AR_INT_DAY | 174 | UBINARY | AR interest grace days |
+| BKSY_AR_CHKACT | 220 | UBINARY | AR bank account index (1–9) |
+| BKSY_AP_CHKACT | 221 | UBINARY | AP bank account index (1–9) |
+| BKSY_PR_CHKACT | 222 | UBINARY | Payroll bank account index (1–9) |
+| BKSY_ARSO_NUM | 223 | FLOAT | Next AR/SO sales order number |
+| BKSY_AUTO_BO | 224 | STRING(1) | Auto backorder flag |
+| BKSY_RTS_DEF | 225 | STRING(1) | RTS default flag |
+| BKSY_AR_FREIGHT | 226 | STRING(10) | AR freight GL account |
+| BKSY_AR_FRGTDPT | 227 | STRING(4) | AR freight GL dept |
+| BKSY_PO_RNI | 228 | STRING(10) | PO received-not-invoiced GL |
+| BKSY_PO_RNIDPT | 229 | STRING(4) | PO RNI GL dept |
+| BKSY_PLAIN_INV | 230 | STRING(1) | Plain (no logo) invoice flag |
+| BKSY_PLAIN_PO | 231 | STRING(1) | Plain PO flag |
+| BKSY_PLAIN_STMT | 232 | STRING(1) | Plain statement flag |
+| BKSY_PLAIN_CHKS | 233 | STRING(1) | Plain checks flag |
+| BKSY_FORM_CMPNY | 234 | STRING(1) | Form company flag |
+| BKSY_AP_RECNUM | 251 | FLOAT | AP record number counter |
+| BKSY_GJ_RECNUM | 252 | FLOAT | GJ record number counter |
+| BKSY_AR_RECNUM | 253 | FLOAT | AR record number counter |
+| BKSY_TAL | 254 | STRING(1) | TAL flag |
+| BKSY_PO_INR | 275 | STRING(10) | PO INR GL account |
+| BKSY_PO_INRDPT | 276 | STRING(4) | PO INR GL dept |
+| BKSY_EXTRA | 277 | STRING(173) | Overflow/extra config blob |
+| BKSY_GL_CLRING | 149 | STRING(10) | GL clearing account |
+| BKSY_GLDPT_CLR | 150 | STRING(4) | GL clearing dept |
+
+### Embedded arrays
+
+**Payment terms (20 slots, fields 6–125, 255–274):**
+Each slot N (1–20) has 7 sub-fields:
+`TERMS_N` (20ch desc), `TRM_AMT_N` (amount), `TRM_TYP_N` (type code), `TRM_DAY_N` (days),
+`TRM_EOM_N` (EOM flag), `TRM_MAX_N` (max amount), `TRM_DISC_N` (discount %)
+
+**Bank accounts (9 slots, fields 175–219, 278–286):**
+Each slot N (1–9) has 6 sub-fields:
+`CHK_NUM_N` (check number), `CHK_BAL_N` (balance), `CHK_NAME_N` (30ch name),
+`CHK_CHKACT_N` (GL account), `CHK_CHKDPT_N` (GL dept), `CHK_CHKCUR_N` (3ch currency code)
+Module-to-bank linkage: AR_CHKACT / AP_CHKACT / PR_CHKACT hold the bank slot index (1–9)
+
+**AR/AP aging buckets (5 slots each, fields 235–244):**
+`AR_AGING_1..5` and `AP_AGING_1..5` — day thresholds for 5-bucket aging reports
+
+**AR/AP end-of-document descriptions (5 slots each):**
+`AR_ENDDESC_1..5` (30ch each) — text appended to invoices; `AP_ENDDESC_1..5` for AP docs
+
+**Payroll optional deduction names (6 slots, fields 245–250):**
+`PR_ODNAME_1..6` (12ch each) — labels for payroll optional deductions
+
+### BKSYPRTR — Printer Registry (companion)
+
+File: `BKSYPRTR.B` | Fields: 6+ (separate table, one record per printer)
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKSY_PRTR_NAME | STRING | 30 | Printer display name |
+| 2 | BKSY_PRTR_EXEC | STRING | 8 | Executable/driver type |
+| 3 | BKSY_PRTR_TAS | STRING | 1 | TAS mode flag |
+| 4 | BKSY_PRTR_LPTNM | UBINARY | 1 | LPT port number |
+| 5 | BKSY_PRTR_TYPE | STRING | 8 | Printer type code |
+| 6 | BKSY_PRTR_PWDT | UBINARY | 2 | Paper width |
+
+*(Full 286-field DDF list in `samples/ddf/schema.md` under `## BKSYMSTR` — Pass 121 2026-06-19)*
 
 ---
 
