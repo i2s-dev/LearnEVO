@@ -211,7 +211,7 @@ to resolve fully:
     - UP = Update Management — BKUPDATE (company/update-flag/date/version)
     - YS = Yes/No System Parameters — T7YSYN.RWN edits BKYSMSTR (195+ YN flags)
 
-16. **RWN bytecode pool type system — PARTIALLY RESOLVED Pass 110 2026-06-19.**
+16. **RWN bytecode pool type system + opcode table — PARTIALLY RESOLVED Pass 110/110b 2026-06-19.**
     Pool type system decoded from `suwin7.rwn` (34-instruction license-check program):
     - `0x41` = variable-length entry: `[41][00][len16][data]`. If data starts with `0xFD` it is a
       **compound blob** (argument block for one or more instructions). Printable-ASCII data = string constant.
@@ -225,17 +225,26 @@ to resolve fully:
       always allocates exactly 60 TEMP variables (TEMP0–TEMP59) before user-declared variables.
     - Multiple dispatch entries point to different byte offsets within the same blob (each reads its own sub-field).
 
+    **Pass 110b additions (25-program survey, 2026-06-19):**
+    - DISP_START = 0x6C0 confirmed universal constant across ALL 25 programs (from 2-instruction T7MSG to 663-variable t7slsfc).
+    - **0x57 (sub=0x05)**: Universal — in all 25 programs. T7MSG (the simplest TAS Pro 7 program, a message dialog with 2 instructions) uses 0x57 as its FIRST (and only functional) instruction, pointing to "T7MSG.DFM". Primary form-execution opcode: MOUNT/RUN form.
+    - **0x20 (sub=0x05)**: Near-universal — 24/25 programs; only T7MSG lacks it. Also references DFM filenames. T7MSG proves 0x57 alone is sufficient to mount+run a form — 0x20 may be a secondary form-link or property-set operation.
+    - **Branch family (sub=0x14)**: Opcodes 0x3B, 0xD2, 0x6A all share sub=0x14. Three jump/branch variants (exact conditional vs. unconditional distinction TBD).
+    - **Proc names**: Length-prefixed Pascal short strings — byte[0]=name_length, bytes[1:1+length]=name. Confirmed from T7askbut: `\x14T7ASKBUT.ONOPENFILES`, `\x10T7ASKBUT.ONSTART`, `\x10T7ASKBUT.ONCLOSE`; domtest: `\x05START`.
+    - **0x9A (sub=0x06)**: 1/25 programs — T7S1.RWN uses it to read "T7S1.TXT"; file-read opcode.
+    - Full 17-opcode table in `docs/02-file-formats/rwn-binary-format.md`.
+
     **Still open sub-questions:**
     - What do the bytes immediately after the `0xFD` marker encode? (Values 0x00, 0x9A, 0x4D observed; 0x9A in
       blobs involving SNVALUE comparisons — may be a sub-opcode or argument-count byte.)
-    - Exact semantics of opcodes 0x0F, 0x42, 0x3B? (Inferred as ASSIGN, GOSUB/CALL, GOTO/branch — not confirmed.)
-    - Why do opcodes 0x43, 0x45, 0x57 appear only once in suwin7.rwn? (Too few examples to characterize.)
+    - **0x57 vs 0x20 exact distinction**: Both sub=0x05, both reference DFMs. Hypothesis: 0x57=primary MOUNT (creates main window), 0x20=secondary MOUNT or SETPROP (registers event handlers). Needs more minimal-program data.
+    - **0x40 role**: T7MSG uses it as FINAL instruction [1] (after 0x57 mounts the form), T7pass also uses it as a final instruction. Likely EXECUTE/WAIT (run the event loop until form closes) or EXIT.
+    - **0x30 (sub=0x15)**: 10/25 programs, once per program. RETURN? END-OF-PROC?
     - Does `0x43` (C) type always encode a pool-section byte offset, or can it be a direct integer in some
       contexts? (All C values in suwin7.rwn are valid pool offsets, but sample size = 1 program.)
     - Does T7INA.RWN also have exactly 60 TEMP variables? Header[0x18]=4620 in both suwin7 and T7INA —
-      is 60 TEMP vars a TAS Pro 7 compiler invariant?
-    - Multi-program opcode comparison needed: run `rwn_dispatch_compare.py` across ≥5 programs to find
-      opcodes that appear in all programs (likely control-flow: GOTO, GOSUB, RETURN, END).
+      is 60 TEMP vars a TAS Pro 7 compiler invariant? (t7slsfc also confirmed via 663-var header — 60 TEMP + 603 user)
+    - Next step to reach C:60+: cross-reference BKMRF (3-way SRC+RUN+RWN Rosetta Stone) to confirm opcode identities; especially: does BKMRF.RUN opcode for conditional branch match 0x3B or 0xD2 in BKMRF.RWN?
 
 ## Nice-to-have follow-ups (not blocking)
 

@@ -1,6 +1,6 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, pool/data section decoded C:35/100
+Status: partial — header confirmed, symbol tables confirmed, pool/data section decoded, 17 opcodes identified C:50/100
 Last updated: 2026-06-19
 
 ---
@@ -127,17 +127,39 @@ collectively encoding the arguments for one high-level TAS Pro 7 statement.
 
 Null terminator: `00 00 00 00  00 00 00 00`
 
-**Observed opcodes in suwin7.rwn (34 total entries):**
+**Opcode table (from 25-program survey, Pass 110b — live decrypt from share):**
 
-| Opcode | sub_byte | Count | Likely meaning |
-|--------|----------|-------|----------------|
-| 0x0F   | 0x0A     | 13    | ASSIGN / property-set |
-| 0x42   | 0x04     | 9     | GOSUB / CALL procedure |
-| 0x3B   | 0x14     | 6     | GOTO / conditional branch |
-| 0x20   | 0x05     | 3     | MOUNT form (d[0] → 'SUWIN7.DFM') |
-| 0x43   | 0x09     | 1     | Unknown |
-| 0x45   | 0x04     | 1     | Unknown (possibly ENTER / input) |
-| 0x57   | 0x05     | 1     | Unknown (possibly WAIT — refs WAIT_SECS) |
+| Opcode | sub  | Coverage | Likely meaning | Evidence |
+|--------|------|----------|----------------|---------|
+| 0x57   | 0x05 | 25/25 ★ UNIVERSAL | MOUNT FORM or RUN | In every program; T7MSG (2-instr message dialog) uses it with DFM ref as first instruction |
+| 0x20   | 0x05 | 24/25  | MOUNT FORM (variant) or LINK FORM | 24/25 programs; only T7MSG lacks it; always sub=0x05; references DFM filenames |
+| 0x0F   | 0x0A | 19/25  | ASSIGN / property-set | In suwin7 sets lblCaption, SERIALNUMBER, etc.; always sub=0x0A |
+| 0xD2   | 0x14 | 11/25  | GOTO / jump (variant) | sub=0x14 same as 0x3B; t7slsfc uses it 5× as branch opcode |
+| 0x30   | 0x15 | 10/25  | RETURN / end-of-proc | sub=0x15; appears once per program, often near end |
+| 0x6A   | 0x14 | 4/25   | GOTO / jump (variant) | sub=0x14 family; domtest uses 3× in branch pattern with 0x42 |
+| 0x3B   | 0x14 | 6/25   | GOTO / conditional branch | Confirmed from suwin7: IF/THEN branch; sub=0x14 family |
+| 0x42   | 0x04 | 3/25   | GOSUB / CALL procedure | Confirmed from suwin7; calls GETSERIALNUM, DOCOUNTDOWN |
+| 0x40   | varies | 5/25 | SHOW / EXECUTE or EXIT | T7MSG [1]=0x40 as final op; T7pass [5]=0x40 as final op; sub varies |
+| 0x43   | 0x09 | 2/25   | Unknown | Appears in suwin7 [19] and one other program |
+| 0x45   | 0x04 | 2/25   | Unknown (possibly ENTER / INPUT) | suwin7 [20] only |
+| 0x49   | varies | 2/25 | Unknown | |
+| 0x4B   | 0x09 | 2/25   | Unknown | t7b [6] = last instruction; refs N:1162627398 |
+| 0x9A   | 0x06 | 1/25   | READ FILE / LOAD TEXT | T7S1.RWN [0] refs STR("T7S1.TXT") |
+| 0x71   | 0x05 | 1/25   | END / TERMINATE (variant) | T7askbut [4] as last instruction |
+| 0xD9   | 0x07 | 2/25   | Unknown | T7S1.RWN uses 2× |
+| 0x15   | 0x04 | 1/25   | END / TERMINATE (variant) | t7slsfc [14] as last instruction |
+
+**Key: sub-byte families observed:**
+- sub=0x05: form operations (0x20, 0x57) and program execution
+- sub=0x0A: assignment/property operations (0x0F)
+- sub=0x04: call/subroutine operations (0x42, 0x45)
+- sub=0x14: jump/branch operations (0x3B, 0x6A, 0xD2)
+- sub=0x15: return/end operations (0x30)
+
+**Note on 0x57 vs 0x20:** Both opcodes reference DFM filenames via pool STR entries and share sub=0x05.
+Distinction is not yet confirmed. Hypothesis: 0x57 = primary MOUNT (creates main form window),
+0x20 = secondary MOUNT or SETPROP (registers event handlers or links subforms).
+Evidence: T7MSG (simplest 2-instruction program) uses ONLY 0x57 → DFM; larger programs use BOTH.
 
 ---
 
