@@ -482,7 +482,7 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.1 Accounts Receivable (AR)
 - [x] ✅ Menu codes listed (AR-A through AR-S) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7AR\*.DFM) — **C: 70/100**
-- [x] ✅ Tables identified: BKAR\* (27 tables); primary keys documented — **C: 65/100**
+- [x] ✅ Tables identified: BKAR\* (27 tables); full satellite family documented — mirror architecture confirmed (BKARECST/BKARSHIP = BKARCUST mirrors; BKARHINV/BKARRINV = BKARINV history/returns mirrors; BKARTXN/B/S identical; BKARINVV = 10-slot GL voucher; BKAREIVT = BKARINVT+BKAB_PERIOD+NORMP; staging=BKARINVI) — Pass 126 2026-06-19 — **C: 82/100**
 - [x] ✅ Key forms read: T7ARA (customer master — all fields), T7ARB (voucher/GL dist), T7ARC (payment application), T7ARD (finance charges), T7ARE (statements), T7ARF-I (reports) — **C: 72/100**
 - [x] ✅ AR workflow fully traced: customer → invoice → payment → statement — **C: 72/100**
 - [x] ✅ Payment application logic confirmed: credits/deposits tracked separately in BKAR.OUT.CREDIT[1-2] — **C: 68/100**

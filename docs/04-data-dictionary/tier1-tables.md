@@ -1459,6 +1459,243 @@ different lifecycle stages.
 
 ---
 
-*Document updated: 2026-06-17 (Pass 25)*
+---
+
+## BKAR* Family — AR Satellite Tables
+
+All confirmed from DDF — Pass 126 2026-06-19.
+
+### Mirror Architecture (key insight)
+
+The BKAR* family uses four structural mirrors of core tables:
+
+| Source Table | Mirror(s) | Reason |
+|---|---|---|
+| BKARCUST (106f) | BKARECST (106f) | "E" company; BKARSHIP (106f) = ship-to address record |
+| BKARINV (84f) | BKARHINV (84f) = history; BKARRINV (84f) = returns |
+| BKARINVL (28f) | BKARHIVL (28f) = hist lines; BKARRIVL (28f) = return lines; BKARSIVL (28f) = ship-to lines |
+| BKARTXN (14f) | BKARTXNB (14f) = batch variant; BKARTXNS (14f) = serial variant |
+
+---
+
+### BKARCUST — AR Customer Master (already documented above)
+
+Full 106-field table: see §BKARCUST at the top of this file.
+
+---
+
+### BKARECST — "E" Company Customer Master
+
+File: `BKARECST.B` | Module: AR (multi-company) | Fields: 106
+
+Byte-for-byte identical schema to BKARCUST. Stores customer records for the "E" company in a multi-company deployment. All field names, types, and offsets are the same as BKARCUST.
+
+---
+
+### BKARSHIP — Ship-To Address Master
+
+File: `BKARSHIP.B` | Module: AR | Fields: 106
+
+Byte-for-byte identical schema to BKARCUST. Stores named ship-to locations for customers who ship to multiple addresses. PK is `BKAR_CUSTCODE` (the ship-to code, not the billing customer code). Selected via `BKARCUST.BKAR_SHIPTO` → BKARSHIP lookup. Contains its own set of contacts/phones/emails, analytics accumulators, and compliance fields.
+
+---
+
+### BKARINVV — AR Voucher with Inline GL Distribution
+
+File: `BKARINVV.B` | Module: AR | Fields: 77
+
+AR voucher record with inline 10-slot GL distribution — analogous to BKAPINVL (75-slot) but for AR manual credits/adjustments. Used when AR needs to distribute a transaction across multiple GL accounts without creating a full invoice.
+
+**Header (fields 1–11):**
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKAR_INVV_CODE | STRING | 10 | Customer code (FK → BKARCUST) — **PK component** |
+| 2 | BKAR_INVV_NUM | STRING | 6 | Voucher number — **PK component** |
+| 3 | BKAR_INVV_DATE | DATE | 4 | Voucher date |
+| 4 | BKAR_INVV_DESC | STRING | 24 | Description |
+| 5 | BKAR_INVV_CHK | UBINARY | 2 | Check number |
+| 6 | BKAR_INVV_TERMD | STRING | 10 | Terms description |
+| 7 | BKAR_INVV_TERMN | UBINARY | 2 | Terms number |
+| 8 | BKAR_INVV_TYPED | STRING | 10 | Type description |
+| 9 | BKAR_INVV_TYPEN | UBINARY | 2 | Type number |
+| 10 | BKAR_INVV_TAMT | FLOAT | 8(2) | Total amount |
+| 11 | BKAR_INVV_TDC | STRING | 1 | Total debit/credit flag |
+
+**GL Distribution Block (10 slots × 5 sub-fields, fields 12–61):**
+
+| Group | Fields | Meaning |
+|-------|--------|---------|
+| BKAR_INVV_GLACT_1..10 | 12–21 | GL account number |
+| BKAR_INVV_GLDPT_1..10 | 22–31 | GL department |
+| BKAR_INVV_DC_1..10 | 32–41 | Debit/credit indicator |
+| BKAR_INVV_GLD_1..10 | 42–51 | GL description (25 chars each) |
+| BKAR_INVV_DAMT_1..10 | 52–61 | Distribution amount |
+
+**Footer (fields 62–77):**
+
+| # | Field | Meaning |
+|---|-------|---------|
+| 62 | BKAR_INVV_ARDPT | AR department |
+| 63–64 | BKAR_INVV_SLSP_1/2 | Salesperson numbers |
+| 65–66 | BKAR_INVV_COMPR_1/2 | Commission percentages |
+| 67 | BKAR_INVV_FRGHT | Freight |
+| 68 | BKAR_INVV_COOP | Co-op/promotional allowance |
+| 69 | BKAR_INVV_TAX | Tax amount |
+| 70 | BKAR_INVV_COGS | Cost of goods sold |
+| 71–75 | BKAR_INVV_FLAG_1..5 | Status flags |
+| 76 | BKAR_INVV_EXTRA | Extra 50 chars |
+| 77 | BKAR_INVV_ISCUR | Multi-currency code |
+
+---
+
+### BKAREIVT — Extended AR Invoice Transaction
+
+File: `BKAREIVT.B` | Module: AR (extended) | Fields: 24
+
+Extended version of BKARINVT (23f). Adds `BKAB_PERIOD` (a LOGICAL bit-field overlay used for period tracking) and `BKAR_INVT_NORMP` (normal-period flag). Otherwise identical structure to BKARINVT.
+
+| Extra Field | Meaning |
+|---|---|
+| BKAB_PERIOD (field 4, LOGICAL overlay) | Period accumulator bit array |
+| BKAR_INVT_NORMP (field 24, STRING 1) | Normal-period posting flag |
+
+---
+
+### BKARINVI — AR Invoice Staging
+
+File: `BKARINVI.B` | Module: AR | Fields: 16
+
+Staging buffer populated during invoice creation before lines are committed to BKARINVL. PK: `BKAR_INVI_SONUM` + `BKAR_INVI_INVNM`. Cleared once the invoice is posted.
+
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | BKAR_INVI_SONUM | FLOAT | SO number — **PK component** |
+| 2 | BKAR_INVI_INVNM | FLOAT | Invoice number — **PK component** |
+| 3 | BKAR_INVI_ESD | DATE | Expected ship date |
+| 4 | BKAR_INVI_PCODE | STRING | Part code |
+| 5 | BKAR_INVI_PQTY | FLOAT | Quantity |
+| 6 | BKAR_INVI_PPRCE | FLOAT | Unit price |
+| 7 | BKAR_INVI_PDISC | FLOAT | Discount % |
+| 8 | BKAR_INVI_PEXT | FLOAT | Extended price |
+| 9 | BKAR_INVI_PCOGS | FLOAT | Cost of goods |
+| 10 | BKAR_INVI_ITYPE | STRING | Item type |
+| 11 | BKAR_INVI_EXTRM | FLOAT | Extended remaining |
+| 12–13 | BKAR_INVI_COMM_1/2 | FLOAT | Commission % per salesperson |
+| 14 | BKAR_INVI_FRGHT | FLOAT | Freight |
+| 15 | BKAR_INVI_COOP | FLOAT | Co-op allowance |
+| 16 | BKAR_INVI_TAX | FLOAT | Tax amount |
+
+---
+
+### BKART — AR Payment Transaction Log
+
+File: `BKART.B` | Module: AR | Fields: 12
+
+One record per AR payment application event. PK: `BKART_CUST` + `BKART_TRXN`. The `BKART_NOTE` flag links to BKARTNOT for detail lines.
+
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | BKART_CUST | STRING | Customer code — **PK component** |
+| 2 | BKART_TRXN | FLOAT | Transaction number — **PK component** |
+| 3 | BKART_TYPE | STRING | Transaction type (P=payment, C=credit, D=debit) |
+| 4 | BKART_DISC | FLOAT | Discount taken |
+| 5 | BKART_AMOUNT | FLOAT | Payment amount |
+| 6 | BKART_POSTDATE | DATE | Post date |
+| 7 | BKART_CNTR | UBINARY | Line counter |
+| 8 | BKART_ENTDATE | DATE | Entry date |
+| 9 | BKART_TRXNLINK | FLOAT | Linked transaction number (chain) |
+| 10 | BKART_INVC | FLOAT | Invoice number applied to |
+| 11 | BKART_CHECK | FLOAT | Check number received |
+| 12 | BKART_NOTE | STRING | Note flag ("Y" = detail in BKARTNOT) |
+
+---
+
+### BKARTNOT — AR Transaction Notes
+
+File: `BKARTNOT.B` | Module: AR | Fields: 3
+
+Detail note lines for BKART payment transactions. PK: `BKART_NOT_TRXN` + `BKART_NOT_CNTR`.
+
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | BKART_NOT_TRXN | Transaction number (FK → BKART) |
+| 2 | BKART_NOT_CNTR | Line counter |
+| 3 | BKART_NOT_DESC | Note text (30 chars) |
+
+---
+
+### BKARTXN / BKARTXNB / BKARTXNS — AR Lot/Serial Shipment Transactions
+
+Files: `BKARTXN.B`, `BKARTXNB.B`, `BKARTXNS.B` | Module: AR/IN | Fields: 14 each (identical)
+
+Tracks lot numbers, serial numbers, and bin locations for items shipped on SO invoices. PK: `BKAR_TXN_SONUM` + `BKAR_TXN_CODE`. BKARTXN = base; BKARTXNB = batch-picking variant; BKARTXNS = serial-number variant (same schema, different lifecycle stage).
+
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | BKAR_TXN_SONUM | FLOAT | SO number — **PK component** |
+| 2 | BKAR_TXN_CODE | STRING | Part code — **PK component** |
+| 3 | BKAR_TXN_DESC | STRING | Part description |
+| 4 | BKAR_TXN_QTY | FLOAT | Quantity shipped |
+| 5 | BKAR_TXN_LOT | STRING | Lot number |
+| 6 | BKAR_TXN_SERIAL | STRING | Serial number |
+| 7 | BKAR_TXN_DATE | DATE | Ship date |
+| 8 | BKAR_TXN_STOCK | STRING | Stock location code |
+| 9 | BKAR_TXN_LINE | FLOAT | Invoice line number |
+| 10 | BKAR_TXN_LOC | STRING | Location code |
+| 11 | BKAR_TXN_TMPSO | STRING | Temp SO reference (40 chars) |
+| 12 | BKAR_TXN_SRNUM | FLOAT | Service record number |
+| 13 | BKAR_TXN_EXTRA | STRING | Extra 50 chars |
+| 14 | BKAR_TXN_BIN | STRING | Bin location (15 chars) |
+
+---
+
+### BKAR* Description Tables (all 5-field BK_DESC_* pattern)
+
+`BKARDESC`, `BKARDPST`, `BKARHDSC`, `BKARRDSC` — all identical 5-field BK_DESC_* pattern (same as BKAPDESC etc.):
+
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | BK_DESC_CODE | Entity code (customer/invoice number) |
+| 2 | BK_DESC_NUM | Record number |
+| 3 | BK_DESC_LINE | Line counter |
+| 4 | BK_DESC_NOTES | Note text (70 chars) |
+| 5 | BK_DESC_DESC | Short description (25 chars) |
+
+BKARDESC = AR description lines; BKARDPST = drop-ship description; BKARHDSC = history description; BKARRDSC = returns description.
+
+---
+
+**BKAR* Family Summary Table** (Pass 126 2026-06-19):
+
+| Table | Fields | Role | Structural Mirror |
+|-------|--------|------|------------------|
+| BKARCUST | 106 | Customer master | — |
+| BKARECST | 106 | "E" company customer master | BKARCUST (identical) |
+| BKARSHIP | 106 | Ship-to address master | BKARCUST (identical) |
+| BKARINV | 84 | AR invoice header | — |
+| BKARHINV | 84 | AR invoice history | BKARINV (identical) |
+| BKARRINV | 84 | AR returns invoice | BKARINV (identical) |
+| BKARINVL | 28 | AR invoice lines | — |
+| BKARHIVL | 28 | AR invoice history lines | BKARINVL (identical) |
+| BKARRIVL | 28 | AR returns invoice lines | BKARINVL (identical) |
+| BKARSIVL | 28 | AR ship-to invoice lines | BKARINVL (identical) |
+| BKARINVI | 16 | AR invoice staging buffer | — |
+| BKARINVT | 23 | AR open-item transaction ledger | — |
+| BKAREIVT | 24 | AR extended invoice transaction | BKARINVT + BKAB_PERIOD + NORMP |
+| BKARINVV | 77 | AR voucher (10-slot GL dist) | — |
+| BKARHTAX | 5 | AR invoice history tax | — |
+| BKARDEP | 6 | Customer deposit | — |
+| BKART | 12 | AR payment transaction log | — |
+| BKARTNOT | 3 | AR transaction notes | — |
+| BKARTXN | 14 | AR lot/serial shipment tx | — |
+| BKARTXNB | 14 | AR lot/serial tx (batch) | BKARTXN (identical) |
+| BKARTXNS | 14 | AR lot/serial tx (serial) | BKARTXN (identical) |
+| BKARCHKH/BKARCHKF | 12 | AP check history (BKAP_CHK_ prefix) | BKAPCHKH/BKAPCHKF |
+| BKARDESC/BKARDPST/BKARHDSC/BKARRDSC | 5 | Description note lines | BK_DESC_* pattern |
+
+---
+
+*Document updated: 2026-06-19 (Pass 126)*
 *Source: `samples/ddf/schema.md` + SRC analysis + DFM analysis*
 *Confidence: 68/100 — Field names and types confirmed from DDF schema. Field meanings inferred from naming conventions and confirmed where SRC source code references the fields directly.*
