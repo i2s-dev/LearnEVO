@@ -410,7 +410,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ### 4.4 Key Individual Tables (minimum needed for 90% goal)
 - [x] ✅ `BKARCUST` — AR Customer master: all 106 DDF fields documented with correct names in `docs/04-data-dictionary/tier1-tables.md` (5 contacts, 5 phones, 5 emails, MTD/YTD/LYR analytics, co-op, Avalara IS* fields) — Pass 123 2026-06-19 — **C: 85/100**
-- [x] ✅ `BKICMSTR` — Inventory Item master: 64 fields documented; PROD_TYPE codes R/N confirmed from live IN-A screen (2026-06-17); full set RFAMNLBTKO confirmed from HH filter string — **C: 82/100**
+- [x] ✅ `BKICMSTR` — Inventory Item master: all 64 DDF-confirmed fields documented with correct names; multi-company mirrors BKICAMTR/BKICEMTR confirmed identical; weight/lead-time fields confirmed in MTICMSTR not here — Pass 124 2026-06-19 — **C: 88/100**
 - [x] ✅ `BKSYMSTR` — System configuration master: all 286 DDF fields organized (20-slot payment terms array, 9-slot bank account array, AR/AP/GL defaults, auto-number counters, PRGS_WHR program path); BKSYPRTR companion table confirmed — Pass 121 2026-06-19 — **C: 85/100**
 - [x] ✅ `AHSYLOG` — User security: all 23 fields documented — **C: 68/100**
 - [x] ✅ `ISJAVA` — Java task queue: pattern confirmed; table NOT found in DDF (may be runtime-only or named differently) — **C: 55/100**
@@ -418,7 +418,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `WORKORD` — Work order master: all 74 fields documented with meaning (Pass 54) — **C: 90/100**
 - [x] ✅ `WORKCHG` — Work order change log: all 25 fields documented — **C: 70/100**
 - [x] ✅ `BKARCUST` — all 106 fields with correct DDF names, meanings, PKs — fully documented Pass 123 2026-06-19 — **C: 85/100**
-- [x] ✅ `BKICMSTR` — all fields with meaning; PROD_TYPE codes confirmed (RFAMNLBTKO, R/N from live UI) — **C: 82/100**
+- [x] ✅ `BKICMSTR` — all 64 DDF-confirmed fields; PROD_TYPE codes RFAMNLBTKO confirmed; 15 satellite BKIC\* tables fully documented — Pass 124 2026-06-19 — **C: 88/100**
 - [x] ✅ `BKSYMSTR` — full schema: 286 fields confirmed from DDF; all embedded arrays documented (terms×20, bank×9, aging×5, ENDDESC×5, PR_ODNAME×6); BKSYPRTR printer table confirmed — Pass 121 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKAPVEND` — AP Vendor master: all 72 DDF fields documented in tier1-tables.md (dual address, 4 contacts, 5 phones, 10 notes, 5 emails, Avalara fields, CUST_CODE cross-ref, 2 UDF fields) — Pass 122 2026-06-19 — **C: 85/100**
 - [x] ✅ `BKGLCOA` — GL Chart of Accounts: all 65 DDF fields documented with correct names (BKGL_ACCT/GLDPT/ACCTD/TYPE/CR_DR/NON_CASH; CURRENT/BUDGET/1YPAST/2YPAST arrays 1–14 + YE fields) — Pass 123 2026-06-19 — **C: 87/100**
@@ -506,8 +506,8 @@ Target for "understood" = C: 75+ on all items below.
 ### 7.3 Inventory (IN)
 - [x] ✅ Menu codes listed (40 operations) — **C: 72/100**
 - [x] ✅ Forms inventoried (T7IN\*.DFM) — **C: 70/100**
-- [x] ✅ Tables: BKIC\* (16 tables), MTICMSTR identified — **C: 58/100**
-- [x] ✅ BKICMSTR all 62 fields documented with meaning in tier1-tables.md: product code/desc, type, class, category, UOM (stock/purchase/price), costs, QOH, reorder, lead time, GL accounts (asset/COGS/scrap/non-tax), absorbed labor/setup/ops/material/fixed OH/variable OH, UPC, MTD/YTD sales — **C: 72/100**
+- [x] ✅ Tables: BKIC\* (16 tables), MTICMSTR identified — all 16 DDF BKIC\* tables documented: BKICMSTR (64f), BKICLOC/BKICELOC (32f each), BKICPMAT/BKICAPMA (85f each), BKICTAX (46f), BKICREQ (41f), BKICDIM (47f), BKICLOCM (12f), BKICREF (8f), BKICMFG (6f), BKICALTD (16f), BKICALTP (6f), BKICVAL (4f); multi-company mirror pattern confirmed (AMTR/EMTR, ELOC, APMA) — Pass 124 2026-06-19 — **C: 85/100**
+- [x] ✅ BKICMSTR all 64 DDF-confirmed fields documented with correct names (replaced wrong UOM/PUOM/PRCUOM/COST/WEIGHT guesses): PROD_CODE/DESC/TYPE/UM/CAT/TXBLE/CLASS/RLVL/RAMT/dates/ADTR/TO/LSTC/AVGC/UOH/UOSO/TOTVL/UOO; MTD/YTD/LYR/PVAR analytics (21–40); 4 GL account pairs (41–49); PRICE/UBO/PMAT/MANUF/NOTE; absorbed costs AVLAB..AVVO; EXTRA/TAXIN/ISUPC/IS_DCODE/LONGP — weight/lead-time/drawing fields confirmed in MTICMSTR not BKICMSTR — Pass 124 2026-06-19 — **C: 88/100**
 - [x] ✅ Supplemental item master form set confirmed: allocation, components, forecast, pricing, specs, UDF, usage, WIP — **C: 65/100**
 - [x] ✅ 16+ location/bin forms (T7INL* series) confirmed — **C: 60/100**
 - [x] ✅ FIFO/LIFO/average cost layer logic traced: BKICVAL (4f, CODE+DATE PK, TOTVL/UOH) holds cost layers; FIFO=oldest DATE first, LIFO=newest, average=skip layers use INVTXN.AVGCOST running calc; INVTXN (24f, MTIT_* prefix) is complete audit log — receipt/shipment/adjustment/WO-issue/WO-receipt all logged with cost+qty+lot+serial+ref; docs/03-modules/in-inventory/README.md (Pass 110h 2026-06-19) — **C: 78/100**

@@ -423,74 +423,389 @@ File: `BKAPCHKH.B` | Module: AP | Fields: 12
 
 ## BKICMSTR — Inventory Item Master
 
-File: `BKICMSTR.B` | Module: IN | Fields: 64
+File: `BKICMSTR.B` | Module: IN | Fields: 64 (all confirmed from DDF — Pass 124 2026-06-19)
 
-| # | Field | Type | Meaning |
-|---|-------|------|---------|
-| 1 | BKIC_PROD_CODE | STRING | Product/part number — primary key |
-| 2 | BKIC_PROD_DESC | STRING | Description line 1 |
-| 3 | BKIC_PROD_DESC2 | STRING | Description line 2 |
-| 4 | BKIC_PROD_TYPE | STRING | Item type code |
-| 5 | BKIC_PROD_CLASS | STRING | Class code |
-| 6 | BKIC_PROD_CAT | STRING | Category code |
-| 7 | BKIC_PROD_UOM | STRING | Stock unit of measure |
-| 8 | BKIC_PROD_PUOM | STRING | Purchase unit of measure |
-| 9 | BKIC_PROD_PRCUOM | STRING | Price unit of measure |
-| 10 | BKIC_PROD_PCVT | FLOAT | Purchase UOM conversion factor |
-| 11 | BKIC_PROD_COST | FLOAT | Standard/current cost |
-| 12 | BKIC_PROD_PRICE | FLOAT | Base selling price |
-| 13 | BKIC_PROD_UOH | FLOAT | Units on hand (quantity in stock) |
-| 14 | BKIC_PROD_UONORD | FLOAT | Units on order (open POs) |
-| 15 | BKIC_PROD_UONSO | FLOAT | Units on sales orders (committed) |
-| 16 | BKIC_PROD_UONWO | FLOAT | Units on work orders |
-| 17 | BKIC_PROD_REODR | FLOAT | Reorder level (triggers planned PO in MRP) |
-| 18 | BKIC_PROD_MINOQ | FLOAT | Minimum order quantity |
-| 19 | BKIC_PROD_LTDAYS | FLOAT | Lead time in days |
-| 20 | BKIC_PROD_WEIGHT | FLOAT | Weight per unit |
-| 21 | BKIC_PROD_FTFCTR | FLOAT | Foot factor (for dimensional items) |
-| 22 | BKIC_PROD_STDPK | FLOAT | Standard pack quantity |
-| 23 | BKIC_PROD_FRETPCT | FLOAT | Freight percentage |
-| 24 | BKIC_PROD_BIN | STRING | Bin/location code |
-| 25 | BKIC_PROD_DRAW | STRING | Drawing number |
-| 26 | BKIC_PROD_REVLVL | STRING | Revision level |
-| 27 | BKIC_PROD_UPC | STRING | UPC / barcode |
-| 28 | BKIC_PROD_DELBUF | FLOAT | Delay buffer days (MRP) |
-| 29 | BKIC_PROD_PLNR | STRING | Planner code |
-| 30 | BKIC_PROD_MRPSW | STRING | MRP planning switch (Y = include) |
-| 31 | BKIC_PROD_GLINV | STRING | GL inventory account |
-| 32 | BKIC_PROD_GLCOGS | STRING | GL cost of goods sold account |
-| 33 | BKIC_PROD_GLVAR | STRING | GL variance account |
-| 34 | BKIC_PROD_TAXBL | STRING | Taxable flag |
-| 35 | BKIC_PROD_TAXGRP | STRING | Tax group |
-| 36 | BKIC_PROD_ACTSTS | STRING | Active status |
-| 37 | BKIC_PROD_STRTDT | DATE | Start date |
-| 38 | BKIC_PROD_LSTPRC | DATE | Last price change date |
-| 39 | BKIC_PROD_LSTCST | DATE | Last cost change date |
-| 40 | BKIC_PROD_LSTRCV | DATE | Last receipt date |
-| 41 | BKIC_PROD_LSTSLS | DATE | Last sale date |
-| 41 | BKIC_PROD_GLA | STRING | GL Account — Inventory Asset |
-| 42 | BKIC_PROD_DPTA | STRING | GL Dept — Inventory Asset |
-| 43 | BKIC_PROD_GLC | STRING | GL Account — COGS |
-| 44 | BKIC_PROD_DPTC | STRING | GL Dept — COGS |
-| 45 | BKIC_PROD_GLS | STRING | GL Account — Scrap |
-| 46 | BKIC_PROD_DPTS | STRING | GL Dept — Scrap |
-| 47 | BKIC_PROD_PRICE | FLOAT | Base selling price (4 dec) |
-| 48 | BKIC_PROD_GLSNT | STRING | GL Account — Non-Tax Sales |
-| 49 | BKIC_PROD_DPTNT | STRING | GL Dept — Non-Tax Sales |
-| 50 | BKIC_PROD_UBO | FLOAT | Units on Backorder |
-| 51 | BKIC_PROD_PMAT | UBINARY | Preferred material flag |
-| 52 | BKIC_PROD_MANUF | STRING | Manufacturer |
-| 53 | BKIC_PROD_NOTE | STRING | Notes |
-| 54 | BKIC_PROD_AVLAB | FLOAT | Absorbed Labor cost |
-| 55 | BKIC_PROD_AVSET | FLOAT | Absorbed Setup cost |
-| 56 | BKIC_PROD_AVOP | FLOAT | Absorbed Operations cost |
-| 57 | BKIC_PROD_AVMAT | FLOAT | Absorbed Material cost |
-| 58 | BKIC_PROD_AVFO | FLOAT | Absorbed Fixed Overhead |
-| 59 | BKIC_PROD_AVVO | FLOAT | Absorbed Variable Overhead |
-| 60 | BKIC_PROD_EXTRA | STRING | Extra/User-defined fields |
-| 61 | BKIC_PROD_TAXIN | STRING | Tax include flag |
-| 62 | BKIC_PROD_ISUPC | STRING | UPC Code |
-| 63–64 | (RLVL, RAMT) | FLOAT | Reorder level, Reorder amount (renamed in DDF variant) |
+Primary key: `BKIC_PROD_CODE` (field 1). BKICAMTR and BKICEMTR are structurally **identical** (multi-company mirrors — "A" company and "E" company variants).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_PROD_CODE | STRING | 15 | Part number — **primary key** |
+| 2 | BKIC_PROD_DESC | STRING | 30 | Description |
+| 3 | BKIC_PROD_TYPE | STRING | 1 | Item type code (R/F/A/M/N/L/B/T/K/O — confirmed from HH filter) |
+| 4 | BKIC_PROD_UM | STRING | 3 | Unit of measure |
+| 5 | BKIC_PROD_CAT | STRING | 4 | Category code |
+| 6 | BKIC_PROD_TXBLE | STRING | 1 | Taxable flag |
+| 7 | BKIC_PROD_CLASS | STRING | 4 | Class code |
+| 8 | BKIC_PROD_RLVL | FLOAT | 8(0) | Reorder level (quantity) |
+| 9 | BKIC_PROD_RAMT | FLOAT | 8(0) | Reorder amount (dollar) |
+| 10 | BKIC_PROD_LSALE | DATE | 4 | Last sale date |
+| 11 | BKIC_PROD_LORD | DATE | 4 | Last order date |
+| 12 | BKIC_PROD_LRCPT | DATE | 4 | Last receipt date |
+| 13 | BKIC_PROD_ADTR | UBINARY | 2 | Auto-transfer flag |
+| 14 | BKIC_PROD_TO | FLOAT | 8(4) | Turnover (turns per year) |
+| 15 | BKIC_PROD_LSTC | FLOAT | 8(4) | Last cost |
+| 16 | BKIC_PROD_AVGC | FLOAT | 8(4) | Average cost |
+| 17 | BKIC_PROD_UOH | FLOAT | 8(2) | Units on hand |
+| 18 | BKIC_PROD_UOSO | FLOAT | 8(2) | Units on sales orders |
+| 19 | BKIC_PROD_TOTVL | FLOAT | 8(2) | Total inventory value |
+| 20 | BKIC_PROD_UOO | FLOAT | 8(2) | Units on open POs |
+| 21 | BKIC_PROD_USMTD | FLOAT | 8(2) | Units sold MTD |
+| 22 | BKIC_PROD_GSMTD | FLOAT | 8(2) | Gross sales MTD |
+| 23 | BKIC_PROD_CMTD | FLOAT | 8(2) | COGS MTD |
+| 24 | BKIC_PROD_NSMTD | FLOAT | 8(2) | Net sales MTD |
+| 25 | BKIC_PROD_NGMTD | FLOAT | 8(4) | Net gross margin % MTD |
+| 26 | BKIC_PROD_USYTD | FLOAT | 8(2) | Units sold YTD |
+| 27 | BKIC_PROD_GSYTD | FLOAT | 8(2) | Gross sales YTD |
+| 28 | BKIC_PROD_CYTD | FLOAT | 8(2) | COGS YTD |
+| 29 | BKIC_PROD_NSYTD | FLOAT | 8(2) | Net sales YTD |
+| 30 | BKIC_PROD_NGYTD | FLOAT | 8(4) | Net gross margin % YTD |
+| 31 | BKIC_PROD_USLYR | FLOAT | 8(2) | Units sold last year |
+| 32 | BKIC_PROD_GSLYR | FLOAT | 8(2) | Gross sales last year |
+| 33 | BKIC_PROD_CLYR | FLOAT | 8(2) | COGS last year |
+| 34 | BKIC_PROD_NSLYR | FLOAT | 8(2) | Net sales last year |
+| 35 | BKIC_PROD_NGLYR | FLOAT | 8(4) | Net gross margin % last year |
+| 36 | BKIC_PROD_USVAR | FLOAT | 8(4) | Units sold % variance (YTD vs LYR) |
+| 37 | BKIC_PROD_GSVAR | FLOAT | 8(4) | Gross sales % variance |
+| 38 | BKIC_PROD_CVAR | FLOAT | 8(4) | COGS % variance |
+| 39 | BKIC_PROD_NSVAR | FLOAT | 8(4) | Net sales % variance |
+| 40 | BKIC_PROD_NGVAR | FLOAT | 8(4) | Net margin % variance |
+| 41 | BKIC_PROD_GLA | STRING | 10 | GL account — inventory asset |
+| 42 | BKIC_PROD_DPTA | STRING | 4 | GL dept — inventory asset |
+| 43 | BKIC_PROD_GLC | STRING | 10 | GL account — COGS |
+| 44 | BKIC_PROD_DPTC | STRING | 4 | GL dept — COGS |
+| 45 | BKIC_PROD_GLS | STRING | 10 | GL account — scrap/variance |
+| 46 | BKIC_PROD_DPTS | STRING | 4 | GL dept — scrap/variance |
+| 47 | BKIC_PROD_PRICE | FLOAT | 8(4) | Base selling price |
+| 48 | BKIC_PROD_GLSNT | STRING | 10 | GL account — non-taxable sales |
+| 49 | BKIC_PROD_DPTNT | STRING | 4 | GL dept — non-taxable sales |
+| 50 | BKIC_PROD_UBO | FLOAT | 8(2) | Units on backorder |
+| 51 | BKIC_PROD_PMAT | UBINARY | 2 | Price matrix number |
+| 52 | BKIC_PROD_MANUF | STRING | 20 | Manufacturer name |
+| 53 | BKIC_PROD_NOTE | STRING | 30 | Note line |
+| 54 | BKIC_PROD_AVLAB | FLOAT | 8(4) | Average labor cost per unit |
+| 55 | BKIC_PROD_AVSET | FLOAT | 8(4) | Average setup cost per unit |
+| 56 | BKIC_PROD_AVOP | FLOAT | 8(4) | Average outside-process cost per unit |
+| 57 | BKIC_PROD_AVMAT | FLOAT | 8(4) | Average material cost per unit |
+| 58 | BKIC_PROD_AVFO | FLOAT | 8(4) | Average fixed overhead per unit |
+| 59 | BKIC_PROD_AVVO | FLOAT | 8(4) | Average variable overhead per unit |
+| 60 | BKIC_PROD_EXTRA | STRING | 100 | Extra / user-defined (100 chars) |
+| 61 | BKIC_PROD_TAXIN | STRING | 1 | Tax-inclusive flag |
+| 62 | BKIC_PROD_ISUPC | STRING | 12 | IS/Avalara UPC code |
+| 63 | BKIC_IS_DCODE | STRING | 3 | Avalara tax decision code |
+| 64 | BKIC_PROD_LONGP | STRING | 25 | Long part description |
+
+**Notes:**
+- The DDF BKICMSTR stores analytics inline (MTD/YTD/LYR sales units + $ + margins + variance, fields 21–40) and four GL account pairs (41–49) — all denormalized for fast reporting.
+- Fields for weight, lead time, min order quantity, drawing number, etc. live in `MTICMSTR` (the MT-prefix item master variant) — NOT in BKICMSTR.
+- `BKIC_PROD_ADTR` is a UBINARY auto-transfer flag; exact flags not confirmed.
+- BKICAMTR and BKICEMTR are byte-for-byte identical in structure — alternate company mirrors of BKICMSTR.
+
+---
+
+## BKIC* Family — Inventory Item Satellite Tables
+
+All confirmed from DDF — Pass 124 2026-06-19. Tables in this family support the core BKICMSTR item master.
+
+### BKICLOCM — Warehouse / Location Master
+
+File: `BKICLOCM.B` | Module: IN | Fields: 12
+
+Defines physical warehouse locations (the `BKIC_LOC_CODE` values referenced in BKICLOC/BKICELOC).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_LOCM_CODE | STRING | 10 | Location code — **primary key** |
+| 2 | BKIC_LOCM_NAME | STRING | 30 | Location name |
+| 3 | BKIC_LOCM_ADDR1 | STRING | 30 | Address line 1 |
+| 4 | BKIC_LOCM_ADDR2 | STRING | 30 | Address line 2 |
+| 5 | BKIC_LOCM_ADDR3 | STRING | 30 | Address line 3 |
+| 6 | BKIC_LOCM_CITY | STRING | 20 | City |
+| 7 | BKIC_LOCM_STATE | STRING | 2 | State |
+| 8 | BKIC_LOCM_ZIP | STRING | 10 | ZIP |
+| 9 | BKIC_LOCM_CNTCT | STRING | 25 | Contact name |
+| 10 | BKIC_LOCM_PHONE | STRING | 25 | Phone |
+| 11 | BKIC_LOCM_FAX | STRING | 25 | Fax |
+| 12 | BKIC_LOCM_TAXGR | STRING | 10 | Tax group (for location-based tax) |
+
+---
+
+### BKICLOC — Item-Location Quantities
+
+File: `BKICLOC.B` | Module: IN | Fields: 32
+
+One row per item × location — tracks quantities and GL accounts per location. `BKICELOC` is **identical** (alternate company "E" mirror).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_LOC_PROD | STRING | 15 | Part number (FK → BKICMSTR) — **PK component** |
+| 2 | BKIC_LOC_CODE | STRING | 10 | Location code (FK → BKICLOCM) — **PK component** |
+| 3 | BKIC_LOC_UOH | FLOAT | 8(2) | Units on hand at this location |
+| 4 | BKIC_LOC_UOSO | FLOAT | 8(2) | Units on sales orders (committed) |
+| 5 | BKIC_LOC_UBO | FLOAT | 8(2) | Units on backorder |
+| 6 | BKIC_LOC_UOO | FLOAT | 8(2) | Units on open POs |
+| 7 | BKIC_LOC_GLA | STRING | 10 | GL account — inventory asset (location override) |
+| 8 | BKIC_LOC_DPTA | STRING | 4 | GL dept — inventory asset |
+| 9 | BKIC_LOC_GLC | STRING | 10 | GL account — COGS |
+| 10 | BKIC_LOC_DPTC | STRING | 4 | GL dept — COGS |
+| 11 | BKIC_LOC_GLS | STRING | 10 | GL account — scrap/variance |
+| 12 | BKIC_LOC_DPTS | STRING | 4 | GL dept — scrap/variance |
+| 13 | BKIC_LOC_GLSNT | STRING | 10 | GL account — non-taxable sales |
+| 14 | BKIC_LOC_DPTSNT | STRING | 4 | GL dept — non-taxable sales |
+| 15 | BKIC_LOC_GLWIP | STRING | 10 | GL account — WIP |
+| 16 | BKIC_LOC_DPTWIP | STRING | 4 | GL dept — WIP |
+| 17 | BKIC_LOC_UOWO | FLOAT | 8(2) | Units on work orders |
+| 18 | BKIC_LOC_UALLOC | FLOAT | 8(2) | Units allocated (reserved) |
+| 19 | BKIC_LOC_UWIP | FLOAT | 8(2) | Units in WIP |
+| 20 | BKIC_LOC_UIQC | FLOAT | 8(2) | Units in incoming QC hold |
+| 21 | BKIC_LOC_EXTRA | STRING | 50 | Extra / user-defined |
+| 22 | BKIC_LOC_LCDATE | DATE | 4 | Last count date (cycle count) |
+| 23 | BKIC_LOC_BIN | STRING | 15 | Bin code within location |
+| 24 | BKIC_LOC_LOT | STRING | 15 | Lot number (if lot-controlled) |
+| 25 | BKIC_LOC_SER | STRING | 25 | Serial number (if serial-controlled) |
+| 26 | BKIC_LOC_NUM1 | FLOAT | 8(0) | User numeric 1 |
+| 27 | BKIC_LOC_NUM2 | FLOAT | 8(0) | User numeric 2 |
+| 28 | BKIC_LOC_DATE1 | DATE | 4 | User date 1 |
+| 29 | BKIC_LOC_WHCTRL | STRING | 1 | Warehouse control flag |
+| 30 | BKIC_LOC_FLAG1 | STRING | 1 | User flag 1 |
+| 31 | BKIC_LOC_ALPHA1 | STRING | 30 | User alpha 1 |
+| 32 | BKIC_LOC_ALPHA2 | STRING | 30 | User alpha 2 |
+
+---
+
+### BKICPMAT — Item Price Matrix
+
+File: `BKICPMAT.B` | Module: IN/SO | Fields: 85
+
+Per-customer, per-item pricing with quantity breaks. `BKICAPMA` is **identical** (alternate company "A" mirror).
+
+| # | Field | Type | Size | Key groups |
+|---|-------|------|------|------------|
+| 1 | BKIC_PMAT_CUST | STRING | 10 | Customer code (FK → BKARCUST) — **PK component** |
+| 2 | BKIC_PMAT_PCODE | STRING | 15 | Part number (FK → BKICMSTR) — **PK component** |
+| 3 | BKIC_PMAT_PNUM | UBINARY | 2 | Price list number — **PK component** |
+| 4–13 | BKIC_PMAT_RATE_1..10 | FLOAT×10 | 8(4) | Price rate for each qty break tier (1–10) |
+| 14–23 | BKIC_PMAT_QTY_1..10 | FLOAT×10 | 8(2) | Qty break threshold for each tier |
+| 24–33 | BKIC_PMAT_PER_1..10 | FLOAT×10 | 8(4) | Percentage discount for each tier |
+| 34 | BKIC_PMAT_EXP | DATE | 4 | Expiry date |
+| 35 | BKIC_PMAT_DCODE | STRING | 10 | Discount code |
+| 36 | BKIC_PMAT_CLASS | STRING | 4 | Customer class |
+| 37–46 | BKIC_PMAT_COMM1_1..10 | FLOAT×10 | 8(4) | Salesperson 1 commission by tier |
+| 47–56 | BKIC_PMAT_COMM2_1..10 | FLOAT×10 | 8(4) | Salesperson 2 commission by tier |
+| 57 | BKIC_PMAT_MIN | FLOAT | 8(2) | Minimum order quantity |
+| 58 | BKIC_PMAT_MINPR | FLOAT | 8(4) | Minimum price |
+| 59 | BKIC_PMAT_EXTRA | STRING | 50 | Extra / user-defined |
+| 60–69 | BKIC_PMAT_ISRET_1..10 | FLOAT×10 | 8(4) | IS retail price by tier |
+| 70 | BKIC_PMAT_PDESC | STRING | 30 | Price description |
+| 71 | BKIC_PMAT_SDATE | DATE | 4 | Start date |
+| 72 | BKIC_PMAT_EDATE | DATE | 4 | End date |
+| 73 | BKIC_PMAT_UID | STRING | 40 | Unique identifier |
+| 74–81 | BKIC_PMAT_OFFIN/PROMO/SCAND/FRTAL/BILLB/SWELL/ACCRU/OFFCH | FLOAT×8 | 8(2) | Trade-spend types: off-invoice, promotional, scan-down, freight-allowed, bill-back, swell allowance, accrual, off-check |
+| 82 | BKIC_PMAT_PFLAG | STRING | 1 | Price flag |
+| 83 | BKIC_PMAT_METH | STRING | 11 | Pricing method code |
+| 84 | BKIC_PMAT_SRTS | FLOAT | 8(2) | Sort/SRTS amount |
+| 85 | BKIC_PMAT_LUMP | FLOAT | 8(2) | Lump sum price |
+
+**Note:** Fields 74–81 (OFFIN/PROMO/SCAND/FRTAL/BILLB/SWELL/ACCRU/OFFCH) are retail trade-spend types — suggests EVO is used by or for retail/grocery channel customers.
+
+---
+
+### BKICTAX — Sales Tax Jurisdiction Table
+
+File: `BKICTAX.B` | Module: IN/AR | Fields: 46
+
+Tax rate and period accumulator by jurisdiction (state + local combo = one row).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_TAX_STATE | STRING | 2 | State code — **PK component** |
+| 2 | BKIC_TAX_LOCAL | STRING | 2 | Local jurisdiction code — **PK component** |
+| 3 | BKIC_TAX_NAME | STRING | 25 | Tax name |
+| 4 | BKIC_TAX_NUMBER | STRING | 15 | Tax registration number |
+| 5 | BKIC_TAX_RATE | FLOAT | 8(4) | Tax rate |
+| 6 | BKIC_TAX_GLACT | STRING | 10 | GL account — tax collected |
+| 7 | BKIC_TAX_GLDPT | STRING | 4 | GL dept — tax collected |
+| 8 | BKIC_TAX_VENDOR | STRING | 10 | Tax vendor code (AP vendor to remit to) |
+| 9–20 | BKIC_TAX_TAXBLE_1..12 | FLOAT×12 | 8(2) | Taxable sales by period 1–12 |
+| 21–32 | BKIC_TAX_NONTAX_1..12 | FLOAT×12 | 8(2) | Non-taxable sales by period 1–12 |
+| 33–44 | BKIC_TAX_COLECT_1..12 | FLOAT×12 | 8(2) | Tax collected by period 1–12 |
+| 45 | BKIC_TAX_OUTSTD | FLOAT | 8(2) | Outstanding tax balance |
+| 46 | BKIC_TAX_FRGHT | STRING | 1 | Freight taxable flag (Y/N) |
+
+---
+
+### BKICREQ — Inventory Requisition
+
+File: `BKICREQ.B` | Module: IN | Fields: 41
+
+Requisition for inventory movement or procurement, with links to WO and PO.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_REQ_STATUS | STRING | 1 | Status |
+| 2 | BKIC_REQ_BY | UBINARY | 2 | Requested-by user number |
+| 3 | BKIC_REQ_IDATE | DATE | 4 | Issue date |
+| 4 | BKIC_REQ_NUM | FLOAT | 8(0) | Requisition number — **PK** |
+| 5 | BKIC_REQ_TYPE | STRING | 1 | Requisition type |
+| 6 | BKIC_REQ_TOLOCN | STRING | 10 | To-location code |
+| 7 | BKIC_REQ_DDATE | DATE | 4 | Desired delivery date |
+| 8 | BKIC_REQ_DESC | STRING | 30 | Description |
+| 9–18 | BKIC_REQ_NOTES_1..10 | STRING×10 | 30 | Notes lines 1–10 |
+| 19 | BKIC_REQ_RQTY | FLOAT | 8(2) | Requested quantity |
+| 20 | BKIC_REQ_MFG | STRING | 25 | Manufacturer |
+| 21 | BKIC_REQ_ORDNUM | FLOAT | 8(0) | Linked PO number |
+| 22 | BKIC_REQ_ITM_NO | STRING | 9 | PO line item number |
+| 23 | BKIC_REQ_ORDQTY | FLOAT | 8(2) | Ordered quantity |
+| 24 | BKIC_REQ_FROM | STRING | 10 | From-location code |
+| 25 | BKIC_REQ_ERDATE | DATE | 4 | Expected receipt date |
+| 26 | BKIC_REQ_PROJ | STRING | 15 | Project code |
+| 27 | BKIC_REQ_WOPRE | FLOAT | 8(0) | Linked WO prefix |
+| 28 | BKIC_REQ_WOSUF | UBINARY | 2 | Linked WO suffix |
+| 29 | BKIC_REQ_OPER | UBINARY | 2 | WO operation number |
+| 30 | BKIC_REQ_MATDIM | STRING | 1 | Material dimension flag |
+| 31 | BKIC_REQ_PARENT | STRING | 15 | Parent part number |
+| 32–38 | BKIC_REQ_TONAME/TOADDR_1..3/TOCITY/TOST/TOZIP | STRING×7 | var | Delivery address block |
+| 39 | BKIC_REQ_TOCONT | STRING | 25 | Delivery contact |
+| 40 | BKIC_REQ_TOFAX | STRING | 25 | Delivery fax |
+| 41 | BKIC_REQ_AGENT | STRING | 25 | Purchasing agent |
+
+---
+
+### BKICDIM — Material Dimensions
+
+File: `BKICDIM.B` | Module: IN | Fields: 47
+
+Physical dimension and metallurgical properties for raw material items. Specialized for metal/coil stock.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKICDIM_PARTNO | STRING | 15 | Part number — **PK** |
+| 2 | BKICDIM_PARENT | STRING | 15 | Parent part (for cut-from items) |
+| 3 | BKICDIM_FIRST | FLOAT | 8(4) | First dimension (width) |
+| 4 | BKICDIM_SECOND | FLOAT | 8(4) | Second dimension (length) |
+| 5 | BKICDIM_GENERIC | STRING | 15 | Generic part code |
+| 6 | BKICDIM_THICK | FLOAT | 8(4) | Thickness |
+| 7 | BKICDIM_ALTDESC | STRING | 30 | Alternate description |
+| 8 | BKICDIM_ALLOY | STRING | 20 | Metal alloy (e.g., 6061-T6) |
+| 9 | BKICDIM_TEMPER | STRING | 20 | Temper designation |
+| 10 | BKICDIM_FINISH_1/2 | STRING | 20 | Finish specification (2 lines) |
+| 12–17 | BKICDIM_F/S/T_TOL_1..2 | FLOAT×6 | 8(4) | Tolerances: first/second/thickness (min/max) |
+| 18 | BKICDIM_DENSITY | FLOAT | 8(4) | Material density |
+| 19 | BKICDIM_SETUP | FLOAT | 8(8) | Setup factor |
+| 20 | BKICDIM_HARDNES | STRING | 20 | Hardness specification |
+| 21 | BKICDIM_TENSIL | STRING | 20 | Tensile strength |
+| 22 | BKICDIM_ELONGAT | STRING | 15 | Elongation |
+| 23 | BKICDIM_YIELD | STRING | 20 | Yield strength |
+| 24–25 | BKICDIM_COATING_1/2 | STRING×2 | 20 | Coating specs |
+| 26–27 | BKICDIM_EDGE_1/2 | STRING×2 | 20 | Edge condition |
+| 28 | BKICDIM_CAMBER | STRING | 15 | Camber specification |
+| 29–30 | BKICDIM_SHPCOND_1/2 | STRING×2 | 20 | Shipping condition |
+| 31–33 | BKICDIM_COIL_1..3 | STRING×3 | 10 | Coil identifiers |
+| 34–45 | BKICDIM_NOTES_1..12 | STRING×12 | 30 | Notes lines 1–12 |
+| 46 | BKICDIM_APPR_BY | STRING | 20 | Approved by |
+| 47 | BKICDIM_APPR_DT | DATE | 4 | Approval date |
+
+**Note:** Coil, alloy, temper, and elongation fields indicate this extension targets metal service center operations.
+
+---
+
+### BKICREF — Customer Part Cross-Reference
+
+File: `BKICREF.B` | Module: IN | Fields: 8
+
+Maps EVO internal part numbers to customer-facing part numbers and descriptions.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_REF_CUST | STRING | 10 | Customer code (FK → BKARCUST) — **PK component** |
+| 2 | BKIC_REF_CODE | STRING | 15 | Internal part number — **PK component** |
+| 3 | BKIC_REF_PDESC | STRING | 30 | Internal part description |
+| 4 | BKIC_REF_CUSNME | STRING | 30 | Customer name (denormalized) |
+| 5 | BKIC_REF_CUSCOD | STRING | 25 | Customer's part number |
+| 6 | BKIC_REF_DESC | STRING | 30 | Customer's part description |
+| 7 | BKIC_REF_EXTRA | STRING | 50 | Extra / user-defined |
+| 8 | BKIC_REF_DESC2 | STRING | 30 | Customer's part description line 2 |
+
+---
+
+### BKICMFG — Manufacturer Cross-Reference
+
+File: `BKICMFG.B` | Module: IN | Fields: 6
+
+Maps EVO part numbers to manufacturer part numbers.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_MFG_PCODE | STRING | 15 | Internal part number — **PK component** |
+| 2 | BKIC_MFG_MANUF | STRING | 25 | Manufacturer name — **PK component** |
+| 3 | BKIC_MFG_MCODE | STRING | 25 | Manufacturer's part number |
+| 4 | BKIC_MFG_REMARK_1 | STRING | 30 | Remark line 1 |
+| 5 | BKIC_MFG_REMARK_2 | STRING | 30 | Remark line 2 |
+| 6 | BKIC_MFG_REMARK_3 | STRING | 30 | Remark line 3 |
+
+---
+
+### BKICALTD — Alternative Item Detail
+
+File: `BKICALTD.B` | Module: IN | Fields: 16
+
+Details for alternate/substitute items with specification lines.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_ALTD_PCODE | STRING | 15 | Part number — **PK component** |
+| 2 | BKIC_ALTD_TYPE | STRING | 1 | Alternate type code — **PK component** |
+| 3 | BKIC_ALTD_DESC | STRING | 30 | Description |
+| 4 | BKIC_ALTD_NOTE | STRING | 30 | Note |
+| 5–16 | BKIC_ALTD_SPECS_1..12 | STRING×12 | 30 | Specification attributes (12 lines) |
+
+---
+
+### BKICALTP — Alternative Item Pricing
+
+File: `BKICALTP.B` | Module: IN | Fields: 6
+
+Links alternate items with notes.
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_ALTP_TYPE | STRING | 1 | Alternate type — **PK component** |
+| 2 | BKIC_ALTP_PCODE | STRING | 15 | Primary part number — **PK component** |
+| 3 | BKIC_ALTP_ACODE | STRING | 25 | Alternate part code |
+| 4–6 | BKIC_ALTP_NOTES_1..3 | STRING×3 | 30 | Notes lines |
+
+---
+
+### BKICVAL — Item Valuation Snapshot
+
+File: `BKICVAL.B` | Module: IN | Fields: 4
+
+Periodic inventory valuation snapshot (one row per part per date).
+
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKIC_VAL_CODE | STRING | 15 | Part number — **PK component** |
+| 2 | BKIC_VAL_DATE | DATE | 4 | Snapshot date — **PK component** |
+| 3 | BKIC_VAL_TOTVL | FLOAT | 8(2) | Total inventory value at snapshot |
+| 4 | BKIC_VAL_UOH | FLOAT | 8(2) | Units on hand at snapshot |
+
+---
+
+**BKIC* Family Summary Table** (Pass 124 2026-06-19):
+
+| Table | Fields | Role | Multi-Company Mirror |
+|-------|--------|------|---------------------|
+| BKICMSTR | 64 | Item master (primary) | BKICAMTR ("A"), BKICEMTR ("E") |
+| BKICLOCM | 12 | Warehouse/location address master | — |
+| BKICLOC | 32 | Item × location quantities + GL accts | BKICELOC ("E") |
+| BKICPMAT | 85 | Per-customer price matrix (10 qty break tiers) | BKICAPMA ("A") |
+| BKICTAX | 46 | Tax jurisdiction + 12-period accumulators | — |
+| BKICREQ | 41 | Inventory requisition (WO + PO links) | — |
+| BKICDIM | 47 | Material dimensions/metallurgy | — |
+| BKICREF | 8 | Customer part cross-reference | — |
+| BKICMFG | 6 | Manufacturer cross-reference | — |
+| BKICALTD | 16 | Alternate item detail + specs | — |
+| BKICALTP | 6 | Alternate item pricing links | — |
+| BKICVAL | 4 | Periodic valuation snapshot | — |
 
 ---
 
