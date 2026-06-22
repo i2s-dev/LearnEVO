@@ -6517,3 +6517,848 @@ Global configuration for the CP (Check Processing) module — path and filename 
 
 *Pass 150 complete: 42 tables documented — Full CM (Contact Management) module: BKCMACCT(41f account master), BKCMACCN(154f multi-contact detail with 10×CONT/TITLE/PHONE/DEAR/EMAIL+UDF arrays), BKCMACCL(2f class link), BKCMACCC(2f class code), BKCMACFC(3f forecast code), BKCMACTD(4f dated activity), BKCMACTF(10f follow-up tasks), BKCMACTH(21f time-tracked call log with billing), BKCMCNTD(12f field labels), BKCMCTL1..4+BKCMCTRL(1f each user locks), BKCMCUST(106f AR customer integration snapshot), BKCMDE(41f download staging=BKCMACCT), BKCMDTCD(2f date codes), BKCMDUN(36f dunning config), BKCMDUNH(6f dunning history), BKCMEA* mirrors (5 tables identical to base), BKCMEFTM(7f=BKCMFTME E-company), BKCMFORM(8f letter templates), BKCMFTME(7f follow-time billing tracker), BKCMHCD2(7f service part mapping), BKCMHCOD(9f service code), BKCMLEAD(2f lead source), BKCMMHST(72f mailing campaign filter/history), BKCMPCFC(3f prospect forecast), BKCMPCNT(24f prospect contact master), BKCMPCTF(9f prospect follow-up), BKCMPCTH(8f prospect history), BKCMREP(14f CRM rep), BKCMSBDF(5f service billing defaults), BKCMTEMP+BKCMTMP1..4(6f×5 work tables), BKCMTERR(11f territory), BKCMVNDF(10f vendor follow-up), BKCMVNDH(8f vendor history), BKCMVNFC(3f vendor forecast); BKCP*: BKCPEC(10f check error staging), BKCPMSTR(9f check processing config). CM module now substantially complete.*
 
+
+---
+
+### BKPSUSER  (BKPSUSER.B) — 11 fields — Alternate session user record
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | CODE | STRING(10) | User code (PK) |
+| 2 | PRT | STRING(3) | Printer assignment |
+| 3 | MENU | UBINARY(2) | Default menu number |
+| 4 | CMPY | STRING(2) | Company code |
+| 5 | MWIND | STRING(1) | Multi-window flag |
+| 6 | PSWD | STRING(10) | Password |
+| 7 | ME | STRING(2) | Module entry |
+| 8 | SEC | STRING(2) | Security level |
+| 9 | MCNTR | UBINARY(2) | Menu counter |
+| 10 | LDATE | DATE | Last login date |
+| 11 | EMP | STRING(10) | Employee code |
+
+Alternate authentication/session record used for multi-company contexts. Stores user credentials with company, security level, and default module assignment. Relates to BKLOGON (10f, the primary logon table) and BKSYLOG (215f, the full module-access matrix).
+
+---
+
+### BKQCMSTR  (BKQCMSTR.B) — 14 fields — QC incoming inspection master
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKQC_VEND_CODE | STRING(10) | Vendor code (PK) |
+| 2 | BKQC_RECV_DATE | DATE | Receipt date (PK) |
+| 3 | BKQC_PO_NUM | FLOAT | PO number (PK) |
+| 4 | BKQC_RECVR_NUM | FLOAT | Receiver number (PK) |
+| 5 | BKQC_POL_ITM_NO | FLOAT | PO line item |
+| 6 | BKQC_PKSLIP_NUM | STRING(10) | Packing slip number |
+| 7 | BKQC_QTY_RECVD | FLOAT | Quantity received |
+| 8 | BKQC_QTY_BUYOFF | FLOAT | Quantity bought off (accepted) |
+| 9 | BKQC_QTY_REJECT | FLOAT | Quantity rejected |
+| 10 | BKQC_PKSLIP_QTY | FLOAT | Packing slip quantity |
+| 11 | BKQC_PROD_CODE | STRING(15) | Product code |
+| 12 | BKQC_UNIT_COST | FLOAT | Unit cost |
+| 13 | BKQC_EXTRA | STRING(50) | Filler |
+| 14 | BKQC_OUT_DATE | DATE | Out/closed date |
+
+QC inspection master for incoming PO receipts. One record per receiver + PO combination. Tracks accepted vs rejected quantities. Detail per fault/unit in BKQCTRAN.
+
+---
+
+### BKQCTRAN  (BKQCTRAN.B) — 21 fields — QC transaction detail
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKQC_TRN_PO | FLOAT | PO number (PK) |
+| 2 | BKQC_TRN_VEND | STRING(10) | Vendor code (PK) |
+| 3 | BKQC_TRN_CODE | STRING(15) | Part code (PK) |
+| 4 | BKQC_TRN_RECNUM | FLOAT | Receiver number (PK) |
+| 5 | BKQC_TRN_GQTY | FLOAT | Good quantity |
+| 6 | BKQC_TRN_BQTY | FLOAT | Bad quantity |
+| 7 | BKQC_TRN_UQTY | FLOAT | Under-inspection quantity |
+| 8 | BKQC_TRN_SCRAP | STRING(5) | Scrap code |
+| 9 | BKQC_TRN_REWORK | STRING(5) | Rework code |
+| 10 | BKQC_TRN_PODTE | DATE | PO date |
+| 11 | BKQC_TRN_ARDTE | DATE | Arrival date |
+| 12 | BKQC_TRN_BODTE | DATE | Buyoff date |
+| 13 | BKQC_TRN_EMPNUM | STRING(10) | Employee number |
+| 14 | BKQC_TRN_RECVNM | STRING(10) | Receiver name/id |
+| 15 | BKQC_TRN_FAULT | FLOAT | Fault quantity |
+| 16 | BKQC_TRN_BROKEN | FLOAT | Broken quantity |
+| 17 | BKQC_TRN_FIXQTY | FLOAT | Reworked/fixed quantity |
+| 18 | BKQC_TRN_POQTY | FLOAT | PO quantity |
+| 19 | BKQC_TRN_INVCD | STRING(5) | Invoice code |
+| 20 | BKQC_TRN_FLAG | STRING(1) | Status flag |
+| 21 | BKQC_TRN_EXTRA | STRING(50) | Filler |
+
+QC inspection detail — one record per part per receiver. Tracks good/bad/under quantities plus fault, broken, and fixed counts with scrap/rework disposition codes. Header in BKQCMSTR.
+
+---
+
+### BKQTNOTE / BKQTTEMP / BKRFQDES  (5 fields each) — Quote/RFQ note lines
+
+All three tables share the BK_DESC_* field prefix and identical structure:
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BK_DESC_CODE | STRING(15) | Parent code (PK) |
+| 2 | BK_DESC_NUM | FLOAT | Parent number (PK) |
+| 3 | BK_DESC_LINE | UBINARY(2) | Line number (PK) |
+| 4 | BK_DESC_NOTES | STRING(70) | Note text |
+| 5 | BK_DESC_DESC | STRING(25) | Short description |
+
+BKQTNOTE — Note lines for quotes (QT module). BKQTTEMP — Quote note template lines. BKRFQDES — Description lines for RFQ records (links to BKRFQ via NUM). Same BK_DESC pattern also used in BKSONOTE (SO notes) from Pass 141.
+
+---
+
+### BKRFQ  (BKRFQ.B) — 49 fields — Request for Quote header
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKRFQ_NUM | FLOAT | RFQ number (PK) |
+| 2 | BKRFQ_EST | STRING(10) | Estimating quote number |
+| 3 | BKRFQ_PARENT | STRING(15) | Parent part |
+| 4 | BKRFQ_OPER | UBINARY(2) | Operation number |
+| 5 | BKRFQ_PROD | STRING(15) | Product/component code |
+| 6 | BKRFQ_WOPRE | FLOAT | WO prefix |
+| 7 | BKRFQ_WOSUF | UBINARY(2) | WO suffix |
+| 8 | BKRFQ_ISSUE | DATE | Issue date |
+| 9 | BKRFQ_VEND | STRING(10) | Vendor code |
+| 10 | BKRFQ_VNAME | STRING(30) | Vendor name |
+| 11 | BKRFQ_VADDR1 | STRING(30) | Vendor address 1 |
+| 12 | BKRFQ_VADDR2 | STRING(30) | Vendor address 2 |
+| 13 | BKRFQ_VCSZ | STRING(30) | Vendor city/state/zip |
+| 14 | BKRFQ_VCONTACT | STRING(20) | Vendor contact |
+| 15 | BKRFQ_USE | STRING(1) | Use flag |
+| 16 | BKRFQ_PUM | STRING(5) | Purchase UOM |
+| 17 | BKRFQ_LEAD | UBINARY(2) | Lead time (days) |
+| 18 | BKRFQ_PCONV | FLOAT | Pack conversion factor |
+| 19 | BKRFQ_EXP | DATE | Expiration date |
+| 20–29 | BKRFQ_QTY_1..10 | FLOAT×10 | 10 quantity break quantities |
+| 30–39 | BKRFQ_COST_1..10 | FLOAT×10 | 10 quantity break unit costs |
+| 40 | BKRFQ_MIN | FLOAT | Minimum order quantity |
+| 41 | BKRFQ_MINCST | FLOAT | Minimum order cost |
+| 42 | BKRFQ_EXTRA | STRING(50) | Filler |
+| 43 | BKRFQ_EST_LINE | FLOAT | Estimating line number |
+| 44 | BKRFQ_LCDATE | DATE | Last change date |
+| 45 | BKRFQ_CQCHANGE | STRING(1) | Cost/qty change flag |
+| 46 | BKRFQ_CWHO | STRING(10) | Changed by |
+| 47 | BKRFQ_ALPHA1 | STRING(10) | Alpha UDF 1 |
+| 48 | BKRFQ_GDATE | DATE | General date |
+| 49 | BKRFQ_FLAG | STRING(1) | Status flag (+ UWHO+MAXDAYS implied) |
+
+RFQ header — one record per vendor quote request. Links to Estimating (EST+EST_LINE) and optionally a Work Order (WOPRE/WOSUF). Stores 10-break quantity/cost matrix. Description lines in BKRFQDES. Routing cost details in BKRTCST.
+
+---
+
+### BKRTCST  (BKRTCST.B) — 24 fields — Routing cost for quoting
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKRT_QUOTE | STRING(10) | Quote number (PK) |
+| 2 | BKRT_CODE | STRING(15) | Part code (PK) |
+| 3 | BKRT_OPER | UBINARY(2) | Operation number (PK) |
+| 4–13 | BKRT_PARTSHR_N_1..10 | FLOAT×10 | 10 parts/hr break values |
+| 14–23 | BKRT_SETUP_N_1..10 | FLOAT×10 | 10 setup time break values |
+| 24 | BKRT_DATE | DATE | Date |
+
+Routing cost detail for the estimating/quoting process. Stores per-operation parts-per-hour and setup times for each of 10 quantity breaks, keyed to the quote + part + operation.
+
+---
+
+### BKRTEMTR  (BKRTEMTR.B) — 62 fields — E-company routing mirror
+
+Identical structure to ROUTING/ROUTAING (62 fields, documented in Pass 147), but using prefix `MTRO_` instead of `MTRT_`/`MTRP_`. Stores E-company routing operations: PART+OPER PK; WCENTER+TYPE+DESC+SETUP+RUN+RUNUM+SCRAP+MOVE+QUEUE+SUBCON+NOTES×4+EXTRA+GL accounts+OUTSRC+BATCHSZ+etc. Full field list matches ROUTING table (schema.md:9209-9303).
+
+---
+
+### BKRTSPEC  (BKRTSPEC.B) — 7 fields — Routing specification notes
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKRT_SPEC_PART | STRING(15) | Part code (PK) |
+| 2 | BKRT_SPEC_SEQ | UBINARY(2) | Sequence/operation (PK) |
+| 3 | BKRT_SPEC_LINE | UBINARY(2) | Line number (PK) |
+| 4–7 | BKRT_SPEC_NOTE_1..4 | STRING(20)×4 | Four 20-char note lines |
+
+Extended note lines for routing operations — allows multi-line specs/instructions per part+operation. Supplements the 4 NOTE fields already in ROUTING.
+
+---
+
+### BKRTTEMP  (BKRTTEMP.B) — 6 fields — Routing template notes
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKRT_TEMP_CODE | STRING(15) | Template code (PK) |
+| 2 | BKRT_TEMP_LINE | UBINARY(2) | Line number (PK) |
+| 3–6 | BKRT_TEMP_NOTE_1..4 | STRING(20)×4 | Four 20-char note lines |
+
+Standard routing notes template — reusable operation notes keyed by template code + line number.
+
+---
+
+### BKPCKIT  (BKPCKIT.B) — 6 fields — PC production kit components
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKPC_KIT_COMP | STRING(15) | Component code |
+| 2 | BKPC_KIT_QTY_R | FLOAT | Required quantity |
+| 3 | BKPC_KIT_QTY_A | FLOAT | Actual quantity |
+| 4 | BKPC_KIT_QTY_S | FLOAT | Staged quantity |
+| 5 | BKPC_KIT_DATELM | DATE | Date eliminated |
+| 6 | BKPC_KIT_LOC | STRING(10) | Location |
+
+**Offset anomaly:** Fields start at byte offset 15, not 0. Indicates a 15-byte header prefix in the .B file not captured as DDF fields — likely a record key or control header stored outside the Btrieve schema. Part of the PC (Production Control / Picking) module. Tracks component staging for kits.
+
+---
+
+### BKPCPLOT  (BKPCPLOT.B) — 10 fields — PC production scheduling plot
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKPC_PLOT_PROD | STRING(15) | Product code |
+| 2 | BKPC_PLOT_ISDTE | DATE | Issue date |
+| 3 | BKPC_PLOT_SPDTE | DATE | Ship/promise date |
+| 4 | BKPC_PLOT_QTY | FLOAT | Quantity |
+| 5 | BKPC_PLOT_CUST | STRING(10) | Customer code |
+| 6 | BKPC_PLOT_INKO | STRING(1) | In/out flag |
+| 7 | BKPC_PLOT_STAT | STRING(1) | Status |
+| 8 | BKPC_PLOT_STRTD | DATE | Started date |
+| 9 | BKPC_PLOT_COMPD | DATE | Completed date |
+| 10 | BKPC_PLOT_LOC | STRING(10) | Location |
+
+**Offset anomaly:** Fields start at byte offset 15, matching BKPCKIT — same 15-byte header prefix pattern. Production scheduling plot record: maps a product + customer + dates to a scheduled production slot with status tracking.
+
+---
+
+### BKSAREPT  (BKSAREPT.B) — 57 fields — Sales Analysis report filter template
+
+| # | Field | Type | Notes |
+|---|-------|------|-------|
+| 1 | BKSA_TYPE | STRING(1) | Template type (PK) |
+| 2 | BKSA_NAME | STRING(10) | Template name (PK) |
+| 3 | BKSA_RTM | STRING(40) | Report template (.RTM) filename |
+| 4–5 | BKSA_FROM1/THRU1 | STRING(10)×2 | Salesperson range |
+| 6–7 | BKSA_FROM2/THRU2 | STRING(4)×2 | ? range |
+| 8–9 | BKSA_FROM3/THRU3 | STRING(10)×2 | Customer range |
+| 10–11 | BKSA_FROM4/THRU4 | STRING(4)×2 | ? range |
+| 12–13 | BKSA_FROM5/THRU5 | DATE×2 | Date range |
+| 14–15 | BKSA_FROM6/THRU6 | STRING(4)×2 | ? range |
+| 16–17 | BKSA_FROM7/THRU7 | DATE×2 | Date range 2 |
+| 18–19 | BKSA_FROM8/THRU8 | STRING(15)×2 | Part code range |
+| 20–21 | BKSA_FROM9/THRU9 | STRING(4)×2 | Class range |
+| 22–23 | BKSA_FROM10/THRU10 | STRING(4)×2 | ? range |
+| 24–25 | BKSA_FROM11/THRU11 | STRING(10)×2 | ? range |
+| 26–27 | BKSA_FROM12/THRU12 | STRING(4)×2 | ? range |
+| 28–29 | BKSA_FROM13/THRU13 | STRING(4)×2 | ? range |
+| 30–31 | BKSA_FROM14/THRU14 | STRING(4)×2 | ? range |
+| 32–33 | BKSA_FROM15/THRU15 | UBINARY(2)×2 | Integer range |
+| 34–35 | BKSA_FROM16/THRU16 | UBINARY(2)×2 | Integer range |
+| 36–37 | BKSA_FROM17/THRU17 | STRING(10)×2 | ? range |
+| 38–39 | BKSA_FROM18/THRU18 | STRING(15)×2 | ? range |
+| 40–41 | BKSA_FROM19/THRU19 | STRING(25)×2 | ? range |
+| 42–43 | BKSA_FROM20/THRU20 | FLOAT(8,2)×2 | Amount range |
+| 44 | BKSA_BASE | STRING(1) | Base type flag |
+| 45 | BKSA_TITLE | STRING(40) | Report title |
+| 46–47 | BKSA_FROM21/THRU21 | STRING(15)×2 | ? range |
+| 48–49 | BKSA_FROM22/THRU22 | STRING(4)×2 | ? range |
+| 50–51 | BKSA_FROM23/THRU23 | DATE×2 | Date range 3 |
+| 52–53 | BKSA_FROM24/THRU24 | FLOAT(8,2)×2 | Amount range 2 |
+| 54–55 | BKSA_FROM25/THRU25 | FLOAT(8,2)×2 | Amount range 3 |
+| 56–57 | BKSA_FROM26/THRU26 | STRING(3)×2 | Short code range |
+
+SA (Sales Analysis) report filter — saves named filter templates for SA reports. 26 FROM/THRU dimension pairs of varying types (string, date, float, binary). Mirrors the BKACTRPT pattern (53f activity report filter). TYPE+NAME = PK; RTM links to the .RTM report file.
+
+---
+
+### BKSBMFG  (BKSBMFG.B) — 6 fields — Substitute manufacturer
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSB_MFG_PARNT | STRING(15) | Parent part (PK) |
+| BKSB_MFG_PROD | STRING(15) | Component part (PK) |
+| BKSB_MFG_CUST | STRING(10) | Customer code (PK) |
+| BKSB_MFG_MANUF | STRING(25) | Manufacturer name |
+| BKSB_MFG_MPART | STRING(25) | Manufacturer part number |
+| BKSB_MFG_EXTRA | STRING(50) | Filler |
+
+Alternate/approved manufacturer record for a BOM component: for a given parent+component+customer combination, records the manufacturer and manufacturer's part number. Part of the SB (Substitute/Approved Sources) module.
+
+---
+
+### BKSBPART  (BKSBPART.B) — 5 fields — Substitute part
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSB_PART_PARNT | STRING(15) | Parent part (PK) |
+| BKSB_PART_PROD | STRING(15) | Original component (PK) |
+| BKSB_PART_CUST | STRING(10) | Customer code (PK) |
+| BKSB_PART_SUBST | STRING(15) | Substitute part code |
+| BKSB_PART_EXTRA | STRING(50) | Filler |
+
+Approved substitute part — for a given parent+component+customer, records a valid alternate part number that can replace the original component.
+
+---
+
+### BKSBVEND  (BKSBVEND.B) — 6 fields — Substitute vendor
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSB_VEND_PARNT | STRING(15) | Parent part (PK) |
+| BKSB_VEND_PROD | STRING(15) | Component part (PK) |
+| BKSB_VEND_CUST | STRING(10) | Customer code (PK) |
+| BKSB_VEND_VEND | STRING(10) | Approved vendor code |
+| BKSB_VEND_VPART | STRING(25) | Vendor's part number |
+| BKSB_VEND_EXTRA | STRING(50) | Filler |
+
+Approved vendor record — for a given parent+component+customer, records an approved vendor and their part number. BKSBMFG, BKSBPART, BKSBVEND together form the SB approved-sources module.
+
+---
+
+### BKSHORT  (BKSHORT.B) — 9 fields — Shortage tracking
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BK_SHORT_PCODE | STRING(15) | Short part code |
+| BK_SHORT_DESC | STRING(25) | Part description |
+| BK_SHORT_WONUM | FLOAT | Work order number |
+| BK_SHORT_WO_SUF | UBINARY(2) | WO suffix |
+| BK_SHORT_QTYREQ | FLOAT(2) | Quantity required |
+| BK_SHORT_SHORT | FLOAT(2) | Shortage quantity |
+| BK_SHORT_DATE | DATE | Date recorded |
+| BK_SHORT_PPCODE | STRING(15) | Parent part code |
+| BK_SHORT_PPDESC | STRING(25) | Parent part description |
+
+Shortage log — records parts that are short for a specific Work Order. Tracks what is needed (QTYREQ), how much is short (SHORT), and the parent assembly that needs it (PPCODE/PPDESC).
+
+---
+
+### BKSLEVEL  (BKSLEVEL.B) — 422 fields — Security level × menu access matrix
+
+PK: BKSL_MENU (UBINARY, menu number) + BKSL_LEVEL (STRING 2, security level code).
+
+Then 20 menu groups, each of 21 fields:
+- `BKSL_MENUn_YN` — Y/N: does this level have any access to menu n?
+- `BKSL_MENUn_1..20` — Individual 1-byte access flags for up to 20 items within menu n
+
+Total: 2 (PK) + 20×21 = 422 fields. Record size: ~423 bytes.
+
+The BKSL_LEVEL value corresponds to BKSLMSTR.BKSL_MSTR_LEVEL (the security level code). BKSL_MENU is the menu number. For each combination, the 20 item slots control access to individual menu choices. Companion to BKUMSRTY (23f) and AHSYLOG (23f).
+
+---
+
+### BKSLMSTR  (BKSLMSTR.B) — 2 fields — Security level master
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSL_MSTR_LEVEL | STRING(2) | Security level code (PK) |
+| BKSL_MSTR_DESC | STRING(45) | Level description |
+
+Simple lookup for security levels — maps a 2-char level code to a 45-char description. Referenced by BKSLEVEL (detailed menu permissions) and BKLOGON/BKSYLOG (user records).
+
+---
+
+### BKSOHLOT  (BKSOHLOT.B) — 14 fields — Sales Order lot control
+
+### BKSOHSER  (BKSOHSER.B) — 14 fields — Sales Order serial control
+
+Both tables are identical in structure (BKAR_TXN_ prefix):
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKAR_TXN_SONUM | FLOAT | Sales order number (PK) |
+| BKAR_TXN_CODE | STRING(15) | Part code (PK) |
+| BKAR_TXN_DESC | STRING(30) | Part description |
+| BKAR_TXN_QTY | FLOAT(2) | Quantity |
+| BKAR_TXN_LOT | STRING(15) | Lot number |
+| BKAR_TXN_SERIAL | STRING(25) | Serial number |
+| BKAR_TXN_DATE | DATE | Transaction date |
+| BKAR_TXN_STOCK | STRING(15) | Stock location |
+| BKAR_TXN_LINE | FLOAT | SO line number |
+| BKAR_TXN_LOC | STRING(10) | Warehouse location |
+| BKAR_TXN_TMPSO | STRING(40) | Temp SO reference |
+| BKAR_TXN_SRNUM | FLOAT | Serial/receiver number |
+| BKAR_TXN_EXTRA | STRING(50) | Filler |
+| BKAR_TXN_BIN | STRING(15) | Bin location |
+
+BKSOHLOT tracks lot-controlled inventory allocated to a SO line. BKSOHSER tracks serialized inventory allocated to a SO line. Both use the same field layout — the distinction is in what LOT/SERIAL fields contain (BKSOHSER populates SERIAL, BKSOHLOT populates LOT). Used during SO picking and shipment.
+
+---
+
+### BKSOLOCK  (BKSOLOCK.B) — 5 fields — Sales Order record lock
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSO_LOCK_REC | STRING(10) | Record identifier (PK) |
+| BKSO_LOCK_ITEM | STRING(25) | Item description |
+| BKSO_LOCK_DATE | DATE | Lock date |
+| BKSO_LOCK_TIME | TIME | Lock time |
+| BKSO_LOCK_WHO | STRING(25) | Locked by (user) |
+
+Concurrency lock table for the SO module — prevents simultaneous editing of the same SO record. Pattern used across modules (BKCMCTL1-4, BKCMCTRL, etc.).
+
+---
+
+### BKSONOTE  (BKSONOTE.B) — 5 fields — Sales Order note lines
+
+BK_DESC pattern (same as BKQTNOTE/BKRFQDES): CODE+NUM+LINE+NOTES(70)+DESC(25). Note lines for Sales Orders, keyed by part code + SO number + line number.
+
+---
+
+### BKSOPO  (BKSOPO.B) — 16 fields — SO-driven MRP suggested PO
+
+### BKWOPO  (BKWOPO.B) — 16 fields — WO-driven MRP suggested PO
+
+Both tables are identical in structure (BKMRP_PO_ prefix) — same as noted for BKMRPPO (Pass 149):
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKMRP_PO_UID | STRING(20) | Unique ID (PK) |
+| BKMRP_PO_VEND | STRING(10) | Vendor code |
+| BKMRP_PO_DATE | DATE | PO date |
+| BKMRP_PO_ERD | DATE | Expected receipt date |
+| BKMRP_PO_PART | STRING(15) | Part code |
+| BKMRP_PO_QTY | FLOAT(2) | Quantity |
+| BKMRP_PO_PRICE | FLOAT(4) | Unit price |
+| BKMRP_PO_WOPRE | FLOAT | WO prefix |
+| BKMRP_PO_WOSUF | UBINARY(2) | WO suffix |
+| BKMRP_PO_PLANR | STRING(4) | Planner code |
+| BKMRP_PO_CONF | STRING(1) | Confirmed flag |
+| BKMRP_PO_DONE | STRING(10) | Done flag/code |
+| BKMRP_PO_MTREC | UBINARY(4) | Material record ref |
+| BKMRP_PO_EXTRA | STRING(50) | Filler |
+| BKMRP_PO_EST | STRING(10) | Estimating link |
+| BKMRP_PO_ESTLNE | FLOAT | Estimating line |
+
+BKSOPO = MRP suggested PO driven by a Sales Order demand. BKWOPO = MRP suggested PO driven by a Work Order demand. Both have identical structure to BKMRPPO (the base MRP suggested PO table). The UID field is the primary key (20-char unique identifier).
+
+---
+
+### BKSOX  (BKSOX.B) — 25 fields — SOX invoice transaction
+
+### BKSOXH  (BKSOXH.B) — 25 fields — SOX invoice history
+
+Both tables are identical in structure (BKSOX_ prefix):
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSOX_COMPANY | STRING(2) | Company code (PK) |
+| BKSOX_INVCNUM | FLOAT | Invoice number (PK) |
+| BKSOX_INVCDATE | DATE | Invoice date |
+| BKSOX_CUSTCODE | STRING(10) | Customer code |
+| BKSOX_CUSTNAME | STRING(30) | Customer name |
+| BKSOX_SUBTOT | FLOAT(2) | Subtotal |
+| BKSOX_TAXAMT | FLOAT(2) | Tax amount |
+| BKSOX_FREIGHT | FLOAT(2) | Freight amount |
+| BKSOX_DEPOSIT | FLOAT(2) | Deposit amount |
+| BKSOX_RETEN | FLOAT(2) | Retention amount |
+| BKSOX_TOTAL | FLOAT(2) | Invoice total |
+| BKSOX_CURRENCY | STRING(3) | Currency code |
+| BKSOX_SONUM | FLOAT | Sales order number |
+| BKSOX_CUSTPO | STRING(25) | Customer PO number |
+| BKSOX_TERMSCODE | UBINARY(2) | Terms code |
+| BKSOX_TERMSDESC | STRING(20) | Terms description |
+| BKSOX_INVCDESC | STRING(30) | Invoice description |
+| BKSOX_SHIPDATE | DATE | Ship date |
+| BKSOX_SHIPPER | FLOAT | Shipper number |
+| BKSOX_JOBNUM | STRING(15) | Job number |
+| BKSOX_TAXCODE | STRING(10) | Tax code |
+| BKSOX_TAXNAME | STRING(30) | Tax name |
+| BKSOX_POSTDATE | DATE | GL posting date |
+| BKSOX_ARCHDATE | DATE | Archive date |
+| BKSOX_ENTDATE | DATE | Entry date |
+
+SOX (Sales Order eXchange / EDI-compatible invoice archive). BKSOX = current transactions; BKSOXH = historical archive. Multi-company (COMPANY field). Stores invoice summary with full financial breakdown. Differs from BKARINV (the main AR invoice table) by including archiving dates and EDI-oriented fields.
+
+---
+
+### BKSYAP  (BKSYAP.B) — 11 fields — System/AP configuration link
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSY_AP_RECVNUM | FLOAT | Receiver number (PK) |
+| BKSY_AP_REOPEN | STRING(1) | Allow reopen flag |
+| BKSY_AP_RQSCRAP | STRING(1) | Require scrap code |
+| BKSY_AP_RQREWRK | STRING(1) | Require rework code |
+| BKSY_AP_RECVFLG | STRING(1) | Receiver flag |
+| BKSY_AP_PONUM | FLOAT | PO number |
+| BKSY_AP_QCRECV | FLOAT | QC receiver reference |
+| BKSY_AP_RFQNUM | FLOAT | RFQ number |
+| BKSY_AP_VPRICE | UBINARY(2) | Vendor price flag |
+| BKSY_AP_PERCOVR | FLOAT(3) | Percent over budget |
+| BKSY_AP_CONVDTE | DATE | Conversion date |
+
+Per-receiver AP system link — stores AP-specific options and cross-references (QC and RFQ links) for a given receipt. Supplements BKAPREC (the main AP receipt table).
+
+---
+
+### BKSYAR  (BKSYAR.B) — 2 fields — System/AR link
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSY_AR_TRXN | FLOAT | Transaction number |
+| BKSY_AR_DEPNO | FLOAT | Deposit number |
+
+Minimal AR system link — associates a transaction with a deposit number.
+
+---
+
+### BKSYCFG  (BKSYCFG.B) — 4 fields — System module configuration flags
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSY_CFG_ACCTG | STRING(1) | Accounting module enabled |
+| BKSY_CFG_SALES | STRING(1) | Sales module enabled |
+| BKSY_CFG_LITEWO | STRING(1) | Lite Work Order mode |
+| BKSY_CFG_ADVWO | STRING(1) | Advanced Work Order mode |
+
+Singleton configuration record — 4 Y/N flags controlling which major modules are active and whether WO is in lite vs. advanced mode.
+
+---
+
+### BKSYHELP  (BKSYHELP.B) — 1 field — Help file path
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSY_HELP_PATH | STRING(70) | Path to EvoHELP.CHM or help directory |
+
+Singleton — stores the path to the EVO help file system.
+
+---
+
+### BKSYLOG  (BKSYLOG.B) — 215 fields — System user module-access matrix
+
+PK: BKSY_LOGON_CHR (1) + BKSY_LOGON_CODE (15). Core auth: PSWD(10) + SCTY(2).
+
+Then 8 module groups, each of 21 fields (YN + 20 OK_n slots):
+- `GLYN` + `OKGL_1..20` — GL (General Ledger) access
+- `ARYN` + `OKAR_1..20` — AR (Accounts Receivable) access
+- `SOYN` + `OKSO_1..20` — SO (Sales Orders) access
+- `APYN` + `OKAP_1..20` — AP (Accounts Payable) access
+- `POYN` + `OKPO_1..20` — PO (Purchase Orders) access
+- `ICYN` + `OKIC_1..20` — IC (Inventory Control) access
+- `PRYN` + `OKPR_1..20` — PR (Payroll) access
+- `SYYN` + `OKSY_1..20` — SY (System) access
+
+Then: OKLM (1) + O1YN + OTH1_1..20 (1-byte each) + O2YN + OTH2_1..20 (2-byte each) = 215 total.
+
+The full per-user access matrix. Each module's 20 slots correspond to individual menu choices within that module. More granular than BKSLEVEL (which is per security-level, not per user). The OTH1/OTH2 groups handle additional/custom modules.
+
+---
+
+### BKSYMSTR  (BKSYMSTR.B) — 286 fields — Global system master singleton
+
+This is the largest singleton configuration table in EVO — a single record storing global defaults for the entire system. Key sections:
+
+**Document counters** (f1–4): ARINV_NUM, APINV_NUM, APPO_NUM, GJ_NUM — next available invoice/PO/GJ numbers.
+
+**Payment terms** (f5–125): TAX_RATE + 20 payment terms, each with TERMS_n (description 20 chars) + TRM_AMT_n (UBINARY, amount) + TRM_TYP_n (type char) + TRM_DAY_n (day of month) + TRM_EOM_n (end-of-month flag) + TRM_MAX_n (max days) + TRM_DISC_n (discount %).
+
+**Company identity** (f126–129): COMP_NAME, COMP_ADD1, COMP_ADD2, COMP_CSZ.
+
+**AR defaults** (f130–140): SHP_VIA, SLSP, ENTBY, TAXABL, ENDDESC_1..5, TURNOFF, PEL.
+
+**AP defaults** (f141–148): SHP_VIA, ENTBY, PEL, ENDDESC_1..5.
+
+**GL account assignments** (f149–172): GL + DPT pairs for clearing, AR, AR-discount, AP, AP-discount, AR-tax, PO-tax, PO-freight, retained earnings, PO-RNI (received-not-invoiced), AR-freight, AR-interest.
+
+**Check books** (f175–219): 9 check books, each with CHK_NUM (next check#), CHK_BAL, CHK_NAME, CHK_CHKACT (GL account), CHK_CHKDPT, CHK_CHKCUR (currency). Plus AR/AP/PR check account selectors.
+
+**Financial config** (f220–244): ARSO_NUM, AUTO_BO, RTS_DEF, AR_FREIGHT, PO_RNI, PLAIN_INV/PO/STMT/CHKS, FORM_CMPNY, AR/AP aging brackets (5 each).
+
+**Payroll overhead** (f245–251): PR_ODNAME_1..6 (overhead category names).
+
+**Record counters** (f251–253): AP_RECNUM, GJ_RECNUM, AR_RECNUM.
+
+**Misc** (f254–286): TAL, EXTRA(173), fiscal year, GL retained earnings/interest, interest rate/days, PR check account, PO INR account + extras, 9×CHKCUR.
+
+Record spans offset 0 to 2331 bytes — one of the largest single records in the schema.
+
+---
+
+### BKSYPRTR  (BKSYPRTR.B) — 11 fields — Printer definition
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSY_PRTR_NAME | STRING(30) | Printer name (PK) |
+| BKSY_PRTR_EXEC | STRING(8) | Executable/driver |
+| BKSY_PRTR_TAS | STRING(1) | TAS printer flag |
+| BKSY_PRTR_LPTNM | UBINARY(1) | LPT port number |
+| BKSY_PRTR_TYPE | STRING(8) | Printer type code |
+| BKSY_PRTR_PWDT | UBINARY(2) | Page width |
+| BKSY_PRTR_PMAX | UBINARY(2) | Page max lines |
+| BKSY_PRTR_PPLNE | UBINARY(2) | Pixels per line |
+| BKSY_PRTR_LASER | STRING(1) | Laser printer flag |
+| BKSY_PRTR_POST | STRING(8) | PostScript driver |
+| BKSY_PRTR_PRUN | STRING(1) | Print run flag |
+
+Printer configuration table — defines available printers with driver, port, page geometry, and type (TAS/laser/PostScript). One record per named printer.
+
+---
+
+### BKSYUSER  (BKSYUSER.B) — 5 fields — Simplified user record
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKSY_USER_CHR | STRING(1) | Character flag |
+| BKSY_USER_CODE | STRING(15) | User code |
+| BKSY_USER_PSWD | STRING(10) | Password |
+| BKSY_USER_SCTY | STRING(2) | Security level |
+| BKSY_USER_COMP | STRING(2) | Company code |
+
+Simplified user record for multi-company contexts — stores user identity with company assignment. Appears to be a subset of BKLOGON (10f). CHR field may be a record type marker.
+
+---
+
+### BKUMSRTY  (BKUMSRTY.B) — 23 fields — UM security sort matrix
+
+| Field | Type | Notes |
+|-------|------|-------|
+| SCRTY_LEVEL | STRING(2) | Security level (PK) |
+| SCRTY_MENU | UBINARY(2) | Menu number (PK) |
+| SCRTY_GROUP | STRING(1) | Group flag |
+| SCRTY_ITEM_1..20 | STRING(1)×20 | 20 item access flags |
+
+Per security-level, per-menu access matrix using a simpler structure than BKSLEVEL. 20 individual 1-byte item slots per menu × level combination. The GROUP field may indicate a menu group category. Companion or alternate to BKSLEVEL (422f) — may be for the UM (User Management) module specifically.
+
+---
+
+### BKUPDATE  (BKUPDATE.B) — 4 fields — Database update version tracking
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BKUP_COMPANY | STRING(2) | Company code (PK) |
+| BKUP_UPDATE | STRING(1) | Update flag |
+| BKUP_DATE | DATE | Update applied date |
+| BKUPDATE_VER | STRING(15) | Version string |
+
+Tracks the EVO database schema version per company — records when and what version update was last applied. Used during EVO upgrades to determine which schema migrations have been run.
+
+---
+
+### BKYSMSTR  (BKYSMSTR.B) — 355 fields — WO/Manufacturing system master singleton
+
+Parallel to BKSYMSTR (AR/AP/GL global config) — this singleton covers Work Order and manufacturing configuration. Key sections:
+
+**WO counter** (f1): BKYS_WONUM — next Work Order number.
+
+**Boolean config flags** (f2–67): BKYS_YN_1..66 — 66 one-byte Y/N flags controlling WO/manufacturing behavior (specific meanings unknown without source, but pattern matches BKFOCFG feature-toggle approach).
+
+**GL account assignments** (f68–331): BKYS_GLACT_1..40 (STRING 10) and BKYS_GLDPT_1..40 (STRING 4) — 40 GL account + department pairs for manufacturing cost postings (WIP, labor, overhead, COGS, etc.).
+
+**UDF slots** (f332–351): 5×NUM (FLOAT), 5×DESC (STRING 25), 5×VNUM (UBINARY 2), 5×DATE — general-purpose user-defined fields for WO config.
+
+**Counter numbers** (f352–355): QCNUM, REQNUM, INVNUM, RBNUM (FLOAT) — next QC, requisition, inventory, and RB (?) document numbers.
+
+Record spans offset 0 to ~1045 bytes.
+
+---
+
+### BOMCHG  (BOMCHG.B) — 15 fields — BOM change audit trail
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BOM_CHG_PARENT | STRING(15) | Parent part code (PK) |
+| BOM_CHG_COMP | STRING(15) | Component part code (PK) |
+| BOM_CHG_CDATE | DATE | Change date |
+| BOM_CHG_USER | STRING(15) | Changed by |
+| BOM_CHG_ACOMP | STRING(1) | Added component flag |
+| BOM_CHG_DCOMP | STRING(1) | Deleted component flag |
+| BOM_CHG_AQTY | FLOAT(8) | New quantity (after) |
+| BOM_CHG_BQTY | FLOAT(8) | Old quantity (before) |
+| BOM_CHG_AREF | STRING(20) | New reference designator (after) |
+| BOM_CHG_BREF | STRING(20) | Old reference designator (before) |
+| BOM_CHG_ASCRAP | FLOAT(2) | New scrap % (after) |
+| BOM_CHG_BSCRAP | FLOAT(2) | Old scrap % (before) |
+| BOM_CHG_AEXTRA | STRING(100) | New extra data (after) |
+| BOM_CHG_BEXTRA | STRING(100) | Old extra data (before) |
+| BOM_CHG_UID | STRING(20) | Unique change ID |
+
+BOM (Bill of Materials) engineering change log. Each record captures a before (B prefix) and after (A prefix) snapshot of a BOM component change — quantity, reference designator, scrap %, and extra data. Add/delete flags indicate structural changes. Provides full audit trail for engineering change orders.
+
+---
+
+### BUCKETS  (BUCKETS.B) — 14 fields — WO capacity scheduling bucket
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BUK_WC | STRING(12) | Work center (PK) |
+| BUK_WCTYPE | STRING(1) | Work center type |
+| BUK_WOPRE | FLOAT | WO prefix (PK) |
+| BUK_WOSUF | UBINARY(2) | WO suffix (PK) |
+| BUK_OPER | UBINARY(2) | Operation number (PK) |
+| BUK_PART | STRING(15) | Part code |
+| BUK_SDATE | DATE | Scheduled start date |
+| BUK_SDATE_SHOP | FLOAT(4) | Start date in shop days |
+| BUK_FDATE | DATE | Scheduled finish date |
+| BUK_FDATE_SHOP | FLOAT(4) | Finish date in shop days |
+| BUK_CRATIO | FLOAT(5) | Capacity ratio |
+| BUK_LOCKED | STRING(1) | Locked flag |
+| BUK_NUM_SUNITS | FLOAT | Number of scheduling units |
+| BUK_CNTN | FLOAT | Contention value |
+
+Finite capacity scheduling — one record per WO operation scheduled to a work center. Stores both calendar dates and shop-day equivalents for start/finish, with a capacity ratio and contention metric for load balancing. Used by the scheduling/dispatch module.
+
+---
+
+### CALENDAR  (CALENDAR.B) — 5 fields — Shop calendar
+
+| Field | Type | Notes |
+|-------|------|-------|
+| MTCAL_DATE | DATE | Calendar date (PK) |
+| MTCAL_DESC | STRING(25) | Holiday/exception description |
+| MTCAL_SAT | STRING(1) | Saturday flag |
+| MTCAL_SUN | STRING(1) | Sunday flag |
+| MTCAL_YEAR | UBINARY(2) | Year |
+
+Shop calendar — one record per exception date (holidays, weekends). Drives scheduling lead-time calculations. SAT/SUN flags indicate weekend days; DESC names holidays.
+
+---
+
+### CALTEMP  (CALTEMP.B) — 2 fields — Calendar computation temp
+
+| Field | Type | Notes |
+|-------|------|-------|
+| SHP_DATE | FLOAT | Shop day count |
+| SLSH_DATE | DATE | Calendar date |
+
+Two-field mapping table used during calendar/scheduling computations to convert between shop-day counts and calendar dates.
+
+---
+
+### CCEDIXRF  (CCEDIXRF.B) — 6 fields — EDI customer cross-reference
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CC_EDI_CUSTCODE | STRING(10) | EVO customer code (PK) |
+| CC_EDI_SENDERID | STRING(15) | EDI sender ID |
+| CC_EDI_SHPTCODE | STRING(17) | Ship-to code |
+| CC_EDI_SHPTZIP | STRING(10) | Ship-to ZIP |
+| CC_EDI_SHIPTO | STRING(10) | Ship-to code (EVO) |
+| CC_EDI_NEXT | FLOAT | Next sequence number |
+
+EDI customer cross-reference — maps EVO customer codes to EDI partner identifiers and ship-to locations. Used by the EDI integration for order translation.
+
+---
+
+### CLASMSTR  (CLASMSTR.B) — 2 fields — Inventory class master
+
+| Field | Type | Notes |
+|-------|------|-------|
+| MTCLASS_M_CLASS | STRING(4) | Class code (PK) |
+| MTCLASS_M_DESC | STRING(30) | Class description |
+
+Simple lookup for inventory class codes — master list of valid class codes with descriptions. Referenced by CLASS (24f, which adds GL account mappings) and CUSTCLAS (customer-facing class codes).
+
+---
+
+### CLASS  (CLASS.B) — 24 fields — Inventory class with GL accounts
+
+| Field | Type | Notes |
+|-------|------|-------|
+| MTCLASS_CLASS | STRING(4) | Class code (PK) |
+| MTCLASS_LOC | STRING(10) | Location (PK) |
+| MTCLASS_DESC | STRING(30) | Description |
+| CLASS_GLA | STRING(10) | Asset GL account |
+| CLASS_DPTA | STRING(4) | Asset GL dept |
+| CLASS_GLC | STRING(10) | COGS GL account |
+| CLASS_DPTC | STRING(4) | COGS GL dept |
+| CLASS_GLS | STRING(10) | Sales GL account |
+| CLASS_DPTS | STRING(4) | Sales GL dept |
+| CLASS_GLSNT | STRING(10) | Sales (non-taxable) GL |
+| CLASS_DPTNT | STRING(4) | Sales (non-taxable) GL dept |
+| CLASS_GLW | STRING(10) | WIP GL account |
+| CLASS_DPTW | STRING(4) | WIP GL dept |
+| CLASS_GLLAB | STRING(10) | Labor GL account |
+| CLASS_DPTLAB | STRING(4) | Labor GL dept |
+| CLASS_GLFOH | STRING(10) | Fixed overhead GL |
+| CLASS_DPTFOH | STRING(4) | Fixed overhead GL dept |
+| CLASS_GLVOH | STRING(10) | Variable overhead GL |
+| CLASS_DPTVOH | STRING(4) | Variable overhead GL dept |
+| CLASS_GLMISC | STRING(10) | Misc GL account |
+| CLASS_DPTMISC | STRING(4) | Misc GL dept |
+| CLASS_GLXTRA | STRING(10) | Extra GL account |
+| CLASS_DPTXTRA | STRING(4) | Extra GL dept |
+| CLASS_EXTRA | STRING(50) | Filler |
+
+Inventory class GL mapping — for each class+location combination, defines GL account+department pairs for 8 cost categories: Asset, COGS, Sales, Sales(NT), WIP, Labor, Fixed OH, Variable OH, Misc, Extra. Drives automatic GL posting when inventory transactions occur.
+
+---
+
+### CUSTCLAS  (CUSTCLAS.B) — 2 fields — Customer class
+
+Identical structure to CLASMSTR: MTCLASS_M_CLASS (4) + MTCLASS_M_DESC (30). Customer-facing classification codes — used to group customers for pricing, reporting, and discount tiers.
+
+---
+
+### DBACNAME  (DBACNAME.B) — 3 fields — Company name table
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CNAME_CODE | STRING(2) | Company code (PK) |
+| CNAME_NAME | STRING(25) | Company name |
+| CNAME_FILLER | STRING(40) | Filler/reserved |
+
+Multi-company name table — maps 2-char company codes to company names. The FILLER field (40 bytes) is reserved for future use. Used wherever multi-company support requires displaying the company name.
+
+---
+
+### DBAFIFO  (DBAFIFO.B) — 5 fields — FIFO cost layer
+
+| Field | Type | Notes |
+|-------|------|-------|
+| FIFO_PARTNO | STRING(15) | Part number (PK) |
+| FIFO_QTY | FLOAT(2) | Quantity in layer |
+| FIFO_COST | FLOAT(4) | Unit cost for layer |
+| FIFO_RECVDATE | DATE | Receipt date of layer |
+| FIFO_REMAIN | FLOAT(2) | Remaining quantity |
+
+FIFO inventory cost layer — one record per receipt lot for each part. As inventory is consumed, REMAIN decrements until the layer is depleted. Drives FIFO cost-of-goods calculations. Related to BKMATCST (10-tier standard cost) for non-FIFO costing.
+
+---
+
+### DBAHLPID  (DBAHLPID.B) — 2 fields — Help ID mapping
+
+| Field | Type | Notes |
+|-------|------|-------|
+| DBA_HELP_REF | STRING(8) | Help reference key |
+| DBA_HELP_MAP | UBINARY(2) | Help topic ID |
+
+Maps a text reference key (8 chars) to a numeric help topic ID — used to link menu/form context to help file sections (EvoHELP.CHM topics).
+
+---
+
+### DISCOUNT  (DISCOUNT.B) — 85 fields — Customer/product price-discount matrix
+
+PK: BKIC_PMAT_CUST (customer 10) + BKIC_PMAT_PCODE (part 15) + BKIC_PMAT_PNUM (UBINARY 2, price matrix number).
+
+**Pricing arrays** (f4–33): 10×RATE (unit price per tier) + 10×QTY (quantity break) + 10×PER (percent discount per tier).
+
+**Classification** (f34–36): EXP (expiry date) + DCODE (discount code 10) + CLASS (class 4).
+
+**Commission arrays** (f37–56): 20×COMM1 (commission rate 1, per tier) + 20×COMM2 (commission rate 2, per tier) — two independent commission schedules.
+
+**Minimum order** (f57–58): MIN (min qty) + MINPR (min price).
+
+**Extra** (f59): EXTRA (STRING 50).
+
+**IS return rates** (f60–69): 10×ISRET — IS (?) return rates per tier.
+
+**Metadata** (f70–73): PDESC (product desc 30) + SDATE/EDATE (effective date range) + UID (unique ID 40).
+
+**Retail/trade allowances** (f74–85): OFFIN (off-invoice %), PROMO, SCAND (scan), FRTAL (freight allowance %), BILLB (bill-back %), SWELL (swell %), ACCRU (accrual %), OFFCH (off-charge %), PFLAG (flag), METH (method 11), SRTS (sort), LUMP (lump sum).
+
+The most complex pricing table in EVO — supports 10-break quantity/price/discount/commission tiers, expiry dates, dual commission schedules, IS return rates, and 8 retail trade promotion allowance types. Used for customer-specific pricing in the SO/AR module.
+
+---
+
+### DPTMENT  (DPTMENT.B) — 2 fields — GL department
+
+| Field | Type | Notes |
+|-------|------|-------|
+| DPT_CODE | STRING(4) | Department code (PK) |
+| DPT_DESC | STRING(30) | Department description |
+
+Simple lookup for GL department codes — maps 4-char department codes to descriptions. Referenced by virtually every table that stores a GL account + department pair.
+
+---
+
+*Pass 151 complete: 50 tables documented — QC module (BKQCMSTR 14f, BKQCTRAN 21f), RFQ/estimating support (BKRFQ 49f, BKRFQDES/BKQTNOTE/BKQTTEMP 5f each BK_DESC pattern, BKRTCST 24f), routing support (BKRTEMTR 62f E-company mirror, BKRTSPEC 7f, BKRTTEMP 6f), PC module (BKPCKIT 6f, BKPCPLOT 10f — both with offset-15 anomaly), security system (BKSLEVEL 422f full access matrix, BKSLMSTR 2f, BKUMSRTY 23f, BKSYLOG 215f user matrix), system singletons (BKSYMSTR 286f global master, BKYSMSTR 355f WO/mfg master, BKSYCFG 4f, BKSYHELP 1f, BKSYPRTR 11f, BKSYUSER 5f, BKUPDATE 4f), system links (BKSYAP 11f, BKSYAR 2f), SA report filter (BKSAREPT 57f), SB approved-sources (BKSBMFG 6f, BKSBPART 5f, BKSBVEND 6f), shortage tracking (BKSHORT 9f), SO lot/serial (BKSOHLOT 14f, BKSOHSER 14f — identical), SO support (BKSOLOCK 5f, BKSONOTE 5f), MRP suggested POs (BKSOPO 16f, BKWOPO 16f — identical), SOX archive (BKSOX 25f, BKSOXH 25f — identical), alternate user (BKPSUSER 11f); non-BK tables: BOMCHG (15f BOM audit), BUCKETS (14f capacity scheduling), CALENDAR (5f shop calendar), CALTEMP (2f), CCEDIXRF (6f EDI xref), CLASMSTR (2f), CLASS (24f GL account mapping per class), CUSTCLAS (2f), DBACNAME (3f multi-company name), DBAFIFO (5f FIFO layers), DBAHLPID (2f help map), DISCOUNT (85f massive pricing/commission matrix), DPTMENT (2f GL dept).*
