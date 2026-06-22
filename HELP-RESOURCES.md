@@ -2995,8 +2995,22 @@ Deposit application form showing: Deposit# (bkar.dep.depno), Customer (BKAR.DEP.
 
 ---
 
-### CH — Multi-Location Chain (T7CHAIN / T7CHAINM)
-**What it does:** Manages multi-location chain relationships. ISCHAINM holds the chain master — location codes, names, and which locations share customer/vendor data. Used in companies running EVO across multiple sites.
+### CH — Multi-Location Chain / Program Chaining (T7CHAIN / T7CHAINM)
+**What it does:** Manages EVO's program-chaining system. When a program completes (e.g., T7SOA Sales Order Entry), it can automatically launch a follow-on program (e.g., T7SOB Invoice Print) with parameters passed between them. Per-user chain definitions allow different users to have different post-program behaviors.
+
+**Forms confirmed from DFM (Pass 153, 2026-06-22):**
+- **T7Chain.DFM** — "Chain List": browse chains per user; grid: IS.CHAIN.USER, IS.CHAIN.DESC, IS.CHAIN.AUTO, IS.CHAIN.PARENT, IS.CHAIN.CHILD
+- **T7CHAINM.DFM** — "Chain Master": full chain definition editor; 9-column grid with PARENT/CHILD/AUTO/DESC/PARAM[1-5]
+
+**IS.CHAIN table structure:** USER(15) + PARENT(12) + CHILD(12) PK; AUTO(1)=Y/N/A; DESC(100); PARAM[1-5](15 each)
+
+**Confirmed parent programs:** T6SOA, T7SOA, T6SOC, T7SOC, T6SOD, T7SOD, T6SOE, T7SOE, T6SOF, T7SOF, T7WOA, T6POA, T7POA, T6POB, T6POR, T7ARA, T7APA, T7SON, ACHHSSOE
+
+**Confirmed child programs:** T6SOB, T7SOB, T6SOC–T7SOF (variants), T7SOG, BKWOB–BKWOI (WO variants), T6WOC, T6WOE, T6POB/POBNP/POC, T7SOOF, T7ARE, T7POIG, BKSON, T6ARN, T7SON, T7SOE, T7WOC, T7WOKD
+
+**AUTO field values:** Y=auto-launch without asking, N=do not chain, A=ask user before launching child
+
+**DDF:** Two tables — ISCHAIN (user-level active chains) and ISCHAINM (chain master/template definitions)
 
 ---
 
@@ -7705,16 +7719,24 @@ GL accounts per currency (each has account + dept pair):
 
 Running balance fields: `AMTBNK`/`AMTAP`/`AMTAR`/`AMTFE`/`AMTPOR`/`AMTAD`/`AMTCS`/`AMTAPD`.
 
-**T7ISMCC UI (confirmed from DFM):**
-The "Convert Source to Base Currency" screen presents a 9-row period grid:
-- **ETBcomboval** — combo box to select source company/currency being converted
-- **is.date** — as-of date for the conversion run
-- **ISGL.CYDATE[1..9]** — read-only date cells showing the GL period-end dates for periods 1–9 (sourced from ISGLDATE)
-- **gl.period[1..9]** — period-number entry for each row (which fiscal period to convert)
+**T7ISMCC UI (confirmed from DFM — Pass 153, 2026-06-22 — full read):**
+Caption: "Convert Source to Base Currency"
 
-The operator selects which company/currency to convert and specifies an as-of date; the form auto-populates period-end dates from ISGLDATE. On "Process," T7ISMCC reads ISMCF for the GL account mapping and posts exchange-rate adjustments via BKGLTRAN.
+Description: "This will convert your Source Currency accounts (AP, AR, PORNI, and Bank Accounts) to Base Currency, with any Gain or Loss posting to the F/E Gain or Loss Account."
 
-**Confidence: 72/100** — both programs confirmed; ISGLDATE(86f) + ISMCF(49f) fully extracted; T7ISMCC period-selection UI confirmed from DFM (9-period grid with ETBcomboval + is.date); synchronization/posting logic blocked by RWN encryption.
+UI fields:
+- **is.cvt.mth** — GL period number (1–12), `vld_glperiod()`
+- **is.date** — as-of date for the conversion run, `vld_gldate()`
+- **gl.period[1-12]** — read-only period numbers (display only)
+- **ISGL.CYDATE[1-12]** — read-only period beginning dates from ISGLDATE
+
+Scope of conversion: AP accounts, AR accounts, PORNI (Purchase Orders Received Not Invoiced), and Bank Accounts — all source-currency balances converted to base currency. Gain/loss posts to F/E (Foreign Exchange) Gain or Loss GL account.
+
+Buttons: Process, Exit
+
+Note: An earlier analysis reported 9-period grid with ETBcomboval (company selector) — the actual DFM shows 12-period grid with `is.cvt.mth` (period selector). No ETBcomboval is present in this form; the company is determined by context.
+
+**Confidence: 80/100** — T7ISMCC.DFM fully read; conversion scope confirmed from form description label; 12 period-date fields (ISGL.CYDATE[1-12]) confirmed; posting logic in RWN.
 
 ---
 
@@ -10183,11 +10205,37 @@ Use case: when GL account records are corrupted or need direct correction outsid
 
 ### FN — File Navigator / Mass Field Replace
 
-**T7FNR.DFM:** Caption "New Screen", complex data maintenance utility. Fields: File Name (FileNAME/DNAME), Field to Change (drepl_field / aREPL_FIELD / nREPL_FIELD for date/alpha/numeric), Array # (element), Action (action), Filter Fields × 4 (flname[1..4] + felement[1..4] + oper[1..4] — file/element/operator per filter), Value (afind_field1..3, dfind_field1..3, nfind_field1..6), Position (Pos/Start/Length for substring operations). Buttons: Process, Test Filters, Exit.
+**T7FNR.DFM** (3,223 lines — fully read Pass 153, 2026-06-22):
 
-FNR = File Navigator Replace — mass field replacement across any EVO data file. Supports find-replace by alpha/date/numeric value with up to 4 filter conditions and substring operations. This is the "nuclear" data fix tool — changes data directly in Btrieve files.
+FNR = File Navigator Replace — mass field replacement across any EVO data file. Supports find-replace by alpha/date/numeric value with **up to 6 filter conditions** and substring operations. This is the "nuclear" data fix tool — changes data directly in Btrieve files without module-level validation.
 
-**FN confidence: 65→72/100**
+**Inputs:**
+- FILENAME (combo, F2 → FilePanel: browser of IS.LOC — EVO file location registry)
+- DNAME (F2 → FieldPanel: browser of IS.DICT — EVO internal field data dictionary)
+- Array # — element index for array fields
+- Action (combo, `vld_action()`) — operation to perform
+
+**Filter conditions (6 rows):** Each row: field name (`flname[n]`) / array# (`felement[n]`) / operator / value (alpha/numeric/date)
+
+**Operators:** All, `<>`, `>`, `<`, `>=`, `<=`, `=`, `$` (contains/substring match)
+
+**Replacement fields:** `AREPL_FIELD` (alpha), `Nrepl_field` (numeric), `dREPL_FIELD` (date)
+
+**Substring controls:** `spos` (start position) + `slength` (length) — for partial alpha field replacement. Per-filter `POS[n]` for `$`-operator match position.
+
+**Buttons:** "Test Filters" (validate conditions before run), Process, Exit
+
+**IS.LOC table** (EVO file location registry — from FilePanel grid bindings):
+- `LOC_FILE_NAME` — Btrieve file name
+- `LOC_BUFF_NAME` — Internal EVO buffer/handle name
+- `LOC_LOCATION` — Full network path to the Btrieve file
+
+**IS.DICT table** (EVO internal field dictionary — from FieldPanel grid bindings):
+- `DICT_FIELD_NAME`, `DICT_TYPE`, `DICT_SIZE`, `DICT_DESC`
+
+**PopupMenu (right-click on numeric replacement field):** "Flat amount" / "Percentage" — two subtypes for numeric replacement.
+
+**FN confidence: 65→80/100** — T7FNR.DFM fully read; 6 filter rows (not 4 as previously noted), IS.LOC and IS.DICT table structures confirmed from FieldName bindings; substring ops confirmed.
 
 ---
 
@@ -10258,13 +10306,27 @@ All share DSN pattern: Host + Port + Name (database name) + Company DSN Settings
 
 ### ML — Multi-Language UI
 
-**T7MLC.DFM:** Caption "DFM Multi Language Generator / Editor". Fields: DFM Name (DFMName), Add Lang (Addlang — add a new language), language (dropdown). Buttons: Generate, Edit, Add Lang, Delete, Exit. Creates translated versions of DFM forms.
+Both DFM files fully read (Pass 153, 2026-06-22):
 
-**T7MLE.DFM:** Caption "Edit Captions". Fields: Default Caption (LANG.DICT.ECAPT — English), Translated Caption (LANG.DICT.LCAPT), Language (LANG.DICT.LANG), language selector. Directly edits the LANGDICT table (same table used by ML module and ISSR.INFO translations).
+**T7MLC.DFM** — "DFM Multi Language Generator / Editor":
+- Select a DFM filename (T7 combo, F2 browse)
+- Buttons: Generate (populate LANG.DICT from DFM captions), Edit (open T7MLE), Add Lang (show 3-char lang code field `Alang`), Delete (select language via `Langdel` combo to remove), Exit
+- Workflow: Generate first → creates ECAPT records for all captions in the selected DFM → then Edit to add translations
 
-**Confirmed LANGDICT field bindings:** ECAPT (English caption, PK part) + LCAPT (local translation, 80 chars) + LANG (language code) — matches the 5-field schema (with FONT(30)+EXTRA(150)).
+**T7MLE.DFM** — "Edit Captions" (SourceFile=T7MLC — same compiled program):
+- Language selector: `Langcombo` → `language` field
+- Grid: LANG.DICT.ECAPT (Default Caption), LANG.DICT.LANG (Lang code), LANG.DICT.LCAPT (Translated Caption)
+- Detail: `defcapt` (read-only English), `LangCapt` (editable translation)
+- Navigation: First / Prev / List / Next / Last / Back
 
-**ML confidence: 68→76/100**
+**LANG.DICT table** (field bindings confirmed from T7MLE.DFM):
+- `ECAPT` — English/default caption (lookup key)
+- `LANG` — 3-character language code (e.g., "ESP", "FRN")
+- `LCAPT` — Localized (translated) caption
+
+**Runtime integration:** LANGDICT is referenced by many programs at runtime (confirmed in dozens of RWN fingerprints). User language is set in SM-K (T7SMK) via `evo.cfg.lang`. Programs look up LANG.DICT.ECAPT + current LANG to substitute LCAPT.
+
+**ML confidence: 68→82/100** — Both DFMs fully read; LANG.DICT(ECAPT/LANG/LCAPT) confirmed from field bindings; Generate/Edit/AddLang/Delete workflow confirmed; 3-char language code format confirmed; T7MLC+T7MLE share single source confirmed (SourceFile=T7MLC in T7MLE).
 
 ---
 

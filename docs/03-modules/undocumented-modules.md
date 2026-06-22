@@ -508,6 +508,229 @@ This module manages warehouse bin and location master records for inventory plac
 
 ---
 
+## CH — Chain Management (Program Chaining)
+
+**DFM files confirmed (2 total):** `T7Chain.DFM` (Chain List), `T7CHAINM.DFM` (Chain Master)
+
+**What it does:** Manages the EVO program-chaining system. When a program (e.g., T7SOA Sales Order Entry) completes, it can automatically launch a follow-on program (e.g., T7SOB Invoice Print) with parameters passed between them. The CH module lets users configure per-user chain definitions.
+
+**Forms confirmed from network share (Pass 153, 2026-06-22):**
+
+| Form | DFM | What it does |
+|------|-----|-------------|
+| Chain List | T7Chain.DFM | Browse existing chain definitions for a user. Grid: IS.CHAIN.USER, IS.CHAIN.DESC, IS.CHAIN.AUTO, IS.CHAIN.PARENT, IS.CHAIN.CHILD. Edit panel: UserName combo, chains combo, Auto entry (1-char, Y/N/A). |
+| Chain Master | T7CHAINM.DFM | Full chain definition editor. 9-column grid: Parent, Child, Auto, Description, Param 1–5. Edit panel: Parent combo + Child combo + Auto + Desc + 5 param combos. |
+
+**IS.CHAIN table structure (confirmed from DFM field bindings):**
+
+| Field | Description |
+|-------|-------------|
+| IS.CHAIN.USER (15) | User name — chain definitions are per-user |
+| IS.CHAIN.PARENT (12) | Parent program (trigger — the program that launches the chain) |
+| IS.CHAIN.CHILD (12) | Child program (target — the program that is launched) |
+| IS.CHAIN.AUTO (1) | Y=auto-launch, N=no chain, A=ask user before launching |
+| IS.CHAIN.DESC (100) | Description of the chain rule |
+| IS.CHAIN.PARAM[1-5] (15 each) | Up to 5 parameters passed from parent to child |
+
+**Confirmed parent programs (T7CHAINM.DFM combo items):**
+T6SOA, T7SOA, T6SOC, T7SOC, T6SOD, T7SOD, T6SOE, T7SOE, T6SOF, T7SOF, T7WOA, \*T6POA, \*T7POA, \*T6POB, \*T6POR, T7ARA, \*T7APA, T7SON, ACHHSSOE
+
+**Confirmed child programs (T7CHAINM.DFM combo items):**
+T6SOB, T7SOB, T6SOC, T7SOC, T6SOD, T7SOD, T6SOF, T7SOF, BKSOG, T7SOG, \*BKWOB, \*BKWOD, \*BKWOE, \*BKWOF, \*BKWOG, \*BKWOH, \*BKWOI, \*T6WOC, \*T6WOE, \*T6POB, \*T6POBNP, \*T6POC, T7SOOF, \*T7ARE, \*T7POIG, BKSON, T6ARN, T7SON, T7SOE, T7WOC, T7WOKD
+
+Programs marked `*` in the original combo items may be conditional or legacy.
+
+**DDF cross-reference:** The DDF contains two related tables — ISCHAIN and ISCHAINM (both 17 fields, identical structure). ISCHAIN = active dispatch (user-specific chains in effect), ISCHAINM = chain master/template (the definitions from T7CHAINM). This split explains the two programs: T7CHAINM edits the master, T7CHAIN applies/browses a user's active set.
+
+**Key facts:**
+- Auto=A triggers a prompt: "Launch [child program]? Y/N" — user decides at runtime
+- PARAM[1-5] carry context from parent to child (e.g., the SO number being processed)
+- The chain list in T7Chain is per-user — different users can have different chain behaviors for the same parent program
+- LANGDICT access (confirmed from RWN fingerprint) = chain descriptions support multi-language display
+
+**Primary tables:** ISCHAIN (user-level active chains), ISCHAINM (chain master/template definitions)
+
+**Confidence: 82/100** — Both DFM files read from network share; IS.CHAIN field names, AUTO values, and PARAM slots confirmed from field bindings; parent/child program lists confirmed from combo Items.Strings; dual ISCHAIN/ISCHAINM table split confirmed from DDF.
+
+---
+
+## EM — Emergency GL Maintenance
+
+**DFM files confirmed (1 total):** `T7EMGL.DFM`
+
+**What it does:** Direct editor for the BKGL (GL account) table — specifically for emergency maintenance of the `BKGL.EXTRA` field (GL Account Link). Allows adding, deleting, and saving GL account records with account/dept filter.
+
+**Form confirmed from network share (Pass 153, 2026-06-22):**
+
+- Filter inputs: `from.glacct` (GL account, F2 browse, `vld_glacct('A')`), `from.gldpt` (department, `vld_glacct('D')`)
+- Grid columns: Account (`BKGL.ACCT`), Dept. (`BKGL.GLDPT`), GL Account Link (`BKGL.EXTRA`)
+- Edit field: `bkgl.extra` — a free-form text field on the GL account record
+- Toolbar: Add, Delete, Save, Exit
+- Handler: `T7EMGL.OnDisp`; uses `T7Gen.OnClose/OnStart/OnOpenFiles`
+
+**BKGL.EXTRA field:** This 50-character field on the GL account record links GL accounts to other accounts or external identifiers. The T7EMGL program is the dedicated tool for maintaining this cross-reference.
+
+**Full DB fingerprint (from RWN Pass 115):** T7EMGL opens 33 tables including BKGLCOA, BKGLTRAN, BKAPVEND, BKARCUST, BKICMSTR, WORKORD, WOBOM, INVTXN, DBAFIFO, ISTRIGRS, ISREMIND, LOT, SERIAL, ISNCR — making EM the most privileged maintenance tool in EVO (can touch GL, AP/PO, WO/BOM, inventory transactions, FIFO cost layers, lot/serial records).
+
+**Primary tables:** BKGLCOA (GL chart of accounts — ACCT+GLDPT PK, 65 fields including EXTRA)
+
+**Confidence: 78/100** — T7EMGL.DFM read from network share; BKGL.ACCT/GLDPT/EXTRA field bindings confirmed; full DB fingerprint confirmed from RWN analysis.
+
+---
+
+## NE — New Company Init
+
+**DFM files confirmed (1 total):** `T7NEWINIT.DFM`
+
+**What it does:** Utility that checks for missing Btrieve data files and creates them if needed. Used when setting up a new company or after adding new modules.
+
+**Form confirmed from network share (Pass 153, 2026-06-22):**
+
+- Label: "This program will check and see if you are missing any data files and create them if necessary."
+- Button: "Go" — runs the file-creation check
+- Button: "Exit"
+- `fileslabel` (hidden, shows progress during file creation)
+- Handler: `T7NEWINIT.OnDisp/OnClose/OnStart/OnOpenFiles`
+
+**Context:** EVO stores each company's data in a separate set of Btrieve `.B` files. When a new company is created via SM (System Maintenance) or when new module tables are added by an upgrade, NE verifies and creates any missing files. It is a one-shot administrative tool.
+
+**Primary tables:** Varies — reads the file location registry (IS.LOC) and creates `.B` files as needed.
+
+**Confidence: 78/100** — T7NEWINIT.DFM read from network share; purpose confirmed from form label text; file-creation logic is in the RWN and not directly readable.
+
+---
+
+## IS-MCC — Multi-Company Currency Conversion
+
+**Program:** `T7ISMCC.RWN` (IS module utility)
+
+**DFM confirmed from network share (Pass 153, 2026-06-22):** `T7ISMCC.DFM`
+
+**What it does:** Converts Source Currency account balances (AP, AR, PORNI, Bank Accounts) to Base Currency, posting any foreign exchange gain or loss to the F/E Gain or Loss GL account.
+
+**Form confirmed:**
+
+- Caption: "Convert Source to Base Currency"
+- Description label: "This will convert your Source Currency accounts (AP, AR, PORNI, and Bank Accounts) to Base Currency, with any Gain or Loss posting to the F/E Gain or Loss Account."
+- Input: `is.cvt.mth` (GL period 1–12, `vld_glperiod()`)
+- Input: `is.date` (conversion date, `vld_gldate()`)
+- Read-only display grid showing all 12 GL periods: `gl.period[1-12]` (period numbers) + `ISGL.CYDATE[1-12]` (period start dates)
+- Note: period 7 and 8 widget field names are swapped in the DFM (editing artifact)
+- Buttons: Process, Exit
+
+**Key facts:**
+- Scope: AP, AR, PORNI (Purchase Order Received Not Invoiced), and Bank Accounts
+- Gain/loss is posted as a GL entry — not a manual adjustment
+- Must specify GL period (1-12) and as-of date — system uses ISGL.CYDATE for period boundaries
+- ISGL.CYDATE[1-12] = 12-element array of period beginning dates from the IS GL period table
+
+**Primary tables:** IS.CVT.* (conversion config), ISGL.CYDATE[1-12] (period dates)
+
+**Confidence: 80/100** — T7ISMCC.DFM read from network share; conversion scope confirmed from form label; period/date fields confirmed from field bindings; underlying conversion algorithm in RWN.
+
+---
+
+## ML — Multi-Language Editor
+
+**DFM files confirmed (2 total):** `T7MLC.DFM` (Generator/Editor), `T7MLE.DFM` (Edit Captions)
+
+**What it does:** Developer tools for adding and editing multi-language translations for EVO DFM form captions. The ML module reads DFM files, extracts their captions into the LANG.DICT table, and allows translating those captions to other languages.
+
+**Forms confirmed from network share (Pass 153, 2026-06-22):**
+
+| Form | DFM | What it does |
+|------|-----|-------------|
+| DFM Multi Language Generator / Editor | T7MLC.DFM | Select a DFM file (T7 combo, F2 browse). Buttons: Edit (open T7MLE to edit captions), Add Lang (show 3-char lang code field), Delete (select language to remove via Langdel combo), Generate (populate LANG.DICT from DFM captions), Exit. |
+| Edit Captions | T7MLE.DFM | Select language (Langcombo → `language` field). Grid: LANG.DICT.ECAPT (Default Caption), LANG.DICT.LANG (Lang code), LANG.DICT.LCAPT (Translated Caption). Navigation: First/Prev/List/Next/Last/Back. Detail: `defcapt` (read-only English), `LangCapt` (editable translated). |
+
+**LANG.DICT table structure (confirmed from T7MLE.DFM field bindings):**
+
+| Field | Description |
+|-------|-------------|
+| ECAPT | English/default caption (the key — used to look up translation) |
+| LANG (3-char) | Language code (e.g., "ESP" for Spanish, "FRN" for French) |
+| LCAPT | Localized (translated) caption |
+
+**Key facts:**
+- Both T7MLC and T7MLE share the same SourceFile (`T7MLC`) — single compiled program handles both screens
+- The Generate function reads a DFM's caption strings and inserts them as ECAPT records
+- Language addition uses a 3-character code entered in `Alang` field (shown when "Add Lang" is clicked)
+- LANGDICT is referenced by many other programs (confirmed in RWN fingerprints) — this is the live translation runtime table
+- T7SMK (SM-K User Settings) has a `Language` option (evo.cfg.lang) that selects which LANG code to display at runtime
+
+**Primary tables:** LANG.DICT (ECAPT + LANG + LCAPT — caption translation registry)
+
+**Confidence: 82/100** — Both DFM files read from network share; LANG.DICT table structure confirmed from T7MLE field bindings (ECAPT/LANG/LCAPT); Generate/Edit/AddLang/Delete workflow confirmed; 3-char language code format confirmed.
+
+---
+
+## FN — File Navigator / Reporter
+
+**DFM files confirmed (1 total):** `T7FNR.DFM` (3,223 lines — fully read)
+
+**What it does:** Universal bulk find-and-replace utility for any Btrieve file. An admin/power-user tool that can read any EVO data file, filter records by up to 6 conditions, and replace field values (alpha, numeric, or date) with a flat value, percentage, or substring replacement.
+
+**Form confirmed from network share (Pass 153, 2026-06-22):**
+
+**Section 1 — Target:**
+| Field | Purpose |
+|-------|---------|
+| FILENAME (TTASComboEnter, F2) | Select the Btrieve file to operate on (F2 opens FilePanel — file browser from IS.LOC) |
+| DNAME (TTASENTER, F2) | Field name within that file (F2 opens FieldPanel — field browser from IS.DICT) |
+| Array # | Element index for array fields |
+| Action (TTASComboBox) | Operation to perform (combo, `vld_action()`) |
+
+**Section 2 — Filter conditions (6 rows):**
+Each row: `flname[n]` (field, F2→field browser), `felement[n]` (array#), `oper[n]` (operator combo), value (alpha `afind_field[n]` / numeric `nfind_field[n]` / date `dfind_field[n]`)
+
+**Operators:** All, `<>`, `>`, `<`, `>=`, `<=`, `=`, `$` (contains/substring)
+
+**Replacement fields:**
+- `AREPL_FIELD` — alpha replacement value
+- `Nrepl_field` — numeric replacement value
+- `dREPL_FIELD` — date replacement value
+- `spos` + `slength` — substring start position and length (for partial alpha replacement)
+- Per-filter `POS[1-6]` — position in filter value for `$` (substring match) operator
+
+**Additional controls:**
+- "Test Filters" button (`btnTest`) — validate filter conditions without processing
+- Progress gauge (hidden during idle)
+- PopupMenu on numeric field: "Flat amount" / "Percentage" — two numeric action subtypes
+
+**IS.LOC table (confirmed from FilePanel `filegrid` column bindings):**
+
+| Field | Description |
+|-------|-------------|
+| LOC_FILE_NAME | Btrieve file name (15-char padded) |
+| LOC_BUFF_NAME | Buffer/handle name (internal EVO name for the file) |
+| LOC_LOCATION | Full network path to the Btrieve file |
+
+This is EVO's internal file location registry — every Btrieve data file the system knows about is registered here.
+
+**IS.DICT table (confirmed from FieldPanel `fieldGrid` column bindings):**
+
+| Field | Description |
+|-------|-------------|
+| DICT_FIELD_NAME | Field name within the Btrieve file |
+| DICT_TYPE | Field data type |
+| DICT_SIZE | Field size (bytes) |
+| DICT_DESC | Field description |
+
+This is EVO's internal field data dictionary — distinct from the Pervasive DDF. Used by T7FNR to present human-readable field names and type information to the admin user.
+
+**Key facts:**
+- T7FNR is the most powerful direct-data-manipulation tool in EVO — it can modify any field in any file with no module-level validation
+- The `vld_action()` call controls which action types appear; the PopupMenu confirms at least "Flat amount" and "Percentage" for numeric fields
+- The `$` operator enables substring/contains matching (similar to SQL LIKE)
+- spos+slength enable substring replacement (write to a portion of an alpha field)
+- IS.LOC is the runtime equivalent of the Pervasive DDF for EVO — it maps logical file names to physical network paths
+
+**Primary tables:** IS.LOC (file location registry), IS.DICT (internal field dictionary), plus any EVO Btrieve file selected by the user
+
+**Confidence: 80/100** — T7FNR.DFM fully read (3,223 lines); all 6 filter rows confirmed; FilePanel (IS.LOC) and FieldPanel (IS.DICT) table structures confirmed from grid column FieldName bindings; PopupMenu action types confirmed; spos/slength substring replacement confirmed; Action combo items not directly visible (vld_action() call — items in RWN).
+
+---
+
 ## ES — Estimating
 
 **DFM files found (3 of 7):** T7ESB.DFM, T7ESC.DFM, T7ESD.DFM, T7ESE.DFM (4 found)
