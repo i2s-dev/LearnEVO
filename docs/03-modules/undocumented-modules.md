@@ -1108,18 +1108,21 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 
 | DFM | Purpose | Key fields |
 |-----|---------|------------|
-| T7FOC | FO-C Option Configuration | PAR.DESC (parent/assembly description), COMP.DESC (component/option description), BKBM.PROD.OPYN[5] — option flag #5 |
-| T7FOD | FO-D Range Report/Operation | from.item/thru.item, from.cat/thru.cat, from.class — item/category/class range |
-| T7FOE | FO-E Item Select | "Feature / Option Item Number" — from.item filter |
+| T7FOC | FO-C Option Pricing Editor | Feature item (from.item=Feature, PAR.DESC=feature description), Option item (thru.item=Option, COMP.DESC=option description), BKBM.PROD.OPYN[4]="Use STD Customer Pricing?", BKBM.PROD.OPYN[5]="Add Price to Parent?", BKBM.PROD.PRICE (DisplayFormat='$,0.0000') |
+| T7FOD | FO-D Range Report Filter | from.item/thru.item (item range), from.cat/thru.cat (category range), from.class/thru.class (class range) → Print button |
+| T7FOE | FO-E Single Item Filter | "Feature / Option Item Number" — from.item → Print button |
 
 **Key findings:**
-- **BKBM.PROD.OPYN[5]** — Option flags are indexed (OPYN[1], OPYN[2]... OPYN[N]) in the BOM product record. Each index corresponds to one configurable feature (e.g., "Color", "Size", "Voltage rating"). T7FOC shows OPYN[5], meaning at least 5 options per product.
-- **Parent/Component pairing** — PAR.DESC (parent) + COMP.DESC (component) = each option is defined as a parent-component relationship. Selecting an option includes or excludes specific BOM components.
-- **Tight BOM integration** — FO reads BKBM.* (BOM tables) directly, confirming it is a BOM sub-module rather than a standalone module.
+- **T7FOC field naming quirk** — `from.item` = the Feature (parent) item number; `thru.item` = the Option (component) item number. These are NOT a from/thru range — they identify one Feature-Option pair whose pricing is being edited. The `thru` naming is a TAS Pro naming convention reuse.
+- **BKBM.PROD.OPYN[4/5] confirmed semantics** — OPYN[4]="Use STD Customer Pricing?" (when Y, option price uses the standard customer price schedule instead of the fixed PRICE field); OPYN[5]="Add Price to Parent?" (when Y, option price is added to the parent feature item's price on the SO line).
+- **BKBM.PROD.PRICE** — The per-option fixed price, format $,0.0000 (4 decimal places). Only used when OPYN[4]=N (not using STD customer pricing).
+- **BKBM.PROD.OPYN array** — At least indices 1–6 confirmed from BKBMMSTR DDF (PROD_OPYN_1..6). T7FOC uses indices 4 and 5; the other slots are available for additional configurator flags.
+- **PAR.DESC / COMP.DESC** — Read-only description display fields. PAR=parent feature description, COMP=component option description. Populated from the item master (BKICMSTR) when the feature/option item numbers are entered.
+- **T7FOD and T7FOE are print filter forms** — both have Print/Exit buttons (not Save). They drive the FP-B "Print Features and Options" report through item and category/class range selections.
 
-**Primary tables:** BKBM.* (BOM — BKBM.PROD.OPYN flags), BKICMSTR (item master for feature items)
+**Primary tables:** BKBM.* (BOM — BKBM.PROD.OPYN[1..6] flags + BKBM.PROD.PRICE), BKICMSTR (item master), ISFOHEAD (FO order header), ISFOLINE (FO config lines), ISFOORDL (output order lines)
 
-**Confidence: 50/100** — 3 DFMs read; option flag mechanism confirmed; exact number of option slots per item and SO-to-option trigger not decoded (in RWN).
+**Confidence: 65/100** — T7FOC DFM fully read; OPYN[4/5] exact semantics confirmed from DFM labels; pricing logic confirmed; full configurator workflow (SO trigger → option selection → ISFOHEAD/ISFOLINE lifecycle) requires RWN bytecode analysis.
 
 ---
 
@@ -1622,7 +1625,17 @@ The following modules have no T7* DFM files on the network share. Their operatio
 **Operations confirmed from CHM:**
 - FP-B — Print Features and Options
 
-**Purpose:** Print sub-module for the FO (Features & Options) module — generates a printed features/options sheet from the configured BOM option flags. **Confidence: 35/100**
+**DFM filter forms (via FO module):** T7FOD.DFM, T7FOE.DFM
+
+**Purpose:** Print sub-module for the FO (Features & Options) module — generates a printed features/options sheet from the configured BOM option flags.
+
+**Key findings:**
+- **Zero T7FP* programs** — exhaustive search across all 1,122 RWN modules found no T7FP* bytecode. FP-B is RTM-only (a ReportBuilder template), launched directly from the EVO menu without a TAS Pro 7 wrapper program.
+- **T7FOD.DFM** — Filter form for FP-B range printing: item range (from.item/thru.item), category range (from.cat/thru.cat), class range (from.class/thru.class). Print + Exit buttons. Confirms FP-B supports item/category/class range filtering.
+- **T7FOE.DFM** — Filter form for FP-B single-item printing: one "Feature / Option Item Number" (from.item). Print + Exit buttons.
+- These are the only filter entry points for FP; the report content comes from BKBM.PROD.OPYN[1..6] option flags and BKBM.PROD.PRICE read by the RTM file.
+
+**Confidence: 55/100** — Filter DFMs read and confirmed; RTM file not read (report content and column layout unknown); zero standalone RWN confirmed (not an oversight — FP is definitively RTM-only).
 
 ---
 

@@ -14647,14 +14647,14 @@ These are batch COGS and commission reconciliation reports operating on posted i
 ### FO (F&O) Additional Forms
 
 **T7FOC — Feature/Option Price Setup:**
-PAR.DESC (feature/parent item description), COMP.DESC (option component description),
-BKBM.PROD.OPYN[4] / BKBM.PROD.OPYN[5] — option yes/no flags in BOM (slots 4-5),
-BKBM.PROD.PRICE — option price, Add Price to Parent flag, Use STD Customer Pricing flag.
+PAR.DESC (feature/parent item description, read-only), COMP.DESC (option component description, read-only),
+BKBM.PROD.OPYN[4]="Use STD Customer Pricing?" — when Y, use standard price schedule instead of PRICE field;
+BKBM.PROD.OPYN[5]="Add Price to Parent?" — when Y, option price adds to the parent feature price on SO;
+BKBM.PROD.PRICE — fixed option price ($,0.0000 format; used when OPYN[4]=N).
+Note: `from.item` = Feature item (not a range start); `thru.item` = Option item (not a range end) — TAS Pro field naming quirk.
 
-The BKBM.PROD.OPYN array appears at least through slot 5 (F&O flags in the BOM component record).
-
-**T7FOD — F&O Range Report:** item/category/class range filters.
-**T7FOE — F&O Single Item:** single item lookup for F&O configuration.
+**T7FOD — F&O Range Report:** item/category/class range filters → Print (FP-B RTM).
+**T7FOE — F&O Single Item:** single Feature/Option item number → Print (FP-B RTM).
 
 ---
 
