@@ -4026,3 +4026,224 @@ The BKCM* family is the EvoERP CRM/Contact Manager module. It mirrors AR custome
 
 *Pass 142 — batch 1 complete: 107 tables documented (AP, AR, BM, CM families). GL, IC, PR, SL, SO, SY, WH families follow in pass 143.*
 
+---
+
+## Pass 143 — BKPI / BKPOX / BKLOGON / BKMATCST / BKRT / BKSA / BKSB / BKSL / BKSO+ / BKPR(partial) / EST* families
+
+### Physical Inventory (BKPI*)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKPILCNT | 10 | PI lot count record |
+| BKPILOT | 10 | PI lot record (identical schema) |
+| BKPIMSTR | 3 | PI period master |
+| BKPIPHYS | 14 | PI physical count tag |
+| BKPISCNT | 10 | PI serial count |
+| BKPISER | 10 | PI serial record (identical to BKPISCNT) |
+
+**BKPIMSTR** (3f): Physical inventory period master. PK = BKPI_MSTR_YEAR (STRING/4) + BKPI_MSTR_QTR (STRING/2). Fields: DESC (STRING/30 — period description). Defines PI fiscal periods.
+
+**BKPILCNT** (10f): PI lot count record. PK = YEAR+QTR+CODE (part code STRING/15)+LOT (lot# STRING/15). Fields: QTY (FLOAT/8/2), TAG (FLOAT/8/0 — count tag#), LOC (warehouse location STRING/10), SERQTY (serial qty FLOAT/8/2), PSTD (posted flag STRING/1), BIN (STRING/15).
+
+**BKPILOT** (10f): PI lot record — byte-identical schema to BKPILCNT.
+
+**BKPIPHYS** (14f): PI physical count tag. PK = TAGNUM (FLOAT/8/0 — tag number). Fields: ACTQTY (FLOAT/8/2 — actual qty counted), EMPNUM (UBINARY/2), EMPNAME (STRING/15), COMMENT (STRING/30), COUNTDATE (DATE), YEAR (STRING/4), QTR (STRING/2), LOC (STRING/10), CODE (part STRING/15), FDATE (DATE — freeze date), LOT (STRING/15), SERIAL (STRING/25), BIN (STRING/15).
+
+**BKPISCNT** (10f): PI serial count. PK = YEAR+QTR+CODE+SERIAL (STRING/25). Fields: QTY (FLOAT/8/2), TAG (FLOAT/8/0), LOC (STRING/10), LOTNO (STRING/15), PSTD (STRING/1), BIN (STRING/15).
+
+**BKPISER** (10f): PI serial record — byte-identical to BKPISCNT.
+
+---
+
+### PO Transmittal / Export (BKPOX*)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKPOX | 19 | PO transmittal header (current) |
+| BKPOXH | 19 | PO transmittal history (identical schema) |
+
+**BKPOX** (19f): Purchase order electronic transmittal/export record. PK = COMPANY (STRING/2)+INVCNUM (STRING/10)+INVCDATE (DATE). Fields: PONUM (FLOAT/8/0), VENDCODE (STRING/10), VENDNAME (STRING/30), SUBTOT (FLOAT/8/2), TAXAMT (FLOAT/8/2), FREIGHT (FLOAT/8/2), TOTAL (FLOAT/8/2), CURRENCY (STRING/3), TERMSDESC (STRING/20), TERMSCODE (UBINARY/2), INVCDESC (STRING/30), TAXCODE (STRING/10), TAXNAME (STRING/30), POSTDATE (DATE), ARCHDATE (DATE), ENTDATE (DATE).
+
+**BKPOXH** (19f): PO transmittal history — byte-identical to BKPOX.
+
+---
+
+### User Login / Session Control (BKLOGON)
+
+**BKLOGON** (10f): User login and session control. PK = CODE (STRING/15 — user ID/login name). Fields: PSWD (password STRING/10 — **stored as plaintext**), CMPY (company code STRING/2), PROG (current program STRING/8), PRINTER (UBINARY/2), INUSE (in-use flag STRING/1), SCRTY (security level STRING/2 — links to BKSLMSTR/BKSLEVEL), MENU (UBINARY/2), SUBMENU (UBINARY/2), CURPRT (current printer# UBINARY/2). INUSE flag prevents duplicate sessions.
+
+---
+
+### Material Cost Break Table (BKMATCST)
+
+**BKMATCST** (23f): Material cost break points per part. PK = BKMC_CODE (STRING/15 — part code). Fields: QTY_1..10 (FLOAT/8/2 — 10 qty break thresholds), COST_1..10 (FLOAT/8/4 — unit cost at each break), DATE (DATE — effective date), MIN (FLOAT/8/2 — minimum order qty). Supports up to 10-tier volume pricing for materials.
+
+---
+
+### Sales Analysis Reports (BKSA*)
+
+**BKSAREPT** (57f): Sales analysis report saved filter parameters. PK = TYPE (STRING/8 — report type) + NAME (STRING/15 — saved filter name). Fields: RTM (report template STRING/15), then 26 FROM/THRU parameter pairs covering every filter type: numeric (FLOAT), date (DATE), 10-char codes, 2-char company, 30-char names, 4-char dept/period, integer (UBINARY), 25-char names, amounts (FLOAT/8/2), currency (STRING/3), etc. Also: BASE (STRING/1), TITLE (STRING/40 — saved report title). Allows saving/restoring complex report filter sets.
+
+---
+
+### Subcontract / Approved Source BOM (BKSB*)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKSBMFG | 6 | Approved manufacturer for component |
+| BKSBPART | 5 | Approved substitute part |
+| BKSBVEND | 6 | Approved vendor for component |
+
+All three share compound PK: PARNT (parent part STRING/15) + PROD (component STRING/15) + CUST (customer STRING/10), allowing customer-specific approved source lists.
+
+**BKSBMFG** (6f): Approved manufacturer. Additional fields: MANUF (STRING/25), MPART (mfg part# STRING/25), EXTRA (STRING/50).
+
+**BKSBPART** (5f): Approved substitute part. Additional fields: SUBST (substitute part STRING/15), EXTRA (STRING/50).
+
+**BKSBVEND** (6f): Approved vendor. Additional fields: VEND (STRING/10), VPART (vendor's part# STRING/25), EXTRA (STRING/50).
+
+---
+
+### WO Component Shortage Tracking (BKSHORT)
+
+**BKSHORT** (9f): Work order component shortage record. PK = PCODE (STRING/15)+WONUM (FLOAT/8/0)+WO_SUF (UBINARY/2). Fields: DESC (STRING/25), QTYREQ (FLOAT/8/2), SHORT (shortage qty FLOAT/8/2), DATE (DATE), PPCODE (parent part STRING/15), PPDESC (parent description STRING/25). Created by MRP/WO when a component is short; drives shortage reporting.
+
+---
+
+### Security / Access Level (BKSL*)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKSLMSTR | 2 | Security level name/description |
+| BKSLEVEL | 422 | Per-level menu access ACL bitmap |
+
+**BKSLMSTR** (2f): Security level master. PK = BKSL_MSTR_LEVEL (STRING/2 — level code e.g. "01", "SU"). Fields: DESC (STRING/45 — level name). One record per defined security level; codes link to BKLOGON.SCRTY and BKSLEVEL.LEVEL.
+
+**BKSLEVEL** (422f): Security access control list — defines which menu items each security level may access. PK = MENU (UBINARY/2 — main menu#) + LEVEL (STRING/2 — security level code). Structure: 2 PK fields + 20 menu groups × 21 flags (each STRING/1):
+
+- `BKSL_MENUx_YN` — Y/N: entire menu group enabled for this level
+- `BKSL_MENUx_1` through `BKSL_MENUx_20` — individual item access flags
+
+Fields 3-23 = MENU1 group, 24-44 = MENU2, … 402-422 = MENU20 group. Record size = 424 bytes (offsets 0-423). Supports up to 20 top-level menus × 20 items each = 400 individual access control points per level. At login, EVO reads (menu#, user-level) → flags to show/hide each menu item.
+
+---
+
+### Sales Order Lot / Serial Allocation (BKSO* additions)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKSOHLOT | 14 | SO lot allocation (on-hold) |
+| BKSOHSER | 14 | SO serial allocation (on-hold, identical) |
+
+Both use BKAR_TXN_ field prefix (shared with AR transaction tables).
+
+**BKSOHLOT** (14f): Lot number committed to a SO line. PK = SONUM (FLOAT/8/0)+CODE (STRING/15)+LINE (FLOAT/8/0). Fields: DESC (STRING/30), QTY (FLOAT/8/2), LOT (STRING/15), SERIAL (STRING/25), DATE (DATE), STOCK (STRING/15), LOC (STRING/10), TMPSO (STRING/40), SRNUM (FLOAT/8/0), EXTRA (STRING/50), BIN (STRING/15).
+
+**BKSOHSER** (14f): Serial number committed to SO line — byte-identical to BKSOHLOT.
+
+---
+
+### Routing Module (BKRT*)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKRTCST | 24 | Routing cost standard |
+| BKRTEMTR | 62 | Routing estimate/template operation master |
+| BKRTSPEC | 7 | Routing specification notes |
+| BKRTTEMP | 6 | Routing template notes |
+
+**BKRTSPEC** (7f): Routing spec notes per part+operation. PK = BKRT_SPEC_PART (STRING/15)+SEQ (UBINARY/2)+LINE (UBINARY/2). Fields: NOTE_1..4 (STRING/20 × 4).
+
+**BKRTTEMP** (6f): Routing template notes. PK = BKRT_TEMP_CODE (STRING/15)+LINE (UBINARY/2). Fields: NOTE_1..4 (STRING/20 × 4).
+
+**BKRTEMTR** (62f): Routing operation template library (used for estimating). PK = MTRO_CODE (STRING/15) + MTRO_OPER (UBINARY/2). Key fields:
+- MTRO_DESC/OPERDESC (STRING/30 each), MTRO_TYPE (1), MTRO_LEAD (UBINARY/2), MTRO_LOTSIZE (FLOAT/8)
+- MTRO_INSTR_1..15 (STRING/60 × 15 — 900 bytes of work instructions)
+- MTRO_WC/WCDESC (work center STRING/12/30), MTRO_TMACHINE/TMACHDESC (machine type STRING/4/30)
+- MTRO_TOOL/TOOLDESC (STRING/15/30), MTRO_CLASS (STRING/15)
+- MTRO_VENDCOST (FLOAT/8/6), MTRO_PARTSHR (FLOAT/8/2)
+- MTRO_TIMEPART/SETUPHRS (TIME/4 each), MTRO_LOTSIZE (FLOAT/8)
+- MTRO_LABOR/MACHINE/FOVHD/VOVHD/SETUP (FLOAT/8/4 — 5 cost elements)
+- MTRO_NUM/NUM_PERSON/NUM_PROCES, MTRO_OVERLAP, MTRO_PIECE_RATE, MTRO_LONGTIME (FLOAT/8/7)
+- MTRO_STD_TIME (STRING/1), MTRO_MIN_CHG, MTRO_PRINT (STRING/1), MTRO_EXTRA (STRING/150)
+- MTRO_NEGOVLP, MTRO_DEF_TIME (TIME/4), MTRO_R_TYPE (STRING/10), MTRO_EST_LINE, MTRO_EST_TAG (STRING/10)
+- MTRO_OP_TEMP_NO (UBINARY/2), MTWO_MISC_COST/MISC_DESC (note: MTWO_ prefix appears to be a DDF typo)
+- MTRO_MISC_ACOST (FLOAT/8/2)
+
+---
+
+### Payroll / Commission Module (BKPR* — partial)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKPRACOM | 12 | Commission archive (historical transactions) |
+| BKPRAGNT | 4 | Agent/salesperson GL account mapping |
+| BKPRBOOK | 87 | Salesperson annual book (quotas + 12-month actuals) |
+| BKPRCOMM | 12 | Commission detail (byte-identical to BKPRACOM) |
+| BKPRCURP | 127 | Current payroll period record per employee |
+| BKPRGLFL | ~664 | Payroll GL distribution (very large, partially confirmed) |
+| BKPRMSTR | ~384 | Employee payroll master (partially confirmed) |
+| BKPRINFO | ~100 | Employee HR information (partially confirmed) |
+
+**BKPRAGNT** (4f): Agent GL mapping. PK = NUM (UBINARY/2). Fields: CODE (STRING/10), GLACT (STRING/10), GLDPT (STRING/4). Maps each salesperson# to GL clearing account.
+
+**BKPRACOM** (12f): Commission transaction archive. PK = SLSP (UBINARY/2)+CCODE (STRING/10)+INVNM (FLOAT/8/0). Fields: INVDT, PAYDT (DATEs), AMTPD (FLOAT/8/2), COMM (FLOAT/8/2), PD_ON (FLOAT/8/2), EXTRA (STRING/25), ULID (FLOAT/8/4), TDATE (DATE), PCODE (STRING/15). **BKPRCOMM** (12f) is byte-identical.
+
+**BKPRBOOK** (87f): Salesperson annual performance book. PK = EMPNUM (UBINARY/2). Fields: CLASS_1/2, RATE_1/2, HOW_1/2, WHEN_1/2 (commission setup), then 12-month arrays: QUOTA_1..12, GROSS_1..12 (gross sales), COGS_1..12, RCPTS_1..12, COMM_1..12 (earned), PAID_1..12 (paid), then FNMI (STRING/25), LNME (STRING/25), EXPACT (STRING/10), EXPDPT (STRING/4), EXTRA (STRING/100), EMAIL (STRING/128).
+
+**BKPRCURP** (127f): Current payroll period per employee. PK = EMPNM (UBINARY/2)+PRDTE (DATE). Fields (1-73 confirmed): ACTNM (UBINARY/2), CHKNM (STRING/6), TOTHR/TOTPY (FLOAT/8/2 each), RPHRS/RPRTE/RPAMT (regular hrs/rate/amt), OPHRS_1..12 (OT code hours × 12), OPRTE_1..12 (OT rates × 12), OPAMT_1..12 (OT amounts × 12), VPHRS/VPRTE/VPAMT (vacation), SPHRS/SPRTE/SPAMT (sick), MDAMT, ODAMT, UOD_1..20 (20 user-defined deductions). Fields 74-127 cover UODEC accumulators and federal/state/local tax withholding arrays.
+
+---
+
+### Estimating Module (EST*)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| ESTCHGS | 3 | Quote surcharge line |
+| ESTMAT | 18 | Quote BOM material line |
+| ESTROUT | 48 | Quote routing operation line |
+| ESTSUM | 213 | Quote/estimate header |
+
+All use MTE*/MTES*/MTESUM_ field prefixes (not BK*). These four tables define a complete quote: ESTSUM header → ESTMAT (materials) + ESTROUT (routing) + ESTCHGS (surcharges). MTESUM_BOM_FLAG/RT_FLAG/EX_FLAG mark whether data has been transferred to a work order.
+
+**ESTCHGS** (3f): Quote surcharge. PK = MTESCH_QUOTE (FLOAT/8/0). Fields: AMT (FLOAT/8/2), DESC (STRING/30).
+
+**ESTMAT** (18f): Quote material line. PK = MTESMAT_QUOTE (FLOAT/8/0)+CODE (STRING/15). Fields: DESC (30), QTYPER (FLOAT/8/8 — 8-decimal qty per), SCRAP (FLOAT/8/2), UM (3), QUREF (FLOAT/8/0), COST1..5 (FLOAT/8/6 — 5 cost types), REMARKS_1..5 (STRING/30 × 5), COSTCD (STRING/1).
+
+**ESTROUT** (48f): Quote routing operation. PK = MTESRO_QUOTE (FLOAT/8/0)+OPER (STRING/3). Fields: DESC (30), WC (STRING/12), TYPE (1), VENDOR/VENDNAME (STRING/10/25), OPCOST (FLOAT/8/6), PARTSHR (FLOAT/8/2), TIMEPART (FLOAT/8/6), SETUPHRS (FLOAT/8/2), MISCCOST/MISCDESC, LAB1..5 (FLOAT/8/4 × 5), MACH1..5, OVER1..5, SETUP1..5, INSTR_1..15 (STRING/60 × 15 instruction lines). Record size = 1219 bytes.
+
+**ESTSUM** (213f): Quote/estimate header. PK = MTESUM_QUOTE (FLOAT/8/0). Structure:
+- Header: DATE, EXPDATE, STATUS (1), CLASS (4), CODE (15), DESC (30), UM (3), CUSTCODE (10), NAME (30), ATTN (30), RFQ (15), REV (4), PROJ (15)
+- 10 qty breaks: QTY_1..10
+- 14 cost arrays × 10 breaks: MAT, MATMU, LAB, LABMU, SETUP, OP, OPMU, OH, OHMU, MISC, OVALL, EXTRA, TOTAL, PRICE — all FLOAT/8/4
+- Notes: NOTES_1..10 (STRING/60 × 10)
+- Tracking: ENTBY (15), LOC (10), TEMP_NUM (UBINARY/2), BOM_FLAG/RT_FLAG/EX_FLAG (STRING/1 each)
+- COST_1..10 (per-break costs), CDATE (conversion date), VOVHD_1..10 (variable overhead)
+- FIN_DATE, L_O_CODE (5), L_O_DATE, LEAD_SRC (4), LEADTIME (30)
+- SLSP_NUM_1/2 (UBINARY/2), COMM_RTE_1/2 (FLOAT/8/4)
+- OPPTYPE (2), QTREV (9), EXTRA2 (100)
+Record size = 2465 bytes.
+
+---
+
+### Department Master (DPTMENT)
+
+**DPTMENT** (2f): Department master — non-BK* table with DPT_ prefix. PK = DPT_CODE (STRING/4). Fields: DPT_DESC (STRING/30). Simple department code lookup.
+
+---
+
+### GL Chart of Accounts — 14-Period Structure Confirmed (BKGLFCOA)
+
+BKGLFCOA (65f confirmed at DDF lines 11260-11325) supports **14 fiscal periods per year**:
+- Fields 7-20: BKGL_CURRENT_1..14 (current year, 14 periods, FLOAT/8/2)
+- Fields 21-34: BKGL_BUDGET_1..14 (14-period budget)
+- Fields 35-48: BKGL_1YPAST_1..14 (prior year, 14 periods)
+- Fields 49-62: BKGL_2YPAST_1..14 (2-years-prior, 14 periods)
+- Field 63: BKGL_EXTRA (STRING/50)
+- Fields 64-65: BKGL_1YPAST_YE + BKGL_2YPAST_YE (year-end balances for prior years)
+Record size = 556 bytes. Periods 13-14 are closing/adjustment periods. This is why BKSYMSTR has TRM_MAX_1..20 (20 payment terms maximum-day thresholds) rather than 12 or 14 — the system was designed with extended period capacity throughout.
+
+---
+
+*Pass 143 complete: 37 tables documented (PI/POX/LOGON/MATCST/SA/SB/SHORT/SL/SO+/RT/PR(partial)/EST* families); BKGLFCOA 14-period structure confirmed.*
+
