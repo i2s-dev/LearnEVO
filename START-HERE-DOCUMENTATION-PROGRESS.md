@@ -144,8 +144,7 @@ Current decryption scripts:
 4. **`.RUN` opcode mapping (continued)** — continue from BKAWLB analysis; map
    `if`/`goto`/`proc`/`return` constructs. Use `scripts/tas6_analyze.py`.
 
-5. **Per-table field meaning documentation** — 659 tables, most without narrative docs.
-   Start with Tier 1 tables in `EVO-DECOMPILE-TODO.md §16`. Fully unblocked.
+5. **✅ DONE (Pass 152, 2026-06-22) Per-table field meaning documentation** — all 659 DDF tables now have schema entries in `docs/04-data-dictionary/tier2-tables.md` (8285 lines). The DDF has been read end-to-end from `samples/ddf/schema.md`. Remaining work is functional/narrative interpretation (what each table does in the business flow), not schema discovery.
 
 6. **Module documentation** — Read `.DFM` forms and `.RTM` reports for undocumented
    modules (DE, FA, JC, SC, SH, LC, SR, QC, etc.). Fully unblocked.
