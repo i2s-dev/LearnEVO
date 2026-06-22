@@ -4076,7 +4076,7 @@ The BKCM* family is the EvoERP CRM/Contact Manager module. It mirrors AR custome
 
 ### Material Cost Break Table (BKMATCST)
 
-**BKMATCST** (23f): Material cost break points per part. PK = BKMC_CODE (STRING/15 — part code). Fields: QTY_1..10 (FLOAT/8/2 — 10 qty break thresholds), COST_1..10 (FLOAT/8/4 — unit cost at each break), DATE (DATE — effective date), MIN (FLOAT/8/2 — minimum order qty). Supports up to 10-tier volume pricing for materials.
+**BKMATCST** (25f): Material cost break points per part. PK = BKMC_CODE (STRING/15 — part code). Fields: QTY_1..10 (FLOAT/8/2 — 10 qty break thresholds), COST_1..10 (FLOAT/8/4 — unit cost at each break), DATE (DATE — effective date), MIN (FLOAT/8/2 — minimum order qty), MINCST (FLOAT/8/4 — minimum cost to charge), EXTRA (STRING/50). Supports up to 10-tier volume pricing for materials.
 
 ---
 
@@ -4246,4 +4246,259 @@ Record size = 556 bytes. Periods 13-14 are closing/adjustment periods. This is w
 ---
 
 *Pass 143 complete: 37 tables documented (PI/POX/LOGON/MATCST/SA/SB/SHORT/SL/SO+/RT/PR(partial)/EST* families); BKGLFCOA 14-period structure confirmed.*
+
+---
+
+## Pass 144 — Help System, Inventory Variants, IS AP/AR Module, IS 2D/Build, RMA Header, PC/Material (2026-06-22)
+
+DDF lines confirmed this pass: 4228–4306 (CP/PC/material), 11629–11730 (help + inventory variants), 11731–12200 (IS2DBAR), 14000–19000 (ISAP*/ISAR* families). BKMATCST field count corrected 23f→25f (inline fix applied to this file previously).
+
+---
+
+### Help System Tables
+
+**EVOHLPID** (2f, `DBA_HELP_*`): EvoERP context-sensitive help reference map.
+File: `EVOHLPID.B` | DDF line ~11629.
+- `DBA_HELP_REF` STRING(8) — help reference code (PK); maps menu codes or field identifiers to CHM help topics.
+- `DBA_HELP_MAP` UBINARY(2) — integer context ID passed to the help engine.
+
+**HELPURL** (3f, `HELP_URL_*`): Help URL repository.
+File: `HELPURL.B` | DDF line ~11637.
+- `HELP_URL_REF` STRING(10) — reference key (PK).
+- `HELP_URL_FILE` STRING(256) — file path or URL for the help topic.
+- `HELP_URL_EXTRA` STRING(100) — additional routing or parameter data.
+
+Both tables support the integrated help system; EVOHLPID maps context IDs for CHM-based help while HELPURL supports web-based or file-based alternatives.
+
+---
+
+### Inventory Transaction Variants
+
+The DDF defines three identically-structured inventory transaction tables (DDF lines 11644–11730). INVTXN (main) was documented earlier; the two variants are:
+
+**INVATXN** (24f, `MTIT_*`): Inventory adjustment transactions. File: `INVATXN.B`. Identical schema to INVTXN. Stores user-initiated quantity adjustments, write-offs, and physical count corrections separately from normal movement transactions.
+
+**INVETXN** (24f, `MTIT_*`): Inventory edit/error transactions. File: `INVETXN.B`. Identical schema to INVTXN. Stores transactions created during error correction or re-posting (e.g., voided receipts, cost corrections). The three-file separation allows audit queries to distinguish normal movement (INVTXN), deliberate adjustments (INVATXN), and error/edit corrections (INVETXN) without filtering on MTIT_TYPE alone.
+
+---
+
+### IS 2D Barcode Module
+
+**IS2DBAR** (109f, `IS2D_BAR_*`): 2D barcode field configuration.
+File: `IS2DBAR.B` | DDF line ~11731.
+KEY: `IS2D_BAR_CODE` STRING(10). Record = 329 bytes.
+
+| Field group | Fields | Meaning |
+|-------------|--------|---------|
+| Header | CODE, ITEM(15), ORDER(UBINARY/2) | Barcode definition key + part item + print order |
+| Separator | CHAR(5) | Field separator character in barcode payload |
+| Source field | FIELD(25) | ERP field name to embed in barcode |
+| Print flags | DOCPR_1..100 (STRING/1 × 100) | Per-document-type print enable flags (100 document types) |
+| Description | DESC(60), EXTRA(100) | Label description and extension |
+| Encoding | ASCII(UBINARY/2), TYPE(10) | ASCII code and barcode symbology (CODE39, QR, etc.) |
+
+Defines what data fields appear on 2D barcode labels for each of 100 document types. One record per barcode field definition; the DOCPR_1..100 array enables/disables that field per document type independently.
+
+---
+
+### IS Build Work Table
+
+**ISBUILD** (4f, `IS_BUILD_*`): Batch sort/build temporary work table.
+File: `ISBUILD.B` | Temporary; cleared before/after batch operations.
+- `IS_BUILD_UID` STRING(40) — entity identifier.
+- `IS_BUILD_SORT` STRING(150) — pre-computed sort key.
+- `IS_BUILD_REC` UBINARY(4) — record number in the source file.
+- `IS_BUILD_FILE` STRING(8) — source file name.
+
+Used internally by IS batch processes (report generation, bulk updates) to stage and sort large record sets before processing. Not a persistent business table.
+
+---
+
+### IS AP Module (ISAP* / BKAP_* family)
+
+The IS AP module is a comprehensive procurement add-on layered over the base BKAP/BKP tables. It stores enhanced copies of AP master data (vendor, PO, invoice) with IS-specific extensions, plus change audit and multi-currency support.
+
+**ISAPACHK** (12f, `BKAP_CHK_*`): AP check/payment detail per invoice.
+File: `ISAPACHK.B` | KEY: VNDCOD+INVNUM.
+- VNDCOD(10), INVNUM(10) — vendor + invoice (PK).
+- INVAMT/AMTPD/DISC (FLOAT/8/2 each) — invoice amount, amount paid, discount.
+- TYPE(1) — payment type (check, EFT, etc.).
+- DESC(25) — payment description.
+- INVDTE — invoice date.
+- NUM (FLOAT/8/0) — check number.
+- CHKACT (UBINARY/2) — check account ID.
+- CHKDTE — check date.
+- ISCUR(3) — currency code (IS multi-currency field).
+
+**ISAPAINL** (385+f, `BKAP_INVL_*`): AP invoice line with 75-way GL distribution.
+File: `ISAPAINL.B` | Record = 3082+ bytes. Largest IS AP record.
+Header fields (~10): vendor code, invoice number, line number, date, terms, type, total.
+Distribution arrays (5 × 75 = 375 fields):
+- `BKAP_INVL_GLACT_1..75` STRING(10) — GL account per distribution slot.
+- `BKAP_INVL_GLDPT_1..75` STRING(4) — GL department per slot.
+- `BKAP_INVL_DC_1..75` STRING(1) — debit/credit flag per slot.
+- `BKAP_INVL_GLD_1..75` STRING(25) — GL description per slot.
+- `BKAP_INVL_DAMT_1..75` FLOAT(8/2) — distribution amount per slot.
+Supports AP invoices split across up to 75 distinct GL accounts. Most invoices use 1–5 slots; complex cost-allocation scenarios use all 75.
+
+**ISAPAPOL** (38f, `BKAP_POL_*`): AP PO line receipt detail.
+File: `ISAPAPOL.B` | Extends standard PO line with IS fields.
+Key IS-specific fields: INVNUM (matched invoice), PCONV (FLOAT/8/5 — price conversion factor for unit-of-measure conversion), PSTDTE (post date), PKSQTY (packing slip qty), INVDTE.
+
+**ISAPARFQ** (57f, `BKAP_PO_*`): AP PO header — archived/historical version.
+File: `ISAPARFQ.B` | Stores closed/archived PO headers.
+Full PO header with vendor+ship-to addresses (3-line each), payment terms, FOB, tax, totals, IS-specific: currency code, broker, revision number, ECO link.
+
+**ISAPOPO** (57f, `BKAP_PO_*`): AP open PO header — active current version.
+File: `ISAPOPO.B` | Identical schema to ISAPARFQ. Active POs only.
+ISAPARFQ and ISAPOPO together implement a two-tier active/archived PO header store (same schema, separate files for open vs. closed).
+
+**ISAPAVND** (72f, `BKAP_*`): AP vendor master snapshot.
+File: `ISAPAVND.B` | Record = 2230 bytes.
+Full vendor record mirroring BKAPVEND plus IS extensions:
+- NOTES_1..10 (STRING/60 × 10) — 10 free-text note lines.
+- EMAIL_1..5 (STRING/128 × 5) — 5 email addresses.
+- IS fields: TAXGRP(10), TAXIN(1), MCCODE(10 — multi-currency code), DCODE(10 — default discount code), CUST_CODE(10 — linked customer), CREDLIM (FLOAT/8/2 — credit limit), REQQC(1 — require QC on receipts), ALPHA1/ALPHA2 (STRING/25 × 2), DATE1/DATE2 (DATE × 2).
+Snapshot is refreshed when AP processes update it; enables IS reporting without joining to BKAPVEND.
+
+**ISAPCHG** (32f, `ISAP_CHG_*`): PO line change audit — active/current.
+**ISAPHCHG** (32f, `ISAP_CHG_*`): PO line change audit — historical. Identical schema.
+Files: `ISAPCHG.B` / `ISAPHCHG.B` | Record = 506 bytes. KEY: PONUM+LINEID.
+Before/after (A/B suffix) pairs for 16 audited fields:
+- Price_A/B, Disc_A/B (FLOAT/8/5 — 5-decimal precision).
+- OOQty_A/B (FLOAT/8/2 — open-order qty).
+- ERD_A/B, ARD_A/B (DATE — estimated/actual receipt dates).
+- WOPRE_A/B, WOSUF_A/B (WO link).
+- Oper_A/B (UBINARY/2 — operation).
+- GLACT_A/B, GLDPT_A/B (GL account/dept).
+- CONV_A/B (FLOAT/8/5 — unit conversion factor).
+- EXTRA_A/B (STRING/30).
+ISAPCHG holds the live change log; ISAPHCHG holds the archived (invoiced/closed) equivalent.
+
+**ISAPEX** (33f, `ISAPEX_*`): Vendor user-defined extension.
+File: `ISAPEX.B` | Record = 430 bytes. KEY: ISAPEX_VEND STRING(10).
+- NUM_1..5 (FLOAT/8/2 × 5) — 5 numeric UDFs.
+- NUM2_1..5 (FLOAT/8/0 × 5) — 5 integer UDFs.
+- FLAG_1..10 (STRING/1 × 10) — 10 yes/no flags.
+- ALPHA_1..5 (STRING/30 × 5) — 5 text UDFs.
+- DATE_1..5 (DATE × 5) — 5 date UDFs.
+- LONGNAME (STRING/60), EXTRA (STRING/100).
+One record per vendor; provides 25 user-defined fields beyond the standard BKAPVEND schema.
+
+**ISAPHQT** (49f, `BKRFQ_*`): Historical RFQ (Request For Quote).
+**ISAPQTQT** (49f, `BKRFQ_*`): Quote-to-quote matching reference. Identical schema.
+Files: `ISAPHQT.B` / `ISAPQTQT.B` | KEY: NUM+VEND. 10 qty-break bids:
+- QTY_1..10 (FLOAT/8/2) — quantity break points.
+- COST_1..10 (FLOAT/8/5) — bid cost per qty break.
+Plus: MIN (FLOAT/8/2 — minimum order qty), MINCST (FLOAT/8/5 — minimum cost), EXPIRE (DATE), LEAD (UBINARY/2 — lead days), CONV (FLOAT/8/5 — conversion factor), FLAG (STRING/1), MAXDAYS (UBINARY/2 — maximum lead days), GDATE (price guaranteed date), UWHO/CWHO (update/create who), ALPHA1 (STRING/25 — free text).
+
+**ISAPPROJ** (12f, `ISAP_PROJ_*`): AP invoice-to-project allocation.
+File: `ISAPPROJ.B` | KEY: FROM(8)+CUST(10)+VEND(10)+JOURN(8/0)+INV(8/0)+LINE(UBINARY/2).
+Links an AP invoice line to a project: PROJ(15 — project code), JCUST(10), JVEND(10), JDEPT(4), JITEM(15), EXTRA(50). Enables project cost tracking for multi-vendor AP scenarios.
+
+**ISAPQPO** (66f, `ISAP_QPO_*`): Quick PO line record.
+File: `ISAPQPO.B` | Record = 1797 bytes.
+Full PO line with extended fields: COMMENTS_1..10 (STRING/60 × 10), FLAGS_1..5 (STRING/1 × 5), ALPHA_1..2 (STRING/25 × 2), NUM_1..2 (FLOAT/8/2 × 2), GDATE_1..5 (DATE × 5), MINCST (FLOAT/8/5), VENOTE (STRING/1000 — vendor notes up to 1 KB). The VENOTE field is the largest single field in the IS AP module, allowing a full paragraph of vendor-specific notes per PO line.
+
+---
+
+### IS AR Module (ISAR* / BKAR_* family)
+
+The IS AR module mirrors the IS AP structure for the AR/SO side — storing enhanced customer master snapshots, history, and change audit.
+
+**ISARARC** (106f, `BKAR_*`): AR customer master snapshot.
+File: `ISARARC.B` | Record > 2500 bytes.
+Full customer record with IS extensions: two complete address sets (billing/shipping), 4 contact names + 5 phone numbers, 10 note lines (STRING/60), 5 email addresses (STRING/128), financial summaries (YTD sales/COGS/disc), IS fields: TAXGRP, TAXIN, MCCODE, REP (salesperson), CREDLIM, ALPHA1/2, DATE1/2. Refreshed snapshot enables IS reporting without live BKARCUST joins.
+
+**ISARADSC** (5f, `BK_DESC_*`): AR description lines — active SO/invoice.
+**ISARAHDS** (5f, `BK_DESC_*`): AR description lines — historical. Identical schema.
+Files: `ISARADSC.B` / `ISARAHDS.B` | KEY: CODE(15)+NUM(FLOAT/8/0)+LINE(UBINARY/2).
+- NOTES (STRING/70) — full description text.
+- DESC (STRING/25) — short label.
+Long-form text lines for IS SO/AR documents; separate active vs. historical files.
+
+**ISARAHIL** (28f, `BKAR_INVL_*`): Historical AR invoice lines.
+File: `ISARAHIL.B` | Record = 312 bytes.
+Full per-line invoice snapshot: PCODE(15), PDESC(30), PQTY/PPRCE/PDISC/PEXT (qty/price/disc/extended), PCOGS (cost of goods), ITYPE(1), TXBLE(1), UBO (unit back-ordered FLOAT/8/2), USTD (unit standard FLOAT/8/2), RTS(1), LOC(10), UM_LN_1/2 (unit-of-measure primary/secondary), COMPR_1/2 (comparison prices FLOAT/8/4 × 2), ASD (actual ship date), TXAMT (tax amount), FRGHT (freight), COOP (co-op deduction), OOQTY (open-order qty), EXTRA(30), SCCOG (secondary COGS FLOAT/8/4).
+
+**ISARAHIN**: Historical AR invoice header.
+File: `ISARAHIN.B` | Large — full BKAR_INV_* schema with IS extensions.
+Full AR invoice header (customer+ship-to addresses, terms, totals, salesperson, customer order, IS fields: ISCUR, ISTXKY, ISREV/ISRVDT, RELNUM, tracking, QSTAT).
+
+**ISARCHG** (26f, `ISAR_CHG_*`): AR SO/invoice line change audit — active.
+**ISARICHG** (26f, `ISAR_CHG_*`): AR invoice line change audit — historical.
+**ISARMCHG** (26f, `ISAR_CHG_*`): AR memo/credit line change audit. All identical schema.
+Files: `ISARCHG.B` / `ISARICHG.B` / `ISARMCHG.B` | Record = 488 bytes. KEY: SONUM/INVNUM+LINE.
+Before/after (A/B) pairs: PRICE_A/B, DISC_A/B, OOQty_A/B, ESD_A/B, ASD_A/B, COMPR_1_A/B, COMPR_2_A/B, EXTRA_A/B (STRING/30 × 2). Plus UNUM (UBINARY/4 — unique sequence number). Three variants cover the three document types (SO line, invoice line, credit memo line).
+
+**ISARINVX** (4f, `ISAR_INV_*`): AR invoice extension record.
+File: `ISARINVX.B` | KEY: SONUM(FLOAT/8/0)+NUM(FLOAT/8/0). Per-invoice extra fields.
+- `ISAR_INV_EXTRA1` STRING(100) — user-defined extension 1.
+- `ISAR_INV_EXRTA2` STRING(100) — user-defined extension 2. **Note: field name typo in original DDF** — `EXRTA2` not `EXTRA2`; this is in the source file, not introduced by documentation.
+
+---
+
+### IS RMA Module — Main Header
+
+**ISRMAM** (54f, `IS_RMA_*`): RMA main header record.
+File: `ISRMAM.B` | Record = 407 bytes. KEY: IS_RMA_NUM(FLOAT/8/0).
+
+The ISRMAM record is the controlling header for the RMA workflow. Previously documented: ISRMAI (active line items), ISRMAC (reason codes), ISRMADSC (description lines), ISRMAINF/ISRMAAI/ISRMAINV (info/archive/invoice tables). ISRMAM is the header that links them all.
+
+| Field group | Fields | Meaning |
+|-------------|--------|---------|
+| Identity | NUM, PART(15), LINEID(UBINARY/2) | RMA number, originating part, line |
+| Dates | RCPTDATE, CLOSDATE | Received date, closed date |
+| Status | STATUS(30), REASON(30), DISP(40) | Current status string, return reason, disposition decision |
+| SO/Invoice link | OSONUM, OINVNUM (original), SONUM, INVNUM (replacement) | Original SO/invoice + replacement SO/invoice |
+| Credit | CMNUM (FLOAT/8/0) | Credit memo number |
+| WO link | WOPRE(FLOAT/8/0), WOSUF(UBINARY/2) | Work order created for rework |
+| SR link | SRNUM(FLOAT/8/0) | Service request number |
+| Qty / condition | QTY(FLOAT/8/2), CONDITION(1) | Return quantity, product condition code |
+| Disposition flags | WO/CR/SO/STOCK/SCRAP/SR/REFUND (STRING/1 × 7) | 7 action type flags (one per disposition path) |
+| User flags | FLAGS_1..20 (STRING/1 × 20) | 20 user-defined flags |
+| Warranty | WARRANTY(1) | Under warranty flag |
+| Tracking | DISPSEL(UBINARY/2) | Disposition selection code |
+| Extra | IEXTRA(150) | Extended text |
+
+The 7 disposition flags (WO/CR/SO/STOCK/SCRAP/SR/REFUND) are the decision record: which combination of actions was taken when the return was processed.
+
+---
+
+### IS SR/SO Merge
+
+**ISSRSOMR** (54f, `ISSR_INFO_*`): Service request / SO merge data.
+File: `ISSRSOMR.B` | Schema identical to ISSRINFO — KEY: SRNUM+UID.
+Stores the flexible UDF block (20 alpha fields × 25ch, 10 date fields, EXTRA/100) for SR records that have been matched/merged with a sales order. Parallel to ISBTCSB (batch SR) and ISSRSOMR (SR→SO merge); all three reuse the ISSR_INFO_* schema for extensibility.
+
+---
+
+### PC Module — Kit and Plot Tables
+
+**BKPCKIT** (6f, `BKPC_KIT_*`): PC kit component record.
+File: `BKPCKIT.B` | Note: implied PK field (kit code, STRING/15) precedes listed fields at offset 0.
+- `BKPC_KIT_COMP` STRING(15) — component part number.
+- `BKPC_KIT_QTY_R` FLOAT(8/2) — required quantity.
+- `BKPC_KIT_QTY_A` FLOAT(8/2) — actual quantity used.
+- `BKPC_KIT_QTY_S` FLOAT(8/2) — quantity shipped.
+- `BKPC_KIT_DATELM` DATE — date eliminated from kit.
+- `BKPC_KIT_LOC` STRING(10) — storage location.
+
+**BKPCPLOT** (10f, `BKPC_PLOT_*`): PC production plot / schedule record.
+File: `BKPCPLOT.B` | Same implied PK pattern.
+- PROD(15) — product/part, ISDTE/SPDTE (issue/shipped date), QTY(FLOAT/8/2), CUST(10), INKO(FLOAT/8/2 — in-process qty), STAT(1 — status), STRTD/COMPD (started/completed date), LOC(10).
+
+---
+
+### Material Trim Table
+
+**BKMATRIM** (3f, `BKMA_TRIM_*`): Sheet metal / material trim configuration.
+File: `BKMATRIM.B` | KEY: MACH STRING(4) — machine code.
+- `BKMA_TRIM_FIRST` FLOAT(8/2) — first-cut trim dimension.
+- `BKMA_TRIM_SECND` FLOAT(8/2) — second-cut trim dimension.
+Per-machine trim/waste offsets for sheet metal cutting. Used in material requirement calculations to account for kerf and edge waste.
+
+---
+
+*Pass 144 complete: 32 tables documented — EVOHLPID/HELPURL (help system); INVATXN/INVETXN (inventory transaction variants); IS2DBAR (2D barcode, 109f); ISBUILD (batch work table); ISAP* family 13 tables (ISAPACHK/ISAPAINL/ISAPAPOL/ISAPARFQ/ISAPOPO/ISAPAVND/ISAPCHG/ISAPHCHG/ISAPEX/ISAPHQT/ISAPQTQT/ISAPPROJ/ISAPQPO); ISAR* family 7 tables (ISARARC/ISARADSC/ISARAHDS/ISARAHIL/ISARAHIN/ISARCHG+2/ISARINVX); ISRMAM (RMA header 54f); ISSRSOMR (SR/SO merge); BKPCKIT/BKPCPLOT/BKMATRIM (PC/material module). BKMATCST corrected 23f→25f.*
 
