@@ -4502,3 +4502,121 @@ Per-machine trim/waste offsets for sheet metal cutting. Used in material require
 
 *Pass 144 complete: 32 tables documented — EVOHLPID/HELPURL (help system); INVATXN/INVETXN (inventory transaction variants); IS2DBAR (2D barcode, 109f); ISBUILD (batch work table); ISAP* family 13 tables (ISAPACHK/ISAPAINL/ISAPAPOL/ISAPARFQ/ISAPOPO/ISAPAVND/ISAPCHG/ISAPHCHG/ISAPEX/ISAPHQT/ISAPQTQT/ISAPPROJ/ISAPQPO); ISAR* family 7 tables (ISARARC/ISARADSC/ISARAHDS/ISARAHIL/ISARAHIN/ISARCHG+2/ISARINVX); ISRMAM (RMA header 54f); ISSRSOMR (SR/SO merge); BKPCKIT/BKPCPLOT/BKMATRIM (PC/material module). BKMATCST corrected 23f→25f.*
 
+---
+
+## Pass 145 — IS QC Spec/Result/Method, SQL Query Store, Quote Analysis, Reminder (2026-06-22)
+
+DDF lines this pass: 19638–19917 (ISQCMTHD, ISQCRSLT, ISQCSPEC, ISQRYSQL, ISQSOA, ISQTCODE, ISQTINFO, ISREMIND). These are the last undocumented IS* tables; completion brings IS* documentation to C: 88+.
+
+---
+
+### IS QC Test Method Library
+
+**ISQCMTHD** (44f, `ISQC_MTD_*`): QC test method definition. DDF line 19638.
+File: `ISQCMTHD.B` | KEY: `ISQC_MTD_TSTCOD` STRING(30). Record = 3367 bytes.
+
+| Field group | Fields | Meaning |
+|-------------|--------|---------|
+| Identity | TSTCOD(30), DESC(60), DESC2(60) | Test code + 2 description lines |
+| Method text | METHOD_1..25 (STRING/100 × 25) | 2,500 bytes of method procedure text (25 × 100-char lines) |
+| Notes | NOTES_1..10 (STRING/60 × 10) | 600 bytes of additional notes |
+| Revision | REV(5), REVBY(UBINARY/2), REVDT(DATE) | Revision level + who revised + when |
+| Entry | ENTBY(UBINARY/2), ENTDT(DATE) | Who entered + when |
+| Extra | EXTRA(100) | Extension field |
+
+The test method library (ISQCMTHD) defines HOW each test is performed — 25 procedure lines + 10 note lines = up to 3,100 characters of instructions per test code. Referenced by ISQCRSLT and ISQCSPEC via TSTCOD.
+
+---
+
+### IS QC Specification and Result Tables
+
+**ISQCSPEC** (57f, `ISQC_SPC_*`): QC test specification — defines expected limits.
+**ISQCRSLT** (57f, `ISQC_SPC_*`): QC test result — records actual measurements. Identical schema.
+Files: `ISQCSPEC.B` / `ISQCRSLT.B` | DDF lines 19687/19749. KEY: LRNUM+CODE+OPER. Record = 1161 bytes.
+
+Note: Both tables share the same `ISQC_SPC_*` field prefix. ISQCSPEC stores the specification (what values are acceptable); ISQCRSLT stores the actual measurement for a specific lot/serial/WO.
+
+| Field group | Fields | Meaning |
+|-------------|--------|---------|
+| Identity | LRNUM(FLOAT/8/0), CODE(15), OPER(UBINARY/2) | Lab record number + part code + operation |
+| Test context | LOT(15), SERIAL(25), BATCH(25) | Lot, serial, batch being tested |
+| WO link | WOPRE(FLOAT/8/0), WOSUF(UBINARY/2) | Work order context |
+| Counting | CNTR/TCNTR (UBINARY/2 × 2) | Sample counter / test counter |
+| Quantity | LOTQTY/TSTQTY (FLOAT/8/2 × 2) | Lot quantity / test quantity |
+| Test type | TSTLOT(1), TSTCOD(30) | Is lot-based test (Y/N) + test code (→ ISQCMTHD) |
+| Measurement | NUMERC(1), MIN/MAX (STRING/15 × 2) | Numeric test flag + min/max spec limits (stored as strings for flexibility) |
+| Expected | EXPMIN/EXPMAX (STRING/2 × 2) | Expected operator (≤, ≥, =, etc.) |
+| Result | RESULT(15), UNITS(15), PASS(1) | Actual result value + units + pass/fail flag |
+| Test stamp | TDATE, TESTBY(UBINARY/2) | Test date + tester employee ID |
+| Test notes | TNOTES_1..5 (STRING/60 × 5) | 5 test note lines |
+| Approval | ADATE, APPBY(UBINARY/2), ACCEPT(1) | Approval date + approver + accept/reject |
+| Approval notes | ANOTES_1..5 (STRING/60 × 5) | 5 approval note lines |
+| Document refs | SONUM, SOLINE, PONUM, ITMNO(9), INVNUM, RCVNUM | Source SO/PO/invoice/receiving links |
+| Sample | SAMQTY(FLOAT/8/2), SAMPLE(25) | Sample size + sample ID |
+| UDF | ALPHA_1..5 (STRING/25 × 5), DATE_1..5 (DATE × 5) | 5 alpha + 5 date user-defined fields |
+| Flags | PSFAIL(STRING/4), EXTRA(100) | Pass/fail sub-code + extension |
+
+This two-table pattern (spec vs. result) allows the QC process to define the acceptance criteria once (ISQCSPEC) and then record each actual measurement separately (ISQCRSLT), with full traceability to the lot/serial/WO/PO context.
+
+---
+
+### IS SQL Query Store
+
+**ISQRYSQL** (2f, `IS_QRY_*`): User-defined SQL query store. DDF line 19811.
+File: `ISQRYSQL.B` | KEY: `IS_QRY_NAME` STRING(30). Record = 1030 bytes.
+- `IS_QRY_QUERY` STRING(1000) — full SQL query text (up to 1 KB).
+
+Stores named SQL queries for IS reporting and drill-through. Queries are referenced by the ISDRILL/ISDRILLM drill-through system and by IS custom report definitions. The 1000-byte field accommodates complex multi-table joins with WHERE clauses.
+
+---
+
+### IS Quote/SO Analysis
+
+**ISQSOA** (12f, `IS_QSOA_*`): Quote / SO analysis line item. DDF line 19818.
+File: `ISQSOA.B` | KEY: `IS_QSOA_UID` STRING(40). Record = 191 bytes.
+- CUST(10), SHPTO(10 — ship-to code), SHPDTE (ship date).
+- ITEM(15), DESC(30), QTY(FLOAT/8/2), PRICE(FLOAT/8/4), DISC(FLOAT/8/2).
+- MDATE1/MDATE2 (DATE × 2 — milestone/target dates).
+- EXTRA(50).
+
+Stores individual line items for quote-to-SO analysis. The UID ties back to a quote or SO header; MDATE1/MDATE2 track customer-requested vs. confirmed ship dates. Used by IS reporting to compare quote pricing against actual SO pricing.
+
+**ISQTCODE** (3f, `IS_CATM_*`): Quote type/category code master. DDF line 19835.
+File: `ISQTCODE.B` | KEY: `IS_CATM_CODE` STRING(4). Record = 164 bytes.
+- `IS_CATM_DESC` STRING(60) — description.
+- `IS_CATM_EXTRA` STRING(100) — extension.
+
+Simple 4-char code lookup for quote type classification. Note: field prefix IS_CATM_* is shared with ISCATMST (category master), suggesting quote types are categorized alongside item categories.
+
+**ISQTINFO** (54f, `ISSR_INFO_*`): Quote UDF extension block. DDF line 19843.
+File: `ISQTINFO.B` | KEY: SRNUM+UID (FLOAT/8/0 × 2). Record = 1171 bytes.
+Identical schema to ISSRINFO — the ISSR_INFO_* 54-field UDF pattern: 5 dates + 20 alpha×25ch + EXTRA(100) + 5 more dates + 20 more alpha×25ch. The same extensibility mechanism used across SR, RMA, QT (Quote), and batch modules.
+
+---
+
+### IS Reminder / Calendar System
+
+**ISREMIND** (12f, `IS_REM_*`): User reminder and calendar entry. DDF line 19902.
+File: `ISREMIND.B` | KEY: `IS_REM_DATE` + `IS_REM_TIME` + `IS_REM_WHO`. Record = 486 bytes.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| IS_REM_DATE | DATE | Reminder date |
+| IS_REM_TIME | TIME | Reminder time (TAS Pro TIME type) |
+| IS_REM_WHO | STRING(20) | User who owns the reminder |
+| IS_REM_SUBJECT | STRING(100) | Subject line / title |
+| IS_REM_EXTRA | STRING(50) | Additional notes |
+| IS_REM_CUST | STRING(10) | Linked customer (optional) |
+| IS_REM_VEND | STRING(10) | Linked vendor (optional) |
+| IS_REM_ITEM | STRING(15) | Linked inventory item (optional) |
+| IS_REM_DISP | STRING(1) | Disposition: O=open, D=done, C=cancelled |
+| IS_REM_CO | STRING(3) | Company code (multi-company) |
+| IS_REM_FILE | STRING(256) | Attached file path |
+| IS_REM_NOTIFY | STRING(1) | Send notification flag (Y/N) |
+
+Provides a cross-module task/reminder system: reminders can be linked to any combination of customer, vendor, and item, with optional document attachment and popup notification. The TIME field (TAS Pro TIME type, 4 bytes) allows time-of-day alerting.
+
+---
+
+*Pass 145 complete: 8 remaining IS* tables documented — ISQCMTHD (44f QC method, 3367-byte record); ISQCRSLT/ISQCSPEC (57f identical QC result/spec with min/max spec limits and test+approval note arrays); ISQRYSQL (2f SQL store with 1KB query field); ISQSOA/ISQTCODE/ISQTINFO (quote analysis/code/UDF); ISREMIND (12f reminder with TIME key field). IS* module documentation now complete — all 659 DDF tables have schema entries in tier2-tables.md.*
+
