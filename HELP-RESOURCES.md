@@ -2619,22 +2619,50 @@ Tracks detailed cost against customer jobs, separate from standard WO cost track
 
 ### ES — Estimating / Quoting
 
-Creates cost estimates for customer RFQs. Estimates can be converted to Sales Orders or Work Orders.
+Creates cost estimates for customer RFQs (requests for quotation). Estimates have a 10-quantity-break cost matrix covering material, labor, overhead, outside process, and misc costs. Completed estimates can be converted to Sales Orders and/or Work Orders.
 
-**Key sub-modules:**
-- T7ESD — Estimate defaults (BKESTCFG: markup percentages, numbering)
-- T7ESB / T7ESE — Main estimate entry forms (customer, items, qty, customer PO#)
-- T7ESC / T7ESH / T7ESI — Cost detail: BKMATCST (material), BKRFQ (vendor quotes), BKRTCST (routing/labor cost)
-- T7EST — Estimate templates (create standard estimates)
+**Program map (DFM-confirmed, Pass 155, 2026-06-22):**
 
-**Estimate → Order conversion:** From a completed estimate, the user can generate a SO (converts to BKARINV/BKARINVL) or a WO (converts to WORKORD/WOBOM). The ISESTDTL table holds estimate detail lines; ESTSUM holds rolled-up totals.
+| Program | Caption | Purpose |
+|---------|---------|---------|
+| T7EST | ES-A Enter Estimates | Main estimate entry — customer, 10 qty levels (IS.EST.QTY[1..10]), margins (MATMU%/LABMU%/OPMU%/OHMU%/OVLMU%), status, drawing/rev, expire date, lost date, quote rev# |
+| T7ESB | ES-B Print Estimates | Filter: SO# range (sFROM.SONUM/sTHRU.SONUM), Customer range, Cust Class range, Job# range; Options: ISPRT.NOTES, ISPRT.HID.NOTES, ISPRT.KIT, ISPRT.ECO, prt.xref, PLDTYPE (YES/NO/PARENT/COMPONENT) |
+| T7ESC | ES-C Print Estimate Detail | Filter: Quote# range (vld_estf/vld_estt); PRINT.REPORT[1..10] qty-level checkboxes; Options: Summary Only (ISPRINT.REPT11), 2nd description, BOM detail, routing detail, extra charges |
+| T7ESD | ES-D Print Customer Quotes | Filter: Quote# range (vld_qtnum), Customer range, Expiry date range, Cust Class, Status (AICXD = Active/Inactive/Complete/eXpired/Deleted), Consolidated; Options: ais.dec (price decimal precision), PLDTYPE (Y/N/P/C) |
+| T7ESE | ES-E Convert Estimates | sFROM.QUOTE → ISTO.SO (Create SO) + ISTO.WO (Create WO); Assigned SO.NUM + sWO.NUM; Customer PO (CUST.PO); LOCATION (vld_loc()); incl.est.no (put Est# in PO field); ISUPD.CONTRACT; Lines grid: APART/AQTY/APRICE/AESD/AWSD/AWFD; Per-line: ORD.QTY/SELL.PRICE/START.DATE/FINISH.DATE/ESD.DATE |
+| T7ESH | ES-H Enter Material Costs | BKMC.CODE (item, vld_item()); BKMC.QTY[1..5] / BKMC.COST[1..5] ($,0.0000); BKMC.DATE (last update); Extra: MTIC.PROD.VEND[1] (primary vendor), Lead Time, Standard Pack, Specifications |
+| T7ESI | ES-I Print Material Costs | Filter: from.item/thru.item (item range) + from.date/thru.date (date range); Print button |
+
+**ES-E Convert Estimates — field detail:**
+- `sFROM.QUOTE` — source estimate/quote number (vld_quote())
+- `ISTO.SO` / `ISTO.WO` — checkboxes: convert to Sales Order / Work Order
+- `SO.NUM` / `sWO.NUM` — new order numbers (read-only, set during conversion)
+- `is.est.cust` — customer (read-only, inherited from quote)
+- `CUST.PO` — customer PO number (editable); `incl.est.no` — include estimate# in PO field
+- `ISUPD.CONTRACT` — Update Contract Price File during conversion
+- Lines grid (`APART`=item, `AQTY`=qty, `APRICE`=price, `AESD`=estimated ship date, `AWSD`=WO start, `AWFD`=WO finish)
+- Per-line detail: `ORD.QTY`, `SELL.PRICE` ($,0.0000), `START.DATE`, `FINISH.DATE`, `ESD.DATE`
+- Note: Convert button (btnConvert) is Visible=False — conversion triggered by program logic, not a visible button
+
+**Quote status codes (AICXD on qt.status field in ES-D):**
+- `A` = Active, `I` = Inactive, `C` = Complete/Converted, `X` = eXpired, `D` = Deleted
+
+**BKMATCST (ES-H entry) — Material Cost Table:**
+- Form shows 5 qty breaks (BKMC.QTY[1..5] / BKMC.COST[1..5]); table has 10 breaks in DDF
+- `BKMC.DATE` tracks last price update — useful for stale-cost warnings
+- Primary vendor reference (`MTIC.PROD.VEND[1]`) pulled from MTICMSTR (ES copy of inventory)
+
+**Estimate → Order conversion:** From ES-E, one estimate can generate both a SO and WO in a single conversion. The lines grid lets the user confirm items, quantities, and pricing from the estimate before committing. ISUPD.CONTRACT updates the contract price file if the estimate was priced against a negotiated contract.
 
 **Use case examples:**
-- "How do I create a quote for a customer?" → ES-B (main entry), add line items with part numbers, costs auto-populate from BKICMSTR/BKRTCST.
-- "How do I convert an estimate to a Sales Order?" → From the estimate form, use the SO conversion function.
-- "How do I get vendor pricing into an estimate?" → RF module (RFQ from Estimates) generates vendor RFQs that feed back into BKRFQ.
+- "How do I create a quote for a customer?" → ES-A (T7EST main entry), enter customer, 10 qty breaks, margins auto-calculate.
+- "How do I print an estimate for internal review?" → ES-C (T7ESC) — pick quote# range, select qty levels to print, optionally include BOM/routing detail.
+- "How do I send a quote to a customer?" → ES-D (T7ESD) — filter by quote# or customer, set status filter, print.
+- "How do I convert a quote to an order?" → ES-E (T7ESE) — enter quote#, check ISTO.SO/ISTO.WO, confirm lines, execute conversion.
+- "How do I get vendor pricing into an estimate?" → RF module generates vendor RFQs feeding back into BKRFQ; or enter material costs manually in ES-H.
+- "How do I update material costs for estimating?" → ES-H (T7ESH) — enter item code, enter costs for up to 5 quantity breaks.
 
-**Confidence: 78/100** — All 11 ES menu programs confirmed; full table family documented in tier4-tables.md; BKESTCFG all 13 fields decoded; ESTSUM 213-field structure confirmed. BKESTCFG 40-byte gap (offsets 14–53) unregistered.
+**Confidence: 82/100** — All 6 DFMs confirmed field-by-field (Pass 155, 2026-06-22); quote status codes AICXD confirmed from AllowedChrs; ES-E conversion flags confirmed; BKMATCST 5-of-10 qty break gap noted. Underlying RWN logic not disassembled.
 
 ---
 
