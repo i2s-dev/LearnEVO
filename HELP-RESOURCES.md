@@ -5492,21 +5492,33 @@ Same 40-alpha/10-date capacity as ISSRINFO; the QT version uses the ISQTINFO alt
 
 ### SL — Shop Loading (Expanded)
 
-T7SLSFC (5p): Shop loading display — overlays AR demand on production capacity. Opens BKARINVL+BKYSMSTR+BKDCLAB+BKARCUST+ISWOPRIO(4f already extracted)+WORKCTR+ROUTING. Very thin program (5 procs) = UI panel only; data assembly logic is in the calling module.
+T7SLSFC (5p, source=ISTS.SRC): Shop loading display — overlays AR demand on production capacity.
+Opens BKARINVL+BKYSMSTR+BKDCLAB+BKARCUST+ISWOPRIO+WORKCTR+ROUTING+ISMCR+TASCOLOR (22 unique
+tables total).
 
-**BKDCLAB** (50f): DC Labor transaction record (partially extracted):
-- LAB_DATE + LAB_EMP — date + employee (PK part)
-- LAB_WOPRE(8) + LAB_WOSUF(2) — WO reference
-- LAB_OPER(2) — operation number
-- LAB_POSTED(1) — posted to WO flag
-- LAB_SHIFT(2) — shift number
-- LAB_START(4) + LAB_FINISH(4) — start/finish times
-- LAB_PARTS(8) — parts completed count
-- LAB_SCRAPPED(8) — scrapped quantity
-- LAB_NOJOBS(2) — job count
-- + 38 more fields (hours, rates, GL, etc.)
+**T7SLSFC is Java-backed** (Pass 157, 2026-06-22): Symbol extraction confirmed JAVA.PATH +
+JAVA.PATH2 variables — the TAS stub launches one or more Java scheduler applications:
 
-**Confidence: 65/100** — T7SLSFC purpose confirmed (read-only demand/capacity overlay, 5 procs = display only); ISWOPRIO(4f) + BKDCLAB(50f, Pass 57) fully extracted; WORKCTR+ROUTING schemas documented in SH module section.
+| JAR | Main Class | Purpose |
+|-----|-----------|---------|
+| Scheduler.jar | main.Driver | Shop Loading primary (older generation) |
+| WCScheduler.jar | com.evoerp.wcsched.main.Main | Work Center Scheduler |
+| WOScheduler.jar | com.evoerp.main.Main | Work Order Scheduler |
+| WorkCenterLoad.jar | com.evoerp.wcload.javafx.App | Visual WC capacity load (JavaFX) |
+| MachineView.jar | com.evoerp.machineview.jfx.App | Machine view (JavaFX) |
+
+Key variables: PLDN (production line down), PTDN (production/tool down), WEBLINK + XCPATH
+(cross-platform display paths), CFG.BUFFER. Config flags: ISTS.CFG.AUTOSL (auto shop loading),
+ISTS.CFG.AUTOPL (auto production loading), ISTS.CFG.WCBF (WC buffer), ISTS.CFG.WCDEPT (WC dept).
+
+**BKDCLAB** (50f): DC Labor transaction record (date+EMP+WOPRE+WOSUF+OPER PK; POSTED+SHIFT+
+START/STOP/PARTS/SCRAPPED/NOJOBS + hours/rates/GL fields).
+
+**ISWOPRIO** (4f): WO priority code — PRIO+DESC+EXTRA+COLOR.
+
+**Confidence: 73/100** — T7SLSFC decrypted + symbol-extracted (Pass 157); Java-backed architecture
+confirmed; 22-table DB fingerprint re-confirmed; 5 candidate scheduler JARs identified by package
+name; exact JAR dispatch logic not yet traced (which JAR for which SL sub-operation).
 
 ---
 
@@ -17607,3 +17619,69 @@ Three tables:
 **MRP / PO enforcement:** T7MRG (MRP firming) and T7POB (PO print) query the SB tables to flag or enforce sourcing rules when generating purchase orders.
 
 *Pass 108 — Platform Subsystems and Spec Book sections added; TAS 4GL `enter` options fully documented (12 options confirmed from 7 SRC files).*
+
+---
+
+## Java Application Inventory (Pass 157, 2026-06-22)
+
+EvoERP ships 30+ Java application JARs on `\\i2s109-solidcrm\DBAMFG$\`. Each is launched by a
+TAS Pro 7 stub program (usually 5–30 procs) that populates ISJAVA or uses JAVA.PATH/JAVA.PATH2 vars
+to shell-execute the JAR. The JARs implement the heavy-UI viewer / analysis layer that TAS Pro 7 UI
+cannot efficiently render.
+
+### Module-to-JAR Mapping
+
+| JAR | Main Class (package) | Module | Purpose |
+|-----|---------------------|--------|---------|
+| Scheduler.jar | main.Driver | SL | Shop Loading scheduler (older) |
+| WCScheduler.jar | com.evoerp.wcsched | SL | Work Center Scheduler |
+| WOScheduler.jar | com.evoerp.main | SL | Work Order Scheduler |
+| WorkCenterLoad.jar | com.evoerp.wcload.javafx | VSCHED | Visual WC capacity load (JavaFX) |
+| MachineView.jar | com.evoerp.machineview.jfx | SL/DC | Machine/floor view (JavaFX) |
+| FOTree.jar | com.evoerp.fotree.main | FO | Features & Options tree view |
+| FOTreeRun.jar | Main | FO | FO tree launcher shim |
+| BOMTREE.JAR | com.evoerp.bomtree.javafx | BM | BOM tree viewer (JavaFX) |
+| EditBOMTree.jar | com.evoerp.editbomtree.javafx | BM | BOM tree editor (JavaFX) |
+| BomUtility.jar | com.evoerp.bomutility.jfx | BM | BOM utility (JavaFX) |
+| BusinessStatus.jar | com.evoerp.businessstatus.main | QU-D | Business Status dashboard |
+| CrmDashboard.jar | com.evoerp.ureinn.jfx | CM | CRM Dashboard (JavaFX) |
+| CustomerServiceInquiry.jar | com.evoerp.csi.main | AR/CM | Customer Service Inquiry |
+| LLForecast.jar | com.evoerp.levelload.main | MR | Level Load / production forecast |
+| MultiYearSales.jar | com.evoerp.multiyear.main | SA | Multi-year sales analysis |
+| SalesRepSummary.jar | com.evoerp.salesanalysis.srs | SA | Sales rep summary |
+| ProfitByInvoice.jar | com.evoerp.salesanalysis.pbi | SA | Profit by invoice |
+| ItemClass.jar | com.evoerp.salesanalysis.ic | SA | Item class analysis |
+| CustomerClass.jar | com.evoerp.salesanalysis.cc | SA | Customer class analysis |
+| CashFlow.jar | main.Main | GL/QU | Cash flow viewer |
+| CashFlowReport.jar | main.Main | GL/QU | Cash flow report |
+| CommissionRpt.jar | main.Main | SA/PR | Commission report |
+| PurchItem.jar | main.Main | PO | Purchase by item analysis |
+| purchtxn.jar | com.evoerp.main | PO | Purchase transaction viewer |
+| purchvend.jar | main.Main | PO | Purchase by vendor analysis |
+| QueryExecute.jar | com.evoerp.queryexecute.jfx | QU-E/F | Query execute (JavaFX) |
+| EVOPVT.JAR | com.evoerp.TASKS.sql | QU-F | SQL task executor (QU-F backend) |
+| SQLExport.jar | com.evoerp.sqlexport.main | EX | SQL Export / BI export |
+| DataUpload.jar | com.evoerp.dataupload.main | TA | Data upload utility |
+| invchange.jar | com.evoerp.icr.main | IN | Inventory change record viewer |
+| phone.jar | com.evoerp.phonecompare.main | CM | Phone/contact comparison |
+| EVOFX.JAR | com.evoerp.FX.sql | ML | Foreign exchange rate SQL tool |
+| EVOAVATAX.JAR | com.evoerp.avatax.sql | (config) | Avalara AvaTax integration |
+| EvoToOutlookAppt.jar | com.evoerp.outlook.appointments | CALREM | Outlook calendar appointment sync |
+| EvoScreenshot.jar | com.evoerp.screenshot.main | (util) | Screenshot capture utility |
+| SMTPCLIENT.JAR | com.evoerp.smtp | (infra) | SMTP email client |
+| EVOERP-BACKUP.JAR | — | TA-O | EvoERP backup (large: 4.3 MB) |
+| Barcode.jar | Main | (util) | Barcode rendering |
+| Tree.jar | — | (util) | Generic tree UI component |
+
+### Java Infrastructure
+All Java JARs use the shared Pervasive JDBC driver (`lib/pvjdbc2.jar`, `lib/pvjdbc2x.jar`) for
+database access and depend on:
+- `lib/Evo.jar` / `lib/Evo2.jar` / `lib/EVO3.JAR` — shared EvoERP Java framework
+- `lib/jide-*.jar` — JIDE Swing component suite (grids, dock, dialogs)
+- `lib/jfreechart.jar` — chart rendering (sales dashboards, capacity charts)
+- Spring 3.0.7 (`lib/spring-*.jar`) — dependency injection for larger apps
+- Java 8 runtime (`java/` folder) for 32-bit TAS Pro 7, Java 11+ (`Java2/`) for newer apps
+
+**Confidence: 72/100** — All 37 JARs enumerated with Main-Class; package names confirm module
+assignments; exact TAS stub → JAR dispatch mapping not yet traced for most modules; JAR source not
+decompiled.
