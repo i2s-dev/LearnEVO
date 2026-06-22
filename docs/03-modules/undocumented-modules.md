@@ -1639,13 +1639,15 @@ The following modules have no T7* DFM files on the network share. Their operatio
 
 **Purpose:** Print sub-module for the FO (Features & Options) module — generates a printed features/options sheet from the configured BOM option flags.
 
-**Key findings:**
-- **Zero T7FP* programs** — exhaustive search across all 1,122 RWN modules found no T7FP* bytecode. FP-B is RTM-only (a ReportBuilder template), launched directly from the EVO menu without a TAS Pro 7 wrapper program.
-- **T7FOD.DFM** — Filter form for FP-B range printing: item range (from.item/thru.item), category range (from.cat/thru.cat), class range (from.class/thru.class). Print + Exit buttons. Confirms FP-B supports item/category/class range filtering.
-- **T7FOE.DFM** — Filter form for FP-B single-item printing: one "Feature / Option Item Number" (from.item). Print + Exit buttons.
-- These are the only filter entry points for FP; the report content comes from BKBM.PROD.OPYN[1..6] option flags and BKBM.PROD.PRICE read by the RTM file.
+**Key findings (updated Pass 156b, 2026-06-22):**
+- **Zero T7FP* programs** — exhaustive search across all 1,122 RWN modules found no T7FP* bytecode. FP uses T7FOD and T7FOE (FO-labeled programs), not a T7FP* namespace.
+- **T7FOD.RWN** — 103 procedures, source EVO.LIB. **DECRYPTED + SYMBOLS EXTRACTED.** Full print executor for FP-B range printing. Opens 18 tables (see fingerprint below). Filter form: T7FOD.DFM (item/category/class ranges).
+- **T7FOE.RWN** — 86 procedures, source EVO.LIB. **DECRYPTED + SYMBOLS EXTRACTED.** Full print executor for FP-B single-item printing. Identical 18-table fingerprint. Filter form: T7FOE.DFM (single item).
+- **NOT RTM-only** — prior conclusion was wrong. T7FOD/T7FOE are full standalone RWN programs, not stubs. The RTM filename is **runtime-configurable** via `CFG.RTM.NAME` / `RTM_NAME` / `RTM.NUMBER` variables (not hardcoded).
+- **18-table DB fingerprint (both programs, identical):** BKICMSTR, MTICMSTR, BKBMMSTR, BKICLOCM, CLASMSTR, BKSYHELP, DBAHLPID, ISIS, MKAHIST, ISLOG, ISDRILL, BKAPVEND, BKARCUST, BKCMACCN, ISLINKS, BKAPDESC, LANGDICT, FILELOC.
+- **MTICMSTR presence** — FP can print from both production (BKICMSTR) and estimating (MTICMSTR) inventory.
 
-**Confidence: 55/100** — Filter DFMs read and confirmed; RTM file not read (report content and column layout unknown); zero standalone RWN confirmed (not an oversight — FP is definitively RTM-only).
+**Confidence: 72/100** — T7FOD/T7FOE decrypted and symbol-extracted (Pass 156b); 18-table DB fingerprint confirmed; RTM runtime-config pattern confirmed from variable names; RTM file content and exact column layout not yet read.
 
 ---
 

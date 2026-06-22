@@ -4347,11 +4347,28 @@ EvoERP import/export index. Very minimal utility — validates form structure an
 
 ### FP — Features & Options Print
 
-No T7FP* programs found in rwn_symbols.json (1,122 modules searched). FP-B "Print Features and
-Options" is a print sub-module of FO (Features & Options). It is likely implemented as a single
-RTM report template (ReportBuilder) triggered from within the FO module, not a standalone RWN.
+FP-B "Print Features and Options" is a print sub-module of FO (Features & Options). There are zero
+T7FP* programs — the print layer uses **T7FOD** and **T7FOE** (FO-labeled RWNs), not a separate
+FP-prefixed namespace.
 
-**Confidence: 55/100** — CHM operation confirmed; absence of any T7FP* program across all 1,122 RWN modules confirmed (exhaustive search); FP-B is definitively RTM-only (print variant of FO-D/FO-E).
+| Program | Procedures | Source | Purpose |
+|---------|-----------|--------|---------|
+| T7FOD | 103 | EVO.LIB | FP-B range print — filter by item range / category range / class range |
+| T7FOE | 86 | EVO.LIB | FP-B single-item print — one Feature/Option item number |
+
+**Database fingerprint (both programs, identical):** BKICMSTR, MTICMSTR, BKBMMSTR, BKICLOCM,
+CLASMSTR, BKSYHELP, DBAHLPID, ISIS, MKAHIST, ISLOG, ISDRILL, BKAPVEND, BKARCUST, BKCMACCN,
+ISLINKS, BKAPDESC, LANGDICT, FILELOC (18 tables).
+
+**Key variables (both programs):** `CFG.RTM.NAME`, `RTM_NAME`, `RTM.NUMBER`, `HOLD.RTM.NAME`,
+`MAX.EVO.RTM`, `RTMVLD_NAME`, `ISTS.CFG.RTMSAV`, `ISTS.CFG.TFNAME` — the RTM filename is
+**runtime-configurable** (loaded from a config/system setting), not hardcoded in the RWN bytecode.
+
+**Notable:** MTICMSTR is included in the 18-table fingerprint, confirming FP can print from both
+production inventory (BKICMSTR) and estimating inventory (MTICMSTR). The programs are full
+print executors, not thin stubs.
+
+**Confidence: 72/100** — T7FOD/T7FOE decrypted and symbol-extracted; 18-table DB fingerprint confirmed; RTM runtime-config pattern confirmed from variable names; RTM file content and exact column layout not yet read.
 
 ---
 
