@@ -5849,3 +5849,671 @@ Minimal MRP control table. One row per part that has a special MRP processing sw
 
 *Pass 149 complete: 24 tables documented — System/security (AHSYLOG 23f logon access array, BKLOGON 10f user accounts); AR temp (ARTTEMP 12f payment staging); License/config (BKABCUST 5f license dates, BKABVEND 2f registration, BKFOCFG 18f feature toggles, BKFLDHLP 3f inline help); Report filter (BKACTRPT 53f activity report FROM/THRU template with 25 dimensions); Estimating clones (BKESTQT 84f = BKARINV + QSTAT/MDATE/MISC, BKESTQTL 28f = BKARINVL + SCCOG); GL COA+mirrors (BKGLCOA 62f base, BKGLCCOA 62f C-company — 4×14 period arrays; BKGLACHK+BKGLCHK 11f×2 check reconciliation; BKGLAGJL 9f GJ lines, BKGLAGJR 11f GJ register, BKGLATRN 16f transaction detail); IS tax (BKISHTAX+BKISTAX 13f×2 identical current/history); Material config (BKMATCST 25f 10-tier qty-break pricing, BKMATRIM 3f machine trim factors); MRP (BKMRPFC 9f forecast demand with OQTY/CQTY netting, BKMRPPO 16f suggested PO action messages, BKMRPSW 2f part override switch).*
 
+---
+
+## Pass 150 — CM (Contact Management / CRM) Module + BKCP* Check Processing (42 tables)
+
+Source: `samples/ddf/schema.md` (DDF direct extraction, lines 3236–4256)
+
+The **CM module** is EvoERP's built-in CRM system — tracking prospect accounts, contacts, sales activity, service calls, dunning letters, and mass mailings. It operates parallel to but separate from the core AR customer master (BKARCUST). Tables follow the naming pattern `BKCM_<entity>_<field>`. Multi-company: an "E" company mirror set (BKCMEA*) duplicates the core tables with identical schemas.
+
+### CRM Module Data Model Overview
+
+```
+BKCMACCT (account master)
+  └── BKCMACCN (10 contacts per account)
+  └── BKCMACCL (class links)
+  └── BKCMACTH (time-tracked activity history)
+  └── BKCMACTF (follow-up tasks)
+  └── BKCMACTD (dated activity log)
+BKCMPCNT (prospect contact — separate from account)
+  └── BKCMPCTH (prospect contact history)
+  └── BKCMPCTF (prospect contact follow-up)
+BKCMCUST (customer integration — pulls BKAR_ data for CM reports)
+BKCMREP (sales rep master)
+BKCMTERR (territory)
+BKCMLEAD (lead source codes)
+BKCMACCC (account class codes)
+```
+
+---
+
+### BKCMACCC — Account Class Code (2 fields)
+
+File: `BKCMACCC.B` | PK: CCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CCODE | STRING(5) | Class code |
+| DESC | STRING(25) | Description |
+
+---
+
+### BKCMACCL — Account-Class Link (2 fields)
+
+File: `BKCMACCL.B` | PK: CODE + CLASS
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account code (FK → BKCMACCT) |
+| CLASS | STRING(5) | Class code (FK → BKCMACCC) |
+
+Many-to-many link — one account can belong to multiple classes for mailing list segmentation.
+
+---
+
+### BKCMACCN — Account Contacts Detail (154 fields)
+
+File: `BKCMACCN.B` | Prefix: `BKCM_ACCN_` | PK: CODE
+
+| Field group | Type | Notes |
+|-------------|------|-------|
+| CODE | STRING(10) | Account code (FK → BKCMACCT) |
+| CONT_1..10 | STRING(30)×10 | Contact full names |
+| TITLE_1..10 | STRING(30)×10 | Contact titles |
+| PHONE_1..10 | STRING(25)×10 | Phone numbers |
+| DEAR_1..10 | STRING(25)×10 | Salutation / "Dear" name |
+| EXTRA | STRING(50) | Extra |
+| EMAIL_1..10 | STRING(128)×10 | Email addresses |
+| DATE1_1..10 | DATE×10 | User-defined date set 1 per contact |
+| DATE2_1..10 | DATE×10 | User-defined date set 2 per contact |
+| ALPH1_1..10 | STRING(25)×10 | User-defined alpha set 1 per contact |
+| ALPH2_1..10 | STRING(25)×10 | User-defined alpha set 2 per contact |
+| CON | STRING(30) | Primary contact name |
+| PRIM | STRING(1) | Primary contact index flag |
+| PHLBL_1..10 | STRING(20)×10 | Phone field labels (user-customizable) |
+| EMLBL_1..10 | STRING(20)×10 | Email field labels |
+| MSLBL_1..10 | STRING(20)×10 | Misc field labels |
+| DTLBL_1..10 | STRING(20)×10 | Date1 field labels |
+| M2LBL_1..10 | STRING(20)×10 | Alpha2 field labels |
+| D2LBL_1..10 | STRING(20)×10 | Date2 field labels |
+
+Record = 4,251 bytes. Stores up to 10 named contacts per account with name, title, phone, email, salutation, and two sets each of UDF dates and alphas. The label fields (PHLBL/EMLBL/etc.) store user-customized column headers — same account-level row for all 10 contacts. Note: field 53–62 prefix is `BMCM_` (typo in DDF for field 53–62 date1 group; should be BKCM_).
+
+---
+
+### BKCMACCT — Account Master (41 fields)
+
+File: `BKCMACCT.B` | Prefix: `BKCM_ACCT_` | PK: CODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account code |
+| OLDCD | STRING(10) | Prior account code (rename history) |
+| ALPHA | STRING(6) | Sort alpha key |
+| NAME | STRING(30) | Company name |
+| ADD1 | STRING(30) | Address line 1 |
+| ADD2 | STRING(30) | Address line 2 |
+| ADD3 | STRING(30) | Address line 3 |
+| CITY | STRING(26) | City |
+| STATE | STRING(2) | State |
+| ZIP | STRING(10) | ZIP code |
+| CNTRY | STRING(30) | Country |
+| CONT1 | STRING(30) | Primary contact name |
+| TITLE | STRING(30) | Contact title |
+| PHONE | STRING(25) | Phone |
+| FAX | STRING(25) | Fax |
+| REP | STRING(5) | Sales rep code (FK → BKCMREP) |
+| DLOAD | STRING(1) | Download flag |
+| SICCD | STRING(7) | SIC industry code |
+| CUST | STRING(1) | Is-a-customer flag (links to BKARCUST) |
+| LEAD | STRING(5) | Lead source code (FK → BKCMLEAD) |
+| START | DATE | Account created date |
+| TERR | STRING(4) | Territory code (FK → BKCMTERR) |
+| REM_1/2 | STRING(60)×2 | Remarks |
+| FONE_1..3 | STRING(15)×3 | Additional phone numbers |
+| FTWO_1..3 | STRING(2)×3 | Phone type codes |
+| FTHRE_1/2 | STRING(25)×2 | Additional phone labels |
+| FTIME | UBINARY | Follow time code |
+| CCARD | STRING(25) | Credit card type |
+| CNUM | STRING(25) | Credit card number |
+| CEXP | DATE | Card expiration date |
+| CMPNM | STRING(25) | Card company name |
+| PNAME | STRING(25) | Cardholder name |
+| EXTRA | STRING(200) | Extra / user-defined |
+| EMAIL | STRING(128) | Email address |
+| EMPS | FLOAT | Number of employees |
+
+This is the CRM prospect/lead master — distinct from BKARCUST (which tracks actual AR customers). When a prospect converts to a customer, CUST='Y' and the AR link is established. OLDCD tracks code changes. SIC code enables industry-based segmentation.
+
+---
+
+### BKCMACFC — Activity Forecast Code (3 fields)
+
+File: `BKCMACFC.B` | PK: FCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| FCODE | STRING(3) | Forecast code |
+| DESC | STRING(25) | Description |
+| REP | STRING(5) | Sales rep (default assignee) |
+
+Code table for categorizing sales forecast activity types.
+
+---
+
+### BKCMACTD — Activity Date Record (4 fields)
+
+File: `BKCMACTD.B` | PK: CODE + DCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account code |
+| DCODE | STRING(2) | Date code (FK → BKCMDTCD) |
+| DATE | DATE | Activity date |
+| EXTRA | STRING(100) | Extra |
+
+Records important dates for an account (e.g., birthday, contract anniversary, next-review date) keyed by a user-defined date code.
+
+---
+
+### BKCMACTF — Activity Follow-Up (10 fields)
+
+File: `BKCMACTF.B` | PK: CODE + REP + TYPE + DATE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account code |
+| REP | STRING(5) | Sales rep |
+| TYPE | STRING(3) | Activity type |
+| DATE | DATE | Follow-up due date |
+| REM_1..5 | STRING(60)×5 | Remarks (5 lines) |
+| DLOAD | STRING(1) | Download flag |
+
+Pending follow-up tasks for an account. Each row is one task assigned to a rep with a due date and notes.
+
+---
+
+### BKCMACTH — Activity Time History (21 fields)
+
+File: `BKCMACTH.B` | Prefix: `BKCM_ACTH_` | PK: CODE + DATE + REP + LINE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account code |
+| DATE | DATE | Activity date |
+| REP | STRING(5) | Sales rep |
+| LINE | UBINARY | Line number (for multi-call days) |
+| CD | STRING(2) | Activity code |
+| EVENT | UBINARY | Event type numeric |
+| PHONE | STRING(1) | Phone call flag |
+| START | TIME | Call/visit start time |
+| STOP | TIME | Call/visit end time |
+| MIN | UBINARY | Duration in minutes |
+| BMIN | UBINARY | Billable minutes |
+| REM | STRING(57) | Remarks |
+| BILLD | STRING(1) | Billed flag |
+| DLOAD | STRING(1) | Downloaded flag |
+| FLINE | STRING(1) | First-line flag |
+| RECVD | TIME | Time received/logged |
+| CNTCT | STRING(25) | Contact name spoken to |
+| RATE | FLOAT(2) | Billing rate |
+| AMT | FLOAT(2) | Billed amount |
+| BALNC | FLOAT(2) | Balance |
+| EXTRA | STRING(50) | Extra |
+
+The detailed call/visit log. Each interaction with an account creates one row. START/STOP/MIN/BMIN support service billing. BILLD+AMT+BALNC track billable service charges per call.
+
+---
+
+### BKCMCNTD — Contact Field Label Definitions (12 fields)
+
+File: `BKCMCNTD.B` | Single-record table
+
+| Field | Type | Notes |
+|-------|------|-------|
+| TTLE1 | STRING(25) | Primary title label |
+| TITLE_1..9 | STRING(25)×9 | Column header labels for contact fields |
+| MREP | STRING(1) | Multiple-rep flag |
+| LTYPE | STRING(1) | List type flag |
+
+System-wide customization of contact column label names displayed in the CM UI.
+
+---
+
+### BKCMCTL1 / BKCMCTL2 / BKCMCTL3 / BKCMCTL4 / BKCMCTRL — User Lock Records (1 field each)
+
+Files: `BKCMCTL1..4.B`, `BKCMCTRL.B` | Single field: `BKCM_CTRL_USER` STRING(10)
+
+Five identical single-field tables used for concurrent access control. Each stores one user code; the CM module writes the current user's code to claim a lock and clears it on exit. CTL1..4 are likely per-module-section locks; CTRL is the master lock.
+
+---
+
+### BKCMCUST — Customer Integration Record (106 fields)
+
+File: `BKCMCUST.B` | Prefix: `BKAR_` | PK: CUSTCODE
+
+Uses the BKAR_ field prefix — this is a CM-maintained snapshot of the AR customer master for use in CRM reporting and mailing. Contains full customer address, 5×contacts, 5×phones, credit info (CREDITLMT, REMAINCRD, OUTINV), sales performance (GROSS/COGS/NET/PNET MTD/YTD/LYR/PVAR), terms, class, discount, commission rates, GL account, ship-to, lead source, SIC code, 10×notes, email addresses, IS tax fields, and more. Updated when CRM syncs with AR.
+
+---
+
+### BKCMDE — Account Download/Exchange Staging (41 fields)
+
+File: `BKCMDE.B` | Prefix: `BKCM_ACCT_` | PK: CODE
+
+Identical schema to BKCMACCT (41 fields). Used as a staging table for downloading/importing CM account records from an external system (e.g. laptops or remote sync). DLOAD flag marks records pending sync.
+
+---
+
+### BKCMDTCD — Date Code Description (2 fields)
+
+File: `BKCMDTCD.B` | PK: DCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| DCODE | STRING(2) | Date code |
+| DESC | STRING(25) | Description |
+
+Code table for user-defined date types used in BKCMACTD (e.g. "BD"=birthday, "CR"=contract renewal).
+
+---
+
+### BKCMDUN — Dunning Letter Configuration (36 fields)
+
+File: `BKCMDUN.B` | Prefix: `BKCM_DUN_` | PK: REP
+
+| Field group | Type | Notes |
+|-------------|------|-------|
+| REP | STRING(5) | Sales rep (or "*" for default) |
+| AGE_1..10 | UBINARY×10 | Aging bucket thresholds (days) |
+| FORM_1..10 | STRING(15)×10 | Letter form code per aging bucket |
+| DESC_1..10 | STRING(30)×10 | Description per aging bucket |
+| DORL | STRING(1) | D=date or L=line sort order |
+| NUMUP | UBINARY | Number of updates |
+| SORT | STRING(1) | Sort preference |
+| PCONT | STRING(1) | Print contact flag |
+| CNUM | UBINARY | Contact number to print |
+
+Per-rep dunning letter configuration. Defines up to 10 aging brackets with a letter form and description for each. When the dunning process runs, it picks the FORM for the AGE bracket that the account's overdue balance falls into.
+
+---
+
+### BKCMDUNH — Dunning Letter History (6 fields)
+
+File: `BKCMDUNH.B` | Prefix: `BKCM_DUNH_` | PK: ACCT + DATE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| ACCT | STRING(10) | Account code |
+| DATE | DATE | Letter sent date |
+| FORM | STRING(15) | Form code used |
+| AGE | UBINARY | Aging bucket at time of letter |
+| AMT | FLOAT(2) | Amount overdue at time |
+| TOT | FLOAT(2) | Total balance at time |
+
+Tracks every dunning letter sent. Used to avoid sending duplicate letters and to audit collection activity.
+
+---
+
+### BKCMEACC / BKCMEACD / BKCMEACF / BKCMEACH / BKCMEACT — E-Company Mirrors
+
+File pattern: `BKCMEA**.B`
+
+| Table | Base table | Difference |
+|-------|-----------|------------|
+| BKCMEACC | BKCMACCL | Identical (2f account-class link) |
+| BKCMEACD | BKCMACTD | Identical (4f activity date) |
+| BKCMEACF | BKCMACTF | Adds `ACTF_SO FLOAT` (SO reference) |
+| BKCMEACH | BKCMACTH | Identical (21f activity time history) |
+| BKCMEACT | BKCMACCT | Identical (41f account master) |
+
+Standard EvoERP multi-company mirror pattern — E-company gets its own physical table files with the same schema. The extra SO field in BKCMEACF links CM follow-up activities back to sales orders for the E-company environment.
+
+---
+
+### BKCMEFTM — E-Company Follow-Time Tracker (7 fields)
+
+File: `BKCMEFTM.B` | Prefix: `BKCM_FTME_` | PK: CODE + FTIME
+
+Identical schema to BKCMFTME (see below). E-company version.
+
+---
+
+### BKCMFORM — Letter/Form Template (8 fields)
+
+File: `BKCMFORM.B` | Prefix: `BKCM_FORM_` | PK: CODE + LINE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(15) | Form/letter code |
+| LINE | UBINARY | Line sequence number |
+| NOTE | STRING(78) | Text content of this line |
+| DESC | STRING(30) | Form description |
+| LEFT | UBINARY | Left margin |
+| LNSPG | UBINARY | Lines per page |
+| START | UBINARY | Start line |
+| DUN | STRING(1) | Is-a-dunning-letter flag |
+
+Multi-line letter template storage. Each form is CODE; each row is one 78-char line of body text. Used for dunning letters (DUN='Y') and general CM correspondence. Referenced by BKCMDUN.FORM_N.
+
+---
+
+### BKCMFTME — Follow-Time Activity Tracker (7 fields)
+
+File: `BKCMFTME.B` | Prefix: `BKCM_FTME_` | PK: CODE + FTIME
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account code |
+| FTIME | UBINARY | Follow-time category code |
+| DESC | STRING(25) | Description |
+| BALNC | FLOAT(2) | Running balance of billable time |
+| LASTP | DATE | Last payment date |
+| ATIME | UBINARY | Accumulated time (minutes?) |
+| NTIME | UBINARY | New time this period |
+
+Per-account billing time accumulator. Tracks billable service time by category (FTIME code). BALNC is the unpaid balance; ATIME/NTIME support current vs. prior period billing.
+
+---
+
+### BKCMHCD2 — Service Help-Code Part Mapping (7 fields)
+
+File: `BKCMHCD2.B` | Prefix: `BKCM_HCD2_` | PK: HCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| HCODE | STRING(2) | Help/service code |
+| PCODE | STRING(1) | Previous code flag |
+| CCODE | STRING(1) | Current code flag |
+| RCODE | STRING(1) | Replacement code flag |
+| PPART | STRING(15) | Previous part number |
+| CPART | STRING(15) | Current part number |
+| RPART | STRING(15) | Replacement part number |
+
+Maps service codes to parts — previous/current/replacement part number for a given service code. Used in service billing to look up what was serviced and what replaced it.
+
+---
+
+### BKCMHCOD — Service Help Code (9 fields)
+
+File: `BKCMHCOD.B` | Prefix: `BKCM_HCOD_` | PK: HCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| HCODE | STRING(2) | Service code |
+| DESC | STRING(25) | Description |
+| WINDW | STRING(1) | Window type flag |
+| RATE | FLOAT(2) | Billing rate |
+| UM | STRING(3) | Unit of measure |
+| ABILL | STRING(1) | Auto-bill flag |
+| BPART | STRING(15) | Before-service part |
+| NPART | STRING(15) | New part used |
+| FPART | STRING(15) | Final/replacement part |
+
+Service code master — defines what service was performed, the billing rate, and part numbers for the before/after state. ABILL controls whether the service auto-creates a billing transaction.
+
+---
+
+### BKCMLEAD — Lead Source Code (2 fields)
+
+File: `BKCMLEAD.B` | PK: SCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| SCODE | STRING(5) | Source code |
+| DESC | STRING(25) | Description |
+
+Code table for how a prospect/account was acquired (e.g. trade show, web, referral). Referenced by BKCMACCT.LEAD.
+
+---
+
+### BKCMMHST — Mailing History / Filter Template (72 fields)
+
+File: `BKCMMHST.B` | Prefix: `BKCM_MHST_` | PK: MCODE + MDATE
+
+| Field group | Type | Notes |
+|-------------|------|-------|
+| MCODE | STRING(15) | Mailing code |
+| DESC | STRING(25) | Description |
+| MDATE | DATE | Mailing date |
+| CLASS_1..20 | STRING(5)×20 | Target class codes (up to 20) |
+| KDCD | STRING(2) | Key date code |
+| FKDAT/TKDAT | DATE×2 | Key date from/to range |
+| FACD/TACD | STRING(10)×2 | Account code from/to |
+| FST/TST | STRING(2)×2 | State from/to |
+| FZIP/TZIP | STRING(10)×2 | ZIP from/to |
+| FSIC/TSIC | STRING(7)×2 | SIC code from/to |
+| CUSTO | STRING(1) | Customers-only flag |
+| FLEAD/TLEAD | STRING(5)×2 | Lead source from/to |
+| FSDT/TSDT | DATE×2 | Account start date from/to |
+| FTERR/TTERR | STRING(4)×2 | Territory from/to |
+| PCONT | STRING(1) | Print contact flag |
+| CNUM | UBINARY | Contact number |
+| DORL | STRING(1) | D=date or L=line sort |
+| NUMUP | UBINARY | Number of updates |
+| OCLAS_1..20 | STRING(5)×20 | Override classes |
+| STAT | STRING(11) | Status |
+| NOCUS | STRING(1) | No-customer flag |
+| FREP/TREP | STRING(5)×2 | Rep from/to |
+| SORT | STRING(1) | Sort order |
+| REM | STRING(1) | Remarks flag |
+| FORM | STRING(15) | Letter form code |
+
+Saved mailing run definition. Each row is one mailing campaign, recording the filter criteria used (which classes, states, zip ranges, SIC codes, territories, etc.) and linking to the letter form. Stores the historical record of who was targeted and when.
+
+---
+
+### BKCMPCFC — Prospect Forecast Code (3 fields)
+
+File: `BKCMPCFC.B` | PK: FCODE
+
+Identical schema to BKCMACFC (3f). Prospect-specific activity forecast code table.
+
+---
+
+### BKCMPCNT — Prospect Contact (24 fields)
+
+File: `BKCMPCNT.B` | Prefix: `BKCM_PCNT_` | PK: CCODE + REP
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CCODE | STRING(10) | Prospect/contact code |
+| REP | STRING(5) | Assigned sales rep |
+| ALPHA | STRING(6) | Sort key |
+| NAME | STRING(30) | Company/contact name |
+| ADD1..3 | STRING(30)×3 | Address lines |
+| CITY/STATE/ZIP/CNTRY | — | Standard address |
+| CONT | STRING(30) | Contact person |
+| TITLE | STRING(30) | Contact title |
+| PHONE | STRING(25) | Phone |
+| FAX | STRING(25) | Fax |
+| CLASS | STRING(5) | Class code |
+| SDATE | DATE | Start date |
+| REM_1..4 | STRING(60)×4 | Remarks |
+| EXTRA | STRING(100) | Extra |
+| WPHON | STRING(25) | Work phone |
+| EMAIL | STRING(40) | Email |
+
+Prospect contact master — a simpler version of BKCMACCT for individual prospects (not full company accounts). One contact can belong to multiple reps.
+
+---
+
+### BKCMPCTF — Prospect Contact Follow-Up (9 fields)
+
+File: `BKCMPCTF.B` | Prefix: `BKCM_PCTF_` | PK: CCODE + REP + TYPE + DATE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CCODE | STRING(10) | Prospect code |
+| REP | STRING(5) | Rep |
+| TYPE | STRING(3) | Activity type |
+| DATE | DATE | Due date |
+| REM_1..5 | STRING(60)×5 | Remarks |
+
+Equivalent of BKCMACTF but for prospect contacts (BKCMPCNT) rather than accounts (BKCMACCT).
+
+---
+
+### BKCMPCTH — Prospect Contact Time History (8 fields)
+
+File: `BKCMPCTH.B` | Prefix: `BKCM_PCTH_` | PK: CCODE + DATE + REP + LINE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CCODE | STRING(10) | Prospect code |
+| DATE | DATE | Activity date |
+| REP | STRING(5) | Rep |
+| LINE | UBINARY | Line number |
+| EVENT | UBINARY | Event type |
+| REM | STRING(60) | Remarks |
+| FLINE | STRING(1) | First-line flag |
+| EXTRA | STRING(50) | Extra |
+
+Simplified contact activity log for prospects (vs. BKCMACTH which tracks TIME+billing for accounts).
+
+---
+
+### BKCMREP — CRM Sales Rep (14 fields)
+
+File: `BKCMREP.B` | Prefix: `BKCM_REP_` | PK: REP
+
+| Field | Type | Notes |
+|-------|------|-------|
+| REP | STRING(5) | Rep code |
+| FNMEMI | STRING(25) | First name / middle initial |
+| LNAME | STRING(25) | Last name |
+| EMP | UBINARY | Employee number (FK → employee master) |
+| PSWD | STRING(10) | CM login password |
+| DHCODE | STRING(2) | Default help/service code |
+| DFCODE | STRING(3) | Default forecast code |
+| DDCODE | STRING(2) | Default date code |
+| VIEW | STRING(1) | Can view all reps flag |
+| CHANGE | STRING(1) | Can change records flag |
+| GWARN | STRING(1) | Gives warning flag |
+| AADD | STRING(1) | Auto-add flag |
+| FNAME | STRING(25) | Full name |
+| FTITLE | STRING(25) | Title |
+
+The CM-specific sales rep master. Separate from the AR salesperson table (BKARSALE). VIEW/CHANGE control whether this rep can see and modify other reps' accounts.
+
+---
+
+### BKCMSBDF — Service Billing Defaults (5 fields)
+
+File: `BKCMSBDF.B` | Single-record config table
+
+| Field | Type | Notes |
+|-------|------|-------|
+| BINC | FLOAT(2) | Billing increment (minimum billable unit) |
+| MINC | UBINARY | Minimum increment count |
+| ICONV | FLOAT(6) | Increment conversion factor |
+| NCHG | UBINARY | No-charge threshold |
+| DHOLD | STRING(1) | Deferred hold flag |
+
+System-wide service billing defaults. BINC defines the minimum time increment for billing (e.g. 0.25 = 15 minutes). ICONV converts minutes to billing units. NCHG sets a minimum duration below which no charge is generated.
+
+---
+
+### BKCMTEMP / BKCMTMP1 / BKCMTMP2 / BKCMTMP3 / BKCMTMP4 — CRM Work Tables (6 fields each)
+
+Files: `BKCMTEMP.B`, `BKCMTMP1..4.B` — all identical schema
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Account/contact code |
+| KEYF | STRING(20) | Key field |
+| GROUP | STRING(8) | Group code |
+| COMP | STRING(2) | Company code |
+| TAG | STRING(1) | Tag flag |
+| ACTIVITY | STRING(5) | Activity type |
+
+Five identical work/scratch tables used during mailing selections, group tagging, and multi-user CM operations. Each user or operation session uses a different TMP table number to avoid conflicts.
+
+---
+
+### BKCMTERR — Sales Territory (11 fields)
+
+File: `BKCMTERR.B` | Prefix: `BKCM_TERR_` | PK: TCODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| TCODE | STRING(4) | Territory code |
+| DESC | STRING(25) | Description |
+| EMAIL | STRING(128) | Territory email address |
+| ALPHA | STRING(30) | Sort alpha |
+| EXTRA | STRING(100) | Extra |
+| FLAGS_1..5 | STRING(1)×5 | Five user-defined flags |
+| DATE | DATE | Effective date |
+
+Territory master. Each BKCMACCT is assigned a TERR. Email allows territory-level notifications. Five flag fields support custom territory attributes.
+
+---
+
+### BKCMVNDF — Vendor Follow-Up (10 fields)
+
+File: `BKCMVNDF.B` | Prefix: `BKCM_VNDF_` | PK: VCODE + REP + TYPE + DATE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| VCODE | STRING(10) | Vendor code (FK → BKAPVEND) |
+| REP | STRING(5) | Sales rep |
+| TYPE | STRING(3) | Activity type |
+| DATE | DATE | Follow-up date |
+| REM_1..5 | STRING(60)×5 | Remarks |
+| PO | FLOAT | Related PO number |
+
+CM tracks vendor contact activity in addition to customer/prospect contact. PO links the follow-up to a specific purchase order.
+
+---
+
+### BKCMVNDH — Vendor Contact History (8 fields)
+
+File: `BKCMVNDH.B` | Prefix: `BKCM_VNDH_` | PK: VCODE + DATE + REP + LINE
+
+Mirrors the BKCMPCTH / BKCMACTH pattern for vendor contacts. VCODE+DATE+REP+LINE PK; EVENT, REM(60), FLINE, EXTRA(50).
+
+---
+
+### BKCMVNFC — Vendor Forecast Code (3 fields)
+
+File: `BKCMVNFC.B` | PK: FCODE
+
+Identical schema to BKCMACFC / BKCMPCFC (3f). Vendor-side forecast code for purchase activity categorization.
+
+---
+
+## BKCP* — Check Processing Module (2 tables)
+
+### BKCPEC — Check Processing Error Correction (10 fields)
+
+File: `BKCPEC.B` | Prefix: `BKCP_EC_` | PK: DATE + GLACCT + LINE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| DATE | DATE | Check date |
+| GLACCT | STRING(10) | GL account |
+| GLDEPT | STRING(4) | GL department |
+| AMOUNT | FLOAT(2) | Check amount |
+| CHECKNO | FLOAT | Check number |
+| DESC | STRING(25) | Description |
+| ISCHK | FLOAT | IS check reference |
+| ERROR | STRING(5) | Error code |
+| LINE | UBINARY | Line number |
+| VEND | STRING(10) | Vendor code |
+
+Staging table for check processing error corrections. Rows are created when a check import fails validation; ERROR contains the failure code. After correction, the row is cleared.
+
+---
+
+### BKCPMSTR — Check Processing Module Config (9 fields)
+
+File: `BKCPMSTR.B` | Prefix: `BKCP_MST_` | Single-record config table
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CMPATH | STRING(66) | Check module data path |
+| IMPATH | STRING(66) | Import file path |
+| CFILE | STRING(20) | Check file name |
+| VFILE | STRING(20) | Vendor file name |
+| EXPATH | STRING(66) | Export path |
+| HFILE | STRING(20) | History file name |
+| LABEX | STRING(1) | Labor export flag |
+| COMMEX | STRING(1) | Commission export flag |
+| EFILE | STRING(20) | Export file name |
+
+Global configuration for the CP (Check Processing) module — path and filename settings for reading check import files and writing export/history files. LABEX/COMMEX control whether labor and commission data are included in exports.
+
+---
+
+*Pass 150 complete: 42 tables documented — Full CM (Contact Management) module: BKCMACCT(41f account master), BKCMACCN(154f multi-contact detail with 10×CONT/TITLE/PHONE/DEAR/EMAIL+UDF arrays), BKCMACCL(2f class link), BKCMACCC(2f class code), BKCMACFC(3f forecast code), BKCMACTD(4f dated activity), BKCMACTF(10f follow-up tasks), BKCMACTH(21f time-tracked call log with billing), BKCMCNTD(12f field labels), BKCMCTL1..4+BKCMCTRL(1f each user locks), BKCMCUST(106f AR customer integration snapshot), BKCMDE(41f download staging=BKCMACCT), BKCMDTCD(2f date codes), BKCMDUN(36f dunning config), BKCMDUNH(6f dunning history), BKCMEA* mirrors (5 tables identical to base), BKCMEFTM(7f=BKCMFTME E-company), BKCMFORM(8f letter templates), BKCMFTME(7f follow-time billing tracker), BKCMHCD2(7f service part mapping), BKCMHCOD(9f service code), BKCMLEAD(2f lead source), BKCMMHST(72f mailing campaign filter/history), BKCMPCFC(3f prospect forecast), BKCMPCNT(24f prospect contact master), BKCMPCTF(9f prospect follow-up), BKCMPCTH(8f prospect history), BKCMREP(14f CRM rep), BKCMSBDF(5f service billing defaults), BKCMTEMP+BKCMTMP1..4(6f×5 work tables), BKCMTERR(11f territory), BKCMVNDF(10f vendor follow-up), BKCMVNDH(8f vendor history), BKCMVNFC(3f vendor forecast); BKCP*: BKCPEC(10f check error staging), BKCPMSTR(9f check processing config). CM module now substantially complete.*
+
