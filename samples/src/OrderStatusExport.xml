@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<en_US>
+    <order_status_export>
+        <process_error text="Error doing order status export."/>
+    </order_status_export>
+</en_US>

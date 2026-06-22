@@ -1394,11 +1394,21 @@ These module codes appear in the DDF table names, program files on the network s
 
 ---
 
-### EX — Execute (generic launcher)
+### EX — SQL Export / Business Intelligence Export
 
-**Files:** t7exec.RUN (TAS Pro 6 .RUN — one file on share)
+**Files:** SQLEXPORT.RWN (TAS Pro 7), SQLEXPORT.DFM (T7JTemp loader), SQLExport.jar (Java Swing)
 
-**Purpose:** A generic program launcher wrapper. Allows the menu to invoke arbitrary external programs or scripts. Not a business module. **Confidence: 35/100**
+**Architecture (Pass 156, 2026-06-22):**
+- SQLEXPORT.RWN launches a "Loading...." splash (SQLEXPORT.DFM = T7JTemp template) while spawning SQLExport.jar.
+- SQLExport.jar is a Java Swing application (`com.evoerp.*` package, v1.5.0, build 2014-03-19).
+- Connects via Pervasive JDBC v2 to a **separate BI database** (`EVOBI2`) on port 1583 — NOT the operational DBAMFG$ data.
+- Key classes: `com.evoerp.sql.PervasiveDatabase`, `com.evoerp.ui.util.TextExportingWorker` (CSV export), `com.evoerp.ui.util.FileOpeningWorker`.
+- Default output: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\` (CSV files).
+- Logs to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
+
+Note: t7exec.RUN (TAS Pro 6) is an older generic program launcher — separate from the TAS Pro 7 EX module.
+
+**Confidence: 45/100** — Architecture confirmed from DFM (T7JTemp) + log file (Java params, package names, DB). SQLExport.jar UI/SQL not decompiled; EVOBI2 schema unknown.
 
 ---
 

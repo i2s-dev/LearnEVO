@@ -2666,6 +2666,40 @@ Creates cost estimates for customer RFQs (requests for quotation). Estimates hav
 
 ---
 
+### EX — SQL Export / Business Intelligence Export
+
+Exports EvoERP data to CSV files by running SQL queries against a separate BI database. Entirely Java-based — the TAS Pro component is just a Java launcher stub.
+
+**Architecture (confirmed from DFM + log files, Pass 156, 2026-06-22):**
+- `SQLEXPORT.RWN` — TAS Pro 7 launcher stub; shows "Loading...." dialog while spawning Java
+- `SQLEXPORT.DFM` — T7JTemp template (generic Java loader form; no EX-specific UI elements)
+- `SQLExport.jar` — Java Swing application (`com.evoerp.*` package, version 1.5.0 build 2014-03-19)
+- Same architecture as QU-F pivot tool (EvoPVT.jar) — TAS stub → Java app
+
+**Database connection:**
+- Connects via Pervasive JDBC v2 to local Pervasive SQL engine
+- Host: i2s109-solidcrm, Port: 1583, DB: **EVOBI2** (separate BI database — NOT the main DBAMFG$ operational data)
+- Uses company context (Company ID) and user name passed from the TAS session
+
+**Key Java classes:**
+- `com.evoerp.sql.PervasiveDatabase` — Pervasive JDBC connection manager
+- `com.evoerp.ui.util.TextExportingWorker` — CSV file export worker (Swing background task)
+- `com.evoerp.ui.util.FileOpeningWorker` — file open/save dialog worker
+
+**Output:**
+- Default export destination: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\` (historical: `\\I2S109-SOLIDCRM\EVOREPORTS\`)
+- Format: CSV (comma-separated values)
+- Common error: path separators in filenames cause FileNotFoundException (e.g., `7\18 thru 8-4.csv`)
+
+**Use case:**
+- "How do I export EvoERP data to Excel/CSV?" → EX module (SQL Export) — runs predefined SQL queries against EVOBI2, exports results to CSV.
+- The EVOBI2 database is a separate reporting/BI database, likely with views or denormalized tables for reporting. SQL Export lets users run these queries and download the results.
+- Logs are written to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
+
+**Confidence: 45/100** — Architecture confirmed from SQLEXPORT.DFM (T7JTemp) + SQL Export.log (Java startup params, package names, DB connection). SQLExport.jar UI and SQL query set not decompiled. EVOBI2 database structure unknown.
+
+---
+
 ### SA — Sales Analysis
 
 Reporting and analysis of sales performance. Separate from standard AR invoicing — uses aggregated/summarized data (BKSAREPT saved templates).
