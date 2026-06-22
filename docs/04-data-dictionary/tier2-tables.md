@@ -5396,3 +5396,456 @@ Record = 195 bytes (3 names × 25 + 10 TIME × 3 shifts × 4 bytes + 50 extra). 
 
 *Pass 148 complete: 17 tables documented — BKPI* family (BKPIMSTR 3f period master, BKPIFROZ 19f freeze snapshot with dual GL pairs, BKPIPHYS 14f count tags, BKPILCNT+BKPILOT 10f×2 lot count identical, BKPISCNT+BKPISER 10f×2 serial count identical); BKPOX+BKPOXH (19f×2 inter-company PO external invoice identical); BKDC* family (BKDCCFG 7f config, 5×LAB_* 50-field identical cluster BKDCLAB/BKDCCLAB/BKDCPLAB/BKDCTLAB/BKDCHLAB, BKDCSHFT 34f 3-shift schedule). BKPI* PI documentation now substantially complete; DC module tables now documented.*
 
+---
+
+## Pass 149 — System/Security/Config/MRP Miscellaneous (24 tables)
+
+Source: `samples/ddf/schema.md` (DDF direct extraction)
+
+### AHSYLOG — Logon Session Security Record (23 fields)
+
+File: `AHSYLOG.B` | Prefix: `AHSY_USER_` | PK: implicit (single record per session?)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| LEVL | STRING(2) | Security level code |
+| MENU | STRING(4) | Default menu code |
+| CTRL | STRING(1) | Control flag |
+| ACCES_1..20 | STRING(1)×20 | Module access flags — one char per module (Y/N or access level code) |
+
+Record = 27 bytes. A flat access array of 20 single-char flags starting at offset 7. Each ACCES_N corresponds to a module index in the EvoERP menu hierarchy. LEVL and MENU are set at logon time; CTRL controls supervisor overrides.
+
+---
+
+### ARTTEMP — AR Payment Temp Staging (12 fields)
+
+File: `ARTTEMP.B` | Prefix: `BKART_` | PK: CUST + TRXN
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CUST | STRING(10) | Customer code |
+| TRXN | FLOAT | Transaction number |
+| TYPE | STRING(1) | Payment type code |
+| DISC | FLOAT(2) | Discount amount |
+| AMOUNT | FLOAT(2) | Payment amount |
+| POSTDATE | DATE | Post date |
+| CNTR | UBINARY | Counter / sequence |
+| ENTDATE | DATE | Entry date |
+| TRXNLINK | FLOAT | Linked transaction number |
+| INVC | FLOAT | Invoice number being paid |
+| CHECK | FLOAT | Check number |
+| NOTE | STRING(1) | Note flag |
+
+Temporary table used during AR payment entry. Rows are created as invoices are matched to a payment and cleared after posting. TRXNLINK connects this row to the parent AR receipt record.
+
+---
+
+### BKABCUST — License/Subscription Control (5 fields)
+
+File: `BKABCUST.B` | Prefix: `BKAB_` | Single-record table (no PK)
+
+| Field | Type | Notes |
+|-------|------|-------|
+| START | DATE | License start date |
+| EXP | DATE | License expiration date |
+| PERIOD | UBINARY | License period in days |
+| WARNING | UBINARY | Days-before-expiry to show warning |
+| STAND_ALNE | STRING(1) | Stand-alone mode flag |
+
+EvoERP subscription/license metadata. STAND_ALNE likely controls whether the system operates in networked vs. standalone mode. Only one record in the file.
+
+---
+
+### BKABVEND — Vendor License Registration (2 fields)
+
+File: `BKABVEND.B` | Prefix: `BKAB_` | PK: SERIAL
+
+| Field | Type | Notes |
+|-------|------|-------|
+| SERIAL | FLOAT | License serial number |
+| REG_NAME | STRING(25) | Registered company name |
+
+Two-field registration table. Stores the serial number and registered name of the EvoERP license holder. Paired with BKABCUST.
+
+---
+
+### BKACTRPT — Activity Report Filter Template (53 fields)
+
+File: `BKACTRPT.B` | Prefix: `BKAC_` | PK: TYPE + NAME
+
+| Field | Type | Notes |
+|-------|------|-------|
+| TYPE | STRING(8) | Report type code |
+| NAME | STRING(15) | Filter template name |
+| RTM | STRING(15) | Report template (.RTM) filename |
+| FROM_PART / THRU_PART | STRING(15)×2 | Part number range |
+| FROM_CLASS / THRU_CLASS | STRING(4)×2 | Item class range |
+| FROM_CAT / THRU_CAT | STRING(4)×2 | Category range |
+| FROM_DATE / THRU_DATE | DATE×2 | Date range |
+| FROM_LOC / THRU_LOC | STRING(10)×2 | Location range |
+| FROM_WOPRE / THRU_WOPRE | FLOAT×2 | Work order prefix range |
+| FROM_WOSUF / THRU_WOSUF | UBINARY×2 | Work order suffix range |
+| FROM_CUST / THRU_CUST | STRING(10)×2 | Customer range |
+| FROM_INV / THRU_INV | FLOAT×2 | Invoice number range |
+| FROM_QC / THRU_QC | STRING(2)×2 | QC code range |
+| FROM_PLOT / THRU_PLOT | STRING(15)×2 | Parent lot range |
+| FROM_LOT / THRU_LOT | STRING(15)×2 | Lot number range |
+| FROM_SER / THRU_SER | STRING(25)×2 | Serial number range |
+| FROM_PRICE / THRU_PRICE | FLOAT(4)×2 | Price range |
+| FROM_AVGC / THRU_AVGC | FLOAT(4)×2 | Average cost range |
+| FROM_STDC / THRU_STDC | FLOAT(6)×2 | Standard cost range |
+| FROM_DESC / THRU_DESC | STRING(30)×2 | Description range |
+| FROM_REF / THRU_REF | STRING(30)×2 | Reference range |
+| FROM_DEPT / THRU_DEPT | STRING(4)×2 | Department range |
+| FROM_QTY / THRU_QTY | FLOAT(2)×2 | Quantity range |
+| FROM_SCRAP / THRU_SCRAP | STRING(2)×2 | Scrap code range |
+| FROM_VEND / THRU_VEND | STRING(10)×2 | Vendor range |
+| FROM_PO / THRU_PO | FLOAT×2 | PO number range |
+| FROM_TYPE / THRU_TYPE | STRING(1)×2 | Transaction type range |
+| TYPE_RANGE | STRING(10) | Type range string |
+| ITEM_RANGE | STRING(8) | Item range string |
+
+Saved filter template for the Inventory Activity Report and similar multi-criteria reports. Each row is a named preset (TYPE+NAME) that stores a full set of FROM/THRU range pairs across 25 dimensions. Linked to an RTM report template file.
+
+---
+
+### BKESTQT — Estimating Quote Header (84 fields)
+
+File: `BKESTQT.B` | Prefix: `BKAR_INV_` | PK: NUM (BKAR_INV_NUM)
+
+Schema is a byte-for-byte clone of BKARINV (AR Invoice header) with three additional fields at the end:
+
+| Extra field | Type | Notes |
+|-------------|------|-------|
+| QSTAT | STRING(1) | Quote status (open/accepted/rejected/expired) |
+| MDATE | DATE | Quote last-modified date |
+| MISC | STRING(100) | Miscellaneous notes |
+
+All 81 shared fields are identical to BKARINV — customer address, ship-to address, terms, salesperson, totals (SUBTOT/TAXAMT/TOTAL/COGS/FRGHT), billing address, etc. The quote number (NUM) serves the same role as invoice number. See BKARINV in tier1-tables.md for the full 81-field schema.
+
+---
+
+### BKESTQTL — Estimating Quote Lines (28 fields)
+
+File: `BKESTQTL.B` | Prefix: `BKAR_INVL_` | PK: INVNM + CNTR
+
+Schema is a close clone of BKARINVL (AR Invoice lines) with one additional field:
+
+| Extra field | Type | Notes |
+|-------------|------|-------|
+| SCCOG | FLOAT(4) | Standard cost of goods (for margin calculation) |
+
+All 27 shared fields are identical to BKARINVL — INVNM, CNTR, ESD (estimated ship date), PCODE, PDESC, PQTY, PPRCE, PDISC, PEXT, PCOGS, ITYPE, TXBLE, UBO, USTD, RTS, LOC, ABQTY, UM_LN_1/2, COMPR_1/2, ASD, TXAMT, FRGHT, COOP, OOQTY, EXTRA(100). SCCOG is used to compute estimated gross margin % during quoting.
+
+---
+
+### BKFLDHLP — Inline Field Help Text (3 fields)
+
+File: `BKFLDHLP.B` | Prefix: `HLP_` | PK: CODE + INDEX
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(17) | Field identifier (form name + field name?) |
+| INDEX | UBINARY | Line number within the help block |
+| LINE | STRING(60) | One line of help text |
+
+Multi-line field help storage. Each field that has context-sensitive help has one or more BKFLDHLP rows (one per line), keyed by CODE+INDEX. The runtime displays all lines for a given CODE when the user presses the help key on that field.
+
+---
+
+### BKFOCFG — Features/Options Module Configuration (18 fields)
+
+File: `BKFOCFG.B` | Prefix: `BKFO_CFG_` | Single-record table
+
+| Field | Type | Notes |
+|-------|------|-------|
+| MANFET | STRING(1) | Manufacturing features flag |
+| YN_1..15 | STRING(1)×15 | 15 binary Yes/No feature toggles |
+| OPCODE | STRING(5) | Options/features operation code |
+| EXTRA | STRING(50) | Extra / user-defined |
+
+The Features/Options module (FO) is EvoERP's global feature-flag control panel. Each YN_N flag enables or disables a specific optional behavior (e.g., lot tracking, multi-currency, serialized inventory). MANFET controls whether manufacturing features are active. OPCODE stores a composite options string.
+
+---
+
+### BKGLACHK — GL A-Company Check Reconciliation (11 fields)
+
+File: `BKGLACHK.B` | Prefix: `BKGL_CHK_` | PK: CHKACT + NUM
+
+Identical schema to BKGLCHK (base company). This is the "A" company mirror.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CHKACT | UBINARY | Check account number |
+| NUM | FLOAT | Check number |
+| DATE | DATE | Check date |
+| TYPE | STRING(1) | Type: C=check, D=deposit, V=void |
+| NAME | STRING(25) | Payee/payer name |
+| AMT | FLOAT(2) | Amount |
+| FLAG | STRING(1) | Cleared/outstanding flag |
+| EXTRA | STRING(100) | Extra / user-defined |
+| DATER | DATE | Date reconciled |
+| VEND | STRING(10) | Vendor code (if AP check) |
+| CUST | STRING(10) | Customer code (if AR payment) |
+
+The check reconciliation ledger used for bank statement matching. FLAG is set when the check clears the bank. DATER records when it was matched in reconciliation.
+
+---
+
+### BKGLCHK — GL Base-Company Check Reconciliation (11 fields)
+
+File: `BKGLCHK.B` | Prefix: `BKGL_CHK_` | PK: CHKACT + NUM
+
+Identical schema to BKGLACHK. Base company (no company suffix) version of the check reconciliation table. See BKGLACHK above for field descriptions.
+
+---
+
+### BKGLAGJL — GL A-Company General Journal Lines (9 fields)
+
+File: `BKGLAGJL.B` | Prefix: `BKGL_GJL_` | PK: TRANSN + LINE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| TRANSN | FLOAT | Transaction number (FK → BKGLAGJR) |
+| ACCTNM | STRING(10) | GL account number |
+| GLDPT | STRING(4) | GL department |
+| DESC | STRING(25) | Line description |
+| DC | STRING(1) | D=debit, C=credit |
+| AMOUNT | FLOAT(2) | Amount |
+| JOB | STRING(15) | Job/project code |
+| LINE | UBINARY | Line sequence number |
+| EXTRA | STRING(50) | Extra / user-defined |
+
+Each GJ entry (header in BKGLAGJR) has one or more debit/credit lines in BKGLAGJL. Debits and credits must balance within a transaction. JOB allows job-costing allocation.
+
+---
+
+### BKGLAGJR — GL A-Company General Journal Register (11 fields)
+
+File: `BKGLAGJR.B` | Prefix: `BKGL_GJ_` | PK: TRANSDT + TRANSNM
+
+| Field | Type | Notes |
+|-------|------|-------|
+| TRANSDT | DATE | Transaction date |
+| TRANSNM | FLOAT | Transaction number |
+| TYPE | STRING(2) | Journal type (GJ=general, AP=payables, AR=receivables, etc.) |
+| TYPEN | UBINARY | Type numeric code |
+| POSTED | STRING(1) | Posted flag |
+| CVCODE | STRING(10) | Source voucher/check/invoice code |
+| INVCHKN | FLOAT | Invoice or check number |
+| NUMLNES | UBINARY | Number of detail lines |
+| CHKACT | UBINARY | Check account reference |
+| JOB | STRING(15) | Job/project code |
+| EXTRA | STRING(50) | Extra / user-defined |
+
+The GJ register is the header table for all manual and auto-generated GL journal entries. TYPE identifies the originating module. POSTED controls whether the entry has been included in COA balances.
+
+---
+
+### BKGLATRN — GL A-Company Transaction Detail (16 fields)
+
+File: `BKGLATRN.B` | Prefix: `BKGL_TRN_` | PK: GLACCT + GLDPT + DATE + CODE + INVC
+
+| Field | Type | Notes |
+|-------|------|-------|
+| GLACCT | STRING(10) | GL account number |
+| GLDPT | STRING(4) | GL department |
+| DATE | DATE | Transaction date |
+| CODE | STRING(10) | Source code (vendor/customer/etc.) |
+| INVC | STRING(10) | Invoice or check reference |
+| DESC | STRING(25) | Description |
+| DC | STRING(1) | D=debit, C=credit |
+| AMT | FLOAT(2) | Amount |
+| TYPE | STRING(2) | Transaction type code |
+| ENTDTE | DATE | Entry date |
+| EXTRA | STRING(25) | Extra / user-defined |
+| TRXN | FLOAT | Transaction number |
+| POST | STRING(1) | Posted flag |
+| PERIOD | UBINARY | Accounting period number |
+| BATCH | FLOAT | Batch number |
+| PART | STRING(15) | Part number (for inventory-related GL entries) |
+
+The granular GL transaction log. Every sub-ledger posting (AP invoice, AR payment, inventory adjustment, etc.) creates one or more rows here, keyed by account+department+date. Used for account drill-down and audit trail. PART links inventory-related entries back to the item.
+
+---
+
+### BKGLCCOA — GL C-Company Chart of Accounts (62 fields)
+
+File: `BKGLCCOA.B` | Prefix: `BKGLC_` | PK: ACCT + GLDPT
+
+Identical structure to BKGLCOA (base company) using BKGLC_ prefix instead of BKGL_.
+
+| Field group | Type | Notes |
+|-------------|------|-------|
+| ACCT | STRING(10) | GL account number |
+| GLDPT | STRING(4) | Department code |
+| ACCTD | STRING(25) | Account description |
+| TYPE | STRING(1) | Account type: A=asset, L=liability, E=equity, R=revenue, X=expense |
+| CR_DR | STRING(1) | Normal balance: C=credit, D=debit |
+| NON_CASH | STRING(1) | Non-cash account flag |
+| CURRENT_1..14 | FLOAT(2)×14 | Current-year period balances (12 periods + period 13 + period 14) |
+| BUDGET_1..14 | FLOAT(2)×14 | Budget amounts by period |
+| 1YPAST_1..14 | FLOAT(2)×14 | Prior-year (1 year ago) actual balances by period |
+| 2YPAST_1..14 | FLOAT(2)×14 | Two-years-prior actual balances by period |
+
+Total: 6 header + 14+14+14+14 = 62 fields. Record = 490 bytes (6 header fields + 56 FLOAT×8 bytes). The 14-period design supports 12 standard periods plus 2 adjustment/closing periods. C-company has its own COA separate from the base company.
+
+---
+
+### BKGLCOA — GL Base-Company Chart of Accounts (62 fields)
+
+File: `BKGLCOA.B` | Prefix: `BKGL_` | PK: ACCT + GLDPT
+
+Identical structure to BKGLCCOA (C-company), using BKGL_ prefix. Base company COA — the primary company's general ledger master. Same 62-field, 490-byte layout: 6 header fields (ACCT, GLDPT, ACCTD, TYPE, CR_DR, NON_CASH) + CURRENT_1..14 + BUDGET_1..14 + 1YPAST_1..14 + 2YPAST_1..14. See BKGLCCOA above for field descriptions.
+
+---
+
+### BKISHTAX — IS Tax History (13 fields)
+
+File: `BKISHTAX.B` | Prefix: `BKIS_TAX_` | PK: CODE + DATE
+
+Identical schema to BKISTAX (current). History archive of tax transactions.
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(10) | Tax code |
+| DATE | DATE | Transaction date |
+| TRFLAG | STRING(1) | Transaction flag |
+| TAXABL | FLOAT(2) | Taxable amount |
+| NONTAX | FLOAT(2) | Non-taxable amount |
+| TAXAMT | FLOAT(2) | Tax amount |
+| CUST | STRING(10) | Customer code |
+| VEND | STRING(10) | Vendor code |
+| INVNO | FLOAT | Invoice number |
+| PONO | FLOAT | PO number |
+| TAG | STRING(1) | Tag flag |
+| ISCUR | STRING(3) | Currency code |
+| APINV | STRING(10) | AP invoice reference |
+
+Tax collection detail for IS (International Sales / Tax) module. Records taxable/non-taxable/tax amounts per transaction per tax code. Supports both AR (CUST+INVNO) and AP (VEND+PONO+APINV) transactions.
+
+---
+
+### BKISTAX — IS Tax Master / Current (13 fields)
+
+File: `BKISTAX.B` | Prefix: `BKIS_TAX_` | PK: CODE + DATE
+
+Identical schema to BKISHTAX. Current (not-yet-archived) tax transaction records. When period is closed, rows move to BKISHTAX. See BKISHTAX above for field descriptions.
+
+---
+
+### BKLOGON — User Logon Record (10 fields)
+
+File: `BKLOGON.B` | Prefix: `BKLOGON_` | PK: CODE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| CODE | STRING(15) | User login code / username |
+| PSWD | STRING(10) | Password (stored as plain text or simple hash) |
+| CMPY | STRING(2) | Default company code |
+| PROG | STRING(8) | Last program accessed |
+| PRINTER | UBINARY | Default printer number |
+| INUSE | STRING(1) | Currently logged in flag |
+| SCRTY | STRING(2) | Security level / group |
+| MENU | UBINARY | Default menu number |
+| SUBMENU | UBINARY | Default sub-menu number |
+| CURPRT | UBINARY | Current printer selection |
+
+The EvoERP user account table. Each row is one user. INUSE prevents concurrent logins (single-session enforcement). SCRTY controls what the user can access — paired with AHSYLOG access flags. CMPY sets the default company on login.
+
+---
+
+### BKMATCST — Material Cost Schedule / Quantity Break Pricing (25 fields)
+
+File: `BKMATCST.B` | Prefix: `BKMC_` | PK: CODE
+
+| Field group | Type | Notes |
+|-------------|------|-------|
+| CODE | STRING(15) | Material/item code |
+| QTY_1..10 | FLOAT(2)×10 | Quantity break thresholds (tier 1–10) |
+| COST_1..10 | FLOAT(4)×10 | Unit cost at each quantity break |
+| DATE | DATE | Effective date |
+| MIN | FLOAT(2) | Minimum order quantity |
+| MINCST | FLOAT(4) | Minimum order cost |
+| EXTRA | STRING(50) | Extra / user-defined |
+
+10-tier quantity-break cost schedule for purchased materials. When MRP or purchasing looks up material cost, it finds the highest QTY_N that the purchase quantity exceeds and uses COST_N. DATE controls effectivity. MINCST is the cost charged when ordering less than MIN units.
+
+---
+
+### BKMATRIM — Material Trim/Waste Factor (3 fields)
+
+File: `BKMATRIM.B` | Prefix: `BKMA_TRIM_` | PK: MACH
+
+| Field | Type | Notes |
+|-------|------|-------|
+| MACH | STRING(4) | Machine code |
+| FIRST | FLOAT(2) | First-pass trim factor (% waste) |
+| SECND | FLOAT(2) | Second-pass trim factor (% waste) |
+
+Per-machine material trim/waste configuration. Used in estimating and manufacturing to inflate material quantity requirements by the expected waste percentage. FIRST and SECND allow different trim rates for first and second operations on the same machine.
+
+---
+
+### BKMRPFC — MRP Forecast Demand (9 fields)
+
+File: `BKMRPFC.B` | Prefix: `BKMRP_FC_` | PK: PART + DATE
+
+| Field | Type | Notes |
+|-------|------|-------|
+| PART | STRING(15) | Part number |
+| DATE | DATE | Demand date |
+| QTY | FLOAT(2) | Original forecast quantity |
+| EXTRA | STRING(25) | Extra / user-defined |
+| OQTY | FLOAT(2) | Original quantity (copy before netting) |
+| CQTY | FLOAT(2) | Confirmed/consumed quantity |
+| FLAG | STRING(1) | Processing flag |
+| DATE1 | DATE | Alternate/adjusted date |
+| NUM | FLOAT | Record number / sequence |
+
+MRP forecast demand input table. Forecast rows drive MRP demand netting alongside actual sales orders. OQTY preserves the original forecast; CQTY tracks how much has been consumed by actual orders (demand pegging). After netting, remaining OQTY-CQTY = net forecast demand passed to MRP explosion.
+
+---
+
+### BKMRPPO — MRP Suggested Purchase Order (16 fields)
+
+File: `BKMRPPO.B` | Prefix: `BKMRP_PO_` | PK: UID
+
+| Field | Type | Notes |
+|-------|------|-------|
+| UID | STRING(20) | Unique ID for this suggested PO line |
+| VEND | STRING(10) | Suggested vendor code |
+| DATE | DATE | Order-by date (release date) |
+| ERD | DATE | Earliest receipt date |
+| PART | STRING(15) | Part number |
+| QTY | FLOAT(2) | Suggested order quantity |
+| PRICE | FLOAT(4) | Suggested unit price |
+| WOPRE | FLOAT | Work order prefix driving demand |
+| WOSUF | UBINARY | Work order suffix driving demand |
+| PLANR | STRING(4) | Planner code |
+| CONF | STRING(1) | Confirmed flag |
+| DONE | STRING(10) | PO number once converted |
+| MTREC | UBINARY | Material record reference |
+| EXTRA | STRING(50) | Extra / user-defined |
+| EST | STRING(10) | Estimate reference |
+| ESTLNE | FLOAT | Estimate line reference |
+
+MRP action messages: suggested purchase orders generated by the MRP explosion. WOPRE+WOSUF link the suggestion to the work order driving demand. CONF marks planner acceptance; once converted to a real PO, DONE stores the PO number. ERD is calculated from lead time.
+
+---
+
+### BKMRPSW — MRP Switch Table (2 fields)
+
+File: `BKMRPSW.B` | Prefix: `BKMRP_SW_` | PK: PART + SW
+
+| Field | Type | Notes |
+|-------|------|-------|
+| PART | STRING(15) | Part number |
+| SW | STRING(1) | Switch / flag value |
+
+Minimal MRP control table. One row per part that has a special MRP processing switch set. SW is a single-character flag. Likely used to mark parts that should be excluded from MRP, treated as make-to-order only, or have some other non-standard MRP behavior.
+
+---
+
+*Pass 149 complete: 24 tables documented — System/security (AHSYLOG 23f logon access array, BKLOGON 10f user accounts); AR temp (ARTTEMP 12f payment staging); License/config (BKABCUST 5f license dates, BKABVEND 2f registration, BKFOCFG 18f feature toggles, BKFLDHLP 3f inline help); Report filter (BKACTRPT 53f activity report FROM/THRU template with 25 dimensions); Estimating clones (BKESTQT 84f = BKARINV + QSTAT/MDATE/MISC, BKESTQTL 28f = BKARINVL + SCCOG); GL COA+mirrors (BKGLCOA 62f base, BKGLCCOA 62f C-company — 4×14 period arrays; BKGLACHK+BKGLCHK 11f×2 check reconciliation; BKGLAGJL 9f GJ lines, BKGLAGJR 11f GJ register, BKGLATRN 16f transaction detail); IS tax (BKISHTAX+BKISTAX 13f×2 identical current/history); Material config (BKMATCST 25f 10-tier qty-break pricing, BKMATRIM 3f machine trim factors); MRP (BKMRPFC 9f forecast demand with OQTY/CQTY netting, BKMRPPO 16f suggested PO action messages, BKMRPSW 2f part override switch).*
+
