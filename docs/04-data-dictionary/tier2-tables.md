@@ -4620,3 +4620,133 @@ Provides a cross-module task/reminder system: reminders can be linked to any com
 
 *Pass 145 complete: 8 remaining IS* tables documented — ISQCMTHD (44f QC method, 3367-byte record); ISQCRSLT/ISQCSPEC (57f identical QC result/spec with min/max spec limits and test+approval note arrays); ISQRYSQL (2f SQL store with 1KB query field); ISQSOA/ISQTCODE/ISQTINFO (quote analysis/code/UDF); ISREMIND (12f reminder with TIME key field). IS* module documentation now complete — all 659 DDF tables have schema entries in tier2-tables.md.*
 
+---
+
+## Pass 146 — MT* Tables: Multi-Class Catalog, Exchange Rates, MRP Work Table + Misc (2026-06-22)
+
+DDF lines this pass: 24661–25184 (MTEXCHG, MTICAMTR, MTICEMTR, MTICMSTR, MTINVDEF, MTMRP, MWOPTEMP, NOTETEMP, NZITPRE). Also: stale EVO-DECOMPILE-TODO.md ⬜ entries updated to reflect Pass 142 (BKAP*/BKAR*) and Pass 40 (BKGL*) work.
+
+---
+
+### MT* — Multi-Class Inventory Master Family
+
+The MT* (Multi-Table / Multi-class) family extends BK* tables to support CLASS-keyed multi-company item data. Four tables share the identical **108-field MTIC_PROD_* schema**:
+
+**MTICMSTR** (108f, `MTIC_PROD_*`): Multi-class item master catalog. DDF line 24899.
+File: `MTICMSTR.B` | KEY: CLASS(4) + CODE(15). Record = 1533 bytes.
+
+The 108 fields extend BKICMSTR (64f, single-company) with CLASS dimension and additional procurement/engineering data:
+
+| Field group | Fields (by number) | Meaning |
+|-------------|-------------------|---------|
+| Identity | 1–2: CLASS(4), CODE(15) | Company class + part code (compound PK) |
+| Basic | 3–11: DESC, SUM, PUM, PCONV, CYCLE, ABC, LOT, SER, ACTIV | Description, stocking/purchasing UOM, conversion, cycle/ABC codes, lot/serial/active flags |
+| Physical | 12–14: STDPK, WT, CUBFT | Standard pack qty, weight(6-dec), cubic feet(4-dec) |
+| Sourcing | 15–16: LEAD(UBINARY/2), LOC(10) | Lead days, default location |
+| Drawing | 17–18: DRAW(15), REV(5) | Drawing number + revision level |
+| Flags | 19–21: COST(1), ESTCD(1), MRP(1) | Costing method, estimating code, MRP flag |
+| GL | 22–25: GLINV(10), INVDP(4), GLWIP(10), WIPDP(4) | Inventory GL acct/dept + WIP GL acct/dept |
+| Specs | 26–37: SPECS_1..12 (STRING/30 × 12) | 12 specification/compliance lines (360 bytes) |
+| Quantities | 38–39: UOWO, UOA (FLOAT/8/2 × 2) | Units on WO, units on order |
+| Finance | 40–41: COMM(FLOAT/8/4), STDC(FLOAT/8/6) | Commission rate, standard cost |
+| Type | 42: TYPE(1) | Item type code |
+| Substitutes | 43–47: SUBST_1..5 (STRING/25 × 5) | 5 approved substitute part codes |
+| Freight | 48: FRT(FLOAT/8/6) | Freight classification rate |
+| MRP | 49: MRPSW(1) | MRP planning switch |
+| Qty ext | 50–51: UIWIP(FLOAT/8/2), AVAIL(FLOAT/8/2) | Units in WIP, available qty |
+| Option | 52: OPTPR(UBINARY/2) | Option pricing code |
+| Customer | 53–55: CUST(10), CUSNM(30), CLDES(30) | Primary customer + name + class description |
+| Vendors | 56–65: VEND_1..10 (STRING/10 × 10) | 10 approved vendor codes |
+| Vendor names | 66–75: VNAM_1..10 (STRING/30 × 10) | 10 vendor names |
+| Vendor part# | 76–84: VPC_1..9 (STRING/20 × 9) | Vendor part codes for first 9 approved vendors |
+| Replace costs | 85–99: RCOST_1..15 (FLOAT/8/6 × 15) | 15 replacement cost slots (e.g., 15 price breaks or cost scenarios) |
+| Options ext | 100–103: OPT(1), LOTSZ(FLOAT/8/0), OPTCS(1), OPTCD(5) | Option type, lot size, option cost flag, option code |
+| QC qty | 104: UIQC(FLOAT/8/2) | Units in QC inspection |
+| Buffers | 105–106: EXPBF(UBINARY/2), DELBF(UBINARY/2) | Expedite buffer days, delete-after buffer days |
+| Cum | 107: CUM(3) | Cumulative lead type code |
+| Long desc | 108: LONGP(25) | Long part number/description |
+
+**MTICAMTR** (108f, `MTIC_PROD_*`): MT IC actual cost master. DDF line 24673.
+File: `MTICAMTR.B` | Identical 108-field schema to MTICMSTR. KEY: CLASS+CODE.
+Stores actual cost snapshot for each CLASS+part combination. Updated during GL cost roll-up. BKICMSTR has AVGC/LSTC/STDC for single company; MTICAMTR provides the same per-CLASS.
+
+**MTICEMTR** (108f, `MTIC_PROD_*`): MT IC estimated cost master. DDF line 24786.
+File: `MTICEMTR.B` | Identical schema. KEY: CLASS+CODE.
+Stores estimated cost snapshot — the estimating module view of part costs (mirrors BKICEMTR relationship to BKICMSTR in single-company context).
+
+**MTINVDEF** (108f, `MTIC_PROD_*`): MT Inventory creation defaults template. DDF line 25012.
+File: `MTINVDEF.B` | Identical schema. KEY: CLASS+CODE (PK = creation template key).
+Stores default field values for new item creation in each CLASS. When a new item is created, MTINVDEF fields pre-populate the new MTICMSTR record, analogous to a template. Not a live catalog — contains system defaults, not actual items.
+
+**Design pattern:** All four MT IC tables share MTIC_PROD_* fields, allowing one join or one screen to work against any of them. The CLASS field is the multi-company dimension; its presence or absence is the primary structural difference between MT* and BK* tables.
+
+---
+
+### MT* — Exchange Rates
+
+**MTEXCHG** (7f, `EXCHG_*`): Multi-currency exchange rate table. DDF line 24661.
+File: `MTEXCHG.B` | KEY: `EXCHG_QUOTE` (FLOAT/8/0) + `EXCHG_LINE` (FLOAT/8/0). Record = 127 bytes.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| EXCHG_QUOTE | FLOAT/8/0 | Currency quote/batch number (PK component) |
+| EXCHG_AMT | FLOAT/8/6 | Exchange rate — 6-decimal precision |
+| EXCHG_DESC | STRING(30) | Currency description |
+| EXCHG_COST | FLOAT/8/6 | Cost rate (sell vs. cost exchange rate may differ) |
+| EXCHG_EXTRA | STRING(50) | Extension field |
+| EXCHG_CODE | STRING(15) | Currency code (e.g., EUR, GBP, CAD) |
+| EXCHG_LINE | FLOAT/8/0 | Rate line number within a quote batch (PK component) |
+
+Stores multi-currency exchange rates referenced by IS multi-currency module (ISMCR/ISMCF). EXCHG_AMT provides 6-decimal precision for currencies with very different values. EXCHG_QUOTE+LINE allows versioned rate sets (a "quote" = a dated rate schedule).
+
+---
+
+### MT* — MRP Planning Work Table
+
+**MTMRP** (13f, `MTMRP_*`): MRP planning work table. DDF line 25125.
+File: `MTMRP.B` | KEY: PARTNO(15) + DATE + LOC(10). Record = 135 bytes.
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| MTMRP_PARTNO | STRING(15) | Part number (PK) |
+| MTMRP_DATE | DATE | Planning date (PK) |
+| MTMRP_QTY | FLOAT/8/2 | Net requirement quantity |
+| MTMRP_ONHAND | FLOAT/8/2 | On-hand quantity at planning date |
+| MTMRP_PEGTO | STRING(10) | Peg-to source order (demand source: SO#, WO#, forecast) |
+| MTMRP_ORDER | STRING(10) | Supply order number (existing WO or PO) |
+| MTMRP_STARTDT | DATE | Order start date |
+| MTMRP_ACTION | STRING(10) | MRP action code (RELEASE, RESCHEDULE, CANCEL, EXPEDITE) |
+| MTMRP_PG_SDATE | DATE | Pegging source start date |
+| MTMRP_PG_FDATE | DATE | Pegging source finish date |
+| MTMRP_PG_QTY | FLOAT/8/2 | Pegged quantity |
+| MTMRP_EXTRA | STRING(50) | Extension field |
+| MTMRP_LOC | STRING(10) | Location code (PK component) |
+
+Generated fresh each MRP run; cleared before regeneration. The PEGTO field traces demand back to its originating sales order or forecast. ACTION records what MRP recommends the planner do (release a new order, reschedule an existing one, etc.).
+
+---
+
+### WO Operation Temp and Misc Tables
+
+**MWOPTEMP** (8f, `MWOP_*`): WO operation completion temp table. DDF line 25143.
+File: `MWOPTEMP.B` | KEY: `MWOP_CNTR` (FLOAT/8/0 — auto-counter). Record = 161 bytes.
+- WOPRE(FLOAT/8/0), WOSUF(UBINARY/2) — WO identifier.
+- SERIAL(25) — serial number being completed.
+- QTYCOM(FLOAT/8/2) — quantity completed in this session.
+- STATUS(10) — current operation status.
+- EXTRA(100) — extension.
+- SRC(UBINARY/2) — source flag (which program/screen created the record).
+
+Temporary staging table for the WO operation completion process (DC data collection or direct entry). Cleared at the start of each completion session; records are consumed when the session posts to MTWORO/WOLABOR.
+
+**NOTETEMP** (5f, `BK_DESC_*`): Note/description temporary staging. DDF line 25156.
+File: `NOTETEMP.B` | Identical BK_DESC_* schema (same 5 fields as BKARDESC, BKAPADSC, etc.). KEY: CODE(15)+NUM(FLOAT/8/0)+LINE(UBINARY/2). NOTES(70)+DESC(25). Temporary editing table for description line entry — data is written here while being edited and committed to the target BK_DESC_* table on save.
+
+**NZITPRE** (15f, `NZ_IPRE_*`): WO prefix allocation / auto-number counter. DDF line 25166.
+File: `NZITPRE.B` | KEY: (single record at offset 0). Record = 120 bytes.
+15 × `NZ_IPRE_PREFIX_N` (FLOAT/8/0 × 15) — 15 next-available WO prefix counters. NZ = "Next Zero" or "New Zealand" (context unclear). Likely a table storing 15 concurrent auto-number allocation slots, used to generate sequential WO prefix numbers without collision in multi-user environments. Analogous to ISNUMBER (52f, 50 next-number slots) but specifically for WO prefixes.
+
+---
+
+*Pass 146 complete: 9 tables documented — MTICMSTR/MTICAMTR/MTICEMTR/MTINVDEF (108f × 4, identical MTIC_PROD_* schema; multi-class item catalog/actual/estimated/defaults); MTEXCHG (7f multi-currency exchange rate, 6-decimal precision); MTMRP (13f MRP planning work table, PARTNO+DATE+LOC PK); MWOPTEMP (8f WO completion temp); NOTETEMP (5f BK_DESC_* note staging); NZITPRE (15f WO prefix auto-number). MT* family now fully documented. Stale ⬜ entries for BKAP*/BKAR*/BKGL* updated to reflect Pass 142/40 work.*
+
