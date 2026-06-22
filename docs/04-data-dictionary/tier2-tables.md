@@ -2519,10 +2519,1166 @@ Supports SMT pick-and-place traceability.
 
 ### Structured Notes (Extended)
 
-**ISSNOTES** (9f, `IS_NOTE_*`) — Structured note record with dual-author tracking. KEY:
-ID(48, UID matching ISLINKS/ISNOTES format)+TYPE(3). Fields: CDATE/CTIME(STRING 10)/CWHO(15)
-(created: date + time-string + employee), EDATE/ETIME(STRING 10)/EWHO(15) (last-edited),
-EXTRA(100). Note: CTIME and ETIME are STRING(10) rather than TIME type — stored as formatted
-time text. Offset gap at 51–62 (12 bytes) between TYPE and CDATE suggests possible reserved
-padding. Provides an audit trail of who created and last edited each note record, keyed on
-the same 48-char UID system used throughout IS modules.
+**ISSNOTES** (12f, `IS_NOTE_*`) — Structured note record with dual-author tracking and
+privacy/group assignment. KEY: ID(48, UID matching ISLINKS/ISNOTES format)+TYPE(3). Fields:
+CDATE/CTIME(STRING 10)/CWHO(15) (created: date + time-string + employee), EDATE/ETIME
+(STRING 10)/EWHO(15) (last-edited), EXTRA(100), [12-byte gap at offset 209–220], PRIVATE(1),
+GROUP(4), CONTACT(30). Note: CTIME and ETIME are STRING(10) rather than TIME type — stored
+as formatted time text. PRIVATE flag marks notes as non-public; GROUP assigns the note to a
+department/team code; CONTACT links the note to a named contact. Total record ≈ 256 bytes.
+*Correction from Pass 139: originally documented as 9f — DDF lines 21377–21381 confirmed 3
+additional fields (PRIVATE, GROUP, CONTACT) at the end of the record.*
+
+---
+
+## Pass 140 — IS* Tables (SO Extension, SR/SS Snapshots, IST/ISU/ISV/ISW Families)
+*DDF source: `samples/ddf/schema.md` lines 21382–24237. Completed 2026-06-22.*
+
+### SO Extension — Shipping Box Manifest
+
+**ISSOABOX / ISSOAHBX / ISSOBOX / ISSOHBOX** (22f each, `ISSO_BOX_*`) — SO shipping box
+manifests, 4 schema-identical variants (archived-line, archived-header, current-line,
+current-header). KEY: WOPRE+WOSUF+LINEID. Fields: BOXNUM(STRING 25)+LNITEM(15)+UCCLBL(25,
+UCC-128 barcode)+BOXHT+BOXLG+BOXWD (FLOAT, box dimensions, 2-dec)+LDATE+EXTRA(50)+BOXWT
+(weight)+INTIME+OUTTIME+ENTBY(5)+MACH(4)+FLAG(1). ~342-byte records. Tracks each shipping
+box assigned to a SO line, with dimensions, weight, UCC label, and timestamps for when the
+box entered/left the packing station.
+
+### SO Extension — UDF Info Blocks
+
+**ISSOAINF / ISSOHINF / ISSOINFO** (54f each, `ISSR_INFO_*`) — SO UDF extension blocks,
+3 schema-identical variants (archived line-level, historical, current). Identical layout to
+the ISSR_INFO_* 54-field pattern first seen in ISSRINFO: 5 dates, 5 alt-dates, 20 alpha*25ch,
+20 alpha*25ch, EXTRA(50). See ISSRINFO entry in Pass 139 documentation for full field list.
+
+### SO Extension — Lot/Serial Transactions
+
+**ISSOALOT / ISSOASER** (14f each, `BKAR_TXN_*`) — SO lot and serial inventory
+transactions, 2 schema-identical variants. Identical to the BKAR_TXN_* 14f pattern seen
+in ISRMTXN/ISRMTXNS: SONUM+CODE(15)+DESC(30)+QTY+LOT(15)+SERIAL(25)+DATE+STOCK(15)+
+LINE+LOC(10)+TMPSO(40)+SRNUM+EXTRA(50)+BIN(15). ISSOALOT records lot-based SO withdrawals;
+ISSOASER records serial-number-based SO withdrawals.
+
+### SO Extension — Review/Approval
+
+**ISSOREVU** (12f, `IS_SOVU_*`) — SO review and electronic approval record. KEY:
+WOPRE+WOSUF+OPER(3). Fields: DATE+TIME+WHO(15)+MOTPAS(STRING 50, motion/electronic
+password signature)+STATUS(1)+NOTES(100)+FLAG(1)+EXTRA(50)+RDATE+RWHO(15). MOTPAS stores
+the electronic approval signature token for the SO review step, the same approval mechanism
+seen in ISCTREVU.
+
+### SPC (Statistical Process Control)
+
+**ISSPC** (20f, `IS_SPC_*`) — SPC quality record per WO operation. KEY: WOPRE+WOSUF+
+OPER(3). Fields: PART(15)+OPDES(30)+DATE+TIME+MACH(4)+EMP(4)+QTY+SCRAP+ANOTES(STRING 1000,
+free-text process notes)+EXTRA(50)+FLAG(1)+4 general-purpose floats (GNUMS 1-4). The 1 KB
+ANOTES field is the largest free-text per-operation field in the IS* shop-floor family,
+supporting narrative process documentation or out-of-control descriptions.
+
+### SP Module — PO Header Snapshot
+
+**ISSPOH** (57f, `BKAP_PO_*`) — SP module Purchase Order header snapshot. Full 57-field
+clone of the standard BKAP_PO_* AP PO header schema (identical to ISSRFQH). KEY: PONUM+
+POTYPE. See BKAP_PO / BKSOPRDS documentation for the full field list. The SP module
+(Special Purchases or SP-type orders) mirrors AP PO documents at the IS-extension layer.
+
+### SP Module — PO Line Snapshot
+
+**ISSPOL** (38f, `BKAP_POL_*`) — SP module Purchase Order line snapshot. Full 38-field
+clone of the BKAP_POL_* PO line schema (identical to ISSRFQL). KEY: PONUM+LINEID. Fields
+18-19 have the confirmed DDF typo NKAP_POL_UM_LIN_1 / NKAP_POL_UM_LIN_2 (should be
+BKAP_POL_). This typo is shared with ISSRFQL and was likely propagated from the same
+template during the DDF build.
+
+### Quote / SR Document Snapshots
+
+**ISSQTH** (84f, `BKAR_INV_*`) — Sales Quote header snapshot. Full 84-field BKAR_INV_*
+invoice header clone. KEY: NUM+SONUM.
+
+**ISSQTL** (28f, `BKAR_INVL_*`) — Sales Quote line snapshot. Full 28-field BKAR_INVL_*
+invoice line clone. KEY: INVNM+CNTR.
+
+**ISSRCH** (84f, `BKAR_INV_*`) — Service Request current header snapshot.
+Full 84-field BKAR_INV_* clone. KEY: NUM+SONUM.
+
+**ISSRCL** (28f, `BKAR_INVL_*`) — Service Request current lines. Full 28-field clone.
+
+All four use the standard invoice snapshot schema described under the BKAR_INV_* /
+BKAR_INVL_* pattern entries in this document.
+
+### SR — Description Lines
+
+**ISSRADSC** (5f, `BK_DESC_*`) — SR archived description lines. Identical to the universal
+BK_DESC_* 5-field pattern: CODE(15)+NUM+LINE+NOTES(70)+DESC(25). Stores archived
+long-form description text for SR documents, one record per 70-char line.
+
+**ISSRDESC** (5f, `BK_DESC_*`) — SR current description lines. Identical schema to
+ISSRADSC. Active descriptive text per SR document line.
+
+### SR — UDF Info Blocks
+
+**ISSRAINF / ISSRHINF / ISSRINFO** (54f each, `ISSR_INFO_*`) — SR UDF extension blocks:
+archived-line, historical, and current variants. All three are schema-identical to the
+ISSR_INFO_* 54-field pattern (5 dates + 5 alt-dates + 20*alpha25 + 20*alpha25 + EXTRA(50)).
+See ISSRINFO in Pass 139 documentation.
+
+### SR — Invoice Snapshots (Archived)
+
+**ISSRAINV** (84f, `BKAR_INV_*`) — SR archived invoice header. Full 84-field
+BKAR_INV_* clone. KEY: NUM+SONUM.
+
+**ISSRAIVL** (28f, `BKAR_INVL_*`) — SR archived invoice lines. Full 28-field clone.
+
+### SR — MMS (Machine/Material/Serial)
+
+**ISSRAMMS** (12f, `ISSR_MMS_*`) — SR archived MMS record. Identical schema to ISSRMMS:
+SRVNUM+LINEID+INVNUM+WOPRE+WOSUF+PART(15)+MAKE(50)+MODLE(50)+SERIAL(50)+INDATE+
+OUTDATE+EXTRA(150). Stores the physical device (manufacturer, model, serial number) for
+the equipment being serviced on an SR. Note: MODLE is the DDF field name spelling for Model.
+
+### SR — RFQ Header/Line Snapshots
+
+**ISSRFQH** (57f, `BKAP_PO_*`) — SR Request for Quotation header snapshot. Full 57-field
+BKAP_PO_* clone. Identical schema to ISSPOH. KEY: PONUM+POTYPE.
+
+**ISSRFQL** (38f, `BKAP_POL_*`) — SR RFQ line snapshot. Full 38-field BKAP_POL_* clone.
+Identical schema to ISSPOL. Has the same NKAP_POL_UM_LIN_1/2 DDF typo in fields 18-19.
+
+### SR — Invoice Snapshots (Current)
+
+**ISSRINV** (84f, `BKAR_INV_*`) — SR current invoice header. Full 84-field BKAR_INV_*
+clone (DDF lines 22537-22625, fully read). KEY: NUM+SONUM.
+
+**ISSRINVL** (28f, `BKAR_INVL_*`) — SR current invoice lines. Full 28-field BKAR_INVL_*
+clone. KEY: INVNM+CNTR.
+
+### SR Master — Document Family
+
+**ISSRMH** (84f, `BKAR_INV_*`) — SR master header. Full 84-field BKAR_INV_* clone.
+The master variants represent the authoritative current SR document record, distinct from
+the provisional current (ISSRCH) and archived (ISSRAINV) copies.
+
+**ISSRMINV** (84f, `BKAR_INV_*`) — SR master invoice header. Full 84-field clone.
+
+**ISSRMIVL** (28f, `BKAR_INVL_*`) — SR master invoice lines. Full 28-field clone.
+
+**ISSRML** (28f, `BKAR_INVL_*`) — SR master lines. Full 28-field BKAR_INVL_* clone.
+
+**ISSRMMS** (12f, `ISSR_MMS_*`) — SR master MMS record. Identical schema to ISSRAMMS
+(12f). Tracks physical device being serviced on the master SR record.
+
+### SR — Transaction Log
+
+**ISSRTXN / ISSRTXNS** (14f each, `BKAR_TXN_*`) — SR lot and serial transactions,
+2 identical variants. Full 14-field BKAR_TXN_* clone: SONUM+CODE(15)+DESC(30)+QTY+
+LOT(15)+SERIAL(25)+DATE+STOCK(15)+LINE+LOC(10)+TMPSO(40)+SRNUM+EXTRA(50)+BIN(15).
+ISSRTXN tracks lot-based SR inventory moves; ISSRTXNS tracks serial-number-based moves.
+
+### SS Module — Document Snapshots
+
+The ISS+S tables form the SS submodule document archive — 4 tables that snapshot both
+SO and SR document headers/lines (likely for a Status Snapshot or Service Scheduling module).
+
+**ISSSOH** (84f, `BKAR_INV_*`) — SS SO header snapshot. Full 84-field BKAR_INV_* clone.
+
+**ISSSOL** (28f, `BKAR_INVL_*`) — SS SO lines snapshot. Full 28-field BKAR_INVL_* clone.
+
+**ISSSRH** (84f, `BKAR_INV_*`) — SS SR header snapshot. Full 84-field BKAR_INV_* clone.
+
+**ISSSRL** (28f, `BKAR_INVL_*`) — SS SR lines snapshot. Full 28-field BKAR_INVL_* clone.
+
+### Service Type Lookups
+
+**ISSTEQUI / ISSTTYPE / ISSTYPE** (3f each, `IS_STYPE_*`) — Three schema-identical
+service type lookup tables. Fields: TYPE(STRING 60)+WHO(STRING 40)+ASSET(STRING 25).
+- **ISSTEQUI** — equipment type classifications (what type of equipment is this?).
+- **ISSTTYPE** — service tracking type codes (e.g., repair, installation, PM).
+- **ISSTYPE** — service type codes (e.g., contract, warranty, T&M).
+
+TYPE (60 chars) holds the full description; WHO (40 chars) stores the responsible
+person/department; ASSET (25 chars) links to an asset/equipment code.
+
+### Shop Floor Tracking
+
+**ISSTRACK** (13f, `IS_STRACK_*`) — Shop floor component-tracking record per WO operation.
+KEY: WOPRE+WOSUF+OPER. Fields: TIME+DATE+PROC(25, process station code)+PSER(20, process
+serial)+COMP(15, component part code)+CSER(20, component serial)+NOTE(STRING 1000, 1 KB
+free-text tracking notes)+EXTRA(50)+AR(1, accept/reject flag)+CLOT(15, component lot).
+~1,166-byte records. Tracks individual process-step + component combinations through the
+shop floor, with a 1 KB note field for quality or issue description.
+
+---
+
+## IST* Family
+
+### Tax Filing
+
+**ISTAXFIL** (84f, `ISIS_TXF_*`) — Tax filing / jurisdiction record. KEY: CODE(10).
+Fields: DESC(30)+VNDCD(10, tax vendor/authority)+IDNUM(15, tax ID number)+
+GLAPO(10, GL account for AP)+GLDPO(4, GL dept for AP)+9*POLRNG(PO low range, floats)+
+9*POHRNG(PO high range)+9*POPERC(PO percentage, 3-dec)+9*SOLRNG(SO low range)+
+9*SOHRNG(SO high range)+9*SOPERC(SO percentage)+GLASO(10, GL account for AR)+
+GLDSO(4, GL dept AR)+TAXIN(1)+9*TICD(1-char tier ID)+9*PTICD(1-char PO tier ID)+
+ISCUR(3, currency)+SOMAX(max taxable SO amount)+POMAX(max taxable PO amount).
+~563-byte records. Stores a single tax jurisdiction with bracket-style rate arrays for
+both SO (sales) and AP (purchasing) sides, allowing up to 9 rate tiers per direction.
+
+**ISTAXGRP** (105f, `ISIS_TXG_*`) — Tax group record. KEY: NAME(10). Fields: 9*CODE(10,
+jurisdiction codes in group)+9*TAXON(1, taxable flag per jurisdiction)+9*PID(1, produce ID
+flag)+FREIGT(1, freight taxable)+DESC(30)+9*DESCF(20, per-jurisdiction label)+
+9*IDC(15, ID codes)+9*PERCC(FLOAT 3-dec, percentage collected)+TOTPER(total %)+
+12*TAXBLE(monthly taxable amount)+12*NONTAX(monthly non-taxable)+12*COLECT(monthly
+collected)+OUTSTD(outstanding)+9*FRGT(freight taxable per jurisdiction)+TOFPER.
+~857-byte records. Groups multiple tax jurisdictions; carries 12-month running totals of
+taxable/non-taxable sales and collected tax amounts per jurisdiction.
+
+### Payment Terms
+
+**ISTERMS** (13f, `IS_TERMS_*`) — Payment terms definition. KEY: NUM(UBINARY). Fields:
+NAME(20)+DESC(50)+AMT(float, discount amount or threshold)+TYP(1, term type)+DAY(UBINARY,
+due days)+EOM(1, end-of-month flag)+MAX(UBINARY, max discount days)+COD(1, cash-on-delivery)+
+ARAP(1, AR or AP applicable)+CC(1, credit card flag)+SRT(UBINARY, sort order)+EXTRA(100).
+~191-byte records. Stores payment terms used in both AR and AP. ARAP flag determines which
+module the term applies to.
+
+### Tool Usage Log
+
+**ISTOOLOG** (34f, `ISTOOL_*`) — Tool usage log per WO operation. KEY: WOPRE+WOSUF+OPER.
+Fields: TOOL(15, tool code/part number)+DATE+WORKDESC(60)+ACTHRS(float 1-dec, actual hours)+
+COST+10*NOTES(STRING 60, 10-line x 60ch notes = 600 chars total)+EMP(UBINARY)+3*DATES+
+5*ALPHA(30)+3*FLAG+ESTHRS(estimated hours)+EXTRA(100)+LOGNUM(float, log sequence)+
+ITEM(15, item/part used). ~1,005-byte records. Tracks tool and labor usage per WO routing
+operation with structured notes, general-purpose date/alpha/flag fields, and a LOGNUM key
+for ordering multiple tool-use entries per operation.
+
+### Business Triggers / Alerts
+
+**ISTRIGRS** (25f, `IS_TRIG_*`) — Business trigger/alert rule. KEY: CODE(15). Fields:
+TRIGR(10, trigger event type)+CONTACT(20)+ONCE(1, fire once flag)+LDATE/LTIME (last fired)+
+EXTRA(100)+WOPRE+WOSUF+PO+SO+CUST(10)+VEND(10)+LOC(10)+DAYS(UBINARY)+ITYPE(10)+
+WOPRET+WOSUFT+ODEL(1)+EFLAG(1)+EMAIL(STRING 400, email recipient list)+[6000-byte gap in
+DDF mapping]+OPER(3)+CLASS(4)+CAT(4)+PLANNER(4). DDF anomaly: OPER is at offset 6634
+while EMAIL ends at offset 634 — a 6000-byte unmapped region between fields 21 and 22,
+possibly a large text buffer or binary blob not registered in the DDF. Triggers fire on
+specified ERP events (WO, PO, SO, customer/vendor actions) and send email notifications.
+
+---
+
+## ISU* Family
+
+### UDF Invoice Mapping
+
+**ISUDFINV** (8f, `IS_UDF_*`) — User-Defined Field invoice screen mapping. KEY: NAME(15,
+UDF slot name). Fields: FIELD(19, physical field name in the table)+START(UBINARY)+
+LENGTH(UBINARY)+SCRVAR(UBINARY, TAS Pro screen variable number)+SCRLBL(25, screen label)+
+SCRSIZE(UBINARY, display width)+EXTRA(100). Maps logical UDF slot names to their physical
+field positions, screen variable assignments, and labels, allowing IS-module UDF screens
+to be configurable per installation.
+
+### UDF Master Codes
+
+**ISUDMSTR** (3f, `IS_UDM_*`) — UDF master code lookup. KEY: CODE(25). Fields: DESC(60)+
+EXTRA(100). A simple code-description table for UDF dropdown values; referenced by ISUDFINV
+field names to provide picklist values on UDF screens.
+
+### Inventory Usage Statistics
+
+**ISUSAGE** (246f, `ISTS_USE_*`) — Extended inventory usage history per item. KEY:
+CODE(15)+TYPE(1). Structure:
+- Current period: 26*QTY (rolling 26-period quantity) + 26*AMT (rolling 26-period amount)
+- Year 1: 13*QTYY1 + 13*AMTY1 (qty + amount per 13-period fiscal year)
+- Year 2: 13*QTYY2 + 13*AMTY2
+- Year 3: 13*QTYY3 + 13*AMTY3
+- Year 4: 13*QTYY4 + 13*AMTY4
+- Year 5: 13*QTYY5 + 13*AMTY5
+- Period-start dates: 2*DATEY1..Y5 (10 dates total for year boundaries)
+- General dates: 10*GDATE
+- 15 FLAG(1) fields + 10*ALPHA(30) + 5 NUM (float) + 5*LSTCAL (last-calibration dates)
+- 5*WHO(15, responsible employee codes) + EXTRA(100)
+
+~2,103-byte records. Provides multi-year rolling usage history at the IS-extension level,
+complementing the core BKIN inventory table usage fields.
+
+---
+
+## ISV* Family
+
+### Company Variables
+
+**ISVAR** (17f, `IS_VAR_*`) — IS-module company configuration singleton. Fields:
+LOGO(256, path to company logo file)+COMPANY(30)+ADD1+ADD2+CITY(20)+STATE(2)+ZIP(8)+
+CONTACT(30)+5*EMAIL1(50, up to 5 email addresses)+WEB(100)+WEBUPD(100, web update URL)+
+WEBSUP(100, web support URL)+EXTRA(150). ~1,106-byte record. Stores company identity and
+contact information used by IS-module screens and reports.
+
+### SQL Variable Mapping
+
+**ISVARSQL** (4f, `IS_VAR_*`) — SQL query variable mapping. KEY: QNAME(30). Fields:
+TYPE(1, query type)+VNAME(30, TAS Pro variable name)+ORDER(UBINARY). Maps named SQL queries
+to their corresponding TAS Pro variable assignments, providing the binding layer between
+external SQL data sources and IS-module screen variables.
+
+### Vendor Address/Data Audit
+
+**ISVNDADT** (11f, `IS_VND_*`) — Vendor name and credit limit change audit trail. KEY:
+VEND(10). Fields: ONAME(30, old name)+NNAME(30, new name)+APPROVE(1)+DATE+TIME+WHO(20,
+approver)+OMAXAMT(old max amount)+NMAXAMT(new max amount)+CHGDESC(30, reason)+EXTRA(100).
+Records before/after for vendor name and maximum credit amount changes, with timestamp and
+approver identity. Supports compliance requirements for vendor data change authorization.
+
+---
+
+## ISW* Family
+
+### WO Change Log
+
+**ISWOCLOG** (32f, `IS_WOLOG_*`) — Work Order change log per operation. KEY: WOPRE+WOSUF+
+OPER. Fields: OPDESC(30)+ITEM(15)+WC(12, work center)+WCDESC(30)+CUST(10)+CUSNME(30)+
+ITEMDS(30)+CDATE/CWHO(30)/CTIME/CWHERE(15, workstation where change occurred)+MACH(4)+
+2*ALPHA1(30)+5*FLAG+5*DATE+2*NUM(float 2-dec)+2*NUM2(float integer)+EXTRA(100).
+~443-byte records. Logs each significant change to a WO operation with who/when/where
+context, supporting traceability and ISO-style change control.
+
+### WO Description Lines
+
+**ISWODESC / ISWOHDSC** (5f each, `BK_DESC_*`) — WO description lines, 2 variants. Both
+are schema-identical to the BK_DESC_* 5-field pattern: CODE(15)+NUM+LINE(UBINARY)+
+NOTES(70)+DESC(25). ISWODESC stores per-operation description lines; ISWOHDSC stores
+WO header-level description lines.
+
+### WO Extended Fields
+
+**ISWOEX** (63f, `IS_WOEX_*`) — WO extended data per routing operation. KEY: WOPRE+WOSUF.
+Fields (summarized): ITP(20, inspection type/process)+ITPP(1)+RF(1, rework flag)+EXTRA(100)+
+MCLASS(6, machine class)+MNUM+CDATE+4 dates+INT1(UBINARY)+NUM1(float 3-dec)+ALPHA1/2(30)+
+5*INT+DATE5+3 single-char ALPHA flags+2*DESC(30)+NUM2(float 4-dec)+WC(12)+3 more DESCs+
+CAUSE(30)+5*GDATE+5*NOTE(100 each, ~500 chars total)+10*FLAGS+5*GNUMS(float)+5*ALPHAS(30).
+~1,171-byte records. Rich extension layer per WO with inspection, machine assignment,
+general-purpose fields, and 5 note slots.
+
+**ISWOHEX** (63f, `IS_WOEX_*`) — WO header extended data. Identical schema to ISWOEX.
+Header-level sibling of ISWOEX — keyed at the WO header rather than per operation.
+Both use the IS_WOEX_* field prefix.
+
+### WO Priority
+
+**ISWOPRIO** (4f, `IS_WOPRIO_*`) — Work Order priority code lookup. KEY: PRIO(1, single
+char priority code). Fields: DESC(30)+EXTRA(100)+COLOR(float, Delphi TColor integer value).
+Maps priority codes to descriptions and display colors for the WO scheduling boards. COLOR
+stores a Delphi TColor constant, allowing color-coded WO rows in the dispatch list.
+
+### WO Routing Operation Extended
+
+**ISWOROEX** (60f, `IS_WROEX_*`) — WO routing operation extended data per routing step.
+KEY: WOPRE+WOSUF+OPER. Fields: ITP(20)+ITPP(1)+FOI(1, first-off inspection flag)+LQTY+
+EXTRA(100)+SDAY/FDAY (UBINARY, schedule start/finish day offsets)+DATE1+ALPHA1(1)/ALPHA2(2)+
+NUM1(float)+DESC1(30)+10*ALPHA3(15, 10 part/component codes)+10*DATE2+5*NUM2(float integer)+
+PRMACH(4, primary machine)+5*FLAG+5*INT+cycle study fields: CYCHR/CYCMIN/CYCSEC
+(UBINARY, hours/minutes/seconds per cycle)+CYPART(float 1-dec, parts per cycle)+
+CYNOTE(255, cycle study notes)+CYNAME(80, study name)+CYDATE+CYMACH(4)+CYCEMP(UBINARY,
+employee who performed cycle study). ~799-byte records. Extends each routing step with
+inspection flags, scheduling offsets, and a built-in cycle-time study framework (full time
+decomposition + parts-per-cycle + named study session).
+
+**ISWROHEX** (60f, `IS_WROEX_*`) — WO routing header extended data. Identical schema to
+ISWOROEX (same IS_WROEX_* prefix, same 60 fields). Header-level variant of ISWOROEX.
+
+### WO Tray / Shop Packet
+
+**ISWOTRAY** (52f, `IS_TRAY_*`) — Work Order shop packet / component tray record. KEY:
+NUM(25, tray/packet identifier)+WOPRE+WOSUF+OPER. Fields: OPDESC(30)+CODE(15, component
+part)+SQTY(start qty)+COMQTY(completed qty)+SCRPQTY(scrap qty)+QCREQD(1, QC required)+
+QCQTY+5*LOC(10)+5*BIN(15)+5*BINQTY+20*ALPHA(25)+5*DATE+EXTRA(100). ~900-byte records.
+Tracks a physical component tray through the shop floor: starting quantity, completed and
+scrapped quantities, QC requirement, and up to 5 bin locations with associated quantities.
+The 20 ALPHA fields provide extensive general-purpose labeling.
+
+---
+
+*Pass 140 documents 53 additional IS* tables: SO extension family (8 tables), SR document
+family (21 tables), SS snapshot family (4 tables), service type lookups (3 tables),
+shop tracking (1 table), IST* (5 tables), ISU* (3 tables), ISV* (3 tables), ISW* (9 tables).*
+
+*ISSNOTES corrected from 9f to 12f (added PRIVATE, GROUP, CONTACT fields).*
+
+*ISWROHEX is the final IS* table in the DDF. Next table family: JGP* (JGPITEMS,
+barcode/packaging data, begins at DDF line 24238).*
+
+
+---
+
+## Pass 141 — JGP/JSP, LOT/SERIAL, MK*, ROUTING, WO Standalone, Utility Tables (2026-06-22)
+
+Tables documented this pass: JGPITEMS, JSPCNLCD, JSPCNLSO, LANGDICT, LOT, MACHINE,
+MENUFILE, MKAHIST, MKASSIGN, MKDEF, MKECLASS, MKEVENT, MKFORM, MKICLASS, MKTCLASS,
+MKTNOTE, MKTRACK, MKTROUT, MWOPTEMP, NOTETEMP, NZITPRE, OPQCDESC, OUTHPROC/OUTPROC,
+PIBINLOC, PIBINLOT, QCCODES, ROCHG, ROUTING/ROUTAING/ROUTTEMP, SCRAP, SCHEDCAL, SCHWO,
+SERIAL/SERIALH, SUMCUST, SUMINV, SUMPNCUS, SUMWC, TOOL, WBTRVMEM/WBTRVMEMO, WCCTL,
+WCTRLOAD/WCTRSLOD, WOBOM/WOHBOM, WOBOMCHG, WOBOMHRM/WOBOMREM, WODATE/WOHDATE,
+WOELABOR/WOHLABOR/WOLABOR/WOLABRPT, WOEMAT/WOHMAT/WOMAT, WOERECV/WOHRECV/WORECV,
+WOEXCHG/WOHEXCHG, WOHROUT, WORKACHG/WORKCHG, WORKCTR, WORKHORD/WORKORD
+
+---
+
+### JGP — Item Global Packaging
+
+#### JGPITEMS — Item packaging/logistics master (86f) [schema.md:24238]
+
+Key fields: `JGP_ITEM` STRING(15) — part number FK; `JGP_LITEM` STRING(30) — long item name;
+`JGP_IND_UPC` STRING(13) — individual unit UPC barcode; `JGP_UOM_UPC` STRING(13) — UOM UPC;
+`JGP_SP_BARCODE`/`JGP_MC_BARCODE`/`JGP_PAL_BARCODE` STRING(14) — standard pack/master case/pallet barcodes;
+`JGP_SP_QTY`/`JGP_MC_QTY`/`JGP_PAL_QTY` FLOAT(8,2) — pack quantities per level;
+`JGP_UOM_H/W/D/WT/CUBE` FLOAT(8,4) — UOM physical dimensions (HxWxD, weight, cubic ft);
+`JGP_SPACK_*`/`JGP_MCART_*`/`JGP_PALLET_*` — same 5-tuple for std pack, master carton, pallet;
+`JGP_IND_*` — individual unit dimensions;
+`JGP_TARRIF_CODE` STRING(15) — tariff/HS code; `JGP_C_OF_ORIGIN` STRING(30) — country of origin;
+`JGP_CERT_1`..`JGP_CERT_9` STRING(100) each — 9 compliance certification text fields;
+`JGP_ALLERGEN_1`..`JGP_ALLERGEN_9` STRING(100) each — 9 allergen declaration fields;
+`JGP_MIN_AGE` UBINARY(2) — minimum age requirement; `JGP_ASTM` STRING(1) — ASTM standard flag;
+`JGP_REVDT_FRONT`/`JGP_REVDT_BACK` STRING(4) — label revision dates (front/back);
+`JGP_ISBN` STRING(17) — ISBN; `JGP_LOCATION1/2/3` STRING(10) — warehouse locations;
+`JGP_GEN_ALPHA_1..5` STRING(15) — 5 generic alpha UDF fields;
+`JGP_GEN_DATE_1..5` DATE(4) — 5 generic date UDF fields;
+`JGP_GEN_FLAG_1..5` STRING(1) — 5 flag fields;
+`JGP_GEN_NUM` FLOAT(8,0) — generic numeric;
+`JGP_CATALOG` STRING(750) — catalog description text; `JGP_LONG_DESC` STRING(750) — long description;
+`JGP_EXTRA` STRING(100) — overflow;
+`JGP_PREF_CRIT` STRING(1) — preferred criteria; `JGP_PRODUCER` STRING(1) — producer flag;
+`JGP_NET_COST` STRING(1) — net cost method; `JGP_NET_ACOST` FLOAT(8,2) — actual net cost.
+
+Purpose: Extended item record for packaging compliance, barcode generation, and logistics
+(carton/pallet configuration). Supports multi-tier retail packaging with per-level UPC codes
+and physical dimensions. ASTM/allergen/certification arrays cover food-safety and toy-safety requirements.
+
+---
+
+### JSP — JSP Cancel Module
+
+#### JSPCNLCD — JSP cancel reason code master (6f) [schema.md:24329]
+
+`JSP_CNLCD_CODE` STRING(1) PK — single-char cancel reason code;
+`JSP_CNLCD_DESC` STRING(30) — description; `JSP_CNLCD_LCODE` STRING(10) — long code;
+`JSP_CNLCD_CDATE` DATE(4) — creation date; `JSP_CNLCD_WHO` STRING(20) — created by;
+`JSP_CNLCD_EXTRA` STRING(100) — overflow.
+
+#### JSPCNLSO — JSP SO cancellation log (12f) [schema.md:24340]
+
+`JSP_CNLSO_SONUM` FLOAT(8,0) — SO number; `JSP_CNLSO_UNUM` FLOAT(8,4) — unit number;
+`JSP_CNLSO_ITEM` STRING(15) — item code; `JSP_CNLSO_CQTY` FLOAT(8,2) — cancelled qty;
+`JSP_CNLSO_CDATE` DATE — cancel date; `JSP_CNLSO_WHO` STRING(20) — cancelled by;
+`JSP_CNLSO_CTIME` TIME — cancel time; `JSP_CNLSO_FLAG` STRING(1) — processing flag;
+`JSP_CNLSO_GDATE` DATE — guaranteed date; `JSP_CNLSO_STAT` STRING(1) — status;
+`JSP_CNLSO_CUST` STRING(10) — customer code; `JSP_CNLSO_EXTRA` STRING(100) — overflow.
+
+Purpose: JSP (Job Scheduling/Planning?) cancel module. Tracks SO line cancellations with
+reason codes, quantities, and timestamps.
+
+---
+
+### Standalone Utility Tables
+
+#### LANGDICT — Multi-language caption dictionary (5f) [schema.md:24357]
+
+`LANG_DICT_ECAPT` STRING(80) — English caption (PK component); `LANG_DICT_LANG` STRING(3) — language code (PK component);
+`LANG_DICT_LCAPT` STRING(80) — translated caption; `LANG_DICT_FONT` STRING(30) — display font;
+`LANG_DICT_EXTRA` STRING(150) — overflow.
+
+Purpose: Maps English UI captions to translated equivalents for multi-language installations.
+Key is (ECAPT, LANG). Allows the TAS Pro 7 runtime to display localized labels.
+
+#### LOT — Lot tracking master (25f) [schema.md:24367]
+
+`MTLOT_CODE` STRING(15) — item code (PK component); `MTLOT_LOT` STRING(15) — lot number (PK component);
+`MTLOT_EXPDATE` DATE — expiration date; `MTLOT_ONHAND` FLOAT(8,2) — qty on hand;
+`MTLOT_PO` FLOAT(8,0) — PO number received on; `MTLOT_RECDOC` FLOAT(8,0) — receiving document;
+`MTLOT_VENDOR` STRING(10) — vendor code; `MTLOT_RECDATE` DATE — date received;
+`MTLOT_RECQTY` FLOAT(8,2) — original received qty; `MTLOT_POCOST` FLOAT(8,4) — PO cost;
+`MTLOT_WO` FLOAT(8,0) — WO number produced on; `MTLOT_INRECDATE` DATE — WO receipt date;
+`MTLOT_WOQTY` FLOAT(8,2) — WO produced qty; `MTLOT_WOCOST` FLOAT(8,4) — WO cost;
+`MTLOT_NOTES_1..5` STRING(45) each — 5 notes lines;
+`MTLOT_LOC` STRING(10) — warehouse location; `MTLOT_WOSUF` UBINARY(2) — WO suffix;
+`MTLOT_EXTRA` STRING(50) — overflow;
+`MTLOT_BEGIN` FLOAT(8,7) — beginning balance; `MTLOT_OUT` FLOAT(8,7) — qty issued out;
+`MTLOT_MAXOUT` FLOAT(8,7) — max qty issued.
+
+Purpose: Lot tracking master. One record per item/lot combination. Tracks both PO-received lots
+and WO-produced lots. `MTLOT_EXPDATE` drives expiry compliance. On-hand qty decrements as lot
+is consumed. Cross-links to SERIAL (MTSER_LOT) for lot+serial traceability.
+
+#### MACHINE — Machine master (20f) [schema.md:24397]
+
+`TMACH_MACHINE` STRING(4) PK — machine code; `TMACH_DESC` STRING(30) — description;
+`TMACH_HRSUSED` FLOAT(8,0) — cumulative hours used; `TMACH_HRSMAINT` FLOAT(8,0) — hours at last maintenance;
+`TMACH_DATE` DATE — last maintenance date; `TMACH_NOTES_1..8` STRING(45) each — 8 notes lines;
+`TMACH_WC` STRING(12) — associated work center; `TMACH_WCDESC` STRING(30) — WC description;
+`TMACH_EXTRA` STRING(100) — overflow; `TMACH_ACTIVE` STRING(1) — active flag;
+`TMACH_INACTDATE` DATE — inactivated date; `TMACH_INACTWHO` STRING(30) — inactivated by;
+`TMACH_INACTWHY` STRING(60) — inactivation reason.
+
+Purpose: Machine asset master. Used for capacity planning and maintenance tracking.
+Referenced from ROUTING/WORKORD via MTRO_TMACHINE and MTWORO_MACHNO.
+4-char machine code distinguishes this from WORKCTR (12-char WC code).
+
+#### MENUFILE — Runtime menu definitions (108f) [schema.md:24422]
+
+`MENU_CODE` STRING(4) PK — 4-char menu identifier; `MENU_TITLE` STRING(30) — menu title;
+`MENU_LEFT`/`MENU_RIGHT`/`MENU_ESCAPE` STRING(4) — navigation target codes;
+`MENU_LINES_1..20` STRING(30) — up to 20 menu line labels;
+`MENU_WIDTH` UBINARY(2) — display width; `MENU_LL_ROW`/`MENU_LL_COL` UBINARY(2) — position;
+`MENU_OPTIONS_1..20` STRING(1) — option keystroke characters;
+`MENU_TYPES_1..20` STRING(1) — option types (P=program, M=menu, etc.);
+`MENU_NAMES_1..20` STRING(4) — target menu/program codes;
+`MENU_PROG_1..20` STRING(8) — program names to launch per option.
+
+Purpose: TAS Pro 7 runtime menu definitions stored in Btrieve. This table defines the entire
+menu hierarchy that the runtime displays. Up to 20 options per menu with keystroke, type,
+and target (either another MENUFILE record or a program name in MENU_PROG_*).
+
+#### MWOPTEMP — WO operation completion template (8f) [schema.md:25143]
+
+`MWOP_CNTR` FLOAT(8,0) — counter/sequence; `MWOP_WOPRE` FLOAT(8,0) — WO prefix;
+`MWOP_WOSUF` UBINARY(2) — WO suffix; `MWOP_SERIAL` STRING(25) — serial number;
+`MWOP_QTYCOM` FLOAT(8,2) — qty completed; `MWOP_STATUS` STRING(10) — status;
+`MWOP_EXTRA` STRING(100) — overflow; `MWOP_SRC` UBINARY(2) — source flag.
+
+Purpose: Temporary working table for WO operation completion batch. Holds serial-level
+completion data while the operation close transaction processes.
+
+#### NOTETEMP — Generic note template (5f) [schema.md:25156]
+
+`BK_DESC_CODE` STRING(15) — parent document code (item/vendor/customer);
+`BK_DESC_NUM` FLOAT(8,0) — document number; `BK_DESC_LINE` UBINARY(2) — line sequence;
+`BK_DESC_NOTES` STRING(70) — note text; `BK_DESC_DESC` STRING(25) — label.
+
+Purpose: Reusable note/description line template. The BK_DESC prefix indicates shared use
+across BK-module entities. Same field set as item description/note tables.
+
+#### NZITPRE — NZ item number prefix ranges (54f) [schema.md:25166]
+
+18 prefixes (FLOAT(8,0)) + 18 next-numbers (FLOAT(8,0)) + 18 descriptions STRING(30).
+`NZ_IPRE_PREFIX_1..18` — prefix values; `NZ_IPRE_NXTNUM_1..18` — next sequence numbers per prefix;
+`NZ_IPRE_DESC_1..18` — descriptions.
+
+Purpose: New Zealand localisation — item number prefix/autonumber ranges. Supports 18 separate
+numbering series, each with its own prefix and sequential counter.
+
+#### OPQCDESC — WO operation QC inspection record (10f) [schema.md:25225]
+
+`OPQC_WOPRE` FLOAT(8,0) — WO prefix; `OPQC_WOSUF` UBINARY(2) — WO suffix;
+`OPQC_OPER` UBINARY(2) — operation number; `OPQC_DESC` STRING(30) — operation description;
+`OPQC_SERIAL` STRING(25) — serial number inspected; `OPQC_UID` STRING(30) — inspector user ID;
+`OPQC_QCCODE` STRING(2) — QC result code (FK to QCCODES); `OPQC_DATE` DATE — inspection date;
+`OPQC_EXTRA` STRING(50) — overflow; `OPQC_QTY` FLOAT(8,2) — qty inspected.
+
+Purpose: Per-operation QC inspection log for WOs. Links a WO/operation to a QC code (pass/fail
+reason), inspector, and quantity. Used for shop-floor quality tracking.
+
+---
+
+### OUTHPROC / OUTPROC — Outsource PO (15f) [schema.md:25240/25260]
+
+Both tables share identical schema (MTPO prefix):
+`MTPO_VENDOR` STRING(10) — vendor; `MTPO_VENDNAME` STRING(20) — vendor name;
+`MTPO_PO` FLOAT(8,0) — PO number; `MTPO_WOPRE` FLOAT(8,0) — parent WO;
+`MTPO_WOSUF` UBINARY(2) — WO suffix; `MTPO_DATE` DATE — date;
+`MTPO_OPER` UBINARY(2) — routing operation number; `MTPO_PROD` STRING(15) — item code;
+`MTPO_DESC` STRING(25) — description; `MTPO_QTY` FLOAT(8,2) — quantity;
+`MTPO_COST` FLOAT(8,4) — unit cost; `MTPO_EXTPR` FLOAT(8,2) — extended price;
+`MTPO_ASSY` STRING(15) — assembly code; `MTPO_ASSYDESC` STRING(30) — assembly description;
+`MTPO_EXTRA` STRING(50) — overflow.
+
+Purpose: Tracks outsource/subcontract purchase orders linked to WO routing operations.
+OUTPROC = current active; OUTHPROC = history/archive. Each record links a PO to a specific
+WO operation (the "buy" step for an outprocessed routing step).
+
+---
+
+### PI — Physical Inventory
+
+#### PIBINLOC — Physical inventory bin/location (14f) [schema.md:25280]
+
+`PIBIN_LOC_ITEM` STRING(15) — item; `PIBIN_LOC_LOC` STRING(10) — location;
+`PIBIN_LOC_BIN` STRING(15) — bin; `PIBIN_LOC_UOH` FLOAT(8,2) — unit on hand;
+`PIBIN_LOC_CDATE` DATE — count date; `PIBIN_LOC_VDATE` DATE — verified date;
+`PIBIN_LOC_DFLT` STRING(1) — default bin flag; `PIBIN_LOC_EXTRA` STRING(100) — overflow;
+`PIBIN_LOC_RVLVL` STRING(5) — reorder level; `PIBIN_LOC_YEAR` STRING(4) — PI year;
+`PIBIN_LOC_QTR` STRING(2) — PI quarter; `PIBIN_LOC_FDATE` DATE — freeze date;
+`PIBIN_LOC_LOT` STRING(15) — lot number; `PIBIN_LOC_SER` STRING(25) — serial number.
+
+Purpose: Physical inventory by item/location/bin/lot/serial. During a PI count, one record
+per item+location+bin combination. Includes lot and serial fields for lot/serial-tracked items.
+Year+quarter fields identify the PI cycle.
+
+#### PIBINLOT — Physical inventory bin/lot count (14f) [schema.md:25299]
+
+`PI_BINLOT_YR` STRING(4) — PI year; `PI_BINLOT_QTR` STRING(2) — quarter;
+`PI_BINLOT_ITEM` STRING(15) — item; `PI_BINLOT_LOC` STRING(10) — location;
+`PI_BINLOT_LOT` STRING(15) — lot; `PI_BINLOT_BIN` STRING(15) — bin;
+`PI_BINLOT_SER` STRING(25) — serial; `PI_BINLOT_UOH` FLOAT(8,2) — on hand count;
+`PI_BINLOT_SQTY` FLOAT(8,2) — system qty; `PI_BINLOT_PSTD` STRING(1) — posted flag;
+`PI_BINLOT_FLAG` STRING(1) — processing flag; `PI_BINLOT_DATE` DATE — count date;
+`PI_BINLOT_NUM` FLOAT(8,0) — sequence number; `PI_BINLOT_EXTRA` STRING(50) — overflow.
+
+Purpose: PI count records keyed by PI cycle (year/quarter) + item/location/lot/bin/serial.
+Stores both the counted qty (`UOH`) and system qty (`SQTY`) for variance calculation.
+`PSTD` flag indicates the adjustment has been posted to inventory.
+
+#### QCCODES — QC reject reason codes (2f) [schema.md:25318]
+
+`MTQC_CODE` STRING(2) PK — 2-char QC code; `MTQC_DESC` STRING(30) — description.
+
+Referenced by OPQCDESC (`OPQC_QCCODE`) and WOELABOR (`MTWOLA_QCCODE`).
+
+---
+
+### RO — Routing Change Log
+
+#### ROCHG — Routing change audit log (22f) [schema.md:25325]
+
+`RO_CHG_PART` STRING(15) — item code; `RO_CHG_OPER` UBINARY(2) — operation number;
+`RO_CHG_AOPER`/`RO_CHG_DOPER` STRING(1) — add/delete operation flags;
+`RO_CHG_CDATE` DATE — change date; `RO_CHG_USER` STRING(15) — changed by;
+`RO_CHG_ALONG`/`RO_CHG_BLONG` FLOAT(8,7) — before/after run time;
+`RO_CHG_ASETUP`/`RO_CHG_BSETUP` TIME — before/after setup time;
+`RO_CHG_ATMACH`/`RO_CHG_BMATCH` STRING(4) — before/after machine;
+`RO_CHG_ATOOL`/`RO_CHG_BTOOL` STRING(15) — before/after tool;
+`RO_CHG_AWC`/`RO_CHG_BWC` STRING(12) — before/after work center;
+`RO_CHG_ASTDT`/`RO_CHG_BSTDT` STRING(1) — before/after standard time flag;
+`RO_CHG_ANUMPERS`/`RO_CHG_BNUMPERS` FLOAT(8,2) — before/after number of persons;
+`RO_CHG_AEXTRA`/`RO_CHG_BEXTRA` STRING(100) — before/after extra fields.
+
+Purpose: Audit trail for routing operation changes. A=after/new, B=before/old (A/B pairs
+follow EVO convention throughout the change tables).
+
+---
+
+### ROUTING / ROUTAING / ROUTTEMP — Routing Operations (62f each) [schema.md:25352/25419/25486]
+
+All three tables share identical MTRO prefix schema:
+
+**Key fields:** `MTRO_CODE` STRING(15) — item code (PK component); `MTRO_OPER` UBINARY(2) — operation number (PK component);
+`MTRO_DESC` STRING(30) — operation description; `MTRO_OPERDESC` STRING(30) — operation detail description;
+`MTRO_TYPE` STRING(1) — operation type (I=in-house, O=outsource, etc.);
+`MTRO_LEAD` UBINARY(2) — lead time days; `MTRO_VENDCOST` FLOAT(8,6) — vendor cost;
+`MTRO_PARTSHR` FLOAT(8,2) — parts per hour; `MTRO_TIMEPART` TIME — time per part;
+`MTRO_SETUPHRS` TIME — setup hours; `MTRO_LOTSIZE` FLOAT(8,0) — lot size basis;
+`MTRO_INSTR_1..15` STRING(60) each — 15 operation instruction lines;
+`MTRO_WC` STRING(12) — work center code; `MTRO_WCDESC` STRING(30) — WC description;
+`MTRO_VENDCODE`/`MTRO_VENDNAME` — vendor for outsource ops;
+`MTRO_LABOR` FLOAT(8,4) — labor rate; `MTRO_MACHINE` FLOAT(8,4) — machine rate;
+`MTRO_FOVHD`/`MTRO_VOVHD` FLOAT(8,4) — fixed/variable overhead rates; `MTRO_SETUP` FLOAT(8,4) — setup rate;
+`MTRO_TMACHINE` STRING(4) — tool/machine code; `MTRO_TOOL` STRING(15) — tool code;
+`MTRO_NUM` UBINARY(2) — number of machines; `MTRO_NUM_PERSON` FLOAT(8,2) — number of persons;
+`MTWO_MISC_COST` FLOAT(8,2) — misc cost; `MTRO_OP_TEMP_NO` UBINARY(2) — operation template number;
+`MTRO_NUM_PROCES` UBINARY(2) — number of processes; `MTRO_TIME_PERPR` TIME — time per process;
+`MTRO_MD_PROC_HR` STRING(1) — mode (proc per hr or hr per proc);
+`MTRO_PROC_PERHR` FLOAT(8,2) — processes per hour; `MTRO_STD_TIME` STRING(1) — use standard time;
+`MTRO_MIN_CHG` FLOAT(8,2) — minimum charge; `MTRO_OVERLAP` UBINARY(2) — overlap %;
+`MTRO_PIECE_RATE` FLOAT(8,2) — piece rate; `MTRO_LONGTIME` FLOAT(8,7) — total runtime;
+`MTRO_PRINT` STRING(1) — print flag; `MTRO_CLASS` STRING(15) — class;
+`MTRO_EXTRA` STRING(150) — overflow; `MTRO_NEGOVLP` FLOAT(8,2) — negative overlap;
+`MTRO_DEF_TIME` TIME — default time; `MTRO_R_TYPE` STRING(10) — routing type;
+`MTRO_EST_LINE` FLOAT(8,0) — estimating line; `MTRO_EST_TAG` STRING(10) — estimating tag.
+
+**Distinction:**
+- `ROUTING` — current active routing master for standard items
+- `ROUTAING` — archive of inactive/superseded routings (name has typo: "ROUTAING" not "ROUTING")
+- `ROUTTEMP` — template workspace for routing edits/copies
+
+Purpose: Manufacturing routing master. One record per item/operation pair. Defines how an item
+is made: the sequence of operations, work centers, machines, tools, labor/machine rates, and
+standard times. Central to WO costing, scheduling (WORKCTR capacity), and WORKHORD/WORKORD.
+Outsource operations (TYPE=O) link to OUTHPROC via vendor and operation number.
+
+---
+
+### SCRAP — Scrap Reason Codes (21f) [schema.md:25579]
+
+`MTSCRAP_CODE` STRING(2) PK — 2-char scrap reason code; `MTSCRAP_DESC` STRING(30) — description;
+`MTSCRAP_TYPE` STRING(1) — scrap type; `MTSCRAP_EXTRA` STRING(50) — overflow;
+`MTSCRAP_GLACCT` STRING(10) — GL account for scrap posting; `MTSCRAP_GLDPT` STRING(4) — GL department;
+`MTSCRAP_FLAG_1..5` STRING(1) — 5 flag fields;
+`MTSCRAP_ALPHA_1..5` STRING(30) — 5 alpha UDF fields;
+`MTSCRAP_DATE_1..5` DATE — 5 date UDF fields.
+
+Purpose: Scrap reason code master. Controls GL posting for scrap (each code maps to a specific
+GL account/department). Referenced by WOELABOR (`MTWOLA_SCRAPCD`) and WOEMAT (`WOMAT_SCRAPCD`).
+
+---
+
+### SCHED* — Scheduling Tables
+
+#### SCHEDCAL — Scheduling calendar (6f) [schema.md:25553]
+
+`SCH_CAL_DATE` DATE PK — calendar date; `SCH_WH_FLAG` STRING(1) — working/holiday flag;
+`SCH_SHOP_DATE` FLOAT(8,0) — forward shop day count; `SCH_BACK_DATE` FLOAT(8,0) — backward shop day count;
+`SCH_SHOP_SLASH` DATE — forward slash date; `SCH_BACK_SLASH` DATE — backward slash date.
+
+Purpose: Maps calendar dates to shop days for forward/backward scheduling. Working days get
+sequential shop day numbers; holidays/weekends are skipped. Used by the scheduler to convert
+between calendar dates and shop days.
+
+#### SCHWO — WO scheduling data (10f) [schema.md:25564]
+
+`SWO_WOPRE` FLOAT(8,0) — WO prefix; `SWO_WOSUF` UBINARY(2) — WO suffix;
+`SWO_OPCOUNT` UBINARY(2) — operation count; `SWO_RUN_DAYS` FLOAT(8,4) — scheduled run days;
+`SWO_DAYS_TOGO` FLOAT(8,0) — days remaining; `SWO_CRATIO` FLOAT(8,5) — critical ratio;
+`SWO_SHOP_START` FLOAT(8,0) — scheduled start shop day; `SWO_SHOP_FINISH` FLOAT(8,0) — scheduled finish shop day;
+`SWO_SHOP_DUE` FLOAT(8,0) — due shop day; `SWO_CONTENTION` FLOAT(8,0) — contention score.
+
+Purpose: Scheduling working data for each active WO. The critical ratio (CRATIO) is the
+standard scheduling priority metric. CONTENTION scores resource conflicts. Used by the
+scheduling engine to prioritize and dispatch WOs.
+
+---
+
+### SERIAL / SERIALH — Serial Number Tracking (30f each) [schema.md:25605/25640]
+
+Both tables share identical MTSER prefix schema:
+
+`MTSER_CODE` STRING(15) — item code (PK component); `MTSER_SERIAL` STRING(25) — serial number (PK component);
+`MTSER_LOT` STRING(15) — associated lot number;
+`MTSER_PO` FLOAT(8,0) — PO received on; `MTSER_RECDOC` FLOAT(8,0) — receiving document;
+`MTSER_VENDOR` STRING(10) — vendor; `MTSER_RECDATE` DATE — receipt date;
+`MTSER_POCOST` FLOAT(8,4) — PO cost;
+`MTSER_SO` FLOAT(8,0) — sales order shipped on; `MTSER_CUSTCODE` STRING(10) — customer;
+`MTSER_SHIPDATE` DATE — ship date; `MTSER_SELLPRICE` FLOAT(8,4) — selling price;
+`MTSER_WO` FLOAT(8,0) — WO produced on; `MTSER_ISSDATE` DATE — WO issue date;
+`MTSER_ISSCOST` FLOAT(8,4) — WO cost;
+`MTSER_INRECDATE` DATE — WO receipt date; `MTSER_INRECCOST` FLOAT(8,4) — WO receipt cost;
+`MTSER_EXPDATE` DATE — expiration date; `MTSER_WOCODE` STRING(15) — WO item code;
+`MTSER_NOTES_1..5` STRING(30) each — 5 notes lines;
+`MTSER_ONHAND` FLOAT(8,2) — on hand (0 or 1 for serial); `MTSER_LOC` STRING(10) — location;
+`MTSER_WOSUF` UBINARY(2) — WO suffix; `MTSER_EXTRA` STRING(50) — overflow;
+`MTSER_BIN` STRING(15) — bin location; `MTSER_INV` FLOAT(8,0) — invoice number.
+
+SERIAL = current active serials; SERIALH = historical (shipped/consumed serials).
+
+Purpose: Complete life-cycle tracking per serial number: received from PO, optionally processed
+through WO, shipped on SO. Cross-links LOT, PIBINLOC, OPQCDESC. On-hand is normally 0 or 1
+(one unit per serial). Moves to SERIALH on shipment.
+
+---
+
+### SUM* — Monthly Summary Aggregates
+
+#### SUMCUST — Monthly sales by customer (5f) [schema.md:25675]
+
+`SUMCUST_CUST` STRING(10) — customer; `SUMCUST_YEAR` UBINARY(2) — year;
+`SUMCUST_MONTH` UBINARY(2) — month; `SUMCUST_SALES` FLOAT(8,4) — net sales;
+`SUMCUST_COGS` FLOAT(8,4) — cost of goods sold.
+
+#### SUMINV — Monthly inventory movements by item (19f) [schema.md:25685]
+
+`SUMINV_PARTNO` STRING(15) — item; `SUMINV_MONTH` UBINARY(2) — month; `SUMINV_YEAR` UBINARY(2) — year;
+`SUMINV_LOCATION` STRING(10) — warehouse location;
+`SUMINV_DOL_ADJ`/`SUMINV_UN_ADJ` — dollar/unit adjustments;
+`SUMINV_DOL_ISS`/`SUMINV_UN_ISS` — dollar/unit issues to WO;
+`SUMINV_DOL_RWIP`/`SUMINV_UN_RWIP` — dollar/unit returns to WIP;
+`SUMINV_DOL_RSTK`/`SUMINV_UN_RSTK` — dollar/unit returns to stock;
+`SUMINV_DOL_SHPS`/`SUMINV_UN_SHPS` — dollar/unit shipped;
+`SUMINV_DOL_SHPC` — cost of units shipped;
+`SUMINV_DOL_WORC`/`SUMINV_UN_WORC` — dollar/unit WO receipts;
+`SUMINV_DOL_FILL`/`SUMINV_UN_FILL` — dollar/unit fill (from PO receipt).
+
+Purpose: Monthly inventory movement summary by item/location. Drives inventory analysis
+reports and cost-of-goods summaries. Each record = one month's activity.
+
+#### SUMPNCUS — Monthly part/customer sales (6f) [schema.md:25709]
+
+`SUMPNCUS_CUST` STRING(10) — customer; `SUMPNCUS_PARTNO` STRING(15) — item;
+`SUMPNCUS_YEAR` UBINARY(2) — year; `SUMPNCUS_MONTH` UBINARY(2) — month;
+`SUMPNCUS_SALES` FLOAT(8,4) — net sales; `SUMPNCUS_COGS` FLOAT(8,2) — COGS.
+
+#### SUMWC — Monthly work center summary (7f) [schema.md:25720]
+
+`SUMWC_WORKCTR` STRING(12) — work center; `SUMWC_YEAR` UBINARY(2) — year;
+`SUMWC_MONTH` UBINARY(2) — month;
+`SUMWC_LABOR` FLOAT(8,2) — total labor hours; `SUMWC_SETUP` FLOAT(8,2) — total setup hours;
+`SUMWC_UNITS` FLOAT(8,2) — units produced; `SUMWC_SCRAP` FLOAT(8,2) — scrap units.
+
+Purpose: Work center activity rolled up by month. Used for productivity and efficiency reports.
+
+---
+
+### TOOL — Tool/Mold Master (57f) [schema.md:25863]
+
+`MTOOL_TOOL` STRING(15) PK — tool code; `MTOOL_DESC` STRING(30) — description;
+`MTOOL_DATE` DATE — put-in-service date; `MTOOL_NOTES_1..8` STRING(45) — 8 note lines;
+`MTOOL_PRTSMAINT` FLOAT(8,0) — parts per maintenance interval; `MTOOL_NOPARTS` FLOAT(8,0) — total parts count;
+`MTOOL_EXTRA` STRING(100) — overflow;
+`MTOOL_WEIGHT`/`MTOOL_HEIGHT`/`MTOOL_WIDTH`/`MTOOL_DEPTH` FLOAT(8,2) — physical dimensions;
+`MTOOL_EJ_STROKE` FLOAT(8,2) — ejector stroke; `MTOOL_NOZ_RAD` FLOAT(8,2) — nozzle radius;
+`MTOOL_TOOLTYPE_1/2` STRING(60) — tool type description; `MTOOL_HOTRUN_CH` STRING(30) — hot runner channels;
+`MTOOL_NUM_PORTS` STRING(30) — number of ports; `MTOOL_WATERTMPA/B` FLOAT(8,2) — water temperatures;
+`MTOOL_SHOTSIZE` FLOAT(8,2) — shot size; `MTOOL_MIN_TON` FLOAT(8,2) — minimum tonnage;
+`MTOOL_CUST` STRING(10) — customer (owner) code; `MTOOL_INSERV_DT` DATE — in-service date;
+`MTOOL_REPL_COST` FLOAT(8,2) — replacement cost;
+`MTOOL_BLOC_BIN`/`MTOOL_ILOC_BIN` STRING(15) — base/in-use location bins;
+`MTOOL_OWNER` STRING(10) — owner code; `MTOOL_CAVITY` STRING(60) — cavity description;
+`MTOOL_CYCLES` FLOAT(8,0) — current cycle count; `MTOOL_TOTCYCLES` FLOAT(8,0) — total lifetime cycles;
+`MTOOL_LST_MDATE` DATE — last maintenance date; `MTOOL_PM_INTVAL` UBINARY(2) — PM interval (shots);
+`MTOOL_FLAG_1..5` STRING(1) — 5 flags; `MTOOL_ALPHA_1..5` STRING(30) — 5 alpha UDF;
+`MTOOL_ADATE_1/2` DATE — 2 date UDF; `MTOOL_BASE_LOC`/`MTOOL_INS_LOC` STRING(10) — locations;
+`MTOOL_LASTUSED` DATE — last use date; `MTOOL_NUMCAVITY` UBINARY(2) — cavity count;
+`MTOOL_NUM1_1/2` FLOAT(8,2) — numeric UDF.
+
+Purpose: Tool/mold master with injection-molding-specific fields (ejector stroke, nozzle radius,
+shot size, tonnage, water temperatures, hot runner channels). Cycle count against PM interval
+drives preventive maintenance. Customer owner field tracks customer-owned tooling.
+Referenced from ROUTING via `MTRO_TOOL`.
+
+---
+
+### WB — Btrieve Working Memory
+
+#### WBTRVMEM / WBTRVMEMO — Btrieve memory buffer (5f each) [schema.md:25925/25935]
+
+`BTRV_MEM_CNTR` UBINARY(4) — counter; `BTRV_MEM_SIZE` UBINARY(4) — buffer size;
+`BTRV_MEM_SUBC` UBINARY(4) — subcount; `BTRV_MEM_LINK` UBINARY(4) — link pointer;
+`BTRV_MEM_BUFF` STRING(512) — data buffer.
+
+Purpose: Runtime working memory tables for the Btrieve/Pervasive engine. These are
+internal plumbing — TAS Pro 7 uses them as temp scratch space for large data operations.
+Not user-facing.
+
+---
+
+### WC — Work Center Control
+
+#### WCCTL — Work center scheduling control (5f) [schema.md:25945]
+
+`WCTL_WC` STRING(12) PK — work center; `WCTL_START` FLOAT(8,0) — scheduled start shop day;
+`WCTL_STOP` FLOAT(8,0) — scheduled stop shop day; `WCTL_COUNT` FLOAT(8,0) — operation count;
+`WCTL_FLAG` STRING(1) — processing flag.
+
+Purpose: Scheduler control record per work center. Tracks the scheduling window (start/stop
+shop days) and operation count for the current scheduling pass.
+
+#### WCTRLOAD / WCTRSLOD — Work center daily load (8f each) [schema.md:25955/25968]
+
+Identical schema: `WC_LOAD_WC` STRING(12) — work center; `WC_LOAD_DATE` DATE — date;
+`WC_LOAD_TOTHRS` FLOAT(8,2) — total hours loaded; `WC_LOAD_UDATE` DATE — update date;
+`WC_LOAD_CAP` FLOAT(8,2) — capacity hours; `WC_LOAD_UTIL` FLOAT(8,2) — utilization %;
+`WC_LOAD_LOAD` FLOAT(8,2) — load %; `WC_LOAD_EXTRA` STRING(100) — overflow.
+
+WCTRLOAD = current load (active WOs); WCTRSLOD = scheduled load (projected).
+
+Purpose: Daily capacity planning per work center. One record per WC per date. CAP comes from
+WORKCTR hours per shift. LOAD = actual hours booked ÷ CAP. Used for capacity analysis reports.
+
+---
+
+### WO Standalone Transaction Tables
+
+These tables form the WO transaction layer (distinct from BKWO* module-level tables).
+Multiple date-versioned copies of the same schema indicate current vs. history partitioning.
+
+#### WOBOM / WOHBOM — WO BOM material lines (24f each) [schema.md:25981/26190]
+
+Identical schema (WOBOM prefix):
+`WOBOM_OPER` UBINARY(2) — operation; `WOBOM_WOPRE` FLOAT(8,0) — WO number;
+`WOBOM_WOSUF` UBINARY(2) — WO suffix; `WOBOM_ASSY` STRING(15) — assembly item code;
+`WOBOM_COMPCODE` STRING(15) — component item code; `WOBOM_START` DATE — start date;
+`WOBOM_ASSYDESC` STRING(30) — assembly description; `WOBOM_COMPDESC` STRING(30) — component description;
+`WOBOM_QTYPER` FLOAT(8,8) — qty per assembly; `WOBOM_SCRAPQTY` FLOAT(8,8) — scrap allowance;
+`WOBOM_TOTQTY` FLOAT(8,4) — total required; `WOBOM_ASSYQTY` FLOAT(8,2) — WO order qty;
+`WOBOM_QTYISSUED` FLOAT(8,4) — qty issued to date; `WOBOM_UM` STRING(3) — unit of measure;
+`WOBOM_EMATCST` FLOAT(8,2) — estimated material cost; `WOBOM_AMATCST` FLOAT(8,2) — actual material cost;
+`WOBOM_REFERENCE` STRING(20) — reference designator; `WOBOM_OPTION` STRING(1) — option flag;
+`WOBOM_VEND` STRING(10) — vendor; `WOBOM_EXTRA` STRING(50) — overflow;
+`WOBOM_SEQ` UBINARY(2) — sequence; `WOBOM_REV` STRING(5) — revision;
+`WOBOM_BINLOC` STRING(10) — bin location; `WOBOM_UID` STRING(30) — user ID.
+
+WOBOM = current WOs; WOHBOM = historical.
+
+Purpose: WO material pick list. One record per WO BOM component. Tracks qty issued vs.
+required for material variance. Reference designator supports electronics/PCB assembly.
+
+#### WOBOMCHG — WO BOM change audit (17f) [schema.md:26010]
+
+Before/after pairs for: COMP (component), QTY, REF (reference), SCRAP, EXTRA.
+Also: WOPRE, WOSUF, PARENT, UID, CDATE, USER, ACOMP (add flag), DCOMP (delete flag).
+
+Purpose: Tracks engineering changes to WO BOMs — component adds, deletes, qty changes.
+
+#### WOBOMHRM / WOBOMREM — WO BOM remark lines (7f each) [schema.md:26032/26044]
+
+`WOBOM_RM_WOPRE` FLOAT(8,0); `WOBOM_RM_WOSUF` UBINARY(2); `WOBOM_RM_PARENT` STRING(15);
+`WOBOM_RM_LINE` UBINARY(2); `WOBOM_RM_COMP` STRING(15); `WOBOM_RM_LINENM` UBINARY(2);
+`WOBOM_RM_REMARK` STRING(30).
+
+Purpose: Free-text remarks attached to WO BOM component lines. WOBOMHRM = history; WOBOMREM = current.
+
+#### WODATE / WOHDATE — WO scheduling parameters (13f each) [schema.md:26056/26219]
+
+`WODATE_WOPRE`/`WOSUF` — WO key; `WODATE_START` DATE — scheduled start;
+`WODATE_FINISH` DATE — scheduled finish; `WODATE_QTY` FLOAT(8,2) — split qty;
+`WODATE_PARPRE`/`WOPARSUF` — parent WO (for multi-level); `WODATE_TOPPRE`/`TOPSUF` — top-level WO;
+`WODATE_DELPRE`/`DELSUF` — delivery WO; `WODATE_EXTRA` STRING(100) — overflow;
+`WODATE_PRIO` STRING(1) — priority.
+
+Purpose: WO scheduling dates and parent/child WO relationships for multi-level assemblies.
+Used by the scheduling engine (SCHWO/SCHEDCAL) and capacity planning.
+
+#### WOELABOR / WOHLABOR / WOLABOR / WOLABRPT — WO labor transactions (58f each) [schema.md:26074/26252/26439/26502]
+
+All four share identical MTWOLA prefix schema (58 fields).
+
+Key fields: `MTWOLA_POSTED` STRING(1) — posted flag; `MTWOLA_DATE` DATE — transaction date;
+`MTWOLA_EMP` UBINARY(2) — employee number; `MTWOLA_WOPRE`/`WOSUF` — WO;
+`MTWOLA_OPER` UBINARY(2) — operation; `MTWOLA_TRXN` UBINARY(2) — transaction sequence;
+`MTWOLA_REGOVER` STRING(1) — regular/overtime; `MTWOLA_RUNHRS` FLOAT(8,2) — run hours;
+`MTWOLA_NOJOBS` UBINARY(2) — number of jobs; `MTWOLA_SETUPHRS` FLOAT(8,2) — setup hours;
+`MTWOLA_PARTS` FLOAT(8,2) — parts completed; `MTWOLA_REWORK` STRING(1) — rework flag;
+`MTWOLA_COMPLETE` STRING(1) — operation complete flag; `MTWOLA_SCRAPPED` FLOAT(8,2) — scrapped qty;
+`MTWOLA_QCCODE` STRING(2) — QC code; `MTWOLA_QCDESC` STRING(30) — QC description;
+`MTWOLA_SCRAPCD` STRING(2) — scrap code; `MTWOLA_SCDESC` STRING(30) — scrap description;
+`MTWOLA_ASSY` STRING(15) — assembly code; `MTWOLA_ASSYDESC` STRING(30) — assembly description;
+`MTWOLA_LABRATE`/`LABCOST`/`SETCOST`/`MACHCOST`/`FOHCOST`/`VOHCOST` FLOAT — cost components;
+`MTWOLA_TEAM`/`SHIFT` UBINARY(2) — team/shift; `MTWOLA_WC` STRING(12) — work center;
+`MTWOLA_TOOL` STRING(15) — tool used; `MTWOLA_MACH` STRING(4) — machine used;
+`MTWOLA_EMP2` UBINARY(2) — second employee; `MTWOLA_MISC` FLOAT(8,6) — misc cost;
+`MTWOLA_START`/`STOP`/`DEDUCT` TIME — clock-in/clock-out/deduction;
+`MTWOLA_OTEAM` UBINARY(2) — overtime team; `MTWOLA_AUDIT` STRING(35) — audit trail;
+`MTWOLA_CYCHR`/`CYCMIN`/`CYCSEC` UBINARY(2) — cycle study: hours/minutes/seconds;
+`MTWOLA_CYCPARTS` FLOAT(8,1) — cycle study parts count; `MTWOLA_CYCNOTE` STRING(255) — cycle study notes;
+`MTWOLA_FLAG_1..5` STRING(1) — 5 flags; `MTWOLA_ALPHA_1..3` STRING(30) — 3 alpha UDF.
+
+Note: 6000-byte gap between `MTWOLA_CYCNOTE` (ends offset 673) and `MTWOLA_FLAG_1` (offset 674) —
+the gap is 0 bytes (255-char field ends at 419+255=674), so no gap. Records are ~769 bytes.
+
+Distinctions: WOELABOR = labor entries (unposted/current); WOHLABOR = historical labor;
+WOLABOR = active labor; WOLABRPT = labor report staging. The cycle study fields
+(CYCHR/MIN/SEC + CYCPARTS + CYCNOTE) provide embedded time-study capability.
+
+#### WOEMAT / WOHMAT / WOMAT — WO material issue transactions (17f each) [schema.md:26137/26315/26565]
+
+All three share identical schema (WOMAT/MTWO prefix mix):
+`WOMAT_DATE` DATE — issue date; `WOMAT_WOPRE`/`WOSUF` — WO;
+`WOMAT_QTYISSUED` FLOAT(8,4) — quantity issued; `WOMAT_QTYSCRAP` FLOAT(8,2) — scrap qty;
+`WOMAT_SCRAPCD` STRING(2) — scrap reason; `WOMAT_LOT` STRING(15) — lot number;
+`WOMAT_SERIAL` STRING(25) — serial number; `MTWO_PRODCODE` STRING(15) — component item code;
+`WOMAT_PRODDESC` STRING(30) — component description; `WOMAT_KIT` STRING(1) — kit flag;
+`WOMAT_PCODE`/`PDESC` STRING — parent item; `WOMAT_SCDESC` STRING(30) — scrap description;
+`WOMAT_COST` FLOAT(8,2) — issue cost; `WOMAT_REF` STRING(15) — reference;
+`WOMAT_EXTRA` STRING(50) — overflow.
+
+WOEMAT = material issue entries; WOHMAT = historical; WOMAT = active.
+Lot/serial fields link to LOT and SERIAL tables for traceability.
+
+#### WOERECV / WOHRECV / WORECV — WO finished goods receipt (11f each) [schema.md:26159/26337/26587]
+
+All three share MTWOR prefix:
+`MTWOR_WOPRE`/`WOSUF` — WO; `MTWOR_DATE` DATE — receipt date;
+`MTWOR_ASSY` STRING(15) — assembly item; `MTWOR_DESC` STRING(30) — description;
+`MTWOR_QTY` FLOAT(8,2) — qty received; `MTWOR_USESTD` STRING(1) — use standard cost flag;
+`MTWOR_AVGC` FLOAT(8,4) — average cost; `MTWOR_LOT` STRING(15) — lot assigned;
+`MTWOR_SERIAL` STRING(25) — serial assigned; `MTWOR_REF` STRING(15) — reference.
+
+Purpose: WO finished goods receipt back to inventory. Assigns lot/serial at receipt.
+WOERECV = entries; WOHRECV = history; WORECV = active.
+
+#### WOEXCHG / WOHEXCHG — WO exchange/misc charges (10f each) [schema.md:26175/26237]
+
+`MTWO_EX_WOPRE`/`WOSUF` — WO; `MTWO_EX_DATE` DATE; `MTWO_EX_PROD` STRING(15) — item;
+`MTWO_EX_DESC` STRING(30); `MTWO_EX_CHG` FLOAT(8,6) — charge amount;
+`MTWO_EX_CHGDESC` STRING(30); `MTWO_EX_GLACCT` STRING(10) — GL account;
+`MTWO_EX_GLDPT` STRING(4); `MTWO_EX_OP` UBINARY(2) — operation.
+
+Purpose: Miscellaneous charges against a WO (tooling, subcontract extras, etc.) with GL coding.
+
+#### WOHROUT — WO historical routing (81f) [schema.md:26353]
+
+Key fields (MTWORO prefix): `MTWORO_WOPRE`/`WOSUF`/`OPER` — WO operation key;
+`MTWORO_PROJ` FLOAT(8,0) — project; `MTWORO_START`/`FINISH`/`FINISH2` DATE — dates;
+`MTWORO_CODE` STRING(15) — routing code; `MTWORO_ESTHRS`/`ACTHRS` FLOAT(8,4) — est/actual hours;
+`MTWORO_ESETHRS`/`ASETHRS` FLOAT(8,4) — est/actual setup hours;
+`MTWORO_OPERDESC` STRING(30); `MTWORO_VEND`/`VENDNAME` — outsource vendor;
+`MTWORO_MACHNO` STRING(4) — machine; `MTWORO_TOOL` STRING(15) — tool;
+`MTWORO_WC` STRING(12) — work center; `MTWORO_PRIORITY` STRING(1);
+`MTWORO_INSTR_1..15` STRING(60) each — 15 instruction lines;
+`MTWORO_QTYCOM` FLOAT(8,2) — qty completed; `MTWORO_SCRAPPED` FLOAT(8,2);
+`MTWORO_ESETCST`..`MTWORO_AVOHCST` FLOAT(8,4) — est/actual 6-component cost split
+(setup, labor, machine, outside, fixed-OH, variable-OH);
+`MTWORO_NUM_PROC` UBINARY(2); `MTWORO_CONTNTN` FLOAT(8,0) — contention;
+`MTWORO_SCHED_WC` STRING(12) — scheduled work center; `MTWORO_NEGOVLP` FLOAT(8,2) — neg overlap;
++ process/time/standard fields mirroring ROUTING.
+
+Purpose: Historical snapshot of each WO routing operation with actual vs. estimated cost
+comparison. Stores the instruction text at time of WO release. 81 fields vs. ROUTING's 62 —
+the extra fields are actual costs, completion data, and scheduling results.
+
+---
+
+### WORKACHG / WORKCHG — WO Header Change Audit (25f each) [schema.md:26603/26633]
+
+Identical schema (WO_CHG prefix):
+`WO_CHG_WOPRE`/`WOSUF`; `WO_CHG_CODE` STRING(15) — changed-by code;
+`WO_CHG_CDATE` DATE; `WO_CHG_USER` STRING(15);
+Before/after pairs: PRIO (priority), STATUS (1), CLASS (1), DESC (30), QTY (float),
+SDATE (start), FDATE (finish), DDATE (due), ASD (actual start), EXTRA (150).
+
+WORKACHG = archive; WORKCHG = current.
+
+Purpose: Audit trail for WO header changes (priority, status, qty, dates). A/B convention
+throughout: A = after/new value, B = before/old value.
+
+---
+
+### WORKCTR — Work Center Master (47f) [schema.md:26663]
+
+`MTWC_WC` STRING(12) PK — work center code; `MTWC_WCDESC` STRING(30) — description;
+`MTWC_DEPT` STRING(4) — department; `MTWC_DEPTDESC` STRING(30) — department description;
+`MTWC_HRSWEEK` UBINARY(2) — hours per week capacity; `MTWC_SETUP` FLOAT(8,4) — setup rate;
+`MTWC_LABOR` FLOAT(8,4) — labor rate; `MTWC_MACHINE` FLOAT(8,4) — machine rate;
+`MTWC_AVGQTIME` UBINARY(2) — average queue time (days); `MTWC_QPR1/2/3` UBINARY(2) — 3 queue priority ranges;
+`MTWC_VOVHD`/`FOVHD` FLOAT(8,4) — variable/fixed overhead rates; `MTWC_EST_VOVHD` FLOAT(8,4) — estimated variable OH;
+`MTWC_LEAD` UBINARY(2) — lead time (days); `MTWC_OUTPROC` STRING(1) — outsource process flag;
+`MTWC_HRS_SHIFT` UBINARY(2) — hours per shift; `MTWC_MIN_CHG` FLOAT(8,2) — minimum charge;
+`MTWC_COST_LB` FLOAT(8,6) — cost per pound; `MTWC_EXTRA` STRING(100) — overflow;
+`MTWC_PARENT_YN` STRING(1) — is a parent WC flag; `MTWC_PARENT_WC` STRING(12) — parent WC;
+`MTWC_LEVEL_YN` STRING(1) — leveled scheduling flag;
+`MTWC_CYCLE_TIME_1..10` UBINARY(2) each — 10 cycle time slots;
+`MTWC_GDATE_1/2` DATE — 2 date UDF; `MTWC_FLAGS_1..5` STRING(1) — 5 flags;
+`MTWC_GNUM` FLOAT(8,0) — generic number;
+`MTWC_ALPHA_1..5` STRING(30) — 5 alpha UDF.
+
+Purpose: Work Center master — the capacity definition for manufacturing. Rate fields
+(LABOR, MACHINE, SETUP, VOVHD, FOVHD) feed into ROUTING cost calculations.
+Capacity (HRSWEEK, HRS_SHIFT) feeds into scheduling. PARENT_WC enables hierarchical
+WC grouping for rollup reporting. OUTPROC flag marks a WC as an outsource operation.
+Referenced throughout ROUTING, WOHROUT, WCTRLOAD, and the labor tables.
+
+---
+
+### WORKHORD / WORKORD — Work Order Header (74f each) [schema.md:26715/26794]
+
+Both share identical MTWO_WIP prefix schema (74 fields):
+
+`MTWO_WIP_WOPRE` FLOAT(8,0) — WO number (PK component); `MTWO_WIP_WOSUF` UBINARY(2) — WO suffix (PK);
+`MTWO_WIP_BLANK` STRING(1) — blank flag; `MTWO_WIP_MULT` STRING(1) — multi-level flag;
+`MTWO_WIP_SQTY` FLOAT(8,2) — scheduled qty; `MTWO_WIP_PRTY` STRING(1) — priority;
+`MTWO_WIP_SSTART`/`SFIN` DATE — scheduled start/finish; `MTWO_WIP_ASTART`/`AFIN` DATE — actual start/finish;
+`MTWO_WIP_COMQTY` FLOAT(8,2) — completed qty; `MTWO_WIP_STATUS` STRING(1) — status (O=open, R=released, C=closed, H=hold);
+`MTWO_WIP_LOCK` STRING(1) — locked flag;
+`MTWO_WIP_ESETUP`/`EMAT`/`EOUTPR`/`ELABOR` FLOAT(8,2) — estimated costs (setup/mat/outsource/labor);
+`MTWO_WIP_ASETUP`/`AMAT`/`AOUTPR`/`ALABOR` FLOAT(8,2) — actual costs;
+`MTWO_WIP_ETOT`/`ATOTAL` FLOAT(8,2) — estimated/actual total costs;
+`MTWO_WIP_EST` FLOAT(8,0) — estimating link; `MTWO_WIP_CODE` STRING(15) — assembly item code;
+`MTWO_WIP_SONUM` FLOAT(8,0) — linked SO number; `MTWO_WIP_SOLINE` FLOAT(8,0) — SO line number;
+`MTWO_WIP_SETUPV`/`MATV`/`OUTPRV`/`LABORV` FLOAT(8,2) — cost variances (actual - estimated);
+`MTWO_CUSTCODE`/`CUSTNAME` STRING — customer for the SO;
+`MTWO_WIP_DESC` STRING(30) — assembly description; `MTWO_WIP_PPRCE` FLOAT(8,4) — projected price;
+`MTWO_WIP_TOTV` FLOAT(8,2) — total variance; `MTWO_WIP_INSTR_1..10` STRING(60) — 10 WO instructions;
+`MTWO_WIP_SCONV`/`QCONV` STRING(1) — scheduling/qty conversion flags;
+`MTWO_WIP_DDATE` DATE — due date;
+`MTWO_WIP_VOVHD`/`AVOVHD`/`VOVHDV` FLOAT(8,2) — variable OH est/actual/variance;
+`MTWO_WIP_EFOVHD`/`AFOVHD`/`FOVHDV` FLOAT(8,2) — fixed OH est/actual/variance;
+`MTWO_WIP_USERCD` STRING(1) — user code; `MTWO_WIP_PROJ` STRING(15) — project code;
+`MTWO_WIP_LOC` STRING(10) — warehouse location; `MTWO_WIP_CONTAT` STRING(25) — contact;
+`MTWO_WIP_CHGORD` UBINARY(2) — change order count;
+`MTWO_WIP_EOTH`/`AOTH`/`OTHV`/`OTHPER` FLOAT(8,2) — other cost est/actual/variance/%;
+`MTWO_WIP_EMISC`/`AMISC`/`MISCV` FLOAT(8,2) — misc cost est/actual/variance;
+`MTWO_WIP_EEXTRA`/`AEXTRA`/`EXTRAV` FLOAT(8,2) — extra cost est/actual/variance;
+`MTWO_WIP_SCHED_1/2` STRING(1) — scheduling flags; `MTWO_WIP_SCRAP` FLOAT(8,2) — scrap qty.
+
+WORKHORD = historical closed WOs; WORKORD = current active WOs.
+
+Purpose: Work Order master header. This is the primary WO control record (not BKWOMSTR —
+WORKORD uses the newer MTWO prefix generation). Tracks the full WO lifecycle from release
+to close. Cost fields track 6-component cost breakdown (setup, material, outsource, labor,
+variable OH, fixed OH) with estimated vs. actual vs. variance. Links to SO via SONUM/SOLINE.
+Project code supports project-based manufacturing. Change order counter tracks ECO revisions.
+
+---
+
+### MK — Marketing Module
+
+#### MKAHIST — Marketing account history (9f) [schema.md:24535]
+
+`MKAHIST_ACCT` STRING(10) — account (customer); `MKAHIST_DATE` DATE; `MKAHIST_TRACK` FLOAT(8,0) — track number;
+`MKAHIST_SEQ` UBINARY(2) — sequence; `MKAHIST_EVENT` FLOAT(8,0) — event number;
+`MKAHIST_MEDIA` STRING(1) — media code; `MKAHIST_FORM` FLOAT(8,0) — form number;
+`MKAHIST_REM1/2` STRING(60) each — 2 remark lines.
+
+Purpose: Marketing activity history per customer account. Records each touchpoint (event,
+media, form) with date, track, and remarks.
+
+#### MKASSIGN — Marketing assignment (6f) [schema.md:24549]
+
+`MKASSIGN_ACCT` STRING(10) — account; `MKASSIGN_TRACK` FLOAT(8,0) — track;
+`MKASSIGN_NXTSEQ` UBINARY(2) — next sequence; `MKASSIGN_NXTDAT` DATE — next action date;
+`MKASSIGN_SALEND` DATE — sale end date; `MKASSIGN_PRCODE` FLOAT(8,0) — price code.
+
+Purpose: Assigns a customer account to a marketing track with scheduling data.
+
+#### MKDEF — Marketing module defaults (11f) [schema.md:24560]
+
+`MKDEF_REQUIRE` STRING(1) — required flag; `MKDEF_CALENDAR` STRING(1) — use calendar flag;
+`MKDEF_TRACK` FLOAT(8,0) — default track; `MKDEF_PRICECD` FLOAT(8,0) — default price code;
+`MKDEF_FUCODE` STRING(3) — follow-up code; `MKDEF_HISTORYCD` STRING(2) — history code;
+`MKDEF_TNEXTID`/`TCNEXTID`/`ENEXTID`/`ECNEXTID`/`FNEXTID` FLOAT(8,0) — auto-number counters
+(track, track-class, event, event-class, form next IDs).
+
+Purpose: Single-row defaults table for the marketing module. Stores next-ID counters for all
+marketing entity types.
+
+#### MKECLASS / MKICLASS — Marketing event/item class codes (3f each) [schema.md:24576/24612]
+
+Identical schema: `MKECLASS_NUM` FLOAT(8,0) PK; `MKECLASS_DESC` STRING(45); `MKECLASS_ACTIVE` STRING(1).
+MKECLASS = event classes; MKICLASS = item classes. Note: MKICLASS reuses the MKECLASS field prefix.
+
+#### MKEVENT — Marketing events (12f) [schema.md:24584]
+
+`MKEVENT_NUM` FLOAT(8,0) PK; `MKEVENT_DESC` STRING(45); `MKEVENT_CLASS` FLOAT(8,0) — FK to MKECLASS;
+`MKEVENT_MEDIA` STRING(1) — media type; `MKEVENT_FORM` FLOAT(8,0) — FK to MKFORM;
+`MKEVENT_FUCODE` STRING(3) — follow-up code; `MKEVENT_REM1/2` STRING(60) — remarks;
+`MKEVENT_SENDTO` UBINARY(2) — send-to code; `MKEVENT_GENNAME` STRING(45) — generic name;
+`MKEVENT_HISTCD` STRING(2) — history code; `MKEVENT_ACTIVE` STRING(1).
+
+#### MKFORM — Marketing forms (6f) [schema.md:24601]
+
+`MKFORM_NUM` FLOAT(8,0) PK; `MKFORM_DESC` STRING(45); `MKFORM_FILE` STRING(25) — file name;
+`MKFORM_ATT` STRING(25) — attachment; `MKFORM_MEDIA` STRING(1); `MKFORM_ACTIVE` STRING(1).
+
+Purpose: Marketing form master — defines printed forms/documents used in campaigns.
+
+#### MKTCLASS — Marketing track class codes (3f) [schema.md:24620]
+
+`MKTCLASS_NUM` FLOAT(8,0) PK; `MKTCLASS_CLASS` STRING(45); `MKTCLASS_ACTIVE` STRING(1).
+
+#### MKTNOTE — Marketing track notes (3f) [schema.md:24628]
+
+`MKTNOTE_TRACK` FLOAT(8,0) — track FK; `MKTNOTE_LINE` UBINARY(2) — line seq;
+`MKNOTE_TEXT` STRING(70) — note text. Note: field prefix mismatch (MKNOTE vs. MKTNOTE).
+
+#### MKTRACK — Marketing tracks (4f) [schema.md:24636]
+
+`MKTRACK_NUM` FLOAT(8,0) PK; `MKTRACK_DESC` STRING(45); `MKTRACK_CLASS` FLOAT(8,0) — FK to MKTCLASS;
+`MKTRACK_ACTIVE` STRING(1).
+
+Purpose: A marketing track is a sequence of timed events (like a campaign drip sequence).
+Accounts are assigned to tracks via MKASSIGN; events fire on schedule per MKTROUT.
+
+#### MKTROUT — Marketing track routes (11f) [schema.md:24645]
+
+`MKTROUT_TRACK` FLOAT(8,0) — track FK; `MKTROUT_SEQ` UBINARY(2) — step sequence;
+`MKTROUT_JUMP` STRING(1) — jump/branch flag; `MKTROUT_NEXTSEQ` UBINARY(2) — next step;
+`MKTROUT_EVENT` FLOAT(8,0) — event to fire (FK to MKEVENT); `MKTROUT_DAYSNXT` UBINARY(2) — days until next step;
+`MKTROUT_FIXED` STRING(1) — fixed date flag; `MKTROUT_SALEBEG` STRING(1) — sale begin flag;
+`MKTROUT_SALELEN` UBINARY(2) — sale length (days); `MKTROUT_SALECLO` STRING(1) — sale close flag;
+`MKTROUT_PRICECD` FLOAT(8,0) — price code to apply.
+
+Purpose: Defines the event sequence within a track: step 1 fires event X, then DAYSNXT days
+later step 2 fires event Y, etc. JUMP/NEXTSEQ allow conditional branching.
+
+---
+
+### Temp/Test Tables (noted, not operational)
+
+**TEMPOLD** (4f) — legacy temp table using BKCM_ACTD prefix (Activity Detail?). Likely a
+remnant from an older module version. Fields: code, date-code, date, extra.
+
+**TESTARRA** (101f) / **TESTFILE** (11f) — TAS Pro 7 developer test tables. Not operational.
+
