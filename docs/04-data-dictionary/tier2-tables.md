@@ -4750,3 +4750,399 @@ File: `NZITPRE.B` | KEY: (single record at offset 0). Record = 120 bytes.
 
 *Pass 146 complete: 9 tables documented — MTICMSTR/MTICAMTR/MTICEMTR/MTINVDEF (108f × 4, identical MTIC_PROD_* schema; multi-class item catalog/actual/estimated/defaults); MTEXCHG (7f multi-currency exchange rate, 6-decimal precision); MTMRP (13f MRP planning work table, PARTNO+DATE+LOC PK); MWOPTEMP (8f WO completion temp); NOTETEMP (5f BK_DESC_* note staging); NZITPRE (15f WO prefix auto-number). MT* family now fully documented. Stale ⬜ entries for BKAP*/BKAR*/BKGL* updated to reflect Pass 142/40 work.*
 
+---
+
+## Pass 147 — EDI, Physical Inventory, Routing mirrors, Serial, SUM* analytics, Misc (2026-06-22)
+
+### EDI Tables — BKEDI\*, CCEDIXRF, ISEDINFO
+
+EDI (Electronic Data Interchange) tables handle inbound X12 EDI purchase orders. The workflow maps inbound EDI → BKEDI staging → AR invoice creation (BKARINV/BKARINVL). DDF lines 4583–4756.
+
+**BKEDIDUN** (7f, `BKEDI_DUN_*`): Customer EDI DUNS cross-reference. DDF line 4583.
+File: `BKEDIDUN.B` | KEY: CUST(10)+DUNS(15).
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKEDI_DUN_CUST | STRING | 10 | Customer code — **PK component** |
+| 2 | BKEDI_DUN_DUNS | STRING | 15 | Customer DUNS number — **PK component** |
+| 3 | BKEDI_DUN_EDI | STRING | 1 | EDI enabled flag |
+| 4 | BKEDI_DUN_EFFDT | DATE | 4 | Effective date |
+| 5 | BKEDI_DUN_PRODS | STRING | 1 | Product data flag |
+| 6 | BKEDI_DUN_ADVS | STRING | 1 | Advance ship notice flag |
+| 7 | BKEDI_DUN_SHPCD | STRING | 1 | Ship code flag |
+
+DUNS = Data Universal Numbering System (D&B). Each row maps a customer code to its EDI DUNS, with capability flags indicating which EDI transaction sets are active for that trading partner.
+
+---
+
+**BKEDIH** (84f, `BKAR_INV_*`): EDI invoice staging header. DDF line 4595.
+File: `BKEDIH.B` | KEY: BKAR_INV_NUM.
+Uses the **identical** 84-field BKAR_INV_* schema as BKARINV (see tier1-tables.md). BKEDIH is a staging copy written by the EDI import process; once validated it is converted to an active BKARINV record. Fields 1–84 are identical offsets and types to BKARINV.
+
+---
+
+**BKEDIL** (28f, `BKAR_INVL_*`): EDI invoice staging lines. DDF line 4684.
+File: `BKEDIL.B` | KEY: BKAR_INVL_INVNM+BKAR_INVL_CNTR.
+Uses the **identical** 28-field BKAR_INVL_* schema as BKARINVL. EDI line staging counterpart to BKEDIH; each row is one line item from an inbound EDI purchase order. Converted to BKARINVL rows on posting.
+
+---
+
+**BKEDMSTR** (3f, `BKEDI_MST_*`): EDI system configuration master. DDF line 4717.
+File: `BKEDMSTR.B` | Single-row config record.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKEDI_MST_NEXTN | FLOAT | 8(0) | Next EDI transaction number |
+| 2 | BKEDI_MST_DUNS | STRING | 15 | Own company DUNS number |
+| 3 | BKEDI_MST_PATH | STRING | 66 | File path for EDI input/output files |
+
+---
+
+**BKEDNOTE** (3f, `BKEDI_NOTE_*`): EDI note attachment. DDF line 4725.
+File: `BKEDNOTE.B` | KEY: BKEDI_NOTE_EDI.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKEDI_NOTE_EDI | FLOAT | 8(0) | EDI transaction number — **PK** |
+| 2 | BKEDI_NOTE_SO | FLOAT | 8(0) | Linked SO number |
+| 3 | BKEDI_NOTE_NOTE | STRING | 80 | Note text |
+
+---
+
+**BKEDPOST** (2f, `BKEDI_POST_*`): EDI posting status. DDF line 4733.
+File: `BKEDPOST.B` | KEY: BKEDI_POST_INVN.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | BKEDI_POST_INVN | FLOAT | 8(0) | Invoice number — **PK** |
+| 2 | BKEDI_POST_CUST | STRING | 10 | Customer code |
+
+Minimal table tracking which EDI invoices have been posted; cleared after posting confirmation.
+
+---
+
+**CCEDIXRF** (6f, `CC_EDI_*`): Multi-company EDI ship-to cross-reference. DDF line 11081.
+File: `CCEDIXRF.B` | KEY: CC_EDI_CUSTCODE+CC_EDI_SENDERID.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | CC_EDI_CUSTCODE | STRING | 10 | Customer code — **PK component** |
+| 2 | CC_EDI_SENDERID | STRING | 15 | EDI sender ID (trading partner ISA qualifier) — **PK component** |
+| 3 | CC_EDI_SHPTCODE | STRING | 17 | Ship-to location code |
+| 4 | CC_EDI_SHPTZIP | STRING | 10 | Ship-to ZIP |
+| 5 | CC_EDI_SHIPTO | STRING | 10 | Internal ship-to location (EVO location code) |
+| 6 | CC_EDI_NEXT | FLOAT | 8(0) | Next sequence number |
+
+CC prefix = multi-company context. Maps EDI trading partner sender IDs to internal ship-to locations; supports multiple ship-to destinations per trading partner.
+
+---
+
+**ISEDINFO** (54f, `ISSR_INFO_*`): EDI UDF extension block. DDF line 15466.
+File: `ISEDINFO.B` | KEY: ISSR_INFO_SRNUM+ISSR_INFO_UID.
+Identical 54-field ISSR_INFO_* schema as ISSRINFO, ISQTINFO, ISBTCSB, ISSRSOMR (see Pass 145): 5×DATE_1..5 + 20×ALPHA_1..20 + EXTRA(100) + 5×DATE1..5 + 20×AL1..20. CODE field (15ch) provides a secondary key. Extends EDI transaction records with user-defined configurable fields.
+
+---
+
+### PI Tables — Physical Inventory
+
+DDF lines 25280–25317.
+
+**PIBINLOC** (14f, `PIBIN_LOC_*`): Physical inventory bin location. DDF line 25280.
+File: `PIBINLOC.B` | KEY: PIBIN_LOC_ITEM+PIBIN_LOC_LOC+PIBIN_LOC_BIN.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | PIBIN_LOC_ITEM | STRING | 15 | Part number — **PK component** |
+| 2 | PIBIN_LOC_LOC | STRING | 10 | Location code — **PK component** |
+| 3 | PIBIN_LOC_BIN | STRING | 15 | Bin code — **PK component** |
+| 4 | PIBIN_LOC_UOH | FLOAT | 8(2) | Units on hand at this bin |
+| 5 | PIBIN_LOC_CDATE | DATE | 4 | Count date (when last physically counted) |
+| 6 | PIBIN_LOC_VDATE | DATE | 4 | Verify date (when last verified) |
+| 7 | PIBIN_LOC_DFLT | STRING | 1 | Default bin flag (Y = primary bin for this item+loc) |
+| 8 | PIBIN_LOC_EXTRA | STRING | 100 | Extra / user-defined |
+| 9 | PIBIN_LOC_RVLVL | STRING | 5 | Review level code |
+| 10 | PIBIN_LOC_YEAR | STRING | 4 | Cycle count year |
+| 11 | PIBIN_LOC_QTR | STRING | 2 | Cycle count quarter |
+| 12 | PIBIN_LOC_FDATE | DATE | 4 | Freeze date (when inventory was frozen for count) |
+| 13 | PIBIN_LOC_LOT | STRING | 15 | Lot number (if lot-controlled) |
+| 14 | PIBIN_LOC_SER | STRING | 25 | Serial number (if serial-controlled) |
+
+Supports full warehouse bin-level physical inventory with cycle count scheduling (YEAR+QTR), freeze dates, and lot/serial tracking per bin.
+
+---
+
+**PIBINLOT** (14f, `PI_BINLOT_*`): Physical inventory bin lot tracking. DDF line 25299.
+File: `PIBINLOT.B` | KEY: PI_BINLOT_YR+PI_BINLOT_QTR+PI_BINLOT_ITEM+PI_BINLOT_LOC+PI_BINLOT_LOT+PI_BINLOT_BIN+PI_BINLOT_SER.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | PI_BINLOT_YR | STRING | 4 | Year — **PK component** |
+| 2 | PI_BINLOT_QTR | STRING | 2 | Quarter — **PK component** |
+| 3 | PI_BINLOT_ITEM | STRING | 15 | Part number — **PK component** |
+| 4 | PI_BINLOT_LOC | STRING | 10 | Location code — **PK component** |
+| 5 | PI_BINLOT_LOT | STRING | 15 | Lot number — **PK component** |
+| 6 | PI_BINLOT_BIN | STRING | 15 | Bin code — **PK component** |
+| 7 | PI_BINLOT_SER | STRING | 25 | Serial number — **PK component** |
+| 8 | PI_BINLOT_UOH | FLOAT | 8(2) | Units on hand (book count) |
+| 9 | PI_BINLOT_SQTY | FLOAT | 8(2) | System quantity (pre-freeze) |
+| 10 | PI_BINLOT_PSTD | STRING | 1 | Posted flag |
+| 11 | PI_BINLOT_FLAG | STRING | 1 | Status flag |
+| 12 | PI_BINLOT_DATE | DATE | 4 | Count date |
+| 13 | PI_BINLOT_NUM | FLOAT | 8(0) | Count sequence number |
+| 14 | PI_BINLOT_EXTRA | STRING | 50 | Extra / user-defined |
+
+Tracks one row per year+quarter+item+location+lot+bin+serial combo during a physical inventory cycle. SQTY = quantity from system before freeze; UOH = physically counted quantity. PSTD flag marks rows posted to the adjustments.
+
+---
+
+### Routing Mirror Tables
+
+ROUTING (62f) is the base routing master (CODE+OPER PK, MTRO_* prefix). Two identical mirrors exist:
+
+**ROUTAING** (62f, `MTRO_*`): "A" company routing mirror. DDF line 25352.
+File: `ROUTAING.B` | KEY: MTRO_CODE+MTRO_OPER. **Identical** 62-field schema as ROUTING. Contains two anomalous fields (42–43) named MTWO_MISC_COST/MTWO_MISC_DESC (MTWO prefix instead of MTRO) — appears to be a schema carry-over from a file merge. Holds the "A" company routing operation records for the multi-company router.
+
+**ROUTTEMP** (62f, `MTRO_*`): Routing session temporary table. DDF line 25486.
+File: `ROUTTEMP.B` | KEY: MTRO_CODE+MTRO_OPER. **Identical** 62-field schema as ROUTING. Cleared at session start; holds routing data being edited before saving to ROUTING/ROUTAING.
+
+---
+
+### SERIAL / SERIALH — Serial Number Master and History
+
+**SERIAL** (30f, `MTSER_*`): Serial number master. DDF line 25605.
+File: `SERIAL.B` | KEY: MTSER_CODE+MTSER_SERIAL.
+| # | Field | Type | Size | Meaning |
+|---|-------|------|------|---------|
+| 1 | MTSER_CODE | STRING | 15 | Part number — **PK component** |
+| 2 | MTSER_SERIAL | STRING | 25 | Serial number — **PK component** |
+| 3 | MTSER_LOT | STRING | 15 | Lot number |
+| 4 | MTSER_PO | FLOAT | 8(0) | Receipt PO number |
+| 5 | MTSER_RECDOC | FLOAT | 8(0) | Receipt document number |
+| 6 | MTSER_VENDOR | STRING | 10 | Vendor code |
+| 7 | MTSER_RECDATE | DATE | 4 | Receipt date |
+| 8 | MTSER_POCOST | FLOAT | 8(4) | PO cost (cost at receipt) |
+| 9 | MTSER_SO | FLOAT | 8(0) | Sales order number |
+| 10 | MTSER_CUSTCODE | STRING | 10 | Customer code |
+| 11 | MTSER_SHIPDATE | DATE | 4 | Ship date |
+| 12 | MTSER_SELLPRICE | FLOAT | 8(4) | Selling price |
+| 13 | MTSER_WO | FLOAT | 8(0) | Work order prefix |
+| 14 | MTSER_ISSDATE | DATE | 4 | Issue date (to WO) |
+| 15 | MTSER_ISSCOST | FLOAT | 8(4) | Issue cost (when issued to WO) |
+| 16 | MTSER_INRECDATE | DATE | 4 | Internal receipt date (from WO completion) |
+| 17 | MTSER_INRECCOST | FLOAT | 8(4) | Internal receipt cost |
+| 18 | MTSER_EXPDATE | DATE | 4 | Expiry / warranty date |
+| 19 | MTSER_WOCODE | STRING | 15 | WO assembly part code |
+| 20–24 | MTSER_NOTES_1..5 | STRING×5 | 30 | Notes lines 1–5 |
+| 25 | MTSER_ONHAND | FLOAT | 8(2) | Units on hand (1.0 if in stock, 0.0 if shipped/issued) |
+| 26 | MTSER_LOC | STRING | 10 | Current location code |
+| 27 | MTSER_WOSUF | UBINARY | 2 | WO suffix |
+| 28 | MTSER_EXTRA | STRING | 50 | Extra / user-defined |
+| 29 | MTSER_BIN | STRING | 15 | Bin code |
+| 30 | MTSER_INV | FLOAT | 8(0) | Invoice number (when sold) |
+
+Full lifecycle tracking: receipt from vendor (PO/RECDOC/VENDOR/RECDATE/POCOST) → in-stock (LOC/BIN/ONHAND=1) → issued to WO (WO/WOSUF/ISSDATE/ISSCOST) → completed (INRECDATE/INRECCOST/WOCODE) → sold (SO/CUSTCODE/SHIPDATE/SELLPRICE/INV). EXPDATE supports warranty/shelf-life expiry tracking.
+
+**SERIALH** (30f, `MTSER_*`): Serial number history archive. DDF line 25640.
+File: `SERIALH.B` | **Identical** 30-field schema as SERIAL. Receives SERIAL records when a serial is fully disposed (sold + invoiced). Provides historical lookup of shipped serial numbers.
+
+---
+
+### SUM\* — Analytics Summary Tables
+
+Four small summary tables providing pre-aggregated analytics by period. DDF lines 25675–25731.
+
+**SUMCUST** (5f, `SUMCUST_*`): Customer sales summary by year+month. DDF line 25675.
+File: `SUMCUST.B` | KEY: SUMCUST_CUST+SUMCUST_YEAR+SUMCUST_MONTH.
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | SUMCUST_CUST | STRING(10) | Customer code — **PK component** |
+| 2 | SUMCUST_YEAR | UBINARY | Year — **PK component** |
+| 3 | SUMCUST_MONTH | UBINARY | Month — **PK component** |
+| 4 | SUMCUST_SALES | FLOAT(8,4) | Net sales amount |
+| 5 | SUMCUST_COGS | FLOAT(8,4) | Cost of goods sold |
+
+---
+
+**SUMINV** (19f, `SUMINV_*`): Inventory activity summary by part+month+location. DDF line 25685.
+File: `SUMINV.B` | KEY: SUMINV_PARTNO+SUMINV_MONTH+SUMINV_YEAR+SUMINV_LOCATION.
+| # | Fields | Size | Meaning |
+|---|--------|------|---------|
+| 1 | SUMINV_PARTNO | STRING(15) | Part number — **PK component** |
+| 2 | SUMINV_MONTH | UBINARY | Month — **PK component** |
+| 3 | SUMINV_YEAR | UBINARY | Year — **PK component** |
+| 4 | SUMINV_LOCATION | STRING(10) | Location code — **PK component** |
+| 5–6 | SUMINV_DOL_ADJ / UN_ADJ | FLOAT×2(8,4/8,2) | Adjustments: dollars / units |
+| 7–8 | SUMINV_DOL_ISS / UN_ISS | FLOAT×2 | Issues to WO: dollars / units |
+| 9–10 | SUMINV_DOL_RWIP / UN_RWIP | FLOAT×2 | Returns from WIP: dollars / units |
+| 11–12 | SUMINV_DOL_RSTK / UN_RSTK | FLOAT×2 | Returns to stock: dollars / units |
+| 13–14 | SUMINV_DOL_SHPS / UN_SHPS | FLOAT×2 | Shipments: dollars / units |
+| 15 | SUMINV_DOL_SHPC | FLOAT(8,4) | Shipment cost |
+| 16–17 | SUMINV_DOL_WORC / UN_WORC | FLOAT×2 | WO completions: dollars / units |
+| 18–19 | SUMINV_DOL_FILL / UN_FILL | FLOAT×2 | Fill (putaway): dollars / units |
+
+Transaction-type split: ADJ=adjustment, ISS=WO issue, RWIP=WIP return, RSTK=stock return, SHPS=shipment, WORC=WO completion, FILL=putaway. Pairs DOL (dollar value) and UN (unit quantity) for each type.
+
+---
+
+**SUMPNCUS** (6f, `SUMPNCUS_*`): Part+customer sales summary by month. DDF line 25709.
+File: `SUMPNCUS.B` | KEY: SUMPNCUS_CUST+SUMPNCUS_PARTNO+SUMPNCUS_YEAR+SUMPNCUS_MONTH.
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | SUMPNCUS_CUST | Customer code — **PK component** |
+| 2 | SUMPNCUS_PARTNO | Part number — **PK component** |
+| 3 | SUMPNCUS_YEAR | Year — **PK component** |
+| 4 | SUMPNCUS_MONTH | Month — **PK component** |
+| 5 | SUMPNCUS_SALES | Net sales (FLOAT/8,4) |
+| 6 | SUMPNCUS_COGS | COGS (FLOAT/8,2) |
+
+Cross-indexed by both part and customer — enables part-level sales analysis per customer per month.
+
+---
+
+**SUMWC** (7f, `SUMWC_*`): Work center activity summary by month. DDF line 25720.
+File: `SUMWC.B` | KEY: SUMWC_WORKCTR+SUMWC_YEAR+SUMWC_MONTH.
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | SUMWC_WORKCTR | Work center code (12ch) — **PK component** |
+| 2 | SUMWC_YEAR | Year — **PK component** |
+| 3 | SUMWC_MONTH | Month — **PK component** |
+| 4 | SUMWC_LABOR | Labor hours (FLOAT/8,2) |
+| 5 | SUMWC_SETUP | Setup hours (FLOAT/8,2) |
+| 6 | SUMWC_UNITS | Units produced (FLOAT/8,2) |
+| 7 | SUMWC_SCRAP | Scrap units (FLOAT/8,2) |
+
+---
+
+### Misc Tables — Codes, Audit, Staging, Development
+
+**CLASMSTR** (2f, `MTCLASS_M_*`): Multi-class master. DDF line 11092.
+File: `CLASMSTR.B` | KEY: MTCLASS_M_CLASS.
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | MTCLASS_M_CLASS | STRING(4) — **PK** |
+| 2 | MTCLASS_M_DESC | STRING(30) — Class description |
+
+Simple lookup table for CLASS codes used in MTICMSTR and the MT multi-class item system.
+
+---
+
+**CLASS** (3f, `MTCLASS_*`): Class/location combo. DDF line 11099.
+File: `CLASS.B` | KEY: MTCLASS_CLASS+MTCLASS_LOC.
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | MTCLASS_CLASS | STRING(4) — **PK component** |
+| 2 | MTCLASS_LOC | STRING(10) — **PK component** |
+| 3 | MTCLASS_DESC | STRING(30) — Description for this class+location combo |
+
+Associates a class code with a location for multi-class, multi-location inventory.
+
+---
+
+**QCCODES** (2f, `MTQC_*`): QC codes master. DDF line 25318.
+File: `QCCODES.B` | KEY: MTQC_CODE.
+| # | Field | Meaning |
+|---|-------|---------|
+| 1 | MTQC_CODE | STRING(2) — **PK** |
+| 2 | MTQC_DESC | STRING(30) — Description |
+
+Simple 2-character QC code lookup (defect classifications, disposition codes, etc.) used by the MT/QC module.
+
+---
+
+**ROCHG** (22f, `RO_CHG_*`): Routing change audit trail. DDF line 25325.
+File: `ROCHG.B` | KEY: RO_CHG_PART+RO_CHG_OPER.
+Before/after pairs for routing operation edits. Fields use A- (after) and B- (before) prefix on matched pairs:
+| Fields | Type | Meaning |
+|--------|------|---------|
+| PART(15)+OPER(UBINARY/2) | — | **PK**: part number + operation number |
+| AOPER / DOPER | STRING(1) | Add / delete operation flags |
+| CDATE | DATE | Change date |
+| USER | STRING(15) | User who made the change |
+| ALONG / BLONG | FLOAT(8,7) | Run time: after / before (7-decimal precision) |
+| ASETUP / BSETUP | TIME | Setup time: after / before |
+| ATMACH / BMATCH | STRING(4) | Machine type: after / before |
+| ATOOL / BTOOL | STRING(15) | Tool code: after / before |
+| AWC / BWC | STRING(12) | Work center: after / before |
+| ASTDT / BSTDT | STRING(1) | Standard time flag: after / before |
+| ANUMPERS / BNUMPERS | FLOAT(8,2) | Number of persons: after / before |
+| AEXTRA / BEXTRA | STRING(100) | Extra UDF: after / before |
+
+---
+
+**SCHEDCAL** (6f, `SCH_CAL_*`): Shop scheduling calendar. DDF line 25553.
+File: `SCHEDCAL.B` | KEY: SCH_CAL_DATE.
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | SCH_CAL_DATE | DATE | Calendar date — **PK** |
+| 2 | SCH_WH_FLAG | STRING(1) | Work/holiday flag (W=working, H=holiday) |
+| 3 | SCH_SHOP_DATE | FLOAT(8,0) | Shop calendar ordinal (working day count forward) |
+| 4 | SCH_BACK_DATE | FLOAT(8,0) | Backward shop calendar ordinal |
+| 5 | SCH_SHOP_SLASH | DATE | Next working date (forward slash) |
+| 6 | SCH_BACK_SLASH | DATE | Previous working date (backward slash) |
+
+Used by MRP and scheduling to compute shop lead times — translates calendar dates to shop working-day ordinals, skipping weekends and holidays.
+
+---
+
+**SCHWO** (10f, `SWO_*`): WO scheduling work table. DDF line 25564.
+File: `SCHWO.B` | KEY: SWO_WOPRE+SWO_WOSUF.
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | SWO_WOPRE | FLOAT(8,0) | WO prefix — **PK component** |
+| 2 | SWO_WOSUF | UBINARY(2) | WO suffix — **PK component** |
+| 3 | SWO_OPCOUNT | UBINARY(2) | Number of open operations |
+| 4 | SWO_RUN_DAYS | FLOAT(8,4) | Total run days remaining |
+| 5 | SWO_DAYS_TOGO | FLOAT(8,0) | Shop days to due date |
+| 6 | SWO_CRATIO | FLOAT(8,5) | Critical ratio (days_togo / run_days); < 1.0 = behind schedule |
+| 7 | SWO_SHOP_START | FLOAT(8,0) | Scheduled start (shop ordinal) |
+| 8 | SWO_SHOP_FINISH | FLOAT(8,0) | Scheduled finish (shop ordinal) |
+| 9 | SWO_SHOP_DUE | FLOAT(8,0) | Due date (shop ordinal) |
+| 10 | SWO_CONTENTION | FLOAT(8,0) | Work center contention score |
+
+Work table populated by the scheduler (SH module). Critical ratio < 1.0 means the WO is behind schedule. CONTENTION reflects queue depth at constraining work centers.
+
+---
+
+**SCRAP** (21f, `MTSCRAP_*`): Scrap/defect codes master. DDF line 25579.
+File: `SCRAP.B` | KEY: MTSCRAP_CODE.
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | MTSCRAP_CODE | STRING(2) | Scrap code — **PK** |
+| 2 | MTSCRAP_DESC | STRING(30) | Description |
+| 3 | MTSCRAP_TYPE | STRING(1) | Type (S=scrap, R=rework, etc.) |
+| 4 | MTSCRAP_EXTRA | STRING(50) | Extra / user-defined |
+| 5 | MTSCRAP_GLACCT | STRING(10) | GL account for scrap posting |
+| 6 | MTSCRAP_GLDPT | STRING(4) | GL dept for scrap posting |
+| 7–11 | MTSCRAP_FLAG_1..5 | STRING(1)×5 | User flags 1–5 |
+| 12–16 | MTSCRAP_ALPHA_1..5 | STRING(30)×5 | User alpha fields 1–5 |
+| 17–21 | MTSCRAP_DATE_1..5 | DATE×5 | User date fields 1–5 |
+
+5-flag + 5-alpha + 5-date UDF pattern (21 total). GL account pair enables direct scrap cost posting during WO completion.
+
+---
+
+**TEMPOLD** (4f, `BKCM_ACTD_*`): Legacy CRM activity staging temp. DDF line 25732.
+File: `TEMPOLD.B` | KEY: BKCM_ACTD_CODE+BKCM_ACTD_DCODE+BKCM_ACTD_DATE.
+Uses BKCM_ACTD_* field names (same prefix as BKCMACTD). Appears to be a prior-session staging table from an older CM module revision; `TEMPOLD` name implies superseded. Fields: CODE(10)+DCODE(2)+DATE+EXTRA(100).
+
+---
+
+**TESTARRA** (55f, `TEST`+`TARRAY_*`): Development test artifact. DDF line 25741.
+File: `TESTARRA.B` | KEY: TEST.
+TEST(10) primary key followed by 54 × TARRAY_N (1-char STRING) fields mapping a char array. This is a developer scaffold table for testing Btrieve array access patterns — not used in production workflows.
+
+---
+
+**BKESTCFG** (13f, `BKEST_CFG_*`): Estimating system configuration. DDF line 4740.
+File: `BKESTCFG.B` | KEY: BKEST_CFG_NUM.
+| # | Field | Type | Meaning |
+|---|-------|------|---------|
+| 1 | BKEST_CFG_NUM | FLOAT(8,0) | Config record number — **PK** |
+| 2 | BKEST_CFG_STAT | STRING(1) | Status |
+| 3 | BKEST_CFG_CLASS | STRING(4) | Item class |
+| 4 | BKEST_CFG_FORM | STRING(1) | Form type |
+| 5 | BKEST_CMPY_INFO | STRING(1) | Company info flag |
+| 6 | BKEST_CFG_DAYS | UBINARY(2) | Days |
+| 7–11 | BKEST_CFG_ENDLN_1..5 | STRING(30)×5 | Quote end lines (5 × 30-char footer text) |
+| 12 | BKEST_CFG_SONUM | FLOAT(8,0) | Last used SO number |
+| 13 | BKEST_CFG_EXTRA | STRING(100) | Extra / user-defined |
+
+Estimating module configuration — quote footer text, item class defaults, SO number counter. Related to the ES (Estimating) module tables ISESTASM/ISESTDTL.
+
+---
+
+*Pass 147 complete: 22 tables documented — BKEDI* family (BKEDIDUN 7f, BKEDIH 84f BKARINV clone, BKEDIL 28f BKARINVL clone, BKEDMSTR 3f, BKEDNOTE 3f, BKEDPOST 2f); CCEDIXRF (6f CC EDI ship-to routing); ISEDINFO (54f ISSR_INFO_* UDF clone); PIBINLOC (14f PI bin location, cycle count YEAR+QTR); PIBINLOT (14f PI bin lot tracking, SQTY vs UOH); ROUTAING + ROUTTEMP (62f × 2, identical ROUTING mirrors); SERIAL + SERIALH (30f × 2, identical serial number lifecycle + history); SUM* group (SUMCUST 5f, SUMINV 19f 7-type inventory activity, SUMPNCUS 6f, SUMWC 7f); misc group (CLASMSTR 2f, CLASS 3f, QCCODES 2f, ROCHG 22f routing audit, SCHEDCAL 6f shop calendar, SCHWO 10f WO scheduling work, SCRAP 21f defect codes, TEMPOLD 4f legacy CRM temp, TESTARRA 55f dev artifact, BKESTCFG 13f estimating config). ED* and PI* ⬜ entries now covered.*
+
