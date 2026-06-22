@@ -17622,12 +17622,43 @@ Three tables:
 
 ---
 
-## Java Application Inventory (Pass 157, 2026-06-22)
+## Java Application Inventory (Pass 157+159, 2026-06-22)
 
 EvoERP ships 30+ Java application JARs on `\\i2s109-solidcrm\DBAMFG$\`. Each is launched by a
 TAS Pro 7 stub program (usually 5–30 procs) that populates ISJAVA or uses JAVA.PATH/JAVA.PATH2 vars
 to shell-execute the JAR. The JARs implement the heavy-UI viewer / analysis layer that TAS Pro 7 UI
 cannot efficiently render.
+
+### TAS Stub Program Families (Pass 159)
+
+Three distinct TAS Pro 7 stub patterns connect to the Java layer:
+
+**Pattern A — Thin ISTECH.LIB launchers (23–27 procs, JAVA.PATH/JAVA.NAME vars):**
+These programs do nothing except look up a JAR path and launch it. Programs: PROJECTEDSTOCK (23p),
+SQLEXPORT (23p), COMMISSIONRPT (23p), INVCHANGE (24p), ITEMCLASS (24p), PURCHITEM (26p),
+WORKCENTERLOAD (26p), CASHFLOW (26p), CRMDASHBOARD (26p), PURCHVEND (26p), PURCHTXN (24p),
+BOMTREE (27p), EDITBOMTREE (27p), t7jtemp (27p), t7jftrans (27p). All from ISTECH.LIB.
+`PROJECTEDSTOCK.RWN` — JAR name unknown (not yet decrypted to read JAVA.NAME constant).
+
+**Pattern B — EVO.LIB/LISTG60.LIB module panels (50–65 procs, PROGRAM.HEADER/VS/INIT/POST vars):**
+Full module programs with display state management that open a Java panel as their primary UI.
+Programs: T7VSCHED (94p), T7JSETTINGS (70p, Sisense BI config: SERIAL7/CDEF.BUFF/SERVER_PATH),
+T7JAVASET (57p, basic Java connection URL/HOST/PORT setup), t7jpos (54p, POS module, POSSOURCE/POSDEST),
+T7JCRM (62p, CRM Java panel), t7jbs (63p, Business Score embedded panel), T7JODPSALES (52p, JO drill-down),
+t7jsacc/jsaSRS/jsoi/jsaPBI/jsaIc (50p each, JS BI data bridges).
+
+**Pattern C — Large TAS programs using Java for sub-operations (HOST/PORT/NAME, 100+ procs):**
+Full TAS Pro 7 business programs that use the Java connection for notifications, AvaTax, or
+real-time alerts — not Java-primary. Programs include: T7SOA (606p, SO Entry → AvaTax/email),
+T7ING (323p, inventory adj), T7POJC (323p, PO QC receiving), T7WOS (197p, WO ship/boxing),
+T7MDefaults (435p, global handle initializer), EvoERPmenu (147p, main menu startup initializer),
+T7SRE (213p, SO return entry / RMA), t7hhssoe (267p, HH ship), T7SOE/SOD/SOGA/SOR (SO variants).
+
+**T7MDefaults** (435p, ISTECH.LIB) is the **global system startup handle initializer**: called from
+the main menu to open shared handles (FO.H/SYAP.H/GLCOA.H/DCSHFT.H/SHIPCO.H/DIGSIG.H/EDIMSTR.H),
+set module enable flags (SYSACCTGON/SYSARON/SYSAPON), and start the Sisense keepalive timer
+(TENMIN.KILLER/LOOP.TIME). It also reads LGS config (DCL.WEEKS/PERIOD.FREQ/PERIOD.PDTE) and
+EIM co-product shift codes (EIMCO.SHIFT2/3).
 
 ### Module-to-JAR Mapping
 
@@ -17682,6 +17713,6 @@ database access and depend on:
 - Spring 3.0.7 (`lib/spring-*.jar`) — dependency injection for larger apps
 - Java 8 runtime (`java/` folder) for 32-bit TAS Pro 7, Java 11+ (`Java2/`) for newer apps
 
-**Confidence: 72/100** — All 37 JARs enumerated with Main-Class; package names confirm module
-assignments; exact TAS stub → JAR dispatch mapping not yet traced for most modules; JAR source not
-decompiled.
+**Confidence: 75/100** — All 37 JARs enumerated with Main-Class; package names confirm module
+assignments; 3 stub patterns classified (Pass 159); PROJECTEDSTOCK JAR name unresolved; T7JAVASET vs
+T7JSETTINGS distinction confirmed; JAR source not decompiled.
