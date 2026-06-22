@@ -3682,3 +3682,347 @@ remnant from an older module version. Fields: code, date-code, date, extra.
 
 **TESTARRA** (101f) / **TESTFILE** (11f) — TAS Pro 7 developer test tables. Not operational.
 
+---
+
+## Pass 142 — Pre-IS* DDF Tables: AP, AR, BM, CM Families
+
+*Source: `samples/ddf/schema.md` lines 0–4166 (DDF read 2026-06-22)*
+
+This pass documents the pre-IS* BK* families that were absent from tier2-tables.md. These tables appear in the DDF before the IS* module tables (~line 11629). All field counts and offsets are confirmed from the DDF.
+
+---
+
+### System / Utility Tables
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| AHSYLOG | 23 | AHSY_ | System activity log: user, date, time, program, action |
+| ARTTEMP | 12 | ARTT_ | A/R temp work table (report/processing scratch) |
+| BKABCUST | 5 | BKAB_ | A/R customer abbreviation/alternate code map |
+| BKABVEND | 2 | BKAB_ | A/P vendor abbreviation/alternate code map |
+| BKACTRPT | 53 | BKAC_ | Activity report control / filter parameters |
+
+**AHSYLOG** (23f, AHSY_ prefix): Audit trail for user logins and program launches. Key fields: `AHSY_USER` (STRING/10), `AHSY_DATE` (DATE), `AHSY_TIME` (TIME), `AHSY_PROG` (STRING/15), `AHSY_ACTION` (STRING/1), plus extended detail fields.
+
+**BKACTRPT** (53f, BKAC_ prefix): Report parameter block for activity/usage reports — stores filter ranges, sort options, output type flags. Largest non-master table in this section.
+
+---
+
+### A/P Module: BKAP* Family
+
+#### Core Vendor Master
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| BKAPVEND | 72 | BKAP_VEND_ | Vendor master (active) |
+| BKAPVND2 | 63 | BKAP2_ | Vendor extended — 5 user-defined fields per type |
+| BKAPEVND | 73 | BKAP_ | Vendor entry (data entry staging) |
+| BKAPNOTE | 8 | BKAP_NOTE_ | Vendor notes (8 fields: VEND + CNTR + 6 NOTE lines) |
+
+**BKAPVEND** (72f): Vendor master. PK = `BKAP_VEND_NUM` (UBINARY/2). Key fields: vendor code (STRING/10), name/address block, tax ID, payment terms (`BKAP_VEND_TERMS`, UBINARY/2), default GL account/dept, 5 email slots (128 each), IS* extension fields (TAXGRP, TAXIN, MCCODE). 1099 flags, credit limit, YTD/LYR purchase totals, 10 notes lines (80-char each).
+
+**BKAPVND2** (63f, BKAP2_ prefix): Vendor extended record — 5 user-defined slots each for: ALPH (25-char string), DATE1 (DATE), DATE2 (DATE), NUML (FLOAT), NUMS (UBINARY). Plus CONT/TITLE/PHONE/FAX, 2 email slots, DEAR fields. PK = `BKAP2_VEND` (STRING/10).
+
+#### A/P Description (Narrative) Satellites — BK_DESC_ Pattern
+
+| Table | Fields | Pattern | Purpose |
+|-------|--------|---------|---------|
+| BKAPADSC | 5 | BK_DESC_ | A/P entry description lines |
+| BKAPDESC | 5 | BK_DESC_ | A/P description lines (active) |
+| BKAPHDSC | 5 | BK_DESC_ | A/P history description lines |
+
+All three share the **BK_DESC_ pattern**: `BK_DESC_CODE` (FLOAT/8) + `BK_DESC_NUM` (UBINARY/2) + `BK_DESC_LINE` (UBINARY/2) + `BK_DESC_NOTES` (STRING/1) + `BK_DESC_DESC` (STRING/60). PK = CODE + LINE. Used to store multi-line narrative text attached to AP vouchers.
+
+#### A/P Check Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKAPCHKF | 12 | A/P check file (current checks) |
+| BKAPCHKH | 12 | A/P check history |
+
+Both share the same 12-field schema: `BKAP_CHK_INVNUM` (FLOAT/8), `BKAP_CHK_VENDNUM` (UBINARY/2), `BKAP_CHK_CHKNUM` (FLOAT/8), date, amount, cleared flag, discount, etc.
+
+#### A/P Invoice / GL Distribution
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| BKAPACCN | 154 | BKAP_ACCN_ | A/P account contacts (10 contact slots × 15 field types) |
+| BKAPINVL | 390 | BKAP_INV_ | A/P invoice GL distribution (75 GL slots) |
+| BKAPRIVL | 390 | BKAP_INV_ | A/P invoice GL distribution — history/reversed |
+| BKAPINVT | 19 | BKAP_INVT_ | A/P invoice temp (work table) |
+| BKAPEIVT | 19 | BKAP_INVT_ | A/P invoice entry temp (same schema as BKAPINVT) |
+| BKAPDEP | 6 | BKAP_DEP_ | A/P department code table |
+
+**BKAPINVL** (390f): Most complex AP table. Stores 75 GL distribution slots, each with 4 arrays indexed 1..75:
+- `BKAP_INV_GLACT_n` (STRING/10) — GL account
+- `BKAP_INV_GLDPT_n` (STRING/4) — GL department
+- `BKAP_INV_DC_n` (STRING/1) — Debit/Credit flag
+- `BKAP_INV_GLD_n` (STRING/15) — GL description
+- `BKAP_INV_DAMT_n` (FLOAT/8/2) — Distribution amount
+
+Plus metadata: INVNUM, VENDNUM, INVDATE, POSTDATE, totals. 390 fields total. **BKAPRIVL** is byte-for-byte identical — the reversed/history version.
+
+#### A/P Purchase Order Tables
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| BKAPAPO | 58 | BKAP_PO_ | A/P PO entry (data entry) |
+| BKAPAPOL | 38 | BKAP_POL_ | A/P PO entry lines |
+| BKAPPO | 57 | BKAP_PO_ | A/P PO active |
+| BKAPPOL | 38 | BKAP_POL_ | A/P PO active lines |
+| BKAPHPO | 57 | BKAP_PO_ | A/P PO history |
+| BKAPHPOL | 38 | BKAP_POL_ | A/P PO history lines |
+| BKAPRFQ | 57 | BKAP_PO_ | A/P RFQ (Request for Quote) |
+| BKAPRFQL | 38 | BKAP_POL_ | A/P RFQ lines |
+| BKAPQUOT | 49 | BKRFQ_ | A/P quotation (vendor quote response) |
+
+**BKAP_PO_ schema** (57–58 fields): Header contains vendor code/num, PO number, dates (order, promised, required), ship-to address block, freight/terms/FOB, approval flag, buyer, totals. BKAPAPO has 58f (1 extra temp field).
+
+**BKAP_POL_ schema** (38 fields): Line-level data — part code, description, ordered qty, received qty, unit price, extended amount, GL acct/dept, line number, status.
+
+**BKAPQUOT** (49f, BKRFQ_ prefix): Vendor quote response — RFQ number, vendor, quoted price/qty/lead-time, expiry date, notes.
+
+---
+
+### A/R Module: BKAR* Family
+
+#### Customer Master
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| BKARCUST | 106 | BKAR_ | A/R customer master |
+| BKARECST | 106 | BKAR_ | Customer master — estimating module view (identical schema) |
+| BKARSHIP | 106 | BKAR_ | A/R alternate ship-to addresses (identical schema) |
+| BKARDEP | 6 | BKAR_DEP_ | A/R department code |
+
+**BKARCUST** (106f, PK = `BKAR_CUSTCODE` STRING/10): Most complete customer record. Fields:
+- Address: CUSTNAME, ADD1, ADD2_1/2, CITY, STATE, ZIP, COUNTRY
+- Contacts: CONTACT_1..5 (STRING/30 each), TELEPHONE_1..5 (STRING/25 each)
+- Credit: CREDITLMT, CHG_INTRST, REMAINCRD, OUTINV, CREDIT_HLD
+- Sales history: GROSS/COGS/NET/PNET × MTD/YTD/LYR/PVAR (16 FLOAT fields)
+- Credit aging: OUT_CREDIT_1/2
+- Tax: TAX_STATE, TAX_LOCAL, TAX_YN
+- Billing: STATEMENT, SLSP_NUM_1/2, TERMS_NUM, PRICE_MAT, DISC_CODE
+- Notes: NOTES_1..10 (STRING/80 each)
+- GL: GLACCT, GLDPT
+- Logistics: FOB, SHIPTO, SHIPVIA, CARRIER, SHP_WINDOW, RECV_HOURS, SHP_TOLRNC
+- CRM: LEAD_SRC, LEAD_SRC2, TERRITORY, SORT, COOP_RATE, COOP_AMT, COMM_1/2
+- QC/Compliance: QC_INFO, REQD_CERTS, RESALE_NO, PURCH_AGMT
+- Contact ext: FAX_PHONE, EMAIL_1..5 (STRING/128 each)
+- IS* extensions: IS_TAXGRP, IS_TAXIN, IS_MCCODE, IS_REP
+
+**BKARECST** and **BKARSHIP** are byte-for-byte identical 106-field schemas — BKARECST gives the estimating module access to customer data; BKARSHIP stores alternate ship-to addresses (same physical layout, different PK usage).
+
+#### A/R Description (Narrative) Satellites — BK_DESC_ Pattern
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKARDESC | 5 | A/R description lines |
+| BKARDPST | 5 | A/R description posted |
+| BKARHDSC | 5 | A/R history description |
+| BKARRDSC | 5 | A/R return/credit description |
+
+All four share the **BK_DESC_ pattern** (same 5-field schema as BKAPADSC — see above).
+
+#### A/R Check Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKARCHKF | 12 | A/R check file |
+| BKARCHKH | 12 | A/R check history |
+
+Identical 12-field schema to BKAPCHKF (different prefix BKAR_CHK_).
+
+#### A/R Invoice Tables
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| BKARINV | 84 | BKAR_INV_ | A/R invoice header (current) |
+| BKARHINV | 84 | BKAR_INV_ | A/R invoice header (history) — identical schema |
+| BKARRINV | 84 | BKAR_INV_ | A/R return/credit invoice — identical schema |
+| BKARINVL | 28 | BKAR_INVL_ | A/R invoice lines (current) |
+| BKARHIVL | 28 | BKAR_INVL_ | A/R invoice lines (history) — identical schema |
+| BKARRIVL | 28 | BKAR_INVL_ | A/R return/credit lines — identical schema |
+| BKARSIVL | 28 | BKAR_INVL_ | A/R sales invoice lines variant (adds SCCOG field) |
+| BKARINVT | 23 | BKAR_INVT_ | A/R invoice temp |
+| BKAREIVT | 24 | BKAR_INVT_ | A/R invoice entry temp (adds BKAB_PERIOD field) |
+| BKARINVI | 16 | BKAR_INVI_ | A/R invoice item temp (SO-to-invoice sequence) |
+| BKARINVV | 77 | BKAR_INVV_ | A/R invoice GL distribution (10 GL slots) |
+| BKARHTAX | 5 | BKAR_TAX_ | A/R invoice tax breakdown |
+
+**BKAR_INV_ schema** (84f): Invoice header. Key fields: INVNM (invoice number, FLOAT/8), CUSTCODE, INVDATE, POSTDATE, DUE date, billing address block (BILCOD/BILNME/BILA1-3/BILCTY/BILST/BILZIP/BILCNT/BILATN — 10 fields), payment terms, salesperson 1/2, tax amounts, freight, totals (subtotal, discount, tax, freight, net), misc. GL acct/dept for revenue posting. **BKARHINV**, **BKARRINV** are byte-identical.
+
+**BKAR_INVL_ schema** (28f): Invoice line items. Key fields: INVNM (FK), CNTR (line counter, UBINARY/2), ESD (estimated ship date, DATE), PCODE (part code, STRING/15), PDESC (description, STRING/30), PQTY, PPRCE, PDISC, PEXT (extended), PCOGS, ITYPE (item type), TXBLE (taxable flag), UBO (unit backorder qty), USTD (unit standard cost), RTS (return-to-stock), LOC (location), ABQTY (allocated backorder), UM_LN_1/2 (units of measure), COMPR_1/2 (component prices), ASD (actual ship date), TXAMT, FRGHT (freight), COOP, OOQTY (original order qty), EXTRA. **BKARHIVL**, **BKARRIVL** are identical. **BKARSIVL** adds SCCOG (standard cost of goods, FLOAT/8/4) as field 28.
+
+**BKARINVV** (77f, BKAR_INVV_ prefix): AR invoice GL distribution — smaller than AP's 75-slot BKAPINVL. Stores 10 GL distribution slots: GLACT_n/GLDPT_n/DC_n/GLD_n/DAMT_n (n=1..10) = 50 fields, plus invoice number, customer code, date, control totals, and metadata = 77 fields total.
+
+#### A/R Transaction Tables
+
+| Table | Fields | Prefix | Purpose |
+|-------|--------|--------|---------|
+| BKART | 12 | BKART_ | A/R transaction ledger |
+| BKARTNOT | 3 | BKART_NOT_ | A/R transaction notes |
+| BKARTXN | 14 | BKAR_TXN_ | A/R transaction detail (lot/serial tracking) |
+| BKARTXNB | 14 | BKAR_TXN_ | A/R transaction detail — backup/batch variant (identical) |
+| BKARTXNS | 14 | BKAR_TXN_ | A/R transaction detail — shipped variant (identical) |
+
+**BKART** (12f): AR ledger entry. PK = CUST + TRXN. Fields: CUST (STRING/10), TRXN (transaction number, FLOAT/8), TYPE (STRING/1: I=invoice, P=payment, C=credit, etc.), DISC, AMOUNT, POSTDATE, CNTR, ENTDATE, TRXNLINK, INVC, CHECK, NOTE.
+
+**BKARTXN** (14f): Lot/serial tracking for shipped items. PK = SONUM + LINE + LOT + SERIAL. Fields: SONUM, CODE (part), DESC, QTY, LOT (STRING/15), SERIAL (STRING/25), DATE, STOCK (location), LINE, LOC, TMPSO (temp SO reference), SRNUM (serial number float), EXTRA, BIN. BKARTXNB and BKARTXNS are byte-identical.
+
+---
+
+### BOM Module: BKBM* Family
+
+#### BOM Line Tables (Shared Schema)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKBMMSTR | 26 | BOM master (production standard) |
+| BKBMAMTR | 26 | BOM alternate material |
+| BKBMAVAL | 26 | BOM alternate validation copy |
+| BKBMEMTR | 26 | BOM engineering master |
+| BKBMSUMM | 26 | BOM summary/rollup |
+
+All five share the **BKBM_ line schema** (26f):
+- PK: `BKBM_PARENT` (STRING/15) + `BKBM_COMPONENT` (STRING/15)
+- `BKBM_QTY_REQD` (FLOAT/8/8 — 8 decimal places for precision)
+- `BKBM_REFERENCE` (STRING/20)
+- `BKBM_PROD_TYPE` (STRING/1) — component type flag
+- `BKBM_PROD_SCRAP` (FLOAT/8/2) — scrap factor
+- `BKBM_PROD_OP` (STRING/3) — operation code
+- `BKBM_PROD_OPYN_1..6` (STRING/1 each) — op enable flags
+- `BKBM_PROD_PRICE` (FLOAT/8/4)
+- `BKBM_PROD_RTNUM` (UBINARY/2) — routing number
+- `BKBM_PROD_DUPOP` (STRING/1) — duplicate op flag
+- `BKBM_PROD_OPDSC` (STRING/5) — op description
+- `BKBM_PROD_VEND` (STRING/10) — outside process vendor
+- `BKBM_DATE1`, `BKBM_DATE2` (DATE) — effectivity dates
+- `BKBM_EXTRA` (STRING/50), `BKBM_REV` (STRING/5) — ECO revision
+- `BKBM_P_TYPE`, `BKBM_C_TYPE` (STRING/10 each) — parent/component type
+- `BKBM_EST_LINE` (FLOAT/8/0), `BKBM_UID` (STRING/20)
+
+#### BOM Satellite Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKBMCNFG | 7 | BOM module configuration |
+| BKBMDIM | 11 | BOM component dimensions (sheet metal / cut-to-size) |
+| BKBMERMK | 20 | BOM engineering remarks (15 remark lines × 64 chars) |
+| BKBMREMK | 20 | BOM remarks — same 20-field schema as BKBMERMK |
+| BKBMNOTE | 16 | BOM notes (parent-level, 15 note lines × 64 chars) |
+
+**BKBMCNFG** (7f): Module config — GL account/dept for BOM postings, AUTO/POST/ROLL/LABOR flags.
+
+**BKBMDIM** (11f): Sheet material cut-to-size dimensions. PK = DIM_PARENT + LINE. Fields: COMP (component), PART_X/Y (part size, FLOAT/8/4), MACH (machine code), TRIM_X/Y (trim allowance), REMN_X/Y (remnant size), EXTRA.
+
+**BKBMERMK / BKBMREMK** (20f each, identical schema): PK = RM_PARENT + LINE + RM_COMP. Contains 15 × `BKBM_RM_REMARK_n` (STRING/64 each) + UID + EXTRA.
+
+**BKBMNOTE** (16f): Parent-level BOM notes. PK = NT_PARENT. Contains 15 × `BKBM_NT_NOTE_n` (STRING/64 each).
+
+---
+
+### CM Module: BKCM* Family (Contact Manager / CRM)
+
+The BKCM* family is the EvoERP CRM/Contact Manager module. It mirrors AR customer data (BKCMCUST = BKARCUST schema), adds prospect tracking (BKCMPCNT), dunning/collections (BKCMDUN/DUNH), activity history (BKCMACTH), and mail-merge campaigns (BKCMMHST).
+
+#### Account / Contact Master
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMACCT | 41 | CM account master (company-level) |
+| BKCMDE | 41 | CM data-entry/export copy (identical schema) |
+| BKCMEACT | 41 | CM eAccess account (identical schema) |
+| BKCMCUST | 106 | CM customer view (identical to BKARCUST 106-field schema) |
+| BKCMACCN | 154 | CM account contacts — 10 contact slots × multi-field |
+| BKCMPCNT | 24 | CM prospect contact master |
+
+**BKCMACCT** (41f, BKCM_ACCT_ prefix): Account (company) master. Fields: CODE (PK/10), OLDCD, ALPHA (sort key/6), NAME (30), ADD1/2/3 (30 each), CITY (26), STATE (2), ZIP (10), CNTRY (30), CONT1/TITLE/PHONE/FAX (contact 1), REP (5), DLOAD, SICCD (7), CUST (is-customer flag), LEAD (5), START (DATE), TERR (4), REMs (2 × STRING/60), phone slots with extensions, credit card fields (CCARD/CNUM/CEXP/CMPNM/PNAME), EXTRA (200), EMAIL (128), EMPS (FLOAT = employee count).
+
+**BKCMACCN** (154f): Per-account contacts table — 10 named contacts each with: CONT_n (30), TITLE_n (30), PHONE_n (25), EMAIL_n (128), ALPH1_n (25), ALPH2_n (25), DATE1_n, DATE2_n. Plus column-header label strings for phone/email/messaging/date slots (PHLBL, EMLBL, MSLBL, DTLBL, M2LBL, D2LBL — 10 × 20-char each). PK = ACCN_CODE. 154 total fields.
+
+**BKCMPCNT** (24f): Prospect contact master (pre-customer). PK = CCODE (10). Fields: REP, ALPHA, NAME, ADD1/2/3, CITY, STATE, ZIP, CNTRY, CONT, TITLE, PHONE, FAX, CLASS, SDATE, REMs 1..4, EXTRA, WPHON, EMAIL.
+
+#### Activity / History Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMACTH | 21 | CM account activity history |
+| BKCMEACH | 21 | CM eAccess activity history (identical schema) |
+| BKCMACTF | 11 | CM activity follow-up |
+| BKCMEACF | 11 | CM eAccess follow-up (identical schema) |
+| BKCMACTD | 4 | CM activity date link |
+| BKCMEACD | 4 | CM eAccess activity date link (identical schema) |
+| BKCMPCTH | 8 | CM prospect contact history |
+| BKCMPCTF | 9 | CM prospect contact follow-up |
+
+**BKCMACTH** (21f): Activity history log entry. PK = CODE + DATE + REP + LINE. Fields: CODE (account/10), DATE, REP (5), LINE (UBINARY/2), CD (activity code/2), EVENT (event type, UBINARY/2), PHONE (Y/N), START/STOP (TIME), MIN/BMIN (duration minutes, UBINARY), REM (memo/57), BILLD (billed flag), DLOAD, FLINE, RECVD (TIME), CNTCT (contact name/25), RATE/AMT/BALNC (billing amounts), EXTRA.
+
+**BKCMACTF** (11f): Follow-up record. PK = CODE + REP + DATE. Fields: CODE, REP, TYPE (activity type/3), DATE, REMs 1..5 (60 each), DLOAD, SO (linked SO number, FLOAT).
+
+#### Dunning / Collections
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMDUN | 36 | Dunning run control parameters |
+| BKCMDUNH | 6 | Dunning history |
+| BKCMFORM | 8 | Dunning form/letter definition |
+
+**BKCMDUN** (36f): Dunning configuration. Per-rep settings: AGE_1..10 (aging bucket thresholds, UBINARY/2 each), FORM_1..10 (form codes, STRING/15 each), DESC_1..10 (descriptions, 30 each), DORL (D=dunning/L=letters), NUMUP, SORT, PCONT (print contact), CNUM.
+
+**BKCMFORM** (8f): Dunning letter template definition. PK = FORM_CODE (15) + LINE (UBINARY). Fields: NOTE (78), DESC (30), LEFT/LNSPG/START (layout params, UBINARY), DUN (flag).
+
+#### Mail Merge / Marketing History
+
+**BKCMMHST** (72f, BKCM_MHST_ prefix): Mail merge history — largest CM table. One record per campaign run. Key fields: MCODE (15), DESC (25), MDATE, 20 CLASS filters and 20 override OCLAS filters (STRING/5 each), FROM/TO range criteria for account code, state, ZIP, SIC, start date, lead source, territory, rep, STATUS filter (11 chars), CUSTO flag, sort/form/contact settings.
+
+#### Code / Lookup Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMACCC | 2 | Contact class code (CCODE/5 + DESC/25) |
+| BKCMACCL | 2 | Account class (CODE/10 + CLASS/5) |
+| BKCMEACC | 2 | eAccess class (identical to BKCMACCL) |
+| BKCMDTCD | 2 | Date code (DCODE/2 + DESC/25) |
+| BKCMACFC | 3 | Follow-up call category (FCODE/3 + DESC/25 + REP/5) |
+| BKCMPCFC | 3 | Prospect follow-up call category (identical) |
+| BKCMLEAD | 2 | Lead source code (SCODE/5 + DESC/25) |
+| BKCMTERR | 11 | Territory definition |
+| BKCMHCOD | 9 | Help/activity category code |
+| BKCMHCD2 | 7 | Help code 2-part hierarchy |
+| BKCMREP | 14 | CM rep/salesperson master |
+| BKCMCNTD | 12 | Contact definitions (title slot labels) |
+
+**BKCMTERR** (11f): Territory. PK = TCODE (4). Fields: DESC (25), EMAIL (128), ALPHA (30), EXTRA (100), FLAGS_1..5 (STRING/1 each), DATE.
+
+**BKCMREP** (14f): CM rep master. PK = REP (5). Fields: FNMEMI, LNAME, EMP (employee num, UBINARY/2), PSWD, DHCODE (default help code), DFCODE, DDCODE, VIEW/CHANGE/GWARN/AADD (permission flags), FNAME, FTITLE.
+
+**BKCMHCOD** (9f): Activity/help category. PK = HCODE (2). Fields: DESC (25), WINDW (Y/N), RATE (billing rate, FLOAT/8/2), UM (unit of measure/3), ABILL (auto-bill flag), BPART/NPART/FPART (part codes for billable/non-billable/flat — STRING/15 each).
+
+#### Free Time / Subscription Billing
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMFTME | 7 | Free time account (billable time balance) |
+| BKCMEFTM | 7 | eAccess free time (identical schema) |
+| BKCMSBDF | 5 | SBD interest / subscription parameters |
+
+**BKCMFTME** (7f): Free time/prepaid support balance. PK = FTME_CODE (10). Fields: FTIME (prepaid minutes, UBINARY), DESC (25), BALNC (balance, FLOAT), LASTP (last posted date), ATIME (used minutes, UBINARY), NTIME (next billing minutes, UBINARY).
+
+**BKCMSBDF** (5f): Service/subscription billing defaults. Fields: BINC (billing increment, FLOAT/8/2), MINC (minimum charge minutes, UBINARY/2), ICONV (unit conversion factor, FLOAT/8/6), NCHG (no-charge threshold, UBINARY/2), DHOLD (defer-to-hold flag, STRING/1).
+
+#### Control / Temp Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKCMCTL1..4, BKCMCTRL | 1 each | Lock control (single field: CTRL_USER STRING/10) |
+| BKCMTEMP | 6 | CM work/temp table |
+| BKCMTMP1 | 6 | CM temp 1 (identical to BKCMTEMP) |
+| BKCMTMP2 | 6 | CM temp 2 (identical to BKCMTEMP) |
+
+**BKCMTEMP** (6f, BKCMT_ prefix): Temporary work record. Fields: CODE (10), KEYF (20), GROUP (8), COMP (2), TAG (1), ACTIVITY (5). Used during CM processing/report runs.
+
+---
+
+*Pass 142 — batch 1 complete: 107 tables documented (AP, AR, BM, CM families). GL, IC, PR, SL, SO, SY, WH families follow in pass 143.*
+
