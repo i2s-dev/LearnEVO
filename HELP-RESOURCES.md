@@ -4367,7 +4367,24 @@ records between the CRM accounting layer and EvoERP's credit card token store.
   - IS_CC_XCTRAN (10) — transaction reference
   - IS_CC_PROCESS (10) — processor code
 
-**Confidence: 55/100** — program confirmed; ISCC schema extracted; purpose from table fingerprint.
+**Pass232 — IS.CC.* 6-var ISCC access namespace confirmed:**
+
+| Var | Field | Meaning |
+|-----|-------|---------|
+| IS.CC.CODE | IS_CC_CODE | Card record code (PK) |
+| IS.CC.SORT | IS_CC_SORT | Display sort order |
+| IS.CC.TOLKEN | IS_CC_TOLKEN | Payment vault token (actual secure reference) |
+| IS.CC.MASKED | IS_CC_MASKED | Masked display number (e.g., XXXX-XXXX-XXXX-1234) |
+| IS.CC.EXP | IS_CC_EXP | Expiration date |
+| IS.CC.ADDRESS | IS_CC_ADDRESS | Billing address for AVS verification |
+
+**XC record handles (Pass232):** ACCT.H (BKCMACCT) + CUST.H (BKARCUST) + YSMSTR.H (BKYSMSTR) + ISCC.H (ISCC) + EXCP.H (exception/error handler)
+
+**XC workflow (Pass232):** BKCMACCT lookup by account code → BKARCUST lookup for billing customer → ISCC token lookup via IS.CC.TOLKEN → display IS.CC.MASKED/EXP/ADDRESS for card verification
+
+**CFROM** = copy-from account for token migration (transferring a card token between CRM accounts)
+
+**Confidence: 85/100** — IS.CC.* 6-var namespace confirmed from var extraction (Pass232); BKCM.ACCT.* 35-var BKCMACCT cross-validated; workflow inferred from record handle pattern; ISCC schema fully extracted from DDF; actual payment vault communication blocked by RWN bytecode.
 
 ---
 
@@ -7997,7 +8014,7 @@ SH=shipping, SO=sales orders, WC=work centers, WO=work orders).
 | **Process control** | **ISLOG (9f)** | **Background process tracker — DS writes a row on start (WHO/WHAT/DOING/STARTD/STARTT/COMPANY), polls IS_LOG_KILL(1) to support graceful admin-initiated termination** |
 | Help/runtime | DBAHLPID (2f: REF+MAP), BKSYHELP (1f: PATH) | Context-sensitive help topic map + CHM path |
 | Runtime infra | FILELOC, LANGDICT, BKSYAR | TAS runtime file registry, language dict, AR sequence numbers |
-| Lookups | ISDRILL, ISDROP, CLASS, ISNUMBER | Generic query/lookup tables; auto-number allocator (50 parallel counters) |
+| Lookups | ISDRILL, **ISDROP** (4f: CODE+TEXT+DESC+EXTRA = User-Defined Drop-Down Codes — DS reads as sync status/code reference), CLASS, ISNUMBER | Generic query/lookup tables; auto-number allocator (50 parallel counters) |
 | WO context | WORKORD | Work order reference for WO-linked sync records |
 
 **ISLOG — active process / kill control (9 fields):**
@@ -8014,7 +8031,11 @@ This is the mechanism by which EVO admins can abort a stuck or long-running DS s
 
 DS module purpose: synchronize selected EvoERP data to/from an external system. Each T7DS* stub dispatches one module's sync cycle. The actual sync logic (which fields move, which direction, which external endpoint) is encrypted in the central sync RWN.
 
-**Confidence: 65/100** — 25 programs identified; identical 36-table fingerprint confirmed across all 24 active stubs; T7DSQC anomaly confirmed (0 tables); architectural pattern (universal dispatcher + ISLOG kill-flag process control) fully documented; all 36 fingerprint tables field-decoded (Pass 109); HH=Handheld, IM=Import/Multi-currency confirmed; sync target endpoint and field-level mapping blocked by RWN encryption.
+**Pass232 — proc names confirmed (var extraction, all 25 programs identical):**
+`STUB.ONOPENFILE` / `STUB.ONSTART` / `STUB.ONDISPLAY` / `STUB.ONCLOSE` / `TIMER.CALL`
+These are TAS Pro 7 background lifecycle event hooks. `TIMER.CALL` = periodic async sync check (confirms DS is a background polling service, not an interactive user program). `STUB.ONDISPLAY` = progress/status display callback. Prior "Drop Ship" interpretation corrected — ISDROP is a generic dropdown code table, not a drop-ship staging table; DS = Data Sync (original interpretation restored).
+
+**Confidence: 85/100** — 25 programs identified; proc names confirmed from var extraction (Pass232); identical 56-table fingerprint confirmed across all 24 active stubs; ISDROP schema corrected to User-Defined Drop-Down Codes (4f from DDF); T7DSQC anomaly confirmed (0 tables = QC sync not implemented); ISLOG kill-flag process control confirmed; HH=Handheld, IM=Import/Multi-currency confirmed; sync target endpoint and field-level logic blocked by RWN bytecode disassembly.
 
 ---
 
