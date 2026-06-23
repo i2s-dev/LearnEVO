@@ -16356,6 +16356,67 @@ ISACCESS stores one record per form-control-group combination:
 
 ---
 
+---
+
+### Recipe 31: EvoERP Login Flow — How the Boot Sequence Works (Pass 227, 2026-06-23)
+
+**Programs involved:** StartEvo.exe → tp7runtime.exe → EvoERPmenu.RWN
+
+**Full startup sequence:**
+1. **StartEvo.exe** (.NET launcher): reads `taspro7.ini` → DomainAuthenticate → KillEvoProcesses → queries `tas_menus` DSN for license/modules → spawns `tp7runtime.exe EvoERPmenu.RWN`
+2. **EvoERPmenu.RWN** loads: runs ONOPENL (on-open label) → opens ISLOG, FILELOC, BKSYMSTR, BKMENUSU, BKPSUSER, ISEXUSER, BKYSMSTR
+3. **Login dialog** (EVOMENU_LOGIN.DCY via suwin6.dcy pre-screen): user enters code + LPASSWORD
+   - SSO path: ISTS.CFG.SSO=Y → WDA.USERNAME captured from Windows → compared to ISEX.USER.WINDO → if match, bypass password prompt (WDA.SECRET validated via WDA.VAL)
+   - Password path: LPASSWORD → decrypted (DPASS/DPASSWORD) → compared to ISEX.USER.PASSW → LOGINRET set
+   - Mode: ISTS.CFG.EPASS = legacy ENCRYPTSTR mode; ISTS.CFG.EHPASS = hash-based mode
+4. **Failed login:** LOG.ATTEMPT incremented; after threshold → lockout; MSGSEC displayed
+5. **Password expiry:** ISEX.USER.PEXPD checked → if expired, FORCE.PASS=T → user must change password before continuing
+6. **Company selection** (EVOMENU_SELCOMP.RWN): COMPCODE selected from FILELOC list → BKYSMSTR loaded for company (company name/GL accounts/tax/check defaults)
+7. **Session established:** WHOAMI/WHOAMIFULL set; BKPSUSER record loaded (printer/menu/security); ISLOG record written (WHO/COMPANY/STARTD/STARTT/COMPU.NAME); ONSTARTL (startup program) executed
+8. **Main menu built:** BKMENUSU read → module groups + buttons → NS/ND per-program flags applied → menu displayed
+9. **Idle timer armed:** TENMIN.KILLER/TENMIN.TIME = 10-minute idle auto-logout
+
+**Key EvoERPmenu.RWN boot vars:**
+
+| Var | Meaning |
+|-----|---------|
+| LPASSWORD | Password typed in login form |
+| LOGINRET | Login return code (0=OK, 1=bad password, 2=locked) |
+| FORCE.PASS | Force password change at next login |
+| WHOAMI | 3-char user login code |
+| WHOAMIFULL | Full user name |
+| START.CO | Company code selected at login |
+| RELOGIN | Re-display login screen |
+| REMEMBER.ME | Remember-me flag for fast re-login |
+| COMPU.NAME | Workstation computer name → written to ISLOG |
+| TENMIN.KILLER | 10-minute idle auto-logout flag |
+| CHEAP.SEATS | Read-only demo mode (view-only session) |
+| KILL.MYSELF / DIE | Session self-terminate flags |
+| LOG.ATTEMPT | Failed login attempt counter |
+
+**ISEXUSER table (security config — 12 fields):**
+
+| Field | Meaning |
+|-------|---------|
+| ISEX.USER.CODE | User login code (same as BKPSUSER key) |
+| ISEX.USER.GROUP | Security group assignment |
+| ISEX.USER.DATE1 | Date field 1 (e.g. password change date) |
+| ISEX.USER.DATE2 | Date field 2 (e.g. last access date) |
+| ISEX.USER.MISC1 | Miscellaneous text 1 |
+| ISEX.USER.MISC2 | Miscellaneous text 2 |
+| ISEX.USER.WINDO | Windows username (for SSO/WDA matching) |
+| ISEX.USER.PASSW | Encrypted/hashed password |
+| ISEX.USER.PEXPD | Password expiry date |
+| ISEX.USER.LPASS | Last password (1-entry history) |
+| ISEX.USER.LDATE | Last login date |
+| ISEX.USER.FLAGS | User flags bitfield |
+
+**BKPSUSER vs ISEXUSER distinction:**
+- BKPSUSER = session/navigation state: printer, default menu, company, security level, menu counter, last login date
+- ISEXUSER = security/auth config: password, group, Windows username, expiry date, login history
+
+---
+
 ## Pass 99 — EvoLinks, FNO, Calendar, Infrastructure DFM sweep (2026-06-18)
 
 ### EvoLinks — Document Attachment System (ISLINKS Table)
