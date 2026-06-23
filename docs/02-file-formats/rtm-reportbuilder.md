@@ -287,10 +287,115 @@ Full count from `samples/rtm_callers.csv` (403 unique RTMs), categorized by 2-le
 SA (Sales Analysis) is the largest underdocumented module (7 RTMs). DC/ES/AW/AS each have 4–5.
 GL/BM/JC/AM have few RTMs because those modules use TAS-native reports more than ReportBuilder.
 
+## Pass 225 — Binary analysis of t7ing1.rtm (Inventory Label/Barcode report, 2026-06-23)
+
+`samples/rtm/t7ing1.rtm` is the Inventory item label report (`IN` module, prints barcoded
+item labels with UPC, lot, and serial barcodes).
+
+### Confirmed DataPipeline path
+
+```
+DataPipeline = Form1.TASFile
+DataPipelineName = TASFile
+```
+
+Both properties appear — `DataPipeline` holds the fully-qualified component path
+(`Form1.TASFile`), `DataPipelineName` holds the short name. TAS binds the data to
+the component named `TASFile` on `Form1`.
+
+### Array field binding notation confirmed
+
+`TppDBText.DataField` supports bracket notation for array elements:
+
+```
+MTIC.PROD.RCOST[6]    ← cost element 6 from the RCOST array field
+MTIC.PROD.SPECS[1]    ← specification string 1
+MTIC.PROD.SPECS[2]    ← specification string 2
+PTD.ARRAY[1..3]       ← period-to-date array elements
+```
+
+This means the `OUTPUT_REPORT_DATA` call must deliver array element values
+under these subscripted names, or the TAS runtime flattens arrays into
+indexed field names before pushing to the pipeline.
+
+### TppDBBarCode — barcode component properties
+
+t7ing1.rtm contains three barcode sections (LOT BARCODE, SERIAL BARCODE, UPC label):
+
+| Property | Example value | Meaning |
+|----------|--------------|---------|
+| `BarCodeType` | `bcCode39` | Code 39 (3-of-9) barcode type |
+| `mmBarWidth` | (numeric) | Narrow bar width in mm |
+| `mmWideBarRatio` | (numeric) | Wide:narrow bar ratio |
+| `BarColor` | `clBlack` | Ink color |
+| `PrintHumanReadable` | T/F | Print digits below barcode |
+| `CalcCheckDigit` | T/F | Auto-compute check digit |
+
+`DataField` for barcode = same TAS dot-notation field name (e.g. `mtlot.lot`, `mtser.serial`).
+
+### TppDBImage — image component properties
+
+| Property | Meaning |
+|----------|---------|
+| `GraphicType` | Image type (`Bitmap`, `Metafile`, etc.) |
+| `ImageReg` | Registry key for image data |
+| `MaintainAspectRatio` | T/F |
+| `Bitmap` | (binary blob for embedded image) |
+| `Stretch` | Scale to fill bounds |
+
+### Component naming convention confirmed
+
+All component instances follow a `pp<ClassName><N>` pattern (lowercase `pp` prefix):
+
+| Component class | Instance naming | Example |
+|-----------------|----------------|---------|
+| `TppReport` | `ppReport1` | root report |
+| `TppDetailBand` | (child of ppReport1, no prefix) | `DetailBand1` |
+| `TppSubReport` | `ppReport1SubReport1` | nested sub-report |
+| `TppChildReport` | `ppReport1ChildReport1` | child report inside sub-report |
+| `TppGroup` | `ppReport1Group1` | grouped section |
+| `TppGroupHeaderBand` | `ppReport1GroupHeaderBand1` | group header |
+| `TppGroupFooterBand` | `ppReport1GroupFooterBand1` | group footer |
+| `TppDBText` | `ppDBText1`, `ppDBText2`… | data-bound text fields |
+| `TppLabel` | `ppLabel1`, `ppLabel2`… | static text |
+| `TppShape` | `ppReport1Shape1` | line/rectangle/ellipse |
+| `TppDBBarCode` | `ppDBBarCode1`, `ppDBBarCode2`… | barcode |
+| `TppDBImage` | `ppDBImage1`, `ppDBImage2`… | image |
+| `TppRegion` | `ppRegion1`…`ppRegion4` | layout region container |
+| `TppPageStyle` | `ppPageStyle1` | page-level style (margins, etc.) |
+| `TppParameterList` | `ppParameterList1` | runtime parameter inputs |
+
+### Field bindings extracted from t7ing1.rtm
+
+All `DataField` values found in the binary (dot-notation TAS names):
+
+```
+BKIC.PROD.AVGC   BKIC.PROD.CAT    BKIC.PROD.CLASS  BKIC.PROD.CODE
+BKIC.PROD.DESC   BKIC.PROD.ISUPC  BKIC.PROD.LSTC   BKIC.PROD.NOTE
+BKIC.PROD.PRICE  BKIC.PROD.RAMT   BKIC.PROD.RLVL   BKIC.PROD.TYPE
+BKIC.PROD.UM     BKIC.PROD.UOH    BKIC.IS.DCODE
+
+MTIC.PROD.CLDES  MTIC.PROD.CUBFT  MTIC.PROD.CUSNM  MTIC.PROD.CUST
+MTIC.PROD.CYCLE  MTIC.PROD.DELBF  MTIC.PROD.DRAW   MTIC.PROD.EXPBF
+MTIC.PROD.LEAD   MTIC.PROD.LOC    MTIC.PROD.RCOST[6]
+MTIC.PROD.REV    MTIC.PROD.SPECS[1]  MTIC.PROD.SPECS[2]  MTIC.PROD.STDPK  MTIC.PROD.WT
+
+mtlot.lot        mtser.serial
+```
+
+ODBC underscore variants (same fields, SQL alias form) also appear:
+`prod_code`, `prod_desc`, `prod_class`, `prod_type`, `prod_avgc`, etc.
+
+### ReportBuilder version
+
+String `7.03` appears near the component header — this is the ReportBuilder engine
+version embedded in the template file.
+
+---
+
 ## Things still open
 
 - Physical location of `cfg.rtm` — `T:\cfg.rtm` is the inferred path via drive mapping; UNC path
   unknown. Would need to identify what share `T:\` maps to on a running workstation.
-- Full binary parser to extract TppDBText data-field bindings from all 403 RTMs programmatically.
-  Format is standard Delphi TStream; `dfmreader` Python library could be adapted.
-- Confirm report parameter passing for multi-currency reports (T7MLC uses LANGDICT).
+- Multi-currency report parameter passing (T7MLC uses LANGDICT).
+- Full programmatic extraction of all 403 RTM field bindings (manual for 2 samples done above).

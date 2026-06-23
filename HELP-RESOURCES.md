@@ -16138,6 +16138,163 @@ POJC internal logic blocked by RWN encryption (some steps inferred from table re
 
 ---
 
+### Recipe 26: AR Cash Receipt — Apply Customer Payment (Pass 221, 2026-06-23)
+
+**Menu:** TC (Treasury Control → Cash Receipts Entry)
+**Program:** t7tcc.RWN (119 procs, LISTG60.LIB, 37 tables)
+**Primary tables:** BKARINVT (25f — AR open-item), BKARCUST (106f — customer), BKART (AR txn), BKGLCHK (GL check register), BKGLTRAN (GL posting), BKARDEP (deposits), BKPRSALE/BKPRCOMM (commission)
+
+**When to use:** When a customer pays one or more open invoices — by check, EFT, or credit memo application.
+
+#### Steps
+
+```
+1. TC → enter customer code (TERMS.NUM resolves customer payment terms)
+
+2. Select open invoices (OP_INV list, limited by MAX_INVOICES)
+   - INV_NUM / INV_DATE / INV_AMTRM = invoice number / date / amount remaining
+   - INV_DISC / DISC_DATE / DAYS.TOPAY = available discount and deadline
+   - SOP_INV = deposit-linked invoices (handled separately in step 4)
+
+3. Enter check details
+   - CHK_NAME[1] = payee name on check
+   - CHECK_AMT / CHECK_NUM / CHKACT = payment amount / check number / bank account
+   - AMOUNT_REM shows unapplied balance as invoices are selected
+
+4. Apply payment to each invoice
+   - ENT_DISC = enter taken discount (auto-validated against DISC_DATE)
+   - ENT_APPLIED = amount applied to this invoice
+   - HOLD_APPLIED = pending apply before confirm
+   - DEP.PMT flag: use customer deposit (BKARDEP) as payment source
+
+5. Batch totals verify
+   - TOT_CREDITS / TOT_DEPOSITS / TOT_CHARGES / TOT_DISC = running batch totals
+   - XBAL cross-balance check: total applied must equal total receipts
+   - NUM_NEG / AMAXNEG = credit memo tracking (negative checks handled)
+
+6. Confirm → system creates:
+   a. BKART = AR payment transaction record
+   b. BKGLCHK = GL check register entry (check reconciliation)
+   c. BKGLTRAN = GL debit Cash / credit AR
+   d. BKARINVT: matched invoices marked closed (CLOSD flag)
+   e. BKPRSALE / BKPRCOMM = salesperson commission records written at receipt time
+   f. BKARDEP: deposit record created if excess cash (DEPOSIT_NUM)
+```
+
+**Key note — multi-bank batch:** CHK.ACT.ARR allows a single receipt batch to apply across multiple bank accounts. Each bank has its own GL debit account (CHKACT from ISBANKS).
+
+**Key note — deposit application:** Customer deposits (BKARDEP) can offset invoices via SOP_INV path. ISAR.DEPL (20f) records each deposit application line with GLACT/GLDPT for proper GL coding.
+
+**Key note — multi-currency:** ISIS.MCF (49-var) exchange rates are applied at receipt time. TC has the most complete multi-currency access in the AR module.
+
+**Confidence: 90/100** — t7tcc 37-table DB, all key variable namespaces, and GL/commission workflow fully confirmed from rwn_symbols.json.
+
+---
+
+### Recipe 27: MRP Forecast Management Lifecycle (Pass 221, 2026-06-23)
+
+**Menu:** MR (Material Requirements → Forecast submenu)
+**Programs:** T7MRADE (import), T7MRA (edit), T7MRB (report), T7MRC (consume/rollover), T7MRD (location analysis)
+**Primary tables:** BKMRPFC (9f — forecast demand), BKICMSTR (64f — item master), INVTXN (24f — inventory transactions)
+
+**When to use:** Managing demand forecasts for MRP planning — import, review, maintain, and roll forecasts forward each period.
+
+#### 5-Program Lifecycle
+
+```
+T7MRADE (MR Import — import forecast from file)
+├─ FILE.NAME / COMMA.FIXED / FIELD.NUMBER / DATE.FORMAT = CSV/fixed-width format params
+├─ REPLACE flag = overwrite vs append existing forecast records
+└─ Creates BKMRPFC records: PART + DATE + QTY (original qty) + OQTY (adjusted) + CQTY (committed) + FLAG
+
+T7MRA (MR-A — edit/view forecast demand)
+├─ BKMRP.FC.* 10-var: KEY/PART/DATE/QTY/EXTRA/OQTY/CQTY/FLAG/DATE1/NUM
+├─ SHOW.ORIG = toggle to view original import qty vs current
+└─ BKEDMSTR / ISJAVA in DB = EDI master + Java engine can generate demand
+
+T7MRB (MR-B — forecast report)
+├─ FROM/THRU ITEM/CLASS/CAT/DATE = range filters
+├─ CURRENT = current-period flag (show only current demand)
+├─ PRT.OQTY = include original qty column in report
+└─ MTIC.PROD.*(54) + CLASMSTR/ISCATMST = item attributes + class/category breakdowns
+
+T7MRC (MR-C — consume/rollover/load-level)
+├─ CONSUME = mark forecast records as consumed by actual SO shipments (BKAR.INVL.* 28-var)
+├─ ERASE = clear historical forecast records
+├─ ROLLOVER = advance forecast one period forward
+├─ LOADLEVEL = smooth demand across periods
+└─ FROM.CUST = filter consumption by customer
+
+T7MRD (MR-D — location change analysis)
+├─ LOCATION = target warehouse location (BKICLOC)
+├─ CHGS2MAK = list of changes to implement (exception report)
+├─ MTFILE/BKFILE = MT/BK item master file handles for comparison
+└─ DB: BKICLOC/BKICLOCM/INVTXN (reads actual inventory vs MRP requirements → outputs exception list)
+```
+
+**How MRP uses the forecast:** BKMRPFC records feed BKMRF.SRC (MRP engine). The engine reads BKMRPFC.QTY as additional demand alongside BKARINVL open SO lines. BKMRPFC → MTMRP (planned demand) → BKMRPPO (planned PO) → converted to BKAPPO by MRP execution.
+
+**Confidence: 90/100** — 5-program suite fully mapped from rwn_symbols.json; T7MRD confirmed as new 5th program; BKMRPFC lifecycle confirmed from BKMRF.SRC source code analysis.
+
+---
+
+### Recipe 28: Paperless DC — Shop Floor Barcode Scan Workflow (Pass 221, 2026-06-23)
+
+**Menu:** PA (Paperless DC → Shop Floor Entry)
+**Program:** T7Paperless.RWN (205 procs, 50 tables, 2915 vars)
+**Primary tables:** WORKORD (74f — WO header), WOROUT (81f — routing operations), BKDCLAB (50f — DC labor), ISWOTRAY (WO container/tray), ISNCR (NCR non-conformance)
+
+**When to use:** When a shop floor operator scans a work order barcode to record labor, receive completed parts, or report a quality rejection.
+
+#### Main Entry Flow
+
+```
+1. Operator scans WO barcode → SCAN.WO + SCAN.OPER captured from scanner
+   - SCAN.WO = work order number (WOPRE + WOSUF)
+   - SCAN.OPER = routing operation code
+
+2. System validates WO/operation
+   - WORKORD (MTWO.WIP.* 71-var) = WO header loaded
+   - WOROUT (MTWORO.*) = routing op details
+   - ISTS.CFG.WOPSWD = WO password required? (if Y, operator must enter WOPSWD)
+
+3. Operator selects action:
+   a. Labor entry → record start/stop times
+      - DC event written to BKDCLAB (50f: EMP+WO+OPER PK; START/FINISH/RUNHRS/SETUPHRS)
+      - Tray assignment: IS.TRAY.*(21-var) = WO container tracked per operation
+        (NUM/WOPRE/WOSUF/OPER/OPDESC/CODE/ITEM/QTY/LOC = physical container context)
+   b. Parts receipt → receive completed qty from WOROUT
+      - WORECV table updated
+      - INVTXN = inventory receipt transaction logged
+   c. Quality rejection → create NCR:
+      - IS.NCR.*(54-var) written to ISNCR:
+        NUM (NCR number) / PART / LOT / SERIAL (item identification)
+        CDATE (creation date) / OPER (operation where found) / QTY / DISP (disposition)
+        PSFAIL (pass/fail) / TSTCOD (test code) / ACCEPT (acceptance decision)
+      - NCR links back to WO+PO+SO (WOPRE/WOSUF/PONUM/SONUM in ISNCR)
+
+4. Email notification (if configured)
+   - EMAIL.CFG.*(34) = SMTP config for rejection/NCR notifications
+   - IS.TRIG.*(27) = trigger system fires alerts on NCR events (TRIGR code)
+
+5. WO exception recording
+   - IS.WOEX.*(38-var/ISWOEX) = WO exception record: WOPRE/WOSUF/ITP/ITPP/RF/EXTRA
+   - WODATE (14f) = actual vs planned dates updated
+
+6. Special bin assignment (bin-control warehouses)
+   - BKICLOC + ISBINLOC + ISBINLOT = bin / lot / serial bin mapping
+   - ISTS.CFG.GENBIN = auto-generate bin on receipt
+   - ISTS.CFG.WHCTRL = warehouse control mode
+```
+
+**Key note — IS.TRAY:** T7Paperless is the only program that writes to ISWOTRAY. Trays are physical containers (totes, pallets) assigned to a WO operation. The tray number appears on the shop traveler for material tracking.
+
+**Key note — IS.NCR:** NCR records can link to AR invoice (INVNUM), AP PO (PONUM), SO (SONUM), and WO (WOPRE/WOSUF). T7ARA (AR customer master) also reads IS.NCR for customer-facing NCR visibility.
+
+**Confidence: 90/100** — T7Paperless.RWN 50-table DB and 2915-var namespace confirmed; IS.NCR and IS.TRAY first documented this session; QC→NCR path at shop floor confirmed.
+
+---
+
 ## Pass 99 — EvoLinks, FNO, Calendar, Infrastructure DFM sweep (2026-06-18)
 
 ### EvoLinks — Document Attachment System (ISLINKS Table)

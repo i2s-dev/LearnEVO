@@ -244,11 +244,82 @@ the company-specific extension at open time.
 
 ---
 
+## Pass 225 — Deep binary analysis of BKICMSTR.B page structure (2026-06-23)
+
+The sample `samples/BKICMSTR.B` (71,680 bytes, 140 pages × 512) was re-analyzed at
+byte level. Key findings:
+
+### BKICMSTR.B sample status: schema-only/empty copy
+
+Only the following pages contain non-zero data. Data record pages are entirely zero-filled,
+confirming this is a **schema-only copy** — the file was created (or captured) without live
+data records. The FCR header record count field (`CB 02` = 715 at offset 0x18) reflects the
+configured maximum or historical count, **not current live records.**
+
+### Non-zero pages and their roles
+
+| Pages | Header bytes | Interpretation |
+|-------|-------------|----------------|
+| 0, 8 | `46 43 00 00 43 00 00 00` | Primary and backup FCR (dual-FCR confirmed) |
+| 1, 7, 15 | `00 00 00 00 …` | Sparse key-definition extension or index hint pages |
+| 32, 40 | `01 00 00 50 50 00 00 00` | B-tree index root pages (type=0x01) |
+| 33–39, 41–47 | `FE FF FF FF 00 00 00 00` | Empty B-tree leaf/data clusters (null-pointer fill) |
+| 48, 52, …, 92 (intervals of 4) | `NN 00 00 00 00 80 00 00` | Secondary index root pointers (one per key, 4-page slot) |
+| 96–136 (intervals of 4) | `NN 00 00 00 45 00 00 00` | Additional key-descriptor pages (`45`=0x45=Btrieve key descriptor signature?) |
+
+### Key definition page (page 32) decoded
+
+```
+Offset  Bytes                    Interpretation
+------  -----                    --------------
+0x00:   01 00 00 50 50 00 00 00  page type=0x01 (key definition), flags=0x5050
+0x08:   05 00 00 00 00 00 00 00  key_count=5 (5 key definitions)
+0x10:   22 00 00 00 0A 80 01 00  key 0: root_page=0x22=34, flags=0x800A, extra=0x0001
+0x18:   16 00 00 00 09 80 01 00  key 1: root_page=0x16=22, flags=0x8009
+0x20:   15 00 00 00 08 80 01 00  key 2: root_page=0x15=21, flags=0x8008
+0x28:   14 00 00 00 07 80 01 00  key 3: root_page=0x14=20, flags=0x8007
+0x30:   13 00 00 00 06 80 01 00  key 4: root_page=0x13=19, flags=0x8006
+```
+
+5 keys match the `05 00` at FCR offset 0x08-0x09. The 0x80 flag byte in the key
+descriptor likely = "key type=primary/unique" flag; low nibble = segment count or key number.
+Root page numbers point to all-zero index pages (empty file).
+
+### Empty data page pattern
+
+Pages 33–39 and 41–47 contain the repeated 8-byte pattern:
+```
+FE FF FF FF 00 00 00 00 (repeated 64× per page)
+```
+`FEFFFFFF` = little-endian int32 = -2 (or 0xFFFFFFFE) — Btrieve's null/end-of-chain pointer.
+These pages are pre-allocated B-tree leaf pages with all record pointers null (empty file).
+Each 8-byte entry = one B-tree leaf node slot (page_ptr + flags).
+Pages per cluster (8 per group of data pages) × 64 entries = 512 slots available per key cluster.
+
+### Physical record size candidate
+
+FCR offset 0x78-0x79: `3C 0F` = LE16 = **3900 bytes**.
+
+BKICMSTR backs many TAS table namespaces: BKIC.PROD.*(64), MTIC.PROD.*(54), IS.PROD.*(26),
+IS.ECO.*(12), IS.LNK.*(16), IS.REM.*(24), BKSB.MFG.*(12), BKMRP.FC.*(11), and others.
+Total fields could exceed 250. At average field width ~10–15 bytes, a 3900-byte record is
+plausible for BKICMSTR as the backing physical file for all item-master namespace tables.
+
+If confirmed, this would mean a production BKICMSTR.B with 715 live records would be
+**715 × 3900 ≈ 2.79 MB** — consistent with a production table (not verifiable from empty sample).
+
+**Status: 3900 as record size is a strong candidate, not confirmed** (FCR layout not publicly
+documented; value matches expectation but could be a different field).
+
+---
+
 ## Things still to verify
 
 - Full FCR (File Control Record) byte layout — partially decoded from BKICMSTR.B and
   RELATE.DDF FCR headers. The dual-FCR (pages 0 + 8) is confirmed. Full field-by-field
   mapping requires Pervasive PSQL SDK documentation not available.
+- Whether `CB 02` (715) in FCR is the record count or a different metric — sample file has
+  zero live data records; the field may be a pre-set maximum or a stale header value.
 - How the `.mdx` (multi-index) files differ from embedded B-tree indexes — no `.mdx`
   sample files exist in `samples/`. The 10 `.mdx` files on the share are overflow key
   files for tables exceeding 24 key segments; structure is a separate Btrieve B-tree.
@@ -259,3 +330,9 @@ the company-specific extension at open time.
 - RELATE.DDF FK enforcement — confirmed: engine-level enforcement not in use; only ~8 FK
   records defined; RI is enforced procedurally by TAS programs. ✅
 - OCCURS.DDF status — confirmed: active, ~150–200 records present. ✅
+
+**Resolved (Pass 225):**
+- Key definition page structure: type=0x01, 5-key BKICMSTR confirmed, 8-byte entry format. ✅
+- Empty record slot marker: `FE FF FF FF 00 00 00 00` = null B-tree pointer fill. ✅
+- BKICMSTR.B sample confirmed as schema-only copy (data pages zero-filled). ✅
+- Physical record size candidate: 3900 bytes from FCR offset 0x78-0x79 (3C0F). ✅ (candidate)
