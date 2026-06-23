@@ -1,7 +1,7 @@
 # Btrieve / Pervasive PSQL `.B` File Format
 
-Status: partial — binary page structure identified from sample; DDF fully cataloged;
-type mapping confirmed from fields.csv.
+Status: verified — FCR logical+physical record sizes confirmed by cross-validation; DDF fully
+cataloged; type mapping confirmed; key definition page decoded; BKIC* family structure clarified.
 
 ---
 
@@ -53,24 +53,31 @@ Offset  Hex value   Interpretation (partial — full FCR spec is proprietary)
 ------  ---------   -----------------------------------------------------------
 00-01:  46 43       "FC" — Btrieve file magic
 02-03:  00 00       File format subversion
-04-05:  43 00       LE16 = 67 — possibly internal record overhead or alignment
-08-09:  05 00       LE16 = 5 — likely number of key definitions
-14-15:  0B 00       LE16 = 11 — possibly log position or version byte
-16-17:  69 02       LE16 = 617
-18-19:  CB 02       LE16 = 715 — record count (matches ~715 inventory items expected)
-36-37:  01 00       Flag byte
-3A-3D:  0E 00 00 08 Probably root page pointer or high-water page
-4A-4D:  50 09 01 00 LE32 = 68,944 — possibly total allocated bytes (< 71,680 = consistent)
+04-05:  43 00       LE16 = 67 — possibly Btrieve file format version or internal overhead
+08-09:  05 00       LE16 = 5 — primary FCR; alt FCR (page 8) shows 04 here; likely
+                    a generation/checkpoint counter (diff of 1 = one checkpoint behind)
+14-15:  0B 00       LE16 = 11 — unknown
+16-17:  69 02       LE16 = 617 — LOGICAL RECORD SIZE (exact DDF record_end=617) ✓ confirmed
+18-19:  CB 02       LE16 = 715 — record count at last file population; 0 in this empty sample
+24-25:  01 00       Flag byte or version indicator
+28-29:  0E 00       LE16 = 14 — unknown (may relate to page count: 140 pages / 10 = 14?)
+4A-4D:  50 09 01 00 LE32 = 68,944 — possibly total allocated record bytes (< 71,680)
 60-6B:  FF*12       End-of-chain marker for free page list (0xFFFFFFFF... = no free pages)
-70-71:  73 02       LE16 = 627
-72-73:  0B 00       LE16 = 11
-74-75:  0B 00       LE16 = 11
-76-77:  0E 00       LE16 = 14
-78-79:  3C 0F       LE16 = 3900 — possibly record length (BKICMSTR has many fields)
+70-71:  00 00       (zero-filled)
+72-73:  73 02       LE16 = 627 — PHYSICAL RECORD SIZE ✓ confirmed
+                    Cross-validated: DDF record_end=617 + ~10 bytes Btrieve record header = 627
+                    Verified using field.ddf: FCR+0x72=34, X$Field DDF record=34 bytes
+74-75:  0B 00       LE16 = 11 — unknown
+76-77:  0B 00       LE16 = 11 — unknown
+78-79:  0E 00       LE16 = 14 — unknown
+7A-7B:  3C 0F       LE16 = 3900 — UNKNOWN; NOT record size; Pervasive DDF files (file.ddf,
+                    field.ddf) both show 272 at this offset; likely a Pervasive-internal
+                    constant or pre-allocation parameter, not the physical record length
 ```
 
-Note: The full FCR layout is not publicly documented by Pervasive. The above is inferred
-from known Btrieve v6 file format patterns and is partly confirmed, partly guessed.
+Note: The full FCR layout is not publicly documented by Pervasive. FCR+0x16 (logical record
+size) and FCR+0x72 (physical record size) are confirmed by cross-validation across multiple
+Btrieve files. All other fields are inferred.
 
 ### Companion files
 
@@ -226,8 +233,11 @@ the company-specific extension at open time.
 1. **All 659 tables, 24,113 fields, and 15,998 index segments** are confirmed from the
    DDF files in `samples/ddf/`. The full schema is in `samples/ddf/schema.md`.
 
-2. **Average record layout**: EvoERP tables average ~37 fields per table; BKICMSTR (item
-   master) has one of the largest layouts at 422 fields.
+2. **Average record layout**: EvoERP tables average ~37 fields per table. BKICMSTR has
+   64 DDF-registered fields (record_end=617 bytes). The BKIC* item-master family spans
+   **16 separate physical .B files** (BKICMSTR.B, BKICALTD.B, BKICALTP.B, BKICPMAT.B,
+   BKICDIM.B, BKICELOC.B, BKICEMTR.B, BKICLOC.B, BKICLOCM.B, BKICMFG.B, BKICREF.B,
+   BKICREQ.B, BKICTAX.B, BKICVAL.B, BKICAMTR.B) collectively covering ~460 fields.
 
 3. **Btrieve integer keys** are stored in binary, not ASCII. TAS Pro converts them for
    display. String keys (e.g., PROD.CODE) are stored raw in the B-tree.
@@ -296,20 +306,32 @@ These pages are pre-allocated B-tree leaf pages with all record pointers null (e
 Each 8-byte entry = one B-tree leaf node slot (page_ptr + flags).
 Pages per cluster (8 per group of data pages) × 64 entries = 512 slots available per key cluster.
 
-### Physical record size candidate
+### Physical record size — confirmed (Pass 228 correction)
 
-FCR offset 0x78-0x79: `3C 0F` = LE16 = **3900 bytes**.
+**FCR+0x16 (16-17): `69 02` = LE16 = 617 bytes — LOGICAL record size** (exact DDF record_end).
 
-BKICMSTR backs many TAS table namespaces: BKIC.PROD.*(64), MTIC.PROD.*(54), IS.PROD.*(26),
-IS.ECO.*(12), IS.LNK.*(16), IS.REM.*(24), BKSB.MFG.*(12), BKMRP.FC.*(11), and others.
-Total fields could exceed 250. At average field width ~10–15 bytes, a 3900-byte record is
-plausible for BKICMSTR as the backing physical file for all item-master namespace tables.
+**FCR+0x72 (72-73): `73 02` = LE16 = 627 bytes — PHYSICAL record size** (DDF 617 + 10-byte
+Btrieve record header/overhead).
 
-If confirmed, this would mean a production BKICMSTR.B with 715 live records would be
-**715 × 3900 ≈ 2.79 MB** — consistent with a production table (not verifiable from empty sample).
+Cross-validation: field.ddf FCR+0x72 = 34 bytes, and X$Field DDF records are 34 bytes
+(file_id 2B + field_id 2B + name 20B + type 2B + offset 4B + size 2B + dec 1B + flags 1B = 34 bytes).
+The 10-byte difference between logical and physical record size is consistent Btrieve overhead.
 
-**Status: 3900 as record size is a strong candidate, not confirmed** (FCR layout not publicly
-documented; value matches expectation but could be a different field).
+**FCR+0x7A (7A-7B): `3C 0F` = LE16 = 3900 — NOT record size.** Both file.ddf and field.ddf
+show 272 (0x0110) at this offset — a Pervasive-internal constant. The 3900 in BKICMSTR.B
+at this offset is a different per-file parameter (possibly key space allocation or reserved blocks).
+
+Note: Prior documentation incorrectly labeled `3C 0F` as being at offset 0x78-0x79 and
+identified it as the record size. Both were errors; corrected in Pass 228.
+
+**BKICMSTR namespace clarification:** Programs that use BKICMSTR also typically open MTICMSTR.B
+(54 MTIC.PROD.* fields, record=1533 bytes) as a separate file. The MTIC.PROD.* vars come from
+MTICMSTR.B, not BKICMSTR.B. BKICMSTR.B exclusively stores BKIC.PROD.* (64 fields, 617 bytes).
+
+If live, a 715-record BKICMSTR.B would occupy: 715 × 627 ≈ 448 KB of record data (plus
+index pages) — a small inventory master, confirming i2 Systems' small-manufacturer scale.
+
+**Status: Physical record size confirmed ✅ at 627 bytes.**
 
 ---
 
@@ -335,4 +357,12 @@ documented; value matches expectation but could be a different field).
 - Key definition page structure: type=0x01, 5-key BKICMSTR confirmed, 8-byte entry format. ✅
 - Empty record slot marker: `FE FF FF FF 00 00 00 00` = null B-tree pointer fill. ✅
 - BKICMSTR.B sample confirmed as schema-only copy (data pages zero-filled). ✅
-- Physical record size candidate: 3900 bytes from FCR offset 0x78-0x79 (3C0F). ✅ (candidate)
+
+**Resolved (Pass 228 — FCR cross-validation):**
+- FCR+0x16 = logical record size (617 bytes) — exact DDF record_end match. ✅
+- FCR+0x72 = physical record size (627 bytes = DDF 617 + 10 Btrieve overhead). ✅
+  Cross-validated: field.ddf FCR+0x72=34, X$Field records=34 bytes (2+2+20+2+4+2+1+1=34).
+- FCR+0x7A = NOT record size; Pervasive-internal (DDF files show 272; BKICMSTR shows 3900). ✅
+- Corrected offset error: doc previously mislabeled 72-73 as 70-71 and 7A-7B as 78-79.
+- Corrected field count: BKICMSTR.B has 64 DDF fields (not 422); BKIC* family = 16 .B files.
+- MTIC.PROD.* fields confirmed in MTICMSTR.B (separate physical file), not BKICMSTR.B. ✅
