@@ -1523,6 +1523,49 @@ All 25 ISTRIGRS fields mapped to UI labels. T7USG = complete trigger entry form,
 
 ---
 
+### FL — File Location Manager (WTASFLOC.RWN)
+
+**What it does:** System administration utility for managing the FILELOC routing table.
+Every time TAS Pro opens a Btrieve `.B` file, it consults FILELOC to resolve the logical
+file code to a physical server path. WTASFLOC provides the "Maintain File Names and
+Locations" form for adding, updating, or deleting FILELOC entries.
+
+**Key namespaces (confirmed from WTASFLOC.RWN.dec + WTASFLOC.DFM, Pass 231):**
+
+| Namespace | Vars | Purpose |
+|-----------|------|---------|
+| `CF_*` | 6 | Current-file selection: CF_FLNAME/CF_FLCODE/CF_RTYPE/CF_DESC/CF_PATH/CF_FDNAME |
+| `LOC_*` | 8 | FILELOC table fields: BUFF_NAME/FILE_NAME/COMP_CODE/REC_SIZE/REC_TYPE/LOCATION/DESCRIPTION/HNDL |
+| `DICT_*` | 13 | FILEDICT field dictionary: FIELD_NAME/OFFSET/TYPE/SIZE/DEC/ARRAY_ELE/UPCASE/DESC/PICTURE/LCD/HOFFSET/HTYPE/HSIZE/HDEC/HARRAY |
+
+**TAS Pro 7 internal tables managed by WTASFLOC:**
+
+| Table | Purpose |
+|-------|---------|
+| `FILELOC` | Maps logical file codes → physical paths (per company) |
+| `FILEDICT` | Field dictionary: name/offset/type/size for each field |
+| `FILEKEY` | Key definitions per file |
+| `FILEKNUM` | Key number assignments |
+| `FILEDES` | File descriptor (template for creating new `.B` files) |
+| `FILEDFLD` | File default field values |
+| `FILEDBF` | dBASE format file registry |
+| `ERRMSG` | TAS runtime error messages |
+
+These tables are **not in the Pervasive DDF** — they are TAS Pro 7 runtime internals.
+FILELOC appears in hundreds of EvoERP programs because every dynamic file-open goes
+through the FILELOC routing layer.
+
+**Use cases:**
+- "How do I change where EvoERP stores its data files?" → FL module → update FILELOC path entries
+- "What fields does a Btrieve table have?" → FL → FILEDICT view shows field name/offset/type
+- WTASDMGR/WTASDATAM/T7DDCHECK all call into the FL infrastructure for file management
+
+**Confidence: 80/100** — DFM fully confirmed (caption "Maintain File Names and Locations",
+all controls); var-level confirmed from WTASFLOC.RWN.dec (99 vars, 22 procs). Proc-level
+logic not yet analyzed. See `docs/03-modules/fl-file-location.md`.
+
+---
+
 ### FO — Features & Options
 
 **What it does:** Product configurator extension to the BOM module. Lets manufactured products have selectable features and options. Each option sets a Y/N flag (BKBM.PROD.OPYN[1..N]) on the BOM item. When a customer orders a configurable product, option selections drive which BOM components are included.
@@ -2696,7 +2739,9 @@ Exports EvoERP data to CSV files by running SQL queries against a separate BI da
 - The EVOBI2 database is a separate reporting/BI database, likely with views or denormalized tables for reporting. SQL Export lets users run these queries and download the results.
 - Logs are written to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
 
-**Confidence: 45/100** — Architecture confirmed from SQLEXPORT.DFM (T7JTemp) + SQL Export.log (Java startup params, package names, DB connection). SQLExport.jar UI and SQL query set not decompiled. EVOBI2 database structure unknown.
+**Pass 231 (2026-06-23) SQLEXPORT.RWN.dec var-confirm:** Java bridge vars[60–71] fully confirmed: HOST/NAME/PORT/TREEDEST/COMP/NOPE/DUMMY_L/DFM/RVAL/ISTS.EDATE/JAVA.PATH/JAVA.NAME — identical pattern to QUERYEXECUTE, CASHFLOW, CRMDASHBOARD, VSCHED, COMMISSIONRPT, PURCHITEM, PURCHVEND (8 confirmed Java bridges). Then EVO.CFG.* workstation vars[72–87] and per-module screen selectors (ARA/APA/INA/INB/POA/SOA/WOA.CFG.ECSCRN+CVTSCRN). 649 non-TEMP vars total; remaining vars are the ISTS.CFG.* workstation config block. See `docs/03-modules/ex-sql-export.md`.
+
+**Confidence: 75/100** — TAS-side var block confirmed from RWN decryption; Java app architecture confirmed from SQLExport.jar + log files. EVOBI2 schema and SQL query set not decompiled; Java UI logic blocked by encryption.
 
 ---
 

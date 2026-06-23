@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-23 (Pass 230 — 4 RWN programs documented: MA(T7MAPDEPO deposit-to-invoice, BKAR.DEP+ISAR.DEPL), YS(T7YSYN 495 ISTS.CFG.* params + BKYS.* layout), SM-workstation(t7slsfc 663v email/SMTP/per-module-screen/paths), shared RTM picker(T7RTMVALID); opaque modules C:65→75/100)
+Last updated: 2026-06-23 (Pass 231 — FL/EX/SB modules resolved: FL(WTASFLOC CF_*/LOC_*/DICT_* 3 namespaces, 8 FILE* internal tables, C:65→80), EX(SQLEXPORT Java bridge vars[60-71] confirmed + EVO.CFG.* workstation block, C:45→75), SB(T7DSBOM pure stub — STUB var only, data-only module, C:45→60); 2 new docs: fl-file-location.md + ex-sql-export.md)
 
 ---
 
