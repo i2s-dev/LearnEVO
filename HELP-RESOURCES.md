@@ -7423,7 +7423,7 @@ ISECO drives part drawing revision control: each ECO records who entered/approve
 |---|---|---|
 | T7ARC | 228 | AR cash receipts — largest AR program; applies payments to invoices; opens BKARDEP+BKARINVI+BKART+BKGLCHK+BKGLTRAN; posts to GL |
 | T7ARN | 191 | AR deposit/note entry — enters SO deposits and AR transaction notes; opens BKARDEP+BKARINVV+BKARTNOT |
-| T7MAPDEPO | 97 | MA deposit posting — posts deposits from BKARDEP to BKARINV+GL; opens ISARDEPL |
+| T7MAPDEPO | 97 | MA deposit mapping — applies customer deposit to open invoice lines; BKAR.DEP.*(DEPNO/CUST/DATE/SO/SR) + ISAR.DEPL.*(SO/SCCOG/OAMT/AMT/AMTRM) + DEPO.ORIG.AMT/DEPO.AMOUNT/AMOUNT.REM balance tracking + FROM.ITEM/GLACCT/GLDPT GL distribution; 1664 vars, LISTG60.LIB; Pass230 var-level confirmed |
 | T7GETDEP | 18 | Get deposit balance — reads BKARDEP+ISARDEPL+MKECLASS; utility called by other programs |
 | T7GETWEB | 6 | Web deposit stub — 6p; retrieves web-order deposit amount |
 
@@ -7442,7 +7442,7 @@ At invoice time: T7ARC — apply deposit + any remaining payment to invoice
 | Table | Fields | Purpose |
 |---|---|---|
 | BKARDEP | 6 | AR deposit header — DEPNO(8) PK; CUST(10)+DATE+SO(8)+SR(1 service flag)+EXTRA(50) |
-| ISARDEPL | ? | AR deposit lines — NOT IN DDF schema; referenced by T7MAPDEPO+T7GETDEP |
+| ISARDEPL | ~18 | AR deposit application lines — ISAR.DEPL.*(confirmed from T7MAPDEPO vars): SO/SCCOG/OAMT/AMT/AMTRM = applied-to SO#, subcontract COGS, original deposit amt, applied amt, remaining amt; NOT IN DDF schema but confirmed in use |
 | BKART | 12 | AR transaction — CUST(10)+TRXN(8) PK; TYPE/DISC/AMOUNT/POSTDATE/ENTDATE/TRXNLINK/INVC/CHECK/NOTE (documented in TC module) |
 | BKARTNOT | 3 | AR transaction notes — TRXN(8)+CNTR(2) PK; DESC(30) — line notes on AR transactions |
 | BKARINVV | 77 | AR invoice voucher — CODE(10)+NUM(6) PK; 10 GL split lines each with GLACT(10)+GLDPT(4)+DC(1)+GLD(25)+DAMT(8); TERMD/TERMN terms; TAMT total; FRGHT+COOP+TAX+COGS amounts; SLSP×2+COMPR×2 commissions; multi-GL manual AR entry |
@@ -7549,6 +7549,63 @@ The T7SMJ* family are data rebuild and recalculate programs — they touch the w
 | ISNUMBER | 52 | Next number sequences — CODE(10) PK; NEXT_1..51(8×51); each CODE row holds 51 sequential counters for different document types (SO, PO, WO, etc.) per company |
 | BKSYAP | 11 | AP system config/counters — RECVNUM(8 next receipt#)+REOPEN(1)+RQSCRAP(1)+RQREWRK(1)+RECVFLG(1)+PONUM(8 next PO#)+QCRECV(8)+RFQNUM(8) + 3 more; single-row table per company |
 | CALTEMP | 2 | Calendar template — SHP_DATE(8)+SLSH_DATE(4); shipping date calculation utility |
+
+---
+
+## YS — Yes/No System Parameters
+
+**Module purpose:** Administrative screen for setting system-wide operational flags. Each
+flag is stored in `BKYSMSTR.B` and loaded into the `ISTS.CFG.*` global variable namespace
+at startup by `T7MDefaults.RWN`. Any change through YS affects all users immediately on
+their next session start.
+
+**Program:** T7YSYN.RWN (1243 vars, 2131 instructions, 52 procs, EVO.LIB)
+**Primary table:** BKYSMSTR (355 fields — one row per company)
+
+### Key ISTS.CFG.* Parameter Categories
+
+| Category | Representative codes | Meaning |
+|----------|---------------------|---------|
+| Security | PASSWD / CFGLVL / SOPSWD / WOPSWD / ARPSWD / CRPSWD | Password requirements and access control |
+| Sales Orders | PRTSOA / SOCHG / SODEL / SOAUD / SODWO / SOCOPY | SO print, edit, and WO-integration flags |
+| Work Orders | WOGKIT / WOOVER / WOAWN / WOGNEG / WOFHOL | WO kit, over-issue, and scheduling flags |
+| Purchase Orders | POCHK / POCHG / POREV / POADSC | PO receipt and revision flags |
+| Inventory | STDCST / UPLCST / WHCTRL / INAMRP / LOTWO / SOLOT / SOSER | Cost method, warehouse, lot/serial tracking |
+| GL / Accounting | CHKBAL / INCGL / GLDATE / GLCTRL / COGSDP | Posting control, period dates |
+| Email | EMAIL / EMAILS / EMAILP / EPASS / BCCBOX | Email system enable and SMTP policy |
+| MRP | MRPDAY / MRPDOL / FOREC / EPOQTY / LEADHR | Planning horizon, dollar threshold, lead time |
+| Data Collection | DCARUN / DCSYNC / DCDAYS / DCTIME / DCMACH | DC terminal and tracking config |
+| AvaTax | AVATAX / AVAACT / AVAKEY / AVACOD | Avalara sales-tax integration |
+| Features | ECO / JOB / ITP / SUBCOS / EVONTS / EVOLNK | Module-level feature flags |
+| Currency | OANDA / FXKEY | Foreign exchange feed |
+| Voice | VOIC/VOWO/VOPO/VOSO/VOAR/VOAP | Audio alerts per module |
+
+**Total confirmed parameters: 495 ISTS.CFG.* codes** (Pass230 — complete extraction from T7YSYN.RWN vars)
+Full list: `docs/03-modules/ys-system-params.md`
+
+### How to find a system parameter's effect
+
+1. Identify the ISTS.CFG.* code (e.g., `ISTS.CFG.PRTSOA`)
+2. Search HELP-RESOURCES for the code — many appear in per-module sections
+3. Run `grep -r "ISTS.CFG.<CODE>" samples/rwn_symbols.json` to find which programs read it
+4. If unknown: look in T7YSYN.DFM for the label next to the field for that code
+
+### BKYSMSTR Field Layout (confirmed from T7YSYN vars)
+
+| Variable | BKYSMSTR field | Meaning |
+|----------|---------------|---------|
+| `BKYS.WONUM` | BKYS_WONUM | Work Order next-number counter |
+| `BKYS.YN` | BKYS_YN_1 | Primary Y/N flags field (multi-value array) |
+| `BKYS.GLNUM` | BKYS_GLNUM | GL account number for system defaults |
+| `BKYS.GLDPT` | BKYS_GLDPT | GL department for system defaults |
+| `BKYS.NUM` | BKYS_NUM | Numeric system value |
+| `BKYS.DESC` | BKYS_DESC | Description text |
+| `BKYS.VNUM` | BKYS_VNUM | Vendor number default |
+| `BKYS.DATE` | BKYS_DATE | Date default |
+| `BKYS.QCNUM` | BKYS_QCNUM | QC number default |
+| `BKYS.REQNUM` | BKYS_REQNUM | Requisition number default |
+| `BKYS.INVNUM` | BKYS_INVNUM | Invoice number default |
+| `BKYS.RBNUM` | BKYS_RBNUM | (purpose TBD) |
 
 ---
 

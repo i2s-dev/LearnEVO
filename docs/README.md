@@ -109,6 +109,10 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [US — Settings](03-modules/us-settings/help-content.md) *(8 CHM topics: US-A through US-H)*
 - [MM-Support — Main Menu (Support) Programs](03-modules/mm-support/help-content.md) *(3 CHM topics: Check for Updates, Send Files, Send Screen Print)*
 - [MM-File — Main Menu (File) Programs](03-modules/mm-file/help-content.md) *(2 CHM topics: Maintain Database, Report Editor)*
+- [YS — Yes/No System Parameters (T7YSYN.RWN)](03-modules/ys-system-params.md) — *Pass230: 495 ISTS.CFG.* params + BKYS.* field layout; BKYSMSTR*
+- [MA — Map Deposits (T7MAPDEPO.RWN)](03-modules/ma-map-deposits.md) — *Pass230: AR deposit-to-invoice mapping; BKAR.DEP+ISAR.DEPL tables*
+- [SM — Workstation Config (t7slsfc.RWN)](03-modules/sm-system-manager/workstation-config.md) — *Pass230: email/SMTP (49 vars), per-module screen selectors, UI flags, Java paths*
+- [Shared Dialogs — T7RTMVALID.RWN (RTM format picker)](03-modules/shared-dialogs.md) — *Pass230: cross-module shared utility for ReportBuilder template selection*
 
 ### 05 — Glossary
 - [Glossary — EvoERP terminology reference](05-glossary/glossary.md) — *verified, from EvoHELP.CHM*

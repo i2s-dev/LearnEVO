@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-23 (Pass 229 — 3.2M instruction frequency analysis across 1,119 programs; b2=0x00 universal confirmed; 15 sub-code families mapped; 0x49=READ_PROP confirmed; 0x6A=GOTO_LABEL(pool string) confirmed; 0x48/0xDC PUSH/POP paired; working disassembler; RWN bytecode C:63→70/100)
+Last updated: 2026-06-23 (Pass 230 — 4 RWN programs documented: MA(T7MAPDEPO deposit-to-invoice, BKAR.DEP+ISAR.DEPL), YS(T7YSYN 495 ISTS.CFG.* params + BKYS.* layout), SM-workstation(t7slsfc 663v email/SMTP/per-module-screen/paths), shared RTM picker(T7RTMVALID); opaque modules C:65→75/100)
 
 ---
 
@@ -104,7 +104,7 @@ Current decryption scripts:
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
 | Database schema | ✅ Done | 92/100 | 659 tables, 24,113 fields extracted |
-| Module documentation | 🔄 Partial | 72/100 | 50+ modules documented from DFM+CHM; 16 still opaque |
+| Module documentation | 🔄 Partial | 75/100 | 50+ modules documented from DFM+CHM; Pass230: MA/YS/SM-workstation/T7RTMVALID documented; 3 opaque remain (EX/PC/RT) |
 | `PROJECT-STRUCTURE.md` | 🔄 In progress | 72/100 | Updated each session |
 | `HELP-RESOURCES.md` | 🔄 In progress | 75/100 | Updated 2026-06-15 — 25+ module sections |
 | `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated 2026-06-16 |
