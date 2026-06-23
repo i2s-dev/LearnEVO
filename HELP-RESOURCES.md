@@ -1488,9 +1488,36 @@ All 25 ISTRIGRS fields mapped to UI labels. T7USG = complete trigger entry form,
 - **Selective File Erase (DE-L) ⚠️:** Erase Inventory, BOM, Customer, and/or Routing files in bulk. Irreversible.
 - **Defect Code Setup (DE-FECT):** Maintain the IS.DEF.CODE/DESC master list used by QC and SPC modules.
 
-**Primary tables:** IS.DEF.* (defect codes), WOMAT.* (WO materials), BKAR.INV.*/BKAR.INVL.* (invoice import target)
+**Key namespaces confirmed (Pass232 var extraction):**
 
-**Confidence: 68/100** — All 20 DFMs read; EDI flows and import targets confirmed; web order bank integration and exact DE-P sub-form scope not fully decoded.
+| Namespace | Vars | Table | Program |
+|-----------|------|-------|---------|
+| IS.DEF.* | 3 | ISDEFECT | T7defect — CODE/DESC/EXTRA |
+| BKAR.INVT.* | 23 | BKARINVT | T7DEQ — AR payment import |
+| BKAP.INVT.* | 20 | BKAPINVT | T7DER — AP payment import |
+| IS.UDF.* | 5 | ISUDFINV | T7DEU — NAME/FIELD/START/LENGTH/SCRVAR |
+
+**BKAR.INVT.* 23-var (BKARINVT — AR cash receipts):**
+CODE/DATE/NUM/AMT/AMTRM/DESC/TERMN/TYPE/GLDPT/SLSP/DEPST/SLSP2/EXTRA/PDATE/MCRAT/MCCOD/TRXN/CHKNO/DEPNO/CHKAC/OPEND/CLOSD/NORMP
+
+**BKAP.INVT.* 20-var (BKAPINVT — AP check/payment records):**
+CODE/KEY/DATE/NUM/AMT/AMTRM/DESC/TYPE/TERMN/GLDPT/SDATE/EXTRA/PDATE/MCRAT/MCCOD/TAX/FRT/DEPNO/CHKNO/CHKAC
+
+**New tables identified (Pass232):**
+- ISFIELDS — export field selection (T7DEx: generic data export config)
+- ISAPQPO — AP Quick PO staging (T7DEV: PO import)
+- BKPIMSTR/BKPIPHYS/BKPILOT/BKPIFROZ/BKPISER — Physical Inventory tables (T7DEHD)
+- BKDCCFG — Data Collection Configuration (WO shop floor DC programs)
+- BKDCLAB — Data Collection Labor Codes
+
+**DE sub-program architecture (Pass232):**
+- T7DE[B-J][a-e] pattern: first letter = operation code, second = sub-variant; D-variant = TAS7 main program (EVO.LIB), A/B/C/E = TAS6 compiled stubs; T7DE[B-J]D = the active TAS7 implementation
+- T7DEBD/DEED/DEFD = WO shop floor DC (BKDCCFG/TOOL/MACHINE/WOBOM/WOMAT/INVTXN/LOT/SERIAL/BKICLOCM/WORKCTR/WOLABOR/SCRAP/BKBMMSTR/WORECV)
+- T7DEK (61p) = global search+replace across INV/BOM/ROUT/CUST/VEND/COA/LAB (WHICH.FILE+WHICH.FIELD+SEARCH.FOR+REPLACE.WITH); handles for all 7 entity types: ICEMTR.H/MICEMTR.H/BMEMTR.H/BMERMK.H/RTEMTR.H/ARECST.H/APEVND.H/GLECOA.H/DCPLAB.H
+- T7DEM (92p, ISTECH.LIB) = BOM/IC validation; PRT.BAD/MISSING.INVALID/TYPE.OK/PARENT.OK = validation flags; dual file-pair handles (EFILE.H/FILE.H) for two-BOM comparison mode
+- T7DEx (82p) = generic data export config; ISFIELDS primary table; FILELOC+FILEDICT field selection; MEM.SELECT.FLD/NUM/DICT_* = in-memory field selection array; TAG.ALL/TAG.CNTR for bulk selection
+
+**Confidence: 91/100** — 11 programs var-extracted (Pass232); IS.DEF.*/BKAR.INVT.*/BKAP.INVT.*/IS.UDF.* namespaces confirmed; 5 new tables identified; WO DC sub-series architecture confirmed; DFMs read for all 20 DFMs; remaining gap: exact semantics of T7DEA/B/C/E/F/G/H/I/J top-level ops not yet decoded from DFM vs var names.
 
 ---
 
