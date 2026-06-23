@@ -16295,6 +16295,67 @@ T7MRD (MR-D — location change analysis)
 
 ---
 
+### Recipe 29: Field-Level Security — Restricting User Access to Specific Fields (Pass 226, 2026-06-23)
+
+**Menu:** PS-L (Personal Settings → Enter Field Specific Access)
+**Program:** T7LIMACC.RWN (42 procs); table: ISACCESS
+
+**When to use:** A user can see or edit a field they should not (e.g., cost fields, discount fields, vendor account numbers). You want to hide or lock it per user group without removing it from the form entirely.
+
+**How it works:**
+ISACCESS stores one record per form-control-group combination:
+- `IS.ACC.DFM` — the DFM form name (e.g., `T7INA.DFM`)
+- `IS.ACC.OBJ` — the control name on that form
+- `IS.ACC.OBJTYPE` — control type (field, button, etc.)
+- `IS.ACC.STATUS` — permission: 0=full access, 1=read-only, 2=hidden
+- `IS.ACC.NAME` — access rule name (for display/lookup)
+- `IS.ACC.FIELD` — additional field qualifier
+
+**Step-by-step:**
+1. Enable field-level access: System Manager → set `ISTS.CFG.LIMACC = Y`.
+2. Go to menu PS-L → Enter Field Specific Access.
+3. Select the target DFM form (e.g. `T7INA` for Inventory Master).
+4. Select the access group to configure.
+5. T7LIMACC reads all controls on the form via OBJECT_LIST / CAPTION_LIST.
+6. For each control, set Status: Full / Read-Only / Hidden.
+7. Records written to ISACCESS (DFMNAME + AGROUP + OBJ = composite key).
+8. On next login, EvoERP calls T7LIMACC at form-load time and applies the rules.
+
+**Tables written:** ISACCESS
+**Feature gate:** ISTS.CFG.LIMACC / ISTS.CFG.ACCESS — if these flags are off, all fields are unrestricted.
+
+---
+
+### Recipe 30: Module License Check — How T7PSE Validates Module Access (Pass 226, 2026-06-23)
+
+**Menu:** PS-E (Personal Settings → Security / License)
+**Program:** T7PSE.RWN (50 procs, 63 tables)
+
+**What it does:** T7PSE validates the EvoERP module license and controls which menu entries remain active per installation.
+
+**License variables:**
+
+| Var | Meaning |
+|-----|---------|
+| SERIAL | Installation serial number |
+| PRODUCT | Licensed product code |
+| APROD | Additional licensed products |
+| SDATE | License start date |
+| EDATE | License expiry date |
+| USERS | Licensed user count |
+| CHKSUM | License checksum |
+| LIC | License valid flag (Y/N) |
+
+**Per-program permission flags (stored in BKMENUSU):**
+- `NS` (NOSAVE) — user cannot save records in this program
+- `ND` (NODELETE) — user cannot delete records in this program
+- `HOTKEY` — keyboard shortcut for this menu entry
+- `ACCESS_CODE` — program-level access code
+
+**Audit trail:** Every security change is written to ISLOG: IS.LOG.WHO (user), IS.LOG.WHAT (record), IS.LOG.DOING (action), IS.LOG.STARTD/STARTT (timestamp), IS.LOG.COMPANY.
+
+---
+
 ## Pass 99 — EvoLinks, FNO, Calendar, Infrastructure DFM sweep (2026-06-18)
 
 ### EvoLinks — Document Attachment System (ISLINKS Table)

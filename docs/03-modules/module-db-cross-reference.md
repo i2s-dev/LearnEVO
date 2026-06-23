@@ -963,11 +963,17 @@ Quick reference — which module is the PRIMARY owner of each core table:
 
 ---
 
-### Module Access / License Control (LI) — T7LIMACC
+### Field-Level Access Control (LI) — T7LIMACC
 
-**Purpose:** License and module access control — ISACCESS table determines which EvoERP modules are enabled/licensed for this installation. 42 procs; the access-control gatekeeper for optional modules.
+**Purpose:** Per-form, per-group field-level security. On every form load, T7LIMACC queries ISACCESS keyed by DFMNAME (active DFM form) + AGROUP (user's access group) and applies the IS.ACC.STATUS rule to each form control (OBJ). Controls can be hidden, read-only, or fully editable per group. 42 procs; tables: ISACCESS (primary), BKSYHELP, DBAHLPID, MKAHIST.
 
-**New tables:** ISACCESS (module access/license flags)
+**ISACCESS namespace (8 vars):** IS.ACC.NAME / IS.ACC.DFM / IS.ACC.OBJ / IS.ACC.OBJTYPE / IS.ACC.STATUS / IS.ACC.FIELD / IS.ACC.TEXT / IS.ACC.EXTRA
+
+**Key input vars:** DFMNAME (form name), AGROUP (user group), ACCESS.H (ISACCESS handle); feature enabled by ISTS.CFG.LIMACC / ISTS.CFG.ACCESS flags.
+
+**Control property accessors:** DFM.H / DFM_OBJNAME / DFM_CAPTION / DFM_TEXT / DFM_HINT; OBJECT_LIST / CAPTION_LIST enumerate all controls on the form.
+
+**New tables:** ISACCESS (field/control-level access rules per DFM+group)
 
 ---
 
@@ -1304,7 +1310,7 @@ New families identified from rwn_symbols.json DB fingerprint analysis.
 **Purpose:** Per-user personal settings — printer defaults, menu customization, column preferences. 5 files, ~300 procs.
 - T7PSF (63 procs): Main PS form. Uses BKMENUSU (menu user settings), procs include MENULINES, T7TLL, CLEANUP — confirms menu/toolbar personalization.
 - T7PSA / T7PSK (90/96 procs): PS admin and setup screens.
-- T7PSE (50 procs): Uses BKMENUSU, BKCMACCT — personal settings with CRM account type filtering.
+- T7PSE (50 procs, 63 tables): License gate + security config. SERIAL/PRODUCT/APROD/SDATE/EDATE/USERS/CHKSUM/LIC/SF.H = module license validation vars; IS.LOG.WHO/WHAT/DOING/STARTD/STARTT/COMPANY = security audit trail written to ISLOG; BK_MNU_AC/SU/EXIST/GNUM/GROUP/BNUM/BTNS = BKMENUSU access vars; NS/ND = NOSAVE/NODELETE per-program permission flags; HOTKEY/ACCESS_CODE = menu security settings. License check determines which modules remain accessible in BKMENUSU.
 
 **New tables:** BKMENUSU (menu user settings — saved menu layout per user), BKPSUSER (PS user settings — printer/preference records per user)
 
