@@ -247,9 +247,19 @@ to resolve fully:
     **Pass 110c additions (10-program form lifecycle analysis, 2026-06-19):**
     - **0x20 vs 0x57 RESOLVED**: 0x20 = CREATE FORM (first use → DFM string = TForm.Create) / BIND HANDLER (subsequent uses). 0x57 = EXECUTE FORM (ShowModal — enter event loop). Standard sequence: `[0x20→DFM][0x20→handler...][0x57→DFM][0x40/0x71→EXIT]`. T7MSG exception: uses 0x57 alone (0 procs, so Create+ShowModal collapsed).
     - **0x40/0x71 = EXIT PROGRAM**: Both are terminal opcodes. 0x40 sub=0x36 appears in T7MSG and t7pass. 0x71 sub=0x05 appears in T7askbut. Semantics identical; variant may encode a return code.
-    - **0x4B = unknown terminal** (t7b, T7BROWSER last instruction; refs N:1162627398). Possibly TIMER_START or WAIT_FOR_EVENT.
     - **evoDCs first instruction**: 0x20 → A[6]:460c12000000 (binary blob, not DFM string). This may be a dynamic form or a NULL form creation — needs further investigation.
-    - Next step to reach C:70+: decode the 0x20 BIND HANDLER arguments (pool offset → what structure? proc index? event name?); confirm 0x30 as RETURN; identify 0x43/0x45/0x49 from t7nest context.
+
+    **Pass 229 additions (2026-06-23 — 3.2M instruction scale analysis + disassembly):**
+    - **b2 byte = 0x00 universally CONFIRMED** across 3,204,306 instructions in 1,119 programs. Single exception: 0x57 EXECUTE_FORM has b2=0xFE for main-form launch.
+    - **Sub-code families CONFIRMED at scale**: 15 sub-code values each map to a consistent family of related opcodes across ALL 1,119 programs.
+    - **0x48/0xDC perfectly paired**: 0x48 appears 16,125×, 0xDC appears 16,121× in exactly the same 948 files (sub=0x19). Almost certainly PUSH/POP.
+    - **0x49 = READ_PROP CONFIRMED**: EVOMENU_SELCOMP [0] reads `READ_PROP("NOVAZYGANDISTECHSUPPORT")` — tech-support mode bypass built into company selector dialog.
+    - **0x6A = GOTO_LABEL**: uses pool STRING as label name (runtime label resolution). EVOMENU_SELCOMP: GOTO_LABEL("Items").
+    - **0x4B = OPEN_FORM** (distinct from 0x20 CREATE/BIND) — EvoERPbackup uses 0x4B with DFM filename. Difference (open-existing vs create-new?) TBD.
+    - **ISTS enhancement marker**: i2 Systems custom programs start with `ASSIGN(" - ISTS Enhancement MM/DD/YY")` at instruction [0] (EVODEFPRINT confirmed 06/15/17).
+    - **Branch target encoding STILL UNKNOWN**: for 0x3B COND_BRANCH and 0xD2 GOTO, the pool_offset field is NOT a pool byte offset (confirmed: poff=19 for EVOMENU_SELCOMP [1] falls inside string "NOVAZYGANDISTECHSUPPORT"). Could be: (a) byte offset in dispatch table, (b) instruction index, (c) pool offset to an undocumented integer type. OPEN — needs more analysis.
+    - **Pool type 0x53 identified**: appears to be a second string type (same format as 0x41 but different type byte). Need more samples.
+    - Current status: **C: 70/100**. Remaining unknowns: branch target encoding; pool types 0x53/0x48/0x0C/etc.; 0x20 BIND HANDLER argument encoding; CALL family sub-semantics.
 
 17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
     - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has

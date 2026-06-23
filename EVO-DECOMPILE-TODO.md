@@ -73,6 +73,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `StartEvo.exe` fully analyzed: .NET assembly; DomainAuthenticate→KillEvoProcesses→LaunchEvoWithUser; queries `tas_menus` via DSN=EVOADMIN; handles `evo://` URI scheme; reads DEFAULTPATH/DFLTCOMPANYCODE from taspro7.ini; robocopy for updates — **C: 88/100**
 - [x] ✅ `suwin6.dcy` format decoded: NOT a Delphi DFM form — it is TAS Pro 7 compiled bytecode (32,864 bytes, Shannon entropy 7.99 bits/byte, no ASCII string literals, validated with K_C key at offset 0). DCY files have two sub-types: Type A = Delphi DFM form (standard, decrypted with K_D), Type B = compiled TAS Pro 7 bytecode (suwin6.dcy, decrypted with K_C). Pre-load behavior itself cannot be traced without a TAS Pro 7 bytecode disassembler. (Pass 112 2026-06-19) — **C: 60/100** (format confirmed, logic opaque)
 - [ ] ⬜ `suwin7.dcy` — fails all 4 known keys; format unknown
+- [x] ✅ **Pass 229 (2026-06-23) — RWN bytecode deep analysis**: 3,204,306 instructions analyzed across 1,119 programs. Key findings: (1) b2 byte universally 0x00 except 0x57 EXECUTE_FORM(b2=0xFE=main form); (2) 15 sub-code families confirmed — each sub-code consistently groups related opcodes; (3) 0x48(PUSH)/0xDC(POP) proven paired — 16,121/16,125 occurrences in exactly same 948 files; (4) 0x49=READ_PROP confirmed (reads "NOVAZYGANDISTECHSUPPORT" in EVOMENU_SELCOMP — tech-support bypass); (5) 0x6A=GOTO_LABEL uses pool string as label name; (6) 0x20=CREATE/BIND confirmed loads DFM (T7PASS disassembly); (7) ISTS enhancement marker pattern identified (ASSIGN(" - ISTS Enhancement MM/DD/YY") at [0]); (8) .dec 8-byte offset documented; (9) branch target encoding for 0x3B still unknown — **C: 70/100**
 - [x] ✅ **EvoERPmenu.RWN full boot-loop vars confirmed** (Pass 227 2026-06-23): 1574 vars, source=NZEVO.LIB, 18 DB tables; boot-flow vars: ONOPENL/ONDISPL/ONSTARTL (startup labels), REMEMBER.ME (remember login), LPASSWORD (entered password), LOGINRET (login return code), FORCE.PASS (force password change), WHOAMI/WHOAMIFULL (login code + full name), START.CO (startup company), RELOGIN (re-login trigger), KILL.MYSELF/DIE/CLOSING (shutdown flags), TENMIN.KILLER/TENMIN.TIME (10-min idle auto-logout), CHEAP.SEATS/CHEAP.SEATSV (read-only demo mode), COMPU.NAME (workstation name → ISLOG), ISTS.PATH (installation path), CO.LOGO (company logo), BUILD (version string), LOG.ATTEMPT (failed login counter) — **C: 88/100**
 - [x] ✅ **Windows Domain Auth (SSO) confirmed** (Pass 227 2026-06-23): ISTS.CFG.SSO = Single Sign-On feature flag; WDA.USERNAME = Windows domain login name; WDA.SECRET = WDA credential/token; WDA.VAL = validation result; ISEX.USER.WINDO = Windows username stored in ISEXUSER for SSO matching; COMPU.NAME = workstation name captured and written to ISLOG session record — **C: 88/100**
 
@@ -157,22 +158,29 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Must be run against local copies in `samples/` (not directly against network share)
   - 1122 entries in rwn_symbols.json from 1145 successfully decrypted RWNs; script verified working
   - Gap closed: suwin7.rwn is the sole failure (unknown 5th key) — a blocked-file issue, not a script defect
-- [x] 🔄 Bytecode instruction set — **C: 63/100** (17 opcodes; form lifecycle semantics confirmed from 10-program ordering analysis; 2026-06-19 refinements)
-  - Dispatch table = program instructions: `[op][00][b2][sub] + [pool_offset_LE4]` (8 bytes each)
-    - b2 is usually 0x00; **exception: op=0x57 EXECUTE_FORM has b2=0xFE** (main form) or b2=0x00 (sub-form in t7nest)
-  - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant — holds for all 1122 programs extracted
-  - **Pool detection**: scan 8-byte blocks from DISP_START+8; first block where byte[0]=0x41 = pool_start. May need to skip 0x00 no-op blocks. Confirmed for all 4 small programs.
-  - Pool immediately follows dispatch; first entry always 0x41 = DFM filename: `[0x41][0x00][len_LE2][name_ascii]`
-  - Typed pool values: 0x41=string/blob (var-len), 0x46=var_ref (val=var_idx×77), 0x43=pool_ptr, 0x52/0x4E/etc.=5-byte numeric
-  - Compound blobs: 0x41 blobs starting with 0xFD contain sub-typed argument fields, end with 0xFF
-  - **CONFIRMED 0x20 = CREATE FORM / BIND HANDLER**: First occurrence → DFM filename string (TForm.Create). Subsequent 0x20s bind event handler procs. Confirmed from 10-program ordering analysis.
-  - **CONFIRMED 0x57 = EXECUTE FORM**: Universal. Enters form event loop (TForm.ShowModal). In suwin7 it is the LAST instruction after 31 license-check ops. In T7MSG (no procs) it creates+executes in one shot.
-  - **Standard form lifecycle**: `[0x20→DFM][0x20→handler...][0x57→DFM][0x40/0x71→EXIT]`
-  - **Branch family (sub=0x14)**: 0x3B, 0xD2, 0x6A — confirmed jump/branch variants
-  - **0x42 = GOSUB/CALL**: sub=0x04; calls named procs. 0x0F = ASSIGN: sub=0x0A; sets properties/vars.
-  - **0x40/0x71 = EXIT PROGRAM**: Both terminate the program; 0x71 sub=0x05, 0x40 sub=0x36.
-  - 17 distinct opcodes fully documented in `docs/02-file-formats/rwn-binary-format.md`
-  - `.dec` files in `samples/rwn_decrypted/` regenerated 2026-06-19 (1145/1146 OK); 1122 with pool extracted
+- [x] 🔄 Bytecode instruction set — **C: 70/100** (30+ opcodes; sub-code families mapped at 3.2M instruction scale; disassembler working; 2026-06-23 Pass 229)
+  - Dispatch table = program instructions: `[op][b1][b2][sub] + [pool_offset_LE4]` (8 bytes each, uniform)
+    - **b1 and b2 are UNIVERSALLY 0x00** — confirmed across 3,204,306 instructions in 1,119 programs (3.2M scale)
+    - **Single exception: 0x57 EXECUTE_FORM has b2=0xFE** for main/top-level form; b2=0x00 for sub-forms
+  - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant (program-relative) — holds for all 1,119 programs
+  - **In .dec files** (rwn_decrypt.py output): 8-byte validation prefix is prepended → file_offset(dispatch) = 0x6C8
+  - Pool immediately follows dispatch; typed values: 0x41=string, 0x46=var_ref, 0x43=pool_ptr, 0x4E=int, 0x52=real
+  - Compound blobs: 0x41 entries starting with 0xFD contain sub-typed argument fields, end with 0xFF
+  - **Sub-code byte groups opcodes into 15+ functional families** (confirmed at scale):
+    - sub=0x0A = ASSIGN family (0x0F, 0x8A, 0x37, 0x56); sub=0x04 = CALL family (0x42, 0x45, 0x16, 0x15)
+    - sub=0x14 = BRANCH family (0x3B, 0x6A, 0xD2, 0x19, 0x93); sub=0x05 = FORM family (0x20, 0x57, 0xD1, 0x29)
+    - sub=0x19 = VAR MGMT family (0x48 PUSH, 0xDC POP — perfectly paired 16K/16K in same 948 files)
+    - sub=0x0F = READ family (0x49, 0x0C); sub=0x06 = FIELD I/O (0x06, 0x08); sub=0x10 = STATUS (0x31, 0x11)
+  - **CONFIRMED 0x20 = CREATE FORM / BIND HANDLER**: loads DFM by pool string (T7PASS [0]: CREATE/BIND("T7PASS.DFM"))
+  - **CONFIRMED 0x57 = EXECUTE FORM** (ShowModal): universal in 1,119/1,119 programs
+  - **CONFIRMED 0x49 = READ_PROP**: reads named system property via pool string (EVOMENU_SELCOMP reads "NOVAZYGANDISTECHSUPPORT" — tech-support mode bypass flag in company selector)
+  - **CONFIRMED 0x6A = GOTO_LABEL**: uses pool string as label name (runtime label-name resolution)
+  - **CONFIRMED 0x0F = ASSIGN**, 0x42 = GOSUB, 0x3B = COND_BRANCH, 0x40/0x71 = EXIT
+  - **0x4B = OPEN_FORM**: appears in some programs in place of 0x20 CREATE — open vs. create distinction TBD
+  - **ISTS customization marker**: i2 Systems–modified programs start with ASSIGN(" - ISTS Enhancement MM/DD/YY") at [0]
+  - Branch target encoding for 0x3B/0xD2 is still unclear (poff is NOT a simple pool byte offset)
+  - 30+ distinct opcodes documented in `docs/02-file-formats/rwn-binary-format.md`
+  - `.dec` files in `samples/rwn_decrypted/` regenerated 2026-06-19 (1145/1146 OK); working disassembler in /tmp
 
 ### 2.3 `.RUN` — TAS Pro 6 Compiled Program
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
@@ -278,10 +286,12 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ All FILE\*.UPD files parsed and delta-compared to current schema
 
 ### 2.11 `.DBA` — Identity / Seat Token
-- [x] ✅ File identified: `WHOAMI.DBA`, per-workstation — **C: 45/100**
-  - Local copy is 2 bytes (CRLF only) — stub/uninitialized on this workstation; reported size of 35 bytes was incorrect
-  - Prior documentation listing "35 bytes" appears to be based on CHMHELP.EVO, not WHOAMI.DBA
-- [ ] ⬜ Byte layout decoded — cannot decode without a populated copy
+- [x] ✅ File identified: `WHOAMI.DBA`, per-workstation — **C: 45/100** (ceiling — cannot decode without populated copy)
+  - Local copy (`C:\ISTS\WHOAMI.DBA`) = 2 bytes (CRLF only) — stub/placeholder
+  - **Network share copy** (`\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA`) = also 2 bytes (Pass 229 confirmed) — both are empty
+  - WHOAMI.DBA is an unused placeholder in this installation; company selection handled by usecomp.run
+  - Reported size of 35 bytes was incorrect — based on CHMHELP.EVO, not WHOAMI.DBA
+- [ ] ⬜ Byte layout decoded — cannot decode without a populated copy from a different installation
 - [ ] ⬜ How WHOAMI.DBA is generated and validated by tp7runtime.exe
 
 ### 2.12 `.EVO` — Unknown Marker File
@@ -1255,7 +1265,7 @@ Priority order — in sequence, each unblocks the next:
 | ~~**2**~~ | ~~Write `rwn_decrypt.py` and decrypt all 1,124 `.RWN` files~~ | ✅ **DONE 2026-06-16** — `scripts/rwn_decrypt.py` with K_B; batch run against share completed; symbol extractor `scripts/rwn_extract_symbols.py` created | Variable names + DB files from all modules now extractable |
 | ~~**3**~~ | ~~Decode `.DCY` files~~ | ✅ **DONE 2026-06-16** — `scripts/dcy_decrypt.py` with K_D; 41/48 files OK; format = Delphi VCL forms | Menu form and login forms decryptable |
 | ~~**4**~~ | ~~Re-decrypt all 1,124 `.RWN` files locally~~ | ✅ **DONE** — `samples/rwn_decrypted/` contains 1,123 `.dec` files; validated by file ID pattern (bytes 0-3==4-7); `rwn_symbols.json` built from these (1,122 entries) | Module variable/DB catalog complete |
-| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 60/100** — DISP_START=0x6C0 universal; 17 opcodes; 0x20=CREATE FORM/BIND, 0x57=EXECUTE FORM, 0x42=GOSUB, 0x0F=ASSIGN, 0x3B/0xD2/0x6A=BRANCH confirmed; .dec files regenerated 1145/1146 OK | Full logic traceability |
+| **5** | Map `.RWN` bytecode instruction set via Rosetta Stone | 🔄 **C: 70/100** — Pass 229: b2=0x00 confirmed at 3.2M scale; 30+ opcodes; 15 sub-code families mapped; 0x49=READ_PROP confirmed; 0x6A=GOTO_LABEL(pool string); 0x48/0xDC=PUSH/POP paired; working disassembler; branch target encoding still unknown | Full logic traceability |
 | **6** | Per-table field meaning documentation (659 tables) | 🔄 **C: 48/100** — Tier 1 tables partially done; 659 × full semantic docs needed | Database understanding |
 | **7** | Module-by-module logic from decoded `.RWN` variable patterns | 🔄 **started** — T7INA variables confirm buffer field names; EvoERPmenu confirms menu tables | Module confidence to 85+ |
 | **7** | Business workflow recipes (end-to-end traces: SO→ship→invoice, WO lifecycle, AP check run, etc.) | #6 | Me | Operational understanding |

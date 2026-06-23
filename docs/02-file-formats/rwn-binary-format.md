@@ -1,7 +1,7 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, pool/data section decoded, 17 opcodes identified, form lifecycle semantics confirmed C:60/100
-Last updated: 2026-06-19
+Status: partial — header confirmed, symbol tables confirmed, pool decoded, 30+ opcodes identified, sub-code families mapped, b2=0x00 confirmed at scale C:70/100
+Last updated: 2026-06-23
 
 ---
 
@@ -113,51 +113,119 @@ ISREMIND, LOT, SERIAL, ISNCR.
 
 ## Dispatch / Instruction Table (offset 0x6C0)
 
-Each entry is 8 bytes: `[4-byte instruction word] [4-byte pool_offset]`.
+Each entry is **8 bytes**: `[op:1][b1:1][b2:1][sub:1][pool_offset_LE32:4]`.
 
-**Instruction word encoding** (little-endian on disk = `[op][00][00][sub]`):
-- Byte 0: opcode
-- Byte 1–2: always 0x00 0x00
-- Byte 3: sub-type / argument count (role not fully understood)
+**Instruction word encoding:**
+- Byte 0: **opcode** — the operation
+- Byte 1: **b1** — appears to always be 0x00 (not yet characterized)
+- Byte 2: **b2** — **universally 0x00** across 3,204,306 instructions in 1,119 programs (one exception: 0x57 EXECUTE_FORM has b2=0xFE when launching the main/top-level form, b2=0x00 for sub-form launches)
+- Byte 3: **sub-code** — groups related opcodes into families (see Sub-Code Families below)
+- Bytes 4–7: **pool_offset** (LE32) — byte offset into the pool section (for data ops), or a branch target value (for control-flow ops — see branch encoding note)
 
-**pool_offset**: byte offset into the pool/data section immediately following the dispatch table.
-Most dispatch entries' pool_offset points to a specific byte offset within a compound "blob" in the pool.
-Multiple consecutive dispatch entries often reference different offsets within the **same** blob,
-collectively encoding the arguments for one high-level TAS Pro 7 statement.
+**Dispatch table starts at program offset 0x6C0 (confirmed universal across all 1,119 programs examined).**
+
+In `.dec` files (output of `scripts/rwn_decrypt.py`), the file has an 8-byte validation prefix prepended,
+so: file_offset(dispatch) = 8 + 0x6C0 = 0x6C8.
 
 Null terminator: `00 00 00 00  00 00 00 00`
 
-**Opcode table (from 25-program survey + 10-program semantic analysis, Pass 110/110b/110c — live decrypt from share):**
+---
 
-| Opcode | sub  | Coverage | Confirmed meaning | Evidence |
-|--------|------|----------|-------------------|---------|
-| 0x20   | 0x05 | 24/25  | ★ CREATE FORM (first use → DFM) / BIND HANDLER (subsequent uses) | In 24/25 programs — ALWAYS as first instruction pointing to DFM filename string. 10-program survey: every program with procs starts with 0x20→DFM, confirming this is the TForm.Create equivalent. Subsequent 0x20 calls bind event handler procs to form events. Only T7MSG (0 procs) skips this and uses 0x57 alone. |
-| 0x57   | 0x05 | 25/25 ★ UNIVERSAL | EXECUTE FORM (show + run event loop) | Universal — all 25 programs. In 10-program survey: suwin7 (34 instr) uses 0x57 as LAST instruction; T7askbut uses it AFTER 3× BIND; t7pass uses it at [4] of 6. When poff=0x0000, pool[0] = DFM filename. In T7MSG (only 2 instructions, 0 procs): 0x57 is FIRST/ONLY functional instruction — implicitly creates AND executes the form in one step (TForm.Create+ShowModal collapsed). |
-| 0x0F   | 0x0A | 19/25  | ASSIGN / SET PROPERTY | Always sub=0x0A. In suwin7: sets lblCaption, SERIALNUMBER, SNVALUE, WAIT_SECS. Pool arg is the value to assign (string, numeric, variable ref). |
-| 0xD2   | 0x14 | 11/25  | GOTO / BRANCH (variant) | sub=0x14 family. t7slsfc uses it 5×. |
-| 0x30   | 0x15 | 10/25  | RETURN / end-of-proc | sub=0x15; appears once per program, often near end. |
-| 0x3B   | 0x14 | 6/25   | CONDITIONAL BRANCH | Always sub=0x14. suwin7: repeated pattern — alternates with 0x0F and 0x42 in license-check loop. The "IF NOT condition THEN GOTO" construct. |
-| 0x6A   | 0x14 | 4/25   | GOTO / BRANCH (variant) | sub=0x14 family. evoDCs uses it; domtest uses it 3×. |
-| 0x42   | 0x04 | 3/25   | GOSUB / CALL PROC | sub=0x04. suwin7 calls DOCOUNTDOWN (0x42→pool+0x4F), GETSERIALNUM (0x42→pool+0x07). Pool arg = proc selector. |
-| 0x40   | varies | 5/25 | EXIT / END PROGRAM | T7MSG [1]=0x40 (sub=0x36) and t7pass [5]=0x40 (sub=0x36) — both as final instructions. Represents orderly program termination. sub=0x36 may be a return code. |
-| 0x71   | 0x05 | 1/25   | EXIT / END (variant) | T7askbut [4] as final instruction. Another end-program opcode variant; sub=0x05 unlike 0x40's sub=0x36. |
-| 0x4B   | 0x09 | 2/25   | Unknown (possibly TIMER/WAIT) | t7b [6] as LAST instruction refs N:1162627398; T7BROWSER [6] as LAST instruction. 1162627398 in ASCII = "NHiE" — probably a timer interval or handle value. |
-| 0x43   | 0x09 | 2/25   | Unknown (possibly SET/CONFIGURE) | suwin7 [19]; t7nest [8]. In t7nest immediately precedes 0x45. |
-| 0x45   | 0x04 | 2/25   | Unknown (possibly INPUT / WAIT FOR USER) | sub=0x04. suwin7 [20]; t7nest [9]. In t7nest: poff=0x00 → DFM string. |
-| 0x49   | 0x0F | 2/25   | Unknown | t7nest [6]; evoDCs [1]. Always sub=0x0F. |
-| 0x9A   | 0x06 | 1/25   | READ FILE / LOAD TEXT | T7S1.RWN [0] refs STR("T7S1.TXT"). Likely READFILE or LOADTEXT opcode. |
-| 0xD9   | 0x07 | 2/25   | Unknown | evoDCs uses 2×; sub=0x07. |
-| 0x15   | 0x04 | 1/25   | END / TERMINATE (variant) | t7slsfc [14] as last instruction. |
+### Sub-Code Families (confirmed at 3.2M instruction scale, Pass 229)
 
-**Key: sub-byte families observed:**
-- sub=0x05: form lifecycle operations (CREATE=0x20, EXECUTE=0x57, EXIT=0x71)
-- sub=0x0A: assignment/property operations (0x0F)
-- sub=0x04: call/subroutine operations (0x42, 0x45)
-- sub=0x09: unknown operations (0x43, 0x4B)
-- sub=0x0F: unknown operations (0x49)
-- sub=0x14: jump/branch operations (0x3B, 0x6A, 0xD2)
-- sub=0x15: return/end operations (0x30)
-- sub=0x36: program exit (0x40)
+The sub-code byte groups opcodes into functional families. Every opcode within a family shares the same sub-code:
+
+| Sub  | Count    | Family description | Key opcodes |
+|------|----------|--------------------|-------------|
+| 0x0A | 1,462K   | **ASSIGN** — variable and property assignment | 0x0F(1.4M), 0x8A(18K), 0x37(11K), 0x56(6.6K) |
+| 0x04 | 592K     | **CALL** — procedure calls and library calls | 0x42(549K), 0x45(21K), 0x16(18K), 0x15(17K), 0xC0(4K) |
+| 0x14 | 544K     | **BRANCH** — all control flow | 0x3B(462K), 0x6A(41K), 0xD2(23K), 0x19(13K), 0x93(4.6K) |
+| 0x05 | 163K     | **FORM** — UI form lifecycle | 0x20(143K), 0x57(11K), 0xD1(4.9K), 0x29(4K) |
+| 0x21 | 46K      | **EVAL** — expression evaluation | 0x1A(46K) |
+| 0x36 | 35K      | **EXIT** — program/proc exit | 0x40(35K) |
+| 0x0F | 37K      | **READ** — property/field reads | 0x49(30K), 0x0C(5.4K), 0xCC(1.3K) |
+| 0x06 | 49K      | **FIELD I/O** — DB field access | 0x06(28K), 0x08(19K), 0xB7(820), 0xBD(791) |
+| 0x10 | 43K      | **STATUS** — status/flag operations | 0x31(23K), 0xD3(10K), 0x11(8K), 0xCD(1.7K) |
+| 0x19 | 39K      | **VAR MGMT** — push/pop and var ops | 0x48(16K), 0xDC(16K), 0xC7(7.4K) |
+| 0x09 | 49K      | **HANDLE** — resource handle ops | 0x4B(25K), 0x4A(12K), 0x43(5K), 0x47(4.9K), 0x46(2.5K) |
+| 0x2B | 23K      | **FIELD ACCESS (sub-group)** | 0x89(23K) |
+| 0x00 | 12K      | **SET** — unconditional set ops | 0xB9(11K) |
+| 0x0B | 7K       | **UNKNOWN** | 0x38(7K) |
+| 0x15 | 3K       | **RETURN** | 0x30(3K) |
+| 0x0C | ~1K      | **DB NAVIGATE** | 0x9A(db ops) |
+
+**KEY DISCOVERY — 0x48 and 0xDC are perfectly paired operations:**
+- 0x48 appears exactly 16,125 times in exactly 948 files
+- 0xDC appears exactly 16,121 times in exactly 948 files (4-count rounding difference)
+- Both have sub=0x19 (VAR MGMT family)
+- This strongly implies 0x48=PUSH and 0xDC=POP (or START_BLOCK/END_BLOCK equivalent)
+
+---
+
+### Opcode Table (Pass 229 — 1,119-program frequency analysis + disassembly)
+
+Top opcodes by frequency across 3,204,306 instructions in 1,119 .dec files:
+
+| Opcode | sub  | Freq     | Coverage | Meaning | Confidence |
+|--------|------|----------|----------|---------|------------|
+| 0x0F   | 0x0A | 1,437K (44.85%) | 1119/1119 | **ASSIGN** — assign value/property | 95% |
+| 0x42   | 0x04 | 549K (17.16%) | 1119/1119 | **GOSUB / CALL PROC** — call procedure | 90% |
+| 0x3B   | 0x14 | 462K (14.43%) | 1119/1119 | **COND_BRANCH** — conditional jump | 95% |
+| 0x20   | 0x05 | 143K (4.46%)  | 1118/1119 | **CREATE/BIND** — load DFM / bind event handler | 95% |
+| 0x1A   | 0x21 | 46K (1.46%)   | varies    | **EVAL** — expression evaluation (intermediate) | 70% |
+| 0x6A   | 0x14 | 41K (1.29%)   | varies    | **GOTO_LABEL** — jump to named label (pool string) | 85% |
+| 0x40   | 0x36 | 35K (1.10%)   | varies    | **EXIT** — end program / return code | 90% |
+| 0x49   | 0x0F | 30K (0.96%)   | varies    | **READ_PROP** — read named property (pool string → value) | 80% |
+| 0x06   | 0x06 | 28K (0.88%)   | varies    | **FIELD_READ** — read DB field value | 65% |
+| 0x4B   | 0x09 | 25K (0.81%)   | varies    | **OPEN_FORM** — open/load DFM form (cf. 0x20 CREATE) | 70% |
+| 0xD2   | 0x14 | 23K (0.74%)   | varies    | **GOTO** — unconditional jump | 85% |
+| 0x31   | 0x10 | 23K (0.73%)   | varies    | **GET_STATUS** — read status flag | 60% |
+| 0x45   | 0x04 | 21K (0.67%)   | varies    | **CALL_LIB2** — library call variant | 55% |
+| 0x08   | 0x06 | 19K (0.62%)   | varies    | **FIELD_WRITE** — write DB field value | 65% |
+| 0x16   | 0x04 | 18K (0.58%)   | varies    | **CALL_LIB** — external library/system call | 55% |
+| 0x8A   | 0x0A | 18K (0.56%)   | varies    | **ASSIGN2** — assign variant (conditional?) | 65% |
+| 0x48   | 0x19 | 16K (0.50%)   | 948/1119  | **PUSH** — push value onto stack | 70% |
+| 0xDC   | 0x19 | 16K (0.50%)   | 948/1119  | **POP** — pop value from stack | 70% |
+| 0x57   | 0x05 | 11K (0.35%)   | 1119/1119 | **EXECUTE_FORM** — run form event loop (ShowModal) | 99% |
+| 0x37   | 0x0A | 11K (0.34%)   | varies    | **ASSIGN_EXPR** — assign expression result | 60% |
+| 0x19   | 0x14 | 13K (0.40%)   | varies    | **LOOP** — loop-back jump | 65% |
+| 0x89   | 0x2B | 23K          | varies    | **GET_FIELD** — get specific field (context TBD) | 60% |
+| 0xB9   | 0x00 | 11K          | varies    | **SET_FIELD** — set specific field (pairs with GET_FIELD) | 60% |
+| 0x11   | 0x10 | 8K           | varies    | **STATUS_CHECK** — status check variant | 55% |
+| 0x30   | 0x15 | 3K           | varies    | **RETURN** — return from procedure | 85% |
+| 0x15   | 0x04 | 17K          | varies    | **TERMINATE** — terminate (variant of CALL family) | 60% |
+| 0x29   | 0x05 | 4K           | varies    | **FORM_OP** — form operation (FORM family) | 55% |
+| 0x71   | 0x05 | varies       | varies    | **EXIT2** — exit variant | 80% |
+| 0x9A   | 0x0C | varies       | varies    | **DB_READ** — read from database file | 75% |
+
+**Notable program-wide semantic observations (Pass 229 disassembly):**
+
+- **0x57 with b2=0xFE** = top-level form execution (main window); b2=0x00 = sub-form or dialog
+- **0x49 READ_PROP** reads pool string as property name → checks system property by name
+  - Example: EVOMENU_SELCOMP [0]: `READ_PROP("NOVAZYGANDISTECHSUPPORT")` — checks tech-support mode flag
+  - Followed by COND_BRANCH to skip multi-company selection when in tech-support mode
+- **0x6A GOTO_LABEL** with pool string = jump to named label (e.g., STR("Items"))
+- **0x4B OPEN_FORM** appears in place of 0x20 CREATE/BIND in some programs — distinction TBD (open existing vs create new instance?)
+- **ISTS customization marker**: programs modified by i2 Systems start with `ASSIGN " - ISTS Enhancement MM/DD/YY"` as instruction [0] (confirmed in EVODEFPRINT.RWN)
+- **Source file types**: .SRC-compiled programs have full proc names; EVO.LIB-compiled programs have garbled/blank proc names (1865-instr EvoChangePass uses EVO.LIB); NZLICE.LIB is Novazygandis license library
+
+---
+
+### Branch Target Encoding (OPEN QUESTION)
+
+For branch-family opcodes (sub=0x14: 0x3B COND_BRANCH, 0x6A GOTO_LABEL, 0xD2 GOTO, etc.),
+the pool_offset field does NOT appear to reference the pool as a byte offset.
+
+**What is known:**
+- 0x6A GOTO_LABEL: pool_offset IS a pool byte offset → points to a pool string entry (the label name). Runtime resolves label name → instruction address.
+- 0x3B COND_BRANCH: pool_offset is NOT a valid pool byte offset (confirmed: for EVOMENU_SELCOMP instruction [1], poff=19 falls mid-string in a known pool entry). The encoding is unknown.
+- 0x42 GOSUB: pool_offset appears to be a direct integer (procedure call address or index). In T7PASS, GOSUB poff=200.
+
+**Hypothesis (unconfirmed)**: COND_BRANCH and GOTO use poff as a BYTE OFFSET within the dispatch table (absolute from dispatch start), but this gives non-8-aligned values (e.g. poff=19 for a program with 8-byte instructions) — which should be impossible unless there is a separate branch resolution mechanism.
+
+**Open**: branch target encoding for 0x3B / 0xD2 is not understood. See `research/OPEN_QUESTIONS.md`.
+
+---
 
 **CONFIRMED — 0x20 vs 0x57 semantic distinction (Pass 110c/110d, 2026-06-19):**
 - 0x20 = CREATE/BIND: first occurrence loads DFM (TForm.Create); subsequent occurrences bind event handlers
@@ -165,18 +233,16 @@ Null terminator: `00 00 00 00  00 00 00 00`
 - T7MSG exception: uses 0x57 alone because it has no event handlers to bind — MOUNT+EXECUTE collapsed into one step
 - Sequence in a typical TAS Pro 7 program:
   ```
-  [0]  0x20 poff=0        # Create form: pool[0] = DFM_NAME string
-  [1+] 0x20 poff=9xN      # Bind event handlers — poff is DIRECT VALUE (not pool offset)
-  [n]  0x57 poff=0        # Execute form (ShowModal) — pool[0] = DFM_NAME again
-  [n+1] 0x40/0x71 poff=X  # Program exit — poff is DIRECT VALUE (exit code/address)
+  [0]  0x20 poff=pool→"DFM_NAME"   # Create form from DFM file
+  [1+] 0x20 poff=...               # Bind event handlers
+  [n]  0x57 b2=FE poff=0           # Execute main form (ShowModal); b2=FE = main form
+  [n+1] 0x40 poff=exit_code        # Program exit
   ```
 - **poff interpretation by opcode family:**
-  - Data opcodes (0x0F ASSIGN, 0x42 GOSUB, 0x9A READFILE): poff IS a pool byte offset → typed entry
-  - Form opcodes (0x20 BIND, 0x57 EXECUTE): poff=0 IS a pool offset (DFM name); poff≠0 is a DIRECT VALUE
-  - Exit opcodes (0x40, 0x71): poff is always a DIRECT VALUE (exit code or address)
-- **Pool alignment**: 9-byte aligned. When poff IS a pool offset, it is always a multiple of 9.
-  The string entry format is: `[0x41][0x00][len_lo][len_hi][char0..char4]` (9 bytes) + continuation
-  blocks of 9 bytes each for remaining characters.
+  - Data opcodes (0x0F ASSIGN, 0x42 GOSUB, 0x9A READFILE, 0x49 READ_PROP): poff IS a pool byte offset → typed entry
+  - Branch opcodes (0x3B, 0xD2): poff encoding unknown (NOT a simple pool offset)
+  - Label opcodes (0x6A): poff IS a pool byte offset → points to a string (label name)
+  - Exit opcodes (0x40, 0x71): poff may be a direct value (exit code)
 
 ---
 
@@ -347,25 +413,32 @@ Variable count for T7INA.RWN: **3,917 variables** (DWORD[0x14] = 0x0F4D).
 | Claim | Confidence | Evidence |
 |-------|-----------|---------|
 | Format marker "TWINB" at offset 0x35 | 100/100 | Both suwin7.rwn and T7INA.RWN |
-| File table at offset 0x80, 16-byte entries | 100/100 | Confirmed by matching .SRC open statements (BKAWLB.SRC ↔ .RUN format) |
+| File table at offset 0x80, 16-byte entries | 100/100 | Confirmed by matching .SRC open statements |
 | Header[0x14] = variable count | 100/100 | suwin7: 68 variables, header[0x14]=68 |
-| Header[0x20] = variable table byte size | 100/100 | suwin7: 68×77=5236=0x1474=header[0x20] |
+| Header[0x20] = variable table byte size | 100/100 | suwin7: 68×77=5236=header[0x20] |
 | Header[0x0C] = procedure table byte size | 95/100 | suwin7: 3 procs × 53 bytes = 159 = header[0x0C] |
 | Variable entry size = 77 bytes | 100/100 | Spacing between TEMP0/TEMP1 names confirmed = 77 |
-| Variable name: non-printable byte 0 = type code, name at bytes 1–14 | 100/100 | All TEMP* vars have byte 0 = 0x05; name verified |
-| Variable name: printable byte 0 = first char of name, name spans bytes 0–14 | 100/100 | CURR_TIME, WAIT_SECS, I, LICTYPE all verified |
-| Procedure entry size = 53 bytes | 95/100 | Spacing between START/DOCOUNTDOWN/GETSERIALNUM = 53 |
+| Variable name: non-printable byte 0 = type code | 100/100 | All TEMP* vars have byte 0 = 0x05; name verified |
+| Variable name: printable byte 0 = first char of name | 100/100 | CURR_TIME, WAIT_SECS, I, LICTYPE all verified |
+| Procedure entry size = 53 bytes | 95/100 | Spacing between proc names = 53 |
 | Source filename = 60 bytes before var table | 100/100 | "suwin7.src" found at expected offset |
-| Procedure names are plaintext in binary | 100/100 | Direct observation |
-| Variable names are plaintext in binary | 100/100 | Direct observation |
-| Dispatch table starts at 0x6C0 | 80/100 | Both examined files; may be derived from file table size |
-| Header[0x00] = dispatch table size | 80/100 | suwin7: header[0x00]=280, 0x6C0+280=0x7D8=pool start |
-| Pool type 0x46 (F) = variable reference, value = var_index × 77 | 95/100 | suwin7: 6 F-values all exact multiples of 77; mapped to named vars SERIALNUMBER, SNVALUE, CURR_TIME, WAIT_SECS |
-| Pool type 0x43 (C) = pool pointer (byte offset into pool) | 90/100 | suwin7: 7 C-values confirmed to point to pool entry starts ('DEMO', 'lblUserSerialNum', 'Caption', VALR constants) |
-| Compound blobs use FD=begin-marker, FF=end-sentinel | 85/100 | All binary BLOBs in suwin7 follow this pattern; FD never appears as data type byte |
-| Dispatch entries reference byte offsets within compound blobs | 85/100 | Multiple dispatch entries shown pointing to different sub-field offsets in the same blob |
-| Pool type 0x41 (A) = string/blob, format [41][00][len16][data] | 95/100 | All strings confirmed; non-printable blobs parse cleanly with same format |
-| Pool fixed-width types (R,N,M,L,D,I,S,C,F) = 5 bytes [type][value32_LE] | 80/100 | VALR entries confirmed; others inferred from consistent spacing |
+| Procedure and variable names are plaintext | 100/100 | Direct observation across 1,119 programs |
+| Dispatch table starts at 0x6C0 (program-relative) | 95/100 | Confirmed in 1,119 programs; header[0x00]=dispatch size; universal |
+| Instruction size = 8 bytes (uniform) | 99/100 | 3,204,306 instructions parsed at uniform 8-byte stride; disp_size always divisible by 8 |
+| b2 byte (instruction byte 2) = 0x00 universally | 99/100 | 3,204,306 instructions analyzed; ONE exception: 0x57 EXECUTE_FORM has b2=0xFE for main-form launch |
+| Sub-code byte groups opcodes into functional families | 95/100 | 15+ sub-code values each map consistently to a group of related opcodes across 1,119 programs |
+| 0x48 (PUSH) and 0xDC (POP) are perfectly paired operations | 90/100 | Appear 16,121/16,125 times in exactly the same 948/1119 files; same sub=0x19 |
+| 0x20 = CREATE/BIND, loads DFM from pool string | 95/100 | T7PASS [0]: `CREATE/BIND("T7PASS.DFM")` — direct disassembly |
+| 0x57 = EXECUTE_FORM (runs form event loop) | 99/100 | Universal in 1,119/1,119 programs; T7PASS [4]: EXECUTE_FORM b2=FE |
+| 0x49 = READ_PROP — reads named system property | 80/100 | EVOMENU_SELCOMP [0]: READ_PROP("NOVAZYGANDISTECHSUPPORT") followed by COND_BRANCH |
+| 0x6A = GOTO_LABEL — jumps to named label (pool string) | 80/100 | EVOMENU_SELCOMP: GOTO_LABEL("Items") — label name resolved from pool string |
+| Pool type 0x46 (F) = variable reference, value = var_index × 77 | 95/100 | suwin7: 6 F-values all exact multiples of 77; named vars confirmed |
+| Pool type 0x43 (C) = pool pointer (byte offset into pool) | 90/100 | suwin7: 7 C-values confirmed to point to pool entry starts |
+| Pool type 0x41 (A) = string, format [41][00][len16][data] | 95/100 | All strings confirmed; pool[0] for T7PASS = "T7PASS.DFM" ✓ |
+| Pool fixed-width types (R=0x52,N=0x4E,S=0x53,C=0x43,F=0x46) = 5 bytes | 80/100 | Confirmed layout from symbol extraction |
+| Compound blobs use FD=begin-marker, FF=end-sentinel | 85/100 | All binary BLOBs in suwin7 follow this pattern |
+| .dec files have 8-byte validation prefix before program | 100/100 | rwn_decrypt.py prepends pt[0:4]=pt[4:8] validation block; all header reads need +8 offset |
+| ISTS enhancement marker = `ASSIGN(" - ISTS Enhancement MM/DD/YY")` at [0] | 90/100 | EVODEFPRINT.RWN [0]: `ASSIGN " - ISTS Enhancement 06/15/17"` |
 | TAS32 (old hypothesis) present in decrypted RWN | WRONG | Old analysis used sha1("mabufoju") key; TAS32 not present with correct key K_B |
 
 ---

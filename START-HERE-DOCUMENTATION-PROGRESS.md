@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-19 (Pass 110c — 10-program form lifecycle semantic analysis; 0x20=CREATE/BIND confirmed, 0x57=EXECUTE FORM confirmed; standard form lifecycle sequence proven; .dec files regenerated (1145/1146 OK); RWN bytecode confidence C:50→60/100)
+Last updated: 2026-06-23 (Pass 229 — 3.2M instruction frequency analysis across 1,119 programs; b2=0x00 universal confirmed; 15 sub-code families mapped; 0x49=READ_PROP confirmed; 0x6A=GOTO_LABEL(pool string) confirmed; 0x48/0xDC PUSH/POP paired; working disassembler; RWN bytecode C:63→70/100)
 
 ---
 
@@ -97,7 +97,7 @@ Current decryption scripts:
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
 | `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool |
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
-| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 60/100 | DISP_START=0x6C0 universal; 17 opcodes confirmed; 0x20=CREATE FORM/BIND, 0x57=EXECUTE FORM, 0x42=GOSUB, 0x0F=ASSIGN, 0x3B/0xD2/0x6A=BRANCH; .dec files regenerated |
+| TAS Pro 7 `.RWN` bytecode | 🔄 Started | 70/100 | b2=0x00 confirmed at 3.2M scale; 30+ opcodes; 15 sub-code families; 0x49=READ_PROP, 0x6A=GOTO_LABEL(string), 0x48/0xDC=PUSH/POP paired; working disassembler; branch target encoding TBD |
 | `.DCY` binary format | ✅ DONE | 95/100 | **Pass 109**: 8-byte ID header + DFM content (text "object..." 37/41; binary ff0a00+classname+TPF0 4/41); all 41 forms = Delphi TEditForm definitions for launcher/utility programs; EVOUSERS/WBKLUGRID documented |
 | `suwin*.DCY` format | ⬜ Unknown | 0/100 | 7 files; K_D fails; possibly use K_A or K_C |
 | K_A / K_C key purposes | ⬜ Unknown | 0/100 | Captured live; which file types they encrypt is unknown |
