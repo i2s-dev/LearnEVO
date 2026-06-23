@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-23 (Pass 231 — FL/EX/SB modules resolved: FL(WTASFLOC CF_*/LOC_*/DICT_* 3 namespaces, 8 FILE* internal tables, C:65→80), EX(SQLEXPORT Java bridge vars[60-71] confirmed + EVO.CFG.* workstation block, C:45→75), SB(T7DSBOM pure stub — STUB var only, data-only module, C:45→60); 2 new docs: fl-file-location.md + ex-sql-export.md)
+Last updated: 2026-06-23 (Pass 232 — AL/SU/BR modules resolved: AL(BKSB.PART.* corrected 7-var, SAVE.BOTH.WAYS confirmed, T7ALOGSETUP LOC_*/BKSY.* confirmed, C:79→85), SU(LUGRID_* 13-var + DRILLM.* 9-var namespaces confirmed, T7gdm=Grid copy utility SKIP/REPLACE/OVERWRITE, C:80→87), BR(BKCM.ACCC.* 2-var+ISPOSI.H confirmed, C:80→82); 1 new doc: su-setup.md)
 
 ---
 

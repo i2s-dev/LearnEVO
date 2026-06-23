@@ -4237,17 +4237,37 @@ production capacity (WORKCTR+ROUTING) and DC labor (BKDCLAB), with WO priority (
 
 Two programs share the T7AL* prefix:
 
-**T7ALOGSETUP** (43 procs): opens FILELOC + BKSYMSTR + BKPSUSER. Configures the EvoERP
+**T7ALOGSETUP** (43 procs): opens FILELOC + BKYSMSTR + BKPSUSER. Configures the EvoERP
 audit log — selects which Btrieve tables and events are recorded, per company/user settings.
 
 **T7ALTPART** (104 procs): opens BKSBPART + BKICMSTR + ISACCESS. Maintains alternate/substitute part number relationships.
 
-**BKSBPART (5f):**
-`BKSB_PART_PARNT`(15) parent item code | `BKSB_PART_PROD`(15) substitute item code | `BKSB_PART_CUST`(10) customer code (blank = all customers) | `BKSB_PART_SUBST`(15) substitute part# | `BKSB_PART_EXTRA`(50) notes.
+**BKSB.PART.* vars — BKSBPART field access (7-var namespace, Pass232):**
 
-Maps a parent item to valid substitutes, optionally restricted to a specific customer. T7ALTPART enables SO entry to suggest substitutes when the primary item is unavailable.
+| Var | Field | Meaning |
+|-----|-------|---------|
+| BKSB.PART.PARNT | PARNT | Parent item code |
+| BKSB.PART.KEY | KEY | Primary key field |
+| BKSB.PART.KEY2 | KEY2 | Secondary key field |
+| BKSB.PART.PROD | PROD | Substitute product code |
+| BKSB.PART.CUST | CUST | Customer-specific restriction (blank = all) |
+| BKSB.PART.SUBST | SUBST | Substitute part number |
+| BKSB.PART.EXTRA | EXTRA | Notes / extra data |
 
-**Confidence: 62/100** — both programs identified; BKSBPART (5f) schema fully extracted from DDF; alternate-part purpose confirmed; ISACCESS role (security check) inferred.
+Note: Prior documentation listed 5 vars (missing KEY/KEY2); Pass232 var extraction corrects this to 7-var.
+
+**Key T7ALTPART behavior (Pass232):**
+- `SAVE.BOTH.WAYS` flag: when set, creates bidirectional substitution (A→B **and** B→A in same write)
+- `FROM.ITEM` / `THRU.ITEM` / `FROM.LONG` / `THRU.LONG` = range filter for batch operations
+- Three record handles: `ALTPART.H` (parent) / `RLPART.H` (related) / `ALPART.H` (alternate)
+
+**T7ALOGSETUP var-level details (Pass232):**
+- Auth vars: USER/PASSWORD/PASS.OK/EUSER/UPSK = password-gated access before any config change
+- Audit config: NEW_GROUP/NEW_GROUP_NUM = audit monitoring group assignment
+- FILELOC iteration: LOC_BUFF_NAME/LOC_FILE_NAME/LOC_COMP_CODE/LOC_REC_SIZE/LOC_REC_TYPE/LOC_LOCATION/LOC_DESCRIPTION — same iteration pattern as WTASFLOC; enumerates ALL registered EVO tables
+- BKSY.* startup read: full 55-var BKYSMSTR (auto-numbers, company info, AR/AP/GL account codes, terms, tax rates) — confirms EvoERP reads entire system master at audit setup launch
+
+**Confidence: 85/100** — both programs var-extracted (Pass232); BKSB.PART.* corrected to 7-var; SAVE.BOTH.WAYS bidirectional confirmed; T7ALOGSETUP LOC_*/BKSY.* confirmed from var extraction; logic flow inferred from var names (not bytecode).
 
 ---
 
@@ -4284,8 +4304,11 @@ BKMRPFC + ISICMSTR. The broad table set reflects EvoERP's shared-library pattern
 are actively used per operation. T7BROWSER (4 procs) is an HTML browser wrapper for the same area.
 
 - **BKCMACCC** (2f): 5-char classification code + 25-char description; used for CRM brand tagging
+- **BKCM.ACCC.* vars (Pass232):** `BKCM.ACCC.CCODE` + `BKCM.ACCC.DESC` — only 2 domain vars in T7BRANDS; remainder is session-init overhead (IS.* feature flags, multi-currency handles, POS handle)
+- **ISPOSI.H** = POS integration handle — confirmed from var table; T7BRANDS opens POS at session init even when only editing brand codes
+- **IS.* feature flags** (from ISIS read): IS.AUTO.TAX.CAL/IS.CC.*/IS.DEMO/IS.EZPAY/IS.IMAGING/IS.LANDED.COST/IS.MULTI.CPAY/IS.MULTI.CURR/IS.PO.TAX/IS.RETAIL.PRICE/IS.RMA/IS.UPC/IS.UPC.1/IS.UPC.2 — T7BRANDS manages system-wide feature flag configuration in addition to brand codes
 
-**Confidence: 65/100** — both programs confirmed; BKCMACCC(2f) + BKCMACCN(154f: 10 contacts × name/title/phone/email + custom date/alpha slots) fully extracted from DDF; T7BROWSER = CRM contact browser confirmed from BKCMACCN use; detailed CRM logic blocked by encryption.
+**Confidence: 82/100** — BKCM.ACCC.* 2-var namespace confirmed from var extraction (Pass232); ISPOSI.H = POS handle confirmed; IS.* feature flag vars confirmed; BKCMACCC(2f) + BKCMACCN(154f) schema fully extracted from DDF; T7BROWSER = CRM contact browser confirmed.
 
 ---
 
@@ -10738,7 +10761,16 @@ All 6 SE/ST DFMs now confirmed:
 
 **T7gdm.DFM:** Grids & Drills Maintenance — Skip (skip), Replace (replace), Overwrite (overwrite). Options for how to handle existing grid data during maintenance operations.
 
-**SU confidence: 72→78/100**
+**Pass232 var extraction:**
+- LUGRID_* confirmed as 13-var BKLUGRID namespace: NAME/DATA/FDNAME/KDATA/END/FORM/PROT/DELFLAG/TEXT/KEYFLD/EXTRA/EXTUDF/EXTPARM
+- FD_* column field defs: COLHEADER/FIELDNAME/TOT/SSSFD/FUNC/TYPE/SIZE/EDIT
+- KD_* key defs: COLHEADER/KEYNAME/FIELDNAME; KEYFLD1-3 = compound key support
+- EXTPARAM1-4 = extended parameter slots; SEC.LEVEL = security level filter
+- DRILLM.* confirmed as 9-var ISDRILLM namespace: PARENT/CHILD/MENU/FILE/SFIELD/TFIELD/KEY/PFILE/EXTAR
+- T7gdm SKIP/REPLACE/OVERWRITE = Grid copy mode flags; GNAME/GDATE/GBUFF = grid record IDs; DPNAME/DCNAME = drill-down record IDs
+- TNOR/TPR = total normal/preferred record counts; dual ISTECHLUG.H+ISTECHDM.H handles = two simultaneous file connections (source/target copy)
+
+**SU confidence: 72→87/100**
 
 ---
 
