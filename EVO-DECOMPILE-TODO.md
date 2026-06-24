@@ -186,19 +186,24 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Older generation; readable strings present (menu codes extractable) — **C: 85/100**
 - [x] ✅ 554 menu codes extracted from `.RUN` string dump — **C: 88/100**
 - [x] ✅ Still in active use for legacy BK\* / T6\* modules — **C: 80/100**
-- [x] ✅ File structure confirmed: header / table-name slots / var section / code section — **C: 78/100**
+- [x] ✅ File structure confirmed: header / table-name slots / var section / code section — **C: 85/100**
   - Magic "TAS32" at offset 0x35; version byte at 0x3A; table names at 0x80 (16-byte slots)
-  - Var section: [0..0x045F] = zero-initialized runtime storage; [0x0460..] = var descriptor table
-  - code_start = 0x80 + N×16 + var_size; 2-byte preamble precedes instruction stream
+  - TWO instruction stream regions (Pass 240): preamble (init) stream at var_section[runtime_base]; code (interactive) stream at code_start+2
+  - Preamble stream: opens tables, finds, clr, mount, menu — addrs = raw var pool offsets (< runtime_base)
+  - Code stream: ENTERs, TRAPs, loops, print — addrs = absolute runtime addresses (>= runtime_base)
+  - code_start = 0x80 + N×16 + var_size; 2-byte entry-offset header precedes instruction stream
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 42/100** (7-byte fixed instruction + var descriptor format confirmed)
+- [x] 🔄 Bytecode instruction set — **C: 65/100** (Pass 240 Rosetta Stone — 19 opcodes confirmed by positional alignment)
   - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
-  - Var descriptor: 7-byte fixed entries `[type_tag][0x00][storage_size][runtime_offset_LE4]` at var_section[runtime_base]
-  - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640); zero area = system/lib vars not in descriptor
-  - Instruction addr = runtime_base + cumulative_offset; array elements: first_addr + n×element_size
-  - 45 user vars confirmed for BKAWLB; total runtime storage = 1110 bytes (all within zero-init area)
-  - 13+ opcodes identified; semantics mostly unknown; 0x3B=BRANCH, 0x0F=ASSIGN cross-confirmed from .RWN
+  - b2 = fixed per opcode (not per-instruction switch); confirmed by multiple instances of same opcode
+  - Confirmed by positional alignment (4× OP_0E = 4 consecutive ENTERs; 3× OP_37 = 3 TRAPs):
+    OP_0E=ENTER(b2=0x61), OP_37=TRAP, OP_20=RET_FUNC, OP_08=TRAP_DFLT, OP_C0=SET_PROP_CTX,
+    OP_C1=ENT_BLOCK, OP_4B=CALL_LIB, OP_39=FUNC_PREPOST, OP_01=ARG_DESC
+  - Confirmed in preamble stream: OP_1F=TABLE_HANDLE, OP_13=FIND_KEY, OP_06=CLR, OP_1C=MOUNT, OP_21=MENU, OP_73=PRG_HDR
+  - Probable from pattern: OP_53=PFMT, OP_93=FOR_LOOP, OP_65=PBLNK/WRITE, OP_BE=PMSG
+  - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640)
   - BKMRF preamble=11780 → large data block precedes instructions; confirmed at abs=0x3C4A
+  - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29
 - [ ] ⬜ All readable logic extracted from `.RUN` string sections
 
 ### 2.4 `.DFM` — Delphi Form Layout

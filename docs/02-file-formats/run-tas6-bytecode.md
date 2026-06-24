@@ -1,8 +1,8 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — instruction format confirmed C:35/100; opcodes in progress
+Status: **partial** — instruction format confirmed C:65/100; opcodes in progress (Pass 240)
 
-Last updated: 2026-06-19
+Last updated: 2026-06-24
 
 ---
 
@@ -11,7 +11,32 @@ Last updated: 2026-06-19
 `.RUN` files are compiled TAS Professional 6 programs. They are unencrypted.
 Analysed via Rosetta Stone: 7 `.SRC` source + `.RUN` binary pairs in
 `samples/rosetta/`. Primary sample: `BKAWLB.RUN` (139,533 bytes) paired with
-`BKAWLB.src` (24,953 bytes).
+`BKAWLB.SRC` (691-line source).
+
+---
+
+## Two-Region Architecture (confirmed from BKAWLB — Pass 240)
+
+Every `.RUN` file contains **two instruction streams**, both using the identical 7-byte
+instruction format:
+
+```
+Region 1 — PREAMBLE (init) stream, at file 0x06C0 for BKAWLB
+  - Executes immediately at program load time
+  - Opens tables, runs finds, sets defaults, mounts forms, shows menu
+  - Corresponds to source lines 42–113 (setup code before first label)
+  - Instruction addrs reference the var pool as RAW OFFSETS (< runtime_base = 0x0460)
+
+Region 2 — CODE (interactive) stream, at file 0x0802 for BKAWLB
+  - Entry point is given by the 2-byte preamble header at code_start (0x0800)
+  - Executes the interactive logic: ENTERs, TRAPs, loops, print routines
+  - Corresponds to source lines 116+ (labeled sections: ENT.STAT, ASSIGN, VIEW, etc.)
+  - Instruction addrs reference vars as ABSOLUTE RUNTIME ADDRESSES (>= runtime_base)
+```
+
+**Address semantics distinction (critical):**
+- Preamble instructions: `addr` = raw var pool offset (< 0x0460 = runtime_base)
+- Code instructions: `addr` = absolute runtime address (= runtime_base + var_pool_offset)
 
 ---
 
@@ -27,10 +52,10 @@ Offset              Size   Description
 0x3B                0x45   Compiler metadata (zero-padded)
 0x80                N×16   Table name slots: 8-char ASCII name + 8 null bytes (N = h[7])
 0x80 + N×16         M      Var section (size = h[6]):
-                             [0 .. runtime_base-1]: zero-initialized runtime var storage
-                             [runtime_base .. M-1]: var descriptor table (see below)
-0x80 + N×16 + M     2      Code section preamble (2 bytes; value = 0 for BKAWLB)
-0x80 + N×16 + M + 2 ...    Instruction stream (7-byte fixed-length instructions)
+                             [0x0000 .. runtime_base-1]: zero-initialized runtime var storage
+                             [runtime_base .. M-1]: PREAMBLE INSTRUCTION STREAM (region 1)
+0x80 + N×16 + M     2      Code section header (2 bytes; value = entry offset LE2)
+0x80 + N×16 + M + 2 ...    CODE INSTRUCTION STREAM (region 2)
    ...later in code section: inline string pool (41-tagged entries)
 ```
 
@@ -40,9 +65,12 @@ code_start = 0x80 + (h[7] × 16) + h[6]
 ```
 For BKAWLB.RUN: `0x80 + (30 × 16) + 0x5A0 = 0x80 + 0x1E0 + 0x5A0 = 0x800`.
 
-> **NOTE — previous doc error:** an earlier version of this document stated code_start=0x6C0
-> for BKAWLB, which was incorrect. The correct value is 0x800. The 0x6C0 value corresponds
-> to where the var descriptor table begins (0x0260 + 0x0460 = 0x06C0), not code_start.
+**Both 0x06C0 and 0x0802 are instruction stream starts in BKAWLB (not a contradiction):**
+- 0x06C0 = start of preamble instruction stream (within the var section, at runtime_base offset)
+- 0x0800 = code_start by formula (contains the 2-byte entry-point header)
+- 0x0802 = start of interactive code instruction stream
+
+An earlier doc version stated "code_start=0x6C0 was wrong; correct value is 0x800." That correction was incomplete: 0x06C0 IS a valid instruction stream (the preamble), and 0x0802 is where the interactive code begins. Both are real instruction streams.
 
 ---
 
@@ -56,8 +84,8 @@ For BKAWLB.RUN: `0x80 + (30 × 16) + 0x5A0 = 0x80 + 0x1E0 + 0x5A0 = 0x800`.
 | 0x0C   | 0x1C4 = 452 | var_table_size (inferred) |
 | 0x10   | 0xA = 10 | Unknown count |
 | 0x14   | 0x17F = 383 | Unknown |
-| 0x18   | 0x5A0 = 1440 | Variable storage size in bytes |
-| 0x1C   | 0x1E = 30 | Table slot count (max slots allocated) |
+| 0x18   | 0x5A0 = 1440 | Variable storage size in bytes (= h[6]) |
+| 0x1C   | 0x1E = 30 | Table slot count (max slots allocated) (= h[7]) |
 | 0x20   | 0x47D0 = 18384 | Unknown offset |
 | 0x24   | 0xFFFF = 65535 | Sentinel / max value |
 | 0x28   | 0x5316 = 21270 | Unknown |
@@ -104,135 +132,173 @@ var_section offset  Contents
 ------------------  --------
 0x0000 – 0x045F     Runtime variable storage (1120 bytes, all zeros in file)
                     At load time, these bytes hold actual variable values.
-                    The runtime_base threshold 0x0460 appears fixed across programs.
-0x0460 – end        Var descriptor table (320 bytes in BKAWLB)
-                    Variable-size entries, one per user variable.
-                    At LOAD TIME this is read by the runtime to set up var types/sizes.
-                    At RUNTIME these bytes may be overwritten by variable data for
-                    vars with runtime_offset >= 0x0460.
+                    runtime_base = 0x0460 for BKAWLB (var_size=1440, table_count=30)
+0x0460 – end        PREAMBLE INSTRUCTION STREAM (region 1)
+                    45 instructions × 7 bytes = 315 bytes, starting at abs file 0x06C0
+                    These are real 7-byte instructions executing init code (opens, finds, etc.)
 ```
 
-### Var Descriptor Entries (confirmed from BKAWLB — 45 entries, 7 bytes each)
-
-Entries are EXACTLY 7 bytes each (verified: all 45 cumulative offsets hold). Format:
-
-```
-Byte  Field           Notes
-[0]   type_tag        Variable type code (e.g. 0x4B=alpha, 0x71=?, 0x3B=?, 0x0F=?, 0x1F=?)
-[1]   0x00            Always zero (padding)
-[2]   b2              Runtime storage size in bytes for this variable
-[3-6] runtime_offset  LE4 = sum of all previous b2 values = byte offset in runtime var pool
-```
-
-Confirmed entry sequence for BKAWLB (45 entries starting at var_section[0x0460], abs file 0x06C0):
-
-| Entry# | Desc pos | Hex | type | b2 | off | Cumulative |
-|--------|----------|-----|------|----|-----|------------|
-| 0 | desc+0x0000 | `4B 00 09 00 00 00 00` | 0x4B | 9 | 0 | param cfrom (a size 8) |
-| 1 | desc+0x0007 | `71 00 05 09 00 00 00` | 0x71 | 5 | 9 | param prg.name (a size ?) |
-| 2 | desc+0x000E | `3B 00 14 0E 00 00 00` | 0x3B | 20 | 14 | var 3 (size 20) |
-| 3 | desc+0x0015 | `0F 00 0A 22 00 00 00` | 0x0F | 10 | 34 | var 4 (size 10) |
-| 4 | desc+0x001C | `1F 00 35 2C 00 00 00` | 0x1F | 53 | 44 | var 5 (size 53) |
-| 5..8 | desc+0x0023.. | type=0x1F b2=53 | 0x1F | 53 | 97,150,203,256 | vars 6..9 |
-| 38 | desc+0x0103 | `0E 00 61 B1 02 00 00` | 0x0E | 97 | 689 | array element (b2=97) |
-| 38..41 | desc+0x0103.. | type=0x0E b2=97 | 0x0E | 97 | 786,883,980 | array elements |
-| 44 | desc+0x0134 | `37 00 0A 4C 04 00 00` | 0x37 | 10 | 1100 | last var |
-
-Total runtime storage = 1110 bytes; 45 × 7 = 315 bytes for descriptor table.
-
-**runtime_base varies** (NOT always 0x0460):
+**runtime_base varies by program:**
 - Programs with var_size=1440, table_count=30: runtime_base=0x0460=1120 (BKAWLB, BKLME)
 - Programs with var_size=2640, table_count=55: runtime_base=0x02D0=720 (BKMRF, BKDCA, BKAPH, BKAPHA, BKROA)
-- The zero-init area (0..runtime_base-1) holds SYSTEM/LIBRARY variables not listed in the descriptor table.
-- runtime_base is NOT directly stored in a header field (no header field matches across all 6 programs tested).
-
-**b2 field caveat:** b2 encodes the variable's INTERNAL RUNTIME ALLOCATION SIZE, which does NOT
-naively map to `source_type_size + 1`. The runtime may allocate a fixed-size "descriptor block" for
-many different source types. Confirmed from BKAWLB analysis: many variables of different source types
-(A25, A15, A11, I1, I5, D8, T8) all have b2=10 — they share the same internal allocation size.
-Type_tag → source type mapping is NOT yet decoded.
-
-**Source var ordering:** the descriptor table order does NOT follow source declaration order. Library
-variables and internal variables may be interleaved. The params (cfrom, prg.name) do appear first.
-
-### Instruction Address Semantics for Var References
-
-For var-section instructions, `addr` = the variable's **runtime address** = runtime_base + its runtime_offset:
-
-```
-addr = runtime_base + cumulative sum of all preceding variables' b2 values
-```
-
-Example (BKAWLB):
-```
-var[0] (cfrom, off=0):    addr = 0x0460 + 0   = 0x0460  → instruction [i0]
-var[1] (prg.name, off=9): addr = 0x0460 + 9   = 0x0469  → instruction [i1]
-var[2] (off=14):          addr = 0x0460 + 14  = 0x046E  → instruction [i2, i3]
-```
-
-For **array elements**, the addr is computed directly by the compiler as:
-```
-addr = addr_of_first_element + n × element_size
-```
-Instructions [i4..i7] reference addrs 0x04CF, 0x0530, 0x0591, 0x05F2 = 0x046E + 97, 194, 291, 388 (stride 97 = b2 of the instruction, matching element size). These hit positions within the runtime pool that are NOT at descriptor entry boundaries — the runtime computes element locations via stride, not by separate descriptor entries per element.
+- runtime_base is NOT directly stored in a header field.
 
 ---
 
-## Code Section
+## Preamble Instruction Stream (Region 1) — BKAWLB
 
-### Preamble
+Preamble starts at abs file 0x06C0 (= 0x0260 [var section start] + 0x0460 [runtime_base]).
+Contains **45 instructions × 7 bytes** encoding source lines 42–113.
 
-Two bytes at code_start. Value varies per program:
-- BKAWLB.RUN: `00 00`
-- BKMRF.RUN: `04 2E` (= 0x2E04 LE = 11780)
-- BKDCA.RUN: `1D E9` (= 0xE91D LE = 59677)
+Each instruction: `[opcode:1][0x00:1][b2:1][addr_LE4:4]`
+For preamble: `addr` = raw var pool offset (< 0x0460).
 
-The non-zero values for BKMRF/BKDCA may indicate an **inline data section** of that many
-bytes before the instruction stream. BKMRF instructions have been confirmed at
-abs=0x3C4A (offset +11786 from code_start), consistent with preamble=11780.
+| I# | File off | Bytes | Opcode | b2 | addr | Source line / role |
+|----|----------|-------|--------|----|----|---------------------|
+| 0  | 0x06C0   | `4B 00 09 00 00 00 00` | CALL_LIB  | 9  | 0x0000 | library init (SETUP_COLOR) |
+| 1  | 0x06C7   | `71 00 05 09 00 00 00` | EXIT2?    | 5  | 0x0009 | param prg.name (off=9) |
+| 2  | 0x06CE   | `3B 00 14 0E 00 00 00` | COND_BRANCH? | 20 | 0x000E | var (off=14) |
+| 3  | 0x06D5   | `0F 00 0A 22 00 00 00` | ASSIGN    | 10 | 0x0022 | var (off=34) |
+| 4  | 0x06DC   | `1F 00 35 2C 00 00 00` | TABLE_HANDLE | 53 | 0x002C | open table 1 (BKSYMSTR) |
+| 5..8 | ...   | `1F 00 35 61/96/CB/00 00 00 00` | TABLE_HANDLE | 53 | 97,150,203,256 | open tables 2..5 |
+| ...| ...     | ...   | ...    | ...| ...  | find, clr, assigns... |
+| ~38..41 | ... | `0E 00 61 ...` | ENTER?    | 97 | var offsets | e.status[1..4] |
+| ~42 | ...   | `13 00 21 ...` | FIND_KEY  | 33 | var off    | find F srch BKSY... |
+| ~43 | ...   | `06 00 ...`    | CLR       | -  | var off    | clr BKSYMSTR rec |
+| ~44 | ...   | `1C 00 ...`    | MOUNT     | -  | var off    | mount SELECT2 type S |
+| ~45 | ...   | `21 00 ...`    | MENU      | -  | var off    | menu at 5,5... |
 
-### Instruction Format (CONFIRMED, 7 bytes, BKAWLB)
+Source lines covered by preamble: 42–113 (SETUP_COLOR through MENU).
+
+---
+
+## Code Section Header (0x0800)
+
+Two bytes at code_start:
+- BKAWLB.RUN: `00 00` → entry at instruction 0 (code stream starts immediately at 0x0802)
+- BKMRF.RUN: `04 2E` (= 0x2E04 LE = 11780) → inline data block precedes instructions
+- BKDCA.RUN: `1D E9` (= 0xE91D LE = 59677) → large inline data block
+
+Non-zero values indicate an **inline data section** of that many bytes before the instruction
+stream. BKMRF instructions confirmed at abs=0x3C4A (offset +11786 from code_start), consistent
+with preamble=11780.
+
+---
+
+## Code Instruction Stream (Region 2) — BKAWLB
+
+Starts at abs file 0x0802 (code_start + 2 for BKAWLB).
+Corresponds to source lines 116+ (labeled sections).
+
+Same 7-byte format: `[opcode:1][0x00:1][b2:1][addr_LE4:4]`
+For code: `addr` = absolute runtime address (≥ runtime_base = 0x0460), OR code branch offset.
+
+Total instructions decoded from 0x06C0 (both regions): 2078.
+
+### Sample: ENT.STAT section (source lines 116–127)
+
+Source:
+```
+ENT.STAT:
+  xtrap chg ignr
+  enter e.status[1] ; enter e.status[2] ; enter e.status[3] ; enter e.status[4]
+  func pre.stat
+    trap F1 do PRE_STAT1
+    trap ESC do PRE_STAT2
+    trap F10 do PRE_STAT3
+  ret .t.
+```
+
+Corresponding instructions (I#46+, file 0x0802+):
+```
+OP_4B  CALL_LIB   (xtrap chg ignr — library call)
+OP_C1  ENT_BLOCK  (block header for 4 enter statements)
+OP_0E  ENTER b2=0x61 (enter e.status[1])
+OP_0E  ENTER b2=0x61 (enter e.status[2])
+OP_0E  ENTER b2=0x61 (enter e.status[3])
+OP_0E  ENTER b2=0x61 (enter e.status[4])
+  ... function pre.stat body ...
+OP_37  TRAP (trap F1 do PRE_STAT1)
+OP_37  TRAP (trap F2 do PRE_STAT2)
+OP_37  TRAP (trap F10 do PRE_STAT3)
+OP_20  RET_FUNC   (ret .t.)
+```
+
+Positional confirmation method: 4 consecutive OP_0E = the 4 `enter e.status[N]`; 3 consecutive
+OP_37 = the 3 traps. No other sequence in the source produces 4 consecutive enters or 3 traps.
+
+---
+
+## Instruction Format (confirmed, 7 bytes)
 
 ```
 Byte  Field      Notes
 ----  -----      -----
 [0]   opcode     Operation code
 [1]   0x00       Always zero (padding or reserved)
-[2]   b2         Sub-opcode / type qualifier / operand size hint
-[3-6] addr LE4   4-byte LE address field
+[2]   b2         Fixed per opcode — encodes operand descriptor size, sub-opcode, or type info
+[3-6] addr LE4   4-byte LE address field (semantics depend on region and opcode)
 ```
 
-All instructions are **exactly 7 bytes**. Confirmed for BKAWLB; same format implied for
-BKMRF/BKDCA (brute-force scan found 100% b1=0x00 alignment at +2 from code_start for all).
+**b2 field:** b2 is a FIXED constant for a given opcode — it does NOT switch per instruction.
+Example: every OP_0E (ENTER) has b2=0x61=97; every OP_37 (TRAP) has b2 TBD.
 
-Instructions start at **code_start + 2** for BKAWLB (after the 2-byte preamble).
-For BKMRF/BKDCA, the instruction stream likely starts at a higher offset (after an inline
-data section).
+---
 
-### Confirmed instruction sequence from BKAWLB (first 30 instructions)
+## Known Opcodes (Pass 240 — combined Rosetta Stone findings)
 
-```
-[i 0] 0x4B b2=0x09  addr=0x0460  (var[0]: cfrom α8, type_tag=0x4B)
-[i 1] 0x20 b2=0x05  addr=0x0469  (var[1]: prg.name α6?, type_tag=0x05)
-[i 2] 0xC1 b2=0x00  addr=0x046E  (var[2], same as i3)
-[i 3] 0x0E b2=0x61  addr=0x046E  (var[2], 97-byte entry)
-[i 4] 0x0E b2=0x61  addr=0x04CF  (var[3] = var[2]+97)
-[i 5] 0x0E b2=0x61  addr=0x0530  (var[4] = var[3]+97)
-[i 6] 0x0E b2=0x61  addr=0x0591  (var[5] = var[4]+97)
-[i 7] 0xC0 b2=0x04  addr=0x05F2  (var[6] = var[5]+97)
-[i 8] 0x49 b2=0x09  addr=0x05F6  (var[7], 4 bytes after var[6])
-[i 9] 0x3B b2=0x14  addr=0x05FF  BRANCH family (same as RWN opcode 0x3B)
-[i10] 0x0F b2=0x0A  addr=0x0613  ASSIGN (same as RWN opcode 0x0F)
-[i11] 0x45 b2=0x05  addr=0x061D
-[i12] 0x48 b2=0x19  addr=0x0622
-```
+### Confirmed by positional alignment or binary pattern
 
-### Branch / code-reference instructions
+| Opcode | Name | b2 | Evidence / source context |
+|--------|------|----|---------------------------|
+| `0x0F` | ASSIGN | 0x0A | Baseline; var assignments throughout |
+| `0x3B` | COND_BRANCH | 0x14 | Baseline; conditional goto |
+| `0x40` | EXIT | — | Baseline |
+| `0x42` | GOSUB | — | Baseline |
+| `0x48` | PUSH | 0x19 | Baseline |
+| `0x49` | READ_PROP | 0x09 | Baseline |
+| `0x57` | EXEC_FORM | — | Baseline |
+| `0x6A` | GOTO_LABEL | — | Baseline |
+| `0x71` | EXIT2 | — | Baseline |
+| `0xDC` | POP | — | Baseline |
+| `0x0E` | ENTER | 0x61 | Positional: 4 in a row = `enter e.status[1..4]` (Pass 240) |
+| `0x37` | TRAP | — | Positional: 3 in a row = 3 traps in `func pre.stat` (Pass 240) |
+| `0x20` | RET_FUNC | 0x05 | End of every function body (`ret .t.`/`ret .f.`) (Pass 240) |
+| `0x08` | TRAP_DFLT | — | Where `trap KEY dflt` expected (Pass 240) |
+| `0xC0` | SET_PROP_CTX | 0x04 | Always precedes READ_PROP group (Pass 240) |
+| `0xC1` | ENT_BLOCK | 0x00 | Always precedes ENTER groups — block setup (Pass 240) |
+| `0x4B` | CALL_LIB | 0x09 | First instruction of every file; `fnc_list`, `xtrap`, `prtr_setup` (Pass 240) |
+| `0x39` | FUNC_PREPOST | 0x51 | Before complex ENTER; pre/post function descriptor (Pass 240) |
+| `0x01` | ARG_DESC | 0x1D | Between OP_39 and ENTER; argument descriptor (Pass 240) |
 
-When `addr >= code_start`, the addr is a **code branch target** (absolute file offset).
-Seen for: 0x3B (branch), 0x0E (with higher addrs), and others.
+### Confirmed in preamble (init) region — opcode = source statement type
 
-Example: `0x0E b2=0x61 addr=0x0083E` where 0x083E > code_start=0x0800.
+| Opcode | Name | b2 | Source statement |
+|--------|------|----|-----------------|
+| `0x1F` | TABLE_HANDLE | 0x35=53 | `open TABLE lock N` — 5× in preamble, stride 53 (Pass 240) |
+| `0x13` | FIND_KEY | 0x21=33 | `find F srch BKSY.ARINV.NUM nlock` (Pass 240) |
+| `0x06` | CLR | — | `clr BKSYMSTR rec` (Pass 240) |
+| `0x1C` | MOUNT | — | `mount SELECT2 type S` (Pass 240) |
+| `0x21` | MENU | — | `menu at 5,5 ...` (Pass 240) |
+| `0x73` | PRG_HDR | — | `prg_hdr prg.name+'...'` — rare (3 total) (Pass 240) |
+
+### Probable (pattern-based, not yet positionally proved)
+
+| Opcode | Name | b2 | Evidence |
+|--------|------|----|----------|
+| `0x53` | PFMT | 0x7D=125 | Repeating in print section loop; b2=125 consistent (Pass 240) |
+| `0x93` | FOR_LOOP | — | Loop header preceding paired OP_65 in `for(mcntr;1;3;1)` area (Pass 240) |
+| `0x65` | PBLNK/WRITE | — | 2 per loop iteration in print section (Pass 240) |
+| `0xBE` | PMSG | 0x28=40 | Print message; addrs spaced by 40 in sequence (Pass 240) |
+| `0x46` | LOAD_VAR | — | Precedes array element assignments with repeating address patterns |
+| `0x4E` | ARRAY_IDX | — | Follows LOAD_VAR for array assignments; IDX increments per element |
+| `0x0A` | PUSH_ADDR | — | Seen before `0x0F 0x00` pairs in MENU_HLDR area |
+
+### Data records (NOT 7-byte instructions)
+
+| Tag | Name | Format | Notes |
+|-----|------|--------|-------|
+| `0x41` | STRING_LITERAL | `41 00 LL_lo LL_hi [LL bytes]` | Inline strings in code section; NOT an opcode |
 
 ---
 
@@ -244,118 +310,9 @@ String literals are embedded in the code section using a tagged format:
 41 00 LL_lo LL_hi [LL bytes of string data]
 ```
 
-These are NOT 7-byte instructions — they are **data records** that appear within the
-code section at addresses referenced by instructions. For BKAWLB, the first string
-`'AW-L-B'` appears at abs=0x03FCB (rel_code=0x37CB), after thousands of instructions.
+These are NOT 7-byte instructions — they are **data records** referenced by instructions.
 
-### First instruction — fixed runtime init
-
-The first instruction of every observed `.RUN` file is opcode 0x4B:
-
-- BKMRF.RUN / .org2 / .TEST: `4B 00 09 00 00 00 00` (addr=0 = system runtime base)
-- BKAWLB.RUN: `4B 00 09 60 04 00 00` (addr=0x0460 = user var section base)
-
-`b2=0x09` is consistent across all files. This instruction likely **initializes the variable
-storage area** — 0x4B is the type_tag for the first user variable (cfrom alpha-8), and
-addr points to the start of the user var descriptor table.
-
-Header field h[4]=10 in every tested file; b2=9 = h[4]-1. Possibly encodes TAS Pro API version.
-
-### Byte Distribution (BKAWLB.RUN, full file)
-
-| Byte | Count | %    | Note |
-|------|-------|------|------|
-| 0x00 | 67098 | 48.1% | Zero padding (addresses, variable storage) |
-| 0x20 | 7751  | 5.6%  | Space char (frequent in string data) |
-| 0x41 | 3353  | 2.4%  | PUSH_VALUE opcode |
-| 0x46 | 3140  | 2.3%  | LOAD_VAR opcode |
-| 0x4E | 2301  | 1.6%  | ARRAY_IDX opcode |
-
----
-
-## Known Opcodes
-
-> **Code section layout note:** The code section is NOT a pure instruction stream.
-> It contains 7-byte INSTRUCTIONS interleaved with variable-length DATA RECORDS.
-> Instructions reference data records via addr field pointing into the code section.
-> Data records have a type tag (e.g., 0x41 = string type), a 2-byte LE length, then content.
-> The 0x41 that appears frequently is the STRING TYPE TAG in data records, not a 7-byte opcode.
-
-### Confirmed 7-byte instructions (from BKAWLB instruction stream)
-
-All 7-byte instructions: `[op:1][0x00:1][b2:1][addr_LE4:4]`
-
-| Opcode | Seen b2 | Observed addr range | Inferred role |
-|--------|---------|---------------------|---------------|
-| `0x4B` | 0x09 | var_section (0x0460+) | VAR_INIT — initialize user var section; first instr every file |
-| `0x20` | 0x05 | var_section | VAR_DECLARE? (var[1] ref, param prg.name) |
-| `0xC1` | 0x00 | var_section | Unknown (appears just before 0x0E series) |
-| `0x0E` | 0x61 | var_section AND code | ARRAY_INIT? repeated for consecutive array elements (stride 97) |
-| `0xC0` | 0x04 | var_section | Unknown |
-| `0x49` | 0x09 | var_section | PUSH_VAR? (references 4-byte var after 97-byte block) |
-| `0x3B` | 0x14 | var_section | BRANCH family (same opcode as in .RWN; likely GOSUB/GOTO) |
-| `0x0F` | 0x0A | var_section | ASSIGN (same opcode as in .RWN) |
-| `0x45` | 0x05 | var_section | Unknown |
-| `0x48` | 0x19 | var_section | Unknown |
-| `0x1F` | 0x?? | var_section | Unknown |
-| `0x13` | 0x?? | var_section | Unknown |
-| `0x06` | 0x?? | var_section | Unknown |
-
-### Older byte-frequency based observations (pre-7-byte-format confirmation)
-
-These were identified from byte frequency and pattern analysis before the 7-byte format
-was confirmed. Some may be data-record type tags rather than instruction opcodes.
-
-| Byte | Name | Evidence | Status |
-|------|------|-----------|--------|
-| `0x41` | STRING_TYPE_TAG | `41 00 LL LL data` — string data records in code section | CONFIRMED (data record, NOT instr) |
-| `0x46` | LOAD_VAR | Precedes array element assignments with repeating address patterns | Probable instr |
-| `0x4E` | ARRAY_IDX | Follows LOAD_VAR for array assignments; IDX increments per element | Probable instr |
-| `0x0A` | PUSH_ADDR | Seen before `0x0F 0x00` pairs in MENU_HLDR area | Probable instr |
-| `0x35` | FIELD_REF? | Repeating with stride 53 at BKMRF code start | Possible instr |
-| `0x43` | OP_43? | Second most frequent non-zero byte (~2%) | Unknown |
-| `0xFF` | END_EXPR? | End of binary expression blobs | Data marker |
-| `0xFD` | EXPR_HDR? | Start of binary expression blobs | Data marker |
-
-**Byte frequency summary (stable opcodes from 3-way compile diff, BKMRF variants):**
-
-| Byte | Role | Approx % in code section |
-|------|------|--------------------------|
-| `0x00` | address padding / arg bytes | 51% |
-| `0x20` | possibly SPACE literal or common opcode | 3.5% |
-| `0x46` | LOAD_VAR | 2.7% |
-| `0x41` | PUSH_VALUE | 2.2% |
-| `0x43` | unknown (OP_43?) | 2.0% |
-| `0xFF` | end-of-expr marker? | 1.6% |
-| `0x4E` | ARRAY_IDX | 1.5% |
-| `0x30` | probably numeric literal `0` | 1.2% |
-| `0x01` | probably numeric literal `1` | 1.2% |
-| `0x0A` | PUSH_ADDR | 1.0% |
-| `0x0F` | OP_0F | 0.85% |
-| `0x49` | PUSH_VAR? | 0.82% |
-| `0xFD` | expr-header? | 0.82% |
-
-### PUSH_VALUE detail (`0x41`)
-
-```
-41 00 LL_lo LL_hi [LL bytes of data]
-```
-
-Used for BOTH plain string literals AND compiled expression blobs. The data can be:
-- Printable ASCII: a literal string from source (e.g., `'AW-L-B'`, `'Sort by'`)
-- Binary: a compiled sub-expression (e.g., form layout spec, mask definition)
-  Binary blobs often start with `fd` and end with `ff`.
-
-**Important:** Some `41 00 LL LL` matches are FALSE POSITIVES — the `41 00` bytes at that
-offset are NOT a PUSH_VALUE instruction; they coincidentally form that pattern within other
-instruction data. The 256-byte "string" at BKMRF.org2 0x24C3 is an example: it is part of
-larger instruction stream, not a string push.
-
-**Strings appear in EXECUTION ORDER** — confirmed from BKMRF.org2: first string `'NLT'` at
-offset 0x35CD matches source line 98 (`opt.types = 'NLT'`); immediately followed by 9 table
-names matching the `open` statements in lines 131-139.
-
-String sequence in BKAWLB matches source code in order:
+String sequence in BKAWLB matches source code execution order:
 ```
 Source: prg.name = "AW-L-B"
 Binary: 41 00 06 00  41 57 2d 4c 2d 42               ("AW-L-B", 6 bytes)
@@ -378,6 +335,18 @@ Binary: 41 00 1b 00  2020...                          ("  Print Work Order Sched
 
 ---
 
+## BKMRF Variants (same source, different compile)
+
+`samples/rosetta/` contains three binaries from the same source:
+- `BKMRF.RUN` — 159,375 bytes, version byte 0x?? (full linked)
+- `BKMRF.org2` — 89,175 bytes, version 0x58 (earlier/partial)
+- `BKMRF.TEST` — 85,898 bytes, version 0x51 (test compile)
+
+These can be byte-diffed to identify which bytes are stable (opcode values) vs.
+variable (addresses that change between compiles). Planned for next analysis pass.
+
+---
+
 ## TAS Pro 7 vs TAS Pro 6 — Key Differences
 
 | Feature | TAS Pro 6 `.RUN` | TAS Pro 7 `.RWN` (decrypted) |
@@ -388,11 +357,7 @@ Binary: 41 00 1b 00  2020...                          ("  Print Work Order Sched
 | Table names | In header table + inline strings | Externalized (assumed `.DCY`) |
 | Variable storage | Zero block in file | Absent from file |
 | Byte distribution | 48% zeros, biased | Uniform ~0.5% per byte |
-| `0x41` opcode | Frequent (PUSH_VALUE) | Not seen in suwin7.rwn |
-
-The **uniformly distributed byte distribution** of TAS Pro 7 decrypted bytecode is
-confirmed correct — it results from having no zero padding (variable storage externalized)
-and no ASCII strings (externalized to .DCY). The decryption is verified correct.
+| `0x41` opcode | Frequent (STRING_LITERAL data) | Not seen |
 
 ---
 
@@ -406,20 +371,8 @@ and no ASCII strings (externalized to .DCY). The decryption is verified correct.
 
 ---
 
-## BKMRF Variants (same source, different compile)
-
-`samples/rosetta/` contains three binaries from the same source:
-- `BKMRF.RUN` — 159,375 bytes, version byte 0x?? (full linked)
-- `BKMRF.org2` — 89,175 bytes, version 0x58 (earlier/partial)
-- `BKMRF.TEST` — 85,898 bytes, version 0x51 (test compile)
-
-These can be byte-diffed to identify which bytes are stable (opcode values) vs.
-variable (addresses that change between compiles). Planned for next analysis pass.
-
----
-
 ## References
 
-- Source: `samples/rosetta/BKAWLB.src`
+- Source: `samples/rosetta/BKAWLB.SRC`
 - Binary: `samples/rosetta/BKAWLB.RUN`
-- Analysis script: `scripts/tas6_analyze.py`
+- Analysis script: `scripts/analyze_run.py`
