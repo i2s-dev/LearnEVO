@@ -630,6 +630,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Pass 45: All 17 T7MR* programs mapped (T7MRA through T7MRO). Full demand-to-release lifecycle: MR-A(forecast entry) → MR-F(explosion engine→MTMRP) → MR-G(firm, BKSBVEND/BKSBMFG select vendor) → MR-H(release→WORKORD+BKAPPO) → MR-I/IX(capacity scheduling with ROUTING+CALENDAR) → MR-J(PO/RFQ via BKRFQ 49f). MTMRP(13f) extracted: PARTNO+DATE PK, PEGTO(demand tracing), ACTION lifecycle. BKRFQ(49f): 10 qty/cost breakpoints, shared by both RF (estimates) and MR (MRP). CALENDAR(5f): SAT+SUN work flags. BKSBVEND(6f)/BKSBMFG(6f)/BKSBPART(5f): approved-source tables used by MR-G vendor selection — **C: 80/100**
 - [x] ✅ Full MRP calculation cycle traced (T7MRF explosion → MTMRP → firm/release)
 - [x] ✅ All core BKMR\*/MTMRP/support tables documented with fields; full field tables + MRP data flow diagram added to docs/03-modules/mr-mrp/README.md (Pass 110h 2026-06-19) — **C: 88/100**
+- [x] ✅ Pass 246 2026-06-24: BKMRF.RUN binary string extraction confirmed 20+ runtime tables opened during MRP run; key new tables: SUMPNCUS(6f summary stats used in BOM Analysis), BKBMMSTR, CALENDAR, BKAPPO/BKAPPOL, WOBOM, BKARINVL/BKARINV, WOROUT, BKICLOC/BKICLOCM; stage progress strings confirmed: "Stage 1/2/3/4:", "BOM Analysis:"; source order types: Sales Orders, Purchase Orders, Work Orders, WO BOMs, S-Type WO BOMs, Forecasts; additional runtime table section added to mr-mrp/README.md — **C: 90/100**
 
 ### 7.10 Routing (RO)
 - [x] ✅ Menu codes listed (19 operations) — **C: 65/100**
@@ -682,6 +683,7 @@ Target for "understood" = C: 75+ on all items below.
 - [x] ✅ Menu codes listed — **C: 62/100**
 - [x] ✅ Source file: BKLME.SRC analyzed — **C: 60/100**
 - [x] ✅ Time entry → WO charge chain fully traced: 3 paths — (1) DC path: BKDCCLAB→DC-G approve→DC-H post→WOLABOR+WORKORD costs+BKGLTRAN; (2) WO-G direct: T7WOG→WOLABOR+WORKORD+BKGLTRAN; (3) PR-J time cards: BKPRTC→PR-K→BKPRCURP+BKPRMSTR YTD (payroll only, no WOLABOR); PR-J-A imports BKDCLAB→BKPRTC for paycheck generation from same DC event; LW module = WO+JC menu alias using same tables; docs/03-modules/lw-labor-wip/README.md created (Pass 111d 2026-06-19) — **C: 82/100**
+- [x] ✅ Pass 246 2026-06-24: BKLME.RUN binary extracted — BKLME = "LM-E Consolidate Inventory Transactions"; confirmed tables: MTICMSTR, INVTXN, BKAPVEND, BKICMSTR; **INVTXN transaction type codes confirmed** (10 types): ADJUSTMT, SHIPMENT, PO RECPT, PO JOBRC, WO RECPT, WO ISSUE, QC RECPT, OUT PROC, $ CHANGE, DELETED (stored as MTIT_TYPE STRING 1; these are display labels); type codes added to in-inventory/README.md; **supersession confirmed**: BKLME (LM-E) is superseded by SM-J-D=t7smjd.rwn in the live EvoERP menu (BKMENUSU.TXT confirms) — **C: 82/100**
 
 ### 7.16 EDI (ED)
 - [x] ✅ Tables: BKED\* (6 tables) — BKEDIH(84f: same structure as BKARINV — EDI-in staging header), BKEDIL(28f: same as BKARINVL — EDI-in lines), BKEDIDUN(7f: customer DUNS mapping+EDI flags), BKEDMSTR(3f: our DUNS+import path+counter), BKEDNOTE(3f: EDI notes), BKEDPOST(2f: posting log); unified invoice architecture confirmed for EDI — **C: 78/100**

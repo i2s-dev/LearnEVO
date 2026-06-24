@@ -180,7 +180,7 @@ Uses `MTIT_*` field prefix (same MT* pattern as MTICMSTR — multi-class transac
 
 | Field | Type | Size | Meaning |
 |-------|------|------|---------|
-| `MTIT_TYPE` | STRING | 1 | Transaction type: R=receipt, S=shipment, A=adjustment, W=WO issue, etc. |
+| `MTIT_TYPE` | STRING | 1 | Transaction type code (single char) — see type code table below |
 | `MTIT_CLASS` | STRING | 4 | Product class (aligns with MTIC_PROD_CLASS) |
 | `MTIT_DATE` | DATE | 4 | Transaction date |
 | `MTIT_CODE` | STRING | 15 | Part code |
@@ -204,6 +204,28 @@ Uses `MTIT_*` field prefix (same MT* pattern as MTICMSTR — multi-class transac
 | `MTIT_DESC` | STRING | 30 | Description |
 | `MTIT_PRODLOT` | STRING | 15 | Production lot |
 | `MTIT_EXTRA` | STRING | 50 | Extra / user-defined |
+
+**Transaction type codes** (confirmed from BKLME.RUN binary, Pass 246 2026-06-24):
+
+`MTIT_TYPE` is STRING 1. The display labels below are the full names hard-coded in BKLME
+("Consolidate Inventory Transactions"). The single-character codes are inferred from
+context — the stored value is one character but the exact mapping is unconfirmed.
+
+| Display label (8 chars) | Inferred code | Event |
+|------------------------|---------------|-------|
+| `ADJUSTMT` | A | Manual inventory adjustment |
+| `SHIPMENT` | S | Sales shipment (outbound) |
+| `PO RECPT` | P | PO receipt — into stock |
+| `PO JOBRC` | J | PO receipt — direct to WO/job |
+| `WO RECPT` | W | Work order receipt (finished goods in) |
+| `WO ISSUE` | I | Work order issue (material consumed) |
+| `QC RECPT` | Q | QC receipt (into QC inspection) |
+| `OUT PROC` | O | Outside-process receipt |
+| `$ CHANGE` | $ | Dollar/cost change (cost update only) |
+| `DELETED`  | D | Logically deleted transaction |
+
+Source: 10 `0x41 0x00 08 00 …` records in BKLME.RUN data channel at offsets 0x0110–0x0238.
+Single-char code assignments are inferred; all 10 labels are confirmed from binary.
 
 **Design notes:**
 - INVTXN is the complete audit trail of every inventory movement — receipts, shipments, adjustments, WO issues, and WO completions all write here.

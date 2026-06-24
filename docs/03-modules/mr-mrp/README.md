@@ -155,6 +155,42 @@ Populated by MR-F (Generate Material Requirements). Cleared and rebuilt each MRP
 
 ---
 
+## Additional runtime tables (confirmed from BKMRF.RUN binary, Pass 246 2026-06-24)
+
+These strings appear in the BKMRF.RUN data channel, indicating the MRP engine opens or
+reads these tables during a run. They are supplementary to the 4 permanent BKMRP* tables.
+
+| String in binary | Role / interpretation | Confidence |
+|------------------|-----------------------|-----------|
+| `BKBMMSTR` | BM (Bills of Material) master — BOM explosion input | confirmed table |
+| `CALENDAR` | Shop calendar — working days for lead time calc | confirmed table |
+| `BKAPPO` / `BKAPPOL` | AP purchase order header + line — existing PO supply | confirmed tables |
+| `WOBOM` | WO BOM (material requirements on open WOs) | confirmed table |
+| `WORKORD` | Work order header — open WO demand input | confirmed table |
+| `BKICLOC` / `BKICLOCM` | IC warehouse location — on-hand quantity per location | confirmed tables |
+| `BKICMSTR` / `MTICMSTR` | IC item master (single/multi-class) | confirmed tables |
+| `BKARINVL` / `BKARINV` | AR invoice line + header — sales order linkage | confirmed tables |
+| `WOROUT` | WO routing — routing steps on open WOs | confirmed table |
+| `SUMPNCUS` | 6-field summary stats table (DDF confirmed); used in BOM Analysis pass | confirmed table |
+| `REORDLVL` | Reorder level — Stage 3 input; likely a field string or MTICMSTR field | inferred |
+| `EXPSENS` | Expedite sensitivity threshold — Stage 4 action messages | inferred (field/constant) |
+| `NLT` | Net lead time accumulator — BOM Analysis pass | inferred (field/variable) |
+| `RFAM` / `RFAMB` | 4/5-char identifiers in Stage 2 / BOM Analysis section | role unclear |
+| `FAMNB` | Family "NB" code — appears near BOM Analysis strings | role unclear |
+
+**Stage source order strings confirmed in binary:** "Sales Orders", "Purchase Orders",
+"Work Orders", "WO BOMs", "S-Type WO BOMs", "Forecasts".
+
+**Stage progress strings confirmed in binary:** "Stage 1:", "Stage 2:", "Stage 3:",
+"Stage 4:", "BOM Analysis:".
+
+**File init messages confirmed in binary:**
+- `Initializing MRP output file...`
+- `Initializing BOM Analysis file...`
+- `Initializing BKMRPSW file...`
+
+---
+
 ## MRP data flow summary
 
 ```
