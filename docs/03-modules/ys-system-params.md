@@ -1,8 +1,10 @@
 # YS — Yes/No System Parameters (T7YSYN.RWN)
 
-Status: verified | Pass 230 2026-06-23
+Status: verified | Pass 230 2026-06-23 | Reconfirmed Pass 248 2026-06-24
 
 Source: variable extraction from `samples/rwn_decrypted/T7YSYN.RWN.dec`
+Reconfirm: `samples/src/T7YSYN.RWN` decrypts cleanly with K_B (Pass 248): source=EVO.LIB, marker=TWINB,
+52 procs (mostly unnamed due to LISTG60 proc-table pattern), 1,243 vars, 14 DB files (BKYSMSTR+13 shared helpers).
 
 ---
 
