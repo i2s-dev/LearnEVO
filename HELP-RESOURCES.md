@@ -18647,3 +18647,103 @@ pattern in SO module).
 WCTRLOAD DDF exactly; WCTRSLOD.H second handle confirmed from named_vars; architecture
 description inferred from var names and Java integration pattern (same HOST/PORT/NAME pattern
 as other Java bridges).
+
+---
+
+## CR — Contract Review / SO Approval (Pass 238)
+
+**Module purpose:** Two-gate approval system for Sales Orders. Gate 1 (T7CTRevu) manages the
+contract-review credit-hold entry and password rotation for the approver role. Gate 2 (T7SORevu)
+provides a full SO context viewer with supervisor-override capability.
+
+### Programs (4 total — Pass 238)
+
+| Program | Procs | Src Library | DB Tables | Role |
+|---|---|---|---|---|
+| T7CTRevu | 96 | LISTG60.LIB | 35 | Contract-review entry + password management |
+| T7CTRevuAdmin | 5 | T7CTRevuAdmin.SRC | 35 | Admin sub-form stub (shares same DB session) |
+| T7SORevu | 78 | LISTG60.LIB | 90 | Full SO supervisor override — largest CR program |
+| T7SORevuAdmin | 5 | T7SORevuAdmin.SRC | 90 | Admin sub-form stub (shares same DB session) |
+
+### IS.CREVU.* Namespace — Contract Review Record (13 vars, ISCTREVU)
+
+| Var | Field | Meaning |
+|---|---|---|
+| IS.CREVU.EMPNME | EMPNME | Approver employee name |
+| IS.CREVU.EMP | EMP | Approver employee number |
+| IS.CREVU.DEPT | DEPT | Approver department |
+| IS.CREVU.ADMIN | ADMIN | Admin flag (can perform admin actions) |
+| IS.CREVU.LEVEL | LEVEL | Approval level (1–5) |
+| IS.CREVU.MOTPAS | MOTPAS | Motion password — the approval password entered by the approver |
+| IS.CREVU.ACTIVE | ACTIVE | Active flag |
+| IS.CREVU.CDATE | CDATE | Creation date |
+| IS.CREVU.EDATE | EDATE | Expiry date |
+| IS.CREVU.ADATE | ADATE | Approval date |
+| IS.CREVU.ATIME | ATIME | Approval time |
+| IS.CREVU.FLAG | FLAG | Status flag |
+| IS.CREVU.EXTRA | EXTRA | Extra/UDF |
+
+### IS.SOVU.* Namespace — SO Supervisor Override Record (12 vars, ISSOREVU)
+
+| Var | Field | Meaning |
+|---|---|---|
+| IS.SOVU.SONUM | SONUM | Sales order number being overridden |
+| IS.SOVU.DEPT | DEPT | Supervisor's department |
+| IS.SOVU.EMPNME | EMPNME | Supervisor's name |
+| IS.SOVU.EMPNUM | EMPNUM | Supervisor's employee number |
+| IS.SOVU.MOTPAS | MOTPAS | Motion password for override |
+| IS.SOVU.ADATE | ADATE | Override authorization date |
+| IS.SOVU.EDATE | EDATE | Override expiry date |
+| IS.SOVU.APPROVE | APPROVE | Approval decision flag |
+| IS.SOVU.REQUIRE | REQUIRE | Override required flag (system-generated) |
+| IS.SOVU.ENTBY | ENTBY | Entered by (who initiated the override request) |
+| IS.SOVU.ENTMOT | ENTMOT | Entry motion (reason/action code) |
+| IS.SOVU.EXTRA | EXTRA | Extra/UDF |
+
+### New Tables (first confirmed — Pass 238)
+
+| Table | Purpose | How Accessed |
+|---|---|---|
+| BKSYAR | AR system parameters — parallel to BKSYAP (AP params); stores AR-wide defaults | Raw file ops in T7SORevu (no dedicated namespace) |
+| ISARCHG | IS-era AR change audit — parallel to ISAPCHG for AP; tracks SO field changes | Raw file ops in T7SORevu (no dedicated namespace) |
+
+### T7SORevu — 90-Table Database Context
+
+T7SORevu has the second-largest database session in the system (90 tables). The breadth of access
+confirms the SO review program needs complete business context to make an authorization decision:
+
+| Table Group | Tables | Purpose |
+|---|---|---|
+| SO core | BKARINV (×6) | Reads SO header from multiple angles |
+| AP context | BKAPPOL, BKAPPO | Reviews outstanding PO commitments against the SO |
+| MRP context | BKMRPFC | Reviews demand forecast — SO vs. MRP demand match |
+| Chain dispatch | ISCHAINM | Multi-company chain dispatch for cross-company SOs |
+| Quality | ISNCR, LOT, SERIAL | Lot/serial/NCR quality status for items on the SO |
+| Scheduling | WORKCHG | WO change records (SO review can trigger WO changes) |
+| GL | BKGLTRAN, BKGLX | GL posting context |
+| AR audit | ISARCHG, BKSYAR | AR change history + AR system params |
+| Triggers | ISTRIGRS, ISREMIND | Alerts and reminders linked to SO |
+
+### Workflow
+
+```
+1. SO is placed on hold (credit / contract review required)
+2. T7CTRevu: approver enters MOTPAS (motion password) at their level (1–5)
+   → IS.CREVU record updated (ADATE/ATIME stamped, ACTIVE flag set)
+3. T7SORevu: supervisor reviews full SO context:
+   - BKAR.INV.* (53 SO header fields)
+   - Outstanding POs vs. SO demand (BKAPPOL/BKAPPO)
+   - MRP demand (BKMRPFC)
+   - Lot/serial quality status (ISNCR/LOT/SERIAL)
+4. Supervisor enters IS.SOVU.MOTPAS to override/approve
+   → ISSOREVU record stamped (APPROVE/ADATE/ENTMOT)
+5. SO released from hold; ISARCHG records the override event
+```
+
+**Multi-company support:** CFROM in T7CTRevu confirms the CR module supports reviewing SOs from
+other companies in a chain-dispatch setup (ISCHAINM in T7SORevu confirms this).
+
+**Confidence: 90/100** — T7CTRevu and T7SORevu fully var-extracted (Pass 238); IS.CREVU.*(13)
+and IS.SOVU.*(12) cross-validated directly; BKSYAR/ISARCHG confirmed in DB file table (schema
+not yet in DDF catalog); T7SORevu 90-table DB implies broad SO authorization context; workflow
+inferred from var names and approval state machine.

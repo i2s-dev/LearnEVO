@@ -285,6 +285,8 @@ the 659-table DDF schema catalog (tier2-tables.md). May not be present in the Pe
 
 | Table | First Seen | Confirmed From | Schema Status |
 |---|---|---|---|
+| BKSYAR | T7SORevu (Pass 238) | DB file table entry | DDF not found; AR system params (parallel to BKSYAP) |
+| ISARCHG | T7SORevu (Pass 238) | DB file table entry | DDF not found; IS-era AR change audit (parallel to ISAPCHG) |
 | BKICREF | T7POS (Pass 236) | DB file table entry | DDF not found; structure unknown |
 | ISORDECO | T7POSI (Pass 236) | DB file table entry | DDF not found; structure unknown |
 | BKSYAP | T7POA (Pass 237) | BKSY.AP.* 24-var namespace | DDF not found; new AP system params table |
