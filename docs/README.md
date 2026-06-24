@@ -114,6 +114,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [YS — Yes/No System Parameters (T7YSYN.RWN)](03-modules/ys-system-params.md) — *Pass230: 495 ISTS.CFG.* params + BKYS.* field layout; BKYSMSTR*
 - [MA — Map Deposits (T7MAPDEPO.RWN)](03-modules/ma-map-deposits.md) — *Pass230: AR deposit-to-invoice mapping; BKAR.DEP+ISAR.DEPL tables*
 - [SM — Workstation Config (t7slsfc.RWN)](03-modules/sm-system-manager/workstation-config.md) — *Pass230: email/SMTP (49 vars), per-module screen selectors, UI flags, Java paths*
+- [SM — Security & Access Control](03-modules/sm-system-manager/security-access-control.md) — *Pass249: three-tier model (BKPSUSER→BKSLEVEL→ISACCESS); BKSLEVEL 20-menu correction; BKSL.*/IS.ACC.* namespaces*
 - [Shared Dialogs — T7RTMVALID.RWN (RTM format picker)](03-modules/shared-dialogs.md) — *Pass230: cross-module shared utility for ReportBuilder template selection*
 - [FL — File Location Manager (WTASFLOC.RWN)](03-modules/fl-file-location.md) — *Pass231: CF_*/LOC_*/DICT_* namespaces confirmed; 8 TAS internal tables (FILELOC/FILEDICT/FILEKEY/FILEKNUM/FILEDES/FILEDFLD/ERRMSG/FILEDBF)*
 - [EX — SQL Export (SQLEXPORT.RWN)](03-modules/ex-sql-export.md) — *Pass231: Java bridge vars[60-71] confirmed; EVOBI2 BI database; EVO.CFG.* + per-module screen selectors; same bridge pattern as 8 other Java programs*

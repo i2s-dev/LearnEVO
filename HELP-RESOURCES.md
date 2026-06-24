@@ -2913,7 +2913,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | ISBINLOC | ISBINLOC.B | WC | Bin locations | Bin location master (distinct from BKICLOC item bins) |
 | ISBINLOT | ISBINLOT.B | IN/WO | Bin-lot cross-ref | Which lot numbers are in which bins |
 | ISBUILD | ISBUILD.B | BM | Build records | Kit/BOM build operation records |
-| ISACCESS | ISACCESS.B | Security | Module access | License/module access control — which modules are enabled |
+| ISACCESS | ISACCESS.B | Security | Form/field-level access | Field-level security: disables/hides specific form controls per user group; enabled by ISTS.CFG.LIMACC; managed by T7LIMACC.RWN; IS.ACC.NAME/DFM/OBJ/OBJTYPE/STATUS/FIELD/TEXT/EXTRA namespace |
 | ISACTION | ISACTION.B | AC | Action items | Corrective action tracking (type/desc/misc) |
 | ISAPCHG | ISAPCHG.B | AP | AP extra charges | Additional charges on AP invoices (parallel to ISARCHG) |
 | ISARCHG | ISARCHG.B | AR | AR extra charges | Additional charges added to AR invoices beyond line items |
