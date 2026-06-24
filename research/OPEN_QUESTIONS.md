@@ -278,6 +278,26 @@ to resolve fully:
       - **Type tag to TAS Pro source type mapping**: 0x4B, 0x71, 0x3B, 0x0F, 0x1F, 0x13, 0x06, 0x0E, 0x21, 0x1C, 0x73, 0x49, 0x37, 0xC0 — what are the corresponding TAS Pro 6 variable types?
       - **runtime_base formula**: which header field encodes the runtime_base threshold?
 
+## Newly Confirmed Tables (Pass 236–237) — DDF Schemas Not Yet Validated
+
+These tables were first documented from var extraction but have not been cross-checked against
+the 659-table DDF schema catalog (tier2-tables.md). May not be present in the Pervasive DDFs.
+
+| Table | First Seen | Confirmed From | Schema Status |
+|---|---|---|---|
+| BKICREF | T7POS (Pass 236) | DB file table entry | DDF not found; structure unknown |
+| ISORDECO | T7POSI (Pass 236) | DB file table entry | DDF not found; structure unknown |
+| BKSYAP | T7POA (Pass 237) | BKSY.AP.* 24-var namespace | DDF not found; new AP system params table |
+| ISAPEX | T7POA (Pass 237) | ISAPEX.* 22-var namespace | DDF not found; ACH/bank approval record |
+| ISECO | T7POA (Pass 237) | IS.ECO.* 12-var namespace | DDF not found; ECO record |
+| ISJOB | T7POA (Pass 237) | IS.JOB.* 9-var namespace | DDF not found; job-cost job master |
+
+**Next step:** Search for these table names in the 659-table DDF listing. If absent, they may be
+Btrieve tables defined in `.DDF` files outside the main DBAMFG$ share, or they may be newer
+additions not in the DDF extract.
+
+---
+
 ## Nice-to-have follow-ups (not blocking)
 
 - **Extract CHM contents fully.** Ran `hh -decompile` but it quietly

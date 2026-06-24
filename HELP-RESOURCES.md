@@ -18423,3 +18423,227 @@ database access and depend on:
 **Confidence: 75/100** — All 37 JARs enumerated with Main-Class; package names confirm module
 assignments; 3 stub patterns classified (Pass 159); PROJECTEDSTOCK JAR name unresolved; T7JAVASET vs
 T7JSETTINGS distinction confirmed; JAR source not decompiled.
+
+---
+
+## QS — Quick SO / POS Mode (Pass 236 Additions)
+
+**Programs confirmed (Pass 236):**
+
+| Program | Procs | Src Library | DB Tables | Role |
+|---|---|---|---|---|
+| T7POS | 104 | LISTG60.LIB | 28 | POS-mode QS entry — uses T7QSOA.DFM form; opens BKARINVV+BKICREF+MTICMSTR |
+| T7POSI | 53 | EVO.LIB | 63 | POS item detail — opens ISPOSI session handle; accesses ISORDECO+BKCMACCC |
+
+T7POS uses the **T7QSOA.DFM** form (same DFM as the QS module's main form), confirming T7POS is the
+point-of-sale entry variant of Quick SO, not a separate POS module. LISTG60.LIB source = non-EVO library
+variant (simpler session; no full multi-currency).
+
+### New Tables (first documented — Pass 236)
+
+| Table | Purpose |
+|---|---|
+| BKICREF | IC cross-reference — part cross-reference between item codes (e.g. vendor part↔internal part); first confirmed table doc |
+| ISORDECO | Order eco-code — eco-code flags on SO/POS orders; in T7POSI DB; first confirmed table doc |
+
+### ISPOSI.H — POS Session Handle
+
+`ISPOSI.H` is the file handle used by T7POSI for the POS session state. Pattern: one handle per logical
+session scope (same pattern as WTASFLOC.H for location, BKPSUSER.H for auth).
+
+### BKAR.* Namespace Extended to 53 Variables
+
+Pass 236 (via T7POS/T7MAPDEPO) confirmed the BKAR.* namespace reaches **53 vars** when using
+the full EVO.LIB session. Additional fields beyond the base 40-var set:
+
+| Var | Meaning |
+|---|---|
+| BKAR.HIST.YN | Invoice history flag |
+| BKAR.DISC.CODE | Discount code |
+| BKAR.NOTES | Invoice notes |
+| BKAR.GLACCT | GL account override |
+| BKAR.TERRITORY | Sales territory code |
+| BKAR.CARRIER | Shipping carrier |
+| BKAR.RECV.HOURS | Receiving hours window |
+
+Plus additional bill-to address block vars (BKAR.BILA1-3/BILCTY/BILNME) confirmed earlier in Pass 166.
+
+### BKCM.ACCC Namespace (from T7POSI)
+
+| Var | Meaning |
+|---|---|
+| BKCM.ACCC.CCODE | CRM account/contact code |
+| BKCM.ACCC.DESC | CRM account/contact description |
+
+Source: BKCMACCC table (CRM account contact cross-reference); accessed in T7POSI for POS customer lookup.
+
+**Confidence: 92/100** — T7POS/T7POSI fully var-extracted (Pass 236); BKICREF/ISORDECO confirmed in
+DB file table; ISPOSI.H/BKCM.ACCC.* confirmed from named_vars; table schemas for BKICREF/ISORDECO
+not yet in DDF (not present in 659-table schema).
+
+---
+
+## TPOA / PO Hub — Pass 237 New Namespaces
+
+**Context:** T7POA (499 procs) is the largest AP/PO program. Pass 237 extracted 7 namespaces that had
+not been previously documented. These are all from the T7POA var table.
+
+### BKAP.POL.* — PO Line Namespace (30 vars, first full doc)
+
+Maps to BKAPPOL table (PO line records). The PO line is the core purchase line item.
+
+| Var | Field | Meaning |
+|---|---|---|
+| BKAP.POL.PCODE | PCODE | Item code ordered |
+| BKAP.POL.PDESC | PDESC | Item description |
+| BKAP.POL.PQTY | PQTY | Quantity ordered |
+| BKAP.POL.PPRCE | PPRCE | Unit price |
+| BKAP.POL.RQTY | RQTY | Quantity received |
+| BKAP.POL.IQTY | IQTY | Quantity invoiced |
+| BKAP.POL.WO | WO | Linked Work Order (subcontract WOs) |
+| BKAP.POL.QC.QTY | QC.QTY | QC-inspected quantity |
+| BKAP.POL.BUYOFF | BUYOFF | Buy-off approval flag |
+| BKAP.POL.SCRAP | SCRAP | Scrap quantity on receipt |
+
+(30 vars total; remaining 20 cover extended line fields, GL account, notes, lot, extra UDF slots.)
+
+### ISAPEX.* — AP Approval / Bank Account Gateway (22 vars, first full doc)
+
+Maps to ISAPEX table — approval record for ACH/EFT payment authorization. Stores bank account info
+for the payee alongside the approval decision.
+
+| Var | Field | Meaning |
+|---|---|---|
+| ISAPEX.BNAME | BNAME | Bank name |
+| ISAPEX.BACCTNAM | BACCTNAM | Bank account name |
+| ISAPEX.BADD | BADD | Bank address |
+| ISAPEX.BEMAIL | BEMAIL | Bank/payee email address |
+
+Additional vars cover routing number, account number, ACH transaction codes, approval date/user, and
+status flags. Appears in T7POA for digital-signature + ACH approval of vendor payments.
+
+### IS.ECO.* — Engineering Change Order Namespace (12 vars, first full doc)
+
+Maps to ISECO table — ECO records tied to purchased items (PO lines can be linked to an ECO).
+
+| Var | Field | Meaning |
+|---|---|---|
+| IS.ECO.PART | PART | Item/part affected by the ECO |
+| IS.ECO.DRAW | DRAW | Drawing number |
+| IS.ECO.REVLVL | REVLVL | Revision level |
+| IS.ECO.ENTDATE | ENTDATE | Entry date |
+| IS.ECO.ECO | ECO | ECO number |
+| IS.ECO.STATUS | STATUS | ECO status code |
+| IS.ECO.APPBY | APPBY | Approved by (user) |
+| IS.ECO.INVDISP | INVDISP | Inventory disposition instruction |
+
+### BKSY.AP.* — AP System Parameters Namespace (24 vars, first full doc)
+
+Maps to **BKSYAP** table — a single-row AP system configuration record (new table, not previously in
+any documented namespace). Analogous to BKYSMSTR for global flags but specifically for AP parameters.
+
+| Var | Field | Meaning |
+|---|---|---|
+| BKSY.AP.RQSCRAP | RQSCRAP | Require scrap entry on QC receipt |
+| BKSY.AP.RQREWRK | RQREWRK | Require rework entry on QC receipt |
+| BKSY.AP.QCRECV | QCRECV | QC receipt required flag |
+| BKSY.AP.RFQNUM | RFQNUM | Auto-number seed for RFQ documents |
+| BKSY.AP.VPRICE | VPRICE | Vendor price tolerance (dollar) |
+| BKSY.AP.PERCOVR | PERCOVR | Vendor price tolerance (percent over) |
+
+(24 vars total; remaining 18 cover additional receipt and voucher default settings.)
+
+**BKSYAP** is the first documentation of this table. It stores AP-wide defaults for QC receipt
+requirements and vendor price tolerance enforcement.
+
+### BKRFQ.* — RFQ Namespace (25 vars, first full doc)
+
+Maps to BKRFQ table (vendor request-for-quote records; 49 fields in DDF). The BKRFQ.* namespace
+exposes the fields accessed by T7POA during PO entry (when converting an RFQ to a PO).
+
+| Var | Field | Meaning |
+|---|---|---|
+| BKRFQ.NUM | NUM | RFQ number |
+| BKRFQ.EST | EST | Estimating record link |
+| BKRFQ.PARENT | PARENT | Parent RFQ (for sub-quotes) |
+| BKRFQ.OPER | OPER | Operation/routing step |
+| BKRFQ.PROD | PROD | Product/item code |
+| BKRFQ.WO | WO | Linked Work Order |
+| BKRFQ.VEND | VEND | Vendor code |
+
+(25 vars; remaining cover price-break levels, lead times, unit of measure, notes.)
+
+Full BKRFQ DDF: 49 fields including VNDPRICE1–5 (5-level price breaks), LEADTIME1–5, and VNDCODE
+(the 5-vendor-quote RFQ structure). BKRFQ.* 25-var accesses a subset of the 49 total fields.
+
+### IS.JOB.* — Job Cost Jobs Namespace (9 vars, first full doc)
+
+Maps to ISJOB table — job-cost job master. Appears in T7POA for PO-to-job-cost linkage (purchase
+costs posted to a job).
+
+| Var | Field | Meaning |
+|---|---|---|
+| IS.JOB.NUMB | NUMB | Job number |
+| IS.JOB.DESC | DESC | Job description |
+| IS.JOB.CUST | CUST | Customer code |
+| IS.JOB.VEND | VEND | Vendor (if job is outsourced) |
+| IS.JOB.STATUS | STATUS | Job status code |
+| IS.JOB.OPENDT | OPENDT | Job open date |
+| IS.JOB.CLOSEDT | CLOSEDT | Job close date |
+
+**Confidence: 92/100** — All 7 namespaces confirmed from T7POA var extraction (Pass 237); BKRFQ
+cross-validated against 49-field DDF schema; BKSYAP confirmed as new table not previously documented;
+ISAPEX/ISECO/ISJOB schema field names inferred from var names (DDF not yet cross-validated for these).
+
+---
+
+## VSCHED — Visual Scheduler (Pass 237 Confirmation)
+
+### WC.LOAD.* Namespace — WCTRLOAD Schema (8 vars, fully confirmed)
+
+Pass 237 var extraction of T7VSCHED.dec confirmed the WCTRLOAD table schema via the `WC.LOAD.*`
+namespace (8 vars, exact DDF match):
+
+| Var | Field | Type | Meaning |
+|---|---|---|---|
+| WC.LOAD.WC | WC | String | Work center code (PK part 1) |
+| WC.LOAD.DATE | DATE | Date | Load date (PK part 2) |
+| WC.LOAD.TOTHRS | TOTHRS | Numeric | Total scheduled hours for this WC on this date |
+| WC.LOAD.UDATE | UDATE | Date | Last update date |
+| WC.LOAD.CAP | CAP | Numeric | Work center capacity (hours available) |
+| WC.LOAD.UTIL | UTIL | Numeric | Utilization percentage |
+| WC.LOAD.LOAD | LOAD | Numeric | Load percentage (TOTHRS / CAP) |
+| WC.LOAD.EXTRA | EXTRA | String | Extra/UDF field |
+
+PK: WC + DATE (composite key — one record per work center per date).
+
+### WCTRSLOD.H — Second WC Load Handle
+
+`WCTRSLOD.H` is a second file handle on the WCTRLOAD table (separate from the primary WC.LOAD.H).
+Used for scheduled-load lookups in a different seek direction or for concurrent access during scheduling
+recalculation. Pattern: dual-handle access on the same table (also seen in BKARINV/BKARINVH dual-handle
+pattern in SO module).
+
+### VSCHED Architecture Summary
+
+| Component | Role |
+|---|---|
+| T7VSCHED.RWN | TAS Pro 7 front-end (94 procs, EVO.LIB, 22 DB tables) |
+| WorkCenterLoad.jar | Java back-end scheduling engine (Gantt chart rendering) |
+| HOST/PORT/NAME | TCP connection params (T7VSCHED → Java via TCP socket) |
+| TMP_FILE_NAME | Temp file for TAS7↔Java data exchange |
+| WCTRLOAD | Primary load table (WC + DATE PK; 8 fields) |
+| WOROUT | Work order routing (operations being scheduled) |
+| BKARINV/L | SO context (schedule-to-ship visibility) |
+
+**How VSCHED works:**
+1. T7VSCHED loads WC capacity data from WCTRLOAD via WC.LOAD.* namespace
+2. Reads WOROUT operations for all open WOs
+3. Sends data to Java WorkCenterLoad.jar via TCP (HOST/PORT/NAME)
+4. Java renders Gantt chart in EvoPVT.jar UI
+5. Schedule changes write back to WCTRLOAD (TOTHRS/LOAD recalculated)
+
+**Confidence: 90/100** — T7VSCHED fully var-extracted (Pass 237); WC.LOAD.* 8-var matches
+WCTRLOAD DDF exactly; WCTRSLOD.H second handle confirmed from named_vars; architecture
+description inferred from var names and Java integration pattern (same HOST/PORT/NAME pattern
+as other Java bridges).
