@@ -7907,6 +7907,120 @@ Full list: `docs/03-modules/ys-system-params.md`
 
 ---
 
+## CH — Multi-Location Chain (Pass 234)
+
+**Module purpose:** Executes EvoERP programs in the context of a *different* company than the currently logged-in company. Allows cross-company operations (e.g., view AR for Company B while logged into Company A) without re-logging in. The most sophisticated inter-module coupling mechanism in EvoERP.
+
+### Programs
+
+| Program | Procs | Source | DB | Operation |
+|---|---|---|---|---|
+| T7Chain | 62 | EVO.LIB | 8 | CH dispatcher — selects chain record, validates user, dispatches to child company |
+| T7CHAINM | 40 | EVO.LIB | 7 | Chain master maintenance — edits ISCHAINM templates |
+
+### IS.CHAIN.* namespace (8 vars — both programs)
+
+| Var | Field | Meaning |
+|-----|-------|---------|
+| IS.CHAIN.USER | USER | Authorized user for this chain |
+| IS.CHAIN.PARENT | PARENT | Source company code |
+| IS.CHAIN.CHILD | CHILD | Target (child) company code |
+| IS.CHAIN.PARAM | PARAM | Current parameter value (view into PARAM_1..10 array) |
+| IS.CHAIN.AUTO | AUTO | Auto-execute flag |
+| IS.CHAIN.DATE | DATE | Chain creation/modification date |
+| IS.CHAIN.DESC | DESC | Chain description |
+| IS.CHAIN.EXTRA | EXTRA | Extra/UDF field |
+
+### BKPS.USER.* namespace (11 vars — T7Chain)
+
+CODE/PRT/MENU/CMPY/MWIND/PSWD/ME/SEC/MCNTR/LDATE/EMP — full user permission record checked at dispatch time to confirm the logged-in user is authorized to execute this chain.
+
+### DICT_* namespace (17 vars — T7CHAINM)
+
+DICT_HNDL + DICT_BUFF_NAME/FIELD_NAME/OFFSET/TYPE/SIZE/DEC/ARRAY_ELE/UPCASE/DESC/PICTURE/LCD/HOFFSET/HTYPE/HSIZE/HDEC/HARRAY — T7CHAINM uses FILEDICT to type-check chain parameters. Each of the 10 PARAM_1..10 slots can carry a different data type; FILEDICT provides the field descriptor so the chain master editor can display the correct input format.
+
+### Key tables
+
+| Table | Purpose |
+|---|---|
+| ISCHAINM | Chain master — USER+PARENT+CHILD PK; PARAM_1..10; AUTO/DATE/DESC/EXTRA |
+| FILEDICT | Field type registry — used by T7CHAINM to type-check PARAM slots |
+| BKSYMSTR | Company configuration — loaded by T7Chain at dispatch time |
+| BKPSUSER | User permissions — auth gate in T7Chain |
+
+**Confidence: 91/100** — Both programs fully var-extracted (Pass 234); IS.CHAIN.* 8-var, DICT_* 17-var, and BKPS.USER.* 11-var confirmed; workflow inferred from var names and table access pattern.
+
+---
+
+## IC — Copy Production to Estimate (T7IC2EST) — Pass 234
+
+**Operation:** IC-A "Copy Production to Estimate Inventory" — one-way bridge that copies BKICMSTR (production inventory master) to MTICMSTR (estimating inventory master). Allows ES module to see current production costs/quantities.
+
+### Handles
+
+| Handle | Table | Direction |
+|--------|-------|-----------|
+| ICMSTR.H | BKICMSTR | Read (production source) |
+| ICEST.H | ISICMSTR | Read (estimating alt-index) |
+| MICMSTR.H | MTICMSTR | Write (estimating primary) |
+| MICEST.H | ISICEST | Write (estimating alt-index dest) |
+
+### Control variables
+
+| Var | Meaning |
+|-----|---------|
+| TNOR | Copy to normal cost tier flag |
+| TPR | Copy to prime cost tier flag |
+
+**Confidence: 90/100** — Single-program module (6 procs, 2 DB) fully analyzed; all 4 handles and TNOR/TPR confirmed; BKIC.PROD.* 52-var shown; gap is ISICEST field names (buffer copy).
+
+---
+
+## SU — Setup / UI Configuration — Grid and Drill-Down Admin (Pass 234)
+
+**Module purpose:** Maintains lookup grid definitions (BKLUGRID), drill-down menu links (ISDRILLM), and grid copies (T7gdm). SU-A=Grid Lookups, SU-B=Drill Down Menus, SU-C=Forms Editor, SU-D=Grid Maintenance.
+
+### Programs
+
+| Program | Procs | Source | DB | Operation |
+|---|---|---|---|---|
+| WBKLUGRID | 68 | ISTECH.LIB | 75 | SU-A — edits BKLUGRID; registers 69 EvoERP tables as lookup sources |
+| EvoERPDrillM | 31 | ISTECH.LIB | 10 | SU-B — edits ISDRILLM parent→child drill-down links |
+| T7gdm | 31 | NZLICE.LIB | 7 | SU-D — copies BKLUGRID+ISDRILLM records between configurations |
+
+### LUGRID_* namespace (13 vars)
+
+NAME/DATA/FDNAME/KDATA/END/FORM/PROT/DELFLAG/TEXT/KEYFLD/EXTRA/EXTUDF/EXTPARM — lookup grid configuration record.
+
+### DRILLM.* namespace (9 vars)
+
+PARENT/CHILD/MENU/FILE/SFIELD/TFIELD/KEY/PFILE/EXTAR — drill-down link record. SFIELD=source key field, TFIELD=target key field that the child program opens on.
+
+### Column/key definition vars (WBKLUGRID)
+
+- **FD_* (8 vars):** COLHEADER/FIELDNAME/TOT/SSSFD/FUNC/TYPE/SIZE/EDIT — per-column field definitions
+- **KD_* (3 vars):** COLHEADER/KEYNAME/FIELDNAME — key column definitions
+- **KEYFLD1-3:** Compound key support (up to 3-part lookup key)
+- **EXTPARAM1-4:** Extended lookup behavior parameters
+
+### T7gdm copy modes and record IDs
+
+| Var | Meaning |
+|-----|---------|
+| SKIP / REPLACE / OVERWRITE | Three copy modes for grid/drilldown records |
+| GNAME/GDATE/GBUFF | Grid record identifiers |
+| DPNAME/DCNAME/DDATE/DBUFF | Drill-down record identifiers |
+| ISTECHLUG.H / LUG.H | Dual BKLUGRID handles |
+| ISTECHDM.H / DM.H | Dual ISDRILLM handles |
+
+### FILELOC accessor (LOC_* 6 vars — WBKLUGRID + EvoERPDrillM)
+
+LOC_BUFF_NAME/LOC_FILE_NAME/LOC_COMP_CODE/LOC_REC_SIZE/LOC_REC_TYPE/LOC_LOCATION — enumerates the 69 registered EvoERP tables available as lookup sources in WBKLUGRID.
+
+**Confidence: 91/100** — All 3 programs fully var-extracted (Pass 234); LUGRID_* 13-var, DRILLM.* 9-var, T7gdm src=NZLICE.LIB, dual handle pattern all confirmed; workflow inferred.
+
+---
+
 ## PO — Purchase Orders (full program map)
 
 **Module purpose:** Creates and tracks purchase orders from creation through receipt to AP voucher. The largest ERP module by program count (50+ programs). Five-level vendor price breaks; QC inspection on receipt; DC-integrated labor on receipt; digital signature approval; EDI 850/855/860 support.
