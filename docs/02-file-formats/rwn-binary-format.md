@@ -214,16 +214,27 @@ Top opcodes by frequency across 3,204,306 instructions in 1,119 .dec files:
 ### Branch Target Encoding (OPEN QUESTION)
 
 For branch-family opcodes (sub=0x14: 0x3B COND_BRANCH, 0x6A GOTO_LABEL, 0xD2 GOTO, etc.),
-the pool_offset field does NOT appear to reference the pool as a byte offset.
+the poff field encoding varies by opcode.
 
-**What is known:**
-- 0x6A GOTO_LABEL: pool_offset IS a pool byte offset → points to a pool string entry (the label name). Runtime resolves label name → instruction address.
-- 0x3B COND_BRANCH: pool_offset is NOT a valid pool byte offset (confirmed: for EVOMENU_SELCOMP instruction [1], poff=19 falls mid-string in a known pool entry). The encoding is unknown.
-- 0x42 GOSUB: pool_offset appears to be a direct integer (procedure call address or index). In T7PASS, GOSUB poff=200.
+**What is known (Pass 241, 2026-06-24):**
+- 0x6A GOTO_LABEL: poff IS a pool byte offset → points to a STRING pool entry (label name). Runtime resolves label name → instruction address.
+- 0x49 READ_PROP: poff IS a pool byte offset → points to a STRING pool entry (property name). Confirmed: EVOMENU_SELCOMP [0] poff=0 → STRING "NOVAZYGANDISTECHSUPPORT". ✓
+- 0x20 CREATE/BIND (form creation, poff=0): poff IS a pool byte offset → points to a STRING pool entry (DFM filename). Confirmed: T7COLORS [0] poff=0 → STRING "T7COLORS.DFM". ✓
+- 0x3B COND_BRANCH: poff is NOT a pool byte offset in the same sense. Confirmed: for EVOMENU_SELCOMP [1] poff=19, pool[19]='H' (byte 15 of "NOVAZYGANDISTECHSUPPORT"), NOT at an entry boundary. For 8 similar DC programs (T7DEBE etc.) with 15 instructions and COND_BRANCH at instruction [14], poffs are 206, 503, 537, 719 — completely different values for programs with the same instruction count.
+- 0x20 CREATE/BIND (event handler bindings, poff > 0): poffs 9, 18, 27, 36... in T7COLORS and EvoDCmenu don't land at pool entry boundaries either. These may use poff as an event handler ID or method index, NOT as a pool byte offset.
 
-**Hypothesis (unconfirmed)**: COND_BRANCH and GOTO use poff as a BYTE OFFSET within the dispatch table (absolute from dispatch start), but this gives non-8-aligned values (e.g. poff=19 for a program with 8-byte instructions) — which should be impossible unless there is a separate branch resolution mechanism.
+**Ruled out:**
+- poff as instruction index (0x3B poff=291 for EVOMENU_SELCOMP instruction [13] → #291, out of range for 44 instructions)
+- poff as byte offset from dispatch start (non-8-aligned)
+- poff as instruction index packed in low byte (poff=388, low byte=0x84=132, invalid)
 
-**Open**: branch target encoding for 0x3B / 0xD2 is not understood. See `research/OPEN_QUESTIONS.md`.
+**Refined hypothesis**: The pool has at minimum two opcode-specific access patterns:
+1. STRING-referencing opcodes (READ_PROP, GOTO_LABEL, CREATE/BIND form creation): poff = pool byte offset to `41 00 LL 00 [data]` STRING entry
+2. Expression/branch opcodes (COND_BRANCH, ASSIGN, GOSUB, CREATE/BIND bindings): poff is either (a) a pool byte offset to a compound blob whose structure we haven't decoded, or (b) a non-pool value (handler ID, computed address, or dispatch-relative reference)
+
+**Instruction counting caveat**: Pool entries can start with `41 00` (STRING type + reserved byte = 0x00), which satisfies the naive b1=0x00 instruction check. Real instruction count = naive count minus any trailing 0x41/0x46/0x43/0x4E/0x52 "instructions". This was confirmed across EVOMENU_SELCOMP, T7PASS, T7COLORS, and EvoDCmenu.
+
+**Open**: The compound blob structure inside COND_BRANCH poffs needs tp7runtime.exe disassembly to decode. See `research/OPEN_QUESTIONS.md`.
 
 ---
 
@@ -238,10 +249,11 @@ the pool_offset field does NOT appear to reference the pool as a byte offset.
   [n]  0x57 b2=FE poff=0           # Execute main form (ShowModal); b2=FE = main form
   [n+1] 0x40 poff=exit_code        # Program exit
   ```
-- **poff interpretation by opcode family:**
-  - Data opcodes (0x0F ASSIGN, 0x42 GOSUB, 0x9A READFILE, 0x49 READ_PROP): poff IS a pool byte offset → typed entry
-  - Branch opcodes (0x3B, 0xD2): poff encoding unknown (NOT a simple pool offset)
-  - Label opcodes (0x6A): poff IS a pool byte offset → points to a string (label name)
+- **poff interpretation by opcode family (updated Pass 241):**
+  - Read opcodes (0x49 READ_PROP): poff IS a pool byte offset → STRING entry (property name) ✓ confirmed
+  - Label/form opcodes (0x6A GOTO_LABEL, 0x20 CREATE/BIND form): poff IS a pool byte offset → STRING entry (label name / DFM filename) ✓ confirmed
+  - Branch opcodes (0x3B COND_BRANCH, 0xD2 GOTO): poff is NOT a pool byte offset to an entry boundary — may be compound blob data offset or non-pool reference
+  - Event bind opcodes (0x20 CREATE/BIND bindings, 0x0F ASSIGN, 0x42 GOSUB): poff encoding unclear; values don't land at pool entry boundaries under the current entry size model
   - Exit opcodes (0x40, 0x71): poff may be a direct value (exit code)
 
 ---
