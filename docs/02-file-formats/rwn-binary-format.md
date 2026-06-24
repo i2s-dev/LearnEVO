@@ -1,7 +1,7 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, pool decoded, 30+ opcodes identified, sub-code families mapped, b2=0x00 confirmed at scale C:70/100
-Last updated: 2026-06-23
+Status: partial — header confirmed, symbol tables confirmed, pool decoded, 30+ opcodes identified, sub-code families mapped, b2=0x00 confirmed at scale, sub=fixed-per-opcode confirmed at 729-instr scale C:73/100
+Last updated: 2026-06-24
 
 ---
 
@@ -228,13 +228,33 @@ the poff field encoding varies by opcode.
 - poff as byte offset from dispatch start (non-8-aligned)
 - poff as instruction index packed in low byte (poff=388, low byte=0x84=132, invalid)
 
-**Refined hypothesis**: The pool has at minimum two opcode-specific access patterns:
-1. STRING-referencing opcodes (READ_PROP, GOTO_LABEL, CREATE/BIND form creation): poff = pool byte offset to `41 00 LL 00 [data]` STRING entry
-2. Expression/branch opcodes (COND_BRANCH, ASSIGN, GOSUB, CREATE/BIND bindings): poff is either (a) a pool byte offset to a compound blob whose structure we haven't decoded, or (b) a non-pool value (handler ID, computed address, or dispatch-relative reference)
+**Refined hypothesis (Pass 242, 2026-06-24 — suwin6t.rwn deep analysis)**:
 
-**Instruction counting caveat**: Pool entries can start with `41 00` (STRING type + reserved byte = 0x00), which satisfies the naive b1=0x00 instruction check. Real instruction count = naive count minus any trailing 0x41/0x46/0x43/0x4E/0x52 "instructions". This was confirmed across EVOMENU_SELCOMP, T7PASS, T7COLORS, and EvoDCmenu.
+Each opcode type uses poff to point to a SPECIFIC BYTE WITHIN a pool entry, not uniformly to the entry start:
+- 0x49 READ_PROP: poff → type byte (0x41) = entry start (header+0)
+- 0x20 CREATE/BIND form creation: poff → type byte (0x41) = entry start (header+0)  
+- 0x20 CREATE/BIND event bindings: poff → content start = header+4 (e.g., suwin6t [68] poff=1074 → pool[1074]='F')
+- 0x6A GOTO_LABEL: poff → reserved byte (header+1) for "F" entry; poff → content start (header+4) for "*.*" entry — inconsistent, may indicate poff semantics differ even within GOTO_LABEL by sub-variant
+- 0x0F ASSIGN, 0x42 GOSUB, 0x3B COND_BRANCH: poff → into compound blob body (not a STRING entry boundary)
 
-**Open**: The compound blob structure inside COND_BRANCH poffs needs tp7runtime.exe disassembly to decode. See `research/OPEN_QUESTIONS.md`.
+**Evidence from suwin6t.rwn (95,262 bytes, 729 instructions)**:
+- GOTO_LABEL [57] poff=901: STRING "F" header at pool[900], poff=901 = header+1
+- GOTO_LABEL [66] poff=1041: STRING "*.*" header at pool[1037], poff=1041 = header+4 (content start)
+- CREATE/BIND [68] poff=1074: STRING "F" header at pool[1070], poff=1074 = header+4 (content start)
+- ASSIGN [0] poff=0: STRING "NZISSHOULDLOCKTHESCREENCOMPLETELY" header at pool[0], but poff=0 = header+0
+
+**Pool readable strings in suwin6t** (screen-lock / session auth purpose confirmed):
+- pool[0]: "NZISSHOULDLOCKTHESCREENCOMPLETELY" — lock flag variable
+- pool[61]: "SUWIN6" — program name
+- pool[865]: "WHOAMI.*" — reads all WHOAMI table fields
+- pool[957]: "WHOAMI.DBA" — specific WHOAMI field
+- pool[972]: "EVOSERVICE" (space-padded to 35 chars) — service name comparison
+- pool[1041]: "*.*" — wildcard pattern
+- pool[904]: "F" — boolean false constant (1-byte string)
+
+**Instruction counting caveat**: Pool entries can start with `41 00` (STRING type + reserved byte = 0x00), which satisfies the naive b1=0x00 instruction check. Real instruction count = naive count minus any trailing 0x41/0x46/0x43/0x4E/0x52 "instructions". Confirmed across EVOMENU_SELCOMP, T7PASS, T7COLORS, EvoDCmenu, and suwin6t.
+
+**Open**: Exact per-opcode poff delta (header+0 vs header+1 vs header+4) needs tp7runtime.exe disassembly to resolve definitively. See `research/OPEN_QUESTIONS.md`.
 
 ---
 
@@ -249,11 +269,13 @@ the poff field encoding varies by opcode.
   [n]  0x57 b2=FE poff=0           # Execute main form (ShowModal); b2=FE = main form
   [n+1] 0x40 poff=exit_code        # Program exit
   ```
-- **poff interpretation by opcode family (updated Pass 241):**
-  - Read opcodes (0x49 READ_PROP): poff IS a pool byte offset → STRING entry (property name) ✓ confirmed
-  - Label/form opcodes (0x6A GOTO_LABEL, 0x20 CREATE/BIND form): poff IS a pool byte offset → STRING entry (label name / DFM filename) ✓ confirmed
-  - Branch opcodes (0x3B COND_BRANCH, 0xD2 GOTO): poff is NOT a pool byte offset to an entry boundary — may be compound blob data offset or non-pool reference
-  - Event bind opcodes (0x20 CREATE/BIND bindings, 0x0F ASSIGN, 0x42 GOSUB): poff encoding unclear; values don't land at pool entry boundaries under the current entry size model
+- **poff interpretation by opcode family (updated Pass 242):**
+  - Read opcodes (0x49 READ_PROP): poff → pool entry start (header+0, type byte = 0x41) ✓ confirmed
+  - Form creation (0x20 CREATE/BIND [0]): poff → pool entry start (header+0) ✓ confirmed
+  - Label opcodes (0x6A GOTO_LABEL): poff → somewhere within STRING entry (header+1 to header+4); opcode-specific delta TBD
+  - Event bind (0x20 CREATE/BIND bindings): poff → content start (header+4) of STRING entry
+  - Branch opcodes (0x3B COND_BRANCH, 0xD2 GOTO): poff points into compound blob body; NOT at STRING entry boundary
+  - Assign/call opcodes (0x0F ASSIGN, 0x42 GOSUB): poff points into compound blob body
   - Exit opcodes (0x40, 0x71): poff may be a direct value (exit code)
 
 ---

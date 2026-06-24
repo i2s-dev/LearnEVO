@@ -257,9 +257,11 @@ to resolve fully:
     - **0x6A = GOTO_LABEL**: uses pool STRING as label name (runtime label resolution). EVOMENU_SELCOMP: GOTO_LABEL("Items").
     - **0x4B = OPEN_FORM** (distinct from 0x20 CREATE/BIND) — EvoERPbackup uses 0x4B with DFM filename. Difference (open-existing vs create-new?) TBD.
     - **ISTS enhancement marker**: i2 Systems custom programs start with `ASSIGN(" - ISTS Enhancement MM/DD/YY")` at instruction [0] (EVODEFPRINT confirmed 06/15/17).
-    - **Branch target encoding STILL UNKNOWN**: for 0x3B COND_BRANCH and 0xD2 GOTO, the pool_offset field is NOT a pool byte offset (confirmed: poff=19 for EVOMENU_SELCOMP [1] falls inside string "NOVAZYGANDISTECHSUPPORT"). Could be: (a) byte offset in dispatch table, (b) instruction index, (c) pool offset to an undocumented integer type. OPEN — needs more analysis.
+    - **Branch target encoding STILL UNKNOWN**: for 0x3B COND_BRANCH and 0xD2 GOTO, poff points into compound blob body (not at a STRING entry boundary). Pass 241 ruled out: instruction index, dispatch byte offset, packed low byte. Pass 242 confirmed: for GOTO_LABEL and CREATE/BIND, poff is an opcode-specific offset INTO a pool STRING entry (header+0, header+1, or header+4 depending on opcode). COND_BRANCH/GOTO poff points to compound blob body — needs tp7runtime.exe disassembly.
+    - **Per-opcode poff delta (Pass 242 new finding)**: READ_PROP poff → header+0; CREATE/BIND form poff → header+0; GOTO_LABEL poff → header+1 OR header+4 (inconsistent across samples); CREATE/BIND bindings poff → header+4; ASSIGN/GOSUB/COND_BRANCH poff → compound blob body. Resolving the inconsistency requires tp7runtime.exe disassembly.
+    - **New opcodes from suwin6t.rwn (Pass 242)**: OP_1A (sub=0x21, 11×), OP_31 (sub=0x10, 11×), OP_D9 (sub=0x07, 1×), OP_B9 (1×), OP_89 (1×), OP_8A (1×), OP_0C (1×), OP_45 (1×). OP_1A and OP_31 are significant (11× each in a 729-instruction program).
     - **Pool type 0x53 identified**: appears to be a second string type (same format as 0x41 but different type byte). Need more samples.
-    - Current status: **C: 70/100**. Remaining unknowns: branch target encoding; pool types 0x53/0x48/0x0C/etc.; 0x20 BIND HANDLER argument encoding; CALL family sub-semantics.
+    - Current status: **C: 73/100**. Remaining unknowns: branch target encoding (requires tp7runtime disassembly); per-opcode poff delta; pool types 0x53/0x48/0x0C/etc.; semantics of OP_1A/OP_31; CALL family sub-semantics.
 
 17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
     - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has

@@ -62,8 +62,14 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `StartEvo.exe` role: checks runtime, reads `taspro7.ini`, spawns tp7runtime.exe — **C: 60/100**
   - Gap: exact command-line arguments passed to tp7runtime.exe not confirmed
 - [x] ✅ `taspro7.ini` keys documented: `DataDictPath`, `DfltRunPrg`, `MultiUser`, `DefaultPath`, `Titlebar`, `HelpFileName` — **C: 80/100**
-- [x] ✅ Bootstrap RWNs identified: `suwin6.dcy`, `suwin7.dcy`, `suwin6t.rwn`, `suwin7t.rwn` — **C: 55/100**
-  - Gap: what these actually do before EvoERPmenu.rwn loads is not confirmed
+- [x] ✅ Bootstrap RWNs identified: `suwin6.dcy`, `suwin7.dcy`, `suwin6t.rwn`, `suwin7t.rwn` — **C: 72/100**
+  - **suwin6t.rwn confirmed** (Pass 242 2026-06-24): 95,262 bytes, 729 instructions, pool at 0x1D90
+  - **Purpose = screen-lock / session authentication**: pool strings confirm: "NZISSHOULDLOCKTHESCREENCOMPLETELY" (lock flag), "SUWIN6" (program name), "WHOAMI.*" (reads identity table), "WHOAMI.DBA" (specific field), "EVOSERVICE" (service name comparison), "*.*" (wildcard), "F" (boolean false constant)
+  - Dominant opcodes: ASSIGN(0x0F)=544 (74.6%), GOSUB(0x42)=61 (8.4%), COND_BRANCH(0x3B)=52 (7.1%), CREATE/BIND(0x20)=12, EXEC_FORM(0x57)=4
+  - New opcodes seen: OP_1A(×11,sub=0x21), OP_31(×11,sub=0x10), OP_D9(×1,sub=0x07), OP_B9(×1), OP_89(×1), OP_8A(×1), OP_0C(×1), OP_45(×1)
+  - Sub field confirmed constant per opcode at 729-instruction scale: ASSIGN=0x0A, COND_BRANCH=0x14, GOSUB=0x04, EXEC_FORM/CREATE_BIND=0x05, GOTO/GOTO_LABEL=0x14, EXIT=0x36, READ_PROP=0x0F, CALL_LIB=0x09
+  - Pool structure: compound expression records (variable refs, expr trees) interleaved with STRING entries; poff for ASSIGN/GOSUB/COND_BRANCH points into compound record body, NOT to STRING header start
+  - Gap: suwin6.dcy / suwin7.dcy logic still opaque (require TAS7 disassembler); suwin7.rwn still blocked (unknown 5th key)
 - [x] ✅ Per-workstation state files cataloged: `taspro7.ini`, `EvoSettings.INI`, `WHOAMI.DBA`, `CHMHELP.EVO`, `RBuilder.ini`, `DFM/`, `PDFS/` — **C: 68/100**
 - [x] ✅ `EvoSettings.INI` fully decoded (2026-06-17) — **C: 88/100**
   - Sections: [Users] global prefs, [User:NAME] per-user, [EMAIL CO# X User:Y] email SMTP+templates, per-module [ARA]/[SOA] etc., [HOT BUTTONS] × 6
@@ -158,19 +164,21 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Must be run against local copies in `samples/` (not directly against network share)
   - 1122 entries in rwn_symbols.json from 1145 successfully decrypted RWNs; script verified working
   - Gap closed: suwin7.rwn is the sole failure (unknown 5th key) — a blocked-file issue, not a script defect
-- [x] 🔄 Bytecode instruction set — **C: 70/100** (30+ opcodes; sub-code families mapped at 3.2M instruction scale; disassembler working; 2026-06-23 Pass 229)
+- [x] 🔄 Bytecode instruction set — **C: 73/100** (30+ opcodes; sub-code families mapped at 3.2M instruction scale + suwin6t 729-instr deep-dive; disassembler working; Pass 229/242)
   - Dispatch table = program instructions: `[op][b1][b2][sub] + [pool_offset_LE4]` (8 bytes each, uniform)
     - **b1 and b2 are UNIVERSALLY 0x00** — confirmed across 3,204,306 instructions in 1,119 programs (3.2M scale)
     - **Single exception: 0x57 EXECUTE_FORM has b2=0xFE** for main/top-level form; b2=0x00 for sub-forms
   - DISP_START = 0x6C0 is a confirmed UNIVERSAL constant (program-relative) — holds for all 1,119 programs
   - **In .dec files** (rwn_decrypt.py output): 8-byte validation prefix is prepended → file_offset(dispatch) = 0x6C8
   - Pool immediately follows dispatch; typed values: 0x41=string, 0x46=var_ref, 0x43=pool_ptr, 0x4E=int, 0x52=real
-  - Compound blobs: 0x41 entries starting with 0xFD contain sub-typed argument fields, end with 0xFF
-  - **Sub-code byte groups opcodes into 15+ functional families** (confirmed at scale):
+  - **Pool compound records** (Pass 242): 0x41 entries starting with 0xFD = compound expression records (variable refs, expr trees, NOT simple strings); end with 0xFF 00 sentinel. Interleaved with plain STRING entries. poff for ASSIGN/GOSUB/COND_BRANCH points into compound record body — NOT to a STRING header start.
+  - **Sub-code byte = fixed constant per opcode** — confirmed at 729-instruction scale (suwin6t.rwn Pass 242):
     - sub=0x0A = ASSIGN family (0x0F, 0x8A, 0x37, 0x56); sub=0x04 = CALL family (0x42, 0x45, 0x16, 0x15)
     - sub=0x14 = BRANCH family (0x3B, 0x6A, 0xD2, 0x19, 0x93); sub=0x05 = FORM family (0x20, 0x57, 0xD1, 0x29)
     - sub=0x19 = VAR MGMT family (0x48 PUSH, 0xDC POP — perfectly paired 16K/16K in same 948 files)
     - sub=0x0F = READ family (0x49, 0x0C); sub=0x06 = FIELD I/O (0x06, 0x08); sub=0x10 = STATUS (0x31, 0x11)
+    - sub=0x21 = **OP_1A** (unknown; 11× in suwin6t); sub=0x07 = **OP_D9** (unknown; 1×)
+    - sub=0x09 = OP_4A/CALL_LIB; sub=0x36 = EXIT(0x40)
   - **CONFIRMED 0x20 = CREATE FORM / BIND HANDLER**: loads DFM by pool string (T7PASS [0]: CREATE/BIND("T7PASS.DFM"))
   - **CONFIRMED 0x57 = EXECUTE FORM** (ShowModal): universal in 1,119/1,119 programs
   - **CONFIRMED 0x49 = READ_PROP**: reads named system property via pool string (EVOMENU_SELCOMP reads "NOVAZYGANDISTECHSUPPORT" — tech-support mode bypass flag in company selector)
@@ -178,7 +186,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - **CONFIRMED 0x0F = ASSIGN**, 0x42 = GOSUB, 0x3B = COND_BRANCH, 0x40/0x71 = EXIT
   - **0x4B = OPEN_FORM**: appears in some programs in place of 0x20 CREATE — open vs. create distinction TBD
   - **ISTS customization marker**: i2 Systems–modified programs start with ASSIGN(" - ISTS Enhancement MM/DD/YY") at [0]
-  - Branch target encoding for 0x3B/0xD2 is still unclear (poff is NOT a simple pool byte offset)
+  - Branch target encoding for 0x3B/0xD2 is still unclear (poff is NOT a simple pool byte offset — points into compound record body)
   - 30+ distinct opcodes documented in `docs/02-file-formats/rwn-binary-format.md`
   - `.dec` files in `samples/rwn_decrypted/` regenerated 2026-06-19 (1145/1146 OK); working disassembler in /tmp
 
