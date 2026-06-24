@@ -268,10 +268,11 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Data pipeline binding: TAS sets up "TASFile" pipeline; fields bound by name (e.g., BKAP_CHK_INVNUM) — **C: 75/100**
 - [x] ✅ TAS keywords for reporting: EXEC_RB, RTM_FN, REPORTNAME, USE_PRINTER, PRINT_TO_FILE — **C: 80/100**
 - [x] ✅ `.btm` confirmed as backup/snapshot of `.RTM` in same format — **C: 72/100**
-- [x] ✅ 899+ RTM files inventoried; 60 `.btm` files cataloged — **C: 88/100**
+- [x] ✅ **1305** RTM files on DBAMFG$ (corrected from 899): T6*=736, Other=380, BK*=150, J7*=20, T7*=19 — **C: 90/100**
+- [x] ✅ FILELOC (central path registry, Btrieve-only, 831/1122 programs) + RTMVLD_* library (327 programs); ISRTMS (29f DDF, per-CUST/VEND/ITEM label routing, 7 label types + 10 printers) — **C: 82/100**
 - [ ] ⬜ Complete TPF0 property table (every TppComponent property type + offset)
-- [ ] ⬜ Full RTM ↔ module cross-reference (which report is called from which SRC function)
-- [ ] ⬜ All 899 RTM files parsed for data-field bindings
+- [ ] ⬜ Full RTM ↔ module cross-reference (FILELOC config-name→RTM mapping requires live FILELOC.B data)
+- [ ] ⬜ All 1305 RTM files parsed for data-field bindings
 
 ### 2.7 `.B` / Btrieve Data Files
 - [x] ✅ Format: Pervasive/Btrieve B-tree paged file; FC magic header — **C: 72/100**
@@ -823,11 +824,11 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] ✅ Engine identified: Nevrona ReportBuilder (stand-alone: `RBDsgnr.exe`) — **C: 88/100**
 - [x] ✅ TPF0 binary format documented (magic, component tree, key classes) — **C: 80/100**
 - [x] ✅ TAS-to-report data pipeline: SETUP_REPORT_BUFF → OUTPUT_REPORT_DATA → EXEC_RB — **C: 72/100**
-- [x] ✅ 899+ RTM files inventoried — **C: 85/100**
-- [x] ✅ `rtm_callers.csv` cross-reference generated — **C: 70/100**
+- [x] ✅ **1305** RTM files inventoried (DBAMFG$); T6*=736/57%, BK*=150, T7*=19 — **C: 90/100**
+- [x] ✅ `rtm_callers.csv` cross-reference: 403 static .RUN callers; FILELOC+RTMVLD_ library=runtime selection (827 progs); ISRTMS=label routing (29f DDF) — **C: 82/100**
 - [x] ✅ PDF output path: `C:\ISTS\PDFS\` — **C: 75/100**
-- [ ] ⬜ All 899 RTM files parsed to extract data-field bindings
-- [ ] ⬜ RTM ↔ module call mapping complete (which SRC function calls which RTM)
+- [ ] ⬜ All 1305 RTM files parsed to extract data-field bindings
+- [ ] ⬜ RTM ↔ module call mapping complete (requires reading live FILELOC.B data for config-name→RTM mapping)
 - [ ] ⬜ Report parameter passing fully documented (how TAS passes filters/date ranges to RTM)
 - [ ] ⬜ Print-to-file vs. print-to-screen vs. print-to-printer mode switching documented
 - [ ] ⬜ Email/PDF archiving workflow traced
@@ -1125,10 +1126,10 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 ## 18. PER-REPORT DOCUMENTATION
 
-- [x] ✅ 899+ RTM files inventoried — **C: 85/100**
-- [x] ✅ `rtm_callers.csv` cross-reference generated — **C: 70/100**
-- [ ] ⬜ All 899 RTM files parsed for: data pipeline fields, sub-report structure, label texts
-- [ ] ⬜ Each report mapped to: calling SRC function + module + menu code
+- [x] ✅ **1305** RTM files inventoried (corrected from 899); FILELOC+RTMVLD_+ISRTMS architecture documented — **C: 87/100**
+- [x] ✅ `rtm_callers.csv` cross-reference: 403 static callers; runtime selection via FILELOC explained — **C: 82/100**
+- [ ] ⬜ All 1305 RTM files parsed for: data pipeline fields, sub-report structure, label texts
+- [ ] ⬜ Each report mapped to: calling SRC function + module + menu code (FILELOC live data needed)
 - [ ] ⬜ Report parameter documentation (what filters/date ranges each report accepts)
 
 ---

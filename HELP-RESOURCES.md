@@ -9308,18 +9308,24 @@ IC-side tax accumulation record (BKIS_ prefix = Btrieve/IS era). Parallel to BKI
 ### ISRTMS (29f) — RTM Template Selector
 
 **PK:** IS_RTM_CUST(10) + IS_RTM_VEND(10) + IS_RTM_ITEM(15)
+**DDF confirmed.** Managed by: T7ARA, J7CCSOLABELS, J7NMITEMRTM, J7NMRTMPRINTER.
 
 Maps customer/vendor/item combinations to specific RTM (ReportBuilder) report templates:
-- RTM(12) — template file name (FK → .RTM file on network share)
-- PROGRAM(15) — program code that uses this template
-- DFLT(1) — default template flag
-- DATE — assignment date
-- FLAG(1) — active/inactive
-- PARTLBL/SHIPLBL/CONTLBL/MIXEDLBL/QUICKLBL/MISCLBL1..3 (12 each) — label template assignments per label type
-- QTY(2) — default label quantity
-- PRINTER_1..N (90 each) — printer assignments
+- `IS_RTM_RTM` (12) — template file name (FK → .RTM file on network share)
+- `IS_RTM_PROGRAM` (15) — program code that uses this template
+- `IS_RTM_DFLT` (1) — default template flag
+- `IS_RTM_DATE` (4) — assignment date
+- `IS_RTM_FLAG` (1) — active/inactive
+- `IS_RTM_PARTLBL/SHIPLBL/CONTLBL/MIXEDLBL/QUICKLBL/MISCLBL1..3` (12 each) — 7 label types
+- `IS_RTM_QTY` (2) — default label quantity
+- `IS_RTM_EXTRA` (100) — extra config
+- `IS_RTM_PRINTER_1..10` (90 each) — 10 printer config slots
 
-ISRTMS is the report template routing table — allows different customers or items to use custom-branded invoice/label templates. When T7SOA prints an invoice, it checks ISRTMS first before using the default template.
+Variable namespace: `IS.RTM.CUST/VEND/ITEM/RTM/PROGRAM/DESC/DFLT/DATE/FLAG/PARTLBL/SHIPLBL/CONTLBL/MIXEDLBL/QUICKLBL/MISCLBL1..3/QTY/PRINTER/EXTRA`
+
+ISRTMS is the report template routing table — allows different customers or items to use custom-branded invoice/label templates. When T7ARA prints an invoice, it checks ISRTMS first before using the default template.
+
+**RTM total on share:** 1305 files (DBAMFG$): T6*=736 (57%), BK*=150, T7*=19, J7*=20, Other=380. Most RTM selection is runtime-configurable via the **FILELOC** path registry (831/1122 programs) and the **RTMVLD_** library (327 programs) — not hardcoded.
 
 ---
 

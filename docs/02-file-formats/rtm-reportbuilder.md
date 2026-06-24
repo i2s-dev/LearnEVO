@@ -393,9 +393,119 @@ version embedded in the template file.
 
 ---
 
+## RTM runtime selection architecture (Pass 250, 2026-06-24)
+
+### FILELOC — Central file path registry
+
+`FILELOC` is a Btrieve-only table (not in DDF) that acts as a **runtime file path resolver**
+for the entire EvoERP system — not just RTMs. Programs do not hardcode RTM file paths; instead
+they look them up by logical name in FILELOC at runtime.
+
+Usage: **831 of 1122 RWN programs** (74%) include FILELOC in their db_files list.
+
+Key variables:
+- `FILELOC.H` — FILELOC file handle (opened by 7 programs that directly query it)
+- `FILELOC.NAMES` — enumeration of all FILELOC records (T7DEx data explorer, T7genImp)
+- `ISTS.CFG.HHFLOC` — a system parameter specifying the handheld/remote file location path;
+  appears in 698 programs (loaded from BKYSMSTR via T7MDefaults at boot)
+
+### RTMVLD_* — Standard RTM validation library
+
+All report-generating programs include a shared RTM path-validation subroutine. This library
+exposes four standard variables:
+
+| Variable | Meaning |
+|----------|---------|
+| `RTMVLD_CFGNAME` | Logical config name used to look up the RTM in FILELOC |
+| `RTMVLD_PATH` | Resolved physical path to the RTM file |
+| `RTMVLD_NAME` | RTM filename (without path) |
+| `RTMVLD_SETTINGS` | Additional RTM settings (printer, copies, etc.) |
+
+Usage: **327 of 1122 programs** use RTMVLD_*. Every RTMVLD program also uses FILELOC — the
+two always appear together. This means the RTM selection path is:
+
+```
+Program has RTMVLD_CFGNAME = "APCHECK"
+    → RTMVLD library looks up "APCHECK" in FILELOC
+    → FILELOC returns path: T:\BKAPHA1.RTM
+    → RTMVLD_PATH = "T:\", RTMVLD_NAME = "BKAPHA1.RTM"
+    → Program calls: RTM_FN (RTMVLD_PATH + RTMVLD_NAME)
+    → EXEC_RB
+```
+
+This explains why static analysis (rtm_callers.csv) captures only 403 of the 1305+ RTM files:
+most RTM selections are **runtime-configurable** through FILELOC, not hardcoded.
+
+### ISRTMS — Label routing table (DDF confirmed, 29 fields)
+
+`ISRTMS.B` maps CUST/VEND/ITEM combinations to specific label RTM files. Used by
+T7ARA (AR Invoices), J7CCSOLABELS, J7NMITEMRTM, J7NMRTMPRINTER for label printing.
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `IS_RTM_CUST` | STRING | 10 | Customer code (PK 1) |
+| `IS_RTM_VEND` | STRING | 10 | Vendor code (PK 2) |
+| `IS_RTM_ITEM` | STRING | 15 | Item code |
+| `IS_RTM_RTM` | STRING | 12 | RTM filename (8.3 format) |
+| `IS_RTM_PROGRAM` | STRING | 15 | Program that uses this config |
+| `IS_RTM_DESC` | STRING | 30 | Description |
+| `IS_RTM_DFLT` | STRING | 1 | Default flag (Y/N) |
+| `IS_RTM_DATE` | DATE | 4 | Date |
+| `IS_RTM_FLAG` | STRING | 1 | Flag |
+| `IS_RTM_PARTLBL` | STRING | 12 | Part label RTM filename |
+| `IS_RTM_SHIPLBL` | STRING | 12 | Shipping label RTM filename |
+| `IS_RTM_CONTLBL` | STRING | 12 | Container label RTM filename |
+| `IS_RTM_MIXEDLBL` | STRING | 12 | Mixed (multi-SKU) label RTM |
+| `IS_RTM_QUICKLBL` | STRING | 12 | Quick label RTM |
+| `IS_RTM_MISCLBL1..3` | STRING | 12 | Miscellaneous label RTMs 1–3 |
+| `IS_RTM_QTY` | UBINARY | 2 | Label quantity |
+| `IS_RTM_EXTRA` | STRING | 100 | Extra configuration |
+| `IS_RTM_PRINTER_1..10` | STRING | 90 | Printer config slots 1–10 |
+
+Variable namespace (from T7ARA, J7CCSOLABELS, J7NMITEMRTM, J7NMRTMPRINTER):
+`IS.RTM.CUST / VEND / ITEM / RTM / PROGRAM / DESC / DFLT / DATE / FLAG /`
+`PARTLBL / SHIPLBL / CONTLBL / MIXEDLBL / QUICKLBL / MISCLBL1..3 / QTY / PRINTER / EXTRA`
+
+### Corrected total RTM count (Pass 250)
+
+Physical count from `\\i2s109-solidcrm\DBAMFG$\*.RTM`: **1305 files** (not 899 as previously estimated).
+
+| Prefix | Count | Description |
+|--------|-------|-------------|
+| `T6*` | 736 | TAS Pro 6 era (dominant — 57% of all RTMs) |
+| Other | 380 | ENA*, customer-specific, utility RTMs |
+| `BK*` | 150 | Legacy DBA-era standard reports |
+| `J7*` | 20 | i2 Systems J7 customer customizations |
+| `T7*` | 19 | TAS Pro 7 era (very few — T7 programs reuse T6 RTMs) |
+
+**T6 module breakdown (736 T6 RTMs by 2-char module code):**
+
+| Module | RTMs | Module | RTMs | Module | RTMs |
+|--------|------|--------|------|--------|------|
+| SO | 131 | AP | 40 | BM | 18 |
+| WO | 68 | GL | 32 | SR | 16 |
+| IN | 67 | PR | 31 | SH | 15 |
+| PO | 41 | AR | 27 | RO | 13 |
+| JC | 26 | SA | 19 | AB | 12 |
+| MR | 11 | DC | 10 | QC | 10 |
+| ES | 8 | CS | 8 | CM | 8 |
+| SP | 7 | DE | 6 | CO | 5 |
+| PI | 5 | RM | 8 | and 30+ smaller | ~60 |
+
+SO (Sales Orders) has 131 T6 RTMs — by far the most report-variant-rich module.
+
+Key insight: TAS Pro 7 added **only 19 new RTMs** for the T7 era. T7* programs almost universally
+reuse T6* RTMs via the FILELOC/RTMVLD_ runtime path resolution. The 736 T6* RTMs remain the
+operative report library even for modern T7 programs.
+
+---
+
 ## Things still open
 
 - Physical location of `cfg.rtm` — `T:\cfg.rtm` is the inferred path via drive mapping; UNC path
   unknown. Would need to identify what share `T:\` maps to on a running workstation.
 - Multi-currency report parameter passing (T7MLC uses LANGDICT).
 - Full programmatic extraction of all 403 RTM field bindings (manual for 2 samples done above).
+- FILELOC schema (fields/keys) — Btrieve-only, not in DDF; needs runtime dump or hex analysis.
+- RTMVLD_ library source — embedded in EVO.LIB or a separate subroutine file.
+- Mapping of FILELOC logical config names to RTM filenames (requires reading live FILELOC.B data).
