@@ -214,7 +214,10 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - **CORRECTED (Pass 243):** pfmt/pblnk = DECLARATIVE (zero bytecode); PRT_TOF = 2 instructions confirmed
   - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640)
   - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_8D, OP_48, OP_57
-- [ ] ⬜ All readable logic extracted from `.RUN` string sections
+- [x] ✅ All readable logic extracted from `.RUN` string sections — **C: 78/100** (Pass 245: method confirmed; BKAWLB fully cataloged)
+  - String records: `41 00 LL_lo LL_hi [LL bytes]` — embedded in data channel starting at file offset 0
+  - BKAWLB.RUN: 786 string records, 432 readable — program identity, 7 sort menus, 7 browse column sets, WO/INV search dialogs, all error messages, help system wiring
+  - See `docs/02-file-formats/run-string-extraction.md`
 
 ### 2.4 `.DFM` — Delphi Form Layout
 - [x] ✅ Format confirmed: plaintext Borland Delphi VCL textual form representation — **C: 92/100**

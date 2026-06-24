@@ -48,7 +48,8 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [.DCY / .RWN — decryption findings (Twofish-CFB, IV confirmed 2026-06-15)](02-file-formats/decryption-findings.md) — *FULLY SOLVED — 1144/1145 files decrypt*
 - [DCY forms catalog — all 41 decrypted DCY files: form types, UI structure, purpose](02-file-formats/dcy-forms-catalog.md) — *verified, 2026-06-17*
 - [TAS Pro 7 UI controls catalog — all 51 control types, frequencies, purpose (from 1,136 DFMs)](02-file-formats/tas-pro-7-controls.md) — *verified, 2026-06-17*
-- [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — file structure + key opcodes*
+- [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — dual-channel architecture confirmed, b2=data_size proven, C:78*
+- [.RUN string extraction — method + BKAWLB full string catalog](02-file-formats/run-string-extraction.md) — *verified, 2026-06-24*
 - [.B / .mdx — Btrieve/Pervasive PSQL data file format (DDF system, page structure, type codes, company routing)](02-file-formats/btrieve-b-format.md) — *partial, 2026-06-18*
 - [TAS Pro 7 data infrastructure modules (wtasdmgr, wtasdatam, wtasinit — FILEDICT system)](02-file-formats/tas-data-infrastructure.md) — *verified, 2026-06-16*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*
