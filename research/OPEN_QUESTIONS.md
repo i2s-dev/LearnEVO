@@ -270,14 +270,26 @@ to resolve fully:
       - **Var descriptor entry format CONFIRMED**: exactly 7 bytes per entry. `[type_tag:1][0x00:1][storage_size:1][runtime_offset_LE4:4]`. 45 entries for BKAWLB, cumulative offsets hold across all 45 entries.
       - **runtime_base NOT universal**: 0x0460 for var_size=1440/table_count=30 programs; 0x02D0 for var_size=2640/table_count=55. Header field that encodes it: not yet identified.
       - **Instruction addr semantics**: addr = runtime_base + cumulative_runtime_offset. Array elements: addr = first_element_addr + n×element_size (no per-element descriptor entries).
+    - **Resolved (Pass 243, 2026-06-24):**
+      - **pfmt/pblnk = DECLARATIVE** — they compile to ZERO bytecode in TAS Pro 6. They are report
+        format directives processed at print time by the .RTM file, not executed as instructions.
+        Proof: BKAWLB has 9 pfmt + 2 pblnk statements but 34×OP_53 + 62×OP_65 — impossible ratio.
+      - **OP_53 ≠ PFMT, OP_65 ≠ PBLNK** — previous identification was wrong.
+      - **PRT_TOF** (8 pfmt + 2 pblnk + page=page+1 + ret) = 2 bytecode instructions only:
+        ASSIGN(page=page+1) at I#1789 + RET_FUNC(ret) at I#1790.
+      - **All ENT section ENTERs use OP_0E (0x0E)** — confirmed in I#46–213 (preamble interactive stream).
+      - **Binary section map for BKAWLB**: I#214=VIEW(MOUNT); I#223–240=PRT_DETAIL 18 COND_JMPs;
+        I#1773–1790 = ABORT_RPT through PRT_TOF; I#313–372 = subroutine area (DSP_WORD1–DSP_CUST_2).
     - **Still open:**
+      - **OP_53/OP_65/OP_93 identity**: cluster as `0x93+0x65×2+0x53+GOSUB` per enter block near
+        FUNC_PREPOST+TRAP blocks. Their addr fields point to inline non-instruction-boundary data.
+        NOT pfmt/pblnk. Possibly field display descriptors for the selection window UI? 29×OP_93,
+        62×OP_65, 34×OP_53 in BKAWLB. Three clusters: I#425–470, I#581–703, I#1021–1077.
       - **BKMRF/BKDCA pre-instruction data block**: preamble=11780 for BKMRF; instructions confirmed at
         abs=0x3C4A (offset=+11786 from code_start). What is the preamble value encoding exactly?
         Is it the byte count of the data block? Does the data block contain form layout or string pool?
-      - **Opcode semantics**: 0x4B=VAR_INIT (first instr), 0x3B=BRANCH, 0x0F=ASSIGN (cross-confirmed
-        from .RWN analysis). 0x20, 0xC1, 0x0E, 0xC0, 0x49, 0x45, 0x48, 0x1F, 0x13, 0x06 = unknown.
-        Next step: align BKAWLB source statements against instruction stream at code_start+2.
-      - **Type tag to TAS Pro source type mapping**: 0x4B, 0x71, 0x3B, 0x0F, 0x1F, 0x13, 0x06, 0x0E, 0x21, 0x1C, 0x73, 0x49, 0x37, 0xC0 — what are the corresponding TAS Pro 6 variable types?
+      - **Remaining unknown opcodes**: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A,
+        OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_40, OP_57, OP_48
       - **runtime_base formula**: which header field encodes the runtime_base threshold?
 
 ## Newly Confirmed Tables (Pass 239) — DDF Schemas Not Yet Validated

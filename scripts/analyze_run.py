@@ -166,18 +166,37 @@ def opcode_stats(instructions):
     return counts
 
 def print_disasm(instructions, code_off, addr_map, max_show=100):
-    """Print disassembly."""
+    """Print disassembly using confirmed .RUN opcode table (Pass 240/243)."""
     KNOWN_OPS = {
-        0x0F: 'ASSIGN',
-        0x3B: 'COND_BRANCH',
-        0x40: 'EXIT',
-        0x42: 'GOSUB',
-        0x48: 'PUSH',
-        0x49: 'READ_PROP',
-        0x57: 'EXEC_FORM',
-        0x6A: 'GOTO_LABEL',
-        0x71: 'EXIT2',
-        0xDC: 'POP',
+        # Confirmed by positional Rosetta Stone alignment (Pass 240)
+        0x0F: 'ASSIGN',      # b2=0x0A
+        0x0E: 'ENTER',       # b2=0x61 — enter field
+        0x37: 'TRAP',        # b2=0x0A — trap key handler
+        0x20: 'RET_FUNC',    # b2=0x05 — return from function (ret .t. / ret .f.)
+        0x08: 'TRAP_DFLT',   # b2=0x06 — trap key dflt
+        0xC0: 'SET_PROP_CTX',# b2=0x04 — set property context
+        0xC1: 'ENT_BLOCK',   # b2=0x00 — enter block marker
+        0x4B: 'CALL_LIB',    # b2=0x09 — call library function (fnc_list, GOSUB lib)
+        0x39: 'FUNC_PREPOST',# b2=0x51 — function pre/post hook setup
+        0x01: 'ARG_DESC',    # b2=0x1D — argument descriptor
+        # Confirmed in preamble (Pass 240)
+        0x1F: 'OPEN_TBL',   # b2=0x35 — open table (TABLE_HANDLE)
+        0x13: 'FIND_KEY',    # b2=0x21 — find F srch
+        0x06: 'CLR_REC',     # b2=0x06 — clr table rec
+        0x1C: 'MOUNT',       # b2=0x11 — mount SELECT2 type S
+        0x21: 'MENU',        # b2=0x59 — menu at x,y
+        0x73: 'PRG_HDR',     # b2=0x07 — prg_hdr
+        # Confirmed from Rosetta Stone context
+        0x49: 'READ_PROP',   # b2=0x09 — read property (e.g. SETUP_COLOR)
+        0x6A: 'GOTO_LABEL',  # — goto label
+        0x42: 'GOSUB',       # — gosub subroutine
+        0x3B: 'COND_JMP',    # — conditional jump (if/endif branches)
+        # Unknown — cluster together as 0x93+0x65x2+0x53+GOSUB per enter block
+        # pfmt/pblnk are DECLARATIVE (zero bytecode) — these are NOT pfmt/pblnk
+        0x53: 'OP_53',       # — unknown; b2=0x7D
+        0x93: 'OP_93',       # — unknown; b2=0x14
+        0x65: 'OP_65',       # — unknown; b2=0x0A
+        0xBE: 'PMSG',        # — print message
     }
 
     for i, (off, op, b2, addr) in enumerate(instructions[:max_show]):

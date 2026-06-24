@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — instruction format confirmed C:65/100; opcodes in progress (Pass 240)
+Status: **partial** — instruction format confirmed C:62/100; opcodes in progress (Pass 243)
 
 Last updated: 2026-06-24
 
@@ -195,37 +195,43 @@ For code: `addr` = absolute runtime address (≥ runtime_base = 0x0460), OR code
 
 Total instructions decoded from 0x06C0 (both regions): 2078.
 
-### Sample: ENT.STAT section (source lines 116–127)
+### Sample: ENT.STAT section (source lines 115–127) — confirmed Pass 243
 
 Source:
 ```
 ENT.STAT:
-  xtrap chg ignr
-  enter e.status[1] ; enter e.status[2] ; enter e.status[3] ; enter e.status[4]
-  func pre.stat
-    trap F1 do PRE_STAT1
-    trap ESC do PRE_STAT2
-    trap F10 do PRE_STAT3
-  ret .t.
+  enter e.status[1] mask 'X ' up acr pre pre.stat() upar START
+  enter e.status[2] mask 'X ' up acr
+  enter e.status[3] mask 'X ' up acr
+  enter e.status[4] mask 'X ' up acr
+  { func pre.stat
+      trap F1 GOSUB SHOWHELP
+      trap ESC goto EXIT2
+      trap f10 goto start_prt
+      fnc_list 'F1 Help','F10 Print,Esc Exit'
+      ret .t.
+  }
 ```
 
 Corresponding instructions (I#46+, file 0x0802+):
 ```
-OP_4B  CALL_LIB   (xtrap chg ignr — library call)
-OP_C1  ENT_BLOCK  (block header for 4 enter statements)
-OP_0E  ENTER b2=0x61 (enter e.status[1])
-OP_0E  ENTER b2=0x61 (enter e.status[2])
-OP_0E  ENTER b2=0x61 (enter e.status[3])
-OP_0E  ENTER b2=0x61 (enter e.status[4])
-  ... function pre.stat body ...
-OP_37  TRAP (trap F1 do PRE_STAT1)
-OP_37  TRAP (trap F2 do PRE_STAT2)
-OP_37  TRAP (trap F10 do PRE_STAT3)
-OP_20  RET_FUNC   (ret .t.)
+I#46   CALL_LIB    (library/section init call)
+I#47   RET_FUNC    (section header return)
+I#48   ENT_BLOCK   (block header for 4 enter statements)
+I#49   ENTER b2=0x61  (enter e.status[1])
+I#50   ENTER b2=0x61  (enter e.status[2])
+I#51   ENTER b2=0x61  (enter e.status[3])
+I#52   ENTER b2=0x61  (enter e.status[4])
+I#53   SET_PROP_CTX   (post func body begin)
+...    ...            (func pre.stat body — see separate body below)
 ```
 
-Positional confirmation method: 4 consecutive OP_0E = the 4 `enter e.status[N]`; 3 consecutive
-OP_37 = the 3 traps. No other sequence in the source produces 4 consecutive enters or 3 traps.
+Positional confirmation: 4 consecutive OP_0E at I#49–52 = the 4 `enter e.status[N]` (Pass 243).
+The inline `{ func pre.stat }` body is compiled separately after the ENTER block.
+
+**All ENT section enters (I#46–213) use OP_0E (0x0E) — NOT OP_93.**
+The 0x93/0x65/0x53 cluster appears later in the binary (I#425+) and does not correspond to
+the ENT section's ENTER statements.
 
 ---
 
@@ -286,13 +292,31 @@ Example: every OP_0E (ENTER) has b2=0x61=97; every OP_37 (TRAP) has b2 TBD.
 
 | Opcode | Name | b2 | Evidence |
 |--------|------|----|----------|
-| `0x53` | PFMT | 0x7D=125 | Repeating in print section loop; b2=125 consistent (Pass 240) |
-| `0x93` | FOR_LOOP | — | Loop header preceding paired OP_65 in `for(mcntr;1;3;1)` area (Pass 240) |
-| `0x65` | PBLNK/WRITE | — | 2 per loop iteration in print section (Pass 240) |
 | `0xBE` | PMSG | 0x28=40 | Print message; addrs spaced by 40 in sequence (Pass 240) |
 | `0x46` | LOAD_VAR | — | Precedes array element assignments with repeating address patterns |
 | `0x4E` | ARRAY_IDX | — | Follows LOAD_VAR for array assignments; IDX increments per element |
 | `0x0A` | PUSH_ADDR | — | Seen before `0x0F 0x00` pairs in MENU_HLDR area |
+
+### Unknown — confirmed NOT pfmt/pblnk (Pass 243)
+
+| Opcode | b2 | Count | Cluster pattern |
+|--------|----|----|-----------------|
+| `0x93` | 0x14 | 29 | Always starts a `0x93 + 0x65×2 + 0x53 + GOSUB` block; ~1 per enter block |
+| `0x65` | 0x0A | 62 | Always appears in pairs immediately after 0x93; field descriptors? |
+| `0x53` | 0x7D | 34 | Always appears after 0x65 pair; validation/action descriptor? |
+
+**CRITICAL CORRECTION (Pass 243):** `pfmt` and `pblnk` in TAS Pro 6 are **DECLARATIVE** — they compile
+to **ZERO bytecode instructions**. They are print format/blank-line directives processed at print time by
+the `.RTM` report file, not executed as instructions. Proof: source `BKAWLB.SRC` has 9 `pfmt` + 2
+`pblnk` statements, but the binary has 34×`0x53` and 62×`0x65` — impossible if 0x53=pfmt, 0x65=pblnk.
+
+**Consequence:** `PRT_TOF` in BKAWLB (source lines 428–440: 8 pfmt + 2 pblnk + page=page+1 + ret)
+compiles to exactly **2 instructions**: ASSIGN (page=page+1) + RET_FUNC (ret). Confirmed at I#1789–I#1790.
+
+**Cluster location:** 0x93/0x65/0x53 clusters appear in groups near FUNC_PREPOST + TRAP sequences
+(inline function bodies of pre/post callbacks for ENTER blocks). Pattern repeats once per enter block.
+Three clusters identified: I#425–470 (8 blocks = ENT.STAT/PRI/CLASS), I#581–703, I#1021–1077. Their
+addr fields point to inline data at non-7-byte-aligned positions — likely packed field descriptors.
 
 ### Data records (NOT 7-byte instructions)
 
@@ -332,6 +356,49 @@ Binary: 41 00 01 00  59                               ("Y", 1 byte)
 Source: prg_hdr prg.name+'  Print Work Order Schedule'
 Binary: 41 00 1b 00  2020...                          ("  Print Work Order Schedule", 27 bytes)
 ```
+
+---
+
+## Rosetta Stone Results — BKAWLB binary section map (Pass 243)
+
+### Confirmed binary-to-source alignments
+
+| Binary range | Source label | Source lines | Notes |
+|--------------|-------------|--------------|-------|
+| I#0–44 | Preamble (init) | ~1–113 | OPEN_TBL×5, init, menu |
+| I#45 | Gap/dummy | — | 7-byte padding between preamble/interactive |
+| I#46–213 | Interactive stream | 115–338 | All ENT sections + sort-by blocks |
+| I#48–52 | ENT.STAT (4 enters) | 116–119 | 4 consecutive ENTER (0x0E) |
+| I#63–69 | ENT.CLASS16 (6 enters) | 148–153 | 6 consecutive ENTER (0x0E) |
+| I#82–89 | ENT.CLASSB+START (7 enters) | 168–211 | 7 consecutive ENTER (0x0E) |
+| I#99–101 | START date range (2 enters) | ~171–177 | 2 consecutive ENTER (0x0E) |
+| I#111–119 | START WO/INV/CUST (8 enters) | ~179–223 | 8 consecutive ENTER (0x0E) |
+| I#214 | VIEW section | 338–339 | MOUNT instruction confirmed |
+| I#217–218 | VIEW traps | 341–342 | trap F1+F2 pair |
+| I#223–240 | PRT_DETAIL filter start | 350–361 | 18 consecutive COND_JMP |
+| I#241–268 | PRT_DETAIL body | 363–398 | for-loops + class check; FOR_OP at I#243 |
+| I#269–290 | PRT_DETAIL last filters | 398–407 | 17 COND_JMPs (CLASS_OK + 8 compound) |
+| I#291–312 | FIND_NEXT + end | 410–412 | FIND_KEY at I#292; RET_FUNC I#312 |
+| I#313–372 | Named subroutines | 446–514 | DSP_WORD1/2, SETUP_INV/CUST, etc. |
+| I#425–470 | 0x93/0x65/0x53 cluster 1 | ~115–145 (func bodies) | 8 blocks = ENT.STAT/PRI/CLASS func bodies |
+| I#521–531 | FUNC_PREPOST×2 + 7 ARG_DESC + ENTER×2 | ~179–207 | START2/3 with pre.wo1/post.wo1 |
+| I#581–703 | 0x93/0x65/0x53 cluster 2 | TBD | 10 blocks |
+| I#1021–1077 | 0x93/0x65/0x53 cluster 3 | TBD | in subroutine section |
+| I#1773–1784 | ABORT_RPT | 413–419 | 12 instructions for 5 pmsg statements |
+| I#1785–1786 | FINISH/EXIT | 421–424 | CALL_LIB (PRTR_SETUP 'F') + RET_FUNC |
+| I#1787 | EXIT2: quit | 426 | OP_4A instruction |
+| I#1789 | PRT_TOF: page=page+1 | 429 | ASSIGN instruction |
+| I#1790 | PRT_TOF: ret | 440 | RET_FUNC instruction |
+
+### pfmt/pblnk declarative finding (confirmed Pass 243)
+
+`pfmt N` and `pblnk N` in TAS Pro 6 compile to **zero bytecode instructions**. They are
+format directives that reference numbered format lines defined in the `\R5...` report block
+at the bottom of the source file. The report runtime uses these numbers when printing — no
+instruction is needed at execution time.
+
+**PRT_TOF** in BKAWLB has: 8 × `pfmt` + 2 × `pblnk` + `page=page+1` + `ret`
+Compiles to: 2 instructions — ASSIGN (page=page+1) at I#1789, RET_FUNC (ret) at I#1790.
 
 ---
 

@@ -201,17 +201,21 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Code stream: ENTERs, TRAPs, loops, print — addrs = absolute runtime addresses (>= runtime_base)
   - code_start = 0x80 + N×16 + var_size; 2-byte entry-offset header precedes instruction stream
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 65/100** (Pass 240 Rosetta Stone — 19 opcodes confirmed by positional alignment)
+- [x] 🔄 Bytecode instruction set — **C: 62/100** (Pass 243: pfmt/pblnk=declarative confirmed; OP_53/OP_65 identification corrected)
   - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
   - b2 = fixed per opcode (not per-instruction switch); confirmed by multiple instances of same opcode
   - Confirmed by positional alignment (4× OP_0E = 4 consecutive ENTERs; 3× OP_37 = 3 TRAPs):
     OP_0E=ENTER(b2=0x61), OP_37=TRAP, OP_20=RET_FUNC, OP_08=TRAP_DFLT, OP_C0=SET_PROP_CTX,
     OP_C1=ENT_BLOCK, OP_4B=CALL_LIB, OP_39=FUNC_PREPOST, OP_01=ARG_DESC
   - Confirmed in preamble stream: OP_1F=TABLE_HANDLE, OP_13=FIND_KEY, OP_06=CLR, OP_1C=MOUNT, OP_21=MENU, OP_73=PRG_HDR
-  - Probable from pattern: OP_53=PFMT, OP_93=FOR_LOOP, OP_65=PBLNK/WRITE, OP_BE=PMSG
+  - **CORRECTED (Pass 243):** pfmt/pblnk = DECLARATIVE (zero bytecode); OP_53 ≠ PFMT, OP_65 ≠ PBLNK
+  - OP_53(b2=0x7D)/OP_65(b2=0x0A)/OP_93(b2=0x14) cluster together as `0x93+0x65×2+0x53+GOSUB` per enter block — identity unknown
+  - PRT_TOF body confirmed = 2 instructions: ASSIGN(page=page+1) + RET_FUNC(ret) at I#1789–1790
+  - ENT section binary map: I#46–213 = all enter blocks (0x0E); I#214 = MOUNT(VIEW); I#223–240 = 18 COND_JMP(PRT_DETAIL filters)
+  - Probable from pattern: OP_BE=PMSG
   - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640)
   - BKMRF preamble=11780 → large data block precedes instructions; confirmed at abs=0x3C4A
-  - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29
+  - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_53, OP_65, OP_93
 - [ ] ⬜ All readable logic extracted from `.RUN` string sections
 
 ### 2.4 `.DFM` — Delphi Form Layout
