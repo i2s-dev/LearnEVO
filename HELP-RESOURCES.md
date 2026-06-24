@@ -18747,3 +18747,109 @@ other companies in a chain-dispatch setup (ISCHAINM in T7SORevu confirms this).
 and IS.SOVU.*(12) cross-validated directly; BKSYAR/ISARCHG confirmed in DB file table (schema
 not yet in DDF catalog); T7SORevu 90-table DB implies broad SO authorization context; workflow
 inferred from var names and approval state machine.
+
+---
+
+## IS — InfoSystem Cross-Module Reports (Pass 239 Additions)
+
+### New Programs Confirmed
+
+| Program | Procs | Library | Tables | Function |
+|---------|-------|---------|--------|----------|
+| ISCCREP.RWN | 48 | LISTG60.LIB | 8 (BKARINV+BKCMACCT) | IS CC Report — AR invoice / CRM account cross-module |
+| ISSHPCAL2.RWN | 65 | EVO.LIB | 27 | IS Shipping Calendar v2 — weekly shipment schedule view |
+
+### ISCCREP — IS Customer Credit Report
+
+- Joins AR invoices (`BKARINV`) to CRM accounts (`BKCMACCT`)
+- Range filter: `FROMSO` / `THRUSO` (SO number range)
+- Handles: `INV.H` (invoice), `ACCT.H` (CRM account)
+- `RTM_NAME` — report template name (configurable report format)
+
+**BKAR.INV.* Namespace Extensions** (fields confirmed in ISCCREP that extend prior documentation):
+
+| Field | Meaning |
+|-------|---------|
+| `BKAR.INV.JOBNUM` | Job cost job number linked to this invoice |
+| `BKAR.INV.COMMPR` | Commission priority code |
+| `BKAR.INV.LINV#P` | Linked invoice number/pointer (invoice chain) |
+| `BKAR.INV.RTS` | Return-to-stock flag |
+| `BKAR.INV.DEPAMT` | Deposit amount applied to this invoice |
+| `BKAR.INV.SHIPPR` | Shipping priority code |
+
+### ISSHPCAL2 — IS Shipping Calendar v2
+
+- Shows upcoming SO shipments in a weekly calendar grid
+- Range: `CUST.FROM`/`THRU`, `ITEM.FROM`/`THRU`, `ENTRY.DATE`
+- Date vars: `ESD` (estimated ship date), `CSD` (confirmed ship date), `CUSTPO`
+- Calendar grid: `X1..X22` = 22 column slots; `FIVEWEEK`/`SIXWEEK` = display mode
+- `PCAL.DAY`/`NCAL.DAY`/`CAL.MONTH` = previous/next navigation
+- `REPTYPE` = report type selector; `NUM.LINES` = lines per page
+- Handles: `ICMSTR.H` (item master), `ARCUST.H` (customer), `CLASSM.H` (class), `APVEND.H` (vendor)
+- DB includes: `BKSBVEND`/`BKSBMFG` (approved vendor/manufacturer), `BKICLOC` (inventory by location),
+  `BKSYMSTR` (system params), `BKARINV`/`BKARINVL` (SO/invoice headers+lines)
+
+**New Table First-Documented:** `BKSYPRTR` — system printer configuration table  
+- Appears in ISSHPCAL2's 27-table DB
+- Purpose: stores default printer settings per workstation or user
+- Schema not yet in DDF catalog; first confirmed as opened by ISSHPCAL2 and T7ISASER
+
+---
+
+## QU — Business Status Dashboard (Pass 239 ISBSF Schema)
+
+### ISBSF — Business Summary Flash Table (43-field schema)
+
+Confirmed via full var extraction from `EVOBS.RWN` (128p, DBA.LIB) = QU-D Business Status:
+
+| Field Group | Fields |
+|-------------|--------|
+| Period | ISBSF.STARTDATE, ISBSF.ENDDATE |
+| AR | ISBSF.AR.BAL (balance), ISBSF.AR.BILL (billings), ISBSF.AR.RECP (receipts), ISBSF.AR.DISC (discounts), ISBSF.AR.COGS (cost of goods), ISBSF.AR.DEPO (deposits) |
+| AP | ISBSF.AP.BAL (balance), ISBSF.AP.PAYA (payables), ISBSF.AP.PAYM (payments), ISBSF.AP.DISC (discounts), ISBSF.AP.ATP (available to pay) |
+| SO | ISBSF.SO.OPEN (open value), ISBSF.SO.BOOK (bookings), ISBSF.SO.SHIP (shipments) |
+| PO | ISBSF.PO.OPEN (open value), ISBSF.PO.BOOK (bookings), ISBSF.PO.RECP (receipts) |
+| WO | ISBSF.WO.WIPBAL (WIP balance), ISBSF.WO.ISSU (material issues), ISBSF.WO.FPVAR (finished-product variance) |
+| IC | ISBSF.IC.VALUE (inventory value) |
+| Cash | ISBSF.CASH.TOTA (total cash), ISBSF.CASH.ACT1..ACT9 (9 bank account balances) |
+| WO Standard Cost | ISBSF.WOS.SETUP, ISBSF.WOS.LAB, ISBSF.WOS.OUTP, ISBSF.WOS.MAT, ISBSF.WOS.FOH, ISBSF.WOS.VOH, ISBSF.WOS.MEXT, ISBSF.WOS.FP, ISBSF.WOS.WIPV |
+| Extra | ISBSF.EXTRA |
+
+EVOBS.RWN reads live data from 33 tables spanning all major modules (BKGLTRAN, BKICMSTR,
+WORKORD, WOMAT, WOLABOR, BKARINV, BKAPPO, etc.) to populate these KPIs in real-time.
+
+**How to use:** EX module → QU-D (Business Status) shows a live company KPI dashboard. All
+financials (AR/AP/SO/PO/WO) for the selected period, plus up to 9 bank account cash balances.
+
+---
+
+## RT — Runtime License Validator (Pass 239 Complete)
+
+`T7RTMVALID.RWN` is a **single-program module** fully characterized.
+
+### License Flags (12 module gates set by ISIS table)
+
+| Flag | Meaning |
+|------|---------|
+| `ISIS.TAX` / `IS.TAX` | Tax calculation module |
+| `ISIS.TAX.IN` | Tax inclusive pricing |
+| `ISIS.TAX.FRM` | Tax form generation |
+| `ISIS.TAX.PO` | Tax on POs |
+| `ISIS.MULTI.CURR` / `IS.MULTI.CURR` | Multi-currency |
+| `ISIS.MULTI.CPAY` | Multi-currency payments |
+| `ISIS.LANDED.COS` / `IS.LANDED.COST` | Landed cost / duty |
+| `ISIS.UPC` / `IS.UPC` | UPC barcode |
+| `ISIS.RETAIL.PRI` / `IS.RETAIL.PRICE` | Retail pricing |
+| `ISIS.COMM.PRICE` / `IS.COMM.PRICE` | Commission pricing |
+| `ISIS.IMAGING` / `IS.IMAGING` | Document imaging |
+| `ISIS.AUTO.TAX` / `IS.AUTO.TAX` | Automatic tax calculation |
+
+License key vars: `SERIAL` (license serial#), `PRODUCT` (product code), `APROD` (active product),
+`SDATE`/`EDATE` (start/expiry), `USERS` (max concurrent users), `EVOONLY` (EvoERP-only flag).
+
+Library: `NZLICE.LIB` (New Zealand / i2 Systems license enforcement library).
+Log: `MKAHIST.*` (license event logging to marketing history table).
+
+**Confidence: 90/100** — T7RTMVALID fully var-extracted (Pass 233, 160 unique vars); all 12
+license flags and key vars documented; tax/currency handle pattern confirmed; license key
+verification algorithm remains in binary (not decompilable).

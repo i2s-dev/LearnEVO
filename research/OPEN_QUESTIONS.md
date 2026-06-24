@@ -278,6 +278,12 @@ to resolve fully:
       - **Type tag to TAS Pro source type mapping**: 0x4B, 0x71, 0x3B, 0x0F, 0x1F, 0x13, 0x06, 0x0E, 0x21, 0x1C, 0x73, 0x49, 0x37, 0xC0 — what are the corresponding TAS Pro 6 variable types?
       - **runtime_base formula**: which header field encodes the runtime_base threshold?
 
+## Newly Confirmed Tables (Pass 239) — DDF Schemas Not Yet Validated
+
+| Table | First Seen | Confirmed From | Schema Status |
+|---|---|---|---|
+| BKSYPRTR | ISSHPCAL2+T7ISASER (Pass 239) | DB file table entry | DDF not found; system printer configuration |
+
 ## Newly Confirmed Tables (Pass 236–237) — DDF Schemas Not Yet Validated
 
 These tables were first documented from var extraction but have not been cross-checked against
