@@ -116,6 +116,9 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [FL — File Location Manager (WTASFLOC.RWN)](03-modules/fl-file-location.md) — *Pass231: CF_*/LOC_*/DICT_* namespaces confirmed; 8 TAS internal tables (FILELOC/FILEDICT/FILEKEY/FILEKNUM/FILEDES/FILEDFLD/ERRMSG/FILEDBF)*
 - [EX — SQL Export (SQLEXPORT.RWN)](03-modules/ex-sql-export.md) — *Pass231: Java bridge vars[60-71] confirmed; EVOBI2 BI database; EVO.CFG.* + per-module screen selectors; same bridge pattern as 8 other Java programs*
 - [SU — Setup / UI Configuration (WBKLUGRID/EvoERPDrillM/T7gdm)](03-modules/su-setup.md) — *Pass232: LUGRID_* 13-var + DRILLM.* 9-var namespaces confirmed; T7gdm = Grid copy utility (SKIP/REPLACE/OVERWRITE modes)*
+- [RT — Runtime License Validator / Session Initializer (T7RTMVALID)](03-modules/rt-runtime-license.md) — *Pass233: 160 vars confirmed; 10 ISIS sub-table handles; tax/currency/localization globals; IS.* flag set; NZLICE.LIB session-init library*
+- [CU — WO Material Cut Sheet (T7CUTSHEET2/T7CUTSHEET2b)](03-modules/cu-wo-cut-sheet.md) — *Pass233: WOMAT.* 17-var + MTLOT.* 22-var + MTWO.WIP.* 20-var confirmed; authentication gate; lot vs no-lot variants*
+- [PA — Paperless DC / Shop Floor Control (T7Paperless/T7PACKMENU/T7PASS)](03-modules/pa-paperless-dc.md) — *Pass233: 13 namespaces confirmed; MTWO.WIP.* 76-var; MTWORO.* 44-var routing ops; MTRO.* 47-var routing master; IS.TRAY.* 21-var; LAB.* + T.* DC labor buffers; A*/H* dual/history handles*
 
 ### 05 — Glossary
 - [Glossary — EvoERP terminology reference](05-glossary/glossary.md) — *verified, from EvoHELP.CHM*

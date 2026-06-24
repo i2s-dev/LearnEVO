@@ -7328,6 +7328,138 @@ Used by T7HHSODD for customer document compliance during shipping. Holds RoHS, c
 
 ---
 
+## RT — Runtime License Validator / Session Initializer (T7RTMVALID / NZLICE.LIB)
+
+**Module purpose:** Called at session startup by every EvoERP module. Validates the license file, opens all shared ISIS sub-tables (tax, currency, landed cost), sets global IS.* module feature flags, and configures tax/currency/localization globals.
+
+**Source:** NZLICE.LIB (NZ License library — added for NZ GST two-rate support; used universally). 20 procs, 440 vars.
+
+### License validation
+
+| Var | Meaning |
+|-----|---------|
+| SERIAL | License serial number |
+| PRODUCT / APROD | Product code / active product |
+| SDATE / EDATE | License start/expiry dates |
+| USERS | Max licensed user count |
+| EVOONLY | EvoERP-only license flag |
+| CHKSUM / BIGSTR | License checksum verification |
+
+### ISIS sub-table handles (10)
+
+| Handle | Table | Purpose |
+|--------|-------|---------|
+| ISTXG.HNDL | ISTXGRP | Tax groups |
+| ISTXF.HNDL | ISTXFRM | Tax formulas |
+| ISTAX.HNDL | ISTAX | Tax amounts |
+| ISMCF.HNDL | ISMCF | Multi-currency master |
+| ISMCR.HNDL | ISMCR | Exchange rates |
+| ISDUTY.HNDL | ISDUTY | Duty codes |
+| ISBRK.HNDL | ISBROKER | Customs brokers |
+| ISLDF.HNDL | ISLANDF | Landed cost GL accounts |
+
+### Module feature gates (IS.* flags)
+
+IS.TAX / IS.MULTI.CURR / IS.LANDED.COST / IS.UPC / IS.RETAIL.PRICE / IS.COMM.PRICE / IS.IMAGING / IS.AUTO.TAX.CAL / IS.EZPAY / IS.RMA / IS.SPEC.SUP — set from ISIS record at session start.
+
+### Tax/localization globals
+
+IS.RTE / IS.RTE2 = primary/secondary tax rates (NZ GST two-tier); IS.BASE / IS.SYMBOL = currency; TITLESTR = app title; DATE_TYPE = date format; IS.DEC = decimal precision.
+
+**Confidence: 88/100** — 160 vars fully confirmed from T7RTMVALID.RWN.dec (Pass 233); ISIS sub-table names inferred from naming conventions.
+
+---
+
+## CU — WO Material Cut Sheet (T7CUTSHEET2 / T7CUTSHEET2b)
+
+**Module purpose:** Generates material cut sheets for Work Orders — lists all planned BOM components vs. issued quantities, with lot/serial tracking. Used on the shop floor to verify material picks before fabrication.
+
+**Programs:** T7CUTSHEET2 (75p, lot-enabled, ISBINLOT) + T7CUTSHEET2b (60p, no-lot, ISBINLOC). Both require user authentication via BKPSUSER.
+
+### Key namespaces
+
+| Namespace | Table | Key fields |
+|-----------|-------|-----------|
+| WOMAT.* (17-var) | WOMAT | DATE/WOPRE/WOSUF/QTYISSUED/QTYSCRAP/SCRAPCD/LOT/SERIAL/PRODCODE/PCODE/COST |
+| MTLOT.* (22-var) | LOT | CODE/LOT/EXPDATE/ONHAND/RECQTY/WOQTY/WOCOST/BEGIN/OUT/MAXOUT |
+| MTWO.WIP.* (20-var) | WORKORD | SQTY/COMQTY/STATUS/ESETUP/EMAT/AMAT/AOUTPR plus cost breakdown |
+
+### Summary variables
+
+| Var | Meaning |
+|-----|---------|
+| WOTOTQTY | Grand total WO quantity |
+| FABQTY | Fabricated/completed quantity |
+| ABIQTY | Remaining quantity to issue |
+| LEFTQTY | Quantity left to cut |
+| GT.MAT | Grand total material cost |
+| GT.ISS | Grand total issued quantity (T7CUTSHEET2b) |
+
+**Confidence: 87/100** — All vars confirmed from var extraction (Pass 233); workflow inferred from var names.
+
+---
+
+## PA — Paperless DC / Shop Floor Control (T7Paperless)
+
+**Module purpose:** Touchscreen shop-floor data collection. Operators scan WO barcodes, log labor time, report completions/scrap, receive outside-process POs, and view routing instructions in real time.
+
+**Programs:** T7Paperless (205p, LISTG60.LIB, 50 tables) + T7PACKMENU (reindex utility) + T7PASS (password auth sub).
+
+### MTWO.WIP.* — WORKORD header (76 MTWO.* vars)
+
+Cost breakdown — 9 categories × E(stimate)/A(ctual)/V(ariance)/%(percent):
+| Category | E | A | V | % |
+|----------|---|---|---|---|
+| Setup | ESETUP | ASETUP | SETUPV | SETUP% |
+| Material | EMAT | AMAT | MATV | MAT% |
+| Outside-process | EOUTPR | AOUTPR | OUTPRV | OUTPR% |
+| Labor | ELABOR | ALABOR | LABORV | LABOR% |
+| Variable overhead | VOVHD | AVOVHD | VOVHDV | VOVHD% |
+| Fixed overhead | EFOVHD | AFOVHD | FOVHDV | FOVHD% |
+| Other | EOTH | AOTH | OTHV | OTHPER |
+| Misc | EMISC | AMISC | MISCV | MISC% |
+| Extra | EEXTRA | AEXTRA | EXTRAV | EXTRA% |
+
+Additional: SQTY/COMQTY/STATUS/LOCK/SONUM/CUSORD/PROJ/LOC/CONTAT/CHGORD/SOLINE/SCRAP/MTWO.CUSTCODE/CUSTNAME
+
+### MTWORO.* — WOROUT routing operations (44 vars)
+
+Per-operation detail for the active WO. Key vars: OPER/%COMP/ESTHRS/ACTHRS/ESETHRS/ASETHRS/OPERDESC/VEND/MACHNO/TOOL/WC/PRIORITY plus cost pairs ESETCST/ASETCST/ELABCST/ALABCST/EMCHCST/AMCHCST/EOUTCST/AOUTCST/EFOHCST/AFOHCST/EVOHCST/AVOHCST.
+
+### MTRO.* — ROUTING master templates (47 vars)
+
+Standard routing definitions: CODE/OPER/OPERDESC/TYPE/VENDCOST/SETUPHRS/LOTSIZE/LABOR/MACHINE/FOVHD/VOVHD/SETUP/STD.TIME/MIN.CHG/OVERLAP/PIECE.RATE plus machine/tool/instruction fields.
+
+### MTWOR.* — WORECV finished goods receipts (10 vars)
+
+WOPRE/WOSUF/DATE/ASSY/QTY/USESTD/AVGC/LOT/SERIAL — records WO completions into inventory.
+
+### IS.TRAY.* — ISWOTRAY tray tracking (21 vars)
+
+NUM/WOPRE/WOSUF/OPER/SQTY/COMQTY/SCRPQTY/QCREQD/QCQTY/LOC/BIN/STATUS — physical work trays on the shop floor.
+
+### LAB.* — DC labor posting buffer (15 vars)
+
+DATE/EMP/WOPRE/WOSUF/OPER/POSTED/SHIFT/START/FINISH/PARTS/SCRAPPED/NOJOBS/RUNHRS/SETUPHRS — assembled before posting to BKDCLAB.
+
+### BKAP.POL.* — outside-process PO receiving (38 vars)
+
+Operators receive outside-process POs from the floor: PONM/ERD/ARD/PCODE/PQTY/RQTY/QC.QTY/BUYOFF/WOPRE/WOSUF/OPER/INVNUM.
+
+### Architecture
+
+1. T7PASS authenticates (PASSWORD/BAD.PASS)
+2. Scan SCAN.WO + SCAN.OPER → loads MTWO.WIP.* + MTWORO.*
+3. Log labor → T.*/LAB.* buffer → post to BKDCLAB
+4. Receive outside-process POs via BKAP.POL.*
+5. QC integration via QCSPEC.H + QCRSLT.H
+6. History mode: H* handles (HLAB/HMAT/HROUT) load closed-WO data
+7. Comparison mode: A* handles (AWORKORD/AWOROUT) open alternate WO version
+
+**Confidence: 90/100** — 13 namespaces fully confirmed from T7Paperless var extraction (Pass 233); workflow architecture inferred from var names and handle patterns.
+
+---
+
 ## DE — Data Entry / EDI / Imports
 
 **Module purpose:** Import external data into EvoERP (BOMs, PO receipts, WO materials, AR invoices, web orders) and process inbound/outbound EDI transaction sets. Also hosts global field replace (DEK) and selective file erase (DEL) — both destructive.
