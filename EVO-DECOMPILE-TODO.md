@@ -99,7 +99,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Tapi32.dll: Windows Telephony API (dial-out features in ERP)
   - avifil32.dll, msvfw32.dll: AVI/video playback (help videos or embedded tutorials?)
   - 49 total DLL imports; all standard Windows libraries + above 4 third-party DLLs
-- [ ] ⬜ Error-code table (runtime error messages ↔ numeric codes)
+- [x] ✅ Error-code table (runtime error messages ↔ numeric codes) — **Pass 247 2026-06-24**: ERRMSG.DBF on network share (dBASE III+, 392 records, fields: ERROR_NUM/ERROR_MSG/ERROR_SZE, 328-byte records with 256-byte message continuation); full 392-entry table extracted and documented in docs/02-file-formats/tas-pro-error-codes.md; categories: 1–9 startup, 10–79 runtime execution, 82–158 Btrieve I/O, 200–232 Btrieve detail, 250–279 navigation/lock, 300–313 size constraints, 500–670 compiler errors; bonus: FILELOC.B/FILEDICT.B/FILEKNUM.B/TASMSLB.B confirmed as required runtime support files — **C: 95/100**
 
 ---
 

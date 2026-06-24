@@ -50,6 +50,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [TAS Pro 7 UI controls catalog — all 51 control types, frequencies, purpose (from 1,136 DFMs)](02-file-formats/tas-pro-7-controls.md) — *verified, 2026-06-17*
 - [.RUN — TAS Pro 6 bytecode format (Rosetta Stone analysis)](02-file-formats/run-tas6-bytecode.md) — *partial — dual-channel architecture confirmed, b2=data_size proven, C:78*
 - [.RUN string extraction — method + BKAWLB full string catalog](02-file-formats/run-string-extraction.md) — *verified, 2026-06-24*
+- [TAS Professional error code table — all 392 codes from ERRMSG.DBF](02-file-formats/tas-pro-error-codes.md) — *verified, Pass 247 2026-06-24*
 - [.B / .mdx — Btrieve/Pervasive PSQL data file format (DDF system, page structure, type codes, company routing)](02-file-formats/btrieve-b-format.md) — *partial, 2026-06-18*
 - [TAS Pro 7 data infrastructure modules (wtasdmgr, wtasdatam, wtasinit — FILEDICT system)](02-file-formats/tas-data-infrastructure.md) — *verified, 2026-06-16*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*

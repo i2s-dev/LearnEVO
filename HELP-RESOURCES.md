@@ -4065,6 +4065,9 @@ All 6 data-bridge programs use only standard boilerplate DB (BKSYHELP+ISIS+MKAHI
 
 **FILE* tables are TAS runtime internals** — not Pervasive DDF tables. FILELOC=file path registry, FILEDICT=field dictionary, FILEKEY=key definitions, FILEKNUM=key numbers, FILEDES=field descriptions, FILEDFLD=field definitions, FILEDBF=dBASE file info, ERRMSG=error messages. These explain why FILELOC/FILEDICT appear in hundreds of EvoERP programs as non-DDF entries — every program that does dynamic record navigation via the TAS runtime links to FILELOC.
 
+**ERRMSG.DBF — TAS Professional Error Code Table (Pass 247 2026-06-24, 100% confirmed)**
+392 records in dBASE III+ format. Fields: ERROR_NUM (4-digit code), ERROR_MSG (64-char), ERROR_SZE (total length). Full 392-entry table in `docs/02-file-formats/tas-pro-error-codes.md`. Key code ranges: 1–9 = startup/loader; 10–79 = runtime execution (type mismatch, stack overflow, array bounds); 82–158 = Btrieve I/O (locks, transactions, navigation); 200–232 = Btrieve detail errors; 265/266 = record locked (error 266 asks user to wait); 500–670 = compiler errors. Notable: error 35 embeds phone `919-932-3068` = old Computer Keyes support; errors 86–104 are day/month names (UI strings); error 311 = demo-version 100-record cap; error 312 = product unlock check.
+
 **Pass 66 — ISSCHED (24f) full schema:**
 TA-N (EVOSCHEDULER 65p + EVOSCHEDSETUP 37p) use ISSCHED as their primary table. NAME(20 PK)+DESC+PROG(program)+CO(company)+TYPE(O/D/W/M)+DATE+TIME+RECUR+LOG+EXTRA+LDATE/LTIME+WHO+EMAIL+PARAM1..9+PARAM0. EVOSCHEDULER reads ISSCHED and spawns the named PROG at DATE+TIME with PARAM1..9 passed as arguments. TA-N is the full EvoERP job scheduler — can schedule any RWN program to run automatically.
 
