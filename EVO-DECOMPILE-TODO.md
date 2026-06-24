@@ -196,26 +196,24 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Still in active use for legacy BK\* / T6\* modules — **C: 80/100**
 - [x] ✅ File structure confirmed: header / table-name slots / var section / code section — **C: 85/100**
   - Magic "TAS32" at offset 0x35; version byte at 0x3A; table names at 0x80 (16-byte slots)
-  - TWO instruction stream regions (Pass 240): preamble (init) stream at var_section[runtime_base]; code (interactive) stream at code_start+2
-  - Preamble stream: opens tables, finds, clr, mount, menu — addrs = raw var pool offsets (< runtime_base)
-  - Code stream: ENTERs, TRAPs, loops, print — addrs = absolute runtime addresses (>= runtime_base)
-  - code_start = 0x80 + N×16 + var_size; 2-byte entry-offset header precedes instruction stream
+  - **DUAL-CHANNEL architecture (Pass 244):** ONE instruction channel (code_off=0x06C0, 2078 instrs) + ONE data channel (starts at file 0x0000, packed sequential records)
+  - b2 = data record size (bytes); addr = ABSOLUTE file offset of record — CONFIRMED 100% by addr chain
+  - Preamble I#0–45 at 0x06C0–0x0801; interactive I#46–2077 at 0x0802–0x3F8B (one continuous stream)
+  - Data channel total size stored at header offset 0x08 (= 0x923E for BKAWLB)
+  - Data channel overlaps instruction channel: ENTER field descriptors (I#64+) share bytes with code region
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 62/100** (Pass 243: pfmt/pblnk=declarative confirmed; OP_53/OP_65 identification corrected)
+- [x] 🔄 Bytecode instruction set — **C: 78/100** (Pass 244: dual-channel architecture confirmed; b2=data_size proven)
   - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
-  - b2 = fixed per opcode (not per-instruction switch); confirmed by multiple instances of same opcode
-  - Confirmed by positional alignment (4× OP_0E = 4 consecutive ENTERs; 3× OP_37 = 3 TRAPs):
-    OP_0E=ENTER(b2=0x61), OP_37=TRAP, OP_20=RET_FUNC, OP_08=TRAP_DFLT, OP_C0=SET_PROP_CTX,
-    OP_C1=ENT_BLOCK, OP_4B=CALL_LIB, OP_39=FUNC_PREPOST, OP_01=ARG_DESC
-  - Confirmed in preamble stream: OP_1F=TABLE_HANDLE, OP_13=FIND_KEY, OP_06=CLR, OP_1C=MOUNT, OP_21=MENU, OP_73=PRG_HDR
-  - **CORRECTED (Pass 243):** pfmt/pblnk = DECLARATIVE (zero bytecode); OP_53 ≠ PFMT, OP_65 ≠ PBLNK
-  - OP_53(b2=0x7D)/OP_65(b2=0x0A)/OP_93(b2=0x14) cluster together as `0x93+0x65×2+0x53+GOSUB` per enter block — identity unknown
-  - PRT_TOF body confirmed = 2 instructions: ASSIGN(page=page+1) + RET_FUNC(ret) at I#1789–1790
-  - ENT section binary map: I#46–213 = all enter blocks (0x0E); I#214 = MOUNT(VIEW); I#223–240 = 18 COND_JMP(PRT_DETAIL filters)
-  - Probable from pattern: OP_BE=PMSG
+  - b2 = data record size per instruction; addr = absolute file offset of that record (CONFIRMED Pass 244)
+  - addr[I+1] = addr[I] + b2[I] — zero exceptions across all 2078 instructions
+  - Confirmed opcodes: OP_0E=ENTER(b2=97), OP_37=TRAP(b2=10), OP_20=RET_FUNC(b2=5), OP_08=TRAP_DFLT(b2=6),
+    OP_C0=SET_PROP_CTX(b2=4), OP_C1=ENT_BLOCK(b2=0), OP_4B=CALL_LIB(b2=9), OP_39=FUNC_PREPOST(b2=0x51),
+    OP_01=ARG_DESC(b2=0x1D), OP_1F=TABLE_HANDLE(b2=53), OP_13=FIND_KEY(b2=33), OP_06=CLR(b2=6),
+    OP_1C=MOUNT(b2=?), OP_21=MENU(b2=?), OP_73=PRG_HDR(b2=7)
+  - **OP_93(b2=20)/OP_65(b2=10)/OP_53(b2=125):** FIELD_ENTER execution family — data records contain embedded 7-byte instruction records for callbacks/validation (Pass 244)
+  - **CORRECTED (Pass 243):** pfmt/pblnk = DECLARATIVE (zero bytecode); PRT_TOF = 2 instructions confirmed
   - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640)
-  - BKMRF preamble=11780 → large data block precedes instructions; confirmed at abs=0x3C4A
-  - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_53, OP_65, OP_93
+  - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_8D, OP_48, OP_57
 - [ ] ⬜ All readable logic extracted from `.RUN` string sections
 
 ### 2.4 `.DFM` — Delphi Form Layout

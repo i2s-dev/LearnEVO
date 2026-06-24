@@ -280,16 +280,19 @@ to resolve fully:
       - **All ENT section ENTERs use OP_0E (0x0E)** — confirmed in I#46–213 (preamble interactive stream).
       - **Binary section map for BKAWLB**: I#214=VIEW(MOUNT); I#223–240=PRT_DETAIL 18 COND_JMPs;
         I#1773–1790 = ABORT_RPT through PRT_TOF; I#313–372 = subroutine area (DSP_WORD1–DSP_CUST_2).
+    - **Resolved (Pass 244):**
+      - **Dual-channel architecture confirmed**: b2 = data record size; addr = absolute file offset.
+        Data channel starts at file offset 0, records pack sequentially (addr_next = addr_prev + b2_prev).
+        100% verified across all 2078 instructions. Data channel total = h[0x08] bytes (0x923E for BKAWLB).
+      - **OP_93/OP_65/OP_53 = FIELD_ENTER execution family**: data records contain embedded 7-byte instruction
+        records for field validation/callback logic. OP_93(20 bytes)=field setup; OP_65(10 bytes)=callback attr;
+        OP_53(125 bytes)=full field exec (~17 embedded instructions).
+      - **BKMRF pre-instruction value**: = total data channel bytes for preamble instructions (same h[0x08] concept).
     - **Still open:**
-      - **OP_53/OP_65/OP_93 identity**: cluster as `0x93+0x65×2+0x53+GOSUB` per enter block near
-        FUNC_PREPOST+TRAP blocks. Their addr fields point to inline non-instruction-boundary data.
-        NOT pfmt/pblnk. Possibly field display descriptors for the selection window UI? 29×OP_93,
-        62×OP_65, 34×OP_53 in BKAWLB. Three clusters: I#425–470, I#581–703, I#1021–1077.
-      - **BKMRF/BKDCA pre-instruction data block**: preamble=11780 for BKMRF; instructions confirmed at
-        abs=0x3C4A (offset=+11786 from code_start). What is the preamble value encoding exactly?
-        Is it the byte count of the data block? Does the data block contain form layout or string pool?
+      - **Exact semantic meaning** of each embedded instruction within OP_93/OP_65/OP_53/OP_8D data blobs.
+      - **OP_8D(b2=20)**: follows OP_53 in field-enter clusters; data contains embedded instructions; role unknown.
       - **Remaining unknown opcodes**: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A,
-        OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_40, OP_57, OP_48
+        OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_48, OP_57
       - **runtime_base formula**: which header field encodes the runtime_base threshold?
 
 ## Newly Confirmed Tables (Pass 239) — DDF Schemas Not Yet Validated

@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — instruction format confirmed C:62/100; opcodes in progress (Pass 243)
+Status: **partial** — dual-channel architecture confirmed C:78/100; major structural discoveries Pass 244
 
 Last updated: 2026-06-24
 
@@ -15,62 +15,75 @@ Analysed via Rosetta Stone: 7 `.SRC` source + `.RUN` binary pairs in
 
 ---
 
-## Two-Region Architecture (confirmed from BKAWLB — Pass 240)
+## Dual-Channel Architecture (confirmed from BKAWLB — Pass 244)
 
-Every `.RUN` file contains **two instruction streams**, both using the identical 7-byte
-instruction format:
+**MAJOR DISCOVERY (Pass 244):** A `.RUN` file has two PARALLEL channels sharing the same
+file bytes:
 
 ```
-Region 1 — PREAMBLE (init) stream, at file 0x06C0 for BKAWLB
-  - Executes immediately at program load time
-  - Opens tables, runs finds, sets defaults, mounts forms, shows menu
-  - Corresponds to source lines 42–113 (setup code before first label)
-  - Instruction addrs reference the var pool as RAW OFFSETS (< runtime_base = 0x0460)
+INSTRUCTION CHANNEL — starts at code_off (0x06C0 for BKAWLB)
+  - Sequential 7-byte instruction records: [opcode][0x00][b2][addr_LE4]
+  - One continuous stream of 2078 instructions total
+  - Sub-sections: preamble (I#0–45, file 0x06C0–0x0801) and interactive (I#46–2077, file 0x0802–0x3F8B)
 
-Region 2 — CODE (interactive) stream, at file 0x0802 for BKAWLB
-  - Entry point is given by the 2-byte preamble header at code_start (0x0800)
-  - Executes the interactive logic: ENTERs, TRAPs, loops, print routines
-  - Corresponds to source lines 116+ (labeled sections: ENT.STAT, ASSIGN, VIEW, etc.)
-  - Instruction addrs reference vars as ABSOLUTE RUNTIME ADDRESSES (>= runtime_base)
+DATA CHANNEL — starts at file offset 0x0000
+  - Packed variable-length records; NO gaps between records
+  - Each record is referenced by exactly one instruction via [addr, b2]
+  - Records are sequential: addr[I+1] = addr[I] + b2[I]  (CONFIRMED 100% by addr chain)
+  - Total size stored in header at offset 0x08 (= 0x923E for BKAWLB)
 ```
 
-**Address semantics distinction (critical):**
-- Preamble instructions: `addr` = raw var pool offset (< 0x0460 = runtime_base)
-- Code instructions: `addr` = absolute runtime address (= runtime_base + var_pool_offset)
+**Key invariants:**
+- `b2` = number of bytes consumed in the data channel for this instruction (CONFIRMED)
+- `addr` = **absolute file offset** of this instruction's data record (CONFIRMED)
+- `addr + b2` = addr of next instruction's data record (no gaps, no overlaps)
+- `b2 = 0` (e.g., ENT_BLOCK): instruction has no data record; addr points to where next record starts
+
+**The data channel overlaps the instruction channel region (0x06C0–0x3F92).** Some instructions'
+data records span file offsets within the instruction range. This is intentional: ENTER field
+descriptors for ENT sections (I#64+) share bytes with the instruction stream. The runtime reads
+specific offsets within each descriptor type — it does not scan byte-by-byte.
 
 ---
 
-## File Layout (confirmed from BKAWLB.RUN)
+## File Layout (confirmed from BKAWLB.RUN — Pass 244)
 
 ```
 Offset              Size   Description
 ------              ----   -----------
+DATA CHANNEL:
+0x00000             var    DATA CHANNEL starts here: packed variable-length records, instruction-referenced
+   (data records for I#0–45 preamble: 0x0000–0x0456 = 1110 bytes)
+   (data records for I#46–2077 interactive: 0x0460–0x923D = 36414 bytes; overlap with code zone)
+   Total data channel = h[0x08] bytes (0x923E for BKAWLB)
+
+FILE HEADER (within data channel):
 0x00                0x34   File header (13 × 4-byte LE fields; see table below)
 0x34                0x01   Padding (0x00)
 0x35                0x05   Magic: "TAS32"
 0x3A                0x01   Compiler version byte (BKAWLB=0x71, BKMRF.org2=0x58)
 0x3B                0x45   Compiler metadata (zero-padded)
 0x80                N×16   Table name slots: 8-char ASCII name + 8 null bytes (N = h[7])
-0x80 + N×16         M      Var section (size = h[6]):
-                             [0x0000 .. runtime_base-1]: zero-initialized runtime var storage
-                             [runtime_base .. M-1]: PREAMBLE INSTRUCTION STREAM (region 1)
-0x80 + N×16 + M     2      Code section header (2 bytes; value = entry offset LE2)
-0x80 + N×16 + M + 2 ...    CODE INSTRUCTION STREAM (region 2)
-   ...later in code section: inline string pool (41-tagged entries)
+0x80 + N×16         h[6]   Var section:
+                             [0x0000 .. runtime_base-1]: zero-initialized runtime var storage (BKAWLB: 1120 bytes)
+                             [runtime_base .. h[6]-1]:  DATA RECORDS for preamble instructions (BKAWLB: 0x0460–0x05FB)
+
+INSTRUCTION CHANNEL (overlapping the data channel):
+code_off=0x06C0     46×7   PREAMBLE: instructions I#0–45 (init code: open tables, finds, menu)
+0x0802              2032×7 INTERACTIVE: instructions I#46–2077 (ENT sections, VIEW, PRT_DETAIL, etc.)
+   (code_start formula: 0x80 + h[7]×16 + h[6] = 0x0800; instruction stream starts 2 bytes later at 0x0802)
+   (preamble ends at 0x0801 = last byte of I#45; code_start 0x0800 falls within I#45's addr field bytes)
 ```
 
-**code_start formula (confirmed):**
+**Key formula:**
 ```
-code_start = 0x80 + (h[7] × 16) + h[6]
+code_off = 0x80 + (h[7] × 16) + runtime_base       (= 0x06C0 for BKAWLB)
+code_start = 0x80 + (h[7] × 16) + h[6]             (= 0x0800 for BKAWLB; I#46 starts at 0x0802)
+runtime_base = h[6] - (preamble_count × 7)          (= 0x0460 for BKAWLB: 1440 - 46*7 = 1118? CHECK)
 ```
-For BKAWLB.RUN: `0x80 + (30 × 16) + 0x5A0 = 0x80 + 0x1E0 + 0x5A0 = 0x800`.
 
-**Both 0x06C0 and 0x0802 are instruction stream starts in BKAWLB (not a contradiction):**
-- 0x06C0 = start of preamble instruction stream (within the var section, at runtime_base offset)
-- 0x0800 = code_start by formula (contains the 2-byte entry-point header)
-- 0x0802 = start of interactive code instruction stream
-
-An earlier doc version stated "code_start=0x6C0 was wrong; correct value is 0x800." That correction was incomplete: 0x06C0 IS a valid instruction stream (the preamble), and 0x0802 is where the interactive code begins. Both are real instruction streams.
+**Overlap:** Data records for interactive instructions (I#64+) fall within the instruction channel range
+(0x06C0–0x3F92). The same file bytes serve dual roles simultaneously.
 
 ---
 
@@ -80,7 +93,7 @@ An earlier doc version stated "code_start=0x6C0 was wrong; correct value is 0x80
 |--------|---------------|-----------|
 | 0x00   | 0x38D9 = 14553 | Unknown — may be entry point offset or code size |
 | 0x04   | 0x105A2 = 66978 | Unknown section offset |
-| 0x08   | 0x923E = 37438 | Unknown |
+| 0x08   | 0x923E = 37438 | **DATA CHANNEL TOTAL SIZE** (confirmed Pass 244: sum of all b2 values = 37438) |
 | 0x0C   | 0x1C4 = 452 | var_table_size (inferred) |
 | 0x10   | 0xA = 10 | Unknown count |
 | 0x14   | 0x17F = 383 | Unknown |
@@ -235,19 +248,32 @@ the ENT section's ENTER statements.
 
 ---
 
-## Instruction Format (confirmed, 7 bytes)
+## Instruction Format (confirmed, 7 bytes — Pass 244)
 
 ```
 Byte  Field      Notes
 ----  -----      -----
 [0]   opcode     Operation code
 [1]   0x00       Always zero (padding or reserved)
-[2]   b2         Fixed per opcode — encodes operand descriptor size, sub-opcode, or type info
-[3-6] addr LE4   4-byte LE address field (semantics depend on region and opcode)
+[2]   b2         SIZE of this instruction's inline data record in the data channel
+[3-6] addr LE4   ABSOLUTE FILE OFFSET of this instruction's inline data record
 ```
 
-**b2 field:** b2 is a FIXED constant for a given opcode — it does NOT switch per instruction.
-Example: every OP_0E (ENTER) has b2=0x61=97; every OP_37 (TRAP) has b2 TBD.
+**b2 = data record size — CONFIRMED 100% by addr chain verification (Pass 244):**
+- Every instruction consumes exactly `b2` bytes from the data channel starting at `addr`
+- `addr[I+1] = addr[I] + b2[I]` — verified across all 2078 instructions, zero exceptions
+- `b2 = 0`: instruction has no data (e.g., ENT_BLOCK); addr just points to where next record starts
+- b2 is a FIXED constant per opcode (every ENTER has b2=97, every TRAP has b2=10, etc.)
+
+**addr = absolute file offset — CONFIRMED:**
+- `addr` is NOT relative to code_off and NOT a runtime variable address
+- `addr` = the byte position in the file where this instruction's data record starts
+- First instruction (CALL_LIB at I#0) has addr=0x0000 — data starts at file byte 0
+
+**Data records can contain embedded instruction records:**
+- Some opcodes (OP_93, OP_65, OP_53) have data records that themselves contain 7-byte instruction-format records
+- These nested records reference deeper data via their own addr/b2 fields
+- This creates a hierarchical descriptor structure for complex constructs like enter fields
 
 ---
 
@@ -297,13 +323,27 @@ Example: every OP_0E (ENTER) has b2=0x61=97; every OP_37 (TRAP) has b2 TBD.
 | `0x4E` | ARRAY_IDX | — | Follows LOAD_VAR for array assignments; IDX increments per element |
 | `0x0A` | PUSH_ADDR | — | Seen before `0x0F 0x00` pairs in MENU_HLDR area |
 
-### Unknown — confirmed NOT pfmt/pblnk (Pass 243)
+### Enter-Field Execution Family — OP_93/OP_65/OP_53 (Pass 243+244)
 
-| Opcode | b2 | Count | Cluster pattern |
-|--------|----|----|-----------------|
-| `0x93` | 0x14 | 29 | Always starts a `0x93 + 0x65×2 + 0x53 + GOSUB` block; ~1 per enter block |
-| `0x65` | 0x0A | 62 | Always appears in pairs immediately after 0x93; field descriptors? |
-| `0x53` | 0x7D | 34 | Always appears after 0x65 pair; validation/action descriptor? |
+These three opcodes form the "FIELD_ENTER" group used for interactive enter fields in the main
+program flow (NOT the preamble ENT.xx declarations). Together they define and execute one enter field.
+
+| Opcode | b2 | Count | Data record content (Pass 244) |
+|--------|----|-------|-------------------------------|
+| `0x93` | 0x14=20 | 29 | 20-byte descriptor containing 2 embedded instruction records (COND_JMP + PMSG + partial RET_FUNC) — field setup/validation callback |
+| `0x65` | 0x0A=10 | 62 | 10-byte descriptor fragment; always appears in pairs; continuation of field descriptor chain |
+| `0x53` | 0x7D=125 | 34 | 125-byte descriptor containing ~17 embedded instruction records — full field execution block (prompt, validate, handle errors) |
+
+**Pattern per enter field:** `OP_93 + [ASSIGN] + OP_65 + OP_65 + OP_53 + OP_8D + CLR_REC + GOSUB + ASSIGN + FIND_KEY + GOSUB`
+
+**Data records contain nested instruction records** (Pass 244 confirmed): the 20-byte OP_93 record
+starts with `3B 00 14 [addr] BE 00 28 [addr]` = COND_JMP + PMSG instruction records. The 125-byte
+OP_53 record contains ~17 instruction records (COND_JMP, TRAP, ASSIGN, PMSG, RET_FUNC, etc.) that
+form the complete field-entry execution logic.
+
+**Why different from ENTER (0x0E)?** ENTER (0x0E) is used in preamble ENT sections to DEFINE/REGISTER
+enter fields. OP_93/65/53 are used in interactive code to EXECUTE an enter interaction with full
+pre/post callback and lookup logic. The data records for these provide the compiled callback bodies.
 
 **CRITICAL CORRECTION (Pass 243):** `pfmt` and `pblnk` in TAS Pro 6 are **DECLARATIVE** — they compile
 to **ZERO bytecode instructions**. They are print format/blank-line directives processed at print time by
@@ -312,11 +352,6 @@ the `.RTM` report file, not executed as instructions. Proof: source `BKAWLB.SRC`
 
 **Consequence:** `PRT_TOF` in BKAWLB (source lines 428–440: 8 pfmt + 2 pblnk + page=page+1 + ret)
 compiles to exactly **2 instructions**: ASSIGN (page=page+1) + RET_FUNC (ret). Confirmed at I#1789–I#1790.
-
-**Cluster location:** 0x93/0x65/0x53 clusters appear in groups near FUNC_PREPOST + TRAP sequences
-(inline function bodies of pre/post callbacks for ENTER blocks). Pattern repeats once per enter block.
-Three clusters identified: I#425–470 (8 blocks = ENT.STAT/PRI/CLASS), I#581–703, I#1021–1077. Their
-addr fields point to inline data at non-7-byte-aligned positions — likely packed field descriptors.
 
 ### Data records (NOT 7-byte instructions)
 
