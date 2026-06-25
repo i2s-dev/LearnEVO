@@ -1176,7 +1176,7 @@ Primary key: MTWO_WIP_WOPRE(8) + MTWO_WIP_WOSUF(2)
 | MTWO_WIP_SQTY | FLOAT | 8 | Scheduled quantity |
 | MTWO_WIP_COMQTY | FLOAT | 8 | Completed quantity |
 | MTWO_WIP_SCRAP | FLOAT | 8 | Scrapped quantity |
-| MTWO_WIP_STATUS | STRING | 1 | Status: F=Released, R=Completed, C=Closed, S=Scheduled, I=In-Process, X=On-Hold |
+| MTWO_WIP_STATUS | STRING | 1 | Status: **S**=Scheduled, **F**=Released, **R**=Completed, **C**=Closed, I=In-Process, X=On-Hold; S/F/R/C SRC-confirmed from BKAWLB.SRC L272-275 (2026-06-25); lifecycle order: S→F→R→C; default WO schedule report includes S/F/R, excludes C |
 | MTWO_WIP_PRTY | STRING | 1 | Priority 1–9 (FK → ISWOPRIO) |
 | MTWO_WIP_SSTART | DATE | 4 | Scheduled start date |
 | MTWO_WIP_SFIN | DATE | 4 | Scheduled finish date |
@@ -12170,7 +12170,7 @@ Pass 87 fills in the rest.
 | MTWO.WIP.WOSUF | WO suffix |
 | MTWO.WIP.CODE | Parent item number |
 | MTWO.WIP.DESC | WO description |
-| MTWO.WIP.STATUS | Status (F=Released, R=Completed, C=Closed, S=Scheduled, I=In Process, X=On Hold) |
+| MTWO.WIP.STATUS | Status: **S**=Scheduled, **F**=Released, **R**=Completed, **C**=Closed, I=In Process, X=On Hold — S/F/R/C SRC-confirmed from BKAWLB.SRC; `mtwo.wip.prty` = priority field |
 | MTWO.WIP.USERCD | User-defined class code |
 | MTWO.WIP.LOC | Location |
 | MTWO.WIP.SQTY | Standard qty to make |
