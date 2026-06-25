@@ -378,6 +378,84 @@ AP-H: Print Checks
 
 ---
 
+## Programs (28 total) — Pass 266 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` — all T7AP* entries.
+
+### Group 1 — Voucher entry
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7APB.RWN` | 301 | EVO.LIB | **AP-B** voucher entry (primary); BKAPINVL+BKAPINVT+BKAPVEND+BKYSMSTR; BKAR.INV 86-var |
+| `t7apv.RWN` | 168 | ISTECH.LIB | **AP-V** AR deposit payment; BKARDEP+BKAPINVT+BKAPVEND+BKAPPO; MTWO.WIP 71-var — pays customer deposits via AP |
+
+### Group 2 — PO receipt / QC
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7APC.RWN` | 285 | ISTECH.LIB | **AP-C** PO receipt with QC integration; BKAPVEND+BKQCMSTR+BKAPPOL+BKAPPO; **BKAP.POL 76-var** (PO line accessor) |
+
+### Group 3 — Vendor master
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7APA.RWN` | 216 | LISTG60.LIB | **AP-A** vendor master editor; BKAPVEND+BKAPVND2+ISTAXGRP+ISEXUSER; BKAP.PO 57-var |
+| `T7APK.RWN` | 110 | LISTG60.LIB | **AP-K** vendor alternate address/info; BKAPVEND+BKAPVND2+CLASMSTR; BKIC.PROD 63-var |
+
+### Group 4 — Check printing
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7APH.RWN` | 216 | ISTECH.LIB | **AP-H** check printing; BKAPCHKF+ISBANKS+ISMCF; **ISIS.MCF 49-var** (multi-currency factor) |
+
+### Group 5 — Voucher inquiry / aging
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7API.RWN` | 191 | LISTG60.LIB | **AP-I** invoice inquiry; BKAPINVT+BKAPVEND; ISIS.MCF 49-var |
+| `T7APE.RWN` | 148 | LISTG60.LIB | **AP-E** AP aging; BKAPINVT+ISMCF+BKAPVEND; ISIS.MCF 49-var |
+| `T7APQ.RWN` | 145 | ISTECH.LIB | **AP-Q** quick voucher select; BKAPVEND+BKAPCHKF; ISIS.MCF 49-var |
+| `T7APG.RWN` | 139 | LISTG60.LIB | **AP-G** AP aging report; BKAPCHKF+BKAPVEND; ISIS.MCF 49-var |
+| `T7APP.RWN` | 109 | LISTG60.LIB | **AP-P** print AP report; BKAPINVL+BKAPVEND; ISIS.MCF 49-var |
+| `T7APF.RWN` | 157 | LISTG60.LIB | **AP-F** print voucher/check history; BKAPVEND+BKAPCHKF+BKAPINVT; EMAIL.CFG 34-var |
+| `T7APT.RWN` | 129 | EVO.LIB | **AP-T** AP transaction report; BKAPVEND+BKAPCHKF+BKAPINVT+BKAPPO; BKAR.INV 86-var |
+| `T7APR.RWN` | 128 | LISTG60.LIB | **AP-R** AP recap/check register; ISBANKS+ISBUILD+BKAPCHKF; EMAIL.CFG 34-var |
+| `T7APX.RWN` | 112 | LISTG60.LIB | **AP-X** AP cross-reference utility; BKAPINVT+ISLINKS+BKAPPOL+BKAPPO; BKAP.PO 57-var |
+
+### Group 6 — Bank reconciliation
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7APY.RWN` | 147 | LISTG60.LIB | **AP-Y** AP bank reconciliation; ISBANKS+BKGLCHK; EMAIL.CFG 34-var |
+| `T7APYB.RWN` | 123 | LISTG60.LIB | **AP-YB** payroll bank interface; ISBANKS+BKPRCURP+BKPRMSTR; **BKPR.EMP 107-var** — links AP bank to payroll current period |
+| `T7APYC.RWN` | 123 | LISTG60.LIB | **AP-YC** bank reconcile + vendor; ISBANKS+BKGLCHK+BKAPVEND; EMAIL.CFG 34-var |
+
+### Group 7 — Utilities / admin
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7APJ.RWN` | 126 | LISTG60.LIB | **AP-J** AP extended vendor data; BKAPVEND+ISAPEX+help tables; EMAIL.CFG 34-var |
+| `T7APZA.RWN` | 125 | LISTG60.LIB | **AP-ZA** AP error/CM tracking; CLASMSTR+BKCMTERR+ISBUILD; EMAIL.CFG 34-var |
+
+### ISIS.MCF namespace — confirmed multi-currency
+
+`ISIS.MCF 49-var` appears in T7APH, T7API, T7APE, T7APQ, T7APG, T7APP, T7GLB, T7GLO, T7GLQ, T7GLK. Consistent with being the **Multi-Currency Framework** exchange rate table — check printing, inquiry, and GL posting all need current exchange rates.
+
+### New tables discovered in AP programs
+
+| Table | Appears In | Inferred Role |
+|-------|-----------|---------------|
+| `BKAPVND2` | T7APA, T7APK | Vendor secondary record — alternate address / 2nd contact |
+| `ISAPEX` | T7APJ | AP extended vendor fields — portal credentials or tax data |
+| `ISEXUSER` | T7APA | External user account — vendor portal login credentials |
+| `BKCMTERR` | T7APZA | CM/error tracking table (credit memo or posting error codes) |
+| `ISLINKS` | T7APX | Cross-reference links (AP voucher ↔ PO line linkage) |
+| `BKARDEP` | t7apv | AR deposit table — customer deposit payments via AP flow |
+| `BKPRCURP` | T7APYB | Payroll current period — AP-YB bridges bank to payroll |
+| `ISMCF` | T7APH, T7GLK | Multi-Currency Framework (exchange rate master) — same as ISIS.MCF |
+
+---
+
 ## Notes & open questions
 
 - BKAPAPO (58f) has one extra field vs BKAPPO (57f) — field not identified; likely an archive timestamp or purge flag.

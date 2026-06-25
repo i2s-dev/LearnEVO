@@ -189,6 +189,87 @@ BKDCSHFT: controls break/lunch time deduction from LAB_START..LAB_FINISH
   to compute net LAB_RUNHRS for each transaction
 ```
 
+## Programs (25 total) — Pass 266 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` — all T7DC* + EvoDC* entries.
+
+### Group 1 — Core labor scanning
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7DCPSF.RWN` | 290 | ISTECH.LIB | **DC-PSF** primary scan / labor collection; BKDCLAB+WOROUT+WORKORD+BKICMSTR; **BKPR.EMP 107-var** |
+| `T7DCA.RWN` | 284 | ISTECH.LIB | **DC-A** labor entry / clock-in-out; BKDCLAB+WORKORD+BKPRMSTR+ISWOEX; **LAB.CYCLE 80-var** (cycle time tracking namespace) |
+| `t7dcb.RWN` | 252 | ISTECH.LIB | **DC-B** bin/location scan; BKICMSTR+BKDCLAB+BKPRMSTR+WORKORD; BKPR.EMP 107-var |
+| `T7DCA2.RWN` | 128 | ISTECH.LIB | **DC-A2** labor entry variant; BKDCLAB+BKPRMSTR+BKYSMSTR+WORKORD; BKPR.EMP 92-var + MTWO.WIP 70-var |
+
+### Group 2 — Review / approval / posting
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7DCG.RWN` | 192 | ISTECH.LIB | **DC-G** labor review / supervisor approval; BKDCLAB+WORKORD+MACHINE+TASCOLOR; BKPR.EMP 107-var + MTWO.WIP 71-var |
+| `T7DCH.RWN` | 181 | ISTECH.LIB | **DC-H** labor posting; BKDCLAB+BKDCCFG+BKPRMSTR+WORKORD; BKPR.EMP 103-var + MTWO.WIP 71-var |
+
+### Group 3 — Reports
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7DCD.RWN` | 151 | LISTG60.LIB | **DC-D** labor detail report; BKPRMSTR+BKPRINFO+BKCPMSTR; BKPR.EMP 105-var + **BKPR.GL 86-var** (payroll GL cost) |
+| `T7DCL.RWN` | 145 | LISTG60.LIB | **DC-L** labor history report; BKPRMSTR+MKAHIST+BKDCLAB+BKPRINFO; BKPR.EMP 105-var + MTWO.WIP 71-var |
+| `T7DCM.RWN` | 102 | EVO.LIB | **DC-M** labor management report; BKPRMSTR+BKDCLAB; BKPR.EMP 105-var |
+
+### Group 4 — Employee / configuration
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7DCN.RWN` | 89 | LISTG60.LIB | **DC-N** employee schedule entry; BKPRMSTR+CALENDAR+BKDCLAB+CLASMSTR; BKPR.EMP 103-var |
+| `T7DCF.RWN` | 86 | LISTG60.LIB | **DC-F** DC configuration / employee setup; BKPRMSTR; BKPR.EMP 103-var |
+| `T7DCE.RWN` | 85 | LISTG60.LIB | **DC-E** operation / workcenter assignment; WOROUT+WORKORD; MTWO.WIP 71-var |
+| `T7DCK.RWN` | 69 | LISTG60.LIB | **DC-K** DC admin/key entry; BKDCLAB+BKPRMSTR; BKPR.EMP 103-var |
+
+### Group 5 — Labels and special functions
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7DCALabel.RWN` | 89 | LISTG60.LIB | **DC-A-LABEL** WO tray / NCR label printing; ISWOTRAY+ISNCR+BKPRMSTR; BKPR.EMP 105-var + MTWO.WIP 71-var |
+| `t7DCina.RWN` | 240 | LISTG60.LIB | **DC-INA** item master inquiry (from DC); BKICMSTR+MTICMSTR+BKAPVEND+BKARCUST; **BKIC.PROD 315-var** + **BKIC.LOC 297-var** — full item master browser embedded in DC |
+| `T7DCSOLookup.RWN` | 52 | EVO.LIB | **DC-SO-LOOKUP** SO lookup from DC terminal; BKARINV; BKAR.INV 86-var |
+
+### Group 6 — Menu / session management
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `EvoDCmenu2.RWN` | 65 | EVO.LIB | DC menu v2; BKSYMSTR+BKAPDESC+BKMENUSU+ISEXUSER; ISTS.CFG 542-var |
+| `EvoDC.RWN` | 51 | ISTECH.LIB | DC session launcher; BKSYMSTR+ISLOG+MKAHIST; ISTS.CFG 529-var |
+| `EvoDCsetup.RWN` | 7 | NZEVO.LIB | DC NZL setup stub; DCL.PERIOD 2-var (labor period dates) |
+| `T7DCC.RWN` | 17 | NZLICE.LIB | NZL license stub — no business logic |
+
+### Notable namespace findings
+
+| Namespace | Count | Program | Meaning |
+|-----------|------:|---------|---------|
+| `LAB.CYCLE` | 80 | T7DCA | Labor cycle time tracking — independent of clock-in/clock-out |
+| `BKPR.EMP` | 107 | T7DCPSF, t7dcb, T7DCG | Employee master accessor — all scan programs need full employee record |
+| `BKPR.GL` | 86 | T7DCD | Payroll GL cost data — DC reports carry payroll-side cost fields |
+| `BKIC.PROD` | 315 | t7DCina | Item master accessor embedded in DC (matches IN-A count) |
+| `MTWO.WIP` | 71 | t7dcb, T7DCG, T7DCH | WIP accessor — DC updates WO operations at scan time |
+| `DCL.PERIOD` | 2 | EvoDCsetup | DC labor period dates (period open/close control) |
+
+### New tables discovered in DC programs
+
+| Table | Appears In | Inferred Role |
+|-------|-----------|---------------|
+| `ISWOEX` | T7DCA | WO exceptions / extensions — additional WO data accessed at scan time |
+| `BKDCCFG` | T7DCH | DC configuration — posting parameters and options |
+| `BKCPMSTR` | T7DCD | CP (company/plant) master — cost pool or plant-level cost grouping |
+| `BKPRINFO` | T7DCD, T7DCL | Payroll info — additional employee pay data beyond BKPRMSTR |
+| `MKAHIST` | T7DCL, EvoDC | MKA history — manufacturer activity log |
+| `ISLOG` | EvoDC | IS event log — session/login audit log |
+| `DCL.PERIOD` | EvoDCsetup | DC labor period control (open/close dates for posting) — namespace only |
+| `ISNCR` | T7DCALabel | Non-Conformance Report — DCLabel prints NCR tags on failing parts |
+| `TASCOLOR` | T7DCG | TAS color table — screen color configuration for DC-G review UI |
+
+---
+
 ## Notes
 
 - All five LAB_* tables share identical schemas. The distinction is purely lifecycle stage: collect → review → post → archive.

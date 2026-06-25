@@ -219,6 +219,97 @@ Key fields: CUSTCODE/NAME, SUBTOT/TAXAMT/FREIGHT/DEPOSIT/RETEN/TOTAL ($ totals),
 ### BKSOXH — SO Invoice Supplemental History (25f)
 Identical structure to BKSOX. Stores archived/closed invoice supplemental records.
 
+## Programs (70 total) — Pass 266 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` — all T7SO* entries. Top 25 by proc count shown; 45 smaller programs follow the same naming conventions.
+
+### Group 1 — Core order entry editors
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SOA.RWN` | 606 | T7DBA.LIB | **SO-A** main order entry; BKARINV+ISTAXGRP+ISSHPVIA+ISORDECO; **BKAR.INV 1376-var** (largest namespace in system) |
+| `T7SOB.RWN` | 221 | DBA.LIB | **SO-B** order acknowledgment print; MTICMSTR+BKARCUST+BKYSMSTR; BKPR.EMP 105-var |
+| `T7SOB75.RWN` | 184 | DBA.LIB | **SO-B** v7.5 variant acknowledgment; same table set as T7SOB |
+| `T7SOPB.RWN` | 194 | DBA.LIB | **SO-PB** print SO (alternative format); MTICMSTR+BKARCUST; BKPR.EMP 105-var |
+| `T7SOOE.RWN` | 244 | DBA.LIB | **SO-OE** order entry alternate; ISBUILD+BKARINV+BKARINVL; BKAR.INV 86-var + MTWO.WIP 71-var |
+
+### Group 2 — Shipping and packing
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SOC.RWN` | 323 | DBA.LIB | **SO-C** ship / certificate of conformance; MTICMSTR+BKARCUST+BKYSMSTR+BKARINV+ISSRINFO; BKPR.EMP 107-var |
+| `T7SOE.RWN` | 244 | ISTECH2.LIB | **SO-E** packing slip / serial receipt; BKARINV+BKARINVL+BKICMSTR+ISSRINFO; **BKAR.INV 344-var** |
+| `T7SOPK.RWN` | 135 | LISTG60.LIB | **SO-PK** packing list; BKARINV+BKARCUST+ISSHPVIA+ISTAXGRP; **BKAR.INV 774-var** (2nd highest in system) |
+
+### Group 3 — Invoicing
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SOF.RWN` | 307 | ISTECH.LIB | **SO-F** invoice print / create; MTICMSTR+BKARCUST+BKSYMSTR+BKYSMSTR; BKPR.EMP 105-var + BKAR.INV 86-var |
+| `T7SOGA.RWN` | 174 | LISTG60.LIB | **SO-GA** GL analysis report; BKARINV+BKYSMSTR+BKSYMSTR+BKARCUST; BKAR.INV 86-var + BKAR.INVL 84-var |
+| `T7SOGCogs.RWN` | 140 | LISTG60.LIB | **SO-GCOGS** COGS (cost of goods sold) report; BKSYMSTR+BKARINV+BKARINVL; BKIC.PROD 63-var |
+| `T7SOGComm.RWN` | 135 | LISTG60.LIB | **SO-GCOMM** sales commissions report; BKSYMSTR+BKARINV+BKARINVL; MTWO.WIP 71-var |
+
+### Group 4 — Scheduling (SO → WO)
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SON.RWN` | 361 | LISTG60.LIB | **SO-N** production scheduling from SO; WORKORD+CALENDAR+BKYSMSTR+BKARINV; **BKIC.LOC 297-var** — highest cross-module namespace for location data |
+
+### Group 5 — Order inquiry / browse
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SOD.RWN` | 218 | LISTG60.LIB | **SO-D** JIT delivery plan; ISARJDLP+BKARINV+BKARINVL+BKARCUST; BKAR.INV 86-var + MTWO.WIP 71-var |
+| `T7SOOA.RWN` | 197 | LISTG60.LIB | **SO-OA** order activity browse; BKSYMSTR+BKARINV+BKARINVL+WORKORD; MTWO.WIP 71-var |
+| `T7SOOI.RWN` | 188 | LISTG60.LIB | **SO-OI** order inquiry; BKSYMSTR+BKARINV+BKARINVL+BKICMSTR; BKIC.PROD 63-var |
+| `T7SOPO.RWN` | 190 | LISTG60.LIB | **SO-PO** print open orders; MTICMSTR+BKYSMSTR+BKARINV+BKARINVL; MTWO.WIP 71-var |
+| `T7SOOF.RWN` | 173 | LISTG60.LIB | **SO-OF** fulfillment / ship-from-loc report; BKSYMSTR+BKARINVL+BKICMSTR+BKICLOC; BKIC.PROD 63-var |
+| `T7SOPC.RWN` | 157 | LISTG60.LIB | **SO-PC** print customer orders; BKYSMSTR+BKARINV+BKARINVL+ISICMSTR; BKAR.INV 86-var |
+| `T7SOOG.RWN` | 150 | LISTG60.LIB | **SO-OG** order grouping/summary; BKSYMSTR+BKARINV+BKARINVL+BKICMSTR; MTWO.WIP 71-var |
+| `T7SOAIMPLINES.RWN` | 156 | LISTG60.LIB | **SO-AIMPLINES** SO import / line import; BKARINV+BKARINVL+BKICREF+MTICMSTR; BKAR.INV 86-var |
+
+### Group 6 — Quick quote / pricing
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SOQH.RWN` | 200 | LISTG60.LIB | **SO-QH** quick order / header; BKICPMAT+BKARCUST+BKICMSTR+BKYSMSTR; BKIC.PROD 126-var + MTIC.PROD 54-var |
+| `T7SOQI.RWN` | 167 | LISTG60.LIB | **SO-QI** quick order inquiry; BKSYMSTR+BKICMSTR+BKICPMAT+MTICMSTR; BKIC.PROD 63-var |
+| `T7SOQK.RWN` | 160 | LISTG60.LIB | **SO-QK** quick kit order; BKICMSTR+MTICMSTR+BKSYMSTR+ISBUILD; BKAR.INV 86-var |
+
+### Group 7 — Order utilities / surcharges
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7SOON.RWN` | 166 | LISTG60.LIB | **SO-ON** order surcharges/notes; BKSYMSTR+ISBUILD+ISARCHG+BKARINV; BKAR.INV 86-var |
+| `T7SOPB` *(see Group 1)* | — | — | — |
+
+### Notable namespace findings
+
+| Namespace | Count | Program | Meaning |
+|-----------|------:|---------|---------|
+| `BKAR.INV` | 1376 | T7SOA | SO entry full invoice accessor — largest in system |
+| `BKAR.INV` | 774 | T7SOPK | Packing list — 2nd highest; reads every invoice field for pack |
+| `BKAR.INV` | 344 | T7SOE | Packing slip — serial receipt link |
+| `BKIC.LOC` | 297 | T7SON | Scheduling from SO — full location/bin awareness |
+| `ISTS.CFG` | 542 | T7SOA, T7SON | System config namespace (appears in nearly all programs) |
+| `BKPR.EMP` | 107 | T7SOC | Shipping uses employee table (Certificate of Conformance signer) |
+
+### New tables discovered in SO programs
+
+| Table | Appears In | Inferred Role |
+|-------|-----------|---------------|
+| `ISORDECO` | T7SOA | Order engineering change — ECO cross-reference on open orders |
+| `ISSHPVIA` | T7SOA, T7SOPK | Shipping method/carrier master (FedEx, UPS, truck, etc.) |
+| `ISSRINFO` | T7SOE, T7SOC | Serial information on SO lines — serial→order linkage |
+| `ISARJDLP` | T7SOD | AR JIT delivery plan — scheduled release quantities by date |
+| `ISARCHG` | T7SOON | AR charge/surcharge codes (freight, handling, misc charges) |
+| `ISBUILD` | T7SOOE, T7SOOI, T7SOON, T7SOQK | Kit/build assembly definition (shared with BM/WO modules) |
+| `BKICPMAT` | T7SOQH, T7SOQI | Customer-specific pricing matrix (customer + part → price) |
+| `BKICREF` | T7SOAIMPLINES | Item cross-reference (customer part# → internal part#) |
+
+---
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*
