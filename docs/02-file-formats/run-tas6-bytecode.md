@@ -1,8 +1,8 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:78/100; major structural discoveries Pass 244
+Status: **partial** — dual-channel architecture confirmed C:82/100; 3-variant byte-diff complete Pass 312
 
-Last updated: 2026-06-24
+Last updated: 2026-06-25
 
 ---
 
@@ -185,16 +185,24 @@ Source lines covered by preamble: 42–113 (SETUP_COLOR through MENU).
 
 ---
 
-## Code Section Header (0x0800)
+## Code Section Header (code_start) — CORRECTED Pass 312
 
-Two bytes at code_start:
-- BKAWLB.RUN: `00 00` → entry at instruction 0 (code stream starts immediately at 0x0802)
-- BKMRF.RUN: `04 2E` (= 0x2E04 LE = 11780) → inline data block precedes instructions
-- BKDCA.RUN: `1D E9` (= 0xE91D LE = 59677) → large inline data block
+The header at `code_start` has **variable size** — instructions start IMMEDIATELY after the
+header bytes. There is no "inline data block" before instructions.
 
-Non-zero values indicate an **inline data section** of that many bytes before the instruction
-stream. BKMRF instructions confirmed at abs=0x3C4A (offset +11786 from code_start), consistent
-with preamble=11780.
+| Program | cs | Header bytes | hdr_size | Stream starts |
+|---------|-----|-------------|---------|---------------|
+| BKAWLB.RUN | 0x0800 | `00 00` | 2 bytes | cs+2 = 0x0802 |
+| BKMRF.org2 | 0x0940 | `57 09 00 00` | 4 bytes | cs+4 = 0x0944 |
+| BKMRF.TEST | 0x0940 | `57 09 00 00` | 4 bytes | cs+4 = 0x0944 |
+| BKMRF.RUN  | 0x0E40 | `04 2E 15 00 00` | 5 bytes | cs+5 = 0x0E45 |
+
+**Rule:** LE16 at cs[0] = 0 → 2-byte header; non-zero → longer header (4 or 5 bytes confirmed).
+Exact semantics of non-zero fields TBD (entry-point offset or section count — not "inline size").
+
+**CORRECTION (Pass 312):** Prior documentation claimed "non-zero LE16 = inline data block size
+before instructions." This was wrong. Previous claim "BKMRF.RUN instructions at abs=0x3C4A" was
+also wrong — confirmed start is **0x0E45** (397 aligned 0x3B b1-zero occurrences from that offset).
 
 ---
 
@@ -437,15 +445,42 @@ Compiles to: 2 instructions — ASSIGN (page=page+1) at I#1789, RET_FUNC (ret) a
 
 ---
 
-## BKMRF Variants (same source, different compile)
+## BKMRF Variants — 3-Way Byte-Diff Results (Pass 312)
 
 `samples/rosetta/` contains three binaries from the same source:
-- `BKMRF.RUN` — 159,375 bytes, version byte 0x?? (full linked)
-- `BKMRF.org2` — 89,175 bytes, version 0x58 (earlier/partial)
-- `BKMRF.TEST` — 85,898 bytes, version 0x51 (test compile)
+- `BKMRF.RUN` — 159,375 bytes, version 0x60, cs=0x0E40, stream at 0x0E45, ~2734 instructions
+- `BKMRF.org2` — 89,175 bytes, version 0x58, cs=0x0940, stream at 0x0944, ~1917 instructions
+- `BKMRF.TEST` — 85,898 bytes, version 0x51, cs=0x0940, stream at 0x0944, ~1851 instructions
 
-These can be byte-diffed to identify which bytes are stable (opcode values) vs.
-variable (addresses that change between compiles). Planned for next analysis pass.
+**3-way byte stability analysis (first 332 common instructions, org2 vs TEST):**
+
+| Byte pos | Field | org2 vs TEST | org2 vs RUN | Interpretation |
+|----------|-------|-------------|-------------|----------------|
+| 0 | opcode | **100% stable** | 22% | Opcodes confirmed; RUN starts different sequence |
+| 1 | b1 | **100% stable** | **100%** | Always 0x00 — confirmed across ALL variants |
+| 2 | b2 | **100% stable** | 23% | b2 is opcode-fixed constant |
+| 3 | addr byte0 (LSB) | 100% (same cs) | 0% | Compile-dependent offsets |
+| 4 | addr byte1 | 100% (same cs) | 0% | Compile-dependent offsets |
+| 5 | addr byte2 | **100% stable** | **100%** | Always 0x00 across ALL variants |
+| 6 | addr byte3 (MSB) | **100% stable** | **100%** | Always 0x00 across ALL variants |
+
+**Key findings:**
+- **b1 (byte 1) = ALWAYS 0x00** — confirmed universally across all three variants.
+- **Addr bytes 5–6 = ALWAYS 0x00** — effective address space is **16-bit** (max addr 0xFFFF).
+  The addr field stores a 2-byte LE16 value in bytes 3–4 with zero padding in bytes 5–6.
+- **Opcode (byte 0) and b2 (byte 2) are stable** between org2 and TEST (100%). The low match
+  vs RUN (22%) reflects different entry points / instruction sequences, NOT opcode instability.
+- org2 and TEST share a **332-instruction common prefix** (first 332 instructions identical byte-for-byte).
+
+**Corrected instruction format:**
+
+```
+[op:1][0x00:1][b2:1][addr_LE16:2][0x00:2]   (7 bytes total)
+        ^^^^                       ^^^^^^
+    always zero               always zero
+```
+
+Effective address space is 16-bit (bytes 3–4). The 4-byte addr field's upper half is always 0.
 
 ---
 

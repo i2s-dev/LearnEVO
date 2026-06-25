@@ -164,7 +164,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Must be run against local copies in `samples/` (not directly against network share)
   - 1122 entries in rwn_symbols.json from 1145 successfully decrypted RWNs; script verified working
   - Gap closed: suwin7.rwn is the sole failure (unknown 5th key) — a blocked-file issue, not a script defect
-- [x] 🔄 Bytecode instruction set — **C: 73/100** (30+ opcodes; sub-code families mapped at 3.2M instruction scale + suwin6t 729-instr deep-dive; disassembler working; Pass 229/242)
+- [x] 🔄 Bytecode instruction set — **C: 76/100** (60+ opcodes observed; sub-code families mapped; pool confirmed at 2875-instr scale T7FOD; Pass 229/242/312)
   - Dispatch table = program instructions: `[op][b1][b2][sub] + [pool_offset_LE4]` (8 bytes each, uniform)
     - **b1 and b2 are UNIVERSALLY 0x00** — confirmed across 3,204,306 instructions in 1,119 programs (3.2M scale)
     - **Single exception: 0x57 EXECUTE_FORM has b2=0xFE** for main/top-level form; b2=0x00 for sub-forms
@@ -202,7 +202,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Data channel total size stored at header offset 0x08 (= 0x923E for BKAWLB)
   - Data channel overlaps instruction channel: ENTER field descriptors (I#64+) share bytes with code region
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 78/100** (Pass 244: dual-channel architecture confirmed; b2=data_size proven)
+- [x] 🔄 Bytecode instruction set — **C: 82/100** (Pass 244/312: dual-channel confirmed; 3-variant byte-diff complete; code_start header corrected; addr is 16-bit effective)
   - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
   - b2 = data record size per instruction; addr = absolute file offset of that record (CONFIRMED Pass 244)
   - addr[I+1] = addr[I] + b2[I] — zero exceptions across all 2078 instructions

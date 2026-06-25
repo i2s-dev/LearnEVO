@@ -1,7 +1,7 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, pool decoded, 30+ opcodes identified, sub-code families mapped, b2=0x00 confirmed at scale, sub=fixed-per-opcode confirmed at 729-instr scale C:73/100
-Last updated: 2026-06-24
+Status: partial — header confirmed, symbol tables confirmed, pool decoded, 60+ opcodes observed, sub-code families mapped, pool confirmed at 2875-instr scale, C:76/100
+Last updated: 2026-06-25
 
 ---
 
@@ -197,6 +197,51 @@ Top opcodes by frequency across 3,204,306 instructions in 1,119 .dec files:
 | 0x29   | 0x05 | 4K           | varies    | **FORM_OP** — form operation (FORM family) | 55% |
 | 0x71   | 0x05 | varies       | varies    | **EXIT2** — exit variant | 80% |
 | 0x9A   | 0x0C | varies       | varies    | **DB_READ** — read from database file | 75% |
+
+### Additional Opcodes from T7FOD (Pass 312 — 2875-instruction corpus, semantics TBD)
+
+T7FOD.RWN.dec (276,693 bytes, 2875 instructions, 1479 vars, 103 procs) adds 31 new opcodes to the
+observed set. Instruction stream: 0x6C8 – 0x609F (8-byte format, all b1=0x00). Pool at 0x60A0.
+
+| Opcode | sub | Count | Notes |
+|--------|-----|-------|-------|
+| 0x2A   | 0x1A | 31 | High frequency — likely CALC or comparison operator |
+| 0xC7   | 0x19 | 21 | Possibly PUSH variant (sub=0x19 same as PUSH/POP family) |
+| 0x4A   | 0x09 | 15 | READ family (sub=0x09 same as READ_PROP 0x49) — READ variant |
+| 0xD3   | 0x10 | 12 | STATUS family (sub=0x10 same as GET_STATUS 0x31) — variant |
+| 0xA1   | 0x00 | 11 | Unusual sub=0x00 — special operation (EXIT/TERM candidate) |
+| 0x5C   | 0x0C | 8  | DB family (sub=0x0C same as DB_READ 0x9A) — DB variant |
+| 0x56   | 0x0A | 8  | ASSIGN family (sub=0x0A) — ASSIGN variant |
+| 0x93   | 0x14 | 5  | BRANCH family (sub=0x14); also in .RUN as FIELD_ENTER_BODY |
+| 0xC0   | 0x04 | 5  | CALL family (sub=0x04) — CALL variant |
+| 0x0C   | 0x0F | 5  | READ sub-family? |
+| 0x5A   | 0x25 | 5  | Unknown sub=0x25 |
+| 0x5B   | 0x1E | 4  | Unknown sub=0x1E |
+| 0x47   | 0x09 | 2  | READ family (sub=0x09) |
+| 0x43   | 0x09 | 2  | READ family (sub=0x09) |
+| 0xDA   | 0x0A | 2  | ASSIGN family |
+| 0x1D   | 0x1A | 2  | Same sub as 0x2A; possibly paired |
+| 0x2B   | 0x06 | 3  | FIELD family (sub=0x06) |
+| 0x44   | 0x05 | 1  | FORM family (sub=0x05) |
+| 0x46   | 0x09 | 1  | READ family |
+| 0x4A   | 0x09 | — | (see above) |
+| 0x6D   | 0x23 | 1  | Unknown |
+| 0xB7   | 0x06 | 1  | FIELD family |
+| 0xBD   | 0x06 | 1  | FIELD family |
+| 0xC6   | 0x0F | 1  | READ sub-family? |
+| 0xCC   | 0x0F | 1  | READ sub-family? |
+| 0xCD   | 0x10 | 1  | STATUS family |
+| 0xD1   | 0x05 | 1  | FORM family |
+| 0xD9   | 0x07 | 1  | Unknown |
+| 0x0B   | 0x0A | 1  | ASSIGN family |
+| 0x12   | 0x0A | 1  | ASSIGN family |
+| 0x2C   | 0x32 | 1  | Unknown |
+| 0x34   | 0x15 | 1  | RETURN family (sub=0x15 same as RETURN 0x30) |
+
+**Pool confirmation from T7FOD (Pass 312):** The flat-byte-stream pool structure
+(type tags 0x41/0x43/0x46/0x4E/0xFF/0xFD) confirmed at 2875-instruction scale.
+Pool starts at 0x60A0; first entry = STRING "T7FOD.DFM" (0x09 bytes at pool+4).
+ISTS customization marker at pool+0x4A: " - ISTS Enhancement 06/02/16".
 
 **Notable program-wide semantic observations (Pass 229 disassembly):**
 

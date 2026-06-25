@@ -267,6 +267,11 @@ to resolve fully:
     - **New opcodes from suwin6t.rwn (Pass 242)**: OP_1A (sub=0x21, 11×), OP_31 (sub=0x10, 11×), OP_D9 (sub=0x07, 1×), OP_B9 (1×), OP_89 (1×), OP_8A (1×), OP_0C (1×), OP_45 (1×). OP_1A and OP_31 are significant (11× each in a 729-instruction program).
     - **Pool type 0x53 identified**: appears to be a second string type (same format as 0x41 but different type byte). Need more samples.
     - Current status: **C: 73/100**. Remaining unknowns: branch target encoding (requires tp7runtime disassembly); per-opcode poff delta; pool types 0x53/0x48/0x0C/etc.; semantics of OP_1A/OP_31; CALL family sub-semantics.
+    **Pass 312 additions (2026-06-25 — T7FOD.RWN.dec 2875-instruction corpus):**
+    - **Pool type system confirmed at scale**: flat-byte-stream structure (0x41/0x43/0x46/0x4E/0xFF/0xFD) confirmed in T7FOD (276KB, 2875 instructions, 1479 vars). Pool starts at 0x60A0 = instr_start + 2875×8. Pool[0] = STRING "T7FOD.DFM". Pool[0x4A] = ISTS customization marker " - ISTS Enhancement 06/02/16".
+    - **31 additional opcodes observed** from T7FOD (see rwn-binary-format.md for full table). Notable: 0x2A (31×, sub=0x1A), 0xC7 (21×, sub=0x19), 0x4A (15×, sub=0x09), 0xD3 (12×, sub=0x10), 0xA1 (11×, sub=0x00). Total unique opcodes observed: 60+.
+    - **Dispatch header format clarified**: 8 zero bytes at 0x6C0 for T7FOD; instructions at 0x6C8. Previous code assumed hdr[0]=pool_offset but T7FOD has hdr[0]=0.
+    - Current status updated to **C: 76/100**.
 
 17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
     - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has
@@ -293,12 +298,16 @@ to resolve fully:
         records for field validation/callback logic. OP_93(20 bytes)=field setup; OP_65(10 bytes)=callback attr;
         OP_53(125 bytes)=full field exec (~17 embedded instructions).
       - **BKMRF pre-instruction value**: = total data channel bytes for preamble instructions (same h[0x08] concept).
+    **Pass 312 additions (2026-06-25 — 3-variant BKMRF byte-diff, corrected code_start header):**
+    - **Code_start header is variable size** (NOT fixed 2 bytes): BKAWLB=2-byte header (`00 00`), BKMRF.org2/TEST=4-byte (`57 09 00 00`), BKMRF.RUN=5-byte (`04 2E 15 00 00`). Instruction stream starts IMMEDIATELY after header bytes. Previous "inline data block" theory was wrong.
+    - **Previous "BKMRF.RUN instructions at 0x3C4A" was an error** — confirmed start is 0x0E45 (397 aligned 0x3B occurrences from cs+5).
+    - **3-variant byte-diff results**: org2 vs TEST share 332-instruction common prefix (100% identical). b1 (byte 1) = 100% stable across ALL 3 variants. Addr bytes 5–6 = 100% zero across all 3 → **effective address space is 16-bit** (addr fits in bytes 3–4 as LE16, zero-padded).
     - **Still open:**
       - **Exact semantic meaning** of each embedded instruction within OP_93/OP_65/OP_53/OP_8D data blobs.
       - **OP_8D(b2=20)**: follows OP_53 in field-enter clusters; data contains embedded instructions; role unknown.
-      - **Remaining unknown opcodes**: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A,
-        OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_48, OP_57
+      - **Code_start header semantics**: what does the non-zero LE16 value encode (entry-point offset? section count?)?
       - **runtime_base formula**: which header field encodes the runtime_base threshold?
+      - Current status updated to **C: 82/100**.
 
 ## Newly Confirmed Tables (Pass 239) — DDF Schemas Not Yet Validated
 
