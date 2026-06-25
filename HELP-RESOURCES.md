@@ -886,20 +886,20 @@ Primary key: `MTRO_CODE`(15) item code + `MTRO_OPER`(2) operation sequence.
 | MTRO_TMACHDESC | STRING 30 | Machine type description |
 | MTRO_TOOL | STRING 15 | Tool code |
 | MTRO_TOOLDESC | STRING 30 | Tool description |
-| MTRO_NUM | UBINARY 2 | Number of machines |
-| MTRO_NUM_PERSON | FLOAT 8 | Number of persons per machine |
+| MTRO_NUM | UBINARY 2 | Number of machines (dflt 1; SRC-confirmed: `enter MTRO.NUM dflt 1`, protected from 0) |
+| MTRO_NUM_PERSON | FLOAT 8 | Number of persons per machine (dflt 1) |
 | MTWO_MISC_COST / MTWO_MISC_DESC | FLOAT/STRING | Misc cost + description (WO-era field name in ROUTING table) |
 | MTRO_MISC_ACOST | FLOAT 8 | Actual misc cost |
 | MTRO_OP_TEMP_NO | UBINARY 2 | Operation template number |
-| MTRO_NUM_PROCES | UBINARY 2 | Number of processes per cycle |
-| MTRO_TIME_PERPR | TIME 4 | Time per process |
-| MTRO_MD_PROC_HR | STRING 1 | Method: processes per hour flag |
-| MTRO_PROC_PERHR | FLOAT 8 | Processes per hour |
-| MTRO_STD_TIME | STRING 1 | Standard time flag |
+| MTRO_NUM_PROCES | UBINARY 2 | Number of parallel/sequential processes per cycle (dflt 1; if 1, multi-process fields skipped) |
+| MTRO_TIME_PERPR | TIME 4 | Time to complete one process cycle |
+| MTRO_MD_PROC_HR | STRING 1 | **M**=multiply throughput (parallel processes) / **D**=divide throughput (sequential passes); default from BKYS.YN[36] |
+| MTRO_PROC_PERHR | FLOAT 8 | Processes per hour = 3600 / TIME_PERPR; after M/D: PARTSHR = PROC_PERHR × NUM_PROCES (M) or ÷ NUM_PROCES (D) |
+| MTRO_STD_TIME | STRING 1 | Standard time flag (Y/N); default from BKYS.YN[37] |
 | MTRO_MIN_CHG | FLOAT 8 | Minimum charge |
 | MTRO_OVERLAP | UBINARY 2 | Overlap days with previous operation |
 | MTRO_PIECE_RATE | FLOAT 8 | Piece rate pay |
-| MTRO_LONGTIME | FLOAT 8 | Long-run time adjustment |
+| MTRO_LONGTIME | FLOAT 8 | Long-cycle time (operations lasting > 1 shift); **mutually exclusive with TIMEPART/PARTSHR** — set to 0 when TIMEPART or PARTSHR is entered; shown only when BKYS.YN[66]='Y' |
 | MTRO_PRINT | STRING 1 | Print flag |
 | MTRO_CLASS | STRING 15 | Classification code |
 | MTRO_EXTRA | STRING 150 | Extra notes |
@@ -910,6 +910,33 @@ Primary key: `MTRO_CODE`(15) item code + `MTRO_OPER`(2) operation sequence.
 | MTRO_EST_TAG | STRING 10 | Estimating tag |
 
 **DDF note:** The DDF table name is `ROUTING` but all field names use the `MTRO_` prefix. One field (`MTWO_MISC_COST`, `MTWO_MISC_DESC`) has the WO-era `MTWO_` prefix — an artifact of field reuse.
+
+**Routing time calculation model (SRC-confirmed from BKROA.SRC):**
+
+Two mutually exclusive time modes exist per operation:
+
+| Mode | When used | Fields |
+|------|-----------|--------|
+| TIMEPART / PARTSHR | Normal per-piece operations | MTRO_TIMEPART (time/piece), MTRO_PARTSHR (pieces/hr) |
+| LONGTIME | Operations spanning more than one shift | MTRO_LONGTIME; toggled by BKYS.YN[66]='Y' |
+
+When either TIMEPART or PARTSHR is entered, `MTRO_LONGTIME` is set to 0 automatically.
+
+**Multi-process calculation (BKROA.SRC L617-626):**
+When `MTRO_NUM_PROCES > 1`, the routing entry adds a multiply/divide step:
+```
+MTRO_PROC_PERHR = 3600 / MTRO_TIME_PERPR
+if MD_PROC_HR = 'M':  PARTSHR = PROC_PERHR × NUM_PROCES   (parallel — throughput multiplied)
+if MD_PROC_HR = 'D':  PARTSHR = PROC_PERHR / NUM_PROCES   (sequential passes — throughput divided)
+MTRO_TIMEPART = ftot(3600.0 / MTRO_PARTSHR)
+```
+Use 'M' when multiple identical machines run simultaneously; use 'D' when one piece must pass through the same machine N times.
+
+**Outside-process cost basis (MTWC_OUTPROC, BKROA.SRC L523-544):**
+For type-P (Outside Processing) operations, the vendor cost calculation depends on the work center's `MTWC_OUTPROC` field:
+- `S` = surface area: `MTRO_MACHINE = MTIC_PROD_CUBFT` (cubic feet)
+- `W` = weight: `MTRO_MACHINE = MTIC_PROD_WT`
+- `Y` = cost per lb: `MTRO_VENDCOST = MTWC_COST_LB × MTIC_PROD_WT`
 
 **Primary tables:**
 
@@ -934,10 +961,7 @@ the EDI-imported routing staging table, not the live ROUTING table.
 **Copy routing (F3 / G.COPY):** Duplicates all ROUTING records from source part to target part.
 G.COPY.SPEC option: additionally copies all BKRTSPEC (specs/notes) records.
 
-**Confidence: 87/100** — BKROA.SRC re-analyzed (Pass 119); ROUTING (62f) schema confirmed from
-DDF; BKRTEMTR (EDI import staging) and ROUTTEMP (edit buffer) confirmed from source; DE-J-C
-call path and G.COPY.SPEC behavior confirmed; all ~20 entry-procedure field names map to MTRO_
-DDF names.
+**Confidence: 91/100** — BKROA.SRC fully analyzed (Pass 281): ROUTING (62f) schema confirmed from DDF; time calculation model (TIMEPART/LONGTIME mutual exclusion, multi-process M/D logic, MTWC.OUTPROC S/W/Y cost basis) SRC-confirmed L523-544, L617-646; MTRO.NUM=number-of-machines SRC-confirmed (dflt 1, protected from 0); all operation TYPE codes L/P/A binary-confirmed from BKROA.RUN [311-313].
 
 ---
 
