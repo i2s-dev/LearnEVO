@@ -183,6 +183,59 @@ Click **Go** and you are prompted whether to create a new order/RFQ or add lines
 
 ---
 
+## Program Reference (DFM/Binary Confirmed — Pass 314, 2026-06-25)
+
+Technical details confirmed from DFM field bindings (T7FOC/D/E.DFM) and string extraction from
+decrypted T7FOD/E.RWN binaries. This section supplements the CHM content above.
+
+### T7FOC — FO-C Enter Option Prices
+
+| Field | TAS variable | Notes |
+|-------|-------------|-------|
+| Feature | `from.item` | Type-O item entry |
+| Feature description | `PAR.DESC` | Auto-filled from BKICMSTR |
+| Option | `thru.item` | Component item within the feature's BOM |
+| Option description | `COMP.DESC` | Auto-filled from BKICMSTR |
+| Use STD Customer Pricing? | `BKBM.PROD.OPYN[4]` | Index 4 of OPYN array in BKBMMSTR |
+| Add Price to Parent? | `BKBM.PROD.OPYN[5]` | Index 5 of OPYN array in BKBMMSTR |
+| Option price | `BKBM.PROD.PRICE` | Stored on the BKBMMSTR BOM line |
+
+**BKBM.PROD.OPYN[] indices confirmed** (only 4 and 5 observed in T7FOC):
+- `OPYN[4]` = Use standard customer pricing flag
+- `OPYN[5]` = Add price to parent flag
+
+### T7FOD — FO-D Print Option Prices
+
+- **RTM template:** `T6FOD1.RTM` (legacy TAS Pro 6-era report template)
+- **Tables:** BKICMSTR, BKBMMSTR, BKICLOCM, CLASMSTR (item class), ISCATMSTR (item category)
+- **Validation:** Items must have `BKIC.PROD.TYPE = "O"` — non-Feature items are rejected
+  with: *"The item you have entered is not a Feature. Please enter a new Item Number or use F2
+  to display a list of features."*
+- **BOM check:** Features without a BOM get: *"The Feature you have entered does not have a
+  Bill of Material."*
+- **Category filter:** Requires category control to be enabled (ISTS.CFG); error if not:
+  *"The Category control is not turned on."*
+- **Class filter:** Uses `mtclass.m.class` for item class lookup
+
+### T7FOE — FO-E Print Option Where Used
+
+- **RTM template:** `T6FOE1.RTM` (legacy TAS Pro 6-era)
+- **Tables:** BKICMSTR, MTICMSTR, BKBMMSTR, BKICLOCM, CLASMSTR + standard session tables
+- **Single-item entry:** `BKIC.PROD.CODE` — F2 opens inventory lookup
+- **Error if no where-used:** *"The item you have entered is not a component in any Bill of
+  Materials."*
+- **Output columns:** Feature, Option, Option Where Used — one row per BOM relationship
+- **Dual-mode:** Enter an Option → lists Features containing it; enter a Feature → lists
+  parent products whose BOM contains that Feature
+
+### T7FOC — BKBMMSTR OPYN Array
+
+The BKBMMSTR (BOM master) table has an `OPYN` array field. T7FOC accesses indices 4 and 5.
+These are the two option-specific boolean flags stored on every BOM line for Options-type
+components. They control pricing behavior in SO-A when a configured item is ordered.
+
+---
+
 ## Cross-references
 
 | Module | Relationship |

@@ -309,31 +309,21 @@ to resolve fully:
       - **runtime_base formula**: which header field encodes the runtime_base threshold?
       - Current status updated to **C: 82/100**.
 
-## Newly Confirmed Tables (Pass 239) — DDF Schemas Not Yet Validated
+## ~~Newly Confirmed Tables (Pass 236-239)~~ RESOLVED Pass 315 2026-06-25
 
-| Table | First Seen | Confirmed From | Schema Status |
-|---|---|---|---|
-| BKSYPRTR | ISSHPCAL2+T7ISASER (Pass 239) | DB file table entry | DDF not found; system printer configuration |
+All 9 tables confirmed present in the 659-table DDF schema (checked against tier1/2/10/11-tables.md).
 
-## Newly Confirmed Tables (Pass 236–237) — DDF Schemas Not Yet Validated
-
-These tables were first documented from var extraction but have not been cross-checked against
-the 659-table DDF schema catalog (tier2-tables.md). May not be present in the Pervasive DDFs.
-
-| Table | First Seen | Confirmed From | Schema Status |
-|---|---|---|---|
-| BKSYAR | T7SORevu (Pass 238) | DB file table entry | DDF not found; AR system params (parallel to BKSYAP) |
-| ISARCHG | T7SORevu (Pass 238) | DB file table entry | DDF not found; IS-era AR change audit (parallel to ISAPCHG) |
-| BKICREF | T7POS (Pass 236) | DB file table entry | DDF not found; structure unknown |
-| ISORDECO | T7POSI (Pass 236) | DB file table entry | DDF not found; structure unknown |
-| BKSYAP | T7POA (Pass 237) | BKSY.AP.* 24-var namespace | DDF not found; new AP system params table |
-| ISAPEX | T7POA (Pass 237) | ISAPEX.* 22-var namespace | DDF not found; ACH/bank approval record |
-| ISECO | T7POA (Pass 237) | IS.ECO.* 12-var namespace | DDF not found; ECO record |
-| ISJOB | T7POA (Pass 237) | IS.JOB.* 9-var namespace | DDF not found; job-cost job master |
-
-**Next step:** Search for these table names in the 659-table DDF listing. If absent, they may be
-Btrieve tables defined in `.DDF` files outside the main DBAMFG$ share, or they may be newer
-additions not in the DDF extract.
+| Table | DDF Location | Status |
+|---|---|---|
+| BKSYPRTR | tier2-tables.md, primary-keys.md | DDF confirmed |
+| BKSYAR | tier2-tables.md, primary-keys.md | DDF confirmed |
+| ISARCHG | tier2-tables.md, tier10-tables.md | DDF confirmed |
+| BKICREF | tier1-tables.md, primary-keys.md | DDF confirmed |
+| ISORDECO | tier2-tables.md | DDF confirmed |
+| BKSYAP | tier1-tables.md, tier2-tables.md | DDF confirmed |
+| ISAPEX | tier2-tables.md, tier11-tables.md | DDF confirmed |
+| ISECO | tier2-tables.md | DDF confirmed |
+| ISJOB | tier1-tables.md, tier2-tables.md | DDF confirmed |
 
 ---
 
