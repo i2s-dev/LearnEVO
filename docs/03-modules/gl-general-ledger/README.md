@@ -365,9 +365,12 @@ Source: `samples/rwn_symbols.json` — all T7GL* entries.
 **BKGL.CHK.*** — Check register fields (11 vars):
 `AMT / CHKACT / CUST / DATE / DATER / EXTRA / FLAG / KEY / NAME / NUM / TYPE / VEND`
 
-**BKGL.STB.*** + **BKGL.STC.*** — Financial statement balance groups (T7GLF):
-- STB = Statement B (Balance Sheet): GLA (assets) / GLL (liabilities) / GLO (other) each with F/MT/T (from/month-total/total) periods + TTLS
-- STC = Statement C (Income Statement): same structure
+**BKGL.STB.***, **BKGL.STC.***, **BKGL.STI.*** — Financial statement row groups (T7GLF, Pass270 2026-06-25):
+- **STB** = Balance Sheet: `GLA` (assets) / `GLL` (liabilities) / `GLO` (equity/other) — each with `.F` / `.MT` / `.T` (first-period / month-to-date / year-to-date total) + `GLATTL` / `GLLTTL` / `GLOTTL` totals
+- **STC** = Cash/Comparison: `GLA` / `GLI` (income/inflow) / `GLL` / `GLN` (net) — each with `.F` / `.MT` / `.T` periods + totals
+- **STI** = Income Statement: `GLC` (COGS) / `GLE` (expenses) / `GLI` (revenue/income) / `GLOE` (other exp) / `GLOI` (other inc) / `GLT` (total) — each with `.F` / `.MT` / `.T` periods + totals
+
+BKGLSTMT (104f) stores pre-computed statement rows. The DDF key `BKGL_STB_GLA_F_1` subscript suggests multiple account-group rows per statement type. T7GLF is the sole accessor (189 procs). Exact multi-row encoding TBD.
 
 ### Additional IS-Prefixed Tables (discovered via T7GL* DB lists)
 

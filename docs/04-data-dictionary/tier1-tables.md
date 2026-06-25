@@ -608,7 +608,7 @@ Uses `BKCM_ACCN_*` prefix (Contact Manager namespace). Stores 10 contact slots p
 
 --- — Inventory Item Master
 
-File: `BKICMSTR.B` | Module: IN | Fields: 64 (all confirmed from DDF — Pass 124 2026-06-19)
+File: `BKICMSTR.B` | Module: IN | Fields: 64 (all confirmed from DDF — Pass 124 2026-06-19) | **C: 82/100** — Pass270 (2026-06-25): 63 unique BKIC.PROD.* named vars from rwn_symbols.json confirm all DDF fields in active runtime use; only BKIC_PROD_ADTR flag bit meanings unconfirmed
 
 Primary key: `BKIC_PROD_CODE` (field 1). BKICAMTR and BKICEMTR are structurally **identical** (multi-company mirrors — "A" company and "E" company variants).
 

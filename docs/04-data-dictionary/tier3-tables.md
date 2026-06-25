@@ -116,9 +116,13 @@ Record size: ~215 bytes, 26 fields
 | 195 | BKBM_UID | STRING | 20 | Unique identifier |
 
 **BOM variant tables** (same structure):
-- `BKBMMSTR` — active production BOM
-- `BKBMAVAL` — alternate/validation BOM
-- `BKBMAMTR` — auto-calculated/master BOM
+- `BKBMMSTR` — active production BOM (258 programs; BKBM.PROD.DUPOP confirmed accessed — Pass270 2026-06-25)
+- `BKBMAVAL` — alternate/validation BOM (**LEGACY: 0 programs access this table in T7 generation**)
+- `BKBMAMTR` — auto-calculated/master BOM (**LEGACY: 0 programs access this table in T7 generation**)
+
+**Satellite tables confirmed (Pass270 2026-06-25):**
+- `BKBMDIM` — cut-plan / material nesting dimensions (7 programs: T7SOA, T7SMJL, T7SOB, T7BMA); fields: COMP, EXTRA, KEY, LINE, MACH, PARENT, PART.X, PART.Y, REMN.X, REMN.Y, TRIM.X, TRIM.Y
+- `BKBMREMK` — BOM remark/notes (32 programs: T7SOA, T7SMJL, T7WOC, T7WOD); fields: COMP, EXTRA, KEY, LINE, PARENT, REMARK, UID
 
 ---
 
