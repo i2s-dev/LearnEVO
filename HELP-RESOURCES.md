@@ -19789,7 +19789,9 @@ All forms reside in `\\i2s109-solidcrm\DBAMFG$\T7INL*.DFM`.
 | T7INLT | IN-L-T | **ABC Analysis / Cycle Count Setup** — assign cycle codes based on usage | Item/class/category from/thru, item type [RFAMNLTK], usage date from/thru, usage $ from/thru; Cycle Code |
 | T7INLV | (BASE Blank) | **Packaging Type Assignment** — link items to packaging types in batch | Item from/thru, Packaging Type (TASENTER1), class/category from/thru, item type [RFAMNLBTKO], active status [YNODEPSQR] |
 
-*T7INLP and T7INLU do not exist on the network share (skipped letters in the sequence).*
+*T7INLP and T7INLU do not exist on the network share (skipped letters in the sequence). T7INLOA is a sub-form of T7INLO (see below).*
+
+| T7INLOA | IN-L-O-A | **Inventory Transaction Archive/Restore** — companion to T7INLO | Item/class/category/type range, active status [YNODE], User-Define from/thru; Archive or Restore [A/R] selector; "Purge Inventory Transactions" option |
 
 ### Inventory GL Transaction Type Codes (from T7INLO)
 
@@ -19828,6 +19830,86 @@ These are the valid GL-side transaction type codes for inventory movements — c
 - **Assign packaging types to items:** IN-L-V
 - **View raw material physical dimensions:** IN-L-F
 - **GL reconciliation and inventory transaction purge:** IN-L-O (GL-G)
+- **Archive or restore inventory transactions:** IN-L-O-A (T7INLOA)
+
+---
+
+## SOG — SO Gross Cost / Commission Reports (Pass 300 — 2026-06-25)
+
+T7SOGCG.DFM and T7SOGCM.DFM are **0-byte placeholders** (empty files — reserved form names, no content).
+
+**T7SOGCogs.DFM** (52KB) — **SOG COGS Report**: filter by Invoice# from/thru, SO# from/thru, Shipper# from/thru, Invoice Date from/thru. Prints cost of goods sold (COGS) per invoice/SO.
+
+**T7SOGComm.DFM** (52KB) — **SOG Commission Report**: identical filter fields as SOGCogs (Invoice#/SO#/Shipper#/Invoice Date ranges). Prints commissions due/paid per invoice/SO.
+
+Both forms are accessed via the SO module (SO-G submenu) for post-shipment cost and commission analysis.
+
+---
+
+## HH — Handheld Sub-Form Library (Pass 300 — 2026-06-25)
+
+Handheld (HH) module sub-forms called by the main EvoDC handheld programs. All read from `\\i2s109-solidcrm\DBAMFG$\T7HH*.DFM`.
+
+### HH WO — Work Order Handheld Sub-Forms (t7hhwo* — 8 forms)
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| t7hhwog | Issue Material | Issue WO components; label printing (RTM, qty, Y/N/Ask); X labels per component |
+| T7HHWOIBIN | WC Bin Selection | Select bin for issued component (component item, WO, bin scan) |
+| T7HHWOIProcess | PROCESS DATA | Progress/wait screen while WO material issue processes |
+| T7HHWOLabel | WO Label | Print WO labels for finished+semi-finished sequences; seq ranges, item class, hour remaining filter, ship box RTM, oper from |
+| T7HHWOLookup | Sales Orders | SO list popup lookup |
+| T7HHWOLOT | RELEASE LOT NUMBER | Scan/assign lot numbers for WO issue; item/desc/qty/UOH display |
+| t7hhwop | Finish Production | WO completion entry; issue date prompt [YNOnce], WO status filter [FRXI], default final qty to Y |
+| T7HHWOSCRAP | Report Scrap Material | Scrap reporting with label printing; lot# + qty entry |
+
+### HH PO — PO Receiving Handheld Sub-Forms (t7hhpoc* — 5 forms)
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| t7hhpoc | Receive PO | Main PO receiving; vendor+item alerts; large screen option; vendor/item display |
+| T7HHPOCBIN | Receive PO | PO receiving to specific bin location |
+| T7HHPOCLot | Receive Lot Numbers | Scan/assign lot numbers during PO receipt |
+| T7HHPOCNotes | Notes Caption | Popup notes display (5 POPLABEL fields) shown during receiving |
+| T7HHPOCSER | Receive Serial Numbers | Scan/assign serial numbers during PO receipt |
+
+### HH IN — Inventory Handheld Sub-Forms (t7hhin* — 5 forms)
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| t7hhinbins | WC Item Lookup | Bin-level item lookup for handheld device |
+| t7hhINGA | Print Inventory Labels | Print item labels during handheld ops; lot qty option, PO line qty option |
+| t7hhinlj | Transfer Inventory | Handheld inventory transfer; from/to location+bin, current OH, qty, transfer date, from WC |
+| T7HHINLJLot | Transfer Lot Numbers | Scan lot numbers during handheld transfer |
+| T7HHINLJSer | Transfer Serial Numbers | Scan serial numbers during handheld transfer |
+
+### HH SS — Shipping/Scan Sub-Forms (T7HHSS* — 5 forms)
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| T7HHSSOE | Shipping | Scan items into box; item/desc/qty/UM/box# display; Clear+Reset functions |
+| t7hhssoeLabels | Print Box Content Labels | Print box content labels (RTM, box#, printer, lot/serial options); Start New Box button |
+| t7hhssoeLverify | PO-G | PO label/list verification display |
+| T7HHSSOESVerify | Sales Orders | SO label/list verification display |
+| T7HHSSOEVerify | Sales Orders | SO label/list verification with "All" option |
+
+### HH SO — SO Shipping Handheld Sub-Forms (T7HHSO* — 5 forms)
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| T7HHSOBIN | WC Bin Selection | Bin selection for SO shipping pick (scan bin) |
+| T7HHSODD | Shipping | SO shipping driver; reprint invoice; SO# scan; service/repair flag; cust code/name |
+| T7HHSOLookup | Sales Orders | SO list popup lookup |
+| T7HHSOLOT | RELEASE LOT NUMBER | Assign lot numbers to SO shipment line |
+| T7HHSOSER | Print Mattress Labels | Print mattress-specific serial labels (industry-specific for mattress manufacturing) |
+
+### HH DC — Data Collection Handheld Sub-Forms (T7HHDC* — 3 forms)
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| T7HHDCA | Shipping | Employee DC clock-in; WO + Sequence; Start/Stop Shift button; shows WO item + sequence desc |
+| t7hhdcb | Loading.... | Loading/splash stub (~5KB — near-empty) |
+| t7hhdcc | Loading.... | Loading/splash stub (~5KB — near-empty) |
 
 ---
 
@@ -19954,3 +20036,34 @@ Confirmed from T7PRLI (W-2 processing form — standard IRS W-2 payer codes):
 - **Prepare California DE-9 quarterly:** PR-L-J
 - **Export FUTA/SUTA/FICA employer taxes (state UI):** PR-L-F
 - **View employee deduction/benefit balances as of a date:** PR-L-P
+
+---
+
+## GL-L, DE-L — GL Import and Data Erasure Utilities (Pass 300 — 2026-06-25)
+
+### GL-L — Credit Card / External Transaction Import (T7GLL.DFM, 109KB)
+
+Caption: "New Screen" (placeholder). Menu code: GL-L.
+
+Imports transactions from a flat file into GL:
+- **File format:** File Name to Import (full path), Length or Delimited mode
+- **Column mapping:** Date, GL Account, GL Department, Description, Amount, Vendor Code
+- **Date Format** selector, "Convert charges from negative values?" option
+- **Credit Card Account** (ENTERBANK — links to a bank/credit card account)
+- **Date Range** filter, Vendor From filter
+- **Preview grid:** Previous Open GL Balance (top), Running Total, Charge/Return — shows import preview with tag-all button before posting
+
+**How to use:** GL module → GL-L → specify the import file path, map the column positions (fixed length or delimited), select the credit card account, verify the preview, Tag All, then post.
+
+### DE-L — Master Data Erasure Utility (T7DEL.DFM, 37KB)
+
+Caption: "New Screen". An **admin-only destructive utility** to bulk-erase master data tables. Checkboxes:
+- Erase Inventory Files?
+- Erase Bill Of Materials Files?
+- Erase Customer Files?
+- Erase Routings Files?
+- Erase Vendor Files?
+- Erase Chart of Accounts Files?
+- Erase Labor Files?
+
+Dynamic `eraselabel` text (likely a confirmation warning). Used during initial setup or demo data wipe. **Irreversible without a backup.**
