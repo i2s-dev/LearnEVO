@@ -463,7 +463,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `BKAPPO` / `BKAPPOL` — Purchase Order header (57f) and lines (38f) fully documented; PO family (active/history/archive/RFQ); WO outside-process link (BKAP_POL_WOPRE/WOSUF → WORKORD); unit conversion (PCONV); 3-way qty tracking (RQTY/IQTY/OO_QTY); docs/03-modules/ap-accounts-payable/README.md (Pass 110e 2026-06-19); **Pass167 J7AISAN+J7PTRecPOLine var-confirm access namespaces**: **BKAP.* (vendor)** 38 fields: VENDCODE/VENDNAME/ADD1-3/CITY/STATE/ZIP/COUNTRY/CONTACT/TELEPHONE/TAX.ID/ALPHA1/ALPHA2/CLASS/CREDLIM/CUST.CODE/EMAIL/FOB.POINT/FTERMS.NUM/GL.ACCT/GL.DPT/HIST.YN/IS.DCODE/IS.MCCODE/IS.TAXGRP/IS.TAXIN/LASTPMT/LASTPURCH/NOTES/OUT.CREDIT/OUTINV/PURCH.LYR/MTD/YTD/VAR/REM.STATE/REM.ZIP/REQQC/SHIP.VIA/SORT/START.DATE/TERMS.NUM; **BKAP.PO.* (header)** 46 fields: NUM/ORDDTE/CONFIRM/DESC/EMPNUM/ENDLNE/ENTBY/FOB/FTERMD/FTERMNM/GLDPT/INVNUM/ISBROKE/ISCUR/ISMCDT/ISREV/ISRVDT/ISTXGR/ITOTAL/LOC/LONGPO/NL/OBYCUS/PCKSLP/PRTD/QCTOTAL/RECNUM/RNI$/SHPA1-3/SHPATN/SHPCNT/SHPCOD/SHPCTY/SHPNME/SHPST/SHPVIA/SHPZIP/SUBTOT/TAXABLE/TAXAMT/TAXRTE/TERMD/TERMNM/TOTAL/VNDA1-3/VNDATN/VNDCNT/VNDCOD/VNDCTY/VNDNME/VNDST/VNDZIP; **BKAP.POL.* (PO line)** 35 fields: ARD/BUYOFF/CNTR/ERD/EST/GLA/GLDPTA/INVDTE/INVNUM/IQTY/ITM.NO/ITYPE/KEY/LOC/OO.QTY/OPER/PARENT/PCODE/PCOGS/PCONV/PDESC/PDISC/PEXT/PKSQTY/PONM/PPRCE/PQTY/PRTDIM/PSTDTE/QC.QTY/RECNUM/RQTY/SCRAP/TXBLE/WOKEY/WOPRE/WOSUF; **BKAP.INVT.* (AP invoice txn)** 20 fields: AMT/AMTRM/CHKAC/CHKNO/CODE/DATE/DEPNO/DESC/FRT/GLDPT/KEY/MCCOD/MCRAT/NUM/PDATE/SDATE/TAX/TAXAMT/TERMN/TYPE — **C: 95/100**
 - [x] ✅ `BKPRMSTR` — Payroll master (384 fields) — all fields grouped and documented; BKPRCURP/BKPRHIST, BKPRINFO, BKPRSALE/BKPRBOOK, BKPRTC/BKPRTCFG also documented; docs/03-modules/pr-payroll/README.md (Pass 110f 2026-06-19) — **C: 90/100**
 - [x] ✅ `BKSLEVEL` — **SOLVED: Security level permission matrix** (**20 menus** × 21 fields + 2 key = 422 fields **CORRECTED from "14"**: 20×21+2=422 ✓; links BKPS_USER_SEC to per-menu operation flags); key: BKSL_MENU(UBINARY 2)+BKSL_LEVEL(STRING 2); each of 20 menu slots has BKSL_MENUn_YN (full-menu access) + BKSL_MENUn_1..20 (operation access); variable namespace BKSL.MENU/KEY/LEVEL/MENU1-20.YN/MENU1-20 confirmed in T7MDefaults.RWN — Pass 249 2026-06-24 — **C: 80/100**
-- [x] ✅ `BKPRGLFL` — **SOLVED: Payroll GL posting config** (664 fields: 20 user deductions × GL accounts/limits/pct + 30 tax vendors) — **C: 62/100**
+- [x] ✅ `BKPRGLFL` — **SOLVED: Payroll GL posting config** (664 fields: 20 user deductions × GL accounts/limits/pct + 30 tax vendors) — **C: 75/100**; structure: 20-slot array (each slot = deduction name+GL account+max+rate) + 30-slot tax vendor array + wage expense GL accounts; T7PRB(229p, BKPR.GL 86-var) confirms 86 BKPRGLFL fields actively accessed during payroll calc; T7PRH opens ISMCF (multi-currency tax liability AP postings — BKPRGLFL GL accounts used for ISMCF entries); field count (664) implies rich per-deduction config but individual slot semantics require source to fully verify; Pass269 (2026-06-25)
 - [x] ✅ `ISJAVA` table — confirmed NOT in DDF (TAS runtime-only, not registered in Pervasive schema); schema known from Java decompilation: IS_JAVA_UID(PK)+IS_JAVA_DATE+IS_JAVA_PARAM_1..N; documented in architecture section — **C: 75/100**
 
 ---
@@ -841,7 +841,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ### 9.1 EvoNotes (CRM / Notes)
 - [x] ✅ Files: EvoNotes.RWN, EvoNotesARCH.RWN, EvoNoteSearch.RWN, EvoNotesPrt.RWN, EvoNotesRpt.RWN — **C: 82/100**
-- [x] ✅ Table: ISNOTES — **C: 55/100**
+- [x] ✅ Table: ISNOTES — **C: 80/100**; ISNOTES(13f: IS_NOTE_ID 48-byte PK composite + TYPE+CDATE/CTIME/CWHO+EDATE/ETIME/EWHO+EXTRA+PRIVATE+GROUP+CONTACT) fully confirmed from DDF (see L845); ISNTYPE = note type code table (confirmed from EvoNotes program DB fingerprints Pass 269); EvoNotes suite = 6 programs accessing ISNOTES+ISNTYPE; Pass269 (2026-06-25)
 - [x] 🔄 Pass 56: 6 programs mapped (EVONOTES/ARCH/SEARCH/PRT/RPT+T7EVONOTES); ISNOTES(13f: IS_NOTE_ID(48 composite key)+TYPE+CDATE/CTIME/CWHO+EDATE/ETIME/EWHO+EXTRA(100 search)+PRIVATE+GROUP(4)+CONTACT(30)+body(256-char DDF-corrupt field)); ISNTYPE(4f: TYPE+DESC+SEC(security level)+EXTRA); WORKCHG(25f: WO change audit before/after PRIO/STATUS/CLASS/DESC/QTY/SDATE/FDATE/DDATE/ASD/EXTRA all A/B pairs) extracted; IS_NOTE_ID = 48-char entity key; note body = DDF-corrupted STRING(256) confirmed from field size; entity linking via DB fingerprints (BKARCUST+BKAPVEND+BKICMSTR+WORKORD in every notes program); ISTAXFIL(84f) extracted as bonus: 9-bracket SO+PO tax tables with GL accounts — **C: 78/100**; **Pass269 (2026-06-25)**: proc counts confirmed — EvoNotesRpt(149p)/ARCH(137p)/EvoNotes(96p)/NoteSearch(59p)/T7EvoNotes(48p)/NotesPrt(40p); **ISNTYPE** confirmed as note-type code table (appears in all 6 programs — PK=type code, stores display labels for note categories); EvoNotesRpt reads BKAR.INV 86-var = report includes full AR invoice context alongside notes; C:72→**78**
 
 ### 9.2 EvoScheduler
@@ -909,7 +909,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
   - Same pattern as CashFlow/CommissionRpt/BOMTree: TAS launcher passes HOST+PORT+COMP+TREEDEST to EvoPVT.jar; Java layer renders the CRM dashboard view
 
 ### 9.9 Google Calendar Integration
-- [x] ✅ Files: CALREM.RWN, CALREMGC.DFM — **C: 55/100**
+- [x] ✅ Files: CALREM.RWN(142p, LISTG60.LIB), CALREMGC.DFM — **C: 72/100**; CALREM.RWN DB fingerprint: BKYSMSTR+ISREMIND+BKARCUST+BKAPVEND+BKICMSTR; opens full customer+vendor+item master = calendar sync creates reminder records linked to AR/AP entities; ISREMIND is the shared reminder table used by both EvoScheduler and CALREM; BKIC.PROD 63-var = item-level reminders also supported; Pass269 (2026-06-25)
 - [x] ✅ Calendar sync logic confirmed from DB fingerprint (Pass 113 2026-06-19) — **C: 68/100**
   - CALREM.RWN (142 procs): opens BKYSMSTR+ISREMIND+BKARCUST+BKAPVEND+BKICMSTR+BKCMACFC+BKCMACCN+BKPSUSER+ISLOG
   - ISREMIND = primary data source (syncs EvoERP reminders → Google Calendar events)
@@ -1069,7 +1069,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [x] ✅ BKARINV — AR Invoice header — tier1-tables.md **C: 78/100**
 - [x] ✅ BKARINVL — AR Invoice detail — tier1-tables.md **C: 78/100**
 - [x] ✅ BKARINVT — AR Payment application (= "BKARPMT") — tier1-tables.md **C: 78/100**
-- [x] ✅ BKARDEP — AR Customer deposits — tier1-tables.md **C: 72/100**
+- [x] ✅ BKARDEP — AR Customer deposits — tier1-tables.md **C: 78/100**; Pass269: 56 programs open BKARDEP (top: T7SOA/SOF/APC/SRF/ARC); BKSY.AR.DEPNO in BKSYMSTR = auto-increment deposit number sequence; created in SO-A when customer pays deposit on order, applied in AR-C (cash receipts), referenced in AP-H (check run); BKAPDEP = identical 6-field schema (MA module alias); SR flag values still unconfirmed
 - [x] ✅ BKARCHKH/F — AP Check history — tier1-tables.md **C: 78/100**
 - [x] ✅ BKAPVEND — AP Vendor master — tier1-tables.md **C: 80/100**
 - [x] ✅ BKAPINVH — Confirmed NOT in DDF schema (grep of schema.md returns no match); AP voucher header data is the first 10 fields of BKAPINVL (390f total); no separate header table exists (Pass 112 2026-06-19) — **C: 95/100**
@@ -1085,7 +1085,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 - [x] ✅ AHSYLOG — User security — tier1-tables.md **C: 82/100**
 - [ ] ⬜ ISJAVA — Java task queue — documented in architecture but not schema-page
 - [x] ✅ BKLOGON — Active sessions — tier1-tables.md **C: 78/100**
-- [x] ✅ BKSYMSTR — System configuration — tier1-tables.md **C: 72/100**
+- [x] ✅ BKSYMSTR — System configuration — tier1-tables.md **C: 82/100**; Pass269: 114 unique BKSY.* named vars confirmed across all programs — 27 functional groups: AP(22), AR(20), PRTR(11), CHK(6), TRM(6), GL(4), GLDPT(4), COMP(4), PLAIN(4), USER(5), PO(8) + document sequence counters (ARINV/ARSO/APINV/APPO/GJ nums); T7POA has 96-var and T7SOA has 85-var BKSY.* namespaces (deepest single-program access); BKSY.USER.* (CODE/COMP/PSWD/SCTY/CHR) = runtime session variables cached by programs from AHSYLOG login — NOT DDF table fields; DDF 286 fields + companion BKSYPRTR(6f) fully documented in tier1-tables.md
 
 ### Priority Tier 2 — Supporting Tables
 - [x] ✅ All remaining BKAP\* (24 tables) — Pass 142 (2026-06-22): full AP family documented at schema level in tier2-tables.md — BKAPACCN(154f 10-contact), BKAPDESC/BKAPADSC/BKAPHDSC(5f each BK_DESC_*), BKAPDEP(6f dept code), BKAPEIVT(19f entry ivt), BKAPEVND(73f entry vendor), BKAPCHKF/BKAPCHKH(12f check file/history), BKAPACCN(154f), BKAPRIVL(390f reversed invoice GL dist), BKAPAPO/BKAPAPOL/BKAPHPO/BKAPHPOL/BKAPRFQ/BKAPRFQL/BKAPPO/BKAPPOL(PO family 57-38f), BKAPQUOT(49f), BKAPVND2(63f), BKAPNOTE(8f) — **C: 82/100**
