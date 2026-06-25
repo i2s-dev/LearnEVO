@@ -20150,3 +20150,448 @@ EvoERP auto-incremented transaction numbers configured in NU module:
 | Sales Orders | Next SO # |
 
 Note: These seed values are also stored in BKYSMSTR auto-number counter fields — the NU module provides a UI to view/edit them directly.
+
+---
+
+## Pass 303 — Lot/Serial, Paperless (PL), RFQ, Drag-Schedule, and Utility Module DFMs
+
+*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7*.DFM*
+
+### Lot/Serial Information Entry — T7LotSerial.DFM
+
+**Caption:** "Enter Lot/Serial Information" | **Size:** 53 KB
+
+Lot/serial number assignment dialog, invoked from PO receipts, WO receipts, or any transaction that requires traceability.
+
+| Field | Purpose |
+|-------|---------|
+| Item Number | Item being received/issued |
+| Item Description | Auto-populated description |
+| Location | Warehouse bin/location for assignment |
+| Total Qty to assign to Lots | Total quantity requiring lot assignment |
+| Lot Qty not yet assigned | Running balance showing unassigned qty |
+| Quantity to Assign to Lots | Input qty for each lot line |
+| Lot Number | Lot/batch number entry |
+| Lot Expiry Date | Expiration date for perishable/tracked lots |
+| Use Same Lot# for all PO Lines | Checkbox: apply one lot number to all lines in the PO receipt |
+
+**Notes key:** "Notes" button allows per-lot notes. Settings button adjusts display options. Form accommodates both lot-controlled (single ID for a batch) and serial-controlled (one ID per unit) inventory.
+
+---
+
+### Paperless (PL) Suite — Issue Components, Notes, WO Dates
+
+Three sub-forms used by the Paperless Work Order module (shop floor entry without paper traveler):
+
+| DFM | Caption | Size | Purpose |
+|-----|---------|------|---------|
+| T7PLessComps.DFM | Issue Components | 43 KB | Issue WO component materials to production |
+| T7PLessNotes.DFM | Notes Caption | 22 KB | Popup viewer for multiple note types |
+| T7PLessWODates.DFM | WO Dates | 14 KB | Displays WO date summary (Total Qty) |
+
+**T7PLessComps.DFM** — "Issue Components":
+- Header: Item No, Item Number, WO Number, Description
+- Buttons: All Comps (load all required components), Issue Comps (execute issue), Shortages (flag missing materials)
+- Filter: `xxxxxx-yyy` pattern suggests item-op style filtering
+
+**T7PLessNotes.DFM** — Note category selector:
+- Categories: QC Specifications | WO Item | Routing | Customer | Vendor
+- Used to display context-specific notes for the active WO/item without leaving the shop floor screen
+
+**T7PLessWODates.DFM** — Simple date summary:
+- Shows Total Qty for the WO; likely a quick-look popup from the PL main form
+
+---
+
+### Work Order Drag-Schedule — T7DRAG.DFM
+
+**Caption:** "New Screen" | **Size:** 53 KB | **Purpose:** Drag-and-drop work order scheduling
+
+Visual scheduling board where WOs can be dragged to reorder or reassign priority/resources. The sparse label set ("Work Order") indicates the form is primarily graphical (likely a TDBGrid or custom drag-canvas component). Used from the WO Scheduling or Production Planning menu.
+
+---
+
+### RFQ (Request for Quote) — T7RFQ.DFM
+
+**Caption:** "New Screen" | **Size:** 58 KB | **Module:** RF (Request for Quote)
+
+| Label | Purpose |
+|-------|---------|
+| Description | Quote line description |
+| Estimate | Estimated cost field |
+| MTESUM_QUOTE_S1 | Quote summary field 1 (pricing rollup) |
+| MTESUM_DESC_S1 | Quote summary description field 1 |
+| Tag Individual | Tag single RFQ line for processing |
+| Tag Groups | Tag all lines in a group |
+| Process | Execute the RFQ (send or finalize) |
+| Pending | Show/filter pending RFQs |
+
+The `MTESUM_*` field naming convention matches the Estimating (ES) module summary fields, confirming that RFQ draws on the estimating engine for cost rollups.
+
+---
+
+### New Initialization — T7NEWINIT.DFM
+
+**Caption:** "New Screen" | **Size:** 32 KB | **Module:** NE
+
+Minimal toolbar-only form (ETB1–ETB5 + Go + Exit). No DataFields or grids. Development hint path: `C:\TASPRO7\DBA7\T7NEWINIT.DFM`. This form is likely a first-run or new-company setup launcher — it provides a "Go" action with no displayed data fields. Purpose inferred from name only; content is opaque.
+
+---
+
+### FTP / Broadcast Reminders — t7ftp.DFM
+
+**Caption:** "New Screen" | **Size:** 35 KB | **Module:** FT
+
+Internal Evo Tool for Broadcast Reminders — per the form's own label. Buttons: Connect | Disconnect | Upload | Download | Set Message
+
+Despite the file prefix "ftp," the form's primary description ("Broadcast Reminders") indicates this is a messaging/notification broadcast tool rather than a generic FTP client. Likely used by administrators to push reminder messages to connected EVO users. The Upload/Download buttons may handle reminder message files or templates.
+
+---
+
+### Import DBA — T7GENIMP.DFM
+
+**Caption:** "Import DBA" | **Size:** 65 KB | **Module:** GE (General Import)
+
+| Field/Label | Purpose |
+|-------------|---------|
+| Import Filename | Path to the source CSV/delimited file |
+| Date Format | Specify date format string for import parsing |
+| Index / Index Label | Map source column to EVO field index |
+| Skip/Replace/Append Records? [S,R,A] | Duplicate handling: S=skip, R=replace, A=append |
+| DATE FORMAT | Secondary date format picker |
+| EVO Structure | Target EVO table/structure selector |
+| Comma Delimited Imp File Req | Notes that the import file must be comma-delimited |
+| Tag All / Untag All | Select/deselect all field mappings |
+
+**Purpose:** Generic data migration tool for importing legacy DBA (DBA Manufacturing predecessor system) data into EvoERP. Supports comma-delimited CSV with configurable date format and duplicate handling. Also used for general data imports from other sources.
+
+---
+
+### GL Account Link (Email) — T7EMGL.DFM
+
+**Caption:** "New Screen" | **Size:** 48 KB | **Module:** EM (Email / GL mapping)
+
+| Field | Purpose |
+|-------|---------|
+| Account | GL account code |
+| GL Account Link | Links a GL account to an email recipient or notification rule |
+| EnterFglacct | GL account entry field |
+| EnterFgldpt | GL department entry field |
+
+**Purpose:** Associates GL account codes with email addresses or notification rules. When transactions post to a linked GL account, an automatic email notification is generated. Part of the EVO workflow/notification engine.
+
+---
+
+### Work Center Filter — t7EWC.DFM
+
+**Caption:** "New Screen" | **Size:** 50 KB | **Module:** EW (Employee Work Center?)
+
+| Field | Purpose |
+|-------|---------|
+| Work Order Number | WO being processed |
+| Sequence Number | Operation sequence within the WO routing |
+| Part Number | Item being manufactured |
+| Work Order Qty | Total WO quantity |
+| Completed Qty | Quantity completed so far |
+| Work Center | Work center code assignment |
+| Machine | Machine assignment |
+| OPER FROM | Operation from filter |
+| WC FROM | Work Center from filter |
+| MACHINE FROM | Machine from filter |
+
+**Purpose:** Filter/assignment form for routing WO operations to specific work centers and machines. Used in production scheduling or time-entry to filter/assign operations. The FROM fields indicate range filtering capability.
+
+---
+
+### Field Service Information — T7FSINFO.DFM
+
+**Caption:** "New Screen" | **Size:** 48 KB | **Module:** FS (Field Service)
+
+| Field | Purpose |
+|-------|---------|
+| Contract | Field service contract number |
+| Program | Service program/type |
+| Who | Technician or contact name |
+| REP | Sales/service representative |
+| ENTERTCUST | Customer entry field |
+
+**Purpose:** Field Service module form for contract-based service information. Captures contract#, service program type, responsible technician, and rep assignment. EvoERP has a Field Service module for managing service contracts and dispatch.
+
+---
+
+### Module Summary — Pass 303 New Module Identifications
+
+| Module Code | Module Name | Key DFM(s) | Notes |
+|-------------|-------------|------------|-------|
+| LO | Lot/Serial | T7LotSerial.DFM | Lot/serial number assignment across PO/WO/IN |
+| PL | Paperless WO | T7PLessComps, PLessNotes, PLessWODates | Shop floor paperless entry |
+| DR | Drag Schedule | T7DRAG.DFM | Visual WO drag-and-drop scheduling board |
+| RF | RFQ | T7RFQ.DFM | Request for Quote with Estimating integration |
+| NE | New Init | T7NEWINIT.DFM | System initialization/first-run launcher |
+| FT | FTP/Broadcast | t7ftp.DFM | Broadcast Reminders tool (not a generic FTP client) |
+| GE | General Import | T7GENIMP.DFM | Import DBA / generic CSV importer |
+| EM | Email-GL | T7EMGL.DFM | GL account→email notification linking |
+| EW | Employee/WC | t7EWC.DFM | Work Center / Machine operation assignment |
+| FS | Field Service | T7FSINFO.DFM | Field service contract/program info |
+
+
+---
+
+## Pass 304 — Sales Order Entry, PO Entry, GL Export, Item Master, Work Center Schedule, and More
+
+*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7*.DFM*
+
+### Sales Order Entry — T7SOA.DFM
+
+**Caption:** "New Screen" | **Size:** 207 KB | **Module:** SO-A
+
+Main Sales Order entry/maintenance form. Header fields: SO Number, Customer Code, Name, Address, City. Buttons include `* New` (create new SO) and ReOpen. The large file size (207 KB) indicates a full-featured entry form with multiple tabs/sections for line items, shipping, pricing, and scheduling.
+
+---
+
+### Purchase Order Entry — T7POA.DFM
+
+**Caption:** "New Screen" | **Size:** 232 KB | **Module:** PO-A
+
+Mirror to T7SOA for the buying side. Header fields: PO Number, Vendor Code, Name, Address, City. Buttons: `* New`, ReOpen. Full PO entry with lines, quantities, pricing, and delivery dates. Largest of the -A series forms.
+
+---
+
+### Customer (AR) Master Entry — T7ARA.DFM
+
+**Caption:** "New Screen" | **Size:** 189 KB | **Module:** AR-A
+
+Customer master record maintenance. Fields: Customer Code, Name, Address, City, State, Zip Code, Country. The "Information" panel likely holds credit limit, payment terms, tax code, and other extended customer attributes. Used from Accounts Receivable / Customer master menu.
+
+---
+
+### GL Export / Extract — T7GLE.DFM
+
+**Caption:** "GL-E" | **Size:** 81 KB | **Module:** GL-E
+
+| Field | Purpose |
+|-------|---------|
+| GL Account From / Thru | Account range filter |
+| Posting Date From | Date range for posted transactions |
+| Entry Date From | Date range by entry/keyed date |
+| Print Customer/Vendor Code or Name | Toggle: show code or name on export |
+
+**Purpose:** Exports or extracts GL transaction detail to a report or external file. Supports range filtering by account and date. Used for auditing, external accounting system feeds, or GL reconciliation. "Processing Data / Please Wait" panel indicates batch-mode execution.
+
+---
+
+### Item Number Merge/Rename — T7SMJL.DFM
+
+**Caption:** "SM-JL" | **Size:** 47 KB | **Module:** SM-JL (Stock Maintenance — Item Merge)
+
+| Field | Purpose |
+|-------|---------|
+| Enter File Name to Import | Source file for batch item renumber |
+| Old Item Number | Item code being replaced |
+| New Item Number | New item code |
+| Exceptions Only or Complete Report? [E/C] | Report scope: E=exceptions only, C=full report |
+| Allow merging of Old with New Items? [Y/N] | Y=merge history/inventory; N=rename only |
+
+**Purpose:** Batch item number renaming and merging utility. Allows an existing item number to be replaced system-wide, or merged into another item (combining inventory, history, and BOM references). Critical change-control utility — irreversible without backup.
+
+---
+
+### Lot Control Report — T7LCC.DFM
+
+**Caption:** "LC-C" | **Size:** 51 KB | **Module:** LC-C (Lot Control — Listing)
+
+| Field | Purpose |
+|-------|---------|
+| Item Number From / Thru | Item range filter |
+| Lot Number From / Thru | Lot# range filter |
+| Lot Exp Date From / Thru | Expiry date range (for perishables) |
+| Sort By | Report sort order |
+
+**Purpose:** Lot control listing report — shows all lots for a range of items, including expiration dates and quantities. Used for lot traceability audits and expiry management.
+
+---
+
+### Serial Number Control Report — T7SCC.DFM
+
+**Caption:** "SC-C" | **Size:** 49 KB | **Module:** SC-C (Serial Control — Listing)
+
+| Field | Purpose |
+|-------|---------|
+| Item Number From / Thru | Item range filter |
+| Serial Number From / Thru | Serial# range filter |
+| Include SO Allocations? | Toggle: show/hide SO-allocated serial numbers |
+
+**Purpose:** Serial number listing report — shows all serial numbers for tracked items. The SO allocations option distinguishes between on-hand and allocated-to-order serial numbers.
+
+---
+
+### Cut Sheet Allocation — t7cutsheet2.DFM
+
+**Caption:** "New Screen" | **Size:** 55 KB | **Module:** CUT (Cut Sheet / Material Cutting)
+
+| Field | Purpose |
+|-------|---------|
+| Job # | Manufacturing job or WO |
+| Lot # | Material lot being cut |
+| Qty Left | Remaining (uncut) quantity |
+| Part | Part number to be cut |
+| Left | Material left over after cutting |
+| * Some Qtys already Allocated | Warning indicator |
+| EJOB | Job entry field |
+
+**Purpose:** Material cutting optimization and allocation form. Used in manufacturing operations where raw sheet/bar/coil material must be cut to produce parts. Tracks job assignments, lot traceability, and leftover material. Common in sheet metal, gasket, or flat-goods manufacturing.
+
+---
+
+### Data Collection Entry — T7DCA.DFM
+
+**Caption:** "DC-A" | **Size:** 149 KB | **Module:** DC-A
+
+| Field | Purpose |
+|-------|---------|
+| Employee | Employee code performing the work |
+| Action | Type of DC transaction (Start/Stop/Complete/etc.) |
+| Work Order | WO being worked |
+| Work Order Item | Line item on the WO |
+| Sequence | Operation sequence number |
+| Sequence Desc | Operation description |
+| Machine | Machine/resource assignment |
+
+**Purpose:** Main Data Collection time/labor entry form. Employees log their time against WO operations via DC-A. The Action field drives the transaction type (clock-in, clock-out, WIP complete, scrap, etc.). Related to the HH handheld DC forms for shop floor use.
+
+---
+
+### Rep Commission Link — T7REPLNK.DFM
+
+**Caption:** "New Screen" | **Size:** 65 KB | **Module:** REP-LNK
+
+| Field | Purpose |
+|-------|---------|
+| Rep Number | Sales representative code |
+| Item Number | Item the commission applies to |
+| Customer Code | Customer the commission applies to |
+| Item Class | Item class override for commission |
+| Commission Rate | Commission percentage |
+| Start Date | Effective date for this commission rule |
+
+**Purpose:** Assigns commission rates to specific rep + item + customer combinations. Allows tiered commission structures where a rep earns different rates for different items or customers. Used by the AR/SO commission calculation engine.
+
+---
+
+### Handheld Notification Settings — T7HHN.DFM
+
+**Caption:** "HH-N" | **Size:** 45 KB | **Module:** HH-N (Handheld Notification)
+
+| Field | Purpose |
+|-------|---------|
+| Limit Shipments to within X Working Days | Filter: only show shipments due within N days |
+| On or before: | Date threshold for shipping queue |
+| Item Type [RFAMNLBTKO] | Item type filter |
+| Refresh Timer (Seconds) | Auto-refresh interval for handheld display |
+| Include Customers on Credit Hold | Toggle: show/hide credit-hold orders |
+| Include Released SO Lines | Toggle: show only released SO lines |
+
+**Item Type codes [RFAMNLBTKO]:**
+
+| Code | Meaning |
+|------|---------|
+| R | Raw Material |
+| F | Finished Good |
+| A | Assembly |
+| M | Make (manufactured) |
+| N | Non-inventory / Service |
+| L | Labor |
+| B | Bought (purchased) |
+| T | Tooling |
+| K | Kit |
+| O | Other |
+
+These codes appear throughout EVO's inventory and production modules as the fundamental item type classification.
+
+---
+
+### SPC Report — T7SPCREP.DFM
+
+**Caption:** "New Screen" | **Size:** 78 KB | **Module:** SPC (Statistical Process Control)
+
+| Field | Purpose |
+|-------|---------|
+| Work Order Number From / Thru | WO range |
+| Parent Part From | Filter by parent assembly |
+| Employee From | Filter by employee |
+| Date From / Thru | Date range |
+| Sequence From / Thru | Operation sequence range |
+| Sides From / Thru | Sides (likely for sheet/panel manufacturing) |
+| Types From / Thru | Type codes range |
+
+**Purpose:** Statistical Process Control reporting. Generates SPC data for quality control analysis. The "Sides" field suggests use in panel/sheet manufacturing (front/back sides of a workpiece). EvoERP has a built-in SPC module for tracking process variation.
+
+---
+
+### Inventory Item Master — T7INB.DFM / T7EvoINB.DFM
+
+**Caption:** "New Screen" | **Sizes:** 302 KB (T7INB), 302 KB (T7EvoINB) | **Module:** IN-B
+
+| Field | Purpose |
+|-------|---------|
+| Item Number | Primary item/part number |
+| Type | Item type code (see HH-N above: RFAMNLBTKO) |
+| Main | Main tab/section |
+| Description | Item description |
+| Class | Item class code (for reporting/grouping) |
+| Category | Item category code |
+| User Defined | User-defined field(s) |
+| Duty Code | Import duty classification code |
+
+**T7EvoINB.al.DFM** (250 KB, Caption "IN-B Enter Inventory") is the legacy/alternate version; **T7EvoINB.DFM** and **T7INB.DFM** are current versions with identical fields. These are the central item master entry forms — the largest IN module forms. All inventory attributes (costing method, UOM, lead time, re-order point, BOM linkage, vendor linkage) are maintained here.
+
+---
+
+### Work Center Schedule — T7WCS.DFM / T7WCS2.DFM
+
+**Caption:** "Work Center Schedule" | **Sizes:** 59 KB / 72 KB | **Module:** WCS
+
+| Label | Purpose |
+|-------|---------|
+| Updating DCD info | Status: refreshing DC (Data Collection) data |
+| Updating SHI info | Status: refreshing Shipment data |
+| Work Started | Column: operations in progress |
+| Work Not Started | Column: operations not yet begun |
+| SORTLABEL | Dynamic sort label |
+
+**T7WCS.DFM** shows the basic schedule board. **T7WCS2.DFM** adds Work Started / Work Not Started grouping columns and separate status refresh for started/not-started operations.
+
+**Purpose:** Real-time work center schedule board. Integrates with Data Collection (DCD) for live WIP status. Shows operations queued at each work center, sorted by priority/date, with started vs. not-started separation.
+
+---
+
+### WO Priority Color Setup — t7woprio.DFM
+
+**Caption:** "New Screen" | **Size:** 49 KB | **Module:** WO-PRIO
+
+Fields: Priority (numeric), Description (text label), Color (visual indicator)
+
+**Purpose:** Defines work order priority levels with color coding for visual scheduling boards (T7DRAG, T7WCS). Administrators configure the priority scale; color coding flows through to scheduling displays to highlight urgent or overdue WOs.
+
+---
+
+### Module Summary — Pass 304 New Module Identifications
+
+| Module Code | Module Name | Key DFM(s) | Notes |
+|-------------|-------------|------------|-------|
+| SO-A | Sales Order Entry | T7SOA.DFM | Main SO entry form (207 KB) |
+| PO-A | Purchase Order Entry | T7POA.DFM | Main PO entry form (232 KB) |
+| AR-A | Customer Master | T7ARA.DFM | Customer master record |
+| GL-E | GL Export | T7GLE.DFM | GL transaction extract/export |
+| SM-JL | Item Merge | T7SMJL.DFM | Batch item number rename/merge |
+| LC-C | Lot Control Listing | T7LCC.DFM | Lot traceability report |
+| SC-C | Serial Control Listing | T7SCC.DFM | Serial number listing |
+| CUT | Cut Sheet | t7cutsheet2.DFM | Material cutting allocation |
+| DC-A | Data Collection Entry | T7DCA.DFM | Employee time/labor entry |
+| REP-LNK | Rep Commission | T7REPLNK.DFM | Commission rate by rep/item/customer |
+| HH-N | Handheld Notify | T7HHN.DFM | HH notification settings; Item Type codes |
+| SPC | Stat Process Control | T7SPCREP.DFM | SPC quality report |
+| IN-B | Item Master | T7INB.DFM, T7EvoINB.DFM | Central inventory item master |
+| WCS | Work Center Schedule | T7WCS.DFM, T7WCS2.DFM | Real-time schedule board |
+| WO-PRIO | WO Priority | t7woprio.DFM | Priority color-code setup |
+
