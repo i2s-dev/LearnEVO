@@ -11559,7 +11559,7 @@ Image attachment fields:
 | MTIC.PROD.EXPBF | Expedite buffer (days) |
 | MTIC.PROD.DELBF | Delay buffer (days) |
 | MTIC.PROD.WIPDP | WIP display option |
-| MTIC.PROD.MRPSW | MRP switch/option |
+| MTIC.PROD.MRPSW | **Quantity rounding flag** — 'N'=no rounding; any other value = round MRP quantities to whole numbers (SRC-confirmed BKMRF.SRC L148-151); NOT the MRP on/off switch (that is MTIC.PROD.MRP) |
 | MTIC.PROD.PLNR | Planner code |
 | MTIC.PROD.MRPQ | Round MRP quantities to |
 
@@ -18144,6 +18144,21 @@ endw
 while .t.              ;infinite loop
   exit                  ;use exit to break
 endw
+
+if cond1               ;else_if — inline else-if without separate else+if+endif
+  ...
+else_if cond2          ;confirmed BKMRF.SRC L380
+  ...
+endif
+
+scan TABLE key FIELD start VALUE for CONDITION   ;scan with filter (skip if not in condition)
+  sloop_if .n. test    ;skip to next if test fails
+  sexit_if condition   ;exit scan if condition
+ends                   ;end scan block
+
+scan TABLE key FIELD start VALUE while CONDITION  ;scan while condition true
+  ...
+ends
 ```
 
 **`ifna TABLE ... endif`** — execute block if last find found no record.
@@ -18213,6 +18228,31 @@ menu at row,col len N wdt W fld HOLDER cntr CTR nch N mcw W esc LABEL [ttl "Titl
 ```
 define t.wokey type V size 10   ;V = variant, explicitly sized; used for dynamic key building
 ```
+
+**File initialization — `casinit` (BKMRF.SRC L203):**
+```
+FILE = "MTMRP"
+casinit file, .t., 'B'*co()   ;create/reinit file; params: name, recreate-flag, extension
+open MTMRP lock N              ;then open normally
+```
+`co()` returns the current 2-char company code; `'B'*co()` builds the Btrieve file extension (e.g., `'BI2'`). `casinit` is called at MRP startup to reinitialize MTMRP and BKMRPSW scratch tables each run.
+
+**Display and window keywords (BKMRF.SRC L200-822):**
+```
+saves                              ;save current screen state (before drawing a window)
+window at row,col len N wdt W box 'type' wcolor N bcolor N  ;draw window
+pmsg 'text' at col,row nocr        ;print message at position, no carriage return
+pmsg VAR at col,row nocr           ;print variable value at position
+msg 'text' nowait                  ;status-bar message without pausing
+redsp                              ;refresh/redraw display (after msg nowait)
+```
+`wcolor`/`bcolor` = window/background color index. Used in BKMRF.SRC MRP progress display: `saves` → `window at 5,15 len 9 wdt 70 box 's' wcolor 113 bcolor 113` → `pmsg` lines → `redsp`.
+
+**`progress()` — progress-bar function (BKMRF.SRC L835, L959):**
+```
+zret = progress()   ;update progress bar (called inside long scan loops)
+```
+Returns value into `zret` (result discarded). Drives the animated progress indicator during long operations.
 
 ---
 
