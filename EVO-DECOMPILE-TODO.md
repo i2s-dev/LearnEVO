@@ -350,7 +350,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `clr <table> rec` — clear/new record — **C: 72/100**; **Pass276**: SRC-confirmed: `clr BKYSMSTR rec` / `clr BKDCSHFT rec` — **C: 85/100**
 - [x] ✅ `del` / `dall` — delete record / delete all — **C: 70/100**; **Pass276**: SRC-confirmed: `del INVTXN nocnf` / `del BKRTEMTR nocnf` / `del BKMRPSW nocnf` — `nocnf` = no confirmation prompt; `dall` not found in available SRC files (likely TAS6-only or report-context); `save <TABLE> nocnf noclr unlock` = save+release lock (BKROA.SRC L2083) — **C: 82/100**
 - [x] ✅ Field access via dot notation: `bksy.comp.name` (table.field) — **C: 85/100**
-- [x] ✅ Locking: `LOCK_OWNER`, `REC_LOCK`, `UNLOCK` keywords — **C: 72/100**
+- [x] ✅ Locking: `LOCK_OWNER`, `REC_LOCK`, `UNLOCK` keywords — **C: 72/100**; **Pass277**: SRC search across all 5 SRC files: `unlock` confirmed as `save ... nocnf noclr unlock` modifier (BKROA.SRC L2083); `nlock` confirmed as `find ... nlock` modifier; `lock R` confirmed as `open ... lock R` (BKDCA.SRC L131, BKMRF.SRC L204 = read/shared lock); `LOCK_OWNER` and `REC_LOCK` not in any SRC (T7-era RWN programs only — confirmed as keywords from runtime keyword list but usage syntax unconfirmed without decrypted RWN) — **C: 78/100**
 - [x] ✅ `rcn TABLE rcn VAR get/set` — record cursor save/restore; `openv` open by variable; `setact` alias table — **C: 85/100**
 - [ ] ⬜ Full find/seek operation set — all 6 modes now confirmed; only gap is `find A` (absolute by position) — **C: 92/100**
 - [ ] ⬜ Transaction keywords (BEGIN_TRAN, COMMIT, ROLLBACK — if they exist)
