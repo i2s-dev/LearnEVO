@@ -267,7 +267,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Key classes: TppReport, TppDetailBand, TppSubReport, TppChildReport, TppShape, TppLabel, TppDBText — **C: 80/100**
 - [x] ✅ Data pipeline binding: TAS sets up "TASFile" pipeline; fields bound by name (e.g., BKAP_CHK_INVNUM) — **C: 75/100**
 - [x] ✅ TAS keywords for reporting: EXEC_RB, RTM_FN, REPORTNAME, USE_PRINTER, PRINT_TO_FILE — **C: 80/100**
-- [x] ✅ `.btm` confirmed as backup/snapshot of `.RTM` in same format — **C: 72/100**
+- [x] ✅ `.btm` confirmed as backup/snapshot of `.RTM` in same format — **C: 72/100**; **Pass290 (2026-06-25): byte-level confirmed** — `samples/btm/I2SCHK1.btm` first 8 bytes = `54 50 46 30 09 54 70 70` ('TPF0\x09Tpp') = IDENTICAL to `samples/rtm/t7ing1.rtm` first 8 bytes — same Nevrona TppReport binary stream format; .btm = ReportBuilder backup copy of .RTM, created by designer when saving — **C: 92/100**
 - [x] ✅ **1305** RTM files on DBAMFG$ (corrected from 899): T6*=736, Other=380, BK*=150, J7*=20, T7*=19 — **C: 90/100**
 - [x] ✅ FILELOC (central path registry, Btrieve-only, 831/1122 programs) + RTMVLD_* library (327 programs); ISRTMS (29f DDF, per-CUST/VEND/ITEM label routing, 7 label types + 10 printers) — **C: 82/100**
 - [ ] ⬜ Complete TPF0 property table (every TppComponent property type + offset)
@@ -375,7 +375,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `ENCRYPTSTR` / `DECRYPTSTR` — crypto keywords present — **C: 72/100**; **Pass289 (2026-06-25): usage mechanism confirmed from EvoChangePass.RWN + EvoResetPass.RWN named_vars**: `DLOLDPASS`=Decrypted-Local-Old-Password (DECRYPTSTR applied to stored password for comparison); `DPASS`=decrypted password intermediate; `PSK`=password salt/key; dual storage: BKPS.USER.PSWD (ISTS.CFG.EPASS mode → ENCRYPTSTR built-in) vs ISEX.USER.PASSW (ISTS.CFG.EHPASS mode → hash); `ISEX.USER.LPASS`=last password (anti-reuse); `ISEX.USER.PEXPD`=password expiry; `ISEX.USER.FLAGS`=password policy flags; `FLPSTR`=force-last-password string (first-login forced change) — **C: 83/100**
 - [x] ✅ `OLECALL` — COM/OLE integration — **C: 55/100**
 - [x] ✅ `SQLCALL` — SQL execution keyword — **C: 55/100**
-- [x] ✅ `GET_WEBSOURCE` — HTTP fetch — **C: 50/100**
+- [x] ✅ `GET_WEBSOURCE` — HTTP fetch — **C: 50/100**; **Pass290 (2026-06-25): T7GETWEB.RWN identified as primary GET_WEBSOURCE program** — 7.5KB, 6 procs (ONOPENFILES/ONSTART/ONCLOSE/BTNEXIT.CLICK/BTNGETWEB.CLICK/BTNGETWEB2.CLICK); source file t7getweb.SRC exists on server; opens BKARDEP+BKARINVT+MTICMSTR+BKICMSTR+FILEKEY+standard tables; AR-focused (deposits + open-item ledger); `BTNGETWEB.CLICK`+`BTNGETWEB2.CLICK` = 2 web-fetch actions; WEB.PAYMENT vars found in related programs; purpose: web payment collection / AR payment sync — **C: 68/100**
 - [x] ✅ `EXEC_TOP_WAIT` — shell execute with wait — **C: 60/100**
 - [x] ✅ `PLAYWAV` — audio playback — **C: 65/100**
 - [ ] ⬜ `SQLCALL` parameter format and connection target fully documented

@@ -2902,6 +2902,9 @@ Reporting and analysis of sales performance. Separate from standard AR invoicing
 4. Database text fields are bound to the TAS data buffer by field name — use names that
    match what the TAS program puts into the buffer (e.g., `BKAP_CHK_INVNUM`)
 5. Save and test
+6. The designer automatically creates a `.btm` backup alongside the `.RTM` on save.
+   `.btm` files are byte-for-byte identical format to `.RTM` (TPF0 binary, first 8 bytes
+   `54 50 46 30 09 54 70 70` confirmed — Pass290 2026-06-25). Safe to ignore or delete.
 
 **RTM config-based selection pattern (confirmed from T7GLF/N/H/G named_vars — Pass287 2026-06-25):**
 
@@ -3215,7 +3218,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 1. **Enter deposit (AR-C or AR-N):** T7ARN (191 procs) creates the BKARDEP record — customer code, deposit amount, SO link, SR flag. GL debit = bank account; credit = AR deposit liability.
 2. **Apply deposit (MA module):** T7MAPDEPO (97 procs) matches BKARDEP records to BKARINVL lines. Creates ISARDEPL records (deposit application lines — not in DDF but confirmed by T7GETDEP/T7MAPDEPO).
 3. **Retrieval helper:** T7GETDEP (18 procs) reads BKARDEP + BKARINVT + ISARDEPL + BKARINVL to return available deposit balance.
-4. **Web deposits:** T7GETWEB (6 procs) reads BKARDEP + BKARINVT for web-order deposit retrieval.
+4. **Web deposits:** T7GETWEB.RWN (6 procs, 7.5KB) reads BKARDEP + BKARINVT for web-order deposit retrieval. Uses TAS `GET_WEBSOURCE` keyword (HTTP fetch). Two web actions: BTNGETWEB.CLICK + BTNGETWEB2.CLICK. Source: t7getweb.SRC on server. Purpose: payment sync with web storefront (WEB.PAYMENT vars in related programs). (Pass290 2026-06-25)
 5. **Payment recording (AR-C):** T7ARC (228 procs) also touches BKARDEP when deposits are cleared against invoices.
 
 **Primary tables:**
