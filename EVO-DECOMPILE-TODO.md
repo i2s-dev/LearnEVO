@@ -931,7 +931,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] ✅ Integration pattern: ISJAVA task-queue table; TAS writes params, Java reads and executes — **C: 75/100**
 - [x] ✅ JavaFX UI components: SplashScreen, TabularView (CSV export), CalendarView, LookupPane — **C: 72/100**
 - [x] ✅ Data layer: hand-rolled SQL builder (Expression, Field, Clause, etc.) — **C: 70/100**
-- [x] ✅ Mail & localization: SMTP sender + resource-bundle i18n — **C: 65/100**
+- [x] ✅ Mail & localization: SMTP sender + resource-bundle i18n — **C: 65/100**; **Pass296 (2026-06-25): com.evoerp.mail package class analysis** — SmtpSecType enum: OAUTH2|STARTTLS; Email builder (from/to/cc/bcc/subject/body/attachments); SmtpClient uses JavaMail+com.sun.mail.smtp.SMTPTransport; OAuth2 mode: XOAUTH2+Bearer token; STARTTLS mode: mail.smtp.starttls.enable; X-Mailer='Evo-ERP SMTP'; error keys evo3.mail.attach_error/close_error; Localization class uses XML DOM (not .properties); external XML locale files; message key pattern evo3.<subsystem>.<key>; resources: EvoJuggle.gif+icon.png only — **C: 78/100**
 - [x] ✅ `ISJAVA` table: TAS writes task ID + params; Java polls, executes, writes result — **C: 72/100**
 - [ ] ⬜ All ISJAVA task command IDs documented with their action
 - [x] ✅ ISJAVA schema: IS_JAVA_UID(PK) + IS_JAVA_DATE + IS_JAVA_PARAM_1..N (dynamic-count params); TAS vars: IS.JAVA.UID / IS.JAVA.PARAM / IS.JAVA.DATE / JAVA.PATH / JAVA.H; table is TAS runtime-only (not in DDF) — **C: 75/100**

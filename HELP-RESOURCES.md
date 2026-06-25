@@ -2747,7 +2747,38 @@ The EvoERP Java integration layer bridges TAS Pro 7 programs and **EvoPVT.jar** 
 
 **Use case:** Configure the Java SQL helper (T7JAVASET: HOST/PORT/NAME), review task queue status, or troubleshoot EvoPVT.jar task processing. Auto FX rate updates require ISTS.CFG.OANDA to be set and EvoPVT.jar running.
 
-**Confidence: 68/100** — ISJAVA field names confirmed (UID/PARAM/DATE); 22 calling programs cataloged; T7AUTOFX FX-daemon purpose confirmed from named vars; ISMCF currency fields confirmed. EvoPVT.jar internal behavior and ISJAVA record format not fully decoded.
+**EvoPVT.jar SMTP / Mail subsystem (Pass 296 — 2026-06-25, class bytecode analysis):**
+
+`com.evoerp.mail` package — 4 classes:
+
+| Class | Purpose |
+|-------|---------|
+| `SmtpSecType` | Enum: `OAUTH2` or `STARTTLS` — two security modes |
+| `Email` | Builder-pattern email message — from, to, cc, bcc, subject, body, attachments list |
+| `Email$Builder` | Fluent builder for Email objects |
+| `SmtpClient` | SMTP sender using **JavaMail** (`javax.mail`) API |
+
+**SmtpClient key details:**
+- Underlying transport: `com.sun.mail.smtp.SMTPTransport`
+- Security modes:
+  - `STARTTLS`: sets `mail.smtp.starttls.enable=true`
+  - `OAUTH2`: sets `mail.smtp.auth.mechanisms=XOAUTH2`; bearer token sent as `auth=Bearer <token>`; issues `AUTH XOAUTH2` SMTP command
+- Properties: `mail.smtp.host`, `mail.smtp.port`, `mail.smtp.user`, `mail.smtp.auth`, `mail.smtp.ssl.enable`
+- X-Mailer header: `"Evo-ERP SMTP"` (identifies EvoERP as sender)
+- Attachments: `MimeMultipart` / `MimeBodyPart` / `attachFile(...)` — supports file attachments
+- Error keys: `evo3.mail.attach_error`, `evo3.mail.close_error` (localized message keys)
+- Methods: `sendMessage(Email)`, `connect(host, port, user, password)`, `connect(host, port, user, password, SmtpSecType)`
+
+**EvoPVT.jar Localization subsystem (Pass 296):**
+- Class: `com.evoerp.localization.Localization`
+- Format: **XML** (uses `javax.xml.parsers.DocumentBuilder` — not `.properties` files)
+- External files: loads from filesystem path (not bundled JAR resources — configurable locale XML)
+- Locale-aware: `java.util.Locale` parameter; `Localization(Locale)` constructor
+- Error: "Error reading localization data from: <path>" on failure
+- Bundled resources (`com/evoerp/res/`): `EvoJuggle.gif` (loading animation), `icon.png` (app icon)
+- Message key pattern: `evo3.<subsystem>.<key>` (e.g., `evo3.mail.attach_error`)
+
+**Confidence: 68/100** — ISJAVA field names confirmed (UID/PARAM/DATE); 22 calling programs cataloged; T7AUTOFX FX-daemon purpose confirmed from named vars; ISMCF currency fields confirmed. SMTP class structure fully documented. EvoPVT.jar ISJAVA task command IDs not decoded.
 
 ---
 
