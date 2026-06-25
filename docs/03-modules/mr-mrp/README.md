@@ -232,14 +232,154 @@ Data extracted from rwn_symbols.json.
 
 **T7MRIX** has MTWO.WIP **213-var** — the highest WIP namespace count in the entire rwn_symbols dataset. This is the MRP→WO expansion view that drills into every open work order's detailed material and capacity consumption. When MR-I generates WOs, T7MRIX shows the exploded view of what those WOs will consume.
 
-**T7MRF** is the MRP generation engine (the only program that writes MTMRP). It reads 6 sources: BKMRPFC (forecasts), BKARINVL (SO demand), BKAPPOL (PO supply), WOBOM (WO material demand), BKICLOC (on-hand), BKICMSTR (item parameters) → writes MTMRP planned orders. The 5-stage engine is confirmed from BKMRF.RUN binary analysis (Pass 246).
+**T7MRF** is the MRP generation engine (the only program that writes MTMRP). It reads 6 demand/supply sources → writes MTMRP planned orders. The **4-stage engine** is fully SRC-confirmed (Pass 283): Stage 1 = make-item planning, Stage 2 = multi-pass BOM explosion, Stage 3 = buy-item planning, Stage 4 = action code assignment (EXPEDITE/DELAY/REVIEW). See "MRP Engine Architecture" section below.
 
 **T7MRH and T7MRG** (the two main report programs) both use DBA.LIB rather than the usual LISTG60.LIB — this suggests they do complex processing (posting or multi-pass calculations) rather than simple browse/display.
 
 ---
 
-## Notes & open questions
+---
 
-- MRP "buffer" sensitivity: T7MRD (52-field MRP parameters form) contains sensitivity settings — the exact buffer/sensitivity field names need extraction to confirm how MTMRP action messages (EXPEDITE/DEFER thresholds) are calculated.
-- BKMRPSW per-part override: relationship to `MTIC_PROD_MRPSW` flag in the item master — unclear whether SW=Y means "run MRP" (include) or SW=Y means "switch off" (exclude). Context suggests SW=Y = include.
-- BKMRPPO CONF field: once confirmed, MR-J creates a real BKAPPO/BKAPPOL record. The BKMRPPO row may then be deleted or marked DONE.
+## MRP Engine Architecture — BKMRF.SRC fully decoded (Pass 283, 2026-06-25)
+
+All the following is **SRC-confirmed** from `samples/src/BKMRF.SRC`.
+
+### Demand loading (pre-stage)
+
+MR-F first clears MTMRP and rebuilds from all 6 demand/supply sources:
+
+| Section | Source table | Field used | Notes |
+|---------|-------------|-----------|-------|
+| `DO.SO` | `BKARINVL` | ESD (estimated ship date) | QTY = PQTY + UBO (ordered + backordered) × -1; skips UM.LN[1]='M' (BOM explosion handles those); skips closed SO (INVCD='Y') |
+| `DO.PO` | `BKAPPOL` | ERD (estimated receipt date) | QTY = PQTY × PCONV (or QC.QTY × PCONV if in QC); EXTRA="PURCHASE ORDER"; ORDER = PO#; QC orders tagged "/QC" suffix; STARTDT = BKAP.PO.ORDDTE |
+| `DO.WO` | `WORKORD` | WO due date | QTY = SQTY - COMQTY; skips STATUS $ "CXI" (closed/cancelled/issued-complete) |
+| `DO.WOBOM` | `WOBOM` | WO BOM required dates | BOM component demand from open WOs |
+| `DO.WSBOM` | `WORKORD` | S-type WO BOMs | S-type work order BOM explosion |
+| `DO.FC` | `BKMRPFC` | FC_DATE | Forecast demand (if INC.FORECAST='Y') |
+| `DO.RLEVEL` | `BKICLOC` | — | Reorder level check — seeds stage 1 |
+
+All demand records: MTMRP.QTY is **negative** (demand) or **positive** (supply).
+
+### 4-Stage MRP engine
+
+```
+Stage 1: Make items (FAMNB types) ─► CREATE.PLN() ─► MTMRP planned orders
+           └─► BOM explosion (GET.BOM) seeds MTMRP component demand
+           └─► BKMRPSW records created for each part
+
+Stage 2: Multi-pass BOM explosion (FAMNB types)
+           Scans BKMRPSW, runs CHK.PLAND / CREATE.PLN for each
+           Loops until ctl.recs = 0 (no new planned orders)
+
+Stage 3: Buy items (R, L, T types) ─► CREATE.PLNB() ─► MTMRP "BUY" orders
+
+Stage 4: Action code assignment (all types, 3 passes)
+           Pass 1: EXPEDITE / EXPSENS — supply arriving too late
+           Pass 2: Update PG.FDATE with GET.RQ.DATE()
+           Pass 3: DELAY / DELSENS / REVIEW — supply arriving too early
+```
+
+**Stage 1/2 item type filter:** `inc.types2 = 'FAMNB' + opt.types` where opt.types (default 'NLT') is user-configurable from the MR-F run parameters (INC.FORECAST, STYPE, OPT.TYPES).
+
+**Stage 3 filter:** `MTIC.PROD.TYPE $ 'RLT'` — raw/purchased/outside-process items.
+
+### Planned order numbering
+
+| Order type | ORDER field format | Counter |
+|-----------|-------------------|---------|
+| Make (F/A/N) planned | `PL1`, `PL2`, … | `plnum` |
+| Phantom (B) planned | `PLP1`, `PLP2`, … | `plpnum` |
+| Buy (R/L/T) planned | `BUY` | `buynum` counter displayed |
+| Reorder level trigger | `REORDLVL` | — |
+
+After Stage 4, PLP records are renumbered via `RENUM.PHN` subroutine.
+
+Initial `MTMRP.ACTION` on newly created planned orders:
+- M-type items → `'BUY'` (make-from items purchase raw material)
+- All other make types (F/A/N/B) → `'MAKE'`
+- R/L/T types (CREATE.PLNB) → `'BUY'`
+
+### Action code assignment (Stage 4)
+
+Stage 4 scans **all** BKMRPSW entries (all item types).
+
+**EXPEDITE / EXPSENS logic (MRK.EXPDTE):**
+```
+lookahead = order.DATE + MTIC.PROD.EXPBF     ; days forward to scan
+scan MTMRP reverse while PARTNO matches
+  if supply found with QTY > 0 within lookahead:
+    if order.DATE - demand.DATE > int(BKIC.PROD.AVFO):
+      ACTION = "EXPEDITE"          ; supply is late by more than threshold
+    else:
+      ACTION = "EXPSENS"           ; supply is late but within sensitivity range
+```
+
+**DELAY / DELSENS / REVIEW logic (MRK.DELAY):**
+```
+lookahead = order.DATE + MTIC.PROD.DELBF     ; days forward to scan
+scan MTMRP reverse while PARTNO matches
+  if demand found with QTY < 0 within lookahead:
+    if demand.DATE - order.DATE > int(BKIC.PROD.AVVO):
+      ACTION = "DELAY"             ; supply arrives too early by more than threshold
+    else:
+      ACTION = "DELSENS"           ; supply is early but within sensitivity range
+  if no demand found in window:
+    ACTION = "REVIEW"              ; supply with no demand — review needed
+```
+
+### Key item master fields used by MRP (SRC-confirmed)
+
+| Field | Type | MRP role |
+|-------|------|---------|
+| `MTIC.PROD.MRP` | STRING 1 | 'Y' = include in MRP run (the real MRP on/off flag) |
+| `MTIC.PROD.MRPSW` | STRING 1 | Quantity rounding flag: 'N'=no rounding, else round planned QTY to whole number |
+| `MTIC.PROD.TYPE` | STRING 1 | Item type — governs which stage processes the part |
+| `MTIC.PROD.LEAD` | UBINARY | Lead time (days) — STARTDT = required_date − LEAD |
+| `MTIC.PROD.EXPBF` | UBINARY | Expedite buffer (days) — lookahead window for EXPEDITE scan |
+| `MTIC.PROD.DELBF` | UBINARY | Delay buffer (days) — lookahead window for DELAY scan |
+| `MTIC.PROD.PCONV` | FLOAT | Purchase UOM conversion factor (applied to PO quantities) |
+| `BKIC.PROD.RLVL` | FLOAT | Reorder level — planned order triggered when ONHAND < RLVL |
+| `BKIC.PROD.RAMT` | FLOAT | Reorder amount — minimum planned order quantity (non-phantoms) |
+| `BKIC.PROD.UOH` | FLOAT | Units on hand — initial ONHAND seed for MRP balance calc |
+| `BKIC.PROD.AVFO` | FLOAT | **EXPEDITE threshold (days)** — if late_days > AVFO → EXPEDITE (previously mislabelled "avg fixed overhead") |
+| `BKIC.PROD.AVVO` | FLOAT | **DELAY sensitivity (days)** — if early_days > AVVO → DELAY (previously mislabelled "avg variable overhead") |
+
+### BKMRPSW role (corrected)
+
+BKMRPSW is a **stage-control scratch file**, not a per-part MRP enable/disable switch:
+- Initialized in Stage 1: `BKMRP.SW.SW = 'Z'` for each part that gets MTMRP records
+- During Stage 2: SW is updated to `MTIC.PROD.TYPE` when a planned order is created
+- Stage 4 scans BKMRPSW (scope A = all records) to process every part that appeared in the run
+- Cleared at the start of each MRP run via `casinit`
+
+### MTMRP.ACTION codes (SRC-confirmed)
+
+| Code | Meaning | Set by |
+|------|---------|--------|
+| `MAKE` | Planned order to manufacture | CREATE.PLN — F/A/N/B types |
+| `BUY` | Planned order to purchase | CREATE.PLN (M-type) + CREATE.PLNB |
+| `EXPEDITE` | Existing supply arriving late (> AVFO days) | Stage 4 MRK.EXPDTE |
+| `EXPSENS` | Existing supply arriving late (≤ AVFO days) | Stage 4 MRK.EXPDTE |
+| `DELAY` | Existing supply arriving too early (> AVVO days) | Stage 4 MRK.DELAY |
+| `DELSENS` | Existing supply arriving too early (≤ AVVO days) | Stage 4 MRK.DELAY |
+| `REVIEW` | Supply with no demand within delay buffer | Stage 4 MRK.DELAY |
+| `REORDLVL` | Order triggered by reorder level rule | Stage 1/3 — seeded by DO.RLEVEL |
+
+### CALENDAR table usage (SRC-confirmed)
+
+`CREATE.PLN` and `CREATE.PLNB` both use `CALENDAR` (the shop calendar) to adjust the planned STARTDT:
+```
+STARTDT = DATE - LEAD
+; if any day in [STARTDT..DATE] is a non-working day (ifdup MTCAL.DATE):
+;   shift STARTDT back one day and recheck
+```
+The `ifdup MTCAL.DATE` check detects calendar blocking days. Working days = days NOT in the CALENDAR table.
+
+---
+
+## Notes & open questions (updated Pass 283)
+
+- BKMRPPO CONF field: once confirmed by user in MR-J, creates a real BKAPPO/BKAPPOL record. The BKMRPPO row is likely then deleted or marked DONE (not confirmed in SRC).
+- `BKAP.PO.PRTD $ "CR"` in DO.PO — C and R are excluded PO statuses. C likely = Cancelled, R likely = Received. Awaiting UI label confirmation.
+- `BKAP.PO.CONFIRM[2]='S'` — PO status flag at position 2 = 'S' is skipped. Meaning of 'S' not confirmed.
+- `MTWO.WIP.STATUS $ "CXI"` — WO statuses C/X/I excluded from MRP demand. Likely Complete/Cancelled/Issued-complete. SRC-level confirmed as exclusion filter; label confirmation pending.

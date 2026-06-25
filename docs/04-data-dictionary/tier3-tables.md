@@ -65,8 +65,8 @@ Record size: 1,533 bytes, 108 fields
 | 1479 | MTIC_PROD_OPTCS | STRING | 1 | Options cost flag |
 | 1480 | MTIC_PROD_OPTCD | STRING | 5 | Options code |
 | 1485 | MTIC_PROD_UIQC | FLOAT | 8 | Units in QC |
-| 1501 | MTIC_PROD_EXPBF | UBINARY | 2 | Expire before (days) — lot expiry warning threshold |
-| 1503 | MTIC_PROD_DELBF | UBINARY | 2 | Delete before (days) — lot deletion threshold |
+| 1501 | MTIC_PROD_EXPBF | UBINARY | 2 | **MRP expedite lookahead buffer (days)** — TEMP.DATE = order.DATE + EXPBF defines the forward window for expedite scan (SRC-confirmed BKMRF.SRC L1299); also used as expire-before threshold in lot tracking |
+| 1503 | MTIC_PROD_DELBF | UBINARY | 2 | **MRP delay lookahead buffer (days)** — TEMP.DATE = order.DATE + DELBF defines forward window for delay scan in GET.RQ.DATE (SRC-confirmed BKMRF.SRC L1570); also used as delete-before threshold in lot tracking |
 | 1505 | MTIC_PROD_CUM | STRING | 3 | Customer UOM |
 | 1508 | MTIC_PROD_LONGP | STRING | 25 | Long part description |
 

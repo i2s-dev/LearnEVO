@@ -786,31 +786,44 @@ orders, forecasts) vs. supply (on-hand, open POs, open WOs) across the full BOM 
 4. **WO BOM explosion (DO.WOBOM):** For each WO, explode WOBOM → component MTMRP demand
 5. **Forecast loading (DO.FC):** Scan BKMRPFC → write projected-demand MTMRP records
 6. **Reorder level check (DO.RLEVEL):** Scan BKICLOC → trigger planned orders at reorder level
-7. **MRP engine Stage 1/2 (START.MRP/2):** Per-part loop: scan MTMRP, accumulate running ONHAND;
-   if ONHAND < reorder level call CREATE.PLN() to add a planned order
-8. **MRP engine Stage 3 (START.MRP3):** Assign BKMRPSW record per part (loop control)
-9. **Action assignment Stage 4 (START.MRP4):** Assign EXPEDITE/DELAY/REVIEW messages after all
-   orders are in MTMRP (more accurate than mid-run assignment)
+7. **MRP engine Stage 1 (START.MRP):** Scan MTICMSTR for FAMNB+opt types; accumulate ONHAND;
+   call CHK.PLAND() when ONHAND < RLVL; call CREATE.PLN() to create planned order + BOM explode;
+   write BKMRPSW record per part processed
+8. **MRP engine Stage 2 (START.MRP2):** Multi-pass BOM explosion — scan BKMRPSW; repeat until
+   no new planned orders created (ctl.recs=0)
+9. **MRP engine Stage 3 (START.MRP3):** Scan MTICMSTR for R/L/T types; call CREATE.PLNB() to
+   create BUY planned orders (no BOM explosion); updates buynum counter
+10. **Action assignment Stage 4 (START.MRP4):** 3 passes over all BKMRPSW entries:
+    - Pass 1: EXPEDITE/EXPSENS — supply arriving late (MRK.EXPDTE using AVFO threshold)
+    - Pass 2: update PG.FDATE via GET.RQ.DATE()
+    - Pass 3: DELAY/DELSENS/REVIEW — supply arriving early (MRK.DELAY using AVVO threshold)
+    After Stage 4: renumber PLP (phantom planned) orders via RENUM.PHN
 
-Note: 2001-01-01 JVH refactor eliminated multi-pass Stage 4 by looping per-part in Stages 1–3.
+**MTICMSTR fields confirmed in BKMRF.SRC (Pass 283):**
+- MTIC.PROD.MRP = 'Y' — include in MRP run
+- MTIC.PROD.TYPE — item type (B=phantom/always-generate; FAMNB=make types stages 1-2; RLT=buy types stage 3; M=make-from gets BUY action)
+- MTIC.PROD.MRPSW ≠ 'N' — quantity rounding flag: 'N'=no rounding; else round planned QTYs to whole number
+- MTIC.PROD.LEAD — lead time days: STARTDT = required_date - LEAD
+- MTIC.PROD.EXPBF — expedite lookahead buffer (days): window for expedite scan
+- MTIC.PROD.DELBF — delay lookahead buffer (days): window for delay scan
+- MTIC.PROD.PCONV — purchase UOM conversion factor (applied to PO qty in DO.PO)
 
-**MTICMSTR fields confirmed in BKMRF.SRC:**
-- MTIC.PROD.MRP = 'Y' — scan filter: only process MRP-enabled items
-- MTIC.PROD.TYPE — item type ('B'=buyout, 'F','A','M','N' = other types); type 'B' uses QOH=0 (always generate orders)
-- MTIC.PROD.MRPSW ≠ 'N' — rounding switch: if 'N', don't round ONHAND to whole units
+**BKICMSTR fields confirmed in BKMRF.SRC (Pass 283):**
+- BKIC.PROD.UOH — on-hand quantity (starting ONHAND)
+- BKIC.PROD.RLVL — reorder level trigger
+- BKIC.PROD.RAMT — minimum order quantity (planned order qty ≥ RAMT, except phantoms)
+- BKIC.PROD.AVFO — **expedite threshold (days)**: late_by > AVFO → EXPEDITE, else → EXPSENS
+- BKIC.PROD.AVVO — **delay sensitivity (days)**: early_by > AVVO → DELAY, else → DELSENS
 
-**BKICMSTR fields confirmed in BKMRF.SRC:**
-- BKIC.PROD.UOH — on-hand quantity (starting ONHAND value for MRP run)
-- BKIC.PROD.RLVL — reorder level (if UOH < RLVL, generate planned order at reorder-level pass)
+**MTMRP confirmed fields (SRC-confirmed Pass 283):**
+PARTNO(15) + DATE + KEY form composite key; ORDER(10, 'REORDLVL'/'PL1'/'BUY'/'PO#'/'WO#-');
+ACTION(10, 'MAKE'/'BUY'/'EXPEDITE'/'EXPSENS'/'DELAY'/'DELSENS'/'REVIEW'/'REORDLVL');
+PEGTO(10, demand source: SO#/WO#/'REORDLVL'); QTY(float, neg=demand/pos=supply);
+PG.SDATE/PG.FDATE/PG.QTY(pegging schedule); STARTDT(planned start = DATE-LEAD);
+ONHAND(float, running projected balance); EXTRA(50, type label e.g. "PURCHASE ORDER")
 
-**MTMRP confirmed fields (12f — from source):**
-PARTNO(15) + DATE(PK composite with KEY), KEY, ORDER(10, e.g. 'REORDLVL'),
-ACTION(10, 'EXPEDITE'/'DELAY'/'REVIEW'), PEGTO(10, demand source reference),
-QTY(float), PG.SDATE(date, pegged start), PG.FDATE(date, pegged finish),
-STARTDT(date, planned start), PG.QTY(float, pegged qty), ONHAND(float, running balance)
-
-**BKMRPSW confirmed fields (2f):**
-PART(15, part number key), SW(1, status flag: 'Z' = processed)
+**BKMRPSW confirmed fields (Pass 283):**
+PART(15, part PK), SW(1, initialized 'Z' in Stage 1; updated to MTIC.PROD.TYPE when planned order created)
 
 **Primary tables:**
 
@@ -13576,18 +13589,25 @@ Per-item MRP sensitivity settings stored in MTIC.PROD:
 | m.sensexp | Expedite sensitivity |
 | m.sensdly | Delay sensitivity |
 
-#### MTMRP Action Codes (Pass 106e)
+#### MTMRP Action Codes (Pass 283 — SRC-confirmed from BKMRF.SRC)
 
 MTMRP.ACTION field values — what T7MRF writes, what T7MRG/T7MRH display:
 
-| Action code | Meaning | What to do |
-|---|---|---|
-| `NEW` | New planned order needed — no supply exists for this demand | Create PO (MR-J) or WO (MR-I) |
-| `DELAY` | Existing PO/WO due too early — supply will arrive before demand | Reschedule PO out (MR-N) |
-| `CANCEL` | Existing PO/WO excess — demand no longer exists | Cancel the PO/WO |
-| `EXPEDITE` | Existing PO/WO due too late — supply arrives after need date | Pull in the PO due date |
-| `RESCHEDULE` | Minor timing adjustment needed | Adjust PO/WO dates |
-| `OK` | No action needed — supply and demand aligned | Review only |
+| Action code | Meaning | Set by | What to do |
+|---|---|---|---|
+| `MAKE` | New planned make order — no supply exists for this demand | CREATE.PLN (F/A/N/B types) | Generate WO (MR-I) |
+| `BUY` | New planned purchase order — no supply exists for demand | CREATE.PLN (M-type) + CREATE.PLNB (R/L/T types) | Generate PO (MR-J) |
+| `EXPEDITE` | Existing PO/WO due late by > BKIC.PROD.AVFO days | Stage 4 MRK.EXPDTE | Pull in the PO/WO due date |
+| `EXPSENS` | Existing PO/WO due late but within AVFO sensitivity | Stage 4 MRK.EXPDTE | Expedite-sensitive — monitor closely |
+| `DELAY` | Existing PO/WO due too early by > BKIC.PROD.AVVO days | Stage 4 MRK.DELAY | Push out the PO/WO due date |
+| `DELSENS` | Existing PO/WO due early but within AVVO sensitivity | Stage 4 MRK.DELAY | Delay-sensitive — monitor |
+| `REVIEW` | Existing supply with no demand in delay buffer window | Stage 4 MRK.DELAY | Review whether the order is still needed |
+| `REORDLVL` | Order triggered by reorder level falling below RLVL | DO.RLEVEL / Stage 1 seeding | Stock replenishment order |
+
+**AVFO/AVVO semantics (SRC-confirmed BKMRF.SRC L1386, L1554):**
+- `BKIC.PROD.AVFO` = expedite threshold in days: `int(AVFO)`. If supply arrives > AVFO days late → EXPEDITE, else → EXPSENS.
+- `BKIC.PROD.AVVO` = delay threshold in days: `int(AVVO)`. If supply arrives > AVVO days early → DELAY, else → DELSENS.
+- Note: DDF field names imply "avg fixed overhead" / "avg variable overhead" but SRC usage is unambiguous — these are MRP action thresholds.
 
 MR-H color-codes these by urgency: ACT.TYPES [MBEDORC] — `M`=Make, `B`=Buy, `E`=Expedite,
 `D`=Delay, `O`=OK, `R`=Reschedule, `C`=Cancel. Color bands set by PRIOR.CL (priority) and
@@ -18123,6 +18143,9 @@ Find modifiers: `err <label>` (branch on not-found), `nlock` (no lock), `noclr` 
 | `just(str, 'L'/'R')` | Justify (left/right pad) |
 | `chr(n)` | Character from ASCII code |
 | `round(val, dec)` | Round numeric |
+| `int(n)` | Integer part (truncate to whole number) |
+| `dtor(date)` | Date-to-real: convert date to numeric float days (for date arithmetic) |
+| `rtod(real)` | Real-to-date: convert float days back to date value |
 | `ttof(time)` / `ftot(n)` | Time ↔ float conversion |
 | `flerr(handle)` | File error code (0=OK) |
 | `fnum('name')` | Get file handle number |
@@ -18154,12 +18177,32 @@ endif
 scan TABLE key FIELD start VALUE for CONDITION   ;scan with filter (skip if not in condition)
   sloop_if .n. test    ;skip to next if test fails
   sexit_if condition   ;exit scan if condition
+  sexit                ;unconditional scan exit
 ends                   ;end scan block
 
 scan TABLE key FIELD start VALUE while CONDITION  ;scan while condition true
+  exit_if condition    ;conditional exit from while-scan
+  sexit                ;unconditional scan exit
+ends
+
+scan TABLE key FIELD scope R while CONDITION  ;scan in REVERSE direction
+  ...
+ends
+
+scan TABLE key FIELD scope A          ;scan ALL records (no start restriction)
   ...
 ends
 ```
+
+**`ifdup TABLE do ... endif`** — execute block if last key lookup found a duplicate:
+```
+MYFIELD = VALUE
+ifdup MYTABLE do
+  ;value already exists in MYTABLE
+  goto DUPLICATE_HANDLER
+endif
+```
+Used to check for duplicate key existence without explicit find (BKMRF.SRC L1454, L1645).
 
 **`ifna TABLE ... endif`** — execute block if last find found no record.
 

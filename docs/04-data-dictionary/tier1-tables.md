@@ -671,8 +671,8 @@ Primary key: `BKIC_PROD_CODE` (field 1). BKICAMTR and BKICEMTR are structurally 
 | 55 | BKIC_PROD_AVSET | FLOAT | 8(4) | Average setup cost per unit |
 | 56 | BKIC_PROD_AVOP | FLOAT | 8(4) | Average outside-process cost per unit |
 | 57 | BKIC_PROD_AVMAT | FLOAT | 8(4) | Average material cost per unit |
-| 58 | BKIC_PROD_AVFO | FLOAT | 8(4) | Average fixed overhead per unit |
-| 59 | BKIC_PROD_AVVO | FLOAT | 8(4) | Average variable overhead per unit |
+| 58 | BKIC_PROD_AVFO | FLOAT | 8(4) | **MRP expedite threshold (days)** — supply-late-by > AVFO → EXPEDITE else EXPSENS (SRC-confirmed BKMRF.SRC L1386; DDF name misled as "avg fixed overhead") |
+| 59 | BKIC_PROD_AVVO | FLOAT | 8(4) | **MRP delay sensitivity (days)** — supply-early-by > AVVO → DELAY else DELSENS (SRC-confirmed BKMRF.SRC L1554; DDF name misled as "avg variable overhead") |
 | 60 | BKIC_PROD_EXTRA | STRING | 100 | Extra / user-defined (100 chars) |
 | 61 | BKIC_PROD_TAXIN | STRING | 1 | Tax-inclusive flag |
 | 62 | BKIC_PROD_ISUPC | STRING | 12 | IS/Avalara UPC code |

@@ -73,8 +73,8 @@ Source: T7INA.RWN (BKIC.PROD.* variables, 63 unique)
 | BKIC.PROD.AVSET | Average setup cost |
 | BKIC.PROD.AVOP | Average outside processing cost |
 | BKIC.PROD.AVMAT | Average material cost |
-| BKIC.PROD.AVFO | Average features/options cost |
-| BKIC.PROD.AVVO | Average vendor/outside op cost |
+| BKIC.PROD.AVFO | **MRP expedite threshold (days)** — if supply-late-by > AVFO → ACTION="EXPEDITE", else → "EXPSENS" (SRC-confirmed BKMRF.SRC L1386; previously mislabelled "avg fixed overhead") |
+| BKIC.PROD.AVVO | **MRP delay sensitivity (days)** — if supply-early-by > AVVO → ACTION="DELAY", else → "DELSENS" (SRC-confirmed BKMRF.SRC L1554; previously mislabelled "avg variable overhead") |
 | BKIC.PROD.EXTRA | Extra/user-defined field |
 | BKIC.PROD.TAXIN | Tax-inclusive price flag |
 | BKIC.PROD.ISUPC | UPC barcode |
