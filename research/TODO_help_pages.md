@@ -1,11 +1,13 @@
 # TODO — Help System Content Gaps
 
 Status: in-progress
-Generated: 2026-04-21. Last recount: 2026-04-21 after completing sections A, D, F.
+Generated: 2026-04-21. Last recount: 2026-06-25 (Passes 307-309).
 
-**Totals:** ~2,720 pages in the help system; **88 are stubs** (was 104 — 16 resolved).
+**Totals:** 2,709 pages. **53 stubs remain** (was 88 → 77 → 67 → 53).
 
-**Completed this pass:** Section A (11 broken-link duplicates fixed via a build-side canonicalizer), Section D (4 format pages written), Section F (1 architecture page written). See [learnevo-help/content/topics.py](../learnevo-help/content/topics.py) and [learnevo-help/content/glossary.py](../learnevo-help/content/glossary.py).
+**Completed this pass (307-309):** Section B — all 44 recipe pages written. Zero recipe stubs remain.
+Prior completions: Section A (broken-link dedup), Section D (file formats), Section F (architecture).
+See [learnevo-help/content/recipes.py](../learnevo-help/content/recipes.py).
 
 Stubs come from [learnevo-help/build.py:372-422](../learnevo-help/build.py#L372-L422): the build script scans every page for `(#foo)` links and synthesizes a placeholder for any target ID that doesn't have a real page. So "stub" = "something linked to this, but nobody wrote the content yet."
 

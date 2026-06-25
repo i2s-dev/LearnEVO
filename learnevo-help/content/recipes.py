@@ -2165,4 +2165,574 @@ inter-company GL transfers.
 ["add company", "new company", "sy-c", "create company",
  "company setup", "multi-company", "company code"]),
 
+("recipe-switch-company", "Switch Between Companies", "SY",
+["Main Menu", "Switch Company (toolbar or menu)"],
+"""
+Change the active company without logging out and back in.
+
+## Steps
+
+1. From the EvoERP main menu, find **Switch Company** in the toolbar
+   or a `SY` sub-menu.
+2. A company selection list appears showing all company codes your
+   user has access to.
+3. Select (or type) the company code to switch to.
+4. EVO reloads the main menu and data files for the new company.
+   Your user session continues; you do not re-enter your password.
+
+## Access restriction
+
+If a company code doesn't appear, your user profile doesn't grant
+access to it. Ask the EVO administrator to update your record
+([[recipe-add-user]]).
+
+## Data isolation
+
+Each company's data is completely separate. Item numbers, customers,
+vendors, and GL accounts are all per-company — not shared across
+companies.
+
+## Default company at login
+
+Your default company (set in your user record) is the one EVO
+opens at login. Switching is for the current session only; the
+next login returns to your default.
+
+## Related
+
+- [[recipe-login]]
+- [[recipe-add-company]]
+- [[recipe-add-user]]
+- [[module-SY]]
+""",
+["switch company", "change company", "company switch", "multi-company",
+ "select company", "switch co"]),
+
+("recipe-update-evo", "Apply an EVO Software Update", "TA",
+["Main Menu", "Utilities", "TA-P Apply Updates"],
+"""
+Install a software update distributed by i2 Systems as a `.UPD` file.
+Updates may add features, fix bugs, and restructure data tables.
+
+## Prerequisites
+
+- Current EVO backup completed ([[recipe-backup]]).
+- All users logged out for the duration.
+- `.UPD` file accessible on the network.
+
+## Steps
+
+1. `Main Menu → Utilities → TA-P Apply Updates`
+   (may also run as the standalone `EvoUpdate.exe` utility).
+2. Browse to the `.UPD` file.
+3. EVO shows the version and number of restructures.
+4. Click **Apply**.
+5. EVO performs four restructure phases:
+   - Phase 1 — Read existing structure from DDF.
+   - Phase 2 — Write new structure definition.
+   - Phase 3 — Copy data to new layout.
+   - Phase 4 — Replace files and clean up.
+6. Updated `.RWN` programs are copied to the network share.
+   `StartEvo.exe` uses `robocopy` to sync local client files.
+7. Log back in and confirm the version string on the About screen.
+
+## If it fails
+
+Do NOT run EVO on partially-updated files. Restore from your
+pre-update backup and contact i2 Systems technical support.
+
+## Related
+
+- [[recipe-backup]]
+- [[module-TA]]
+""",
+["update evo", "apply update", "ta-p", "software update", "patch",
+ "upd file", "evo update", "upgrade"]),
+
+("recipe-credit-memo", "Issue a Credit Memo to a Customer", "AR",
+["Main Menu", "Accounts Receivable", "AR-D Enter Credit Memos"],
+"""
+Issue a credit memo directly to a customer — reducing their AR
+balance without a linked return. For return-based credits, see
+[[recipe-rma]].
+
+## When to use
+
+- Price adjustment (customer was overcharged).
+- Allowance or promotional credit.
+- Correcting an invoicing error.
+- Writing off a small balance.
+
+## Steps
+
+1. `Main Menu → Accounts Receivable → AR-D Enter Credit Memos`
+2. **Customer#** — who receives the credit.
+3. **Credit memo date** — determines the accounting period.
+4. **Amount** — credit amount (enter positive; EVO treats it as a
+   credit from the memo type).
+5. **GL account** — Revenue reversal or concessions account.
+6. **Reference** — optional invoice number or reason text.
+7. F10 Post — creates a negative open item in `BKARINV`.
+   GL: **DR** Revenue, **CR** AR.
+
+## Applying the credit
+
+After posting, apply it against a specific open invoice in
+`AR-C Enter Cash Receipts` — offset the credit memo against
+the invoice to clear both.
+
+## Tables touched
+
+- `BKARINV` — credit memo open item (negative amount)
+- `BKARCUST` — customer balance reduced
+
+## Related
+
+- [[recipe-rma]]
+- [[recipe-record-payment]]
+- [[module-AR]]
+""",
+["credit memo", "ar-d", "customer credit", "price adjustment",
+ "credit customer", "allowance", "ar credit"]),
+
+("recipe-receive-stock", "Receive Stock Without a PO", "IN",
+["Main Menu", "Inventory", "IN-C Enter Receipts"],
+"""
+Add inventory without a linked Purchase Order — for transfers from
+another facility, job-site returns, or initial stock loads.
+
+## When to use
+
+- Goods arrive with no PO (returned from a job site, inter-company
+  transfer, initial setup).
+- Do NOT use for PO-linked receipts — use PO-B ([[recipe-receive-po]]).
+
+## Steps
+
+1. `Main Menu → Inventory → IN-C Enter Receipts`
+2. **Item#**, **Qty received**, **Unit cost**.
+3. **Receipt date** — defaults to today.
+4. **GL offset account** — Inventory Clearing or Inter-company
+   Transfer account.
+5. **Location / Bin** and **Lot#** (if lot-controlled).
+6. F10 Post.
+   - Increments `BKICMSTR.BKIC_PROD_UOH`.
+   - GL: **DR** Inventory, **CR** Offset account.
+   - Logs to `BKICTRN`.
+
+## Tables touched
+
+- `BKICMSTR` — on-hand updated
+- `BKICLOC` — per-bin balance
+- `BKICTRN` — transaction log
+
+## Related
+
+- [[recipe-receive-po]]
+- [[recipe-adjust-inventory]]
+- [[module-IN]]
+""",
+["receive stock", "in-c", "enter receipt", "stock receipt",
+ "inventory receipt", "receive inventory", "no po receipt"]),
+
+("recipe-1099", "Prepare and Print 1099 Forms", "AP",
+["Main Menu", "Accounts Payable", "AP-L-H 1099 Report"],
+"""
+At year-end, report non-employee compensation payments to the IRS
+via 1099-NEC or 1099-MISC forms.
+
+## Prerequisites
+
+- Vendors flagged with a 1099 type ([[recipe-enter-vendor]] —
+  `BKAP_VEN_1099` field set).
+- All AP payments for the year posted.
+- Run before year-end close.
+
+## Steps
+
+1. `Main Menu → Accounts Payable → AP-L-H 1099 Report`
+2. **Year** — the tax year.
+3. **Minimum amount** — defaults to $600 (IRS threshold).
+4. **Vendor range** — blank for all.
+5. EVO lists qualifying vendors and year-to-date amounts.
+   Review for accuracy before printing.
+6. Load 1099 forms and print.
+
+## Common issues
+
+| Issue | Fix |
+|-------|-----|
+| Vendor missing | Set `BKAP_VEN_1099` to non-blank |
+| Amount wrong | Verify all payments posted; check for voided/reissued checks |
+| Wrong box | Confirm 1099 type code maps to correct IRS form box |
+
+## Related
+
+- [[recipe-enter-vendor]]
+- [[recipe-year-end-close]]
+- [[module-AP]]
+""",
+["1099", "ap-l-h", "1099-nec", "1099-misc", "tax forms",
+ "year end 1099", "vendor 1099", "irs reporting"]),
+
+("recipe-purge-history", "Purge Old Transaction History", "TA",
+["Main Menu", "Utilities", "TA-* Purge / Archive"],
+"""
+Remove completed transactions from active tables to free space and
+improve report performance.
+
+## When to purge
+
+- After year-end close and audit sign-off.
+- Per your data-retention policy (7+ years for US financial records).
+- Never purge the current or prior fiscal year if audit is pending.
+
+## Module-specific purge utilities
+
+| Menu | What it purges |
+|------|---------------|
+| `PI-H` | Completed Physical Inventory records |
+| `WO-K` | Closed WO history |
+| `AP-K` | Paid vouchers and check history |
+| `AR-J` | Paid invoices |
+| `PO-F` | Fully received/closed POs |
+| `GL-J` | Posted GL detail |
+| `SO-O` | Shipped/closed SOs |
+
+## General steps
+
+1. Navigate to the purge menu for the module.
+2. Enter a **purge-through date** — at least 1 full year in the past.
+3. Use **Print before purge** to create a paper/PDF archive.
+4. Confirm.
+
+## Safety rules
+
+- Always back up before purging ([[recipe-backup]]).
+- Purge history tables only — never master tables (BKICMSTR,
+  BKARCUST, BKAPVEND).
+
+## Related
+
+- [[recipe-backup]]
+- [[recipe-year-end-close]]
+- [[module-TA]]
+""",
+["purge history", "purge data", "archive", "ta purge",
+ "delete history", "clean up"]),
+
+("recipe-po-to-payment", "PO-to-Payment End-to-End", "PO",
+["Main Menu", "Purchase Orders / Accounts Payable"],
+"""
+The complete procure-to-pay cycle: PO → receive → voucher → check.
+
+## Overview
+
+```
+PO-A Create PO → PO-B Receive → AP-B Enter Voucher → AP-H Select → AP-I Print Checks
+```
+
+## Step 1 — Create PO (PO-A)
+
+See [[recipe-enter-po]]. Posting increments units-on-order
+(`BKICMSTR.BKIC_PROD_UOPO`).
+
+## Step 2 — Receive Goods (PO-B)
+
+See [[recipe-receive-po]]. Posting:
+- Increases on-hand inventory.
+- GL: **DR** Inventory, **CR** AP Clearing.
+
+## Step 3 — Enter Invoice / Voucher (AP-B)
+
+1. `AP → AP-B Enter Vouchers`
+2. Match vendor invoice to PO receipt lines (3-way match).
+3. Post — GL: **DR** AP Clearing, **CR** Accounts Payable.
+
+## Step 4 — Select for Payment (AP-H)
+
+See [[recipe-pick-invoices]]. Choose invoices due by a given date
+and capture early-pay discounts.
+
+## Step 5 — Print and Post Checks (AP-I / AP-G)
+
+See [[recipe-print-checks]]. After printing, confirm in AP-G.
+GL: **DR** Accounts Payable, **CR** Cash.
+
+## GL flow summary
+
+| Event | Debit | Credit |
+|-------|-------|--------|
+| Receive PO | Inventory | AP Clearing |
+| Enter invoice | AP Clearing | Accounts Payable |
+| Issue check | Accounts Payable | Cash |
+
+## Related
+
+- [[recipe-enter-po]]
+- [[recipe-receive-po]]
+- [[recipe-enter-voucher]]
+- [[recipe-print-checks]]
+- [[recipe-pick-invoices]]
+""",
+["po to payment", "procure to pay", "p2p", "purchase to pay",
+ "po cycle", "end to end po", "ap cycle"]),
+
+("recipe-estimate", "Create a Customer Estimate or Quote", "QT",
+["Main Menu", "Estimating", "QT-A Enter Estimates"],
+"""
+Build a cost estimate and price quote before committing to a
+Sales Order.
+
+## Steps
+
+1. `Main Menu → Estimating → QT-A Enter Estimates`
+2. **Estimate#**, **Customer#**, **Item / Description**, **Quantity**.
+3. Add **material lines** (pull from existing BOM or enter manually).
+4. Add **labor lines** — operations × hours × work center rate.
+5. Add **overhead** percentage.
+6. EVO calculates total cost and suggests a selling price via markup.
+7. F10 Save.
+
+## Converting to a Sales Order
+
+When the customer accepts:
+1. `QT-B Convert to SO` — creates a live SO.
+2. EVO can optionally create a BOM and routing for new part numbers.
+
+## Tables touched
+
+- `BKQTMSTR` — estimate header
+- `BKQTLINE` — estimate lines
+
+## Related
+
+- [[recipe-enter-so]]
+- [[recipe-rfq]]
+- [[module-QT]]
+""",
+["estimate", "quote", "qt-a", "quotation", "cost estimate",
+ "price quote", "estimating", "customer quote"]),
+
+("recipe-rfq", "Send an RFQ to a Vendor", "PO",
+["Main Menu", "Purchase Orders", "PO-G Enter RFQs"],
+"""
+Request price quotes from vendors before creating a Purchase Order.
+
+## Steps
+
+1. `Main Menu → Purchase Orders → PO-G Enter RFQs`
+2. **RFQ#**, **Requested-by date**, **Item**, **Quantity**.
+3. Add 2–3 vendor numbers to quote.
+4. F10 Post. Print RFQ forms via `PO-H Print RFQs`.
+
+## Enter vendor responses
+
+`PO-I Enter RFQ Responses` — record each vendor's price, lead time,
+and valid-through date.
+
+## Accept and create PO
+
+`PO-J Accept RFQ` — select the winning vendor. EVO creates a PO
+automatically. See [[recipe-enter-po]].
+
+## Tables touched
+
+- `BKPORFQH` — RFQ header
+- `BKPORFQL` — RFQ lines and vendor quotes
+
+## Related
+
+- [[recipe-enter-po]]
+- [[recipe-estimate]]
+- [[module-PO]]
+""",
+["rfq", "request for quote", "po-g", "vendor quote", "price request",
+ "bid", "quote vendors"]),
+
+("recipe-print-invoice", "Print or Reprint a Customer Invoice", "SO",
+["Main Menu", "Sales Orders", "SO-D Print Invoices"],
+"""
+Print the invoice for a shipped SO, or reprint a prior invoice.
+
+## Steps
+
+1. `Main Menu → Sales Orders → SO-D Print Invoices`
+2. **Batch print** — EVO shows all unprinted invoices. Print all.
+3. **Single reprint** — enter the specific invoice number and set
+   the reprint flag.
+
+## Invoice content
+
+- Bill-to / ship-to addresses
+- Invoice date, SO#, customer PO#
+- Line items with qty, unit price, extended
+- Subtotal, freight, tax, total due
+- Payment terms and due date
+
+## Email invoicing
+
+If the email module is active, use SO-D to email invoices as PDFs.
+Requires SMTP settings in System Defaults.
+
+## Related
+
+- [[recipe-so-pick-ship]]
+- [[recipe-record-payment]]
+- [[module-SO]]
+""",
+["print invoice", "so-d", "reprint invoice", "invoice", "customer invoice"]),
+
+("recipe-print-statements", "Print Customer Statements", "AR",
+["Main Menu", "Accounts Receivable", "AR-J Print Statements"],
+"""
+Send periodic account statements to customers showing open invoices,
+payments, and total amount owed.
+
+## Steps
+
+1. `Main Menu → Accounts Receivable → AR-J Print Statements`
+2. **Statement date** — as-of date for balances.
+3. **Customer range** — blank for all with a balance.
+4. **Include zero-balance?** — usually `N`.
+5. **Statement type** — **Balance Forward** or **Open Item**.
+6. Print.
+
+## Statement content
+
+- Customer name and address
+- Open invoices: date, invoice#, amount
+- Recent payments applied
+- Current balance and aging summary (current / 30 / 60 / 90+)
+
+## Dunning messages
+
+Automatically inserted text based on aging bucket
+(e.g., "Your account is 60+ days past due").
+
+## Related
+
+- [[recipe-ar-aging]]
+- [[recipe-record-payment]]
+- [[module-AR]]
+""",
+["print statements", "ar-j", "customer statements", "account statement",
+ "balance forward", "open item statement"]),
+
+("recipe-custom-report", "Run or Customize a Report", "RT",
+["Main Menu", "Reports", "Various RT-* menus"],
+"""
+EvoERP reports are ReportBuilder `.RTM` files. Each module has a
+Reports sub-menu (e.g., `AR-L-*`, `IN-I-*`, `WO-L-*`).
+
+## Running a standard report
+
+1. Navigate to the report menu.
+2. Enter filter parameters (date range, item range, etc.).
+3. Choose output: **Screen**, **Printer**, **PDF**, or **File**.
+4. Press F10 to run.
+
+## Customizing a report
+
+1. Locate the `.RTM` file on `\\\\server\\EVOReports\\`.
+2. Copy to a local working folder.
+3. Open in `RBDsgnr.exe` (ReportBuilder Designer).
+4. Add/remove bands, labels, and DB fields.
+5. Save and copy the modified `.RTM` back to the share.
+6. Test from EVO.
+
+## FILELOC table
+
+`FILELOC.B` maps report configuration names to `.RTM` filenames.
+If a report loads the wrong template, check `FILELOC`.
+
+## Related
+
+- [[module-RT]]
+- [[recipe-export-csv]]
+""",
+["custom report", "report", "rtm", "reportbuilder", "run report",
+ "modify report", "report designer"]),
+
+("recipe-export-csv", "Export Data to Excel or CSV", "IN",
+["Main Menu", "Inventory / Reports / Utilities"],
+"""
+Get EvoERP data into Excel or CSV for external analysis or
+system integration.
+
+## Method 1 — Report to File
+
+Most EVO reports have a **File** output option:
+1. Navigate to any report menu.
+2. Set parameters, choose **Output: File**.
+3. Enter a file path and run.
+4. Open in Excel (`Data → From Text/CSV`).
+
+## Method 2 — IN-P Export Items
+
+`Main Menu → Inventory → IN-P Export Items` — export item master
+fields to a delimited text file.
+
+## Method 3 — Generic Export (TA module)
+
+Some installations have a `TA-* Export` utility:
+1. Select table name (e.g., `BKICMSTR`).
+2. Select fields and filter criteria.
+3. Export to CSV.
+
+## Importing back
+
+Use **GE Import** (`T7GENIMP.DFM` — "Import DBA"):
+- Mode: **Skip** (skip duplicates), **Replace** (overwrite),
+  or **Append** (always insert).
+- Map CSV columns to table fields.
+
+## Related
+
+- [[recipe-custom-report]]
+- [[module-IN]]
+- [[module-TA]]
+""",
+["export csv", "export excel", "export data", "csv", "data export",
+ "import export", "in-p export"]),
+
+("recipe-pick-invoices", "Select Invoices for AP Payment Run", "AP",
+["Main Menu", "Accounts Payable", "AP-H Select Invoices for Payment"],
+"""
+Choose which open vendor invoices to pay in the current check run.
+
+## Steps
+
+1. `Main Menu → Accounts Payable → AP-H Select Invoices for Payment`
+2. **Pay-through date** — include invoices due on or before this date.
+3. **Discount date** — capture early-pay discounts still valid.
+4. **Vendor range** and **Bank account**.
+5. EVO shows a list of selected invoices with amounts and discounts.
+6. Review: uncheck to skip; add lines to force-include.
+7. F10 to accept — total selected amount is displayed.
+
+## Next step
+
+Go to `AP-I Print Checks` ([[recipe-print-checks]]) to print checks.
+
+## Partial payments
+
+Override the payment amount on an invoice line before finalizing
+to pay a vendor partially (e.g., invoice in dispute).
+
+## Tables touched
+
+- `BKAPOPEN` — open invoices
+- `BKAPSEL` — working table for current selection
+
+## Related
+
+- [[recipe-enter-voucher]]
+- [[recipe-print-checks]]
+- [[recipe-po-to-payment]]
+- [[module-AP]]
+""",
+["pick invoices", "select invoices", "ap-h", "payment selection",
+ "check run", "select for payment"]),
+
 ]
