@@ -1,65 +1,251 @@
 # Bill of Materials (BM)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 258 (2026-06-25)
 
 - **Module code**: `BM`
-- **Tables**: 10 (prefixes `BKBM`)
-- **UI forms**: 16 (prefixes `T7BM`, `T6BM`, `BKBM`)
+- **Tables**: 13 (10 BKBM* + 3 BKSB* approved-list tables)
+- **Programs**: 17 (T7BMA–T7BMR + T7BMGNC + T7BMKPRINT stubs)
+- **UI forms**: 16 (T7BMA–T7BMR DFMs)
 - **Menu operations**: 10
 
-## Menu operations
+---
 
-| Code | Operation | Legacy module file(s) |
-| ---- | --------- | --------------------- |
-| `BM-C` | Print Where Used | BKBMC |
-| `BM-D` | Print BOM Availability | BKBMD |
-| `BM-E` | Global Replace | BKBME |
-| `BM-F` | Global Delete | BKBMF |
-| `BM-G` | IN-B     IN-L-A     SO-Q- | AUTOBMG;BKBMG;ISSMJS |
-| `BM-H` | Print BOM at Average Cost | BKBMH;BKBMH1 |
-| `BM-I` | Print Summarized BOM | BKBMI |
-| `BM-J` | Enter Approved Substitutes | BKBMJ |
-| `BM-J-C` | Enter Approved Manufacturers | BKBMJC |
-| `BM-X` | BOM report | BKBMX |
+## Programs (17 total)
 
-## UI forms (16)
+Source: `samples/rwn_symbols.json` — all entries keyed to T7BM* path.
 
-| DFM file | Caption | fields | controls | tabs |
-| -------- | ------- | -----: | -------: | ---: |
-| `T7BMA.DFM` | New Screen | 44 | 105 | 0 |
-| `T7BMAx.DFM` | New Screen | 42 | 77 | 0 |
-| `T7BMB.DFM` | BM-B | 28 | 58 | 0 |
-| `T7BMC.DFM` | BM-C | 6 | 27 | 0 |
-| `T7BMD.DFM` | Print Availability | 18 | 46 | 0 |
-| `T7BME.DFM` | BM-E | 6 | 24 | 0 |
-| `T7BMF.DFM` | BM-F | 2 | 18 | 0 |
-| `T7BMG.DFM` | BM-G | 18 | 48 | 0 |
-| `T7BMH.DFM` | BM-H | 11 | 33 | 0 |
-| `T7BMI.DFM` | BM-I | 16 | 40 | 0 |
-| `T7BMJ.DFM` |  | 0 | 1 | 0 |
-| `T7BMK.DFM` |  | 0 | 1 | 0 |
-| `T7BML.DFM` |  | 0 | 1 | 0 |
-| `T7BMP.DFM` | BOM Pick List | 7 | 29 | 0 |
-| `T7BMQ.DFM` | BM-Q | 3 | 21 | 0 |
-| `T7BMR.DFM` | BM-R | 16 | 43 | 0 |
+| Program | Procs | Lib | Role |
+|---------|-------|-----|------|
+| T7BMA.RWN | 218 | LISTG60.LIB | BOM editor — main CRUD interface for BKBMMSTR |
+| T7BMB.RWN | 194 | DBA.LIB | BOM print (basic): PRT.2ND.DESC / PRT.DWG.PAR / PRT.VENDS / PRT.SPECS |
+| T7BMC.RWN | 178 | DBA.LIB | Where-used multi-level: X_LEVEL/LEVEL/LVL_QTY/LVL_TOTAL + MEM_CODE/MEM_COMPONENT/MEM_PRNT_COST |
+| T7BMD.RWN | 284 | DBA.LIB | BOM shortage/availability calculator — posts to GL via BKGLTRAN+DBAFIFO |
+| T7BME.RWN | 119 | LISTG60.LIB | Remark copy: COPY.REMARKS = copies all remarks from one BOM to another |
+| T7BMF.RWN | 86 | LISTG60.LIB | Simple item browser (FROM.ITEM only — minimal filter, pure browse) |
+| T7BMG.RWN | 177 | LISTG60.LIB | Multi-level BOM explosion + cost rollup: ROLLUP flag, opens ROUTING+WORKCTR |
+| T7BMH.RWN | 122 | LISTG60.LIB | Where-used browser: CHG.TIME/CHG.DATE + STDDAYS/STDMONTH/STDYEAR (lead time) |
+| T7BMI.RWN | 202 | DBA.LIB | BOM print with routings: PRT.ROUTINGS flag adds routing op costs to printout |
+| T7BMJ.RWN | 118 | LISTG60.LIB | Approved substitute parts browser: FROM.SUBST filter, BKARCUST + BKSBPART |
+| T7BMK.RWN | 130 | LISTG60.LIB | Approved vendor BOM browser: FROM.VEND/SORT.BY.VEND, BKAPVEND + BKSBVEND |
+| T7BML.RWN | 143 | LISTG60.LIB | Approved manufacturer BOM browser: FROM.MFG filter, BKSBMFG |
+| T7BMP.RWN | 101 | LISTG60.LIB | Item + bin location browser: BKICMSTR + ISBINLOC (bin location pick list) |
+| T7BMQ.RWN | 110 | LISTG60.LIB | BOM cost summary: MEM.QTY / TOT.COMP / SUB.TOT / COMP.EXT |
+| T7BMR.RWN | 132 | LISTG60.LIB | BOM-to-order / ASN: BKARINVL + ISBUILD + QUOTE.NUMBER / COMP.QTY1-3 |
+| T7BMGNC.RWN | 5 | T7BMGNC.SRC | Stub (GNC customization — no business logic) |
+| T7BMKPRINT.RWN | 5 | T7BMKPrint.SRC | Stub (kit print — no business logic) |
 
-## Database tables (10)
+---
 
-Full field details are in `../../../samples/ddf/schema.md` (see per-table heading).
+## Program Details
 
-| Table | File on disk | Fields | Key fields (first 3) |
-| ----- | ------------ | -----: | -------------------- |
-| **BKBMAMTR** | `BKBMAMTR.B` | 26 | `BKBM_PARENT`, `BKBM_COMPONENT`, `BKBM_QTY_REQD` |
-| **BKBMAVAL** | `BKBMAVAL.B` | 26 | `BKBM_PARENT`, `BKBM_COMPONENT`, `BKBM_QTY_REQD` |
-| **BKBMCNFG** | `BKBMCNFG.B` | 7 | `BKBM_CNFG_NUM`, `BKBM_CNFG_GLACT`, `BKBM_CNFG_GLDPT` |
-| **BKBMDIM** | `BKBMDIM.B` | 11 | `BKBM_DIM_PARENT`, `BKBM_DIM_LINE`, `BKBM_DIM_COMP` |
-| **BKBMEMTR** | `BKBMEMTR.B` | 26 | `BKBM_PARENT`, `BKBM_COMPONENT`, `BKBM_QTY_REQD` |
-| **BKBMERMK** | `BKBMERMK.B` | 20 | `BKBM_RM_PARENT`, `BKBM_RM_LINE`, `BKBM_RM_COMP` |
-| **BKBMMSTR** | `BKBMMSTR.B` | 26 | `BKBM_PARENT`, `BKBM_COMPONENT`, `BKBM_QTY_REQD` |
-| **BKBMNOTE** | `BKBMNOTE.B` | 16 | `BKBM_NT_PARENT`, `BKBM_NT_NOTE_1`, `BKBM_NT_NOTE_2` |
-| **BKBMREMK** | `BKBMREMK.B` | 20 | `BKBM_RM_PARENT`, `BKBM_RM_LINE`, `BKBM_RM_COMP` |
-| **BKBMSUMM** | `BKBMSUMM.B` | 26 | `BKBM_PARENT`, `BKBM_COMPONENT`, `BKBM_QTY_REQD` |
+### T7BMA — BOM Editor
 
-## Notes & open questions
+218 procs, LISTG60.LIB, 41 DB files. The main BOM CRUD editor.
 
-- *(populated per-module manually as deeper reading happens.)*
+Key var namespaces confirmed from rwn_symbols.json:
+- **BKBM.*** — 20-var BKBMMSTR field accessor: KEY/PARENT/PROD.LINE#/COMPONENT/QTY.REQD/REFERENCE/PROD.TYPE/SCRAP/OP/OPYN/PRICE/RTNUM/DUPOP/OPDSC/VEND/DATE1/DATE2/EXTRA/REV/P.TYPE/C.TYPE/EST.LINE/UID
+  - PROD.TYPE = component type code
+  - SCRAP = scrap percentage
+  - OP = assigned routing operation
+  - OPYN = operation flag
+  - PRICE = standard price at BOM line level
+  - RTNUM = routing number link
+  - DUPOP = duplicate operation
+  - OPDSC = operation description
+  - P.TYPE / C.TYPE = parent/component type codes
+  - EST.LINE = estimate line link
+- **BKBM.RM.*** — 7-var BKBMREMK field accessor: PARENT/KEY/LINE/COMP/REMARK/UID/EXTRA
+- **Feature/Option integration**: BKFOCFG + ISFOHEAD + ISFOLINE in DB list — product configurator BOM variants managed from T7BMA
+- **Dimensional BOM**: BKBMDIM + BKICDIM — sheet-metal dimensional BOM co-managed
+- **Material cost**: BKMATCST in DB list — material cost for BOM costing
+- **ECO**: ISECO in T7BMB DB list — engineering change orders referenced in BOM prints
+
+### T7BMD — Shortage/Availability Calculator
+
+284 procs, DBA.LIB, 41 DB files. Most complex BM program.
+
+Quantity variables (7 quantity types):
+| Var | Meaning |
+|-----|---------|
+| UOSO | Units on Sales Orders |
+| UBO | Units Backordered |
+| UOO | Units on Open Orders |
+| UIQC | Units in QC hold |
+| UOWO | Units on Work Orders |
+| UOA | Units on Allocations |
+| UIWIP | Units in WIP |
+
+Decision flags:
+| Var | Meaning |
+|-----|---------|
+| SO.BO | SO backorder flag |
+| PO.WO | PO/WO shortage flag |
+| SHORT_FLAG | Shortage detected |
+| REBUILD | Rebuild shortage list from scratch |
+
+Math vars: QTY_TO_USE / QTY_TO_BUILD / QTY_REQUIRED
+
+**GL posting**: Opens BKGLTRAN + DBAFIFO — T7BMD CAN POST to GL (shortage resolution writes financial entries when inventory is committed to meet shortage). This is the only BM program with GL write access.
+
+### T7BMG — Multi-Level BOM Explosion + Cost Rollup
+
+177 procs, LISTG60.LIB. Multi-level traversal with cost rollup:
+
+| Var | Meaning |
+|-----|---------|
+| X_LEVEL | Current explosion depth |
+| LEVEL | Node level in tree |
+| LVL_QTY | Quantity at current level |
+| LVL_TOTAL | Accumulated quantity through all parent levels |
+| ROLLUP | Cost rollup flag — rolls unit costs up through all BOM levels |
+
+Opens ROUTING + WORKCTR DB files: routing operation costs are included in the cost rollup computation. ROLLUP calculates MTIC.PROD.COST (rolled-up standard cost) from all BOM levels + routing operations.
+
+### T7BMH — Where-Used Browser
+
+122 procs, LISTG60.LIB. Where-used with lead time analysis:
+- CHG.TIME / CHG.DATE — change timestamp tracking
+- STDDAYS / STDMONTH / STDYEAR — standard lead time components
+
+### T7BMI — BOM Print With Routings
+
+202 procs, DBA.LIB. BOM print variant: **PRT.ROUTINGS** flag enables printing of routing operation costs alongside component lines.
+
+### T7BMJ — Approved Substitutes
+
+118 procs, LISTG60.LIB. Browse/manage approved substitute parts:
+- FROM.SUBST — filter by substitute part number
+- Tables: BKARCUST + BKSBPART
+
+### T7BMK — Approved Vendor List
+
+130 procs, LISTG60.LIB. Browse/manage approved vendor sourcing:
+- FROM.VEND — filter by vendor
+- SORT.BY.VEND — sort mode
+- Tables: BKAPVEND + BKSBVEND
+
+### T7BML — Approved Manufacturer List
+
+143 procs, LISTG60.LIB. Browse/manage approved manufacturers:
+- FROM.MFG — filter by manufacturer
+- Tables: BKSBMFG
+
+### T7BMQ — BOM Cost Summary
+
+110 procs, LISTG60.LIB. Component cost calculation:
+| Var | Meaning |
+|-----|---------|
+| MEM.QTY | Memory quantity (accumulated during traversal) |
+| TOT.COMP | Total component count |
+| SUB.TOT | Subtotal cost |
+| COMP.EXT | Component extended cost |
+
+### T7BMR — BOM-to-Order / ASN
+
+132 procs, LISTG60.LIB. Generates orders or ASNs from BOM:
+- QUOTE.NUMBER — links to a Sales Quote (make-to-order configured product path)
+- COMP.QTY1 / COMP.QTY2 / COMP.QTY3 — component quantity tiers
+- Tables: BKARINVL + ISBUILD
+
+ISBUILD = carton/kit build table (also used by DE-D carton build module) — T7BMR bridges BOM component lists into kit assembly orders.
+
+### T7BMP — Item + Bin Location Browser
+
+101 procs, LISTG60.LIB. Browse items with bin location assignment:
+- Tables: BKICMSTR + ISBINLOC (bin location per item)
+- DFM caption: "BOM Pick List"
+
+---
+
+## Menu Operations
+
+| Code | Operation | Program | Notes |
+|------|-----------|---------|-------|
+| BM-C | Print Where Used | T7BMC | Multi-level where-used print |
+| BM-D | Print BOM Availability | T7BMD | Shortage/availability + GL posting |
+| BM-E | Global Replace | T7BME | Remark copy utility |
+| BM-F | Global Delete | T7BMF | Item browse / global delete |
+| BM-G | Multi-level explosion | T7BMG | Explosion + cost rollup (ROLLUP) |
+| BM-H | Print BOM at Average Cost | T7BMH | Where-used + lead time |
+| BM-I | Print Summarized BOM | T7BMI | BOM print + routing costs |
+| BM-J | Enter Approved Substitutes | T7BMJ | BKSBPART management |
+| BM-J-C | Enter Approved Manufacturers | T7BML | BKSBMFG management |
+| BM-X | BOM report | T7BMR | BOM-to-order / ASN (ISBUILD) |
+
+Additional programs (T7BMK, T7BMP, T7BMQ, T7BMGNC, T7BMKPRINT) are accessed via submenu or subsystem, not direct menu codes.
+
+---
+
+## Database Tables (13 total)
+
+### Core BOM Tables (10 — BKBM*)
+
+Full field details in `../../../samples/ddf/schema.md`.
+
+| Table | Fields | Key Fields | Purpose |
+|-------|--------|-----------|---------|
+| BKBMMSTR | 26 | PARENT + COMPONENT | Current/active BOM lines |
+| BKBMAMTR | 26 | PARENT + COMPONENT | Actual-cost BOM snapshot |
+| BKBMAVAL | 26 | PARENT + COMPONENT | Actual-value BOM snapshot |
+| BKBMEMTR | 26 | PARENT + COMPONENT | Estimated BOM snapshot |
+| BKBMSUMM | 26 | PARENT + COMPONENT | BOM summary snapshot |
+| BKBMCNFG | 7 | NUM + GLACT + GLDPT | BOM configuration / GL account linkage |
+| BKBMDIM | 11 | DIM_PARENT + LINE + COMP | Sheet-metal dimensional BOM |
+| BKBMERMK | 20 | RM_PARENT + LINE + COMP | Engineering remarks (10×64 lines) |
+| BKBMREMK | 20 | RM_PARENT + LINE + COMP | Regular remarks (10×64 lines) |
+| BKBMNOTE | 16 | NT_PARENT | Parent-level notes (15×64 lines) |
+
+The 5 main BOM data tables (BKBMMSTR/AMTR/AVAL/EMTR/SUMM) share an identical 26-field schema — parallel-snapshot architecture preserving current, actual, estimated, and summary states.
+
+### Approved List Tables (3 — BKSB*)
+
+These tables are managed by T7BMJ/K/L and are also read by MRP planning programs.
+
+| Table | Manager | Purpose |
+|-------|---------|---------|
+| BKSBPART | T7BMJ | Approved substitute parts — alternative components for a BOM line |
+| BKSBVEND | T7BMK | Approved vendor sourcing — approved vendors per part |
+| BKSBMFG | T7BML | Approved manufacturer list — approved manufacturers per part |
+
+Note: BKSB* tables are **not in the DDF** confirmed in `samples/ddf/schema.md`. Their schemas are inferred from program variable names only.
+
+---
+
+## UI Forms (16)
+
+| DFM File | Caption | Fields | Controls |
+|----------|---------|--------|----------|
+| T7BMA.DFM | New Screen | 44 | 105 |
+| T7BMAx.DFM | New Screen | 42 | 77 |
+| T7BMB.DFM | BM-B | 28 | 58 |
+| T7BMC.DFM | BM-C | 6 | 27 |
+| T7BMD.DFM | Print Availability | 18 | 46 |
+| T7BME.DFM | BM-E | 6 | 24 |
+| T7BMF.DFM | BM-F | 2 | 18 |
+| T7BMG.DFM | BM-G | 18 | 48 |
+| T7BMH.DFM | BM-H | 11 | 33 |
+| T7BMI.DFM | BM-I | 16 | 40 |
+| T7BMJ.DFM | (empty caption) | 0 | 1 |
+| T7BMK.DFM | (empty caption) | 0 | 1 |
+| T7BML.DFM | (empty caption) | 0 | 1 |
+| T7BMP.DFM | BOM Pick List | 7 | 29 |
+| T7BMQ.DFM | BM-Q | 3 | 21 |
+| T7BMR.DFM | BM-R | 16 | 43 |
+
+T7BMJ/K/L DFMs have 0 fields + 1 control each — grid-only launch screens (the grid is the entire UI).
+
+---
+
+## Key Relationships
+
+- T7BMA is the only program that writes BKBMMSTR — all other BM programs read it
+- T7BMD is the only BM program with GL write access (BKGLTRAN + DBAFIFO)
+- T7BMG ROLLUP computes MTIC.PROD.COST — the result feeds into IC standard costing
+- T7BMR ISBUILD bridges BOM component lists → kit/carton assembly orders (also used by DE module)
+- T7BMR QUOTE.NUMBER links BOM-to-order through Sales Quotes (SO module)
+- BKFOCFG + ISFOHEAD + ISFOLINE in T7BMA DB list = Features/Options product configurator variants are managed as BOM branches
+- BKSBPART/VEND/MFG are also read by MRP programs (procurement planning uses approved sourcing lists)
+
+---
+
+**Confidence: 88/100** — All 17 programs confirmed from rwn_symbols.json; BKBM* 10-table schemas confirmed from DDF; program roles and key vars confirmed from named-var extraction; BKSB* tables (BKSBPART/VEND/MFG) inferred from program vars + DB file lists (not confirmed in DDF). Gap: exact BKSB* field schemas unknown; T7BMGNC and T7BMKPRINT stub purpose unconfirmed.
