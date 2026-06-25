@@ -30,32 +30,61 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 
 ## UI forms (24)
 
-| DFM file | Caption | fields | controls | tabs |
-| -------- | ------- | -----: | -------: | ---: |
-| `T7GLA.DFM` | GL-A | 113 | 162 | 0 |
-| `T7GLARCH.DFM` |  | 2 | 19 | 0 |
-| `T7GLB.DFM` |  | 0 | 1 | 0 |
-| `T7GLBLIST.DFM` |  | 0 | 1 | 0 |
-| `T7GLC.DFM` | GL-C | 24 | 61 | 0 |
-| `T7GLD.DFM` | GL-D | 14 | 47 | 0 |
-| `T7GLE.DFM` | GL-E | 18 | 51 | 0 |
-| `T7GLE2.DFM` | GL-E | 15 | 39 | 0 |
-| `T7GLESPEED.DFM` | GL-E | 16 | 48 | 0 |
-| `T7GLF.DFM` | GL- F | 98 | 177 | 0 |
-| `T7GLG.DFM` | GL-G | 6 | 25 | 0 |
-| `T7GLH.DFM` | GL- H | 16 | 36 | 0 |
-| `T7GLI.DFM` | GL- I | 12 | 40 | 0 |
-| `T7GLJ.DFM` |  | 0 | 1 | 0 |
-| `T7GLJASK.DFM` | Change Location | 4 | 11 | 0 |
-| `T7GLK.DFM` | GL- K | 13 | 42 | 0 |
-| `T7GLL.DFM` |  | 0 | 1 | 0 |
-| `T7GLN.DFM` | GL- N | 40 | 87 | 0 |
-| `T7GLO.DFM` | GL-O | 117 | 160 | 0 |
-| `T7GLOOB.DFM` | GL- O-OB | 5 | 27 | 0 |
-| `T7GLP.DFM` | GL-P | 12 | 40 | 0 |
-| `T7GLQ.DFM` |  | 0 | 1 | 0 |
-| `T7GLS.DFM` |  | 0 | 1 | 0 |
-| `T7GLT.DFM` | New Screen | 31 | 68 | 0 |
+**Note (Pass 313, 2026-06-25):** Several DFM files showed "0 fields, 1 control" in the auto-generated inventory — this was a parsing failure caused by the icon data detection logic. T7GLB.DFM was manually analyzed and contains many fields across 4 tabs. Same issue likely applies to T7GLARCH, T7GLBLIST, T7GLJ, T7GLL, T7GLQ, T7GLS.
+
+| DFM file | Caption | fields | controls | tabs | Notes |
+| -------- | ------- | -----: | -------: | ---: | ----- |
+| `T7GLA.DFM` | GL-A | 113 | 162 | 0 | COA + budget edit; DISP.ACCT1-4[1-13] = 13 periods × 4 account segments |
+| `T7GLARCH.DFM` |  | 2 | 19 | 0 | Archive trigger form — may have parse failure |
+| `T7GLB.DFM` | GL-B | **~80** | **~180** | **4** | **Journal entry — 4 tabs (see below); parse was failing** |
+| `T7GLBLIST.DFM` |  | 0 | 1 | 0 | Likely list/picker; parse may have failed |
+| `T7GLC.DFM` | GL-C | 24 | 61 | 0 | Print filter: batch range, date ranges, GL account range, journal type |
+| `T7GLD.DFM` | GL-D | 14 | 47 | 0 | Print journals |
+| `T7GLE.DFM` | GL-E | 18 | 51 | 0 | Account balance inquiry |
+| `T7GLE2.DFM` | GL-E | 15 | 39 | 0 | Account inquiry v2 |
+| `T7GLESPEED.DFM` | GL-E | 16 | 48 | 0 | Speed entry variant |
+| `T7GLF.DFM` | GL- F | 98 | 177 | 0 | Financial statements |
+| `T7GLG.DFM` | GL-G | 6 | 25 | 0 | Print GL code/description list |
+| `T7GLH.DFM` | GL- H | 16 | 36 | 0 | Print chart of accounts |
+| `T7GLI.DFM` | GL- I | 12 | 40 | 0 | Print check register |
+| `T7GLJ.DFM` |  | 0 | 1 | 0 | Bank reconciliation — parse may have failed |
+| `T7GLJASK.DFM` | Change Location | 4 | 11 | 0 | Location picker dialog |
+| `T7GLK.DFM` | GL- K | 13 | 42 | 0 | Transfer bank funds |
+| `T7GLL.DFM` |  | 0 | 1 | 0 | AP check void/GL reconcile — parse may have failed |
+| `T7GLN.DFM` | GL- N | 40 | 87 | 0 | Custom statement layout |
+| `T7GLO.DFM` | GL-O | 117 | 160 | 0 | Post GL batches |
+| `T7GLOOB.DFM` | GL- O-OB | 5 | 27 | 0 | Out-of-balance finder |
+| `T7GLP.DFM` | GL-P | 12 | 40 | 0 | Edit GL batch entries; BKGL.TRN.* fields confirmed |
+| `T7GLQ.DFM` |  | 0 | 1 | 0 | Reverse batch posting — parse may have failed |
+| `T7GLS.DFM` |  | 0 | 1 | 0 | View GL journal notes — parse may have failed |
+| `T7GLT.DFM` | New Screen | 31 | 68 | 0 | Check/transaction print |
+
+### T7GLB.DFM — GL Journal Entry Form (manually analyzed, Pass 313 2026-06-25)
+
+4 tabs confirmed from DFM:
+
+**Tab 1 — "GJ Trans List"** (browse mode)
+- Grid shows journal transaction headers
+- Fields: `BKGL.GJ.TRANSNM`, `BKGL.GJ.POSTED`, `BKGL.GJ.NUMLNES`, `BKGL.GJ.TRANSDT`, `BKGL.GJ.TYPE`, `BKGL.GJ.CVCODE`, `BKGL.GJ.CHKACT`, `BKGL.GJ.INVCHKN`, `TAGGED`
+- Search and sort controls; date search field (FSD)
+
+**Tab 2 — "GJ Trans Details"** (header edit)
+- Transaction Number (`TNUMSTR`), Transaction Type 1-5 (`BKGL.GJ.TYPE`), Description (`TYPE.DESC`)
+- Transaction Date (`BKGL.GJ.TRANSDT`), Bank Account 1-99 (`Adsp.chkact`)
+- GJ Transaction Code (`BKGL.GJ.CVCODE`), Deposit/Check Number (`BKGL.GJ.INVCHKN`)
+- Job Number (`BKGL.GJ.JOB`), Type Name combo (`BKGL.GJ.TYPEN`)
+- Button: "Default Jobs"
+
+**Tab 3 — "Trans Line Items"** (line item list)
+- Grid: `LINE.ACCT`, `LINE_GLDPT`, `LINE.DESC`, `DR.DISP`, `CR.DISP`, `LINE.JOB`
+- Summary panel: Transaction Number, Transaction Date, Code, Check Number, Bank (EDIT.BANK/BANKNAME/BANKGL), "Needed to balance" (`NEEDBAL.AMT`, `NEEDBAL.TYPE`)
+
+**Tab 4 — "Trans Line Item Details"** (line item edit)
+- GL Account (`EDIT.ACCT`), Line Description (`EDIT.DESC`), Department (`EDIT.DEPT`)
+- Amount (`EDIT.AMT`), D/C indicator (`EDIT.DC`), Job Number (`EDIT.JOB`)
+- Default Description (`DFLT_DESC`), Check/Invoice Number (`TICSTR`)
+- Context display: Bank account info, needed-to-balance amount
+- Bottom bar: Transaction Number, Type, Date (`TNUMSTR_2`, `TYPE.DESC2`, `BKGL.GJ.TRANSDT`)
 
 ## Database tables (28)
 

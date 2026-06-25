@@ -232,6 +232,42 @@ and loaded into memory during boot by `T7MDefaults.RWN`.
 
 ---
 
+## YN[N] Array Index → Function Mapping (Pass 313, 2026-06-25)
+
+**Source:** Direct SRC code analysis of Bkaph.src, Bkapha.src, BKDCA.src, BKROA.src.
+These programs access BKYSMSTR via `BKYS.YN[N]` direct array indexing, bypassing the
+ISTS.CFG.* symbolic namespace. This table maps the numeric index to the observed behavior.
+
+| Index | Type | Observed Values | Function | Source module | Notes |
+|-------|------|-----------------|----------|---------------|-------|
+| `YN[20]` | YN | Y/N | WO parts tracking in DC labor entries | BKDCA.src:708 | `if bkys.yn[20]='Y' .a. lab.parts<>0` — enables parts on DC labor; same as ISTS.CFG.`WOCALC`? |
+| `YN[36]` | STRING | numeric string | Default processes/hour for routing ops | BKROA.src:609 | `MTRO.MD.PROC.HR=BKYS.YN[36]` default fill; set in MD module |
+| `YN[37]` | YN | Y/N | Default standard-time flag for routing ops | BKROA.src:656 | `MTRO.STD.TIME=BKYS.YN[37]` default fill; mask "YN" entry |
+| `YN[38]` | YN | Y/N | WO routing op sequence numbering mode | BKROA.src:1582, BKDCA.src | Y = use template# as seq#; N = `seq.cntr × VNUM[3]`; set in MD-B (= ISTS.CFG.`WOCALC`) |
+| `YN[48]` | CHAR | '1'–'5' | AP check format / RTM template selection | Bkaph.src:60, Bkapha.src:796 | 1→bkapha1.rtm, 4→bkapha2.rtm, 5→bkapha3.rtm; `$` operator tests membership in set |
+| `YN[59]` | YN | Y/N | Routing: prompt for overlap entry (MD-D) | BKROA.src:647 | `enter MTRO.OVERLAP pre bkys.yn[59]='Y'`; Y = show overlap/negative-overlap fields |
+| `YN[66]` | YN | Y/N | Routing: long-time entry mode | BKROA.src:629 | `if BKYS.YN[66]='Y' goto ENT.LNGTME`; Y = long-format time entry |
+| `YN[228]` | YN | Y/N | Data Collection: module-level enable flag | BKDCA.src:194 | Controls DC labor processing behavior; exact meaning TBD |
+| `YN[229]` | YN | Y/N | Data Collection: employee time tracking | BKDCA.src:228 | Y = track employee time in DC transactions |
+| `YN[249]` | STRING | numeric string | AP check top margin (in lines/points) | Bkapha.src:269 | `nTopMarg = val(bkys.yn[249])` — comment only, exact meaning TBD |
+
+**Companion arrays** also indexed numerically:
+
+| Index | Type | Function | Source |
+|-------|------|----------|--------|
+| `VNUM[3]` | NUMERIC | Default routing operation sequence increment | BKROA.src:1579 — "set in MD-B, used as multiplier for seq#" |
+| `GLNUM[5]` | GL# | GL account for location-based inventory | BKLME.src:434 — `MTIT.LOC=BKYS.GLNUM[5]` |
+
+**Observations:**
+- YN[] values are not restricted to Y/N — they store arbitrary short strings (numeric values for
+  processes/hour, character codes for check formats). The field name "YN" is misleading.
+- The numeric indices appear to be grouped by module area: 20s–30s = WO/MFG defaults,
+  40s–50s = AP, 60s = routing, 220s–240s = Data Collection, 240s–250s = print margins.
+- BKYS.YN[38] = WOCALC is the only index confirmed to match an ISTS.CFG.* code;
+  the others are not yet cross-referenced to symbolic names.
+
+---
+
 ## Related Tables
 
 | Table | Fields | Purpose |
@@ -239,7 +275,9 @@ and loaded into memory during boot by `T7MDefaults.RWN`.
 | `BKYSMSTR` | 355 | System parameters — one row per EVO install |
 | `BKSYMSTR` | 286 | System master (company info, sequence numbers) |
 
-**Confidence: 82/100** — Variable names and categories extracted from binary and confirmed
+**Confidence: 83/100** — Variable names and categories extracted from binary and confirmed
 consistent with BKYSMSTR schema. Parameter meanings are inferred from abbreviation + ERP
 context; the BKYSMSTR DDF has 355 declared fields matching the observed BKYS.* var layout.
+Pass 313: added 10 direct YN[N] → function mappings from SRC code analysis; only YN[38]=WOCALC
+cross-references to ISTS.CFG.* symbolic name; remaining 494 index→code cross-references TBD.
 Full functional meanings require source code or runtime observation to confirm edge cases.
