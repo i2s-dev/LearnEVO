@@ -838,4 +838,712 @@ Or reversed if net positive.
 """,
 ["physical inventory", "pi-a", "pi-b", "pi-e", "count", "cycle count", "shrink"]),
 
+("recipe-enter-item", "Add a New Item (Item Master)", "IN",
+["Main Menu", "Inventory", "IN-B Enter Items"],
+"""
+Create or update an item record in the Inventory master. Every part,
+raw material, assembly, finished good, or labor code tracked by EVO
+must have a record here.
+
+## Prerequisites
+
+- Know the item number you want to assign (or let EVO assign the next
+  sequential number if auto-numbering is on).
+- Know the product type (see table below).
+- Have the default GL accounts set up in System Defaults.
+
+## Steps
+
+1. `Main Menu → Inventory → IN-B Enter Items`
+2. **Item#** — enter the item number (up to 15 chars, typically
+   all-caps alphanumeric with no spaces).
+3. **Description** — free-text, max 30 chars. This is what prints on
+   pick tickets, invoices, and POs.
+4. **Product Type** — single-letter code:
+
+   | Code | Meaning |
+   |------|---------|
+   | R | Raw Material |
+   | F | Finished Good |
+   | A | Assembly |
+   | M | Make (manufactured in-house) |
+   | N | Non-inventory (expense, service) |
+   | L | Labor (time charge) |
+   | B | Bought (purchased part, no stock) |
+   | T | Tooling |
+   | K | Kit |
+   | O | Other |
+
+5. **UOM** — unit of measure (EA, LB, FT, BOX, etc.).
+6. **Cost method** — Standard (`S`), Average (`A`), or FIFO (`F`).
+7. **Reorder point** / **Reorder qty** — triggers MRP and min/max
+   replenishment.
+8. **GL accounts** — Inventory, COGS, Sales, Variance. Usually
+   defaulted from `T7MDefaults.DFM` (Master Defaults) by product type.
+9. **Bin / Location** — default bin for this item.
+10. F10 Post.
+
+## Key fields (BKICMSTR)
+
+| Field | Meaning |
+|-------|---------|
+| `BKIC_PROD_ITEM` | Item number (PK) |
+| `BKIC_PROD_DESC` | Description |
+| `BKIC_PROD_TYPE` | Product type (R/F/A/M/N/L/B/T/K/O) |
+| `BKIC_PROD_UOM` | Unit of measure |
+| `BKIC_PROD_UOH` | Units on hand |
+| `BKIC_PROD_UOSO` | Units on sales order |
+| `BKIC_PROD_UOPO` | Units on purchase order |
+| `BKIC_PROD_UOWO` | Units on work order |
+| `BKIC_PROD_COMMIT` | Committed qty |
+| `BKIC_PROD_COST` | Standard/avg cost |
+| `BKIC_PROD_REORD` | Reorder point |
+| `BKIC_PROD_EOQTY` | Economic order quantity |
+
+## Tables touched
+
+- `BKICMSTR` — item master record
+- `BKICLOC` — per-bin location records (multi-location)
+- `BKICSUP` — default supplier link
+
+## Related
+
+- [[recipe-enter-bom]] — add a bill of materials for this item
+- [[recipe-enter-routing]] — add a routing (if manufactured)
+- [[recipe-enter-po]] — buy this item
+- [[module-IN]]
+- [[table-BKICMSTR]]
+""",
+["enter item", "new item", "in-b", "item master", "add part", "product type",
+ "raw material", "finished good", "assembly", "inventory item"]),
+
+("recipe-enter-vendor", "Add or Edit a Vendor", "AP",
+["Main Menu", "Accounts Payable", "AP-A Enter Vendors"],
+"""
+Create or update an Accounts Payable vendor (supplier) record.
+
+## Prerequisites
+
+- Vendor name and remit-to address.
+- Payment terms code (must exist in Terms table; AP-G).
+- GL expense account for this vendor's purchases.
+
+## Steps
+
+1. `Main Menu → Accounts Payable → AP-A Enter Vendors`
+2. **Vendor#** — up to 6 chars. Convention: first two letters of
+   company name + sequential digits (e.g., `AC0001`).
+3. **Name** — full company name (prints on checks).
+4. **Address** lines, **City**, **State**, **Zip**, **Country**.
+5. **Phone**, **Fax**, **Contact** name.
+6. **Terms** — code from AP-G (e.g., `NET30`, `2/10`).
+7. **1099 type** — blank = not a 1099 vendor. Set to `7` (Non-employee
+   compensation) for contractors.
+8. **GL accounts** — AP clearing account (defaults from system), COGS
+   or expense account for this vendor's invoices.
+9. **Currency** — if multi-currency is enabled. Defaults to base.
+10. F10 Post.
+
+## Key fields (BKAPVEND)
+
+| Field | Meaning |
+|-------|---------|
+| `BKAP_VEN_VEND` | Vendor number (PK) |
+| `BKAP_VEN_NAME` | Vendor name |
+| `BKAP_VEN_ADDR1–3` | Address lines |
+| `BKAP_VEN_CITY` | City |
+| `BKAP_VEN_STATE` | State |
+| `BKAP_VEN_ZIP` | Zip |
+| `BKAP_VEN_TERMS` | Payment terms code |
+| `BKAP_VEN_1099` | 1099 type code |
+| `BKAP_VEN_YTDPURCH` | Year-to-date purchases |
+| `BKAP_VEN_YTDPAY` | Year-to-date payments |
+| `BKAP_VEN_BAL` | Current balance |
+
+## Tables touched
+
+- `BKAPVEND` — vendor master
+
+## Related
+
+- [[recipe-enter-po]] — create a PO for this vendor
+- [[recipe-enter-voucher]] — enter an invoice from this vendor
+- [[module-AP]]
+""",
+["enter vendor", "new vendor", "ap-a", "vendor master", "supplier", "add vendor",
+ "1099", "payment terms"]),
+
+("recipe-enter-po", "Create a Purchase Order", "PO",
+["Main Menu", "Purchase Orders", "PO-A Enter Purchase Orders"],
+"""
+Create a purchase order to a vendor. EVO tracks open POs against
+on-order inventory quantities and drives receipt and voucher flows.
+
+## Prerequisites
+
+- Vendor exists in `BKAPVEND` ([[recipe-enter-vendor]]).
+- Items exist in `BKICMSTR` ([[recipe-enter-item]]).
+- Ship-to location and buyer code set up.
+
+## Steps
+
+1. `Main Menu → Purchase Orders → PO-A Enter Purchase Orders`
+2. **PO#** — EVO assigns next sequential PO number automatically, or
+   enter a manual PO number if your site uses pre-printed forms.
+3. **Vendor#** — enter or F2 lookup. EVO fills name, address, terms.
+4. **Order date** — defaults to today.
+5. **Expected receipt date** — used for scheduling and MRP.
+6. **Ship via** — carrier code (optional).
+7. **Buyer** — buyer/buyer code (prints on PO form).
+8. **For each line:**
+   - **Item#** — part number to order.
+   - **Description** — auto-filled from item master; editable.
+   - **Qty ordered** — quantity to buy.
+   - **Unit cost** — defaults from last cost in item master; editable.
+   - **Expected date** — per-line (can differ from header date).
+   - **Job / WO#** — link to a work order if direct-to-WO purchase.
+9. F10 Post.
+
+## What posting does
+
+- Creates header in `BKPOMSTR` and lines in `BKPOLINE`.
+- Increments `BKICMSTR.BKIC_PROD_UOPO` (units on PO) for each item.
+- PO status = `O` (Open).
+
+## Receiving
+
+After goods arrive, use **PO-B Receive Purchase Order** to enter
+receipts. See [[recipe-receive-po]].
+
+## Key tables
+
+| Table | Contents |
+|-------|---------|
+| `BKPOMSTR` | PO header — vendor, date, status, totals |
+| `BKPOLINE` | PO line items — item, qty, cost, received |
+| `BKPORECV` | Receipt history |
+| `BKICMSTR` | Updated: UOPO (units on PO) |
+
+## Related
+
+- [[recipe-receive-po]] — next step after creating a PO
+- [[recipe-enter-voucher]] — enter the vendor invoice when it arrives
+- [[recipe-enter-vendor]]
+- [[module-PO]]
+""",
+["create po", "purchase order", "po-a", "enter po", "order from vendor",
+ "buy parts", "procurement", "vendor order"]),
+
+("recipe-receive-po", "Receive a Purchase Order", "PO",
+["Main Menu", "Purchase Orders", "PO-B Receive Purchase Orders"],
+"""
+Record the arrival of goods against an open purchase order.
+Receiving increases on-hand inventory and creates a receipt record
+that the AP voucher will reference.
+
+## Prerequisites
+
+- An open PO exists ([[recipe-enter-po]]).
+- Items are physically in the warehouse (or at least in-transit for a
+  3-way match shop).
+
+## Steps
+
+1. `Main Menu → Purchase Orders → PO-B Receive Purchase Orders`
+2. **PO#** — enter the PO number. EVO loads header and open lines.
+3. **Receipt date** — defaults to today; change if backdating.
+4. **Receiver#** — your internal receiver or packing slip number
+   (for traceability).
+5. For each line being received:
+   - **Qty received** — enter actual quantity; can be partial.
+   - **Unit cost** — confirm or override (triggers cost variance if
+     different from PO cost).
+   - **Location / bin** — where to put this stock.
+   - **Lot#** — if item is lot-controlled, EVO prompts for a lot
+     number ([[recipe-enter-item]] lot flag).
+6. F10 Post.
+
+## What posting does
+
+- Writes records to `BKPORECV`.
+- Increments `BKICMSTR.BKIC_PROD_UOH` by qty received.
+- Decrements `BKICMSTR.BKIC_PROD_UOPO` by qty received.
+- Posts a debit to the Inventory account and a credit to the AP
+  Clearing (Accrued Liability) account — awaiting the vendor invoice.
+- If full receipt: PO line status → `R` (Received); header → `R`
+  when all lines received.
+
+## Partial receipts
+
+EVO leaves the PO open with the remaining qty still on order.
+Receive again with PO-B to bring in the remainder, or manually
+close with PO-E if you're not expecting the balance.
+
+## Lot / serial at receiving
+
+If the item has lot control enabled (`BKIC_PROD_LOTCTL = Y`), the
+Lot Assignment dialog ([[module-LC]]) launches automatically.
+
+## Related
+
+- [[recipe-enter-po]]
+- [[recipe-enter-voucher]] — after receiving, enter the vendor invoice
+- [[module-PO]]
+- [[module-LC]]
+""",
+["receive po", "po-b", "receiving", "receipt", "goods receipt", "packing slip",
+ "receive inventory", "po receipt"]),
+
+("recipe-enter-bom", "Build a Bill of Materials", "BM",
+["Main Menu", "Bill of Materials", "BM-A Enter Bill of Materials"],
+"""
+Define the component list for a manufactured item. The BOM tells EVO
+(and MRP) what raw materials and sub-assemblies are needed to build
+one unit of the parent item.
+
+## Prerequisites
+
+- Parent item (finished good or assembly) exists in `BKICMSTR`
+  with product type `A`, `M`, or `F`.
+- All component items exist in `BKICMSTR`.
+
+## Steps
+
+1. `Main Menu → Bill of Materials → BM-A Enter Bill of Materials`
+2. **Parent Item#** — the item you're building.
+3. **BOM revision** — EVO supports multiple revisions (A, B, C…).
+   Defaults to active revision.
+4. **For each component:**
+   - **Sequence#** — line order (10, 20, 30…).
+   - **Component Item#** — raw material or sub-assembly.
+   - **Quantity per** — qty needed per *one* parent unit.
+   - **UOM** — component unit of measure.
+   - **Scrap %** — expected yield loss; EVO inflates qty needed.
+   - **Reference designator** — (electronics only) board position
+     (e.g., R1, C3).
+   - **Operation seq** — if using routings, which routing step uses
+     this component (for WIP staging).
+5. F10 Post.
+
+## Phantom assemblies
+
+Set a component's BOM type to `P` (Phantom) to explode through it at
+WO creation — EVO substitutes the phantom's components directly
+rather than ordering the phantom as a separate item.
+
+## BM-D Where-Used
+
+Use `BM-D Where-Used Report` to find every parent that uses a given
+component — useful for engineering changes.
+
+## BM-E Component Replace
+
+Global substitution — replace one component with another across all
+BOMs in one pass (`BM-E Component Replace`).
+
+## Key tables
+
+| Table | Contents |
+|-------|---------|
+| `BKBMMSTR` | BOM header — parent item, revision, effectivity |
+| `BKBMAMTR` | BOM lines — components, qty-per, scrap%, op-seq |
+
+## Related
+
+- [[recipe-work-order]] — WO pulls the BOM at creation
+- [[recipe-run-mrp]] — MRP explodes the BOM
+- [[recipe-enter-routing]] — pair with a routing for full WO
+- [[module-BM]]
+""",
+["bom", "bill of materials", "bm-a", "component list", "enter bom",
+ "materials", "parent item", "sub-assembly", "explosion", "qty per"]),
+
+("recipe-enter-routing", "Define a Routing (Operations)", "RO",
+["Main Menu", "Routings", "RO-A Enter Routings"],
+"""
+A routing is the sequence of manufacturing operations (steps) for a
+parent item. Each operation defines which work center performs it,
+how long it takes, and how labor cost is captured.
+
+## Prerequisites
+
+- Parent item exists in `BKICMSTR` (type M, F, or A).
+- Work centers exist (WC-A; [[module-WC]]).
+
+## Steps
+
+1. `Main Menu → Routings → RO-A Enter Routings`
+2. **Item#** — the item being manufactured.
+3. **Revision** — routing revision letter (typically matches BOM rev).
+4. **For each operation (step):**
+   - **Sequence#** — op order (10, 20, 30…).
+   - **Work Center** — the WC code where this op runs.
+   - **Operation description** — e.g., "Cut", "Drill", "Inspect".
+   - **Setup hours** — one-time setup per run.
+   - **Run hours/unit** — labor hours to complete one unit.
+   - **Machine hours/unit** — separate from labor if machine-paced.
+   - **Queue time** — days to wait before this op can start (for
+     scheduling lead-time calculations).
+   - **Move time** — days to move from this WC to the next.
+   - **Instructions** — free-form text (prints on traveler / router).
+   - **Tools** — list of tooling required (linked to RO-I Tool
+     Maintenance).
+5. F10 Post.
+
+## Lead time calculation
+
+EVO uses routing ops to compute item lead time:
+
+```
+lead_time = sum(setup + (run × lot_size) + queue + move) for all ops
+```
+
+This drives MRP's planned order start dates and scheduling.
+
+## Key tables
+
+| Table | Contents |
+|-------|---------|
+| `ROUTING` | Routing header — item, revision |
+| `BKRTEMTR` | Routing operations — seq, WC, hours, times |
+| `BKRTTOOL` | Tooling per operation |
+| `BKRTINST` | Instructions per operation |
+
+## Related
+
+- [[recipe-enter-bom]] — companion to the BOM
+- [[recipe-work-order]] — WO copies routing ops at creation
+- [[recipe-dc-labor]] — operators clock labor against routing ops
+- [[module-RO]]
+- [[module-WC]]
+""",
+["routing", "ro-a", "enter routing", "operations", "work center", "setup hours",
+ "run hours", "lead time", "traveler", "op sequence"]),
+
+("recipe-dc-labor", "Clock Labor on a Work Order (DC)", "DC",
+["Main Menu", "Data Collection", "DC-A Enter Labor"],
+"""
+Record operator labor hours against a work order operation.
+DC (Data Collection) is how shop-floor time gets into EVO —
+either through the DC-A keyboard entry screen or a handheld scanner.
+
+## Prerequisites
+
+- An open Work Order with a routing ([[recipe-work-order]]).
+- Employee record exists (DC employee table).
+- Work center exists ([[module-WC]]).
+
+## Steps
+
+1. `Main Menu → Data Collection → DC-A Enter Labor`
+2. **Employee#** — operator ID.
+3. **WO#** — the work order number.
+4. **Sequence#** — the routing operation being worked (10, 20, …).
+5. **Machine#** — (optional) specific machine within the WC.
+6. **Date** — defaults to today.
+7. **Start time / Stop time** — or enter **Elapsed hours** directly.
+8. **Qty complete** — units finished this session.
+9. **Qty scrap** — units scrapped (triggers scrap GL posting).
+10. **Action** — `E` Enter new record; `C` Close operation when done.
+11. F10 Post.
+
+## What posting does
+
+- Writes to `WOLABOR` (active WO labor).
+- Accumulates actual hours and actual cost on the WO.
+- If `Action = C`, marks the routing operation complete; EVO moves
+  to the next op in the traveler.
+- Scrap quantity posts to the Scrap account defined in System
+  Defaults (`BKSY_SCRAP_ACCT`).
+
+## WO Priority
+
+Use `WO-PRIO` (t7woprio.DFM) to assign color-coded priorities to
+open WOs — visible in `DC-A` and `WCS` (Work Center Schedule) to
+help operators pick what to work on next.
+
+## Key tables
+
+| Table | Contents |
+|-------|---------|
+| `WOLABOR` | Active WO labor records |
+| `WOHLAB` | History (after WO close) |
+| `BKDCEMPL` | DC employee master |
+| `BKDCMACH` | Machine codes |
+
+## Related
+
+- [[recipe-work-order]]
+- [[recipe-enter-routing]]
+- [[module-DC]]
+- [[module-WC]]
+""",
+["labor", "dc-a", "data collection", "clock in", "time entry", "work order labor",
+ "shop floor", "dc labor", "operator hours", "scrap"]),
+
+("recipe-so-pick-ship", "Pick, Pack, and Ship a Sales Order", "SO",
+["Main Menu", "Sales Orders", "SO-C Pick/Ship"],
+"""
+Once a sales order is entered ([[recipe-enter-so]]), use the
+pick-ship flow to pull stock from inventory, create a packing slip,
+and record the shipment.
+
+## Prerequisites
+
+- An open SO with sufficient on-hand stock (or allow backorder).
+- Shipping carrier and freight terms set.
+
+## Steps
+
+### 1. SO-B — Print Pick Tickets
+
+```
+Main Menu → Sales Orders → SO-B Print Pick Tickets
+```
+
+Prints a warehouse pick list per SO (or by item/location for wave
+picking). Items are staged but inventory isn't deducted yet.
+
+### 2. SO-C — Ship the Order
+
+```
+Main Menu → Sales Orders → SO-C Enter Shipments
+```
+
+1. **SO#** — enter or scan the SO number.
+2. EVO shows open lines. Enter **qty shipped** per line.
+   - Partial ship leaves remainder as a backorder.
+   - Enter `0` to skip a line entirely this shipment.
+3. **Ship date** — defaults to today.
+4. **Carrier / tracking** — enter carrier and tracking number.
+5. **Packing slip#** — EVO assigns or you enter a manual number.
+6. F10 Post.
+
+### 3. SO-D — Print Invoice
+
+After posting the shipment, print the customer invoice:
+
+```
+Main Menu → Sales Orders → SO-D Print Invoices
+```
+
+Or batch-print all unprinted invoices for the day.
+
+## What posting does
+
+- Deducts shipped qty from `BKICMSTR.BKIC_PROD_UOH`.
+- Reduces `BKIC_PROD_UOSO` and `BKIC_PROD_COMMIT` by shipped qty.
+- Creates an AR open item in `BKARINV` / `BKARINVL`.
+- Posts to GL: Debit AR, Credit Revenue; Debit COGS, Credit Inventory.
+
+## Lot / serial at ship
+
+If the item is lot- or serial-tracked, EVO prompts to select which
+lot numbers (LC) or serial numbers (SC) are being shipped.
+
+## Backorders
+
+If qty shipped < qty ordered, EVO creates a backorder line. The
+original SO remains open for the balance.
+
+## Tables touched
+
+- `BKARINV` — AR invoice / shipment header
+- `BKARINVL` — invoice lines
+- `BKICMSTR` — on-hand decremented
+- `BKSOSHIP` — shipment record
+
+## Related
+
+- [[recipe-enter-so]]
+- [[recipe-record-payment]]
+- [[module-SO]]
+- [[module-AR]]
+""",
+["ship order", "so-c", "pick ship", "packing slip", "shipment", "invoice so",
+ "so-b", "pick ticket", "so-d", "ship sales order"]),
+
+("recipe-adjust-inventory", "Adjust Inventory On-Hand", "IN",
+["Main Menu", "Inventory", "IN-F Inventory Adjustments"],
+"""
+Make a direct positive or negative adjustment to on-hand quantity
+for any item — used for cycle count corrections, damage write-offs,
+or initial stock loads.
+
+## When to use
+
+- Fixing a count discrepancy outside of a full physical inventory.
+- Writing off damaged or obsolete stock.
+- Loading initial on-hand quantities for a new company.
+- Transferring stock between bins within the same location.
+
+## Steps
+
+1. `Main Menu → Inventory → IN-F Inventory Adjustments`
+2. **Item#** — the item to adjust.
+3. **Adj date** — defaults to today (must be in open period).
+4. **Qty** — positive number to increase on-hand; negative to
+   decrease. EVO shows current on-hand for reference.
+5. **Unit cost** — for positive adjustments, the cost of the units
+   being added. For negative, current average/standard cost.
+6. **Reason code** — select or enter a reason (cycle count, damage,
+   theft, etc.). Reason codes are user-defined in system tables.
+7. **GL account override** — optional. If blank, posts to the
+   default Inventory Adjustment account (`BKSY_INV_ADJACC`).
+8. **Lot#** — required if item is lot-controlled.
+9. F10 Post.
+
+## What posting does
+
+- Changes `BKICMSTR.BKIC_PROD_UOH` by the qty entered.
+- If cost-method is Average, recalculates average cost.
+- Posts GL: Inventory ↔ Inventory Adjustment account.
+- Writes to `BKICADJ` history table.
+
+## Bin transfer (multi-location)
+
+To move stock from Bin A to Bin B with no net change in total on-hand,
+use `IN-G Transfer Inventory` rather than two adjustments.
+
+## Tables touched
+
+- `BKICMSTR` — on-hand updated
+- `BKICLOC` — per-bin balance updated
+- `BKICADJ` — adjustment history
+- `BKICTRN` — transaction log
+
+## Related
+
+- [[recipe-physical-inventory]] — full-cycle approach
+- [[module-IN]]
+- [[table-BKICMSTR]]
+""",
+["adjust inventory", "in-f", "inventory adjustment", "cycle count correction",
+ "write off", "on-hand", "stock adjustment", "damage write-off"]),
+
+("recipe-ar-aging", "Run an AR Aging Report", "AR",
+["Main Menu", "Accounts Receivable", "AR-L-A AR Aging"],
+"""
+The AR Aging shows how old your open customer balances are —
+organized into current, 30, 60, 90, and 90+ day buckets.
+Run it to prioritize collections and review credit exposure.
+
+## Steps
+
+1. `Main Menu → Accounts Receivable → AR-L-A AR Aging`
+2. **As-of date** — EVO ages balances relative to this date.
+   Use today for current AR; use a prior period-end for historical.
+3. **Sort by** — Customer# or Customer Name.
+4. **Customer range** — leave blank for all; enter from/thru for
+   a subset.
+5. **Detail or summary** — Summary shows one line per customer;
+   Detail shows every open invoice.
+6. **Include on credit hold?** — Y to flag credit-hold customers.
+7. Print or export.
+
+## Reading the report
+
+Each row shows:
+- Customer# and Name
+- Current (invoices not yet due)
+- 1–30 days past due
+- 31–60 days past due
+- 61–90 days past due
+- 91+ days past due
+- Total balance
+
+Totals at the bottom reconcile to the AR control account in GL.
+
+## Collections workflow
+
+- Sort by 91+ column descending to find worst-aged balances.
+- Use `AR-A Enter Customers` to view the customer's credit terms
+  and put on credit hold if needed.
+- Use `AR-H Enter AR Notes` to log call notes per customer.
+
+## Reconciliation
+
+The grand total of AR Aging **must match** the GL AR control account
+balance as of the same date. If they differ, run `AR-L-B AR
+Reconciliation` to find the discrepancy.
+
+## Tables touched (read only — this is a report)
+
+- `BKARCUST` — customer master (name, terms)
+- `BKARINV` — open invoices
+- `BKARPAY` — applied payments
+
+## Related
+
+- [[recipe-record-payment]] — apply a payment to reduce aging
+- [[recipe-print-statements]] — send statements to customers
+- [[module-AR]]
+""",
+["ar aging", "ar-l-a", "aging report", "accounts receivable aging",
+ "past due", "collections", "30 60 90", "open invoices"]),
+
+("recipe-financial-statements", "Print Financial Statements", "AM",
+["Main Menu", "Accounting Manager", "AM-F Financial Statements"],
+"""
+Generate the Balance Sheet, Income Statement (P&L), and (optionally)
+Statement of Cash Flows from EVO's General Ledger.
+
+## Prerequisites
+
+- All journals posted and period closed for the reporting period.
+- Financial statement formats defined in `AM-D Statement Format`
+  (groups GL accounts into line items like "Total Revenue",
+  "Cost of Goods Sold", etc.).
+
+## Steps
+
+1. `Main Menu → Accounting Manager → AM-F Financial Statements`
+2. **Statement type** — Balance Sheet, Income Statement, or both.
+3. **Period** — select the accounting period (or date range for
+   mid-period interim).
+4. **Comparison** — optional prior period or budget columns.
+   - **Prior period** — same period last year (year-over-year).
+   - **Budget** — requires budget entries in `AM-C Budget Entry`.
+5. **Consolidated?** — if multi-company, roll up subsidiaries.
+6. **Detail level** — Summary (by account group) or Detail
+   (every account code).
+7. Print or export to Excel.
+
+## Statement format setup (AM-D)
+
+If statements look wrong or missing accounts, the format definition
+needs updating:
+
+1. `AM-D Enter Statement Format`
+2. Each format line maps a GL account range to a label and section
+   (Assets, Liabilities, Equity, Revenue, Expense).
+3. Add new account ranges after creating new GL accounts.
+
+## Period-end checklist before printing
+
+- All AP vouchers entered and posted.
+- All AR cash receipts posted.
+- Bank reconciliation complete (`GL-F Bank Reconciliation`).
+- Payroll posted (if EVO handles payroll).
+- Depreciation posted (if EVO handles fixed assets).
+- All WO receipts and issues posted.
+- Inventory adjustments posted.
+
+## Tables touched (read only — this is a report)
+
+- `BKGLMSTR` — GL account master
+- `BKGLHIST` — posted GL transaction detail
+- `BKAMFMT` — financial statement format definitions
+- `BKAMBUDG` — budget amounts (if comparison used)
+
+## Related
+
+- [[recipe-month-end-close]]
+- [[module-AM]]
+- [[module-GL]]
+""",
+["financial statements", "balance sheet", "income statement", "p&l",
+ "profit and loss", "am-f", "financial report", "gl report",
+ "accounting manager", "period end report"]),
+
 ]

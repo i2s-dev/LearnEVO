@@ -32,22 +32,22 @@ Ordered roughly by likely priority (daily-use workflows first):
 
 ### B.1 Daily-use workflows
 - [ ] `recipe-login` — how to start EVO and sign in
-- [ ] `recipe-enter-customer` *(referenced in synonyms but NOT yet a stub — may already exist; verify)*
-- [ ] `recipe-enter-vendor`
-- [ ] `recipe-enter-item`
-- [ ] `recipe-enter-po`
-- [ ] `recipe-receive-po`
-- [ ] `recipe-receive-stock`
-- [ ] `recipe-enter-voucher` *(check — referenced in synonyms)*
-- [ ] `recipe-print-checks` *(check — referenced in synonyms)*
+- [x] `recipe-enter-customer` ✓ (written in recipes.py)
+- [x] `recipe-enter-vendor` ✓ (written 2026-06-25)
+- [x] `recipe-enter-item` ✓ (written 2026-06-25)
+- [x] `recipe-enter-po` ✓ (written 2026-06-25)
+- [x] `recipe-receive-po` ✓ (written 2026-06-25)
+- [ ] `recipe-receive-stock` — direct receipt without PO
+- [x] `recipe-enter-voucher` ✓ (written in recipes.py)
+- [x] `recipe-print-checks` ✓ (written in recipes.py)
 - [ ] `recipe-pick-invoices`
 - [ ] `recipe-print-invoice`
-- [ ] `recipe-record-payment` *(check — referenced in synonyms)*
+- [x] `recipe-record-payment` ✓ (written in recipes.py)
 - [ ] `recipe-print-statements`
 
 ### B.2 Sales / shipping
-- [ ] `recipe-enter-so` *(check — referenced in synonyms)*
-- [ ] `recipe-so-pick-ship`
+- [x] `recipe-enter-so` ✓ (written in recipes.py)
+- [x] `recipe-so-pick-ship` ✓ (written 2026-06-25)
 - [ ] `recipe-so-to-cash`
 - [ ] `recipe-estimate`
 - [ ] `recipe-rfq`
@@ -55,23 +55,23 @@ Ordered roughly by likely priority (daily-use workflows first):
 - [ ] `recipe-credit-memo`
 
 ### B.3 Manufacturing
-- [ ] `recipe-work-order` *(check — referenced in synonyms)*
-- [ ] `recipe-enter-bom`
-- [ ] `recipe-enter-routing`
-- [ ] `recipe-run-mrp` *(check — referenced in synonyms)*
-- [ ] `recipe-dc-labor`
+- [x] `recipe-work-order` ✓ (written in recipes.py)
+- [x] `recipe-enter-bom` ✓ (written 2026-06-25)
+- [x] `recipe-enter-routing` ✓ (written 2026-06-25)
+- [x] `recipe-run-mrp` ✓ (written in recipes.py)
+- [x] `recipe-dc-labor` ✓ (written 2026-06-25)
 
 ### B.4 Inventory
-- [ ] `recipe-adjust-inventory`
+- [x] `recipe-adjust-inventory` ✓ (written 2026-06-25)
 - [ ] `recipe-transfer-stock`
-- [ ] `recipe-physical-inventory` *(check — referenced in synonyms)*
+- [x] `recipe-physical-inventory` ✓ (written in recipes.py)
 - [ ] `recipe-close-po`
 
 ### B.5 Period / compliance
-- [ ] `recipe-ar-aging`
-- [ ] `recipe-month-end-close` *(check — referenced in synonyms)*
+- [x] `recipe-ar-aging` ✓ (written 2026-06-25)
+- [x] `recipe-month-end-close` ✓ (written in recipes.py)
 - [ ] `recipe-year-end-close`
-- [ ] `recipe-financial-statements`
+- [x] `recipe-financial-statements` ✓ (written 2026-06-25)
 - [ ] `recipe-1099`
 - [ ] `recipe-void-check`
 - [ ] `recipe-purge-history`
