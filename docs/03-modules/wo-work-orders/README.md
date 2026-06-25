@@ -1,9 +1,10 @@
 # Work Orders (WO)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 261 (2026-06-25)
 
 - **Module code**: `WO`
-- **Tables**: 30 (prefixes `WO`, `WORK`)
+- **Tables**: 30 core (WO*/WORK*) + 7 IS-prefix auxiliary (ISWOEX, ISWOPRIO, ISWOROEX, ISWOCLOG, ISWOTRAY, OUTPROC, WOBOMREM) = 37 total
+- **Programs**: 46 (T7WO* confirmed from rwn_symbols.json)
 - **UI forms**: 68 (prefixes `T7WO`, `T6WO`, `BKWO`)
 - **Menu operations**: 31
 
@@ -387,6 +388,101 @@ This is the *standard routing library*, not a WO-specific routing. When a WO is 
 | `MTRO_EST_TAG` | STRING | 10 | Estimate tag |
 
 **Design notes:** ROUTTEMP has identical schema — used as a scratch copy during routing edits. The WO routing (WOROUT) is a copy of ROUTING stamped at WO creation time; subsequent changes to ROUTING do not retroactively affect open WOs.
+
+## Programs (46 total) — Pass 261 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` (T7WO* entries).
+
+### Core WO Programs (largest by proc count)
+
+| Program | Procs | Lib | DB | Role |
+|---------|-------|-----|----|------|
+| T7WOA.RWN | 413 | LISTG60.LIB | 61 | WO-A: Main WO editor; MTWO.WIP.* 82-var WORKORD namespace + MTWORO.* 63-var WOROUT namespace (see var tables in this doc) |
+| T7WOI.RWN | 357 | ISTECH.LIB | 61 | WO-I: WO receipt/finished production — WORECV+ISSERIAL+BKSHORT; BKPR.* 107 vars = payroll integration at receipt |
+| T7WOG.RWN | 330 | ISTECH.LIB | 44 | WO-G: Issue materials to WO — WOMAT+INVTXN+SCRAP+BKAPPOL/PO; posts inventory transactions |
+| T7WOLF.RWN | 294 | LISTG60.LIB | 48 | WO-L-F: WO shortage report — BKSBMFG+BKSBPART (approved sourcing check during shortage) |
+| T7WOC.RWN | 283 | DBA.LIB | 63 | WO-C: Shop packet / traveler print — ISBUILD+BKQCMSTR+BKQCTRAN+TOOL+MACHINE+ISWOROEX; 21 print options (PRT.ACTIVE/BAR/BOM/INSPEC/SCHED/MACH/ECO/LABELS etc.) |
+| T7WOLI.RWN | 260 | LISTG60.LIB | 42 | WO-L-I: Allocations report — ISBUILD+BKAPVEND+WORKCTR |
+| T7WOLA.RWN | 255 | DBA.LIB | 36 | WO-L-A: Outside process AP document — BKAPPOL+BKAPPO+ISWOPRIO+BKAPDESC (creates PO for subcontract routing op) |
+| T7WOD.RWN | 252 | DBA.LIB | 62 | WO-D: Pick list print — BKBMMSTR+BKSBPART+BKSBMFG+WOBOMREM+BKICDIM; reads approved sourcing for pick |
+| T7WOB.RWN | 249 | LISTG60.LIB | 46 | WO-B: Release/change status — ISWOPRIO+ISWOEX+WOLABOR+ROUTING+BKGLTRAN+DBAFIFO (GL posting at WO close) |
+| T7WOKJ.RWN | 241 | LISTG60.LIB | 46 | WO-K-J: Outside process operations — WOMAT+OUTPROC+ISECO+ISORDECO; manages outside-process routing steps |
+| T7WOJ.RWN | 233 | ISTECH.LIB | 52 | WO-J: DC shop-floor posting — BKDCLAB+ISWOCLOG+ISSERIAL+INVTXN; applies DC events to WO with audit log |
+| T7WOA.old.RWN | 220 | LISTG60.LIB | 65 | WO-A legacy — older WO editor; MTWOLA.* 45 vars (labor namespace); ISJOB = job costing link |
+| T7WOF.RWN | 214 | ISTECH.LIB | 62 | WO-F: Labor/time entry — WOLABOR+BKPRMSTR+MACHINE+ROUTING+BKDCLAB+QCCODES+SCRAP+TOOL (BKDCLAB = DC data feeds WO time card) |
+| T7WOKK.RWN | 204 | ISTECH.LIB | 51 | WO-K-K: DC backflush + reversal — BKDCLAB+WOLABOR+WORECV+INVTXN (reverses DC postings; does backflush inventory transaction) |
+| T7WOKL.RWN | 198 | LISTG60.LIB | 33 | WO-K-L: Quick WO creation — BKARINVL+CALENDAR+ROUTING+WORKCTR; fast WO from SO line |
+| T7WOS.RWN | 197 | DBA.LIB | 42 | WO-S: Serial WO close — ISSOBOX+ISRTMS+ISSRINFO+ISSERCNT+ISBINLOC (ship/serial confirmation at WO close) |
+| T7WOLB.RWN | 193 | LISTG60.LIB | 35 | WO-L-B: WO report/browser — ISORDECO+LOT+SERIAL+ISSERCNT+ISWOPRIO |
+| T7WOKD.RWN | 191 | LISTG60.LIB | 39 | WO-K-D: Multi-assembly WO — ISWOEX+BKBMMSTR+ISECO+ISWOROEX |
+| T7WOKA.RWN | 190 | LISTG60.LIB | 29 | WO-K-A: Routing editor — WORKCTR+MACHINE+TOOL+ROUTING+ISWOROEX+ISROUTEX+ISITP+ISLINKS |
+| T7WOKB.RWN | 182 | LISTG60.LIB | 35 | WO-K-B: WO BOM editor — WOBOM+BKBMMSTR+BKBMREMK+WOBOMREM+ISNOTES+ISLINKS |
+| T7WOFA.RWN | 176 | LISTG60.LIB | 62 | WO-F-A: Backflush production — BKSHORT+OUTPROC+INVTXN+SCRAP+ISSERIAL (backflush materials at completion) |
+| T7WOLG.RWN | 174 | LISTG60.LIB | 60 | WO-L-G: WC by key component — WORKCTR+MKAHIST+ISLOG |
+| T7WOLK.RWN | 164 | LISTG60.LIB | 34 | WO-L-K: WO kit/allocations — BKBMREMK+BKBMNOTE+BKSBPART+BKSBVEND+BKSBMFG+ISBINLOC |
+| T7WOP.RWN | 159 | LISTG60.LIB | 21 | WO-P: WO/SO reconciliation browse — ISIS+BKCMACCN+ISDRILL |
+| T7WOKNA.RWN | 150 | EVO.LIB | 25 | WO-K-NA: NC/QC hold — ISPREQ+BKICLOCM+WOMAT (prerequisite check / NC hold release) |
+| T7WOPO.RWN | 150 | LISTG60.LIB | 60 | WO-PO: MRP→PO release — BKMRPPO+BKAPPO+BKRFQ+BKSBVEND+BKSBMFG (releases MRP-planned POs from WO demand) |
+| T7WOLC.RWN | 147 | LISTG60.LIB | 60 | WO-L-C: WC backlog — ISBUILD+WORKCTR+BKCMLEAD+MACHINE |
+| T7WOFAD.RWN | 144 | EVO.LIB | 60 | WO-F-A-D: Direct backflush — BKSHORT+OUTPROC+INVTXN+ISBINLOC+CLASS |
+| T7WOLE.RWN | 139 | LISTG60.LIB | 21 | WO-L-E: Post labor to payroll — WOLABOR+BKPRCURP+BKPRMSTR (WO labor hours → payroll current period) |
+| T7WOLD.RWN | 137 | LISTG60.LIB | 60 | WO-L-D: Projected shipments — INVTXN+BKARINV+BKARINVL |
+| T7WOLJ.RWN | 136 | LISTG60.LIB | 20 | WO-L-J: Finished WO report — WORKCTR+CLASMSTR+ISCATMST |
+| T7WOLL.RWN | 133 | LISTG60.LIB | 24 | WO-L-L: WO BOM/tool list — ISBUILD+ISBINLOC+BKBMREMK+WOBOMREM+TOOL |
+| T7WOKT.RWN | 130 | LISTG60.LIB | 22 | WO-K-T: Time/scrap entry — BKPRMSTR+WORKCTR+SCRAP+ISPREQ |
+| T7WOLO.RWN | 117 | LISTG60.LIB | 20 | WO-L-O: Open WO report — ISBUILD+WORKCTR+BKARCUST |
+| T7WOLH.RWN | 115 | LISTG60.LIB | 60 | WO-L-H: Projected hours — WORKCTR |
+| T7WOE.RWN | 114 | LISTG60.LIB | 62 | WO-E: Print labor cards — WOROUT+ISACCESS |
+| T7WOKSA.RWN | 114 | LISTG60.LIB | 60 | WO-K-SA: WO work tray — ISWOTRAY+ISBNMSTR (work-queue / bin assignment system) |
+| T7WOH.RWN | 111 | ISTECH.LIB | 25 | WO-H: Extra/misc charges — WOEXCHG+BKGLCOA (extra charge with GL account assignment) |
+| T7WOKC.RWN | 105 | LISTG60.LIB | 25 | WO-K-C: Multi-date WO — WODATE+WOEXCHG+ISNOTES |
+| T7WOKM.RWN | 104 | EVO.LIB | 26 | WO-K-M: Scrap entry — SCRAP+ISPREQ+BKPRMSTR |
+| T7WOLN.RWN | 102 | LISTG60.LIB | 60 | WO-L-N: WO PO shortage — BKAPPOL+BKSBMFG+BKSBPART (WO outside-process PO shortage) |
+| T7WOKE.RWN | 101 | LISTG60.LIB | 22 | WO-K-E: Substitute parts — BKSBPART+WOBOMREM+BKBMREMK |
+| T7WOKG.RWN | 100 | LISTG60.LIB | 19 | WO-K-G: Recalculate hours — WORKCTR+ROUTING |
+| T7WOLM.RWN | 100 | EVO.LIB | 60 | WO-L-M: WO→SO reconcile — BKARINV+BKARINVL+BKBMMSTR |
+| T7WOTRWK.RWN | 91 | LISTG60.LIB | 20 | WO-TRW-K: RMA→WO link — ISRMAI+BKICLOCM (RMA triggers WO creation) |
+| T7WOKS.RWN | 84 | LISTG60.LIB | 60 | WO-K-S: Work tray status — ISWOTRAY+ISBNMSTR (work tray position display) |
+
+Additional stubs/utilities: T7WOPRIO(55p,EVO.LIB)=ISWOPRIO editor, t7woprio2(55p)=variant, T7WOKMA(53p)=ISPRESN presenter, T7WOEXARCH(49p,ISTECH.LIB)=WO routing archive→ISWOROEX, t7wosfix(28p)=ISWOTRAY fix, T7WOROFIX(18p)=WOROUT repair, T7WODefalults(17p)=WO defaults, T7WOT(17p)=WO template, T7WONoteTLL(16p)=ISNOTES, T7WOKN(9p)=stub, T7WOBSINGLE/WOJSINGLE(8p)=single-item stubs.
+
+---
+
+## IS-Prefix Auxiliary Tables (7 confirmed — Pass 261)
+
+These tables are used by WO programs but are not part of the core WO* / WORK* family:
+
+| Table | Programs Using It | Purpose |
+|-------|-----------------|---------|
+| ISWOEX | T7WOA, T7WOB, T7WOI, T7WOKD | WO extended/extra data — alternate key via ISWOHEX (63f) |
+| ISWOPRIO | T7WOA, T7WOB, T7WOLA, T7WOPRIO | WO priority scheduling codes — schedules routing ops by priority band |
+| ISWOROEX | T7WOA.old, T7WOKA, T7WOKC, T7WOEXARCH | WO routing extension data — extra routing op fields per WO |
+| ISWOCLOG | T7WOJ | WO operation change audit log (32f — WOPRE+WOSUF+OPER PK + WHO/WHEN/WHERE/MACHINE) |
+| ISWOTRAY | T7WOKSA, T7WOKS, t7wosfix | WO work tray / queue management — bin-level work assignment |
+| OUTPROC | T7WOKJ, T7WOFA, T7WOFAD | Outside process operations — routing steps of type O (outside vendor) |
+| WOBOMREM | T7WOD, T7WOKE, T7WOLL, T7WOKB | WO BOM remarks — BOM-line notes attached to WO (mirrors BKBMREMK but WO-instance) |
+
+---
+
+## DC→WO Integration (confirmed — Pass 261)
+
+Three T7WO* programs handle Data Collection → Work Order integration:
+
+1. **T7WOF** (214p, ISTECH.LIB): Time/labor entry form — reads BKDCLAB (DC lab records) to pre-fill time card entries. MACHINE table = machine time tracking. QCCODES = QC codes on labor operations.
+2. **T7WOJ** (233p, ISTECH.LIB): DC shop-floor event application — reads BKDCLAB and writes ISWOCLOG. Posts each DC event to the WO as an operation change, writing a full audit record (who/when/where/machine).
+3. **T7WOKK** (204p, ISTECH.LIB): DC labor reversal + backflush — reads BKDCLAB, writes WOLABOR + INVTXN. Reverses erroneous DC postings; also performs material backflush from WORECV. The "undo DC entry" and "backflush" program.
+
+---
+
+## WO→PO Integration (confirmed — Pass 261)
+
+Three pathways from Work Orders to Purchase Orders:
+
+1. **MRP-driven PO release** (T7WOPO, 150p): Reads BKMRPPO (MRP planned POs), selects vendor via BKSBVEND/BKSBMFG approved lists, creates BKAPPO records. This is the "WO-Q: Convert WOs to POs" menu operation.
+2. **Outside-process subcontract PO** (T7WOLA, 255p): For routing operations of type O (outside), creates BKAPPOL/BKAPPO lines directly from WO-LA. Uses ISWOPRIO for priority scheduling. BKAPDESC = AP document description.
+3. **WO release PO link** (T7WOB, 249p): BKAPPOL is in T7WOB's DB list — outside-process PO lines are created/linked at WO release time as well as during processing.
+
+---
 
 ## Notes & open questions
 
