@@ -26,3 +26,7 @@ deploy/*.tar.gz
 
 # Derived/large binary outputs — regenerate with scripts/rwn_decrypt.py
 samples/rwn_decrypted/*.dec
+
+# PyInstaller build intermediates (dist/ output lives in C:\ProgramData\i2Systems\Tools\)
+programs/*/build/
+programs/*/dist/
