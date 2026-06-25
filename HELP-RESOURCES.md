@@ -15852,60 +15852,102 @@ it (SM-O or direct) inferred; restore steps are general Btrieve/Pervasive proced
 **When to use:** Adding a new EvoERP user, assigning security level, and configuring
 starting menu and preferences.
 
-**Module path:** SM → SM-A (User Maintenance) + SM-B (Security Levels)
+**Module path:** PS → PS-A (T7PSA.RWN, "User Setup")
+
+> **Correction (Pass 286 2026-06-25):** Earlier versions said `SM-A (User Maintenance)`
+> and referenced `AHSYLOG`. T7PSA.RWN is the T7-era user setup program (confirmed from
+> rwn_symbols.json); it opens `BKPSUSER` + `ISEXUSER`. `AHSYLOG` is a DBA-era legacy
+> table — zero T7 programs access it (confirmed Pass270). T7 security uses
+> BKPSUSER + BKSLEVEL + ISACCESS + ISEXUSER.
+
+**BKPSUSER fields (primary user record — T7PSA named_vars BKPS.USER.*):**
+
+| Field | Meaning |
+|-------|---------|
+| CODE | User code (login name, PK) |
+| PSWD | Encrypted password (ENCRYPTSTR) |
+| SEC | Security level code (FK to BKSLEVEL) |
+| MENU | Starting menu code (4-char) |
+| CMPY | Default company code |
+| MWIND | Multiple windows flag |
+| PRT | Printer preferences |
+| ME | Display name |
+| MCNTR | Menu item counter |
+| LDATE | Last login date |
+| EMP | Linked employee ID |
+
+**ISEXUSER fields (extended user record — T7PSA named_vars ISEX.USER.*):**
+
+| Field | Meaning |
+|-------|---------|
+| CODE | User code (FK to BKPSUSER) |
+| GROUP | User group code |
+| DATE1 / DATE2 | Access date range (start / end) |
+| MISC1 / MISC2 | Miscellaneous flags |
+| WINDO | Window layout preferences |
+| PASSW | Password (extended security copy) |
+| PEXPD | Password expiry date |
+| LPASS | Last password (for history/reuse policy) |
+| LDATE | Last login date |
+| FLAGS | Permission flags |
 
 **Steps:**
 
 ```
-1. SM-A (User Maintenance) — create the user record
-   - Enter: AHSYLOG.AHSY_USER_ID (user name / login)
-   - Enter: AHSYLOG.AHSY_PASSWORD (initial password — user should change)
-   - Assign: AHSYLOG.AHSY_USER_LEVL (security level — 2-char code)
-     Security level controls what menus the user can see and which
-     operations they can perform (via BKSLEVEL matrix)
-   - Set: AHSYLOG.AHSY_USER_TYPE (user type: A=Admin, U=User, etc.)
-   - Set access flags: AHSYLOG.AHSY_USER_ACCES_1..20 (optional overrides)
-   - Set: starting menu / company
+1. PS-A (T7PSA.RWN) — create the user record
+   - Enter: BKPS.USER.CODE (login name, unique)
+   - Enter: BKPS.USER.PSWD (initial password — stored via ENCRYPTSTR)
+   - Set: BKPS.USER.SEC (security level code — must match a BKSLEVEL row)
+   - Set: BKPS.USER.MENU (starting menu, 4-char code, e.g. "MAIN")
+   - Set: BKPS.USER.CMPY (default company code)
+   - Optionally: BKPS.USER.EMP (link to employee record for payroll/DC)
+   - T7PSA also creates ISEXUSER row: ISEX.USER.CODE, GROUP, date range,
+     PASSW (copy), PEXPD (expiry), FLAGS
 
-2. SM-B (Security Level Maintenance) — verify or create the security level
-   - If using existing level: verify BKSLEVEL matrix has correct permissions
-   - If new level needed: create BKSLEVEL row for the new level code
-   - For each of 20 menu sections: set YN master toggle + individual op flags
-   - 20 operations per section = what the user can do within that menu
+2. Security level — verify or create in SM-B or equivalent
+   - Security level = BKPS.USER.SEC code
+   - BKSLEVEL (422f) stores the permission matrix: PK = BKSL_MENU + BKSL_LEVEL
+   - 20 menu sections × 21 flags each = 441 total permission flags per level
+   - ISACCESS (T7PSA also opens this) — additional access control layer
 
-3. WBK (Workbench / Menu Customizer) — optional menu customization
-   - If this user needs a custom menu (vs. the global EvoERP menu):
-     Use WBK to create a custom menu layout
-   - Assign: GROUP/BUTTON/CAPTION/IMAGE for each menu item
-   - Set: FASTSELECT (keyboard shortcut) for frequently used options
-   - Assign: ACCESS_CODE (security check per button)
+3. ISTS.CFG.PASSWD — password policy config key
+   - Sets password complexity rules / expiry behavior
+   - Configured in system settings (BKSYMSTR / BKYSMSTR)
 
 4. Test the login:
    - Log in as the new user
    - Verify menu shows expected modules
    - Attempt an operation in a restricted area — confirm access denied
-   - Verify starting company is correct
+   - Verify ISLOG records the session (IS.LOG.WHO = user code)
 
-5. EvoSettings.INI (per-user preferences):
+5. EvoSettings.INI (per-workstation preferences):
    - Stored in [User:NAME] section of EvoSettings.INI on the workstation
    - Set on first login: screen layout, column widths, grid preferences
-   - Email configuration (if user sends from EvoERP): [EMAIL CO# X User:Y] section
-     requires SMTP host, port, credentials
+   - Email configuration: [EMAIL CO# X User:Y] section requires SMTP host/port/creds
 ```
 
-**Key tables:**
-- AHSYLOG — user master (PK: AHSY_USER_ID)
-- BKSLEVEL — security permission matrix (PK: BKSL_MENU + BKSL_LEVEL)
-- BKLOGON — active sessions (updated on each login)
+**Key tables (T7PSA.RWN DB fingerprint — confirmed):**
+- `BKPSUSER` — primary user record (CODE+PSWD+SEC+MENU+CMPY+EMP etc.)
+- `ISEXUSER` — extended record (GROUP+DATES+FLAGS+PASSW+PEXPD+LPASS)
+- `BKSLEVEL` (422f) — security permission matrix (PK: BKSL_MENU + BKSL_LEVEL)
+- `ISACCESS` — access control (T7PSA opens this; exact role TBD)
+- `ISLOG` — session log (records each login: WHO/WHAT/DOING/STARTD/STARTT)
+- `BKPSUSER.LDATE` — last login date updated on each login
+
+> **AHSYLOG is NOT the T7 user table.** It is a DBA-era legacy (0 T7 programs open
+> it). Do not reference it in user setup tasks.
 
 **Common errors:**
-- User can see all menus even with restricted level — check BKSLEVEL YN flag for
-  each menu section; YN=Y grants access regardless of individual op flags
-- User cannot log in — password case-sensitivity; check AHSY_PASSWORD format
-- "Access denied" on everything — AHSY_USER_LEVL not matching a BKSLEVEL row
+- User can see all menus even with restricted level — check BKSLEVEL row for this
+  SEC level; YN master toggle overrides individual op flags
+- User cannot log in — check BKPS.USER.PSWD encryption; verify ISEXUSER row exists
+- "Access denied" on everything — BKPS.USER.SEC code not matching any BKSLEVEL row
+- Password expired — check ISEX.USER.PEXPD date; ISTS.CFG.PASSWD policy config
 
-**Confidence: 74/100** — AHSYLOG + BKSLEVEL confirmed from DDF and DFMs; WBK steps
-confirmed from WBK DFM analysis; BKLOGON behavior inferred.
+**Confidence: 82/100** — T7PSA.RWN DB fingerprint + named_vars confirmed; BKPSUSER
+and ISEXUSER field sets confirmed from T7PSA named_vars; BKSLEVEL role confirmed from
+DDF; AHSYLOG correction from Pass270 (0 T7 programs). Gap: exact BKSLEVEL matrix
+layout and ISACCESS role require decrypted T7PSA bytecode.
 
 ---
 

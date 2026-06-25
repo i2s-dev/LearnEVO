@@ -1004,7 +1004,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **Receive a purchase order** — PO-J (T7POJC) → BKAPPOL/BKAPINVL/BKAPINVT; QC/lot/serial/bin capture; DBAFIFO cost layer; Recipe 25 in HELP-RESOURCES.md — **C: 82/100**
 
 ### 13.4 System Administration Workflows
-- [x] ✅ **New user setup** — AHSYLOG entry, access flags, starting menu — see Recipe 13 — **C: 65/100**
+- [x] ✅ **New user setup** — PS-A (T7PSA.RWN) → BKPSUSER+ISEXUSER+BKSLEVEL+ISACCESS — see Recipe 13 — **C: 65/100**; **Pass286 (2026-06-25): T7PSA.RWN confirmed (18 tables: BKPSUSER+ISEXUSER+ISACCESS+BKSLEVEL primary); AHSYLOG NOT the T7 user table (0 T7 programs access it — DBA legacy, Pass270); BKPS.USER.* namespace: CODE/PSWD/SEC/MENU/CMPY/MWIND/PRT/ME/MCNTR/LDATE/EMP; ISEX.USER.* namespace: CODE/GROUP/DATE1/DATE2/MISC1/MISC2/WINDO/PASSW/PEXPD/LPASS/LDATE/FLAGS; ISTS.CFG.PASSWD = password policy config key; Recipe 13 fully corrected — **C: 82/100**
 - [x] ✅ **New company creation** — UT → company add, NE module (T7NEWINIT: 49 procs) — see Recipe 16; Pass 153 (2026-06-22): T7NEWINIT.DFM fully read; "check and create missing data files" confirmed from form label; Go+Exit+fileslabel(progress) confirmed — **C: 78/100**
 - [x] ✅ **Backup / restore** — TA-O (EVOERPBACKUP) — see Recipe 12 — **C: 65/100**
 - [x] ✅ **Software update** — EvoUpdate pipeline traced (Pass 110e 2026-06-19) — see Platform Subsystems § EvoUpdate — **C: 75/100**
