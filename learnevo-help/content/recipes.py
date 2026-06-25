@@ -1546,4 +1546,623 @@ needs updating:
  "profit and loss", "am-f", "financial report", "gl report",
  "accounting manager", "period end report"]),
 
+("recipe-login", "Start EVO and Sign In", "SY",
+["Desktop shortcut or C:\\ISTS\\StartEvo.exe"],
+"""
+How to launch EvoERP and log into a company.
+
+## Steps
+
+1. Double-click the **EvoERP** shortcut on your desktop, or run
+   `C:\\ISTS\\StartEvo.exe`.
+2. `StartEvo.exe` checks the local install, reads `taspro7.ini`, and
+   launches `tp7runtime.exe` against the main menu program
+   (`EvoERPmenu.RWN` on the network share).
+3. The **Login** screen appears. Enter:
+   - **Company code** — 1- or 2-character company identifier (e.g.,
+     `01`). If there is only one company, this may default.
+   - **User ID** — your EVO user code (case-insensitive).
+   - **Password** — your EVO password.
+4. Press Enter or click **Login**.
+5. On success, the EvoERP main menu appears, showing all modules
+   your user profile permits.
+
+## Single Sign-On (SSO)
+
+If your site has Windows Domain Authentication enabled
+(`ISTS.CFG.SSO = Y`), EVO may fill the User ID from your Windows
+login automatically. Confirm and press Enter.
+
+## First login / forced password change
+
+On first login or after an admin password reset, EVO forces you to
+choose a new password before proceeding.
+
+## Remember Me
+
+Check **Remember Me** (`REMEMBER.ME` flag) to save your company and
+user ID for the next login — password is never saved.
+
+## Idle timeout
+
+EVO automatically logs out after 10 minutes of inactivity
+(`TENMIN.KILLER` timer). Any keypress resets the clock.
+
+## Troubleshooting
+
+| Symptom | Likely cause |
+|---------|-------------|
+| "Cannot connect to server" | Network share `\\\\server\\DBAMFG$` unreachable |
+| "Invalid user" | User code doesn't exist in `BKSYUSER` |
+| "Invalid password" | Password mismatch; see admin for reset |
+| Blank screen / crash | `tp7runtime.exe` or `qtintf70.dll` version mismatch |
+| "License exceeded" | Too many concurrent users (TAS Pro 7 seat count) |
+
+## Related
+
+- [[module-SY]] — system administration including user setup
+- [[recipe-add-user]] — create a new user account
+""",
+["login", "sign in", "start evo", "launch evo", "startevo", "password",
+ "company code", "user id", "sso", "single sign-on"]),
+
+("recipe-rma", "Process a Customer Return (RMA)", "SO",
+["Main Menu", "Sales Orders", "SO-J Enter RMAs"],
+"""
+Record goods returned by a customer. EVO creates a Return Material
+Authorization (RMA) to track the return, restores inventory, and
+generates a credit memo to reduce the customer's balance.
+
+## Prerequisites
+
+- Original SO or invoice number (helpful but not required).
+- Customer exists in `BKARCUST`.
+- Returned items exist in `BKICMSTR`.
+
+## Steps
+
+### 1. Create the RMA — SO-J
+
+1. `Main Menu → Sales Orders → SO-J Enter RMAs`
+2. **RMA#** — EVO assigns next sequential number.
+3. **Customer#** — the customer returning goods.
+4. **Original SO#** — enter if known; links return to original sale.
+5. **RMA date** — date customer notified / shipped return.
+6. **For each returned line:**
+   - **Item#** — what they're returning.
+   - **Qty returned** — units coming back.
+   - **Reason code** — defective, wrong item, overshipment, etc.
+   - **Disposition** — `R` Restock, `S` Scrap, `R` Repair/Rework.
+7. F10 Post. EVO prints an RMA acknowledgment to send to the customer.
+
+### 2. Receive the Return — SO-K
+
+When goods physically arrive:
+
+1. `Main Menu → Sales Orders → SO-K Receive RMAs`
+2. Enter the **RMA#**. Confirm quantities received.
+3. EVO puts stock back into inventory (if disposition = Restock):
+   increments `BKICMSTR.BKIC_PROD_UOH`.
+4. F10 Post.
+
+### 3. Credit Memo — SO-L (or AR-D)
+
+After receiving the return, issue the customer a credit:
+
+1. `Main Menu → Sales Orders → SO-L Enter Credit Memos`
+2. Reference the **RMA#**. EVO fills customer, items, and amounts.
+3. Adjust amount if partial credit (restocking fee, etc.).
+4. F10 Post — creates a credit in `BKARINV` with negative amount.
+   Customer balance decreases. GL: Credit AR, Debit Revenue (reversal).
+
+## Tables touched
+
+- `BKSORMA` — RMA header
+- `BKSORMAD` — RMA detail lines
+- `BKARINV` — credit memo record
+- `BKICMSTR` — on-hand restored (Restock disposition)
+
+## Related
+
+- [[recipe-enter-so]]
+- [[recipe-so-pick-ship]]
+- [[recipe-record-payment]]
+- [[module-SO]]
+- [[module-AR]]
+""",
+["rma", "return", "so-j", "customer return", "credit memo", "return material",
+ "refund", "return goods", "so-k", "receive return"]),
+
+("recipe-so-to-cash", "SO-to-Cash End-to-End", "SO",
+["Main Menu", "Sales Orders / Accounts Receivable"],
+"""
+The complete order-to-cash cycle: enter an order, ship it, invoice
+the customer, and collect payment.
+
+## Overview
+
+```
+SO-A Enter Order
+  ↓
+SO-B Print Pick Tickets
+  ↓
+SO-C Ship / Create Invoice
+  ↓
+SO-D Print Invoice
+  ↓
+(Customer pays)
+  ↓
+AR-C Enter Cash Receipts
+```
+
+## Step 1 — Enter the Order (SO-A)
+
+See [[recipe-enter-so]] for full detail. Key: confirm pricing,
+customer credit limit, and requested ship date before posting.
+
+## Step 2 — Pick the Order (SO-B)
+
+Print pick tickets for the warehouse. Stock is still in inventory;
+no GL entry yet.
+
+## Step 3 — Ship and Invoice (SO-C)
+
+Enter shipped quantities. EVO:
+- Deducts stock from `BKICMSTR`
+- Creates the invoice in `BKARINV` / `BKARINVL`
+- Posts GL: **DR** AR, **CR** Revenue; **DR** COGS, **CR** Inventory
+
+If the SO is only partially filled, the remainder stays as an open
+backorder. Run SO-C again when the rest ships.
+
+## Step 4 — Print the Invoice (SO-D)
+
+Print and mail (or email) the invoice to the customer. EVO marks the
+invoice as printed. Some sites also email a PDF from the report
+printer driver.
+
+## Step 5 — Collect Payment (AR-C)
+
+When the customer's check (or EFT) arrives:
+1. `Main Menu → AR → AR-C Enter Cash Receipts`
+2. Enter **Customer#**, **Payment amount**, **Check#**, **Date**.
+3. EVO shows open invoices. Apply payment to specific invoices
+   (full or partial). Unapplied balance goes to a suspense bucket.
+4. F10 Post — closes the matched invoices.
+
+## Typical GL flow
+
+| Event | Debit | Credit |
+|-------|-------|--------|
+| Ship | AR | Revenue |
+| Ship | COGS | Inventory |
+| Cash receipt | Cash | AR |
+
+## Discounts
+
+If the customer pays within terms (e.g., 2/10), enter the discount
+amount at AR-C. EVO posts the difference to a Sales Discount account.
+
+## Related
+
+- [[recipe-enter-so]]
+- [[recipe-so-pick-ship]]
+- [[recipe-record-payment]]
+- [[recipe-ar-aging]]
+- [[module-SO]]
+- [[module-AR]]
+""",
+["order to cash", "so to cash", "otc", "ship invoice collect",
+ "sales cycle", "end to end so", "ar cash receipt"]),
+
+("recipe-transfer-stock", "Transfer Stock Between Bins or Locations", "IN",
+["Main Menu", "Inventory", "IN-G Transfer Inventory"],
+"""
+Move on-hand inventory from one bin or warehouse location to another
+without changing the total quantity on hand.
+
+## When to use
+
+- Reorganizing warehouse storage.
+- Moving finished goods from production floor to finished-goods
+  bin after a work order receipt.
+- Consolidating partial bins.
+- Moving slow items to overflow or off-site storage.
+
+## Steps
+
+1. `Main Menu → Inventory → IN-G Transfer Inventory`
+2. **Item#** — the item to move.
+3. **From Location / Bin** — current storage location.
+4. **To Location / Bin** — destination.
+5. **Qty to transfer** — how many units to move. EVO validates that
+   the From location has at least this quantity.
+6. **Transfer date** — defaults to today.
+7. **Lot#** — if lot-controlled, specify which lot is moving.
+8. F10 Post.
+
+## What posting does
+
+- Decrements `BKICLOC` at the From location.
+- Increments `BKICLOC` at the To location.
+- `BKICMSTR.BKIC_PROD_UOH` total is unchanged.
+- No GL entry — this is a physical move, not a cost event.
+- Writes to `BKICTRN` (transaction log).
+
+## Multi-warehouse transfers
+
+If moving between separate warehouse codes (not just bins within
+the same warehouse), EVO may require both a **Transfer Out** and a
+**Transfer In** step depending on your site's multi-location
+configuration. Check `T7MDefaults` for `MULTI_WH` flag.
+
+## Tables touched
+
+- `BKICLOC` — per-bin balance updated (both from and to)
+- `BKICTRN` — transaction log entry
+
+## Related
+
+- [[recipe-adjust-inventory]]
+- [[recipe-physical-inventory]]
+- [[module-IN]]
+- [[table-BKICMSTR]]
+""",
+["transfer stock", "move inventory", "in-g", "bin transfer", "location transfer",
+ "warehouse transfer", "move stock", "relocate inventory"]),
+
+("recipe-close-po", "Close or Cancel a Purchase Order", "PO",
+["Main Menu", "Purchase Orders", "PO-E Close/Cancel POs"],
+"""
+Close a PO that is fully received, or cancel lines/POs you no longer
+need. Closing removes the open quantity from on-order balances.
+
+## When to use
+
+- Vendor delivered the full order → PO should auto-close at final
+  receipt, but use PO-E if it stays open.
+- You are canceling an order the vendor can no longer fill.
+- Clearing old unreceived POs to clean up the open PO report.
+
+## Steps
+
+### Close (fully received)
+
+1. `Main Menu → Purchase Orders → PO-E Close Purchase Orders`
+2. Enter the **PO#**.
+3. EVO shows header and any lines with remaining open qty.
+4. Select **Close All** to close the entire PO, or close individual
+   lines selectively.
+5. F10 Post.
+
+### Cancel (not yet received)
+
+Same path as Close. Set close reason to **Cancel** (or the
+site-defined cancel code). EVO:
+- Sets PO line status to `C` (Cancelled).
+- Decrements `BKICMSTR.BKIC_PROD_UOPO` by the cancelled qty.
+- No receiving entry is created.
+- No cost is posted to GL (nothing was received).
+
+## Impact on MRP
+
+Cancelled PO lines no longer count as supply in MRP. If MRP
+previously relied on this PO to cover demand, the next MRP run
+will generate a new planned order to cover the gap.
+
+## Partial close
+
+Close only specific lines (e.g., items delivered; remove balance
+you know won't ship). Leave other lines open.
+
+## Tables touched
+
+- `BKPOMSTR` — PO status updated
+- `BKPOLINE` — line status updated
+- `BKICMSTR` — UOPO decremented by cancelled qty
+
+## Related
+
+- [[recipe-enter-po]]
+- [[recipe-receive-po]]
+- [[module-PO]]
+""",
+["close po", "cancel po", "po-e", "cancel purchase order",
+ "close purchase order", "cancel order", "po closeout"]),
+
+("recipe-year-end-close", "Year-End Close", "AM",
+["Main Menu", "Accounting Manager", "AM-M Year-End Close"],
+"""
+Close the fiscal year in EvoERP's General Ledger. This zeroes
+out income and expense accounts and carries the net income
+into Retained Earnings.
+
+## Prerequisites
+
+- All 12 (or 13) accounting periods for the fiscal year are closed
+  ([[recipe-month-end-close]]).
+- Audited financials signed off.
+- Backup created ([[recipe-backup]]) — year-end is not easily reversed.
+- No open journals or unposted batches.
+
+## Steps
+
+1. `Main Menu → Accounting Manager → AM-M Year-End Close`
+2. EVO displays the **fiscal year** to be closed (confirm it's the
+   right year).
+3. **Retained Earnings account** — confirm the GL account that will
+   receive the net income/loss transfer.
+4. EVO shows a pre-close checklist summary:
+   - All periods closed? ✓/✗
+   - Unposted batches? ✓/✗
+5. Type `YES` to confirm (or equivalent confirmation prompt).
+6. EVO performs the close:
+   - Zeros all Revenue and Expense accounts.
+   - Transfers net income to Retained Earnings.
+   - Rolls forward opening balances for Balance Sheet accounts.
+   - Archives prior-year GL history to `BKGLHIST` with year-end
+     flag.
+7. After close, the new fiscal year is set as current.
+
+## What changes after close
+
+- P&L accounts (Revenue, Expense) start the new year at zero.
+- Balance Sheet accounts (Assets, Liabilities, Equity) carry forward
+  their ending balances.
+- Prior-year comparatives remain accessible in AM-F with
+  "Prior Year" comparison option.
+- `BKAMFPRD` period table is updated: old year's periods locked,
+  new year's first period opened.
+
+## Cannot undo
+
+Year-end close is permanent. If you must reopen a prior year:
+- Restore from backup and re-close — or —
+- Manually post a correcting journal in the new year.
+
+## Tables touched
+
+- `BKGLMSTR` — account balances zeroed (P&L) or carried forward
+- `BKGLHIST` — year-end archive entries
+- `BKAMFPRD` — period table updated
+
+## Related
+
+- [[recipe-month-end-close]]
+- [[recipe-financial-statements]]
+- [[module-AM]]
+- [[module-GL]]
+""",
+["year end close", "fiscal year close", "year-end", "am-m",
+ "close fiscal year", "year end", "retained earnings close"]),
+
+("recipe-void-check", "Void a Check", "AP",
+["Main Menu", "Accounts Payable", "AP-J Void Checks"],
+"""
+Void a printed check — either because it was lost, misprinted,
+or issued in error. Voiding reverses the payment and reopens
+the vendor invoice.
+
+## Prerequisites
+
+- Know the check number and check date.
+- The period the check was in must be open, OR you have override
+  authority to post into a closed period.
+
+## Steps
+
+1. `Main Menu → Accounts Payable → AP-J Void Checks`
+2. **Check#** — enter the check number to void.
+3. **Check date** — EVO looks up the check and confirms vendor and
+   amount.
+4. **Void date** — the date the void is posted (defaults to today).
+   This determines which period absorbs the reversal.
+5. **Reason** — optional text note (for audit trail).
+6. F10 Post.
+
+## What posting does
+
+- Marks the check as `VOID` in `BKAPCHKS`.
+- Reverses the GL cash entry: **DR** AP, **CR** Cash.
+- Reopens the original vouchers (invoices) that the check paid;
+  they return to `BKAPOPEN` as unpaid.
+- The vendor's balance increases by the voided amount.
+
+## Re-issuing
+
+After voiding, re-issue a replacement check through the normal
+`AP-I Print Checks` flow ([[recipe-print-checks]]).
+
+## Partial void
+
+EVO does not support partial check voids. If a check covered
+multiple invoices and only some are wrong, void the entire check
+and re-issue for the correct invoices only.
+
+## Tables touched
+
+- `BKAPCHKS` — check record marked VOID
+- `BKAPOPEN` — voided invoices returned to open status
+- `BKGLHIST` — reversal GL entries posted
+
+## Related
+
+- [[recipe-print-checks]]
+- [[recipe-enter-voucher]]
+- [[module-AP]]
+""",
+["void check", "ap-j", "void payment", "cancel check",
+ "lost check", "check reversal", "voided check"]),
+
+("recipe-add-user", "Add a New EVO User", "SY",
+["Main Menu", "System", "SY-A Enter Users"],
+"""
+Create a new user account so someone can log into EvoERP.
+
+## Prerequisites
+
+- You must be logged in as an admin-level user (or have SY module access).
+- Know what modules and functions the new user needs.
+
+## Steps
+
+1. `Main Menu → System → SY-A Enter Users`
+2. **User ID** — 1–8 char code, typically the person's initials or
+   first name (e.g., `JSMITH`). This is what they type at login.
+3. **Full name** — displayed in menus and reports.
+4. **Password** — temporary password; user will be prompted to change
+   on first login if `Force Password Change = Y`.
+5. **Access level** — numeric level (1–9 typically). Higher = more
+   authority. Affects which menus and overrides are available.
+6. **Module access** — list of module codes this user can access.
+   Blank/all = full access (admin). Restrict sensitive modules
+   (e.g., AP, GL, SY) for non-admin users.
+7. **Default company** — which company this user logs into by default.
+8. **Windows login** (SSO) — if Single Sign-On is enabled, enter the
+   user's Windows domain username to link accounts.
+9. F10 Post.
+
+## Restrict menu items
+
+Beyond module-level access, use `SY-B Menu Restrictions` to hide
+specific sub-menu items from a user or group.
+
+## Password policy
+
+- Passwords are stored hashed in `BKSYUSER`.
+- Admins can reset (but not view) passwords via SY-A.
+- Minimum length and complexity rules are set in `T7MDefaults`.
+
+## Tables touched
+
+- `BKSYUSER` — user master record
+
+## Related
+
+- [[recipe-login]]
+- [[recipe-add-company]]
+- [[module-SY]]
+""",
+["add user", "new user", "sy-a", "create user", "user account",
+ "user setup", "user id", "password reset", "user access"]),
+
+("recipe-backup", "Back Up EVO Data", "TA",
+["Main Menu", "Utilities / Admin", "TA-O Evo Backups"],
+"""
+Create a backup of EvoERP company data. EVO supports local ZIP
+backups and (with the cloud module) automatic upload to i2 tech
+support servers.
+
+## When to back up
+
+- Before any major operation: year-end close, large data imports,
+  system updates.
+- On a regular scheduled basis (daily recommended for production
+  data).
+- Before running a Physical Inventory post.
+
+## Steps (manual backup)
+
+1. `Main Menu → Utilities → TA-O Evo Backups`
+2. **Backup type** — select:
+   - **Full** — all company data files.
+   - **Company** — specific company(ies) only.
+   - **Custom** — user-defined file list.
+3. **Zip file name / path** — where to save the `.zip` file.
+   Default is usually a network backup folder.
+4. For **Company** type, check the companies to include.
+5. Click **Start Backup** (or equivalent action button).
+6. EVO creates a ZIP archive using the TZipMaster VCL component.
+   Progress is shown in the status area.
+
+## Cloud backup (GS_BACKUP flag)
+
+If your site has cloud backup enabled, EVO automatically:
+1. Creates the local ZIP.
+2. Uploads to `https://login.istechsupport.com/api/v1/evo/backups/`
+   in multi-part chunks with SHA-256 integrity verification.
+3. Shows upload progress and confirms success.
+
+## Scheduled backups
+
+Click **Schedule** to configure recurring automatic backups.
+Requires the EVO scheduler service to be running.
+
+## Restore
+
+Restore is handled by i2 technical support for production data.
+For test/dev, extract the ZIP and place files back in the
+appropriate company folder on the network share.
+
+## What's in the ZIP
+
+- All `.B` (Btrieve) data files for the selected companies.
+- `*.DFM`, `*.DCY` dictionary files (if a Full backup).
+- Does NOT include `.RWN` program files (those are the application,
+  not data).
+
+## Related
+
+- [[recipe-add-company]]
+- [[recipe-update-evo]]
+- [[module-TA]]
+""",
+["backup", "ta-o", "evo backup", "zip backup", "cloud backup",
+ "data backup", "backup company", "schedule backup"]),
+
+("recipe-add-company", "Add a New Company in EVO", "SY",
+["Main Menu", "System", "SY-C Add Company"],
+"""
+Create a new company code in EvoERP. Each company has its own set
+of data files and GL chart of accounts.
+
+## When to add a company
+
+- New legal entity or subsidiary.
+- Setting up a test/training company (common prefix: `TS`, `TEST`).
+- Creating a new fiscal year rollover copy for experimentation.
+
+## Prerequisites
+
+- Admin access (SY module).
+- Know the 1–2 character company code (e.g., `02`, `AB`).
+- Have a template company to copy from, OR plan to set up from scratch.
+
+## Steps
+
+1. `Main Menu → System → SY-C Add Company` (or equivalent admin utility)
+2. **Company code** — 1–2 alphanumeric chars. This becomes the
+   suffix on all data files (e.g., `BKICMSTR.B02` for company `02`).
+3. **Company name** — full legal name; appears on reports and invoices.
+4. **Copy from** — select an existing company to copy GL accounts,
+   system defaults, and user-defined tables from. Or select NONE
+   to start empty.
+5. **Create data files** — EVO creates blank Btrieve files for every
+   required table in the new company's folder.
+6. Confirm.
+
+## After adding
+
+- Set up System Defaults in `T7MDefaults` for the new company.
+- Define the fiscal calendar in `AM-A Accounting Periods`.
+- Assign the default GL accounts for AR, AP, Inventory, etc.
+- Grant user access to the new company code ([[recipe-add-user]]).
+
+## Multi-company data isolation
+
+Each company's files are physically separate on the network share
+(separate directory or separate file-suffix convention). There is
+no data bleed between companies unless you explicitly use
+inter-company GL transfers.
+
+## Related
+
+- [[recipe-add-user]]
+- [[recipe-backup]]
+- [[module-SY]]
+- [[module-AM]]
+""",
+["add company", "new company", "sy-c", "create company",
+ "company setup", "multi-company", "company code"]),
+
 ]

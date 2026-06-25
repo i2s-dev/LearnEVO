@@ -70,18 +70,32 @@ Ordered roughly by likely priority (daily-use workflows first):
 ### B.5 Period / compliance
 - [x] `recipe-ar-aging` ✓ (written 2026-06-25)
 - [x] `recipe-month-end-close` ✓ (written in recipes.py)
-- [ ] `recipe-year-end-close`
+- [x] `recipe-year-end-close` ✓ (written 2026-06-25)
 - [x] `recipe-financial-statements` ✓ (written 2026-06-25)
 - [ ] `recipe-1099`
-- [ ] `recipe-void-check`
+- [x] `recipe-void-check` ✓ (written 2026-06-25)
 - [ ] `recipe-purge-history`
 - [ ] `recipe-po-to-payment`
 
+### B.2 Sales / shipping (additional)
+- [x] `recipe-rma` ✓ (written 2026-06-25)
+- [x] `recipe-so-to-cash` ✓ (written 2026-06-25)
+- [ ] `recipe-estimate`
+- [ ] `recipe-rfq`
+- [ ] `recipe-credit-memo`
+
+### B.4 Inventory (additional)
+- [x] `recipe-transfer-stock` ✓ (written 2026-06-25)
+- [x] `recipe-close-po` ✓ (written 2026-06-25)
+
+### B.1 Login
+- [x] `recipe-login` ✓ (written 2026-06-25)
+
 ### B.6 Admin / utilities
-- [ ] `recipe-add-user`
-- [ ] `recipe-add-company`
+- [x] `recipe-add-user` ✓ (written 2026-06-25)
+- [x] `recipe-add-company` ✓ (written 2026-06-25)
 - [ ] `recipe-switch-company`
-- [ ] `recipe-backup`
+- [x] `recipe-backup` ✓ (written 2026-06-25)
 - [ ] `recipe-update-evo`
 - [ ] `recipe-custom-report`
 - [ ] `recipe-export-csv`
