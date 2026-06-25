@@ -1121,7 +1121,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 - [x] ✅ DFM summary CSV (`samples/dfm_parsed/dfm_summary.csv`) — **C: 82/100**
 - [x] ✅ Form-to-menu-code mapping: DFM column added to code-program-mapping.md (2026-06-19) — 723/870 codes resolved (83%); 9 are .RUN legacy; 12 RWN not yet decrypted; 147 are navigation groups — **C: 83/100**
 - [ ] ⬜ Form-to-table mapping (which tables does each form read/write)
-- [ ] ⬜ Per-form narrative documentation (field labels + purpose) for all 1,109 forms
+- [x] 🔄 Per-form narrative documentation (field labels + purpose) for all 1,109 forms — **Pass298-306 (2026-06-25): comprehensive T7*.DFM survey complete**: all 911 T7* DFMs surveyed A-Z with form captions, key field labels, and purpose; documented in HELP-RESOURCES.md passes 298-306; full module-code reference table built (50+ module codes); J7* custom forms (50 forms) covered in Pass 12; ~150 EvoERP*/BK* system forms still undocumented — **C: 78/100**
 
 ---
 
