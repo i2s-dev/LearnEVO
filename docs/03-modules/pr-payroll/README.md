@@ -511,6 +511,111 @@ Year-end:
 
 ---
 
+## Programs (42 total) — Pass 268 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` (T7PR* entries).
+
+### Group 1: Core payroll processing
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7PRB.RWN` | 229 | LISTG60 | 34 | **PR-B Enter Pay Info** — current-period batch; BKPRCURP+BKPRMSTR+BKPRGLFL; BKPR.EMP 107-var, BKPR.GL 86-var, BKPR.CURP 46-var |
+| `T7PRC.RWN` | 129 | LISTG60 | 27 | **PR-C Print Payroll Register** — BKPRCURP+ISBUILD+BKPRMSTR; BKPR.EMP 105-var |
+| `T7PRD.RWN` | 189 | ISTECH | 32 | **PR-D Print Payroll Checks** — BKSYMSTR+BKPRCURP+ISBANKS; BKPR.EMP 105-var; ISTECH.LIB = check printing engine |
+| `T7PRG.RWN` | 134 | ISTECH | 25 | **PR-G Void Payroll Checks** — BKPRCURP+BKPRMSTR+ISBANKS; ISTECH.LIB |
+
+### Group 2: Employee master / setup
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7PRA.RWN` | 169 | LISTG60 | 26 | **PR-A Edit W-2 Data / Enter Employees** — BKPRMSTR+BKPRINFO+BKPRGLFL+BKGLCOA; BKPR.EMP 105-var, BKPR.INFO 37-var |
+| `T7PRM.RWN` | 150 | LISTG60 | 21 | **PR-M Payroll Defaults** — BKPRGLFL+BKYSMSTR+BKPRMSTR; BKPR.EMP 103-var |
+| `T7PRP.RWN` | 75  | LISTG60 | 26 | **PR-P Enter Employee Raises** — BKPRMSTR+BKPRINFO |
+| `T7PRQ.RWN` | 75  | LISTG60 | 26 | **PR-Q** (paired with PR-P) — BKPRMSTR+BKPRINFO |
+| `T7PRS.RWN` | 64  | LISTG60 | 15 | **PR-S** employee setup screen — BKPRMSTR+BKPRINFO |
+| `T7PROGINFO.RWN` | 80 | LISTG60 | 19 | **Employee training/progress info** — ISPRINFO+CLASMSTR (new table pair: course catalog + employee completion) |
+
+### Group 3: Time cards
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7PRJ.RWN` | 83 | LISTG60 | 15 | **PR-J Enter Time Cards** — BKPRMSTR+BKPRTC; time card entry for payroll |
+| `T7PRK.RWN` | 134 | LISTG60 | 30 | **PR-K Print/Post Time Cards** — BKSYMSTR+BKPRMSTR+BKPRTC+BKPRGLFL; posts BKPRTC → BKPRCURP |
+
+### Group 4: Tax and AP liabilities
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7PRF.RWN` | 92 | EVO | 17 | **PR-F Maintain Tax Tables** — BKPRFTAX only; no BKPR.EMP (pure tax bracket editor; 11-tier table) |
+| `T7PRH.RWN` | 121 | LISTG60 | 23 | **PR-H Transfer Liabilities to AP** — BKPRGLFL+BKYSMSTR+BKAPINVT+ISMCF; ISIS.MCF 49-var (multi-currency tax liabilities → AP) |
+
+### Group 5: Quarterly and annual reports (PR-L-*)
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7PRLI.RWN` | 219 | LISTG60 | 27 | **PR-L-I Print W-2 Forms** — largest PR report; BKPRMSTR+BKPRGLFL; BKPR.EMP 105-var |
+| `T7PRLO.RWN` | 152 | LISTG60 | 27 | **PR-L-O** (unlisted menu — extended report?) — BKSYMSTR+BKPRMSTR+BKPRCURP+BKPRINFO; BKPR.EMP 105-var |
+| `T7PRLG.RWN` | 131 | EVO | 22 | **PR-L-G GL allocation detail** (unlisted menu — EVO.LIB = newer addition) — BKPRGLFL+BKPRCURP+BKPRMSTR+BKPRINFO |
+| `T7PRLD.RWN` | 131 | LISTG60 | 22 | **PR-L-D Print Detail Earnings Ledger** — BKPRCURP+BKPRMSTR+BKPRINFO |
+| `T7PRLF.RWN` | 125 | LISTG60 | 18 | **PR-L-F Print Subject To Report** — BKPRGLFL+ISBUILD+BKPRMSTR |
+| `T7PRLC.RWN` | 115 | LISTG60 | 22 | **PR-L-C Print QTD Taxable Earnings** — BKPRMSTR+BKPRCURP+BKPRGLFL |
+| `T7PRLE.RWN` | 114 | LISTG60 | 27 | **PR-L-E Print Detail Deductions Ledger** — BKPRGLFL+BKPRCURP |
+| `T7PRLM.RWN` | 113 | LISTG60 | 24 | **PR-L-M Print Employer Contributions** — BKPRGLFL+BKPRCURP+BKPRMSTR |
+| `T7PRLP.RWN` | 112 | LISTG60 | 22 | **PR-L-P Print Employee Raises** — ISBUILD+BKPRMSTR+BKPRCURP |
+| `T7PRLQ.RWN` | 111 | LISTG60 | 24 | **PR-L-Q** (paired with PR-L-P) — BKPRMSTR+BKPRINFO+BKPRGLFL |
+| `T7PRLH.RWN` | 105 | EVO | 17 | **PR-L-H Print 940 Report** — EVO.LIB; BKPRGLFL+BKPRCURP+BKPRMSTR |
+| `T7PRLK.RWN` | 107 | LISTG60 | 22 | **PR-L-K Print Payroll Hours** — BKPRCURP+BKPRMSTR |
+| `T7PRLN.RWN` | 107 | LISTG60 | 22 | **PR-L-N Print Payroll Wages Detail** — BKPRCURP+BKPRMSTR |
+| `T7PRLB.RWN` | 108 | LISTG60 | 26 | **PR-L-B Print QTD Earnings Register** — BKPRMSTR+BKPRINFO+BKPRCURP |
+| `T7PRLA.RWN` | 104 | LISTG60 | 17 | **PR-L-A Print Quarterly Info** — BKPRMSTR+BKPRGLFL |
+| `T7PRLJ.RWN` | 93 | EVO | 20 | **PR-L-J Print CA DE6 Form** — EVO.LIB; BKPRMSTR+**BKPRSALE**+BKPRGLFL (sales commission data in payroll report) |
+
+### Group 6: History, year-end, print
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `t7PRI.RWN` | 108 | LISTG60 | 18 | **PR-I Print Pay History** — BKPRCURP+BKPRMSTR+BKPRINFO |
+| `T7PRE.RWN` | 99  | LISTG60 | 23 | **PR-E Print Employee Info** — BKPRMSTR+BKPRGLFL |
+| `T7PRN.RWN` | 99  | LISTG60 | 24 | **PR-N Purge Payroll History** — BKPRCURP+BKPRMSTR |
+| `T7PRO.RWN` | 74  | EVO | 18 | **PR-O Year End Routine** — EVO.LIB; BKPRMSTR+FILELOC (year-end roll + W-2 freeze) |
+
+### Group 7: Utilities and stubs
+
+| Program | Procs | Lib | Role |
+|---------|------:|-----|------|
+| `T7PRDPST.RWN` | 32 | ISTECH | Direct-post utility — BKPRCURP+BKPRGLFL+BKPRMSTR+BKPRINFO; ISTECH.LIB = direct GL post |
+| `T7PRJCSYNC.RWN` | 33 | EVO | JC Sync — BKPRMSTR+BKPRINFO; syncs payroll data → job costing |
+| `T7PRFIX.RWN` | 56 | EVO | Data repair utility — BKPRMSTR |
+| `T7PRDIVFIX.RWN` | 30 | EVO | Division assignment fix — BKPRMSTR |
+| `T7print.RWN` | 49 | EVO | General print stub — MKAHIST+FILELOC |
+| `t7pretag.RWN` | 37 | EVO | Pre-tag utility — BKICMSTR+BKPSUSER (item→employee pre-assignment?) |
+| `T7PRSADMIN.RWN` | 5 | t7prsADMIN.SRC | Admin stub |
+| `t7program.RWN` | 4 | t7program.SRC | Minimal stub |
+
+---
+
+### Key program revelations (Pass 268)
+
+**T7PRB** (229p, LISTG60) is the core payroll calculation engine — it holds the highest BKPR.EMP var count (107) and BKPR.CURP count (46), confirming it reads every employee field and writes the complete current-period pay record. It is the only program to hold the full 542 ISTS.CFG access count alongside full BKPR.EMP+GL+CURP namespaces simultaneously.
+
+**T7PRLI** (219p) is the largest-by-proc report — W-2 printing requires reading almost every employee master field (105-var) and all GL accounts (86-var) to correctly allocate withholding across all state tax jurisdictions. Second largest program count after T7PRB.
+
+**T7PRH** (121p) opens ISMCF — multi-currency framework — confirming that payroll tax liabilities transferred to AP can span multiple currencies (for international sites or multi-currency clients).
+
+**T7PRLJ** (93p, PR-L-J CA DE6) opens **BKPRSALE** — the sales commission/employee sales table. This is the only PR program that reads BKPRSALE, confirming CA DE6 includes commission income. BKPRSALE is also read by T7ARG (AR) and T7PRLJ (PR), making it a cross-module commission bridge.
+
+**T7PROGINFO** (80p) opens **ISPRINFO + CLASMSTR** — a new table pair not previously identified. CLASMSTR is likely a course/class catalog; ISPRINFO links employees to completed classes. This is EvoERP's employee training/qualification tracking subsystem, accessed via a PR menu item.
+
+**T7PRO** (PR-O Year End, 74p) opens **FILELOC** — a path-lookup table. This confirms PR year-end uses the file location table to find and rename/archive prior-year payroll files (BKPRHIST → archive) during year-end roll.
+
+**New tables confirmed from T7PR* programs:**
+- `ISPRINFO` — employee progress/training records (T7PROGINFO)
+- `CLASMSTR` — training class/course catalog (T7PROGINFO)
+- `FILELOC` — file path lookup table used during year-end roll (T7PRO, T7print)
+- `ISBANKS` — bank account master (T7PRD, T7PRG — paycheck bank routing)
+
+---
+
 ## Notes & open questions
 
 - **BKPRMSTR record size = 3,389 bytes** (BANKA ends at offset 3372 + 17 = 3389). Very large row — each employee is almost 3.5 KB.

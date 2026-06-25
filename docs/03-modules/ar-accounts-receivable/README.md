@@ -319,8 +319,18 @@ Data extracted from rwn_symbols.json.
 
 ---
 
+## Pass 268 supplement (2026-06-25)
+
+**ISTERMS confirmed as payment terms master** — appears in T7ARF, T7ARE, T7ARG, T7ARH, T7ARD, T7ARP db_files lists. This resolves the open question below; the payment terms table is `ISTERMS`, not `BKTERMS`. `BKAR_TERMS_NUM` (UBINARY FK in BKARCUST) and `BKAR_INVT_TERMN` (UBINARY FK in BKARINVT) both point to `ISTERMS`. Confirmed also in T7POS (PO), T7ARF (AR), T7ARG (AR), T7ARE (AR) — heavily cross-module.
+
+**BKPRSALE in T7ARG** — T7ARG (AR-G Print Customer Code/Name, 148p) opens `BKPRSALE`. This is the payroll sales commission table appearing in the AR aging print program — confirming that commission-based settlements are computed by cross-referencing salesperson commission records from `BKPRSALE` during AR reporting. Also appears in T7PRLJ (PR) = CA DE6.
+
+**IS.TRIG 27-var in T7ARU** — T7ARU (85p) has IS.TRIG 27-var namespace. ISTRIG is an event trigger table — unapplied payments management triggers events (notifications / workflow steps) via the ISTRIG mechanism. The IS.TRIG 27 vars = 27 distinct trigger-type fields accessed.
+
+---
+
 ## Notes & open questions
 
 - BKAREIVT vs BKARINVT: Both have the same PK and nearly identical fields. BKAREIVT has a spurious BKAB_PERIOD field (LOGICAL size 1792 at an overlapping offset) which is a Btrieve alternate-key index definition artifact, not a real data field. Treat BKARINVT (23f) as canonical.
-- The exact payment terms table name is unconfirmed from DDF alone. BKAR_TERMS_NUM (UBINARY in BKARCUST) and BKAR_INVT_TERMN (UBINARY in BKARINVT) both reference it. Likely BKTERMS or similar — needs live data or RWN source to confirm.
+- **ISTERMS confirmed** (Pass 268): `BKAR_TERMS_NUM` FK → `ISTERMS`. Full ISTERMS schema not yet extracted from DDF.
 - BKARINVV (77f) is not yet documented — field semantics unknown. It may be the "voucher-verified" copy of a posted invoice.

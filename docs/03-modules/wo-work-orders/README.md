@@ -397,7 +397,7 @@ Source: `samples/rwn_symbols.json` (T7WO* entries).
 
 | Program | Procs | Lib | DB | Role |
 |---------|-------|-----|----|------|
-| T7WOA.RWN | 413 | LISTG60.LIB | 61 | WO-A: Main WO editor; MTWO.WIP.* 82-var WORKORD namespace + MTWORO.* 63-var WOROUT namespace (see var tables in this doc) |
+| T7WOA.RWN | 413 | LISTG60.LIB | 61 | WO-A: Main WO editor; **MTWO.WIP 781-var** (3rd largest namespace in system) + BKIC.LOC 324-var + IS.WOEX 76-var; WORKORD+MTICMSTR+ISWOEX+ISWOPRIO+WOROUT |
 | T7WOI.RWN | 357 | ISTECH.LIB | 61 | WO-I: WO receipt/finished production — WORECV+ISSERIAL+BKSHORT; BKPR.* 107 vars = payroll integration at receipt |
 | T7WOG.RWN | 330 | ISTECH.LIB | 44 | WO-G: Issue materials to WO — WOMAT+INVTXN+SCRAP+BKAPPOL/PO; posts inventory transactions |
 | T7WOLF.RWN | 294 | LISTG60.LIB | 48 | WO-L-F: WO shortage report — BKSBMFG+BKSBPART (approved sourcing check during shortage) |
@@ -481,6 +481,23 @@ Three pathways from Work Orders to Purchase Orders:
 1. **MRP-driven PO release** (T7WOPO, 150p): Reads BKMRPPO (MRP planned POs), selects vendor via BKSBVEND/BKSBMFG approved lists, creates BKAPPO records. This is the "WO-Q: Convert WOs to POs" menu operation.
 2. **Outside-process subcontract PO** (T7WOLA, 255p): For routing operations of type O (outside), creates BKAPPOL/BKAPPO lines directly from WO-LA. Uses ISWOPRIO for priority scheduling. BKAPDESC = AP document description.
 3. **WO release PO link** (T7WOB, 249p): BKAPPOL is in T7WOB's DB list — outside-process PO lines are created/linked at WO release time as well as during processing.
+
+---
+
+## Pass 268 supplement (2026-06-25) — T7WOA namespace correction + additional programs
+
+**CORRECTION (Pass 268):** T7WOA MTWO.WIP count was previously recorded as 82-var (Pass 261 error). Actual value from rwn_symbols.json is **781-var** — the 3rd largest namespace in the entire EvoERP system (after BKAR.INV 1376-var in T7SOA and BKAP.PO 798-var in T7POA). T7WOA.old (220p) has MTWO.WIP 490-var, confirming the new T7WOA version significantly expanded its WIP field access. T7WOA also accesses **BKIC.LOC 324-var** (very large location/inventory data), confirming the WO editor reads nearly every inventory location field.
+
+**ISPREQ confirmed in T7WOKNA** (150p, EVO.LIB) — the NC/QC hold program opens ISPREQ. This confirms ISPREQ = **purchase requisition** table: when a non-conformance hold is applied to WO materials, T7WOKNA creates a purchase requisition via ISPREQ. Also opened by T7WOKT (time/scrap entry, 130p) and T7WOKM (scrap entry, 104p) — NC items at time of scrap generate requisitions for replacement materials.
+
+**BKSHORT confirmed as shortage tracking table** — T7WOFA (176p, backflush) and T7WOFAD (144p, direct backflush) both open BKSHORT. BKSHORT is written when the backflush finds insufficient on-hand quantity to satisfy WO material requirements. Field prefix is likely BKSH_* (schema not yet extracted from DDF).
+
+**Additional programs (Pass 261 count = 46; actual = 63):** The 17 additional programs identified in Pass 268 extraction but not in the Pass 261 table are lower-proc-count entries already captured in the stubs/utilities footnote. No new high-proc programs discovered; the core 46 remain the primary programs.
+
+**New tables confirmed from Pass 268 WO extraction:**
+- `ISPREQ` — purchase requisition (T7WOKNA, T7WOKT, T7WOKM)
+- `BKSHORT` — material shortage record at backflush (T7WOFA, T7WOFAD)
+- `BKICLOCM` — inventory location master variant (T7WOKNA, T7WOD) — likely BKICLOC mirror/copy
 
 ---
 
