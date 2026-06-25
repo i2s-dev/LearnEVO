@@ -989,7 +989,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **MRP run** — MR-A → MR-J → MR-K — see Recipe 4 — **C: 75/100**
 - [x] ✅ **Physical inventory count** — PI-A → PI-C → PI-D → PI-F — see Recipe 8 — **C: 75/100**
 - [x] ✅ **Sales order → ship → invoice** — SO-A → BO → SO-F → SO-G — see Recipe 1 — **C: 80/100**
-- [x] ✅ **Inventory adjustment** — IN-G/IN-H → BKISTXN+BKICLOC — see Recipe 14 — **C: 70/100**
+- [x] ✅ **Inventory adjustment** — IN-C (T7INC.RWN) → INVTXN(type A/C)+BKICLOC+BKGLTRAN — see Recipe 14 — **C: 70/100**; **Pass286 (2026-06-25): IN-C confirmed from T7INC.DFM caption + T7INC.RWN DB fingerprint (43 tables: INVTXN+BKICMSTR+BKICLOC+MTICMSTR+BKGLTRAN+DBAFIFO+LOT+SERIAL+SCRAP+ISNCR+ISGLDATE+41 more); IN-G=Print Labels (not adjustments); BKISTXN does not exist (0 programs open it across 1122 RWN corpus); INVTXN.TYPE='A'=ADJUSTMT, 'C'=$ CHANGE (SRC-confirmed BKLME.SRC L249/L258); Recipe 14 fully corrected — **C: 82/100**
 - [x] ✅ **Lot/serial tracking** — PO receipt → WO issue → WO completion → SO shipment — see Recipe 15 — **C: 68/100**; **Pass284 (2026-06-25): BKLME.SRC confirms**: INVTXN.MTIT_LOT/MTIT_SERIAL populated for lot/serial transactions; LM-E explicitly skips these records (`if mtit.lot<>"" goto find_next`); the preservation rule is SRC-confirmed — lot/serial history is never consolidated; INVTXN TYPE codes for tracking events: P=PO receipt (lot/serial assigned), I=WO issue, W=WO receipt, S=SO shipment — all write MTIT_LOT or MTIT_SERIAL field — **C: 75/100**
 
 ### 13.3 Payroll Workflows

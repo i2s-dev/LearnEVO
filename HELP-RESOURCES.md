@@ -15843,54 +15843,94 @@ confirmed from WBK DFM analysis; BKLOGON behavior inferred.
 physical count (Recipe 8). Also used for writing off obsolete stock, adjusting for
 damaged goods, or correcting a posting error.
 
-**Module path:** IN → IN-G (Inventory Adjustment — Quantity) or IN-H (Cost Adjustment)
+**Module path:** IN → IN-C (T7INC.RWN, "Enter Inventory Adjustments")
 
-**Quantity adjustment (IN-G):**
+> **Note:** Earlier versions of this doc incorrectly said `IN-G/IN-H`. IN-G = Print
+> Inventory Labels; there is no IN-H. IN-C is the correct adjustment entry form.
+> Confirmed from T7INC.DFM caption + T7INC.RWN DB fingerprint (Pass 286 2026-06-25).
+
+**Form fields (T7INC.DFM — confirmed):**
+
+| Field | Required | Notes |
+|-------|----------|-------|
+| Item Number | Yes | BKICMSTR lookup |
+| Quantity | Yes | Positive = add, negative = remove |
+| Location | No | Warehouse location (BKICLOC) |
+| PO Number | No | Link to purchase order if PO-sourced |
+| Vendor Code | No | Vendor for PO-receipt-style adj |
+| Reference | No | Memo/reason text |
+| PO Price | No | Override cost for this transaction |
+| WC Bin | No | Work center bin |
+| Use Avg/STD/Last Cost [A/S/L] | No | Cost basis: A=Average, S=Standard, L=Last |
+
+For lot-tracked items, a second sub-form adds:
+- Lot Number (required for lot adj)
+- Lot On-Hand Quantity
+
+**Adjustment process:**
 
 ```
-1. IN-G (Inventory Adjustment)
-   - Enter: item code (BKICMSTR / MTICMSTR)
-   - Enter: adjustment quantity (positive = add, negative = remove)
-   - Enter: GL account for the offset entry (inventory adjustment account)
-   - Enter: reason code or note
-   - Enter: lot / serial number if item is lot/serial tracked
-   - Enter: bin location if location tracking is active
-   - Post: creates BKISTXN row (type I = Inventory adjustment),
-           updates BKICLOC (per-location quantity),
-           posts offset to GL via BKGLTRAN
+1. IN-C (T7INC.RWN) — Enter Inventory Adjustment
+   - Enter item code (BKICMSTR / MTICMSTR lookup)
+   - Enter quantity: positive to add, negative to remove
+   - Optionally enter: Location, Reference, cost override
+   - For lot/serial items: enter Lot Number and Lot On-Hand Qty
+   - Post:
+     → creates INVTXN row (MTIT.TYPE = 'A' — ADJUSTMT)
+     → INVTXN.AVGCOST = unit cost for this transaction
+     → updates BKICLOC (per-location quantity)
+     → posts offset to GL via BKGLTRAN
+     → if FIFO costing: adjusts DBAFIFO cost layer
+     → if ISNCR required: non-conformance record linked
 
-2. Verify:
-   - IN-O-A (Item Inquiry) — confirm new on-hand qty
+2. Bulk import mode (IN-C sub-form):
+   - Supports CSV file import (comma.fixed = C or F for fixed-width)
+   - imp.filename = CSV path; import.loc = default location
+   - imp.at.zero$ = import at $0 cost flag
+   - use.std = use standard cost flag
+   - usePOCF = apply PO conversion factor
+
+3. Verify:
+   - IN-A (Item Inquiry) — confirm new on-hand qty in BKICLOC
    - GL-O-B (GL Detail) — confirm GL offset was posted to correct account
 ```
 
-**Cost adjustment (IN-H):**
+**INVTXN type codes for adjustments (BKLME.SRC L249 — SRC-confirmed):**
 
-```
-1. IN-H (Cost Adjustment)
-   - Enter: item code
-   - Enter: cost adjustment amount (per unit or total)
-   - System recalculates weighted average cost (if AVCO costing)
-   - Or sets new standard cost (if STND costing — requires separate cost roll)
-   - Posts BKISTXN row (type C = cost adjustment)
-```
+| MTIT.TYPE | BKLME label | Meaning |
+|-----------|-------------|---------|
+| `A` | ADJUSTMT | Quantity adjustment (IN-C standard adj) |
+| `C` | $ CHANGE | Cost adjustment (unit cost change, no qty change) |
 
-**Key tables:**
-- BKICMSTR / MTICMSTR — item master (on-hand qty, average cost)
-- BKICLOC — per-location quantity (updated if location tracking active)
-- BKISTXN — inventory transaction history (I or C type row added)
-- BKGLTRAN — GL offset entry
+**Key tables (T7INC.RWN DB fingerprint — confirmed):**
+- `INVTXN` — inventory transaction log (new row per adjustment; TYPE='A' or 'C')
+- `BKICMSTR` / `MTICMSTR` — item master (on-hand qty, average cost)
+- `BKICLOC` — per-location on-hand quantity (updated on every adj)
+- `BKGLTRAN` / `BKGLX` — GL offset entries
+- `DBAFIFO` — FIFO cost layers (adjusted if FIFO costing method)
+- `LOT` / `SERIAL` / `ISBINLOC` / `ISBINLOT` — lot/serial/bin tracking (if applicable)
+- `SCRAP` — scrap transaction log (scrap adjustments)
+- `ISNCR` — non-conformance records (triggered by scrap/quality adjustments)
+- `BKGLCOA` — GL chart of accounts (for GL account lookup)
+- `ISGLDATE` — GL period dates (to validate period is open)
+
+> **BKISTXN does not exist.** Earlier versions of this recipe and Recipe 15 mentioned
+> `BKISTXN` as the inventory transaction table — that was an error. Zero programs in the
+> entire 1122-RWN corpus open a table named `BKISTXN`. The real table is `INVTXN`.
+> Corrected in Pass 286 (2026-06-25).
 
 **Notes:**
 - Adjustments bypass the formal Physical Inventory (PI module) — use PI for
-  periodic full counts, IN-G only for spot corrections
+  periodic full counts, IN-C for spot corrections
 - Large adjustments should be approved; EvoERP does not require approval for
-  IN-G by default (no approval routing like WOAC/SOAC)
-- Lot/serial tracked items: must specify lot/serial on adjustment
+  IN-C by default (no approval routing like WOAC/SOAC)
+- Cost adjustments change INVTXN.AVGCOST only — they do not create a new
+  on-hand quantity row; the AVGCOST on BKICMSTR is updated separately
 
-**Confidence: 70/100** — Module path confirmed from menu codes; table flow is standard
-inventory adjustment logic for Btrieve-based systems; DFM for T7ING not specifically
-analyzed (no T7ING.DFM found in samples — behavior inferred from module pattern).
+**Confidence: 82/100** — T7INC.RWN DB fingerprint fully confirmed (43 tables); T7INC.DFM
+form fields read; INVTXN type codes SRC-confirmed from BKLME.SRC; module path and table
+corrections verified. Remaining gap: exact field-by-field posting logic requires
+decrypted T7INC.RWN bytecode.
 
 ---
 
@@ -15909,7 +15949,7 @@ production batch.
 | BKICLOC | Per-location, per-lot quantity on-hand |
 | ISBINLOT | Bin-level lot quantity (ITEM+LOC+LOT+BIN PK) |
 | ISSOBOX | Shipping box contents (SONUM+LINE+BOX PK) — includes LOT field |
-| BKISTXN | Inventory transaction history — each receipt/issue writes a row with LOT field |
+| INVTXN | Inventory transaction log — each receipt/issue/adjustment writes a row with LOT field (note: BKISTXN does not exist; corrected Pass286) |
 | WORKORD.LOT / WOROUT.LOT | WO routing step lot tracking |
 
 **Lifecycle flow:**
