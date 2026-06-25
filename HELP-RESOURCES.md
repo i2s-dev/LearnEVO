@@ -580,19 +580,26 @@ location tracking, physical counts, and inventory transactions.
 **Item master fields (BKICMSTR — 64 fields, key subset):**
 - `BKIC_PROD_CODE` — Part number (primary key, offset 0, 15 chars)
 - `BKIC_PROD_DESC` — Description (offset 15, 30 chars)
-- `BKIC_PROD_TYPE` — Item type code (offset 45, 1 char) — **confirmed codes (live IN-A screen + SRC files):**
-  - `R` = Raw/purchased inventory — tracked, UOH maintained, posts to inventory on SO ship
-  - `N` = Non-stock — not tracked, UOH always 0, no inventory decrement on ship; still posts to AR
-  - `F` = Finished goods (manufactured, sellable end item)
-  - `A` = Assembly (manufactured from components)
-  - `M` = Manufactured / Miscellaneous
-  - `K` = Kit (sell as bundle; pulls components)
-  - `B` = Phantom (virtual BOM node — zero on-hand, skipped in MRP on-hand calc)
-  - `L` = Labor charge (non-inventory service line)
-  - `T` = Tool/fixture (tracked separately, non-inventory)
-  - `O` = Outside service (sent to vendor for processing; no routings allowed)
-  - Source: confirmed R and N from live IN-A screen (2026-06-17); others from BKMRF.SRC + BKROA.SRC analysis
+- `BKIC_PROD_TYPE` — Item type code (offset 45, 1 char) — **all 10 codes binary-confirmed (BKLME.RUN + BKAWLB.RUN item-type selector screen, 2026-06-24):**
+  - `R` = Purchased Part — tracked, UOH maintained, posts to inventory on SO ship
+  - `F` = Finished Good — manufactured sellable end item
+  - `A` = Subassembly — manufactured sub-component
+  - `M` = Make From — manufactured (make-from BOM)
+  - `B` = Phantom Assembly — virtual BOM node; zero on-hand, exploded through in MRP
+  - `N` = Non Inventory — not tracked, UOH always 0, no inventory decrement on ship; still posts to AR
+  - `K` = Selling Kit — sold as bundle; pulls components on ship
+  - `L` = Labor — non-inventory service/labor charge
+  - `T` = Outside Process — sent to vendor for processing
+  - `O` = Feature — configurable option/feature item
   - Items with invalid type for routings (BKROA.SRC): B, K, R, O, M
+- `BKIC_PROD_ACTIV` — Item status code (1 char) — **5 of 9 confirmed; P/S/Q/R blocked by RWN encryption:**
+  - `Y` = Active (inferred; logical default active state)
+  - `N` = Inactive — system message: "is designated as inactive. Notify purchasing/planning for evaluation." (BKDCA.RUN)
+  - `O` = Obsolete (BKDCA.RUN, BKROA.RUN)
+  - `E` = Engineering — item in engineering/development status (BKDCA.RUN, BKROA.RUN)
+  - `D` = Discontinued — system message: "has been discontinued" (BKDCA.RUN, BKROA.RUN)
+  - `P`, `S`, `Q`, `R` = unknown (appear in [YNODEPSQR] filter across T7UTKG/T7SOQB/T7SOQK; meanings unconfirmed)
+  - Full confirmed filter set: `[YNODEPSQR]` — appears in item master reports and price list print forms
 - `BKIC_PROD_UOM` — Unit of measure (stock)
 - `BKIC_PROD_PUOM` — Purchase UOM
 - `BKIC_PROD_PRCUOM` — Price UOM
@@ -610,10 +617,18 @@ location tracking, physical counts, and inventory transactions.
 - `BKIC_PROD_MRPSW` — MRP planning switch
 - GL accounts for COGS, inventory, variance
 
-**Inventory transaction types (INVTXN):**
-- A = Adjustment, S = Shipment (sales), P = PO Receipt, J = PO Job Receipt,
-  W = WO Receipt (finished goods), I = WO Issue (material), Q = QC Receipt,
-  O = Out-Process, C = Cost Change
+**Inventory transaction types (INVTXN):**  
+All 9 codes binary-confirmed from BKLME.RUN AllowedChrs string "ASPJWIQOC" (2026-06-25):
+- `A` = Adjustments
+- `S` = Shipments
+- `P` = Purchase Receipts to Stock
+- `J` = Purchase Receipts to WIP (Job)
+- `W` = Work Order Receipts to Stock
+- `I` = Stock Issues to WIP
+- `Q` = Purchase Receipts to QC
+- `O` = Outside Process (receipts from outside process vendor)
+- `C` = Cost Change ($ change — standard cost revaluation)
+- Note: "DELETED" in LM-E consolidation output is a consolidation status counter, not a type code
 
 **Transaction consolidation** (BKLME.SRC): Rolls up individual transactions by type into
 summary records for period-end. Lot/serial tracked items are excluded from consolidation.
@@ -14965,8 +14980,7 @@ Updates all location references in the database.
 **T7UTKF — Item Master Report (F variant):**
 from/thru item, class, category ranges + item.type [RFAMNLBTKO] filter + prt.extdesc (include 2nd desc line).
 
-**Item type codes (UTKF/UTKG):** R=Purchased, F=Finished goods, A=?, M=Made/manufactured,
-N=Non-stock, L=?, B=?, T=?, K=Kit, O=Obsolete (inferred from context).
+**Item type codes (UTKF/UTKG):** All 10 binary-confirmed: R=Purchased Part, F=Finished Good, A=Subassembly, M=Make From, B=Phantom Assembly, N=Non Inventory, K=Selling Kit, L=Labor, T=Outside Process, O=Feature. Filter string `[RFAMNLBTKO]`.
 
 **T7UTKG — Item Master Report (G variant):**
 Same as F + act.status filter [YNODEPSQR] (Y/N=active/inactive status plus D/E/P/S/Q/R variants) + GL account range.
@@ -17779,9 +17793,14 @@ Controls item base prices, price codes, customer contract pricing, and mass pric
 | T7SOQJ.DFM | Recalculate prices from cost basis — new base price = cost × markup; optionally update contract prices |
 | T7SOQL.DFM | Import price codes from CSV file |
 
-**Price code status field values (active status filter `YNODEPSQR`):**
-- Y = active, N = inactive, O = obsolete, D = discontinued, E = end-of-life,
-  P = prototype, S = sample, Q = quote-only, R = restricted
+**Item active status codes (filter `[YNODEPSQR]` used in price list + item master reports):**  
+5 of 9 binary-confirmed (BKDCA.RUN, BKROA.RUN, 2026-06-24):
+- `Y` = Active (inferred)
+- `N` = Inactive (binary-confirmed)
+- `O` = Obsolete (binary-confirmed)
+- `D` = Discontinued (binary-confirmed)
+- `E` = Engineering (binary-confirmed; NOT "end-of-life")
+- `P`, `S`, `Q`, `R` = meanings unconfirmed (appear in filter string; require RWN decryption)
 
 ---
 
