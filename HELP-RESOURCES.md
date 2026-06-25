@@ -12796,6 +12796,80 @@ T7WOKS edits individual bin assignments; T7WOKSA prints the WIP bin location rep
 | WO-L-N | T7WOLN | WO notes print |
 | WO-L-O | T7WOLO | WC by customer report |
 
+**WO-L Report Suite — Status/Type Code Reference (Pass 297 — 2026-06-25, DFM analysis):**
+
+**WO Status codes** (from filter labels across T7WOLA/B/D/F/H/I/J/N — inferred from context):
+
+| Code | Meaning | Notes |
+|------|---------|-------|
+| F | Firm | Firm-planned — entered, not yet released to shop floor |
+| R | Released | Released to shop floor for production |
+| S | Started | Operations begun (first labor entry made) |
+| C | Closed | Completed and post-production costing done |
+| I | In-process / In-hold | Mid-production hold variant |
+| X | Cancelled | Cancelled/inactive WO |
+
+Subset variants by form: `[FR]`=labor summary (WOLH); `[SFRC]`=completion (WOLD); `[SFRCIX]`=full open-order list (WOLA); `[CXSFRI]`=finished WO (WOLJ); `[FRSCXI]`=shortage (WOLF). Confidence: inferred from context — not decoded from source code.
+
+**WO Routing Operation Status codes** `[CQASN]` (from T7WOLB "Print Last Operation[CQASN]"):
+
+| Code | Meaning |
+|------|---------|
+| C | Complete |
+| Q | Queue (waiting) |
+| A | Active (currently being worked) |
+| S | Scheduled |
+| N | Next (next operation in sequence) |
+
+**Item Active Status codes** `[YNODEPSQR]` (from T7WOLI "Active Status"):
+
+| Code | Meaning |
+|------|---------|
+| Y | Active |
+| N | Inactive |
+| O | Obsolete |
+| D | Discontinued |
+| E | Engineering sample |
+| P | Prototype |
+| S | Saleable |
+| Q | Quote only |
+| R | Restricted |
+
+**Item Type codes** `[RFAMNLBTKO]` (from T7WOLA/WOLI "Item Type"):
+
+| Code | Meaning |
+|------|---------|
+| R | Raw material |
+| F | Finished goods |
+| A | Assembly |
+| M | Make (manufactured) |
+| N | Non-inventory / non-stocked |
+| L | Labor |
+| B | Buy (purchased only) |
+| T | Tool/template |
+| K | Kit |
+| O | Outside process / service |
+
+**WO-L per-form key filter summary (Pass 297 DFM analysis):**
+
+| Form | Unique filters not shared with WO-L-A |
+|------|--------------------------------------|
+| WO-L-A | from/thru.item, WO#, cust, dates (start/fin/due), cust PO, planner, job, class/cat, status [SFRCIX], priority, sort [SFW], agg [PW], excl class/cat; include service PO, BOM, shortages, rework, partial, unissued; prt.to.pdf |
+| WO-L-B | status [4 checkboxes], priority [3], class [6+all+blank], sort, cust PO, planner, job, SO#, dates (start/fin/due); orphans.only, unstarted.wos, so.only; prt.last.op [CQASN] |
+| WO-L-C | WC, machine, WO fin date; WO status/priority/class text; lead.source 1+2; dept.break; no.start.qty toggle |
+| WO-L-D | sched start/fin dates, job, planner; subtotal by (SUBTOT.BY.TXT); prt.seq [CLN]; prt.est.hrs; prt.no.wos |
+| WO-L-E | Employee from/thru, lab date from/thru; post.hrs toggle (post to PR) |
+| WO-L-F | Sequence from/thru; Parent item + Comp item ranges (class/cat/type each); act.start.date; WO class; need.so/po/wo/alloc.date toggles; Parent+Comp planner; export to file (expt.filename, field.delim); USE.WOLOC; prt.compwos, PRT.SUBS, incl.po.detail |
+| WO-L-G | WC, Parent item, Comp item, comp class/cat; key.component[1..15] (up to 15 watch-parts); PRT.COMP.DESC |
+| WO-L-H | WO#, sched start/fin, job; status [FR]; priority [1-9]; WO class; totals; BREAKWO (separate page per WO) |
+| WO-L-I | Item/type/class/cat/vendor/cycle/planner; ACT.STATUS [YNODEPSQR]; WO status/priority; cust; sort by WC; incl.neg.alloc; VEND.COST; rebuild; PRT.ORD.DETAIL; INCL.NO.UOH; sort_by_text; incl.po.allocs |
+| WO-L-J | WO finish date; status [CXSFRI]; WC; class/cat; excl cat; incl.rout.det; prt.wo.timing; incl.no.wc |
+| WO-L-K | Seq from/thru; PRT.SPECS/DWG.PAR/SUBS/VENDS/MFGS; incl.rohs; NUM.DECIMALS; incl.xref; incl.phantoms; smt.report |
+| WO-L-L | Seq from/thru; comp from/thru; use.bom.qty; label.qty; sort.by.bin; scan.wonum (scan at runtime) |
+| WO-L-M | SO from/thru; SO.LIST (non-sequential list); CUST.LIST; use.wobom |
+| WO-L-N | WO# from/thru; WO status |
+| WO-L-O | Cust from/thru; date from/thru |
+
 ---
 
 ### SO — Sales Order Full Suite
