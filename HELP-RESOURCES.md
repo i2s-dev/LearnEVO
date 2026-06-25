@@ -20115,3 +20115,38 @@ Purpose: records pre-payments and deposits on Sales Orders. GL Account can be le
 **T7CAR8D.DFM** (80KB) — **CAR 8D Action Items**:
 Fields: CAR#, Action#, Creation Date, Due Date, Status, Release flag, Team, Problem Description, Immediate Containment Action, Completed by, Completed on.
 Purpose: the 8D problem-solving methodology within the QC/CAR module. Each CAR has multiple 8D action items with ownership, due dates, and completion tracking. Part of the NCR/CAR corrective action workflow.
+
+---
+
+## Miscellaneous Utility and Admin DFMs (Pass 302 — 2026-06-25)
+
+| Form | Prefix | Purpose |
+|------|--------|---------|
+| T7ALTPART.DFM (59KB) | AL | **Alternate Part Maintenance** — item from/thru range + alternate part# entry; manages BKICALTD/BKICALTP alternate item tables |
+| T7BINSET.DFM (46KB) | BI | **"Istech Warehouse Control Setup Utility"** — WC bin setup: default location, start time, progress display (files/records/percent); admin batch setup for WC bin records |
+| T7BRANDS.DFM (44KB) | BR | **Brand Code Table** — Code/Description/REP; lookup table for item brand codes |
+| T7CVTROIA.DFM (21KB) | CV | **Item Range Filter ("Filters")** — item from/thru + process; likely an item conversion or recalculation utility |
+| T7ITMCFG.DFM (53KB) | IT | **Item Number Format Configurator** — defines auto-numbering structure: total length, starting position of numeric portion, length of numeric portion, last number, formatted last number; the item number pattern setup |
+| T7JBS.DFM (47KB) | JB | **Java Business Server Settings** — Host/Port/Name/Company DSN/Destination; Test Settings button; companion to T7JAVASET for a separate Java service component |
+| T7JPOS.DFM (48KB) | JP | **Java POS Server Settings** — Host/Port/Name/Company DSN/Destination/Source; Point-of-Sale Java server connection settings |
+| T7MLE.DFM (26KB) | ML | **Multi-Language Caption Editor** — Select Language (Langcombo dropdown), Default Caption vs Translated Caption entry; EvoERP supports multiple UI languages; this form translates labels/captions |
+| T7numdef.DFM (47KB) | NU | **Next Numbers (auto-number seeds)** — sets next sequential# for: Work Orders (Next WO#), QC Lab Report, Next QC#, Purchases (Next PO#, Next RFQ#), Sales (Next Estimate#, Next SO#) |
+| T7STOCK.DFM (44KB) | ST | **Stock Code Table** — Code/Description/REP; another code lookup table (stock type/category codes) |
+| T7SDET.DFM (41KB) | SD | **Type/Det Table** — minimal form with Type + Det fields; small lookup/detail code table |
+| T7BZFIX.DFM (26KB) | BZ | **BZ Fix Utility** — tag/untag records in a file; file search; Process Tagged button; admin record-repair tool |
+
+### Next Numbers Reference (T7numdef.DFM — confirmed field labels)
+
+EvoERP auto-incremented transaction numbers configured in NU module:
+
+| Transaction Type | Field Label |
+|----------------|-------------|
+| Work Orders | Next WO # |
+| QC Lab Report | Next QC Lab Report |
+| Purchase Orders | Next PO # |
+| Quality Control | Next QC # |
+| Request for Quote | Next RFQ # |
+| Estimates | Next Estimate # |
+| Sales Orders | Next SO # |
+
+Note: These seed values are also stored in BKYSMSTR auto-number counter fields — the NU module provides a UI to view/edit them directly.
