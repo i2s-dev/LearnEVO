@@ -18322,6 +18322,92 @@ format FIELD recv VAR nocma nofd neg L  ;format numeric FIELD into string VAR
 ```
 `mount ... type R` loads a classic TAS Pro internal report form (not an RTM file). `pfmt N` references a numbered line template defined in the form's `\FIELDS` section. `prtr_setup 'r'` restores printer to normal-width after wide output.
 
+**`findv` — variable-handle find (BKDCA.SRC — Pass 285, 2026-06-25):**
+```
+findv M fnum dctlab key lab.emp val lab.emp nlock
+;    ↑  ↑             ↑          ↑
+;  mode  file-handle  key-field  search-value
+
+findv m fnum dctlab key lab.key val LAB.EMP,LAB.WOPRE,LAB.WOSUF,LAB.OPER,"O"
+;multi-value composite key: supply values in key-field order, last="O" literal
+```
+Like `find`, but uses a runtime file-handle variable instead of a compile-time table name.
+Required when tables are opened with `openv "NAME" fnum HANDLE` (variable-name open).
+Key modes are the same as `find`: `M` (exact match), `F` (first), `N` (next), etc.
+Multi-value composite key: list values in the same order as the defined key fields, separated by commas.
+
+**`time FIELD get` — get current time (BKDCA.SRC L259):**
+```
+time TMP.TIME get    ;stores current HH:MM:SS into TMP.TIME (type T field)
+```
+
+**`novldmsg` — suppress next validation message (BKDCA.SRC L277):**
+```
+novldmsg             ;suppress the "invalid field value" popup for next enter statement
+```
+Used before an `enter` that might produce a validation error the program wants to handle silently.
+
+**Color functions (BKDCA.SRC L298, L328):**
+```
+pmsg cch(),mid(MESSAGE[1],1,size(message[1],'a')),ccf() at 9,4
+;cch() = begin highlight color sequence (returns color-start string)
+;ccf() = end   highlight color sequence (returns color-end string)
+;ccr() = color reset (returns normal-color sequence)
+pmsg "Work Order Number?...",ccr(),"   " at 4,qline
+```
+`cch()` / `ccf()` bracket a string to display it in the highlight color.
+`ccr()` resets to normal foreground color. All three return control-sequence strings
+that are concatenated directly into `pmsg` or `msg` output.
+
+**`clrlne` — clear line segment (BKDCA.SRC L579-581):**
+```
+clrlne at 3,qline nchr 74    ;erase 74 chars starting at row 3, col qline
+```
+Clears N characters at a specific screen row/column without moving the cursor.
+Used to erase stale entry-field content when scrolling or redisplaying.
+
+**`scroll` — scroll screen region (BKDCA.SRC L586-588):**
+```
+scroll at 4,qline len 2 wdt 40 num 1 UP
+;  at row,col — top-left of scroll region
+;  len N — height in rows
+;  wdt W — width in characters
+;  num N — number of lines to scroll
+;  UP / DOWN — direction
+```
+Shifts a rectangular screen region up or down by N lines. Used for data-entry list
+views where new rows push old ones upward.
+
+**`size(str, 'a')` — visible string length (BKDCA.SRC L298):**
+```
+size(message[1], 'a')    ;returns number of printable chars (excluding trailing spaces)
+```
+`'a'` = active/visible length mode. Equivalent to `len(trim(str, 'R'))` but more efficient.
+
+**`val(str)` — string to numeric (inferred from DC context):**
+```
+rec.num = val(REC_STR)   ;convert string-representation of number to numeric type
+```
+Inverse of `str()`. Parses a numeric string into the target numeric type.
+
+**`ENT_LIST(ptr, count, default, mask)` — prompted list entry (BKDCA.SRC L608):**
+```
+OK = ENT_LIST(MSG_PTR, NUM.MSG, OK, ENT.MASK)
+;  MSG_PTR  — pointer to MESSAGE[] array
+;  NUM.MSG  — number of message lines
+;  OK       — default answer
+;  ENT.MASK — valid chars (e.g. "YN")
+;  returns  — entered character
+```
+Displays a multi-line message block (from MESSAGE[]) and prompts for a single-char entry.
+Higher-level wrapper around `msg + enter`. Defined in `#LIB windows` or `#LIB dclab`.
+
+**`msg_list` — display message list (BKDCA.SRC L597):**
+```
+msg_list msg_ptr, num.msg    ;display NUM.MSG lines from MESSAGE[] array and wait
+```
+Companion to `ENT_LIST` — display-only, no entry. Defined in `#LIB windows`.
+
 ---
 
 ### EvoERP Module Code Confirmations (Pass 104)
