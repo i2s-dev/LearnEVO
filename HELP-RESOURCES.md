@@ -15940,9 +15940,30 @@ and as part of scheduled maintenance. Three backup scopes available.
 - `ISTS.CFG.DCCOMP` — DC component config key used during backup scope selection
 - `HAVEFILES` — flag: at least one file was found to include in the archive
 
-**Confidence: 72/100** — EvoERPbackup.RWN DB fingerprint + named_vars confirmed; GS_BACKUP
-suggests remote/cloud storage option not previously documented; form DFM confirmed; restore
-steps are general Btrieve/Pervasive procedure. (Pass286 2026-06-25)
+**EvoERPbackup.DFM UI (Pass 295 — 2026-06-25, live DFM read):**
+- `Grouptype` = "Backup Type" group with 3 radio buttons:
+  - `TASRadioButton1` = **Full System** (all EvoERP files)
+  - `TASRadioButton2` = **Company Data** (selected company's .B files)
+  - `TASRadioButton3` = **Customized** (user-selected file patterns)
+- `companys:TTASDataGrid` = grid of company codes to include
+- `customfiles:TTASDataGrid` = file selection grid (Customized mode only)
+- `zipfiles:TTASComboEnter` = "Add file type (Wildcards allowed) from:" — file pattern entry
+- `zipname:TTASComboEnter` = "Name of Zip file to Create or Add to:" — output ZIP path
+- `zipping:TImage` = animated progress indicator during ZIP creation
+- `ZipMaster:TZipMaster` = **Delphi TZipMaster VCL component** — creates ZIP archives locally
+- Buttons: Go, Schedule (recurring), Exit, Save
+
+**EVOERP-BACKUP.JAR — Cloud backup uploader (Pass 295 — 2026-06-25, JAR analysis):**
+- Main-Class: `com.evoerp.backup.Backup` (Maven, JDK 21)
+- Uploads the local ZIP to **istechsupport.com** cloud backup service via 3-step API:
+  1. **START:** `POST https://login.istechsupport.com/api/v1/evo/backups/archives/start` → returns `uploadId`
+  2. **PART:** `POST https://login.istechsupport.com/api/v1/evo/backups/archives/part` — chunked upload with `PART_SIZE` chunks; each part sends `{"size": N}` + binary data + `partSha256` (SHA-256 hash of the chunk)
+  3. **COMPLETE:** `POST https://login.istechsupport.com/api/v1/evo/backups/archives/complete` → sends `{"uploadId": "...", "sha256": "..."}` (full archive SHA-256 for integrity verification)
+- Authentication: `authKey` via `authorization` header
+- Uses Apache HttpClient 5 + Jackson JSON parsing
+- `GS_BACKUP` TAS var = flag to trigger this JAR-based cloud upload after local ZIP creation
+
+**Confidence: 82/100** — EvoERPbackup.DFM fully decoded (UI components confirmed); EVOERP-BACKUP.JAR API endpoints and multi-part upload protocol confirmed from class bytecode; local backup uses TZipMaster; cloud backup uses istechsupport.com multi-part HTTP API with SHA-256 verification. Restore procedure for local backups is manual; cloud restore path not confirmed. (Pass295 2026-06-25)
 
 ---
 
