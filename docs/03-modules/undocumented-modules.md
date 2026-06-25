@@ -570,11 +570,23 @@ Programs marked `*` in the original combo items may be conditional or legacy.
 
 **BKGL.EXTRA field:** This 50-character field on the GL account record links GL accounts to other accounts or external identifiers. The T7EMGL program is the dedicated tool for maintaining this cross-reference.
 
-**Full DB fingerprint (from RWN Pass 115):** T7EMGL opens 33 tables including BKGLCOA, BKGLTRAN, BKAPVEND, BKARCUST, BKICMSTR, WORKORD, WOBOM, INVTXN, DBAFIFO, ISTRIGRS, ISREMIND, LOT, SERIAL, ISNCR — making EM the most privileged maintenance tool in EVO (can touch GL, AP/PO, WO/BOM, inventory transactions, FIFO cost layers, lot/serial records).
+**Full DB fingerprint (from RWN Pass 115):** T7EMGL opens 33+ tables including BKGLCOA, BKGLTRAN, BKAPVEND, BKARCUST, BKICMSTR, WORKORD, WOBOM, INVTXN, DBAFIFO, ISTRIGRS, ISREMIND, LOT, SERIAL, ISNCR, **EMERSNGL** — making EM the most privileged maintenance tool in EVO (can touch GL, AP/PO, WO/BOM, inventory transactions, FIFO cost layers, lot/serial records).
 
-**Primary tables:** BKGLCOA (GL chart of accounts — ACCT+GLDPT PK, 65 fields including EXTRA)
+**Pass 315 (2026-06-25) — binary string extraction from T7EMGL.RWN.dec:**
+- **Program title confirmed:** `"Emerson GL X-Ref"` — displays as "Emerson GL X-Ref" in the window title
+- **Filter is a FROM/THRU range:** `FROM.GLACCT` + `THRU.GLACCT` + `FROM.GLDPT` + `THRU.GLDPT` — not just single-account entry as previously thought
+- **BKGLCOA namespace confirmed at scale:** BKGL.KEY / BKGL.ACCT / BKGL.GLDPT / BKGL.ACCTD / BKGL.TYPE / BKGL.CR.DR / BKGL.NON.CASH / BKGL.CURRENT / BKGL.BUDGET / BKGL.1YPAST / BKGL.2YPAST / BKGL.EXTRA / BKGL.1YPAST.YE / BKGL.2YPAST.YE / BKGL.ETBCOMBOVAL (14 confirmed)
+- **EMERSNGL accessed directly** (the 65-field single-company external COA table — see DDF tier2-tables.md). T7EMGL maps BKGLCOA ↔ EMERSNGL.
+- **GLCOA.H** — handle variable for BKGLCOA cursor/position
+- **TEMP.GL1 / TEMP.GL2** — working GL account pair during cross-reference operation
+- **Source libraries:** EVO.LIB, DBA.LIB, ISTECH.LIB, EVOIM.LIB, LISTG60.LIB
+- Standard IS.* multi-currency + ISTS.CFG.* vars present (all modules include these via EVO.LIB)
 
-**Confidence: 78/100** — T7EMGL.DFM read from network share; BKGL.ACCT/GLDPT/EXTRA field bindings confirmed; full DB fingerprint confirmed from RWN analysis.
+**Confirmed purpose:** T7EMGL is a GL-to-GL account cross-reference editor. The `BKGL.EXTRA` field maps each EvoERP GL account to a corresponding account code in EMERSNGL (an external or legacy GL chart). This is used for intercompany reporting or GL export to a parent company's GL system. The "Emerson" in the title likely refers to a specific customer/parent-company integration (possibly Emerson Electric — a legacy reference in i2 Systems' customer base).
+
+**Primary tables:** BKGLCOA (GL chart of accounts — ACCT+GLDPT PK, 65 fields including EXTRA), EMERSNGL (external COA, 65f)
+
+**Confidence: 85/100** — T7EMGL.DFM read from network share; BKGL.ACCT/GLDPT/EXTRA field bindings confirmed; full DB fingerprint confirmed; Pass 315 binary string extraction confirmed EMERSNGL access, program title, FROM/THRU range filter, full BKGLCOA namespace.
 
 ---
 
