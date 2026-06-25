@@ -2778,6 +2778,16 @@ The EvoERP Java integration layer bridges TAS Pro 7 programs and **EvoPVT.jar** 
 - Bundled resources (`com/evoerp/res/`): `EvoJuggle.gif` (loading animation), `icon.png` (app icon)
 - Message key pattern: `evo3.<subsystem>.<key>` (e.g., `evo3.mail.attach_error`)
 
+**T7JAVASET.DFM — Java server settings form (Pass 297 — 2026-06-25):**
+- 4 entry fields confirmed: `Host` (server hostname), `port` (TCP port), `name` (database/schema name), `TREEDEST` (destination tree path for Java data export — new field)
+- T7JAVASET.RWN additional known vars: SERVER_PATH, UNC_PATH, NEWDB, COMPANY, LOC_* (file registration)
+
+**T7JAVA.DFM — Java Response output monitor (Pass 297 — 2026-06-25):**
+- Caption: `'Java Response'`
+- Components: `TImage` (1.4MB — icon/animation resource), `TRtnTimer`, `TShellExe`
+- No entry fields — display-only output monitor window
+- Shown when EvoPVT.jar Java tasks are executing; displays Java process status/results back to TAS user
+
 **Confidence: 68/100** — ISJAVA field names confirmed (UID/PARAM/DATE); 22 calling programs cataloged; T7AUTOFX FX-daemon purpose confirmed from named vars; ISMCF currency fields confirmed. SMTP class structure fully documented. EvoPVT.jar ISJAVA task command IDs not decoded.
 
 ---

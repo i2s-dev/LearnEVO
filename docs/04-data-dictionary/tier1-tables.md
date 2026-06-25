@@ -2839,3 +2839,44 @@ Older-generation user record. Contains user code, password, security level, and 
 *Document updated: 2026-06-19 (Pass 132)*
 *Source: `samples/ddf/schema.md` (lines 10032–10633)*
 *Confidence: 82/100 — All schemas confirmed from DDF; BKSYLOG security model interpretation (BKUMSRTY templates → BKSYLOG per-user grants) inferred from field names and security architecture; individual OK_N slot assignments (which GL operation maps to OKGL_1, etc.) unknown without RWN analysis.*
+
+---
+
+## ISJAVA — Java Task Queue (Virtual Table — NOT in DDF)
+
+**Source:** Pass 297 (2026-06-25). Schema derived from Java bytecode decompilation of EvoPVT.jar and TAS named_var analysis.
+
+**⚠️ Virtual table — NOT registered in Pervasive/Btrieve DDF.** This table exists only as a TAS Pro 7 runtime data structure used to bridge TAS programs and EvoPVT.jar. It does not appear in FILEDICT, FILEKNUM, or any Pervasive DDF table.
+
+**Purpose:** Shared task queue between TAS Pro 7 programs (writers) and EvoPVT.jar Java service (reader/processor). TAS programs push work items by writing records; EvoPVT.jar polls, processes, and removes them.
+
+**Schema (from Java decompilation — C: 75/100):**
+
+| # | Field | Type | Description |
+|---|-------|------|-------------|
+| 1 | IS_JAVA_UID | String (PK) | Unique task identifier |
+| 2 | IS_JAVA_PARAM | String | Task parameters — command name + arguments passed to Java |
+| 3 | IS_JAVA_DATE | Date | Queue date — when the task was enqueued |
+
+**TAS handle variable:** `JAVA.H`
+
+**Programs that open ISJAVA (22 confirmed from rwn_symbols.json):**
+- EvoERPmenu.RWN — main menu monitors for Java-side notifications
+- T7AUTOFX.RWN — Auto FX daemon (Oanda currency rates); uses TIMER.CALL for periodic queuing
+- T7SOA.RWN + 11 other T7SO*.RWN — Sales Order programs (email/document dispatch)
+- T7MRA/B/C/E.RWN — MRP programs (post-run notifications)
+- T7MDefaults.RWN, T7Memo2Alpha.RWN, T7MHOPE.RWN, T7MLC.RWN — miscellaneous
+
+**Workflow:**
+1. TAS program writes record: IS_JAVA_UID (generated) + IS_JAVA_PARAM (command string) + IS_JAVA_DATE
+2. EvoPVT.jar polls ISJAVA → reads record → dispatches to appropriate Java handler class
+3. Java processes task (SMTP send, FX rate fetch, SQL bridge, etc.) → removes record from ISJAVA
+4. Result returned to TAS via T7JAVA.DFM response window or ISJAVA field update
+
+**Related files:**
+- `T7JAVARUN.RWN` — Java program runner (shows wait screen while Java executes)
+- `T7JAVASET.RWN` — Java server configuration (HOST/PORT/NAME/TREEDEST)
+- `T7jsql.RWN` — SQL bridge program
+- `T7AUTOFX.RWN` — Auto FX rate daemon
+
+*Confidence: 75/100 — UID/PARAM/DATE field names confirmed from Java bytecode; PK assumption (UID) is logical but not DDF-verified; PARAM content format (command name + args) inferred from Java handler class routing; exact field sizes unknown.*

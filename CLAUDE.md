@@ -5,6 +5,22 @@ If anything here is ambiguous, stop and ask. Do not guess.
 
 ---
 
+## 0a. programs/ — custom standalone software
+
+The `programs/` folder at the repo root is where all custom standalone programs
+are built and stored. These are tools that interface with or replace EvoERP
+functionality, built using data learned from the LearnEVO research.
+
+- Each program lives in its own subfolder: `programs/<program-name>/`
+- Programs use **DSN=DBA** (Pervasive SQL ODBC) for database access
+- Python + tkinter + reportlab is the default stack unless another is chosen
+- `requirements.txt` must be kept current in each program folder
+- Programs must **never write to** `C:\ISTS\` or `\\i2s109-solidcrm\` (read-only rule from §1 applies)
+- Current programs:
+  - `wo-schedule/` — Print Work Order Schedule (mirrors EVO WO-L-B / T7WOLB.DFM + T6WOLB2.RTM)
+
+---
+
 ## 0. BROKEN.md — mandatory first read every session
 
 **ALWAYS read `BROKEN.md` at the repo root before doing anything in this workspace.**
