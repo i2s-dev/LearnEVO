@@ -321,9 +321,73 @@ Period-end close (GL-P/GL-O cycle):
 
 ---
 
+## Programs (22 total) — Pass 259 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` — all T7GL* entries.
+
+| Program | Procs | Lib | Menu | Role |
+|---------|-------|-----|------|------|
+| T7GLA.RWN | 69 | LISTG60.LIB | GL-A | COA editor + budget setup; opens BKGLCOA+ISGLCOA+ISGLNBGT; BKGL.NO.CASH/NON.CASH flags |
+| T7GLB.RWN | 215 | LISTG60.LIB | GL-B | Main journal entry (GJ/CR/CD/TT/YE types); BKGLGJRN+BKGLGJLN+BKGLCHK+ISBANKS+ISJOB |
+| T7GLC.RWN | 129 | LISTG60.LIB | GL-C | Transaction inquiry/report: BKGLTRAN browser; BKGL.TRN.* namespace |
+| T7GLD.RWN | 132 | EVO.LIB | GL-D | Print journals / account detail: BKGLTRAN+BKAPDESC |
+| T7GLE.RWN | 191 | LISTG60.LIB | GL-E | Account balance inquiry: ISGLCOA+ISGLDATE period-based view; BKGL.TRN.* |
+| T7GLE2.RWN | 156 | LISTG60.LIB | GL-E | Account inquiry v2: adds BKARINVL access (AR-linked GL entry view) |
+| T7GLESPEED.RWN | 164 | LISTG60.LIB | GL-E | Speed entry variant: TASCOLOR = color-coded fast GL entry |
+| T7GLF.RWN | 189 | EVO.LIB | GL-F | Financial statements: BKGLSTMT+ISGLNBGT; BKGL.STB.* (Balance Sheet) + BKGL.STC.* (Income Stmt) vars |
+| T7GLG.RWN | 99 | LISTG60.LIB | GL-G | Print GL code/description list: BKAPDESC+LANGDICT (descriptive COA print) |
+| T7GLH.RWN | 99 | LISTG60.LIB | GL-H | Print chart of accounts: ISGLNBGT in DB (budget detail included) |
+| T7GLI.RWN | 112 | LISTG60.LIB | GL-I | Print check register: BKGL.CHK.* vars; BKGLCHK+ISBANKS+ISBSF |
+| T7GLJ.RWN | 171 | ISTECH.LIB | GL-J | Bank reconciliation: BKGL.CHK.* + ISBANKS+BKGLCHK+MKTRACK+ISACCESS |
+| T7GLK.RWN | 102 | LISTG60.LIB | GL-K | Transfer bank funds: BKGL.CHK.* + ISMCF+ISMCR+ISBSF (multi-currency bank transfer) |
+| T7GLL.RWN | 166 | LISTG60.LIB | — | AP check void/GL reconcile: BKGLCHK+ISBANKS+BKAPCHKF+BKAPINVL+BKAPINVT |
+| T7GLN.RWN | 182 | LISTG60.LIB | GL-N | Custom statement layout: BKGLFSTL statement line definitions |
+| T7GLO.RWN | 165 | EVO.LIB | GL-O | Post GL batches: BKGLTRAN+ISGLDATE+ISGLCOA+ISBSF+ISBANKS+ISMCF; BKGL.TRN.* + NON.CASH |
+| T7GLOOB.RWN | 107 | EVO.LIB | GL-O-OB | Out-of-balance finder: ISACCESS access control; identifies debit≠credit batches |
+| T7GLP.RWN | 87 | ISTECH.LIB | GL-P | Period-end batch edit: ISGLDATE; BKGL.TRN.TPE.TX (period-end tax type) |
+| T7GLQ.RWN | 104 | ISTECH.LIB | GL-Q | Reverse batch posting: both BKGL.GJ.* + BKGL.CHK.* + BKGLGJRN+BKGLGJLN+BKGLCHK |
+| T7GLS.RWN | 78 | EVO.LIB | GL-S | Recurring journal notes: BKGL.GJ.* vars + BKGLGJRN+ISNOTES |
+| T7GLT.RWN | 120 | T7DBA.LIB | — | Check/transaction print: BKGLCHK+ISBANKS (print library) |
+| T7GLARCH.RWN | 77 | EVO.LIB | — | Archive GL transactions: BKGLTRAN→BKGLATRN; ISGLDATE period gate; GL.REC var |
+
+### Key BKGL.* Variable Namespaces (from T7GLB rwn_symbols.json)
+
+**BKGL.GJ.*** — GJ batch header fields (11 vars):
+`CHKACT / CVCODE / EXTRA / INVCHKN / JOB / NUMLNES / POSTED / TRANSDT / TRANSNM / TYPE / TYPEN`
+
+**BKGL.GJL.*** — GJ batch line fields (9 vars):
+`ACCTNM / AMOUNT / DC / DESC / EXTRA / GLDPT / JOB / LINE / TRANSN`
+
+**BKGL.TRN.*** — GL transaction fields (17 vars):
+`AMT / BATCH / CODE / DATE / DC / DESC / ENTDTE / EXTRA / GLACCT / GLDPT / INVC / KEY / PART / PERIOD / POST / TPE.TX / TRXN / TYPE`
+(TPE.TX = period-end tax transaction type — T7GLP only)
+
+**BKGL.CHK.*** — Check register fields (11 vars):
+`AMT / CHKACT / CUST / DATE / DATER / EXTRA / FLAG / KEY / NAME / NUM / TYPE / VEND`
+
+**BKGL.STB.*** + **BKGL.STC.*** — Financial statement balance groups (T7GLF):
+- STB = Statement B (Balance Sheet): GLA (assets) / GLL (liabilities) / GLO (other) each with F/MT/T (from/month-total/total) periods + TTLS
+- STC = Statement C (Income Statement): same structure
+
+### Additional IS-Prefixed Tables (discovered via T7GL* DB lists)
+
+| Table | Appears In | Role |
+|-------|-----------|------|
+| ISGLCOA | T7GLA, T7GLE, T7GLO | IS version of GL Chart of Accounts (company-level COA override?) |
+| ISGLDATE | T7GLE, T7GLO, T7GLP, T7GLARCH | GL period/date control: open/close state per fiscal period |
+| ISGLNBGT | T7GLA, T7GLF, T7GLH | IS GL New Budget — budget planning table (separate from BKGLCOA.BUDGET_N) |
+| ISBSF | T7GLI, T7GLK, T7GLO | Bank Statement Format — bank account configuration for reconciliation |
+| ISMCF | T7GLK, T7GLO, T7POA | Multi-Currency Framework master (exchange rates + symbols) |
+| ISJOB | T7GLB | Job costing table — GL entries can be tagged to a job number |
+
+These tables are NOT in the standard BKBM/BKGL DDF families but appear consistently in GL DB file lists. Schemas are not confirmed from DDF.
+
+---
+
 ## Notes & open questions
 
 - BKGLECOA / BKGLFCOA: Both have the same 65-field schema as BKGLCOA. One likely tracks the consolidated/entity company (EE); the other may be a financial-statement mapping layer. Not confirmed without RWN source.
 - BKGLCCOA (62f) — 3 fields fewer than BKGLCOA. The missing fields are unknown; possibly the two year-end balance fields and one other.
 - BKGLSTMT (104f): Large statement definition table — likely the custom financial statement layout used by GL-N. Schema not yet read.
 - BKGLFSTL (12f): Financial statement layout lines — BKFS_NAME + LINE_NUM + SGL_ACCT as key. Likely the row definitions for GL-F printed statements.
+- ISGLCOA / ISGLDATE / ISGLNBGT / ISBSF / ISMCF / ISJOB schemas: inferred from DB file list only; not in DDF.
