@@ -6093,6 +6093,12 @@ All variant tables below point to the same physical .B file via alternate Btriev
 | ISAPCHG | 32 | AP/PO change audit trail — PONUM+LINEID+PCODE+CDATE+USER+REVLVL+ALOC/BLOC+APRICE/BPRICE+... |
 | ISAPHCHG | 32 | AP change history — identical structure |
 
+**ISARCHG full field namespace** (confirmed from T7SOLINEHIST.DFM — Pass 297 2026-06-25):
+`CDATE` (change date), `BPRICE`/`APRICE` (price before/after), `BDISC`/`ADISC` (discount before/after), `BOOQTY`/`AOOQTY` (open order qty before/after), `BASD`/`AASD` (actual ship date before/after), `BESD`/`AESD` (estimated ship date before/after), `BCOMPR[1-2]`/`ACOMPR[1-2]` (commission rate 1&2 before/after), `BLOC`/`ALOC` (location before/after), `USER` (who changed). Also carries current line values: `line.prod.prce/disc/oqty/asd/esd/comm1/comm2[mcntr]`.
+
+**ISAPCHG full field namespace** (confirmed from T7POLINEHIST.DFM — Pass 297 2026-06-25):
+`CDATE`, `BPRICE`/`APRICE`, `BDISC`/`ADISC`, `BOOQTY`/`AOOQTY`, `BARD`/`AARD` (actual receipt date before/after), `BERD`/`AERD` (estimated receipt date before/after), `BGLA`/`AGLA` (GL account before/after), `BGLD`/`AGLD` (GL dept before/after), `BWOP`/`AWOP` (WO prefix before/after), `BWOS`/`AWOS` (WO suffix before/after), `BOPER`/`AOPER` (WO operation before/after), `USER`. Note: ISAPCHG is 32 fields vs ISARCHG 26 fields — the extra 6 are the GL acct/dept + WO op audit fields (PO lines can affect GL accounts and WO operations, SO lines cannot).
+
 ### AP/AR Extended Tables
 
 **ISAPEX** (33f) — AP vendor extended data (mirror of ISAREX for AR customers):
@@ -19750,3 +19756,75 @@ Log: `MKAHIST.*` (license event logging to marketing history table).
 **Confidence: 90/100** — T7RTMVALID fully var-extracted (Pass 233, 160 unique vars); all 12
 license flags and key vars documented; tax/currency handle pattern confirmed; license key
 verification algorithm remains in binary (not decompilable).
+
+---
+
+## IN-L — Inventory Utilities Report Suite (Pass 298 — 2026-06-25)
+
+19 DFM forms confirmed on network share (T7INLA–T7INLV; T7INLP and T7INLU do not exist).
+All forms reside in `\\i2s109-solidcrm\DBAMFG$\T7INL*.DFM`.
+
+### Per-Form Reference
+
+| Form | Caption | Purpose | Key Filters / Fields |
+|------|---------|---------|---------------------|
+| T7INLA | IN-L-A | **Item Cost Inquiry** — multi-level cost display | Item#; shows Material/Labor/Setup/Outside Proc/Fixed+Variable Overhead, Standard Cost, Rolled-up Costs, Avg Cost, Last Cost, Lot Size, Type-R completion date. Has &Cost Rollup button |
+| T7INLB | IN-L-B | **Generate/Delete Location Records** — create or remove BKIC_LOCM_* records in batch | Item from/thru, class from, item type [RFAMNLBTKO], WC setting [QYN]; also single-item mode; edits: Name, Addr1/2, City/State/Zip, Phone, FAX, Contact, Tax#, Loc Type, WC setting, order, MRP file |
+| T7INLC | IN-L-C | **Customer Cross-Reference Maintenance** — link item ↔ customer ↔ customer item# | Item (ITEM), Customer (BKIC_REF_CUSCOD), Customer Item# (BKIC_REF_DESC) |
+| T7INLD | IN-L-D | **Print Customer Cross-Reference** — print listing of customer ↔ item cross-refs | Customer from/thru, item from/thru, class/category from/thru; include extended item desc |
+| T7INLE | IN-L-E | **Standard/Last Cost Rollup** — updates rolled-up costs for item range | Item/class/category from/thru, active status [YNODEPSQR], last vs. avg cost [LA]; options: update rollup date, report-only mode, use last PO receipt for last cost. Only updates "R" type parts |
+| T7INLF | IN-L-H* | **Material Dimensions Maintenance** — raw-stock physical properties per item | Material Item#, Parent Item# (optional), Generic Item# (grouping); fields: Length(X)/Width(Y)/Thickness, Stock UM, Alloy, Qty, Density, Temper, Finish, Hardness, Tensile Strength, Elongation, Yield, Max Camber, Coating, Edge Condition, Shipping Condition, Coil Max OD, Size Min ID, Max Wt. *(Caption reads IN-L-H but file is T7INLF — likely a naming inconsistency)* |
+| T7INLG | IN-L-G | **Print Item Listing** — printed item master report | Item/class/category from/thru, active status [YNODEPSQR], item type [RFAMNLBTKO], generic item# from/thru; sort by |
+| T7INLH | IN-L-H | **Item Cost Maintenance (Edit)** — view and manually adjust item costs | Item#; shows Avg Cost / Last Cost / Std Cost / Book Value in CURRENT vs. REVISED columns; per-bucket FIFO/LIFO amounts; Receipt Date, Qty Remain, Current Cost, Revised Cost, New Cost |
+| T7INLI | IN-L-I | **Costing Method Change** — switch item costing method | CMLabel (costing method selector — likely FIFO/LIFO/AVG); simple single-selector form |
+| T7INLJ | IN-L-J | **Single-Item Inventory Transfer** — move UOH between locations/bins | Item#, From Location + Bin, To Location + Bin, Transfer Qty, Lot#, Reference (FROM + TO), Transfer Date; shows Current UOH / Bin UOH / New UOH; has Set as Default Bin option |
+| T7INLK | IN-L-K | **Inventory Discrepancy Report** — find data integrity problems | Item/class/category/type/location/GL account range; checkbox filters: Negative UOH, Avg≠Std Cost, Avg≠Last Cost, Avg×UOH≠Book Value, FIFO/LIFO 0-qty buckets, Avg Cost=0, Blank Bin Location, Std Cost=0; Single vs. Location All vs. Master mode; include segregated locations |
+| T7INLL | IN-L-L | **No-BOM / Inactive Parent Report** — find items with missing or inactive BOMs | Item/class/category/type from/thru, component active status [YNODEPSQR], "Inactive Parents, No BOM, or both" option |
+| T7INLM | IN-L-M | **Multi-Transfer Inventory (batch/CSV)** — batch or CSV-imported transfers | CSV fields: Item Code, From Loc, To Loc, Qty, From Bin, To Bin (optional), Lot#, Serial#; cross-company transfer with customer code + truck number; modes: Process, Save Batch, Tag, Reverse, Reprint; creates TO location records option |
+| T7INLN | IN-L-N | **Copy Item to Different Company** — duplicate item master across companies | From/To item#, Company Code, skip/replace flag; options: copy BOM / routings / BOM remarks / BOM notes / routing notes / drawing+revision level; also CSV import; destination company path editable |
+| T7INLO | GL-G* | **Inventory GL Reconciliation / Purge Utility** — GL transaction management | Transaction type checkboxes: A=Adjustments, I=Stock Issues to WIP, J=PO Receipts to WIP, P=PO Receipts to Stock, S=Shipments, W=WO Receipts to Stock, Q=QC Receipts, O=Outside Processing Receipts, C=PO Price Change, M=Make-From Issue, T=Transfers, R=Service/Repair, G=Scrap, B=Bins; date range, AS-OF date, item/class/category/type/active-status filters; options: Delete Transactions, Consider Open SO as Activity, Consider Alloc as Activity, Check All Locations, Stock Value at STD Cost, Clear Costs & Pricing [AQN], Change Items to New Class. *(Caption reads GL-G; file is T7INLO)* |
+| T7INLQ | IN-L-q | **ITP (Item Type Package) Maintenance** — maintains IS.ITP.DESC lookup | ITP Number (ENTERITP), Description; supports add/edit/delete/print |
+| T7INLR | (New Screen) | **Inter-Company Transfer Receipt** — receive inventory transfers between companies | Transfer Number to receive, Receipt Date; Transfer From/To Company, Transfer To Location; also Reprint and Reverse functions |
+| T7INLS | (New Screen) | **Simple Item Range Process** — bare utility form | Item from/thru + Process button; likely a targeted rebuild/recalculate for item range |
+| T7INLT | IN-L-T | **ABC Analysis / Cycle Count Setup** — assign cycle codes based on usage | Item/class/category from/thru, item type [RFAMNLTK], usage date from/thru, usage $ from/thru; Cycle Code |
+| T7INLV | (BASE Blank) | **Packaging Type Assignment** — link items to packaging types in batch | Item from/thru, Packaging Type (TASENTER1), class/category from/thru, item type [RFAMNLBTKO], active status [YNODEPSQR] |
+
+*T7INLP and T7INLU do not exist on the network share (skipped letters in the sequence).*
+
+### Inventory GL Transaction Type Codes (from T7INLO)
+
+These are the valid GL-side transaction type codes for inventory movements — confirmed from T7INLO (IN-L-O / GL-G) checkbox labels:
+
+| Code | Description |
+|------|-------------|
+| A | Adjustments |
+| I | Stock Issues to WIP |
+| J | Purchase Receipts to WIP |
+| P | Purchase Receipts to Stock |
+| S | Shipments |
+| W | WO Receipts to Stock |
+| Q | Receipts to QC |
+| O | Outside Processing Receipts |
+| C | PO Price Change |
+| M | Make From Component Issue |
+| T | Transfers |
+| R | Service and Repair |
+| G | Scrap |
+| B | Bins |
+
+### How to Use IN-L Forms
+
+- **Transfer inventory between locations:** IN-L-J (single item) or IN-L-M (batch/CSV)
+- **Inter-company transfer receipt:** IN-L-R (receive the shipment on the destination company)
+- **Cost rollup after BOM changes:** IN-L-E (cost rollup utility, item range, update rollup date option)
+- **Manually adjust item costs:** IN-L-H (edit current/revised/new costs per item)
+- **Find inventory data integrity problems:** IN-L-K (discrepancy report — negative UOH, zero costs, book value mismatch, etc.)
+- **Print item master listing:** IN-L-G
+- **Maintain customer item cross-references (customer part numbers):** IN-L-C (maintenance), IN-L-D (print)
+- **ABC / cycle count categorization:** IN-L-T
+- **Maintain ITP (Item Type Package) codes:** IN-L-Q
+- **Copy item to another company:** IN-L-N
+- **Set up or remove warehouse location records:** IN-L-B
+- **Assign packaging types to items:** IN-L-V
+- **View raw material physical dimensions:** IN-L-F
+- **GL reconciliation and inventory transaction purge:** IN-L-O (GL-G)
