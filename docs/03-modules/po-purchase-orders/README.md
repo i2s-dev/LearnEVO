@@ -113,6 +113,104 @@ Full field details are in `../../../samples/ddf/schema.md` (see per-table headin
 | **BKPOX** | `BKPOX.B` | 19 | `BKPOX_COMPANY`, `BKPOX_INVCNUM`, `BKPOX_INVCDATE` |
 | **BKPOXH** | `BKPOXH.B` | 19 | `BKPOX_COMPANY`, `BKPOX_INVCNUM`, `BKPOX_INVCDATE` |
 
+## Programs (38 total) — Pass 267 (2026-06-25)
+
+Source: `samples/rwn_symbols.json` — all T7PO* entries.
+
+### Group 1 — Core PO entry
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POA.RWN` | 499 | LISTG60.LIB | **PO-A** main PO entry editor; BKAPPO+BKAPVEND+BKAPPOL+MTICMSTR; **BKAP.PO 798-var** (2nd largest namespace in system, after T7SOA) + **BKAP.POL 190-var** |
+
+### Group 2 — Receiving
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `t7poc.RWN` | 377 | LISTG60.LIB | **PO-C** PO receipt (standard); BKAPPOL+BKAPPO+BKAPDESC+MTICMSTR+BKYSMSTR; BKPR.EMP 105-var + BKAR.INV 86-var |
+| `T7POIL.RWN` | 110 | LISTG60.LIB | **PO-IL** receiving labor / employee sign-off; BKAPPO+BKPRMSTR+TASCOLOR; BKPR.EMP 103-var |
+
+### Group 3 — QC receiving
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POJC.RWN` | 323 | DBA.LIB | **PO-JC** QC inspection receipt (primary); BKQCMSTR+BKQCTRAN+BKAPPOL+BKAPPO+MTICMSTR; BKPR.EMP 105-var |
+| `T7POJA.RWN` | 176 | DBA.LIB | **PO-JA** QC receive alternate form; BKQCMSTR+BKAPPOL+BKICMSTR; BKPR.EMP 105-var + MTWO.WIP 71-var |
+| `T7POJB.RWN` | 143 | LISTG60.LIB | **PO-JB** QC browse / inquiry; BKQCMSTR+BKAPPO+BKAPPOL; BKPR.EMP 103-var |
+| `T7POIH.RWN` | 103 | LISTG60.LIB | **PO-IH** QC history view; BKQCMSTR+BKAPPOL+BKAPVEND+BKQCTRAN; BKAP.PO 57-var |
+| `T7POJD.RWN` | 99 | LISTG60.LIB | **PO-JD** QC detail report; BKQCTRAN+BKAPVEND+BKQCMSTR |
+
+### Group 4 — PO print
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POB.RWN` | 190 | DBA.LIB | **PO-B** print PO (with digital signature support); MTICMSTR+BKAPVEND+BKYSMSTR; BKPR.EMP 105-var |
+| `T7POLP.RWN` | 90 | LISTG60.LIB | **PO-LP** PO labels / prep; BKSBVEND+TASCOLOR |
+| `T7POL.RWN` | 83 | LISTG60.LIB | **PO-L** PO item labels; BKSBVEND+BKAPVEND+BKICMSTR+ISICMSTR; MTIC.PROD 54-var |
+| `T7POLX.RWN` | 60 | LISTG60.LIB | **PO-LX** extended labels; BKSBVEND+BKAPVEND+BKICMSTR |
+
+### Group 5 — PO inquiry / browse
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POM.RWN` | 174 | LISTG60.LIB | **PO-M** PO management / MRP buy; BKAPVEND+BKICMSTR+MTICMSTR+ISNOTES; **BKIC.LOC 264-var** (high location awareness for ordered parts) |
+| `T7POIG.RWN` | 171 | LISTG60.LIB | **PO-IG** item/group inquiry; ISNTYPE+ISBUILD+BKAPVEND; BKAR.INV 86-var + MTWO.WIP 71-var |
+| `T7POID.RWN` | 127 | DBA.LIB | **PO-ID** PO inquiry detail; BKRFQ+MTICMSTR+BKICMSTR; BKIC.PROD 63-var + MTIC.PROD 54-var |
+| `T7POK.RWN` | 141 | LISTG60.LIB | **PO-K** PO type / status browser; MTICMSTR+BKSYMSTR+BKAPPO+BKAPPOL; BKAP.PO 57-var |
+| `T7POII.RWN` | 124 | LISTG60.LIB | **PO-II** PO item inquiry; ISAPCHG+MTICMSTR+BKAPPO+BKAPVEND; BKAP.PO 57-var |
+| `T7POH.RWN` | 122 | LISTG60.LIB | **PO-H** PO history / vendor price breaks; BKRFQ+BKAPDESC+BKICMSTR+BKAPVEND; BKAP.PO 57-var |
+| `T7POQ.RWN` | 106 | LISTG60.LIB | **PO-Q** PO quantity / backlog; BKAPPO+BKAPPOL+BKICLOC; BKAP.PO 57-var |
+| `T7POG.RWN` | 124 | LISTG60.LIB | **PO-G** PO grouping / summary; BKRFQ+BKAPPO+BKAPPOL; MTWO.WIP 71-var |
+
+### Group 6 — Special flows
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POENG.RWN` | 274 | LISTG60.LIB | **PO-ENG** engineering / kit PO entry; ISBUILD+BKAPPOL+BKAPPO+MTICMSTR; MTWO.WIP 71-var |
+| `T7POEA.RWN` | 184 | ISTECH.LIB | **PO-EA** EDI / AP electronic PO; BKYSMSTR+BKAPPO+BKAPPOL+BKICMSTR+BKAPDESC; BKPR.EMP 105-var |
+| `T7POS.RWN` | 104 | LISTG60.LIB | **PO-S** PO→SO direct shipment conversion; BKARCUST+ISTERMS+ISQSOA+BKARINV+BKARINVL; BKAR.INV 86-var — drop-ship PO creates SO invoice |
+| `T7POAIMPLINES.RWN` | 132 | LISTG60.LIB | **PO-AIMPLINES** PO line import; BKAPPO+BKICMSTR+BKAPPOL+BKICLOC; BKAP.PO 57-var |
+
+### Group 7 — RFQ / Estimating bridge
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POF.RWN` | 85 | LISTG60.LIB | **PO-F** forecast / RFQ; BKRFQ+BKARINVL+ISESTDTL+BKESTCFG; MTWO.WIP 71-var — RFQ bridges PO and Estimating modules |
+
+### Group 8 — CRM / utilities
+
+| Program | Procs | Lib | Role / key tables |
+|---------|------:|-----|-------------------|
+| `T7POP.RWN` | 53 | EVO.LIB | **PO-P** CRM vendor integration; BKAPVND2+BKCMVNDF+BKCMVNFC+BKCMVNDH — links PO vendor to CRM contact records |
+| `T7POSI.RWN` | 53 | EVO.LIB | **PO-SI** CRM/system index; BKCMACCC |
+| `T7POLA.RWN` | 47 | EVO.LIB | **PO-LA** PO label auto-print |
+| `t7poo.RWN` | 17 | NZLICE.LIB | NZL license stub — no business logic |
+
+### Notable namespace findings
+
+| Namespace | Count | Program | Meaning |
+|-----------|------:|---------|---------|
+| `BKAP.PO` | 798 | T7POA | PO header field accessor — 2nd largest namespace in system |
+| `BKAP.POL` | 190 | T7POA | PO line field accessor — confirms T7POA accesses every PO line field |
+| `BKIC.LOC` | 264 | T7POM | Location awareness for MRP buy recommendations |
+| `BKPR.EMP` | 105 | t7poc, T7POB, T7POJC | Receiving and printing require employee record (signer) |
+| `BKAR.INV` | 86 | t7poc, T7POJC, T7POS | PO receiving and drop-ship flow bridge to AR invoice |
+| `MTWO.WIP` | 71 | T7POIG, T7POJA, T7POF | WIP-aware PO processing (outside-process, kit assembly) |
+
+### New tables discovered in PO programs
+
+| Table | Appears In | Inferred Role |
+|-------|-----------|---------------|
+| `BKRFQ` | T7POID, T7POG, T7POH, T7POF, T7POIC | Request for Quote header (bridges Estimating→PO) |
+| `ISNTYPE` | T7POIG, T7WOLB | Note type codes — categories for notes attached to records |
+| `ISQSOA` | T7POS | Quick SO address — destination address for drop-ship POs |
+| `ISTERMS` | T7POS (+ T7AR*, T7AP*) | Payment terms master (discount days, net days, terms description) |
+| `ISAPCHG` | T7POII | AP change tracking — records changes to PO/invoice data |
+| `BKSBVEND` | T7POLP, T7POL, T7POLX | Sub-vendor / distributor master (supply chain tier 2) |
+| `BKCMVNDF` / `BKCMVNFC` / `BKCMVNDH` | T7POP | CRM vendor files — link PO vendor to CRM contact/call records |
+
+---
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*
