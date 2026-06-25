@@ -20067,3 +20067,51 @@ Caption: "New Screen". An **admin-only destructive utility** to bulk-erase maste
 - Erase Labor Files?
 
 Dynamic `eraselabel` text (likely a confirmation warning). Used during initial setup or demo data wipe. **Irreversible without a backup.**
+
+---
+
+## ES, SA, FA, MA, CAR — Module DFM Additions (Pass 301 — 2026-06-25)
+
+### ES — Estimating Module DFMs
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| T7EST (344KB) | ES-A | **Enter Estimates** — main estimate entry; 10 qty levels; material/labor/outside proc/overhead margins; total margin; order description |
+| T7ESB | ES-B | **Print Estimates** — customer/class/est#/job# range; print linked docs/notes/hidden notes/kit components; SO# range |
+| T7ESC | ES-C | **Print Quote Details** — quote# range; quantity levels 1–10 to print; summary only; 2nd description line |
+| T7ESD | ES-D | **Print Customer Quotes** — quote#/customer/class/expiry/status filters; price decimal precision; print consolidated quote |
+| T7ESE | ES-E | **Convert Estimates to WO/SO** — convert quote# to WO and/or SO; customer/PO#/location; WO start/finish dates; SO ship date; put Est# in customer PO field |
+| T7ESH | ES-H | **Enter Material Costs** — BKMATCST editor: part# (BKMC_CODE)/desc/cost/qty 1–5/last update/primary vendor/lead time/standard pack/specs |
+| T7ESI | (New Screen) | **Item/Date range utility** — item from/thru + date from/thru + process (likely cost update or expiry recalculation) |
+
+### SA — Sales Analysis Module DFMs
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| T7SAM (256KB) | SA-M | **Sales Analysis Report Configurator** — saves to BKSAREPT; fields: BKSA_NAME/BKSA_TITLE/BKSA_RTM; print format/sort/show top/base |
+| T7SAN (212KB) | SA-N | **Sales Analysis Report Configurator (variant)** — same structure as SA-M |
+| T7SAO | SA-O | **Top N Sales Report** — customer/salesperson/bill+ship state+territory/class/date range filters; current YTD vs LYR YTD comparison |
+| T7SAP | SA-P | **Product/Item Sales Report** — product class/category/item#/type/active status/invoice#/customer/ship date filters |
+| T7SAQ | Actual Margin Report | **Actual Margin Report** — ship date from/thru + WO finish date from/thru |
+
+### FA — Fixed Assets Module DFMs
+
+| Form | Caption | Purpose |
+|------|---------|---------|
+| T7FAA (79KB) | (New Screen) | **Asset Entry/Maintenance** — asset#, type, description, cost basis, residual value, life, method, asset account, accum dep account, dep exp account, date disposed |
+| T7FAB (73KB) | (New Screen) | **Depreciation Posting** — asset#, amount/percent, post date, net asset value, accum dep acct, dep exp acct, "Ready to Post" flag |
+| T7FAE (88KB) | FA-E | **Asset Import** — import from flat file (fixed/delimited): asset#/type/desc/desc2/cost basis/residual value |
+
+Key tables (confirmed via T7FAA/FAB var analysis Pass 178): `ISFXASST` (23f — asset master with IS.FXA.*), `ISFXATRN` (12f — asset transactions with IS.FXT.*), `BKAP.PURCH.*` (4 vars — AP purchase history for asset cost tracking).
+
+### MA — AR Cash Receipts / Deposits DFMs
+
+**T7MAPDEPO.DFM** (70KB) — **SO Deposit Entry**:
+Fields: SO#, Description, Qty, Amount, Deposit Amount, Item#, GL Account (with default account option), Deposit#, Customer, Amount Remaining.
+Purpose: records pre-payments and deposits on Sales Orders. GL Account can be left blank to use the default deposit GL account. Accessed via MA module (AR Cash Receipts → Deposit management).
+
+### CAR — Corrective Action Request 8D Form
+
+**T7CAR8D.DFM** (80KB) — **CAR 8D Action Items**:
+Fields: CAR#, Action#, Creation Date, Due Date, Status, Release flag, Team, Problem Description, Immediate Containment Action, Completed by, Completed on.
+Purpose: the 8D problem-solving methodology within the QC/CAR module. Each CAR has multiple 8D action items with ownership, due dates, and completion tracking. Part of the NCR/CAR corrective action workflow.
