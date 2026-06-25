@@ -2870,7 +2870,35 @@ Reporting and analysis of sales performance. Separate from standard AR invoicing
    match what the TAS program puts into the buffer (e.g., `BKAP_CHK_INVNUM`)
 5. Save and test
 
-**Confidence for modifying reports: 72/100** — RTM format confirmed; designer tool confirmed; data binding mechanism confirmed from AP source analysis. Full field list per report not yet extracted.
+**RTM config-based selection pattern (confirmed from T7GLF/N/H/G named_vars — Pass287 2026-06-25):**
+
+Programs that offer user-selectable RTM templates (e.g., GL Financial Statements, Custom Statements)
+use a common pattern:
+
+```
+CFG.RTM.NAME     = rtm_name_from_config_table   ;e.g. "T6GLFS1.RTM"
+CFG.RTM.FIELD    = field_tag_from_config         ;label/identifier
+CFG.RTM.DESC     = description_from_config       ;display name shown to user
+MAX.EVO.RTM      = N                             ;max configurable RTM slots
+RTM.NUMBER       = user_selection                ;which slot user picked
+HOLD.RTM.NAME    = RTM.NAME                      ;save selection
+RTM_NAME         = resolved_path                 ;FILELOC or RTMVLD resolved path
+RTMVLD_NAME      = validated_name                ;runtime library validation
+```
+
+Config tables storing RTM templates:
+- `BKGLSTMT` — GL financial statement definitions (T7GLF: Print Financial Statements)
+- `BKGLFSTL` — GL financial statement layouts (T7GLN: Print Custom Statements)
+- `ISGLNBGT` — GL normalized budget comparison data (T7GLF + T7GLH)
+- `FILELOC` — runtime RTM path resolver (opened by all GL report programs)
+
+T6 fallback names:
+- `T6.RTM.NAME` — TAS Pro 6 era RTM name (fallback when T7 template not configured)
+- `T6PC.RTM.NAME` — T6 percentage-column RTM name
+
+**Confidence for modifying reports: 80/100** — RTM format confirmed; designer tool confirmed;
+data binding mechanism confirmed; config-based RTM selection pipeline confirmed from named_vars
+of T7GLF/N/H/G. Full field list per report not yet extracted (requires live FILELOC data).
 
 ### Known Report Templates
 

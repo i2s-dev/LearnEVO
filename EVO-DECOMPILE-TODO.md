@@ -824,7 +824,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 - [x] ✅ Engine identified: Nevrona ReportBuilder (stand-alone: `RBDsgnr.exe`) — **C: 88/100**
 - [x] ✅ TPF0 binary format documented (magic, component tree, key classes) — **C: 80/100**
-- [x] ✅ TAS-to-report data pipeline: SETUP_REPORT_BUFF → OUTPUT_REPORT_DATA → EXEC_RB — **C: 72/100**
+- [x] ✅ TAS-to-report data pipeline: SETUP_REPORT_BUFF → OUTPUT_REPORT_DATA → EXEC_RB — **C: 72/100**; **Pass287 (2026-06-25): T7GLF/N/H/G named_vars confirm RTM selection pipeline**: `CFG.RTM.NAME`/`CFG.RTM.FIELD`/`CFG.RTM.DESC` = config-table fields storing available RTM templates; `MAX.EVO.RTM` = max RTM slots in config; `RTM.NUMBER` = user selection; `HOLD.RTM.NAME` = held selection; `RTM_NAME` = resolved filename; `RTMVLD_NAME` = runtime-library validated name; `T6.RTM.NAME`/`T6PC.RTM.NAME` = T6 era fallback RTM names; config tables: `BKGLSTMT` (GL statement definitions, T7GLF) / `BKGLFSTL` (GL financial statement layouts, T7GLN) / `ISGLNBGT` (GL normalized budget, T7GLF+H); FILELOC opened by all GL report programs = runtime RTM path resolver — **C: 82/100**
 - [x] ✅ **1305** RTM files inventoried (DBAMFG$); T6*=736/57%, BK*=150, T7*=19 — **C: 90/100**
 - [x] ✅ `rtm_callers.csv` cross-reference: 403 static .RUN callers; FILELOC+RTMVLD_ library=runtime selection (827 progs); ISRTMS=label routing (29f DDF) — **C: 82/100**
 - [x] ✅ PDF output path: `C:\ISTS\PDFS\` — **C: 75/100**
