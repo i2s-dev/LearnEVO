@@ -15746,7 +15746,7 @@ old data, keeping the live database fast. Run in the order shown — archive bef
      A=AR, S=SO, P=PO, J=JC, W=WO, I=Inventory, Q=QC, O=overhead,
      C=cost adj, M=MRP, T=transfer, R=return, G=GL
    - Consolidation: optionally consolidate to summary records
-   - Result: old BKISTXN rows moved to archive file
+   - Result: old INVTXN rows moved to archive file
 
 3. SM-JB — Work Order Archive (if month-end WO closure done)
    - Archive finished/cancelled WOs older than cut-off date
@@ -15779,7 +15779,7 @@ old data, keeping the live database fast. Run in the order shown — archive bef
 ```
 
 **Key tables affected:**
-- BKISTXN / archive equivalent — inventory transactions
+- INVTXN / archive equivalent — inventory transactions (BKISTXN does not exist)
 - WORKORD / WORKCHG — WO header and detail (archived to separate files)
 - BKAPPO / BKAPPOL — PO header/detail (archived)
 - BKQCRECV — QC receiver (archived or purged)
@@ -16072,12 +16072,12 @@ production batch.
 Step 1: PO Receipt (PO-E)
   → LOT record created (or existing lot updated)
   → BKICLOC.QTY incremented for this lot at this location
-  → BKISTXN row written (type R = Receipt, LOT field populated)
+  → INVTXN row written (MTIT.TYPE = 'P' = PO RECPT, MTIT.LOT populated)
 
 Step 2: WO Material Issue (DC module / WO-K-B)
   → Operator scans or enters lot number
   → BKICLOC.QTY decremented (lot consumed from location)
-  → BKISTXN row written (type M = Material Issue, LOT field)
+  → INVTXN row written (MTIT.TYPE = 'I' = WO ISSUE, MTIT.LOT field)
   → ISBINLOT updated if bin tracking active
 
 Step 3: WO Completion (WO-K-J — Enter WO Completions)
@@ -16089,25 +16089,23 @@ Step 4: SO Shipment (SO-C — Pick/Pack/Ship)
   → Lot number selected for the SO line
   → ISSOBOX.LOT populated for shipping scan
   → BKICLOC decremented from shipping location
-  → BKISTXN row written (type S = Shipment, LOT field)
+  → INVTXN row written (MTIT.TYPE = 'S' = SHIPMENT, MTIT.LOT field)
   → BKSOHLOT row written (SO history lot record)
 ```
 
 **Tracing a lot:**
-- Find all transactions for a lot: `SELECT * FROM BKISTXN WHERE BKIS_LOT_CODE = '?'`
+- Find all transactions for a lot: `SELECT * FROM INVTXN WHERE MTIT_LOT = '?'` (field confirmed from T7INC named_vars: MTIT.LOT)
 - Find current qty by location: `SELECT * FROM BKICLOC WHERE BKIC_LOC_LOT = '?'`
 - Find which SOs received this lot: `SELECT * FROM BKSOHLOT WHERE BKAR_TXN_LOT = '?'`
 
 **Serial tracking** follows the same lifecycle but one-to-one (each serial number = 1 unit).
-Serial numbers are tracked in the SERIAL table and BKISTXN.LOT field (shares the same column).
+Serial numbers are tracked in the SERIAL table and INVTXN.MTIT_LOT field (same lot/serial column, BKISTXN does not exist).
 
 **Lot-enabled items:** Set BKICMSTR/MTICMSTR field `MTIC_PROD_LOT = 'Y'` (lot tracking) or
 `MTIC_PROD_SER = 'Y'` (serial tracking). Once enabled, EvoERP requires a lot/serial on every
 transaction for that item.
 
-**Confidence: 68/100** — Table schemas confirmed from DDF; transaction type codes inferred from
-field naming conventions; exact workflow steps confirmed from module DB fingerprints (PO-E opens
-LOT, SO-C opens ISSOBOX+LOT, WO-K opens WORKORD+LOT). Per-step screen behavior blocked by RWN encryption.
+**Confidence: 78/100** — INVTXN type codes SRC-confirmed from BKLME.SRC (P=PO RECPT, I=WO ISSUE, S=SHIPMENT, W=WO RECPT, J=PO JOBRC, A=ADJUSTMT, Q=QC RECPT, O=OUT PROC, C=$ CHANGE); T7INC named_vars confirm MTIT.LOT field; BKISTXN corrected to INVTXN (0 programs open BKISTXN). DB fingerprints confirmed. Gap: exact per-step screen fields still blocked by RWN encryption. (Pass286 2026-06-25)
 
 ---
 
