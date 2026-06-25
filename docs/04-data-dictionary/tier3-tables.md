@@ -115,14 +115,19 @@ Record size: ~215 bytes, 26 fields
 | 187 | BKBM_EST_LINE | FLOAT | 8 | Estimating line cost |
 | 195 | BKBM_UID | STRING | 20 | Unique identifier |
 
-**BOM variant tables** (same structure):
-- `BKBMMSTR` — active production BOM (258 programs; BKBM.PROD.DUPOP confirmed accessed — Pass270 2026-06-25)
-- `BKBMAVAL` — alternate/validation BOM (**LEGACY: 0 programs access this table in T7 generation**)
-- `BKBMAMTR` — auto-calculated/master BOM (**LEGACY: 0 programs access this table in T7 generation**)
+**BOM variant tables — T7 active vs. DBA-era legacy (Pass271 2026-06-25):**
+- `BKBMMSTR` — active production BOM (**258 programs**; BKBM.PROD.DUPOP confirmed)
+- `BKBMAVAL` — alternate/validation BOM (**LEGACY: 0 T7 programs**)
+- `BKBMAMTR` — auto-calculated/master BOM (**LEGACY: 0 T7 programs**)
+- `BKBMEMTR` — estimated BOM (**LEGACY: 0 T7 programs**)
+- `BKBMSUMM` — BOM summary roll-up (**LEGACY: 0 T7 programs**)
+- `BKBMERMK` — engineering remarks (**LEGACY: 0 T7 programs**)
+- `BKBMCNFG` — BOM config (**LEGACY: 0 T7 programs**)
 
-**Satellite tables confirmed (Pass270 2026-06-25):**
-- `BKBMDIM` — cut-plan / material nesting dimensions (7 programs: T7SOA, T7SMJL, T7SOB, T7BMA); fields: COMP, EXTRA, KEY, LINE, MACH, PARENT, PART.X, PART.Y, REMN.X, REMN.Y, TRIM.X, TRIM.Y
-- `BKBMREMK` — BOM remark/notes (32 programs: T7SOA, T7SMJL, T7WOC, T7WOD); fields: COMP, EXTRA, KEY, LINE, PARENT, REMARK, UID
+**Satellite tables confirmed (Pass271 2026-06-25):**
+- `BKBMDIM` — cut-plan / material nesting dimensions (**7 programs**; fields: COMP, EXTRA, KEY, LINE, MACH, PARENT, PART.X, PART.Y, REMN.X, REMN.Y, TRIM.X, TRIM.Y)
+- `BKBMREMK` — BOM remark/notes (**32 programs**; fields: COMP, EXTRA, KEY, LINE, PARENT, REMARK, UID)
+- `BKBMNOTE` — BOM parent notes (**17 programs**; 16f, 15×64 text lines)
 
 ---
 
