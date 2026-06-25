@@ -21123,3 +21123,52 @@ Note: GF forms are customer-specific customizations embedded in the shared DBAMF
 | WO | Work Orders | WOA-WON, WOK* |
 | WO-PRIO | WO Priority Colors | WOPRIO |
 
+
+---
+
+## Pass 306 — LC (Lot Control) Complete Suite and TODO Corrections
+
+*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7LC*.DFM*
+
+### LC Module — Lot Control (Full Suite, T7LC*)
+
+The LC module tracks lot/batch numbers through the supply chain — from PO receipt to WO issue to shipping.
+
+| DFM | Caption | Key Fields | Purpose |
+|-----|---------|-----------|---------|
+| T7LCA.DFM | LC-A Edit Lot Numbers (58KB) | Lot#; On-Hand; Date Rcvd; WO#; Exp Date; Location; Cost; PO# | Edit/view existing lot records |
+| T7LCB.DFM | LC-B Assign Lot Control (38KB) | Product Description; Product Type; Item#; Lot Control? | Toggle lot tracking on/off per item |
+| T7LCC.DFM | LC-C Listing (50KB) | Item# From; Lot# From; Lot Exp Date From; Sort By | Lot listing report |
+| T7LCC2.DFM | LC-C Print Lot Availability (47KB) | Serial# From/Thru; Lot Exp Date From/Thru; Item# From/Thru | Lot availability by serial/expiry |
+| T7LCE.DFM | LC-E Listing (57KB) | Item# From; Item Class; Category; Item Type; Summary or Detail; Sub Sort by Lot/Exp Date; Exceptions Only | Lot listing by item type |
+| T7LCF.DFM | LC-F Detail (38KB) | Item#; Lot#; Summary/Details/All | Lot detail report (choose summary or full detail) |
+| T7LCG.DFM | LC-G Archive (49KB) | Archive or Unarchive [A/U]; Item#; Exp Date; Rcvd Date; Lot#; Include Zero UOH Only? | Archive expired or depleted lots |
+
+**Related forms:**
+- **T7LotSerial.DFM** ("Enter Lot/Serial Information") — transaction-time lot assignment popup (used during PO receipts, WO receipts, etc.)
+- **t7lottag.DFM** ("Evo Lot Tagging") — lot label printing (Label1/Label2/Label3 fields)
+
+**LC vs SC parallel structure:** The Lot Control (LC) and Serial Control (SC) modules are structurally parallel:
+
+| LC Form | SC Equivalent | Function |
+|---------|--------------|---------|
+| LC-A Edit Lot Numbers | SC-A Edit Serial Numbers | Manual edit of records |
+| LC-B Assign Lot Control | SC-B Assign Serial Control | Toggle tracking per item |
+| LC-C Listing | SC-C Listing | Range report |
+| LC-G Archive | SC-E Archive | Archive/unarchive |
+
+This confirms EvoERP has symmetric lot and serial tracking implementations with the same workflow in both branches.
+
+---
+
+### TODO Correction: LO and LC Module Status
+
+The EVO-DECOMPILE-TODO.md previously listed:
+- `LO — no T7 RWN/DFM files found (DBA-era legacy)`
+- `LM — no T7 RWN/DFM files found (DBA-era legacy)`
+
+**CORRECTION:**
+- **LC module** (Lot Control): 7 DFMs confirmed (T7LCA–T7LCG + T7LCC2) + 2 utility forms (T7LotSerial, t7lottag) + 7 RWN files
+- **LO module label** in the TODO likely referred to an incorrect module code — the Lot/Serial entry form is T7LotSerial.DFM (no T7LO prefix), and Lot Control uses the LC prefix
+- **LM module**: confirmed no T7LM* files — DBA-era legacy module, not implemented in TAS Pro 7
+
