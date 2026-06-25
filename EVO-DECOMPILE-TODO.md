@@ -47,9 +47,9 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 ## 1. SYSTEM ARCHITECTURE & RUNTIME
 
 ### 1.1 High-Level Architecture
-- [x] ✅ Three-tier model identified (Client thin install / Network share / tp7runtime.exe stateless) — **C: 78/100**
+- [x] ✅ Three-tier model identified (Client thin install / Network share / tp7runtime.exe stateless) — **C: 78/100**; **Pass310 (2026-06-25): architecture-overview + taspro7-ini-reference topic pages written; StartEvo.exe fully analyzed (C:88); network share layout fully documented** — **C: 88/100**
   - Confirmed: `C:\ISTS\` = thin client, `\\i2s109-solidcrm\DBAMFG$\` = program/data share
-  - Gap: exact IPC between client and share not fully traced; StartEvo.exe internals not decoded
+  - Gap: exact IPC between client and share not fully traced (UNC file access, no explicit RPC)
 - [x] ✅ Network share layout mapped (`DBAMFG$\`, `evo-ERP\`, `ISTS\`, `EVOReports\`, `2004.1\`) — **C: 85/100**
 - [x] ✅ Multi-company layout understood (per-company subdirs + `.B<code>` file suffixes) — **C: 82/100**
   - Known company codes: Default, 22, AB, AT, CA, Goldstar, I2, IT, UU, DefaultSQL, Testdata, DEV, Bak Up, Menu Backup, Recovered
@@ -59,9 +59,9 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ### 1.2 Boot Sequence
 - [x] ✅ Full boot chain traced: `EvoERP.lnk → StartEvo.exe → tp7runtime.exe → EvoERPmenu.rwn → EVOMENU_LOGIN → EVOMENU_SELCOMP → EvoERPmenu.RWN builds module tree → EVOMENU_RUNPRG dispatches to module` — **C: 90/100**
-- [x] ✅ `StartEvo.exe` role: checks runtime, reads `taspro7.ini`, spawns tp7runtime.exe — **C: 60/100**
-  - Gap: exact command-line arguments passed to tp7runtime.exe not confirmed
-- [x] ✅ `taspro7.ini` keys documented: `DataDictPath`, `DfltRunPrg`, `MultiUser`, `DefaultPath`, `Titlebar`, `HelpFileName` — **C: 80/100**
+- [x] ✅ `StartEvo.exe` role: checks runtime, reads `taspro7.ini`, spawns tp7runtime.exe — **C: 60/100**; **superseded by L79 (C:88) — StartEvo.exe fully analyzed as .NET assembly** — **C: 88/100** (see L79)
+  - Gap: exact command-line arguments passed to tp7runtime.exe (args inferred from .NET decompilation)
+- [x] ✅ `taspro7.ini` keys documented: `DataDictPath`, `DfltRunPrg`, `MultiUser`, `DefaultPath`, `Titlebar`, `HelpFileName` — **C: 80/100**; **Pass310 (2026-06-25): full key catalog published as `taspro7-ini-reference` topic in learnevo-help** — [Setup] DataDictPath/DfltRunPrg/Serial=670538/DefaultPath/Titlebar/HelpFileName/MultiUser/DFLTCOMPANYCODE; [TP5WIN] legacy font/color/box-draw; [TAS50] CP437 box-draw char codes; [Compiler Settings] Lib=C:\ISTECH; [FileManager] UseCodeBase=0=Btrieve — **C: 90/100**
 - [x] ✅ Bootstrap RWNs identified: `suwin6.dcy`, `suwin7.dcy`, `suwin6t.rwn`, `suwin7t.rwn` — **C: 72/100**
   - **suwin6t.rwn confirmed** (Pass 242 2026-06-24): 95,262 bytes, 729 instructions, pool at 0x1D90
   - **Purpose = screen-lock / session authentication**: pool strings confirm: "NZISSHOULDLOCKTHESCREENCOMPLETELY" (lock flag), "SUWIN6" (program name), "WHOAMI.*" (reads identity table), "WHOAMI.DBA" (specific field), "EVOSERVICE" (service name comparison), "*.*" (wildcard), "F" (boolean false constant)
@@ -114,7 +114,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - `HELPSCRN.SRC` = universal F1 help template included in all programs; `isdef.SRC` = IS module definitions
 - [x] ✅ Variable declaration syntax: `define <name> type A/i/n/d/t size <N> [array <N>] [LOCAL]` — **C: 92/100**
   - `LOCAL` modifier: variable scoped to current `func` block (only valid inside function body)
-- [x] ✅ Database I/O keywords: `open`, `find F srch`, `clr`, `del`, `dall` — **C: 80/100**
+- [x] ✅ Database I/O keywords: `open`, `find F srch`, `clr`, `del`, `dall` — **C: 80/100**; **Pass310 (2026-06-25): src-deep-dive topic page written — full keyword reference table with SRC-confirmed syntax** — open/find/findv/clr/dal/del/dall all SRC-confirmed with composite key and multi-value examples; `src-deep-dive` topic now in learnevo-help — **C: 90/100**
 - [x] ✅ UI/form keywords: `mount`, `prg_hdr`, `enter`, `xtrap`, `fnc_list`, `menu` — **C: 75/100**; **Pass276**: full syntax SRC-confirmed for all 6 (see §3.2/3.3): mount/enter/trap/xtrap/fnc_list/menu all documented with complete parameter sets from BKAWLB+BKDCA+BKLME+BKMRF+BKROA — **C: 88/100**; **Pass285 (2026-06-25): BKDCA.SRC confirms new UI keywords**: `findv M fnum HANDLE key FIELD val VALUE [nlock]` = variable-handle find (used when table opened with `openv` variable-name open); multi-value composite key: `findv m fnum dctlab key lab.key val EMP,WOPRE,WOSUF,OPER,"O"`; `time FIELD get` = store current HH:MM:SS into type-T field; `novldmsg` = suppress next validation message; `cch()`/`ccf()` = begin/end highlight color bracket; `ccr()` = color reset; `clrlne at row,col nchr N` = erase N chars at screen position; `scroll at row,col len H wdt W num N UP/DOWN` = scroll rectangular region; `ENT_LIST(ptr,count,default,mask)` = display message array + single-char entry; `msg_list msg_ptr,num` = display-only message list — **C: 91/100**
 - [x] ✅ 7 plaintext `.SRC` files analyzed: BKAWLB, BKDCA, BKLME, BKMRF, BKROA, Bkaph, Bkapha — **C: 90/100**
 - [x] ✅ `.a.` / `.o.` / `.n.` / `$` operators fully documented with behavior — **C: 95/100**
