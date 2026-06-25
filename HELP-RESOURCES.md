@@ -15609,46 +15609,118 @@ file name prompt with local/server toggle.
 **When to use:** Recording adjusting entries, accruals, reclassifications, or any
 transaction that must go directly to the General Ledger without an AR/AP/PR sub-ledger.
 
-**Module path:** GL → GL-A (Journal Entry) or GL-B (Recurring Journal Entry)
+**Module path:** GL → GL-B (T7GLB.RWN, "Enter Post General Journal Trxns")
+
+> **Correction (Pass 286 2026-06-25):** Earlier versions said GL-A. GL-A = Edit
+> Budgets / View COA (T7GLA.RWN). GL-B = journal entry. Confirmed from master_index.csv
+> (`GL-B,GL,Add new GJ Transaction,BKGLB`) and T7GLB.RWN DB fingerprint.
+
+**Table flow:**
+
+```
+Entry         → BKGLGJRN (journal header) + BKGLGJLN (journal lines)
+Post (GL-B)  → BKGLTRAN (posted transaction rows, one per debit/credit line)
+Archive      → T7GLARCH.RWN purges BKGLTRAN to history
+```
+
+**BKGLGJRN fields (journal header — from T7GLB.RWN named_vars BKGL.GJ.*):**
+
+| Field | Meaning |
+|-------|---------|
+| TRANSDT | Transaction date |
+| TRANSNM | Transaction/journal number |
+| TYPE | Journal type code |
+| TYPEN | Type name |
+| POSTED | Posted flag (Y/N) |
+| CVCODE | Currency conversion code |
+| INVCHKN | Invoice or check number |
+| NUMLNES | Number of lines in journal |
+| CHKACT | Check account |
+| JOB | Job code (ISJOB) |
+| EXTRA | Memo / extra |
+
+**BKGLGJLN fields (journal lines — from T7GLB.RWN named_vars BKGL.GJL.*):**
+
+| Field | Meaning |
+|-------|---------|
+| TRANSN | Transaction number (FK to BKGLGJRN) |
+| ACCTNM | GL account code/name |
+| GLDPT | Department code |
+| DESC | Line description |
+| DC | D=Debit, C=Credit |
+| AMOUNT | Dollar amount |
+| JOB | Job code |
+| LINE | Line sequence number |
+| EXTRA | Memo / extra |
+
+**BKGLTRAN fields (posted — from T7GLARCH.RWN named_vars BKGL.TRN.*):**
+
+| Field | Meaning |
+|-------|---------|
+| GLACCT | GL account |
+| KEY | Record key |
+| GLDPT | Department |
+| DATE | Transaction date |
+| CODE | Transaction/source code |
+| INVC | Invoice number |
+| DESC | Description |
+| DC | D=Debit, C=Credit |
+| AMT | Amount |
+| TYPE | Transaction type |
+| ENTDTE | Entry date |
+| EXTRA | Extra/memo |
+| TRXN | Transaction number |
+| POST | Posted flag |
+| PERIOD | Fiscal period |
 
 **Steps:**
 
 ```
-1. GL-A (Journal Entry)
-   - Enter: Journal date (BKGLTRAN.JRNLDATE)
-   - Enter: Journal description (BKGLTRAN.DESC)
+1. GL-B (T7GLB.RWN) — Enter Journal
+   - Enter: Transaction date (BKGL.GJ.TRANSDT)
+   - Enter: Journal type (BKGL.GJ.TYPE)
    - For each line:
-     a. GL account number → BKGLCOA.GLACCT (must exist in chart of accounts)
-     b. Debit or credit amount
-     c. Reference / memo for this line
-   - Total debits must equal total credits (entry is balanced)
-   - Post → creates BKGLTRAN rows, updates BKGLCOA period balances
+     a. GL account code → BKGLCOA lookup
+     b. Department (BKGL.GJL.GLDPT) — optional
+     c. D or C (Debit/Credit) → BKGL.GJL.DC
+     d. Amount → BKGL.GJL.AMOUNT
+     e. Description → BKGL.GJL.DESC
+   - Total debits must equal total credits (balanced)
+   - Post: T7GLB writes:
+     → BKGLGJRN row (journal header, POSTED='N' initially)
+     → BKGLGJLN rows (one per line)
+     → On post: BKGLTRAN rows created, BKGLGJRN.POSTED='Y'
+   - Optional: link to ISJOB (job costing), ISAPPROJ (project), ISDEPT
 
-2. If entry is recurring (e.g., monthly accrual):
-   - Use GL-B (Recurring Journal Entry) instead
-   - Set: frequency, start/end date, template
-   - Run GL-B monthly to generate the actual transaction
-
-3. Verify posting:
-   - GL-O-A (GL Trial Balance) — confirm accounts changed as expected
-   - GL-O-B (GL Detail Listing) — shows individual BKGLTRAN rows
+2. Verify posting:
+   - GL-C (T7GLC.RWN) — Print GL Transactions proof report
+   - GL-O-A (GL Trial Balance) — confirm account balances
 ```
 
-**Key tables:**
-- BKGLTRAN — journal transaction rows (one per debit/credit line)
-- BKGLCOA — chart of accounts (GL account master + period balances)
-- BKGLPER — period status (open/closed per fiscal period)
+**Key tables (T7GLB.RWN DB fingerprint — confirmed, 33 tables total):**
+- `BKGLGJRN` — journal header (unposted + posted)
+- `BKGLGJLN` — journal lines (debit/credit detail)
+- `BKGLTRAN` — posted transaction log (permanent record)
+- `BKGLCOA` — chart of accounts (account validation + balance update)
+- `ISGLDATE` — fiscal period dates (validate period open/closed)
+- `ISBANKS` — bank accounts (for bank-related journal entries)
+- `ISAPPROJ` — project codes (for project cost allocation)
+- `ISJOB` — job codes (job-costing link)
+- `ISDEPT` — department codes
+- `BKGLCHK` — check register (for check-creation journals)
 
-**Pre-requisite:** The fiscal period must be open in BKGLPER. If the period is closed,
-use GL-G (Reopen Period) before entry. Re-close after posting.
+**Pre-requisite:** The fiscal period must be open in `ISGLDATE`. Check `BKGL.TRN.PERIOD`
+to confirm the entry will land in the correct period.
 
 **Common errors:**
-- "Account not found" — account code not in BKGLCOA; add via GL-C (COA maintenance)
-- "Period closed" — open the period via GL-G first
+- "Account not found" — code not in BKGLCOA; add via GL-A (COA/budget maintenance)
+- "Period closed" — period locked in ISGLDATE; requires AM to reopen
 - Entry not balanced — system will not allow posting; check debit/credit totals
 
-**Confidence: 76/100** — Module path confirmed from menu codes; table structure verified;
-exact field-by-field behavior of GL-A form inferred from DFM (T7GLA*) — RWN logic blocked.
+**Confidence: 85/100** — T7GLB.RWN DB fingerprint confirmed (33 tables); BKGLGJRN/BKGLGJLN
+and BKGLTRAN field sets confirmed from named_vars; module code GL-B confirmed from
+master_index.csv. Remaining gap: exact post-trigger logic and period validation
+behavior requires decrypted T7GLB.RWN bytecode.
 
 ---
 

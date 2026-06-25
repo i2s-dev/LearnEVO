@@ -979,7 +979,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 - [x] ✅ **Cash receipts** — AR-C → BKARTXN+BKARINVT+BKARCUST+BKGLTRAN — see Recipe 7 — **C: 75/100**
 - [x] ✅ **Purchase order → AP voucher → check** — see Recipe 3 — **C: 75/100**
 - [x] ✅ **Month-end close** — AR-H → AP → IN → AM period lock — see Recipe 5 — **C: 72/100**
-- [x] ✅ **GL journal entry** — T7GLB enter → T7GLC report → T7GLP period-end → T7GLARCH archive — see Recipe 10 — **C: 70/100**
+- [x] ✅ **GL journal entry** — GL-B (T7GLB.RWN) enter → T7GLC report → T7GLP period-end → T7GLARCH archive — see Recipe 10 — **C: 70/100**; **Pass286 (2026-06-25): GL-B confirmed from master_index (not GL-A which = Edit Budgets); T7GLB.RWN DB fingerprint: BKGLGJRN+BKGLGJLN+BKGLTRAN+BKGLCOA+ISGLDATE+ISBANKS+ISAPPROJ+ISJOB+ISDEPT+BKGLCHK (33 tables total); BKGL.GJ.* namespace: TRANSDT/TRANSNM/TYPE/TYPEN/POSTED/CVCODE/INVCHKN/NUMLNES/CHKACT/JOB/EXTRA; BKGL.GJL.* namespace: TRANSN/ACCTNM/GLDPT/DESC/DC/AMOUNT/JOB/LINE/EXTRA; BKGL.TRN.* namespace (BKGLTRAN posted fields): GLACCT/KEY/GLDPT/DATE/CODE/INVC/DESC/DC/AMT/TYPE/ENTDTE/EXTRA/TRXN/POST/PERIOD; Recipe 10 fully rewritten — **C: 85/100**
 - [x] ✅ **Period-end archiving** — T7GLP → T7GLARCH → purge — see Recipe 11 — **C: 70/100**
 - [x] ✅ **Year-end close** — full sequence traced: PR-O (BKPRMSTR→BKPRW2 + YTD zero + BKPRSALE→BKPRBOOK) → PR-L-I W-2 print → AP-S 1099 (BKAPVEND.TAX_ID + BKAPVND2) → AM GL year-end shift (BKGLCOA CURRENT→1YPAST→2YPAST) → SM-J* archive; Recipe 21 added to HELP-RESOURCES.md (Pass 112 2026-06-19) — **C: 88/100**
 
