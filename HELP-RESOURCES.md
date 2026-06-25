@@ -20595,3 +20595,531 @@ Fields: Priority (numeric), Description (text label), Color (visual indicator)
 | WCS | Work Center Schedule | T7WCS.DFM, T7WCS2.DFM | Real-time schedule board |
 | WO-PRIO | WO Priority | t7woprio.DFM | Priority color-code setup |
 
+
+---
+
+## Pass 305 — Comprehensive Module DFM Survey (A–Z Full Coverage)
+
+*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7*.DFM — 911 DFMs surveyed*
+
+This pass documents all remaining module groups discovered in a full alphabetical DFM survey.
+
+---
+
+### AM Module — GL/Accounting Management (T7AMA – T7AMS)
+
+The AM module manages GL accounting periods, account codes, budgets, and financial statements.
+
+| DFM | Caption/Module | Key Fields / Purpose |
+|-----|---------------|---------------------|
+| T7AMA.DFM | AM-A | Fiscal Year Start Date; Open Period Start/End; Accounting Open Period |
+| T7AMB.DFM | AM-B | Working on GL Account; Current / Beginning / Total Year balances |
+| T7AMC.DFM | AM-C | Account Code; Dept; Description; Account Type; E Type Only; GL-O Posting Only |
+| T7AMD.DFM | AM-D | Template department; Code of NEW dept; Only create these account types; Clear Budget Values |
+| T7AME.DFM | Financial Statements (249KB) | Financial Statements; Report Title; G/L From/Thru; Net Income |
+| T7AMG.DFM | AM-G Consolidation | Consolidation Name; Last Consolidation on; Base Currency |
+| T7AMH.DFM | AM-H GL Renumber | Import Filename; Old GL Code/Dept to New GL Code/Dept |
+| T7AMI.DFM | AM-I Journal | Date Range; GL Account From; Journal Type |
+| T7AMJ.DFM | AM-J Vendor Purge | Purge/Archive/Restore [P,A,R]; Vendor From; Process Thru Date |
+| T7AMK.DFM | AM-K Customer Purge | Purge/Archive/Restore; Customer From; Process Thru Date |
+| T7AMN.DFM | AM-N Budget (122KB) | Period 1 through 6 (multi-period budget entry grid) |
+| T7AMO.DFM | AM-O Vendor Purge | Delete PO Orphans [L,H,B,N]; Vendor Class |
+| T7AMP.DFM | AM-P Customer Purge | Delete SO Orphans [L,H,B,N]; Include Ship To Customers [Y/N] |
+| T7AMQ.DFM | AM-Q Budget Copy (179KB) | Use One Year Past Amounts; Factor; Use Annual Budget; Use Current for Next Year |
+| T7AMS.DFM | AM-S Journal Purge | Journal Date From; Archive/Purge/Restore; Journal Type From |
+
+---
+
+### BM Module — Bill of Materials (T7BMA – T7BMR)
+
+| DFM | Caption | Key Fields / Purpose |
+|-----|---------|---------------------|
+| T7BMA.DFM | BM-A Entry (187KB) | F+O BOM; Component; BKBM_RM_REMARK1/2/3 |
+| T7BMB.DFM | BM-B Explosion | Decimals in qty; Print up to N levels |
+| T7BMC.DFM | BM-C Where-Used | Component From; Print levels; Include inactive Parent |
+| T7BMD.DFM | Print Availability | Shortages indicated by *; Print For Location; Qty to Project; RoHS Compliant [Y/N/O] |
+| T7BME.DFM | BM-E Replace Comp | Search for Component then Replace with Component |
+| T7BMF.DFM | BM-F Remove Comp | Remove this Component from all BOMs |
+| T7BMG.DFM | BM-G Listing | Item Type [RFAMNLBTKO]; Class From; Category From |
+| T7BMH.DFM | BM-H Print | Decimals; Parent Item Number From |
+| T7BMI.DFM | BM-I Print | Decimals; Parent Item Number From (alternate) |
+| T7BMJ.DFM | BM-J Customer-Spec | Std Item#; Parent Item#; Customer Code; Substitute Item |
+| T7BMK.DFM | BM-K Vendor | Std Item#; Parent Item#; Customer Code; Vendor Code; Auto Print Folder |
+| T7BML.DFM | BM-L Manufacturer | Std Item#; Parent Item#; Customer Code; Manufacturer Item |
+| T7BMP.DFM | BOM Pick List | Item# From; Item Type; Assembly Item#; Component Types |
+| T7BMQ.DFM | BM-Q | Component From |
+| T7BMR.DFM | BM-R Projection | Parent Item#; Qty to Project; Item Class/Category |
+| T7BOMSCRAPFIX.DFM | Reset Scrap Calculation | Item# From; Current Item; File Name |
+
+---
+
+### BS Module — Business Status Dashboard
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7BS.DFM | Business Status (137KB) | AR Current Balance/Billings/Receipts |
+| T7BSCash.DFM | Business Status Cash Detail | Cash/Balance breakdown |
+| T7BSR.DFM | Business Status Rebuild | Rebuild summary tables from transaction history |
+| T7BSWO.DFM | Business Status Work Orders | WOs; FP Variances; Issues; WIP Balance |
+
+---
+
+### CAR Module — Corrective Action Requests
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7CAR8D.DFM | CAR Actions (79KB) | CAR#; Action#; Creation Date; Due Date — 8D tracking |
+| t7carfu.DFM | Follow Up | Follow Up Date; User; Follow Up Type |
+| T7CARFUP.DFM | Follow Up Code | Code; Description |
+
+---
+
+### CC Module — Credit Cards
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7CCDE.DFM | CC Import (55KB) | File to Import; Length or Delimited |
+| T7CCP.DFM | Credit Card Info | CC Number; Expiry Date; Zip Code |
+| T7CCPO.DFM | Credit Card Charges | CC Number; Expiry; Amount |
+| T7ccr1.DFM | Credit Card Invoice List | Terms From; Date Range |
+
+---
+
+### CM Module — Customer Master / CRM
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7CMA.DFM | CM-A Entry (164KB) | Account; Country; Zip; City — full customer record |
+| T7CMACON.DFM | Customer Contact (103KB) | E-Mails; Include Ack/PkSlip — contact with email preferences |
+| T7CMACL.DFM | Classes (50KB) | Class; Description |
+| T7CMAKD.DFM | Key Dates (52KB) | Key Date Code; Description; Key Date |
+| T7CMBB.DFM | CM-B-B Report (106KB) | Report Code; Description; Date; Primary Sort |
+| T7CMCON.DFM | Customer Contact (55KB) | Customer; Contact Name; Position |
+| T7CMK.DFM | CM-K Import | Customer From; Skip or Replace |
+| T7RemindRpt.DFM | CM-B-D | Event Date From; Item#; Customer; Type From |
+
+---
+
+### CS Module — Commissions / Salesperson
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7CSA.DFM | CS-A Setup (49KB) | Salesperson#; Class; Vendor Code; Rate; First Name |
+| T7CSB.DFM | CS-B View Info (128KB) | Quota; COGS; Comm Due; Comm Paid |
+| T7CSC.DFM | CS-C Print | Which Month? (0=YTD); Include Monthly Detail |
+| T7CSD.DFM | CS-D Transfer | Tag/Untag/Transfer |
+| T7CSE.DFM | CS-E Detail | Item#; Salesperson#; Invoice Date; Include Monthly Totals |
+| T7CSF.DFM | CS-F Summary | Salesperson# Range; Invoice Date |
+| T7CSI.DFM | Evo Master Inquiry | Customer; Item#; SO#; Invoice# |
+| T7CSP.DFM | CS-P Summary | Salesperson# Range; Invoice Date; Months Range |
+| T7CSDE.DFM | Rep Link Import | File to Import; Length or Delimited |
+
+---
+
+### CT Module — Contract Review
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7CTRevu.DFM | Setup Contract Review Departments | Password; Department; Confirm Password |
+| T7CTRevuPSWD.DFM | Enter Contract Review ID | Contract Reviewer ID; Department; Password |
+
+---
+
+### DC Module — Data Collection (Full Suite)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7DCA.DFM | DC-A (149KB) | Employee; Action; WO; WO Item; Sequence; Machine |
+| T7DCA2.DFM | DC-A Shift Mode | Done; Start Shift; Stop Shift |
+| T7DCALabel.DFM | Print Transfer Label | Item#; Bin Location; Sequence; Work Center |
+| T7DCB.DFM | DC-B (104KB) | Parts Made; Parts Scrapped; Total Parts Made |
+| T7DCBSERIAL.DFM | Enter Serial Numbers | Serial Num; Total Qty; Remaining Qty |
+| T7DCD.DFM | DC-D Login (71KB) | Employee Number; Password; WO From |
+| T7DCE.DFM | DC-E Labor Tickets | WO#; Include Outside Processing; Alternate Operations |
+| T7DCF.DFM | DC-E Employee Tickets | Number per Employee; Employee From |
+| T7DCG.DFM | DC-G Edit Labor (113KB) | Date Range; Include Shift Records [Y/N/Only] |
+| T7DCH.DFM | DC-H (51KB) | Employee From; Shifts [123]; WO From; Time Range |
+| T7DCK.DFM | DC-K Archive | Archive/Restore/Purge Shift Records [A,R,P] |
+| T7DCL.DFM | DC-L Timecard (71KB) | Date From; Employee; Password |
+| T7DCM.DFM | DC-M Labor Report | Sort by Employee; Include Run Hours; Salary; Labor Type |
+| T7DCN.DFM | DC-N Holiday | Employee Code From; Date From; Holiday Hours |
+| T7DCPSF.DFM | HH-L Paperless Shop Floor (114KB) | WO Number; Sequence; Item No; Desc |
+| T7DCPSFComps.DFM | Issue Components | All Comps; Issue Comps; Shortages |
+| T7DCPSFECO.DFM | ECO | Drawing#; Revision Level; Internal Date; ECO# |
+| T7AUTODCH.DFM | AUTO DC-H | Employee From; Shifts [123]; WO From |
+
+Shift codes [123] = Shift 1, Shift 2, Shift 3.
+
+---
+
+### DE Module — Data Exchange/EDI
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| t7dba2evo.DFM | Classic to Evo Notes | Customers/Vendors/WOs/SOs — DBA migration |
+| T7DEPB.DFM | DE-P-B EDI | EDI Number; Customer; Release#; Customer Order |
+| T7DEPD.DFM | DE-P-D | New SO Date/Number; Default Est Ship Date; Location |
+| T7DEPE.DFM | DE-P-E | SO#; Customer; Invoice# |
+| T7DET.DFM | Web Import (118KB) | Order Header Records; Customer Code; Order# |
+| T7DETB.DFM | DE-T-B (109KB) | Import File; to EDI Module or Open SO [E,S]; Date Format |
+| T7DEU.DFM | Web Item Export | CSV; Item# From; Item Type |
+| T7DEV.DFM | POA Import | PO#; Item#; Description; Qty |
+| T7DEQ.DFM | Invoice Import | Comma Delimited or Fixed Length; Skip/Replace |
+| t7ediftp.DFM | EDI FTP | Connecting; Downloading; Importing; Error checking |
+| T7EDII.DFM | ED-I-I Import | Import Filename; CSV; Date Format |
+| T7DEK.DFM | Field Replace | File; Field; Replace all Values; Search/Replace |
+| T7DEHD.DFM | PI-C Import Tags | Count Date; Tag#; Location |
+
+---
+
+### GL Module — General Ledger (Full Suite)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7GLA.DFM | GL-A (172KB) | ACCT_HDR1-4 — journal entry |
+| T7GLB.DFM | GL-B (140KB) | GJ Trans List; Search; Sort; GJ Trans Details |
+| T7GLC.DFM | GL-C Batch Filter | Batch Range; Post Date Range; Entry Date Range; Inv/Vch# |
+| T7GLD.DFM | GL-D Search | Date Entered; Vend/Cust Code; Reference#; Journal Type |
+| T7GLE.DFM | GL-E Export | GL Account; Posting Date; Entry Date; Print Code or Name |
+| T7GLF.DFM | GL-F Report (142KB) | Column 1-3; Column Headings |
+| T7GLG.DFM | GL-G | GL Account From; Exclude inactive accounts |
+| T7GLH.DFM | GL-H Budget | Account Range; Dept Range; Current Amounts; Budget Amounts |
+| T7GLI.DFM | GL-I Check Register | Bank Account; Sort By; Types; Check From |
+| T7GLJ.DFM | GL-J Bank Recon (99KB) | Opening Balance; Tagged Deposits; Tagged Checks |
+| T7GLK.DFM | GL-K Funds Transfer | Date; To Bank Account; Currency; Bank Statement |
+| T7GLL.DFM | GL-L CC Import (107KB) | File to Import; Date; GL Account; GL Dept |
+| T7GLN.DFM | GL-N Report (80KB) | Column 1-3; Column Headings |
+| T7GLO.DFM | GL-O Post (154KB) | Out of Balance Report; Post; Vnd/Cus Code/Name |
+| T7GLP.DFM | GL-P | Transaction Date; Code; Number |
+| T7GLQ.DFM | GL-Q Bank | Bank Account; Date; GL Account; Code |
+| T7GLS.DFM | GL-S Notes | Transaction#; Transaction Code; Note Date |
+| T7GLT.DFM | GL-T Import | CSV or Fixed Length; Account Number; Department |
+| T7GLARCH.DFM | Archive GL | Archive GL Transactions Before date |
+
+---
+
+### MR Module — MRP / Material Requirements Planning
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7MRA.DFM | MR-A Requisitions | Due Date; Item#; Consumed Qty; Original Qty |
+| T7MRB.DFM | MR-B Listing | Item From; Item Type [RFAMNLBTKO]; Class; Category |
+| T7MRC.DFM | MR-C Action | Date From; Item#; Class; Category; Item Type |
+| T7MRD.DFM | MR-D Demand | Item#; Item Type [RFAM]; Category; Class; Vendor From |
+| T7MRE.DFM | MR-E Supply | Item#; Item Type [RFAMNLT]; Category; Class; Master/Specific Location |
+| T7MRF.DFM | MR-F (74KB) | Stage 1-4 — MRP execution staging |
+| T7MRG.DFM | MR-G | Item#; Date From; Item Type [FAMRNLT]; Class |
+| T7MRH.DFM | MR-H Color | Number of X Days; Report Color Options |
+| T7MRI.DFM | MR-I | Item#; Class; Category; Planner Code From |
+| T7MRIR.DFM | Review QTY | Item#; Description; Start Date; Finish Date |
+| T7MRIX.DFM | WO Qty per Part | WO Qty to make for each part; Tool; Item# |
+| T7MRJ.DFM | MR-J | Quantity; Item#; Due Date; Category |
+| T7MRJR.DFM | MR-J Review | Item#; MRP Start/Finish Date |
+| T7MRJX.DFM | Vendor Order | Vendor; Est Rcp Date; Price; Confirmed [Y/N] |
+| T7MRL.DFM | MR-L Plan | PL Number; Reverse Lookup |
+| T7MRN.DFM | MR-N | Vendor From; PO Value; Report Only |
+| T7MRO.DFM | MR-O | Item#; Item Type [FRAM]; Class; Category |
+| T7MULTIYIELD.DFM | Multiple Yield | Description; Quantity; Item# |
+
+---
+
+### PI Module — Physical Inventory
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7PIA.DFM | PI-A Capture Frozen | Year; PI Number; Freeze Date |
+| T7PIB.DFM | PI-B Frozen Report | Year; PI Number; Sort by Part or Bin |
+| T7PIC.DFM | PI-C Enter Tag Counts (89KB) | Part#; Tag#; Location; Count Qty |
+| T7PICA.DFM | PI-C-A Exception Report | Year; PI Number; Sort By |
+| T7PID.DFM | PI-D Missing Tags | Year; PI Number; Starting Tag# |
+| T7PIE.DFM | PI-E Enter Tag Counts (57KB) | Part#; Location; Frozen Cost |
+| T7PIF.DFM | PI-F Report | Year; PI Number; Sort by Item# or Class [I/C] |
+| T7PIG.DFM | PI-G Update Actual | Year; PI Number; FIFO/LIFO uses Current cost |
+| T7PIH.DFM | PI-H Purge | Year; PI Number |
+
+Workflow: PI-A (freeze) → PI-B (print sheets) → PI-C (enter counts) → PI-C-A (exceptions) → PI-D (missing tags) → PI-F (report) → PI-G (update) → PI-H (purge).
+
+---
+
+### RM Module — Returns / RMA
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7RMAWHY.DFM | RMA Why | RMA#; Line#; Status; Item |
+| T7RMD.DFM | RM-D (152KB) | Item#; Original Inv#/SO#; Warranty [NLPB] |
+| T7RME.DFM | RMA Reason Codes | Code; Description |
+| T7RMG.DFM | RM-G | Customer From; Item#; Reason Codes; RMA Date |
+| T7RMDASK.DFM | Change Location | Pass RMA# to Desc/Job/None [D/J/N]; Location; Est Ship Date |
+
+---
+
+### RO Module — Routings
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7ROA.DFM | RO-A Entry (165KB) | Cycle Time Threshold; Sequence; Oper |
+| T7ROASpecs.DFM | Routing Specs | Item#; Sequence; Current/Total Lines |
+| T7ROB.DFM | RO-B Listing | Item From |
+| T7ROC.DFM | RO-C Global Change (157KB) | Outside processing WC; Lead Time; Min Charge |
+| T7ROD.DFM | Machine Maintenance | Machine; WC; No. Hours between Service; Date Last Service |
+| T7ROE.DFM | Enter Tool (130KB) | Weight; Height; Width; Depth; Ejector Stroke |
+| T7ROG.DFM | Work Center Types | Code; Description; Type; GL Account From |
+| T7ROH.DFM | Departments | Department; Description |
+| T7ROI.DFM | RO-I Routing Notes (94KB) | Note Type; MTRO_INSTR1-3 |
+| T7ROJA.DFM | RO-J-A Print Routings | Item# From; WO From; Master/WO [M/W]; Include Specs |
+| T7ROJB.DFM | RO-J-B Work Centers | Work Center From; Dept Code From |
+| T7ROJC.DFM | RO-J-C Machines | Machine From; Last Maintenance Date |
+| T7ROJD.DFM | RO-J-D Print Tools | Tool From; Last Maintenance |
+| T7ROJE.DFM | QC Codes | QC Code From |
+| T7ROJF.DFM | Scrap Codes | Scrap Code From |
+| T7ROJG.DFM | Departments | Dept Code From |
+| T7ROJH.DFM | RO-J-H WC Ops | WC From; Operation From; Type [A/L/P] |
+| T7ROK.DFM | RO-K Template | Template#; Current/Total Lines; ENT_CODE |
+| T7ROL.DFM | RO-L | Item#; Sequence; MTRO_CODE; MTRO_DESC |
+| T7ROP.DFM | RO-P Update Standard | Received Date From; Item#; Update Vendor/Cost/Both [V/C/B] |
+| T7ROQ.DFM | WC Rename | Old/New Work Center; New Description |
+
+---
+
+### SC Module — Serial Control
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7SCA.DFM | SC-A Edit Serial Numbers | Serial#; On-Hand; Date Rcvd; WO# |
+| T7SCB.DFM | SC-B Assign Serial Control | Product Type; Item#; Serial Control? |
+| T7SCC.DFM | SC-C Listing | Item# From; Serial# From; Include SO Allocations |
+| T7SCC2.DFM | SC-C Print Availability | Serial#/Location From/Thru |
+| T7SCE.DFM | Archive/Unarchive | Item#; Serial#; Exp Date; Rcvd Date |
+| T7SCF.DFM | SC-F Exceptions | Class; Category; Item# |
+| T7SCG.DFM | Serial# Structure | Total Length; Starting Position of Numeric; Last Number |
+| T7SCH.DFM | SC-H | Serial# From; Item# From |
+
+---
+
+### SH Module — Production Scheduling
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7SHA.DFM | SH-A (76KB) | Work Order; Item#; Description; Customer |
+| T7SHB.DFM | SH-B (109KB) | Auto-Entry OFF; WO#; Start/Finish Date |
+| T7SHC.DFM | SH-C Capacity | Work Center; Dept; Total Hours/Day; % Utilization |
+| T7SHE.DFM | Due Date Change | New Due Date; Action; Sort; Labor Data Thru |
+| T7SHF.DFM | SH-F Status [FR] | WO#; Start/Finish Date |
+| T7SHG.DFM | SH-G Dashboard | WO STATUS; WO CLASS; WO PRIORITY |
+| T7SHH.DFM | SH-H Report | WO#; Start/Finish Date; Planner Code; Item# |
+| T7SHI.DFM | SH-I Color | Elapsed Start Date Color; Not Started on Time |
+| T7SHJ.DFM | SH-J | WO STATUS; WO CLASS; WO PRIORITY |
+| T7SHM.DFM | SH-M | Item#; Qty; Start Date |
+| T7SHN.DFM | SH-N | PART TYPES; Item#; Class; Category |
+| T7SHO.DFM | SH-O WC Report | Work Center From; Page Break between WCs |
+| T7SHP.DFM | SH-P Color Report | Priority Change Color; Elapsed Start Date Color |
+| T7VSCHED.DFM | Visual Schedule | Item#; Qty; Start/Finish Date |
+| T7WCBK.DFM | Live Work Center Schedule | Work Center; Refresh Timer; WO STATUS |
+
+---
+
+### SM Module — Stock Maintenance
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7SMC.DFM | SM-C (158KB) | Item Class; Location; Class/Location GL Account; Default GL Account |
+| T7SMJL.DFM | SM-JL Item Merge | Old/New Item#; Exceptions/Complete [E/C]; Allow Merging [Y/N] |
+
+---
+
+### SO Module — Sales Orders (Extended)
+
+Additional SO forms beyond SOA and SOG documented in earlier passes:
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7SOAE.DFM | SO-A-E (379KB) | Largest SO entry form; Stock; Info tab |
+| T7SOB.DFM | SO-B | Customer/Class/SO/Job# ranges |
+| T7SOC.DFM | SO-C (113KB) | Footer Copy 1-3; SO# |
+| T7SOD.DFM | SO-D (126KB) | DUNS; Kanban ID; Country of Origin; Cust Routing |
+| T7SOE.DFM | SO-E (153KB) | Address/City/State/Zip — packing slip |
+| T7SOF.DFM | SO-F (141KB) | Customer Code/Class/Sort/Shipper# — invoice |
+| T7SOFDEP.DFM | Apply Deposit | Open Deposit; Amount; Deposit#; Date |
+| T7SOGA.DFM | SO-G-A Order Posting | Posting Invoice#; Line Item |
+| T7SOJINFO.DFM | Recurring Order Info | Group Code; Frequency; Limit; Next Invoice |
+| T7SOK.DFM | SO-K | Pre-Post; Tag Several; Tag All; Sort Order |
+| T7SOLOT.DFM | SO-LOT | Item#; Lot#; Description |
+| T7SOBIN.DFM | SO-BIN | Item#; Bin#; Description |
+| T7SON.DFM | SO-N (76KB) | SO#; Use Cust Due Date or Est Ship Date as WO Due Date; WO Status [SRFC] |
+| T7SOOA.DFM | SO-OA | Ship Date; Customer; Job#; SO# |
+| T7SOOB.DFM | SO-OB | Sort By; Item#; Job#; Est Ship Date |
+| T7SOOE.DFM | SO-O-E (125KB) | Machine 1-3; WO Status |
+| T7SOOH.DFM | SO-Oh | Currency; Invoice Types; Invoice Date |
+| T7SOPC.DFM | SO-PC (77KB) | New SO Date; Change Est Ship Date; Change Cust Due Date |
+| T7SOPF.DFM | Blanket Release | SO#; Release Date; Balance on Order; Part# |
+| T7SOPI.DFM | SO-PI Shipper | Invoice#; Freight; Tracking#; Shipping Company; Shipper# |
+| T7SOAXCOM.DFM | SO Commission | Rep#; Commission%; Overage Amount/% |
+
+---
+
+### TA/UT Module — System Administration and Utilities
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7MDefaults.DFM | Master Default Settings (1484KB) | Manufacturing; WOs; Setup; WO Status Code — central system config |
+| T7MDefBanks.DFM | Banks (83KB) | Bank Account#; GL Account; Bank Account Name |
+| T7SIVL.DFM | Evo Security System | DBA/Evo Serial; Company; Product — license validation |
+| T7UTKA.DFM | UT-K-A Clear | Clear transaction data only [C]; GL; AR; AP |
+| T7UTKD.DFM | UT-K-D Year-End | Current/Last Year; GL Account; Suspense Account |
+| T7UTKE.DFM | UT-K-E | New master location code; NEWCODE |
+| T7UTKH.DFM | UT-K-H GL Mapping | Inventory Types; Item#; Class; GL Account; Purchased Parts |
+| t7uti.DFM | Multi-Company | Company Code; Name; Path; Create Company |
+
+---
+
+### WC Module — Warehouse Control
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7WCA.DFM | WC-A Location Entry | Location; Description; Name — warehouse bin master |
+| T7WCB.DFM | WC-B Listing | Item#; Class; Category; Item Type |
+| T7WCC.DFM | WC-C (138KB) | Item; Description; Warehouse; Serial Panel |
+| T7WCD.DFM | WC-D Import | Skip/Replace Bin Locations [S/R]; Warehouse; Bin; Default Bin [Y/N] |
+| T7WCE.DFM | WC-E | Item#; Item Type; Class; Category |
+| T7WCG.DFM | WC-G | Item#; Active Status [YNODE]; Category; Class |
+| T7WCH.DFM | WC-H | Location; Name; Bin From |
+| T7WCLOCFIX.DFM | LOC SYNCH UTILITY | File Name; Current Item |
+
+Active Status codes [YNODE]: Y=Active, N=Inactive, O=Obsolete, D=Discontinued, E=End-of-life (inferred).
+
+---
+
+### WO Module — Work Orders (Full Suite)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7WOA.DFM | WO-A Entry (178KB) | Work Order; Status; New; Information; Location |
+| T7WOAC.DFM | WO-A-C (171KB) | Priority; CreatedLabel |
+| T7WOAE.DFM | WO-A-E (232KB) | Largest WO entry form |
+| T7WOACFG.DFM | WO-A Settings | Exclude 0 Qty Components; Update BOM; Update Routing |
+| T7WOACPY.DFM | Copy WO | WO# [Blank for Next]; Copy All Suffixes? |
+| T7WOAECO.DFM | ECO | Item#; Description; Type; Drawing#; Revision |
+| T7WOAMDT.DFM | Enter Multi Dates | Start/Finish Date; Qty; Priority; Total Qty |
+| T7WOB.DFM | WO-B (58KB) | WO#; WO Start Date; New WO Status [R/F] |
+| T7WOC.DFM | WO-C Listing (88KB) | WO#; Job#; WO Status; Est Start Date; Active/Archive [A/D] |
+| T7WOD.DFM | WO-D Pick List (69KB) | Include RoHS; Inventory Types [RFAMN]; Sort; Job# |
+| T7WODATES.DFM | WO Dates (76KB) | Multi Date; Change Start Date for WO Prefix |
+| T7WOF.DFM | WO-F Labor (98KB) | Employee; Password; Emp Name; WO |
+| T7WOFA.DFM | WO-F Backflush | Backflushing Material; Please Wait |
+| T7WOG.DFM | WO-G Issue (174KB) | Item; Line; Sequence Range; Issue Date |
+| T7WOH.DFM | WO-H Cost (69KB) | Cost type [E/M]; Date; Cost Amount; Parent Part |
+| T7WOI.DFM | WO-I Receipt (144KB) | Work Order; Date; Parent Item; WO NUM |
+| T7WOIASK.DFM | Scrap | Total/Remaining Qty to Scrap; Scrap Code |
+| T7WOJ.DFM | WO-J (50KB) | WO#; Job#; Posting Date; Code |
+| T7WOJPRESERIALS.DFM | Pre-Assigned Serials | Current/Reassigned WO#; unused serials |
+| T7WOKA.DFM | WO-K-A (109KB) | WO#; Qty to Make; Sequence |
+| T7WOKACOPYROUT.DFM | Copy WO Routing | FROM WO# to TO WO#; Copy to Standard [Y/N] |
+| T7WOKB.DFM | WO-K-B (150KB) | To WO#; Copy WO BOM; Copy to Standard BOM |
+| T7WOKC.DFM | WO-K-C | Work Order; Assembly; Desc |
+| T7WOKD.DFM | WO-K-D | Create WO for Max Levels; WO# From; Item WO Class |
+| T7WOKDQTY.DFM | Enter Qty to Make | Qty Required; Qty to Balance; Item; On-Hand |
+| T7WOKE.DFM | WO-K-E (86KB) | Item#; On-Hand; On Sales Order |
+| T7WOKF.DFM | WO-K-F | WO#; Sequence; Started; Finished |
+| T7WOKG.DFM | WO-K-G | WO#; Start/Fin Date; Job# |
+| T7WOKJ.DFM | WO-K-J | Item#; WO# From |
+| T7WOKK.DFM | WO-K-K Reverse DC (96KB) | Date; Work Order; Employee; Sequence |
+| T7WOKL.DFM | WO-K-L (101KB) | Date of WO; WO Due Date; Location of Parent; Location for Components; WO Status [FRSC] |
+
+WO Status codes [FRSC]: F=Firm (planned), R=Released (to floor), S=Started, C=Completed.
+
+---
+
+### Additional Utility DFMs
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7ACRDTYPE.DFM | Credit Type | Doc Type; Reason; Disposition — AR credit memo type codes |
+| T7ACTION.DFM | Action Type | Action Type; Description — workflow action codes |
+| T7ALERTMSG.DFM | ALERT NOTIFICATION | Alert popup dialog |
+| T7ALOGSETUP.DFM | Audit Log Setup | User Name; Password; Status |
+| T7DEFECT.DFM | Defect Code | Code; Description |
+| T7DIGSIG.DFM | Digital Signatures (128KB) | PO#; Vendor; Terms — PO digital approval |
+| T7DROPDOWN.DFM | Dropdown Setup | Code; Text; Description — user-defined dropdown lists |
+| T7USG.DFM | USG Triggers | Trigger Code; User; Last Date/Time; Days Pre — event-triggered notifications |
+| T7Chain.DFM | Chain List | Chains; User Name; Auto Chain [Y/N/Ask] |
+| T7CHAINM.DFM | Chain Master | Child Program; Parent Program; Auto Chain — program chaining |
+| T7PASS.DFM | Password | Generic password entry dialog |
+| T7SIVL.DFM | Evo Security System | DBA/Evo Serial; Company; Product — license validation |
+| T7TCC.DFM | Bank Account | CHK_NAME_1 |
+| T7TESTNACHA.DFM | NACHA | Bank Account#; Name; Check# From; Check Date |
+| T7REBQC.DFM | Recalculate QC Qty | Tag Items; Item Range |
+| T7REINDEX.DFM | Reindex | Tag All/Untag; Reindex Tagged |
+| T7RTMVALID.DFM | Select Report Format | Report Format Name |
+| t7redindexDD.DFM | Reindex Data Dictionary | File Dict; File Loc; File Key |
+
+---
+
+### GF Module — Golding Farms Custom Forms
+
+Customer-specific customizations for a company named Golding Farms (produce/agricultural distributor):
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7GFPRICE.DFM | Golding Farms Pricing (208KB) | Delivered Prices; Archive Data; Bill To Customer |
+| T7GFCB.DFM | (89KB) | General; Order — custom order form |
+| t7GFdept.DFM | Dept Code/Description | Department setup |
+| t7GFdiv.DFM | Div Code/Description | Division setup |
+
+Note: GF forms are customer-specific customizations embedded in the shared DBAMFG$ directory.
+
+---
+
+### Complete EvoERP Module Code Reference (Updated)
+
+| Code | Module Name | Key Forms |
+|------|------------|-----------|
+| AM | GL Accounting Management | AMA-AMS |
+| AP | Accounts Payable | T7APL |
+| AR | Accounts Receivable | T7ARA, T7ARL |
+| BM | Bill of Materials | BMA-BMR |
+| BOL | Bill of Lading | T7BOL |
+| BS | Business Status Dashboard | T7BS, BSCash, BSR, BSWO |
+| CAR | Corrective Action Requests (8D) | CAR8D, carfu |
+| CC | Credit Cards | CCDE, CCP, CCPO |
+| CM | Customer Master (CRM) | CMA, CMACON, CMAKD |
+| CS | Commissions/Salesperson | CSA-CSP |
+| CT | Contract Review | CTRevu |
+| CUT | Material Cutting | cutsheet2 |
+| DC | Data Collection | DCA-DCN, DCPSF, AUTODCH |
+| DE | Data Exchange (EDI) | DEL-DEX, ediftp, dba2evo |
+| ES | Estimating | ESA-ESI, EST |
+| EW | Employee Work Center | EWC |
+| EM | Email/GL Link | EMGL |
+| FA | Fixed Assets | FAA, FAB, FAE |
+| FS | Field Service | FSINFO |
+| FT | FTP/Broadcast | ftp |
+| GE | General Import | GENIMP |
+| GF | Golding Farms (custom) | GFPrice, GFCB |
+| GL | General Ledger | GLA-GLT, GLARCH |
+| HH | Handheld/Mobile | HH*, HHN, HHPIC |
+| IN | Inventory | INB (item master), IN-L suite |
+| JC | Job Cost | T7JCL |
+| LC | Lot Control | LCC |
+| LO | Lot/Serial Info | LotSerial |
+| MR | MRP/Requirements Planning | MRA-MRO |
+| NE | New Init | NEWINIT |
+| PI | Physical Inventory | PIA-PIH |
+| PL | Paperless Shop Floor | PLessComps, PLessNotes |
+| PO | Purchase Orders | POA, POB, POF-POH, POIC, POENG |
+| PR | Payroll | PRLA-PRLQ |
+| RF | RFQ | RFQ |
+| RM | Returns/RMA | RMD, RMG |
+| RO | Routings | ROA-ROQ |
+| SA | Sales Analysis | SAA, SAM-SAQ |
+| SC | Serial Control | SCA-SCH |
+| SH | Production Scheduling | SHA-SHP |
+| SM | Stock Maintenance | SMC, SMJL |
+| SO | Sales Orders | SOA, SOB-SON, SOO*, SOP* |
+| SOG | COGS/Commission | SOGCogs, SOGComm |
+| SPC | Statistical Process Control | SPCREP |
+| TA | System Administration | TA-O (backup), MDefaults |
+| UT | Utilities | UTH, UTI, UTKA-UTKH |
+| WC | Warehouse Control | WCA-WCH, WCS |
+| WO | Work Orders | WOA-WON, WOK* |
+| WO-PRIO | WO Priority Colors | WOPRIO |
+
