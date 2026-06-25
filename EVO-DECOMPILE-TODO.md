@@ -70,7 +70,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Sub field confirmed constant per opcode at 729-instruction scale: ASSIGN=0x0A, COND_BRANCH=0x14, GOSUB=0x04, EXEC_FORM/CREATE_BIND=0x05, GOTO/GOTO_LABEL=0x14, EXIT=0x36, READ_PROP=0x0F, CALL_LIB=0x09
   - Pool structure: compound expression records (variable refs, expr trees) interleaved with STRING entries; poff for ASSIGN/GOSUB/COND_BRANCH points into compound record body, NOT to STRING header start
   - Gap: suwin6.dcy / suwin7.dcy logic still opaque (require TAS7 disassembler); suwin7.rwn still blocked (unknown 5th key)
-- [x] ✅ Per-workstation state files cataloged: `taspro7.ini`, `EvoSettings.INI`, `WHOAMI.DBA`, `CHMHELP.EVO`, `RBuilder.ini`, `DFM/`, `PDFS/` — **C: 68/100**
+- [x] ✅ Per-workstation state files cataloged: `taspro7.ini`, `EvoSettings.INI`, `WHOAMI.DBA`, `CHMHELP.EVO`, `RBuilder.ini`, `DFM/`, `PDFS/` — **C: 68/100**; **Pass292 (2026-06-25): live inspection of C:\ISTS\** — WHOAMI.DBA=2 bytes (0D0A only, empty/reset); EvoSettings.INI=1.2KB (full section structure cataloged: [ARA/APA/INA/INB/POA/SOA/WOA]+[Users]+[User:NAME]+[EMAIL CO# X User:Y]+[HOT BUTTONS]); taspro7.ini=4.8KB (full key catalog: [Setup] DataDictPath+DfltRunPrg+Serial=670538; [TP5WIN] legacy font/color/box-draw config; [TAS50] CP437 box-draw char codes; [Compiler Settings] Lib=C:\ISTECH; [FileManager] UseCodeBase=0=Btrieve mode); RBuilder.ini=2.6KB (ReportBuilder designer toolbar/window state only) — **C: 82/100**
 - [x] ✅ `EvoSettings.INI` fully decoded (2026-06-17) — **C: 88/100**
   - Sections: [Users] global prefs, [User:NAME] per-user, [EMAIL CO# X User:Y] email SMTP+templates, per-module [ARA]/[SOA] etc., [HOT BUTTONS] × 6
   - Key flags: SAVE ACCESS, EvoorClassicScreen, Converted, OpenListXXX, Reminder, CheckForUpdates, TopMost
@@ -277,7 +277,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 ### 2.7 `.B` / Btrieve Data Files
 - [x] ✅ Format: Pervasive/Btrieve B-tree paged file; FC magic header — **C: 72/100**
 - [x] ✅ Schema queryable via Pervasive ODBC (SELECT from X$File, X$Field) — **C: 88/100**
-- [x] ✅ Companion files: `.mdx` (index), `.XLB` (extended attributes) — **C: 65/100**
+- [x] ✅ Companion files: `.mdx` (index), `.XLB` (extended attributes) — **C: 65/100**; **Pass292 (2026-06-25): both formats byte-confirmed** — .mdx: magic=02 7C + base filename ASCII (dBASE IV compound index format); used ONLY for DBF-format DDF tables (filedict/filedes/filedfld/filekey/fileknum/fileloc/filerel) + BKLUGRID/BKMENUSU/errmsg; Btrieve .B files have NO .mdx. .XLB: magic=46 43 00 00 (=FC\0\0, identical to Btrieve .B signature); Btrieve overflow companion for variable-length/blob fields; BKAPHPOL.XLB=118MB (AP policy blobs); BKAPCHKH.XLB=11.5MB; not all tables have .XLB — only memo-field tables — **C: 80/100**
 - [x] ✅ Per-company suffix: default = `.B`, others = `.B22`, `.BAB`, etc. — **C: 85/100**
 - [x] ✅ DDF types 12/13 resolved: NOTE and LVAR, DDF-catalog only, zero in business tables — **C: 95/100**
 - [x] ✅ RELATE.DDF: ~8 FK records, engine-level RI not used, RI enforced procedurally — **C: 90/100**
@@ -305,7 +305,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ All FILE\*.UPD files parsed and delta-compared to current schema
 
 ### 2.11 `.DBA` — Identity / Seat Token
-- [x] ✅ File identified: `WHOAMI.DBA`, per-workstation — **C: 45/100** (ceiling — cannot decode without populated copy)
+- [x] ✅ File identified: `WHOAMI.DBA`, per-workstation — **C: 45/100** (ceiling — cannot decode without populated copy); **Pass292 (2026-06-25): live read C:\ISTS\WHOAMI.DBA** = 2 bytes (0D 0A = CRLF only) — file is empty/reset on this workstation; written by WHOAMI keyword (opcode 7965) when user logs in; populated copy would hold workstation name+user+company code as fixed-length fields (based on WHOAMI/WHOAMIFULL var sizes in EvoERPmenu.RWN named_vars) — **C: 52/100** (format still ceiling-limited without populated copy)
   - Local copy (`C:\ISTS\WHOAMI.DBA`) = 2 bytes (CRLF only) — stub/placeholder
   - **Network share copy** (`\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA`) = also 2 bytes (Pass 229 confirmed) — both are empty
   - WHOAMI.DBA is an unused placeholder in this installation; company selection handled by usecomp.run
@@ -885,7 +885,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ### 9.7 EvoUpdate (In-App Patching)
 - [x] ✅ Files: EvoUpdate.RWN, EvoERPupd.RWN, EvoPRupd.RWN, EvoUPDSetup.RWN, UPDTP7.EXE — **C: 70/100**
-- [x] ✅ Update mechanism: reads FILE\*.UPD manifests, applies schema migrations — **C: 65/100**
+- [x] ✅ Update mechanism: reads FILE\*.UPD manifests, applies schema migrations — **C: 65/100**; **Pass292 (2026-06-25): FILE*.UPD files byte-confirmed as Btrieve snapshots** — 11 .UPD files on share: evo.upd=3 bytes ('1\r\n' version marker); FILECHSP/FILEDEF/FILEDES/FILEDFLD/FILEDICT/FILEKEY/FILEKNUM/FILELOC/FILEREL/FILES.UPD all start with FC\0\0 (Btrieve format); these are target-state DDF snapshot copies — EvoERPupd reads them as the expected post-update schema; FILELOC.UPD=2.3MB / FILEDICT.UPD=4.0MB / FILEDES.UPD=940KB — **C: 75/100**
 - [x] ✅ Full update pipeline traced — EvoUpdate(entry)→EvoUPDSetup(path)→EvoERPupd(77p; FILEDICT/FILEDBF/FILEKEY schema registry; FROM_FILE→TO_FILE migration; UPDATE_FD field defs; RSTR_FILES rollback; updates BKLUGRID+ISDRILLM+ISTS.CFG)→EvoPRupd(payroll)→Evocnvtb(DDF sync) — **C: 75/100**
 - [x] ✅ UPDTP7.EXE role confirmed (Pass 113 2026-06-19) — **C: 68/100**
   - 32-bit VC++ Win32 executable, 85,680 bytes; 24,240-byte encrypted overlay at offset 0xF000

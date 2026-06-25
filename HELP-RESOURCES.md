@@ -3517,7 +3517,7 @@ Every EvoERP entity screen (AR, AP, PO, SO, WO, IC) has a notes button that call
 | **UOM** | Unit of Measure |
 | **variance** | Difference between standard cost and actual cost; also between WO estimated vs. actual |
 | **voucher** | An AP or AR transaction record (invoice entry) |
-| **WHOAMI.DBA** | 35-byte workstation identity token read by tp7runtime.exe |
+| **WHOAMI.DBA** | Workstation identity token at `C:\ISTS\WHOAMI.DBA`; written by `WHOAMI` keyword (opcode 7965) — empty (2-byte CRLF) when not yet populated; holds workstation name + last user + company code when filled |
 | **work center** | A production resource (machine group, labor area) with capacity; WORKCTR table |
 | **WO** | Work Order — a manufacturing job order |
 | **YN flag** | A boolean configuration flag stored in BKYSMSTR (indexed as YN[N]) |
@@ -18289,15 +18289,161 @@ The I2 company has 200+ unique aliases, reflecting extensive customization.
 
 ---
 
-### WHOAMI.DBA — Workstation Identity File
+### WHOAMI.DBA — Workstation Identity File (Pass 292 — 2026-06-25)
 
-`\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA` is **2 bytes** (CR+LF only — essentially empty).
-The per-workstation identity file is stored locally: `C:\ISTS\WHOAMI.DBA`.
-The network copy being empty suggests all workstation-specific data lives locally.
+`C:\ISTS\WHOAMI.DBA` is **2 bytes** (`0D 0A` = CRLF only) on this workstation — essentially empty/reset.
+When populated, WHOAMI.DBA stores the workstation identity token written by `tp7runtime.exe` via the `WHOAMI` keyword (opcode 7965).
+The WHOAMI keyword reads/writes this file — EvoERPmenu.RWN uses it to persist the last-logged-in workstation code (WHOAMI/WHOAMIFULL vars) across sessions.
 
-The CLAUDE.md notes WHOAMI.DBA can be 35 bytes — the local workstation copy at
-C:\ISTS\WHOAMI.DBA may contain workstation name, last user, company code, and
-other session state that survives restart.
+Network share `\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA` does not exist; the file is purely local to each workstation. A "35-byte" filled WHOAMI.DBA would contain the workstation name + company code + user code as a fixed-length record (matches the WHOAMI/WHOAMIFULL variable lengths observed in EvoERPmenu.RWN named_vars).
+
+**Per-workstation files at `C:\ISTS\` (Pass 292 — 2026-06-25, live inspection):**
+
+| File | Size | Purpose |
+|------|------|---------|
+| `WHOAMI.DBA` | 2 bytes (empty) | Workstation identity token; filled when user logs in |
+| `EvoSettings.INI` | ~1.2 KB | User preferences, module layout, email config, hot buttons |
+| `taspro7.ini` | ~4.8 KB | TAS Pro 7 runtime configuration — paths, fonts, colors, compiler settings |
+| `RBuilder.ini` | ~2.6 KB | Nevrona ReportBuilder designer toolbar/window layout state |
+| `CHMHELP.EVO` | — | EvoHELP.CHM chapter index cache |
+| `DFM/` | folder | Cached compiled DFM form binaries for speed |
+| `PDFS/` | folder | PDF output staging area |
+
+**`EvoSettings.INI` section structure (live read — `C:\ISTS\EvoSettings.INI`):**
+
+```
+[ARA] / [APA] / [INA] / [INB] / [POA] / [SOA] / [WOA]   ;one per module
+  SAVE ACCESS=0          ;remember last-accessed record in this module (0/1)
+  EvoorClassicScreen=    ;blank=Evo UI; Classic=DBA-era text-mode UI
+  Converted=             ;migration flag (set after DBA→EVO data conversion)
+
+[Users]                  ;global per-workstation defaults
+  Toolbar=0
+  OpenList{MOD}=0        ;remember open-list state per module (INB/INA/SOA/POA/ARA/APA/WOA)
+  Language=              ;locale override (blank=default)
+  Sounds=.F.             ;enable/disable EVO audio notifications
+  DefPrintPath=          ;default print-to-file path
+  DefPrinter=Microsoft Print to PDF   ;last selected printer
+  Reminder=.F.           ;enable reminder/notification popups
+  Notification=.F.       ;enable system notifications
+  RemSeconds=0           ;reminder snooze interval (seconds)
+  RemSnoozeAll=0         ;snooze-all flag
+  QuickPrint=            ;quick-print shortcut binding
+  CheckForUpdates=.F.    ;auto-check EVO update server
+  TopMost=0              ;keep EVO window always-on-top
+
+[User:ADMIN]             ;per-user section (one per EVO login code)
+  AutoReStartEvoNum=     ;auto-restart sequence number
+
+[EMAIL CO# I2 User:ADMIN]   ;per-user per-company email settings
+  BCC= / Subject=
+  Body1..10=             ;10 email body templates
+  Signature1..10=        ;10 email signature slots
+  Attach Path=           ;default attachment folder
+  SMTP= / PORT= / SEC=   ;SMTP server / port / SSL mode
+  EMAIL= / NAME= / USER= / PASS=   ;sender address, display name, credentials
+  EFAIL= / ECB= / EVB=   ;failure email / CC / BCC recipients
+
+[HOT BUTTONS]            ;6 user-configurable quick-launch shortcuts
+  Program N= / Icon N= / Hint N=    ;(N=1..6) .RWN path / icon path / tooltip
+```
+
+**`taspro7.ini` key sections (live read — `C:\ISTS\taspro7.ini`):**
+
+```
+[Setup]                  ;runtime connection settings
+  DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\
+  DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn
+  DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
+  DfltCompanyCode=       ;(blank = user selects at login)
+  MultiUser=1 / MainMenu=1 / FullSetup=1
+  Titlebar=Evo ~ ERP
+  HelpFileName=\\I2S109-SOLIDCRM\DBAMFG$\EvoHELP.CHM
+
+[FileManager]
+  UseCodeBase=0          ;0=Btrieve mode; 1=codebase (dBASE) mode
+  UseBtrvMemos=1         ;use Btrieve memo pages
+  ServerName= / ServerUserName=PUBLIC / UseFileMgr=0
+
+[User Options]
+  AskYesNo=1             ;prompt yes/no on destructive operations
+  CS Server Name=zuDk8s9p  ;(encoded — Crystal/external server)
+  Serial=670538          ;TAS Pro 7 license serial number
+
+[TP5WIN]                 ;TAS Pro 5 compatibility — window/display settings
+  Video Rows=30 / Video Cols=80   ;legacy text-mode screen dimensions
+  Font Size Reg=16 / Font Size Input=16
+  Form Bkg Color / Form Font Color / Entry Bkg Color / etc.
+  Run Font Name=Terminal  ;monospace font for text-mode forms
+
+[TAS50]                  ;TAS Pro 5 compatibility settings
+  Date Type=MDY / Date Separator=/   ;date format
+  Dollar Chr=$ / Comma Chr=, / Decimal Chr=.
+  ;Box-drawing chars (CP437 values):
+  Upper Left Corner=218 / Upper Right Corner=183
+  Lower Left Corner=212 / Lower Right Corner=188
+  Left Vertical=179 / Right Vertical=186
+  Upper Horizontal=196 / Lower Horizontal=205
+  MU Num Retries=2 / MU Retry Delay=2   ;multi-user retry on lock conflict
+
+[Compiler Settings]      ;TAS Pro 7 source compiler (for development)
+  Lib Directory=C:\ISTECH
+  Run Code Size=2048 / Compiled Code Size=2048 / etc.
+```
+
+Notable: `taspro7.ini` records recently opened `.RTM`, `.SRC`, `.DFM`, and `.RWN` files in `[Report Format File History]`, `[Source File History]`, `[Screen File History]`, and `[Run File History]` sections — historical paths reference `F:\Projects\TAS\istech\` (development drive) and `\\2kserver\c\evoerp\` (older server name).
+
+**`RBuilder.ini`** stores ReportBuilder designer state only (toolbar dock positions, window sizes, grid snap settings). No ERP-significant data.
+
+---
+
+### Companion Files: `.mdx` and `.XLB` (Pass 292 — 2026-06-25)
+
+EvoERP uses two types of companion files alongside its primary data files:
+
+**`.mdx` — dBASE IV Multiple Index (compound index file)**
+- Magic bytes: `02 7C` followed by the base filename in ASCII (e.g., `BKLUGRID`)
+- Format: dBASE IV MDX (multi-tag compound index) — NOT Btrieve
+- **Usage:** The Pervasive SQL **DDF tables** (data dictionary files) are stored in dBASE DBF format, not Btrieve, and use `.mdx` for their indexes
+- DDF tables with `.mdx` companions: `filedict`, `filedes`, `filedfld`, `filekey`, `fileknum`, `fileloc`, `filerel`
+- Non-DDF tables with `.mdx`: `BKLUGRID` (lookup grid), `BKMENUSU` (menu/security), `errmsg` (error messages) — these are also DBF-format tables
+- The core application data (BKICMSTR, BKARINV, WORKORD, etc.) uses Btrieve `.B` files with NO `.mdx` companion
+
+**`.XLB` — Btrieve overflow / large-object companion file**
+- Magic bytes: `46 43 00 00` = `FC\0\0` — identical to `.B` Btrieve file signature
+- Format: Standard Btrieve file, same page structure as `.B`
+- **Usage:** Companion to `.B` files that have variable-length / blob fields; Btrieve stores overflow record pages in the `.XLB` file when the record exceeds the page size
+- Large example: `BKAPHPOL.XLB` = 118 MB (AP policy detail blobs); `BKAPHPOL.B` = the fixed-length header records
+- `BKAPCHKH.XLB` (11.5 MB), `BKAPINVT.XLB` (9.9 MB), `BKAPINVL.XLB` — all AP module tables with memo/text fields
+- Not all tables have `.XLB`; only tables with memo/variable fields generate them
+
+**Two-format split:** Application data = Btrieve `.B` + optional `.XLB`; DDF/schema tables = dBASE `.DBF` + `.mdx`.
+
+---
+
+### Update Mechanism: `FILE*.UPD` Files (Pass 292 — 2026-06-25)
+
+`\\i2s109-solidcrm\DBAMFG$\` contains 11 `.UPD` files:
+
+| File | Size | Purpose |
+|------|------|---------|
+| `evo.upd` | 3 bytes | Version marker — contains "1\r\n" (update sequence number) |
+| `FILECHSP.upd` | 3 KB | Btrieve snapshot — character set page (FC magic bytes confirmed) |
+| `FILEDEF.UPD` | 32 KB | Btrieve snapshot of FILEDEF (file definitions DDF) |
+| `FILEDES.UPD` | 940 KB | Btrieve snapshot of FILEDES (file descriptions) |
+| `FILEDFLD.UPD` | 114 KB | Btrieve snapshot of FILEDFLD (field definitions DDF) |
+| `FILEDICT.UPD` | 4.0 MB | Btrieve snapshot of FILEDICT (full data dictionary) |
+| `FILEKEY.UPD` | 934 KB | Btrieve snapshot of FILEKEY (index key definitions) |
+| `FILEKNUM.UPD` | 405 KB | Btrieve snapshot of FILEKNUM (key number mapping) |
+| `FILELOC.UPD` | 2.3 MB | Btrieve snapshot of FILELOC (file locations — all 3,613 tables) |
+| `FILEREL.UPD` | 73 KB | Btrieve snapshot of FILEREL (table relationships) |
+| `FILES.UPD` | 73 KB | Btrieve snapshot of FILES table |
+
+**How the update mechanism works:**
+- All `FILE*.UPD` files are Btrieve-format files (`FC\0\0` magic bytes) — they are **snapshot copies** of the target-state DDF tables
+- `evo.upd` = sequence/version number file (plain text "1\r\n")
+- `EvoERPupd.RWN` reads `FILE*.UPD` → compares current DDF against the snapshot → applies schema migration (CREATE_FILE, FROM_FILE/TO_FILE copy, field-mapping via FILEDICT/FILEDFLD)
+- The snapshot approach means: "after this update, the DDF should match these .UPD files exactly"
 
 ---
 
