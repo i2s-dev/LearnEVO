@@ -2469,18 +2469,43 @@ Per-customer, per-item pricing override table with 10 price break levels, 2 comm
 | AHSY_USER_CTRL | 1 char | Control flag |
 | AHSY_USER_ACCES_1 through _20 | 1 char each | Module permission flags (20 modules) |
 
-**Login process:** EvoERPmenu.rwn → EVOMENU_LOGIN.DCY (form) → validates against AHSYLOG
-→ EVOMENU_SELCOMP.DCY (company select) → main menu.
+**NOTE (Pass288 2026-06-25): AHSYLOG is a DBA-era legacy table — 0 T7 programs access it.
+T7-generation security uses BKPSUSER (270 programs) + ISEXUSER + BKSLEVEL + ISACCESS instead.
+AHSYLOG schema is documented here for reference only.**
 
-**Session tracking:** Active logins stored in BKLOGON (10 fields: code, password, company,
-program, printer, in-use flag, security level, menu, submenu, current printer).
+**Login process (T7 generation):** ISSPLASH → `EVOMENU_LOGIN.RWN` displays `EVOMENU_LOGIN.DCY` form
+→ validates against BKPSUSER (code + ENCRYPTSTR password) + ISEXUSER (Windows SSO matching)
+→ `EVOMENU_SELCOMP.RWN` displays `EVOMENU_SELCOMP.DCY` → user picks company → EvoERPmenu.RWN builds menu.
 
-**Password storage:** Encrypted via `ENCRYPTSTR` TAS keyword. Algorithm not decoded.
+**Login form (EVOMENU_LOGIN.DCY — Pass288 confirmed):**
+- `entLogOn: TTASENTER` — User Name field
+- `entPassword: TTASENTER` (PasswordChar='*') — masked password entry
+- `entVpassword: TTASENTER` + `ViewPass: TGlyphBtn` — show/hide password toggle
+- `TASENTER1: TTASENTER` — 3rd entry field (runtime data, probably company pre-fill)
+- `slAButton / slAGroup / slAMenu: TTASStrList` — string lists for menu population after login
+- `Evoshellexe: TShellExe` — shell launch component (for EvoERP startup)
+- Validation: `vldentPassword()` TAS function called on Password field
 
-**To add a new user:** SM module (System Maintenance) → user setup function. Creates record
-in AHSYLOG with role, starting menu code, and 20 access flags.
+**Company selection form (EVOMENU_SELCOMP.DCY — Pass288 confirmed):**
+- `cbxCompany: TTASComboBox` — dropdown populated from FILELOC/BKYSMSTR company list
+- Label: "Click on the Down Arrow below to get a list of Companies:"
+- Select / Cancel toolbar buttons
 
-**Confidence: 65/100** — AHSYLOG schema confirmed. Login flow traced. Access flag → module mapping not decoded.
+**Password change (EVOCHANGEPASS.DCY — Pass288 confirmed):**
+- Fields: `username` (pre-filled), `oldpass` (current), `newpass` (new), `reentpass` (confirm)
+- Save / Exit buttons. Old password required → user self-service only.
+
+**Password reset (EVORESETPASS.DCY — Pass288 confirmed):**
+- Fields: `username` (admin selects any user), `newpass` (new), `reentpass` (confirm)
+- No `oldpass` field → admin bypass. Save / Exit buttons.
+
+**Session tracking:** Active logins stored in `ISLOG` (9 fields: WHO/WHAT/DOING/STARTD/STARTT/COMPANY/KILL/MSG/EXTRA), opened by 999 programs. `BKLOGON` is DBA-era legacy (0 T7 programs access it).
+
+**Password storage:** Encrypted via `ENCRYPTSTR` TAS keyword (ISTS.CFG.EPASS mode) or hashed (ISTS.CFG.EHPASS mode). Algorithm not decoded. Stored in ISEX.USER.PASSW field.
+
+**To add a new user (T7 generation):** PS-A (T7PSA.RWN) → User Setup. Creates record in BKPSUSER (code/password/security-level) + ISEXUSER (Windows username for SSO, expiry, flags).
+
+**Confidence: 82/100** — Form fields fully confirmed from DCY content. T7 security tables confirmed from rwn_symbols.json corpus (270p/269p/1p). Password algorithm still not decoded.
 
 ---
 

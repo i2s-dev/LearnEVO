@@ -471,13 +471,13 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ## 5. SECURITY & LOGIN SYSTEM
 
-- [x] ✅ Login form identified: `EVOMENU_LOGIN.DCY` (encrypted) — **C: 65/100**
+- [x] ✅ Login form identified: `EVOMENU_LOGIN.DCY`; **Pass288 (2026-06-25): fully decoded** — TEditForm1, Caption='Evo ~ ERP'; `entLogOn:TTASENTER`=username; `entPassword:TTASENTER`(PasswordChar='*')=masked password; `entVpassword:TTASENTER`+`ViewPass:TGlyphBtn`=show-password toggle; `TASENTER1:TTASENTER`=3rd entry (likely company code); `slAButton/slAGroup/slAMenu:TTASStrList`=menu population string lists; `Evoshellexe:TShellExe`=shell component; `vldentPassword()`=TAS validation function — **C: 87/100**
 - [x] ✅ `AHSYLOG` table structure: AHSY_USER_LEVL (role), AHSY_USER_MENU (starting menu 4-char), AHSY_USER_CTRL (control flag), AHSY_USER_ACCES_1..20 (20 module permission flags) — **C: 80/100**; Pass270 (2026-06-25): 0 T7 programs access AHSYLOG — DBA-era legacy confirmed
 - [x] ✅ Password storage: encrypted via `ENCRYPTSTR` TAS keyword; algorithm not decoded — **C: 55/100**
 - [x] ✅ Session tracking via `ISLOG` table (NOT BKLOGON) — **C: 82/100**; Pass270 (2026-06-25): ISLOG(9f)=T7 session table (999 programs, all major modules); IS_LOG_WHO/WHAT/DOING/STARTD/STARTT/COMPANY/KILL/MSG/EXTRA; EvoERPmenu.RWN writes ISLOG on login; BKLOGON=0 T7 programs (DBA legacy, never touched by T7 generation)
 - [x] ✅ Locking keywords: `LOCK_OWNER`, `REC_LOCK`, `UNLOCK` — **C: 65/100**; **Pass277 cross-ref (2026-06-25)**: `unlock` confirmed as `save ... nocnf noclr unlock` modifier in BKROA.SRC; `lock R` = read/shared lock (`open TABLE lock R`) in BKDCA.SRC+BKMRF.SRC; `LOCK_OWNER` and `REC_LOCK` absent from all 5 SRC files — T7-era RWN keywords only (syntax unconfirmable without decrypted RWN); see L353 for full locking analysis — **C: 75/100**
-- [x] ✅ Password reset/change forms identified: `EVORESETPASS.DCY`, `EVOCHANGEPASS.DCY` — **C: 60/100**
-- [x] ✅ Company selection form: `EVOMENU_SELCOMP.DCY` — **C: 60/100**
+- [x] ✅ Password reset/change forms identified: `EVORESETPASS.DCY`, `EVOCHANGEPASS.DCY`; **Pass288 (2026-06-25): both fully decoded** — EVOCHANGEPASS: Caption='Change Password'; `username/oldpass/newpass/reentpass:TTASENTER`=4 fields (user, current, new, confirm); EVORESETPASS: Caption='Reset Password'; `username/newpass/reentpass:TTASENTER`=3 fields only (admin bypass — no old-pass check); Save/Exit buttons in both — **C: 85/100**
+- [x] ✅ Company selection form: `EVOMENU_SELCOMP.DCY`; **Pass288 (2026-06-25): fully decoded** — TEditForm3, Caption='Choose Company'; `cbxCompany:TTASComboBox`=dropdown company list; Label='Click on the Down Arrow below to get a list of Companies:'; `btnSelectCompany:TButton`/`btnCancel:TButton`; MainMenu with Select/Cancel items; TTASComboBox populated at runtime from BKSYMSTR company list — **C: 82/100**
 - [ ] ⬜ `AHSY_USER_ACCES_1..20` — exact index → module mapping (which flag controls which module)
 - [ ] ⬜ `AHSY_USER_LEVL` — all role values and what each allows/denies
 - [ ] ⬜ Password hashing algorithm reverse-engineered
