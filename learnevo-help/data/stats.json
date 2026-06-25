@@ -1,15 +1,15 @@
 {
   "pages": 2709,
   "by_kind": {
-    "topic": 77,
+    "topic": 32,
     "recipe": 45,
-    "module": 22,
+    "module": 67,
     "menu": 759,
     "table": 659,
     "form": 1109,
     "glossary": 38
   },
-  "tokens_in_index": 19775,
+  "tokens_in_index": 20328,
   "nav_sections": [
     "Getting Started",
     "Concepts",

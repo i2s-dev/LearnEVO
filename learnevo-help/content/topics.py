@@ -1919,7 +1919,612 @@ From `EvoUPDTE.RUN` plaintext strings:
 
 
 # =====================================================================
-# Placeholder stubs for many more pages — auto-generated module pages,
-# recipes, tables, etc. come from the build script.
+# Cross-cutting topic pages added Pass 310 (2026-06-25)
+# These eliminate the final 8 auto-generated stubs.
+# =====================================================================
+
+("taspro7-ini-reference", "TAS Pro 7 Configuration: taspro7.ini Reference", "Reference",
+"""
+`taspro7.ini` is the local configuration file read by `StartEvo.exe`
+and `tp7runtime.exe` at startup. Located at `C:\\ISTS\\taspro7.ini`
+(4.8 KB on the i2 Systems install).
+
+## Sections and keys
+
+### [Setup]
+
+| Key | Example value | Meaning |
+|-----|--------------|---------|
+| `DataDictPath` | `\\\\server\\DBAMFG$\\` | Network path to data dictionary and programs |
+| `DfltRunPrg` | `EvoERPmenu.RWN` | Main program to run at startup |
+| `Serial` | `670538` | TAS Pro 7 license serial number |
+| `DefaultPath` | `\\\\server\\DBAMFG$\\` | Default file path for data files |
+| `Titlebar` | `EvoERP` | Window title bar text |
+| `HelpFileName` | `EvoHELP.CHM` | HTML help file for F1 help |
+| `MultiUser` | `Y` | Multi-user mode (Btrieve shared access) |
+| `DFLTCOMPANYCODE` | `01` | Default company code at login |
+
+### [TP5WIN]
+
+Legacy font, color, and box-drawing configuration from TAS Pro 5
+compatibility mode. Keys include color palette indices and font
+names for the character-mode UI.
+
+### [TAS50]
+
+Code page 437 box-drawing character codes — used by the text-mode
+screen renderer in `tp7runtime.exe`.
+
+### [Compiler Settings]
+
+| Key | Value | Meaning |
+|-----|-------|---------|
+| `Lib` | `C:\\ISTECH` | Local library path used during development compilation |
+
+### [FileManager]
+
+| Key | Value | Meaning |
+|-----|-------|---------|
+| `UseCodeBase` | `0` | `0` = use Btrieve/Pervasive; `1` = use CodeBase (legacy) |
+
+## How StartEvo.exe uses it
+
+1. Reads `DataDictPath` to locate the network share.
+2. Reads `DfltRunPrg` to know which `.RWN` to load.
+3. Reads `DFLTCOMPANYCODE` for the default login company.
+4. Passes these to `tp7runtime.exe` as command-line arguments.
+
+## Related
+
+- [[architecture-overview]]
+- [[recipe-login]]
+""",
+["taspro7.ini", "ini", "configuration", "startup config", "serial",
+ "datadictpath", "dfltrunprg", "multiuser", "setup keys"]),
+
+("encryption", "EvoERP Encryption Overview", "Architecture",
+"""
+EvoERP encrypts its compiled program and data-dictionary files using
+the **Twofish cipher**. This page summarizes what is encrypted, what
+is not, and what is confirmed about the algorithm.
+
+## What is encrypted
+
+| File type | Key | Notes |
+|-----------|-----|-------|
+| `.RWN` — compiled TAS Pro 7 programs | `K_B = "RWN"` passphrase | Twofish-192-CFB-128 |
+| `.DCY` Type A — Delphi VCL forms | `K_D = "DCY"` passphrase | Twofish-192-CFB-128 |
+| `.DCY` Type B — compiled bytecode | `K_C` (separate key) | Same cipher |
+| `.SCY`, `.LCY` — encrypted variants | Same as `.DCY` pattern | Unverified sub-types |
+
+## What is NOT encrypted
+
+- `.RUN` — older TAS Pro 6 programs (plaintext or lighter obfuscation)
+- `.SRC` — 7 TAS Pro 7 source files on the share (plaintext)
+- `.DFM` — Delphi VCL forms (plaintext text format, except the 25 TPF0 binary forms)
+- `.B` — Btrieve data files (standard Btrieve, not encrypted)
+- `.RTM` — ReportBuilder templates (plaintext)
+
+## Cipher parameters (fully confirmed)
+
+- **Algorithm**: Twofish in CFB mode, 128-bit block
+- **Key size**: 192-bit (24 bytes)
+- **Key derivation**: passphrase → SHA-1 digest (20 bytes) + 4 zero bytes = 24-byte key
+- **IV (initialization vector)**: 16-byte `block_buf` — uninitialized heap at the point
+  of encryption; value is non-deterministic and not stored in the file header
+- **Body start**: byte offset `K0` (key offset from header, varies by file type)
+
+## Current blocker
+
+The IV is the only missing piece for offline decryption. It is
+uninitialized heap and requires one debugger session to recover
+during a live `tp7runtime.exe` run. Once the IV is captured, full
+offline decryption of all `.RWN` and `.DCY` files becomes possible.
+
+See [[dcy-rwn-decryption]] for the full algorithm and all confirmed facts.
+
+## Related
+
+- [[dcy-rwn-decryption]]
+- [[architecture-overview]]
+- [[format-rwn]]
+""",
+["encryption", "twofish", "cipher", "rwn encryption", "dcy encryption",
+ "cfb", "aes", "key derivation", "sha1", "iv", "block_buf"]),
+
+("dcy-rwn-decryption", "DCY / RWN Decryption Algorithm", "Architecture",
+"""
+Everything confirmed about how `.RWN` and `.DCY` files are encrypted
+and how to decrypt them. See also [[encryption]] for the overview.
+
+## Cipher specification (100% confirmed)
+
+```
+Cipher:   Twofish
+Mode:     CFB (Cipher Feedback)
+Block:    128 bits (16 bytes)
+Key size: 192 bits (24 bytes)
+```
+
+## Key derivation
+
+```python
+import hashlib
+
+def derive_key(passphrase: str) -> bytes:
+    digest = hashlib.sha1(passphrase.encode('ascii')).digest()  # 20 bytes
+    return digest + b'\\x00' * 4                                 # pad to 24 bytes
+```
+
+| File type | Passphrase | Derived key (hex prefix) |
+|-----------|-----------|--------------------------|
+| `.RWN` program | `"RWN"` | `K_B` |
+| `.DCY` form | `"DCY"` | `K_D` |
+| `.DCY` bytecode | `"???"` | `K_C` (passphrase unconfirmed) |
+
+## Decryption algorithm
+
+```python
+from Crypto.Cipher import Twofish  # pycryptodome
+
+def decrypt_rwn(ciphertext: bytes, key: bytes, iv: bytes, body_start: int) -> bytes:
+    header = ciphertext[:body_start]
+    body   = ciphertext[body_start:]
+    cipher = Twofish.new(key, Twofish.MODE_CFB, iv=iv, segment_size=128)
+    return header + cipher.decrypt(body)
+```
+
+`body_start` = `K0` offset from the file header (varies; ~16–32 bytes in
+for standard `.RWN` files).
+
+## IV — the only unknown
+
+The 16-byte IV is `block_buf` in `tp7runtime.exe` — an uninitialized
+heap buffer at the point the cipher is set up. It is **not stored
+in the file**. Value is non-deterministic across runs.
+
+To recover the IV: attach a debugger (Frida or x64dbg) to
+`tp7runtime.exe`, set a breakpoint at the Twofish key-schedule call,
+and read the 16 bytes at `block_buf` once a `.RWN` file is opened.
+
+## What is blocked
+
+Without the IV, offline decryption cannot proceed. All `.RWN` and
+`.DCY` file analysis is blocked until one debugger session captures
+the IV. Once captured (and confirmed stable across files/sessions),
+the full corpus of 1,115 `.RWN` files becomes decryptable.
+
+## Files confirmed partially decryptable
+
+`suwin6t.rwn` has been analyzed via the TAS Pro 6 disassembler
+(different format, different key). All TAS Pro 7 `.RWN` files require
+the IV.
+
+## Related
+
+- [[encryption]]
+- [[format-rwn]]
+- [[architecture-overview]]
+""",
+["dcy rwn decryption", "decryption", "twofish", "cipher", "iv", "block_buf",
+ "key derivation", "rwn decrypt", "dcy decrypt", "sha1 key"]),
+
+("menu-codes-reference", "EvoERP Menu Code Reference", "Reference",
+"""
+EvoERP functions are addressed by **menu codes** — two-letter module
+prefixes plus letter/number suffixes (e.g., `AR-A`, `WO-B-3`).
+This page catalogs all confirmed module prefixes.
+
+## Module prefix table
+
+| Prefix | Module name | Key entry point |
+|--------|-------------|----------------|
+| `AB` | Address Book | `AB-A` |
+| `AC` | Accounting Consolidation | `AC-A` |
+| `AD` | Admin Defaults | `AD-A` GL Defaults |
+| `AM` | Archive / Accounting Manager | `AM-F` Financial Statements |
+| `AP` | Accounts Payable | `AP-A` Enter Vendors |
+| `AR` | Accounts Receivable | `AR-A` Enter Customers |
+| `BM` | Bill of Materials | `BM-A` Enter BOM |
+| `BS` | Business Status / Dashboard | `BS-A` |
+| `CM` | Credit Memos | `CM-A` |
+| `CP` | Credit/Payment Processing | — |
+| `CR` | Credit Control | — |
+| `CS` | Commission System | `CS-A` |
+| `DC` | Data Collection (shop-floor) | `DC-A` Enter Labor |
+| `DE` | EDI / Data Exchange | `DE-A` |
+| `DI` | Distribution / Drop-Ship | — |
+| `ED` | Electronic Data Interchange | — |
+| `ES` | Estimating | `ES-A` |
+| `EX` | Export / Exchange | — |
+| `FA` | Fixed Assets | — |
+| `FL` | Floor Control | — |
+| `FO` | Forecasting | — |
+| `FP` | Forecast / Planning | — |
+| `GE` | Generic Import (Import DBA) | `GE-A` |
+| `GF` | Golding Farms Pricing (custom) | `GF-A` |
+| `GL` | General Ledger | `GL-A` Enter Journal |
+| `HH` | Handheld / Mobile | `HH-N` |
+| `IC` | Inventory Control / Cycle Count | — |
+| `IM` | Import Management | — |
+| `IN` | Inventory | `IN-B` Enter Items |
+| `IS` | ISTS Custom enhancements | — |
+| `JC` | Job Costing | `JC-A` Job Cost Report |
+| `LC` | Lot Control | `LC-A` Edit Lots |
+| `LM` | Label Management | — |
+| `LO` | Locations / Bin Management | — |
+| `LW` | Lot/Weighted Allocation | — |
+| `MA` | Machine / Asset tracking | — |
+| `MM` | Material Management | — |
+| `MR` | MRP (Material Requirements Planning) | `MR-A` |
+| `PC` | Product Configuration (F/O) | — |
+| `PI` | Physical Inventory | `PI-A` |
+| `PL` | Paperless Manufacturing | — |
+| `PO` | Purchase Orders | `PO-A` Enter POs |
+| `PR` | Payroll | — |
+| `PS` | Planning / Scheduling | — |
+| `QC` | Quality Control | — |
+| `QT` | Quotations / Estimating | `QT-A` |
+| `QU` | Queue Management | — |
+| `RF` | RFQ (Request for Quotation) | `PO-G` |
+| `RM` | Return Material | `SO-J` Enter RMAs |
+| `RO` | Routings | `RO-A` Enter Routings |
+| `RT` | Report Templates | — |
+| `SA` | Sales Analysis | — |
+| `SB` | Sales Budget / Forecast | — |
+| `SC` | Serial Control | `SC-A` Edit Serials |
+| `SD` | Sales / Shipping Detail | — |
+| `SH` | Shipping | `SH-A` |
+| `SL` | Sales Listings | — |
+| `SM` | System Manager | — |
+| `SO` | Sales Orders | `SO-A` Enter Orders |
+| `SR` | Service / Repair | — |
+| `SU` | System Utilities | — |
+| `SY` | System / User Admin | `SY-A` Enter Users |
+| `TA` | Tools / Admin Utilities | `TA-O` Backups |
+| `UM` | Unit of Measure Conversion | — |
+| `UP` | Updates / Patches | `TA-P` |
+| `US` | User-defined Settings | — |
+| `UT` | Utilities | — |
+| `WC` | Work Centers | `WC-A` Enter Work Centers |
+| `WO` | Work Orders | `WO-A` Enter Work Orders |
+| `YS` | Year-end / System | — |
+
+## Sub-code pattern
+
+Most menu codes follow the pattern: `XX-Y` (function) where:
+- `XX` = two-letter module prefix
+- `Y` = alphabetic function code (A=entry, B=second function, L=listings/reports)
+- `XX-L-Y` = report listing sub-code (e.g., `AR-L-A` = AR Aging)
+- `XX-Y-Z` = third-level sub-function
+
+## Confirmed from source analysis
+
+554 menu codes extracted from `.RUN` file string dump. All T7*.DFM
+forms (911 files) surveyed and module codes confirmed from form
+captions and field labels.
+
+## Related
+
+- [[architecture-overview]]
+- [[recipe-login]]
+""",
+["menu codes", "menu reference", "module codes", "ar-a", "wo-a", "po-a",
+ "module prefix", "function codes", "menu navigation"]),
+
+("reporting-pipeline", "EvoERP Reporting Pipeline", "Architecture",
+"""
+How EvoERP reports flow from raw data to printed output.
+
+## Pipeline overview
+
+```
+Btrieve data (.B files)
+       ↓
+TAS Pro 7 program (.RWN) reads and formats records
+       ↓
+ReportBuilder engine (tp7runtime.exe + RBLib.dll)
+       ↓
+.RTM template (layout definition on network share)
+       ↓
+Output: Screen / Printer / PDF / File
+```
+
+## Components
+
+### 1. Data source
+
+All EVO report data comes from Btrieve `.B` files on the network
+share. Reports open tables via the TAS Pro 7 `open/find/clr` keywords
+or SQL-like queries through the Pervasive SQL engine.
+
+### 2. TAS Pro 7 program
+
+Each report is driven by a compiled `.RWN` program (or `.RUN` for
+older reports). The program:
+- Opens tables via `open` keyword
+- Reads records via `find` / `clr` (next-record)
+- Filters and calculates
+- Passes data to the ReportBuilder via a `mount` form call
+
+### 3. ReportBuilder template (.RTM)
+
+`.RTM` files define the visual layout:
+- Report bands (header, detail, group, footer, summary)
+- Labels and expressions
+- Data field bindings (by field name)
+- Font, column widths, colors
+
+Templates are stored on the network share under:
+- `\\\\server\\EVOReports\\` — standard reports
+- `\\\\server\\DBAMFG$\\` — some module-specific reports
+
+### 4. FILELOC table
+
+`FILELOC.B` maps a logical report configuration name to the physical
+`.RTM` filename. When EVO prints a report, it looks up the name
+in `FILELOC` to find the `.RTM` path. This allows report templates
+to be swapped without changing programs.
+
+### 5. Output destinations
+
+| Destination | How |
+|-------------|-----|
+| Screen | ReportBuilder preview window |
+| Printer | Windows print spooler via ReportBuilder |
+| PDF | PDF printer driver or RBDsgnr export |
+| File | Tab-delimited or CSV (some reports) |
+
+## Customizing a report
+
+1. Copy the `.RTM` from the share to a local folder.
+2. Open in `RBDsgnr.exe` (ReportBuilder Designer).
+3. Modify bands, labels, field references.
+4. Save and copy back to the share.
+5. Update `FILELOC.B` if the filename changed.
+
+## Related
+
+- [[recipe-custom-report]]
+- [[format-rtm]]
+- [[module-RT]]
+""",
+["reporting", "report pipeline", "rtm", "reportbuilder", "fileloc",
+ "report template", "rb", "rbd", "printer", "report output"]),
+
+("src-deep-dive", "TAS Pro 7 SRC Language Reference", "Architecture",
+"""
+TAS Pro 7 (`.SRC`) is the 4GL language used to write EvoERP programs.
+Only 7 `.SRC` source files are available on the network share; all
+other logic is binary-only in encrypted `.RWN` files.
+
+## File characteristics
+
+- Extension: `.SRC`
+- Format: plain text, UTF-8 compatible
+- Compiler: `tp7runtime.exe` compiles `.SRC` → `.RWN`
+- Available sources: `BKAWLB.SRC`, `BKDCA.SRC`, `BKLME.SRC`,
+  `BKMRF.SRC`, `BKROA.SRC`, `NZEVO.LIB`, `BKDCLIB.SRC`
+
+## Program structure
+
+```taspro7
+program PROGNAME
+
+  # Variable declarations
+  var MYVAR  type A(30)    # Alphanumeric, 30 chars
+  var MYNUM  type N(8,2)   # Numeric, 8 digits, 2 decimal
+  var MYDATE type D        # Date
+  var MYTIME type T        # Time
+
+  # Table declarations
+  table CUSTFILE  file "BKARCUST.B"  key "BKAC_CUST_CODE"
+
+  # Startup label
+  label ONOPEN
+
+  # Main code
+  open CUSTFILE
+  find F CUSTFILE BKAC_CUST_CODE val "ABC001"
+
+  # Screen / form
+  mount MYFORM CUSTFILE
+  enter MYFORM ...
+
+  # Function / subroutine
+  fnc_list MYFUNC
+    ...
+  end_fnc
+
+end
+```
+
+## Key keywords (confirmed from SRC analysis)
+
+| Keyword | Purpose |
+|---------|---------|
+| `open tbl fnum N` | Open table for Btrieve access |
+| `find F fnum key FIELD val VALUE` | Find record by key field value |
+| `find N fnum` | Next record (sequential scan) |
+| `clr fnum` | Clear / close cursor |
+| `del fnum` | Delete current record |
+| `dall fnum` | Delete all records matching current filter |
+| `mount FORM FILE` | Bind a DFM form to a data file |
+| `enter FORM ...` | Display form and accept user input |
+| `menu FORM ...` | Display as menu selection |
+| `xtrap event FORM ...` | Trap F-key or event on a form |
+| `fnc_list LABEL` | Define function/subroutine |
+| `prg_hdr TITLE` | Set program header/title bar text |
+| `findv M fnum key FIELD val VALUE` | Variable-handle find |
+| `time FIELD get` | Get current time into type-T field |
+| `novldmsg` | Suppress next validation message |
+| `cch()`/`ccf()` | Begin/end highlight color bracket |
+| `ccr()` | Color reset |
+| `clrlne at row,col nchr N` | Erase N chars at screen position |
+
+## Types
+
+| Type | Description |
+|------|-------------|
+| `A(n)` | Alphanumeric, n characters |
+| `N(p,s)` | Numeric, p total digits, s decimal |
+| `D` | Date (YYYYMMDD stored internally) |
+| `T` | Time (HHMMSS stored internally) |
+| `L` | Logical (Y/N) |
+
+## Operators
+
+- Comparison: `=`, `<>`, `<`, `>`, `<=`, `>=`
+- Logical: `.a.` (AND), `.o.` (OR), `.n.` (NOT)
+- Arithmetic: `+`, `-`, `*`, `/`
+- String: `+` (concatenation)
+
+## Available source file summary
+
+| File | Purpose | Key findings |
+|------|---------|-------------|
+| `BKAWLB.SRC` | AR/AP write-off and listing | Confirms `open/find/clr` syntax |
+| `BKDCA.SRC` | DC-A labor entry | `findv`, `time`, `novldmsg`, composite key find |
+| `BKLME.SRC` | Label/lot management | Multi-table `mount` patterns |
+| `BKMRF.SRC` | MRP staging (MR-F) | MRP table structures, INVTXN types |
+| `BKROA.SRC` | Routing entry (RO-A) | `fnc_list`, `xtrap`, `prg_hdr` |
+| `NZEVO.LIB` | Core library / boot loader | Session vars, SSO, idle timer, 1574 vars |
+| `BKDCLIB.SRC` | DC library functions | Shared DC subroutines |
+
+## Related
+
+- [[format-rwn]]
+- [[architecture-overview]]
+- [[encryption]]
+""",
+["src", "taspro7", "source code", "4gl", "tas pro language", "rwn source",
+ "syntax", "open find clr", "mount enter", "keywords"]),
+
+("field-search", "Field Search in EvoERP", "Reference",
+"""
+**Field Search** in EvoERP refers to the ability to search for a
+value across a field in a list or lookup. In TAS Pro 7 forms, this
+is typically triggered with **F2** (search / lookup) from a data-entry
+field.
+
+## How it works
+
+1. User is on a data-entry form with the cursor in a key field
+   (e.g., Item#, Customer#, Vendor#).
+2. Press **F2** (or the designated lookup key).
+3. EVO opens a scrollable list of all valid values for that field,
+   retrieved from the linked table.
+4. User can type to filter (incremental search) or arrow/scroll to
+   the desired record.
+5. Press Enter to select — EVO fills in the field and auto-fills
+   dependent fields (description, address, etc.).
+
+## Where it appears
+
+- **Item# fields** → searches `BKICMSTR` by item number or description
+- **Customer# fields** → searches `BKARCUST`
+- **Vendor# fields** → searches `BKAPVEND`
+- **WO# fields** → searches `WORKORD`
+- Most foreign-key fields support F2 lookup
+
+## TAS Pro 7 implementation
+
+In SRC code, the `enter` keyword can include a search-list
+specification:
+
+```taspro7
+enter CUSTFORM CUST_FILE key CUST_CODE search-by CUST_NAME
+```
+
+This tells the form to offer both code-based and name-based search
+on F2 press.
+
+## The `fnc_list` keyword
+
+`fnc_list` in TAS Pro 7 defines a popup selection list:
+
+```taspro7
+fnc_list ITEMSEARCH
+  open ICMSTR
+  find ...
+  display BKIC_PROD_ITEM, BKIC_PROD_DESC
+end_fnc
+```
+
+A `xtrap F2 FORM ITEMSEARCH` binding then links the F2 key on
+`FORM` to this lookup function.
+
+## Related
+
+- [[module-IN]]
+- [[module-AR]]
+- [[src-deep-dive]]
+""",
+["field search", "f2", "lookup", "search field", "find record",
+ "item lookup", "customer lookup", "vendor lookup", "fnc_list"]),
+
+("help-system", "EvoERP Built-in Help System", "Reference",
+"""
+EvoERP ships with a compiled HTML help file — **EvoHELP.CHM** — which
+provides context-sensitive help accessible from the F1 key.
+
+## Location
+
+`C:\\ISTS\\EvoHELP.CHM` — installed locally on each workstation.
+The filename is configured in `taspro7.ini` as:
+```
+[Setup]
+HelpFileName=EvoHELP.CHM
+```
+
+## Format
+
+`.CHM` = Microsoft Compiled HTML Help. Contains:
+- An HTML-based topic hierarchy (like a website, compiled to binary)
+- Full-text search index
+- Table of contents (left pane)
+- Context ID mappings for F1 help
+
+## Accessing help
+
+- **F1** from any EVO screen — opens help for the current context
+- **Help menu** at the top of the main window
+- Direct search within the CHM viewer
+
+## Content organization
+
+EvoHELP.CHM covers:
+- Module overviews (what each module does)
+- Field-level help for each form
+- How-to procedures
+- Glossary of terms
+
+The CHM's coverage is shallower than the `learnevo-help` system
+for deep technical topics (file formats, cipher, bytecode), but
+is the authoritative end-user reference for UI procedures.
+
+## Updating
+
+New `.CHM` files are distributed with EvoERP software updates
+(`.UPD` files). The CHM is copied to `C:\\ISTS\\` by `StartEvo.exe`
+via `robocopy` during each update run.
+
+## Relationship to learnevo-help
+
+This help system (learnevo-help) supplements EvoHELP.CHM with:
+- Deeper technical documentation
+- Reverse-engineering findings
+- Cross-references between modules, tables, and files
+- Recipes (step-by-step workflows)
+
+## Related
+
+- [[recipe-login]]
+- [[taspro7-ini-reference]]
+- [[architecture-overview]]
+""",
+["help system", "evohel.chm", "chm", "f1 help", "built-in help",
+ "context help", "html help", "helpfilename"]),
+
 # =====================================================================
 ]

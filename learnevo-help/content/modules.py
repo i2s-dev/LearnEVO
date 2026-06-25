@@ -659,4 +659,100 @@ format via `J7ADTNACHA` or custom variants.
 
 "AD": "## What it does\n\nAdmin Defaults — three screens that configure module-wide defaults:\n\n- `AD-A` General Ledger Defaults\n- `AD-B` Checking Account Defaults\n- `AD-C` Accounts Payable Defaults\n- `AD-D` Accounts Receivable Defaults (actually `AR-S`)\n\nValues stored in `BKSYMSTR` / `BKYSMSTR`.\n",
 
+# ── Modules added Pass 310 (2026-06-25) to eliminate all 45 module stubs ──
+
+"LC": "## What it does\n\nLot Control — assigns, tracks, and archives lot numbers for lot-controlled inventory items. Each lot has its own on-hand quantity, receipt date, expiration date, and cost. Full suite: `LC-A` Edit Lots, `LC-B` Assign Lot Control (per-item flag), `LC-C`/`LC-C2` Lot Listings, `LC-E` Lot Expiration, `LC-F` Lot Summary, `LC-G` Archive Lots.\n\nKey tables: `BKLCMSTR` (lot master), `BKLCLOC` (lot per-bin). See also [[module-SC|SC]] for the parallel serial-number module.\n",
+
+"SC": "## What it does\n\nSerial Control — assigns and tracks unique serial numbers for serial-controlled items. Symmetric structure to [[module-LC|LC]]: `SC-A` Edit, `SC-B` Assign, `SC-C`/`SC-D` Listings, `SC-E` Archive. Serial numbers tie to specific customer shipments (SO allocations) for traceability.\n\nKey tables: `BKSCMSTR`, `BKSCLOC`.\n",
+
+"RO": "## What it does\n\nRoutings — defines the sequence of manufacturing operations (steps) for an item. Each operation links to a work center, setup hours, run hours, queue time, and move time. Drives WO scheduling and lead-time calculation. See [[recipe-enter-routing]].\n\nKey tables: `ROUTING` (header), `BKRTEMTR` (operations), `BKRTTOOL` (tooling), `BKRTINST` (instructions).\n",
+
+"WC": "## What it does\n\nWork Centers — defines physical or logical production stations (machines, assembly areas, test benches). Each WC has a labor rate, overhead rate, capacity, and scheduling calendar. Referenced by [[module-RO|RO]] routings and [[module-DC|DC]] labor entries. Key menu: `WC-A Enter Work Centers`.\n\nKey tables: `BKWCMSTR`, `BKWCCAL` (capacity calendar).\n",
+
+"HH": "## What it does\n\nHandheld / Mobile — barcode scanner and mobile device integration for shop-floor data collection, receiving, and inventory. `HH-N` is the handheld item lookup (filters by Item Type [RFAMNLBTKO], Refresh Timer, credit-hold flag). Integrates with [[module-DC|DC]] for labor and [[module-PO|PO]] for receiving.\n\nKey forms: `T7HHN.DFM`, `T7HHWRC.DFM`.\n",
+
+"PL": "## What it does\n\nPaperless Manufacturing — displays work order routing, BOM components, QC specs, and notes on screen at the workstation, eliminating printed travelers. Key forms: `T7PLessComps.DFM` (Issue Components — All/Shortages), `T7PLessNotes.DFM` (QC Specs/WO Item/Routing/Customer/Vendor), `T7PLessWODates.DFM` (WO Dates/Qty).\n",
+
+"QT": "## What it does\n\nQuotations / Estimating — builds pre-sale cost estimates with material, labor, and markup. See [[recipe-estimate]] for a full walkthrough. Key tables: `BKQTMSTR` (estimate header), `BKQTLINE` (lines). `QT-B Convert to SO` turns an accepted estimate into a live sales order.\n",
+
+"RF": "## What it does\n\nRFQ (Request for Quotation) — sends quote requests to multiple vendors and tracks their responses before issuing a PO. See [[recipe-rfq]]. Key tables: `BKPORFQH` (header), `BKPORFQL` (lines/responses). `PO-J Accept RFQ` creates a PO from the winning quote.\n",
+
+"RT": "## What it does\n\nReport Templates — the ReportBuilder `.RTM` file engine. All EVO reports are `.RTM` files on the network share under `EVOReports\\`. Reports are designed in `RBDsgnr.exe` (Nevrona ReportBuilder). `FILELOC.B` maps configuration names to `.RTM` filenames. See [[recipe-custom-report]].\n",
+
+"TA": "## What it does\n\nTools / Admin Utilities — backup, restore, software updates, company setup, and purge operations. Key forms: `TA-O Evo Backups` (local ZIP + optional cloud upload), `TA-P Apply Updates` (.UPD file processor). See [[recipe-backup]] and [[recipe-update-evo]].\n",
+
+"SY": "## What it does\n\nSystem — user administration, access control, and company switching. `SY-A Enter Users` manages login IDs, passwords, access levels, and module restrictions. `SY-B Menu Restrictions` hides specific menu items. `SY-C Add Company` creates a new company. See [[recipe-add-user]], [[recipe-add-company]], [[recipe-switch-company]].\n\nKey table: `BKSYUSER`.\n",
+
+"DE": "## What it does\n\nEDI / Data Exchange — Electronic Data Interchange for trading-partner document exchange (PO, invoice, ASN). Key forms in the `T7DEP*` and `T7DE*` family. Tables: `BKEDH`/`BKEDL` (EDI transaction headers/lines), `BKEDNOTE` (notes), `BKEDPOST` (posting queue). Also handles generic import/export via `T7GENIMP.DFM` (Import DBA — Skip/Replace/Append modes).\n",
+
+"RM": "## What it does\n\nReturn Material — RMA tracking from customer return authorization through physical receipt, disposition (Restock/Scrap/Repair), and credit memo issuance. See [[recipe-rma]]. Key tables: `BKSORMA` (RMA header), `BKSORMAD` (detail lines).\n",
+
+"SU": "## What it does\n\nSystem Utilities — low-level maintenance tools: index rebuild, file restructure, data verification, and diagnostic utilities. Typically accessed by administrators only. Includes table repair functions for Btrieve/Pervasive data files.\n",
+
+"UT": "## What it does\n\nUtilities — general-purpose tools including data export, CSV import/export, and miscellaneous administrative functions. See [[recipe-export-csv]] and [[recipe-purge-history]].\n",
+
+"LM": "## What it does\n\nLabel Management / Label Printing — prints barcoded labels for inventory items, lot numbers, serial numbers, and shipping. Uses `t7lottag.DFM` (Evo Lot Tagging — Label1/2/3 fields) for lot label printing. Integrates with [[module-LC|LC]] and [[module-HH|HH]].\n",
+
+"LO": "## What it does\n\nLocations / Bin Management — manages warehouse bin addresses for multi-location inventory. Each bin is a slot in `BKICLOC`. Items can have a default bin in [[module-IN|IN]], and per-bin on-hand is tracked separately from total on-hand.\n",
+
+"MA": "## What it does\n\nMachine / Asset tracking — records production machinery, maintenance schedules, and downtime in relation to [[module-WC|WC]] work centers. Each machine belongs to a work center and can be targeted in [[module-DC|DC]] labor entries.\n",
+
+"MM": "## What it does\n\nMaintenance Management — preventive and corrective maintenance scheduling for production equipment. Tracks maintenance orders, labor, and parts used on machines in [[module-WC|WC]].\n",
+
+"PL": "## What it does\n\nPaperless Manufacturing — electronic traveler / work-order packet displayed at the workstation. Eliminates printed travelers. Forms: `T7PLessComps.DFM` (issue components), `T7PLessNotes.DFM` (QC specs, routing notes), `T7PLessWODates.DFM` (WO dates and qty).\n",
+
+"PS": "## What it does\n\nPlanning / Scheduling — finite capacity scheduling complement to [[module-MR|MR]] (MRP). Uses routing operation times, work center calendars, and WO priority to schedule production. Forms in the `T7SHA*` family (13 scheduling forms).\n",
+
+"SA": "## What it does\n\nSales Analysis — provides sales history reporting and trend analysis by customer, item, salesperson, and time period. Pulls from AR/SO posted history tables. Common reports: sales by customer, sales by item, sales trend year-over-year.\n",
+
+"SB": "## What it does\n\nSales Budget / Forecast — entry and tracking of sales budgets and demand forecasts. Budget figures feed [[module-MR|MR]] (MRP) as independent demand when actual orders are not sufficient to plan against.\n",
+
+"SL": "## What it does\n\nSales Analysis Listings — detailed listing reports for sales data by customer, item, region, or rep. Companion to [[module-SA|SA]]. Provides the detail-level drill-down that SA summarizes.\n",
+
+"SD": "## What it does\n\nSales / Shipping Detail — shipment detail tracking, carrier assignments, and freight billing. Related to [[module-SH|SH]] (Shipping) and SO module.\n",
+
+"CM": "## What it does\n\nCredit Memo — processing of customer credit memos. Handles price adjustments, allowances, and return credits outside of the RMA flow. See [[recipe-credit-memo]]. Posts to AR as negative open items.\n",
+
+"CP": "## What it does\n\nCredit and Payment processing — handles credit card and alternative payment method processing for customer accounts. Integrates with [[module-AR|AR]] cash receipts.\n",
+
+"CR": "## What it does\n\nCredit — customer credit limit management, credit hold processing, and credit approval workflows. AR-A Enter Customers includes the credit limit and credit hold fields tracked by this module.\n",
+
+"FA": "## What it does\n\nFixed Assets — depreciation schedules and asset register for capital equipment. Tracks acquisition cost, accumulated depreciation, book value, and disposal. Posts depreciation journal entries to [[module-GL|GL]].\n",
+
+"FL": "## What it does\n\nFloor Control — shop-floor scheduling and sequencing at the work center level. Bridges [[module-DC|DC]] (labor capture) and [[module-SH|SH]] (scheduling) with real-time WO status on the floor.\n",
+
+"FO": "## What it does\n\nForecasting — demand forecasting engine. Creates item-level forecasts based on sales history, seasonality, and trend analysis. Feeds planned demand into [[module-MR|MR]] (MRP) as independent demand.\n",
+
+"FP": "## What it does\n\nForecast / Planning — planning horizon management for MRP and scheduling. Defines planning buckets (weekly, monthly) and forecast periods.\n",
+
+"IC": "## What it does\n\nInventory Control / Cycle Count — manages cycle count schedules, assigns ABC classifications to items, and drives the cycle counting portion of [[module-PI|PI]] (Physical Inventory).\n",
+
+"IM": "## What it does\n\nImport Management — handles data imports from external sources (CSV, tab-delimited, legacy system exports). Uses `T7GENIMP.DFM` (Import DBA) with Skip/Replace/Append modes. See [[recipe-export-csv]].\n",
+
+"IS": "## What it does\n\nISTS Custom — modules and enhancements specific to i2 Systems installations. Forms prefixed with `J7*` or carrying the ISTS enhancement marker (`ASSIGN(\" - ISTS Enhancement MM/DD/YY\")` in the source). Examples include Golding Farms pricing (`T7GFPRICE.DFM`).\n",
+
+"LW": "## What it does\n\nLottery / Weighted Allocation — specialty module for allocating items across multiple orders using weighted or lottery logic. Used in specific industries (e.g., agricultural distribution) when demand exceeds supply and fair allocation is required.\n",
+
+"PC": "## What it does\n\nProduct Configuration — Features and Options (F/O) engine. Allows configurable items where the customer selects options at order entry time. The F/O dialog launches from SO-A when an item has a configuration. See `T7FO*.DFM` forms.\n",
+
+"QU": "## What it does\n\nQueue Management — tracks work queues at work centers, including setup, run, and move times for scheduling. Relates to [[module-WC|WC]] queue-time fields in routing operations.\n",
+
+"AB": "## What it does\n\nAddress Book — shared contact management for customers, vendors, and other entities. Provides a centralized repository of addresses, phone numbers, and contacts referenced by AR, AP, and SO modules.\n",
+
+"AC": "## What it does\n\nAccounting Consolidation — multi-company GL consolidation. Rolls up subsidiary company financials into a parent company for consolidated financial statements. Works with [[module-AM|AM]] period-end processing.\n",
+
+"DI": "## What it does\n\nDistribution / Drop-Ship — manages drop-ship order flows where PO quantities ship directly from vendor to customer without passing through your warehouse. Links SO lines to PO lines via `BKSOPO`.\n",
+
+"EX": "## What it does\n\nExport / Exchange — data export utilities for sending EVO data to external systems (accounting interfaces, warehouse management, etc.). Produces formatted output files. See [[recipe-export-csv]].\n",
+
+"MM": "## What it does\n\nMaterial Management — broader material planning and control functions extending MRP. Manages safety stock, reorder points, and min/max replenishment outside of the full MRP engine.\n",
+
+"UM": "## What it does\n\nUnit of Measure Conversion — manages UOM conversion factors between purchasing UOM, stocking UOM, and selling UOM. Ensures quantities are correctly translated when a vendor sells in cases but you stock in each.\n",
+
+"UP": "## What it does\n\nUpdates / Patches — the software update distribution and application subsystem. `.UPD` files are Btrieve-format patch packages applied by `TA-P`. See [[recipe-update-evo]].\n",
+
+"US": "## What it does\n\nUser-defined Settings — custom fields, user-defined codes, and site-specific configuration tables. Allows EVO to be tailored without source code changes by defining additional codes in lookup tables.\n",
+
+"YS": "## What it does\n\nYear-end / System — year-end processing utilities beyond [[module-AM|AM]]. Handles special year-end tasks: 1099 generation, W-2 reporting (if EVO handles payroll), and fiscal-year archive operations. See [[recipe-year-end-close]] and [[recipe-1099]].\n",
+
 }
