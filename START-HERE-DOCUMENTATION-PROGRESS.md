@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-23 (Pass 232 — AL/SU/BR modules resolved: AL(BKSB.PART.* corrected 7-var, SAVE.BOTH.WAYS confirmed, T7ALOGSETUP LOC_*/BKSY.* confirmed, C:79→85), SU(LUGRID_* 13-var + DRILLM.* 9-var namespaces confirmed, T7gdm=Grid copy utility SKIP/REPLACE/OVERWRITE, C:80→87), BR(BKCM.ACCC.* 2-var+ISPOSI.H confirmed, C:80→82); 1 new doc: su-setup.md)
+Last updated: 2026-06-25 (Pass 285-286 — BKDCA.SRC keyword deep-dive (findv/cch/clrlne/scroll/time/novldmsg/size/val confirmed, C:88→91/C:90→92); 5 recipe corrections: Recipe 10 GL-B not GL-A (BKGLGJRN+BKGLGJLN schema added), Recipe 13 PS-A/BKPSUSER not SM-A/AHSYLOG (BKPS.USER.*/ISEX.USER.* confirmed), Recipe 14 IN-C/INVTXN not IN-G/BKISTXN (T7INC.RWN 43-table fingerprint), Recipe 15 INVTXN type codes from BKLME.SRC; BKISTXN purged from all 8 occurrences (never existed); OPEN_QUESTIONS.md item 2 updated (T7 security = BKPSUSER+BKSLEVEL not AHSYLOG))
 
 ---
 

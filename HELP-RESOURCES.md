@@ -113,8 +113,8 @@ Step-by-step traces of common end-to-end processes. These answer "how does X wor
 | 10 | GL Journal Entry (Manual) | GL-B |
 | 11 | Period-End Archiving and Purging | GL-P → GL-ARCH |
 | 12 | EvoERP Backup and Restore | TA-O |
-| 13 | New User Setup | SM → PS-A |
-| 14 | Inventory Manual Adjustment | IN-G/IN-H |
+| 13 | New User Setup | PS-A (T7PSA.RWN) |
+| 14 | Inventory Manual Adjustment | IN-C (T7INC.RWN) |
 | 15 | Lot/Serial Tracking Lifecycle | PO-J → WO-F → SO-C |
 | 16 | New Company Creation | UT → NE |
 | 17 | Payroll — Time Entry | WO-L-E or PR-J → PR-K |
@@ -15842,8 +15842,18 @@ and as part of scheduled maintenance. Three backup scopes available.
 - For full system restore: extract to a staging folder, validate,
   then copy over production path
 
-**Confidence: 68/100** — EvoERPbackup form confirmed from DFM; exact menu path to launch
-it (SM-O or direct) inferred; restore steps are general Btrieve/Pervasive procedure.
+**Additional confirmed vars (EvoERPbackup.RWN named_vars — Pass286 2026-06-25):**
+- `GS_BACKUP` — Glacier/Google Storage off-site backup flag (remote storage option)
+- `FILELOC` — table opened to resolve backup destination paths
+- `BKSY.COMP.NAME/ADD1/ADD2/CSZ` — company name and address embedded in archive header
+- `ZIPPATH` / `ZIPFILE` — resolved archive path and filename
+- `LOC_FILE_NAME` / `LOC_COMP_CODE` — per-location file names and company codes (multi-company)
+- `ISTS.CFG.DCCOMP` — DC component config key used during backup scope selection
+- `HAVEFILES` — flag: at least one file was found to include in the archive
+
+**Confidence: 72/100** — EvoERPbackup.RWN DB fingerprint + named_vars confirmed; GS_BACKUP
+suggests remote/cloud storage option not previously documented; form DFM confirmed; restore
+steps are general Btrieve/Pervasive procedure. (Pass286 2026-06-25)
 
 ---
 

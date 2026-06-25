@@ -90,9 +90,14 @@ to resolve fully:
 
    **New open sub-question:** 7 `suwin*.DCY` files fail K_D decryption → see item #13 below.
 
-2. **Exact ACCES_1..20 → module mapping** in the security model.
-   Easiest path: watch a running `Enter Users` (`SM-?`) screen save a
-   user and read the bytes written to `AHSYLOG`.
+2. ~~**Exact ACCES_1..20 → module mapping**~~ **PARTIALLY RESOLVED 2026-06-25 (Pass286).**
+   T7-era security does NOT use `AHSYLOG` — zero T7 programs access it (confirmed Pass270).
+   T7 security: `BKPSUSER.BKPS_USER_SEC` = security level code → `BKSLEVEL` (422-field
+   permission matrix, 20 sections × 21 flags each). `BKPSUSER` managed by T7PSA.RWN.
+   `ISEXUSER` stores extended flags: ISEX.USER.GROUP/DATE1/DATE2/PASSW/PEXPD/LPASS/FLAGS.
+   `ISACCESS` = additional access control table (T7PSA also opens this, role TBD).
+   **Remaining open:** exact BKSLEVEL index→module mapping (which BKSL_MENU code controls
+   which EvoERP module) and exact ISACCESS role still requires decrypted T7PSA bytecode.
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a
