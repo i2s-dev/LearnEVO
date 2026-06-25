@@ -18174,6 +18174,20 @@ clr BKYSMSTR rec             ;clear record buffer (new record)
 del INVTXN nocnf             ;delete without confirmation prompt
 save MTICMSTR nocnf noclr unlock  ;save, no confirm, keep buffer, release lock
 find F srch BKSY.ARINV.NUM nlock  ;find first on key, no lock
+open MTMRP lock R            ;open with read-lock (shared, non-exclusive)
+openv "BKDCPLAB" fnum HANDLE lock R  ;open table by variable name
+```
+
+**Pop-up menu (BKAWLB.SRC + BKROA.SRC — Pass 276):**
+```
+menu at row,col len N wdt W fld HOLDER cntr CTR nch N mcw W esc LABEL [ttl "Title"]
+;   len=visible-items, wdt=menu-width, fld=selection-var, cntr=item-counter
+;   nch=total-choices, mcw=max-choice-width, esc=escape-label, ttl=title
+```
+
+**Variable type V (variant) — BKDCA.SRC L49:**
+```
+define t.wokey type V size 10   ;V = variant, explicitly sized; used for dynamic key building
 ```
 
 ---

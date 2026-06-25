@@ -115,7 +115,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ Variable declaration syntax: `define <name> type A/i/n/d/t size <N> [array <N>] [LOCAL]` — **C: 92/100**
   - `LOCAL` modifier: variable scoped to current `func` block (only valid inside function body)
 - [x] ✅ Database I/O keywords: `open`, `find F srch`, `clr`, `del`, `dall` — **C: 80/100**
-- [x] ✅ UI/form keywords: `mount`, `prg_hdr`, `enter`, `xtrap`, `fnc_list`, `menu` — **C: 75/100**
+- [x] ✅ UI/form keywords: `mount`, `prg_hdr`, `enter`, `xtrap`, `fnc_list`, `menu` — **C: 75/100**; **Pass276**: full syntax SRC-confirmed for all 6 (see §3.2/3.3): mount/enter/trap/xtrap/fnc_list/menu all documented with complete parameter sets from BKAWLB+BKDCA+BKLME+BKMRF+BKROA — **C: 88/100**
 - [x] ✅ 7 plaintext `.SRC` files analyzed: BKAWLB, BKDCA, BKLME, BKMRF, BKROA, Bkaph, Bkapha — **C: 90/100**
 - [x] ✅ `.a.` / `.o.` / `.n.` / `$` operators fully documented with behavior — **C: 95/100**
 - [x] ✅ `{ func }` block scoping rules fully confirmed (Pass 107): — **C: 90/100**
@@ -341,7 +341,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `$` string-contains operator confirmed: `if X $ "ABC"` = true if X in set — **C: 90/100**
 - [ ] ⬜ Expression precedence rules
 - [x] ✅ 20+ built-in functions documented (str/trim/mid/chr/round/ttof/ftot/flerr/fnum/co/zask/etyp/iif/loc/just/windows/clicked_on/max_cols/dpath) — **C: 85/100**
-- [x] ✅ Extended types V (variant) and O (legacy numeric) documented with BKDCA.SRC source — **C: 72/100**
+- [x] ✅ Extended types V (variant) and O (legacy numeric) documented with BKDCA.SRC source — **C: 72/100**; **Pass276**: `define t.wokey type V size 10` (BKDCA.SRC L49) = V is an explicitly sized variant type (not inferred from runtime); `etyp()` returns 'C' in BKROA.SRC L1538 (`if etyp() <> 'C'`) = etyp() returns current field entry-type code; O type = legacy numeric (observed in DC module, BKDCA.SRC context) — **C: 80/100**
 - [x] ✅ `find R` mode confirmed absent; `lock R` = read-lock on open — **C: 90/100**
 
 ### 3.2 Database I/O Keywords
@@ -362,7 +362,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ `wmount` / `load_form` / `set_focus` — windowed form loading — **C: 68/100**
 - [x] ✅ `enter <field> [mask] [up] [acr] [pre/post <expr>] [upar <label>]` — field input with hooks — **C: 72/100**; **Pass276**: SRC-confirmed full syntax: `enter <VAR> [mask 'XX'] [up] [acr] [pre <expr|call()>] [post <call()>] [upar <label>] [dflt <VAR>] [vld <call()>] [at row,col] [noclickoff]`; examples: `enter e.status[1] mask 'X ' up acr pre pre.stat() upar START` (BKAWLB), `enter emp.alpha post adjemp() vld chk_emp() upar START acr at 23,qline noclickoff` (BKDCA), `enter FROM3 pre pre.wo1() post post.wo1()` (BKAWLB); `up`=validate on up-arrow, `acr`=auto-cursor-return, `noclickoff`=ignore mouse click-off, `at row,col`=position override — **C: 87/100**
 - [x] ✅ `prg_hdr "..."` — program header/title — **C: 80/100**
-- [x] ✅ `menu` — pop-up selection list — **C: 70/100**
+- [x] ✅ `menu` — pop-up selection list — **C: 70/100**; **Pass276**: SRC-confirmed full syntax from BKAWLB.SRC L112 + BKROA.SRC L920: `menu at row,col len N wdt W fld VAR cntr CTR nch N mcw W esc LABEL [ttl "Title"]`; `len`=visible items count, `wdt`=menu width, `fld`=selection-holder field, `cntr`=current-item counter, `nch`=total choices, `mcw`=max choice width, `esc LABEL`=escape handler, `ttl`=title string — **C: 87/100**
 - [ ] ⬜ Full `enter` keyword option set documented
 - [ ] ⬜ All window management keywords (resize, move, close, modal/modeless)
 - [ ] ⬜ Event model (how keystrokes, mouse events, and form events are handled)
