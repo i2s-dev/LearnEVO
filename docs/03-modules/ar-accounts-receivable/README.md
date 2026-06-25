@@ -271,6 +271,54 @@ The BKARCUST customer statistics (BKAR_DAYS_TOPAY = average days to pay; BKAR_NU
 
 ---
 
+## Programs (20 total, Pass 265 2026-06-25)
+
+Data extracted from rwn_symbols.json.
+
+| Program | Procs | Lib | DBs | Role / key tables |
+|---------|------:|-----|----:|-------------------|
+| `T7ARB.RWN` | 301 | ISTECH | 51 | **AR-B Enter Vouchers** — invoice entry; BKARCUST + BKARINVV + ISNOTES; BKAR.INV 86-var |
+| `T7ARA.RWN` | 274 | LISTG60 | 45 | **AR-A Enter Customers** — customer master editor; BKARCUST + ISAREX + ISTAXGRP; BKAR.GROSS/COGS/NET 144-var each (sales analysis integration) |
+| `T7ARC.RWN` | 228 | LISTG60 | 45 | **AR-C Record Payments** — cash receipts; BKARCUST + BKARINV; BKAR.INV 86-var |
+| `T7ARN.RWN` | 191 | ISTECH | 43 | **AR-N Print Customer Deposits** — BKARDEP + BKARINV + BKARCUST |
+| `T7ARF.RWN` | 182 | LISTG60 | 31 | **AR-F Print Aging** — BKART + BKYSMSTR; aging computed at runtime from BKARINVT |
+| `t7ara2.RWN` | 176 | LISTG60 | 29 | **AR-A secondary form** — BKARCUST + ISTAXGRP + BKCMDUNH; BKAR.GROSS 48-var |
+| `T7ARE.RWN` | 163 | LISTG60 | 28 | **AR-E Print Statements** — BKSYMSTR + ISMCF + BKYSMSTR; ISIS.MCF 49-var |
+| `T7ARM.RWN` | 159 | ISTECH | 39 | **AR-M Enter Customer Refund** — BKAPINVT + BKGLCHK + BKARCUST |
+| `T7ARG.RWN` | 148 | LISTG60 | 19 | **AR-G Print Customer Code/Name** — ISTERMS + BKARCUST + BKARINV |
+| `T7ARK.RWN` | 144 | LISTG60 | 23 | **AR-K Print Sales Tax Report** — BKISTAX + ISTAXFIL |
+| `T7ARR.RWN` | 137 | LISTG60 | 24 | **AR-R** bank reconciliation; ISBANKS + BKAPCHKF |
+| `T7ARP.RWN` | 136 | LISTG60 | 21 | **AR-P Generate Dun Letters** — BKARINVT + BKARCUST; BKAR.INVT 25-var (open-item aging detail) |
+| `T7ARH.RWN` | 122 | LISTG60 | 18 | **AR-H Print Customer General Info** — BKARCUST + BKARINV + ISTERMS |
+| `T7ARD.RWN` | 121 | LISTG60 | 32 | **AR-D Charge Interest on Invoices** — BKSYMSTR + ISMCF + BKARCUST; ISIS.MCF 49-var |
+| `T7ARL.RWN` | 110 | ISTECH | 26 | **AR-L Transfer Sales Taxes** — BKISTAX + ISTAXFIL |
+| `T7ARI.RWN` | 103 | LISTG60 | 56 | **AR-I Print Customer Mail Labels** — BKARCUST + BKARINV |
+| `T7ARU.RWN` | 85 | LISTG60 | 22 | **AR-U** unapplied payments management; BKARCUST + BKARINVT; IS.NCR 54-var |
+| `T7ART.RWN` | 68 | LISTG60 | 56 | **AR-T** i2 custom program; ISCC + BKARCUST |
+| `T7ARQ.RWN` | 17 | NZLICE | 56 | NZ license check stub |
+| `T7ARSHIP.RWN` | 15 | NZLICE | 56 | NZ ship license check stub |
+
+### Key program revelations (Pass 265)
+
+**T7ARB** (301p, ISTECH) opens **BKARINVV** — the 77-field "invoice vouchered" table. This confirms BKARINVV is written during live invoice entry, not just a reporting artifact. BKARINVV likely stores the full invoice header expanded with pricing/tax verification data before final posting to BKARINV.
+
+**T7ARA** has BKAR.GROSS 144-var + BKAR.COGS 144-var + BKAR.NET 144-var namespaces. These 432 access vars (144 fields × 3 metrics) indicate T7ARA includes a **sales analysis sub-module** — the customer master editor also drives the AR-A sales analysis view with gross/COGS/net breakdowns. This is confirmed by the presence of ISAREX (AR extended data) in the DB list.
+
+**T7ARP** (AR-P Dun Letters, 136p) accesses BKAR.INVT 25-var — BKARINVT's payment-application fields — confirming the dunning process reads each open invoice's age and balance from BKARINVT directly.
+
+**T7ARR** opens ISBANKS + BKAPCHKF — bank account master + check file. This is the **bank reconciliation** program (not explicitly in the legacy menu codes), confirming EVO has a full bank reconciliation workflow accessible via AR.
+
+**New tables confirmed from T7AR* programs:**
+- `ISAREX` — AR extended customer data (T7ARA)
+- `ISTAXGRP` — Tax group codes (T7ARA, t7ara2)
+- `BKISTAX` — IS tax table (T7ARK, T7ARL)
+- `ISTAXFIL` — Tax filing records (T7ARK, T7ARL)
+- `ISBANKS` — Bank account master (T7ARR)
+- `BKGLCHK` — GL check reconciliation work table (T7ARM)
+- `ISIS.MCF` — 49-var namespace in T7ARE/T7ARD — MCF = multi-currency factor or matching (exact purpose unclear)
+
+---
+
 ## Notes & open questions
 
 - BKAREIVT vs BKARINVT: Both have the same PK and nearly identical fields. BKAREIVT has a spurious BKAB_PERIOD field (LOGICAL size 1792 at an overlapping offset) which is a Btrieve alternate-key index definition artifact, not a real data field. Treat BKARINVT (23f) as canonical.

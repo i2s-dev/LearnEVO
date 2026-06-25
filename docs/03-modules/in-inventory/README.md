@@ -270,6 +270,150 @@ There are two parallel item master families in the IN module:
 
 **MTMRP** (13f) — MRP calculation work table. Used by the MR (MRP) module. Fields: `MTMRP_PARTNO`, `MTMRP_DATE`, `MTMRP_QTY`, `MTMRP_ONHAND`, `MTMRP_PEGTO` (pegged-to demand order), `MTMRP_ORDER` (supply order), `MTMRP_STARTDT`, `MTMRP_ACTION`, `MTMRP_PG_SDATE/FDATE/QTY` (pegging start/finish dates and qty), `MTMRP_EXTRA`, `MTMRP_LOC`. This stores the MRP explosion results and demand-supply pegging before the planned orders are released.
 
+## Programs (53 total, Pass 265 2026-06-25)
+
+Data extracted from rwn_symbols.json (proc counts, lib, db fingerprint, named-var namespaces).
+
+### Core item master editors
+
+| Program | Procs | Lib | DBs | Role / key namespaces |
+|---------|------:|-----|----:|----------------------|
+| `T7INB.RWN` | 466 | LISTG60 | 69 | **IN-B Enter Inventory** — full item master editor; BKIC.PROD 504-var + BKIC.LOC 297-var + MTIC.PROD 162-var |
+| `T7INA.RWN` | 352 | LISTG60 | 53 | **IN-A Inventory Inquiry** — browse/view item master; BKIC.PROD 315-var + BKIC.LOC 324-var + IS.NCR 58-var |
+| `T7IND.RWN` | 355 | LISTG60 | 45 | **IN-D Print Reorder Report** — location-level reorder; BKIC.LOC 297-var + ISBUILD |
+| `T7INC.RWN` | 247 | LISTG60 | 44 | **IN-C Enter Inventory Adjustments** — manual adj; INVTXN + SCRAP + BKICLOC |
+| `T7INS.RWN` | 150 | ISTECH2 | 37 | **IN-S** item status editor; BKICLOCM + BKICLOC + ISIS + MKAHIST |
+| `T7INLS.RWN` | 148 | LISTG60 | 36 | **IN-L-S Rebuild Stock Status** — ISIS + ISLOG + BKICLOCM |
+| `T7INAC.RWN` | 185 | COSTING.LIB | 29 | **IN-A-C actual costing** sub-form; BKIC.PROD 310-var |
+| `T7INAE.RWN` | 185 | COSTING.LIB | 31 | **IN-A-E estimated costing** sub-form; BKIC.PROD 310-var |
+
+### Inventory adjustments / postings
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7ING.RWN` | 323 | DBA.LIB | 47 | **IN-G Print Inventory Labels** — BKPR.EMP 107-var + SERIAL + ISLBLMAP + BKAPPOL |
+| `T7INO.RWN` | 252 | EVO.LIB | 32 | **IN-O User-Defined Transactions** — INVTXN + BKACTRPT + CLASS |
+| `T7INP.RWN` | 184 | LISTG60 | 28 | **IN-P Inventory Posting** — GL-side close; INVTXN + ISGLDATE + BKICLOCM |
+| `t7ingImport.RWN` | 78 | EVO.LIB | 20 | **IN-G-A Import & Print Labels** — batch import; LOT + SERIAL + BKARCUST |
+| `t7INGA.RWN` | 48 | T7TLL.LIB | 17 | IN-G-A mobile/TLL label variant; LOT + SERIAL |
+| `T7INVARCH.RWN` | 52 | EVO.LIB | 64 | **INVTXN archive** — rolls old INVTXN rows to archive; ISGLDATE |
+| `T7INVENTORY.RWN` | 54 | EVO.LIB | 14 | Module launcher / dispatcher |
+
+### Location / bin series (T7INL*)
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7INLM.RWN` | 243 | T7DBA.LIB | 36 | **IN-L-M Multi-Transfer Inventory** — LOT + ISBINLOC + BKARTXN + SERIAL |
+| `T7INLB.RWN` | 224 | LISTG60 | 41 | **IN-L-B Enter/Assign Locations** — BKICLOCM + BKICLOC + ISBINLOC + ISBINLOT + ISBNMSTR |
+| `T7INLR.RWN` | 198 | ISTECH | 40 | Location receipt posting sub-program; ISMCF + BKICLOCM + FILELOC |
+| `T7INLO.RWN` | 186 | EVO.LIB | 36 | **IN-L-O Inventory Utilities** — INVTXN + BKARINVL |
+| `T7INLK.RWN` | 170 | LISTG60 | 22 | **IN-L-K Inventory Exceptions Report** — DBAFIFO + BKICLOC |
+| `T7INLJ.RWN` | 155 | ISTECH | 34 | **IN-L-J Transfer Inventory** — SERIAL + LOT + ISBINLOC + INVTXN |
+| `T7INLT.RWN` | 152 | LISTG60 | 20 | **IN-L-T Reset Inventory Cycle Codes** — ISCYCLCD |
+| `T7INLE.RWN` | 136 | LISTG60 | 22 | **IN-L-E Update Material Standard Costs** — BKAPPOL + BKAPPO |
+| `T7INLOA.RWN` | 107 | LISTG60 | 64 | **IN-L-O-A** advanced location history; INVTXN + ROUTING + SERIAL |
+| `T7INLA.RWN` | 100 | LISTG60 | 64 | **IN-L-A Enter Standard Costs** — ISICMSTR + IS.NCR |
+| `T7INLN.RWN` | 116 | LISTG60 | 27 | **IN-L-N Copy Item** — ISECO + ISNOTES + ISLINKS |
+| `T7INLL.RWN` | 133 | LISTG60 | 64 | **IN-L-L BOM Report** — BKBMMSTR |
+| `T7INLD.RWN` | 114 | LISTG60 | 64 | **IN-L-D Print Customer Cross-Reference** — BKICREF |
+| `T7INLG.RWN` | 118 | LISTG60 | 64 | **IN-L-G Print Material Dimensions** — BKICDIM |
+| `T7INLC.RWN` | 88 | LISTG60 | 17 | **IN-L-C Enter Customer Cross-Reference** — BKICREF + BKARCUST + FILELOC |
+| `T7INLF.RWN` | 79 | LISTG60 | 64 | **IN-L-F Enter Material Dimensions** — BKICDIM |
+| `T7INLV.RWN` | 97 | LISTG60 | 64 | **IN-L-V Archive Obsolete Inventory** — ISICMSTR + CLASS |
+| `T7INLQ.RWN` | 96 | EVO.LIB | 64 | IN-LQ item type/qualification; ISITP |
+| `T7INLH.RWN` | 93 | LISTG60 | 64 | **IN-L-H Edit FIFO/LIFO Buckets** — DBAFIFO + INVTXN |
+| `T7INLI.RWN` | 65 | EVO.LIB | 64 | **IN-L-I Change Inventory Costing Method** — DBAFIFO + BKICLOC |
+
+### Inquiry / reports
+
+| Program | Procs | Lib | DBs | Role |
+|---------|------:|-----|----:|------|
+| `T7INF.RWN` | 194 | LISTG60 | 29 | **IN-F Print Inventory Value** — BKICLOC + BKAP.POL 38-var |
+| `T7INM.RWN` | 147 | LISTG60 | 25 | **IN-M Summary Reorder Report** — WORKORD + BKAPPOL + WOBOM + BKMRPFC |
+| `T7INE.RWN` | 158 | LISTG60 | 27 | **IN-E Print Inventory Transactions** — MKAHIST + INVTXN |
+| `T7INH.RWN` | 134 | LISTG60 | 64 | **IN-H Print Inventory Listing** — BKICREF + BKSBVEND + INVTXN |
+| `T7INI.RWN` | 121 | LISTG60 | 64 | **IN-I Print Inventory General Info** — BKARCUST + BKAPVEND + BKSBMFG |
+| `T7INJ.RWN` | 143 | LISTG60 | 64 | **IN-J Print Physical Check** — ISBUILD + ISBINLOC + ISCYCLCD |
+| `T7INK.RWN` | 142 | ISTECH | 35 | IN-K bin inventory kit; ISBINLOC + INVTXN |
+| `T7INDPO.RWN` | 134 | EVO.LIB | 30 | IN-D-PO demand/PO drill-down; BKMRPPO + BKAPPO |
+| `T7INNC.RWN` | 135 | LISTG60 | 18 | **IN-N-C Print Closed WO Costing** — WORKORD |
+| `T7INND.RWN` | 129 | LISTG60 | 22 | **IN-N-D Print Inventory to GL Exceptions** — BKGLTRAN + BKGLCOA |
+| `T7INNB.RWN` | 119 | LISTG60 | 64 | **IN-N-B Print Shipments Costing** — INVTXN |
+| `T7INNA.RWN` | 98 | EVO.LIB | 64 | **IN-N-A Print Month End Inventory Costing** — INVTXN |
+
+### New Entity / NZL license checks (NZLICE.LIB stubs)
+
+| Program | Procs | Lib | Role |
+|---------|------:|-----|------|
+| `T7INAS.RWN` | 17 | NZLICE | New Zealand license check for IN-A |
+| `T7INBLIM.RWN` | 15 | NZLICE | NZ limit check for IN-B |
+| `T7INBNC.RWN` | 15 | NZLICE | NZ NCR license check |
+| `T7INLIMA.RWN` | 15 | NZLICE | NZ LIMA license check |
+| `T7INLIMACCESS.RWN` | 15 | NZLICE | NZ license access check |
+
+---
+
+## Supplemental item master panels (Pass 265 2026-06-25)
+
+The IN-A (inquiry) and IN-B (edit) item master programs display sub-forms via wmount/load_form.
+These DFMs appear as pop-up tabs on the item record.
+
+### IN-A sub-panels (T7INA*.DFM)
+
+| DFM | Caption | Fields | Purpose |
+|-----|---------|-------:|---------|
+| `T7INAACDOC.DFM` | Accutron Documentation | 4 | Customer-specific documentation panel |
+| `T7INAALO.DFM` | (blank) | 0 | Allocation lookup (7 controls = grid only) |
+| `T7INACMP.DFM` | Compliance | 34 | RoHS / environmental compliance flags |
+| `T7INAFORECAST.DFM` | (blank) | 4 | Demand forecast entry |
+| `T7INAPRC.DFM` | Customer Price | 9 | Per-customer price code entry |
+| `T7INASPC.DFM` | Specifications | 16 | Item specifications |
+| `T7INAUDF.DFM` | Specifications (UDF) | 33 | User-defined fields |
+| `T7INAUSG.DFM` | (blank) | 4 | Usage statistics |
+| `T7INAWIP.DFM` | Item In WIP | 7 | WIP inventory drill-down |
+| `t7inaC.DFM` | T7INA | 53 | Primary item inquiry form (53 visible fields) |
+| `t7inaE.DFM` | (blank) | 0 | Estimated cost sub-panel |
+
+### IN-B sub-panels (T7INB*.DFM)
+
+| DFM | Caption | Fields | Purpose |
+|-----|---------|-------:|---------|
+| `T7INBCMP.DFM` | Compliance | 34 | RoHS compliance (mirrors T7INACMP) |
+| `T7INBECO.DFM` | (blank) | 0 | ECO (Engineering Change Order) link |
+| `T7INBMFG.DFM` | (blank) | 0 | Manufacturing data panel |
+| `T7INBMRP.DFM` | MRP Settings | 15 | MRP parameters (lot size, lead time, etc.) |
+| `T7INBSPC.DFM` | Specifications | 15 | Item specifications (edit mode) |
+| `T7INBUDF.DFM` | Specifications (UDF) | 33 | User-defined fields (edit mode) |
+| `T7INBVND.DFM` | (blank) | 0 | Vendor info panel |
+| `t7inbc.DFM` | IN-B Enter Inventory | 67 | Primary item editor form (67 visible fields) |
+
+**Design note:** The IN-B MRP Settings panel (T7INBMRP, 15 fields) is the per-item configuration point for the MR (MRP) module — lead time, lot size, safety stock, order policy, and similar parameters are stored in BKICMSTR and read by MRP planning programs.
+
+---
+
+## IS-prefix auxiliary tables (Pass 265 2026-06-25)
+
+Discovered from DB fingerprints in T7IN* programs; not all are in standard DDF.
+
+| Table | First seen in | Purpose (inferred from program context) |
+|-------|--------------|----------------------------------------|
+| `ISICMSTR` | T7INA, T7INLA, T7INLR, T7INLV | IS item master — extended per-item data outside BKICMSTR; appears alongside IS.NCR namespace |
+| `ISITP` | T7INA, T7INLQ | Item type profile — classifies items by type/category for reporting |
+| `ISBINLOC` | T7INLB, T7INLJ, T7INJ, T7INK | Bin location assignment record — maps item+lot to a specific bin within a warehouse location |
+| `ISBINLOT` | T7INLB | Bin lot record — lot-level bin assignment data |
+| `ISBNMSTR` | T7INLB | Bin master — defines physical bin locations within a warehouse |
+| `ISCYCLCD` | T7INLT, T7INJ | Cycle count code table — assigns cycle count frequency codes to items |
+| `ISICUL` | T7ING | Item category / UL listing data — possibly certification (UL = Underwriters Laboratories) |
+| `ISMCF` | T7INLR | Manufacturing constraint factor — used in location receipt logic |
+| `FILELOC` | T7INLB, T7INLC, T7INLR | File-level location master — top-level location definitions |
+| `ISECO` | T7INLN | Engineering Change Order header |
+| `DBAFIFO` | T7INLH, T7INLI, T7INLK | FIFO cost layer work table — parallel to BKICVAL, used by costing engine |
+| `ISGLDATE` | T7INP, T7IND | GL date control — current posting period date lock |
+| `MKAHIST` | T7INE, T7INF, T7INH, T7INI | Market/sales history — appears across inquiry programs; may be a shared demand-history table |
+| `ISIS` | T7INS, T7INLS, T7INB, many | IS Information Systems inquiry base — appears universally alongside MKAHIST+ISLOG+ISDRILL |
+
+---
+
 ## Notes & open questions
 
 - BKICMSTR (64f) vs MTICMSTR (108f): The 44-field difference includes fields like `MTIC_PROD_CLASS` PK, 10 vendor slots (VEND_1..10, VNAM_1..10, VPC_1..9), 15 replacement costs (RCOST_1..15), lot size (LOTSZ), optional features (OPT/OPTCS/OPTCD), cumulative scheduling (CUM), and long part# (LONGP).

@@ -206,6 +206,38 @@ BKICLOC (on-hand)    ──┘
                                 (planned WOs)           (planned POs)
 ```
 
+## Programs (17 total, Pass 265 2026-06-25)
+
+Data extracted from rwn_symbols.json.
+
+| Program | Procs | Lib | DBs | Role / key tables |
+|---------|------:|-----|----:|-------------------|
+| `T7MRJ.RWN` | 206 | LISTG60 | 39 | **MR-J Generate Purchase Orders** — BKMRPPO → BKAPPO; IS.NCR 58-var + BKAP.PO 57-var |
+| `T7MRH.RWN` | 193 | DBA.LIB | 29 | **MR-H Print Order Action Report** — BKICMSTR + ISBUILD; BKAR.INV 86-var + MTWO.WIP 71-var |
+| `T7MRG.RWN` | 188 | DBA.LIB | 34 | **MR-G Print Material Requirements** — MTMRP + BKICMSTR; BKAR.INV 86-var + MTWO.WIP 71-var |
+| `T7MRF.RWN` | 172 | LISTG60 | 35 | **MR-F Generate Material Requirements** — reads BKMRPFC + BKARINVL → writes MTMRP; BKAR.INV 86-var |
+| `T7MRI.RWN` | 171 | LISTG60 | 31 | **MR-I Generate Work Orders** — MTMRP → WORKORD; MTWO.WIP 71-var |
+| `T7MRIX.RWN` | 130 | LISTG60 | 40 | **MR-I-X WO expansion drill-down** — WORKORD + ISICMSTR; MTWO.WIP **213-var** (highest WIP namespace in system) |
+| `T7MRJX.RWN` | 123 | LISTG60 | 40 | **MR-J-X PO expansion drill-down** — BKMRPPO + BKAPPO; BKAP.PO 57-var |
+| `T7MRD.RWN` | 121 | LISTG60 | 21 | **MR-D Enter MRP Parameters** — 52-field form; BKICMSTR + MTICMSTR |
+| `T7MRE.RWN` | 120 | LISTG60 | 40 | **MR-E Print MRP Parameters** — BKICLOCM + BKICMSTR |
+| `T7MRB.RWN` | 117 | LISTG60 | 40 | **MR-B Print Forecast** — BKMRPFC + BKICMSTR |
+| `T7MRO.RWN` | 113 | LISTG60 | 40 | **MR-O planned orders browser** — ISBUILD + MTMRP |
+| `T7MRC.RWN` | 108 | LISTG60 | 40 | **MR-C Reset Forecast** — BKMRPFC + MTICMSTR |
+| `T7MRN.RWN` | 95 | LISTG60 | 40 | **MR-N Print Planned Orders Report** — ISBUILD + MTMRP |
+| `T7MRL.RWN` | 85 | EVO.LIB | 40 | **MR-L Print Planned Orders** — MTMRP |
+| `T7MRADE.RWN` | 75 | EVO.LIB | 40 | **MR-A-D-E demand forecast editor** — BKMRPFC + BKICMSTR |
+| `T7MRA.RWN` | 65 | LISTG60 | 40 | **MR-A Enter Forecast** — BKMRPFC + BKICMSTR |
+| `T7MRK.RWN` | 5 | stub | 40 | Stub — RFQ generation (no business logic) |
+
+**T7MRIX** has MTWO.WIP **213-var** — the highest WIP namespace count in the entire rwn_symbols dataset. This is the MRP→WO expansion view that drills into every open work order's detailed material and capacity consumption. When MR-I generates WOs, T7MRIX shows the exploded view of what those WOs will consume.
+
+**T7MRF** is the MRP generation engine (the only program that writes MTMRP). It reads 6 sources: BKMRPFC (forecasts), BKARINVL (SO demand), BKAPPOL (PO supply), WOBOM (WO material demand), BKICLOC (on-hand), BKICMSTR (item parameters) → writes MTMRP planned orders. The 5-stage engine is confirmed from BKMRF.RUN binary analysis (Pass 246).
+
+**T7MRH and T7MRG** (the two main report programs) both use DBA.LIB rather than the usual LISTG60.LIB — this suggests they do complex processing (posting or multi-pass calculations) rather than simple browse/display.
+
+---
+
 ## Notes & open questions
 
 - MRP "buffer" sensitivity: T7MRD (52-field MRP parameters form) contains sensitivity settings — the exact buffer/sensitivity field names need extraction to confirm how MTMRP action messages (EXPEDITE/DEFER thresholds) are calculated.

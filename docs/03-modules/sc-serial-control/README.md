@@ -101,3 +101,29 @@ Physical Inventory (PI-C → T7DCBSERIAL)
 | `BKAR_TXN_SERIAL` | AR | Serial number on AR shipment transaction |
 | `ISSERCNT` | SC | Serial counter / sequence number management (cycle count support) |
 | `ISSCOMP` | SC | Compound serial tracking (T7SCOMP) |
+
+---
+
+## Programs (9 total, Pass 265 2026-06-25)
+
+Data extracted from rwn_symbols.json.
+
+| Program | Procs | Lib | DBs | Role / key tables |
+|---------|------:|-----|----:|-------------------|
+| `T7SCF.RWN` | 131 | LISTG60 | 32 | **SC-F** serial format setup / full serial editor; SERIAL + BKICMSTR |
+| `T7SCC.RWN` | 121 | LISTG60 | 32 | **SC-C** serial inquiry/browse; SERIAL + BKICMSTR |
+| `T7SCH.RWN` | 113 | EVO.LIB | 32 | **SC-H** serial history browser; MTICMSTR + SERIAL; BKAR.INV 86-var + MTWO.WIP 71-var |
+| `T7SCG.RWN` | 92 | LISTG60 | 18 | **SC-G** serial format/counter setup; ISSERCNT + MTICMSTR + CLASMSTR |
+| `T7SCE.RWN` | 88 | LISTG60 | 32 | **SC-E** serial edit; BKICMSTR + SERIAL |
+| `T7SCA.RWN` | 78 | LISTG60 | 25 | **SC-A** serial master editor; SERIAL + MTICMSTR + BKYSMSTR; BKAR.INV 86-var |
+| `T7SCB.RWN` | 59 | LISTG60 | 32 | **SC-B** assign serial control on items; BKICMSTR + MTICMSTR (sets BKIC_PROD_SERNO flag) |
+| `T7SCOMP.RWN` | 54 | EVO.LIB | 32 | **SC-COMP** compound serial management; ISSCOMP table (serial assemblies) |
+| `T7SCD.RWN` | 5 | stub | 32 | Stub — serial duplicate check (no business logic) |
+
+**T7SCH** is the largest program by proc count after the two main editors. Its access to BKAR.INV 86-var and MTWO.WIP 71-var confirms serial history crosses into AR shipment and WO data — SC-H shows the complete chain: WO receipt → stock → shipment.
+
+**T7SCG** is the serial counter/format program — it manages ISSERCNT which controls auto-generation of serial numbers (total length, start position, last number assigned). This is the "serial number format" setup that feeds the auto-assign logic in PO receipt and WO completion.
+
+**T7SCOMP** manages ISSCOMP (compound serial assemblies) — this is for items where a serial number represents an assembly of multiple serialized components. Each compound serial record tracks which sub-serials are bound together.
+
+**Confidence: 82/100** — All 9 programs confirmed from rwn_symbols.json; SERIAL/SERIALH schemas confirmed from DDF; ISSERCNT and ISSCOMP confirmed from program DB lists (not yet in DDF extract).
