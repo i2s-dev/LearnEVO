@@ -19828,3 +19828,129 @@ These are the valid GL-side transaction type codes for inventory movements — c
 - **Assign packaging types to items:** IN-L-V
 - **View raw material physical dimensions:** IN-L-F
 - **GL reconciliation and inventory transaction purge:** IN-L-O (GL-G)
+
+---
+
+## AP-L, AR-L, BOL, MRL, JCL, DCL — Single-Form Module Reports (Pass 299 — 2026-06-25)
+
+### AP-L — Vendor Listing / MTD-YTD Recalculation (T7APLA.DFM, 44KB)
+
+Filter fields: Vendor from/thru, Vendor Class from/thru, Sort by Code/Name/Alpha [C,N,A].
+Option: **Recalculate MTD and YTD totals (Y/N)?** — runs AP vendor statistics recalculation as part of the listing report.
+Note: Caption = "New Screen" (placeholder label on the DFM); menu code = AP-L.
+
+### AR-L — Transfer Sales Taxes (T7ARL.DFM, 56KB)
+
+Not a listing report — this is the **GL sales tax posting utility**.
+Grid columns: `ISIS.TXF.CODE`, `ISIS.TXF.DESC` (tax jurisdiction code + description), Tax Rate, Post Date, Outstanding Amount, Amount Tagged.
+Buttons: Tag One / Tag Group / Tag All / Post.
+Purpose: selects ISIS.TXF (tax jurisdiction) records with outstanding AR sales tax and posts them to GL. Used to remit sales tax to the appropriate jurisdiction.
+
+### BOL — Bill of Lading Entry (T7BOL.DFM, 175KB) and Multi-SO BOL (T7BOLMSO.DFM, 132KB)
+
+**T7BOL.DFM** — full BOL editor. Key fields:
+- Header: BOL#, Authorization#, Control#, Load#, Seal#, Trailer#, SCAC, Carrier Name, Ship Date, Ship Via
+- Timing: Pick Up Date/Time, Driver Arrived Time, Loading Start/End Time, Driver Departed Time
+- Commodity: Description, Total Item Qty/Wt, Total Cases, Pallet Weight, NMFC#, CLASS, PACKAGE, Handling Unit
+- Billing: Type [CTBNPA], Billing Account#
+- Parties: Customer, Ship-To Customer, SO Number, Drop Ship Company (ENTERDROP), Third-Party Customer (EnterTPCust), Shipper Number
+- Extensions: Walmart Shipment / Walmart Master fields (EDI 856 ASN support), Service and Repair flag
+- Marks and Exceptions lines 1–4
+
+**Billing Type codes [CTBNPA]** — confirmed from T7BOL.DFM:
+| Code | Meaning |
+|------|---------|
+| C | Collect |
+| T | Third Party |
+| B | Buyer |
+| N | No Charge |
+| P | Prepaid |
+| A | Advance |
+
+**T7BOLMSO.DFM** — Multi-SO variant. Adds: billing lines (6 lines), No. of Packages, No. of Holding Units, Shipping Class#, Hazardous Material, US DOT Hazmat Reg#, Number of Pallets, Skid Weight, Misc Box Item#, Total Net Wt/Gross Wt.
+**Billing Type codes [PCTN]** for multi-SO: P=Prepaid, C=Collect, T=Third Party, N=No Charge.
+
+### MR-L — MRP Planning List (T7MRL.DFM, 63KB)
+
+Filter: PL Number from/thru (valid range: 1 thru `LAST.PLND`), Reverse Lookup option.
+Purpose: prints an MRP planning list by planning list number. `LAST.PLND` is the system variable for the last planning list number generated.
+
+### JC-L — Job Cost Listing (T7JCL.DFM, 54KB)
+
+Filter: WO Act Start Date from/thru, Item# from/thru, WO# from/thru, WO Status filter, Use Archived WOs option.
+Purpose: prints job cost details for work orders in a date/item/status range.
+
+### DC-L — Data Collection / Timecard Entry Display (T7DCL.DFM, 73KB)
+
+Entry/display fields: Employee#, Employee name, Password, Current Status.
+Timecard display: Hours Today, Hours Pay Period, hours breakdown — Regular (Reg), Overtime (OT), Holiday (Hol), Double Time (DT), Vacation (Vac), Sick.
+Additional: Available Hours, Vacation Available Hours, Error In Pay Period Hours flag.
+Date range (From/Thru), Start Shift button.
+Purpose: the DC module time entry and timecard review form. Employees enter employee# + password to clock in; system shows running hours totals.
+
+---
+
+## PR-L — Payroll Report Suite (Pass 299 — 2026-06-25)
+
+16 DFM forms (T7PRLA through T7PRLQ, with gaps). All in `\\i2s109-solidcrm\DBAMFG$\T7PRL*.DFM`.
+
+### Per-Form Reference
+
+| Form | Caption | Purpose | Key Filters / Fields |
+|------|---------|---------|---------------------|
+| T7PRLA | PR-L-A | **Employee Listing** — basic employee directory | Employee from/thru, include terminated employees |
+| T7PRLB | PR-L-B | **Payroll History** — employee payroll history report | Employee from/thru, payroll date from/thru, include terminated |
+| T7PRLC | PR-L-C | **Payroll Tax Verification / CSV Export** — tax totals check and export | Payroll date range, employee/division range; tax breakdowns: FIT, SIT, Medicare, Workers' Comp; Reporting Quarter; CSV export filename; "Set to zero if no Limit" |
+| T7PRLD | PR-L-D | **Payroll Detail Report (variant)** — same structure as B | Employee range, payroll date range, include terminated |
+| T7PRLE | PR-L-E | **Detail Deductions Ledger** — per-employee deduction detail | Payroll date range, employee/division range, include terminated |
+| T7PRLF | PR-L-F | **FUTA/SUTA/FICA Employer Tax Export** — state unemployment + federal tax filing | Division/employee range; Rate/Limit; FUTA/SUTA/FICA totals; Employer UI Acct#; payroll year; CSV export; state-specific exports: Illinois Withholding Schedule P, Wisconsin UI Format Alt 1; suppress zero YTD |
+| T7PRLG | PR-L-G | **941 Federal Quarterly Return** — IRS Form 941 data entry | EIN, Total Wages, company address (State/City/Street/Name/Trade Name/ZIP), quarter + date range |
+| T7PRLH | PR-LH | **940 Annual FUTA Return** — IRS Form 940 data entry | EIN, Part I/II/IV; SUTA contributions per state; experience period; FUTA credit/rate; multi-state: ST1/ST2/ST3/ST4 with state IDs; B=single-state flag; C=SUTA exemption reason |
+| T7PRLI | PR-LI | **W-2 Processing** — annual W-2 employee wage statements | Employee range, FICA limit, Federal ID, local tax deduction#, locality (primary+2nd), pension plan ded#, Box 12A/14 (HSA, 125, cafeteria), Advance EIC ded#; Kind of Payer [AHMQXFR], Kind of Employer [FSTYN], W2 control#; BSO User ID (SSA e-file); Georgia state withholding#; contact/email/phone/fax for transmittal; electronic file info; correction W-2 mode |
+| T7PRLJ | PR-L-J | **California DE-9 Quarterly Return** — CA-specific quarterly form | Payroll period, quarter/year, California Tax ID, blank lines at top margin, gross wages excludable deductions |
+| T7PRLK | PR-L-K | **Print Payroll Hours** — hours breakdown per employee | Payroll date range, employee/division range, include terminated |
+| T7PRLM | PR-L-M | **Payroll Detail (variant)** | Employee range, payroll date range, include terminated |
+| T7PRLN | PR-L-N | **Print Payroll Wages Detail** | Payroll date range, employee/division range, employee from/thru |
+| T7PRLO | PR-L-O | **PDF Pay Stub Generator** — exports PDF pay stubs to disk | Employee range, payroll date range, PDF output path (e.g. `C:\PAYROLL\STUBS\`), "One PDF per Employee per Stub?" option |
+| T7PRLP | PR-L-P | **Employee Deduction/Benefit Summary** — balances as of a date | Employee range, As-Of Date, include $0 amounts, include terminated, subtotal by division |
+| T7PRLQ | PR-L-Q | **Payroll Report (general variant)** | Employee range, date range, include terminated |
+
+### W-2 Kind of Payer Codes [AHMQXFR]
+
+Confirmed from T7PRLI (W-2 processing form — standard IRS W-2 payer codes):
+
+| Code | Meaning |
+|------|---------|
+| A | Standard employer (941 filer) |
+| H | Household employer (Schedule H filer) |
+| M | Military employer |
+| Q | Medicare Qualified Government Employee (MQGE) |
+| X | Railroad retirement |
+| F | Form 944 filer |
+| R | Regular (alternative code) |
+
+### W-2 Kind of Employer Codes [FSTYN]
+
+| Code | Meaning |
+|------|---------|
+| F | Federal government |
+| S | State/local government (non-tax-exempt) |
+| T | Tax-exempt organizations |
+| Y | State/local government (tax-exempt) |
+| N | None apply (standard private employer) |
+
+### How to Use PR-L Forms
+
+- **Print employee listing:** PR-L-A
+- **Print payroll history for a pay period:** PR-L-B or PR-L-D or PR-L-M
+- **Print deductions ledger:** PR-L-E
+- **Print hours worked:** PR-L-K
+- **Print wages detail:** PR-L-N
+- **Generate PDF pay stubs:** PR-L-O (specify output folder path)
+- **Verify tax totals / export for 941 prep:** PR-L-C
+- **Prepare IRS Form 941 (federal quarterly):** PR-L-G
+- **Prepare IRS Form 940 (annual FUTA):** PR-L-H
+- **Process W-2 annual statements + e-file to SSA:** PR-L-I
+- **Prepare California DE-9 quarterly:** PR-L-J
+- **Export FUTA/SUTA/FICA employer taxes (state UI):** PR-L-F
+- **View employee deduction/benefit balances as of a date:** PR-L-P
