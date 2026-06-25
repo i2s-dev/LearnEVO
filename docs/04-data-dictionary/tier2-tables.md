@@ -342,22 +342,26 @@ File: `INVTXN.B` | Module: IN | Fields: 24
 
 | # | Field | Type | Meaning |
 |---|-------|------|---------|
-| 1 | MTIT_TYPE | STRING | Transaction type: A=Adjustment, S=Shipment, P=PO Receipt, J=PO Job Receipt, W=WO Receipt, I=WO Issue, Q=QC Receipt, O=Out-Process, C=Cost Change |
-| 2 | MTIT_PROD | STRING | Product code (FK → BKICMSTR) |
+| 1 | MTIT_TYPE | STRING | Transaction type (SRC-confirmed): A=ADJUSTMT, S=SHIPMENT, P=PO RECPT, J=PO JOBRC, W=WO RECPT, I=WO ISSUE, Q=QC RECPT, O=OUT PROC, C=$ CHANGE |
+| 2 | **MTIT_CODE** | STRING | Product code / part number (PK 4; FK → BKICMSTR) — NOTE: field 2 in earlier docs was wrong "MTIT_PROD"; SRC confirms MTIT.CODE |
 | 3 | MTIT_DATE | DATE | Transaction date |
-| 4 | MTIT_QTY | FLOAT | Quantity (positive = in, negative = out) |
-| 5 | MTIT_COST | FLOAT | Unit cost at time of transaction |
-| 6 | MTIT_EXT | FLOAT | Extended cost |
-| 7 | MTIT_REF | STRING | Reference (WO#, PO#, invoice#) |
-| 8 | MTIT_LOC | STRING | Location code |
-| 9 | MTIT_LOT | STRING | Lot number |
-| 10 | MTIT_SERIAL | STRING | Serial number |
-| 11 | MTIT_GLACCT | STRING | GL inventory account |
-| 12 | MTIT_GLDEPT | STRING | GL department |
-| 13 | MTIT_CLASS | STRING | Item class at time of transaction |
-| 14 | MTIT_USER | STRING | User who created transaction |
-| 15 | MTIT_PSTDT | DATE | Post date |
-| 16–24 | (additional fields) | | Customer, WO link, job, currency, extra |
+| 4 | MTIT_QTY | FLOAT | Quantity — positive for receipts/adjustments-in; for S/I types QTY is positive but semantically outbound |
+| 5 | MTIT_AVGCOST | FLOAT | Average cost — semantics vary by type: P/J=unit PO price; I/Q/O=total cost (divide by QTY for unit); A/S/W/C=unit cost (SRC-confirmed BKLME.SRC) |
+| 6 | MTIT_STDCST | FLOAT | Standard cost at time of transaction (from MTIC.PROD.RCOST[13]) |
+| 7 | MTIT_REF | STRING | Reference (SO#, PO#, WO# or "Consolidate Inv Transactions" for LM-E records) |
+| 8 | MTIT_LOC | STRING | GL account/location code (set from BKYS.GLNUM[5] for consolidation records) |
+| 9 | MTIT_LOT | STRING | Lot number — populated for lot-tracked items; LM-E preserves these records (does not consolidate) |
+| 10 | MTIT_SERIAL | STRING | Serial number — preserved by LM-E (not consolidated) |
+| 11 | MTIT_INVOICE | FLOAT | Invoice/SO number (for S-type shipment transactions) |
+| 12 | MTIT_PRICE | FLOAT | Selling/PO price (for P/J PO receipt — copied into AVGCOST by LM-E) |
+| 13 | MTIT_PO | FLOAT | PO number (for P/J receipt transactions) |
+| 14 | MTIT_WOPRE | FLOAT | Work order prefix (for W/I/Q/O WO-linked transactions) |
+| 15 | MTIT_WOSUF | UBINARY | Work order suffix |
+| 16 | MTIT_CLASS | STRING | Item class at time of transaction |
+| 17 | MTIT_DEPT | STRING | Department (from BKIC.PROD.DPTA) |
+| 18 | MTIT_CUST | STRING | Customer or company name (SO customer, or BKSY.COMP.NAME for system records) |
+| 19 | MTIT_DESC | STRING | Description text |
+| 20–24 | (additional fields) | | VENDOR, SCRAP, QC, PRODLOT, EXTRA — see in-inventory README |
 
 ---
 

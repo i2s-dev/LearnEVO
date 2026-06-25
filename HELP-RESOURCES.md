@@ -18126,6 +18126,15 @@ Full language reference in `docs/02-file-formats/src-tas-pro-language.md`.
 | `find L` | Last record |
 | `find G` | Greater-or-equal (first record with key >= given value) |
 | `find M` | Match (exact key match) |
+| `find R` | Related find — navigate to first child record by relationship |
+
+**`find R` with `rel` modifier (SRC-confirmed BKLME.SRC L228-229):**
+```
+find R srch MTIT.CODE rel BKIC.PROD.CODE   ;find first INVTXN where MTIT.CODE = current BKIC.PROD.CODE
+find R srch MTIC.PROD.CODE rel BKIC.PROD.CODE  ;find MTICMSTR related to current BKICMSTR
+```
+`find R srch <child_key> rel <parent_key>` navigates to the first record in the child table
+whose key field equals the parent's key field. Used to traverse one-to-many relationships.
 
 Find modifiers: `err <label>` (branch on not-found), `nlock` (no lock), `noclr` (keep buffer).
 
@@ -18296,6 +18305,22 @@ redsp                              ;refresh/redraw display (after msg nowait)
 zret = progress()   ;update progress bar (called inside long scan loops)
 ```
 Returns value into `zret` (result discarded). Drives the animated progress indicator during long operations.
+
+**Print / report output keywords (BKLME.SRC — Pass 284, 2026-06-25):**
+```
+mount MINVR type R pto L   ;load report form MINVR, type R (report), pto L (portrait/landscape)
+prtr_setup 'w'             ;printer setup — 'w'=wide, 'r'=restore
+PRT_WHR = pwhr()           ;query printer destination (screen/printer/file/etc.)
+print_cancel()             ;returns .t. if user cancelled printing
+trap PG_BRK gosub PRT_TOF  ;trap page-break event → go to TOF (top-of-form) subroutine
+pfmt N                     ;print line using format template #N
+pfmt N ptw D               ;print format N to destination D (D = device/disk)
+pblnk N                    ;print N blank lines
+pmsg "" ptw D              ;print blank line to destination D
+format FIELD recv VAR nocma nofd neg L  ;format numeric FIELD into string VAR
+;   nocma=no comma, nofd=no fill digits, neg=show negative, L=left-justify
+```
+`mount ... type R` loads a classic TAS Pro internal report form (not an RTM file). `pfmt N` references a numbered line template defined in the form's `\FIELDS` section. `prtr_setup 'r'` restores printer to normal-width after wide output.
 
 ---
 

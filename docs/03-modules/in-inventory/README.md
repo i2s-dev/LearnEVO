@@ -205,33 +205,37 @@ Uses `MTIT_*` field prefix (same MT* pattern as MTICMSTR — multi-class transac
 | `MTIT_PRODLOT` | STRING | 15 | Production lot |
 | `MTIT_EXTRA` | STRING | 50 | Extra / user-defined |
 
-**Transaction type codes** (confirmed from BKLME.RUN binary, Pass 246 2026-06-24):
+**Transaction type codes** (SRC-confirmed from BKLME.SRC, Pass 284 2026-06-25):
 
-`MTIT_TYPE` is STRING 1. The display labels below are the full names hard-coded in BKLME
-("Consolidate Inventory Transactions"). The single-character codes are inferred from
-context — the stored value is one character but the exact mapping is unconfirmed.
+`MTIT_TYPE` is STRING 1. All 9 type codes and their 8-char display labels are
+**SRC-confirmed** from BKLME.SRC L249-257/L605-613 (`if MTIT.TYPE="X" then MEMORY1[1]="LABEL"`).
 
-| Display label (8 chars) | Inferred code | Event |
-|------------------------|---------------|-------|
-| `ADJUSTMT` | A | Manual inventory adjustment |
-| `SHIPMENT` | S | Sales shipment (outbound) |
-| `PO RECPT` | P | PO receipt — into stock |
-| `PO JOBRC` | J | PO receipt — direct to WO/job |
-| `WO RECPT` | W | Work order receipt (finished goods in) |
-| `WO ISSUE` | I | Work order issue (material consumed) |
-| `QC RECPT` | Q | QC receipt (into QC inspection) |
-| `OUT PROC` | O | Outside-process receipt |
-| `$ CHANGE` | $ | Dollar/cost change (cost update only) |
-| `DELETED`  | D | Logically deleted transaction |
+| Code | Display label | Event | Net QTY effect | AVGCOST storage |
+|------|--------------|-------|----------------|----------------|
+| `A` | `ADJUSTMT` | Manual inventory adjustment | + or − (signed QTY) | Unit cost |
+| `S` | `SHIPMENT` | Sales shipment (outbound) | − (positive QTY deducted) | Unit cost |
+| `P` | `PO RECPT` | PO receipt into stock | + | PRICE (unit PO price) |
+| `J` | `PO JOBRC` | PO receipt direct to WO/job | + | PRICE (unit PO price) |
+| `W` | `WO RECPT` | Work order receipt (finished goods in) | + | Unit cost |
+| `I` | `WO ISSUE` | Work order material issue | − (positive QTY deducted) | Total cost ÷ QTY |
+| `Q` | `QC RECPT` | QC receipt (into inspection) | — | Total cost ÷ QTY |
+| `O` | `OUT PROC` | Outside-process receipt | — | Total cost ÷ QTY |
+| `C` | `$ CHANGE` | Cost change only (no qty change) | 0 | Unit cost |
 
-Source: 10 `0x41 0x00 08 00 …` records in BKLME.RUN data channel at offsets 0x0110–0x0238.
-Single-char code assignments are inferred; all 10 labels are confirmed from binary.
+Note: the 10th binary label "DELETED" (`BKLME.RUN` data channel) is the fallthrough/default
+case in BKLME.SRC (L258: unconditional `MEMORY1[1]="DELETED"` after the type chain) — not a
+real transaction type code stored in MTIT_TYPE.
+
+**AVGCOST semantics by type (SRC-confirmed BKLME.SRC L272-315):**
+- **P/J** (PO receipt): `MTIT.AVGCOST = MTIT.PRICE` on read — stored as PO unit price, NOT weighted avg
+- **I/Q/O** (WO issue/QC/outside process): `MTIT.AVGCOST = MTIT.AVGCOST / MTIT.QTY` on read — stored as TOTAL cost (QTY × unit_cost); must divide to get unit cost
+- **A/S/W/C**: MTIT.AVGCOST is stored directly as unit cost
 
 **Design notes:**
-- INVTXN is the complete audit trail of every inventory movement — receipts, shipments, adjustments, WO issues, and WO completions all write here.
-- For FIFO/LIFO costing, BKICVAL maintains the actual cost layers; INVTXN preserves the historical record of what was consumed and at what cost.
-- `MTIT_AVGCOST` is updated by the system each time inventory is received, recalculating the running weighted average (total value on hand ÷ total units on hand).
-- The lot and serial fields link to lot tracking (BKICLOC LOT field) and serial tracking systems.
+- INVTXN is the complete audit trail of every inventory movement.
+- For FIFO/LIFO costing, BKICVAL maintains cost layers; INVTXN preserves historical record.
+- **Lot/serial records are NOT consolidated by LM-E** (BKLME.SRC L236-237: `if mtit.lot<>"" goto find_next` / `if mtit.serial<>"" goto find_next`) — they are preserved individually for traceability.
+- LM-E purges individual INVTXN records (`del INVTXN nocnf`) and writes type-summary records with REF="Consolidate Inv Transactions" plus a beginning-balance A record with QTY=BKIC.PROD.UOH.
 - INVTXN is printed by IN-E (Print Inventory Transactions) and IN-N-D (Print Inventory Audit).
 
 ---
