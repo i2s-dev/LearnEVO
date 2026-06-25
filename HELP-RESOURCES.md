@@ -18468,9 +18468,56 @@ sexit_if condition           ;break out of subroutine loop
 
 **Form loading (all 5 SRC files — Pass 276):**
 ```
-mount ENTROUT type S         ;load and display form ENTROUT
+mount ENTROUT type S         ;load and display form ENTROUT (full-screen)
 prg_hdr 'MR-F  Generate...' ;set program title bar text
 ```
+
+**Windowed / modal form keywords (Pass 291 — 2026-06-25, from tp7runtime.keywords.txt):**
+
+`mount ... type S` loads a full-screen form that takes over the display. For popup overlays and dialog boxes, TAS Pro 7 uses a separate windowed-form keyword set:
+
+| Keyword | Opcode | Purpose |
+|---------|--------|---------|
+| `WMOUNT` | 7730 | Windowed mount — load form as a popup overlay (not full-screen) |
+| `SET_FOCUS` | 7731 | Set keyboard focus to a named field or control |
+| `LOAD_FORM` | 7736 | Load a form definition into memory (without displaying) |
+| `LOAD_MODAL_FORM` | 7946 | Load and display a blocking modal dialog (waits for user to close) |
+| `ACTIVATE_FORM` | 7741 | Activate/bring forward a previously loaded windowed form |
+| `RELEASE_FORM` | 7740 | Release/destroy a loaded form and free its memory |
+| `REFRESHFORM` | 7756 | Redraw/repaint a form (after data changes) |
+| `SAVE_FORM` | 7753 | Save form state |
+| `ENABLE_ALL` | 7735 | Enable all fields/controls on current form |
+| `DISABLE_ALL` | 7739 | Disable all fields/controls on current form |
+| `SET_ALL_OBJECTS` | 7758 | Set a property on all objects in the form |
+| `GET_OBJ_PROP` | 7945 | Get a named property from a form object |
+| `SET_OBJ_PROP` | 7973 | Set a named property on a form object |
+
+`WMOUNT` is the popup/overlay equivalent of `mount ... type S`. `LOAD_MODAL_FORM` blocks execution until the user dismisses the dialog — used for confirmations, password entry, company selection, etc.
+
+**Integration / external-system keywords (Pass 291 — 2026-06-25, from tp7runtime.keywords.txt + strings):**
+
+| Keyword | Opcode | Purpose |
+|---------|--------|---------|
+| `OLECALL` | 8013 | Invoke a COM/OLE object method ("invoke COM object") |
+| `SENDKEYS` | 8019 | Send keystrokes to the active window (Windows automation) |
+| `APPACTIVATE` | 8020 | Activate / bring forward a named application window |
+| `SQLCALL` | 8018 | Execute a SQL statement via the configured SQL bridge |
+| `MYSQL_QUERY` | 8023 | Execute a MySQL-specific query (separate keyword from SQLCALL) |
+| `EXEC_TOP_WAIT` | 8051 | Shell-execute an external program and block until it exits |
+| `GET_WEBSOURCE` | 8026 | Fetch content from an HTTP/HTTPS URL |
+| `PLAYWAV` | 7755 | Play a PCM WAV audio file |
+| `MSGSOUND` | 7879 | Play a system message sound alert |
+| `QRCODE` | 8053 | Generate a QR code |
+| `EXPORTGRID` | 8054 | Export a grid/table to a file (Excel, CSV, etc.) |
+| `COPYTOCLIPBOARD` | 8055 | Copy data to the Windows clipboard |
+| `ENCRYPTSTR` | — | Encrypt a string with a key (see Security section) |
+| `DECRYPTSTR` | — | Decrypt an ENCRYPTSTR-encrypted string |
+| `USECODEBASE` | 7975 | Reference an external code library |
+| `LOAD_DLL` | 7987 | Load and call a Windows DLL function |
+| `COMPILE_EXPR` | 7989 | Compile and evaluate a TAS expression at runtime |
+| `WHOAMI` | 7965 | Read/write the WHOAMI.DBA workstation identity file |
+
+`OLECALL` is used with `APPACTIVATE` + `SENDKEYS` for Windows COM automation (activate a COM object's window, send keystrokes). `T7jsql.RWN` (216 KB, 52 procedures) is the SQL bridge program — `HOST`/`PORT`/`NAME`/`JAVA.PATH` vars suggest it spawns a Java SQL proxy. `MYSQL_QUERY` is a distinct keyword from `SQLCALL`, confirming EVO supports both generic SQL and MySQL-specific paths. Audio (`PLAYWAV`/`MSGSOUND`) is delivered via the `KDWaveEditor` VCL component registered in tp7runtime.
 
 **Field entry — full syntax (BKAWLB.SRC + BKDCA.SRC — Pass 276):**
 ```
