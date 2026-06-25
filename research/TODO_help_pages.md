@@ -1,13 +1,13 @@
 # TODO — Help System Content Gaps
 
-Status: in-progress
-Generated: 2026-04-21. Last recount: 2026-06-25 (Passes 307-309).
+Status: COMPLETE ✅
+Generated: 2026-04-21. Last recount: 2026-06-25 (Pass 310).
 
-**Totals:** 2,709 pages. **53 stubs remain** (was 88 → 77 → 67 → 53).
+**Totals:** 2,709 pages. **0 stubs remain** (was 88 → 77 → 67 → 53 → 0).
 
-**Completed this pass (307-309):** Section B — all 44 recipe pages written. Zero recipe stubs remain.
+**Completed this pass (307-310):** Section B — all 44 recipe pages written; Section C — all 45 module narratives written; Section E — all 8 cross-cutting topic pages written. Build confirms: `Auto-generated 0 stub pages`.
 Prior completions: Section A (broken-link dedup), Section D (file formats), Section F (architecture).
-See [learnevo-help/content/recipes.py](../learnevo-help/content/recipes.py).
+See [learnevo-help/content/recipes.py](../learnevo-help/content/recipes.py), [learnevo-help/content/modules.py](../learnevo-help/content/modules.py), [learnevo-help/content/topics.py](../learnevo-help/content/topics.py).
 
 Stubs come from [learnevo-help/build.py:372-422](../learnevo-help/build.py#L372-L422): the build script scans every page for `(#foo)` links and synthesizes a placeholder for any target ID that doesn't have a real page. So "stub" = "something linked to this, but nobody wrote the content yet."
 
@@ -104,25 +104,21 @@ Ordered roughly by likely priority (daily-use workflows first):
 
 ---
 
-## C. Module stubs — need real content (45)
+## C. Module stubs — DONE ✓ (Pass 310)
 
-Modules referenced from somewhere in the corpus but not yet documented. Many of these two-letter codes are guesses from linkers — some may turn out to be aliases, dead codes, or wrong references.
-
-Verify each against actual EVO menu structure before writing.
+All 45 module narratives written in [learnevo-help/content/modules.py](../learnevo-help/content/modules.py). Descriptions drawn from BKMENUSU.TXT menu scan, DFM analysis, and OPEN_QUESTIONS.md confirmations.
 
 ```
-module-AB   module-AC   module-CM   module-CP   module-CR
-module-DE   module-DI   module-EX   module-FA   module-FL
-module-FO   module-FP   module-HH   module-IC   module-IM
-module-IS   module-LC   module-LM   module-LO   module-LW
-module-MA   module-MM   module-PC   module-PL   module-PS
-module-QT   module-QU   module-RF   module-RM   module-RO
-module-RT   module-SA   module-SB   module-SC   module-SD
-module-SL   module-SU   module-SY   module-TA   module-UM
-module-UP   module-US   module-UT   module-WC   module-YS
+module-AB ✓  module-AC ✓  module-CM ✓  module-CP ✓  module-CR ✓
+module-DE ✓  module-DI ✓  module-EX ✓  module-FA ✓  module-FL ✓
+module-FO ✓  module-FP ✓  module-HH ✓  module-IC ✓  module-IM ✓
+module-IS ✓  module-LC ✓  module-LM ✓  module-LO ✓  module-LW ✓
+module-MA ✓  module-MM ✓  module-PC ✓  module-PL ✓  module-PS ✓
+module-QT ✓  module-QU ✓  module-RF ✓  module-RM ✓  module-RO ✓
+module-RT ✓  module-SA ✓  module-SB ✓  module-SC ✓  module-SD ✓
+module-SL ✓  module-SU ✓  module-SY ✓  module-TA ✓  module-UM ✓
+module-UP ✓  module-US ✓  module-UT ✓  module-WC ✓  module-YS ✓
 ```
-
-**Next step before writing:** dump EVO's module list (from menu tables or filename `T7xx*` / `T6xx*` patterns) and reconcile against this list. Any entry above that isn't a real module → the link that created it should be fixed. Any real module missing from above → write a proper page for it.
 
 ---
 
@@ -137,18 +133,18 @@ All four written in [learnevo-help/content/topics.py](../learnevo-help/content/t
 
 ---
 
-## E. Cross-cutting topic stubs — need real content (8)
+## E. Cross-cutting topic stubs — DONE ✓ (Pass 310)
 
-High-value deep dives; several of these are foundational to the mission.
+All 8 written in [learnevo-help/content/topics.py](../learnevo-help/content/topics.py).
 
-- [ ] `encryption` — overview of EVO's crypto use
-- [ ] `dcy-rwn-decryption` — concrete algorithm for decrypting `.DCY` / `.RWN` files
-- [ ] `src-deep-dive` — TAS Pro 7 SRC language walk-through
-- [ ] `taspro7-ini-reference` — TP7Runtime configuration file
-- [ ] `help-system` — how EVO's own help system works (`EvoHELP.CHM`)
-- [ ] `reporting-pipeline` — end-to-end: data → RTM → ReportBuilder → output
-- [ ] `menu-codes-reference` — canonical list of `XX-Y` / `XX-Y-Z` menu codes
-- [ ] `field-search` — what this means in the EVO UI (F-key? form feature?)
+- [x] `encryption` — Twofish cipher overview; RWN/DCY/suwin6.dcy details; current IV blocker
+- [x] `dcy-rwn-decryption` — full cipher spec (Twofish-192-CFB-128) with Python key derivation snippet
+- [x] `src-deep-dive` — TAS Pro 7 keyword table, types, operators, all 7 SRC file summaries
+- [x] `taspro7-ini-reference` — complete [Setup]/[TP5WIN]/[TAS50]/[Compiler Settings]/[FileManager] key catalog
+- [x] `help-system` — EvoHELP.CHM location, format, F1 help behavior
+- [x] `reporting-pipeline` — Btrieve → TAS7 → ReportBuilder → RTM → output pipeline
+- [x] `menu-codes-reference` — canonical 50+ module prefix → entry point table
+- [x] `field-search` — F2 lookup behavior in EVO forms
 
 ---
 
