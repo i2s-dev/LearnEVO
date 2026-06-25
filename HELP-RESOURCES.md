@@ -2716,13 +2716,38 @@ Stores user-configured lookup grid layouts. Primary table: **BKLUGRID** (lookup 
 
 ---
 
-### JA — Java Integration Setup
+### JA — Java Integration Setup (Pass 293 — 2026-06-25)
 
-Configuration interface for the EvoERP Java integration layer (EvoPVT.jar). Uses **ISJAVA** task queue table. T7JAA/T7JAB modules found. Provides setup UI for the Java bridge that enables SQL reporting and external data export (e.g., Crystal Reports via Pervasive JDBC, or web-facing dashboards).
+The EvoERP Java integration layer bridges TAS Pro 7 programs and **EvoPVT.jar** (the Java-side service). Communication uses the **ISJAVA** table as a shared task queue.
 
-**Use case:** Configure the Java SQL helper service, set up JDBC connection parameters, or troubleshoot EvoPVT.jar task queue processing.
+**ISJAVA table — Java task queue:**
+- Field `IS.JAVA.UID` — unique task identifier
+- Field `IS.JAVA.PARAM` — task parameters (command + arguments for Java)
+- Field `IS.JAVA.DATE` — queue date
+- TAS Pro 7 programs write records to ISJAVA → EvoPVT.jar reads, processes, and removes them
 
-**Confidence: 45/100** — Module identified; ISJAVA table documented from prior analysis; setup UI fields not decoded.
+**Programs that open ISJAVA (22 programs confirmed — Pass 293):**
+- **EvoERPmenu.RWN** — main menu monitors ISJAVA for incoming Java-side results/notifications
+- **T7AUTOFX.RWN** (Auto FX daemon) — queues Oanda currency rate fetch tasks; runs on `TIMER.CALL`; uses HOST/PORT/JAVA.PATH + ISTS.CFG.OANDA config
+- **T7SOA.RWN + 11 other T7SO*.RWN** — Sales Order entry and reporting (SO module opens ISJAVA for email/document notifications)
+- **T7MRA/B/C/E.RWN** — MRP programs (Manufacturing Reports / MRP variants) — open ISJAVA for post-run notifications
+- **T7MDefaults.RWN, T7Memo2Alpha.RWN, T7MHOPE.RWN, T7MLC.RWN** — miscellaneous modules
+
+**Java integration programs:**
+- **T7JAVARUN.RWN** (122KB, 11 procs, source=NZEVO.LIB) — Java program runner; vars: `RUNPRGNAME`, `JAVAMENU`, `JAVAAUTH`, `PARAM1-5`, `DEBUG.ON`; shows "please wait" screen (T7JAVARUN title = wait screen shown while EvoPVT.jar executes)
+- **T7JAVASET.RWN** (237KB, 57 procs, source=EVO.LIB) — Java server configuration; vars: `HOST`, `PORT`, `NAME`, `SERVER_PATH`, `UNC_PATH`, `NEWDB`, `COMPANY`, `LOC_*`; opens FILELOC+BKSYMSTR for database location management; also manages tax table handles and language settings
+- **T7jsql.RWN** (216KB, 52 procs, source=EVO.LIB) — SQL bridge; opens BKAPVEND, BKARCUST, BKGLTRAN, ISNCR, BKICMSTR, ISTRIGRS etc.; likely executes SQLCALL/MYSQL_QUERY via Java
+
+**Multi-currency (ISMCF/ISMCR tables) — also opened by T7AUTOFX:**
+- `ISMCF` = IS Multi-Currency Configuration; fields: CODE, BASE, SYMBOL, DESC, DEC, GL accounts (GLABK/GLDBK for bank, GLAAP/GLDAP for AP, GLAAR/GLDAR for AR, GLAIS/GLDIS for inventory, AMTBNK/AMTAP/AMTAR/AMTFE — amounts)
+- `ISMCR` = IS Multi-Currency Rates (exchange rate records)
+- T7AUTOFX fetches Oanda rates (via JAVA.PATH / EvoPVT.jar) and writes exchange rates to ISMCR
+
+**JA module menu programs:** T7JAA, T7JAB — Java integration configuration UI screens.
+
+**Use case:** Configure the Java SQL helper (T7JAVASET: HOST/PORT/NAME), review task queue status, or troubleshoot EvoPVT.jar task processing. Auto FX rate updates require ISTS.CFG.OANDA to be set and EvoPVT.jar running.
+
+**Confidence: 68/100** — ISJAVA field names confirmed (UID/PARAM/DATE); 22 calling programs cataloged; T7AUTOFX FX-daemon purpose confirmed from named vars; ISMCF currency fields confirmed. EvoPVT.jar internal behavior and ISJAVA record format not fully decoded.
 
 ---
 
