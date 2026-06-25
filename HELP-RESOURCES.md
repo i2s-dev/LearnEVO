@@ -2501,7 +2501,15 @@ AHSYLOG schema is documented here for reference only.**
 
 **Session tracking:** Active logins stored in `ISLOG` (9 fields: WHO/WHAT/DOING/STARTD/STARTT/COMPANY/KILL/MSG/EXTRA), opened by 999 programs. `BKLOGON` is DBA-era legacy (0 T7 programs access it).
 
-**Password storage:** Encrypted via `ENCRYPTSTR` TAS keyword (ISTS.CFG.EPASS mode) or hashed (ISTS.CFG.EHPASS mode). Algorithm not decoded. Stored in ISEX.USER.PASSW field.
+**Password storage (Pass289 2026-06-25 — confirmed from EvoChangePass.RWN named_vars):**
+- `ISTS.CFG.EPASS=1` → TAS built-in `ENCRYPTSTR(password, PSK)` → stored in `BKPS.USER.PSWD` (BKPSUSER)
+- `ISTS.CFG.EHPASS=1` → hash-based (algorithm unknown) → stored in `ISEX.USER.PASSW` (ISEXUSER)
+- `PSK` var = password salt/key passed to ENCRYPTSTR
+- `DLOLDPASS` = DECRYPTSTR applied to stored password (for old-password verification in EVOCHANGEPASS)
+- `ISEX.USER.LPASS` = last password (anti-reuse check)
+- `ISEX.USER.PEXPD` = password expiry date
+- `ISEX.USER.FLAGS` = password policy flags (force-change, etc.)
+- `FLPSTR` var = force-last-password string (used for first-login forced change)
 
 **To add a new user (T7 generation):** PS-A (T7PSA.RWN) → User Setup. Creates record in BKPSUSER (code/password/security-level) + ISEXUSER (Windows username for SSO, expiry, flags).
 
