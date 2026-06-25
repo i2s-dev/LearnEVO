@@ -17960,7 +17960,7 @@ Parallel: SO-N (generate WOs from SO) → WO module.
 | SO-A | BKSOA/BKSOA2 | T7SOA.DFM / T7SOAE.DFM / T7SOAC.DFM | Enter / edit sales orders — customer, items, qty, price, disc, due date, location, FOB, freight, drop ship, currency, job#, APH market/program fields |
 | SO-B | BKSOB | T7SOB.DFM | Print sales orders (with blanket lines, kit components, hidden notes, linked documents) |
 | SO-BIN | BKSOBIN | T7SOBIN.DFM | Bin-level inventory allocation for SO lines |
-| SO-C | BKSOC | T7SOC.DFM | Print pick tickets / packing slips (back-orders, lot numbers, serial numbers, multi-location) |
+| SO-C | BKSOC | T7SOC.DFM | Multi-document print hub: pick tickets, packing slips, Certificate of Conformance (item-level + SO-level), Country of Origin, shipping documents — filter by SO#/customer/item/class/job/truck/date range; 20+ print options |
 | SO-D | BKSOD | T7SOD.DFM | Print shipping labels — standard, John Deere (I/M/X/S types), PDF417 barcode, kanban |
 | SO-E | BKSOE | T7SOE.DFM | Ship sales order — release to invoice, assign shipper, BOL number, carrier pro number, gross weight |
 | SO-F | BKSOF | T7SOF.DFM | Print invoices — consolidated, auto-email, apply deposits, print C of C, print C of O |
@@ -18002,6 +18002,25 @@ BKSOX/BKSOXH (SO extract for reporting), BKSONOTE (SO notes), BKSOPO (SO→PO cr
 ISSOHNFO (SO header UDF values — sohAlpha/sohDate), ISSOINFO (SO misc info), ISSRINFO (SO line UDFs),
 ISSCHED (scheduling), BKSOLOCK (SO record locking), BKSOHLOT (header lot assignments),
 BKSOHSER (header serial numbers).
+
+**SO-C (T7SOC.DFM) — Multi-document print dialog (Pass 294 — 2026-06-25, live DFM read):**
+
+T7SOC is a 4-in-1 print hub. The user selects one or more document types to print, filters the batch, and prints all at once:
+
+| Report type | RTM selector field | RTM file pool |
+|-------------|-------------------|---------------|
+| Certificate of Conformance (item-level) | `EnterCofCIRTM` | BKSOC1-4, ENSOC1-4, T6SOC1-4, T6SOCCNF, + variants |
+| Certificate of Conformance (SO-level) | `EnterCofCSORTM` | (same pool) |
+| Country of Origin | `EnterCOORTM` | T6SOCCOO, ENSOCscn, ENSOC3B, + variants |
+| Shipping Document / Packing Slip | `EnterShipDocRTM` | T6SOC3T, BKSOC3T, ENSOCxx, + variants |
+
+**Filter range fields:** From/To SO# (`EnterFSONum/EnterTSONum`), Customer (`EnterFCust/EnterTCust`), Item (`EnterFItem/EnterTItem`), Customer Class (`EnterFCustClass/EnterTCustClass`), Job (`EnterFJob/EnterTJob`), Truck (`EnterFTruck/EnterTTruck`), Invoice Date (`EnterFInvDate/EnterTInvDate`), Ship Date (`EnterFSDate/EnterTSDate`), Specific Ship Date (`EnterShipDate`), Ship# (`EnterShipNum`), Ship Doc (`EnterShipDoc`), SO CofC# (`EnterSOCofC`), COO (`EnterCOO`).
+
+**Print option checkboxes:** `cbPrtNotes/cbPrtHNotes` (notes/header notes), `cbPrtComment` (comments), `cbPrtCons` (consolidate), `cbPrtECO` (Engineering Change Order), `cbPrtKit/cbPrtOnekit` (kit/single kit), `cbPrtLot` (lot numbers), `cbPrtOpts/cbPrtOptQty` (options/quantities), `cbPrtNoPrice` (suppress price), `cbPrtTruck` (truck), `cbPrtBO/cbPTBackOrder` (backorder lines), `cbBlankets` (blanket orders), `cbNonRel` (non-released), `cbOnlyBO` (backorder-only), `cbSurcharge`, `cbUseSTD` (standard pricing), `cbEDate/cbSDate` (end/start date filter), `cbLineCofC` (line-level CofC).
+
+**Multi-location:** `EnterBinLocs` + `EnterMultiLoc` combo boxes for bin and location selection.
+
+**RTM file inventory (60+ files in SOC series):** BKSOC1-4 / BKSOC1T-4T (BK era + T-suffix = test?), ENSOC1-4 + ENSOC1T-4T (EN era), ENSOC3B/4B/4a/4k/4l/4LC/4p/4p1/4W/6/9 (EN era variants), T6SOC1-4 + T6SOC1T-4T (T6 era), T6SOC3c/3d/3E/4fl/4bb/4tp (T6 variants), T6SOCCNF (CofC only), T6SOCCOO (COO only), ENSOCscn (487KB — largest, likely consolidated multi-format), ENASOC3.
 
 **John Deere label integration (T7SOD.DFM):**
 - Label types: I (item), M (material), X (mixed), S (small)
