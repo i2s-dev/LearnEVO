@@ -1,8 +1,8 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341
+Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356
 
-Last updated: 2026-06-25
+Last updated: 2026-06-26
 
 ---
 
@@ -590,6 +590,63 @@ than being registered as a named DDF column.
 - FAIL: 1 — `t6ine1.RWN` starts with `TPF0` (binary Delphi form, misnamed .RWN)
 - Output: `samples/rwn_decrypted/` (1,122 unique files, ~283 MB, gitignored)
 - Summary CSV: `samples/rwn_decrypted/decrypt_summary.csv`
+
+---
+
+## Cross-File Corpus Analysis (Pass 356 — 2026-06-26)
+
+Analyzed 5 Rosetta Stone pairs (BKAWLB, BKLME, BKMRF, BKROA, BKDCA2~1) + 397 `.RUN` files from `samples/`.
+
+### Universal instruction start at 0x06C0
+
+**Confirmed across 374/397 files (94.2%):** the non-null instruction stream always begins at absolute
+file offset `0x06C0 = 1728 bytes`.
+
+Outliers (23 files):
+- **19 small files** (3,322–5,054 bytes) — stub programs whose early null-fill runs into the first 20
+  test windows, but their opcodes still originate at 0x6C0.
+- **3 × T6EDI*.RUN** (215K–262K bytes: `T6EDIE.RUN`, `t6edib.RUN`, `t6ediex.RUN`) — EDI-related programs
+  with a different/longer header. These three are the only confirmed exceptions.
+
+**Corollary:** For any standard `.RUN` file, you can safely start parsing instructions at `0x6C0`
+without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
+
+### Cross-file opcode frequency (13,489 instructions, 5 files)
+
+95 unique opcodes observed. Top 25 by frequency:
+
+| Opcode | Count | Pct | Name (if known) |
+|--------|-------|-----|-----------------|
+| `0x0F` | 5058 | 37.5% | ASSIGN |
+| `0x3B` | 1966 | 14.6% | COND_BRANCH |
+| `0x20` | 651 | 4.8% | RET_FUNC |
+| `0x42` | 632 | 4.7% | GOSUB / FIELD_TERM |
+| `0x01` | 564 | 4.2% | ARG_DESC |
+| `0x4B` | 419 | 3.1% | CALL_LIB |
+| `0x06` | 267 | 2.0% | CLR |
+| `0x45` | 256 | 1.9% | ? (b2=5, invariant) |
+| `0x37` | 206 | 1.5% | TRAP |
+| `0x16` | 182 | 1.3% | ? (b2=4, invariant) |
+| `0x65` | 170 | 1.3% | FIELD_CALLBACK |
+| `0x49` | 160 | 1.2% | READ_PROP |
+| `0xBE` | 142 | 1.1% | PMSG |
+| `0x0E` | 134 | 1.0% | ENTER |
+| `0x6A` | 131 | 1.0% | GOTO_LABEL |
+| `0x15` | 119 | 0.9% | ? (b2=4, invariant) |
+| `0x4A` | 98 | 0.7% | ? (b2=9, invariant) |
+| `0x8A` | 98 | 0.7% | ? (b2=9, invariant) |
+| `0x1A` | 97 | 0.7% | ? (b2=9, invariant) |
+| `0x43` | 90 | 0.7% | ? (b2=9, invariant) |
+| `0x31` | 88 | 0.7% | ? (b2=16, invariant) |
+| `0x53` | 84 | 0.6% | ENTER_FIELD_FULL |
+| `0x48` | 83 | 0.6% | PUSH |
+| `0x2D` | 83 | 0.6% | ? |
+| `0x47` | 83 | 0.6% | ? |
+
+Remaining 70 opcodes appear at <0.6% each; total unique = 95.
+
+**Remaining gaps:** ~70 opcodes have no source mapping; OP_93/65/53 blob internal layout unknown
+(requires tp7runtime.exe disassembly); T6EDI* header format different from standard.
 
 ---
 
