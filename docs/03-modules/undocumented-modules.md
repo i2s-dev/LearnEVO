@@ -326,17 +326,67 @@ This module manages serial number assignment, tracking, and lifecycle for serial
 ## LC — Lot Control
 
 **DFM files confirmed (6 found):** T7LCA.DFM, T7LCB.DFM, T7LCC.DFM, T7LCE.DFM, T7LCF.DFM, T7LCG.DFM
+**RWN programs confirmed (7 total):** T7LCA–G all decrypted and analyzed (Pass 316, 2026-06-26)
 
 **What it does:** Lot number tracking for inventory items. Assigns lot numbers at receipt, tracks lot quantities through production and shipment. Structurally identical to SC (Serial Control) but at lot-quantity level rather than individual-unit level.
 
-| Code | DFM | What it does |
-|------|-----|-------------|
-| LC-A | T7LCA.DFM | **Edit Lot Numbers** — view/edit individual lot records. Fields: MTLOT.LOT (lot number), MTLOT.ONHAND (qty on hand), MTLOT.RECDATE (receipt date), MTLOT.WO (associated WO#). Primary table: MTLOT. |
-| LC-B | T7LCB.DFM | **Assign Lot Control** — configure which inventory items are lot-tracked via MTIC.PROD.LOT flag. Shows BKIC.PROD.DESC (description), BKIC.PROD.NOTE, BKIC.PROD.TYPE. Parallel to SC-B for serials. |
-| LC-C | T7LCC.DFM | Lot browse/inquiry with allocation print option (`prt.allocs`). Filter by item and lot ranges. |
-| LC-E | T7LCE.DFM | Item/class/category range filter for lot reports |
-| LC-F | T7LCF.DFM | **Lot status inquiry** — filter by item + lot number. Report options: Summary, Details, All. |
-| LC-G | T7LCG.DFM | **Archive/Unarchive lots** — by item range + expiry date range (`from.expdate`, `thru.expdate`). Expiry date confirms lot tracking is used for perishable/dated materials. |
+| Code | DFM | Procs | Source lib | What it does |
+|------|-----|------:|-----------|-------------|
+| LC-A | T7LCA.DFM | 71 | LISTG60.LIB | **Edit Lot Numbers** — full MTLOT record editor (see MTLOT schema below) |
+| LC-B | T7LCB.DFM | 59 | LISTG60.LIB | **Assign Lot Control** — enables/disables lot tracking per item via `MTIC.PROD.LOT` flag; shows BKIC.PROD.* inventory stats |
+| LC-C | T7LCC.DFM | 125 | LISTG60.LIB | **Print Lot Allocations** — lot report with `prt.allocs` option; FROM/THRU item+lot+date filter; totals: STD cost, cost, on-hand |
+| LC-D | (none) | 5 | t7lcd.SRC | **Stub** — pure launcher (STUB var, 0 tables) |
+| LC-E | T7LCE.DFM | 124 | LISTG60.LIB | **Lot Status Report** — item/class/category ranges; `neg.only` (negative qty), `orphans.only`, `excepts.only`, `summ.only` flags; dual RTM (T6+BK era) |
+| LC-F | T7LCF.DFM | 95 | EVO.LIB | **Lot Traceability** — item+lot filter; INVTXN+INVATXN history; `rm.fg` (raw/FG toggle); totals: ship/issue/received/adj/accounted/unaccounted |
+| LC-G | T7LCG.DFM | 98 | LISTG60.LIB | **Lot Master Listing** — item+lot+expiry+receive date ranges; `zero.uoh.only`; `archive` flag; handles both active (LOT.H) and archived (ALOT.H) lots |
+
+**Pass 316 — MTLOT namespace (23 vars from T7LCA):**
+
+The `MTLOT.*` variable set is the complete access namespace for the MTLOT Btrieve table:
+
+| Variable | Meaning |
+|----------|---------|
+| `MTLOT.CODE` | Part number (PK with LOT) |
+| `MTLOT.KEY` | Btrieve key handle |
+| `MTLOT.LOT` | Lot number (PK with CODE) |
+| `MTLOT.EXPDATE` | Expiration date |
+| `MTLOT.ONHAND` | Current on-hand quantity |
+| `MTLOT.PO` | Purchase order number this lot came from |
+| `MTLOT.RECDOC` | Receipt document number |
+| `MTLOT.VENDOR` | Vendor code |
+| `MTLOT.RECDATE` | Receipt date |
+| `MTLOT.RECQTY` | Original received quantity |
+| `MTLOT.POCOST` | PO unit cost at receipt |
+| `MTLOT.WO` | Work order prefix (WO this lot was used in) |
+| `MTLOT.INRECDATE` | In-process receipt date (WO receipt) |
+| `MTLOT.WOQTY` | WO quantity issued from this lot |
+| `MTLOT.WOCOST` | WO cost applied from this lot |
+| `MTLOT.NOTES` | Free-text notes |
+| `MTLOT.LOC` | Warehouse/bin location |
+| `MTLOT.WOSUF` | WO suffix |
+| `MTLOT.EXTRA` | Extra / user-defined field |
+| `MTLOT.BEGIN` | Beginning balance (lot's opening qty) |
+| `MTLOT.OUT` | Total quantity out |
+| `MTLOT.MAXOUT` | Maximum quantity allowed out |
+
+**T7LCF — Lot Traceability (Pass 316):**
+
+| Variable | Meaning |
+|----------|---------|
+| `FROM.ITEM` / `LOT.NO` | Entry filter: part number + lot number |
+| `RM.FG` | Toggle: Raw Material vs Finished Goods trace direction |
+| `INVTXN.H` / `INVATXN.H` | Inventory transaction + archive transaction handles |
+| `WORK.H` / `RECV.H` | WO and receipt handles |
+| `CUST.H` / `VEND.H` | Customer + vendor lookup handles |
+| `TOT.SHIP` | Total shipped quantity |
+| `TOT.ISSUE` | Total issued to WO |
+| `TOT.RECD` | Total received |
+| `TOT.ADJ` | Total adjusted |
+| `TOT.ACC` | Total accounted for |
+| `TOT.UNACC` | Total unaccounted (traceability gap) |
+| `RTM_NAME` | Runtime-configurable RTM template |
+
+`TOTUNACC` (unaccounted qty) is the key lot traceability metric — a non-zero value means the lot has transactions that don't trace to a customer shipment or WO.
 
 **SC vs LC comparison:**
 
@@ -345,13 +395,14 @@ This module manages serial number assignment, tracking, and lifecycle for serial
 | Granularity | One record per unit | One record per lot (multiple units) |
 | Main table | MTSER | MTLOT |
 | Item flag | MTIC.PROD.SER | MTIC.PROD.LOT |
-| Expiry tracking | MTSER.EXPDATE | LC-G has expiry date filter |
-| Archive form | SC-E | LC-G |
+| Expiry tracking | MTSER.EXPDATE | MTLOT.EXPDATE + LC-G expiry range filter |
+| Archive form | SC-E | LC-G (ARCHIVE flag + ALOT.H handle) |
 | Assign form | SC-B | LC-B |
+| Traceability | SC history | LC-F (INVTXN+INVATXN+WORK.H+RECV.H) |
 
-**Primary tables:** MTLOT (lot master — one record per lot), MTIC.PROD.LOT (item-level lot tracking flag)
+**Primary tables:** MTLOT (lot master — 22 fields confirmed), MTICMSTR (item master with MTIC.PROD.LOT flag), BKICMSTR (inventory master), INVTXN/INVATXN (lot transaction history)
 
-**Confidence: 72/100** — All 6 found DFM files read; lot lifecycle confirmed; MTLOT table fields confirmed; expiry date support confirmed.
+**Confidence: 88/100** — Pass 316: all 7 RWN programs analyzed; MTLOT 22-field access namespace fully confirmed from T7LCA vars; T7LCF traceability workflow confirmed (INVTXN+INVATXN+WORK.H+TOT.* counters); T7LCD confirmed as stub; T7LCG archive/ALOT.H pattern confirmed; remaining gap is the exact MTLOT DDF field count (var-extracted, not DDF-confirmed).
 
 ---
 
@@ -606,9 +657,69 @@ Programs marked `*` in the original combo items may be conditional or legacy.
 
 **Context:** EVO stores each company's data in a separate set of Btrieve `.B` files. When a new company is created via SM (System Maintenance) or when new module tables are added by an upgrade, NE verifies and creates any missing files. It is a one-shot administrative tool.
 
-**Primary tables:** Varies — reads the file location registry (IS.LOC) and creates `.B` files as needed.
+**Pass 316 (2026-06-26) — T7NEWINIT.RWN.dec binary analysis:**
 
-**Confidence: 78/100** — T7NEWINIT.DFM read from network share; purpose confirmed from form label text; file-creation logic is in the RWN and not directly readable.
+Program confirmed: `'NEWINIT Create missing Data Files'` (source: EVO.LIB, 49 procs, 1256 vars).
+
+**Variable namespace (key non-TEMP vars):**
+
+| Variable | Purpose |
+|----------|---------|
+| `LOC_H` | FILELOC table handle |
+| `DES_H` | FILEDES table handle |
+| `LOC_BUFF_NAME` | FILELOC: buffer/logical name |
+| `LOC_FILE_NAME` | FILELOC: physical `.B` filename |
+| `LOC_COMP_CODE` | FILELOC: company code suffix |
+| `LOC_REC_SIZE` | FILELOC: record size |
+| `LOC_REC_TYPE` | FILELOC: record type |
+| `LOC_LOCATION` | FILELOC: full network path |
+| `LOC_DESCRIPTION` | FILELOC: description |
+| `DES_FD_NAME` | FILEDES: file descriptor name (key) |
+| `DES_INFORMATION` | FILEDES: file creation spec string |
+| `FD_NAME` | Current file descriptor name being processed |
+| `FD_EXT` | File extension |
+| `FILE_LOC` | Target file location path |
+| `CREATE_FILE` | Flag: create this file now |
+| `CREATE_SPECS` | Btrieve file creation specification |
+| `FILTER_CODE` | Filter: which files to include in the check |
+| `FILE_NAME` | Target filename |
+| `MCNTR` | Count of files created this run |
+| `LOC.REC` | Current FILELOC record pointer |
+| `FILE.OK` / `SEC.OK` | File-exists / security validation flags |
+| `DBN` / `LFN` | Database name / local filename temps |
+
+**UI strings confirmed from binary:**
+
+| String | Context |
+|--------|---------|
+| `'Creating   '` | Progress label prefix during file creation |
+| `'Created '` | Completion prefix |
+| `' missing file(s).'` | Completion suffix: "Created N missing file(s)." |
+| `'Error - in initializing file '` | Error prefix |
+| `'File descriptor name is blank.'` | Validation error |
+| `'The create file name is blank.'` | Validation error |
+| `' is not in FILEDES.DBF. It needs to be there before using this program.'` | FD lookup error |
+
+**File descriptor names (FILEDES entries T7NEWINIT knows):**
+`CMPDFLT`, `DBAHELP`, `DBALOC`, `DBAMAIM`, `DBAHLPID`, `EVOHLPID`, `DBAMODUL`,
+`DBAUSRMN`, `DCBUFFER`, `DEFAULTS`, `ERRMSG`, `MEMORY`, `MENUFILE`, `PRG`,
+`RESTFILE`, `TAS`, `TRANSLTE`, `WTASFMGR`, `BKMENUSU`, `BKLUGRID`, `BKUPDATE`,
+`BKSLMSTR`, `BKICREQ`, `MONTHEND`, `BKPSUSER`, `BKSLEVEL`, `BKSYUSER`, `MEATTRB`
+
+These are the 28 system-level Btrieve files that NE can create. They are all framework/system
+tables (menus, security, user registry, help, DBA dictionaries) — not module-data tables. Module
+data tables (BKARINV, BKAPPO, etc.) are created by a different mechanism (EvoUpdate).
+
+**Architecture:**
+1. Open FILELOC — iterate every registered file
+2. For each entry: look up matching FILEDES record by `LOC_BUFF_NAME` = `DES_FD_NAME`
+3. If FILEDES found, attempt Btrieve file open at `LOC_LOCATION` + `LOC_FILE_NAME`
+4. If open fails (file missing): use `DES_INFORMATION` spec string to create the file via Btrieve API
+5. Increment `MCNTR`; update `filesLabel.caption` with progress
+
+**Primary tables:** FILELOC (file registry), FILEDES (file creation specs)
+
+**Confidence: 88/100** — Pass 316: full var namespace extracted from T7NEWINIT.RWN.dec (49 procs, 1256 vars); all 28 FILEDES file descriptor names confirmed from binary strings; create/check workflow fully reconstructed from variable names + UI strings; FILELOC/FILEDES relationship confirmed; only gap is the exact Btrieve file-create API call syntax (buried in bytecode).
 
 ---
 
