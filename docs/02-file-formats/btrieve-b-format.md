@@ -84,8 +84,8 @@ Btrieve files. All other fields are inferred.
 | Extension | Purpose |
 |-----------|---------|
 | `.B` | Main Btrieve data file (records + B-tree indexes embedded) |
-| `.mdx` | Multi-Index Xtra — overflow key file when >24 key segments per table. 10 files on the share. |
-| `.XLB` | Extended Lock Byte file — Pervasive's concurrency manager. Paired with each `.B`. |
+| `.mdx` | Multi-Index Xtra — dBASE IV compound index format; used ONLY for the 10 DBF-format FILEDICT/FILELOC/BKLUGRID/BKMENUSU/errmsg tables — NOT present on Btrieve `.B` files |
+| `.XLB` | Btrieve overflow/blob companion — magic `46 43 00 00` (= "FC\0\0", same as `.B`); present ONLY on tables that have variable-length memo/blob fields; 7 tables in EvoERP (all AP-related except BKISTAX) |
 | `.B22`, `.BAB`, `.BI2`, etc. | Per-company variant — same schema, different physical file. Suffix = company code. |
 
 ---
@@ -335,6 +335,33 @@ index pages) — a small inventory master, confirming i2 Systems' small-manufact
 
 ---
 
+## `.XLB` companion files — complete catalog (Pass 361 2026-06-26)
+
+`.XLB` files are Btrieve overflow companions for tables that store variable-length
+memo/blob fields. Magic bytes `46 43 00 00` (= "FC\0\0") confirm they are Btrieve
+format. NOT a "lock byte" file — that was a prior misidentification (corrected Pass 292).
+
+**Only 7 tables in EvoERP have XLB files:**
+
+| Table | Corresponding module | Max size (AB company) | Contents |
+|-------|---------------------|-----------------------|----------|
+| `BKAPAPOL.XLB` | AP — AP Policy | 112 KB | AP policy terms/conditions text |
+| `BKAPCHKF.XLB` | AP — Check Form | 84 KB | Check form template blob |
+| `BKAPCHKH.XLB` | AP — Check Header | 11.5 MB | Check memo text (one per check) |
+| `BKAPHPOL.XLB` | AP — Historical Policy | **115 MB** | Archive of historical AP policy text |
+| `BKAPINVL.XLB` | AP — Invoice Line | 9.7 MB | Invoice line extended descriptions |
+| `BKAPINVT.XLB` | AP — Invoice Header | 21.8 MB | Invoice header memo text |
+| `BKISTAX.XLB` | IS — Tax | 56 KB | Tax configuration blob |
+
+**Pattern:** Files exist per-company subfolder (AB, Default, I2, Testdata, UU = 5 companies).
+`BKAPHPOL.XLB` = 115 MB in AB = largest single data file; stores full-text AP policy history.
+
+**Implication:** Of the 659 tables, only 7 (1%) have variable-length memo fields.
+All AP-module tables (except the non-AP `BKISTAX`). All other EvoERP fields are
+fixed-length — consistent with the Btrieve fixed-record-size model.
+
+---
+
 ## Things still to verify
 
 - Full FCR (File Control Record) byte layout — partially decoded from BKICMSTR.B and
@@ -345,7 +372,7 @@ index pages) — a small inventory master, confirming i2 Systems' small-manufact
 - How the `.mdx` (multi-index) files differ from embedded B-tree indexes — no `.mdx`
   sample files exist in `samples/`. The 10 `.mdx` files on the share are overflow key
   files for tables exceeding 24 key segments; structure is a separate Btrieve B-tree.
-- `.XLB` lock file internal format (not needed for analysis; locking is handled by MKDE).
+- Full internal layout of `.XLB` blob files (magic confirmed as FC\0\0; internal record format not decoded).
 
 **Resolved (Pass 106i):**
 - Types 12 and 13 — confirmed: NOTE and LVAR, exclusively in DDF catalog tables. ✅

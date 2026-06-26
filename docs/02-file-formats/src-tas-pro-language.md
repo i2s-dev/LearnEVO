@@ -287,6 +287,67 @@ eval/compile), `EXEC_TOP_WAIT` (shell-exec and wait), `PLAYWAV`.
 This is a very well-rounded 4GL — it has Windows API, COM, HTTP,
 SQL, and on-the-fly code compilation.
 
+#### OLECALL — COM/OLE automation (opcode 8013)
+
+Invokes a COM/OLE object method or property. Used by EvoERP for **Excel data export**:
+4 programs confirmed as callers via `EXCELCONN`/`EXCELCON` variable (connection handle):
+
+| Program | Module | Purpose |
+|---------|--------|---------|
+| `T7JCE.RWN` | JC — Job Cost Efficiency | Export WO cost data to Excel |
+| `T7SON.RWN` | SO-N — RMA / special orders | Export SO/RMA data to Excel |
+| `T7WOLA.RWN` | WO-LA — WO Schedule list | Export WO schedule to Excel |
+| `T7WOLD.RWN` | WO-LD — WO Detail list | Export WO detail to Excel |
+
+`SENDKEYS` (opcode 8019) + `APPACTIVATE` (opcode 8020) are companion keywords used to
+activate the Excel window and send keystrokes to it. Exact parameter form (object
+dispatch syntax) cannot be confirmed without decrypted bytecode.
+
+Note: `COM.LINE`, `COM.SLSP` etc. in other programs mean *commission*, not COM objects.
+
+#### SQLCALL / MYSQL_QUERY — SQL execution (opcodes 8018 / 8023)
+
+`SQLCALL` (generic SQL) and `MYSQL_QUERY` (MySQL-specific variant) execute external
+SQL queries. Primary caller: `T7jsql.RWN` (52 procs, 216 KB, EVO.LIB) — the Java SQL
+bridge. Key variables:
+
+- `HOST` / `PORT` / `NAME` — Java server connection target
+- `JAVA.PATH` / `JAVA.NAME` — path to EvoPVT JAR
+- `TREEDEST` — query result destination
+- `DICT_HNDL` / `KEY_HNDL` / `LOC_HNDL` — DDF file handles (for schema generation pass)
+
+`QUERYEXECUTE.RWN` (26 procs, ISTECH.LIB) uses the same HOST/PORT/NAME/JAVA.PATH pattern
+= second Java-bridge SQL executor (the interactive query launcher from the QU module).
+
+#### GET_WEBSOURCE — HTTP fetch (confirmed caller: T7GETWEB.RWN)
+
+`T7GETWEB.RWN` (7.5 KB, 6 procs, source `t7getweb.SRC`) is the primary GET_WEBSOURCE
+caller. Opens `BKARDEP` (AR deposits) + `BKARINVT` (AR transactions) + item/customer
+tables. Two web-fetch actions (`BTNGETWEB.CLICK` + `BTNGETWEB2.CLICK`). The URL
+parameters are string literals embedded in the bytecode (not named variables). Purpose:
+**web payment gateway sync** — polls payment processor for AR deposit confirmations.
+
+#### EXEC_TOP_WAIT — shell execute with wait (opcode 8051)
+
+Launches an external executable and blocks TAS Pro until it exits. Used by the EvoUpdate
+pipeline (`EvoERPupd.RWN` → `EVOUPDATE.RWN`) to run `UPDTP7.EXE` (schema patch runner)
+as part of the version-upgrade flow. Also used for `LAUNCH.ESA` in `T7SOA.RWN` (launches
+`T7PSEA.RWN`, the tech-support FTP upload utility).
+
+#### PLAYWAV — audio playback (opcode 7755)
+
+Plays a PCM WAV file. `EVO.CFG.SOUNDS` (checked in 926 programs) is the global
+enable/disable flag — most programs check it before any sound playback. Key indicators:
+
+- `DINGED.ONCE` in `autoT7POJC.RWN` = anti-replay flag (sound plays once per event on
+  PO quality-control receiving threshold notification)
+- `MSGSOUND` (opcode 7879) = simpler system-beep variant (no WAV file needed)
+- `KDWaveEditor` VCL component registered in `tp7runtime.exe` = runtime audio recording/editing
+  capability (for customizing alert sounds)
+
+The WAV file paths are string literals in the bytecode, not named variables — specific
+filenames cannot be confirmed without bytecode disassembly.
+
 ## Additional language constructs — from BKROA, BKMRF, BKDCA analysis
 
 ### Comment styles
