@@ -1,12 +1,12 @@
 # Work Orders (WO)
 
-Status: verified | Pass 261 (2026-06-25)
+Status: verified | Pass 326 (2026-06-26)
 
 - **Module code**: `WO`
 - **Tables**: 30 core (WO*/WORK*) + 7 IS-prefix auxiliary (ISWOEX, ISWOPRIO, ISWOROEX, ISWOCLOG, ISWOTRAY, OUTPROC, WOBOMREM) = 37 total
-- **Programs**: 46 (T7WO* confirmed from rwn_symbols.json)
+- **Programs**: 46 T7WO* (from rwn_symbols.json) + 32 BKWO* TAS6 + 32 BKAW* TAS6 (older AW/LW generation) = 110 programs total across generations
 - **UI forms**: 68 (prefixes `T7WO`, `T6WO`, `BKWO`)
-- **Menu operations**: 31
+- **Menu operations**: 31 (WO-A through WO-Q + WO-K-* sub-series + WO-L-* report sub-series)
 
 ## Narrative / vendor help
 
@@ -17,39 +17,42 @@ status-code table, save-time processing, and cross-links).
 
 ## Menu operations
 
-| Code | Operation | Legacy module file(s) |
-| ---- | --------- | --------------------- |
-| `WO-A` | Enter Work Orders | BKWOA;ISTECH;ISWORPT1 |
-| `WO-A-A` | Enter Work Orders - ECO Drawing Entry | BKWOA |
-| `WO-B` | Change WO Status | BKWOB;ISWORPT2 |
-| `WO-C` | Special Work Order Report | J5SMRPT3 |
-| `WO-D` | Print Pick Lists | BKWOD |
-| `WO-E` | Print Labor Cards/Labels | BKWOE;T6WOE |
-| `WO-F` | Enter Labor | BKWOF |
-| `WO-G` | Enter WO BOM | BKWOG;BKWOKB;ISWOG |
-| `WO-H` | Enter Misc/Extra Costs | BKWOH |
-| `WO-I` | Enter Finished Production | BKWOFA;BKWOI;BKWOIP~1;ISMULTIY;ISTECH |
-| `WO-J` | Rebuild Work Orders | BKREBWO;BKWOJ;ISTECH |
-| `WO-K-A` | Enter Work Order Routings | BKWOKA |
-| `WO-K-B` | Enter WO BOM | BKWOKB |
-| `WO-K-C` | Create Multi-Date Work Orders | BKWOKC |
-| `WO-K-D` | Create Multi-Assy Work Orders | BKWOKD |
-| `WO-K-E` | Swap Substitute Parts | BKWOKE |
-| `WO-K-F` | Edit Sequence Started/Finished Dates | BKWOKF |
-| `WO-K-G` | Recalculate Projected Hours | BKWOKG |
-| `WO-K-L` | Quick Work Orders | NZQWO |
-| `WO-L-A` | Print Work Order Status | t6wola |
-| `WO-L-C` | Print Work Center Backlog | BKWOLC |
-| `WO-L-D` | Print Projected Shipments | BKWOLD |
-| `WO-L-E` | Print/Post Labor to Payroll | BKWOLE |
-| `WO-L-F` | Print Work Order Shortage | BKWOLF;t6wolf |
-| `WO-L-G` | Print Work Center by Key Component | BKWOLG |
-| `WO-L-H` | Print Projected Hours Report | BKWOLH |
-| `WO-L-I` | Print Allocations | BKWOLI |
-| `WO-L-J` | Print Finished Work Order Report | ISWOLJ |
-| `WO-M` | Batch Labor Entry | BKDCG;BKDCGMSG;CBKWOM;J5HDWOM |
-| `WO-N` | Post Labor Batches | AUTODCH;BKDCH;UMCDCP |
-| `WO-Q` | Convert Work Orders to Purchase Orders | CAWOPO;ISWOPO |
+> ⚠️ **Pass 326 corrections** (2026-06-26): WO-C, WO-G, WO-J, and WO-Q had incorrect descriptions from pre-binary analysis. Binary strings in BKWO*.RUN files are now the authoritative source for TAS6-era operation names.
+
+| Code | Operation | TAS6 file(s) | T7 file(s) |
+| ---- | --------- | ------------ | ---------- |
+| `WO-A` | Enter Work Orders | BKWOA, BKAWA (LW-A) | T7WOA |
+| `WO-A-A` | Enter Work Orders — ECO Drawing Entry | BKWOA | T7WOA |
+| `WO-B` | Change WO Status / Release | BKWOB, BKAWB (LW-B Release) | T7WOB |
+| `WO-C` | **Print Travelers / Shop Packet** *(was "Special Work Order Report" — incorrect)* | BKWOC (Print Travelers) | T7WOC (Shop Packet 21 options) |
+| `WO-D` | Print Pick Lists | BKWOD, BKAWD (LW-D) | T7WOD |
+| `WO-E` | Print Labor Cards/Labels | BKWOE, BKAWE (AW-E) | T7WOE |
+| `WO-F` | Enter Labor | BKWOF, BKAWF (AW-F); backflush: BKWOFA/BKAWFA | T7WOF; backflush: T7WOFA |
+| `WO-G` | **Issue Material** *(was "Enter WO BOM" — incorrect; that is WO-K-B)* | BKWOG (WO-G Issue Material), BKAWG (LW-E) | T7WOG |
+| `WO-H` | Enter Misc/Extra Costs | BKWOH, BKAWH (AW-H) | T7WOH |
+| `WO-I` | Enter Finished Production | BKWOI, BKWOIP~1, BKAWI (LW-G) | T7WOI; T7WOFA (backflush path) |
+| `WO-J` | **Close/Cancel Work Orders** *(was "Rebuild Work Orders" — incorrect; rebuild=utility AW-J-A)* | BKWOJ (Close/Cancel), BKAWJ (LW-H Close/Cancel) | T7WOJ (repurposed: DC shop-floor posting) |
+| `WO-K-A` | Enter Work Order Routings | BKWOKA, BKAWKA (AW-K-A) | T7WOKA |
+| `WO-K-B` | Enter WO BOM | BKWOKB, BKAWKB (LW-I-A) | T7WOKB |
+| `WO-K-C` | Create Multi-Date Work Orders | BKWOKC, BKAWKC (LW-I-B) | T7WOKC |
+| `WO-K-D` | Create Multi-Assy Work Orders | BKWOKD, BKAWKD (LW-I-C) | T7WOKD |
+| `WO-K-E` | Swap Substitute Parts | BKWOKE, BKAWKE (LW-I-D) | T7WOKE |
+| `WO-K-F` | Edit Sequence Started/Finished Dates | BKWOKF, BKAWKF (AW-K-F) | — |
+| `WO-K-G` | Recalculate Projected Hours | BKWOKG | T7WOKG |
+| `WO-K-L` | Quick Work Orders | — | T7WOKL |
+| `WO-L-A` | Print Work Order Status | BKWOLA, BKAWLA (LW-J-A) | T7WOLA |
+| `WO-L-B` | Print Work Order Schedule | BKWOLB, BKAWLB (Print WO Schedule) | T7WOLB |
+| `WO-L-C` | Print Work Center Backlog | BKWOLC, BKAWLC (AW-L-C) | T7WOLC |
+| `WO-L-D` | Print Projected Shipments | BKWOLD, BKAWLD (AW-L-D) | T7WOLD |
+| `WO-L-E` | Print/Post Labor to Payroll | BKWOLE, BKAWLE (AW-L-E) | T7WOLE |
+| `WO-L-F` | Print Work Order Shortage | BKWOLF, BKAWLF (LW-J-G) | T7WOLF |
+| `WO-L-G` | Print Work Center by Key Component | BKWOLG, BKAWLG (AW-L-G) | T7WOLG |
+| `WO-L-H` | Print Projected Hours Report | BKWOLH | T7WOLH |
+| `WO-L-I` | Print Allocations | BKWOLI | T7WOLI |
+| `WO-L-J` | Print Finished Work Order Report | — | T7WOLJ |
+| `WO-M` | Batch Labor Entry (DC) | BKWOM (dispatcher→BKDCGA/BKAWMA), BKAWM | T7WOM |
+| `WO-N` | Post Labor Batches (DC) | BKWON (dispatcher→BKDCHA/BKAWNA), BKAWN | T7WON |
+| `WO-Q` | **View Archived Work Orders** *(was "Convert WOs to POs" — incorrect; BKWOQ→BKWOAA archive)* | BKWOQ (dispatcher→BKWOAA archive view) | see T7WOPO for MRP→PO |
 
 ## UI forms (68)
 
@@ -501,8 +504,126 @@ Three pathways from Work Orders to Purchase Orders:
 
 ---
 
+## Pass 326 — TAS6 Binary Inventory (2026-06-26)
+
+All 64 TAS6 WO programs binary-analyzed from string extraction. Two parallel TAS6 program families discovered.
+
+### Dual TAS6 program architecture
+
+The TAS6 WO module has TWO parallel program families:
+
+| Family | Count | Module prefix | Size range | Role |
+|--------|------:|---------------|------------|------|
+| **BKWO\*** | 32 | `WO-*` (current naming) | 3 KB – 510 KB | Updated/expanded TAS6 programs |
+| **BKAW\*** | 32 | `AW-*` / `LW-*` (older naming) | 3 KB – 168 KB | Older TAS6 generation; ~½ size of BKWO* counterparts |
+
+The BKAW* family used two sub-prefixes:
+- **AW-** = "Advanced Work Orders" (core WO operations: AW-E Print Labels, AW-F Enter Labor, AW-H Misc Costs, AW-K-* sub-ops, AW-L-* reports)
+- **LW-** = "Labor/WIP" (primary WO operations: LW-A Enter, LW-B Release, LW-D Pick Lists, LW-E Issue Material, LW-G Enter Finished Production, LW-H Close/Cancel, LW-I-* WO BOM sub-series, LW-J-* report sub-series)
+
+The BKWOM/BKWON dispatchers are the bridge between families: BKWOM routes to either BKDCGA (DC-enabled path) or BKAWMA (non-DC path). BKWON routes to BKDCHA or BKAWNA.
+
+### TAS6 BKWO* complete inventory (32 files)
+
+| File | Size | Title (from binary) |
+|------|-----:|---------------------|
+| BKWOA | 410 KB | LW-A / WO-A  Enter Work Orders |
+| BKWOB | 305 KB | LW-B / WO-B  Change WO Status |
+| BKWOC | 260 KB | WO-C  Print Travelers |
+| BKWOCA | 203 KB | WO-C-A (lookup/search variant) |
+| BKWOD | 201 KB | WO-D  Print Pick Lists |
+| BKWOE | 154 KB | WO-E  Print Labor Cards/Labels |
+| BKWOF | 366 KB | WO-F  Enter Labor |
+| BKWOFA | 284 KB | WO-F  Enter Labor [Backflush Materials] / WO-I Enter Finished Production [Backflush Materials] |
+| BKWOG | 511 KB | WO-G  Issue Material |
+| BKWOH | 231 KB | WO-H  Enter Misc/Extra Costs |
+| BKWOI | 470 KB | WO-I  Enter Finished Production |
+| BKWOIP~1 | 276 KB | WO-I  Enter Finished Production (alt/newer variant) |
+| BKWOJ | 303 KB | WO-J  Close/Cancel Work Orders |
+| BKWOKA | 298 KB | WO-K-A  Enter Work Order Routings |
+| BKWOKB | 303 KB | WO-K-B  Enter WO BOM |
+| BKWOKC | 156 KB | WO-K-C  Create Multi-Date Work Orders |
+| BKWOKD | 237 KB | WO-K-D  Create Multi-Assy Work Orders |
+| BKWOKE | 229 KB | WO-K-E  Swap Substitute Parts |
+| BKWOKF | 28 KB | WO-K-F  Edit Sequence Started/Finished Dates |
+| BKWOKG | 63 KB | WO-K-G  Recalculate Projected Hours |
+| BKWOLA | 248 KB | WO-L-A  Print Work Order Status |
+| BKWOLB | 241 KB | WO-L-B  Print Work Order Schedule |
+| BKWOLC | 238 KB | WO-L-C  Print Work Center Backlog |
+| BKWOLD | 215 KB | WO-L-D  Print Projected Shipments |
+| BKWOLE | 166 KB | WO-L-E  Print/Post Labor to Payroll |
+| BKWOLF | 337 KB | WO-L-F  Print Work Order Shortage (dual: LW-J-G) |
+| BKWOLG | 204 KB | WO-L-G  Print Work Center by Key Component |
+| BKWOLH | 150 KB | WO-L-H  Print Projected Hours Report |
+| BKWOLI | 341 KB | WO-L-I  Print Allocations |
+| BKWOM | 3.6 KB | Dispatcher → BKDCGA (DC path) or BKAWMA (non-DC path) |
+| BKWON | 3.6 KB | Dispatcher → BKDCHA (DC path) or BKAWNA (non-DC path) |
+| BKWOQ | 8.7 KB | Dispatcher → BKWOAA (WO-A archive view) |
+
+### TAS6 BKAW* complete inventory (32 files)
+
+| File | AW/LW title | Corresponding BKWO* |
+|------|-------------|---------------------|
+| BKAWA | LW-A  Enter Work Orders | BKWOA |
+| BKAWB | LW-B  Release Work Orders | BKWOB |
+| BKAWC | Print Travelers | BKWOC |
+| BKAWCA | Print Travelers (variant) | BKWOCA |
+| BKAWD | LW-D  Print Pick Lists | BKWOD |
+| BKAWE | AW-E  Print Labor Cards/Labels | BKWOE |
+| BKAWF | AW-F  Enter Labor | BKWOF |
+| BKAWFA | AW-F  Enter Labor [Backflush Materials] | BKWOFA |
+| BKAWFV | Dispatcher (~3.4 KB) | — |
+| BKAWG | LW-E  Issue Material | BKWOG |
+| BKAWGV | Dispatcher (~3.4 KB) | — |
+| BKAWH | AW-H  Enter Misc/Extra Costs | BKWOH |
+| BKAWI | LW-G  Enter Finished Production | BKWOI |
+| BKAWIB | AW-I  Rebuild Work Order Costs *(utility, not main menu)* | — |
+| BKAWIV | Dispatcher (~3.4 KB) | — |
+| BKAWJ | LW-H  Close/Cancel Work Orders | BKWOJ |
+| BKAWJA | AW-J  Rebuild Work Orders *(utility, not main menu)* | — |
+| BKAWKA | AW-K-A  Enter Work Order Routings | BKWOKA |
+| BKAWKB | LW-I-A  Enter Work Order Bills of Material | BKWOKB |
+| BKAWKC | LW-I-B  Create Multi-Date Work Orders | BKWOKC |
+| BKAWKD | LW-I-C  Create Multi-Assy Work Orders | BKWOKD |
+| BKAWKE | LW-I-D  Swap Substitute Parts | BKWOKE |
+| BKAWKF | AW-K-F  Edit Sequence Started/Finished Dates | BKWOKF |
+| BKAWLA | Print Work Order Status (LW-J-A) | BKWOLA |
+| BKAWLB | Print Work Order Schedule (LW-J-B) | BKWOLB |
+| BKAWLC | AW-L-C  Print Work Center Backlog | BKWOLC |
+| BKAWLD | AW-L-D  Print Projected Shipments | BKWOLD |
+| BKAWLE | AW-L-E  Print/Post Labor to Payroll | BKWOLE |
+| BKAWLF | LW-J-G  Print Work Order Shortages | BKWOLF |
+| BKAWLG | AW-L-G  Print Work Center by Key Component | BKWOLG |
+| BKAWM | Dispatcher (~3.5 KB) | BKWOM |
+| BKAWN | Dispatcher (~3.5 KB) | BKWON |
+
+### TAS6→T7 menu code renaming (confirmed from binary)
+
+TAS6 and T7 share the same menu code numbers but some operations changed meaning:
+
+| Code | TAS6 function | T7 function | Change |
+|------|--------------|-------------|--------|
+| WO-B | Change WO Status | Release / Change Status (+ GL close) | Expanded |
+| WO-J | Close/Cancel Work Orders | DC Shop-Floor Event Posting | **Reassigned** |
+| WO-Q | View Archived Work Orders | — (T7WOPO handles MRP→PO) | **Reassigned** |
+
+The T7 generation renumbered some operations. WO-J in TAS6 = Close/Cancel; in T7 WO-J is DC posting (Close logic moved into WO-B). WO-Q in TAS6 = archive view; in T7 the archive viewer is handled differently.
+
+### New table references from TAS6 binary analysis
+
+| TAS6 handle | TAS7/DDF name | Purpose |
+|-------------|---------------|---------|
+| `SCHED` | `SCHWO` (10f) | WO scheduling working data — critical ratio, shop start/finish days |
+| `WOLHA` | `WOHLABOR` (58f) | WO labor history archive (H-suffix = historical) |
+| `BKICL_JITPRG` | unknown | JIT scheduling program table — opened by BKWOKC (Multi-Date) and BKWOKD (Multi-Assy); field accessor `MTIC_JITPRG`; **not in DDF schema** |
+
+`BKICL_JITPRG` is an undocumented JIT planning table used when creating multi-date and multi-assembly work orders. It is not registered in the Pervasive DDF (not accessible via ODBC). Likely a runtime-only scratch table or a TAS6-era table that was deprecated before the DDF was fully populated.
+
+---
+
 ## Notes & open questions
 
 - WORKACHG vs WORKCHG: both have identical 25-field schema with WO_CHG_ prefix. Likely split between assembly-level changes (WORKACHG) and general WO header changes (WORKCHG), but the actual split criterion is not confirmed from schema alone — would need RWN source to verify.
 - WORKSORD: identical 74-field schema to WORKORD. Likely MRP-generated "scheduled" WO proposals that haven't been formally released; confirmed from the module name pattern but not from RWN logic.
 - WOELABOR: identical schema to WOLABOR. The "E" prefix here likely means "entered but not posted" (pending labor) rather than "estimated."
+- BKICL_JITPRG: JIT scheduling table referenced in BKWOKC/BKWOKD TAS6 binaries but not in DDF — purpose and schema unknown.

@@ -68,9 +68,12 @@ are the few remaining gaps after the bulk autonomous pass.
   [docs/02-file-formats/rtm-reportbuilder.md](../docs/02-file-formats/rtm-reportbuilder.md).
 
 - **What about `.IMP` / `.UPD` / `.XPT`?**
-  IMP = plaintext import config. UPD = Btrieve schema-update snapshot.
-  XPT = plaintext export layout. See
-  [docs/02-file-formats/other-formats.md](../docs/02-file-formats/other-formats.md).
+  IMP = **binary 442-byte** fixed record (40-byte filename + 2-byte mode code + two 100-entry
+  uint16 LE column maps; prior "plaintext" characterization was wrong — Pass 325 2026-06-26).
+  UPD = Btrieve schema-update snapshot.
+  XPT = **binary 32000-byte** block (12-byte filename + 1-byte type flag + 15-char column
+  accessor slots; prior "plaintext" characterization was wrong — Pass 325).
+  See [docs/02-file-formats/imp-xpt-import-export.md](../docs/02-file-formats/imp-xpt-import-export.md).
 
 ## STILL OPEN (post-autonomous)
 
