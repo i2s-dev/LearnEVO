@@ -165,7 +165,7 @@ The permanent record of every GL posting. All sub-ledger modules (AR, AP, IC, WO
 | `BKGL_TRN_DESC` | STRING 25 | Description |
 | `BKGL_TRN_DC` | STRING 1 | Debit (D) or Credit (C) |
 | `BKGL_TRN_AMT` | FLOAT | Transaction amount |
-| `BKGL_TRN_TYPE` | STRING 2 | Journal/source type: AP, AR, GJ, PR, IC, WO, PO, etc. |
+| `BKGL_TRN_TYPE` | STRING 2 | Journal/source type — see confirmed type code table below |
 | `BKGL_TRN_ENTDTE` | DATE | Entry date (when entered, may differ from transaction date) |
 | `BKGL_TRN_EXTRA` | STRING 25 | Extra / user-defined |
 | `BKGL_TRN_TRXN` | FLOAT | Transaction sequence number |
@@ -174,11 +174,78 @@ The permanent record of every GL posting. All sub-ledger modules (AR, AP, IC, WO
 | `BKGL_TRN_BATCH` | FLOAT | Batch number (GL-O batch reference) |
 | `BKGL_TRN_PART` | STRING 15 | Part/item code (for inventory-related GL entries) |
 
+**BKGLTRAN.TYPE — all 9 confirmed codes (from BKGLO.RUN binary analysis, Pass 321 2026-06-26):**
+
+| Code | Label (from GL-O batch UI) | Source |
+|------|---------------------------|--------|
+| `GJ` | General Journal | GL-B manual journal entries (also used for Beginning Balance) |
+| `CR` | Cash Receipts | GL-B Cash Receipts journal |
+| `CD` | Cash Disbursements | GL-B Cash Disbursements journal |
+| `YE` | Year End | GL-O year-end close entries to Retained Earnings |
+| `RS` | Sales | AR/SO module postings to GL |
+| `RP` | Purchases | AP/PO module postings to GL |
+| `PR` | Payroll | Payroll module postings to GL |
+| `OT` | Other | Miscellaneous module postings (IC, FA, etc.) |
+| `WO` | Work Orders | Work Order module postings to GL |
+
+Note: `TT` (Transaction Template) is a pre-posting state only — templates are converted to type `GJ` before being posted. Beginning Balance entries also use type `GJ`.
+
 **Notes:**
 - BKGLTRAN rows are the transaction detail; BKGLCOA accumulates the period totals. The trial balance is read from BKGLCOA, but BKGLTRAN provides the drill-down detail.
 - POST flag distinguishes batches staged in BKGLTEMP (not yet posted) from committed entries in BKGLTRAN.
-- TYPE codes identify the originating sub-ledger: `AP`=Accounts Payable, `AR`=Accounts Receivable, `GJ`=General Journal, `PR`=Payroll, `IC`=Inventory, `WO`=Work Orders.
 - BKGLATRN is the prior-year archive (GL period-end close copies and clears BKGLTRAN → BKGLATRN).
+- BKGLTMP and BKGLTMP2 are temporary work tables used during GL-O batch post processing (confirmed from BKGLO.RUN strings `BKGLTMPA` / `bkgltmp2A`).
+
+---
+
+## TAS6-era GL programs (20 BKGL*.RUN — binary analyzed Pass 321 2026-06-26)
+
+All 20 TAS6 .RUN programs found on DBAMFG$ share. Each has T7GL* counterpart in T7 generation.
+
+| File | Size | Menu op | Purpose (from binary strings) |
+|------|------|---------|-------------------------------|
+| `BKGLA.RUN` | 160 KB | GL-A | View/edit Chart of Accounts; budget entry |
+| `BKGLB.RUN` | 266 KB | GL-B | Enter/Post General Journal transactions (GJ/CR/CD/TT/BB entry) |
+| `BKGLC.RUN` | ~50 KB | GL-C | Print GL transactions (report) |
+| `BKGLD.RUN` | ~80 KB | GL-D | Print journals; displays "Net Balance" |
+| `BKGLE.RUN` | ~120 KB | GL-E | Print detailed/summary Trial Balance |
+| `BKGLF.RUN` | ~100 KB | GL-F | Print Financial Statements (Income Stmt / Balance Sheet) |
+| `BKGLG.RUN` | ~40 KB | GL-G | Print GL code and description list |
+| `BKGLH.RUN` | ~60 KB | GL-H | Print Chart of Accounts (period comparison table) |
+| `BKGLI.RUN` | ~80 KB | GL-I | Print Check Register |
+| `BKGLJ.RUN` | ~130 KB | GL-J | Reconcile Check Register (bank reconciliation) |
+| `BKGLK.RUN` | ~90 KB | GL-K | Transfer Bank Account Funds (multi-currency) |
+| `BKGLL.RUN` | 3 KB | GL-L | Stub launcher → calls BKGLB (cfrom parameter variant) |
+| `BKGLM.RUN` | ~50 KB | GL-M | Generate Recurring GJ Transactions from BKGLRGJR |
+| `BKGLN.RUN` | ~100 KB | GL-N | Print Custom Financial Statements |
+| `BKGLO.RUN` | 258 KB | GL-O | Print/Post GL Batches (9-type batch selector, year-end close) |
+| `BKGLOOB.RUN` | ~30 KB | GL-OOB | Find out-of-balance GL transactions |
+| `BKGLP.RUN` | ~80 KB | GL-P | Edit GL Batch Entries |
+| `BKGLPURG.RUN` | ~40 KB | GL-PURG | Purge GL Transactions |
+| `BKGLQ.RUN` | ~60 KB | GL-Q | Reverse Batch Posting |
+| `BKGLS.RUN` | ~30 KB | GL-S | View GL Journal Notes |
+
+**Key observations from binary string analysis:**
+
+BKGLB.RUN transaction type selector confirms all 5 user-entry types:
+```
+General Journal      [GJ]
+Cash Receipts        [CR]
+Cash Disbursements   [CD]
+Transaction Template [TT]   ← becomes GJ type when posted
+Beginning Balance    [GJ]   ← Beginning Balance also stores as GJ type
+```
+
+BKGLO.RUN batch posting UI confirms all 9 selectable posting types:
+```
+Cash Receipts      CR     Other       OT
+Cash Disbursements CD     Work Orders WO
+Sales              RS     General Jrn GJ
+Purchases          RP     Year End    YE
+Payroll            PR
+```
+
+BKGLO.RUN also confirms `BKGLTMP`/`BKGLTMP2` as temporary staging tables during GL-O batch post, and `BKGLOOB.RUN` as an inline out-of-balance finder sub-call from GL-O.
 
 ---
 

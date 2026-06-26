@@ -75,7 +75,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [SA — Sales Analysis](03-modules/sa-sales-analysis/README.md) — + [help-content.md](03-modules/sa-sales-analysis/help-content.md)
 - [PO — Purchase Orders](03-modules/po-purchase-orders/README.md) (29 / 41 / 8) — + [help-content.md](03-modules/po-purchase-orders/help-content.md) *(27 CHM topics)*
 - [WO — Work Orders](03-modules/wo-work-orders/README.md) (31 / 68 / 30) — + [help-content.md](03-modules/wo-work-orders/help-content.md) *(52 CHM topics)*
-- [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28) — + [help-content.md](03-modules/gl-general-ledger/help-content.md) *(18 CHM topics)*
+- [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28) — + [help-content.md](03-modules/gl-general-ledger/help-content.md) *(18 CHM topics)* — Pass321 2026-06-26: all 9 BKGLTRAN.TYPE codes confirmed from BKGLO.RUN binary; 20 BKGL*.RUN programs inventoried; C:83→97
 - [BM — Bill of Materials](03-modules/bm-bill-of-materials/README.md) (10 / 16 / 10) — + [help-content.md](03-modules/bm-bill-of-materials/help-content.md) *(16 CHM topics)*
 - [RO — Routings](03-modules/ro-routings/README.md) — + [help-content.md](03-modules/ro-routings/help-content.md) *(22 CHM topics)*
 - [LC — Lot Control](03-modules/lc-lot-control/README.md) — + [help-content.md](03-modules/lc-lot-control/help-content.md) *(6 CHM topics)*
