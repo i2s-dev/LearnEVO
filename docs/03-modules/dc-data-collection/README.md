@@ -1,11 +1,11 @@
 # Data Collection (Shop Floor) (DC)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 338 (2026-06-26)
 
 - **Module code**: `DC`
-- **Tables**: 7 (prefixes `BKDC`)
+- **Tables**: 7 (prefixes `BKDC`) + 4 auxiliary (BKCPMSTR, BKPRINFO, ISWOEX, ISNCR)
 - **UI forms**: 26 (prefixes `T7DC`, `T6DC`, `EVODC`)
-- **Menu operations**: 7
+- **Menu operations**: 9 core (DC-A through DC-I, no DC-J) + DC-K/L/M/N T7-only
 
 ## Narrative / vendor help
 
@@ -20,15 +20,19 @@ floor hardware / barcode setup notes.
 
 ## Menu operations
 
-| Code | Operation | Legacy module file(s) |
-| ---- | --------- | --------------------- |
-| `DC-A` | Print Transfer Labels | J5ISDCA;J6ISDCA |
-| `DC-D` | View/Print Labor Status | BKDCD;t6dcd |
-| `DC-E` | Print Labor Tickets | BKDCE;T6DCE |
-| `DC-F` | Print Employee Tickets | BKDCF;T6DCF |
-| `DC-G` | Edit Labor Transactions | BKDCG;BKDCGMSG;CBKWOM;J5HDWOM |
-| `DC-H` | Filelock on TOOL - | AUTODCH;BKDCH;UMCDCP |
-| `DC-I` | View | BKDCI |
+> ⚠️ **Pass 338 corrections** (2026-06-26): DC-A, DC-B, DC-C, DC-H were wrong or missing in prior auto-generated table. TAS6 BKDC*.RUN binaries are authoritative.
+
+| Code | Operation | TAS6 file(s) | T7 file(s) | Notes |
+| ---- | --------- | ------------ | ---------- | ----- |
+| `DC-A` | **Enter Labor/Production** *(was "Print Transfer Labels" — wrong)* | BKDCA, BKDCA2~1 | T7DCA, T7DCA2 | Three-mode entry: Labor+Production / Production Only / Labor Only |
+| `DC-B` | **Enter Production Only** *(was missing)* | BKDCB (8KB dispatch→BKDCA) | — | Dispatch stub calling BKDCA in Production-only mode |
+| `DC-C` | **Enter Labor Only** *(was missing)* | BKDCC (9KB dispatch→BKDCA) | — | Dispatch stub calling BKDCA in Labor-only mode |
+| `DC-D` | View/Print Labor Status | BKDCD | T7DCD | Also exports to CheckMark Payroll (identical logic to WO-L-E); BKHLAB=history access |
+| `DC-E` | Print Labor Tickets | BKDCE | T7DCE | Uses bkdce.rtm report template |
+| `DC-F` | Print Employee Tickets | BKDCF | T7DCF | Uses bkdcf.rtm report template |
+| `DC-G` | Edit Labor Transactions | BKDCG, BKDCGMSG | T7DCG | Edit/Delete only — "cannot Add Labor records with this program, use DC-A/B/C"; BKDCGMSG = message-display variant for scanner terminals |
+| `DC-H` | **Post Labor Transactions** *(was "Filelock on TOOL -" — garbled)* | BKDCH | T7DCH | Also accessible as **WO-N Post Labor Batches** — same program, two menu paths; opens BKBMMSTR for BOM-based backflush during posting |
+| `DC-I` | Select Active/Archive Work Orders | BKDCI | — | WO browser/filter for DC context; multi-date selection; "View Work Order Notes" mode; links to LW-A Enter Work Orders |
 
 ## UI forms (26)
 
@@ -270,10 +274,63 @@ Source: `samples/rwn_symbols.json` — all T7DC* + EvoDC* entries.
 
 ---
 
+---
+
+## Pass 338 — TAS6 BKDC* binary analysis (2026-06-26)
+
+All 11 BKDC*.RUN files extracted and analyzed. This pass corrected the menu table and confirmed workflow details.
+
+### Complete TAS6 BKDC* inventory (11 files)
+
+| File | Size | Title (from binary) | Role |
+|------|-----:|---------------------|------|
+| BKDCA | 225 KB | "Enter Labor/Production" | DC-A main entry |
+| BKDCA2~1 | 135 KB | "Enter Labor/Production" (variant) | DC-A2 variant — directly writes WOLABOR; has "Reporting Labor?" prompt |
+| BKDCB | 8 KB | "Enter Production Only" | DC-B dispatch → BKDCA |
+| BKDCC | 9 KB | "Enter Labor Only" | DC-C dispatch → BKDCA |
+| BKDCD | 202 KB | "DC-D View/Print Labor Status" | DC-D report + CheckMark export |
+| BKDCE | 148 KB | "DC-E Print Labor Tickets" | Uses bkdce.rtm; WO range filter |
+| BKDCF | 127 KB | "DC-F Print Employee Tickets" | Uses bkdcf.rtm; employee-based tickets |
+| BKDCG | 236 KB | "DC-G Edit Labor Transactions" | Review/edit; cannot add records |
+| BKDCGMSG | 179 KB | "DC-G Edit Labor Transactions" | DC-G variant with message formatting for scanner displays |
+| BKDCH | 286 KB | "DC-H Post Labor Transactions" / "WO-N Post Labor Batches" | Same program, two menu paths |
+| BKDCI | 252 KB | "DC-I Select Active/Archive Work Orders" | WO browser with date-based filtering |
+
+### Key findings
+
+**DC-A architecture** — BKDCA opens: `BKDCSHFT`, `BKDCLAB`, `BKPRMSTR`, `BKICMSTR`, `MTICMSTR`, `BKDCPLAB`, `BKDCTLAB`. Validates Employee number, allows "Enter Machine NO." for machine-based time capture. Calls `ISDCA.RUN` for transfer label printing (that is the separate label function — not the main DC-A operation title). The three scan modes (Labor+Production / Production Only / Labor Only) are invoked through DC-A, DC-B (dispatch), and DC-C (dispatch).
+
+**BKDCA2~1.RUN** — second DC-A variant (135KB vs 225KB). Directly opens `WOLABOR` (bypasses BKDCCLAB staging — posts straight to WO labor table). Has `"Reporting Labor?"` prompt and `BKDCTLAB` handle. This is likely the workstation variant used when DC-A is configured for direct posting (no review step).
+
+**DC-H = WO-N confirmed** — BKDCH.RUN contains both `"DC-H  Post Labor Transactions"` and `"WO-N  Post Labor Batches"` title strings. Also opens `BKBMMSTR` (BOM master) — confirms that DC-H performs BOM-based backflush material issue during posting. `BKDCCLAB` (raw collected) + `BKDCLAB` (reviewed) + `BKDCCFG` (posting config) all opened. F10=Post All hotkey confirmed.
+
+**DC-D CheckMark integration** — BKDCD.RUN contains identical CheckMark export message to WO-L-E: "Now run 'Enter Hours' (then click 'Import Hours') in CheckMark Payroll using this file name." Print options: `Print by Emp# or WO# [E/W]`, `Print Details [Y/N]`, `Print Shift only [Y/N]`. Opens `BKDCHLAB` (history) for historical reports. `BKCPMSTR` confirmed (CP master = company/plant cost pool table used for DC costing reports).
+
+**BKDCGMSG** — smaller variant of DC-G (179KB vs 236KB). Missing `BKSYMSTR` (system master) that BKDCG has, suggesting it's a simplified version for dedicated DC terminals that don't need full system context. Both contain identical "You cannot Add Labor records with this program. Use DC-A, B, or C." message.
+
+**DC-I WO browser** — Opens `BKICMSTR`, `MTICMSTR`, `CLASMSTR`. Multi-date WO selection ("you may enter an unlimited number" of dates). Two modes: "DC-I View [Work Order]" and "DC-I View Work Order Notes". Links to "LW-A Enter Work Orders". Allows Work Center filter.
+
+### Table accessors confirmed
+
+| TAS6 handle | DDF table | Confirmed in |
+|-------------|-----------|-------------|
+| `BKDCPLABA` | BKDCPLAB | BKDCA, BKDCG, BKDCH |
+| `BKDCTLABA` | BKDCTLAB | BKDCA |
+| `BKDCSHFTA` | BKDCSHFT | BKDCA, BKDCG, BKDCH |
+| `BKDCLABA` | BKDCLAB | BKDCG, BKDCH, BKDCD |
+| `BKDCCLABA` | BKDCCLAB | BKDCH |
+| `BKDCHLABL` | BKDCHLAB | BKDCD |
+| `BKDCIA` | (self) | BKDCI |
+| `WOLABORA` | WOLABOR | BKDCA2~1 (direct post variant) |
+
+---
+
 ## Notes
 
 - All five LAB_* tables share identical schemas. The distinction is purely lifecycle stage: collect → review → post → archive.
-- BKDCTLAB may be used as a working/temp table during DC-H posting — its exact role is inferred from the name ("transaction") but not confirmed without RWN source.
+- BKDCTLAB confirmed as working/temp table opened by DC-A during data entry (not DC-H). DC-H uses BKDCCLAB (raw) and BKDCLAB (reviewed) directly.
 - The scrap reason codes (LAB_SCRAPCD_1..5) allow a single operation to report up to 5 distinct failure modes with separate quantities — important for QC analysis.
 - `LAB_CYCLE_*` fields track cycle time independently of clock-in/clock-out, supporting cycle time studies and rate analysis.
-- DC-A prints transfer labels (J5ISDCA = i2 custom program); DC-H is the core posting program (AUTODCH = automated version for batch mode).
+- BKDCA2~1.RUN bypasses BKDCCLAB staging and writes WOLABOR directly — used when DC is configured for direct-post mode (no approval step).
+- AUTODCH (referenced in prior menu table) = automated/batch DC-H variant not in the 11-file TAS6 set; UMCDCP = i2 custom DC-H extension.
+- Transfer labels are printed by calling `ISDCA.RUN` from within DC-A (not a separate menu operation).
