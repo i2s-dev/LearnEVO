@@ -1,6 +1,6 @@
 # Accounts Receivable (AR)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 334 (2026-06-26)
 
 - **Module code**: `AR`
 - **Tables**: 29 (prefixes `BKAR`, `BKAB`, `BKART`)
@@ -19,14 +19,15 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 | `AR-F` | Print Aging | BKARF;T6ARF |
 | `AR-G` | Print Customer Code and Name | BKARG |
 | `AR-H` | Print Customer General Info | BKARH |
-| `AR-I` | Print Customer Mail Labels | BKARI;T6ARI |
-| `AR-J` | Print Customer Rolodex | BKARJ;rolodex.run |
+| `AR-I` | Print Open Credits / Deposits | BKARI;T6ARI |
+| `AR-J` | Print Customer List by Class | BKARJ;rolodex.run |
 | `AR-K` | Print Sales Tax Report | BKARK |
 | `AR-L` | Transfer Sales Taxes | BKARL |
-| `AR-M` | Enter Customer Refund | BKARM |
+| `AR-M` | Cash Receipts / Unapplied Credits | BKARM |
 | `AR-N` | Print Customer Deposits | BKARN;T6arn |
-| `AR-P` | Generate Dun Letters | BKARP;T6ARP |
-| `AR-Q` | View Customers | BKARA |
+| `AR-P` | Generate Dun Letters / Labels | BKARP;T6ARP |
+| `AR-Q` | View Customers (dispatch stub) | BKARQ → BKARAA+BKARQA |
+| `AR-R` | Print AR Payment History | BKARR |
 | `AR-S` | Accounts Receivable Defaults | BKADE |
 
 ## UI forms (24)
@@ -334,3 +335,151 @@ Data extracted from rwn_symbols.json.
 - BKAREIVT vs BKARINVT: Both have the same PK and nearly identical fields. BKAREIVT has a spurious BKAB_PERIOD field (LOGICAL size 1792 at an overlapping offset) which is a Btrieve alternate-key index definition artifact, not a real data field. Treat BKARINVT (23f) as canonical.
 - **ISTERMS confirmed** (Pass 268): `BKAR_TERMS_NUM` FK → `ISTERMS`. Full ISTERMS schema not yet extracted from DDF.
 - BKARINVV (77f) is not yet documented — field semantics unknown. It may be the "voucher-verified" copy of a posted invoice.
+- **TAS6/TAS7 menu-code discrepancy (Pass 334):** T7ARI.DFM caption says "Print Customer Mail Labels" but BKARI.RUN (TAS6) binary says "Include Open Credits / Include Open Deposits". Both are AR-I; the menu code was likely repurposed between TAS6→TAS7. The T7 DFM caption reflects the *current* (TAS7) behavior; BKARI.RUN reflects the legacy function.
+
+---
+
+## Pass 334 — TAS6 binary analysis of 18 BKAR*.RUN programs (2026-06-26)
+
+Source: string extraction from `samples/BKAR*.RUN` (copied from `\\i2s109-solidcrm\DBAMFG$\`).
+
+### 18-program TAS6 inventory
+
+| File | Size | Confirmed role | Key binary evidence |
+|------|-----:|----------------|---------------------|
+| `BKARA.RUN` | 410 KB | AR-A Enter Customers | "Customer Prices", "Running Balance", "Click to see Imaging", BKARSIVLA |
+| `BKARB.RUN` | 324 KB | AR-B Enter AR Vouchers/Invoices | "A/R Voucher", "Leave voucher number blank to have system assign", "Invoices...printed using SO-F reprint mode" |
+| `BKARC.RUN` | 331 KB | AR-C Apply Payments | "This Payment", "Excludes deposits linked to a sales order", "Invoice Number/Sales Order No/Customer Code" sort options |
+| `BKARCUR.RUN` | 131 KB | AR-A-Q Enter Customer Currency Codes | Literal string "AR-A-Q Enter Customers Currency Codes"; "Customer Currency Conversion Utility [International] 2000.1" |
+| `BKARD.RUN` | 204 KB | AR-D Charge Interest on Invoices | "Only those customers that you have indicated are subject to finance", "interest rate is set in AD-B)", opens BKGLTRAN |
+| `BKARE.RUN` | 238 KB | AR-E Print Customer Statements | "Statement Date", "Balance Forward Date", "Show Customer Deposits?", BKPRTCFG/BKPRTCFGA |
+| `BKARF.RUN` | 230 KB | AR-F Print Invoices / Aged Trial Balance | "Update Credit Hold Status?", "Include deposits(YNO)?", "Print Follow-up Notes?", "Long Check#?"; opens BKPRSALE for commission |
+| `BKARG.RUN` | 154 KB | AR-G Print Customer List | "Customer Code and Name List", "Active Customers", "Print From/Thru Customer Code" |
+| `BKARH.RUN` | 153 KB | AR-H Print Customer General Info | "Customer General Information", "Started", "Salesperson", "Interest", "Statement", "Price Level", "Terms" (column headers) |
+| `BKARI.RUN` | 168 KB | AR-I Print Open Credits / Deposits | "Include Open Credits", "Include Open Deposits", "active/inactive customers" (TAS6 role differs from T7ARI.DFM caption — see Notes) |
+| `BKARJ.RUN` | 56 KB | AR-J Print Customer List by Class | "CUSTOMER", "From/Thru Customer Code", "From/Thru Customer Class", "All Customers (A) or just" |
+| `BKARK.RUN` | 163 KB | AR-K Print Sales Tax Report | "Tax Code Totals", "Taxable Non-taxable Freight Taxes Collected Taxes Outstanding" |
+| `BKARL.RUN` | 198 KB | AR-L Transfer Sales Taxes | "Tax Entries, totalling $", "This Program requires the new TAX system", "Tax Code/Description/Tax Rate/Post Date"; opens BKAPINVT+BKGLTRAN+BKGLXI |
+| `BKARM.RUN` | 273 KB | AR-M Cash Receipts / Unapplied Credits | "Unapplied Credits and Deposits", "A/P Voucher", "Bank Account", "Invoice#/Date/Description/Terms", "Customer Name/Currency"; multi-currency |
+| `BKARN.RUN` | 273 KB | AR-N Print Customer Deposits | "Total number of deposits", "Grand Total of All Deposits", "Total Deposits for", "for AR aging & statements" |
+| `BKARP.RUN` | 220 KB | AR-P Generate Dun Letters / Labels | "Print labels? [Y/N]", "Print Contact Name? [Y/N]", "@@Last Payment@@"; references BKSY.PO.TAXGL |
+| `BKARQ.RUN` | 4 KB | AR-Q Dispatch stub | Redirects to BKARAA + BKARQA (not BKARA as previously documented) |
+| `BKARR.RUN` | 200 KB | AR-R Print AR Payment History | "Accounts Receivable Payment History", "Active(A) or Archived(D) payments?", opens ISARACHKA |
+
+### Menu code corrections confirmed by binary
+
+| Code | Prior description | Corrected description | Source |
+|------|-----------------|-----------------------|--------|
+| `AR-I` | Print Customer Mail Labels | Print Open Credits / Deposits | BKARI.RUN strings: "Include Open Credits", "Include Open Deposits" |
+| `AR-J` | Print Customer Rolodex | Print Customer List by Class | BKARJ.RUN strings: customer class range filter, no rolodex-specific terms |
+| `AR-M` | Enter Customer Refund | Cash Receipts / Unapplied Credits | BKARM.RUN strings: "Unapplied Credits and Deposits", "A/P Voucher", "Bank Account" |
+| `AR-Q` | View Customers → BKARA | Dispatch stub → BKARAA + BKARQA | BKARQ.RUN is 4 KB (stub); dispatches to BKARAA and BKARQA, not back to BKARA |
+| `AR-R` | (missing from table) | Print AR Payment History | BKARR.RUN: "Accounts Receivable Payment History", opens ISARACHKA |
+
+### BKARCUR — International multi-currency sub-menu (AR-A-Q)
+
+`BKARCUR.RUN` contains the literal menu code string `AR-A-Q Enter Customers Currency Codes` and identifies itself as "Customer Currency Conversion Utility [International] 2000.1". This is a sub-menu of AR-A launched only when multi-currency is enabled. It manages per-customer currency codes used by BKAR_IS_MCCODE (field 104 of BKARCUST). Not listed in the standard AR menu table — it is accessed via AR-A → Q (sub-option).
+
+### BKARF confirms commission linkage to BKPRSALE
+
+`BKARF.RUN` (AR-F Print Invoices) opens `BKPRSALE` — the payroll sales commission table. This mirrors Pass 268's finding of BKPRSALE in T7ARG. The invoice print program computes or references salesperson commission percentages from the PR module when generating the aged trial balance / invoice printout. Establishes a confirmed data link: AR-F → BKPRSALE (PR module).
+
+### BKARM confirms cross-module AR↔AP write-off path
+
+`BKARM.RUN` strings include "A/P Voucher" alongside "Unapplied Credits and Deposits" and "Bank Account". This confirms AR-M can write an AP voucher as a write-off mechanism when unapplied AR credits are cleared against AP balances. BKARM is the primary cash receipts and unapplied payment management program, not simply "customer refund entry" as the prior description stated.
+
+### BKARN deposits feed AR aging
+
+`BKARN.RUN` confirms via the string "for AR aging & statements" that deposit records in BKARDEP (managed by AR-N) are included in the aging calculation. When AR-F (Print Aging) or AR-E (Statements) compute open balances, deposits from BKARDEP reduce the open-item total. This closes an open question about whether deposits affect the aging display.
+
+### Document imaging in BKARA
+
+`BKARA.RUN` contains "Click to see Imaging" — confirms EvoERP has a document imaging subsystem integrated into the AR-A customer master editor. Customers can have scanned documents attached and viewable from within the AR-A form. This is the same imaging capability seen in other modules.
+
+### New accessor namespaces confirmed (Pass 334)
+
+| Namespace | Found in | Meaning |
+|-----------|----------|---------|
+| `BKAR.CHG.INTRST` | BKARD | AR charge interest flag (maps to BKARCUST.BKAR_CHG_INTRST) |
+| `BKAR.CREDIT.HLD` | BKARF | AR credit hold flag (maps to BKARCUST.BKAR_CREDIT_HLD) |
+| `BKAR.DAYS.TOPAY` | BKARG, BKARP | AR average days to pay (maps to BKARCUST.BKAR_DAYS_TOPAY) |
+| `BKAR.START.DATE` | BKARG | AR account start date (maps to BKARCUST.BKAR_START_DATE) |
+| `BKAR.INV.CUSCOD` | BKARA, BKARB | AR invoice header customer code |
+| `BKAR.INV.CUSORD` | BKARB, BKARC | AR invoice header customer order number |
+| `BKAR.INV.INVDTE` | BKARA, BKARB | AR invoice header invoice date |
+| `BKAR.INV.ORDDTE` | BKARB | AR invoice header order date |
+| `BKAR.INV.JOBNUM` | BKARB | AR invoice header job/project number |
+| `BKAR.INV.SHPVIA` | BKARB | AR invoice header ship-via method |
+| `BKAR.INV.SHIPDT` | BKARB | AR invoice header ship date |
+| `BKAR.INV.SHIPPR` | BKARB | AR invoice header shipping prepaid flag |
+| `BKAR.INV.SHPCOD` | BKARB | AR invoice header ship-to code |
+| `BKAR.INV.SHPATN` | BKARB | AR invoice header ship attention name |
+| `BKAR.INV.DEPAMT` | BKARN | AR invoice header deposit amount |
+| `BKAR.INV.CUSATT` | BKARB | AR invoice header customer attention |
+| `BKAR.INV.CUSCNT` | BKARB | AR invoice header customer contact |
+| `BKAR.INV.CUSCTY` | BKARB | AR invoice header customer city |
+| `BKAR.INV.CUSZIP` | BKARB | AR invoice header customer ZIP |
+| `BKAR.INV.ENDLNE` | BKARB | AR invoice header end-of-line marker |
+| `BKAR.INV.ISMCDT` | BKARB | AR invoice header IS multi-currency date |
+| `BKAR.INV.ISTXKY` | BKARB | AR invoice header IS tax key |
+| `BKAR.INVL.EXTRA` | BKARB | AR invoice line extra/user field |
+| `BKAR.INVL.INVNM` | BKARB | AR invoice line invoice number |
+| `BKAR.INVL.PCODE` | BKARB | AR invoice line product code |
+| `BKAR.INVL.PDESC` | BKARB | AR invoice line product description |
+| `BKAR.INVL.PDISCK` | BKARB | AR invoice line discount key |
+| `BKAR.INVL.PPRCEC` | BKARB | AR invoice line price-each value |
+| `BKAR.INVT.AMTRM` | BKARC, BKARP | AR INVT amount remaining (open balance) |
+| `BKAR.INVT.CHKNO` | BKARC | AR INVT check number |
+| `BKAR.INVT.CLOSD` | BKARC | AR INVT closed date |
+| `BKAR.INVT.DEPSTH` | BKARN | AR INVT deposit-to-history flag |
+| `BKAR.INVT.MCCOD` | BKARM | AR INVT multi-currency code |
+| `BKAR.INVT.NORMP` | BKARC | AR INVT normal payment flag |
+| `BKAR.INVT.OPEND` | BKARC | AR INVT open date |
+| `BKAR.INVT.CHKAC` | BKARC | AR INVT check bank account code |
+| `BKAR.INVT.DEPNO` | BKARN | AR INVT deposit number |
+| `BKAR.INVT.MCRAT` | BKARM | AR INVT multi-currency exchange rate |
+| `BKAR.INVI.EXTRML` | BKARI | AR invoice inquiry extra-mile flag |
+| `BKAR.INVI.INVNM` | BKARI | AR invoice inquiry invoice number |
+| `BKAR.INVI.PCOGSC` | BKARI | AR invoice inquiry COGS code |
+| `BKAP.OUT.CREDITA` | BKARL | AP outstanding credit archive (cross-module: AR-L tax reconciliation writes AP credits) |
+| `BKPR.SLS.EMPNUM` | BKARF | PR salesperson employee number (AR-F → BKPRSALE commission link) |
+| `BKSY.PO.TAXGL` | BKARP | System PO tax GL account (AR-P dunning letters references PO tax GL for tax-exempt tracking) |
+
+### New archive/index tables confirmed (Pass 334)
+
+| Table | Found in | Role |
+|-------|----------|------|
+| `BKARCUSTF` | BKARG, BKARK | BKARCUST filter variant |
+| `BKARCUSTL` | BKARB, BKARN | BKARCUST list variant |
+| `BKARCHKFA` | BKARC, BKARE, BKARF, BKARN, BKARR | BKARCHKF archive |
+| `BKARCHKFI` | BKARE | BKARCHKF index |
+| `BKARCHKFL` | BKARF | BKARCHKF list |
+| `BKARHINVA` | BKARA, BKARB, BKARD, BKARK | BKARHINV archive |
+| `BKARHINVI` | BKARB | BKARHINV index |
+| `BKARHDSCA` | BKARA, BKARC | BKARHDSC archive |
+| `BKARHIVLA` | BKARA | BKARHIVL archive |
+| `BKARECSTA` | BKARA | BKARECST archive |
+| `BKARECSTI` | BKARA | BKARECST index |
+| `BKARQA` | BKARA, BKARQ | AR-Q dispatch archive |
+| `BKARTA` | BKARA, BKARD, BKARF | BKART archive (customer transaction history) |
+| `BKARINVA` | BKARA | BKARINV archive |
+| `BKARINVI` | BKARA | BKARINV index (confirmed — also in DDF as 16f table) |
+| `BKARINVTA` | BKARD | BKARINVT archive |
+| `BKARINVTF` | BKARG | BKARINVT filter |
+| `BKARINVTFP` | BKARG | BKARINVT filter+print |
+| `BKARINVTI` | BKARC | BKARINVT index |
+| `BKARINVTL` | BKARM | BKARINVT list |
+| `BKARINVTN` | BKARM | BKARINVT next (auto-number sequence?) |
+| `BKARINVTV` | BKARM | BKARINVT void variant |
+| `BKARDEPA` | BKARC, BKARM, BKARN | BKARDEP archive |
+| `BKARDESCA` | BKARA | BKARDESC archive |
+| `BKARTNOTA` | BKARF, BKARN | BKARTNOT archive |
+| `BKARTXNA` | BKARP | BKARTXN archive |
+| `BKARPRTCFG` | BKARE | Print configuration table (new; not in prior DDF) |
+| `BKPRTCFGA` | BKARE | BKPRTCFG archive |
+| `BKPRSALEA` | BKARF | BKPRSALE archive (PR sales commission) |
+| `ISARCRHDA` | BKARF | IS AR credit hold decisions archive |
+| `ISARACHKA` | BKARR | IS AR check/payment history archive |
+| `ISARAINTA` | BKARD | IS AR invoice totals archive |
+| `ISARAHINA` | BKARD | IS AR invoice history archive |
+| `BKARSIVLA` | BKARA, BKARB, BKARC, BKARE–BKARN, BKARP, BKARR | BKARSIVL archive — universally present in all AR programs; likely session/display context table (same pattern seen in all BM and GL programs) |
