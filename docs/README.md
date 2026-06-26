@@ -85,7 +85,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [PR — Payroll](03-modules/pr-payroll/README.md) (29 / 40 / 16) — + [help-content.md](03-modules/pr-payroll/help-content.md) *(35 CHM topics)*
 - [DC — Data Collection](03-modules/dc-data-collection/README.md) (7 / 26 / 7) — + [help-content.md](03-modules/dc-data-collection/help-content.md) *(14 CHM topics)*
 - [QC — Quality Control](03-modules/qc-quality-control/README.md) (0 / 15 / 2)
-- [JC — Job Costing](03-modules/jc-job-costing/README.md) (20 ops / 14 DFMs / 0 own tables) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)* · *Pass318 2026-06-26: binary analysis (5 programs), T7 stubs confirmed, dual-menu architecture, SFRCXI codes — C:75*
+- [JC — Job Costing](03-modules/jc-job-costing/README.md) (20 ops / 14 DFMs / 0 own tables) — + [help-content.md](03-modules/jc-job-costing/help-content.md) *(20 CHM topics)* · *Pass318-319 2026-06-26: all 19 BKJC*.RUN binary-analyzed; BKJCENG shared engine; 6 dual-menu programs; 11 archive tables — C:92*
 - [LW — Labor/WIP/Job Cost](03-modules/lw-labor-wip/README.md) (19 menu ops / shared WO tables) — *verified, 2026-06-19 · WO+JC menu alias; 3-path time entry chain documented*
 - [CS — Commission System](03-modules/cs-commission-system/README.md) (16 / 12 / 16) — + [help-content.md](03-modules/cs-commission-system/help-content.md)
 - [CM — Contact Manager](03-modules/cm-contact-manager/README.md) — + [help-content.md](03-modules/cm-contact-manager/help-content.md)
