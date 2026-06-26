@@ -1,6 +1,6 @@
 # Inventory (IN)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 335 (2026-06-26)
 
 - **Module code**: `IN`
 - **Tables**: 19 (prefixes `BKIC`, `MTIC`)
@@ -21,7 +21,7 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 | `IN-H` | Print Inventory Listing | BKINH;t6inh |
 | `IN-I` | Print Inventory General Info | BKINI |
 | `IN-J` | Print Physical Check | BKINJ |
-| `IN-K` | IN-L-E     SM-J- | BKINK;ISSMJS |
+| `IN-K` | Adjust Physical Levels | BKINK |
 | `IN-L-A` | Enter Standard Costs | BKINLA;FIXSTD |
 | `IN-L-B` | Enter/Assign Locations | BKINLB |
 | `IN-L-C` | Enter Customer Cross-Reference | BKINLC |
@@ -49,7 +49,7 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 | `IN-N-A` | Print Month End Inventory Costing | BKINNA |
 | `IN-N-B` | Print Shipments Costing | BKINNB |
 | `IN-N-C` | Print Closed Work Orders Costing | BKINNC |
-| `IN-N-D` | Print Inventory Audit | BKINND;ISINND |
+| `IN-N-D` | Print Inventory Audit (**REMOVED** — redirects to Reconcile Inventory On-Hand) | BKINND |
 | `IN-O` | User Defined Inventory Transactions | BKINO;T6INO |
 
 ## UI forms (67)
@@ -418,8 +418,171 @@ Discovered from DB fingerprints in T7IN* programs; not all are in standard DDF.
 
 ---
 
+## Pass 335 — TAS6 binary analysis of 32 BKIN*.RUN programs (2026-06-26)
+
+Source: string extraction from `samples/BKIN*.RUN` (copied from `\\i2s109-solidcrm\DBAMFG$\`).
+
+### 32-program TAS6 inventory
+
+| File | Size | Confirmed role | Key binary evidence |
+|------|-----:|----------------|---------------------|
+| `BKINA.RUN` | 342 KB | IN-A Inventory Inquiry | "IN-A Inventory Inquiry"; extensive stock status: SOs/POs/WOs/allocs/WIP/transactions; BOM drill-down; where-used; customer X-ref; lot/serial; "Click to see Imaging"; ISTS.CFG 200+ keys |
+| `BKINB.RUN` | 426 KB | IN-B Enter Inventory / DE-J-A Edit Imported Inventory | "IN-B Enter Inventory" AND "DE-J-A Edit Imported Inventory" — dual dispatch; types R/M/F/B/T/K; service/repair; multi-yield; track M/M/S |
+| `BKINC.RUN` | 375 KB | IN-C Enter Inventory Adjustments | "IN-C Enter Inventory Adjustments"; types N/L/T/K/B/O excluded; "You cannot take the Inventory Negative"; scrap/purchase receipt modes |
+| `BKIND.RUN` | 367 KB | IN-D Print Reorder Report | "IN-D Print Reorder Report"; SO/PO/WO detail filter options; stock status rebuild option; sort by item/vendor |
+| `BKINE.RUN` | 222 KB | IN-E Print Inventory Transactions | "IN-E Print Inventory Transactions"; type filter string "ASPJWIOQCMTRGB"; bin transactions variant |
+| `BKINF.RUN` | 305 KB | IN-F Print Inventory Value | "IN-F Print Inventory Value"; avg cost × units; class/type/vendor/customer/GL asset filters; "Include Onhand with $0 costs" option |
+| `BKING.RUN` | 240 KB | IN-G Print Inventory Labels | "IN-G Print Inventory Labels"; 1/2/3 column; barcode; bin location S/D/N; standard pack quantity; PO receiving labels |
+| `BKINH.RUN` | 216 KB | IN-H Print Inventory Listing | "IN-H Print Inventory Listing"; "ROHS COMPLIANT INVENTORY LISTING" variant |
+| `BKINI.RUN` | 203 KB | IN-I Print Inventory General Info | "IN-I Print Inventory General Info"; columns: stock UM/price UM/cost method/lot ctrl/serial ctrl/lead time/weight/cubic feet/primary vendor/mfgr item no/rev level/specs |
+| `BKINIT.RUN` | 6 KB | System message stub | Only MESSAGE/ERR strings — internal error-message utility, not user-facing |
+| `BKINJ.RUN` | 253 KB | IN-J Print Physical Check | "IN-J Print Physical Check"; cycle code filter; "Consolidate Locations?"; active status filter |
+| `BKINK.RUN` | 290 KB | IN-K Adjust Physical Levels | "IN-K Adjust Physical Levels"; lot/serial hold warning; FIFO/LIFO note; "You cannot take the Inventory Negative" |
+| `BKINLA.RUN` | 236 KB | IN-L-A Enter Standard Costs | "IN-L-A Enter Standard Costs"; LOT/SERIAL control; ESTD COST/BASE PRICE/EPO PRICE/RMA RECPT columns |
+| `BKINLB.RUN` | 280 KB | IN-L-B Enter/Assign Locations | "IN-L-B Enter/Assign Locations"; FACTORY/WAREHOUSE LOCATION; GENERATE/DELETE LOCATION RECORDS; BKIC.LOCM.* namespace |
+| `BKINLC.RUN` | 203 KB | IN-L-C Enter Customer Cross-Reference | "IN-L-C Enter Customer Cross-Reference"; BKIC.REF.* namespace |
+| `BKINLD.RUN` | 201 KB | IN-L-D Print Customer Cross-Reference | "IN-L-D Print Customer Cross-Reference"; CUSTOMER CROSS REFERENCES header |
+| `BKINLE.RUN` | 192 KB | IN-L-E Update Material Standard Costs | "IN-L-E Update Material Standard Costs"; bulk update from avg/last cost |
+| `BKINLF.RUN` | 204 KB | IN-L-F Enter Material Dimensions | "IN-L-F Enter Material Dimensions"; BKICDIM.* namespace confirmed |
+| `BKINLG.RUN` | 190 KB | IN-L-G Print Material Dimensions | "IN-L-G Print Material Dimensions"; MATERIAL DIMENSIONS report header |
+| `BKINLH.RUN` | 240 KB | IN-L-H Edit FIFO/LIFO Buckets | "IN-L-H Edit FIFO/LIFO Buckets"; GL posting to clearing account on cost change |
+| `BKINLI.RUN` | 124 KB | IN-L-I Change Inventory Costing Method | "IN-L-I Change Inventory Costing Method"; "AVERAGE COST" / "STANDARD COST" current method strings; GL clearance codes |
+| `BKINLJ.RUN` | 315 KB | IN-L-J Transfer Inventory | "IN-L-J Transfer Inventory"; ISBINLOT/ISBINLOTA; LOT/SERIAL error handling |
+| `BKINLK.RUN` | 259 KB | IN-L-K Inventory Exceptions Report | "IN-L-K Inventory Exceptions Report"; exception types multi-select; by-location reporting |
+| `BKINLL.RUN` | 203 KB | IN-L-L BOM Report | "IN-L-L BOM report"; BKBM.COMPONENT/BKBM.PARENT namespace |
+| `BKINMC.RUN` | 98 KB | IN-M-C Global Price Change | "IN-M-C Global Price Change"; multi-module string "IN-PO-BM-LW-LC-SC-FO-PI"; BKIC.PMAT.* namespace |
+| `BKINMI.RUN` | 128 KB | IN-M-I / IN-M-E / IN-M-G (price reports) | "IN-M-I Print Contract Prices" + "IN-M-E Print Price Code Prices" + "IN-M-G Print Dicount Code Prices" — single TAS6 program handles all three; BKIC.PMAT.* namespace |
+| `BKINNA.RUN` | 132 KB | IN-N-A Print Month End Inventory Costing | "IN-N-A Print Month End Inventory Costing"; 9 transaction categories in report |
+| `BKINNB.RUN` | 218 KB | IN-N-B Print Shipments Costing | "IN-N-B Print Shipments Costing"; "MONTHLY SHIPMENTS AT STANDARD COST" |
+| `BKINNC.RUN` | 159 KB | IN-N-C Print Closed Work Orders Costing | "IN-N-C Print Closed Work Orders Costing"; STANDARD/STANDARD.MAT vars |
+| `BKINND.RUN` | 8 KB | IN-N-D — REMOVED | "IN-N-D, Print Inventory Audit, has been removed from the system. Please use Reconcile Inventory On-Hand instead." — stub only |
+| `BKINO.RUN` | 349 KB | IN-O User Defined Inventory Transactions | "IN-O User Defined Inventory Transactions"; LOT HIST/SER HIST/INV TXN table references; custom transaction types |
+| `BKINTCUR.RUN` | 66 KB | Multi-currency conversion utility | Touches BKAP.PO.ISCUR/IS.MCCODE, BKAR.INV.ISCUR/IS.MCCODE, BKAR.INVT.MCCOD/MCRAT, BKAR.INVV.ISCUR, BKAP.INVL.ISCUR, BKAP.CHK.ISCUR, BKIS.TAX.ISCUR — confirms IS-currency fields across all modules |
+
+### Menu code corrections confirmed by binary
+
+| Code | Prior description | Corrected description | Source |
+|------|-----------------|-----------------------|--------|
+| `IN-K` | "IN-L-E SM-J-" (garbled parse) | Adjust Physical Levels | BKINK.RUN: "IN-K Adjust Physical Levels" literal string |
+| `IN-N-D` | Print Inventory Audit | **REMOVED** — displays removal message, redirects to Reconcile Inventory On-Hand | BKINND.RUN: 8 KB stub with explicit removal message |
+
+### IN-B dual dispatch — DE-J-A confirmed
+
+`BKINB.RUN` contains both `"IN-B  Enter Inventory"` and `"DE-J-A  Edit Imported Inventory"` as program title strings, and both appear in add-new and edit-existing variants:
+- `"DE-J-A  Edit Imported Inventory - Add New Item Number"`
+- `"IN-B  Enter Inventory - Add New"`
+- `"DE-J-A  Edit Imported Inventory - Edit Existing Item Number"`
+- `"IN-B  Enter Inventory - Edit Existing"`
+
+BKINB is the TAS6 backing for both `IN-B` (standard inventory entry) and `DE-J-A` (imported item editing). DE-J-A is the Data Entry module code for importing item records from an external source and editing them within EVO.
+
+### BKINE transaction type string — all 14 type codes confirmed
+
+`BKINE.RUN` and `BKINMC.RUN` both contain the literal string `ASPJWIOQCMTRGB` — this is the full enumeration of all 14 valid INVTXN transaction type codes used as a menu filter. Extending the 9 previously SRC-confirmed codes:
+
+| Code | Previously known | Extended meaning (inferred from BKINNA report sections) |
+|------|------------------|---------------------------------------------------------|
+| `A` | ✅ SRC: ADJUSTMT | Manual adjustment |
+| `S` | ✅ SRC: SHIPMENT | Sales shipment |
+| `P` | ✅ SRC: PO RECPT | PO receipt to stock |
+| `J` | ✅ SRC: PO JOBRC | PO receipt to WIP/job |
+| `W` | ✅ SRC: WO RECPT | Work order receipt |
+| `I` | ✅ SRC: WO ISSUE | WO material issue |
+| `O` | ✅ SRC: OUT PROC | Outside-process receipt |
+| `Q` | ✅ SRC: QC RECPT | QC inspection receipt |
+| `C` | ✅ SRC: $ CHANGE | PO price change (cost change, no qty) |
+| `M` | new | Make-From component issue (BKINNA: "MAKE FROM COMPONENT ISSUE") |
+| `T` | new | Inventory transfer (BKINNA: "TRANSFERS") |
+| `R` | new | Service/repair transaction (BKINNA: "SERVICE AND REPAIR") |
+| `G` | new | Unknown — present in filter string; no matching BKINNA section found |
+| `B` | new | Unknown — present in filter string; no matching BKINNA section found |
+
+### BKINNA month-end report categories — all transaction types mapped
+
+`BKINNA.RUN` (IN-N-A Print Month End Inventory Costing) has 9 section headers, each corresponding to a transaction type:
+
+| Section header | Type code |
+|---------------|-----------|
+| PURCHASE RECEIPTS TO STOCK | P |
+| PURCHASE RECEIPTS TO WIP | J |
+| STOCK ISSUES TO WIP | I |
+| WORK ORDER RECEIPTS TO STOCK | W |
+| ADJUSTMENTS | A |
+| OUTSIDE PROCESSING RECEIPTS | O |
+| PO PRICE CHANGE | C |
+| MAKE FROM COMPONENT ISSUE | M (new) |
+| TRANSFERS | T (new) |
+| SERVICE AND REPAIR | R (new) — note: S=SHIPMENT is not in month-end costing (it's in BKINNB separately) |
+
+### BKINTCUR — multi-currency field confirmations across modules
+
+`BKINTCUR.RUN` is a cross-module multi-currency conversion utility that touches the multi-currency flag and rate fields in every major module simultaneously:
+
+| Namespace | Module | Field meaning |
+|-----------|--------|---------------|
+| `BKAP.PO.ISCUR` | AP | PO multi-currency flag |
+| `BKAP.IS.MCCODE` | AP | AP multi-currency code |
+| `BKAR.INV.ISCUR` | AR | AR invoice multi-currency flag |
+| `BKAR.IS.MCCODE` | AR | AR multi-currency code |
+| `BKAR.INVV.ISCUR` | AR | AR vouchered invoice multi-currency flag |
+| `BKAR.INVT.MCCOD` | AR | AR open-item ledger currency code |
+| `BKAR.INVT.MCRAT` | AR | AR open-item ledger exchange rate |
+| `BKAP.INVL.ISCUR` | AP | AP invoice line multi-currency flag |
+| `BKAP.INVT.MCCOD` | AP | AP open-item currency code |
+| `BKAP.INVT.MCRAT` | AP | AP open-item exchange rate |
+| `BKAP.CHK.ISCUR` | AP | AP check multi-currency flag |
+| `BKIS.TAX.ISCUR` | IS | IS tax record multi-currency flag |
+| `BKIS.TAX.PONO` | IS | IS tax PO number |
+| `BKIS.TAX.VEND` | IS | IS tax vendor code |
+| `BKIS.TAX.CUST` | IS | IS tax customer code |
+
+`BKIS.TAX.*` namespace is new — confirms the IS module has its own tax records table that tracks both vendor (PO) and customer (SO) tax amounts with a multi-currency flag.
+
+### New accessor namespaces confirmed (Pass 335)
+
+| Namespace | Found in | Meaning |
+|-----------|----------|---------|
+| `BKIC.LOCM.CODE` | BKINLB, BKINLK | Location master code |
+| `BKIC.LOCM.CITY` | BKINLB | Location city |
+| `BKIC.LOCM.STATE` | BKINLB | Location state |
+| `BKIC.LOCM.ZIP` | BKINLB | Location ZIP |
+| `BKIC.LOCM.TAX#` | BKINLB | Location tax number |
+| `BKIC.LOCM.CNTCT` | BKINLB | Location contact name |
+| `BKIC.LOCM.PHONE` | BKINLB | Location phone |
+| `BKIC.LOCM.ADDR3` | BKINLK | Location address line 3 |
+| `BKICDIM.PARTNO` | BKINLF, BKINLG | Material dimensions part number |
+| `BKICDIM.PARENT` | BKINLF, BKINLG | Parent assembly of material part |
+| `BKICDIM.GENERIC` | BKINLF, BKINLG | Phantom part for grouping alternates |
+| `BKICDIM.FIRST/.F.TOL` | BKINLF | First dimension + tolerance |
+| `BKICDIM.SECOND/.S.TOL` | BKINLF | Second dimension + tolerance |
+| `BKICDIM.THICK/.T.TOL` | BKINLF | Thickness + tolerance |
+| `BKICDIM.SETUP` | BKINLF | Material setup code |
+| `BKICDIM.DENSITY` | BKINLF | Material density |
+| `BKICDIM.ALLOY` | BKINLF | Alloy specification |
+| `BKICDIM.TEMPER` | BKINLF | Temper specification |
+| `BKICDIM.FINISH` | BKINLF | Surface finish |
+| `BKICDIM.HARDNES` | BKINLF | Hardness |
+| `BKIC.PMAT.PCODE` | BKINMC, BKINMI | Price matrix product code |
+| `BKIC.PMAT.CUST` | BKINMC, BKINMI | Price matrix customer code |
+| `BKIC.PMAT.RATE` | BKINMC, BKINMI | Price/discount rate |
+| `BKIC.PMAT.PER` | BKINMC, BKINMI | Per-unit basis |
+| `BKIC.PMAT.DCODE` | BKINMI | Discount code |
+| `BKIC.PMAT.PNUM` | BKINMI | Price number |
+| `BKIC.PMAT.CLASS` | BKINMI | Product class filter |
+| `BKIC.PMAT.EXP` | BKINMI | Contract expiry date |
+| `BKIC.PMAT.QTY` | BKINMI | Quantity break |
+| `BKIC.PMAT.COMM1/.COMM2` | BKINMI | Commission codes 1 + 2 |
+| `BKIS.TAX.ISCUR` | BKINTCUR | IS tax record multi-currency flag |
+| `BKIS.TAX.PONO` | BKINTCUR | IS tax PO number |
+| `BKIS.TAX.VEND` | BKINTCUR | IS tax vendor |
+| `BKIS.TAX.CUST` | BKINTCUR | IS tax customer |
+
+---
+
 ## Notes & open questions
 
 - BKICMSTR (64f) vs MTICMSTR (108f): The 44-field difference includes fields like `MTIC_PROD_CLASS` PK, 10 vendor slots (VEND_1..10, VNAM_1..10, VPC_1..9), 15 replacement costs (RCOST_1..15), lot size (LOTSZ), optional features (OPT/OPTCS/OPTCD), cumulative scheduling (CUM), and long part# (LONGP).
 - MTINVDEF (108f identical schema to MTICMSTR) acts as the "factory default" template — when a user creates a new item, the system copies default values from MTINVDEF to pre-populate fields.
 - Relationship between BKIC* and MTIC* items: unclear whether every BKIC item has a corresponding MTIC record, or if they are independent catalogs. Without RWN source code, the sync/copy logic cannot be confirmed.
+- **INVTXN type codes G and B (Pass 335 open):** The type filter string "ASPJWIOQCMTRGB" confirms G and B are valid type codes, but no matching BKINNA report section maps to them. G may be a sub-type of adjustments (e.g., G=GL adjustment or G=gift/sample). B is unknown. Requires further analysis.
+- **BKINIT.RUN purpose (Pass 335):** The 6 KB BKINIT.RUN contains only MESSAGE/ERR strings. It is likely a shared message/error lookup utility called by other BKIN programs — not a standalone user-facing program.
