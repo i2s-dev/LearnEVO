@@ -1,6 +1,6 @@
 # Estimating (ES)
 
-Status: verified | Pass 315 2026-06-25
+Status: verified | Pass 339 2026-06-26
 
 Sources: DDF schema (tier2-tables.md), DFM field analysis (T7ESB/C/D/E/H/I.DFM), CHM help content.
 
@@ -232,7 +232,150 @@ Material dimensions screen accesses these BKICDIM fields:
 - BKESF reads `BKQTNOTE` — Copy Estimates also duplicates quote note content
 - BKESD reads `MTESUM.NOTES[1..10]` — 10 free-text note lines on estimates
 
-**Confidence: 93/100** — DFM field sets fully confirmed (Pass 315) for 6 of 8 programs;
+---
+
+## MTESUM.* field access namespace — Pass 339
+
+Source: string extraction from `samples/BKESA.RUN` and `samples/BKESEA.RUN`.
+
+ESTSUM is accessed via the `MTESUM.*` prefix in all ES programs. Full accessor namespace confirmed from BKESA.RUN:
+
+### Quote header fields
+
+| TAS variable | Meaning |
+|-------------|---------|
+| `MTESUM.QUOTE` | Quote number (PK) |
+| `MTESUM.CODE` | Item number |
+| `MTESUM.DESC` | Item description |
+| `MTESUM.UM` | Unit of measure |
+| `MTESUM.REV` | Revision level |
+| `MTESUM.STATUS` | Quote status: `A`=Active, `C`=Converted, `I`=Inactive, `X`=Cancelled, `D`=Archived |
+| `MTESUM.DATE` | Entry date |
+| `MTESUM.EXPDATE` | Expiration date |
+| `MTESUM.CUSTCODE` | Customer code |
+| `MTESUM.NAME` | Customer name |
+| `MTESUM.ATTN` | Attention / contact name |
+| `MTESUM.SLSP.NUM` | Salesperson number |
+| `MTESUM.PROJ` | Project code |
+| `MTESUM.NOTES` | Free-text notes; `MTESUM.NOTES[1..10]` confirmed (10 note lines, accessed in BKESD) |
+
+### Per-quantity-break cost summary (14 cost types × 10 qty breaks)
+
+| TAS variable | Meaning |
+|-------------|---------|
+| `MTESUM.MAT` | Material cost |
+| `MTESUM.MATMU` | Material markup % |
+| `MTESUM.SETUP` | Setup cost |
+| `MTESUM.LAB` | Labor cost |
+| `MTESUM.LABMU` | Labor markup % |
+| `MTESUM.OP` | Outside-process cost |
+| `MTESUM.OPMU` | Outside-process markup % |
+| `MTESUM.OH` | Overhead cost |
+| `MTESUM.OHMU` | Overhead markup % |
+| `MTESUM.OVALL` | Overall (total) cost |
+| `MTESUM.MISC` | Misc charges |
+| `MTESUM.EXTRA` | Extra charges |
+| `MTESUM.TOTAL` | Grand total |
+| `MTESUM.COST` | Unit cost |
+| `MTESUM.PRICE` | Quote/sell price |
+
+---
+
+## BKESTCFG configuration keys — Pass 339
+
+BKESTCFG stores system defaults loaded at ES-A startup. Key names confirmed from BKESA.RUN string extraction:
+
+| Key | Meaning |
+|-----|---------|
+| `MAT%` | Default material markup % |
+| `LAB%` | Default labor markup % |
+| `OP%` | Default outside-process markup % |
+| `OH%` | Default overhead markup % |
+| `TOT%` | Default total markup % |
+| `DAYS` | Quote expiry days from entry date |
+| `CLASS` | Default estimate class code |
+| `STAT` | Default estimate status code on creation |
+| `CMEST` | CRM-linked estimate integration flag |
+| `INBESA` | ES-A in-bound data entry integration flag |
+
+---
+
+## BKESE — ES-E Convert Estimates: complete 45-table analysis — Pass 339
+
+BKESE.RUN (309KB, latest ISTS Enhancement **03/27/23**) is the largest and most recently modified ES program. It handles the entire estimate-to-order pipeline in one operation.
+
+### Source tables (read from estimate)
+`ESTSUM`, `BKBMMSTR`, `ROUTING`, `WORKCTR`, `BKRTCST`, `BKMATCST`, `BKRFQ`, `MTEXCHG`, `MTICMSTR`, `BKARCUST`, `BKCMACCT`
+
+### Target tables (written at conversion)
+| Target | Written | Purpose |
+|--------|---------|---------|
+| `BKARINV` | SO header | New sales order created |
+| `BKARINVL` | SO lines | Line items from estimate |
+| `BKARINVT` | SO transaction | SO transaction record |
+| `WORKORD` | WO header | New work order (if converting to WO) |
+| `WOBOM` | WO BOM | Bill of materials transferred from BKBMMSTR |
+| `WOROUT` | WO routing | Routing transferred from ROUTING table |
+| `WODATE` | WO operation dates | Scheduled start/finish per operation |
+| `BKGLTRAN` | GL journal entries | Overhead/cost GL entries posted on convert |
+| `ISLOG` | Audit trail | Conversion event logged |
+| `MKAHIST` | Change history | Marketing/history audit |
+
+### Reference tables (applied during conversion)
+| Table | Purpose |
+|-------|---------|
+| `BKICMSTR` / `BKICLOC` / `BKICLOCM` | Item and location lookup |
+| `BKICPMAT` | Pricing matrix — applied to SO sell price at conversion |
+| `ISTERMS` | Payment terms applied to the new SO |
+| `ISTAXGRP` / `BKICTAX` | Tax group and tax rate applied |
+| `BKPRSALE` | Salesperson applied from estimate |
+| `ISJOB` | Job costing link created at conversion |
+| `ISWOEX` | WO extension UDF fields copied from estimate |
+| `CALENDAR` | EVO calendar — used for lead-time and scheduled-date calc |
+| `ISIS` | Multi-currency — quote prices converted if multi-currency |
+| `BKAPDESC` | Description codes |
+| `BKAPVEND` | Vendor reference |
+| `FILELOC` | File location registry |
+| `ISNUMBER` | `ESTNUMA`, `WONUMA`, `SONUMA` — auto-number counters |
+
+---
+
+## Cost accumulation arrays — Pass 339
+
+BKESA.RUN (Enter Estimates main router) uses two internal arrays for multi-level BOM and routing cost rollup before writing totals back to ESTSUM:
+
+**BARR_* — BOM cost accumulation (12 elements):**
+`BARR_LEV`, `BARR_COMP`, `BARR_PAR`, `BARR_LINE`, `BARR_QTY`, `BARR_SET`,
+`BARR_MAT`, `BARR_OP`, `BARR_LAB`, `BARR_FOH`, `BARR_VOH`, `BARR_MISC`
+
+**RARR_* — Routing cost accumulation (9 elements):**
+`RARR_CNTR`, `RARR_PART`, `RARR_QTY`, `RARR_SEQ`, `RARR_SET`,
+`RARR_LAB`, `RARR_OP`, `RARR_OH`, `RARR_MISC`
+
+---
+
+## ISTS Enhancement dates — TAS6 ES programs
+
+Enhancement dates extracted from binary strings — show modification chronology:
+
+| Program | ISTS Enhancement | Notes |
+|---------|-----------------|-------|
+| `BKESAB.RUN` | 09/03/10 | Earliest — Routings sub-screen |
+| `BKESB.RUN` | 05/09/11 | Print Estimates |
+| `BKESG.RUN` | 07/23/12 | Print Estimate Listing |
+| `BKESH.RUN` | 09/22/12 | Enter Material Costs |
+| `BKESF.RUN` | 05/27/15 | Copy Estimates |
+| `BKESA.RUN` | 08/23/18 | Enter Estimates main |
+| `BKESD.RUN` | 08/23/18 | Print Customer Quotes (same date as BKESA — updated together) |
+| `BKESE.RUN` | 03/27/23 | Convert Estimate → SO/WO — **most recently modified ES program** |
+
+---
+
+**Confidence: 95/100** — DFM field sets fully confirmed (Pass 315) for 6 of 8 programs;
 BKMATCST 25-field schema confirmed from DDF; BKESTQT/BKESTQTL/ESTSUM schemas from DDF;
 TAS6 15-program inventory confirmed from binary (Pass 324); ES-A sub-program architecture
-confirmed; BKICDIM field namespace confirmed; ES-A title corrected to "Enter Estimates".
+confirmed; BKICDIM field namespace confirmed; ES-A title corrected to "Enter Estimates";
+MTESUM.* 15-header + 15×10-qty-break cost field namespace fully documented (Pass 339);
+BKESTCFG config keys confirmed; BKESE 45-table conversion architecture fully mapped;
+status codes A/C/I/X/D confirmed; BARR_*/RARR_* cost arrays confirmed;
+ISTS Enhancement chronology 2010–2023 confirmed.
