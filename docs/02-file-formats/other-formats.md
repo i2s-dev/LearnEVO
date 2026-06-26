@@ -2,21 +2,20 @@
 
 Status: verified by direct inspection of sample files.
 
-## `.IMP` — Import definition (plaintext)
+## `.IMP` — Import definition (**binary, 442 bytes**)
 
-Source: `../../samples/imp/BKDEB.IMP`. Fixed-width plaintext, one
-import definition per line. Sample first line of `BKDEB.IMP`:
+**CORRECTION (Pass 325 2026-06-26):** Not plaintext — fixed-size binary.
 
-```
-U:\PROFPN.CSV                           SC
-```
+Full format: 40-byte source filename (space-padded) + 2-byte mode code (`SC`/`DC`/`RC`/`RIC`)
++ 100 × uint16 LE import column map + 100 × uint16 LE export column map (entry 100 = 0x0A0D
+CRLF sentinel). Empty files (0 bytes) = no import configured.
 
-Column 1 = source filename (fixed-width field). Column 2 = mode
-(`SC` = Source Copy / Standard Conversion? *to confirm*).
+Mode codes: `SC`=Standard CSV, `DC`=Delimited CSV, `RC`=Btrieve raw copy.
 
-The `BKDE` family of IMP files (BKDEB..BKDEH, BKDES) are pre-canned
-"Dealer / Data Entry" import templates. `BKPIPHYS.IMP` imports physical
-inventory counts. `ISWCD.IMP` imports work-center definitions.
+The `BKDE` family (BKDEB..BKDEH, BKDES) are pre-canned "Dealer / Data Entry" import templates.
+`BKPIPHYS.IMP` imports physical inventory counts. `ISWCD.IMP` imports work-center definitions.
+
+→ Full format documentation: [imp-xpt-import-export.md](imp-xpt-import-export.md)
 
 ## `.UPD` — Pervasive DDF update manifest (binary Btrieve)
 
@@ -34,28 +33,19 @@ Working hypothesis: when an EVO update arrives, it ships a set of
 and applies a schema migration against the live DDFs. (Hence the TAS
 runtime keywords `RESTRUCTURE_DBF`, `PACK_DBF`, `REINDEX_DBF`.)
 
-## `.XPT` — Export layout (plaintext, fixed-width)
+## `.XPT` — Export layout (**binary, 32000 bytes fixed**)
 
-Source: `../../samples/xpt/BKAPEVND.XPT`. Format:
+**CORRECTION (Pass 325 2026-06-26):** Not plaintext — fixed-size binary block.
 
-```
-<output.TXT>  <flag>   <FIELD1>   <FIELD2>   ...   <FIELDN>
-```
+Full format: 12-byte target filename (space-padded) + 1-byte type flag (`S`=Standard,
+`T`=Tabular, `F`=Full/Formatted, `D`=Detail, ` `=Default) + N × 15-byte column accessor
+names (space-padded ASCII) terminated by a 15-zero slot + spaces to fill 32000 bytes.
 
-Sample first line of `BKAPEVND.XPT`:
+The `.XPT` family covers BKAP/BKAR/BKIC/BKSO/INVTXN/WORKORD/BKBMMSTR tables —
+canned CSV-style exports invokable from the DE menu. INVTXN.XPT confirms 25 `MTIT.*`
+INVTXN field accessors. BKAPPOL.XPT lists 39 `BKAP.POL.*` fields.
 
-```
-BKAPEVND.TXT  T  BKAP.CLASS   BKAP.VENDCODE   BKAP.VENDNAME   ...
-```
-
-The first token is the destination file (a `.TXT` under the same
-directory). The second token appears to be a type/mode flag (`T` =
-Tabular?). The rest is a space-padded list of TAS-style field names
-(dotted notation) to emit as columns.
-
-The `.XPT` family (20 files) covers most of the BKAP/BKAR/BKSO tables
-— these are **canned CSV-style exports** that the user can invoke from
-the menu.
+→ Full format documentation: [imp-xpt-import-export.md](imp-xpt-import-export.md)
 
 ## `.btm` — Backup RTM (same as RTM)
 
