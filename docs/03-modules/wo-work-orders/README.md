@@ -127,6 +127,73 @@ status-code table, save-time processing, and cross-links).
 | `t7woprio.DFM` |  | 0 | 1 | 0 |
 | `t7woprio2.DFM` |  | 0 | 1 | 0 |
 
+### Pass 327 (2026-06-26) — Key form field layouts from DFM analysis
+
+The prior forms table had incorrect counts for many key forms (0 fields, 1 control) due to parser failure. Direct DFM reads confirm the following layouts:
+
+**T7WOA.DFM — WO-A Enter Work Orders** (171 controls, NOTEMEMO grid)
+- Header: Work Order, Status, Part#, Description, Qty to Make, Qty Completed, Start Date, Finish Date, Due Date, Class, Priority
+- Cost tabs: Est./Projected | Actual
+- Additional dates: Convert Date, Prod. Date, Show Date
+- Customer link: Cust, Name, Attn, PO#, Job#, Quote, SO#
+- Toolbar actions: ECO, Material Issues, Outside Process, Copy Work Order
+
+**T7WOB.DFM — WO-B Change WO Status / Release** (46 controls)
+- Range: WO Number From/Thru, WO Start Date From/Thru
+- Status change: New WO Status (R/F), New WO Approval (Y/N/P), New WO Priority, New WO Job Number
+- Options: Print Shortages [Y/N/E], Rebuild Stock Status, WO Prefix/Suffix
+- Import: comma-delimited import file for bulk status changes
+- Flag: Prompt and Assign Lot Numbers on release
+
+**T7WOG.DFM — WO-G Issue Material** (132 controls, LinesGrid)
+- Filter: Item, Bin, Line, Sequence Range, Issue Date, Customer, Reference, Kit Issue
+- Line grid columns: Item Number, Description, UM, Location, Serial Number, Lot Number, Scrap Code, Qty Issued, Qty Scrapped, Actual Cost, Lot/Ser indicator, % Issued
+- Options: Issue Scrap, Show All Comps, Auto Issue Lots, Print Pick List
+
+**T7WOI.DFM — WO-I Receive Finished Production** (123 controls, CompsGrid)
+- Header: Work Order, Date, Parent Item
+- Browse pane: Item, Description, Location, Bin, Short UOH, Comps
+- Receipt detail: Date Received, Parent Part, Reference, Qty Good Completed, Scrap Qty, Bin, Qty to Make, Qty Completed TD, Scrap Code, Multi Scrap Codes, Actual Unit Cost, NCR Qty, Transfer Number, Truck Number
+- Cost summary: Material, Estm Costs, Setup
+
+**T7WOF.DFM — WO-F Enter Labor** (98 controls)
+- Login: Employee, Password
+- WO selection: Work Order, Date, Employee, Sort By
+- Labor line: Run Hours, Overtime Run Hrs, % Completed, Qty Completed, No. in Team, X of Y, Work Date, Work Order, Sequence, Type, Machine, Use Machine As Bin
+- Pay type: Reg/Over/Dbl/Sick/Hol/Vac, Shift, No. Jobs Worked
+- Quality: Setup Hours, QC Code, Description, Rework, Qty Scrapped, Scrap Code
+
+**T7WOJ.DFM — WO-J Close/Cancel Work Orders** (38 controls)
+- Range: WO Number From/Thru, Job Number From/Thru
+- Options: Posting Date, Close or Cancel [C/X], Close WO Note Type, Close WO Note Code/Description
+- Flags: Check for unused Auto-Generated Serial Numbers, Use Last Receipt Date, Print Closed/Cancel Report
+
+**T7WOKA.DFM — WO-K-A Enter WO Routing** (100 controls, NOTEMEMO grid)
+- Header: WO Number, Qty to Make
+- Routing line grid: Sequence, Operation, Type, Description, Work Center, Routing#, Line, #Proc, Time/Part, Parts/Hour, Setup, Overlap Hours, Negative Overlap, Persons#, Machine, Tool
+- Outside Processing: Vendor, Cost, Lead Time
+- Options: First Off Inspection, Long Time, Std Time, Copy Routing, Display Routing Lines
+
+**T7WOKB.DFM — WO-K-B Enter WO BOM** (132 controls, WOBOMGrid, NOTEMEMO)
+- Header: WO Number, Item, Description, Status, Qty To Make
+- BOM line grid: Line#, Item Number, Description, Qty Per, UM, Sequence, Scrap Per, Qty Required, Reference, Phantom, Qty Issued, % Issued
+- Functions: Copy WO BOM (between WOs), Copy WO BOM to Standard BOM, MultiYield BOM
+
+**T7WOKC.DFM — WO-K-C Assign Multi-Dates** (21 controls — minimal)
+- Header: Work Order only
+- Bulk multi-date scheduling (date assignment via program logic, not form entry)
+
+**T7WOKD.DFM — WO-K-D Create Multi-Level Sub-Assembly WOs** (60 controls)
+- Range: WO Number From/Thru, Item Category, WO Class From/Thru
+- Options: Create WO for Max Levels, Offset Lead Times, Use Shop Calendar, Create WO Only Below Reorder Level, Prompt for WO Qty, Consider Location, Create WO for Balance Required, Use Reorder Level/Amount
+- Flags: Combine Duplicates, Match Parent WO Status, Exclude 0 Qty Components, Create WO for Non-Inventory Items, Match Parent WO Due Date/Est Ship Date [YNEB], Match Parent Job Number [Y/N/W]
+- WO Class: Use Sub-Assembly WO Class if populated
+
+**T7WOKE.DFM — WO-K-E WO BOM Substitutes** (80 controls, LocationGrid)
+- Availability summary: On-Hand, On SO, On BO, On PO, In QC, On WO, Allocation, Available, WIP
+- Substitute entry: Standard Component vs Substitute Item, Qty Required, Qty Issued, Qty Unissued
+- Quantity logic: Qty of Substitute to use, Qty of Std Component still to issue
+
 ## Database tables (30 + 2 routing templates)
 
 Full field details are in `../../../samples/ddf/schema.md` (see per-table heading).
