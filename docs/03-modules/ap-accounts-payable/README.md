@@ -1,6 +1,6 @@
 # Accounts Payable (AP)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 336 (2026-06-26)
 
 - **Module code**: `AP`
 - **Tables**: 26 (prefixes `BKAP`, `BKAB`)
@@ -13,11 +13,13 @@ Status: verified (auto-generated from the extracted schema, menu-code dump, and 
 | ---- | --------- | --------------------- |
 | `AP-A` | Enter Vendors | BKAPA |
 | `AP-B` | Enter Vouchers | BKAPB;T6APB |
+| `AP-C` | Enter PO Invoices | BKAPC |
 | `AP-D` | Enter Scheduled Payment Dates | BKAPD |
 | `AP-E` | Print Vouchers/Invoices Due by Date | BKAPE;t6ape |
 | `AP-F` | Pick Vouchers/Invoices to Pay | BKAPF |
 | `AP-G` | Print Pro Forma Check Register | BKAPG;ISTECH;t6apg |
-| `AP-H` | Print Checks | BKAPHA;T6APHA |
+| `AP-H` | Print Checks (Laser) | BKAPHA;T6APHA |
+| `AP-H` | Print Checks (Continuous Forms) | BKAPH |
 | `AP-I` | Print Aging | BKAPI;T6API |
 | `AP-J` | Print Vendor Code and Name | BKAPJ;t6apj |
 | `AP-K` | Print Vendor General Info | BKAPK |
@@ -508,6 +510,89 @@ BKAPCHKF is mutually locked across all of AP-E, F, G, and H — only one step ca
 ### 1099 dispatch mechanism
 
 `BKAPS.RUN` (5 KB) is a pure routing stub. It reads `BKSYMSTR` to determine the current tax year (via `BKSYMSTR`/TEMP00* vars), then dispatches to `APS1999` or `APS2000` via `BKSY.PRGS.WHR` (the program-chain variable used throughout EVO for module handoff). No 1099 logic lives in BKAPS itself.
+
+---
+
+## Pass 336 — TAS6 binary analysis of 21 BKAP*.RUN programs (2026-06-26)
+
+Source: string extraction from `samples/BKAP*.RUN` (copied from `\\i2s109-solidcrm\DBAMFG$\`).
+
+### 21-program TAS6 inventory
+
+| File | Size | Confirmed role | Key binary evidence |
+|------|-----:|----------------|---------------------|
+| `BKAPA.RUN` | 236 KB | AP-A Enter Vendors | "AP-A Enter Vendors"; ISIS.TAX namespace; "requires the new TAX system"; ISTAXGRP/ISTAXFIL |
+| `BKAPB.RUN` | 265 KB | AP-B Enter Vouchers | "AP-B Enter Vouchers"; warns to use AP-C for open PO receipts; reversing voucher mode; long invoice migration strings |
+| `BKAPC.RUN` | 386 KB | AP-C Enter PO Invoices | "AP-CI0"; "Rev. F/E TAX"; "cannot be reversed here — use AP-B"; long invoice migration; INVALID GL ACCOUNT posting check |
+| `BKAPCUR.RUN` | 131 KB | AP-A-Q Enter Vendor Currency Codes | "AP-A-Q Enter Vendors Currency Codes"; BKAP.IS.MCCODE; ISTS.CFG.AVATAX (AvaTax integration confirmed in AP) |
+| `BKAPD.RUN` | 168 KB | AP-D Enter Scheduled Payment Dates | "AP-D Enter Scheduled Payment Dates"; BKAP.INVT.SDATE/AMTRM/MCCOD/TERMN/EXTRA; BKAP.OUT.CREDIT |
+| `BKAPE.RUN` | 196 KB | AP-E Print Vouchers/Invoices Due by Date | "AP-E Print Vouchers/Invoices Due by Date"; BKAPCHKF lock check; outstanding credits warning; BKAP.INVT.AMTRM/CODE/DATE/NUM/MCCOD |
+| `BKAPF.RUN` | 191 KB | AP-F Pick Vouchers/Invoices to Pay | "AP-F Pick Vouchers/Invoices to Pay"; "Select Items to Pay"; applied credits > vouchers warning; E.PAYMENT electronic payment flag; BKAPCHKF lock |
+| `BKAPG.RUN` | 166 KB | AP-G Print Pro Forma Check Register | "AP-G Print Pro Forma Check Register"; BKAPCHKF lock; negative net payment warning (refund deposit); A/P CASH ACCOUNT validation |
+| `BKAPH.RUN` | 261 KB | AP-H Print Checks [Continuous Forms] | "AP-H Print Checks [Continuous Forms]"; BKAPCHKF mutual lock (E/F/G/H); check stub: REFERENCE/DATE/DESCRIPTION/AMOUNT/DISCOUNT/NET AMOUNT columns |
+| `BKAPHA.RUN` | 265 KB | AP-H Print Checks [Laser Forms] | "AP-H Print Checks [Laser Forms]"; ISBANKS/ISBANKSA; same BKAPCHKF lock; laser check format |
+| `BKAPI.RUN` | 243 KB | AP-I Print Aging | "AP-I Print Aging"; three mode headers: "VENDOR TRANSACTION LISTING", "VENDOR AGING", "VENDOR PAST DUE AGING"; BKYS.AP.AGING config |
+| `BKAPJ.RUN` | 160 KB | AP-J Print Vendor Code and Name | "AP-J Print Vendor Code and Name"; VENDOR CODE AND NAME LIST; BKAP.LASTPURCH/OUTINV/OUT.CREDIT |
+| `BKAPK.RUN` | 154 KB | AP-K Print Vendor General Info | "AP-K Print Vendor General Info"; VENDOR GENERAL INFORMATION |
+| `BKAPL.RUN` | 155 KB | AP-L Print Vendor Purchase Info | "AP-L Print Vendor Purchase Info"; VENDOR PURCHASE INFORMATION; BKAP.PURCH.MTD/YTD/LYR/VAR |
+| `BKAPM.RUN` | 166 KB | AP-M Print Vendor Labels | "AP-M Print Vendor Labels" |
+| `BKAPN.RUN` | 56 KB | AP-N Print Vendor Rolodex | "AP-N Print Vendor Rolodex"; multi-module string "GL-AR-AP-SO-SA-CS-CM-PRI"; BKAP.NEW.VEND |
+| `BKAPO.RUN` | 103 KB | AP-O Enter Recurring Vouchers | "AP-O Enter Recurring Vouchers"; BKAP.INVL.* namespace; tax group check |
+| `BKAPP.RUN` | 191 KB | AP-P Generate Recurring Vouchers | "AP-P Generate Recurring Vouchers"; ISBANKS; long invoice migration |
+| `BKAPQ.RUN` | 196 KB | AP-Q Void AP Check | "AP-Q Void AP Check"; "Manual Check — reverse in AP-B instead"; AP VOID CHECK REGISTER; ISBANKS |
+| `BKAPR.RUN` | 179 KB | AP-R Print AP Payment History | "AP-R Print AP Payment History"; AP PAYMENT HISTORY; ISBANKS/ISBANKSI/ISBANKSA |
+| `BKAPS.RUN` | 5 KB | AP-S dispatch stub | Only BKSY.PRGS.WHR — routing stub to APS1999/APS2000 (confirmed from prior analysis) |
+
+### Menu code corrections / additions confirmed by binary
+
+| Code | Prior state | Correction | Source |
+|------|------------|-----------|--------|
+| `AP-C` | Missing from menu table | Enter PO Invoices — `BKAPC.RUN` (386 KB) confirmed | BKAPC.RUN "AP-CI0" title + "cannot be reversed here — use AP-B" |
+| `AP-H` | Only laser (BKAPHA) listed | Two variants: BKAPHA=Laser, BKAPH=Continuous Forms | BKAPH.RUN: "Print Checks [Continuous Forms]"; BKAPHA.RUN: "Print Checks [Laser Forms]" |
+| `AP-A-Q` | Not in main table | AP-A-Q Enter Vendor Currency Codes — sub-menu of AP-A | BKAPCUR.RUN literal: "AP-A-Q Enter Vendors Currency Codes" |
+
+### BKAPC AP-C vs AP-B relationship confirmed
+
+BKAPB.RUN contains: "Warning: There are open PO receipts for this vendor. Your system defaults are set to process invoices in AP. To do so please use AP-C (Enter PO Invoices)."
+
+This confirms the two workflows:
+- **AP-B** (BKAPB): Enter a manually-keyed voucher not linked to a PO receipt
+- **AP-C** (BKAPC): Process an invoice against open PO receipts (three-way match: PO → receipt → invoice)
+
+BKAPC also shows "This Invoice cannot be reversed here. It was created as a Voucher and needs to be reversed in AP-B" — confirming AP-C invoices have their own reversal restriction.
+
+### BKAPI — three aging report modes in one program
+
+`BKAPI.RUN` contains three distinct section-header strings:
+1. `VENDOR TRANSACTION LISTING` — chronological payment history per vendor
+2. `VENDOR AGING` — standard aging buckets (current/30/60/90+)
+3. `VENDOR PAST DUE AGING` — only past-due items
+
+All three modes are driven by the `BKYS.AP.AGING` config key (maps to BKSY.AP.AGING namespace). The aging day boundaries are configured in system defaults (AP-S / AD-B settings).
+
+### BKAPCUR — AvaTax confirmed in AP
+
+`BKAPCUR.RUN` (AP-A-Q) contains `ISTS.CFG.AVATAX` — confirming that the AvaTax integration (external cloud tax calculation) is configured within AP vendor maintenance. AvaTax is Avalara's automated sales tax service. This means EvoERP can calculate AP tax liability via Avalara when processing PO invoices.
+
+### New accessor namespaces confirmed (Pass 336)
+
+| Namespace | Found in | Meaning |
+|-----------|----------|---------|
+| `BKAP.PURCH.MTD` | BKAPL | AP vendor purchases month-to-date |
+| `BKAP.PURCH.YTD` | BKAPL | AP vendor purchases year-to-date |
+| `BKAP.PURCH.LYR` | BKAPL | AP vendor purchases last year |
+| `BKAP.PURCH.VAR` | BKAPL | AP vendor purchases prior-year variance |
+| `BKAP.LASTPURCH` | BKAPJ, BKAPL | AP vendor last purchase date |
+| `BKAP.OUTINV` | BKAPJ, BKAPK | AP vendor outstanding invoices balance |
+| `BKAP.OUT.CREDIT` | BKAPD, BKAPJ | AP vendor outstanding credit memos |
+| `BKAP.NEW.VEND` | BKAPN | AP new vendor flag |
+| `BKAP.INVT.SDATE` | BKAPD | AP invoice scheduled payment date |
+| `BKAP.INVT.EXTRA` | BKAPD | AP invoice extra/user field |
+| `BKAP.INVT.MCCOD` | BKAPD, BKAPE | AP invoice multi-currency code |
+| `BKAP.INVT.TERMN` | BKAPD | AP invoice payment terms code |
+| `BKAP.IS.MCCODE` | BKAPCUR | AP IS multi-currency code |
+| `ISIS.TAX` | BKAPA | IS tax namespace in AP vendor (full IS tax integration) |
+| `ISTS.CFG.AVATAX` | BKAPCUR | AvaTax integration enabled flag |
 
 ---
 
