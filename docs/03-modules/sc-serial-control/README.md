@@ -163,25 +163,40 @@ This constrains which item types can be serial-tracked:
 | O | Outside process | No |
 | M / F / P / etc. | Standard manufactured/purchased | Yes |
 
-### MTIT.* namespace — INVTXN field prefix (confirmed from BKSCF/BKSCG)
+### MTIT.* namespace — INVTXN field prefix (confirmed from BKSCF/BKSCG + INVTXN.XPT)
 
-BKSCF and BKSCG use `MTIT.*` to access INVTXN fields during serial assignment:
+BKSCF and BKSCG use `MTIT.*` to access INVTXN fields during serial assignment. INVTXN.XPT
+(Pass 325) extends the known namespace to 25 fields:
 
 | TAS variable | Meaning |
 |-------------|---------|
-| `MTIT.TYPE` | Transaction type |
+| `MTIT.TYPE` | Transaction type code |
 | `MTIT.CLASS` | Item class |
 | `MTIT.DATE` | Transaction date |
 | `MTIT.CODE` | Part number |
-| `MTIT.QTY` | Quantity |
-| `MTIT.SERIAL` | Serial number on transaction |
-| `MTIT.INVOICE` | Invoice number |
-| `MTIT.LOT` | Lot number |
+| `MTIT.QTY` | Transaction quantity |
+| `MTIT.AVGCOST` | Average cost at transaction time |
+| `MTIT.STDCST` | Standard cost at transaction time |
 | `MTIT.LOC` | Warehouse location |
+| `MTIT.REF` | Reference number / document |
+| `MTIT.CUST` | Customer code (SO-linked transactions) |
+| `MTIT.INVOICE` | Invoice / SO number |
 | `MTIT.PRICE` | Unit price |
+| `MTIT.PO` | Purchase order number |
+| `MTIT.WOPRE` | Work order prefix |
+| `MTIT.WOSUF` | Work order suffix |
+| `MTIT.LOT` | Lot number |
+| `MTIT.SERIAL` | Serial number |
+| `MTIT.VENDOR` | Vendor code (PO-linked transactions) |
+| `MTIT.SCRAP` | Scrap quantity |
+| `MTIT.QC` | QC hold quantity |
+| `MTIT.DEPT` | Department |
 | `MTIT.DESC` | Description |
+| `MTIT.PRODLOT` | Production lot (manufactured, distinct from purchased lot) |
+| `MTIT.EXTRA` | Extra / user-defined field |
 
-This confirms `MTIT` = `INVTXN` (prefix `MTIT_` maps to `INVTXN` Btrieve file). Previously only `MTIT_SERIAL` was known as an INVTXN field; this establishes the full field-access namespace used by SC programs.
+`MTIT` = `INVTXN` (prefix `MTIT_` maps to `INVTXN` Btrieve file). Pass 324 confirmed 11 fields
+from SC binaries; Pass 325 extended the list to 25 from INVTXN.XPT export template analysis.
 
 ### SC-F / SC-G field accessors (confirmed, Pass 324)
 

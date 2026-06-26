@@ -287,16 +287,17 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ Low-level I/O operations (Btrieve status codes, operation codes) documented
 
 ### 2.8 `.IMP` — Import Definition
-- [x] ✅ Format: plaintext; source filename + mode (e.g., `U:\PROFPN.CSV SC`) — **C: 80/100**
-- [x] ✅ 11 files cataloged — **C: 85/100**
-- [ ] ⬜ All import definition keywords/flags documented
-- [ ] ⬜ Import pipeline traced end-to-end (which SRC calls the import, which table it populates)
+- [x] ✅ **Pass325 (2026-06-26): BINARY format confirmed — NOT plaintext** — 442-byte fixed record: bytes 0–39 = source filename (space-padded), 40–41 = 2-char mode code (SC/DC/RC/RIC), 42–241 = Map1 (100 × uint16 LE, import column map: Map1[N-1] = source CSV column for target field N, 0=skip), 242–441 = Map2 (100 × uint16 LE, export column map; Map2[99]=0x0A0D=CRLF record-terminator sentinel); empty (0 byte) files = no import configured; prior "plaintext" characterization was wrong — **C: 85/100 → 92/100**
+- [x] ✅ 11 files cataloged — **C: 92/100**
+- [x] ✅ Mode codes: SC=Standard CSV, DC=Delimited CSV, RC=Btrieve raw-copy source, RIC=unclear (3-char, overlaps Map1 byte 0) — **C: 92/100**
+- [x] ✅ Import pipeline: DE module programs (T7DEHD/T7DEV/T7DEQ/T7DER) read .IMP, apply Map1 to map CSV columns to target Btrieve table fields — **C: 85/100** (inferred from program var analysis, not SRC-confirmed)
+- [ ] ⬜ "RIC" 3-char mode exact encoding and Map2 export semantics need SRC-level verification
 
 ### 2.9 `.XPT` — Export Layout
-- [x] ✅ Format: plaintext; `output.TXT flag FIELD1 FIELD2…` — **C: 78/100**
-- [x] ✅ 20 files cataloged; cover BKAP/BKAR/BKSO exports — **C: 80/100**
-- [ ] ⬜ All export flags documented
-- [ ] ⬜ Export pipeline traced (SRC → .XPT → .TXT output flow)
+- [x] ✅ **Pass325 (2026-06-26): BINARY format confirmed — NOT plaintext** — 32000-byte fixed block: bytes 0–11 = target filename (12-byte space-padded), byte 12 = type flag (S=Standard/T=Tabular/F=Full-Formatted/D=Detail/' '=default), bytes 13+ = 15-char column accessor names (space-padded, null-terminated list); prior "plaintext" characterization was wrong — **C: 80/100 → 92/100**
+- [x] ✅ 8 files fully decoded (BKARCUST/BKICMSTR/BKAPPOL/BKAPVEND/INVTXN/WORKORD/BKBMMSTR/BKSBMFG); INVTXN.XPT confirms 25 MTIT.* (INVTXN) field accessors (extends Pass 324 list of 11); BKBMMSTR.XPT reveals BOM field namespace: BKBM.PROD.LINE#/RTNUM/DUPOP/OPDSC/VEND/DATE1/DATE2/EXTRA/REV/OPYN(×6) — **C: 92/100**
+- [x] ✅ Export type flags documented (S/T/F/D/space) — **C: 92/100**
+- [ ] ⬜ Export pipeline SRC-level confirmation (T7DEx/T7DEU source not available)
 
 ### 2.10 `.UPD` — Schema Migration Manifest
 - [x] ✅ Format: Btrieve DDF; mirrors Pervasive system catalog tables (FILE\*.UPD) — **C: 75/100**

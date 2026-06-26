@@ -55,6 +55,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [TAS Pro 7 data infrastructure modules (wtasdmgr, wtasdatam, wtasinit — FILEDICT system)](02-file-formats/tas-data-infrastructure.md) — *verified, 2026-06-16*
 - [.RTM / .btm — Nevrona ReportBuilder templates](02-file-formats/rtm-reportbuilder.md) — *verified*
 - [.IMP / .UPD / .XPT / others](02-file-formats/other-formats.md) — *verified*
+- [.IMP / .XPT — Import/Export definition files (442-byte and 32000-byte binary templates)](02-file-formats/imp-xpt-import-export.md) — *verified, Pass 325 2026-06-26*
 
 ### 03 — Modules
 - [Module naming (T6/T7 prefixes, AR/AP/IN/SO/PO/WO/GL)](03-modules/naming-and-inventory.md) — *draft*
