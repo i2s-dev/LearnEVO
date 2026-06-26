@@ -1,6 +1,6 @@
 # Bill of Materials (BM)
 
-Status: verified | Pass 258 (2026-06-25)
+Status: verified | Pass 332 (2026-06-26)
 
 - **Module code**: `BM`
 - **Tables**: 13 (10 BKBM* + 3 BKSB* approved-list tables)
@@ -294,7 +294,7 @@ T7BMJ/K/L DFMs have 0 fields + 1 control each — grid-only launch screens (the 
 | `BKBMK.RUN` | 4 KB | BM-K-A | (stub) | BKPOLA, BKSYMSTR |
 | `BKBML.RUN` | 196 KB | BM-L-A | Enter Approved Manufacturers (older variant of BM-J-C) | BKSBMFG |
 | `BKBMM.RUN` | 196 KB | (SM-J-Q) | BOM Recursion Utility — title says "SM-J-Q" (Service Management), not BM | BKBMMSTR, BKICMSTR |
-| `BKBMX.RUN` | 192 KB | BM-X | Inactive Bill of Material Utility | BKBMMSTR, BKICMSTR |
+| `BKBMX.RUN` | 192 KB | BM-X | Change Item Class utility (binary: "New Item Class" / "Change Item Class?") | BKBMMSTR, BKICMSTR |
 
 ### Key findings from binary analysis
 
@@ -338,3 +338,46 @@ Title string "SM-J-Q  Bill of Material Recursion Utility" indicates this program
 ---
 
 **Confidence: 90/100** — All 17 programs confirmed from rwn_symbols.json; BKBM* 10-table schemas + BKSB* 3-table schemas all confirmed from DDF (Pass 317); program roles and key vars confirmed from named-var extraction. Remaining gap: T7BMGNC and T7BMKPRINT stub purpose unconfirmed (minor — both are small programs with no business logic).
+
+---
+
+## Pass 332 — additional BKBM\*.RUN binary findings (2026-06-26)
+
+Re-extraction of all 17 `samples/BKBM*.RUN` files for namespaces, table open patterns, and message strings.
+
+### BKBMX.RUN — correction
+
+Prior Pass 323 said "Inactive Bill of Material Utility". Binary string extraction shows the screen prompt is **"Change Item Class?"** with input field **"New Item Class"**. BKBMX.RUN is an item class reclassification utility — it updates `BKICMSTR` class for items across the BOM.
+
+### RoHS binary confirmation
+
+`BKBMH.RUN` contains the literal screen messages:
+- `"All components are ROHS compliant"`
+- `"Not all components are ROHS compliant"`
+
+This is binary proof that RoHS compliance status is evaluated at BOM print time in the TAS6 generation. BKBMH iterates all BOM components and sets the compliance summary message. The check was already present before the T7 rewrite.
+
+### BKARSIVLA — new table
+
+`BKARSIVLA` appears in BKBMA, BKBMB, BKBMC, BKBMD, BKBMG, BKBMH, BKBMH1, BKBMH2, BKBMI. Inferred role: AR SI (Sales Invoice?) Variance / Level / Archive table — opened by most BOM programs as a session-context or currency table. Exact schema unknown; DDF lookup needed.
+
+### New accessor namespaces confirmed
+
+| Namespace | Seen in | Meaning |
+|-----------|---------|---------|
+| `BKIC.LOC.UALLOC` | BKBMA–BKBMM | IC location unallocated quantity |
+| `BKIC.REF.CUSCODU` | BKBMA–BKBMX | IC reference customer code (uppercase variant) |
+| `BKIC.PROD.UALLOC` | BKBMD | IC product unallocated quantity |
+| `BKIC.PROD.TOTVL` | BKBMD | IC product total value |
+| `BKIC.PROD.LRCPTR` | BKBMH2 | IC product last received cost pointer |
+| `BKSB.PART.PARNT` | BKBMB, BKBMC, BKBMI | SB approved substitute parent field |
+| `BKSB.VEND.PARNT` | BKBMB, BKBMC | SB approved vendor parent field |
+| `ISFO.LIN.QTYREQ` | BKBMA | F/O option line quantity required |
+| `BKBM.DIM.PARENT` | BKBMA | BM dimensional BOM parent field |
+| `BKAP.PO.CONFIRMJ` | BKBMD | AP PO confirmed-job flag (demand side of shortage calc) |
+| `BKAR.INVL.INVNM` | BKBMD | AR invoice line invoice number field |
+| `BKIC.LOCM.STATE` | BKBMD | IC location-machine state (availability considers machine state) |
+
+### BKBMM.RUN — additional confirmation
+
+Binary strings from BKBMM.RUN include the report header `"BILL OF MATERIAL RECURSION ERROR REPORT"` and type-filter labels `"[B] Phantom Assembly"` / `"[O] Feature"`. This confirms the program detects circular BOM references specifically for Phantom Assembly (B) and Feature (O) type components, which are the types most likely to cause phantom recursion. The `BKWOAA` table open confirms WO archives are scanned for WIP with recursive BOM structures.
