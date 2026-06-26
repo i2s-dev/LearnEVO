@@ -4184,6 +4184,8 @@ Both use BKAR_TXN_ field prefix (shared with AR transaction tables).
 | BKPRAGNT | 4 | Agent/salesperson GL account mapping |
 | BKPRBOOK | 87 | Salesperson annual book (quotas + 12-month actuals) |
 | BKPRCOMM | 12 | Commission detail (byte-identical to BKPRACOM) |
+| BKPRHCOM | 12 | Commission history tier (mirror of BKPRCOMM/BKPRACOM) |
+| BKPRSTFL | 2 | State payroll filing table |
 | BKPRCURP | 127 | Current payroll period record per employee |
 | BKPRGLFL | ~664 | Payroll GL distribution (very large, partially confirmed) |
 | BKPRMSTR | ~384 | Employee payroll master (partially confirmed) |
@@ -4191,7 +4193,9 @@ Both use BKAR_TXN_ field prefix (shared with AR transaction tables).
 
 **BKPRAGNT** (4f): Agent GL mapping. PK = NUM (UBINARY/2). Fields: CODE (STRING/10), GLACT (STRING/10), GLDPT (STRING/4). Maps each salesperson# to GL clearing account.
 
-**BKPRACOM** (12f): Commission transaction archive. PK = SLSP (UBINARY/2)+CCODE (STRING/10)+INVNM (FLOAT/8/0). Fields: INVDT, PAYDT (DATEs), AMTPD (FLOAT/8/2), COMM (FLOAT/8/2), PD_ON (FLOAT/8/2), EXTRA (STRING/25), ULID (FLOAT/8/4), TDATE (DATE), PCODE (STRING/15). **BKPRCOMM** (12f) is byte-identical.
+**BKPRACOM** (12f): Commission transaction archive. PK = SLSP (UBINARY/2)+CCODE (STRING/10)+INVNM (FLOAT/8/0). Fields: INVDT, PAYDT (DATEs), AMTPD (FLOAT/8/2), COMM (FLOAT/8/2), PD_ON (FLOAT/8/2), EXTRA (STRING/25), ULID (FLOAT/8/4), TDATE (DATE), PCODE (STRING/15). **BKPRCOMM** (12f) is byte-identical. **BKPRHCOM** (12f) is the history tier of the same 3-table active/archive/history commission stack — PK: BKPR_COMM_SLSP+BKPR_COMM_CCODE+BKPR_COMM_INVNM; used by CS-O commission report for transferred transactions.
+
+**BKPRSTFL** (2f): State payroll filing table. PK = BKPR_ST_STCODE (STRING/2 — 2-char state code). Fields: BKPR_ST_TAXNUM (STRING/10 — state tax ID number). Used during W-2 processing and state payroll filing.
 
 **BKPRBOOK** (87f): Salesperson annual performance book. PK = EMPNUM (UBINARY/2). Fields: CLASS_1/2, RATE_1/2, HOW_1/2, WHEN_1/2 (commission setup), then 12-month arrays: QUOTA_1..12, GROSS_1..12 (gross sales), COGS_1..12, RCPTS_1..12, COMM_1..12 (earned), PAID_1..12 (paid), then FNMI (STRING/25), LNME (STRING/25), EXPACT (STRING/10), EXPDPT (STRING/4), EXTRA (STRING/100), EMAIL (STRING/128).
 

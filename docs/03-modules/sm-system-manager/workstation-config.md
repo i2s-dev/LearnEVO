@@ -67,8 +67,8 @@ Java-based SMTP library).
 | `EMAIL.CFG.EFAIL` | Email failure flag |
 | `EMAIL.CFG.BCC` | Default BCC address |
 | `EMAIL.CFG.SUBJ` | Default subject template |
-| `EMAIL.CFG.BOD1`–`BOD9` | Default email body lines (9 lines) |
-| `EMAIL.CFG.SIG1`–`SIG9` | Email signature lines (9 lines) |
+| `EMAIL.CFG.BOD0`–`BOD9` | Default email body lines (10 lines; index 0–9) |
+| `EMAIL.CFG.SIG0`–`SIG9` | Email signature lines (10 lines; index 0–9) |
 | `EMAIL.CFG.APTH` | Email application path |
 | `EMAIL.CFG.ECB` | Email callback setting |
 | `EMAIL.CFG.EVB` | Email verify-before-send flag |
@@ -107,13 +107,15 @@ allowing per-workstation customization of which form layout is shown.
 | `JAVA.PATH` | Path to Java/EvoPVT JAR (primary) |
 | `JAVA.PATH2` | Path to Java/EvoPVT JAR (secondary) |
 | `XCPATH` | External/cross-path (purpose TBD) |
-| `HOTBUTTON1P` | Hot-button 1 launch path |
-| `HOTBUTTON2P` | Hot-button 2 launch path |
+| `HOTBUTTON1H`–`HOTBUTTON6H` | Hot-button 1–6 hint/caption text |
+| `HOTBUTTON1I`–`HOTBUTTON6I` | Hot-button 1–6 icon/image index |
+| `HOTBUTTON1P`–`HOTBUTTON6P` | Hot-button 1–6 program/launch path |
 
 ---
 
 ## Architecture Notes
 
+- Include chain (from string literal in binary): `t7slsfc.SRC` + `DBA.LIB` + `IM.LIB` + `NZLICE.LIB` + `EVOIM.LIB` + `EVOCFG.SRC` + `ISTS.SRC` — 6 libraries merged at compile time.
 - The 663 variables are populated by reading BKSYMSTR (system master), BKSYPRTR (printer
   config), ISJAVA (Java email config), and ISTS.CFG records at program startup.
 - The 15-instruction dispatch is minimal: open handles → EXECUTE_FORM (DFM) → save on close.
@@ -134,6 +136,4 @@ allowing per-workstation customization of which form layout is shown.
 - `BKSYPRTR.B` — Printer configuration table
 - `ISJAVA.B` — Java/email configuration table
 
-**Confidence: 78/100** — Variable names extracted and categorized from binary; DFM pairing is
-inferred (same-basename rule → T7SLSFC.DFM, not T7SMK.DFM — confirm by checking DFM inventory);
-table write targets are inferred from var naming conventions.
+**Confidence: 90/100** — Pass248/Pass358: all 663 variables extracted and categorized; 32 DB files confirmed; EMAIL.CFG BOD0-9/SIG0-9 (10 lines each, not 9 — corrected Pass358); all 6 HOTBUTTON H/I/P suffixes confirmed; remaining gap = exact DFM pairing (T7SLSFC.DFM vs T7SMK.DFM) and runtime write-back targets.

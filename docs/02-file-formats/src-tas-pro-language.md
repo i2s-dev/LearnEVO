@@ -215,9 +215,9 @@ one of: **I, B, R, P, T, D, N, L, A, F**".
 | `A` | Alpha (fixed-length string) |
 | `N` | Numeric (decimal; `dec` sets fraction digits) |
 | `I` | Integer (max 10 digits) |
-| `B` | Byte (single byte; to verify) |
-| `R` | Record position / pointer into a file |
-| `P` | Pointer (to verify — may be memory pointer) |
+| `B` | Byte (1–3 chars; errmsg.dbf error 614 confirmed) |
+| `R` | Record position / pointer into a file (errmsg.dbf confirmed) |
+| `P` | Pointer — memory/file pointer (errmsg.dbf error 614 confirmed) |
 | `T` | Time |
 | `D` | Date |
 | `L` | Logical (boolean) |
