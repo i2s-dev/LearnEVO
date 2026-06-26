@@ -332,14 +332,21 @@ All 9 tables confirmed present in the 659-table DDF schema (checked against tier
 
 ## Post-Pass-326 open items
 
-18. **BKICL_JITPRG — undocumented JIT table (2026-06-26).**
-    Found as a string in BKWOKC.RUN and BKWOKD.RUN binaries (Pass 326 WO TAS6 binary analysis).
-    The name pattern `BKICL_JITPRG` suggests **IC (Inventory Control) → JIT Program** (Just-in-Time).
-    Not present in the 659-table DDF schema extracted from the network share.
-    Could be: (a) a company-specific i2 Systems customization table, (b) an EVO add-on module table
-    not installed at this site, or (c) a staging table accessed by the WO material issue programs.
-    **To resolve:** grep all other WO/IC binaries for BKICL_JITPRG; check if it appears in any .SRC files;
-    verify whether it's missing from DDF or just missing from the tier docs.
+~~18. **BKICL_JITPRG — undocumented JIT table**~~ **RESOLVED Pass 351 2026-06-26.**
+    `BKICL_JITPRG` is **NOT a database table** — it is an **in-program variable** in the IC module's
+    shared Library buffer (`BKICL_` namespace). Confirmed by parsing the variable descriptor section
+    of BKINC.RUN: entry = `[NAME:16 bytes][DESC:32 bytes]` per variable; `BKICL_JITPRG` has
+    type=`A` (alpha/string), size=10 bytes. The full `BKICL_` cluster in every program is:
+    - `BKICLOC.H` (I, 5) — IC Location handle array
+    - `BKICL_JITPRG` (A, 10) — JIT Program code (10-char) for the current IC Location item
+    - `BKICL_BUFF` (A, 255) — IC Location read buffer
+    - `BKICL_REC` (R, 10) — IC Location record pointer
+    Appears in 200+ programs (AP, WO, SO, PO, BM, IN, SC, DC, …) because all programs that
+    process IC items include this standard IC Library variable namespace. The `BKIC_JITPRG` (A, 10)
+    variant (without the `L`) is the IC Master (BKICMSTR) equivalent.
+    No DDF field matches `JITPRG` across all 659 tables — the physical data is most likely embedded
+    within `BKIC_PROD_EXTRA` (100-byte extension area in BKICMSTR) at a fixed byte offset not
+    registered as a named DDF field. **Not missing from DDF; never was a separate table.**
 
 ---
 

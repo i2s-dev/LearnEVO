@@ -496,6 +496,49 @@ Effective address space is 16-bit (bytes 3–4). The 4-byte addr field's upper h
 
 ---
 
+## Named Variable Export Table (Pass 351 — 2026-06-26)
+
+Programs that expose shared variables to other programs contain a **Named Variable Export Table**
+in a section beyond the data channel. Each entry is **48 bytes**:
+
+```
+[NAME:16 bytes] [DESCRIPTOR:32 bytes]
+  Name = up to 15 ASCII chars, right-padded with spaces, null-terminated.
+  Descriptor layout:
+    [0..2]  : 3 zero bytes
+    [3]     : type letter ('A'=alpha, 'I'=integer/index, 'R'=real, 'L'=long,
+                            'D'=date, 'N'=numeric, 'V'=variable-length)
+    [4]     : 0x00
+    [5]     : element_size in bytes
+    [6..15] : 10 zero bytes
+    [16..19]: 0xFF 0xFF 0xFF 0xFF (sentinel)
+    [20..23]: element_size again (LE32)
+    [24..31]: 8 zero bytes
+```
+
+**Example — BKINC.RUN IC Library buffer cluster** (confirmed Pass 351):
+| Name | Type | Size | Purpose |
+|------|------|------|---------|
+| `BKICLOC.H` | I | 5 | IC Location handle array |
+| `BKICL_JITPRG` | A | 10 | JIT Program code for current IC Location item |
+| `BKICL_BUFF` | A | 255 | IC Location read buffer |
+| `BKICL_REC` | R | 10 | IC Location record pointer |
+| `BKIC.LOC.KEY` | V | 25 | IC Location composite key |
+| `BKICMSTR.H` | I | 5 | IC Master handle array |
+| `BKIC_JITPRG` | A | 10 | JIT Program code for current IC Master item |
+| `BKIC_BUFF` | A | 255 | IC Master read buffer |
+| `BKIC_REC` | R | 10 | IC Master record pointer |
+
+The `BKICL_` prefix = BK IC L-ibrary shared buffer. This namespace appears in 200+ programs
+(all modules that process IC items: AP, WO, SO, PO, BM, IN, SC, DC, HH, …).
+
+**`BKICL_JITPRG` is NOT a database table** — it is this in-program variable (10-char alpha)
+holding the JIT scheduling program code for the current IC item. Not present in the 659-table
+DDF because it mirrors a field embedded in `BKIC_PROD_EXTRA` (100-byte extension area) rather
+than being registered as a named DDF column.
+
+---
+
 ## TAS Pro 7 vs TAS Pro 6 — Key Differences
 
 | Feature | TAS Pro 6 `.RUN` | TAS Pro 7 `.RWN` (decrypted) |
