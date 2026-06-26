@@ -456,6 +456,61 @@ Source: `samples/rwn_symbols.json` — all T7AP* entries.
 
 ---
 
+---
+
+## TAS6-era programs (BKAP*.RUN) — complete binary inventory (Pass 322, 2026-06-26)
+
+21 TAS Pro 6 `.RUN` programs confirmed from binary string extraction. All files in `samples/`.
+
+| File | Size | Menu code(s) | Operation | Key tables |
+|------|-----:|--------------|-----------|------------|
+| `BKAPA.RUN` | 235 KB | AP-A, MM-L, CM-E, CS-B, DE-J-E | Enter Vendors (+ 4 other modules) | BKAPVEND, BKAPVND2, ISTAXGRP, ISTERMS, BKGLCOA, ISVNDADT, BKCMVNDH/FC/F, ISMCF |
+| `BKAPB.RUN` | 265 KB | AP-B | Enter Vouchers | BKAPINVL, BKAPVEND, BKAPPO, BKAPPOL, BKAPINVT, BKGLCOA, BKAPCHKF, BKGLTRAN, BKARINVV, ISGLDATE |
+| `BKAPC.RUN` | 385 KB | AP-C **+ PO-N** | Enter PO Invoices / Reconcile PO Invoices | BKSYAP, MTICMSTR, BKAPINVT, BKAPPO, BKAPPOL, BKQCMSTR, WOROUT, WORKORD, WOBOM, OUTPROC, WORECV, INVTXN, DBAFIFO, ISLANDF, ISAPCHG, ISDUTY, ISBROKER |
+| `BKAPCUR.RUN` | 131 KB | AP-A-Q | Vendor Currency Codes (International module 2000.1) | BKAPVEND, ISMCF, ISIS |
+| `BKAPD.RUN` | 167 KB | AP-D | Enter Scheduled Payment Dates | BKAPVEND, BKAPINVT, ISTERMS |
+| `BKAPE.RUN` | 195 KB | AP-E | Print Vouchers/Invoices Due by Date | BKAPINVT, BKAPVEND, BKAPCHKF (**lock**), ISMCF |
+| `BKAPF.RUN` | 190 KB | AP-F | Pick Vouchers/Invoices to Pay | BKAPVEND, BKAPCHKF (**lock**), BKAPINVT, ISTERMS |
+| `BKAPG.RUN` | 165 KB | AP-G | Print Pro Forma Check Register | BKAPCHKF (**lock**), BKAPVEND, BKGLCOA, ISBANKS, BKGLTRAN, BKAPINVT |
+| `BKAPH.RUN` | 260 KB | AP-H **[continuous forms]** | Print Checks | BKAPCHKF, BKPRTCFG, BKAPVEND, ISBANKS, ISMCF, BKAPINVT, BKARCUST, BKGLCHK, BKGLCOA, BKGLTRAN, ISGLDATE |
+| `BKAPHA.RUN` | 264 KB | AP-H **[laser forms]** | Print Checks | (same as BKAPH + BKAPCHKH) |
+| `BKAPI.RUN` | 242 KB | AP-I | Print Aging (3 types: Aging / Listing / Past Due; "Frozen Aging" since v96.2D) | BKAPVEND, BKAPINVT, ISTERMS, ISMCF, BKCMVNFC/F, BKAPCHKF |
+| `BKAPJ.RUN` | 160 KB | AP-J, MM-K-D | Print Vendor Code and Name | BKAPVEND, BKAPPO, BKAPCHKF, BKAPVND2 |
+| `BKAPK.RUN` | 153 KB | AP-K | Print Vendor General Info | BKAPVEND, BKAPVND2 |
+| `BKAPL.RUN` | 155 KB | AP-L | Print Vendor Purchase Info | BKAPVEND |
+| `BKAPM.RUN` | 165 KB | AP-M | Print Vendor Labels (3.5"×15/16", Avery 6490, Avery 5160 → BKAPM1/2/3.RTM) | BKAPVEND |
+| `BKAPN.RUN` | 55 KB | AP-N | Print Vendor Rolodex | BKAPVEND |
+| `BKAPO.RUN` | 102 KB | AP-O | Enter Recurring Vouchers (types A=Voucher, B=Credit Memo, C=Manual Check) | BKAPINVL, BKAPVEND, BKAPPO, BKGLCOA, BKARINV, BKARINVV, BKAPRIVL |
+| `BKAPP.RUN` | 190 KB | AP-P | Generate Recurring Vouchers | BKAPINVL, BKAPVEND, BKAPINVT, BKGLCHK, ISBANKS, BKAPCHKF, BKGLTRAN, BKAPRIVL |
+| `BKAPQ.RUN` | 195 KB | AP-Q | Void AP Check | BKAPCHKF, BKAPVEND, ISBANKS, BKAPINVT, BKGLCOA, BKGLTRAN, BKGLCHK, BKAPINVL |
+| `BKAPR.RUN` | 178 KB | AP-R | Print AP Payment History ("1099 Vendors Only?" filter); reads ISAPACHK (archived) or BKAPCHKH (active) | BKAPCHKF, BKAPVND2, BKAPVEND, ISBANKS |
+| `BKAPS.RUN` | 5 KB | AP-S | 1099 Forms stub — dispatches to APS1999 or APS2000 based on BKSYMSTR year setting | BKSYMSTR, TEMP00* |
+
+### AP check workflow (binary-confirmed)
+
+```
+AP-D (schedule payment dates)
+  → AP-E (print invoices due; locks BKAPCHKF)
+  → AP-F (pick invoices to pay; locks BKAPCHKF)
+  → AP-G (print pro-forma check register; locks BKAPCHKF)
+  → AP-H (print checks: BKAPH=continuous, BKAPHA=laser; check format selected by BKYS.YN[48])
+  → AP-Q (void a check if needed)
+```
+
+BKAPCHKF is mutually locked across all of AP-E, F, G, and H — only one step can run at a time.
+
+### Multi-program binaries
+
+- **BKAPA.RUN** serves 5 menu operations: AP-A (Enter Vendors), MM-L, CM-E, CS-B, DE-J-E. Largest multi-module overlap in AP.
+- **BKAPC.RUN** (385 KB — largest AP file) handles both **AP-C** (Enter PO Invoices) and **PO-N** (Reconcile PO Invoices) — confirmed from title strings in same binary. Touches WO/IN/PO tables (WOROUT, WORKORD, INVTXN, DBAFIFO) because PO receipt reconciliation drives inventory and WO updates.
+- **BKAPCUR.RUN** = "Vendor Currency Conversion Utility [International] 2000.1" — registered under **AP-A-Q**.
+
+### 1099 dispatch mechanism
+
+`BKAPS.RUN` (5 KB) is a pure routing stub. It reads `BKSYMSTR` to determine the current tax year (via `BKSYMSTR`/TEMP00* vars), then dispatches to `APS1999` or `APS2000` via `BKSY.PRGS.WHR` (the program-chain variable used throughout EVO for module handoff). No 1099 logic lives in BKAPS itself.
+
+---
+
 ## Notes & open questions
 
 - BKAPAPO (58f) has one extra field vs BKAPPO (57f) — field not identified; likely an archive timestamp or purge flag.

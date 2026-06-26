@@ -393,6 +393,54 @@ version embedded in the template file.
 
 ---
 
+## Computed vs. DDF field names in TASFile pipeline (Pass 322, 2026-06-24)
+
+Confirmed from binary analysis of `samples/rtm/BKAPH1.RTM` and `samples/rtm/BKAPHA1.RTM`
+(AP check print templates).
+
+### Two categories of DataField values in a single RTM
+
+Within a single RTM file, `TppDBText.DataField` carries two distinct kinds of names:
+
+| Category | Example values | Source |
+|----------|---------------|--------|
+| **DDF field names** | `BKAP_CHK_INVNUM`, `BKAP_CHK_AMTPD`, `BKAP_CHK_DISC`, `BKAP_CHK_INVDTE`, `BKAP_VENDNAME`, `BKAP_CUST_CODE` | Direct Btrieve DDF columns; TAS pushes these verbatim from the open BKAPCHKF/BKAPVEND record |
+| **Computed field names** | `CHK_DATE`, `CHK_NUM`, `CHK_AMT_DOL`, `LINE_DESC`, `TOT_AMT`, `TOT_DAMT`, `TOT_RAMT`, `TOT_TOT`, `PRT_ADD1`, `PRT_ADD2`, `PRT_CSZ`, `PRT_COUNTRY`, `CHECK_INVNUM` | Runtime-computed values staged into the TASFile pipeline buffer by the TAS program before `EXEC_RB` |
+
+The naming convention distinguishes the two:
+
+- **DDF names** follow the Btrieve field naming convention: `TABLEPREFIX_FIELDNAME` (e.g. `BKAP_CHK_INVNUM`). These match exactly the field names in the DDF schema.
+- **Computed names** are short ALL-CAPS tokens with no table prefix (e.g. `CHK_DATE`, `TOT_AMT`, `PRT_ADD1`). These do not exist in any DDF file; they are calculated by the TAS program and staged via `SETUP_REPORT_BUFF` / `OUTPUT_REPORT_DATA`.
+
+### Mechanism
+
+The TAS program (e.g. BKAPH.RUN / BKAPHA.RUN) builds a TASFile pipeline buffer before calling `EXEC_RB`. This buffer contains both:
+1. Fields read directly from open database records (DDF column values passed through unchanged)
+2. Fields assembled or calculated at runtime — formatted check amounts in dollars and cents (`CHK_AMT_DOL`), formatted address lines (`PRT_ADD1/2/CSZ/COUNTRY`), running totals (`TOT_AMT/DAMT/RAMT/TOT`), the check number (`CHK_NUM`), line description (`LINE_DESC`), and the invoice reference in check format (`CHECK_INVNUM`)
+
+This is why RTM-level static analysis alone cannot determine what a field contains — computed fields require tracing the TAS program logic to understand how they are populated.
+
+### Sub-report nesting in BKAPH1.RTM
+
+BKAPH1.RTM uses nested sub-reports for invoice detail lines within each check:
+
+```
+TppReport (master — check header per vendor)
+  └─ TppDetailBand
+       └─ TppSubReport
+            └─ TppChildReport (detail — one row per invoice reference line)
+```
+
+The ChildReport binds to the same TASFile pipeline; the TAS program iterates invoice references, calling `OUTPUT_REPORT_DATA` once per line to feed the child.
+
+BKAPHA1.RTM (laser forms) adds a second sub-report/child pair (`TppSubReport2` / `ChildReport2`) for the second copy of the check detail — laser checks print two copies of the stub.
+
+### ReportBuilder version note
+
+`BKAPHA1.RTM` contains `Version = '4.05 Pro'` — an older ReportBuilder engine than the `7.03` seen in `t7ing1.rtm`. The T6-era AP check RTMs predate the T7-era label RTMs. Both versions use the same TASFile pipeline mechanism; version differences affect component properties, not the field binding protocol.
+
+---
+
 ## RTM runtime selection architecture (Pass 250, 2026-06-24)
 
 ### FILELOC — Central file path registry
