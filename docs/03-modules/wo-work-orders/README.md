@@ -688,9 +688,54 @@ The T7 generation renumbered some operations. WO-J in TAS6 = Close/Cancel; in T7
 
 ---
 
+## Pass 337 — TAS6 BKWO* deep analysis (2026-06-26)
+
+Detailed string extraction from all 32 BKWO*.RUN files (previously only cataloged at title level in Pass 326). New confirmed findings:
+
+### BKDCPLAB — DC Production Lab table in WO-I (new)
+
+Both `BKWOI.RUN` (WO-I Enter Finished Production) and `BKWOIP~1.RUN` (WO-I import variant) open `BKDCPLAB`. This confirms that DC module production lab postings feed directly into WO-I at the completion step. The accessor handle `BKDCPLAB` (prefix `BKDC_`) bridges DC scan events to WO finished-production records — when a DC terminal posts production, it writes to BKDCPLAB, which WO-I then reads to pre-fill the completion entry. This is a fourth DC→WO integration point (in addition to T7WOF/T7WOJ/T7WOKK previously documented).
+
+### WO-F employee login tables
+
+`BKWOF.RUN` (Enter Labor) opens both `BKPRMSTR` (payroll master) and `BKPSUSER` (payroll user table). This confirms that WO labor entry authenticates the employee against the payroll system — the "Employee / Password" login fields on T7WOF.DFM map to BKPRMSTR (employee record) and BKPSUSER (login credential). Shop floor login uses payroll employee numbers, not EvoERP user accounts.
+
+### WO-C Traveler RTM templates (named)
+
+`BKWOC.RUN` uses five RTM report templates: `bkwoc1.rtm`, `bkwoc2.rtm`, `bkwoc3.rtm`, `bkwoc4.rtm`, and `BKWOC3OC.RTM`. Also opens `NOVAZYG` (NovaZyg document linking — used for image links and web links on the shop packet, per string "You need to enter an Image Link first" and "You need to enter a Web Site to link to"). NovaZyg was a third-party document management library bundled with EvoERP.
+
+### BKWOKF MTWORO.* accessor names (confirmed)
+
+`BKWOKF.RUN` (WO-K-F Edit Sequence Started/Finished Dates) contains bare accessor names in its field-reference table:
+`MTWORO.CODE`, `MTWORO.WOPRE`, `MTWORO.WOSUF`, `MTWORO.WC`, `MTWORO.OPER`, `MTWORO.STARTED`, `MTWORO.FINISHED`
+
+These are the WOROUT fields directly accessed by WO-K-F. Confirms MTWORO_ is the DDF field prefix for WOROUT (routing operation), and STARTED/FINISHED are the actual started/finished date field names.
+
+### BKWOKG MTWO.WIP.* accessor names (confirmed)
+
+`BKWOKG.RUN` (WO-K-G Recalculate Projected Hours) contains:
+`MTWO.WIP.WOPRE`, `MTWO.WIP.WOSUF`, `MTWO.WIP.STATUS`, `MTWO.WIP.SSTART`, `MTWO.WIP.SFIN`
+
+Confirms WORKORD field names: MTWO_WIP_SSTART and MTWO_WIP_SFIN (scheduled start/finish dates used by projected hours calculation). Consistent with full WORKORD DDF field table.
+
+### WO-L-E CheckMark payroll integration detail
+
+`BKWOLE.RUN` contains: "Now run 'Enter Hours' (then click 'Import Hours') in CheckMark Payroll using this file name" and notes about employee names matching between PR-A/MM-B and CheckMark. Confirms **CheckMark** is a separate third-party payroll software (not EvoERP native payroll), and WO-L-E exports a comma-delimited file for import. Hours > 999.99 or < 0 are clamped to 0 with a warning. The normal payroll path (WO→BKPRCURP) is distinct from this CheckMark export path.
+
+### BKARINVL in BKWOA (SO link at WO entry)
+
+`BKWOA.RUN` opens `BKARINVL` (AR invoice lines). This confirms that WO-A (Enter Work Orders) can look up AR invoice lines — the SO# / reference fields on the WO header link back to an AR invoice line, supporting SO-linked WO creation at order entry time.
+
+### LW vs WO menu prefix (TAS6 naming confirmed)
+
+`BKWOA.RUN` contains both `LW-A  Enter Work Orders` and `WO-A  Enter Work Orders` — same program, two menu paths. The LW-* prefix was the older "Light Work Orders" menu; WO-* is the current name. All BKWO* programs that also appear in the LW menu carry both title strings in the binary.
+
+---
+
 ## Notes & open questions
 
 - WORKACHG vs WORKCHG: both have identical 25-field schema with WO_CHG_ prefix. Likely split between assembly-level changes (WORKACHG) and general WO header changes (WORKCHG), but the actual split criterion is not confirmed from schema alone — would need RWN source to verify.
 - WORKSORD: identical 74-field schema to WORKORD. Likely MRP-generated "scheduled" WO proposals that haven't been formally released; confirmed from the module name pattern but not from RWN logic.
 - WOELABOR: identical schema to WOLABOR. The "E" prefix here likely means "entered but not posted" (pending labor) rather than "estimated."
 - BKICL_JITPRG: JIT scheduling table referenced in BKWOKC/BKWOKD TAS6 binaries but not in DDF — purpose and schema unknown.
+- BKDCPLAB: DC production lab table (in BKWOI/BKWOIP~1) — field schema not yet extracted from DDF. BKDC_ prefix likely.
