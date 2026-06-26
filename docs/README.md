@@ -94,7 +94,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [PI — Physical Inventory](03-modules/pi-physical-inventory/README.md) (9 / 10 / 7) — + [help-content.md](03-modules/pi-physical-inventory/help-content.md) *(8 CHM topics)*
 - [WC — Warehouse Control](03-modules/wc-warehouse-control/README.md) — + [help-content.md](03-modules/wc-warehouse-control/help-content.md) *(5 CHM topics)*
 - [SH — Scheduling](03-modules/sh-shipping/README.md) (16 / 15 / 1) — + [help-content.md](03-modules/sh-shipping/help-content.md) *(22 CHM topics)* · *folder name `sh-shipping/` is a legacy mislabel; module is Scheduling*
-- [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6)
+- [ED — EDI](03-modules/ed-edi/README.md) (6 / 3 / 6) — *Pass320 2026-06-26: CandoEDI middleware architecture confirmed; X12 sets 850/860/810/855/856; BKEDI.DUN.*/MST.* namespaces — C:90*
 - [CR — Contract Review](03-modules/cr-contract-review/README.md) — + [help-content.md](03-modules/cr-contract-review/help-content.md)
 - [QU — Queries & Reports](03-modules/qu-queries/help-content.md) *(7 CHM topics: overview + QU-A through QU-F)*
 - [HH — Hand Held Data Collection](03-modules/hh-handheld/README.md) (32 programs, 6 functional groups) — + [help-content.md](03-modules/hh-handheld/help-content.md) *(15 CHM topics: Paperless Shop Floor + HH-A through HH-M)*
