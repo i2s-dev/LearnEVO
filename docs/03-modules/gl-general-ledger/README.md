@@ -1,6 +1,6 @@
 # General Ledger (GL)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 333 (2026-06-26)
 
 - **Module code**: `GL`
 - **Tables**: 28 (prefixes `BKGL`)
@@ -545,3 +545,64 @@ BKGLO.RUN batch-filter screen shows types CR, OT, CD, WO, RS, GJ, PR — the 7 "
 - BKGLSTMT (104f): Large statement definition table — likely the custom financial statement layout used by GL-N. Schema not yet read.
 - BKGLFSTL (12f): Financial statement layout lines — BKFS_NAME + LINE_NUM + SGL_ACCT as key. Likely the row definitions for GL-F printed statements.
 - ISGLCOA / ISGLDATE / ISGLNBGT / ISBSF / ISMCF / ISJOB schemas: inferred from DB file list only; not in DDF.
+
+---
+
+## Pass 333 — additional BKGL\*.RUN binary findings (2026-06-26)
+
+Re-extraction of all 20 `samples/BKGL*.RUN` files.
+
+### Accessor reference confirmations
+
+`BKGLOOB.RUN` and `BKGLQ.RUN` contain literal runtime accessor reference strings:
+- `BKGL.TRN.TYPE  H` — confirms `BKGL_TRN_TYPE` is a 2-char string accessor (table handle code H)
+- `BKGL.TRN.POST  o` (BKGLQ) and `BKSY.PRTR.POST  7` (BKGLS) — POST field accessor confirmed
+
+### IS table archive variants
+
+Binary opens from multiple programs confirm the IS table family has full A/I suffix variants:
+
+| Table | Seen in | Inferred role |
+|-------|---------|---------------|
+| `ISGLCOAA` | BKGLA, BKGLF, BKGLH | IS GL COA archive |
+| `ISGLDATEA` / `ISGLDATEI` | BKGLB, BKGLE, BKGLF | IS GL date period archive / index |
+| `ISGLBDGTA` | BKGLF, BKGLN | IS GL budget archive |
+| `ISGLNBGTI` | BKGLA, BKGLH | IS GL next-budget index |
+
+### Additional BKGL table variants
+
+| Table | Seen in | Role |
+|-------|---------|------|
+| `BKGLCOA0` | BKGLG | COA zero-department variant (no dept code — "All" accounts print) |
+| `BKGLCHKF` | BKGLJ | Check register filter (bank reconciliation filtered view) |
+| `BKGLCHKL` | BKGLK | Check register list (bank transfer context) |
+| `BKGLXI` | BKGLK | GL cross-reference index (read by bank transfer program) |
+| `BKGLOOBA` | BKGLO | Out-of-balance archive (unbalanced batch staging) |
+| `BKGLGJRNL` | BKGLK | GJ recurring journal line (accessed during bank transfer) |
+
+### GL-S dual mode
+
+`BKGLS.RUN` binary contains both title strings:
+- `"GL-S  Print GL Journal Notes"` (print mode)
+- `"GL-S  View GL Journal Notes"` (view mode)
+
+GL-S is a dual print/view program for journal notes — the menu shows only "View" but the program supports printing as well.
+
+### BKGLF budget comparison modes
+
+`BKGLF.RUN` confirms 4 historical budget comparison display modes:
+- `0 - Four Year Budget Past Amounts`
+- `7 - One Year Budget Past Amounts`
+- `8 - Two Year Budget Past Amounts`
+- `9 - Three Year Budget Past Amounts`
+
+Combined with `B - Budget Amounts` (current budget) and `B - Balance Sheet`, GL-F supports up to 4 years of budget history comparison alongside current actuals.
+
+### BKGLI check type codes
+
+`BKGLI.RUN` check register picker confirms check type codes:
+- `A - All Types` — print all check types
+- `B - Both Types` — D (deposit) + C (check)
+- `V - Voided Checks` — voided checks only
+
+These match the `BKGL_CHK_TYPE` field in BKGLCHK (confirmed string 1 type from DDF).
