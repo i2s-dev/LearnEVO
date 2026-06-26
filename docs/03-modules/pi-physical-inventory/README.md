@@ -331,4 +331,34 @@ PI-H: Purge Physical Inventory (T7PIH)
 
 ---
 
-**Confidence: 85/100** — All 9 programs confirmed from rwn_symbols.json with proc counts, lib assignments, and DB file lists; 7 BKPI* schemas confirmed from DDF; BKPH.INFO.* 18-var namespace confirmed from named-var extraction; workflow steps confirmed from program roles and DB file analysis; ISCYCLCD/PIBINLOC/ISBNMSTR existence confirmed from DB file lists but schemas not confirmed from DDF. Gap: ISCYCLCD field layout unknown; exact PIBINLOC structure vs ISBINLOC not compared.
+---
+
+## TAS6-era programs (BKPI*.RUN) — cross-validation (Pass 324)
+
+Sources: string extraction from `samples/BKPI*.RUN`.
+
+| File | Size | Menu Codes | Title (from binary) | Key Tables / Notes |
+|------|-----:|------------|---------------------|--------------------|
+| `BKPIA.RUN` | 273KB | PI-A | Capture Frozen Inventory | BKPIMSTR, BKICMSTR, BKGLCOA, BKICLOC, BKPIFROZ, LOT, BKPILOT, SERIAL, BKPISER, ISBNMSTR, ISBINLOC, PIBINLOC, ISBINLOT, PIBINLOT |
+| `BKPIB.RUN` | 166KB | PI-A, PI-B | Frozen Inventory Report | BKPIMSTR, BKPIFROZ, BKICMSTR, PIBINLOC, BKPISER, BKPILOT, BKICLOCM |
+| `BKPIC.RUN` | 275KB | PI-C | Enter Tag Counts | BKPIMSTR, BKPIPHYS, BKICLOC, BKICMSTR, BKPIFROZ, BKPRMSTR, ISBINLOC, LOT, SERIAL, BKPISER, BKPILOT, BKICLOCM, ISBNMSTR, **BKDEHDA** |
+| `BKPICA.RUN` | 145KB | PI-C-A | Physical Inventory Exception Report | BKPIMSTR, BKPIPHYS, BKPIFROZ, BKICMSTR, BKICLOCM; uses `bkpica1.rtm` for printing |
+| `BKPID.RUN` | 149KB | PI-D | Missing Tags Report | BKPIMSTR, BKPIPHYS, BKPIFROZ, BKICLOCM |
+| `BKPIE.RUN` | 37KB | PI-E | **Edit Frozen Inventory Costs** | BKPIMSTR, BKPIFROZ, BKICMSTR; BKPH.INFO.COST = editable field |
+| `BKPIF.RUN` | 205KB | PI-F, PI-G, PI-H | Physical Inventory Report | BKPIMSTR, BKPIFROZ, BKICMSTR, BKPIPHYS, BKPILOT, BKPISER, BKICLOCM, **BKGLCOA** |
+| `BKPIG.RUN` | 255KB | PI-G | Update Actual Inventory | BKPIMSTR, BKPIPHYS, BKICLOC, BKICMSTR, BKPIFROZ, ISBINLOC, ISBNMSTR, INVTXN, PIBINLOC, ISBINLOT, BKPILOT, SERIAL, **BKAPPO, BKAPPOL, WORKORD, BKARINV, BKGLTRAN, BKGLX**, ISGLDATE, DBAFIFO |
+| `BKPIH.RUN` | 130KB | PI-H | Purge Physical Inventory | BKPIMSTR, BKPIFROZ, BKICLOCM, BKPISER, BKPILOT, BKPIPHYS, PIBINLOC |
+
+### New findings from TAS6 binary (Pass 324)
+
+**BKPIG posts GL directly (confirmed):** BKPIG.RUN opens BKGLTRAN, BKGLX, and ISGLDATE — confirms PI-G writes GL journal entries for inventory adjustments. The GL batch type `PI` (Physical Inventory) confirmed in GL module analysis originates here.
+
+**BKPIG accesses BKAPPO/BKAPPOL, WORKORD, BKARINV:** During PI-G posting, the program reads AP purchase orders and work orders. This is for FIFO/LIFO cost basis — PI-G must resolve the correct unit cost for inventory adjustments using purchase price history (BKAPPOL) and WO receipt cost. DBAFIFO confirmed as well (FIFO layer table).
+
+**BKPIC opens BKDEHDA:** The tag count entry program accesses the DE (Data Exchange) hot-delete archive table BKDEHDA. This likely supports the DC/handheld data import path — scanned tag data collected via DC module flows through BKDEHDA before PI-C processes it.
+
+**T6 PI-E = "Edit Frozen Inventory Costs":** In TAS6, PI-E allows editing the frozen cost (BKPH.INFO.COST) for specific items before posting. In the T7 era, T7PIE became a variance summary grid. The functionality shifted: T6 had cost-edit capability; T7 removed it in favor of read-only variance display.
+
+**BKPIF opens BKGLCOA:** The Physical Inventory Report reads GL chart of accounts — for displaying the GL account/department pairs assigned to each item's inventory adjustment entry.
+
+**Confidence: 93/100** — All 9 programs confirmed from rwn_symbols.json with proc counts, lib assignments, and DB file lists; 7 BKPI* schemas confirmed from DDF; BKPH.INFO.* 18-var namespace confirmed from named-var extraction; workflow steps confirmed from program roles and DB file analysis; TAS6 9-program binary inventory cross-validated (Pass 324); BKPIG GL posting + FIFO/PO cost lookup confirmed; ISCYCLCD/PIBINLOC/ISBNMSTR existence confirmed from DB file lists but schemas not confirmed from DDF.

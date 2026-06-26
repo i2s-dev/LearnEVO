@@ -126,4 +126,71 @@ Data extracted from rwn_symbols.json.
 
 **T7SCOMP** manages ISSCOMP (compound serial assemblies) — this is for items where a serial number represents an assembly of multiple serialized components. Each compound serial record tracks which sub-serials are bound together.
 
-**Confidence: 82/100** — All 9 programs confirmed from rwn_symbols.json; SERIAL/SERIALH schemas confirmed from DDF; ISSERCNT and ISSCOMP confirmed from program DB lists (not yet in DDF extract).
+---
+
+## TAS6-era programs (BKSC*.RUN) — binary inventory (Pass 324)
+
+Sources: string extraction from `samples/BKSC*.RUN`.
+
+| File | Size | Menu Code | Title (from binary) | Key Tables |
+|------|-----:|-----------|---------------------|------------|
+| `BKSCA.RUN` | 209KB | SC-A | Edit Serial Numbers (active / archived) | SERIAL, SERIALH, MTICMSTR, BKARINV, BKICLOC, ISBINLOC, BKICLOCM, BKICMSTR |
+| `BKSCB.RUN` | 181KB | SC-B | Assign Serial Control | MTICMSTR, BKICMSTR |
+| `BKSCC.RUN` | 223KB | SC-C | Print Serial Availability | BKICMSTR, SERIAL, BKICLOCM, MTICMSTR, BKARTXN |
+| `BKSCD.RUN` | 3KB | stub | dispatches → BKINOA | BKSYMSTR, BKINOA |
+| `BKSCE.RUN` | 107KB | SC-E | Reconcile Inventory | BKICMSTR, SERIAL, MTICMSTR, BKICLOC |
+| `BKSCF.RUN` | 53KB | SC-F | **Purchase Order Serial Control** | BKAPPO, BKAPPOL, MTICMSTR, INVTXN, SERIAL |
+| `BKSCG.RUN` | 56KB | SC-G | **Sales Order Serial Control** | BKARINV, BKARINVL, MTICMSTR, INVTXN, SERIAL |
+| `BKSCHKYS.RUN` | 5KB | stub | Key selection | TASCOLOR, FILEKNUM |
+
+### T6 vs T7 menu assignment shift
+
+In TAS6, SC-F = "Purchase Order Serial Control" and SC-G = "Sales Order Serial Control". In TAS7, those functions moved and T7SCF became the "Serial Format / Full Serial Editor" while T7SCG became "Serial Format/Counter Setup". The TAS6 SC-F/G covered the PO→serial and SO→serial assignment operations; in T7 these are handled by PO-L/PO-M and SO-C entry screens directly.
+
+### SC-B part type restriction (confirmed from binary)
+
+BKSCB.RUN contains: `"Serial numbering is not allowed for part types N, L, T, K, B, or O."`
+
+This constrains which item types can be serial-tracked:
+
+| Type | Meaning | Serializable? |
+|------|---------|:---:|
+| N | Non-stocked / misc charge | No |
+| L | Labor | No |
+| T | Text / description line | No |
+| K | Kit header | No |
+| B | Bulk material | No |
+| O | Outside process | No |
+| M / F / P / etc. | Standard manufactured/purchased | Yes |
+
+### MTIT.* namespace — INVTXN field prefix (confirmed from BKSCF/BKSCG)
+
+BKSCF and BKSCG use `MTIT.*` to access INVTXN fields during serial assignment:
+
+| TAS variable | Meaning |
+|-------------|---------|
+| `MTIT.TYPE` | Transaction type |
+| `MTIT.CLASS` | Item class |
+| `MTIT.DATE` | Transaction date |
+| `MTIT.CODE` | Part number |
+| `MTIT.QTY` | Quantity |
+| `MTIT.SERIAL` | Serial number on transaction |
+| `MTIT.INVOICE` | Invoice number |
+| `MTIT.LOT` | Lot number |
+| `MTIT.LOC` | Warehouse location |
+| `MTIT.PRICE` | Unit price |
+| `MTIT.DESC` | Description |
+
+This confirms `MTIT` = `INVTXN` (prefix `MTIT_` maps to `INVTXN` Btrieve file). Previously only `MTIT_SERIAL` was known as an INVTXN field; this establishes the full field-access namespace used by SC programs.
+
+### SC-F / SC-G field accessors (confirmed, Pass 324)
+
+BKSCF — BKAP.PO.* and BKAP.POL.* fields accessed for PO serial linkage:
+`BKAP.PO.NUM`, `BKAP.PO.VNDCOD`, `BKAP.PO.VNDNME`, `BKAP.PO.ORDDTE`, `BKAP.PO.TOTAL`, `BKAP.POL.PONM`, `BKAP.POL.PCODE`, `BKAP.POL.RQTY`, `BKAP.POL.IQTY`, `BKAP.POL.WOPRE`, `BKAP.POL.ARD`
+
+BKSCG — BKAR.INV.* and BKAR.INVL.* fields accessed for SO serial linkage:
+`BKAR.INV.SONUM`, `BKAR.INV.NUM`, `BKAR.INV.CUSCOD`, `BKAR.INV.CUSNME`, `BKAR.INV.CUSORD`, `BKAR.INV.SHPCOD`, `BKAR.INV.SHPNME`, `BKAR.INV.TOTAL`, `BKAR.INV.DESC`, `BKAR.INV.JOBNUM`, `BKAR.INV.INVCD`, `BKAR.INVL.INVNM`, `BKAR.INVL.PCODE`, `BKAR.INVL.USTD`, `BKAR.INVL.ASD`
+
+Both programs also use `MTSER.*` (SERIAL table fields) and `CHECK_OPEN_ONLY` filter.
+
+**Confidence: 92/100** — All 9 T7 programs confirmed from rwn_symbols.json; SERIAL/SERIALH schemas confirmed from DDF; ISSERCNT and ISSCOMP confirmed from program DB lists; TAS6 8-program binary inventory confirmed (Pass 324); SC-B part type restriction string confirmed; MTIT.* namespace (INVTXN fields) confirmed from BKSCF/BKSCG; T6→T7 menu assignment shift documented; BKINOA stub target identified.

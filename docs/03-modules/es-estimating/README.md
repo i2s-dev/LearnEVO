@@ -15,9 +15,9 @@ Sources: DDF schema (tier2-tables.md), DFM field analysis (T7ESB/C/D/E/H/I.DFM),
 
 | Code | Operation | Programs | Confidence |
 | ---- | --------- | -------- | ---------- |
-| `ES-A` | Copy RFQs to Estimates | BKESA;BKPOA;BKPOA1;BKPOF;T6POA | 75 (table structure) |
+| `ES-A` | Enter Estimates (main + sub-programs) | BKESA;BKESAA;BKESAB;BKESAC;BKESH | 92 (binary confirmed) |
 | `ES-B` | Print Estimates | BKESB (T7ESB.DFM) | 85 (DFM confirmed) |
-| `ES-C` | Configure Quote Print Templates | BKESC (T7ESC.DFM) | 82 (DFM confirmed) |
+| `ES-C` | Enter Quote Templates | BKESC;BKESCA (T7ESC.DFM) | 90 (binary + DFM confirmed) |
 | `ES-D` | Print Customer Quotes | BKESD (T7ESD.DFM) | 85 (DFM confirmed) |
 | `ES-E` | Convert Estimates to WO/SO | BKESE (T7ESE.DFM) | 85 (DFM confirmed) |
 | `ES-F` | Copy Estimates | BKESF | 75 (table structure) |
@@ -170,6 +170,69 @@ ES-H edits tiers 1–5 through the DFM; all 10 tiers exist in the DDF schema.
 - **ES-E conversion**: Converts estimate → SO (BKESTQT lines → BKARINVL) and/or WO (ESTSUM BOM → WOBOM)
   in one operation. Supports adding lines to an existing order.
 
-**Confidence: 88/100** — DFM field sets fully confirmed (Pass 315) for 6 of 8 programs;
-BKMATCST 25-field schema confirmed from DDF; BKESTQT/BKESTQTL/ESTSUM schemas from DDF.
-ES-A (Copy RFQs) and ES-F (Copy Estimates) not yet analyzed from binary/DFM.
+---
+
+## TAS6-era programs (BKES*.RUN) — binary inventory (Pass 324)
+
+Sources: string extraction from `samples/BKES*.RUN`.
+
+| File | Size | Menu Code | Title (from binary) | Key Tables |
+|------|-----:|-----------|---------------------|------------|
+| `BKESA.RUN` | 310KB | ES-A | Enter Estimates (main router) | BKESTCFG, ESTSUM, BKARCUST, BKICMSTR, BKRTCST, BKRFQ, BKBMMSTR, BKMATCST, ROUTING, WORKCTR, WORKORD |
+| `BKESAA.RUN` | 147KB | ES-A | Enter Estimates [Bill of Materials] | BKFOCFG, BKBMMSTR, BKBMREMK, BKBMNOTE, BKBMDIM, MACHINE, BKICDIM, BKMATRIM |
+| `BKESAB.RUN` | 249KB | ES-A | Enter Estimates [Routings] | ROUTING, ESTSUM, WORKCTR, BKRTCST, BKRTSPEC, BKRTTEMP, BKICMSTR |
+| `BKESAC.RUN` | 107KB | ES-A | Enter Estimates [Material Dimensions] | BKICDIM, BKICMSTR, BKBMMSTR (BKICDIM field accessors below) |
+| `BKESAV.RUN` | 7KB | stub | help dispatch → BKESAA | BKSYMSTR, BKSYHELP |
+| `BKESB.RUN` | 199KB | ES-B | Print Estimates | BKESTCFG, ESTSUM, BKARCUST, BKICMSTR, BKRFQ, BKBMMSTR, BKBMNOTE, BKBMREMK, ROUTING, BKRTCST, BKMATCST; dispatches → BKESA, BKESE |
+| `BKESC.RUN` | 61KB | ES-C | Enter Quote Templates | ESTSUM (MTESUM.*), BKQTTEMP, BKQTNOTE; dispatches → BKESCA |
+| `BKESCA.RUN` | 37KB | ES-C | Enter Quote Templates [Print] | BKQTTEMP |
+| `BKESD.RUN` | 213KB | ES-D | Print Customer Quotes [Letterhead] / [Universal] | BKESTCFG, ESTSUM (MTESUM.* 20+ fields), BKARCUST; reads all MTESUM.NOTES[1..10] |
+| `BKESE.RUN` | 302KB | ES-E | Convert Estimates → SO/WO | ESTSUM, BKARINV, BKARINVL, WORKORD, WOBOM, BKBMMSTR, BKRFQ, WODATE, BKGLTRAN, BKICLOCM |
+| `BKESEA.RUN` | 77KB | ES-E | Convert sub-program (WO match/assign) | ESTSUM, MTICMSTR, WORKORD, ROUTING, WOBOM, BKMATCST; MTWO.WIP.* and MTESUM.* namespace access |
+| `BKESF.RUN` | 196KB | ES-F | Copy Estimates | BKESTCFG, ESTSUM, BKICMSTR, BKBMMSTR, BKBMREMK, ROUTING, BKRTSPEC, BKMATCST, BKQTNOTE |
+| `BKESG.RUN` | 224KB | ES-G | Print Estimate Listing | ESTSUM, BKARCUST, BKCMACCT, BKICMSTR |
+| `BKESH.RUN` | 183KB | ES-A / ES-H | Enter Estimates [Material Costs] / Enter Material Costs | BKMATCST, BKICMSTR |
+| `BKESI.RUN` | 95KB | ES-I | Print Material Costs | BKMATCST, BKICMSTR; field accessors: BKMC.CODE/DATE/QTY/COST, BKIC.PROD.CODE/DESC |
+
+### ES-A sub-program architecture
+
+ES-A in TAS6 is a multi-tab form delivered via the main router (BKESA) plus four sub-programs, each handling a distinct tab of the estimate:
+
+| Sub-program | Tab |
+|-------------|-----|
+| BKESA | Main header + summary |
+| BKESAA | Bill of Materials |
+| BKESAB | Routings |
+| BKESAC | Material Dimensions |
+| BKESH | Material Costs (also ES-H standalone) |
+
+**Correction (Pass 324):** ES-A is "Enter Estimates" — not "Copy RFQs to Estimates" as prior menu_codes.csv analysis inferred. The BKESA.RUN binary title string `"ES-A  Enter Estimates"` is definitive. RFQ import is handled as a sub-workflow within BKESA (opens BKRFQ), not the primary purpose.
+
+### BKICDIM field accessors (confirmed from BKESAC.RUN)
+
+Material dimensions screen accesses these BKICDIM fields:
+
+| TAS variable | Meaning |
+|-------------|---------|
+| `BKICDIM.PARENT` | Parent part number |
+| `BKICDIM.PARTNO` | Component/dimension part number |
+| `BKICDIM.FIRST` | First dimension (width) |
+| `BKICDIM.F.TOL` | First dimension tolerance |
+| `BKICDIM.SECOND` | Second dimension (length/height) |
+| `BKICDIM.S.TOL` | Second dimension tolerance |
+| `BKICDIM.THICK` | Material thickness |
+| `BKICDIM.T.TOL` | Thickness tolerance |
+| `BKICDIM.SETUP` | Setup code |
+| `BKICDIM.DENSITY` | Material density |
+
+### Cross-module links from ES binary
+
+- BKESE opens `BKGLTRAN` — ES-E posts GL entries during estimate→order conversion (overhead/cost transfer)
+- BKESEA accesses `MTWO.WIP.*` namespace (WO master) for WO assignment during convert
+- BKESF reads `BKQTNOTE` — Copy Estimates also duplicates quote note content
+- BKESD reads `MTESUM.NOTES[1..10]` — 10 free-text note lines on estimates
+
+**Confidence: 93/100** — DFM field sets fully confirmed (Pass 315) for 6 of 8 programs;
+BKMATCST 25-field schema confirmed from DDF; BKESTQT/BKESTQTL/ESTSUM schemas from DDF;
+TAS6 15-program inventory confirmed from binary (Pass 324); ES-A sub-program architecture
+confirmed; BKICDIM field namespace confirmed; ES-A title corrected to "Enter Estimates".
