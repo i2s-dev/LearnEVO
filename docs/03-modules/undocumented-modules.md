@@ -1559,7 +1559,50 @@ Note: t7exec.RUN (TAS Pro 6) is an older generic program launcher — separate f
 
 ---
 
-### MA — Map Deposits / Material Analysis (dual use)
+### LO — Lot/Serial Assignment Popup (T7LotSerial + t7lottag)
+
+**Pass 317 (2026-06-26):** DFMs read from `\\i2s109-solidcrm\DBAMFG$`; copied to `samples/src/`.
+
+**Files:** `T7LotSerial.DFM` (54 KB), `t7lottag.DFM` (14 KB)
+
+LO is not a menu-accessible module — it provides **cross-module popup forms** invoked by PO receiving, WO completion, and SO shipment whenever lot or serial tracking is required.
+
+#### T7LotSerial.DFM — "Enter Lot/Serial Information" popup
+
+SourceFile: `T7LOTSER`. FormStyle: `fsStayOnTop` (always on top). OnClose: `T7LS.OnClose`. 13 bound fields:
+
+| FieldName | Meaning |
+|-----------|---------|
+| `ETBcomboval` | Grid selector (toolbar combo) |
+| `ls.loc` | Warehouse/bin location for lot/serial assignment |
+| `lot.start.qty` | Total qty to assign to lots |
+| `lot.rem.qty` | Lot qty not yet assigned (running remainder) |
+| `lot.ind.qty` | Qty for this individual lot number entry |
+| `lot.num` | Lot number being assigned |
+| `Lot.expDate` | Lot expiry date |
+| `use.same.lot` | "Use Same Lot# for all PO Lines" flag (Y/N checkbox) |
+| `ser.start.qty` | Total qty to serialize |
+| `ser.rem.qty` | Qty not yet serialized (running remainder) |
+| `ser.ind.qty` | Qty for this individual serial number |
+| `ser.num` | Serial number being assigned |
+| `Ser.expDate` | Serial expiry date |
+
+The form has two panels: one for lot entry (`lot.*` vars) and one for serial entry (`ser.*` vars). Both panels appear on the same form — the TAS program controls which panel is visible based on the item's tracking type (LOT_YN/SER_YN flags). The `use.same.lot` checkbox is for PO line context: when receiving a multi-line PO, all lines get the same lot number.
+
+#### t7lottag.DFM — Evo Lot Tag (label print template)
+
+A `TPanel` container with 3 dynamically-filled labels: `Label1`, `Label2`, `Label3`. No FieldName bindings — the TAS program sets label content at runtime from the lot record (typically: Label1=item code, Label2=lot number, Label3=quantity or expiry). This is the label print preview / print dialog for the lot tag printer.
+
+#### Cross-module context
+
+This popup is called from:
+- **PO-J** (receiving): assigns lot/serial to received items before posting to BKICLOC/MTLOT
+- **WO completion**: assigns lot/serial to finished goods
+- **SO-C/MH** (shipping): verifies lot/serial allocation before shipment
+
+The full Lot Control module logic (T7LCA–T7LCG) is documented under the LC module section.
+
+**Confidence: 90/100** — Both DFMs fully read and all fields confirmed (Pass 317). Popup invocation context confirmed from LC/MH/PO module analysis. Remaining gap: exact TAS proc names that call T7LotSerial (invocation chain not traced from binary — would require decrypted RWN caller analysis).
 
 **Files:** T7MAPDEPO.DFM, T7MAPDEPO.RWN
 
@@ -1625,17 +1668,57 @@ Note: t7exec.RUN (TAS Pro 6) is an older generic program launcher — separate f
 
 ### SB — Spec Book / Approved Source List
 
-**Tables:** BKSBMFG, BKSBPART, BKSBVEND
+**Pass 317 (2026-06-26):** BKSB* schemas fully confirmed from Pervasive ODBC DDF query.
 
-| Table | Key fields |
-|-------|------------|
-| BKSBMFG | BKSB_MFG_PARNT (parent item), BKSB_MFG_PROD (product/component), BKSB_MFG_CUST (customer), BKSB_MFG_MANUF (manufacturer name), BKSB_MFG_MPART (mfr part#), BKSB_MFG_EXTRA |
-| BKSBPART | BKSB_PART_PARNT, BKSB_PART_PROD, BKSB_PART_CUST, BKSB_PART_SUBST (substitute part), BKSB_PART_EXTRA |
-| BKSBVEND | BKSB_VEND_PARNT, BKSB_VEND_PROD, BKSB_VEND_CUST, BKSB_VEND_VEND (vendor code), BKSB_VEND_VPART (vendor part#), BKSB_VEND_EXTRA |
+**Tables:** BKSBMFG (16f), BKSBPART (5f), BKSBVEND (6f)
 
-**Files:** BKSBMFG.XPT, BKSBVEND.XPT (export templates for manufacturer and vendor spec records).
+SB is a **data module** — no dedicated T7SB* UI programs. The three tables are managed via BM-J/K/L (T7BMJ/T7BMK/T7BML) and a stub `T7DSBOM.RWN` (5 procs, 1 var=STUB — pure stub, no logic).
 
-**Purpose:** Manages the **Approved Source List (ASL)** — for each parent assembly + component item + customer combination, records the approved manufacturers (with mfr part numbers), approved vendors (with vendor part numbers), and approved substitute parts. Common in electronics/PCB manufacturing where customers specify which manufacturer's version of a component is acceptable. SB = **Spec Book**. **Confidence: 65/100**
+#### BKSBPART — Approved Substitute Parts (5 fields, DDF-confirmed)
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSB_PART_PARNT` | STRING | 15 | Parent assembly (PK) |
+| `BKSB_PART_PROD` | STRING | 15 | Component/product (PK) |
+| `BKSB_PART_CUST` | STRING | 10 | Customer code (PK — customer-specific substitutes) |
+| `BKSB_PART_SUBST` | STRING | 15 | Approved substitute part number |
+| `BKSB_PART_EXTRA` | STRING | 50 | Notes/spare field |
+
+#### BKSBVEND — Approved Vendors (6 fields, DDF-confirmed)
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSB_VEND_PARNT` | STRING | 15 | Parent assembly (PK) |
+| `BKSB_VEND_PROD` | STRING | 15 | Component/product (PK) |
+| `BKSB_VEND_CUST` | STRING | 10 | Customer code (PK) |
+| `BKSB_VEND_VEND` | STRING | 10 | Approved vendor code (FK → BKAPVEND) |
+| `BKSB_VEND_VPART` | STRING | 25 | Vendor's part number for this component |
+| `BKSB_VEND_EXTRA` | STRING | 50 | Notes/spare field |
+
+#### BKSBMFG — Approved Manufacturers (16 fields, DDF-confirmed)
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSB_MFG_PARNT` | STRING | 15 | Parent assembly (PK) |
+| `BKSB_MFG_PROD` | STRING | 15 | Component/product (PK) |
+| `BKSB_MFG_CUS` | STRING | 10 | Customer code (PK) |
+| `BKSB_MFG_MANUF` | STRING | 25 | Manufacturer name (PK) |
+| `BKSB_MFG_MPART` | STRING | 25 | Manufacturer's part number |
+| `BKSB_MFG_EXTRA` | STRING | 50 | Notes/spare field |
+| `BKSB_MFG_MAKING` | STRING | 10 | Assembly process code |
+| `BKSB_MFG_ALPHA_1` | STRING | 30 | User-defined alpha 1 |
+| `BKSB_MFG_ALPHA_2` | STRING | 30 | User-defined alpha 2 |
+| `BKSB_MFG_GDATES_1` | DATE | 4 | Generic date 1 (e.g., approval date) |
+| `BKSB_MFG_GDATES_2` | DATE | 4 | Generic date 2 (e.g., expiry date) |
+| `BKSB_MFG_FLAGS_1..5` | STRING | 1 each | Status/approval flags (Y/N) |
+
+BKSBMFG is the richest table — 16 fields with approval dates and 5 status flags supporting manufacturer approval workflows.
+
+**Files:** BKSBMFG.XPT, BKSBVEND.XPT (export templates for spec records). T7DSBOM.RWN = pure stub.
+
+**Purpose:** Manages the **Approved Source List (ASL)** — for each parent assembly + component item + customer combination, records approved manufacturers (with mfr part#s), approved vendors (with vendor part#s), and approved substitute parts. Common in electronics/PCB manufacturing where customers specify which manufacturer's version of a component is acceptable. SB = **Spec Book**.
+
+**Confidence: 90/100** — All three BKSB* table schemas now DDF-confirmed (Pass 317); field semantics confirmed from field name patterns + BM-J/K/L program analysis; T7DSBOM.RWN confirmed as pure stub. Remaining gap: BKSBMFG FLAGS_1..5 and ALPHA_1..2 semantic meanings not confirmed (field names are generic).
 
 ---
 
@@ -1705,12 +1788,13 @@ Note: t7exec.RUN (TAS Pro 6) is an older generic program launcher — separate f
 | EX | Execute (launcher) | Internal utility | t7exec.RUN | 35 |
 | FL | Field Help | Internal | BKFLDHLP | 65 |
 | LM | List Maintenance (Inv Txn Consolidation) | Legacy (not in menu) | BKLMA-BKLMI.RUN, BKLME.SRC | 90 |
+| LO | Lot/Serial Assignment Popup | Cross-module popup (no menu entry) | T7LotSerial.DFM, t7lottag.DFM | 90 |
 | MA | Map Deposits / Material | Partial (T7 era) | T7MAPDEPO.DFM; BKMATCST, BKMATRIM | 55 |
 | MM | Manufacturing Maintenance (legacy) | Legacy predecessor to LM | BKMMA-BKMMN.RUN | 40 |
 | PC | Production Control (legacy) | Legacy | BKPCKIT, BKPCPLOT | 50 |
 | PL | Pay Link (Checkmark Payroll) | Active (in menu) | T6PLA.RUN, BKPLB-BKPLD.RUN | 72 |
 | RT | Routing Templates (for ES Estimating) | Internal sub-module | BKRTCST, BKRTEMTR, BKRTSPEC, BKRTTEMP | 55 |
-| SB | Spec Book / Approved Source List | Active (has .XPT exports) | BKSBMFG, BKSBPART, BKSBVEND | 65 |
+| SB | Spec Book / Approved Source List | Active (has .XPT exports) | BKSBMFG, BKSBPART, BKSBVEND | 90 |
 | SL | Security Levels | Internal | BKSLEVEL, BKSLMSTR; t7slsfc.RWN | 60 |
 | SY | System Tables (internal prefix) | Internal (used by SM/AD) | BKSYMSTR, BKYSMSTR, BKSY* | 55 |
 | UM | User Menu Security | Internal | BKUMSRTY | 60 |

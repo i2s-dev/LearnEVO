@@ -197,17 +197,53 @@ Full field details in `../../../samples/ddf/schema.md`.
 
 The 5 main BOM data tables (BKBMMSTR/AMTR/AVAL/EMTR/SUMM) share an identical 26-field schema — parallel-snapshot architecture preserving current, actual, estimated, and summary states.
 
-### Approved List Tables (3 — BKSB*)
+### Approved List Tables (3 — BKSB*) — Pass 317 DDF-confirmed
 
 These tables are managed by T7BMJ/K/L and are also read by MRP planning programs.
 
-| Table | Manager | Purpose |
-|-------|---------|---------|
-| BKSBPART | T7BMJ | Approved substitute parts — alternative components for a BOM line |
-| BKSBVEND | T7BMK | Approved vendor sourcing — approved vendors per part |
-| BKSBMFG | T7BML | Approved manufacturer list — approved manufacturers per part |
+#### BKSBPART — Approved Substitute Parts (5 fields)
 
-Note: BKSB* tables are **not in the DDF** confirmed in `samples/ddf/schema.md`. Their schemas are inferred from program variable names only.
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSB_PART_PARNT` | STRING | 15 | Parent assembly part number (PK) |
+| `BKSB_PART_PROD` | STRING | 15 | Component/product code (PK) |
+| `BKSB_PART_CUST` | STRING | 10 | Customer code (PK — customer-specific substitutes) |
+| `BKSB_PART_SUBST` | STRING | 15 | Approved substitute part number |
+| `BKSB_PART_EXTRA` | STRING | 50 | Spare/notes field |
+
+#### BKSBVEND — Approved Vendors (6 fields)
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSB_VEND_PARNT` | STRING | 15 | Parent assembly part number (PK) |
+| `BKSB_VEND_PROD` | STRING | 15 | Component/product code (PK) |
+| `BKSB_VEND_CUST` | STRING | 10 | Customer code (PK — customer-specific sourcing) |
+| `BKSB_VEND_VEND` | STRING | 10 | Approved vendor code (FK → BKAPVEND) |
+| `BKSB_VEND_VPART` | STRING | 25 | Vendor's part number for this component |
+| `BKSB_VEND_EXTRA` | STRING | 50 | Spare/notes field |
+
+#### BKSBMFG — Approved Manufacturers (16 fields)
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| `BKSB_MFG_PARNT` | STRING | 15 | Parent assembly part number (PK) |
+| `BKSB_MFG_PROD` | STRING | 15 | Component/product code (PK) |
+| `BKSB_MFG_CUS` | STRING | 10 | Customer code (PK) |
+| `BKSB_MFG_MANUF` | STRING | 25 | Manufacturer name (PK) |
+| `BKSB_MFG_MPART` | STRING | 25 | Manufacturer's part number |
+| `BKSB_MFG_EXTRA` | STRING | 50 | Spare/notes field |
+| `BKSB_MFG_MAKING` | STRING | 10 | "Making" status code (assembly process flag) |
+| `BKSB_MFG_ALPHA_1` | STRING | 30 | Alpha field 1 (user-defined) |
+| `BKSB_MFG_ALPHA_2` | STRING | 30 | Alpha field 2 (user-defined) |
+| `BKSB_MFG_GDATES_1` | DATE | 4 | Generic date 1 (e.g., approval/expiry date) |
+| `BKSB_MFG_GDATES_2` | DATE | 4 | Generic date 2 |
+| `BKSB_MFG_FLAGS_1` | STRING | 1 | Flag 1 (Y/N status flag) |
+| `BKSB_MFG_FLAGS_2` | STRING | 1 | Flag 2 |
+| `BKSB_MFG_FLAGS_3` | STRING | 1 | Flag 3 |
+| `BKSB_MFG_FLAGS_4` | STRING | 1 | Flag 4 |
+| `BKSB_MFG_FLAGS_5` | STRING | 1 | Flag 5 |
+
+BKSBMFG is the richest of the three — 16 fields vs 5–6 for the other two, with manufacturer-specific dates (approval/certification dates) and 5 status flags. This supports approval workflows (e.g., `GDATES_1` = approval date, `FLAGS_1` = approved/pending flag).
 
 ---
 
@@ -248,4 +284,4 @@ T7BMJ/K/L DFMs have 0 fields + 1 control each — grid-only launch screens (the 
 
 ---
 
-**Confidence: 88/100** — All 17 programs confirmed from rwn_symbols.json; BKBM* 10-table schemas confirmed from DDF; program roles and key vars confirmed from named-var extraction; BKSB* tables (BKSBPART/VEND/MFG) inferred from program vars + DB file lists (not confirmed in DDF). Gap: exact BKSB* field schemas unknown; T7BMGNC and T7BMKPRINT stub purpose unconfirmed.
+**Confidence: 90/100** — All 17 programs confirmed from rwn_symbols.json; BKBM* 10-table schemas + BKSB* 3-table schemas all confirmed from DDF (Pass 317); program roles and key vars confirmed from named-var extraction. Remaining gap: T7BMGNC and T7BMKPRINT stub purpose unconfirmed (minor — both are small programs with no business logic).
