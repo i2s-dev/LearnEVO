@@ -1,6 +1,6 @@
 # Sales Orders (SO)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 330 (2026-06-26)
 
 - **Module code**: `SO`
 - **Tables**: 7 (prefixes `BKSO`)
@@ -307,6 +307,140 @@ Source: `samples/rwn_symbols.json` — all T7SO* entries. Top 25 by proc count s
 | `ISBUILD` | T7SOOE, T7SOOI, T7SOON, T7SOQK | Kit/build assembly definition (shared with BM/WO modules) |
 | `BKICPMAT` | T7SOQH, T7SOQI | Customer-specific pricing matrix (customer + part → price) |
 | `BKICREF` | T7SOAIMPLINES | Item cross-reference (customer part# → internal part#) |
+
+---
+
+## Pass 330 — TAS6 BKSO\*.RUN binary analysis (2026-06-26)
+
+All 57 TAS6 BKSO\*.RUN programs copied from `\\i2s109-solidcrm\DBAMFG$\` to `samples/` and analyzed via Python string extraction.
+
+### TAS6 BKSO\*.RUN program inventory (57 files)
+
+| File | Approx size | Menu code | Title / role (from binary) |
+|------|------------|-----------|---------------------------|
+| BKSOA.RUN | 469 KB | SO-A | Enter Sales Orders (main entry) |
+| BKSOA2.RUN | 517 KB | SO-A | Enter Sales Orders (v2 variant — quotes) |
+| BKSOAA.RUN | 20 KB | SO-A-A | SO invoice post sub-routine |
+| BKSOB.RUN | 261 KB | SO-B | Print Acknowledgements (confirmed SO-BA) |
+| BKSOBB.RUN | 88 KB | SO-B | Print Acknowledgements (alternate format) |
+| BKSOC.RUN | 297 KB | SO-C | Print Pick Tickets |
+| BKSOD.RUN | 187 KB | SO-D | Print Shipping Labels (text mode) |
+| BKSOE.RUN | 328 KB | SO-E | Enter Sales Orders [Lot Control] |
+| BKSOF.RUN | 375 KB | SO-F | Print/Reprint Invoices (confirmed SO-FA) |
+| BKSOFT.RUN | 107 KB | SO-F | Print Invoices (text/standard forms) |
+| BKSOG.RUN | 184 KB | SO-G | Post Invoices |
+| BKSOGA.RUN | 388 KB | SO-G-A | Post Invoices (GL post variant) |
+| BKSOGLOT.RUN | 150 KB | SO-G | Post Invoices [Lot Control] |
+| BKSOGSAV.RUN | 94 KB | SO-G | Post Invoices (save/COGS variant) |
+| BKSOGSER.RUN | 132 KB | SO-G | Post Invoices [Serial Control] |
+| BKSOH.RUN | 178 KB | SO-H | Display Invoice History |
+| BKSOHA.RUN | 128 KB | SO-H-A | Display Invoice History (sub-view) |
+| BKSOI.RUN | 287 KB | SO-I | Customer Service Inquiry (WO/PO status) |
+| BKSOJ.RUN | 406 KB | SO-J | View Recurring Sales Orders |
+| BKSOJ2.RUN | 428 KB | SO-J | View Recurring Sales Orders (v2/quotes) |
+| BKSOK.RUN | 158 KB | SO-K | Generate SOs from Recurring Templates |
+| BKSOL.RUN | 151 KB | SO-L | Browse/List Open Sales Orders |
+| BKSOLA.RUN | 59 KB | SO-L-A | Browse Sales Orders (sub) |
+| BKSOLOT.RUN | 150 KB | SO-LOT | RMA Entry [Lot Control] |
+| BKSOM.RUN | 177 KB | SO-M | Print Template Forms |
+| BKSON.RUN | 315 KB | SO-N | Service/Repair Orders |
+| BKSOOA.RUN | 266 KB | SO-O-A | Print Open Sales Order Listing |
+| BKSOOB.RUN | 211 KB | SO-O-B | Print Backorder Listing |
+| BKSOOC.RUN | 84 KB | SO-O-C | Print Credit Memos / Invoice list |
+| BKSOOD.RUN | 180 KB | SO-O-D | Print Commissions by Sales Order |
+| BKSOOE.RUN | 221 KB | SO-O-E | Print Shipping Schedule |
+| BKSOOF.RUN | 244 KB | SO-O-F | Print Available to Ship |
+| BKSOOG.RUN | 135 KB | SO-O-G | Print Sales Order/Work Order Schedule |
+| BKSOOH.RUN | 169 KB | SO-O-H | Print Invoice Listing |
+| BKSOOI.RUN | 251 KB | SO-O-I | Print Released Sales Orders |
+| BKSOOJ.RUN | 8 KB | SO-O-J | Print User-Defined Detail (dispatch stub → BKSAMA) |
+| BKSOOK.RUN | 8 KB | SO-O-K | Print User-Defined Summary (dispatch stub → BKSANA) |
+| BKSOPA.RUN | 7 KB | SO-P-A | Enter Sales Quotations (dispatch stub → BKSOAA/T7SOA) |
+| BKSOPB.RUN | 227 KB | SO-P-B | Print Sales Quotations |
+| BKSOPC.RUN | 169 KB | SO-P-C | Convert Sales Quotation to Sales Order |
+| BKSOPD.RUN | 8 KB | SO-P-D | Print User-Defined Detail (dispatch stub → BKSAMA) |
+| BKSOPE.RUN | 8 KB | SO-P-E | Print User-Defined Summary (dispatch stub → BKSANA) |
+| BKSOPI.RUN | 150 KB | SO-P-I | Enter Freight & Tracking # |
+| BKSOQ.RUN | 150 KB | SO-Q | Customer Service Inquiry (Pricing) |
+| BKSOQA.RUN | 226 KB | SO-Q-A | Enter Base Prices |
+| BKSOQB.RUN | 201 KB | SO-Q-B | Print Base Prices |
+| BKSOQC.RUN | 225 KB | SO-Q-C | Global Price Change |
+| BKSOQD.RUN | 7 KB | SO-Q-D | Enter Price Codes (dispatch stub → BKSOQHA) |
+| BKSOQE.RUN | 7 KB | SO-Q-E | Print Price Code Prices (dispatch stub → BKSOQIA) |
+| BKSOQF.RUN | 7 KB | SO-Q-F | Enter Discount Codes (dispatch stub → BKSOQHA) |
+| BKSOQG.RUN | 7 KB | SO-Q-G | Print Discount Code Prices (dispatch stub → BKSOQIA) |
+| BKSOQH.RUN | 288 KB | SO-Q-H | Enter Contract Prices |
+| BKSOQI.RUN | 217 KB | SO-Q-I | Print Contract Prices |
+| BKSOQJ.RUN | 108 KB | SO-Q-J | Generate Base Prices (catalog/price matrix) |
+| BKSOR.RUN | 191 KB | SO-R | Void Invoice (confirmed "OK to void this invoice?") |
+| BKSOSER.RUN | 153 KB | SO-SER | RMA Entry [Serial Control] |
+| BKSOT.RUN | 8 KB | SO-T | View (dispatch stub → BKSOAA/T7SOA) |
+
+**Key findings:**
+- SO-A entry actually has **4 TAS6 variants**: BKSOA (main), BKSOA2 (with quote support), BKSOJ (recurring), BKSOJ2 (recurring+quotes). All share the `BKAR.INV.*` accessor namespace.
+- SO-E is **Lot-Controlled SO Entry** (not "Release Sales Orders") — confirmed from "Enter Lot Control information?" prompt.
+- SO-G has **4 posting variants**: standard (BKSOG), GL post (BKSOGA), lot-control (BKSOGLOT), serial-control (BKSOGSER), plus BKSOGSAV (COGS-save path using BKAR.COG/GRO/NET/PNE accessors).
+- SO-L is a **Browse/List** function (not "Enter/Print Note Templates") — confirmed from "Show All Orders", "Released Orders", "Printed not Posted" prompts.
+- SO-N is **Service/Repair Orders** — confirmed from "Ser/Rep OrderA" title string (uses BKBM.PRO/BKBM.QTY namespaces for BOM integration).
+- Dispatch stubs (BKSOOJ/BKSOOK/BKSOPD/BKSOPE/BKSOPA/BKSOT) are 7-8 KB TAS6→T7 bridges.
+
+### Menu code corrections (from binary confirmation)
+
+| Code | Prior description | Corrected description | Source |
+|------|------------------|-----------------------|--------|
+| SO-A | View | **Enter Sales Orders** | BKSOA title "Sales OrderA" |
+| SO-E | Release Sales Orders | **Enter Sales Orders [Lot Control]** | BKSOE "Enter Lot Control information?" |
+| SO-L | Enter/Print Note Templates | **Browse/List Open Sales Orders** | BKSOL "Show All Orders / Released Orders / Printed not Posted" |
+| SO-N | Manual Mat Cost/Lab Hours | **Service/Repair Orders** | BKSON title "Ser/Rep OrderA" |
+
+### New accessor namespaces confirmed from BKSO\*.RUN binaries
+
+| Namespace | Appears In | Meaning |
+|-----------|-----------|---------|
+| `BKSO.LOC.*` | BKSOG, BKSOR | SO Location — location-aware SO queries |
+| `BKPR.SLS.*` | BKSOG, BKSOR, BKSOOD | PR Sales commission accessor → BKPRSALE |
+| `BKAR.COG.*` | BKSOGSAV | AR Cost of Goods sold accessor |
+| `BKAR.GRO.*` | BKSOGSAV | AR Gross profit accessor |
+| `BKAR.NET.*` | BKSOGSAV | AR Net profit accessor |
+| `BKAR.PNE.*` | BKSOGSAV | AR Prior Net profit accessor |
+| `BKAR.DIS.*` | BKSOA, BKSOJ | AR Discount accessor |
+| `BKAR.SLS.*` | BKSOC, BKSOE | AR Salesperson accessor |
+| `BKAR.CRE.*` | BKSOA, BKSOC | AR Credit/credit-limit accessor |
+| `BKAR.STA.*` | BKSOE, BKSOPB | AR Status accessor |
+| `BKAR.LEA.*` | BKSOPC | AR Lead source accessor |
+| `BKAR.PRI.*` | BKSOPC | AR Price accessor |
+| `BKAR.IS.*` | BKSOA, BKSOE | AR IS-module accessor |
+| `BKBM.PRO.*` | BKSOJ2, BKSON | BOM product accessor — SO-N/recurring reads BOM |
+| `BKBM.QTY.*` | BKSOJ2, BKSON | BOM quantity accessor |
+| `BKEST.CF.*` | BKSOPB | Estimating config accessor — proposals link to ES module |
+| `BKIS.TAX.*` | BKSOOH | IS tax accessor |
+| `BKSB.MFG.*` | BKSOHA, BKSOOG, BKSOQJ | SB Spec Book manufacturer accessor |
+| `BKSB.VEN.*` | BKSOHA, BKSOOG | SB Spec Book vendor accessor |
+| `BKIC.REF.*` | BKSOHA, BKSOOG, BKSOOI | IC item cross-reference accessor |
+| `BKIC.PMA.*` | BKSOK, BKSOQA, BKSOQC | IC price matrix accessor → BKICPMAT |
+
+### Additional tables confirmed from BKSO\*.RUN binaries
+
+| Table | Confirmed by | Purpose |
+|-------|-------------|---------|
+| BKSOLAA | BKSOL.RUN | SO list supplemental — tracks browse state/status per list view |
+| BKSONOTEA | BKSOL, BKSOLA | BKSONOTE archive tier (active notes active/archived) |
+| BKSONOTEI | BKSOL, BKSOLA | BKSONOTE inactive tier |
+| BKSOQHA | BKSOQD, BKSOQF dispatch | SO-Q contract/price-code header table |
+| BKSOQIA | BKSOQE, BKSOQG dispatch | SO-Q price display/report table |
+| BKSOPAA | BKSOPA dispatch | SO proposals archive table |
+| BKSOAA | BKSOPA, BKSOT dispatch | SO master dispatch pointer table |
+| BKSAMA | BKSOOJ, BKSOPD dispatch | User-defined detail report table (SO-O-J / SO-P-D) |
+| BKSANA | BKSOOK, BKSOPE dispatch | User-defined summary report table (SO-O-K / SO-P-E) |
+
+### SO data flow confirmed from TAS6 binaries
+
+1. **Quote → Order path**: BKSOPB (print quote) → BKSOPC (convert: "Converting Quote# ...") → BKSOA/BKSOJ (order entry)
+2. **Lot-control path**: BKSOE (enter) → BKSOGLOT (post) — parallel to standard path
+3. **Serial-control path**: BKSOA/BKSOE (enter with serial) → BKSOGSER (post)
+4. **COGS capture**: BKSOGSAV uses BKAR.COG/GRO/NET/PNE accessors to record profitability metrics at posting time → confirms SO post writes COGS data into AR records
+5. **Commission path**: BKSOGSAV → BKPR.SLS.* accessor → updates BKPRSALE commission records during invoice posting
+6. **BOM link**: BKSON (service/repair orders) and BKSOJ2 (recurring) both open BKBM.PRO/QTY namespace — SO-N builds BOM from sales order requirements
 
 ---
 

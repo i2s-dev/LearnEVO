@@ -330,6 +330,19 @@ All 9 tables confirmed present in the 659-table DDF schema (checked against tier
 
 ---
 
+## Post-Pass-326 open items
+
+18. **BKICL_JITPRG — undocumented JIT table (2026-06-26).**
+    Found as a string in BKWOKC.RUN and BKWOKD.RUN binaries (Pass 326 WO TAS6 binary analysis).
+    The name pattern `BKICL_JITPRG` suggests **IC (Inventory Control) → JIT Program** (Just-in-Time).
+    Not present in the 659-table DDF schema extracted from the network share.
+    Could be: (a) a company-specific i2 Systems customization table, (b) an EVO add-on module table
+    not installed at this site, or (c) a staging table accessed by the WO material issue programs.
+    **To resolve:** grep all other WO/IC binaries for BKICL_JITPRG; check if it appears in any .SRC files;
+    verify whether it's missing from DDF or just missing from the tier docs.
+
+---
+
 ## Nice-to-have follow-ups (not blocking)
 
 - **Extract CHM contents fully.** Ran `hh -decompile` but it quietly
