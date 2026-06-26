@@ -8,6 +8,10 @@ Status: verified (menu codes confirmed; chain traced from DC/PR/WO table structu
 
 LW (Labor/WIP) provides shop-floor and job-cost access without exposing the full WO engineering setup menus. It shares all its database tables with the WO module.
 
+**Relationship to JC module**: LW-J-* operations share programs with the standalone JC (Job Costing)
+module. Several BKJC*.RUN programs serve both LW-J-* and JC-* menu paths. The JC module has 20
+reporting operations (JC-A through JC-T); see [docs/03-modules/jc-job-costing/README.md](../jc-job-costing/README.md).
+
 ## Menu operations
 
 | Code | Operation | Programs |
@@ -23,16 +27,47 @@ LW (Labor/WIP) provides shop-floor and job-cost access without exposing the full
 | `LW-I-B` | Create Multi-Date Work Orders | BKAWKC;BKWOKC |
 | `LW-I-C` | Create Multi-Assembly Work Orders | BKAWKD;BKWOKD |
 | `LW-I-D` | Swap Substitute Parts | BKAWKE;BKWOKE |
-| `LW-J-B` | Print Work Order Schedule | BKAWLB |
-| `LW-J-C` | Print Material/Labor Issues | BKJCE;ISJCE |
-| `LW-J-D` | Print Outside Purchases | BKJCF |
-| `LW-J-E` | Print Job Cost Summary | BKLWJE |
-| `LW-J-F` | Print Job Cost Report | BKJCA |
-| `LW-J-G` | Print Work Order Shortages | BKAWLF;BKWOLF |
-| `LW-J-H` | Print WIP Summary | BKJCM;BKJCR |
-| `LW-J-I` | Print WO Receipts | BKJCQ |
+| `LW-J-B` | Print Work Order Schedule | BKAWLB | = JC none (LW-only) |
+| `LW-J-C` | Print Material/Labor Issues | BKJCE;ISJCE | = JC-E |
+| `LW-J-D` | Print Outside Purchases | BKJCF | = JC-F |
+| `LW-J-E` | Print Job Cost Summary | BKLWJE | = JC none (LW-only, BKLWJE.RUN) |
+| `LW-J-F` | Print Job Cost Report | BKJCA | = JC-A |
+| `LW-J-G` | Print Work Order Shortages | BKAWLF;BKWOLF | = JC none (LW-only) |
+| `LW-J-H` | Print WIP Summary | BKJCM;BKJCR | = JC-M (BKJCM) + JC-R (BKJCR) |
+| `LW-J-I` | Print WO Receipts | BKJCQ | = JC-Q |
 
 LW-J-* operations = Job Cost reports. LW-A/B/D/E/F/G/H/I-* = duplicates of WO-A/B/D/E/F/G/H/I-* with simplified access paths.
+
+---
+
+## WO status codes — confirmed from JC binary analysis (Pass 318)
+
+`BKJCE.RUN` (TAS Pro 6, Pre-2020) contains the WO status filter string `SFRCXI`, confirming
+all 6 WO status codes are TAS6-era (not T7-only additions):
+
+| Code | Meaning |
+|------|---------|
+| `S` | Scheduled |
+| `F` | Released (Firm) |
+| `R` | Received / Completed |
+| `C` | Closed |
+| `X` | Cancelled |
+| `I` | In Process |
+
+The 4 codes S/F/R/C were confirmed from BKAWLB.SRC (Pass 278). The codes X=Cancelled and
+I=In Process are now confirmed from BKJCE.RUN and BKJCQ.RUN TAS6 binaries (Pass 318).
+
+---
+
+## LM-E supersession
+
+`BKLME.RUN` (LM-E Consolidate Inventory Transactions) was the legacy program for
+consolidating INVTXN records. In current EvoERP, it is **superseded by `SM-J-D`**
+(`t7smjd.rwn`) confirmed in BKMENUSU.TXT. LM-E still exists in the file system but
+is no longer a menu entry.
+
+No dedicated T7LW\* or T7LA\* runtime programs exist — the LW module uses T7WO\* programs
+directly for operations LW-A through LW-I, and BKJC\*/BKLW\* TAS6 programs for LW-J-\* reports.
 
 ---
 
