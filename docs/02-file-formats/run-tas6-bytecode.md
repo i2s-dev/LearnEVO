@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:82/100; 3-variant byte-diff complete Pass 312
+Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341
 
 Last updated: 2026-06-25
 
@@ -89,21 +89,33 @@ runtime_base = h[6] - (preamble_count × 7)          (= 0x0460 for BKAWLB: 1440 
 
 ## Header Fields (offsets 0x00-0x33, all LE 32-bit)
 
-| Offset | Value (BKAWLB) | Hypothesis |
-|--------|---------------|-----------|
-| 0x00   | 0x38D9 = 14553 | Unknown — may be entry point offset or code size |
-| 0x04   | 0x105A2 = 66978 | Unknown section offset |
-| 0x08   | 0x923E = 37438 | **DATA CHANNEL TOTAL SIZE** (confirmed Pass 244: sum of all b2 values = 37438) |
-| 0x0C   | 0x1C4 = 452 | var_table_size (inferred) |
-| 0x10   | 0xA = 10 | Unknown count |
-| 0x14   | 0x17F = 383 | Unknown |
-| 0x18   | 0x5A0 = 1440 | Variable storage size in bytes (= h[6]) |
-| 0x1C   | 0x1E = 30 | Table slot count (max slots allocated) (= h[7]) |
-| 0x20   | 0x47D0 = 18384 | Unknown offset |
-| 0x24   | 0xFFFF = 65535 | Sentinel / max value |
-| 0x28   | 0x5316 = 21270 | Unknown |
-| 0x2C   | 0x0 = 0 | Zero |
-| 0x30   | 0x1A4 = 420 | Unknown |
+| Offset | Value (BKAWLB) | Status | Notes |
+|--------|---------------|--------|-------|
+| 0x00   | 0x38D9 = 14553 | **CONFIRMED Pass341** | **INSTRUCTION STREAM BYTE COUNT** = instruction_count × 7; confirmed exact integer division across 5 files (BKAWLB=2079, BKMRF=2639, BKDCA=3471, BKLME=2137, BKROA=4577 instructions) |
+| 0x04   | 0x105A2 = 66978 | unknown | Offset within post-data-channel section; not a clean section marker |
+| 0x08   | 0x923E = 37438 | **CONFIRMED Pass244** | **DATA CHANNEL TOTAL SIZE** = sum of all b2 values; last addr + last b2 = this value |
+| 0x0C   | 0x1C4 = 452 | inferred | Possibly var table descriptor size (not confirmed) |
+| 0x10   | 0xA = 10 | **CONFIRMED Pass341** | **FORMAT CONSTANT = 10** always; same across all 5 files; likely format version or magic value |
+| 0x14   | 0x17F = 383 | unknown | Not define-statement count (SRC has 45 defines, this=383); possibly string/symbol pool count |
+| 0x18   | 0x5A0 = 1440 | **CONFIRMED Pass244** | **VARIABLE STORAGE SIZE** in bytes (= h[6]); 1440 for 30-slot programs, 2640 for 55-slot programs |
+| 0x1C   | 0x1E = 30 | **CONFIRMED Pass244** | **TABLE SLOT COUNT** (max slots allocated) (= h[7]); 30 for small programs, 55 for large |
+| 0x20   | 0x47D0 = 18384 | unknown | Possibly an offset into the post-data-channel section or a section size |
+| 0x24   | 0xFFFF = 65535 | unknown | 0xFFFF in BKAWLB/BKDCA/BKLME; 256000 in BKMRF/BKROA; possibly a limit counter |
+| 0x28   | 0x5316 = 21270 | unknown | Varies widely; no clear formula found |
+| 0x2C   | 0x0 = 0 | **CONFIRMED Pass341** | **ALWAYS ZERO** across all 5 files; reserved/unused |
+| 0x30   | 0x1A4 = 420 | unknown | 420 for 30-slot programs; varies for 55-slot (600/780/660) |
+
+### Cross-file header comparison (Pass 341 — 5 sample files)
+
+| File | Size | h00 (instr×7) | instrs | h08 (data) | h18 (vars) | h1C (slots) | h10 (const) |
+|------|------|---------------|--------|------------|------------|-------------|-------------|
+| BKAWLB.RUN | 139533 | 14553 | 2079 | 37438 | 1440 | 30 | 10 |
+| BKMRF.RUN | 159375 | 18473 | 2639 | 37021 | 2640 | 55 | 10 |
+| BKDCA.RUN | 230690 | 24297 | 3471 | 49603 | 2640 | 55 | 10 |
+| BKLME.RUN | 127835 | 14959 | 2137 | 33547 | 1440 | 30 | 10 |
+| BKROA.RUN | 281173 | 32039 | 4577 | 70023 | 2640 | 55 | 10 |
+
+**Key takeaway:** All programs share two var/table-slot configurations: 1440-var/30-slot (smaller) and 2640-var/55-slot (larger). h[0x10]=10 is invariant. h[0x00]/7 gives exact instruction count.
 
 ---
 
