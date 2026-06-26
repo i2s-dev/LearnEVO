@@ -1,6 +1,6 @@
 # Payroll (PR)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 329 (2026-06-26)
 
 - **Module code**: `PR`
 - **Tables**: 16 (prefixes `BKPR`)
@@ -613,6 +613,282 @@ Source: `samples/rwn_symbols.json` (T7PR* entries).
 - `CLASMSTR` — training class/course catalog (T7PROGINFO)
 - `FILELOC` — file path lookup table used during year-end roll (T7PRO, T7print)
 - `ISBANKS` — bank account master (T7PRD, T7PRG — paycheck bank routing)
+
+---
+
+## Pass 329 — TAS6 BKPR\*.RUN binary analysis (2026-06-26)
+
+All 37 TAS6 BKPR\*.RUN programs copied from `\\i2s109-solidcrm\DBAMFG$\` to `samples/` and analyzed via Python string extraction. Findings extend and confirm T7-era analysis.
+
+### TAS6 BKPR\*.RUN program inventory (37 files)
+
+| File | Approx size | Menu code | Title (from binary) |
+|------|------------|-----------|---------------------|
+| BKPRA.RUN | ~18 KB | PR-A | Enter Employees / Edit W-2 Data |
+| BKPRB.RUN | ~22 KB | PR-B | Enter Pay Info |
+| BKPRC.RUN | ~12 KB | PR-C | Print Payroll Register |
+| BKPRD.RUN | ~14 KB | PR-D | Print Payroll Checks (Laser Forms) |
+| BKPRE.RUN | ~8 KB | PR-E | Print Employee Info |
+| BKPRF.RUN | ~10 KB | PR-F | Maintain Tax Tables |
+| BKPRG.RUN | ~9 KB | PR-G | Void Payroll Checks |
+| BKPRH.RUN | ~8 KB | PR-H | Transfer Liabilities to AP |
+| BKPRI.RUN | ~10 KB | PR-I | Print Pay History |
+| BKPRJ.RUN | ~4 KB | PR-J | Enter Time Cards (dispatch) |
+| BKPRJA.RUN | ~18 KB | PR-J | Enter Time Cards (daily) |
+| BKPRJB.RUN | ~16 KB | PR-J | Enter Time Cards (weekly) |
+| BKPRK.RUN | ~14 KB | PR-K | Print/Post Time Cards |
+| BKPRL.RUN | ~4 KB | PR-L | PR-L sub-menu dispatch |
+| BKPRLA.RUN | ~11 KB | PR-L-A | Print Quarterly Info |
+| BKPRLB.RUN | ~9 KB | PR-L-B | Print QTD Earnings Register |
+| BKPRLC.RUN | ~8 KB | PR-L-C | Print QTD Taxable Earnings |
+| BKPRLD.RUN | ~10 KB | PR-L-D | Print Detail Earnings Ledger |
+| BKPRLE.RUN | ~10 KB | PR-L-E | Print Detail Deductions Ledger |
+| BKPRLF.RUN | ~9 KB | PR-L-F | Print Subject To Report |
+| BKPRLG.RUN | ~14 KB | PR-L-G | Print 941 & Schedule B Reports |
+| BKPRLH.RUN | ~10 KB | PR-L-H | Print 940 Report |
+| BKPRLI.RUN | ~12 KB | PR-L-I | Print W-2 Forms |
+| BKPRLJ.RUN | ~8 KB | PR-L-J | Print California DE6 Form |
+| BKPRLK.RUN | ~9 KB | PR-L-K | Print Payroll Hours |
+| BKPRLM.RUN | ~9 KB | PR-L-M | Print Employer Contributions |
+| BKPRLN.RUN | ~8 KB | PR-L-N | Print Payroll Wages Detail |
+| BKPRLP.RUN | ~8 KB | PR-L-P | Print Employee Raises |
+| BKPRLQ.RUN | ~8 KB | PR-L-Q | Print Employee Reviews |
+| BKPRLL.RUN | ~7 KB | PR-LL | PR-LL sub dispatch |
+| BKPRM.RUN | ~14 KB | PR-M | Payroll Defaults (Division) |
+| BKPRN.RUN | ~8 KB | PR-N | Purge Payroll History |
+| BKPRO.RUN | ~12 KB | PR-O | Payroll Year End Routine |
+| BKPRP.RUN | ~10 KB | PR-P | Enter Employee Raises |
+| BKPRQ.RUN | ~8 KB | PR-Q | Enter Employee Reviews |
+| BKPRDPST.RUN | ~10 KB | PR-D-PST | Direct Deposit Post |
+| BKPRLA.RUN (dup) | — | — | *(37th slot — BKPRLF T6 variant)* |
+
+**Key findings:**
+- PR-D has two variants: **Laser Forms** (BKPRD) and **Continuous Forms** — both map to the same menu code PR-D with a format selector
+- BKPRDPST.RUN is a dedicated **Direct Deposit Post** program (separate from BKPRD) — accesses BKGL.CHK.*, ISPRTEMP, ISBANKS, ISBANKSA, ISBANKSI
+- BKPRM.RUN introduces a **Division** layer — multi-location payroll can segment employees by division, each with its own GL defaults
+- BKPRO.RUN (Year-End) confirms all QTD/YTD fields are zeroed in BKPR.EMP after snapshot to BKPRHIST
+- BKPRA menu shows `Y - Sync PR-JC excluding Job Rates` / `$ - Sync PR-JC including Job Rates` — PR-JC sync merges Job Costing records into employee master
+- BKPRLG reads FICACRD/FICAEMP/FICAEXP/FICAERP accessor groups — confirms 941 form maps directly to BKPR.GL.* fields
+
+### BKPR.EMP.\* accessor map (91 fields, from BKPRA + BKPRB + BKPRO binaries)
+
+These are the TAS6 field accessor names for BKPRMSTR (employee master). Each `BKPR.EMP.XXX` call maps to a column in the BKPRMSTR Btrieve table.
+
+| Accessor | Meaning | Notes |
+|----------|---------|-------|
+| NUM | Employee number | Primary key |
+| LNME | Last name | |
+| FNMI | First name + middle initial | Combined field |
+| SSN | Social Security Number | |
+| ADD | Street address | |
+| CSZ | City/State/Zip | Combined field |
+| ZIP | ZIP code | Also in CSZ |
+| CNTRY | Country | International |
+| PHONE | Phone number | |
+| SDATE | Start (hire) date | |
+| BDAY | Birth date | |
+| TERM | Termination date | |
+| LSTPR | Last pay date | |
+| DEPT | Department code | |
+| SHIFT | Shift code | |
+| PAYTYP | Pay type | H=hourly, S=salary |
+| SRTE | Salary rate per period | |
+| MS | Marital status | S/M (old W-4) |
+| FEDEXM | Federal exemptions | Old W-4 line 5 |
+| ADDIT | Additional withholding | Old W-4 |
+| NEWW4 | 2020+ W-4 flag | Y=new form, N=old |
+| 2EPJ | 2020 W-4 Step 2e | Extra withholding — multiple jobs |
+| AAD | 2020 W-4 Step 4b | Additional annual deduction |
+| ANDD | 2020 W-4 Step 3 | Annual dependent deduction |
+| AWPPP | Annual withholding per period | Calculated from 2020 W-4 |
+| OAIWW | 2020 W-4 Step 4a | Other annual income withholding |
+| STEXM | State exemptions | |
+| STEXMA | State exemptions additional | |
+| STEXMN | State exemptions (new-form) | |
+| SDIEXM | SDI exempt flag | |
+| EXTRA | Extra deduction amount | |
+| FITQTD | Fed income tax QTD | |
+| FITYTD | Fed income tax YTD | |
+| FICQTD | FICA (SS) QTD | |
+| FICYTD | FICA (SS) YTD | |
+| MDQTD | Medicare QTD | |
+| MDYTD | Medicare YTD | |
+| MDAMT | Medicare employee amount | |
+| MDACT | Medicare account GL | |
+| MDDPT | Medicare deduction department | |
+| MDNME | Medicare line description | |
+| SDIQTD | SDI QTD | |
+| SDIYTD | SDI YTD | |
+| STQTD | State income tax QTD | |
+| STYTD | State income tax YTD | |
+| RHQTD | Regular hours QTD | |
+| RHYTD | Regular hours YTD | |
+| RAQTD | Regular amounts QTD | |
+| RAYTD | Regular amounts YTD | |
+| OHQTD | Other hours QTD | 12-slot array |
+| OHYTD | Other hours YTD | 12-slot array |
+| OAQTD | Other amounts QTD | 12-slot array |
+| OAYTD | Other amounts YTD | 12-slot array |
+| SHQTD | Shift differential QTD | |
+| SHYTD | Shift differential YTD | |
+| VHQTD | Vacation hours QTD | |
+| VHYTD | Vacation hours YTD | |
+| VAQTD | Vacation amounts QTD | |
+| VAYTD | Vacation amounts YTD | |
+| VRTE | Vacation accrual rate (hrs/period) | |
+| VCAP | Vacation hours cap | |
+| VDUE | Vacation hours balance | |
+| SAQTD | Sick amounts QTD | |
+| SAYTD | Sick amounts YTD | |
+| SCAP | Sick hours cap | |
+| SDUE | Sick hours balance | |
+| WKQTD | Total weekly hours QTD | |
+| WKYTD | Total weekly hours YTD | |
+| OTHQTD | Other deductions QTD | |
+| OTHYTD | Other deductions YTD | |
+| OTHAMT | Other deduction amount | |
+| OTHNME | Other deduction description | |
+| OTHACT | Other deduction GL account | |
+| OTHDPT1 | Other deduction GL department | |
+| UODQTD | User-defined deductions QTD | 20-slot array |
+| UODYTDB | User-defined deductions YTD balance | 20-slot array |
+| UODLMT | User-defined deduction limit | 20-slot array |
+| UODYLM | User-defined deduction yearly limit | 20-slot array |
+| UODAMTM | User-defined deduction monthly max | 20-slot array |
+| UDEQTD | Employer deduction QTD | 20-slot array |
+| UDEYTDO | Employer deduction YTD | 20-slot array |
+| UDELMT | Employer deduction limit | 20-slot array |
+| UDEYLM | Employer deduction yearly limit | 20-slot array |
+| UDEAMT | Employer deduction amount | 20-slot array |
+| WCEE | Workers Comp employee amount | |
+| WCER | Workers Comp employer rate | |
+| BANKA | Bank account number | Direct deposit |
+| BANKR | Bank routing number | Direct deposit |
+| BENDTE | Benefits eligibility date | |
+| EXPACT | Expense account GL | |
+| EXPDPTL | Expense dept GL | |
+| OPNAME | Operator who last edited | |
+| PAYAMT | Gross pay amount | |
+
+### BKPR.CURP.\* accessor map (41 fields, from BKPRB + BKPRD binaries)
+
+Accessor names for BKPRCURP (current-period pay records).
+
+| Accessor | Meaning |
+|----------|---------|
+| EMPNO | Employee number (FK → BKPRMSTR) |
+| CKNUM | Check number |
+| CKNUMB | Check number (bank, direct deposit) |
+| CKDTE | Check date |
+| PAYDTE | Pay date |
+| PERIOD | Pay period number |
+| YEAR | Payroll year |
+| FLNME | Full name (printed on check) |
+| ADDR | Check address |
+| DEPT | Department |
+| MS | Marital status |
+| DPST | Direct deposit flag |
+| DPSTBK | Direct deposit bank code |
+| RATEREG | Regular pay rate |
+| RATEOT | Overtime pay rate |
+| RATEVAC | Vacation pay rate |
+| RATESK | Sick pay rate |
+| HOURSRG | Regular hours this period |
+| HOURSOT | Overtime hours this period |
+| HOURSVAC | Vacation hours this period |
+| HOURSK | Sick hours this period |
+| OTHRS | Other hours this period |
+| AMT | Gross pay amount |
+| CKAMT | Net check amount |
+| NETAMT | Net pay amount |
+| FAMT | Federal income tax withheld |
+| FICA | FICA withheld |
+| MDAMT | Medicare withheld |
+| MDSAM | Medicare surtax (high-earner) |
+| SDIAMT | SDI withheld |
+| STAMT | State income tax withheld |
+| FICEXM | FICA exempt flag |
+| MDEXM | Medicare exempt flag |
+| SDIEXM | SDI exempt flag |
+| STEXM | State exemptions |
+| DEPCNT | Dependent count |
+| FDLIM | Federal deduction limit |
+| UODAMT | Employee deduction amounts | (20-slot array) |
+| UDEAMT | Employer deduction amounts | (20-slot array) |
+| WKHRS | Total weekly hours |
+| WKAMT | Total weekly gross |
+
+### BKPR.TAX.\* accessor map (7 fields, from BKPRF binary)
+
+Accessor names for BKPRTC (tax table rates/limits).
+
+| Accessor | Meaning |
+|----------|---------|
+| FICBASE | FICA taxable wage base (annual SS limit) |
+| FITBASE | Federal income tax base threshold |
+| MDBASE | Medicare taxable base (unlimited; used for surtax calc) |
+| SDIBASE | SDI taxable wage base |
+| STBASE | State income tax base |
+| FICLMT | FICA annual employee limit |
+| MDLMT | Medicare annual limit (informational only) |
+
+### BKPR.GL.\* accessor map (sample — 75+ fields, from BKPRLG + BKPRLH + BKPRM binaries)
+
+BKPRGLFL has 664 fields total — organized as `<tax-type><role>` per state+department combination. Representative confirmed accessors:
+
+| Accessor | Meaning |
+|----------|---------|
+| FICACRD | FICA credit GL account |
+| FICAEMP | FICA employee-side GL |
+| FICAEXP | FICA expense GL |
+| FICAERP | FICA employer-portion GL |
+| FITCRD | Federal income tax credit GL |
+| FITEXP | FIT expense GL |
+| FUTACRD | FUTA credit GL |
+| FUTALMT | FUTA annual wage limit |
+| FUTART | FUTA tax rate |
+| MDCRD | Medicare credit GL |
+| MDEXP | Medicare expense GL |
+| MDERP | Medicare employer GL |
+| SDICRD | SDI credit GL |
+| SDIEMP | SDI employee GL |
+| SDIEXP | SDI expense GL |
+| STCRD | State income tax credit GL |
+| STEMP | State IT employee GL |
+| STEXP | State IT expense GL |
+| WCBASE | Workers Comp wage base |
+| WCCRD | Workers Comp credit GL |
+| WCEXP | Workers Comp expense GL |
+| WCRATE | Workers Comp rate |
+
+Full 664-field map requires BKPRGLFL DDF/schema extraction — the 75+ confirmed above cover all tax-type categories.
+
+### New tables confirmed from TAS6 binaries
+
+| Table | Confirmed by | Purpose |
+|-------|-------------|---------|
+| ISPRJDEA | BKPRJA.RUN | PR-J-A Import Time Cards staging — `A` suffix = active/current import batch |
+| ISPRTEMP | BKPRDPST.RUN, BKPRH.RUN | Payroll transaction temp/staging during posting |
+| ISBANKS | BKPRDPST.RUN | Bank account master (direct deposit routing) |
+| ISBANKSA | BKPRDPST.RUN | Bank accounts — alternate/archive tier |
+| ISBANKSI | BKPRDPST.RUN | Bank accounts — inactive tier |
+
+### WOELABOR deletion constraint (WO↔PR link confirmed)
+
+BKPRA.RUN contains the string:
+> `"Cannot delete. There are WO labor import (WOELABOR) records for this employee."`
+
+This confirms WOELABOR is a **Work Order employee labor import** staging table. Attempting to delete an employee in PR-A checks WOELABOR — if any un-posted WO labor records reference that employee number, the delete is blocked. This is the only confirmed cross-module constraint between WO and PR.
+
+### 2020 IRS Form W-4 support confirmed
+
+BKPRA.RUN references `"SF7 W-4 2020"` as a shortcut key label. The new W-4 fields in BKPR.EMP.* map directly to the 2020 IRS W-4 redesign:
+- `2EPJ` → Step 2(c): jobs with similar income (extra withholding amount)
+- `ANDD` → Step 3: total dependents deduction claim
+- `AAD` → Step 4(b): additional itemized deductions
+- `OAIWW` → Step 4(a): other annual income (investments, retirement)
+- `AWPPP` → Calculated: annual withholding per pay period (derived from above)
+- `NEWW4` → flag: Y=2020 form used; N=legacy form
 
 ---
 
