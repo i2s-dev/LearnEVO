@@ -873,20 +873,85 @@ ACTIVITY fields index into the current result set for paging or mail-merge outpu
 
 ---
 
+### Prospect Sub-Cluster Tables
+
+**Pass 359 (2026-06-26) — DDF-confirmed schemas for prospect activity tables:**
+
+**BKCMPCFC** (3f) — Prospect follow-up code master (parallel to BKCMACFC for accounts)
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| BKCM_PCFC_FCODE | STRING | 3 | Follow-up code (PK) |
+| BKCM_PCFC_DESC | STRING | 25 | Description |
+| BKCM_PCFC_REP | STRING | 5 | Default rep |
+
+**BKCMPCTF** (9f) — Prospect contact follow-up (parallel to BKCMACTF for accounts)
+
+PK: CCODE+REP+TYPE+DATE
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| BKCM_PCTF_CCODE | STRING | 10 | Prospect code (PK part 1) |
+| BKCM_PCTF_REP | STRING | 5 | Rep code (PK part 2) |
+| BKCM_PCTF_TYPE | STRING | 3 | Follow-up type code (PK part 3) |
+| BKCM_PCTF_DATE | DATE | 4 | Follow-up date (PK part 4) |
+| BKCM_PCTF_REM_1..5 | STRING 60 ×5 | Remark lines |
+
+**BKCMPCTH** (8f) — Prospect contact history (parallel to BKCMACTH for accounts, more compact)
+
+PK: CCODE+DATE+REP+LINE
+
+| Field | Type | Size | Meaning |
+|-------|------|------|---------|
+| BKCM_PCTH_CCODE | STRING | 10 | Prospect code (PK part 1) |
+| BKCM_PCTH_DATE | DATE | 4 | Activity date (PK part 2) |
+| BKCM_PCTH_REP | STRING | 5 | Rep code (PK part 3) |
+| BKCM_PCTH_LINE | UBINARY | 2 | Line number (PK part 4) |
+| BKCM_PCTH_EVENT | UBINARY | 2 | Event code |
+| BKCM_PCTH_REM | STRING | 60 | Remark text |
+| BKCM_PCTH_FLINE | STRING | 1 | First-line flag |
+| BKCM_PCTH_EXTRA | STRING | 50 | Extra data |
+
+Note: BKCMPCTH (8f) is a stripped-down version of BKCMACTH (21f) — prospects don't have
+billing/rate/balance fields; only event logging is tracked.
+
+---
+
+### E-Mirror Tables (Edit Buffers) — DDF-Confirmed Schemas
+
+**Pass 359 (2026-06-26) — all 6 E-mirror tables schema-verified from DDF:**
+
+| Table | Fields | Mirrors | Schema |
+|-------|--------|---------|--------|
+| BKCMDE | 41 | BKCMACCT | Identical BKCM_ACCT_* (41f) |
+| BKCMEACT | 41 | BKCMACCT | Identical BKCM_ACCT_* (41f) |
+| BKCMEACH | 21 | BKCMACTH | Identical BKCM_ACTH_* (21f) |
+| BKCMEACF | 11 | BKCMACTF | Identical BKCM_ACTF_* (11f) |
+| BKCMEACD | 4 | BKCMACTD | Identical BKCM_ACTD_* (4f) |
+| BKCMEACC | 2 | BKCMACCL | Identical BKCM_ACCL_* (2f) |
+
+BKCMDE and BKCMEACT are BOTH full copies of BKCMACCT — dual-buffer architecture supporting
+two concurrent account editors. The five BKCMCTL* lock tables (one per slot) govern which
+user holds which edit buffer. Commit flow: copy master → E-table → user edits E-table →
+save writes E→master → clears E-table.
+
+---
+
 ### BKCM* Architecture Summary
 
 ```
 BKCMACCT ──► BKCMACCN (10-slot contacts)
+     │    └── E-mirrors: BKCMDE + BKCMEACT (dual edit buffers for concurrent editing)
      │
      ├──► BKCMACTH / BKCMACTF / BKCMACTD (activity log/follow-up/dates)
-     │         each has E-mirror (BKCMEACH/BKCMEACF/BKCMEACD) for in-progress edits
+     │    └── E-mirrors: BKCMEACH / BKCMEACF / BKCMEACD (identical schemas)
      │
      ├──► BKCMCUST (BKAR_* fields — bridge to AR customer master BKARCUST)
      │
      └──► BKCMACCL / BKCMEACC (class assignments → BKCMACCC)
 
-BKCMPCNT ──► BKCMPCTF / BKCMPCTH  (prospect follow-up / history)
-             └──► BKCMPCFC (prospect follow-up codes)
+BKCMPCNT ──► BKCMPCTF (9f) / BKCMPCTH (8f)  (prospect follow-up / history)
+             └──► BKCMPCFC (3f) (prospect follow-up codes)
 
 BKCMREP ──► (assigns accounts/prospects, controls view/change permissions)
 
@@ -901,11 +966,6 @@ BKCMVNDH / BKCMVNDF  (vendor CRM — parallel to account activity tables)
 BKCMCTL1-4 / BKCMCTRL  (edit locks — one per concurrent user)
 BKCMTEMP / TMP1-4      (query scratch — one per concurrent user)
 ```
-
-**Mirror architecture:** `BKCMDE`, `BKCMEACT`, `BKCMEACH`, `BKCMEACF`, `BKCMEACD`,
-`BKCMEACC` are all in-progress edit buffers for their non-E counterparts. The pattern
-is: copy master record to E-table → user edits E-table → commit writes E→master and
-clears E. This prevents dirty reads during concurrent edits.
 
 ---
 

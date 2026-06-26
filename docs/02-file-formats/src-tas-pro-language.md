@@ -235,6 +235,9 @@ DEL    |(*file_name/@filenum*) (*NOCNF*) (*GOTO lbl*) (*ERR lbl/NO_ERR*)
 DALL   |(*filename/@filenum*) (*KEY keyname/@keynum*) (*START f/c/e*)
        (*SCOPE arfn f/c/e*) (*FOR f/c/e*) (*WHILE f/c/e*)
        (*CNTR fn/v*) (*DISP*)
+       # Confirmed TAS Pro 7 keyword (tp7runtime.keywords.txt). Conditional batch-delete:
+       # KEY=filter by key range, SCOPE=scope array function, FOR/WHILE=predicates,
+       # CNTR=progress counter variable, DISP=display progress. More powerful than DEL.
 
 ENTER  |(*field_name*) (*MASK f/c/e*) (*HELP lbl/@udf*) (*UPAR lbl*)
        (*UP*) (*ACR*) (*PSWD*) (*AT col;row*) (*NOREV*) (*COLOR f/c/e*)
@@ -267,9 +270,10 @@ The runtime has first-class support for a report pipeline:
 ### Data-engine keywords
 
 `USECODEBASE` (switch to the CodeBase DBF engine instead of Btrieve),
-`BTRIEVE_VERSION`, `PERVASIVE_SERVER`, `LOCK_OWNER`, `CREATE_DBF`,
-`CONVERT_TO_DBF`, `RESTRUCTURE_DBF`, `PACK_DBF`, `REINDEX_DBF`,
-`REC_LOCK`, `UNLOCK`, `DUPCHECK`, `IFDUPCB`, `DELETED`, `CBDELETED`.
+`BTRIEVE_VERSION`, `PERVASIVE_SERVER`, `LOCK_OWNER` (opcode 8032 — returns username of current record owner),
+`CREATE_DBF`, `CONVERT_TO_DBF`, `RESTRUCTURE_DBF`, `PACK_DBF`, `REINDEX_DBF`,
+`REC_LOCK` (opcode 7992 — acquire exclusive record lock), `UNLOCK` (opcode 7813),
+`DUPCHECK`, `IFDUPCB`, `DELETED`, `CBDELETED`.
 
 ### Integration / system keywords
 
@@ -557,6 +561,22 @@ Beyond letter keys and function keys, traps confirmed for:
 **`xtrap_si_udc` / `xtrap_rstr_udc`** — save and restore all UDC (User Defined Command) trap state. Call before overriding traps in a modal sub-screen; restore on return.
 
 **`xtrap chg ignr`** — suppress the "change" event.
+
+### T7 key trapping via DFM properties
+
+In TAS Pro 7 `.RWN` programs, key trapping is **not** done through a standalone `trap`
+keyword. Instead, it is configured through DFM form properties:
+
+| Property | Opcode | Purpose |
+|----------|--------|---------|
+| `KeyTraps` | 8091 | List of key-trap definitions for the form |
+| `KeyTrapHint` | 8092 | Status-bar hint text to display for each trap |
+
+This is confirmed from `tp7runtime.keywords.txt` — `KeyTraps` and `KeyTrapHint` are
+registered as DFM section property names (under `# Entry / object properties (DFM)`).
+The TAS6 `trap <key> gosub/goto` runtime keyword exists in `.RUN` (TAS6) programs;
+in T7 the equivalent binding is declared in the `.DFM` at design time. The `KeyTraps`
+property controls which keys activate programmatic callbacks from within a T7 form.
 
 ### MAGLIB — graphical button library
 
