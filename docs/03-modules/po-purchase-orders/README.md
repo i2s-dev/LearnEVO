@@ -1,6 +1,6 @@
 # Purchase Orders (PO)
 
-Status: verified (auto-generated from the extracted schema, menu-code dump, and DFM inventory).
+Status: verified | Pass 331 (2026-06-26)
 
 - **Module code**: `PO`
 - **Tables**: 8 (prefixes `BKPO`, `BKAPPO`, `BKAPAPO`, `BKAPHPO`)
@@ -22,11 +22,11 @@ related System Overview sections.
 
 | Code | Operation | Legacy module file(s) |
 | ---- | --------- | --------------------- |
-| `PO-A` | Enable UPC Numbers | BKPOA;BKPOA1;ISTECH;T6POA |
+| `PO-A` | Enter Purchase Orders | BKPOA;BKPOA1;ISTECH;T6POA |
 | `PO-B` | Print Purchase Orders | BKPOB;T6POB |
-| `PO-C` | P/O Lot Control | BKPOC;BKPOCLOT;BKPOCSER;ISPOC;ISTECH |
+| `PO-C` | Receive Purchase Orders | BKPOC;BKPOCLOT;BKPOCSER;ISPOC;ISTECH |
 | `PO-D` | View PO Receivers | BKPOA;BKPOA1;T6POA |
-| `PO-E` | Copy RFQs | BKPOA;BKPOA1;T6POA |
+| `PO-E` | Enter Quotations | BKPOA;BKPOA1;T6POA |
 | `PO-E-A` | Request for Quote (Universal) | BKPOEA;T6POEA |
 | `PO-F` | Enter Verbal RFQs | BKPOF |
 | `PO-G` | Convert RFQs | BKPOG |
@@ -214,3 +214,96 @@ Source: `samples/rwn_symbols.json` — all T7PO* entries.
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*
+
+---
+
+## Pass 331 — TAS6 BKPO\*.RUN binary analysis (2026-06-26)
+
+Binary string extraction of all 32 BKPO\*.RUN files from `samples/`. These are TAS Pro 6 compiled programs — the older generation that launched (or was replaced by) T7 equivalents.
+
+### TAS6 program inventory
+
+| File | Size | Menu / Role |
+|------|-----:|-------------|
+| `BKPOA.RUN` | 491 KB | PO-A: Enter Purchase Orders (also handles PO-E / ES-A quotation dispatch) |
+| `BKPOA1.RUN` | 342 KB | PO-A v1 (also shows "PO-D View PO Receivers" — alternate PO entry variant) |
+| `BKPOB.RUN` | 241 KB | PO-B: Print Purchase Orders (Universal / Plain / Standard form variants) |
+| `BKPOC.RUN` | 429 KB | PO-C: Receive Purchase Orders |
+| `BKPOCLOT.RUN` | 55 KB | PO-C Lot Control receiving variant |
+| `BKPOCSER.RUN` | 55 KB | PO-C Serial Control receiving variant |
+| `BKPOD.RUN` | 4 KB | PO-D dispatch stub → BKPODA (view receivers) |
+| `BKPOE.RUN` | 4 KB | PO-E dispatch stub → BKPOEA (enter quotations) |
+| `BKPOEA.RUN` | 166 KB | PO-E-A: Request for Quote (Universal / Plain Paper variants) |
+| `BKPOENG.RUN` | 368 KB | PO-I-A / B / E / F: four PO-I reports in one program |
+| `BKPOF.RUN` | 273 KB | PO-F: Enter Verbal RFQs (+ ES-A Enter Verbal RFQs — bridges PO and Estimating) |
+| `BKPOG.RUN` | 203 KB | PO-G: Convert RFQs to POs |
+| `BKPOH.RUN` | 209 KB | PO-H: Enter / Archive / Purge / Restore Vendor Prices |
+| `BKPOIA.RUN` | 3 KB | PO-I-A dispatch stub → BKPOENGA |
+| `BKPOIB.RUN` | 3 KB | PO-I-B dispatch stub → BKPOENGA |
+| `BKPOIC.RUN` | 139 KB | PO-I-C: Print RFQ Status |
+| `BKPOID.RUN` | 203 KB | PO-I-D: Print Vendor Prices |
+| `BKPOIE.RUN` | 3 KB | PO-I-E dispatch stub → BKPOENGA |
+| `BKPOIF.RUN` | 3 KB | PO-I-F dispatch stub → BKPOENGA |
+| `BKPOIG.RUN` | 119 KB | PO-I-G: Print PO Items by Due Date |
+| `BKPOJA.RUN` | 172 KB | PO-J-A: Print Receipt Travelers |
+| `BKPOJB.RUN` | 249 KB | PO-J-B: Print Inventory in QC |
+| `BKPOJC.RUN` | 330 KB | PO-J-C: Enter Inspection Buyoffs |
+| `BKPOJD.RUN` | 50 KB | PO-J-D: Save PO History (post-buyoff archive) |
+| `BKPOK.RUN` | 176 KB | PO-K: Close Purchase Orders |
+| `BKPOL.RUN` | 219 KB | PO-L: Enter Approved Vendors (PO-L-A confirmed) |
+| `BKPOLA.RUN` | 126 KB | PO-L-A: Print Approved Vendors |
+| `BKPOM.RUN` | 293 KB | PO-M: Purchase Order Inquiry |
+| `BKPON.RUN` | 10 KB | PO-N: dispatch stub |
+| `BKPOP.RUN` | 221 KB | PO-P: View Vendors — **multi-module dispatch**: also MM-L / CM-E / CS-B / DE-J-E |
+| `BKPOQ.RUN` | 142 KB | PO-Q: Edit Est Rec and Orig Promise Dates |
+| `BKPOSER.RUN` | 4 KB | Serial stub |
+
+### Key findings
+
+**Dispatch stub pattern confirmed:** BKPOD, BKPOE, BKPOIA, BKPOIB, BKPOIE, BKPOIF, BKPOSER are all 3-4 KB stubs that open a single table and redirect to a T7 program (same pattern confirmed in SO and WO modules).
+
+**BKPOP multi-module dispatch:** BKPOP.RUN serves five different menu codes: `PO-P`, `MM-L`, `CM-E`, `CS-B`, `DE-J-E`. A single vendor-entry/view program shared across PO, Materials Management, Contract Management, Customer Service, and Deferred modules.
+
+**BKPOF PO/Estimating bridge:** BKPOF handles both `PO-F Enter Verbal RFQs` and `ES-A Enter Verbal RFQs` — one binary serves two modules, confirming RFQ workflow spans PO and Estimating.
+
+**BKPOENG four-report program:** BKPOENG.RUN (368 KB) dispatches to all four PO-I-A/B/E/F report variants. The four 3 KB stubs (BKPOIA/BKPOIB/BKPOIE/BKPOIF) each redirect to BKPOENGA (T7 version).
+
+**Lot/serial receiving variants:** BKPOCLOT (55 KB) and BKPOCSER (55 KB) are dedicated PO-C receiving variants for lot-controlled and serial-controlled inventory — parallel to SO-G lot/serial posting variants (Pass 330).
+
+**BKPOJC inspection buyoffs:** BKPOJC.RUN (330 KB) is the largest QC program — handles full inspection buyoff workflow including NCR creation when items fail QC.
+
+### New accessor namespaces confirmed
+
+| Namespace | Confirmed in | Inferred meaning |
+|-----------|-------------|-----------------|
+| `BKAP.CUS` | BKPOA, BKPOC | AP customer cross-reference (vendor is also a customer) |
+| `BKAP.FOB` | BKPOA | Free-On-Board terms on PO |
+| `BKAP.GL` | BKPOA, BKPOC | AP GL account on PO/receipt |
+| `BKAP.HIS` | BKPOH, BKPOM | AP PO history access |
+| `BKAP.IS` | BKPOA | AP IS (system) flags on PO |
+| `BKAP.NOT` | BKPOA, BKPOM | AP notes on PO |
+| `BKAP.NEW` | BKPOA | AP new PO fields (newer-era additions) |
+| `BKAP.OUT` | BKPOA, BKPOK | AP outside process (subcontract) fields |
+| `BKAP.SHI` | BKPOA, BKPOB | AP ship-to fields on PO |
+| `BKAP.TER` | BKPOA | AP terms field on PO |
+| `BKQC.OUT` | BKPOJC | QC outside-process fields (inspection after outside work) |
+| `EGW.APDE` | BKPOF | Estimating Gateway AP/DE cross-reference (RFQ bridge) |
+
+### New tables discovered (Pass 331)
+
+| Table | Appears in | Inferred role |
+|-------|-----------|---------------|
+| `BKAPRFQA` / `BKAPRFQI` | BKPOEA, BKPOF, BKPOG | RFQ header (A) and line items (I) — active RFQ dataset |
+| `BKAPRFQLA` / `BKAPRFQLI` | BKPOF, BKPOG | RFQ log / history (archived after conversion) |
+| `BKAPQUOTA` | BKPOH | Vendor price quote archive (5-level pricing) |
+| `BKPOCSERA` | BKPOCSER | Serial control PO receiving detail (serial# per received line) |
+| `BKAPAPOA` / `BKAPAPOLA` | BKPOJD | PO archive header (A) and line items (L) — closed PO history |
+| `BKPOENGA` | BKPOIA, BKPOIB, BKPOIE, BKPOIF | T7 target for 4 BKPOENG dispatch stubs |
+| `BKPOAA` | BKPOA | PO address override (ship-to address per PO) |
+| `BKPODA` | BKPOD | PO receiver display (view-only receiver detail) |
+| `BKPOEA` | BKPOE | PO-E quotation entry target |
+| `BKAMKA` | BKPOJB, BKPOJC | AM kit / assembly QC records (kit-level inspection) |
+| `BKAPEVNDA` / `BKAPEVNDL` | BKPOL | Approved vendor header (A) and list (L) — per-item approved source |
+| `BKCMREP` / `BKCMREPA` | BKPOP | CRM rep / territory records (vendor contact CRM integration) |
+| `BKBMGA` | BKPOF | BOM group archive (Estimating BOM groups in RFQ) |
+| `BKAPVENDIP` | BKPOP | Vendor IP / internet contact record (vendor web/email data) |
