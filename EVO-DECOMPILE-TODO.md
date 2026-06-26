@@ -164,7 +164,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Must be run against local copies in `samples/` (not directly against network share)
   - 1122 entries in rwn_symbols.json from 1145 successfully decrypted RWNs; script verified working
   - Gap closed: suwin7.rwn is the sole failure (unknown 5th key) — a blocked-file issue, not a script defect
-- [x] 🔄 Bytecode instruction set — **C: 76/100** (60+ opcodes observed; sub-code families mapped; pool confirmed at 2875-instr scale T7FOD; Pass 229/242/312)
+- [x] 🔄 Bytecode instruction set — **C: 76/100** (60+ opcodes observed; sub-code families mapped; pool confirmed at 2875-instr scale T7FOD; Pass 229/242/312); **Pass354 (2026-06-26): T7FOE 2669-instr corpus analyzed** — OP_1A(EVAL) confirmed 33× with property-name STRING refs (Signature10, Notes SHIP VIA); OP_31(GET_STATUS) consistent [OP_42][OP_31][OP_42] sandwich pattern confirmed 13×; OP_0F(ASSIGN) dominant at 48% confirmed; doc updated: rwn-binary-format.md — **C: 78/100**
   - Dispatch table = program instructions: `[op][b1][b2][sub] + [pool_offset_LE4]` (8 bytes each, uniform)
     - **b1 and b2 are UNIVERSALLY 0x00** — confirmed across 3,204,306 instructions in 1,119 programs (3.2M scale)
     - **Single exception: 0x57 EXECUTE_FORM has b2=0xFE** for main/top-level form; b2=0x00 for sub-forms

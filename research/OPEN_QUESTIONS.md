@@ -277,6 +277,13 @@ to resolve fully:
     - **31 additional opcodes observed** from T7FOD (see rwn-binary-format.md for full table). Notable: 0x2A (31×, sub=0x1A), 0xC7 (21×, sub=0x19), 0x4A (15×, sub=0x09), 0xD3 (12×, sub=0x10), 0xA1 (11×, sub=0x00). Total unique opcodes observed: 60+.
     - **Dispatch header format clarified**: 8 zero bytes at 0x6C0 for T7FOD; instructions at 0x6C8. Previous code assumed hdr[0]=pool_offset but T7FOD has hdr[0]=0.
     - Current status updated to **C: 76/100**.
+    **Pass 354 additions (2026-06-26 — T7FOE.RWN.dec 2669-instruction corpus):**
+    - T7FOE.RWN.dec: 265,362 bytes, 2669 instructions, pool at 0x5A30 = instr_start(0x6C8) + 2669×8. Confirmed pool[0] = "T7FOE.DFM", pool[0x31] = " - ISTS Enhancement 06/03/16". Program = "FO-E Print Option Where Used".
+    - **OP_1A (EVAL) confirmed**: 33× in T7FOE (vs 11× in suwin6t.rwn). poff sometimes references property-name STRINGs: "Signature10", "Notes SHIP VIA", "Signature8". Consistent with expression evaluation over named properties. Often follows OP_3B. Pool entry at poff=NULL type (0x00) = inside compound blob body (inline argument, not an independent entry).
+    - **OP_31 (GET_STATUS) consistent structural pattern**: all 13 occurrences in T7FOE follow the same pattern: `[OP_42=CALL PROC][OP_31=GET_STATUS][OP_42=CALL PROC]` — status check sandwiched between two procedure calls. GET_STATUS reads the result/status of the preceding operation.
+    - **OP_0F (ASSIGN) dominant confirmed**: 1282× (48% of all instructions), consistent with 44.85% at 3.2M scale. Sub=0x0A confirmed. References STRING pool entries for program labels, column names, library names (e.g., "FO-E  Print Option Where Used", "ISTECH", "\\auto\\EvoSettings.ini", "EMAIL CO# ", " User:", "HOT BUTTONS").
+    - **OP_42 frequency**: 445× in T7FOE — 1 in 6 instructions is a GOSUB/CALL PROC.
+    - Current status updated to **C: 78/100**.
 
 17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
     - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has

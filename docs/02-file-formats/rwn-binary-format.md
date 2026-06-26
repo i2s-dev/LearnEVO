@@ -1,7 +1,7 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, pool decoded, 60+ opcodes observed, sub-code families mapped, pool confirmed at 2875-instr scale, C:76/100
-Last updated: 2026-06-25
+Status: partial — header confirmed, symbol tables confirmed, pool decoded, 60+ opcodes observed, sub-code families mapped, pool confirmed at 2875-instr + 2669-instr scale; OP_1A/OP_31 behavioral patterns documented; branch target encoding still requires tp7runtime.exe, C:78/100
+Last updated: 2026-06-26
 
 ---
 
@@ -242,6 +242,52 @@ observed set. Instruction stream: 0x6C8 – 0x609F (8-byte format, all b1=0x00).
 (type tags 0x41/0x43/0x46/0x4E/0xFF/0xFD) confirmed at 2875-instruction scale.
 Pool starts at 0x60A0; first entry = STRING "T7FOD.DFM" (0x09 bytes at pool+4).
 ISTS customization marker at pool+0x4A: " - ISTS Enhancement 06/02/16".
+
+---
+
+### Additional Observations from T7FOE (Pass 354 — 2669-instruction corpus)
+
+T7FOE.RWN.dec (265,362 bytes, 2669 instructions) — "FO-E Print Option Where Used" report program.
+Instruction stream: 0x6C8 – 0x5A2F (8-byte format). Pool at 0x5A30.
+Pool[0] = STRING "T7FOE.DFM" (9 bytes). Pool[0x31] = " - ISTS Enhancement 06/03/16".
+
+**Frequency distribution in T7FOE (top opcodes):**
+
+| Opcode | sub  | Count | Meaning (vs. 3.2M analysis) |
+|--------|------|-------|-----------------------------|
+| 0x0F   | 0x0A | 1282  | ASSIGN — dominant opcode, 48% of all instructions (consistent with 44.85% at scale) |
+| 0x42   | 0x04 | 445   | GOSUB/CALL PROC — 1 in 6 instructions is a procedure call |
+| 0x3B   | 0x14 | 362   | COND_BRANCH — 2nd most common after ASSIGN |
+| 0x20   | 0x05 | 114   | CREATE/BIND — many event handler bindings |
+| 0x1A   | 0x21 | 33    | EVAL — see below |
+| 0x6A   | 0x14 | 28    | GOTO_LABEL |
+| 0xD2   | 0x14 | 27    | GOTO |
+| 0x49   | 0x0F | 27    | READ_PROP |
+| 0x40   | 0x36 | 26    | EXIT |
+| 0x31   | 0x10 | 13    | GET_STATUS — see below |
+
+**OP_1A (EVAL, sub=0x21) new behavioral observations:**
+- 33× in T7FOE; pool poff sometimes points to STRING entries containing property names
+  - I#1198: EVAL → pool STRING "Signature10"
+  - I#1798: EVAL → pool STRING "Notes SHIP VIA"  
+  - I#927:  EVAL → pool STRING "Signature8" (nearby context)
+  - I#1305: EVAL near OP_42 → STRING "INB" (subprogram ref)
+- Pool STRING data for EVAL is a **named accessor**: property name, column name, or procedure name
+- Often appears immediately after OP_3B (conditional branch lands on EVAL)
+- Sometimes appears in consecutive pairs (I#97+98, I#167+168, I#1798+1803)
+- Pool poff=null (0x00) type = pointer falls inside another pool entry's data (inline argument)
+- Confirms "intermediate expression evaluation" role — evaluates a named property or expression
+
+**OP_31 (GET_STATUS, sub=0x10) new behavioral observation:**
+- 13× in T7FOE — CONSISTENT STRUCTURAL PATTERN observed for all 13 occurrences:
+  ```
+  [OP_42 = CALL PROC]
+  [OP_31 = GET_STATUS]     ← always sandwiched between two GOSUB/CALL operations
+  [OP_42 = CALL PROC]
+  ```
+- This confirms GET_STATUS = check result/status of the preceding operation; result feeds next call
+- poff may be NULL (result goes to implicit stack) or a BLOB (argument block for the status check)
+- Shares sub=0x10 with OP_D3 (STATUS variant, 12× in T7FOD) and OP_11 (STATUS_CHECK, 8K at scale)
 
 **Notable program-wide semantic observations (Pass 229 disassembly):**
 
