@@ -17,21 +17,40 @@ The `BKDE` family (BKDEB..BKDEH, BKDES) are pre-canned "Dealer / Data Entry" imp
 
 → Full format documentation: [imp-xpt-import-export.md](imp-xpt-import-export.md)
 
-## `.UPD` — Pervasive DDF update manifest (binary Btrieve)
+## `.UPD` — Pervasive DDF update manifest (binary Btrieve, Pass 361)
 
-Source: `../../samples/upd/FILEDEF.UPD`. Starts with `FC` magic (same
-as the DDFs) — it's a Btrieve file.
+All 10 `FILE*.UPD` files on the share start with `FC` magic = Btrieve format.
+Files: `FILEDICT`(3.9MB), `FILELOC`(2.2MB), `FILEDES`(918KB), `FILEKEY`(913KB),
+`FILEKNUM`(396KB), `FILEDFLD`(112KB), `FILEREL`(72KB), `FILES`(72KB),
+`FILEDEF`(32KB), `FILECHSP`(3KB).
 
-There are exactly nine of these on the share, all named `FILE*.UPD`:
-`FILEDEF`, `FILEDES`, `FILEDFLD`, `FILEDICT`, `FILEKEY`, `FILEKNUM`,
-`FILELOC`, `FILEREL`, `FILES`. These mirror the nine Pervasive system
-catalog tables (`FILE.DDF`, `FIELD.DDF`, `INDEX.DDF`, `ATTRIB.DDF`,
-`OCCURS.DDF`, `RELATE.DDF`, `VIEW.DDF`, `TRIGGER.DDF`, `PROC.DDF`).
+**`FILES.UPD` record structure** (decoded Pass 361 — 48-byte records):
 
-Working hypothesis: when an EVO update arrives, it ships a set of
-`FILE*.UPD` snapshots of the *new* DDF state. The runtime reads these
-and applies a schema migration against the live DDFs. (Hence the TAS
-runtime keywords `RESTRUCTURE_DBF`, `PACK_DBF`, `REINDEX_DBF`.)
+```
+Offset  Size  Content
+------  ----  -------
+0       2     Record flag (01 00 = active)
+2       8     Sequential physical key (incrementing by 1 each record)
+10      8     Table name (left-justified, space-padded, e.g. "BKCMDE  ")
+18      8     Physical filename (same as table name, e.g. "BKCMDE  ")
+26      2     File ID in migration batch (sequential, matches insertion order)
+28      4     Old record size (LE32 — bytes before upgrade)
+32      4     New record size (LE32 — bytes after upgrade)
+36      4     Unknown tail
+40      8     Btrieve B-tree separator bytes (FF FF FF FF FF FF FF FF)
+```
+
+`FILES.UPD` contains 302 table entries (partial migration batch — one upgrade's delta,
+not the full 659-table schema). The old_size/new_size fields encode the byte-level schema
+delta for each table being modified.
+
+`FILECHSP.upd` contains `MATRIX`/`MATRIX2`/`GENERIC` identifiers = check-format type codes.
+`FILEDEF.UPD` contains character-set validation arrays (0-9 + A-Z sequences).
+
+**Confirmed purpose:** EvoUpdate ships `FILE*.UPD` snapshots of the new schema state.
+`EvoERPupd.RWN` reads these files via FILEDICT/FILEDBF/FILEKEY handles, computes FROM→TO
+deltas, and `EXEC_TOP_WAIT`s `UPDTP7.EXE` to apply Btrieve restructure operations.
+(TAS keywords involved: `RESTRUCTURE_DBF`, `PACK_DBF`, `REINDEX_DBF`.)
 
 ## `.XPT` — Export layout (**binary, 32000 bytes fixed**)
 
