@@ -343,27 +343,57 @@ Byte  Field      Notes
 | `0x4E` | ARRAY_IDX | — | Follows LOAD_VAR for array assignments; IDX increments per element |
 | `0x0A` | PUSH_ADDR | — | Seen before `0x0F 0x00` pairs in MENU_HLDR area |
 
-### Enter-Field Execution Family — OP_93/OP_65/OP_53 (Pass 243+244)
+### Enter-Field Execution Family — OP_93/OP_65/OP_53 (Pass 243+244+353)
 
 These three opcodes form the "FIELD_ENTER" group used for interactive enter fields in the main
 program flow (NOT the preamble ENT.xx declarations). Together they define and execute one enter field.
 
-| Opcode | b2 | Count | Data record content (Pass 244) |
-|--------|----|-------|-------------------------------|
-| `0x93` | 0x14=20 | 29 | 20-byte descriptor containing 2 embedded instruction records (COND_JMP + PMSG + partial RET_FUNC) — field setup/validation callback |
-| `0x65` | 0x0A=10 | 62 | 10-byte descriptor fragment; always appears in pairs; continuation of field descriptor chain |
-| `0x53` | 0x7D=125 | 34 | 125-byte descriptor containing ~17 embedded instruction records — full field execution block (prompt, validate, handle errors) |
+| Opcode | b2 | Count | Data record content |
+|--------|----|-------|---------------------|
+| `0x93` | 0x14=20 | 29 | 20-byte blob containing **data channel references** — field setup/validation callback context |
+| `0x65` | 0x0A=10 | 62 | 10-byte blob; appears 1–N times after OP_93; continuation of field descriptor |
+| `0x53` | 0x7D=125 | 34 | 125-byte blob containing **data channel references** — full field execution block |
+| `0x42` | 0x04=4   |    | Field terminator — closes the OP_53 block for one enter field |
 
-**Pattern per enter field:** `OP_93 + [ASSIGN] + OP_65 + OP_65 + OP_53 + OP_8D + CLR_REC + GOSUB + ASSIGN + FIND_KEY + GOSUB`
+**Cluster pattern per enter field** (Pass 353 confirmed from BKAWLB.RUN I#425–I#435):
 
-**Data records contain nested instruction records** (Pass 244 confirmed): the 20-byte OP_93 record
-starts with `3B 00 14 [addr] BE 00 28 [addr]` = COND_JMP + PMSG instruction records. The 125-byte
-OP_53 record contains ~17 instruction records (COND_JMP, TRAP, ASSIGN, PMSG, RET_FUNC, etc.) that
-form the complete field-entry execution logic.
+```
+[OP_93 b2=20]          ← field setup blob (references data channel UI string records)
+[OP_65 b2=10] × N      ← callback attribute descriptors (N ≥ 1; often 2)
+[OP_3B b2=20]?         ← conditional branch (for `upar` or `acr` target, optional)
+[OP_53 b2=125]         ← full field execution blob
+[OP_42 b2=4]           ← field terminator
+```
+
+One cluster = one TAS Pro 6 `enter` field statement. Example mapping from BKAWLB.SRC/RUN:
+
+```
+Source:  enter e.status[1] mask 'X ' up acr pre pre.stat() upar START
+Binary:  I#425: OP_93  b2=20 addr=0x20d6   ← blob refs data channel 0x4af8="Esc Exit"
+         I#426: OP_65  b2=10               ← callback attr 1
+         I#427: OP_65  b2=10               ← callback attr 2
+         I#428: OP_3B  b2=20               ← COND_BRANCH for `upar START`
+         I#429: OP_53  b2=125 addr=0x2112  ← full execution blob
+         I#430: OP_42  b2=4   addr=0x218f  ← field terminator
+```
+
+**CRITICAL CORRECTION (Pass 353):** The blobs are **NOT** nested instruction streams. Prior
+documentation (Pass 244) that described "embedded instruction records (COND_JMP + PMSG + partial
+RET_FUNC)" was an incorrect interpretation — those bytes do not parse cleanly as 7-byte instructions
+(20-byte blob ≠ 2×7+clean; 125-byte blob similarly). The blobs contain **absolute data channel
+offsets** pointing to UI string records (prompt text, help text, function key labels). Confirmed:
+OP_93 blob at 0x20d6 references data channel offset 0x4af8 = "Esc Exit" (from `fnc_list` in source).
+
+**Internal byte layout still unknown:** The exact sub-field structure within the 20-byte, 10-byte, and
+125-byte blobs requires tp7runtime.exe disassembly to decode fully.
+
+**Field inheritance:** Some consecutive `enter` fields omit OP_93 — I#435 (field 2 in a group) has
+OP_53 with no preceding OP_93, inheriting the prior field's setup context.
 
 **Why different from ENTER (0x0E)?** ENTER (0x0E) is used in preamble ENT sections to DEFINE/REGISTER
 enter fields. OP_93/65/53 are used in interactive code to EXECUTE an enter interaction with full
-pre/post callback and lookup logic. The data records for these provide the compiled callback bodies.
+pre/post callback and lookup logic. The blobs reference data channel records that provide runtime
+context (UI strings, prompt text, callbacks).
 
 **CRITICAL CORRECTION (Pass 243):** `pfmt` and `pblnk` in TAS Pro 6 are **DECLARATIVE** — they compile
 to **ZERO bytecode instructions**. They are print format/blank-line directives processed at print time by

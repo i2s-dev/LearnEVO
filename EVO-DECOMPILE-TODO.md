@@ -202,15 +202,15 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - Data channel total size stored at header offset 0x08 (= 0x923E for BKAWLB)
   - Data channel overlaps instruction channel: ENTER field descriptors (I#64+) share bytes with code region
   - See `docs/02-file-formats/run-tas6-bytecode.md`
-- [x] 🔄 Bytecode instruction set — **C: 82/100** (Pass 244/312: dual-channel confirmed; 3-variant byte-diff complete; code_start header corrected; addr is 16-bit effective); **Pass341 (2026-06-26): instruction count derivable from header** — h[0x00]/7 = exact instruction count (BKAWLB=2079, BKMRF=2639, BKDCA=3471, BKLME=2137, BKROA=4577); opcode mapping remains incomplete (blocked without disassembler or additional SRC pairs) — **C: 85/100**
+- [x] 🔄 Bytecode instruction set — **C: 82/100** (Pass 244/312: dual-channel confirmed; 3-variant byte-diff complete; code_start header corrected; addr is 16-bit effective); **Pass341 (2026-06-26): instruction count derivable from header** — h[0x00]/7 = exact instruction count (BKAWLB=2079, BKMRF=2639, BKDCA=3471, BKLME=2137, BKROA=4577); opcode mapping remains incomplete (blocked without disassembler or additional SRC pairs) — **C: 85/100**; **Pass353 (2026-06-26): field entry cluster pattern confirmed** — [OP_93][OP_65×N][OP_3B?][OP_53][OP_42] = one `enter` field; CORRECTED OP_93/65/53 blobs contain DATA CHANNEL REFERENCES (not inner instruction streams); OP_93 blob at 0x20d6 refs data channel 0x4af8="Esc Exit" confirmed; OP_42(b2=4) = field terminator added to opcode table; field inheritance: subsequent fields in group may omit OP_93; blob internal layout still requires tp7runtime.exe disassembly — **C: 87/100**
   - All instructions exactly 7 bytes: `[op:1][0x00:1][b2:1][addr_LE4:4]` — confirmed BKAWLB
   - b2 = data record size per instruction; addr = absolute file offset of that record (CONFIRMED Pass 244)
   - addr[I+1] = addr[I] + b2[I] — zero exceptions across all 2078 instructions
   - Confirmed opcodes: OP_0E=ENTER(b2=97), OP_37=TRAP(b2=10), OP_20=RET_FUNC(b2=5), OP_08=TRAP_DFLT(b2=6),
     OP_C0=SET_PROP_CTX(b2=4), OP_C1=ENT_BLOCK(b2=0), OP_4B=CALL_LIB(b2=9), OP_39=FUNC_PREPOST(b2=0x51),
     OP_01=ARG_DESC(b2=0x1D), OP_1F=TABLE_HANDLE(b2=53), OP_13=FIND_KEY(b2=33), OP_06=CLR(b2=6),
-    OP_1C=MOUNT(b2=?), OP_21=MENU(b2=?), OP_73=PRG_HDR(b2=7)
-  - **OP_93(b2=20)/OP_65(b2=10)/OP_53(b2=125):** FIELD_ENTER execution family — data records contain embedded 7-byte instruction records for callbacks/validation (Pass 244)
+    OP_1C=MOUNT(b2=?), OP_21=MENU(b2=?), OP_73=PRG_HDR(b2=7), OP_42=FIELD_TERM(b2=4)
+  - **OP_93(b2=20)/OP_65(b2=10)/OP_53(b2=125)/OP_42(b2=4):** FIELD_ENTER cluster — blobs reference data channel UI string records (NOT inner instruction streams — corrected Pass 353); cluster = [OP_93][OP_65×N][OP_3B?][OP_53][OP_42] per `enter` field
   - **CORRECTED (Pass 243):** pfmt/pblnk = DECLARATIVE (zero bytecode); PRT_TOF = 2 instructions confirmed
   - runtime_base varies: 0x0460 (var_size=1440) vs 0x02D0 (var_size=2640)
   - Remaining unknowns: OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_4A, OP_5D, OP_56, OP_1B, OP_1A, OP_44, OP_47, OP_19, OP_29, OP_8D, OP_48, OP_57
