@@ -130,9 +130,11 @@ to resolve fully:
    configured for this workstation. Written once; presence/content tells the runtime
    that EvoHELP.CHM has been registered for this machine.
 
-7. **`.btm` vs. `.RTM` — is `.btm` automatic backup?** Filenames align
-   with RTMs suggesting yes, but the snapshot-on-save mechanism hasn't
-   been observed in action.
+~~7. **`.btm` vs. `.RTM` — is `.btm` automatic backup?**~~ **RESOLVED Pass 352 2026-06-26.**
+   YES — confirmed byte-for-byte. `ENCOB3B.btm` (147047 bytes) = `ENCOB3B.RTM` (147047 bytes),
+   both start with `TPF0\tTppReport`. ReportBuilder's save mechanism: rename old `.RTM` to `.btm`
+   (backup), then write new `.RTM`. When identical, the last save was a no-change re-save.
+   `.btm` = previous version of the `.RTM` before the most recent save in the designer.
 
 8. ~~**Scheduler job table.**~~ **RESOLVED 2026-06-17.**
    Scheduler table = **ISSCHED**. Confirmed by DB fingerprint analysis:

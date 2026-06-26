@@ -6,8 +6,11 @@ Status: verified — header structure confirmed from
 ## Format
 
 `.RTM` files are **Delphi binary form streams** (TPF0 format) holding
-a **Nevrona ReportBuilder** `TppReport` component tree. A `.btm` is a
-backup/snapshot of an RTM at the same format.
+a **Nevrona ReportBuilder** `TppReport` component tree. A `.btm` is
+ReportBuilder's automatic save-backup: when the designer saves, it renames
+the old `.RTM` to `.btm` before writing the new version — identical format,
+byte-for-byte identical when the last save was a no-change re-save.
+Confirmed: `ENCOB3B.btm` = `ENCOB3B.RTM` (147047 bytes, `TPF0` magic, identical content — Pass 352).
 
 First 4 bytes:
 ```
