@@ -732,6 +732,48 @@ Confirms WORKORD field names: MTWO_WIP_SSTART and MTWO_WIP_SFIN (scheduled start
 
 ---
 
+## Pass 340 — WO-L-*/WO-K-*/WO-D/E supplementary binary analysis (2026-06-26)
+
+String extraction from 11 additional BKWO*.RUN files: BKWOLA, BKWOLB, BKWOLD, BKWOLE, BKWOLG, BKWOLH, BKWOKF, BKWOKG, BKWOM, BKWON, BKWOD, BKWOE.
+
+### ISTS Enhancement chronology — WO-L-*/WO-D/E programs
+
+Previously only Pass 326 and Pass 337 had enhancement dates for core programs (BKWOA/B/C/G/I/J etc.). Pass 340 fills in the WO-L-* and supplementary programs:
+
+| Program | Enhancement date | Menu code | Role |
+|---------|-----------------|-----------|------|
+| `BKWOLD` | 12/01/04 | WO-L-D | Print Projected Shipments — earliest WO-L enhancement |
+| `BKWOLA` | 10/16/06 | WO-L-A | Print Work Order Status (aggregate) |
+| `BKWOLE` | 12/01/08 | WO-L-E | Print/Post Labor to Payroll (CheckMark export) |
+| `BKWOE`  | 08/02/10 | WO-E   | Print Labor Cards/Labels |
+| `BKWOLH` | 06/25/12 | WO-L-H | Print Projected Hours Report |
+| `BKWOD`  | 01/25/13 | WO-D   | Print Pick Lists (with bin-location support) |
+| `BKWOLG` | 09/09/13 | WO-L-G | Print Work Center by Key Component — most recent |
+
+Combined with Pass 337 dates (BKWOA=08/23/18, BKWOB=01/25/13, BKWOC=09/15/14, BKWOF=08/23/18, BKWOG/H/I from Pass 326), the full WO enhancement range is 12/01/04→08/23/18.
+
+### BKWOLG table access (WO-PO supply lookup in material report)
+
+`BKWOLG.RUN` (WO-L-G Print Work Center by Key Component) opens `BKAPPO` and `BKAPPOL`. This means the WO material report can display open PO supply quantities alongside WO demand — the WO-L-G report is not pure WO data but a demand-supply balance view. Full table set: WORKCTR, WOROUT, WOBOM, BKICMSTR, WORKORD, CLASMSTR, **BKAPPO, BKAPPOL**, BKSYHELP, DBAHLPID, TASCOLOR, MTICMSTR, BKSBVEND, BKSBMFG, BKICREF, BKICLOC, BKSYPRTR, BKSYMSTR, BKAPDESC, MKAHIST, BKAPVEND, BKARCUST, BKCMACCT.
+
+### BKWOLD and BKWOLH table access
+
+`BKWOLD.RUN` (Print Projected Shipments): BKSYMSTR, WORKORD, MTICMSTR, BKARCUST, BKICMSTR, BKSYHELP, DBAHLPID, TASCOLOR, CLASMSTR, BKSBVEND, BKSBMFG, BKICREF, BKICLOC, BKSYPRTR, BKAPDESC, MKAHIST, BKAPVEND, BKCMACCT. No AP tables — purely WO→customer projected delivery.
+
+`BKWOLH.RUN` (Print Projected Hours): BKSYMSTR, BKYSMSTR, WORKORD, WOROUT, BKSYHELP, DBAHLPID, TASCOLOR, BKICMSTR, BKSYPRTR, BKAPDESC, MKAHIST, BKAPVEND, BKARCUST, BKCMACCT. Filter at default shows status [FR] and requires BKYSYMSTR "Projected $ and Hours" flag.
+
+### BKWOLA status filter variant
+
+`BKWOLA.RUN` (Print Work Order Status / aggregate) uses the filter string `XCSFRIA` — all 6 status codes (X/C/S/F/R/I) as the "all statuses" default, vs. `SFRCXIA` in BKAWLB. Both cover the same 6 codes; the ordering difference is a TAS6 multi-status comparison string artifact, not a functional difference. BKWOLA also creates a temporary aggregate file `WOROUTMPA` at runtime for multi-WO roll-up; this is not a persistent table.
+
+### WO-M and WO-N dispatch targets (confirmed)
+
+`BKWOM.RUN`: dispatcher to `BKDCGA` (DC-G production review) and `BKAWMA` (older WO-M).
+`BKWON.RUN`: dispatcher to `BKDCHA` (DC-H post labor batches) and `BKAWNA` (older WO-N).
+Both follow the standard TAS6 3327-byte stub pattern (TEMP00 targets, BKSYMSTR session init only).
+
+---
+
 ## Notes & open questions
 
 - WORKACHG vs WORKCHG: both have identical 25-field schema with WO_CHG_ prefix. Likely split between assembly-level changes (WORKACHG) and general WO header changes (WORKCHG), but the actual split criterion is not confirmed from schema alone — would need RWN source to verify.
