@@ -483,6 +483,61 @@ These tables are NOT in the standard BKBM/BKGL DDF families but appear consisten
 
 ---
 
+## TAS6-era programs (BKGL*.RUN) — complete binary inventory (Pass 323, 2026-06-26)
+
+20 TAS Pro 6 `.RUN` programs confirmed from binary string extraction. All files in `samples/`.
+
+| File | Size | Menu code | Operation | Key tables |
+|------|-----:|-----------|-----------|------------|
+| `BKGLA.RUN` | 160 KB | GL-A | View Chart of Accounts (T6 = read-only view; T7GLA adds budget editing) | BKGLCOA, ISCOA, ISGLCOA, ISGLDATE, ISGLNBGT |
+| `BKGLB.RUN` | 266 KB | GL-B | Enter/Post General Journal Transactions (types: GJ, CR, CD + Beginning Balance) | BKGLGJRN, BKGLGJLN, BKGLTGJR, BKGLTGJL, BKGLCHK, BKGLTRAN |
+| `BKGLC.RUN` | 180 KB | GL-C-A | Convert AP to Long Invoice Numbers (data-migration utility; requires all users out) | BKAPINVT, BKAPINVL, BKAPCHKF, BKAPCHKH |
+| `BKGLD.RUN` | 151 KB | GL-D | Print Journals | BKGLTRAN, BKGLCOA |
+| `BKGLE.RUN` | 231 KB | GL-E | Enter/Edit GL Batch Entries (manual GL edits before posting) | BKGLTEMP, BKGLTRAN, BKGLCOA |
+| `BKGLF.RUN` | 212 KB | GL-F | Print Financial Statements (requires AM-E format + AM-N period dates) | BKGLSTMT, BKGLFSTL, BKGLFCOA, ISGLBDGT, ISGLDATE |
+| `BKGLG.RUN` | 139 KB | GL-G (+ AM-D) | Print GL Code and Description | BKGLCOA |
+| `BKGLH.RUN` | 167 KB | GL-H | Print Chart of Accounts | BKGLCOA, ISCOA, ISGLCOA, ISGLDATE |
+| `BKGLI.RUN` | 172 KB | GL-I | Print Check Register | BKGLCHK, ISBANKS, ISBSF |
+| `BKGLJ.RUN` | 186 KB | GL-J | Reconcile Check Register (bank reconciliation) | BKGLCHK, BKGLCHKF, ISBANKS, ISBSF |
+| `BKGLK.RUN` | 184 KB | GL-K | Transfer Bank Account Funds | BKGLCHK, BKGLCHKL, BKGLTRAN, BKGLX |
+| `BKGLL.RUN` | 3 KB | (stub) | — references BKGLBA/BKGLLA; likely thin launcher | BKGLBA, BKGLLA |
+| `BKGLM.RUN` | 44 KB | GL-M | Generate Recurring GJ Transactions | BKGLGJRN, BKGLGJLN, BKGLRGJR, BKGLRGJL, BKGLTRAN |
+| `BKGLN.RUN` | 184 KB | GL-N | Print Custom/Budget Statements (requires AM-N period dates) | BKGLFSTL, BKGLFCOA, ISGLBDGT, ISGLDATE |
+| `BKGLO.RUN` | 258 KB | GL-O (+ GL-P) | Print/Post GL Batches (filter: CR, CD, GJ, WO, PR, RS, OT) | BKGLTRAN, BKGLTEMP, BKAPINVL, BKAPINVT |
+| `BKGLOOB.RUN` | 121 KB | (utility) | Find Out-of-Balance GL Transactions | BKGLTRAN, BKGLTEMP |
+| `BKGLP.RUN` | 144 KB | GL-P | Post Batches to GL (locks: "Another user is Editing or Posting GL Batches") | BKGLTMP, BKGLTRAN, BKGLTEMP |
+| `BKGLPURG.RUN` | 114 KB | GL-PURG | Purge GL Transactions | BKGLTRAN |
+| `BKGLQ.RUN` | 51 KB | GL-Q | Reverse Batch Posting | BKGLTEMP, BKGLTRAN |
+| `BKGLS.RUN` | 79 KB | GL-S | View/Print GL Journal Notes (also accesses WO tables: WOADSC, WOAWN, WOCALC — GL notes can reference WO activity) | BKGLGJRN |
+
+### GL batch type codes — binary confirmed (Pass 323)
+
+From BKGLB.RUN (entry screen picker) and BKGLO.RUN (post-batch filter screen):
+
+| Code | Description | Source module | Confirmed from |
+|------|-------------|--------------|----------------|
+| **GJ** | General Journal | GL-B (manual entry) | BKGLB+BKGLO binary |
+| **CR** | Cash Receipts | AR module (cash application) | BKGLB+BKGLO binary |
+| **CD** | Cash Disbursements | AP module (check printing) | BKGLB+BKGLO binary |
+| **WO** | Work Orders | WO module (labor/material costing) | BKGLO binary |
+| **PR** | Payroll | PR module (payroll post via T7PRD) | BKGLO binary |
+| **RS** | Revenue/Sales | SO module (invoice posting) | BKGLO binary |
+| **OT** | Other | Miscellaneous / catch-all | BKGLO binary |
+| **MR** | MRP | MRP module (confirmed Pass 321) | BKGLO.RUN Pass 321 |
+| **JC** | Job Cost | JC module | BKGLO.RUN Pass 321 |
+| **PI** | Physical Inventory | PI module | BKGLO.RUN Pass 321 |
+| **VM** | Vendor Manual | Vendor manual check | BKGLO.RUN Pass 321 |
+
+GL-B (manual entry) only allows GJ, CR, CD — the other codes are written automatically by their respective source modules when they call `EXEC_RB` against BKGLTRAN.
+
+BKGLO.RUN batch-filter screen shows types CR, OT, CD, WO, RS, GJ, PR — the 7 "selectable" types; MR/JC/PI/VM also exist in BKGLTRAN but appear to lack their own batch-filter checkbox (posted-only, never shown in filter screen).
+
+### ISBSF — Bank Statement Format (confirmed used by GL-I/J, 2026-06-26)
+
+`ISBSF` appears in BKGLI.RUN and BKGLJ.RUN — it is the bank statement import/configuration table used for check register printing and bank reconciliation. Schema not yet confirmed from DDF (not in standard BKGL* family).
+
+---
+
 ## Notes & open questions
 
 - BKGLECOA / BKGLFCOA: Both have the same 65-field schema as BKGLCOA. One likely tracks the consolidated/entity company (EE); the other may be a financial-statement mapping layer. Not confirmed without RWN source.

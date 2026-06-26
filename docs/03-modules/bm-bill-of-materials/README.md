@@ -272,6 +272,59 @@ T7BMJ/K/L DFMs have 0 fields + 1 control each — grid-only launch screens (the 
 
 ---
 
+## TAS6-era programs (BKBM*.RUN) — complete binary inventory (Pass 323, 2026-06-26)
+
+17 TAS Pro 6 `.RUN` programs confirmed from binary string extraction. All files in `samples/`.
+
+| File | Size | Menu code | Operation | Key tables |
+|------|-----:|-----------|-----------|------------|
+| `BKBMA.RUN` | 307 KB | BM-A | Enter Bills of Material (also: "Edit Imported BOMs", "Enter Estimates [BOM]") | BKBMMSTR, BKBMDIM, BKBMREMK, BKBMNOTE, BKFOCFG, BKICDIM, BKESHA |
+| `BKBMB.RUN` | 223 KB | BM-B | Print Bills of Material (+ Print Features and Options) | BKBMMSTR, BKBMREMK, BKBMNOTE, BKBMMSTRFP |
+| `BKBMC.RUN` | 206 KB | BM-C | Print Where Used (multi-level) | BKBMMSTR, BKBMMSTRF, BKICREF |
+| `BKBMD.RUN` | 331 KB | BM-D | Print BOM Availability (shortage + demand calc; largest BM file) | BKBMMSTR, BKARINVL, BKAPPOL, BKAPPO, BKBMAVAL |
+| `BKBME.RUN` | 94 KB | BM-E | Global Replace (replace one component across all BOMs) | BKBMMSTR, BKSBMFG, BKSBVEND |
+| `BKBMF.RUN` | 94 KB | BM-F | Global Delete | BKBMMSTR, BKSBMFG, BKSBVEND |
+| `BKBMG.RUN` | 252 KB | BM-G | Print/Rollup Standard Costs (multi-level cost explosion up BOM tree) | BKBMMSTR, BKBMREMK, BKBMNOTE, BKICMSTR |
+| `BKBMH.RUN` | 213 KB | BM-H | Print BOM at Average Cost | BKBMMSTR, BKBMREMK, BKBMNOTE, BKICMSTR |
+| `BKBMH1.RUN` | 147 KB | BM-H | (older variant of BM-H — Print BOM at Average Cost) | same tables as BKBMH |
+| `BKBMH2.RUN` | 205 KB | BM-B-A | Print Features and Options variant (accesses AP history PO lines) | BKBMMSTR, BKAPPOL, BKAPHPOL |
+| `BKBMI.RUN` | 229 KB | BM-I | Print Summarized BOM / Pick List (uses temp file lock; one user at a time) | BKBMMSTR, BKBMSUMM, BKICREF |
+| `BKBMJ.RUN` | 195 KB | BM-J | Enter Approved Substitutes | BKSBMFG, BKSBVEND, BKSBPART, BKICREF |
+| `BKBMJC.RUN` | 99 KB | BM-J-C | Enter Approved Manufacturers | BKSBMFG, BKSBVEND |
+| `BKBMK.RUN` | 4 KB | BM-K-A | (stub) | BKPOLA, BKSYMSTR |
+| `BKBML.RUN` | 196 KB | BM-L-A | Enter Approved Manufacturers (older variant of BM-J-C) | BKSBMFG |
+| `BKBMM.RUN` | 196 KB | (SM-J-Q) | BOM Recursion Utility — title says "SM-J-Q" (Service Management), not BM | BKBMMSTR, BKICMSTR |
+| `BKBMX.RUN` | 192 KB | BM-X | Inactive Bill of Material Utility | BKBMMSTR, BKICMSTR |
+
+### Key findings from binary analysis
+
+**Multi-level BOM explosion confirmed:**
+- `BKBMC.RUN` (BM-C) = multi-level **Where Used** — uses `BKBMMSTRF` (filter variant) and `BKICREF` (cross-reference index) to traverse the BOM tree upward
+- `BKBMG.RUN` (BM-G) = multi-level **cost rollup** — rolls standard costs up through all BOM levels via `BKBMMSTRF0` (filter variant with 0 suffix); writes to MTIC.PROD.COST
+- `BKBMI.RUN` (BM-I) = summarized/multi-level **pick list** — uses `BKBMSUMM` to accumulate summarized quantities across BOM levels (one line per part across all BOM levels)
+- `BKBMD.RUN` (BM-D) = multi-level **availability** — also reads `BKARINVL` (SO demand) and `BKAPPOL` (PO supply) for shortage calculation
+
+**BKICREF — Where Used cross-reference index:**
+Appears in BKBMC (Where Used), BKBMI (pick list), BKBMJ (substitutes), BKBME (global replace). `BKICREF` is the reverse BOM index: given a component part, look up which parents use it. This accelerates the "where used" search without scanning all BKBMMSTR records.
+
+**BKBMMSTR filter variants discovered:**
+| Variant | Seen in | Likely role |
+|---------|---------|-------------|
+| `BKBMMSTR` | all programs | Live BOM lines |
+| `BKBMMSTRF` | BKBMC, BKBMH, BKBMJ | Filter/find variant (alternate key by parent) |
+| `BKBMMSTRF0` | BKBMG | F0 variant — perhaps "first component" key for cost rollup |
+| `BKBMMSTRFP` | BKBMB | FP variant — Features and Products BOM line? |
+| `BKBMMSTRL` | BKBMH | L variant — "last" key |
+| `BKBMMSTRI` | BKBME/F/G | I variant — index (alternate-key open) |
+
+**BKBMA.RUN dual-module integration:**
+Opens `BKESHA` (Estimating Spec Header Archive) — confirming BM-A is the BOM entry point for the Estimating module as well. Also opens `BKICDIM` (item dimension master) alongside `BKBMDIM` (BOM-specific dimensions) — the two dimension tables are managed together during BOM entry.
+
+**BKBMM.RUN — SM module recursion utility:**
+Title string "SM-J-Q  Bill of Material Recursion Utility" indicates this program belongs to the **Service Management (SM)** module, not BM. It detects and resolves circular/recursive BOM references (a part that is a component of itself). Registered as SM-J-Q.
+
+---
+
 ## Key Relationships
 
 - T7BMA is the only program that writes BKBMMSTR — all other BM programs read it
