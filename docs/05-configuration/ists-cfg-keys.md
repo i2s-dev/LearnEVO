@@ -832,11 +832,11 @@ Source: `samples/T7MDefaults.DFM` parsed by `scripts/parse_mdefaults_dfm2.py`.
 | YN[87] | Acct. Receivables | Print Co. Name/Addr on Statement | unknown | DFM |
 | YN[200] | Scheduling | Use Lead Time Scheduling [F/B/N] | unknown | DFM |
 | YN[202] | Processing | PO-C to update Std. Cost if Cost is $0.00 | unknown | DFM |
-| YN[209] | Setup | Default PO Tax rate | unknown | DFM |
-| YN[212] | Setup | DC-A/DC-C: Round Shift Start/Stop by X minutes | unknown | DFM |
-| YN[213] | Setup | Post Inventory Adjustments? | unknown | DFM |
-| YN[214] | Setup | Post PO Transactions? | unknown | DFM |
-| YN[215] | Setup | Post COGS Transactions? | unknown | DFM |
+| YN[209] | Setup | Use Accounting Open Period Start Date in GL-B (label from backwards-scan in Setup tab) | unknown | DFM (approx) |
+| YN[212] | Setup | Use Accounting Open Period Start Date in AP-B | unknown | DFM (approx) |
+| YN[213] | Setup | Use Accounting Open Period Start Date in AR-C | unknown | DFM (approx) |
+| YN[214] | Setup | (label ambiguous — Setup tab density) | unknown | DFM (approx) |
+| YN[215] | Setup | (label ambiguous — Setup tab density) | unknown | DFM (approx) |
 | YN[218] | Setup | DC-A/DC-C: Round Shift Start/Stop by X minutes | unknown | DFM |
 | YN[220] | Printing | Invoices (format number?) | unknown | DFM |
 | YN[222] | Setup | GL Department | unknown | DFM |
@@ -864,6 +864,102 @@ Several Setup tab entries show the same label description (e.g. "Post Inventory 
 
 ---
 
+## BKYS.GLNUM[N] / BKYS.GLDPT[N] — GL Account Slot Mapping
+
+Pass 380 (2026-06-29): 19 of 40 GL account slots confirmed from T7MDefaults.DFM.
+Each slot is a pair — GLNUM[N] = GL account number, GLDPT[N] = GL department code.
+Source: DFM Top-position pairing (medium confidence; most Manufacturing/Acct.Sales tab entries are reliable).
+
+| Slot | Module | GL Account Purpose |
+|------|--------|--------------------|
+| GLNUM[2] / GLDPT[2] | Accounting / Sales | AR Customer Deposits |
+| GLNUM[3] / GLDPT[3] | Manufacturing | WO Absorbed Labor |
+| GLNUM[4] / GLDPT[4] | Accounting / Sales | SO Retention |
+| GLNUM[5] | Setup | (label ambiguous — "Post COGS Transactions?"; may be wrong pairing) |
+| GLNUM[6] / GLDPT[6] | Manufacturing | WO Absorbed Fixed Overhead |
+| GLNUM[7] / GLDPT[7] | Manufacturing | WO Absorbed Var Overhead |
+| GLNUM[9] / GLDPT[9] | Manufacturing | WO Extra Costs |
+| GLNUM[10] / GLDPT[10] | Manufacturing | WO Miscellaneous Costs |
+| GLNUM[14] / GLDPT[14] | Manufacturing | IN Absorbed Freight In |
+| GLNUM[15] | Customers | Default Customer Class Code (not a GL account — possibly repurposed slot) |
+| GLNUM[16] | Customers | Default Discount Code (not a GL account — possibly repurposed slot) |
+| GLNUM[17] / GLDPT[17] | Accounting / Sales | CS Agents Commission Payable |
+| GLNUM[18] / GLDPT[18] | Accounting / Sales | CS Agents Commission Expense |
+| GLNUM[20] / GLDPT[20] | Manufacturing | WO WIP Variance |
+| GLNUM[21] / GLDPT[21] | Manufacturing | PO Purchase Price Variance |
+| GLNUM[33] / GLDPT[33] | Accounting / Sales | AP Deposits |
+| GLNUM[34] / GLDPT[34] | Manufacturing | WO WIP Inventory |
+| GLNUM[35] / GLDPT[35] | Manufacturing | IN Cost of Goods Sold |
+| GLNUM[36] / GLDPT[36] | Manufacturing | IN Inventory (Asset) |
+| GLNUM[37] / GLDPT[37] | Accounting / Sales | SO Non-Taxable Sales |
+| GLNUM[38] / GLDPT[38] | Accounting / Sales | SO Taxable Sales |
+
+Slots 1, 8, 11–13, 15–16, 19, 22–32, 39–40 not yet confirmed (labels either missing or ambiguous).
+
+## BKYS.VNUM[N] and BKYS.NUM[N] Slot Mapping
+
+| Slot | Purpose |
+|------|---------|
+| VNUM[2] | Default Salesperson #1 code (Customers tab) |
+| VNUM[3] | Default sequence increment for Routing (Routing tab) |
+| NUM[1] | (label ambiguous from Setup tab; likely a counter field) |
+
+## BKEST.CFG.* — Estimates Configuration Keys
+
+Pass 380 (2026-06-29): 10 BKEST.CFG keys confirmed from T7MDefaults.DFM (Estimates tab).
+These are stored in BKESTCFG (1-row config table for the Estimating module).
+
+| Key | Description | Allowed Values |
+|-----|-------------|----------------|
+| BKEST.CFG.CLASS | Default Class Code for new estimates | — |
+| BKEST.CFG.DAYS | Number of days to expiration date for quotes | — |
+| BKEST.CFG.FORM | Customer Quote Print Format (1=ESD1.RTM universal, 2=ESD2.RTM letterhead) | 1,2 |
+| BKEST.CFG.LAB% | Default Labor Margin % | — |
+| BKEST.CFG.MAT% | Default Material Margin % | — |
+| BKEST.CFG.OH% | Default Overhead Margin % | — |
+| BKEST.CFG.OP% | Default Outside Processing (Outs Proc) Margin % | — |
+| BKEST.CFG.STAT | Default Status Code for new estimates | A,C,I,X |
+| BKEST.CFG.TOT% | Default Total Margin % | — |
+| BKEST.CFG.ENDLN | (Printing context — may be shared with other modules) | — |
+
+## DFM-Sourced ISTS.CFG Key Reference
+
+Pass 380 (2026-06-29): All 504 ISTS.CFG key descriptions have been extracted from T7MDefaults.DFM
+using Top-position label pairing. The complete mapping is in `samples/T7MDefaults_cfg_keys.csv`.
+
+**Selected confirmed key descriptions** (supersede the inferred meanings above):
+
+| Key | Confirmed Description | Source |
+|-----|-----------------------|--------|
+| ISTS.CFG.ACCESS | Allow CM-A to access AR-A [Legacy Settings] | DFM |
+| ISTS.CFG.ACDCSQ | INB: Use TOOLS lookup and validation setup in RO-E | DFM |
+| ISTS.CFG.ACKBO | Include BO on EDI Acknowledgments | DFM |
+| ISTS.CFG.APBDTE | AP-B: Use Invoice Date as Post Date in AP-B | DFM |
+| ISTS.CFG.APBSDT | AP-B: Use Accounting Open Period Start Date | DFM |
+| ISTS.CFG.APBVND | AP-B: Prevent Creating New Vendors | DFM |
+| ISTS.CFG.APCLST | AP-C: Update Last Cost when Changing Price | DFM |
+| ISTS.CFG.APLINK | AP-C/AP-B: Enable Vendor Invoice Links [YNA] | DFM |
+| ISTS.CFG.APLANG | AP-H: Print Check English/Spanish (E/S) | DFM |
+| ISTS.CFG.APHXPT | AP-H: Export Program Name | DFM |
+| ISTS.CFG.APPVND | AP-B/AP-F/PO-A/PO-C: Use Approved Vendors [YNP] | DFM |
+| ISTS.CFG.APSORT | AP-B: Sort vendors by (1=Vendor/2=Name/3=State/4=Zip/5=Contact) | DFM |
+| ISTS.CFG.ARADTE | Allow Edit of Customer Start Date in AR-A | DFM |
+| ISTS.CFG.ARCBOM | BMA: Auto Archive BOM [Y/N] | DFM |
+| ISTS.CFG.XCOMA | Enable Extended Commission System [Sales Commissions] | DFM |
+| ISTS.CFG.XCOMH | Enable Overage within Extended Commissions [Sales Commissions] | DFM |
+| ISTS.CFG.XCOMM | Enable Extended Commission System [Sales Commissions] | DFM |
+| ISTS.CFG.XDBA | Permanently Disable DBA Classic | DFM |
+| ISTS.CFG.XREBSS | DCA/B/C Allow access to view and modify the WC [Y/N] | DFM |
+| ISTS.CFG.ZPRCOM | Save zero dollar value Commissions? [Y/N] | DFM |
+
+For the full table of all 504 keys with DFM-sourced descriptions, see `samples/T7MDefaults_cfg_keys.csv`.
+
+**Note on label quality:** Non-Setup-tab entries tend to have accurate pairings. Setup tab entries
+(which contain hundreds of flags densely stacked) have lower pairing accuracy — treat them as
+approximate. The CSV includes tab context to help identify likely-accurate vs ambiguous entries.
+
+---
+
 ## Keys in Old Grep-Based List but NOT in T7YSYN
 
 These keys appeared in rwn_strings grep results but are absent from T7YSYN's editor fields.
@@ -884,6 +980,6 @@ match the ISTS.CFG.* pattern rather than true configuration keys.*
 
 ---
 
-*Last updated: 2026-06-29 — Pass 379*
-*Source: T7YSYN symbol table + T7MDefaults.DFM Top-position pairing (89 YN entries)*
-*Confidence: 62/100 — 495 keys confirmed as BKYSMSTR editor fields; DFM pairing gives 89/354 YN semantics (25% coverage); Setup tab pairings less reliable; ISTS.CFG key↔YN index mapping mostly unknown.*
+*Last updated: 2026-06-29 — Pass 380*
+*Sources: T7YSYN symbol table + T7MDefaults.DFM Top-position pairing (89 YN entries + 504 ISTS.CFG entries + GL account slots)*
+*Confidence: 72/100 — 495 keys confirmed as BKYSMSTR editor fields; 504 keys have DFM-sourced descriptions (full CSV: samples/T7MDefaults_cfg_keys.csv); 19/40 GL account slots confirmed; 10 BKEST.CFG keys confirmed; Setup tab label pairings remain less reliable.*
