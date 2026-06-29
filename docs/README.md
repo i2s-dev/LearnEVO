@@ -155,6 +155,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Tier 11 tables — Module archive and extended tables (Pass 108): EvoERP archive pattern documented; ISSO* SO IS tables (10t: ISSOBOX packing/ISSOINFO/ISSOREVU approval); ISSR* SR archive (21t — BKARINV clones + ISSR_INFO 54f pattern); ISRM* RMA archive (14t); ISSS* staging (4t); ISST* scan tracking (4t); ISPO* PO tracking (7t: ISPOTRK carrier tracking); ISAP* AP extended (15t: ISAPAINL 390f AP archive invoice); ISPR* extended payroll (7t: ISPRMSTR 384f, ISPREQ WO labor auth)](04-data-dictionary/tier11-tables.md) — *partial, 2026-06-18*
 - [Variable-to-field name map — TAS program variable names (BKIC.PROD.*, BKAR.*, BKAP.*) mapped to DB fields](04-data-dictionary/variable-field-map.md) — *verified, 2026-06-16*
 - [Primary keys — 200+ tables with primary key fields from INDEX.DDF](04-data-dictionary/primary-keys.md) — *partial*
+- [FILELOC routing table — 401 logical buffer names → 863 physical filenames, 6 companies; schema, alias groups, company codes, CodeBase entries (Pass 388, 2026-06-29)](04-data-dictionary/fileloc-routing.md) — *verified*
 
 ### 07 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*

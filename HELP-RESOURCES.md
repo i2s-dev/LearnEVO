@@ -1639,9 +1639,17 @@ through the FILELOC routing layer.
 - "What fields does a Btrieve table have?" → FL → FILEDICT view shows field name/offset/type
 - WTASDMGR/WTASDATAM/T7DDCHECK all call into the FL infrastructure for file management
 
-**Confidence: 80/100** — DFM fully confirmed (caption "Maintain File Names and Locations",
-all controls); var-level confirmed from WTASFLOC.RWN.dec (99 vars, 22 procs). Proc-level
-logic not yet analyzed. See `docs/03-modules/fl-file-location.md`.
+**Pass 388 (2026-06-29) — live fileloc.dbf fully parsed:**
+- **401 unique logical buffer names** (what TAS programs use in `open TABLE`)
+- **863 unique physical filenames** (what actually opens on disk, per company)
+- **123 alias groups** — same logical handle routes to different physical files by context
+- **6 company codes**: B (default), BI2 (i2 Systems), BAT, BAB, BCA, B99 (test)
+- **Record types**: B=Btrieve (4,419), C=CodeBase/dBASE (15), F=Overlay (1)
+- **Notable alias groups**: BKAPDESC→21 description buffers; BKARINV→26 invoice aliases; BKBMMSTR→39 aliases (most-migrated); BKARINVL→30 line aliases; INVTXN→28 aliases
+- **CORRECTION**: FILELOC does NOT route RTM report files — RTMs use ISTS.CFG.RTM.* config keys in BKYSMSTR, ISRTMS table (per-customer label routing), RTMVLD_* library, or hardcoded paths in RWN pool strings
+- Full routing table documented at `docs/04-data-dictionary/fileloc-routing.md`
+
+**Confidence: 90/100** — Schema + all 401 buffer names + alias groups live-confirmed from fileloc.dbf (Pass 388); DFM + var-level confirmed from WTASFLOC (Pass 231). Proc-level logic not yet analyzed. See `docs/03-modules/fl-file-location.md`.
 
 ---
 
