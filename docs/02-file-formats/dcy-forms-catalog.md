@@ -4,7 +4,31 @@ Status: verified (all 41 files decrypted and scanned 2026-06-17)
 
 All `.DCY` files are Delphi VCL form definitions encrypted with Twofish-192-CFB-128 using key K_D.
 After decryption they are standard Delphi `.DFM` text format (`object Name: ClassName … end`).
-Seven `suwin*.DCY` files use a different key (K_C or unknown) — see `decryption-findings.md`.
+`suwin6.dcy` uses key K_C (see below). `suwin7.dcy` uses an unknown 5th key — see `decryption-findings.md`.
+
+### suwin6.dcy — ISTech License Dialog (K_C key, confirmed Pass 375 2026-06-29)
+
+Form: `EditForm1_1: TEditForm1_1` — **ISTech License dialog** (shown at EvoERP startup)
+Caption: `' ISTech License'`; style: `fsStayOnTop` (modal, always-on-top)
+Components: Image1 (PNG logo), Memo1 (company address), 7 × TLabel, TGlyphBtn, TRtnTimer, 2 × TBevel
+
+**Key data hardcoded in form:**
+| Component | Caption | Meaning |
+|-----------|---------|---------|
+| lblUserSerialNum | `670538` | License serial number |
+| lblUserNum | ` 48` | Max concurrent users |
+| lblUserLicType | `VPY` | License type code |
+| Memo1 Lines | `i2 Systems / 355 Bantam Lake Rd / Morris, CT 06763` | Registered company |
+| lblFromIgnore | `lblFromIgnore` (hidden) | License start date (set at runtime) |
+| lblThruIgnore | `lblThruIgnore` (hidden) | License end date (set at runtime) |
+| lblLimitedUse | `***` | Limited-use indicator (set at runtime) |
+
+Timeout: `TRtnTimer` with `Interval=3000` / `SecondsBtwnCalls=3` / `CallPrgLoc=-1` — auto-dismisses after ~3 seconds.
+Hint: `'C:\TASPRO7\DBA7\tas6evodba.DFM'` — developer path on ISTech's build machine.
+Copyright: `Evo~ERP 2003-2013` + `MGM Holdings 1985-2003`.
+**Purpose of K_C**: protects the license credentials embedded in this form.
+
+`samples/suwin6_decrypted.bin` — regenerated correctly Pass 375.
 
 The companion `.DFM` file on the network share is always the matching plaintext copy;
 the `.DCY` is the deployed encrypted version the runtime actually loads.

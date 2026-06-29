@@ -170,12 +170,16 @@ to resolve fully:
     and 28 other modules with 1–6 codes each. These programs work
     correctly at runtime — they are simply opaque to static analysis.
 
-13. **`suwin*.DCY` format — PARTIALLY RESOLVED 2026-06-17.**
-    - **suwin6.dcy** → validated by **K_C** (`fdc2883f6d6537dd667270406d0a4c85969295ac`). Decrypted content is binary (not Delphi VCL text). K_C = bootstrap DCY key.
-    - **suwin7.dcy** → still fails K_A, K_B, K_C, K_D. 3,527 bytes, entropy 7.945. A 5th key exists or it uses a completely different format.
+13. **`suwin*.DCY` format — PARTIALLY RESOLVED 2026-06-17, CORRECTED Pass 375 2026-06-29.**
+    - **suwin6.dcy** → K_C ✅ Delphi VCL text form = **ISTech License dialog** (`EditForm1_1: TEditForm1_1`).
+      Serial=`670538`, Users=48, LicType=`VPY`, company=`i2 Systems / Morris CT`.
+      Prior "binary opcodes" finding was WRONG — stale decrypted binary from broken implementation.
+      K_C purpose = **license dialog encryption key** (protects hardcoded serial/user count).
+    - **suwin7.dcy** → still fails K_A, K_B, K_C, K_D (192-bit and 256-bit). 3,527 bytes, entropy 7.945.
+      Likely a 5th key; possibly TAS Pro 7 era license dialog. Blocked without live capture.
     - **suwin6t.rwn / suwin7.rwn** → both validate with K_B (standard RWN key — expected).
     - **K_A** (`d97f05679438037073c30628734764020859f77e`) purpose remains unknown.
-    - Remaining: identify what K_A encrypts; find key for suwin7.dcy.
+    - Remaining: identify what K_A encrypts; find key for suwin7.dcy (requires live Frida session).
 
 ~~12. **Customization forms (`J7*`).**~~ **RESOLVED 2026-06-17.**
     All 50 J7 RWN modules cataloged; 16 DFMs read for form titles and field labels.

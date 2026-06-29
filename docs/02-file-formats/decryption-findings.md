@@ -25,16 +25,36 @@ All confirmed via live Frida capture (`frida_capture_key_and_iv.py`) + Python de
 | K_A | `d97f05679438037073c30628734764020859f77e` | unknown (appears at EVO startup; tried against all suwin files — none pass) |
 | K_C | `fdc2883f6d6537dd667270406d0a4c85969295ac` | **suwin6.dcy** (confirmed 2026-06-17) |
 
-**suwin6.dcy / K_C confirmed (2026-06-17, verified Pass 112 2026-06-19):**
+**suwin6.dcy / K_C confirmed (2026-06-17, re-verified Pass 375 2026-06-29 — prior "binary opcodes" finding was WRONG):**
 - Validation block: `4b7650d14b7650d1` — pt[0:4] == pt[4:8] ✅
-- Decrypted content: **32,864 bytes of compiled TAS Pro 7 bytecode** — NOT a Delphi VCL form
-- Shannon entropy of decrypted plaintext: **7.9939 bits/byte** (near maximum; no string literals found)
-- String extraction (5+ printable chars): 0 recognizable words, table names, or TAS Pro keywords
-- Confirmed sub-type: DCY Type B (TAS Pro 7 compiled bytecode) vs DCY Type A (Delphi DFM form)
-  - Type A: encrypted with K_D; decrypts to `object FormName: TFormClass...` (ASCII DFM)
-  - Type B: encrypted with K_C; decrypts to pure compiled opcodes (same as .RWN body)
-- The pre-load logic cannot be traced without a TAS Pro 7 bytecode disassembler
-- samples/suwin6_decrypted.bin — the decrypted binary (32,864 bytes)
+- **CORRECTION (Pass 375):** Decrypts to a **Delphi VCL text form**, NOT compiled bytecode.
+  The earlier "binary opcodes" finding was produced by a stale `suwin6_decrypted.bin` from an
+  incorrectly parameterized decryptor (pre-cipher-confirmation code). The correct output is:
+  `object EditForm1_1: TEditForm1_1` — the **ISTech License dialog**.
+- **ISTech License dialog contents:**
+  - Caption = `' ISTech License'` (modal, `fsStayOnTop`)
+  - Memo1 (company address): `i2 Systems / 355 Bantam Lake Rd / Morris, CT 06763`
+  - `lblUserSerialNum` Caption = `'670538'` — hardcoded **serial number**
+  - `lblUserNum` Caption = `' 48'` — **48 concurrent users** licensed
+  - `lblLicenseType` Caption = `'License Type'`; `lblUserLicType` Caption = `'VPY'` — **VPY license type**
+  - `lblFromIgnore` / `lblThruIgnore` — hidden labels, set at runtime to license date range
+  - `lblLimitedUse` Caption = `'***'` — placeholder for limited-use status
+  - `btnContinue: TGlyphBtn` — dismissal button
+  - `Timeout: TRtnTimer` — 3000ms auto-dismiss timer
+  - Hint = `'C:\TASPRO7\DBA7\tas6evodba.DFM'` — developer path: ISTech uses `C:\TASPRO7\DBA7\`
+  - Copyright: `Evo~ERP 2003-2013 All Rights Reserved` + `MGM Holdings 1985-2003`
+- **Purpose of K_C**: protects the license dialog DCY (contains hardcoded serial and user count)
+- `samples/suwin6_decrypted.bin` regenerated correctly (Pass 375)
+- All DCY files (Type A and B) use the same Delphi VCL text format; K_C and K_D differ only in key bytes
+
+**suwin key summary (corrected Pass 375):**
+| File | Key | Format |
+|------|-----|--------|
+| suwin6.dcy | K_C | Delphi VCL text form (`EditForm1_1` — ISTech License dialog) |
+| suwin6.dcy (Default/) | K_C | Same as above (copy for Default company) |
+| suwin7.dcy | unknown (5th key?) | Unknown — 3527 bytes, entropy 7.945 |
+| suwin6t.rwn | K_B | Standard RWN binary |
+| suwin7.rwn | K_B | Standard RWN binary |
 
 **suwin7.dcy — still unresolved:**
 - 3,527 bytes, entropy 7.945 (fully encrypted)
@@ -44,10 +64,7 @@ All confirmed via live Frida capture (`frida_capture_key_and_iv.py`) + Python de
 **suwin key summary:**
 | File | Key | Format |
 |------|-----|--------|
-| suwin6.dcy | K_C | Binary (not Delphi VCL form) |
-| suwin7.dcy | unknown (5th key?) | Unknown |
-| suwin6t.rwn | K_B | Standard RWN binary |
-| suwin7.rwn | K_B | Standard RWN binary |
+*(suwin key table above — corrected Pass 375)*
 
 192-bit key = raw key + `\x00\x00\x00\x00`.
 
