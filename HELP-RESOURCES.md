@@ -2558,7 +2558,16 @@ AHSYLOG schema is documented here for reference only.**
 
 **Access:** AD-A (GL Defaults) via T7MDEFAULTS.RWN (435 procs). See Accounting Defaults (AD) section below.
 
-**Confidence: 85/100** — All 286 DDF fields confirmed from samples/ddf/schema.md; embedded arrays fully documented (20-slot terms, 9-slot bank, 5-slot aging, BKSYPRTR printer table confirmed); tier1-tables.md updated Pass 121.
+**BKYSMSTR** — 355-field YN/GL-account/counter/description configuration table (one record per company). Contains:
+- YN[1..250] — 250 boolean/string toggle flags (89/250 semantics documented, see AD section below)
+- GLNUM[1..40] / GLDPT[1..40] — 40 GL account/dept pairs for module posting (19/40 confirmed, see AD section)
+- NUM[1..5] — 5 general counters
+- DESC[1..5] — 5 description strings
+- VNUM[1..5] — 5 vendor/code fields (VNUM[2]=default salesperson, VNUM[3]=routing seq increment)
+- DATE[1..5] — 5 date fields
+- Auto-number counters: WONUM, QCNUM, REQNUM, INVNUM, RBNUM
+
+**Confidence: 88/100** — All 286 DDF fields of BKSYMSTR confirmed from samples/ddf/schema.md; BKYSMSTR 355f schema from DDF confirmed; 89/354 YN semantics documented from T7MDefaults.DFM; 19/40 GL account slots confirmed; embedded arrays fully documented; tier1-tables.md updated Pass 121.
 
 ---
 
@@ -2582,7 +2591,67 @@ AHSYLOG schema is documented here for reference only.**
 
 **Note on naming:** T7ADCA.RWN is "Advanced Data Collection" (not Accounting Defaults) — different module despite the AD prefix.
 
-**Confidence: 70/100** — CHM content fully documented; RWN programs identified; primary tables known; specific BKSYMSTR field offsets per setting not yet mapped.
+**BKYSMSTR GL Account Slots (BKYS.GLNUM[N] / BKYS.GLDPT[N])** — confirmed from T7MDefaults.DFM Pass 380:
+
+| Slot | GL Account Purpose | Module |
+|------|--------------------|--------|
+| [2] | AR Customer Deposits | AR |
+| [3] | WO Absorbed Labor | WO/Manufacturing |
+| [4] | SO Retention | SO |
+| [6] | WO Absorbed Fixed Overhead | WO/Manufacturing |
+| [7] | WO Absorbed Variable Overhead | WO/Manufacturing |
+| [9] | WO Extra Costs | WO/Manufacturing |
+| [10] | WO Miscellaneous Costs | WO/Manufacturing |
+| [14] | IN Absorbed Freight In | IN |
+| [17] | CS Agents Commission Payable | CS |
+| [18] | CS Agents Commission Expense | CS |
+| [20] | WO WIP Variance | WO/Manufacturing |
+| [21] | PO Purchase Price Variance | PO |
+| [33] | AP Deposits | AP |
+| [34] | WO WIP Inventory | WO/Manufacturing |
+| [35] | IN Cost of Goods Sold | IN |
+| [36] | IN Inventory (Asset) | IN |
+| [37] | SO Non-Taxable Sales | SO |
+| [38] | SO Taxable Sales | SO |
+
+Slots 1, 5, 8, 11–13, 15–16, 19, 22–32, 39–40 are not yet confirmed (may hold additional module GL accounts or default codes).
+
+**BKYSMSTR YN Flag Highlights** — selected from 89/354 mapped entries (Pass 379/380):
+
+| YN[N] | Setting Description | Tab |
+|-------|---------------------|-----|
+| YN[1] | Post COGS Transactions? (Y/N) | Setup |
+| YN[2] | Post Inventory Adjustments? (Y/N) | Setup |
+| YN[5] | Post WO Transactions? (Y/N) | Setup |
+| YN[27] | Post PO Transactions? (Y/N) | Setup |
+| YN[33] | Invoice PO Receipts through AP | Setup |
+| YN[36] | Multiply or Divide process time by # of processes? (M/D) | Routing |
+| YN[37] | Use standard time in routing? (Y/N) | Routing |
+| YN[38] | Make sequence equal template number? (WOCALC) | Routing |
+| YN[39] | SO Packing Slip form (1=SOC1, 2=SOC2, 3=SOC3, 4=SOC4) | Printing |
+| YN[47] | Payroll check form (1=PRD1 laser, 2=PRD2 continuous) | Checking |
+| YN[48] | AP check form (1=APHA1, 2=APH1 continuous, 4=APHA2, 5=APHA3) | Checking |
+| YN[57] | Display machine prompt in Enter Labor? | Scheduling |
+| YN[59] | Allow entry to overlap settings in routings? | Scheduling |
+| YN[66] | Display long time prompt in routing? | Routing |
+| YN[67] | Include item in MRP Generation? | MRP |
+| YN[76] | SO Acknowledgment form (1=SOB1, 2=SOB2, 3=SOB3, 4=SOB4) | Printing |
+| YN[77] | SO Quote form (1=SOPB1, 2=SOPB2, 3=SOPB3, 4=SOPB4) | Printing |
+| YN[78] | PO form (1=POE1 universal, 2=POE2 plain) | Printing |
+| YN[200] | Use Lead Time Scheduling [F=forward/B=backward/N=none] | Scheduling |
+| YN[209] | Use Accounting Open Period Start Date in GL-B | Setup |
+| YN[212] | Use Accounting Open Period Start Date in AP-B | Setup |
+| YN[213] | Use Accounting Open Period Start Date in AR-C | Setup |
+| YN[228] | DC alternate screen — Y=mount BKDCAF (ISTS.CFG.DCSEQ) | Setup |
+| YN[229] | DC auto-close on new job start (ISTS.CFG.DCSYNC) | Setup |
+| YN[230] | AR invoice age based on (1) age or (2) days past due | Acct. Receivables |
+| YN[237] | PO & DC update actual start/finish dates of sequences? | Scheduling |
+| YN[248] | Round MRP quantities to the next whole number? | MRP |
+
+Full 89-entry YN mapping table in `docs/05-configuration/ists-cfg-keys.md`.
+Full 504-entry ISTS.CFG key description table in `samples/T7MDefaults_cfg_keys.csv`.
+
+**Confidence: 80/100** — CHM content fully documented; RWN programs confirmed; GL account slot mapping 19/40 confirmed from DFM; YN flag semantics 89/354 documented; BKEST.CFG and BKYS array slots confirmed.
 
 ---
 
