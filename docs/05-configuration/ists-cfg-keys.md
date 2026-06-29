@@ -972,13 +972,72 @@ Slots 1, 8, 11–13, 19, 22–32, 39–40 not yet confirmed (labels either missi
 - GLNUM[5]='I2S' (company code — NOT a GL account; see correction above)
 - GLNUM[8]='51200' (purpose unknown — not in DFM table; slot 8 now partially confirmed as active)
 
-## BKYS.VNUM[N] and BKYS.NUM[N] Slot Mapping
+## BKYS.VNUM[N], BKYS.NUM[N], BKYS.DESC[N], BKYS.DATE[N] — Non-YN Non-GL Scalar Slots
 
-| Slot | Purpose |
-|------|---------|
-| VNUM[2] | Default Salesperson #1 code (Customers tab) |
-| VNUM[3] | Default sequence increment for Routing (Routing tab) |
-| NUM[1] | (label ambiguous from Setup tab; likely a counter field) |
+Pass 385 (2026-06-29): live DSN=DBA query + DFM binding extraction for all 20 non-YN non-GL
+scalar slots in BKYSMSTR. Total BKYSMSTR column breakdown (355 fields confirmed):
+250 YN + 40 GLNUM + 40 GLDPT + 5 NUM + 5 VNUM + 5 DESC + 5 DATE + 5 auto-numbers = 355.
+
+### Auto-Number Counters
+
+These 5 columns store the next available auto-number for each subsystem:
+
+| Column | Live Value (i2S) | Purpose |
+|--------|-----------------|---------|
+| BKYS_WONUM | 401 | Next Work Order number |
+| BKYS_QCNUM | 1 | Next QC Receipt number |
+| BKYS_REQNUM | 0 | Next Requisition number (RE module) |
+| BKYS_INVNUM | 1 | Next Invoice number (reset or not yet used) |
+| BKYS_RBNUM | 20 | Next Report Batch number (RB — exact purpose unknown) |
+
+### VNUM[N] Slots (5 slots, STRING type)
+
+| Slot | DFM Description (T7MDefaults) | Live Value (i2S) | Confidence |
+|------|-------------------------------|------------------|------------|
+| VNUM[1] | (not bound in any DFM) | '1111' | DFM: unknown; live: likely a system code |
+| VNUM[2] | "Recycle Fee Item Num" (Customers tab) | '0' | DFM (medium) — prior note "Salesperson #1" was a different label pairing error |
+| VNUM[3] | "ROA: Recalc Parts/Hr when changing # Persons (Y/N/A)" (Routing tab) | '10' | DFM (medium); live '10' consistent with Routing sequence increment |
+| VNUM[4] | (not bound in any DFM) | '0' | unknown |
+| VNUM[5] | (not bound in any DFM) | '7' | unknown; value 7 may be a count or mode code |
+
+### NUM[N] Slots (5 slots, NUMERIC type)
+
+| Slot | DFM Description | Live Value (i2S) | Confidence |
+|------|-----------------|------------------|------------|
+| NUM[1] | "WO-K-M: Require a Reason code" (Setup tab) | 2 | DFM (low — Setup tab density); 2 could be a multi-option code |
+| NUM[2] | (not bound in any DFM) | 7952 | unknown; 7952 is suspiciously specific — possibly a check number counter or print count |
+| NUM[3] | (not bound in any DFM) | 1 | unknown |
+| NUM[4] | (not bound in any DFM) | 1 | unknown |
+| NUM[5] | (not bound in any DFM) | 50 | unknown; 50 could be max-users type cap (license allows 48) |
+
+### DESC[N] Slots (5 slots, STRING type — 25 chars)
+
+| Slot | DFM Description | Live Value (i2S) | Confidence |
+|------|-----------------|------------------|------------|
+| DESC[1] | "SOE: Enter BOL Info for EDI?" (Setup tab) | '' (blank) | DFM (low — label mismatch likely) |
+| DESC[2] | (not bound in any DFM) | '' (blank) | unknown |
+| DESC[3] | "Force Order Descriptions in SO/PO" (T7MDefNDC Setup) | 'PLANT' | DFM description may be wrong; live 'PLANT' suggests default dept/location code |
+| DESC[4] | (not bound in any DFM) | '' (blank) | unknown |
+| DESC[5] | (not bound in any DFM) | '' (blank) | unknown |
+
+**Note on DESC[3]='PLANT':** The value 'PLANT' strongly suggests this stores a default
+department code, location name, or facility identifier used as a fallback when no specific
+dept/location is assigned. The DFM-derived label is likely a label-pairing error.
+
+### DATE[N] Slots (5 slots, DATE type)
+
+| Slot | DFM Description | Live Value (i2S) | Confidence |
+|------|-----------------|------------------|------------|
+| DATE[1] | (not bound in T7MDefaults DFM) | 2024-01-01 | Likely accounting open period start date (AR or fiscal year) |
+| DATE[2] | (not bound in any DFM) | 2024-01-01 | Same as DATE[1] — possibly AP open period start |
+| DATE[3] | (not bound in any DFM) | (null) | Not set at i2 Systems |
+| DATE[4] | (not bound in any DFM) | 2020-12-31 | Prior period end date (last closed fiscal year or archived period) |
+| DATE[5] | (not bound in any DFM) | 2020-12-31 | Same as DATE[4] — prior period variant |
+
+**Observation:** DATE[1]=DATE[2]=2024-01-01 mirrors the current fiscal year start at i2 Systems.
+DATE[4]=DATE[5]=2020-12-31 likely marks the last fully-archived/closed period.
+The DFM references to YN[35]/YN[231]="Open Period End Date" and YN[4]="Fiscal Year Start Date"
+are in the YN (string) block; DATE[N] may be the same concept stored as actual date objects.
 
 ## BKEST.CFG.* — Estimates Configuration Keys
 
