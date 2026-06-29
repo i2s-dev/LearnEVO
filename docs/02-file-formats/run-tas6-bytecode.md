@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356; Pass 366: OP_8D structural pattern confirmed as DISPATCH_CONT; Pass 367: OP_25=PFMT, OP_22=PBLNK, OP_0C=DEL_REC confirmed; OP_43/OP_47=array-field-subscript pair, OP_29=array-iter-init structural; pfmt/pblnk CORRECTION applied — they DO compile to instructions; Pass 368: library-expansion zone confirmed; OP_44 structural pattern established; OP_19/OP_5C probable browse descriptors; OP_1B library-stub hypothesis; OP_56/OP_5D partial; 5 unknowns remain
+Status: **partial** — dual-channel architecture confirmed C:88/100; Pass 368: library-expansion zone confirmed; OP_44 structural pattern; OP_19/OP_5C probable browse descriptors; OP_1B library-stub hypothesis; OP_56/OP_5D partial; Pass 369: BKROA added (4577 instr, 4 libs); OP_19 group sizes ×1/×4/×10 confirmed; OP_5C dual-role discovered; OP_C0/C1 balanced pairs; OP_5D main-code zero-buffer + library address-table; 5 unknowns remain
 
 Last updated: 2026-06-29
 
@@ -806,6 +806,18 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 - Confidence: 20/100.
 
 **Remaining unknowns (Pass 368):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **still 5 unknowns** (partial analysis only; counts and structural patterns established but no source keyword positively confirmed for any).
+
+**Pass 369 updates (2026-06-29):** BKROA.SRC added as 4th Rosetta Stone (2433 lines, 4577 instr, 4 libraries). Key structural findings:
+
+- **OP_19 group sizes confirmed** — three distinct run lengths: ×1 (singleton), ×4 (medium browse), ×10 (inv_menu 10-column IC Master browse). Only the ×10 group is immediately preceded by OP_5C. The ×1 and ×4 groups have varied predecessors (OP_20, OP_0F, etc.).
+- **OP_5C has TWO distinct roles** — (a) Before OP_19×10: 10-column browse header (1 instance in BKROA I#2701, 1 in BKLME I#1669); (b) Standalone in main code: 4 instances in BKROA main-code subroutine I#806-I#1045 not followed by OP_19. Confidence for role (a) stays 45%; role (b) purpose unknown. Data for role (a) instance I#2701: `00 02 59 46 F0 1B 00 00 00 00 00 00`.
+- **OP_44 structural pattern confirmed in BKROA** — 6 instances at I#1839, I#1981, I#2309, I#2418, I#2493, I#2634; all in library zone. Invariant after: [OP_44][OP_06/CLR][OP_93][OP_65×N]. Preceding pattern includes [OP_39/FUNC_PREPOST] for cases I#2418, I#2493, I#2634; some cases preceded by [OP_BE/PMSG] instead. 55% confidence.
+- **OP_5D — main code instance** — BKROA I#29 has OP_5D at addr 0x02FA with ALL-ZERO 20-byte data record; this is a runtime-initialized buffer in the data channel zero-fill zone (zone2). Confirms OP_5D allocates a runtime buffer in main code. BKROA library instances I#2001-2002 contain repeating 7-byte address table: `[0A][addr_lo][addr_hi][01 00 0F 00]` with instruction-index addresses (0x047F=1151, 0x0489=1161, etc., spaced by +0x0A=10). 20% confidence still.
+- **OP_C0/OP_C1** — always perfectly balanced (BKLME=3/3, BKDCA=18/18, BKROA=37/37). OP_C1 always b2=0 (no-data terminator). Pattern [OP_C0 b2=4][payload][OP_C1 b2=0] seen in library zone; OP_C0 b2=4 carries 4-byte parameter. Not yet mapped to source keyword.
+- **OP_56 keyword search** — BKROA window=6 exactly matches OP_56=6, but BKLME (window=0, OP_56=4) and BKDCA (window=2, OP_56=6) contradict it. No source keyword matches OP_56 count consistently across all files. All 6 BKROA OP_56 instances are in library zone (I#1788+). 20% confidence.
+- **Library zone boundary** — BKROA library zone starts at FUNC_ENTRY I#1607. Subroutines: I#806 (last main-code complex sub, 240 instr), I#1046, I#1186 (last main-code subs before library). FUNC_ENTRY count for BKROA: 69 total.
+
+**Remaining unknowns (Pass 369):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **still 5 unknowns** — structural patterns better characterized but source keywords unconfirmed. OP_5C role (b) also open.
 
 ---
 
