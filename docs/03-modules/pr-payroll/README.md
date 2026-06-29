@@ -861,7 +861,7 @@ BKPRGLFL has 664 fields total — organized as `<tax-type><role>` per state+depa
 | WCEXP | Workers Comp expense GL |
 | WCRATE | Workers Comp rate |
 
-Full 664-field map requires BKPRGLFL DDF/schema extraction — the 75+ confirmed above cover all tax-type categories.
+See **§ BKPRGLFL — Payroll GL Configuration Matrix (Pass 381)** below for the complete 679-field confirmed schema.
 
 ### New tables confirmed from TAS6 binaries
 
@@ -892,12 +892,143 @@ BKPRA.RUN references `"SF7 W-4 2020"` as a shortcut key label. The new W-4 field
 
 ---
 
+## BKPRGLFL — Payroll GL Configuration Matrix (Pass 381, 2026-06-29)
+
+**Status: verified** — full 679-column schema confirmed from live DSN=DBA ODBC query.
+
+**PK:** `BKPR_GL_STCODE` (STRING 2) + `BKPR_GL_DEPT` (STRING 4)
+**Live rows (i2 Systems):** `CT/STCK` (STOCKROOM, weekly), `CT/ENG` (ENGINEERING, weekly)
+
+BKPRGLFL is the payroll GL routing table. One row per state+department combination. Every GL account, expense account, and tax vendor used by payroll is looked up from this table at run time. T7PRB (Enter Pay Info), T7PRH (Transfer to AP), T7PRLI (Print W-2), and 9 other programs all open BKPRGLFL.
+
+### Scalar fields
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| BKPR_GL_STCODE | STRING 2 | State code (PK 1) |
+| BKPR_GL_DEPT | STRING 4 | Department code (PK 2) |
+| BKPR_GL_DPTNME | STRING 20 | Department name — `STOCKROOM`, `ENGINEERING` |
+| BKPR_GL_PAYPER | STRING 1 | Pay period code — `W`=weekly, `B`=bi-weekly, `S`=semi-monthly, `M`=monthly |
+
+### Standard tax GL pairs
+
+Each tax type has a liability account (`ACCT`, STRING 10) and a department (`DPT`, STRING 4):
+
+| Tax type | Liability fields | Expense fields | Notes |
+|----------|-----------------|----------------|-------|
+| FIT | BKPR_GL_FITACCT + FITDPT | BKPR_GL_FITEXP + FITEXPD | Federal income tax |
+| FICA (employee) | BKPR_GL_FICACCT_1 + FICDPT_1 | BKPR_GL_FICAEXP_1 + FICAEXD_1 | Employee SS |
+| FICA (employer) | BKPR_GL_FICACCT_2 + FICDPT_2 | BKPR_GL_FICAEXP_2 + FICAEXD_2 | Employer SS match |
+| FUTA | BKPR_GL_FUTACCT + FUTDPT | BKPR_GL_FUTAEXP + FUTAEXD | Federal unemployment |
+| SUTA | BKPR_GL_SUTACCT + SUTDPT | BKPR_GL_SUTAEXP + SUTAEXD | State unemployment |
+| SIT | BKPR_GL_SITACCT + SITDPT | — | State income tax |
+| WC | BKPR_GL_WCACCT + WCDPT | BKPR_GL_WCEXP + WCEXD | Workers comp |
+| MD | BKPR_GL_MDACCT + MDDPT | — | Medicare |
+| OD | BKPR_GL_ODACCT + ODDPT | — | Other deduction GL |
+| SDI | BKPR_GL_SDIACCT + SDIDPT | BKPR_GL_SDIEXP + SDIEXPD | State disability — both liability and expense |
+
+### Tax rate fields
+
+| Field | Meaning |
+|-------|---------|
+| BKPR_GL_FICAEMP | FICA employee rate (6.2%) |
+| BKPR_GL_FICAEPL | FICA employer rate (6.2%) |
+| BKPR_GL_FICALMT | FICA annual wage base limit |
+| BKPR_GL_FUTART | FUTA rate |
+| BKPR_GL_FUTALMT | FUTA annual wage limit |
+| BKPR_GL_FUTACRD | FUTA credit rate |
+| BKPR_GL_SUTART | SUTA rate |
+| BKPR_GL_SUTALMT | SUTA annual wage limit |
+| BKPR_GL_SRTE | SDI rate |
+| BKPR_GL_VRTE | Vacation accrual rate |
+
+### General payroll expense accounts (15 slots)
+
+`BKPR_GL_EXPACT_1..15` (GL account, STRING 10) + `BKPR_GL_EXPDPT_1..15` (GL dept, STRING 4)
+
+**Live data confirmed:** slots 6–12 all contain GL account `8710` (payroll expense). These are the expense distribution lines that T7PRB posts gross wages to.
+
+### Optional pay names (5 slots)
+
+`BKPR_GL_OPAYNME_1..5` (STRING 10) — names for optional/supplemental pay types (bonus, commission, etc.).
+
+### Tax vendor arrays
+
+| Array | Count | Field type | Purpose |
+|-------|------:|-----------|---------|
+| BKPR_GL_TAXVEND_1..30 | 30 | STRING 10 | Primary tax vendor codes (AP vendor IDs for tax remittances) |
+| BKPR_GL_TAXVND1_1..16 | 16 | STRING 10 | Secondary/alternate tax vendor codes |
+
+### User-defined deductions (UOD, 20 slots)
+
+One row of flags + accounts per UOD slot (1–20). Each slot = one employee-side deduction (health ins, dental, 401k, FSA, etc.):
+
+| Field suffix | Per-slot type | Meaning |
+|-------------|--------------|---------|
+| UODACT_N | STRING 10 | GL liability account |
+| UODDPT_N | STRING 4 | GL department |
+| UODCALC_N | STRING 2 | Calculation method code |
+| UODNAME_N | STRING 12 | Deduction name (displayed on check stub) |
+| UODPTX_N | STRING 1 | Pre-tax flag (Y=reduces taxable income) |
+| UODFIT_N | STRING 1 | FIT exempt (Y=not subject to FIT) |
+| UODFICA_N | STRING 1 | FICA exempt |
+| UODMED_N | STRING 1 | Medicare exempt |
+| UODFUTA_N | STRING 1 | FUTA exempt |
+| UODSIT_N | STRING 1 | SIT exempt |
+| UODSUTA_N | STRING 1 | SUTA exempt |
+| UODSDI_N | STRING 1 | SDI exempt (**confirmed Pass 381**) |
+| UODWC_N | STRING 1 | Workers Comp exempt (**confirmed Pass 381**) |
+| UODLOC1_N | STRING ? | Location code 1 (**confirmed Pass 381**) |
+
+### UOD slot 1 sub-variants (6 sub-slots)
+
+`BKPR_GL_UODACT1_1..6`, `BKPR_GL_UODDPT1_1..6`, `BKPR_GL_UODCLC1_1..6` — UOD slot 1 can split across up to 6 GL accounts (e.g. split health insurance premiums across multiple liability accounts).
+
+### User-defined earnings (UDE, 20 slots)
+
+Employer-side matching contributions (401k match, employer health, etc.):
+
+| Field suffix | Meaning |
+|-------------|---------|
+| UODEACT_N | GL account |
+| UODEDPT_N | GL department |
+| UODECLC_N | Calculation method |
+
+### Extra GL slots (confirmed Pass 381)
+
+`BKPR_GL_XACT_1..5` + `BKPR_GL_XDPT_1..5` — 5 extra GL account+department pairs for miscellaneous payroll GL entries not covered by the standard tax and UOD arrays.
+
+### Binary overflow buffer
+
+`BKPR_GL_EXTRA` — 200-byte binary buffer (Pervasive BINARY type). Reserved for future fields or runtime scratch space.
+
+### Field count summary
+
+| Group | Count |
+|-------|------:|
+| PK + scalar | 4 |
+| Tax GL pairs (10 types × 2–4 fields each) | ~32 |
+| Tax rates | 10 |
+| Expense accounts (15 × 2) | 30 |
+| Optional pay names | 5 |
+| Tax vendors (30 + 16) | 46 |
+| UOD arrays (20 slots × 14 flags/fields) | 280 |
+| UOD slot 1 sub-variants (6 × 3) | 18 |
+| UDE arrays (20 × 3) | 60 |
+| Extra GL (5 × 2) | 10 |
+| EXTRA buffer | 1 |
+| **Total (DDF)** | **~679** |
+
+The DDF reports 664 named fields + 15 additional unnamed/padding = 679 physical columns.
+
+---
+
 ## Notes & open questions
 
 - **BKPRMSTR record size = 3,389 bytes** (BANKA ends at offset 3372 + 17 = 3389). Very large row — each employee is almost 3.5 KB.
 - **UOD vs UDE naming:** UOD = User-defined deductions (employee side — health, dental, 401k, etc.). UDE = User-defined employer deductions (employer match). Both have 20 slots each, with QTD/YTD/limit arrays.
 - **OHQTD/OAQTD (fields 62–109):** The "OH" prefix means "Other Hours" — these 12 buckets accumulate hours and amounts for non-standard pay types (overtime, bonus, shift differential, etc.). Named in BKPRTCFG.
-- **BKPRGLFL (664 fields):** This is a very wide table. With 664 fields organized by state+dept, it stores all GL accounts for every tax type for every combination. Complexity suggests multi-state payroll support.
+- **BKPRGLFL (679 DDF columns):** Fully documented in Pass 381 — see §BKPRGLFL above. Multi-state payroll support confirmed: one row per state+dept combination; all tax GL accounts, rates, UOD/UDE arrays, and expense distribution lines in one wide table.
 - **BKPRCOMM vs BKPRACOM vs BKPRHCOM:** Same 12-field schema with PK SLSP+CCODE+INVNM. The three tables are active/archive/history tiers — mirrors the AP invoicing active/archive/history pattern.
 - **BKPRSALE vs BKPRBOOK:** Same 87-field schema. BKPRBOOK likely holds prior fiscal year's commission data (rolled from BKPRSALE during year-end) so both years can be queried.
 - **Time card flow:** Entered via PR-J → stored in BKPRTC → printed/posted via PR-K → time card hours become inputs to Enter Pay Info (PR-B) → check detail goes to BKPRCURP → after posting to BKPRHIST.

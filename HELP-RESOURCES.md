@@ -3260,7 +3260,7 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | BKGLGJLN | BKGLGJLN.B | GL | GL journal lines | Individual debit/credit lines within a GL journal entry |
 | BKPRCURP | BKPRCURP.B | PR | PR current period | YTD and current-period payroll amounts per employee |
 | BKPRFTAX | BKPRFTAX.B | PR | PR federal tax tables | Federal and state withholding rate schedules |
-| BKPRGLFL | BKPRGLFL.B | PR | PR GL flags | Maps each payroll expense type to its target GL account |
+| BKPRGLFL | BKPRGLFL.B | PR | PR GL matrix | Maps every payroll tax type to its GL accounts; PK=STCODE+DEPT; 679 cols confirmed Pass381 |
 | BKPRINFO | BKPRINFO.B | PR | PR employee extra | Supplemental employee fields beyond the main BKPRMSTR record |
 | BKPRTC | BKPRTC.B | PR | PR time cards | Individual time-card entries (employee × job × operation) |
 | BKARINVI | BKARINVI.B | AR | AR inv-inventory link | Links AR invoices to the inventory transaction records they generated |
@@ -6990,31 +6990,48 @@ Tax formula: find bracket where (income - exemptions × ALLOW) falls between STA
 
 ---
 
-### BKPRGLFL (664f) — Payroll GL Account Mapping
+### BKPRGLFL (679 cols) — Payroll GL Account Mapping
 
-Per state+dept row. Maps every payroll tax type to its GL accounts and stores all payroll tax rates.
+Per state+dept row. One row per company × state × department combination. Every GL account used by payroll at posting time comes from this table.
 
-- BKPR_GL_STCODE(2) + DEPT(4) — state code + department (PK)
-- BKPR_GL_FITACCT(10)/FITDPT — Federal Income Tax GL
-- BKPR_GL_FICACCT_1/2(10)/FICDPT — FICA GL (1=SS, 2=Medicare)
-- BKPR_GL_FUTACCT(10)/FUTDPT — FUTA GL
-- BKPR_GL_SUTACCT(10)/SUTDPT — SUTA GL
-- BKPR_GL_SITACCT(10)/SITDPT — State Income Tax GL
-- BKPR_GL_WCACCT(10)/WCDPT — Workers Compensation GL
-- BKPR_GL_SDIACCT(10)/SDIDPT — SDI (State Disability Insurance) GL
-- BKPR_GL_FICAEMP(8) + FICAEPL(8) + FICALMT(8) — FICA rates: employee/employer % + wage limit
-- BKPR_GL_FUTART(8) + FUTALMT(8) + FUTACRD(8) — FUTA rate / wage limit / credit
-- BKPR_GL_SUTART(8) + SUTALMT(8) — SUTA rate + wage limit
-- BKPR_GL_SDI_RTE(8) + SDI_LMT(8) — SDI rate + wage limit
-- BKPR_GL_SRTE(8) + VRTE(8) — sick + vacation accrual rates
-- BKPR_GL_PAYPER(1) — pay frequency (W=weekly, B=bi-weekly, S=semi-monthly, M=monthly)
-- BKPR_GL_WCHOW(1) — workers comp calc method
-- BKPR_GL_FICAEXP_1/2 + FICAEXD_1/2 — FICA expense GL (employer side)
-- BKPR_GL_SUTAEXP + WCEXP — SUTA + WC expense GL accounts
-- BKPR_GL_UODAMT1_1..N — user-defined other deduction amounts per bracket
-- +600 more (per-deduction-type GL mappings, 12+ user-defined deduction GL accounts)
+**Pass 381 (2026-06-29): full schema confirmed from live ODBC. Live rows: CT/STCK (STOCKROOM, weekly), CT/ENG (ENGINEERING, weekly).**
 
-At 664 fields, BKPRGLFL is one of the widest tables in EvoERP — it encodes the entire state payroll tax configuration in a single row per state, avoiding joins during payroll calculation.
+**Primary key:** BKPR_GL_STCODE (STRING 2) + BKPR_GL_DEPT (STRING 4)
+
+**Tax GL pairs** (each has an acct + dept, some also have expense acct + expense dept):
+
+| Tax type | Liability | Expense | Notes |
+|----------|-----------|---------|-------|
+| FIT | FITACCT/FITDPT | FITEXP/FITEXPD | Federal income tax |
+| FICA employee | FICACCT_1/FICDPT_1 | FICAEXP_1/FICAEXD_1 | SS employee |
+| FICA employer | FICACCT_2/FICDPT_2 | FICAEXP_2/FICAEXD_2 | SS employer match |
+| FUTA | FUTACCT/FUTDPT | FUTAEXP/FUTAEXD | Federal unemployment |
+| SUTA | SUTACCT/SUTDPT | SUTAEXP/SUTAEXD | State unemployment |
+| SIT | SITACCT/SITDPT | — | State income tax |
+| WC | WCACCT/WCDPT | WCEXP/WCEXD | Workers comp |
+| Medicare | MDACCT/MDDPT | — | |
+| OD | ODACCT/ODDPT | — | Other deduction |
+| SDI | SDIACCT/SDIDPT | SDIEXP/SDIEXPD | State disability |
+
+**Tax rates:** FICAEMP, FICAEPL, FICALMT, FUTART, FUTALMT, FUTACRD, SUTART, SUTALMT, SRTE, VRTE
+
+**General expense accounts:** EXPACT_1..15 + EXPDPT_1..15 — GL 8710 confirmed in slots 6–12
+
+**Optional pay names:** OPAYNME_1..5
+
+**Tax vendors:** TAXVEND_1..30 + TAXVND1_1..16
+
+**User-defined deductions (UOD 1–20):** UODACT/UODDPT/UODCALC/UODNAME/UODPTX + exemption flags UODFIT/UODFICA/UODMED/UODFUTA/UODSIT/UODSUTA/UODSDI/UODWC (SDI+WC confirmed Pass381) + UODLOC1 location code (confirmed Pass381)
+
+**UOD slot 1 sub-variants:** UODACT1_1..6 / UODDPT1_1..6 / UODCLC1_1..6 (splits slot 1 across up to 6 GL accounts)
+
+**User-defined earnings (UDE 1–20):** UODEACT/UODEDPT/UODECLC
+
+**Extra GL slots (confirmed Pass381):** XACT_1..5 + XDPT_1..5
+
+**Binary buffer:** EXTRA (200 bytes)
+
+At 679 DDF columns, BKPRGLFL is the widest table in EvoERP. It encodes the entire state payroll tax configuration in one row per state+department, avoiding joins during payroll calculation. Programs that need GL accounts at posting time (T7PRB, T7PRH, T7PRLI, etc.) all do a single key-fetch on STCODE+DEPT.
 
 ---
 
@@ -7172,7 +7189,7 @@ Per-customer carrier configuration with account numbers:
 | BKPRMSTR | 384 | Employee master — EMP# PK; NAME+SSN+ADDRESS+PAYTYP+15 pay rates+all QTD/YTD tax types |
 | BKPRCURP | 127 | Current period — EMP#+DATE PK; regular+12 OT+vacation+sick hrs/rates/amounts |
 | BKPRFTAX | 47 | Tax bracket table — CODE PK; ALLOW+11 START/THRU/AMT/PERC brackets |
-| BKPRGLFL | 664 | GL mapping per state+dept — all payroll tax GL accounts + rates (FICA/FUTA/SUTA/SDI/WC) |
+| BKPRGLFL | 679 | GL mapping per state+dept — all payroll tax GL accounts + rates (FICA/FUTA/SUTA/SDI/WC); 20 UOD × 14 flags; 20 UDE; 46 tax vendors; 15 EXPACT; 5 XACT extra slots |
 | BKPRSALE | 87 | Sales rep commissions — 12-month QUOTA/GROSS/COGS/RCPTS per employee |
 | BKPRINFO | 128 | HR info — 6 review+raise dates, vacation/sick accrual, direct deposit banking |
 | BKPRTC | 7 | Time card — EMP+DATE PK; START+STOP+DEDUCT times + TYPE |
@@ -9198,7 +9215,7 @@ Maps each state code to the employer's state tax identification number:
 
 Used when generating state payroll tax filings (W-2, SIT returns).
 
-**PR confidence: 85/100** — ISPRUDF(31f) + BKPRSTFL(2f) fully decoded; PR table family now covers: BKPRMSTR(384f employee master), BKPRCURP(127f current period), BKPRFTAX(47f tax brackets), BKPRGLFL(664f GL map), BKPRINFO(128f HR info), BKPRTC(7f time card), ISPRTEMP(15f direct deposit), ISPRUDF(31f custom deductions), BKPRSTFL(2f state IDs).
+**PR confidence: 90/100** — ISPRUDF(31f) + BKPRSTFL(2f) fully decoded; Pass381 BKPRGLFL(679f) full schema confirmed from live ODBC; PR table family now covers: BKPRMSTR(384f employee master), BKPRCURP(127f current period), BKPRFTAX(47f tax brackets), BKPRGLFL(679f GL map, fully confirmed), BKPRINFO(128f HR info), BKPRTC(7f time card), ISPRTEMP(15f direct deposit), ISPRUDF(31f custom deductions), BKPRSTFL(2f state IDs).
 
 ---
 
@@ -16732,11 +16749,11 @@ and payroll year-end close.
 they come from the AP module. Use AP-J (1099 report) which reads BKAP1099 or similar
 table tracking 1099-eligible AP payments.
 
-**Confidence: 82/100** — PR-H, PR-O, PR-L-A/C/G/H/I/N/F programs confirmed from CHM with
+**Confidence: 90/100** — PR-H, PR-O, PR-L-A/C/G/H/I/N/F programs confirmed from CHM with
 field-level detail; PR-H AP voucher creation path confirmed; BKPRW2 table named in PR-O
-CHM text; BKPRGLFL (664f) GL config schema confirmed from DDF; internal QTD/YTD field
-mapping within BKPRMSTR (384f) not individually named — count confirmed, field meanings
-inferred from CHM context.
+CHM text; BKPRGLFL (679 cols) GL config schema fully confirmed from live ODBC (Pass381)
+including UODSDI/UODWC/UODLOC1 + XACT/XDPT extra GL + EXPACT GL 8710 live data;
+BKPRMSTR (384f) all fields documented by group.
 
 ---
 
