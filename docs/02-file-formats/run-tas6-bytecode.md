@@ -712,8 +712,8 @@ without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
 | `0x31` | 88 | 0.7% | ? (b2=16, invariant) |
 | `0x53` | 84 | 0.6% | ENTER_FIELD_FULL |
 | `0x48` | 83 | 0.6% | PUSH |
-| `0x2D` | 83 | 0.6% | ? |
-| `0x47` | 83 | 0.6% | ? |
+| `0x2D` | 83 | 0.6% | CALLBACK_RET — stores callback return value; appears as [OP_2D][RET_FUNC] (terminal) or [OP_2D][GOTO exit] (non-terminal); b2=6 |
+| `0x47` | 83 | 0.6% | ? (b2=9; paired with OP_43: [OP_43][ASSIGN][OP_47] — appears in data-processing loops) |
 
 Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
@@ -723,7 +723,9 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
 **Pass 364 updates (2026-06-29):** OP_15=GOSUB confirmed — BKLME I#83=L222 `gosub PRT_TOF`; b2=4 invariant. OP_42=JMP confirmed (was "GOSUB/FIELD_TERM" in frequency table) — BKDCA I#62=L197 `else`; compiler-inserted unconditional jump for `else` and `fexit`; b2=4. OP_16=GOTO confirmed (strong inference) — BKDCA I#42=L169 `goto NO.EN.SHFT`; explicit programmer `goto LABEL`; b2=4. OP_45=FOR_LOOP inferred — BKDCA for-loop structure at I#35 (`for(i;1;3;1)`) and I#40 (`next`); b2=5. Key distinction: OP_42(JMP) is compiler-generated structured flow; OP_16(GOTO) is explicit unstructured programmer goto.
 
-**Remaining unknowns (Pass 364):** OP_25, OP_22, OP_32, OP_2D, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~13 unknowns remain (down from 15 in Pass 363). OP_93/65/53 blob internal layout unknown; T6EDI* header format different from standard.
+**Pass 365 updates (2026-06-29):** OP_A1(b2=0)=LABEL_MARKER inferred — zero-width data record, always appears immediately before RET_FUNC sharing the same data channel addr; marks goto-target labels (exit points) inside callback functions. OP_2D(b2=6)=CALLBACK_RET inferred — stores callback function return value (.T./.F. equivalent); observed as [OP_2D][RET_FUNC] (terminal exit) and [OP_2D][GOTO] (non-terminal branch to shared exit label). OP_32(b2=6)=CALLBACK_SEP inferred — appears immediately after RET_FUNC before next FUNC_PRE or ARG_DESC+ENTER; separates successive callback function blocks in enter-field sequences. OP_43(b2=9)/OP_47(b2=9) always appear as pair [OP_43][ASSIGN][OP_47] in data-processing loops (zone3 and main body); identical data records across files = shared library operation; semantics still unknown. OP_29(b2=5) always precedes FOR_LOOP; count=13 identical across all 5 sample files = shared library subroutine; semantics unknown.
+
+**Remaining unknowns (Pass 365):** OP_25, OP_22, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~11 unknowns remain (OP_32+OP_2D inferred, OP_A1 newly identified; down from 13 in Pass 364). OP_93/65/53 blob internal layout unknown; T6EDI* header format different from standard.
 
 ---
 
