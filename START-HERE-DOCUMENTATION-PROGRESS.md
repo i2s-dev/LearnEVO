@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-25 (Pass 285-286 — BKDCA.SRC keyword deep-dive (findv/cch/clrlne/scroll/time/novldmsg/size/val confirmed, C:88→91/C:90→92); 5 recipe corrections: Recipe 10 GL-B not GL-A (BKGLGJRN+BKGLGJLN schema added), Recipe 13 PS-A/BKPSUSER not SM-A/AHSYLOG (BKPS.USER.*/ISEX.USER.* confirmed), Recipe 14 IN-C/INVTXN not IN-G/BKISTXN (T7INC.RWN 43-table fingerprint), Recipe 15 INVTXN type codes from BKLME.SRC; BKISTXN purged from all 8 occurrences (never existed); OPEN_QUESTIONS.md item 2 updated (T7 security = BKPSUSER+BKSLEVEL not AHSYLOG))
+Last updated: 2026-06-29 (Pass 387 — suwin6.dcy corrected: IS standard Type A DCY / Delphi VCL text form TEditForm1_1 = ISTech License dialog; K_C purpose confirmed; Pass 285-286 — BKDCA.SRC keyword deep-dive (findv/cch/clrlne/scroll/time/novldmsg/size/val confirmed, C:88→91/C:90→92); 5 recipe corrections: Recipe 10 GL-B not GL-A (BKGLGJRN+BKGLGJLN schema added), Recipe 13 PS-A/BKPSUSER not SM-A/AHSYLOG (BKPS.USER.*/ISEX.USER.* confirmed), Recipe 14 IN-C/INVTXN not IN-G/BKISTXN (T7INC.RWN 43-table fingerprint), Recipe 15 INVTXN type codes from BKLME.SRC; BKISTXN purged from all 8 occurrences (never existed); OPEN_QUESTIONS.md item 2 updated (T7 security = BKPSUSER+BKSLEVEL not AHSYLOG))
 
 ---
 
@@ -56,7 +56,7 @@ begin disassembling `.RWN` bytecode.
 | Disassemble `.RWN` bytecode | Unblocked — TAS Pro 7 bytecode structure not yet mapped; uniform opaque bytes expected |
 | Read module logic for any of the 1,124 `.RWN` programs | Unblocked — bytecode disassembly + DCY format parsing needed first |
 | `.DCY` data dictionary binary structure | **Partially done** — decryption works; binary field layout not yet reverse-engineered |
-| Identify K_A / K_C key purposes | Unknown — captured live but which file types use them is not yet known |
+| Identify K_A key purpose | K_C confirmed = suwin6.dcy (ISTech License dialog); K_A still unknown — captured live but which file type uses it is not yet known |
 
 ---
 
@@ -99,8 +99,8 @@ Current decryption scripts:
 | `.RUN` opcode table | 🔄 Started | 22/100 | 0x41 PUSH_VALUE, 0x46 LOAD_VAR, 0x4E ARRAY_IDX identified |
 | TAS Pro 7 `.RWN` bytecode | 🔄 Started | 70/100 | b2=0x00 confirmed at 3.2M scale; 30+ opcodes; 15 sub-code families; 0x49=READ_PROP, 0x6A=GOTO_LABEL(string), 0x48/0xDC=PUSH/POP paired; working disassembler; branch target encoding TBD |
 | `.DCY` binary format | ✅ DONE | 95/100 | **Pass 109**: 8-byte ID header + DFM content (text "object..." 37/41; binary ff0a00+classname+TPF0 4/41); all 41 forms = Delphi TEditForm definitions for launcher/utility programs; EVOUSERS/WBKLUGRID documented |
-| `suwin*.DCY` format | ⬜ Unknown | 0/100 | 7 files; K_D fails; possibly use K_A or K_C |
-| K_A / K_C key purposes | ⬜ Unknown | 0/100 | Captured live; which file types they encrypt is unknown |
+| `suwin*.DCY` format | 🔄 Partial | 45/100 | 7 files; suwin6.dcy ✅ SOLVED (Pass 387): TEditForm1_1 ISTech License dialog, K_C key; suwin7.dcy fails all 5 keys |
+| K_A / K_C key purposes | 🔄 Partial | 50/100 | K_C confirmed = suwin6.dcy (ISTech License dialog); K_A still unknown |
 | `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
 | `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
 | Database schema | ✅ Done | 92/100 | 659 tables, 24,113 fields extracted |
@@ -132,8 +132,7 @@ Current decryption scripts:
    37/41 text DFM ("object EditForm..."), 4/41 binary DFM (ff0a00+classname+TPF0). All are Delphi
    UI form definitions for launcher/utility programs. See `docs/02-file-formats/decryption-findings.md`.
 
-2. **Identify K_A / K_C purposes** — try K_A and K_C against `suwin*.DCY` (7 files).
-   Also watch what files EVO opens at startup (Frida file-open hook) — K_A fired at boot.
+2. **Identify K_A purpose** — K_C confirmed (Pass 387) = suwin6.dcy ISTech License dialog. K_A still unknown — fired at boot; try against remaining suwin*.dcy files (Frida file-open hook to identify the target).
 
 3. **`.RWN` bytecode disassembly** (C:35/100, Pass 110) — pool type system decoded; compound blob
    structure confirmed; F-type=var_ref, C-type=pool_ptr proven from suwin7.rwn.
