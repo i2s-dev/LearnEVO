@@ -1,0 +1,90 @@
+﻿YN_INDEX,TAB,LABEL,OBJ_TYPE,OPTIONS,LINE
+1,"Setup","WO-K-M: Require a Reason code","TTASENTER","",313
+2,"Setup","WO-K-M: Require a Reason code","TTASENTER","",391
+3,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1538
+4,"Setup","WO-K-M: Require a Reason code","TTASENTER","",540
+5,"Setup","WO-K-M: Require a Reason code","TTASENTER","",426
+15,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1574
+15,"Routing","ROA: Recal Parts/Hr when changing # Persons (Y/N/A)","TTASENTER","",17718
+16,"Sales Commissions","Prevent S/R from calculating Commissions  [Y/N]","TTASENTER","",27704
+17,"Sales Commissions","Prevent S/R from calculating Commissions  [Y/N]","TTASENTER","",27741
+18,"Sales Commissions","Prevent S/R from calculating Commissions  [Y/N]","TTASENTER","",27778
+19,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1392
+20,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1646
+21,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1428
+22,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1465
+23,"BOM","BMA/ROA: Prevent edit for Active Status[YNODEPQRS]","TTASENTER","",18022
+24,"BOM","BMA/ROA: Prevent edit for Active Status[YNODEPQRS]","TTASENTER","",17986
+25,"BOM","BMA/ROA: Prevent edit for Active Status[YNODEPQRS]","TTASENTER","",17950
+26,"BOM","BMA/ROA: Prevent edit for Active Status[YNODEPQRS]","TTASENTER","",17914
+27,"Setup","WO-K-M: Require a Reason code","TTASENTER","",1000
+28,"Features / Options","Suppress Option Headers, Footers, Indents?","TTASENTER","",18377
+29,"Setup","SOE: Enter BOL Info for EDI?","TTASENTER","",19349
+30,"Setup","SOE: Enter BOL Info for EDI?","TTASENTER","",19385
+31,"Processing","PO-A  Allow using expired Vendor Prices (Y,N,A,W)","TTASENTER","",6699
+32,"Setup","PO-Q  Allow Entry to Quantity","TTASENTER","",5292
+33,"Setup","PO-Q  Allow Entry to Quantity","TTASENTER","",6187
+35,"Setup","SOE: Enter BOL Info for EDI?","TTASENTER","",19421
+36,"Routing","ROA: Recal Parts/Hr when changing # Persons (Y/N/A)","TTASENTER","",17409
+37,"Routing","ROA: Recal Parts/Hr when changing # Persons (Y/N/A)","TTASENTER","",17373
+38,"Routing","ROA: Recal Parts/Hr when changing # Persons (Y/N/A)","TTASENTER","",17337
+39,"Printing","Sales Order RTM","TTASComboBox","1 - Graphical Universal Form (Condensed)       [SOC1.RTM]; 2 - Graphical Universal Form (Single Qty Fmt) [SOC2.RTM]; 3 - Graphical Plain Paper (Condensed)            [SOC3.RTM]; 4 - Graphical Plain Paper (Single Qty Fmt)      [SOC4.RTM]; FieldName = 'BKYS.YN[39]; DropDownPrgLoc = -1",26353
+40,"Setup","PO-Q  Allow Entry to Quantity","TTASENTER","",5181
+41,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4422
+42,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4458
+43,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4494
+44,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4530
+45,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4602
+46,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4566
+47,"Checking","PRBankLabel","TTASComboBox","1 - Graphical Laser Forms         [PRD1.RTM]; 2 - Graphical Continuous Forms [PRD2.RTM]; FieldName = 'BKYS.YN[47]; DropDownPrgLoc = -1; DispPrgLoc = -1; ClickPrgLoc = -1",39050
+48,"Checking","PRBankLabel","TTASComboBox","1 - Laser Forms Stub/Check/Stub [APHA1.RTM]; 2 - Graphical Continuous Forms    [APH1.RTM]; 4 - Laser Forms Stub/Stub/Check [APHA2.RTM]; 5 - Laser Forms Check/Stub/Stub [APHA3.RTM]; FieldName = 'BKYS.YN[48]; DropDownPrgLoc = -1",39008
+50,"Setup","IN-A: Enable Add/Edit/Delete Notes [A/E/D]","TTASENTER","",15102
+57,"Scheduling","Display machine prompt in Enter Labor?","TTASENTER","",10282
+59,"Scheduling","Display machine prompt in Enter Labor?","TTASENTER","",10246
+62,"Printing","Sales Order RTM","TTASENTER","",25686
+63,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4638
+64,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4674
+65,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1501
+66,"Routing","ROA: Recal Parts/Hr when changing # Persons (Y/N/A)","TTASENTER","",17301
+67,"MRP","Use Sequence Start Date as Need Date in MR-F","TTASENTER","",9686
+73,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1610
+74,"Printing","Sales Order RTM","TTASENTER","",25650
+76,"Printing","Sales Order RTM","TTASComboBox","1 - Graphical Universal Form (Condensed) [SOB1.RTM]; 2 - Graphical Universal Form                    [SOB2.RTM]; 3 - Graphical Plain Paper (Condensed)      [SOB3.RTM]; 4 - Graphical Plain Paper                         [SOB4.RTM]; FieldName = 'BKYS.YN[76]; DropDownPrgLoc = -1",26311
+77,"Printing","Sales Order RTM","TTASComboBox","1 - Graphical Universal Form (Condensed) [SOPB1.RTM]; 2 - Graphical Universal Form                    [SOPB2.RTM]; 3 - Graphical Plain Paper (Condensed)      [SOPB3.RTM]; 4 - Graphical Plain Paper                         [SOPB4.RTM]; FieldName = 'BKYS.YN[77]; DropDownPrgLoc = -1",26437
+78,"Printing","Prevent printing of POs not Digitally Signed?","TTASComboBox","1  Graph Universal     [POE1.RTM]; 2  Graph Plain Paper [POE2.RTM]; FieldName = 'bkys.yn[78]; DropDownPrgLoc = -1; DispPrgLoc = -1; ClickPrgLoc = -1",9443
+79,"Legacy Settings","Coordinate AR and CM edits","TTASENTER","",28572
+80,"Printing","Prevent printing of POs not Digitally Signed?","TTASENTER","",9054
+82,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4710
+83,"Processing","PO-A  Allow using expired Vendor Prices (Y,N,A,W)","TTASENTER","",6663
+84,"Processing","PO-A  Allow using expired Vendor Prices (Y,N,A,W)","TTASENTER","",6735
+85,"Processing","PO-A  Allow using expired Vendor Prices (Y,N,A,W)","TTASENTER","",6771
+86,"Processing","PO-A  Allow using expired Vendor Prices (Y,N,A,W)","TTASENTER","",6806
+87,"Acct. Receivables","Password for Pi Payment","TTASENTER","",29826
+200,"Scheduling","Display machine prompt in Enter Labor?","TTASENTER","",10138
+202,"Processing","WOI/HHD/HHI: Suppress Final Qty for this WO [Y/N]","TTASENTER","",1682
+209,"Setup","Use Accounting Open Period Start Date in AR-C","TTASENTER","",34505
+212,"Setup","Use Accounting Open Period Start Date in AR-C","TTASENTER","",34469
+213,"Setup","Use Accounting Open Period Start Date in AR-C","TTASENTER","",34433
+214,"Setup","Use Accounting Open Period Start Date in AR-C","TTASENTER","",34397
+215,"Setup","Use Accounting Open Period Start Date in AR-C","TTASENTER","",34361
+218,"Setup","DC-A/DC-B/DC-G/WO-M: Default for Scrap Prompt [Y/N]","TTASENTER","",10710
+220,"Printing","WO-I: Print Inventory or WO Labels (Y,N,A,W)","TTASENTER","",4746
+222,"Setup","PO-Q  Allow Entry to Quantity","TTASENTER","",5365
+223,"Setup","PO-Q  Allow Entry to Quantity","TTASENTER","",5328
+225,"Processing","SO-A: Pull XREF from Ship To Customer [Y/N/B]","TTASENTER","",24042
+228,"Setup","DC-A/DC-B/DC-G/WO-M: Default for Scrap Prompt [Y/N]","TTASENTER","",10674
+229,"Setup","DC-A/DC-B/DC-G/WO-M: Default for Scrap Prompt [Y/N]","TTASENTER","",10637
+230,"Acct. Receivables","Password for Pi Payment","TTASENTER","",29898
+231,"Setup","SOE: Enter BOL Info for EDI?","TTASENTER","",19458
+237,"Scheduling","Display machine prompt in Enter Labor?","TTASENTER","",10210
+238,"Setup","SOE: Enter BOL Info for EDI?","TTASENTER","",19926
+239,"Setup","SOE: Enter BOL Info for EDI?","TTASENTER","",19494
+240,"Estimates","ES-B/SO-A/SOP-A: Prevent Active Status S Items","TTASENTER","",14168
+241,"Printing","Prevent printing of POs not Digitally Signed?","TTASENTER","",9090
+242,"Printing","Prevent printing of POs not Digitally Signed?","TTASENTER","",9126
+243,"Printing","Sales Order RTM","TTASENTER","",25830
+244,"Printing","Sales Order RTM","TTASENTER","",25794
+245,"Printing","Sales Order RTM","TTASENTER","",25758
+246,"Printing","Sales Order RTM","TTASENTER","",25722
+247,"Acct. Receivables","Password for Pi Payment","TTASENTER","",29862
+248,"MRP","Use Sequence Start Date as Need Date in MR-F","TTASENTER","",9722

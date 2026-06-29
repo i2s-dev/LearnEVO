@@ -754,18 +754,24 @@ Additional routing YN flags (from BKROA.SRC source):
 In TAS Pro source, BKYSMSTR flags are accessed as `BKYS.YN[N]`.
 The `ISTS.CFG.*` key string is the alias used to look up the numeric index at runtime.
 
-The 354 YN flags in BKYSMSTR and the 495 ISTS.CFG keys are not 1:1 — some keys map to
-BKSYMSTR string/numeric fields rather than YN flags.
+BKYSMSTR has exactly **250 YN columns** (BKYS_YN_1 through BKYS_YN_250), confirmed from
+live DSN=DBA ODBC schema query (Pass 382, 2026-06-29). The prior "354" figure was incorrect.
+
+The 250 YN flags and the 495 ISTS.CFG keys are not 1:1 — some keys map to
+BKYSMSTR string/numeric fields rather than YN flags.
 
 ### Confidence key
 - **SRC** = confirmed from TAS Pro source code (highest confidence)
 - **DFM** = matched from T7MDefaults.DFM by Top-position pairing (medium confidence; Setup tab entries less reliable due to label density)
 - **inferred** = guessed from key name (low confidence)
 
-### Full YN[N] Mapping Table (Pass 379, 2026-06-29)
+### Full YN[N] Mapping Table (Pass 379+382, 2026-06-29)
 
-89 of 354 YN[N] slots mapped from T7MDefaults.DFM (system defaults editor UI labels).
-Source: `samples/T7MDefaults.DFM` parsed by `scripts/parse_mdefaults_dfm2.py`.
+**88 unique indices** (89 rows — YN[15] duplicated) of **250 total** YN[N] slots in BKYSMSTR.
+Sources: `samples/T7MDefaults.DFM` (81 unique, parsed by `scripts/parse_mdefaults_dfm2.py`) +
+`samples/dfm/T7MDefNDC.DFM` (8 additional: YN[200,202,209,212,213,214,215,218]) +
+SRC file evidence (10 slots with direct code confirmation).
+Remaining ~162 slots (of 250) not bound in any DFM — set programmatically or from other screens.
 
 | YN[N] | Tab | Description | ISTS.CFG Key | Source |
 |-------|-----|-------------|--------------|--------|
@@ -858,9 +864,21 @@ Source: `samples/T7MDefaults.DFM` parsed by `scripts/parse_mdefaults_dfm2.py`.
 | YN[246] | Printing | Print Title on: Acknowledgments | unknown | DFM |
 | YN[247] | Acct. Receivables | Print Title on Statement | unknown | DFM |
 | YN[248] | MRP | Round MRP quantities to the next whole number? | unknown | DFM |
+| YN[249] | Checking | AP check top margin offset (numeric value, not Y/N — stores pixel offset for top margin on AP checks) | unknown | SRC (Bkaph.src:349 `nTopMarg = val(bkys.yn[249])`) |
 
 **Notes on duplicate/ambiguous labels in Setup tab:**
 Several Setup tab entries show the same label description (e.g. "Post Inventory Adjustments?" for YN[2], YN[40], YN[213], YN[228]). This occurs because the Setup tab has many controls in close vertical proximity; Top-position pairing may capture a different setting's label. Treat Setup tab DFM entries with lower confidence than non-Setup tabs.
+
+**Note on YN[249] numeric usage:** Not all YN[N] slots store Y/N flags. YN[249] stores a numeric
+string (pixel offset). The column type in BKYSMSTR is STRING(2) for all YN slots, so numeric
+values are stored as ASCII digit strings. Other slots may similarly store format codes (1–5) or
+small integers rather than Y/N.
+
+**Pass 382 corrections (2026-06-29):** Prior documentation incorrectly stated BKYSMSTR had 354
+YN columns. Live ODBC query of DSN=DBA confirmed the actual count is 250 (BKYS_YN_1 through
+BKYS_YN_250). The 89-row DFM-derived table is complete — no additional YN controls exist in
+T7MDefaults.DFM or T7MDefNDC.DFM. The remaining ~161 slots (250 − 89) are set outside these
+two forms.
 
 ---
 
