@@ -827,6 +827,13 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
 **Remaining unknowns (Pass 370):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **still 5 unknowns** — OP_C0/OP_C1 now confirmed as structural block delimiters (not in the 5).
 
+**Pass 371 updates (2026-06-29):** OP_44 role identified with higher confidence.
+
+- **OP_44 (b2=5) = ENTER_EXEC_BEGIN**: Not a standalone source keyword. Generated WITHIN library expansion stubs for complex `enter` fields (those with traps/callbacks). Marks the boundary: [OP_39/FUNC_PREPOST][OP_4B×N traps][**OP_44**][OP_06/CLR×M][OP_93][OP_65×N] — separates trap-registration phase from field-entry-execution phase. BKLME has 2 OP_44 = 2 complex enter stubs (L138/L139 with upar/vld callbacks); BKDCA has 3; BKROA has 6. The BKLME stub at I#1108-I#1366 contains [FUNC_ENTRY][setup…][OP_4B×5 traps][OP_44][OP_06×2][OP_93][OP_65×2] × 3 fields, with OP_65 data containing database table references ("INVTXNA", "BKAPVEN" = INVTXN and BKAPVEND table field refs). Confidence: **75%** (upgraded from 55%).
+- **OP_65 data confirmed**: Contains enter field descriptors including database table names — visible as readable ASCII suffix in 10-byte records (e.g., "INVTXNA", "BKAPVEN"). Each [OP_93][OP_65×N] cluster = one `enter` field definition with N sub-descriptors.
+
+**Remaining unknowns (Pass 371):** OP_5D, OP_56, OP_1B, OP_19 — **4 unknowns** (OP_44 upgraded to 75%; OP_5D/OP_56/OP_1B/OP_19 still low confidence).
+
 ---
 
 ## References
