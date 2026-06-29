@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356; Pass 366: OP_8D structural pattern confirmed as DISPATCH_CONT
+Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356; Pass 366: OP_8D structural pattern confirmed as DISPATCH_CONT; Pass 367: OP_25=PFMT, OP_22=PBLNK, OP_0C=DEL_REC confirmed; OP_43/OP_47=array-field-subscript pair, OP_29=array-iter-init structural; pfmt/pblnk CORRECTION applied — they DO compile to instructions; 5 unknowns remain
 
 Last updated: 2026-06-29
 
@@ -335,6 +335,12 @@ Byte  Field      Notes
 | `0x1C` | MOUNT | — | `mount SELECT2 type S` (Pass 240) |
 | `0x21` | MENU | — | `menu at 5,5 ...` (Pass 240) |
 | `0x73` | PRG_HDR | — | `prg_hdr prg.name+'...'` — rare (3 total) (Pass 240) |
+| `0x25` | PFMT | 0x0A | `pfmt N` — set print format line ref; 8 in BKLME = 8 `pfmt` in source (exact match — Pass 367) |
+| `0x22` | PBLNK | 0x0A | `pblnk N` — print N blank lines; 7 in BKLME = 7 `pblnk` in source (exact match — Pass 367) |
+| `0x0C` | DEL_REC | — | `del TABLE nocnf` — delete current record; 1 in BKLME = 1 `del INVTXN nocnf` (exact match — Pass 367) |
+| `0x43` | ARRAY_FLD_BEGIN | 0x09 | Database field array subscript open: always [OP_43][ASSIGN][OP_47]; local-var arrays use plain ASSIGN instead (Pass 367) |
+| `0x47` | ARRAY_FLD_END | 0x09 | Database field array subscript close: always [OP_43][ASSIGN][OP_47] (Pass 367) |
+| `0x29` | ARRAY_ITER_INIT | 0x05 | Array iteration init: appears immediately before FOR_LOOP at `next` or before OP_43; linked-list array seek (Pass 367) |
 
 ### Probable (pattern-based, not yet positionally proved)
 
@@ -397,13 +403,15 @@ enter fields. OP_93/65/53 are used in interactive code to EXECUTE an enter inter
 pre/post callback and lookup logic. The blobs reference data channel records that provide runtime
 context (UI strings, prompt text, callbacks).
 
-**CRITICAL CORRECTION (Pass 243):** `pfmt` and `pblnk` in TAS Pro 6 are **DECLARATIVE** — they compile
-to **ZERO bytecode instructions**. They are print format/blank-line directives processed at print time by
-the `.RTM` report file, not executed as instructions. Proof: source `BKAWLB.SRC` has 9 `pfmt` + 2
-`pblnk` statements, but the binary has 34×`0x53` and 62×`0x65` — impossible if 0x53=pfmt, 0x65=pblnk.
+**CORRECTION (Pass 367 — supersedes Pass 243):** `pfmt` and `pblnk` DO compile to bytecode
+instructions: **OP_25 = PFMT** (b2=10) and **OP_22 = PBLNK** (b2=10). Count matches in BKLME:
+8 OP_25 = 8 `pfmt` in source (exact); 7 OP_22 = 7 `pblnk` in source (exact). Pass 243 correctly
+ruled out OP_53=pfmt and OP_65=pblnk, but incorrectly concluded pfmt/pblnk compile to zero. The
+"PRT_TOF = 2 instructions" claim missed the leading pfmt/pblnk instructions. BKAWLB PRT_TOF
+(8 pfmt + 2 pblnk + page=page+1 + ret) compiles to **12 instructions**, not 2.
 
-**Consequence:** `PRT_TOF` in BKAWLB (source lines 428–440: 8 pfmt + 2 pblnk + page=page+1 + ret)
-compiles to exactly **2 instructions**: ASSIGN (page=page+1) + RET_FUNC (ret). Confirmed at I#1789–I#1790.
+`pfmt N` = set the current print format line reference at runtime (OP_25, b2=10).
+`pblnk N` = print N blank lines at this point in the report (OP_22, b2=10).
 
 ### Data records (NOT 7-byte instructions)
 
@@ -708,12 +716,12 @@ without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
 | `0x4A` | 98 | 0.7% | QUIT (b2=9; confirmed I#1787 BKAWLB=L426 `quit`; high count from library includes — Pass 362) |
 | `0x8A` | 98 | 0.7% | ? (b2=9, invariant) |
 | `0x1A` | 97 | 0.7% | FIND_BASIC (b2=**33** ← freq-table b2 was wrong; `find F srch FIELD` no-qualifier; BKDCA I#19=L118 — Pass 362) |
-| `0x43` | 90 | 0.7% | ? (b2=9, invariant) |
+| `0x43` | 90 | 0.7% | ARRAY_FLD_BEGIN (b2=9; always [OP_43][ASSIGN][OP_47]; database field array subscript — before ASSIGN of MTIC.PROD.RCOST[N] etc.; local-var arrays use plain ASSIGN instead — Pass 367) |
 | `0x31` | 88 | 0.7% | ? (b2=16, invariant) |
 | `0x53` | 84 | 0.6% | ENTER_FIELD_FULL |
-| `0x48` | 83 | 0.6% | PUSH |
+| `0x48` | 83 | 0.6% | LOOP_BODY_ENTRY (b2=25; appears ONLY at `for(...)` declaration, never at `next`; marks loop-body start — Pass 364/367) |
 | `0x2D` | 83 | 0.6% | CALLBACK_RET — stores callback return value; appears as [OP_2D][RET_FUNC] (terminal) or [OP_2D][GOTO exit] (non-terminal); b2=6 |
-| `0x47` | 83 | 0.6% | ? (b2=9; paired with OP_43: [OP_43][ASSIGN][OP_47] — appears in data-processing loops) |
+| `0x47` | 83 | 0.6% | ARRAY_FLD_END (b2=9; paired with OP_43: [OP_43][ASSIGN][OP_47]; database field array subscript close — Pass 367) |
 
 Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
@@ -729,7 +737,17 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
 **Pass 366 updates (2026-06-29):** OP_8D(b2=20) structural pattern confirmed via BKDCA full-instruction-range analysis. OP_8D always appears as part of a **[CALL_LIB][OP_8D]** pair immediately before RET_FUNC in enter-field callback sequences. Together the pair pre-registers a 4-instruction CONTINUATION BLOCK: CALL_LIB (data=`00 00` prefix + embedded-ASSIGN ref) registers block[0]; OP_8D (data=20-byte block of 3×7-byte embedded instruction refs) registers block[1..3]. The 4 embedded addresses point to **DISTANT non-adjacent instructions** (e.g., I#393→points to I#604-607 which are 211 instructions away; I#495→points to I#826-829 which are 332 instructions away). All address chains are sequentially verified (addr[k+1] = addr[k] + b2[k]). Interpretation: **DISPATCH_CONT** — dispatch continuation registration; the TAS runtime dispatches to the pre-registered block when the current callback exits via RET_FUNC. I#1721 (after OP_53 in ENTER cluster) is a distinct context and may represent a variant use of OP_8D. I#236's data does not parse cleanly and may be a library-call variant. Confidence: 65/100 — 3 clean instances confirmed; 2 anomalous instances unexplained.
 
-**Remaining unknowns (Pass 366):** OP_25, OP_22, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29 — 10 unknowns remain (OP_8D structural pattern documented as DISPATCH_CONT inference). OP_43/OP_47 always [OP_43][ASSIGN][OP_47] — identical 9-byte data records across files; in zone3 data-processing subroutines; semantics unknown. OP_29(b2=5) always precedes FOR_LOOP; count=13 fixed across all 5 files = shared library subroutine entry. OP_07(b2=22) — 22-byte records, 3-11× per file; NOT in unknowns (was known); pattern 22=3×7+1 suggests embedded instruction triple + 1 extra byte.
+**Pass 367 updates (2026-06-29):** 6 new opcode mappings confirmed; pfmt/pblnk corrected.
+- **OP_25(b2=10) = PFMT** — `pfmt N` (set print format line): 8 in BKLME = 8 `pfmt` in source (exact count match). CORRECTS Pass 243 which incorrectly stated pfmt→zero instructions.
+- **OP_22(b2=10) = PBLNK** — `pblnk N` (print blank lines): 7 in BKLME = 7 `pblnk` in source (exact count match). CORRECTS Pass 243 which incorrectly stated pblnk→zero instructions.
+- **OP_0C(b2≈6) = DEL_REC** — `del TABLE nocnf`: 1 in BKLME = 1 `del INVTXN nocnf` in source (exact count match).
+- **OP_43(b2=9) = ARRAY_FLD_BEGIN** — always appears as [OP_43][ASSIGN][OP_47] triple; marks start of a database-table field array subscript access (e.g., `MTIT.STDCST=MTIC.PROD.RCOST[13]`, `BKYS.GLNUM[5]`). Local-variable arrays (e.g., `QTY.A[isct]=0`, `MEMORY1[1]="ADJUSTMT"`) compile to plain ASSIGN with no bracketing opcodes.
+- **OP_47(b2=9) = ARRAY_FLD_END** — closing partner of OP_43; always [OP_43][ASSIGN][OP_47].
+- **OP_29(b2=5) = ARRAY_ITER_INIT** — appears immediately before FOR_LOOP (at `next` statements) and immediately before OP_43 (for direct array element access); count=13 in both BKDCA and BKLME matching each instance of OP_43 or array-for-loop; related to TAS Pro's linked-list array model requiring iteration to reach element N.
+- **FOR_LOOP dual-use confirmed**: OP_45(b2=5) used at BOTH `for(var;start;end;step)` declaration AND at `next` (increment + loop-back). OP_48 appears ONLY at the `for()` declaration (= LOOP_BODY_ENTRY marker); never at `next`.
+- **pfmt/pblnk CORRECTION**: Both do compile to instructions (OP_25, OP_22). BKAWLB PRT_TOF (8 pfmt + 2 pblnk + 1 assign + 1 ret) compiles to 12 instructions, not 2 as claimed in Pass 243.
+
+**Remaining unknowns (Pass 367):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **5 unknowns remain** (down from 10 in Pass 366). Note: OP_22 count in BKLME=7 exactly matches `pblnk` count but ≈ `rcn` count (8 lines, some with double `rcn` token); pblnk interpretation preferred for exact match. OP_07(b2=22) — 22-byte records, NOT in unknowns; pattern 22=3×7+1 suggests embedded instruction triple + 1 extra byte.
 
 ---
 
