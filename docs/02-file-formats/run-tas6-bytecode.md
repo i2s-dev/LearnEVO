@@ -692,19 +692,19 @@ without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
 | `0x0F` | 5058 | 37.5% | ASSIGN |
 | `0x3B` | 1966 | 14.6% | COND_BRANCH |
 | `0x20` | 651 | 4.8% | RET_FUNC |
-| `0x42` | 632 | 4.7% | GOSUB / FIELD_TERM |
+| `0x42` | 632 | 4.7% | JMP — unconditional jump (for `else` clause and `fexit`; BKDCA I#62=L197 `else`) |
 | `0x01` | 564 | 4.2% | ARG_DESC |
 | `0x4B` | 419 | 3.1% | CALL_LIB |
 | `0x06` | 267 | 2.0% | CLR |
-| `0x45` | 256 | 1.9% | ? (b2=5, invariant) |
+| `0x45` | 256 | 1.9% | FOR_LOOP (b2=5; used at both `for(...)` setup and `next` increment) |
 | `0x37` | 206 | 1.5% | TRAP |
-| `0x16` | 182 | 1.3% | ? (b2=4, invariant) |
+| `0x16` | 182 | 1.3% | GOTO — explicit `goto LABEL`; BKDCA I#42=L169 `goto NO.EN.SHFT` |
 | `0x65` | 170 | 1.3% | FIELD_CALLBACK |
 | `0x49` | 160 | 1.2% | FUNC_ENTRY (subroutine entry marker — see §Three-Zone Architecture) |
 | `0xBE` | 142 | 1.1% | PMSG |
 | `0x0E` | 134 | 1.0% | ENTER |
 | `0x6A` | 131 | 1.0% | GOTO_LABEL |
-| `0x15` | 119 | 0.9% | ? (b2=4, invariant) |
+| `0x15` | 119 | 0.9% | GOSUB — subroutine call; BKLME I#83=L222 `gosub PRT_TOF` |
 | `0x4A` | 98 | 0.7% | QUIT (b2=9; confirmed I#1787 BKAWLB=L426 `quit`; high count from library includes — Pass 362) |
 | `0x8A` | 98 | 0.7% | ? (b2=9, invariant) |
 | `0x1A` | 97 | 0.7% | FIND_BASIC (b2=**33** ← freq-table b2 was wrong; `find F srch FIELD` no-qualifier; BKDCA I#19=L118 — Pass 362) |
@@ -721,7 +721,9 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
 **Pass 363 updates:** OP_02=CLRSCR(b2=0) confirmed — source L161 `clrscr` → BKMRF I#26 OP_02. OP_49 renamed from READ_PROP to FUNC_ENTRY(b2=9) — appears at every subroutine boundary immediately after OP_20=RET_FUNC; contains 9-byte subroutine descriptor. Three-zone data channel architecture confirmed (see §Three-Zone Data Channel Architecture below).
 
-**Remaining unknowns (Pass 363):** OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~15 unknowns remain (down from 19 in Pass 356). OP_93/65/53 blob internal layout unknown (requires tp7runtime.exe disassembly); T6EDI* header format different from standard.
+**Pass 364 updates (2026-06-29):** OP_15=GOSUB confirmed — BKLME I#83=L222 `gosub PRT_TOF`; b2=4 invariant. OP_42=JMP confirmed (was "GOSUB/FIELD_TERM" in frequency table) — BKDCA I#62=L197 `else`; compiler-inserted unconditional jump for `else` and `fexit`; b2=4. OP_16=GOTO confirmed (strong inference) — BKDCA I#42=L169 `goto NO.EN.SHFT`; explicit programmer `goto LABEL`; b2=4. OP_45=FOR_LOOP inferred — BKDCA for-loop structure at I#35 (`for(i;1;3;1)`) and I#40 (`next`); b2=5. Key distinction: OP_42(JMP) is compiler-generated structured flow; OP_16(GOTO) is explicit unstructured programmer goto.
+
+**Remaining unknowns (Pass 364):** OP_25, OP_22, OP_32, OP_2D, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~13 unknowns remain (down from 15 in Pass 363). OP_93/65/53 blob internal layout unknown; T6EDI* header format different from standard.
 
 ---
 
