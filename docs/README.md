@@ -106,7 +106,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [PS — Password Security](03-modules/ps-password-security/help-content.md) *(7 CHM topics)*
 - [DE — Data Exchange](03-modules/de-data-exchange/help-content.md) *(15 CHM topics)*
 - [IM — International Module](03-modules/im-international/help-content.md) *(3 CHM topics)*
-- [FA — Fixed Assets](03-modules/fa-fixed-assets/help-content.md) *(6 CHM topics)*
+- [FA — Fixed Assets](03-modules/fa-fixed-assets/README.md) (2 tables / 3 programs) — + [help-content.md](03-modules/fa-fixed-assets/help-content.md) *(6 CHM topics)* · *Pass377 2026-06-29: all 3 RWN decrypted; ISFXASST(23f)+ISFXATRN(12f) DDF-confirmed; GL posting workflow confirmed (T7FAB→BKGLTRAN); C:92*
 - [AM — Accounting Maintenance](03-modules/am-accounting-maintenance/help-content.md) *(18 CHM topics)*
 - [AD — Accounting Defaults](03-modules/ad-accounting-defaults/help-content.md) *(3 CHM topics)*
 - [US — Settings](03-modules/us-settings/help-content.md) *(8 CHM topics: US-A through US-H)*

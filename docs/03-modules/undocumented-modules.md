@@ -31,28 +31,17 @@ It is effectively the GL administration module.
 
 ## FA — Fixed Assets
 
-**DFM files confirmed:** T7FAA.DFM, T7FAB.DFM, T7FAE.DFM (3 forms)
+**FULLY DOCUMENTED — see [docs/03-modules/fa-fixed-assets/README.md](fa-fixed-assets/README.md)**
 
-**From CHM help content:**
-- **FA-A — Enter Fixed Assets:** Records asset details including cost basis, useful life, depreciation method.
-- **FA-B — Post Depreciation:** Creates and posts depreciation journal entries by asset to GL.
+Pass 377 (2026-06-29): all 3 RWN programs decrypted and fully analyzed. Both schemas DDF-confirmed. GL posting workflow confirmed.
 
-**Forms read from network share:**
+**Summary:**
+- **2 tables:** ISFXASST (23f asset master), ISFXATRN (12f depreciation transactions)
+- **3 programs:** T7FAA (84p, Enter Assets), T7FAB (69p, Post Depreciation → BKGLTRAN), T7FAE (79p, Export CSV/fixed-width)
+- T7FAB writes BKGL.TRN.GLACCT/GLDPT/DATE/CODE/INVC/DESC/DC — confirmed GL posting
+- ISFXATRN.POSTED N→Y after posting; IS_FXA_ACCUMDEP/LDEPAMT/LDEPDATE updated on asset master
 
-| Code | DFM | What it does |
-|------|-----|-------------|
-| FA-A | T7FAA.DFM | **Asset Master Entry** — add/edit fixed assets. Fields: Asset Number, Type, Description (2 lines), Cost Basis, Residual Value, Useful Life, Depreciation Method, Asset Account (GL), Accum Dep Account (GL). Tables: IS.FXA.NUMBER/TYPE/DESC/CSTBAS/RESVAL/LIFE/METH |
-| FA-B | T7FAB.DFM | **Post Depreciation** — reviews and posts depreciation entries. Fields: Asset Number, Amount, Percent, Post Date, Net Asset Value, Accumulated Dep Account (debit/credit), Dep Expense Account (debit/credit), "Ready to Post" flag. Tables: IS.FXT.AMOUNT/NETAVAL/ACDEPA/ACDEPD/DEPEXPA/DEPEXPD |
-| FA-E | T7FAE.DFM | **Export Assets** — exports fixed asset data (COMMA.FIXED.STR = comma or fixed-width format; file.name = output file) |
-
-**Key findings:**
-- Table prefix **IS.FXA.*** = IS Fixed Asset record (asset master)
-- Table prefix **IS.FXT.*** = IS Fixed Asset Transaction (depreciation entries)
-- Both depreciation debit and credit accounts are tracked (ACDEPA/D, DEPEXPA/D) — confirms standard double-entry journal structure for depreciation posting
-- "Ready to Post" flag in FA-B = batch-style depreciation: calculate first, then review, then post
-- FA is a small but self-contained GL sub-module — reads only IS.FXA.*/IS.FXT.*
-
-**Confidence: 75/100** — All 3 DFM files read from network share; table structure confirmed (IS.FXA.* + IS.FXT.*); depreciation posting workflow confirmed; specific depreciation method codes not documented.
+**Confidence: 92/100**
 
 ---
 

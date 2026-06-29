@@ -2260,7 +2260,13 @@ One row per depreciation run per asset. Posted=Y means GL transaction was create
 | ISFXASST | 23 | Fixed asset master — cost basis, method, life, GL accounts, accumulated depreciation |
 | ISFXATRN | 12 | Depreciation transaction log — per-period amount+%, posted status, GL routing |
 
-**Confidence: 82/100** — ISFXASST(23f) and ISFXATRN(12f) full schemas extracted from DDF; all FA-A/FA-B field references now confirmed; depreciation calculation formula (SL vs. DB) confirmed from METH field; GL posting flow confirmed (ISFXATRN.POSTED → BKGLTRAN); FA-E export logic blocked by encryption.
+**GL posting detail (T7FAB):** Each depreciation entry writes 2 lines to BKGLTRAN via BKGL.TRN.* namespace: DR IS_FXT_DEPEXPA/D (depreciation expense, income statement) / CR IS_FXT_ACDEPA/D (accumulated depreciation, balance sheet). BKSYMSTR is read to validate the open accounting period before posting. IS_FXT_POSTED flips N→Y after posting; IS_FXA_ACCUMDEP/LDEPAMT/LDEPDATE/LDEPPERC updated on asset master.
+
+**Depreciation workflow:** FA-A (enter asset in ISFXASST) → [periodic calculation: create ISFXATRN rows with POSTED='N'] → FA-B (review+post to BKGLTRAN, flip POSTED='Y') → FA-C/D (print transaction list / asset register) → FA-E (export CSV/fixed-width to FILE.NAME).
+
+**Disposal:** No dedicated menu code. Set IS_FXA_EDATE + IS_FXA_SOLD manually; gain/loss GL adjustment is manual.
+
+**Confidence: 92/100** — All 3 RWN programs decrypted and analyzed (Pass377, 2026-06-29). Both table schemas DDF-confirmed (23+12 fields). All 35 IS.FXA.*/IS.FXT.* field accesses confirmed from T7FAA and T7FAB variable tables. GL posting workflow confirmed: T7FAB writes BKGL.TRN.* to BKGLTRAN. Export format confirmed from T7FAE (COMMA.FIXED toggle). Remaining gap: depreciation calculation method formula (SL vs DB bytecode logic) and disposal accounting.
 
 ---
 
