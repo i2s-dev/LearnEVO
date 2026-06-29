@@ -2281,8 +2281,31 @@ ISLINKS (app + record key).
 
 **ISNUMBER** (52f, `IS_NUM_*`) — Next-number sequence registry. KEY: CODE(10).
 Stores 50 independent next-number slots (NEXT_1..50, float 0-dec) + EXTRA(100).
-One record per document type (e.g. "NCR", "CAR", "ECO"). The 50 slots allow
-multi-company or multi-division sequence sets within a single record.
+**Pass 386 (2026-06-29): live DSN=DBA query confirmed.** 9 active records at i2 Systems:
+
+| CODE | NEXT_1 | NEXT_2 | Notes |
+|------|--------|--------|-------|
+| PO | 74550 | 53268 | Per-company PO# — 4 companies active (NEXT_1..4 non-zero) |
+| SO | 75932 | 94728 | Per-company SO# — 9+ companies active (including NEXT_7=119128, NEXT_9=121123) |
+| AP | 4025 | 1 | AP batch/check counters — NEXT_7=8253 (likely check#), NEXT_12=274, NEXT_13=68 |
+| INV | 2 | — | Invoice sequence; NEXT_1=2 (near-reset or low-usage company) |
+| PAY | 0 | — | Payroll numbering — all zeros (not used via ISNUMBER at i2S) |
+| GL | 14690 | 2 | GL journal entry# (NEXT_1=14690 = total GJ entries), NEXT_2=2 |
+| EMAIL | 1 | — | Email batch counter |
+| WO | 55119 | — | Historical WO count (NEXT_1=55119 vs BKYS_WONUM=401 — different counters) |
+| QC | 75 | — | QC inspection report# |
+
+**Architecture:** Each NEXT slot corresponds to a company or counter type. The 50 slots
+allow up to 50 simultaneous company sequences per module without per-company table files.
+Accessed by T7numdef.RWN (38p, opens BKYSMSTR+ISNUMBER — the Number Definitions screen).
+
+**Two-tier WO numbering:** BKYS_WONUM (in BKYSMSTR) = 401 tracks the next short WO number
+for the active company in the current numbering cycle. ISNUMBER/WO/NEXT_1 = 55119 is a
+separate running historical total — these serve different purposes in the WO module.
+
+**BKYS_NUM[2] cross-reference:** BKYS_NUM[2]=7952 is close to but not equal to AP/NEXT_7=8253.
+The exact purpose of BKYS_NUM[2] remains unconfirmed — possibly a per-company AP check
+starting number or a separate counter not visible in ISNUMBER.
 
 ### Order / PO Support
 
