@@ -101,23 +101,40 @@ T7WOG.RWN binary decoded. Key confirmed facts:
 - **Procedures with LOOP** relevant to kit display: none in the 1491-1548 WINPOS range.
   LOOPs found in: LOAD.DO.POH, POST.ICUV, EXPLODE_BOM, NO.KIT.2, ADD.NEG.BUCK, SHOWHLP.
 
-**Revised mechanism hypothesis (2026-06-29):**
+**CONFIRMED FREEZE MECHANISM (2026-06-29 — database correlation, 7/7 WOs):**
 
-For **75338-2 and 75338-4**: WINPOS[1494] DB_V returns 0 mandatory records (Btrieve key finds
-no OPTION='N' rows). IFs at [1499], [1500], [1502] evaluate. TERMINATE at [1503] may fire,
-showing "The material issues for these components have been processed to a file. Please process
-these materials." message and closing the form (which looks like a freeze to the user). If
-TERMINATE does NOT fire: EVAL[1544] calculates REMAINING_QTY = 0 - 0 = 0 and WINPOS passes
-this to T7WOG4. T7WOG4 hangs with 0-row grid input.
+WINPOS reads the **first** mandatory WOBOM record sorted by COMPCODE (Btrieve key order).
+It computes REMAINING = WOBOM_TOTQTY − WOBOM_QTYISSUED for that ONE record, then passes it
+to T7WOG4 (the kit list display form). If REMAINING = 0 → T7WOG4 freezes. If no mandatory
+records exist → WINPOS TERMINATEs showing an "all processed" message (form closes).
 
-For **75405-3**: WINPOS[1494] reads mandatory WOBOM records (21 rows, OPTION='N'). IF[1510]
-checks WOBOM.QTYISSUED vs WOBOM.TOTQTY. EVAL[1544] calculates remaining qty for one record.
-If the first Btrieve record encountered is fully issued (QTYISSUED=TOTQTY), REMAINING_QTY=0
-is passed to T7WOG4 → same freeze as above. Mechanism still uncertain — requires T7WOG4 decode.
+| WO | Outcome | First mandatory COMPCODE | REMAINING |
+|---|---|---|---|
+| 75338-1 | works | 055-03950-0 | 10.0 |
+| 75338-2 | FREEZES | (no mandatory items) | N/A → TERMINATE |
+| 75338-3 | works | 055-03950-0 | 2.0 |
+| 75338-4 | FREEZES | (no mandatory items) | N/A → TERMINATE |
+| 75338-5 | works | 055-03950-0 | 2.0 |
+| 75405-3 | FREEZES | 055-03950-0 (fully issued) | 0.0 |
+| 54552-1 | FREEZES | 055-53829-0M40K (fully issued) | 0.0 |
 
-**What's still needed to confirm:**
-1. T7WOG4.RWN decrypted (needs IV from one debugger session with Frida)
-2. Or: live Frida trace of the KIT=L path on a failing WO
+**Perfect 7/7 correlation.** Every working WO has its first mandatory item unissued.
+Every freezing WO either has no mandatory items, or its alphabetically-first mandatory
+item is fully issued.
+
+**54552-1 (new case, 2026-06-29):** STATUS='R' (Completed, 375 units done), AMAT=27896.82.
+13 mandatory items (OPTION='N'), 3 fully issued / 7 partial / 3 zero-qty. First mandatory by
+COMPCODE = 055-53829-0M40K (TOTQTY=QTYISSUED=400, REMAINING=0) → freeze. The partial items
+(rem=130–205) do NOT matter; only the first item's REMAINING drives WINPOS.
+
+**Latent risk:** Any SMT WO where the alphabetically-first mandatory COMPCODE gets fully issued
+(typically "055-*" parts) will freeze on KIT=L at next issue attempt. This is a bug in T7WOG4
+(the kit list display form, not yet decrypted). Fix requires T7WOG4.RWN decode or a DB
+workaround (reorder WOBOM_SEQ so an unissued item sorts first by Btrieve key).
+
+**What's still needed to fully close:**
+1. T7WOG4.RWN decrypted (needs IV from one Frida debugger session) to see exact hang
+2. Confirm whether Btrieve key is by COMPCODE only or OPER+COMPCODE+WOPRE+WOSUF
 
 Note: CP1E-08W-30K-HE (working for 75338-3) has no BKBMMSTR TYPE='N' entries same as
 CP1E-09W-30K-H (75405-3), so BKBMMSTR TYPE is NOT the distinguishing factor.
