@@ -1,8 +1,8 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356
+Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356; Pass 366: OP_8D structural pattern confirmed as DISPATCH_CONT
 
-Last updated: 2026-06-26
+Last updated: 2026-06-29
 
 ---
 
@@ -726,6 +726,10 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 **Pass 365 updates (2026-06-29):** OP_A1(b2=0)=LABEL_MARKER inferred — zero-width data record, always appears immediately before RET_FUNC sharing the same data channel addr; marks goto-target labels (exit points) inside callback functions. OP_2D(b2=6)=CALLBACK_RET inferred — stores callback function return value (.T./.F. equivalent); observed as [OP_2D][RET_FUNC] (terminal exit) and [OP_2D][GOTO] (non-terminal branch to shared exit label). OP_32(b2=6)=CALLBACK_SEP inferred — appears immediately after RET_FUNC before next FUNC_PRE or ARG_DESC+ENTER; separates successive callback function blocks in enter-field sequences. OP_43(b2=9)/OP_47(b2=9) always appear as pair [OP_43][ASSIGN][OP_47] in data-processing loops (zone3 and main body); identical data records across files = shared library operation; semantics still unknown. OP_29(b2=5) always precedes FOR_LOOP; count=13 identical across all 5 sample files = shared library subroutine; semantics unknown.
 
 **Remaining unknowns (Pass 365):** OP_25, OP_22, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~11 unknowns remain (OP_32+OP_2D inferred, OP_A1 newly identified; down from 13 in Pass 364). OP_93/65/53 blob internal layout unknown; T6EDI* header format different from standard.
+
+**Pass 366 updates (2026-06-29):** OP_8D(b2=20) structural pattern confirmed via BKDCA full-instruction-range analysis. OP_8D always appears as part of a **[CALL_LIB][OP_8D]** pair immediately before RET_FUNC in enter-field callback sequences. Together the pair pre-registers a 4-instruction CONTINUATION BLOCK: CALL_LIB (data=`00 00` prefix + embedded-ASSIGN ref) registers block[0]; OP_8D (data=20-byte block of 3×7-byte embedded instruction refs) registers block[1..3]. The 4 embedded addresses point to **DISTANT non-adjacent instructions** (e.g., I#393→points to I#604-607 which are 211 instructions away; I#495→points to I#826-829 which are 332 instructions away). All address chains are sequentially verified (addr[k+1] = addr[k] + b2[k]). Interpretation: **DISPATCH_CONT** — dispatch continuation registration; the TAS runtime dispatches to the pre-registered block when the current callback exits via RET_FUNC. I#1721 (after OP_53 in ENTER cluster) is a distinct context and may represent a variant use of OP_8D. I#236's data does not parse cleanly and may be a library-call variant. Confidence: 65/100 — 3 clean instances confirmed; 2 anomalous instances unexplained.
+
+**Remaining unknowns (Pass 366):** OP_25, OP_22, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29 — 10 unknowns remain (OP_8D structural pattern documented as DISPATCH_CONT inference). OP_43/OP_47 always [OP_43][ASSIGN][OP_47] — identical 9-byte data records across files; in zone3 data-processing subroutines; semantics unknown. OP_29(b2=5) always precedes FOR_LOOP; count=13 fixed across all 5 files = shared library subroutine entry. OP_07(b2=22) — 22-byte records, 3-11× per file; NOT in unknowns (was known); pattern 22=3×7+1 suggests embedded instruction triple + 1 extra byte.
 
 ---
 
