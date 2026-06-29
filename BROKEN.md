@@ -59,14 +59,14 @@ Within WO 75338, comparison of freezing vs working suffixes:
 75405-3 (FREEZES): OPTION='N' (21) + 2/3/4 — same distribution as working WOs (anomalous)
 
 **Root cause for 75338-2:**
-WOBOM_OPTION='1' used for mandatory items instead of 'N'. LOAD.KIT in T7WOG.RWN searches
-for mandatory components by OPTION='N' (and possibly OPTION=''). OPTION='1' is treated as
-optional group 1, not mandatory. With no OPTION='N' records found, LOAD.KIT enters an
-infinite search loop, blocking the UI thread permanently.
+WOBOM_OPTION='1' used for mandatory items instead of 'N'. LOAD.KIT is NOT the kit list
+loader (see Binary Analysis below — LOAD.KIT is bin validation). WINPOS in T7WOG.RWN reads
+WOBOM records filtered by OPTION='N' via Btrieve key. With no OPTION='N' records found,
+WINPOS either TERMINATEs (showing "all processed" message → form closes) or passes a
+0-remaining-qty to T7WOG4, which then hangs on an empty list.
 
 **Root cause for 75338-4:**
-No mandatory items at all — only OPTION='2', '3', '4'. LOAD.KIT cannot find a mandatory
-component to anchor the kit list, infinite loop results.
+No mandatory items at all — only OPTION='2', '3', '4'. Same WINPOS mechanism as 75338-2.
 
 **Root cause for 75405-3 (PARTIAL ISSUE STATE — confirmed data, mechanism still inferred):**
 WOBOM has OPTION='N' correctly for 21 mandatory items. However, 75405-3 is in a
@@ -74,23 +74,50 @@ WOBOM has OPTION='N' correctly for 21 mandatory items. However, 75405-3 is in a
 = WOBOM_TOTQTY = 208, WOBOM_^ISSUED = 100.0), and 12 are not yet issued (QTYISSUED=0,
 ^ISSUED=0.0). Additionally, within optional group 2, the sub-assembly 720-50498-02 has one
 component fully issued (640-50539, ^ISSUED=100%) and one not (720-50498-3, ^ISSUED=0%).
+Freeze mechanism for 75405-3 is still under investigation (see Binary Analysis below).
 
 **Confirmed data (2026-06-29 session):**
 - WORKORD status = 'F' (Firm = active), COMQTY=0, AMAT=3310.59 (actual material cost confirms partial issue)
 - 75338-3 (works): WORKORD AMAT=0.0, all WOBOM QTYISSUED=0 (fresh, nothing issued)
 - Both WOs have 21 mandatory (OPTION='N') records in WOBOM
 
-**Mechanism hypothesis:**
-LOAD.KIT initializes a loop counter from the total WOBOM mandatory count (21), then loops
-reading WOBOM records where QTYISSUED=0 to build the kit selection list. For fresh WOs it
-finds 21 and terminates. For 75405-3 it finds only 12 (the 9 already-issued ones are skipped),
-the counter never reaches 21, and the loop cycles indefinitely back through WOBOM from the
-beginning looking for more unissued records. This is a partial-issue-state bug: LOAD.KIT was
-designed for fresh WOs where all kit items are unissued.
+**Binary analysis results (2026-06-29 — wog_deep2.py):**
 
-**Alternative mechanism:** VLD_KITISSUE pre-validates the kit. It returns an error when it
-finds the inconsistent partial-issue state (some mandatory items done, some not). LOAD.KIT
-retries in a loop waiting for VLD_KITISSUE to succeed, which it never does.
+T7WOG.RWN binary decoded. Key confirmed facts:
+- **LOAD.KIT (3351-3413)** = BIN VALIDATION only (validates which physical bin to pull from).
+  Contains ZERO loop instructions. The "LOAD.KIT loop counter" hypothesis was WRONG.
+- **WINPOS (1491-1548)** = the actual WOBOM reader. 58 instructions, ZERO loop instructions.
+  Contains two DB_V calls: [1494] and [1536]. Contains TERMINATE at [1503] (conditional).
+  At [1544]: EVAL WOBOM.TOTQTY - WOBOM.QTYISSUED → calculates remaining qty to issue.
+  At [1538]: string "T7WOG4" appears → WINPOS launches **T7WOG4** (the kit list display form).
+- **T7WOG4** = the separate kit list display form. T7WOG4.RWN NOT yet decrypted (needs IV
+  from debugger session). **The freeze most likely occurs inside T7WOG4.**
+- **WOBOM.OPTION** has ZERO code-level comparisons in T7WOG.RWN. Filtering is done
+  entirely at the Btrieve key level inside the DB_V call — never tested in TAS Pro code.
+- **ALL database access** is via DB_V (0x5C sub=0C). Zero DB_READ (0x9A) instructions exist.
+- **WHATSON (1691-1770)** = WIP material cost accounting processor. NOT the kit list builder.
+- **VLD_QTYISSUED (1306-1340)** = post-issue "completed?" confirmation dialog. NOT a qty validator.
+- **KIT.LIST (348-365)** = operation range selector (FROM.OPER / THRU.OPER input). NOT BOM loader.
+- **Procedures with LOOP** relevant to kit display: none in the 1491-1548 WINPOS range.
+  LOOPs found in: LOAD.DO.POH, POST.ICUV, EXPLODE_BOM, NO.KIT.2, ADD.NEG.BUCK, SHOWHLP.
+
+**Revised mechanism hypothesis (2026-06-29):**
+
+For **75338-2 and 75338-4**: WINPOS[1494] DB_V returns 0 mandatory records (Btrieve key finds
+no OPTION='N' rows). IFs at [1499], [1500], [1502] evaluate. TERMINATE at [1503] may fire,
+showing "The material issues for these components have been processed to a file. Please process
+these materials." message and closing the form (which looks like a freeze to the user). If
+TERMINATE does NOT fire: EVAL[1544] calculates REMAINING_QTY = 0 - 0 = 0 and WINPOS passes
+this to T7WOG4. T7WOG4 hangs with 0-row grid input.
+
+For **75405-3**: WINPOS[1494] reads mandatory WOBOM records (21 rows, OPTION='N'). IF[1510]
+checks WOBOM.QTYISSUED vs WOBOM.TOTQTY. EVAL[1544] calculates remaining qty for one record.
+If the first Btrieve record encountered is fully issued (QTYISSUED=TOTQTY), REMAINING_QTY=0
+is passed to T7WOG4 → same freeze as above. Mechanism still uncertain — requires T7WOG4 decode.
+
+**What's still needed to confirm:**
+1. T7WOG4.RWN decrypted (needs IV from one debugger session with Frida)
+2. Or: live Frida trace of the KIT=L path on a failing WO
 
 Note: CP1E-08W-30K-HE (working for 75338-3) has no BKBMMSTR TYPE='N' entries same as
 CP1E-09W-30K-H (75405-3), so BKBMMSTR TYPE is NOT the distinguishing factor.
@@ -129,15 +156,16 @@ total quantity already issued (QTYISSUED / TOTQTY * 100). Values: 0.0 = nothing 
 - Long-term BOM fix: Review all CP1E-* BOM templates to ensure mandatory components are
   encoded with BKBM_PROD_TYPE='N' (not 'A' or 'B'), and that WO creation propagates this
   correctly to WOBOM_OPTION='N'.
-- Long-term code fix (requires EVO vendor): LOAD.KIT should use count of UNISSUED mandatory
-  items (QTYISSUED=0) to initialize the loop counter, not total mandatory item count.
+- Long-term code fix (requires EVO vendor or T7WOG4 decode): investigate T7WOG4 and how it
+  handles 0-remaining-qty input. The fix is in T7WOG4, not T7WOG or LOAD.KIT.
 
 **Lesson:**
-WOBOM_OPTION='N' = mandatory (recognized by LOAD.KIT). WOBOM_OPTION='1' through '4' etc. =
-optional selection groups. OPTION='1' is NOT the same as mandatory — it is optional group 1.
-Any WO where mandatory BOM items have OPTION='1' will freeze on KIT=L. The BKBMMSTR source
-BOM's PROD_TYPE field (A/B/N/R) likely determines what OPTION value WOBOM gets on WO
-creation: TYPE='N' → WOBOM OPTION='N'; TYPE='A'/'B'/'R' → WOBOM OPTION = option group number.
+WOBOM_OPTION='N' = mandatory (filtered by Btrieve key in WINPOS DB_V, not by TAS code).
+WOBOM_OPTION='1' through '4' = optional selection groups. OPTION='1' is NOT the same as
+mandatory — it is optional group 1. Any WO where mandatory BOM items have OPTION='1' will
+freeze on KIT=L because WINPOS finds 0 mandatory records and launches T7WOG4 with 0-row input.
+The LOAD.KIT hypothesis (loop counter) was completely wrong — LOAD.KIT is bin validation,
+not the BOM loader. The BOM reader is WINPOS; the display is T7WOG4 (separate module).
 
 ---
 

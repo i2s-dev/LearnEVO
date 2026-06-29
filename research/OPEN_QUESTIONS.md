@@ -363,31 +363,36 @@ All 9 tables confirmed present in the 659-table DDF schema (checked against tier
 
 ---
 
-## WO-G KIT=L Freeze — open sub-questions (2026-06-29)
+## WO-G KIT=L Freeze — open sub-questions (updated 2026-06-29 after binary analysis)
 
-Investigation into the SMT WO-G KIT=L freeze confirmed root causes for 75338-2 and 75338-4.
-Remaining open items:
+Binary analysis of T7WOG.RWN.dec (wog_deep2.py, 2026-06-29) revised the mechanism. Key facts:
+- LOAD.KIT (3351-3413) = BIN VALIDATION only — LOAD.KIT loop-counter hypothesis was WRONG
+- WINPOS (1491-1548) = WOBOM reader; zero loop instructions; DB_V[1494] reads WOBOM; EVAL[1544]
+  computes TOTQTY-QTYISSUED; WINPOS[1538] launches T7WOG4 (separate kit list display form)
+- Freeze most likely occurs inside T7WOG4.RWN (NOT YET DECRYPTED — needs IV from debugger)
+- WOBOM.OPTION filtering is Btrieve key only; zero TAS code comparisons — confirmed
 
-19. **75405-3 exact mechanism**: WO has 9/21 mandatory WOBOM items at QTYISSUED=208 (^ISSUED=100%)
-    and 12 at QTYISSUED=0. Hypothesis: LOAD.KIT loop counter initialized from total mandatory count
-    (21), only finds 12 unissued records, cycles back looking for 9 more, infinite loop. Confirmed:
-    partial issue state distinguishes this WO from working WOs. Unconfirmed: the exact loop structure
-    in LOAD.KIT (requires RWN binary tracing — pool WOBOM.OPTION hits are in form field-binding tables,
-    not code comparison blobs; actual comparison likely uses Btrieve key navigation not pool blobs).
+19. **75405-3 exact mechanism (REVISED)**: WINPOS reads a WOBOM record and passes REMAINING_QTY
+    (TOTQTY-QTYISSUED) to T7WOG4. If the first mandatory record encountered by Btrieve is fully
+    issued, REMAINING=0, and T7WOG4 gets 0-row input. T7WOG4 likely hangs on empty-grid init.
+    **STATUS: Partially revised — still needs T7WOG4.RWN decode to confirm.**
 
-20. **LOAD.KIT loop structure**: WOBOM.OPTION pattern (465a3a0000) found at pool+281530/304562/326618
-    — all in the form field-binding table area (sequential 14-byte counter+var+poolptr entries), NOT in
-    code operand blobs. This means LOAD.KIT does NOT use pool-level OPTION='N' string comparisons.
-    The filter is likely a Btrieve key read with OPTION as part of the key, or a field-level compare in
-    the dispatch table. Cannot trace further without tp7runtime disassembly or live session.
+20. ✅ **RESOLVED (2026-06-29)**: LOAD.KIT loop structure — LOAD.KIT is BIN VALIDATION with zero
+    loops. WOBOM.OPTION is Btrieve-key filtered in DB_V — confirmed by zero code-level comparisons.
+    The "LOAD.KIT loop counter" hypothesis was wrong.
 
-21. **75820 and 75838 freeze confirmation**: These WOs also have WOBOM_OPTION='1' (confirmed from
-    prior query). Recommend testing KIT=L on these WOs to confirm they also freeze. If confirmed,
-    same fix applies (UPDATE WOBOM SET OPTION='N' WHERE OPTION='1').
+23. **T7WOG4.RWN — what does it do with 0-row input?** T7WOG4 is the kit list display form. When
+    passed REMAINING_QTY=0, it likely cannot initialize LinesGrid and hangs. Confirming this requires
+    T7WOG4.RWN decryption (blocked on IV — needs one Frida debugger session).
+    **STATUS: BLOCKED on T7WOG4.RWN IV recovery.**
 
-22. **Are other Firm WOs (AMAT > 0) vulnerable to the partial-issue freeze?** 227 Firm WOs have
-    AMAT>0 (materials already issued). Only SMT-style WOs use KIT=L; most WOs probably use KIT=Y.
-    Only the SMT department affected by KIT=L freeze — other departments likely don't use KIT=L.
+21. **75820 and 75838 freeze confirmation**: These WOs also have WOBOM_OPTION='1'. Same fix applies:
+    UPDATE WOBOM SET WOBOM_OPTION='N' WHERE WOBOM_OPTION='1' AND WOBOM_WOPRE IN ('75820','75838').
+    **STATUS: Unconfirmed — requires live test.**
+
+22. **Are other Firm WOs (AMAT > 0) vulnerable to partial-issue freeze?** 227 Firm WOs have AMAT>0.
+    Only SMT uses KIT=L. Other departments use KIT=Y. KIT=Y workaround covers all cases.
+    **STATUS: Low priority.**
 
 ---
 
