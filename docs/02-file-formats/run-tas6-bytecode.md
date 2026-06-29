@@ -571,6 +571,76 @@ than being registered as a named DDF column.
 
 ---
 
+## Three-Zone Data Channel Architecture (Pass 363 — 2026-06-29)
+
+The **data channel** spans from `0x0200` to `h[0x08]-1`. It is divided into three physically
+contiguous zones with distinct roles:
+
+### Zone 1 — Static Header + Table Name Registry (`0x0000`–`0x01FF`)
+
+Bytes `0x00`–`0x7F`: file header (see §Header). Bytes `0x80`–`0x1FF`: table name registry —
+`h[0x0C]` bytes total, each slot 16 bytes wide (up to 15 ASCII chars right-padded with `0x00`).
+All `open TABLE lock N` source statements compile into slots here — NOT into runtime instructions.
+
+### Zone 2 — Zero-Filled Runtime Buffers (`0x0200`–`CODE_START + instruction_stream_bytes - 1`)
+
+The instruction stream starts at `CODE_START = 0x6C0`. Each instruction has `addr` pointing to
+its data record somewhere in the data channel. For **main-program instructions** (I#0 through the
+subroutine transition), addr points into the preamble + zero-fill region. These data records are
+**ZERO at compile time** — they are runtime-allocated variable storage. Reading them from the file
+yields all zeros (not meaningful static content).
+
+A **5-byte gap** separates the instruction stream end from the post-instruction data:
+`00 FE 00 00 00` at `instruction_stream_end` to `instruction_stream_end + 4`.
+
+### Zone 3 — Post-Instruction Static String Data (`instruction_stream_end + 5` to `h[0x08] - 1`)
+
+For **subroutine-body instructions** (I#transition through I#N-1), addr points into this zone.
+These records contain real static data: string literals, subroutine descriptor bytes, etc.
+The data channel end marker `h[0x08]` is exactly `last_data_record_start + last_b2`.
+
+**h[0x08] confirmed for two files:**
+| File | h[0x08] | instruction_stream_end | zone3_start |
+|------|---------|----------------------|-------------|
+| BKMRF.RUN | 0x909D | 0x4EE2 | 0x4EE7 |
+| BKLME.RUN | 0x830B | 0x4128 | 0x412D |
+
+### Zone 4 — Post-Data-Channel Field Definitions (`h[0x08]` to end of file)
+
+Beyond the data channel, a separate zone holds compiled ENTER field definitions and screen layouts.
+Format: TAS string records `41 00 NN_lo NN_hi [NN bytes of string data]`. These encode field prompts,
+help strings, validation messages — the compile-time form layout separate from the runtime instruction
+stream. Not addressed by any instruction's `addr` field (they are accessed by a different mechanism).
+
+**BKMRF post-data-channel example** (starting at `0x909D`):
+```
+41 00 01 00 5A         → 1-char string: "Z"
+41 00 07 00 ...        → 7-char string: "BKMRPSW"
+41 00 04 00 ...        → 4-char string: "DONE"
+```
+
+### Subroutine Structure
+
+Subroutines sit in the upper portion of the instruction stream (I#transition to I#N-1). Each
+subroutine begins with **OP_49=FUNC_ENTRY(b2=9)** and ends with **OP_20=RET_FUNC(b2=5)**.
+
+```
+[OP_20 b2=5]          ← end of prior subroutine (or end of main program)
+[OP_49 b2=9]          ← subroutine entry: 9-byte descriptor in zone3
+  [body instructions] ← instructions with addr pointing into zone3 static data
+[OP_20 b2=5]          ← end of this subroutine
+[OP_49 b2=9]          ← next subroutine entry
+  ...
+```
+
+**BKMRF transition at I#1327** (first instruction with zone3 data); **BKLME transition at I#1169**.
+
+**Library subroutines:** `#LIB includes` compile their library function bodies into this same
+subroutine area — NOT as inline main-program instructions. The 20 preamble instructions (I#0–I#19)
+are runtime-generated startup sequences (header scan + table registry scan), not library code.
+
+---
+
 ## TAS Pro 7 vs TAS Pro 6 — Key Differences
 
 | Feature | TAS Pro 6 `.RUN` | TAS Pro 7 `.RWN` (decrypted) |
@@ -630,7 +700,7 @@ without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
 | `0x37` | 206 | 1.5% | TRAP |
 | `0x16` | 182 | 1.3% | ? (b2=4, invariant) |
 | `0x65` | 170 | 1.3% | FIELD_CALLBACK |
-| `0x49` | 160 | 1.2% | READ_PROP |
+| `0x49` | 160 | 1.2% | FUNC_ENTRY (subroutine entry marker — see §Three-Zone Architecture) |
 | `0xBE` | 142 | 1.1% | PMSG |
 | `0x0E` | 134 | 1.0% | ENTER |
 | `0x6A` | 131 | 1.0% | GOTO_LABEL |
@@ -649,7 +719,9 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
 **Pass 362 updates:** OP_4A=QUIT confirmed; OP_1A=FIND_BASIC confirmed (b2=33, freq-table had wrong b2); OP_40=OPEN_R confirmed (same b2=53 as OP_1F); OP_71 renamed CHK_PARAM (appears at I#1 in all programs = entry param check); OP_48=PUSH and OP_57=EXEC_FORM removed from unknowns list (already confirmed).
 
-**Remaining unknowns (Pass 362):** OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~15 unknowns remain (down from 19 in Pass 356). OP_93/65/53 blob internal layout unknown (requires tp7runtime.exe disassembly); T6EDI* header format different from standard.
+**Pass 363 updates:** OP_02=CLRSCR(b2=0) confirmed — source L161 `clrscr` → BKMRF I#26 OP_02. OP_49 renamed from READ_PROP to FUNC_ENTRY(b2=9) — appears at every subroutine boundary immediately after OP_20=RET_FUNC; contains 9-byte subroutine descriptor. Three-zone data channel architecture confirmed (see §Three-Zone Data Channel Architecture below).
+
+**Remaining unknowns (Pass 363):** OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~15 unknowns remain (down from 19 in Pass 356). OP_93/65/53 blob internal layout unknown (requires tp7runtime.exe disassembly); T6EDI* header format different from standard.
 
 ---
 
