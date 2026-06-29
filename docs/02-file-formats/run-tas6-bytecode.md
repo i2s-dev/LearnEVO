@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356; Pass 366: OP_8D structural pattern confirmed as DISPATCH_CONT; Pass 367: OP_25=PFMT, OP_22=PBLNK, OP_0C=DEL_REC confirmed; OP_43/OP_47=array-field-subscript pair, OP_29=array-iter-init structural; pfmt/pblnk CORRECTION applied — they DO compile to instructions; 5 unknowns remain
+Status: **partial** — dual-channel architecture confirmed C:88/100; 3 new header fields confirmed Pass 341; cross-file corpus 374/397 files Pass 356; Pass 366: OP_8D structural pattern confirmed as DISPATCH_CONT; Pass 367: OP_25=PFMT, OP_22=PBLNK, OP_0C=DEL_REC confirmed; OP_43/OP_47=array-field-subscript pair, OP_29=array-iter-init structural; pfmt/pblnk CORRECTION applied — they DO compile to instructions; Pass 368: library-expansion zone confirmed; OP_44 structural pattern established; OP_19/OP_5C probable browse descriptors; OP_1B library-stub hypothesis; OP_56/OP_5D partial; 5 unknowns remain
 
 Last updated: 2026-06-29
 
@@ -748,6 +748,64 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 - **pfmt/pblnk CORRECTION**: Both do compile to instructions (OP_25, OP_22). BKAWLB PRT_TOF (8 pfmt + 2 pblnk + 1 assign + 1 ret) compiles to 12 instructions, not 2 as claimed in Pass 243.
 
 **Remaining unknowns (Pass 367):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **5 unknowns remain** (down from 10 in Pass 366). Note: OP_22 count in BKLME=7 exactly matches `pblnk` count but ≈ `rcn` count (8 lines, some with double `rcn` token); pblnk interpretation preferred for exact match. OP_07(b2=22) — 22-byte records, NOT in unknowns; pattern 22=3×7+1 suggests embedded instruction triple + 1 extra byte.
+
+**Pass 368 updates (2026-06-29):** Library-expansion zone confirmed; OP_44 structural pattern established; OP_19/OP_5C probable browse descriptors; OP_1B 139-byte library descriptor; OP_56/OP_5D partial analysis.
+
+**Library-expansion zone confirmed (Pass 368):** The `.RUN` instruction stream has TWO distinct sections separated by a zone boundary:
+- **Main program code** (I#0 to ~I#686 for BKLME): compiled from source lines 1–~815; ratio ≈ 0.75 instructions/source-line. Calibrated from pfmt calibration points: L318→I#178, L442→I#297, L484→I#329, L488→I#332, L533→I#370, L638→I#474, L645→I#479, L765→I#577.
+- **Library expansion zone** (I#~687+): compiled bodies of `#LIB DBA`, `#LIB lookups`, `#LIB WINDOWS` etc.; EACH unique call site in main code generates a unique stub appended here. All OP_1B (I#1432+), most OP_56 (I#1004+), and OP_5D (I#1293+) instances in BKLME fall in this zone.
+
+**OP_44 structural pattern (Pass 368):**
+- Appears in BKLME and BKDCA; 2 in BKLME (I#1153, I#1602), 3 in BKDCA (I#1052, I#1609, I#1673)
+- Pattern: **[FUNC_PREPOST(OP_39)][CALL_LIB×1-2][TRAP×1-N][OP_44][CLR][OP_93]**
+- OP_44 data at I#1153: `00 0a 05 80 00`; at I#1602: `00 00 00 00 07`
+- Semantic: **section-transition marker** — marks boundary between callback/trap setup and enter-field execution
+- Confidence: 55/100 — 5 consistent instances; no source keyword confirmed
+
+**OP_1B (b2=139) — library descriptor (Pass 368):**
+- 4 instances BKLME (I#1432, I#1464, I#1634, I#1997), all in library-expansion zone
+- 5 instances BKDCA (I#1084, I#1454, I#1642, I#1756, +1), all in library-expansion zone
+- BKDCA has exactly 5 `findv` calls in main source → count matches OP_1B=5 (but `findv` compiles to main-code stubs; OP_1B appears in the expanded library stubs those calls trigger)
+- BKLME has 0 `findv` but 4 OP_1B — 3 from `save TABLE nocnf` stubs + 1 from `windcall tascolor.ovl` (WINDOWS library)
+- Data: 139-byte records containing TAS-tagged type data (`46 00`=numeric, `41 00 LL data`=alpha):
+  - I#1464 data: embedded strings "WO RECPT", "WO ISSUE" (INVTXN type code→description mapping)
+  - I#1634 data: embedded strings "INVTXN", "BKICMSTR" (table name pair)
+  - I#1997 data: embedded strings "tascolor.ovl", "F@#  Fp#   " (overlay name + print format)
+- Entries in I#1432/1464 contain 0xFF entry-separators and per-entry {code, description, binary-ref} triples
+- Interpretation: **LIBRARY_DESCRIPTOR** — compile-time descriptor block for complex library operations; one per call site in library expansion zone. Operations covered include validated find, save-with-table-binding, windcall overlay invocations. Confidence: 35/100.
+
+**OP_5C (b2=12) — probable browse/view header (Pass 368):**
+- 1 in BKLME (I#1669), 28 in BKDCA
+- In BKLME: appears immediately before OP_19×10 sequence in `inv_menu` library expansion
+- In BKDCA: 28 occurrences in library-expansion zone with diverse successors
+- BKLME data at I#1669: `01 00 6c 49 01 00 41 00 11 00 00 02`
+- Interpretation: browse/view section header or context block; precedes column descriptors in browse dialog setup
+- Confidence: 45/100.
+
+**OP_19 (b2=20) — probable browse column descriptor (Pass 368):**
+- 10 consecutive in BKLME (I#1670–1679) from `inv_menu` library expansion; each followed by ASSIGN
+- 2 scattered in BKDCA (I#421, I#3131) — not consecutive, different contexts
+- Source `inv_menu` (BKLME.SRC L772, L779) opens a 10-column IC Master browse; 10 OP_19 = 10 column definitions
+- Interpretation: one OP_19 = one column descriptor for a browse/view dialog (field, width, position)
+- Confidence: 50/100.
+
+**OP_56 (b2=10) — inside windowed call (Pass 368):**
+- 4 in BKLME (I#614, I#1004, I#1088, I#1100); 6 in BKDCA (I#1110, I#3018, I#3021, I#3155, I#3166, I#3188)
+- Appears inside **[OP_C0][OP_56][OP_20][OP_C1]** pattern in 3 BKDCA instances — bracketed by window-call setup/teardown opcodes
+- BKDCA I#3166 data contains readable "lush?" = truncated from message "To Flush?" — a parameter string
+- BKDCA has 6 `clrlne` main-source calls with count=6 matching OP_56=6, but all OP_56 are in library zone while `clrlne` is in main code — likely coincidental count match
+- Interpretation: windowed-message or UI-call parameter block used inside window/dialog invocations; not `clrlne`
+- Confidence: 25/100.
+
+**OP_5D (b2=20) — BKLME-exclusive (Pass 368):**
+- 2 consecutive in BKLME only (I#1293, I#1294); 0 in BKDCA
+- Data I#1293: `60 0f 00 00 10 0b 00 00 00 00 00 00 00 01 46 00 00 00 00 46` — contains LE32 offsets and TAS numeric tags
+- Data I#1294: `90 12 00 00 30 00 00 00 ff 46 c0 0c 00 00 46 60 0f 00 00 41` — 0xFF separator + TAS tags
+- BKLME has 2 `prtr_setup` (L218, L524) matching count but positions in main code (I#~163, ~393) don't match I#1293+
+- Likely from a BKLME-specific library function or print-setup-related operation
+- Confidence: 20/100.
+
+**Remaining unknowns (Pass 368):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **still 5 unknowns** (partial analysis only; counts and structural patterns established but no source keyword positively confirmed for any).
 
 ---
 
