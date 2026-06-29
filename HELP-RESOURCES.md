@@ -12433,6 +12433,37 @@ Additional from WO-K-K reverse: `LAB.EMP`, `LAB.DATE`, `LAB.WOPRE`, `LAB.WOSUF`,
 
 Also: `remark.replace` / `remark.origin` (edit.remark[1..15] — 15 BOM remarks)
 
+#### WO-G KIT=L Freeze — Known Bug and Workaround
+
+**Symptom:** EVO freezes before showing the kit selection list when KIT=L (List) is chosen in
+WO-G (Issue Material). Requires force-killing EVO. SMT department affected most.
+
+**Root causes (confirmed 2026-06-29):**
+
+| WO Condition | Freeze? | Cause |
+|---|---|---|
+| All mandatory WOBOM items have OPTION='N' and QTYISSUED=0 | No | Normal — LOAD.KIT works |
+| Mandatory items have OPTION='1' instead of OPTION='N' | YES | LOAD.KIT treats '1' as optional group 1, finds zero mandatory items, infinite loop |
+| No mandatory items (only OPTION=2/3/4) | YES | LOAD.KIT finds zero mandatory items, infinite loop |
+| OPTION='N' correct but some items already issued (partial issue state) | YES | LOAD.KIT loop counter based on total mandatory count, only finds unissued ones, never satisfies counter |
+
+**OPTION values in WOBOM:**
+- `'N'` = mandatory — MUST be in this OPTION for LOAD.KIT to recognize as mandatory
+- `'1'`, `'2'`, `'3'`, `'4'` = optional selection group numbers — NOT mandatory despite '1' looking like it
+
+**WOBOM_^ISSUED field:** Numeric percentage (0.0–100.0). Not a flag. QTYISSUED/TOTQTY*100.
+
+**Workaround:** Use KIT=Y (All) instead of KIT=L (List). Issues all components at once without
+the selection loop.
+
+**Permanent fixes (requires DB write access or EVO vendor):**
+- WOs with OPTION='1': `UPDATE WOBOM SET WOBOM_OPTION='N' WHERE ... AND WOBOM_OPTION='1'`
+- WOs with partial issue state (some items already issued): Use KIT=Y for the remainder. No
+  WOBOM fix available — the issue is the code path, not the data.
+- Known affected WOs: 75338-2 (OPTION='1'), 75338-4 (no mandatory), 75405-3 (partial issue)
+
+**Also check:** 75820, 75838 — these also have OPTION='1' in WOBOM and will freeze on KIT=L.
+
 #### WOMAT — WO Material Issues (T7WOG)
 
 | Field | Meaning |

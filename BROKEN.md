@@ -68,20 +68,49 @@ infinite search loop, blocking the UI thread permanently.
 No mandatory items at all — only OPTION='2', '3', '4'. LOAD.KIT cannot find a mandatory
 component to anchor the kit list, infinite loop results.
 
-**Root cause for 75405-3 (NOT YET CONFIRMED):**
-WOBOM has OPTION='N' correctly. However, the source BOM template CP1E-09W-30K-H in
-BKBMMSTR has NO rows with BKBM_PROD_TYPE='N'. Working BOM CP4E-08W-30K-H has 3 TYPE='N'
-rows (P.CP-XXW-XXK-X, T.CP-XXW-XXK-X, 740-05085-BR). LOAD.KIT may also read BKBMMSTR
-TYPE='N' rows directly (not just WOBOM), and failing to find them for CP1E-09W causes a
-secondary loop. Note: CP1E-08W-30K-HE (which also has zero TYPE='N' in BKBMMSTR) WORKS for
-75338-3, so BKBMMSTR TYPE='N' is not a complete explanation. 75405-3's freeze cause is
-unclear — may require different investigation or may have been incidentally fixed.
+**Root cause for 75405-3 (PARTIAL ISSUE STATE — confirmed data, mechanism still inferred):**
+WOBOM has OPTION='N' correctly for 21 mandatory items. However, 75405-3 is in a
+**partially-issued state**: 9 of 21 mandatory items are already fully issued (WOBOM_QTYISSUED
+= WOBOM_TOTQTY = 208, WOBOM_^ISSUED = 100.0), and 12 are not yet issued (QTYISSUED=0,
+^ISSUED=0.0). Additionally, within optional group 2, the sub-assembly 720-50498-02 has one
+component fully issued (640-50539, ^ISSUED=100%) and one not (720-50498-3, ^ISSUED=0%).
+
+**Confirmed data (2026-06-29 session):**
+- WORKORD status = 'F' (Firm = active), COMQTY=0, AMAT=3310.59 (actual material cost confirms partial issue)
+- 75338-3 (works): WORKORD AMAT=0.0, all WOBOM QTYISSUED=0 (fresh, nothing issued)
+- Both WOs have 21 mandatory (OPTION='N') records in WOBOM
+
+**Mechanism hypothesis:**
+LOAD.KIT initializes a loop counter from the total WOBOM mandatory count (21), then loops
+reading WOBOM records where QTYISSUED=0 to build the kit selection list. For fresh WOs it
+finds 21 and terminates. For 75405-3 it finds only 12 (the 9 already-issued ones are skipped),
+the counter never reaches 21, and the loop cycles indefinitely back through WOBOM from the
+beginning looking for more unissued records. This is a partial-issue-state bug: LOAD.KIT was
+designed for fresh WOs where all kit items are unissued.
+
+**Alternative mechanism:** VLD_KITISSUE pre-validates the kit. It returns an error when it
+finds the inconsistent partial-issue state (some mandatory items done, some not). LOAD.KIT
+retries in a loop waiting for VLD_KITISSUE to succeed, which it never does.
+
+Note: CP1E-08W-30K-HE (working for 75338-3) has no BKBMMSTR TYPE='N' entries same as
+CP1E-09W-30K-H (75405-3), so BKBMMSTR TYPE is NOT the distinguishing factor.
 
 **BKBMMSTR structure for key BOM templates:**
 - CP4E-08W-30K-H: A=6, B=6, N=3, R=14 rows (HAS TYPE=N)
 - CP1E-08W-30K-HE: A=8, B=3, R=14 rows (no TYPE=N) → 75338-3 WORKS
 - CP1E-08W-30K-H: A=8, B=4, R=14 rows (no TYPE=N) → 75338-2 FREEZES (OPTION=1 bug)
-- CP1E-09W-30K-H: A=7, B=5, R=14 rows (no TYPE=N) → 75405-3 FREEZES (cause unclear)
+- CP1E-09W-30K-H: A=7, B=5, R=14 rows (no TYPE=N) → 75405-3 FREEZES (partial issue state)
+
+**WOBOM_^ISSUED field clarified:** This is a NUMERIC field holding the percentage of the
+total quantity already issued (QTYISSUED / TOTQTY * 100). Values: 0.0 = nothing issued,
+100.0 = fully issued, 37.98 = 79/208 = 37.98% issued. NOT a boolean flag.
+
+**Issue state for 75405-3 mandatory items:**
+- 9 of 21 at ^ISSUED=100 (fully done): 055-03950-0, 055-04651-30KH, 055-04764-1,
+  650-50138-ERP3, 650-50185-ERP, 650-50525-12, 650-50797-ERP1, 650-51141, 685-50822-12
+- 12 of 21 at ^ISSUED=0 (not yet issued): 530-50802, 640-02157, 640-50577, 642-50566,
+  685-50532ERP-12, 700-50487-B-01, 700-50487E-A-1, 701-50530-C-12, 703-50112-C,
+  720-50565-01, 740-05085-BR, 800-50931
 
 **Fix attempts:**
 1. None applied yet — database is read-only for this workspace. Must be done in EVO or directly
@@ -92,11 +121,16 @@ unclear — may require different investigation or may have been incidentally fi
 - For 75338-2 specifically: UPDATE WOBOM SET WOBOM_OPTION='N' WHERE WOBOM_WOPRE='75338'
   AND WOBOM_WOSUF='2' AND WOBOM_OPTION='1' (21 rows)
 - For 75338-4: No mandatory items exist. Options: add mandatory WOBOM records, or use KIT=Y.
-- For 75405-3: Test again to confirm still frozen. If still frozen, investigate BKBMMSTR TYPE
-  field and whether LOAD.KIT reads BKBMMSTR during kit list building.
+- For 75405-3: WO is in a partial issue state — 9 mandatory items already fully issued,
+  12 remaining. Use KIT=Y to issue remaining components. No WOBOM data fix needed; the
+  freeze is caused by the partial-issue state, not wrong OPTION values. If LOAD.KIT is
+  re-entered after all remaining items are issued, it should either terminate correctly or
+  the WO should be completed first via the WO completion screen.
 - Long-term BOM fix: Review all CP1E-* BOM templates to ensure mandatory components are
   encoded with BKBM_PROD_TYPE='N' (not 'A' or 'B'), and that WO creation propagates this
   correctly to WOBOM_OPTION='N'.
+- Long-term code fix (requires EVO vendor): LOAD.KIT should use count of UNISSUED mandatory
+  items (QTYISSUED=0) to initialize the loop counter, not total mandatory item count.
 
 **Lesson:**
 WOBOM_OPTION='N' = mandatory (recognized by LOAD.KIT). WOBOM_OPTION='1' through '4' etc. =
