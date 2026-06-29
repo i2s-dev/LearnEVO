@@ -2842,25 +2842,27 @@ Older-generation user record. Contains user code, password, security level, and 
 
 ---
 
-## ISJAVA — Java Task Queue (Virtual Table — NOT in DDF)
+## ISJAVA — Java Task Queue
 
-**Source:** Pass 297 (2026-06-25). Schema derived from Java bytecode decompilation of EvoPVT.jar and TAS named_var analysis.
+**Source:** Pass 362 (2026-06-26). Schema fully confirmed from Pervasive DDF (FILE.DDF file_id=437 + FIELD.DDF raw scan) and ISJAVA.B file header.
 
-**⚠️ Virtual table — NOT registered in Pervasive/Btrieve DDF.** This table exists only as a TAS Pro 7 runtime data structure used to bridge TAS programs and EvoPVT.jar. It does not appear in FILEDICT, FILEKNUM, or any Pervasive DDF table.
+**⚠️ CORRECTION (Pass 362):** Prior docs stated "NOT in DDF" — this was wrong. ISJAVA IS registered in the Pervasive DDF as file_id=437. The earlier DDF parser (parse_ddf.py) missed the IS_JAVA_PARAM sub-fields because their names contain brackets (`IS_JAVA_PARAM[  1]`), which the parser's character-filter rejected.
 
 **Purpose:** Shared task queue between TAS Pro 7 programs (writers) and EvoPVT.jar Java service (reader/processor). TAS programs push work items by writing records; EvoPVT.jar polls, processes, and removes them.
 
-**Schema (from Java decompilation — C: 75/100):**
+**Schema (from DDF + .B file header — C: 93/100):**
 
-| # | Field | Type | Description |
-|---|-------|------|-------------|
-| 1 | IS_JAVA_UID | String (PK) | Unique task identifier |
-| 2 | IS_JAVA_PARAM | String | Task parameters — command name + arguments passed to Java |
-| 3 | IS_JAVA_DATE | Date | Queue date — when the task was enqueued |
+| # | DDF Name | TAS Var | Type | Offset | Size | Description |
+|---|----------|---------|------|--------|------|-------------|
+| 1 | IS_JAVA_UID | IS.JAVA.UID | STRING | 0 | 40 | Task/job unique identifier (PK) |
+| 2 | IS_JAVA_PARAM[1..25] | IS.JAVA.PARAM | STRING ×25 | 40–2039 | 80 each = 2000 total | Large parameter string (SQL query / command); split across 25 DDF slots of 80 chars each due to Btrieve field-size limit |
+| 3 | IS_JAVA_DATE | IS.JAVA.DATE | DATE | 2040 | 4 | Task queue date |
+
+**Record size:** 2054 bytes (2044 field data + 10 Btrieve overhead), confirmed from ISJAVA.B file header.
 
 **TAS handle variable:** `JAVA.H`
 
-**Programs that open ISJAVA (22 confirmed from rwn_symbols.json):**
+**Programs that open ISJAVA (23 confirmed from rwn_symbols.json):**
 - EvoERPmenu.RWN — main menu monitors for Java-side notifications
 - T7AUTOFX.RWN — Auto FX daemon (Oanda currency rates); uses TIMER.CALL for periodic queuing
 - T7SOA.RWN + 11 other T7SO*.RWN — Sales Order programs (email/document dispatch)
@@ -2879,4 +2881,4 @@ Older-generation user record. Contains user code, password, security level, and 
 - `T7jsql.RWN` — SQL bridge program
 - `T7AUTOFX.RWN` — Auto FX rate daemon
 
-*Confidence: 75/100 — UID/PARAM/DATE field names confirmed from Java bytecode; PK assumption (UID) is logical but not DDF-verified; PARAM content format (command name + args) inferred from Java handler class routing; exact field sizes unknown.*
+*Confidence: 93/100 — DDF field definitions confirmed; exact offsets and sizes from FIELD.DDF raw scan; record size verified from .B file; remaining gap = task command IDs (string literals in encrypted .RWN bytecode).*

@@ -297,7 +297,7 @@ Byte  Field      Notes
 
 ---
 
-## Known Opcodes (Pass 240 — combined Rosetta Stone findings)
+## Known Opcodes (Pass 240 + Pass 362 — combined Rosetta Stone findings)
 
 ### Confirmed by positional alignment or binary pattern
 
@@ -305,13 +305,12 @@ Byte  Field      Notes
 |--------|------|----|---------------------------|
 | `0x0F` | ASSIGN | 0x0A | Baseline; var assignments throughout |
 | `0x3B` | COND_BRANCH | 0x14 | Baseline; conditional goto |
-| `0x40` | EXIT | — | Baseline |
-| `0x42` | GOSUB | — | Baseline |
+| `0x42` | GOSUB | 0x04 | Baseline; also used as FIELD_TERM in ENTER cluster context |
 | `0x48` | PUSH | 0x19 | Baseline |
 | `0x49` | READ_PROP | 0x09 | Baseline |
-| `0x57` | EXEC_FORM | — | Baseline |
+| `0x57` | EXEC_FORM | 0x05 | Baseline |
 | `0x6A` | GOTO_LABEL | — | Baseline |
-| `0x71` | EXIT2 | — | Baseline |
+| `0x71` | CHK_PARAM | 0x05 | Baseline; appears at I#1 (BKAWLB/BKROA/BKDCA) = parameter-check at program entry |
 | `0xDC` | POP | — | Baseline |
 | `0x0E` | ENTER | 0x61 | Positional: 4 in a row = `enter e.status[1..4]` (Pass 240) |
 | `0x37` | TRAP | — | Positional: 3 in a row = 3 traps in `func pre.stat` (Pass 240) |
@@ -322,13 +321,16 @@ Byte  Field      Notes
 | `0x4B` | CALL_LIB | 0x09 | First instruction of every file; `fnc_list`, `xtrap`, `prtr_setup` (Pass 240) |
 | `0x39` | FUNC_PREPOST | 0x51 | Before complex ENTER; pre/post function descriptor (Pass 240) |
 | `0x01` | ARG_DESC | 0x1D | Between OP_39 and ENTER; argument descriptor (Pass 240) |
+| `0x4A` | QUIT | 0x09 | Positional: BKAWLB I#1787 = `quit` at source L426 (EXIT2 label); b2=9 matches CALL_LIB (Pass 362) |
 
 ### Confirmed in preamble (init) region — opcode = source statement type
 
 | Opcode | Name | b2 | Source statement |
 |--------|------|----|-----------------|
-| `0x1F` | TABLE_HANDLE | 0x35=53 | `open TABLE lock N` — 5× in preamble, stride 53 (Pass 240) |
-| `0x13` | FIND_KEY | 0x21=33 | `find F srch BKSY.ARINV.NUM nlock` (Pass 240) |
+| `0x1F` | OPEN_LOCK_N | 0x35=53 | `open TABLE lock N` — 5× in BKAWLB preamble (Pass 240) |
+| `0x40` | OPEN_LOCK_R | 0x35=53 | `open TABLE lock R` — same b2=53 as OP_1F; appears where read-only/openv opens expected (BKDCA uses exclusively, BKROA uses for lock R; Pass 362) |
+| `0x13` | FIND_QUALIFIED | 0x21=33 | `find F srch FIELD err LABEL` or `find F srch FIELD nlock` — with qualifier (Pass 240/362) |
+| `0x1A` | FIND_BASIC | 0x21=33 | `find F srch FIELD` — no err label, no nlock; BKDCA I#19 = `find F srch BKYS.WONUM` (L118, no err); b2=33 same as OP_13 (Pass 362) |
 | `0x06` | CLR | — | `clr BKSYMSTR rec` (Pass 240) |
 | `0x1C` | MOUNT | — | `mount SELECT2 type S` (Pass 240) |
 | `0x21` | MENU | — | `menu at 5,5 ...` (Pass 240) |
@@ -633,9 +635,9 @@ without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
 | `0x0E` | 134 | 1.0% | ENTER |
 | `0x6A` | 131 | 1.0% | GOTO_LABEL |
 | `0x15` | 119 | 0.9% | ? (b2=4, invariant) |
-| `0x4A` | 98 | 0.7% | ? (b2=9, invariant) |
+| `0x4A` | 98 | 0.7% | QUIT (b2=9; confirmed I#1787 BKAWLB=L426 `quit`; high count from library includes — Pass 362) |
 | `0x8A` | 98 | 0.7% | ? (b2=9, invariant) |
-| `0x1A` | 97 | 0.7% | ? (b2=9, invariant) |
+| `0x1A` | 97 | 0.7% | FIND_BASIC (b2=**33** ← freq-table b2 was wrong; `find F srch FIELD` no-qualifier; BKDCA I#19=L118 — Pass 362) |
 | `0x43` | 90 | 0.7% | ? (b2=9, invariant) |
 | `0x31` | 88 | 0.7% | ? (b2=16, invariant) |
 | `0x53` | 84 | 0.6% | ENTER_FIELD_FULL |
@@ -645,8 +647,9 @@ without needing to compute the `0x80 + h[7]×16 + h[6]` formula.
 
 Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 
-**Remaining gaps:** ~70 opcodes have no source mapping; OP_93/65/53 blob internal layout unknown
-(requires tp7runtime.exe disassembly); T6EDI* header format different from standard.
+**Pass 362 updates:** OP_4A=QUIT confirmed; OP_1A=FIND_BASIC confirmed (b2=33, freq-table had wrong b2); OP_40=OPEN_R confirmed (same b2=53 as OP_1F); OP_71 renamed CHK_PARAM (appears at I#1 in all programs = entry param check); OP_48=PUSH and OP_57=EXEC_FORM removed from unknowns list (already confirmed).
+
+**Remaining unknowns (Pass 362):** OP_25, OP_22, OP_15, OP_16, OP_32, OP_2D, OP_43, OP_5D, OP_56, OP_1B, OP_44, OP_47, OP_19, OP_29, OP_8D — ~15 unknowns remain (down from 19 in Pass 356). OP_93/65/53 blob internal layout unknown (requires tp7runtime.exe disassembly); T6EDI* header format different from standard.
 
 ---
 
