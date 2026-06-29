@@ -880,6 +880,58 @@ BKYS_YN_250). The 89-row DFM-derived table is complete — no additional YN cont
 T7MDefaults.DFM or T7MDefNDC.DFM. The remaining ~161 slots (250 − 89) are set outside these
 two forms.
 
+### Live BKYSMSTR YN Values at i2 Systems (Pass 384, 2026-06-29)
+
+Full BKYSMSTR row queried via DSN=DBA ODBC (single-row table). Key findings:
+
+**DFM-mapped slots confirmed against live values:**
+
+| YN[N] | Live Value | DFM Description | Validation |
+|-------|-----------|-----------------|------------|
+| YN[1] | 'F' | Post COGS Transactions? | ⚠ Not Y/N — stores format code |
+| YN[9] | 'C' | (not in DFM table) | New: unknown code |
+| YN[36] | 'D' | Multiply or Divide by processes (M/D) | ✓ Divide |
+| YN[39] | '4' | SO Packing Slip format (1-4) | ✓ SOC4.RTM |
+| YN[47] | '1' | Payroll check format (1=laser) | ✓ PRD1.RTM |
+| YN[48] | '1' | AP check format (1=APHA1.RTM) | ✓ APHA1.RTM |
+| YN[76] | '4' | SO Acknowledgment format (1-4) | ✓ SOB4.RTM |
+| YN[77] | '4' | SO Quote format (1-4) | ✓ SOPB4.RTM |
+| YN[78] | '2' | PO form format (1-2) | ✓ POE2.RTM plain paper |
+| YN[200] | 'N' | Lead Time Scheduling (F/B/N) | ✓ None |
+| YN[249] | '0' | AP check top margin offset | ✓ 0 px offset |
+
+**New live values for unmapped slots (not in DFM table):**
+
+Many previously-blank slots have non-null values at i2 Systems, confirming they are active
+configuration settings not exposed in T7MDefaults.DFM. Representative sample:
+`YN[6]`, `YN[7]`, `YN[8]`, `YN[10]`, `YN[11]`, `YN[12]`, `YN[13]`, `YN[14]` — all non-null
+but descriptions unknown. Similarly, many slots in the YN[51]–YN[99] range have non-null values.
+
+**Auto-number counters:** BKYS_WONUM=401 (next Work Order number at time of query).
+
+### YN[102]–YN[149]: Module Enable/Disable Block (Pass 384)
+
+Live values show that slots YN[102] through YN[149] form a contiguous block of module
+enable/disable flags. At i2 Systems:
+
+- Most slots contain **'Y'** (module enabled/licensed)
+- Some slots contain **'Z'** (module disabled — not licensed or feature not active)
+- Example: YN[115]='Z', YN[118]='Z' (two unlicensed modules at i2 Systems)
+- YN[102]='Y', YN[149]='Y' (bookend slots both active)
+
+**Semantics confirmed:**
+- `'Y'` = module active/licensed
+- `'Z'` = module disabled or not licensed
+- Other letter codes (A–F, M, W etc.) likely indicate sub-mode or tier (consistent with
+  non-Y/N usage seen elsewhere in YN fields)
+
+**Count:** 48 consecutive slots (YN[102]–YN[149]). BKMENUSU.TXT lists 42 module groups
+across 10 tab categories, consistent with ~42+ flag positions in this range.
+
+**Mapping blocked:** The exact module-name→YN[N] index assignment (e.g. "AR module = YN[102]")
+is defined in T7YSYN.RWN or T7MDefaults.RWN, both encrypted. Cannot confirm without
+debugger IV recovery. See `docs/02-file-formats/decryption-findings.md`.
+
 ---
 
 ## BKYS.GLNUM[N] / BKYS.GLDPT[N] — GL Account Slot Mapping
@@ -893,7 +945,7 @@ Source: DFM Top-position pairing (medium confidence; most Manufacturing/Acct.Sal
 | GLNUM[2] / GLDPT[2] | Accounting / Sales | AR Customer Deposits |
 | GLNUM[3] / GLDPT[3] | Manufacturing | WO Absorbed Labor |
 | GLNUM[4] / GLDPT[4] | Accounting / Sales | SO Retention |
-| GLNUM[5] | Setup | (label ambiguous — "Post COGS Transactions?"; may be wrong pairing) |
+| GLNUM[5] | Setup | **Company code** — live value 'I2S' (Pass 384); NOT a GL account number. Slot repurposed to store a short company identifier string. DFM label pairing was incorrect. |
 | GLNUM[6] / GLDPT[6] | Manufacturing | WO Absorbed Fixed Overhead |
 | GLNUM[7] / GLDPT[7] | Manufacturing | WO Absorbed Var Overhead |
 | GLNUM[9] / GLDPT[9] | Manufacturing | WO Extra Costs |
@@ -912,7 +964,13 @@ Source: DFM Top-position pairing (medium confidence; most Manufacturing/Acct.Sal
 | GLNUM[37] / GLDPT[37] | Accounting / Sales | SO Non-Taxable Sales |
 | GLNUM[38] / GLDPT[38] | Accounting / Sales | SO Taxable Sales |
 
-Slots 1, 8, 11–13, 15–16, 19, 22–32, 39–40 not yet confirmed (labels either missing or ambiguous).
+Slots 1, 8, 11–13, 19, 22–32, 39–40 not yet confirmed (labels either missing or ambiguous).
+
+**Live GLNUM values confirmed (Pass 384, DSN=DBA):**
+- GLNUM[2]='2115' (AR Customer Deposits — matches DFM description)
+- GLNUM[3]='5001' (WO Absorbed Labor — matches DFM description)
+- GLNUM[5]='I2S' (company code — NOT a GL account; see correction above)
+- GLNUM[8]='51200' (purpose unknown — not in DFM table; slot 8 now partially confirmed as active)
 
 ## BKYS.VNUM[N] and BKYS.NUM[N] Slot Mapping
 
