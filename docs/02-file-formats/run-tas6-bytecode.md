@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — dual-channel architecture confirmed C:88/100; Pass 368: library-expansion zone confirmed; OP_44 structural pattern; OP_19/OP_5C probable browse descriptors; OP_1B library-stub hypothesis; OP_56/OP_5D partial; Pass 369: BKROA added (4577 instr, 4 libs); OP_19 group sizes ×1/×4/×10 confirmed; OP_5C dual-role discovered; OP_C0/C1 balanced pairs; OP_5D main-code zero-buffer + library address-table; 5 unknowns remain
+Status: **partial** — Pass 368-370: library-expansion zone, OP_C0=BLOCK_OPEN/OP_C1=BLOCK_CLOSE confirmed; OP_19 group sizes ×1/×4/×10; OP_5C dual-role; OP_44 structural pattern; 5 unknowns remain (OP_5D/OP_56/OP_1B/OP_44/OP_19)
 
 Last updated: 2026-06-29
 
@@ -818,6 +818,14 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 - **Library zone boundary** — BKROA library zone starts at FUNC_ENTRY I#1607. Subroutines: I#806 (last main-code complex sub, 240 instr), I#1046, I#1186 (last main-code subs before library). FUNC_ENTRY count for BKROA: 69 total.
 
 **Remaining unknowns (Pass 369):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **still 5 unknowns** — structural patterns better characterized but source keywords unconfirmed. OP_5C role (b) also open.
+
+**Pass 370 updates (2026-06-29):** OP_C0/OP_C1 structural role confirmed.
+
+- **OP_C0 (b2=4) = BLOCK_OPEN**: In 22/23 main-code instances in BKROA, OP_C0 immediately precedes OP_49 (FUNC_ENTRY), enclosing a complete callback subroutine: [OP_C0][OP_49...body...OP_20][OP_C1]. 1 anomalous instance (I#113) wraps [OP_3B×2][OP_16×2] with no FUNC_ENTRY — an inline code block. BKLME: 1 main-code OP_C0 (I#36) wraps the `func SETUP_INV` callback subroutine (L140-149). Source correlate: `{...}` compound block in `enter` statements. Library-zone OP_C0 wraps [OP_56][OP_20] or similar short payloads.
+- **OP_C1 (b2=0) = BLOCK_CLOSE**: Always immediately follows OP_20 (RET_FUNC) or final payload instruction. b2=0 = zero-byte data record = pure structural marker. Balanced count: BKLME=3, BKDCA=18, BKROA=37 pairs.
+- **Implication for OP_56**: In library zone, OP_56 is the PAYLOAD BODY inside [OP_C0][OP_56][OP_20][OP_C1] = a one-instruction callback subroutine. Source keyword for OP_56 remains unknown but likely a library function invocation that compiles to a single-instruction library body.
+
+**Remaining unknowns (Pass 370):** OP_5D, OP_56, OP_1B, OP_44, OP_19 — **still 5 unknowns** — OP_C0/OP_C1 now confirmed as structural block delimiters (not in the 5).
 
 ---
 
