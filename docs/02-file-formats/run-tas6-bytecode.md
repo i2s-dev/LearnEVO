@@ -1,6 +1,6 @@
 # TAS Pro 6 `.RUN` File Format — Bytecode Analysis
 
-Status: **partial** — Pass 368-373: library-expansion zone, OP_C0=BLOCK_OPEN/OP_C1=BLOCK_CLOSE confirmed; OP_44=ENTER_EXEC_BEGIN 75%; OP_56=DATA_CONTINUATION confirmed; OP_19/OP_1B/OP_5D still low confidence
+Status: **partial** — Pass 368-374: library-expansion zone, OP_C0=BLOCK_OPEN/OP_C1=BLOCK_CLOSE confirmed; OP_44=ENTER_EXEC_BEGIN 75%; OP_56=DATA_CONTINUATION confirmed; OP_19=BROWSE_COLUMN_DESCRIPTOR 70%; OP_1B=LARGE_DESCRIPTOR_BODY 50%; OP_5D 35%
 
 Last updated: 2026-06-29
 
@@ -847,6 +847,45 @@ Remaining 70 opcodes appear at <0.6% each; total unique = 95.
 - **Corrected instruction boundary rule** — header[0:4] LE32 = total instruction bytes. n = header_value // 7 (exact integer, verified for all 5 files). Data section starts at INSTR_START + instruction_bytes. Values: BKROA n=4577 data@0x83E7, BKDCA n=3471 data@0x65A9, BKLME n=2137 data@0x412F, BKAWLB n=2079 data@0x3F99. Reading past this boundary gives data section bytes, not instructions — earlier analysis that produced wrong opcode counts was caused by missing this boundary. This finding supersedes any prior instruction-count values derived from full-file scanning.
 
 **Remaining unknowns (Pass 373):** OP_5D, OP_1B, OP_19 — **3 unknowns** (OP_56 resolved to 60%; OP_44 at 75%). OP_5D: 20-byte runtime-buffer allocator in main code (zero-filled) OR address-table builder in library zone; 20% confidence. OP_1B: 139-byte library descriptor, possible `findv`/`save`/`windcall` stub entry; 35% confidence. OP_19: browse column descriptor (10 OP_19 = 10-column inv_menu browse); 50% confidence.
+
+**Pass 374 updates (2026-06-29):** Deep analysis of OP_19, OP_1B, OP_5D from full data record dumps across BKROA/BKDCA/BKLME.
+
+**OP_19 (b2=20) = BROWSE_COLUMN_DESCRIPTOR — upgraded to 70%:**
+- Group structure across 3 files: BKROA 8 groups (×1×3, ×4×3, ×10×1, ×1 text), BKDCA 2 singletons, BKLME 1 group ×10.
+- **×10 groups** (BKROA I#2702-2711, BKLME I#1670-1679): ALWAYS preceded by OP_5C(b2=12) = browse header. Data contains `41 00 LL` (Alpha type tag, length LL), `4C` (Long), `FF` entry separators. 10 OP_19 = 10-column browse = inv_menu IC Master browse (confirmed from BKLME.SRC `inv_menu` at L772/L779).
+- **×4 groups** (BKROA I#1251-1254 etc.): 4-column lookup browses. BKROA.SRC has several enter fields with 'Y' lookup flag (MTRO.WC, MTRO.TYPE, MTRO.VENDCODE etc.) generating 4-column lookup browse windows.
+- **BKDCA has 0 Y-flag fields** → only 2 singletons total (no multi-column browses). Confirmed: BKDCA.SRC enter fields are plain entry (no lookup browse flag), consistent with 0 ×4/×10 groups.
+- **×1 singletons at I#979/1105/1152**: 1-column lookup browses (single-field validation lookups). Preceded by OP_20(b2=5), OP_0F(b2=10), or OP_37(b2=10) depending on variant.
+- **BKROA I#4032 "s part does not have"** — text continuation within library zone, NOT a column descriptor. Prev=OP_3B(b2=20), data = "s part does not have" (20 ASCII bytes = tail of a message string). OP_3B reads 20 bytes at 0xF8C1 (start of string), OP_19 reads next 20 bytes — combined 40-byte string record. This use is DATA_CONTINUATION (same as OP_56) rather than column descriptor, context-dependent.
+- Rule: OP_19 in groups immediately preceded by OP_5C or OP_0F(b2=10) = column descriptor; OP_19 as sole read after OP_3B = text continuation.
+
+**OP_1B (b2=139) = LARGE_DESCRIPTOR_BODY — upgraded to 50%:**
+- All instances across ALL 3 files are in the library-expansion zone (BKROA I#2477+, BKDCA I#1084+, BKLME I#1432+). None in main-program zone.
+- Three fixed chain patterns:
+  - Pattern A: OP_0F(10) + OP_1B(139) + OP_2D(6) = 155 bytes total (most common)
+  - Pattern B: OP_0F(10) + OP_1B(139) + OP_3B(20) = 169 bytes total
+  - Pattern C: OP_BB(10) + OP_1B(139) + OP_C0(4) = 153 bytes total (windcall pattern)
+- **Observed data content** (full 149-byte record dumps):
+  - BKDCA I#3133: browse column header labels "WO", "Emp", "START", "FINISH", "Posted", "Parts", "Runhrs" — a WO list browse header row
+  - BKDCA I#1756: function key labels "F1 Help" (7 bytes) + `41 00 08` "Esc Exit" (8 bytes) — fnc_list key definitions with Alpha-tagged entries
+  - BKDCA I#1084: dispatch table of 21 × 7-byte sub-records each = `0F 00 0A [addr_lo] [addr_hi] 00 00` — OP_0F dispatch table pointing to 21 consecutive 10-byte field descriptors
+  - BKROA I#4034: validation message "valid Type for Routings" + table name "BKDEJC" + error text "You may only edit routings t..." — enter field validation context
+  - BKLME I#1997 (Pattern C): overlay name "tascolor.ovl" (×2 = two calls) + "RN" + " " Alpha entries — windcall descriptor (tascolor.ovl = TAS color/theming overlay from #LIB WINDOWS)
+- All data uses `41 00 NN` (Alpha, length NN), `46` (Float/Numeric type), `4C` (Long type), `FF` entry separators, `49` (Integer type) — same type-tag vocabulary as OP_19/OP_5D data.
+- **Fixed size 139** regardless of content type: the record is always exactly 149 bytes (10+139), padded/truncated to fit.
+- Confidence: **50/100** (continuation read confirmed; content is a generic fixed-size library descriptor body; specific keyword unclear since all instances are in compiled library code, not in user-visible source keywords).
+
+**OP_5D (b2=20) = DESCRIPTOR_CONTINUATION_MEDIUM — upgraded to 35%:**
+- Found in BKROA (3) and BKLME (2). BKDCA has 0.
+- **Pattern A** (program header, BKROA I#29 only): OP_40(b2=53) + OP_5D(20) + OP_3B(20). Data = 73 bytes ALL ZEROS (zone2 runtime buffer). This is in the startup initialization sequence (I#25-35 are a chain of OP_1F×2, OP_40×2, OP_5D, OP_3B, OP_40 all reading zero-filled buffers). OP_5D here reads a 20-byte zero-initialized runtime state block within the init sequence.
+- **Pattern B** (data body, BKROA I#2001-2002, BKLME I#1293-1294): OP_16(b2=4) + OP_5D(20) + OP_5D(20) + OP_3B(20) = 64-byte record.
+  - BKROA I#2001-2002 data: 5+ sub-records of format `[0A][addr_lo][addr_hi][01 00 0F 00]` with incrementing addresses (+0x0A each) — an address table pointing to 10-byte field records.
+  - BKLME I#1293-1294 data: LE32 values (0x00000F60=3936, 0x00000B10=2832, zeros, etc.) with type tags 0x46='F', 0x41='A', 0xFF separator — same type-tag vocabulary as OP_19 and OP_1B.
+  - OP_16 header (4 bytes, BKLME I#1292): `00 00 B4 46` — includes `46`='F' type code in last byte.
+- OP_5D reads 20 bytes exactly like OP_19, but in a DIFFERENT chain context (preceded by OP_16 or OP_40, not OP_5C or OP_0F). Both read 20-byte descriptor segments; the opcode distinction may reflect different runtime handling of the data.
+- OP_16 has 86/48/13 instances in BKROA/BKDCA/BKLME — it is a very common instruction, NOT exclusively paired with OP_5D. Only 1 OP_16 in BKLME precedes OP_5D (I#1292).
+
+**Remaining unknowns (Pass 374):** OP_5D — **1 true unknown** (plus OP_19/OP_1B upgraded to 70%/50% but not fully resolved). OP_5D is a 20-byte DATA_CONTINUATION read in two contexts: zero-fill init buffers (main code) and structured type-tagged descriptor blocks (library code). Source keyword unknown.
 
 ---
 
