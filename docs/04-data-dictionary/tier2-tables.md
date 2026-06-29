@@ -8,28 +8,43 @@ unless confirmed by SRC source, DFM labels, or rwn_strings analysis.
 
 ## BKSLEVEL — Security Level Permission Matrix
 
-File: `BKSLEVEL.B` | Module: Security/SM | Fields: 422 | **VERIFIED 2026-06-17**
+File: `BKSLEVEL.B` | Module: Security/SM | Fields: 422 | **Updated Pass 383, 2026-06-29**
 
 **What this is:** Per-security-level menu access control table. Each row defines what
-a given security level can do across all menus. Pairs with AHSYLOG (per-user permissions).
+a given security level can do across 20 configurable menu groups. Pairs with BKPSUSER
+(per-user level assignment).
 
 **Primary key:** BKSL_MENU (UBINARY 2) + BKSL_LEVEL (STRING 2)
 
-**Field structure (exactly confirmed from DDF):**
-- BKSL_MENU (UBINARY 2) — menu number (PK part 1)
-- BKSL_LEVEL (STRING 2) — security level code (PK part 2)
-- BKSL_MENU1_YN, BKSL_MENU1_1..20 — menu section 1: master toggle + 20 operation flags
-- BKSL_MENU2_YN, BKSL_MENU2_1..20 — menu section 2
-- … repeats for MENU3 through MENU20
-- Total: 20 menu sections × (1 YN + 20 ops) + 2 key fields = 422 fields ✓
+**Field structure (confirmed from DDF + binary analysis):**
+- BKSL_MENU (UBINARY 2) — menu screen number (PK part 1); **integer**, not a module code string
+- BKSL_LEVEL (STRING 2) — security level code (PK part 2); e.g. '1'-'5' at i2 Systems
+- BKSL_MENU1_YN (STRING 1) — group 1 quick-access flag (Y=restricted, N=unrestricted)
+- BKSL_MENU1_1..20 (STRING 1 each) — group 1 per-operation flags
+- BKSL_MENU2_YN, BKSL_MENU2_1..20 — group 2 (same pattern)
+- … repeats for groups 3 through 20
+- Total: 2 PK + 20 groups × 21 flags = 2 + 420 = 422 fields ✓
+- Logical record size: 424 bytes (FCR+0x16 confirmed)
 
-**How it connects to AHSYLOG:**
-- AHSYLOG.AHSY_USER_LEVL = 2-char role code → FK → BKSLEVEL
-- The 20 AHSY_USER_ACCES_N flags in AHSYLOG override or supplement BKSLEVEL permissions
-- BKSL_MENU{N}_YN = quick "has any access" check per menu section
+**Pass 383 live binary findings (2026-06-29):**
+- i2 Systems BKSLEVEL.B has **40 rows**: 8 BKSL_MENU values (1–8) × 5 BKSL_LEVEL values ('1'–'5')
+- Full coverage matrix: every (MENU, LEVEL) combination exists
+- **All operation flags = 'N'** in the i2 Systems installation — no menu-level restrictions enforced
+- BKSL_LEVEL '1'–'5' = 5 security levels (role codes used in BKPSUSER.BKPS_SEC)
+- BKSL_MENU 1–8 = 8 distinct main menu screens; exact module mapping still blocked
+  (mapping hard-coded in encrypted T7MDefaults.RWN; inferred from BKMENUSU.TXT GROUPS
+  section: 8 values likely = Mfg, Items, Sales, Queries+HH, System Mgr, Accounting,
+  Payroll, Settings — **unconfirmed**)
 
-**Confidence: 82/100** — Exact field counts confirmed; 20-menu structure verified.
-Section-to-module mapping (which menu number = which EvoERP module) not yet confirmed.
+**How it connects to other security tables:**
+- BKPSUSER.BKPS_SEC (STRING 30) = 30-char bitmap; each char = level code → FK into BKSL_LEVEL
+- Note: AHSYLOG is DBA-era legacy (0 T7 programs access it); T7 security uses BKPSUSER instead
+- BKSL_MENU{N}_YN = quick toggle; BKSL_MENU{N}_1..20 = per-operation granular flags
+
+**Confidence: 87/100** — Field counts and logical record size confirmed from DDF + FCR;
+BKSL_MENU integer type confirmed; live i2 Systems 8×5 matrix confirmed from binary;
+all-N flag configuration confirmed. Remaining gap: BKSL_MENU integer → module name
+mapping requires T7MDefaults.RWN decryption (blocked).
 
 ---
 
