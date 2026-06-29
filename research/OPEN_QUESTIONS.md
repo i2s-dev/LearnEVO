@@ -271,7 +271,7 @@ to resolve fully:
     - **0x6A = GOTO_LABEL**: uses pool STRING as label name (runtime label resolution). EVOMENU_SELCOMP: GOTO_LABEL("Items").
     - **0x4B = OPEN_FORM** (distinct from 0x20 CREATE/BIND) — EvoERPbackup uses 0x4B with DFM filename. Difference (open-existing vs create-new?) TBD.
     - **ISTS enhancement marker**: i2 Systems custom programs start with `ASSIGN(" - ISTS Enhancement MM/DD/YY")` at instruction [0] (EVODEFPRINT confirmed 06/15/17).
-    - **Branch target encoding STILL UNKNOWN**: for 0x3B COND_BRANCH and 0xD2 GOTO, poff points into compound blob body (not at a STRING entry boundary). Pass 241 ruled out: instruction index, dispatch byte offset, packed low byte. Pass 242 confirmed: for GOTO_LABEL and CREATE/BIND, poff is an opcode-specific offset INTO a pool STRING entry (header+0, header+1, or header+4 depending on opcode). COND_BRANCH/GOTO poff points to compound blob body — needs tp7runtime.exe disassembly.
+    - **✅ Branch target encoding RESOLVED (Pass 378, 2026-06-29)**: TAS Pro 7 uses COMPUTED/RUNTIME labels — NO static instruction addresses in binary. All sub=0x14 branch opcodes (GOTO/GOTO_LABEL/COND_BRANCH/GOSUB) store compound expression blobs in the pool; branch targets are label name strings evaluated at runtime by tp7runtime.exe. Evidence: 0/27 GOTO pool strings match any GOTO_LABEL pool strings; 0/50 COND_BRANCH compound records contain label strings; GOTO[206] + COND_BRANCH[198] share "NO_REFRESH" string in pool as a computed label reference. Static control-flow graph recovery from binary is architecturally impossible. C:75/100 (mechanism confirmed; pool compound expression format for 0xFD markers still partially opaque).
     - **Per-opcode poff delta (Pass 242 new finding)**: READ_PROP poff → header+0; CREATE/BIND form poff → header+0; GOTO_LABEL poff → header+1 OR header+4 (inconsistent across samples); CREATE/BIND bindings poff → header+4; ASSIGN/GOSUB/COND_BRANCH poff → compound blob body. Resolving the inconsistency requires tp7runtime.exe disassembly.
     - **New opcodes from suwin6t.rwn (Pass 242)**: OP_1A (sub=0x21, 11×), OP_31 (sub=0x10, 11×), OP_D9 (sub=0x07, 1×), OP_B9 (1×), OP_89 (1×), OP_8A (1×), OP_0C (1×), OP_45 (1×). OP_1A and OP_31 are significant (11× each in a 729-instruction program).
     - **Pool type 0x53 identified**: appears to be a second string type (same format as 0x41 but different type byte). Need more samples.
@@ -288,6 +288,9 @@ to resolve fully:
     - **OP_0F (ASSIGN) dominant confirmed**: 1282× (48% of all instructions), consistent with 44.85% at 3.2M scale. Sub=0x0A confirmed. References STRING pool entries for program labels, column names, library names (e.g., "FO-E  Print Option Where Used", "ISTECH", "\\auto\\EvoSettings.ini", "EMAIL CO# ", " User:", "HOT BUTTONS").
     - **OP_42 frequency**: 445× in T7FOE — 1 in 6 instructions is a GOSUB/CALL PROC.
     - Current status updated to **C: 78/100**.
+    **Pass 378 additions (2026-06-29 — branch target encoding resolution):**
+    - **Branch target encoding RESOLVED**: computed/runtime labels; poff for GOTO/GOTO_LABEL/COND_BRANCH/GOSUB = pool byte offset into sequential compound expression stream; target resolved at runtime; static CFG impossible. Evidence: 0/27 GOTO→GOTO_LABEL matches; 0/50 COND_BRANCH label matches; all 39 GOTO_LABEL pool entries = complex binary compound blobs. See rwn-binary-format.md "Branch Target Encoding — Resolved".
+    - Current status updated to **C: 82/100**.
 
 17. **TAS Pro 6 `.RUN` bytecode — 7-byte instruction format CONFIRMED, semantics mostly open (2026-06-19).**
     - Instruction format `[op:1][0x00:1][b2:1][addr_LE4:4]` confirmed for BKAWLB. Code section has

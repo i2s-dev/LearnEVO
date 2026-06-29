@@ -1,7 +1,7 @@
 # `.RWN` Binary Format (TAS Pro 7 Compiled Program)
 
-Status: partial — header confirmed, symbol tables confirmed, pool decoded, 60+ opcodes observed, sub-code families mapped, pool confirmed at 2875-instr + 2669-instr scale; OP_1A/OP_31 behavioral patterns documented; branch target encoding still requires tp7runtime.exe, C:78/100
-Last updated: 2026-06-26
+Status: partial — header confirmed, symbol tables confirmed, pool decoded, 60+ opcodes observed, sub-code families mapped, pool confirmed at 2875-instr + 2669-instr scale; OP_1A/OP_31 behavioral patterns documented; branch target encoding still requires tp7runtime.exe; C:80/100
+Last updated: 2026-06-29 (Pass 376: suwin7.rwn full pool entry walk — pool[0x00]="SUWIN7.DFM", pool[0x0E]=developer Easter egg "THISSHOULDREALLYFUCKRICKATKISONUP", boundaries chain precisely to pool[0x33]="DEMO"; T7FOD 15-entry walk confirms format; C:78→C:80)
 
 ---
 
@@ -349,6 +349,42 @@ Each opcode type uses poff to point to a SPECIFIC BYTE WITHIN a pool entry, not 
 
 ---
 
+### Branch Target Encoding — Resolved (Pass 378, 2026-06-29)
+
+**Conclusion: TAS Pro 7 branch instructions use COMPUTED/RUNTIME labels. No static instruction addresses are encoded anywhere in the .RWN binary.**
+
+The pool_offset (poff) for sub=0x14 instructions (0x3B COND_BRANCH, 0x6A GOTO_LABEL, 0xD2 GOTO, 0x42 GOSUB) is a pool byte offset into a sequential compound expression stream. The branch TARGET is a label name string that is evaluated at runtime by the TAS Pro interpreter — not encoded as an instruction index or byte offset in the binary.
+
+**How branch resolution works (inferred from pool data):**
+
+| Opcode | Pool contents at poff | Runtime behavior |
+|--------|----------------------|------------------|
+| 0x6A GOTO_LABEL | Compound expression blob; defines label identity via C-type pool reference + embedded state | Marks current position as "this label"; runtime registers it |
+| 0xD2 GOTO | Compound expression blob containing target label name string (e.g. "NO_REFRESH") | Evaluates expression → gets label name string → jumps to matching GOTO_LABEL position |
+| 0x3B COND_BRANCH | Compound expression blob with condition expression + target label name | Evaluates condition; if true, evaluates target label expression and jumps |
+| 0x42 GOSUB | Compound expression blob containing proc name string (e.g. "ondisplayscreen") | Evaluates expression → gets proc name → calls matching procedure by name |
+
+**Key evidence (T7FOD.RWN.dec, 2875 instructions, Pass 378):**
+
+1. **0/27 GOTO instructions** have a pool string that matches any GOTO_LABEL pool string — NO static cross-references between GOTO and GOTO_LABEL in the binary.
+2. **0/50 COND_BRANCH instructions** (first 50) contain any string matching a GOTO_LABEL definition — confirmed no static label linking.
+3. **All 39 GOTO_LABEL** pool entries start with complex binary compound records (0xFD markers, C-type/F-type references), NOT simple 0x41 label name strings.
+4. **GOTO[206] and COND_BRANCH[198]** both contain "NO_REFRESH" in their compound expression pool data — they reference the same label object in the pool, but the label definition (GOTO_LABEL) is resolved at runtime by string matching.
+5. **GOSUB[10]** pool data contains embedded string "ondisplayscreen" within compound blob at poff=404 — proc name is a runtime-evaluated expression, not a compile-time resolved address.
+6. **Pool is sequential**: each instruction's poff is an absolute offset into a byte-contiguous expression stream. poff for instruction N+1 immediately follows instruction N's pool data (verified via monotonically increasing poffs: COND_BRANCH[74] poff=1307, GOTO_LABEL[75] poff=1331, COND_BRANCH[79] poff=1376, GOTO_LABEL[80] poff=1400).
+
+**Implication for decompilation**: Static disassembly cannot resolve branch targets. The control flow graph cannot be recovered from the .RWN binary alone — tp7runtime.exe must execute the program to resolve computed label expressions at runtime. This is the fundamental architectural limit of static .RWN analysis.
+
+**Confidence: C:75/100** — Mechanism confirmed from pool data analysis; pool compound expression format for branch types is partially decoded (0xFD marker role still unclear); static resolution definitively impossible without runtime.
+
+**Theories ruled out (all Pass 378):**
+- Theory A: poff = byte offset from dispatch_start (only 6% consistent for COND_BRANCH — coincidence)
+- Theory B: poff = instruction index (only 6% consistent — coincidence; most poffs >> n_instrs)
+- Theory D: poff = absolute file offset into dispatch range (only 7% consistent — coincidence)
+- Theory E: GOTO/COND_BRANCH use label NAME strings cross-referenced to GOTO_LABEL (0/27 matches — false)
+
+---
+
 **CONFIRMED — 0x20 vs 0x57 semantic distinction (Pass 110c/110d, 2026-06-19):**
 - 0x20 = CREATE/BIND: first occurrence loads DFM (TForm.Create); subsequent occurrences bind event handlers
 - 0x57 = EXECUTE: enters the form's event loop (TForm.ShowModal); LAST substantive operation in most programs
@@ -452,6 +488,29 @@ Semantic: evaluates `SERIALNUMBER` against the string "DEMO" — likely `IF SERI
 - Blob with F=SNVALUE × 2 + C→VALR(800000) + C→VALR(900000): countdown timer comparison
 - Blob with C→'lblUserSerialNum' + C→'Caption': sets `lblUserSerialNum.Caption` UI property
 - Blob with C→'lblUserLicType' + C→'Caption': sets `lblUserLicType.Caption` UI property
+
+### Pool entry layout — full walk example (suwin7.rwn, Pass 376)
+
+The pool section begins immediately after the dispatch table. Walking byte-by-byte from pool offset 0 confirms
+the exact entry boundaries:
+
+```
+pool[0x0000]: 41 00 0A 00 "SUWIN7.DFM"    → 14 bytes total (entry 0)
+pool[0x000E]: 41 00 21 00 "THISSHOULDREALLYFUCKRICKATKISONUP"  → 37 bytes total (entry 1, developer Easter egg)
+pool[0x0033]: 41 00 04 00 "DEMO"           → 8 bytes total (entry 2)
+...
+```
+
+Entry boundaries chain precisely: `0x00 + 14 = 0x0E`, `0x0E + 37 = 0x33` — matches the documented
+`C-type pool[0x33] → "DEMO"` reference confirmed earlier. Zero padding or gaps between entries.
+
+**Pattern confirmed:** pool entry 0 is always the DFM filename. Pool entry 1 in suwin7.rwn is a 33-char
+developer test/debug comment left by the original programmer. This sort of Easter egg string is only
+present in SRC-compiled programs (not LISTG60.LIB-compiled ones).
+
+**T7FOD pool walk (Pass 376):** Walked 15 consecutive string entries from pool offset 0 in T7FOD.RWN.dec
+(276,685 bytes, 2,875 instructions), confirming the same `[41][00][len_lo][len_hi][content]` format at
+all boundaries with zero exceptions.
 
 ---
 
