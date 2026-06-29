@@ -2559,15 +2559,17 @@ AHSYLOG schema is documented here for reference only.**
 **Access:** AD-A (GL Defaults) via T7MDEFAULTS.RWN (435 procs). See Accounting Defaults (AD) section below.
 
 **BKYSMSTR** — 355-field YN/GL-account/counter/description configuration table (one record per company). Contains:
-- YN[1..250] — 250 boolean/string toggle flags (89/250 semantics documented, see AD section below)
-- GLNUM[1..40] / GLDPT[1..40] — 40 GL account/dept pairs for module posting (19/40 confirmed, see AD section)
-- NUM[1..5] — 5 general counters
-- DESC[1..5] — 5 description strings
-- VNUM[1..5] — 5 vendor/code fields (VNUM[2]=default salesperson, VNUM[3]=routing seq increment)
-- DATE[1..5] — 5 date fields
-- Auto-number counters: WONUM, QCNUM, REQNUM, INVNUM, RBNUM
+- YN[1..250] — 250 boolean/string toggle flags (88 unique semantics documented; YN[102]–YN[149] = module enable/disable block; many slots store format codes not just Y/N)
+- GLNUM[1..40] / GLDPT[1..40] — 40 GL account/dept pairs for module posting (19/40 confirmed; GLNUM[5]='I2S' = company code not GL account)
+- NUM[1..5] — 5 general counters (NUM[1]=2 at i2S; NUM[2]=7952 unknown purpose — possibly AP check#)
+- DESC[1..5] — 5 description strings (DESC[3]='PLANT' = default dept/location code; others blank at i2S)
+- VNUM[1..5] — 5 code/numeric fields (VNUM[2]=Recycle Fee Item#; VNUM[3]=10=routing seq increment; VNUM[1]='1111', VNUM[5]=7)
+- DATE[1..5] — 5 date fields (DATE[1]=DATE[2]=2024-01-01 open period start; DATE[4]=DATE[5]=2020-12-31 archived period)
+- Auto-number counters: WONUM=401, QCNUM=1, REQNUM=0, INVNUM=1, RBNUM=20 (at i2 Systems, 2026-06-29)
 
-**Confidence: 88/100** — All 286 DDF fields of BKSYMSTR confirmed from samples/ddf/schema.md; BKYSMSTR 355f schema from DDF confirmed; 89/354 YN semantics documented from T7MDefaults.DFM; 19/40 GL account slots confirmed; embedded arrays fully documented; tier1-tables.md updated Pass 121.
+**ISNUMBER** — Multi-company auto-number registry (9 rows × 50 slots). One record per module code (PO/SO/AP/INV/GL/WO/QC/EMAIL/PAY). Each of 50 NEXT slots stores the next available sequence number for a different company. Key live values: PO/NEXT_1=74550; SO/NEXT_1=75932; AP/NEXT_7=8253 (check#?); WO/NEXT_1=55119 (historical total, separate from BKYS_WONUM).
+
+**Confidence: 90/100** — All 355 BKYSMSTR fields live-queried (Pass 384/385); 88 YN semantics documented; all NUM/VNUM/DESC/DATE slots live-queried; ISNUMBER confirmed from live DSN=DBA (Pass 386).
 
 ---
 
