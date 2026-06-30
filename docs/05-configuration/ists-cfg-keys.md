@@ -931,7 +931,7 @@ Live values — full BKYSMSTR query (Pass 396 2026-06-30):
 | YN[115] | **'Z'** | FO (Features & Options) — **NOT licensed at i2S** |
 | YN[116] | 'Y' | PI (Physical Inventory) |
 | YN[117] | 'Y' | WC (Warehouse Control) |
-| YN[118] | **'Z'** | SO (Sales Orders) — **'Z' surprising; i2S uses SO programs** |
+| YN[118] | **'Z'** | SO? — **CONTRADICTED: all 3,686 BKARINV records have BKAR_INV_SONUM populated; i2S uses SO; YN[118]='Z' ≠ "SO not licensed"** |
 | YN[119] | 'Y' | SR (Service and Repair) |
 | YN[120] | 'Y' | RM (RMA) |
 | YN[121] | 'Y' | SA (Sales Analysis) |
@@ -976,9 +976,14 @@ Live values — full BKYSMSTR query (Pass 396 2026-06-30):
 (Mfg→Items→Sales→Queries→HandHeld→SystemMgr→Accounting→PayLink→Payroll→Settings).
 Hypothesis: YN[102+N−1] = GROUPS entry N. Confidence: **INFERRED, not confirmed.**
 Test case: YN[115]='Z' matches FO (Features & Options) at position 14 — plausible since
-FO is a specialty module. YN[118]='Z' matches SO (Sales Orders) at position 17 — this is
-surprising given i2S uses SO programs; may indicate GROUPS ordering ≠ slot ordering, or
-'Z' means something other than "completely unlicensed" for SO.
+FO is a specialty module not used by all manufacturers.
+**HYPOTHESIS CONTRADICTED at YN[118]:** If GROUPS order is correct, YN[118]=SO. But
+all 3,686 BKARINV records have BKAR_INV_SONUM populated (Pass 396 live query) — i2S
+clearly uses Sales Orders. Either:
+1. GROUPS order ≠ T7YSYN slot order (BKMENUSU may have been customized), OR
+2. 'Z' means something other than "unlicensed" for some slots (sub-tier or variant flag),
+   OR 3. YN[118] maps to a different module than GROUPS position 17.
+**Conclusion: the GROUPS-order 1:1 mapping is likely incorrect or not universally applicable.**
 
 **Count:** 48 slots (YN[102]–YN[149]). 42 GROUPS modules + 6 unaccounted slots (YN[144-149]).
 Candidates for the 6 extra: NE, QT, RF, LI, ML, and/or reserved slots.
