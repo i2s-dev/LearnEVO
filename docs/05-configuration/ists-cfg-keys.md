@@ -909,6 +909,121 @@ but descriptions unknown. Similarly, many slots in the YN[51]–YN[99] range hav
 
 **Auto-number counters:** BKYS_WONUM=401 (next Work Order number at time of query).
 
+### Complete YN[1]–[99] Live Snapshot (Pass 430, 2026-06-30)
+
+Full live query via DSN=DBA ODBC. Total non-empty slots across all 250: **171** (up from the 82
+reported in Pass 384, which was a partial scan). The definitive YN[1]–[99] live values are:
+
+| YN[N] | Live Value | DFM Description (where known) |
+|-------|-----------|-------------------------------|
+| YN[1] | `'F'` | Post COGS Transactions? (⚠ not Y/N — format code) |
+| YN[2] | *(blank)* | Post Inventory Adjustments? |
+| YN[3] | `'N'` | Prevent Item Creation from ES-A |
+| YN[4] | `'N'` | Fiscal Year Start Date |
+| YN[5] | `'N'` | Post WO Transactions? |
+| YN[6] | `'N'` | unknown |
+| YN[7] | `'N'` | unknown |
+| YN[8] | `'N'` | unknown |
+| YN[9] | `'C'` | unknown (not in DFM table; 'C' = mode code) |
+| YN[10] | `'N'` | unknown |
+| YN[11] | `'N'` | unknown |
+| YN[12] | `'N'` | unknown |
+| YN[13] | `'N'` | unknown |
+| YN[14] | `'N'` | unknown |
+| YN[15] | `'N'` | PO-A Default for change dates (Y/N) |
+| YN[16] | `'N'` | Enter Commissions at Sales Order Entry? |
+| YN[17] | `'N'` | Enter Commissions at Line Item Entry? |
+| YN[18] | `'Y'` | Enter Commissions for 2 Salespersons? |
+| YN[19] | `'N'` | SOQA/INB: Disable Base Price passdown |
+| YN[20] | `'N'` | Use Long Weight in Calculations? (SRC: DC barcode mode) |
+| YN[21] | `'N'` | IN-A: Disable Rebuild Stock Status |
+| YN[22] | `'Y'` | WOJ: Process WIP Variance |
+| YN[23] | `'N'` | Require Sequence Entry - Type N |
+| YN[24] | `'N'` | Require Sequence Entry - Type L |
+| YN[25] | `'N'` | Require Sequence Entry - Type T |
+| YN[26] | `'N'` | Require Sequence Entry - Type R,M,F,A |
+| YN[27] | `'N'` | Post PO Transactions? |
+| YN[28] | `'Y'` | Suppress Option Headers, Footers, Indents? |
+| YN[29] | `'N'` | Copy Cust PO#s from WO#s as comment lines |
+| YN[30] | `'N'` | AP-C Price change update PO Line price (Y/N/A) |
+| YN[31] | `'I'` | (DFM: IN-A Disable Rebuild) ⚠ value 'I' ≠ Y/N — likely WOGKIT (kit issuance mode) |
+| YN[32] | `'Y'` | Copy Cust PO#s from WO#s as comment lines (variant) |
+| YN[33] | `'Y'` | Invoice PO Receipts through AP |
+| YN[34] | *(blank)* | unknown |
+| YN[35] | `'N'` | Open Period End Date |
+| YN[36] | `'D'` | Multiply or Divide by # processes (M/D) — ✓ Divide |
+| YN[37] | `'N'` | Use standard time? |
+| YN[38] | `'N'` | Make sequence = template number? (SRC: ISTS.CFG.WOCALC) |
+| YN[39] | `'4'` | SO Packing Slip format — ✓ SOC4.RTM |
+| YN[40] | `'Y'` | Post Inventory Adjustments? (variant) |
+| YN[41] | `'Y'` | Print Ending Lines (PO form?) |
+| YN[42] | `'Y'` | Sales Order Ending Lines |
+| YN[43] | `'N'` | Print Title on RFQ? |
+| YN[44] | `'N'` | Sales Quote Print Format Number |
+| YN[45] | `'N'` | Print Discount Column on Forms? |
+| YN[46] | `'Y'` | Print Co. Name/Address on Forms? |
+| YN[47] | `'1'` | Payroll check format — ✓ PRD1.RTM (laser) |
+| YN[48] | `'1'` | AP check format — ✓ APHA1.RTM (stub/check/stub) |
+| YN[49] | *(blank)* | unknown |
+| YN[50] | `'A'` | (DFM: Post PO Transactions variant) ⚠ value 'A' ≠ Y/N |
+| YN[51] | `'N'` | unknown |
+| YN[52] | `'N'` | unknown |
+| YN[53] | `'N'` | unknown |
+| YN[54] | `'N'` | unknown |
+| YN[55] | `'I'` | unknown (⚠ non-standard 'I' — possibly INGKIT kit mode for Inventory) |
+| YN[56] | `'F'` | unknown (⚠ non-standard 'F') |
+| YN[57] | `'N'` | Display machine prompt in Enter Labor? |
+| YN[58] | `'W'` | unknown (⚠ non-standard 'W') |
+| YN[59] | `'N'` | Allow entry to overlap settings in routings? (SRC: BKROA.SRC:647) |
+| YN[60] | `'N'` | unknown |
+| YN[61] | `'A'` | unknown (⚠ non-standard 'A') |
+| YN[62] | `'Y'` | Decimalized Quantities on Forms? |
+| YN[63] | `'Y'` | Decimalized Quantities on Forms? (variant) |
+| YN[64] | `'Y'` | Print Title on: Acknowledgments |
+| YN[65] | `'N'` | Divide Overhead by # of Jobs Worked |
+| YN[66] | `'N'` | Display long time prompt? (SRC: ISTS.CFG.LNGWT, BKROA.SRC:629) |
+| YN[67] | `'Y'` | Include in MRP Generation? |
+| YN[68] | `'N'` | unknown |
+| YN[69] | `'N'` | unknown |
+| YN[70] | `'N'` | unknown |
+| YN[71] | *(blank)* | unknown |
+| YN[72] | *(blank)* | unknown |
+| YN[73] | `'Y'` | Prevent Item Creation from PI-C |
+| YN[74] | `'Y'` | Print Discount Column on Forms? |
+| YN[75] | `'Y'` | unknown |
+| YN[76] | `'4'` | SO Acknowledgment format — ✓ SOB4.RTM |
+| YN[77] | `'4'` | SO Quote format — ✓ SOPB4.RTM |
+| YN[78] | `'2'` | PO form format — ✓ POE2.RTM (plain paper) |
+| YN[79] | `'Y'` | Prompt for save in Enter Accounts? |
+| YN[80] | `'Y'` | Print Ending Lines (PO?) |
+| YN[81] | `'N'` | unknown |
+| YN[82] | `'Y'` | Packing Slips (format number?) |
+| YN[83] | `'Y'` | SOQA/INB: Disable Base Price passdown (variant) |
+| YN[84] | `'N'` | WOJ: Process WIP Variance (variant) |
+| YN[85] | `'Y'` | Divide Overhead by # of Jobs Worked (variant) |
+| YN[86] | `'Y'` | Prevent Item Creation from ES-A (variant) |
+| YN[87] | `'Y'` | AR: Print Co. Name/Addr on Statement |
+| YN[88] | `'N'` | unknown |
+| YN[89] | `'P'` | unknown (⚠ non-standard 'P') |
+| YN[90]–YN[101] | *(all blank)* | unknown — 12 consecutive empty slots |
+
+**Non-standard mode codes in YN[1]-[99] (not Y/N/blank):**
+`'F'`(YN[1]), `'C'`(YN[9]), `'I'`(YN[31],YN[55]), `'A'`(YN[50],YN[61]),
+`'4'`(YN[39],YN[76],YN[77]), `'D'`(YN[36]), `'1'`(YN[47],YN[48]),
+`'2'`(YN[78]), `'F'`(YN[56]), `'W'`(YN[58]), `'P'`(YN[89]).
+
+**T7YSYN linear mapping — DISPROVEN (Pass 430, 2026-06-30):**
+The T7YSYN symbol table lists 495 ISTS.CFG keys in editing-order. An earlier hypothesis mapped
+YN slot N to the Nth key in T7YSYN's pool (the "linear mapping"). This is **wrong**. Counter-evidence:
+- `BKROA.SRC:392,1582` confirms YN[38] = ISTS.CFG.WOCALC (linear mapping gives SCRCMP for YN[38])
+- `BKROA.SRC:629` confirms YN[66] = ISTS.CFG.LNGWT (linear mapping gives PAYRQE for YN[66])
+
+The T7YSYN symbol table order reflects the editor's UI layout, not the YN array index order.
+The scratchpad file `yn_table.txt` (previous session) contains the full 250-slot linear mapping
+table — treat its "ISTS.CFG Key" column as **T7YSYN pool order only, not confirmed slot assignments**.
+
+The DFM+SRC analysis remains the only confirmed method for mapping slots to key names.
+
 ### YN[102]–YN[149]: Module Enable/Disable Block (Pass 384, full live data Pass 396)
 
 Live values — full BKYSMSTR query (Pass 396 2026-06-30):

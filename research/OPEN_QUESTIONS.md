@@ -109,6 +109,12 @@ to resolve fully:
    flags — all 42 modules have active menu entries regardless of their YN value. The meaning
    of the per-slot values remains blocked by encrypted T7YSYN.RWN.
    **Remaining open:** BKSL_MENU integer → module name mapping; ISACCESS role; YN value semantics.
+   **Pass 430 (2026-06-30):** T7YSYN linear mapping DISPROVEN. A prior hypothesis mapped
+   YN slot N to the Nth ISTS.CFG key in T7YSYN's symbol pool. SRC evidence refutes this:
+   BKROA.SRC:392 confirms YN[38]=WOCALC but linear gives SCRCMP; BKROA.SRC:629 confirms
+   YN[66]=LNGWT but linear gives PAYRQE. The symbol pool is in editor-UI order, not YN-index
+   order. The yn_table.txt scratchpad from Pass 429 is NOT a confirmed mapping table.
+   YN[31]='I' (live) is plausibly WOGKIT from the linear mapping but unconfirmed by SRC.
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a

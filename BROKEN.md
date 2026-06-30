@@ -226,6 +226,16 @@ freeze on KIT=L because WINPOS finds 0 mandatory records and launches T7WOG4 wit
 The LOAD.KIT hypothesis (loop counter) was completely wrong — LOAD.KIT is bin validation,
 not the BOM loader. The BOM reader is WINPOS; the display is T7WOG4 (separate module).
 
+**Additional finding (Pass 430, 2026-06-30):**
+Live BKYSMSTR query confirmed BKYS_YN_31='I'. The T7YSYN linear mapping (disproven) assigns
+ISTS.CFG.WOGKIT to YN[31]. The value 'I' is plausibly WOGKIT = Individual/List mode ('I').
+This is consistent: the DFM-derived description for YN[31] ("IN-A: Disable Rebuild Stock Status")
+is likely wrong because a Y/N rebuild flag would never have value 'I'. WOGKIT='I' would mean
+the global kit issuance default is "Individual/List" mode, which is exactly the mode (KIT=L)
+that triggers this bug. If WOGKIT controlled the default KIT= mode shown at WO-G entry, then
+'I'=Individual may be the configured default — meaning all users default to KIT=L and encounter
+this bug whenever their first mandatory item is fully issued.
+
 ---
 
 ## Bug B-017 — ISJAVA wrongly documented as "NOT in DDF"
