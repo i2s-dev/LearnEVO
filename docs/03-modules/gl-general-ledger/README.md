@@ -606,3 +606,93 @@ Combined with `B - Budget Amounts` (current budget) and `B - Balance Sheet`, GL-
 - `V - Voided Checks` — voided checks only
 
 These match the `BKGL_CHK_TYPE` field in BKGLCHK (confirmed string 1 type from DDF).
+
+---
+
+## Live Data Analysis (Pass 417, 2026-06-30)
+
+### BKGLTRAN live statistics
+
+Live DSN=DBA query: 2,965,096 records spanning 2016-12-31 to 2026-11-14.
+
+**Type distribution (all records, POST='P' unless noted):**
+
+| TYPE | Count | Module source | Notes |
+|------|------:|--------------|-------|
+| `WO` | 1,536,024 | Work Orders | Dominant — every WO cost posting (material, labor, overhead) |
+| `RP` | 510,902 | Purchasing/AP | PO receipts to stock (Receiving Purchase) |
+| `RS` | 460,109 | Sales/AR | SO invoice postings (Revenue/Sales) |
+| `CD` | 161,098 | AP checks | Cash disbursements (check payments) |
+| `OT` | 139,286 | Misc modules | Other/catch-all (IC adjustments, transfers, etc.) |
+| `CR` | 89,231 | AR cash application | Cash receipts (AR payment postings) |
+| `GJ` | 60,933 | GL-B/GL-O manual | General journal manual entries |
+| `YE` (P) | 2,426 | GL-O year-end | Year-end close entries — posted |
+| `YE` (N) | 4,300 | GL-O year-end | Year-end entries — NOT yet posted to COA |
+| `JA` | 111 | Journal adjustment | Journal adjustment (JA type confirmed — not in original list) |
+| `RP` (unposted) | 238 | AP | Staged/pending receipt postings |
+| `CD` (unposted) | 219 | AP | Staged/pending disbursement postings |
+| `RS` (unposted) | 128 | AR/SO | Staged/pending sales postings |
+| `CR` (unposted) | 49 | AR | Staged/pending cash receipts |
+| `OT` (unposted) | 34 | Misc | Staged/pending other |
+| `GJ` (unposted) | 5 | GL | Staged/pending journal entries |
+| `GL` | 2 | Direct GL | Direct GL entries (rare) |
+
+**POST field values:** 'P'=posted to COA balances; ' '=staged/pending; 'N'=year-end not yet applied.
+
+**BKGL_TRN_PERIOD:** 0 for ALL 2,965,096 records — **period-end close (T7GLP) is NOT used at
+i2 Systems.** All transactions remain in "period 0" (unassigned period). The period-locking
+mechanism exists in the code but is not exercised at this installation.
+
+**BKGL_TRN_EXTRA format (confirmed from sample):** Stores `<USERNAME><SPACE><HH:MM:SS><SPACE><A/P>`
+e.g., `'JFOOTE         12:14:51 P'` = user JFOOTE, 12:14:51 PM. Timestamp uses 12-hour format
+identical to ISJAVA UID timestamp pattern.
+
+**BKGL_TRN_BATCH:** numeric batch reference. Sample: 20424 — correlates to BKGLGJRN.TRANSNM
+for GJ-type transactions posted via GL-O.
+
+### BKGLGJRN (Journal Register) live statistics
+
+14,035 records (active unposted + recently posted journal batches).
+
+**Type distribution:**
+
+| TYPE | TYPEN | Count | Meaning |
+|------|------:|------:|---------|
+| `CR` | 2 | 7,895 | Cash Receipts journals (AR cash application entries) |
+| `GJ` | 1 | 5,350 | General Journals (manual DR/CR entries) |
+| `CD` | 3 | 790 | Cash Disbursements (AP check printing entries) |
+
+**TYPEN numeric codes confirmed:** 1=GJ, 2=CR, 3=CD. These match the T7GLB.DFM type picker.
+
+**Sample BKGLGJRN record (most recent):**
+- TRANSDT=2026-11-14, TRANSNM=14314, TYPE='CR', TYPEN=2
+- CVCODE='JAN SWEEP' (batch sweep code — i2 sweeps AR cash monthly)
+- INVCHKN=11426 (check/invoice number), NUMLNES=2, CHKACT=4 (bank account 4)
+- POSTED='Y', JOB=null
+
+**BKGLGJLN:** 52,848 lines total; avg 3.76 lines per journal batch.
+
+### ISGLDATE (GL Period Gate) live structure
+
+1 single row. 85 fields. Structure: 7 fiscal years × 12 periods each + FYDATE + EXTRA.
+
+| Variable range | Live dates | Purpose |
+|----------------|-----------|---------|
+| `ISGL_CYDATE_1..12` | 2026-01-01 to 2026-12-01 | Current year period start dates |
+| `ISGL_1YDATE_1..12` | 2025-01-01 to 2025-12-01 | Prior year 1 period dates |
+| `ISGL_2YDATE_1..12` | 2024-01-01 to 2024-12-01 | Prior year 2 period dates |
+| `ISGL_3YDATE_1..12` | 2023-01-01 to 2023-12-01 | Prior year 3 period dates |
+| `ISGL_4YDATE_1..12` | 2022-01-01 to 2022-12-01 | Prior year 4 period dates |
+| `ISGL_5YDATE_1..12` | 2021-01-01 to 2021-12-01 | Prior year 5 period dates |
+| `ISGL_6YDATE_1..12` | 2020-01-01 to 2020-12-01 | Prior year 6 period dates (oldest retained) |
+| `ISGL_FYDATE` | 2026-01-01 | Fiscal year start date (matches BKSYMSTR FISCAL_YR) |
+| `ISGL_EXTRA` | '01/01/27...' | Next fiscal year start (stored as MM/DD/YY string in EXTRA field) |
+
+All periods at i2 Systems use the 1st of each month = **standard monthly accounting periods**.
+ISGLDATE is accessed by T7GLE (period-based balance inquiry), T7GLO (post to correct period),
+T7GLP (edit period assignments), and T7GLARCH (archive by period gate).
+
+**Key insight:** ISGLDATE stores period-start-date boundaries only — it is NOT a locked/unlocked
+flag table. Period locking (preventing postings to prior periods) is enforced by T7GLP when it
+writes BKGL_TRN_PERIOD; since all BKGLTRAN records have PERIOD=0, the period gate is bypassed
+at i2 Systems — all postings go to the current (open) period regardless of date.
