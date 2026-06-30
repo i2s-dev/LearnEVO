@@ -393,3 +393,24 @@ This is binary proof that RoHS compliance status is evaluated at BOM print time 
 ### BKBMM.RUN — additional confirmation
 
 Binary strings from BKBMM.RUN include the report header `"BILL OF MATERIAL RECURSION ERROR REPORT"` and type-filter labels `"[B] Phantom Assembly"` / `"[O] Feature"`. This confirms the program detects circular BOM references specifically for Phantom Assembly (B) and Feature (O) type components, which are the types most likely to cause phantom recursion. The `BKWOAA` table open confirms WO archives are scanned for WIP with recursive BOM structures.
+
+## Live Data Analysis (Pass 421, 2026-06-30)
+
+Queried via DSN=DBA ODBC against the live i2 Systems database.
+
+### BKBMMSTR — BOM Components
+
+| Metric | Value |
+|--------|------:|
+| Total BOM component records | 208,686 |
+| Unique parent assemblies | 29,714 |
+| Unique component items | 27,415 |
+| Avg components per parent | ~7.0 |
+
+- BKBMAVAL=0 and BKBMAMTR=0 confirm these are unused legacy DBA-era tables
+- BKBMREMK=1,226 (remark notes on BOM lines — 15-field text block per record)
+- BKBMDIM=1 (dimensional BOM record — essentially unused at i2 Systems)
+
+**Key insight:** The BOM database is large — 29,714 unique assemblies with an average
+of 7 components each. BKBMAVAL/BKBMAMTR remain empty, confirming only BKBMMSTR is
+active for BOM data in the T7 era.

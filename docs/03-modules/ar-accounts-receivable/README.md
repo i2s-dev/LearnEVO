@@ -536,3 +536,16 @@ Invoice code (`BKAR_INV_INVCD`) distribution:
 | Date range | 1990-11-30 to 2026-06-29 (35+ years) |
 
 **Key insight:** AR archiving is heavily used — 95,982 archived vs. 3,692 open (96.3% of all-time invoices are archived). History dates to 1990, predating the EvoERP software name. This is the longest historical record in the entire database. Contrast with GL: `BKGLATRN=0` (GL transactions are never archived at i2 Systems).
+
+### BKARCHKF — Finance charges (Pass 421, 2026-06-30)
+
+| Metric | Value |
+|--------|------:|
+| Total finance charge records | 43,698 |
+| TYPE='P' (payment applied) | 41,016 |
+| TYPE='D' (debit/charge) | 2,682 |
+
+- BKARCHKH=0 (history table empty — finance charge history is not archived separately at i2 Systems)
+- BKARTXN=2 / BKARTXNB=0 / BKARTXNS=0 (lot/serial AR tracking not actively used)
+- BKARCUST=4,401 customers (confirmed from Pass 420)
+- BKARDEP=47 active customer deposits

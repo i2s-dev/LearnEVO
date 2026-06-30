@@ -779,3 +779,51 @@ TRXNTYPE, JOURNAL (GL journal batch), WOPRE+WOSUF (work order number).
 **Key insight:** Inventory transactions dominate (62% of all cross-ref rows) — every IC transaction
 generates a BKGLX row for drill-back. Numeric type codes ('4','5','6','7','8') are module-specific
 subtypes not yet mapped to letter codes; require T7-era RWN decryption to identify definitively.
+
+## Live Data Analysis (Pass 421, 2026-06-30)
+
+Queried via DSN=DBA ODBC against the live i2 Systems database.
+
+### BKGLCOA — Chart of Accounts
+
+| Metric | Value |
+|--------|------:|
+| Total accounts | 2,184 |
+| Unique departments | 56 |
+| Account types: E (expense/equity) | 1,898 |
+| Account types: A (asset) | 101 |
+| Account types: L (liability) | 92 |
+| Account types: I (income) | 85 |
+| Account types: O (other) | 8 |
+
+### BKGLTRAN — GL Transactions
+
+| Metric | Value |
+|--------|------:|
+| Total transaction rows | 2,965,096 |
+| Unique GL accounts touched | 245 |
+| Date range | 2016-12-31 to 2026-11-14 |
+
+**Transaction type distribution** (BKGL_TRN_TYPE):
+
+| TYPE | Count D | Count C | Meaning |
+|------|--------:|--------:|---------|
+| `WO` | 768,013 | 768,011 | Work Order cost entries — by far the most common |
+| `RP` | 266,239 | 244,901 | AP payments |
+| `RS` | 159,126 | 301,111 | AR receipts/cash |
+| `CD` | 109,667 | 51,650 | Cash disbursements |
+| `OT` | 69,660 | 69,660 | Other/miscellaneous |
+| `CR` | 34,714 | 54,566 | Credit memos |
+| `GJ` | 32,035 | 28,903 | General journal entries |
+| `YE` | 2,119 | 4,607 | Year-end closing entries |
+| `JA` | 34 | 77 | Journal adjustments |
+| `GL` | 1 | 1 | Direct GL (rare) |
+
+**Key insight:** WO (Work Order) transactions are 52% of all GL entries — every WO
+labor/material posting generates paired D/C GL rows. The manufacturing cost flow drives
+GL volume more than any other module.
+
+### BKGLSTMT — Financial Statement
+
+- 1 record total — this is the single company financial statement configuration template
+- Used by T7GLF (189p) to format Balance Sheet / Income Statement reports
