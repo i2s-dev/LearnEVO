@@ -1,0 +1,787 @@
+code,module,operation,group,module_name,menu_text,program
+ADA,AD,A,Accounting,Accounting Defaults,&A - General Ledger Defaults,T7DSGL.rwn
+ADB,AD,B,Accounting,Accounting Defaults,&B - Checking Accounts Defaults,T7DSCK.rwn
+ADC,AD,C,Accounting,Accounting Defaults,&C - Accounts Payable Defaults,T7DSAP.rwn
+AMA,AM,A,Accounting,Accounting Maintenance,&A - Reset Period-End Close Date,t7ama.rwn
+AMB,AM,B,Accounting,Accounting Maintenance,&B - Fiscal Year End Routines,t7amb.rwn
+AMC,AM,C,Accounting,Accounting Maintenance,&C - Enter General Ledger Accounts,T7AMC.RWN
+AMD,AM,D,Accounting,Accounting Maintenance,&D - Enter General Ledger Departments,t7amd.rwn
+AME,AM,E,Accounting,Accounting Maintenance,&E - Format Standard Financial Statement,t7ame.rwn
+AMF,AM,F,Accounting,Accounting Maintenance,&F - Format Custom Financial Statements,t6amf.run
+AMG,AM,G,Accounting,Accounting Maintenance,&G - Consolidate Financials,t7amg.rwn
+AMH,AM,H,Accounting,Accounting Maintenance,&H - Change GL Account Codes,t7amh.rwn
+AMI,AM,I,Accounting,Accounting Maintenance,&I - Consolidate General Ledger Detail,t7ami.rwn
+AMJ,AM,J,Accounting,Accounting Maintenance,&J - Purge/Archive AP History,t7amj.rwn
+AMK,AM,K,Accounting,Accounting Maintenance,&K - Purge/Archive AR History,t7amk.rwn
+AMN,AM,N,Accounting,Accounting Maintenance,&N - Maintain GL Fiscal Periods,T7AMN.RWN
+AMO,AM,O,Accounting,Accounting Maintenance,&O - Purge/Archive Vendor Data,t7amo.rwn
+AMP,AM,P,Accounting,Accounting Maintenance,&P - Purge/Archive Customer Data,t7amp.rwn
+AMQ,AM,Q,Accounting,Accounting Maintenance,&Q - Enter Budget Amounts,t7amq.rwn
+AMR,AM,R,Accounting,Accounting Maintenance,&R - Out of Balance Report,T7GLOOB.RWN
+AMS,AM,S,Accounting,Accounting Maintenance,&S - Purge/Archive GL Journals,t7ams.rwn
+AMT,AM,T,Accounting,Accounting Maintenance,&T - Archive GL Transaction Detail,T7GLARCH.RWN
+APA,AP,A,Accounting,Accounts Payable,&A - Enter Vendors,t7apa.rwn
+APB,AP,B,Accounting,Accounts Payable,&B - Enter Vouchers,t7apb.rwn
+APC,AP,C,Accounting,Accounts Payable,&C - Enter Purchase Order Invoices,t7apc.rwn
+APD,AP,D,Accounting,Accounts Payable,&D - Enter Scheduled Payment Dates,t7apd.rwn
+APE,AP,E,Accounting,Accounts Payable,&E - Print Vouchers/Invoices Due by Date,t7ape.rwn
+APF,AP,F,Accounting,Accounts Payable,&F - Pick Vouchers/Invoices to Pay,t7apf.rwn
+APG,AP,G,Accounting,Accounts Payable,&G - Print Pro Forma Check Register,t7apg.rwn
+APH,AP,H,Accounting,Accounts Payable,&H - Print Checks,t7aph.rwn
+API,AP,I,Accounting,Accounts Payable,&I - Print Aging,t7api.rwn
+APJ,AP,J,Accounting,Accounts Payable,&J - Print Vendor Code and Name,t7apj.rwn
+APK,AP,K,Accounting,Accounts Payable,&K - Print Vendor General Info,t7apk.rwn
+APL,AP,L,Accounting,Accounts Payable,&L - Print Vendor Purchase Info,t7apl.rwn
+APM,AP,M,Accounting,Accounts Payable,&M - Print Vendor Labels,t7apm.rwn
+APN,AP,N,Accounting,Accounts Payable,&N - Enter Vouchers (Edit Address),t7apn.rwn
+APO,AP,O,Accounting,Accounts Payable,&O - Enter Recurring Vouchers,t7apo.rwn
+APP,AP,P,Accounting,Accounts Payable,&P - Generate Recurring Vouchers,t7app.rwn
+APQ,AP,Q,Accounting,Accounts Payable,&Q - Void AP Check,t7apq.rwn
+APR,AP,R,Accounting,Accounts Payable,&R - Print AP Payment History,t7apr.rwn
+APS,AP,S,Accounting,Accounts Payable,&S - Print 1099 Forms,t7aps.rwn
+APT,AP,T,Accounting,Accounts Payable,&T - AP Check Inquiry,T7APT.RWN
+APU,AP,U,Accounting,Accounts Payable,&U - View Vendor Information,T7APU.RWN
+APV,AP,V,Accounting,Accounts Payable,&V - Enter Vendor Deposit,T7APV.RWN
+APW,AP,W,Accounting,Accounts Payable,&W - Accounts Payable Defaults,T7DSAP.RWN
+APX,AP,X,Accounting,Accounts Payable,&X - Print Invoice Details,T7APX.RWN
+APY,AP,Y,Accounting,Accounts Payable,&Y - Remittance Options,
+APYA,AP,YA,Accounting,Accounts Payable,&A - Print Remittance Advice,T7APY.RWN
+APYB,AP,YB,Accounting,Accounts Payable,&B - Positive Pay,T7APYB.RWN
+APYC,AP,YC,Accounting,Accounts Payable,&C - NACHA Upload,T7APYC.RWN
+APZ,AP,Z,Accounting,Accounts Payable,&Z - Reports,
+APZA,AP,ZA,Accounting,Accounts Payable,&A - Top Vendor Listing,t7apza.rwn
+ARA,AR,A,Sales,Accounts Receivable,&A - Enter Customers,t7ara.rwn
+ARB,AR,B,Sales,Accounts Receivable,&B - Enter Vouchers,t7arb.rwn
+ARC,AR,C,Sales,Accounts Receivable,&C - Record Payments,t7arc.rwn
+ARD,AR,D,Sales,Accounts Receivable,&D - Charge Interest on Invoices,t7ard.rwn
+ARE,AR,E,Sales,Accounts Receivable,&E - Print Statements,t7are.rwn
+ARF,AR,F,Sales,Accounts Receivable,&F - Print Aging,t7arf.rwn
+ARG,AR,G,Sales,Accounts Receivable,&G - Print Customer Code and Name,t7arg.rwn
+ARH,AR,H,Sales,Accounts Receivable,&H - Print Customer General Info,t7arh.rwn
+ARI,AR,I,Sales,Accounts Receivable,&I - Print Customer Mail Labels,t7ari.rwn
+ARK,AR,K,Sales,Accounts Receivable,&K - Print Sales Tax Report,t7ark.rwn
+ARL,AR,L,Sales,Accounts Receivable,&L - Transfer Sales Taxes,T7ARL.RWN
+ARM,AR,M,Sales,Accounts Receivable,&M - Enter Customer Refund,t7arm.rwn
+ARN,AR,N,Sales,Accounts Receivable,&N - Enter/Print Customer Deposits,t7arn.rwn
+ARP,AR,P,Sales,Accounts Receivable,&P - Customer Payment Notification,t7arp.rwn
+ARQ,AR,Q,Sales,Accounts Receivable,&Q - View Customer Information,T7arq.rwn
+ARR,AR,R,Sales,Accounts Receivable,&R - Print AR Payment History,t7arr.rwn
+ARS,AR,S,Sales,Accounts Receivable,&S - Accounts Receivable Defaults,t7dsar.rwn
+ARU,AR,U,Sales,Accounts Receivable,&U - Update Credit Hold Status,T7ARU.RWN
+BMA,BM,A,Items,Bill of Materials,&A - Enter Bills of Material,t7bma.rwn
+BMB,BM,B,Items,Bill of Materials,&B - Print Bills of Material,t7bmb.rwn
+BMC,BM,C,Items,Bill of Materials,&C - Print Where Used,t7bmc.rwn
+BMD,BM,D,Items,Bill of Materials,&D - Print BOM Availability,t7bmd.rwn
+BME,BM,E,Items,Bill of Materials,&E - Global Replace,t7bme.rwn
+BMF,BM,F,Items,Bill of Materials,&F - Global Delete,t7bmf.rwn
+BMG,BM,G,Items,Bill of Materials,&G - Print/Rollup Standard Costs,t7bmg.rwn
+BMH,BM,H,Items,Bill of Materials,&H - Print BOM at Average Cost,t7bmh.rwn
+BMI,BM,I,Items,Bill of Materials,&I - Print Summarized BOM,t7bmi.rwn
+BMJ,BM,J,Items,Bill of Materials,&J - Enter Approved Substitutes,t7bmj.rwn
+BMK,BM,K,Items,Bill of Materials,&K - Enter Approved Vendors,t7bmk.rwn
+BML,BM,L,Items,Bill of Materials,&L - Enter Approved Manufacturers,t7bml.rwn
+BMM,BM,M,Items,Bill of Materials,&M - Bill of Materials Defaults,T7DSBOM.RWN
+BMN,BM,N,Items,Bill of Materials,&N - BOM Availability - Tree View,BOMTREE.RWN
+BMO,BM,O,Items,Bill of Materials,&O - Create/Edit BOM - Tree View,EDITBOMTREE.RWN
+BMP,BM,P,Items,Bill of Materials,&P - Print BOM Pick List,T7BMP.RWN
+BMQ,BM,Q,Items,Bill of Materials,&Q - Roll Up Where Used,T7BMQ.RWN
+BMR,BM,R,Items,Bill of Materials,&R - Print BOM for Quoting,T7BMR.RWN
+CMA,CM,A,Sales,Contact Master,&A - Enter Contact Accounts,t7cma.rwn
+CMB,CM,B,Sales,Contact Master,&B - Contact Account Reports,
+CMBB,CM,BB,Sales,Contact Master,&B - Print Accounts Listing & Labels,t7cmbb.rwn
+CMBC,CM,BC,Sales,Contact Master,&C - Print Reminders,T7REMINDRPT.RWN
+CMBF,CM,BF,Sales,Contact Master,&F - Print Notes,evonotesrpt.rwn
+CMC,CM,C,Sales,Contact Master,&C - CRM Dashboard,t7jcrm.rwn
+CMJ,CM,J,Sales,Contact Master,&J - Change Account Codes,t7cmj.rwn
+CMK,CM,K,Sales,Contact Master,&K - Add Customers to Account File,t7cmk.rwn
+CMM,CM,M,Sales,Contact Master,&M - Contact Manager Defaults,T7DSCM.RWN
+CRA,CR,A,Sales,Contract Review,&A - Assign Departments to SO,T7SOREVUADMIN.RWN
+CRB,CR,B,Sales,Contract Review,&B - Enter SO Approvals,T7SOREVU.RWN
+CSA,CS,A,Sales,Commissions,&A - Enter Salespersons,T7CSA.RWN
+CSB,CS,B,Sales,Commissions,&B - View Salespersons Info,t7csb.rwn
+CSC,CS,C,Sales,Commissions,&C - Print Salespersons Info,t7csc.rwn
+CSD,CS,D,Sales,Commissions,&D - Transfer Sales Commissions,t7csd.rwn
+CSE,CS,E,Sales,Commissions,&E - Print Commission Detail,t7cse.rwn
+CSF,CS,F,Sales,Commissions,&F - Print Commission Summary,t7csf.rwn
+CSG,CS,G,Sales,Commissions,&G - Enter Sales Rep Links,T7replnk.rwn
+CSH,CS,H,Sales,Commissions,&H - Import Sales Rep Links,T7CSDE.RWN
+CSK,CS,K,Sales,Commissions,&K - Enter Price Code Commissions,t7csk.rwn
+CSL,CS,L,Sales,Commissions,&L - Print Price Code Commissions,t7csl.rwn
+CSM,CS,M,Sales,Commissions,&M - Enter Contract Commissions,t7csm.rwn
+CSN,CS,N,Sales,Commissions,&N - Print Contract Commissions,t7csn.rwn
+CSO,CS,O,Sales,Commissions,&O - Print Commissions Earned Detail,t7cso.rwn
+CSP,CS,P,Sales,Commissions,&P - Print Commissions Due Summary,t7csp.rwn
+CSQ,CS,Q,Sales,Commissions,&Q - Commission Year End Routine,t7csq.rwn
+CSR,CS,R,Sales,Commissions,&R - Sales Commission Defaults,T7DSCS.RWN
+DCA,DC,A,Mfg,Data Collection,&A - Enter Labor/Production,t7dca.rwn
+DCB,DC,B,Mfg,Data Collection,&B - Enter Production Only,t7dcb.rwn
+DCC,DC,C,Mfg,Data Collection,&C - Enter Labor Only,t7dcc.rwn
+DCD,DC,D,Mfg,Data Collection,&D - Print Labor Status,t7dcd.rwn
+DCE,DC,E,Mfg,Data Collection,&E - Print Labor Tickets,t7dce.rwn
+DCF,DC,F,Mfg,Data Collection,&F - Print Employee Tickets,t7dcf.rwn
+DCG,DC,G,Mfg,Data Collection,&G - Edit Labor Transactions,t7dcg.rwn
+DCH,DC,H,Mfg,Data Collection,&H - Post Labor Transactions,t7dch.rwn
+DCI,DC,I,Mfg,Data Collection,&I - Work Order Inquiry,T7WOT.rwn
+DCJ,DC,J,Mfg,Data Collection,&J - Data Collection Defaults,T7DSDC.RWN
+DCK,DC,K,Mfg,Data Collection,&K - Archive Shift Data,T7DCK.RWN
+DCL,DC,L,Mfg,Data Collection,&L - Shift Clock In/Out,T7DCL.RWN
+DCM,DC,M,Mfg,Data Collection,&M - Employee Dashboard,T7DCM.RWN
+DCN,DC,N,Mfg,Data Collection,&N - Generate Holiday Shift Records,T7DCN.RWN
+DEA,DE,A,System Mgr,Data Exchange,&A - Export Data,sqlexport.rwn
+DEB,DE,B,System Mgr,Data Exchange,&B - Import Inventory,
+DEBA,DE,BA,System Mgr,Data Exchange,&A - Generate Import Header,T7DEBA.RWN
+DEBB,DE,BB,System Mgr,Data Exchange,&B - Import Inventory,T7DEBB.RWN
+DEBC,DE,BC,System Mgr,Data Exchange,&C - Inventory Error Report,T7DEBC.RWN
+DEBD,DE,BD,System Mgr,Data Exchange,&D - Edit Imported Inventory,T7DEBD.RWN
+DEBE,DE,BE,System Mgr,Data Exchange,&E - Transfer Inventory to Master Files,T7DEBE.RWN
+DEC,DE,C,System Mgr,Data Exchange,&C - Import Bills of Material,
+DECA,DE,CA,System Mgr,Data Exchange,&A - Generate Import Header,T7DECA.RWN
+DECB,DE,CB,System Mgr,Data Exchange,&B - Import Bills of Material,T7DECB.RWN
+DECC,DE,CC,System Mgr,Data Exchange,&C - Bills of Material Error Report,T7DECC.RWN
+DECD,DE,CD,System Mgr,Data Exchange,&D - Edit Imported Bills of Material,T7DECD.RWN
+DECE,DE,CE,System Mgr,Data Exchange,&E - Transfer Bills of Material to Master Files,T7DECE.RWN
+DED,DE,D,System Mgr,Data Exchange,&D - Import Routings,
+DEDA,DE,DA,System Mgr,Data Exchange,&A - Generate Import Header,T7DEDA.RWN
+DEDB,DE,DB,System Mgr,Data Exchange,&B - Import Routings,T7DEDB.RWN
+DEDC,DE,DC,System Mgr,Data Exchange,&C - Routings Error Report,T7DEDC.RWN
+DEDD,DE,DD,System Mgr,Data Exchange,&D - Edit Imported Routings,T7DEDD.RWN
+DEDE,DE,DE,System Mgr,Data Exchange,&E - Transfer Routings to Master Files,T7DEDE.RWN
+DEE,DE,E,System Mgr,Data Exchange,&E - Import Customers,
+DEEA,DE,EA,System Mgr,Data Exchange,&A - Generate Import Header,T7DEEA.RWN
+DEEB,DE,EB,System Mgr,Data Exchange,&B - Import Customers,T7DEEB.RWN
+DEEC,DE,EC,System Mgr,Data Exchange,&C - Customer Error Report,T7DEEC.RWN
+DEED,DE,ED,System Mgr,Data Exchange,&D - Edit Imported Customers,T7DEED.RWN
+DEEE,DE,EE,System Mgr,Data Exchange,&E - Transfer Customers to Master Files,T7DEEE.RWN
+DEF,DE,F,System Mgr,Data Exchange,&F - Import Vendors,
+DEFA,DE,FA,System Mgr,Data Exchange,&A - Generate Import Header,T7DEFA.RWN
+DEFB,DE,FB,System Mgr,Data Exchange,&B - Import Vendors,T7DEFB.RWN
+DEFC,DE,FC,System Mgr,Data Exchange,&C - Vendor Error Report,T7DEFC.RWN
+DEFD,DE,FD,System Mgr,Data Exchange,&D - Edit Imported Vendors,T7DEFD.RWN
+DEFE,DE,FE,System Mgr,Data Exchange,&E - Transfer Vendors to Master Files,T7DEFE.RWN
+DEG,DE,G,System Mgr,Data Exchange,&G - Import Chart of Accounts,
+DEGA,DE,GA,System Mgr,Data Exchange,&A - Generate Import Header,T7DEGA.RWN
+DEGB,DE,GB,System Mgr,Data Exchange,&B - Import Chart of Accounts,T7DEGB.RWN
+DEGC,DE,GC,System Mgr,Data Exchange,&C - Chart of Accounts Error Report,T7DEGC.RWN
+DEGD,DE,GD,System Mgr,Data Exchange,&D - Edit Imported Chart of Accoutns,T7DEGD.RWN
+DEGE,DE,GE,System Mgr,Data Exchange,&E - Transfer Chart of Accounts to Master Files,T7DEGE.RWN
+DEH,DE,H,System Mgr,Data Exchange,&H - Global Field Change,T7DEK.RWN
+DEI,DE,I,System Mgr,Data Exchange,&I - Erase Files,t7del.rwn
+DEJ,DE,J,System Mgr,Data Exchange,&J - Import and Post Labor,
+DEJA,DE,JA,System Mgr,Data Exchange,&A - Create Import Header,t7deja.rwn
+DEJB,DE,JB,System Mgr,Data Exchange,&B - Import Labor,t7dejb.rwn
+DEJC,DE,JC,System Mgr,Data Exchange,&C - Imported Labor Error Report,t7dejc.rwn
+DEJD,DE,JD,System Mgr,Data Exchange,&D - Edit Imported Labor,t7dejd.rwn
+DEJE,DE,JE,System Mgr,Data Exchange,&E - Transfer Imported Labor,t7deje.rwn
+DEK,DE,K,System Mgr,Data Exchange,&K - Import and Post Material Issues,t7dejh.rwn
+DEL,DE,L,System Mgr,Data Exchange,&L - Import and Post Finished Production,T7WOP.RWN
+DEM,DE,M,System Mgr,Data Exchange,&M - Import Physical Inventory Count,T7PIC.RWN
+DEP,DE,P,System Mgr,Data Exchange,&P - EDI Interface,
+DEPB,DE,PB,System Mgr,Data Exchange,&B - Import EDI Orders,t7depb.rwn
+DEPC,DE,PC,System Mgr,Data Exchange,&C - Edit EDI Orders,t7depc.rwn
+DEPD,DE,PD,System Mgr,Data Exchange,&D - Convert EDI Orders to Sales Orders,t7depd.rwn
+DEPE,DE,PE,System Mgr,Data Exchange,&E - Export EDI Invoice/Acknowledgement,t7depe.rwn
+DEPF,DE,PF,System Mgr,Data Exchange,&F - Export EDI ASN,t7depf.rwn
+DEPH,DE,PH,System Mgr,Data Exchange,&H - EDI Error Report,t7deph.rwn
+DEQ,DE,Q,System Mgr,Data Exchange,&Q - Import open Accounts Receivable,t7deq.rwn
+DER,DE,R,System Mgr,Data Exchange,&R - Import open Accounts Payable,t7der.rwn
+DET,DE,T,System Mgr,Data Exchange,&T - Import Sales Orders,
+DETA,DE,TA,System Mgr,Data Exchange,A - FTP Web Storefront Orders,T7DET.RWN
+DETB,DE,TB,System Mgr,Data Exchange,B - SHOPIFY Web Storefront Orders,T7DETB.RWN
+DETC,DE,TC,System Mgr,Data Exchange,C - File Web Storefront Orders,T7DETC.RWN
+DEU,DE,U,System Mgr,Data Exchange,&U - Upload Stock Balance to Web Storefront,J7BEFWEBINV.RWN
+ESA,ES,A,Mfg,Estimates,&A - Enter Estimates,t7esa.rwn
+ESB,ES,B,Mfg,Estimates,&B - Print Customer Quotes,T7ESB.RWN
+ESC,ES,C,Mfg,Estimates,&C - Print Estimate Cost Rollup,t7esc.rwn
+ESD,ES,D,Mfg,Estimates,&D - Quick Estimate,T7EST.RWN
+ESE,ES,E,Mfg,Estimates,&E - Convert Estimates,T7ese.RWN
+ESH,ES,H,Mfg,Estimates,&H - Enter Material Costs,T7ESH.RWN
+ESI,ES,I,Mfg,Estimates,&I - Print Material Costs,t7esi.rwn
+ESJ,ES,J,Mfg,Estimates,&J - Estimating Defaults,T7DSEST.RWN
+ESK,ES,K,Mfg,Estimates,&K - Update Estimating Inventory from Production,T7IC2EST.RWN
+ESL,ES,L,Mfg,Estimates,&L - Edit Estimating Inventory,T7ESL.RWN
+ESM,ES,M,Mfg,Estimates,&M - Estimating Inventory Inquiry,T7ESM.RWN
+FAA,FA,A,Accounting,Fixed Assets,&A - Enter Assets,T7FAA.RWN
+FAB,FA,B,Accounting,Fixed Assets,&B - Post Depreciation,T7FAB.RWN
+FAC,FA,C,Accounting,Fixed Assets,&C - List Depreciation Transactions,UT7GFAC.RWN
+FAD,FA,D,Accounting,Fixed Assets,&D - List Assets,UT7GFAD.RWN
+FAE,FA,E,Accounting,Fixed Assets,&E - Import Assets,T7FAE.RWN
+FOA,FO,A,Items,Features and Options,&A - Set up Features and Options,T7FOA.RWN
+FOB,FO,B,Items,Features and Options,&B - Print Features and Options,T7FOB.RWN
+FOC,FO,C,Items,Features and Options,&C - Enter Option Prices,T7FOC.RWN
+FOD,FO,D,Items,Features and Options,&D - Print Option Prices,T7FOD.RWN
+FOE,FO,E,Items,Features and Options,&E - Print Option Where Used,T7FOE.RWN
+FOF,FO,F,Items,Features and Options,&F - Feature and Option Defaults,T7DSFO.RWN
+FOG,FO,G,Items,Features and Options,&G - Configure Item,EvoFNO.RWN
+GLA,GL,A,Accounting,General Ledger,&A - View Chart of Accounts,T7GLA.RWN
+GLB,GL,B,Accounting,General Ledger,&B - Enter/Post General Journal Trxns,t7glb.rwn
+GLC,GL,C,Accounting,General Ledger,&C - Print GL Transactions,t7glc.rwn
+GLD,GL,D,Accounting,General Ledger,&D - Print Journals,T7GLD.RWN
+GLE,GL,E,Accounting,General Ledger,&E - Print Detailed Trial Balance,t7gle.rwn
+GLF,GL,F,Accounting,General Ledger,&F - Print Financial Statements,t7glf.rwn
+GLG,GL,G,Accounting,General Ledger,&G - Print GL Code and Description,t7glg.rwn
+GLH,GL,H,Accounting,General Ledger,&H - Print Chart of Accounts,T7GLH.RWN
+GLI,GL,I,Accounting,General Ledger,&I - Print Check Register,t7gli.rwn
+GLJ,GL,J,Accounting,General Ledger,&J - Reconcile Check Register,t7glj.rwn
+GLK,GL,K,Accounting,General Ledger,&K - Transfer Bank Account Funds,t7glk.rwn
+GLL,GL,L,Accounting,General Ledger,&L - Credit Card Reconciliation,T7GLL.RWN
+GLN,GL,N,Accounting,General Ledger,&N - Print Custom Statements,t7gln.rwn
+GLO,GL,O,Accounting,General Ledger,&O - Print/Post General Ledger Batches,t7glo.rwn
+GLP,GL,P,Accounting,General Ledger,&P - Edit General Ledger Batch Entries,t7glp.rwn
+GLQ,GL,Q,Accounting,General Ledger,&Q - Enter Payroll Checks,t7glq.rwn
+GLR,GL,R,Accounting,General Ledger,&R - Business Status,T7JBS.rwn
+GLS,GL,S,Accounting,General Ledger,&S - View Journal Notes,t7gls.rwn
+GLT,GL,T,Accounting,General Ledger,&T - Import GL Transactions,T7GLT.RWN
+HHA,HH,A,Hand Held,Hand Held Programs,&A - Scan & Ship,t7hhssoe.rwn
+HHB,HH,B,Hand Held,Hand Held Programs,&B - Print Labels,T7HHinga.rwn
+HHC,HH,C,Hand Held,Hand Held Programs,&C - Issue Materials,T7HHWOG.RWN
+HHD,HH,D,Hand Held,Hand Held Programs,&D - Enter Finished Production,T7HHWOP.RWN
+HHE,HH,E,Hand Held,Hand Held Programs,&E - Enter Physical Counts,T7HHPIC.RWN
+HHF,HH,F,Hand Held,Hand Held Programs,&F - Enter Labor,T7HHDCA.RWN
+HHG,HH,G,Hand Held,Hand Held Programs,&G - Receive PO,T7HHPOC.RWN
+HHH,HH,H,Hand Held,Hand Held Programs,&H - Enter Shipping Information,J7HHLITN.RWN
+HHI,HH,I,Hand Held,Hand Held Programs,&I - Paperless Shop Floor Tracking,t7dcpsf.rwn
+HHJ,HH,J,Hand Held,Hand Held Programs,&J - Print WO Label,t7hhwolabel.rwn
+HHK,HH,K,Hand Held,Hand Held Programs,&K - Transfer Inventory,t7hhinlj.rwn
+HHL,HH,L,Hand Held,Hand Held Programs,&L - Multi-User Paperless Shop Floor,t7paperless.rwn
+HHM,HH,M,Hand Held,Hand Held Programs,&M - Issue Scrap Component,t7hhwoscrap.rwn
+IMA,IM,A,System Mgr,International Module,&A - International Configuration,T7DSIM.RWN
+IMB,IM,B,System Mgr,International Module,&B - Enter Multiple Currencies,t7imb.rwn
+IMC,IM,C,System Mgr,International Module,&C - Enter Currency Exchange Rates,t7imc.rwn
+IMD,IM,D,System Mgr,International Module,&D - Enter Landed Cost Defaults,t7imd.rwn
+IME,IM,E,System Mgr,International Module,&E - Enter Landed Cost Duty Codes,t7ime.rwn
+IMF,IM,F,System Mgr,International Module,&F - Enter Landed Cost Customs Fees,t7imf.rwn
+IMH,IM,H,System Mgr,International Module,&H - International Defaults,T7DSIM.RWN
+INA,IN,A,Items,Inventory,&A - Inventory Inquiry,t7ina.rwn
+INB,IN,B,Items,Inventory,&B - Enter Inventory,T7inb.rwn
+INC,IN,C,Items,Inventory,&C - Enter Inventory Adjustments,t7inc.rwn
+IND,IN,D,Items,Inventory,&D - Print Reorder Report,t7ind.rwn
+INE,IN,E,Items,Inventory,&E - Print Inventory Transactions,t7ine.rwn
+INF,IN,F,Items,Inventory,&F - Print Inventory Value,t7inf.rwn
+ING,IN,G,Items,Inventory,&G - Print Inventory Labels,t7ing.rwn
+INH,IN,H,Items,Inventory,&H - Print Inventory Listing,t7inh.rwn
+INI,IN,I,Items,Inventory,&I - Print Inventory General Info,t7ini.rwn
+INJ,IN,J,Items,Inventory,&J - Print Physical Check,t7inj.rwn
+INK,IN,K,Items,Inventory,&K - Adjust Physical Levels,t7ink.rwn
+INL,IN,L,Items,Inventory,&L - Inventory Maintenance Programs,
+INLA,IN,LA,Items,Inventory,&A - Enter Standard Costs,t7inla.rwn
+INLB,IN,LB,Items,Inventory,&B - Enter/Assign Locations,t7inlb.rwn
+INLC,IN,LC,Items,Inventory,&C - Enter Customer Cross-Reference,t7inlc.rwn
+INLD,IN,LD,Items,Inventory,&D - Print Customer Cross-Reference,t7inld.rwn
+INLE,IN,LE,Items,Inventory,&E - Update Material Standard Costs,t7inle.rwn
+INLH,IN,LH,Items,Inventory,&H - Edit FIFO/LIFO Buckets,t7inlh.rwn
+INLI,IN,LI,Items,Inventory,&I - Change Costing Method,t7inli.rwn
+INLJ,IN,LJ,Items,Inventory,&J - Transfer Inventory,t7inlj.rwn
+INLK,IN,LK,Items,Inventory,&K - Inventory Exceptions Report,t7inlk.rwn
+INLL,IN,LL,Items,Inventory,&L - Inactive BOM Component Report,t7inll.rwn
+INLM,IN,LM,Items,Inventory,&M - Batch Location Transfers,T7INLM.RWN
+INLN,IN,LN,Items,Inventory,&N - Copy Item Number,t7inln.rwn
+INLO,IN,LO,Items,Inventory,&O - Inactive Item Utility,t7inlo.rwn
+INLQ,IN,LQ,Items,Inventory,&Q - Enter Inspection & Test Procedures,t7inlq.rwn
+INLR,IN,LR,Items,Inventory,&R - Intercompany Inventory Transfer,T7INLR.RWN
+INLS,IN,LS,Items,Inventory,&S - Rebuild Stock Status,t7inls.rwn
+INLT,IN,LT,Items,Inventory,&T - Reset Cycle Code,T7INLT.RwN
+INLU,IN,LU,Items,Inventory,&U - Item Number Configurator,T7ITMCFG.RWN
+INM,IN,M,Items,Inventory,&M - Summary Reorder Report,T7INM.RWN
+INN,IN,N,Items,Inventory,&N - Month End Reports,
+INNA,IN,NA,Items,Inventory,&A - Print Month End Inventory Costing,t7inna.rwn
+INNB,IN,NB,Items,Inventory,&B - Print Shipments Costing,t7innb.rwn
+INNC,IN,NC,Items,Inventory,&C - Print Closed Work Orders Costing,t7innc.rwn
+INND,IN,ND,Items,Inventory,&D - Print Inventory to GL Exceptions,t7innd.rwn
+INO,IN,O,Items,Inventory,&O - User Defined Inventory Transactions,t7ino.rwn
+INP,IN,P,Items,Inventory,&P - Inventory Usage Report,t7inp.rwn
+INQ,IN,Q,Items,Inventory,&Q - Import & Print Inventory Labels,T7ingimport.rwn
+INR,IN,R,Items,Inventory,&R - Inventory Defaults,T7DSIC.RWN
+INS,IN,S,Items,Inventory,&S - View Stock Status,T7INS.RWN
+JCA,JC,A,Mfg,Job Costing,&A - Print Job Cost Report,t7jca.rwn
+JCB,JC,B,Mfg,Job Costing,&B - Print Profit Projection,t7jcb.rwn
+JCC,JC,C,Mfg,Job Costing,&C - Print Labor Transactions,t7jcc.rwn
+JCD,JC,D,Mfg,Job Costing,&D - Print Overhead Transactions,t7jcd.rwn
+JCE,JC,E,Mfg,Job Costing,&E - Print Material Issues,t7jce.rwn
+JCF,JC,F,Mfg,Job Costing,&F - Print Outside Purchases,t7jcf.rwn
+JCG,JC,G,Mfg,Job Costing,&G - Print Labor Efficiency,t7jcg.rwn
+JCH,JC,H,Mfg,Job Costing,&H - Print Work Order History,t7jch.rwn
+JCI,JC,I,Mfg,Job Costing,&I - Print Production by Work Center,t7jci.rwn
+JCJ,JC,J,Mfg,Job Costing,&J - Print Production by Machine,t7jcj.rwn
+JCK,JC,K,Mfg,Job Costing,&K - Print Production by Tool,t7jck.rwn
+JCL,JC,L,Mfg,Job Costing,&L - Print Job Cost Summary,t7jcl.rwn
+JCM,JC,M,Mfg,Job Costing,&M - Print WIP Summary,t7jcm.rwn
+JCN,JC,N,Mfg,Job Costing,&N - Print WIP Percent Completion,T7jcn.rwn
+JCO,JC,O,Mfg,Job Costing,&O - Print Standard Labor Hours,t7jco.rwn
+JCP,JC,P,Mfg,Job Costing,&P - Print Materials in WIP,t7jcp.rwn
+JCQ,JC,Q,Mfg,Job Costing,&Q - Print Work Order Receipts,t7jcq.rwn
+JCR,JC,R,Mfg,Job Costing,&R - Print Multi-Assembly Cost Rollup,T7JCR.RWN
+JCS,JC,S,Mfg,Job Costing,&S - Work Order Detail Report,T7JCS.RWN
+JCT,JC,T,Mfg,Job Costing,&T - Scrap Yield Report,T7JCT.RWN
+LCA,LC,A,Items,Lot Control,&A - Edit Lot Numbers,t7lca.rwn
+LCB,LC,B,Items,Lot Control,&B - Assign Lot Control,t7lcb.rwn
+LCC,LC,C,Items,Lot Control,&C - Print Lot Availability,t7lcc.rwn
+LCD,LC,D,Items,Lot Control,&D - Print Lot History,T7LCD.RWN
+LCE,LC,E,Items,Lot Control,&E - Lot Control On Hand Report,t7lce.rwn
+LCF,LC,F,Items,Lot Control,&F - Lot Traceability Report,t7lcf.rwn
+MRA,MR,A,Mfg,MRP,&A - Enter Forecast,T7MRA.RWN
+MRB,MR,B,Mfg,MRP,&B - Print Forecast,t7mrb.rwn
+MRC,MR,C,Mfg,MRP,&C - Reset Forecast,T7MRC.RWN
+MRD,MR,D,Mfg,MRP,&D - Enter MRP Parameters,t7mrd.rwn
+MRE,MR,E,Mfg,MRP,&E - Print MRP Parameters,T7MRE.RWN
+MRF,MR,F,Mfg,MRP,&F - Generate Material Requirements,T7MRF.RWN
+MRG,MR,G,Mfg,MRP,&G - Print Material Requirements,t7mrg.rwn
+MRH,MR,H,Mfg,MRP,&H - Print Order Action Report,t7mrh.rwn
+MRI,MR,I,Mfg,MRP,&I - Generate Work Orders,t7mri.rwn
+MRJ,MR,J,Mfg,MRP,&J - Generate Purchase Orders,T7MRJ.RWN
+MRK,MR,K,Mfg,MRP,&K - Generate RFQs,t7mrk.rwn
+MRL,MR,L,Mfg,MRP,&L - Print Planned Orders Report,t7mrl.rwn
+MRM,MR,M,Mfg,MRP,&M - MRP Defaults,T7DSMRP.RWN
+MRN,MR,N,Mfg,MRP,&N - Apply Delay Action to POs,t7mrn.rwn
+PIA,PI,A,Items,Physical Inventory,&A - Capture Frozen Inventory,t7pia.rwn
+PIB,PI,B,Items,Physical Inventory,&B - Frozen Inventory Report,T7PIB.RWN
+PIC,PI,C,Items,Physical Inventory,&C - Enter Tag Counts,t7pic.rwn
+PID,PI,D,Items,Physical Inventory,&D - Missing Tags Report,t7pid.rwn
+PIE,PI,E,Items,Physical Inventory,&E - Edit Frozen Inventory Costs,t7pie.rwn
+PIF,PI,F,Items,Physical Inventory,&F - Physical Inventory Report,t7pif.rwn
+PIG,PI,G,Items,Physical Inventory,&G - Update Actual Inventory,t7pig.rwn
+PIH,PI,H,Items,Physical Inventory,&H - Purge Physical Inventory,t7pih.rwn
+PLA,PL,A,Pay Link,?,&A - Run Checkmark Payroll,T6PLA.RUN
+PLB,PL,B,Pay Link,?,&B - Import Employee Checks,BKPLB.RUN
+PLC,PL,C,Pay Link,?,&C - Import Employer Vouchers,BKPLC.RUN
+PLD,PL,D,Pay Link,?,&D - Payroll Link Setup,BKPLD.RUN
+POA,PO,A,Mfg,Purchase Orders,&A - Enter Purchase Orders,t7poa.rwn
+POB,PO,B,Mfg,Purchase Orders,&B - Print Purchase Orders,t7pob.rwn
+POC,PO,C,Mfg,Purchase Orders,&C - Receive Purchase Orders,t7poc.rwn
+POD,PO,D,Mfg,Purchase Orders,&D - View PO Receivers,t7pod.rwn
+POE,PO,E,Mfg,Purchase Orders,&E - Enter/Print RFQs,t7poe.rwn
+POF,PO,F,Mfg,Purchase Orders,&F - Enter Verbal RFQs,t7pof.rwn
+POG,PO,G,Mfg,Purchase Orders,&G - Convert RFQs,t7pog.rwn
+POH,PO,H,Mfg,Purchase Orders,&H - Enter Vendor Prices,t7poh.rwn
+POI,PO,I,Mfg,Purchase Orders,&I - Reports,
+POIA,PO,IA,Mfg,Purchase Orders,&A - Print Open Purchase Orders Listing,t7poia.rwn
+POIB,PO,IB,Mfg,Purchase Orders,&B - Print Closed Purchase Orders Listin,t7poib.rwn
+POIC,PO,IC,Mfg,Purchase Orders,&C - Print RFQ Status,t7poic.rwn
+POID,PO,ID,Mfg,Purchase Orders,&D - Print Vendor Prices,t7poid.rwn
+POIE,PO,IE,Mfg,Purchase Orders,&E - Print Receiving Report,t7poie.rwn
+POIF,PO,IF,Mfg,Purchase Orders,&F - Print Received not Invoiced,t7poif.rwn
+POIG,PO,IG,Mfg,Purchase Orders,&G - Print Purch Order Items by Due Date,t7poig.rwn
+POIH,PO,IH,Mfg,Purchase Orders,&H - Print On Time Delivery Report,T7POIH.RwN
+POII,PO,II,Mfg,Purchase Orders,&I - Print Purchase Order Changes,t7POIi.RwN
+POIJ,PO,IJ,Mfg,Purchase Orders,&J - Print/Export Purchases by Item/Item Class,purchitem.rwn
+POIK,PO,IK,Mfg,Purchase Orders,&K - Print/Export Purchases by Vendor,purchvend.rwn
+POIL,PO,IL,Mfg,Purchase Orders,&L - Print Digital Signature Status,t7poil.rwn
+POJ,PO,J,Mfg,Purchase Orders,&J - QC Inspection Programs,
+POJA,PO,JA,Mfg,Purchase Orders,&A - Print Receipt Travelers,t7poja.rwn
+POJB,PO,JB,Mfg,Purchase Orders,&B - Print Inventory in QC,t7pojb.rwn
+POJC,PO,JC,Mfg,Purchase Orders,&C - Enter Inspection Buyoffs,t7pojc.rwn
+POJD,PO,JD,Mfg,Purchase Orders,&D - Vendor Quality Performance Report,t7pojd.rwn
+POK,PO,K,Mfg,Purchase Orders,&K - Close Purchase Orders,t7pok.rwn
+POL,PO,L,Mfg,Purchase Orders,&L - Assign Vendors to Items,t7pol.rwn
+PON,PO,N,Mfg,Purchase Orders,&N - Reconcile PO Invoices,t7pon.run
+POO,PO,O,Mfg,Purchase Orders,&O - View Open Purchase Orders,t7poo.rwn
+POP,PO,P,Mfg,Purchase Orders,&P - View Vendor Information,T7APU.rwn
+POQ,PO,Q,Mfg,Purchase Orders,&Q - Maintain PO Delivery Dates,T7poQ.RWN
+POR,PO,R,Mfg,Purchase Orders,&R - Print Receiving Slip,T7por.rwn
+POS,PO,S,Mfg,Purchase Orders,&S - Purchase Order Defaults,T7DSPO.RWN
+POT,PO,T,Mfg,Purchase Orders,&T - Electronically Approve PO,T7DIGSIGPO.RWN
+PRA,PR,A,Payroll,Payroll,&A - Enter Employees,t7pra.rwn
+PRB,PR,B,Payroll,Payroll,&B - Enter Pay Info,T7PRB.RWN
+PRC,PR,C,Payroll,Payroll,&C - Print Payroll Register,T7PRC.RWN
+PRD,PR,D,Payroll,Payroll,&D - Print Payroll Checks,T7PRD.RWN
+PRE,PR,E,Payroll,Payroll,&E - Print Employee Info,T7PRE.RWN
+PRF,PR,F,Payroll,Payroll,&F - Maintain Tax Tables,T7PRF.RWN
+PRG,PR,G,Payroll,Payroll,&G - Void Payroll Checks,T7PRG.RWN
+PRH,PR,H,Payroll,Payroll,&H - Transfer Liabilities to AP,T7PRH.RWN
+PRI,PR,I,Payroll,Payroll,&I - Print Pay History,t7pri.rwn
+PRJ,PR,J,Payroll,Payroll,&J - Enter Time Cards,T7PRJ.RWN
+PRK,PR,K,Payroll,Payroll,&K - Print/Post Time Cards,T7PRK.RWN
+PRL,PR,L,Payroll,Payroll,&L - Reports,
+PRLA,PR,LA,Payroll,Payroll,&A - Print Quarterly Info,T7PRLA.RWN
+PRLB,PR,LB,Payroll,Payroll,&B - Print QTD Earnings Register,T7PRLB.RWN
+PRLC,PR,LC,Payroll,Payroll,&C - Print QTD Taxable Earnings,T7PRLC.RWN
+PRLD,PR,LD,Payroll,Payroll,&D - Print Detail Earnings Ledger,T7PRLD.RWN
+PRLE,PR,LE,Payroll,Payroll,&E - Print Detail Deductions Ledger,t7prle.rwn
+PRLF,PR,LF,Payroll,Payroll,&F - Print Subject To Report,T7PRLF.RWN
+PRLG,PR,LG,Payroll,Payroll,&G - Print 941 and Schedule B Reports,T7PRLG.RWN
+PRLH,PR,LH,Payroll,Payroll,&H - Print 940 Report,T7PRLH.RWN
+PRLI,PR,LI,Payroll,Payroll,&I - Print W-2 Forms,T7PRLI.RWN
+PRLJ,PR,LJ,Payroll,Payroll,&J - Print Calif DE6 Form,T7PRLJ.RWN
+PRLK,PR,LK,Payroll,Payroll,&K - Print Payroll Hours,t7prlk.rwn
+PRLL,PR,LL,Payroll,Payroll,&L - Print 941B Forms,T7PRLL.RWN
+PRLM,PR,LM,Payroll,Payroll,&M - Print Employer Contributions,T7PRLM.RWN
+PRLN,PR,LN,Payroll,Payroll,&N - Print Payroll Wages Detail,t7prln.rwn
+PRLO,PR,LO,Payroll,Payroll,&O - Reprint Payroll Check Stub,t7prlo.rwn
+PRLP,PR,LP,Payroll,Payroll,&P - Print Vacation & Sick Due,t7prlp.rwn
+PRM,PR,M,Payroll,Payroll,&M - Payroll Divisions,T7PRM.RWN
+PRN,PR,N,Payroll,Payroll,&N - Purge Payroll History,T7PRN.RWN
+PRO,PR,O,Payroll,Payroll,&O - Payroll Year End Routine,T7PRO.RWN
+PRP,PR,P,Payroll,Payroll,&P - Enter Raise Information,T7PRP.RWN
+PRQ,PR,Q,Payroll,Payroll,&Q - Enter Review Information,T7PRQ.RWN
+PRR,PR,R,Payroll,Payroll,&R - Payroll Defaults,T7DSPR.RWN
+PRS,PR,S,Payroll,Payroll,&S - Assign Password to Employee,T7PRS.RWN
+PRT,PR,T,Payroll,Payroll,&T - Archive Pay History,T7SMJV.RWN
+PSA,PS,A,System Mgr,Password Security,&A - System Users/Passwords,t7psa.rwn
+PSB,PS,B,System Mgr,Password Security,&B - DBA System Security Levels,bkpsb.run
+PSC,PS,C,System Mgr,Password Security,&C - DBA Company Logon Access,bkpsc.run
+PSE,PS,E,System Mgr,Password Security,&E - Evo Menu Access by User Report,t7pse.rwn
+PSF,PS,F,System Mgr,Password Security,&F - Evo Menu Access by Program,t7psf.rwn
+PSG,PS,G,System Mgr,Password Security,&G - Maintain Menu Access Records,WBKMENUSETUP.RWN
+PSH,PS,H,System Mgr,Password Security,&H - Configure Auto-Chain Programs,T7CHAIN.RWN
+PSI,PS,I,System Mgr,Password Security,&I - Enter Approved Signers for Purchase Orders,T7DIGSIGADMIN.RWN
+PSJ,PS,J,System Mgr,Password Security,&J - Enter Contract Review Signers,T7CTREVUADMIN.RWN
+PSK,PS,K,System Mgr,Password Security,&K - Enter Vendor Approval,J7appvend.rwn
+PSL,PS,L,System Mgr,Password Security,&L - Enter Field Specific Access,T7LIMACC.rwn
+QCA,QC,A,Mfg,Quality Control,&A - Quality Control Receiving Report,T7QCA.RWN
+QCB,QC,B,Mfg,Quality Control,&B - Quality Control Materials Report,T7QCB.RWN
+QCC,QC,C,Mfg,Quality Control,&C - Production Scrap Report,T7QCC.RWN
+QCD,QC,D,Mfg,Quality Control,&D - Quality Control Labor Report,T7QCD.RWN
+QCE,QC,E,Mfg,Quality Control,&E - Vendor Quality Performance,t7pojd.rwn
+QCF,QC,F,Mfg,Quality Control,&F - Non-Conformance Reporting,
+QCFA,QC,FA,Mfg,Quality Control,&A - Enter NCR,T7QCFA.RWN
+QCFB,QC,FB,Mfg,Quality Control,&B - Print NCR,T7QCFB.RWN
+QCFC,QC,FC,Mfg,Quality Control,&C - Disposition NCR,T7QCFC.RWN
+QCFD,QC,FD,Mfg,Quality Control,&D - Close NCR,T7QCFD.RWN
+QCFE,QC,FE,Mfg,Quality Control,&E - View NCR,T7QCFE.RWN
+QCFF,QC,FF,Mfg,Quality Control,&F - NCR Listing,T7QCFF.RWN
+QCG,QC,G,Mfg,Quality Control,&G - Corrective Action,
+QCGA,QC,GA,Mfg,Quality Control,&A - Enter CAR,T7QCGA.RWN
+QCGB,QC,GB,Mfg,Quality Control,&B - Print CAR,T7QCGB.RWN
+QCGC,QC,GC,Mfg,Quality Control,&C - View CAR,T7QCGC.RWN
+QCGD,QC,GD,Mfg,Quality Control,&D - List CAR,T7QCGD.RWN
+QCH,QC,H,Mfg,Quality Control,&H - QC Defaults,T7DSQC.RWN
+QUA,QU,A,Queries,Queries & Reports,&A - Master Inquiry,t7csi.rwn
+QUB,QU,B,Queries,Queries & Reports,&B - Calendar Drill Down,caldrillbt.rwn
+QUC,QU,C,Queries,Queries & Reports,&C - Calendar Summary Report,isshpcal2.rwn
+QUD,QU,D,Queries,Queries & Reports,&D - Business Status,t7jbs.rwn
+QUE,QU,E,Queries,Queries & Reports,&E - Quick Grid Lookup,t7qgrid.rwn
+QUF,QU,F,Queries,Queries & Reports,&F - Query Executor,queryexecute.rwn
+RMA,RM,A,Sales,RMA,&A - Enter RMA,t7rma.rwn
+RMB,RM,B,Sales,RMA,&B - Print RMA,T7RMB.RWN
+RMC,RM,C,Sales,RMA,&C - Receive RMA,T7RMC.RWN
+RMD,RM,D,Sales,RMA,&D - Disposition RMA,T7RMD.RWN
+RME,RM,E,Sales,RMA,&E - Enter RMA Return Codes,T7RME.RWN
+RMF,RM,F,Sales,RMA,&F - RMA/Service & Repair Defaults,T7DSRMA.RWN
+RMG,RM,G,Sales,RMA,&G - Reason Codes Report,t7rmg.rwn
+ROA,RO,A,Items,Routings,&A - Enter Routings,t7roa.rwn
+ROB,RO,B,Items,Routings,&B - Print/Rollup Routings Costs,t7rob.rwn
+ROC,RO,C,Items,Routings,&C - Work Centers,t7roc.rwn
+ROD,RO,D,Items,Routings,&D - Enter Machines,t7rod.rwn
+ROE,RO,E,Items,Routings,&E - Enter Tools,t7roe.rwn
+ROF,RO,F,Items,Routings,&F - Enter QC Codes,t7rof.rwn
+ROG,RO,G,Items,Routings,&G - Enter Scrap Codes,T7ROG.RWN
+ROH,RO,H,Items,Routings,&H - Enter Departments,t7roh.rwn
+ROI,RO,I,Items,Routings,&I - Enter Operation Templates,t7roi.rwn
+ROJ,RO,J,Items,Routings,&J - Reports,
+ROJA,RO,JA,Items,Routings,&A - Print Routings,t7roja.rwn
+ROJB,RO,JB,Items,Routings,&B - Print Work Centers,t7rojb.rwn
+ROJC,RO,JC,Items,Routings,&C - Print Machines,t7rojc.rwn
+ROJD,RO,JD,Items,Routings,&D - Print Tools,T7ROJD.RWN
+ROJE,RO,JE,Items,Routings,&E - Print QC Codes,t7roje.rwn
+ROJF,RO,JF,Items,Routings,&F - Print Scrap Codes,t7rojf.rwn
+ROJG,RO,JG,Items,Routings,&G - Print Departments,t7rojg.rwn
+ROJH,RO,JH,Items,Routings,&H - Print Operation Templates,t7rojh.rwn
+ROK,RO,K,Items,Routings,&K - Enter Specifications Templates,t7rok.rwn
+ROL,RO,L,Items,Routings,&L - Enter Sequence Print Control,t7rol.rwn
+ROM,RO,M,Items,Routings,&M - Enter Testing Method,t7qcmthd.rwn
+RON,RO,N,Items,Routings,&N - Enter Testing Requirements,t7qcspec.rwn
+ROO,RO,O,Items,Routings,&O - Routings Defaults,T7DSRO.RWN
+ROP,RO,P,Items,Routings,&P - Update Processing Cost Standards,t7rop.rwn
+SAA,SA,A,Sales,Sales Analysis,&A - Print Daily Sales/Bookings,t7saa.rwn
+SAB,SA,B,Sales,Sales Analysis,&B - Print Profit by Invoice,T7SAB.RWN
+SAC,SA,C,Sales,Sales Analysis,&C - Print Customer Detail,T7SAC.RWN
+SAD,SA,D,Sales,Sales Analysis,&D - Print Customer Summary,T7SAD.RWN
+SAE,SA,E,Sales,Sales Analysis,&E - Print Customer Class Detail,T7SAE.RWN
+SAF,SA,F,Sales,Sales Analysis,&F - Charts and Export,
+SAFA,SA,FA,Sales,Sales Analysis,&A - Profit by Invoice,t7jsapbi.rwn
+SAFB,SA,FB,Sales,Sales Analysis,&B - Sales by Customer,t7jsacc.rwn
+SAFC,SA,FC,Sales,Sales Analysis,&C - Sales by Salesperson,t7jsasrs.rwn
+SAFD,SA,FD,Sales,Sales Analysis,&D - Sales by Item/Class,t7jsaic.rwn
+SAG,SA,G,Sales,Sales Analysis,&G - Print Customer Class Summary,T7SAG.RWN
+SAH,SA,H,Sales,Sales Analysis,&H - Print Salesperson Detail,T7SAH.RWN
+SAI,SA,I,Sales,Sales Analysis,&I - Print Salesperson Summary,T7SAI.RWN
+SAJ,SA,J,Sales,Sales Analysis,&J - Print Inventory Detail,T7SAJ.RWN
+SAL,SA,L,Sales,Sales Analysis,&L - Print Product Class,T7SAL.RWN
+SAM,SA,M,Sales,Sales Analysis,&M - Print User-Defined Detail,t7sam.rwn
+SAN,SA,N,Sales,Sales Analysis,&N - Print User-Defined Summary,t7san.rwn
+SAO,SA,O,Sales,Sales Analysis,&O - Top Customer Report,T7SAO.RWN
+SAP,SA,P,Sales,Sales Analysis,&P - Print Sales With Surcharge Rolled Up,t7sap.rwn
+SCA,SC,A,Items,Serial Control,&A - Edit Serial Numbers,t7sca.rwn
+SCB,SC,B,Items,Serial Control,&B - Assign Serial Control,t7scb.rwn
+SCC,SC,C,Items,Serial Control,&C - Print Serial Availability,t7scc.rwn
+SCD,SC,D,Items,Serial Control,&D - Print Serial History,T7SCD.RWN
+SCE,SC,E,Items,Serial Control,&E - Archive Serial Numbers,t7sce.rwn
+SCF,SC,F,Items,Serial Control,&F - Serial Control Exception Report,t7scf.rwn
+SCG,SC,G,Items,Serial Control,&G - Enter Serial Generation Parameters,t7scg.rwn
+SCH,SC,H,Items,Serial Control,&H - Serial Traceability Report,t7sch.rwn
+SDA,SD,A,System Mgr,System Defaults,&A - Company Defaults,T7DSCO.rwn
+SDB,SD,B,System Mgr,System Defaults,&B - Work Order Defaults,t7dswo.rwn
+SDC,SD,C,System Mgr,System Defaults,&C - Purchase Order Defaults,t7dspo.rwn
+SDD,SD,D,System Mgr,System Defaults,&D - MRP Defaults,t7dsmrp.rwn
+SDE,SD,E,System Mgr,System Defaults,&E - Scheduling Defaults,t7dssh.rwn
+SDF,SD,F,System Mgr,System Defaults,&F - Data Collection Defaults,t7dsdc.rwn
+SDG,SD,G,System Mgr,System Defaults,&G - Estimating Defaults,t7dsest.rwn
+SDH,SD,H,System Mgr,System Defaults,&H - Inventory Defaults,t7dsic.rwn
+SDI,SD,I,System Mgr,System Defaults,&I - Routings Defaults,t7dsro.rwn
+SDJ,SD,J,System Mgr,System Defaults,&J - Bills of Material Defaults,t7dsbom.rwn
+SDL,SD,L,System Mgr,System Defaults,&L - Features and Options Defaults,t7dsfo.rwn
+SDM,SD,M,System Mgr,System Defaults,&M - Sales Orders Defaults,t7dsso.rwn
+SDN,SD,N,System Mgr,System Defaults,&N - Sales Commissions Defaults,t7dscs.rwn
+SDO,SD,O,System Mgr,System Defaults,&O - Contact Manager Defaults,t7dscm.rwn
+SDP,SD,P,System Mgr,System Defaults,&P - Customer/AR Defaults,t7dsar.rwn
+SDQ,SD,Q,System Mgr,System Defaults,&Q - Master Default Settings,t7mdefaults.rwn
+SDR,SD,R,System Mgr,System Defaults,&R - Assign Next Document Numbers,t7numdef.rwn
+SDS,SD,S,System Mgr,System Defaults,&S - Warehouse Control Defaults,t7dswc.rwn
+SDT,SD,T,System Mgr,System Defaults,&T - Service/RMA Defaults,t7dsrma.rwn
+SDU,SD,U,System Mgr,System Defaults,&U - Hand-Held Defaults,t7dshh.rwn
+SDV,SD,V,System Mgr,System Defaults,&V - International Setting Defaults,T7DSIM.RWN
+SHA,SH,A,Mfg,Scheduling,&A - Edit WO Start/Finish/Due Dates,t7sha.rwn
+SHB,SH,B,Mfg,Scheduling,&B - Manually Schedule Work Orders,t7shb.rwn
+SHC,SH,C,Mfg,Scheduling,&C - Manually Schedule Work Centers,t7shc.rwn
+SHD,SH,D,Mfg,Scheduling,&D - Manually Schedule Machines,machineview.rwn
+SHE,SH,E,Mfg,Scheduling,&E - Finite Scheduling,t7she.rwn
+SHF,SH,F,Mfg,Scheduling,&F - Infinite Scheduling,t7shf.rwn
+SHG,SH,G,Mfg,Scheduling,&G - Print Work Order Schedule,t7shg.rwn
+SHH,SH,H,Mfg,Scheduling,&H - Print Work Order Status,t7shh.rwn
+SHI,SH,I,Mfg,Scheduling,&I - Print Work Center Schedule,t7shi.rwn
+SHJ,SH,J,Mfg,Scheduling,&J - Print Machine Schedule,t7shj.rwn
+SHK,SH,K,Mfg,Scheduling,&K - View Work Center Load,t7shk.rwn
+SHL,SH,L,Mfg,Scheduling,&L - View or Calculate Work Center Load,workcenterload.rwn
+SHM,SH,M,Mfg,Scheduling,&M - Lead Time Estimator,t7shm.rwn
+SHN,SH,N,Mfg,Scheduling,&N - Generate Lead Times,t7shn.rwn
+SHO,SH,O,Mfg,Scheduling,&O - Finite Schedule Bucket Report,t7sho.rwn
+SHP,SH,P,Mfg,Scheduling,&P - Lead Time Scheduling,t7shp.rwn
+SHQ,SH,Q,Mfg,Scheduling,&Q - Scheduling Defaults,T7DSSH.RWN
+SHR,SH,R,Mfg,Scheduling,&R - Work Center Scheduler,T7VSCHED.RWN
+SMA,SM,A,System Mgr,System Maintenance,&A - Enter Customers,t7ara.rwn
+SMB,SM,B,System Mgr,System Maintenance,&B - Enter Vendors,t7apa.rwn
+SMC,SM,C,System Mgr,System Maintenance,&C - Enter Classes,
+SMCA,SM,CA,System Mgr,System Maintenance,&A - Enter Item Classes,T7SMCA.RWN
+SMCB,SM,CB,System Mgr,System Maintenance,&B - Enter Customer Classes,T7SMCB.RWN
+SMCC,SM,CC,System Mgr,System Maintenance,&C - Enter Vendor Classes,T7SMCC.RWN
+SMD,SM,D,System Mgr,System Maintenance,&D - Enter Terms Table,t7smd.rwn
+SME,SM,E,System Mgr,System Maintenance,&E - Enter Tax Codes,t7sme.rwn
+SMF,SM,F,System Mgr,System Maintenance,&F - Enter Tax Groups,T7SMF.RWN
+SMG,SM,G,System Mgr,System Maintenance,&G - Enter Employees,t7smg.rwn
+SMH,SM,H,System Mgr,System Maintenance,&H - Enter Shop Calendar,t7smh.rwn
+SMI,SM,I,System Mgr,System Maintenance,&I - Contact Manager Maintenance,
+SMIA,SM,IA,System Mgr,System Maintenance,&A - Enter Lead Source Codes,t7smia.rwn
+SMIB,SM,IB,System Mgr,System Maintenance,&B - Enter Territory Codes,t7smib.rwn
+SMIC,SM,IC,System Mgr,System Maintenance,&C - Enter Reminder Types,t7smic.rwn
+SMID,SM,ID,System Mgr,System Maintenance,&D - Enter Class Codes,t7smid.rwn
+SMIE,SM,IE,System Mgr,System Maintenance,&E - Enter Key Date Codes,t7smie.rwn
+SMIF,SM,IF,System Mgr,System Maintenance,&F - Enter Reasons for Quote Loss,t7smif.rwn
+SMJ,SM,J,System Mgr,System Maintenance,&J - File Maintenance Programs,
+SMJA,SM,JA,System Mgr,System Maintenance,&A - Work Order File Maintenance,t7smja.rwn
+SMJB,SM,JB,System Mgr,System Maintenance,&B - Archive Work Orders,t7smjb.rwn
+SMJC,SM,JC,System Mgr,System Maintenance,&C - Reconcile Inventory On-Hand,t7smjc.rwn
+SMJD,SM,JD,System Mgr,System Maintenance,&D - Consolidate Inventory Transactions,t7smjd.rwn
+SMJE,SM,JE,System Mgr,System Maintenance,&E - Purge Work Orders,t7smje.rwn
+SMJF,SM,JF,System Mgr,System Maintenance,&F - Purge Purchase Order History,t7smjf.rwn
+SMJG,SM,JG,System Mgr,System Maintenance,&G - Purge/Archive QC Receipts,T7SMJG.RWN
+SMJH,SM,JH,System Mgr,System Maintenance,&H - Purge Data Collection File,t7smjh.rwn
+SMJI,SM,JI,System Mgr,System Maintenance,&I - Purge/Archive Estimates,T7SMJI.RWN
+SMJJ,SM,JJ,System Mgr,System Maintenance,&J - Purge or Archive Closed Sales Orders,T7smjj.rwn
+SMJK,SM,JK,System Mgr,System Maintenance,&K - Purge or Archive Invoice History,t7smjk.rwn
+SMJL,SM,JL,System Mgr,System Maintenance,&L - Change/Merge Item Numbers,t7smjl.rwn
+SMJM,SM,JM,System Mgr,System Maintenance,&M - Change/Merge Customer Codes,t7smjm.rwn
+SMJN,SM,JN,System Mgr,System Maintenance,&N - Change/Merge Vendor Codes,t7smjn.rwn
+SMJO,SM,JO,System Mgr,System Maintenance,&O - Rebuild Customer/Vendor Credit Info,t7smjo.rwn
+SMJP,SM,JP,System Mgr,System Maintenance,&P - Purge or Archive Service RMA Orders,t7smjp.rwn
+SMJQ,SM,JQ,System Mgr,System Maintenance,&Q - BOM Recursion Utility,t7smjq.rwn
+SMJR,SM,JR,System Mgr,System Maintenance,&R - Archive Purchase Orders,t7smjr.rwn
+SMJS,SM,JS,System Mgr,System Maintenance,&S - Purge Inventory Audit Info,t7smjs.rwn
+SMJT,SM,JT,System Mgr,System Maintenance,&T - Purge or Archive Sales Quotes,t7smjt.rwn
+SMJU,SM,JU,System Mgr,System Maintenance,&U - Configure Vendor User Defined,T7APINFO.RWN
+SMJV,SM,JV,System Mgr,System Maintenance,&V - Archive Inventory Transactions,T7INVARCH.RWN
+SMK,SM,K,System Mgr,System Maintenance,&K - Evo User Settings,T7SMK.RWN
+SMN,SM,N,System Mgr,System Maintenance,&N - Evo Notes Maintenance,
+SMNA,SM,NA,System Mgr,System Maintenance,&A - Enter Note Types,T7SMN.RWN
+SMNB,SM,NB,System Mgr,System Maintenance,&B - Enter System Notes,EVONOTES.RWN
+SMNC,SM,NC,System Mgr,System Maintenance,&C - Synchronize Classic Notes to Evo,T7DBA2EVO.RWN
+SMND,SM,ND,System Mgr,System Maintenance,&D - Synchronize Evo Notes to Classic,T7EVO2DBA.RWN
+SMNE,SM,NE,System Mgr,System Maintenance,&E - Archive Evo Notes,EVONOTESARCH.RWN
+SMNF,SM,NF,System Mgr,System Maintenance,&F - Update Evo Notes,T7SMNF.RWN
+SMO,SM,O,System Mgr,System Maintenance,&O - Enter Ship Via Codes,T7SMO.RWN
+SMP,SM,P,System Mgr,System Maintenance,&P - Inventory Parameters,
+SMPA,SM,PA,System Mgr,System Maintenance,&A - Category Master Maintenance,t7smpa.rwn
+SMPB,SM,PB,System Mgr,System Maintenance,&B - User Defined Master Maintenance,t7smpb.rwn
+SMPC,SM,PC,System Mgr,System Maintenance,&C - Enter QC Codes,T7ROF.RWN
+SMPD,SM,PD,System Mgr,System Maintenance,&D - Enter Scrap Codes,T7ROG.RWN
+SMPE,SM,PE,System Mgr,System Maintenance,&E - Define Inventory User Defined Fields,T7UDFINV.RWN
+SMPF,SM,PF,System Mgr,System Maintenance,&F - Enter Job Listing,T7SMPF.RWN
+SMPG,SM,PG,System Mgr,System Maintenance,&G - Enter WO Priorities,T7WOPRIO2.RWN
+SMPH,SM,PH,System Mgr,System Maintenance,&H - Enter Cycle Codes,T7SMPH.RWN
+SMPI,SM,PI,System Mgr,System Maintenance,&I - Enter Defect Codes,T7SMPI.RWN
+SMR,SM,R,System Mgr,System Maintenance,&R - Multi-Language Maintenance,T7MLC.RWN
+SMS,SM,S,System Mgr,System Maintenance,&S - Evo Links,
+SMSA,SM,SA,System Mgr,System Maintenance,&A - Enter Evo Links,EVOLINKS.RWN
+SMSB,SM,SB,System Mgr,System Maintenance,&B - Broken Links Report,T7SMSB.RWN
+SMSC,SM,SC,System Mgr,System Maintenance,&C - Vendor Invoice Links Defaults,T7SMSC.RWN
+SMSD,SM,SD,System Mgr,System Maintenance,&D - Vendor Invoice Links,T7SMSD.RWN
+SMT,SM,T,System Mgr,System Maintenance,&T - Enter Java Settings,T7JSETTINGS.RWN
+SMU,SM,U,System Mgr,System Maintenance,&U - Enter Customer Ship Via,T7SMU.RWN
+SMV,SM,V,System Mgr,System Maintenance,&V - Download Updates,T7JUPD.RWN
+SOA,SO,A,Sales,Sales Orders,&A - Enter Sales Orders,T7SOA.RWN
+SOB,SO,B,Sales,Sales Orders,&B - Print Acknowledgements,t7sob.rwn
+SOC,SO,C,Sales,Sales Orders,&C - Print Packing Slips,t7soc.rwn
+SOD,SO,D,Sales,Sales Orders,&D - Print Shipping Labels,t7sod.rwn
+SOE,SO,E,Sales,Sales Orders,&E - Release Sales Orders,t7soe.rwn
+SOF,SO,F,Sales,Sales Orders,&F - Print Invoices,t7sof.rwn
+SOG,SO,G,Sales,Sales Orders,&G - Post Invoices,t7sog.rwn
+SOH,SO,H,Sales,Sales Orders,&H - Display Invoice History,t7soh.rwn
+SOI,SO,I,Sales,Sales Orders,&I - Customer Service Inquiry,t7jsoi.rwn
+SOJ,SO,J,Sales,Sales Orders,&J - Enter Recurring Sales Orders,t7soj.rwn
+SOK,SO,K,Sales,Sales Orders,&K - Generate Recurring Sales Orders,t7sok.rwn
+SON,SO,N,Sales,Sales Orders,&N - Convert Sales Orders to Work Orders,t7son.rwn
+SOO,SO,O,Sales,Sales Orders,&O - Reports,
+SOOA,SO,OA,Sales,Sales Orders,&A - Print Open Sales Order Listing,t7sooa.rwn
+SOOB,SO,OB,Sales,Sales Orders,&B - Print Backorder Listing,t7soob.rwn
+SOOC,SO,OC,Sales,Sales Orders,&C - Reprint Invoice,T7sooc.rwn
+SOOD,SO,OD,Sales,Sales Orders,&D - Print Commissions by Sales Order,t7sood.rwn
+SOOE,SO,OE,Sales,Sales Orders,&E - Print Shipping Schedule,t7sooe.rwn
+SOOF,SO,OF,Sales,Sales Orders,&F - Print Available to Ship,t7soof.rwn
+SOOG,SO,OG,Sales,Sales Orders,&G - Print Sales Order/Work Order Schedu,t7soog.rwn
+SOOH,SO,OH,Sales,Sales Orders,&H - Print Invoice Listing,t7sooh.rwn
+SOOI,SO,OI,Sales,Sales Orders,&I - Print Released Sales Orders,t7sooi.rwn
+SOOJ,SO,OJ,Sales,Sales Orders,&J - Print User-Defined Detail,t7sooj.rwn
+SOOK,SO,OK,Sales,Sales Orders,&K - Print User-Defined Summary,t7sook.rwn
+SOOM,SO,OM,Sales,Sales Orders,&M - Print Changes to Sales Orders,t7soom.rwn
+SOON,SO,ON,Sales,Sales Orders,&N - Print On Time Delivery Performance,t7soon.rwn
+SOP,SO,P,Sales,Sales Orders,&P - Sales Quotes and Misc.,
+SOPA,SO,PA,Sales,Sales Orders,&A - Enter Sales Quotations,t7sopa.rwn
+SOPB,SO,PB,Sales,Sales Orders,&B - Print Sales Quotations,t7sopb.rwn
+SOPC,SO,PC,Sales,Sales Orders,&C - Convert Sales Quotations,t7sopc.rwn
+SOPD,SO,PD,Sales,Sales Orders,&D - Sales Quotation Detail Report,t7sopd.rwn
+SOPE,SO,PE,Sales,Sales Orders,&E - Sales Quotation Summary Report,t7sope.rwn
+SOPF,SO,PF,Sales,Sales Orders,&F - Release Blanket Order,T7SOPF.RWN
+SOPI,SO,PI,Sales,Sales Orders,&I - Enter Freight & Tracking Information,t7sopi.rwn
+SOPJ,SO,PJ,Sales,Sales Orders,&J - Post Shipped Items,t7sopj.rwn
+SOPK,SO,PK,Sales,Sales Orders,&K - Edit Posted Invoice,t7sopk.rwn
+SOPL,SO,PL,Sales,Sales Orders,&L - Print Changes to Quotes,t7sopl.rwn
+SOPM,SO,PM,Sales,Sales Orders,&M - Converted Quote Report,t7sopm.rwn
+SOPN,SO,PN,Sales,Sales Orders,&N - Convert SO to PO,t7sopo.rwn
+SOPP,SO,PP,Sales,Sales Orders,&P - Edis Estimated Ship Dates,t7sopp.rwn
+SOQ,SO,Q,Sales,Sales Orders,&Q - Pricing,
+SOQA,SO,QA,Sales,Sales Orders,&A - Enter Base Prices,t7soqa.rwn
+SOQB,SO,QB,Sales,Sales Orders,&B - Print Base Prices,t7soqb.rwn
+SOQC,SO,QC,Sales,Sales Orders,&C - Global Price Change,t7soqc.rwn
+SOQD,SO,QD,Sales,Sales Orders,&D - Enter Price Codes,t7soqd.rwn
+SOQE,SO,QE,Sales,Sales Orders,&E - Print Price Codes,t7soqe.rwn
+SOQF,SO,QF,Sales,Sales Orders,&F - Enter Discount Codes,t7soqf.rwn
+SOQG,SO,QG,Sales,Sales Orders,&G - Print Discount Codes,t7soqg.rwn
+SOQH,SO,QH,Sales,Sales Orders,&H - Enter Contract Prices,t7soqh.rwn
+SOQI,SO,QI,Sales,Sales Orders,&I - Print Contract Prices,t7soqi.rwn
+SOQJ,SO,QJ,Sales,Sales Orders,&J - Generate Base Prices,t7soqj.rwn
+SOQK,SO,QK,Sales,Sales Orders,&K - Print Catalog,t7soqk.rwn
+SOQL,SO,QL,Sales,Sales Orders,&L - SO Price Change,t7soql.rwn
+SOR,SO,R,Sales,Sales Orders,&R - Void Invoice,t7sor.rwn
+SOS,SO,S,Sales,Sales Orders,&S - Mass Release Sales Orders,T7sos.rwn
+SOT,SO,T,Sales,Sales Orders,&T - Sales Order Inquiry,T7SOT.rwn
+SOU,SO,U,Sales,Sales Orders,&U - Sales Order Defaults,T7DSSO.RWN
+SRA,SR,A,Sales,Service and Repair,&A - Enter Service/Repair,T7SRA.RWN
+SRB,SR,B,Sales,Service and Repair,&B - Print Service/Repair,T7SRB.RWN
+SRC,SR,C,Sales,Service and Repair,&C - Convert S/R to Work Order,T7SRC.RWN
+SRD,SR,D,Sales,Service and Repair,&D - Print S/R Packing Slips,T7SRD.RWN
+SRE,SR,E,Sales,Service and Repair,&E - Release Service/Repairs,T7SRE.RWN
+SRF,SR,F,Sales,Service and Repair,&F - Print S/R Invoices,T7SRF.RWN
+SRG,SR,G,Sales,Service and Repair,&G - Post S/R Invoices,T7SRG.RWN
+SRH,SR,H,Sales,Service and Repair,&H - RMA & Service & Repair Defaults,T7DSRMA.RWN
+SRI,SR,I,Sales,Service and Repair,&I - Void S/R Invoice,T7SRI.RWN
+SUA,SU,A,Queries,Query & Report Setup,&A - Maintain Grid Lookups,wbklugrid.rwn
+SUB,SU,B,Queries,Query & Report Setup,&B - Maintain Drill Down Menus,evoerpdrillm.rwn
+SUC,SU,C,Queries,Query & Report Setup,&C - Forms Editor,reports.int
+SUD,SU,D,Queries,Query & Report Setup,&D - Grid Maintenance,t7gdm.rwn
+TAA,TA,A,?,?,&A - Run TAS Program,RUNPRG.INT
+TAB,TA,B,?,?,&B - Change Company Code,GETCO.INT
+TAC,TA,C,?,?,&C - Set Configuration,CONFIG.INT
+TAD,TA,D,?,?,&D - Maintain Database,WTASDATAM.RWN
+TAE,TA,E,?,?,&E - Initialize Database,WTASINIT.RWN
+TAF,TA,F,?,?,&F - Maintain Location File,WTASFLOC.RWN
+TAG,TA,G,?,?,&G - Maintain Menu Access Records,WBKMENUSETUP.RWN
+TAH,TA,H,?,?,&H - Maint Menu Access - End User,WBKMENUSUEU.RWN
+TAI,TA,I,?,?,&I - Update File Structures,WTASMERGE.RWN
+TAM,TA,M,?,?,&M - RTM Editor,REPORTS.INT
+TAN,TA,N,?,?,&N - Program Scheduler,evoscheduler.rwn
+TAO,TA,O,?,?,&O - Backup Utility,EvoERPbackup.rwn
+TAP,TA,P,?,?,&P - Change Password,PASSWORD.INT
+TAQ,TA,Q,?,?,&Q - Change Logo Image,Evologo.rwn
+TAR,TA,R,?,?,&R - SQL Editor,T7JSQL.RWN
+TAS,TA,S,?,?,&S - Data Dictionary Check,T7DDCHECK.RWN
+USA,US,A,Settings,User Settings,&A - Customize Settings,T7SMK.RWN
+USB,US,B,Settings,User Settings,&B - Customize Menu,WBKMENUSUEU.RWN
+USC,US,C,Settings,User Settings,&C - Reset Screen Size/Locations,t7resetdfm.RWN
+USD,US,D,Settings,User Settings,&D - Change Password,PASSWORD.INT
+USE,US,E,Settings,User Settings,&E - Update PO Electronic Signature Info,T7DIGSIG.RWN
+USF,US,F,Settings,User Settings,&F - Enter Reminders,calrem.rwn
+USG,US,G,Settings,User Settings,&G - Enter Triggers,T7USG.RWN
+USH,US,H,Settings,User Settings,&H - Update Contract Review Password,T7CTREVU.RWN
+UTA,UT,A,System Mgr,Utilities,&A - Run a DBA Program,runprg.int
+UTC,UT,C,System Mgr,Utilities,&C - Re-Index File,t7reindex.rwn
+UTD,UT,D,System Mgr,Utilities,&D - Edit Data Location File,wtasfloc.rwn
+UTE,UT,E,System Mgr,Utilities,&E - Set System Configuration,config.int
+UTH,UT,H,System Mgr,Utilities,&H - Print File Layouts,t7uth.rwn
+UTI,UT,I,System Mgr,Utilities,&I - Create/Delete Company,t7uti.rwn
+UTK,UT,K,System Mgr,Utilities,&K - File Maintenence Programs,
+UTKA,UT,KA,System Mgr,Utilities,&A - Clear Data,t7utka.rwn
+UTKB,UT,KB,System Mgr,Utilities,&B - Search and Replace,T7FNR.RWN
+UTKD,UT,KD,System Mgr,Utilities,&D - Recalc GL Chart of Accounts,t7utkd.rwn
+UTKE,UT,KE,System Mgr,Utilities,&E - Consolidate Inventory Locations,T7UTKE.RWN
+UTKF,UT,KF,System Mgr,Utilities,&F - Set Avg and Last Cost to Std Cost,t7utkf.rwn
+UTKG,UT,KG,System Mgr,Utilities,&G - Recalc Inventory Book Value,t7utkg.rwn
+UTKH,UT,KH,System Mgr,Utilities,&H - Recalc Avg Cost fr FIFO/LIFO Bucket,T7UTKH.RWN
+UTKI,UT,KI,System Mgr,Utilities,&I - Fix Binary Zeroes,t7bzfix.rwn
+WCA,WC,A,Items,Warehouse Control,&A - Enter Warehouse Bin Locations,T7WCA.RWN
+WCB,WC,B,Items,Warehouse Control,&B - Assign Warehouse Control,T7WCB.RWN
+WCC,WC,C,Items,Warehouse Control,&C - Assign Bins to Items,T7WCC.RWN
+WCE,WC,E,Items,Warehouse Control,&E - Print Bin Inventory Listing,T7WCE.RWN
+WCF,WC,F,Items,Warehouse Control,&F - Print Bin Inventory Exceptions,T7WCF.RWN
+WCG,WC,G,Items,Warehouse Control,&G - Warehouse Control Defaults,T7DSWC.RWN
+WOA,WO,A,Mfg,Work Orders,&A - Enter Work Orders,t7woa.rwn
+WOB,WO,B,Mfg,Work Orders,&B - Release Work Orders,t7wob.rwn
+WOC,WO,C,Mfg,Work Orders,&C - Print Travelers,t7woc.rwn
+WOD,WO,D,Mfg,Work Orders,&D - Print Pick Lists,t7wod.rwn
+WOE,WO,E,Mfg,Work Orders,&E - Print Labor Cards/Labels,t7woe.rwn
+WOF,WO,F,Mfg,Work Orders,&F - Enter Labor,T7WOF.RWN
+WOG,WO,G,Mfg,Work Orders,&G - Issue Materials,t7wog.rwn
+WOH,WO,H,Mfg,Work Orders,&H - Enter Misc/Extra Costs,T7WOH.RWN
+WOI,WO,I,Mfg,Work Orders,&I - Enter Finished Production,t7woi.rwn
+WOJ,WO,J,Mfg,Work Orders,&J - Close/Cancel Work Orders,t7woj.rwn
+WOK,WO,K,Mfg,Work Orders,&K - Work Order Maintenance Programs,
+WOKA,WO,KA,Mfg,Work Orders,&A - Enter Work Order Routings,T7WOKA.RWN
+WOKB,WO,KB,Mfg,Work Orders,&B - Enter Work Order Bills of Material,t7wokb.rwn
+WOKC,WO,KC,Mfg,Work Orders,&C - Create Multi-Date Work Orders,t7wokc.rwn
+WOKD,WO,KD,Mfg,Work Orders,&D - Create Multi-Assy Work Orders,t7wokd.rwn
+WOKE,WO,KE,Mfg,Work Orders,&E - Swap Substitute Parts,T7WOKE.RWN
+WOKF,WO,KF,Mfg,Work Orders,&F - Edit Sequence Started/Finished Date,t7wokf.rwn
+WOKG,WO,KG,Mfg,Work Orders,&G - Recalculate Projected Hours,t7wokg.rwn
+WOKH,WO,KH,Mfg,Work Orders,&H - Rebuild Work Order Costs,t7rebwo.rwn
+WOKI,WO,KI,Mfg,Work Orders,&I - Kitting System,t7kit.rwn
+WOKJ,WO,KJ,Mfg,Work Orders,&J - Synch WO BOM and Routing,j7ptwoki.rwn
+WOKK,WO,KK,Mfg,Work Orders,&K - Edit Posted DC Labor,t7wokk.rwn
+WOKL,WO,KL,Mfg,Work Orders,&L - Quick Work Order,T7WOKL.RWN
+WOKM,WO,KM,Mfg,Work Orders,&M - Parts Requester,t7wokm.rwn
+WOKN,WO,KN,Mfg,Work Orders,&N - Stockroom Program,t7wokn.rwn
+WOKO,WO,KO,Mfg,Work Orders,&O - Map Component Serial to Parent,T7WOKO.RWN
+WOKP,WO,KP,Mfg,Work Orders,&P - Map Component Lot to Parent,T7WOKP.RWN
+WOKQ,WO,KQ,Mfg,Work Orders,&Q - Convert WO to PO,T7WOPO.RWN
+WOKR,WO,KR,Mfg,Work Orders,&R - Issue Scrap Component,t7hhwoscrap.rwn
+WOKS,WO,KS,Mfg,Work Orders,&S - Assign WO to Bin,t7woks.rwn
+WOKT,WO,KT,Mfg,Work Orders,&T - Print Issued Part Requests,t7wokt.rwn
+WOL,WO,L,Mfg,Work Orders,&L - Reports,
+WOLA,WO,LA,Mfg,Work Orders,&A - Print Work Order Status,t7wola.rwn
+WOLB,WO,LB,Mfg,Work Orders,&B - Print Work Order Schedule,t7wolb.rwn
+WOLC,WO,LC,Mfg,Work Orders,&C - Print Work Center Backlog,t7wolc.rwn
+WOLD,WO,LD,Mfg,Work Orders,&D - Print Projected Shipments,t7wold.rwn
+WOLE,WO,LE,Mfg,Work Orders,&E - Print/Post Labor to Payroll,t7wole.rwn
+WOLF,WO,LF,Mfg,Work Orders,&F - Print Work Order Shortages,t7wolf.rwn
+WOLG,WO,LG,Mfg,Work Orders,&G - Print Work Center by Key Component,bkwolg.run
+WOLH,WO,LH,Mfg,Work Orders,&H - Print Projected vrs Estimated hrs,t7wolh.rwn
+WOLI,WO,LI,Mfg,Work Orders,&I - Print Allocations,T7woli.rwn
+WOLJ,WO,LJ,Mfg,Work Orders,&J - Print Work Order Completions,t7wolj.rwn
+WOLK,WO,LK,Mfg,Work Orders,&K - Print Work Order Bill of Materials,t7wolk.rwn
+WOLL,WO,LL,Mfg,Work Orders,&L - Print Work Order Component Labels,j7woll.rwn
+WOLM,WO,LM,Mfg,Work Orders,&M - Print Material Summary,t7wolm.rwn
+WOLN,WO,LN,Mfg,Work Orders,&N - WO BOM for Purchasing,t7woln.rwn
+WOM,WO,M,Mfg,Work Orders,&M - Batch Labor Entry,t7wom.rwn
+WON,WO,N,Mfg,Work Orders,&N - Post Labor Batches,t7dch.rwn
+WOO,WO,O,Mfg,Work Orders,&O - Post Material Issues,t7dejh.rwn
+WOP,WO,P,Mfg,Work Orders,&P - Batch Finished Production,t7wop.rwn
+WOQ,WO,Q,Mfg,Work Orders,&Q - Work Order Inquiry,T7WOT.rwn
+WOR,WO,R,Mfg,Work Orders,&R - Work Order Defaults,T7DSWO.RWN
+WOS,WO,S,Mfg,Work Orders,&S - Print WOrk Order Labels,T7WOS.RWN
+WOT,WO,T,Mfg,Work Orders,&T - Enter Rework Work Order,T7WOTRWK.RWN

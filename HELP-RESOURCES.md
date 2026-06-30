@@ -482,6 +482,65 @@ Step 3 — Verify:
 
 ## MODULE REFERENCE
 
+### Complete Module Code Quick Reference (Pass 410, 2026-06-30)
+
+All 42 EvoERP modules confirmed from `BKMENUSU.TXT` BUTTONS section + GROUPS section.
+786 total menu items. Full catalog: `samples/menu_catalog.csv`, `samples/module_names.csv`.
+
+| Code | Full Name | Group | Items |
+|------|-----------|-------|------:|
+| AD | Accounting Defaults | Accounting | 3 |
+| AM | Accounting Maintenance | Accounting | 18 |
+| AP | Accounts Payable | Accounting | 30 |
+| AR | Accounts Receivable | Sales | 18 |
+| BM | Bill of Materials | Items | 18 |
+| CM | Contact Master | Sales | 9 |
+| CR | Contract Review | Sales | 2 |
+| CS | Commissions | Sales | 16 |
+| DC | Data Collection | Mfg | 14 |
+| DE | Data Exchange | System Mgr | 62 |
+| ES | Estimates | Mfg | 11 |
+| FA | Fixed Assets | Accounting | 5 |
+| FO | Features and Options | Items | 7 |
+| GL | General Ledger | Accounting | 19 |
+| HH | Hand Held Programs | Hand Held | 13 |
+| IM | International Module | System Mgr | 7 |
+| IN | Inventory | Items | 41 |
+| JC | Job Costing | Mfg | 20 |
+| LC | Lot Control | Items | 6 |
+| MR | MRP | Mfg | 14 |
+| PI | Physical Inventory | Items | 8 |
+| PL | Pay Link (Checkmark payroll) | Pay Link | 4 |
+| PO | Purchase Orders | Mfg | 35 |
+| PR | Payroll | Payroll | 36 |
+| PS | Password Security | System Mgr | 11 |
+| QC | Quality Control | Mfg | 18 |
+| QU | Queries & Reports | Queries | 6 |
+| RM | RMA | Sales | 7 |
+| RO | Routings | Items | 24 |
+| SA | Sales Analysis | Sales | 19 |
+| SC | Serial Control | Items | 8 |
+| SD | System Defaults | System Mgr | 21 |
+| SH | Scheduling | Mfg | 18 |
+| SM | System Maintenance | System Mgr | 69 |
+| SO | Sales Orders | Sales | 57 |
+| SR | Service and Repair | Sales | 9 |
+| SU | Query & Report Setup | Queries | 4 |
+| TA | System Configuration (TAS) | System Mgr | 16 |
+| US | User Settings | Settings | 8 |
+| UT | Utilities | System Mgr | 15 |
+| WC | Warehouse Control | Items | 6 |
+| WO | Work Orders | Mfg | 54 |
+
+**Menu code format:**
+- 3-char codes: `WOA` = WO module, operation A = "Enter Work Orders" → `t7woa.rwn`
+- 4-char codes: `CMBB` = CM module, parent B, sub-B = "Print Accounts Listing" → `t7cmbb.rwn`
+- Parent ops without a program file are sub-menu headers (drill down to sub-ops)
+
+See [module-codes.md](docs/03-modules/module-codes.md) for full detail including sample operations per module.
+
+---
+
 ### Accounts Receivable (AR)
 
 **What it does:** Manages customer accounts, invoices, payments, statements, and aging.

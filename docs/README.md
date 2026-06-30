@@ -68,6 +68,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [AP check printing workflow — complete step-by-step from Bkaph.SRC + Bkapha.SRC](03-modules/ap-check-workflow.md) — *verified*
 - [Module ↔ Database cross-reference — which RWN opens which tables, ownership matrix](03-modules/module-db-cross-reference.md) — *verified, 2026-06-16*
 - [Undocumented modules — 20+ modules with DFM-confirmed forms (AM, FA, JC, SA, SH, SM, PR, PO, etc.)](03-modules/undocumented-modules.md) — *partial*
+- [Module Code Reference — all 42 modules, full names, groups, item counts](03-modules/module-codes.md) — *verified 2026-06-30*
 
 **Per-module deep-dive pages** (each joins menu codes + schema + UI forms):
 - [AR — Accounts Receivable](03-modules/ar-accounts-receivable/README.md) (17 menu / 24 forms / 29 tables) — + [help-content.md](03-modules/ar-accounts-receivable/help-content.md)

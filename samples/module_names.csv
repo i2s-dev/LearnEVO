@@ -1,0 +1,44 @@
+module_code,full_name,group,icon_id,item_count
+AD,Accounting Defaults,Accounting,33,3
+AM,Accounting Maintenance,Accounting,29,18
+AP,Accounts Payable,Accounting,9,30
+AR,Accounts Receivable,Sales,26,18
+BM,Bill of Materials,Items,2,18
+CM,Contact Master,Sales,25,9
+CR,Contract Review,Sales,61,2
+CS,Commissions,Sales,21,16
+DC,Data Collection,Mfg,10,14
+DE,Data Exchange,System Mgr,20,62
+ES,Estimates,Mfg,13,11
+FA,Fixed Assets,Accounting,60,5
+FO,Features and Options,Items,30,7
+GL,General Ledger,Accounting,14,19
+HH,Hand Held Programs,Hand Held,56,13
+IM,International Module,System Mgr,12,7
+IN,Inventory,Items,5,41
+JC,Job Costing,Mfg,3,20
+LC,Lot Control,Items,35,6
+MR,MRP,Mfg,8,14
+NE,New Programs,(no group),14,0
+PI,Physical Inventory,Items,27,8
+PL,(no name),Pay Link,,4
+PO,Purchase Orders,Mfg,22,35
+PR,Payroll,Payroll,18,36
+PS,Password Security,System Mgr,15,11
+QC,Quality Control,Mfg,62,18
+QU,Queries & Reports,Queries,55,6
+RM,RMA,Sales,57,7
+RO,Routings,Items,7,24
+SA,Sales Analysis,Sales,11,19
+SC,Serial Control,Items,31,8
+SD,System Defaults,System Mgr,36,21
+SH,Scheduling,Mfg,17,18
+SM,System Maintenance,System Mgr,34,69
+SO,Sales Orders,Sales,24,57
+SR,Service and Repair,Sales,53,9
+SU,Query & Report Setup,Queries,36,4
+TAS,System Configuration,System Mgr,4,0
+US,User Settings,Settings,58,8
+UT,Utilities,System Mgr,16,15
+WC,Warehouse Control,Items,54,6
+WO,Work Orders,Mfg,1,54

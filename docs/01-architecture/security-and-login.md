@@ -39,14 +39,25 @@ appear to participate:
 - `EVORESETPASS.DCY` / `EVOCHANGEPASS.DCY` — password reset / change.
 - `EVOUSERS.DCY` — user admin screen (Enter Users — SM-??).
 
-### Password storage
+### Password storage — `BKSYUSER` (confirmed Pass 410, 2026-06-30)
 
-Not yet observed in any plaintext. Candidate columns on `AHSYLOG` or
-a parallel `BKPSUSER` table (present in the table inventory,
-1 field discovered — record likely has an encrypted-password column we
-haven't decoded yet). The runtime has `ENCRYPTSTR` / `DECRYPTSTR`
-keywords, suggesting the password is stored encrypted with a
-runtime-private key.
+Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSYUSER.B` (31,744 bytes, Btrieve FC magic).
+This table is Btrieve-only (not in PSQL DDF).
+
+Fields from FILEDICT:
+- `BKSY.USER.CODE` — user login code (key field)
+- `BKSY.USER.PSWD` — password hash/stored value
+- `BKSY.USER.LEVL` — security level assignment
+- `BKSY.USER.CTRL` — control flags
+- `BKSY.USER.NAME` — user display name
+
+Binary analysis: records contain `'N'`-padded fields — no plaintext passwords visible.
+The runtime uses `ENCRYPTSTR`/`DECRYPTSTR` keywords, suggesting passwords are stored
+with TAS Pro's built-in symmetric encryption.
+
+`BKSYUSER` is distinct from `AHSYLOG`:
+- `BKSYUSER` = authentication (who you are, password, level)
+- `AHSYLOG` = authorization (what you can access per module)
 
 ## Per-workstation identity — `WHOAMI.DBA`
 
@@ -92,7 +103,44 @@ EvoERP has **four distinct access control layers**, applied sequentially:
 
 `AHSY_USER_ACCES_1..20` — 20 one-byte flags per user. Each is `'Y'`/`'N'`/`'R'` (read-only inferred). The module-to-index mapping is not yet confirmed; the 20 slots likely correspond to the ~20 nav tab module groups.
 
-`AHSY_USER_LEVL` (2 chars) links to `BKSLEVEL` — the security level permission matrix: 14 menus × 20 options = 422 fields. Each row in BKSLEVEL describes what operations a given level can perform in a given menu.
+`AHSY_USER_LEVL` (2 chars) links to `BKSLEVEL` — the security level permission matrix. See §BKSLEVEL below for confirmed structure.
+
+### `BKSLEVEL` — Security Level Access Masks (confirmed Pass 410, 2026-06-30)
+
+Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSLEVEL.B` (50,176 bytes, Btrieve FC magic).
+
+**Record structure** (424 bytes per record; confirmed from FCR[0x16]=424):
+
+| Offset | Size | Field | Notes |
+|--------|------|-------|-------|
+| 0 | 4 | Btrieve record header | Delete flag + internal |
+| 4 | 1 | `BKSL.LEVEL` | Security level code: ASCII digit `'1'`–`'9'` |
+| 5 | 1 | Separator | Space `0x20` |
+| 6 | 418 | Access mask | 19 groups × 22 bytes = 418 bytes |
+| — | **424** | Total | |
+
+The 418-byte access mask is 19 entries of:
+- `BKSL.MENUn` (21 bytes): per-operation Y/N flags for that menu group (each byte = `'Y'` or `'N'`)
+- `BKSL.MENUn.YN` (1 byte): master enable/disable flag for the entire group
+
+**This installation has all levels set to all-`'N'`** — every byte in every access mask is `0x4E` ('N'). This means level-based access control is **disabled** in this installation; access is enforced entirely through `AHSYLOG.AHSY_USER_ACCES_1..20` per-user flags.
+
+**Levels present** (5 records in BKSLEVEL.B):
+Levels '1', '2', '3', '4', '5' — all with all-N (deny) masks.
+
+### `BKSLMSTR` — Security Level Names (confirmed Pass 410, 2026-06-30)
+
+Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSLMSTR.B` (29,696 bytes).
+Contains descriptive names for each security level:
+
+| Level | Name |
+|-------|------|
+| 1 | All |
+| 2 | All except PR |
+| 3 | ALL EXCEPT SYSMGR,GL,AM,AD,PR |
+| 4 | MFG,ITEM ONLY |
+
+These names describe the **intended** access template for each level, but since all masks are all-N in this installation, the templates are not currently enforced by BKSLEVEL. The level assignment in AHSYLOG is present but the level-gate is effectively bypassed.
 
 ### Layer 3 — `BKPSUSER` program-level access
 
@@ -148,6 +196,28 @@ records it intends to modify. When a user picks an action like
 `EVOUSERS.DCY` plus `BKLOGON` (1 table on the inventory) probably also
 track who is currently logged in to prevent double-login of the same
 seat and to drive the "who's in the system" status bar.
+
+## Help System Scope — `DBAHLPID.B` (Pass 410, 2026-06-30)
+
+Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\DBAHLPID.B` (178,176 bytes).
+Btrieve-only table. Maps menu/help topic codes to help page IDs.
+
+**Record format**: `8XX-Y    ` (9-char fixed-width key) + 1-byte sequential page ID.
+- `8` = section prefix (all EvoERP help = section 8)
+- `XX` = 2-char module code
+- `-Y` = operation letter (A, B, C, ...)
+- Trailing spaces = fixed-width padding
+
+Contains **647 unique operations across 43 modules**. Modules with no help topics defined
+(e.g. QC) are absent even if they exist in the menu. One module (`AI`) has 4 operations
+in DBAHLPID but no BKMENUSU.TXT GROUPS/BUTTONS entry — likely a hidden internal module.
+
+This is the most complete functional scope catalog for EvoERP: every accessible menu operation
+that has context-sensitive help is enumerated in DBAHLPID. See
+[module-codes.md](../03-modules/module-codes.md) for the full 42-module reference.
+
+`DBAHELP.B` (94,208 bytes): the companion file containing actual help text. Contains no
+printable strings ≥15 chars — help text is stored in an encoded/binary format.
 
 ## Things still to verify
 
