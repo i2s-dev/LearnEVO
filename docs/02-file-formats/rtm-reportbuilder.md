@@ -316,6 +316,84 @@ Initially `Visible = False`. Made visible by TAS code when `print_opt[3]` (Email
 
 ---
 
+## Email and PDF archiving workflow (Pass 402)
+
+### Email subsystem — three DFM layers
+
+#### 1. EMAILREL4.DFM — per-workstation SMTP settings (SourceFile=`emailrel4`)
+
+Accessed from workstation setup; stores connection params in the `email.cfg.*` TAS namespace:
+
+| Field | TAS variable | Default | Meaning |
+|---|---|---|---|
+| `smtp` (TTASENTER) | `email.cfg.SMTP` | — | SMTP server hostname |
+| `email` (TTASENTER) | `email.cfg.Email` | — | Sender email address |
+| `name` (TTASENTER) | `email.cfg.Name` | — | Sender display name |
+| `smtpport` (TSpinEdit) | *(integer)* | 25 | SMTP port (1–65535) |
+| `TestEmail` (TGlyphBtn) | — | — | Sends a test email to verify settings |
+
+Events: `emailrel4.OnStart` / `emailrel4.OnClose`. `OpenFiles = 'emailrel4.OnOpenFiles'` (loads BKYSMSTR config on open).
+
+Full `EMAIL.CFG.*` namespace in BKYSMSTR (23 vars confirmed from t7slsfc): SMTP/PORT/SEC/EMAIL/NAME/USER/PASS/EPASS/EFAIL/ECB/EVB/APTH/BCC/SUBJ/BOD1-9.
+
+#### 2. nzedefs.DFM — global email defaults (SourceFile=`nzemdefs`)
+
+Admin-configurable defaults applied to all outgoing emails:
+
+| Field | TAS variable | Meaning |
+|---|---|---|
+| `bccSelf` (TTASENTER) | `entBCC` | BCC self address; ValidExpr=`"@" $ entBCC .and. "." $ entBCC` |
+| `SUBJ` (TTASENTER) | `entSUB` | Default subject line template |
+| `SubjectFields` (TTASComboBox, hidden) | `entSubjectField` | Field substitution picker for subject |
+| `Body` (TMemo, 3600 chars max) | *(body lines stored as BOD1-9 in BKYSMSTR)* | Default body text (60 lines × 60 chars) |
+| `SIGN` (TMemo, 200 chars max) | *(stored as SIG1-9 in BKYSMSTR)* | Signature (5 lines × 40 chars) |
+| `APATH` (TTASComboEnter, gkEllipsis) | `entAPATH` | Default attachment path |
+| `Fields` (TTASComboBox, hidden) | `entFIELD` | Field substitution picker for body |
+
+`OnDisplayScreen = 'nzedefs.OnDisp'` — validates email format on display.
+
+#### 3. nzemailtll.DFM — email compose form (SourceFile=`NzEmailtll`)
+
+Caption = ' Evo ~ ERP email'. Mounted when user selects Email mode from print dialog or from menu.
+
+| Field | TAS variable | Meaning |
+|---|---|---|
+| `entTO` (TTASENTER) | `entTO` | To: address(es) |
+| `entCC` (TTASENTER) | `entCC` | Cc: address(es) |
+| `entICC` (TTASENTER) | `entICC` | Icc: (internal CC — company users) |
+| `entSUB` (TTASENTER) | `Email.cfg.subj` | Subject line |
+| `TASComboBox1` (TTASComboBox) | `TEMPATT` | Email form/template name |
+| `tmpATT` (TTASENTER) | `tempATT` | Attachment template path |
+| `attach` (TTASENTER) | `fpath` | Actual attached file path |
+| `Name` (TTASENTER) | `name` | Recipient contact name |
+| `TASCheckBox1` (TTASCheckBox) | `bccself` | BCC self |
+| `emaillist` (TTASDataGrid) | `EMAILLIST` / `EMAILLBL` / `CONTNAME` | Recipient grid: email address, display label, contact name |
+| `ICCLIST` (TTASDataGrid) | `ICCLIST` / `ICCNAME` | ICC grid: internal CC email, ICC contact name |
+| `msglist` (TTASStrList) | *(runtime body)* | Email body text |
+| `NOTEMEMO` (TTASStrList) | *(runtime note)* | Note/memo attachment content |
+
+Events: `OnStart = 'NZE.START'` (pre-populates recipient from contact lookup), `OnClose = 'NZE.END'`.
+
+**Email → print flow:**
+1. User selects `print_opt[3]` (Email) in PRINTTLL and optionally sets contact lookup fields
+2. `t7print` resolves email recipient from `contname`/`contnum`/`contprimcode` + `SpinEmail` (1–5 contact slots)
+3. If `autoemail = True` → sends without opening compose dialog
+4. If `autoemail = False` → mounts `nzemailtll` for user to review To/Cc/Subject/Body before sending
+
+### PDF archiving
+
+TAS keyword `PRINT_ARCHIVE` (opcode ~7943) in the calling program's print sequence:
+- Prints AND saves a PDF copy simultaneously
+- PDF files written to `C:\ISTS\PDFS\` (per-workstation local path)
+- Format: `<reportname>_<date>.pdf` (naming from t7print logic — blocked by encryption)
+- `PRINT_TO_FILE` (opcode 7874) alone saves to `fpath` without printing
+
+**Archive vs email:**
+- Archive = automatic silent copy to `C:\ISTS\PDFS\` (no user interaction)
+- Email = sends the rendered output via SMTP to a contact address
+
+---
+
 ## TppDBText field binding format (Pass 106i)
 
 Confirmed from `I2SCHK1.btm` binary inspection — two field name formats appear in the same RTM:

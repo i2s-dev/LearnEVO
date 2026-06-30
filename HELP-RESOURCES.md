@@ -3773,11 +3773,29 @@ Every EvoERP report uses the same universal print dialog (`printtll.DFM`, Source
 
 ### How email works
 
-Email is composed in NZEMAILTLL ("Evo ~ ERP email"):
-- Fields: To, Cc, BCC, Attachment, Subject, Form (email template name)
-- Checkboxes: BCC Self, BCC Rep (auto-BCC the user's own address or assigned sales rep)
-- Customer and vendor contact grids allow selecting recipients by name
-- **Defaults** (admin-configurable in NZEDEFS): Subject template, Body template, Signature, Attachment path, BCC Self default
+Email is composed in `nzemailtll.DFM` (SourceFile=`NzEmailtll`, Caption="Evo ~ ERP email"):
+- **To / Cc / Icc / Subject** — free-text address fields; `entTO`, `entCC`, `entICC`, `Email.cfg.subj`
+- **BCC Self** (`bccself` TTASCheckBox) — auto-BCC the sender's own address
+- **Form** (`TEMPATT` TTASComboBox) — email form/template name
+- **Attachment** (`fpath` TTASENTER) — attached file path
+- **emaillist** (TTASDataGrid) — recipient grid: EMAILLIST (address), EMAILLBL (label), CONTNAME (contact)
+- **ICCLIST** (TTASDataGrid) — internal CC grid: ICCLIST, ICCNAME
+- `msglist` (TTASStrList) — email body; `NOTEMEMO` (TTASStrList) — note attachment text
+- OnStart=`NZE.START` pre-populates from contact lookup; OnClose=`NZE.END`
+
+**Email account configuration** (`emailrel4.DFM`, SourceFile=`emailrel4`):
+- Per-workstation settings: `email.cfg.SMTP`, `email.cfg.Email`, `email.cfg.Name`, port (default 25)
+- TestEmail button verifies SMTP connectivity
+- Full `EMAIL.CFG.*` namespace (23 vars) stored in BKYSMSTR: SMTP/PORT/SEC/EMAIL/NAME/USER/PASS/EPASS/EFAIL/ECB/EVB/APTH/BCC/SUBJ/BOD1-9
+
+**Global defaults** (`nzedefs.DFM`, SourceFile=`nzemdefs`, Caption="Evo Email Default Settings"):
+- `entBCC` — BCC self address (validated: `'"@" $ entBCC .and. "." $ entBCC'`)
+- `entSUB` — subject template; `entSubjectField` (TTASComboBox) — field substitution in subject
+- `Body` (TMemo, max 3600 chars) — default body (60 lines × 60 chars)
+- `SIGN` (TMemo, max 200 chars) — signature (5 lines × 40 chars)
+- `entAPATH` (TTASComboEnter, gkEllipsis) — default attachment path
+
+**Auto-send path:** If `autoemail = True` in PRINTTLL, the email sends without opening the compose dialog.
 
 ### How lookup lists work (QU / SU architecture)
 
