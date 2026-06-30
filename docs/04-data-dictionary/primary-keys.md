@@ -1,15 +1,32 @@
 # EvoERP -- Primary Key Reference (Complete)
-Status: complete | verified-from-INDEX.DDF | Pass359 2026-06-26
+Status: complete | verified-from-live-ODBC | Pass359 2026-06-26 | updated Pass407 2026-06-30
 
-**Method:** Pervasive INDEX.DDF index_num=0 records, fields ordered by part_num.
-This is the Btrieve segment-0 (first physical key). For most tables this equals
-the unique primary key, but compound PKs where the first segment is a subset may
-show only the leading field(s). Tables marked "(DDF parse anomaly)" have false-positive
-index records and their PKs must be determined from schema analysis.
+**Method (Pass 407 update):** Live ODBC query against DSN=DBA — `X$Index JOIN X$Field JOIN X$File`
+where `Xi$Number = 0` (index segment 0 = primary key). `Xi$Field` joins to `Xe$Id` in X$Field.
+Script: `scripts/extract_primary_keys.py`. Output: `samples/primary_keys.csv`.
 
-| Table count | PK extracted | Parse anomaly | No index 0 |
-|-------------|--------------|---------------|------------|
-| 656 | 648 | 4 | 4 |
+This supersedes the Pass 359 binary INDEX.DDF parse (656 tables). ODBC is authoritative.
+
+| Table count | PK confirmed | No PK in DDF | Notes |
+|-------------|-------------|--------------|-------|
+| 715 | 711 | 4 | ODBC live query 2026-06-30 |
+
+Tables with **no index 0** in DDF: `BKSYHELP`, `ISDLCK1`, `ISDLCK2`, `TESTARRA`
+— these are singleton config rows or write-only temp tables with no Btrieve PK defined.
+
+**Primary key structure:**
+- Single-field PKs: 532 tables
+- Compound PKs (2+ fields): 179 tables
+
+**DDF vs Btrieve-only architecture note:**
+The 715 tables in DDF are accessible via ODBC (DSN=DBA). However, several major operational
+modules use tables that are **NOT** in the DDF — they are Btrieve-only and accessible only via
+TAS Pro direct file I/O. Known Btrieve-only (not in DDF) tables include:
+- Main SO (Sales Order) header/line tables — only IS* extension tables (ISSOAINF etc.) are in DDF
+- Main AP/AR/PO history might be archived to Btrieve-only files
+- AHSYMSTR (user security master) — not in DDF under that name
+Operational WO tables ARE in DDF: `WORKORD` (PK `MTWO_WIP_WOPRE`), `WORKHORD` (history),
+`WOBOM` (BOM), `WOROUT` (routing), etc.
 
 ## AHSY
 
