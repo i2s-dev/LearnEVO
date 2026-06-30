@@ -334,3 +334,86 @@ All 11 BKDC*.RUN files extracted and analyzed. This pass corrected the menu tabl
 - BKDCA2~1.RUN bypasses BKDCCLAB staging and writes WOLABOR directly — used when DC is configured for direct-post mode (no approval step).
 - AUTODCH (referenced in prior menu table) = automated/batch DC-H variant not in the 11-file TAS6 set; UMCDCP = i2 custom DC-H extension.
 - Transfer labels are printed by calling `ISDCA.RUN` from within DC-A (not a separate menu operation).
+
+---
+
+## BKDCA.SRC — SRC-level analysis (Pass 395/396 2026-06-30)
+
+BKDCA.SRC (225KB, TAS Pro 5/6 era, DC-A Enter Labor/Production entry) was analyzed in full.
+Confirms and extends the binary-level findings above.
+
+### BKYSMSTR YN flags in DC-A (SRC-confirmed)
+
+| YN slot | Value at i2S | Behavior |
+|---------|-------------|---------|
+| `BKYS.YN[20]` | ? | DC barcode mode — when 'Y' and `lab.parts != 0`, sets `lab.extra = "B"` on posted DCTLAB entries (backflush/barcode trigger). Source: L708, L846. |
+| `BKYS.YN[228]` | ? | Screen variant — 'Y'=mount BKDCAF (simplified 8-line form), 'N'=mount BKDCA (standard 12-line form). Source: L194. |
+| `BKYS.YN[229]` | ? | Multi-job / auto-close mode — 'Y'=find existing open labor by WO+OPER (multi-job), prompt "Continue entering for Employee?", auto-close on new job start; 'N'=find by employee only (single-job-per-employee). Source: L228, L414, L548. |
+
+### MOVE_TLAB subroutine (SRC-confirmed, L701-718)
+
+```
+MOVE_TLAB:
+  scan @dctlab key lab.emp start tmp.emp while lab.emp = tmp.emp
+    if lab.posted = "O"
+      lab.nojobs = tmp.nojobs
+    else
+      lab.posted = "P"
+      if bkys.yn[20] = "Y" .a. lab.parts <> 0
+        lab.extra = "B"
+      endif
+    endif
+    save @dcplab nocnf
+    del @DCtLAB nocnf
+  ends
+```
+
+This confirms: BKDCTLAB → BKDCPLAB migration (all temp records for an employee moved
+atomically). Open ("O") records get their `nojobs` counter updated; all other records
+are marked Posted ("P") and saved to DCTLAB.
+
+### Multi-job mode (YN[229]='Y') vs single-job (YN[229]='N')
+
+When `YN[229]='Y'` (multi-job):
+```
+findv m fnum dctlab key lab.key val LAB.EMP,LAB.WOPRE,LAB.WOSUF,LAB.OPER,"O"
+```
+Looks for existing **Open** record matching employee + WO prefix + WO suffix + operation.
+If found → continue editing that record. Allows one employee to have **multiple WOs open simultaneously**.
+
+When `YN[229]='N'` (single-job):
+```
+findv m fnum dctlab key lab.emp val lab.EMP
+```
+Looks for **any** open record for that employee. Employee can only have **one WO open at a time**.
+If trying to clock into a new WO while open on another, system shows "First you must Clock Out of Work Order X-Y."
+
+### Auto-close logic (YN[229]='Y' only)
+
+On EXIT and when switching employees, if `YN[229]='Y'`:
+```
+if tmp.nojobs <> no.jobs then gosub auto_close
+```
+`tmp.nojobs` = count of temp jobs at session start; `no.jobs` = current count.
+If count changed (employee added jobs), auto-close fires to push BKDCTLAB → BKDCPLAB.
+This prevents orphaned temp records when DC-A exits without explicit POST step.
+
+### Entry loop structure
+
+```
+START:
+  clr WORKORD buff | clr worout buff
+  emp.alpha = '' | wopre.alpha = '' | wosuf.alpha = '' | oper.alpha = ''
+  → enter emp.alpha (employee number)
+  → if YN[229]='Y' and tmp.emp != 0: prompt "Continue entering for Employee N?"
+  → enter time, WO prefix/suffix, operation
+  → validate, find/create BKDCTLAB record
+  → ENT.PARTS: enter part quantities
+  → save @DCTLAB nocnf
+```
+
+Key observations:
+- `clr WORKORD buff` at the top of every START loop — prevents record locking conflicts (FMZ 9/29/98 comment)
+- `lab.shift = 1` set as default if zero (AGL 8/8/00 safety) — ensures shift is always valid
+- `time TMP.TIME get` = read current system time for timestamp
+- `calc_runhrs` = calculated run hours function called before `save @DCTLAB nocnf`
