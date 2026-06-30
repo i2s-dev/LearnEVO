@@ -1024,7 +1024,57 @@ partial (cycle) counts in addition to full physical inventory.
   inventory variance accounts in BKSYMSTR
 """,
 
-"SH": "## What it does\n\nShipping — pack, ship, label, track. Integrates with UPS/FedEx/USPS APIs. Labels via `J7DCMatLabels` and handheld flows.\n",
+"SH": """
+## What it does
+
+Scheduling — manages work order scheduling, work center capacity, and finite/infinite
+scheduling runs. Includes both interactive Gantt-style views (Java-backed) and batch
+scheduling engines. Drives lead time calculation and WO start/finish date assignment.
+
+## Menu operations
+
+| Code | Operation | Engine |
+|------|-----------|--------|
+| SH-A | Edit WO Start/Finish/Due Dates | T7SHA.RWN |
+| SH-B | Manually Schedule Work Orders | T7SHB.RWN |
+| SH-C | Manually Schedule Work Centers | T7SHC.RWN |
+| SH-D | Manually Schedule Machines | MachineView.jar |
+| SH-E | Finite Scheduling | T7SHE.RWN |
+| SH-F | Infinite Scheduling | T7SHF.RWN |
+| SH-G | Print Work Order Schedule | T7SHG.RWN |
+| SH-H | Print Work Order Status | T7SHH.RWN |
+| SH-I | Print Work Center Schedule | T7SHI.RWN |
+| SH-J | Print Machine Schedule | T7SHJ.RWN |
+| SH-K | View Work Center Load | T7SHK.RWN |
+| SH-L | View or Calculate Work Center Load | WorkCenterLoad.jar |
+| SH-M | Lead Time Estimator | T7SHM.RWN |
+| SH-N | Generate Lead Times | T7SHN.RWN |
+| SH-O | Finite Schedule Bucket Report | T7SHO.RWN |
+| SH-P | Lead Time Scheduling | T7SHP.RWN |
+| SH-Q | Scheduling Defaults | T7DSSH.RWN |
+| SH-R | Work Center Scheduler | T7VSCHED.RWN (WCScheduler.jar) |
+
+## Java-backed views
+
+SH-D, SH-L, and SH-R launch Java JARs from the ISJAVA task queue:
+- `MachineView.jar` — machine schedule Gantt
+- `WorkCenterLoad.jar` — work center capacity load visualization
+- `WCScheduler.jar` / `WOScheduler.jar` — interactive Gantt-style schedulers
+
+## Key tables
+
+- `WORKCTR` (47f, `MTWC.*` namespace) — work center capacity, labor/overhead rates
+- `WORKORD` (74f) — WO headers with start/finish/due dates
+- `WOROUT` (81f) — WO routing operations (per-operation schedule)
+- `SCHEDCAL` / `CALENDAR` — shop business calendar (SH-Q configures)
+- `ISWOPRIO` (4f) — WO priority codes with Gantt color assignments
+
+## Integration
+
+- **[[module-WO|WO]]** — all SH operations read WORKORD; SH-A writes start/finish dates
+- **[[module-RO|RO]]** — routing operation times (ROUTING/WOROUT) drive scheduling math
+- **[[module-DC|DC]]** — BKDCLAB actual labor feeds Gantt for actual-vs-planned comparison
+""",
 
 "ED": """
 ## What it does
@@ -1275,7 +1325,28 @@ RM-G  Reason Codes Report (t7rmg.rwn)
 - **[[module-IN|IN]]** — Restock disposition triggers INVTXN adjustment
 """,
 
-"SU": "## What it does\n\nSystem Utilities — low-level maintenance tools: index rebuild, file restructure, data verification, and diagnostic utilities. Typically accessed by administrators only. Includes table repair functions for Btrieve/Pervasive data files.\n",
+"SU": """
+## What it does
+
+Query & Report Setup — configures the interactive query and drill-down
+infrastructure used by the [[module-QU|QU]] Queries & Reports module. Admins
+use SU to build grid layouts, drill-down menu trees, and maintain the forms
+editor for custom screen layouts.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| SU-A | Maintain Grid Lookups | wbklugrid.rwn |
+| SU-B | Maintain Drill Down Menus | evoerpdrillm.rwn |
+| SU-C | Forms Editor | reports.int |
+| SU-D | Grid Maintenance | t7gdm.rwn |
+
+## Integration
+
+- **[[module-QU|QU]]** — SU-A configures the grid layouts that QU-E (Quick Grid Lookup) uses
+- **[[module-RT|RT]]** — SU-C (Forms Editor = reports.int) is the ReportBuilder designer entry point
+""",
 
 "UT": "## What it does\n\nUtilities — general-purpose tools including data export, CSV import/export, and miscellaneous administrative functions. See [[recipe-export-csv]] and [[recipe-purge-history]].\n",
 
@@ -1289,7 +1360,41 @@ RM-G  Reason Codes Report (t7rmg.rwn)
 
 "PL": "## What it does\n\nPaperless Manufacturing — electronic traveler / work-order packet displayed at the workstation. Eliminates printed travelers. Forms: `T7PLessComps.DFM` (issue components), `T7PLessNotes.DFM` (QC specs, routing notes), `T7PLessWODates.DFM` (WO dates and qty).\n",
 
-"PS": "## What it does\n\nPlanning / Scheduling — finite capacity scheduling complement to [[module-MR|MR]] (MRP). Uses routing operation times, work center calendars, and WO priority to schedule production. Forms in the `T7SHA*` family (13 scheduling forms).\n",
+"PS": """
+## What it does
+
+Password Security — manages user accounts, password policies, module access
+restrictions, menu access control, electronic approval signers, and field-level
+access restrictions. The security administration hub for the EVO system.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| PS-A | System Users / Passwords | t7psa.rwn |
+| PS-B | DBA System Security Levels | bkpsb.run (T6 era) |
+| PS-C | DBA Company Logon Access | bkpsc.run (T6 era) |
+| PS-E | Evo Menu Access by User Report | t7pse.rwn |
+| PS-F | Evo Menu Access by Program Report | t7psf.rwn |
+| PS-G | Maintain Menu Access Records | WBKMENUSETUP.RWN |
+| PS-H | Configure Auto-Chain Programs | T7CHAIN.RWN |
+| PS-I | Enter Approved Signers for Purchase Orders | T7DIGSIGADMIN.RWN |
+| PS-J | Enter Contract Review Signers | T7CTREVUADMIN.RWN |
+| PS-K | Enter Vendor Approval | J7appvend.rwn (ISTS custom) |
+| PS-L | Enter Field Specific Access | T7LIMACC.rwn |
+
+## Key tables
+
+- `BKSYUSER` (5f) — user-to-security-level mapping
+- `BKSLEVEL` (422f) — security level × menu access matrix (422 fields = 211 menu operations × allow/deny flag pairs)
+- `BKSYLOG` (215f) — per-user module access tracking
+
+## Integration
+
+- **[[module-SY|SY]]** — SY-A Enter Users feeds into PS security levels
+- **[[module-US|US]]** — US-D Change Password is the user-facing entry; PS-A is the admin view
+- **[[module-CR|CR]]** — PS-J configures the approvers used by CR contract review workflow
+""",
 
 "SA": """
 ## What it does
@@ -1429,13 +1534,132 @@ cost rates used by all SL scheduling calculations.
 - **[[module-DC|DC]]** — BKDCLAB time-clock feed drives Gantt actual vs scheduled
 """,
 
-"SD": "## What it does\n\nSales / Shipping Detail — shipment detail tracking, carrier assignments, and freight billing. Related to [[module-SH|SH]] (Shipping) and SO module.\n",
+"SD": """
+## What it does
 
-"CM": "## What it does\n\nCredit Memo — processing of customer credit memos. Handles price adjustments, allowances, and return credits outside of the RMA flow. See [[recipe-credit-memo]]. Posts to AR as negative open items.\n",
+System Defaults — consolidated access to all module defaults screens. Each
+SD sub-menu opens the defaults entry form for a specific EVO module. This is
+where the system administrator configures default values, numbering sequences,
+and behavioral flags for every module without needing to navigate into each
+module's own menu.
+
+## Menu operations (defaults screens)
+
+| Code | Defaults screen | Key program |
+|------|----------------|-------------|
+| SD-A | Company Defaults | T7DSCO.rwn |
+| SD-B | Work Order Defaults | t7dswo.rwn |
+| SD-C | Purchase Order Defaults | t7dspo.rwn |
+| SD-D | MRP Defaults | t7dsmrp.rwn |
+| SD-E | Scheduling Defaults | t7dssh.rwn |
+| SD-F | Data Collection Defaults | t7dsdc.rwn |
+| SD-G | Estimating Defaults | t7dsest.rwn |
+| SD-H | Inventory Defaults | t7dsic.rwn |
+| SD-I | Routings Defaults | t7dsro.rwn |
+| SD-J | Bills of Material Defaults | t7dsbom.rwn |
+| SD-L | Features and Options Defaults | t7dsfo.rwn |
+| SD-M | Sales Orders Defaults | t7dsso.rwn |
+| SD-N | Sales Commissions Defaults | t7dscs.rwn |
+| SD-O | Contact Manager Defaults | t7dscm.rwn |
+| SD-P | Customer / AR Defaults | t7dsar.rwn |
+| SD-Q | Master Default Settings | t7mdefaults.rwn (495-key BKYSMSTR editor) |
+| SD-R | Assign Next Document Numbers | t7numdef.rwn |
+| SD-S | Warehouse Control Defaults | t7dswc.rwn |
+| SD-T | Service / RMA Defaults | t7dsrma.rwn |
+| SD-U | Hand-Held Defaults | t7dshh.rwn |
+| SD-V | International Settings Defaults | T7DSIM.RWN |
+
+`SD-Q Master Default Settings` is the most powerful: it opens `T7MDefaults.rwn`,
+the full 495-key BKYSMSTR editor with all ISTS.CFG.* flags, YN slots, numbering,
+and module parameters. See [[recipe-configure-defaults]].
+
+## Integration
+
+All SD defaults are stored in `BKYSMSTR` (355f) and `BKSYMSTR` (286f). Every
+module reads its operational defaults from those singletons at runtime.
+""",
+
+"CM": """
+## What it does
+
+Contact Master — the CRM (Customer Relationship Management) module. Manages
+customer and prospect account records, contact history, reminders, campaigns,
+and activity tracking. Closely integrated with AR (customer accounts) and SO.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| CM-A | Enter Contact Accounts | t7cma.rwn |
+| CM-B-B | Print Accounts Listing & Labels | t7cmbb.rwn |
+| CM-B-C | Print Reminders | T7REMINDRPT.RWN |
+| CM-B-F | Print Notes | evonotesrpt.rwn |
+| CM-C | CRM Dashboard | t7jcrm.rwn (Java) |
+| CM-J | Change Account Codes | t7cmj.rwn |
+| CM-K | Add Customers to Account File | t7cmk.rwn |
+| CM-M | Contact Manager Defaults | T7DSCM.RWN |
+
+## Key tables (BKCM* family — 46 tables)
+
+Most BKCM* tables are **Btrieve-only** (not in Pervasive DDF) — cannot be
+queried via SQL/ODBC; only accessible through TAS Pro or the Java CM bridge.
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKCMCUST` | 106 | Customer CRM account (links to BKARCUST) |
+| `BKCMACCT` | 41 | Prospect / non-customer account |
+| `BKCMACCN` | 154 | Account notes + 10 contacts per account |
+| `BKCMACTH` | 21 | Activity history (START/STOP/billing) |
+| `BKCMACTF` | 11 | Follow-up + SO link |
+| `BKCMMHST` | 72 | Campaign / mailing history (20-class filter) |
+| `BKCMREP` | 14 | Sales rep access flags |
+| `BKCMTERR` | 2 | Territory codes |
+| `BKCMDUN` | 36 | 10-level dunning ladder |
+| `MKAHIST` | 9 | Activity history log (used by 158 programs) |
+
+## Integration
+
+- **[[module-AR|AR]]** — BKCMCUST links to BKARCUST; CM-K imports AR customers into CRM
+- **[[module-SO|SO]]** — SO module reads BKCMACTH for quote-to-order history
+- **[[module-SA|SA]]** — SA reports can filter by BKCMTERR (territory) and BKCMLEAD (lead source)
+""",
 
 "CP": "## What it does\n\nCredit and Payment processing — handles credit card and alternative payment method processing for customer accounts. Integrates with [[module-AR|AR]] cash receipts.\n",
 
-"CR": "## What it does\n\nCredit — customer credit limit management, credit hold processing, and credit approval workflows. AR-A Enter Customers includes the credit limit and credit hold fields tracked by this module.\n",
+"CR": """
+## What it does
+
+Contract Review — an electronic approval workflow that requires designated
+department managers to sign off on a Sales Order before it can proceed to
+fulfillment. Prevents unapproved orders from shipping.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| CR-A | Assign Departments to SO | T7SOREVUADMIN.RWN |
+| CR-B | Enter SO Approvals | T7SOREVU.RWN |
+
+## Workflow
+
+```
+SO created → CR-A assigns review departments to the SO
+           → CR-B displays pending SOs awaiting approval
+           → each department approver signs off (ISCTREVU: employee + MOTPAS signature)
+           → when all departments approve → SO released for fulfillment
+```
+
+## Key tables
+
+- `ISSOREVU` (SR module, part of IS* family) — SO review pending records
+- `ISCTREVU` (17f) — contract review sign-off: employee code + MOTPAS signature
+
+## Integration
+
+- **[[module-SO|SO]]** — SO header status blocked until CR approval clears
+- **[[module-PS|PS]]** — PS-J Enter Contract Review Signers configures who can approve
+- **[[module-US|US]]** — US-H Update Contract Review Password manages the approval PIN
+""",
 
 "FA": """
 ## What it does
@@ -1494,9 +1718,77 @@ does not corrupt historical transaction records.
   the open accounting period before posting
 """,
 
-"FL": "## What it does\n\nFloor Control — shop-floor scheduling and sequencing at the work center level. Bridges [[module-DC|DC]] (labor capture) and [[module-SH|SH]] (scheduling) with real-time WO status on the floor.\n",
+"FL": """
+## What it does
 
-"FO": "## What it does\n\nForecasting — demand forecasting engine. Creates item-level forecasts based on sales history, seasonality, and trend analysis. Feeds planned demand into [[module-MR|MR]] (MRP) as independent demand.\n",
+File Location Browser — a TAS Pro 7 built-in administrative utility that allows
+any registered Btrieve table to be browsed interactively at runtime. Accessed via
+`WTASFLOC.RWN`. Not a business module — it is a low-level data inspection tool for
+system administrators and developers.
+
+**FL has no standalone top-level menu entry.** It is invoked directly by name
+(FL) in the TAS Pro launcher or from the SU/SM admin areas.
+
+## Key facts
+
+- Opens `FILELOC.B` (the runtime file-location registry) which maps 386+ logical
+  table names to their physical `.B` file paths
+- From FILELOC, the user selects any table and FL opens it for browse/edit
+- 74-table database fingerprint: FL reads all FILELOC-registered tables
+- Programs: `WTASFLOC.RWN` (22 procs, source: `wtasfloc.SRC`) — one of the few
+  readable `.SRC` files on the network share
+
+## Key namespaces (confirmed from wtasfloc.SRC)
+
+- `LOC_*` — FILELOC fields (LOC_BUFF_NAME / FILE_NAME / COMP_CODE / REC_SIZE / REC_TYPE / LOCATION / DESCRIPTION / HNDL)
+- `DICT_*` — FILEDICT fields (13 vars: field name, offset, type, size, dec, array, etc.)
+- `CF_*` — current file selection (CF_FLNAME / CF_FLCODE / CF_RTYPE / CF_DESC / CF_PATH / CF_FDNAME)
+
+## Integration
+
+- **[[module-SU|SU]]** — SU-related admin path for data inspection
+- **[[module-SM|SM]]** — SM-J file maintenance context for Btrieve data verification
+""",
+
+"FO": """
+## What it does
+
+Features and Options — the product configurator module. Allows certain inventory
+items to be defined with selectable features (e.g., fabric color, cushion style,
+leg finish) that the customer picks at order entry time. EVO builds the correct
+BOM variant automatically based on selections.
+
+At i2 Systems this drives the upholstery product line (sofas, chairs) where each
+order specifies fabric, cushion, welt, zipper, and other configurable attributes.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| FO-A | Set up Features and Options | T7FOA.RWN |
+| FO-B | Print Features and Options | T7FOB.RWN |
+| FO-C | Enter Option Prices | T7FOC.RWN |
+| FO-D | Print Option Prices | T7FOD.RWN |
+| FO-E | Print Option Where Used | T7FOE.RWN |
+| FO-F | Feature and Option Defaults | T7DSFO.RWN |
+| FO-G | Configure Item | EvoFNO.RWN |
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKFOCFG` | 18 | F/O configuration (per-item feature setup) |
+| `ISFOHEAD` | — | F/O order header (active SO options) |
+| `ISFOLINE` | 78 | F/O BOM line (50 option-flags per line) |
+| `ISFOORDL` | 18 | F/O order line (from selected options) |
+| `ISFOHIST` | 15 | F/O history + conversion to SO records |
+
+## Integration
+
+- **[[module-SO|SO]]** — FO dialog launches from SO-A when an item has a configuration
+- **[[module-BM|BM]]** — T7BMA (BOM editor) manages the F/O BOM variants (BKFOCFG+ISFOLINE in T7BMA DB)
+- **[[module-IN|IN]]** — item master `OPT` flag enables the F/O dialog on that item
+""",
 
 "FP": "## What it does\n\nForecast / Planning — planning horizon management for MRP and scheduling. Defines planning buckets (weekly, monthly) and forecast periods.\n",
 
@@ -1531,7 +1823,41 @@ module, not through the IC utility.
 - **[[module-PI|PI]]** — cycle count frequency (ISCYCLCD) is a PI-adjacent feature, not IC
 """,
 
-"IM": "## What it does\n\nImport Management — handles data imports from external sources (CSV, tab-delimited, legacy system exports). Uses `T7GENIMP.DFM` (Import DBA) with Skip/Replace/Append modes. See [[recipe-export-csv]].\n",
+"IM": """
+## What it does
+
+International Module — multi-currency support and landed cost tracking.
+Enables EVO to process transactions in foreign currencies, maintain exchange
+rates, and capture landed costs (duties, customs fees, freight) on imported
+purchase orders.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| IM-A | International Configuration | T7DSIM.RWN |
+| IM-B | Enter Multiple Currencies | t7imb.rwn |
+| IM-C | Enter Currency Exchange Rates | t7imc.rwn |
+| IM-D | Enter Landed Cost Defaults | t7imd.rwn |
+| IM-E | Enter Landed Cost Duty Codes | t7ime.rwn |
+| IM-F | Enter Landed Cost Customs Fees | t7imf.rwn |
+| IM-H | International Defaults | T7DSIM.RWN |
+
+## Key tables
+
+- `MTEXCHG` (7f) — multi-currency exchange rate master (Java entity class confirmed)
+- `ISLANDF` (6f) — landed cost GL account mapping
+- `ISMCF` (49f) — multi-currency configuration
+- `ISMCR` (22f) — exchange rate history (ISTS multi-currency)
+
+## Integration
+
+- **[[module-AP|AP]]** — foreign currency POs converted using IM exchange rates
+- **[[module-AR|AR]]** — multi-currency AR invoices use MTEXCHG rates
+- **[[module-GL|GL]]** — currency gain/loss posts to GL on settlement
+- Auto FX rate update: `T7AUTOFX.RWN` uses OANDA API (key in ISTS.CFG.FXKEY) to
+  update MTEXCHG rates automatically via ISJAVA task queue
+""",
 
 "IS": "## What it does\n\nISTS Custom — modules and enhancements specific to i2 Systems installations. Forms prefixed with `J7*` or carrying the ISTS enhancement marker (`ASSIGN(\" - ISTS Enhancement MM/DD/YY\")` in the source). Examples include Golding Farms pricing (`T7GFPRICE.DFM`).\n",
 
@@ -1539,7 +1865,39 @@ module, not through the IC utility.
 
 "PC": "## What it does\n\nProduct Configuration — Features and Options (F/O) engine. Allows configurable items where the customer selects options at order entry time. The F/O dialog launches from SO-A when an item has a configuration. See `T7FO*.DFM` forms.\n",
 
-"QU": "## What it does\n\nQueue Management — tracks work queues at work centers, including setup, run, and move times for scheduling. Relates to [[module-WC|WC]] queue-time fields in routing operations.\n",
+"QU": """
+## What it does
+
+Queries & Reports — the interactive inquiry and cross-module reporting hub.
+Contains master inquiry screens, calendar drill-downs, business status dashboards,
+quick grid lookups, and a live SQL query executor. The primary tools for
+non-reporting-module data lookup.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| QU-A | Master Inquiry | t7csi.rwn |
+| QU-B | Calendar Drill Down | caldrillbt.rwn |
+| QU-C | Calendar Summary Report | isshpcal2.rwn |
+| QU-D | Business Status (dashboard) | t7jbs.rwn (Java) |
+| QU-E | Quick Grid Lookup | t7qgrid.rwn |
+| QU-F | Query Executor (live SQL) | queryexecute.rwn (Java JDBC) |
+
+## Notable programs
+
+`queryexecute.rwn` launches `QUERYEXECUTE.RWN` which calls `EvoPVT.jar`
+directly via JAVA.NAME to run arbitrary SQL against the Pervasive database via
+JDBC. This is the only user-facing ad-hoc SQL interface in EVO.
+
+`t7jbs.rwn` launches the Java Business Scorecard (`ISJBSF` table, 143 fields)
+— a KPI dashboard summarizing open orders, backlog, inventory value, etc.
+
+## Integration
+
+- **[[module-SU|SU]]** — SU-A/D configures the grid layouts and drill-down menus used here
+- **[[module-RT|RT]]** — QU-B/C use calendar/schedule reports built on RTM templates
+""",
 
 "AB": "## What it does\n\nAddress Book — shared contact management for customers, vendors, and other entities. Provides a centralized repository of addresses, phone numbers, and contacts referenced by AR, AP, and SO modules.\n",
 
