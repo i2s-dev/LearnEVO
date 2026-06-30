@@ -19063,6 +19063,18 @@ open MTMRP lock R            ;open with read-lock (shared, non-exclusive)
 openv "BKDCPLAB" fnum HANDLE lock R  ;open table by variable name
 ```
 
+**Transaction model — no BEGIN/COMMIT/ROLLBACK (Pass 392 — confirmed absent):**
+
+TAS Pro 7 has NO transaction keywords. The full 187-entry runtime keyword list contains no
+`BEGIN_TRAN`, `COMMIT`, or `ROLLBACK`. Data integrity relies entirely on:
+- Btrieve record-level locking: `open TABLE lock R` (exclusive), `find ... nlock` (shared read)
+- `REC_LOCK` (opcode 7992) — acquire exclusive record lock
+- `UNLOCK` (opcode 7813) — release lock
+- `LOCK_OWNER` (opcode 8032) — query who holds a lock (returns username string)
+- Application-level sequencing: programs write records one at a time in dependency order;
+  each `save`/`del` is its own atomic Btrieve operation.
+- No rollback mechanism: partial-write failures are handled by manual conditional del+save sequences.
+
 **Pop-up menu (BKAWLB.SRC + BKROA.SRC — Pass 276):**
 ```
 menu at row,col len N wdt W fld HOLDER cntr CTR nch N mcw W esc LABEL [ttl "Title"]

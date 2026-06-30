@@ -275,6 +275,41 @@ The runtime has first-class support for a report pipeline:
 `REC_LOCK` (opcode 7992 — acquire exclusive record lock), `UNLOCK` (opcode 7813),
 `DUPCHECK`, `IFDUPCB`, `DELETED`, `CBDELETED`.
 
+#### Transaction model — no BEGIN/COMMIT/ROLLBACK
+
+TAS Pro 7 has **no explicit transaction keywords**. `BEGIN_TRAN`, `COMMIT`, and
+`ROLLBACK` do not exist in the runtime. The entire keyword list (187 entries in
+`tp7runtime.keywords.txt`) contains only three data-consistency keywords:
+`REC_LOCK`, `UNLOCK`, `LOCK_OWNER`. Data integrity is handled by:
+
+1. **Btrieve record-level locking** — `open TABLE lock R` (exclusive open) or
+   `find G nlock` (shared read); Btrieve's native optimistic/pessimistic concurrency.
+2. **Application-level sequencing** — programs save/write records one at a time in
+   dependency order; no atomic multi-table writes.
+3. **No rollback** — if a multi-step write fails midway, the program must explicitly
+   reverse any prior writes. EVO programs handle this with conditional `del` + `save`
+   sequences, not a transaction log.
+
+This is the inherited Btrieve model: each Btrieve record operation (save/delete) is
+its own atomic unit. Multi-record operations are not atomic at the database layer.
+
+#### WHOAMI — workstation identity (opcode 7965)
+
+`WHOAMI` is a **built-in TAS Pro 7 keyword** (not a Btrieve table). It reads/writes
+the workstation identity file `C:\ISTS\WHOAMI.DBA`. Zero programs in the 1,122-RWN
+corpus open a Btrieve table named `WHOAMI` — all workstation-identity access goes
+through the keyword.
+
+Key behaviors confirmed:
+- `WHOAMI` variable holds the current workstation/user identity string.
+- `WHOAMIFULL` — extended identity (full name or domain\user form).
+- `WHOAMI.EXTRA` — additional workstation metadata field (used in J7* custom programs).
+- `REWHOAMI` / `REWHOAMIFULL` — re-read the identity (refresh from WHOAMI.DBA).
+- 161 programs reference `WHOAMI` as a named variable; EVOERPMENU + suwin6t are
+  the primary identity-consumers (session init + screen-lock guard).
+- `WHOAMI.DBA` at `C:\ISTS\` is 2 bytes (0x0D 0x0A = empty/reset) when no session
+  is active. The runtime writes the active identity on login and clears it on logout.
+
 ### Integration / system keywords
 
 `OLECALL` (COM/OLE), `SQLCALL`, `MYSQL_QUERY`, `GET_WEBSOURCE` (HTTP
