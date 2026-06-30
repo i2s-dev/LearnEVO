@@ -706,12 +706,144 @@ operative report library even for modern T7 programs.
 
 ---
 
+---
+
+## Systematic DataField extraction — all 2610 RTM files (Pass 406, 2026-06-30)
+
+Source: `samples/rtm_fields.csv` — produced by `scripts/extract_rtm_fields.py`.
+
+### Extraction summary
+
+| Metric | Value |
+|--------|-------|
+| RTM files processed | 2610 |
+| Files with at least one DataField | 1302 (50%) |
+| Total DataField rows | 118,432 |
+| Unique DataField values | 8,574 |
+| Files with FileName (sub-report links) | 0 |
+
+The 2610 count includes both `*.RTM` and `*.rtm` globs across the share root; the 1302 with DataField means roughly half the files are layout-only (no bound data fields — shared library templates, headers/footers, cfg.rtm, etc.).
+
+### DataField naming patterns
+
+| Pattern | Row count | Example |
+|---------|-----------|---------|
+| `TABLE.FIELD` / `TABLE.SUB.FIELD` (standard DDF) | 45,870 | `BKAR.INV.INVDTE`, `BKAP.CHK.INVNUM` |
+| Computed/staged variables (no strict DB pattern) | 69,350 | `from.date`, `tot.amt`, `prt.addr1`, `CHK_DATE` |
+| `ARRAY[n]` bracket subscript | 1,716 | `ABAL[1]`, `MTIC.PROD.RCOST[6]` |
+| Single-char alias (e.g. `A.FIELD`) | 1,394 | `A.BOQ`, `A.EMPNUM` |
+| `{n}` display-width suffix | 100 | `AC.DET.ACTCOST{10}` |
+| Leading-dot prefix | 2 | `.BK.DESC.NOTES` |
+
+**Key insight:** 59% of all DataField values are computed/staged variables rather than direct DDF column names. These are TAS program variables filled by `OUTPUT_REPORT_DATA` and carry no inherent table structure — they carry report-specific names like `from.*`, `thru.*`, `tot.*`, `prt.*`, `sub.*`, `cal.*`.
+
+### Top table/alias prefixes by row count
+
+| Prefix | Rows | Module | Notes |
+|--------|------|--------|-------|
+| `BKAR` | 11,734 | AR | Accounts Receivable — most-reported module |
+| `CUST` | 5,518 | AR/SO | Customer address staging (computed) |
+| `BKSY` | 4,476 | SY | System/configuration (often `BKSY.AP.ENDDESC`) |
+| `BKAP` | 2,660 | AP | Accounts Payable |
+| `from` | 2,498 | * | Date/code range parameter — lower bound |
+| `thru` | 2,488 | * | Date/code range parameter — upper bound |
+| `bksa` | 2,464 | SA | Sales Analysis (lowercase alias) |
+| `PTD` | 2,310 | * | Period-to-date staging arrays |
+| `IS` | 2,008 | IN/SY | Inventory Summary staging |
+| `bkic` | 1,866 | IC | Inventory Control (lowercase alias) |
+| `prt` | 1,684 | * | Print staging fields (378 unique) |
+| `MTWO` | 1,650 | WO | Manufacturing Work Orders |
+| `tot` | 1,588 | * | Running total staging (372 unique) |
+
+### Key table field inventories (confirmed from RTM bindings)
+
+#### BKAR — Accounts Receivable (158 unique DataField values)
+
+Customer master fields: `CUSTCODE`, `CUSTNAME`, `ADD1`, `ADD2`, `CITY`, `STATE`, `ZIP`,
+`COUNTRY`, `TELEPHONE`, `FAX.PHONE`, `EMAIL`, `CONTACT`, `CLASS`, `TERMS.NUM`, `SLSP.NUM`,
+`SHIPVIA`, `TERRITORY`, `SIC.CODE`, `CREDITLMT`, `LEAD.SRC`, `PRICE.MAT`, `STATEMENT`,
+`LASTPMT`, `LASTSALE`, `START.DATE`, `TXN.CODE`, `TXN.LOT`, `TXN.SERIAL`, `IS.MCCODE`
+
+Invoice header (`.INV.*`): `NUM`, `INVDTE`, `ORDDTE`, `SHIPDT`, `SHIPPR`, `SONUM`, `CUSORD`,
+`DESC`, `SLSP`, `SLSP2`, `TERMD`, `TOTAL`, `SUBTOT`, `TAXAMT`, `TAXABL`, `FRGHT`, `COGS`,
+`LOC`, `FOB`, `RTS`, `ENTBY`, `ISCUR`, `TRACK`, `CHKNUM`, `BILCOD`, `BILNME`, `BILZIP`,
+`SHPNME`, `SHPA1`, `SHPCOD`, `SHPCTY`, `SHPST`, `SHPZIP`, `SHPVIA`, `CUSATT`, `COMMPR`,
+`JOBNUM`
+
+Invoice line (`.INVL.*`): `INVNM`, `PCODE`, `PDESC`, `PQTY`, `PPRCE`, `PEXT`, `PDISC`,
+`COGS`, `PCOGS`, `UBO`, `USTD`, `UM.LN`, `LOC`, `RTS`, `CNTR`, `ARD`, `ASD`, `ESD`,
+`COMPR`, `OOQTY`
+
+Invoice transaction (`.INVT.*`): `CODE`, `DATE`, `DESC`, `NUM`, `AMT`, `AMTRM`
+
+#### BKAP — Accounts Payable (93 unique DataField values)
+
+Vendor master: `VENDCODE`, `VENDNAME`, `CONTACT`, `TERMS.NUM`, `LASTPMT`, `LASTPURCH`,
+`PURCH.LYR`, `PURCH.MTD`, `PURCH.YTD`, `PURCH.VAR`, `CUST.CODE`, `IS.MCCODE`
+
+PO header (`.PO.*`): `NUM`, `VNDCOD`, `VNDNME`, `ORDDTE`, `TERMD`, `TOTAL`, `FOB`,
+`SHPVIA`, `SHPNME`, `SHPA1`, `SHPA2`, `SHPCTY`, `SHPST`, `SHPZIP`, `TAXABLE`, `TAXAMT`,
+`DESC`, `EMPNUM`, `ENTBY`, `PCKSLP`, `OBYCUS`, `CONFIRM`, `ISCUR`, `ISREV`, `ISRVDT`
+
+PO line (`.POL.*`): `PONM`, `PCODE`, `PDESC`, `PQTY`, `PPRCE`, `PEXT`, `RQTY`, `IQTY`,
+`ARD`, `ESD`, `ERD`, `OPER`, `CNTR`, `OO.PPRCE`, `OO.PQTY`, `OO.QTY`, `QC.QTY`,
+`QC_QTY`, `WOPRE`, `WOSUF`
+
+AP check (`.CHK.*`): `NUM`, `INVNUM`, `INVDTE`, `INVAMT`, `AMTPD`, `DISC`, `CHKDTE`,
+`VNDCOD`, `DESC`, `ISCUR`
+
+AP transaction (`.INVT.*`): `CODE`, `DATE`, `DESC`, `NUM`, `MCCOD`
+
+#### MTWO — Work Orders (43 unique DataField values)
+
+WIP header (`.WIP.*`): `CODE`, `DESC`, `DESCII`, `WOPRE`, `WOSUF`, `STATUS`, `SQTY`,
+`COMQTY`, `SSTART`, `SFIN`, `DDATE`, `ASTART`, `AFIN`, `PRTY`, `LOC`, `SONUM`, `CUSORD`,
+`PPRCE`, `ETOT`, `CHGORD`, `PROJ`, `CONTAT`, `USERCD`
+
+Customer link: `CUSTCODE`, `CUSTNAME`, `PRODCODE`
+
+#### MTIC — IC Product Master (54 unique DataField values)
+
+Product master (`.PROD.*`): `CODE`, `DESC`, `CLDES`, `TYPE`, `LOC`, `CUST`, `CUSNM`,
+`ACTIV`, `UOA`, `AVAIL`, `CYCLE`, `LEAD`, `DRAW`, `REV`, `WT`, `CUBFT`, `STDPK`,
+`MRPSW`, `MRP`, `WIPDP`, `LONGP`, `EXPBF`, `DELBF`, `VEND`
+
+Array fields: `RCOST[2]`, `RCOST[6]`, `RCOST[13]` — rolling cost elements;
+`SPECS[1..5]` — specification strings; `SUBST[1]`, `SUBST[3]` — substitute parts
+
+#### Computed staging namespaces (report-specific)
+
+| Namespace | Unique values | Role |
+|-----------|--------------|------|
+| `prt.*` | 378 | Print staging: formatted/computed values ready for output |
+| `tot.*` | 372 | Running totals (subtotals, grand totals, accumulators) |
+| `from.*` | 101 | Report range parameters — lower bound (date, code, class) |
+| `thru.*` | 101 | Report range parameters — upper bound (mirrors `from.*`) |
+| `sub.*` | 122 | Sub-totals per group |
+| `IS.*` | 88 | Inventory Summary staging (formatted IS values) |
+| `bkpr.*` | 259 | Payroll staging fields (lowercase — alias or computed) |
+| `bksa.*` | 56 | Sales Analysis monthly period values (`bksa.from1..12`) |
+| `cal.*` | — | Calculated period values (current year) |
+| `ncal.*` | — | Next/prior-year calculated period values |
+| `pcal.*` | — | Prior-year calculated period values |
+| `PTD.ARRAY[n]` | 3 | Period-to-date array (current, prior, variance) |
+
+**`from.*` / `thru.*` pattern:** 101 unique range parameters confirm EvoERP reports have a standardized set of filter parameters (date ranges, part ranges, customer ranges, location codes, etc.) that TAS programs fill from user input before the report loop.
+
+**`bksa.from1..12`:** Sales Analysis monthly sales amounts for months 1–12 of the fiscal year pushed one record per customer to the SA report pipeline.
+
+### Summary update to "Things still open"
+
+The systematic extraction resolves the "full programmatic extraction" open item. The remaining gaps are:
+- FILELOC schema and live data mapping (which logical names resolve to which RTM filenames)
+- RTMVLD_ library internals (blocked — embedded in encrypted .RWN)
+- Physical location of `cfg.rtm` (requires identifying what `T:\` maps to on a live workstation)
+
 ## Things still open
 
 - Physical location of `cfg.rtm` — `T:\cfg.rtm` is the inferred path via drive mapping; UNC path
   unknown. Would need to identify what share `T:\` maps to on a running workstation.
 - Multi-currency report parameter passing (T7MLC uses LANGDICT).
-- Full programmatic extraction of all 403 RTM field bindings (manual for 2 samples done above).
 - FILELOC schema (fields/keys) — Btrieve-only, not in DDF; needs runtime dump or hex analysis.
-- RTMVLD_ library source — embedded in EVO.LIB or a separate subroutine file.
+- RTMVLD_ library source — embedded in EVO.LIB or a separate subroutine file (blocked — .RWN encrypted).
 - Mapping of FILELOC logical config names to RTM filenames (requires reading live FILELOC.B data).
