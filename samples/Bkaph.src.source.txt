@@ -1,1 +1,3 @@
-//i2s109-solidcrm/DBAMFG$/Bkaph.src
+\i2s109-solidcrm\DBAMFG$\Bkaph.src
+Copied 2026-06-30 Pass 393
+AP-H: Print AP Checks (dot matrix format) -- TAS Pro 5/6 era, DBA Software 1992-1999

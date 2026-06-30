@@ -702,6 +702,47 @@ No `find R` statement was found in any of the 7 SRC files. `lock R` (read-lock o
 is confirmed. The `find` modes in use are: F, N, G, M, L, P only.
 Type `R` variable usage is exclusively with the `rcn` (record cursor) statement, not `find`.
 
+### Print / reporting commands (Pass 393 — from BKAPH.SRC)
+
+Confirmed from `BKAPH.SRC` and `BKAPHA.SRC` (AP check printing — TAS Pro 5/6 era):
+
+- **`format VALUE recv ALPHAVAR NOCMA NOFD`** — convert a number to formatted alpha text.
+  `NOCMA` = suppress thousands commas; `NOFD` = suppress fractional digits. Used to render
+  check amounts as words (e.g., `format TOT.RAMT recv DOLLAR.ALPHA NOCMA NOFD` → "00123 45").
+- **`pfmt N`** — select print format slot N (sets column layout / line spacing for the printer).
+- **`pvert N`** — advance N lines on the printer.
+- **`ptof`** — advance to top-of-form (form feed to next physical check/page).
+- **`pchr 'CMD'`** — emit a printer control sequence by name (`'pcmp'`=form advance, `'preg'`=regular-print resume).
+- **`pset wdt N`** — set print width to N characters.
+- **`pon S`** — redirect print output to screen (`S` = screen).
+
+### File open modes — `lock f` (Pass 393)
+
+TAS Pro supports a **full file lock** mode in addition to record-level locking:
+```
+open BKAPCHKF lock f err LABEL
+```
+`lock f` = exclusive file-level lock. Prevents any other process from opening the file at
+all while the lock is held. Used in AP check printing to prevent concurrent AP-E/F/G/H
+sessions from corrupting the BKAPCHKF staging file. Must be opened with `err LABEL` to
+handle the case where another session holds the lock.
+
+### Multi-currency built-in functions (Pass 393 — from BKAPH.SRC)
+
+Confirmed from BKAPH.SRC multi-currency sections:
+- **`isis_get`** — load ISIS multi-currency config into the `isis.*` variable namespace.
+  Must be called before any multi-currency operations; populates `isis.multi.curr`,
+  `isis.mcf.*`, `isis.mcr.*` etc.
+- **`isis_mcrate(DATE, CURCODE)`** — returns the exchange rate for `CURCODE` on `DATE`.
+  Used to compute amount conversions for FX gain/loss postings.
+- **`is_mc_cvt(FROMCUR, TOCUR, DATE, AMT)`** — converts `AMT` from currency `FROMCUR`
+  to `TOCUR` using the rate on `DATE`.
+- **`is_curr_ctrl("MODULE", CURCODE)`** — applies multi-currency GL account overrides for
+  the named module (e.g., `"AP"`), setting `BKGL.ACCT`/`BKGL.GLDPT` to the multi-currency
+  AP GL accounts from ISMCF.
+- **`findv M fnum HANDLE key KEY val VALUE`** — seek a record by value in a file opened
+  by handle. `findv` variant of `find` for variable-handle files.
+
 ## Things still to verify
 
 - How `#INC HELPSCRN` is resolved — `HELPSCRN.INC` or equivalent not found on share.

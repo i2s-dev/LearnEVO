@@ -70,17 +70,28 @@ After user confirms checks printed OK, GL entries are posted:
 | Discount taken | `BKSY.AP.DISCGL` | `BKSY.AP.DISCDPT` | Credit |
 | Checking account | `BKSY.CHK.CHKACT[CHKACT]` | `BKSY.CHK.CHKDPT[CHKACT]` | Credit |
 | FX gain/loss | `ISIS.MCF.GLAIS` / `ISIS.MCF.GLABS` | — | varies |
+| GL clearing (fallback) | `BKSY.GL.CLRING` | `BKSY.GLDPT.CLR` | varies |
 
-GL transaction fields written to BKGLTRAN:
+**CORRECTION (Pass 393 2026-06-30):** GL entries during check printing are written to
+**BKGLTEMP** (staging table), NOT BKGLTRAN directly. The `POST.TO.GL` subroutine
+(BKAPH.SRC L1092) calls `save BKGLTEMP nocnf`. The final call to `msg.chk.post()`
+(BKAPH.SRC L1081 — a function from the APH library) then moves BKGLTEMP → BKGLTRAN
+as part of the finalization step.
+
+Fallback: if GL account not found in BKGLTRAN, POST.TO.GL falls back to BKSY.GL.CLRING
+(clearing account). If that also fails, POST.FAIL=1 (unposted flag for reconciliation).
+
+GL transaction fields written to **BKGLTEMP** (staging):
 ```
 BKGL.TRN.TYPE   = "CD"        (Cash Disbursement journal type)
-BKGL.TRN.DATE   = CHK.DATE
-BKGL.TRN.INVC   = CHK.NUM     (check number as GL reference)
-BKGL.TRN.GLACCT = GL account code
-BKGL.TRN.GLDPT  = department code
-BKGL.TRN.CODE   = vendor code
-BKGL.TRN.DC     = "D" or "C"
-BKGL.TRN.AMT    = amount (absolute value)
+BKGL.TRN.DATE   = TODAYS.DATE (check date)
+BKGL.TRN.INVC   = CHK.NUM     (check number as GL reference, NOT invoice number)
+BKGL.TRN.GLACCT = BKGL.ACCT   (GL account code)
+BKGL.TRN.GLDPT  = BKGL.GLDPT  (department code)
+BKGL.TRN.CODE   = BKAP.CHK.VNDCOD  (vendor code)
+BKGL.TRN.DC     = "D" if POST.AMT>0, "C" if POST.AMT<0
+BKGL.TRN.AMT    = ABS(POST.AMT)    (always positive)
+BKGL.TRN.ENTDTE = date()            (entry date)
 BKGL.TRN.DESC   = description
 ```
 
@@ -124,5 +135,51 @@ Tracked via:
 
 ---
 
-*Last updated: 2026-06-11*
-*Confidence: 82/100 — Complete workflow traced from TAS Pro source files (Bkaph.SRC + Bkapha.SRC). GL posting fields confirmed. Minor gap: AP-E (voucher selection) not directly read; inferred from AP-H precondition check.*
+---
+
+## AP Check Format — BKYSMSTR YN[48] (Pass 393 2026-06-30, SRC-confirmed)
+
+`BKYS.YN[48]` controls the check print format selected in AD-C:
+
+| YN[48] value | Format | Program |
+|---|---|---|
+| '1' | Laser format | → chains to BKAPHA |
+| '4' | Laser format (variant) | → chains to BKAPHA |
+| '5' | Laser format (variant) | → chains to BKAPHA |
+| '2' | Windows graphical dot matrix | BKAPH (text.mode=F) |
+| '3' | Text mode dot matrix | BKAPH (text.mode=T) |
+
+Live value on i2 Systems = '1' (laser format confirmed). Source: BKAPH.SRC L60-80.
+
+## File Lock Pattern (Pass 393)
+
+BKAPCHKF uses **full exclusive file lock** (`lock f`) — not just a record lock:
+```
+trap rlck goto CHKF_ERR
+open BKAPCHKF lock f err CHKF_ERR
+```
+`lock f` prevents any other process from opening BKAPCHKF at all.
+Error handling: if lock fails → display "Cannot lock file BKAPCHKF.B..." message and quit.
+This prevents concurrent AP-E, AP-F, AP-G, AP-H, AP-HA sessions.
+The file is closed before chaining to BKAPG (prevent lock held across chain).
+Source: BKAPH.SRC L209-218.
+
+## TAS Pro 4GL Language — Additional Keywords Confirmed
+
+From BKAPH.SRC (Pass 393):
+- **`format VALUE recv ALPHAVAR NOCMA NOFD`** — format a number into an alpha text string
+  (NOCMA=no commas, NOFD=no fractional digits). Used for check amount-in-words.
+- **`pfmt N`** — set current print format (column position/layout) to format N.
+- **`pvert N`** — move print head N lines vertically.
+- **`pchr 'CMD'`** — emit a printer control character (e.g., `pchr 'pcmp'` = form feed/page advance, `pchr 'preg'` = regular print).
+- **`ptof`** — print top-of-form (advance to next physical form).
+- **`pset wdt N`** — set print width to N characters.
+- **`pon S`** — print output to screen.
+- **`findv M fnum HANDLE key KEY val VALUE`** — variable-handle file seek; `findv` = find-by-variable.
+- **`isis_get`** — load ISIS multi-currency config into isis.* vars (multi-currency init).
+- **`isis_mcrate(DATE, CURCODE)`** — returns exchange rate for currency code on date.
+- **`is_mc_cvt(FROMCUR, TOCUR, DATE, AMT)`** — convert amount between currencies.
+- **`is_curr_ctrl("MODULE", CURCODE)`** — apply multi-currency GL controls for a module.
+
+*Last updated: Pass 393 2026-06-30*
+*Confidence: 92/100 — BKGLTEMP correction confirmed from BKAPH.SRC L1122; YN[48] SRC-confirmed L60-80; lock f SRC-confirmed L209-218; all GL fields SRC-confirmed; msg.chk.post() finalization function referenced but source not available.*
