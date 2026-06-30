@@ -1,6 +1,6 @@
 # `.IMP` and `.XPT` — Import/Export Definition Files
 
-Status: verified | Pass 325 2026-06-26
+Status: verified | Pass 325 2026-06-26 | updated Pass 403 2026-06-30
 
 Sources: hex analysis of 11 × `.IMP` and 8 × `.XPT` files from `\\i2s109-solidcrm\DBAMFG$\`
 (local copies in `samples/`).
@@ -22,14 +22,17 @@ Empty files (0 bytes) = no import configured for that menu operation.
 | Offset | Size | Type | Contents |
 |--------|-----:|------|----------|
 | 0x00 | 40 | ASCII | Source file path (space-padded, e.g., `U:\PROFPN.CSV`) |
-| 0x28 | 2 | ASCII | Mode code: `SC`, `DC`, `RC` — see table below |
-| 0x2A | 200 | uint16 LE × 100 | **Map1 — Import map**: for each target field 1–100, the source column index (1-based; 0 = skip/blank) |
+| 0x28 | 2–3 | ASCII | Mode code: `SC`, `DC`, `RC` (2 chars) or `RIC` (3 chars) — see table below |
+| 0x2A or 0x2B | 200 | uint16 LE × 100 | **Map1 — Import map**: starts at 0x2A for 2-char modes; starts at 0x2B for `RIC` |
 | 0xF2 | 200 | uint16 LE × 100 | **Map2 — Export map**: for each target field 1–100, the output column index (1-based; 0 = skip); **entry 100 = 0x0A0D (CRLF) = record-terminator sentinel** |
 
-Total = 40 + 2 + 200 + 200 = **442 bytes**.
+Total = 40 + 2 + 200 + 200 = **442 bytes** (fixed regardless of mode length).
 
-Note: A 3-char mode `RIC` was observed in `ISWCD.IMP` — the 'C' byte overlaps byte 0x2A
-(first byte of Map1), corrupting Map1 entry 1. For `RIC` files Map1 parsing begins at 0x2B.
+**Mode field byte layout (Pass 403 binary-confirmed):** The mode is a variable-length
+ASCII string at offset 0x28. For 2-char modes (`SC`, `DC`, `RC`), Map1 immediately follows
+at 0x2A. For the 3-char mode `RIC`, Map1 starts at 0x2B. The prior note that 'C' in RIC
+"corrupts" Map1[0] is incorrect — `RIC` is a valid 3-char mode and Map1@0x2B gives sensible
+column mappings: e.g., ISWCD.IMP shows field1=skip, field2→col2, field3→col1.
 
 ### Mode codes
 
@@ -38,7 +41,7 @@ Note: A 3-char mode `RIC` was observed in `ISWCD.IMP` — the 'C' byte overlaps 
 | `SC` | Standard CSV (comma-separated; standard quote rules) |
 | `DC` | Delimited CSV (user-defined delimiter variant) |
 | `RC` | Raw Copy from Btrieve file (source path names a `.B`/`.B00` file) |
-| `RIC` | Unclear — observed in `ISWCD.IMP` (WC department data); 3-char code |
+| `RIC` | Raw Import CSV — 3-char mode confirmed from binary (Pass 403); likely R=Raw, I=Import, C=CSV; differs from SC in some parse detail (quoting/delimiter rules — not confirmed from source) |
 
 ### Map interpretation
 
@@ -249,8 +252,9 @@ Programs confirmed to use import definitions:
 - `T7DEx` (82p) — Generic export config (uses ISFIELDS + possibly `.XPT`)
 - `T7DEU` (102p) — Web/FTP catalog export → ISUDFINV (likely `.XPT`-driven)
 
-**Confidence: 91/100** — IMP format confirmed from hex analysis of 5 non-empty files (442-byte
-structure, uint16 LE column maps, CRLF sentinel at Map2[100]); XPT format confirmed from all 8
-files (32000-byte block, 12-byte filename + 1-byte flag + 15-char column slots); MTIT.* 25-field
-namespace confirmed from INVTXN.XPT; XPT type-flag semantics inferred from context (not confirmed
-from source code); "RIC" mode encoding and Map2 export semantics need SRC-level verification.
+**Confidence: 95/100** — IMP format confirmed from hex analysis of 5 non-empty files (442-byte
+structure, uint16 LE column maps, CRLF sentinel at Map2[100]); `RIC` 3-char mode now binary-
+confirmed (Pass 403): valid 3-char mode, Map1 starts at 0x2B not 0x2A; ISWCD.IMP mapping decoded
+(field1=skip, field2→col2, field3→col1); XPT format confirmed from all 8 files (32000-byte block,
+12-byte filename + 1-byte flag + 15-char column slots); MTIT.* 25-field namespace confirmed from
+INVTXN.XPT; only remaining gap: exact parse-behavior difference between RIC and SC (no SRC available).

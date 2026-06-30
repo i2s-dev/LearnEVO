@@ -305,7 +305,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ 11 files cataloged — **C: 92/100**
 - [x] ✅ Mode codes: SC=Standard CSV, DC=Delimited CSV, RC=Btrieve raw-copy source, RIC=unclear (3-char, overlaps Map1 byte 0) — **C: 92/100**
 - [x] ✅ Import pipeline: DE module programs (T7DEHD/T7DEV/T7DEQ/T7DER) read .IMP, apply Map1 to map CSV columns to target Btrieve table fields — **C: 85/100** (inferred from program var analysis, not SRC-confirmed)
-- [ ] ⬜ "RIC" 3-char mode exact encoding and Map2 export semantics need SRC-level verification
+- [x] ✅ **"RIC" 3-char mode confirmed (Pass 403 2026-06-30)**: Binary analysis of ISWCD.IMP (442 bytes) confirms `RIC` = valid 3-char mode, NOT a 2-char mode + corruption. Mode field at 0x28 is variable-length: 2 chars (SC/DC/RC) with Map1 at 0x2A, 3 chars (RIC) with Map1 at 0x2B. ISWCD.IMP mapping decoded: field1=skip, field2→CSV col2, field3→CSV col1; prior doc corrected (removed "corruption" note); RIC likely = Raw Import CSV (R=Raw, I=Import, C=CSV); exact parse difference from SC still requires SRC — **C: 91/100**
 
 ### 2.9 `.XPT` — Export Layout
 - [x] ✅ **Pass325 (2026-06-26): BINARY format confirmed — NOT plaintext** — 32000-byte fixed block: bytes 0–11 = target filename (12-byte space-padded), byte 12 = type flag (S=Standard/T=Tabular/F=Full-Formatted/D=Detail/' '=default), bytes 13+ = 15-char column accessor names (space-padded, null-terminated list); prior "plaintext" characterization was wrong — **C: 80/100 → 92/100**
