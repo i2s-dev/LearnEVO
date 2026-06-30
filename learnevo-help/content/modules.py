@@ -1803,24 +1803,47 @@ RM-G  Reason Codes Report (t7rmg.rwn)
 "SU": """
 ## What it does
 
-Query & Report Setup — configures the interactive query and drill-down
-infrastructure used by the [[module-QU|QU]] Queries & Reports module. Admins
-use SU to build grid layouts, drill-down menu trees, and maintain the forms
-editor for custom screen layouts.
+Query & Report Setup — the administration module for configuring the
+interactive query and reporting infrastructure used by [[module-QU|QU]].
+SU is for **system administrators**, not end users. It defines grid column
+layouts, drill-down menu trees, and provides access to the forms/report editor.
 
 ## Menu operations
 
-| Code | Operation | Program |
-|------|-----------|---------|
-| SU-A | Maintain Grid Lookups | wbklugrid.rwn |
-| SU-B | Maintain Drill Down Menus | evoerpdrillm.rwn |
-| SU-C | Forms Editor | reports.int |
-| SU-D | Grid Maintenance | t7gdm.rwn |
+| Code | Operation | Program | Notes |
+|------|-----------|---------|-------|
+| SU-A | Maintain Grid Lookups | `wbklugrid.rwn` | Edit WBKLUGRID.DCY — defines columns, field bindings, keys for all grid views |
+| SU-B | Maintain Drill Down Menus | `evoerpdrillm.rwn` | Configure drill-down menu trees (context menus on browse grids) |
+| SU-C | Forms Editor | `reports.int` | Launches ReportBuilder designer (`RBDsgnr.exe`) for editing `.RTM` report templates |
+| SU-D | Grid Maintenance | `t7gdm.rwn` | Low-level grid column/layout maintenance |
+
+## Key concepts
+
+**Grid lookups (SU-A / WBKLUGRID.DCY):**
+The grid lookup system is defined in `WBKLUGRID.DCY` — a DCY file with a
+non-standard format encoding column headers, field names, totals flags, and
+external UDF procedure calls per grid. There are dozens of grid definitions
+covering every browse screen in EVO (SO browse, PO browse, WO browse, etc.).
+When users click a column header to sort, the WBKLUGRID definition drives the
+available sort keys.
+
+**Drill-down menus (SU-B / evoerpdrillm.rwn):**
+ISDRILLM (drill-down menu table) stores context-menu definitions. When a user
+right-clicks on a grid row, the drill-down menu shows related operations (e.g.,
+right-click on a SO → "View Invoice", "Open WO", "Print Packing Slip"). SU-B
+allows administrators to add, remove, or modify these context actions.
+
+**Forms editor (SU-C):**
+`reports.int` is an internal TAS Pro integration that launches `RBDsgnr.exe`
+(Nevrona ReportBuilder) for editing report templates. This is the user-facing
+equivalent of directly opening `EVOReports/*.RTM` files in the designer.
 
 ## Integration
 
-- **[[module-QU|QU]]** — SU-A configures the grid layouts that QU-E (Quick Grid Lookup) uses
-- **[[module-RT|RT]]** — SU-C (Forms Editor = reports.int) is the ReportBuilder designer entry point
+- **[[module-QU|QU]]** — QU-E (Quick Grid Lookup) and QU-A (Master Inquiry)
+  use grid layouts defined in SU-A
+- **[[module-RT|RT]]** — SU-C is the EVO menu entry for the ReportBuilder designer
+- **[[module-SM|SM]]** — SM has some overlap with SU for system-level configuration
 """,
 
 "UT": """
@@ -2717,6 +2740,145 @@ definition table) per-user.
 
 - **[[module-SM|SM]]** — SM-K is the same as US-A (Evo User Settings, T7SMK.RWN)
 - **[[module-SY|SY]]** — SY-A manages security levels and module access; US manages personal prefs
+""",
+
+"TAS": """
+## What it does
+
+TAS (System Configuration) — the EVO system diagnostics and data-dictionary
+integrity group, listed under "System Mgr" in the EVO menu.
+
+There is currently only one item in this group:
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| TAS-S | Data Dictionary Check | T7DDCHECK.RWN |
+
+## TAS-S Data Dictionary Check
+
+`T7DDCHECK.RWN` scans the Pervasive PSQL DDF (Data Dictionary Files) and
+verifies that every table listed in the DDF still exists on disk and that
+all declared fields are present and sized correctly. Reports discrepancies
+between the DDF schema and the physical `.B` files.
+
+This is typically run after an EVO update or after a database recovery to
+verify schema integrity before resuming production.
+
+## Integration
+
+- **[[module-TA|TA]]** — TA-A/B rebuild indexes; TAS-S checks schema validity
+- **[[module-SM|SM]]** — SM tools also cover table maintenance
+""",
+
+"LI": """
+## What it does
+
+License / Module Access — controls which EVO modules are enabled for this
+installation and provides field-level access restriction for licensed features.
+
+`LI` is accessed via `T7LIMACC.RWN` (42 procedures, NZLICE.LIB library).
+
+## What LI manages
+
+**Module licensing gates** (ISTS.CFG flags read from BKYSMSTR):
+EVO is modular — features like RMA, Features/Options, EDI, DC Barcoding, and
+lot/serial control are separately licensed. `ISTS.CFG.*` flags in BKYSMSTR
+(YN[102]–YN[143], one per BKMENUSU GROUP) control which modules are active.
+
+T7LIMACC reads these flags at startup and selectively enables/disables menu
+items and form fields depending on what is licensed.
+
+**Field-level access control** (ISACCESS table):
+Beyond module-level gating, LI provides per-form, per-field access restriction.
+Each object in a DFM form can be marked as view-only, hidden, or restricted to
+specific security levels. ISACCESS (8 fields: NAME/OBJ/OBJTYPE/DFM/FIELD/STATUS/TEXT/EXTRA)
+stores these per-field restrictions.
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `ISACCESS` | 8 | Per-DFM/per-field access restriction records |
+| `BKSYHELP` | 1 | Help message text for restricted fields |
+| `DBAHLPID` | 2 | Help ID cross-reference |
+| `MKAHIST` | 9 | Activity history — access-grant events logged here |
+
+## How field access works
+
+```
+T7LIMACC scans DFM form file
+  → reads TAS form component names + captions
+  → matches each to ISACCESS by form name + object name
+  → applies STATUS restriction per field:
+      0 = no restriction
+      1 = view-only (gray out)
+      2 = hidden
+      3 = security-level restricted
+```
+
+## System configuration center
+
+T7LIMACC also doubles as the **global EVO system configuration center** —
+it reads and writes all ISTS.CFG.* flags (hundreds of behavior flags from
+BKYSMSTR), EVO.CFG.* user preferences, EMAIL.CFG.* SMTP settings, and the
+6 HOTBUTTON toolbar shortcuts. This makes it the primary tool for system
+administrators configuring EVO behavior across all modules.
+
+## Integration
+
+- **[[module-PS|PS]]** — PS manages user-level security levels; LI manages
+  field-level access and module licensing on top of security levels
+- **[[module-SD|SD]]** — SD is the user-facing System Defaults; LI is the
+  internal implementation of the config system behind it
+""",
+
+"MK": """
+## What it does
+
+Marketing / Activity Tracking — the CRM activity engine underlying EVO.
+The MK module manages marketing campaigns, activity events, follow-up
+tracks, and form templates for customer/prospect engagement.
+
+MK is NOT a user-visible top-level menu group — its programs are invoked
+from within CM (Contact Master) and other modules. However, MK tables appear
+in virtually every EVO module because `MKAHIST` (activity history) serves as
+a universal audit log across the entire system: 158+ programs write to MKAHIST
+for event logging.
+
+## Key tables (11 total)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `MKDEF` | 11 | Module config: ECNEXTID/ENEXTID/FNEXTID/TNEXTID auto-counters |
+| `MKEVENT` | 12 | Event/activity type: class, description, form template, media |
+| `MKECLASS` | 3 | Event classification codes |
+| `MKICLASS` | 3 | Inbound activity classification codes |
+| `MKTRACK` | 4 | Campaign/track definitions: NUM/CLASS/DESC/ACTIVE |
+| `MKTCLASS` | 3 | Track classification codes |
+| `MKTROUT` | 11 | Track routing: SEQ/EVENT/DAYSNXT/NEXTSEQ/JUMP/FIXED/PRICECD |
+| `MKFORM` | 6 | Form templates: NUM/DESC/FILE/ATT/ACTIVE |
+| `MKASSIGN` | 6 | Activity assignments: ACCT/NXTDAT/NXTSEQ/PRCODE |
+| `MKTNOTE` | 3 | Track notes: TRACK/LINE/TEXT |
+| `MKAHIST` | 9 | Activity history: ACCT/DATE/EVENT/FORM/TRACK/SEQ/MEDIA/REM1/REM2 |
+
+## How it works
+
+A **track** (MKTRACK) is a campaign sequence — a series of timed contact
+events (MKTROUT) with defined intervals and next steps. Accounts (customers,
+prospects) are **assigned** to tracks (MKASSIGN) and the track scheduler
+advances them through events automatically.
+
+Each completed event is logged to `MKAHIST` — which is why MKAHIST appears
+in 158+ programs across all EVO modules as the universal activity audit trail.
+The GL bank reconciliation (T7GLJ) also opens MKTRACK, confirming the marketing
+engine is wired into non-CRM modules.
+
+## Integration
+
+- **[[module-CM|CM]]** — Contact Master uses MK for campaign management and
+  follow-up scheduling; BKCM* tables link to MKTRACK via the activity framework
+- **[[module-GL|GL]]** — T7GLJ (bank reconciliation) opens MKTRACK
+- **[[module-LI|LI]]** — LI logs access-grant events to MKAHIST (audit trail)
 """,
 
 "YS": """
