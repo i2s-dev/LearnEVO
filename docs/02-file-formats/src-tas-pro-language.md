@@ -193,10 +193,13 @@ Module letter codes in the middle of the name:
 
 ### Compiler pragmas observed in the runtime
 `#TDATA` (set total data segment size) · `#ADD_FLDS` · `#WINFORM` (this
-program has a Windows form) · `#WINREPORT` · `#FORMSENCRYPTED` (form
-file is encrypted) · `#FORCERWN` (must run as RWN, not RUN) ·
-`#MAINMENU` · `#ALL_LOC` · `#DONTCOMPILE` · `#UDX`, `#LIB`, `#INC`,
-`#PRO3`, `#TDATA`.
+program has a Windows form — compile-time pragma; maps to `@Specline@mount_winform`
+internally; **not found in any of the 2,575 EVO program string dumps**: all T7
+programs in this installation are natively Windows-form already, so `#WINFORM` is
+only needed when upgrading a T5/T6 text-mode program to T7 Windows mode) ·
+`#WINREPORT` · `#FORMSENCRYPTED` (form file is encrypted) · `#FORCERWN` (must
+run as RWN, not RUN) · `#MAINMENU` · `#ALL_LOC` · `#DONTCOMPILE` ·
+`#UDX`, `#LIB`, `#INC`, `#PRO3`, `#TDATA`.
 
 ### Control flow keywords
 `if` / `else` / `else_if` / `endif`
@@ -269,11 +272,24 @@ The runtime has first-class support for a report pipeline:
 
 ### Data-engine keywords
 
-`USECODEBASE` (switch to the CodeBase DBF engine instead of Btrieve),
+`USECODEBASE` (opcode 7975 — switch the active data engine from Btrieve to CodeBase
+DBF; **not used in any of the 2,575 EVO programs in this installation** — EVO is
+Btrieve-only; CodeBase support is a latent TAS Pro capability unused here),
 `BTRIEVE_VERSION`, `PERVASIVE_SERVER`, `LOCK_OWNER` (opcode 8032 — returns username of current record owner),
-`CREATE_DBF`, `CONVERT_TO_DBF`, `RESTRUCTURE_DBF`, `PACK_DBF`, `REINDEX_DBF`,
+`CREATE_DBF`, `CONVERT_TO_DBF`, `RESTRUCTURE_DBF`, `PACK_DBF`,
+`REINDEX_DBF` (opcode 7986 — rebuild CodeBase DBF index; function syntax:
+`REINDEX_DBF()`; runtime error if called on a non-CodeBase (Btrieve) file: "You
+cannot use the REINDEX_DBF() function for non-CodeBase files."; **not the same
+as UT-C which rebuilds Btrieve B-tree indices via T7REINDEX.RWN**),
 `REC_LOCK` (opcode 7992 — acquire exclusive record lock), `UNLOCK` (opcode 7813),
 `DUPCHECK`, `IFDUPCB`, `DELETED`, `CBDELETED`.
+
+**UT-C Re-Index** (T7REINDEX.RWN — Btrieve B-tree rebuild utility): invoked from
+the System Manager menu when Btrieve Status 2 errors or corrupted key structures
+occur. T7REINDEX.DFM type=TShellExe (wraps an external shell executable for the
+Btrieve API rebuild). **WARNING (from EvoHELP):** do not reindex while other users
+are on the system; back up the file first. This is completely separate from
+`REINDEX_DBF()` which is CodeBase-only.
 
 #### Transaction model — no BEGIN/COMMIT/ROLLBACK
 

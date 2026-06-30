@@ -2633,6 +2633,7 @@ Slots 1, 5, 8, 11–13, 15–16, 19, 22–32, 39–40 are not yet confirmed (may
 | YN[1] | Post COGS Transactions? (Y/N) | Setup |
 | YN[2] | Post Inventory Adjustments? (Y/N) | Setup |
 | YN[5] | Post WO Transactions? (Y/N) | Setup |
+| YN[20] | DC barcode entry mode — Y=set EXTRA='B' on parts-bearing labor entries (BKDCA.SRC L708, L846 SRC-confirmed) | DC |
 | YN[27] | Post PO Transactions? (Y/N) | Setup |
 | YN[33] | Invoice PO Receipts through AP | Setup |
 | YN[36] | Multiply or Divide process time by # of processes? (M/D) | Routing |
@@ -2642,7 +2643,7 @@ Slots 1, 5, 8, 11–13, 15–16, 19, 22–32, 39–40 are not yet confirmed (may
 | YN[47] | Payroll check form (1=PRD1 laser, 2=PRD2 continuous) | Checking |
 | YN[48] | AP check form (1=APHA1, 2=APH1 continuous, 4=APHA2, 5=APHA3) | Checking |
 | YN[57] | Display machine prompt in Enter Labor? | Scheduling |
-| YN[59] | Allow entry to overlap settings in routings? | Scheduling |
+| YN[59] | Allow entry to overlap settings in routings? — SRC-confirmed: BKROA.SRC L647 comment: "BKYS.YN[59] is the MD-D setting to prompt for overlap on routings"; gates MTRO.OVERLAP and MTRO.NEGOVLP fields | Scheduling |
 | YN[66] | Display long time prompt in routing? | Routing |
 | YN[67] | Include item in MRP Generation? | MRP |
 | YN[76] | SO Acknowledgment form (1=SOB1, 2=SOB2, 3=SOB3, 4=SOB4) | Printing |
@@ -2657,6 +2658,7 @@ Slots 1, 5, 8, 11–13, 15–16, 19, 22–32, 39–40 are not yet confirmed (may
 | YN[230] | AR invoice age based on (1) age or (2) days past due | Acct. Receivables |
 | YN[237] | PO & DC update actual start/finish dates of sequences? | Scheduling |
 | YN[248] | Round MRP quantities to the next whole number? | MRP |
+| YN[249] | Laser check top margin override (numeric stored as alpha; `nTopMarg = val(bkys.yn[249])`; live value='0'; BKAPHA.SRC L269 SRC-confirmed, but that line is commented out) | Checking |
 
 Full 89-entry YN mapping table in `docs/05-configuration/ists-cfg-keys.md`.
 Full 504-entry ISTS.CFG key description table in `samples/T7MDefaults_cfg_keys.csv`.
