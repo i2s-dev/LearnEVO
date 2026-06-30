@@ -966,7 +966,60 @@ mode (pricing set manually rather than cost-rolled-up).
 - **[[module-PO|PO]]** — vendor RFQ support via BKRFQ table
 """,
 
-"SR": "## What it does\n\nService / Repair — tracks in-bound service orders (customer equipment), labor, parts consumed, and warranty. Adjacent to RMA flow in SO.\n",
+"SR": """
+## What it does
+
+Service and Repair — tracks customer equipment sent in for service or repair.
+Manages the full workflow from receipt through diagnosis, parts and labor
+consumption, invoice generation, and return shipment. Adjacent to
+[[module-RM|RM]] (RMA) — a repair disposition in RM can create an SR order.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| SR-A | Enter Service/Repair | T7SRA.RWN |
+| SR-B | Print Service/Repair | T7SRB.RWN |
+| SR-C | Convert S/R to Work Order | T7SRC.RWN |
+| SR-D | Print S/R Packing Slips | T7SRD.RWN |
+| SR-E | Release Service/Repairs | T7SRE.RWN |
+| SR-F | Print S/R Invoices | T7SRF.RWN |
+| SR-G | Post S/R Invoices | T7SRG.RWN |
+| SR-H | RMA & Service & Repair Defaults | T7DSRMA.RWN |
+| SR-I | Void S/R Invoice | T7SRI.RWN |
+
+## Workflow
+
+```
+SR-A  Enter Service/Repair order
+      → captures customer, equipment, reported problem
+      → creates ISSR_INFO_* UDF record
+
+SR-C  Convert to Work Order (optional)
+      → creates WORKORD for complex repairs requiring WO routing
+
+SR-E  Release
+      → moves to billable status
+
+SR-F  Print Invoice   →   SR-G Post Invoice
+      → generates AR invoice for labor + parts
+      → posts to BKARINV
+```
+
+## Key tables (ISSR* family)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `ISSRSOMR` | — | SR order main record |
+| `ISSRINFO` | 54 | SR UDF extension (ISSR_INFO_* 54 user-defined fields) |
+| `ISRMAI` | 54 | RMA lines (shared with RM module on repair path) |
+
+## Integration
+
+- **[[module-RM|RM]]** — Repair disposition in RM creates an SR order
+- **[[module-WO|WO]]** — SR-C converts complex repairs to full WO routing
+- **[[module-AR|AR]]** — SR-G posts the service invoice to AR
+""",
 
 "PI": """
 ## What it does
@@ -1210,15 +1263,139 @@ See [[recipe-month-end-close]] and [[recipe-year-end-close]].
 - **[[module-SM|SM]]** — SM-J handles operational archive (WO, PO, QC); AM handles accounting archive
 """,
 
-"AD": "## What it does\n\nAdmin Defaults — three screens that configure module-wide defaults:\n\n- `AD-A` General Ledger Defaults\n- `AD-B` Checking Account Defaults\n- `AD-C` Accounts Payable Defaults\n- `AD-D` Accounts Receivable Defaults (actually `AR-S`)\n\nValues stored in `BKSYMSTR` / `BKYSMSTR`.\n",
+"AD": """
+## What it does
+
+Accounting Defaults — three screens that configure GL, checking accounts,
+and AP module defaults. Part of the [[module-SD|SD]] System Defaults family,
+but grouped under Accounting in the navigation bar.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| AD-A | General Ledger Defaults | T7DSGL.rwn |
+| AD-B | Checking Accounts Defaults | T7DSCK.rwn |
+| AD-C | Accounts Payable Defaults | T7DSAP.rwn |
+
+Note: `AD-D Accounts Receivable Defaults` in some older versions is the same
+as `AR-S` (AR Defaults). In this installation it is accessed via SD-P.
+
+## Key table
+
+All accounting defaults are stored in `BKSYMSTR` (286f) and `BKYSMSTR` (355f)
+— the same global singletons used by every module.
+
+## Integration
+
+- **[[module-GL|GL]]** — AD-A sets the default posting period, account numbering, and COA structure
+- **[[module-AP|AP]]** — AD-C sets terms, default vendor GL accounts, and check format
+""",
 
 # ── Modules added Pass 310 (2026-06-25) to eliminate all 45 module stubs ──
 
 "LC": "## What it does\n\nLot Control — assigns, tracks, and archives lot numbers for lot-controlled inventory items. Each lot has its own on-hand quantity, receipt date, expiration date, and cost. Full suite: `LC-A` Edit Lots, `LC-B` Assign Lot Control (per-item flag), `LC-C`/`LC-C2` Lot Listings, `LC-E` Lot Expiration, `LC-F` Lot Summary, `LC-G` Archive Lots.\n\nKey tables: `BKLCMSTR` (lot master), `BKLCLOC` (lot per-bin). See also [[module-SC|SC]] for the parallel serial-number module.\n",
 
-"SC": "## What it does\n\nSerial Control — assigns and tracks unique serial numbers for serial-controlled items. Symmetric structure to [[module-LC|LC]]: `SC-A` Edit, `SC-B` Assign, `SC-C`/`SC-D` Listings, `SC-E` Archive. Serial numbers tie to specific customer shipments (SO allocations) for traceability.\n\nKey tables: `BKSCMSTR`, `BKSCLOC`.\n",
+"SC": """
+## What it does
 
-"RO": "## What it does\n\nRoutings — defines the sequence of manufacturing operations (steps) for an item. Each operation links to a work center, setup hours, run hours, queue time, and move time. Drives WO scheduling and lead-time calculation. See [[recipe-enter-routing]].\n\nKey tables: `ROUTING` (header), `BKRTEMTR` (operations), `BKRTTOOL` (tooling), `BKRTINST` (instructions).\n",
+Serial Control — assigns and tracks unique serial numbers for serial-controlled
+inventory items. Provides complete lifecycle traceability: from PO receipt through
+WO issue/assembly through SO shipment to a specific customer. Symmetric
+structure to [[module-LC|LC]] (Lot Control).
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| SC-A | Edit Serial Numbers | t7sca.rwn |
+| SC-B | Assign Serial Control (per-item flag) | t7scb.rwn |
+| SC-C | Print Serial Availability | t7scc.rwn |
+| SC-D | Print Serial History | T7SCD.RWN |
+| SC-E | Archive Serial Numbers | t7sce.rwn |
+| SC-F | Serial Control Exception Report | t7scf.rwn |
+| SC-G | Enter Serial Generation Parameters | t7scg.rwn |
+| SC-H | Serial Traceability Report | t7sch.rwn |
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `SERIAL` | 30 | Active serial number master (`MTSER_*` prefix) — PO cost, SO ship, WO codes |
+| `SERIALH` | 30 | Archived serial numbers (identical structure) |
+| `BKSCMSTR` | varies | SC module configuration (generation parameters) |
+
+**MTSER.* 27-var namespace** in T7SCA: CODE/SERIAL/LOT/PO/RECDOC/VENDOR/RECDATE/POCOST/SO/CUSTCODE/SHIPDATE/SELLPRICE/WO/ISSDATE/ISSCOST/INRECDATE/INRECCOST/EXPDATE/WOCODE/NOTES/ONHAND/LOC/WOSUF/EXTRA/BIN/INV — full PO→WO→SO lifecycle per serial.
+
+## Audit and fix (SC-F)
+
+T7SCF performs 9 audit checks (orphans, duplicates, control changes, invalid
+locations, unbalanced on-hand, unbalanced transactions, expired materials,
+item type mismatches, negative on-hand) with 4 auto-fix modes.
+
+## Integration
+
+- **[[module-PO|PO]]** — serial assigned at PO receipt (POCOST/RECDATE/VENDOR)
+- **[[module-WO|WO]]** — serial linked to WO during issue and assembly
+- **[[module-SO|SO]]** — serial linked to SO shipment for customer traceability
+- **[[module-LC|LC]]** — parallel structure; an item can be both lot AND serial controlled
+""",
+
+"RO": """
+## What it does
+
+Routings — defines the sequence of manufacturing operations (steps) for a
+manufactured item. Each routing step specifies a work center, setup hours,
+run hours per unit, queue time, and move time. Drives WO scheduling
+(SH module) and lead-time calculation (MR module).
+
+Also manages the supporting master data: work centers, machines, tools,
+departments, QC codes, scrap codes, and operation templates.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| RO-A | Enter Routings | t7roa.rwn |
+| RO-B | Print / Rollup Routing Costs | t7rob.rwn |
+| RO-C | Work Centers | t7roc.rwn |
+| RO-D | Enter Machines | t7rod.rwn |
+| RO-E | Enter Tools | t7roe.rwn |
+| RO-F | Enter QC Codes | t7rof.rwn |
+| RO-G | Enter Scrap Codes | T7ROG.RWN |
+| RO-H | Enter Departments | t7roh.rwn |
+| RO-I | Enter Operation Templates | t7roi.rwn |
+| RO-J-A | Print Routings | t7roja.rwn |
+| RO-J-B | Print Work Centers | t7rojb.rwn |
+| RO-J-C | Print Machines | t7rojc.rwn |
+| RO-J-D | Print Tools | T7ROJD.RWN |
+| RO-K | Enter Specifications Templates | t7rok.rwn |
+| RO-M | Enter Testing Method | t7qcmthd.rwn |
+| RO-N | Enter Testing Requirements | t7qcspec.rwn |
+| RO-O | Routings Defaults | T7DSRO.RWN |
+| RO-P | Update Processing Cost Standards | t7rop.rwn |
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `ROUTING` | 62 | Routing operation (`MTRO_*` prefix) — header per item+operation |
+| `BKRTEMTR` | 62 | E-routing mirror (identical structure) |
+| `WORKCTR` | 47 | Work center master (`MTWC_*` prefix) — capacity, rates, calendar |
+| `MACHINE` | 20 | Machine master (`TMACH_*` prefix) |
+| `TOOL` | 57 | Tool/mold master (`MTOOL_*` prefix) — injection mold tooling |
+| `BKRTTOOL` | — | Routing-to-tool link |
+| `BKRTSPEC` | 7 | Routing specification notes |
+| `BKRTCST` | 24 | Routing cost for quoting |
+| `ISROUTEX` | 100 | Routing extended: 5-cycle arrays (notes/emp/WO/date/machine) |
+
+## Integration
+
+- **[[module-WO|WO]]** — WO creates WOROUT (WO routing) from ROUTING template at release
+- **[[module-SH|SH]]** — scheduling reads WORKCTR capacity + ROUTING times for scheduling math
+- **[[module-BM|BM]]** — BOM entry (T7BMA) shows routing on the BOM line (RTNUM link)
+- **[[module-MR|MR]]** — MRP uses routing lead times for planned order due date calculation
+""",
 
 "WC": """
 ## What it does
@@ -1258,9 +1435,54 @@ under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
 - **[[module-LO|LO]]** — LO module also manages location-level inventory
 """,
 
-"HH": "## What it does\n\nHandheld / Mobile — barcode scanner and mobile device integration for shop-floor data collection, receiving, and inventory. `HH-N` is the handheld item lookup (filters by Item Type [RFAMNLBTKO], Refresh Timer, credit-hold flag). Integrates with [[module-DC|DC]] for labor and [[module-PO|PO]] for receiving.\n\nKey forms: `T7HHN.DFM`, `T7HHWRC.DFM`.\n",
+"HH": """
+## What it does
 
-"PL": "## What it does\n\nPaperless Manufacturing — displays work order routing, BOM components, QC specs, and notes on screen at the workstation, eliminating printed travelers. Key forms: `T7PLessComps.DFM` (Issue Components — All/Shortages), `T7PLessNotes.DFM` (QC Specs/WO Item/Routing/Customer/Vendor), `T7PLessWODates.DFM` (WO Dates/Qty).\n",
+Hand Held Programs — barcode scanner and mobile device integration for
+shop-floor data collection: SO scan-and-ship, WO labor entry, material
+issues, finished production receipt, PO receiving, physical inventory
+counting, and bin-to-bin transfers. 32 T7HH* programs across 6 functional
+groups. Shares BKDCLAB with the desktop [[module-DC|DC]] module.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| HH-A | Scan & Ship | t7hhssoe.rwn |
+| HH-B | Print Labels | T7HHinga.rwn |
+| HH-C | Issue Materials | T7HHWOG.RWN |
+| HH-D | Enter Finished Production | T7HHWOP.RWN |
+| HH-E | Enter Physical Counts | T7HHPIC.RWN |
+| HH-F | Enter Labor | T7HHDCA.RWN |
+| HH-G | Receive PO | T7HHPOC.RWN |
+| HH-H | Enter Shipping Information | J7HHLITN.RWN (ISTS custom) |
+| HH-I | Paperless Shop Floor Tracking | t7dcpsf.rwn |
+| HH-J | Print WO Label | t7hhwolabel.rwn |
+| HH-K | Transfer Inventory | t7hhinlj.rwn |
+| HH-L | Multi-User Paperless Shop Floor | t7paperless.rwn |
+| HH-M | Issue Scrap Component | t7hhwoscrap.rwn |
+
+**Paperless Manufacturing** (T7PLess*.DFM forms — WO routing, BOM, QC specs
+on screen) is accessed via HH-I and HH-L.
+
+## Key functional groups
+
+| Group | Programs | Purpose |
+|-------|---------|---------|
+| SO / Shipping | t7hhssoe + J7HHLITN + 8 more | Scan orders, print labels, ship |
+| WO / Production | T7HHWOG/WOP/woscrap + 5 more | Issue materials, report FP, scrap |
+| PO Receiving | T7HHPOC + 4 more | Receive POs with QC |
+| DC Labor | T7HHDCA + 3 more | Time-clock labor entry for WO operations |
+| Bin/Location | t7hhinlj + 1 more | Bin transfer, bin lookup |
+| Physical Inventory | T7HHPIC | Count entry for PI cycle |
+
+## Integration
+
+- **[[module-DC|DC]]** — HH-F Enter Labor writes to BKDCLAB (same table as desktop DC)
+- **[[module-PO|PO]]** — HH-G Receive PO writes to same BKQCMSTR/BKQCTRAN as T7POJC
+- **[[module-WO|WO]]** — HH-C/D/M read WORKORD, WOBOM, and write INVTXN / WORECV
+- **[[module-PI|PI]]** — HH-E writes to BKPIPHYS / PIBINLOC (same PI count tables)
+""",
 
 "QT": "## What it does\n\nQuotations / Estimating — builds pre-sale cost estimates with material, labor, and markup. See [[recipe-estimate]] for a full walkthrough. Key tables: `BKQTMSTR` (estimate header), `BKQTLINE` (lines). `QT-B Convert to SO` turns an accepted estimate into a live sales order.\n",
 
@@ -1272,7 +1494,72 @@ under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
 
 "SY": "## What it does\n\nSystem — user administration, access control, and company switching. `SY-A Enter Users` manages login IDs, passwords, access levels, and module restrictions. `SY-B Menu Restrictions` hides specific menu items. `SY-C Add Company` creates a new company. See [[recipe-add-user]], [[recipe-add-company]], [[recipe-switch-company]].\n\nKey table: `BKSYUSER`.\n",
 
-"DE": "## What it does\n\nEDI / Data Exchange — Electronic Data Interchange for trading-partner document exchange (PO, invoice, ASN). Key forms in the `T7DEP*` and `T7DE*` family. Tables: `BKEDH`/`BKEDL` (EDI transaction headers/lines), `BKEDNOTE` (notes), `BKEDPOST` (posting queue). Also handles generic import/export via `T7GENIMP.DFM` (Import DBA — Skip/Replace/Append modes).\n",
+"DE": """
+## What it does
+
+Data Exchange — the comprehensive import/export and EDI module. Far broader
+than just EDI: DE handles bulk CSV/flat-file import for inventory, BOM,
+routings, customers, vendors, GL chart, labor, material issues, finished
+production, physical inventory, and AR/AP open items. Also manages EDI
+trading-partner document exchange and web storefront order integration
+(FTP, Shopify, file-based).
+
+## Menu operations
+
+| Code | Operation | Key programs |
+|------|-----------|-------------|
+| DE-A | Export Data | sqlexport.rwn |
+| DE-B | Import Inventory | T7DEBB.RWN (import + validate + transfer) |
+| DE-C | Import Bills of Material | T7DECB/DECC/DECD/DECE |
+| DE-D | Import Routings | T7DEDB/DEDC/DEDD/DEDE |
+| DE-E | Import Customers | T7DEEB/DEEC/DEED/DEEE |
+| DE-F | Import Vendors | T7DEFB/DEFC/DEFD/DEFE |
+| DE-G | Import Chart of Accounts | T7DEGB/DEGC/DEGD/DEGE |
+| DE-H | Global Field Change | T7DEK.RWN |
+| DE-I | Erase Files | t7del.rwn |
+| DE-J | Import and Post Labor | t7deja/dejb/dejc/dejd/deje |
+| DE-K | Import and Post Material Issues | t7dejh.rwn |
+| DE-L | Import and Post Finished Production | T7WOP.RWN |
+| DE-M | Import Physical Inventory Count | T7PIC.RWN |
+| DE-P | EDI Interface (sub-menu) | Import/Edit/Convert/Export EDI |
+| DE-Q | Import open Accounts Receivable | t7deq.rwn |
+| DE-R | Import open Accounts Payable | t7der.rwn |
+| DE-T | Import Sales Orders | FTP / Shopify / file web storefronts |
+| DE-U | Upload Stock Balance to Web Storefront | J7BEFWEBINV.RWN (ISTS custom) |
+
+## Import workflow pattern (for each data type)
+
+```
+DE-X-A  Generate Import Header (template/format definition)
+DE-X-B  Import [Data]          (read flat file into staging table)
+DE-X-C  Error Report           (validate staged data, report problems)
+DE-X-D  Edit Imported [Data]   (fix staging errors interactively)
+DE-X-E  Transfer to Master     (commit to production tables)
+```
+
+## EDI sub-menu (DE-P)
+
+| Code | Operation |
+|------|-----------|
+| DE-P-B | Import EDI Orders (X12 850 PO from trading partner) |
+| DE-P-C | Edit EDI Orders |
+| DE-P-D | Convert EDI Orders to Sales Orders |
+| DE-P-E | Export EDI Invoice/Acknowledgement (X12 810/997) |
+| DE-P-F | Export EDI ASN (X12 856 Advance Ship Notice) |
+| DE-P-H | EDI Error Report |
+
+## Key tables
+
+- `BKEDH` / `BKEDL` — EDI transaction headers/lines (staging)
+- `BKEDNOTE` — EDI notes
+- `BKEDPOST` — EDI posting queue
+
+## Integration
+
+Every production module writes to DE's target tables — DE-B imports feed
+BKICMSTR (IN), DE-C feeds BKBMMSTR (BM), DE-J feeds BKDCLAB (DC), etc.
+DE-T (Shopify/FTP orders) feeds BKARINV/BKARINVL (SO pipeline).
+""",
 
 "RM": """
 ## What it does
@@ -1348,7 +1635,42 @@ editor for custom screen layouts.
 - **[[module-RT|RT]]** — SU-C (Forms Editor = reports.int) is the ReportBuilder designer entry point
 """,
 
-"UT": "## What it does\n\nUtilities — general-purpose tools including data export, CSV import/export, and miscellaneous administrative functions. See [[recipe-export-csv]] and [[recipe-purge-history]].\n",
+"UT": """
+## What it does
+
+Utilities — low-level administrative and data maintenance tools. Includes running
+arbitrary DBA/TAS programs by name, file index rebuild, data location file editing
+(FILELOC), system configuration, file layout reports, company create/delete,
+and data correction utilities (clear data, search-and-replace, cost recalculation).
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| UT-A | Run a DBA Program | runprg.int |
+| UT-C | Re-Index File | t7reindex.rwn |
+| UT-D | Edit Data Location File | wtasfloc.rwn (same as [[module-FL|FL]]) |
+| UT-E | Set System Configuration | config.int |
+| UT-H | Print File Layouts | t7uth.rwn |
+| UT-I | Create/Delete Company | t7uti.rwn |
+| UT-K-A | Clear Data | t7utka.rwn |
+| UT-K-B | Search and Replace | T7FNR.RWN |
+| UT-K-D | Recalc GL Chart of Accounts | t7utkd.rwn |
+| UT-K-E | Consolidate Inventory Locations | T7UTKE.RWN |
+| UT-K-F | Set Avg and Last Cost to Std Cost | t7utkf.rwn |
+| UT-K-G | Recalc Inventory Book Value | t7utkg.rwn |
+| UT-K-H | Recalc Avg Cost from FIFO/LIFO Bucket | T7UTKH.RWN |
+| UT-K-I | Fix Binary Zeroes | t7bzfix.rwn |
+
+**UT-D** opens the same `wtasfloc.rwn` as the [[module-FL|FL]] File Location Browser.
+**UT-A** allows running any TAS Pro program by code — a superuser escape hatch.
+
+## Integration
+
+UT-I (Create/Delete Company) is the mechanism for adding a new company code;
+it creates the FILELOC routing records and `.B<code>` file structure.
+UT-K utilities are bulk data correction tools run after data migrations or errors.
+""",
 
 "LM": "## What it does\n\nLabel Management / Label Printing — prints barcoded labels for inventory items, lot numbers, serial numbers, and shipping. Uses `t7lottag.DFM` (Evo Lot Tagging — Label1/2/3 fields) for lot label printing. Integrates with [[module-LC|LC]] and [[module-HH|HH]].\n",
 
@@ -1358,7 +1680,31 @@ editor for custom screen layouts.
 
 "MM": "## What it does\n\nMaintenance Management — preventive and corrective maintenance scheduling for production equipment. Tracks maintenance orders, labor, and parts used on machines in [[module-WC|WC]].\n",
 
-"PL": "## What it does\n\nPaperless Manufacturing — electronic traveler / work-order packet displayed at the workstation. Eliminates printed travelers. Forms: `T7PLessComps.DFM` (issue components), `T7PLessNotes.DFM` (QC specs, routing notes), `T7PLessWODates.DFM` (WO dates and qty).\n",
+"PL": """
+## What it does
+
+Pay Link — connects EVO to an external payroll service (Checkmark Payroll).
+Exports employee time and labor data from EVO and imports the resulting paycheck
+records back. Runs on T6-era programs (BK prefix).
+
+**Paperless Manufacturing** (shop-floor workstation display of WO traveler, BOM,
+QC specs, and routing notes) is accessed from [[module-HH|HH]] menu items
+HH-I (Paperless Shop Floor Tracking) and HH-L (Multi-User Paperless Shop Floor),
+not from PL.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| PL-A | Run Checkmark Payroll | T6PLA.RUN (T6 era) |
+| PL-B | Import Employee Checks | BKPLB.RUN (T6 era) |
+| PL-C | Import Employer Vouchers | BKPLC.RUN (T6 era) |
+| PL-D | Payroll Link Setup | BKPLD.RUN (T6 era) |
+
+## Integration
+
+- **[[module-PR|PR]]** — internal EVO payroll; PL is for sites that use an external payroll service instead
+""",
 
 "PS": """
 ## What it does
