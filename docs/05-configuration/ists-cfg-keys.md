@@ -909,28 +909,81 @@ but descriptions unknown. Similarly, many slots in the YN[51]–YN[99] range hav
 
 **Auto-number counters:** BKYS_WONUM=401 (next Work Order number at time of query).
 
-### YN[102]–YN[149]: Module Enable/Disable Block (Pass 384)
+### YN[102]–YN[149]: Module Enable/Disable Block (Pass 384, full live data Pass 396)
 
-Live values show that slots YN[102] through YN[149] form a contiguous block of module
-enable/disable flags. At i2 Systems:
+Live values — full BKYSMSTR query (Pass 396 2026-06-30):
 
-- Most slots contain **'Y'** (module enabled/licensed)
-- Some slots contain **'Z'** (module disabled — not licensed or feature not active)
-- Example: YN[115]='Z', YN[118]='Z' (two unlicensed modules at i2 Systems)
-- YN[102]='Y', YN[149]='Y' (bookend slots both active)
+| YN[N] | Live value | GROUPS-order hypothesis (see below) |
+|-------|------------|--------------------------------------|
+| YN[102] | 'Y' | WO (Work Orders) |
+| YN[103] | 'Y' | JC (Job Costing) |
+| YN[104] | 'Y' | PO (Purchase Orders) |
+| YN[105] | 'A' | MR (MRP) — 'A' = Advanced tier? |
+| YN[106] | 'Q' | SH (Scheduling) — 'Q' = unknown tier |
+| YN[107] | 'A' | DC (Data Collection) — 'A' = Advanced tier? |
+| YN[108] | 'Y' | ES (Estimates) |
+| YN[109] | 'Y' | QC (Quality Control) |
+| YN[110] | 'Y' | IN (Inventory) |
+| YN[111] | 'Y' | RO (Routings) |
+| YN[112] | 'Y' | BM (Bill of Materials) |
+| YN[113] | 'Y' | LC (Lot Control) |
+| YN[114] | 'Y' | SC (Serial Control) |
+| YN[115] | **'Z'** | FO (Features & Options) — **NOT licensed at i2S** |
+| YN[116] | 'Y' | PI (Physical Inventory) |
+| YN[117] | 'Y' | WC (Warehouse Control) |
+| YN[118] | **'Z'** | SO (Sales Orders) — **'Z' surprising; i2S uses SO programs** |
+| YN[119] | 'Y' | SR (Service and Repair) |
+| YN[120] | 'Y' | RM (RMA) |
+| YN[121] | 'Y' | SA (Sales Analysis) |
+| YN[122] | ' ' | CS (Commissions) — space = not applicable/unlicensed |
+| YN[123] | ' ' | CM (Contact Master) |
+| YN[124] | 'Y' | AR (Accounts Receivable) |
+| YN[125] | 'Y' | CR (Contract Review) |
+| YN[126] | 'Y' | QU (Queries & Reports) |
+| YN[127] | 'Y' | SU (Query & Report Setup) |
+| YN[128] | 'Y' | HH (Hand Held Programs) |
+| YN[129] | '1' | UT (Utilities) — '1' = unknown sub-mode |
+| YN[130] | 'Y' | SM (System Maintenance) |
+| YN[131] | ' ' | SD (System Defaults) |
+| YN[132] | 'Y' | IM (International Module) |
+| YN[133] | 'Y' | PS (Password Security) |
+| YN[134] | 'Y' | DE (Data Exchange) |
+| YN[135] | 'Y' | TAS (System Configuration) |
+| YN[136] | 'Y' | GL (General Ledger) |
+| YN[137] | 'Y' | AP (Accounts Payable) |
+| YN[138] | 'Y' | FA (Fixed Assets) |
+| YN[139] | 'Y' | AM (Accounting Maintenance) |
+| YN[140] | 'Y' | AD (Accounting Defaults) |
+| YN[141] | 'Y' | PL (Pay Link) |
+| YN[142] | 'Y' | PR (Payroll) |
+| YN[143] | 'Y' | US (User Settings) |
+| YN[144] | 'Y' | unknown (no GROUPS entry) |
+| YN[145] | 'Y' | unknown |
+| YN[146] | 'Y' | unknown |
+| YN[147] | ' ' | unknown |
+| YN[148] | 'Y' | unknown |
+| YN[149] | 'Y' | unknown |
 
-**Semantics confirmed:**
+**Value semantics (confirmed for 'Y'/'Z', inferred for others):**
 - `'Y'` = module active/licensed
 - `'Z'` = module disabled or not licensed
-- Other letter codes (A–F, M, W etc.) likely indicate sub-mode or tier (consistent with
-  non-Y/N usage seen elsewhere in YN fields)
+- `'A'` = Advanced tier (MR/DC context); consistent with BKSYCFG.ADVWO pattern
+- `'Q'` = unknown sub-mode (SH/Scheduling context)
+- `'1'` = numeric flag (UT context)
+- `' '` = not applicable / not separately licensed (built into base system?)
 
-**Count:** 48 consecutive slots (YN[102]–YN[149]). BKMENUSU.TXT lists 42 module groups
-across 10 tab categories, consistent with ~42+ flag positions in this range.
+**GROUPS-order hypothesis:** BKMENUSU.TXT has 42 module entries in reading order
+(Mfg→Items→Sales→Queries→HandHeld→SystemMgr→Accounting→PayLink→Payroll→Settings).
+Hypothesis: YN[102+N−1] = GROUPS entry N. Confidence: **INFERRED, not confirmed.**
+Test case: YN[115]='Z' matches FO (Features & Options) at position 14 — plausible since
+FO is a specialty module. YN[118]='Z' matches SO (Sales Orders) at position 17 — this is
+surprising given i2S uses SO programs; may indicate GROUPS ordering ≠ slot ordering, or
+'Z' means something other than "completely unlicensed" for SO.
 
-**Mapping blocked:** The exact module-name→YN[N] index assignment (e.g. "AR module = YN[102]")
-is defined in T7YSYN.RWN or T7MDefaults.RWN, both encrypted. Cannot confirm without
-debugger IV recovery. See `docs/02-file-formats/decryption-findings.md`.
+**Count:** 48 slots (YN[102]–YN[149]). 42 GROUPS modules + 6 unaccounted slots (YN[144-149]).
+Candidates for the 6 extra: NE, QT, RF, LI, ML, and/or reserved slots.
+
+**Mapping definitively blocked:** T7YSYN.RWN (encrypted) maps module codes→YN indices.
 
 ---
 
