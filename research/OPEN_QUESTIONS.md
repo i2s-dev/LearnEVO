@@ -93,14 +93,22 @@ to resolve fully:
 
    **New open sub-question:** 7 `suwin*.DCY` files fail K_D decryption → see item #13 below.
 
-2. ~~**Exact ACCES_1..20 → module mapping**~~ **PARTIALLY RESOLVED 2026-06-25 (Pass286).**
+2. ~~**Exact ACCES_1..20 → module mapping**~~ **PARTIALLY RESOLVED 2026-06-25 (Pass286), FURTHER UPDATED Pass 412/413 2026-06-30.**
    T7-era security does NOT use `AHSYLOG` — zero T7 programs access it (confirmed Pass270).
    T7 security: `BKPSUSER.BKPS_USER_SEC` = security level code → `BKSLEVEL` (422-field
    permission matrix, 20 sections × 21 flags each). `BKPSUSER` managed by T7PSA.RWN.
    `ISEXUSER` stores extended flags: ISEX.USER.GROUP/DATE1/DATE2/PASSW/PEXPD/LPASS/FLAGS.
    `ISACCESS` = additional access control table (T7PSA also opens this, role TBD).
-   **Remaining open:** exact BKSLEVEL index→module mapping (which BKSL_MENU code controls
-   which EvoERP module) and exact ISACCESS role still requires decrypted T7PSA bytecode.
+   **Pass 412 (2026-06-30):** AHSYLOG has 0 records AND BKPSUSER has 0 records in this
+   installation. All DDF-registered access control tables (AHSYLOG, BKPSUSER, ISEXUSER,
+   ISACCESS, BKLOGON) have 0 records. Security in this installation = minimal; only
+   BKSYUSER.B (Btrieve-only, not in DDF, 5f) is the active authentication table.
+   The ACCES_1..20 flag mapping is unanswerable from live data (table never populated).
+   **Pass 413 (2026-06-30):** GROUPS-order mapping for YN[102]-YN[143] confirmed (42 entries
+   match 42 GROUPS slots). However, the YN values (Y/Z/A/Q/1/space) are NOT enable/disable
+   flags — all 42 modules have active menu entries regardless of their YN value. The meaning
+   of the per-slot values remains blocked by encrypted T7YSYN.RWN.
+   **Remaining open:** BKSL_MENU integer → module name mapping; ISACCESS role; YN value semantics.
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a

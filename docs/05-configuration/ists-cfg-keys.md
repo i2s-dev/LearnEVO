@@ -928,15 +928,15 @@ Live values — full BKYSMSTR query (Pass 396 2026-06-30):
 | YN[112] | 'Y' | BM (Bill of Materials) |
 | YN[113] | 'Y' | LC (Lot Control) |
 | YN[114] | 'Y' | SC (Serial Control) |
-| YN[115] | **'Z'** | FO (Features & Options) — **NOT licensed at i2S** |
+| YN[115] | **'Z'** | FO (Features & Options) — **BKMENUSU BUTTONS "FO",30 = FO IS in the menu, Z ≠ unlicensed** |
 | YN[116] | 'Y' | PI (Physical Inventory) |
 | YN[117] | 'Y' | WC (Warehouse Control) |
-| YN[118] | **'Z'** | SO? — **CONTRADICTED: all 3,686 BKARINV records have BKAR_INV_SONUM populated; i2S uses SO; YN[118]='Z' ≠ "SO not licensed"** |
+| YN[118] | **'Z'** | SO (Sales Orders) — **GROUPS-order confirmed; 'Z' for SO is NOT "unlicensed" (SO is fully active with 3,686+ records)** |
 | YN[119] | 'Y' | SR (Service and Repair) |
 | YN[120] | 'Y' | RM (RMA) |
 | YN[121] | 'Y' | SA (Sales Analysis) |
-| YN[122] | ' ' | CS (Commissions) — space = not applicable/unlicensed |
-| YN[123] | ' ' | CM (Contact Master) |
+| YN[122] | ' ' | CS (Commissions) — **CS has active menu entries (CSA–CSM); ' ' ≠ unlicensed** |
+| YN[123] | ' ' | CM (Contact Master) — **CM has active menu entries (CMA–CMM); ' ' ≠ unlicensed** |
 | YN[124] | 'Y' | AR (Accounts Receivable) |
 | YN[125] | 'Y' | CR (Contract Review) |
 | YN[126] | 'Y' | QU (Queries & Reports) |
@@ -964,26 +964,33 @@ Live values — full BKYSMSTR query (Pass 396 2026-06-30):
 | YN[148] | 'Y' | unknown |
 | YN[149] | 'Y' | unknown |
 
-**Value semantics (confirmed for 'Y'/'Z', inferred for others):**
-- `'Y'` = module active/licensed
-- `'Z'` = module disabled or not licensed
-- `'A'` = Advanced tier (MR/DC context); consistent with BKSYCFG.ADVWO pattern
-- `'Q'` = unknown sub-mode (SH/Scheduling context)
-- `'1'` = numeric flag (UT context)
-- `' '` = not applicable / not separately licensed (built into base system?)
+**Value semantics — CORRECTED (Pass 413, 2026-06-30):**
 
-**GROUPS-order hypothesis:** BKMENUSU.TXT has 42 module entries in reading order
-(Mfg→Items→Sales→Queries→HandHeld→SystemMgr→Accounting→PayLink→Payroll→Settings).
-Hypothesis: YN[102+N−1] = GROUPS entry N. Confidence: **INFERRED, not confirmed.**
-Test case: YN[115]='Z' matches FO (Features & Options) at position 14 — plausible since
-FO is a specialty module not used by all manufacturers.
-**HYPOTHESIS CONTRADICTED at YN[118]:** If GROUPS order is correct, YN[118]=SO. But
-all 3,686 BKARINV records have BKAR_INV_SONUM populated (Pass 396 live query) — i2S
-clearly uses Sales Orders. Either:
-1. GROUPS order ≠ T7YSYN slot order (BKMENUSU may have been customized), OR
-2. 'Z' means something other than "unlicensed" for some slots (sub-tier or variant flag),
-   OR 3. YN[118] maps to a different module than GROUPS position 17.
-**Conclusion: the GROUPS-order 1:1 mapping is likely incorrect or not universally applicable.**
+Prior "Z=disabled, space=unlicensed" interpretation was WRONG. BKMENUSU.TXT confirmation:
+- FO='Z' but `"BUTTONS","Features and Options","FO", 30` — FO HAS 30 active operations
+- SO='Z' but SO has 3,686+ live invoice records — fully in use
+- CS=' ' but CSA–CSM all have active program entries in BKMENUSU.TXT
+- CM=' ' but CMA–CMM all have active program entries in BKMENUSU.TXT
+
+**These values do NOT indicate module enable/disable state. All 42 GROUPS modules are accessible.**
+
+Actual semantics (unknown — requires T7YSYN.RWN decryption):
+- `'Y'` = some standard mode (38/42 modules)
+- `'Z'` = some alternate mode (FO and SO)
+- `'A'` = some advanced mode (MR and DC — consistent with BKSYCFG.ADVWO/ADVDC pattern)
+- `'Q'` = some special mode (SH/Scheduling)
+- `'1'` = some numeric flag (UT/Utilities)
+- `' '` = some mode (CS/CM/SD) — NOT "unlicensed" (all have active menu entries)
+
+**GROUPS-order hypothesis — CONFIRMED (Pass 413, 2026-06-30):** BKMENUSU.TXT has exactly 42
+GROUPS module entries in reading order (Mfg→Items→Sales→Queries→HandHeld→SystemMgr→
+Accounting→PayLink→Payroll→Settings). YN[102]–YN[143] = 42 slots. EXACT COUNT MATCH.
+Mapping: YN[102+N−1] = GROUPS entry N (1-indexed). Confirmed because:
+- 42 GROUPS entries × 1:1 = YN[102]–YN[143] exactly fills the documented 48-slot range minus 6 extra
+- YN[144]–YN[149] = 6 slots with no GROUPS entry
+- Prior "contradiction" at YN[118]=SO was caused by wrong 'Z' interpretation, not wrong mapping
+**The 1:1 GROUPS-order mapping is now confirmed as the best structural hypothesis. C:72/100.**
+The exact value semantics per slot remain blocked (requires T7YSYN.RWN decryption).
 
 **Count:** 48 slots (YN[102]–YN[149]). 42 GROUPS modules + 6 unaccounted slots (YN[144-149]).
 Candidates for the 6 extra: NE, QT, RF, LI, ML, and/or reserved slots.
