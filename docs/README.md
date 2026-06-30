@@ -159,6 +159,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Primary keys — 200+ tables with primary key fields from INDEX.DDF](04-data-dictionary/primary-keys.md) — *partial*
 - [FILELOC routing table — 401 logical buffer names → 863 physical filenames, 6 companies; schema, alias groups, company codes, CodeBase entries (Pass 388, 2026-06-29)](04-data-dictionary/fileloc-routing.md) — *verified*
 - [Cross-module foreign key relationships — 270 inferred FKs, 68 parent tables; global invoice/PO/txn number architecture; NOTETEMP/ROUTTEMP/XXICMSTR super-tables](04-data-dictionary/fk-cross-module.md) — *inferred, Pass 411 2026-06-30*
+- [Java entity catalog — 533 EvoPVT.jar SQL table entity classes; 18,858 fields with accurate Java types (STRING/DECIMAL/DATE/INTEGER/TIME); WO triple-variant, MK*, BKCM*, ESTSUM, X$ catalog tables; full JSON: samples/jar/java_table_schemas.json](04-data-dictionary/java-entity-catalog.md) — *verified, Pass 423 2026-06-30*
 
 ### 07 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*

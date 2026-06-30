@@ -19618,6 +19618,31 @@ database access and depend on:
 - Spring 3.0.7 (`lib/spring-*.jar`) — dependency injection for larger apps
 - Java 8 runtime (`java/` folder) for 32-bit TAS Pro 7, Java 11+ (`Java2/`) for newer apps
 
+### EvoPVT.jar SQL Entity Layer (Pass 423, 2026-06-30)
+
+EvoPVT.jar contains a complete SQL entity layer in `com.evoerp.sql.tables` — 533 table classes
+covering every EvoERP table accessible via Pervasive JDBC. This is the authoritative Java-side
+schema for all tables, including those not registered in the DDF relational layer.
+
+Full catalog: `samples/jar/java_table_schemas.json` (18,858 fields with types)
+Full doc: `docs/04-data-dictionary/java-entity-catalog.md`
+
+| Java Field Type | Count | Pervasive Mapping |
+|-----------------|-------|-------------------|
+| StringField | 10,254 | CHAR/VARCHAR |
+| BigDecimalField | 6,407 | DECIMAL/NUMERIC |
+| LocalDateField | 1,084 | DATE |
+| IntegerField | 989 | INTEGER |
+| LocalTimeField | 124 | TIME |
+
+Key notable tables confirmed via entity classes:
+- **BKCM* Contact Manager** (46 tables): BKCMACCN (154f, 10× contacts), BKCMACCT (41f, prospect), BKCMMHST (72f, campaigns) — most not in PSQL DDF (Btrieve-only)
+- **WO triple-variant**: Active (WO*), Historical (WOH*), Estimated (WOE*) for Labor/Material/Routing/BOM/Date/Exchange sub-tables
+- **ESTSUM** (213f, MTESUM_ prefix): Multi-company estimating summary — 10 qty-breaks × 13 cost types = 130 cost/price fields
+- **MK* Marketing** (11 tables): MKDEF/MKEVENT/MKTRACK/MKTROUT/MKFORM/MKASSIGN/MKAHIST — event/campaign tracking
+- **X$ catalog** (10 tables): X$FILE, X$FIELD, X$INDEX, X$ATTRIB etc. — Pervasive DDF system catalog directly queryable via JDBC
+- **MENUFILE** (108f): TAS Pro menu definitions — MENU_CODE + 20× MENU_LINES/OPTIONS/TYPES/NAMES/PROG
+
 **Confidence: 75/100** — All 37 JARs enumerated with Main-Class; package names confirm module
 assignments; 3 stub patterns classified (Pass 159); PROJECTEDSTOCK JAR name unresolved; T7JAVASET vs
 T7JSETTINGS distinction confirmed; JAR source not decompiled.
