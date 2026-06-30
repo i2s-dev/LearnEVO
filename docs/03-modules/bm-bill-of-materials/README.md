@@ -337,6 +337,18 @@ Title string "SM-J-Q  Bill of Material Recursion Utility" indicates this program
 
 ---
 
+## Live Data Analysis (Pass 419, 2026-06-30)
+
+All counts from live ODBC queries against DSN=DBA.
+
+### BKBMMSTR — BOM Lines
+
+208,686 active BOM lines. With BKICMSTR at 50,790 items, this averages **~4.1 BOM component lines per item** across the entire catalog — consistent with a mixed catalog of purchased parts (0 BOM lines), simple assemblies (1–3 lines), and complex multi-level sub-assemblies (10+ lines).
+
+BOM depth depends on item type: R-type (Regular/purchased) items have no BOM; F/A/B-type manufactured items carry all the BOM volume. With F+A+B = 28,414 items in BKICMSTR, the manufacturing items average ~7.3 BOM lines each.
+
+---
+
 **Confidence: 90/100** — All 17 programs confirmed from rwn_symbols.json; BKBM* 10-table schemas + BKSB* 3-table schemas all confirmed from DDF (Pass 317); program roles and key vars confirmed from named-var extraction. Remaining gap: T7BMGNC and T7BMKPRINT stub purpose unconfirmed (minor — both are small programs with no business logic).
 
 ---

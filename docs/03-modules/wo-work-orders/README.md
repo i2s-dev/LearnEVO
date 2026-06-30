@@ -774,6 +774,52 @@ Both follow the standard TAS6 3327-byte stub pattern (TEMP00 targets, BKSYMSTR s
 
 ---
 
+## Live Data Analysis (Pass 419, 2026-06-30)
+
+All counts from live ODBC queries against DSN=DBA.
+
+### WORKORD — Active Work Orders
+
+28,064 current WO records. Status distribution (MTWO_WIP_STATUS):
+
+| Code | Name | Count | % |
+|------|------|------:|---|
+| `C` | Closed | 24,254 | 86.4% |
+| `X` | Cancelled | 2,169 | 7.7% |
+| `F` | Firm | 1,440 | 5.1% |
+| `R` | Released | 180 | 0.6% |
+| (other) | Space/I/misc | 21 | 0.1% |
+
+Note: WORKORD contains closed WOs pending archival to WORKHORD (WO-J marks status C but archival is a separate step). The 24,254 C-status rows represent the unarchived closed WO backlog.
+
+### WORKHORD — Historical Work Orders
+
+121,012 archived WO records (identical 74-field schema to WORKORD). Status distribution:
+
+| Code | Count |
+|------|------:|
+| `C` | 115,931 |
+| `X` | 5,081 |
+
+**Total WOs ever created at i2 Systems: ~149,076** (28,064 active/pending + 121,012 archived). i2 Systems has been running EvoERP for 20+ years; this is the cumulative WO history.
+
+### WORKCTR — Work Centers
+
+27 active work center records (MTWC_WC). Work centers define the shop floor routing points — each WO routing operation references a WORKCTR by code.
+
+### Manufacturing scale summary
+
+| Metric | Value |
+|--------|------:|
+| Items in master (BKICMSTR) | 50,790 |
+| Active/pending WOs (WORKORD) | 28,064 |
+| Archived WOs (WORKHORD) | 121,012 |
+| Inventory transactions (INVTXN) | 3,268,510 |
+| WO Issue transactions (type I) | 2,321,657 |
+| Work centers (WORKCTR) | 27 |
+
+---
+
 ## Notes & open questions
 
 - WORKACHG vs WORKCHG: both have identical 25-field schema with WO_CHG_ prefix. Likely split between assembly-level changes (WORKACHG) and general WO header changes (WORKCHG), but the actual split criterion is not confirmed from schema alone — would need RWN source to verify.

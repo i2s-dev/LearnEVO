@@ -586,6 +586,62 @@ BKINB is the TAS6 backing for both `IN-B` (standard inventory entry) and `DE-J-A
 
 ## Notes & open questions
 
+## Live Data Analysis (Pass 419, 2026-06-30)
+
+All counts from live ODBC queries against DSN=DBA.
+
+### BKICMSTR — Item Master
+
+50,790 active items. Type distribution (BKIC_PROD_TYPE) — all 10 codes from CHM confirmed:
+
+| Code | Name | Count | % | CHM definition |
+|------|------|------:|---|----------------|
+| `R` | Regular | 13,352 | 26.3% | Purchased components and resale items |
+| `F` | Finished Good | 12,934 | 25.5% | Top-level manufactured products |
+| `A` | Subassembly | 9,589 | 18.9% | Manufactured sub-components for higher assemblies |
+| `N` | Non-Inventory | 7,114 | 14.0% | Eng charges, shop supplies, service items — no on-hand balance |
+| `B` | Phantom Assembly | 5,891 | 11.6% | Never stocked; auto-explodes at WO creation |
+| `M` | Make From | 1,778 | 3.5% | Outside-processed item with distinct pre/post part numbers |
+| `K` | Selling Kit | 79 | 0.16% | Kit ordered/invoiced as single item in SO, never made |
+| `O` | Feature | 51 | 0.10% | Features & Options module — pop-up option group at SO entry |
+| `L` | Labor | 0 | — | Labor categories (CHM-documented, not used at i2 Systems) |
+| `T` | Outside Processing | 0 | — | Services (plating, painting, heat treat) — not used at i2 Systems |
+
+Note: i2 Systems item mix is manufacturing-heavy (F+A+B = 55.9% manufactured; R = 26.3% purchased). MTICMSTR has 50,990 items — 200 more than BKICMSTR (multi-class catalog includes items not in the single-company BK* tables).
+
+### BKICLOC — Item/Location Records
+
+136,510 rows (2.69 location records per item on average). Each row is an item+warehouse-location slot holding on-hand quantity, reorder points, and cycle codes.
+
+### INVTXN — Inventory Transaction Log
+
+3,268,510 total transaction records. Full MTIT_TYPE distribution (all 14 codes confirmed from BKLME.SRC + BKINE.RUN binary):
+
+| Code | Name | Count | % | Direction |
+|------|------|------:|---|-----------|
+| `I` | Stock Issues to WIP | 2,321,657 | 71.0% | − (out to WO) |
+| `S` | Shipments | 317,213 | 9.7% | − (outbound sales) |
+| `W` | WO Receipts to Stock | 185,361 | 5.7% | + (FG in from WO) |
+| `P` | Purchase Receipts to Stock | 180,194 | 5.5% | + (PO receipt) |
+| `Q` | Receipt to QC | 100,438 | 3.1% | ± |
+| `A` | Adjustments | 90,868 | 2.8% | ± |
+| `T` | Transfers | 34,670 | 1.1% | 0 (location move) |
+| `C` | PO Price Change | 19,233 | 0.6% | 0 (cost only) |
+| `M` | Make From Component Issue | 7,706 | 0.24% | − |
+| `B` | Bin Transactions | 7,178 | 0.22% | 0 (bin-to-bin) |
+| `G` | Scrap | 2,155 | 0.07% | − |
+| `R` | Service/Repair | 1,103 | 0.03% | ± |
+| `J` | Purchase Receipts to WIP | 712 | 0.02% | + (direct to WO) |
+| `` (blank) | Unknown/legacy | 25 | <0.01% | — |
+
+Key insight: Type I (Stock Issues to WIP) at 71% confirms i2 Systems is deeply WO-driven manufacturing — the dominant inventory movement is kit-issuing components to work orders. The S+W+P three-way flow (shipments + WO receipts + PO receipts) accounts for the remaining core logistics at ~21%.
+
+Date range: earliest transactions from early 2000s to 2026-06-30 (no archive table used — all history in INVTXN).
+
+---
+
+## Notes & open questions
+
 - BKICMSTR (64f) vs MTICMSTR (108f): The 44-field difference includes fields like `MTIC_PROD_CLASS` PK, 10 vendor slots (VEND_1..10, VNAM_1..10, VPC_1..9), 15 replacement costs (RCOST_1..15), lot size (LOTSZ), optional features (OPT/OPTCS/OPTCD), cumulative scheduling (CUM), and long part# (LONGP).
 - MTINVDEF (108f identical schema to MTICMSTR) acts as the "factory default" template — when a user creates a new item, the system copies default values from MTINVDEF to pre-populate fields.
 - Relationship between BKIC* and MTIC* items: unclear whether every BKIC item has a corresponding MTIC record, or if they are independent catalogs. Without RWN source code, the sync/copy logic cannot be confirmed.
