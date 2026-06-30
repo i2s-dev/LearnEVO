@@ -262,24 +262,85 @@ every related-record lookup.
 
 ## Company file routing
 
-EvoERP runs 6 companies (AT, AB, CA, I2, IT, 99). Each company has its own physical
-copy of every `.B` file, identified by the company code in the file extension:
+**Pass 414 (2026-06-30): FILELOC fully cataloged from `fileloc.dbf` (4,435 records).**
 
-| Extension | Company |
-|-----------|---------|
-| `.B` (plain) | Default / I2 (fallback) |
-| `.BAT` | AT company |
-| `.BAB` | AB company |
-| `.BCA` | CA company |
-| `.BI2` | I2 company (current production) |
-| `.B99` | Company 99 (demo/test) |
-| `.BIT` | IT company (sysadmin) |
-| `.B22` | Company "22" (legacy/frozen) |
+EvoERP runs 4 active companies + 1 test company. The company file routing is managed
+entirely by `FILELOC` — both a Btrieve file (`FILELOC.B`, 2.8 MB) and a dBASE IV
+mirror (`fileloc.dbf`, 4,461 rows). Each company's tables live in a subfolder of
+`\\i2s109-solidcrm\DBAMFG$\`:
 
-The routing is managed by `FILELOC.B` (3,613 records × 6 companies — see
+| LOC_COMP_C | Subfolder | Description |
+|------------|-----------|-------------|
+| `B`        | `DEFAULT\` | Shared / system-level tables (393 buffers) |
+| `B99`      | `TESTDATA\` | Test/demo company |
+| `BI2`      | `I2\`      | i2 Systems — main production company |
+| `BAB`      | `AB\`      | AB company |
+| `BAT`      | `AT\`      | AT company |
+| `BCA`      | `CA\`      | CA company |
+| `TMP`      | `DRILL\`   | Drill-down temp files (timestamped, auto-registered) |
+| `DDF`      | (none)     | Btrieve DDF internal tables (BTRVCOM/FILE/FIELD/FIELDEXT/INDEX) |
+| `OVL`      | (none)     | Overlay file (TASCOLOR) |
+| `C`        | `DRILL\`   | DBF-format reference tables |
+
+**Note:** `.BIT` (IT company) and `.B22` (Company 22) do NOT appear in FILELOC — they
+were either legacy extensions or never existed in this installation.
+
+### FILELOC field schema (7 fields, record=218 bytes)
+
+| Field | Type | Length | Purpose |
+|-------|------|--------|---------|
+| LOC_BUFF_N | C | 8  | Logical buffer name — used in TAS `open BUFFNAME` statements |
+| LOC_FILE_N | C | 32 | Physical filename on disk (without extension) |
+| LOC_COMP_C | C | 3  | Company context code (see table above) |
+| LOC_REC_SI | N | 5  | Record size |
+| LOC_REC_TY | C | 1  | File type: `B`=Btrieve, `C`=DBF, `F`=overlay |
+| LOC_LOCATI | C | 128 | Relative path from `\\DBAMFG$\` root (e.g., `DEFAULT\`, `I2\`) |
+| LOC_DESCRI | C | 40 | Description (rarely populated in this installation) |
+
+### Multi-company architecture (confirmed from 4,435 records)
+
+- **393 unique buffer names** in DEFAULT\
+- **365 buffer names** per company directory (I2/AB/AT/CA all identical)
+- **28 tables** are DEFAULT-only (shared system, no company copy):
+  `BKICREQ`, `BKPSUSER`, `BKSLEVEL`, `BKSLMSTR`, `BKSYUSER`, `BKUPDATE`,
+  `BTRVFILE`, `CMPDFLT`, `DBAHELP`, `DBAHLPID`, `DBALOC`, `DBAMAIMN`,
+  `DBAMODUL`, `DBAUSRMN`, `DCBUFFER`, `DEFAULTS`, `FIELDS`, `MEMORY`,
+  `MENUFILE`, `PRGFILE`, `PRGFILE2`, `TASCMDH`, `TASCMDL`, `TASEDHLP`,
+  `TASMAKE`, `TASMSLB`, `TRANSLTE`, `WBTRVMEM`
+- These 28 shared tables include all user security tables
+  (BKPSUSER, BKSLEVEL, BKSYUSER) confirming they are **cross-company**
+- **121 buffer names** map to multiple physical files (virtual table families):
+  e.g., `BKARINV` → 24 physical files (BKARINV + all BKAR*/ISSA*/ISSN* invoice clones);
+  `BKBMMSTR` → 10 files (BOM family); `BKAPCHKF` → 6 check files
+- Full catalog: `samples/fileloc_catalog.csv`
+
+### Virtual buffer families (multiple physical files per logical open)
+
+When TAS code does `open BKARINV`, it opens **all 24 physical files** mapped to that
+buffer simultaneously. This is how the archive, temp, and mirror tables (BKARHINV,
+BKESTQT, ISESAHDR, ISSRINV…) all share the same field schema as the primary table —
+one logical `open` loads the entire family.
+
+### Drill-down temp table usage (from 117 TMP records, 2024-2026)
+
+The TMP records in FILELOC log every drill-down session. Most-drilled tables:
+- BKBMMSTR: 29 sessions (BOM master — most common drill target)
+- INVTXN: 25 sessions (inventory transactions)
+- ISBINLOC: 16 sessions (bin location quantity)
+- BKAPPOL: 12 sessions (AP PO lines)
+- ISBNMSTR: 9 sessions (bin master)
+- BKARINVL: 6 sessions (AR invoice lines)
+- WOBOM + WORKORD: 5 sessions each
+- BKARINV + BKART + BKARINVT: 3 sessions each
+
+The routing is managed by FILELOC.B (see
 [tas-data-infrastructure.md](tas-data-infrastructure.md)). TAS Pro runtime looks up
-the logical table name in FILELOC to find the correct physical file for the current
-company before any `open` statement executes.
+`LOC_BUFF_N` in FILELOC filtered by current company code to find `LOC_LOCATI` + `LOC_FILE_N`,
+then opens `\\DBAMFG$\<LOC_LOCATI><LOC_FILE_N>.B` before any `open` statement executes.
+
+**Important:** FILELOC does NOT map RTM report template names to file paths.
+RTM selection uses the ISRTMS table (29 fields) or module config tables (e.g., BKGLSTMT).
+The earlier TODO note claiming FILELOC contains "config-name→RTM mapping" was incorrect.
 
 ---
 

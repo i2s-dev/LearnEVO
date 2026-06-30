@@ -1708,7 +1708,14 @@ through the FILELOC routing layer.
 - **CORRECTION**: FILELOC does NOT route RTM report files — RTMs use ISTS.CFG.RTM.* config keys in BKYSMSTR, ISRTMS table (per-customer label routing), RTMVLD_* library, or hardcoded paths in RWN pool strings
 - Full routing table documented at `docs/04-data-dictionary/fileloc-routing.md`
 
-**Confidence: 90/100** — Schema + all 401 buffer names + alias groups live-confirmed from fileloc.dbf (Pass 388); DFM + var-level confirmed from WTASFLOC (Pass 231). Proc-level logic not yet analyzed. See `docs/03-modules/fl-file-location.md`.
+**Pass 414 (2026-06-30) — FILELOC schema and multi-company architecture fully confirmed:**
+- **4,435 active records** in fileloc.dbf (LOC_BUFF_N 8-char / LOC_FILE_N 32-char / LOC_COMP_C 3-char / LOC_REC_SI 5-num / LOC_REC_TY 1-char / LOC_LOCATI 128-char / LOC_DESCRI 40-char)
+- **4 active companies**: I2 (→`I2\`), AB (→`AB\`), AT (→`AT\`), CA (→`CA\`) + DEFAULT (→`DEFAULT\`) + B99 (→`TESTDATA\`); `.BIT` and `.B22` extensions do NOT exist in this installation
+- **393 unique buffer names** in DEFAULT\; **365** per company directory; **28 tables** are DEFAULT-only (shared cross-company): all user security tables (BKPSUSER, BKSLEVEL, BKSLMSTR, BKSYUSER), MENUFILE, PRGFILE/PRGFILE2, CMPDFLT, DBA* system tables, TAS runtime tables (TASCMDH/L, TASEDHLP, TASMAKE, TASMSLB), TRANSLTE, WBTRVMEM, MEMORY, FIELDS, DEFAULTS, DCBUFFER, DBALOC
+- **TMP records** = drill-down session history (COMP_C='TMP', path=`DRILL\`): top drill targets: BKBMMSTR (29), INVTXN (25), ISBINLOC (16), BKAPPOL (12), ISBNMSTR (9), BKARINVL (6)
+- Full record catalog: `samples/fileloc_catalog.csv`; schema documented in `docs/02-file-formats/btrieve-b-format.md` §Company file routing
+
+**Confidence: 95/100** — Complete schema + record counts + multi-company architecture byte-confirmed from live fileloc.dbf (Pass 388 + 414); virtual buffer families and 28 shared tables fully enumerated; remaining gap = proc-level logic in WTASFLOC.RWN (blocked by encryption).
 
 ---
 
