@@ -18643,7 +18643,8 @@ where to find each logical table for each company. Loaded first at every boot.
 **Statistics (confirmed from full parse):**
 - 3,613 total records
 - 386 unique logical table names
-- 6 company codes: AT, AB, CA, I2, IT, 99
+- 6 company codes in FILELOC.B: AT, AB, CA, I2, IT, 99
+  (ARCHIVE.INI on share also shows B22 and BUU — additional companies outside FILELOC.B scope)
 - 1,754 alias mappings (48.5%) — different physical file per company
 - 1,859 same-name mappings — same physical file across companies
 

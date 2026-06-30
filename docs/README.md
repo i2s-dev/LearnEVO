@@ -37,6 +37,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Java integration via `EvoPVT.jar` + `ISJAVA` task queue](01-architecture/java-integration.md) — *verified*
 - [Supporting subsystems (Notes, Scheduler, Service, DC, Links, FNO, Update, …)](01-architecture/subsystems.md) — *draft*
 - [Connecting external software to the EVO database (ODBC, DSN, bitness)](01-architecture/external-odbc-connections.md) — *verified*
+- [Network topology, Pervasive SQL server mode, per-company databases](01-architecture/network-topology.md) — *verified*
 
 ### 02 — File formats
 - [File format catalog (all extensions seen in EVO)](02-file-formats/catalog.md)
