@@ -779,6 +779,17 @@ TRXNTYPE, JOURNAL (GL journal batch), WOPRE+WOSUF (work order number).
 **Key insight:** Inventory transactions dominate (62% of all cross-ref rows) — every IC transaction
 generates a BKGLX row for drill-back.
 
+**`BKGLX_JOURNAL` codes (Pass 432, 2026-06-30) — 6 values, all identified:**
+
+| Journal | Count | Meaning |
+|---------|------:|---------|
+| `WO` | 1,371,718 | Work Order — material issues (I), labor (L), overhead (F/W), WIP variance (4), backouts (E) |
+| `RS` | 248,381 | Revenue/Sales — SO invoice parts (5), non-part (6), return (7), shipment header (S) |
+| `RP` | 117,923 | Receipts/Purchasing — PO receipts (P), subcontract/outside-process (J), mixed (4/8) |
+| `OT` | 61,528 | Other — inventory adjustments (A), miscellaneous (S) |
+| `CR` | 23,209 | Cash Receipts — AR check (8), deposit (D), other (O) |
+| `CD` | 10 | Cash Disbursements — AP payments (8) |
+
 **Pass 432 (2026-06-30) — ALL 16 TRXNTYPE codes now identified from live BKGLX data** (journal code +
 description + document-number fields — no RWN decryption needed):
 - `'4'` = WO WIP Variance: journal=WO, "Close WO - WIP Variance", posted on WO close when actual cost ≠ standard
