@@ -24,7 +24,7 @@ otherwise the row here is the current best summary.
 | `.exe` | 50    | Windows executables               | n/a       | *todo* |
 | `.XPT` | 20    | Unknown — candidate: SAS export?  | ?         | *open-question* |
 | `.B`   | 659   | Btrieve PSQL data file (record store) | No (binary B-tree) | [btrieve-b-format.md](btrieve-b-format.md) |
-| `.UPD` | 9     | Update/patch manifest             | ?         | *open-question* |
+| `.UPD` | 9     | **EvoERP proprietary Btrieve dictionary** (FC magic, 4096-byte pages) — FILELOC/FILEDICT/FILEKEY/etc. are live runtime lookup tables + migration targets | **Partially** (Pass 409: 3,265 field pairs extracted from FILEDICT; 1,352 routing records from FILELOC) | [fl-file-location.md](../03-modules/fl-file-location.md) |
 | `.HTM` | 9     | Static HTML (help / generated)    | Yes       | n/a |
 | `.dll` | 9     | Windows DLLs (`c4dll`, `qtintf70`, etc.) | n/a | *todo* |
 | `.SRC` | 7     | **TAS Pro 4GL source** (partial — most sources are off-server) | **Yes (plaintext)** | [src-tas-pro-language.md](src-tas-pro-language.md) |

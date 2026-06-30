@@ -123,19 +123,100 @@ Mirrors the FILEDICT table — field-level metadata for any registered Btrieve f
 
 WTASFLOC manages tables that are **TAS runtime internals** — not in the Pervasive DDF:
 
-| Table | Purpose |
-|-------|---------|
-| `FILELOC` | Maps logical file codes → physical paths (per company) |
-| `FILEDICT` | Field dictionary: name/offset/type/size for every field |
-| `FILEKEY` | Key definitions for each registered Btrieve file |
-| `FILEKNUM` | Key number assignments |
-| `FILEDES` | File descriptor — template for creating new `.B` files |
-| `FILEDFLD` | File default field values |
-| `FILEDBF` | dBASE format file registry |
-| `ERRMSG` | TAS runtime error messages |
+| Table | Physical file | Purpose |
+|-------|--------------|---------|
+| `FILELOC` | `FILELOC.UPD` | Maps logical file codes → physical paths (per company + location) |
+| `FILEDICT` | `FILEDICT.UPD` | Field dictionary: name/offset/type/size for every registered field |
+| `FILEKEY` | `FILEKEY.UPD` | Key definitions for each registered Btrieve file |
+| `FILEKNUM` | `FILEKNUM.UPD` | Key number assignments |
+| `FILEDES` | `FILEDES.UPD` | File descriptor — record-level metadata for creating `.B` files |
+| `FILEDFLD` | `FILEDFLD.UPD` | File default field values |
+| `FILEDBF` | — | dBASE format file registry |
+| `ERRMSG` | `errmsg.dbf` | TAS runtime error messages (dBASE format) |
+| `FILES` | `FILES.UPD` | Master list of registered Btrieve tables |
+| `FILEREL` | `FILEREL.UPD` | FK relationships within the FILE* system |
+| `FILEDEF` | `FILEDEF.UPD` | File definitions / character-set validation data |
+| `FILECHSP` | `FILECHSP.UPD` | Character set page mapping (printer type codes) |
 
-These 8 tables appear in hundreds of EvoERP programs because every program that performs
-dynamic record navigation or file-open calls links to the FILELOC routing layer.
+These tables are **live runtime lookup tables** (not just migration artifacts). Every TAS Pro
+program that opens a Btrieve file calls FILELOC at runtime to resolve the physical path.
+EvoUpdate also reads/writes them during schema migrations.
+
+---
+
+## Binary Analysis of FILE*.UPD (Pass 409, 2026-06-30)
+
+All FILE*.UPD files are **Btrieve data files** (FC magic `46 43`, 4096-byte pages), stored in
+`\\i2s109-solidcrm\DBAMFG$\`. They are not in the Pervasive DDF — TAS Pro accesses them directly.
+
+### FILELOC.UPD — Table-to-File Location Routing
+
+- **1,352 records** = 340 unique logical tables × 2 location codes × duplicates
+- **Location codes**: `DEFAULT` (production data) and `TESTDATA` (test/training mode)
+- Every table has both a production and test path — EvoERP has built-in test-mode support
+- **304 tables have a physical file name different from their logical name** (aliases)
+- Example aliases:
+  - `BKAPVEND` (logical) → `BKAPEVND` (production physical file)
+  - `BKAPDESC` (logical) → maps to 16+ physical files: `BKARDESC`, `BKGLDESC`, `BKSONOTE`, `ISRMADSC`, etc.
+- **Template tables**: `BKAPDESC`, `BKAPPOL`, etc. define a shared schema used by multiple
+  physical files across modules (e.g., every module's notes/description table uses BKAPDESC's schema)
+- Extracted CSV: `samples/fileloc_mappings.csv` (1,352 rows)
+
+### FILEDICT.UPD — EvoERP Field Dictionary (4 MB)
+
+- **3,265 unique (table, field_path) pairs** across **370 tables**
+- Field paths use TAS Pro dot notation: `TABLE_ALIAS.FIELD_NAME` or `TABLE_ALIAS.SUB.FIELD` 
+- Record format: `[table_name: 8 bytes, space-padded][field_path: variable-length ASCII]`
+- Extracted CSV: `samples/filedict_fields.csv` (3,265 rows)
+
+Top tables by field count:
+
+| Table | Fields | Module |
+|-------|--------|--------|
+| BKPRMSTR | 47 | Payroll master |
+| BKSYMSTR | 41 | System config master |
+| BKICMSTR | 34 | Inventory item master |
+| WOROUT | 33 | WO routing output |
+| BKPRGLFL | 33 | Payroll GL files |
+| BKAPPO | 32 | AP Purchase Order |
+| WORKORD | 32 | Work Order header |
+| BKARINV | 29 | AR Invoice header |
+| BKARCUST | 27 | AR Customer master |
+| ROUTING | 27 | WO Routing template |
+
+Security fields (AHSYLOG table):
+- `AHSY.USER.ACCES` — module access flags (AHSY_USER_ACCES)
+- `AHSY.USER.CTRL` — control flags
+- `AHSY.USER.KEY` — user record key
+- `AHSY.USER.LEVL` — security level
+- `AHSY.USER.MENU` — menu access mask
+- `AHSY.USER.PKEYS` — password keys
+
+Description template fields (BKAPDESC logical schema):
+- `BK.DESC.CODE`, `BK.DESC.DESC`, `BK.DESC.KEY`, `BK.DESC.KEY2`, `BK.DESC.LINE`, `BK.DESC.NOTES`, `BK.DESC.NUM`
+
+### FILES.UPD — Master Table Registry (72 KB)
+
+Contains the master list of registered Btrieve tables. The BKCM* series tables are registered
+here and are **not in the Pervasive DDF** — they form EvoERP's Company Master add-on module:
+`BKCMACCC`, `BKCMACCL`, `BKCMACCN`, `BKCMACCT`, `BKCMACFC`, `BKCMACTD`, `BKCMACTF`,
+`BKCMACTH`, `BKCMCNTD`, `BKCMDE`, `BKCMDTCD`, `BKCMDUN`, `BKCMDUNH`, `BKCMEACC`,
+`BKCMEACD`, `BKCMEACF`, `BKCMEACH`, `BKCMEACT`, `BKCMFORM`, `BKCMHCOD`, `BKCMLEAD`,
+`BKCMMHST`, `BKCMPCFC`, `BKCMPCNT`, `BKCMPCTF`, `BKCMPCTH`, `BKCMREP`, `BKCMSBDF`,
+`BKCMTERR`, `BKCMVNDF`, `BKCMVNDH`, `BKCMVNFC`, `BKICPMAT`, `DISCOUNT`
+
+### FILEREL.UPD — Table Relationships (72 KB)
+
+Only 2 real relationship records — both link tables within the FILE* system itself:
+- `FILEDICT.DICT_BUFF_NAME` → `FILELOC.LOC_BUFF_NAME`
+- `FILEKNUM.KNUM_BUFF_NAME` → `FILELOC.LOC_BUFF_NAME`
+
+Main EvoERP table FK relationships are **not** stored here — they are enforced procedurally
+by TAS Pro program logic (confirmed: no FK data in FILEREL for production BK*/IS* tables).
+
+### evo.upd (3 bytes)
+
+Contains ASCII `"1\r\n"` — a version marker only.
 
 ---
 
@@ -157,5 +238,7 @@ This program is reached via:
 - The DFM `cePath` combo uses `TASComboEnter` — meaning it does a runtime FILELOC
   lookup to populate the path list (it reads FILELOC to show where files currently are).
 
-**Confidence: 80/100** — DFM fully read; var-level confirmed from decrypted RWN. Proc
-names extracted but not analyzed individually. BKAPPOL/BKAPPO cross-link purpose inferred.
+**Confidence: 92/100** — DFM + RWN vars fully confirmed; binary analysis of all FILE*.UPD
+files complete (Pass 409, 2026-06-30); 3,265 field-path pairs extracted from FILEDICT; 1,352
+FILELOC routing records extracted; template-table architecture confirmed. Remaining gap:
+FILEKEY/FILEKNUM record structure not fully decoded; FILEDFLD purpose unclear.
