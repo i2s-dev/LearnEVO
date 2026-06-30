@@ -1294,7 +1294,51 @@ All accounting defaults are stored in `BKSYMSTR` (286f) and `BKYSMSTR` (355f)
 
 # ── Modules added Pass 310 (2026-06-25) to eliminate all 45 module stubs ──
 
-"LC": "## What it does\n\nLot Control — assigns, tracks, and archives lot numbers for lot-controlled inventory items. Each lot has its own on-hand quantity, receipt date, expiration date, and cost. Full suite: `LC-A` Edit Lots, `LC-B` Assign Lot Control (per-item flag), `LC-C`/`LC-C2` Lot Listings, `LC-E` Lot Expiration, `LC-F` Lot Summary, `LC-G` Archive Lots.\n\nKey tables: `BKLCMSTR` (lot master), `BKLCLOC` (lot per-bin). See also [[module-SC|SC]] for the parallel serial-number module.\n",
+"LC": """
+## What it does
+
+Lot Control — assigns and tracks lot numbers for lot-controlled inventory items.
+Each lot has its own on-hand quantity, receipt date, expiration date, cost, and
+vendor/PO reference. Supports full lot traceability: from PO receipt through
+WO assembly through SO shipment to a specific customer lot.
+Symmetric structure to [[module-SC|SC]] (Serial Control).
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| LC-A | Edit Lot Numbers | t7lca.rwn |
+| LC-B | Assign Lot Control (per-item flag) | t7lcb.rwn |
+| LC-C | Print Lot Availability | t7lcc.rwn |
+| LC-D | Print Lot History | T7LCD.RWN |
+| LC-E | Lot Control On Hand Report | t7lce.rwn |
+| LC-F | Lot Traceability Report | t7lcf.rwn |
+| LC-G | Archive Lots (with expiry date range) | T7LCG.RWN |
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `LOT` | 25 | Active lot master (`MTLOT_*` prefix) — CODE+LOT PK |
+| `BKLCMSTR` / `BKLCLOC` | — | Lot master and per-bin lot quantities |
+
+**MTLOT.* 22-var namespace** (confirmed from T7LCA/LCG): CODE/LOT/EXPDATE/ONHAND/
+LOC/VENDOR/RECDATE/RECQTY/POCOST/WO/WOCOST/NOTES_1..5/WOSUF/BEGIN/OUT/MAXOUT.
+
+Fields of note:
+- `EXPDATE` — expiry date for food/pharma compliance
+- `POCOST` — landed cost at receipt
+- `WOCOST` — assembled-into-WO cost
+- `NOTES_1..5` — 5 free-text note lines per lot
+
+## Integration
+
+- **[[module-PO|PO]]** — lot assigned at PO receipt (POCOST/RECDATE/VENDOR)
+- **[[module-WO|WO]]** — lot linked to WO material issue and assembly
+- **[[module-SO|SO]]** — lot linked to SO shipment line for customer traceability
+- **[[module-PI|PI]]** — PIBINLOT (14f) tracks lot quantities during physical count
+- **[[module-SC|SC]]** — parallel serial module; an item can be both lot and serial controlled
+""",
 
 "SC": """
 ## What it does
@@ -1484,15 +1528,159 @@ on screen) is accessed via HH-I and HH-L.
 - **[[module-PI|PI]]** — HH-E writes to BKPIPHYS / PIBINLOC (same PI count tables)
 """,
 
-"QT": "## What it does\n\nQuotations / Estimating — builds pre-sale cost estimates with material, labor, and markup. See [[recipe-estimate]] for a full walkthrough. Key tables: `BKQTMSTR` (estimate header), `BKQTLINE` (lines). `QT-B Convert to SO` turns an accepted estimate into a live sales order.\n",
+"QT": """
+## What it does
 
-"RF": "## What it does\n\nRFQ (Request for Quotation) — sends quote requests to multiple vendors and tracks their responses before issuing a PO. See [[recipe-rfq]]. Key tables: `BKPORFQH` (header), `BKPORFQL` (lines/responses). `PO-J Accept RFQ` creates a PO from the winning quote.\n",
+Quotations / Estimating — **not a separate top-level menu module.** This code is
+an alias for the [[module-ES|ES]] Estimates module. Quotes (estimates) are entered
+and managed via the ES menu (ES-A through ES-E).
 
-"RT": "## What it does\n\nReport Templates — the ReportBuilder `.RTM` file engine. All EVO reports are `.RTM` files on the network share under `EVOReports\\`. Reports are designed in `RBDsgnr.exe` (Nevrona ReportBuilder). `FILELOC.B` maps configuration names to `.RTM` filenames. See [[recipe-custom-report]].\n",
+Key tables: `BKESTQT` (6,894 active quotes), `BKESTQTL` (462,727 lines). These
+are byte-for-byte clones of `BKARINV`/`BKARINVL`.
 
-"TA": "## What it does\n\nTools / Admin Utilities — backup, restore, software updates, company setup, and purge operations. Key forms: `TA-O Evo Backups` (local ZIP + optional cloud upload), `TA-P Apply Updates` (.UPD file processor). See [[recipe-backup]] and [[recipe-update-evo]].\n",
+See [[module-ES|ES]] for the full description and workflow.
+""",
 
-"SY": "## What it does\n\nSystem — user administration, access control, and company switching. `SY-A Enter Users` manages login IDs, passwords, access levels, and module restrictions. `SY-B Menu Restrictions` hides specific menu items. `SY-C Add Company` creates a new company. See [[recipe-add-user]], [[recipe-add-company]], [[recipe-switch-company]].\n\nKey table: `BKSYUSER`.\n",
+"RF": """
+## What it does
+
+RFQ (Request for Quotation) — not a standalone top-level menu module, but a
+significant program group (`T7RFQ.RWN`, 103 procs) invoked from within the
+[[module-PO|PO]] and [[module-MR|MR]] modules when requesting vendor quotes
+before issuing a purchase order.
+
+## Workflow
+
+```
+MR-G or PO vendor selection
+  → T7RFQ launched to send quote requests to multiple vendors
+  → vendors respond with prices for one or more quantity breaks
+  → prices recorded in BKRFQ (49f, 10-break cost matrix)
+  → winning vendor selected → PO-J Accept RFQ creates the PO
+```
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKRFQ` | 49 | RFQ header — 10 qty/cost breakpoints per vendor quote |
+| `BKRFQDES` | 5 | RFQ description/address lines |
+| `ISESTDTL` | 203 | Estimate detail tied to RFQ (cost breakdown per component) |
+
+## Integration
+
+- **[[module-PO|PO]]** — PO-J Accept RFQ creates a PO from the winning quote
+- **[[module-MR|MR]]** — MR-G releases planned orders using BKSBVEND + RFQ for sourcing
+- **[[module-ES|ES]]** — ES estimates can trigger RFQ via BKRFQ for vendor pricing
+""",
+
+"RT": """
+## What it does
+
+Report Templates — **not a standalone top-level menu module.** `RT` refers to the
+Nevrona ReportBuilder `.RTM` file format and report engine used throughout EVO.
+
+All EVO reports are `.RTM` files stored on the network share under `EVOReports\\`
+(confirmed path: `\\\\i2s109-solidcrm\\EVOReports\\`). Reports are designed in
+`RBDsgnr.exe` (Nevrona ReportBuilder 5.x).
+
+## How RTM files work
+
+```
+TAS Pro 7 program (.RWN)
+  → RBDsgnr/RBRun engine loaded
+  → FILELOC.B maps config key → RTM filename
+  → RTM file loaded → merged with Btrieve data → printed/previewed
+```
+
+## RTM file anatomy
+
+RTM files are binary Delphi-format streams containing:
+- Report header: title, page size, margins, orientation
+- Band definitions: page header, group header, detail, group footer, page footer, summary
+- Component list: TRBText, TRBDBText, TRBLine, TRBShape, TRBImage (all Delphi class names)
+- Data pipeline: table name, filters, sort order
+
+## Key files
+
+| File | Purpose |
+|------|---------|
+| `RBDsgnr.exe` | ReportBuilder designer (visual report editor) |
+| `FILELOC.B` | Maps EVO config keys to RTM filenames on disk |
+| `EVOReports\\*.RTM` | All report templates (~300+ files) |
+| `T6WOL*.RTM` | Work order listing reports (T6 era) |
+| `T7*.RTM` | Current-era report templates |
+
+Reports are called from TAS Pro programs via `RUNREPORT(configkey)` or equivalent
+procedure call in `.RWN` programs. See [[module-UT|UT]] for report management utilities.
+""",
+
+"TA": """
+## What it does
+
+Tools / Admin Utilities — the EVO system maintenance and administration module.
+Covers data backup/restore, software update application, data purging, company
+setup, and system-wide configuration tasks.
+
+## Menu operations
+
+| Code | Operation | Notes |
+|------|-----------|-------|
+| TA-A | Rebuild Indexes | Rebuilds Btrieve index files for a table (fixes corrupted indexes) |
+| TA-B | Rebuild All Indexes | Bulk index rebuild across all tables |
+| TA-C | Pack Tables | Removes deleted-record slots from Btrieve files |
+| TA-D | Pack All Tables | Bulk pack operation |
+| TA-E | Table Statistics | Counts records, reports file sizes |
+| TA-F | File Conversion | Migrates Btrieve file format versions |
+| TA-G | Initialize Tables | Resets a table to empty (CAUTION: destructive) |
+| TA-H | Table Copy | Copies a table to a backup file |
+| TA-I | Company Setup | Configures company name, address, fiscal year, license |
+| TA-J | Import Data | Processes `.IMP` import definition files |
+| TA-K | Export Data | Exports table data to flat files |
+| TA-L | Purge Data | Deletes old transactions by date cutoff |
+| TA-M | Archive Data | Moves old transactions to archive tables |
+| TA-N | Restore Data | Restores data from backup |
+| TA-O | EVO Backups | Creates ZIP snapshot of all Btrieve data files |
+| TA-P | Apply Updates | Applies `.UPD` patch packages to the database |
+
+## Key concepts
+
+- **Btrieve file repair**: TA-A/B/C/D are the first-line response to any
+  "file error" or "status 22" Btrieve error — index corruption is common.
+- **`.UPD` update files**: binary Btrieve-format patch packages delivered by
+  EVO Support; TA-P reads and applies them. See [[module-UP|UP]] for detail.
+- **Backup strategy**: TA-O creates a local ZIP; for network backup, the
+  `\\\\i2s109-solidcrm\\DBAMFG$` folder should be backed up at OS level.
+
+## Integration
+
+- **[[module-SD|SD]]** — System Defaults overlap with TA-I Company Setup
+- **[[module-SM|SM]]** — System Maintenance overlaps with TA rebuild/pack tools
+- **[[module-PS|PS]]** — Password Security controls who can run TA operations
+""",
+
+"SY": """
+## What it does
+
+System — **not a standalone top-level module in standard EVO.**
+User administration, access control, and company switching are split between:
+
+- **[[module-PS|PS]]** — Password Security: user logins, access levels, module
+  restrictions (`BKSLEVEL`, 422 fields — 5 access levels × ~84 modules).
+  `PS-A Enter Users`, `PS-B Security Levels`.
+- **[[module-SM|SM]]** — System Maintenance: company setup, system-wide
+  parameters, and menu customization.
+- **[[module-SD|SD]]** — System Defaults: company defaults and configuration.
+
+`SY` appears as a shorthand alias in some contexts (e.g., inter-program calls)
+but is not listed as a GROUPS entry in `BKMENUSU.TXT`. When EVO documentation
+or an error message references `SY`, it means the PS/SM/SD cluster.
+
+## Key table
+
+`BKSLEVEL` (422 fields) — security level matrix: each of the 5 access levels
+has a Y/N flag for every function in every module.
+""",
 
 "DE": """
 ## What it does
@@ -1672,13 +1860,67 @@ it creates the FILELOC routing records and `.B<code>` file structure.
 UT-K utilities are bulk data correction tools run after data migrations or errors.
 """,
 
-"LM": "## What it does\n\nLabel Management / Label Printing — prints barcoded labels for inventory items, lot numbers, serial numbers, and shipping. Uses `t7lottag.DFM` (Evo Lot Tagging — Label1/2/3 fields) for lot label printing. Integrates with [[module-LC|LC]] and [[module-HH|HH]].\n",
+"LM": """
+## What it does
 
-"LO": "## What it does\n\nLocations / Bin Management — manages warehouse bin addresses for multi-location inventory. Each bin is a slot in `BKICLOC`. Items can have a default bin in [[module-IN|IN]], and per-bin on-hand is tracked separately from total on-hand.\n",
+Label Management / Label Printing — prints barcoded labels for inventory
+items, lot numbers, serial numbers, and shipping cartons.
 
-"MA": "## What it does\n\nMachine / Asset tracking — records production machinery, maintenance schedules, and downtime in relation to [[module-WC|WC]] work centers. Each machine belongs to a work center and can be targeted in [[module-DC|DC]] labor entries.\n",
+**Note:** LM is not confirmed as a separate top-level BKMENUSU group.
+Label printing is integrated into multiple modules rather than being
+a standalone menu.
 
-"MM": "## What it does\n\nMaintenance Management — preventive and corrective maintenance scheduling for production equipment. Tracks maintenance orders, labor, and parts used on machines in [[module-WC|WC]].\n",
+## Label types and sources
+
+| Label type | Where printed | Form / Program |
+|------------|---------------|----------------|
+| Lot tags | LC or WO receive | `t7lottag.DFM` (Evo Lot Tagging) |
+| Item labels | IN or WC | `t7itemlbl.DFM` (item barcode label) |
+| Shipping labels | SH / SO | part of the SH ship-confirm workflow |
+| Work order traveler | WO | `T6WOLB2.RTM` (WO listing / traveler) |
+
+## Key form: t7lottag.DFM
+
+The `t7lottag.DFM` form (`Evo Lot Tagging`) has three label lines:
+`Label1`, `Label2`, `Label3` — configurable text printed on the lot tag.
+Fields include lot number, item code, quantity, date, and reference.
+
+## Integration
+
+- **[[module-LC|LC]]** — Lot Control: lot labels printed at LC-B Assign Lot Control
+- **[[module-HH|HH]]** — HandHeld: barcode scanning uses labels generated here
+- **[[module-WO|WO]]** — Work Order: WO travelers are printed via ReportBuilder RTM
+- **[[module-SH|SH]]** — Scheduling/Shipping: shipping labels at ship-confirm
+""",
+
+"LO": """
+## What it does
+
+Locations / Bin Management — **not a separate top-level module.** Warehouse bin
+and location management is handled by the [[module-WC|WC]] Warehouse Control module.
+
+`WC-A Enter Warehouse Bin Locations` defines bins in `ISBINLOC`.
+Per-bin on-hand quantities and bin-to-bin transfers are also managed from WC.
+
+See [[module-WC|WC]] for Warehouse Control documentation.
+""",
+
+"MA": """
+## What it does
+
+Machine / Asset tracking — **not a separate top-level module.** Machine master
+records (equipment assigned to work centers) are managed from the
+[[module-RO|RO]] Routing module.
+
+`RO-D Enter Machines` defines machines: machine number, work center, description,
+and capacity. The `MACHINE` table (16 fields) stores the machine master.
+Machines are referenced in routing steps to specify which machine runs each
+operation.
+
+[[module-DC|DC]] Data Collection can log labor entries against specific machines.
+
+See [[module-RO|RO]] for Routing module documentation.
+""",
 
 "PL": """
 ## What it does
@@ -1970,7 +2212,19 @@ queried via SQL/ODBC; only accessible through TAS Pro or the Java CM bridge.
 - **[[module-SA|SA]]** — SA reports can filter by BKCMTERR (territory) and BKCMLEAD (lead source)
 """,
 
-"CP": "## What it does\n\nCredit and Payment processing — handles credit card and alternative payment method processing for customer accounts. Integrates with [[module-AR|AR]] cash receipts.\n",
+"CP": """
+## What it does
+
+Credit and Payment processing — **not a separate top-level module.** Credit card
+and payment processing for customer accounts is handled within the
+[[module-AR|AR]] Accounts Receivable module.
+
+AR-B Enter Cash Receipts processes payments including credit card transactions.
+Credit limit management is in the customer master (`AR-A Enter Customers`,
+`BKARCUST.CRLIMIT`). Credit hold release is in [[module-CR|CR]] Contract Review.
+
+See [[module-AR|AR]] for Accounts Receivable documentation.
+""",
 
 "CR": """
 ## What it does
@@ -2136,7 +2390,19 @@ order specifies fabric, cushion, welt, zipper, and other configurable attributes
 - **[[module-IN|IN]]** — item master `OPT` flag enables the F/O dialog on that item
 """,
 
-"FP": "## What it does\n\nForecast / Planning — planning horizon management for MRP and scheduling. Defines planning buckets (weekly, monthly) and forecast periods.\n",
+"FP": """
+## What it does
+
+Forecast / Planning — **not a separate top-level module.** Sales forecasting
+and planning horizon management are functions within the [[module-MR|MR]]
+MRP (Material Requirements Planning) module.
+
+MR-A Enter MPS Forecast / MR-B Review MPS Forecast manage forecast demand
+quantities by item and period. The planning horizon (buckets, periods) is
+configured in [[module-SD|SD]] System Defaults.
+
+See [[module-MR|MR]] for MRP and forecasting documentation.
+""",
 
 "IC": """
 ## What it does
@@ -2205,11 +2471,69 @@ purchase orders.
   update MTEXCHG rates automatically via ISJAVA task queue
 """,
 
-"IS": "## What it does\n\nISTS Custom — modules and enhancements specific to i2 Systems installations. Forms prefixed with `J7*` or carrying the ISTS enhancement marker (`ASSIGN(\" - ISTS Enhancement MM/DD/YY\")` in the source). Examples include Golding Farms pricing (`T7GFPRICE.DFM`).\n",
+"IS": """
+## What it does
 
-"LW": "## What it does\n\nLottery / Weighted Allocation — specialty module for allocating items across multiple orders using weighted or lottery logic. Used in specific industries (e.g., agricultural distribution) when demand exceeds supply and fair allocation is required.\n",
+ISTS Custom Enhancements — **not a standard EVO top-level module.**
+`IS` is the prefix used for i2 Systems (ISTS) database enhancements and
+custom programs added on top of the standard EVO install.
 
-"PC": "## What it does\n\nProduct Configuration — Features and Options (F/O) engine. Allows configurable items where the customer selects options at order entry time. The F/O dialog launches from SO-A when an item has a configuration. See `T7FO*.DFM` forms.\n",
+## What lives under IS*
+
+| Family | Description |
+|--------|-------------|
+| `ISAP*` | AP enhancements (11 tables) |
+| `ISAR*` | AR enhancements (22 tables) |
+| `ISES*` | Estimating enhancements (7 tables; ISESTAQT=5,816 archived quotes) |
+| `ISSO*` | SO enhancements (9 tables) |
+| `ISSR*` | Service/RMA (10 tables — ISRMAI, ISRMAINV, etc.) |
+| `ISWO*` | WO enhancements (6 tables) |
+| `ISGL*` | GL enhancements (6 tables) |
+| `ISPR*` | Payroll enhancements (5 tables) |
+| `ISPO*` | PO enhancements (5 tables) |
+| `ISFO*` | Features/Options enhancements (5 tables) |
+| `ISQC*` | QC enhancements (3 tables) |
+| `ISIC*` | Inventory cycle enhancements (4 tables) |
+| `ISBINLOC` | Warehouse bin locations (used by [[module-WC|WC]]) |
+
+## Custom programs
+
+Programs with `J7` prefix or `ASSIGN(" - ISTS Enhancement MM/DD/YY")` in source
+are i2 Systems customizations. Example: `T7GFPRICE.DFM` (Golding Farms pricing).
+
+The IS table family is fully accessible via Pervasive PSQL ODBC (unlike BKCM* tables).
+""",
+
+"LW": """
+## What it does
+
+Lottery / Weighted Allocation — specialty allocation module. When demand for
+a lot-controlled or supply-constrained item exceeds available quantity, LW
+provides a weighted or lottery-based fair-allocation mechanism across open
+sales orders.
+
+**Not confirmed as a top-level menu module in BKMENUSU.TXT.** This may be a
+site-specific or optional module installed at select customers. Not observed
+in the i2 Systems EVO instance.
+
+If available, the LW module would integrate with [[module-SO|SO]] Sales Orders
+and [[module-LC|LC]] Lot Control to allocate lot quantities across competing orders.
+
+*Status: unverified — module presence at i2 is unknown.*
+""",
+
+"PC": """
+## What it does
+
+Product Configuration — **not a separate top-level module.** Product configuration
+in EVO is the [[module-FO|FO]] Features and Options module.
+
+`FO-A` defines features and option sets for configurable items. When a configured
+item is entered on a Sales Order, the F/O dialog (launched from `SO-A`) presents
+the option choices and builds the item's configuration record.
+
+See [[module-FO|FO]] for the full Features and Options module documentation.
+""",
 
 "QU": """
 ## What it does
@@ -2245,19 +2569,125 @@ JDBC. This is the only user-facing ad-hoc SQL interface in EVO.
 - **[[module-RT|RT]]** — QU-B/C use calendar/schedule reports built on RTM templates
 """,
 
-"AB": "## What it does\n\nAddress Book — shared contact management for customers, vendors, and other entities. Provides a centralized repository of addresses, phone numbers, and contacts referenced by AR, AP, and SO modules.\n",
+"AB": """
+## What it does
 
-"AC": "## What it does\n\nAccounting Consolidation — multi-company GL consolidation. Rolls up subsidiary company financials into a parent company for consolidated financial statements. Works with [[module-AM|AM]] period-end processing.\n",
+Address Book — **not a separate top-level module.** A shared address and
+contact repository is provided by the [[module-CM|CM]] Contact Master module
+(BKCM* family, 46 tables).
 
-"DI": "## What it does\n\nDistribution / Drop-Ship — manages drop-ship order flows where PO quantities ship directly from vendor to customer without passing through your warehouse. Links SO lines to PO lines via `BKSOPO`.\n",
+Customer addresses are managed in [[module-AR|AR]] (`AR-A`, `BKARCUST`).
+Vendor addresses are in [[module-AP|AP]] (`AP-A`, `BKAPVEND`).
+Ship-to addresses for customers are sub-records under BKARCUST.
 
-"EX": "## What it does\n\nExport / Exchange — data export utilities for sending EVO data to external systems (accounting interfaces, warehouse management, etc.). Produces formatted output files. See [[recipe-export-csv]].\n",
+The Contact Master (CM) module provides the unified contact directory spanning
+customers, prospects, and companies. See [[module-CM|CM]] for full documentation.
+""",
 
-"MM": "## What it does\n\nMaterial Management — broader material planning and control functions extending MRP. Manages safety stock, reorder points, and min/max replenishment outside of the full MRP engine.\n",
+"AC": """
+## What it does
 
-"UM": "## What it does\n\nUnit of Measure Conversion — manages UOM conversion factors between purchasing UOM, stocking UOM, and selling UOM. Ensures quantities are correctly translated when a vendor sells in cases but you stock in each.\n",
+Accounting Consolidation — **not a separate top-level module.** Multi-company
+GL consolidation is performed from the [[module-AM|AM]] Accounting Management
+module.
 
-"UP": "## What it does\n\nUpdates / Patches — the software update distribution and application subsystem. `.UPD` files are Btrieve-format patch packages applied by `TA-P`. See [[recipe-update-evo]].\n",
+`AM-G Consolidate Financials` rolls up subsidiary company trial balances into
+a parent company for consolidated financial statements. The [[module-IM|IM]]
+International Module handles multi-currency translation adjustments before
+consolidation.
+
+See [[module-AM|AM]] for Accounting Management documentation.
+""",
+
+"DI": """
+## What it does
+
+Distribution / Drop-Ship — **not a separate top-level module.** Drop-ship order
+management (where a vendor ships directly to the customer) is handled within
+[[module-SO|SO]] Sales Orders and [[module-PO|PO]] Purchase Orders.
+
+When a SO line is flagged as drop-ship:
+1. SO-A marks the line with the drop-ship flag
+2. PO is generated linked to that SO line via `BKSOPO` (SO/PO link table)
+3. The vendor ships to the customer address from the SO — goods never enter your warehouse
+4. AP invoice closes the PO; AR invoice closes the SO
+
+See [[module-SO|SO]] for drop-ship sales order entry and [[module-PO|PO]] for the
+linked purchase order workflow.
+""",
+
+"EX": """
+## What it does
+
+Export / Exchange — **not a standalone top-level module.** Data export to
+external systems is a function available across multiple EVO modules.
+
+Key export mechanisms:
+- **[[module-DE|DE]]** Data Exchange — the primary module for structured
+  data interchange (EDI, flat-file import/export definitions using `.IMP` files)
+- **[[module-TA|TA]]** Tools Admin — `TA-K Export Data` exports raw table
+  contents to flat files
+- **[[module-QU|QU]]** Queries & Reports — `QU-F Query Executor` allows
+  ad-hoc SQL output via `queryexecute.rwn` (Java JDBC)
+
+The DE module handles integration-oriented export (trading partner EDI,
+formatted interfaces). Use TA-K for simple data dumps.
+""",
+
+"MM": """
+## What it does
+
+Material Management — **not a separate top-level module.** Safety stock,
+reorder points, and min/max replenishment planning are managed within the
+[[module-MR|MR]] MRP module and [[module-IN|IN]] Inventory.
+
+- `IN-A Enter Items` stores `BKICMSTR.REORDER_PT` and `BKICMSTR.SAFETY_STK`
+- MR-F runs MRP and generates planned orders based on reorder points when
+  demand-driven MRP is not being used
+- Min/max replenishment (order-up-to logic) uses `BKICMSTR.ORDER_QTY`
+
+For full material requirements planning, see [[module-MR|MR]].
+For item-level safety stock and reorder point setup, see [[module-IN|IN]].
+""",
+
+"UM": """
+## What it does
+
+Unit of Measure Conversion — **not a separate top-level module.** UOM
+conversion factors are defined within the [[module-IN|IN]] Inventory module.
+
+`IN-A Enter Items` stores `BKICMSTR.PURCH_UM` (purchasing UOM), `STOCK_UM`
+(stocking UOM), and `SELL_UM` (selling UOM) plus the conversion factors
+between them. System-wide UOM codes are defined in [[module-SD|SD]] System Defaults.
+
+See [[module-IN|IN]] for Inventory and [[module-SD|SD]] for UOM code setup.
+""",
+
+"UP": """
+## What it does
+
+Updates / Patches — **not a separate top-level module.** EVO software update
+application is handled by [[module-TA|TA]] Tools Admin, `TA-P Apply Updates`.
+
+## How EVO updates work
+
+EVO Support delivers patch packages as `.UPD` files — Btrieve-format files
+containing table modifications, new records, or program replacements.
+
+```
+TA-P Apply Updates
+  → browse to .UPD file on disk
+  → TA-P reads Btrieve records from .UPD
+  → applies each record to the target table
+  → logs which updates were applied (prevents double-apply)
+```
+
+Network share programs (`.RWN`, `.RTM`, `.DFM`) are updated by Support directly
+copying new versions to `\\\\i2s109-solidcrm\\DBAMFG$\\` — no `.UPD` needed for
+program files, only for database-structure changes.
+
+See [[module-TA|TA]] for the full Tools Admin module including TA-P.
+""",
 
 "US": """
 ## What it does
@@ -2289,6 +2719,19 @@ definition table) per-user.
 - **[[module-SY|SY]]** — SY-A manages security levels and module access; US manages personal prefs
 """,
 
-"YS": "## What it does\n\nYear-end / System — year-end processing utilities beyond [[module-AM|AM]]. Handles special year-end tasks: 1099 generation, W-2 reporting (if EVO handles payroll), and fiscal-year archive operations. See [[recipe-year-end-close]] and [[recipe-1099]].\n",
+"YS": """
+## What it does
+
+Year-end / System — **not a separate top-level module.** Fiscal year-end
+processing is handled by the [[module-AM|AM]] Accounting Management module.
+
+`AM-B Fiscal Year End` closes the fiscal year: rolls forward retained earnings,
+zeroes income statement accounts, creates the opening balance for the new year.
+
+1099 generation (for vendor payments) is in [[module-AP|AP]].
+W-2/payroll year-end (if using EVO payroll) is in [[module-PL|PL]].
+
+See [[module-AM|AM]] for period-end and year-end procedures.
+""",
 
 }
