@@ -759,26 +759,39 @@ TRXNTYPE, JOURNAL (GL journal batch), WOPRE+WOSUF (work order number).
 
 | Type | Count | Likely source module |
 |------|------:|----------------------|
-| `I` | 1,138,587 | Inventory transaction (IN/IC) |
+| `I` | 1,138,587 | Inventory transaction (IN/IC) — part+qty+amount |
 | `S` | 122,506 | Shipment / Sales Order (SO) |
-| `P` | 117,526 | Purchase / Purchase Order (PO) |
-| `W` | 108,226 | Work Order (WO) |
-| `5` | 100,071 | Unknown numeric subtype |
-| `L` | 96,030 | Labor / LW module |
-| `A` | 61,524 | Assembly / BOM (BM) |
-| `4` | 28,651 | Unknown numeric subtype |
-| `6` | 25,794 | Unknown numeric subtype |
-| `8` | 22,804 | Unknown numeric subtype |
-| `J` | 365 | Journal entry (GL-B) |
-| `O` | 277 | Other / miscellaneous |
-| `F` | 233 | Financial (possibly FA fixed assets) |
-| `D` | 151 | Direct / disbursement |
-| `7` | 14 | Unknown numeric subtype |
-| `E` | 10 | Expense |
+| `P` | 117,526 | Purchase / Purchase Order (PO receipt) |
+| `W` | 108,226 | Work Order material issue (WO) |
+| `5` | 100,071 | **SO Revenue (parts)** — journal=RS, part+qty+SO#, customer name |
+| `L` | 96,030 | Labor posting (DC/LW module) |
+| `A` | 61,524 | **Inventory Adjustment** — journal=OT, part, qty, desc="Adjustments to Stock"; amt=0 |
+| `4` | 28,651 | **WO WIP Variance** — journal=WO, desc="Close WO - WIP Variance", has part+WO#; qty=0 |
+| `6` | 25,794 | **SO Revenue (non-part)** — journal=RS, no part, SO# present (service/freight/misc) |
+| `8` | 22,804 | **AR Check Receipt** — journal=CR, check# in BKGLX_POINVC ("Ck# XXXX"), customer name |
+| `J` | 365 | **Subcontract/Outside Process** — journal=RP, part="SUB-CONTRACTOR", WO# present |
+| `O` | 277 | **AR Other Receipt** — journal=CR, BKGLX_POINVC="Op…" prefix, large amounts |
+| `F` | 233 | **Fixed Overhead** — journal=WO, desc="Fixed OH on Work in Process", part+WO# |
+| `D` | 151 | **Customer Deposit** — journal=CR, BKGLX_POINVC="Dp…" prefix, customer name |
+| `7` | 14 | **SO Return/Credit (non-part)** — journal=RS, rare, recent SO#s |
+| `E` | 10 | **WO Backout/Reversal** — journal=WO, part+WO#; appears in pairs (original+Backout:) |
 
 **Key insight:** Inventory transactions dominate (62% of all cross-ref rows) — every IC transaction
-generates a BKGLX row for drill-back. Numeric type codes ('4','5','6','7','8') are module-specific
-subtypes not yet mapped to letter codes; require T7-era RWN decryption to identify definitively.
+generates a BKGLX row for drill-back.
+
+**Pass 432 (2026-06-30) — ALL 16 TRXNTYPE codes now identified from live BKGLX data** (journal code +
+description + document-number fields — no RWN decryption needed):
+- `'4'` = WO WIP Variance: journal=WO, "Close WO - WIP Variance", posted on WO close when actual cost ≠ standard
+- `'5'` = SO Revenue (parts): journal=RS; SO invoice lines for products with part+qty
+- `'6'` = SO Revenue (non-part): journal=RS; service/freight/misc charges on SO invoices, no part
+- `'7'` = SO Return/Credit (non-part): journal=RS; rare (14 rows), credit memo non-part lines
+- `'8'` = AR Check Receipt: journal=CR; check# in BKGLX_POINVC ("Ck# XXXX"), customer payment
+- `'A'` = Inventory Adjustment: journal=OT; desc="Adjustments to Stock"; qty movement, amt=0
+- `'D'` = Customer Deposit: journal=CR; "Dp…" prefix in BKGLX_POINVC; AR deposit receipt
+- `'E'` = WO Backout/Reversal: journal=WO; appears in debit/credit pairs with desc="Backout:"
+- `'F'` = Fixed Overhead: journal=WO; desc="Fixed OH on Work in Process"; WO overhead absorption
+- `'J'` = Subcontract/Outside Process: journal=RP; part="SUB-CONTRACTOR"; outside-process cost on WO
+- `'O'` = AR Other Receipt: journal=CR; "Op…" prefix in BKGLX_POINVC; large-amount AR payments
 
 ## Live Data Analysis (Pass 421, 2026-06-30)
 

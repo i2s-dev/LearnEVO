@@ -375,7 +375,12 @@ All 9 tables confirmed present in the 659-table DDF schema (checked against tier
 - ✅ **BKARCUST = 4,401 customers.** Market segments: MAR=1,335 / ARCH=1,242 / ELEV=362 / INDS=209. Top state: FL=614 (marine customers).
 - ✅ **BKARINV = 3,692 open invoices; BKARHINV = 95,982 archived (1990–2026).** AR archiving is heavily used — 96% of all invoices are archived. INVCD: Y=active, N=paid/credit, X=unknown status.
 - ✅ **BKAPVEND = 3,166 vendors; BKAPINVT = 82,867 invoice headers.** Type I=invoice (57,479) / P=PO receipt (23,068) / C=credit (2,229). BKAPCHKF=0 (staging table, cleared after posting).
-- ✅ **BKGLX_TRXNTYPE numeric codes ('4','5','6','7','8') remain unidentified.** Require T7-era RWN decryption to map.
+- ✅ **BKGLX_TRXNTYPE numeric codes ('4','5','6','7','8') RESOLVED Pass 432 (2026-06-30)** — identified from BKGLX journal code + description + document-number fields:
+  - `'4'` = **WO WIP Variance** — journal=`WO`, desc=`Close WO - WIP Variance`, has part+WO#; qty=0 (dollar-only); 28,651 rows (2004–present). Posted when WO closes and actual cost ≠ standard cost.
+  - `'5'` = **SO Revenue (parts)** — journal=`RS`, has part+qty+SO#, customer name in desc; 100,071 rows. SO invoice line items for parts/products.
+  - `'6'` = **SO Revenue (non-part)** — journal=`RS`, no part, SO# present, customer name; 25,794 rows. Service, freight, or misc charges on SO invoices.
+  - `'7'` = **SO Return/Credit (non-part)** — journal=`RS`, no part, SO# present; 14 rows (rare). Credit memo non-part lines.
+  - `'8'` = **AR Cash Receipt** — journal=`CR`, no part, no SO, check# in BKGLX_POINVC, customer name; 22,804 rows. Customer payment posting.
 
 ---
 
