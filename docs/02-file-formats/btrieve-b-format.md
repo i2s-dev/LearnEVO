@@ -362,6 +362,138 @@ fixed-length — consistent with the Btrieve fixed-record-size model.
 
 ---
 
+## Btrieve status codes and TAS Pro I/O error handling (Pass 408, 2026-06-30)
+
+Source: `samples/errmsg_clean.txt` (extracted from `samples/errmsg.dbf`, TAS Pro 5.0 runtime
+error message table — same messages used by TAS Pro 7 runtime).
+
+### TAS Pro error codes → Btrieve status code mapping
+
+TAS Pro error codes 200–225 are the localized messages for Btrieve engine status codes.
+The `@` in the message is a runtime substitution for the file name.
+
+| TAS err | Btrieve status | Message summary |
+|---------|---------------|-----------------|
+| 200 | 1 | Physical I/O error during disk read/write |
+| 201 | 4 | File not open — must call `open` first |
+| 202 | 5 | Duplicate key — key value already exists, duplicates not allowed |
+| 203 | 6 | Key changed during traversal — tried `next`/`prev` after modifying the key field |
+| 204 | 10 | Attempt to modify a non-modifiable key segment |
+| 205 | 11 | Pre-image file error — cannot access/create/open the transaction log |
+| 206 | 12 | Pre-image disk full |
+| 207 | 13 | Unrecoverable error — restore from backup |
+| 208 | 14 | Invalid file format — not a Btrieve file; check `type` in `open` |
+| 209 | 15 | Pre-image not enabled — `/T` transaction trailer required |
+| 210 | 16 | Nested transaction — a prior `BEGIN_TRANS` must be `COMMIT`-ed first |
+| 211 | 17 | Transaction process error — disk probably full; restore from backup |
+| 212 | 18 | No active transaction — `ROLLBACK_TRANS` requires prior `BEGIN_TRANS` |
+| 213 | 19 | Transaction file limit exceeded — max 12 files per transaction |
+| 214 | 20 | File is read-only — no write or delete permitted |
+| 215 | 21 | Buffer overflow — too many open files; adjust `/M` memory option |
+| 216 | 22 | Owner already set for this file |
+| 217 | 23 | Wrong owner name — file cannot be opened |
+| 218 | 24 | Expanded memory manager error |
+| 219 | 81 | Write-write conflict — record changed by another user since last read |
+| 220 | 83 | Lock table full — adjust `/L` in Btrieve loader |
+| 221 | 84 | Record was deleted by another user — use locking to prevent |
+| 222 | 85 | Transaction data mismatch — record must be read within its own transaction |
+| 223 | 86 | Too many open files (DOS `FILES=` limit) |
+| 225 | 90 | DOS access restriction on file/record |
+
+**Notes:**
+- Status codes 25–80 are Btrieve internal states not surfaced to the TAS application layer.
+- Status codes 82 and 88–89 are not mapped (gaps in the 220–225 range).
+- These correspond to TAS Pro 5.0 / Btrieve 5.x. Btrieve 6.x+ (used in EvoERP) added status codes 90+ for Pervasive network and security errors; the TAS 7 runtime added handling for these beyond the errmsg.dbf table.
+
+### TAS Pro runtime I/O status codes (not Btrieve engine codes)
+
+TAS Pro adds its own layer of runtime status messages for file operation outcomes that Btrieve signals but TAS interprets:
+
+| TAS err | Trigger | Message |
+|---------|---------|---------|
+| 265 | `find` / `save` lock wait | "The record in file: @ is locked by another user." (silent — no retry prompt) |
+| 266 | `find` / `save` lock wait | "The record in file: @ is locked by another user. Do you wish to try again? (Y/N)" |
+| 268 | `scan` / `find N` | "The search reached the end of the file." |
+| 269 | `find P` beyond first | "The search reached the beginning of the file." |
+| 270 | `find M/E/K` no match | "The record was not found." |
+| 271 | `find` on empty file | "There are no records in the file." |
+| 272 | `delete` with no active record | "There is no active record in the file so you cannot delete it." |
+
+Error 265 is a "soft lock" (wait silently), 266 is interactive (asks user to retry). The
+program controls which variant appears via TAS Pro's file open lock mode parameter.
+
+### `flerr()` — programmatic error checking
+
+TAS Pro's `flerr(fnum('TABLENAME'))` function returns the last Btrieve status code for a
+given file handle. Used in two patterns:
+
+**Explicit check after find/save:**
+```
+find M srch BKICMSTR = MTMRP.PARTNO
+if flerr(fnum('BKICMSTR')) <> 0
+    ; handle not-found or I/O error
+endif
+```
+
+**`ifna` — implicit not-found handling:**
+TAS Pro's `ifna LABEL` clause on a find statement jumps to LABEL when the result is
+"record not found" (Btrieve status 9 = end of file, or status 4 equivalent).
+`ifna` is syntactic sugar for `if flerr() = not-found-status then goto LABEL`.
+No explicit `flerr()` call needed.
+
+**`err LABEL`** — jumps to LABEL on ANY I/O error (status <> 0), including locking errors.
+Combined with `ifna` for full coverage:
+```
+find M srch BKBMMSTR = INVNUM ifna NoRecord err IOError
+```
+
+### Btrieve operation codes (standard reference)
+
+The `flerr()` status reflects the result of the most recent Btrieve operation. Standard
+Btrieve operation codes that TAS Pro invokes internally:
+
+| Op code | Btrieve operation | TAS Pro keyword |
+|---------|------------------|-----------------|
+| 0 | Open | `open TABLENAME ...` |
+| 1 | Close | `close TABLENAME` |
+| 2 | Insert | `save TABLENAME` (new record) |
+| 3 | Update | `save TABLENAME` (existing record) |
+| 4 | Delete | `delete TABLENAME` |
+| 5 | Get Equal | `find E` |
+| 6 | Get Next | `find N` or `scan` loop iteration |
+| 7 | Get Previous | `find P` |
+| 8 | Get Greater or Equal | `find M` (by match) |
+| 9 | Get Greater Than | (TAS `find A` — absolute position) |
+| 10 | Get Less or Equal | (reverse-direction find) |
+| 11 | Get Less Than | (reverse-direction find) |
+| 12 | Get First | `find F` |
+| 13 | Get Last | `find L` |
+| 22 | Get by percentage | (not used by TAS Pro) |
+| 28 | Get Direct | (TAS `find A` — direct page access) |
+| 33 | Begin transaction | `BEGIN_TRANS` |
+| 34 | End transaction (commit) | `COMMIT_TRANS` |
+| 35 | Abort transaction (rollback) | `ROLLBACK_TRANS` |
+| 30 | Set owner | (file security — not used in EvoERP) |
+| 31 | Clear owner | (file security) |
+
+**Lock modes (TAS `open` statement flag):**
+TAS Pro opens files with a lock flag that determines how concurrent access is handled:
+
+| Open flag | Btrieve equivalent | Behavior |
+|-----------|--------------------|---------|
+| (default) | No lock | Read/write with retry on lock conflict |
+| `type R` | Read-only | No writes allowed; no lock conflicts |
+| (auto-lock) | Record lock on read | Prevents write-write conflict (status 81) |
+| `scope R` in scan | Bounded key range | Limits scan to within a key range |
+
+When a lock conflict occurs (status 81 or 83), TAS Pro either:
+1. Displays error 265 (silent — program handles retry in code), or
+2. Displays error 266 with Y/N prompt (user decides whether to retry)
+
+The choice is controlled by the calling program's error-handling setup before the `find`.
+
+---
+
 ## Things still to verify
 
 - Full FCR (File Control Record) byte layout — partially decoded from BKICMSTR.B and

@@ -298,7 +298,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [x] ✅ OCCURS.DDF: ~150+ occurrence records confirmed active; dual FCR (pages 0+8) confirmed — **C: 85/100**; **Pass344**: OCCURS.DDF confirmed non-empty (distinct from empty RELATE/TRIGGER/PROC/VIEW/ATTRIB); 150+ occurrence records = arrays/repeating fields in Btrieve tables; dual FCR (page 0 primary + page 8 alternate) confirmed; Btrieve scorecard C:90 — **C: 90/100**
 - [ ] ⬜ Btrieve page layout at full byte level (complete FCR field map)
 - [ ] ⬜ Index structure decoded from `.mdx` companion
-- [ ] ⬜ Low-level I/O operations (Btrieve status codes, operation codes) documented
+- [x] ✅ **Pass 408 (2026-06-30): Low-level I/O operations documented** — TAS Pro error codes 200-225 mapped to Btrieve status codes 1-90 (from errmsg.dbf); runtime I/O codes 265-272 (end-of-file, not-found, locked, begin/end); `flerr()` usage patterns + `ifna`/`err LABEL` error handling; Btrieve operation code reference (ops 0-35) + TAS keyword mapping; open lock modes documented; in btrieve-b-format.md Pass408 section — **C: 78/100** (errmsg.dbf confirmed; Btrieve op codes are standard xBase knowledge; exact TAS Pro lock mode encoding not directly observed)
 
 ### 2.8 `.IMP` — Import Definition
 - [x] ✅ **Pass325 (2026-06-26): BINARY format confirmed — NOT plaintext** — 442-byte fixed record: bytes 0–39 = source filename (space-padded), 40–41 = 2-char mode code (SC/DC/RC/RIC), 42–241 = Map1 (100 × uint16 LE, import column map: Map1[N-1] = source CSV column for target field N, 0=skip), 242–441 = Map2 (100 × uint16 LE, export column map; Map2[99]=0x0A0D=CRLF record-terminator sentinel); empty (0 byte) files = no import configured; prior "plaintext" characterization was wrong — **C: 85/100 → 92/100**
