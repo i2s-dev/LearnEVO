@@ -1,6 +1,6 @@
 # `.SRC` — TAS Professional 4GL Source
 
-Status: draft. Based on the seven `.SRC` files present on the deployment
+Status: draft | updated Pass 404 2026-06-30. Based on the seven `.SRC` files present on the deployment
 share (`BKAWLB`, `BKDCA`, `BKLME`, `BKMRF`, `BKROA`, `Bkaph`, `Bkapha`) —
 copies in `../../samples/src/`.
 
@@ -431,6 +431,92 @@ All confirmed from BKMRF.SRC and BKROA.SRC:
 String concatenation uses both `*` and `+` — both work, `*` is the traditional form.
 
 Empty string literal: `""` (double-quote pair). The result of a `just()` / `str()` call can be assigned back and compared to `""`.
+
+### Expression precedence (Pass 404 — confirmed from BKROA/BKMRF/BKAWLB/BKDCA source analysis)
+
+TAS Pro 4GL uses a precedence hierarchy consistent with xBase/Clipper family languages.
+Confirmed from analysis of all 7 `.SRC` files; mixed `.a.`/`.o.` in the same expression
+was not observed (see note below).
+
+| Level | Operators | Notes |
+|-------|-----------|-------|
+| 1 (highest) | `()` | Parenthesized grouping. Confirmed in `pre (inc.all.class = 'N' .a. num.full < 6)`. |
+| 2 | `*`, `/` | Multiplication, division. |
+| 3 | `+`, `-` | Addition, subtraction, string concatenation. |
+| 4 | `=`, `<>`, `<`, `>`, `<=`, `>=`, `$` | Comparisons and substring test. All at same level. |
+| 5 | `.n.` | Unary NOT — always prefix; applies to the immediately following operand. |
+| 6 | `.a.` | Logical AND. |
+| 7 (lowest) | `.o.` | Logical OR. |
+
+**Key observations from source:**
+- `.n.` (NOT) is always used as `if .n. windows()`, `sloop_if .n. TYPE $ 'FAMNB'`, etc. —
+  it precedes a single operand (function call, comparison, or `$` expression). It is
+  **never** found wrapping a compound boolean expression without parentheses, which is
+  consistent with it being a high-precedence unary prefix.
+- `.a.` appears in chained form (`A .a. B .a. C`) but never mixed with `.o.` in the
+  same expression in any of the 7 SRC files. AND-before-OR precedence (level 6/7) is
+  inferred from the xBase family standard, not directly observable here.
+- `$` (in-set / substring) behaves at the comparison level:
+  `if '-' $ MTMRP.ORDER .o. MTMRP.EXTRA = 'PURCHASE ORDER'` — `$` result is OR'd with
+  an `=` comparison, same as pairing two `=` tests.
+- Parentheses are always available: `pre (cond .a. cond)` confirms grouping syntax.
+- **No ternary operator.** Use `iif(cond, a, b)` as the inline conditional (documented
+  in the built-in functions section).
+- **No short-circuit guarantee** documented; assume full evaluation.
+
+### `scan` statement — full syntax (Pass 404)
+
+`scan` is the primary cursor-loop for Btrieve tables. Heavily used in BKMRF.SRC and BKROA.SRC.
+
+```tas
+scan TABLENAME key KEYFIELD start START_VAL [, START_VAL2, ...]
+     [for FILTER_EXPR]
+     [while GUARD_EXPR]
+     [scope R]
+   ; loop body
+   sloop_if SKIP_CONDITION   ; skip (continue) this iteration
+   sexit_if EXIT_CONDITION   ; break out of the scan loop
+ends
+```
+
+| Clause | Meaning |
+|--------|---------|
+| `key KEYFIELD` | Use this index for the scan. |
+| `start VAL` | Starting key value. `''` = first record. Composite keys: `start K1, K2!` (the `!` terminates the key). |
+| `for EXPR` | Initial filter — skip records where EXPR is false (evaluated at start-of-scan positioning). |
+| `while EXPR` | Termination guard — exit loop when EXPR becomes false. Used to bound scans by a parent-key value. |
+| `scope R` | Reverse — scan in reverse key order. |
+| `sloop_if COND` | Continue (skip to next record) if COND is true. |
+| `sexit_if COND` | Break out of the scan loop if COND is true. |
+| `ends` | End of scan block. |
+
+Examples from BKMRF.SRC:
+```tas
+;Scan item master where MRP=Y
+scan MTICMSTR key MTIC.PROD.CODE start '' for MTIC.PROD.MRP = "Y"
+    sloop_if .n. MTIC.PROD.TYPE $ inc.types2    ;skip if type not in allowed set
+    sloop_if .n. MTIC.PROD.TYPE $ 'FAMNB'        ;skip phantom/non-MRP types
+    ;... process record ...
+ends
+
+;Scan MRP records for a single part (bounded by parent key)
+scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE, 0 while MTMRP.PARTNO = MTIC.PROD.CODE
+    sexit_if TEMP.LOC <> CREATE.RECNO            ;exit if wrong record
+    ;... process record ...
+ends
+
+;Scan BOM backward (reverse key order)
+scan BKBMMSTR key BKBM.KEY start PARENT_PART, 0!, "" while BKBM.PARENT = PARENT_PART
+    ;... process BOM line ...
+ends
+```
+
+**Handle-based scan** (`scan @handle`): uses a file opened by handle via `openv`. Seen in
+BKDCA.SRC: `scan @dcPlab key lab.emp`. Identical clause syntax; terminates with `ends`.
+
+**Scan vs. `while`:** Simple `while` loops iterate in-memory logic; `scan` is the
+Btrieve-cursor form. Both support `sexit_if` / `sloop_if`. `while` loops use `exit` (not
+`sexit_if`) to break.
 
 ### Full variable types
 
