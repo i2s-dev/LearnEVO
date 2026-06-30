@@ -246,6 +246,44 @@ stored per-user or per-workstation, not on this share).
 - Java connection parameters source: **`jdbc.ini`** text file (not Windows registry) ✅
 - ISJAVA table schema: IS_JAVA_UID + IS_JAVA_DATE + IS_JAVA_PARAM[1..25] ✅
 
+## ISJAVA live data analysis (Pass 412, 2026-06-30)
+
+Live ISJAVA records queried via ODBC (DSN=DBA). Results:
+
+**Record count:** 1,774 records spanning 2021-12-10 to 2025-02-03.
+Records are **retained permanently** — this is an audit log, not a cleared queue.
+
+**PARAM_1 distribution** (only parameter actually used — PARAM_2..25 are all empty):
+
+| PARAM_1 | Count | Likely task type |
+|---------|------:|-----------------|
+| `1` | 1,407 | Most common SA analysis (likely SalesRepSummary) |
+| `2` | 345 | Second SA analysis type (likely ProfitByInvoice) |
+| `3` | 14 | Rare SA type (ItemClass?) |
+| `0` | 5 | Internal/cleanup sentinel (UID=`-i`) |
+| `4` | 2 | Very rare (CustomerClass?) |
+| `5` | 1 | Very rare (MultiYearSales?) |
+
+**UID format:** `<USERNAME><HHMMSS><A|P><YYYYMMDD>`
+- `USERNAME` = EvoERP user code (up to ~10 chars)
+- `HHMMSS` = time in 12-hour HH:MM:SS format
+- `A` or `P` = AM or PM
+- `YYYYMMDD` = date
+
+Examples:
+- `BSCHIBI010308P20240523` = user BSCHIBI, 1:03:08 PM, 2024-05-23
+- `ASTEMPIEN015256P20230403` = user ASTEMPIEN, 1:52:56 PM, 2023-04-03
+- `-i` = internal record (startup/cleanup sentinel written by EvoPVT.jar itself)
+
+**Top 5 users by task count:**
+DFRENETTE(201), BSCHIBI(189), STEVESP(176), JCHARETTE(171), RONEILL(160)
+
+**Key insight:** Since PARAM_2..25 are always empty, each Java task submission uses
+only `PARAM_1` as the task type discriminator. EvoPVT.jar reads `PARAM_1` and dispatches
+to the appropriate SA JAR. The task type → JAR mapping (1=SalesRepSummary, 2=ProfitByInvoice,
+3=ItemClass, 4=CustomerClass, 5=MultiYearSales) is confirmed by the JAR inventory but
+the exact number-to-JAR assignment requires reading the TAS program that writes `PARAM_1`.
+
 ## Resolved open questions (Pass 390 2026-06-30)
 
 - ISJAVA IS in DDF (file_id=437) — prior "not in DDF" was wrong ✅
@@ -253,3 +291,10 @@ stored per-user or per-workstation, not on this share).
 - Two-tier TAS access: 9 programs queue tasks (JAVA.H + IS.JAVA.*), 14 programs path-only ✅
 - ISJOB = separate job/project table (9f, file_id=416, T7SMPF primary editor) ✅
 - EVOReports folder = informal user workspace, not print-to-file output ✅
+
+## Resolved open questions (Pass 412, 2026-06-30)
+
+- ISJAVA has 1,774 live records (permanent audit log, not a cleared queue) ✅
+- UID format: `<USER><HHMMSS><A|P><YYYYMMDD>` (12-hour AM/PM encoded) ✅
+- PARAM_1 = task type (1-5); PARAM_2..25 always empty in this installation ✅
+- 5 internal `-i` records with PARAM_1=`0` = EvoPVT.jar startup sentinel ✅

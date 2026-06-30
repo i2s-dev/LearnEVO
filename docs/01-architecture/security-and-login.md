@@ -8,24 +8,28 @@ running trace.
 
 ### Table — `AHSYLOG`
 
-Authoritative per-user access record. Schema (from extracted DDF):
+DDF schema confirmed (Pass 412, 2026-06-30): exists in Pervasive DDF (Table ID=6), 23 fields.
+**This table has 0 records in this installation.** It is a legacy schema artifact from the
+BK/TAS Pro 6 era that is never populated in the T7 EvoERP deployment.
 
-| # | Field | Type | Size |
-|---|-------|------|-----:|
-| 1 | `AHSY_USER_LEVL` | STRING | 2 |
-| 2 | `AHSY_USER_MENU` | STRING | 4 |
-| 3 | `AHSY_USER_CTRL` | STRING | 1 |
-| 4-23 | `AHSY_USER_ACCES_1` … `AHSY_USER_ACCES_20` | STRING | 1 each |
+Schema (from DDF, all STRING dtype=0):
 
-Meaning (inferred):
-- `AHSY_USER_LEVL` — 2-char role/level code (e.g. `AD`, `SU`, `MG`).
-- `AHSY_USER_MENU` — 4-char starting-menu code for this user (e.g.
-  `MAIN` / `SMDF`).
-- `AHSY_USER_CTRL` — 1-char control flag (active/disabled / admin?).
-- `AHSY_USER_ACCES_1..20` — **20 per-module permission flags.** Each
-  is one byte — probably `'Y'` / `'N'` / possibly `'R'` (read-only).
-  Likely index corresponds to module order (AR=1, AP=2, IN=3, SO=4, …
-  — to confirm).
+| # | Field | Offset | Size |
+|---|-------|-------:|-----:|
+| 1 | `AHSY_USER_LEVL` | 0 | 2 |
+| 2 | `AHSY_USER_MENU` | 2 | 4 |
+| 3 | `AHSY_USER_CTRL` | 6 | 1 |
+| 4-23 | `AHSY_USER_ACCES_1` … `AHSY_USER_ACCES_20` | 7–26 | 1 each |
+
+Total record size: 27 bytes.
+
+Meaning (from field names and DBA-era architecture; never confirmed from live data):
+- `AHSY_USER_LEVL` — 2-char role/level code (links to BKSLEVEL).
+- `AHSY_USER_MENU` — 4-char starting-menu code for this user.
+- `AHSY_USER_CTRL` — 1-char control flag (active/disabled/admin).
+- `AHSY_USER_ACCES_1..20` — 20 per-module permission flags (Y/N). Index → module
+  mapping **cannot be determined from live data** because the table is never populated.
+  These flags were designed for the BK/TAS Pro 6 era DBA-era security model.
 
 ### Login form (`EVOMENU_LOGIN.DCY` + ...)
 
@@ -88,22 +92,41 @@ Known company codes on this installation (folder suffixes):
 The login program sets `DfltCompanyCode` in `taspro7.ini` after the
 user's selection.
 
-## Multi-layer security model (confirmed Pass 105, 2026-06-18)
+## Multi-layer security model (updated Pass 412, 2026-06-30)
 
-EvoERP has **four distinct access control layers**, applied sequentially:
+EvoERP defines **four distinct access control layers**, but in this installation most are
+either disabled or unpopulated. Active layers shown with ✅; inactive shown with ⬜.
 
-| Layer | Mechanism | Table / File | Scope |
-|-------|-----------|--------------|-------|
-| 1. License gate | `StartEvo.exe` queries `tas_menus` via PSQL DSN=EVOADMIN | `BKMENUSU.DBF` | Whether a program is licensed at all |
-| 2. User/module | `AHSYLOG.AHSY_USER_ACCES_1..20` flags | `AHSYLOG` | Which of 20 module groups a user can access |
-| 3. Menu access | `WBKMENUSETUP.RWN` / `BKPSUSER.SEC` | `BKPSUSER` | Which individual program codes the user's security level permits |
-| 4. Field-level | `T7LIMACC.RWN` (PS-L "Enter Field Specific Access") | unknown table | Which individual fields a user can view or edit |
+| Layer | Mechanism | Table / File | Status |
+|-------|-----------|--------------|--------|
+| 1. License gate | `StartEvo.exe` queries `tas_menus` via PSQL DSN=EVOADMIN | `BKMENUSU.DBF` | ✅ active |
+| 2. Authentication | Password check + level lookup | `BKSYUSER.B` (Btrieve-only) | ✅ active |
+| 3. User/module | `AHSYLOG.AHSY_USER_ACCES_1..20` flags | `AHSYLOG` | ⬜ 0 records — NOT configured |
+| 4. Level masks | `BKSLEVEL` per-operation Y/N masks | `BKSLEVEL.B` | ⬜ all-N — NOT configured |
+| 5. Menu access | `WBKMENUSETUP.RWN` / `BKPSUSER.SEC` | `BKPSUSER` | ⬜ 0 records — NOT configured |
+| 6. Field-level | `T7LIMACC.RWN` (PS-L) | `ISACCESS` | ❓ unknown if populated |
 
-### Layer 2 — `AHSYLOG` module-level flags
+**Conclusion for this installation:** Access control is essentially unrestricted — users
+authenticate via password (Layer 2) and then have full access to all modules. The DBA-era
+module-flag and level-mask systems (Layers 3, 4) are deployed as schema but never configured.
+`BKPSUSER` (Layer 5) is also empty. This is a minimal-security configuration.
 
-`AHSY_USER_ACCES_1..20` — 20 one-byte flags per user. Each is `'Y'`/`'N'`/`'R'` (read-only inferred). The module-to-index mapping is not yet confirmed; the 20 slots likely correspond to the ~20 nav tab module groups.
+### Layer 2 — `BKSYUSER.B` authentication (active)
 
-`AHSY_USER_LEVL` (2 chars) links to `BKSLEVEL` — the security level permission matrix. See §BKSLEVEL below for confirmed structure.
+`BKSYUSER.B` is the active authentication table. Btrieve-only (not in DDF). 5 fields:
+- `BKSY.USER.CODE` — login username (key)
+- `BKSY.USER.PSWD` — password (stored via `ENCRYPTSTR` TAS obfuscation)
+- `BKSY.USER.LEVL` — security level code (links to BKSLEVEL, but BKSLEVEL is all-N)
+- `BKSY.USER.CTRL` — control flags
+- `BKSY.USER.NAME` — display name
+
+### Layer 3 — `AHSYLOG` module-level flags (NOT configured in this installation)
+
+`AHSYLOG` has 0 records. Schema exists in DDF (23 fields), but it is never populated.
+`AHSY_USER_ACCES_1..20` flag index → module mapping is **unknown** (cannot be determined
+from live data; would require DBA-era source code or a populated installation).
+
+`AHSY_USER_LEVL` (2 chars) links to `BKSLEVEL` — see §BKSLEVEL below for confirmed structure.
 
 ### `BKSLEVEL` — Security Level Access Masks (confirmed Pass 410, 2026-06-30)
 
@@ -142,23 +165,26 @@ Contains descriptive names for each security level:
 
 These names describe the **intended** access template for each level, but since all masks are all-N in this installation, the templates are not currently enforced by BKSLEVEL. The level assignment in AHSYLOG is present but the level-gate is effectively bypassed.
 
-### Layer 3 — `BKPSUSER` program-level access
+### Layer 5 — `BKPSUSER` program-level access (NOT configured in this installation)
 
-`BKPSUSER` (11 fields, confirmed Pass 46):
+`BKPSUSER` has 0 records (confirmed Pass 412, 2026-06-30). Schema exists in DDF (Table ID=218),
+but it is never populated in this installation. The 11-field schema (confirmed from DDF):
 
-| Field | Size | Meaning |
-|-------|------|---------|
-| `CODE` | 15 | User code (PK, links to AHSYLOG) |
-| `PSWD` | 10 | Per-program password (for sensitive programs) |
-| `PRT` | 1 | Print permission flag |
-| `MENU` | 4 | Starting menu (4-char code) |
-| `CMPY` | — | Default company |
-| `MWIND` | — | Max windows open |
-| `ME` | — | Memo flag |
-| `SEC` | 30 | Security code string (which programs allowed) |
-| `MCNTR` | — | Menu counter |
-| `LDATE` | — | Last login date |
-| `EMP` | — | Links to BKPRMSTR (employee record) |
+| Field | Offset | Size | Meaning |
+|-------|-------:|-----:|---------|
+| `BKPS_USER_CODE` | 0 | 15 | User code (PK, links to BKSYUSER) |
+| `BKPS_USER_PRT` | 15 | 2 | Print permission (integer) |
+| `BKPS_USER_MENU` | 17 | 2 | Starting menu (integer) |
+| `BKPS_USER_CMPY` | 19 | 2 | Default company code |
+| `BKPS_USER_MWIND` | 21 | 1 | Max windows open flag |
+| `BKPS_USER_PSWD` | 22 | 10 | Per-program password |
+| `BKPS_USER_ME` | 32 | 1 | Memo flag |
+| `BKPS_USER_SEC` | 33 | 30 | Security code string (which programs allowed) |
+| `BKPS_USER_MCNTR` | 63 | 2 | Menu counter |
+| `BKPS_USER_LDATE` | 65 | 4 | Last login date |
+| `BKPS_USER_EMP` | 69 | 2 | Links to BKPRMSTR (employee record) |
+
+The 30-byte `SEC` field would store per-user program access codes but is never set here.
 
 ### Security administration programs (from BKMENUSU.TXT, Pass 105)
 
@@ -221,12 +247,10 @@ printable strings ≥15 chars — help text is stored in an encoded/binary forma
 
 ## Things still to verify
 
-- [ ] Confirm ACCES_1..20 index → module mapping. Easiest: open
-  `EVOUSERS.DCY` in the running app while watching the AHSY record
-  being written.
-- [ ] Password hashing algorithm. Is it just `ENCRYPTSTR` (symmetric
-  TAS obfuscation)?
-- [ ] How `AHSY_USER_MENU` maps to an actual menu tree entry. We know
-  menu codes look like `SO-A`, but `AHSY_USER_MENU` is 4 chars —
-  perhaps it points to a custom **main-menu** subtree (e.g. `MMAR` =
-  "Main Menu → AR").
+- [ ] `ACCES_1..20` index → module mapping: **cannot be determined from live data** —
+  AHSYLOG has 0 records in this installation. Would require a different installation
+  with configured security, or the original BK-era source code.
+- [ ] Password hashing algorithm: `ENCRYPTSTR` TAS obfuscation (symmetric, key unknown).
+- [ ] `ISACCESS` (field-level access table): not yet queried — may or may not be populated.
+- [ ] How `AHSY_USER_MENU` maps to a menu tree entry in a configured installation.
+- [ ] Confirm whether other companies (not Default) have populated AHSYLOG or BKPSUSER.
