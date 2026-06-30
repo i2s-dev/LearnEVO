@@ -604,10 +604,30 @@ All counts from live ODBC queries against DSN=DBA.
 | `M` | Make From | 1,778 | 3.5% | Outside-processed item with distinct pre/post part numbers |
 | `K` | Selling Kit | 79 | 0.16% | Kit ordered/invoiced as single item in SO, never made |
 | `O` | Feature | 51 | 0.10% | Features & Options module — pop-up option group at SO entry |
-| `L` | Labor | 0 | — | Labor categories (CHM-documented, not used at i2 Systems) |
+| `L` | Labor | 2 | <0.01% | Labor categories |
 | `T` | Outside Processing | 0 | — | Services (plating, painting, heat treat) — not used at i2 Systems |
 
 Note: i2 Systems item mix is manufacturing-heavy (F+A+B = 55.9% manufactured; R = 26.3% purchased). MTICMSTR has 50,990 items — 200 more than BKICMSTR (multi-class catalog includes items not in the single-company BK* tables).
+
+### MTICMSTR — Item Status Distribution (Pass 422, 2026-06-30)
+
+`MTIC_PROD_ACTIV` is the item status field (not in BKICMSTR's PSQL layer):
+
+| Code | Meaning | Count |
+|------|---------|------:|
+| `Y` | Active | 45,940 |
+| `N` | Inactive | 4,142 |
+| `E` | Engineering | 446 |
+| `O` | Obsolete | 435 |
+| `D` | Discontinued | 14 |
+| `P` | Unknown (RWN-encrypted) | 7 |
+| *(blank)* | Unset/legacy | 4 |
+| `X` | Unknown | 1 |
+| `Q` | Unknown (RWN-encrypted) | 1 |
+
+Meanings of Y/N/E/O/D confirmed from BKDCA.RUN/BKROA.RUN binary strings (Pass 272–273).
+R and S codes appear in CHM/documentation but have 0 items at i2 Systems.
+P (7 items) and Q (1 item) semantics require RWN decryption to confirm.
 
 ### BKICLOC — Item/Location Records
 
