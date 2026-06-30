@@ -868,7 +868,47 @@ assigned, then shows:
 - **[[module-GL|GL]]** — job costs can post to job-specific GL accounts
 """,
 
-"CS": "## What it does\n\nCommission System — tracks salesperson commissions from AR/SO activity. 16 tables, 16 menu ops. Includes multi-tier comp (primary + secondary salesperson), team splits, override rates.\n",
+"CS": """
+## What it does
+
+Commissions — calculates and reports salesperson commissions derived from posted
+AR/SO invoices. Supports multiple commission structures: flat rates, price-code
+commissions, and contract commissions. Handles primary + secondary salesperson
+splits and year-end commission transfer.
+
+## Menu operations
+
+| Code | Operation |
+|------|-----------|
+| CS-A | Enter Salespersons |
+| CS-B | View Salesperson Info |
+| CS-C | Print Salesperson Info |
+| CS-D | Transfer Sales Commissions |
+| CS-E | Print Commission Detail |
+| CS-F | Print Commission Summary |
+| CS-G | Enter Sales Rep Links |
+| CS-H | Import Sales Rep Links |
+| CS-K | Enter Price Code Commissions |
+| CS-L | Print Price Code Commissions |
+| CS-M | Enter Contract Commissions |
+| CS-N | Print Contract Commissions |
+| CS-O | Print Commissions Earned Detail |
+| CS-P | Print Commissions Due Summary |
+| CS-Q | Commission Year End Routine |
+| CS-R | Sales Commission Defaults |
+
+## Key table
+
+`ISPRSALE` (87 fields, IS_PR_SALE_* prefix) — sales rep commission master:
+commission rate, commission type, pay period, earned/paid totals.
+Stores commission amounts per salesperson per period derived from AR/SO activity.
+
+## Integration
+
+- **[[module-AR|AR]]** — commissions sourced from posted invoices (BKARINV)
+- **[[module-SO|SO]]** — salesperson code on SO header drives commission assignment
+- **[[module-PR|PR]]** — commission earned amounts feed payroll (CS-D Transfer)
+""",
 
 "ES": """
 ## What it does
@@ -1042,9 +1082,83 @@ they are configured entirely within CandoEDI.
   DEP outbound compliance module, not by ED directly
 """,
 
-"SM": "## What it does\n\nSystem Manager — company setup, users, defaults, backup/restore, updates. The **largest module by form count** (109 forms). Most admin-only.\n\nSee [[security-model]] for user admin.\n",
+"SM": """
+## What it does
 
-"AM": "## What it does\n\nArchive / Maintenance — period-end close, fiscal year-end, data purges. The **critical-timing** module: what you run at month-end. See [[recipe-month-end-close]].\n",
+System Maintenance — the broadest administrative module in EVO. Contains master
+file setup (customers, vendors, classes, terms, tax codes, employees, shop
+calendar), file maintenance / archive / purge operations, and miscellaneous
+utilities. **Largest module by program count** (34 top-level buttons, 109+ forms).
+
+## Key operation groups
+
+| Group | Codes | Purpose |
+|-------|-------|---------|
+| Master file setup | SM-A–SM-H | Enter customers (t7ara), vendors (t7apa), classes, terms, taxes, employees, shop calendar |
+| Contact master setup | SM-I (A–F) | Lead sources, territory codes, reminder types, class codes, date codes, quote-loss reasons |
+| File maintenance | SM-J (A–V) | Archive/purge: WOs, PO history, QC, DC, estimates, SOs, invoices, GL journals; reconcile inventory; merge item/customer/vendor codes |
+| User / system admin | SM-K | Evo User Settings (T7SMK.RWN) — user profile customization |
+| Notes maintenance | SM-N | Note types, system notes, Classic↔Evo sync |
+| Ship-via codes | SM-O | Enter ship-via codes (T7SMO.RWN) |
+
+## Key tables
+
+- `BKLOGON` — user login + access level master
+- `ISJOB` (9f) — job/project cross-reference (SM-PF primary editor, 64 procs)
+- `BKSYMSTR` (286f) — global system parameter singleton (company name, terms, defaults)
+- `BKYSMSTR` (355f) — manufacturing system parameters (WO numbering, ISTS.CFG.*, YN slots)
+
+## Integration
+
+- **[[module-SY|SY]]** — SY handles user password and access security; SM handles master data
+- **[[module-AM|AM]]** — AM handles GL/accounting period-end; SM-J handles operational archive/purge
+- **[[module-GL|GL]]** — SM-C/D enter GL accounts and departments (cross-listed as AM-C/D)
+""",
+
+"AM": """
+## What it does
+
+Accounting Maintenance — period-end, fiscal year-end, GL setup, financial
+statement formatting, and AP/AR/GL archive/purge operations. The critical-timing
+module: these programs must be run in the correct order at month-end and year-end.
+See [[recipe-month-end-close]] and [[recipe-year-end-close]].
+
+## Menu operations
+
+| Code | Operation |
+|------|-----------|
+| AM-A | Reset Period-End Close Date |
+| AM-B | Fiscal Year End Routines |
+| AM-C | Enter General Ledger Accounts |
+| AM-D | Enter General Ledger Departments |
+| AM-E | Format Standard Financial Statement |
+| AM-F | Format Custom Financial Statements |
+| AM-G | Consolidate Financials (multi-company) |
+| AM-H | Change GL Account Codes |
+| AM-I | Consolidate General Ledger Detail |
+| AM-J | Purge/Archive AP History |
+| AM-K | Purge/Archive AR History |
+| AM-N | Maintain GL Fiscal Periods |
+| AM-O | Purge/Archive Vendor Data |
+| AM-P | Purge/Archive Customer Data |
+| AM-Q | Enter Budget Amounts |
+| AM-R | Out of Balance Report |
+| AM-S | Purge/Archive GL Journals |
+| AM-T | Archive GL Transaction Detail |
+
+## Key tables
+
+- `BKGLPER` — GL fiscal period master (open/close flags)
+- `BKGLCOA` (65f) — chart of accounts
+- `BKGLTRAN` — GL journal detail (source of all financial reports)
+
+## Integration
+
+- **[[module-GL|GL]]** — AM-A/B control the period locks that GL enforces on posting
+- **[[module-AP|AP]]** — AM-J purges AP invoice and check history
+- **[[module-AR|AR]]** — AM-K purges AR invoice history (complement to SA aging reports)
+- **[[module-SM|SM]]** — SM-J handles operational archive (WO, PO, QC); AM handles accounting archive
+""",
 
 "AD": "## What it does\n\nAdmin Defaults — three screens that configure module-wide defaults:\n\n- `AD-A` General Ledger Defaults\n- `AD-B` Checking Account Defaults\n- `AD-C` Accounts Payable Defaults\n- `AD-D` Accounts Receivable Defaults (actually `AR-S`)\n\nValues stored in `BKSYMSTR` / `BKYSMSTR`.\n",
 
@@ -1056,7 +1170,43 @@ they are configured entirely within CandoEDI.
 
 "RO": "## What it does\n\nRoutings — defines the sequence of manufacturing operations (steps) for an item. Each operation links to a work center, setup hours, run hours, queue time, and move time. Drives WO scheduling and lead-time calculation. See [[recipe-enter-routing]].\n\nKey tables: `ROUTING` (header), `BKRTEMTR` (operations), `BKRTTOOL` (tooling), `BKRTINST` (instructions).\n",
 
-"WC": "## What it does\n\nWork Centers — defines physical or logical production stations (machines, assembly areas, test benches). Each WC has a labor rate, overhead rate, capacity, and scheduling calendar. Referenced by [[module-RO|RO]] routings and [[module-DC|DC]] labor entries. Key menu: `WC-A Enter Work Centers`.\n\nKey tables: `BKWCMSTR`, `BKWCCAL` (capacity calendar).\n",
+"WC": """
+## What it does
+
+Warehouse Control — manages warehouse bin addresses for multi-location inventory.
+Defines physical bin locations within each stock location, assigns items to bins,
+and tracks bin-level on-hand quantities separately from total on-hand.
+
+Not to be confused with **work centers** (production stations) — those are set up
+under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
+
+## Menu operations
+
+| Code | Operation |
+|------|-----------|
+| WC-A | Enter Warehouse Bin Locations |
+| WC-B | Assign Warehouse Control (per-location flag) |
+| WC-C | Assign Bins to Items |
+| WC-E | Print Bin Inventory Listing |
+| WC-F | Print Bin Inventory Exceptions |
+| WC-G | Warehouse Control Defaults |
+
+## Key tables
+
+| Table | Purpose |
+|-------|---------|
+| `ISBINLOC` (22 fields) | Bin master — bin code + location + on-hand per lot |
+| `BKICLOC` (32 fields) | Per-location on-hand quantities (UOH/UOO/UOSO/UBO per location) |
+| `ISBINLOT` (14 fields) | Bin + lot cross-reference |
+| `PIBINLOC` (14 fields) | Bin-level count records during physical inventory |
+
+## Integration
+
+- **[[module-IN|IN]]** — items can have a default bin; BKICMSTR links to bin
+- **[[module-PI|PI]]** — bin counts feed Physical Inventory via PIBINLOC
+- **[[module-HH|HH]]** — handheld scanners use BKIC.LOC.* 297-var namespace for bin scanning
+- **[[module-LO|LO]]** — LO module also manages location-level inventory
+""",
 
 "HH": "## What it does\n\nHandheld / Mobile — barcode scanner and mobile device integration for shop-floor data collection, receiving, and inventory. `HH-N` is the handheld item lookup (filters by Item Type [RFAMNLBTKO], Refresh Timer, credit-hold flag). Integrates with [[module-DC|DC]] for labor and [[module-PO|PO]] for receiving.\n\nKey forms: `T7HHN.DFM`, `T7HHWRC.DFM`.\n",
 
@@ -1074,7 +1224,56 @@ they are configured entirely within CandoEDI.
 
 "DE": "## What it does\n\nEDI / Data Exchange — Electronic Data Interchange for trading-partner document exchange (PO, invoice, ASN). Key forms in the `T7DEP*` and `T7DE*` family. Tables: `BKEDH`/`BKEDL` (EDI transaction headers/lines), `BKEDNOTE` (notes), `BKEDPOST` (posting queue). Also handles generic import/export via `T7GENIMP.DFM` (Import DBA — Skip/Replace/Append modes).\n",
 
-"RM": "## What it does\n\nReturn Material — RMA tracking from customer return authorization through physical receipt, disposition (Restock/Scrap/Repair), and credit memo issuance. See [[recipe-rma]]. Key tables: `BKSORMA` (RMA header), `BKSORMAD` (detail lines).\n",
+"RM": """
+## What it does
+
+RMA (Return Material Authorization) — manages the full lifecycle of customer
+returns: authorization, print/ship instructions, physical receipt, disposition
+(Restock / Scrap / Repair), and credit memo generation.
+
+## Workflow
+
+```
+RM-A  Enter RMA (t7rma.rwn)
+      → creates RMA authorization record
+      → assigns RMA number, return codes, disposition
+
+RM-B  Print RMA (T7RMB.RWN)
+      → generates packing slip / return instructions for customer
+
+RM-C  Receive RMA (T7RMC.RWN)
+      → records physical receipt of returned goods
+      → updates inventory (Restock path) or scrap / repair routing
+
+RM-D  Disposition RMA (T7RMD.RWN)
+      → final disposition: Restock → INVTXN adjustment
+                           Scrap   → INVTXN scrap transaction
+                           Repair  → creates WO or SR service order
+
+RM-E  Enter RMA Return Codes (T7RME.RWN)
+RM-F  RMA / Service & Repair Defaults (T7DSRMA.RWN)
+RM-G  Reason Codes Report (t7rmg.rwn)
+```
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `ISRMAI` | 54 | Active RMA lines (IS_RMA_* prefix) |
+| `ISRMAAI` | 54 | Archived RMA lines (identical structure) |
+| `ISRMAINV` | 84 | RMA invoice record (BKAR_INV_* clone — credit memo) |
+| `ISRMINV` | 84 | RMA invoice (alternate/current path) |
+| `ISRMAINF` | 54 | RMA UDF extension (ISSR_INFO_* 54 user-defined fields) |
+| `ISRMAC` | 3 | RMA reason codes |
+| `ISRMTXN` | 14 | RMA transaction log (BKAR_TXN_* clone) |
+
+## Integration
+
+- **[[module-AR|AR]]** — credit memo posts to AR as negative open item via ISRMAINV
+- **[[module-SO|SO]]** — original SO invoice traced via OSONUM/OINVNUM on ISRMAI
+- **[[module-SR|SR]]** — Repair disposition can create a service order in SR
+- **[[module-IN|IN]]** — Restock disposition triggers INVTXN adjustment
+""",
 
 "SU": "## What it does\n\nSystem Utilities — low-level maintenance tools: index rebuild, file restructure, data verification, and diagnostic utilities. Typically accessed by administrators only. Includes table repair functions for Btrieve/Pervasive data files.\n",
 
@@ -1092,11 +1291,143 @@ they are configured entirely within CandoEDI.
 
 "PS": "## What it does\n\nPlanning / Scheduling — finite capacity scheduling complement to [[module-MR|MR]] (MRP). Uses routing operation times, work center calendars, and WO priority to schedule production. Forms in the `T7SHA*` family (13 scheduling forms).\n",
 
-"SA": "## What it does\n\nSales Analysis — provides sales history reporting and trend analysis by customer, item, salesperson, and time period. Pulls from AR/SO posted history tables. Common reports: sales by customer, sales by item, sales trend year-over-year.\n",
+"SA": """
+## What it does
 
-"SB": "## What it does\n\nSales Budget / Forecast — entry and tracking of sales budgets and demand forecasts. Budget figures feed [[module-MR|MR]] (MRP) as independent demand when actual orders are not sufficient to plan against.\n",
+Sales Analysis — reporting-only module (no data entry) that produces detailed
+and summary sales reports from posted AR/SO invoice history. Supports 26
+user-configurable FROM/THRU range filters per report type (invoice date,
+customer, item, salesperson, class, category, territory, lot, job, etc.).
+Four Java-backed analysis views provide interactive charts.
 
-"SL": "## What it does\n\nSales Analysis Listings — detailed listing reports for sales data by customer, item, region, or rep. Companion to [[module-SA|SA]]. Provides the detail-level drill-down that SA summarizes.\n",
+**Scale at i2 Systems:** SA reads from 462,727+ posted invoice lines.
+
+## Menu operations
+
+| Code | Operation | Engine |
+|------|-----------|--------|
+| SA-A | Print Daily Sales/Bookings | T7SAA.RWN |
+| SA-B | Print Profit by Invoice | T7SAB.RWN |
+| SA-C | Print Customer Detail | T7SAC.RWN |
+| SA-D | Print Customer Summary | T7SAD.RWN |
+| SA-E | Print Customer Class Detail | T7SAE.RWN |
+| SA-F → A | Profit by Invoice (chart) | ProfitByInvoice.jar |
+| SA-F → B | Sales by Customer | CustomerClass.jar |
+| SA-F → C | Sales by Salesperson | SalesRepSummary.jar |
+| SA-F → D | Sales by Item/Class | ItemClass.jar |
+| SA-G | Print Customer Class Summary | T7SAG.RWN |
+| SA-H | Print Salesperson Detail | T7SAH.RWN |
+| SA-I | Print Salesperson Summary | T7SAI.RWN |
+| SA-J | Print Inventory Detail | T7SAJ.RWN |
+| SA-L | Print Product Class | T7SAL.RWN |
+| SA-M | Print User-Defined Detail | T7SAM.RWN |
+| SA-N | Print User-Defined Summary | T7SAN.RWN |
+| SA-O | Top Customer Report | T7SAO.RWN |
+| SA-P | Print Sales With Surcharge Rolled Up | T7SAP.RWN |
+| SA-Q | Print Actual Margin (uses WO actual costs) | T7SAQ.RWN |
+
+## Key tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKSAREPT` | 57 | Saved report configurations (TYPE+NAME PK, RTM + 26 FROM/THRU range pairs) |
+| `BKACTRPT` | 53 | Activity report configurations (same structure, for SA-M/SA-N) |
+
+SA reads (but does not write) `BKARINV`/`BKARINVL` (AR invoices), `BKARCUST`,
+`BKICMSTR`, and for actual-cost analysis: `WORKORD`/`WOMAT`/`WOBOM`.
+
+## Integration
+
+- **[[module-AR|AR]]** — all SA reports draw from posted AR invoice history
+- **[[module-SO|SO]]** — SA-A includes bookings (open SO) from BKSOX
+- **[[module-WO|WO]]** — SA-Q uses actual WO labor+material costs for margin
+- **[[module-CS|CS]]** — salesperson links via ISPRSALE / BKPRSALE
+""",
+
+"SB": """
+## What it does
+
+Spec Book / Approved Vendor List (AVL) — enforces approved sourcing for purchased
+components. Defines which manufacturers, vendors, and manufacturer part numbers
+are approved for each item. During purchasing and receiving, the system validates
+that the selected source is on the approved list.
+
+**SB has no standalone top-level menu.** The approved sourcing data is accessed
+through the BM (BOM) module sub-menus and is enforced automatically by PO and
+IN module transactions.
+
+## Tables
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKSBPART` | 5 | Approved substitute parts (FROM.SUBST cross-reference) |
+| `BKSBVEND` | 6 | Approved vendor sources (VENDOR + MFGNM + VPART + REV + EXTRA + UID) |
+| `BKSBMFG` | 16 | Approved manufacturer master (MFG code + name + address + contact) |
+
+## Access points
+
+| Location | Program | What it does |
+|----------|---------|-------------|
+| BM-J | T7BMJ.RWN | Enter approved substitutes (BKSBPART) |
+| BM-K | T7BMK.RWN | Enter approved vendors (BKSBVEND) |
+| BM-L | T7BML.RWN | Enter approved manufacturers (BKSBMFG) |
+| PO receive | T7POENG.RWN | Validates BKSBVEND on engineering receipts |
+| MRP | T7MRG.RWN | Uses BKSBVEND / BKSBMFG to select vendor at planned-order release |
+
+## Integration
+
+- **[[module-BM|BM]]** — AVL data is managed from BM browse/entry screens
+- **[[module-PO|PO]]** — PO receipt programs check BKSBVEND / BKSBMFG compliance
+- **[[module-MR|MR]]** — MR-G auto-selects first approved vendor from BKSBVEND
+- **[[module-WO|WO]]** — T7WOLA (outside process) reads BKSBVEND for subcontract sourcing
+""",
+
+"SL": """
+## What it does
+
+Shop Loading — the ISTS-enhanced scheduling and work center load subsystem.
+SL programs integrate with the [[module-SH|SH]] scheduling module and provide
+Java-backed interactive visualizations for work center capacity, WO priority,
+and finite scheduling.
+
+The main SL component is `T7SLSFC` — the **ISTS global session config loader**
+that reads ~250 `ISTS.CFG.*` flags from BKYSMSTR into memory at session start.
+The scheduling views (T7SHA/SHC/SHP) and Java JARs are accessible from the
+SH module menu (SHA–SHR).
+
+**SL has no standalone top-level menu entry.** All SL functionality is reached
+through the [[module-SH|SH]] Scheduling menu.
+
+## Programs
+
+| Program | Procs | Purpose |
+|---------|------:|---------|
+| `T7SLSFC` | 5 | ISTS session config loader — reads ISTS.CFG.* flags at startup |
+| `T7SHA` | 94 | WO schedule / Gantt chart (SH-A) |
+| `T7SHC` | 70 | Work center capacity scheduler (SH-C) |
+| `T7SHP` | 179 | Priority-based lead time scheduler (SH-P) |
+
+## Java-backed load views (launched from SH-K / SH-L / SH-R)
+
+| JAR | Entry point | View |
+|-----|------------|------|
+| `WCScheduler.jar` | `com.evoerp.wcsched` | Work center scheduler (SH-R) |
+| `WorkCenterLoad.jar` | `com.evoerp.wcload.javafx.App` (VSCHED) | WC load visualization (SH-L) |
+| `WOScheduler.jar` | — | Work order scheduler |
+| `MachineView.jar` | `com.evoerp.machineview.jfx.App` | Machine schedule (SH-D) |
+
+## Key namespace
+
+`MTWC.*` 30-var namespace from `WORKCTR` (47f): WC/%UTIL/HRSWEEK/LABOR/SETUP/
+MACHINE/AVGQTIME/VOVHD/QPR1-3/PARENT.WC/OUTPROC — work center capacity and
+cost rates used by all SL scheduling calculations.
+
+## Integration
+
+- **[[module-SH|SH]]** — SL programs are the implementation of SH scheduling menu items
+- **[[module-WO|WO]]** — reads WORKORD + WOROUT + BKDCLAB for schedule inputs
+- **[[module-DC|DC]]** — BKDCLAB time-clock feed drives Gantt actual vs scheduled
+""",
 
 "SD": "## What it does\n\nSales / Shipping Detail — shipment detail tracking, carrier assignments, and freight billing. Related to [[module-SH|SH]] (Shipping) and SO module.\n",
 
@@ -1169,7 +1500,36 @@ does not corrupt historical transaction records.
 
 "FP": "## What it does\n\nForecast / Planning — planning horizon management for MRP and scheduling. Defines planning buckets (weekly, monthly) and forecast periods.\n",
 
-"IC": "## What it does\n\nInventory Control / Cycle Count — manages cycle count schedules, assigns ABC classifications to items, and drives the cycle counting portion of [[module-PI|PI]] (Physical Inventory).\n",
+"IC": """
+## What it does
+
+Inventory Copy utility — a single-operation utility that copies production
+inventory master data (BKICMSTR) into the estimating inventory mirror (ISICMSTR /
+MTICMSTR). Accessed as **IC-A Copy Production to Estimate Inventory**.
+
+This is a one-way bridge: it ensures the estimating module (ES) has current
+standard costs, UOM, and item descriptions when building estimates.
+
+**IC has no standalone menu group.** It is a small utility invoked from within
+the IN or ES module workflow.
+
+## Program
+
+`T7IC2EST` (6 procs, 2 tables) from EVOCFG.SRC:
+- Reads `BKICMSTR` (production item master) + `MTICMSTR` (multi-company IC)
+- Writes to `ISICMSTR` (IS-era estimating IC mirror) + `ISICEST` (estimating IC test)
+- `TNOR` / `TPR` flags select which cost tier (normal vs. prime) to transfer
+
+**Cycle count** scheduling and ABC classification are tracked in `ISCYCLCD` (7 fields:
+cycle count frequency codes) and managed through the [[module-PI|PI]] Physical Inventory
+module, not through the IC utility.
+
+## Integration
+
+- **[[module-ES|ES]]** — IC-A populates the IC mirror used by Estimating for standard costs
+- **[[module-IN|IN]]** — source data is BKICMSTR (production inventory master)
+- **[[module-PI|PI]]** — cycle count frequency (ISCYCLCD) is a PI-adjacent feature, not IC
+""",
 
 "IM": "## What it does\n\nImport Management — handles data imports from external sources (CSV, tab-delimited, legacy system exports). Uses `T7GENIMP.DFM` (Import DBA) with Skip/Replace/Append modes. See [[recipe-export-csv]].\n",
 
@@ -1195,7 +1555,35 @@ does not corrupt historical transaction records.
 
 "UP": "## What it does\n\nUpdates / Patches — the software update distribution and application subsystem. `.UPD` files are Btrieve-format patch packages applied by `TA-P`. See [[recipe-update-evo]].\n",
 
-"US": "## What it does\n\nUser-defined Settings — custom fields, user-defined codes, and site-specific configuration tables. Allows EVO to be tailored without source code changes by defining additional codes in lookup tables.\n",
+"US": """
+## What it does
+
+User Settings — per-user personal preferences for the EVO interface. Each logged-in
+user can customize their own menu layout, screen positions, password, reminders,
+and workflow triggers without affecting other users.
+
+## Menu operations
+
+| Code | Operation | Program |
+|------|-----------|---------|
+| US-A | Customize Settings (toolbar, colors, screen mode) | T7SMK.RWN |
+| US-B | Customize Menu (add/remove/reorder menu items) | WBKMENUSUEU.RWN |
+| US-C | Reset Screen Size / Locations | t7resetdfm.RWN |
+| US-D | Change Password | PASSWORD.INT |
+| US-E | Update PO Electronic Signature Info | T7DIGSIG.RWN |
+| US-F | Enter Reminders (calendar reminders) | calrem.rwn |
+| US-G | Enter Triggers (automation triggers) | T7USG.RWN |
+| US-H | Update Contract Review Password | T7CTREVU.RWN |
+
+These settings are stored per-user in EvoSettings.INI (`[User:NAME]` sections) and
+in `BKLOGON` / `BKSYUSER`. US-B customizations are stored in `BKMENUSU` (the menu
+definition table) per-user.
+
+## Integration
+
+- **[[module-SM|SM]]** — SM-K is the same as US-A (Evo User Settings, T7SMK.RWN)
+- **[[module-SY|SY]]** — SY-A manages security levels and module access; US manages personal prefs
+""",
 
 "YS": "## What it does\n\nYear-end / System — year-end processing utilities beyond [[module-AM|AM]]. Handles special year-end tasks: 1099 generation, W-2 reporting (if EVO handles payroll), and fiscal-year archive operations. See [[recipe-year-end-close]] and [[recipe-1099]].\n",
 
