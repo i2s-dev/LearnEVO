@@ -1,6 +1,6 @@
 # Reporting Pipeline
 
-Status: verified (format + cross-reference dumped from every RUN/RWN).
+Status: verified (format + cross-reference fully built Pass 389 2026-06-29).
 
 ## Overview
 
@@ -20,40 +20,84 @@ EvoERP's reporting pipeline is two-tiered:
 
 - **`.RTM`** — active ReportBuilder template (binary Delphi `TPF0`).
 - **`.btm`** — snapshot/backup of an RTM, same format.
-- **899 RTMs + 60 BTMs** on the share.
+- **1,305 RTMs** on the share (DBAMFG$ root); 406 `.btm` backups. (Pass 389 — corrects prior "899" count; 899 was an earlier incomplete scan.)
 
 Format details: [../02-file-formats/rtm-reportbuilder.md](../02-file-formats/rtm-reportbuilder.md).
 Designer: `C:\ISTS\RBDsgnr.exe`.
 
-## Cross-reference — which programs use which RTMs
+## RTM Routing Mechanism (Pass 389 2026-06-29)
 
-`scripts/bulk_strings_rwn.py` dumped all binaries; grepping the dumps
-for `*.rtm` filenames yields an RTM → caller mapping. Full CSV:
-`../../samples/rtm_callers.csv`. Top 15 most-called templates:
+**How programs find their RTM files — two distinct patterns:**
 
-| RTM | # callers | Representative callers |
-| --- | --------: | ---------------------- |
-| `cfg.rtm`    | 792 | almost every program — the "config report" common template |
-| `ent.rtm`    | 90  | entry-form summary templates |
-| `t6.rtm`     | 40  | generic T6-era template |
-| `temp.rtm`   | 30  | scratch/intermediate |
-| `bk.rtm`     | 23  | generic BK-era template |
-| `banks.rtm`  | 16  | AP check run (`BKADC`, `BKAPH`, `BKAPHA`) |
-| `dflt.rtm`   | 16  | default fallback |
-| `test.rtm`   | 11  | dev/test |
-| `max.rtm`    | 7   | `T6ALSO*` sales-order utilities |
-| `curr.rtm`   | 7   | multi-currency outputs |
-| `short.rtm`  | 5   | short-item shortage listings |
-| `next.rtm`   | 5   | paginated continuation |
-| `using.rtm`  | 5   | where-used reports |
-| `bksopb1.rtm`..`bksopb4.rtm` | 4 each | SO packing slip formats 1-4 |
-| `bksob1.rtm`..`bksob4.rtm`  | 3 each | SO acknowledgement formats 1-4 |
+### Pattern A — Dynamic config key (`ISTS.CFG.RTM`): 970 RTMs, all T7-era
 
-A single "menu operation → RTM" pattern emerges: most `SO-X`
-variations exist in **4 format flavors** (labeled `1`/`2`/`3`/`4`), and
-the user's choice of format is stored in `BKYSMSTR.bkys.yn[48]` as
-seen in `samples/src/Bkaph.src`:60-81. The program picks the RTM by
-concatenating a base name with the format digit.
+The string `ISTS.CFG.RTM` appears in **789 of 801 report programs**. This is NOT an
+RTM filename — it is a BKYSMSTR config key that stores the base directory path for
+RTM files (e.g., `\\i2s109-solidcrm\DBAMFG$\`). The program:
+1. Reads `ISTS.CFG.RTM` from BKYSMSTR to get the base path
+2. Concatenates the RTM filename (e.g., `T7APH1.RTM`) to form the full path
+3. Calls `RTM_FN <full_path>` → `EXEC_RB`
+
+This means **970 RTMs are reachable at runtime but have no hardcoded path in any program binary** — they are discovered only by knowing which base name the program constructs. This is confirmed by: 970 RTM files exist on the share but appear in NO pool string.
+
+### Pattern B — Hardcoded filename in pool strings: 335 RTMs, all T6/BK-era
+
+Older programs (BK\*.RUN, T6\*.RUN) embed the RTM filename directly in their pool:
+`RTM_FN bkaph1.rtm`. **335 of the 1,305 share RTMs** are referenced this way.
+
+The naming convention for hardcoded RTMs: `<PROGBASE><N>.RTM` where N is the format
+variant (1–7 or more). Example: `BKAPH.RUN` has `BKAPH1.RTM` + `BKAPH2.RTM` (2 check
+print formats — portrait and landscape or customer variants).
+
+### Cross-reference summary (Pass 389)
+
+| Metric | Count |
+|--------|------:|
+| RTM files on share | 1,305 |
+| Programs referencing RTM by name in pool | 801 |
+| Unique real RTM filenames in pool strings | 375 |
+| On share AND referenced by name | 335 |
+| On share but NOT referenced (ISTS.CFG.RTM only) | 970 |
+| Referenced in pool but not on share (custom/J-series) | 40 |
+
+Full file list: `samples/rtm_file_list.txt` (all 1,305 uppercase names).
+
+### Module-to-RTM mapping (hardcoded pool only — T6/BK era)
+
+Most `SO-X` variations exist in **4 format flavors** (labeled `1`/`2`/`3`/`4`), and
+the user's choice of format is stored in `BKYSMSTR.BKYS_YN[48]` as seen in
+`samples/src/Bkaph.src`:60-81. The program picks the RTM by concatenating a base name
+with the format digit.
+
+| Module | RTM count | Representative RTMs |
+|--------|----------:|---------------------|
+| SO | 73 | BKSOB1-4, BKSOC1-4, BKSOF1-7, BKSOPB1-4, T6SOB1-4, T6SOC1-4T, T6SOD1-2, T6SOF1-7 |
+| SR | 36 | BKSRB1-4, BKSRD1-4(+T variants), BKSRF1-7, T6SRB1-4, T6SRD1-4T, T6SRF1-7 |
+| AP | 26 | BKAPH1, BKAPHA1-3, BKAPM1-3, BKAPS1/3, T6APH1, T6APHA1-3, T6API1-3, T6APM1-3, T6APS1 |
+| AR | 22 | BKARE1-4, BKARI1-3, BKARP1, T6ARE1-4, T6ARF1-4, T6ARI1-3, T6ARP1 |
+| WO | 20 | BKAWC1-2, BKAWE1-2, BKWOC1-4, T6WOC1-4, T6WOE1-2, T6WOLA1, ISWORPT1-2 |
+| J6 | 20 | J6BKMDIS, J6BKMREP, J6BTSRWO, J6CFCLBL/CUST/PRPT/SAN1/TOPI, J6CRCOLR, J6EBDLOT, etc. |
+| PO | 17 | BKPOB1-4, BKPOE1-2, T6POB1-4+R+S, T6POE1-2, T6POIH1, T6POJA1 |
+| JM | 12 | JM6USE1-2, JMCELESC, JMCFILBL/FILOT, JMCHECK1, JMCRBFS, JMCRBOOK, JMCRTOPN, JMTOPN1-2 |
+| IN | 12 | BKING1, BKINLJ1, T6IND1, T6INH1, T6INO1-2, T6INLM1, T6INLO1, T6INE1, T6ISLCE1 |
+| PR | 11 | BKPRD1-2, BKPRLF1, BKPRLG1, BKPRLI, T6PRD1-2, T6PRLF1, T6PRLG1, T6PRLI/PRLI2 |
+| CM | 9 | BKCMBD1-3, BKCMBI1, T6CMBD1-3, T6CMBI1, BKCMACCCTEMP |
+| DC | 6 | BKDCE, BKDCF, ISDCA1, T6DCD1, T6DCE, T6DCF |
+| SA | 5 | BKSAM1, BKSAN1, T6SAM1, T6SAN1, BKSAREPTBKSA |
+| ES | 4 | BKESD1-2, T6ESD1/3 |
+| WC | 4 | ISWCE1, ISWCF1, T6ISWCE1, T6ISWCF1 |
+| GL | 3 | T6GLC1, T6GLO1, T6PC |
+| LC | 3 | ISLCF1, T6ISLCE1, T6LCC1 |
+| PI | 3 | BKPICA1, T6PICA1, T6PIF1 |
+| AM | 2 | T6AMF, T6AMF1 |
+| BM | 2 | T6BMB1, T6FOB1 |
+| AC | 2 | BKAC, BKACTRPTBKAC |
+| RM | 2 | BKRMA1, T6RMA1 |
+| JC | 1 | T6JCA1 |
+| SC | 1 | ISSCF1 |
+
+J5-series customization RTMs (J5EBISAM, J5NTWOLK, J5SMRPT3, J5TWIINV) referenced in pool strings
+but not on current share — may be installed on other setups or retired.
 
 ## Program flow for an RB report
 

@@ -3087,17 +3087,46 @@ T6 fallback names:
 data binding mechanism confirmed; config-based RTM selection pipeline confirmed from named_vars
 of T7GLF/N/H/G. Full field list per report not yet extracted (requires live FILELOC data).
 
-### Known Report Templates
+### RTM Routing Mechanism (Pass 389 2026-06-29)
+
+**How programs find their RTM file — two patterns:**
+
+**Pattern A (T7-era, 970 RTMs):** The config key `ISTS.CFG.RTM` in BKYSMSTR stores the RTM
+base directory path. Programs build the full path at runtime by concatenating this key value
+with a hardcoded short filename. This is why 789/801 report programs contain the string
+`ISTS.CFG.RTM` — it is a variable lookup, not an actual filename.
+
+**Pattern B (T6/BK-era, 335 RTMs):** Older programs embed the RTM filename directly in their
+pool string and call `RTM_FN bkaph1.rtm` with a hardcoded name.
+
+**RTM file count:** 1,305 RTM files in `\\i2s109-solidcrm\DBAMFG$\` (full list: `samples/rtm_file_list.txt`).
+Of these, 970 are reachable only via Pattern A and appear in no program's pool strings.
+
+**Module-to-RTM count (hardcoded pool only):**
+SO=73, SR=36, AP=26, AR=22, WO=20, PO=17, IN=12, PR=11, CM=9, DC=6, SA=5, ES=4, WC=4, GL=3, LC=3, PI=3
+
+### Selected Report Templates
 
 | RTM File | Module | Purpose |
 |----------|--------|---------|
-| BKAPHA1.RTM | AP | AP check — laser format 1 |
-| BKAPHA2.RTM | AP | AP check — laser format 2 |
-| BKAPHA3.RTM | AP | AP check — laser format 3 |
-| ENARE4.RTM | AR | AR aged statement |
-| t7ing1.rtm | IN | IN-G inventory labels |
+| BKAPHA1.RTM–BKAPHA3.RTM | AP | AP check — 3 laser formats |
+| BKAPH1.RTM | AP | AP check remittance |
+| BKAPM1–3.RTM | AP | AP payment memo formats |
+| BKAPS1.RTM / BKAPS3.RTM | AP | AP 1099 forms |
+| BKARE1–4.RTM | AR | AR statements (4 formats) |
+| BKARI1–3.RTM | AR | AR invoice formats |
+| BKARP1.RTM | AR | AR pre-check (payment plan) |
+| BKSOB1–4.RTM | SO | SO acknowledgment (4 formats) |
+| BKSOC1–4.RTM | SO | SO order confirmation (4 formats) |
+| BKSOF1–7.RTM | SO | SO invoice (7 formats) |
+| BKSOPB1–4.RTM | SO | SO packing slip (4 formats) |
+| BKPOB1–4.RTM | PO | PO form (4 formats) |
+| BKWOC1–4.RTM | WO | WO pick ticket (4 formats) |
+| BKPRD1–2.RTM | PR | Payroll check (2 formats) |
+| BKPRLG1.RTM | PR | PR register |
+| BKPRLI.RTM | PR | PR labor detail |
 
-*(Full RTM cross-reference in `samples/rtm_callers.csv`)*
+*(Full RTM cross-reference in `docs/05-reports/overview.md` Pass389 section)*
 
 ---
 
