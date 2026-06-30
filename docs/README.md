@@ -158,9 +158,11 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Variable-to-field name map — TAS program variable names (BKIC.PROD.*, BKAR.*, BKAP.*) mapped to DB fields](04-data-dictionary/variable-field-map.md) — *verified, 2026-06-16*
 - [Primary keys — 200+ tables with primary key fields from INDEX.DDF](04-data-dictionary/primary-keys.md) — *partial*
 - [FILELOC routing table — 401 logical buffer names → 863 physical filenames, 6 companies; schema, alias groups, company codes, CodeBase entries (Pass 388, 2026-06-29)](04-data-dictionary/fileloc-routing.md) — *verified*
+- [Cross-module foreign key relationships — 270 inferred FKs, 68 parent tables; global invoice/PO/txn number architecture; NOTETEMP/ROUTTEMP/XXICMSTR super-tables](04-data-dictionary/fk-cross-module.md) — *inferred, Pass 411 2026-06-30*
 
 ### 07 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*
+- [RTM Report Template Inventory by Module — 1,734 RTMs, generation breakdown, custom EN* prefixes](02-file-formats/rtm-module-inventory.md) — *verified, Pass 411 2026-06-30*
 
 ### 08 — Menu system
 - [Menu system overview — 554 codes across 38 modules](06-menu-system/overview.md) — *verified*
