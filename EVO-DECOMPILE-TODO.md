@@ -255,7 +255,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
   - 814/1122 standard (prog.DFM == prog name); 193 → STUB.DFM (J7* i2 customizations); 115 truly non-standard (e.g. T7ADCA→T7DCA.DFM, T7INAC→T7INA.DFM, T7POS→T7QSOA.DFM, T7FIX.DFM for fix utilities)
   - Menu→DFM join: 734/870 resolved (84%); 136 not in dec dir (BK*/T6* or group entries)
   - Instruction count stats: median=2722, max=20367 (T7SOA), min=2; 885/1122 have >1000 instructions
-- [ ] ⬜ Binary `.DFM` variant (the 25 TPF0-format forms) decoded
+- [x] ✅ **Binary DFM variant resolved (Pass 390 2026-06-30)**: Scanned all 1,136 DFMs on share — found **0 TPF0-format DFMs** (the item was mislabeled). Found **16 zero-byte DFMs** (not 25 as previously stated): EVOCHANGEPASS/EVOLOGO/J7ADTNACHA/J7BEFWEB/J7CIWEB/J7POAIMP/PTWOKI/ROP/T7APACH/T7APPVND/T7DSIG/T7RRPT/T7SOGCG/T7SOGCM/TT7SOOD/WOKK.DFM. The 4 binary DCY files (not DFMs) are the actual TPF0-format forms — already documented in §2.5. No unresolved "binary DFM" subtype exists. **C: 100/100**
 
 ### 2.5 `.DCY` — Data Dictionary / Compiled Schema
 - [x] ✅ Format: Twofish-192-CFB encrypted binary; key K_D; cipher solved 2026-06-16 — **C: 100/100**
@@ -396,7 +396,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 - [ ] ⬜ `SQLCALL` parameter format and connection target fully documented
 - [ ] ⬜ `OLECALL` parameter format and COM object binding documented
 - [ ] ⬜ `ENCRYPTSTR` algorithm reverse-engineered (see §14)
-- [ ] ⬜ `ISJAVA` task queue interaction fully traced from TAS side
+- [x] ✅ **`ISJAVA` task queue interaction traced (Pass 390 2026-06-30)** — Two-tier TAS access confirmed from 23-program corpus: (A) 9 programs have JAVA.H + IS.JAVA.UID/PARAM/DATE = full queue read/write (EVOERPMENU=monitor, T7AUTOFX=FX rates, T7MDEFAULTS=config, T7SOA/SOE/SOGA/SOR=SO email notifications); (B) 14 programs have JAVA.PATH/PATH2 only = path-reference, no queue writing. T7jsql.RWN and QUERYEXECUTE.RWN both Java-bridge programs but PATH-only (call Java directly, not via queue). JAVA.PATH2 = secondary Java path (fallback). JAVA.NAME = Java class name (QUERYEXECUTE). DDF schema confirmed 27 fields: UID(40) + 25×PARAM(80 each) + DATE(4) = 2,054-byte record. **CORRECTION**: ISJAVA IS in DDF (file_id=437) — prior "not in DDF" was wrong. New discovery: **ISJOB is a separate table** (file_id=416, 9f, 175-byte record: NUMB/DESC/CUST/VEND/RSVD/STATUS/OPENDT/CLOSEDT/EXTRA) = job/project cross-reference; T7SMPF.RWN primary editor (SM module, 64p); accessed by 15 programs (SO/AP/AR/GL/PO/WO/J7*); ISTS.CFG.JOB enable flag. See `docs/01-architecture/java-integration.md` Pass390 — **C: 85/100**
 
 ---
 
@@ -857,7 +857,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [ ] ⬜ Report parameter passing fully documented (how TAS passes filters/date ranges to RTM)
 - [ ] ⬜ Print-to-file vs. print-to-screen vs. print-to-printer mode switching documented
 - [ ] ⬜ Email/PDF archiving workflow traced
-- [ ] ⬜ `EVOReports\` share folder purpose confirmed (stored report output?)
+- [x] ✅ **`EVOReports\` purpose confirmed (Pass 390 2026-06-30)**: NOT a print-to-file output folder. Contents: ad-hoc SQL queries (.sql), CSV exports (.csv), screenshot PNGs (.png), empty subfolder. Files are user-created and irregularly dated (2015–2023). Purpose = informal shared workspace for ad-hoc queries and data exports. Print-to-file report PDFs are stored per-user or per-workstation, not on this share. **C: 90/100**
 - [ ] ⬜ All report templates for each module listed by name + purpose
 
 ---

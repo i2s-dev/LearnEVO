@@ -162,23 +162,78 @@ hypothesized). The file is parsed line-by-line; recognized keys:
 The `DEFAULT_FILE` constant points to `jdbc.ini`. The `WinRegistry` class is used for
 other purposes (e.g., finding the Java installation path for `JAVA.PATH`), not for DB connection.
 
-## ISJAVA table schema (confirmed from bytecode + TAS named_vars, Pass 110d, 2026-06-19)
+## ISJAVA table schema (confirmed from DDF + TAS named_vars, Pass 390 2026-06-30)
 
-ISJAVA is a **TAS runtime-only table** (not registered in the Pervasive DDF). It serves as the
-task-queue and audit trail for all Java-initiated database operations.
+**CORRECTION (Pass 362 2026-06-26):** ISJAVA IS registered in the Pervasive DDF (file_id=437).
+The prior "not in DDF" claim was wrong — the DDF parser filtered brackets in field names.
 
-| TAS field name | DB column | Type | Purpose |
-|----------------|-----------|------|---------|
-| `IS.JAVA.UID` | `IS_JAVA_UID` | STRING | Unique task ID (PK) — correlation key between TAS call and Java result |
-| `IS.JAVA.DATE` | `IS_JAVA_DATE` | DATE | Task execution date |
-| `IS.JAVA.PARAM` | `IS_JAVA_PARAM_1`, `IS_JAVA_PARAM_2`, … | STRING (×N) | Command-line parameters passed to EvoPVT.jar (array; column count = max args) |
+Confirmed DDF schema (27 fields, record = 2,054 bytes):
+
+| TAS field name | DB column | Type | Size | Offset | Purpose |
+|----------------|-----------|------|------|--------|---------|
+| `IS.JAVA.UID` | `IS_JAVA_UID` | STRING | 40 | 0 | Unique task ID (PK) |
+| `IS.JAVA.PARAM` | `IS_JAVA_PARAM[1..25]` | STRING | 80 each | 40–2039 | 25 parameter slots (80 chars each = up to 2,000 chars total) |
+| `IS.JAVA.DATE` | `IS_JAVA_DATE` | DATE | 4 | 2040 | Queue/execution date |
 
 Additional TAS variables (not DB columns):
-- `JAVA.PATH` — path to `EvoPVT.jar` (from config or taspro7.ini)
-- `JAVA.H` — TAS file handle for the ISJAVA Btrieve table
+- `JAVA.PATH` — path to `EvoPVT.jar` (read from ISTS.CFG or taspro7.ini)
+- `JAVA.PATH2` — secondary Java path (fallback or alternate version)
+- `JAVA.H` — TAS file handle for the open ISJAVA Btrieve table
+- `JAVA.NAME` — Java class/program name (used by QUERYEXECUTE.RWN)
 
-The INSERT is built dynamically: `INSERT INTO ISJAVA (IS_JAVA_UID, IS_JAVA_DATE, IS_JAVA_PARAM_1, IS_JAVA_PARAM_2, ...) VALUES (?, ?, ?, ?, ...)`
-The count of PARAM columns equals the number of args the calling TAS program passes.
+## ISJAVA two-tier usage pattern (Pass 390 2026-06-30)
+
+Of 23 programs that open ISJAVA, two distinct access tiers exist:
+
+**Tier A — Full queue access (9 programs, have JAVA.H + IS.JAVA.UID/PARAM/DATE):**
+
+| Program | Module | Task type |
+|---------|--------|-----------|
+| `EVOERPMENU.RWN` | Menu | Queue monitor — polls ISJAVA, dispatches to EvoPVT.jar |
+| `T7AUTOFX.RWN` | System | FX rate fetch daemon (queues Oanda API calls) |
+| `T7MDEFAULTS.RWN` | System | System defaults (config update notifications) |
+| `T7SOA.RWN` | SO | Sales order entry — queues SO confirmation emails |
+| `T7SOE.RWN` | SO | SO release/ship — queues shipping notifications |
+| `T7SOGA.RWN` | SO | SO invoice posting — queues invoice emails |
+| `T7SOR.RWN` | SO | SO returns — queues return/RMA notifications |
+
+**Tier B — Path-only reference (14 programs, have JAVA.PATH/PATH2 only):**
+These programs only reference the Java path (T7MRA/B/C/E MRP suite, T7SOH/SOLOT/SOLINFO, T7SOGCOGS, T7SOHINFO/SOINFO/SOJ/SOK/MEMO2ALPHA, T7MHOPE/MLC) — they check Java availability or display Java-related info but do not queue tasks themselves.
+
+**T7jsql.RWN** (SQL bridge, 52 procs) has `JAVA.PATH + JAVA.PATH2` only — it calls Java directly rather than using the ISJAVA queue.  
+**QUERYEXECUTE.RWN** (26 procs) has `JAVA.PATH + JAVA.NAME` — interactive query launcher.
+
+## ISJOB — separate job/project tracking table (Pass 390 2026-06-30)
+
+`ISJOB` is entirely distinct from `ISJAVA`. It is a job/project cross-reference table used to link transactions to job numbers.
+
+DDF schema (9 fields, record = 175 bytes, file_id=416, location=ISJOB.B):
+
+| Field | Type | Size | Purpose |
+|-------|------|------|---------|
+| `IS_JOB_NUMB` | STRING | 15 | Job number (primary key) |
+| `IS_JOB_DESC` | STRING | 30 | Job description |
+| `IS_JOB_CUST` | STRING | 10 | Customer code link |
+| `IS_JOB_VEND` | STRING | 10 | Vendor code link |
+| `IS_JOB_RSVD` | STRING | 1 | Reserved |
+| `IS_JOB_STATUS` | STRING | 1 | Status code |
+| `IS_JOB_OPENDT` | DATE | 4 | Open date |
+| `IS_JOB_CLOSEDT` | DATE | 4 | Close date |
+| `IS_JOB_EXTRA` | STRING | 100 | Extra data |
+
+TAS namespace: `IS.JOB.*` (9 vars matching the DDF fields).  
+Primary editor: `T7SMPF.RWN` (SM module, 64 procs, 1,292 vars — also opens JOB.H handle).  
+Enable flag: `ISTS.CFG.JOB`; config variants: `ISTS.CFG.JOBDEC`, `ISTS.CFG.JOBCUS`.  
+Accessed by 15 programs: SO (T7SOA/SOPK), AP (T7APB), AR (T7ARB), GL (T7GLB), PO (T7POA/TPOA),
+WO (T7WOA/OLD), SA (T7SAA), MRP (T7MRIX), and J7* customizations.
+
+## EVOReports network share (Pass 390 2026-06-30)
+
+`\\i2s109-solidcrm\EVOReports\` is **not** a systematic print-to-file output folder.
+Actual contents: ad-hoc SQL queries (.sql), CSV exports (.csv), screenshot PNGs, an empty subfolder.
+Files are irregularly dated (2015–2023) and user-created. Purpose: informal workspace for sharing
+queries and data extracts across users.  Print-to-file report output goes elsewhere (PDFs likely
+stored per-user or per-workstation, not on this share).
 
 ## Resolved open questions (Pass 106l)
 
@@ -189,5 +244,12 @@ The count of PARAM columns equals the number of args the calling TAS program pas
 ## Resolved open questions (Pass 110d, 2026-06-19)
 
 - Java connection parameters source: **`jdbc.ini`** text file (not Windows registry) ✅
-- ISJAVA table schema: IS_JAVA_UID + IS_JAVA_DATE + IS_JAVA_PARAM_N (dynamic N) ✅
-- ISJAVA is TAS runtime-only (not in Pervasive DDF) ✅
+- ISJAVA table schema: IS_JAVA_UID + IS_JAVA_DATE + IS_JAVA_PARAM[1..25] ✅
+
+## Resolved open questions (Pass 390 2026-06-30)
+
+- ISJAVA IS in DDF (file_id=437) — prior "not in DDF" was wrong ✅
+- ISJAVA schema: 27 fields — UID (40) + 25×PARAM (80 each) + DATE (4) ✅
+- Two-tier TAS access: 9 programs queue tasks (JAVA.H + IS.JAVA.*), 14 programs path-only ✅
+- ISJOB = separate job/project table (9f, file_id=416, T7SMPF primary editor) ✅
+- EVOReports folder = informal user workspace, not print-to-file output ✅

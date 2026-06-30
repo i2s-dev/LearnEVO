@@ -2314,7 +2314,7 @@ One row per depreciation run per asset. Posted=Y means GL transaction was create
 - **SM-E/F — Tax Setup:** ISTAXFIL(84f: tax rates) + ISIS.TXG (tax groups). ISTAXFIL structure: CODE(10) PK + DESC + VNDCD(tax authority vendor) + IDNUM; 9 SO brackets (SOLRNG quantity ranges + SOHRNG hour ranges + SOPERC percentages + TICD type flags) + 9 PO brackets (POLRNG/POHRNG/POPERC/PTICD); GL accounts for SO tax (GLASO+GLDSO) and AP/PO tax (GLAPO+GLDPO); TAXIN(1 inclusive flag), ISCUR(3 currency), SOMAX+POMAX (max tax amounts). Tax groups (ISTAXGRP) assign a tax file CODE to a customer or vendor.
 - **SM-O — Ship Via:** ISSHPVIA with carrier tracking URL field.
 - **SM-D — Payment Terms:** IS.TERMS (standard payment terms like Net30, 2/10Net30).
-- **SM-PF — Job Number:** ISJOB (next job cost number counter).
+- **SM-PF — Job Number:** ISJOB (job/project tracking — links transactions to job numbers across SO/AP/AR/GL/PO/WO/SA/MRP). 9 fields: NUMB(PK/15), DESC, CUST, VEND, STATUS, OPENDT, CLOSEDT, EXTRA. Enable: ISTS.CFG.JOB.
 - **SM-PH — Cycle Codes:** IS.CYCLE (production cycle codes).
 - **SM sub-modules:**
   - T7SMI* (CRM masters): BKCMLEAD, BKCMTERR, BKCMACFC, BKCMACCC, BKCMDTCD
@@ -2811,12 +2811,28 @@ The EvoERP Java integration layer bridges TAS Pro 7 programs and **EvoPVT.jar** 
 - Field `IS.JAVA.DATE` — queue date
 - TAS Pro 7 programs write records to ISJAVA → EvoPVT.jar reads, processes, and removes them
 
-**Programs that open ISJAVA (22 programs confirmed — Pass 293):**
-- **EvoERPmenu.RWN** — main menu monitors ISJAVA for incoming Java-side results/notifications
-- **T7AUTOFX.RWN** (Auto FX daemon) — queues Oanda currency rate fetch tasks; runs on `TIMER.CALL`; uses HOST/PORT/JAVA.PATH + ISTS.CFG.OANDA config
-- **T7SOA.RWN + 11 other T7SO*.RWN** — Sales Order entry and reporting (SO module opens ISJAVA for email/document notifications)
-- **T7MRA/B/C/E.RWN** — MRP programs (Manufacturing Reports / MRP variants) — open ISJAVA for post-run notifications
-- **T7MDefaults.RWN, T7Memo2Alpha.RWN, T7MHOPE.RWN, T7MLC.RWN** — miscellaneous modules
+**Programs that open ISJAVA (23 programs confirmed — Pass 390):**
+
+Two distinct access tiers exist across these 23 programs:
+
+**Tier A — Full queue access (9 programs: have JAVA.H handle + IS.JAVA.UID/PARAM/DATE fields):**
+
+| Program | Module | Purpose |
+|---------|--------|---------|
+| `EVOERPMENU.RWN` | Menu | Queue monitor — polls ISJAVA, dispatches to EvoPVT.jar |
+| `T7AUTOFX.RWN` | System | FX rate fetch daemon (queues Oanda API calls) |
+| `T7MDEFAULTS.RWN` | System | System defaults config update notifications |
+| `T7SOA.RWN` | SO | Sales order entry — queues SO confirmation emails |
+| `T7SOE.RWN` | SO | SO release/ship — queues shipping notifications |
+| `T7SOGA.RWN` | SO | SO invoice posting — queues invoice emails |
+| `T7SOR.RWN` | SO | SO returns — queues RMA notifications |
+
+**Tier B — Path-only reference (14 programs: JAVA.PATH/PATH2 only, no queue writes):**
+- MRP suite: T7MRA/B/C/E (check Java availability for post-run actions)
+- SO: T7SOH/SOLOT/SOLINFO/SOGCOGS/SOHINFO/SOINFO/SOJ/SOK/MEMO2ALPHA (check path, display Java info)
+- System: T7MHOPE/MLC
+- `T7jsql.RWN` (SQL bridge, 52 procs) — calls Java directly via exec, not via ISJAVA queue
+- `QUERYEXECUTE.RWN` (26 procs) — interactive query launcher; uses JAVA.PATH + JAVA.NAME
 
 **Java integration programs:**
 - **T7JAVARUN.RWN** (122KB, 11 procs, source=NZEVO.LIB) — Java program runner; vars: `RUNPRGNAME`, `JAVAMENU`, `JAVAAUTH`, `PARAM1-5`, `DEBUG.ON`; shows "please wait" screen (T7JAVARUN title = wait screen shown while EvoPVT.jar executes)
@@ -2873,7 +2889,20 @@ The EvoERP Java integration layer bridges TAS Pro 7 programs and **EvoPVT.jar** 
 - No entry fields — display-only output monitor window
 - Shown when EvoPVT.jar Java tasks are executing; displays Java process status/results back to TAS user
 
-**Confidence: 68/100** — ISJAVA field names confirmed (UID/PARAM/DATE); 22 calling programs cataloged; T7AUTOFX FX-daemon purpose confirmed from named vars; ISMCF currency fields confirmed. SMTP class structure fully documented. EvoPVT.jar ISJAVA task command IDs not decoded.
+**ISJAVA schema (confirmed from DDF, Pass 390):** 27 fields, 2,054-byte record — IS_JAVA_UID(STRING/40, PK) + IS_JAVA_PARAM[1..25](STRING/80 each, 25 parameter slots) + IS_JAVA_DATE(DATE/4). DDF file_id=437. Prior "not in DDF" claim was wrong — DDF parser had been filtering bracket characters in field names.
+
+**ISJOB — separate job/project tracking table (Pass 390 2026-06-30):**
+
+`ISJOB` is entirely distinct from `ISJAVA` (different table, different purpose). It links transactions to job/project numbers across all modules.
+- DDF: file_id=416, location=ISJOB.B, 9 fields, 175-byte record
+- Schema: IS_JOB_NUMB(15/PK), IS_JOB_DESC(30), IS_JOB_CUST(10), IS_JOB_VEND(10), IS_JOB_RSVD(1), IS_JOB_STATUS(1), IS_JOB_OPENDT(DATE/4), IS_JOB_CLOSEDT(DATE/4), IS_JOB_EXTRA(100)
+- Primary editor: T7SMPF.RWN (SM module, menu SM-PF), 64 procs, 1,292 vars — opens `JOB.H` handle
+- Enable flag: `ISTS.CFG.JOB`; config variants `ISTS.CFG.JOBDEC`, `ISTS.CFG.JOBCUS`
+- Accessed by 15 programs: SO (T7SOA/SOPK), AP (T7APB), AR (T7ARB), GL (T7GLB), PO (T7POA/TPOA), WO (T7WOA/OLD), SA (T7SAA), MRP (T7MRIX), and J7* customizations
+
+**EVOReports network share:** `\\i2s109-solidcrm\EVOReports\` is NOT a print-to-file output folder. Actual contents: ad-hoc SQL files, CSV exports, PNGs — irregularly dated 2015–2023, user-created workspace. Print-to-file PDF output goes elsewhere (per-user or per-workstation), not on this share.
+
+**Confidence: 85/100** — ISJAVA two-tier access pattern confirmed from rwn_symbols.json (23 programs, 9 with JAVA.H + IS.JAVA.* full access, 14 path-only); DDF schema confirmed for ISJAVA (27f) and ISJOB (9f); T7AUTOFX FX-daemon purpose confirmed; SMTP class structure fully documented. EvoPVT.jar ISJAVA task command IDs not decoded; exact queue write direction requires dynamic trace confirmation.
 
 ---
 
@@ -5529,11 +5558,9 @@ Previously documented as 6 DFMs; now 13 programs fully identified:
 | FROM_TYPE/THRU_TYPE | Transaction type range |
 | BKAC_TYPE_RANGE + ITEM_RANGE | Additional filter flags |
 
-**ISJOB** (9f): Job tracking:
-- IS_JOB_NUMB(15) — job number (PK)
-- IS_JOB_DESC(30) + CUST(10) + VEND(10) — description, customer, vendor
-- IS_JOB_STATUS(1) + OPENDT + CLOSEDT — job lifecycle
-- Used in SA to group invoices under a job number
+**ISJOB** (9f, 175B, file_id=416): Job/project cross-reference — links transactions to job numbers across all modules.
+- IS_JOB_NUMB(15/PK), IS_JOB_DESC(30), IS_JOB_CUST(10), IS_JOB_VEND(10), IS_JOB_RSVD(1), IS_JOB_STATUS(1), IS_JOB_OPENDT(DATE/4), IS_JOB_CLOSEDT(DATE/4), IS_JOB_EXTRA(100)
+- Primary editor: T7SMPF.RWN (SM-PF menu). Enable flag: ISTS.CFG.JOB. 15 programs across SO/AP/AR/GL/PO/WO/SA/MRP access it.
 
 **ISAREX** (51f): AR customer extended data:
 - ISAREX_CUST(10) — PK
