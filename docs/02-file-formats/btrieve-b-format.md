@@ -46,38 +46,102 @@ Confirmed from `samples/BKICMSTR.B`:
 | Data pages | Fixed-length record storage — packed records, each with a usage byte prefix |
 | Free pages | Recycled deleted records — chained by the FCR's free page list |
 
+### FCR field map — confirmed from multi-file analysis (Pass 412, 2026-06-30)
+
+Cross-validated across 17 EvoERP `.B` files with known DDF metadata. Fields confirmed as
+**C** (constant across all files), **V** (varies), or **K** (known function).
+
+```
+Offset  Size  Status  Meaning
+------  ----  ------  -------------------------------------------------------
+0x00    2     K       "FC" magic (0x46 0x43) — Btrieve file signature
+0x02    2     C=0     Flags or format subversion (always 0 in EvoERP)
+0x04    2     V       Varies (1, 67, 123) — possibly key format flags
+0x06    2     C=0     Reserved / unused
+0x08    4     V       Varies — NOT a reliable record count; appears to be
+                      a checkpoint counter or B-tree page counter
+0x0C    4     V       0 or 16384 — possibly free page chain head pointer
+0x10    4     C=0     Constant 0 — reserved
+0x14    2     V       Varies — possibly key specification length/count
+0x16    2     K       LOGICAL RECORD LENGTH (= DDF record_end; 100% confirmed
+                      cross-validated against 12 DDF tables)
+0x18    2     V       Varies — unknown (may be key definition data)
+0x1A    2     C=0     Constant 0 — reserved
+0x1C    2     V       Varies (0..675) — NOT page size (values don't match
+                      standard Btrieve page sizes 512/1024/2048/4096)
+0x1E    2     C=0     Constant 0 — NOT index count despite prior hypothesis
+0x20    4     C=0     Constant 0 — NOT record count in this Pervasive version
+0x24    2     C=1     Constant 1 — file format marker
+0x26    2     C=0     Constant 0
+0x28    4     V       Varies — unknown (index/page related)
+0x2C    4     C=0     Constant 0 (unused pages count or free-page tail)
+0x30    2     C=0     Constant 0
+0x32-   ~     C=0     Bytes 0x32-0x43 all constant 0 in EvoERP files
+0x44    2     V       Varies (0, 1, 2)
+0x48    4     V       Two values: 0x07000000 or 0x09510000
+                      (Pervasive-internal version or capability flags)
+0x4C    4     C=1     Constant 1 — format marker
+0x50    4     V       Varies — unknown
+0x54    4     C=0     Constant 0
+0x58    4     C=0xFFFF0000  Bitmask sentinel (high 16 bits set)
+0x5C    4     C=0xFFFFFFFF  All-1s sentinel — free page list end marker
+0x60    4     V       0xFF0000FF or 0xFFFFFFFF — another sentinel mask
+0x64    2     C=0xFFFF     All-1s sentinel
+0x66-   ~     C=0     Bytes 0x66-0x71 all constant 0 in EvoERP files
+0x70    2     C=0     Constant 0
+0x72    2     K       PHYSICAL RECORD LENGTH = logical + overhead (confirmed)
+                      Standard overhead = 10 bytes (Btrieve record header)
+                      Anomalous overhead = 2 bytes (BKARCUST, ISJAVA — reason unknown)
+0x74    2     V       Varies — key-definition data
+0x76    2     V       Varies — key-definition data
+0x78    4     V       Varies — unknown
+0x7C    4     C=0     Constant 0
+```
+
+#### Record header overhead (confirmed Pass 412)
+
+The 10-byte Btrieve record header appended to each physical record contains:
+- B-tree management pointers and delete/modification flags
+- Confirmed: physical = logical + 10 for 15/17 analyzed files
+- Two anomalous files (BKARCUST, ISJAVA) have physical = logical + 2 — cause unknown;
+  may relate to large-record compression, different file version, or Default vs. active company
+
+#### Cross-validation table (logical record vs. DDF)
+
+| Table | DDF end | FCR 0x16 | FCR 0x72 | overhead |
+|-------|--------:|--------:|--------:|--------:|
+| BKICMSTR | 617 | 617 | 627 | 10 |
+| BKARCUST | 2498 | 2498 | 2500 | **2** |
+| BKARINV | 1551 | 1551 | 1561 | 10 |
+| WORKORD | 1173 | 1173 | 1183 | 10 |
+| BKGLCOA | 556 | 556 | 566 | 10 |
+| BKGLTRAN | 137 | 137 | 147 | 10 |
+| AHSYLOG | 27 | 27 | 37 | 10 |
+| BKPSUSER | 71 | 71 | 81 | 10 |
+| ISEXUSER | 83 | 83 | 93 | 10 |
+| ISACCESS | 275 | 275 | 285 | 10 |
+| ISJAVA | 2044 | 2044 | 2046 | **2** |
+| BKLOGON | 46 | 46 | 56 | 10 |
+
+Note: The full FCR layout is not publicly documented by Pervasive. FCR+0x16 (logical record
+size) and FCR+0x72 (physical record size) are confirmed by cross-validation across 12 DDF
+tables. All other field assignments are inferred from pattern analysis.
+
 ### Header byte decode (BKICMSTR.B FCR sample)
 
 ```
-Offset  Hex value   Interpretation (partial — full FCR spec is proprietary)
+Offset  Hex value   Interpretation
 ------  ---------   -----------------------------------------------------------
 00-01:  46 43       "FC" — Btrieve file magic
-02-03:  00 00       File format subversion
-04-05:  43 00       LE16 = 67 — possibly Btrieve file format version or internal overhead
-08-09:  05 00       LE16 = 5 — primary FCR; alt FCR (page 8) shows 04 here; likely
-                    a generation/checkpoint counter (diff of 1 = one checkpoint behind)
-14-15:  0B 00       LE16 = 11 — unknown
-16-17:  69 02       LE16 = 617 — LOGICAL RECORD SIZE (exact DDF record_end=617) ✓ confirmed
-18-19:  CB 02       LE16 = 715 — record count at last file population; 0 in this empty sample
-24-25:  01 00       Flag byte or version indicator
-28-29:  0E 00       LE16 = 14 — unknown (may relate to page count: 140 pages / 10 = 14?)
-4A-4D:  50 09 01 00 LE32 = 68,944 — possibly total allocated record bytes (< 71,680)
-60-6B:  FF*12       End-of-chain marker for free page list (0xFFFFFFFF... = no free pages)
-70-71:  00 00       (zero-filled)
-72-73:  73 02       LE16 = 627 — PHYSICAL RECORD SIZE ✓ confirmed
-                    Cross-validated: DDF record_end=617 + ~10 bytes Btrieve record header = 627
-                    Verified using field.ddf: FCR+0x72=34, X$Field DDF record=34 bytes
-74-75:  0B 00       LE16 = 11 — unknown
-76-77:  0B 00       LE16 = 11 — unknown
-78-79:  0E 00       LE16 = 14 — unknown
-7A-7B:  3C 0F       LE16 = 3900 — UNKNOWN; NOT record size; Pervasive DDF files (file.ddf,
-                    field.ddf) both show 272 at this offset; likely a Pervasive-internal
-                    constant or pre-allocation parameter, not the physical record length
+02-03:  00 00       Constant 0 (flags/version)
+04-05:  43 00       LE16 = 67 — varies; possibly key format flags
+08-09:  05 00       LE16 = 5 — checkpoint/generation counter
+16-17:  69 02       LE16 = 617 — LOGICAL RECORD SIZE (DDF confirmed) ✓
+24-25:  01 00       Constant 1 — format marker
+58-5B:  00 00 FF FF LE32 = 0xFFFF0000 — sentinel mask
+5C-5F:  FF FF FF FF LE32 = 0xFFFFFFFF — free page list end sentinel
+72-73:  73 02       LE16 = 627 — PHYSICAL RECORD SIZE (617+10) ✓
 ```
-
-Note: The full FCR layout is not publicly documented by Pervasive. FCR+0x16 (logical record
-size) and FCR+0x72 (physical record size) are confirmed by cross-validation across multiple
-Btrieve files. All other fields are inferred.
 
 ### Companion files
 
