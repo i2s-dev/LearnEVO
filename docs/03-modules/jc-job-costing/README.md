@@ -380,8 +380,20 @@ handles for the archive variants of the primary tables. Notable JC-specific arch
 
 ---
 
+## Live Data Analysis (Pass 421, 2026-06-30)
+
+| Table | Count | Notes |
+|-------|------:|-------|
+| ISJOB | 45,862 | Job code master (IS_JOB_NUMB + DESC + CUST + VEND + STATUS) |
+| ISJBSF | 142 | Business scorecard records |
+
+ISJOB has 45,862 job codes — all with STATUS=' ' (blank). ISJOB serves as a reference
+table for job number tracking in WO labor and inventory transactions; blank STATUS for
+all records confirms job codes are passive reference data (not individually
+activated/deactivated). ISJBSF=142 (business scorecard, lightly used).
+
 **Confidence: 92/100** — All 19 BKJC*.RUN programs binary-analyzed with table lists,
 report layouts, status filters, ISTS enhancement dates, archive table inventory, and
 dual-menu assignments confirmed; 2 programs (JC-S, JC-T) are T7-only (no RUN file).
-Remaining gap: bytecode-level field-access namespace analysis not done (requires RWN
-decryption, blocked).
+Live data: ISJOB=45,862 (Pass421). Remaining gap: bytecode-level field-access namespace
+analysis not done (requires RWN decryption, blocked).
