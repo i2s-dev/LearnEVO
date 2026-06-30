@@ -132,7 +132,7 @@ Primary key: `BKGL_ACCT` (10) + `BKGL_GLDPT` (4)
 | `BKGL_ACCT` | STRING | 10 | GL account code (PK part 1) |
 | `BKGL_GLDPT` | STRING | 4 | GL department (PK part 2) |
 | `BKGL_ACCTD` | STRING | 25 | Account description |
-| `BKGL_TYPE` | STRING | 1 | Account type: A=Asset, L=Liability, E=Equity, R=Revenue, C=Cost/Expense |
+| `BKGL_TYPE` | STRING | 1 | Account type: A=Asset, L=Liability, O=Owners Equity, I=Income/Revenue, E=Expense/Cost |
 | `BKGL_CR_DR` | STRING | 1 | Normal balance: C=Credit, D=Debit |
 | `BKGL_NON_CASH` | STRING | 1 | Non-cash account flag (depreciation, etc.) |
 | `BKGL_CURRENT_1..14` | FLOAT×14 | 8 | Current year period balances (periods 1–12 + 2 adjusting) |
@@ -610,6 +610,39 @@ These match the `BKGL_CHK_TYPE` field in BKGLCHK (confirmed string 1 type from D
 ---
 
 ## Live Data Analysis (Pass 417, 2026-06-30)
+
+### BKGLCOA (Chart of Accounts) live statistics
+
+2,185 account records (account+department combinations).
+
+**Account type distribution (Pass 417, live-confirmed):**
+
+| TYPE | Count | Meaning | Account range (i2S) |
+|------|------:|---------|---------------------|
+| `E` | 1,898 | Expense / Cost of Sales | 5000–9999 |
+| `A` | 101 | Asset | 1000–1999 |
+| `L` | 92 | Liability | 2000–2999 |
+| `I` | 85 | Income / Revenue | 4000–4999 |
+| `O` | 8 | Owners Equity | 3000–3999 |
+
+**CORRECTION from prior documentation:** The type codes were previously listed as
+A/L/E/R/C (Asset/Liability/Equity/Revenue/Cost). **This was wrong.** Live data confirms:
+- `E` = Expense (1,898 accounts — clearly expense, not equity)
+- `I` = Income/Revenue (85 accounts)
+- `O` = Owners Equity (8 accounts — common stock, paid-in capital, retained earnings, current earnings)
+- No `R` or `C` type codes exist in the live chart of accounts.
+
+**Sample accounts per type:**
+- Asset (A): 1112=CASH LITCHFIELD BANCORP, 1113=CASH i2 SYSTEMS CALIFORNI, 1114=BANK OF AMERICA
+- Liability (L): 2110=ACCOUNTS PAYABLE, 2111=INVOICES RECEIVED NOT POSTED, 2115=CUSTOMER DEPOSITS
+- Equity (O): 3000=COMMON STOCK, 3050=PAID IN CAPITAL, 3100=CURRENT EARNINGS
+- Income (I): 4001=DRIVER CONTROL BOX, 4002=DRIVERS, 4003=LED FIXTURES (product line revenue)
+- Expense (E): 5001=COST OF SALES, 5002=BAD DEBT/ASSET EXPENSE
+
+**BKGLATRN (archived GL transactions): 0 records** — GL transactions have never been archived
+at i2 Systems. All 2,965,096 transactions spanning 2016-2026 remain live in BKGLTRAN.
+This is consistent with BKGLTRAN.PERIOD=0 (T7GLARCH period gate not exercised).
+Contrast with AR: BKARHINV has 95,982 archived AR invoices — AR archiving IS used regularly.
 
 ### BKGLTRAN live statistics
 
