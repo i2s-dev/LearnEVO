@@ -361,14 +361,20 @@ Sources: string extraction from `samples/BKPI*.RUN`.
 
 **BKPIF opens BKGLCOA:** The Physical Inventory Report reads GL chart of accounts — for displaying the GL account/department pairs assigned to each item's inventory adjustment entry.
 
-## Live Data Analysis (Pass 421, 2026-06-30)
+## Live Data Analysis (Pass 421+422, 2026-06-30)
 
 | Table | Count | Notes |
 |-------|------:|-------|
 | BKPIMSTR | 250 | PI period master records (YEAR + QTR + DESC) |
+| PIBINLOC | 22,279 | Bin-location PI records — item × location × bin triplets being counted |
+| PIBINLOT | 40 | Lot-tracked items in current count period |
 
 250 PI cycles represent approximately 62 years of quarterly PI runs or shorter
 intervals with overlapping periods. The 3-field structure (YEAR/QTR/DESC) confirms
 BKPIMSTR is purely an index of PI sessions — it holds no count or freeze data itself.
 
-**Confidence: 93/100** — All 9 programs confirmed from rwn_symbols.json with proc counts, lib assignments, and DB file lists; 7 BKPI* schemas confirmed from DDF; BKPH.INFO.* 18-var namespace confirmed from named-var extraction; workflow steps confirmed from program roles and DB file analysis; TAS6 9-program binary inventory cross-validated (Pass 324); BKPIG GL posting + FIFO/PO cost lookup confirmed; ISCYCLCD/PIBINLOC/ISBNMSTR existence confirmed from DB file lists but schemas not confirmed from DDF; live data: BKPIMSTR=250 (Pass421).
+PIBINLOC=22,279 confirms the bin-level counting is actively used — one record per
+item+location+bin combination being physically counted. The 40 lot records in PIBINLOT
+show lot-tracked components are tracked separately during the count period.
+
+**Confidence: 93/100** — All 9 programs confirmed from rwn_symbols.json with proc counts, lib assignments, and DB file lists; 7 BKPI* schemas confirmed from DDF; BKPH.INFO.* 18-var namespace confirmed from named-var extraction; workflow steps confirmed from program roles and DB file analysis; TAS6 9-program binary inventory cross-validated (Pass 324); BKPIG GL posting + FIFO/PO cost lookup confirmed; PIBINLOC/PIBINLOT schemas confirmed from DDF (14f each); live data: BKPIMSTR=250/PIBINLOC=22,279/PIBINLOT=40 (Pass421/422).

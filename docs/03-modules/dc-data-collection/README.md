@@ -417,3 +417,24 @@ Key observations:
 - `lab.shift = 1` set as default if zero (AGL 8/8/00 safety) — ensures shift is always valid
 - `time TMP.TIME get` = read current system time for timestamp
 - `calc_runhrs` = calculated run hours function called before `save @DCTLAB nocnf`
+
+---
+
+## Live Data Analysis (Pass 422, 2026-06-30)
+
+| Table | Count | Notes |
+|-------|------:|-------|
+| BKDCLAB1–5 | N/A | ERR — not accessible via PSQL ODBC relational layer (Btrieve direct-access only) |
+| BKDCSHFT | 1 | Single shift schedule record |
+| BKDCCFG | 0 | Data collection config not set up at i2 Systems |
+
+The 5 BKDCLAB* pipeline tables (BKDCLAB1–BKDCLAB5) are not exposed through the Pervasive
+PSQL ODBC relational engine — they exist as Btrieve (.B) files on disk but have no DDF
+relational mapping accessible via DSN=DBA. This is consistent with the DC module being a
+real-time data collection subsystem that writes directly via Btrieve rather than through
+the SQL layer.
+
+BKDCSHFT=1 (single shift config record) and BKDCCFG=0 (no data collection configuration)
+confirm the DC module is installed but not actively deployed at i2 Systems.
+
+**Confidence: 85/100** — 7-table schema documented; 3 BKDCTLAB programs analyzed; LAB_* pipeline cluster architecture confirmed; live data confirms module idle at i2 Systems; gap: BKDCLAB1-5 row counts unverifiable via PSQL (Btrieve-only access).

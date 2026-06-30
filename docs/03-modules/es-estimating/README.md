@@ -403,18 +403,31 @@ Enhancement dates extracted from binary strings — show modification chronology
 
 ---
 
-## Live Data Analysis (Pass 421, 2026-06-30)
+## Live Data Analysis (Pass 421+422, 2026-06-30)
 
 | Table | Count | Notes |
 |-------|------:|-------|
 | BKESTQT | 6,894 | Quote headers (Y=5,909 open / X=366 cancelled / blank=618) |
 | BKESTQTL | 462,727 | Quote line items (~67 lines/quote avg) |
 | ESTSUM | 0 | Legacy TAS6 estimate summary — not used in T7 era |
+| ISESTAQT | 5,816 | IS-era archived quote headers (BKAR_INV_* schema clone) |
+| ISESTAQL | 130,792 | IS-era archived quote lines (~22.5 lines/quote avg) |
+| ISESTHDR | 0 | IS-era in-progress quote headers — not used |
+| ISESTLNE | 0 | IS-era in-progress quote lines — not used |
+| ISESAHDR | 0 | ES archive header variant — not used |
+| ISESALNE | 0 | ES archive line variant — not used |
+| ISESTASM | 0 | ES assembly cost summary — not used |
+| ISESADTL/ISESTDTL | 0 | ES cost detail breakdown — not used |
+| ISESTPO | 0 | ES MRP PO bridge — not used |
 
 **Key insight:** Estimating is heavily used — 6,894 quotes with 462,727 line items.
 BKESTQT uses the exact BKAR_INV_* field naming (same schema as AR invoices) with
 INVCD status: Y=active quote, X=cancelled, blank=unset. Average 67 line items per
 quote confirms the estimating module handles complex multi-line BOMs.
+
+ISESTAQT/ISESTAQL hold 5,816 archived quotes (the IS-era schema layer) while the
+older ISESTHDR/ISESTLNE in-progress tables are empty — confirming the T7-era BKESTQT
+pipeline is the active one and IS-era archive tables stored historical data only.
 
 ---
 
@@ -425,4 +438,4 @@ confirmed; BKICDIM field namespace confirmed; ES-A title corrected to "Enter Est
 MTESUM.* 15-header + 15×10-qty-break cost field namespace fully documented (Pass 339);
 BKESTCFG config keys confirmed; BKESE 45-table conversion architecture fully mapped;
 status codes A/C/I/X/D confirmed; BARR_*/RARR_* cost arrays confirmed;
-ISTS Enhancement chronology 2010–2023 confirmed; live data: BKESTQT=6,894/BKESTQTL=462,727 (Pass421).
+ISTS Enhancement chronology 2010–2023 confirmed; live data: BKESTQT=6,894/BKESTQTL=462,727/ISESTAQT=5,816/ISESTAQL=130,792 (Pass421/422).
