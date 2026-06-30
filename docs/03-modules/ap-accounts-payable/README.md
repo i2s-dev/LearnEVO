@@ -1,6 +1,6 @@
 # Accounts Payable (AP)
 
-Status: verified | Pass 336 (2026-06-26)
+Status: verified | Pass 418 (2026-06-30)
 
 - **Module code**: `AP`
 - **Tables**: 26 (prefixes `BKAP`, `BKAB`)
@@ -596,9 +596,57 @@ All three modes are driven by the `BKYS.AP.AGING` config key (maps to BKSY.AP.AG
 
 ---
 
+## Live Data Analysis (Pass 418, 2026-06-30)
+
+### BKAPVEND — Vendor master
+
+| Metric | Value |
+|--------|-------|
+| Total vendors | 3,166 |
+
+### BKAPINVT — AP invoice headers
+
+| Metric | Value |
+|--------|-------|
+| Total invoice headers | 82,867 |
+| Date range | up to 2026-06-30 |
+
+Invoice type (`BKAP_INVT_TYPE`) distribution:
+
+| Type | Count | Interpretation |
+|------|-------|----------------|
+| I | 57,479 | Standard invoice (vendor bill) |
+| P | 23,068 | PO receipt (AP-C Enter PO Invoices) |
+| C | 2,229 | Credit memo |
+| M | 91 | Memo / miscellaneous |
+
+**Note:** P-type records link to PO receipts via `BKAPPOL`. i2 Systems generates roughly 23k PO-receipt AP invoices vs 57k direct vendor invoices — about 28% of all AP invoices originate from the PO workflow.
+
+### BKAPINVL — AP invoice lines
+
+| Metric | Value |
+|--------|-------|
+| Total invoice lines | 18,622 |
+
+Average of ~0.22 lines per invoice header (most AP invoices have 0 detail lines — amounts are recorded at header level only; line items are used selectively for PO receipt matching or multi-account splits).
+
+### BKAPPOL — AP PO receipt lines
+
+| Metric | Value |
+|--------|-------|
+| Total PO receipt lines | 24,937 |
+
+### BKAPCHKF — AP check file
+
+| Metric | Value |
+|--------|-------|
+| Records | 0 |
+
+`BKAPCHKF` is empty at i2 Systems — this is a staging table used during the check-printing cycle (AP-H). Records are written during check generation and cleared after posting. The permanent check history lives in `BKGLCHK` (GL check register, 40,654 checks). `BKAPCHKH` (check history) is the archived counterpart.
+
 ## Notes & open questions
 
 - BKAPAPO (58f) has one extra field vs BKAPPO (57f) — field not identified; likely an archive timestamp or purge flag.
 - BKAPRFQ / BKAPRFQL: Request for Quote tables use same schema as BKAPPO/BKAPPOL — RFQs and POs share structure, distinguished by document type routing in the program.
-- BKAPCHKF vs BKAPCHKH: Both are 12f check tables (VNDCOD + INVNUM + INVAMT PK). CHK**F** is likely "check file" (current) and CHK**H** is history; or F = front-end staging, H = history. Purpose distinction not confirmed.
+- BKAPCHKF vs BKAPCHKH: Both are 12f check tables (VNDCOD + INVNUM + INVAMT PK). **RESOLVED (Pass 418):** BKAPCHKF=0 records — it is a check-print staging table, cleared after posting. BKAPCHKH is the permanent history variant.
 - BKAPNOTE (12f): AP note table — SRCH1/SRCH2/DATE PK suggests a searchable note log linked to vendors or vouchers; exact use not yet traced.

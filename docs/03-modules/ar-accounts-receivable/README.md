@@ -1,6 +1,6 @@
 # Accounts Receivable (AR)
 
-Status: verified | Pass 334 (2026-06-26)
+Status: verified | Pass 418 (2026-06-30)
 
 - **Module code**: `AR`
 - **Tables**: 29 (prefixes `BKAR`, `BKAB`, `BKART`)
@@ -483,3 +483,56 @@ Source: string extraction from `samples/BKAR*.RUN` (copied from `\\i2s109-solidc
 | `ISARAINTA` | BKARD | IS AR invoice totals archive |
 | `ISARAHINA` | BKARD | IS AR invoice history archive |
 | `BKARSIVLA` | BKARA, BKARB, BKARC, BKARE–BKARN, BKARP, BKARR | BKARSIVL archive — universally present in all AR programs; likely session/display context table (same pattern seen in all BM and GL programs) |
+
+## Live Data Analysis (Pass 418, 2026-06-30)
+
+### BKARCUST — Customer master
+
+| Metric | Value |
+|--------|-------|
+| Total customers | 4,401 |
+| Top states | FL=614, NY=442, CA=329, TX=192 |
+
+Customer class (market segment) distribution:
+
+| Class | Count | Interpretation |
+|-------|-------|----------------|
+| MAR | 1,335 | Marine |
+| ARCH | 1,242 | Architecture |
+| (blank) | 638 | Unclassified |
+| ELEV | 362 | Elevator |
+| INDS | 209 | Industrial |
+| DISP | 174 | Display/Distribution |
+| IND | 154 | Industrial (alternate code) |
+| TRAN | 94 | Transportation |
+| ARCR | 61 | Architecture-related |
+| RECR | 24 | Recreation |
+
+Payment terms are stored as numeric codes (`BKAR_TERMS_NUM`): 1=1,817 customers, 6=1,710, 11=525, 7=152. These are foreign keys into a terms master table (likely `BKARMTRD` or BKSYMSTR terms slots).
+
+**Geographic note:** Florida is i2 Systems' largest customer state by count — consistent with a manufacturer serving Marine markets. National distribution across all major states.
+
+### BKARINV — Open AR invoices
+
+| Metric | Value |
+|--------|-------|
+| Total open invoices | 3,692 |
+| Date range | up to 2026-07-01 |
+
+Invoice code (`BKAR_INV_INVCD`) distribution:
+
+| Code | Count | Interpretation |
+|------|-------|----------------|
+| Y | 2,896 | Active unpaid invoice |
+| X | 421 | Unknown (possibly transferred or on-hold) |
+| (blank) | 202 | Unset / legacy |
+| N | 163 | Paid / credit note |
+
+### BKARHINV — Archived AR invoices
+
+| Metric | Value |
+|--------|-------|
+| Total archived | 95,982 |
+| Date range | 1990-11-30 to 2026-06-29 (35+ years) |
+
+**Key insight:** AR archiving is heavily used — 95,982 archived vs. 3,692 open (96.3% of all-time invoices are archived). History dates to 1990, predating the EvoERP software name. This is the longest historical record in the entire database. Contrast with GL: `BKGLATRN=0` (GL transactions are never archived at i2 Systems).

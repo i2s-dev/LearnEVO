@@ -354,6 +354,25 @@ All 9 tables confirmed present in the 659-table DDF schema (checked against tier
 
 ---
 
+## Post-Pass-416 resolved items
+
+**Pass 417 (2026-06-30) — GL period-end mechanism:**
+
+- ✅ **BKGLTRAN.PERIOD = 0 for ALL 2,965,096 records.** i2 Systems does not use T7GLP period-locking. All GL transactions are in "period 0" (unassigned). ISGLDATE stores period-start-date boundaries (not lock flags). Period locking is architecturally available but not exercised at this installation.
+- ✅ **BKGLATRN = 0 records.** GL transactions are never archived at i2 Systems. All 10 years of GL history stays live in BKGLTRAN.
+- ✅ **BKGLXH = 0 records.** GL cross-reference history is also never archived.
+- ✅ **BKGLX purpose confirmed:** Per-transaction cross-reference (1,822,769 rows) linking GL postings to source-module documents via PART+QUANTITY+AMOUNT+TRXNTYPE+WOPRE/WOSUF. Inventory (type I) = 62% of all rows.
+- ✅ **BKGLCHK = 40,654 checks (2004–2026).** Type C=Check / D=ACH / X=Cleared / V=Void confirmed from live data.
+
+**Pass 418 (2026-06-30) — AR/AP live data:**
+
+- ✅ **BKARCUST = 4,401 customers.** Market segments: MAR=1,335 / ARCH=1,242 / ELEV=362 / INDS=209. Top state: FL=614 (marine customers).
+- ✅ **BKARINV = 3,692 open invoices; BKARHINV = 95,982 archived (1990–2026).** AR archiving is heavily used — 96% of all invoices are archived. INVCD: Y=active, N=paid/credit, X=unknown status.
+- ✅ **BKAPVEND = 3,166 vendors; BKAPINVT = 82,867 invoice headers.** Type I=invoice (57,479) / P=PO receipt (23,068) / C=credit (2,229). BKAPCHKF=0 (staging table, cleared after posting).
+- ✅ **BKGLX_TRXNTYPE numeric codes ('4','5','6','7','8') remain unidentified.** Require T7-era RWN decryption to map.
+
+---
+
 ## Post-Pass-326 open items
 
 ~~18. **BKICL_JITPRG — undocumented JIT table**~~ **RESOLVED Pass 351 2026-06-26.**

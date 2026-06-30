@@ -729,3 +729,53 @@ T7GLP (edit period assignments), and T7GLARCH (archive by period gate).
 flag table. Period locking (preventing postings to prior periods) is enforced by T7GLP when it
 writes BKGL_TRN_PERIOD; since all BKGLTRAN records have PERIOD=0, the period gate is bypassed
 at i2 Systems — all postings go to the current (open) period regardless of date.
+
+### BKGLCHK (Check Register) live statistics
+
+40,654 records. Date range: 2004-05-27 to 2026-11-14.
+
+`BKGL_CHK_TYPE` distribution:
+
+| Type | Count | Interpretation |
+|------|------:|----------------|
+| `C` | 24,480 | Standard check (paper AP/AR check) |
+| `D` | 13,802 | ACH / direct deposit disbursement |
+| `X` | 1,231 | Cleared / reconciled (bank rec marked) |
+| `V` | 1,141 | Voided check |
+
+All bank activity since 2004 is retained live in BKGLCHK — no archive table `BKGLCHKH` has been
+used. Fields confirmed: CHKACT (bank account number), CHK_NUM, CHK_DATE, CHK_TYPE, CHK_NAME,
+CHK_AMT, CHK_FLAG, CHK_EXTRA, CHK_DATER (reconciliation date), CHK_VEND.
+
+### BKGLX (GL Cross-Reference) live statistics
+
+1,822,769 records. `BKGLXH` = 0 (cross-reference history never archived, same policy as BKGLATRN).
+
+BKGLX is a per-transaction cross-reference linking GL postings back to source-module document
+identifiers. Each row carries: POSTDATE, ARCHDATE, ENTDATE, PART (part number), QUANTITY, AMOUNT,
+TRXNTYPE, JOURNAL (GL journal batch), WOPRE+WOSUF (work order number).
+
+`BKGLX_TRXNTYPE` distribution:
+
+| Type | Count | Likely source module |
+|------|------:|----------------------|
+| `I` | 1,138,587 | Inventory transaction (IN/IC) |
+| `S` | 122,506 | Shipment / Sales Order (SO) |
+| `P` | 117,526 | Purchase / Purchase Order (PO) |
+| `W` | 108,226 | Work Order (WO) |
+| `5` | 100,071 | Unknown numeric subtype |
+| `L` | 96,030 | Labor / LW module |
+| `A` | 61,524 | Assembly / BOM (BM) |
+| `4` | 28,651 | Unknown numeric subtype |
+| `6` | 25,794 | Unknown numeric subtype |
+| `8` | 22,804 | Unknown numeric subtype |
+| `J` | 365 | Journal entry (GL-B) |
+| `O` | 277 | Other / miscellaneous |
+| `F` | 233 | Financial (possibly FA fixed assets) |
+| `D` | 151 | Direct / disbursement |
+| `7` | 14 | Unknown numeric subtype |
+| `E` | 10 | Expense |
+
+**Key insight:** Inventory transactions dominate (62% of all cross-ref rows) — every IC transaction
+generates a BKGLX row for drill-back. Numeric type codes ('4','5','6','7','8') are module-specific
+subtypes not yet mapped to letter codes; require T7-era RWN decryption to identify definitively.
