@@ -215,6 +215,15 @@ Primary key: IS_FXT_NUMBER + IS_FXT_DATE (asset number + date).
 
 ---
 
+## Live Data Analysis (Pass 421, 2026-06-30)
+
+| Table | Count | Notes |
+|-------|------:|-------|
+| ISFXASST | 589 | Fixed asset master records |
+| ISFXATRN | 22,568 | Depreciation/transaction entries (~38 per asset) |
+
+589 fixed assets with 22,568 transaction records (~38 transactions/asset). Regular depreciation postings have been made over many years. Each periodic run creates a batch of ISFXATRN records posted to BKGLTRAN.
+
 ## Confidence: 92/100
 
-All 3 RWN programs decrypted and analyzed (Pass 377, 2026-06-29). Both table schemas DDF-confirmed (23 + 12 fields). All 35 IS.FXA.* + IS.FXT.* field accesses confirmed from T7FAA and T7FAB variable tables. GL posting workflow confirmed: T7FAB writes BKGL.TRN.* to BKGLTRAN. Export format confirmed from T7FAE (COMMA.FIXED toggle). Remaining gap: depreciation calculation method logic (straight-line vs declining balance formula in bytecode) and exact disposal accounting procedure.
+All 3 RWN programs decrypted and analyzed (Pass 377, 2026-06-29). Both table schemas DDF-confirmed (23 + 12 fields). All 35 IS.FXA.* + IS.FXT.* field accesses confirmed from T7FAA and T7FAB variable tables. GL posting workflow confirmed: T7FAB writes BKGL.TRN.* to BKGLTRAN. Export format confirmed from T7FAE (COMMA.FIXED toggle). Live data: ISFXASST=589/ISFXATRN=22,568 (Pass421). Remaining gap: depreciation calculation method logic (straight-line vs declining balance formula in bytecode) and exact disposal accounting procedure.

@@ -403,6 +403,21 @@ Enhancement dates extracted from binary strings — show modification chronology
 
 ---
 
+## Live Data Analysis (Pass 421, 2026-06-30)
+
+| Table | Count | Notes |
+|-------|------:|-------|
+| BKESTQT | 6,894 | Quote headers (Y=5,909 open / X=366 cancelled / blank=618) |
+| BKESTQTL | 462,727 | Quote line items (~67 lines/quote avg) |
+| ESTSUM | 0 | Legacy TAS6 estimate summary — not used in T7 era |
+
+**Key insight:** Estimating is heavily used — 6,894 quotes with 462,727 line items.
+BKESTQT uses the exact BKAR_INV_* field naming (same schema as AR invoices) with
+INVCD status: Y=active quote, X=cancelled, blank=unset. Average 67 line items per
+quote confirms the estimating module handles complex multi-line BOMs.
+
+---
+
 **Confidence: 95/100** — DFM field sets fully confirmed (Pass 315) for 6 of 8 programs;
 BKMATCST 25-field schema confirmed from DDF; BKESTQT/BKESTQTL/ESTSUM schemas from DDF;
 TAS6 15-program inventory confirmed from binary (Pass 324); ES-A sub-program architecture
@@ -410,4 +425,4 @@ confirmed; BKICDIM field namespace confirmed; ES-A title corrected to "Enter Est
 MTESUM.* 15-header + 15×10-qty-break cost field namespace fully documented (Pass 339);
 BKESTCFG config keys confirmed; BKESE 45-table conversion architecture fully mapped;
 status codes A/C/I/X/D confirmed; BARR_*/RARR_* cost arrays confirmed;
-ISTS Enhancement chronology 2010–2023 confirmed.
+ISTS Enhancement chronology 2010–2023 confirmed; live data: BKESTQT=6,894/BKESTQTL=462,727 (Pass421).

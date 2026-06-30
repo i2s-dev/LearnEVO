@@ -154,8 +154,22 @@ ED-B dispatches to all four inbound programs depending on configuration.
 
 ---
 
+## Live Data Analysis (Pass 421, 2026-06-30)
+
+| Table | Count | Notes |
+|-------|------:|-------|
+| BKEDIH | 0 | EDI inbound order headers — not used at i2 Systems |
+| BKEDIL | 0 | EDI inbound order lines — not used at i2 Systems |
+
+**Key insight:** EDI is licensed but not actively used at i2 Systems — BKEDIH/BKEDIL are
+empty. No X12 850 orders are being received electronically. The CandoEDI middleware and
+all the BKED*/ISEDI* plumbing exists but is idle.
+
+---
+
 **Confidence: 90/100** — CandoEDI middleware architecture fully confirmed from binary
 strings; 5 X12 transaction sets confirmed (850/860/810/855/856); variable namespaces
-extracted; X12 version numbers confirmed N/A in EvoERP (configured in CandoEDI only).
+extracted; X12 version numbers confirmed N/A in EvoERP (configured in CandoEDI only);
+live data confirms module is licensed but idle at i2 Systems (Pass421).
 Remaining gap: internal CandoEDI format of DBASO.IN/DBASO.OUT flat files not analyzed
 (CandoEDI proprietary format, no RUN file for it).
