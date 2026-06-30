@@ -782,6 +782,85 @@ The `|` separator is distinct from `&&` (comment to end-of-line) and `;` (commen
 | `'4'` | `bkapha2.rtm` | Laser check variant 2 |
 | `'5'` | `bkapha3.rtm` | Laser check variant 3 |
 
+## T7 Form Event Model (Pass 398 — from tp7runtime.keywords.txt)
+
+TAS Pro 7 uses DFM form properties to wire events — **not** source-level `trap` keywords.
+Source-level `trap` is TAS Pro 6 / `.RUN`-era only. All T7 `.RWN` programs use DFM event properties.
+
+### Form-level events
+
+| Property | Opcode | Description |
+|----------|--------|-------------|
+| `OnStart` | 8082 | Subroutine label called when the form opens (startup hook) |
+| `OnClose` | 8081 | Subroutine label called when the form closes |
+| `OnDisplayScreen` | 8073 | Subroutine label called when screen is displayed/refreshed |
+| `OpenFiles` | 8083 | Automatic file-open list for the form (DFM-driven `open TABLE` replacement) |
+| `ProgramName` | 8074 | Name of the TAS program this form binds to |
+| `ProgramStart` | 8075 | Entry label within the program for form startup |
+
+### Field-level events (per `enter` field in DFM)
+
+| Property | Opcode | Description |
+|----------|--------|-------------|
+| `PreLabel` | 8084 | Subroutine label called before field entry (`pre` equivalent) |
+| `PostLabel` | 8085 | Subroutine label called after field entry (`post` equivalent) |
+| `ValidLabel` | 8086 | Validation subroutine label (`vld` equivalent) |
+| `OnClickLabel` | 8087 | Click event handler label |
+| `OnChangeLabel` | 8088 | Change event handler label |
+| `ValidExpr` | 8079 | Inline validation expression |
+| `ValidCheckOnExit` | 8080 | Boolean — validate when leaving field |
+| `ValidMsg` | 8078 | Validation failure message |
+| `FieldName` | 8070 | Binds the DFM control to a program variable name |
+| `NoClickOff` | 8071 | Prevents form deactivation on mouse click-off |
+| `NoClickOn` | 8072 | Related click-on behavior control |
+| `UpCase` | 8077 | Force entry to uppercase |
+| `StartAtEnd` | 8076 | Cursor starts at end of current field value |
+| `FastSearchFld` | 8089 | Fast-search column field for browse controls |
+| `FastSearchType` | 8090 | Fast-search type code |
+
+### Key events (replaces TAS6 `trap` keyword in T7)
+
+| Property | Opcode | Description |
+|----------|--------|-------------|
+| `KeyTraps` | 8091 | Array of key trap definitions (key code → subroutine label) |
+| `KeyTrapHint` | 8092 | Display hint text for key traps (shown in fnc-key bar) |
+
+### DFM section structure (events and entry)
+
+```
+[Events]
+  OnStart = MYSTART_LABEL
+  OnClose = MYEXIT_LABEL
+[Entry]
+  FieldName = MYVAR
+  PreLabel = PRE_MYVAR
+  PostLabel = POST_MYVAR
+  ValidLabel = VLD_MYVAR
+  ValidMsg = "Invalid entry"
+  UpCase
+[Master-Slave]
+  MasterFile = BKARCUST
+  MasterFieldList = BKAR_CUST_CODE
+```
+
+### Grid and help
+
+| Property | Opcode | Description |
+|----------|--------|-------------|
+| `AttachGrid` | 8093 | Attaches a grid control to the form |
+| `HelpStatusBar` | 8094 | Status bar help text for F1 context help |
+| `HelpStatusBarMsg` | 8095 | Status bar help message string |
+
+### Master-Slave
+
+`MasterFile` + `MasterFieldList` define a lookup relationship — when a key field changes,
+the slave table is automatically searched and bound fields are filled. This is the DFM-level
+equivalent of the TAS6 `find G` + field-population block.
+
+*Pass 398 (2026-06-30): confirmed from tp7runtime.keywords.txt opcodes 8070–8114.*
+
+---
+
 ## Things still to verify
 
 - How `#INC HELPSCRN` is resolved — `HELPSCRN.INC` or equivalent not found on share.
