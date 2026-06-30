@@ -427,13 +427,24 @@ Binary analysis of T7WOG.RWN.dec (wog_deep2.py, 2026-06-29) revised the mechanis
     T7WOG4.RWN decryption (blocked on IV — needs one Frida debugger session).
     **STATUS: BLOCKED on T7WOG4.RWN IV recovery.**
 
-21. **75820 and 75838 freeze confirmation**: These WOs also have WOBOM_OPTION='1'. Same fix applies:
-    UPDATE WOBOM SET WOBOM_OPTION='N' WHERE WOBOM_OPTION='1' AND WOBOM_WOPRE IN ('75820','75838').
-    **STATUS: Unconfirmed — requires live test.**
+21. **75820 and 75838 freeze confirmation** — **CONFIRMED STILL VULNERABLE (Pass 432, 2026-06-30):**
+    Live WOBOM query confirms:
+    - WO 75405-3: ZERO OPTION='1' records — **already fixed** (cleared to 'N' or 'L')
+    - WO 75820: **114 OPTION='1' records, ALL not-fully-issued (issued=0)** — still at freeze risk
+    - WO 75838: **84 OPTION='1' records, ALL not-fully-issued (issued=0)** — still at freeze risk
+    - Globally: **13,289 WOBOM lines have OPTION='1' AND issued < total** — all potential T7WOG freeze candidates
+    Fix (must be run by admin with ODBC write access):
+    ```sql
+    UPDATE WOBOM SET WOBOM_OPTION='N' WHERE WOBOM_OPTION='1' AND WOBOM_WOPRE IN (75820, 75838);
+    -- Global fix (all WOs):
+    UPDATE WOBOM SET WOBOM_OPTION='N' WHERE WOBOM_OPTION='1' AND WOBOM_QTYISSUED < WOBOM_TOTQTY;
+    ```
+    **STATUS: NOT YET FIXED — user action required on WOs 75820 and 75838.**
 
-22. **Are other Firm WOs (AMAT > 0) vulnerable to partial-issue freeze?** 227 Firm WOs have AMAT>0.
-    Only SMT uses KIT=L. Other departments use KIT=Y. KIT=Y workaround covers all cases.
-    **STATUS: Low priority.**
+22. **Are other Firm WOs (AMAT > 0) vulnerable to partial-issue freeze?**
+    **CONFIRMED (Pass 432, 2026-06-30):** 13,289 WOBOM lines globally have OPTION='1' and are
+    not fully issued. All are T7WOG freeze candidates. The global UPDATE above would fix all.
+    **STATUS: Confirmed risk — user action required.**
 
 ---
 
