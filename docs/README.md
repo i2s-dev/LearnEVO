@@ -143,6 +143,8 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 
 ### 06 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
+- [**Table index — ALL 579 DBA tables with module + purpose (from Evo-DBA_File_Fields 052421.xlsx)**](04-data-dictionary/table-index.md) — *verified-schema, Pass 431 2026-06-30*
+- [**Field reference by module — 21,299 fields across 32 modules + misc (from Evo-DBA_File_Fields 052421.xlsx)**](04-data-dictionary/fields-so.md) — *see fields-\<module\>.md files; SO/WO/AR/AP/PO/GL/IN/SM/PR/ES/CM/BM/etc.*
 - [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*
 - [Tier 1 tables — 12 core tables fully documented (AHSYLOG, BKARCUST, BKARINV, BKAPVEND, BKGLCOA, WORKORD, BKSYMSTR, etc.)](04-data-dictionary/tier1-tables.md) — *partial*
 - [Tier 2 tables — BKSLEVEL (SOLVED), BKPRGLFL (SOLVED), BKAPPO, BKAPPOL, WO detail tables, payroll, BKYSMSTR YN flags](04-data-dictionary/tier2-tables.md) — *partial*
