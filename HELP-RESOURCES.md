@@ -20001,7 +20001,7 @@ These are the valid GL-side transaction type codes for inventory movements — c
 | T | Transfers |
 | R | Service and Repair |
 | G | Scrap |
-| B | Bins |
+| B | Bin Transactions |
 
 ### How to Use IN-L Forms
 

@@ -205,26 +205,31 @@ Uses `MTIT_*` field prefix (same MT* pattern as MTICMSTR — multi-class transac
 | `MTIT_PRODLOT` | STRING | 15 | Production lot |
 | `MTIT_EXTRA` | STRING | 50 | Extra / user-defined |
 
-**Transaction type codes** (SRC-confirmed from BKLME.SRC, Pass 284 2026-06-25):
+**Transaction type codes** (all 14 — fully confirmed Pass 391 2026-06-30):
 
-`MTIT_TYPE` is STRING 1. All 9 type codes and their 8-char display labels are
-**SRC-confirmed** from BKLME.SRC L249-257/L605-613 (`if MTIT.TYPE="X" then MEMORY1[1]="LABEL"`).
+`MTIT_TYPE` is STRING 1. The first 9 are **SRC-confirmed** from BKLME.SRC L249-257/L605-613.
+G and B confirmed from `BKINE.RUN` binary label strings (Pass 391).
 
-| Code | Display label | Event | Net QTY effect | AVGCOST storage |
-|------|--------------|-------|----------------|----------------|
-| `A` | `ADJUSTMT` | Manual inventory adjustment | + or − (signed QTY) | Unit cost |
-| `S` | `SHIPMENT` | Sales shipment (outbound) | − (positive QTY deducted) | Unit cost |
-| `P` | `PO RECPT` | PO receipt into stock | + | PRICE (unit PO price) |
-| `J` | `PO JOBRC` | PO receipt direct to WO/job | + | PRICE (unit PO price) |
-| `W` | `WO RECPT` | Work order receipt (finished goods in) | + | Unit cost |
-| `I` | `WO ISSUE` | Work order material issue | − (positive QTY deducted) | Total cost ÷ QTY |
-| `Q` | `QC RECPT` | QC receipt (into inspection) | — | Total cost ÷ QTY |
-| `O` | `OUT PROC` | Outside-process receipt | — | Total cost ÷ QTY |
-| `C` | `$ CHANGE` | Cost change only (no qty change) | 0 | Unit cost |
+| Code | Short label | Full label (binary-confirmed) | Event | Net QTY |
+|------|-------------|-------------------------------|-------|---------|
+| `A` | `ADJUSTMT` | Adjustments | Manual inventory adjustment | ± |
+| `S` | `SHIPMENT` | Shipments | Sales shipment (outbound) | − |
+| `P` | `PO RECPT` | Purchase Receipts to Stock | PO receipt into stock | + |
+| `J` | `PO JOBRC` | Purchase Receipts to WIP | PO receipt direct to WO/job | + |
+| `W` | `WO RECPT` | Work Order Receipts to Stock | Work order finished goods in | + |
+| `I` | `WO ISSUE` | Stock Issues to WIP | Work order material issue | − |
+| `O` | `OUT PROC` | Outside Processing Receipt | Outside-process receipt | ± |
+| `Q` | `QC RECPT` | Receipt to QC | QC inspection receipt | ± |
+| `C` | `$ CHANGE` | PO Price Change | Cost change only (no qty change) | 0 |
+| `M` | `MKE FROM` | Make From Component Issue | Make-from BOM component issue | − |
+| `T` | `TRANSFER` | Transfer | Location-to-location transfer | 0 |
+| `R` | `SERV&REP` | Service and Repair | Service/repair transaction | ± |
+| `G` | `SCRAP` | Scrap | WO/production scrap recording | − |
+| `B` | `BIN TXN` | Bin Transactions | Bin-to-bin transfer within location | 0 |
 
-Note: the 10th binary label "DELETED" (`BKLME.RUN` data channel) is the fallthrough/default
+Note: the binary label "DELETED" (`BKLME.RUN` data channel) is the fallthrough/default
 case in BKLME.SRC (L258: unconditional `MEMORY1[1]="DELETED"` after the type chain) — not a
-real transaction type code stored in MTIT_TYPE.
+real transaction type code stored in MTIT_TYPE. All 14 codes are confirmed.
 
 **AVGCOST semantics by type (SRC-confirmed BKLME.SRC L272-315):**
 - **P/J** (PO receipt): `MTIT.AVGCOST = MTIT.PRICE` on read — stored as PO unit price, NOT weighted avg
@@ -494,8 +499,8 @@ BKINB is the TAS6 backing for both `IN-B` (standard inventory entry) and `DE-J-A
 | `M` | new | Make-From component issue (BKINNA: "MAKE FROM COMPONENT ISSUE") |
 | `T` | new | Inventory transfer (BKINNA: "TRANSFERS") |
 | `R` | new | Service/repair transaction (BKINNA: "SERVICE AND REPAIR") |
-| `G` | new | Unknown — present in filter string; no matching BKINNA section found |
-| `B` | new | Unknown — present in filter string; no matching BKINNA section found |
+| `G` | new | **Scrap** — WO/production scrap recording (BKINE.RUN label: "G - Scrap"; short: "SCRAP") |
+| `B` | new | **Bin Transactions** — bin-to-bin transfer within location (BKINE.RUN label: "B - Bin Transactions"; short: "BIN TXN") |
 
 ### BKINNA month-end report categories — all transaction types mapped
 
@@ -584,5 +589,5 @@ BKINB is the TAS6 backing for both `IN-B` (standard inventory entry) and `DE-J-A
 - BKICMSTR (64f) vs MTICMSTR (108f): The 44-field difference includes fields like `MTIC_PROD_CLASS` PK, 10 vendor slots (VEND_1..10, VNAM_1..10, VPC_1..9), 15 replacement costs (RCOST_1..15), lot size (LOTSZ), optional features (OPT/OPTCS/OPTCD), cumulative scheduling (CUM), and long part# (LONGP).
 - MTINVDEF (108f identical schema to MTICMSTR) acts as the "factory default" template — when a user creates a new item, the system copies default values from MTINVDEF to pre-populate fields.
 - Relationship between BKIC* and MTIC* items: unclear whether every BKIC item has a corresponding MTIC record, or if they are independent catalogs. Without RWN source code, the sync/copy logic cannot be confirmed.
-- **INVTXN type codes G and B (Pass 335 open):** The type filter string "ASPJWIOQCMTRGB" confirms G and B are valid type codes, but no matching BKINNA report section maps to them. G may be a sub-type of adjustments (e.g., G=GL adjustment or G=gift/sample). B is unknown. Requires further analysis.
+- **INVTXN type codes G and B: ✅ RESOLVED (Pass 391 2026-06-30):** G=Scrap (binary label "G - Scrap", short "SCRAP") and B=Bin Transactions (binary label "B - Bin Transactions", short "BIN TXN") — confirmed from BKINE.RUN type selector screen string list. BKINNA lacks these sections because scrap and bin moves are handled by BKINE (transaction entry) rather than month-end costing reports.
 - **BKINIT.RUN purpose (Pass 335):** The 6 KB BKINIT.RUN contains only MESSAGE/ERR strings. It is likely a shared message/error lookup utility called by other BKIN programs — not a standalone user-facing program.
