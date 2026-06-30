@@ -1023,6 +1023,45 @@ The DDF reports 664 named fields + 15 additional unnamed/padding = 679 physical 
 
 ---
 
+## Live Data Analysis (Pass 420, 2026-06-30)
+
+Queried via DSN=DBA ODBC against the live i2 Systems database.
+
+### BKPRMSTR — Employee master
+
+| Status | Count | Notes |
+|--------|------:|-------|
+| N (active) | 293 | Active employees |
+| Y (terminated) | 9 | Terminated employees retained in table |
+| *(blank)* | 3 | Legacy/undefined status |
+| **Total** | **305** | |
+
+- Earliest start date: 2012-01-01 (oldest active employee record in PSQL)
+- Latest start date: 2025-04-09
+- BKPRCURP: 17 records (current payroll batch — in-progress or just completed run)
+
+### BKPRSALE / BKPRCOMM — Commission
+
+| Table | Records | Notes |
+|-------|--------:|-------|
+| BKPRSALE | 154 | Salesperson commission config records |
+| BKPRCOMM | 51,309 | Commission transaction history |
+
+- 127 unique salespeople have commission history in BKPRCOMM
+- Date range: 2004-07-26 to 2026-06-22 — 22 years of commission history
+- Commission transactions far exceed active salesperson count: many past salespeople/reps still have closed-transaction history
+
+### Other payroll tables
+
+| Table | Records | Notes |
+|-------|--------:|-------|
+| BKPRFTAX | 0 | Not in PSQL DDF — Btrieve-only tax bracket table |
+| BKPRGLFL | 2 | GL allocation matrix (2 state/dept combinations) |
+
+**Scale summary:** ~293 active employees; 22-year commission history (51,309 transactions, 127 salespeople); payroll is a live module with active BKPRCURP batch.
+
+---
+
 ## Notes & open questions
 
 - **BKPRMSTR record size = 3,389 bytes** (BANKA ends at offset 3372 + 17 = 3389). Very large row — each employee is almost 3.5 KB.

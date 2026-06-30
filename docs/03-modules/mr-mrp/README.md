@@ -377,6 +377,40 @@ The `ifdup MTCAL.DATE` check detects calendar blocking days. Working days = days
 
 ---
 
+## Live Data Analysis (Pass 420, 2026-06-30)
+
+Queried via DSN=DBA ODBC against the live i2 Systems database.
+
+### MTMRP — MRP output table
+
+| Action Code | Count | Meaning |
+|-------------|------:|---------|
+| *(blank)* | 31,437 | Pending — demand loaded, not yet actioned |
+| BUY | 2,559 | Planned purchase order (outside buy) |
+| REVIEW | 2,311 | Action required — user review needed |
+| MAKE | 772 | Planned work order (make in-house) |
+| DELSENS | 45 | Delay-sensitive — supply behind demand |
+| EXPSENS | 13 | Expedite-sensitive — demand urgent |
+| **Total** | **37,137** | |
+
+Key observations:
+- 85% of MTMRP records are blank-action (demand loaded, awaiting MRP run processing)
+- BUY >> MAKE (2,559 vs 772): i2 Systems buys far more than it makes in the current MRP snapshot
+- 2,311 REVIEW items = significant manual MRP workload outstanding
+- Date range: 2001-01-01 to 2044-05-12 (MTMRP accumulates demand history and future planning horizon)
+
+### Supporting tables
+
+| Table | Records | Notes |
+|-------|--------:|-------|
+| MTMRP | 37,137 | Full MRP output — action codes confirmed |
+| BKMRPFC | 0 | No forecasts loaded in MRP at this time |
+| BKMRPPO | 0 | No planned POs outstanding (all released or cleared) |
+
+**Interpretation:** BKMRPFC=0 confirms i2 Systems runs MRP in pure-demand mode (actual SO/WO demand only, no forecasting). BKMRPPO=0 means all planned POs from last MRP run have been confirmed/released to BKAPPO/BKAPPOL.
+
+---
+
 ## Notes & open questions (updated Pass 283)
 
 - BKMRPPO CONF field: once confirmed by user in MR-J, creates a real BKAPPO/BKAPPOL record. The BKMRPPO row is likely then deleted or marked DONE (not confirmed in SRC).

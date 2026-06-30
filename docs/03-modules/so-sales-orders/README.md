@@ -444,6 +444,44 @@ All 57 TAS6 BKSO\*.RUN programs copied from `\\i2s109-solidcrm\DBAMFG$\` to `sam
 
 ---
 
+## Live Data Analysis (Pass 420, 2026-06-30)
+
+Queried via DSN=DBA ODBC against the live i2 Systems database.
+
+### BKARINV — AR Invoice header (current/unarchived)
+
+| INVCD | Count | Meaning |
+|-------|------:|---------|
+| Y | 2,896 | Open/active invoice |
+| X | 422 | Cancelled |
+| *(blank)* | 202 | Paid/closed (not yet archived) |
+| N | 164 | Credit memo |
+| *(other)* | 10 | Unknown |
+| **Total** | **3,694** | Current-period invoices only |
+
+Note: This is the active (unarchived) table. Historical invoices are in BKARHINV (much larger — covered by GL cross-reference data in pass 418).
+
+### BKARINVT — AR Transaction history
+
+| Type | Count | Meaning |
+|------|------:|---------|
+| I | 30,680 | Invoice posting |
+| P | 13,391 | Payment received |
+| C | 2,365 | Credit memo |
+| **Total** | **46,437** | |
+
+### Other AR/SO tables
+
+| Table | Records | Notes |
+|-------|--------:|-------|
+| BKARINVL | 77,862 | AR invoice detail lines (~21 lines/invoice) |
+| BKARCUST | 4,401 | Customer master records |
+| BKARDEP | 47 | Current customer deposits |
+| BKARCHKF | 43,696 | Archived AR check/payment records |
+| BKARTXN | 2 | AR tax transactions (near-empty) |
+
+**Scale summary:** 4,401 customers; 3,694 current invoices; 46,437 AR transactions total. Latest invoice date: 2026-07-01.
+
 ## Notes & open questions
 
 - *(populated per-module manually as deeper reading happens.)*

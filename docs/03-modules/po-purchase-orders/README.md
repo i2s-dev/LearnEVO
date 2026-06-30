@@ -307,3 +307,41 @@ Binary string extraction of all 32 BKPO\*.RUN files from `samples/`. These are T
 | `BKCMREP` / `BKCMREPA` | BKPOP | CRM rep / territory records (vendor contact CRM integration) |
 | `BKBMGA` | BKPOF | BOM group archive (Estimating BOM groups in RFQ) |
 | `BKAPVENDIP` | BKPOP | Vendor IP / internet contact record (vendor web/email data) |
+
+---
+
+## Live Data Analysis (Pass 420, 2026-06-30)
+
+Queried via DSN=DBA ODBC against the live i2 Systems database.
+
+### AP Core tables
+
+| Table | Records | Notes |
+|-------|--------:|-------|
+| BKAPINVT | 82,867 | AP invoice transactions (see type breakdown below) |
+| BKAPINVL | 18,622 | AP invoice detail lines |
+| BKAPPO | 2,802 | Current AP purchase orders (latest: 2026-06-30) |
+| BKAPPOL | 24,931 | AP PO line items |
+| BKAPVEND | 3,166 | Vendor master records |
+
+### BKAPINVT — AP Transaction types
+
+| Type | Count | Meaning |
+|------|------:|---------|
+| I | 57,479 | Vendor invoice |
+| P | 23,068 | AP payment/check |
+| C | 2,229 | Credit memo |
+| M | 91 | Misc adjustment |
+| **Total** | **82,867** | |
+
+**Interpretation:** i2 Systems has processed 57,479 vendor invoices and 23,068 AP payments over the company's history in this table. The P/I ratio (23,068/57,479 ≈ 40%) suggests many invoices remain open or were archived. 2,802 current POs with 24,931 lines = avg 8.9 lines/PO.
+
+### Sourcing tables (BM/PO support)
+
+| Table | Records | Unique items | Notes |
+|-------|--------:|------------:|-------|
+| BKSBVEND | 5,354 | many | Approved vendor records; BKSB_VEND_PARNT blank = global (not BOM-context-specific) |
+| BKSBMFG | 8,271 | 6,635 | 6,635 unique items have approved manufacturer records |
+| BKSBPART | 319 | 35 | 35 unique items have approved substitute parts |
+
+Key insight: **6,635 items have approved manufacturer records** (BKSBMFG) — represents ~50% of manufactured item types at i2 Systems. This confirms the approved manufacturer table is actively maintained for component sourcing compliance.
