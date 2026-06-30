@@ -1250,6 +1250,74 @@ match the ISTS.CFG.* pattern rather than true configuration keys.*
 
 ---
 
-*Last updated: 2026-06-29 — Pass 380*
-*Sources: T7YSYN symbol table + T7MDefaults.DFM Top-position pairing (89 YN entries + 504 ISTS.CFG entries + GL account slots)*
-*Confidence: 72/100 — 495 keys confirmed as BKYSMSTR editor fields; 504 keys have DFM-sourced descriptions (full CSV: samples/T7MDefaults_cfg_keys.csv); 19/40 GL account slots confirmed; 10 BKEST.CFG keys confirmed; Setup tab label pairings remain less reliable.*
+## BKSYMSTR Live GL Account Scalars (Pass 416, 2026-06-30)
+
+Live DSN=DBA query: `SELECT TOP 1 * FROM BKSYMSTR`. 286 total fields; 29 are meaningfully
+non-zero, non-blank. All other fields (including all auto-number fields) are 0 or null.
+
+### Auto-Number Fields — All Zero at i2 Systems
+
+BKSYMSTR has 17 auto-number/record-counter fields; **all are 0.0** at i2 Systems:
+- `BKSY_ARINV_NUM`, `BKSY_APINV_NUM`, `BKSY_APPO_NUM`, `BKSY_GJ_NUM` — invoice/PO/journal auto-num
+- `BKSY_CHK_NUM_1` through `BKSY_CHK_NUM_9` — 9 per-bank check number counters (one per bank account slot)
+- `BKSY_ARSO_NUM`, `BKSY_AP_RECNUM`, `BKSY_GJ_RECNUM`, `BKSY_AR_RECNUM` — record counters
+
+**Interpretation:** i2 Systems uses manual document numbering for all transaction types (AP invoices,
+PO numbers, journal entries, check numbers). Auto-numbering from BKSYMSTR is unused.
+Note: `BKSY_CHK_NUM` (singular) does not exist — the field is `BKSY_CHK_NUM_1..9`.
+
+### GL Account Mappings (live values, i2 Systems)
+
+| Field | Live Value | Purpose |
+|-------|-----------|---------|
+| `BKSY_GL_CLRING` | '9999' | GL clearing account (9999 = not configured) |
+| `BKSY_GL_RETEARN` | '9999' | GL retained earnings account (9999 = not configured) |
+| `BKSY_GL_RELYR` | '3200' | GL prior-year retained earnings release account |
+| `BKSY_GL_ARINTR` | '9999' | AR interest income GL account (not configured) |
+| `BKSY_AR_GLACT` | '1200' | AR control account (Accounts Receivable) |
+| `BKSY_AR_DISCGL` | '4004' | AR sales discount GL account |
+| `BKSY_AR_DISCDPT` | '1' | AR discount department code |
+| `BKSY_AR_FREIGHT` | '8517' | AR freight revenue GL account |
+| `BKSY_AR_FRGTDPT` | '4' | AR freight department code |
+| `BKSY_AP_GLACT` | '2110' | AP control account (Accounts Payable) |
+| `BKSY_AP_DISCGL` | '5100' | AP purchase discount GL account |
+| `BKSY_AP_DISCDPT` | '1' | AP discount department code |
+| `BKSY_TAX_GLACT` | '9999' | Sales tax GL account (not configured) |
+| `BKSY_PO_TAXGL` | '8805' | PO/purchasing tax GL account |
+| `BKSY_PO_TAXDPT` | '0000' | PO tax department code |
+| `BKSY_PO_FREIGHT` | '5102' | PO freight expense GL account |
+| `BKSY_PO_FRGTDPT` | '0250' | PO freight department code |
+| `BKSY_PO_RNI` | '2137' | Received-Not-Invoiced accrual account (PO receipt → awaiting AP invoice) |
+
+### Financial Settings (live values)
+
+| Field | Live Value | Purpose |
+|-------|-----------|---------|
+| `BKSY_FISCAL_YR` | 2026-01-01 | Current fiscal year start date |
+| `BKSY_AR_INT_RTE` | 1.5 | AR late-payment interest rate (1.5% per period) |
+| `BKSY_AR_INT_DAY` | 1 | AR interest calculation day of month |
+
+### Aging Buckets (both AR and AP)
+
+| Field | Value | Meaning |
+|-------|-------|---------|
+| `BKSY_AR_AGING_2` | 30 | AR aging bucket 2 cutoff (days) |
+| `BKSY_AR_AGING_3` | 60 | AR aging bucket 3 cutoff |
+| `BKSY_AR_AGING_4` | 90 | AR aging bucket 4 cutoff |
+| `BKSY_AR_AGING_5` | 120 | AR aging bucket 5 cutoff |
+| `BKSY_AP_AGING_2` | 30 | AP aging bucket 2 cutoff (days) |
+| `BKSY_AP_AGING_3` | 60 | AP aging bucket 3 cutoff |
+| `BKSY_AP_AGING_4` | 90 | AP aging bucket 4 cutoff |
+| `BKSY_AP_AGING_5` | 120 | AP aging bucket 5 cutoff |
+
+Standard 30/60/90/120 day aging for both AR and AP. No custom aging buckets at i2 Systems.
+
+**Note on 9999 values:** GL account '9999' is used as a placeholder for accounts not configured
+at i2 Systems (clearing, retained earnings, tax, AR interest). The actual chart-of-accounts
+uses BKGLCOA as the master; 9999 may be the system-reserved placeholder number.
+
+---
+
+*Last updated: 2026-06-30 — Pass 416*
+*Sources: T7YSYN symbol table + T7MDefaults.DFM Top-position pairing (89 YN entries + 504 ISTS.CFG entries + GL account slots) + DSN=DBA live BKSYMSTR query (Pass 416)*
+*Confidence: 72/100 — 495 keys confirmed as BKYSMSTR editor fields; 504 keys have DFM-sourced descriptions (full CSV: samples/T7MDefaults_cfg_keys.csv); 19/40 GL account slots confirmed; 10 BKEST.CFG keys confirmed; BKSYMSTR GL account scalars fully live-confirmed (Pass 416); Setup tab label pairings remain less reliable.*
