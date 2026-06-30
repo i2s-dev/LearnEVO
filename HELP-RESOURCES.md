@@ -3752,13 +3752,20 @@ Every EvoERP entity screen (AR, AP, PO, SO, WO, IC) has a notes button that call
 
 ### How printing works
 
-Every EvoERP report uses the same universal print dialog (PRINTTLL.DCY):
-- **Print** — send to a named printer (Setup button configures printer properties)
-- **Print Preview** — preview on-screen before printing
-- **Email** — opens NZEMAILTLL email composition form with document attached
-- **Print to File** — save output to a file (type + path fields)
-- **Number of Copies** — spinner
-- **Auto Send Email** — automatically emails without opening compose dialog; driven by contact number/primary code
+Every EvoERP report uses the same universal print dialog (`printtll.DFM`, SourceFile=`t7print`). It is mounted via `mount printtll type R` from the calling program:
+
+- **P&review** (`print_opt[1]`, default) — open in ReportBuilder on-screen preview
+- **&Printer** (`print_opt[2]`) — send directly to the selected printer (`dflt.printer`)
+- **&Email** (`print_opt[3]`) — show EmailPanel; send via SMTP with contact targeting
+- **&File** (`print_opt[4]`) — enable PrintToFileGrp; write to disk (`prt.file.type` = format, `fpath` = path with "..." browse button)
+- **Number of Copies** — TSpinEdit (1–99)
+- **Save Settings** button persists the current settings as user defaults
+
+**Email mode fields** (EmailPanel, Visible=False until `print_opt[3]` selected):
+- `autoemail` (TTASCheckBox) — auto-send without user confirm
+- `contname` / `contnum` (TTASRadioButton) — look up recipient by name vs. number
+- `contprimcode` (TTASENTER, default 'B') — primary contact code prefix; on completion focus jumps to SpinEmail
+- `SpinEmail` (TSpinEdit, 1–5) — contact email slot number
 
 **SDQ Settings** require a password (PRINTTLLPSWD — "SDQ Settings Password"). SDQ = per-report saved defaults.
 

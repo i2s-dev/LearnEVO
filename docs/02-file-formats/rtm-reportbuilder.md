@@ -239,6 +239,83 @@ PDF path: `C:\ISTS\PDFS\` — created by `USE_PRINTER` / `PRINT_ARCHIVE` per wor
 
 ---
 
+## PRINTTLL.DFM — universal print dialog (Pass 401)
+
+`Source: samples/dfm/printtll.DFM` — `SourceFile = 't7print'`, `Caption = 'Print'`
+
+**All print jobs in EvoERP that require user interaction are routed through this single shared dialog.** It is invoked by a `mount printtll type R` call from the calling program.
+
+### Print mode selection (GroupBox2 "Print Options")
+
+Four `TTASRadioButton` controls, all in `Group = 0`, bind to the `print_opt[N]` TAS variable array:
+
+| Index | FieldName | Caption | Default | Effect |
+|-------|-----------|---------|---------|--------|
+| 1 | `print_opt[1]` | P&review | `Checked = True` | Open report in ReportBuilder preview window |
+| 2 | `print_opt[2]` | &Printer | — | Send directly to selected printer |
+| 3 | `print_opt[3]` | &Email | — | Reveal EmailPanel; send via SMTP |
+| 4 | `print_opt[4]` | &File | — | Enable PrintToFileGrp; save to disk file |
+
+`ChangePrgLoc = 0` on all four — selecting any radio fires TAS event handler [0] which shows/hides the conditional UI sections.
+
+### Printer section (GroupBox3 "Printer")
+
+- `PrinterNameEnter` (TTASENTER) — `FieldName = 'dflt.printer'`, `TabStop = False` — displays selected printer name (read-only display; selection via `SetupPrinterBtn`)
+- `SetupPrinterBtn` (TButton) — Caption = 'Setup' — opens Windows printer setup dialog
+
+### Copies section (GroupBox1 "Copies")
+
+- `SpinEdit1` (TSpinEdit) — MaxValue = 99, MinValue = 1, Value = 1
+
+### Print to File section (PrintToFileGrp)
+
+Initially `Enabled = False`. Enabled by TAS code when `print_opt[4]` (File) is selected.
+
+- `cbPrintType` (TTASComboBox) — `FieldName = 'prt.file.type'` — file format selection (PDF, CSV, etc.; items populated at runtime)
+- `cbEnterPath` (TTASComboEnter) — `FieldName = 'fpath'`, `GlyphKind = gkEllipsis` — output file path with "..." browse button
+
+### Email section (EmailPanel)
+
+Initially `Visible = False`. Made visible by TAS code when `print_opt[3]` (Email) is selected.
+
+- `AutoEmail` (TTASCheckBox) — `FieldName = 'autoemail'` — "Auto Send Email" — if checked, sends without user confirmation
+- Contact selection (GroupBox4):
+  - `ContName` (TTASRadioButton) — `FieldName = 'contname'`, default checked — look up recipient by contact **name**
+  - `ContNum` (TTASRadioButton) — `FieldName = 'contnum'` — look up recipient by contact **number**
+  - `PrimCode` (TTASENTER) — `FieldName = 'contprimcode'`, default `Text = 'B'` — primary contact code prefix; `FocusOnObject = 'spinemail'` (on completion, focus jumps to SpinEmail)
+  - `SpinEmail` (TSpinEdit) — MaxValue = 5, MinValue = 1 — selects contact email slot 1–5
+
+### Buttons
+
+- `SaveSettingsBtn` (TGlyphBtn) — Caption = '&Save Settings' — persists current print settings as user default
+- `OkBtn` (TButton) — Caption = '&Ok' — executes print with current settings
+- `CancelBtn` (TButton) — Caption = 'E&xit'
+
+### TAS variable bindings summary
+
+| TAS variable | Field | Meaning |
+|---|---|---|
+| `print_opt[1]` | PreviewRadioBtn | Preview mode active |
+| `print_opt[2]` | PrinterRadioBtn | Printer mode active |
+| `print_opt[3]` | EmailRadioBtn | Email mode active |
+| `print_opt[4]` | FileRadioBtn | File mode active |
+| `dflt.printer` | PrinterNameEnter | Selected printer name |
+| `prt.file.type` | cbPrintType | Output file format |
+| `fpath` | cbEnterPath | Output file path |
+| `autoemail` | AutoEmail | Auto-send without confirm |
+| `contname` | ContName | Use contact name for email lookup |
+| `contnum` | ContNum | Use contact number for email lookup |
+| `contprimcode` | PrimCode | Contact primary code (default 'B') |
+
+### Event flow
+
+1. Dialog opens → `OnStart = 'PRTTLL.START'` fires (loads saved settings into `print_opt[N]`, `dflt.printer`, etc.)
+2. User selects print mode → `ChangePrgLoc = 0` fires per radio change — shows/hides EmailPanel, enables/disables PrintToFileGrp
+3. User clicks Ok → `t7print` source evaluates `print_opt[N]` and calls `USE_PRINTER` / `PRINT_TO_FILE` / email dispatch / file save accordingly
+4. Dialog closes → `OnClose = 'PRTTLL.END'` fires
+
+---
+
 ## TppDBText field binding format (Pass 106i)
 
 Confirmed from `I2SCHK1.btm` binary inspection — two field name formats appear in the same RTM:
