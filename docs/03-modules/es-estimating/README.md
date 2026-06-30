@@ -1,6 +1,6 @@
 # Estimating (ES)
 
-Status: verified | Pass 339 2026-06-26
+Status: verified | Pass 339 2026-06-26 | Pass 415 live data 2026-06-30
 
 Sources: DDF schema (tier2-tables.md), DFM field analysis (T7ESB/C/D/E/H/I.DFM), CHM help content.
 
@@ -132,13 +132,45 @@ used in estimating. The DFM shows tiers 1–5; the DDF schema confirms 10 tiers 
 
 ## Database tables
 
-| Table | File on disk | Fields | PK | Purpose |
-| ----- | ------------ | -----: | -- | ------- |
-| **BKESTCFG** | `BKESTCFG.B` | 13 | `BKEST_CFG_NUM` | Estimating system configuration per estimate number |
-| **BKESTQT** | `BKESTQT.B` | 84 | `BKAR_INV_NUM` | Quote header — clones BKARINV structure + `QSTAT`/`MDATE`/`MISC` |
-| **BKESTQTL** | `BKESTQTL.B` | 28 | `BKAR_INVL_INVNM`+`CNTR` | Quote lines — clones BKARINVL structure + `ESD`/`SCCOG` |
-| **ESTSUM** | `ESTSUM.B` | 213 | `MTESUM_QUOTE` | Full estimate summary: materials + routing + charges; `BOM_FLAG`/`RT_FLAG`/`EX_FLAG` mark WO-transfer status |
-| **BKMATCST** | `BKMATCST.B` | 25 | `BKMC_CODE` | Material cost schedule: 10-tier qty-break pricing per item; edited by ES-H |
+| Table | File on disk | Fields | Live Records | PK | Purpose |
+| ----- | ------------ | -----: | -----------: | -- | ------- |
+| **BKESTCFG** | `BKESTCFG.B` | 18 | 1 | `BKEST_CFG_NUM` | Estimating system config (1 config record, key=2) |
+| **BKESTQT** | `BKESTQT.B` | 104 | 6,892 | `BKAR_INV_NUM` | Quote header — 104 fields (84 BKARINV-mirror + 20 extra); `BKAR_INV_QSTAT`='Y'/'N'/' ' |
+| **BKESTQTL** | `BKESTQTL.B` | 28 | 462,659 | `BKAR_INVL_INVNM`+`CNTR` | Quote lines — mirrors BKARINVL + `ESD`/`SCCOG` |
+| **ESTSUM** | `ESTSUM.B` | 213 | **0** | `MTESUM_QUOTE` | Full estimate BOM/routing/charges — **NOT USED at i2 Systems** (see note below) |
+| **BKMATCST** | `BKMATCST.B` | 25 | **0** | `BKMC_CODE` | Material cost schedule: 10-tier qty-break pricing — **NOT USED at i2 Systems** |
+| **BKRTCST** | `BKRTCST.B` | 24 | **0** | `QUOTE`+`CODE`+`OPER` | Routing cost schedule — **NOT USED at i2 Systems** |
+
+**Usage pattern at i2 Systems (Pass 415):** ES is used heavily for customer quote documents (6,892 quotes, 461K lines, 661 customers) but NOT for integrated cost estimation. ESTSUM, BKMATCST, and BKRTCST are all empty — the BOM-based cost rollup feature of ES-A is not in use. The module operates in "quote letter" mode only.
+
+### BKESTCFG — Estimating Config (Pass 415, live ODBC confirmed)
+
+1 record, 18 fields. Live values at i2 Systems:
+
+| DDF field | Type | Live Value | Meaning |
+|-----------|------|-----------|---------|
+| `BKEST_CFG_NUM` | FLOAT | `2.0` | PK — config record number (key=2) |
+| `BKEST_CFG_STAT` | STRING(1) | `'A'` | Default status for new estimates |
+| `BKEST_CFG_CLASS` | STRING(4) | *(blank)* | Default estimate class code |
+| `BKEST_CFG_FORM` | STRING(1) | `'2'` | Quote form variant (1 or 2) |
+| `BKEST_CFG_MAT^` | FLOAT | `0.0` | Default material markup % |
+| `BKEST_CFG_LAB^` | FLOAT | `0.0` | Default labor markup % |
+| `BKEST_CFG_OP^` | FLOAT | `0.0` | Default outside-process markup % |
+| `BKEST_CFG_OH^` | FLOAT | `0.0` | Default overhead markup % |
+| `BKEST_CFG_TOT^` | FLOAT | `0.0` | Default total markup % |
+| `BKEST_CMPY_INFO` | STRING(1) | `'Y'` | Print company info on quotes |
+| `BKEST_CFG_DAYS` | INT | `30` | Quote expiry days from entry date |
+| `BKEST_CFG_ENDLN_1..5` | STRING(30)×5 | *(all blank)* | Up to 5 custom ending lines on quotes |
+| `BKEST_CFG_SONUM` | FLOAT | `56576.0` | Last/next quote number |
+| `BKEST_CFG_EXTRA` | STRING(100) | *(zeros)* | Reserved/unused blob |
+
+### BKESTQT — Quote Status Values (Pass 415, live)
+
+| BKAR_INV_QSTAT | Count | Interpretation |
+|---------------|------:|----------------|
+| `'Y'` | 4,689 | Converted (promoted to order) |
+| `' '` | 2,200 | Open / not yet converted |
+| `'N'` | 3 | Declined / lost |
 
 ### BKMATCST — Material Cost Schedule (Pass 315, DFM + DDF confirmed)
 

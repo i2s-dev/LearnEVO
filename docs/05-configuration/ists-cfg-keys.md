@@ -999,6 +999,76 @@ Candidates for the 6 extra: NE, QT, RF, LI, ML, and/or reserved slots.
 
 ---
 
+### YN[150]–YN[250]: Complete Live Snapshot (Pass 415, 2026-06-30)
+
+Full live query of BKYSMSTR via DSN=DBA ODBC. Key structural finding: **YN[150]–YN[198] are ALL EMPTY at i2 Systems** — 49 consecutive blank slots. This gap suggests this range is either unused in the current EVO build, reserved for a module not licensed at i2, or populated only in certain configurations.
+
+**YN[199]–YN[250] live values:**
+
+| YN[N] | Live Value | DFM Description (from existing DFM-mapped table) | Source |
+|-------|-----------|---------------------------------------------------|--------|
+| YN[199] | `'A'` | unknown | live only |
+| YN[200] | `'N'` | Use Lead Time Scheduling [F/B/N] | DFM |
+| YN[201] | `'1'` | unknown | live only |
+| YN[202] | `'E'` | PO-C: update Std. Cost if Cost is $0.00 | DFM |
+| YN[203] | `'Y'` | unknown | live only |
+| YN[204] | `'Y'` | unknown | live only |
+| YN[205] | `'Y'` | unknown | live only |
+| YN[206] | `'Y'` | unknown | live only |
+| YN[207] | `'Z'` | unknown | live only |
+| YN[208] | `'Y'` | unknown | live only |
+| YN[209] | `'Y'` | Use Acctg Open Period Start Date in GL-B | DFM (approx) |
+| YN[210] | `'Y'` | unknown | live only |
+| YN[211] | `'Y'` | unknown | live only |
+| YN[212] | `'Y'` | Use Acctg Open Period Start Date in AP-B | DFM (approx) |
+| YN[213] | `'Y'` | Use Acctg Open Period Start Date in AR-C | DFM (approx) |
+| YN[214] | `'Y'` | (label ambiguous) | DFM (approx) |
+| YN[215] | `'Y'` | (label ambiguous) | DFM (approx) |
+| YN[216] | `'Y'` | unknown | live only |
+| YN[217] | `'Y'` | unknown | live only |
+| YN[218] | `'N'` | DC-A/DC-C: Round Shift Start/Stop by X minutes | DFM |
+| YN[219] | *(blank)* | unknown | — |
+| YN[220] | *(blank)* | Invoices (format number?) | DFM |
+| YN[221] | *(blank)* | unknown | — |
+| YN[222] | `'Y'` | GL Department | DFM |
+| YN[223] | `'R'` | Location | DFM |
+| YN[224] | `'4'` | unknown | live only |
+| YN[225] | `'2'` | SOQA/INB: Disable Base Price passdown (variant) | DFM |
+| YN[226] | `'0'` | unknown | live only |
+| YN[227] | *(blank)* | unknown | — |
+| YN[228] | `'Y'` | DC screen variant: Y=mount BKDCAF (simplified) | SRC (BKDCA.SRC:194) |
+| YN[229] | `'N'` | DC multi-job/auto-close mode | SRC (BKDCA.SRC:228) |
+| YN[230] | `'1'` | AR Invoice Age based on (1) age or (2) days past due | DFM |
+| YN[231] | `'Y'` | Open Period End Date | DFM |
+| YN[232] | `'4'` | unknown | live only |
+| YN[233] | *(blank)* | unknown | — |
+| YN[234] | *(blank)* | unknown | — |
+| YN[235] | *(blank)* | unknown | — |
+| YN[236] | *(blank)* | unknown | — |
+| YN[237] | *(blank)* | PO & DC update actual start/finish dates of sequences? | DFM |
+| YN[238] | `'Y'` | Disable Recalc Est Cost in WO-A | DFM |
+| YN[239] | `'R'` | Allow WOs for Make From Items | DFM |
+| YN[240] | `'Y'` | Estimates: Print Title on Quote? | DFM |
+| YN[241] | `'Y'` | Printing: Print Title on RFQ? | DFM |
+| YN[242] | `'Y'` | Printing: Print Co. Name/Address on Forms? | DFM |
+| YN[243] | `'Y'` | Sales Quotes (format number?) | DFM |
+| YN[244] | `'Y'` | Invoices (format number?) | DFM |
+| YN[245] | `'Y'` | Packing Slips (format number?) | DFM |
+| YN[246] | `'Y'` | Print Title on: Acknowledgments | DFM |
+| YN[247] | `'Y'` | AR: Print Title on Statement | DFM |
+| YN[248] | `'N'` | MRP: Round MRP quantities to next whole number? | DFM |
+| YN[249] | `'0'` | AP check top margin offset (pixels) | SRC (Bkapha.src:269) |
+| YN[250] | `'0'` | unknown | live only |
+
+**Observations:**
+- YN[199-218] is a 20-slot block of consecutive non-empty values. The value pattern ('A','N','1','E' + 'Y'×4 + 'Z' + 'Y'×10 + 'N') is superficially similar to the module-enable block at YN[102-143], but the DFM-mapped entries in this range (YN[200], YN[202], YN[209], YN[212-215], YN[218]) are individual named config settings, not module enables. The 'Z' at YN[207] and 'A' at YN[199] could be coincidental.
+- YN[223]='R' and YN[239]='R' — 'R' is a non-standard value; likely a location/routing/report code.
+- YN[224]='4', YN[225]='2', YN[226]='0', YN[230]='1', YN[232]='4' — numeric strings, format codes or counts.
+- YN[243-247] all='Y' with DFM descriptions matching the printing format flags — but DFM said these store format numbers (1-4), so 'Y' here is anomalous unless 'Y'=default/inherit.
+- YN[250]='0' — **new finding** (previously unknown/blank in prior passes).
+
+---
+
 ## BKYS.GLNUM[N] / BKYS.GLDPT[N] — GL Account Slot Mapping
 
 Pass 380 (2026-06-29): 19 of 40 GL account slots confirmed from T7MDefaults.DFM.
