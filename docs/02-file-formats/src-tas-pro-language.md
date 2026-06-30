@@ -714,7 +714,12 @@ Confirmed from `BKAPH.SRC` and `BKAPHA.SRC` (AP check printing — TAS Pro 5/6 e
 - **`ptof`** — advance to top-of-form (form feed to next physical check/page).
 - **`pchr 'CMD'`** — emit a printer control sequence by name (`'pcmp'`=form advance, `'preg'`=regular-print resume).
 - **`pset wdt N`** — set print width to N characters.
+- **`pset wdt N tlnes T plnes P`** — full page setup: width N, total lines T per page, print lines P (body lines per page).
 - **`pon S`** — redirect print output to screen (`S` = screen).
+- **`RTM_VALID`** — validate the current RTM filename before printing (checks file exists and is readable). Must be called after setting `rtm_name` and before `setup_print_buff`/`exec_rb`.
+- **`setup_print_buff pb_num N fldlst 'field1','field2',... [link_to M]`** — define print buffer N with named field list. `link_to M` attaches this buffer as a child/detail of buffer M (sub-report nesting). Field names use underscore separators matching DDF names (e.g., `'bkap_chk_invnum'`). This is the TAS Pro 5/6 name for what later became `SETUP_REPORT_BUFF`.
+- **`output_print_data pb_num N fldlst var1,var2,...`** — emit a row of data to print buffer N. Values are program variables (no quotes), matched positionally to the `setup_print_buff` field list. TAS Pro 5/6 name for `OUTPUT_REPORT_DATA`.
+- **`print_cancel()`** — built-in function that returns `.t.` if the user cancelled the print dialog. Call after RTM setup and before the main print loop.
 
 ### File open modes — `lock f` (Pass 393)
 
@@ -742,6 +747,24 @@ Confirmed from BKAPH.SRC multi-currency sections:
   AP GL accounts from ISMCF.
 - **`findv M fnum HANDLE key KEY val VALUE`** — seek a record by value in a file opened
   by handle. `findv` variant of `find` for variable-handle files.
+
+### Multi-statement syntax on one line (Pass 393 — from BKAPHA.SRC)
+
+TAS Pro allows multiple assignments on a single line separated by `|`:
+```
+lnes=0 | tot.amt=0 | tot.damt=0 | tot.ramt=0
+```
+This is equivalent to four separate assignment statements. Confirmed from BKAPHA.SRC L829.
+The `|` separator is distinct from `&&` (comment to end-of-line) and `;` (comment).
+
+### RTM file mapping for AP laser checks (Pass 393 — from BKAPHA.SRC L796-798)
+
+`BKYS.YN[48]` controls which RTM template is used:
+| YN[48] | RTM file | Format |
+|--------|----------|--------|
+| `'1'` | `bkapha1.rtm` | Standard laser check |
+| `'4'` | `bkapha2.rtm` | Laser check variant 2 |
+| `'5'` | `bkapha3.rtm` | Laser check variant 3 |
 
 ## Things still to verify
 
