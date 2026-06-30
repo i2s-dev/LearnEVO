@@ -257,12 +257,19 @@ Records are **retained permanently** — this is an audit log, not a cleared que
 
 | PARAM_1 | Count | Likely task type |
 |---------|------:|-----------------|
-| `1` | 1,407 | Most common SA analysis (likely SalesRepSummary) |
-| `2` | 345 | Second SA analysis type (likely ProfitByInvoice) |
-| `3` | 14 | Rare SA type (ItemClass?) |
-| `0` | 5 | Internal/cleanup sentinel (UID=`-i`) |
-| `4` | 2 | Very rare (CustomerClass?) |
-| `5` | 1 | Very rare (MultiYearSales?) |
+| `1` | 1,407 | SO email: confirmation/new order (T7SOA) |
+| `2` | 345 | SO email: shipping notification (T7SOE) |
+| `3` | 14 | SO email: invoice (T7SOGA) or return (T7SOR) |
+| `0` | 5 | Internal sentinel (UID=`-i`, written by EvoPVT.jar itself) |
+| `4` | 2 | Rare SO event or other module |
+| `5` | 1 | Rare SO event or other module |
+
+**CORRECTION from prior guess:** An earlier draft labeled PARAM_1 values as SA analysis types
+(SalesRepSummary, ProfitByInvoice, etc.). That was wrong — the SA JARs use direct Java
+invocation, NOT the ISJAVA queue. The ISJAVA queue is used exclusively by SO email programs
+(T7SOA/SOE/SOGA/SOR confirmed in Tier A). The UID user codes (regular EvoERP employees:
+DFRENETTE, BSCHIBI, STEVESP) further confirm these are user-triggered events (SO entry),
+not automated SA analysis runs.
 
 **UID format:** `<USERNAME><HHMMSS><A|P><YYYYMMDD>`
 - `USERNAME` = EvoERP user code (up to ~10 chars)
@@ -275,14 +282,12 @@ Examples:
 - `ASTEMPIEN015256P20230403` = user ASTEMPIEN, 1:52:56 PM, 2023-04-03
 - `-i` = internal record (startup/cleanup sentinel written by EvoPVT.jar itself)
 
-**Top 5 users by task count:**
+**Top 5 users by task count (Pass 415):**
 DFRENETTE(201), BSCHIBI(189), STEVESP(176), JCHARETTE(171), RONEILL(160)
 
-**Key insight:** Since PARAM_2..25 are always empty, each Java task submission uses
-only `PARAM_1` as the task type discriminator. EvoPVT.jar reads `PARAM_1` and dispatches
-to the appropriate SA JAR. The task type → JAR mapping (1=SalesRepSummary, 2=ProfitByInvoice,
-3=ItemClass, 4=CustomerClass, 5=MultiYearSales) is confirmed by the JAR inventory but
-the exact number-to-JAR assignment requires reading the TAS program that writes `PARAM_1`.
+**Key insight:** ~1-2 ISJAVA records per day over 3 years matches SO email frequency
+at i2 Systems. The queue is a permanent audit log — records are never deleted.
+Task type → exact TAS code requires T7SOA.RWN bytecode analysis (blocked by encryption).
 
 ## Resolved open questions (Pass 390 2026-06-30)
 
