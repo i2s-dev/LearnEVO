@@ -154,6 +154,74 @@ Offset  Hex value   Interpretation
 
 ---
 
+## `.mdx` compound index format — decoded (Pass 433, 2026-07-01)
+
+**Samples copied:** `BKMENUSU.mdx` (9,216 B = 18 pages), `filedict.mdx` (344,064 B = 672 pages),
+`filedfld.mdx` (6,144 B = 12 pages), `fileloc.mdx` (262,144 B = 512 pages).
+
+> **Correction of prior claim:** the `.mdx` files are **NOT** Btrieve overflow-key files.
+> They are dBASE IV compound index files for the 10 DBF-format tables
+> (BKMENUSU, BKLUGRID, errmsg, FILEDICT/FILELOC/FILEDFLD/FILEDBF/FILEDES/FILEKEY/FILEKNUM).
+> No Btrieve `.B` file uses or produces a `.mdx`.
+
+### File layout
+
+| Offset | Size | Field | Sample (BKMENUSU.mdx) |
+|--------|------|-------|----------------------|
+| 0 | 1 | Version = `02` (dBASE IV MDX) | `02` |
+| 1 | 1 | Last update year − 1900 | `7C` = 124 → 2024 |
+| 2 | 1 | Last update month | `09` = September |
+| 3 | 1 | Last update day | `1D` = 29 |
+| 4 | 8 | Base filename (space-padded) | `'BKMENUSU'` |
+| 12 | 8 | Reserved / zero-fill | `00 00 00 00 00 00 00 00` |
+| 20 | 4 | Constant `02 00 00 04` — format marker | same in all 4 samples |
+| 24 | 4 | Block factor / internal | `01 30 20 00` |
+| 28 | 4 | **Tag count** (LE uint32) | `01` = 1 tag |
+| 32 | 4 | **Total page count** (LE uint32) | `12` = 18 pages |
+| 36 | 476 | Remaining header (reserved) | zeros |
+
+Page size = 512 bytes. File size = total_pages × 512. Confirmed for all 4 samples.
+
+### Tag directory (page 2 = offset 512)
+
+Page 2 is the tag directory page. First 32 bytes (offset 512–543) are reserved/zero.
+Active tag entries start at **offset 544** (page 2 + 32 bytes), one per 32-byte slot,
+up to `tag_count` entries.
+
+#### Tag entry structure (32 bytes)
+
+| Offset | Size | Field | Notes |
+|--------|------|-------|-------|
+| 0 | 4 | Root B-tree page number (LE uint32) | First tag always page 4 |
+| 4 | 11 | Tag name (NUL-padded) | e.g., `'MNU_AC\0\0\0\0\0'` |
+| 15 | 1 | `0x10` — key format flag | constant; 0x10 = char ascending |
+| 16 | 2 | internal | varies per tag |
+| 18 | 1 | Tag index (0-based sequential) | 0 for 1st tag, 1 for 2nd, etc. |
+| 19 | 1 | `0x02` — constant production-index flag | same in all observed tags |
+| 20 | 1 | Key data type: `'C'` = char | all EvoERP DBF keys are char |
+| 21 | 11 | Reserved / zero fill | |
+
+#### Observed tags per file
+
+| File | Tags | Tag names (root pages) |
+|------|-----:|------------------------|
+| `BKMENUSU.mdx` | 1 | MNU_AC (pg 4) |
+| `filedict.mdx` | 3 | BUFF_NAME (pg 4), OVERLAY (pg 6), FIELD_NAME (pg 8) |
+| `fileloc.mdx` | 2 | BUFF_NAME (pg 4), FILE_NAME (pg 6) |
+| `filedfld.mdx` | 1 | (not fully decoded; 12-page file) |
+
+**Pattern:** Root B-tree pages are assigned in even increments starting at 4 (page 4, 6, 8,…).
+Page 2 = tag directory, page 3 = probably key statistics; page 4+ = B-tree nodes.
+
+### Significance for EvoERP
+
+These `.mdx` indexes define how TAS Pro and CodeBase (c4dll.dll) access the DBF-format tables.
+The `FILEDICT` indexes (BUFF_NAME, OVERLAY, FIELD_NAME) are used by TAS Pro's `FILELOC`
+call to look up which physical `.B` file to open for a given logical table name + company
+code — making them part of the critical multi-company routing path (see §Company file routing).
+
+---
+
 ## DDF system (X$ catalog tables)
 
 The schema is stored in a set of special Btrieve files called the **Data Dictionary Files
@@ -626,9 +694,8 @@ The choice is controlled by the calling program's error-handling setup before th
   mapping requires Pervasive PSQL SDK documentation not available.
 - Whether `CB 02` (715) in FCR is the record count or a different metric — sample file has
   zero live data records; the field may be a pre-set maximum or a stale header value.
-- How the `.mdx` (multi-index) files differ from embedded B-tree indexes — no `.mdx`
-  sample files exist in `samples/`. The 10 `.mdx` files on the share are overflow key
-  files for tables exceeding 24 key segments; structure is a separate Btrieve B-tree.
+- ~~How the `.mdx` (multi-index) files differ~~ — **RESOLVED Pass 433 (2026-07-01)** ✅  
+  See `.mdx` section below. The "overflow key for Btrieve tables" claim was WRONG.
 - Full internal layout of `.XLB` blob files (magic confirmed as FC\0\0; internal record format not decoded).
 
 **Resolved (Pass 106i):**
