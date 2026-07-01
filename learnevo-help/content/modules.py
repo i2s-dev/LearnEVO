@@ -2234,6 +2234,41 @@ utilities. **Largest module by program count** (34 top-level buttons, 109+ forms
 (payment terms legacy), `BKTAX` (tax code legacy), `BKSMSHIP` (ship-via legacy),
 `CALT` (calendar), `CALSHIFT`, `BKSCHEDULE`, `BKUOM`, `BKUOMCON`
 
+## Multi-jurisdiction sales tax (ISTAXGRP, Pass 502 2026-07-01)
+
+`ISTAXGRP` (105 fields, 2 records at i2) defines tax groups used in AR, AP, SO, PO,
+and QT. Each tax group bundles up to **9 jurisdictions** (federal, state, county, city,
+special districts) with individual rates and freight rules, plus 12 taxable/non-taxable
+category slots.
+
+| Field group | Count | Meaning |
+|-------------|-------|---------|
+| ISIS_TXG_NAME | 1 | Tax group name (PK) |
+| ISIS_TXG_DESC | 1 | Description |
+| ISIS_TXG_FREIGT | 1 | Freight taxable flag (whole-group default) |
+| ISIS_TXG_TOTPER | 1 | Combined tax % total (all jurisdictions) |
+| ISIS_TXG_TOFPER | 1 | Combined freight tax % total |
+| ISIS_TXG_OUTSTD | 1 | Outstanding balance |
+| ISIS_TXG_CODE_1..9 | 9 | Jurisdiction codes (state/county/city/district slots) |
+| ISIS_TXG_IDC_1..9 | 9 | Jurisdiction ID / lookup code |
+| ISIS_TXG_DESCF_1..9 | 9 | Per-jurisdiction description |
+| ISIS_TXG_PERCC_1..9 | 9 | Per-jurisdiction tax rate (%) |
+| ISIS_TXG_PID_1..9 | 9 | Per-jurisdiction posting ID (GL account selector) |
+| ISIS_TXG_TAXON_1..9 | 9 | Taxon flag per jurisdiction |
+| ISIS_TXG_FRGT_1..9 | 9 | Freight taxable flag per jurisdiction |
+| ISIS_TXG_COLECT_1..12 | 12 | Collection period flags |
+| ISIS_TXG_TAXBLE_1..12 | 12 | Taxable-category flags (which item categories are taxable) |
+| ISIS_TXG_NONTAX_1..12 | 12 | Non-taxable-category flags |
+
+**Workflow:** Each customer and location is assigned a tax group code; when an invoice
+is created the matching ISTAXGRP record is read to calculate and post the multi-line
+tax breakout. The 12 TAXBLE/NONTAX slots allow category-level overrides (e.g., food
+items non-taxable even in a state that taxes other goods).
+
+**Companion table:** `ISTAXFIL` (2 records, 84 fields) — tax filing configuration
+(maps each jurisdiction's collected taxes to the correct GL account for remittance).
+Together ISTAXGRP+ISTAXFIL represent the full tax compliance subsystem embedded in EVO.
+
 ## System parameter singletons
 
 Both `BKYSMSTR` (355f) and `BKSYMSTR` (286f) are single-row singletons storing
@@ -4340,6 +4375,43 @@ This allows different assets to post depreciation to different cost centers.
 Key note: `ISFXATRN` stores **redundant copies** of the 4 GL account fields
 from ISFXASST. This means changing the GL accounts on an asset after posting
 does not corrupt historical transaction records.
+
+## ISFXASST key fields (EVO3.JAR, 23 active out of 48 total)
+
+| Field | Meaning |
+|-------|---------|
+| IS_FXA_NUMBER | Asset number (PK) |
+| IS_FXA_TYPE | Asset type code |
+| IS_FXA_DESC / DESC2 | Description (two lines) |
+| IS_FXA_SERIAL | Asset serial number |
+| IS_FXA_SDATE | Acquisition / in-service date |
+| IS_FXA_EDATE | Disposal / retirement date |
+| IS_FXA_CSTBAS | Cost basis (original acquisition cost) |
+| IS_FXA_RESVAL | Residual / salvage value |
+| IS_FXA_LIFE | Useful life (years) |
+| IS_FXA_METH | Depreciation method code (SL=straight-line, DDB=double-declining, etc.) |
+| IS_FXA_ACCUMDEP | Running accumulated depreciation total |
+| IS_FXA_ACDEPA / ACDEPD | Accumulated depreciation GL account / dept |
+| IS_FXA_DEPEXPA / DEPEXPD | Depreciation expense GL account / dept |
+| IS_FXA_GLA / GLD | Asset at-cost GL account / dept |
+| IS_FXA_LDEPAMT | Last depreciation amount posted |
+| IS_FXA_LDEPDATE | Last depreciation date |
+| IS_FXA_LDEPPERC | Last depreciation rate (%) |
+| IS_FXA_SOLD | Disposal flag (Y = asset retired/sold) |
+| IS_FXA_EXTRA | Spare / custom use |
+
+## Asset disposal workflow
+
+When an asset is retired or sold, the following fields record the event:
+- `IS_FXA_SOLD = 'Y'` — marks the asset as disposed
+- `IS_FXA_EDATE` — disposal date
+- `IS_FXA_CSTBAS - IS_FXA_ACCUMDEP` = net book value at disposal
+- GL entries required: **DR Accumulated Depreciation** + **DR Cash** (if sold) + **CR Asset at Cost** ± **CR/DR Gain/Loss on Disposal**
+
+EVO generates these GL entries via FA-B (Post Depreciation) on the final depreciation period
+before the disposal date. The actual disposal GL lines are posted through the GL module
+journal entry (T7GLA) since there is no dedicated FA-Disposal program — the SOLD flag and
+EDATE update are made directly in FA-A (Edit Asset).
 
 ## DFM-confirmed details (3 DFMs)
 
