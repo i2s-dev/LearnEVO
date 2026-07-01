@@ -2445,6 +2445,23 @@ master). Stores the credit memo issued to the customer when the RMA is closed.
 - **[[module-SO|SO]]** — original SO invoice traced via OSONUM/OINVNUM on ISRMAI
 - **[[module-SR|SR]]** — Repair disposition can create a service order in SR
 - **[[module-IN|IN]]** — Restock disposition triggers INVTXN adjustment
+
+## DFM-confirmed operation details (5 DFMs)
+
+| DFM | Caption | Key fields |
+|-----|---------|-----------|
+| T7RMAWHY | RMA Why | RMA Number, Line #, Status, Item, Desc., Original Invoice #, Original SO #, Reason, Description |
+| T7RMD | RM-D (receive line) | Item Number, Original Inv Num/SO Num, Warranty [NLPB], Reason for Return, RMA Line Status, RMA Quantity, Received Qty, Quantity to Receive |
+| T7RMDASK | Change Location | Pass RMA# to Desc/Job/None [D/J/N], Location, Enter Restock Charge, Enter SO Number, Estimated Ship Date, Original Inv/Price, RMA Item Price |
+| T7RME | reason code maint. | (code/description list) |
+| T7RMG | BASE Blank T7 SCREEN | (template/print base) |
+
+**Warranty [NLPB]** — warranty status codes confirmed:
+N=No warranty, L=Limited warranty, P=Parts only, B=Both/Full warranty.
+
+**Pass RMA# to [D/J/N]** — when restocking an RMA item, controls where the RMA
+number is passed: D=to Description field, J=to Job# field, N=None (not passed).
+This allows GL/job-costing traceability for returned goods.
 """,
 
 "SU": """
@@ -2792,6 +2809,22 @@ User-defined sort/break with up to 10 sort/break field indexes (udbrk.array[1..1
 - **[[module-SO|SO]]** — SA-A includes bookings (open SO) from BKSOX
 - **[[module-WO|WO]]** — SA-Q uses actual WO labor+material costs for margin
 - **[[module-CS|CS]]** — salesperson links via ISPRSALE / BKPRSALE
+
+## DFM-confirmed operation details (6 DFMs)
+
+| DFM | Caption | Notes |
+|-----|---------|-------|
+| T7SAA | SA-A | print/settings (standard sales report) |
+| T7SAM | SA-M | From/Thru ranges, print (multi-filter sales analysis) |
+| T7SAN | SA-N | From/Thru ranges, print (alternate multi-filter variant) |
+| T7SAO | SA-O Top N Sales Report | Top-N customer/item ranking report |
+| T7SAP | SA-P | print/settings |
+| T7SAQ | Actual Margin Report | Ship Date From filter; uses actual WO costs for margin |
+
+SA-O ("Top N Sales Report") provides ranked listing of top N customers or items
+by sales volume — management summary report.
+SA-Q ("Actual Margin Report") calculates true margin using actual WO
+labor+material costs, not standard cost — key profitability analysis tool.
 """,
 
 "SB": """
