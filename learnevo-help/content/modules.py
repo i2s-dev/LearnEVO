@@ -3172,6 +3172,38 @@ and up to 20 category flags (BKCM.CLASS_1..20).
 - **[[module-SA|SA]]** — SA reports can filter by BKCMTERR (territory) and BKCMLEAD (lead source)
 """,
 
+"CC": """
+## What it does
+
+Credit Card processing — a separate T7CC* module that handles real-time credit
+card charges, CC data import, and CC-linked transaction lookup. Works alongside
+the [[module-AR|AR]] and [[module-PO|PO]] modules to process both customer
+(AR) and vendor (PO/AP) credit card payments.
+
+## Menu operations (DFM-confirmed, 6 DFMs)
+
+| Code | Program | Description |
+|------|---------|-------------|
+| CC-C-ITM | T7CCCITM | **Charge by Item Number** — Item# lookup; Process button (lookup CC charge associated with an item) |
+| CC-C-WOT | T7CCCWOT | **Charge by Work Order** — WO# / Location / Go button |
+| CC-D/DE | T7CCDE | **CC Data Import** — bulk CSV/fixed CSV: Customer Code / CC Number / Expiry Date / Sort; import customer CC info on file |
+| CC-P | T7CCP | **Process Customer CC Payment** (AR-linked) — CC Number / Expiry (MMYY) / Zip Code / Address / Name on Card / Amount / CC Type / CC Processor / Use a Different Card |
+| CC-PO | T7CCPO | **PO/AP Credit Card Charge** (PO-linked) — CC Number / Expiry (YYYY) / Amount / Zip / CVV / Address |
+| CC-R1 | T7ccr1 | **Credit Card Invoice List** — Terms From / Date range (report of CC-linked invoices) |
+
+**T7CCP vs T7CCPO:** CCP handles customer AR payments (has CC Type, CC Processor, Name on Card, MMYY expiry), while CCPO handles PO/AP vendor payments (adds CVV field, YYYY expiry format — different form of the card entry).
+
+**T7CCDE CC Import:** allows bulk import of customer CC data (card-on-file) from an external file with column mapping for Number/Expiry/Customer.
+
+**At i2 Systems:** IS.CC.* (8 fields) confirmed in prior passes; CC processing is active for customer SO/AR transactions; BKCC* tables are Btrieve-only (not in ODBC DDF).
+
+## Integration
+
+- **[[module-AR|AR]]** — CC-P charges appear as cash receipt entries in BKARINV
+- **[[module-PO|PO]]** — CC-PO charges linked to PO/AP payment; CC-C-WOT links CC charges to WO cost
+- **[[module-CP|CP]]** — see also CP stub for general credit/payment overview
+""",
+
 "CP": """
 ## What it does
 
