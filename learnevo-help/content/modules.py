@@ -2258,21 +2258,53 @@ SA reads (but does not write) `BKARINV`/`BKARINVL` (AR invoices), `BKARCUST`,
 ## What it does
 
 Spec Book / Approved Vendor List (AVL) — enforces approved sourcing for purchased
-components. Defines which manufacturers, vendors, and manufacturer part numbers
-are approved for each item. During purchasing and receiving, the system validates
-that the selected source is on the approved list.
+components. Defines which manufacturers, vendors, and approved part numbers are
+valid for each component, keyed by component + product assembly + customer.
+During purchasing, the system validates that the selected source is on the AVL.
 
-**SB has no standalone top-level menu.** The approved sourcing data is accessed
-through the BM (BOM) module sub-menus and is enforced automatically by PO and
-IN module transactions.
+**SB has no standalone top-level menu.** AVL data is accessed from BM sub-menus
+and enforced automatically by PO and IN module transactions.
 
-## Tables
+**Scale (2026-07-01):** 8,271 approved manufacturer sources + 5,354 approved vendor
+sources + 319 approved substitutes = 13,944 total AVL records at i2 Systems.
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `BKSBPART` | 5 | Approved substitute parts (FROM.SUBST cross-reference) |
-| `BKSBVEND` | 6 | Approved vendor sources (VENDOR + MFGNM + VPART + REV + EXTRA + UID) |
-| `BKSBMFG` | 16 | Approved manufacturer master (MFG code + name + address + contact) |
+## Tables (live counts, 2026-07-01)
+
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `BKSBMFG` | 8,271 | 6 | Approved manufacturer source: component + assembly + customer + MFG code + MFG part# |
+| `BKSBVEND` | 5,354 | 6 | Approved vendor source: component + assembly + customer + vendor + vendor part# |
+| `BKSBPART` | 319 | 5 | Approved substitute parts: component + assembly + customer + substitute part# |
+
+**AVL key structure (all three tables):**
+- `BKSB_*_PARNT` (STRING 15) — component item code (the part being sourced)
+- `BKSB_*_PROD` (STRING 15) — top-level product/assembly that uses this component
+- `BKSB_*_CUST` (STRING 10) — customer code (blank = applies to all customers)
+
+This 3-key design means AVL rules can be **customer-specific**: two customers can
+require different approved manufacturers for the same component in the same assembly.
+
+## BKSBMFG — Approved Manufacturer Source (6 fields)
+
+| Field | Meaning |
+|-------|---------|
+| `BKSB_MFG_PARNT` | Component item code (PK part 1) |
+| `BKSB_MFG_PROD` | Product assembly (PK part 2) |
+| `BKSB_MFG_CUST` | Customer code (PK part 3, blank=any) |
+| `BKSB_MFG_MANUF` | Approved manufacturer code |
+| `BKSB_MFG_MPART` | Manufacturer's part number |
+| `BKSB_MFG_EXTRA` | Extra / notes |
+
+## BKSBVEND — Approved Vendor Source (6 fields)
+
+| Field | Meaning |
+|-------|---------|
+| `BKSB_VEND_PARNT` | Component item code |
+| `BKSB_VEND_PROD` | Product assembly |
+| `BKSB_VEND_CUST` | Customer code |
+| `BKSB_VEND_VEND` | Approved vendor code |
+| `BKSB_VEND_VPART` | Vendor's part number |
+| `BKSB_VEND_EXTRA` | Extra / notes |
 
 ## Access points
 
@@ -2286,7 +2318,7 @@ IN module transactions.
 
 ## Integration
 
-- **[[module-BM|BM]]** — AVL data is managed from BM browse/entry screens
+- **[[module-BM|BM]]** — AVL data managed from BM browse/entry screens (BM-J/K/L)
 - **[[module-PO|PO]]** — PO receipt programs check BKSBVEND / BKSBMFG compliance
 - **[[module-MR|MR]]** — MR-G auto-selects first approved vendor from BKSBVEND
 - **[[module-WO|WO]]** — T7WOLA (outside process) reads BKSBVEND for subcontract sourcing
