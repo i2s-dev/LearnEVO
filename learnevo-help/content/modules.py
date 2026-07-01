@@ -1564,13 +1564,23 @@ structure to [[module-LC|LC]] (Lot Control).
 
 ## Key tables
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `SERIAL` | 30 | Active serial number master (`MTSER_*` prefix) — PO cost, SO ship, WO codes |
-| `SERIALH` | 30 | Archived serial numbers (identical structure) |
-| `BKSCMSTR` | varies | SC module configuration (generation parameters) |
+| Table | Records | Fields | Purpose |
+|-------|--------:|-------:|---------|
+| `SERIAL` | Btrieve-only | 30 | Active serial master (`MTSER_*`) — PO cost, SO ship, WO codes |
+| `SERIALH` | Btrieve-only | 30 | Archived serial numbers (identical structure) |
+| `INVTXN` | 3,269,208 | 40 | **Inventory transaction log** — every receipt, issue, transfer, and return |
+| `WORECV` | 53,502 | 11 | WO completions/receipts linked to serial assignments |
+| `ISBINLOC` | 31,844 | 9 | Bin-location stock positions (serial-aware) |
+| `ISCATMST` | 35 | 3 | Category master codes |
+| `ISSERCNT` | 0 | 9 | Serial counter — not used at i2 |
+| `ISSCOMP` | 0 | 5 | Serial compound tracking — not used at i2 |
+| `ISSTYPE` | 0 | 3 | Serial type codes — not used at i2 |
 
 **MTSER.* 27-var namespace** in T7SCA: CODE/SERIAL/LOT/PO/RECDOC/VENDOR/RECDATE/POCOST/SO/CUSTCODE/SHIPDATE/SELLPRICE/WO/ISSDATE/ISSCOST/INRECDATE/INRECCOST/EXPDATE/WOCODE/NOTES/ONHAND/LOC/WOSUF/EXTRA/BIN/INV — full PO→WO→SO lifecycle per serial.
+
+**At i2 Systems**, serial tracking is minimal — ISSERCNT=0 and ISSTYPE=0
+confirm serial number generation is not configured. The INVTXN table
+(3.27M rows) is the primary active table accessed by SC programs.
 
 ## Audit and fix (SC-F)
 
@@ -2113,6 +2123,22 @@ and data correction utilities (clear data, search-and-replace, cost recalculatio
 **UT-D** opens the same `wtasfloc.rwn` as the [[module-FL|FL]] File Location Browser.
 **UT-A** allows running any TAS Pro program by code — a superuser escape hatch.
 
+## Program detail — UT-K sub-suite
+
+| Program | Procs | DB tables | Purpose |
+|---------|------:|----------:|---------|
+| T7UTH | 109 | 18 | File registry manager: reads FILELOC/FILEDICT/FILEKEY — the TAS7 internal Btrieve schema. Outputs file layout reports. Vars: LOC_BUFF_NAME/LOC_FILE_NAME/LOC_COMP_CODE/LOC_REC_SIZE/LOC_REC_TYPE/LOC_LOCATION/LOC_DESCRIPTION/FILEFAST |
+| T7UTKD | 91 | 19 | GL fiscal-year-period recalc: FYCUR + FY1YP–FY6YP = 7-year period boundary recalculation; FROM/THRU GL account range |
+| T7UTKE | 238 | 55 | Location-code mass-change: NEW.CODE + LOCATION; **55-table DB = broadest UT access** — touches every location-linked record across all modules |
+| T7UTKF | 116 | 53 | Item book-value change: CHG.BOOK/BV.CHANGE/ZRET; updates standard cost fields across 53 tables |
+| T7UTKG | 145 | 23 | Item status change: ACT.STATUS + FROM/THRU item/class/cat range + GL account range |
+| T7UTKH | 135 | 21 | Item notes and inactive filter: INC.TYPE/INCL.INACTIVE/PRT.NOTE |
+| T7UTKA | — | — | Payroll GL config (documented under [[module-PR|PR]]) |
+
+The 55-table DB of T7UTKE is the largest in the UT suite — consolidating
+inventory locations requires touching every table that records a location code
+(WO, PO, SO, IN, SC, LC, PI, SH, etc.).
+
 ## Integration
 
 UT-I (Create/Delete Company) is the mechanism for adding a new company code;
@@ -2425,6 +2451,21 @@ through the [[module-SH|SH]] Scheduling menu.
 `MTWC.*` 30-var namespace from `WORKCTR` (47f): WC/%UTIL/HRSWEEK/LABOR/SETUP/
 MACHINE/AVGQTIME/VOVHD/QPR1-3/PARENT.WC/OUTPROC — work center capacity and
 cost rates used by all SL scheduling calculations.
+
+## Key tables (live ODBC)
+
+| Table | Records | Fields | Purpose |
+|-------|--------:|-------:|---------|
+| `ISARCHG` | 211,748 | 26 | SO change audit trail — before/after field values for every SO line edit |
+| `WORKCTR` | 27 | 48 | Work center master — capacity, rates, dept |
+| `ISWOPRIO` | 40 | 4 | WO priority codes for Gantt color coding (PRIO/DESC/EXTRA/COLOR) |
+| `BKDCLAB` | 22 | 51 | DC labor data feed to Gantt (DATE/EMP/WOPRE/WOSUF/OPER/SHIFT/HRS) |
+| `ISBUILD` | 0 | 15 | WO build/staging queue — not used at i2 |
+
+**ISARCHG** is the SO change history — 211,748 rows confirm heavy SO editing
+activity at i2. Structure: `IS_CHGNO`, `IS_CHG_SONUM`, `IS_CHG_INVNUM`,
+`IS_CHG_LINEID`, and 20 paired A*/B* before/after value fields covering
+price, quantity, date, location, and GL fields.
 
 ## Integration
 
