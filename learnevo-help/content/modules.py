@@ -948,11 +948,36 @@ All BKDCLAB* tables share **identical 51-field LAB_* schema** and are accessible
 | `LAB_UID` | Unique record ID (STRING 30) |
 | `LAB_ADT_SUPER/IN/OUT` | Audit trail: supervisor + in/out (STRING 100 each) |
 
+## Menu operations (DFM-confirmed, 22 DFMs)
+
+| Code | Program | Description |
+|------|---------|-------------|
+| DC-A | T7DCA / T7DCA2 | **Real-time labor entry** (touchscreen/barcode terminal) — Employee / Action / Work Order / WO Item / Sequence / Machine / Work Center / Total Parts Made / Hrs; Notes required if cycle time exceeded. T7DCA2 adds Start Shift / Stop Shift buttons |
+| DC-A-Label | T7DCALabel | **Print Transfer Label** — Item#/Desc/Bin Location/Sequence (printed when transferring WIP between operations) |
+| DC-A-Notes | T7DCANotes | **WO Notes panel** — links: WO Item / WO Routing / WO / Routing (note viewer for DC-A context) |
+| DC-B | t7dcb | **Production quantity entry** — Parts Made / Parts Scrapped / Total Parts Made / Scrap Code + Desc / Prev Seq Made; sub-form T7DCBSERIAL for serial number assignment (Serial# / Total Qty / Remaining Qty) |
+| DC-D | T7DCD | **Supervisor inquiry / timecard review** — Employee# / Password; WO From/Thru filter (supervisor-level access to DC records) |
+| DC-E | T7DCE | **Print Labor Tickets** (per operation) — WO# range / Number to Print per Operation / Include Outside Processing / Include Alternate Operations |
+| DC-E-F | T7DCF | **Print Employee Tickets** (per employee) — Employee From/Thru / Number to Print per Employee |
+| DC-G | T7DCG | **Edit Labor Transactions** (grid editor) — Date range / Include Shift Records [Y/N/Only]; columns: Date/WO/Employee/Sequence/Run+Setup Hrs/Time Start+Finish/Parts/Scrapped |
+| DC-H | T7DCH | **Batch post labor** — Employee range / Shifts [1/2/3] / WO# range; Post button (commits staged BKDCLAB to WO labor/material) |
+| DC-K | T7DCK | **Shift record archive/purge/restore** — Employee range / Shifts [123] / Date range / [A/R/P] |
+| DC-L | T7DCL | **Employee timecard display** — Employee# / Password; shows Current Status / Hours Today / Hours Pay Period / Reg/OT/Hol/DT/Vac/Sick breakdown; Start Shift button |
+| DC-M | T7DCM | **Labor summary board** — Sort by Employee Name / Include Run Hours / Include Salary Employees / Include Labor Type / Show Current Date Only (real-time shop floor view) |
+| DC-N | T7DCN | **Holiday/vacation posting** — Employee From/Thru / Date range / **Holiday Hours** (payroll-linked time-off entry) |
+| DC-PSF | T7DCPSF | **Paperless Shop Floor** (also accessible as HH-L) — WO#/Sequence/Item/Desc/Job/Drawing/Rev; sub-forms: Issue Components (All Comps/Issue Comps/Shortages), ECO viewer (Drawing/Rev/ECO#/ECO Date), Notes (QC Specifications/WO Item/Routing), SO Lookup |
+
+**Shift codes [1/2/3]:** DC tracks three shifts per day. BKDCSHFT holds 3 shift names + 3 buffer codes (e.g. Day/Evening/Night).
+
+**DC-PSF / HH-L dual access:** The Paperless Shop Floor form (`T7DCPSF.DFM` caption "HH-L Paperless Shop Floor") is accessible both from the DC menu and from the HH (HandHeld) module. The ECO sub-form (`T7DCPSFECO.DFM`) provides a read-only Engineering Change Order view during production.
+
+**t7DCina.DFM** (caption "T7INA") — a cross-module navigation panel showing buttons for SO/SH/PO/RC/WO/AL/LO/BM/TR/VN/MF/RO/SR, embedded within the DC environment to allow rapid jumps to related modules.
+
 ## Integration
 
-- **[[module-WO|WO]]** — BKDCLAB posts to WOLABOR and WOMAT when processed
-- **[[module-PR|PR]]** — LAB_RUNHRS + LAB_SETUPHRS feed BKPRCURP for payroll
-- **[[module-HH|HH]]** — handheld device interface; HH-I Paperless Shop Floor uses DC tables
+- **[[module-WO|WO]]** — BKDCLAB posts to WOLABOR and WOMAT when processed (DC-H)
+- **[[module-PR|PR]]** — LAB_RUNHRS + LAB_SETUPHRS feed BKPRCURP for payroll (DC-N holiday hours also post to PR)
+- **[[module-HH|HH]]** — HH-L Paperless Shop Floor = T7DCPSF (same program, dual-access)
 - **[[module-DE|DE]]** — DE-J batch import writes directly to BKDCLAB
 """,
 
