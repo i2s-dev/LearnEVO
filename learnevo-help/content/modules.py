@@ -110,7 +110,7 @@ AM-K Archive → closed invoices move BKARINV → BKARHINV
 | `AR-E` | Monthly Statements |
 | `AR-G/H/I/J` | Customer name/info/labels/tax listings |
 | `AR-K` | Sales Tax Report |
-| `AR-N` | Customer Deposits |
+| `AR-N` | Customer Deposits — **T7MAPDEPO.DFM confirmed**: SO# / Description / Qty / Amount / Deposit Amount / Item# / GL Account / Deposit# / Customer / Amount Remaining (maps a deposit to specific SO lines with GL account override) |
 | `AR-R` | AR Payment History |
 
 ## Integration
