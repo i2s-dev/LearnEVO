@@ -17720,6 +17720,155 @@ ISACCESS stores one record per form-control-group combination:
 
 ---
 
+### Recipe 34: WO-G Issue Materials — Issue BOM Components to a Work Order (Pass 439, 2026-07-01)
+
+**When to use:** After a Work Order is released (status F or R), to issue raw-material and component parts from inventory to the WO. Done before or during production; each issue reduces on-hand inventory and records actual material cost against the WO.
+
+**Programs:** WO-G (T7WOG.RWN); companion program: WO-O Post Material Issues (T7DEJH.RWN)
+
+**Full sequence:**
+
+1. **WO-G (T7WOG.RWN) — Issue Materials**
+   - Enter WO#. The form loads the WOBOM records (WO Bill of Material) for that WO, showing all components with their required qty, qty already issued, and qty remaining.
+   - Filter by Sequence Range (operation from/thru) to issue components for a specific routing step.
+   - For each component line, enter:
+     - `Qty Issued` — quantity being issued this transaction
+     - `Qty Scrapped` / `Scrap Code` — if issuing and scrapping simultaneously
+     - `Location` / `Bin` — where the parts are being pulled from
+     - `Lot Number` / `Serial Number` — for lot/serial-tracked parts
+     - `Reference` — optional free-text note
+   - **Kit Issue** button: issues the full BOM quantity for all components in one action. When used, EvoERP sets `WORKORD.MTWO_KIT_STAT = 'L'` (KIT=L freeze), locking the WO BOM against further changes.
+   - **Issue Scrap?** toggle: if checked, a scrap-code grid appears so multiple scrap codes can be distributed against the scrapped quantity.
+   - Click **Save** per line, or **Add** to queue additional issues before posting.
+   - Click **Reverse** to undo a prior material issue (creates a negative WOMAT transaction).
+
+2. **What gets written:**
+   - `WOMAT` — one record per issue transaction: `WOMAT_WOPRE/WOSUF` (WO key), `WOMAT_PCODE` (component part#), `WOMAT_QTYISSUED`, `WOMAT_QTYSCRAP`, `WOMAT_DATE`, `WOMAT_SCRAPCD`, `WOMAT_LOT`, `WOMAT_SERIAL`, `WOMAT_COST` (actual unit cost), `WOMAT_KIT` flag.
+   - `WOBOM.WOBOM_QTYISSUED` — updated with cumulative issued qty so the "remaining to issue" is always current.
+   - Inventory decremented: `BKINVLOC` on-hand qty reduced by qty issued for the component part at the specified location.
+   - WO cost updated: `WORKORD.MTWO_WIP_ACTMATCST` accumulates the actual material cost from each WOMAT transaction.
+
+3. **WO-O (T7DEJH.RWN) — Post Material Issues** (optional batch mode)
+   - Alternative to interactive WO-G: reads staged issue records and posts them in batch. Used for DE-K (Data Exchange import of material issues) or barcode-scan workflows.
+
+**Key tables:**
+
+| Table | Role |
+|-------|------|
+| `WOBOM` | WO Bill of Material — one row per component per WO; tracks `WOBOM_QTYISSUED` vs `WOBOM_TOTQTY` |
+| `WOMAT` | Issue transaction history — one row per issue event per component |
+| `WORKORD` | Updated: `MTWO_WIP_ACTMATCST`, `MTWO_KIT_STAT` |
+| `BKINVLOC` | Inventory on-hand decremented per component at specified location |
+
+**KIT=L note:** Once WO-G issues via the Kit Issue button, MTWO_KIT_STAT='L' freezes the WOBOM. Subsequent WO-B-B BOM changes will not propagate to this WO. This is the documented freeze behavior researched in OPEN_QUESTIONS.md §WO-G KIT=L.
+
+**Live data at i2 Systems:** 505,923 WOBOM lines across all WOs; 469,515 WOMAT issue transactions; 222.9M units issued total; 214,333 units recorded as scrap.
+
+---
+
+### Recipe 35: WO-I Enter Finished Production — Receive Completed Assemblies from a WO (Pass 439, 2026-07-01)
+
+**When to use:** After all or part of a Work Order's quantity has been produced, to receive the finished assemblies into inventory and close out actual costs against the WO. WO-I is the "receive" counterpart to WO-G (issue).
+
+**Programs:** WO-I (T7WOI.RWN)
+
+**Full sequence:**
+
+1. **WO-I (T7WOI.RWN) — Enter Finished Production**
+   - Enter WO#. The form shows the parent assembly part#, description, quantity to make, and quantity completed to date.
+   - Fill in:
+     - `Date Received` — production receipt date
+     - `Qty Good Completed` — quantity of good (accepted) assemblies
+     - `Scrap Quantity` / `Scrap Code` — assemblies scrapped during production; `Multi Scrap Codes?` toggle for distributing across codes
+     - `Bin` — put-away location for finished assemblies
+     - `Reference` — optional note
+     - `NCR Quantity` — if non-conforming qty needs an NCR (links to QC-F-A)
+     - `Transfer Number` / `Truck Number` — for inter-site transfers (Add to Transfer to Dyersville? toggle at i2)
+   - The form displays a cost comparison panel showing **Estimated** vs **Actual** costs (Material, Setup, Labor, Outside Process, Fixed OH, Variable OH, Misc., Extra, Total), plus **Average**, **Current**, **Last**, and **Standard** cost rates. This allows the production supervisor to verify the cost variance before accepting.
+   - Click **Process** to post the receipt.
+   - Click **Reverse** to un-receive a prior WO-I entry.
+   - **Comps** button: shows component consumption (WOBOM lines) for the WO.
+   - **Short UOH** indicator: flags if the received quantity leaves inventory short of other demand.
+
+2. **What gets written:**
+   - `WORECV` — one record per receipt event: `MTWOR_WOPRE/WOSUF`, `MTWOR_ASSY` (parent part), `MTWOR_QTY` (qty received), `MTWOR_DATE`, `MTWOR_AVGC` (average cost), `MTWOR_LOT`, `MTWOR_SERIAL`, `MTWOR_REF`.
+   - `WORKORD` — updated: `MTWO_WIP_QTYCOMP` (qty completed to date), `MTWO_WIP_STATUS` may change to 'C' if fully completed, `MTWO_WIP_ACTMATCST`/`MTWO_WIP_ACTLABCST` finalized.
+   - `BKINVLOC` — parent assembly on-hand incremented at the specified bin/location.
+   - GL posted: WIP account relieved; Finished Goods inventory debited; variance accounts written if actual vs standard cost differ.
+
+3. **Closing the WO:**
+   - When Qty Completed ≥ Qty To Make, EvoERP flags the WO as fully received. Formal close is via WO-J (Close/Cancel Work Orders), which sets `MTWO_WIP_STATUS = 'C'` and purges the WO from active queues.
+
+**Key tables:**
+
+| Table | Role |
+|-------|------|
+| `WORECV` | Production receipt transactions — 11 fields |
+| `WORKORD` | Updated: qty completed, status, actual costs |
+| `BKINVLOC` | Parent assembly inventory incremented |
+| `BKGLTRX` | GL journal: WIP relief, FG debit, variance |
+
+**Live data at i2 Systems:** 53,500 WORECV records; 9,573,602 total units received across all WOs.
+
+---
+
+### Recipe 36: ES Estimating — Create a Quote and Convert to Sales Order / Work Order (Pass 439, 2026-07-01)
+
+**When to use:** When a customer requests a price quote for a new or existing product. The Estimating (ES) module creates a formal quote with a full cost rollup, then converts it to a Sales Order (and optionally a Work Order) when the customer accepts.
+
+**Programs:** ES-A → ES-B → (ES-C) → ES-E
+
+**Full sequence:**
+
+1. **ES-A (T7ESA.RWN) — Enter Estimates**
+   - Create a new estimate (quote). Enter customer, date, and quote details.
+   - Add line items: each line has part#, description, qty, unit price, and cost components.
+   - The estimate header is stored in `BKESTQT` (same 84-field structure as `BKARINV` — EvoERP reuses the AR invoice table schema for quotes). Line detail in `BKESTQTL` (same column names as `BKARINVL`).
+   - `BKAR_INV_INVCD` type code on the estimate: `'Y'` = standard active quote, `'X'` = cancelled/voided.
+   - `BKESTCFG` (1 record) stores estimating configuration defaults (number sequences, default markup rates, etc.).
+
+2. **ES-B (T7ESB.RWN) — Print Customer Quotes**
+   - Prints the customer-facing quote document from BKESTQT/BKESTQTL.
+   - Standard output: customer address block, quote#, date, line items with unit prices, totals.
+
+3. **ES-C (T7ESC.RWN) — Print Estimate Cost Rollup** *(optional internal review)*
+   - Prints an internal cost analysis: raw material cost, labor cost, overhead, and resulting margin.
+   - Used to verify profitability before sending the quote to the customer.
+
+4. **ES-E (T7ESE.RWN) — Convert Estimates** *(key step)*
+   - Select the Quote# to convert.
+   - Choose what to create:
+     - **Convert to Sales Order?** — creates a new SO in BKSOHEDR/BKSOITEM; assigns new SO#.
+     - **Convert to Work Order?** — creates a new WO in WORKORD/WOBOM; assigns new WO#, Start Date, Finish Date.
+     - Both can be selected simultaneously.
+   - **Put Est.# in Customer PO?** — if checked, the estimate number is placed into the SO's Customer PO field (`BKSOHEDR.BKSO_HDR_CUSTPO`) for traceability.
+   - After conversion, `BKESTQT.BKAR_INV_SONUM` is populated with the new SO#, linking quote to order.
+   - The original estimate record is NOT deleted — it remains in BKESTQT as an audit trail.
+
+5. **ES-D (T7EST.RWN) — Quick Estimate** *(shortcut)*
+   - Streamlined single-screen estimate for simple one-line quotes. No multi-line BOM expansion.
+
+**Key tables:**
+
+| Table | Role |
+|-------|------|
+| `BKESTQT` | Estimate/quote header — 84 fields, same structure as BKARINV; PK = BKAR_INV_NUM |
+| `BKESTQTL` | Estimate/quote line detail — same columns as BKARINVL (invoice line items) |
+| `BKESTCFG` | Estimating configuration — 1 record, default markup rates and number sequences |
+| `BKSOHEDR` | Created by ES-E convert (if Convert to SO); new SO header |
+| `WORKORD` | Created by ES-E convert (if Convert to WO); new WO header |
+
+**Estimating module totals at i2 Systems:** 6,897 quotes (BKESTQT), 462,837 quote line items (BKESTQTL); all 6,897 quotes have an SO# (BKAR_INV_SONUM > 0), indicating every estimate at i2 has been converted to an order. Type distribution: 5,912 type='Y' (active), 366 type='X' (voided), 618 type=' ' (draft).
+
+**Related modules:**
+- `SO` — Sales Orders created by ES-E conversion
+- `WO` — Work Orders created by ES-E conversion
+- `ES-J (T7DSEST.RWN)` — Estimating Defaults (configures default rates, markup tables)
+- `ES-K (T7IC2EST.RWN)` — Update Estimating Inventory from Production (pulls actual costs back into estimating rates)
+- `ES-L/M (T7ESL/ESM.RWN)` — Edit / Inquire Estimating Inventory (maintains the separate estimating cost database)
+
+---
+
 ## Pass 99 — EvoLinks, FNO, Calendar, Infrastructure DFM sweep (2026-06-18)
 
 ### EvoLinks — Document Attachment System (ISLINKS Table)
