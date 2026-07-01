@@ -2288,10 +2288,95 @@ as `AR-S` (AR Defaults). In this installation it is accessed via SD-P.
 All accounting defaults are stored in `BKSYMSTR` (286f) and `BKYSMSTR` (355f)
 — the same global singletons used by every module.
 
+## AD-A — General Ledger Defaults (Pass 498, Acctug.pdf ch. 11)
+
+Controls system-wide GL behavior and supplies every module's default account codes.
+
+**Control flags** (4 Y/N posting-on/off toggles):
+| Field | Meaning |
+|-------|---------|
+| Post COGS Transactions? | N = suppress automatic SO invoice → COGS posting |
+| Post PO Transactions? | N = suppress automatic PO receipt → Inventory posting |
+| Post Inventory Adjustments? | N = suppress IN-A adj → GL posting |
+| Post WO Transactions? | N = suppress WO cost → WIP/Inventory posting |
+| Permit use of Item Class GLs? | Y = allow SM-C item-class level GL overrides |
+
+**System counters:**
+- `Fiscal Year Start Dt` — calendar start date; auto-updated by AM-B (never change manually)
+- `Next Genl Journal No` — next GL-B batch number
+
+**Accounting & Sales GL accounts** (first screen):
+| Account | Type | Purpose |
+|---------|------|---------|
+| Current Earnings | O (OE) | Net income/loss for current fiscal year; zeroed to Retained Earnings at AM-B |
+| Retained Earnings | O (OE) | Accumulated prior-year earnings |
+| Clearing Account | O (OE) | Catch-all when GL code not found during posting; recommended 99999 |
+| Accounts Payable | L | AP control account |
+| AP Discounts Taken | E or I | Vendor early-pay discounts |
+| Accounts Receivable | A | AR control account |
+| AR Discounts Taken | I or E | Customer early-pay discounts |
+| AR Interest Charged | I | Overdue invoice interest income |
+| AR Customer Deposits | L | Prepayments (separate from AR; applied later via AR-C/AR-N) |
+| Taxable Sales | I | Revenue from taxable items (can override per item class in SM-C) |
+| Non-Taxable Sales | I | Revenue from non-taxable items (can override per item class in SM-C) |
+| Invoice Freight Out | I or contra-E | Freight billed to customers on SO invoices |
+| Sales Tax Withheld | L | Sales taxes collected; can use separate account per tax authority |
+| Retention | A | Holds retention billing amounts until retention SO is posted |
+| Agents Commissions Payable | L | Credited when invoices/payments include agent commissions; cleared by CS-D |
+| Agents Commission Expense | E | Debited when agent commissions are recorded |
+
+**Manufacturing GL accounts** (second screen — "Mfg GL Accounts" button):
+| Account | Type | Posted when |
+|---------|------|-------------|
+| Inventory | A | PO receipt; WO completion transfer from WIP |
+| Cost-of-Goods-Sold | E | SO invoice posted (can override per item class) |
+| Absorbed Freight In | (contra-A) | IN-B Freight Pct absorption — credit side; debit → Inventory asset |
+| POs Received not Invoiced | L | PO receipt (credit); cleared at AP invoice entry (debit) |
+| PO Freight In | E | Vendor freight on PO invoices |
+| PO Sales Tax Expense | E | Tax charged on PO invoices |
+| Extra Costs (WO) | E | WO extra costs: credit Extra Costs, debit WIP; reversed at AP voucher |
+| Miscellaneous Costs (WO) | E | WO routing misc costs (tooling etc.): same credit/debit pattern as Extra Costs |
+| Absorbed Labor | E (credit) | Labor reported on WO: cancels actual direct labor expense; ideally nets to zero |
+| Labor Variance | E | Difference between actual direct labor and absorbed labor; adjust at month-end |
+| Absorbed Fixed Overhead | E (credit) | Fixed OH absorbed as % of labor: cancels actual fixed OH expense |
+| Fixed Overhead Variance | E | Difference between actual fixed OH and absorbed fixed OH |
+| Absorbed Variable Overhead | E (credit) | Variable OH absorbed as % of labor: cancels actual variable OH expense |
+| Variable Overhead Variance | E | Difference between actual variable OH and absorbed variable OH |
+| WIP Inventory | A | All WO costs (material/labor/OH) debited here; credited at WO completion |
+| WIP Variance | E | Adjusted at month-end by variance entries; also posted when WOs close with residual |
+
+## AD-B — Checking Accounts Defaults (Pass 498, Acctug.pdf ch. 11)
+
+Up to 9 checking accounts. Three are designated as defaults for AR deposits, AP checks, and Payroll.
+
+| Field | Meaning |
+|-------|---------|
+| AR (default bank #) | Which of the 9 accounts receives AR deposits |
+| AP (default bank #) | Which of the 9 accounts issues AP checks |
+| PR (default bank #) | Which of the 9 accounts issues payroll checks |
+| AP Checks Print Format # | 1/2/4/5 = graphical laser/continuous; 3 = text dot-matrix |
+| Account Name | Display label (appears in lookup windows throughout system) |
+| GL Account-Dept | Cash account code for this checking account (usually asset, sometimes liability for CC) |
+| Balance | Period-ending balance; auto-updated by GL-J (Reconcile Check Register) |
+| Next Ck # | Next check number to be assigned; auto-increments each print run |
+
+## AD-C — Accounts Payable Defaults (Pass 498, Acctug.pdf ch. 11)
+
+| Field | Meaning |
+|-------|---------|
+| Next AP Invoice Number | Auto-assigned when payroll/sales taxes transferred to AP |
+| Next Recurring AP Number | Incremented each time a new AP-O recurring voucher template is created |
+| Aging Periods 1–5 | Day thresholds for AP-I aging report buckets; Period 1 should always be 0 |
+
 ## Integration
 
 - **[[module-GL|GL]]** — AD-A sets the default posting period, account numbering, and COA structure
 - **[[module-AP|AP]]** — AD-C sets terms, default vendor GL accounts, and check format
+- **[[module-AR|AR]]** — AD-A AR accounts (deposits, discounts, interest) used by all AR posting
+- **[[module-CS|CS]]** — AD-A Agents Commissions accounts used when CS-D transfers commissions
+- **[[module-WO|WO]]** — AD-A manufacturing GL accounts (WIP/Absorbed Labor/OH) drive all WO cost postings
+- **[[module-PO|PO]]** — AD-A PO GL accounts (Received-not-Invoiced, Freight In) used at receipt/invoice
+- **[[module-SO|SO]]** — AD-A COGS/Sales accounts used at invoice posting
 """,
 
 # ── Modules added Pass 310 (2026-06-25) to eliminate all 45 module stubs ──
