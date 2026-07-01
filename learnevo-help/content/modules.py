@@ -344,6 +344,31 @@ Inventory moves always post to GL:
 - Adjustment: Inventory ↔ Adjustment account
 - Sale: COGS ↔ Inventory
 
+## T7ITMCFG — Item Number Auto-Format Configuration (DFM-confirmed)
+
+`T7ITMCFG.DFM` (66 procs, LISTG60.LIB, 30 tables) — the "Item Configuration"
+utility. The DFM shows the item number auto-format panel:
+
+| Field | Meaning |
+|-------|---------|
+| Item Group | Code identifying a group of auto-numbered items |
+| Total Length of Item Number | Total character length of generated item codes |
+| Starting Position of Numeric Portion | Where the numeric sequence begins |
+| Length of Numeric Portion | How many digits in the auto-increment |
+| Last Number | Last used auto-number in this group |
+| Formatted Last Number | Display-formatted version of Last Number |
+
+Add / Edit / Delete / Save / Exit toolbar with Search. This is EVO's item number
+auto-generation system: each Item Group has its own format template, and the system
+increments "Last Number" each time a new item is added.
+
+**T7ITMCFG is also the broadest item-config program (30 tables):** Opens
+ISSERCNT / ISCYCLCD / ISUDFINV / IS2DBAR / WORKCTR / BKGLCOA / BKGLTRAN /
+BKSBPART / BKMRPFC / DBAFIFO / ISNCR / ISNTYPE / CLASS / SERIAL / BKAPPOL /
+BKAPPO and more — confirming T7ITMCFG is the master item-level configuration
+editor (serial codes, cycle count codes, UDF fields, 2D barcode settings,
+work center links, MRP forecast, alt-parts, FIFO layers, NCR links).
+
 ## Related
 
 - [[module-PI|PI - Physical Inventory]]
