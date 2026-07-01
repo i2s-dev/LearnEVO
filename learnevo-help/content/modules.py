@@ -702,8 +702,8 @@ Bill of Materials defines what components go into what assemblies. It is
 the structural backbone of manufacturing at i2 Systems — every Work Order
 and MRP run depends on BOM data.
 
-**Scale:** 208,686 BOM lines linking 29,714 parent assemblies to 27,415
-unique components (average 7.0 components per parent).
+**Scale:** 208,703 BOM lines (BKBMMSTR, ODBC confirmed) — linking parent
+assemblies to components with avg ~7 components per parent.
 
 ## Core table: BKBMMSTR
 
