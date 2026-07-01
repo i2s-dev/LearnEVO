@@ -2433,12 +2433,25 @@ The TA module uses `WTAS*` program prefixes (not `T7TA*`) for its core tools:
 | WTASCHKINT | **"DataScanIntegrity utility"** — Total Progress, Current Scan Progress, Scan Type, Records Scanned (company selector sub-dialog: All/Current company) |
 | WTASCVTDICT | **"Convert Existing Dictionary"** — Working On, Next (DDF conversion tool) |
 | WTASDMGR3 | **"Restructure a file"** — FD to restructure, Number of files/records remaining, Working on file |
-| WTASFLOC | **"Maintain File Names and Locations"** — File Name, Extension, FD Name, Rec Type (this is the FL module) |
-| WTASINIT | File Create/Initialize with same fields as WTASFLOC |
+| WTASFLOC | **"Maintain File Names and Locations"** — File Name, Extension, FD Name, Rec Type, Path, Description, Delete File, Update All (this is the FL module) |
+| WTASINIT | **"Addsum TAS Professional 7 Create/Initialize File Program"** — File Name, Extension, FD Name, Rec Type, Path, Description, Initialize button |
+| WTASDMGR2 | **"New FD"** — Enter the new FD Name (sub-dialog of WTASDMGR) |
+| WTASDMGR3 | **"Restructure a file"** — FD to restructure, files/records remaining counter |
+| WTASDMS2 | **"Enter Array Elements"** — array field value editor |
+| WTASDMS3 | **"Edit Memo Field"** — memo text editor (generic popup for long fields) |
+| WTASDMS4 | **"Enter Filter Expression"** — Btrieve filter expression entry |
+| WTASDMS5 | **"Enter Find Next Expression"** — search within current record set |
+| WTASCHKINT | **"DataScanIntegrity utility"** — Total/Current Scan Progress, Scan Type, Records Scanned, Current file/key, Start scan; sub-dialog: "Include which companies" (Current/All) |
 
-**Key finding:** WTASDMGR is the full Addsum TAS data dictionary editor — it confirms
-the runtime is "TAS Premier 7i" (not just "TAS Pro 7"), and that the DDD is maintained
-via a GUI tool with Fields/Keys tabs and export capability.
+WTASDATAM ("Maintain Database") fields: Sort by, file name, "Search for dates in the
+format YYYYMMDD", Sequential (no key) mode, Edit, Save row, Add row, Delete, Choose
+fields to display, Override file location path, Deleted records counter. This is a
+general-purpose low-level Btrieve record editor — the TAS Pro admin power tool.
+
+**Key finding:** WTASDMGR is the full Addsum TAS Premier 7i data dictionary editor —
+confirms runtime is "TAS Premier 7i" (not just "TAS Pro 7"). DDD managed via GUI with
+Fields/Keys tabs, key properties (Modifiable/Allow duplicates/Ignore Case/Clear segment
+field num), Export visible rows, and New/Edit/Delete field capability.
 
 ## Integration
 
@@ -3947,6 +3960,29 @@ up an item number and see: on-hand qty, open SOs, open POs, open WOs,
 current BOM, and routing — all from a single inquiry. This is the
 "where-is-my-stuff" tool for production and customer service.
 
+## Shared lookup engine (WBKLOOKUP)
+
+`WBKLOOKUP.DFM` — "Evo Lookups" — the universal list-picker dialog used throughout
+EvoERP to let users choose from any table. Buttons: Select, Edit, Add New, Delete,
+Go, Exit, Print, SSSFD (saved searches/sort/filter), Change View, Drill_down, Drill_up,
+Camera (image viewer). This is the backbone behind every "lookup" field in EVO.
+
+`WMBKLOOKUP.DFM` — Mobile/web variant of the lookup: Lookup:, Select, Edit, Add New,
+Delete, First, Previous navigation buttons — used in HH/mobile contexts.
+
+`WBKHHLOOKUP.DFM` — HH-specific list picker: Search, Sort List by, Tag All/UnTag All,
+Vendors Number / Manufacturers / Customers X-Ref sub-tabs — used in handheld item lookup.
+
+`WBKLUGRID.DFM` — "Maintain Grid Lookup Data" admin tool: Grid Name, FD Name,
+Form Name, Security Level, Start At End, Key Data, Sort Keys — configures which columns
+appear in each lookup popup and how it sorts. Accessed by SU/SM admins.
+
+`GetAlphaGen.DFM` — minimal 1-field text input (GAG Caption, GAGLABEL, Cancel) —
+used wherever a single string prompt is needed without a full form.
+
+`GetFileName.DFM` — "Enter File" — File Name, Local/Server path toggle, Cancel —
+shared file-path picker for import/export dialogs.
+
 ## Integration
 
 | Module | Relationship |
@@ -4440,10 +4476,21 @@ evoalerts.DFM: system broadcast alerts — AlertMessage, Ignore, View.
 
 ## ERP Scheduler
 
-evoERPsched.DFM confirms: "Run at time", "Schedule Every", day-of-week
-checkboxes (Monday, ...). EvoSchedsetup.DFM: "Create Evo Scheduler as a
-Service" (installs as a Windows service). Drives background tasks like
-US-G Triggers and scheduled report email.
+`EvoScheduler.DFM` — task configuration grid; each scheduled task has:
+Name, Description, Program (RWN to run), Params, Log File, Company, E-Mail
+(recipient for completion notification), Occuring (schedule type), Type,
+Next Date, Next Time, Reoccur Every X Minutes, Last Date, Last Time.
+
+`evoERPsched.DFM`: "Run at time" + "Schedule Every" + day-of-week checkboxes.
+
+Service installation forms (all share same SMTP setup UI):
+- `EvoSchedsetup.DFM` — "Create Evo Scheduler as a Service" (Windows service)
+- `EVOSERVICESETUP.DFM` — "Create EvoService for your Server" (the EVO background service)
+- `EVOSERVICEREMOVE.DFM` — "Remove EvoService from your Server"
+- `EvoMobilesetup.DFM` — "Create Mobile Reminders Setup" (pushes reminders to mobile)
+
+All service-install forms share: Server Path (g:\path), SMTP, User, Passwd, Port,
+Email, Name, 32/64-bit OS selector, Continue and TestEmail buttons.
 
 ## Business Status dashboard (EvoBS)
 
@@ -4487,6 +4534,43 @@ Resolves the question "where does this number appear?" across all modules.
 | EVOSERVICESETUP.DFM | Create EvoService Windows service (SMTP, Server Path) |
 | EvocfgSave.DFM | Save/Restore Evo Service Settings |
 | EVOFILTERS.DFM | WO filter panel (WO#/Finished Date/Status) — shared across SH/WO/PA |
+
+## Email system (NZE)
+
+`nzemailtll.DFM` — "Evo ~ ERP email" — the universal email compose dialog:
+To, Cc, Icc (internal CC), BCC Self toggle, Form (report template), Attachment (&Att:),
+Subject, Send, Cancel. Used whenever EvoERP sends an email (invoices, packing slips,
+acknowledgements, etc.).
+
+`nzedefs.DFM` — "Evo Email Default Settings": Attach (default attachment flag),
+Signature, Body Text, BCC Self, Subject, Subject Fields — configures the default
+template for each outbound document type.
+
+## Print dialog (shared across all modules)
+
+`printtll.DFM` — "Print" — the standard EvoERP print routing dialog:
+- Number of Copies
+- Print Options: Printer / Preview / Email / File
+- Printer: Name, Setup, Print to File, Type, Where
+- Save Settings, Exit
+
+All EvoERP reports and documents reach this dialog before output.
+
+## Calendar Summary Report
+
+`EvoCSR.DFM` — "Calendar Summary Report" — cross-order scheduling summary:
+Month (to display), Customer From/Thru, Item From/Thru, ESD (Estimated Ship Date),
+CDD (Customer Due Date), Report Fields (Customer and PO#; Qty and Backorder;
+SO# and Customer). Used to view open SO delivery commitments by calendar period.
+
+## UI customization tools
+
+| DFM | Purpose |
+|-----|---------|
+| DFMALTS.DFM | "Set ALT Keys for DFMs" — maps keyboard shortcuts to form fields |
+| DDFilters.DFM | "Drill Filters" — Apply/Edit/Delete/Save/Load/Clear/Sort; manages persistent drill-down filter sets |
+| EvoERPDrillM.DFM | "Drill Down Menus" — Source Field, Target Field, Menu Text, Key, File, Child/Parent Grid; configures cross-record navigation |
+| classic2evonts.DFM | "Classic 2 Evo Notes" — migrates legacy note records to the ISNOTES format |
 
 ## Data Collection workstation menu
 
