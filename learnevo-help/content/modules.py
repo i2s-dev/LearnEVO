@@ -4714,6 +4714,7 @@ purchase orders.
 | IM-D | Enter Landed Cost Defaults | t7imd.rwn |
 | IM-E | Enter Landed Cost Duty Codes | t7ime.rwn |
 | IM-F | Enter Landed Cost Customs Fees | t7imf.rwn |
+| IM-G | Enter Tax-In Codes | t7img.rwn |
 | IM-H | International Defaults | T7DSIM.RWN |
 
 ## Database tables (live counts, 2026-07-01)
@@ -4762,6 +4763,51 @@ This program exists but is not scheduled at i2 (MTEXCHG remains empty).
 T7IMD confirms that landed costs (duty/freight/customs) post to separate GL accounts.
 T7IME's note that the first 3 chars of Duty Code = Vendor code means duty rates are
 per-vendor — different suppliers have different tariff classifications.
+
+## Multi-currency GL accounts per currency (Pass 503, Acctug.pdf Chapter 9)
+
+Each source currency configured in IM-B has its own set of GL accounts:
+
+| Account | Purpose |
+|---------|---------|
+| AP Control | AP balances in source currency |
+| AR Control | AR balances in source currency |
+| AR Deposits | Customer deposits (AR-N) in this currency |
+| PO's Rec'd Not Invoiced (PORNI) Control | Uninvoiced PO receipts in source currency |
+| PORNI Conversions | Offset for Convert-to-Base routine |
+| F/E Gain/Loss — Transactions | FX gain/loss on individual transactions |
+| F/E Gain/Loss — Conversions | FX gain/loss on periodic conversion runs |
+| Bank Account | Bank balance in source currency |
+| Bank Account Conversions | Offset for Convert-to-Base routine |
+
+## Currency conversion workflow (IM-B, confirmed from Acctug.pdf Chapter 9)
+
+The "Convert to Base Currency" routine (IM-B) runs in **two transactions per account**:
+
+1. **Reversal of last conversion**: Credits or debits the Conversions account for the
+   amount stored in "Last Conversion Values" (cancels the previous period's FX entry).
+   Offsetting entry goes to the F/E Gain/Loss-Conversions account.
+
+2. **New conversion**: Formula: `(current rate − 1) × Control Account balance = Conversion amount`.
+   The Conversion amount is posted to the Conversions account; offset to F/E Gain/Loss-Conversions.
+   Net result: `Control Account + Conversions Account = total balance in base currency`.
+
+This two-step reversal+rebook approach ensures prior-period FX entries do not accumulate;
+only the most recent conversion value persists in the Conversions accounts.
+
+## IM-G: Tax-In Codes (back-out embedded taxes)
+
+IM-G defines **Tax-In** codes — used when the selling or purchase price already includes
+taxes embedded in it. Each code specifies the rate and the GL accounts to which the
+backed-out tax amount is posted. Tax-In amounts reduce the invoice price and post the
+difference to the assigned tax GL accounts. Used in markets where prices are tax-inclusive
+(e.g. GST/VAT models).
+
+## IM-E: Duty Code structure (Acctug.pdf confirmed)
+
+The 6-character Duty Code = vendor code first 3 chars (from AP-A) + item code last 3 chars
+(from IN-B). Example: if vendor has Duty Code "CHN" and item has "ELE", the combined code
+is "CHNELE". Duty percentage is assigned to this combined code in IM-E.
 """,
 
 "IS": """
