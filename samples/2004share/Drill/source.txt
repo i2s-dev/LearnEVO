@@ -1,0 +1,7 @@
+Source: \\i2s109-solidcrm\2004.1\Drill\
+Copied: 2026-07-01 (Pass 493) — BKMENUSU.TXT only
+Contents: BKMENUSU.TXT (40KB) — text dump of menu customization table
+Not copied: BKLUGRID.DBF/dbt/mdx (dBASE IV), BKMENUSU.DBF/dbt/mdx (dBASE IV),
+  BKGLFSTL.B* (GL fiscal template .B files), BKSBMFG.B* (spec book MFG .B files),
+  BKMENUST.TXT, BKMENUSTC.TXT, BKMENUSTR.TXT (5.3KB each — menu subset text dumps)
+BKLUGRID/BKMENUSU dBASE IV files confirm the Drill subsystem uses DBF format (not Btrieve).

@@ -1,0 +1,6 @@
+Source: \\i2s109-solidcrm\2004.1\DefaultSQL\
+Copied: 2026-07-01 (Pass 493)
+Contents: 6 SQL files for DE-A preset queries — GL no Inv Txn.sql, Inventory Non Asset.sql,
+  Inventory txn no GL Post.sql, Non-Inventory Asset.sql, RNI Invoiced.sql, RNI Received.sql
+These are the source SQL for 6 of the 7 CHM-confirmed preset queries in T7JSQL (SQL Export).
+7th query (INVGLACCT) has no corresponding .sql file in this folder.

@@ -1,0 +1,7 @@
+Source: \\i2s109-solidcrm\2004.1\lib\
+Copied: 2026-07-01 (Pass 493) — small JARs only (< 2MB)
+Contents: Evo.jar (162KB), Evo2.jar (632KB), EVO3.JAR (1.3MB), Evo2-upd.jar (604KB),
+  Evo2.jaru (243KB), ACTIVATION.JAR (56KB), barcode4j.jar (274KB)
+Not copied (too large): aws-java-sdk-1.10.27.jar, jfreechart-1.0.14.jar, httpclient-4.3.6.jar
+These JARs represent the EVO Java integration evolution: Evo.jar (oldest) → Evo2 → EVO3.
+The current production JAR on the live share is EvoPVT.jar (not in 2004.1; it's in DBAMFG$).

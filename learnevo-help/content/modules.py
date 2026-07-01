@@ -148,6 +148,34 @@ pro-forma registers, check runs, 1099s, aging, and history.
 | `BKAPCHKH` | N/A | — | Check history — Btrieve-only |
 | `BKAPPAY` | N/A | — | AP payments scheduled — Btrieve-only |
 | `BKAP1099` | N/A | — | 1099 records — Btrieve-only |
+| `BKAPHPOL` | N/A | — | PO receiver lines (Pass 493, DefaultSQL-confirmed) |
+| `BKAPHPO` | N/A | — | PO headers (Pass 493, DefaultSQL-confirmed) |
+
+**BKAPHPOL fields (DefaultSQL-confirmed):**
+
+| Field | Meaning |
+|-------|---------|
+| `BKAP_POL_PCODE` | Part code |
+| `BKAP_POL_PONM` | PO number (FK to BKAPHPO.BKAP_PO_NUM) |
+| `BKAP_POL_PSTDTE` | Post date (date invoice was posted) |
+| `BKAP_POL_ARD` | Actual received date |
+| `BKAP_POL_INVNUM` | Invoice/voucher number |
+| `BKAP_POL_PQTY` | Purchase quantity |
+| `BKAP_POL_PPRCE` | Purchase price |
+
+**BKAPHPO fields (DefaultSQL-confirmed):**
+
+| Field | Meaning |
+|-------|---------|
+| `BKAP_PO_NUM` | PO number (PK) |
+| `BKAP_PO_VNDCOD` | Vendor code (FK to BKAPVEND) |
+
+**RNI (Received-Not-Invoiced) concept:** When PO-C receives goods, EVO
+debits Inventory and credits a PO/RNI GL account (description =
+`'RECEIVED/NOT INVOICED'`). When AP-C vouchers the invoice, EVO reverses
+the RNI credit and posts the AP liability (description = `'RNI/INVOICED'`).
+The two DE-A preset queries `RNI Received` and `RNI Invoiced` audit for
+orphaned GL entries in this two-step process.
 
 **BKAPVEND key fields (72 total):** `BKAP_VENDCODE(10,PK)`, `BKAP_VENDNAME(30)`,
 address (ADD1_1/ADD2_1/CITY_1/STATE/ZIP/COUNTRY_1 — dual-address capable),
@@ -368,6 +396,38 @@ BKSBPART / BKMRPFC / DBAFIFO / ISNCR / ISNTYPE / CLASS / SERIAL / BKAPPOL /
 BKAPPO and more — confirming T7ITMCFG is the master item-level configuration
 editor (serial codes, cycle count codes, UDF fields, 2D barcode settings,
 work center links, MRP forecast, alt-parts, FIFO layers, NCR links).
+
+## INVTXN — Inventory transaction ledger (Pass 493, DefaultSQL-confirmed)
+
+Every inventory movement writes a row to `INVTXN`. This table is the
+mirror of `BKGLTRAN` for inventory-side entries; the two tables are
+reconciled by GL↔IN audit queries in DE-A (SQL Export).
+
+| Field | Meaning |
+|-------|---------|
+| `MTIT_CODE` | Part number |
+| `MTIT_DATE` | Transaction date |
+| `MTIT_TYPE` | Transaction type code — see table below |
+| `MTIT_QTY` | Quantity moved (positive or negative) |
+| `MTIT_AVGCOST` | Average cost at time of transaction |
+| `MTIT_EXTRA` | Binary extra data — contains entry date at offsets 26-33 (MMDDYY format as chars: `SUBSTRING(MTIT_EXTRA,26,2)`=MM, `29,2`=DD, `32,2`=YY; century assumed '20') |
+
+**MTIT_TYPE codes (all 12 confirmed from DefaultSQL GL↔IN query):**
+
+| Code | Meaning | GL type |
+|------|---------|---------|
+| A | Adjustment | OT |
+| C | Credit receipt | RP |
+| I | Issue to WO | WO |
+| J | Journal | RP |
+| M | Misc purchase | RP |
+| O | Order-related | RP |
+| P | Purchase receipt | RP |
+| Q | Quote/misc | RP |
+| R | Return sale | RS |
+| S | Sale (shipment) | RS |
+| T | Transfer | OT |
+| W | WO completion | WO |
 
 ## Related
 
@@ -756,6 +816,50 @@ the layout + executes SELECTs against `BKGLATRN` summed by account.
 
 Posts AFTER the close date aren't allowed; admins can temporarily
 reopen a period via `AM-A`.
+
+## BKGLTRAN — GL transaction detail (Pass 493, DefaultSQL-confirmed)
+
+`BKGLTRAN` is the sub-ledger GL posting table written by AR/AP/IN/PO/WO
+automatically as transactions occur. **Distinct from `BKGLX_JOURNAL`**
+(the extended-GL journal documented in docs/gl-journal.md).
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `BKGL_TRN_PART` | char | Part/vendor code linked to the transaction |
+| `BKGL_TRN_DATE` | date | Transaction date (yyyy-mm-dd) |
+| `BKGL_TRN_TYPE` | char(2) | Source type — see table below |
+| `BKGL_TRN_AMT` | decimal | Dollar amount |
+| `BKGL_TRN_ENTDTE` | date | Entry date (when posted) |
+| `BKGL_TRN_CODE` | char | Secondary code (vendor code in AP context) |
+| `BKGL_TRN_GLACCT` | char(10) | GL account number |
+| `BKGL_TRN_INVC` | char | Invoice number (byte[0] is a flag; bytes[1-9] = invoice#) |
+| `BKGL_TRN_DESC` | char | Description — e.g. `'RNI/INVOICED'`, `'RECEIVED/NOT INVOICED'` |
+
+**BKGL_TRN_TYPE codes (confirmed from DefaultSQL cross-reference):**
+
+| Code | Meaning | Source |
+|------|---------|--------|
+| `OT` | Other Transaction | Inventory Adjustments, Transfers |
+| `RP` | Receipt/Purchase | PO Receipts, AP Credits, Misc |
+| `RS` | Receipt/Sale | SO Shipments, Sales Returns |
+| `WO` | Work Order | WO Issues and WO completions |
+
+**INVTXN ↔ BKGLTRAN type mapping** (confirmed from GL↔IN audit queries):
+
+| MTIT_TYPE | BKGL_TRN_TYPE | Description |
+|-----------|--------------|-------------|
+| A | OT | Adjustment |
+| P | RP | Purchase receipt |
+| S | RS | Sale (shipment) |
+| I | WO | Issue to WO |
+| W | WO | WO completion/return |
+| Q | RP | Quote/misc |
+| M | RP | Misc purchase |
+| T | OT | Transfer |
+| C | RP | Credit |
+| R | RS | Return sale |
+| J | RP | Journal |
+| O | RP | Order-related |
 
 ## Related
 
@@ -4434,19 +4538,25 @@ Results display in a grid with an option to save as CSV.
 **Mode 2: Query Wizard** — guided UI to pick tables → select fields → define
 JOIN conditions → add filters → click Finish to build the query automatically.
 
-## Default preset queries (CHM-confirmed)
+## Default preset queries (CHM-confirmed + Pass 493 DefaultSQL files)
 
-Seven built-in reconciliation queries available via "Default Queries" button:
+Seven built-in reconciliation queries available via "Default Queries" button.
+Six of the seven have SQL source files confirmed in `samples/2004share/DefaultSQL/`.
 
-| Name | Purpose |
-|------|---------|
-| `GLPOINV` | GL transactions to PO/RNI account from AP-C with no matching PO line |
-| `GLPORECPT` | GL transactions to PO/RNI account from PO-C with no matching PO line |
-| `Inv_Txn_no_GL` | Inventory transactions with no corresponding GL entries |
-| `INVGL` | GL transactions to inventory account with no corresponding inventory transaction |
-| `INVGLACCT` | Inventory transactions with incorrect GL accounts (wrong item class/location) |
-| `Inventory_Non_Asset` | Tangible inventory items posting to non-asset GL accounts |
-| `Non_Inventory_Asset` | Non-tangible inventory items posting to asset GL accounts |
+| Name | SQL file | Purpose |
+|------|---------|---------|
+| `GLPOINV` | `RNI Invoiced.sql` | GL txns to PO/RNI from AP-C with no matching BKAPHPOL line (BKGL_TRN_DESC=`'RNI/INVOICED'`) |
+| `GLPORECPT` | `RNI Received.sql` | GL txns to PO/RNI from PO-C with no matching BKAPHPOL line (BKGL_TRN_DESC=`'RECEIVED/NOT INVOICED'`) |
+| `Inv_Txn_no_GL` | `Inventory txn no GL Post.sql` | INVTXN rows with no matching BKGLTRAN entry |
+| `INVGL` | `GL no Inv Txn.sql` | BKGLTRAN rows with no matching INVTXN entry |
+| `Inventory_Non_Asset` | `Inventory Non Asset.sql` | Tangible inventory items (type R/F/A/M) posting to non-asset GL accounts |
+| `Non_Inventory_Asset` | `Non-Inventory Asset.sql` | Non-tangible items (type N/L/K/T) posting to asset GL accounts |
+| `INVGLACCT` | *(no SQL file found)* | Inventory transactions with incorrect GL accounts (wrong item class/location) |
+
+The GL↔IN cross-reference queries both use the same MTIT_TYPE → BKGL_TRN_TYPE
+12-code mapping table (see [[module-GL|GL]] and [[module-IN|IN]] for the full map).
+The join also matches on `MTIT_EXTRA` binary date (offsets 26/29/32) against
+`BKGL_TRN_ENTDTE` and on `ROUND(ABS(MTIT_QTY * MTIT_AVGCOST), 2)` = `BKGL_TRN_AMT`.
 
 ## Related export mechanisms
 
