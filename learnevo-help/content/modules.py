@@ -1994,15 +1994,36 @@ departments, QC codes, scrap codes, and operation templates.
 | RO-G | Enter Scrap Codes | T7ROG.RWN |
 | RO-H | Enter Departments | t7roh.rwn |
 | RO-I | Enter Operation Templates | t7roi.rwn |
-| RO-J-A | Print Routings | t7roja.rwn |
-| RO-J-B | Print Work Centers | t7rojb.rwn |
-| RO-J-C | Print Machines | t7rojc.rwn |
-| RO-J-D | Print Tools | T7ROJD.RWN |
-| RO-K | Enter Specifications Templates | t7rok.rwn |
+| RO-J-A | Print Routings — Item#/WO# range; **Master or WO Routing [M/W]** | T7ROJA |
+| RO-J-B | Print Work Centers — WC range / Dept range | T7ROJB |
+| RO-J-C | Print Machines — Machine range / Last Maintenance Date range | T7ROJC |
+| RO-J-D | Print Tools — Tool range / Last Maintenance / **Active+Inactive+Both [AIB]** | T7ROJD |
+| RO-J-E | Print QC Codes — QC Code From/Thru | T7ROJE |
+| RO-J-F | Print Scrap Codes — Scrap Code From/Thru | T7ROJF |
+| RO-J-G | Print Departments — Dept Code From/Thru | T7ROJG |
+| RO-J-H | Print Operation Types — WC range / Operation range / **Type [A/L/P]** (All/Labor/Purchase) | T7ROJH |
+| RO-K | Enter Routing Templates — Template Number / Add/Insert/Delete | T7ROK |
+| RO-L | Enter Routing Specs / QC Link — Item#/Sequence#/**Print on Shop Traveler** flag | T7ROL |
 | RO-M | Enter Testing Method | t7qcmthd.rwn |
 | RO-N | Enter Testing Requirements | t7qcspec.rwn |
 | RO-O | Routings Defaults | T7DSRO.RWN |
-| RO-P | Update Processing Cost Standards | t7rop.rwn |
+| RO-P | Update Routing Standard from Receipts — Received Date range / Item# range / **Update Vendor+Cost+Both [V/C/B]** / Limit to Sequence | T7ROP |
+| RO-Q | Work Center Rename (CSV import) — Old WC → New WC / New Description | T7ROQ |
+
+## DFM-confirmed operation details (25 DFMs)
+
+**RO-A (T7ROA.DFM):** Cycle Time Threshold (In Seconds) — sets a threshold for flagging exceeded cycle times; columns: RUN/SETUP/Sequence/Oper/Type/Description/Work Center/Rout#/Line/Processes#/Time per Part. Sub-forms:
+- **t7roacpy** — "Copy Existing Routing": Part/Desc/Est# + Copy From direction toggle (**Production ↔ Estimates**)
+- **T7ROASpecs** — "Enter Routing Specs": Item#/Sequence/spec grid (Current Line/Total Lines)
+- **T7ROAOpts** — column display toggle panel
+
+**RO-C (T7ROC.DFM):** Global change to outside processing settings — selects which fields to change (Outside Processing WC / Lead Time / Min Charge / Vendor Cost / Unit Cost) across routing records. Batch update tool.
+
+**RO-D (T7ROD.DFM):** Machine master: Machine/Work Center/Hours between Service/Last Service Date/Hours Used/Notes/Reason/Active flag; **Trim Size X/Trim Size Y** — confirms cutting machine support (foam/fabric material dimensions).
+
+**RO-E (T7ROE.DFM):** Tool/mold master: Weight/Height/Width/Depth/Ejector Stroke/Nozzle Radius/Tool Type 1/Hot Runners Channel/#Water Ports/Water Temp Side A/Water Temp Side B/Shot Size/Min Tonnage Required — **injection mold tooling fields** confirm i2 Systems works with plastic injection molding or tooling components.
+
+**T7ROUTWO.DFM** — "Select WOROUT/ROUTING" — shared sub-form that lets the user choose between a WO-specific routing (WOROUT) and the master routing (ROUTING) when both exist.
 
 ## Key tables
 
@@ -2787,9 +2808,24 @@ not from PL.
 | PL-C | Import Employer Vouchers | BKPLC.RUN (T6 era) |
 | PL-D | Payroll Link Setup | BKPLD.RUN (T6 era) |
 
+## Shared Paperless sub-forms (T7PLess*.DFM confirmed)
+
+The `T7PLess*` DFM files are shared sub-forms used by the Paperless Shop Floor
+system (HH-L / DC-PSF) and are named with the "PLess" prefix:
+
+| DFM | Caption | Fields |
+|-----|---------|--------|
+| T7PLessComps | Issue Components | All Comps / Issue Comps / Shortages / Item# / WO# |
+| T7PLessNotes | Notes Caption | QC Specifications / WO Item / Routing / **Customer / Vendor** / Cancel |
+| T7PLessWODates | WO Dates | Total Qty / Exit |
+
+T7PLessNotes has Customer and Vendor links (in addition to QC Spec/WO Item/Routing) — slightly richer than T7DCPSFNotes which is DC-PSF-only. This suggests T7PLess forms are the shared base layer used by multiple contexts.
+
 ## Integration
 
 - **[[module-PR|PR]]** — internal EVO payroll; PL is for sites that use an external payroll service instead
+- **[[module-HH|HH]]** — T7PLess* sub-forms are called by HH-L (Paperless Shop Floor)
+- **[[module-DC|DC]]** — DC-PSF uses T7DCPSFComps/Notes/ECO (DC-specific variants); T7PLess* is the shared base
 """,
 
 "PS": """
