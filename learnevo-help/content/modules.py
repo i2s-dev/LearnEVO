@@ -4099,10 +4099,132 @@ module's own menu.
 the full 495-key BKYSMSTR editor with all ISTS.CFG.* flags, YN slots, numbering,
 and module parameters. See [[recipe-configure-defaults]].
 
+## SD-B — Work Orders Defaults (field semantics, Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Work Order Status Code | S/F/R | S=Scheduled (no allocation), F=Firmed (allocated), R=Released (on shop floor) |
+| Default Priority Code | 1/2/3 | Sort order for scheduling; 2=most common default |
+| Default Class Code | 1 char | User classification for WO reports/filters |
+| Next Work Order Number | integer | Auto-increments each new WO |
+| Labor Prompt in Kit Issues? | Y/N | Y=pop-up prompt to include labor in kit issues; N=always include |
+| Backflush in Enter Finished Prod? | Y/N | Y=present backflush option in WO-I |
+| Close WO in Enter Finished Prod? | Y/N | Y=present close-WO option at finish entry (WO-I) |
+| View only in WO Bills of Mat? | Y/N | Y=read-only WOBOM after creation |
+| Print BOM Remarks? - Traveler | Y/N | Print component BOM remarks on shop traveler |
+| Print BOM Comments? - Traveler | Y/N | Print WO BOM comments on traveler |
+| Print Job Schedule? - Traveler | Y/N | Print related WOs (same prefix) in traveler header |
+| Print Short Form? - Traveler | Y/N | Y=short format, N=long format |
+| Print Bill of Mat? - Traveler | Y/N | N=suppress BOM from traveler |
+| Use Std Cost in Ent Fin Prod? | Y/N | Y=always receive finished goods at std cost; N=allow actual cost |
+| Print Mat in Seqs? - Traveler | Y/N | Y=print BOM within routing sequences |
+| Print Machine and Tool - Traveler | Y/N | Print machine/tool assignments on traveler |
+| Print Inspection Fields - Traveler | Y/N | Print sign-off fields (qty/first-article/last-article/accepted/rejected) |
+| Use Actual Costs in Labor Entry? | Y/N | Y=use employee file labor rates; N=use work center standard rates |
+| Post Overhead as % of Labor? | Y/N | Y=OH rate is % of labor cost; N=OH rate is $/hr |
+| Calculate Labor from Bills of Mat? | Y/N | Y=ES-E converts BOM type-L items to routing time |
+| Delete Labor after BOM Calc? | Y/N | Y=delete type-L items from BOM after conversion |
+| View only in Enter Routings? | Y/N | Y=read-only WORO after creation |
+| Backflush by Sequence in Enter Labor? | Y/N | Y=prompt for sequence backflush in WO-F |
+| Divide Labor Cost by # Jobs Worked | Y/N | Y=split labor cost equally among concurrent WOs |
+| Print Multi Routings? - Traveler | Y/N | Y=multiple routing numbers on one WO print as separate routings |
+
+## SD-C — Purchase Orders Defaults (field semantics, Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Print Co. Name/Address on forms? | Y/N | Print company name/address on PO/RFQ forms |
+| Force PO to use approved vendors? | X in slot | X=Do not check / X=Warn if unapproved / X=Prohibit unapproved |
+| Next PO Number | integer | Auto-increments each new PO |
+| Next RFQ Number | integer | Auto-increments each new RFQ |
+| Track PO Taxes using Tax Groups | Y/N | Y=track incoming sales tax by tax group |
+| Default PO Tax Rate | decimal | Tax rate for non-tax-group taxable POs |
+| Require Pack Slip Info? | Y/N | Default in PO-C header: require packing slip info on receipt |
+| Receive Into | I/Q | I=Inventory direct, Q=QC Inspection |
+| Receive all Lines? | Y/N | Default for PO-C: receive all lines at once |
+| Item Number for Job Cost Freight | item code | Freight-to-WO item number for AP-C |
+
+## SD-D — Material Requirements Defaults (Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Meaning |
+|-------|---------|
+| Include in MRP Generation? | Default Y/N for new inventory items created in IN-B |
+| Expedite Buffer (days) | Days within which a late arrival triggers EXPEDITE (not a new BUY) |
+| Expedite Sensitivity (days) | Suppress EXPEDITE if days-late ≤ this value |
+| Delay Buffer (days) | Days early that triggers DELAY (not REVIEW) for early arrivals |
+| Delay Sensitivity (days) | Suppress DELAY if days-early ≤ this value |
+
+## SD-E — Scheduling Defaults (Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Update actual seq start/finish dates? | Y/N | Y=finite scheduling; ask "is sequence complete?" in PO-C/WO-F/DC |
+| Allow overlap settings in routings? | Y/N | Y=show forward OVERLAP field in RO-A (finite scheduling) |
+| Display Machine prompt in Enter Labor? | Y/N | Y=pop-up machine override in WO-F (infinite/manual scheduling) |
+
+## SD-F — Data Collection Defaults (Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Allow clocking in/out on multiple jobs? | Y/N | Y=concurrent WO sequences; auto-split labor across open seqs |
+| Use full screen? | Y/N | Y=full transaction history display; N=two-line entry mode |
+| Enable Employee Shift Start/Stop? | Y/N | Y=track shift records for payroll (DC-A/DC-C) |
+
+## SD-G — Estimating Defaults (Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Meaning |
+|-------|---------|
+| Starting Quote Number | Next ES-A quote number |
+| Default Status Code | A=Active / C=Converted / I=Inactive / X=Canceled |
+| Default Class Code | 4-char estimate classification |
+| Num Days to Expiration Date | Quote validity period (added to quotation date) |
+| Material Margin | Default profit margin % for material cost |
+| Labor Margin | Default profit margin % for labor+setup cost |
+| Outs Proc Margin | Default profit margin % for outside processing |
+| Overhead Margin | Default profit margin % for overhead |
+| Total Margin | Applied to all costs above (not to misc/extra costs) |
+| Default Machine for Trim Size | RO-D machine for Yield Calculator (sheet cutting) |
+| Use Yield Calculator in BOM entry | Y/N |
+
+## SD-H — Inventory Defaults (Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Default Inventory Location | blank or code | Blank=no location required (single-warehouse); code=default location |
+| Average, FIFO, LIFO Costing? | A/F/L | A=weighted running average; F=FIFO; L=LIFO; change via IN-L-I only |
+
+## SD-I — Routings Defaults (Mfgug.pdf Ch.23, Pass 504)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Multiply or Divide by Num Processes | M/D | M=multiply processes×rate; D=divide rate by process count |
+| Use Standard Time | Y/N | Y=apply std time in WO-F; N=require actual time entry |
+
+## SD-M — Sales Orders Defaults (Mfgug.pdf Ch.23, Pass 504) — key behavioral flags
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Next Sales Order Number | integer | Auto-increments each new SO |
+| Next Invoice Number | integer | Auto-increments each new SO-F invoice |
+| Next Packing Slip Number | integer | Sequential packing slip tracker |
+| Next Recurring Sales Order No | integer | Recurring SO template counter |
+| Next Sales Quote Number | integer | ES-A quote counter |
+| Default Taxable | Y/N | Default taxable status for new SOs; overridden by SM-A customer flag |
+| Ready to Ship Default | Y/N | Default Rdy? flag for instant invoicing without SO-E release |
+| Release Qtys > On Hand | 0/1/2 | 0=no control; 1=warn but allow; 2=prohibit |
+| Turn the Credit Limit Message off? | Y/N | Y=suppress credit limit warnings in SO-A |
+| Prompt for Taxable Line Item Amt? | Y/N | Y=pop-up to override taxable amount per line (construction use) |
+| Prompt for Itemized Sales Tax? | Y/N | Y=ask to itemize sales tax on each SO save |
+| Prompt for Retention Billing? | Y/N | Y=offer retention % split at SO-E release |
+| Print Discount Column on Forms? | Y/N | N=suppress discount column on SO forms |
+| Decimalized Quantities on Forms? | Y/N | Y=suppress decimal places on order documents |
+
 ## Integration
 
 All SD defaults are stored in `BKYSMSTR` (355f) and `BKSYMSTR` (286f). Every
-module reads its operational defaults from those singletons at runtime.
+module reads its operational defaults from those singletons at runtime. The
+Mfgug.pdf Ch.23 field descriptions above directly explain the BKSY.WO.* / BKSY.PO.*
+/ BKSY.SO.* / BKSY.MRP.* / BKSY.DC.* / BKSY.EST.* namespaces used in T7MDEFAULTS.
 """,
 
 "CM": """
