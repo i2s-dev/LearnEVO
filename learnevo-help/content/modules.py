@@ -2309,6 +2309,33 @@ BKAR_INV_ORDDTE, BKAR_INV_SHIPDT, BKAR_INV_SONUM, BKAR_INV_SUBTOT,
 BKAR_INV_TAXAMT, BKAR_INV_FRGHT — the void screen is a full AR invoice
 display, confirming SR invoices share the BKARINV schema byte-for-byte.
 
+## SR behavioral differences from SO (EVOHELP.PDF §SR, Pass 510)
+
+### SR-A vs SO-A
+- Prompts for Order or Quote at entry
+- Location defaults to the Service/Repair Location defined in SD-T (IN-L-B sets Type=S for S/R locations — excludes from Available in IN-A)
+- Standard pricing does NOT pull in for production part numbers
+- Type N items with "Service/Repair item" flag in IN-B prompt for Make, Model, and Serial Number
+- Line Number codes: **S/R** = processed via work order; **K** = deducted from inventory at invoice posting (no WO)
+- Component lines can specify a different inventory Location than the S/R location
+
+### SR-C vs SO-N (Convert to WO)
+- Standard BOM and Routing do NOT pull for production items — sequences must be added manually via WO-K-A
+- Alternative: define a Service/Repair template item with a routing and enter it in SD-T defaults
+
+### SR-E Release (no equivalent in SO)
+- Displays WO BOM; user selects which components to itemize on invoice
+- Each component can be priced individually OR parent assembly reflects total price
+- COGS entered here overrides average cost for invoice posting
+- Components not flagged K are only deducted if released here
+
+### SR-G vs SO-G
+- Uses COGS entered in SR-E (not inventory average cost)
+- On-hand of the repair item is NOT affected (no inventory deduction of the parent item)
+- Transaction type generated = **R** (Service & Repair), not S (Shipment)
+- GL posting: WIP → COGS account (not Inventory → COGS)
+- Also performs WO-I Enter Finished Production and closes the associated work order in one step
+
 ## Standard Detail (T7SDET) — DFM-confirmed 2026-07-01
 
 Service type/detail code maintenance (SD/Standard Detail subsystem).
@@ -2376,6 +2403,27 @@ PI-H  Purge Physical Inventory
 | `BKPIPHYS` | Btrieve-only | Count tag entry (actual count per item) |
 | `PIBINLOC` | Btrieve-only | Bin-location count records |
 | `BKPISER` / `BKPISCNT` | — | Serial frozen/counted (10f each) |
+
+## PI Count Types — critical behavioral distinction (EVOHELP.PDF §PI, Pass 510)
+
+| Type | Behavior for uncounted items |
+|------|------------------------------|
+| **Type 1** (partial/cycle) | Uncounted items are left unchanged — assumed to be items not in scope |
+| **Type 2** (complete) | Uncounted items are zeroed out — assumes everything was counted; use for year-end |
+
+**PI-A date caveat:** Entering a prior Freeze Date does NOT back-calculate inventory. The snapshot is always of inventory as-it-exists at the moment PI-A runs, regardless of the date field.
+
+**PI does NOT include WIP.** PI module only counts on-hand inventory. Work-in-process inventory is obtained via JC-P Print Materials in WIP. Adjustments to WIP must be done through WO-G Issue Materials.
+
+**PI-C new item:** If a counted item is not in the inventory master, PI-C prompts "Would you like to set it up as a new part number?" — answer Y and create it from PI-C (do NOT go to IN-B Enter Inventory instead).
+
+**PI-C import:** Bar code scanner data can be imported as comma- or space-delimited text file. File and path must follow 8.3 naming convention (max 8-char names, no spaces). Comma-delimited: enter column number; space-delimited: enter start position + field length. Items requiring serial control cannot be imported and must be entered manually.
+
+**PI-G cost choices:**
+- **F** = Use frozen cost (cost at time of snapshot) — preferred by accountants for reconciliation
+- **C** = Use current average cost — FIFO/LIFO costing always uses C (no choice)
+
+**PI-H caveat:** Cannot delete an item in IN-B Enter Inventory while that item exists in an unposted physical inventory. Must either purge the PI or exclude the item and refreeze.
 
 ## Cycle count support
 
@@ -3268,6 +3316,20 @@ enables warehouse picking by bin address, and bin-level counts during PI.
 A single item can have multiple bins within one location (primary + overflow).
 The default bin (`ISBIN_LOC_DFLT = Y`) is used when picking for SOs or issuing
 to WOs unless the user specifies otherwise.
+
+## SD-S master WC settings (EVOHELP.PDF §WC, Pass 510)
+
+Three SD-S Warehouse Control Defaults settings control all WC behavior:
+
+| Setting | Options |
+|---------|---------|
+| **Master WC switch** | N = 1 bin per item only; Y = multiple bins tracked but on-hand qty NOT maintained per bin; Q = qty by bin IS maintained per bin |
+| **Use Controlled Bin Locations** | Y = bins must exist in master list (WC-A); N = users can create bins on-the-fly |
+| **Allow Blank Bin Locations** | Y = items can be assigned to a blank bin; N = all bins must be named |
+
+When WC is first enabled, each item's existing Bin field from IN-B Enter Inventory is automatically assigned as the default bin for that item.
+
+Transaction behavior: For WC=Y transactions prompt for bin but do not control qty by bin. For WC=Q all transactions prompt for bin AND quantity split.
 
 ## DFM-confirmed operation details
 
