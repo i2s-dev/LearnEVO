@@ -786,6 +786,78 @@ SCHWO is populated by the WO scheduling program and read by the WO schedule
 view (WO-B "Print WO Schedule"). SWO_CONTENTION flags work centers that are
 over-subscribed in the current schedule.
 
+## WO extension tables (Pass 500, 2026-07-01)
+
+Four extension/UDF tables linked to WO records:
+
+### ISWOEX — WO user-defined fields (28 fields)
+One row per WO (PK: WOPRE + WOSUF). Provides configurable extension slots for WO-level data.
+
+| Field group | Fields | Purpose |
+|-------------|--------|---------|
+| PK | WOPRE, WOSUF | WO number + suffix (FK to WORKORD) |
+| Text UDFs | ALPHA1..5 | 5 user-defined text fields |
+| Description UDFs | DESC1, DESC2 | 2 longer description fields |
+| Date UDFs | DATE1..5, CDATE | 5 date UDFs + creation date |
+| Integer UDFs | INT1..5 | 5 integer UDFs |
+| Numeric UDFs | NUM1, NUM2 | 2 numeric UDFs |
+| Classification | ITP, ITPP | Item type pointer + parent |
+| Material | MCLASS, MNUM | Material class + material number |
+| Misc | EXTRA, RF | Reserved + reference field |
+
+### ISWOROEX — WO routing operation UDFs (51 fields)
+One row per WO routing operation (PK: WOPRE + WOSUF + OPER). Per-operation extension.
+
+| Field group | Fields | Purpose |
+|-------------|--------|---------|
+| PK | WOPRE, WOSUF, OPER | WO + operation# |
+| Text UDFs | ALPHA1, ALPHA2 | 2 text UDFs |
+| Text array | ALPHA3_1..10 | 10-element text array UDF |
+| Date UDFs | DATE1 | Single date UDF |
+| Date array | DATE2_1..10 | 10-element date array |
+| Description | DESC1 | Description UDF |
+| Flag UDFs | FLAG_1..5 | 5 Y/N flag UDFs |
+| Integer UDFs | INT_1..5 | 5 integer UDFs |
+| Numeric UDF | NUM1 | Single numeric UDF |
+| Numeric array | NUM2_1..5 | 5-element numeric array |
+| Scheduling | SDAY, FDAY | Start day / Finish day (for DC tray scheduling) |
+| Machine | PRMACH | Primary machine code (FK to MACHINE) |
+| Qty | LQTY | Lot quantity |
+| Misc | ITP, ITPP, FOI, EXTRA | Type pointers, first-op indicator, reserved |
+
+### ISWOTRAY — WO tray tracking (52 fields)
+Assembly tray system — tracks physical trays of sub-assemblies as they move through operations.
+
+| Field group | Fields | Purpose |
+|-------------|--------|---------|
+| PK | CODE, OPER, WOPRE, WOSUF | Tray code + operation + WO |
+| Tray ID | NUM | Tray number |
+| Slots | ALPHA_1..20 | 20 text label/tag data slots |
+| Bins | BIN_1..5, BINQTY_1..5 | Up to 5 bin locations + quantities |
+| Locations | LOC_1..5 | 5 location codes |
+| Dates | DATE_1..5 | 5 date stamps |
+| Quantities | COMQTY, SQTY, QCQTY, SCRPQTY | Completed / start / QC / scrap qty |
+| QC | QCREQD | QC required flag for this tray |
+| Operation | OPDESC | Operation description |
+| Misc | EXTRA | Reserved |
+
+### ISORDECO — Order ECO linkage (12 fields)
+Links Engineering Change Orders to specific orders (SO/PO/WO). Cross-reference for ECO impact tracking.
+
+| Field | Purpose |
+|-------|---------|
+| IS_OECO_WOPRE + IS_OECO_WOSUF | Linked WO |
+| IS_OECO_SONUM | Linked SO number |
+| IS_OECO_PONUM | Linked PO number |
+| IS_OECO_PART | Part number affected by this ECO |
+| IS_OECO_ECO | ECO (Engineering Change Order) number |
+| IS_OECO_REVLVL | Revision level at time of ECO application |
+| IS_OECO_DRAW | Drawing number |
+| IS_OECO_ENTDATE | Date ECO was applied to this order |
+| IS_OECO_TMPO | Temporary operation code |
+| IS_OECO_UNUM | Unique unit number |
+| IS_OECO_EXTRA | Reserved |
+
 ## Related
 
 - [[module-BM|BM - Bill of Materials]]
