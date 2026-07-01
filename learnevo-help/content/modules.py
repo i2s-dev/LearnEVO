@@ -1955,17 +1955,29 @@ RM-F  RMA / Service & Repair Defaults (T7DSRMA.RWN)
 RM-G  Reason Codes Report (t7rmg.rwn)
 ```
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `ISRMAI` | 54 | Active RMA lines (IS_RMA_* prefix) |
-| `ISRMAAI` | 54 | Archived RMA lines (identical structure) |
-| `ISRMAINV` | 84 | RMA invoice record (BKAR_INV_* clone — credit memo) |
-| `ISRMINV` | 84 | RMA invoice (alternate/current path) |
-| `ISRMAINF` | 54 | RMA UDF extension (ISSR_INFO_* 54 user-defined fields) |
-| `ISRMAC` | 3 | RMA reason codes |
-| `ISRMTXN` | 14 | RMA transaction log (BKAR_TXN_* clone) |
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `ISRMAI` | 6,986 | 84 | Active RMA lines (IS_RMA_* prefix) |
+| `ISRMAAI` | 4,279 | 84 | Archived RMA lines (identical 84-field structure) |
+| `ISRMAINV` | 2,194 | 104 | RMA invoice/credit memo (BKAR_INV_* clone) |
+| `ISRMINV` | 3,220 | 104 | RMA invoice history (second credit memo archive) |
+| `ISRMAINF` | 0 | 54 | RMA UDF extension (ISSR_INFO_* 54 user-defined fields) |
+| `ISRMAC` | 12 | 3 | RMA reason codes |
+| `ISRMTXN` | 0 | 14 | RMA transaction log (BKAR_TXN_* clone) |
+
+**ISRMAI 84-field schema highlights (IS_RMA_* prefix):**
+NUM(PK), PART, LINEID, DATE, RCPTDATE, CLOSDATE, STATUS(30), REASON(30), DISP(40),
+OSONUM/OINVNUM (original SO/invoice), SONUM/INVNUM/CMNUM (new documents),
+REORDER, WOPRE/WOSUF (repair WO), WARRANTY, FLAGS_1..20 (disposition bits:
+WO/CR/SO/STOCK/SCRAP/SR/REFUND), OQTY/RQTY/IQTY (ordered/received/issued qty),
+WHO, NCR#, CONTACT, PHONE, EMAIL, VNDRMA, TRACK, RETVIA, FREIGHT.
+
+**ISRMAINV** is a full 104-field BKAR_INV_* clone — same schema as BKARINV (AR invoice
+master). Stores the credit memo issued to the customer when the RMA is closed.
+
+**Total active RMA history at i2:** 6,986 active + 4,279 archived = 11,265 RMA records.
 
 ## Integration
 
@@ -2498,10 +2510,29 @@ SO created → CR-A assigns review departments to the SO
            → when all departments approve → SO released for fulfillment
 ```
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-- `ISSOREVU` (SR module, part of IS* family) — SO review pending records
-- `ISCTREVU` (17f) — contract review sign-off: employee code + MOTPAS signature
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `ISCRISLS` | 0 | 10 | Contract sales compliance tracking (ISCR_SLS_CUST/ITEM/dates/qty) |
+| `ISSOREVU` | 0 | 12 | SO review staging — one row per department per SO pending |
+| `ISCTREVU` | 0 | 17 | Approver master — who can sign off on CR approvals |
+
+**All CR tables have 0 records at i2 Systems — the CR module is configured but not
+actively used.** Tables exist in the DDF and ODBC schema but contain no data.
+
+**ISSOREVU** (12 fields): IS_SOVU_SONUM, DEPT(25), EMPNME(25), EMPNUM(5), MOTPAS(10),
+ADATE, EDATE, APPROVE(1), REQUIRE(1), ENTBY(25), ENTMOT(10), EXTRA(100).
+One row per department assigned to review a SO. APPROVE='Y' when signed off.
+REQUIRE='Y' forces the department to approve before SO proceeds.
+
+**ISCTREVU** (17 fields): IS_CREVU_EMPNME, EMP(5), DEPT(25), ADMIN(1), LEVEL(2),
+MOTPAS(10), ACTIVE(1), CDATE, EDATE, ADATE, ATIME, FLAG_1..5, EXTRA(100).
+This is the approver master — lists who is authorized to sign CRs. MOTPAS is the
+one-time-password used as the approval PIN (same mechanism as PS-J electronic signers).
+
+**ISCRISLS** (10 fields): IS_CR_SLS_CUST(10), ITEM(15), SDATE, SUOH, SHPQTY,
+SHPDTE, INVNUM, FDATE, FUOH, SOLDTE — tracks contract compliance by customer+item.
 
 ## Integration
 
@@ -2723,12 +2754,36 @@ the IN or ES module workflow.
 
 `T7IC2EST` (6 procs, 2 tables) from EVOCFG.SRC:
 - Reads `BKICMSTR` (production item master) + `MTICMSTR` (multi-company IC)
-- Writes to `ISICMSTR` (IS-era estimating IC mirror) + `ISICEST` (estimating IC test)
+- Writes to `ISICMSTR` (IS-era item extension) + `ISICEST` (estimating IC mirror)
 - `TNOR` / `TPR` flags select which cost tier (normal vs. prime) to transfer
 
-**Cycle count** scheduling and ABC classification are tracked in `ISCYCLCD` (7 fields:
-cycle count frequency codes) and managed through the [[module-PI|PI]] Physical Inventory
-module, not through the IC utility.
+## Database tables (live counts, 2026-07-01)
+
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `BKICMSTR` | ~51,938 | 176 | Production item master (source of truth) |
+| `ISICMSTR` | 51,938 | 93 | IS* item extension: weight/dims/tool/lead/flags/alphas/numerics |
+| `ISICEST` | 51,408 | 64 | Estimating IC mirror: full BKICMSTR clone (BKIC_PROD_* prefix) |
+| `MTICMSTR` | 50,990 | ~60 | Multi-company IC mirror (MTIC_PROD_* prefix) |
+| `ISCYCLCD` | 0 | 7 | Cycle count frequency codes (not configured at i2) |
+| `ISCYCLE` | 0 | — | Cycle count schedule (not in use) |
+
+**ISICMSTR** (IS* item extension, keyed on IS_PROD_CODE):
+Extends each BKICMSTR record with additional i2-specific attributes:
+IS_PROD_WT (weight), IS_PROD_ITP (item type), IS_PROD_HI/WD/LG (dimensions),
+IS_PROD_FOBPAL/FOBFULL (FOB pallet/full), IS_PROD_TOOL (tooling ref), IS_PROD_SLEAD (supplier lead),
+IS_PROD_FLAG_1..10, IS_PROD_FLAGS_1..25 (35 flag fields), IS_PROD_ALPHA_1..5, IS_PROD_ALPHA2_1..10,
+IS_PROD_NUM_1..5, IS_PROD_NUM2_1..10, IS_PROD_GDATES/GDATES2 (10 date slots), IS_PROD_RCODE.
+
+**ISICEST** (estimating mirror, keyed on BKIC_PROD_CODE):
+Near-complete clone of BKICMSTR: BKIC_PROD_DESC/TYPE/UM/CAT/TXBLE/CLASS/RLVL/RAMT/LSALE/etc.
+(64 of BKICMSTR's 176 fields). IC-A keeps this synchronized for the ES Estimating module.
+
+Count divergence: ISICMSTR=51,938 vs MTICMSTR=50,990 vs ISICEST=51,408 — minor lag from
+IC-A not having been run for all records equally, but all are near-complete mirrors.
+
+**Cycle count** scheduling (ISCYCLCD/ISCYCLE) is managed through [[module-PI|PI]] Physical
+Inventory, not through the IC utility. These tables are empty at i2 Systems.
 
 ## Integration
 
@@ -2757,12 +2812,30 @@ purchase orders.
 | IM-F | Enter Landed Cost Customs Fees | t7imf.rwn |
 | IM-H | International Defaults | T7DSIM.RWN |
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-- `MTEXCHG` (7f) — multi-currency exchange rate master (Java entity class confirmed)
-- `ISLANDF` (6f) — landed cost GL account mapping
-- `ISMCF` (49f) — multi-currency configuration
-- `ISMCR` (22f) — exchange rate history (ISTS multi-currency)
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `ISMCF` | 1 | 49 | Multi-currency config singleton (ISIS_MCF_CODE/BASE/GL pairs) |
+| `ISLANDF` | 1 | 6 | Landed cost GL account mapping (duty/freight/customs fee GL pairs) |
+| `MTEXCHG` | 0 | 7 | Exchange rate master (EXCHG_QUOTE/AMT/DESC/COST/EXTRA/CODE) |
+| `ISMCR` | 0 | 22 | Exchange rate history (ISIS_MCR_BASE/DATE/SOURCE_1..4/RATE_1..4 etc.) |
+
+**At i2 Systems: IM is configured but not actively used.** ISMCF=1 (module is set up) and
+ISLANDF=1 (one landed cost GL mapping exists) but MTEXCHG=0 and ISMCR=0 — no foreign
+currencies are in use and no exchange rates are being tracked.
+
+**ISLANDF** (6 fields): ISIS_LND_GLADT/GLDDT (duty GL account+dept), ISIS_LND_GLAFR/GLDFR
+(freight GL account+dept), ISIS_LND_GLACF/GLDCF (customs fees GL account+dept).
+One row holds the default GL posting targets for landed cost components on POs.
+
+**ISMCF** (49 fields): ISIS_MCF_CODE (base currency code), ISIS_MCF_BASE (base currency name),
+ISIS_MCF_GLABK/GLDBK (bank account/dept), ISIS_MCF_GLABS/GLDBS (balance-sheet FX account),
+plus 44 more configuration flags for multi-currency AR/AP/GL behavior.
+
+**T7AUTOFX.RWN** — automatic exchange rate update program: reads OANDA API key from
+ISTS.CFG.FXKEY in BKYSMSTR, calls OANDA REST API, and populates MTEXCHG + ISMCR.
+This program exists but is not scheduled at i2 (MTEXCHG remains empty).
 
 ## Integration
 
@@ -2780,23 +2853,33 @@ ISTS Custom Enhancements — **not a standard EVO top-level module.**
 `IS` is the prefix used for i2 Systems (ISTS) database enhancements and
 custom programs added on top of the standard EVO install.
 
-## What lives under IS*
+## What lives under IS* (live counts, 2026-07-01)
 
-| Family | Description |
-|--------|-------------|
-| `ISAP*` | AP enhancements (11 tables) |
-| `ISAR*` | AR enhancements (22 tables) |
-| `ISES*` | Estimating enhancements (7 tables; ISESTAQT=5,816 archived quotes) |
-| `ISSO*` | SO enhancements (9 tables) |
-| `ISSR*` | Service/RMA (10 tables — ISRMAI, ISRMAINV, etc.) |
-| `ISWO*` | WO enhancements (6 tables) |
-| `ISGL*` | GL enhancements (6 tables) |
-| `ISPR*` | Payroll enhancements (5 tables) |
-| `ISPO*` | PO enhancements (5 tables) |
-| `ISFO*` | Features/Options enhancements (5 tables) |
-| `ISQC*` | QC enhancements (3 tables) |
-| `ISIC*` | Inventory cycle enhancements (4 tables) |
-| `ISBINLOC` | Warehouse bin locations (used by [[module-WC|WC]]) |
+| Family | Key tables + record counts | Description |
+|--------|---------------------------|-------------|
+| `ISAP*` | (11 tables) | AP enhancements |
+| `ISAR*` | (22 tables) | AR enhancements |
+| `ISES*` | ISESTAQT=5,816 / ISESTAQL=130,792 | Estimating: archived quotes (BKAR_INV_* clone, 104f) + quote lines (BKAR_INVL_* clone, 29f) |
+| `ISSO*` | ISSSOH=37 / ISSSOL=1,177 | Service orders (BKAR_INV_* clone, 104f) |
+| `ISRMA*` | ISRMAI=6,986 / ISRMAAI=4,279 / ISRMAINV=2,194 / ISRMINV=3,220 | RMA: active+archived records, credit memos (BKAR_INV_* clone, 104f) |
+| `ISWO*` | (6 tables) | WO enhancements |
+| `ISGL*` | ISGLDATE=1 / ISGLHDAT=18 / ISGLBDGT=2,173 / ISGLCOA=2,181 | GL period/budget/COA extensions |
+| `ISPR*` | ISPRSALE=0 | Payroll/sales enhancements (not active at i2) |
+| `ISPO*` | ISSPOH=34 / ISSPOL=182 | PO enhancements |
+| `ISFO*` | ISFOHEAD=10,842 / ISFOLINE=934,922 / ISFOHIST=25,338 | Features/Options product configurator |
+| `ISQC*` | ISNCR=74 / ISCAR=0 | QC NCR/CAR extensions |
+| `ISIC*` | ISICMSTR=51,938 / ISICEST=51,408 | Item master + estimating IC extensions |
+| `ISFA*` | ISFXASST=589 / ISFXATRN=22,568 | Fixed Assets |
+| `ISSS*` | (same as ISSO*, re-used prefix) | Service/Repair order tables |
+| `ISCR*` | ISCRISLS=0 / ISSOREVU=0 / ISCTREVU=0 | Contract Review (configured, not active) |
+| `ISJOB` | ISJOB=45,862 / ISJBSF=142 | Job Costing codes |
+| `ISBINLOC` | (WC bin locations) | Warehouse bin locations (used by [[module-WC|WC]]) |
+
+**Key architectural pattern:** IS* tables that store document headers use the same
+`BKAR_INV_*` 104-field schema as BKARINV (AR invoice master). This applies to:
+ISSSOH (service orders), ISRMAINV/ISRMINV (RMA credit memos), ISESTAQT (archived quotes).
+Document lines use the `BKAR_INVL_*` 29-field schema. This one-schema-fits-all approach
+means all IS* document types can use the same posting and printing infrastructure as AR.
 
 ## Custom programs
 
