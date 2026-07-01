@@ -23,15 +23,15 @@ aging, interest, sales taxes, deposits, and dunning.
 
 ## Key tables
 
-| Table | Purpose | Live count (i2) |
-|-------|---------|----------------|
-| `BKARCUST` | Customer master (106 fields) | 4,404 customers |
-| `BKARINV` | Open invoice headers (104 fields) | 3,708 open invoices |
-| `BKARINVL` | Invoice line items | ~47,000 lines |
-| `BKARHINV` | Archived invoice headers | 95,982 paid/archived |
-| `BKARCHKF` | Customer payments (checks/EFT) | 43,698 payments |
-| `BKARTXN` | AR transaction ledger | multi-year history |
-| `BKARCR` | Cash receipts staging | current period |
+| Table | Records | Fields | Purpose |
+|-------|--------:|-------:|---------|
+| `BKARCUST` | 4,405 | 106 | Customer master (ODBC confirmed) |
+| `BKARINV` | 3,709 | 104 | Open invoice headers (ODBC confirmed) |
+| `BKARINVL` | 78,025 | 29 | Invoice line items (ODBC confirmed) |
+| `BKARHINV` | 95,998 | 104 | Archived invoice headers (ODBC confirmed) |
+| `BKARCHKF` | 43,700 | 12 | Customer payments (checks/EFT, ODBC confirmed) |
+| `BKARTXN` | 2 | 14 | AR transaction ledger (sparse — most history in GL) |
+| `BKARCR` | N/A | — | Cash receipts staging — Btrieve-only |
 
 `BKARCUST` is 106 fields: name, bill-to/ship-to address, credit limit,
 terms code, tax code, salesperson, pricing code, GL receivable account,
@@ -100,6 +100,27 @@ thresholds.
 Accounts Payable manages **what you owe vendors** and **how you pay
 them**: vendor master, invoices (vouchers), scheduled payment dates,
 pro-forma registers, check runs, 1099s, aging, and history.
+
+## Key tables
+
+| Table | Records | Fields | Notes |
+|-------|--------:|-------:|-------|
+| `BKAPVEND` | 3,166 | 72 | Vendor master — **ODBC confirmed** |
+| `BKAPINVT` | N/A | — | AP invoice (voucher) header — Btrieve-only |
+| `BKAPINVL` | N/A | — | AP invoice line items — Btrieve-only |
+| `BKAPCHKF` | N/A | — | Checks current — Btrieve-only |
+| `BKAPCHKH` | N/A | — | Check history — Btrieve-only |
+| `BKAPPAY` | N/A | — | AP payments scheduled — Btrieve-only |
+| `BKAP1099` | N/A | — | 1099 records — Btrieve-only |
+
+**BKAPVEND key fields (72 total):** `BKAP_VENDCODE(10,PK)`, `BKAP_VENDNAME(30)`,
+address (ADD1_1/ADD2_1/CITY_1/STATE/ZIP/COUNTRY_1 — dual-address capable),
+4 contacts + 5 phone numbers, `BKAP_OUTINV(52)` outstanding balance,
+purchase stats (MTD/YTD/LYR), `BKAP_GL_ACCT(10)` default GL account,
+`BKAP_TERMS_NUM(5)` payment terms, `BKAP_TAX_ID(20)` for 1099,
+10 notes lines (60 chars each), 2 email fields (128 chars each),
+`BKAP_CUST_CODE(15)` cross-ref to AR customer,
+`BKAP_IS_MCCODE(3)` multi-currency code.
 
 ## Core concept
 
@@ -759,10 +780,25 @@ supply. It reads every open Sales Order, WO demand, and safety stock
 requirement, nets them against open POs and WOs plus on-hand inventory,
 explodes the BOMs, and generates a recommended action list.
 
-**Scale:** 37,137 records in `MTMRP` — the live planning table. i2 Systems
-runs in pure-demand mode (no forecasting, BKMRPFC=0).
+**Scale:** 37,137 records in `MTMRP` (13f, ODBC confirmed). i2 Systems
+runs in pure-demand mode (no forecasting, BKMRPFC=0/10f confirmed).
 
-## MTMRP action codes
+## Key tables
+
+| Table | Records | Fields | Notes |
+|-------|--------:|-------:|-------|
+| `MTMRP` | 37,137 | 13 | Live MRP planning rows — ODBC confirmed |
+| `BKMRPFC` | 0 | 10 | Forecast — ODBC confirmed, not used at i2 |
+| `BKMRPSW` | 4,717 | 2 | Suggested WOs (BKMRP_SW_PART, BKMRP_SW_SW) |
+| `BKMRPPO` | 0 | 16 | Suggested POs — ODBC confirmed, currently empty |
+| `BKMRPCA` | N/A | — | MRP calendar adjustments — Btrieve-only |
+
+MTMRP schema (13f): `MTMRP_PARTNO(15)`, `MTMRP_DATE(10)`, `MTMRP_QTY(52)`,
+`MTMRP_ONHAND(52)`, `MTMRP_PEGTO(10)`, `MTMRP_ORDER(10)`, `MTMRP_STARTDT(10)`,
+`MTMRP_ACTION(10)`, `MTMRP_PG_SDATE(10)`, `MTMRP_PG_FDATE(10)`,
+`MTMRP_PG_QTY(52)`, `MTMRP_EXTRA(50)`, `MTMRP_LOC(10)`.
+
+## MTMRP action codes (MTMRP_ACTION field)
 
 | Code | Count | Meaning |
 |------|------:|---------|
@@ -1042,8 +1078,9 @@ Estimating builds pre-sale quotes with full BOM/routing cost roll-up —
 material, labor, overhead, and markup — before committing to a Sales Order
 or Work Order.
 
-**Scale:** 6,894 active quotes with 462,727 line items (~67 lines per quote).
-An additional 5,816 archived quotes exist in the IS-era ISESTAQT table.
+**Scale:** 6,897 active quotes with 462,837 line items (~67 lines/quote, ODBC confirmed).
+An additional 5,816 archived quotes in ISESTAQT + 130,792 lines in ISESTAQL
+(IS-era tables, same BKAR_INV_* field layout as BKESTQT/BKESTQTL).
 i2 Systems uses ES heavily as the primary pre-sale tool.
 
 ## Quote lifecycle
@@ -1065,13 +1102,22 @@ ES-B  Print Estimate   →  customer-facing quote document
 
 ## Key tables
 
-| Table | Records | Purpose |
-|-------|--------:|---------|
-| `BKESTQT` | 6,894 | Quote header — byte-for-byte BKARINV clone |
-| `BKESTQTL` | 462,727 | Quote lines — byte-for-byte BKARINVL clone |
-| `BKESTCFG` | 1 | Quote configuration singleton |
-| `ISESTDTL` | 0 | Detailed cost breakdown per component (legacy path) |
-| `ESTSUM` | 0 | Legacy DBA estimate summary — unused in T7 era |
+| Table | Records | Fields | Purpose |
+|-------|--------:|-------:|---------|
+| `BKESTQT` | 6,897 | 104 | Quote header — BKAR_INV_* field layout (ODBC confirmed) |
+| `BKESTQTL` | 462,837 | 29 | Quote lines — BKAR_INVL_* field layout (ODBC confirmed) |
+| `BKESTCFG` | 1 | 18 | Quote configuration singleton (ODBC confirmed) |
+| `ISESTAQT` | 5,816 | 104 | IS-era archived quote headers — same BKAR_INV_* layout |
+| `ISESTAQL` | 130,792 | 29 | IS-era archived quote lines — same BKAR_INVL_* layout |
+| `ISESTDTL` | 0 | 220 | Detailed cost breakdown per component (legacy path) |
+| `ESTSUM` | 0 | 228 | Legacy DBA estimate summary — unused in T7 era |
+| `ISESTLBR` | N/A | — | Labor cost detail — Btrieve-only |
+| `ISESTMTL` | N/A | — | Material cost detail — Btrieve-only |
+
+BKESTQT and ISESTAQT share the same 104-field BKAR_INV_* schema (mirroring
+the AR invoice header). Key fields: BKAR_INV_NUM (quote number), BKAR_INV_INVCD
+(status: Y=open/X=cancelled), BKAR_INV_CUSCOD (customer), BKAR_INV_INVDTE
+(date), BKAR_INV_TOTAL (quote total), BKAR_INV_JOBNUM (linked job).
 
 ## Cost structure
 
@@ -1766,8 +1812,8 @@ Quotations / Estimating — **not a separate top-level menu module.** This code 
 an alias for the [[module-ES|ES]] Estimates module. Quotes (estimates) are entered
 and managed via the ES menu (ES-A through ES-E).
 
-Key tables: `BKESTQT` (6,894 active quotes), `BKESTQTL` (462,727 lines). These
-are byte-for-byte clones of `BKARINV`/`BKARINVL`.
+Key tables: `BKESTQT` (6,897 active quotes), `BKESTQTL` (462,837 lines). These
+are byte-for-byte clones of `BKARINV`/`BKARINVL` (ODBC confirmed).
 
 See [[module-ES|ES]] for the full description and workflow.
 """,
@@ -2299,7 +2345,7 @@ user-configurable FROM/THRU range filters per report type (invoice date,
 customer, item, salesperson, class, category, territory, lot, job, etc.).
 Four Java-backed analysis views provide interactive charts.
 
-**Scale at i2 Systems:** SA reads from 462,727+ posted invoice lines.
+**Scale at i2 Systems:** SA reads from 462,837+ posted invoice lines (BKESTQTL, ODBC confirmed).
 
 ## Menu operations
 
