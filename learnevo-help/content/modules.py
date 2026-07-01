@@ -1201,9 +1201,10 @@ Origin (I/V/R) = Internal / Vendor / Rework (inferred from manufacturing QC cont
 |-----|---------|-------------|
 | QC-G-A | T7QCGA | **Enter CAR** — CAR# / Created / Item / Component / Qty / Defect / Description of Nonconformity / Initiator |
 | QC-G-B | T7QCGB | **Print CAR** — CAR# range / Print Linked Documents / Print Notes / Print Open Only |
-| QC-G-D | T7QCGD | **CAR List** — Item / Component / CAR# / Location / Origin (I/V/R) / Open-Review-Closed status / Filter Owner |
+| QC-G-D | T7QCGD | **CAR List** — Item / Component / CAR# / Location / Origin (I/V/R) / Open-Review-Failed-Closed status / Filter Owner |
 
-CAR (Corrective Action Report) has a 3-state status (Open / Review / Closed) vs. NCR's 2-state (Open / Closed).
+CAR (Corrective Action Report) has a **4-state** status (Open / Review / Failed / Closed) vs. NCR's 2-state (Open / Closed).
+The "Failed" state was added in Pass 492 DFM confirmation (T7QCGA Items.Strings); prior doc said 3-state — now corrected.
 The "Filter Owner" field in QC-G-D allows filtering CARs by assigned owner — not present in the NCR list.
 
 ## Workflow
@@ -1262,14 +1263,14 @@ historical reference list rather than actively managed records.
 | JC-B | T7JCB.RWN | Job Cost by Job — summary or detail; composite report option |
 | JC-E | T7JCE.RWN | WO Cost with date range filter + act finish date |
 | JC-F | T7JCF.RWN | Job Cost by WO with date range |
-| JC-H | T7JCH.RWN | Operation efficiency — work center / sequence / scheduled finish date |
-| JC-L | T7JCL.RWN | Labor report — act start/finish date ranges |
-| JC-M | T7JCM.RWN | Material report — transaction date / customer / act finish date |
-| JC-N | T7JCN.RWN | Month-end cost report — ISCALC.HOW_C/H/P costing method; ISCOST.BREAKOUT |
+| JC-H | T7JCH.RWN | Operation efficiency — work center / sequence / scheduled finish date; "A=Ask if Updating to a lower value" option |
+| JC-L | T7JCL.RWN | Labor report — act start/finish date ranges; Y/N/L mode selector |
+| JC-M | T7JCM.RWN | Material report — LAST.TXN.DATE (transaction date) / customer / act finish date (RTM field: LAST.TXN.DATE) |
+| JC-N | T7JCN.RWN | Month-end cost report — WO Status [RCSF] (Released/Closed/Started/Finished); Thru-Last-Month-Date + Thru-Current-Month-Date boundary selectors; ISCALC.HOW_C/H/P costing method |
 | JC-P | T7JCP.RWN | Print Materials in WIP — component / zero-issue / rebuild WO options |
 | JC-Q | T7JCQ.RWN | WO Variance — fin product / WIP var / scrap code ranges |
 | JC-R | T7JCR.RWN | WO cost as-of-date — same as Q with prior-date snapshot option |
-| JC-S | T7JCS.RWN | WO cost summary by act start/finish + customer/job ranges |
+| JC-S | T7JCS.RWN | WO cost summary by act start/finish + customer/job ranges; option "Print all Invoices for the SO associated with the WO" |
 | JC-RM | T7JCRM.RWN | Java BI Report Manager — same JDBC architecture as SQLEXPORT |
 
 WO Status codes used in JC reports: C=Complete, X=Closed, F=Finished,
