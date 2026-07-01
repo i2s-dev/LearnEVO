@@ -21,57 +21,77 @@ Accounts Receivable manages everything related to **what customers owe
 you** and **how they pay**: customer master records, invoices, statements,
 aging, interest, sales taxes, deposits, and dunning.
 
+## Key tables
+
+| Table | Purpose | Live count (i2) |
+|-------|---------|----------------|
+| `BKARCUST` | Customer master (106 fields) | 4,404 customers |
+| `BKARINV` | Open invoice headers (104 fields) | 3,708 open invoices |
+| `BKARINVL` | Invoice line items | ~47,000 lines |
+| `BKARHINV` | Archived invoice headers | 95,982 paid/archived |
+| `BKARCHKF` | Customer payments (checks/EFT) | 43,698 payments |
+| `BKARTXN` | AR transaction ledger | multi-year history |
+| `BKARCR` | Cash receipts staging | current period |
+
+`BKARCUST` is 106 fields: name, bill-to/ship-to address, credit limit,
+terms code, tax code, salesperson, pricing code, GL receivable account,
+balance forward, last payment date.
+
+`BKARINV` is 104 fields: invoice#, SO#, customer, bill/ship address,
+terms, total, tax, salesperson, freight, all detail for statement and
+aging. Status code: Y=active, X=voided, N=returned.
+
 ## Core concept
 
-Each customer exists as a single row in [[table-BKARCUST|BKARCUST]] with
-106 fields. An invoice is a `BKARINV` header + one-or-more `BKARINVL`
-lines. A payment is a `BKARCHKF` check that links back to one or more
-invoices. When an invoice is fully paid, it moves from `BKARINV` to
-`BKARHINV` (history) during `AM-K (Archive AR)`.
+Each customer exists as one row in BKARCUST. An invoice is a BKARINV
+header + one-or-more BKARINVL lines. A payment is a BKARCHKF check
+that links back to one or more invoices. When an invoice is fully paid
+it moves from BKARINV to BKARHINV (history) during AM-K Archive AR.
 
 ## Typical workflow
 
 ```
-AR-A Enter Customer
+AR-A Enter Customer → BKARCUST
   ↓
-SO-A Create Sales Order
+SO-A Create Sales Order → shipped → SO-F Print Invoice
+  ↓  (invoice creation crosses into SO module)
+AR-B Post Invoice to AR → BKARINV / BKARINVL / BKGLTRAN
   ↓
-SO-F Print Invoice           ← crosses the module boundary into SO
+AR-E Print Statement (monthly) → mailed to customer
   ↓
-AR-B Post Invoice to AR
+AR-C Record Payment → BKARCHKF / BKARTXN / updates BKARCUST.balance
   ↓
-AR-E Print Statement (monthly)
+AR-D Charge Interest (optional, if overdue) → posts interest voucher
   ↓
-AR-C Record Payment (when received)
-  ↓
-AR-D Charge Interest (if overdue)
-  ↓
-AM-K Archive after N years
+AM-K Archive → closed invoices move BKARINV → BKARHINV
 ```
 
 ## Common reports
 
-- `AR-F` Aging (current/30/60/90/over)
-- `AR-E` Statements
-- `AR-G`/`AR-H`/`AR-I`/`AR-J` Customer listings
-- `AR-K` Sales tax report
-- `AR-N` Deposits
+| Code | Report |
+|------|--------|
+| `AR-F` | Customer Aging (current/30/60/90/over 90 days) |
+| `AR-E` | Monthly Statements |
+| `AR-G/H/I/J` | Customer name/info/labels/tax listings |
+| `AR-K` | Sales Tax Report |
+| `AR-N` | Customer Deposits |
+| `AR-R` | AR Payment History |
 
-## Integration with other modules
+## Integration
 
-- **[[module-SO|SO]]** creates the invoices that AR posts.
-- **[[module-GL|GL]]** receives every AR transaction (AR ↔ Cash, AR ↔
-  Sales Rev, AR ↔ Tax, AR ↔ Bad Debt).
-- **[[module-CS|CS]]** (Commission System) reads AR invoices to compute
-  commissions earned by salespeople.
+| Module | Relationship |
+|--------|-------------|
+| `SO` | SO-F creates BKARINV invoices; AR records the payment |
+| `GL` | Every AR transaction posts to BKGLTRAN (2.97M GL entries total) |
+| `CS` | Commission System reads BKARINV to compute earned commissions |
+| `AM` | AM-K archives paid invoices; AM-H posts period-end AR summary |
 
 ## Admin defaults
 
-See `AD-E (Accounts Receivable Defaults)` to configure:
-- Default receivable GL account
-- Interest rate and grace period
-- Statement format preferences
-- Taxable/non-taxable defaults
+`AD-E (Accounts Receivable Defaults)` configures:
+default receivable GL account, interest rate and grace period,
+statement format, taxable/non-taxable defaults, and aging bucket
+thresholds.
 """,
 
 "AP": """
@@ -250,70 +270,87 @@ Inventory moves always post to GL:
 
 Sales Orders covers the **customer-facing order lifecycle** — from
 quotation through order entry, picking, shipping, invoicing, and
-RMAs. 48 menu ops, 69 forms — the largest module by UI surface.
+RMAs. 48 menu operations, 69 UI forms — the largest module by UI surface.
+
+## Key tables
+
+| Table | Purpose | Live count (i2) |
+|-------|---------|----------------|
+| `BKARINV` | SO / invoice headers (104 fields) | 3,708 open; 95,982 archived |
+| `BKARINVL` | SO / invoice line items (38 fields) | 78,023 lines |
+| `BKARINVI` | Invoice shipping detail | per invoice |
+| `BKSOHLOT` | Lot shipping records | lot-tracked shipments |
+| `BKSOHSER` | Serial shipping records | serial-tracked shipments |
+| `BKSONOTE` | Order notes | per-line notes |
+| `BKSOPO` | SO-to-PO link for drop-ship | 0 if no drop-ships |
+
+**Note:** EvoERP reuses `BKARINV` for both Sales Orders and Invoices.
+The status code `BKAR_INV_INVCD` distinguishes them:
+- `Y` = active SO / active invoice (2,896 at i2)
+- `X` = voided (421)
+- `N` = returned/credit memo (179)
+- ` ` = draft / in-progress (202)
 
 ## Document lifecycle
 
 ```
-Quote (SO-P-A)
-  ↓ accepted
-Sales Order (SO-A)
-  ↓ produced/picked
-Pick Ticket (SO-C)
-  ↓ physically picked
-Packing Slip (SO-C)
-  ↓ shipped
-Invoice (SO-F)
-  ↓ posted to AR
-(AR module takes over)
+SO-P-A Enter Quote
+  ↓ customer accepts
+SO-A Enter Sales Order → BKARINV (INVCD=' ') + BKARINVL
+  ↓
+CR-B Contract Review (if required by customer/item)
+  ↓ approved
+SO-C Print Pick Ticket → pickers pull from warehouse
+  ↓ physically picked and confirmed
+SO-C Print Packing Slip → shipped with goods
+  ↓
+SO-F Print Invoice → BKARINV (INVCD='Y') + posts to BKGLTRAN
+  ↓ payment received
+AR-C Record Payment → BKARCHKF closes the invoice
 ```
 
-## Sales levels
+## SO screen variants
 
-Multiple price levels supported per item, in `BKSLEVEL` (422 fields!).
-Each customer has a default level (`BKARCUST.BKAR_SAL_LVL`), plus per-
-item overrides.
+| Code | Variant | Use case |
+|------|---------|----------|
+| `SO-A` | Standard SO | Normal sales order entry |
+| `SO-P-A` | Quote | Price quote before order is confirmed |
+| `SO-P-F` | RMA Return | Return Material Authorization |
+| `SO-J` | Recurring SO | Auto-create repeat orders on schedule |
+| `SO-Q` | Quick Entry | Fast single-line SO entry |
+| `SO-T` | In-house | Internal transfer orders |
+
+## Sales pricing
+
+Multiple price levels supported per item in `BKSLEVEL` (422 fields).
+Each customer has a default price level (`BKARCUST.BKAR_SAL_LVL`),
+with per-item overrides. Discounts apply by customer price code or
+quantity break.
 
 ## Features & Options configurator
 
-See [[subsystem-evofno]]. If an item has `BKIC_PROD_FNO_FLAG = Y`,
-entering it on an SO launches a modal dialog that walks through
-Feature (category, e.g. "Color") and Options (choice, e.g. "Red"),
-building a configured line.
+If an item has `BKIC_PROD_FNO_FLAG = Y`, entering it on an SO launches
+a modal F/O dialog. User selects from Feature categories (e.g. "Color")
+and Options (e.g. "Red"). The configuration builds a custom part# and
+BKARINVL line. See [[module-FO|FO]] for configuration setup.
 
-## Variant screens
+## Invoice formats
 
-- `SO-A` base
-- `SO-P-A` quote variant
-- `SO-P-F` RMA (return) variant
-- `SO-J` recurring SO
-- `SO-Q` quick-entry
-- `SO-T` in-house
-
-## Multiple invoice formats
-
-Four SO invoice formats stored in RTM variants: `bksof1.rtm` through
-`bksof4.rtm`. Pick based on customer requirements (their PO number,
-line-item detail, price display, etc.).
-
-## Tables
-
-- `BKARINV` — SO header (same table is reused for invoices — status
-  field distinguishes)
-- `BKARINVL` — SO lines
-- `BKARINVI` — Invoice shipping detail
-- `BKARINVV` — Invoice variants
-- `BKSOHLOT` / `BKSOHSER` — Lot / serial shipping records
-- `BKSONOTE` — order notes
-- `BKSOPO` — links SO to drop-ship PO
+Four RTM variants: `bksof1.rtm` through `bksof4.rtm`. Selected per
+customer based on their requirements (customer PO# display, line-item
+detail level, price visibility, etc.).
 
 ## Integration
 
-- **AR** — posted invoices land here
-- **IN** — ship events decrement on-hand
-- **CS** — commissions earned
-- **PO** — drop-ships auto-generate POs
-- **WO** — make-to-order triggers a WO
+| Module | Relationship |
+|--------|-------------|
+| `AR` | SO-F posts to BKARINV; AR records payment |
+| `IN` | Shipment decrements BKINVLOC on-hand |
+| `WO` | Make-to-order: releasing an SO can trigger WO creation |
+| `PO` | Drop-ship SOs auto-create linked PO via BKSOPO |
+| `CS` | Commission System reads posted invoices for commission calc |
+| `CR` | Contract Review module can block SO until approved |
+| `ES` | ES-E Convert Estimates creates new SOs from quotes |
 """,
 
 "PO": """
