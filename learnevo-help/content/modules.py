@@ -1611,6 +1611,7 @@ start), `MTWO_WIP_SFIN` (scheduled finish), `MTWO_WIP_PRTY` (priority code),
 | T7SHN | Generate Lead Times range: Part Types [RFAMNLBTKO], Item/Class/Category/Planner From–Thru |
 | T7SHO | Work Center range report: WC From–Thru, page break between work centers option |
 | T7SHP | Color priority report: 3-zone thresholds (X days, X–Y days, >Y days) for priority change, elapsed start, WO finish vs. est. ship date |
+| T7VSCHED | **Visual Scheduler launcher** — WO filter: Item#/Desc/Qty/Start Date/Finish Date/WO Prefix #/WO Status [RF]/Estimate#; **Visual Scheduler Options** panel: (1) Initialize Scheduling Files and start Visual Scheduler, (2) Start Visual Scheduler to continue editing, (3) Post Visual Scheduler dates; "Creating Work Files" progress state; "Work Order Scheduler" + "Work Center Scheduler" dual views; WO Prefix# hint: "Enter the Starting WO Number with a Unique Prefix Number" |
 
 ## Integration
 
@@ -2285,14 +2286,40 @@ label for mattress serial tracking on SO release.
 "QT": """
 ## What it does
 
-Quotations / Estimating — **not a separate top-level menu module.** This code is
-an alias for the [[module-ES|ES]] Estimates module. Quotes (estimates) are entered
-and managed via the ES menu (ES-A through ES-E).
+Quotations / Service Quotes — two separate sub-areas:
 
-Key tables: `BKESTQT` (6,897 active quotes), `BKESTQTL` (462,837 lines). These
-are byte-for-byte clones of `BKARINV`/`BKARINVL` (ODBC confirmed).
+1. **Standard Quotes (alias for ES):** The QT code points to the
+   [[module-ES|ES]] Estimates module. Quotes (estimates) are entered and managed
+   via the ES menu (ES-A through ES-E). Tables: `BKESTQT` (6,897 active quotes),
+   `BKESTQTL` (462,837 lines) — byte-for-byte clones of `BKARINV`/`BKARINVL`.
 
-See [[module-ES|ES]] for the full description and workflow.
+2. **Service Quote UDFs (T7QTINFO):** A dedicated UDF extension form for service
+   quotes — "Quote Misc. Information" (note: caption has typo "Infromation"). Provides
+   20 user-defined fields attached to a service quote record.
+
+## DFM-confirmed details
+
+**T7QTINFO (Quote Misc. Information):** UDF panel for service quote orders —
+5 date fields (`qtDate1`–`qtDate5`) and 15 alpha fields (`qtAlpha1`–`qtAlpha15`),
+plus Save/Exit toolbar. Stored in `ISQTINFO` (54 fields; mirrors the
+`ISSR_INFO_*` UDF clone pattern used by SR orders). Program: 42 procs,
+`LISTG60.LIB`, 39 tables (includes `BKBMMSTR`, `BKAPINVL`, `BKAPPO`,
+`ISTAXGRP`, `BKARINVV` for GL distribution).
+
+**ISSR.INFO.\* access namespace (30-var, from T7QTINFO var-confirm):**
+SRNUM/UID/CODE/DATE/ALPHA/EXTRA + DATE1–5 (5 UDF date slots) +
+AL1–20 (20 alpha UDF slots).
+
+**Note:** The `qtDate`/`qtAlpha` DFM field names differ from the underlying
+`ISSR.INFO.DATE*`/`AL*` namespace — the DFM labels are display-layer aliases.
+The "BADGER.TRUCK" var in T7QTINFO confirms i2-specific customization
+(Badger Truck is a customer with custom service quote fields).
+
+## Integration
+
+- **[[module-ES|ES]]** — standard quote entry and management
+- **[[module-SR|SR]]** — T7SRINFO provides the same UDF pattern for S&R orders
+  (5 date + 17 alpha); QT uses a parallel form for service quotes
 """,
 
 "RF": """
