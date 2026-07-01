@@ -941,7 +941,7 @@ Job Costing cross-references manufacturing costs (from Work Orders) against
 Job Codes — allowing management reporting by project, contract, or
 cost-center that spans multiple WOs.
 
-**Scale:** 45,862 job codes in `ISJOB` (all blank STATUS — passive reference
+**Scale:** 45,863 job codes in `ISJOB` (all blank STATUS — passive reference
 data, not actively managed via menu). 142 business scorecard records in
 `ISJBSF`.
 
@@ -959,7 +959,7 @@ the summary by job showing planned vs. actual labor, material, and overhead.
 | `ISJBSF` | 142 | Business scorecard — key metrics per job/period (144 fields) |
 
 ISJOB has only 3 meaningful fields: `IS_JOB_CODE`, `IS_JOB_DESC`, and
-`IS_JOB_STATUS`. All 45,862 rows have blank STATUS — the codes are a
+`IS_JOB_STATUS`. All 45,863 rows have blank STATUS — the codes are a
 historical reference list rather than actively managed records.
 
 ## Key report
@@ -1337,19 +1337,54 @@ utilities. **Largest module by program count** (34 top-level buttons, 109+ forms
 | User / system admin | SM-K | Evo User Settings (T7SMK.RWN) — user profile customization |
 | Notes maintenance | SM-N | Note types, system notes, Classic↔Evo sync |
 | Ship-via codes | SM-O | Enter ship-via codes (T7SMO.RWN) |
+| Job codes | SM-P | Enter job codes for job-cost cross-reference (T7SMJL.RWN) |
 
-## Key tables
+## Key tables — ODBC-accessible
 
-- `BKLOGON` — user login + access level master
-- `ISJOB` (9f) — job/project cross-reference (SM-PF primary editor, 64 procs)
-- `BKSYMSTR` (286f) — global system parameter singleton (company name, terms, defaults)
-- `BKYSMSTR` (355f) — manufacturing system parameters (WO numbering, ISTS.CFG.*, YN slots)
+| Table | Records | Fields | Purpose |
+|-------|--------:|-------:|---------|
+| `BKYSMSTR` | 1 | 355 | Manufacturing system parameters (WO numbering, YN flags, ISTS.CFG.*) |
+| `BKSYMSTR` | 1 | 286 | Global system parameters (company name, terms, GL defaults) |
+| `BKICLOC` | 136,501 | 32 | Item/location stock positions (inventory by item × location) |
+| `ISJOB` | 45,863 | 9 | Job code master (IS_JOB_CODE/DESC/STATUS) |
+| `ISJBSF` | 142 | 144 | Business scorecard metrics per job/period |
+| `BKICPMAT` | 32 | 137 | Customer price matrix (tier-based pricing rules) |
+| `BKICREF` | 1,674 | 19 | Item cross-references (customer part#, vendor part#) |
+| `WORKCTR` | 27 | 48 | Work center master (name, dept, WC code, capacity) |
+| `BKICLOCM` | 16 | 15 | Location/warehouse master (CODE/NAME/ADDR/TAX) |
+| `ISBANKS` | 12 | 36 | Bank account definitions (GL acct, routing) |
+| `ISSHIPCO` | 11 | 16 | Shipping company codes (carrier definitions) |
+| `ISNCR` | 74 | 63 | Non-conformance reports |
+| `ISCATMST` | 35 | 3 | Category master codes |
+| `ISTERMS` | 18 | 13 | Payment terms (NUM/NAME/DESC/AMT/TYP/DAY/EOM/MAX/COD/ARAP/CC/SRT/EXTRA) |
+| `ISNTYPE` | 16 | 4 | Note type codes |
+| `ISTAXGRP` | 2 | 105 | Tax group definitions |
+| `ISTAXFIL` | 2 | 84 | Tax filing configuration |
+| `ISTRIGRS` | 7 | 27 | Trigger condition rules |
+| `ISNUMBER` | 9 | 52 | Auto-number configuration by document type |
+| `CLASS` | 40 | 24 | Item class master |
+| `CLASMSTR` | 185 | 2 | Class/subclass name table |
+| `BKDCSHFT` | 1 | 34 | Data collection shift singleton |
+
+**Btrieve-only (not in Pervasive DDF):** `BKEMP` (employee master), `BKTERM`
+(payment terms legacy), `BKTAX` (tax code legacy), `BKSMSHIP` (ship-via legacy),
+`CALT` (calendar), `CALSHIFT`, `BKSCHEDULE`, `BKUOM`, `BKUOMCON`
+
+## System parameter singletons
+
+Both `BKYSMSTR` (355f) and `BKSYMSTR` (286f) are single-row singletons storing
+hundreds of system flags, GL account defaults, company info, and module-enable
+switches. They are read at session start and cached. The full 355-field
+`BKYSMSTR` schema includes 250 YN* flag slots (YN[1]..YN[250]) plus 40 GL account
+pairs, 4 auto-numbers (WONUM/QCNUM/REQNUM/INVNUM), and the ISTS.CFG.* namespace.
 
 ## Integration
 
 - **[[module-SY|SY]]** — SY handles user password and access security; SM handles master data
 - **[[module-AM|AM]]** — AM handles GL/accounting period-end; SM-J handles operational archive/purge
 - **[[module-GL|GL]]** — SM-C/D enter GL accounts and departments (cross-listed as AM-C/D)
+- **[[module-WO|WO]]** — WORKCTR and BKICLOCM are read constantly by WO for routing/location lookup
+- **[[module-IN|IN]]** — BKICLOC (136,501 rows) is the heart of inventory: per-item per-location stock
 """,
 
 "AM": """
