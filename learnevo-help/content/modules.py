@@ -70,9 +70,24 @@ aging, interest, sales taxes, deposits, and dunning.
 | `BKARTXNS` | — | — | Unposted serial allocation to order lines — staging buffer for serial-tracked items pending AR post (EVOHELP.PDF §File Names, Pass 505) |
 | `BKARCR` | N/A | — | Cash receipts staging — Btrieve-only |
 
-`BKARCUST` is 106 fields: name, bill-to/ship-to address, credit limit,
-terms code, tax code, salesperson, pricing code, GL receivable account,
-balance forward, last payment date.
+`BKARCUST` is 106 fields (EVOHELP.PDF §AR-A confirms key fields, Pass 506):
+- **Cust Cd** — 10-char alphanumeric PK
+- **Alpha Sort** — sort key (default = first 6 chars of company name); used by alpha-sort reports
+- **Ship to Customer? (SHIPTO)** — Y = this code is a warehouse/ship-to address only; cannot be used on bill-to side
+- **Bill** — for SHIPTO=Y records, this is the associated bill-to customer code
+- **Ship-to Cd** — default ship-to address code for SO entry; ship-to's salesperson/tax takes precedence over bill-to
+- **FOB** — prints on SO documents; no lookup constraint
+- **Ship Via** — defaults into SO header ship-via field
+- **Default GL Sales** — overrides item-class GL account; used when SO module not in use (AR-B vouchers)
+- **Class** — 4-char classification for report grouping
+- **Start Date** — first-sale date or record creation date
+- **Slsp 1/2** — two salespersons; each has own Comm field; ship-to salesperson overrides bill-to
+- **Territory** — 4-char; must exist in SM-I-B Enter Territory Codes
+- **Lead Source 1/2** — must exist in SM-I-A Enter Lead Source Codes
+- **Resale Number** — 15-char tax-exemption resale certificate number
+- **RTM Print Group** — SINGLE CHAR suffix for customer-specific RTM variants: if customer is group "A" and standard RTM is "ENSOF4.RTM", program tries "ENSOF4A.RTM" first. Allows custom invoice/SO layouts per customer group.
+- **Ship Time** — transit days; SO-A uses this to auto-calc ship date = customer due date − Ship Time
+- credit limit, terms code, tax code, pricing code, GL receivable account, balance forward, last payment date
 
 `BKARINV` is 104 fields: invoice#, SO#, customer, bill/ship address,
 terms, total, tax, salesperson, freight, all detail for statement and
