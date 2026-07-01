@@ -1752,6 +1752,18 @@ Fields of note:
 - **[[module-SO|SO]]** — lot linked to SO shipment line for customer traceability
 - **[[module-PI|PI]]** — PIBINLOT (14f) tracks lot quantities during physical count
 - **[[module-SC|SC]]** — parallel serial module; an item can be both lot and serial controlled
+
+## DFM-confirmed operation details (7 DFMs)
+
+| DFM | Caption | Key fields |
+|-----|---------|-----------|
+| T7LCA | LC-A Edit Lot Numbers | Lot Number, On-Hand, Date Rcvd |
+| T7LCB | LC-B Assign Lot Control | Item Number, Product Type, Lot Control? toggle |
+| T7LCC | LC-C | From/Thru filter, print |
+| T7LCC2 | LC-C Print Lot Availability | Serial Number From/Thru (note: serial-aware variant of LC-C) |
+| T7LCE | lot on-hand report | Item Number/Class/Category, Item Type [RFAMNLBTKO], Summary or Detail, Sub Sort by Lot/Exp Date, Exceptions Only, Negative Lot UOH |
+| T7LCF | lot traceability | Item Number, Lot Number, Summary/Details/All |
+| T7LCG | archive/unarchive | Archive/Unarchive [A/U], Item/Exp/Rcvd/Lot Date ranges, Include Zero UOH Only |
 """,
 
 "SC": """
@@ -1800,6 +1812,35 @@ confirm serial number generation is not configured. The INVTXN table
 T7SCF performs 9 audit checks (orphans, duplicates, control changes, invalid
 locations, unbalanced on-hand, unbalanced transactions, expired materials,
 item type mismatches, negative on-hand) with 4 auto-fix modes.
+
+## Serial number generation (SC-G — T7SCG.DFM confirmed)
+
+T7SCG configures auto-generation of serial numbers per item:
+- **Item Number** — per-item configuration
+- **Item Class** — class-level default
+- **Total Length of Serial Number** — fixed-width format
+- **Starting Position of Numeric Portion** — prefix chars before number
+- **Length of Numeric Portion** — auto-increment digit count
+- **Last Number / Last Serial Number** — current auto-increment state
+- **Format type [NISJ]:** N=Normal, I=UCC Item barcode, S=UCC Skid barcode,
+  J=John Deere # — EVO supports John Deere-specific serial numbering format
+
+The John Deere [J] format confirms i2 Systems ships to or works with John
+Deere as a customer, requiring their barcode/serial specification.
+
+## DFM-confirmed operation details
+
+| DFM | Caption | Key fields |
+|-----|---------|-----------|
+| T7SCA | SC-A Edit Serial Numbers | Serial Number, On-Hand, Date Rcvd |
+| T7SCB | SC-B Assign Serial Control | Item Number, Product Type, Serial Control? toggle |
+| T7SCC | SC-C | From/Thru filter, print |
+| T7SCC2 | SC-C Print Serial Availability | Serial Number From/Thru |
+| T7SCE | archive/unarchive | Archive/Unarchive [A/U], Item/Serial/Exp/Rcvd/Ship Date From, Include Zero UOH Only |
+| T7SCF | SC-F Serial Control Exceptions | print/settings |
+| T7SCG | (SC-G generator config) | Total Length/Start Pos/Numeric Length/Last#/Format [NISJ] |
+| T7SCH | SC-H | print/settings |
+| T7SCOMP | compound serial management | Detail, Compound, Visible — compound serial/component tracking |
 
 ## Integration
 
@@ -2503,6 +2544,24 @@ inventory locations requires touching every table that records a location code
 UT-I (Create/Delete Company) is the mechanism for adding a new company code;
 it creates the FILELOC routing records and `.B<code>` file structure.
 UT-K utilities are bulk data correction tools run after data migrations or errors.
+
+## DFM-confirmed operation details (8 DFMs)
+
+| DFM | Caption | Key fields |
+|-----|---------|-----------|
+| T7UTH | file layout report | File Layout From/Thru (print FILELOC/FILEDICT layouts) |
+| t7uti | company create/delete | Company Code, Company Name, Company Path, Delete Company, Create Company, Copy from another Company? |
+| T7UTKA | **DATA PURGE** | D=Delete ALL data / C=Clear transaction data only; modules: GL/BKSYMSTR, AR/SO, AP/PO, Manufacturing/Inventory, Payroll, Contact Manager |
+| T7UTKD | GL fiscal year | Current / Last Year / 2–6 Years Ago; GL Account From/Thru (period management) |
+| T7UTKE | location code change | IMPORTANT WARNING; New master location code — mass-replaces location codes across all 55 tables |
+| T7UTKF | UT-K-F item book value | process/settings |
+| T7UTKG | UT-K-G item status | process/settings |
+| T7UTKH | inventory type filter | INVENTORY TYPES: Item Number/Class, GL Account, Purchased Parts/Make From/Subassembly/Finished Goods item type filters |
+
+**T7UTKA** is the most destructive utility in EVO — it can permanently delete all
+records from an entire module. The DFM warning text: "To Delete ALL data in the
+specified module, enter D" / "To clear transaction related data only, enter C."
+This is administrator-only; running it on the production database is irreversible.
 """,
 
 "LM": """
@@ -2639,6 +2698,28 @@ per security level. A security level with all YN=Y = unrestricted access to that
 database on the network share. BKPSUSER.B lives there but may be registered under a
 different logical name, or users are stored in a company-specific BKPSUSER.B variant
 rather than a shared one.
+
+## DFM-confirmed operation details (6 DFMs)
+
+**T7PSA — PS-A System Users/Passwords (confirmed fields):**
+- User Name, Default Start Company, Security Level, Security Code [A/P/1/2/C/V/U/E]
+- Employee / Rep., Group, Windows Username, Allow Auto Login, **Velocitrack Admin**
+
+**Security Code [A/P/1/2/C/V/U/E]** — 8 security tier flags:
+A=Administrator, P=Power User, 1=Level 1, 2=Level 2, C=Controller,
+V=View Only, U=User, E=Employee. Controls module/field access rights.
+
+**Velocitrack Admin** — Velocitrack is the barcode/mobile scanning system used
+at i2 Systems for shop-floor data collection. Users with this flag have admin
+access to Velocitrack device management within EVO.
+
+**T7PSE/T7PSF — Report DFMs:**
+- T7PSE "User Security Report" — User Name From/Thru, Printing Items/Groups
+- T7PSF "Access to Program Report" — Program Name filter (shows all users with access to a given program)
+
+**T7PSK — Approve Vendor (DFM confirmed):**
+Caption "Approve Vendor" — vendor approval workflow requiring PS-level authorization
+before a new vendor can be used in purchasing. Integrates with [[module-PO|PO]].
 
 ## Integration
 
@@ -3368,6 +3449,20 @@ This program exists but is not scheduled at i2 (MTEXCHG remains empty).
 - **[[module-GL|GL]]** — currency gain/loss posts to GL on settlement
 - Auto FX rate update: `T7AUTOFX.RWN` uses OANDA API (key in ISTS.CFG.FXKEY) to
   update MTEXCHG rates automatically via ISJAVA task queue
+
+## DFM-confirmed operation details (5 DFMs)
+
+| DFM | Operation | Key fields |
+|-----|-----------|-----------|
+| T7IMB | IM-B Currency Codes | Code, Description, Base, Symbol, Text, Pos (position), Decimals, Accounts Payable GL, Control Account |
+| T7IMC | IM-C Exchange Rates | Date, Base currency, Source, Rate (manual rate entry table) |
+| T7IMD | IM-D Landed Cost GL Accounts | Duty Account, Freight Account, Customs Fees Account |
+| T7IME | IM-E Duty Rate Codes | Code, Percentage; "first 3 chars of Duty Code represent the Vendor" |
+| T7IMF | IM-F Broker/Customs Fees | Broker, Percentage, Type, Flat Fee |
+
+T7IMD confirms that landed costs (duty/freight/customs) post to separate GL accounts.
+T7IME's note that the first 3 chars of Duty Code = Vendor code means duty rates are
+per-vendor — different suppliers have different tariff classifications.
 """,
 
 "IS": """
@@ -3529,16 +3624,38 @@ customers, prospects, and companies. See [[module-CM|CM]] for full documentation
 "AC": """
 ## What it does
 
-Accounting Consolidation — **not a separate top-level module.** Multi-company
-GL consolidation is performed from the [[module-AM|AM]] Accounting Management
-module.
+Activity Control — WO date management, action/reason code maintenance, and
+account-number fix utilities. 5 programs sharing a 16-table database (WORKORD,
+WOBOM, WORO, INVTXN, BKICMSTR, ISTRIGRS core).
 
-`AM-G Consolidate Financials` rolls up subsidiary company trial balances into
-a parent company for consolidated financial statements. The [[module-IM|IM]]
-International Module handles multi-currency translation adjustments before
-consolidation.
+**Note on GL consolidation:** Multi-company GL consolidation ("AC" in some
+older ERP parlance) is in [[module-AM|AM]] AM-G Consolidate Financials — not
+in this AC module.
 
-See [[module-AM|AM]] for Accounting Management documentation.
+## Menu operations (3 DFMs confirmed)
+
+| Code | DFM | Operation | Key fields |
+|------|-----|-----------|-----------|
+| AC-A | T7ACRDTYPE | Enter Return/Defect Types | Doc Type, Reason, Disposition (ISACTION-like table) |
+| AC-B | T7ACTION | Enter Action Codes | Action Type, Description (ISACTION: TYPE/DESC/MISC) |
+| AC-C | T7ACDATE | WO Date Recalculation | Start Date, Finish Date, Quantity, Parent WO, Top WO, Deleted WO, Total Qty |
+| AC-D | T7ACDET | Activity Detail Fixer | (no DFM — RWN-only utility) |
+| AC-E | T7ACCNFIX | Account Number Fix | (no DFM — RWN-only, updates BKCM.ACCN.* account numbers) |
+
+## Key tables
+
+| Table | Purpose |
+|-------|---------|
+| `ISACTION` | Action type codes: TYPE/DESC/MISC |
+| `WODATE` | WO actual-vs-planned dates: WOPRE/WOSUF/START/FINISH/QTY/PARPRE/PARSUF/TOPPRE/TOPSUF/DELPRE/DELSUF/EXTRA/PRIO/H (14 fields, parent/top/delivery WO hierarchy + priority) |
+| `BKARDTYPE` | Return/defect type codes (T7ACRDTYPE AC.RD.* vars: TYPE/REASON/DISPO/EXTRA1/EXTRA2) |
+
+## Integration
+
+- **[[module-WO|WO]]** — T7ACDATE recalculates WODATE records after WO changes;
+  T7ACDET fixes orphaned activity detail records; all 5 programs share the 16-table WO DB
+- **[[module-CM|CM]]** — T7ACCNFIX updates BKCM.ACCN.* account numbers after renumbering
+- **[[module-RM|RM]]** — T7ACRDTYPE manages the return/defect type codes used by RMA workflows
 """,
 
 "DI": """
