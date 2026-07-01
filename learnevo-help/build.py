@@ -34,6 +34,7 @@ from topics import TOPICS
 from recipes import RECIPES
 from modules import MODULE_NARRATIVES
 from glossary import GLOSSARY
+from known_issues import KNOWN_ISSUES
 
 SAMPLES = BASE / "samples"
 
@@ -152,6 +153,17 @@ for pid, title, section, body, keywords in TOPICS:
         "title": title,
         "section": section,
         "kind": "topic",
+        "body": convert_wiki_links(body),
+        "keywords": keywords,
+    }
+
+# 1b. Known Issues
+for pid, title, section, body, keywords in KNOWN_ISSUES:
+    pages[pid] = {
+        "id": pid,
+        "title": title,
+        "section": section,
+        "kind": "issue",
         "body": convert_wiki_links(body),
         "keywords": keywords,
     }
@@ -452,6 +464,7 @@ print(f"Auto-generated {len(missing)} stub pages for referenced-but-missing IDs"
 
 nav = {
     "Getting Started": [],
+    "Known Issues": [],
     "Concepts": [],
     "Architecture": [],
     "Modules": [],
@@ -497,7 +510,7 @@ for mod in nav["Forms"]:
     nav["Forms"][mod].sort(key=lambda x: x["id"])
 
 # Sort sections
-for sec in ("Getting Started", "Concepts", "Architecture", "Modules",
+for sec in ("Getting Started", "Known Issues", "Concepts", "Architecture", "Modules",
             "Recipes", "Data", "Reference", "Integration", "Glossary"):
     nav[sec].sort(key=lambda x: x["title"])
 
@@ -622,6 +635,16 @@ KEYWORD_ALIASES = {
     "f2": ["menu-navigation"],
     "lookup": ["menu-navigation"],
     "shortcut": ["menu-navigation"],
+    "freeze": ["ki-001"],
+    "frozen": ["ki-001"],
+    "hang": ["ki-001"],
+    "kit=l": ["ki-001"],
+    "kit=y": ["ki-001"],
+    "known issue": ["ki-001"],
+    "known issues": ["ki-001"],
+    "bug": ["ki-001"],
+    "issue material": ["ki-001", "module-WO"],
+    "wog": ["ki-001", "module-WO"],
     "workflow": ["core-workflows"],
     "multi-company": ["multi-company"],
     "companies": ["multi-company"],

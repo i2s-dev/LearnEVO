@@ -1,17 +1,19 @@
 {
-  "pages": 2709,
+  "pages": 2716,
   "by_kind": {
     "topic": 32,
-    "recipe": 45,
-    "module": 67,
+    "issue": 1,
+    "recipe": 46,
+    "module": 72,
     "menu": 759,
     "table": 659,
     "form": 1109,
     "glossary": 38
   },
-  "tokens_in_index": 20328,
+  "tokens_in_index": 21741,
   "nav_sections": [
     "Getting Started",
+    "Known Issues",
     "Concepts",
     "Architecture",
     "Modules",
