@@ -1590,6 +1590,35 @@ EvoERP tracks three types of alternate/cross-reference items in the BOM:
 - **[[module-ES|ES]]** — Estimating pulls BOM for cost roll-up.
 - **[[module-HH|HH]]** — HH-C Issue Materials and HH-D Finish Production
   read WOBOM (the WO snapshot of the BOM), not BKBMMSTR directly.
+
+## BM-A field semantics (EVOHELP.PDF §BM-A, Pass 508)
+
+**Allowed parent types:** F (Finished Good), A (Assembly), B (unknown), K (Kit), M (Make/Manufacturing) only. **R, L, or T type items cannot have BOMs.**
+
+| Field | Notes |
+|-------|-------|
+| Lin (Line Number) | Optional; determines sort order on shop traveler and BOM reports; auto-assigned in entry order if skipped |
+| Component | Item#; program auto-shows type and description; same component can appear twice (warning shown but allowed) |
+| Qty Per | 8 decimal places; default 1.00000000 |
+| Scrap | % = entered as value (10% = 10.00); Q = fixed quantity scrap loss; WO firming adds scrap to required qty; **% scrap does NOT round up to whole numbers — not suitable for discrete components** |
+| Seq | Routing sequence; used for (1) shop traveler placement within operation, and (2) **backflushing by sequence** — components tied to a sequence are auto-relieved from inventory when that sequence is completed in WO-F Enter Labor |
+| Rt# | Routing number for multi-routing work orders; components assigned to Rt# print only on that routing — departments see only their sequences and parts |
+| Reference | 20-char memo field; common use: drawing bubble numbers |
+| Include when backflushing parent assembly | N = exclude from scrap-assembly backflush (e.g., packaging materials not consumed on a scrapped assembly) |
+
+**BOM line remarks**: Up to 15 lines per component (via "Line Remarks" button); optionally print on shop traveler and BOM reports.
+
+**BOM notes**: Unlimited notes on the parent part (via "Notes" button); optionally print on shop traveler and BOM reports.
+
+**Copy feature**: Copy all or selected components from another BOM, with or without remarks; can copy from multiple source BOMs to merge them into one target BOM.
+
+**PS-A Security Code E (Engineer)**: Users with code E can only create/edit BOMs for parent items with Active Status = E. Prevents non-engineer users from modifying items that have been released to Production.
+
+## BM-B / BM-C options (EVOHELP.PDF §BM-B/C, Pass 508)
+
+BM-B Print BOM: Multi-level up to 35 levels; 2nd description line option (P=Parent/C=Component/A=Both); Specifications, BOM Remarks, BOM Notes print options; Approved Substitutes/Vendors/Manufacturers print option; qty decimal precision choice.
+
+BM-C Print Where Used: Single-level or multi-level (up to 35); "Print for Inactive Parent?" option.
 """,
 
 "MR": """
@@ -3032,6 +3061,65 @@ departments, QC codes, scrap codes, and operation templates.
 - **[[module-SH|SH]]** — scheduling reads WORKCTR capacity + ROUTING times for scheduling math
 - **[[module-BM|BM]]** — BOM entry (T7BMA) shows routing on the BOM line (RTNUM link)
 - **[[module-MR|MR]]** — MRP uses routing lead times for planned order due date calculation
+
+## RO-A Enter Routings — field semantics (EVOHELP.PDF §RO-A, Pass 508)
+
+### Header fields
+| Field | Notes |
+|-------|-------|
+| Item# | Part number being routed; must exist in item master |
+| Rt# (Routing Number) | Default 1; each distinct Rt# prints a separate shop traveler on WO release |
+| Description | Auto-filled from item master; read-only display |
+
+### Line (operation) fields
+| Field | Notes |
+|-------|-------|
+| Seq | Sequence number (e.g., 10, 20, 30); determines traveler print order |
+| Oper | Operation code; must exist in RO-I operation templates if templates are used |
+| Type | Sequence Type: **R** = always Run Time; **S** = always Setup; blank = either (most common) |
+| Description | Free-text operation description; prints on shop traveler |
+| Work Center | Must exist in RO-C work center master |
+| Rout# | Routing number for this line; links to multi-routing travelers |
+| Processes# | Number of simultaneous processes per operation; enables Time/Process, Processes/Hr, Multiply/Divide sub-fields |
+| Time per Part | Run time per unit produced (HH:MM:SS or decimal hours); mutually calculated with Parts/Hr |
+| Parts/Hr | Throughput rate; mutually calculated with Time per Part |
+| Setup | Setup time in HH:MM:SS |
+| Decimal Time | Use for >99 hours or sub-second precision |
+| Forward Overlap | Hours after this sequence completes before parts move to the next (e.g., paint drying time) |
+| Backward Overlap | Number of parts produced at this sequence before the next sequence can begin (enables parallel/simultaneous ops) |
+| Std Time? | Y = auto-applies standard time when parts are reported — for operations impossible to track individually |
+| #Persons | Number of people assigned; 2 decimal places; used in direct-labor cost calculations |
+| Mach | Machine number; must exist in RO-D machine master |
+| Tool | Tool number; must exist in RO-E tool master |
+| Line | Optional sort key; determines order on shop traveler and routing reports |
+
+### Time/Processes sub-fields (visible when Processes# > 1)
+| Field | Notes |
+|-------|-------|
+| Time/Process | Time per individual process within the operation |
+| Processes/Hr | Throughput in processes per hour |
+| Multiply/Divide | Controls whether #Proc multiplies or divides the total time calculation |
+
+### Lines/Components-driven time (Time Type field)
+| Code | Meaning |
+|------|---------|
+| blank / F | Flat time — fixed time regardless of BOM complexity |
+| L | BOM Lines-driven — time scales with number of BOM lines (e.g., assembly steps) |
+| C | Components-driven — time scales with total component count |
+
+### Outside processing fields (visible when Work Center is flagged as outside processing)
+| Field | Notes |
+|-------|-------|
+| Vend | Vendor code; required for outside processing (or use a dummy vendor) |
+| Cost | Per-unit outside processing cost; if WC has a Cost/lb default, prompts for weight × cost |
+| Min Charge | Minimum charge for the operation; cost rollup uses max(qty x Cost, Min Charge) |
+| LT | Outside processing lead time in days; auto-fills from work center default |
+
+### Text fields
+| Field | Notes |
+|-------|-------|
+| Notes | Free-form text, unlimited lines; prints on shop traveler; for outside processing, content also auto-populates the PO line notes |
+| Specs | Structured specification fields with predetermined headings; for industry-specific process parameters (e.g., temperature, pressure, material grade) |
 """,
 
 "WC": """
