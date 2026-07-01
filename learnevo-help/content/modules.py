@@ -812,35 +812,52 @@ Shop-floor Data Collection (DC) captures labor, material issues, scrap, and
 WO receipts at the point of work — from handheld scanners or barcode
 terminals — so the system stays current without manual data entry.
 
-**At i2 Systems:** DC is installed but not actively used (BKDCCFG=0 — no
-data collection configuration). Shop floor data is entered via WO module
-menus instead.
+**At i2 Systems:** BKDCCFG=0 (no DC configuration active). Shop floor labor
+is entered via WO-F menus, not barcode terminals. However BKDCHLAB holds
+96,421 historical DC labor records from prior active use.
 
-## Architecture
+## Database tables (live counts, 2026-07-01)
 
-DC has 7 database tables:
+| Table | Records | Purpose |
+|-------|--------:|---------|
+| `BKDCLAB` | 22 | Active labor transactions not yet posted (pipeline staging) |
+| `BKDCPLAB` | 1 | Posted-pending labor (cleared after full post cycle) |
+| `BKDCCLAB` | 0 | Cleared/archived labor |
+| `BKDCTLAB` | 0 | Temp labor staging |
+| `BKDCHLAB` | 96,421 | Historical DC labor — all posted transactions (archive) |
+| `BKDCSHFT` | 1 | Shift configuration (3 shift names + 3 buffer codes) |
+| `BKDCCFG` | 0 | Data collection module configuration |
 
-| Table | Purpose |
+All BKDCLAB* tables share **identical 51-field LAB_* schema** and are accessible via ODBC.
+
+## BKDCLAB / BKDCHLAB — Labor Transaction Schema (51 fields)
+
+| Field | Meaning |
 |-------|---------|
-| `BKDCLAB1`–`BKDCLAB5` | 5 identical pipeline stages for labor capture (50f each) — Btrieve-only, not in PSQL layer |
-| `BKDCSHFT` | Shift schedule master (34f, 3 shift slots) — 1 record |
-| `BKDCCFG` | Data collection configuration (7f) — empty |
-
-The 5 `BKDCLAB*` tables form a pipeline: data flows through stages 1→5 as
-it is validated and posted to WO labor records. Each stage is identical in
-schema (`DATE+EMP+WO+OPER` primary key) — the stage number is the
-differentiator.
-
-The tables use **Btrieve direct-access only** — they don't appear in the
-PSQL ODBC relational layer (`SELECT COUNT(*) FROM BKDCLAB1` returns ERR).
-This is deliberate: real-time handheld data collection bypasses the SQL
-engine for speed.
+| `LAB_DATE` | Work date |
+| `LAB_EMP` | Employee number |
+| `LAB_WOPRE` + `LAB_WOSUF` | Work order number + suffix |
+| `LAB_OPER` | Routing operation number |
+| `LAB_POSTED` | Posted flag (Y/N) |
+| `LAB_SHIFT` | Shift number |
+| `LAB_START` / `LAB_FINISH` | Clock-in / clock-out time |
+| `LAB_PARTS` / `LAB_SCRAPPED` | Parts completed / scrapped |
+| `LAB_NOJOBS` | Number of jobs run |
+| `LAB_RUNHRS` / `LAB_SETUPHRS` | Run time / setup time hours |
+| `LAB_REGOVER` | R=Regular / O=Overtime |
+| `LAB_SCRAPCD_1..5` / `LAB_SCRAPQTY_1..5` | Up to 5 scrap reason codes + qty |
+| `LAB_JCNUM` | Job code (links to ISJOB) |
+| `LAB_CYCLE_HR/MIN/SEC/PARTS/NOTE` | Cycle time tracking |
+| `LAB_GEN_DATE_1..2`, `LAB_GEN_ALPHA_1..2`, `LAB_GEN_NUM_1..2`, `LAB_GEN_FLAG_1..5` | Generic extension fields |
+| `LAB_UID` | Unique record ID (STRING 30) |
+| `LAB_ADT_SUPER/IN/OUT` | Audit trail: supervisor + in/out (STRING 100 each) |
 
 ## Integration
 
-- **[[module-WO|WO]]** — labor entries and material issues post directly to
-  `WOLABOR` and `WOMAT`
-- **[[module-PR|PR]]** — time totals from DC feed payroll hours
+- **[[module-WO|WO]]** — BKDCLAB posts to WOLABOR and WOMAT when processed
+- **[[module-PR|PR]]** — LAB_RUNHRS + LAB_SETUPHRS feed BKPRCURP for payroll
+- **[[module-HH|HH]]** — handheld device interface; HH-I Paperless Shop Floor uses DC tables
+- **[[module-DE|DE]]** — DE-J batch import writes directly to BKDCLAB
 """,
 
 "QC": """
@@ -848,43 +865,73 @@ engine for speed.
 
 Quality Control tracks incoming and in-process inspections — from setting
 up inspection plans per item to recording results and issuing certificates
-of compliance (CoC).
+of compliance (CoC) and Non-Conformance Reports (NCRs).
 
-**Scale:** 53,300 receive events in `BKQCMSTR` with a 1.73% rejection rate.
-i2 Systems actively uses QC for incoming inspection on purchased components.
+**Scale (2026-07-01):** 53,304 inspection events in BKQCMSTR; 54,227 transaction
+lines in BKQCTRAN (avg 1.02 trans/event); 74 NCRs in ISNCR.
+Rejection rate: BKQCMSTR.QTY_REJECT / QTY_RECVD = ~1.7% historically.
 
-## Core tables
+## Database tables (live counts, 2026-07-01)
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `BKQCMSTR` | 14 | QC inspection event record (one per receive + inspection) |
-| `BKQCTRAN` | 21 | Per-line inspection detail with pass/fail and quantities |
-| `ISQCMTHD` | 44 | QC method library (test procedures, 3,367-byte record) |
-| `ISQCRSLT` | 57 | QC result/specification per method (min/max as strings) |
-| `ISQCSPEC` | 57 | QC specification master (identical schema to ISQCRSLT) |
-| `ISQCAMST` | 14 | QC receiving master (alternate inspection table) |
-| `ISQCATRN` | 20 | QC receiving transaction detail |
-| `OPQCDESC` | 10 | Per-operation QC descriptions |
-| `QCCODES` | 2 | Inspection result codes |
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `BKQCMSTR` | 53,304 | 15 | QC inspection event (one per PO receive lot) |
+| `BKQCTRAN` | 54,227 | 38 | Per-line inspection detail with pass/fail quantities |
+| `ISNCR` | 74 | — | Non-Conformance Reports |
+| `ISCAR` | 0 | — | Corrective Action Reports |
+| `ISQCMTHD` | 0 | 44 | QC method library (test procedures) |
+| `ISQCRSLT` | 0 | 57 | QC result/specification per method |
+| `ISQCSPEC` | 0 | 57 | QC specification master |
+| `ISQCAMST` | 0 | 14 | Alternative QC receiving master |
+| `ISQCATRN` | 0 | 20 | Alternative QC receiving transaction detail |
+
+**At i2:** ISQCMTHD/ISQCRSLT/ISQCSPEC all empty — the method library feature
+is not configured. i2 uses basic receive-inspect-pass/fail flow without
+pre-defined test methods.
+
+## BKQCMSTR — QC Inspection Event (15 fields)
+
+| Field | Meaning |
+|-------|---------|
+| `BKQC_VEND_CODE` | Vendor code |
+| `BKQC_RECV_DATE` | Receipt date |
+| `BKQC_PO_NUM` | Purchase order number |
+| `BKQC_RECVR_NUM` | Receiver (receipt transaction) number |
+| `BKQC_POL_ITM_NO` | PO line item number (STRING 10) |
+| `BKQC_PKSLIP_NUM` | Packing slip number |
+| `BKQC_QTY_RECVD` | Quantity received |
+| `BKQC_QTY_BUYOFF` | Quantity accepted (bought off) |
+| `BKQC_QTY_REJECT` | Quantity rejected |
+| `BKQC_PKSLIP_QTY` | Packing slip quantity |
+| `BKQC_PROD_CODE` | Item/part code |
+| `BKQC_UNIT_COST` | Unit cost at receipt |
+| `BKQC_EXTRA` | Extra (STRING 25) |
+| `BKQC_OUT_DATE` | Release/disposition date |
+| `BKQC_QTY_NCR` | Quantity sent to NCR |
+
+## BKQCTRAN — QC Transaction Detail (38 fields)
+
+Key fields: TRN_PO, TRN_VEND, TRN_CODE (item#), TRN_RECNUM (receiver#),
+TRN_GQTY (good qty), TRN_BQTY (buy-off qty), TRN_UQTY (unacceptable qty),
+TRN_SCRAP (scrap code), TRN_REWORK (rework code), TRN_PODTE/ARDTE/BODTE
+(PO/arrival/buy-off dates), TRN_EMPNUM (inspector), TRN_FAULT/BROKEN flags,
+TRN_FIXQTY (fixed qty), TRN_NCR (NCR qty) + 5 date/num/alpha generic fields.
 
 ## Workflow
 
 ```
-PO receipt arrives  →  QC-A: Create inspection record (BKQCMSTR)
-                    →  QC-B: Enter results line-by-line (BKQCTRAN)
-                    →  QC-C: Print certificate of compliance
+PO receipt arrives  ->  QC-A: Create inspection record (BKQCMSTR)
+                    ->  QC-B: Enter inspection results (BKQCTRAN)
+                    ->  QC-C: Print certificate of compliance
+                    ->  QC-F: NCR workflow if rejection (ISNCR created)
 ```
-
-The QC module hooks into the PO receiving process: when a PO line is
-received, it can trigger QC inspection before the inventory is released.
-Items on hold pending QC show up separately in the inventory availability
-picture.
 
 ## Integration
 
-- **[[module-PO|PO]]** — QC inspection triggers on PO receipt
-- **[[module-IN|IN]]** — items under QC hold are not available for issue
-- **[[module-WO|WO]]** — in-process QC can be triggered per routing operation
+- **[[module-PO|PO]]** — QC inspection triggers on PO receipt (QC-J intercept on PO-E)
+- **[[module-IN|IN]]** — items under QC hold are unavailable for issue until released
+- **[[module-WO|WO]]** — in-process QC can trigger per routing operation (OPQCDESC table)
+- **[[module-NCR|NCR/IS]]** — QC-F-A creates ISNCR; QC-F-B triggers ISCAR corrective action
 """,
 
 "JC": """
@@ -1084,19 +1131,28 @@ SR-F  Print Invoice   →   SR-G Post Invoice
       → posts to BKARINV
 ```
 
-## Key tables (ISSR* family)
+## Key tables (ISSS* family, live 2026-07-01)
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `ISSRSOMR` | — | SR order main record |
-| `ISSRINFO` | 54 | SR UDF extension (ISSR_INFO_* 54 user-defined fields) |
-| `ISRMAI` | 54 | RMA lines (shared with RM module on repair path) |
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `ISSSOH` | 37 | 104 | Service order header — BKAR_INV_* schema clone (same layout as BKARINV) |
+| `ISSSOL` | 1,177 | — | Service order lines — BKAR_INVL_* schema clone (same layout as BKARINVL) |
+| `ISSSRH` | 0 | — | Service/repair history headers |
+| `ISSSRL` | 0 | — | Service/repair history lines |
+
+**ISSSOH uses byte-for-byte BKAR_INV_* field naming (104 fields):** BKAR_INV_NUM,
+BKAR_INV_SONUM, BKAR_INV_INVCD (status), BKAR_INV_INVDTE, BKAR_INV_CUSCOD, and
+all customer/ship-to address fields — identical structure to BKARINV.
+This means SR-F/SR-G can generate invoices using the same posting logic as SO-F/SO-G.
+
+**Scale at i2:** 37 active service orders, 1,177 service order lines (avg 31.8 lines/order).
 
 ## Integration
 
 - **[[module-RM|RM]]** — Repair disposition in RM creates an SR order
 - **[[module-WO|WO]]** — SR-C converts complex repairs to full WO routing
-- **[[module-AR|AR]]** — SR-G posts the service invoice to AR
+- **[[module-AR|AR]]** — SR-G posts the service invoice to BKARINV (same posting path as SO)
+- **[[module-SO|SO]]** — ISSSOH mirrors BKARINV schema; the posting path is identical
 """,
 
 "PI": """
