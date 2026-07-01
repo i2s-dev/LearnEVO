@@ -1332,12 +1332,30 @@ PI-H  Purge Physical Inventory
 PIBINLOC has `YEAR`/`QTR` cycle fields and last-count dates — supporting
 partial (cycle) counts in addition to full physical inventory.
 
+## DFM-confirmed operation details (10 DFMs)
+
+| DFM | Caption / confirmed |
+|-----|---------------------|
+| T7PIA | **PI-A Capture Frozen Inventory** — Year, Physical Inventory Number, Freeze Date, Process button |
+| T7PIB | **PI-B Frozen Inventory Report** — Year, PI#, Sort by Part or Bin, **Export FileName** (can export to flat file) |
+| T7PIC | **PI-C Enter Tag Counts** — Part Number, Tag Number, Location, Count Qty (barcode-entry workflow) |
+| T7PICA | **PI-C-A Exception Report** — Year, PI#, Sort by, Print button |
+| T7PID | **PI-D Missing Tags Report** — Year, PI#, Starting Tag Number |
+| T7PIE | **PI-E Enter Tag Counts (alternate)** — shows Frozen Cost; Part Number, Location, Frozen Cost, Edit (review mode vs. blind-count mode in PI-C) |
+| T7PIF | **PI-F Physical Inventory Report** — Year, PI#, Sort by Item Number or Class (I/C), Include Tag Details (Y/N/L) |
+| T7PIG | **PI-G Update Actual Inventory** — Year, PI#, note: "FIFO/LIFO always uses Current cost"; Post button |
+| T7PIH | **PI-H Purge Physical Inventory** — Year, PI# (cleanup after posting) |
+| T7HHPIC | **HH PI-C Entry** (handheld variant) — Phys Inv No, Count Date, Year, Name (operator name) |
+
+**Note on PI-C vs PI-E:** T7PIC is the blind-count entry (operator enters qty without seeing frozen), T7PIE shows the frozen cost (supervisor review mode).
+
 ## Integration
 
 - **[[module-IN|IN]]** — PI variances post as `INVTXN` type A adjustments,
   updating BKICLOC on-hand
 - **[[module-GL|GL]]** — PI adjustments generate GL journal entries via the
   inventory variance accounts in BKSYMSTR
+- **[[module-HH|HH]]** — T7HHPIC provides handheld scanner PI count entry
 """,
 
 "SH": """
@@ -2061,6 +2079,25 @@ setup, and system-wide configuration tasks.
   EVO Support; TA-P reads and applies them. See [[module-UP|UP]] for detail.
 - **Backup strategy**: TA-O creates a local ZIP; for network backup, the
   `\\\\i2s109-solidcrm\\DBAMFG$` folder should be backed up at OS level.
+
+## DFM-confirmed tools (WTAS* family)
+
+The TA module uses `WTAS*` program prefixes (not `T7TA*`) for its core tools:
+
+| DFM | Caption / Confirmed |
+|-----|---------------------|
+| WTASDMGR | **"Addsum TAS Premier 7i Maintain Data Dictionary"** — full DDD manager; fields/keys tabs, Export visible rows; Key Name editor |
+| WTASDATAM | **"Maintain Database"** — Sort by, file name, "Search for dates in YYYYMMDD format", Sequential (no key) mode |
+| WTASINIT | **"Addsum TAS Professional 7 Create/Initialize File Program"** — File Name, Extension, FD Name, Rec Type |
+| WTASCHKINT | **"DataScanIntegrity utility"** — Total Progress, Current Scan Progress, Scan Type, Records Scanned (company selector sub-dialog: All/Current company) |
+| WTASCVTDICT | **"Convert Existing Dictionary"** — Working On, Next (DDF conversion tool) |
+| WTASDMGR3 | **"Restructure a file"** — FD to restructure, Number of files/records remaining, Working on file |
+| WTASFLOC | **"Maintain File Names and Locations"** — File Name, Extension, FD Name, Rec Type (this is the FL module) |
+| WTASINIT | File Create/Initialize with same fields as WTASFLOC |
+
+**Key finding:** WTASDMGR is the full Addsum TAS data dictionary editor — it confirms
+the runtime is "TAS Premier 7i" (not just "TAS Pro 7"), and that the DDD is maintained
+via a GUI tool with Fields/Keys tabs and export capability.
 
 ## Integration
 
