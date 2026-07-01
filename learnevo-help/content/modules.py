@@ -366,6 +366,18 @@ The MRP Settings tab drives MRP generation: only items with Include in MRP = Y a
 MR runs. Reorder Level and Reorder Amount also drive IN-D (Reorder Report) independently
 of MRP. ECO tab records engineering change history against the item.
 
+**Mandatory fields for new item** (EVOHELP.PDF §IN-B): Item#, Class, Part Type, Stock UM, Price UM, Purch UM — program will not save without all 6.
+
+**Item deletion restrictions** (EVOHELP.PDF §IN-B): Cannot delete if any of: on-hand qty > 0, open orders, in any BOM, has a routing, in active or non-purged physical inventory. Program shows list of blocking reasons.
+
+**Specifications sub-tab**: Free-format text notepad; automatically prints on shop travelers; optionally prints on order acknowledgments, packing lists, invoices, and POs.
+
+**Primary Vendor** (EVOHELP.PDF §IN-B): When a vendor code is entered, EvoERP automatically creates a record in the approved vendor file (PO-L). The primary vendor is the default for MR-J Generate Purchase Orders.
+
+**Lead Time semantics** (EVOHELP.PDF §IN-B): For purchased items = calendar days order-to-receive. For manufactured items = shop days (per SM-H shop calendar) to make a typical run — does not include lower-level BOM procurement time.
+
+**PO Conv Mult**: Purchase-to-stock UOM conversion factor. Only enter if Stock UM ≠ Purch UM AND Purch UM is not a pre-defined EVO value. Example: Purch UM=YD, Stock UM=FT → Mult=3.0.
+
 ## Typical workflow
 
 ```
