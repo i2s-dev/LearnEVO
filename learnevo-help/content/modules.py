@@ -1570,6 +1570,22 @@ BKAR_INV_ORDDTE, BKAR_INV_SHIPDT, BKAR_INV_SONUM, BKAR_INV_SUBTOT,
 BKAR_INV_TAXAMT, BKAR_INV_FRGHT — the void screen is a full AR invoice
 display, confirming SR invoices share the BKARINV schema byte-for-byte.
 
+## Standard Detail (T7SDET) — DFM-confirmed 2026-07-01
+
+Service type/detail code maintenance (SD/Standard Detail subsystem).
+
+**T7SDET.DFM** (caption "New Screen"): Type field (combo Items: **"Top"** / **"Bottom"** —
+mattress-industry position codes); Add/Save/Delete/Exit toolbar.
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `ISSDET` | 4 | Service detail codes — IS_SDET_TYPE str20 / DETAIL str20 / WHO str40 / SUB str1 |
+| `ISSTYPE` | 3 | Service type master — IS_STYPE_TYPE str60 / WHO str40 / ASSET str25 |
+
+**"Top"/"Bottom" Items:** confirm i2 Systems mattress manufacturing context — service
+detail types are mattress surface positions. IS_STYPE.ASSET(str25) = asset category
+link (equipment or product type being serviced). IS_SDET.SUB(str1) = sub-classification flag.
+
 ## Integration
 
 - **[[module-RM|RM]]** — Repair disposition in RM creates an SR order
@@ -3356,6 +3372,28 @@ activity at i2. Structure: `IS_CHGNO`, `IS_CHG_SONUM`, `IS_CHG_INVNUM`,
 `IS_CHG_LINEID`, and 20 paired A*/B* before/after value fields covering
 price, quantity, date, location, and GL fields.
 
+## DFM-confirmed details (Pass 489, 2026-07-01)
+
+**T7SHA.DFM (SH-A WO Schedule Viewer):** WO header display — Work Order / Item Number /
+Description / Customer / Sched Start / Sched Finish / Due Date / Priority / Class /
+Lead Time. **Auto-entry mode [ON/OFF]** toggle (ON = auto-advances to next WO in sequence).
+Priorities 1/2/3 in combo items.
+
+**T7SHP.DFM (SH-P Priority Report):** Color-coded WO schedule report with configurable
+thresholds. Background color assignments:
+- Priority Change Color — when WO priority changes
+- Elapsed Start Date Color — WO Start Date has elapsed
+- Color for X Days < Start Date <= Y Days — approaching start (amber zone)
+- Color for Start Date <= X Days — imminent start (red zone)
+- Color for Start Date > Y Days — future/comfortable (green zone)
+- WO Finish Date > Est Ship Date Color — finish date exceeds ship commitment
+- WOs that Cannot Meet Assigned Finish Date Color — physically impossible finish
+
+**Number of X Days / Number of Y Days** — configurable day thresholds for the color
+bands. **"Only show color for WOs that do NOT have any Open, Posted or UnPosted labor"** —
+limits color alerts to WOs not yet started. Filters: Start Date From/Thru,
+Finish Date From/Thru, WO Class Code From. Items Y/N/P.
+
 ## Integration
 
 - **[[module-SH|SH]]** — SL programs are the implementation of SH scheduling menu items
@@ -4637,6 +4675,20 @@ in 158+ programs across all EVO modules as the universal activity audit trail.
 The GL bank reconciliation (T7GLJ) also opens MKTRACK, confirming the marketing
 engine is wired into non-CRM modules.
 
+## DFM-confirmed details (Pass 489, 2026-07-01)
+
+| DFM | Caption | Key fields / purpose |
+|-----|---------|---------------------|
+| T7AMK.DFM | New Screen | MK-A Purge/Archive/Restore — **Purge, Archive or Restore [P/A/R]** selector; Process Thru Date; Customer From/Thru range; Go/Exit |
+| T7BMK.DFM | BM-K | AVL/Spec-Book vendor cross-reference report — Standard Item# From/Thru, Parent Item# From, Customer Code From, Vendor Code From, Vendor Part#; **Sort By Vendor** toggle; **Auto Print Folder** path; dual role: BM-K (BOM Vendor BOM) AND MK-B (Marketing spec-book AVL report) |
+| T7CMK.DFM | (bulk-copy) | Customer account bulk-copy — from.cust/thru.cust + class range; SHIPTO + SKIPR [S/R] (skip existing or replace) |
+| T7SMK.DFM | **Evo User Settings** | **CORRECTION: T7SMK is NOT a campaign summary.** T7SMK = per-user preferences editor: Language selector, Default Print Path, Check for Reminders every X seconds, **Snooze All interval** (combo: 5 min / 10 min / 15 min / 30 min / 1 hr / 2 hr / 4 hr / 8 hr / 0.5 day / 1 day / 2 day / 3 day / 4 day / 1 week), Hot Button 1-3 (program + icon), Email Body + Signature; accessed from SM module settings |
+
+**T7SMK correction:** Prior documentation identified T7SMK as "campaign summary."
+The DFM confirms it is the **Evo User Settings** dialog — per-user preferences
+for reminder intervals, hotkeys, email templates, and print paths. The actual
+campaign summary is in T7MKA/MKTRACK territory.
+
 ## Integration
 
 - **[[module-CM|CM]]** — Contact Master uses MK for campaign management and
@@ -4920,6 +4972,21 @@ appears to be a legacy/alternate email setup path.
 `EvoDCsetup.DFM` / `Evowkssetup.DFM` = "Create Workstation Setup" — Server Path,
 Date Format (dd/mm/yy or mm/dd/yy selector), Continue.
 `EVODCS.DFM` = DC screen (dynamic, no caption).
+
+## Brands (BR) — DFM-confirmed 2026-07-01
+
+**T7BRANDS.DFM** (caption "New Screen"): Code / Description fields; Add/Save/Delete/Exit/
+**Back** toolbar; Hint "Back to the List of links" (same hierarchy-navigation pattern as FIB).
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `BKCMACCC` | 2 | Brand code master — CCODE str5 / DESC str25 |
+| `BKCMACCN` | 154 | Account notes with up to 10 contacts per account |
+| `ISBROKER` | 4 | Broker commission table — ISIS_BRK_CODE str10 / FLAT float / PERC float / TYPE str1 |
+
+**T7BROWSER.RWN** (4 procs, 55-table session-init overhead, 0 named vars) = the main
+brand browser; uses BKCMACCN+BKCMACCC as business tables; ISPOSI.H = POS terminal
+integration confirms brands appear in point-of-sale context.
 
 ## Reporting Bridges (JS) — DFM-confirmed 2026-07-01
 
