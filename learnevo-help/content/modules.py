@@ -998,6 +998,35 @@ ISJOB has only 3 meaningful fields: `IS_JOB_CODE`, `IS_JOB_DESC`, and
 `IS_JOB_STATUS`. All 45,863 rows have blank STATUS — the codes are a
 historical reference list rather than actively managed records.
 
+## Menu operations (DFM-confirmed)
+
+| Code | Program | Description |
+|------|---------|-------------|
+| JC-A | T7JCA.RWN | Job Cost Report — WO# / item / customer / job ranges; status [CXFRSI] |
+| JC-B | T7JCB.RWN | Job Cost by Job — summary or detail; composite report option |
+| JC-E | T7JCE.RWN | WO Cost with date range filter + act finish date |
+| JC-F | T7JCF.RWN | Job Cost by WO with date range |
+| JC-H | T7JCH.RWN | Operation efficiency — work center / sequence / scheduled finish date |
+| JC-L | T7JCL.RWN | Labor report — act start/finish date ranges |
+| JC-M | T7JCM.RWN | Material report — transaction date / customer / act finish date |
+| JC-N | T7JCN.RWN | Month-end cost report — ISCALC.HOW_C/H/P costing method; ISCOST.BREAKOUT |
+| JC-P | T7JCP.RWN | Print Materials in WIP — component / zero-issue / rebuild WO options |
+| JC-Q | T7JCQ.RWN | WO Variance — fin product / WIP var / scrap code ranges |
+| JC-R | T7JCR.RWN | WO cost as-of-date — same as Q with prior-date snapshot option |
+| JC-S | T7JCS.RWN | WO cost summary by act start/finish + customer/job ranges |
+| JC-RM | T7JCRM.RWN | Java BI Report Manager — same JDBC architecture as SQLEXPORT |
+
+WO Status codes used in JC reports: C=Complete, X=Closed, F=Finished,
+R=Released, S=Started, I=In-Process (combined set from T7JCA/JCN/JCP DFMs).
+
+**T7JCENG.RWN** is the shared calculation engine (shown during JC report
+generation): Report Type, Sort/Subtotal By, Level of Detail, WO Status
+(e.status[1..5]), WO Source (e.source[1]), Labor Type fields.
+
+**T7JCRM** — like SQLEXPORT, this is a Java JDBC-backed BI export tool:
+Host/Port/Name/Destination settings (T7JCRM.DFM confirmed), connects to
+Pervasive PSQL for custom JC queries and exports.
+
 ## Key report
 
 **JC-A** (Job Cost Report) — for a range of job codes, lists each WO
