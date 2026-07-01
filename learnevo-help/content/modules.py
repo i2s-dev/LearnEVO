@@ -3177,19 +3177,62 @@ linked purchase order workflow.
 "EX": """
 ## What it does
 
-Export / Exchange — **not a standalone top-level module.** Data export to
-external systems is a function available across multiple EVO modules.
+SQL Export / BI Export — **DE-A SQL Query/Export (Java Version)**. A Java Swing
+application embedded in EVO via the T7Jtemp loader pattern that allows ad-hoc
+SQL queries against the live Pervasive PSQL database and exports results to CSV.
 
-Key export mechanisms:
-- **[[module-DE|DE]]** Data Exchange — the primary module for structured
-  data interchange (EDI, flat-file import/export definitions using `.IMP` files)
-- **[[module-TA|TA]]** Tools Admin — `TA-K Export Data` exports raw table
-  contents to flat files
-- **[[module-QU|QU]]** Queries & Reports — `QU-F Query Executor` allows
-  ad-hoc SQL output via `queryexecute.rwn` (Java JDBC)
+This is not a standalone top-level module — it is accessible as **DE-A** under
+the Data Exchange menu.
 
-The DE module handles integration-oriented export (trading partner EDI,
-formatted interfaces). Use TA-K for simple data dumps.
+## Architecture
+
+```
+EVO menu → DE-A
+  → SQLEXPORT.RWN (TAS wrapper, 23p, ISTECH.LIB)
+      passes vars[60-71]: HOST/NAME/PORT/TREEDEST/COMP/NOPE/DUMMY_L/DFM/RVAL/...
+  → T7Jtemp (Java loader)
+  → SQLExport.jar (com.evoerp, v1.5.0, built 2014-03-19)
+      Java Swing UI defined in T7JSQL.DFM (SourceFile='T7Jsql')
+```
+
+## Connection settings (T7JSQL.DFM confirmed)
+
+The Settings panel in the Java UI has three fields:
+- **Host** — Pervasive PSQL server hostname
+- **Port** — default **1583** (Pervasive PSQL JDBC port)
+- **Name** — database/DSN name
+- **Destination** (TreeDEST combo, validated by `vld_treeDEST()`) — output target
+
+Connection goes directly to Pervasive PSQL via JDBC, bypassing the ODBC layer.
+
+## Two query modes
+
+**Mode 1: Direct SQL** — type any Pervasive SQL SELECT directly and click Go.
+Results display in a grid with an option to save as CSV.
+
+**Mode 2: Query Wizard** — guided UI to pick tables → select fields → define
+JOIN conditions → add filters → click Finish to build the query automatically.
+
+## Default preset queries (CHM-confirmed)
+
+Seven built-in reconciliation queries available via "Default Queries" button:
+
+| Name | Purpose |
+|------|---------|
+| `GLPOINV` | GL transactions to PO/RNI account from AP-C with no matching PO line |
+| `GLPORECPT` | GL transactions to PO/RNI account from PO-C with no matching PO line |
+| `Inv_Txn_no_GL` | Inventory transactions with no corresponding GL entries |
+| `INVGL` | GL transactions to inventory account with no corresponding inventory transaction |
+| `INVGLACCT` | Inventory transactions with incorrect GL accounts (wrong item class/location) |
+| `Inventory_Non_Asset` | Tangible inventory items posting to non-asset GL accounts |
+| `Non_Inventory_Asset` | Non-tangible inventory items posting to asset GL accounts |
+
+## Related export mechanisms
+
+- **[[module-TA|TA-K]]** Export Data — raw table → flat file dump (no SQL required)
+- **[[module-QU|QU]]** Query Executor — alternative ad-hoc query tool via
+  `queryexecute.rwn` (also Java JDBC-based)
+- **[[module-DE|DE]]** Data Exchange — structured EDI / `.IMP`-format file exchange
 """,
 
 "MM": """
