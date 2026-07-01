@@ -1013,13 +1013,52 @@ TRN_SCRAP (scrap code), TRN_REWORK (rework code), TRN_PODTE/ARDTE/BODTE
 (PO/arrival/buy-off dates), TRN_EMPNUM (inspector), TRN_FAULT/BROKEN flags,
 TRN_FIXQTY (fixed qty), TRN_NCR (NCR qty) + 5 date/num/alpha generic fields.
 
+## Menu operations (DFM-confirmed, 15 DFMs)
+
+| Code | Program | Description |
+|------|---------|-------------|
+| QC-A | T7QCA | Scrap/QC report — date range / item / item class / vendor / QC-Scrap code; toggle Use QC Codes vs Use Scrap Codes |
+| QC-B | T7QCB | Component scrap report — parent item / parent class / scrap code / WO# / component item; A/Archived filter |
+| QC-C | T7QCC | CoC (Certificate of Compliance) report — same filter set as QC-B; A/Archived filter |
+| QC-D | T7QCD | Detail scrap report — by employee, sequence number, QC/Scrap code; A/Archived filter |
+| QC-F | T7QCFA/FB/FD/FF | NCR sub-menu (see below) |
+| QC-G | T7QCGA/GB/GD | CAR sub-menu (see below) |
+| QC-M | T7QCMTHD | Enter Testing Method — Description/Revision/Test Code/Date/Notes/Links |
+| QC-R | T7QCRESULTS / T7QCRSLT | Enter/report Testing Results — Sequence No / Test Quantity / Clear button |
+| QC-S | T7QCSPEC | Enter Testing Requirements — Test No / Test Code / Seq# / Individual or Batch [I/B] / Min / Max / Units / Pass-Only flag |
+
+## NCR workflow (QC-F sub-menu)
+
+| Sub | Program | Description |
+|-----|---------|-------------|
+| QC-F-A | T7QCFA | **Enter NCR** — NCR# / Created / Item / Component / Qty / Defect / Description of Nonconformity / Who |
+| QC-F-B | T7QCFB | **Print NCR** — NCR# range; Print Linked Documents / Print Notes / Print Serial Numbers; Open or Closed NCR filter |
+| QC-F-D | T7QCFD | **Close NCR** — NCR# range / NCR Date range / Force Close NCR |
+| QC-F-F | T7QCFF | **NCR List** — Item / Component / NCR# / Location / Origin (I/V/R) / Sort by Part or Date (P/D) / Status (O/D/C) |
+
+Origin (I/V/R) = Internal / Vendor / Rework (inferred from manufacturing QC context).
+
+## CAR workflow (QC-G sub-menu)
+
+| Sub | Program | Description |
+|-----|---------|-------------|
+| QC-G-A | T7QCGA | **Enter CAR** — CAR# / Created / Item / Component / Qty / Defect / Description of Nonconformity / Initiator |
+| QC-G-B | T7QCGB | **Print CAR** — CAR# range / Print Linked Documents / Print Notes / Print Open Only |
+| QC-G-D | T7QCGD | **CAR List** — Item / Component / CAR# / Location / Origin (I/V/R) / Open-Review-Closed status / Filter Owner |
+
+CAR (Corrective Action Report) has a 3-state status (Open / Review / Closed) vs. NCR's 2-state (Open / Closed).
+The "Filter Owner" field in QC-G-D allows filtering CARs by assigned owner — not present in the NCR list.
+
 ## Workflow
 
 ```
-PO receipt arrives  ->  QC-A: Create inspection record (BKQCMSTR)
-                    ->  QC-B: Enter inspection results (BKQCTRAN)
-                    ->  QC-C: Print certificate of compliance
-                    ->  QC-F: NCR workflow if rejection (ISNCR created)
+PO receipt arrives  ->  QC-A: Scrap/QC report (BKQCMSTR)
+                    ->  QC-B/C/D: Component scrap / CoC / detail reports
+                    ->  QC-F-A: Enter NCR if rejection (ISNCR created)
+                    ->  QC-F-D: Force-close NCR when resolved
+                    ->  QC-G-A: Escalate to CAR if corrective action required (ISCAR)
+For in-process testing:
+  QC-M: Define test method  ->  QC-S: Set specifications  ->  QC-R: Record results
 ```
 
 ## Integration
@@ -1027,7 +1066,7 @@ PO receipt arrives  ->  QC-A: Create inspection record (BKQCMSTR)
 - **[[module-PO|PO]]** — QC inspection triggers on PO receipt (QC-J intercept on PO-E)
 - **[[module-IN|IN]]** — items under QC hold are unavailable for issue until released
 - **[[module-WO|WO]]** — in-process QC can trigger per routing operation (OPQCDESC table)
-- **[[module-NCR|NCR/IS]]** — QC-F-A creates ISNCR; QC-F-B triggers ISCAR corrective action
+- NCR/CAR tables (ISNCR, ISCAR) are IS* custom tables; 74 NCRs live at i2, 0 CARs
 """,
 
 "JC": """
@@ -1079,9 +1118,10 @@ historical reference list rather than actively managed records.
 WO Status codes used in JC reports: C=Complete, X=Closed, F=Finished,
 R=Released, S=Started, I=In-Process (combined set from T7JCA/JCN/JCP DFMs).
 
-**T7JCENG.RWN** is the shared calculation engine (shown during JC report
-generation): Report Type, Sort/Subtotal By, Level of Detail, WO Status
-(e.status[1..5]), WO Source (e.source[1]), Labor Type fields.
+**T7JCENG.RWN** is the shared calculation engine invoked by most JC reports
+(displayed as "JC Engine / Processing Data / Please Wait" while computing).
+Its DFM shows: Report Type, Sort/Subtotal By, Level of Detail, WO Status
+(5-state filter), WO Source, Labor Type — all parameterized per calling report.
 
 **T7JCRM** — like SQLEXPORT, this is a Java JDBC-backed BI export tool:
 Host/Port/Name/Destination settings (T7JCRM.DFM confirmed), connects to
