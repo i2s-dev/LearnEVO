@@ -1278,7 +1278,14 @@ R=Released, S=Started, I=In-Process (combined set from T7JCA/JCN/JCP DFMs).
 **T7JCENG.RWN** is the shared calculation engine invoked by most JC reports
 (displayed as "JC Engine / Processing Data / Please Wait" while computing).
 Its DFM shows: Report Type, Sort/Subtotal By, Level of Detail, WO Status
-(5-state filter), WO Source, Labor Type — all parameterized per calling report.
+(5-state filter), WO Source, Labor Type/Shift — all parameterized per calling report.
+
+**T7JCENG DFM-confirmed Report Types** (Items.Strings): Labor Transactions /
+Overhead Transactions / Labor Efficiency / Production by WC / Production by
+Machine / Production by Tool / Standard Labor Hours — 7 distinct reports.
+**Multiple Setup** option: Y=Include setup time once per WO/Operation (first page
+only), N=include for every occurrence. Prevents double-counting setup hours
+when a WO is split across pages.
 
 **T7JCRM** — like SQLEXPORT, this is a Java JDBC-backed BI export tool:
 Host/Port/Name/Destination settings (T7JCRM.DFM confirmed), connects to
@@ -1299,6 +1306,56 @@ assigned, then shows:
 - **[[module-WO|WO]]** — WO header has a Job Code field; all WO cost
   transactions carry the job code forward
 - **[[module-GL|GL]]** — job costs can post to job-specific GL accounts
+""",
+
+"JO": """
+## What it does
+
+Jobs/Departments — cross-dimensional cost and revenue analytics. Unlike JC
+(which groups WOs under a simple job code), JO allocates transactions across
+a 4-way composite key: **Customer × Vendor × Department × Item**.
+
+45,863 ISJOB records (all blank STATUS) serve as the reference dimension list.
+T7JOANDA.RWN (1,456 KB) is the primary JO analytics program — a heavyweight
+Java-integrated analytics engine (T7JOANDA.DFM caption "Java Response").
+
+## 4-dimensional architecture (DFM-confirmed)
+
+`t7jobs.DFM` (compact 163×278px `fsStayOnTop` filter form): vld_jcust() /
+vld_jvend() / vld_jdept() / vld_jitem() — 4 dimension validators for:
+- **jcust** — Customer dimension
+- **jvend** — Vendor dimension
+- **jdept** — Department dimension
+- **jitem** — Product/Item dimension
+
+A JO "job" is not a sequential number — it is the intersection of these four
+dimensions. A transaction is assigned to JO by specifying which combination
+of customer/vendor/department/item applies.
+
+## Programs (DFM-confirmed)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| t7jobs.DFM | (compact filter) | Dimension filter selection — the JO selector sub-form |
+| T7JOANDA.DFM | Java Response | Primary JO analytics engine (Java-integrated, 1,456 KB binary) |
+| T7JODPSALES.DFM | New Screen | Java bridge launcher — Host/Port/Name/DSN settings; hint references T7Jtree.DFM (tree-based query layout) |
+
+T7SMJO = SM KPI dashboard integration (shows JO summary in the SM module scorecard).
+T7JODPSALES hint `C:\\TASPRO7\\DBA7\\T7Jtree.DFM` confirms it reuses the
+T7JTREE Java tree-browsing form rather than having its own layout.
+
+## Key tables
+
+| Table | Records | Purpose |
+|-------|--------:|---------|
+| `ISJOB` | 45,863 | Job dimension master (IS_JOB_CODE/DESC/STATUS) |
+| `ISJBSF` | 142 | Business scorecard metrics per job/period (143 fields) |
+
+## Integration
+
+- **[[module-JC|JC]]** — JC reports filter by job code; JO provides the dimensional
+  analysis layer on top of JC cost data
+- **[[module-SM|SM]]** — T7SMJO feeds JO summary metrics into the SM KPI dashboard
 """,
 
 "CS": """
@@ -4863,6 +4920,57 @@ appears to be a legacy/alternate email setup path.
 `EvoDCsetup.DFM` / `Evowkssetup.DFM` = "Create Workstation Setup" — Server Path,
 Date Format (dd/mm/yy or mm/dd/yy selector), Continue.
 `EVODCS.DFM` = DC screen (dynamic, no caption).
+
+## Reporting Bridges (JS) — DFM-confirmed 2026-07-01
+
+7 Java export bridge launchers (all LISTG60, all confirmed by DFM scan):
+
+| DFM | Bridge | Purpose |
+|-----|--------|---------|
+| T7JSACC.DFM | ACC | Accounting data export to Java/BI |
+| T7JSAIC.DFM | AIC | Inventory & Cost export |
+| T7JSAPBI.DFM | APBI | **Power BI** export — confirms Power BI integration |
+| T7JSASRS.DFM | ASRS | SRS (SQL Server Reporting Services?) export |
+| T7JSOI.DFM | OI | Order Inquiry export |
+| T7JSQL.DFM | SQL | SQL/generic export + Destination field |
+| T7JSettings.DFM | (settings) | Java bridge settings utility: Host/Port/Name/DSN; **Detect Settings** (auto-discover); **Test Settings**; **Generate Program** (builds a new TAS bridge program from template) |
+
+All launchers share identical UI: Host / Port / Name / Company DSN Settings / Save / Go.
+T7JODPSALES.DFM reuses the T7Jtree.DFM layout (tree-based job sales query bridge).
+
+## Rebuild Utilities (RE) — DFM-confirmed 2026-07-01
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| T7REBQC.DFM | Recalculate QC Qty | Recalculates QC on-hand quantities — Tag Items; Item Range; From Through Range selection |
+| T7REBSS.DFM | Rebuilding Stock Status | Rebuilds inventory stock status aggregate (progress display) |
+| t7rebwo.DFM | New Screen | Rebuild Work Order data — WO#/Job#/Item#/Status [SFRICX]; Active(A) or Archive(D) |
+| T7REINDEX.DFM | New Screen | Per-file reindex utility — Tag/Untag/Tag All/Untag All by File Name; Reindex Tagged |
+| t7redindexDD.DFM | Reindex Data Dictionary | Reindexes DDF tables: File Dict / File Loc / File Key / File Key Num / File DBF / Menu tabs |
+| t7ResetDFM.DFM | Reset DFM Settings | Resets user DFM customizations to defaults; "Resetting DFM" progress |
+| T7RemindRpt.DFM | CM-B-D | Reminder report — Event Date / Item# / Customer / Type ranges; Open/Dismissed/Both filter |
+| T7REPDEF.DFM | New Screen | Sales Rep definition maintenance — Label / Title; Add/Save/Delete |
+| T7REPLNK.DFM | New Screen | Sales Rep item-customer link — Rep# / Item# / Customer / Item Class; Sort By |
+| T7REPLNK1.DFM | New Screen | Rep link with Commission Rate — adds Commission Rate field to T7REPLNK |
+
+**REPDEF/REPLNK/REPLNK1** are Sales Rep commission structure programs (not reminder-related
+despite the T7RE* prefix). T7REPLNK1 confirms per-link commission rate overrides exist.
+
+## Field Information Base (FS) — DFM-confirmed 2026-07-01
+
+FIB is a 3-level hierarchy: Class → Program → Info+Employee.
+
+| DFM | Caption | Fields | Purpose |
+|-----|---------|--------|---------|
+| T7FSCLASS.DFM | New Screen | Class / Description | Class maintenance — BKFIBCLASS or ISFIBCL table |
+| T7FSEMP.DFM | New Screen | Rep # / Market Segment | Employee/Rep assignment — sales territory dimension |
+| T7FSINFO.DFM | New Screen | Contract / Program / Who | Info record maintenance — the bottom-level FIB record |
+
+All 3 DFMs share Add/Save/Delete/Exit/**Back** toolbar with "Back to the List of links" hint
+(Back navigates up one level in the FIB hierarchy).
+ISTS.EDATE = LGS integration confirmed (FIB connects to LGS garment shipping schedule).
+FIB Class is also tied to DFM form names (T7FSCLASS reads DFM.H/DFM_CAPTION/DFM_NAME/DFM_OBJNAME)
+suggesting FIB classes correspond to EvoERP form identifiers.
 """,
 
 "J7": """
