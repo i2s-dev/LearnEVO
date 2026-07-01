@@ -2659,35 +2659,39 @@ Tools / Admin Utilities — the EVO system maintenance and administration module
 Covers data backup/restore, software update application, data purging, company
 setup, and system-wide configuration tasks.
 
-## Menu operations
+## Menu operations (Pass 494, BKMENUSU.TXT-confirmed)
 
-| Code | Operation | Notes |
-|------|-----------|-------|
-| TA-A | Rebuild Indexes | Rebuilds Btrieve index files for a table (fixes corrupted indexes) |
-| TA-B | Rebuild All Indexes | Bulk index rebuild across all tables |
-| TA-C | Pack Tables | Removes deleted-record slots from Btrieve files |
-| TA-D | Pack All Tables | Bulk pack operation |
-| TA-E | Table Statistics | Counts records, reports file sizes |
-| TA-F | File Conversion | Migrates Btrieve file format versions |
-| TA-G | Initialize Tables | Resets a table to empty (CAUTION: destructive) |
-| TA-H | Table Copy | Copies a table to a backup file |
-| TA-I | Company Setup | Configures company name, address, fiscal year, license |
-| TA-J | Import Data | Processes `.IMP` import definition files |
-| TA-K | Export Data | Exports table data to flat files |
-| TA-L | Purge Data | Deletes old transactions by date cutoff |
-| TA-M | Archive Data | Moves old transactions to archive tables |
-| TA-N | Restore Data | Restores data from backup |
-| TA-O | EVO Backups | Creates ZIP snapshot of all Btrieve data files |
-| TA-P | Apply Updates | Applies `.UPD` patch packages to the database |
+"TAS" group in BKMENUSU.DBF = System Configuration. `.INT` entries are TAS Pro
+built-in intrinsic commands (part of tp7runtime.exe, not separate files).
+
+| Code | Description | Program | Type |
+|------|-------------|---------|------|
+| TA-A | Run TAS Program | RUNPRG.INT | intrinsic |
+| TA-B | Change Company Code | GETCO.INT | intrinsic |
+| TA-C | Set Configuration | CONFIG.INT | intrinsic |
+| TA-D | Maintain Database | WTASDATAM.RWN | RWN |
+| TA-E | Initialize Database | WTASINIT.RWN | RWN |
+| TA-F | Maintain Location File | WTASFLOC.RWN | RWN |
+| TA-G | Maintain Menu Access Records | WBKMENUSETUP.RWN | RWN |
+| TA-H | Maint Menu Access - End User | WBKMENUSUEU.RWN | RWN |
+| TA-I | Update File Structures | WTASMERGE.RWN | RWN |
+| TA-M | RTM Editor | REPORTS.INT | intrinsic |
+| TA-N | Program Scheduler | evoscheduler.rwn | RWN |
+| TA-O | Backup Utility | EvoERPbackup.rwn | RWN |
+| TA-P | Change Password | PASSWORD.INT | intrinsic |
+| TA-Q | Change Logo Image | Evologo.rwn | RWN |
+| TA-R | SQL Editor | **T7JSQL.RWN** | RWN |
+| TA-S | Data Dictionary Check | T7DDCHECK.RWN | RWN |
+
+**Note on TA-R:** Prior documentation incorrectly identified TA-R as QUERYEXECUTE.
+BKMENUSU.TXT confirms TA-R = T7JSQL.RWN ("SQL Editor"). QUERYEXECUTE is
+QU-F ("Query Executor") under the Queries menu — a completely different program.
+
+**Note on TA-M (RTM Editor):** Prior doc said this invokes an external program.
+BKMENUSU.TXT confirms it is REPORTS.INT — a TAS Pro built-in intrinsic command,
+not a separate file.
 
 ## Key concepts
-
-- **Btrieve file repair**: TA-A/B/C/D are the first-line response to any
-  "file error" or "status 22" Btrieve error — index corruption is common.
-- **`.UPD` update files**: binary Btrieve-format patch packages delivered by
-  EVO Support; TA-P reads and applies them. See [[module-UP|UP]] for detail.
-- **Backup strategy**: TA-O creates a local ZIP; for network backup, the
-  `\\\\i2s109-solidcrm\\DBAMFG$` folder should be backed up at OS level.
 
 ## DFM-confirmed tools (WTAS* family)
 

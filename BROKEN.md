@@ -8,6 +8,29 @@ without explicit reasoning for why a different outcome is expected now.
 
 ---
 
+## Mistake M-005 — TA-R documented as QUERYEXECUTE; BKMENUSU.TXT confirms T7JSQL.RWN
+
+**Date:** 2026-07-01 (Pass 494)
+**Status:** ✅ FIXED
+
+**Symptom:** modules.py TA section and scorecard stated TA-R = QUERYEXECUTE(26p, ISDRILL)
+("Query Executor"). This is wrong.
+
+**Root cause:** Pass 112 RWN pool scan apparently matched TA-R to QUERYEXECUTE without
+cross-checking against the actual menu DBF. QUERYEXECUTE is QU-F ("Query Executor") under
+the Queries menu, not TA-R.
+
+**Fix (worked):** BKMENUSU.TXT (canonical menu DBF dump from 2004.1\Drill\) confirms:
+- TA-R = "SQL Editor" = T7JSQL.RWN
+- QU-F = "Query Executor" = queryexecute.rwn
+modules.py TA section menu table replaced with BKMENUSU-confirmed entries.
+
+**Lesson:** Always cross-reference RWN pool scan results against BKMENUSU.DBF before
+documenting menu code → program mappings. The pool scan identifies candidate programs
+but doesn't confirm which menu code calls them.
+
+---
+
 ## Mistake M-004 — QC CAR status documented as 3-state, DFM confirms 4-state
 
 **Date:** 2026-07-01 (Pass 492)
