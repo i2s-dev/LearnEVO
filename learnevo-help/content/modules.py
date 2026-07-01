@@ -4445,10 +4445,17 @@ notes.
 | IS_NOTE_CONTACT | Contact reference |
 | IS_NOTE_ALPHA / EXTRA | Extra fields |
 
-EvoNotes.DFM confirms: "KILL" button (delete), Contact, View Current/Archive,
-search (EvoNoteSearch.DFM: string search, Current/Archived/Both, Match Case).
-EvoNotesARCH.DFM: archive/restore by date range. EvoNotesRpt.DFM: notes report
-by Event Date + Item# range.
+EvoNotes.DFM: KILL button (delete), Contact, View Current/Archive, Search.
+Notes sub-forms fully confirmed:
+
+| DFM | Fields |
+|-----|--------|
+| EVOENOTES.DFM | Entry: Date, Time, Who, Type, View, Alert, Notes for:, Contact, Save, Exit |
+| EvoNoteSearch.DFM | Search: String, Current/Archived/Both, Match Case |
+| EvoNotesARCH.DFM | Archive/Restore: Note Date From/Thru, Item# From, CM Customer From |
+| EvoNotesPrt.DFM | Print selection: 6 note-type checkboxes (Box 1–6), Print Note Types |
+| EvoNotesRpt.DFM | Report: Event Date From/Thru, Item#/CM Customer/Vendor/User Name ranges |
+| ENPM.DFM | "Processing Memo…" — progress dialog while note memo is saved |
 
 ## Links system (EvoLinks)
 
@@ -4462,17 +4469,43 @@ Key fields: IS_LNK_UID, IS_LNK_LINK (file path/URL), IS_LNK_APP (open-with app),
 IS_LNK_GLOBAL, IS_LNK_OPENWITH, IS_LNK_DATE, IS_LNK_NOTE (annotation),
 IS_LNK_WHO, IS_LNK_ATYPE (attachment type), IS_LNK_PRIVATE, IS_LNK_SORT.
 
-EvoLinks.DFM confirms: Image Preview panel, File, View Current, KILL.
-EvoELinks.DFM: "Entering Links" panel (Date, Who, Link, File).
-EvoLinkCVT.DFM: utility to convert old image links to EvoLinks format.
+EvoLinks.DFM: viewer — KILL (delete), Image Preview, File, View Current/Archive, Links for:, ID2.
+EvoELinks.DFM: entry form — Date, Who, Link, File, Sort#, **Use Global Path**, Image Preview,
+Alert (per-link alert flag), Item Alert, View Only, **SDS** (Safety Data Sheet tag),
+Printing (printable flag), Document Type — rich metadata per link.
+EvoLinkCVT.DFM: "Evo Links CVT" — "Converting Image Links to Evo Links" migration progress.
+
+`imageinfo.DFM` — attached image GPS viewer: File Name, Date, Time, **Latitude, Longitude**,
+Get (reads EXIF GPS from file), Map button. Geotagged photos can be attached and mapped
+directly from within EvoERP via EvoLinks.
 
 ## Reminders & Alerts
 
 **ISREMIND — 0 records / 24 fields (not used at i2 Systems)**
 
 evoreminders.DFM: pop-up panel — ReminderMessage, Dismiss, Reschedule,
-Dismiss All. evorereminders.DFM: Snooze — "Remind me again in X [time unit]".
+Dismiss All, Snooze All. evorereminders.DFM: Snooze — "Remind me again in X [time unit]".
 evoalerts.DFM: system broadcast alerts — AlertMessage, Ignore, View.
+REMREM.DFM: minimal "Reminder..." popup (bare notification form).
+
+`dayrem.DFM` — "Day Time Reminders" — full reminder entry form:
+Time, Subject, Notes, Item, Cust, Vend, File/URL, Remind me X [unit] before this event,
+Date, Type, Contact, Phone, Email Address, Add button.
+
+**Calendar DFMs:**
+
+| DFM | Caption / Purpose |
+|-----|------------------|
+| calDDsel.DFM | "Calendar Drill Down" — choose Drill Down Type: **Est. Receipt Date** or **Vendor Promise Date** — selects which PO date field the calendar drills on |
+| caldrillbt.DFM | Calendar grid (Sun-Sat week view) with Previous/Next navigation |
+| CALDRILL.DFM | Calendar grid variant (no navigation buttons) |
+| calrem.DFM | Calendar with Previous/Next/Print/Today/**Export to Google Calendar**/Closed — the reminders calendar with Google Calendar integration |
+| CALREMGC.DFM | Google Calendar export dialog: Event Date From/Thru, Export Reminders filter (All / Open Only / Dismissed Only), Export button |
+| CALGRIDDRILL.DFM | "Calendar Drill Downs" — grid of scheduled items for the selected day |
+
+The **Google Calendar export** (`calrem.DFM + CALREMGC.DFM`) allows EvoERP reminders
+to be pushed to a user's Google Calendar as events. Filter: export all, only open, or
+only dismissed reminders within a date range.
 
 ## ERP Scheduler
 
@@ -4508,9 +4541,10 @@ BKGLCOA, WORKORD for live aggregation.
 
 ## Master Inquiry (EvoCSI)
 
-EvoCSI.DFM: "Evo Master Inquiry" — single entry point for cross-module
-lookup by Customer Code, Item Number, SO Number, or Invoice Number.
-Resolves the question "where does this number appear?" across all modules.
+`EvoCSI.DFM` — "Evo Master Inquiry" — cross-module lookup by any of these key types:
+Customer Code, Item Number, SO Number, Invoice Number, Vendor Code, PO Receipts,
+PO Number, WO Number. Resolves "where does this number appear?" across all modules.
+Eight lookup dimensions confirmed from DFM scan.
 
 ## Password management
 
@@ -4572,11 +4606,73 @@ SO# and Customer). Used to view open SO delivery commitments by calendar period.
 | EvoERPDrillM.DFM | "Drill Down Menus" — Source Field, Target Field, Menu Text, Key, File, Child/Parent Grid; configures cross-record navigation |
 | classic2evonts.DFM | "Classic 2 Evo Notes" — migrates legacy note records to the ISNOTES format |
 
+## UDF (User Defined Field) editors
+
+`udfedit.DFM` through `udfedit5.DFM` — six "Enter Value" dialogs, one per UDF
+data type/length. When a user edits a UDF field in any EvoERP form, the appropriate
+udfedit variant pops up based on the field's type. Caption is just "Enter Value" for
+all six — the difference is in the underlying component type (text, numeric, date, memo).
+
+## Saved Search/Sort/Filter (SSS)
+
+`SSS.DFM` = "Drill Filters" — the persistent filter manager linked to the SSSFD button
+in WBKLOOKUP. `SSSFD.DFM` = "Sub String Search" with Clear and Evo Notes buttons —
+the free-text substring search panel within the lookup engine.
+
+## Image/photo viewer
+
+`imageinfo.DFM` — "New Screen" — displays photo metadata: File Name, Date, Time,
+**Latitude, Longitude**, Get, Map button. EvoERP can display GPS coordinates from
+geotagged images attached via EvoLinks. Map button presumably opens a map viewer.
+`Imageprint.DFM` — "Printing Linked Documents" — progress dialog for printing linked files.
+
+## TAS Premier 7i native charts (non-Java)
+
+TAS Premier 7i has built-in chart rendering (not requiring the Java EvoPVT.jar):
+
+| DFM | Caption | Series |
+|-----|---------|--------|
+| chartBarModal.DFM | "Bar Chart Values & Captions" | 3 series with color, Values/Label/Caption |
+| chartLineModal.DFM | "Line Chart Values & Captions" | 2 series + Point Labels |
+| ChartPieModal.DFM | "Pie Chart Values & Captions" | 1 series + Labels + Caption |
+| ChartDemo.DFM | "Addsum TAS 7i Chart Demo Program" | Bar chart type / Format / Enter Values / Print |
+
+These are TAS 7i's own VCL chart dialogs — independent of the Java BI layer.
+
+## WO-related utilities
+
+`ACT7SHKNOTE.DFM` — WO sequence note entry: WO Number, Sequence, Note, Save, Exit.
+Used to attach free-text notes to individual WO operations (sequence steps).
+
+`EVOERPUPDW.DFM` — "Archive Work Orders" — Archive Closed WO as of [date]. Despite
+the EVOERPUPD prefix (suggesting an update), this is a WO archiving tool.
+
+## T6 → T7 migration tools
+
+| DFM | Purpose |
+|-----|---------|
+| T6MENUUTIL.DFM | "Evo ~ ERP T6 Program Names" — remap T6 program names to T7 equivalents |
+| dbamenu_LOGIN.Dfm | DBA Manufacturing era login form (pre-EvoERP, no caption) |
+| dbamenu_SELCOMP.Dfm | DBA Manufacturing company selector (pre-EvoERP, no caption) |
+| ht6close.DFM | T6 WO close confirmation dialog |
+| ht6inc.DFM | T6 receiving dialog (Item, Qty, Process) |
+| ht6so.DFM | T6 Sales Order creation (PO#, Item, Desc, Qty) |
+| ht6wo.DFM | T6 Work Orders viewer (Start, End) |
+
+These T6-era forms are still present on the share but are not invoked in normal T7/EvoERP operation.
+
+## Email server config
+
+`EMAILREL4.DFM` — another SMTP configuration form (SMTP, Email, Name, Port, TestEmail) —
+appears to be a legacy/alternate email setup path.
+
 ## Data Collection workstation menu
 
-EvoDCmenu.DFM: "Data Collection Menu" with Prog1–Prog4 configurable buttons.
-EvoDCmenu2.DFM: DC Menu with Main/Exit/Settings/Help.
-EvoDCsetup.DFM: "Create Workstation Setup" (Server Path, Date Format).
+`EvoDCmenu.DFM` = "Data Collection Menu" with Prog1–9 + Main/Exit/Settings/Help buttons.
+`EvoDCmenu2.DFM` = DC Menu with Main/Exit/Settings/Help/About.
+`EvoDCsetup.DFM` / `Evowkssetup.DFM` = "Create Workstation Setup" — Server Path,
+Date Format (dd/mm/yy or mm/dd/yy selector), Continue.
+`EVODCS.DFM` = DC screen (dynamic, no caption).
 """,
 
 "J7": """
