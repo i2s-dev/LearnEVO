@@ -320,59 +320,88 @@ line-item detail, price display, etc.).
 ## What it does
 
 Purchase Orders manages procurement — creating POs, receiving against
-them, and feeding `AP` for payment. 29 menu ops.
+them, and feeding AP for payment. 29 menu operations covering the full
+procurement lifecycle: RFQ → quote → PO → receipt → AP voucher → check.
 
 ## PO lifecycle
 
 ```
-RFQ (optional, RF-A)
-  ↓ quoted
-Quote (PO-E)
-  ↓ accepted
-Purchase Order (PO-A)
-  ↓ approved
-Expected receipt (PO-C)
-  ↓ received physically
-Receipt (PO-C) → inventory
-  ↓ invoiced by vendor
-Voucher (AP-B) linked to PO
-  ↓ approved & paid
-Check (AP-H)
+RF-A / PO-E-A Request for Quote (optional)
+  ↓ vendor responds
+PO-G Convert RFQs → Purchase Order
+  ↓ (or PO-A Enter PO directly)
+PO-A Purchase Order created
+  ↓ approved (if approval limits configured)
+PO-C Receive Purchase Orders → inventory on-hand incremented
+  ↓ PO-J-A Print Receipt Traveler (for QC inspection path)
+PO-J-C Enter Inspection Buyoffs (QC accepts/rejects received qty)
+  ↓ QC release
+AP-B Enter AP Voucher → linked to PO via BKAP_POL_PONM
+  ↓ approved & checked
+AP-H Print Checks → posted to GL
 ```
-
-## Drop-ship POs
-
-POs created from a drop-ship SO line link back to `BKSOPO`. When
-vendor ships direct to customer, the PO receipt simultaneously closes
-the SO line.
-
-## Approval workflow
-
-If approval limits are configured (`BKAPAPO.BKAP_APO_APRV_*`), POs
-over a threshold need approval before receipt.
 
 ## Key tables
 
-- `BKAPPO` — PO header
-- `BKAPPOL` — PO lines
-- `BKAPAPO` — APo (approved POs)
-- `BKAPAPOL` — APo lines
-- `BKAPHPO` / `BKAPHPOL` — History
+| Table | Contents | Live count (i2) |
+|-------|----------|----------------|
+| `BKAPPO` | Open PO headers (58 fields) | 2,814 |
+| `BKAPPOL` | Open PO lines (38 fields) | 25,022 |
+| `BKAPAPO` | Archived PO headers | 66,098 |
+| `BKAPAPOL` | Archived PO lines | 278,089 |
+| `BKAPHPO` | Historical PO headers | 77,780 |
+| `BKAPHPOL` | Historical PO lines (has .XLB blob file) | 325,518 |
 
-## Receiving
+Total POs ever created at i2: ~146,700 (open + archived + historical).
 
-`PO-C` walks the receiver through:
-1. Select PO or blanket
-2. Pick lines being received
-3. Enter actual quantity (defaults to ordered, override for partial)
-4. Enter lot / serial if applicable
-5. Post → inventory increment + accrual GL entry
+Key header fields (`BKAPPO`): `BKAP_PO_NUM` (PO#, PK), `BKAP_PO_VNDCOD`/`VNDNME`
+(vendor), `BKAP_PO_SHPCOD`/`SHPNME` (ship-to location), `BKAP_PO_TERMD` (payment
+terms), `BKAP_PO_ENTBY` (entered by user).
+
+Key line fields (`BKAPPOL`): `BKAP_POL_PONM` (PO#, FK), `BKAP_POL_CNTR` (line#),
+`BKAP_POL_PCODE`/`PDESC` (item/description), `BKAP_POL_PQTY` (ordered qty),
+`BKAP_POL_PPRCE` (unit price), `BKAP_POL_PDISC` (discount %), `BKAP_POL_ERD`
+(expected receipt date).
+
+## Receiving (PO-C)
+
+1. Select PO number (or scan barcode)
+2. Pick lines being received (partial receipts supported)
+3. Enter actual quantity received (defaults to ordered qty)
+4. Enter lot # and/or serial # if item is lot/serial-tracked
+5. Select bin location
+6. Post → `BKINVLOC` on-hand incremented; accrual GL entry posted
+
+## QC path (PO-J)
+
+For items requiring incoming inspection:
+- `PO-J-A` prints a receipt traveler (work order-style routing card)
+- `PO-J-C Enter Inspection Buyoffs` records accepted/rejected qty into
+  `BKQCMSTR` (receive event) + `BKQCTRAN` (per-item QC detail)
+- `PO-J-B Print Inventory in QC` shows what is still awaiting inspection
+
+## Drop-ship POs
+
+POs created from a drop-ship SO line link back to `BKSOPO` via the
+BKAP_PO_SONUM field. When vendor ships direct to customer, the PO
+receipt simultaneously closes the SO line without touching inventory.
+
+## Approval workflow
+
+If approval limits are configured, POs over a dollar threshold require
+approval (BKAP_PO_APRV flag) before they can be received. Configured
+in PO or AP defaults.
 
 ## Integration
 
-- **AP** — picks up received-unvouchered for payment
-- **IN** — receipt increments on-hand
-- **GL** — receipt: Inventory ↔ Accrued AP; Voucher: Accrued AP ↔ AP
+| Module | Relationship |
+|--------|-------------|
+| `AP` | AP-B picks up received-not-vouchered PO lines for payment |
+| `IN` | PO-C receipt increments BKINVLOC on-hand |
+| `GL` | Receipt: Inventory ↔ Accrued AP; Voucher: Accrued AP ↔ AP |
+| `QC` | PO-J-C writes BKQCMSTR/BKQCTRAN; QC-A/QC-E report off PO receipts |
+| `MR` | MRP creates PO suggestions; PO delivery dates feed MR due-date calc |
+| `SO` | Drop-ship SOs generate linked POs via BKSOPO |
 """,
 
 "WO": """
@@ -568,66 +597,64 @@ reopen a period via `AM-A`.
 "PR": """
 ## What it does
 
-Payroll. 29 menu ops, 16 tables, and the table with the **most
-fields of any** (`BKPRGLFL` has 664 fields for payroll GL mapping).
+Payroll manages the full US payroll cycle: employee master, time entry,
+tax calculation, check printing, GL posting, and year-end W-2/941 filing.
+29 menu operations, 16 dedicated tables. Holds the **largest table in
+EvoERP by field count** — `BKPRGLFL` has 664 fields mapping payroll
+cost components to GL accounts.
 
-## Scope
+## Key tables
 
-Full US-based payroll:
+| Table | Purpose | Live count (i2) |
+|-------|---------|----------------|
+| `BKPRMSTR` | Employee master (384 fields) | 305 employees |
+| `BKPRCURP` | Current period payroll entries | 17 (current cycle) |
+| `BKPRHISTP` | Payroll history | multi-year |
+| `BKPRTCFG` | Tax configuration (205 fields) | 1 record |
+| `BKPRW2` | W-2 staging | 0 (pre-year-end) |
+| `BKPRGLFL` | GL distribution mapping (664 fields) | 1 record |
+| `BKPRSTAB` | Tax rate tables | 1 record |
 
-- Employee master (`BKPRMSTR`, 384 fields)
-- Time & attendance integration (from DC or external)
-- Federal / state / local tax calc (`BKPRTCFG`, `BKPRW2`)
-- Deductions (health, 401k, garnishments)
-- Direct deposit
-- Check printing
-- Quarterly 941, year-end W-2
-- GL distribution per employee / per cost center
-
-## Workflow
+## Payroll cycle workflow
 
 ```
-PR-A Enter Employees
+PR-A Enter Employees → BKPRMSTR (name, address, tax status, deductions,
+  bank routing for direct deposit, GL cost center)
   ↓
-PR-B Enter Time (or import from DC)
+PR-B Enter Time → BKPRCURP (hours per employee per period)
+  (or import from DC shop-floor time scans, or from WO-F Enter Labor)
   ↓
-PR-C Calculate Payroll
+PR-C Calculate Payroll → compute gross, taxes, deductions, net
+  Federal withholding + SS (6.2%) + Medicare (1.45%) + state + local
+  Deductions: health, 401k, garnishments
   ↓
-PR-D Print Pre-check Register (proof)
+PR-D Print Pre-Check Register → proof listing; verify before printing
   ↓
-PR-E Print Checks / DD advices
+PR-E Print Checks / DD Advices → physical checks or ACH direct-deposit file
+  (ACH via J7ADTNACHA or custom variant; bank routing in BKPRMSTR.BKPR_DD_*)
   ↓
-PR-F Post to GL
+PR-F Post to GL → BKPRGLFL maps each pay component to GL accounts
   ↓ quarterly
-PR-G Print 941
+PR-G Print 941 → federal quarterly payroll tax return
   ↓ annually
-PR-H Print W-2
+PR-H Print W-2 → BKPRW2 staging → W-2 forms
 ```
 
-## Tax calc
+## Tax calculation
 
-Uses the `BKPRTCFG` table (205 fields) plus federal tax tables
-(shipped with updates) to compute per-paycheck:
-- Federal withholding
-- Social Security (6.2%)
-- Medicare (1.45%)
-- State income tax (per state rules)
-- Local tax (where applicable)
-- SUTA, FUTA employer portions
+`BKPRTCFG` (205 fields) + federal/state rate tables (`BKPRSTAB`) drive
+withholding. Rates updated via `EvoPRupd.RWN` when IRS or state changes
+them. Supports: federal, Social Security, Medicare, state income tax,
+local tax, SUTA, FUTA (employer portions).
 
-Rates are updated via `EvoPRupd.RWN` when the IRS / state changes
-them.
+## Integration
 
-## Direct deposit
-
-Bank info per employee in `BKPRMSTR.BKPR_DD_*`. ACH file generation
-format via `J7ADTNACHA` or custom variants.
-
-## Related
-
-- [[module-GL]]
-- [[module-CS|CS - Commissions]] — posts to PR for payout
-- [[module-DC|DC]] — labor data source
+| Module | Relationship |
+|--------|-------------|
+| `GL` | PR-F posts payroll journal entries; BKPRGLFL maps components to accounts |
+| `DC` | Shop-floor time scans in BKDCLAB* feed PR-B time entry |
+| `CS` | Commissions module can post to payroll for salesperson payout |
+| `WO` | WO-F Enter Labor also writes time records used by PR |
 """,
 
 # Short stubs for remaining modules - filled in by build script via schema/menu data
@@ -2561,35 +2588,57 @@ See [[module-FO|FO]] for the full Features and Options module documentation.
 "QU": """
 ## What it does
 
-Queries & Reports — the interactive inquiry and cross-module reporting hub.
-Contains master inquiry screens, calendar drill-downs, business status dashboards,
-quick grid lookups, and a live SQL query executor. The primary tools for
-non-reporting-module data lookup.
+Queries & Reports is the interactive inquiry and cross-module reporting hub.
+It contains master inquiry screens, calendar drill-downs, business status
+dashboards, quick grid lookups, and a live SQL query executor. This is the
+primary module for ad-hoc data lookup when a specific module's built-in
+reports don't answer the question.
 
 ## Menu operations
 
-| Code | Operation | Program |
-|------|-----------|---------|
-| QU-A | Master Inquiry | t7csi.rwn |
-| QU-B | Calendar Drill Down | caldrillbt.rwn |
-| QU-C | Calendar Summary Report | isshpcal2.rwn |
-| QU-D | Business Status (dashboard) | t7jbs.rwn (Java) |
-| QU-E | Quick Grid Lookup | t7qgrid.rwn |
-| QU-F | Query Executor (live SQL) | queryexecute.rwn (Java JDBC) |
+| Code | Operation | Program | What it does |
+|------|-----------|---------|-------------|
+| QU-A | Master Inquiry | t7csi.rwn | Cross-module grid: search items, customers, vendors, WOs, SOs, POs by any key field |
+| QU-B | Calendar Drill Down | caldrillbt.rwn | Click any date to see what WOs/SOs are scheduled for that day |
+| QU-C | Calendar Summary Report | isshpcal2.rwn | Printable monthly calendar of scheduled shipments / WO completions |
+| QU-D | Business Status (Java) | t7jbs.rwn | KPI dashboard: open orders, backlog value, inventory turns |
+| QU-E | Quick Grid Lookup | t7qgrid.rwn | Configurable quick-search grids for common lookups |
+| QU-F | Query Executor (live SQL) | queryexecute.rwn | Ad-hoc Pervasive SQL against any table via JDBC |
 
-## Notable programs
+## QU-F: Live SQL Query Executor
 
-`queryexecute.rwn` launches `QUERYEXECUTE.RWN` which calls `EvoPVT.jar`
-directly via JAVA.NAME to run arbitrary SQL against the Pervasive database via
-JDBC. This is the only user-facing ad-hoc SQL interface in EVO.
+The most powerful tool in the QU module. `QUERYEXECUTE.RWN` launches
+`EvoPVT.jar` directly (via JAVA.NAME) to run arbitrary SQL against the
+Pervasive database via JDBC. This is the **only user-facing ad-hoc SQL
+interface** in EVO — all other reports are fixed RTM templates.
 
-`t7jbs.rwn` launches the Java Business Scorecard (`ISJBSF` table, 143 fields)
-— a KPI dashboard summarizing open orders, backlog, inventory value, etc.
+Use cases: custom data extracts, verifying table contents, building
+one-off reports that don't exist in the standard menus.
+
+Access restriction: typically limited to IT/admin users via PS-B security
+levels because raw SQL can read any table.
+
+## QU-D: Business Status Dashboard
+
+`ISJBSF` table (143 fields) stores the KPI metrics displayed in the
+Java Business Scorecard. The scorecard summarizes: open SO backlog,
+WO work-in-progress value, inventory on-hand value, on-time delivery
+%, and other business metrics. Updated on schedule or on-demand.
+
+## QU-A: Master Inquiry Grid
+
+`t7csi.rwn` provides a unified search grid across modules. You can look
+up an item number and see: on-hand qty, open SOs, open POs, open WOs,
+current BOM, and routing — all from a single inquiry. This is the
+"where-is-my-stuff" tool for production and customer service.
 
 ## Integration
 
-- **[[module-SU|SU]]** — SU-A/D configures the grid layouts and drill-down menus used here
-- **[[module-RT|RT]]** — QU-B/C use calendar/schedule reports built on RTM templates
+| Module | Relationship |
+|--------|-------------|
+| `SU` | SU-A/D configures the grid layouts and drill-down column sets |
+| `RT` | QU-B/C calendar reports use RTM report templates |
+| `All` | QU-F SQL executor can query any of the 659 registered tables |
 """,
 
 "AB": """
