@@ -3394,6 +3394,30 @@ bands. **"Only show color for WOs that do NOT have any Open, Posted or UnPosted 
 limits color alerts to WOs not yet started. Filters: Start Date From/Thru,
 Finish Date From/Thru, WO Class Code From. Items Y/N/P.
 
+## DFM-confirmed SH program inventory (Pass 490, 2026-07-01)
+
+The SL module has at least 13 programs (SH-A through SH-O, not all letters used):
+
+| DFM | Caption | Function |
+|-----|---------|----------|
+| T7SHA.DFM | SH-A | WO Schedule Viewer: WO/Item/Auto-entry [ON/OFF]/Priorities 1-3 |
+| T7SHB.DFM | SH-B | WO Schedule Viewer variant: WO/Start Date/Finish Date/Auto-Entry OFF/Back (same viewer pattern as SH-A) |
+| T7SHC.DFM | SH-C | Work Center Capacity Entry: WC/Dept/Total Hours Per Day/% Utilization/Total Shift Hours/Outside Processing? |
+| T7SHE.DFM | SH-E | WO Dispatch/Schedule Generation: Action [Generate New/Reprint Prior]; Sort by [Due Date/Work Order No/Critical Ratio]; "Labor Data has been Entered & Posted up Thru" status |
+| T7SHF.DFM | SH-F | WO Filter Report: Status Codes [FR]/WO#/Start Date/Finish Date/Job#/WO Class/Priority [1-9]/Planner Code ranges |
+| T7SHG.DFM | SH-G | WO Schedule Report: WO STATUS/CLASS/Included Classes/PRIORITY/Sort By/Customer/Start/Finish Date/Planner Code |
+| T7SHH.DFM | New Screen | WO Filter Form: WO#/Start Date/Finish Date/Planner Code/Item#/Customer/Status Codes |
+| T7SHI.DFM | SH-I | Color-Coded WC Schedule Report: Elapsed Start Date Color/Background Color/"Only show color for WOs Not Started on Time"; WC/Customer/Start/Finish Date ranges |
+| T7SHJ.DFM | SH-J | WO Schedule Report: WO STATUS/CLASS/PRIORITY/Sort By/Customer/Start/Finish/Planner (similar to SH-G) |
+| T7SHP.DFM | SH-P | Priority Color Report: 7 color zones/X-Y day thresholds (see details above) |
+| T7SHM.DFM | SH-M | Item Schedule: Item#/Desc/Qty/Start Date/Lead Time/Est Finish/Priority 1/Queue Times |
+| T7SHN.DFM | SH-N | Part Planning: PART TYPES/Item#/Item Class/Item Category/Planner Code/Cycle Code/Calculate using |
+| T7SHO.DFM | SH-O | WC Report: Work Center From/Thru; Page Break between Work Centers? |
+| T7SHIPRTM.DFM | New Screen | User RTM Assignment: User/RTM Name/Add/Delete/Back; "Back to the List of links" — assigns per-user RTM report templates for SH reports |
+
+**Critical Ratio** sort order in SH-E = classic MRP dispatch rule: CR = (Time remaining) / (Work remaining),
+where CR < 1 means late, CR = 1 means on-time, CR > 1 means slack.
+
 ## Integration
 
 - **[[module-SH|SH]]** — SL programs are the implementation of SH scheduling menu items
@@ -4258,6 +4282,13 @@ Vendors Number / Manufacturers / Customers X-Ref sub-tabs — used in handheld i
 Form Name, Security Level, Start At End, Key Data, Sort Keys — configures which columns
 appear in each lookup popup and how it sorts. Accessed by SU/SM admins.
 
+`WBKLKPMEMO.DFM` — "Edit Memo Field": Save/Cancel — inline memo editor invoked when a
+lookup field contains a long text value (e.g., note or description over one line).
+
+`WBKLPRINT.DFM` — "Order Printing": Print Acknowledgements / Print Packing Slips /
+Print Invoices / Go — quick batch-print dialog launched from the SO lookup to print
+multiple document types for the selected order in one step.
+
 `GetAlphaGen.DFM` — minimal 1-field text input (GAG Caption, GAGLABEL, Cancel) —
 used wherever a single string prompt is needed without a full form.
 
@@ -4740,17 +4771,21 @@ notes.
 | IS_NOTE_CONTACT | Contact reference |
 | IS_NOTE_ALPHA / EXTRA | Extra fields |
 
-EvoNotes.DFM: KILL button (delete), Contact, View Current/Archive, Search.
-Notes sub-forms fully confirmed:
+EvoNotes DFM suite fully confirmed (Pass 490, 2026-07-01):
 
-| DFM | Fields |
-|-----|--------|
-| EVOENOTES.DFM | Entry: Date, Time, Who, Type, View, Alert, Notes for:, Contact, Save, Exit |
-| EvoNoteSearch.DFM | Search: String, Current/Archived/Both, Match Case |
-| EvoNotesARCH.DFM | Archive/Restore: Note Date From/Thru, Item# From, CM Customer From |
-| EvoNotesPrt.DFM | Print selection: 6 note-type checkboxes (Box 1–6), Print Note Types |
-| EvoNotesRpt.DFM | Report: Event Date From/Thru, Item#/CM Customer/Vendor/User Name ranges |
-| ENPM.DFM | "Processing Memo…" — progress dialog while note memo is saved |
+| DFM | Caption | Function |
+|-----|---------|----------|
+| EvoNotes.DFM | Evo Notes | Main editor (LISTG60 grid): KILL(delete)/Contact/View Current/View Archive/Search toolbar; hints: Add New Note/Edit Note/Delete Note/Copy in a new Note/Select Note |
+| EVOENOTES.DFM | Entering Notes | Per-entity popup entry: Date/Time/Who/Type/View/Alert/Notes for:/Contact/Save/Exit |
+| EvoNoteSearch.DFM | Evo Notes Search | Full-text search: String to search for/Search Current-Archived-Both/Match Case |
+| EvoNotesARCH.DFM | Evo Notes | Archive/Restore: Note Date From/Thru/Item# From/CM Customer From/Process/Settings |
+| EvoNotesPrt.DFM | Evo Notes Selection | Print: Box 1–6 display areas/Note Types/Print Note Type(s)/Save Settings |
+| EvoNotesRpt.DFM | Evo Notes | Report: Event Date From/Thru/Item#/CM Customer/Vendor/User Name ranges/Print/Settings |
+| ENPM.DFM | Processing Memo… | Progress dialog during memo save |
+| evoreminders.DFM | Evo Reminders | Reminder popup: ReminderMessage/Dismiss/Reschedule/Exit/Dismiss All/Snooze All |
+| evorereminders.DFM | Reschedule | Snooze interval picker: "Remind me again in" + 14 items (5 min/10 min/15 min/30 min/1 hour/2 hours/4 hours/8 hours/0.5 days/1 day/2 days/3 days/4 days/1 week); matches T7SMK Snooze All interval list |
+| classic2evonts.DFM | Classic 2 Evo Notes | Migration utility: converts pre-EvoNotes classic note records to new EvoNotes format |
+| REMREM.DFM | Reminder... | Minimal reminder popup (legacy/alternate reminder dialog) |
 
 ## Links system (EvoLinks)
 
