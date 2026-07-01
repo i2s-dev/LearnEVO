@@ -14,6 +14,42 @@ HAND-WRITTEN narrative for each.
 
 MODULE_NARRATIVES = {
 
+"TC": """
+## What it does
+
+Treasury Control — AR receipt batch processing module. TC handles the
+batch-level control of cash receipts: batching incoming payments by terms
+or bank account, cross-balancing batch totals, posting commissions on
+receipt, and AP check cross-reference. Functions as the "outer wrapper"
+for AR-B (Enter Cash Receipts) batch workflow.
+
+## Menu operations (DFM-confirmed)
+
+| Code | Program | Description |
+|------|---------|-------------|
+| TC-C | T7TCC | **Batch Payment by Terms** — Enter Terms to Pay / Bank Account / Process (select a payment terms code to process all due invoices meeting that term) |
+
+**T7DETC** (T7DE-T-C) is a separate stub dispatcher that routes to TC programs from the DE module, not a TC menu program.
+
+## Key workflow
+
+```
+TC-A: Open receipt batch (batch# / date / limits)
+TC-B: Enter receipts (calls AR-B per transaction)
+TC-C: Pay-by-terms (T7TCC: select Terms / Bank Account → process)
+TC-X: Cross-balance and post batch (XBAL cross-balance check)
+```
+
+**Batch controls (from var analysis):** MAX_BATCH, NUM_NEG/POS (negative/positive record counters), NEGRECNUM/POSRECNUM, XBAL cross-balance; SOP_INV = system-of-payment invoice link.
+
+## Integration
+
+- **[[module-AR|AR]]** — AR-B cash receipt entry is invoked within TC batches
+- **[[module-AP|AP]]** — BKAP.CHK.*(14) AP check cross-reference in TC
+- **[[module-CS|CS]]** — BKPR.COMM.*(48)/BKPR.SLS.*(17) commissions calculated on-receipt within TC
+- **[[module-IS|IS]]** — ISIS.MCF.*(49-var) multi-currency conversion in TC for foreign currency receipts
+""",
+
 "AR": """
 ## What it does
 
@@ -3044,6 +3080,47 @@ price, quantity, date, location, and GL fields.
 - **[[module-SH|SH]]** — SL programs are the implementation of SH scheduling menu items
 - **[[module-WO|WO]]** — reads WORKORD + WOROUT + BKDCLAB for schedule inputs
 - **[[module-DC|DC]]** — BKDCLAB time-clock feed drives Gantt actual vs scheduled
+""",
+
+"SP": """
+## What it does
+
+Statistical Process Control (SPC) — in-process quality measurement module
+that captures inspection data at the work order / operation level. Tracks
+accepted, rework, and scrap quantities per operation with Drawing/Revision
+references. Provides real-time live dashboard and PPM (Parts Per Million)
+defect reporting.
+
+## Menu operations (DFM-confirmed, 6 DFMs)
+
+| Code | Program | Description |
+|------|---------|-------------|
+| SP-A | T7SPC | **SPC Entry** — Inspector# / Employee / Work Order / WO Item / WO Qty / Customer / Drawing / Revision / Sequence / Accepted Qty / Rework Qty / General Notes; Sort By field |
+| SP-B | T7SPCLIVEGRID | **Top Real Time Errors** — live grid display of current SPC errors (auto-refresh) |
+| SP-C | T7SPCLIVEREP | **Live SPC Report** — Types/Details From/Thru / Date range / Show Top N / **Refresh Every X Mins** (auto-refreshing live report) |
+| SP-D | T7SPCREP | **SPC Report** — WO#/Parent Part/Employee/Date/Sequence/**Sides**/Types/Details/Test Types/Serial#/**Test Reason [P/R/B]**/Customer |
+| SP-E | T7SPCREP2 | **SPC Report (variant 2)** — same filter set as SP-D |
+| SP-F | T7SPCREPPPM | **PPM Report** — WO#/Parent/Date/Sides/Types/Details/Customer/**Include S/R** (scrap/rework toggle) |
+
+**Sides From/Thru** — mattress and foam products have inspectable "sides" (top/bottom/border/handle); this filter enables side-specific SPC tracking.
+
+**Test Reason [P/R/B]** — P=Pass-test/Production, R=Rework, B=Both. Filters SPC records by why the inspection was performed.
+
+**PPM** = Parts Per Million defect rate — standard manufacturing quality metric for defect frequency across large production runs.
+
+## Database (via ISQC.SPC.* namespace)
+
+SPC data is stored in ISQC.SPC.* tables (41-variable namespace confirmed from
+T7DCPSF(290p) analysis). Live SPC data is also accessible from T7DCPSF (DC-PSF /
+HH-L Paperless Shop Floor), making it visible on the shop floor without running
+the SP module separately.
+
+## Integration
+
+- **[[module-DC|DC]]** — DC-PSF (Paperless Shop Floor) accesses the same SPC
+  data; ISQC.SPC.*(41-var) namespace shared between DC and SP
+- **[[module-QC|QC]]** — QC tracks incoming inspection; SP tracks in-process operation-level inspection
+- **[[module-WO|WO]]** — WO# / Sequence are the primary keys on SPC records
 """,
 
 "SD": """
