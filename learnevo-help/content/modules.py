@@ -560,6 +560,19 @@ Each customer has a default price level (`BKARCUST.BKAR_SAL_LVL`),
 with per-item overrides. Discounts apply by customer price code or
 quantity break.
 
+## SO-A line item field semantics (EVOHELP.PDF §SO-A, Pass 506)
+
+| Field | Meaning |
+|-------|---------|
+| Ready to Invoice? | Y = auto-backorder excess over on-hand; N = use SO-E Release Sales Orders to designate ship qty |
+| Backord Qty | Auto-filled when Ready to Invoice? = Y and qty > on-hand; also filled by SO-E for unshipped items |
+| Price | Sourced from: price code file, base inventory price, contract price, or manual; SD-M can prohibit manual price change |
+| UM | Unit of measure; M = per-thousand pricing, C or H = per-hundred; LOT or MIN = lot charge (price not multiplied by qty) |
+| Disc | Discount % from customer's discount code (class × dollar amount); NOT applied to contract prices; negative = upcharge/surcharge; surcharge >9.99% requires SD-M "Enable Up Charges in Discounts" = Y |
+| Tax? | Per-line taxability; defaults from IN-B item master; can be overridden; always N if order-header Taxable? = N |
+| Release? | Ready-to-ship flag per line; Y = released for invoicing; set by SO-E Release Sales Orders; reset to N after invoice post |
+| Est Shp | Estimated ship date per line (default = today); F7 duplicates the item to a new line for blanket orders with multiple ship dates |
+
 ## Features & Options configurator
 
 If an item has `BKIC_PROD_FNO_FLAG = Y`, entering it on an SO launches
