@@ -2391,6 +2391,18 @@ Four Java-backed analysis views provide interactive charts.
 SA reads (but does not write) `BKARINV`/`BKARINVL` (AR invoices), `BKARCUST`,
 `BKICMSTR`, and for actual-cost analysis: `WORKORD`/`WOMAT`/`WOBOM`.
 
+## SA-M/SA-N filter ranges (T7SAM.DFM confirmed)
+
+The 26 FROM/THRU range pairs (BKSA.FROM1..26 / BKSA.THRU1..26) map to:
+Invoice Date, Ship Date, Invoice#, SO#, Bill Cust, Ship Cust, Bill State,
+Ship State, Bill Zip, Ship Zip, Bill Country, Ship Country, Cust Start Date,
+Lead Source, Bill Territory, Cust Class, Sales Rep 1, Sales Rep 2, Currency,
+Location, Job Num, Cust Ord#, Invoice Total, Ship Territory, plus
+**line-item filters**: Item#, Item Class, Product Category, Item Desc,
+SO Desc, Est Ship Date, Ship Qty, Ship Cost, Cust Ref, % Margin Range.
+Quote status filter supports codes Y/L/N/A/S/D/W/B.
+User-defined sort/break with up to 10 sort/break field indexes (udbrk.array[1..10]).
+
 ## Integration
 
 - **[[module-AR|AR]]** — all SA reports draw from posted AR invoice history
@@ -3337,6 +3349,30 @@ and workflow triggers without affecting other users.
 These settings are stored per-user in EvoSettings.INI (`[User:NAME]` sections) and
 in `BKLOGON` / `BKSYUSER`. US-B customizations are stored in `BKMENUSU` (the menu
 definition table) per-user.
+
+## US-G Triggers (T7USG.DFM confirmed)
+
+Triggers are **scheduled business event notifications** — EVO fires a trigger
+(email or on-screen alert) when defined conditions are met. T7USG.RWN manages
+the trigger list; data stored in a Btrieve-only IS_TRIG* table (not in DDF).
+
+**Trigger definition fields (IS.TRIG.\* namespace):**
+- `CODE` — trigger code (PK)
+- `CONTACT` — contact name to notify
+- `EMAIL` / `EFLAG` — email address + enable email reminder (Y/N)
+- `DAYS` — days before trigger fires (pre-notification window)
+- `TRIGR` — the trigger event code
+- `ONCE` — fire once on next occurrence vs. recurring
+- `LDATE` / `LTIME` — last triggered date/time
+- `NOTE` — free-text notes on the trigger
+- `ODEL` — delete after triggered
+
+**Trigger filter scope** — each trigger can be scoped to:
+Item number, Customer code, Vendor code, SO#, PO#, WO range (prefix+suffix),
+Operation, Item Class, Item Category, Planner Code, Bin Location, Item Types.
+
+**At i2 Systems:** triggers are configured but status of active records is
+unknown (IS_TRIG* is Btrieve-only, not in ODBC).
 
 ## Integration
 
