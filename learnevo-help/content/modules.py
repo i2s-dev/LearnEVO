@@ -2499,6 +2499,31 @@ The EvoERP menu system is implemented via a "Workbook Menu" subsystem. Admin for
 
 These allow SY/SM admins to customize which programs appear in which menu groups for
 each user or access-code group, and to remap program names when RWN files are renamed.
+
+## Key table: BKSYMSTR (286 fields, 1 row — global system defaults)
+
+Set via SM (System Maintenance). One row stores all company-wide defaults:
+
+| Field group | Examples | Purpose |
+|-------------|----------|---------|
+| **Company** | `BKSY_COMP_NAME`, `BKSY_COMP_ADD1/2/CSZ` | Company name and address |
+| **AR GL** | `BKSY_AR_GLACT=1200`, `BKSY_AR_DISCGL=4004 dept1`, `BKSY_AR_FREIGHT=8517 dept4` | AR receivables, discount, freight GL defaults |
+| **AP GL** | `BKSY_AP_GLACT=2110`, `BKSY_AP_DISCGL=5100 dept1` | AP payables, discount GL defaults |
+| **PO GL** | `BKSY_PO_FREIGHT=5102 dept0250`, `BKSY_PO_RNI=2137`, `BKSY_PO_TAXGL=8805` | PO freight, received-not-invoiced, tax GL |
+| **GL** | `BKSY_GL_CLRING=9999`, `BKSY_GL_RETEARN=9999`, `BKSY_GL_ARINTR=9999`, `BKSY_GL_RELYR=3200` | GL clearing, retained earnings, AR interest, prior-year |
+| **Tax** | `BKSY_TAX_RATE=0`, `BKSY_TAX_GLACT=9999` | Default tax rate and GL account |
+| **Aging** | `BKSY_AR_AGING_1-5=0/30/60/90/120`, `BKSY_AP_AGING_1-5=0/30/60/90/120` | AR/AP aging bucket day thresholds |
+| **Terms** | `BKSY_TERMS_1-20`, `BKSY_TRM_AMT/DAY/TYP/EOM/MAX/DISC_1-20` | 20 payment terms slots (description + amount/day/type/EOM/max/disc) |
+| **Check register** | `BKSY_CHK_NUM/BAL/NAME/CHKACT/CHKDPT/CHKCUR_1-9` | 9 bank accounts (next check#, balance, name, GL acct/dept, currency) |
+| **Counters** | `BKSY_ARINV_NUM=0`, `BKSY_APINV_NUM=0`, `BKSY_APPO_NUM=0`, `BKSY_GJ_NUM=0` | Next AR invoice, AP invoice, AP PO, GJ number |
+| **Fiscal** | `BKSY_FISCAL_YR=01/01/2026` | Fiscal year start date |
+| **AR defaults** | `BKSY_AR_SLSP`, `BKSY_AR_ENTBY`, `BKSY_AR_TAXABL`, `BKSY_AR_PEL` | Default salesperson, entered-by, taxable flag |
+| **AR interest** | `BKSY_AR_INT_RTE=1.5`, `BKSY_AR_INT_DAY=1` | Finance charge rate (1.5%), grace days (1) |
+| **Print flags** | `BKSY_PLAIN_INV/PO/STMT/CHKS` | Y/N whether to use plain-paper forms |
+| **AP end desc** | `BKSY_AP_ENDDESC_1-5` | Default AP invoice end-of-description lines |
+
+Live values (i2 Systems, 2026-07-01): AR GL=1200, AP GL=2110, freight(AR)=8517/dept4,
+freight(PO)=5102/dept0250, AR interest=1.5%/1-day, aging=0/30/60/90/120, fiscal=2026-01-01.
 """,
 
 "DE": """
@@ -3394,15 +3419,32 @@ the [[module-AR|AR]] and [[module-PO|PO]] modules to process both customer
 "CP": """
 ## What it does
 
-Credit and Payment processing — **not a separate top-level module.** Credit card
-and payment processing for customer accounts is handled within the
-[[module-AR|AR]] Accounts Receivable module.
+Company Paths — a single-row system configuration table (`BKCPMSTR`) that stores
+custom file-path overrides for the EvoERP installation. Not a menu-accessible module;
+the table is populated at install time if non-default paths are needed.
 
-AR-B Enter Cash Receipts processes payments including credit card transactions.
-Credit limit management is in the customer master (`AR-A Enter Customers`,
-`BKARCUST.CRLIMIT`). Credit hold release is in [[module-CR|CR]] Contract Review.
+**CORRECTION (2026-07-01):** Previously mislabeled as "Credit and Payment." There is
+no `CP` entry in `BKMENUSU.TXT`. Credit card and payment processing lives in
+[[module-AR|AR]] (AR-B Enter Cash Receipts, BKARCUST.CRLIMIT). Credit hold release
+is in [[module-CR|CR]] Contract Review. BKCPMSTR is a path-config table, not a
+payment table.
 
-See [[module-AR|AR]] for Accounts Receivable documentation.
+## Key table: BKCPMSTR (9 fields, 1 row)
+
+| Field | Meaning |
+|-------|---------|
+| `BKCP_MST_CMPATH` | Company master path (custom install location) |
+| `BKCP_MST_IMPATH` | Image files path |
+| `BKCP_MST_CFILE` | Company-specific config file |
+| `BKCP_MST_VFILE` | Vendor file override |
+| `BKCP_MST_EXPATH` | Executable path override |
+| `BKCP_MST_HFILE` | Help file path |
+| `BKCP_MST_LABEX` | Label file extension |
+| `BKCP_MST_COMMEX` | Common files extension |
+| `BKCP_MST_EFILE` | Executable file name override |
+
+At i2 Systems all 9 fields are empty (default paths used). BKCPMSTR exists in the
+ODBC DSN=DBA catalog but is not referenced by any menu group.
 """,
 
 "CR": """
@@ -3579,6 +3621,43 @@ system administrators and developers.
 
 - **[[module-SU|SU]]** — SU-related admin path for data inspection
 - **[[module-SM|SM]]** — SM-J file maintenance context for Btrieve data verification
+""",
+
+"GF": """
+## What it does
+
+Golding Farms — a **customer-specific customization module** built for a single
+customer account. Not a standard EvoERP module; these programs exist only at
+installations that serve Golding Farms. All 8 DFMs found on the i2 Systems network
+share (T7GF prefix).
+
+## Programs (8 DFMs confirmed, 2026-07-01)
+
+| DFM | Caption / Type | Purpose |
+|-----|----------------|---------|
+| `T7GFPRICE.DFM` | **Golding Farms Pricing** | Delivered price management per bill-to customer: Add/Save/Archive Data/View Archive; Cust/Street/City address; Notes, Sales Orders, Shipments links |
+| `T7GFCB.DFM` | New Screen (General + Order tabs) | Customer / Bill-To order entry with standard toolbar (Save/Exit/Delete) |
+| `T7GFR.DFM` | New Screen (report range) | Report by Orders From/Thru date range |
+| `T7GFV.DFM` | New Screen (view, Today button) | Today's orders viewer + Print |
+| `T7GFVS.DFM` | New Screen ("Orders to ship on") | Ship-schedule viewer + Print |
+| `t7GFdept.DFM` | New Screen | Golding Farms **department code** table (Dept Code + Description) |
+| `t7GFdiv.DFM` | New Screen | Golding Farms **division code** table (Div Code + Description) |
+| `T7GFTEST.DFM` | New Screen (test get file()) | Developer test form — not production |
+
+## Key features (T7GFPRICE)
+
+Delivered Prices screen for Golding Farms pricing:
+- Bill-To Customer header (Cust + Street + City)
+- **Delivered Prices** grid — customer-specific delivered pricing
+- **Archive Data** / **View Archive** — price history archive workflow
+- **Notes**, **Sales Orders**, **Shipments** sidebar buttons
+
+## Scope
+
+GF is invoked directly by program name (not via a standard BKMENUSU menu group).
+T7GFdept/div provide lookup tables for the GF-specific department and division codes
+used in Golding Farms order entry. No standard `BK*` tables found for GF — pricing
+data likely stored in a custom `IS*` or standalone `.B` file.
 """,
 
 "FO": """
