@@ -4850,4 +4850,271 @@ WO/SO/HH modules are extended with mattress-specific serial tracking.
   of standard EvoERP AP.
 """,
 
+"NE": """
+## What it does
+
+New Company / Data File Initializer — checks whether required Btrieve data files
+are missing and creates them. Used when setting up a new company code or recovering
+from missing-file errors. Single T7 program.
+
+## DFM confirmed (T7NEWINIT.DFM, 2026-07-01)
+
+- Caption: "This program will check and see if you are missing any data file"
+- Buttons: **Go** (run the check/create) + **Exit**
+- No input fields — reads FILELOC registry and creates missing `.B` files
+
+## Context
+
+`T7NEWINIT.RWN` — runs after `UT-I Create/Delete Company` (which sets up FILELOC
+routing records) to ensure all blank data files exist. Also used as a repair tool
+when a data file is accidentally deleted. One variable, zero DB tables (it creates
+files, not records).
+
+## Integration
+
+- **[[module-UT|UT]]** — UT-I creates the company structure; NE initializes files
+- **[[module-FL|FL]]** — reads FILELOC to know which files to check/create
+""",
+
+"EM": """
+## What it does
+
+Emergency GL — a utility for creating or editing GL account link records when
+normal GL posting fails or when emergency manual GL corrections are needed.
+Not a standard transaction module — used by accountants/admins to fix GL mappings.
+
+## DFM confirmed (T7EMGL.DFM, 2026-07-01)
+
+Caption: **"GL Account Link"**
+
+| Field/Button | Purpose |
+|---|---|
+| Account | GL account number |
+| &Add | Add a new GL account link record |
+| &Save | Save the current record |
+| &Delete | Delete the current link |
+| &Back | Back to the list of links |
+| E&xit | Exit |
+
+The "Back to the List of links" hint (from `hints`) confirms EM is a list/detail
+editor for GL account link records (probably `BKGL.*` namespace).
+
+## Key namespace (from variable analysis, Pass185)
+
+`BKGL.*` 14-var namespace: ACCT/KEY/GLDPT/ACCTD/TYP + others — the GL account
+master fields used by EM to build/repair GL account-to-department links.
+
+## Integration
+
+- **[[module-GL|GL]]** — EM repairs GL account links that SM or standard modules write
+- **[[module-SM|SM]]** — SM-A Enter Chart of Accounts is the normal path; EM is the break-glass tool
+""",
+
+"PA": """
+## What it does
+
+Paperless DC — the shop-floor paperless manufacturing workstation. Displays WO
+traveler, BOM components, routing notes, QC specs, and customer/vendor notes on a
+touchscreen terminal without printing. The operator can enter production and labor
+directly from the form. Separate from but related to DC-PSF (HH-L).
+
+## DFMs confirmed (3 DFMs, 2026-07-01)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| `T7Paperless.DFM` | **Paperless Shop Floor** | Main workstation form — WO#/Sequence/Item No; keyboard shortcuts: F9=WO Login, F2=Production Only, F3=Labor Only, F4=Transfer Label, F7=Notes; **Item Alerts** + **Archives** + **Refresh** buttons |
+| `t7packmenu.DFM` | **Pack Menu** | Pack workstation admin — **Menu** / **Grids** / **Reindex** / E&xit tabs |
+| `T7PASS.DFM` | **Password** | Simple password entry dialog ("Password :") — used for workstation authentication |
+
+## T7Paperless vs T7DCPSF
+
+| Feature | T7Paperless (PA) | T7DCPSF (DC-PSF / HH-L) |
+|---------|------------------|--------------------------|
+| Caption | "Paperless Shop Floor" | "HH-L Paperless Shop Floor" |
+| Item Alerts button | Yes | Not shown |
+| Archives button | Yes | Not shown |
+| Refresh button | Yes | Not shown |
+| Context | PA standalone workstation | DC/HH module dual-access |
+
+T7Paperless appears to be the independent PA-module variant; T7DCPSF is the version
+accessed from both DC and HH menus.
+
+## Integration
+
+- **[[module-DC|DC]]** — DC-PSF (T7DCPSF) is a related but separate form; both display
+  shop floor data
+- **[[module-HH|HH]]** — HH-L uses T7DCPSF; PA module uses T7Paperless
+- **[[module-WO|WO]]** — reads WORKORD/WOBOM/WORO for WO traveler display
+""",
+
+"AL": """
+## What it does
+
+Audit Log + Alt Part — a dual-purpose module covering:
+1. **Alternate Part lookup/management** — maintains bidirectional alternate part
+   number cross-references for inventory items
+2. **Auto-Login setup** — configures workstation auto-login credentials (AL-Log)
+3. **Alert notifications** — displays EvoERP system alert messages to users
+
+## DFMs confirmed (3 DFMs, 2026-07-01)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| `T7ALTPART.DFM` | **Alternate Part** | Part Number entry + "Create the Inverse of this Part Number/Alternate Part Record" option + **Related Parts** button |
+| `T7ALOGSETUP.DFM` | (New Screen) | **Enable/Disable Auto Login** — User Name / Password / Status / &Enable Auto Login / &Disable Auto Login buttons |
+| `T7ALERTMSG.DFM` | **ALERT NOTIFICATION** | Simple popup: AlertMsgLabel + &OK |
+
+## Key variable (SAVE.BOTH.WAYS, confirmed)
+
+T7ALTPART uses a `SAVE.BOTH.WAYS` variable to control bidirectional alternate-part
+creation: when enabled, creating Part A → Alt B automatically creates the inverse
+record (Alt B → Part A). The DFM confirms: "Create the Inverse of this Part Number/
+Alternate Part Record as" checkbox.
+
+## Integration
+
+- **[[module-IN|IN]]** — alternate parts feed BOM substitution lookup
+- **[[module-PS|PS]]** — PS-A user management; AL auto-login stores workstation credentials
+- **[[module-EVO|EVO]]** — Alert notifications (T7ALERTMSG) are dispatched system-wide
+""",
+
+"SE": """
+## What it does
+
+Service Events / Service Code Tables — maintains lookup codes for the service
+quality tracking system (error codes, procedure codes, service types) and logs
+service error events keyed to WO + operation. Related to QC/SR quality workflows.
+
+## DFMs confirmed (4 DFMs, 2026-07-01)
+
+| DFM | Caption | Fields |
+|-----|---------|--------|
+| `T7SETYPE.DFM` | New Screen | **Type** field + Add/Save/Delete toolbar |
+| `T7SEPROC.DFM` | New Screen | **Type** field + Add/Save/Delete toolbar |
+| `T7SERR.DFM` | New Screen | **Type** field + Add/Save/Delete toolbar |
+| `T7SELLOC.DFM` | **Selection Locations** | Tag All / Untag All / **Include Segregated Locations** / Settings / Go |
+
+The first three are simple code-table editors (one "Type" field = code + description).
+T7SELLOC is a multi-select location picker used cross-module.
+
+## Database tables (ODBC confirmed, 2026-07-01)
+
+| Table | Fields | Records | Purpose |
+|-------|--------|--------:|---------|
+| `ISSETYPE` | 2 | 0 | Service type codes (IS_SETYPE_ERR / IS_SETYPE_WHO) |
+| `ISSEPROC` | 2 | 0 | Procedure codes (IS_SEPROC_PROC / IS_SEPROC_WHO) |
+| `ISSERR` | 17 | 0 | **Service error event log** — full WO event record |
+
+### ISSERR — Service Error Event (17 fields)
+
+| Field | Meaning |
+|-------|---------|
+| `IS_SERR_WOPRE` / `IS_SERR_WOSUF` | Work order prefix + suffix |
+| `IS_SERR_OPER` | Routing operation number |
+| `IS_SERR_TIME` / `IS_SERR_DATE` | Time/date of error event |
+| `IS_SERR_ERROR` | Error type code (→ ISSETYPE) |
+| `IS_SERR_PROCESS` | Procedure code (→ ISSEPROC) |
+| `IS_SERR_COUNT` | Error count |
+| `IS_SERR_REF` | Reference (ticket/batch#) |
+| `IS_SERR_EXTRA` | Extra/free-text |
+| `IS_SERR_DOF` | Date of failure |
+| `IS_SERR_DIAG` | Diagnosis |
+| `IS_SERR_REWORK` | Rework required |
+| `IS_SERR_SERIAL` | Serial number |
+| `IS_SERR_ADOF` | Actual date of failure |
+| `IS_SERR_ADIAG` | Actual diagnosis |
+| `IS_SERR_AREWORK` | Actual rework |
+
+**At i2 Systems all SE tables have 0 records** — the SE service-error tracking
+feature is not in active use.
+
+## Integration
+
+- **[[module-SR|SR]]** — SR Service Repair uses SE type/proc codes for service tickets
+- **[[module-QC|QC]]** — QC quality events may reference SE error codes
+""",
+
+"CH": """
+## What it does
+
+Auto-Chain Configuration (also "Multi-Location Chain") — the PS-H utility for
+defining program chains. A "chain" automatically launches a child program after
+a parent program completes, allowing multi-step workflows to run without manual
+navigation. Per-user chains are supported.
+
+## DFMs confirmed (3 DFMs, 2026-07-01)
+
+| DFM | Caption | Key fields |
+|-----|---------|-----------|
+| `T7Chain.DFM` | **Chain List** | User Name / Auto Chain [Y/N/Ask] / Add+Edit+Delete+Back+Save+Exit |
+| `T7CHAINM.DFM` | **Chain Master** | **Child Program** / **Parent Program** / Auto Chain [Y/N/Ask] / Description; program list includes T6SOA/T7SOA/T6SOC/T7SOC... |
+| `T7CHARGBK.DFM` | New Screen | Save / Exit (minimal — may be a charge-back form) |
+
+T7CHAINM programs list confirms chains are set up for SO sub-programs (T6SOA/T7SOA,
+T6SOC/T7SOC, T6SOD/T7SOD, T6SOE/T7SOE, T6SOF/T7SOF...) — both T6 and T7 variants
+are chainable.
+
+## Database tables (ODBC confirmed, 2026-07-01)
+
+| Table | Fields | Records | Purpose |
+|-------|--------|--------:|---------|
+| `ISCHAIN` | 17 | 0 | Chain definitions |
+| `ISCHAINM` | 17 | 0 | Chain master (same schema) |
+
+**ISCHAIN / ISCHAINM — 17 fields:**
+IS_CHAIN_USER / IS_CHAIN_PARENT / IS_CHAIN_CHILD / IS_CHAIN_PARAM_1..10 /
+IS_CHAIN_AUTO / IS_CHAIN_DATE / IS_CHAIN_DESC / IS_CHAIN_EXTRA
+
+- `USER` = user name (blank = applies to all users)
+- `PARENT` = parent program code (e.g. "T7SOA")
+- `CHILD` = child program code to launch after parent exits
+- `PARAM_1..10` = up to 10 parameter strings passed to child program
+- `AUTO` = Y/N/Ask (auto-launch without prompt, or ask first)
+
+**At i2 Systems both tables have 0 records** — no auto-chains configured.
+
+## Integration
+
+- **[[module-PS|PS]]** — PS-H "Configure Auto-Chain Programs" is the menu entry for CH
+- **[[module-SO|SO]]** — SO sub-programs are the most common chain target
+""",
+
+"ML": """
+## What it does
+
+Multi-Language — a DFM-based UI localization system that allows EvoERP forms to
+be displayed in languages other than English. The ML module generates string
+extraction files from DFMs and provides a caption editor for translators.
+
+## DFMs confirmed (2 DFMs, 2026-07-01)
+
+| DFM | Caption | Purpose |
+|-----|---------|---------|
+| `T7MLC.DFM` | **DFM Multi Language Generator / Editor** | DFM Name input / Generate (extract strings) / Edit / Add Lang / Delete / Select a Language to Delete |
+| `T7MLE.DFM` | **Edit Captions** | Select a Language dropdown / Default Caption (original) / Translated Caption (localized); navigation: First/Prev/List/Next/Last |
+
+## Workflow
+
+```
+T7MLC: DFM Name → Generate → creates string table for that DFM
+T7MLC: Add Lang → registers a new language (e.g. "Español")
+T7MLE: Select Language → Default Caption ↔ Translated Caption editor
+       Navigate First/Prev/List/Next/Last through all strings
+Runtime: EVO loads translated captions at startup per user's language setting
+```
+
+## Key table link
+
+T7MLC is confirmed to use `BKEDMSTR` in its DB (from Pass181 analysis) — the same
+EDI config table. This may be incidental (shared runtime library) or `BKEDMSTR`
+holds a multi-language flag.
+
+**At i2 Systems:** Multi-language is not in use — single-language (English) install.
+
+## Integration
+
+- **[[module-DE|DE]]** — DE/EDI shares `BKEDMSTR`; ML reads it for its own config
+- **[[module-SM|SM]]** — SM may include a language-selection option in system setup
+""",
+
 }
