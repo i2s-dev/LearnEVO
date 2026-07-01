@@ -358,7 +358,7 @@ AP check format is controlled by **BKYS.YN[48]** (not an ISTS.CFG key):
 | ISTS.CFG.DCSCRP | DC scrap tracking | inferred |
 | ISTS.CFG.DCSEQ | DC sequence/screen mode — YN[228]: Y=mount BKDCAF alternate screen | **confirmed from BKDCA.SRC:193** |
 | ISTS.CFG.DCSQTY | DC scanned quantity field | inferred |
-| ISTS.CFG.DCSYNC | DC synchronize/auto-close — YN[229]: Y=auto-close on new job start | **confirmed from BKDCA.SRC** |
+| ISTS.CFG.DCSYNC | DC employee continuation — YN[229]: Y=prompt "Continue entering for same employee?"; auto-closes open jobs when user declines | **confirmed from BKDCA.SRC:228-239** |
 | ISTS.CFG.DCTIME | DC time tracking flag | inferred |
 | ISTS.CFG.DCTMSS | DC time miss threshold | inferred |
 | ISTS.CFG.DCTSWC | DC time-switch work center | inferred |
@@ -849,7 +849,7 @@ Remaining ~162 slots (of 250) not bound in any DFM — set programmatically or f
 | YN[223] | Setup | Location | unknown | DFM |
 | YN[225] | Processing | SOQA/INB: Disable Base Price passdown to subsid Co (variant) | unknown | DFM |
 | YN[228] | Setup | DC-B/DC-G/WO-M: Default for Scrap Prompt | ISTS.CFG.DCSEQ | DFM+SRC (BKDCA.SRC:193-201) |
-| YN[229] | Setup | Multijob DC auto-close on new job start | ISTS.CFG.DCSYNC | DFM+SRC (BKDCA.SRC) |
+| YN[229] | DC | Prompt "Continue for same employee?" between entries; auto-closes employee's open jobs on decline | ISTS.CFG.DCSYNC | DFM+SRC (BKDCA.SRC:228-239) |
 | YN[230] | Acct. Receivables | Invoice Age based on (1) age or (2) days past due | unknown | DFM |
 | YN[231] | Setup | Open Period End Date | unknown | DFM |
 | YN[237] | Scheduling | PO & DC update the actual start/finish dates of sequences? | unknown | DFM |
@@ -1152,7 +1152,7 @@ Full live query of BKYSMSTR via DSN=DBA ODBC. Key structural finding: **YN[150]�
 | YN[226] | `'0'` | unknown | live only |
 | YN[227] | *(blank)* | unknown | — |
 | YN[228] | `'Y'` | DC screen variant: Y=mount BKDCAF (simplified) | SRC (BKDCA.SRC:194) |
-| YN[229] | `'N'` | DC multi-job/auto-close mode | SRC (BKDCA.SRC:228) |
+| YN[229] | `'N'` | DC employee continuation prompt + auto-close on decline | SRC (BKDCA.SRC:228-239) |
 | YN[230] | `'1'` | AR Invoice Age based on (1) age or (2) days past due | DFM |
 | YN[231] | `'Y'` | Open Period End Date | DFM |
 | YN[232] | `'4'` | unknown | live only |
@@ -1433,6 +1433,36 @@ uses BKGLCOA as the master; 9999 may be the system-reserved placeholder number.
 
 ---
 
-*Last updated: 2026-06-30 — Pass 416*
-*Sources: T7YSYN symbol table + T7MDefaults.DFM Top-position pairing (89 YN entries + 504 ISTS.CFG entries + GL account slots) + DSN=DBA live BKSYMSTR query (Pass 416)*
+---
+
+### Pass 435 SRC Re-read — Routing and DC Slot Confirmations (2026-07-01)
+
+Re-reading all 7 SRC files on the network share to extract all `BKYS.YN[N]` references directly from source code.
+No ISTS.CFG.* references appear in any SRC file — ISTS.CFG namespace is only used by T7YSYN and T7MDefaults.
+
+**Newly confirmed / corrected from this pass:**
+
+| Slot | Module | Confirmed Meaning | SRC reference |
+|------|--------|-------------------|---------------|
+| YN[20] | DC | Tag parts-bearing labor entries with EXTRA='B' (batch/barcode label) when Y | BKDCA.SRC:708,846 |
+| YN[36] | RO | Default proc/hr mode for routing entry: 'M'=multiply / 'D'=divide (MTRO.MD.PROC.HR dflt) | BKROA.SRC:609 |
+| YN[37] | RO | Default "use standard time?" Y/N per routing operation (MTRO.STD.TIME dflt) | BKROA.SRC:656-657 |
+| YN[38] | RO | Routing op sequence mode: Y=use template# as seq# / N=sequential × BKYS.VNUM[3] increment | BKROA.SRC:392-398, 1582-1591 |
+| YN[48] | AP | AP check format code: '1','4','5'=laser (BKAPHA1/2/3.RTM); '2'=Win DM; '3'=text DM; '23'=graphical | BKAPH.SRC:60-75, BKAPHA.SRC:796-798 |
+| YN[59] | RO | MD-D: prompt for routing operation overlap (MTRO.OVERLAP / MTRO.NEGOVLP entry) | BKROA.SRC:647 (explicit comment) |
+| YN[66] | RO | Enable long-wait time entry on routing operations (goto ENT.LNGTME when Y) | BKROA.SRC:629 |
+| YN[228] | DC | DC-A form variant: Y=mount BKDCAF extended queue form (qline=8) / N=standard BKDCA (qline=12) | BKDCA.SRC:194-200 |
+| YN[229] | DC | **CORRECTED** — Prompt "Continue entering for same employee?" between entries; auto-closes employee's open jobs when user declines | BKDCA.SRC:228-239 |
+| YN[249] | AP | AP laser check top-margin offset (val() → nTopMarg); commented-out feature, live='0' | BKAPH.SRC:349 (comment), BKAPHA.SRC:269 |
+
+**Notes:**
+- YN[229] prior description ("auto-close on new job start") was inaccurate — corrected above
+- YN[228] DFM label ("DC-B/DC-G/WO-M: Default for Scrap Prompt") conflicts with SRC — SRC is authoritative
+- YN[38] DFM label "Make sequence equal template number?" matches SRC exactly
+- All 7 SRC files exhausted for YN references; remaining ~162 unknown slots require bytecode analysis or Frida
+
+---
+
+*Last updated: 2026-07-01 — Pass 435*
+*Sources: T7YSYN symbol table + T7MDefaults.DFM Top-position pairing (89 YN entries + 504 ISTS.CFG entries + GL account slots) + DSN=DBA live BKSYMSTR query (Pass 416) + SRC re-read confirmation (Pass 435)*
 *Confidence: 72/100 — 495 keys confirmed as BKYSMSTR editor fields; 504 keys have DFM-sourced descriptions (full CSV: samples/T7MDefaults_cfg_keys.csv); 19/40 GL account slots confirmed; 10 BKEST.CFG keys confirmed; BKSYMSTR GL account scalars fully live-confirmed (Pass 416); Setup tab label pairings remain less reliable.*
