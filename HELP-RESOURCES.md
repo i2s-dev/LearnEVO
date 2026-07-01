@@ -183,16 +183,20 @@ Step-by-step traces of common end-to-end processes. These answer "how does X wor
 
 ```
 1. WO-A (T7WOA): Create Work Order
-   - Creates WORKORD row (MTWO_WIP_WOPRE+WOSUF PK, STATUS='O' open)
-   - Copies BOM → WOBOM (required components with QTYPER, REF, VEND)
-   - Copies ROUTING → WOROUT (planned operations with ESTHRS, WC, costs)
-   - Sets MTWO_WIP_SQTY (start qty), dates (start/due), priority
+   - Creates WORKORD row (MTWO_WIP_WOPRE+WOSUF PK)
+   - WO number = 6-char prefix + 3-char suffix (shared prefix = same SO, multi-delivery, or subassembly set)
+   - Default STATUS = 'F' (Firm) per SD-B; can be changed to 'S' (Scheduled) for future orders
+   - STATUS='F': Copies BOM → WOBOM (allocates inventory components); phantom type-B items explode to level 1
+   - STATUS='S': NO WOBOM created, NO inventory allocation; changing S→F later creates WOBOM + allocates
+   - Sets MTWO_WIP_SQTY (start qty), dates (start/due/finish), priority, job code, quote#, SO#, customer
+   - Multiple dates option: unlimited start/finish/qty combinations stored in WODATE table
+   - Lead time scheduling: enter start → auto-calc finish; enter finish → auto-calc start (backward scheduling)
+   - CUST field: customer code, or blank → displays "STOCK" (building for inventory)
 
-2. WO-B (T7WOB): Release / Pick Materials
-   - WORKORD STATUS → 'R' (released)
-   - WOBOM QTYISSUED updated as picks are confirmed
-   - INVTXN: issue transactions (qty negative, type=WO issue)
-   - BKICLOC: on-hand decremented; ISBINLOC bin-level decremented
+2. WO-B (T7WOB): Release Work Order
+   - WORKORD STATUS → 'R' (Released: on shop floor, actual start date created)
+   - Generates optional shortage report (BKSHORT)
+   - Can be skipped if SD-B default = release all WOs on creation
 
 3. DC / WO-K-K (labor entry): Record Labor
    - BKDCLAB: staging row per labor ticket (LAB_POSTED='N')
@@ -810,10 +814,15 @@ issues, and close-out.
 **Menu codes:** WO-A through WO-T (31 operations)
 
 **Key operations:**
-- **WO-A — Enter Work Orders:** Create work orders. Form T7WOA.DFM. Fields: WO number,
+- **WO-A — Enter Work Orders:** Create work orders. Form T7WOA.DFM. Fields: WO number
+  (6-char prefix + 3-char suffix; shared prefix = same SO / multi-delivery / subassembly set),
   location, part#, description, qty to make, qty completed, start date, finish date, due
-  date, class, priority, status. Action buttons: Copy WO, ECO, Material Issues, Labor,
-  Outside Processes, Notes, Links.
+  date, class, priority, status, customer (blank → STOCK), job#, quote#, SO#, price (JC only).
+  Status F (Firm, default) → WOBOM created + inventory allocated. Status S (Scheduled) → no WOBOM.
+  Phantom (type-B) BOM items: first-level components also copied into WOBOM.
+  Multiple dates: pop-up allows unlimited start/finish/qty combinations (stored in WODATE).
+  Lead time scheduling: enter start date → auto-calc finish; enter finish date → auto-calc start.
+  Action buttons: Copy WO, ECO, Material Issues, Labor, Outside Processes, Notes, Links.
 - **WO-B — Release Work Orders:** Release to shop floor.
 - **WO-C — Print Traveler:** Shop traveler document.
 - **WO-D — Pick List:** Material pick list.
@@ -832,7 +841,7 @@ issues, and close-out.
 
 | Table | Purpose |
 |-------|---------|
-| WORKORD | WO master — 74 fields: WO prefix/suffix (key), qty to make, priority, class, status, sched/actual start/finish dates, completed qty, estimated costs (labor/material/overhead/outside), actual costs (same), customer order, 10 instruction lines, scrap qty |
+| WORKORD | WO master — **83 fields** (ODBC confirmed 28,078 records, Pass 462): WO prefix/suffix (key), qty to make, priority, class, status (S/F/R/C/X), sched/actual start/finish dates, completed qty, estimated costs (labor/material/overhead/outside), actual costs (same), customer code, job#, quote#, SO#, 10 instruction lines, scrap qty, KIT flag |
 | WORKCHG | WO change log — 25 fields: WO ref, change code, change date, user, before/after: priority, status, class, description, qty, dates |
 | WOBOM | WO bill of materials |
 | WOMAT | WO material issues |
@@ -842,7 +851,7 @@ issues, and close-out.
 | MACHINE | Machine master |
 | TOOL | Tool master |
 
-**Confidence: 68/100** — BKAWLB.SRC (WO schedule report) + BKDCA.SRC (DC labor) fully analyzed. WO master table fully confirmed. Full lifecycle logic partially traced.
+**Confidence: 82/100** — BKAWLB.SRC (WO schedule report) + BKDCA.SRC (DC labor) fully analyzed. WORKORD 83f ODBC-confirmed. Full lifecycle traced (Pass 326). WO-A/WO-G/WO-F/WO-J field semantics confirmed from EVOHELP.PDF (Pass 505). Status S/F/R/C/X meanings corrected from EVOHELP.PDF canonical descriptions. Y/N/L kit issue modes confirmed.
 
 ---
 
@@ -1330,7 +1339,7 @@ Primary key: MTWO_WIP_WOPRE(8) + MTWO_WIP_WOSUF(2)
 | MTWO_WIP_SQTY | FLOAT | 8 | Scheduled quantity |
 | MTWO_WIP_COMQTY | FLOAT | 8 | Completed quantity |
 | MTWO_WIP_SCRAP | FLOAT | 8 | Scrapped quantity |
-| MTWO_WIP_STATUS | STRING | 1 | Status: **S**=Scheduled, **F**=Released, **R**=Completed, **C**=Closed, I=In-Process, X=On-Hold; S/F/R/C SRC-confirmed from BKAWLB.SRC L272-275 (2026-06-25); lifecycle order: S→F→R→C; default WO schedule report includes S/F/R, excludes C |
+| MTWO_WIP_STATUS | STRING | 1 | Status: **S**=Scheduled (no BOM allocation), **F**=Firm (BOM allocated, inventory reserved), **R**=Released (on shop floor, actual start date set), **C**=Closed (actual finish date set), X=Canceled (purge via SM-J-E to reverse issues); S/F/R/C SRC-confirmed from BKAWLB.SRC L272-275 (2026-06-25); EVOHELP.PDF §WO-A confirms F/R/C/X meanings (Pass 505 2026-07-01); lifecycle: S→F→R→C; default WO schedule report includes S/F/R, excludes C; SD-B default sets initial status (usually F) |
 | MTWO_WIP_PRTY | STRING | 1 | Priority 1–9 (FK → ISWOPRIO) |
 | MTWO_WIP_SSTART | DATE | 4 | Scheduled start date |
 | MTWO_WIP_SFIN | DATE | 4 | Scheduled finish date |
@@ -17797,6 +17806,11 @@ ISACCESS stores one record per form-control-group combination:
      - `Location` / `Bin` — where the parts are being pulled from
      - `Lot Number` / `Serial Number` — for lot/serial-tracked parts
      - `Reference` — optional free-text note
+   - **Issue mode prompt (Y/N/L)** — EVOHELP.PDF §WO-G confirms three modes:
+     - `Y` (Kit): suggests ALL needed materials regardless of on-hand stock (can take inventory negative)
+     - `N` (Individual): all component quantities start at 0; operator enters each manually
+     - `L` (List): suggests the lesser of required qty and on-hand qty (won't go negative)
+   - **Balance Required mode**: entering quantity = 0 with Y or L issues exactly what's needed to reach 100% issued (useful after partial prior issues)
    - **Kit Issue** button: issues the full BOM quantity for all components in one action. When used, EvoERP sets `WORKORD.MTWO_KIT_STAT = 'L'` (KIT=L freeze), locking the WO BOM against further changes.
    - **Issue Scrap?** toggle: if checked, a scrap-code grid appears so multiple scrap codes can be distributed against the scrapped quantity.
    - Click **Save** per line, or **Add** to queue additional issues before posting.
