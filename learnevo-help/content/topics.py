@@ -1014,21 +1014,39 @@ Evo Notes is a **per-record note-log system** that attaches free-form
 notes to any master record — customer, vendor, item, work order,
 invoice, whatever. Universal. Used as a lightweight CRM and audit trail.
 
+**Scale at i2 Systems:** 133,568 notes in `ISNOTES` across all record types.
+
 ## How it works
 
 - Every master record has an "Evo Notes" button on its form.
 - Clicking it opens `EvoNotes.RWN` with the current record's key.
-- Each note has: author (WHOAMI), timestamp, subject, body.
-- Notes are append-only from the user's view (admins can delete).
+- Each note is stored in `ISNOTES` (14 fields) keyed by a text ID
+  in the format `TableName + RecordKey` (e.g. `BKAPPO   74584`).
+- Note types: CSN (customer service, 105,763 notes), STD (standard, 15,863),
+  ARP (AR payment, 5,551), CSH (cash, 3,777), HID (hidden, 1,810), and others.
+- The note text lives in `IS_NOTE_ALPHA` (the main body field).
 - Notes are searchable globally via `EvoNoteSearch.RWN`.
+
+## ISNOTES table (14 fields)
+
+| Field | Content |
+|-------|---------|
+| `IS_NOTE_ID` | Parent record ID — table name + key (text, 45 chars) |
+| `IS_NOTE_TYPE` | Note type code (3 chars): CSN/STD/ARP/CSH/HID/INT/INV/RMA/SHP/PO/PUR/FRT |
+| `IS_NOTE_ALPHA` | Note body text (memo field) |
+| `IS_NOTE_CDATE/CTIME/CWHO` | Created date, time, user |
+| `IS_NOTE_EDATE/ETIME/EWHO` | Last edited date, time, user |
+| `IS_NOTE_PRIVATE` | Y = hidden from standard users |
+| `IS_NOTE_GROUP` | Group/department assignment |
+| `IS_NOTE_CONTACT` | Contact name linked to the note |
 
 ## Relevant programs
 
 - `EvoNotes.RWN` — main entry/display
-- `EvoNotesARCH.RWN` — archive
-- `EvoNoteSearch.RWN` — cross-record search
-- `EvoNotesPrt.RWN` — print
-- `EvoNotesRpt.RWN` — report
+- `EvoNotesARCH.RWN` — archive notes
+- `EvoNoteSearch.RWN` — cross-record global search
+- `EvoNotesPrt.RWN` — print notes for a record
+- `EvoNotesRpt.RWN` — report generator
 - `classic2evonts.DFM` — migrate from classic DBA notes
 
 ## Related
@@ -1036,7 +1054,7 @@ invoice, whatever. Universal. Used as a lightweight CRM and audit trail.
 - [[architecture-overview]]
 - [[subsystem-evolinks]]
 """,
-["notes", "evo notes", "notes system", "crm", "record notes"]),
+["notes", "evo notes", "notes system", "crm", "record notes", "ISNOTES", "CSN"]),
 
 ("subsystem-evoscheduler", "Evo Scheduler — Cron-Like Job Runner", "Architecture",
 """
@@ -1068,25 +1086,40 @@ service.
 ("subsystem-evolinks", "Evo Links — Document Attachments", "Architecture",
 """
 Evo Links attaches arbitrary documents (PDFs, photos, emails, scanned
-forms, etc.) to master records.
+forms, drawings, etc.) to master records. It is the file-attachment layer
+of EvoERP — complementary to [[subsystem-evonotes]] (text notes).
+
+**Scale at i2 Systems:** 4,196 linked documents in `ISLINKS`.
 
 ## How it works
 
-- Files stored in `\\\\i2s109-solidcrm\\DBAMFG$\\LinkDoc\\`.
-- Database table maps `<record-key, filename>`.
-- Display-in-context from any master form via "Evo Links" button.
+- Files are stored in the `\\\\i2s109-solidcrm\\DBAMFG$\\LinkDoc\\` folder
+  on the network share.
+- `ISLINKS` (313 fields) maps each attachment to its parent record.
+  Key fields: `IS_LNK_UID` (record key), `IS_LNK_LINK` (filename/path),
+  `IS_LNK_APP` (application type), plus 310 IS_LNK_TYPES_N classification
+  fields for organizing/tagging attachments.
+- Any master record form with an "Evo Links" button can attach files.
+- Common uses: attach a signed PO, scanned receiving doc, engineering
+  drawing, email thread, or approval sign-off to the relevant EVO record.
 
 ## Programs
 
-- `EvoLinks.RWN` — main
-- `EvoLinkCVT.RWN` — converter / migration
+- `EvoLinks.RWN` — main attachment viewer/editor
+- `EvoLinkCVT.RWN` — converter / migration utility
+
+## ISLINKS at i2 Systems
+
+`IS_LNK_APP` is blank on all 4,196 records (application type not used).
+The 310 IS_LNK_TYPES_N fields provide an extensible classification schema
+but appear unused in this installation.
 
 ## Related
 
-- [[subsystem-evonotes]]
+- [[subsystem-evonotes]] — text notes (133,568 records; complementary system)
 - [[architecture-overview]]
 """,
-["links", "attachments", "documents", "files", "evo links"]),
+["links", "attachments", "documents", "files", "evo links", "ISLINKS", "LinkDoc"]),
 
 ("subsystem-evofno", "Evo Features & Options — Product Configurator", "Architecture",
 """
