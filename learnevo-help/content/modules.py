@@ -1459,8 +1459,8 @@ they are configured entirely within CandoEDI.
 
 | Table | Records | Purpose |
 |-------|--------:|---------|
-| `BKEDIH` | 0 | Inbound order staging header (84f, BKARINV clone) |
-| `BKEDIL` | 0 | Inbound order staging lines (28f, BKARINVL clone) |
+| `BKEDIH` | 0 | Inbound order staging header (**104f** ODBC confirmed, BKARINV clone) |
+| `BKEDIL` | 0 | Inbound order staging lines (**29f** ODBC confirmed, BKARINVL clone) |
 | `BKEDIDUN` | 0 | Trading partner DUNS ↔ customer mapping |
 | `BKEDMSTR` | 1 | Config: CandoEDI path + our DUNS + counter |
 | `BKEDNOTE` | 0 | Order notes |
@@ -2146,11 +2146,41 @@ DE-X-E  Transfer to Master     (commit to production tables)
 | DE-P-F | Export EDI ASN (X12 856 Advance Ship Notice) |
 | DE-P-H | EDI Error Report |
 
-## Key tables
+## Key tables (ODBC confirmed)
 
-- `BKEDH` / `BKEDL` — EDI transaction headers/lines (staging)
-- `BKEDNOTE` — EDI notes
-- `BKEDPOST` — EDI posting queue
+| Table | Records | Fields | Purpose |
+|-------|--------:|-------:|---------|
+| `BKEDIH` | 0 | 104 | Inbound EDI order staging header — identical layout to BKARINV (104f) |
+| `BKEDIL` | 0 | 29 | Inbound EDI order staging lines — identical layout to BKARINVL (29f) |
+| `BKEDMSTR` | 1 | 3 | EDI config (CandoEDI path, our DUNS, counter) |
+| `BKEDNOTE` | 0 | 3 | EDI notes |
+| `BKEDPOST` | 0 | 2 | EDI export posting log |
+| `BKEDIDUN` | 0 | 7 | Trading partner DUNS↔customer mapping |
+
+All other DE staging tables (BKDEITEM, BKDEBOM, BKDECUST, BKDEVEND, etc.)
+are **Btrieve-only** (not in ODBC DDF) — they are temporary import staging
+tables purged after DE-X-E Transfer.
+
+## DFM-confirmed operation details
+
+| DFM | Operation | Confirmed |
+|-----|-----------|-----------|
+| T7DEK | **DE-H Global Field Change** — File selector, Field to Change, Replace all Values toggle, search-value + replace-value pair | DFM |
+| T7DEL | **DE-I Erase Files** — 6 checkboxes: Inventory / Bill of Materials / Customers / Routings / Vendors / Chart of Accounts | DFM |
+| T7DEER | DE error report — validate against Estimating or Production, allow 0-qty BOM components flag | DFM |
+| T7DEM | **DE-M Import BOM** — "Import to Estimating or Production?" toggle (E/P), "Allow Importing BOM Components with 0 Qty Per" flag, Transfer button | DFM |
+| T7DEJH | DE-J-H Issue Materials sub-screen — Thru (date), Print, Add, Edit, Issue Materials buttons | DFM |
+| T7DEHD | DE physical inventory tag import — Skip/Replace existing tags, Count Date, Tag#, Location, Actual Quantity | DFM |
+| T7DET | **DE-T Web Order Import (header)** — Rec Designator Type=H; confirmed fields: Customer Code, Order Number, Ship To Name | DFM |
+| T7DETB | **DE-T-B** — "Import to EDI Module or to Open SO File [E,S]", Date Format, Customer Code, Name | DFM |
+| T7DEU | **DE-U Web Item Export** — CSV file name, Item Number From/Thru, Item Type [RFAMNLBTKO], Settings | DFM |
+| T7DEV | **DE-V POA Import** (PO Acknowledgement) — PO Number, Item Number, Description, Quantity, Name | DFM |
+| T7DEPB / T7DEP860 | **DE-P-B EDI 860 PO Change** — EDI#, Customer, Release Number, Customer Order; two DFMs (one for 860 variant) | DFM |
+| T7DEPD | **DE-P-D Convert EDI to SO** — New Sales Order Date, New Sales Order Number, Default Est Ship Date | DFM |
+| T7DEPE | **DE-P-E Export EDI Invoice** — SO#, Customer, Invoice#, BOL# | DFM |
+| T7DEPF | **DE-P-F Export format** — PSV or Fixed Length file, Include Header Information flag | DFM |
+| T7DEPH | **DE-P-H EDI Error Report** — EDI# range From/Thru, date range | DFM |
+| T7DEX | Tag-selection panel (Tag All / Untag All / Tag / Untag) — shared utility for multi-record selection | DFM |
 
 ## Integration
 
@@ -3650,6 +3680,102 @@ zeroes income statement accounts, creates the opening balance for the new year.
 W-2/payroll year-end (if using EVO payroll) is in [[module-PL|PL]].
 
 See [[module-AM|AM]] for period-end and year-end procedures.
+""",
+
+"J7": """
+## What it does
+
+J7 is the namespace for **i2 Systems custom programs** written by ISTS (the EvoERP
+vendor) specifically for i2 Systems. All J7 programs are add-ons that extend standard
+EvoERP modules with business-specific functionality.
+
+**i2 Systems business context (confirmed from DFMs):** i2 Systems is a
+**mattress manufacturer**. Multiple J7 DFMs reference "Mattress Number",
+"Mattress Description", "Print Mattress Labels", and "Serial Num:" in the
+context of serialized mattress production and shipping. The standard EvoERP
+WO/SO/HH modules are extended with mattress-specific serial tracking.
+
+## J7 programs by category (41 DFMs confirmed)
+
+### Mattress production & shipping (HH/DC)
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7DCMATLABELS | Print Mattress Labels — Mattress Number/Description/Serial# entry |
+| J7DCSSOE | Shipping — Customer Name, Serial Num, Mattress Number (ship-confirm) |
+| J7DCSSOEVERIFY | Sales Orders verification list |
+| J7EBSERIAL | Enter Serial Number — Item Code, Item, Last Serial Scanned |
+| J7HHEBINC | Inventory Adjustment (HH) — Mattress Number/Description/Serial# |
+| J7HHEBXFER | Transfer Inventory (HH) — Mattress Number/Description/Serial# |
+| J7HHEBXFERVERIFY | Verify Transfer — Exit/List/Label |
+| J7HHLITN | Enter Tracking Numbers (HH) — Customer, Track#, Ship Co |
+| J7HHPTSSOE | Shipping (HH) — Item Num/Code/Description |
+| J7HHPTSSOELABELS | Print Box Content Labels — Misc/RTM/Box/Label Qty |
+| J7HHPTSSOEVERIFY | Sales Orders verification (HH) — Label/List |
+| J7HHRTSSOE | Shipping (HH) — Rel SO/Reset/Clear buttons |
+
+### AP/Purchasing
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7APPVEND | Approve Vendor — Vendor Code, Name, Max Allowable Check Amount, Approved flag |
+| J7AUTOAPC | Auto Enter PO Invoices — Received Date range, Vendor Class range |
+| J7I2SACH | ACH Export — Bank Account Number, Bank Account Name |
+| J7POAIMPLINES | Import PO Lines — Filename, PO#, Vend Code, Name |
+| J7PTRECPOLINE | Receive PO Line — Item#, Receive Qty, Description, Price |
+
+### Sales Orders / SO
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7CRSOW | SO-W custom — SO# range, Order Date range |
+| J7I2SYSTEMSOOE | Custom SOOE — multi-range filter SOOE form |
+| J7SOAIMPLINES | Import SO Lines — Company Code/Name/Path, PO# |
+| J7SYNCWOTOSO | Synchronize WO to SO — SO Line#, WO#, Item#, Description |
+| J7ABISHIPRPT | Lapco Fulfillment Report — Customer range, Order Date range |
+| J7LAPCOSO | Print Inventory Usage — Item# range, Customer range (Lapco-specific) |
+
+### Work Orders / Production
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7PEDCB | Production Status — WO#, Description, Parent Part, Department |
+| J7PTWOKI | WO-K-J custom — Item# range, WO# range |
+| J7WOLL | WO-L-L custom — Sequence# range, Component# range |
+| J7TMCKANBAN | Kanban Orders — Item#, Receive Qty, Description, Price |
+
+### Inventory / Warehouse
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7BEFWEBINV | Web Item Export — CSV file, Item# range, Item Type (same as DE-U) |
+| J7CIWEBIMPORT | Web Import — E=EDI module or S=SO file, Date Format, Customer |
+| J7CJBUSAGE | Print Inventory Usage — Product Class/Category range |
+| J7EIMDCREV | IN-H Print Inventory Listing with DC List and Reverse option |
+| J7NMBINS | Bin management — Item, Description, Save/Clear |
+
+### Job Costing / Analysis
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7MCDSAREPORT | Sales Analysis Report — YTD Date range, Customer Code range |
+| J7SMJCT | Closed Job Cost Report — SO#, Item#, Order Date range |
+| J7MPIMPORTAR | Import AR — filename import tool |
+
+### System
+| Program | Caption / Purpose |
+|---------|------------------|
+| J7CCPIC | PI-C Enter Tag Counts — Phys Inv No, Count Date, Year, Name |
+| J7NMRTMPRINTER | RTM Printer config — RTM Name, Printer, Program Name, Setup |
+
+## Key observations
+
+- **Serial tracking on all mattresses:** J7 programs confirm every mattress unit carries
+  a serial number from production through shipping, using EvoERP's standard serial
+  tracking infrastructure plus mattress-specific labels (J7DCMATLABELS).
+- **Lapco is a major customer:** J7ABISHIPRPT ("Lapco Fulfillment Report") and J7LAPCOSO
+  are dedicated to Lapco drop-ship reporting — Lapco is a branded product line or
+  key customer with special fulfillment requirements.
+- **Custom vendor approval:** J7APPVEND adds an "Approved Vendor" flag and a
+  "Maximum Allowable Check Amount" to the standard vendor master — a finance control.
+- **Kanban support:** J7TMCKANBAN suggests i2 uses lean pull-replenishment for some
+  items alongside the standard MRP-driven purchasing.
+- **ACH payments:** J7I2SACH exports ACH payment files (bank transfers) — not part
+  of standard EvoERP AP.
 """,
 
 }
