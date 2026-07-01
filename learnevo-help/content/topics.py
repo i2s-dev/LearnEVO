@@ -1166,7 +1166,8 @@ but appear unused in this installation.
 """
 Features & Options (FNO) is EVO's **product configurator** — the
 "Dell-laptop style" choose-your-CPU/RAM/screen dialog. Launched from
-sales-order line entry for configurable items.
+sales-order line entry for configurable items. At i2, **10,842 active
+configurations** are stored with **934,922 option-selection line records**.
 
 ## How it works
 
@@ -1174,27 +1175,80 @@ sales-order line entry for configurable items.
 2. When entering that item on an SO, EVO launches `EvoFNOSO.RWN`.
 3. User walks through feature categories (e.g. "Color") and picks
    options (e.g. "Red").
-4. The configured line's price is the sum of feature-option prices.
+4. Each option selection toggles an `ISFO_LIN_OPFLAG_N` flag on the
+   BOM component lines; the configured line price is the sum of
+   feature-option prices.
 5. Optional: generate a unique SKU / item code for this configuration.
+6. History of who converted/approved each config is stored in ISFOHIST.
 
-## Related modules
+## Data model — ISFO* tables (ODBC-accessible)
 
-- `EvoFNO.RWN` — master config
-- `EvoFNOPO.RWN` — on PO entry (buy configured items)
-- `EvoFNOSO.RWN` — on SO entry (sell configured items)
-- `EvoFNOWO.RWN` — on WO entry (make configured items)
+| Table | Records | Fields | Purpose |
+|-------|---------|--------|---------|
+| ISFOHEAD | 10,842 | 16 | One row per saved configuration session |
+| ISFOLINE | 934,922 | 78 | One row per BOM component line, option flags |
+| ISFOHIST | 25,338 | 15 | Revision / approval audit trail |
+| BKFOCFG | 1 | 18 | Global FNO configuration singleton |
 
-## Help topic
+### ISFOHEAD — 16 fields
+`ISFO_HDR_UID`(40, PK, UUID), `ISFO_HDR_PARENT`(15, item part#),
+`ISFO_HDR_DATE`(10), `ISFO_HDR_DESC`(30), `ISFO_HDR_CUST`(10),
+`ISFO_HDR_VEND`(10), `ISFO_HDR_RFQ`(20), `ISFO_HDR_STATUS`(15),
+`ISFO_HDR_REV`(5), `ISFO_HDR_MDATES_1..5`(10 each, 5 milestone dates),
+`ISFO_HDR_PERM`(1, permanent flag), `ISFO_HDR_EXTRA`(150)
 
-CHM topic: `using_features_and_options_in_sales_orders` and
-`setting_up_features_and_options`.
+### ISFOLINE — 78 fields
+`ISFO_LIN_UID`(40, PK), `ISFO_LIN_LEVEL`(5, BOM depth),
+`ISFO_LIN_OPFLAG_1..50`(1 each — 50 option-selection Y/N bits per row),
+`ISFO_LIN_PARENT`(15, FK → ISFOHEAD), `ISFO_LIN_LINEN`(5),
+`ISFO_LIN_COMP`(15, component part#), `ISFO_LIN_QTYREQ`(52),
+`ISFO_LIN_REF`(20, reference designator), `ISFO_LIN_TYPE`(1),
+`ISFO_LIN_SCRAP`(52), `ISFO_LIN_OP`(3, operation),
+`ISFO_LIN_OPYN_1..6`(1 each — 6 operational Y/N flags),
+`ISFO_LIN_PRICE`(52), `ISFO_LIN_RTNUM`(5), `ISFO_LIN_DUPOP`(1),
+`ISFO_LIN_OPDSC`(5), `ISFO_LIN_VEND`(10), `ISFO_LIN_DATE1`(10),
+`ISFO_LIN_DATE2`(10), `ISFO_LIN_REV`(5), `ISFO_LIN_PBRANC`(5),
+`ISFO_LIN_CBRANC`(5), `ISFO_LIN_EXTRA`(150), `ISFO_LIN_BEXTRA`(50)
+
+### ISFOHIST — 15 fields
+`ISFO_HIST_UID`(40, PK), `ISFO_HIST_WHO`(20), `ISFO_HIST_DATE`(10),
+`ISFO_HIST_TIME`(8), `ISFO_HIST_STATU`(40), `ISFO_HIST_PART`(15),
+`ISFO_HIST_CVTTO`(4, converted-to document type),
+`ISFO_HIST_CVTNO`(52, converted-to document#), `ISFO_HIST_CITEM`(15),
+`ISFO_HIST_QTY`(52), `ISFO_HIST_LOC`(10), `ISFO_HIST_CV`(10),
+`ISFO_HIST_DDATE`(10), `ISFO_HIST_PRICE`(52), `ISFO_HIST_EXTRA`(100)
+
+### BKFOCFG — 18 fields (global singleton)
+`BKFO_CFG_MANFET`(1), `BKFO_CFG_YN_1..15`(1 each — 15 Y/N config flags),
+`BKFO_CFG_OPCODE`(5), `BKFO_CFG_EXTRA`(50)
+
+## Btrieve-only tables (not in DDF)
+
+The option *catalog* (defining available features/options) is stored in
+Btrieve-only .B files not exposed via ODBC: `BKFOOPT`, `BKFOFEAT`,
+`BKFOFLT`, `BKFOGOPT`, `BKFOGOIM`, `BKFOMFLT`, `BKFOCST`, `BKFOPRC`,
+`BKFOPRCS`. These define what options exist; the ISFO* tables record
+which options were *selected* for each configuration.
+
+## Programs
+
+- `EvoFNO.RWN` — master setup / option catalog editor
+- `EvoFNOSO.RWN` — on SO line entry (sell configured items)
+- `EvoFNOPO.RWN` — on PO line entry (buy configured items)
+- `EvoFNOWO.RWN` — on WO line entry (make configured items)
+
+## Help topics
+
+CHM: `using_features_and_options_in_sales_orders`,
+`setting_up_features_and_options`
 
 ## Related
 
 - [[module-SO]]
+- [[module-FO]]
 - [[architecture-overview]]
 """,
-["fno", "features", "options", "configurator", "configurable", "evo fno"]),
+["fno", "features", "options", "configurator", "configurable", "evo fno", "ISFOHEAD", "ISFOLINE"]),
 
 ("java-integration", "Java Integration — EvoPVT.jar + ISJAVA Queue", "Integration",
 """
@@ -1206,44 +1260,66 @@ advanced CSV).
 
 The integration is **queue-based**:
 
-1. Java tool writes a parameterized row into the `ISJAVA` table:
-```sql
-INSERT INTO ISJAVA (IS_JAVA_UID, IS_JAVA_DATE, IS_JAVA_PARAM_1, ...)
-VALUES (?, ?, ?, ...);
-```
-2. A TAS program polls `ISJAVA` by UID.
-3. TAS processes the row and writes results back (either to ISJAVA
-   itself or to a domain table).
+1. A Java tool or TAS program writes a parameterized row into `ISJAVA`.
+2. The polling side reads rows by `IS_JAVA_UID` and processes them.
+3. Results go back either into ISJAVA parameters or into a domain table.
 
 This keeps business logic in TAS while using Java for transport and
-third-party integrations.
+third-party integrations (e.g., OANDA FX rate fetches → MTEXCHG).
+
+## ISJAVA table — confirmed schema (27 fields, 1,774 records)
+
+| Field | Size | Purpose |
+|-------|------|---------|
+| IS_JAVA_UID | 40 | UUID primary key — identifies the queued job |
+| IS_JAVA_PARAM_1..25 | 80 each | 25 string parameter slots (input/output) |
+| IS_JAVA_DATE | 10 | Date stamp |
+
+**1,774 records** at i2 indicates active historical usage (rows may be
+retained after processing rather than deleted).
+
+## Known callers
+
+- `T7AUTOFX.RWN` — fetches live FX rates via OANDA API; writes result
+  to MTEXCHG; uses ISJAVA to pass the API key and receive rate data
+- CashFlow reports, Commission reports — pass query parameters
+- CRM dashboard — passes filter criteria to Java-rendered charts
 
 ## Structure of EvoPVT.jar
 
 Inside the JAR (unzip-able):
 
 - `com.evoerp.Evo` — JavaFX main application
-- `com.evoerp.TASKS.sql.PervasiveDatabase` — JDBC wrapper
-- `com.evoerp.TASKS.sql.Main$WindowsUtils` — CLI entry
-- `com.evoerp.javafx.*` — UI widgets (SplashScreen, TabularView,
-  CalendarView, LookupPane, …)
-- `com.evoerp.sql.*` — lightweight SQL builder (AliasTable, Clause,
-  AndClause, BinaryClause, …)
+- `com.evoerp.TASKS.sql.PervasiveDatabase` — JDBC wrapper (Pervasive
+  JDBC driver bundled as `com.pervasive.jdbc`)
+- `com.evoerp.TASKS.sql.Main$WindowsUtils` — CLI entry point
+- `com.evoerp.javafx.*` — UI widgets: SplashScreen, TabularView,
+  CalendarView, LookupPane, …
+- `com.evoerp.sql.*` — lightweight SQL builder: AliasTable, Clause,
+  AndClause, BinaryClause, …
 - `com.evoerp.util.*` — CSV, file, Windows registry helpers
-- `com.pervasive.jdbc` — Pervasive JDBC driver
 - `org.apache.commons.{codec,logging}` — shipped dependencies
 
 ## Invoking
 
 - Standalone: `java -jar EvoPVT.jar` — opens the JavaFX UI.
-- From TAS: `EXEC_TOP_WAIT "java -jar ... args"` — spawn with args.
+- From TAS: `EXEC_TOP_WAIT "java -jar C:\\ISTS\\EvoPVT.jar [args]"` —
+  synchronous spawn; TAS blocks until Java exits.
+
+## Writing to ISJAVA (example)
+```sql
+INSERT INTO ISJAVA (IS_JAVA_UID, IS_JAVA_DATE, IS_JAVA_PARAM_1, IS_JAVA_PARAM_2)
+VALUES ('my-job-001', '2026-07-01', 'param-value-1', 'param-value-2');
+```
+TAS then queries: `SELECT * FROM ISJAVA WHERE IS_JAVA_UID = 'my-job-001'`
 
 ## Related
 
 - [[odbc-access]]
+- [[subsystem-evoscheduler]]
 - [[architecture-overview]]
 """,
-["java", "jar", "evopvt", "isjava", "integration", "jdbc", "javafx"]),
+["java", "jar", "evopvt", "isjava", "integration", "jdbc", "javafx", "ISJAVA", "fx rate", "oanda"]),
 
 ("what-is-evoerp", "What is EvoERP? — At a Glance", "Getting Started",
 """
