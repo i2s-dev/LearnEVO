@@ -1912,47 +1912,123 @@ to WOs unless the user specifies otherwise.
 Hand Held Programs — barcode scanner and mobile device integration for
 shop-floor data collection: SO scan-and-ship, WO labor entry, material
 issues, finished production receipt, PO receiving, physical inventory
-counting, and bin-to-bin transfers. 32 T7HH* programs across 6 functional
+counting, and bin-to-bin transfers. 52 T7HH*/J7HH* DFMs across 7 functional
 groups. Shares BKDCLAB with the desktop [[module-DC|DC]] module.
+All HH data files are Btrieve-only (none visible via ODBC/DDF).
 
 ## Menu operations
 
-| Code | Operation | Program |
-|------|-----------|---------|
-| HH-A | Scan & Ship | t7hhssoe.rwn |
-| HH-B | Print Labels | T7HHinga.rwn |
-| HH-C | Issue Materials | T7HHWOG.RWN |
-| HH-D | Enter Finished Production | T7HHWOP.RWN |
-| HH-E | Enter Physical Counts | T7HHPIC.RWN |
-| HH-F | Enter Labor | T7HHDCA.RWN |
-| HH-G | Receive PO | T7HHPOC.RWN |
-| HH-H | Enter Shipping Information | J7HHLITN.RWN (ISTS custom) |
-| HH-I | Paperless Shop Floor Tracking | t7dcpsf.rwn |
-| HH-J | Print WO Label | t7hhwolabel.rwn |
-| HH-K | Transfer Inventory | t7hhinlj.rwn |
-| HH-L | Multi-User Paperless Shop Floor | t7paperless.rwn |
-| HH-M | Issue Scrap Component | t7hhwoscrap.rwn |
+| Code | Operation | DFM(s) | Key fields |
+|------|-----------|--------|-----------|
+| HH-A | Scan & Ship (SSOE) | t7hhssoe + T7HHSSOE* | Item Num, Last Scan, Qty, &Rel SO, Reset |
+| HH-B | Print Inventory Labels | t7hhINGA | Item No, Qty, Lot No, Serial No, Print Linked docs option |
+| HH-C | Issue Materials | t7hhwog | WO#, Item, Qty, Print Labels Y/N/Ask, Use Large Screen Lookups |
+| HH-D | Enter Finished Production | t7hhwop | WO#, Item, Qty, Lookup WO Status [FRXI], Prompt for Issue Date [YNOnce] |
+| HH-E | Enter Physical Counts | T7HHPIC + t7hhpictags | Phys Inv No, Count Date, Emp Name (HHPIC) / Item No, Count Qty, Lot No, Serial No (tags) |
+| HH-F | Enter Labor (DC) | T7HHDCA + t7hhdcb/c | Work Order, Sequence, Work Order Item, Emp Name |
+| HH-G | Receive PO | t7hhpoc + T7HHPOC* | Vendor, Item, Qty, PO Type, Enable Vendor/Item Alerts, Use Large Screen Lookups |
+| HH-H | Enter Shipping Info | J7HHLITN / T7HHH | SO Number, Customer Name, Track #, Ship Co |
+| HH-I | Paperless Shop Floor | t7dcpsf | (Paperless Manufacturing sub-system) |
+| HH-J | Print WO Label | T7HHWOLabel | Fin/Semi-Fin Seq From/Thru, Item Class, Hour remaining Filters, Ship Box RTM |
+| HH-K | Transfer Inventory | t7hhinlj + T7HHINLJLot/Ser | From WC/Bin → To, Qty to Transfer, Transfer Date; sub-forms for Lot/Serial capture |
+| HH-L | Multi-User Paperless | t7paperless | (Paperless Manufacturing, multi-user variant) |
+| HH-M | Issue Scrap Component | T7HHWOSCRAP | Item No, Lot, Qty, Serial, Label Qty, RTM, Print Labels Y/N/Ask |
+| HH-N | SO Shipping Queue | T7HHN/N2/NREL | (see Shipping Queue section) |
+| HH-O | Bin-to-Bin Transfer | T7HHO | Item, Qty, Bin Qty, FROM BIN, TO BIN, Location, Transfer Date |
 
-**Paperless Manufacturing** (T7PLess*.DFM forms — WO routing, BOM, QC specs
-on screen) is accessed via HH-I and HH-L.
+## HH-N: SO Shipping Queue / Dashboard
 
-## Key functional groups
+T7HHN (settings), T7HHN2 (list + action), T7HHNREL (alternate filter) form the
+HH-N shipping queue. Settings fields:
+- Limit Shipments to within X Working Days
+- On or before: (date)
+- Item Type [RFAMNLBTKO]  (R=Regular, F=?, A=?, M=Misc, N=Non-stock, etc.)
+- Refresh Timer (Seconds)
+- Include Customers on Credit Hold (Y/N)
+- Include Released SO Lines
+- Include SO Lines with 00/00/00 Dates
+- Include Kit Components
+- Include Back Order in SO Quantity
+- Show Only Ship Early SO
+- Incl Ship Early SOs with Limited Shipments
+- Display SO-O-I when Printing SOs
 
-| Group | Programs | Purpose |
-|-------|---------|---------|
-| SO / Shipping | t7hhssoe + J7HHLITN + 8 more | Scan orders, print labels, ship |
-| WO / Production | T7HHWOG/WOP/woscrap + 5 more | Issue materials, report FP, scrap |
-| PO Receiving | T7HHPOC + 4 more | Receive POs with QC |
-| DC Labor | T7HHDCA + 3 more | Time-clock labor entry for WO operations |
-| Bin/Location | t7hhinlj + 1 more | Bin transfer, bin lookup |
-| Physical Inventory | T7HHPIC | Count entry for PI cycle |
+T7HHN2 action buttons: &Lot, S&erial, Release SOs, &Print.
+T7HHNDTE captures final shipping details: Ship Date, Ship Via, Tracking #, SO#, Customer, Freight.
+
+## HH-A: SSOE and SODD variants
+
+Two scan-ship variants:
+- **T7HHSSOE** (standard) — Item Num, Qty, Last Scan, &Rel SO, Reset. Post-scan
+  verify in T7HHSSOEVerify (Exit/Label/List/All) and T7HHSSOESVerify (Exit/Label/List).
+  Print Box Content Labels in t7hhssoeLabels (Misc/RTM/Box/Printer/Print Lot Numbers).
+- **T7HHSODD** (Direct Delivery) — SO Number, Reprint Invoice button. Separate
+  workflow for direct customer shipments.
+- **J7HHSSOE variants** (i2 custom): J7HHPTSSOE (PTS variant for PTS orders),
+  J7HHRTSSOE (&Rel SO + Reset buttons, Reset capability for corrections).
+
+## PO Receiving sub-forms
+
+T7HHPOC (main) → spawns:
+- T7HHPOCBin — WC Bin Selection (processing wait screen)
+- T7HHPOCLot — Receive Lot Numbers (Lot Number, Last Lot Scanned, Item)
+- T7HHPOCSER — Receive Serial Numbers (Serial Num, Last Serial Scanned, Item)
+- T7HHPOCNotes — Notes category chooser (PO / PO Line Item / Item / Vendor)
+
+## WO sub-forms
+
+Finish Production (HH-D) sub-forms: T7HHWOIBin (WC Bin Selection: Component,
+WO Num, Qty), T7HHWOIProcess (background PROCESS DATA wait screen),
+T7HHWOLOT (Release Lot Number: Lot#, Last Lot Scanned, Qty On Hand, Bin),
+t7hhwoser (Enter Serial Number: Serial Num, Last Serial Scanned, Qty).
+
+## WO Label configuration (T7HHWOLabel)
+
+- Finished item classification: Fin Seq From/Thru, Fin Item Class
+- Semi-finished item classification: Semi-Fin Item Class, Semi-Fin Seq From/Thru
+- Hour remaining Filters
+- Ship Box RTM (report template for box label)
+- Always Default Label Qty = 1
+- Show Print Dialog box
+- Use Full screen lookups
+
+## SO Lot/Serial capture sub-forms
+
+T7HHSOBIN — WC Bin Selection (for SO pick); T7HHSOLOT — Release Lot Number
+(Lot#, Last Lot Scanned, Item, Qty, On Hand, Bin); T7HHSOSER — captioned
+"Print Mattress Labels" (Serial Num, Last Serial Scanned, Item) — i2-specific
+label for mattress serial tracking on SO release.
+
+## i2 Systems extensions (J7HH*)
+
+| Program | Caption | Purpose |
+|---------|---------|---------|
+| J7HHEBINC | Inventory Adjustment | Mattress serial # adjustment (Mattress Number/Desc/Serial Num) |
+| J7HHEBXFER | Transfer Inventory | Mattress serial transfer (same fields as EBINC) |
+| J7HHEBXferVerify | Verify Transfer | Confirm mattress transfer (Exit/List/Label) |
+| J7HHLITN / T7HHH | Enter Tracking Numbers | Carrier tracking # entry: SO#, Customer, Track#, Ship Co |
+| J7HHPTSSOE | Shipping | PTS order scan-ship variant |
+| J7HHPTSSOELABELS | Print Box Content Labels | Box labels for PTS shipments |
+| J7HHPTSSOEVerify | Sales Orders | PTS shipping verify |
+| J7HHRTSSOE | Shipping | Release+Reset variant of SSOE |
+
+## Utility forms
+
+- **T7HHALERTMSG** — "ALERT NOTIFICATION" popup (vendor alert / item alert,
+  shown when triggered by t7hhpoc settings)
+- **T7HHProcess / T7HHWOIProcess** — "PROCESS DATA / Please Wait" spinners
+- **T7HHItemLU** — Inventory item search (Search field, Desc column)
+- **t7hhinbins** — "WC Item Lookup" (bins by WC)
+- **T7HHSOLookup / T7HHWOLookup** — SO/WO lookup forms (for scan or manual entry)
 
 ## Integration
 
 - **[[module-DC|DC]]** — HH-F Enter Labor writes to BKDCLAB (same table as desktop DC)
 - **[[module-PO|PO]]** — HH-G Receive PO writes to same BKQCMSTR/BKQCTRAN as T7POJC
-- **[[module-WO|WO]]** — HH-C/D/M read WORKORD, WOBOM, and write INVTXN / WORECV
+- **[[module-WO|WO]]** — HH-C/D/M read WORKORD, WOBOM; write INVTXN / WORECV
 - **[[module-PI|PI]]** — HH-E writes to BKPIPHYS / PIBINLOC (same PI count tables)
+- **[[module-SO|SO]]** — HH-A/N release SO lines; T7HHSOSER prints mattress labels
+- **J7 customs** — HH-H (J7HHLITN) and J7HHEB* bridge HH to mattress serial tracking
 """,
 
 "QT": """
@@ -2796,16 +2872,43 @@ and activity tracking. Closely integrated with AR (customer accounts) and SO.
 
 ## Menu operations
 
-| Code | Operation | Program |
-|------|-----------|---------|
-| CM-A | Enter Contact Accounts | t7cma.rwn |
-| CM-B-B | Print Accounts Listing & Labels | t7cmbb.rwn |
-| CM-B-C | Print Reminders | T7REMINDRPT.RWN |
-| CM-B-F | Print Notes | evonotesrpt.rwn |
-| CM-C | CRM Dashboard | t7jcrm.rwn (Java) |
-| CM-J | Change Account Codes | t7cmj.rwn |
-| CM-K | Add Customers to Account File | t7cmk.rwn |
-| CM-M | Contact Manager Defaults | T7DSCM.RWN |
+| Code | Operation | DFM | Key fields |
+|------|-----------|-----|-----------|
+| CM-A | Enter Contact Accounts | T7CMA | Account, Name, Address, City/State/Zip, Country, Contact, Phone, Fax, Currency, Group, SIC, Sls Rep 1 |
+| CM-B-B | Print Accounts Listing & Labels | T7CMBB | Report Code, Description, Date, Primary Sort, Filters, SIC Code |
+| CM-B-C | Print Reminders | T7REMINDRPT | (reminder print) |
+| CM-B-F | Print Notes | evonotesrpt | (notes print) |
+| CM-C | CRM Dashboard | t7jcrm | (Java CRM dashboard) |
+| CM-J | Change Account Codes | t7cmj | (code renumber) |
+| CM-K | Add Customers to Account File | T7CMK | Customer From/Thru, Customer Class From, Skip or Replace Existing, Include Ship To |
+| CM-M | Contact Manager Defaults | T7DSCM | (defaults maintenance) |
+
+## DFM-confirmed sub-forms
+
+**T7CMACON / T7CMCON — Customer Contact Information**
+Two contact sub-forms (CMACON = full; CMCON = simplified).
+CMACON fields: Customer, Contact Name, Position, Primary Contact flag,
+Phone Numbers (phone1..phone10), and **E-mail include flags**:
+Ack (acknowledgement), PkSlip (packing slip), Invoice, Quote, Statement,
+RFQ, PO, E-Pay. These flags control which transaction types send e-mail
+to each contact automatically.
+
+**T7CMABCL / T7CMABCLB / T7CMABCLP / T7CMACL — Class Management**
+Account class code maintenance (Class + Description). Variants ABCLB/P are
+alternate views. T7CMACL is the global classes list editor (all classes).
+DFM caption is hardcoded "BellTec Industries" — inherited from the
+system integrator's dev/test company; the caption is the form title, not
+a module name.
+
+**T7CMAKD — Key Dates**
+Per-account key date tracking: Key Date Code, Description, Key Date value.
+Used for anniversary dates, contract renewals, or follow-up milestones.
+
+**T7CMfocvt / T7CMnfcvt — Conversion Filters**
+T7CMfocvt: "From Rep Number → To Evo User Name" (converts legacy rep-number
+assignments to named EVO user IDs); filter: Transaction Date From/Thru.
+T7CMnfcvt: "Customer From/Thru" with Transaction Date From filter.
+These are data-migration utilities for rep-code upgrades.
 
 ## Database tables (live counts, 2026-07-01)
 
@@ -3281,6 +3384,17 @@ Programs with `J7` prefix or `ASSIGN(" - ISTS Enhancement MM/DD/YY")` in source
 are i2 Systems customizations. Example: `T7GFPRICE.DFM` (Golding Farms pricing).
 
 The IS table family is fully accessible via Pervasive PSQL ODBC (unlike BKCM* tables).
+
+## Utility: T7ISMCC — Multi-Currency Conversion
+
+Caption: "Convert Source to Base Currency". Fields:
+- GL Period, Beginning Date
+- Convert/Post as of What Date?
+- Convert as of What GL Period?
+
+T7ISMCC is the multi-currency revaluation utility — converts foreign-currency
+balances to the base currency as of a specific GL period. Writes to GL. This is
+the only confirmed IS-prefix DFM in the EVO install (T7ISMCC.DFM + T7ISMCC.RWN).
 """,
 
 "LW": """
