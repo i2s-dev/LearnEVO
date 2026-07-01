@@ -71,6 +71,14 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Restore from an AWS Glacier backup archive | EvoERPbackup → Glacier restore | [Platform Subsystems](#platform-subsystems) |
 | Add a hyperlink attachment to a PO / SO / WO / part | EvoLinks | [Platform Subsystems](#platform-subsystems) |
 | View or enter reminders / calendar events | CALREM | [Platform Subsystems](#platform-subsystems) |
+| Issue materials (components) to a work order | WO-G | [Recipe 34](#recipe-34-wo-g-issue-materials--issue-bom-components-to-a-work-order-pass-439-2026-07-01) |
+| Record finished production / receive completed WO qty | WO-I | [Recipe 35](#recipe-35-wo-i-enter-finished-production--receive-completed-assemblies-from-a-wo-pass-439-2026-07-01) |
+| Create a price quote for a customer | ES-A → ES-B | [Recipe 36](#recipe-36-es-estimating--create-a-quote-and-convert-to-sales-order--work-order-pass-439-2026-07-01) |
+| Convert an accepted estimate/quote to a Sales Order | ES-E | [Recipe 36](#recipe-36-es-estimating--create-a-quote-and-convert-to-sales-order--work-order-pass-439-2026-07-01) |
+| Select AP invoices for payment (pre-check run) | AP-F | [Recipe 32](#recipe-32-ap-check-run--select-invoices-and-print-checks-pass-438-2026-07-01) |
+| Enter a Non-Conformance Report (NCR) | QC-F-A | [Recipe 33](#recipe-33-non-conformance-report-ncr-workflow-pass-438-2026-07-01) |
+| Issue the full kit at once for a work order | WO-G → Kit Issue button | [Recipe 34](#recipe-34-wo-g-issue-materials--issue-bom-components-to-a-work-order-pass-439-2026-07-01) |
+| See a WO's BOM components and issued quantities | WO-G Comps button or JC inquiry | [Work Orders](#work-orders-wo) |
 | View / enter a Spec Book / Approved Source List (AVL/QPL) | IN-B (SB tab) | [Spec Book / AVL (SB)](#spec-book--approved-source-list-sb) |
 | Collect employee labor hours into payroll (shop-floor or time cards) | WO-L-E or PR-J → PR-K | [Recipe 17: Payroll Time Entry](#recipe-17-payroll--time-entry-labor-hours-collection-pass-110d-2026-06-19) |
 | Calculate payroll and verify before printing checks | PR-B → PR-C | [Recipe 18: Payroll Calculation and Register](#recipe-18-payroll-calculation-and-register-pass-110d-2026-06-19) |
@@ -17866,6 +17874,86 @@ ISACCESS stores one record per form-control-group combination:
 - `ES-J (T7DSEST.RWN)` — Estimating Defaults (configures default rates, markup tables)
 - `ES-K (T7IC2EST.RWN)` — Update Estimating Inventory from Production (pulls actual costs back into estimating rates)
 - `ES-L/M (T7ESL/ESM.RWN)` — Edit / Inquire Estimating Inventory (maintains the separate estimating cost database)
+
+---
+
+### Recipe 37: Work Order Lifecycle — From Release to Close (Pass 444, 2026-07-01)
+
+**When to use:** To understand the complete production order flow from the moment manufacturing is authorized through final receipt of finished goods and WO closure. This recipe ties together WO-A, WO-B, WO-C/D/E, WO-F, WO-G, and WO-I.
+
+**Programs:** WO-A → WO-B → WO-G → WO-F → WO-I → WO-J
+
+**Full sequence:**
+
+1. **WO-A (T7WOA.RWN) — Enter Work Orders**
+   - Creates the WORKORD header record: WO#, parent assembly, quantity to make, start/due dates, routing, BOM reference.
+   - Status set to `F` (Firm) — authorized but not yet on the shop floor.
+   - WOBOM lines created from the item's current Bill of Materials (BM module). Each WOBOM line = one component.
+   - WOROUT records created from the item's Routing (RO module). Each WOROUT = one operation at a work center.
+   - If ES-E was used to convert an estimate, WORKORD.MTWO_WIP_NUM may reference the estimate#.
+
+2. **WO-B (T7WOB.RWN) — Release Work Orders**
+   - Changes status from `F` (Firm) to `R` (Released).
+   - Optionally generates traveler and pick list at release time.
+   - After release, the BOM is "frozen" — further BM changes don't auto-update this WO.
+   - If Kit Issue will be used in WO-G, release also sets `MTWO_KIT_STAT`.
+
+3. **WO-C (T7WOC.RWN) — Print Travelers**
+   - Prints the shop traveler (routing card) that follows the assembly through production.
+   - Shows operations, work centers, standard times, notes.
+
+4. **WO-D (T7WOD.RWN) — Print Pick Lists**
+   - Prints the component pick list (from WOBOM) for the stockroom.
+   - Shows item#, description, required qty, location, bin.
+
+5. **WO-F (T7WOF.RWN) — Enter Labor** *(during production)*
+   - Records direct labor hours against WO routing operations.
+   - Writes to WOROUT: `MTWORO_ACTUAL_HRS`, sets operation status to A (Active) or C (Complete).
+   - Also writes to BKPRCURP for payroll integration.
+   - Alternative: DC module (barcode scan), HH handheld, or DE-K (batch import).
+
+6. **WO-G (T7WOG.RWN) — Issue Materials** *(during production)*
+   - Issues components from inventory to the WO. See Recipe 34 for full detail.
+   - Writes WOMAT transactions; updates WOBOM.WOBOM_QTYISSUED; decrements BKINVLOC.
+   - **Kit Issue** option issues all components at once and sets `MTWO_KIT_STAT = 'L'` (freeze).
+
+7. **WO-I (T7WOI.RWN) — Enter Finished Production** *(when complete)*
+   - Receives the completed assembly into inventory. See Recipe 35 for full detail.
+   - Writes WORECV; increments parent assembly on-hand in BKINVLOC.
+   - Shows cost comparison: Estimated vs. Actual (Material/Labor/OH breakdown).
+   - When qty received ≥ qty to make: WO is fully received; ready to close.
+
+8. **WO-J (T7WOJ.RWN) — Close / Cancel Work Orders**
+   - Sets `MTWO_WIP_STATUS = 'C'` (Closed) or 'X' (Cancelled).
+   - Posts final WIP variance to GL: `WORKORD.MTWO_WIP_ACTMATCST` vs. standard cost.
+   - Removes WO from active production queues (WOROUT records archived).
+   - Open WOBOM with remaining qty can be reversed or left for partial-close analysis.
+
+**Status codes on WORKORD.MTWO_WIP_STATUS:**
+
+| Code | Meaning |
+|------|---------|
+| `F` | Firm — entered but not released |
+| `R` | Released — on shop floor; materials can be issued |
+| `S` | Started — labor has been posted against at least one operation |
+| `C` | Closed — fully received and closed |
+| `I` | On Hold — temporarily frozen |
+| `X` | Cancelled — abandoned |
+
+**Key tables written across the WO lifecycle:**
+
+| Table | Stage | Content |
+|-------|-------|---------|
+| `WORKORD` | WO-A | Master record: item, qty, dates, status, accumulated costs |
+| `WOBOM` | WO-A | BOM snapshot: all components with required qty per operation |
+| `WOROUT` | WO-A | Routing snapshot: all operations with work center and standard times |
+| `WOMAT` | WO-G | Material issue transactions (one per issue event per component) |
+| `WOROUT` | WO-F/DC | Updated with actual hours per operation |
+| `WORECV` | WO-I | Production receipt transactions (one per receive event) |
+| `BKINVLOC` | WO-G/I | Component qty decremented (WO-G), assembly qty incremented (WO-I) |
+| `BKGLTRAN` | WO-I/J | WIP postings: material cost, labor cost, OH absorption, variance |
+
+**Live data at i2 Systems:** 505,923 WOBOM lines; 469,515 WOMAT issue transactions; 53,500 WORECV receipts. 8,238 open routing operations across active WOs (WOROUT).
 
 ---
 
