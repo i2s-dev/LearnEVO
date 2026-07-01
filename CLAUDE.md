@@ -292,6 +292,7 @@ same session as the work that generates the findings — do not defer.
 
 | Document | What it tracks | Update trigger |
 |----------|---------------|----------------|
+| `KNOWN-ISSUES.md` | EvoERP production bugs with KI-NNN IDs, workarounds, and fix status | Any user-facing EvoERP bug confirmed or workaround live-tested |
 | `BROKEN.md` | Every bug, mistake, and failed fix — **mandatory read at session start** | Any bug encountered or fix attempted |
 | `BUGS.md` | learnevo-help browser bugs and launcher fixes | Any UI/server bug or launcher change |
 | `START-HERE-DOCUMENTATION-PROGRESS.md` | Current blocker, what is/isn't unblocked, research snapshot | Any change to what is blocked or unblocked |
