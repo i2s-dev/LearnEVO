@@ -1508,39 +1508,58 @@ departments, QC codes, scrap codes, and operation templates.
 "WC": """
 ## What it does
 
-Warehouse Control — manages warehouse bin addresses for multi-location inventory.
-Defines physical bin locations within each stock location, assigns items to bins,
-and tracks bin-level on-hand quantities separately from total on-hand.
+Warehouse Control manages warehouse bin addresses for multi-location inventory.
+It defines physical bin locations within each stock location, assigns items to
+bins, and tracks bin-level on-hand quantities separately from total on-hand.
 
-Not to be confused with **work centers** (production stations) — those are set up
-under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
+**Not to be confused with work centers** (production stations) — those are set
+up under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
 
 ## Menu operations
 
-| Code | Operation |
-|------|-----------|
-| WC-A | Enter Warehouse Bin Locations |
-| WC-B | Assign Warehouse Control (per-location flag) |
-| WC-C | Assign Bins to Items |
-| WC-E | Print Bin Inventory Listing |
-| WC-F | Print Bin Inventory Exceptions |
-| WC-G | Warehouse Control Defaults |
+| Code | Operation | Program |
+|------|-----------|---------|
+| WC-A | Enter Warehouse Bin Locations | — |
+| WC-B | Assign Warehouse Control (per-location flag) | — |
+| WC-C | Assign Bins to Items | — |
+| WC-E | Print Bin Inventory Listing | — |
+| WC-F | Print Bin Inventory Exceptions | — |
+| WC-G | Warehouse Control Defaults | — |
 
 ## Key tables
 
-| Table | Purpose |
-|-------|---------|
-| `ISBINLOC` (22 fields) | Bin master — bin code + location + on-hand per lot |
-| `BKICLOC` (32 fields) | Per-location on-hand quantities (UOH/UOO/UOSO/UBO per location) |
-| `ISBINLOT` (14 fields) | Bin + lot cross-reference |
-| `PIBINLOC` (14 fields) | Bin-level count records during physical inventory |
+| Table | Purpose | Live count (i2) |
+|-------|---------|----------------|
+| `ISBINLOC` | Item-bin-location record (9 fields): item, location, bin, UOH, created/updated dates, default-bin flag, extra, reorder level | 31,843 records |
+| `BKICLOC` | Per-location on-hand quantities per item (32 fields): UOH/UOO/UOSO/UBO, lot/serial tracked qtys | per item per location |
+| `ISBINLOT` | Bin + lot cross-reference | lot-tracked items |
+| `PIBINLOC` | Bin-level count records during physical inventory | PI cycle only |
+
+`ISBINLOC` key fields: `ISBIN_LOC_ITEM` (part#), `ISBIN_LOC_LOC` (location code),
+`ISBIN_LOC_BIN` (bin code), `ISBIN_LOC_UOH` (units on hand at this bin),
+`ISBIN_LOC_DFLT` (Y = default bin for this item).
+
+**Live scale at i2 Systems:** 31,843 item-bin records across 10 locations and 1,272
+distinct bin addresses.
+
+## Warehouse Control concept
+
+Without WC enabled, inventory is tracked per-location only (BKICLOC). With WC
+enabled, inventory is additionally tracked per bin within a location. This
+enables warehouse picking by bin address, and bin-level counts during PI.
+
+A single item can have multiple bins within one location (primary + overflow).
+The default bin (`ISBIN_LOC_DFLT = Y`) is used when picking for SOs or issuing
+to WOs unless the user specifies otherwise.
 
 ## Integration
 
-- **[[module-IN|IN]]** — items can have a default bin; BKICMSTR links to bin
-- **[[module-PI|PI]]** — bin counts feed Physical Inventory via PIBINLOC
-- **[[module-HH|HH]]** — handheld scanners use BKIC.LOC.* 297-var namespace for bin scanning
-- **[[module-LO|LO]]** — LO module also manages location-level inventory
+| Module | Relationship |
+|--------|-------------|
+| `IN` | BKICMSTR stores the default bin per item per location; WC-C assigns bins |
+| `PI` | Physical Inventory counts at bin level flow into PIBINLOC |
+| `HH` | Handheld scanners look up and confirm bin addresses during pick/ship/receive |
+| `WO` | WO-G Issue Materials can specify the source bin; WO-I receipt can specify put-away bin |
 """,
 
 "HH": """
