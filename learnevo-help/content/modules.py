@@ -747,6 +747,45 @@ The "Proportion Costs by [W/F/E]" selector confirms three co-product cost
 allocation methods: by weight ratio, fixed amounts, or equal split. This is
 the MU/Multi-Yield subsystem DFM form.
 
+## WO scheduling tables (Pass 496, EVO3.JAR)
+
+### SCHEDCAL — Shop calendar (6 fields)
+
+Maps calendar dates to shop working days, excluding holidays and weekends.
+
+| Field | Notes |
+|-------|-------|
+| SCH_CAL_DATE | Calendar date (the actual date) |
+| SCH_SHOP_DATE | Corresponding shop working day number |
+| SCH_SHOP_SLASH | Shop date display format (with slashes) |
+| SCH_BACK_DATE | Back-scheduled date (for due-date → start-date calculation) |
+| SCH_BACK_SLASH | Back-scheduled date display format |
+| SCH_WH_FLAG | Warehouse/holiday flag — marks non-working days |
+
+The WO scheduling engine uses SCHEDCAL to translate due dates to shop start dates
+by counting backward through working days, skipping SCH_WH_FLAG days.
+
+### SCHWO — Scheduled work order results (10 fields)
+
+Stores the output of the WO scheduling run for each work order.
+
+| Field | Notes |
+|-------|-------|
+| SWO_WOPRE | WO prefix (FK to BKWOMSTR) |
+| SWO_WOSUF | WO suffix (FK to BKWOMSTR) |
+| SWO_SHOP_START | Computed shop start date |
+| SWO_SHOP_FINISH | Computed shop finish date |
+| SWO_SHOP_DUE | Required ship/due date |
+| SWO_DAYS_TOGO | Shop days remaining |
+| SWO_RUN_DAYS | Total planned run days |
+| SWO_CRATIO | Completion ratio (% complete, 0.0–1.0) |
+| SWO_OPCOUNT | Number of routing operations |
+| SWO_CONTENTION | Resource contention flag — set if WC is over-scheduled |
+
+SCHWO is populated by the WO scheduling program and read by the WO schedule
+view (WO-B "Print WO Schedule"). SWO_CONTENTION flags work centers that are
+over-subscribed in the current schedule.
+
 ## Related
 
 - [[module-BM|BM - Bill of Materials]]
@@ -921,6 +960,72 @@ All 16 fields confirmed from EVO3.JAR BKGLTRAN.class (Pass 495, 2026-07-01).
 | R | RS | Return sale |
 | J | RP | Journal |
 | O | RP | Order-related |
+
+## GL transaction variant family (Pass 496)
+
+Three tables share the identical 16-field BKGL_TRN_* schema:
+
+| Table | Role |
+|-------|------|
+| BKGLTRAN | Live GL sub-ledger postings (current period) |
+| BKGLETRN | Extended GL transactions — same schema, separate physical file |
+| BKGLHIST | GL transaction history archive |
+
+`BKGLTRAN` is used by DefaultSQL cross-reference queries; `BKGLETRN` appears in
+EVO3.JAR as a distinct class but all 16 fields are identical (BKGL_TRN_AMT through
+BKGL_TRN_TYPE). `BKGLHIST` is the archive counterpart.
+
+## GL journal entry tables (Pass 496, EVO3.JAR)
+
+EVO maintains separate tables for manual journal entry batches:
+
+### BKGLGJRN — GL general journal header (11 fields)
+
+| Field | Notes |
+|-------|-------|
+| BKGL_GJ_CHKACT | Check account |
+| BKGL_GJ_CVCODE | Conversion code |
+| BKGL_GJ_EXTRA | Extra/binary data |
+| BKGL_GJ_INVCHKN | Invoice/check number |
+| BKGL_GJ_JOB | Job reference |
+| BKGL_GJ_NUMLNES | Number of lines in this journal batch |
+| BKGL_GJ_POSTED | Posted flag |
+| BKGL_GJ_TRANSDT | Transaction date |
+| BKGL_GJ_TRANSNM | Transaction/journal name (batch identifier) |
+| BKGL_GJ_TYPE | Journal type |
+| BKGL_GJ_TYPEN | Type number |
+
+### BKGLGJLN — GL general journal lines (9 fields)
+
+| Field | Notes |
+|-------|-------|
+| BKGL_GJL_ACCTNM | GL account number |
+| BKGL_GJL_AMOUNT | Amount |
+| BKGL_GJL_DC | Debit/Credit flag |
+| BKGL_GJL_DESC | Line description |
+| BKGL_GJL_EXTRA | Extra/binary data |
+| BKGL_GJL_GLDPT | GL department |
+| BKGL_GJL_JOB | Job reference |
+| BKGL_GJL_LINE | Line number within batch |
+| BKGL_GJL_TRANSN | Transaction/batch reference (FK to BKGLGJRN.BKGL_GJ_TRANSNM) |
+
+**Recurring journal variants:** `BKGLRGJR` (header) and `BKGLRGJL` (lines) share
+identical 11- and 9-field schemas with BKGLGJRN/BKGLGJLN. These hold template
+recurring entries that auto-post on schedule (e.g., monthly depreciation).
+
+### BKGLSTMT — GL financial statement layout (104 fields)
+
+Three sub-groups by prefix:
+- `BKGL_STB_*` — Statement B: assets/liabilities section (balance sheet rows), with
+  account ranges (`GLA_F/T` = from/to for asset accounts, `GLL_F/T` = liability from/to,
+  `GLO_F/T` = other; `_MT` = merge/total flag; `_TTL` = totals) — 34 fields
+- `BKGL_STC_*` — Statement C: income statement section (4 account range sets +
+  net/income totals) — 36 fields
+- `BKGL_STI_*` — Statement I: income detail section (current/expense/income ranges;
+  `_F/T` from/to; `GLOETT/GLOITT` = other expense/income totals) — 34 fields
+
+The 104-field BKGLSTMT table stores the financial statement format definitions —
+which GL account ranges map to which statement lines and totals.
 
 ## Related
 
@@ -2785,6 +2890,75 @@ general-purpose low-level Btrieve record editor — the TAS Pro admin power tool
 confirms runtime is "TAS Premier 7i" (not just "TAS Pro 7"). DDD managed via GUI with
 Fields/Keys tabs, key properties (Modifiable/Allow duplicates/Ignore Case/Clear segment
 field num), Export visible rows, and New/Edit/Delete field capability.
+
+## Security and session tables (Pass 496, EVO3.JAR)
+
+### BKLOGON — Active user session (10 fields)
+
+One row per currently logged-in user. Controls concurrent-login prevention and
+stores the active session state.
+
+| Field | Notes |
+|-------|-------|
+| BKLOGON_CODE | User login code (primary key) |
+| BKLOGON_PSWD | Password (stored for session auth) |
+| BKLOGON_CMPY | Company code currently active (set by TA-B Change Company) |
+| BKLOGON_MENU | Current top-level menu group |
+| BKLOGON_SUBMENU | Current submenu position |
+| BKLOGON_PROG | Program file currently running |
+| BKLOGON_PRINTER | Default printer for this session |
+| BKLOGON_CURPRT | Currently active printer (may differ from default) |
+| BKLOGON_SCRTY | Security level code (FK to BKSLEVEL.BKSL_LEVEL) |
+| BKLOGON_INUSE | In-use flag — set on login, cleared on logout; prevents duplicate logins |
+
+BKLOGON_INUSE is the concurrency lock. BKLOGON_SCRTY → BKSLEVEL determines which
+menus the user can see.
+
+### BKSLEVEL — Security access matrix (422 fields)
+
+Stores per-security-level menu access control. One row per defined security level.
+The 422 fields break down as:
+
+- `BKSL_LEVEL` — the security level code (e.g., "ADMIN", "USER1")
+- `BKSL_MENU` — associated menu group identifier
+- `BKSL_MENU{n}_YN` (n = 1–20) — whether menu group n is accessible at all (Y/N)
+- `BKSL_MENU{n}_{k}` (n = 1–20, k = 1–20) — whether item k within menu group n is
+  accessible (Y/N)
+
+Math: 2 + (20 × 21) = 2 + 420 = 422 fields exactly.
+
+The 20 menu groups map to the MENUFILE/BKMENUSU menu group definitions. Each group
+has up to 20 individual menu operations. This is EvoERP's entire menu-based access
+control system stored as a single denormalized row per security level.
+
+**Relationship:** BKLOGON.BKLOGON_SCRTY → BKSLEVEL.BKSL_LEVEL → 20 menu groups each
+with up to 20 item flags → MENUFILE.MENU_CODE → MENUFILE.MENU_PROG_n (the .RWN to run)
+
+### MENUFILE — Runtime menu definition (108 fields)
+
+The in-memory/database representation of the EVO menu system, loaded from
+BKMENUSU.DBF at runtime.
+
+| Field group | Count | Notes |
+|-------------|-------|-------|
+| MENU_CODE | 1 | Menu group code (e.g., "AP", "SO") |
+| MENU_TITLE | 1 | Display title for the menu group |
+| MENU_ESCAPE | 1 | Escape key binding |
+| MENU_LEFT, MENU_RIGHT | 2 | Horizontal boundaries |
+| MENU_WIDTH | 1 | Menu window width |
+| MENU_LL_COL, MENU_LL_ROW | 2 | Lower-left display position |
+| MENU_NAMES_1-20 | 20 | Display label for each of up to 20 items |
+| MENU_PROG_1-20 | 20 | Program file (.RWN/.INT) for each item |
+| MENU_LINES_1-20 | 20 | Display line number for each item |
+| MENU_OPTIONS_1-20 | 20 | Option flags for each item |
+| MENU_TYPES_1-20 | 20 | Type code for each item |
+
+108 = 8 header fields + 5 × 20 per-item arrays. The MENU_PROG_n fields are the exact
+.RWN filenames that BKMENUSU.TXT confirms (e.g., `T7JSQL.RWN`, `queryexecute.rwn`).
+
+MENUFILE ties the three security layers together:
+`BKLOGON` (session) → `BKSLEVEL` (access matrix) → `MENUFILE` (menu definition) →
+`MENU_PROG_n` (program to launch)
 
 ## Integration
 
