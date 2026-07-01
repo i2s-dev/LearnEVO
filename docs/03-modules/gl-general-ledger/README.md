@@ -247,6 +247,23 @@ Payroll            PR
 
 BKGLO.RUN also confirms `BKGLTMP`/`BKGLTMP2` as temporary staging tables during GL-O batch post, and `BKGLOOB.RUN` as an inline out-of-balance finder sub-call from GL-O.
 
+**Live BKGLTRAN type distribution — Pass 434 (2026-07-01), i2 Systems, 2,965,096 rows total:**
+
+| BKGL_TRN_TYPE | Count | % | Meaning |
+|---------------|------:|---|---------|
+| WO | 1,536,024 | 52% | Work Order GL postings (component issues, receipts, labor, overhead) |
+| RP | 511,140 | 17% | Purchases — PO receipt postings (AP/IN module) |
+| RS | 460,237 | 16% | Sales — SO invoice/shipment postings (AR/IN module) |
+| CD | 161,317 | 5% | Cash Disbursements — AP check payments |
+| OT | 139,320 | 5% | Other (misc transactions not in the named categories) |
+| CR | 89,280 | 3% | Cash Receipts — AR customer payments |
+| GJ | 60,938 | 2% | General Journal — manual entries via GL-B/GL-P |
+| YE | 6,726 | 0.2% | Year End — closing entries |
+| JA | 111 | <0.01% | Unknown — not in BKGLO.RUN UI (possibly Journal Adjustment) |
+| GL | 2 | <0.01% | Unknown — 2 orphan records |
+
+Note: `PR` (Payroll) appears in BKGLO.RUN UI but has 0 live rows — i2 Systems likely posts payroll GL entries as GJ or WO type rather than through the PR batch path.
+
 ---
 
 ## General Journal (GJ) table family

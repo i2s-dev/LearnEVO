@@ -517,7 +517,7 @@ receiving, PI adjustments, and manual IC adjustments.
 
 | Field | Type | Size | Meaning |
 |-------|------|------|---------|
-| MTIT_TYPE | STRING | 1 | Transaction type: `R`=receive (PO), `I`=issue (to WO), `A`=adjustment, `S`=ship (SO), `P`=PI/physical, `X`=scrap |
+| MTIT_TYPE | STRING | 1 | Transaction type — **Pass 434 (2026-07-01) live-data confirmed** (3,269K rows): `I`=WO Issue (2,322K, 71% — components issued from stock to WO); `S`=SO Shipment (317K); `W`=WO Receipt (185K — finished goods from WO to stock); `P`=PO Receipt (180K); `Q`=QC Receipt/Return (100K — negative qty=vendor return after QC fail); `A`=Adjustment (91K); `T`=Location Transfer (35K); `C`=Customer Return (19K, negative qty); `M`=Multi-yield/co-product (8K); `B`=Bin Transfer (7K); `G`=Scrap (2K, WO-linked); `R`=Service Repair (1K, LOC=SERVREPAIR); `J`=Outside Job/sub-contractor (712); `O`=Outside Process receipt (SRC-only, 0 in live data) |
 | MTIT_CLASS | STRING | 4 | Item class code |
 | MTIT_DATE | DATE | 4 | Transaction date |
 | MTIT_CODE | STRING | 15 | Part number / item code |
@@ -542,10 +542,7 @@ receiving, PI adjustments, and manual IC adjustments.
 | MTIT_PRODLOT | STRING | 15 | Production lot (for WO receipts — the lot assigned to finished goods) |
 | MTIT_EXTRA | STRING | 50 | Extra / overflow field |
 
-**Usage pattern:** When SO-G posts a shipment, it writes one INVTXN row per line item
-(TYPE=`S`, CODE=part, QTY=-shipped_qty, REF=SO#, CUST=customer). When WO receipts post,
-they write TYPE=`R`/`I` rows. BKICLOC on-hand is decremented/incremented, then INVTXN
-gets the corresponding audit row.
+**Usage pattern (live-data confirmed Pass 434):** WO-component issues (TYPE=`I`) dominate at 71% — every component pulled from stock for a work order gets one row (REF=customer name, WOPRE/WOSUF=WO number, QTY=positive issued quantity). SO shipments (TYPE=`S`) write one row per invoice line (REF=customer name, CUST=customer code, QTY=positive shipped qty). WO receipts (TYPE=`W`) record finished-goods-to-stock (REF=job desc, WOPRE/WOSUF=WO). PO receipts (TYPE=`P`) record incoming parts (REF=vendor name, PO=PO number). Location transfers (TYPE=`T`) come in paired rows: one negative (from-loc) + one positive (to-loc). MTIT_CLASS is the item class code (PCBA/HRDW/RES/CBLA/CAP etc. — i2 Systems specific). Total rows at i2 Systems: ~3.27M (2016–2026).
 
 ---
 

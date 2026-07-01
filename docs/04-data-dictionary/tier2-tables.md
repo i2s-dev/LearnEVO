@@ -357,7 +357,7 @@ File: `INVTXN.B` | Module: IN | Fields: 24
 
 | # | Field | Type | Meaning |
 |---|-------|------|---------|
-| 1 | MTIT_TYPE | STRING | Transaction type (SRC-confirmed): A=ADJUSTMT, S=SHIPMENT, P=PO RECPT, J=PO JOBRC, W=WO RECPT, I=WO ISSUE, Q=QC RECPT, O=OUT PROC, C=$ CHANGE |
+| 1 | MTIT_TYPE | STRING | Transaction type — **SRC + live-data confirmed Pass 434 (2026-07-01)**: `I`=WO ISSUE (2,322K=71%); `S`=SHIPMENT (317K); `W`=WO RECPT (185K); `P`=PO RECPT (180K); `Q`=QC RECPT/vendor-return (100K, neg qty=rejection); `A`=ADJUSTMT (91K); `T`=Transfer (35K); `C`=$ CHANGE/customer-return (19K); `M`=Multi-yield (8K); `B`=Bin Xfr (7K); `G`=Scrap (2K, WO-linked); `R`=Repair-SR (1K); `J`=JOB/outside-proc (712); `O`=OUT PROC (SRC-only, 0 live) |
 | 2 | **MTIT_CODE** | STRING | Product code / part number (PK 4; FK → BKICMSTR) — NOTE: field 2 in earlier docs was wrong "MTIT_PROD"; SRC confirms MTIT.CODE |
 | 3 | MTIT_DATE | DATE | Transaction date |
 | 4 | MTIT_QTY | FLOAT | Quantity — positive for receipts/adjustments-in; for S/I types QTY is positive but semantically outbound |
