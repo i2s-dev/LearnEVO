@@ -411,6 +411,26 @@ reconciled by GL↔IN audit queries in DE-A (SQL Export).
 | `MTIT_QTY` | Quantity moved (positive or negative) |
 | `MTIT_AVGCOST` | Average cost at time of transaction |
 | `MTIT_EXTRA` | Binary extra data — contains entry date at offsets 26-33 (MMDDYY format as chars: `SUBSTRING(MTIT_EXTRA,26,2)`=MM, `29,2`=DD, `32,2`=YY; century assumed '20') |
+| `MTIT_CLASS` | Item class |
+| `MTIT_CUST` | Customer code (for customer-specific transactions) |
+| `MTIT_DEPT` | Department code |
+| `MTIT_DESC` | Transaction description |
+| `MTIT_INVOICE` | Invoice number |
+| `MTIT_LOC` | Location/bin |
+| `MTIT_LOT` | Lot number |
+| `MTIT_PO` | PO number |
+| `MTIT_PRICE` | Price at time of transaction |
+| `MTIT_PRODLOT` | Production lot |
+| `MTIT_QC` | QC code |
+| `MTIT_REF` | Reference field |
+| `MTIT_SCRAP` | Scrap quantity |
+| `MTIT_SERIAL` | Serial number |
+| `MTIT_STDCST` | Standard cost at time of transaction |
+| `MTIT_VENDOR` | Vendor code |
+| `MTIT_WOPRE` | Work order prefix |
+| `MTIT_WOSUF` | Work order suffix |
+
+All 24 fields confirmed from EVO3.JAR INVTXN.class (Pass 495, 2026-07-01).
 
 **MTIT_TYPE codes (all 12 confirmed from DefaultSQL GL↔IN query):**
 
@@ -820,8 +840,40 @@ reopen a period via `AM-A`.
 ## BKGLTRAN — GL transaction detail (Pass 493, DefaultSQL-confirmed)
 
 `BKGLTRAN` is the sub-ledger GL posting table written by AR/AP/IN/PO/WO
-automatically as transactions occur. **Distinct from `BKGLX_JOURNAL`**
-(the extended-GL journal documented in docs/gl-journal.md).
+automatically as transactions occur. **Distinct from `BKGLX`**
+(the extended-GL cross-module table — see BKGLX section below).
+
+## BKGLX — Extended GL cross-module table (Pass 495, EVO3.JAR-confirmed)
+
+BKGLX stores richer GL posting information than BKGLTRAN, with explicit
+cross-module links to WO, PO, and SO. BKGLXH is the history/archived version.
+
+| Field | Meaning |
+|-------|---------|
+| `BKGLX_TRXNTYPE` | Journal/transaction type (16 confirmed codes: GLPOINV/GLSO/GLINV/etc.) |
+| `BKGLX_JOURNAL` | Journal number |
+| `BKGLX_TRXN` | Transaction number |
+| `BKGLX_AMOUNT` | Dollar amount |
+| `BKGLX_QUANTITY` | Quantity |
+| `BKGLX_PART` | Part/item code |
+| `BKGLX_WOPRE` | Work order prefix (FK to WORKORD) |
+| `BKGLX_WOSUF` | Work order suffix (FK to WORKORD) |
+| `BKGLX_PONUM` | PO number |
+| `BKGLX_POINVC` | PO invoice number |
+| `BKGLX_SOINVC` | SO invoice number |
+| `BKGLX_CCLASS` | Customer class |
+| `BKGLX_ICLASS` | Item class |
+| `BKGLX_COMPANY` | Company code |
+| `BKGLX_DESC` | Description |
+| `BKGLX_ENTDATE` | Entry date |
+| `BKGLX_POSTDATE` | Post date |
+| `BKGLX_POST` | Posted flag |
+| `BKGLX_ARCHDATE` | Archive date |
+| `BKGLX_BATCH` | Batch number |
+
+**Design contrast**: BKGLTRAN is GL-account focused (has BKGL_TRN_GLACCT);
+BKGLX is cross-module linkage focused (has WOPRE/WOSUF/PONUM/SOINVC, no GL account).
+Both tables are written for every posting event.
 
 | Field | Type | Meaning |
 |-------|------|---------|
@@ -834,6 +886,15 @@ automatically as transactions occur. **Distinct from `BKGLX_JOURNAL`**
 | `BKGL_TRN_GLACCT` | char(10) | GL account number |
 | `BKGL_TRN_INVC` | char | Invoice number (byte[0] is a flag; bytes[1-9] = invoice#) |
 | `BKGL_TRN_DESC` | char | Description — e.g. `'RNI/INVOICED'`, `'RECEIVED/NOT INVOICED'` |
+| `BKGL_TRN_BATCH` | char | Batch number (for batch-posted entries) |
+| `BKGL_TRN_DC` | char | Debit/credit flag |
+| `BKGL_TRN_EXTRA` | binary | Extra data |
+| `BKGL_TRN_GLDPT` | char | GL department |
+| `BKGL_TRN_PERIOD` | int | Fiscal period number |
+| `BKGL_TRN_POST` | char | Posted flag |
+| `BKGL_TRN_TRXN` | char | Transaction number |
+
+All 16 fields confirmed from EVO3.JAR BKGLTRAN.class (Pass 495, 2026-07-01).
 
 **BKGL_TRN_TYPE codes (confirmed from DefaultSQL cross-reference):**
 
