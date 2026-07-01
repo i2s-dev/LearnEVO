@@ -17608,6 +17608,118 @@ ISACCESS stores one record per form-control-group combination:
 
 ---
 
+### Recipe 32: AP Check Run — Select Invoices and Print Checks (Pass 438, 2026-07-01)
+
+**When to use:** At end of payment cycle (weekly/bi-weekly) to pay open vendor invoices.
+
+**Programs:** AP-D → AP-F → AP-G → AP-H → (AP-Q to void)
+
+**Full sequence:**
+
+1. **AP-D (t7apd.rwn) — Enter Scheduled Payment Dates**
+   - Open each vendor invoice (BKAPINVL) and set `BKAP_DESC_PDATE` (scheduled payment date).
+   - Optional step — used to pre-schedule payment dates for aging analysis.
+
+2. **AP-E (t7ape.rwn) — Print Vouchers/Invoices Due by Date**
+   - Run before the check run to see what invoices fall due within the payment window.
+   - Reads BKAPINVL filtered by due date. Output is a preview list only — no tables written.
+
+3. **AP-F (t7apf.rwn) — Pick Vouchers/Invoices to Pay**
+   - **This step builds the check run batch.** User marks invoices to include.
+   - Writes `BKAPCHKF` (check run file) — one row per invoice/voucher selected for payment.
+   - Supports partial payment, discount adjustment, and payment date override.
+
+4. **AP-G (t7apg.rwn) — Print Pro Forma Check Register**
+   - Optional proof step. Reads `BKAPCHKF` and prints a preview of checks to be cut.
+   - No GL posting — read-only audit trail before committing.
+
+5. **AP-H (t7aph.rwn) or AP-H-A (t7apha.rwn) — Print Checks**
+   - Reads `BKAPCHKF`, prints physical checks (or ACH output).
+   - Format controlled by `BKYS.YN[48]`: `1/4/5` = laser (AP-H-A via BKAPHA1/2/3.RTM), `2/3` = continuous/dot-matrix.
+   - **GL posting at print time:**
+     - Debit: AP Control account (BKAPVEND.BKAP_GLACT)
+     - Credit: Bank account (ISBANKS)
+   - After posting: `BKAPINVL` invoice marked paid, `BKAPCHKH` check header written,
+     `BKAPCHKF` rows deleted, vendor `BKAPVEND.LASTPMT` updated.
+   - ACH/NACHA output: AP-Y-C (t7apyc.rwn) generates ACH file after AP-H.
+
+6. **AP-Q (t7apq.rwn) — Void AP Check**
+   - Reverses a posted check: reverses GL entries, reopens original BKAPINVL invoice.
+   - Creates a void BKGLCHK record (TYPE=`V`).
+
+7. **AP-T (t7apt.rwn) — AP Check Inquiry**
+   - View historical check detail from `BKAPCHKH` (check header) + `BKAPINVT` (check transactions).
+
+**Key tables written:**
+
+| Table | When written | Content |
+|-------|-------------|---------|
+| `BKAPCHKF` | AP-F (Pick) | Staging: invoices selected for this check run |
+| `BKAPCHKH` | AP-H (Print) | Permanent check header: vendor, check#, date, amount |
+| `BKAPINVT` | AP-H (Print) | Invoice transaction: marks invoice as paid |
+| `BKGLTRAN` | AP-H (Print) | GL journal: AP debit, bank credit |
+| `BKGLCHK` | AP-H or AP-Q | Check register: TYPE=`C`(check)/`D`(ACH)/`V`(void)/`X`(cleared) |
+
+**Live data at i2 Systems:** `BKGLCHK` = 40,654 checks (2004–2026); `BKAPCHKF` = 0 rows (cleared after each run).
+
+---
+
+### Recipe 33: Non-Conformance Report (NCR) Workflow (Pass 438, 2026-07-01)
+
+**When to use:** When a part, assembly, or vendor delivery does not meet quality requirements.
+
+**Programs:** QC-F-A → QC-F-B → QC-F-C → QC-F-D → (QC-G-A if CAR required)
+
+**Full sequence:**
+
+1. **QC-F-A (T7QCFA.RWN) — Enter NCR**
+   - Creates an `ISNCR` record with the next sequential NCR# (auto from BKYS.QCNUM).
+   - Required fields: Part#, Qty, Description of Nonconformity, Origin (I/V):
+     - `IS_NCR_ORIG = 'I'` (In-house): fill in WO#/Work Center/Machine/Tool
+     - `IS_NCR_ORIG = 'V'` (Vendor): fill in PO#/RMA# and vendor-supplied info
+   - Optional: Drawing/Rev, Lot#, Serial#, Inventory Check Required flag.
+   - Sets `IS_NCR_STATUS = 'O'` (Open).
+
+2. **QC-F-B (T7QCFB.RWN) — Print NCR**
+   - Prints the formal NCR document from the ISNCR record.
+   - Used to hand off the physical NCR to the responsible party (e.g., vendor, shop floor supervisor).
+
+3. **QC-F-C (T7QCFC.RWN) — Disposition NCR**
+   - Fills in how the nonconforming material was handled:
+     - `IS_NCR_DISP`: disposition code (e.g., scrap, rework, use-as-is, return to vendor)
+     - `IS_NCR_SCRAP`: scrap code (links to ISDROP scrap code table)
+     - `IS_NCR_QC`: QC code
+     - `IS_NCR_DWHO` / `IS_NCR_DDATE`: who dispositioned and when
+   - **CAR trigger:** Set `IS_NCR_ACTION = 'Y'` to flag that a Corrective Action Report is required.
+
+4. **QC-F-D (T7QCFD.RWN) — Close NCR**
+   - Sets `IS_NCR_STATUS = 'C'` (Closed).
+   - Final step in the NCR lifecycle. At i2 Systems, this step has never been used (all 74 NCRs remain Open as of 2026-07-01).
+
+5. **QC-G-A (T7QCGA.RWN) — Enter CAR** (only if `IS_NCR_ACTION = 'Y'`)
+   - Creates an `ISCAR` record (Corrective Action Report) linked to the NCR via `IS_NCR_CAR`.
+   - CAR is for systemic root-cause investigation and correction. Process has never been used at i2 Systems.
+
+**Other NCR operations:**
+- `QC-F-E (T7QCFE.RWN)` — View NCR (read-only inquiry)
+- `QC-F-F (T7QCFF.RWN)` — NCR Listing (filtered report)
+- `QC-G-B/C/D` — Print/View/List CAR
+
+**Key tables written:**
+
+| Table | When | Content |
+|-------|------|---------|
+| `ISNCR` | QC-F-A, QC-F-C, QC-F-D | NCR master — 27 fields; PK = IS_NCR_NUM (float, sequential) |
+| `ISCAR` | QC-G-A | Corrective Action master — same IS_NCR_* field names; 0 live records at i2 |
+
+**Live data at i2 Systems:** 74 NCRs (1–74), range 2020-02-12 to 2026-06-11, all status='O'; 45 In-house / 29 Vendor. No CARs ever created.
+
+**Related receiving-QC path (separate from NCR):**
+- `PO-J-C` → writes `BKQCMSTR` (receive event) + `BKQCTRAN` (per-item QC transaction) — this is the high-volume path (53,300 records)
+- NCR is only created when a formal nonconformance document is needed (74 total vs 53,300 receiving events = ~0.14% escalation rate)
+
+---
+
 ## Pass 99 — EvoLinks, FNO, Calendar, Infrastructure DFM sweep (2026-06-18)
 
 ### EvoLinks — Document Attachment System (ISLINKS Table)
