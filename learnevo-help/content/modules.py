@@ -940,6 +940,12 @@ AR/SO invoices. Supports multiple commission structures: flat rates, price-code
 commissions, and contract commissions. Handles primary + secondary salesperson
 splits and year-end commission transfer.
 
+**Key architectural note:** CS has no dedicated BKCS* commission tables. Commission
+data is stored as fields within the core AR/SO tables: BKARCUST holds the rate,
+BKARINV holds the per-invoice percentages, BKICPMAT holds per-price-code rates.
+ISPRSALE (IS* custom, 0 records at i2) is the accumulation table for earned
+commissions but is not actively used at i2 Systems.
+
 ## Menu operations
 
 | Code | Operation |
@@ -961,17 +967,25 @@ splits and year-end commission transfer.
 | CS-Q | Commission Year End Routine |
 | CS-R | Sales Commission Defaults |
 
-## Key table
+## Where commission data lives
 
-`ISPRSALE` (87 fields, IS_PR_SALE_* prefix) — sales rep commission master:
-commission rate, commission type, pay period, earned/paid totals.
-Stores commission amounts per salesperson per period derived from AR/SO activity.
+| Table | Field(s) | What it stores |
+|-------|----------|----------------|
+| `BKARCUST` | `BKAR_COMM_1`, `BKAR_COMM_2` | Customer commission % for primary/secondary rep |
+| `BKARCUST` | `BKAR_IS_REP` | IS custom sales rep code (5 chars) |
+| `BKARINV` | `BKAR_INV_COMMPR_1`, `BKAR_INV_COMMPR_2` | Per-invoice commission % at time of posting |
+| `BKICPMAT` | `BKIC_PMAT_COMM1_1..10` | Per-price-code commission rates (10 price bands) |
+| `ISPRSALE` | IS_PR_SALE_* (87 fields, 0 records) | IS custom accumulated commission totals |
+
+**At i2 Systems:** Commission module is minimally used. ISPRSALE is empty (0 records).
+Salesperson commissions are tracked manually outside EVO rather than through CS-D Transfer.
 
 ## Integration
 
-- **[[module-AR|AR]]** — commissions sourced from posted invoices (BKARINV)
-- **[[module-SO|SO]]** — salesperson code on SO header drives commission assignment
-- **[[module-PR|PR]]** — commission earned amounts feed payroll (CS-D Transfer)
+- **[[module-AR|AR]]** — commissions sourced from BKARINV; BKARCUST drives rate defaults
+- **[[module-SO|SO]]** — salesperson code on SO header (BKAR_INV_SALEP_1/2) drives assignment
+- **[[module-PR|PR]]** — CS-D Transfer writes earned commissions to PR for payment
+- **[[module-IN|IN]]** — BKICPMAT price-code commission matrix links back to item setup
 """,
 
 "ES": """
@@ -1313,15 +1327,37 @@ See [[recipe-month-end-close]] and [[recipe-year-end-close]].
 | AM-S | Purge/Archive GL Journals |
 | AM-T | Archive GL Transaction Detail |
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-- `BKGLPER` — GL fiscal period master (open/close flags)
-- `BKGLCOA` (65f) — chart of accounts
-- `BKGLTRAN` — GL journal detail (source of all financial reports)
+| Table | Records | Purpose |
+|-------|--------:|---------|
+| `ISGLDATE` | 1 | Current fiscal period boundary dates (12 CY + 6 prior years x 12) |
+| `ISGLHDAT` | 18 | Historical period date registry — 7 years x 12 periods per row (84 date fields) |
+| `ISGLBDGT` | 2,173 | Historical GL balances per account/dept: 4 years x 14 periods + year-end total |
+| `ISGLCOA` | 2,181 | IS* shadow of BKGLCOA — financial statement formatter working set |
+| `BKGLCOA` | 2,185 | Chart of accounts master (65 fields, acct#/dept/type/balance fields) |
+| `BKGLTRAN` | 2,965,096 | GL transaction detail — source of all financial reports (2016-2026) |
+
+**ISGLBDGT structure:** keyed on ISGL_ACCT + ISGL_GLDPT; TYPE(A/L/E/I), CR_DR, NON_CASH
+flags; then ISGL_3YPAST_1..14, ISGL_4YPAST_1..14, ISGL_5YPAST_1..14, ISGL_6YPAST_1..14
+(14 periods each = 12 months + 2 adjustment periods) + year-end totals for each year.
+One row per COA account matches BKGLCOA (2,173 vs 2,185 — slight divergence from deletions).
+
+**ISGLHDAT structure:** 84+ fields — ISGL_CYDATE_1..12, ISGL_1YDATE_1..12, through
+ISGL_6YDATE_1..12 + ISGL_FYDATE + ISGL_EXTRA — stores period cutoff date boundaries
+for 7 fiscal years. 18 records (vs ISGLDATE's 1 record) suggests one row per historical year maintained.
+
+## Key AM operations
+
+- **AM-A Reset Period-End Close Date** — updates ISGLDATE to advance the fiscal period gate
+- **AM-B Fiscal Year End** — rolls BKGLCOA CURRENT→1YPAST→2YPAST balance fields; zeroes income
+  statement; creates opening entry; populates ISGLHDAT with completed year's period dates
+- **AM-Q Enter Budget Amounts** — writes budget figures to ISGLBDGT per account/period
+- **AM-T Archive GL Detail** — moves BKGLTRAN rows older than N years to offline archive
 
 ## Integration
 
-- **[[module-GL|GL]]** — AM-A/B control the period locks that GL enforces on posting
+- **[[module-GL|GL]]** — AM-A/B control the period boundary that GL enforces on posting dates
 - **[[module-AP|AP]]** — AM-J purges AP invoice and check history
 - **[[module-AR|AR]]** — AM-K purges AR invoice history (complement to SA aging reports)
 - **[[module-SM|SM]]** — SM-J handles operational archive (WO, PO, QC); AM handles accounting archive
@@ -2077,17 +2113,36 @@ access restrictions. The security administration hub for the EVO system.
 | PS-K | Enter Vendor Approval | J7appvend.rwn (ISTS custom) |
 | PS-L | Enter Field Specific Access | T7LIMACC.rwn |
 
-## Key tables
+## Database tables
 
-- `BKSYUSER` (5f) — user-to-security-level mapping
-- `BKSLEVEL` (422f) — security level × menu access matrix (422 fields = 211 menu operations × allow/deny flag pairs)
-- `BKSYLOG` (215f) — per-user module access tracking
+| Table | DDF | ODBC | Purpose |
+|-------|-----|------|---------|
+| `BKPSUSER` | 11f | 0 records (DBA DSN) | User account: code, password, security level, company, printer, menu, emp# |
+| `BKSLMSTR` | 2f | not in DBA DSN | Security level master: level code + description |
+| `BKSLEVEL` | 422f | not in DBA DSN | Security level menu access matrix — 20 menus x 20+ ops x flags |
+| `BKSYLOG` | — | 0 records | Module access audit log (empty at i2 Systems) |
+
+**BKPSUSER fields (11):** BKPS_USER_CODE (user ID, PK), BKPS_USER_PRT (default printer),
+BKPS_USER_MENU (default menu), BKPS_USER_CMPY (company code), BKPS_USER_MWIND (window mode),
+BKPS_USER_PSWD (encrypted password), BKPS_USER_ME (multi-entity Y/N), BKPS_USER_SEC
+(security level → FK to BKSLMSTR), BKPS_USER_MCNTR (menu counter), BKPS_USER_LDATE
+(last login date), BKPS_USER_EMP (linked employee code → FK to BKPRMSTR).
+
+**BKSLEVEL (422 fields):** Key = BKSL_MENU (menu# 1-20) + BKSL_LEVEL (2-char level code).
+Then BKSL_MENU1_YN/BKSL_MENU1_1..N through BKSL_MENU20_* — one flag per menu operation
+per security level. A security level with all YN=Y = unrestricted access to that menu.
+
+**Why BKPSUSER shows 0 records via DBA DSN:** The DBA DSN is configured for the DBAMFG$
+database on the network share. BKPSUSER.B lives there but may be registered under a
+different logical name, or users are stored in a company-specific BKPSUSER.B variant
+rather than a shared one.
 
 ## Integration
 
-- **[[module-SY|SY]]** — SY-A Enter Users feeds into PS security levels
-- **[[module-US|US]]** — US-D Change Password is the user-facing entry; PS-A is the admin view
-- **[[module-CR|CR]]** — PS-J configures the approvers used by CR contract review workflow
+- **[[module-SY|SY]]** — SY-A Enter Users is the T7 user entry screen backed by BKPSUSER
+- **[[module-US|US]]** — US-D Change Password is user-facing; PS-A is admin view of same data
+- **[[module-CR|CR]]** — PS-J configures the contract review approvers (T7CTREVUADMIN)
+- **[[module-PO|PO]]** — PS-I configures digital signature approvers for purchase orders
 """,
 
 "SA": """
@@ -2459,13 +2514,16 @@ system administrators and developers.
 "FO": """
 ## What it does
 
-Features and Options — the product configurator module. Allows certain inventory
-items to be defined with selectable features (e.g., fabric color, cushion style,
-leg finish) that the customer picks at order entry time. EVO builds the correct
-BOM variant automatically based on selections.
+Features and Options — the product configurator module. Allows configurable
+inventory items to be set up with selectable features (e.g., fabric, cushion
+style, leg finish, welt color) that the customer picks at order entry time.
+EVO explodes the correct BOM variant automatically from the selected options.
 
-At i2 Systems this drives the upholstery product line (sofas, chairs) where each
-order specifies fabric, cushion, welt, zipper, and other configurable attributes.
+At i2 Systems, FO drives the **upholstery product line** (sofas, chairs, sectionals)
+where each order specifies dozens of configurable attributes. The ISFO* custom
+table family extends the standard EVO FO module with full workflow tracking
+(Copied → Tagging → Completed → Cvt toSO). As of 2026-07-01: 10,842 configuration
+sessions in ISFOHEAD with 934,922 BOM lines across those sessions.
 
 ## Menu operations
 
@@ -2479,21 +2537,71 @@ order specifies fabric, cushion, welt, zipper, and other configurable attributes
 | FO-F | Feature and Option Defaults | T7DSFO.RWN |
 | FO-G | Configure Item | EvoFNO.RWN |
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `BKFOCFG` | 18 | F/O configuration (per-item feature setup) |
-| `ISFOHEAD` | — | F/O order header (active SO options) |
-| `ISFOLINE` | 78 | F/O BOM line (50 option-flags per line) |
-| `ISFOORDL` | 18 | F/O order line (from selected options) |
-| `ISFOHIST` | 15 | F/O history + conversion to SO records |
+| Table | Records | Purpose |
+|-------|--------:|---------|
+| `BKFOCFG` | 1 | F/O global config flags (MANFET + 15 YN flags, OPCODE) |
+| `ISFOHEAD` | 10,842 | Configuration session header: parent item, customer, date, status |
+| `ISFOLINE` | 934,922 | BOM lines per session: 50 OPFLAG bits + component, qty, op, price |
+| `ISFOHIST` | 25,338 | Workflow history per session: status transitions with WHO/DATE/TIME |
+| `ISFOBMRM` | 11,890 | BOM remarks: up to 15x64-char remark fields per component |
+| `ISFOORDL` | 8 | Live order lines from active conversions (transient staging) |
+
+## ISFOHEAD — Configuration Session Header (16 fields)
+
+| Field | Type | Meaning |
+|-------|------|---------|
+| `ISFO_HDR_UID` | STRING 40 | Unique configuration ID (PK) |
+| `ISFO_HDR_PARENT` | STRING 15 | Parent item# being configured |
+| `ISFO_HDR_DATE` | DATE | Configuration date |
+| `ISFO_HDR_DESC` | STRING 30 | Description / order ref |
+| `ISFO_HDR_CUST` | STRING 10 | Customer# |
+| `ISFO_HDR_VEND` | STRING 10 | Vendor# (if vendor-driven) |
+| `ISFO_HDR_RFQ` | STRING 20 | RFQ reference# |
+| `ISFO_HDR_STATUS` | STRING 15 | Workflow status (see below) |
+| `ISFO_HDR_REV` | STRING 5 | Revision# |
+| `ISFO_HDR_MDATES_1..5` | DATE x5 | 5 milestone dates |
+| `ISFO_HDR_PERM` | STRING 1 | Permanent flag |
+| `ISFO_HDR_EXTRA` | STRING 150 | Extra / user-defined |
+
+**Status values (from live data):**
+
+| Status | Count | Meaning |
+|--------|------:|---------|
+| Completed | 3,071 | Configuration finalized |
+| Copied | 544 | Copied from another session |
+| Cvt toSO XXXXX | ~700 total | Converted to SO# XXXXX |
+| (blank) | 19 | In-progress / draft |
+
+**Top configured parent items:** A3120Z-31HAE (869 sessions), E1150Z-11CAB (564),
+A3120Z-11HAE (331), A3120Z-31HCE (299) — all upholstered seating SKUs at i2.
+
+## ISFOLINE — BOM Lines per Session (78 fields)
+
+50 ISFO_LIN_OPFLAG_N (STRING 1 each) encode which option flags apply to this
+BOM component. Additional fields: LEVEL, PARENT, LINEN, COMP (part#), QTYREQ,
+REF, TYPE, SCRAP, OP (operation code), 6 OPYN flags, PRICE, RTNUM, DUPOP, OPDSC,
+VEND, DATE1/2, REV, PBRANC, CBRANC. 934,922 lines across 10,842 sessions = avg
+86 BOM lines per configuration session.
+
+## ISFOHIST — Workflow History (15 fields)
+
+Records every status transition: WHO (user), DATE, TIME, STATU (new status),
+PART (item changed), CVTTO (conversion type: SO/WO), CVTNO (target document#),
+CITEM (converted item), QTY, LOC, CV, DDATE, PRICE.
+
+**History status distribution:** Copied (10,806), Completed (7,231), Tagging (93),
+Cvt toSO (various SO#s, ~700 total) — matches ISFOHEAD status lifecycle.
 
 ## Integration
 
-- **[[module-SO|SO]]** — FO dialog launches from SO-A when an item has a configuration
-- **[[module-BM|BM]]** — T7BMA (BOM editor) manages the F/O BOM variants (BKFOCFG+ISFOLINE in T7BMA DB)
-- **[[module-IN|IN]]** — item master `OPT` flag enables the F/O dialog on that item
+- **[[module-SO|SO]]** — FO-G launches from SO-A when item has OPT flag set; ISFOHIST
+  CVTTO='SO' records link configuration sessions to Sales Orders
+- **[[module-BM|BM]]** — BKFOCFG and ISFOLINE are in T7BMA DB fingerprint; BOM variants
+  stored as ISFOLINE OPFLAG bit patterns
+- **[[module-IN|IN]]** — BKICMSTR OPT flag enables the FO dialog for that item
+- **[[module-WO|WO]]** — ISFOHIST CVTTO='WO' records show direct WO conversions
 """,
 
 "FP": """
