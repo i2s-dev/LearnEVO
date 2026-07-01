@@ -1051,6 +1051,17 @@ All BKDCLAB* tables share **identical 51-field LAB_* schema** and are accessible
 
 **t7DCina.DFM** (caption "T7INA") — a cross-module navigation panel showing buttons for SO/SH/PO/RC/WO/AL/LO/BM/TR/VN/MF/RO/SR, embedded within the DC environment to allow rapid jumps to related modules.
 
+**T7AUTODCH.DFM (caption "AUTO DC-H"):** Automated batch-post variant of DC-H —
+Employee From/Thru / Shifts [123] / WO Number From/Thru; Exit / Settings / Post
+buttons; ETBcomboval = LISTG60.LIB grid. T7AUTODCH is the scheduled/automation
+variant of T7DCH — same fields, designed to run unattended as part of
+[[module-AU|AU]] batch automation.
+
+**T7PUTAWAY.DFM (caption "New Screen"):** Bin-level inventory put-away form —
+Part / Bin / Bin Location fields; Put Away / Print Label / Clear / Exit buttons;
+ETBcomboval = LISTG60.LIB grid. Confirms the [[module-PU|PU]] Put-Away
+workflow: scan/enter part number → assign to bin location → print bin label.
+
 ## Integration
 
 - **[[module-WO|WO]]** — BKDCLAB posts to WOLABOR and WOMAT when processed (DC-H)
@@ -2353,6 +2364,15 @@ BKRFQDES has 427 records (historical vendor addresses from past RFQ sessions).
 BKRFQ (49 fields): RFQ#/PART/VENDOR/ITEM/QUOTE PK; then QTY_1..10 + COST_1..10
 (10-break price matrix) + VENDCODE/VENDNAME/PHONE/DATE/EXPDATE/NOTES/ENTBY/EXTRA fields.
 
+## DFM-confirmed details
+
+**T7RFQ.DFM (caption "New Screen"):** Two-panel view — Pending (items needing
+quotes) and RFQ (items with active quotes). Grid columns: LIST.PART /
+LIST.DESC / LIST.QTY / LIST.VEND / LIST.STDCST / LIST.STATUS / LIST.TAG.
+Actions: Tag Individual / Tag Groups / Process / Exit. The tag-based workflow
+lets buyers select items individually or by group before processing them into
+RFQ requests.
+
 ## Integration
 
 - **[[module-PO|PO]]** — PO-J Accept RFQ creates a PO from the winning quote
@@ -3520,6 +3540,23 @@ one-time-password used as the approval PIN (same mechanism as PS-J electronic si
 
 **ISCRISLS** (10 fields): IS_CR_SLS_CUST(10), ITEM(15), SDATE, SUOH, SHPQTY,
 SHPDTE, INVNUM, FDATE, FUOH, SOLDTE — tracks contract compliance by customer+item.
+
+## DFM-confirmed details
+
+**T7CTRevu (Setup Contract Review Departments):** Admin configuration form —
+Password + Confirm Password + Department fields; Admin Level + Mass Approval
+toggles; SO filter: SO Number From/Thru + Order Date From/Thru; actions:
+Save / Reset / App SOs (bulk approve SOs in range) / Kill (delete record).
+
+**T7CTRevuPSWD (Enter Contract Review ID and password):** Auth sub-form —
+Contract Reviewer ID / Department / Password. Shared with T7SORevuPSWD.
+
+**T7SORevu (SO Contract Review):** Live SO review display — SO Number /
+Customer / Entered By / Entered Date; grid (ETBcomboval = LISTG60.LIB);
+hints: "SO Notes" / "SO Evo Links" / "Clear Data" / "SO Department Evo Links" /
+"SO Department Notes" — confirms the CR review screen has direct access to
+SO-level and department-level notes and EvoLinks attachments.
+Actions: Save / Exit / Kill.
 
 ## Integration
 
