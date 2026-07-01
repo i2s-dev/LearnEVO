@@ -1059,29 +1059,70 @@ invoice, whatever. Universal. Used as a lightweight CRM and audit trail.
 ("subsystem-evoscheduler", "Evo Scheduler — Cron-Like Job Runner", "Architecture",
 """
 `EvoScheduler.RWN` runs EVO jobs on a schedule — like cron for the ERP.
-Paired with `EvoService.RWN` for unattended execution as a Windows
-service.
+Paired with `EvoService.RWN` for unattended execution as a Windows service.
+`EvoService.RWN` is the Windows service wrapper: it polls `ISSCHED` for
+due jobs and fires them, then checks `ISREMIND` for user reminders.
 
-## Typical jobs
+**At i2 Systems: ISSCHED=0 records — EvoScheduler is not configured.**
+The infrastructure exists but no scheduled jobs are set up.
 
-- Nightly MRP (`AUTOT7MRF.RWN`)
-- Morning aging reports
-- EDI file pickups
-- Backup runs
+## Programs
 
-## Configuration
+| Program | Procs | Purpose |
+|---------|------:|---------|
+| `EvoScheduler.RWN` | — | Interactive schedule management UI |
+| `EvoService.RWN` | 27 | Windows service: polls ISSCHED + ISREMIND |
+| `EvoServiceSetup.RWN` | 49 | Service install wizard (language-safe) |
+| `EvoServiceRemove.RWN` | 18 | Service uninstall wizard |
+| `AUTOT7MRF.RWN` | — | Auto-MRP launcher (typical scheduled job) |
 
-- `EvoSchedSetup.RWN` — edit schedule entries (name, cron-like
-  expression, program to run, arguments).
-- Stored in a scheduler table (naming TBD; likely `BKSCHED*` but not
-  found in the 659-table inventory — may be created dynamically).
+## ISSCHED table (24 fields, 2026-07-01 live schema)
+
+The scheduler queue is `ISSCHED` in the Pervasive DDF:
+
+| Field | Size | Purpose |
+|-------|-----:|---------|
+| `IS_SCHED_NAME` | 50 | Job name (primary key) |
+| `IS_SCHED_DESC` | 256 | Description |
+| `IS_SCHED_PROG` | 256 | Program to run (e.g., `AUTOT7MRF.RWN`) |
+| `IS_SCHED_CO` | 3 | Company code to run under |
+| `IS_SCHED_TYPE` | 1 | Schedule type (D=daily, W=weekly, M=monthly, O=once) |
+| `IS_SCHED_DATE` | 10 | Next run date |
+| `IS_SCHED_TIME` | 8 | Next run time |
+| `IS_SCHED_RECUR` | 52 | Recurrence expression |
+| `IS_SCHED_LOG` | 256 | Last run log message |
+| `IS_SCHED_LDATE` | 10 | Last run date |
+| `IS_SCHED_LTIME` | 8 | Last run time |
+| `IS_SCHED_WHO` | 15 | Who configured the job |
+| `IS_SCHED_EMAIL` | 128 | Email address for job completion notification |
+| `IS_SCHED_PARAM1..0` | 256 each | 10 program arguments (PARAM1–PARAM0 = 0..9) |
+| `IS_SCHED_EXTRA` | 100 | Extra user-defined data |
+
+## ISREMIND table (24 fields)
+
+`ISREMIND` stores user calendar reminders and is polled by EvoService:
+
+Key fields: IS_REM_DATE/TIME (due date/time), IS_REM_WHO (user), IS_REM_SUBJECT (100),
+IS_REM_MEMO(0=BLOB), IS_REM_CUST/VEND/ITEM (linked entity), IS_REM_DISP (dismissed flag),
+IS_REM_NOTIFY (send notification), IS_REM_TYPE (3=type code), IS_REM_NOTE (6000=memo),
+IS_REM_EMAIL (400=address), IS_REM_SENT (sent flag/timestamp).
+
+## Typical jobs (configured elsewhere in EVO)
+
+- Nightly MRP: `AUTOT7MRF.RWN` in company DBA
+- Morning aging reports: any AR-H equivalent report program
+- EDI file pickups: T7EDII import trigger
+- Automatic FX rate update: `T7AUTOFX.RWN` (OANDA API → MTEXCHG)
+- Backup: `EvoERPbackup.RWN` (ZIP snapshot via zipdll.dll)
 
 ## Related
 
 - [[architecture-overview]]
 - [[recipe-run-mrp]]
+- [[module-IM|IM]] for T7AUTOFX FX rate auto-update via ISSCHED
 """,
-["scheduler", "cron", "schedule", "auto", "unattended", "batch", "evo scheduler"]),
+["scheduler", "cron", "schedule", "auto", "unattended", "batch", "evo scheduler",
+ "ISSCHED", "ISREMIND", "EvoService", "EvoScheduler", "automated jobs"]),
 
 ("subsystem-evolinks", "Evo Links — Document Attachments", "Architecture",
 """
