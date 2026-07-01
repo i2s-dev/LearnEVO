@@ -3682,6 +3682,120 @@ W-2/payroll year-end (if using EVO payroll) is in [[module-PL|PL]].
 See [[module-AM|AM]] for period-end and year-end procedures.
 """,
 
+"EVO": """
+## What it does
+
+EVO* is the **platform layer** of EvoERP — a set of cross-cutting features
+shared by every module. These are not menu modules; they appear as toolbar
+buttons, right-click context menus, and pop-up panels within existing module
+screens.
+
+## Notes system (EvoNotes)
+
+**ISNOTES — 133,574 records / 14 fields (ODBC confirmed, 2026-07-01)**
+
+The most actively used platform feature. Every record in EvoERP (customer,
+vendor, item, WO, SO, PO, invoice, etc.) can have one or more attached text
+notes.
+
+| Field | Purpose |
+|-------|---------|
+| IS_NOTE_ID | Note unique ID |
+| IS_NOTE_TYPE | Module/record type link (WO, SO, AR, etc.) |
+| IS_NOTE_NOTE | Note text |
+| IS_NOTE_CDATE / CTIME / CWHO | Created date/time/who |
+| IS_NOTE_EDATE / ETIME / EWHO | Last edited date/time/who |
+| IS_NOTE_PRIVATE | Private (Y = visible only to creator) |
+| IS_NOTE_GROUP | Group tag |
+| IS_NOTE_CONTACT | Contact reference |
+| IS_NOTE_ALPHA / EXTRA | Extra fields |
+
+EvoNotes.DFM confirms: "KILL" button (delete), Contact, View Current/Archive,
+search (EvoNoteSearch.DFM: string search, Current/Archived/Both, Match Case).
+EvoNotesARCH.DFM: archive/restore by date range. EvoNotesRpt.DFM: notes report
+by Event Date + Item# range.
+
+## Links system (EvoLinks)
+
+**ISLINKS — 4,196 records / 313 fields (ODBC confirmed)**
+
+Attaches external files (PDFs, images, Office docs) to any EvoERP record.
+The 313-field schema uses an `IS_LNK_TYPES_1..N` array for cross-module
+type associations (one association field per module/record type pair).
+
+Key fields: IS_LNK_UID, IS_LNK_LINK (file path/URL), IS_LNK_APP (open-with app),
+IS_LNK_GLOBAL, IS_LNK_OPENWITH, IS_LNK_DATE, IS_LNK_NOTE (annotation),
+IS_LNK_WHO, IS_LNK_ATYPE (attachment type), IS_LNK_PRIVATE, IS_LNK_SORT.
+
+EvoLinks.DFM confirms: Image Preview panel, File, View Current, KILL.
+EvoELinks.DFM: "Entering Links" panel (Date, Who, Link, File).
+EvoLinkCVT.DFM: utility to convert old image links to EvoLinks format.
+
+## Reminders & Alerts
+
+**ISREMIND — 0 records / 24 fields (not used at i2 Systems)**
+
+evoreminders.DFM: pop-up panel — ReminderMessage, Dismiss, Reschedule,
+Dismiss All. evorereminders.DFM: Snooze — "Remind me again in X [time unit]".
+evoalerts.DFM: system broadcast alerts — AlertMessage, Ignore, View.
+
+## ERP Scheduler
+
+evoERPsched.DFM confirms: "Run at time", "Schedule Every", day-of-week
+checkboxes (Monday, ...). EvoSchedsetup.DFM: "Create Evo Scheduler as a
+Service" (installs as a Windows service). Drives background tasks like
+US-G Triggers and scheduled report email.
+
+## Business Status dashboard (EvoBS)
+
+Three-panel executive dashboard accessed from the main menu toolbar:
+
+| DFM | Content |
+|-----|---------|
+| EvoBS.DFM | Top-level: AR Current Balance, Billings |
+| EvoBSCash.DFM | Cash detail: Cash Balance, Bank Accounts |
+| EvoBSWO.DFM | Work Orders: FP/Variances, Issues, WIP Balance |
+| EVOBSR.DFM | Rebuild: regenerates BS aggregates from live data |
+
+No dedicated ODBC table found — likely reads directly from BKARINV, BKARCUST,
+BKGLCOA, WORKORD for live aggregation.
+
+## Master Inquiry (EvoCSI)
+
+EvoCSI.DFM: "Evo Master Inquiry" — single entry point for cross-module
+lookup by Customer Code, Item Number, SO Number, or Invoice Number.
+Resolves the question "where does this number appear?" across all modules.
+
+## Password management
+
+| DFM | Purpose |
+|-----|---------|
+| Evopass.DFM | Login password prompt |
+| EVOUPASS.DFM | User + password entry |
+| EVOCHANGEPASS.DFM | Change password |
+| EVORESETPASS.DFM | Reset password — User Name, New Password, Reenter Password |
+
+## Maintenance tools
+
+| DFM | Purpose |
+|-----|---------|
+| EvoERPupd.DFM | Online EVO update: Initialize, FileName, FD Name |
+| EvoForceUpd.DFM | Force Update (bypass version check) |
+| Evocnvtb.DFM | Synchronize Data Dictionary with Btrieve — rebuilds DDF from live .B files |
+| EvoERPbackup.DFM | Backup utility: file types, zip file name, Backup Type |
+| EvoERPDrillM.DFM | Drill-down menu editor: Source Field, Target Field, Menu Text, Key |
+| EVOFUP.DFM | Upload files to ISTS tech support: Select Tech, zip, Your Name |
+| EVOSERVICESETUP.DFM | Create EvoService Windows service (SMTP, Server Path) |
+| EvocfgSave.DFM | Save/Restore Evo Service Settings |
+| EVOFILTERS.DFM | WO filter panel (WO#/Finished Date/Status) — shared across SH/WO/PA |
+
+## Data Collection workstation menu
+
+EvoDCmenu.DFM: "Data Collection Menu" with Prog1–Prog4 configurable buttons.
+EvoDCmenu2.DFM: DC Menu with Main/Exit/Settings/Help.
+EvoDCsetup.DFM: "Create Workstation Setup" (Server Path, Date Format).
+""",
+
 "J7": """
 ## What it does
 
