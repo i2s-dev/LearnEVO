@@ -280,6 +280,24 @@ The active cost lives in `BKIC_PROD_AVGC`, `BKIC_PROD_STDC`,
 Enable multi-location in `AD-D (Inventory Defaults)`. Each location has
 its own quantities in `BKICLOC`, and the item master just shows summed.
 
+## IN-B Enter Inventory — item master sub-tabs (T6ISINB*.DFM confirmed)
+
+The "Enter Inventory" form has at least 7 sub-tabs:
+
+| Tab | Key fields |
+|-----|-----------|
+| **Main** | Item#, Description, Class, Category, Type, Act Status, Taxable, Tax In, Stock UM, Price UM, Purch UM, Duty Code, User Defined Sort Field, Characteristics |
+| **ECO** | Drawing Number, Revision Level, Internal Date, Entered By, ECO Number (Add/Edit/Delete/Print) |
+| **Item Links** | Order, Link, Use Global Path, File Associations vs Other, Printing, Image Thumbnail |
+| **Manufacturer** | Manufacturer, Vendor Item Number |
+| **MRP Settings** | Include in MRP, Reorder Level, Reorder Amount, Lead Time, Planner Code, Round MRP Quantities, Expedite Buffer (Days), Delay Buffer (Days) |
+| **Specifications** | (item spec text, exact fields dynamic) |
+| **Vendor** | Vendor, Vendor Item Number |
+
+The MRP Settings tab drives MRP generation: only items with Include in MRP = Y appear in
+MR runs. Reorder Level and Reorder Amount also drive IN-D (Reorder Report) independently
+of MRP. ECO tab records engineering change history against the item.
+
 ## Typical workflow
 
 ```
@@ -302,6 +320,19 @@ IN-G Adjust (correct discrepancies)
 - `IN-I` Valuation (current worth)
 - `IN-O` User-defined inventory transactions
 - `IN-L-A` Print location summary
+
+## Standard Cost view (T6ISSTDCST.DFM)
+
+`T6ISSTDCST.DFM` — "Standard Cost" — shows a two-tier cost summary for any item:
+
+| Section | Fields |
+|---------|--------|
+| **This Level Costs** | Material, Freight, Labor, Setup, Outside Proc, Fixed Overhead, Var. Overhead |
+| **Rolled-up Costs (All Levels)** | Material & Frt., Standard Cost, Lot Size, Item Number, Description |
+
+This matches the standard cost rollup concept: "This Level" shows costs at this
+assembly level only; "Rolled-up" includes all sub-components recursively. The Standard
+Cost final value lives in `BKICMSTR.BKIC_PROD_STDC`.
 
 ## GL impact
 
@@ -470,8 +501,10 @@ Key line fields (`BKAPPOL`): `BKAP_POL_PONM` (PO#, FK), `BKAP_POL_CNTR` (line#),
 
 For items requiring incoming inspection:
 - `PO-J-A` prints a receipt traveler (work order-style routing card)
-- `PO-J-C Enter Inspection Buyoffs` records accepted/rejected qty into
-  `BKQCMSTR` (receive event) + `BKQCTRAN` (per-item QC detail)
+- `PO-J-C Enter Inspection Buyoffs` (`autoT7POJC.DFM`) records accepted/rejected qty into
+  `BKQCMSTR` (receive event) + `BKQCTRAN` (per-item QC detail). Form fields:
+  Receiver Number, To Date, Receiver Line Qty, Bought Off to Date, Rejected to Date,
+  Qty Remaining — cumulative tracking of what has been inspected against each receipt.
 - `PO-J-B Print Inventory in QC` shows what is still awaiting inspection
 
 ## Drop-ship POs
@@ -747,8 +780,17 @@ local tax, SUTA, FUTA (employer portions).
 |--------|-------------|
 | `GL` | PR-F posts payroll journal entries; BKPRGLFL maps components to accounts |
 | `DC` | Shop-floor time scans in BKDCLAB* feed PR-B time entry |
+| `GL` | PR-F posts payroll journal entries; BKPRGLFL maps components to accounts |
+| `DC` | Shop-floor time scans in BKDCLAB* feed PR-B time entry |
 | `CS` | Commissions module can post to payroll for salesperson payout |
 | `WO` | WO-F Enter Labor also writes time records used by PR |
+
+## Nasco payroll export (i2-specific)
+
+`NascoPAYex.DFM` — "Export Payroll Data" — prompts for Payroll date and exports
+the period's payroll data for submission to **Nasco** (i2's external payroll service
+processor). This supplements the internal PR module: i2 uses EVO for time/cost
+tracking and Nasco for the actual payroll run / tax filing / check disbursement.
 """,
 
 # Short stubs for remaining modules - filled in by build script via schema/menu data
@@ -2426,6 +2468,24 @@ or an error message references `SY`, it means the PS/SM/SD cluster.
 
 `BKSLEVEL` (422 fields) — security level matrix: each of the 5 access levels
 has a Y/N flag for every function in every module.
+
+## Menu infrastructure — WBKMEN*.DFM (8 DFMs confirmed)
+
+The EvoERP menu system is implemented via a "Workbook Menu" subsystem. Admin forms:
+
+| DFM | Purpose |
+|-----|---------|
+| WBKMENU_LOGIN.DFM | Login form (dynamic, no static caption) |
+| WBKMENUSETUP.DFM | **Menu Item Setup** — Groups/Buttons, Menu Lines, New Menu, Existing Menu Items; Add/Edit/Delete User; Add Group; Update to Latest Prg; Change Prg Name |
+| WBKMENUSUCPRG.DFM | **Change Program Name** — old vs new program name mapping |
+| wbkmenusueu.dfm | **Per-user access** — Menu Item Setup with Access Code field |
+| WBKMENUSUMVEBTN.DFM | Move Button between groups |
+| WBKMENUSUNEWAC.DFM | **Enter New Access Code** — New Menu Access Code, Copy From (inherit another user's menu) |
+| WBKMENUBUTT.DFM | Button selector |
+| WBKMENUPICS.DFM | Image/icon selector |
+
+These allow SY/SM admins to customize which programs appear in which menu groups for
+each user or access-code group, and to remap program names when RWN files are renamed.
 """,
 
 "DE": """
@@ -3303,6 +3363,7 @@ the [[module-AR|AR]] and [[module-PO|PO]] modules to process both customer
 | CC-P | T7CCP | **Process Customer CC Payment** (AR-linked) — CC Number / Expiry (MMYY) / Zip Code / Address / Name on Card / Amount / CC Type / CC Processor / Use a Different Card |
 | CC-PO | T7CCPO | **PO/AP Credit Card Charge** (PO-linked) — CC Number / Expiry (YYYY) / Amount / Zip / CVV / Address |
 | CC-R1 | T7ccr1 | **Credit Card Invoice List** — Terms From / Date range (report of CC-linked invoices) |
+| CC-R (alt) | ISCCREP.DFM | **Credit Card Report** — Sales Order From / Thru date range filter; prints CC activity by SO |
 
 **T7CCP vs T7CCPO:** CCP handles customer AR payments (has CC Type, CC Processor, Name on Card, MMYY expiry), while CCPO handles PO/AP vendor payments (adds CVV field, YYYY expiry format — different form of the card entry).
 
@@ -3448,6 +3509,13 @@ does not corrupt historical transaction records.
 | T7FAB | **FA-B Post Depreciation** — Asset Number, Amount, Percent, Post date, Net Asset Value, Accumulated Dep Acct; confirms GL accounts visible on posting screen |
 | T7FAE | **FA-E Export Assets** — File Name (with path), Length or Delimited import format, Asset Number; `* = Basic Fields` note for simplified export |
 
+## Utility data browser forms (UT7G*.DFM)
+
+`UT7GFAC.DFM` and `UT7GFAD.DFM` are FA-specific utility data browser panels used for
+drilling into fixed assets data (FXATRN transactions and FXASSETS master) from within
+module contexts. These are runtime-loaded forms (caption = "Loading....") — the actual
+table name (FXATRN/FXASSETS) appears as the second caption field.
+
 ## Integration
 
 - **[[module-GL|GL]]** — depreciation posts to BKGLTRAN; BKSYMSTR validates
@@ -3525,6 +3593,23 @@ sessions in ISFOHEAD with 934,922 BOM lines across those sessions.
 | FO-E | Print Option Where Used | T7FOE.RWN |
 | FO-F | Feature and Option Defaults | T7DSFO.RWN |
 | FO-G | Configure Item | EvoFNO.RWN |
+
+## FO-G Configure Item UI (EvoFNO.DFM)
+
+The main configurator form has two display modes and several actions:
+
+- **Indented View** — shows BOM hierarchy with parent/child indentation
+- **Edit View** — flat editable grid for changing option selections
+- **Tag / All** — tag individual components or tag all for batch operations
+- **Sort** — re-sort the displayed BOM by various criteria
+- **Convert** — launch conversion dialog; three targets:
+  - **Convert → PO** (`EvoFNOPO.DFM`): "Converting to Purchase Order" progress dialog
+  - **Convert → SO** (`EvoFNOSO.DFM`): "Converting to Sales Order" progress dialog
+  - **Convert → WO** (`EvoFNOWO.DFM`): "Converting to Work Order" progress dialog
+- **Qty dialog** (`EvoFNOQty.DFM`): "F&O Qty" — prompts for QTY to be made, Location,
+  Cust/Vend, Due Date before conversion
+
+Conversion writes to ISFOHIST with CVTTO = 'SO', 'PO', or 'WO' and CVTNO = target document#.
 
 ## Database tables (live counts, 2026-07-01)
 
@@ -4364,12 +4449,12 @@ US-G Triggers and scheduled report email.
 
 Three-panel executive dashboard accessed from the main menu toolbar:
 
-| DFM | Content |
-|-----|---------|
-| EvoBS.DFM | Top-level: AR Current Balance, Billings |
-| EvoBSCash.DFM | Cash detail: Cash Balance, Bank Accounts |
-| EvoBSWO.DFM | Work Orders: FP/Variances, Issues, WIP Balance |
-| EVOBSR.DFM | Rebuild: regenerates BS aggregates from live data |
+| DFM | Fields confirmed by scan |
+|-----|--------------------------|
+| EvoBS.DFM | AR: Current Balance, Billings, Receipts, Discounts, COGS, Deposits; AP: Payables, Payments, Approved to Pay; SO: Open Orders, Booked Orders |
+| EvoBSCash.DFM | Cash, Balance, Bank Accounts (drill-down from EvoBS) |
+| EvoBSWO.DFM | WIP Balance, Labor, Materials & Process, Fixed Overhead, Variable Overhead, Misc Extra, Finished Production, Variance, FP/Variance |
+| EvoBSR.DFM | Rebuild/recalculate aggregates (progress: "Initializing...") |
 
 No dedicated ODBC table found — likely reads directly from BKARINV, BKARCUST,
 BKGLCOA, WORKORD for live aggregation.

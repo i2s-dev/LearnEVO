@@ -1,0 +1,727 @@
+object EditForm1: TEditForm1
+  Left = 316
+  Top = 188
+  Width = 544
+  Height = 434
+  Hint = 'C:\TASPRO7\DBA7\VARINFO.DFM'
+  Caption = ' VAR Infromation'
+  Color = clBtnFace
+  Font.Charset = DEFAULT_CHARSET
+  Font.Color = clWindowText
+  Font.Height = -13
+  Font.Name = 'Arial'
+  Font.Style = []
+  FormStyle = fsStayOnTop
+  Icon.Data = {
+    0000010001002020000001000800A80800001600000028000000200000004000
+    0000010008000000000080040000000000000000000000000000000000000000
+    0000DED3FF00D6D3FF00FF00FF000000FF00E7FFF700ADF7F700ADE3F700ADCF
+    F700ADBEF700F7AAF700E7AAF700CEAAF700BDAAF700ADAAF700E7FFEF00D6FB
+    EF00EFEFEF0084EFEF0063EBEF00E7E3EF0084D7EF00FFD3EF0063CBEF0084BA
+    EF0063A6EF00849EEF00EF86EF00D686EF00BD86EF009C86EF008C86EF006382
+    EF00EF61EF00CE61EF00A561EF008461EF006361EF00D6FBE700ADF7E70039E7
+    E700EFE3E700FFD3E700D6D3E70039BAE700F7AAE700398EE7003965E700423C
+    E700E738E700BD38E7008C38E7006338E700D6FBDE00FFD3DE00C6C3DE00FFFB
+    D600EFFBD600E7FBD600DEFBD600D6FBD600FFEFD60084EFD600FFE7D600FFDB
+    D600D6D7D60018D7D600FFD3D600E7D3D600B5B2D60018AAD600EF86D6001879
+    D600184DD600D61CD600AD1CD6007B1CD6004A1CD600211CD600ADF7CE0063EB
+    CE00F7AACE00A5A2CE00EF61CE00DEC3C6009492C600ADF7BD0084EFBD0039E7
+    BD00BDBEBD00F7AABD00EF86BD008482BD00E738BD00D6B2B50018B2B500188A
+    B5007371B5001865B5001841B500B518B5008C18B5006318B5003918B5001818
+    B500F7F7AD00E7F7AD00CEF7AD00BDF7AD00ADF7AD00F7E3AD0018D7AD00F7CF
+    AD00F7BEAD00F7AAAD006361AD00D61CAD0063EBA500A5A6A500CEA2A500A5A2
+    A500EF61A5005251A50084EF9C00C69A9C00EF869C0042419C00C69294003130
+    940039E78C0018B28C008C8E8C00108E8C00106D8C0010518C00E7388C001030
+    8C0021208C00B5188C0010148C008C108C006B108C0052108C0031108C00EFEF
+    8400D6EF8400BDEF84009CEF840084EF840063EB8400EFD78400EFBA8400EF9E
+    8400EF868400BD828400EF618400101084000000840018D77B00D61C7B007375
+    7300108E6B008C106B00EFEB6300CEEB6300A5EB630084EB630063EB630039E7
+    6300EFCB630018B26300EFA66300EF82630008656300EF616300AD6163000851
+    6300E738630008246300B5186300630C6300520C6300390C63005A5D5A00108E
+    5200086552008C105200630C520018D74A00D61C4A00424542009C414200E7E7
+    3900BDE739008CE7390063E7390039E73900E7BA390018B23900E78E3900E765
+    390008653900393C3900E7383900B5183900630C3900108E3100943031003130
+    31008C103100086521008C202100D6D71800ADD718007BD718004AD71800B5B2
+    18008CB2180063B2180039B21800D6AA1800B58A1800D6791800B5651800D64D
+    1800B53C1800D61C1800B51818008C8E10006B8E1000528E1000108E10008C6D
+    10008C5110008C30100084101000636508005265080021650800635108006338
+    080063240800FFFF000000FF0000FF0000008400000000000000000000000000
+    0000000000000000000000000000000000000000000000000000FFFFFF000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    00000000000000000000000000000000000000000000000000000000000000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F50000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFF59AFF5F5AF7CFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFBFF576FF599AAF59FFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFF5F5AF7CFFFF59BF59FFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFAFF57F9ABF9AFF59AFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFF7CF5AFFFFFAFBF78FFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFAFF57CFFFF9AF578FFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFAFBF59FFFFF5BFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFAFBF59FFF5BFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFF7CAFF5BF7CFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF5F50000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F50000F5
+    F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5F5000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    0000000000000000000000000000000000000000000000000000000000000000
+    000000000000000000000000000000000000000000000000000000000000FFFF
+    FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF800000018000
+    0001800000018000000180000001800000018000000180000001800000018000
+    0001800000018000000180000001800000018000000180000001800000018000
+    00018000000180000001FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF}
+  OldCreateOrder = False
+  OnClose = 'VARINFO.OnClose'
+  No_Refresh = False
+  OnStart = 'VARINFO.OnStart'
+  OpenFiles = 'VARINFO.OnOpenFiles'
+  ScreenPos = tpDesktopCenter
+  SpecifiedTop = 0
+  SpecifiedLeft = 0
+  SourceFile = 'VARINFO'
+  RememberSizeDate = 39085.710942187500000000
+  SourceAttached = False
+  PixelsPerInch = 96
+  TextHeight = 16
+  object Panel1: TPanel
+    Left = 0
+    Top = 0
+    Width = 536
+    Height = 373
+    Align = alClient
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 0
+    object Label1: TLabel
+      Left = 9
+      Top = 26
+      Width = 55
+      Height = 16
+      Caption = 'VAR Icon'
+    end
+    object Label2: TLabel
+      Left = 9
+      Top = 90
+      Width = 55
+      Height = 16
+      Caption = 'Company'
+    end
+    object Label3: TLabel
+      Left = 9
+      Top = 118
+      Width = 48
+      Height = 16
+      Caption = 'Address'
+    end
+    object Label4: TLabel
+      Left = 9
+      Top = 172
+      Width = 23
+      Height = 16
+      Caption = 'City'
+    end
+    object Label5: TLabel
+      Left = 251
+      Top = 172
+      Width = 31
+      Height = 16
+      Caption = 'State'
+    end
+    object Label6: TLabel
+      Left = 9
+      Top = 199
+      Width = 51
+      Height = 16
+      Caption = 'Zip Code'
+    end
+    object Label7: TLabel
+      Left = 9
+      Top = 227
+      Width = 45
+      Height = 16
+      Caption = 'Contact'
+    end
+    object Label8: TLabel
+      Left = 9
+      Top = 253
+      Width = 33
+      Height = 16
+      Caption = 'Email'
+    end
+    object Label9: TLabel
+      Left = 9
+      Top = 280
+      Width = 54
+      Height = 16
+      Caption = 'Web Site'
+    end
+    object Label10: TLabel
+      Left = 9
+      Top = 308
+      Width = 48
+      Height = 16
+      Caption = 'Updates'
+    end
+    object Label11: TLabel
+      Left = 9
+      Top = 336
+      Width = 45
+      Height = 16
+      Caption = 'Support'
+    end
+    object logo: TTASComboEnter
+      Left = 72
+      Top = 24
+      Width = 255
+      Height = 21
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000000000000000000000000000000000000F0F3F7F0F3F7
+        F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7BEC8
+        D2203040B9C0C8F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0
+        F3F7F0F3F7F0F3F7F0F3F7BEC8D23050604078C0304860BEC8CDF0F3F7F0F3F7
+        F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7BEC8D23050703080
+        D04098E050B0F050687070889070788060707050606040505030384030384040
+        485050505050505050586040709040A0E060C8FF7090A0D2D9DC708890A0E0F0
+        70D0F050B8E030B0E030A0C0708080B0A8A0D0C0B0D0B0A08078705058506090
+        B07098B0405060F0F3F7808890B0E8F090E8FF80E0FF70D8FF80A0B0C0B8B0FF
+        F0E0FFE8E0F0D8C0F0D0B08078704070905080A0202830F0F3F78090A0B0E8F0
+        A0E8FF90E8FF80E0FF909090F0E8E0FFF8F0FFF0F0FFE8E0F0D8D0D0B0A05060
+        601080B0303840F0F3F78090A0B0F0FFB0F0FFA0E8FF90E0FF909890F0E8E0FF
+        FFFFFFF8F0FFF0F0FFE8E0E0C0B05068701080B0404050F0F3F78098A0C0F0FF
+        B0F0F0A0F0FFA0E8FF90B8C0C0C0C0FFFFFFFFFFFFFFF8F0FFF0E0B0A0905080
+        A01088C0505060F0F3F78098A0C0F0FFB0F0FFB0F0FFA0E8FF90E0F0A0B0B0C0
+        C0C0F0E8E0F0E8E0B0B0A070809040A8E01090C0506070F0F3F790A0A0C0F0FF
+        B0F0FFB0F0FFB0F0F0A0F0FF90E0F090B8C090989090909070A0B050B8E050B8
+        F02098D0607080F0F3F790A0B0C0F0FFC0F0FFC0F0FFC0F0FFB0F0FFB0F0FFA0
+        E8FF90E8FF90E0FF80D8FF70D0FF70C8F060C0F0607080F0F3F790A0B090A0B0
+        90A0B090A0B090A0B090A0B090A0A09098A08098A08098A08098A08098A08098
+        A08098A0C9D2D5F0F3F790A8B0B0E8F0B0F0FFB0F0FFB0F0F090E0F090A0B0BF
+        D3D7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7E4F1F690A8B0
+        90A8B090A8B090A8B090A8B0E3E9EBF0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3
+        F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0
+        F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7F0F3F7}
+      NumGlyphs = 1
+      TabOrder = 0
+      Text = 'logo'
+      FieldName = 'IS.VAR.LOGO    '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = -1
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = False
+    end
+    object logopanel: TPanel
+      Left = 344
+      Top = 23
+      Width = 178
+      Height = 58
+      BevelInner = bvLowered
+      Ctl3D = False
+      ParentCtl3D = False
+      TabOrder = 12
+      object varlogo: TImage
+        Left = 2
+        Top = 2
+        Width = 175
+        Height = 55
+        Center = True
+        Proportional = True
+        Transparent = True
+      end
+    end
+    object TASENTER1: TTASENTER
+      Left = 72
+      Top = 88
+      Width = 256
+      Height = 21
+      AutoSize = False
+      TabOrder = 1
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.COMPANY '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER2: TTASENTER
+      Left = 72
+      Top = 116
+      Width = 256
+      Height = 21
+      AutoSize = False
+      TabOrder = 2
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.ADD1    '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER3: TTASENTER
+      Left = 72
+      Top = 143
+      Width = 256
+      Height = 21
+      AutoSize = False
+      TabOrder = 3
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.ADD2    '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER4: TTASENTER
+      Left = 72
+      Top = 170
+      Width = 173
+      Height = 21
+      AutoSize = False
+      TabOrder = 4
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.CITY    '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER5: TTASENTER
+      Left = 299
+      Top = 170
+      Width = 28
+      Height = 21
+      AutoSize = False
+      TabOrder = 5
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.STATE   '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER6: TTASENTER
+      Left = 72
+      Top = 197
+      Width = 91
+      Height = 21
+      AutoSize = False
+      TabOrder = 6
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.ZIP     '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER7: TTASENTER
+      Left = 71
+      Top = 224
+      Width = 256
+      Height = 21
+      AutoSize = False
+      TabOrder = 7
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.CONTACT '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER8: TTASENTER
+      Left = 70
+      Top = 251
+      Width = 362
+      Height = 21
+      AutoSize = False
+      TabOrder = 8
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.EMAIL1  '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER9: TTASENTER
+      Left = 70
+      Top = 278
+      Width = 458
+      Height = 21
+      AutoSize = False
+      TabOrder = 9
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.WEB     '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER10: TTASENTER
+      Left = 70
+      Top = 306
+      Width = 458
+      Height = 21
+      AutoSize = False
+      TabOrder = 10
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.WEBUPD  '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+    object TASENTER11: TTASENTER
+      Left = 70
+      Top = 334
+      Width = 458
+      Height = 21
+      AutoSize = False
+      TabOrder = 11
+      Text = 'TASENTER1'
+      FieldName = 'IS.VAR.WEBSUP  '
+      DispPrgLoc = -1
+      ClickPrgLoc = -1
+      ChangePrgLoc = 0
+      PrePrgLoc = -1
+      PostPrgLoc = -1
+      ValidPrgLoc = -1
+      ValidCheckOnExit = False
+      ValidUserEsc = False
+      ValidExprLoc = 0
+      ValidExprTyp = #0
+      Group = 0
+      NoClickOn = False
+      NoClickOff = False
+      ReturnIsTab = True
+      SelectStart = 0
+      PreRetFalse = False
+      EntryFont.Charset = DEFAULT_CHARSET
+      EntryFont.Color = clWindowText
+      EntryFont.Height = -11
+      EntryFont.Name = 'MS Sans Serif'
+      EntryFont.Style = []
+      EntryBGColor = clWhite
+      EntryUseDflt = True
+      FldModified = True
+    end
+  end
+  object Panel6: TPanel
+    Left = 0
+    Top = 373
+    Width = 536
+    Height = 34
+    Align = alBottom
+    BevelInner = bvLowered
+    BevelOuter = bvLowered
+    TabOrder = 1
+    object Save: TGlyphBtn
+      Left = 409
+      Top = 5
+      Width = 59
+      Height = 24
+      Caption = 'Save'
+      TabOrder = 0
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000000000000000000000000000000000000FFFEFDFFFEFD
+        FFFEFDFFFEFDFFFEFDFFFEFD3A3939B9B9B96D6D6D787877FFFEFDFFFEFDFFFE
+        FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD4242428383834D
+        4D4D8D8D8D6D6D6D737372FFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+        FFFEFDFFFEFD6C6C6C6A6A6A6C6C6C5D5D5D4C4C4C8989896C6C6C70706FFFFE
+        FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD6C6C6CC3C3C38F8F8F6A6A6A7B
+        7B7B7676764C4C4C8888886C6C6C6F6F6EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+        696969E0E0E0CCCCCCCCCCCCB4B4B47A7A7A7777774F4F4F5252528787876C6C
+        6C70706FFFFEFDFFFEFDFFFEFD2E2E2EE8E8E88D8D8DCDCDCDD9D9D9D9D9D985
+        85855A5A5A5F5F5F6363635050508E8E8E6C6C6C737372FFFEFD000000727272
+        D3D3D36A6A6A7A7A7AC9C9C9A8A8A86464646C6C6C7C7C7CE4E4C9E5E5E55555
+        559595956D6D6D787877000000898989707070CFCFCF8383839D9D9D7D7D7D80
+        8080828282E7E7E7DFDFAFEFEFD7E7E7E75E5E5EA1A1A16A6A6AFFFEFD535353
+        9292926E6E6EA3A3A3848484929292858585E7E7E7DCDCDCEFEFEFD4D4D4F3F3
+        F3EBEBEB636363787877FFFEFDFFFEFD6262629F9F9F9F9F9F999999858585EA
+        EAEAE1E1E1EFEFEFD9D9D9F3F3F3CBCBCBBFBFBF737372FFFEFDFFFEFDFFFEFD
+        FFFEFD6767679F9F9F666652ECECECE2E2E2F0F0F0D9D9D9F3F3F3D1D1D1BEBE
+        BE70706FFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD7B7B7BC0C0C0B2B289F1
+        F1F1DBDBDBF4F4F4D2D2D2BEBEBE6F6F6EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+        FFFEFDFFFEFDFFFEFD7A7A7AC0C0C0AFAF84F9F9F9D3D3D3BFBFBF70706FFFFE
+        FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD747474C0
+        C0C0AAAA7BBFBFBF737372FFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD
+        FFFEFDFFFEFDFFFEFDFFFEFDFFFEFD6C6C6C8C8C8C787877FFFEFDFFFEFDFFFE
+        FDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFF
+        FEFD7F7F7EFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFDFFFEFD}
+      GlyphKind = bkCustom
+    end
+    object Exit: TGlyphBtn
+      Left = 469
+      Top = 5
+      Width = 59
+      Height = 24
+      Caption = 'Exit'
+      TabOrder = 1
+      Glyph.Data = {
+        36030000424D3603000000000000360000002800000010000000100000000100
+        1800000000000003000000000000000000000000000000000000CED5D9DDE2E4
+        DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4E6DFE4
+        E6DFE4E6DDE2E4CED5D9DBE0E28E94CA4F56B83139B00F19A70F19A70F19A70F
+        19A70F19A70F19A70F19A70F19A73139B04F56B88E94CADBE0E2DBE0E34E55B7
+        5B69E16877EE6575EE6273ED5F71ED5C6EEC596CEC566AEB5268EB4F66EA4C63
+        EA3F54DD4E55B7DBE0E3D8DDE03039AF6D7BEE5766E53E4FDA3445D53345D433
+        43D33142D23141D13040CF3647D34357DF4C63EA3A45B9D8DDE0D5DBDD0F19A7
+        707DEF4354DD4354DAC5CAF3606DDD3446D53345D45F6BDBC4C8F0404ED23445
+        D14F66EA202DB8D5DBDDD2D7DA0F19A7737FEF4657DFC5CAF3FFFFFFF3F4FD60
+        6EDE606DDDF3F4FCFFFFFFC4C8F03040CF5268EB202EB8D2D7DACED4D70F19A7
+        7681EF4859E16270E3F3F4FDFFFFFFF3F4FDF3F4FDFFFFFFF3F4FC5F6BDB3141
+        D0566AEB222FB8CED4D7CAD1D40F19A77A87F0495BE3384CDE6371E4F3F4FDFF
+        FFFFFFFFFFF3F4FD606DDD3343D33142D15C71EC2735B9CAD1D4C7CDD10F19A7
+        8697F35066E74059E36778E7F3F4FDFFFFFFFFFFFFF3F4FD6373DF3B50D7394F
+        D56983EF2A39BAC7CDD1C2C9CD0F19A78EA3F46484ED7994EEF5F7FDFFFFFFF5
+        F7FDF5F7FDFFFFFFF5F7FD758EE64F71DE7491F22B3BBAC2C9CDBFC6CA0F19A7
+        91A4F46685EECED7F9FFFFFFF5F7FD7792EC7791EAF5F7FDFFFFFFCCD5F54F71
+        DE7693F22B3BBABFC6CABAC2C50F19A792A4F56686EF6283EECDD7F87892EE52
+        77E85175E6758FE9CBD5F65C7AE35475E17894F22D3CBABAC2C5B6BEC12832AB
+        8FA0F5778DF25D7BEE5C7AED5B79EC5977EA5876E85674E75473E65371E4647F
+        EA748DF23A46B8B6BEC1B5BCC03C44AF7783E78998F48795F48493F48191F37E
+        90F37B8EF3798DF3768AF37389F37187F25F73E33C44AFB5BCC0B5BDC06E77B7
+        3C44AF2731AA0F19A70F19A70F19A70F19A70F19A70F19A70F19A70F19A72731
+        AA3C44AF6E77B7B5BDC0C3CBCFB8BFC3B3BABEB3BABEB3BABEB3BABEB3BABEB3
+        BABEB3BABEB3BABEB3BABEB3BABEB3BABEB3BABEB8BFC3C3CBCF}
+      GlyphKind = bkCustom
+    end
+  end
+  object Evoshellexe: TShellExe
+    StartOption = soSW_HIDE
+    Left = 480
+    Top = 96
+  end
+end
