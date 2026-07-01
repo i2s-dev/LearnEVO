@@ -649,6 +649,24 @@ Four scheduling modes, help topics documented:
 - **Lead-time** — based on fixed lead times per op
 - **Manual** — user-entered dates
 
+## Multi-Yield WO (T7MULTIYIELD.DFM confirmed)
+
+Multi-Yield allows a single WO to produce multiple output items (co-products
+or by-products from one production run). `T7MULTIYIELD.DFM` DFM-confirmed:
+
+| Field | Meaning |
+|-------|---------|
+| Item Number | Output item code |
+| Description | Output item description |
+| Quantity | Expected yield quantity |
+| Bin | Target bin location |
+| Proportion Costs by [W/F/E] | Cost distribution method: **W**eight / **F**ixed / **E**qual |
+| Use Standard Cost? | Use std cost instead of actual for the yield split |
+
+The "Proportion Costs by [W/F/E]" selector confirms three co-product cost
+allocation methods: by weight ratio, fixed amounts, or equal split. This is
+the MU/Multi-Yield subsystem DFM form.
+
 ## Related
 
 - [[module-BM|BM - Bill of Materials]]
@@ -4699,10 +4717,14 @@ Three-panel executive dashboard accessed from the main menu toolbar:
 
 | DFM | Fields confirmed by scan |
 |-----|--------------------------|
-| EvoBS.DFM | AR: Current Balance, Billings, Receipts, Discounts, COGS, Deposits; AP: Payables, Payments, Approved to Pay; SO: Open Orders, Booked Orders |
-| EvoBSCash.DFM | Cash, Balance, Bank Accounts (drill-down from EvoBS) |
-| EvoBSWO.DFM | WIP Balance, Labor, Materials & Process, Fixed Overhead, Variable Overhead, Misc Extra, Finished Production, Variance, FP/Variance |
-| EvoBSR.DFM | Rebuild/recalculate aggregates (progress: "Initializing...") |
+| T7BS.DFM (= EvoBS) | **Status** date; **AR:** Current Balance / Billings / Receipts / Discounts / COGS / Deposits; **AP:** Payables / Payments / Approved to Pay; **SO:** Open Orders / Booked Orders / **Shipments**; **PO** + **WO** drill-down sections (click-to-drill hints confirmed) |
+| T7BSCash.DFM (= EvoBSCash) | Cash / Balance — bank account cash detail (drill-down from main BS) |
+| T7BSWO.DFM (= EvoBSWO) | **Work Orders** section: FP/Variances (Finished Production / Variance) / Issues / WIP Balance / Labor / Materials & Process / Fixed Overhead / Variable Overhead / Misc. Extra; Back button |
+| T7BSR.DFM (= EvoBSR) | **Business Status Rebuild** — "Initializing..." progress; rebuilds/recalculates BS aggregates |
+
+**T7BS hint strings confirm 5 drill-down sections:** "Click to Drill Down to Accounts
+Receivables" / "…Payables" / "…Sales Orders" / "…Purchase Orders" / "…Work Orders" —
+the BS dashboard is fully clickable to module-level detail.
 
 No dedicated ODBC table found — likely reads directly from BKARINV, BKARCUST,
 BKGLCOA, WORKORD for live aggregation.
@@ -4922,6 +4944,23 @@ WO/SO/HH modules are extended with mattress-specific serial tracking.
 |---------|------------------|
 | J7CCPIC | PI-C Enter Tag Counts — Phys Inv No, Count Date, Year, Name |
 | J7NMRTMPRINTER | RTM Printer config — RTM Name, Printer, Program Name, Setup |
+
+## T7LGS* — LGS Custom Shipping Programs (3 DFMs confirmed, 2026-07-01)
+
+These T7LGS-prefixed programs are ISTS-authored customizations for a
+garment/apparel industry customer (LGS = Lapco Garment Systems or similar).
+They follow the same scan-based shipping workflow as the J7DCSSOE/J7HHPTSSOE
+mattress variants, but for garment shipments.
+
+| DFM | Caption | Key fields |
+|-----|---------|-----------|
+| T7LGSSOE.DFM | Shipping | Customer Name / Item Num / Item Code / Item Description / Last Item Scanned / Quantity / Qty / UM — scan-based shipment confirmation |
+| T7LGSSOEVerify.DFM | Sales Orders | Grid (ETBcomboval); Exit / Label / List actions — verification step after scanning |
+| t7LGssoeLabels.DFM | Print Box Content Labels | RTM template / Print Lot Numbers / Print Serial Numbers checkboxes / Label Qty / Print / Exit — box content label printing |
+
+**Workflow:** Scan items via T7LGSSOE → verify SO lines via T7LGSSOEVerify
+→ print box labels via t7LGssoeLabels. Parallel to J7DCSSOE/J7DCSSOEVERIFY/
+J7HHPTSSOELABELS for mattress production.
 
 ## Key observations
 
