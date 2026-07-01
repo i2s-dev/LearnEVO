@@ -822,15 +822,48 @@ Key logic:
 - Reads BKICLOC for on-hand, BKAPPO for open POs, WORKORD for open WOs
 - Writes action rows to MTMRP
 
+## Menu operations (18 DFMs confirmed)
+
+| DFM | Operation | Confirmed from |
+|-----|-----------|----------------|
+| T7MRA | MR-A Enter/review demand — Item#, Qty, Due Date, Consumed/Original/Projected Qty | DFM |
+| T7MRADE | MR-A Import — CSV or fixed-length: Item Number, Date (YYYYMMDD), Qty | DFM |
+| T7MRB | MR-B — Item/Type [RFAMNLBTKO]/Class range report | DFM |
+| T7MRC | MR-C — Date/Item/Class/Category range report | DFM |
+| T7MRD | MR-D — Item/Type [RFAM]/Category/Class range | DFM |
+| T7MRE | MR-E — Item/Type [RFAMNLT]/Category/Class range | DFM |
+| T7MRF | **MR-F Run MRP** — 4-stage progress (Stage 1–4 + BOM Analysis + Generating Material Requirements) | DFM |
+| T7MRG | MR-G — Item/Date/Type [FAMRNLT]/Class range report | DFM |
+| T7MRH | MR-H — Color-coded report: "Req Date − Lead Time is Prior to Today" and "+ X Days" thresholds | DFM |
+| T7MRI | MR-I — Item/Class/Category range filter | DFM |
+| T7MRIR | MR-I Review Qty dialog — Item#, Description, Start Date, Finish Date, Quantity | DFM |
+| T7MRIX | MR-I Execute — WO Qty per part; multi-part grid (Part1–Part4, Tool) | DFM |
+| T7MRJ | **MR-J Planned PO Suggestions** — Qty/Item range/Due Date range/Category/Vendor/Start Date | DFM |
+| T7MRJR | MR-J Review — Item#, Description, MRP Start Date, MRP Finish Date, RFQ Date, Exp Recv Date, Quantity | DFM |
+| T7MRJX | MR-J Execute — Vendor, Est. Rcp Date, Qty, Price, Confirmed Y/N, Show Blank Vendors | DFM |
+| T7MRL | MR-L Print Plan — PL Number (1 thru LAST.PLND), Reverse Lookup flag | DFM |
+| T7MRN | MR-N — Vendor range, PO $ Value threshold, Report Only flag | DFM |
+| T7MRO | MR-O — Item/Type [FRAM]/Class/Category/Planner range | DFM |
+
+**MR-F is the core MRP computation:** T7MRF.DFM shows a 4-stage progress
+sequence followed by "BOM Analysis" and "Generating Material Requirements" —
+this is the UI wrapper for the BKMRF.SRC engine described below.
+
+**MR-J is the PO suggestion workflow:** T7MRJR shows the suggested PO review
+screen (MRP dates, RFQ date, exp. receipt date, qty); T7MRJX is the
+confirmation/edit screen with vendor, price, Confirmed Y/N flag. When confirmed,
+MR-J converts BKMRPPO rows into real BKAPPO/BKAPPOL records.
+
 ## Typical workflow
 
 ```
-MR-A  Run MRP (triggers BKMRF or BKMRP)
+MR-F  Run MRP (4-stage BKMRF engine, T7MRF.DFM progress display)
 MR-B  Review suggested POs    → BKMRPPO
 MR-C  Review suggested WOs    → BKMRPSW
-MR-J  Confirm planned PO      → creates BKAPPO/BKAPPOL
+MR-J  Confirm planned PO      → T7MRJR review → T7MRJX execute → BKAPPO/BKAPPOL
 MR-K  Confirm planned WO      → creates WORKORD
-MR-L  Clear MRP output        → purges MTMRP
+MR-L  Print plan (PL Number)
+MR-L/clear  Purge MTMRP output
 ```
 
 ## Integration
@@ -1222,6 +1255,26 @@ This means SR-F/SR-G can generate invoices using the same posting logic as SO-F/
 
 **Scale at i2:** 37 active service orders, 1,177 service order lines (avg 31.8 lines/order).
 
+## DFM-confirmed details
+
+**T7SRINFO (S&R Misc. Information):** UDF panel attached to SR orders —
+5 date fields (Date1–5) and 17 alpha fields (Alpha1–17) for user-defined
+data. Stored in a companion record keyed by SRNUM.
+
+**T7SRBK (Live Work Center Schedule):** Real-time WC queue view filtered
+by Location, with Firmed/Released/Complete status checkboxes and a
+configurable refresh timer. Confirms SR-C work orders appear in the shop
+scheduling queue like regular WOs.
+
+**T7SRF caption is "SO-F":** Confirmed that SR-F Print Invoices reuses the
+SO invoice print form directly — SR invoice printing is handled by the
+same program as SO-F. This makes sense given the shared BKAR_INV_* schema.
+
+**T7SRI (SR-I Void Invoice) DFM-confirmed fields:** BKAR_INV_INVDTE,
+BKAR_INV_ORDDTE, BKAR_INV_SHIPDT, BKAR_INV_SONUM, BKAR_INV_SUBTOT,
+BKAR_INV_TAXAMT, BKAR_INV_FRGHT — the void screen is a full AR invoice
+display, confirming SR invoices share the BKARINV schema byte-for-byte.
+
 ## Integration
 
 - **[[module-RM|RM]]** — Repair disposition in RM creates an SR order
@@ -1326,11 +1379,36 @@ SH-D, SH-L, and SH-R launch Java JARs from the ISJAVA task queue:
 
 ## Key tables
 
-- `WORKCTR` (47f, `MTWC.*` namespace) — work center capacity, labor/overhead rates
-- `WORKORD` (74f) — WO headers with start/finish/due dates
-- `WOROUT` (81f) — WO routing operations (per-operation schedule)
-- `SCHEDCAL` / `CALENDAR` — shop business calendar (SH-Q configures)
-- `ISWOPRIO` (4f) — WO priority codes with Gantt color assignments
+| Table | Records | Fields | Notes |
+|-------|--------:|-------:|-------|
+| `WORKORD` | 28,078 | 83 | WO headers — ODBC confirmed |
+| `WOBOM` | 505,943 | 39 | WO BOM lines — ODBC confirmed |
+| `WOROUT` | 8,239 | 83 | WO routing operations (per-op schedule) — ODBC confirmed |
+| `SCHWO` | 0 | 10 | Finite schedule WO queue — ODBC confirmed (empty = not used at i2) |
+| `SCHEDCAL` | 0 | 6 | Shop calendar — ODBC confirmed (empty = default M–F used) |
+| `WORKCTR` | — | 47 | Work center master (`MTWC.*` namespace) — Btrieve-only |
+| `ISWOPRIO` | — | 4 | WO priority codes with Gantt color — Btrieve-only |
+
+**SH-A DFM-confirmed fields** written to WORKORD: `MTWO_WIP_SSTART` (scheduled
+start), `MTWO_WIP_SFIN` (scheduled finish), `MTWO_WIP_PRTY` (priority code),
+`MTWO_WIP_DDATE` (due date). The `AUTO_TEXT` combo enables auto-entry mode.
+
+**SH-C DFM-confirmed fields** written to WOROUT (routing operations): `MTWORO_START`
+(op start date), `MTWORO_FINISH` (op finish date); also captures total hours/day,
+% utilization, shift hours, and outside-processing flag per work center.
+
+## DFM-confirmed operation details
+
+| DFM | Confirmed purpose |
+|-----|-------------------|
+| T7SHE | Reschedule / reprocess: sets new due date for priority change; "Labor Data Posted up Thru" field and "Incl Last/Curr WO Seq?" flag confirm this is the labor-driven reschedule, not a full finite schedule run |
+| T7SHF | Print filtered schedule: Status Codes [FR], WO range, Start/Finish date range, Job Number range |
+| T7SHG/J | Print WO Schedule report: WO Status/Class/Included Classes/Priority checkboxes; Sort by; Customer/Start/Finish/Planner ranges |
+| T7SHI | Color-coded WC Schedule: per-WC page layout, elapsed-start-date color, same WO Status/Class/Priority filters as SH-G |
+| T7SHM | Lead Time Estimator: item number (PART_NO), start date (SDATE), 4 priority date fields (PR0_DATE–PR3_DATE) |
+| T7SHN | Generate Lead Times range: Part Types [RFAMNLBTKO], Item/Class/Category/Planner From–Thru |
+| T7SHO | Work Center range report: WC From–Thru, page break between work centers option |
+| T7SHP | Color priority report: 3-zone thresholds (X days, X–Y days, >Y days) for priority change, elapsed start, WO finish vs. est. ship date |
 
 ## Integration
 
@@ -1753,7 +1831,7 @@ up under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
 
 | Table | Purpose | Live count (i2) |
 |-------|---------|----------------|
-| `ISBINLOC` | Item-bin-location record (9 fields): item, location, bin, UOH, created/updated dates, default-bin flag, extra, reorder level | 31,843 records |
+| `ISBINLOC` | Item-bin-location record (9 fields): item, location, bin, UOH, created/updated dates, default-bin flag, extra, reorder level | 31,848 records |
 | `BKICLOC` | Per-location on-hand quantities per item (32 fields): UOH/UOO/UOSO/UBO, lot/serial tracked qtys | per item per location |
 | `ISBINLOT` | Bin + lot cross-reference | lot-tracked items |
 | `PIBINLOC` | Bin-level count records during physical inventory | PI cycle only |
@@ -1762,7 +1840,7 @@ up under [[module-RO|RO]] routing option `RO-C Enter Work Centers`.
 `ISBIN_LOC_BIN` (bin code), `ISBIN_LOC_UOH` (units on hand at this bin),
 `ISBIN_LOC_DFLT` (Y = default bin for this item).
 
-**Live scale at i2 Systems:** 31,843 item-bin records across 10 locations and 1,272
+**Live scale at i2 Systems:** 31,848 item-bin records across 10 locations and 1,272
 distinct bin addresses.
 
 ## Warehouse Control concept
@@ -1774,6 +1852,17 @@ enables warehouse picking by bin address, and bin-level counts during PI.
 A single item can have multiple bins within one location (primary + overflow).
 The default bin (`ISBIN_LOC_DFLT = Y`) is used when picking for SOs or issuing
 to WOs unless the user specifies otherwise.
+
+## DFM-confirmed operation details
+
+| DFM | Confirmed purpose |
+|-----|-------------------|
+| T7WCBK | **Live Work Center Schedule** real-time dashboard: work center filter, configurable refresh timer (seconds), WO Status checkboxes, Operation#, Category, Customer filter — gives shop-floor visibility into what's queued per work center |
+| T7WCD | **WC-D Bin Location Import**: CSV or fixed-length import; required fields: Warehouse (Location), Bin, Item Number; optional: Default Bin Y/N, Lot#, Serial#, Bin Qty; S/R/I flag controls skip/replace/ignore for existing records |
+| T7WCE/F | **WC-E/F** item listing/exception reports: Active Status [YNODEPSQR], Item Type [RFAMNLBTKO], Class/Category ranges |
+| T7WCG | **WC-G** Defaults: item/class/category range, Location, Bin range, Default Bin checkbox |
+| T7WCH | **WC-H** Bin Master browse: Location, Name, Bin From–Thru |
+| T7WCLOCFIX | **LOC SYNCH UTILITY** (maintenance tool, not a menu item): updates `MTIC.PROD.LOC` with the Default WC Bin — runs as a batch process showing File/Start Time/Current Time/Current Item/Default Loc |
 
 ## Integration
 
