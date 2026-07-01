@@ -184,11 +184,14 @@ to resolve fully:
     and 28 other modules with 1–6 codes each. These programs work
     correctly at runtime — they are simply opaque to static analysis.
 
-13. **`suwin*.DCY` format — PARTIALLY RESOLVED 2026-06-17, CORRECTED Pass 375 2026-06-29.**
+13. **`suwin*.DCY` format — PARTIALLY RESOLVED 2026-06-17, CORRECTED Pass 375 2026-06-29, CORROBORATED Pass 505 2026-07-01.**
     - **suwin6.dcy** → K_C ✅ Delphi VCL text form = **ISTech License dialog** (`EditForm1_1: TEditForm1_1`).
       Serial=`670538`, Users=48, LicType=`VPY`, company=`i2 Systems / Morris CT`.
       Prior "binary opcodes" finding was WRONG — stale decrypted binary from broken implementation.
       K_C purpose = **license dialog encryption key** (protects hardcoded serial/user count).
+      **EVOHELP.PDF §Installation (Pass 505) independently confirms**: "you should have received 3 license
+      files via email: BKARSIVL.B, START_UP.RUN, and SUWIN6.DCY" — confirms suwin6.dcy is a license
+      file distributed separately from the software, consistent with K_C = license cipher key.
     - **suwin7.dcy** → still fails K_A, K_B, K_C, K_D (192-bit and 256-bit). 3,527 bytes, entropy 7.945.
       Likely a 5th key; possibly TAS Pro 7 era license dialog. Blocked without live capture.
     - **suwin6t.rwn / suwin7.rwn** → both validate with K_B (standard RWN key — expected).

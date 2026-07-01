@@ -66,7 +66,8 @@ aging, interest, sales taxes, deposits, and dunning.
 | `BKARINVL` | 78,025 | 29 | Invoice line items (ODBC confirmed) |
 | `BKARHINV` | 95,998 | 104 | Archived invoice headers (ODBC confirmed) |
 | `BKARCHKF` | 43,700 | 12 | Customer payments (checks/EFT, ODBC confirmed) |
-| `BKARTXN` | 2 | 14 | AR transaction ledger (sparse — most history in GL) |
+| `BKARTXN` | 2 | 14 | Unposted lot allocation to order lines — staging buffer for lot-tracked items pending AR post (EVOHELP.PDF canonical; 2 live records = currently empty/temp) |
+| `BKARTXNS` | — | — | Unposted serial allocation to order lines — staging buffer for serial-tracked items pending AR post (EVOHELP.PDF §File Names, Pass 505) |
 | `BKARCR` | N/A | — | Cash receipts staging — Btrieve-only |
 
 `BKARCUST` is 106 fields: name, bill-to/ship-to address, credit limit,
@@ -683,34 +684,58 @@ Actual vs. planned:
 - Actual = actual issues + actual labor + actual overhead
 - **Variance** posts to GL at close
 
-## Tables (the 30-table family)
+## Tables (confirmed from EVOHELP.PDF §File Names, Pass 505)
 
+Active / live tables:
 ```
-WORKORD         WO header
-WOBOM           Per-WO BOM
+WORKORD         Work order header
+WOBOM           Work order bill of material
 WOBOMCHG        BOM changes within WO
-WOBOMHRM        BOM hierarchy (multi-level)
-WOBOMREM        BOM removed items
-WODATE          Date tracking
-WOHBOMR/WOHBOMM WO BOM history
-WOHLABOR        WO labor history
-WOHMAT          WO material issue history
-WOHRECV         WO receipt history
-WOHROUT         WO routing history
-WOLABOR         Current labor
-WOLABRPT        Labor reports
-WOMAT           Current material issues
-WORECV          Receipts
-WORKACHG        Actual changes
-WORKCHG         Changes
-WORKCTR         Work centers
-WORKHORD        Hold orders
-WORKORD         Main WO table
-WORKSORD        Sub-orders (sub-WOs)
+WOBOMREM        WO bill of material remarks
+WODATE          Work order dates
+WOLABOR         Labor transactions
+WOMAT           Material transactions
+WORECV          Work order receipts
+WOROUT          Work order routing
+WOROUTMP        Aggregate WO routings (temporary)
 WOROCHG         Routing operation changes
-WOROUT          Per-WO routing
-WOROUTMP        Routing temp
-WOSROUT         Sub-routing
+WORKCHG         Change audit log
+WORKACHG        Actual changes
+WORKCTR         Work centers
+WCTRLOAD        Work center load %
+ISMACS          Machine schedule
+OUTPROC         Outside processing transactions
+QCCODES         QC codes
+SCRAP           Scrap codes
+BKSHORT         Shortage tracking (temp — PCODE/WONUM/QTYREQ/SHORT)
+ISWOEX          WO header 2 / UDF extensions (28f)
+ISWOROEX        WO routing adjunct / op UDFs (51f)
+ISWOTRAY        Paperless batch tracking (52f)
+ISWOPRIO        WO priority master (4f — Gantt color coding)
+ISQCMTHD        Paperless shop floor test methods (44f)
+ISQCSPEC        Paperless shop floor test requirements
+ISQCRSLT        Paperless shop floor test results (57f)
+```
+
+Archive (H = historical, written by SM-J-B Archive Work Orders):
+```
+WOHBOM          WO bill of material — archive
+WOBOMHRM        WO bill of material remarks — archive
+WOHDATE         WO dates — archive
+WOHLABOR        Labor transactions — archive
+WOHMAT          Material transactions — archive
+WOHRECV         WO receipts — archive
+WOHROUT         WO routing — archive
+WORKHORD        WO header — archive
+WOEXCHG         WO extra charges
+WOHEXCHG        WO extra charges — archive
+OUTHPROC        Outside processing transactions — archive
+```
+
+Visual Scheduler temp files (created by T7VSCHED/SH-R "Initialize Scheduling Files"):
+```
+WORKSORD        Temp WO header for Visual Scheduler
+WOSROUT         Temp WO routing for Visual Scheduler
 ```
 
 ## Reports
@@ -2095,8 +2120,16 @@ SH-D, SH-L, and SH-R launch Java JARs from the ISJAVA task queue:
 | `WOROUT` | 8,239 | 83 | WO routing operations (per-op schedule) — ODBC confirmed |
 | `SCHWO` | 0 | 10 | Finite schedule WO queue — ODBC confirmed (empty = not used at i2) |
 | `SCHEDCAL` | 0 | 6 | Shop calendar — ODBC confirmed (empty = default M–F used) |
+| `CALENDAR` | — | — | Shop calendar (alternate/older name — EVOHELP.PDF §File Names) |
 | `WORKCTR` | — | 47 | Work center master (`MTWC.*` namespace) — Btrieve-only |
+| `WCTRLOAD` | — | — | Work center load % (persistent; WCTRSLOD = temp for Visual Scheduler) |
 | `ISWOPRIO` | — | 4 | WO priority codes with Gantt color — Btrieve-only |
+| `BUCKETS` | — | — | Finite schedule buckets (capacity time-buckets for finite scheduling engine) |
+| `WCCTL` | — | — | Finite scheduling temp file (cleared after each finite schedule run) |
+| `WCTRSLOD` | — | — | Temp WC load % for Visual Scheduler (built by T7VSCHED Initialize step) |
+| `WORKSORD` | — | — | Temp WO header for Visual Scheduler (see also WO section) |
+| `WOSROUT` | — | — | Temp WO routing for Visual Scheduler (see also WO section) |
+| `CALTEMP` | — | — | Temp file for generating shop calendar (SM utility) |
 
 **SH-A DFM-confirmed fields** written to WORKORD: `MTWO_WIP_SSTART` (scheduled
 start), `MTWO_WIP_SFIN` (scheduled finish), `MTWO_WIP_PRTY` (priority code),
@@ -2229,6 +2262,22 @@ utilities. **Largest module by program count** (34 top-level buttons, 109+ forms
 | `CLASS` | 40 | 24 | Item class master |
 | `CLASMSTR` | 185 | 2 | Class/subclass name table |
 | `BKDCSHFT` | 1 | 34 | Data collection shift singleton |
+| `ISLOG` | — | 9 | Active user list (WHO/WHAT/DOING/STARTD/STARTT/COMPANY/KILL/MSG/EXTRA; opened by 999 programs) |
+| `ISNOTES` | 133,574 | 14 | Notes — universal note store for all EVO entities (EVOHELP.PDF: "NOTES") |
+| `ISLINKS` | — | — | Links — entity-to-entity cross-reference (EVOHELP.PDF: "LINKS") |
+| `ISNTYPE` | 16 | 4 | Note type codes (EVOHELP.PDF: "NOTE TYPES") |
+| `ISREMIND` | — | 22 | Reminders / calendar entries (DATE/TIME/WHO/SUBJECT/CUST/VEND/ITEM/EMAIL/SENT) |
+| `ISCHAINM` | 0 | 17 | Auto chain program master (EVOHELP.PDF: "AUTO CHAIN PROGRAM MASTER") |
+| `ISCHAIN` | 0 | 17 | Auto chain programs (EVOHELP.PDF: "AUTO CHAIN PROGRAMS") |
+| `ISSCHED` | — | — | EVO Scheduler program list (EVOHELP.PDF: "LIST OF PROGRAMS TO RUN BY EVO SCHEDULER") |
+| `ISSHPVIA` | — | — | Ship via listing (EVOHELP.PDF: "SHIP VIA LISTING"; distinct from ISSHIPCO=company master) |
+| `ISDLCK1` | — | — | Lock file for next-number program (prevents concurrent sequence increments) |
+| `ISDLCK2` | — | — | Lock file for master default program |
+| `ISDRILLM` | — | — | Master drill-down file (context-menu definitions for drill-down navigation) |
+| `ISEREM` | — | — | EvoRemind notifications (system notification queue) |
+| `DBAHLPID` | 2 | — | Program-specific help reference (maps program codes to help IDs) |
+| `LANGDICT` | — | — | Translation master (multi-language label dictionary) |
+| `MKAHIST` | 12 | 9 | System activity history log (EVOHELP.PDF: "SYSTEM DEFAULT MASTER FILE 3"; 158+ programs write audit events here — ACCT/DATE/EVENT/FORM/TRACK/SEQ/MEDIA/REM1/REM2; dual purpose: 12 config rows + audit log) |
 
 **Btrieve-only (not in Pervasive DDF):** `BKEMP` (employee master), `BKTERM`
 (payment terms legacy), `BKTAX` (tax code legacy), `BKSMSHIP` (ship-via legacy),
