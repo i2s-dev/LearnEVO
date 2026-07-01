@@ -1691,13 +1691,32 @@ One row per COA account matches BKGLCOA (2,173 vs 2,185 — slight divergence fr
 ISGL_6YDATE_1..12 + ISGL_FYDATE + ISGL_EXTRA — stores period cutoff date boundaries
 for 7 fiscal years. 18 records (vs ISGLDATE's 1 record) suggests one row per historical year maintained.
 
-## Key AM operations
+## Key AM operations (DFM-confirmed, 15 DFMs)
 
-- **AM-A Reset Period-End Close Date** — updates ISGLDATE to advance the fiscal period gate
-- **AM-B Fiscal Year End** — rolls BKGLCOA CURRENT→1YPAST→2YPAST balance fields; zeroes income
-  statement; creates opening entry; populates ISGLHDAT with completed year's period dates
-- **AM-Q Enter Budget Amounts** — writes budget figures to ISGLBDGT per account/period
-- **AM-T Archive GL Detail** — moves BKGLTRAN rows older than N years to offline archive
+| Code | Program | DFM-confirmed detail |
+|------|---------|----------------------|
+| AM-A | T7AMA | **Period setup** — Current Fiscal Year Start Date / Today / Open Period Start Date / Open Period End Date / **Accounting Open Period Start Date** (two separate open-period boundaries) |
+| AM-B | T7AMB | **GL balance editor** — Working on GL Account; columns: Current / Beginning / Total Year / 1 Year / 2 Year / … 6 Year |
+| AM-C | T7AMC | **COA maintenance** — Account Code / Dept / Description / Account Type / (E Type Only) / (GL-O Posting Only) / Budget Amounts / Period / Beginning Balance / Ending Balance / New Account / Non-Cash flag / Inactive flag |
+| AM-D | T7AMD | **Dept create/delete** — use existing dept as TEMPLATE → code of NEW dept; filter by account types (Asset/Liability/Expense/Income/Owner); Clear Budget Values; Department to be Deleted |
+| AM-E | T7AME | **Financial statements** — Income Statement / Balance Sheet / Cash Flow / Statement of Changes in Financial Position; GL From/Thru; Report Title / section titles |
+| AM-G | T7AMG | **Multi-company consolidation setup** — Consolidation Name / Last Consolidation Date / **Base Currency** |
+| AM-H | T7AMH | **GL account code change** (CSV import) — Import Filename; Old GL Code/Dept → New GL Code/Dept; Start Time / Current Time progress display |
+| AM-I | T7AMI | **Journal inquiry** — Date Range From/Thru / GL Account From / Journal Type filter; Go button |
+| AM-J | T7AMJ | **AP history purge/archive/restore** — Vendor From/Thru / Process Thru Date / [P/A/R] |
+| AM-K | T7AMK | **AR history purge/archive/restore** — Customer From/Thru / Process Thru Date / [P/A/R] |
+| AM-N | T7AMN | **Fiscal period dates** — Period 1–12 end dates + "4 Years Ago" row (multi-year period boundary editor) |
+| AM-O | T7AMO | **AP/PO data purge** — Vendor From/Thru / Last Activity Date / Vendor Class / **Delete PO Orphans [L/H/B/N]** (Lines/Header/Both/None) |
+| AM-P | T7AMP | **AR/SO data purge** — Customer From/Thru / Last Activity Date / **Delete SO Orphans [L/H/B/N]** / **Include Ship To Customers [Y/N]** / Customer Class |
+| AM-Q | T7AMQ | **Budget entry/copy** — GL Account From/Thru / GL Dept / Use One Year Past Amounts / Factor / Use Annual Budget / Use Current for Next Year / Use Annual for Next Year Budget |
+| AM-S | T7AMS | **GL journal purge/archive/restore** — Journal Date range / Journal Number range / Journal Type / [Archive/Purge/Restore] |
+
+**Delete Orphan codes [L/H/B/N]:** L=Lines only, H=Header only, B=Both, N=None — controls whether the purge removes only line items, only the header record, or both when the parent document has no remaining lines.
+
+- **AM-A Reset Period-End Close Date** — updates ISGLDATE to advance the fiscal period gate (two boundaries: "Open Period" for transactions, "Accounting Open Period" for close process)
+- **AM-B Fiscal Year End** — rolls BKGLCOA CURRENT→1YPAST→2YPAST balance fields; zeroes income statement; creates opening entry; populates ISGLHDAT with completed year's period dates
+- **AM-Q Enter Budget Amounts** — writes budget figures to ISGLBDGT per account/period; copy-from-prior-year with multiplier factor supported
+- **AM-T Archive GL Detail** — moves BKGLTRAN rows older than N years to offline archive (no DFM — may use inline filter only)
 
 ## Integration
 
