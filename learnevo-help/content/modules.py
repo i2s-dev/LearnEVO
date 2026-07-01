@@ -955,8 +955,8 @@ the summary by job showing planned vs. actual labor, material, and overhead.
 
 | Table | Records | Purpose |
 |-------|--------:|---------|
-| `ISJOB` | 45,862 | Job master — code + description + status |
-| `ISJBSF` | 142 | Business scorecard — key metrics per job/period |
+| `ISJOB` | 45,863 | Job master (9 fields: IS_JOB_CODE/IS_JOB_DESC/IS_JOB_STATUS + extras) |
+| `ISJBSF` | 142 | Business scorecard — key metrics per job/period (144 fields) |
 
 ISJOB has only 3 meaningful fields: `IS_JOB_CODE`, `IS_JOB_DESC`, and
 `IS_JOB_STATUS`. All 45,862 rows have blank STATUS — the codes are a
@@ -1471,21 +1471,31 @@ Symmetric structure to [[module-SC|SC]] (Serial Control).
 | LC-F | Lot Traceability Report | t7lcf.rwn |
 | LC-G | Archive Lots (with expiry date range) | T7LCG.RWN |
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `LOT` | 25 | Active lot master (`MTLOT_*` prefix) — CODE+LOT PK |
-| `BKLCMSTR` / `BKLCLOC` | — | Lot master and per-bin lot quantities |
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `LOT` | 11 | 25 | Active lot master (`MTLOT_*` prefix, `CODE+LOT` PK) |
+| `BKLCMSTR` | Btrieve-only | — | Lot master (legacy; not in PSQL DDF) |
+| `BKLCLOC` | Btrieve-only | — | Per-bin lot quantities (not in PSQL DDF) |
+
+**At i2 Systems, lot control is minimally used — only 11 active lot records.** The LOT
+table (DDF name `LOT`, TAS access prefix `MTLOT.*`) is the only ODBC-accessible lot table.
 
 **MTLOT.* 22-var namespace** (confirmed from T7LCA/LCG): CODE/LOT/EXPDATE/ONHAND/
 LOC/VENDOR/RECDATE/RECQTY/POCOST/WO/WOCOST/NOTES_1..5/WOSUF/BEGIN/OUT/MAXOUT.
 
+Full 25-field LOT schema (from DDF): MTLOT_CODE, MTLOT_LOT, MTLOT_EXPDATE, MTLOT_ONHAND,
+MTLOT_PO, MTLOT_RECDOC, MTLOT_VENDOR, MTLOT_RECDATE, MTLOT_RECQTY, MTLOT_POCOST,
+MTLOT_WO, MTLOT_INRECDATE, MTLOT_WOQTY, MTLOT_WOCOST, MTLOT_NOTES_1..5, MTLOT_LOC,
+MTLOT_WOSUF, MTLOT_EXTRA, MTLOT_BEGIN, MTLOT_OUT, MTLOT_MAXOUT.
+
 Fields of note:
-- `EXPDATE` — expiry date for food/pharma compliance
-- `POCOST` — landed cost at receipt
-- `WOCOST` — assembled-into-WO cost
-- `NOTES_1..5` — 5 free-text note lines per lot
+- `MTLOT_EXPDATE` — expiry date (food/pharma compliance)
+- `MTLOT_POCOST` — landed cost at PO receipt
+- `MTLOT_WOCOST` — cost when assembled into a WO
+- `MTLOT_NOTES_1..5` — 5 free-text note lines per lot
+- `MTLOT_BEGIN/OUT/MAXOUT` — initial qty, total out, max quantity ever issued
 
 ## Integration
 
@@ -1734,13 +1744,18 @@ MR-G or PO vendor selection
   → winning vendor selected → PO-J Accept RFQ creates the PO
 ```
 
-## Key tables
+## Database tables (live counts, 2026-07-01)
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `BKRFQ` | 49 | RFQ header — 10 qty/cost breakpoints per vendor quote |
-| `BKRFQDES` | 5 | RFQ description/address lines |
-| `ISESTDTL` | 203 | Estimate detail tied to RFQ (cost breakdown per component) |
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `BKRFQ` | 0 | 49 | RFQ header — 10 qty/cost breakpoints per vendor quote |
+| `BKRFQDES` | 427 | 5 | RFQ vendor address lines (5 address lines per RFQ vendor) |
+| `ISESTDTL` | 0 | 203 | Estimate detail tied to RFQ (cost breakdown per component) |
+
+**At i2 Systems: RFQ is configured but currently idle** — BKRFQ has 0 active records.
+BKRFQDES has 427 records (historical vendor addresses from past RFQ sessions).
+BKRFQ (49 fields): RFQ#/PART/VENDOR/ITEM/QUOTE PK; then QTY_1..10 + COST_1..10
+(10-break price matrix) + VENDCODE/VENDNAME/PHONE/DATE/EXPDATE/NOTES/ENTBY/EXTRA fields.
 
 ## Integration
 
@@ -2448,23 +2463,32 @@ and activity tracking. Closely integrated with AR (customer accounts) and SO.
 | CM-K | Add Customers to Account File | t7cmk.rwn |
 | CM-M | Contact Manager Defaults | T7DSCM.RWN |
 
-## Key tables (BKCM* family — 46 tables)
+## Database tables (live counts, 2026-07-01)
 
-Most BKCM* tables are **Btrieve-only** (not in Pervasive DDF) — cannot be
-queried via SQL/ODBC; only accessible through TAS Pro or the Java CM bridge.
+BKCM* tables are **in the PSQL DDF and ODBC-accessible** at i2 Systems.
 
-| Table | Fields | Purpose |
-|-------|--------|---------|
-| `BKCMCUST` | 106 | Customer CRM account (links to BKARCUST) |
-| `BKCMACCT` | 41 | Prospect / non-customer account |
-| `BKCMACCN` | 154 | Account notes + 10 contacts per account |
-| `BKCMACTH` | 21 | Activity history (START/STOP/billing) |
-| `BKCMACTF` | 11 | Follow-up + SO link |
-| `BKCMMHST` | 72 | Campaign / mailing history (20-class filter) |
-| `BKCMREP` | 14 | Sales rep access flags |
-| `BKCMTERR` | 2 | Territory codes |
-| `BKCMDUN` | 36 | 10-level dunning ladder |
-| `MKAHIST` | 9 | Activity history log (used by 158 programs) |
+| Table | Records | Fields | Purpose |
+|-------|--------:|--------|---------|
+| `BKCMCUST` | 1,267 | 106 | Customer CRM account (links to BKARCUST by customer code) |
+| `BKCMACCT` | 1,264 | 41 | Prospect / non-customer CRM account |
+| `BKCMACCN` | 5,754 | 154 | Account notes + up to 10 contacts per account (avg 4.5 contacts) |
+| `BKCMACTH` | 3,446 | 21 | Activity history: START/STOP timestamps, billing flag, rep |
+| `BKCMACTF` | 468 | 11 | Follow-up records: due-date, SO link, status |
+| `BKCMMHST` | 2 | 72 | Campaign / mailing history (20-class filter) — barely used |
+| `BKCMREP` | 4 | 14 | Sales rep access flags — 4 reps configured |
+| `BKCMTERR` | 7 | 11 | Territory codes — 7 sales territories |
+| `BKCMDUN` | 0 | 36 | 10-level dunning ladder (not configured at i2) |
+| `MKAHIST` | 12 | 9 | System activity history log (audit, used by 158 programs) |
+| `CLASMSTR` | 185 | 2 | Account class codes (CLASS + DESCRIPTION) |
+
+**Scale at i2:** 1,267 CRM customers + 1,264 prospect accounts = 2,531 total CRM accounts;
+5,754 account notes/contacts; 3,446 activity history records; 4 sales reps; 7 territories.
+CRM is **actively used** at i2 Systems for managing both customers and prospects.
+
+**BKCMACCN** (154 fields) is the account notes hub: each account record holds
+10 inline contact slots (CONTACT_1..10 with name/title/phone/email/fax each),
+plus note text fields, lead source, classification, territory, rep assignment,
+and up to 20 category flags (BKCM.CLASS_1..20).
 
 ## Integration
 
