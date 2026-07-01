@@ -234,8 +234,12 @@ total quantity already issued (QTYISSUED / TOTQTY * 100). Values: 0.0 = nothing 
 1. None applied yet — database is read-only for this workspace. Must be done in EVO or directly
    via Pervasive SQL by someone with write access.
 
+**Confirmed workaround (2026-07-01):** KIT=Y (issue all) **confirmed working** by live user
+test. Bypasses T7WOG4 entirely — no REMAINING=0 path. Use KIT=Y for all affected SMT WOs
+until the underlying T7WOG4 bug is resolved.
+
 **Recommended fix:**
-- IMMEDIATE workaround for ALL affected WOs: Use KIT=Y (issue all) instead of KIT=L (list).
+- IMMEDIATE workaround for ALL affected WOs: Use KIT=Y (issue all) instead of KIT=L (list). ✅ CONFIRMED WORKING
 - For 75338-2 specifically: UPDATE WOBOM SET WOBOM_OPTION='N' WHERE WOBOM_WOPRE='75338'
   AND WOBOM_WOSUF='2' AND WOBOM_OPTION='1' (21 rows)
 - For 75338-4: No mandatory items exist. Options: add mandatory WOBOM records, or use KIT=Y.
