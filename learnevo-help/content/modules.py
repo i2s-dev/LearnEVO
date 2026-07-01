@@ -1125,6 +1125,20 @@ commissions but is not actively used at i2 Systems.
 **At i2 Systems:** Commission module is minimally used. ISPRSALE is empty (0 records).
 Salesperson commissions are tracked manually outside EVO rather than through CS-D Transfer.
 
+## DFM-confirmed operation details (9 DFMs)
+
+| DFM | Caption / Confirmed |
+|-----|---------------------|
+| T7CSA | **CS-A Enter Salespersons** — Salesperson Number, Type/Class, Vendor Code, Rate, First Name/MI, Last Name |
+| T7CSB | **CS-B View Salesperson Info** — Quota, COGS, Comm Due, Comm Paid, Receipts (read-only dashboard) |
+| T7CSC | **CS-C Print Salesperson Info** — Which Month? (0 = YTD), Salesperson# range, Include Monthly Detail toggle |
+| T7CSD | **CS-D Transfer Sales Commissions** — Tag All/Untag All/Tag/Untag/Transfer Tagged (batch transfer UI) |
+| T7CSE | **CS-E Print Commission Detail** — Item# range, Salesperson# range, Invoice Date range |
+| T7CSF | **CS-F Print Commission Summary** — Salesperson# range, Invoice Date range |
+| T7CSI | EvoCSI Master Inquiry — Customer/Item/SO/Invoice/Vendor (shared cross-module lookup, not CS-specific) |
+| T7CSO | **CS-O Print Commissions Earned Detail** — Color options: Class 1, Color 1/2, Background colors |
+| T7CSP | **CS-P Print Commissions Due Summary** — Salesperson# range, Invoice Date range (separate from CS-F) |
+
 ## Integration
 
 - **[[module-AR|AR]]** — commissions sourced from BKARINV; BKARCUST drives rate defaults
@@ -2949,6 +2963,14 @@ This allows different assets to post depreciation to different cost centers.
 Key note: `ISFXATRN` stores **redundant copies** of the 4 GL account fields
 from ISFXASST. This means changing the GL accounts on an asset after posting
 does not corrupt historical transaction records.
+
+## DFM-confirmed details (3 DFMs)
+
+| DFM | Caption / Confirmed |
+|-----|---------------------|
+| T7FAA | **FA-A Enter Asset** — Asset Number, Type, Description, Cost Basis, Residual Value, Life (depreciation life in years) |
+| T7FAB | **FA-B Post Depreciation** — Asset Number, Amount, Percent, Post date, Net Asset Value, Accumulated Dep Acct; confirms GL accounts visible on posting screen |
+| T7FAE | **FA-E Export Assets** — File Name (with path), Length or Delimited import format, Asset Number; `* = Basic Fields` note for simplified export |
 
 ## Integration
 
