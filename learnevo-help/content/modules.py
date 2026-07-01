@@ -1888,10 +1888,20 @@ RTM files are binary Delphi-format streams containing:
 | File | Purpose |
 |------|---------|
 | `RBDsgnr.exe` | ReportBuilder designer (visual report editor) |
+| `T7RTMVALID.RWN` | RTM format name validator / license checker |
 | `FILELOC.B` | Maps EVO config keys to RTM filenames on disk |
 | `EVOReports\\*.RTM` | All report templates (~300+ files) |
 | `T6WOL*.RTM` | Work order listing reports (T6 era) |
 | `T7*.RTM` | Current-era report templates |
+
+## T7RTMVALID — report format name dialog
+
+`T7RTMVALID.DFM` caption: **"Select Report Format Name"** (DFM confirmed).
+Single field: `rtmvld_name` — the RTM file name to validate.
+Buttons: Ok / Cancel / Settings.
+This is invoked when a TAS program needs the user to confirm or select a
+report format before printing, and validates that the named RTM file exists
+and is licensed.
 
 Reports are called from TAS Pro programs via `RUNREPORT(configkey)` or equivalent
 procedure call in `.RWN` programs. See [[module-UT|UT]] for report management utilities.
@@ -2762,12 +2772,26 @@ system administrators and developers.
 
 ## Key facts
 
+- DFM caption: **"Maintain File Names and Locations"** — full CRUD (Create/Update/Delete),
+  not just browse (WTASFLOC.DFM confirmed)
 - Opens `FILELOC.B` (the runtime file-location registry) which maps 386+ logical
   table names to their physical `.B` file paths
-- From FILELOC, the user selects any table and FL opens it for browse/edit
+- From FILELOC, the user selects any table entry and can create, edit, or delete it
+- **Update All** button regenerates all path mappings from the canonical registry
 - 74-table database fingerprint: FL reads all FILELOC-registered tables
-- Programs: `WTASFLOC.RWN` (22 procs, source: `wtasfloc.SRC`) — one of the few
-  readable `.SRC` files on the network share
+- Programs: `WTASFLOC.RWN` (22 procs, source: `wtasfloc.SRC`) + `WTASFLOCUPD.RWN`
+  (update sub-form) — one of the few readable `.SRC` files on the network share
+
+## DFM form fields (WTASFLOC.DFM confirmed)
+
+| Field | Label | Purpose |
+|-------|-------|---------|
+| `CF_FLNAME` | File Name | Logical table name (key into FILELOC) |
+| `CF_FLCODE` | Extension | File extension (e.g. `.B`) |
+| `CF_RTYPE` | Rec Type | Record type code (combo) |
+| `CF_DESC` | Description | Human-readable description |
+| `CF_PATH` | Path | Physical file path |
+| `CF_FDNAME` | FD Name | Field dictionary name (links to FILEDICT) |
 
 ## Key namespaces (confirmed from wtasfloc.SRC)
 
