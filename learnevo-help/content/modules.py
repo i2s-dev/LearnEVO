@@ -138,6 +138,30 @@ AM-K Archive → closed invoices move BKARINV → BKARHINV
 | `CS` | Commission System reads BKARINV to compute earned commissions |
 | `AM` | AM-K archives paid invoices; AM-H posts period-end AR summary |
 
+## AR-B voucher types (EVOHELP.PDF §AR-B, Pass 506)
+
+| Code | Type | GL behavior |
+|------|------|-------------|
+| (blank/standard) | Invoice | Debit AR account; distribution must be net credits |
+| Credit Memo | Credit memo | Credit AR account; distribution must be net debits |
+| Cash Transaction | Direct cash, no formal invoice | Debit cash/bank account; AR account bypassed; appears on statement/aging as paid invoice if full; distribution = credits |
+| D | Beginning balance invoice | Posts to aging/voucher files; does NOT post to GL (used when cutting over from prior system) |
+| E | Beginning balance credit memo | Posts to aging/voucher files; does NOT post to GL |
+
+**Distribution**: Up to 10 GL accounts; debits must equal credits for save. Default distribution amount = amount needed to balance.
+
+## AR-C payment capabilities (EVOHELP.PDF §AR-C, Pass 506)
+
+- **Prepayments**: Record customer deposits before invoicing (applies as credit later)
+- **Early payment discounts**: Take discounts on invoices during payment application
+- **Apply credits**: Apply outstanding credits without cash (Check Amount = $0)
+- **NSF checks**: Enter as negative amount to reverse a prior payment
+- **Partial payments**: Apply portion of check to one invoice; balance stays open
+- **Split across customers**: Spread one payment across multiple customer accounts
+- **X-Charge credit card**: Approval code prefix V/M/A/D (Visa/MasterCard/AmEx/Discover) stored as Check Number (must be unique); requires SD-P config
+- **Multi-currency** (IM module): If IM-A Pay=N → post in source currency; Pay=Y → two GL transactions (source + conversion to base currency at IM-C exchange rate; F/E Gain/Loss recognized at payment time)
+- **Check Number field**: 20-char alphanumeric; used as unique transaction ID; reusing same number can cause lookup confusion
+
 ## Admin defaults
 
 `AD-E (Accounts Receivable Defaults)` configures:
