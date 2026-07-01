@@ -5502,8 +5502,31 @@ Three-panel executive dashboard accessed from the main menu toolbar:
 Receivables" / "…Payables" / "…Sales Orders" / "…Purchase Orders" / "…Work Orders" —
 the BS dashboard is fully clickable to module-level detail.
 
-No dedicated ODBC table found — likely reads directly from BKARINV, BKARCUST,
-BKGLCOA, WORKORD for live aggregation.
+**Backing tables confirmed from EVO3.JAR class catalog (Pass 501, 2026-07-01):**
+
+| Table | Fields | Role |
+|-------|--------|------|
+| ISBSF | 143 | Company-level Business Scorecard aggregates |
+| ISJBSF | 143 | Job/division-level scorecard — same field structure as ISBSF |
+
+ISBSF field groups (EVO3.JAR, 143 total):
+
+| Group | Count | Fields |
+|-------|-------|--------|
+| Root | 3 | ISBSF_STARTDATE, ISBSF_ENDDATE, ISBSF_EXTRA |
+| AP | 5 | ISBSF_AP_ATP (approved-to-pay), ISBSF_AP_BAL, ISBSF_AP_DISC, ISBSF_AP_PAYA, ISBSF_AP_PAYM |
+| AR | 6 | ISBSF_AR_BAL, ISBSF_AR_BILL, ISBSF_AR_COGS, ISBSF_AR_DEPO, ISBSF_AR_DISC, ISBSF_AR_RECP |
+| CASH | 110 | ISBSF_CASH_ACT1..9 (9 named accounts) + ISBSF_CASH_ACTS_1..100 (100-slot sub-account array) |
+| IC | 1 | ISBSF_IC_VALUE (inventory value snapshot) |
+| PO | 3 | ISBSF_PO_BOOK, ISBSF_PO_OPEN, ISBSF_PO_RECP |
+| SO | 3 | ISBSF_SO_BOOK, ISBSF_SO_OPEN, ISBSF_SO_SHIP |
+| WO | 3 | ISBSF_WO_FPVAR (FP variance), ISBSF_WO_ISSU (issues), ISBSF_WO_WIPBAL |
+| WOS | 9 | ISBSF_WOS_FOH, ISBSF_WOS_FP, ISBSF_WOS_LAB, ISBSF_WOS_MAT, ISBSF_WOS_MEXT, ISBSF_WOS_OUTP, ISBSF_WOS_SETUP, ISBSF_WOS_VOH, ISBSF_WOS_WIPV |
+
+T7BSR.DFM ("Business Status Rebuild") repopulates ISBSF/ISJBSF from live transactional tables
+(BKARINV, BKARCUST, WORKORD, etc.); the dashboard reads the pre-computed aggregates, not live data.
+The 100-slot CASH_ACTS array accommodates an unlimited number of GL cash accounts mapped to the
+T7BSCash.DFM bank account drill-down.
 
 ## Master Inquiry (EvoCSI)
 
