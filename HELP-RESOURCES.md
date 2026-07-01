@@ -288,36 +288,86 @@ Step-by-step traces of common end-to-end processes. These answer "how does X wor
 
 ### Recipe 5: Month-End Close
 
-**Trigger:** End of accounting period. Must be done in order.
+**Trigger:** End of accounting period. Source: Acctug.pdf chapter 12 (DBA Accounting
+User Guide, Pass 497) — DBA module codes match EvoERP 1:1.
+
+**Phase 1 — Reconcile GL balances with subsidiary ledgers**
+
+These reports confirm subsidiary ledger totals equal the corresponding GL account:
+
+| Report to print | EvoERP op | GL account it should equal |
+|----------------|-----------|---------------------------|
+| AR Aging | AR-F | Accounts Receivable |
+| Inventory Value | IN-F | Inventory account(s) |
+| PO Received Not Invoiced | PO-I-F + PO-J-B | Received Not Invoiced (RNI) |
+| WIP Summary (status R/F, then C/X) | JC-M | WIP account |
+| AP Aging | AP-I | Accounts Payable |
+| Check Register | GL-I | Checking account(s) |
+
+Note: IN-F must be run before making transactions in the new month; other reports
+can be run after month-end as of a prior date.
+
+**Phase 2 — Perform typical month-end activities**
 
 ```
-Step 1 — AR Close:
-  AR-G: Print statements (reads BKARTXN, no writes)
-  AR-H: Age receivables (reads BKARCUST+BKARTXN; updates BKARCUST aging buckets)
-  Verify AR trial balance (AR report vs. GL AR account balance)
-
-Step 2 — AP Close:
-  AP-I: AP aging report (reads BKAPDESC)
-  Verify AP trial balance (AP report vs. GL AP account balance)
-  All PO receipts vouched (BKAPINVT fully matched to BKAPDESC)
-
-Step 3 — Inventory Close:
-  IN-N: Print inventory valuation report
-  If needed: UT-K-H (recalculate average costs) — BKICLOC + MTICMSTR unit costs
-  Post any adjustments via IN-G or IN-H
-
-Step 4 — GL Period Lock:
-  AM (Accounting Maintenance) → Period Control: set period end date
-  ISGLDATE: period dates updated (BKGL_DATE_GLDT*)
-  Once locked, prior-period postings rejected
-
-Step 5 — Reconciliation:
-  GL-A trial balance vs. AR/AP/IC subsidiary ledgers
-  BKGLCOA balances vs. sum of BKGLTRAN for the period
+AR-D   — Charge interest on past-due invoices (if applicable)
+AR-E   — Print and mail customer statements
+GL-B   — Enter recurring/reversing journal entries → GL-O to post
+SO-J   — Generate recurring monthly sales orders → SO-F (print) → SO-G (post)
+AP-P   — Generate recurring monthly AP vouchers
+AR-L   — Transfer sales taxes due to Accounts Payable
+CS-D   — Transfer sales commissions to AP/Payroll
+LM-D   — Reconcile inventory on-hand (accuracy of stock status)
+UT-K-D — Recalculate book value; journal entry for any change (GL-B → GL-O)
+GL-B   — Month-end adjustments (depreciation, etc.) → GL-O to post
+GL-J   — Reconcile check register with bank statement
 ```
 
-**Key tables read:** BKARTXN, BKARCUST, BKAPDESC, BKICLOC, MTICMSTR, BKGLCOA, BKGLTRAN
-**Key tables written:** BKARCUST (aging), ISGLDATE (period lock)
+Optional purges (AM module):
+```
+AM-P-B — Purge paid AP vouchers
+AM-P-C — Purge paid AR vouchers (customer payments)
+AM-P-D — Purge closed sales orders
+LM-F   — Purge closed purchase orders
+```
+
+**Phase 3 — Manufacturing variance entries** (GL-B → GL-O)
+
+```
+Labor Variance:
+  DR WIP Variance (expense)  / CR Absorbed Labor (expense)
+  OR: DR Labor Variance (expense) / CR Absorbed Labor
+  (actual direct labor − absorbed labor for the period)
+
+Fixed Overhead Variance:
+  DR WIP Variance / CR Absorbed Fixed Overhead
+  (actual fixed OH − absorbed fixed OH)
+
+Variable Overhead Variance:
+  DR WIP Variance / CR Absorbed Variable Overhead
+  (actual variable OH − absorbed variable OH)
+```
+
+**Phase 4 — Close and print financial statements**
+
+```
+AM-A   — Reset GL Close Date (set to first day of new period)
+GL-F   — Print Financial Statements (standard format from BKGLSTMT)
+GL-N   — Print Custom Statements (alternate format)
+```
+
+**Key tables read:** BKARCUST, BKAPDESC, MTICMSTR, BKICLOC, BKGLTRAN, BKGLCOA, BKGLCHK
+**Key tables written:** BKGLTRAN (GL-O posts journal entries), BKGLCOA (period balances
+updated), ISGLDATE (GL close date)
+
+**Monthly checklist (abbreviated)**
+1. Backup (programs + data)
+2. Print AR-F, IN-F, PO-I-F, JC-M, AP-I, GL-I — verify vs GL accounts
+3. AR-D, AR-E, GL-B recurring entries → GL-O post
+4. AP-P recurring vouchers; AR-L taxes; CS-D commissions
+5. LM-D reconcile; UT-K-D book value
+6. Labor/OH variance journal entries → GL-O post
+7. AM-A reset close date; GL-F/N financial statements
 
 ---
 
@@ -17005,7 +17055,7 @@ Complete the normal month-end close for December before starting year-end:
 #### Phase 4 — GL Year-End Close
 
 ```
-8. AM (Accounting Maintenance) — Year-End GL Shift
+8. AM-B — Fiscal Year End Routine  *** run on first day of new fiscal year ***
    - Shifts BKGLCOA period balances forward by one year:
      Before: CURRENT_1..14, 1YPAST_1..14, 2YPAST_1..14
      After:  CURRENT_1..14 → zeroed/retained earnings, old CURRENT → 1YPAST, old 1YPAST → 2YPAST
@@ -17013,6 +17063,8 @@ Complete the normal month-end close for December before starting year-end:
      equity account; income/expense accounts zeroed for new year
    - BKGLCOA 65-field schema: CURRENT/BUDGET/1YPAST/2YPAST arrays each have 14 period columns
      plus a YE (year-end total) column
+   - Does NOT prevent making prior-year adjusting entries (can post to prior year anytime)
+   - Confirmed from Acctug.pdf AM-B program description (Pass 497)
 
 9. GL-O — Post Journal Batches (if any year-end adjusting entries remain)
    - Post any final GJR journal batches before closing

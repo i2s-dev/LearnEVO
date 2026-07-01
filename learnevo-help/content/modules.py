@@ -1015,17 +1015,54 @@ recurring entries that auto-post on schedule (e.g., monthly depreciation).
 
 ### BKGLSTMT — GL financial statement layout (104 fields)
 
-Three sub-groups by prefix:
-- `BKGL_STB_*` — Statement B: assets/liabilities section (balance sheet rows), with
-  account ranges (`GLA_F/T` = from/to for asset accounts, `GLL_F/T` = liability from/to,
-  `GLO_F/T` = other; `_MT` = merge/total flag; `_TTL` = totals) — 34 fields
-- `BKGL_STC_*` — Statement C: income statement section (4 account range sets +
-  net/income totals) — 36 fields
-- `BKGL_STI_*` — Statement I: income detail section (current/expense/income ranges;
-  `_F/T` from/to; `GLOETT/GLOITT` = other expense/income totals) — 34 fields
+Three sub-groups by prefix (confirmed from Acctug.pdf AM-E program description,
+Pass 497):
+- `BKGL_STB_*` — Statement **B** = **Balance Sheet** (assets/liabilities/equity
+  section; `GLA_F/T` = asset account ranges 1-4, `GLL_F/T` = liability ranges 1-4,
+  `GLO_F/T` = owners equity ranges 1-2; `_MT` = merge/total flag; `_TTL` = section
+  totals) — 34 fields
+- `BKGL_STC_*` — Statement **C** = **P&L Income Statement** (Profit & Loss;
+  income ranges 1-2, COGS ranges 1-2, expense ranges 1-4, other income/expense;
+  `GLITTL` = income main title, `GLLTTL_1-4` = sub-group titles; `_MN_TTL` = net
+  income total) — 36 fields
+- `BKGL_STI_*` — Statement **I** = **Cash Flow** (Statement of Changes in
+  Financial Position; `GLOETT/GLOITT` = other expense/income totals; asset/liability
+  ranges; net income and non-cash expense sections) — 34 fields
 
-The 104-field BKGLSTMT table stores the financial statement format definitions —
-which GL account ranges map to which statement lines and totals.
+The AM-E program writes this table (Format Standard Financial Statements). GL-F
+reads it to print statements. Each row stores a complete statement format: 3
+statement types in one 104-field record, each with account-range from/to pairs and
+section title strings.
+
+## Manufacturing GL accounting philosophy (Pass 497, Acctug.pdf)
+
+EvoERP uses **absorption costing**:
+- Labor, material, outside process, and overhead costs are **absorbed into WIP**
+  (not directly expensed) as they are charged to work orders
+- When WO is completed, costs transfer from WIP to Inventory (asset)
+- Only when items are **invoiced** do costs become COGS (expense)
+
+**GL accounts required per item class** (set up in IN/AD defaults):
+| Account purpose | Type | When posted |
+|----------------|------|-------------|
+| Inventory | Asset | PO receipt / WO completion |
+| WIP | Asset | Material issue / labor / OH charged to WO |
+| Cost of Goods Sold | Expense | SO invoice posted |
+| Sales | Income | SO invoice posted |
+
+**Absorbed cost accounts** (set up in AD-A GL Defaults, expense section):
+| Account | Posted when | Direction |
+|---------|-------------|-----------|
+| Absorbed Labor | Labor reported to WO | Credit (offsets actual labor) |
+| Absorbed Fixed Overhead | Labor reported (% of labor) | Credit |
+| Absorbed Variable Overhead | Labor reported (% of labor) | Credit |
+
+Both fixed and variable OH are **calculated as % of direct labor** and posted
+simultaneously with the labor entry. Month-end variance = actual OH − absorbed OH.
+
+**GL account code structure**: 10-character alphanumeric code + optional
+4-character department suffix (e.g., `5500-MKTG`). Departments apply to income
+and expense accounts only — not balance sheet accounts.
 
 ## Related
 
