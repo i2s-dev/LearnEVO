@@ -2401,20 +2401,23 @@ tables purged after DE-X-E Transfer.
 | DFM | Operation | Confirmed |
 |-----|-----------|-----------|
 | T7DEK | **DE-H Global Field Change** — File selector, Field to Change, Replace all Values toggle, search-value + replace-value pair | DFM |
-| T7DEL | **DE-I Erase Files** — 6 checkboxes: Inventory / Bill of Materials / Customers / Routings / Vendors / Chart of Accounts | DFM |
-| T7DEER | DE error report — validate against Estimating or Production, allow 0-qty BOM components flag | DFM |
-| T7DEM | **DE-M Import BOM** — "Import to Estimating or Production?" toggle (E/P), "Allow Importing BOM Components with 0 Qty Per" flag, Transfer button | DFM |
+| T7DEL | **DE-I Erase Files** — 7 checkboxes: Inventory / Bill of Materials / Customers / Routings / Vendors / Chart of Accounts / **Labor** | DFM |
+| T7DEER | **BOM import error report** — "Only print for records that have Errors?", "Validate against Estimating or Production?", "Allow Importing Comps with 0 Qty Per" | DFM |
+| T7DEFECT | **Defect Code maintenance** — Defect Code / Description / Add / Edit / Delete / Back (shared lookup table used by QC and DE) | DFM |
+| T7DEM | **DE-M Import BOM** — "Import BOM Components to Estimating or Production?" toggle, "Allow Importing BOM Components with 0 Qty Per" flag, Transfer button | DFM |
 | T7DEJH | DE-J-H Issue Materials sub-screen — Thru (date), Print, Add, Edit, Issue Materials buttons | DFM |
-| T7DEHD | DE physical inventory tag import — Skip/Replace existing tags, Count Date, Tag#, Location, Actual Quantity | DFM |
-| T7DET | **DE-T Web Order Import (header)** — Rec Designator Type=H; confirmed fields: Customer Code, Order Number, Ship To Name | DFM |
-| T7DETB | **DE-T-B** — "Import to EDI Module or to Open SO File [E,S]", Date Format, Customer Code, Name | DFM |
-| T7DEU | **DE-U Web Item Export** — CSV file name, Item Number From/Thru, Item Type [RFAMNLBTKO], Settings | DFM |
-| T7DEV | **DE-V POA Import** (PO Acknowledgement) — PO Number, Item Number, Description, Quantity, Name | DFM |
-| T7DEPB / T7DEP860 | **DE-P-B EDI 860 PO Change** — EDI#, Customer, Release Number, Customer Order; two DFMs (one for 860 variant) | DFM |
+| T7DEHD | **PI-C Import Tags** (Physical Inventory count-tag import) — Skip/Replace existing tags [S/R], Count Date, Tag#, Location, Actual Qty, Item#, Employee#, Bin, Lot, Serial, Comma/Fixed Length [C/F], Import Filename | DFM |
+| T7DEQ | **DE-Q Customer Invoice import** — Filename, CSV/Fixed, Skip/Replace [S/R]; columns: Invoice#/Customer/Date(YYYYMMDD)/Amount/Exchange Rate/Currency Code/Description/Terms# | DFM |
+| T7DER | **DE-R Vendor Invoice import** — same layout as DEQ but with Vendor instead of Customer | DFM |
+| T7DET | **DE-T Web Order Import (header)** — Rec Designator Type=H; confirmed fields: Customer Code, Order Number, Ship-To Name/Address/City/State/Postal/Country/Contact/Phone, Tax Group | DFM |
+| T7DETB | **DE-T-B** — "Import to EDI Module or to Open SO File [E,S]", Date Format, Customer, Bank Account, Drop Shipment Default [Y/N/G], Include Second Description, Include Specifications, Import Comment Lines, Order ID | DFM |
+| T7DEU | **DE-U Web Item Export** — CSV file name, Item Number From/Thru, Item Type [RFAMNLBTKO], Class From, Settings | DFM |
+| T7DEV | **DE-V POA Import** (PO Acknowledgement) — PO#, Item#, Description, Qty, Vendor Code, Line#, Import Filename, Receipt Date, Packing Slip#, Employee# | DFM |
+| T7DEPB / T7DEP860 | **DE-P-B EDI orders / DE-P-B EDI 860 PO Change** — EDI#, Customer, Release#, Customer Order; T7DEP860 adds "Import EDI 860" button; T7DEPB adds Line# | DFM |
 | T7DEPD | **DE-P-D Convert EDI to SO** — New Sales Order Date, New Sales Order Number, Default Est Ship Date | DFM |
-| T7DEPE | **DE-P-E Export EDI Invoice** — SO#, Customer, Invoice#, BOL# | DFM |
-| T7DEPF | **DE-P-F Export format** — PSV or Fixed Length file, Include Header Information flag | DFM |
-| T7DEPH | **DE-P-H EDI Error Report** — EDI# range From/Thru, date range | DFM |
+| T7DEPE | **DE-P-E Export EDI Invoice/ASN** — SO#, Customer, Invoice#, BOL#, PSV/Fixed file, Orders Entered By, Distribution Center, Create By Customer | DFM |
+| T7DEPF | **DE-P-F Invoice export** — Invoice#, PSV or Fixed Length, Include Header Information, SO/Invoice toggle | DFM |
+| T7DEPH | **DE-P-H Standard Pack / EDI list** — EDI# range, STANDARD PACK / CUSTOMER PO# columns | DFM |
 | T7DEX | Tag-selection panel (Tag All / Untag All / Tag / Untag) — shared utility for multi-record selection | DFM |
 
 ## Integration
