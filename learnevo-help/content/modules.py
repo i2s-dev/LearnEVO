@@ -1162,9 +1162,10 @@ Physical Inventory (PI) manages the process of counting actual on-hand
 inventory and reconciling the system quantities. Supports both full physical
 counts and cycle counting.
 
-**Scale:** 250 PI sessions on record. Current snapshot: 22,279 bin-location
-count records (PIBINLOC) and 40 lot records (PIBINLOT) — PI is actively used
-at i2 Systems.
+**Scale:** Live ODBC: 31,248 frozen inventory records (`BKPIFROZ`) and 51 lot
+records (`BKPILOT`) — confirms PI was run and data remains. Session headers
+(`BKPIMSTR`) and count tags (`BKPIPHYS`) are Btrieve-only. PI is actively
+used at i2 Systems.
 
 ## Workflow
 
@@ -1190,12 +1191,12 @@ PI-H  Purge Physical Inventory
 
 | Table | Records | Purpose |
 |-------|--------:|---------|
-| `BKPIMSTR` | 250 | PI session header (YEAR + QTR + DESC) |
-| `BKPIFROZ` | — | Frozen snapshot of on-hand at count start |
-| `BKPIPHYS` | — | Count tag entry (actual count per item) |
-| `PIBINLOC` | 22,279 | Bin-location count records |
-| `PIBINLOT` | 40 | Lot-tracked items in current count |
-| `BKPILOT` / `BKPILCNT` | — | Lot frozen/counted (10f each) |
+| `BKPIFROZ` | 31,248 | Frozen snapshot of on-hand at count start (19f, ODBC confirmed) |
+| `BKPILOT` | 51 | Lot frozen/counted records (10f, ODBC confirmed) |
+| `BKPISER` | 0 | Serial frozen/counted — not used at i2 (10f) |
+| `BKPIMSTR` | Btrieve-only | PI session header (YEAR + QTR + DESC) |
+| `BKPIPHYS` | Btrieve-only | Count tag entry (actual count per item) |
+| `PIBINLOC` | Btrieve-only | Bin-location count records |
 | `BKPISER` / `BKPISCNT` | — | Serial frozen/counted (10f each) |
 
 ## Cycle count support
@@ -2685,8 +2686,12 @@ This allows different assets to post depreciation to different cost centers.
 
 | Table | Records | Purpose |
 |-------|--------:|---------|
-| `ISFXASST` | 589 | Asset master (23 fields) |
-| `ISFXATRN` | 22,568 | Depreciation transactions (12 fields) |
+| `ISFXASST` | 589 | Asset master (48 fields, ODBC confirmed) |
+| `ISFXATRN` | 22,568 | Depreciation transactions (12 fields, ODBC confirmed) |
+| `ISFXBOOK` | Btrieve-only | Depreciation book definitions |
+| `ISFXDEP` | Btrieve-only | Depreciation schedule per asset |
+| `ISFXCLS` | Btrieve-only | Asset class codes |
+| `ISFXLOC` | Btrieve-only | Asset location codes |
 
 Key note: `ISFXATRN` stores **redundant copies** of the 4 GL account fields
 from ISFXASST. This means changing the GL accounts on an asset after posting
@@ -2972,7 +2977,7 @@ custom programs added on top of the standard EVO install.
 | `ISFA*` | ISFXASST=589 / ISFXATRN=22,568 | Fixed Assets |
 | `ISSS*` | (same as ISSO*, re-used prefix) | Service/Repair order tables |
 | `ISCR*` | ISCRISLS=0 / ISSOREVU=0 / ISCTREVU=0 | Contract Review (configured, not active) |
-| `ISJOB` | ISJOB=45,862 / ISJBSF=142 | Job Costing codes |
+| `ISJOB` | ISJOB=45,863 / ISJBSF=142 | Job Costing codes |
 | `ISBINLOC` | (WC bin locations) | Warehouse bin locations (used by [[module-WC|WC]]) |
 
 **Key architectural pattern:** IS* tables that store document headers use the same
