@@ -751,25 +751,52 @@ is the only active one.
 `BKBMEMTR` (engineering mirror, 0 rows) would hold an in-progress ECO copy
 that gets approved and promoted to BKBMMSTR.
 
-## Menu operations
+## Menu operations (16 DFMs confirmed)
 
-| Code | Operation | Notes |
-|------|-----------|-------|
-| `BM-A` | Enter BOM | Main entry — add/edit component lines |
-| `BM-C` | Print Where-Used | "Which assemblies use this component?" |
-| `BM-D` | Availability | "Can I build N units with current stock?" |
-| `BM-E` | Global Replace | Swap one component for another across all BOMs |
-| `BM-F` | Global Delete | Remove component from all BOMs |
-| `BM-H` | Print BOM at Average Cost | Explosion with current costs |
-| `BM-J` | Approved Substitutes | Alternate parts (BKSBPART table) |
+| Code | DFM | Operation | Key fields |
+|------|-----|-----------|-----------|
+| BM-A | T7BMA | Enter BOM | List: Add/Edit/Copy/Delete/Options; sub-form T7BMAx: Line No, Component, Qty Per, Scrap%, Sequence, Routing#, Reference, Scrap Type [Q/%], Include When BackFlushing For Scrap Assembly, Manufactured or Kit type [M/K] |
+| BM-B | T7BMB | Print BOM | Parent Item Number From/Thru, Number of decimals in Qty required, Print up to this many levels |
+| BM-C | T7BMC | Print Where Used | Component From/Thru, Print up to levels, Print for inactive Parent? |
+| BM-D | T7BMD | Print Availability | Print For Location, Quantity to Project, Incl ROHS Compliant items [Y/N/O]; note: shortages indicated by * |
+| BM-E | T7BME | Replace Component | Search for Component, Replace with Component, Copy old BOM Remarks to new Component |
+| BM-F | T7BMF | Remove Component | Remove this Component (global delete from all BOMs) |
+| BM-G | T7BMG | Print by Item Type/Class | Item Type [RFAMNLBTKO], Class From/Thru, Category From/Thru |
+| BM-H | T7BMH | Print BOM Costs | Parent Item Number From/Thru, Number of decimals, For (P)arent or (C)omponent? |
+| BM-I | T7BMI | Print BOM at Cost | Parent Item Number From/Thru, Number of decimals, Print Avg/Std/Last Cost [A/L/S] |
+| BM-J | T7BMJ | Approved Substitutes | Std Item Number/Parent/Customer Code/Substitute Item ranges → columns: Std Item, Parent, Customer Code, Line Number, Substitute Part |
+| BM-K | T7BMK | Vendor BOM | Standard Item/Parent/Customer/Vendor Code ranges → columns: Vendor Code, Vendor Part Number; Sort By Vendor; Auto Print Folder |
+| BM-L | T7BML | Manufacturer BOM | Std Item/Parent/Customer/Manufacturer Item ranges → columns: Manufacturer Name, Manufacturer Part Number |
+| BM-P | T7BMP | BOM Pick List | Assembly Item Number, Item Number From, Item Type [RFAMNLBTKO], Component Types |
+| BM-Q | T7BMQ | BOM Roll Up | Component From/Thru (cost roll-up) |
+| BM-R | T7BMR | Requirements Projection | Parent Item Number, Quantity(s) to Project, Item Class From/Category From/Thru |
+
+## BOM line entry (T7BMAx sub-form)
+
+Key fields on each BOM component line:
+- **Scrap Type [Q/%]** — Q=fixed quantity scrap loss, %=percentage scrap factor applied to Qty Per
+- **Manufactured or Kit type [M/K]** — M=sub-assembly to manufacture; K=kit (phantom, explodes through to raw components)
+- **Include When BackFlushing For Scrap Assembly** — controls whether component is consumed when parent is reported as scrap
+- **Routing#** — operation routing step that consumes this component
+- **Sequence** — BOM line sort order within the parent
+
+## Cross-reference reports (BM-J / BM-K / BM-L)
+
+EvoERP tracks three types of alternate/cross-reference items in the BOM:
+- **BM-J Approved Substitutes** (BKSBPART table): customer-specific approved substitute parts (Std Item + Customer Code → Substitute Part)
+- **BM-K Vendor BOM** (BKBMVEND): which vendor supplies which component, with vendor part numbers; Sort By Vendor output for purchasing
+- **BM-L Manufacturer BOM** (BKBMMFR): manufacturer name + manufacturer part number cross-reference
 
 ## Integration
 
 - **[[module-WO|WO]]** — when a WO is released, its BOM is copied from
-  BKBMMSTR into `WOBOM` (per-WO snapshot). Changes to the master BOM do
+  BKBMMSTR into `WOBOM` (per-WO snapshot). Changes to master BOM do
   not affect in-progress WOs.
-- **[[module-MR|MR]]** — MRP explodes BOMs to compute component demand.
-- **[[module-ES|ES]]** — Estimating can pull BOM for cost roll-up.
+- **[[module-MR|MR]]** — MRP explodes BOMs to compute component demand;
+  BOM structure determines how far MRP pushes planned orders down.
+- **[[module-ES|ES]]** — Estimating pulls BOM for cost roll-up.
+- **[[module-HH|HH]]** — HH-C Issue Materials and HH-D Finish Production
+  read WOBOM (the WO snapshot of the BOM), not BKBMMSTR directly.
 """,
 
 "MR": """
@@ -3517,18 +3544,39 @@ See [[module-AM|AM]] for Accounting Management documentation.
 "DI": """
 ## What it does
 
-Distribution / Drop-Ship — **not a separate top-level module.** Drop-ship order
-management (where a vendor ships directly to the customer) is handled within
-[[module-SO|SO]] Sales Orders and [[module-PO|PO]] Purchase Orders.
+Digital Signatures — electronic signature approval workflow for Purchase Orders.
+T7DIGSIG.DFM / T7DIGSIG.RWN: requires an authorized user's password and (optionally)
+a signature file before a PO above a dollar threshold can be approved or printed.
 
-When a SO line is flagged as drop-ship:
-1. SO-A marks the line with the drop-ship flag
-2. PO is generated linked to that SO line via `BKSOPO` (SO/PO link table)
-3. The vendor ships to the customer address from the SO — goods never enter your warehouse
-4. AP invoice closes the PO; AR invoice closes the SO
+**Note on the "DI" prefix:** earlier stubs incorrectly described this as Distribution/
+Drop-Ship. Drop-ship is handled within [[module-SO|SO]] (SO-A drop-ship flag) and
+[[module-PO|PO]] (BKSOPO SO/PO link table), not as a standalone DI module.
 
-See [[module-SO|SO]] for drop-ship sales order entry and [[module-PO|PO]] for the
-linked purchase order workflow.
+## DFM-confirmed operation (T7DIGSIG.DFM)
+
+**Caption: "Enter Digital Signatures"**
+
+Fields:
+- PO # — the purchase order requiring signature
+- Vendor — vendor name (read-only display)
+- Name / Description / Terms — PO summary (display)
+- Entered By — user who entered the PO (display)
+- Job # — job/cost code linked to PO
+- Date — PO date
+- Notes — free-text approval notes
+- Password — authorizing user's password (required to sign)
+- Signature File — path to a signature image file (optional)
+- PO Threshold — dollar amount above which signature is required
+- PO-A Ent By ID — tracks which PO-A entry user ID entered the PO
+
+**T7DigSigChgPSWD.DFM** — "Change Password": Old Password, New Password,
+Reenter Password (self-service password change for the DI signing authority).
+
+## Integration
+
+- **[[module-PO|PO]]** — T7DIGSIG is invoked from within the PO approval
+  workflow when a PO exceeds the configured PO Threshold
+- Signature records written to ISDIGSIG or similar IS* table (not yet ODBC-confirmed)
 """,
 
 "EX": """
@@ -3782,6 +3830,17 @@ it reads and writes all ISTS.CFG.* flags (hundreds of behavior flags from
 BKYSMSTR), EVO.CFG.* user preferences, EMAIL.CFG.* SMTP settings, and the
 6 HOTBUTTON toolbar shortcuts. This makes it the primary tool for system
 administrators configuring EVO behavior across all modules.
+
+## T7LIMACC.DFM — Limited Access Generator / Editor
+
+Caption: "DFM Multi Limited Access Generator / Editor"
+Fields: DFM Name, Access Group, Generate, Edit, Copy
+
+The DFM form is a code-generation tool: given a DFM file name and an access
+group, it generates the ISACCESS restriction records for all fields in that
+DFM. Operators: Generate (create new access records for a DFM), Edit (modify
+existing restrictions), Copy (duplicate an access group's restrictions to
+another DFM).
 
 ## Integration
 
