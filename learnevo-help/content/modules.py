@@ -4889,12 +4889,53 @@ Eight lookup dimensions confirmed from DFM scan.
 | EVOCHANGEPASS.DFM | Change password |
 | EVORESETPASS.DFM | Reset password — User Name, New Password, Reenter Password |
 
+## EvoERP Update System (Pass 491, 2026-07-01)
+
+**Distribution staging**: `\\i2s109-solidcrm\evo-ERP\ISTS\` is the master workstation
+install image. Robocopy deploys it to `C:\ISTS\` on each workstation. It contains all
+client executables plus zip utilities and UPDTP7.EXE.
+
+**Update workflow — 3 programs, DFM-confirmed:**
+
+| DFM | Caption | Role |
+|-----|---------|------|
+| EvoUPDsetup.DFM | Create Update Setup | Developer: specify Server Path → builds update package |
+| EvoERPupd.DFM | Evo ~ ERP Update | User: Initialize / Files-in-Update / Files-to-Force tabs / Update+Go |
+| EvoForceUpd.DFM | Evo ~ ERP Force Update | Same as above with force-update as default |
+| EVOERPUPDW.DFM | Archive Work Orders | WO archival utility (NOT an ERP update) — archive Closed WOs as-of date |
+
+**Key binaries in distribution** (confirmed from `evo-ERP\ISTS\`):
+- `UPDTP7.EXE` (86KB) — TAS Pro 7 file updater; called via `EXEC_TOP_WAIT` from EvoERPupd
+- `unzdll.dll` + `zipdll.dll` — ZIP/UNZIP for in-app update package decompression
+- `robocopy.exe` — bundled for workstation deployment
+- `fileloc.zip` (1.7MB in `evo-ERP\`) — distributed FILELOC table update package
+
+**EvoUPDsetup fields** (DFM): Server Path (placeholder `g:\path`) + Creating label + Continue.
+**EvoERPupd fields** (DFM): Initialize checkbox → FD Name + FileName per file (FILELOC-style
+registration) → "Files in this Update" tab + "Files to Force" tab → Update+Go.
+**CheckForUpdates** in `EvoSettings.INI [Users]` section controls whether the client
+auto-checks for an available update at startup (default `.F.` = disabled).
+
+**Per-workstation config files** (`C:\ISTS\`):
+- `EvoSettings.INI` — per-user EVO prefs: Toolbar/OpenList mode flags, Language, Sounds,
+  DefPrintPath, Reminder/Notification/RemSeconds/RemSnoozeAll, QuickPrint,
+  CheckForUpdates; per-module screen (EvoorClassicScreen E/C); HOT BUTTONS 1-6
+- `taspro7.INI` (deployed: 127 bytes) — minimal: UseBtrvMemos=1, LimitRuntime=1,
+  HelpFileName=`\\i2s109-solidcrm\DBAMFG$\EvoHELP.CHM`
+- `WHOAMI.DBA` (9 bytes) — last login: "NON EVO" if no user logged in; otherwise
+  `<user> <time> <date>` (e.g., "CWILLIAMS      11:00:53 A20171019")
+- `BMB.CFG` (56 bytes) — Pervasive PSQL workstation license key (V2355B-28BBE pattern)
+- `CHMHELP.EVO` (35 bytes) — marker file: "EvoHELP now set for this computer"
+
+**Developer source layout** (from `taspro7.ini` in outer distribution):
+- Source files: `F:\Projects\TAS\istech\` (developer machine, F: drive)
+- Old server: `\\2kserver\c\DBAMFG\` (Windows 2000-era predecessor to i2s109-solidcrm)
+- Dev DataDictPath: `E:\DBAMFG\` (developer's local drive mapping)
+
 ## Maintenance tools
 
 | DFM | Purpose |
 |-----|---------|
-| EvoERPupd.DFM | Online EVO update: Initialize, FileName, FD Name |
-| EvoForceUpd.DFM | Force Update (bypass version check) |
 | Evocnvtb.DFM | Synchronize Data Dictionary with Btrieve — rebuilds DDF from live .B files |
 | EvoERPbackup.DFM | Backup utility: file types, zip file name, Backup Type |
 | EvoERPDrillM.DFM | Drill-down menu editor: Source Field, Target Field, Menu Text, Key |
