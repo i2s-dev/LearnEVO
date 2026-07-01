@@ -2108,6 +2108,43 @@ commissions but is not actively used at i2 Systems.
 **At i2 Systems:** Commission module is minimally used. ISPRSALE is empty (0 records).
 Salesperson commissions are tracked manually outside EVO rather than through CS-D Transfer.
 
+## CS-A field semantics (EVOHELP.PDF §CS-A, Pass 509)
+
+### Class (employee vs. agent)
+| Code | Meaning |
+|------|---------|
+| E | Employee — commissions paid via internal Payroll module or ADP/CheckMark; salesperson# must match SM-G employee# |
+| A | Agent (outside) — commissions paid via AP voucher to the vendor assigned in Vendor Code field; must be set up in AP-A first |
+
+### How (commission basis)
+| Code | Meaning |
+|------|---------|
+| G | Gross Sales — net invoice amount after line discount; excludes tax and freight |
+| C | COGS — cost of goods sold at average cost at time of invoice posting |
+| N | Net Profit / Gross Margin — gross sales minus COGS |
+| F | FOB selling price — Bill To customer contract price (used when Ship To price includes embedded freight) |
+
+Note: Extended Commissions only supports G or F.
+
+### When (commission trigger)
+| Code | Meaning |
+|------|---------|
+| I | Invoice posting — commission due immediately when SO-G posts the invoice |
+| P | Customer payment — commission due when AR-C records the payment |
+| A | Accrue — GL entry made at invoice post (debit Commission Expense, credit Commission Payable); but transfer to AP/Payroll not allowed until customer payment received |
+
+### CS-D Transfer accounting
+- Employee reps: updates payroll record with commission amount (or prints CheckMark manual report if using outside payroll)
+- Agent reps: generates AP voucher to their vendor; converted to vendor's source currency if multi-currency
+- GL treatment: commission expense is recognized at invoice post; CS-D transfer posts to Commission Payable (liability account), NOT expense — expense was already booked
+
+### Extended Commissions (CS-G / SD-N setting)
+When Extended Commissions is enabled in SD-N Sales Commission Defaults:
+- Unlimited reps per order (vs. 2 in standard CS)
+- Commissions assigned at line-item level by Rep + Customer + Item + Item Class combinations
+- Start Date / End Date support for promotional commission periods
+- CS-G stores the Rep Link records: Rep#/Customer/Item#/Item Class/Rate/Start Date/End Date
+
 ## DFM-confirmed operation details (9 DFMs)
 
 | DFM | Caption / Confirmed |
@@ -2889,6 +2926,51 @@ Fields of note:
 - **[[module-PI|PI]]** — PIBINLOT (14f) tracks lot quantities during physical count
 - **[[module-SC|SC]]** — parallel serial module; an item can be both lot and serial controlled
 
+## Workflow triggers (EVOHELP.PDF §LC, Pass 509)
+
+Lot numbers are required at these transaction points when an item has Lot Control = Y:
+- **PO-C Receive POs** — lot assigned at receipt; if received to QC (Q), prompt deferred until PO-J-C buyoff
+- **WO-G Issue Materials** — cursor stops at Qty field; prompted for lot number per component
+- **WO-I Enter Finished Production** — parent assembly lot assigned here if parent is lot-controlled
+- **IN-C Enter Inventory Adjustments** — one adjustment per lot (use instead of IN-K for lot items)
+- **IN-K Adjust Physical Levels** — warns if changed; better to use IN-C for lot items
+- **SO-A Enter Sales Orders** — optional pre-assignment (requires SD-M Setup II: "Ask for Lot info when adding SO Lines" = Y)
+- **SO-E Release Sales Orders** — if not pre-assigned, prompts here
+- **SO-G Post Invoices** — final check; if still unassigned, prompts during post
+
+Creating a lot manually in LC-A is not recommended — it does not update INVTXN or GL detail.
+
+## LC-D transaction type codes (EVOHELP.PDF §LC-D, Pass 509)
+
+| Code | Transaction type |
+|------|-----------------|
+| A | Adjustments (IN-C, IN-K, or Physical Inventory) |
+| B | Bin Location Transfers |
+| C | PO Price Change entered in AP-C (**not tracked by Lot Number**) |
+| G | Scrap |
+| I | Stock issues to work-in-process |
+| J | Purchase order receipts to work-in-process |
+| M | Make-From Component Issue |
+| O | Outside Processing (Service) PO Receipt to Work Order (**not tracked by Lot Number**) |
+| P | Purchase order receipts to stock |
+| Q | Purchase Receipt to QC |
+| R | Service & Repair |
+| S | Shipments |
+| T | Warehouse Transfer |
+| W | Work order receipts to stock |
+
+Note: C and O are not tracked by lot number; they appear in inventory but cannot be filtered by lot in LC-D.
+
+## LC-E exception filters (EVOHELP.PDF §LC-E, Pass 509)
+
+| Filter | Meaning |
+|--------|---------|
+| Exceptions Only | Total inventory on-hand does not equal sum of all lot quantities |
+| Negative Lot UOH | Individual lot records with negative on-hand |
+| Orphan Lots | Lots assigned to item numbers that no longer exist |
+| Summary or Detail | Print line per item vs. line per lot number |
+| Sub Sort by Lot or Exp Date | Controls secondary sort within item |
+
 ## DFM-confirmed operation details (7 DFMs)
 
 | DFM | Caption | Key fields |
@@ -2942,6 +3024,24 @@ structure to [[module-LC|LC]] (Lot Control).
 **At i2 Systems**, serial tracking is minimal — ISSERCNT=0 and ISSTYPE=0
 confirm serial number generation is not configured. The INVTXN table
 (3.27M rows) is the primary active table accessed by SC programs.
+
+## Workflow triggers (EVOHELP.PDF §SC, Pass 509)
+
+Serial numbers are required (one per unit) at these transaction points when an item has Serial Control = Y:
+- **PO-C Receive POs** — serial assigned per unit received; if received to QC, deferred until PO-J-C buyoff
+- **WO-G Issue Materials** — serial required for each unit issued; Auto Generate button uses SC-G parameters
+- **WO-I Enter Finished Production** — serial assigned per unit completed
+- **IN-C Enter Inventory Adjustments** — one serial per unit adjusted
+- **IN-K Adjust Physical Levels** — warns if changed; IN-C preferred for serial items
+- **SO-A Enter Sales Orders** — optional pre-assignment (requires SD-M Setup II: "Ask for Serial info when adding SO Lines" = Y); F2 lookup shows available serial numbers for the item
+- **SO-E Release Sales Orders** — prompts if not pre-assigned
+- **SO-G Post Invoices** — final check; prompts if still unassigned during post
+
+Creating a serial record manually in SC-A is not recommended — it does not update INVTXN or GL detail.
+
+## SC-D transaction type codes (EVOHELP.PDF §SC-D, Pass 509)
+
+Identical to LC-D codes: A=Adjustments / B=Bin Transfer / C=PO Price Change (not by serial) / G=Scrap / I=WIP issue / J=PO receipt to WIP / M=Make-From / O=Outside Processing (not by serial) / P=PO receipt to stock / Q=PO Receipt to QC / R=Service & Repair / S=Shipments / T=Warehouse Transfer / W=WO receipts to stock.
 
 ## Audit and fix (SC-F)
 
