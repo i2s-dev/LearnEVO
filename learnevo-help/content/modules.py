@@ -294,6 +294,92 @@ The AP check printer is one of the few programs we have in plaintext:
 - Updates `BKAPCHKF` → `BKAPCHKH` after successful print.
 
 See [[recipe-print-checks]] for the user-facing walk-through.
+
+## AP-A Enter Vendors — field semantics (EVOHELP.PDF §AP-A, Pass 507)
+
+| Field | Size | Notes |
+|-------|------|-------|
+| Vend Code | 10-char alphanumeric | PK; common format = first 3 letters of name 1 + first 3 of name 2 |
+| Alpha Sort | 6-char | Sort key; defaults to first 6 chars of vendor name |
+| Vend Name | 30-char | |
+| Address 1/2 | 30-char each | Two address lines |
+| City | 26-char | |
+| State | 2-char | |
+| Zip | 10-char | |
+| Country | 30-char | |
+| Contact 1 | 30-char | Three additional contacts via "Other Contacts" button |
+| Telephone/Fax | 25-char each | |
+| Remittance Address | — | Used on printed checks (AP-H); if blank, standard address used |
+| Tax ID No | 15-char | For 1099 reporting (AP-S Print 1099 Forms) |
+| Tax Group | — | PO tax authority (only if SD-C "Track PO Taxes using Tax Groups" = Y) |
+| Send 1099? | checkbox | Controls which vendors get 1099 forms printed by AP-S |
+| Customer at This Vendor | — | Your customer code in their accounting system |
+| Class Cd | 4-char | Groups vendors for reports (e.g., out-of-state, wholesale) |
+| Terms Cd | Required | Payment terms; default for PO-A and AP-B/AP-C entry |
+| Default GL Exp Acct | — | Default GL account for AP-B voucher entry; overridden by item class GL on PO-based vouchers |
+| Start Dt | — | First purchase date / record creation date |
+| Ship Via | — | Default shipping method; defaults into POs |
+| FOB | — | Default FOB point; defaults into POs |
+| Print File Lbls | checkbox | Include in AP-M Print Vendor Mail Labels (file label mode) |
+| Web Site | — | URL field |
+
+**International fields** (only visible when IM-A enabled): Currency (default for POs), Duty Code (3-char, used with IN-B duty code to calculate landed cost fee), Tax-In Code (excise tax code from IM-G).
+
+**Auto-filled status fields**: Outstanding Inv Amts (total owed), Outstanding Credits (unapplied credits), Last Purch (date of last PO receipt), Last Payment (date of last check).
+
+**Deletion restrictions**: Outstanding Inv Amts and Outstanding Credits must both be $0.00; no open POs allowed. Archived via AM-O Archive/Purge Vendor Data rather than deleted if purchase/payment history exists.
+
+## AP-B Enter Vouchers — voucher types (EVOHELP.PDF §AP-B, Pass 507)
+
+| Type | Name | GL behavior |
+|------|------|-------------|
+| A | AP Voucher | Credits default AP account; debit distribution must balance |
+| B | Credit Memo | Debits AP account; credit distribution must balance |
+| C | Manual Check | Posts directly to Cash Disbursements; also optionally prints a check |
+| D | Beg Balance | Populates open aging only — does NOT post to GL (system cutover use) |
+| E | Beg Bal Credit | Populates open aging only — does NOT post to GL (system cutover use) |
+| F | Template | Pulls predefined % distribution to multiple GL accounts; saved as A or B |
+
+Key AP-B fields: **Inv Num** (20-char, Required), **Voucher Date** (invoice date = aging date), **GL Post Date** (defaults to today; controls GL period and aging inclusion separately from invoice date), **Desc** (25-char, prints on check stub), **Terms** (from AP-A default), **Total Amt** (12-digit), **Schedule Date** (override payment due date), **Job Number** (optional; can be Required via SM-P-F). Distribution: up to **75 GL accounts**; debits must equal credits.
+
+## AP-C Enter Purchase Order Invoices — key behaviors (EVOHELP.PDF §AP-C, Pass 507)
+
+- **COD vs Invoice**: COD bypasses AP, creates a manual check entry, optionally prints check. Invoice goes to AP for future payment via AP-F/AP-H.
+- **Invoice Date vs GL Post Date**: Invoice date = aging date (always enter as-received). GL Post Date = accounting period (can differ for late-arriving invoices). Aging age based on Invoice Date; aging *inclusion* as-of a date controlled by GL Post Date.
+- **Price override**: If unit cost differs from PO, overriding it corrects inventory last cost, average cost, and any job costing.
+- **Partial invoicing**: Cannot invoice more than the received quantity. Full receipt + invoicing triggers prompt to close PO (deletes from open PO file, marks receivers as closed in history).
+- **Multi-PO invoice**: One vendor invoice can cover multiple POs. Only one currency (if IM-A multi-currency) per invoice.
+- **Freight / Tax / Misc Charges**: Separate fields on the invoice total; freight defaults blank; tax auto-calculated if PO had sales tax, or can be manual override.
+- **RNI reversal**: AP-C posts debit to PO/RNI (Received-Not-Invoiced) account and credit to AP — completing the two-step RNI cycle started by PO-C.
+- **PO-C Receive Into**: I=Inventory (items update stock immediately); Q=QC Inspection (items held in QC, must be released via PO-J-C Enter Inspection Buyoffs before they enter inventory).
+
+## AP-F Pick Vouchers — workflow (EVOHELP.PDF §AP-F, Pass 507)
+
+- Pick per vendor; one vendor at a time.
+- Auto-apply oldest-first (answering Y to "apply against all outstanding invoices" option).
+- Partial payment: enter any amount up to the invoice balance in the Applied field.
+- Outstanding credits can be auto-applied (Y) or applied manually after choosing an invoice.
+- **ePay button**: records electronic payments (wire transfer, credit card) without printing a check; prompts for bank account + reference number; posts immediately to check register and payment history; optionally prints a receipt.
+- All picks are provisional until AP-H Print Checks is run. Can re-run AP-F to change picks by re-entering the vendor code.
+
+## AP-H Print Checks — GL posting (EVOHELP.PDF §AP-H, Pass 507)
+
+AP-H is the **commit step**: prints checks, then:
+1. Empties the AP check register (BKAPCHKF).
+2. Updates AP Payment History.
+3. Posts to GL Cash Disbursements journal.
+4. Adds checks to GL check register file (BKGLCHK, used for bank reconciliation).
+5. Updates next check number in AD-B Checking Accounts Defaults.
+
+## AP-I Print Aging — three report types (EVOHELP.PDF §AP-I, Pass 507)
+
+| Type | Content | Paid items included? |
+|------|---------|---------------------|
+| AP Aging | Open invoices by age columns (default or custom periods); totals-only or detail | No |
+| AP Listing | Transaction detail, oldest first; invoice date/number/vendor/description/original amount/remaining/age | Yes (open and paid, with start date) |
+| AP Past Due | Open invoices by age based on payment terms (not invoice date) | No |
+
+Aging is run as-of any prior date; the program recreates the aging as it was on that date. Multi-currency: run in source currency (per-currency totals) or base currency (reconcile with GL AP balances).
 """,
 
 "IN": """
@@ -699,6 +785,48 @@ in PO or AP defaults.
 | `QC` | PO-J-C writes BKQCMSTR/BKQCTRAN; QC-A/QC-E report off PO receipts |
 | `MR` | MRP creates PO suggestions; PO delivery dates feed MR due-date calc |
 | `SO` | Drop-ship SOs generate linked POs via BKSOPO |
+
+## PO types (EVOHELP.PDF §PO-A, Pass 507)
+
+| Type | Name | Description |
+|------|------|-------------|
+| P | Purchase | Tangible items; received to inventory (or WO if Work Order field specified) |
+| S | Service | Outside processing; Work Order and Seq fields **required**; price defaults from routing outside-processing cost; receipt posts to WO job cost, not inventory |
+
+## PO-A line item fields (EVOHELP.PDF §PO-A, Pass 507)
+
+| Field | Notes |
+|-------|-------|
+| REF | Optional line reference number; auto-assign in SD-C |
+| Item Number | From IN-B; blank = comment line (no qty/price/date) |
+| Location | Per-line override of header location; defaults from header |
+| Job Number | Associates line item with a job for cost tracking |
+| Description | Defaults from IN-B; customizable on PO without changing master; 2nd description + Specifications auto-add as comment lines |
+| Quantity | 11-char numeric, 2 decimals |
+| Due Date | Required; first line defaults from vendor lead time (PO-H) or item lead time (IN-B), adjusted past non-working days per SM-H calendar; subsequent lines default from prior line |
+| Price | Type P: defaults from PO-H vendor price file, else IN-B Last Cost; Type S: defaults from RO-A routing outside-processing cost |
+| UM pricing codes | M=per-thousand; H or C=per-hundred; LOT=flat lot charge; LB=per pound; CWT=per 100 weight; SF=per sq ft; MSF=per 1000 sq ft; BF=per board foot; MBF=per 1000 board foot; LF=per linear foot; CLF=per 100 linear feet; MLF=per 1000 linear feet |
+| Conv. Fact. | PO UM → Stock UM conversion multiplier; built-in for M/H/C/LOT/LB/etc.; manual entry only for non-standard UMs (e.g., 1 REL of 5000 resistors → Conv=5000) |
+| Taxable? | Per-line; defaults from IN-B; always N if order header Taxable? = N |
+| Disc% | 4-digit, 2 decimal; discount off gross unit price |
+| Work Order | Optional for type P; **required** for type S; received units/costs bypass inventory and post directly to WO job costing |
+| Seq | Routing sequence; required for type S (must match outside-processing seq in WO routing) |
+
+## PO-C Receive — key behaviors (EVOHELP.PDF §PO-C, Pass 507)
+
+**Receive Into options** (pop-up at start of receipt):
+- **I — Inventory**: items go directly to stock; on-hand incremented immediately.
+- **Q — QC Inspection**: items held in QC; must be released via PO-J-C Enter Inspection Buyoffs before entering inventory.
+
+**Header fields**: Receipt Date (defaults today), Packing Slip (optional; required if SD-C "Require Pack Slip Info?" = Y), Employee Number (optional receiving clerk).
+
+**Receive All Lines? Y/N**: Y marks all remaining lines as fully received; can restrict via "Recv thru Due Date" to receive only lines through a specified date (useful for blanket/scheduled POs). Individual line exceptions can still be changed after answering Y.
+
+**Per-line fields**: Qty this Receipt (actual count), Packing Slip Qty (vendor's count — discrepancy tracking only), Unit Cost (access controlled by SD-C: no access / view only / changeable).
+
+**GL and inventory posting on save**: PO marked received; posts to GL and Purchases journal; updates inventory on-hand, on-PO/WIP, average cost, last cost, last receipt date, and average days to receive; per-location inventory updated too.
+
+**Returning items**: To return items on a fully-received line, set Display Fully Recd Lines? = Y and enter a negative quantity against the line.
 """,
 
 "WO": """
@@ -1230,6 +1358,82 @@ and expense accounts only — not balance sheet accounts.
 - [[module-AM|AM - Archive/Maintenance]]
 - [[module-AD|AD - Admin Defaults]]
 - [[recipe-month-end-close]]
+
+## GL-A View Chart of Accounts — field meanings (EVOHELP.PDF §GL-A, Pass 507)
+
+**GL-A is read-only except for Budget amounts.** To create/change accounts, use AM-C.
+
+| Field | Notes |
+|-------|-------|
+| Acct Code | 10-char alphanumeric GL account number |
+| Dept | 4-char GL department code; blank if not using departments |
+| Description | Account title |
+| Type | A=Asset, L=Liability, O=Owner's Equity, I=Income, E=Expense |
+| Norm Dr/Cr | D=normally Debit (asset/expense); C=normally Credit (equity/income/liability) — auto-set by Type |
+| Non-Cash | Y = non-cash expense; used by GL-F Cash Flow statement to add back to net income (e.g., depreciation) |
+| Current | Monthly posted amounts in current year |
+| Budget | Monthly budget amounts (editable in GL-A; used for comparison in GL-F) |
+| 1 Year Past | Posted amounts from prior year |
+| 2 Years Past | Posted amounts from 2 years prior |
+| Prior Years | Click Previous/Next buttons — up to 6 years past available |
+
+Check AD-A GL Defaults before changing/deleting a GL account to avoid breaking system default accounts.
+
+## GL-B Enter/Post General Journal Trxns — transaction types (EVOHELP.PDF §GL-B, Pass 507)
+
+| Code | Type | Description |
+|------|------|-------------|
+| 1/GJ | General Journal | Manual adjusting entries; do NOT use for AR/AP adjustments (use AR-B/AP-B instead) |
+| 2/CR | Cash Receipts | Requires Bank Account; updates check register |
+| 3/CD | Cash Disbursements | Requires Bank Account; updates check register |
+| 4/TT | Transaction Template | Saved recurring template; can be copied/reversed to create new entries |
+| 5/BB | Beginning Balance | Initial GL balances when starting accounting on EVO |
+
+**Other GL-B facts**:
+- Up to 999 line items per transaction batch
+- **Must balance (debits = credits) before posting**; can save out-of-balance and fix later
+- Transactions are committed to a **temporary file** first; GL-O Print/Post General Ledger Batches does the final transfer to permanent GL
+- Copy button: duplicates any transaction (including posted/template) to a new transaction
+- Reverse button: copies with debits↔credits swapped (for month-end reversing accruals)
+- Notes: can be attached to GJ/CR/CD transactions
+- **CAUTION**: Entries here affect GL only — not AR aging or AP aging. Always use AR-B / AP-B for subsidiary ledger adjustments.
+
+## GL-D Print Journals — journal types (EVOHELP.PDF §GL-D, Pass 507)
+
+| Journal | What it records |
+|---------|----------------|
+| General Journal | GL-B General Journal type entries |
+| Cash Receipts | GL-B CR entries + cash-terms SO-G invoices + AR-C payments + AR-N deposits |
+| Cash Disbursements | AP-H checks, AP-F ePay, AP-B manual checks, AP-C COD payments, AR-M customer refunds, GL-B CD entries |
+| Sales Journal | SO-G invoice postings + AR-B vouchers/credits + AR-D interest charges |
+| Purchases Journal | AP non-cash transactions (vouchers, credits, sales tax, commissions, payroll tax transfers to AP) |
+| Other Journal | Inventory value/qty changes, bank transfers, commissions, month-end currency conversions |
+| Work Order Journal | All WO module transactions |
+| Year End Journal | Income/expense account closure to Retained Earnings (AM-B Fiscal Year End + any prior-year income/expense posts via GL-O) |
+
+## GL-F Print Financial Statements — options (EVOHELP.PDF §GL-F, Pass 507)
+
+Three standard statement types (defined in AM-E Format Standard Financial Statements):
+- **Income Statement** (Profit & Loss): Beg Month + End Month by fiscal period number
+- **Balance Sheet**: "as of end of this Month" (one period-end snapshot)
+- **Cash Flow** (Changes in Financial Position): Beg Month + End Month
+
+Up to **4 comparison columns** per statement. Per column:
+
+| Option | Meaning |
+|--------|---------|
+| C | Current year amounts |
+| B | Budget amounts |
+| 1–6 | 1–6 years past amounts |
+| D | Column 1 minus Column 2 (difference; available for column 3 only) |
+
+**Income statement only**: Print % (percentages beside amounts; wider output, may reduce column count).
+
+Department filtering: Beg/End Dept Code to limit scope; Print Department Detail Y/N; Print Account Codes Y/N; Print Zero Amounts Y/N.
+
+Consolidated report option available if AM-G Consolidate Financials has been run for multiple companies.
+
+**Custom financial statements** (AM-I Format / AM-F Print) → use GL-N Print Custom Statements, not GL-F.
 """,
 
 "PR": """
@@ -3599,6 +3803,49 @@ equivalent of directly opening `EVOReports/*.RTM` files in the designer.
   use grid layouts defined in SU-A
 - **[[module-RT|RT]]** — SU-C is the EVO menu entry for the ReportBuilder designer
 - **[[module-SM|SM]]** — SM has some overlap with SU for system-level configuration
+
+## SU-A UDF (User Defined Functions) mechanism (EVOHELP.PDF §SU-A, Pass 507)
+
+SU-A grid columns can include **calculated or cross-file values** via UDF scripts:
+
+- UDF scripts are TAS Pro source files named `UDF1.SRC`, `UDF2.SRC`, etc.
+- Referenced on the grid column as data field name `UDF1()`, `UDF2()`, etc.
+- Column type set to A (alphanumeric) or N (numeric); Size = display width.
+- UDF template structure:
+  ```
+  func UDF1                              // must match file number
+  define variablename type N size 9 dec 2  // optional work variable
+  if filehandle.h = 0                    // open only once
+    openv 'tablename' fnum filehandle.h lock N
+  endif
+  findv M fnum filehandle.h key indexname val fieldname  // find record
+  variablename = calculation             // optional calc
+  ret variablename                       // return result
+  ```
+- Grid name is shown in lower-left corner of lookup grid screen.
+- Grid definitions are stored in WBKLUGRID.DCY (the grid config file).
+- **Copy grid**: open existing grid, answer Y to "create a copy", blank FD name, then answer N to "does not exist" prompt, specify FD name and edit.
+- **Security level**: 1 = full access, 999 = most restricted; sensitive grids (payroll) should use low numbers.
+- **Start at end?**: Y = grid opens with cursor on last record.
+- **Substring search**: alphanumeric fields only; max 6 per grid.
+
+## SU-B Maintain Drill Down Menus — two-file system (EVOHELP.PDF §SU-B, Pass 507)
+
+Two copies of `ISDRILLM.B` exist:
+- `DBAMFG\ISDRILLM.B` — IS Tech master; **replaced on every IS Tech update**
+- `DBAMFG\DRILL\ISDRILLM.B` — local working copy; user customizations go here
+
+When editing in SU-B, choose "local" (DRILL\) to edit customizations, or "ISTECH" (DBAMFG\) to edit the master (will be overwritten by next update). A drill link record = parent grid + child grid + child index + display text + link field.
+
+To receive an IS Tech update for drill links: copy `DBAMFG\ISDRILLM.B` → `DBAMFG\DRILL\ISDRILLM.B` (overwrites any local customizations).
+
+## SU-D Grid Maintenance — three sync modes (EVOHELP.PDF §SU-D, Pass 507)
+
+| Mode | Behavior |
+|------|---------|
+| Skip | New grids from IS Tech update appended; same-name grids not replaced (user edits preserved). **This mode runs automatically during IS Tech update install.** |
+| Replace | New and existing same-name grids that are newer in the IS Tech version are replaced; user-unique named grids retained |
+| Overwrite | Entire grid file replaced by IS Tech standard; all user edits lost |
 """,
 
 "UT": """
