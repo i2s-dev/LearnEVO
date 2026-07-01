@@ -3500,18 +3500,39 @@ See [[module-WC|WC]] for Warehouse Control documentation.
 "MA": """
 ## What it does
 
-Machine / Asset tracking — **not a separate top-level module.** Machine master
-records (equipment assigned to work centers) are managed from the
-[[module-RO|RO]] Routing module.
+AR Deposit Apply — applies customer deposit payments to specific Sales Order
+line items. Deposits were originally entered via AR-N (Enter/Print Deposits) or
+AR-C (Record Payments); MA links those deposit balances to SO shipments/invoices.
 
-`RO-D Enter Machines` defines machines: machine number, work center, description,
-and capacity. The `MACHINE` table (16 fields) stores the machine master.
-Machines are referenced in routing steps to specify which machine runs each
-operation.
+**Confirmed from T7MAPDEPO.DFM** (Pass 499, 2026-07-01):
 
-[[module-DC|DC]] Data Collection can log labor entries against specific machines.
+Form Caption: "New Screen" (placeholder) — SourceFile = T7mapdepo
 
-See [[module-RO|RO]] for Routing module documentation.
+## Form fields (T7MAPDEPO.DFM)
+
+**Header area:**
+- Deposit # — the AR deposit record number
+
+**Detail area:**
+| Field | Purpose |
+|-------|---------|
+| SO Number | Sales order being applied to |
+| Item Number | Line item on the SO |
+| Description | Item description |
+| Qty | Quantity |
+| Amount | Line amount |
+| Deposit Amount | How much of the deposit to apply to this line |
+| GL Account | Override GL account (leave blank for default accounts) |
+
+Note: leaving GL Account blank uses the system default AR Customer Deposits account
+(set in AD-A). Populated when deposits need to be applied to a specific GL instead.
+
+## Integration
+
+- **[[module-AR|AR]]** — deposits originate in AR-N/AR-C; MA links them to SO lines
+- **[[module-SO|SO]]** — MA applies deposits against SO orders before invoicing
+- **[[module-GL|GL]]** — posts from AR Customer Deposits account to AR control when applied
+- **[[module-AD|AD]]** — AD-A defines the default AR Customer Deposits GL account
 """,
 
 "PL": """
@@ -5203,16 +5224,83 @@ campaign summary is in T7MKA/MKTRACK territory.
 "YS": """
 ## What it does
 
-Year-end / System — **not a separate top-level module.** Fiscal year-end
-processing is handled by the [[module-AM|AM]] Accounting Management module.
+YN Flags Editor / One-Time Database Migration Utility — a privileged admin tool
+that runs one-time data conversion and schema migration scripts against the live
+Btrieve database. Program: `T7YSYN.RWN` (also `T7YSYN.DFM`).
 
-`AM-B Fiscal Year End` closes the fiscal year: rolls forward retained earnings,
-zeroes income statement accounts, creates the opening balance for the new year.
+**Confirmed from T7YSYN.RWN.dec strings** (Pass 499, 2026-07-01):
+- Caption: `YS-YN  Utility to change settings`
+- Author tag: `ISTS Enhancement 08/31/18` (last modified August 2018 by i2 Systems)
 
-1099 generation (for vendor payments) is in [[module-AP|AP]].
-W-2/payroll year-end (if using EVO payroll) is in [[module-PL|PL]].
+## Purpose
 
-See [[module-AM|AM]] for period-end and year-end procedures.
+YS is a **run-once conversion utility** — each entry in its list is a one-time
+database migration that should only be run once during system upgrades or data
+repairs. Selecting an entry runs the corresponding conversion routine directly
+against Btrieve (.B) files.
+
+## Known conversion entries (from RWN strings)
+
+| Entry label | What it does |
+|-------------|--------------|
+| Converted to Long Check # for AR | Migrates AR check numbers to long format |
+| Direct Deposit Conversion | Converts payroll direct deposit data |
+| Flag to clean ICLOC GLACCOUNTS | Cleans up item-class/location GL account fields |
+| INIT ISBSF.Bxx Data | Initializes ISBSF (Business Scorecard) files |
+| Bin Loc Util | Bin location data migration |
+| SO line Loc Util | SO line location field migration |
+| CC Encryption Util | Credit card number encryption conversion |
+| ROHS Cleanup Util (IN-B) | Cleans RoHS compliance flags in IN-B |
+| WO Materials (IN-B) | WO material reference migration in IN-B |
+| Move POL GL Code to .GLA and .GLDPT | Migrates PO line GL code to new fields |
+| Move next numbers to ISNUMB | Migrates auto-number sequences to ISNUMB table |
+| Convert to Long Invoice # in AP | Migrates AP invoice numbers to long format |
+| One time PR Encrypt Util | Payroll data encryption migration |
+| BZ fix in update to BKBM.EXTRA | Fixes BZ (BOM) EXTRA field values |
+| Convert Long Invoice 2 (missed BKISTAX) | Follow-up long invoice migration (tax table) |
+| Left justify Invoice (AP) Numbers | Normalizes AP invoice number formatting |
+| Sync ISPRMSTR with BKPRMSTR util | Synchronizes two PR master tables |
+| SRINFO / SOINFO / QTINFO Util to move out of arrays | Migrates info fields from arrays to flat fields |
+| SR Loc Util into MKAHIST | Moves SR location data to marketing history |
+| Move Cycle code to .VEND[8] | Migrates cycle code into vendor array slot 8 |
+| Util to move BANKS to ISBANKS | Migrates bank accounts to ISBANKS table |
+| Move Invoiced to IType for SR/RMA | Sets IType flag on SR/RMA records |
+| XCHARGE Conversion | X-Charge credit card processor conversion |
+| PMAT Conversion to Start & End Dates | Migrates PMAT date fields |
+| Convert CMACCT to CMCUST | Migrates CRM account to customer code |
+| Update/Clean BKIC.PROD.GL | Cleans item-class product GL account fields |
+| Cleanup BKIC.PROD.LONGP | Cleans long part number fields in BKIC |
+| Flag to move Lot/Serial into BIN | Moves lot/serial data into BIN table structure |
+| Notes/Links Format fix | Fixes EVONOTES format field |
+| Convert EvoNotes to A6000 | Converts EvoNotes to new A6000 storage format |
+| TERMS from EvoUTIL | Migrates payment terms from EvoUTIL |
+| BKBMMSTR BZFix on PTYPE | Fixes PTYPE field on BOM master |
+| EvoNOTES one CSN/CSH | EvoNotes CSN/CSH field consolidation |
+| BKBMMSTR Unique ID fill | Fills unique IDs on BOM master records |
+| WOBOM Unique ID Fill | Fills unique IDs on WO BOM records |
+| Fill in APRIVL Blank Number | Populates blank AP Rivl (rival) numbers |
+| Convert AP Contacts to APACCN | Migrates AP contacts to APACCN table |
+| Fill in ISCC Processor with X Charge | Populates CC processor flag |
+| Separate S/R and RMA data | Splits SR and RMA record types |
+| SO Quote Status .Extra 96 | Sets quote status flags in Extra field byte 96 |
+| PR Array to File | Converts payroll array data to file-based storage |
+
+## Tables accessed
+
+- `BKYSMSTR` (355f) — YS system master (flag storage for migration state)
+- `BKSYHELP` / `DBAHLPID` — help system tables
+- Most Btrieve tables (each conversion touches specific .B files)
+
+## Integration
+
+- **[[module-TA|TA]]** — YS accessed through admin/system maintenance area
+- **[[module-SY|SY]]** — BKYSMSTR stores YS flags alongside SY system settings
+- **[[module-AM|AM]]** — year-end processing is in AM-B, not YS
+
+## CAUTION
+
+Each entry runs once only. Running a conversion twice may corrupt data.
+This tool is for ISTS/i2 Systems staff use only during system upgrades.
 """,
 
 "EVO": """
