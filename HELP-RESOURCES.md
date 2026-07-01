@@ -2227,29 +2227,50 @@ Primary key: `MTLOT_CODE`(15) item code + `MTLOT_LOT`(15) lot number.
 
 ### Quality Control (QC)
 
-**What it does:** Records incoming inspection results (pass/fail/scrap) on PO receipts and WO outputs. Tracks QC/scrap codes per vendor range.
+**What it does:** Three-tier QC system: (1) incoming inspection on PO receipts written by `PO-J-C Enter Inspection Buyoffs`, (2) production scrap/rework reporting from WO material issuance, (3) formal Non-Conformance Report (NCR) and Corrective Action Report (CAR) tracking.
 
-**Menu codes:** QC (18 files in RWN analysis)
+**Menu codes:** 20 operations — QC-A through QC-H; QC-F (Non-Conformance) and QC-G (Corrective Action) each have sub-menus. Note: `menu_codes.csv` has NO QC entries; see `samples/BKMENUSU.TXT` for authoritative structure.
 
 **Key operations:**
-- **QC-A — Main Entry:** QC code + scrap code dual-classification; vendor range filter for incoming inspection.
-- **QC-B/C/D — Reports:** Parent item roll-up reports across QC/scrap records.
+- **QC-A** — Quality Control Receiving Report (vendor/item/date range filter)
+- **QC-B** — Quality Control Materials Report (includes WO + component item filters)
+- **QC-C** — Production Scrap Report
+- **QC-D** — Quality Control Labor Report (adds employee + sequence range)
+- **QC-E** — Vendor Quality Performance (shared with PO-J-D, program `t7pojd.rwn`)
+- **QC-F-A** — Enter NCR (creates `ISNCR` record; captures part, WO/PO, origin I/V, disposition)
+- **QC-F-B/C/D/E/F** — Print / Disposition / Close / View / List NCR
+- **QC-G-A through D** — Enter / Print / View / List CAR (Corrective Action — unused at i2)
+- **QC-H** — QC Defaults (`T7DSQC.RWN`)
+
+Also accessible cross-module: `PO-J-B` (Print Inventory in QC), `LM-H` (Purge QC Receipts), `RO-F` (Enter QC Codes), `RO-M` (Enter Testing Method), `RO-N` (Enter Testing Requirements).
 
 **Primary tables:**
 
-| Table | Purpose |
-|-------|---------|
-| BKQCMSTR (14f) | QC master records — receiving QC by vendor |
-| BKQCTRAN (21f) | QC transaction log — per-item QC event log |
-| ISNCR (35f) | NCR/defect tracking — linked to WO/PO/RMA |
-| ISQCSPEC (57f) | QC specification per routing operation |
-| ISQCMTHD (44f) | QC measurement methods |
-| ISWOTRAY (52f) | WO tray scan + QC results by tray |
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| BKQCMSTR | 14f | QC receiving master — one record per PO receive event |
+| BKQCTRAN | 21f | QC transaction detail — one record per item per receive event |
+| ISNCR | 27f | Non-Conformance Report master |
+| ISCAR | 27f | Corrective Action Report (same IS_NCR_* field names; 0 records at i2) |
+
+**Live data at i2 Systems:**
+- BKQCMSTR: 53,300 receive events; 90.4M qty received; 1.73% rejection rate; active through 2026-06-30
+- BKQCTRAN: 54,216 records (avg 1.02 items per receive event)
+- ISNCR: 74 NCRs (all status=`O` Open — none closed); 45 In-house, 29 Vendor; no CARs triggered
+- ISCAR: 0 records — Corrective Action workflow never used at i2 Systems
+
+**NCR workflow:**
+```
+QC-F-A Enter NCR → IS_NCR_STATUS='O', IS_NCR_ORIG='I'|'V'
+QC-F-C Disposition → IS_NCR_DISP, IS_NCR_SCRAP, optionally IS_NCR_ACTION='Y'
+QC-F-D Close → IS_NCR_STATUS='C'
+QC-G-A Enter CAR → ISCAR record linked via IS_NCR_CAR (if action required)
+```
 
 **SCRAP (21f) — Scrap Code Master:**
-`MTSCRAP_CODE`(10 PK) + DESC(30) + TYPE(1, scrap classification type) + EXTRA(100) + GLACCT(10)/GLDPT(4, GL scrap account) + FLAG_1..5 (1×5 custom flags) + ALPHA_1..5 (15×5 custom alpha fields) + DATE_1..5 (date×5 custom dates). One row per scrap reason code. GL accounts allow scrap to be posted to different GL accounts by type. MTSCRAP_ prefix = MT-era table. Used across QC, WO (BKDCLAB has 5 scrap code slots), HH, and RMA modules.
+`MTSCRAP_CODE`(10 PK) + DESC(30) + TYPE(1) + EXTRA(100) + GLACCT(10)/GLDPT(4, GL scrap account) + FLAG_1..5 + ALPHA_1..5 + DATE_1..5. GL accounts allow scrap to post to different GL accounts by type. Used across QC, WO, HH, and RMA modules.
 
-**Confidence: 62/100** — 18 programs confirmed; all QC table schemas extracted; SCRAP(21f) full schema decoded; QC inspection flow traced; NCR/CAPA workflow confirmed; per-inspection measurement logic blocked by encryption.
+**Confidence: 88/100** — Pass 436 (2026-07-01): menu structure confirmed from BKMENUSU.TXT (20 ops); BKQCMSTR/BKQCTRAN/ISNCR schemas from DDF; live data confirmed via DSN=DBA; NCR workflow from T7QCFA DFM + live ISNCR. Gap: IS_NCR_ACTION='Y' semantics inferred from form label (all blank at i2); ISCAR field count beyond 27 (tier2-tables.md notes 35f) not fully reconciled.
 
 ---
 
