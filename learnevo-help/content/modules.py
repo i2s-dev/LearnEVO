@@ -3188,6 +3188,60 @@ All SM-I programs maintain simple code+description tables used as filters in CM-
 All SM-I programs follow the same workflow: enter code → enter 25-char description → Save.
 F2/Lookup button to edit existing codes. These tables live in BKCMTERR (territory) and
 BKCM* companion code tables.
+
+## SM-J file maintenance programs (EVOHELP.PDF §7.2.16–7.2.32, Pass 531)
+
+All SM-J programs are batch data maintenance utilities. Most require exclusive access (no other
+users) when making actual changes. Run in report-only mode first when available.
+
+| Program | Purpose | Key operational notes |
+|---------|---------|----------------------|
+| SM-J-B Archive WOs | Move closed/canceled WOs to archive; retain for JC reports | WO#/Finish/Job#/Cust/Item ranges; Archive+Exception reports; disk space freed only after UT-C Re-Index; can Restore |
+| SM-J-C Reconcile Inventory | Sync all inventory-related files | Two levels: **Master** (BKICMSTR/MTICMSTR/BKICLOCM/BKICLOC/CLASMSTR/CLASS; cleans dups/mismatches/blanks) + **Transaction** (reconcile INVTXN/BKARINVL/BKAPPOL/WOBOM with On-Hand; Method A=force txn to match QOH; Method B=force QOH to match txn); Report-only mode available |
+| SM-J-D Consolidate Inv Txns | Collapse detail to monthly balance-forward | 16 transaction types (S=sale, A=adjust, R=receipt, I=issue, Q=QC, etc.); Thru Date; deletes audit trail (date/time/user) |
+| SM-J-E Purge WOs | Delete closed/canceled WOs permanently | WO# + Finish Date ranges; closed/canceled flag; optional purge listing |
+| SM-J-F Purge PO History | Clear closed PO history file | Vendor + date ranges; source for IN-A and PO reports; SM-J-R = archive alternative |
+| SM-J-G Purge QC Receipts | Clear fully-bought-off QC receivers | Date range or all |
+| SM-J-H Purge DC File | Purge posted BKDCLAB records | Date-through filter; data already in WO files; only DC-D posted reports affected; no harm in leaving indefinitely except DC-D speed |
+| SM-J-I Purge Estimates | Delete inactive/canceled estimates | Quote#/Customer/Expiration/Class ranges; Include Status I (inactive) Y/N; Purge Inventory+BOM+Routing for items with Active=N |
+| SM-J-J Archive/Purge Closed SOs | Remove closed SOs from active file | Purge/Archive/Restore; invoice#/date/customer ranges; no affect on sales history (separate files) |
+| SM-J-K Purge/Archive Inv History | Clear or archive invoice history | Purge/Archive/Restore; invoice#/date/customer ranges; source for SA module + SO-I/AR-A/IN-A shipment lookups |
+| SM-J-L Change Part Numbers | Rename item# across ALL files including history | Old/New Part No; CAUTION: changes history; automated CSV option (Old,New pairs from Excel) |
+| SM-J-M Change Customer Codes | Rename customer code across ALL files | Same as SM-J-L but for customer codes |
+| SM-J-N Change Vendor Codes | Rename vendor code across ALL files | Same as SM-J-L but for vendor codes; automated CSV option |
+| SM-J-O Rebuild Cust/Vend Credit | Rebuild credit totals in AR-A/AP-A | Cust/Vend ranges; rebuild YTD+Last Year; Days-to-Pay method 1=unweighted / 2=recency-skewed / 3=payment-amount-weighted |
+| SM-J-P Purge/Archive SR/RMA | Remove closed SR+RMA orders | Purge/Archive/Restore; invoice#/date/customer ranges; no affect on shipment history |
+| SM-J-Q BOM Recursion Utility | Check BOM for loops (item in own BOM) | Item#/type ranges; nested-detail mode; loops cause MRP+cost rollup to run forever |
+| SM-J-R Archive POs | Move closed POs to BKAPHPO/BKAPHPOL | PO#/Vendor/Order Date ranges; Restore option; disk space freed only after UT-C; speeds PO-I-F |
+
+**SM-K Evo User Settings:** Identical to US-A Customize Settings.
+
+## Evo Notes system (EVOHELP.PDF §7.2.34, Pass 531)
+
+Notes in EVO-ERP are unlimited-length memos associated with any data object
+(parts, customers, orders, order lines). Stored in `ISNOTES` table.
+
+**Enable:** SD-A "Enable Evo Notes System" = Y. Entry is always possible regardless.
+
+**Preset note types:**
+| Type | Meaning |
+|------|---------|
+| CSN | Classic Synchronized Note — visible to DBA Classic users |
+| CSH | Classic Synchronized Hidden Note |
+| STD | Standard Note |
+| HID | Hidden Note |
+| INT | Internal Note — can never print on any document |
+| PRD | Paperless Product Notes — used by HH-L Paperless Shop Floor |
+
+Custom types added via SM-N-A. Mixed DBA Classic + EVO networks: use CSN/CSH for
+shared objects (Customers, Vendors, WOs, POs, SOs).
+
+**Printing:** When Evo Notes enabled, a selection window pops up before printing documents.
+Notes can be saved per document type. Example: PMT note type → prints on invoices but not
+packing slips. Note attached to Ship Via code → prints on all packing slips for that Ship Via.
+
+**RTMs:** EN* / IEN* (International) contain subreports with `Note Title` and `IS.NOTE.NOTE`
+fields. Note Title shows note type + source object. T6/IT6 RTMs do NOT have note subreports.
 """,
 
 "AM": """
