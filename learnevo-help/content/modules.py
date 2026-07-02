@@ -5938,6 +5938,23 @@ T7DCPSF(290p) analysis). Live SPC data is also accessible from T7DCPSF (DC-PSF /
 HH-L Paperless Shop Floor), making it visible on the shop floor without running
 the SP module separately.
 
+## ISS* SPC table family (Pass 547c, 2026-07-02, confirmed from RWN symbols)
+
+| Table | Fields | Program | Purpose |
+|-------|--------|---------|---------|
+| ISSPC | 21 | T7SPC/T7SPCLIVEGRID/T7ROJA | SPC master records — WO/Seq/Inspector/Employee/Date/Accepted/Rework/Scrap qtys |
+| ISSDET | 4 | T7SDET/T7SPC/T7SPCLIVEGRID | SPC detail measurements per sample |
+| ISSERR | 17 | T7SPC/T7SPCLIVEGRID/T7SPCREP | SPC error/defect records — defect code + qty + notes |
+| ISSCOMP | 5 | T7SCOMP/T7SPC | SPC component specs — defines what components/features are inspected |
+| ISSEPROC | 2 | T7SEPROC/T7SPC | SPC process definitions with control limits |
+| ISSETYPE | 2 | T7SETYPE/T7SPC/T7SPCREP | SPC error/event type codes (defect categories) |
+| ISSTRACK | 13 | T7SPC | SPC session tracking/audit trail |
+| ISSTYPE | 3 | T7GENAED/T7GENGET/T7SDET/T7SERR | SPC/QC type codes — shared with general QC |
+
+Note: ISSERR and ISSEPROC are also listed in the SC module as "Serial" tables, but RWN
+evidence confirms they are **SPC tables** opened primarily by SP programs. The "ISS" prefix
+is SPC, not serial (serial tables use SERIAL/SERIALH/ISSERCNT naming instead).
+
 ## Integration
 
 - **[[module-DC|DC]]** — DC-PSF (Paperless Shop Floor) accesses the same SPC

@@ -31,7 +31,7 @@ Field details are in per-module files in this directory.
 | BKCMDE | NOT USED | 41 |
 | BKCMEFTM | NOT USED | 7 |
 | BKCMPCFC | NOT USED | 3 |
-| BKCMSBDF | NOT USED | 5 |
+| BKCMSBDF | CM subdirectory/subfolder defaults (T7MDEFNDC — menu defaults for DC) | 5 |
 | BKCMTEMP | NOT USED | 6 |
 | BKCMTMP1 | NOT USED | 6 |
 | BKCMTMP2 | NOT USED | 6 |
@@ -44,13 +44,13 @@ Field details are in per-module files in this directory.
 | BKGLTMP2 | NOT USED | 16 |
 | BKICALTD | NOT USED | 16 |
 | BKICALTP | NOT USED | 6 |
-| BKICDIM | NOT USED | 47 |
+| BKICDIM | Item dimensions (T7BMA/T7INLF/T7INLG — BOM/IN programs; stores length/width/height/weight dimensions per item) | 47 |
 | BKICMFG | NOT USED | 6 |
 | BKICREQ | NOT USED | 46 |
 | BKICTAX | Item sales tax codes (J7DCSSOE, J7HHRTSSOE — tax code per item for SO shipping) | 46 |
-| BKICVAL | NOT USED | 4 |
+| BKICVAL | Item valuation overrides (T7SMJL — job cost uses for valuation adjustments) | 4 |
 | BKLOGON | NOT USED | 10 |
-| BKMATRIM | NOT USED | 3 |
+| BKMATRIM | Material trim specs (T7ROD — routing outside-process material trim dimensions) | 3 |
 | BKPCKIT | NOT USED | 7 |
 | BKPCPLOT | NOT USED | 12 |
 | BKPRBOOK | NOT USED | 86 |
@@ -59,7 +59,7 @@ Field details are in per-module files in this directory.
 | BKSYCFG | NOT USED | 4 |
 | BKSYHELP | System help/label lookup — F1 context help; opened by 1,040+ programs as standard session table | 1 |
 | BKSYLOG | NOT USED | 215 |
-| BKSYPRTR | NOT USED | 11 |
+| BKSYPRTR | System printer table — default/DC printer assignments; opened by 33 programs including EVODCSETUP/EVODEFPRINT | 11 |
 | BKUMSRTY | NOT USED | 23 |
 | BKUPDATE | NOT USED | 4 |
 | BOMCHG | NOT USED | 15 |
@@ -71,8 +71,8 @@ Field details are in per-module files in this directory.
 | ISAMRPF | NOT USED | 9 |
 | ISAPHCHG | NOT USED | 32 |
 | ISARICHG | NOT USED | 26 |
-| ISARINVX | NOT USED | 4 |
-| ISAUTODC | NOT USED | 12 |
+| ISARINVX | AR invoice cross-reference extension (T7ESB/T7SOA/T7SOB — SO/estimate programs link invoices) | 4 |
+| ISAUTODC | Auto data collection config (T7AUTODCH/T7AUTODEJH — scheduled automatic DC batch posting) | 12 |
 | ISBILLSH | NOT USED | 4 |
 | ISBMTMP | — | 27 |
 | ISBTCSB | — | 54 |
@@ -82,14 +82,14 @@ Field details are in per-module files in this directory.
 | ISCMGRP | NOT USED | 2 |
 | ISCONVRT | J7RCCONVTABLE/J7RCPITEX | 9 |
 | ISDCSER | — | 17 |
-| ISDEPT | NOT USED | 3 |
+| ISDEPT | Department code table (T7APB/T7ARB/T7GLB/T7GLJ — AP/AR/GL use for dept lookups) | 3 |
 | ISDIV | NOT USED | 3 |
-| ISDROP | NOT USED | 4 |
+| ISDROP | System dropdown options table (T7DROPDOWN + 25 other programs — stores system-wide dropdown list values) | 4 |
 | ISEAB | NOT USED | 6 |
 | ISGLFCOA | NOT USED | 67 |
-| ISGLNBGT | NOT USED | 35 |
+| ISGLNBGT | GL next-period budget/balance (T7AMB/T7AMH/T7AMQ/T7GLA — asset management + GL budget data) | 35 |
 | ISICESA | NOT USED | 64 |
-| ISLBLMAP | NOT USED | 102 |
+| ISLBLMAP | Inventory label field mapping (T7ING — maps label template fields to item master fields) | 102 |
 | ISLOTS | PARENT COMPONENT LOT TO SERIAL MAP | 11 |
 | ISLTYPE | LINK TYPE (NOT USED) | 4 |
 | ISPOBOX | NOT USED | 22 |
@@ -99,27 +99,27 @@ Field details are in per-module files in this directory.
 | ISPOSC | — | 2 |
 | ISPOTRK | — | 7 |
 | ISPRESN | — | 1 |
-| ISREPDEF | NOT USED | 3 |
-| ISRTLOAD | NOT USED | 21 |
+| ISREPDEF | Report definitions (T7REPDEF/EXCOM/T7SOAXCOM — saves report configurations by user) | 3 |
+| ISRTLOAD | Routing load/runtime data (T7SOA/T7SOB — SO loads routing data for outside-process cost lookup) | 21 |
 | ISRTMS | RTM printer assignments (J7CCSOLABELS/J7NMITEMRTM/J7NMRTMPRINTER — maps items to RTM + printer) | 29 |
-| ISSCOMP | NOT USED | 5 |
-| ISSDET | NOT USED | 4 |
-| ISSEPROC | NOT USED | 2 |
+| ISSCOMP | SPC component definition (T7SCOMP/T7SPC — Statistical Process Control; component specs) | 5 |
+| ISSDET | SPC detail measurements (T7SDET/T7SPC/T7SPCLIVEGRID — recorded sample measurements) | 4 |
+| ISSEPROC | SPC process definition (T7SEPROC/T7SPC — process specs with control limits) | 2 |
 | ISSEQUIP | NOT USED | 2 |
-| ISSERR | NOT USED | 17 |
-| ISSETYPE | NOT USED | 2 |
+| ISSERR | SPC error/defect records (T7SPC/T7SPCLIVEGRID/T7SPCREP — out-of-control events) | 17 |
+| ISSETYPE | SPC error/event type codes (T7SETYPE/T7SPC — categories of defects) | 2 |
 | ISSHIPA | NOT USED | 5 |
-| ISSMTCFG | NOT USED | 15 |
+| ISSMTCFG | SM time config (T7SMTEND/T7SMTSET — scheduling time-slot configuration for SM module) | 15 |
 | ISSNOTES | NOT USED | 14 |
-| ISSPC | NOT USED | 21 |
+| ISSPC | SPC main records (T7SPC/T7SPCLIVEGRID — master SPC measurement log; also read by T7ROJA for capacity analysis) | 21 |
 | ISSTEQUI | NOT USED | 3 |
-| ISSTRACK | NOT USED | 13 |
+| ISSTRACK | SPC tracking/audit (T7SPC — tracks SPC session and user actions) | 13 |
 | ISSTTYPE | NOT USED | 3 |
-| ISSTYPE | NOT USED | 3 |
+| ISSTYPE | SPC/type code table (T7GENAED/T7GENGET/T7SDET/T7SERR — general event type codes shared by SPC and QC) | 3 |
 | ISTOOLOG | NOT USED | 34 |
-| ISUSAGE | NOT USED | 54 |
+| ISUSAGE | Item usage history (T7INA/T7INAS/T7INF/T7INP — IN programs track per-item usage metrics) | 54 |
 | ISVAR | NOT USED | 17 |
-| JGPITEMS | NOT USED | 86 |
+| JGPITEMS | Physical inventory items (T7ING/T7INH/T7INI/T7INJ — JG-era PI item records; 86 fields) | 86 |
 | JSPCNLCD | NOT USED | 6 |
 | JSPCNLSO | NOT USED | 12 |
 | MENUFILE | NOT USED | 108 |
@@ -129,12 +129,12 @@ Field details are in per-module files in this directory.
 | MKFORM | NOT USED | 6 |
 | MKTCLASS | NOT USED | 3 |
 | MKTNOTE | NOT USED | 3 |
-| MKTRACK | NOT USED | 4 |
+| MKTRACK | MK tracking (T7GLJ — GL journal tracking for MK module transactions) | 4 |
 | MKTROUT | NOT USED | 11 |
 | MTINVDEF | NOT USED | 109 |
 | MWOPTEMP | NOT USED | 8 |
 | NZITPRE | NOT USED | 54 |
-| OPQCDESC | NOT USED | 10 |
+| OPQCDESC | Operation QC description (T7DCA/T7DCALABEL/T7ADCA — QC descriptions per routing operation for DC workstation) | 10 |
 | SUMCUST | NOT USED | 5 |
 | SUMINV | NOT USED | 19 |
 | SUMWC | NOT USED | 7 |
