@@ -4978,6 +4978,57 @@ To receive an IS Tech update for drill links: copy `DBAMFG\ISDRILLM.B` → `DBAM
 | Skip | New grids from IS Tech update appended; same-name grids not replaced (user edits preserved). **This mode runs automatically during IS Tech update install.** |
 | Replace | New and existing same-name grids that are newer in the IS Tech version are replaced; user-unique named grids retained |
 | Overwrite | Entire grid file replaced by IS Tech standard; all user edits lost |
+
+## SU-A UDF examples (EVOHELP.PDF §SU-A pages 442-444, Pass 537)
+
+Five concrete UDF examples from the EVOHELP.PDF. These patterns cover the most common UDF use cases:
+
+```
+// UDF1 — get Cust PO from BKARHINV for the Shipments grid
+func UDF1
+define invhead.h type I size 5
+if sohead.h = 0
+  openv 'bkarhinv' fnum invhead.h lock N
+endif
+findv M fnum invhead.h key bkar.inv.num val bkar.invl.invnm
+ret bkar.inv.cusord
+```
+
+```
+// UDF2 — calculate net discounted unit price
+func UDF2
+define discprice type n size 13 dec 4
+discprice = bkar.invl.pprce * (1-(bkar.invl.pdisc/100))
+ret discprice
+```
+
+```
+// UDF3 — return SO number from the already-open AR invoice header
+func UDF3
+ret BKAR.INV.SONUM
+```
+
+```
+// UDF4 — assumes UDF1 was already called (reuse its file handle)
+func UDF4
+findv M fnum invhead.h key bkar.inv.invnum val bkar.invl.invnm
+ret bkar.inv.total
+```
+
+```
+// UDF5 — val() converts text field to numeric for key match
+func UDF5
+define apinv.h type I size 5
+if apinv.h = 0
+  openv 'MKICLASS' fnum apinv.h lock N
+endif
+findv M fnum apinv.h key mkeclass.num val val(bkap.pol.invnum)
+ret mkeclass.desc
+```
+
+**Key patterns:** UDF3 demonstrates single-file zero-code return. UDF4 demonstrates handle
+reuse across UDFs (call UDF1 first to open the handle). UDF5 demonstrates `val()` for
+converting alphanumeric PK fields to numeric index keys.
 """,
 
 "UT": """
