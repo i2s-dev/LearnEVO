@@ -3762,6 +3762,31 @@ and is licensed.
 
 Reports are called from TAS Pro programs via `RUNREPORT(configkey)` or equivalent
 procedure call in `.RWN` programs. See [[module-UT|UT]] for report management utilities.
+
+## T7RTMVALID — dual role: RTM selector AND license validator (Pass 520)
+
+`T7RTMVALID.RWN` serves two entirely separate roles:
+
+**Role 1 — RTM format name selector** (invoked before printing)
+- DFM caption: "Select Report Format Name"
+- Field: RTM file name input
+- Buttons: Ok / Cancel / Settings
+- Validates that the named RTM file exists before the report runs
+
+**Role 2 — Runtime license validator** (invoked at EVO startup)
+- Library: `NZLICE.LIB`
+- Reads `ISIS` table (4-table DB: BKSYHELP / DBAHLPID / ISIS / MKAHIST)
+- Reads 12 module gate flags from ISIS: TAX / TAX.IN / TAX.FRM / TAX.PO /
+  MULTI.CURR / MULTI.CPAY / LANDED.COS / UPC / RETAIL.PRI / COMM.PRICE /
+  IMAGING / AUTO.TAX
+- Sets 21 system-wide IS.* license flags used by all other programs:
+  IS.TAX / MULTI.CURR / LANDED.COST / UPC / RETAIL.PRICE / COMM.PRICE /
+  IMAGING / UPC.1 / MULTI.CPAY / PIC.PATH / TAX.FRM / PO.TAX / TAX.IN /
+  TAX.CVT / CUR.CVT / AUTO.TAX.CAL / EZPAY / RMA / SPEC.SUP / SPEC.SUPF / SPEC.SUPT
+- Concurrent user enforcement: USERS / USBUFF
+- Serial key obfuscation: SCBUFF / SER5 / SER6
+- Logs validation to MKAHIST (activity audit trail)
+- IS.DEMO flag: if set, all programs run in demo/evaluation mode
 """,
 
 "TA": """
@@ -7278,6 +7303,14 @@ files, not records).
 
 - **[[module-UT|UT]]** — UT-I creates the company structure; NE initializes files
 - **[[module-FL|FL]]** — reads FILELOC to know which files to check/create
+
+## DFM-confirmed (T7NEWINIT.DFM, Pass 520)
+Caption: "New Screen"
+Fields: **Go** + **Exit** only — no user input required.
+Single-operation utility. Clicking Go triggers the new company file initialization
+sequence for the current company (creates required Btrieve files if missing).
+The simplicity of the DFM confirms NE is a one-shot bootstrap, not an interactive
+data entry form.
 """,
 
 "EM": """
@@ -7549,7 +7582,7 @@ holds a multi-language flag.
 ## Integration
 
 - **[[module-DE|DE]]** — DE/EDI shares `BKEDMSTR`; ML reads it for its own config
-- **[[module-SM|SM]]** — SM may include a language-selection option in system setup
+- **[[module-SM|SM]]** — SM-R Multi Language Maintenance is the user-accessible setup path: create language code → select DFM → Generate string table → edit translations in T7MLE. See SM-R documentation (Pass 518) for full workflow.
 """,
 
 "KI": """
@@ -7760,6 +7793,97 @@ standard BKSO* Sales Order record — just created faster.
 
 - **[[module-SO|SO]]** — produces the same BKSO* tables as SO-A; QS is just a faster front-end
 - **[[module-IN|IN]]** — item lookup reads BKICMSTR for valid item numbers
+""",
+
+"FN": """
+## What it does
+
+File Navigator (UT-K-B Search and Replace) — a mass field-value editor for Btrieve data
+files. Allows searching for records matching filter conditions and replacing or adjusting
+field values in bulk. Accessed from the UT Utilities menu as UT-K-B "Search and Replace."
+
+## DFM-confirmed (T7FNR.DFM, Pass 475 + Pass 520)
+Caption: "New Screen"
+
+| Section | Fields |
+|---------|--------|
+| Target | File Name (Btrieve .B file), Field to Change, Array # |
+| Filter conditions (up to 3) | Array #, Operation, Value, Pos, Start, Length |
+| Operations | All / <> / > / < / >= / <= / = / $ ($ = substring contains) |
+| Adjustment | Flat amount, Percentage |
+| Buttons | Test Filters (preview matches), Process, Exit |
+
+## Workflow
+
+1. Enter Btrieve file name.
+2. Specify which field to change (with optional array index for multi-value fields).
+3. Define up to 3 filter conditions to limit which records get changed.
+4. Click Test Filters to preview the match count before committing.
+5. Enter flat amount or percentage adjustment value.
+6. Click Process to apply changes across all matching records.
+
+## Notes
+
+- Break-glass mass-update tool intended for data corrections, price adjustments, or
+  field repairs that would otherwise require custom SQL or Btrieve API code.
+- Operates directly on Btrieve `.B` files — not SQL-level access.
+- The `$` operation (substring contains) is unique to TAS Pro and not standard SQL.
+
+## Integration
+
+- **[[module-UT|UT]]** — FN is accessed as UT-K-B from the UT Utilities sub-menu
+- **[[module-IN|IN]]** — common use case: bulk price adjustments on BKICPROD
+""",
+
+"MH": """
+## What it does
+
+Shipping Order — batch shipment release and outbound shipping document processing.
+MH handles multi-bin picking, lot/serial assignment, backorder control, carrier
+tracking, and per-user RTM assignment for shipping report templates.
+
+## Programs
+
+| Program | Description |
+|---------|-------------|
+| `T7MHOPE.RWN` | Main shipping order processing (98p, ISTECH2.LIB, 30-table DB) |
+| `T7SHIPRTM.RWN` | Per-user RTM assignment for shipping order report templates |
+
+## DFM-confirmed (T7SHIPRTM.DFM, Pass 520)
+Caption: "New Screen"
+Fields: **User** + **RTM Name** — maps each user to a specific .RTM report format
+for their shipping order print output. Add/Edit/Delete/Back toolbar.
+This allows different users or workstations to use different shipping order
+layouts (e.g., different form designs for different carriers or customers).
+
+## Key operational variables (from Pass 181/216)
+| Variable | Purpose |
+|----------|---------|
+| MULTI.BIN / MULTI.BIN.QTY / MULTI.BIN.CNTR | Multi-bin pick quantities |
+| DEFAULT.BIN | Default bin for single-bin operations |
+| ALLOW.BO / ALLOW.BO.RCN / ALLOW.BO.CNTR | Backorder release control |
+| TRACKING.NUM / SHIP.CO | Carrier tracking number + carrier code |
+| SPECIAL / SPECIAL2 | Tariff codes for customs |
+| RET.LOC | Return location for MH-handled SO returns |
+| LOT_YN / SER_YN | Lot/serial tracking flags |
+| FROM.CUST / THRU.CUST | Batch release customer range filter |
+| TERRITORY | Territory filter |
+| FROM.ORDDTE / THRU.ORDDTE | Order date range filter |
+| AUTO.BO / AUTO.RCOMM | Automatic backorder release / recommit flags |
+| IS.SHPVIA.* / IS.SHIP.* | Ship-via and carrier tables (ISSHPVIA + ISSHIPCO) |
+| ISREP.ORD.* | Repeat-order staging (ISREPORD table) |
+
+## 30-table DB
+BKICLOC / MTICMSTR / BKGLTRAN / ISREPLNK / BKPRSALE / BKICPMAT / ISBSF
+(plus standard BK* SO/AR tables)
+
+## Integration
+
+- **[[module-SO|SO]]** — MH processes released SO lines for shipment; reads SO header/lines
+- **[[module-IN|IN]]** — inventory allocated and on-hand reduced at ship confirmation
+- **[[module-LC|LC]]** / **[[module-SC|SC]]** — lot/serial tracking applied at ship
+- **[[module-AR|AR]]** — invoice created on ship confirmation; BKARINV/BKARINVL written
+- **[[module-RT|RT]]** — T7SHIPRTM assigns per-user RTM for shipping order prints
 """,
 
 }
