@@ -180,19 +180,23 @@ Offset  Hex value   Interpretation
 | 32 | 4 | **Total page count** (LE uint32) | `12` = 18 pages |
 | 36 | 476 | Remaining header (reserved) | zeros |
 
-Page size = 512 bytes. File size = total_pages × 512. Confirmed for all 4 samples.
+**Addressing:** the file is divided into 512-byte sectors. All page/block references in headers
+are 0-indexed sector numbers (multiply by 512 to get byte offset). File size = total_pages × 512.
+**B-tree node blocks span 2 consecutive sectors = 1024 bytes each** — confirmed from leaf entry
+counts that overflow a single 512-byte sector (e.g., BKMENUSU leaf sector 14 holds 31 entries ×
+20 bytes + 8-byte header = 628 bytes, which requires 1024 bytes).
 
-### Tag directory (page 2 = offset 512)
+### Tag directory (sector 1 = offset 512)
 
-Page 2 is the tag directory page. First 32 bytes (offset 512–543) are reserved/zero.
-Active tag entries start at **offset 544** (page 2 + 32 bytes), one per 32-byte slot,
+Sector 1 is the tag directory. First 32 bytes (offset 512–543) are reserved/zero.
+Active tag entries start at **offset 544** (sector 1 + 32 bytes), one per 32-byte slot,
 up to `tag_count` entries.
 
-#### Tag entry structure (32 bytes)
+#### Tag directory entry structure (32 bytes)
 
 | Offset | Size | Field | Notes |
 |--------|------|-------|-------|
-| 0 | 4 | Root B-tree page number (LE uint32) | First tag always page 4 |
+| 0 | 4 | Tag header sector (LE uint32) | First tag always sector 4 |
 | 4 | 11 | Tag name (NUL-padded) | e.g., `'MNU_AC\0\0\0\0\0'` |
 | 15 | 1 | `0x10` — key format flag | constant; 0x10 = char ascending |
 | 16 | 2 | internal | varies per tag |
@@ -201,17 +205,83 @@ up to `tag_count` entries.
 | 20 | 1 | Key data type: `'C'` = char | all EvoERP DBF keys are char |
 | 21 | 11 | Reserved / zero fill | |
 
+**Note:** The tag directory entry points to a **tag header** sector (not the B-tree root directly).
+The tag header at that sector then points to the actual B-tree root node sector.
+
 #### Observed tags per file
 
-| File | Tags | Tag names (root pages) |
-|------|-----:|------------------------|
-| `BKMENUSU.mdx` | 1 | MNU_AC (pg 4) |
-| `filedict.mdx` | 3 | BUFF_NAME (pg 4), OVERLAY (pg 6), FIELD_NAME (pg 8) |
-| `fileloc.mdx` | 2 | BUFF_NAME (pg 4), FILE_NAME (pg 6) |
-| `filedfld.mdx` | 1 | (not fully decoded; 12-page file) |
+| File | Tags | Tag names (tag-header sectors) |
+|------|-----:|-------------------------------|
+| `BKMENUSU.mdx` | 1 | MNU_AC (sector 4) |
+| `filedict.mdx` | 3 | BUFF_NAME (sector 4), OVERLAY (sector 6), FIELD_NAME (sector 8) |
+| `fileloc.mdx` | 2 | BUFF_NAME (sector 4), FILE_NAME (sector 6) |
+| `filedfld.mdx` | 1 | (not fully decoded; 12-sector file) |
 
-**Pattern:** Root B-tree pages are assigned in even increments starting at 4 (page 4, 6, 8,…).
-Page 2 = tag directory, page 3 = probably key statistics; page 4+ = B-tree nodes.
+**Pattern:** Tag header sectors start at 4 and increment by 2 per tag.
+Sectors 2–3 appear reserved (zero-fill). Sector 4+ = tag headers, then B-tree data blocks.
+
+### Tag header (at tag-header sector, 32 bytes used)
+
+Each tag header is a 32-byte record at the start of a 1024-byte block:
+
+| Offset | Size | Field | BKMENUSU MNU_AC | filedict BUFF_NAME |
+|--------|------|-------|-----------------|--------------------|
+| 0 | 4 | B-tree root node sector (LE uint32) | 12 | 158 |
+| 4 | 4 | Flags / padding | `00 00 00 00` | `00 00 00 00` |
+| 8 | 1 | Key flags: `0x10` = char ascending | `10` | `10` |
+| 9 | 1 | Key type: `'C'` = character | `43` | `43` |
+| 10 | 2 | Unknown | `00 00` | `00 00` |
+| 12 | 2 | **key_len**: meaningful key bytes (LE uint16) | 15 | 8 |
+| 14 | 2 | Unknown | `0x32` = 50 | `0x54` = 84 |
+| 16 | 2 | Unknown | `00 00` | `00 00` |
+| 18 | 2 | **rec_len**: total B-tree entry size (LE uint16) | 20 | 12 |
+| 20 | 4 | Record count or internal counter | 163 | 11 |
+| 24 | up to 40 | Key expression or tag name | `'MNU_AC'` | `'DICT_BUFF_'` |
+
+**rec_len formula:** `rec_len = 4 + roundup4(key_len)` where roundup4 aligns to next 4-byte
+boundary. Confirmed: key_len=8 → rec_len=12; key_len=13 → rec_len=20; key_len=15 → rec_len=20.
+
+### B-tree node structure (Pass 562, 2026-07-02) — fully decoded
+
+All B-tree data nodes (internal and leaf) share the same 1024-byte block layout:
+
+```
+Bytes 0–3:   entry_count  (uint32 LE) — number of keys/entries in this node
+Bytes 4–7:   flags        (uint32 LE) — 0 observed
+Bytes 8+:    entries × entry_count, each rec_len bytes:
+               [4-byte ptr/rec][key_len bytes of key][padding to rec_len-4 bytes]
+```
+
+**Internal node** (has children): the 4-byte ptr field is a **child sector number**.
+After the last regular entry, one additional 4-byte rightmost child sector is written (no key):
+```
+8 + entry_count × rec_len + 0: rightmost_child_sector (uint32 LE)
+```
+
+**Leaf node** (has records): the 4-byte ptr field is a **DBF record pointer** (1-based ordinal).
+No rightmost-child entry. Entries are sorted ascending by key value.
+
+**Padding:** `rec_len - 4 - key_len` bytes follow each key (zero-fill); serves as null terminator
+for character keys (e.g., key_len=15, rec_len=20 → 1 zero byte after the 15-char key).
+
+#### BKMENUSU MNU_AC B-tree — verified layout
+
+```
+Sector 12 (root, internal node):
+  entry_count=4, entries: [(sec=14,"DDIAZ"), (sec=6,"JFOOTE"), (sec=16,"LABOR"), (sec=8,"RGRANITTO")]
+  rightmost_child = sector 10
+Sector 14 (leaf, A–D range):   31 entries, first="ABERNACKI", last≤"DDIAZ"
+Sector 6  (leaf, D–J range):   36 entries, first>"DDIAZ",     last≤"JFOOTE"
+Sector 16 (leaf, J–L range):   30 entries, first>"JFOOTE",    last≤"LABOR"
+Sector 8  (leaf, L–R range):   44 entries, first>"LABOR",     last≤"RGRANITTO"
+Sector 10 (leaf, R–Z range):   45 entries, first>"RGRANITTO"
+```
+
+Total leaf entries = 186 ≥ 163 active records; excess 23 = deleted/inactive DBF records
+retained in index until the file is packed.
+
+Max entries per 1024-byte block: `(1024 − 8) / rec_len`. For MNU_AC (rec_len=20): **50 max**.
+For filedict BUFF_NAME (rec_len=12): **84 max**; root node at sector 158 holds 73 entries.
 
 ### Significance for EvoERP
 
