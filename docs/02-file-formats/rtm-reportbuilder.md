@@ -871,11 +871,36 @@ other RTM files. The sub-report pattern is:
 - Its `Template.FileName` property names another RTM on the same share
 - At print time, ReportBuilder loads the child RTM and merges it into the output
 
-Most common sub-report targets (i.e., RTMs frequently referenced by other RTMs):
-- `C:\DBAMFG\BKISWCE1.RTM` — Work Order Cost Extension sub-report (T6WOL* reports)
-- `C:\DBAMFG\BKAPHA4.RTM` — AP check sub-variant
-- `C:\DBAMFG\bksrb4.rtm` — SR/Sales sub-report library
-- `C:\DBAMFG\bksam1.rtm` — SA/Sample summary sub-report
+Most common sub-report targets (i.e., RTMs frequently referenced by other RTMs) from
+`samples/rtm_crossrefs.csv` (Pass 560, 2026-07-02):
+
+| Rank | Callee | Callers | Purpose (confirmed from file analysis) |
+|------|--------|---------|----------------------------------------|
+| 1 | `BKISWCE1.RTM` | 244 | **Bin Inventory Report** — 4-view warehouse bin location sub-report. Title "BIN INVENTORY REPORT". Views: Item-Warehouse-Bin, Warehouse-Item, Warehouse-Bin-Item. DataFields: `isbin_loc_loc/bin/dflt/item/uoh`, `bkic_prod_desc/note`, `wc_mstr/loc`. Filters: Item From/Thru, Class From/Thru, Category From/Thru, Bin From/Thru. Components: TppSubReport×3, TppChildReport×3, TppDBBarCode absent (text only). |
+| 2 | `BKSOF4.RTM` | 239 | **SO Invoice Line-Item sub-report** (SO form F4). DataFields: `BKAR_INVL_PCODE/PDESC/PDISC/UBO/PCOGS/UM_LN[1..2]`, `BKAR_INV_CUSCOD/SHPNME/FOB/ORDDTE/SHIPDT/SONUM/TAXABL/SHPVIA`, `BKSY_COMP_ADD1/CSZ`, `BKAR_TXN_LOT/SERIAL`, `DISCOUNT`, `BK_DESC_NOTES`. |
+| 3 | `BKWOC1.RTM` | 237 | **WO sub-report C1** (Work Order Traveler section). Contains TppDBBarCode component. DataField: `WODATE_FINISH`. |
+| 4 | `BKSOC4.RTM` | 131 | SO sub-report C4 (SO Customer section). |
+| 5 | `BKSAM1.RTM` | 120 | **SA/Sales Analysis sub-report** M1. DataFields: `bksa_from1..26/thru1..26` monthly range arrays, `BKAR_INVL_PCODE/UBO/PCOGS`, `BKAR_INV_CUSCOD/SONUM`, `BKAR_CLASS`, `UDbreaklist`. |
+| 6 | `BKSRB4.RTM` | 80 | SR/Sales return sub-report B4. |
+| 7 | `BKSOC1.RTM` | 80 | SO sub-report C1. |
+| 8 | `BKPOB4.RTM` | 78 | PO sub-report B4. |
+| 9 | `BKSOF1.RTM` | 77 | SO Invoice Form F1. |
+| 10 | `BKWOC2.RTM` | 69 | WO sub-report C2. |
+| 11 | `BKSOF2.RTM` | 66 | SO Invoice Form F2. |
+| 12 | `BKSOPB4.RTM` | 65 | SO Packing sub-report B4. |
+| 13 | `BKSOC2.RTM` | 62 | SO sub-report C2. |
+| 14 | `BKSOF3.RTM` | 62 | SO Invoice Form F3. |
+| 15 | `TOPSALE.RTM` | 52 | Top Sales sub-report (SA module). |
+| 16 | `BKSOC3.RTM` | 47 | SO sub-report C3. |
+| 17 | `BKSOB4.RTM` | 45 | SO sub-report B4. |
+| 18 | `IBKSOF3.RTM` | 36 | i2 Systems custom SO Form F3 variant (ISTS prefix). |
+| 19 | `IBKSOF4.RTM` | 35 | i2 Systems custom SO Form F4 variant. |
+| 20 | `BKSOB3.RTM` | 33 | SO sub-report B3. |
+
+**Pattern:** The most-called sub-reports fall into 3 categories:
+1. **Cross-module utility** (BKISWCE1): bin location report embedded in 244 reports across AR, WO, J6, J7, T6 modules — reports that need to show item location data include it as a sub-report.
+2. **SO/Invoice detail** (BKSOF*): Sales Order line-item formatting sub-reports, included by invoice/packing/shipping report variants.
+3. **WO components** (BKWOC*): Work Order section sub-reports (with barcode support).
 
 ### Developer history revealed by stored paths
 
@@ -912,8 +937,8 @@ Delphi 3 timeframe before migrating to TAS Pro 7 / Nevrona ReportBuilder.
 
 ## Things still open
 
-- Physical location of `cfg.rtm` — not found via UNC walk; likely `T:\cfg.rtm` on the T: drive mapping. `cfg.rtm` is in `samples/rtm_crossrefs.csv` as a callee, confirming it exists; UNC path still unknown.
+- Physical location of `cfg.rtm` — not found via UNC walk (`\\i2s109-solidcrm\DBAMFG$\`); **not present in `samples/rtm_crossrefs.csv`** (corrected — earlier note was wrong); likely on T: drive mapping only on a live workstation or does not exist at this installation.
 - Multi-currency report parameter passing (T7MLC uses LANGDICT).
-- FILELOC schema (fields/keys) — Btrieve-only, not in DDF; needs runtime dump or hex analysis.
+- FILELOC schema: `fileloc.dbf` fields confirmed: `LOC_BUFF_N(8)`, `LOC_FILE_N(32)`, `LOC_COMP_C(3)`, `LOC_REC_SI(5)`, `LOC_REC_TY(1)`, `LOC_LOCATI(128)`, `LOC_DESCRI(40)`. 4,464 records in live DBF. RTM files are **not** directly in FILELOC — RTMVLD_ uses BKSYMSTR keys, not FILELOC, for RTM path lookup.
 - RTMVLD_ library source — embedded in EVO.LIB or a separate subroutine file (blocked — .RWN encrypted).
-- Mapping of FILELOC logical config names to RTM filenames (requires reading live FILELOC.B data).
+- Mapping of RTMVLD_ logical config names to RTM filenames: requires reading live BKSYMSTR data for keys that resolve to RTM paths.
