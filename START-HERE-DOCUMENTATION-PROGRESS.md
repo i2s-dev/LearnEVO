@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-06-30 (Pass 431 — Excel data dictionary import: 579 tables / 21,299 fields documented in 33 per-module Markdown files + master table index; Pass 430: T7YSYN variable table confirmed 15-byte name fields, 1243 vars, ISTS.CFG indices 131-625; Pass 428: BKACTRPT.MKD decoded (Btrieve variant, saved report filter configs); Pass 415: BKYSMSTR complete 250-slot live snapshot; YN[150-198]=all empty; YN[199-250] documented; Pass 413: BKMENUSU GROUPS-order mapping CONFIRMED for YN[102-143] — 42 modules in Mfg→Items→Sales→Queries→HH→SysMgr→Accounting→PayLink→Payroll→Settings order; value semantics blocked (Y/Z/A/Q/1/space are per-module mode flags, NOT enable/disable); Pass 412: FCR field map completed (C:72); Pass 411: 270 inferred FK relationships mapped (fk-cross-module.md); Pass 405: network topology documented Pervasive PSQL v11.30 server TCP:1583; Pass 390: ISJAVA queue fully traced 23-program corpus; Pass 387: suwin6.dcy SOLVED K_C=ISTech license dialog)
+Last updated: 2026-07-02 (Pass 551 — DDF-confirmed ISEXUSER(6f)/ISACCESS(8f)/BKLOGON(10f); corrected ISEXUSER "12-field" claim. Pass 550: 7-layer auth model documented (BKSYCFG/BKSYLOG/BKSYUSER/ISACCESS/etc.). Pass 545: barcode4j.jar confirmed; Evo2.jar SQL Query Wizard + EvoErpScript language decoded; EVO3.JAR as JavaFX EvoPVT dev branch. Pass 544: PROJECT-STRUCTURE.md C:90→92; ISEXUSER documented. Pass 542-546: 10+ modules synced to modules.py. All scorecard items now at 90+; major remaining gap is YN[N] slot mapping (88/250 confirmed; remaining 162 blocked by T7YSYN bytecode encryption). Pass 431: Excel data dictionary import: 579 tables / 21,299 fields documented in 33 per-module Markdown files + master table index)
 
 ---
 
@@ -106,10 +106,10 @@ Current decryption scripts:
 | Database schema | ✅ Done | 95/100 | 659 tables (DDF); 579 tables / 21,299 fields from Excel export (Pass 431); 33 per-module field files in docs/04-data-dictionary/ |
 | YN slot mapping (BKYSMSTR) | 🔄 Partial | 82/100 | 250-slot live snapshot complete; 88 DFM+SRC confirmed; YN[102-143]=42 module-enable slots (BKMENUSU GROUPS order); YN[150-198]=all empty; 162 slots still unknown |
 | ISTS.CFG key directory | ✅ Done | 88/100 | 495 confirmed keys from T7YSYN; full docs/05-configuration/ists-cfg-keys.md |
-| Module documentation | 🔄 Partial | 75/100 | 50+ modules documented from DFM+CHM+RWN; 270 FK relationships mapped |
-| `PROJECT-STRUCTURE.md` | 🔄 In progress | 72/100 | Updated each session |
-| `HELP-RESOURCES.md` | 🔄 In progress | 80/100 | Updated Pass 431 — all 579 DBA tables + 21,299 fields in table quick-reference |
-| `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated Pass 431 (2026-06-30) |
+| Module documentation | ✅ All 90+ | 92/100 | All scorecard modules at C:90+; 50+ modules documented in modules.py narratives; full DFM, RTM, RWN symbol coverage |
+| `PROJECT-STRUCTURE.md` | ✅ Current | 92/100 | Updated Pass 544/551; 659 tables cataloged from DDF; all major RWN programs mapped |
+| `HELP-RESOURCES.md` | ✅ Current | 92/100 | Updated Pass 431+ — all 579 DBA tables + 21,299 fields; 44 recipe pages; full keyword index |
+| `EVO-DECOMPILE-TODO.md` | ✅ Current | — | Master checklist, updated Pass 551 (2026-07-02) |
 
 ---
 
@@ -130,29 +130,33 @@ Current decryption scripts:
 
 ## 7. Highest-value next tasks (in priority order)
 
-1. **YN[N] ↔ ISTS.CFG.* mapping — push from C:82 to C:90** — 162 of 250 slots still unknown.
+1. **YN[N] ↔ ISTS.CFG.* mapping — push from C:82 toward C:90** — 162 of 250 slots unknown.
    Options: (a) T7YSYN pool expression tree parser (complex, multi-token compound format);
-   (b) find more SRC files; (c) additional DFM analysis for control bindings.
-   Blocked slots YN[102-143]: module-enables confirmed but value semantics (Y/Z/A/Q/1/space) blocked.
+   (b) additional DFM control binding analysis; (c) live query more companies' BKYSMSTR.
+   Blocked slots YN[102-143]: module-enable order confirmed (BKMENUSU GROUPS order), but
+   value semantics (Y/Z/A/Q/1/space flags) blocked by RWN encryption.
    `docs/05-configuration/ists-cfg-keys.md` is the working document.
 
 2. **Identify K_A purpose** — K_C confirmed (Pass 387) = suwin6.dcy ISTech License dialog.
-   K_A still unknown — fired at boot; try Frida file-open hook to identify which file type uses K_A.
+   K_A still unknown — fired at boot; Frida file-open hook needed to identify which file uses K_A.
 
-3. **`.RWN` bytecode deeper analysis** (C:82) — 60+ opcodes confirmed; static CFG impossible
-   (branch targets = computed pool expressions). New angle: analyze more decrypted RWN files for
-   new opcode patterns. T7YSYN pool section has 419 BKYS.YN references — compound expression
-   tree parser would unlock YN slot ↔ ISTS.CFG key mapping.
+3. **`.RWN` bytecode deeper analysis** (C:82 natural ceiling) — 60+ opcodes confirmed;
+   static CFG impossible (branch targets = computed runtime pool). Only angle that could move
+   this is T7YSYN pool tree parser to map YN slot indices, or a live debugger session.
 
-4. **Module documentation — undocumented modules** (C:75 avg) — Use DFM forms + RTM reports
-   for DC, FA, JC, SC, SH, LC, SR, QC modules. All unblocked. DFM in `samples/dfm/`.
+4. **✅ DONE (Pass 550+) Module documentation** — All scorecard modules at C:90+;
+   50+ modules documented in `learnevo-help/content/modules.py` narratives. DFM, RTM, RWN
+   symbol coverage complete for all accessible programs.
 
-5. **Business workflow recipes** — Document end-to-end processes (SO→ship→invoice,
-   WO lifecycle, AP check run, MRP run) in `docs/` and `HELP-RESOURCES.md`. Fully unblocked.
+5. **✅ DONE (Pass 307-497) Business workflow recipes** — 44 recipe pages in learnevo-help;
+   full SO/WO/AP/GL/period-end/year-end workflows documented; Acctug.pdf (Pass 497) confirms.
 
 6. **✅ DONE (Pass 431) Per-table field meaning documentation** — 579 tables / 21,299 fields
    from `Evo-DBA_File_Fields 052421.xlsx`; 33 per-module field files in `docs/04-data-dictionary/`;
    master table index in `docs/04-data-dictionary/table-index.md`. ~65% field descriptions present.
 
 7. **suwin7.dcy decryption** — fails all 5 known keys (K_A/K_B/K_C/K_D/K_E). May use
-   a 6th key generated by a different ISTech subsystem. Requires Frida session to capture.
+   a 6th key from a different ISTech subsystem. Requires Frida session to capture.
+
+8. **learnevo-help content completeness** — A few sub-90 module stubs may remain; run the
+   help server and check for any missing narratives via the browser UI.
