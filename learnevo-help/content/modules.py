@@ -4770,6 +4770,33 @@ Set via SM (System Maintenance). One row stores all company-wide defaults:
 
 Live values (i2 Systems, 2026-07-01): AR GL=1200, AP GL=2110, freight(AR)=8517/dept4,
 freight(PO)=5102/dept0250, AR interest=1.5%/1-day, aging=0/30/60/90/120, fiscal=2026-01-01.
+
+## Session authorization model (Pass 550, 2026-07-02)
+
+Login and access control involve a 6-layer chain:
+
+| Layer | Table | Contents | Loaded by |
+|-------|-------|----------|-----------|
+| 1 — Feature flags | `BKSYCFG` (4 fields) | ACCTG/ADVWO/LITEWO/SALES — which subsystems are installed | EvoERPmenu.RWN at startup |
+| 2 — Legacy user auth | `BKSYUSER` (5 fields) | CODE/PSWD/SCTY/COMP/CHR — TAS Pro 7 internal user records | EvoERPmenu.RWN login check |
+| 3 — Session matrix | `BKSYLOG` (215 fields) | BKSY_LOGON_*YN flags + OK*_1..20 arrays — per-user module + menu-slot access | EvoERPmenu.RWN/dbamenu_flex.RWN via `LOGON`/`LLOGON` handle |
+| 4 — Security levels | `BKSLEVEL` (422 fields) | 5 levels x ~84 module-functions Y/N — what each security level allows | Read by PS-B program |
+| 5 — User preferences | `BKPSUSER` (11 fields) | Per-user default menu/printer/company/max-windows — NOT an auth table | Loaded at login for UI defaults |
+| 6 — ISTS.CFG keys | In-memory (BKYSMSTR) | GLCTRL/POSEC/SOSEC/WHCTRL — access flags propagated from BKSYLOG to all child programs | Set by EvoERPmenu after reading BKSYLOG |
+
+`BKSYLOG` is the runtime access matrix. Structure: 9 module-level Y/N enable flags
+(`APYN/ARYN/GLYN/ICYN/POYN/PRYN/SOYN/SYYN/OKLM`) plus 20 per-function OK flags for
+each of 10 module groups (OKAP, OKAR, OKGL, OKIC, OKPO, OKPR, OKSO, OKSY, OTH1, OTH2).
+The 1..20 slot to specific menu letter mapping is not yet confirmed (requires live data
+or a populated BKSYLOG record). In this i2 Systems installation, all three auth layers
+(AHSYLOG, BKPSUSER, and the traditional BKSYLOG record set) are empty — access is
+controlled by Windows SSO, not EvoERP security groups.
+
+`BKSYCFG` feature flags control which top-level subsystems appear:
+- `BKSY_CFG_ACCTG` — accounting module (AP/AR/GL) enabled
+- `BKSY_CFG_ADVWO` — advanced Work Order mode (vs. lite WO mode)
+- `BKSY_CFG_LITEWO` — lite/simplified Work Order mode
+- `BKSY_CFG_SALES` — Sales module (SO/AR) enabled
 """,
 
 "DE": """

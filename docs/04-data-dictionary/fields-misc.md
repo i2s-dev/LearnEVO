@@ -1108,16 +1108,16 @@ Fields: 205
 | 205 | BKPRT_CFG_USEPR_9 | INTEGER | 2 | — | — |
 
 ## BKSYCFG
-**NOT USED**
+**System configuration flags** — feature toggle table read by EvoERPmenu.RWN at session start. Controls which major subsystems are enabled.
 
 Fields: 4
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKSY_CFG_ACCTG | STRING | 1 | — | — |
-| 2 | BKSY_CFG_ADVWO | STRING | 1 | — | — |
-| 3 | BKSY_CFG_LITEWO | STRING | 1 | — | — |
-| 4 | BKSY_CFG_SALES | STRING | 1 | — | — |
+| 1 | BKSY_CFG_ACCTG | STRING | 1 | — | Accounting module enabled flag (Y/N) |
+| 2 | BKSY_CFG_ADVWO | STRING | 1 | — | Advanced Work Order mode enabled (Y/N) |
+| 3 | BKSY_CFG_LITEWO | STRING | 1 | — | Lite (simplified) Work Order mode enabled (Y/N) |
+| 4 | BKSY_CFG_SALES | STRING | 1 | — | Sales module enabled flag (Y/N) |
 
 ## BKSYHELP
 **System help lookup** — opened by 1,040+ programs as a standard session table for F1 context-sensitive help text.
@@ -1129,20 +1129,22 @@ Fields: 1
 | 1 | BKSY_HELP_PATH | STRING | 70 | — | — |
 
 ## BKSYLOG
-**NOT USED**
+**Session authorization matrix** — the runtime per-user access control table. Populated at login by EvoERPmenu.RWN / dbamenu_flex.RWN (via the `LOGON`/`LLOGON` handle). Not opened directly by module programs — the menu reads it and propagates access flags to ISTS.CFG keys (GLCTRL, POSEC, SOSEC, WHCTRL) which all programs then read.
+
+Structure: 20 single-char Y/N "OK" flags per module (OKAP, OKAR, OKGL, OKIC, OKPO, OKPR, OKSO, OKSY, OTH1, OTH2) mapping to the 20 menu slots in each module letter (A–T), plus top-level Y/N enable flags (APYN, ARYN, GLYN, ICYN, POYN, PRYN, SOYN, SYYN, OKLM), and session identity fields (CODE/PSWD/SCTY/CHR). This is the access-control mechanism: BKSY_LOGON_OKGL_3='Y' means the user has access to GL menu item G (3rd slot). Index mapping to menu codes not yet confirmed.
 
 Fields: 215
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKSY_LOGON_APYN | STRING | 1 | — | — |
-| 2 | BKSY_LOGON_ARYN | STRING | 1 | — | — |
-| 3 | BKSY_LOGON_CHR | STRING | 1 | — | — |
-| 4 | BKSY_LOGON_CODE | STRING | 15 | — | — |
-| 5 | BKSY_LOGON_GLYN | STRING | 1 | — | — |
-| 6 | BKSY_LOGON_ICYN | STRING | 1 | — | — |
-| 7 | BKSY_LOGON_O1YN | STRING | 1 | — | — |
-| 8 | BKSY_LOGON_O2YN | STRING | 1 | — | — |
+| 1 | BKSY_LOGON_APYN | STRING | 1 | — | AP module enabled for this user (Y/N) |
+| 2 | BKSY_LOGON_ARYN | STRING | 1 | — | AR module enabled for this user (Y/N) |
+| 3 | BKSY_LOGON_CHR | STRING | 1 | — | User type/character code |
+| 4 | BKSY_LOGON_CODE | STRING | 15 | — | User code (login ID) |
+| 5 | BKSY_LOGON_GLYN | STRING | 1 | — | GL module enabled for this user (Y/N) |
+| 6 | BKSY_LOGON_ICYN | STRING | 1 | — | IC (Inventory Control) module enabled for this user (Y/N) |
+| 7 | BKSY_LOGON_O1YN | STRING | 1 | — | Other module 1 enabled for this user (Y/N) |
+| 8 | BKSY_LOGON_O2YN | STRING | 1 | — | Other module 2 enabled for this user (Y/N) |
 | 9 | BKSY_LOGON_OKAP_1 | STRING | 1 | — | — |
 | 10 | BKSY_LOGON_OKAP_10 | STRING | 1 | — | — |
 | 11 | BKSY_LOGON_OKAP_11 | STRING | 1 | — | — |
@@ -1223,7 +1225,7 @@ Fields: 215
 | 86 | BKSY_LOGON_OKIC_7 | STRING | 1 | — | — |
 | 87 | BKSY_LOGON_OKIC_8 | STRING | 1 | — | — |
 | 88 | BKSY_LOGON_OKIC_9 | STRING | 1 | — | — |
-| 89 | BKSY_LOGON_OKLM | STRING | 1 | — | — |
+| 89 | BKSY_LOGON_OKLM | STRING | 1 | — | LM (Labor Module?) enabled for this user (Y/N) |
 | 90 | BKSY_LOGON_OKPO_1 | STRING | 1 | — | — |
 | 91 | BKSY_LOGON_OKPO_10 | STRING | 1 | — | — |
 | 92 | BKSY_LOGON_OKPO_11 | STRING | 1 | — | — |
@@ -1344,12 +1346,12 @@ Fields: 215
 | 207 | BKSY_LOGON_OTH2_7 | STRING | 2 | — | — |
 | 208 | BKSY_LOGON_OTH2_8 | STRING | 2 | — | — |
 | 209 | BKSY_LOGON_OTH2_9 | STRING | 2 | — | — |
-| 210 | BKSY_LOGON_POYN | STRING | 1 | — | — |
-| 211 | BKSY_LOGON_PRYN | STRING | 1 | — | — |
-| 212 | BKSY_LOGON_PSWD | STRING | 10 | — | — |
-| 213 | BKSY_LOGON_SCTY | STRING | 2 | — | — |
-| 214 | BKSY_LOGON_SOYN | STRING | 1 | — | — |
-| 215 | BKSY_LOGON_SYYN | STRING | 1 | — | — |
+| 210 | BKSY_LOGON_POYN | STRING | 1 | — | PO module enabled for this user (Y/N) |
+| 211 | BKSY_LOGON_PRYN | STRING | 1 | — | PR (Payroll/Production?) module enabled for this user (Y/N) |
+| 212 | BKSY_LOGON_PSWD | STRING | 10 | — | User password (stored encrypted via ENCRYPTSTR) |
+| 213 | BKSY_LOGON_SCTY | STRING | 2 | — | Security level code |
+| 214 | BKSY_LOGON_SOYN | STRING | 1 | — | SO module enabled for this user (Y/N) |
+| 215 | BKSY_LOGON_SYYN | STRING | 1 | — | SY (System admin) module enabled for this user (Y/N) |
 
 ## BKSYPRTR
 **System printer assignments** — used by 33+ programs including EVODCSETUP/EVODEFPRINT. Stores default and per-station printer settings.

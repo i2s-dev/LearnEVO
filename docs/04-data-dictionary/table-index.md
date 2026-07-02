@@ -56,9 +56,9 @@ Field details are in per-module files in this directory.
 | BKPRBOOK | NOT USED | 86 |
 | BKPRSTFL | NOT USED | 2 |
 | BKPRTCFG | NOT USED | 205 |
-| BKSYCFG | NOT USED | 4 |
+| BKSYCFG | System configuration flags — ACCTG/ADVWO/LITEWO/SALES feature toggles; read by EvoERPmenu at session start | 4 |
 | BKSYHELP | System help/label lookup — F1 context help; opened by 1,040+ programs as standard session table | 1 |
-| BKSYLOG | NOT USED | 215 |
+| BKSYLOG | Session authorization table — 215-field access matrix populated at login by EvoERPmenu.RWN; OKAP/OKAR/OKGL/OKIC/OKPO/OKPR/OKSO/OKSY arrays (20 slots each) control which menu items user can access per module | 215 |
 | BKSYPRTR | System printer table — default/DC printer assignments; opened by 33 programs including EVODCSETUP/EVODEFPRINT | 11 |
 | BKUMSRTY | NOT USED | 23 |
 | BKUPDATE | NOT USED | 4 |
