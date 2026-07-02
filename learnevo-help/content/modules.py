@@ -6214,11 +6214,62 @@ These settings are stored per-user in EvoSettings.INI (`[User:NAME]` sections) a
 in `BKLOGON` / `BKSYUSER`. US-B customizations are stored in `BKMENUSU` (the menu
 definition table) per-user.
 
-## US-G Triggers (T7USG.DFM confirmed)
+## US-A field semantics (EVOHELP.PDF §US-A, Pass 515)
+
+**Settings are workstation-specific** except Email settings which are per-user + per-company.
+
+**Tabs:** Misc / Mfg / Items / Sales / Queries / Sys Mgr / Accounting / Payroll / Email
+
+**Misc Tab key settings:**
+- **Enable Toolbar**: upper-right toolbar (calculator, camera, web link, etc.)
+- **Notification Sounds**: "Ding" wav when lookup grid search completes
+- **Language**: activates screen translation (ML tables must be created in SM-R first)
+- **Enable Evo Reminders on Startup**: opens Reminders calendar on launch; also required for Triggers to function
+- **Enable Evo Notifications**: receives IS Tech Support broadcast messages via FTP (needs internet)
+- **Check for reminders**: frequency of reminder polling
+- **Snooze All**: resets all open reminders by specified minutes
+- **Enable Quick Printing**: bypasses RTM name/notes popup screens; uses defaults
+- **Hot Buttons 1-6**: assigns programs to launch from main menu Hot Button slots; optional image per button
+
+**Email Tab key settings:**
+SMTP address / Login / Port / BCC address / Default subject+body+signature /
+Attach path (folder for PDF generation; Windows user must have full write rights) /
+Auto-email failure address (receives notices when batch items have no email — e.g., invoicing batches)
+
+**Mfg/Items/Sales/Accounting Tabs:** Each tab controls: show opening list Y/N; load in Evo tabbed view vs. DBA Classic view.
+
+## US-G Triggers — event codes (EVOHELP.PDF §US-G, Pass 515)
 
 Triggers are **scheduled business event notifications** — EVO fires a trigger
 (email or on-screen alert) when defined conditions are met. T7USG.RWN manages
 the trigger list; data stored in a Btrieve-only IS_TRIG* table (not in DDF).
+
+**16 trigger event codes:**
+
+| Code | When fires |
+|------|-----------|
+| `REORDER` | Item stock on-hand hits reorder level |
+| `REORDERA` | Item quantity **available** hits reorder level |
+| `EFP` | Enter Finished Production |
+| `RECEIPT` | Purchased item received |
+| `RECEIPTQC` | Purchased item received to QC |
+| `LOT` | Lot-controlled item within N days of expiration |
+| `SERIAL` | Serial-controlled item within N days of expiration |
+| `BASE PRICE` | Item base price changed in SO-Q-A or IN-B |
+| `SO` | New SO entered or lines added (one trigger per line) |
+| `SOEDIT` | Existing SO lines edited |
+| `SODELETE` | Existing SO deleted |
+| `PO` | New PO entered or lines added (one trigger per line) |
+| `EPO` | PO edited (one trigger per line) |
+| `NONPO` | PO receipt is past estimated receipt date |
+| `NONSO` | Sales Order is past estimated ship date |
+| `NONWO` | Work Order is past estimated completion date |
+
+**LOT/SERIAL triggers:** enter "Days Pre" = days before expiry to warn.
+**NON* triggers:** checked at each login, scanning back to last login date.
+**Security Level 1-10:** can create triggers for other users; >10 = self only.
+**Notification:** desktop popup (link to IN-A for item) + optional email to multiple addresses.
+**At i2 Systems:** triggers are configured but status of active records is unknown (IS_TRIG* is Btrieve-only, not in ODBC).
 
 **Trigger definition fields (IS.TRIG.\* namespace):**
 - `CODE` — trigger code (PK)
@@ -6234,9 +6285,6 @@ the trigger list; data stored in a Btrieve-only IS_TRIG* table (not in DDF).
 **Trigger filter scope** — each trigger can be scoped to:
 Item number, Customer code, Vendor code, SO#, PO#, WO range (prefix+suffix),
 Operation, Item Class, Item Category, Planner Code, Bin Location, Item Types.
-
-**At i2 Systems:** triggers are configured but status of active records is
-unknown (IS_TRIG* is Btrieve-only, not in ODBC).
 
 ## Integration
 
