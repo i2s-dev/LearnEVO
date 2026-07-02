@@ -1,0 +1,11 @@
+Source: \\i2s109-solidcrm\DBAMFG$\<filename>.RUN
+Copied: 2026-07-02 (Pass 561 — cross-generation corpus confirmation)
+Purpose: Validate .RUN string extraction method across T6/T7/J5/J6 generations
+
+Files:
+  T6APB.RUN   — AP Enter Vouchers (T6 era, ISTS Enhanced 10/15/2014)
+  T7APU.RUN   — AP Upload stub (T7 era, 1-string replacement notice)
+  J6CHGREP.RUN — ISTS custom Change Sales Rep on AR invoice (2008)
+  J5BOMXPT.RUN — ISTS custom BOM export to CSV (2007)
+  T6WOC.RUN   — Work Order + Print Travelers (T6 era, ISTS Enhanced 04/21/2012)
+  T6ARB.RUN   — AR Enter Vouchers (T6 era, ISTS Enhanced 10/14/2010)
