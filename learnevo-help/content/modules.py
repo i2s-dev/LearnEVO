@@ -168,6 +168,47 @@ AM-K Archive → closed invoices move BKARINV → BKARHINV
 default receivable GL account, interest rate and grace period,
 statement format, taxable/non-taxable defaults, and aging bucket
 thresholds.
+
+## AR-E / AR-F / AR-G / AR-I / AR-K / AR-L / AR-P detailed (EVOHELP.PDF pages 427–434, Pass 523)
+
+### AR-E Print Statements (page 427)
+Prints AR statements on universal form or plain paper (set in SD-P). Options:
+Show previous payments vs. open items only; include/exclude customer deposits.
+Customer filter: range of customer codes and/or customer classes.
+Prints only customers with Statement?=Y in their customer master.
+Age calculation: days since invoice posted OR days past due (configurable in SD-P).
+
+### AR-F Print Aging (pages 428–430)
+Three report types: **AR Aging** / **AR Listing** / **AR Past Due**.
+- **AR Aging**: totals only OR open invoices by age bucket; 5 configurable aging columns.
+  Can backdate: enter prior date to reconstruct as-of aging on that date.
+  Deposits can be included/excluded (include to match GL AR account balance).
+- **AR Listing**: always detail only (no totals option); filter by terms type.
+- **AR Past Due**: ages from each invoice's due date per terms code (not posting date).
+Multi-currency: B=base currency (convert at historical exchange rates).
+Credit hold filter: print only customers on credit hold.
+
+### AR-G / AR-H Print Customer Lists (pages 430–431)
+AR-G: customer code + name + phone. AR-H: general customer information (all fields).
+Filters: customer code range + class range. AR-H includes optional totals.
+
+### AR-I Print Customer Mail Labels (page 431)
+Three label formats: 1-up (3.5"×15/16" continuous) / 2-up (Avery 5161) / 3-up (Avery 5160).
+Filter: Active or Inactive customers (Inactive = no open invoices/credits/SOs, no recent activity).
+
+### AR-K Print Sales Tax Report (page 432)
+Lists outstanding sales tax liability by tax authority. Basis for AR-L transfer amounts.
+
+### AR-L Transfer Sales Taxes (pages 432–433)
+Moves sales tax GL liabilities to AP vouchers for payment.
+Creates AP voucher in each tax authority's vendor account (set up in AP-A).
+On Save: updates Next AP Invoice#, updates vendor outstanding, posts to GL Purchases journal,
+updates outstanding tax balances in SM-E.
+Multi-currency: specify source currency or base currency payment at transfer time.
+
+### AR-P Generate Dun Letters (page 416 cross-ref)
+Generates collection letters for past-due accounts. Threshold set in customer master.
+Configurable letter text; prints aging summary with letter.
 """,
 
 "AP": """
