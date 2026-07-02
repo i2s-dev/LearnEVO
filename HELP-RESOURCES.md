@@ -1900,22 +1900,28 @@ through the FILELOC routing layer.
 **Security note:** IS.CC.MASKED stores only the masked (tokenized) card number, not the raw PAN. Compliance-aware storage.
 
 **J7 Customization — CC-C programs (T7CCCITM, T7CCCRNO, T7CCCWOT):**
-These three programs use **ISCCICM(59f)** — a J7-specific catalog extension table with field names that reveal door hardware manufacturing:
+These three programs use **ISCCICM(59f)** — a J7-specific product specification extension table for **mattress cover/fabric manufacturing** (CORRECTED from earlier "door hardware" interpretation — full 59-field schema confirms mattress context):
 - ISCC_ICM_CODE(15) + DESC(30) + DESC2(30) — item code + two descriptions
-- ISCC_ICM_FSIZE(30) — frame/door size specification
-- ISCC_ICM_CUST(60) — customer specification (longer than standard 10-char customer code = free-text field)
-- ISCC_ICM_COLLEC(120) — product collection/style name (120 chars)
-- ISCC_ICM_HINGE(25) — hinge specification
-- ISCC_ICM_SPY(25) — spy hole / peephole specification
-- ISCC_ICM_PDF(60) — PDF document path (product sheet/drawing)
+- ISCC_ICM_FSIZE(30) — finished size of the mattress/cover
+- ISCC_ICM_CUST(60) — customer code (or customer-specific spec variant)
+- ISCC_ICM_COLLEC(120) — product collection/line name (marketing name)
+- ISCC_ICM_FABRIC(60) — fabric description (ticking material)
+- ISCC_ICM_TCOLOR(60) — ticking color
+- ISCC_ICM_STRIPE(25) — stripe/pattern specification
+- ISCC_ICM_CUSHTY(60) — cushion type (comfort level)
+- ISCC_ICM_POLY(20) — polyurethane foam specification
+- ISCC_ICM_FILIT_1..4(15 each) / ISCC_ICM_FILQTY_1..4(20 each) — up to 4 fill materials + quantities (mattress layering)
+- ISCC_ICM_LAWLAB(60) — law label text (US federal mattress law label requirement)
+- ISCC_ICM_SEWNOT(60) — sewing notation/instruction
+- ISCC_ICM_HINGE(25) — handle/hinge attachment type (mattress handle)
+- ISCC_ICM_SOLIDF(25) — SolidWorks file path (3D CAD model for the cover pattern)
+- ISCC_ICM_PDF(60) — PDF spec sheet path
 - ISCC_ICM_PNAME(60) — product name
 - ISCC_ICM_AMTPP(25) — amount per piece
-- ISCC_ICM_SOLIDF(25) — SolidWorks file path (3D model integration)
-- +47 more configurable spec/dimension fields
 
-T7CCCITM (CC-C item maintenance), T7CCCRNO (CC-C change request numbering), T7CCCWOT (CC-C WO closure) are J7 Systems customizations for door hardware catalog management — not part of stock EvoERP. BKRTSPEC+BKBMDIM+BKBMNOTE+BKBMREMK in the fingerprint confirm these programs also manage routing specs and BOM dimensions.
+T7CCCITM (CC-C item maintenance), T7CCCRNO (CC-C change request numbering), T7CCCWOT (CC-C WO closure) are J7/ISTS customizations for mattress cover specification management. Also uses J7CCITEMSYNC (syncs BKICMSTR↔ISCCICM↔ISICMSTR). BKRTSPEC+BKBMDIM+BKBMNOTE+BKBMREMK confirm routing specs and BOM dimensions are managed alongside cover specs.
 
-**Confidence: 78/100** — ISCC(14f) full schema extracted (tokenized CC vault); BKPSUSER security integration confirmed; ISCCICM(59f) extracted — J7 catalog extension confirmed (door hardware: frame/hinge/spy/SolidWorks fields); CC-CCC J7 customization boundary identified.
+**Confidence: 88/100** (CORRECTED from 78 — full 59-field schema decoded; mattress fabric context confirmed; "door hardware" interpretation was incorrect based on subset of fields only).
 
 ---
 

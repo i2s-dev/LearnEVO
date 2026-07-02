@@ -220,41 +220,57 @@ ISCONVRT supplements the standard per-item UOM conversion fields in BKICMSTR;
 it is used for items in the RC customer system that require a different conversion
 rate than the standard item master.
 
-### ISCCICM — Corrugated/Cut Item Master Extension (59 fields, 22 confirmed)
+### ISCCICM — Mattress Cover/Fabric Product Specification (59 fields, all confirmed)
 
-Extended item specification for corrugated packaging and mattress components.
-Keyed by item CODE+CUST (item code + customer-specific variant).
+Extended item specification for mattress cover and fabric products.
+Keyed by item CODE (item code). Used by T7CCCITM (CC-C item maintenance) and
+J7CCITEMSYNC (item sync). Full 59-field DDF schema confirmed from fields-misc.md.
 
-| Field | Notes |
-|-------|-------|
-| ISCC.ICM.CODE | Item code (PK part 1) |
-| ISCC.ICM.CUST | Customer code (PK part 2 — specs can vary by customer) |
-| ISCC.ICM.DESC | Description line 1 |
-| ISCC.ICM.DESC2 | Description line 2 |
-| ISCC.ICM.FSIZE | Finished size of the corrugated sheet/box |
-| ISCC.ICM.HINGE | Hinge type (corrugated box design spec) |
-| ISCC.ICM.BOXNO | Box number (position in multi-box shipment spec) |
-| ISCC.ICM.BTNCOD | Button/binding code (wire binding spec for corrugated) |
-| ISCC.ICM.BTNQTY | Button/binding quantity per box |
-| ISCC.ICM.FILIT | Fill type (mattress padding/cushioning material) |
-| ISCC.ICM.FILQTY | Fill quantity |
-| ISCC.ICM.TIECOD | Ticking/tie code |
-| ISCC.ICM.TIEMTR | Tie material |
-| ISCC.ICM.TIEQTY | Tie quantity |
-| ISCC.ICM.LAWLAB | Law label flag (mattress federal law label requirement) |
-| ISCC.ICM.SEWNOT | Sewing notation/instruction |
-| ISCC.ICM.PERCOM | Per-component quantity or pricing |
-| ISCC.ICM.SPY | Selling price |
-| ISCC.ICM.PDF | PDF spec sheet attachment path |
-| ISCC.ICM.CUSFD | Customer-specific field (order date or dimension) |
-| ISCC.ICM.CUSHTYJ | Customer ship-to code |
+**Key fields (selected from 59 total):**
 
-Used by J7CCITEMSYNC (item sync between BKICMSTR and ISCCICM + ISICMSTR) to keep
-standard inventory and corrugated spec data synchronized across both item masters.
-The 59-field total (22 confirmed from filedict; ~37 additional) suggests additional
-array-based spec fields (likely additional dimension/spec fields for corrugated specs).
+| Field | Type | Notes |
+|-------|------|-------|
+| ISCC_ICM_CODE | STRING(15) | Item code (PK) |
+| ISCC_ICM_CUST | STRING(60) | Customer code / customer-specific variant |
+| ISCC_ICM_DESC | STRING(30) | Description |
+| ISCC_ICM_DESC2 | STRING(30) | Description line 2 |
+| ISCC_ICM_PNAME | STRING(60) | Product name (marketing name) |
+| ISCC_ICM_COLLEC | STRING(120) | Collection/line name |
+| ISCC_ICM_FSIZE | STRING(30) | Finished size (mattress dimensions) |
+| ISCC_ICM_FABRIC | STRING(60) | Fabric/ticking material description |
+| ISCC_ICM_TCOLOR | STRING(60) | Ticking color |
+| ISCC_ICM_STRIPE | STRING(25) | Stripe/pattern |
+| ISCC_ICM_CUSHTY | STRING(60) | Cushion type (comfort level) |
+| ISCC_ICM_POLY | STRING(20) | Polyurethane foam specification |
+| ISCC_ICM_CONST | STRING(60) | Construction description |
+| ISCC_ICM_FILIT_1..4 | STRING(15) each | Fill material types 1-4 (mattress layers) |
+| ISCC_ICM_FILQTY_1..4 | STRING(20) each | Fill quantities 1-4 |
+| ISCC_ICM_LAWLAB | STRING(60) | Law label text (US federal mattress label requirement) |
+| ISCC_ICM_SEWNOT | STRING(60) | Sewing notation/instruction |
+| ISCC_ICM_HINGE | STRING(25) | Handle/hinge attachment type |
+| ISCC_ICM_BTNCOD | STRING(25) | Button/binding code |
+| ISCC_ICM_BTNQTY | NUMERIC(8) | Button/binding quantity |
+| ISCC_ICM_TIECOD | STRING(25) | Ticking tie code |
+| ISCC_ICM_TIEMTR | STRING(30) | Tie material |
+| ISCC_ICM_TIEQTY | NUMERIC(8) | Tie quantity |
+| ISCC_ICM_FABLAB | STRING(60) | Fabric label text |
+| ISCC_ICM_LABLOC | STRING(60) | Label location (where to sew label on cover) |
+| ISCC_ICM_SOLIDF | STRING(25) | SolidWorks CAD file path (3D model reference) |
+| ISCC_ICM_PDF | STRING(60) | PDF spec sheet path |
+| ISCC_ICM_AMTPP | STRING(25) | Amount per piece |
+| ISCC_ICM_PERCOM | STRING(25) | Per-component |
+| ISCC_ICM_SPY | STRING(25) | Selling price Y |
+| ISCC_ICM_BOXNO | STRING(30) | Box number |
+| ISCC_ICM_BOXQTY | STRING(30) | Box quantity |
+| ISCC_ICM_CVL | STRING(25) | Cover level |
+| ISCC_ICM_CUBE | STRING(30) | Cubic feet/inches |
+| ISCC_ICM_CWEIGH | NUMERIC(8,6) | Component weight |
+| ISCC_ICM_HAVPIC | STRING(60) | Has picture flag |
 
-**Business significance:** ISCCICM is the i2 Systems corrugated/mattress manufacturing
-specification table — it captures the product design data (box dimensions, binding
-specs, law label, sewing details) that standard BKICMSTR fields cannot hold. It is
-the bridge between ERP inventory and the shop-floor specification sheet.
+Used by T7CCCITM (CC-C item maintenance) and J7CCITEMSYNC to sync mattress cover specs
+between BKICMSTR (standard item master) and ISCCICM + ISICMSTR. Also opens BKBMDIM,
+BKRTSPEC, BKBMMSTR, BKBMNOTE, BKBMREMK for complete routing+BOM spec management.
+
+**Note:** Earlier documentation described this as "door hardware" based on HINGE/SPY/SOLIDF
+fields only — full schema confirmed as **mattress cover manufacturing** via FABRIC/TCOLOR/
+STRIPE/CUSHTY/POLY/LAWLAB/SEWNOT fields. SPY = Selling Price Y (not "spy hole").
