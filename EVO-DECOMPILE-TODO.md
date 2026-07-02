@@ -994,7 +994,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 - [x] ✅ All 50 modules categorized by functional area (CC=corrugated, HH=handheld, DC=data collection, customer integrations) — **C: 90/100** — **Pass348**
 - [x] ✅ Core tables used by J7 modules confirmed: BKICMSTR, BKARINV/L, BKAPPOL, ISARTXNB, ISWOTRAY — **C: 90/100** — **Pass348**
 - [ ] ⬜ J7 RWN internal logic (blocked by encryption — see §14)
-- [ ] ⬜ Custom J7-specific tables (if any) — not yet confirmed to exist
+- [x] ✅ **Pass 562 (2026-07-02): Custom J7-specific tables confirmed** — analysis of 50 J7 programs via rwn_symbols.json db_files: **exactly 1 J7-exclusive table** found: `ISCCBTXN` (DDF-confirmed, TID=357, 16 fields, 205-byte record); used only by J7CCFABXFER.RWN (135 procs, source=LISTG60.LIB); location=ISCCBTXN.BI2 (ABI company only, not in default company); fields: ISCC_TXN_FABRIC/JOB/LOT/SER/BIN/LOC (15-char strings) + PULQTY/NEDQTY/LOTQTY/TRANS (8-byte floats) + SDATE/TDATE/GDATE (Btrieve dates) + STATUS(1) + ALPHA(15) + EXTRA(50); purpose = CC Fabric Bin Transfer transaction log (custom i2S corrugated manufacturing flow); 0 live records; all 49 other J7 programs use standard EvoERP tables only; J7 source libraries: LISTG60.LIB(29), ISTS.SRC(7), EVO.LIB(6), DBA.LIB(2), others(6) — **C: 82/100** (table confirmed; LISTG60.LIB content blocked by encryption; J7-specific meaning inferred from field names + DFM caption context)
 
 ---
 
