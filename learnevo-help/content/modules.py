@@ -5329,6 +5329,42 @@ sessions in ISFOHEAD with 934,922 BOM lines across those sessions.
 | FO-F | Feature and Option Defaults | T7DSFO.RWN |
 | FO-G | Configure Item | EvoFNO.RWN |
 
+## Setup workflow (EVOHELP.PDF §FO, Pass 512)
+
+| Step | Action |
+|------|--------|
+| 1 | Create **Type O inventory items** for each feature (not stocked, not ordered; decision point in configurator) |
+| 2 | Create **Option Bills of Material** via FO-A or BM-A: enter the Type O item as parent; each option is a component |
+| 3 | Add **Feature items (Type O)** to the parent product's BOM wherever optional components exist |
+| 4 | Review via FO-B Print Features and Options to verify structure |
+
+**Unlimited nesting:** Features can contain Features (e.g., FABRIC → PATTERNS or SOLIDS → specific options). Options can also contain their own features. The configurator traverses the full tree.
+
+### FO-A — Option Settings (5 fields per option in the option BOM)
+
+| Field | Options | Meaning |
+|-------|---------|---------|
+| Manufactured or Kit type | **M** = passes to WO BOM; **K** = stays on SO line only (no WO) |
+| Include in cost rollup? | Y/N | Whether this option's standard cost is included in parent rollup |
+| Percentage pricing? | Y/N | If Y, option price is a % of the parent's price |
+| Option price/percent | numeric | Flat price per unit (or % if Percentage=Y); multiplied by Qty Per × order qty through all nesting levels |
+| Add price to parent? | **Y** = option price added to parent price; **N** = itemized as a separate line on the SO |
+
+Defaults for these settings can be configured in SD-L Features and Options Defaults.
+
+### FO-A — Feature Settings (when a Feature/Type O item is added to a parent BOM)
+
+| Setting | Meaning |
+|---------|---------|
+| Mandatory Feature | Selection required during SO entry — operator cannot skip it |
+| Feature not required | Selection optional at order entry operator's discretion |
+
+### FO-G conversion targets
+
+FO-G can convert a completed configuration to: **Sales Quote**, **Sales Order**, **Work Order**, **Vendor RFQ**, **Purchase Order**. Multiple targets can be processed sequentially in one operation. A future release would also support converting to a permanent part number.
+
+FO-G status codes: blank = in-progress / Completed = all selections done (Convert button enabled) / "Cvt to" = previously converted.
+
 ## FO-G Configure Item UI (EvoFNO.DFM)
 
 The main configurator form has two display modes and several actions:
