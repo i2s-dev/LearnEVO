@@ -172,7 +172,7 @@ Fields: 7
 | 7 | BKBM_CNFG_ROLL | STRING | 1 | — | — |
 
 ## BKBMDIM
-**NOT USED**
+**BOM dimensions** — used by T7BMA/T7CCCITM/J7CCITEMSYNC. Stores length/width/height/weight dimensions per BOM item code.
 
 Fields: 11
 
@@ -311,7 +311,7 @@ Fields: 3
 | 3 | BKCM_PCFC_REP | STRING | 5 | — | — |
 
 ## BKCMSBDF
-**NOT USED**
+**CM subdirectory/folder defaults** — used by T7MDEFNDC (menu defaults for DC terminals). Configures folder paths for DC programs.
 
 Fields: 5
 
@@ -394,7 +394,7 @@ Fields: 6
 | 6 | BKCMT_TAG | STRING | 1 | — | — |
 
 ## BKDCCFG
-**NOT USED**
+**DC terminal/scanner configuration** — used by T7ADCA/T7AUTODCH/J7EIMDCRev. Stores per-terminal DC scanner settings.
 
 Fields: 7
 
@@ -538,7 +538,7 @@ Fields: 6
 | 6 | BKIC_ALTP_TYPE | STRING | 1 | — | — |
 
 ## BKICDIM
-**NOT USED**
+**Item dimensions** — used by T7BMA/T7INLF/T7INLG (BOM and IN programs). Stores per-item dimensional data (size/weight specs).
 
 Fields: 47
 
@@ -661,7 +661,7 @@ Fields: 46
 | 46 | BKIC_REQ_WOSUF | INTEGER | 2 | — | — |
 
 ## BKICTAX
-**NOT USED**
+**Item tax codes** — used by T7ESE/J7DCSSOE/J7HHRTSSOE. Per-item sales tax classification codes.
 
 Fields: 46
 
@@ -715,7 +715,7 @@ Fields: 46
 | 46 | BKIC_TAX_VENDOR | STRING | 10 | — | Vendor Code for Tax Authority |
 
 ## BKICVAL
-**NOT USED**
+**Item valuation overrides** — used by T7SMJL (job cost). Stores valuation adjustment records per item.
 
 Fields: 4
 
@@ -745,7 +745,7 @@ Fields: 10
 | 10 | BKLOGON_SUBMENU | INTEGER | 2 | — | — |
 
 ## BKMATRIM
-**NOT USED**
+**Material trim specifications** — used by T7ROD (RO-D routing). Stores outside-process material trim dimensions per routing.
 
 Fields: 3
 
@@ -1120,7 +1120,7 @@ Fields: 4
 | 4 | BKSY_CFG_SALES | STRING | 1 | — | — |
 
 ## BKSYHELP
-**NOT USED**
+**System help lookup** — opened by 1,040+ programs as a standard session table for F1 context-sensitive help text.
 
 Fields: 1
 
@@ -1352,7 +1352,7 @@ Fields: 215
 | 215 | BKSY_LOGON_SYYN | STRING | 1 | — | — |
 
 ## BKSYPRTR
-**NOT USED**
+**System printer assignments** — used by 33+ programs including EVODCSETUP/EVODEFPRINT. Stores default and per-station printer settings.
 
 Fields: 11
 
@@ -1646,7 +1646,7 @@ Fields: 26
 | 26 | ISAR_CHG_USER | STRING | 15 | — | — |
 
 ## ISARINVX
-**NOT USED**
+**AR invoice cross-reference extension** — used by T7ESB/T7SOA/T7SOB (SO and estimate programs). Links invoices to extended reference data.
 
 Fields: 4
 
@@ -1658,7 +1658,7 @@ Fields: 4
 | 4 | ISAR_INV_SONUM | NUMERIC | 8 | — | — |
 
 ## ISAUTODC
-**NOT USED**
+**Auto data collection config** — used by T7AUTODCH/T7AUTODEJH (scheduled automatic DC batch posting programs).
 
 Fields: 12
 
@@ -1937,7 +1937,7 @@ Fields: 17
 | 17 | ISDC_SER_WOSUF | INTEGER | 2 | — | — |
 
 ## ISDEPT
-**NOT USED**
+**Department code table** — used by T7APB/T7ARB/T7GLB/T7GLJ (AP/AR/GL programs). Department reference lookup.
 
 Fields: 3
 
@@ -1959,7 +1959,7 @@ Fields: 3
 | 3 | IS_GF_DIV_MISC | STRING | 100 | — | — |
 
 ## ISDROP
-**NOT USED**
+**System dropdown values** — used by T7DROPDOWN and 25 other programs. Stores system-wide dropdown list options by code/type.
 
 Fields: 4
 
@@ -2060,7 +2060,7 @@ Fields: 67
 | 67 | ISGL_TYPE | STRING | 1 | — | — |
 
 ## ISGLNBGT
-**NOT USED**
+**GL next-period budget/balance** — used by T7AMB/T7AMH/T7AMQ/T7GLA (asset management and GL). Stores budget and next-period GL balances.
 
 Fields: 35
 
@@ -2175,7 +2175,7 @@ Fields: 64
 | 64 | BKIC_PROD_USYTD | NUMERIC | 8 | 2 | Units Sold Year-To-Date |
 
 ## ISLBLMAP
-**NOT USED**
+**Inventory label field mapping** — used by T7ING (IN-G inventory labels). Maps label template fields to item master column names.
 
 Fields: 102
 
@@ -2416,7 +2416,7 @@ Fields: 1
 | 1 | IS_PRESN_REASON | STRING | 30 | — | — |
 
 ## ISREPDEF
-**NOT USED**
+**Report definitions** — used by T7REPDEF/EXCOM/T7SOAXCOM. Stores saved report filter configurations by program and user.
 
 Fields: 3
 
@@ -2427,7 +2427,7 @@ Fields: 3
 | 3 | ISREP_DEF_TITLE | STRING | 30 | — | — |
 
 ## ISRTLOAD
-**NOT USED**
+**Routing load runtime table** — used by T7SOA/T7SOB/T7SOB75 (SO entry programs). Loads routing cost data for outside-process operations during SO entry.
 
 Fields: 21
 
@@ -2456,7 +2456,7 @@ Fields: 21
 | 21 | IS_LOAD_TRUCK | STRING | 15 | — | — |
 
 ## ISRTMS
-**NOT USED**
+**RTM printer assignments** — used by J7CCSOLABELS/J7NMITEMRTM/J7NMRTMPRINTER. Maps items to specific RTM report templates and printers.
 
 Fields: 29
 
@@ -2493,7 +2493,7 @@ Fields: 29
 | 29 | IS_RTM_VEND | STRING | 10 | — | — |
 
 ## ISSCOMP
-**NOT USED**
+**SPC component specifications** — used by T7SCOMP/T7SPC. Statistical Process Control; defines which components/features are inspected per process.
 
 Fields: 5
 
@@ -2506,7 +2506,7 @@ Fields: 5
 | 5 | IS_SCOMP_WHO | STRING | 40 | — | — |
 
 ## ISSDET
-**NOT USED**
+**SPC detail measurements** — used by T7SDET/T7SPC/T7SPCLIVEGRID. Stores individual measurement readings per SPC inspection sample.
 
 Fields: 4
 
@@ -2518,7 +2518,7 @@ Fields: 4
 | 4 | IS_SDET_WHO | STRING | 40 | — | — |
 
 ## ISSEPROC
-**NOT USED**
+**SPC process definitions** — used by T7SEPROC/T7SPC. Defines SPC measurement processes with control limits and specifications.
 
 Fields: 2
 
@@ -2538,7 +2538,7 @@ Fields: 2
 | 2 | IS_SEQUIP_NAME | STRING | 20 | — | — |
 
 ## ISSERR
-**NOT USED**
+**SPC error/defect records** — used by T7SPC/T7SPCLIVEGRID/T7SPCREP. Records defect events with error code, process, quantity, and WO reference.
 
 Fields: 17
 
@@ -2563,7 +2563,7 @@ Fields: 17
 | 17 | IS_SERR_WOSUF | INTEGER | 2 | — | — |
 
 ## ISSETYPE
-**NOT USED**
+**SPC error/event type codes** — used by T7SETYPE/T7SPC/T7SPCREP. Defines categories of defects (error types) for SPC classification.
 
 Fields: 2
 
@@ -2586,7 +2586,7 @@ Fields: 5
 | 5 | IS_SHPA_USER | STRING | 30 | — | — |
 
 ## ISSMTCFG
-**NOT USED**
+**SM time configuration** — used by T7SMTEND/T7SMTSET. Stores scheduling time-slot configuration for the SM scheduling module.
 
 Fields: 15
 
@@ -2631,7 +2631,7 @@ Fields: 14
 | 14 | IS_NOTE_TYPE | STRING | 3 | — | — |
 
 ## ISSPC
-**NOT USED**
+**SPC master records** — used by T7SPC/T7SPCLIVEGRID/T7ROJA. Master SPC measurement log: WO/Sequence/Inspector/Employee/Accepted/Rework/Scrap qtys.
 
 Fields: 21
 
@@ -2671,7 +2671,7 @@ Fields: 3
 | 3 | IS_STYPE_WHO | STRING | 40 | — | — |
 
 ## ISSTRACK
-**NOT USED**
+**SPC session tracking** — used by T7SPC. Audit trail for SPC data entry sessions.
 
 Fields: 13
 
@@ -2703,7 +2703,7 @@ Fields: 3
 | 3 | IS_STYPE_WHO | STRING | 40 | — | — |
 
 ## ISSTYPE
-**NOT USED**
+**SPC/general type codes** — used by T7GENAED/T7GENGET/T7SDET/T7SERR. General event type codes shared between SPC and QC modules.
 
 Fields: 3
 
@@ -2756,7 +2756,7 @@ Fields: 34
 | 34 | ISTOOL_WOSUF | INTEGER | 2 | — | — |
 
 ## ISUSAGE
-**NOT USED**
+**Item usage history** — used by T7INA/T7INAS/T7INF/T7INP (IN programs). Tracks per-item usage metrics and consumption history.
 
 Fields: 54
 
@@ -2843,7 +2843,7 @@ Fields: 17
 | 17 | IS_VAR_ZIP | STRING | 8 | — | — |
 
 ## JGPITEMS
-**NOT USED**
+**Physical inventory items (legacy)** — used by T7ING/T7INH/T7INI/T7INJ. JG-era physical inventory item records (86 fields). PI count storage.
 
 Fields: 86
 
@@ -3176,7 +3176,7 @@ Fields: 3
 | 3 | MKTNOTE_TRACK | NUMERIC | 8 | — | — |
 
 ## MKTRACK
-**NOT USED**
+**MK tracking** — used by T7GLJ (GL journal). Tracks GL journal entries for MK module transactions.
 
 Fields: 4
 
@@ -3402,7 +3402,7 @@ Fields: 54
 | 54 | NZ_IPRE_PREFIX_9 | NUMERIC | 8 | — | — |
 
 ## OPQCDESC
-**NOT USED**
+**Operation QC descriptions** — used by T7DCA/T7DCALABEL/T7ADCA (DC programs). QC description text per routing operation for the DC workstation display.
 
 Fields: 10
 
