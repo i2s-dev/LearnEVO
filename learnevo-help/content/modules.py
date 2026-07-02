@@ -2058,6 +2058,13 @@ T7JTREE Java tree-browsing form rather than having its own layout.
 - **[[module-JC|JC]]** — JC reports filter by job code; JO provides the dimensional
   analysis layer on top of JC cost data
 - **[[module-SM|SM]]** — T7SMJO feeds JO summary metrics into the SM KPI dashboard
+
+## SM-P-F — Job code maintenance (EVOHELP.PDF §SM-P-F page 491, Pass 518)
+Job codes in the ISJOB table are maintained via SM-P-F Enter Jobs.
+From SO-A, WO-A, and PO-A, the Job Number field supports F2 lookup into ISJOB.
+Inline add: if an unknown job code is typed in any of those programs, EVO prompts
+whether to add it to ISJOB immediately. Only the job code itself is required; description
+and all other fields are optional.
 """,
 
 "CS": """
@@ -2735,6 +2742,80 @@ pairs, 4 auto-numbers (WONUM/QCNUM/REQNUM/INVNUM), and the ISTS.CFG.* namespace.
 - **[[module-GL|GL]]** — SM-C/D enter GL accounts and departments (cross-listed as AM-C/D)
 - **[[module-WO|WO]]** — WORKCTR and BKICLOCM are read constantly by WO for routing/location lookup
 - **[[module-IN|IN]]** — BKICLOC (136,501 rows) is the heart of inventory: per-item per-location stock
+
+## SM-O / SM-P / SM-R–SM-U sub-programs (EVOHELP.PDF §7.2, Pass 518)
+
+### SM-O Enter Ship Via Codes (page 489)
+Code (≤15 chars) + optional company code / name / description / vendor code.
+Carrier tracking: enter the carrier home page URL and a %%TRACK%% URL template
+(replace the package tracking number with the literal string `%%TRACK%%`). UPS and
+FedEx examples are provided. SO-I Customer Service Inquiry uses this to open a browser
+and track a shipment directly from the shipments screen.
+
+### SM-P-A Enter Categories (page 489–490)
+4-char alphanumeric code + 25-char description. Used in IN-B Enter Inventory as a
+user-defined filter for various reports.
+
+### SM-P-B Enter User Defined (page 490)
+25-char code + description. A second user-defined filter for IN-B / reports.
+
+### SM-P-C / SM-P-D
+SM-P-C is identical to RO-G Enter Scrap Codes.
+SM-P-D is identical to RO-F Enter QC Codes.
+
+### SM-P-E Define Inventory User Defined Fields (page 490–491)
+Up to 30 UDF slots mapped to `MTIC.PROD.SUBST[2]`, `[3]`, `[4]`, or `[5]`
+(each 25 chars = 100 chars total). Each UDF specifies: source field, start position,
+length, label, and screen position (1–30; 3 columns of 10; 1=upper-left, 21=upper-right,
+30=lower-right). Appear on IN-A/IN-B **User Defined Tab** (GUI Tab view only).
+Default on first load: 4 auto-defined fields using first 10 chars of each SUBST field.
+If all UDFs are deleted, the same 4 defaults reload on the next program launch.
+Storage: `BKICPROD.MTIC_PROD_SUBST_2` through `_5`.
+
+### SM-P-F Enter Jobs (page 491)
+Maintains the `ISJOB` reference table used in SO-A, WO-A, and PO-A Job Number
+fields. Only required field: the job code itself. All other fields optional.
+Add/Edit/Delete/Print. Inline add: if an unknown job code is typed in SO-A/WO-A/PO-A,
+EVO offers to add it to ISJOB on the spot.
+
+### SM-P-G Enter WO Priority Codes (page 491)
+Default codes: 1/2/3 = High/Medium/Low. Can define up to 9 numeric + 26 alpha codes.
+Color assignment per code: used by SH-R Work Center Scheduler to visually differentiate
+WO priorities on the schedule grid.
+
+### SM-P-H Enter Cycle Codes (page 491)
+4-char code + description + count frequency (days). Used by PI-A Capture Frozen
+Inventory to filter which items are due for counting based on last-count date + frequency.
+
+### SM-R Multi Language Maintenance (page 492)
+Translation table for multi-language displays or terminology overrides. Workflow:
+1. Create a language (3-char code, e.g., `SPA`).
+2. Select a DFM screen to translate (e.g., `T7INAC.DFM` for IN-A Classic view).
+3. Click Generate — loads all field description rows.
+4. Enter translated values per language column.
+Fields with no translation continue to display the original text. Storage: `LANGDICT`.
+
+### SM-S Enter Evo Links (page 492–493)
+Global Evo Links management. Types: SO / PP / Quotes / Inventory / etc. Print settings
+control whether a link prints as a thumbnail on the document or as a linked page after it.
+Conversion: the rightmost toolbar button (arrow icon) converts old Inventory Links to
+Evo Links; after conversion it becomes an eyeglasses icon (view-only).
+
+### SM-T Enter Java Settings (page 493–494)
+JDBC connection for Java-integrated programs: SH-R Work Center Scheduler,
+BM-N BOM Availability Tree, GL-R Business Status.
+| Field | Notes |
+|-------|-------|
+| Host | Server IP or name |
+| Port | Default 1583 (Pervasive Relational Engine port) |
+| Name | Database name in Pervasive Control Center pointing to company subfolder |
+| Destination | Folder for Java report output |
+Test Settings: success shows first 10 inventory items; failure produces an error report.
+
+### SM-U Customer Ship Via (page 494)
+Per-customer carrier account numbers for third-party freight billing.
+Fields: Customer Code, Ship To Code (must exist in SM-O), Priority (precedence when
+multiple accounts exist), Billing Account Number, Notes, Active/Inactive, Insurance Required.
 """,
 
 "AM": """
@@ -5061,6 +5142,29 @@ All SD defaults are stored in `BKYSMSTR` (355f) and `BKSYMSTR` (286f). Every
 module reads its operational defaults from those singletons at runtime. The
 Mfgug.pdf Ch.23 field descriptions above directly explain the BKSY.WO.* / BKSY.PO.*
 / BKSY.SO.* / BKSY.MRP.* / BKSY.DC.* / BKSY.EST.* namespaces used in T7MDEFAULTS.
+
+## SD-A Company Defaults (EVOHELP.PDF §7.3.2 pages 495–496, Pass 518)
+
+| Field | Values | Effect |
+|-------|--------|--------|
+| Configuration Settings | 0 / 1 / 2 | 0=no form-default changes; 1=system-wide defaults; 2=system-wide + per-workstation user overrides |
+| Password | string | Required to change system-wide config when setting is 1 or 2; blank = anyone can change |
+| Alt. Drive for \ISTS\ | C or blank | Always C or blank unless using Terminal Services / Citrix |
+| Multiple Print Dialog Box | Y / N / A | Y=reopen after print; N=no reopen; A=ask "Finished Printing?" |
+| Remove EDI SO-IN file | Y / N | Prompt to clear ED-B import file after import |
+| Enable Del/Make Obsolete in IN-L-O | Y / N | Allow IN-L-O to make items Obsolete or Delete |
+| Enable Change/Save Default RTMs | Y / N | Prompt to set non-default RTM as new default |
+| Maximize Evo Menu Screen on Start | Y / N / blank | N=remember last menu size; blank/Y=always maximize |
+| Trace Evo File Name | string | Leave blank unless instructed by tech support for debugging |
+| Enable Evo Notes System | Y / N | Enables Memo-style free-form Notes for printing |
+| Enable Evo Links System | Y / N | 256-char path / Evo Links to all master files (not just inventory) |
+| Enable/Disable/Hide BCC box | E / D / H | Controls BCC visibility in email dialogs |
+| Control Ship Via Code | N / Y / R / A | N=no check; Y=list but optional; R=required from list; A=add-on-fly |
+| Use Evo Login as Paperless Login | Y / N | Employee# (SM-G) = PS-A Logon ID; auto-clock-in on HH-I load |
+| Permanently Disable DBA Classic | Y / N | Must disable Classic if passwords are encrypted (irreversible once encrypted) |
+| Permanently Encrypt Passwords | Y / N | **Irreversible.** Requires ADMIN user + no blank passwords; DBA Classic must be disabled |
+| Company name | 25 chars alphanumeric | Displayed at top of master menus and printed on forms |
+| Address Line 1 / Line 2 | 25 chars each | Company address printed on forms |
 """,
 
 "CM": """
