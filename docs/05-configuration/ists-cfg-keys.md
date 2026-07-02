@@ -762,123 +762,136 @@ BKYSMSTR string/numeric fields rather than YN flags.
 
 ### Confidence key
 - **SRC** = confirmed from TAS Pro source code (highest confidence)
-- **DFM** = matched from T7MDefaults.DFM by Top-position pairing (medium confidence; Setup tab entries less reliable due to label density)
+- **DFM positional** = matched from T7MDefaults.DFM (Sep 2024) by positional label-to-control ordering within each container (Pass 557; high confidence)
+- **DFM** = matched from T7MDefaults.DFM by old coordinate-based pairing (lower confidence; some entries corrected in Pass 557)
 - **inferred** = guessed from key name (low confidence)
 
-### Full YN[N] Mapping Table (Pass 379+382, 2026-06-29)
+### Full YN[N] Mapping Table (Pass 557, 2026-07-02)
 
-**88 unique indices** (89 rows — YN[15] duplicated) of **250 total** YN[N] slots in BKYSMSTR.
-Sources: `samples/T7MDefaults.DFM` (81 unique, parsed by `scripts/parse_mdefaults_dfm2.py`) +
-`samples/dfm/T7MDefNDC.DFM` (8 additional: YN[200,202,209,212,213,214,215,218]) +
+**90 unique slots** (91 rows — YN[15] duplicated) of **250 total** YN[N] slots in BKYSMSTR.
+Sources: `samples/dfm_parsed/T7MDEFAULTS.DFM` (Sep 2024, 82 via **positional matching** by
+`scripts/_tmp_dfm_yn_map.py`) + `samples/dfm_parsed/T7MDefNDC.DFM` (Apr 2018, confirms) +
 SRC file evidence (10 slots with direct code confirmation).
-Remaining ~162 slots (of 250) not bound in any DFM — set programmatically or from other screens.
+**Positional matching method:** within each DFM container (TTabSheet/TPanel/TGroupBox), all TLabel
+objects are defined first, then all input controls in the same order. Label[i] → Control[i] within
+each container. More reliable than the coordinate-based approach used in Pass 379 (which
+produced ~40 wrong mappings in the dense Setup/GL tabs). Both DFM versions agree on descriptions.
+Remaining ~160 slots (of 250) are not bound in these two forms.
 
-| YN[N] | Tab | Description | ISTS.CFG Key | Source |
-|-------|-----|-------------|--------------|--------|
-| YN[1] | Setup | Post COGS Transactions? | unknown | DFM |
-| YN[2] | Setup | Post Inventory Adjustments? | unknown | DFM |
-| YN[3] | Processing | Prevent Item Creation from ES-A | unknown | DFM |
-| YN[4] | Setup | Fiscal Year Start Date | unknown | DFM |
-| YN[5] | Setup | Post WO Transactions? | unknown | DFM |
-| YN[15] | Processing | PO-A Default for change dates (Y,N) | unknown | DFM |
-| YN[15] | Routing | ROB: Print Fixed and Variable Overhead as % (Y/N) | unknown | DFM (duplicate index — two controls share YN[15]) |
-| YN[16] | Sales Commissions | Enter Commissions at Sales Order Entry? [Y/N] | unknown | DFM |
-| YN[17] | Sales Commissions | Enter Commissions at Line Item Entry? [Y/N] | unknown | DFM |
-| YN[18] | Sales Commissions | Enter Commissions for 2 Salespersons? [Y/N] | unknown | DFM |
-| YN[19] | Processing | SOQA/INB: Disable Base Price passdown to subsid Co | unknown | DFM |
-| YN[20] | Processing | Use Long Weight in Calculations? | ISTS.CFG.LNGWT | DFM+SRC (BKDCA:708 barcode flag) |
-| YN[21] | Processing | IN-A: Disable Rebuild Stock Status | unknown | DFM |
-| YN[22] | Processing | WOJ: Process WIP Variance | unknown | DFM |
-| YN[23] | BOM | Require Sequence Entry - Type N (Non Inventory)? | unknown | DFM |
-| YN[24] | BOM | Require Sequence Entry - Type L (Labor)? | unknown | DFM |
-| YN[25] | BOM | Require Sequence Entry - Type T (Out Process)? | unknown | DFM |
-| YN[26] | BOM | Require Sequence Entry - Type R, M, F, A? | unknown | DFM |
-| YN[27] | Setup | Post PO Transactions? | unknown | DFM |
-| YN[28] | Features / Options | Suppress Option Headers, Footers, Indents? | unknown | DFM |
-| YN[29] | Setup | Copy Cust PO#s from WO#s as comment lines | unknown | DFM |
-| YN[30] | Setup | AP-C Price change update PO Line price (Y/N/A) | unknown | DFM |
-| YN[31] | Processing | IN-A: Disable Rebuild Stock Status | unknown | DFM |
-| YN[32] | Setup | Copy Cust PO#s from WO#s as comment lines | unknown | DFM (may be same label/different variant) |
-| YN[33] | Setup | Invoice PO Receipts through AP | unknown | DFM |
-| YN[35] | Setup | Open Period End Date | unknown | DFM |
-| YN[36] | Routing | Multiply or Divide by number of processes? (M/D) | unknown | DFM+SRC (BKROA.SRC:609) |
-| YN[37] | Routing | Use standard time? | unknown | DFM+SRC (BKROA.SRC:656) |
-| YN[38] | Routing | Make sequence equal template number? | ISTS.CFG.WOCALC | DFM+SRC (BKROA.SRC:392,1582) |
-| YN[39] | Printing | SO Packing Slip form format: 1=SOC1.RTM (condensed), 2=SOC2.RTM (single qty), 3=SOC3.RTM (plain condensed), 4=SOC4.RTM (plain single qty) | unknown | DFM |
-| YN[40] | Setup | Post Inventory Adjustments? | unknown | DFM (Top-pair may overlap YN[2] label) |
-| YN[41] | Printing | Print Ending Lines (PO form?) | unknown | DFM |
-| YN[42] | Printing | Sales Order Ending Lines (variant) | unknown | DFM |
-| YN[43] | Printing | Print Title on RFQ? | unknown | DFM |
-| YN[44] | Printing | Sales Quote Print Format Number | unknown | DFM |
-| YN[45] | Printing | Print Discount Column on Forms? | unknown | DFM |
-| YN[46] | Printing | Print Co. Name/Address on Forms? | unknown | DFM |
-| YN[47] | Checking | Payroll check form format: 1=PRD1.RTM (laser), 2=PRD2.RTM (continuous) | unknown | DFM |
-| YN[48] | Checking | AP check form format: 1=APHA1.RTM (stub/check/stub), 2=APH1.RTM (continuous), 4=APHA2.RTM (stub/stub/check), 5=APHA3.RTM (check/stub/stub) | unknown | DFM+SRC (Bkaph.src:60-81) |
-| YN[50] | Setup | Post PO Transactions? | unknown | DFM (may overlap YN[27] label) |
-| YN[57] | Scheduling | Display machine prompt in Enter Labor? | unknown | DFM |
-| YN[59] | Scheduling | Allow entry to overlap settings in routings? | unknown | DFM+SRC (BKROA.SRC:647) |
-| YN[62] | Printing | Decimalized Quantities on Forms? | unknown | DFM |
-| YN[63] | Printing | Decimalized Quantities on Forms? | unknown | DFM (variant of YN[62]?) |
-| YN[64] | Printing | Print Title on: Acknowledgments | unknown | DFM |
-| YN[65] | Processing | Divide Overhead by # of Jobs Worked | unknown | DFM |
-| YN[66] | Routing | Display long time prompt? | unknown | DFM+SRC (BKROA.SRC:629) |
-| YN[67] | MRP | Include in MRP Generation? | unknown | DFM |
-| YN[73] | Processing | Prevent Item Creation from PI-C | unknown | DFM |
-| YN[74] | Printing | Print Discount Column on Forms? | unknown | DFM |
-| YN[76] | Printing | SO Acknowledgment form format: 1=SOB1.RTM, 2=SOB2.RTM, 3=SOB3.RTM, 4=SOB4.RTM | unknown | DFM |
-| YN[77] | Printing | SO Quote form format: 1=SOPB1.RTM, 2=SOPB2.RTM, 3=SOPB3.RTM, 4=SOPB4.RTM | unknown | DFM |
-| YN[78] | Printing | PO form format: 1=POE1.RTM (universal), 2=POE2.RTM (plain paper) | unknown | DFM |
-| YN[79] | Legacy Settings | Prompt for save in Enter Accounts? | unknown | DFM |
-| YN[80] | Printing | Print Ending Lines (PO?) | unknown | DFM |
-| YN[82] | Printing | Packing Slips (format number?) | unknown | DFM |
-| YN[83] | Processing | SOQA/INB: Disable Base Price passdown to subsid Co | unknown | DFM |
-| YN[84] | Processing | WOJ: Process WIP Variance | unknown | DFM |
-| YN[85] | Processing | Divide Overhead by # of Jobs Worked | unknown | DFM |
-| YN[86] | Processing | Prevent Item Creation from ES-A | unknown | DFM |
-| YN[87] | Acct. Receivables | Print Co. Name/Addr on Statement | unknown | DFM |
-| YN[200] | Scheduling | Use Lead Time Scheduling [F/B/N] | unknown | DFM |
-| YN[202] | Processing | PO-C to update Std. Cost if Cost is $0.00 | unknown | DFM |
-| YN[209] | Setup | Use Accounting Open Period Start Date in GL-B (label from backwards-scan in Setup tab) | unknown | DFM (approx) |
-| YN[212] | Setup | Use Accounting Open Period Start Date in AP-B | unknown | DFM (approx) |
-| YN[213] | Setup | Use Accounting Open Period Start Date in AR-C | unknown | DFM (approx) |
-| YN[214] | Setup | (label ambiguous — Setup tab density) | unknown | DFM (approx) |
-| YN[215] | Setup | (label ambiguous — Setup tab density) | unknown | DFM (approx) |
-| YN[218] | Setup | DC-A/DC-C: Round Shift Start/Stop by X minutes | unknown | DFM |
-| YN[220] | Printing | Invoices (format number?) | unknown | DFM |
-| YN[222] | Setup | GL Department | unknown | DFM |
-| YN[223] | Setup | Location | unknown | DFM |
-| YN[225] | Processing | SOQA/INB: Disable Base Price passdown to subsid Co (variant) | unknown | DFM |
-| YN[228] | Setup | DC-B/DC-G/WO-M: Default for Scrap Prompt | ISTS.CFG.DCSEQ | DFM+SRC (BKDCA.SRC:193-201) |
+| YN[N] | Module | Description | ISTS.CFG Key | Source |
+|-------|--------|-------------|--------------|--------|
+| YN[1] | WO Setup | Work Order Status Code — default status when creating WO; live='F' (Firm) | unknown | DFM positional |
+| YN[2] | WO Setup | Default Class Code | unknown | DFM positional |
+| YN[3] | WO Processing | Use Actual Costs in Labor Entry? | unknown | DFM positional |
+| YN[4] | WO Setup | View only in Enter Routing | unknown | DFM positional |
+| YN[5] | WO Setup | View only in WO Bills Mat? | unknown | DFM positional |
+| YN[15] | WO Processing | Post Overhead as % of Labor? | unknown | DFM positional |
+| YN[15] | INV Routing | Primary Routing Note Type | unknown | DFM positional (dup index — two controls share YN[15]) |
+| YN[16] | Sales Commissions | Enter Commissions at Sales Order Entry? [Y/N] | unknown | DFM positional |
+| YN[17] | Sales Commissions | Enter Commissions at Line Item Entry? [Y/N] | unknown | DFM positional |
+| YN[18] | Sales Commissions | Enter Commissions for 2 Salespersons? [Y/N] | unknown | DFM positional |
+| YN[19] | WO Processing | Labor Prompt in Kit Issues? | unknown | DFM positional |
+| YN[20] | WO Processing | Backflush by Seq in Enter Labor? [Y/N/B] | unknown | DFM positional |
+| YN[21] | WO Processing | Backflush in Enter Finished Prod? [Y/N/A/B] | unknown | DFM positional |
+| YN[22] | WO Processing | Close WO in Enter Finished Prod? | unknown | DFM positional |
+| YN[23] | INV BOM | Require Sequence Entry - Type R, M, F, A? | unknown | DFM positional |
+| YN[24] | INV BOM | Require Sequence Entry - Type T (Out Process)? | unknown | DFM positional |
+| YN[25] | INV BOM | Require Sequence Entry - Type L (Labor)? | unknown | DFM positional |
+| YN[26] | INV BOM | Require Sequence Entry - Type N (Non Inventory)? | unknown | DFM positional |
+| YN[27] | WO Setup | Allow edit of Component Description in WO-G | unknown | DFM positional |
+| YN[28] | INV Features | Mandatory Feature? | unknown | DFM positional |
+| YN[29] | SO Setup | Turn the Credit Limit Message Off? | unknown | DFM positional |
+| YN[30] | SO Setup | Prompt for Taxable Line Item Amt? | unknown | DFM positional |
+| YN[31] | PO Processing | Receive Into (QC / Inventory) | unknown | DFM positional |
+| YN[32] | PO Setup | Default PO Tax rate | unknown | DFM positional |
+| YN[33] | PO Setup | PO-Q Allow Entry to Price | unknown | DFM positional |
+| YN[35] | SO Setup | Prompt for Itemized Sales Tax? | unknown | DFM positional |
+| YN[36] | INV Routing | Multiply or Divide by number of processes? (M/D) — live='D' (Divide) | unknown | DFM+SRC (BKROA.SRC:609) |
+| YN[37] | INV Routing | Use standard time? | unknown | DFM positional+SRC (BKROA.SRC:656) |
+| YN[38] | INV Routing | Make sequence equal template number? | ISTS.CFG.WOCALC | DFM positional+SRC (BKROA.SRC:392,1582) |
+| YN[39] | SO Printing | SO Packing Slip form format: 1=SOC1.RTM (condensed), 2=SOC2.RTM (single qty), 3=SOC3.RTM (plain condensed), 4=SOC4.RTM (plain single qty) — live='4' | unknown | DFM+SRC |
+| YN[40] | PO Setup | Default Ship Via | unknown | DFM positional |
+| YN[41] | WO Printing | Print BOM Remarks? | unknown | DFM positional |
+| YN[42] | WO Printing | Print BOM Comments? | unknown | DFM positional |
+| YN[43] | WO Printing | Print Job Schedule? | unknown | DFM positional |
+| YN[44] | WO Printing | Print Short Form? | unknown | DFM positional |
+| YN[45] | WO Printing | Print Mat in Seqs? | unknown | DFM positional |
+| YN[46] | WO Printing | Print Bill of Mat? | unknown | DFM positional |
+| YN[47] | PR Checking | Payroll check form format: 1=PRD1.RTM (laser), 2=PRD2.RTM (continuous) — live='1' | unknown | DFM+SRC |
+| YN[48] | AP Checking | AP check form format: 1=APHA1.RTM (stub/chk/stub), 2=APH1.RTM (continuous), 4=APHA2.RTM (stub/stub/chk), 5=APHA3.RTM (chk/stub/stub) — live='1' | unknown | DFM+SRC (Bkaph.src:60-81) |
+| YN[50] | INV Setup | Default Inventory Location | unknown | DFM positional |
+| YN[57] | WO Scheduling | Display machine prompt in Enter Labor? | unknown | DFM positional |
+| YN[59] | WO Scheduling | Allow entry to overlap settings in routings? | unknown | DFM positional+SRC (BKROA.SRC:647) |
+| YN[62] | SO Printing | Sales Quote Print Format Number | unknown | DFM positional |
+| YN[63] | WO Printing | Print Machine and Tool? | unknown | DFM positional |
+| YN[64] | WO Printing | Print Inspection Fields? | unknown | DFM positional |
+| YN[65] | WO Processing | Use Std Cost in ENT Fin Prod? | unknown | DFM positional |
+| YN[66] | INV Routing | Display long time prompt? | ISTS.CFG.LNGWT | DFM+SRC (BKROA.SRC:629) |
+| YN[67] | MRP | Include in MRP Generation? | unknown | DFM positional |
+| YN[73] | WO Processing | Divide Labor Cost by # Jobs Worked | unknown | DFM positional |
+| YN[74] | SO Printing | Packing Slip Print Format Number | unknown | DFM positional |
+| YN[76] | SO Printing | SO Acknowledgment form format: 1=SOB1.RTM, 2=SOB2.RTM, 3=SOB3.RTM, 4=SOB4.RTM — live='4' | unknown | DFM |
+| YN[77] | SO Printing | SO Quote form format: 1=SOPB1.RTM, 2=SOPB2.RTM, 3=SOPB3.RTM, 4=SOPB4.RTM — live='4' | unknown | DFM |
+| YN[78] | PO Printing | PO form format: 1=POE1.RTM (universal), 2=POE2.RTM (plain paper) — live='2' | unknown | DFM |
+| YN[79] | Contact Master | Prompt for save in Enter Accounts? | unknown | DFM positional |
+| YN[80] | PO Printing | Print Co. Name/Address on forms? | unknown | DFM positional |
+| YN[82] | WO Printing | Print Multi Routing? | unknown | DFM positional |
+| YN[83] | PO Processing | Require Pack Slip Info? | unknown | DFM positional |
+| YN[84] | PO Processing | Receive all lines? | unknown | DFM positional |
+| YN[85] | PO Processing | Display comment lines? | unknown | DFM positional |
+| YN[86] | PO Processing | Display fully received lines? | unknown | DFM positional |
+| YN[87] | Acct. Receivables | Pop-up in AR-C for Cr hld (Y/N/V) | unknown | DFM positional |
+| YN[200] | WO Scheduling | Use Lead Time Scheduling [F/B/N] — live='N' (none) | unknown | DFM positional |
+| YN[202] | WO Processing | Use Projected or Estimate $ and Hrs [P/E]? | unknown | DFM positional |
+| YN[209] | GL Setup | Post WO Transactions? | unknown | DFM positional |
+| YN[212] | GL Setup | Post Inventory Adjustments? | unknown | DFM positional |
+| YN[213] | GL Setup | Post PO Transactions? | unknown | DFM positional |
+| YN[214] | GL Setup | Post COGS Transactions? | unknown | DFM positional |
+| YN[215] | GL Setup | Fiscal Year Start Date | unknown | DFM positional |
+| YN[218] | DC Setup | Allow Dec Entry # of jobs worked | unknown | DFM positional |
+| YN[220] | WO Printing | Print Routing Seq Order (A/D) | unknown | DFM positional |
+| YN[222] | PO Setup | Allow entry to (Y/N/Require) — partial label; likely bin location or PO approval | unknown | DFM positional |
+| YN[223] | PO Setup | Copy Cust PO's from WO's as comment lines | unknown | DFM positional |
+| YN[225] | SO Processing | SO-E: Release Qtys > On hand (0/1/2/3) | unknown | DFM positional |
+| YN[228] | DC Setup | DC-B/DC-G/WO-M: Default for Scrap Prompt | ISTS.CFG.DCSEQ | DFM+SRC (BKDCA.SRC:193-201) |
 | YN[229] | DC | Prompt "Continue for same employee?" between entries; auto-closes employee's open jobs on decline | ISTS.CFG.DCSYNC | DFM+SRC (BKDCA.SRC:228-239) |
-| YN[230] | Acct. Receivables | Invoice Age based on (1) age or (2) days past due | unknown | DFM |
-| YN[231] | Setup | Open Period End Date | unknown | DFM |
-| YN[237] | Scheduling | PO & DC update the actual start/finish dates of sequences? | unknown | DFM |
-| YN[238] | Setup | Disable Recalc Est Cost in WO-A | unknown | DFM |
-| YN[239] | Setup | Allow WOs for Make From Items | unknown | DFM |
-| YN[240] | Estimates | Print Title on Quote? | unknown | DFM |
-| YN[241] | Printing | Print Title on RFQ? | unknown | DFM |
-| YN[242] | Printing | Print Co. Name/Address on Forms? | unknown | DFM |
-| YN[243] | Printing | Sales Quotes (format number?) | unknown | DFM |
-| YN[244] | Printing | Invoices (format number?) | unknown | DFM |
-| YN[245] | Printing | Packing Slips (format number?) | unknown | DFM |
-| YN[246] | Printing | Print Title on: Acknowledgments | unknown | DFM |
-| YN[247] | Acct. Receivables | Print Title on Statement | unknown | DFM |
-| YN[248] | MRP | Round MRP quantities to the next whole number? | unknown | DFM |
-| YN[249] | Checking | AP check top margin offset (numeric value, not Y/N — stores pixel offset for top margin on AP checks) | unknown | SRC (Bkaph.src:349 `nTopMarg = val(bkys.yn[249])`) |
+| YN[230] | Acct. Receivables | Invoice Age basis or Sales Person assignment (1/2/B) — partial label | unknown | DFM positional (partial) |
+| YN[231] | SO Setup | Prompt for Retention Billing? | unknown | DFM positional |
+| YN[237] | WO Scheduling | PO & DC update the actual start/finish dates of sequences? | unknown | DFM positional |
+| YN[238] | SO Setup | Prevent Copying of SO# and Quotes? | unknown | DFM positional |
+| YN[239] | SO Setup | Retention Item No | unknown | DFM positional |
+| YN[240] | WO Estimates | Contact Master for Estimates | unknown | DFM positional |
+| YN[241] | PO Printing | RFQ Print Format Number | unknown | DFM positional |
+| YN[242] | PO Printing | Print Title on RFQ? | unknown | DFM positional |
+| YN[243] | SO Printing | Sales Quotes (format number?) | unknown | DFM (old coord. approx. — not confirmed by positional) |
+| YN[244] | SO Printing | Decimalized Quantities on Forms? | unknown | DFM positional |
+| YN[245] | SO Printing | Print Discount Column on Forms? | unknown | DFM positional |
+| YN[246] | SO Printing | Print Co. Name/Address on Forms? | unknown | DFM positional |
+| YN[247] | Acct. Receivables | Pop-up in AR-C for Comm. (Y/N/C) | unknown | DFM positional |
+| YN[248] | MRP | Expedite Buffer (Days) — stores numeric days as string | unknown | DFM positional |
+| YN[249] | AP Checking | AP check top margin offset (pixel offset; live='0') — stores numeric as string | unknown | SRC (Bkaph.src:349 `nTopMarg = val(bkys.yn[249])`) |
 
-**Notes on duplicate/ambiguous labels in Setup tab:**
-Several Setup tab entries show the same label description (e.g. "Post Inventory Adjustments?" for YN[2], YN[40], YN[213], YN[228]). This occurs because the Setup tab has many controls in close vertical proximity; Top-position pairing may capture a different setting's label. Treat Setup tab DFM entries with lower confidence than non-Setup tabs.
+**Notes on positional matching method (Pass 557):**
+Within each container (TTabSheet/TPanel/TGroupBox) in the DFM, TLabel objects are defined
+first, then input controls (TTASENTER/TTASNumEnter etc.) in the same order. Label[i] →
+Control[i] within each container. This corrects the coordinate-based (Top-position pairing)
+approach used in Pass 379, which frequently matched wrong labels in the dense Setup/GL tabs.
+The old method produced ~40 wrong descriptions; this table reflects the corrected values.
 
-**Note on YN[249] numeric usage:** Not all YN[N] slots store Y/N flags. YN[249] stores a numeric
-string (pixel offset). The column type in BKYSMSTR is STRING(2) for all YN slots, so numeric
-values are stored as ASCII digit strings. Other slots may similarly store format codes (1–5) or
-small integers rather than Y/N.
+**Known positional conflicts (SRC evidence overrides):**
+- YN[36]: positional says “Default sequence increment”; SRC (BKROA.SRC:609) + live='D' confirms “Multiply or Divide by number of processes? (M/D)”.
+- YN[66]: positional says “Multiply or Divide...”; SRC (BKROA.SRC:629) confirms “Display long time prompt?” (ISTS.CFG.LNGWT).
+- YN[228/229]: positional says “Allow clocking in/out on multiple jobs?” / “Use full Screen?”; SRC (BKDCA.SRC:193–239) confirms DCSEQ/DCSYNC. Container label/control counts mismatched.
 
-**Pass 382 corrections (2026-06-29):** Prior documentation incorrectly stated BKYSMSTR had 354
-YN columns. Live ODBC query of DSN=DBA confirmed the actual count is 250 (BKYS_YN_1 through
-BKYS_YN_250). The 89-row DFM-derived table is complete — no additional YN controls exist in
-T7MDefaults.DFM or T7MDefNDC.DFM. The remaining ~161 slots (250 − 89) are set outside these
-two forms.
+**Note on non-Y/N slot usage:** Not all YN[N] slots store Y/N flags. The BKYSMSTR STRING(2)
+column type allows any 1–2 char value. Known non-Y/N usage: YN[1]='F' (status code),
+YN[36]='D' (M/D choice), YN[39/62/74/76/77/78/241]=(format numbers 1–5),
+YN[47/48]=(form number 1–5), YN[200]='F/B/N' (schedule mode), YN[248]=(days), YN[249]=(pixels).
+
+**Pass 382 corrections (2026-06-29):** Live ODBC query of DSN=DBA confirmed BKYSMSTR has exactly
+250 YN columns (BKYS_YN_1 through BKYS_YN_250). Remaining ~160 slots (of 250) not bound in
+T7MDefaults.DFM or T7MDefNDC.DFM; these are set programmatically or from other module-specific
+screens not yet analyzed.
 
 ### Live BKYSMSTR YN Values at i2 Systems (Pass 384, 2026-06-29)
 
