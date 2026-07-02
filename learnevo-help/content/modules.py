@@ -2816,6 +2816,67 @@ Test Settings: success shows first 10 inventory items; failure produces an error
 Per-customer carrier account numbers for third-party freight billing.
 Fields: Customer Code, Ship To Code (must exist in SM-O), Priority (precedence when
 multiple accounts exist), Billing Account Number, Notes, Active/Inactive, Insurance Required.
+
+## SM-C / SM-D / SM-G / SM-H operational details (EVOHELP.PDF §7.2, Pass 521)
+
+### SM-C Enter Item Classes (pages 463–465)
+Item classes organize inventory for reports and GL posting. Every item must have a class.
+**9 GL accounts per class:**
+asset/expense | COGS | taxable sales | non-taxable sales | WIP |
+absorbed labor | absorbed fixed OH | absorbed variable OH | absorbed material burden
+
+If any GL account is left blank, the system uses the AD-A default. Classes only need
+non-default GL accounts for exceptions. Material burden % is also per-class.
+Multi-location: separate Class/Location records for per-location GL overrides.
+
+### SM-D Enter Terms Table (pages 466–467)
+Up to 99 terms types. Stored as a numbered sequence in `ISTERMS`.
+**Critical rule:** The FIRST position term is the default for NSF checks, interest
+charges, PR tax, and commission transfers — use a generic term like "NET 30".
+**Warning:** Once orders are entered, do NOT reorder the terms table — existing records
+store the terms number, not the description; reordering changes their meaning.
+Fields: Term Num / Description (20 chars, prints on invoices+POs) / Disc Amt (%) /
+Disc Days / Net Days / COD flag / AR/AP applicability.
+
+### SM-G Enter Employees (pages 470–471)
+4-char numeric employee number. Fields: First name / MI / Last name / Address / City /
+State / Zip / Phone / Start Date / Regular Pay Rate / Overtime Pay Rate / Email / Division /
+Shift / Multiple WO simultaneous clocking / Exempt from overhead burden / Photo image link.
+Uses: WO labor tracking / JC job costing / DC data collection / PO receiving+inspection+approval /
+email icc list / Sales Rep assignment.
+Wage rates: employee rates can replace work center rates for job costing (Rate button).
+
+### SM-H Enter Shop Calendar (pages 472–473)
+Marks non-workdays (weekends, holidays, shutdowns) unlimited years forward.
+**Two calendars:** (1) general system calendar (used by PO-A, WO-A date validation);
+(2) SH-E finite scheduling calendar (must be generated separately from within SM-H).
+Programs that use the calendar will not allow dates that fall on marked non-workdays.
+
+## SM-J file maintenance programs (EVOHELP.PDF §7.2, Pass 521)
+
+| Program | Purpose |
+|---------|---------|
+| SM-J-A | WO File Maintenance — delete blank/duplicate/orphan records; Report-only then For-real modes |
+| SM-J-B | Archive Work Orders — move closed WOs to history |
+| SM-J-C | Reconcile Inventory On-Hand — compare calculated vs. stored on-hand |
+| SM-J-D | Consolidate Inventory Transactions — merge redundant INVTXN records |
+| SM-J-E | Purge Work Orders — permanently delete old WO records |
+| SM-J-F | Purge Purchase Order History |
+| SM-J-G | Purge QC Receipts |
+| SM-J-H | Purge Data Collection File |
+| SM-J-I | Purge Estimates |
+| SM-J-J | Archive or Purge Closed Sales Orders |
+| SM-J-K | Purge or Archive Invoice History |
+| SM-J-L | **Change Part Numbers** — renames an item number across ALL system files (including history); can merge two item numbers |
+| SM-J-M | **Change Customer Codes** — renames a customer code across ALL files (including history); can merge |
+| SM-J-N | **Change Vendor Codes** — renames a vendor code across ALL files (including history); can merge |
+| SM-J-O | Rebuild Customer/Vendor Credit Info |
+| SM-J-P | Purge/Archive Service/RMA Orders |
+| SM-J-Q | BOM Recursion Utility — detect/fix circular BOM references |
+| SM-J-R | Archive Purchase Orders |
+
+**Key warning for SM-J-L/M/N:** These operations change HISTORY files as well as master
+files. Use only during startup or under controlled renumbering projects.
 """,
 
 "AM": """
@@ -4380,6 +4441,49 @@ UT-K utilities are bulk data correction tools run after data migrations or error
 records from an entire module. The DFM warning text: "To Delete ALL data in the
 specified module, enter D" / "To clear transaction related data only, enter C."
 This is administrator-only; running it on the production database is irreversible.
+
+## UT-I / UT-K-A through UT-K-G operational detail (EVOHELP.PDF pages 456–462, Pass 521)
+
+### UT-I Create / Delete Company (page 456)
+Creates a new company (copy of files from an existing company) or deletes an existing one.
+Fields: Company Code / Company Name / Company Path / Delete flag / Create flag /
+Copy from existing company? / Copy company code.
+Special modes: F3=update data dictionary only (files already exist); F4=create missing files only.
+Underlying action: copies Btrieve .B files from source company path to new company path,
+then updates the company registry.
+
+### UT-K-A Clear Data (pages 457–458)
+Clears or purges all data in a selected module. **The most destructive utility in EVO.**
+Entry D = delete ALL records in the module. Entry C = clear transaction data only (keeps masters).
+Six selectable module groups: GL / AR+SO / AP+PO / Manufacturing+Inventory / Payroll / Contact Manager.
+Always back up and get all users off system first.
+
+### UT-K-B Global Field Replace (pages 458–459)
+Mass-update a single field across all records of a Btrieve file.
+Fields: File Name, Field to Change, Array# (for array fields), Action (Flat amount / Percentage),
+3 filter conditions each with field name + operation (All / <> / > / < / >= / <= / $ / =$) +
+comparison value. F10=Process. Test Filters button validates conditions before running.
+Same functionality as T7FNR described in FN module.
+
+### UT-K-D Recalculate GL Account Balances (page 460)
+Rebuilds GL account balance buckets (BKGLCOA / ISGLCOA) by summing all BKGLTRAN entries.
+Useful after data corruption or import. "Orphan" BKGLTRAN entries (account not in COA) are
+posted to a configurable suspense account. Allows Current Year / Last Year / 2–6 Years Ago
+to scope the recalculation. GL Account From/Thru filter for partial recalc.
+
+### UT-K-E Consolidate Inventory Locations (pages 460–461)
+Merges inventory from one location code into another across all 55 inventory-related tables.
+Presents an important warning before running. New master location code = target code.
+This is a mass-rename/merge — not a quantity transfer.
+
+### UT-K-F Set Average/Last Cost to Standard Cost (page 461)
+For each item in inventory, sets the Average Cost and Last Cost fields equal to the
+current Standard Cost. Used when switching costing methods or after a cost roll-up.
+Per-item or all-items. No undo — run reports first.
+
+### UT-K-G Recalculate Inventory Book Value (page 461–462)
+Recalculates the BKICMSTR.BKIC_BKVAL (book value) field for each inventory item
+by multiplying on-hand quantity × unit cost. Use after cost corrections or data repair.
 """,
 
 "LM": """
