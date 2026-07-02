@@ -1,10 +1,11 @@
 # EX — SQL Export / Business Intelligence Export (SQLEXPORT.RWN)
 
-Status: verified | Pass 315 2026-06-25
+Status: verified | Pass 556 2026-07-02
 
 Sources: variable extraction from `samples/rwn_decrypted/SQLEXPORT.RWN.dec` +
-DFM read from Pass 156 + SQLExport.jar analysis from Pass 156 +
-EvoPVT.jar class file analysis from Pass 315.
+DFM read from Pass 156 + SQLExport.jar class string analysis (Pass 556) +
+EvoPVT.jar class file analysis from Pass 315 + JDBC.INI read (Pass 556) +
+all 19 DefaultSQL query files read (Pass 556).
 
 ---
 
@@ -17,7 +18,7 @@ business logic; it passes session parameters to the Java app and exits.
 - **Module code:** EX (SQL Export)
 - **Program:** SQLEXPORT.RWN (23 procs, 709 vars)
 - **DFM:** T7JTemp template (Caption: "Loading....") — generic Java loader; no EX-specific UI
-- **Java application:** `SQLExport.jar` (`com.evoerp.*`, v1.5.0 build 2014-03-19)
+- **Java application:** `SQLExport.jar` (`com.evoerp.*`, v1.8.6 build 2021-09-11)
 - **Architecture pattern:** identical to QUERYEXECUTE, CASHFLOW, CRMDASHBOARD,
   COMMISSIONRPT, PURCHITEM, PURCHVEND, VSCHED (7 confirmed Java bridges)
 
@@ -27,9 +28,14 @@ business logic; it passes session parameters to the Java app and exits.
 
 1. TAS Pro opens SQLEXPORT.RWN, displays "Loading...." dialog
 2. Passes session parameters (HOST/NAME/PORT/COMP/JAVA.PATH/JAVA.NAME) to JVM
-3. Java app `SQLExport.jar` launches — full Swing UI with SQL query selection
-4. User selects a predefined SQL query against **EVOBI2** (separate BI database, NOT DBAMFG$)
-5. Export runs via `TextExportingWorker`; results written to `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\` as CSV
+3. Java app `SQLExport.jar` launches — full Swing UI with SQL query editor
+4. User selects a query from the **Default Queries** menu (loaded from `DefaultSQL\` directory) or writes ad-hoc SQL
+5. Export runs; results written as CSV to the `Tree Destination` for the active company code
+6. **Company code** (COMP var) selects which Pervasive database to query (see `jdbc.ini` section below)
+
+The `DefaultSQL\` queries all target **operational EvoERP tables** in the main `abi` database — they query
+BKARHINV, BKICMSTR, BKGLTRAN, WOBOM, BKAPHPO, etc. directly. EVOBI2 is an additional reporting database
+available via the BI2 company code; it is not required by the DefaultSQL queries.
 
 ---
 
@@ -103,27 +109,70 @@ After the workstation block, SQLEXPORT.RWN carries per-module screen selector va
 
 ---
 
-## Java Application Details (from Pass 156)
+## Java Application Details (Pass 556 class analysis)
 
-**SQLExport.jar** (`com.evoerp.*`):
+**SQLExport.jar** (`com.evoerp.sqlexport.*`, v1.8.6):
 
 | Class | Purpose |
 |-------|---------|
-| `com.evoerp.sql.PervasiveDatabase` | Pervasive JDBC v2 connection manager |
-| `com.evoerp.ui.util.TextExportingWorker` | CSV export Swing background task |
-| `com.evoerp.ui.util.FileOpeningWorker` | File open/save dialog worker |
+| `com.evoerp.sqlexport.ui.QueryFrame` | Main window — query editor (JEditorPane, text/sql), toolbar (New/Execute/Export), Default Queries menu |
+| `QueryFrame$QueryWorker` | Background SwingWorker that executes SQL via `Database.executeQuery()` |
+| `QueryFrame$DirectExportWorker` | Background SwingWorker for direct-to-CSV export |
+| `QueryFrame$StoredQueryLoader` | Loads `StoredQuery` objects from DefaultSQL .sql files for the menu |
+| `com.evoerp.sqlexport.sql.Database` | Wraps a `PervasiveDatabase` connection; executes queries; saves/loads from ISQRYSQL/ISVARSQL |
+| `com.evoerp.sqlexport.sql.StoredQuery` | Holds one .sql file's text; `loadFromFile(File)` reads from disk |
+| `com.evoerp.sqlexport.sql.Permission` | SELECT permission type; `check()` enforces read-only access |
+| `com.evoerp.sqlexport.ui.QueryResultFrame` | Displays result set; supports CSV export with "Format for Excel" checkbox |
 
-**Database connection:**
-- Target: **EVOBI2** (separate BI database — NOT operational DBAMFG$)
-- Host: i2s109-solidcrm, Port: 1583
-- The EVOBI2 schema contains views or denormalized tables for reporting
+**JDBC.INI** (`\\I2S109-SOLIDCRM\DBAMFG$\JDBC.INI`, copied to `samples/jar/JDBC.INI`):
+
+```ini
+[BAB]          ; Main production company
+Host=i2s109-solidcrm
+Port=1583
+Name=abi                              ; operational DBAMFG$ database
+Tree Destination=\\I2S109-SOLIDCRM\EVOREPORTS\
+
+[BI2]          ; BI/reporting company
+Host=I2S109-SOLIDCRM
+Port=1583
+Name=EVOBI2                           ; separate BI reporting database
+Tree Destination=\\I2S109-SOLIDCRM\DBAMFG$\REPORTS
+
+[B22]          ; Second company (testing / alternate)
+Host=i2s109-solidcrm
+Port=1583
+Name=evob22
+Tree Destination=\\I2S109-SOLIDCRM\EVOREPORTS\
+
+[BAT]          ; Batch processing company
+Host=I2S109-SOLIDCRM
+Port=1583
+Name=EVOBAT
+Tree Destination=\\I2S109-SOLIDCRM\DBAMFG$\REPORTS
+```
+
+All four databases share the same Pervasive PSQL server on port 1583.
+`DatabaseSettings` reads this file; TAS passes the `COMP` var to select the section.
 
 **Output:**
-- Path: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\` (historical: `\\I2S109-SOLIDCRM\EVOREPORTS\`)
-- Format: CSV
+- Path: `Tree Destination` from jdbc.ini for the active company code
+  - BAB: `\\I2S109-SOLIDCRM\EVOREPORTS\`
+  - BI2/BAT: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\`
+- Format: CSV; "Format for Excel" option adds Excel-compatible quoting
 - Log: `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`
 
-**Known bug:** path separators in filenames (e.g., `7\18 thru 8-4.csv`) cause
+**Saved Queries** — two additional tables in the database store user-saved queries:
+
+| Table | Columns | Purpose |
+|-------|---------|---------|
+| `ISQRYSQL` | `IS_QRY_NAME`, `IS_QRY_QUERY` | Named saved SQL queries (full query text) |
+| `ISVARSQL` | `IS_VAR_QNAME`, `IS_VAR_TYPE`, `IS_VAR_VNAME`, `IS_VAR_ORDER` | Variable definitions for parameterized queries |
+
+**Variable Query Wizard** — "Variable Query Wizard" menu item uses `com.evoerp.sql.wizard.QueryConstructor`
+(shared with EvoPVT Query builder) to build parameterized queries. Variables are saved to ISVARSQL.
+
+**Known bug (historical):** path separators in filenames (e.g., `7\18 thru 8-4.csv`) cause
 `FileNotFoundException` — the backslash is treated as a path separator.
 
 ---
@@ -136,6 +185,56 @@ All EvoERP Java bridges share the same TAS-side var pattern at offset vars[60]:
 Confirmed programs: SQLEXPORT, QUERYEXECUTE, CASHFLOW, CRMDASHBOARD, COMMISSIONRPT,
 PURCHITEM, PURCHVEND, VSCHED. Each uses a different `.jar` and class name in
 `JAVA.PATH` / `JAVA.NAME`.
+
+---
+
+## DefaultSQL Query Catalog (Pass 556 — all 19 queries read)
+
+Copied from `\\I2S109-SOLIDCRM\DBAMFG$\DefaultSQL\` → `samples/jar/DefaultSQL/`.
+All queries target the main `abi` production database (company BAB).
+
+| File | Purpose | Key Tables |
+|------|---------|-----------|
+| `ACH Vendor.sql` | List vendors with ACH flag | BKAPVEND + ISAPEX (ISAPEX_FLAG_1) |
+| `AP Count.sql` | Count AP GL txns by entry date | BKGLTRAN (type RP, acct 2110) |
+| `AP Daily Invoicing.sql` | Count AP invoices by posting date | BKAPINVT (type I) |
+| `Closed WO.sql` | Closed WOs with under-issued BOM components | WOBOM + WORKORD + ISWOEX + BKICMSTR |
+| `EandO.sql` | Excess-and-obsolete inventory analysis | BKICMSTR + INVTXN + MTICMSTR |
+| `GL no Inv Txn.sql` | GL txns to inventory account with no matching INVTXN | BKGLTRAN + INVTXN (date in MTIT_EXTRA) |
+| `Inventory Non Asset.sql` | Inventory items posting to non-Asset GL accounts | BKGLCOA + BKICMSTR + CLASS |
+| `Inventory txn no GL Post.sql` | INVTXN entries with no matching GL transaction | INVTXN + BKGLTRAN |
+| `Non-Inventory Asset.sql` | Non-tangible items posting to Asset GL accounts | BKGLCOA + BKICMSTR + CLASS |
+| `overstock.sql` | Inventory items with excess available qty × avg cost | BKICMSTR + MTICMSTR |
+| `Released WO.sql` | Released WOs with under-issued BOM components | WOBOM + WORKORD + ISWOEX |
+| `RNI.sql` | Received-not-invoiced PO lines (rqty>0, no invoice) | BKAPHPO + BKAPHPOL |
+| `RNI Invoiced.sql` | GL RNI/Invoiced txns with no matching AP PO receiver | BKGLTRAN + BKAPHPOL + BKAPHPO |
+| `RNI Received.sql` | GL Received/Not-Invoiced txns with no matching PO receiver | BKGLTRAN + BKAPHPOL |
+| `RNI-INVOICED.SQL` | AP invoices flagged as RNI (BKAP_INVT_EXTRA[49]=R) | BKAPINVT |
+| `Royalty.sql` | Sales invoices with royalty field | BKARHINV + BKARHIVL + BKICMSTR + MTICMSTR |
+| `SALES.sql` | Sales invoice line items with ASD date | BKARHINV + BKARHIVL |
+| `Shipping Info.sql` | Full BKARHINV record dump (all columns) | BKARHINV |
+| `VoucherPO.sql` | AP vouchers for PO vendors | BKAPHPO + BKAPINVL |
+
+**New table relationships confirmed from these queries:**
+
+| Table | Key Fields Found | Notes |
+|-------|----------------|-------|
+| `ISAPEX` | `ISAPEX_VEND` → BKAPVEND PK, `ISAPEX_FLAG_1` | AP extension; ISAPEX_FLAG_1=ACH enabled flag |
+| `ISWOEX` | `IS_WOEX_WOPRE`, `IS_WOEX_WOSUF` → WORKORD PK, `IS_WOEX_CDATE` | WO extension table |
+| `CLASS` | `MTCLASS_CLASS` → BKICMSTR.BKIC_PROD_CLASS, `CLASS_GLA` = GL account | Item class → GL account mapping |
+| `MTICMSTR` | `MTIC_PROD_CODE` FK→ BKICMSTR, `MTIC_PROD_AVAIL`, `MTIC_PROD_UOA`, `MTIC_PROD_UOWO`, `MTIC_PROD_VEND_1`, `MTIC_PROD_SPECS_5` | MT-prefixed inventory extension |
+
+**INVTXN.MTIT_EXTRA date encoding** (confirmed from GL no Inv Txn.sql):
+- `SUBSTRING(MTIT_EXTRA, 26, 2)` = month (MM)
+- `SUBSTRING(MTIT_EXTRA, 29, 2)` = day (DD)
+- `SUBSTRING(MTIT_EXTRA, 32, 2)` = year (YY, prepend '20')
+
+**INVTXN.MTIT_TYPE codes** (confirmed from GL no Inv Txn):
+A=adjustment, P=PO receipt, S=sale/shipment, I=WO issue, W=WO completion, Q=?, M=?, T=transfer, C=?, R=return, J=journal, O=?
+
+**BKGLTRAN.BKGL_TRN_DESC values** (confirmed from RNI queries):
+- `'RECEIVED/NOT INVOICED'` — PO receiving (PO-C) posts
+- `'RNI/INVOICED'` — PO invoicing (AP-C) posts
 
 ---
 
@@ -167,20 +266,21 @@ SELECT IS_SHIP_WEB_2 FROM ISSHIPCO WHERE IS_SHIP_SHIPVIA = ?
 
 ### jdbc.ini Config Format
 
-The `DatabaseSettings.class` reads `jdbc.ini` from the local `auto/` directory (path `auto\EvoSettings.ini`
-in TAS var, but the Java side uses `jdbc.ini`). File format — line-by-line scanner, section-based:
+`DatabaseSettings.class` reads `\\I2S109-SOLIDCRM\DBAMFG$\JDBC.INI`. Format — INI-style,
+line-by-line scanner with `startsWith` checks. Each section starts with `[COMPANY_CODE]`:
 
-```
-Company <code>
-Host    <hostname>
-Port    <port>
-Name    <database_name>
-Tree Destination <code>
-Report Destination <folder>
+```ini
+[CODE]
+Host=<hostname>
+Port=<port_number>
+Name=<pervasive_database_name>
+Tree Destination=<UNC_path_for_report_output>
 ```
 
-One `Company` block per company. `defaultCompanyCode` sets the fallback.
-TAS passes the current `COMP` var to select the correct section at runtime.
+Keys are: `Host`, `Port`, `Name`, `Tree Destination` (= `REPORT_DEST_KEY`).
+`DatabaseSettings.getDefault()` returns the instance for `defaultCompanyCode`.
+TAS passes the current `COMP` var to select the correct section at runtime via `getInstance(companyCode)`.
+The `INSTANCE_MAP` caches instances keyed by company code.
 
 ### UI Framework (`com.evoerp.javafx.*`)
 
@@ -213,26 +313,27 @@ company is passed from TAS via the `COMP` var in the Java bridge vars block.
 
 ## Use Cases
 
-- "How do I export EvoERP data to Excel/CSV?" → EX module → SQL Export — runs
-  predefined SQL against EVOBI2, exports results to CSV on the network share.
-- The EVOBI2 database is a reporting/BI database separate from the operational tables.
-  SQL Export lets users run these queries and download results without ERP access.
-- Shop calendar integration: the Java app uses PervasiveDatabase.getShopCalendar()
-  which queries the CALENDAR table (MTCAL_DATE field) to load holiday dates for
-  date calculations in reports.
-- Shipping tracking: PervasiveDatabase.getTrackingUrl() queries ISSHIPCO.IS_SHIP_WEB_2
-  for the carrier's tracking URL template, substituting %%TRACK%% with the tracking number.
+- "How do I export EvoERP data to Excel/CSV?" → EX module → SQL Export — select from Default Queries
+  menu or write ad-hoc SQL; results export to CSV on the network share. "Format for Excel" option
+  adds Excel-compatible quoting.
+- The Default Queries target the main `abi` operational database. EVOBI2 (company BI2) is a
+  separate BI reporting database accessible by switching company code.
+- Shop calendar integration: `PervasiveDatabase.getShopCalendar()` queries `CALENDAR.MTCAL_DATE`
+  to load holiday dates for date calculations in reports.
+- Shipping tracking: `PervasiveDatabase.getTrackingUrl()` queries `ISSHIPCO.IS_SHIP_WEB_2`
+  for the carrier's tracking URL template, substituting `%%TRACK%%` with the tracking number.
+- Saved queries (Variable Query Wizard): queries with parameters are built via the wizard,
+  stored in `ISQRYSQL` (query text) and `ISVARSQL` (variable definitions).
 
 ---
 
-## Remaining Gap (blocked)
+## Remaining Gap
 
-The specific SQL queries for each EX export report are defined in `SQLExport.jar` (not in EvoPVT.jar).
-That JAR is not present locally and is not decompilable without it. The EVOBI2 database schema
-is also inaccessible (separate Pervasive server, DDFs not extracted). These two items cap the
-confidence ceiling at approximately 85/100.
+EVOBI2 database DDF schema not extracted — the internal table structure of the BI reporting
+database is unknown. EVOBAT and evob22 databases also undocumented.
 
-**Confidence: 85/100** — TAS-side var block fully confirmed; Java bridge architecture fully
-mapped; EvoPVT.jar framework classes analyzed (Pass 315): JDBC.ini format, SQL query builder
-framework, ShopCalendar/tracking SQL, multi-company architecture, UI framework all confirmed.
-Remaining gap: specific EX export query set and EVOBI2 schema are in SQLExport.jar (not locally available).
+**Confidence: 93/100** — TAS-side var block fully confirmed; Java app fully analyzed
+(QueryFrame/Database/StoredQuery/Permission all class-string-extracted, Pass 556); JDBC.INI
+read (4 companies: BAB=abi, BI2=EVOBI2, B22=evob22, BAT=EVOBAT); all 19 DefaultSQL queries
+read with tables and field references documented. Remaining gap: EVOBI2/evob22/EVOBAT database
+schemas not extracted. — **C: 93/100**

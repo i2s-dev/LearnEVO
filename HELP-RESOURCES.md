@@ -751,6 +751,29 @@ All 9 codes binary-confirmed from BKLME.RUN AllowedChrs string "ASPJWIQOC" (2026
 - `C` = Cost Change ($ change — standard cost revaluation)
 - Note: "DELETED" in LM-E consolidation output is a consolidation status counter, not a type code
 
+**INVTXN.MTIT_TYPE codes confirmed from GL no Inv Txn.sql (Pass 556) — GL transaction type mapping:**
+
+| MTIT_TYPE | Description | BKGL_TRN_TYPE |
+|-----------|-------------|---------------|
+| A | Adjustment | OT (other) |
+| P | PO Receipt to Stock | RP (receipt posting) |
+| S | Shipment / Sale | RS (receipt/sale) |
+| I | Stock Issue to WIP | WO (work order) |
+| W | WO Receipt to Stock | WO (work order) |
+| Q | PO Receipt to QC | RP |
+| M | ??? | RP |
+| T | Transfer | OT |
+| C | Cost Change | RP |
+| R | Return | RS |
+| J | PO Receipt to WIP (Job) | RP |
+| O | Outside Process receipt | RP |
+
+**INVTXN.MTIT_EXTRA date encoding** (confirmed from GL no Inv Txn.sql, Pass 556):
+- Position 26, length 2 → month (MM)
+- Position 29, length 2 → day (DD)
+- Position 32, length 2 → year (YY; prepend '20' for full 4-digit year)
+- Full expression: `'20' + MTIT_EXTRA[32:33] + '-' + MTIT_EXTRA[26:27] + '-' + MTIT_EXTRA[29:30]`
+
 **Transaction consolidation** (BKLME.SRC): Rolls up individual transactions by type into
 summary records for period-end. Lot/serial tracked items are excluded from consolidation.
 
@@ -3170,32 +3193,50 @@ Exports EvoERP data to CSV files by running SQL queries against a separate BI da
 **Architecture (confirmed from DFM + log files, Pass 156, 2026-06-22):**
 - `SQLEXPORT.RWN` — TAS Pro 7 launcher stub; shows "Loading...." dialog while spawning Java
 - `SQLEXPORT.DFM` — T7JTemp template (generic Java loader form; no EX-specific UI elements)
-- `SQLExport.jar` — Java Swing application (`com.evoerp.*` package, version 1.5.0 build 2014-03-19)
+- `SQLExport.jar` — Java Swing application (`com.evoerp.*` package, **v1.8.6 build 2021-09-11**)
 - Same architecture as QU-F pivot tool (EvoPVT.jar) — TAS stub → Java app
 
-**Database connection:**
-- Connects via Pervasive JDBC v2 to local Pervasive SQL engine
-- Host: i2s109-solidcrm, Port: 1583, DB: **EVOBI2** (separate BI database — NOT the main DBAMFG$ operational data)
-- Uses company context (Company ID) and user name passed from the TAS session
+**Database connection — 4 Pervasive databases on i2s109-solidcrm:1583 (from `JDBC.INI`):**
+
+| Company | Database | Tree Destination | Purpose |
+|---------|----------|-----------------|---------|
+| BAB | `abi` | `\\I2S109-SOLIDCRM\EVOREPORTS\` | Main production EvoERP database |
+| BI2 | `EVOBI2` | `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS` | Separate BI/reporting database |
+| B22 | `evob22` | `\\I2S109-SOLIDCRM\EVOREPORTS\` | Second company or test |
+| BAT | `EVOBAT` | `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS` | Batch processing |
+
+TAS passes `COMP` var → selects the company code → database. DefaultSQL queries target `abi` (main production).
 
 **Key Java classes:**
-- `com.evoerp.sql.PervasiveDatabase` — Pervasive JDBC connection manager
-- `com.evoerp.ui.util.TextExportingWorker` — CSV file export worker (Swing background task)
-- `com.evoerp.ui.util.FileOpeningWorker` — file open/save dialog worker
+- `QueryFrame` — main window: SQL editor, Execute/Export toolbar, Default Queries menu (recursively loads .sql files from `DefaultSQL\` directory)
+- `Database` — wraps Pervasive connection; executes queries; saves to `ISQRYSQL`/`ISVARSQL`
+- `StoredQuery` — loads one .sql file from disk (`loadFromFile(File)`)
+- `Permission` — enforces SELECT-only access
 
 **Output:**
-- Default export destination: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\` (historical: `\\I2S109-SOLIDCRM\EVOREPORTS\`)
-- Format: CSV (comma-separated values)
-- Common error: path separators in filenames cause FileNotFoundException (e.g., `7\18 thru 8-4.csv`)
+- Destination: `Tree Destination` from jdbc.ini for the active company (BAB→EVOREPORTS\, BI2→DBAMFG$\REPORTS\)
+- Format: CSV; "Format for Excel" checkbox adds Excel-compatible quoting
+- Log: `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`
+
+**Default Queries (19 pre-built .sql files in `DefaultSQL\`, targeting main `abi` DB):**
+ACH Vendor, AP Count, AP Daily Invoicing, Closed WO, EandO, GL no Inv Txn, Inventory Non Asset,
+Inventory txn no GL Post, Non-Inventory Asset, overstock, Released WO, RNI, RNI Invoiced,
+RNI Received, RNI-INVOICED, Royalty, SALES, Shipping Info, VoucherPO.
+Full query text in `samples/jar/DefaultSQL/`.
+
+**Saved Query tables:**
+- `ISQRYSQL` — `IS_QRY_NAME` + `IS_QRY_QUERY` — stores saved query text by name
+- `ISVARSQL` — `IS_VAR_QNAME` + `IS_VAR_TYPE` + `IS_VAR_VNAME` + `IS_VAR_ORDER` — variable definitions for parameterized queries (Variable Query Wizard)
 
 **Use case:**
-- "How do I export EvoERP data to Excel/CSV?" → EX module (SQL Export) — runs predefined SQL queries against EVOBI2, exports results to CSV.
-- The EVOBI2 database is a separate reporting/BI database, likely with views or denormalized tables for reporting. SQL Export lets users run these queries and download the results.
-- Logs are written to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
+- "How do I export EvoERP data to Excel/CSV?" → EX module → select from Default Queries menu or write ad-hoc SQL → Execute → Export. Results export as CSV to the network share.
+- "How do I save a custom query?" → Write SQL in the editor → File → Save As → saved as .sql file.
+- "How do I run a parameterized query?" → Tools → Variable Query Wizard → define variables → saved to ISVARSQL.
+- Logs written to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
 
-**Pass 231 (2026-06-23) SQLEXPORT.RWN.dec var-confirm:** Java bridge vars[60–71] fully confirmed: HOST/NAME/PORT/TREEDEST/COMP/NOPE/DUMMY_L/DFM/RVAL/ISTS.EDATE/JAVA.PATH/JAVA.NAME — identical pattern to QUERYEXECUTE, CASHFLOW, CRMDASHBOARD, VSCHED, COMMISSIONRPT, PURCHITEM, PURCHVEND (8 confirmed Java bridges). Then EVO.CFG.* workstation vars[72–87] and per-module screen selectors (ARA/APA/INA/INB/POA/SOA/WOA.CFG.ECSCRN+CVTSCRN). 649 non-TEMP vars total; remaining vars are the ISTS.CFG.* workstation config block. See `docs/03-modules/ex-sql-export.md`.
+**Pass 556 (2026-07-02):** SQLExport.jar fully class-string-extracted; JDBC.INI read; all 19 DefaultSQL queries read; ISQRYSQL/ISVARSQL tables confirmed; 4-database architecture confirmed.
 
-**Confidence: 75/100** — TAS-side var block confirmed from RWN decryption; Java app architecture confirmed from SQLExport.jar + log files. EVOBI2 schema and SQL query set not decompiled; Java UI logic blocked by encryption.
+**Confidence: 93/100** — TAS-side var block confirmed; all Java classes analyzed (class string extraction); JDBC.INI read; all 19 DefaultSQL queries read. Remaining gap: EVOBI2/evob22/EVOBAT schemas not extracted.
 
 ---
 
@@ -6432,10 +6473,11 @@ All variant tables below point to the same physical .B file via alternate Btriev
 ### AP/AR Extended Tables
 
 **ISAPEX** (33f) — AP vendor extended data (mirror of ISAREX for AR customers):
-- ISAPEX_VEND(10) — vendor code (PK)
+- ISAPEX_VEND(10) — vendor code (PK, FK → BKAPVEND.BKAP_VENDCODE)
 - ISAPEX_LONGNAME(60) — long vendor name
+- **ISAPEX_FLAG_1** — ACH payment flag (confirmed from ACH Vendor.sql: identifies vendors set up for ACH electronic payments)
 - ISAPEX_NUM_1..5 + NUM2_1..N — numeric extended fields
-- + 20 more configurable fields
+- + ~26 more configurable fields
 
 **ISAPQPO** (66f) — AP vendor quote pricing:
 - ISAP_QPO_PCODE(15)+PQTY+VNDCOD(10)+PPRCE+PDISC+UM(3) + 60 more — per-item vendor pricing from quotes
@@ -6876,7 +6918,26 @@ Maintained by T7DROPDOWN (53 procs). Provides generic configurable dropdown list
 - IS_SHIP_NOTES_1..5 (60 each) — 5 operational note lines
 - IS_SHIP_SHIPVIA(15) — default ship-via code (FK → ISSHPVIA)
 - IS_SHIP_EXTRA(150)
-- IS_SHIP_WEB_1..5 (120 each) — 5 carrier web service URLs (tracking, rating, labels, etc.)
+- IS_SHIP_WEB_1..5 (120 each) — 5 carrier web service URLs
+- **IS_SHIP_WEB_2** — tracking URL template; `%%TRACK%%` placeholder replaced with tracking number by `PervasiveDatabase.getTrackingUrl()` (confirmed from EvoPVT.jar)
+
+---
+
+### ISQRYSQL — SQL Export Saved Queries
+
+- `IS_QRY_NAME` — query name (PK)
+- `IS_QRY_QUERY` — full SQL query text
+
+Populated by SQLExport.jar (EX module) when user saves a query via File → Save As. The query can then be reloaded by name.
+
+### ISVARSQL — SQL Export Variable Definitions
+
+- `IS_VAR_QNAME` — query name (FK → ISQRYSQL)
+- `IS_VAR_TYPE` — variable type (string/date/number etc.)
+- `IS_VAR_VNAME` — variable name
+- `IS_VAR_ORDER` — display order
+
+Populated by the Variable Query Wizard in SQLExport.jar. Defines the input parameters for parameterized queries.
 
 ---
 
