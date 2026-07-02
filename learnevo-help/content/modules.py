@@ -3802,6 +3802,26 @@ label for mattress serial tracking on SO release.
 - **[[module-PI|PI]]** — HH-E writes to BKPIPHYS / PIBINLOC (same PI count tables)
 - **[[module-SO|SO]]** — HH-A/N release SO lines; T7HHSOSER prints mattress labels
 - **J7 customs** — HH-H (J7HHLITN) and J7HHEB* bridge HH to mattress serial tracking
+
+## HH sub-program operational details (EVOHELP.PDF §6, Pass 528)
+
+All HH programs accept barcode scanning or manual keyboard entry for all key fields.
+Transaction date defaults to system clock of the terminal for all programs unless otherwise noted.
+
+| Program | Replaces | Key Operation |
+|---------|----------|---------------|
+| HH-A Scan & Ship | SO-E Release | Scan SO# → scan each item (EVO# or UPC) → Verify box → print box label → next box. Lot/serial prompted as applicable. Clear = current box or whole order. Save = release + ready for invoicing. Unreleased items → backorder. |
+| HH-B Print Bar Code Labels | IN-G/IN-Q | Enter qty + item# + lot/serial → Print. Uses RTM Print Group from IN-B (T7ING1.RTM base; T7ING1A.RTM for group A parts). HH version prints direct to default printer without dialog. |
+| HH-C Issue Materials | WO-G | Scan WO# → scan each component + qty. Lot/serial prompted as needed. Clear → new WO. |
+| HH-D Enter Finished Production | WO-I / WO-P | Scan WO# → enter qty complete → Save. Backflush/costing/auto-close settings come from SD-B (no operator prompts). Lot default = WO# if set in SD-Q. Label print auto-launch controlled by SD-Q. |
+| HH-E Enter PI Tag Counts | PI-C | Employee# + PI# + date + Location → Tags: tag# + item# + qty + lot + serial + bin. |
+| HH-F Enter Labor | DC-A | Employee# + WO# + sequence → clock in. Clock out: qty good + qty scrapped. Shift Start/Stop clock-in/out if enabled. |
+| HH-G Receive Purchase Order | PO-C | PO# → receipt date / Inventory or QC / packing slip / employee# → scan item lines → lot/serial → Save. |
+| HH-H Enter Shipping Info | SO-P-I | Box ID or SO# → tracking# + freight company + freight charge. Multiple boxes: enter each box tracking#, total freight on last box. |
+| HH-I Paperless Shop Floor | DC-PSF | WO# + sequence → traveler-like display. Buttons: Links (drawings) / Notes / QC Tests / Issue Components / Report Complete / Clock Out. Employee login optional if SD-Q set to use EVO login. |
+| HH-J Print WO Label | WO-S | Scan WO# + label qty → print. |
+| HH-K Transfer Inventory | IN-L-J | Item# + From/To location + qty + date. If WC enabled: From/To bin + lot/serial. |
+| HH-L Multi-user Paperless | HH-I (multi) | WO# + sequence → display. Buttons: clock in/out / report parts / issue components / print labels / inspection results. |
 """,
 
 "QT": """
