@@ -5958,6 +5958,37 @@ Cvt toSO (various SO#s, ~700 total) — matches ISFOHEAD status lifecycle.
   stored as ISFOLINE OPFLAG bit patterns
 - **[[module-IN|IN]]** — BKICMSTR OPT flag enables the FO dialog for that item
 - **[[module-WO|WO]]** — ISFOHIST CVTTO='WO' records show direct WO conversions
+
+## FO-B / FO-C / FO-D / FO-E print programs (EVOHELP.PDF §FO, Pass 524)
+
+### FO-B Print Features and Options (T7FOB.RWN)
+Prints the feature+option BOM structure for one or more parent items. Used in Step 4 of
+the setup workflow to verify the option tree is correct before entering live orders.
+Prints option BOM hierarchy with feature flags, prices, and quantities.
+Approved substitutes, approved vendors, and approved manufacturers can optionally print.
+
+### FO-C Enter Option Prices (T7FOC.RWN — pages 305)
+Updates option prices without having to navigate through individual option BOMs.
+Faster than FO-A for price-maintenance-only work.
+Entry: specify the **Feature** item# first (F2 to lookup; filter shows only O-type features).
+Then select the option and update its price.
+Pricing that uses standard pricing (base price list, price codes, contracts) is managed
+in the IN module Pricing submenu, NOT in FO-C.
+DFM-confirmed fields: BKBM.PROD.OPYN[4]=Use-STD-Customer-Pricing /
+OPYN[5]=Add-Price-to-Parent / BKBM.PROD.PRICE.
+
+### FO-D Print Option Prices (T7FOD.RWN — DFM-confirmed)
+Prints a report of all option prices per feature.
+RTM=T6FOD1 (T6-era report template).
+Filters: type-O items only; category control check (IS.CATM/mtclass.m.class).
+Uses triple range selectors: from/thru item, category, class (SELECT_FROM1-3/SELECT_THRU1-3).
+
+### FO-E Print Option Where Used (T7FOE.RWN — pages 306)
+Given an option item or a feature item, prints which features it belongs to or which
+parent products contain it. Dual mode:
+- Enter **option** → prints all features within which that option appears
+- Enter **feature** → prints all parent products whose BOM contains that feature
+RTM=T6FOE1; uses single-item search (not range); output: "Option Where Used" report.
 """,
 
 "FP": """
