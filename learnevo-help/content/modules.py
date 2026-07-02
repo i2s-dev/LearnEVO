@@ -4197,6 +4197,44 @@ and data correction utilities (clear data, search-and-replace, cost recalculatio
 **UT-D** opens the same `wtasfloc.rwn` as the [[module-FL|FL]] File Location Browser.
 **UT-A** allows running any TAS Pro program by code — a superuser escape hatch.
 
+## UT-C Re-Index File (EVOHELP.PDF §UT-C, Pass 516)
+
+When to use: file key structure corrupted from static discharge, power failure, or disk damage.
+Symptoms: wrong description returned for a valid code; missing data; Btrieve Status 2 Error.
+
+**WARNING:** Do NOT re-index while other users are on the system — if interrupted, the file cannot be recovered.
+**Always make a backup before re-indexing.**
+
+## UT-D Edit Data Location File (EVOHELP.PDF §UT-D, Pass 516)
+
+Manages the FILELOC routing records that tell EVO where each `.B` data file lives.
+
+**Multi-company file extension scheme:**
+- Default company: files in `DEFAULT\` folder, extension `.B`
+- Company 99: files in `99\` folder (or custom path), extension `.B99`
+- Data dictionary files (`FILE*.*`): always in the main EVOERP folder — shared across companies
+
+**Schema files** share another file's layout. When editing, the Layout field = name of the primary file.
+For non-schema files, File Name and Layout are the same.
+
+**Chg All Locations** button: mass-reassigns all file paths for a given company code.
+
+**NOTE:** Do not use without Technical Support guidance. Used at initial setup or when adding custom programs.
+
+## UT-H Print File Layouts (EVOHELP.PDF §UT-H, Pass 516)
+
+Prints field specifications for a FROM/THRU range of files. Primary use cases:
+- Third-party report writers that need field names and sizes
+- DE-A SQL Query Export (to know which fields to select)
+- Technical Support and custom program development
+
+## UT-I Create/Delete Company (EVOHELP.PDF §UT-I, Pass 516)
+
+**Single company users:** No action needed — the default company files are pre-installed and ready.
+Can also use UT-K-A Clear Data to initialize (empty) the default company files.
+
+**IMPORTANT:** Always use EVO-ERP (not DBA Classic) to create/delete companies — both sets of data dictionaries (EVO and Classic) must be updated together. Using DBA alone leaves the EVO DDF out of sync.
+
 ## Program detail — UT-K sub-suite
 
 | Program | Procs | DB tables | Purpose |
