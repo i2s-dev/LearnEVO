@@ -8934,4 +8934,514 @@ T7BOLMSO handles LTL and intercompany shipments and adds:
 - **[[module-PR|PR]]** — T7BOLMSO uses BKPRMSTR for driver/employee sign-off (payroll employee table)
 """,
 
+"MU": """
+## What it does
+
+Multi-Yield Work Orders — records multiple co-product output part numbers from
+a single Work Order. Used in process manufacturing where one production run
+yields two or more distinct finished items (e.g., cutting a sheet into
+multiple parts, blending that produces by-products).
+
+## Program confirmed (Passes 160, 179, 197, 200)
+
+| Program | Pages | Lib | Tables |
+|---------|-------|-----|--------|
+| T7MULTIYIELD | 150p | LISTG60.LIB | 43 |
+
+## Entry flow (from EVOHELP.PDF §SO-K, page 350)
+
+Multi-Yield is activated by a placeholder part number configured in SM (System Manager):
+1. When SO-K (Generate Recurring Sales Orders / WO generation) runs, if the placeholder is
+   set, the user is prompted: "Create Multi Yield Work Order?"
+2. Answer Y → all SO lines, regardless of part number, combine into a single WO using the
+   Multi-Yield placeholder part number's BOM and routing.
+3. All components of all line items are added to the WO Bill of Materials.
+4. When the WO is processed in WO-I (Enter Finished Production), the system automatically
+   presents the list of SO items for multi-yield output selection.
+
+## Key variables
+
+| Variable | Meaning |
+|----------|---------|
+| E.PART / E.DESC / E.QTY / E.BIN | Expected output co-product fields (per yield output line) |
+| M.PART / M.DESC / M.QTY / M.PER / M.BIN | Material input fields (component consumed) |
+| PROPORTION | Yield split ratio between co-products |
+| SCAN.WONUM | Barcode scan for WO number entry |
+| MTWO.WIP.MULT | Multiple-yield flag on WORKORD |
+| MTWO.WIP.PRTY / SSTART / SFIN | WO scheduling fields |
+| STDCOST | Standard cost of co-product output (variance baseline) |
+
+## 9-component cost variance tracking (Pass 200)
+
+Each co-product tracks full E/A/V/% variance:
+EMAT/AMAT/MATV/MAT% (material), EOUTPR/AOUTPR/OUTPRV/OUTPR% (outside process),
+ELABOR/ALABOR/LABORV/LABOR% (labor), ESETUP/ASETUP/SETUPV/SETUP% (setup),
+VOVHD/AVOVHD/VOVHDV/VOVHD% (variable OH), EFOVHD/AFOVHD/FOVHDV/FOVHD% (fixed OH),
+EOTH/AOTH/OTHV/OTHPER (other), EMISC/AMISC/MISCV/MISC% (misc),
+EEXTRA/AEXTRA/EXTRAV/EXTRA% (extra), ETOT/ATOTAL/TOTV/TOT% (totals).
+
+## WO header extensions
+
+| Variable | Meaning |
+|----------|---------|
+| SONUM / CUSORD | SO + customer order link |
+| DESC | WO description |
+| PPRCE | Production price / selling price of co-product |
+| PROJ | Project number |
+| LOC | Warehouse location |
+| DDATE | Due date |
+| INSTR | Work instructions |
+| SCONV / QCONV | Start/qty conversion for multi-unit yield |
+| CHGORD | Change order flag |
+| SOLINE | SO line number |
+
+## Scrap disposal
+
+| Variable | Meaning |
+|----------|---------|
+| SCRAP.POST.AMT / QTY / COST / AVGC | GL posting amounts |
+| SCRAP.SEP.OK | Separate disposal OK flag |
+| HOLD.QTY / AVGC / QTYISSUED | Hold tracking |
+
+## Key database tables
+
+| Table | Purpose |
+|-------|---------|
+| WORKORD | WO header; MTWO.WIP.MULT flag here |
+| WOROUT | WO routing output per yield step (each co-product has independent routing) |
+| WOBOM / WOMAT | WO BOM + material issues |
+| WORECV / INVTXN | WO receipts + inventory transactions per co-product |
+| ISWOEX | WO extended — holds multi-yield state (38-field schema) |
+| ISBINLOC / ISBINLOT / ISBNMSTR | Bin tracking + bin label master for physical labels |
+| LOT / SERIAL | Lot and serial tracking for co-products |
+| BKGLTRAN / BKGLX / DBAFIFO | GL posting + FIFO cost layers |
+| BKARINVL | SO line link (co-products traced back to originating SO) |
+| MTICMSTR | Multi-company item master |
+
+## ISWOEX schema (WO extended, 38 fields)
+
+ALPHA1-5 / ALPHAS / CAUSE / CDATE / DATE1-5 / DESC1-5 / EXTRA / FLAGS /
+GDATE / GNUMS / INT1-5 / ITP / ITPP / MCLASS / MNUM / NOTE / NUM1-2 /
+RF / WC / WOPRE / WOSUF
+
+## Integration
+
+- **[[module-SO|SO]]** — Multi-Yield triggered from SO-K WO generation; SO lines become co-product outputs
+- **[[module-WO|WO]]** — WO-I (Enter Finished Production) processes multi-yield receipts
+- **[[module-BM|BM]]** — Multi-Yield WO uses BOM of placeholder part number
+- **[[module-SM|SM]]** — placeholder part number configured in SM (SO-N Multi-Yield Part Number field)
+- **[[module-GL|GL]]** — full cost variance posted to GL per co-product
+""",
+
+"LG": """
+## What it does
+
+LGS Customer Module — Canadian customs processing. Generates Statement of Entry
+(SOE) documents for cross-border shipments from Canada. A specialized add-on
+for companies doing Canada-US trade. Two programs: t7lgssoe (main SOE creator)
+and T7LGSSOEVerify (pre-submission compliance validator).
+
+## Programs confirmed (Passes 162, 187, 203, 204)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| t7lgssoe | 170p | LISTG60.LIB | 42 | Main SOE entry and print |
+| T7LGSSOEVerify | 41p | EVO.LIB | 14 | Pre-submission vendor/manufacturer compliance check |
+
+## Domain-specific variables
+
+| Variable | Meaning |
+|----------|---------|
+| RETEN.PER | Customs retention period |
+| BKAR.INV.RETEN | Invoice-level retention flag |
+| ISTS.EDATE | SOE effective date |
+| ISTS.CFG.TRACK | Canadian customs tracking mode |
+| ISTS.CFG.SOEDTE | Statement of Entry date config |
+| ISTS.CFG.POEDTE | Port of Entry date config |
+| FACTOR / FACTOR2 | Customs duty calculation factors |
+| SPECIAL / SPECIAL2 | Special customs handling codes (non-standard tariff treatment) |
+| RTM_NAME | Customs form RTM template (runtime-configurable) |
+| RET.SONUM | Return SO number (inbound returns from Canadian customs) |
+| CFROM | Customs from-date filter |
+
+## Per-line customs declaration fields
+
+| Variable | Meaning |
+|----------|---------|
+| LINE.PART / LINE.PQTY | Part number + quantity per customs line |
+| LINE.UBO | Units back-ordered |
+| LINE.TXAMT | Taxable amount per line |
+| LINE.RELEASE | Release/clear flag |
+| UBO_FLAG / TOT_UBO | Back-order flags (total) |
+| INCL.SERIAL / INCL.LOT | Flags controlling whether serial/lot data is in SOE submission |
+| LOTQ.ND | Lot quantity non-decimal (whole-number rounding for customs) |
+| A.LOTQ | Adjusted lot quantity (post-rounding) |
+
+## Tax handle set (full customs tax stack)
+
+ISTXG.HNDL / ISTXF.HNDL / ISTAX.HNDL / ISHTX.HNDL / HTAX.HNDL /
+ISMCF.HNDL / ISMCR.HNDL / ISDUTY.HNDL / ISBRK.HNDL / ISLDF.HNDL
+
+## SOEVerify compliance check (T7LGSSOEVerify)
+
+- Opens SBVEND.H (sub-vendor handle) + SBMFG.H (manufacturer handle) for origin compliance
+- Reads BKCMACCT (CRM financial account — vendor financial standing, not contacts)
+- BKCMACCT holds credit/payment status of manufacturers submitted on customs SOE
+- APVEND.H — AP-level vendor compliance check in addition to financial standing
+- V.OLINK — supervisor override of failed compliance (authorized override with audit trail)
+- PRINT.LABELS / LABELFORM / LABELQTY — physical customs package label printing during verify
+- XRETATVAL — verification result code
+- MCLASS.H — material class handle for HS code determination
+
+## Key database tables
+
+| Table | Purpose |
+|-------|---------|
+| BKARINV / BKARCUST / BKARINVL | AR invoice + customer + lines (shipment being declared) |
+| BKARTXN | AR transaction-level tracking (customs processes individual transactions) |
+| INVTXN | Inventory transaction-level (duty applied at inventory movement) |
+| BKBMMSTR | BOM master (component classification for HS code assignment) |
+| BKICTAX (46f) | Item-level tax rates — 12-month history per STATE+LOCAL |
+| ISTAXGRP | Multi-jurisdiction tax group assignment |
+| BKAPPO / BKAPPOL | Import PO link |
+| BKICLOC / BKICLOCM | Item-location + location extended master |
+| WORKORD / WOBOM | WO integration |
+| LOT / SERIAL / ISNCR | Lot + serial + NCR tracking |
+
+## Shipping operation mode flags (same pattern as T7MHOPE)
+
+AUTO.BO (auto back-order), AUTO.RCOMM (auto recommit), CHK.UOH (check UOH),
+CLR.PQTY (clear price-qty), DSP.COMMENTS / DSP.SHIPPED — confirms t7lgssoe
+is the Canadian-customs shipping sister module to MH (Shipping Order).
+
+## AR handle set
+
+ARINV.H + ARHINV.H + ARINVT.H + ARINVL.H + ARTXN.H / ARTXNS.H + ARCUST.H + ARDESC.H
+
+## Integration
+
+- **[[module-AR|AR]]** — reads BKARINV/BKARINVL; AR invoice drives SOE declaration
+- **[[module-SO|SO]]** — shipments originate from SO; BKARINV links back to SONUM
+- **[[module-IN|IN]]** — INVTXN: inventory transaction-level duty application
+- **[[module-BM|BM]]** — BKBMMSTR: BOM component breakdown for tariff HS code assignment
+- **[[module-MH|MH]]** — LG is the Canadian customs variant of the standard shipping workflow
+""",
+
+"JS": """
+## What it does
+
+JS Integration / Reporting Bridges — exports EvoERP data to external BI and
+reporting layers. Architecture: TAS Pro 7 stub programs → EvoPVT.jar Java
+layer → EVOBI2 database → Sisense dashboards (or SQL Server Reporting Services
+/ Power BI). 12 programs total.
+
+## Programs confirmed (Passes 44, 157, 159, 186, 197, 201)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7JSACC | 50p | EVO.LIB | Account data export |
+| T7JSAIC | 50p | EVO.LIB | Intercompany sync |
+| T7JSAPBI | 50p | EVO.LIB | Power BI connector |
+| T7JSASRS | 50p | EVO.LIB | SQL Server Reporting Services |
+| T7JSOI | 50p | EVO.LIB | Order integration (SAP/external ERP) |
+| T7JSQL | 52p | EVO.LIB | Dynamic SQL query export |
+| T7JSETTINGS | 70p | EVO.LIB | Sisense BI connection settings |
+| T7JUPD | 27p | EVO.LIB | Deploy Java BI runtime files |
+| T7JTREE | 52p | EVO.LIB | Tree-view drill-down panel |
+| t7jtemp | 27p | ISTECH.LIB | User preferences manager |
+| T7JAVASET | 57p | EVO.LIB | Java connection URL/HOST/PORT/NAME config |
+| T7JAVARUN | 11p | NZEVO.LIB | Minimal Java runner shim |
+
+## Universal variables (all 6 data-export programs)
+
+HOST / PORT / NAME — Java service connection
+TREEDEST — tree destination panel
+COMP — company context
+INIT — Java service initialization flag
+DICT_HNDL / KNUM_HNDL / KEY_HNDL — dynamic Btrieve schema generation via FILEDICT/FILELOC API
+VS / POST / CO.LOC / NO.POST — display state variables
+
+## T7JSETTINGS — Sisense BI config
+
+SERIAL7 / CDEF.BUFF / SERVER_PATH / CDEF.STOP — Sisense connection license and serialization.
+TENMIN.KILLER / TENMIN.TIME — 10-minute BI connection session keepalive/timeout.
+
+## T7JSQL — Dynamic SQL
+
+52p (vs 50p standard) — 2 extra procs for schema formatting.
+DICT_HNDL + KNUM_HNDL + KEY_HNDL reads FILEDICT + FILELOC API to dynamically
+generate SQL schemas from the Btrieve table registry (same FILEDICT pattern as T7FNR
+and T7CHAINM — all dynamic-query tools share this pattern).
+
+## t7jtemp — User preferences manager
+
+Full per-user config store: EVO.CFG.* (TOOLBAR/OL*/LANG/SOUNDS/REMIND/EREMIND/REMSEC/
+RSNOOZE/QPRINT/CFU/TOPMOST/AREN), EMAIL.CFG.* (BCC/BOD1-9/SIG1-9/SMTP/PORT/SEC/
+EMAIL/NAME/USER/PASS/EPASS/EFAIL/ECB/EVB), HOTBUTTON1-6P/I/H, per-module electronic
+screen + convert-screen config (ARA/APA/INA/INB/POA/SOA/WOA.CFG.ECSCRN/CVTSCRN),
+HH.CFG.RPTPTR/LABPTR, PRINTBOXES / DEFPRINTPATH / DEFPRINTER, JAVA.PATH.
+
+## T7JUPD — Deployment
+
+FPATH (deployment file path) + IS2DBAR (2D barcode config) + ISUDFINV (user-defined
+invoice fields) + PAR (parameter) — deploys Java BI runtime files and configures barcode/
+custom-field support.
+
+## T7JAVASET — Multi-company Sisense setup
+
+UNC_PATH (network UNC path for server deployment), NEWDB, FNAME / COMPANY /
+CURRENT.CO / LP (company-aware setup), WBUFF (write buffer).
+Configures the basic Java connection values in BKYSMSTR for all modules.
+
+## T7JAVARUN — Shim
+
+RUNPRGNAME / JAVAAUTH / EVOPROGRAMS / DC_PRG_NAME (program list + data-collection
+program name), PARAM1-5 (5 Java runtime parameters). From NZEVO.LIB (NZ framework).
+
+## Database architecture
+
+All 6 data-export programs share an identical 69-table session-init DB (ISDRILL-based).
+NO JS-specific business tables — data is read from existing ERP tables via the Java layer.
+T7JSETTINGS has a minimal 14-table config-only DB.
+
+## Integration
+
+- **[[module-QU|QU]]** — T7JSQL uses same EvoPVT.jar / jdbc.ini pattern as QU-F (Queries)
+- **[[module-FN|FN]]** — T7JSQL / T7CHAINM share FILEDICT dynamic schema pattern
+- **[[module-SM|SM]]** — T7JAVASET writes Java connection config to BKYSMSTR
+- **[[module-US|US]]** — t7jtemp is the US user preferences backend (email, toolbar, hotbuttons)
+""",
+
+"PU": """
+## What it does
+
+Warehouse Put-Away — assigns incoming AP receipts to bin locations after receiving.
+Workflow: AP receipt (PO → receive) → bin assignment → lot/serial recording → GL posting.
+One program: T7PUTAWAY.
+
+## Program confirmed (Passes 121, 160, 181, 197, 199)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| T7PUTAWAY | 105p | LISTG60.LIB | 34 | Bin assignment and inventory put-away after AP receipt |
+
+## Key variables
+
+| Variable | Meaning |
+|----------|---------|
+| SCAN.ITEM | Barcode scan input (item number) |
+| ENTERBIN | Operator bin entry |
+| ACTION | Put-away action code |
+| PABBL | Put-away compound state variable (bin/box/lot) |
+| BKIC.IS.DCODE | Item discontinued flag (checked before put-away) |
+| MTIC.PROD.CUBFT | Cubic feet (warehouse space calculation) |
+| MTIC.PROD.ABC | ABC cycle-count class |
+| MTIC.PROD.STDPK | Standard pack (unit of put-away) |
+
+## BKIC.PROD.* namespace (~30 variables)
+
+Full BKICMSTR item master including YTD and MTD rolling-12-month sales history:
+CODE/DESC/TYPE/UM/CAT/TXBLE/CLASS/RLVL/RAMT/LSALE/LORD/LRCPT/ADTR/TO/LSTC/AVGC/
+UOH/UOSO/TOTVL/UOO/USMTD/GSMTD/CMTD (MTD stats) + NSMTD/NGMTD/USYTD/GSYTD/
+CYTD/NSYTD/NGYTD (YTD stats). PU reads full rolling-12-month item history for ABC
+class and reorder-level decisions during put-away.
+
+## Database tables (34 total, 7 business + 27 session-init)
+
+| Table | Purpose |
+|-------|---------|
+| BKAPINVL / BKAPPO | AP receipt lines + PO (put-away is AP-receipt-driven) |
+| BKICMSTR / MTICMSTR | Item master + multi-company item master |
+| ISLINKS | Item cross-references |
+| BKGLTRAN / DBAFIFO | GL posting + FIFO cost layer created at put-away time |
+| LOT / SERIAL | Lot and serial tracking at bin assignment |
+| MKECLASS | Class-based bin routing rules |
+| TASCOLOR | Color coding for put-away classes |
+| ISORDECO | ECO-linked put-away |
+| ISGLDATE | GL-date-controlled posting |
+| BKCMACCT | CRM account context for customer-owned/consignment stock |
+| BKPSUSER | Operator security check before bin write |
+
+## Workflow
+
+1. PO receipt processed in AP.
+2. T7PUTAWAY opens; operator scans item barcode (SCAN.ITEM) or types item number.
+3. System checks item discontinued flag (BKIC.IS.DCODE).
+4. Operator enters target bin (ENTERBIN); class-based rules (MKECLASS/TASCOLOR) suggest bin.
+5. Lot/serial numbers recorded if item is lot/serial tracked.
+6. DBAFIFO cost layer created at this point (not in a separate GL batch).
+7. BKGLTRAN GL record written; BKAPINVL receipt line updated.
+
+## Integration
+
+- **[[module-AP|AP]]** — PO receipts (BKAPINVL/BKAPPO) are the input to put-away
+- **[[module-IN|IN]]** — item master and bin location data; inventory on-hand updated
+- **[[module-GL|GL]]** — DBAFIFO FIFO layer + BKGLTRAN created at put-away time
+- **[[module-LC|LC]]** / **[[module-SC|SC]]** — lot/serial tracking at bin assignment
+""",
+
+"AU": """
+## What it does
+
+Automation Modules — background and scheduled automation utilities. Eight programs
+covering FX rate auto-update, MRP-to-SAP integration, inventory location rebuild,
+datacollection (DC) automation, and period-close stubs.
+
+## Programs confirmed (Passes 164, 179, 197)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7AUTOFX | 21p | EVO.LIB | Java-backed FX (foreign exchange) rate updater |
+| T7AUTOMRF | 132p | EVO.LIB | MRP planned order → SAP S4/S3 integration |
+| T7AUTOREBSS | 79p | EVO.LIB | Inventory location rebuilder |
+| T7AutoDCH | 183p | EVO.LIB | Automated datacollection labor scanner |
+| T7AUTOWOLA | stub | EVO.LIB | Period-close stub |
+| T7AUTOUTKG | stub | EVO.LIB | Period-close stub |
+| T7AUTOSMJC | stub | EVO.LIB | Period-close stub |
+| T7AUTODEJH | stub | EVO.LIB | Period-close stub |
+
+## T7AUTOFX — FX rate updater
+
+HOST / PORT / JAVA.PATH — Java service connection (same EvoPVT.jar pattern as JS/QU).
+FRMCUR / TOCUR — currency pair to update.
+CFROM / CDATE / CTIME — from-date + run timestamp.
+TEST.MODE — dry-run flag (no write).
+ERRORMSG — error accumulator.
+Reads ISMCR (multi-currency rates source table) and writes ISIS.MCF.*:
+CODE (currency code) / BASE (base flag) / GLABK/GLDBK (GL acct/dept bank-foreign) /
+GLABS/GLDBS (GL acct/dept bank-base).
+
+## T7AUTOMRF — MRP → SAP bridge
+
+ACTION — MRP action code.
+PG.SDATE / PG.FDATE — planning dates.
+PG.QTY — planned quantity.
+LOC — warehouse location.
+S4.PARTNO / S3.PROD.CODE — SAP S4 / S3 cross-reference part numbers in MRP output
+  (links planned orders to SAP system part IDs for dual-ERP integration).
+MTMRP.PARTNO / KEY / DATE / QTY / ONHAND / PEGTO — MRP output fields.
+
+## T7AUTOREBSS — Inventory location rebuilder
+
+Performs a full location-level restock sweep: BKIC.LOC.* × 264 = all inventory locations.
+Used to rebuild inventory location records after data corrections.
+
+## T7AutoDCH — Datacollection labor automation
+
+Filters: SFROM / STHRU.EMP + FROM / THRU WONUM / LABDATE / LABTIME + BACKFLUSH flag.
+IS.AUTO.* 13 variables (automation labor scan event):
+DATE / EMP / EXTRA / FILE / FLAG / IP / OPER / PARTS / SHIFT / TAX / TIME / WOPRE / WOSUF
+(IP = workstation IP, FILE = automation file trigger, TAX = tax event, SHIFT = current shift code).
+BKDC.SH.* 14 variables (BKDCSHFT shift schedule):
+BRK1IN/BRK1OUT/BRK2IN/BRK2OUT/BUFFER/EXTRA/FIN/FINBUF/LUNCHIN/LUNCHOT/NAME1/NAME2/NAME3/START.
+BKDCLAB (50f) fully extracted — reads complete labor records.
+
+## Integration
+
+- **[[module-DC|DC]]** — T7AutoDCH automates DC labor scan (shares BKDCSHFT/BKDCLAB schemas)
+- **[[module-IM|IM]]** — T7AUTOFX writes to ISIS.MCF.* (multi-currency config managed by IM-A)
+- **[[module-MR|MR]]** — T7AUTOMRF bridges MRP planned orders to SAP via S4/S3 part numbers
+- **[[module-IN|IN]]** — T7AUTOREBSS rebuilds BKIC.LOC.* location records
+""",
+
+"RE": """
+## What it does
+
+Reminders + Rebuild Utilities — two distinct functional groups sharing a module prefix:
+reminder reporting/daemon (ISREMIND-based) and WO/inventory rebuild utilities.
+Eight programs total.
+
+## Programs confirmed (Passes 117, 182, 198, 199)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7RemindRpt | 125p | — | Reminder report (filterable by customer/vendor/type/assignee) |
+| evoremind | 46p | EVO.LIB | Reminder daemon — fires popup notifications to active users |
+| T7REPLNK | 67p | — | Sales rep report link maintenance |
+| T7REPDEF | 52p | — | Rep default settings |
+| T7REINDEX | 36p | — | Btrieve re-indexer (FILELOC-driven) |
+| T7REBQC | 62p | — | QC data rebuild |
+| T7REBWO | 123p | — | WO cost rebuild |
+| T7RESETDFM | 8p | ISTECH.LIB | DFM layout reset utility |
+| T7REDINDEXDD | 5p | — | Re-index stub |
+
+## ISREMIND reminder architecture (evoremind daemon)
+
+REMIND.H — reminder record handle.
+AREMIND.H — alert reminder handle.
+REMINDERMESSAGE — displayed text from ISREMIND.MSG.
+REMCNTR — reminder counter for batch processing.
+I.AM / A.RET / A.RET2 — daemon identity and return codes.
+ISTS.PATH — system path for cross-module access.
+
+evoremind.RWN is the reminder service daemon. It fires notifications to active users and
+monitors: TOOL (tool calibration/availability), ISAPEX (approval workflow pending),
+BKAPPOL (AP line authorizations), BKSYUSER (user routing), ISSCHED (scheduled jobs).
+
+## T7RemindRpt filter variables
+
+FROM/THRU.CUST / FROM/THRU.VEND — customer + vendor range.
+FROM.WHO / THRU.WHO — assignee range.
+FROM/THRU.CO — multi-company filter.
+FROM/THRU.TYPE — reminder type range.
+REM.STATUS — open/closed/pending filter.
+SORT.BY.TEXT — full-text sort on reminder message.
+REMINDS / FOLLOWS — total reminder + follow-up counts in report run.
+
+## T7REBWO — WO cost rebuild variables
+
+L.RATIO / F.RATIO / V.RATIO — labor/fixed/variable overhead cost ratios (configurable).
+SELECT_FROM1-4 / SELECT_THRU1-4 — 4 independent range filter pairs (item/date/dept/op).
+REBWO.OP.LIST / COST / CNTR — per-operation rebuild tracking arrays.
+ACTIVE.WOS — active WOs in rebuild batch.
+CFROM.WOPRE / CTHRU.WOPRE — current WO-prefix range.
+NOJOBS.DEC — no-jobs decimal flag for WOs without labor.
+
+## T7REPLNK / T7REPDEF schemas
+
+ISREPLNK (11f): REPNM + CUST + ITEM (PK), CLASS + SDATE + EDATE + LABEL + GLA + GLD + EXTRA
+  — links sales rep name to customer+item+class range for report assignments.
+ISREPDEF (3f): LABEL (5 PK) + TITLE + EXTRA — report definition labels.
+
+## T7REINDEX / T7REDINDEXDD
+
+T7REINDEX: FILELOC-driven; re-indexes Btrieve files defined in FILELOC registry.
+T7REDINDEXDD: uses FD / FL / FK / FKN / FDBF / FMENU TAS schema handles —
+re-indexer operates on menu-defined Btrieve table schema (FMENU = menu-schema handle).
+
+## T7RESETDFM
+
+DUMMY_L var; DB matches T7REPLNK (ISREPLNK + BKPRSALE + BKARCUST).
+Resets rep-report-link form column widths/layout preferences to defaults.
+
+## Key database tables
+
+| Table | Purpose |
+|-------|---------|
+| ISREMIND | Reminder records |
+| BKARCUST / BKCMACCN | Customer + company for recipient routing |
+| WORKORD / WOBOM / WORECV / WOROUT / WOMAT / WOLABOR | WO data for T7REBWO |
+| BKPRSALE / ISREPLNK / ISREPDEF | Rep report linking |
+| FILELOC | File registry for T7REINDEX |
+| BKICMSTR | Item master for T7REBQC |
+| MTICMSTR | Multi-company item master |
+
+## WOLABOR schema (58 fields, fully documented)
+
+DATE + EMP + WOPRE + WOSUF + OPER + TRXN (PK), RUNHRS / SETUPHRS / LABRATE / LABCOST /
+SETCOST / MACHCOST / FOHCOST / VOHCOST / WC / TOOL / MACH / START / STOP / DEDUCT +
+cycle time + 5 flags + 3 alpha UDF.
+
+## WORECV schema (11 fields)
+
+WOPRE + WOSUF + DATE (PK), ASSY + QTY + AVGC + LOT + SERIAL.
+
+## Integration
+
+- **[[module-WO|WO]]** — T7REBWO rebuilds WO cost records; reads WORKORD/WOLABOR/WORECV
+- **[[module-AR|AR]]** — T7REPLNK links AR customers to sales rep report assignments
+- **[[module-US|US]]** — US-F (Enter Reminders) creates ISREMIND records; evoremind fires them
+- **[[module-IN|IN]]** — T7REBQC rebuilds QC data from BKICMSTR
+""",
+
 }
