@@ -108,7 +108,11 @@ to resolve fully:
    match 42 GROUPS slots). However, the YN values (Y/Z/A/Q/1/space) are NOT enable/disable
    flags — all 42 modules have active menu entries regardless of their YN value. The meaning
    of the per-slot values remains blocked by encrypted T7YSYN.RWN.
-   **Remaining open:** BKSL_MENU integer → module name mapping; ISACCESS role; YN value semantics.
+   **Remaining open:** BKSL_MENU integer → module name mapping; YN value semantics.
+   **ISACCESS role RESOLVED (Pass 550, 2026-07-02):** ISACCESS is the program+form+object
+   level granular access control table. IS.ACC.NAME+IS.ACC.DFM+IS.ACC.OBJ = 3-key check
+   (user name, form DFM file, object/button name). Opened by 269 programs. Managed by
+   T7LIMACC.RWN (PS-L). Has 0 records in this installation (NOT configured).
    **Pass 430 (2026-06-30):** T7YSYN linear mapping DISPROVEN. A prior hypothesis mapped
    YN slot N to the Nth ISTS.CFG key in T7YSYN's symbol pool. SRC evidence refutes this:
    BKROA.SRC:392 confirms YN[38]=WOCALC but linear gives SCRCMP; BKROA.SRC:629 confirms

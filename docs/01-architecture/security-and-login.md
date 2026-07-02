@@ -94,31 +94,37 @@ user's selection.
 
 ## Multi-layer security model (updated Pass 412, 2026-06-30)
 
-EvoERP defines **four distinct access control layers**, but in this installation most are
+EvoERP defines **six distinct access control layers**, but in this installation most are
 either disabled or unpopulated. Active layers shown with ✅; inactive shown with ⬜.
 
 | Layer | Mechanism | Table / File | Status |
 |-------|-----------|--------------|--------|
 | 1. License gate | `StartEvo.exe` queries `tas_menus` via PSQL DSN=EVOADMIN | `BKMENUSU.DBF` | ✅ active |
 | 2. Authentication | Password check + level lookup | `BKSYUSER.B` (Btrieve-only) | ✅ active |
-| 3. User/module | `AHSYLOG.AHSY_USER_ACCES_1..20` flags | `AHSYLOG` | ⬜ 0 records — NOT configured |
-| 4. Level masks | `BKSLEVEL` per-operation Y/N masks | `BKSLEVEL.B` | ⬜ all-N — NOT configured |
-| 5. Menu access | `WBKMENUSETUP.RWN` / `BKPSUSER.SEC` | `BKPSUSER` | ⬜ 0 records — NOT configured |
-| 6. Field-level | `T7LIMACC.RWN` (PS-L) | `ISACCESS` | ❓ unknown if populated |
+| 3. Session matrix | `BKSYLOG` 215-field OK matrix (loaded at login by `EvoERPmenu.RWN`/`dbamenu_flex.RWN` via `LOGON`/`LLOGON`); 9 module *YN flags + OKAP/OKAR/OKGL/etc _1..20 per-function arrays; propagated to ISTS.CFG keys (GLCTRL/POSEC/SOSEC) | `BKSYLOG` | ✅ loaded at login |
+| 4. User/module flags | `AHSYLOG.AHSY_USER_ACCES_1..20` per-user module enable flags | `AHSYLOG` | ⬜ 0 records — NOT configured |
+| 5. Level masks | `BKSLEVEL` 422-field per-operation Y/N masks (5 levels × ~84 operations) | `BKSLEVEL.B` | ⬜ all-N — NOT configured |
+| 6. Menu/user prefs | `WBKMENUSETUP.RWN` / `BKPSUSER.SEC` user preferences + per-user starting menu | `BKPSUSER` | ⬜ 0 records — NOT configured |
+| 7. Field-level | `T7LIMACC.RWN` (PS-L); 269 programs open `ISACCESS`; IS.ACC.NAME+DFM+OBJ = 3-key check (user+form+object) | `ISACCESS` | ⬜ 0 records — NOT configured |
 
 **Conclusion for this installation:** Access control is essentially unrestricted — users
-authenticate via password (Layer 2) and then have full access to all modules. The DBA-era
-module-flag and level-mask systems (Layers 3, 4) are deployed as schema but never configured.
-`BKPSUSER` (Layer 5) is also empty. This is a minimal-security configuration.
+authenticate via password (Layer 2) and then have full access to all modules. The
+session matrix (Layer 3) runs at login but no user records in AHSYLOG/BKPSUSER/ISACCESS
+restrict access. This is a minimal-security / Windows-SSO-only configuration.
+
+**Pass 550 (2026-07-02):** Updated from 4 to 7 layers; BKSYLOG session matrix role confirmed
+from rwn_symbols.json (LOGON/LLOGON handle in EvoERPmenu.RWN and dbamenu_flex.RWN only);
+ISACCESS role confirmed as program+form+object level granular access control (269 programs).
 
 ### Layer 2 — `BKSYUSER.B` authentication (active)
 
-`BKSYUSER.B` is the active authentication table. Btrieve-only (not in DDF). 5 fields:
+`BKSYUSER.B` is the active authentication table. Btrieve-only (not in DDF). 5 fields
+(confirmed from filedict_fields.csv + T7USG.RWN named_vars, Pass 550):
 - `BKSY.USER.CODE` — login username (key)
 - `BKSY.USER.PSWD` — password (stored via `ENCRYPTSTR` TAS obfuscation)
-- `BKSY.USER.LEVL` — security level code (links to BKSLEVEL, but BKSLEVEL is all-N)
-- `BKSY.USER.CTRL` — control flags
-- `BKSY.USER.NAME` — display name
+- `BKSY.USER.SCTY` — security level code (links to BKSLEVEL, but BKSLEVEL is all-N)
+- `BKSY.USER.COMP` — default company code
+- `BKSY.USER.CHR` — character/type flag
 
 ### Layer 3 — `AHSYLOG` module-level flags (NOT configured in this installation)
 
