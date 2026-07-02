@@ -839,10 +839,80 @@ The systematic extraction resolves the "full programmatic extraction" open item.
 - RTMVLD_ library internals (blocked — embedded in encrypted .RWN)
 - Physical location of `cfg.rtm` (requires identifying what `T:\` maps to on a live workstation)
 
+## Template.FileName cross-reference map (Pass 559, 2026-07-02)
+
+Full binary scan of all 1,305 RTM files on `\\i2s109-solidcrm\DBAMFG$\` for the
+`\x11Template.FileName` Pascal-short-string property (17 bytes: `\x11` + `Template.FileName`).
+Stored as `\x06` (vaString) + length byte + path string. Result: `samples/rtm_crossrefs.csv`.
+
+**Note:** Earlier analysis (Pass 406) searched for `\x08FileName` (8 bytes) and found zero.
+The correct property name is `Template.FileName` (17 bytes with the parent qualifier), not bare `FileName`.
+
+### Statistics
+
+| Metric | Count |
+|--------|-------|
+| Total Template.FileName properties found | 4,178 |
+| Self-references (file stores its own path) | 1,600 |
+| Cross-references (sub-report links) | 2,578 |
+| Distinct caller→callee RTM pairs | 1,078 |
+| Distinct caller files | 892 / 1,305 (68%) |
+| Files without self-ref path stored | 122 |
+
+**Self-reference semantics:** When a ReportBuilder report is saved, it stores its own filepath as
+`Template.FileName` in the root `TppReport` component. 1,183 unique files have this (the remaining
+122 were either never saved on a `C:\DBAMFG\` or `T:\` path, or are templates without self-ref).
+
+### Sub-report architecture
+
+892 of the 1,305 RTM files contain sub-report (`TppSubReport` / `TppChildReport`) references to
+other RTM files. The sub-report pattern is:
+- Parent RTM has a `TppSubReport` component
+- Its `Template.FileName` property names another RTM on the same share
+- At print time, ReportBuilder loads the child RTM and merges it into the output
+
+Most common sub-report targets (i.e., RTMs frequently referenced by other RTMs):
+- `C:\DBAMFG\BKISWCE1.RTM` — Work Order Cost Extension sub-report (T6WOL* reports)
+- `C:\DBAMFG\BKAPHA4.RTM` — AP check sub-variant
+- `C:\DBAMFG\bksrb4.rtm` — SR/Sales sub-report library
+- `C:\DBAMFG\bksam1.rtm` — SA/Sample summary sub-report
+
+### Developer history revealed by stored paths
+
+RTM files retain their original save paths from developer machines. These dev artifacts are in
+`samples/rtm_crossrefs.csv` and reveal:
+
+| Path prefix | Source | Note |
+|-------------|--------|------|
+| `C:\DBAMFG\` | Production i2 Systems workstation | Standard production path |
+| `T:\` | Workstation T: drive mapping → share | Per-workstation mapping |
+| `\\I2s109-solidcrm\dbamfg$\` | Current production UNC | Absolute form of production path |
+| `C:\SOURCE\RTM\` | Developer source tree | Developer machine (ISTech/Addsum) |
+| `C:\TASPRO7\DBA7\` | Developer TAS Pro 7 project | DBA7 development environment |
+| `\\I2s44-hapi\dbamfg$\` | Dev machine "hapi" | ISTech/Addsum developer workstation |
+| `\\wacke\dbamfg$\` | Dev machine "wacke" | ISTech/Addsum developer workstation |
+| `D:\DBAMFGPR\` | Dev machine drive D: | Separate payroll DBAMFG partition |
+| `C:\Program Files\Borland\Delphi 3\BIN\test.RTM` | Delphi 3 install | **Confirms Delphi 3 used in original development** |
+| `\\Asisvr\apps\dbamfg\` | Customer "Asisvr" | EvoERP client site |
+| `\\Seconsvr01\dbamfg$\` | Customer "Seconsvr01" | EvoERP client site |
+| `\\Cpt-app\dbamfg\` | Customer "Cpt-app" | EvoERP client site |
+| `\\Server\eimco\Public\Apps\DBAMFG\` | Customer "EIMCO" | Mining equipment company (EIMCO) |
+
+The **Borland Delphi 3** path confirms that the original ReportBuilder integration and RTM files
+were developed using Delphi 3 (mid-to-late 1990s era). DBA Manufacturing originated in the
+Delphi 3 timeframe before migrating to TAS Pro 7 / Nevrona ReportBuilder.
+
+### Notable edge-case files
+
+- `t6woc9 - backup 9-24-25.RTM` — backup copy of work order traveler from 2025-09-24 (future date)
+- `t6woc9 backup 5-14-25.RTM` — backup from 2025-05-14
+- `T6SOC4T - Copy.RTM` — copy artifact
+- `BKAPHA103009.RTM` → `T:\BKAPHA1.RTM` — dated variant name (103009 = Oct 30, 2009?)
+- `BKARG.RTM` → `C:\Program Files\Borland\Delphi 3\BIN\test.RTM` — leftover Delphi 3 test artifact
+
 ## Things still open
 
-- Physical location of `cfg.rtm` — `T:\cfg.rtm` is the inferred path via drive mapping; UNC path
-  unknown. Would need to identify what share `T:\` maps to on a running workstation.
+- Physical location of `cfg.rtm` — not found via UNC walk; likely `T:\cfg.rtm` on the T: drive mapping. `cfg.rtm` is in `samples/rtm_crossrefs.csv` as a callee, confirming it exists; UNC path still unknown.
 - Multi-currency report parameter passing (T7MLC uses LANGDICT).
 - FILELOC schema (fields/keys) — Btrieve-only, not in DDF; needs runtime dump or hex analysis.
 - RTMVLD_ library source — embedded in EVO.LIB or a separate subroutine file (blocked — .RWN encrypted).

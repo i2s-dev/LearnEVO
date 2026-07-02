@@ -3360,6 +3360,29 @@ SO=73, SR=36, AP=26, AR=22, WO=20, PO=17, IN=12, PR=11, CM=9, DC=6, SA=5, ES=4, 
 
 *(Full RTM cross-reference in `docs/05-reports/overview.md` Pass389 section)*
 
+### RTM Sub-Report Cross-Reference Map (Pass 559, 2026-07-02)
+
+**Key technical fact:** Sub-report links in RTM files are stored via the `Template.FileName` property
+(17-byte Pascal short string `\x11Template.FileName`), **not** a bare `FileName` property.
+This property names the child RTM that a `TppSubReport` or `TppChildReport` component loads.
+
+Full scan of all 1,305 RTM files:
+- **4,178 Template.FileName properties** found
+- **1,600 self-references** (each report stores its own save path)
+- **2,578 sub-report cross-references** across **1,078 distinct caller→callee pairs**
+- **892 RTM files** (68%) are sub-report callers
+- Full map: `samples/rtm_crossrefs.csv`
+
+Most-referenced sub-report RTMs (called by many parents):
+- `BKISWCE1.RTM` — Work Order Cost Extension (14+ T6WOL* reports)
+- `bksam1.rtm` — Sample/staging (T7AP* AP reports)
+- `bksrb4.rtm` — SR sub-component (multiple SR reports)
+
+**Developer artifact note:** Stored paths reveal development history — Delphi 3 was used in
+original development (`C:\Program Files\Borland\Delphi 3\BIN\test.RTM`), source tree at
+`C:\SOURCE\RTM\`, and dev machines `\\I2s44-hapi\` and `\\wacke\` (ISTech/Addsum developers).
+Customer installations seen in stored paths: Asisvr, Seconsvr01, Cpt-app, EIMCO.
+
 ---
 
 ## TABLE QUICK-REFERENCE

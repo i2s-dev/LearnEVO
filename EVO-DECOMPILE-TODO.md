@@ -1156,8 +1156,8 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 ## 18. PER-REPORT DOCUMENTATION
 
 - [x] ✅ **1305** RTM files inventoried (corrected from 899); FILELOC+RTMVLD_+ISRTMS architecture documented — **C: 87/100**
-- [x] ✅ `rtm_callers.csv` cross-reference: 403 static callers; runtime selection via FILELOC explained — **C: 82/100**
-- [x] ✅ **Pass 406 (2026-06-30): All 2610 RTM files parsed for DataField (data pipeline bindings)** — 8,574 unique values; sub-report FileName props: 0 found (sub-report links appear to use a different binary encoding not captured by current parser); label texts = static TppLabel properties (not DataField-bound) — **C: 82/100** (FileName prop encoding gap remains)
+- [x] ✅ `rtm_callers.csv` cross-reference: 403 static callers; runtime selection via FILELOC explained — **C: 82/100**; **Pass 559 (2026-07-02): sub-report cross-reference map complete** — `samples/rtm_crossrefs.csv`: 4,178 Template.FileName props; 1,600 self-refs; 2,578 cross-refs; 1,078 distinct caller→callee pairs; 892/1,305 RTMs call sub-reports; property name is `\x11Template.FileName` not `\x08FileName` (Pass 406 bug); dev artifacts confirm Delphi 3 origin, dev machines i2s44-hapi/wacke, customer machines Asisvr/Seconsvr01/Cpt-app/EIMCO — **C: 90/100**
+- [x] ✅ **Pass 406 (2026-06-30): All 2610 RTM files parsed for DataField (data pipeline bindings)** — 8,574 unique values; sub-report FileName props: 0 found (sub-report links appear to use a different binary encoding not captured by current parser); label texts = static TppLabel properties (not DataField-bound) — **C: 82/100** (FileName prop encoding gap remains); **Pass 559 (2026-07-02): RESOLVED** — property name is `\x11Template.FileName` (17 chars) not `\x08FileName` (8 chars); full scan found 2,578 cross-refs; `samples/rtm_crossrefs.csv` is the definitive sub-report link map — **C: 92/100**
 - [ ] ⬜ Each report mapped to: calling SRC function + module + menu code (FILELOC live data needed)
 - [ ] ⬜ Report parameter documentation (what filters/date ranges each report accepts)
 
