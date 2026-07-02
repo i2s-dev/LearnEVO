@@ -8810,4 +8810,128 @@ BKICLOC / MTICMSTR / BKGLTRAN / ISREPLNK / BKPRSALE / BKICPMAT / ISBSF
 - **[[module-RT|RT]]** — T7SHIPRTM assigns per-user RTM for shipping order prints
 """,
 
+"BO": """
+## What it does
+
+Bill of Lading — generates and prints BOL documents for outbound shipments.
+Three programs: T7BOL (standard BOL from SO), T7BOLMSO (multi-site/LTL BOL
+with driver sign-off), and T7BOMSCRAPFIX (unrelated BOM scrap repair utility
+that happens to start with "BO").
+
+## Programs confirmed (Passes 117, 162, 186, 198, 199)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7BOL | 178p | LISTG60.LIB | Standard BOL — single-company outbound shipment |
+| T7BOLMSO | 174p | LISTG60.LIB | Multi-site BOL — LTL carrier, driver sign-off |
+| T7BOMSCRAPFIX | 80p | LISTG60.LIB | BOM scrap % fix utility (not a BOL program) |
+
+## Carrier reference fields (T7BOL / T7BOLMSO)
+
+| Variable | Meaning |
+|----------|---------|
+| LOAD.NUMBER | Carrier load number |
+| SEAL.NUMBER | Trailer seal number |
+| TRAILER.NUMBER | Trailer/container number |
+| AUTHOR.NUMBER | Authorization number |
+| CONTROL.NUMBER | Control/pro number |
+| SCAC | Standard Carrier Alpha Code (EDI carrier ID for electronic freight billing) |
+
+## Logistics timestamps
+
+| Variable | Meaning |
+|----------|---------|
+| PICKUP.TIME / PICKUP.DATE | Scheduled carrier pickup |
+| DRIVER.ARRIVED | Time driver arrived at dock |
+| LOADING.START | Time loading began |
+| LOADING.END | Time loading completed |
+| DRIVER.DEPARTED | Time driver left facility |
+
+## BOL line-item fields
+
+| Variable | Meaning |
+|----------|---------|
+| EDIT.DESC | Line item description |
+| QTY / EDIT.QTY | Quantity shipped |
+| CASES | Number of cases |
+| PALLET.WT / EDIT.PALLET.WT | Pallet weight |
+| EDIT.HTYPE / EDIT.HQY | Hazardous material type / quantity |
+| EDIT.HM | Hazmat flag |
+| EDIT.NMFC | NMFC freight classification code (LTL carrier tariff) |
+| EDIT.CLASS | Freight class (30/50/70/85/100/125/150/etc.) |
+| EDIT.PQTY / EDIT.PTYPE | Package quantity / type |
+| EDIT.UNITS / EDIT.UM | Unit count + unit of measure for LTL |
+| EDIT.PACKS | Package count per line (multi-SO BOL manifest) |
+
+## Dimensional weight (LTL DIM weight)
+
+Supports full NMFC DIM weight calculation:
+- SKID.DEPTH / WIDTH / HEIGHT / WEIGHT / VOLUME — per-skid dimensions
+- EDIT.DEPTH / WIDTH / HEIGHT / WEIGHT — per-line dimensions
+- TOTAL.WEIGHT / VOLUME / DENSITY — calculated totals
+- SKID.CLASS / VOLUME — NMFC class and cubic volume per skid
+
+## Billing and routing
+
+| Variable | Meaning |
+|----------|---------|
+| BILLING.TYPE | Prepaid / Collect / Third-party |
+| BILLING.ACCT | Freight billing account number |
+| THIRD.PARTY | Third-party billing flag |
+| COMMODITY / DEPARTMENT | Freight commodity + billing department |
+| DROP.SHPNME / DROP.SHIP.TO | Drop-ship address override (direct-to-customer) |
+| INTER.DROP | Intercompany drop-ship flag |
+| PRT.SUPPLEMENT | Print BOL supplement/annex |
+| MARKS | Marks & numbers field (required for hazmat/export BOLs) |
+
+## Retail/apparel support
+
+| Variable | Meaning |
+|----------|---------|
+| WALMARTSHIPMENT / WALMARTMASTER | Walmart EDI compliance BOL fields |
+| TOT.PAIRS / EDIT.PAIRS | Pair count for garment/footwear (retail apparel) |
+
+## Multi-site BOL (T7BOLMSO additions)
+
+T7BOLMSO handles LTL and intercompany shipments and adds:
+- **EDIT.SSONUM** — source-site SO number (references the originating SO at the origin company)
+- **EDIT.BILLING.LINE** — billing entity per BOL line (intercompany cost allocation)
+- **BKPRMSTR** — payroll employee confirmation (driver sign-off)
+- **BKPSUSER** — ERP user authorization (dual-sign for multi-site shipments)
+
+## Key database tables
+
+| Table | Purpose |
+|-------|---------|
+| BKARINV / BKARINVL | AR invoice header + lines (the shipment being billed) |
+| BKARCUST | AR customer master (ship-to / bill-to addresses) |
+| BKICMSTR | Inventory item master (item descriptions, weights) |
+| ISSHIPCO | Shipping company master |
+| ISSHPVIA | Ship-via codes |
+| ISSOBOX | BOL manifest (22 fields: pallet/carton tracking) |
+| ISAREX | AR export certifications (compliance documents for BOL) |
+| ISSRINFO | SR service record info |
+| BKCMACCN | Company master |
+| FILELOC | File location registry |
+
+## Workflow
+
+1. Release SO lines for shipment via SO-C (Print Packing Slips).
+2. When "Enable Bill of Lading in SO-C" is Y (set in SM), SO-C prompts whether to print a BOL.
+3. T7BOL opens; enter carrier references (SCAC, load#, seal#, trailer#).
+4. Enter logistics timestamps (pickup time, loading start/end, driver departure).
+5. For each BOL line: enter NMFC code, freight class, package type/count, DIM weight.
+6. For hazmat lines: enter HTYPE and HQY.
+7. Print BOL; system writes ISSOBOX manifest record.
+8. For LTL / multi-site: use T7BOLMSO — driver and ERP user both sign off.
+
+## Integration
+
+- **[[module-SO|SO]]** — BOL triggered from SO-C packing slip print; reads BKARINV/BKARINVL
+- **[[module-AR|AR]]** — reads AR invoice for ship-to address and order totals
+- **[[module-IN|IN]]** — item weights/descriptions from BKICMSTR
+- **[[module-SM|SM]]** — "Enable Bill of Lading in SO-C" flag controls BOL prompt activation
+- **[[module-PR|PR]]** — T7BOLMSO uses BKPRMSTR for driver/employee sign-off (payroll employee table)
+""",
+
 }
