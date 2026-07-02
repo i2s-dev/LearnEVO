@@ -935,6 +935,147 @@ Delphi 3 timeframe before migrating to TAS Pro 7 / Nevrona ReportBuilder.
 - `BKAPHA103009.RTM` → `T:\BKAPHA1.RTM` — dated variant name (103009 = Oct 30, 2009?)
 - `BKARG.RTM` → `C:\Program Files\Borland\Delphi 3\BIN\test.RTM` — leftover Delphi 3 test artifact
 
+## TPF0 binary stream — component class inventory and property table (Pass 563, 2026-07-02)
+
+Source: Binary analysis of 8 RTM/BTM sample files (BKAPH1.RTM, BKAPHA1.RTM, BKISWCE1.RTM,
+BKSAM1.RTM, BKSOF4.RTM, BKSRB4.RTM, BKWOC1.RTM, t7ing1.rtm) — confirmed from `samples/rtm/`.
+
+### Binary object format
+
+Every TPF0 object is encoded as:
+```
+[3-byte prefix] [class_len: 1 byte] [class_name: N bytes]
+                [inst_len:  1 byte] [inst_name:  M bytes]
+                [properties...]     [0x00: end-of-object]
+```
+
+The 3-byte prefix bytes: first byte is a flags/type marker (0x02 seen on band containers,
+0x00 on the root TppReport); exact semantics of bytes 2–3 not fully decoded.
+
+Properties follow immediately after the instance name, as:
+```
+[name_len: 1 byte] [prop_name: N bytes] [value_type: 1 byte] [value: variable]
+```
+
+Property list terminates when `name_len = 0x00`. Child objects follow.
+
+### Property value encoding types
+
+| Byte | Name | Width | Encoding |
+|------|------|-------|----------|
+| 0x02 | vaInt8 | 1 byte | Signed 8-bit integer |
+| 0x03 | vaInt16 | 2 bytes | Signed 16-bit LE integer |
+| 0x04 | vaInt32 | 4 bytes | Signed 32-bit LE integer |
+| 0x05 | vaExtended | 10 bytes | 80-bit extended float (Delphi `Extended`) |
+| 0x06 | vaString | 1+N bytes | Pascal short string: 1-byte length + N chars |
+| 0x07 | vaIdent | 1+N bytes | Identifier short string: 1-byte length + N chars |
+| 0x08 | vaFalse | 0 bytes | Boolean false (no data bytes) |
+| 0x09 | vaTrue | 0 bytes | Boolean true (no data bytes) |
+| 0x0A | vaBinary | 4+N bytes | Binary blob: 4-byte LE length + N bytes |
+| 0x0B | vaSet | variable | Set: sequence of short strings, terminated by 0x00 |
+| 0x12 | vaLString | 4+N bytes | Long string: 4-byte LE length + N chars |
+| 0x13 | vaWString | 4+N wide | Wide string: 4-byte char count + N×2 bytes UTF-16 |
+
+### Common property table
+
+Properties confirmed from 8 RTM sample files; types are from the binary encoding:
+
+| Property name | Encoding | Semantic meaning |
+|---------------|----------|-----------------|
+| `mmLeft` | vaInt8/Int16 | Horizontal position in units of 0.001mm |
+| `mmTop` | vaInt16 | Vertical position in units of 0.001mm |
+| `mmWidth` | vaInt32 | Component width (e.g. 203200 = 203.2mm for page width) |
+| `mmHeight` | vaInt16 | Component height in 0.001mm units |
+| `mmBottomOffset` | vaInt8/Int16 | Band bottom margin in 0.001mm units |
+| `mmOverFlowOffset` | vaInt16 | Band overflow extension in 0.001mm units |
+| `mmStopPosition` | vaInt16 | Maximum extent before forced page break |
+| `mmPrintPosition` | vaInt16 | Print position within band |
+| `BandType` | vaInt8 | Band context for child components (see enum below) |
+| `DataField` | vaString | TASFile field binding (dot or underscore notation) |
+| `UserName` | vaString | TASFile pipeline user name (1204 occurrences across 8 files) |
+| `Caption` | vaString/vaLString | Static text content for TppLabel |
+| `Tag` | vaInt8 | User-defined integer tag (0–255; used to number bands in multi-section reports) |
+| `Font.Name` | vaString | Typeface name (e.g. `Arial`, `Courier New`) |
+| `Font.Size` | vaInt8/Int16 | Point size |
+| `Font.Charset` | vaInt8 | Windows charset constant (0=ANSI_CHARSET) |
+| `Font.Color` | vaInt32 | RGB color (0x000000 = black) |
+| `Font.Style` | vaSet | Set of style flags: `fsBold`, `fsItalic`, `fsUnderline`, `fsStrikeout` |
+| `Alignment` | vaIdent | `taRightJustify`, `taCenter`, `taLeftJustify` |
+| `Visible` | vaFalse/vaTrue | Boolean visibility |
+| `Transparent` | vaFalse/vaTrue | Transparent background |
+| `ParentWidth` | vaFalse/vaTrue | Inherit parent container's width |
+| `PrintHeight` | vaIdent | `phDynamic` = auto-size height; other values = fixed |
+| `GroupNo` | vaInt8 | Group number for TppGroup / TppGroupHeaderBand pairing |
+| `ShiftWithParent` | vaFalse/vaTrue | Move with parent when parent shifts vertically |
+| `ShiftRelativeTo` | vaString | Named sibling component to shift relative to |
+| `PrintCheck` | vaString | Boolean expression evaluated at print time; suppresses if false |
+| `OnPrint` | vaString | Event handler name fired before each component prints |
+| `NewPage` | vaFalse/vaTrue | Force page break before this band (TppSummaryBand) |
+| `Pen.Style` | vaIdent | `psClear`, `psSolid`, `psDash`, etc. — border/line style |
+| `BarCodeType` | vaIdent | `bcCode39`, `bcCode128`, etc. — barcode symbology |
+| `DataPipeline` | vaString | Fully-qualified pipeline path (`Form1.TASFile`) |
+| `DataPipelineName` | vaString | Short pipeline name (`TASFile`) |
+| `PrinterSetup.PaperName` | vaString | Paper size name (e.g. `Letter`) |
+| `PrinterSetup.PrinterName` | vaString | Printer name (Windows printer queue name) |
+| `PrinterSetup.BinName` | vaString | Paper bin/tray name |
+| `PrinterSetup.DocumentName` | vaString | Print job name |
+| `PrinterSetup.mmTopMargin` etc. | vaInt32 | Page margins in 0.001mm units |
+
+### BandType enum
+
+`BandType` is NOT stored explicitly on band class objects (TppDetailBand etc.) — it is an implied
+default specific to each class. The property appears on child components (TppRegion, TppLabel,
+TppSubReport etc.) to indicate which band context they are grouped with at runtime.
+
+Observed values in sample files:
+
+| Value | Class context seen on | Probable enum name |
+|-------|----------------------|-------------------|
+| 0 | TppTitleBand context | `btTitle` |
+| 1 | TppHeaderBand context | `btPageHeader` |
+| 3 | TppDetailBand context | `btDetail` |
+| 4 | TppDetailBand / TppSubReport context | `btSubDetail` or `btChild` |
+| 5 | TppGroupHeaderBand context | `btGroupHeader` |
+| 7 | (page footer context) | `btPageFooter` or `btSummary` |
+
+Values 2, 6 not observed in sample set (may be btColumnHeader, btGroupFooter, etc.).
+
+### Complete TppComponent class inventory (8 sample files)
+
+| Class | Count | Role |
+|-------|-------|------|
+| `TppDBText` | 609 | Data-bound text field; most common component |
+| `TppLabel` | 388 | Static text label |
+| `TppRegion` | 104 | Layout container / panel |
+| `TppDetailBand` | 44 | Main data detail band |
+| `TppSubReport` | 35 | Sub-report reference (paired with TppChildReport) |
+| `TppChildReport` | 35 | Child report body (always equal count to TppSubReport) |
+| `TppLine` | 22 | Horizontal or vertical rule line |
+| `TppTitleBand` | 14 | Report title band (top of each page) |
+| `TppGroupHeaderBand` | 13 | Group header band |
+| `TppGroupFooterBand` | 13 | Group footer band |
+| `TppGroup` | 13 | Group definition (always equal count to TppGroupHeaderBand) |
+| `TppShape` | 12 | Rectangle, oval, or rounded-rectangle shape |
+| `TppReport` | 9 | Root report container (one per RTM) |
+| `TppSummaryBand` | 8 | Report summary / grand total band |
+| `TppDBBarCode` | 8 | Data-bound barcode component |
+| `TppSystemVariable` | 7 | System-generated value (page number, date, record count) |
+| `TppDBImage` | 3 | Data-bound image component |
+| `TppHeaderBand` | 2 | Page header band |
+| `TppParameterList` | 2 | Runtime parameter input definition |
+| `TppPageStyle` | 1 | Page-level formatting (one per report) |
+
+**Key ratio:** TppDBText:TppLabel ≈ 1.57:1. In EvoERP reports, database-bound fields
+outnumber static labels — reports are data-dense, not form-dense.
+
+**Sub-report pairing:** TppSubReport and TppChildReport always appear in equal counts.
+Each TppSubReport object owns exactly one TppChildReport.
+
+**Group pairing:** TppGroup, TppGroupHeaderBand, and TppGroupFooterBand appear in equal
+counts (13 each). Every group definition has a matching header and footer band.
+
+---
+
 ## Things still open
 
 - Physical location of `cfg.rtm` — not found via UNC walk (`\\i2s109-solidcrm\DBAMFG$\`); **not present in `samples/rtm_crossrefs.csv`** (corrected — earlier note was wrong); likely on T: drive mapping only on a live workstation or does not exist at this installation.
