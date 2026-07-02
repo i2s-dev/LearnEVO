@@ -8934,6 +8934,376 @@ T7BOLMSO handles LTL and intercompany shipments and adds:
 - **[[module-PR|PR]]** — T7BOLMSO uses BKPRMSTR for driver/employee sign-off (payroll employee table)
 """,
 
+"IT": """
+## What it does
+
+Item Serial / Barcode / Cycle Config — configures serial number formats, 2D barcode
+print rules, and cycle-count codes per inventory item. One program: T7ITMCFG.
+
+## Program confirmed (Passes 162, 187, 202, 205, 254)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| T7ITMCFG | 66p | LISTG60.LIB | 64 (10 business + 54 session-init) | Serial format + barcode + cycle-count config |
+
+## Business tables (10 confirmed)
+
+| Table | Purpose |
+|-------|---------|
+| ISSERCNT | Serial number counter / format (9 fields) |
+| BKICMSTR | Item master (full ~50-var namespace) |
+| BKGLCOA | GL chart of accounts (for GL account assignment in serial config) |
+| SERIAL | Serial records |
+| ISNCR | Non-conformance records |
+| IS2DBAR | 2D barcode format config (109 fields) |
+| ISCYCLCD | Cycle-count code definitions (7 fields) |
+| ISGLDATE | GL date control for serial posting periods |
+| ISUDFINV | User-defined inventory fields |
+| ISICMSTR | Item class master (for class-based serial format assignments) |
+
+## ISSERCNT schema (9 fields, DDF-confirmed)
+
+IS_SERC_ITEM(15) + CLASS(4) + SPOS + LENG + TOTAL + NUMBER(counter) + LAST(25) + EXTRA + L2
+
+IS.SERC.* namespace: ITEM / CLASS / SPOS / LENG / TOTAL / NUMBER / LAST / EXTRA / L2
+
+## Serial format variables
+
+| Variable | Meaning |
+|----------|---------|
+| SER.FORMAT | Serial number format template string |
+| SSIZE / SPOS / ANUM | Format components: size / position / alphanumeric flag |
+| ITMCFG.H | ISSERCNT record handle |
+| ICMSTR.H | Item class master handle |
+| REC.NUM | Serial record navigator |
+| TOT.LOCS | Total location count |
+| POS | Format position counter (iterates through format positions) |
+
+## IS2DBAR schema (109 fields, fully decoded — Pass 254)
+
+IS2D_BAR_CODE(10 PK) + IS2D_BAR_ITEM(15) + IS2D_BAR_ORDER(UBINARY/2) +
+IS2D_BAR_CHAR(5) + IS2D_BAR_FIELD(25) + IS2D_BAR_DOCPR_1..100 (1-char × 100 doc-property flags) +
+IS2D_BAR_DESC(60) + IS2D_BAR_EXTRA(100) + IS2D_BAR_ASCII(UBINARY/2) + IS2D_BAR_TYPE(10)
+
+Architecture: one record per CODE → ITEM + FIELD pair.
+DOCPR_1-100 = 100 document-type print flags (which of 100 document types this barcode config prints on).
+IS2D_BAR_TYPE = barcode symbology code (PDF417 / QR / Code128 / etc.).
+IS2D_BAR_ASCII = ASCII encoding mode.
+
+## ISCYCLCD schema (7 fields)
+
+IS_CYCLE_CODE(4 PK) + DESC(30) + FREQ + DATE + ALPHA(15) + NUM + EXTRA(50)
+Defines ABC cycle-count frequency codes assigned to items.
+
+## Integration
+
+- **[[module-SC|SC]]** — ISSERCNT serial format configs drive serial assignment in SC (Serial Control)
+- **[[module-IN|IN]]** — BKICMSTR item master; IT configures per-item serial/barcode behavior
+- **[[module-GL|GL]]** — BKGLCOA opened for GL account assignment in serial configuration
+- **[[module-WC|WC]]** — ISCYCLCD cycle-count codes used in WC warehouse cycle-count scheduling
+""",
+
+"EDII": """
+## What it does
+
+EDI Invoice Import — automated inbound EDI → AR invoice creation pipeline. Reads EDI
+flat files (pipe-delimited or fixed-width) and creates AR invoices, SO lines, and WOs
+without human intervention. One program: T7EDII.
+
+## Program confirmed (Passes 162, 187, 202, 205)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| T7EDII | 183p | LISTG60.LIB | 43 | Inbound EDI file → full AR invoice creation |
+
+## DFM confirmed (T7EDII.DFM, Pass 490)
+
+Caption: "ED-I-I"
+Entry fields: Import Filename / Date Format / Cust Code (Optional) / Ship Date / PO Number.
+A companion DFM (t7ediftp.DFM) shows an 8-step FTP import progress bar:
+Connecting → Downloading → Importing → Error checking → Converting to SALES →
+Disconnecting → Merging PO files.
+
+## File-parsing variables
+
+| Variable | Meaning |
+|----------|---------|
+| IMP.FILENAME / FPATH / HOLD.FPATH | Import file path |
+| DATE.FORMAT | Date format selector |
+| DATE.FORM.ARRAY / DATE.CNTR / DATE.POS1 / DATE.POS2 | Multi-format EDI date parser |
+| FIELD.NUMBER | EDI field position tracker |
+| MM / DD / YYYY | Parsed date components |
+| FROM.CUST / FROM_PROD / FROM_LOC | Customer / product / location filters |
+
+## Import staging arrays (parallel arrays, one element per EDI line)
+
+ITEM.LIST / QTY.LIST / ESD.LIST / CUSORD.LIST / FS.FLAG.LIST / CUSCOD.LIST /
+REBSS.LIST / SKIP.LIST — item / qty / ESD / customer-order / flag / custcode / rebill / skip
+SO.LIST / NEW.SO.LIST / SO.LINE.LIST — existing SO mapping + new SO assignment + line
+
+## Per-line import staging
+
+IMP.COMMENT / PCODE / PQTY / ESD / CUSCOD / FS.FLAG / CUSORD / SONUM — raw EDI line fields.
+SONUM.POS — SO number position in EDI record format.
+OLD.PQTY / NEW.PQTY — pre/post-update quantities.
+SO.LINE.UPDATED — SO line modified flag.
+REB.SS.CNTR — rebill salesperson counter per import run.
+QTY_REQUESTED — raw requested qty before EDI adjustment.
+CUST.REC1 — first customer record match (multi-match dedup).
+DFLT.LOC — default warehouse location for items with no location.
+
+## 6 optional include flags
+
+INCL.MFGS (manufacturer codes) / INCL.VEND.PART (vendor part numbers) /
+INCL.2ND.DESC (secondary description) / INCL.SPECS (specification sheets) /
+INCL.MF.COMPS (made-from BOM components) + MF.PARENT (made-from parent item)
+
+## IS.TERMS.* schema (13 fields, first complete documentation — Pass 205)
+
+NUM / NAME / DESC / AMT / TYP / DAY / EOM / MAX / COD / ARAP / CC / SRT / EXTRA
+- COD = cash-on-delivery flag
+- CC = credit card terms
+- ARAP = applies to AR or AP
+
+## ISAR.CHG.* schema (21 fields, first complete documentation — Pass 205)
+
+Change-order audit: SONUM / INVNUM / LINEID / PCODE / CDATE / USER / REVLVL +
+A/B before-after pairs: ALOC/BLOC / APRICE/BPRICE / ADISC/BDISC / AOOQTY/BOOQTY /
+AESD/BESD / AASD/BASD / ACOMPR/BCOMPR / AEXTRA/BEXTRA / UNUM
+
+## BKIC.LOC.* schema (26 fields, first complete documentation — Pass 205)
+
+PROD / KEY / CODE (item+location PK), UOH / UOSO / UBO / UOO (qty on-hand/on-SO/back/on-order),
+GLA/DPTA/GLC/DPTC/GLS/DPTS/GLSNT/DPTSNT/GLWIP/DPTWIP (GL accounts at location level),
+UOWO / UALLOC / UWIP / UIQC (units on-WO/allocated/WIP/QC),
+EXTRA / LCDATE / BIN / LOT / SER / NUM1 / NUM2 / DATE1 / WHCTRL / FLAG1 / ALPHA1 / ALPHA2
+
+## BKSY.* namespace (55 variables — full system master at init, Pass 205)
+
+Auto-numbers / company info / AR defaults / AP defaults / GL clearing accounts /
+AR+AP GL accounts / check accounts / fiscal year / AR interest / PO GL /
+retained earnings / aging periods / print flags / terms config.
+
+## Key database tables
+
+BKARINV + BKARCUST + BKARINVL + BKSYMSTR + BKYSMSTR + ISTERMS + ISTAXGRP +
+BKICPMAT + BKICLOC + BKICMSTR + MTICMSTR + BKGLTRAN + WORKORD + LOT + SERIAL +
+ISARCHG (change-order audit) + CLASMSTR + ISCATMST + FILELOC + ISACCESS
+
+## Integration
+
+- **[[module-AR|AR]]** — creates BKARINV / BKARINVL records; identical code path to manual SO-A entry
+- **[[module-WO|WO]]** — can create new WOs (BKYS.WONUM auto-number) from EDI transactions
+- **[[module-DE|DE]]** — DE module contains the T7DE* dispatcher stubs that call T7EDII
+- **[[module-GF|GF]]** — T7EDII calls GF pricing module for per-customer price lookup
+""",
+
+"VSCHED": """
+## What it does
+
+Visual Work Center Capacity Scheduler — displays work center capacity vs. load on a
+Gantt-style visual chart. Hybrid architecture: Java (WorkCenterLoad.jar) renders the
+visual chart; TAS7 (T7VSCHED) reads/writes WCTRLOAD capacity snapshots and WO data
+directly. One TAS program.
+
+## Program confirmed (Passes 115, 157, 162, 205, 237)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| T7VSCHED | 94p | EVO.LIB | 22 | Visual WC capacity chart + WO scheduling |
+| WorkCenterLoad.jar | Java | — | — | com.evoerp.wcload.javafx.App — visual chart renderer |
+
+## WC.LOAD.* namespace (WCTRLOAD, 8 variables — first complete doc)
+
+| Variable | Meaning |
+|----------|---------|
+| WC.LOAD.WC + DATE | Primary key |
+| TOTHRS | Total hours booked on this WC for this date |
+| CAP | Work center capacity (hours) |
+| UTIL | Utilization % |
+| LOAD | Load % (second measure of WC loading) |
+| UDATE | Last update date |
+| EXTRA | Overflow |
+
+WCTRLOAD.H — current load handle.
+WCTRSLOD.H — scheduled load handle (reads WCTRLOAD for scheduled-only view).
+
+## WCTRLOAD = pre-computed daily snapshot
+
+WCTRLOAD is NOT calculated on the fly — it is a pre-computed daily capacity snapshot.
+The Java layer WorkCenterLoad.jar updates it; T7VSCHED reads it for the TAS-side display.
+
+## WO scheduling variables
+
+| Variable | Meaning |
+|----------|---------|
+| ADD.ITEM / ADD.QTY / ADD.WONUM | Item + qty + WO number to add to schedule |
+| ADD.WOPRE / ADD.WOSUF | WO prefix + suffix |
+| ADD.SSTART / ADD.SFIN | Scheduled start / finish dates |
+| ADD.STATUS | WO status for added WO |
+| ADD.ESTNUM / SADD.ESTNUM | Estimate number (VSCHED links to ES estimating) |
+| OK.TO.ADD.WOS | Validation gate before adding WO |
+
+## Estimating integration (first documented in VSCHED)
+
+ESTHDR.H / ESTLNE.H / ICEST.H — estimate header / line / IC-estimate handles.
+VSCHED can display estimated workload alongside actual WOs — unique cross-module visibility.
+
+## Key database tables (22 confirmed)
+
+| Table | Purpose |
+|-------|---------|
+| WORKORD / WOROUT | WO header + routing ops |
+| WCTRLOAD | Pre-computed daily WC load snapshot |
+| BKICMSTR | Item descriptions for WO display |
+| BKARINV / BKARINVL | Customer demand context overlay |
+| ISACCESS | License gate (requires explicit access grant) |
+| FILELOC | FILEDICT API for dynamic export |
+| BKYSMSTR | System config |
+| BKSYMSTR | Session global |
+
+Note: NO LOT / SERIAL / DBAFIFO / BKGLTRAN — zero financial posting from T7VSCHED.
+
+## MTWO.WIP.* 31 variables confirmed (cross-validation)
+
+WOPRE / WOSUF / BLANK / MULT / SQTY / PRTY / SSTART / SFIN / ASTART / AFIN /
+COMQTY / STATUS / LOCK / ESETUP / EMAT / EOUTPR / ELABOR / ASETUP / AMAT / AOUTPR /
+ALABOR / ETOT / ATOTAL / EST / CODE / SONUM / SETUPV / MATV / OUTPRV / LABORV / SETUP%
+
+## Integration
+
+- **[[module-WO|WO]]** — reads WORKORD/WOROUT; WOs can be added to schedule from within VSCHED
+- **[[module-WC|WC]]** — WCTRLOAD is the Work Center load table; WC defines capacity
+- **[[module-ES|ES]]** — ESTHDR.H/ESTLNE.H estimating handles; estimated load shown alongside WO load
+- **[[module-JS|JS]]** — uses same EvoPVT.jar / HOST/PORT/JAVA.PATH Java bridge pattern
+""",
+
+"TPOA": """
+## What it does
+
+PO Processing / Approval Hub — the largest standalone EvoERP program (499 procedures),
+handling the full PO lifecycle: entry, vendor lookup, receipt, QC, approval workflow,
+digital signatures, ECO integration, RFQ, job costing, and multi-currency. Identified
+as the PO processing hub accessed via T-P-O-A menu.
+
+## Program confirmed (Passes 115, 162, 237)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| TPOA | 499p | LISTG60.LIB | 61 | Full PO lifecycle — entry → approval → receipt → invoice |
+
+## BKAP.POL.* namespace (BKAPPOL PO lines, 30 variables — first complete doc)
+
+| Variable | Meaning |
+|----------|---------|
+| PONM / KEY / CNTR | PO number / Btrieve key / counter |
+| ERD | Expected receipt date |
+| PCODE / PDESC | Part code + description |
+| PQTY / PPRCE / PDISC / PEXT | Quantity / price / discount / extended |
+| PCOGS | Cost of goods sold |
+| ITYPE | Item type |
+| GLA / GLDPTA | GL account + department for expensing |
+| TXBLE | Taxable flag |
+| RQTY / IQTY | Received qty / invoiced qty |
+| OO.QTY | Over-order qty |
+| QC.QTY / BUYOFF | QC-rejected qty + QC buy-off flag |
+| SCRAP | Scrap qty |
+| PRTDIM | Print dimensions |
+| LOC | Warehouse location |
+| OPER / WOPRE / WOKEY / WOSUF | Work center + WO receipt link |
+| ARD | Actual receipt date |
+| EST / ITM.NO | Estimating link + item number |
+
+## ISAPEX.* namespace (22 variables — approval gateway + bank account)
+
+VEND / LONGNAME / NUM / NUM2 / FLAG / ALPHA / DATE / EXTRA +
+BNAME / BACCTNAM / BADD1-3 / BCITY / STATE / ZIP / BCOUNTRY /
+BCONTACT / BEMAIL / BAEMAIL / BAPHONE / BACCTTYP
+
+**Critical:** ISAPEX stores BANK ACCOUNT info (BNAME/BACCTNAM/BADD/BEMAIL) for ACH/EFT
+payment approval — ISAPEX is not just an approval flag but a payment-authorization record
+linking PO → bank → vendor.
+
+## IS.ECO.* namespace (ISECO Engineering Change Orders, 12 variables)
+
+PART / DRAW / REVLVL / ENTDATE / ENTBY / ECO / CURRENT / STATUS / DATE / APPBY / INVDISP / EXTRA
+- REVLVL = BOM revision level
+- ECO = ECO number
+- CURRENT = current revision flag
+- APPBY = approved by
+- INVDISP = inventory disposition code on ECO approval
+
+## BKAP.INVL.* namespace (BKAPINVL AP invoice lines, 20 variables)
+
+CODE / NUM / DATE / DESC / TERMD / TERMN / TYPED / TYPEN / TAMT / TDC /
+GLACT / GLDPT / DC / GLD / DAMT / APDPT / CHK / EXTRA / ISCUR / JOB
+- JOB = job cost link
+- ISCUR = currency code
+- TDC = terms discount code
+
+## BKSY.AP.* namespace (BKSYAP AP system parameters, 24 variables — first doc)
+
+APINV.NUM / APPO.NUM / AP.SHP.VIA / AP.ENTBY / AP.PEL / AP.ENDDESC /
+AP.GLACT / AP.GLDPT / AP.DISCGL / AP.DISCDPT / AP.CHKACT / AP.AGING /
+AP.RECNUM / AP.RECVNUM / AP.REOPEN / AP.RQSCRAP / AP.RQREWRK / AP.RECVFLG /
+AP.PONUM / AP.QCRECV / AP.RFQNUM / AP.VPRICE / AP.PERCOVR / AP.CONVDTE
+- RQSCRAP / RQREWRK / QCRECV = QC receipt require-scrap / rework / QC flags
+- RFQNUM = next RFQ auto-number
+- VPRICE = vendor price comparison
+- PERCOVR = percent over tolerance
+
+## BKRFQ.* namespace (BKRFQ requests-for-quote, 25 variables)
+
+NUM / KEY / EST / PARENT / OPER / PROD / WOKEY / WOPRE / WOSUF / ISSUE /
+VEND / VENDNAME / PARNTDESC / PRODDESC / USE / PUM / LEAD / PCONV / EXP /
+QTY / COST / MIN / MINCST / EXTRA / EST.LINE
+
+## IS.JOB.* namespace (ISJOB job-cost jobs, 9 variables)
+
+NUMB / DESC / CUST / VEND / RSVD / STATUS / OPENDT / CLOSEDT / EXTRA
+
+## Vendor variables
+
+BKAP.VENDCODE / NAME / ADD1-3 / CITY / STATE / ZIP / CONTACT / TELEPHONE / COUNTRY (address)
+BKAP.OUTINV / LASTPURCH / LASTPMT / PURCH.MTD / YTD / LYR / VAR / OUT.CREDIT (purchase history)
+BKAP.CUST.CODE — vendor's customer code (vendor↔customer cross-link)
+BKAP.GL.ACCT / DPT — vendor default GL
+BKAP.IS.TAXGRP / TAXIN / MCCODE / DCODE / CREDLIM / REQQC — vendor feature flags
+
+## Digital signature variables
+
+DIGSIG.H / USING.DIGSIG / NEW.DIGSIG.REQD / PRE.DIGSIG — digital signature on PO
+
+## Barcode / concurrent editing variables
+
+SCAN.QTY / SCAN.QTY.CHAR / SCAN.WO — barcode scan on PO receipt
+SCREEN.LOCKED / PONUM.LOCKED — concurrent editing protection
+USE.ACTIVE.PO — draft→active PO state transition
+SCREEN.PO / SCREEN.POTEMP — PO vs. temp-PO mode
+
+## Top variable namespace counts (Pass 237)
+
+BKAP=1056, IS=302, BKAR=202, BKIC=112, BKPR=105, ISIS=102, BKSY=96,
+MTWO=73, MTWORO=69, MTIC=54, ISAPEX=22, MTLOT=22
+
+## Key database tables (61 total)
+
+BKAPPO + BKAPVEND + BKAPPOL + MTICMSTR + BKYSMSTR + ISTERMS + ISNOTES +
+ISLINKS + ISAPEX + BKARCUST + BKICMSTR + BKICLOCM + WORKORD + WOBOM + WOROUT +
+BKRFQ + ISECO + ISORDDSC + ISORDECO + ISJOB + BKSBVEND + BKSBMFG + ISAPCHG +
+ISDIGSIG + WORKCHG + CALENDAR + ISMCF + ISMCR + BKARINV + BKARINVL + BKAPINVL +
+ISTAXFIL + LOT + SERIAL + ISNCR + BKGLTRAN + MKAHIST
+
+## Integration
+
+- **[[module-AP|AP]]** — TPOA IS the primary AP/PO processing interface
+- **[[module-WO|WO]]** — WO receipt link (WOPRE/WOSUF) on PO lines; WO engineering changes (WORKCHG)
+- **[[module-QC|QC]]** — QC receipt flags (RQSCRAP/RQREWRK/QCRECV) + buy-off on PO receipt
+- **[[module-RF|RF]]** — BKRFQ RFQ records linked from PO lines
+- **[[module-JC|JC]]** — ISJOB job-cost jobs linked to AP invoices
+- **[[module-PS|PS]]** — ISAPEX approval gateway with digital signatures and bank account auth
+""",
+
 "DS": """
 ## What it does
 
