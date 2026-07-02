@@ -1521,6 +1521,49 @@ Final step that moves transactions from the BKGLTEMP temporary file to the perma
 
 Workflow: Print to review → Post (when no blocking codes); can edit individual transactions (GL Acct / Dept / Post Date / D or C) before posting.
 **Warning:** If transactions exist beyond the current fiscal year, EVO prompts to run AM-B Fiscal Year End Routine first; can post current-year items while warning remains.
+
+## GL-P / GL-Q / GL-R / GL-S details (EVOHELP.PDF pages 614-617, Pass 527)
+
+### GL-P Edit General Ledger Batch Entries (pages 614-615)
+Edit any transaction in a GL batch (from GL-O) before final posting.
+- Select transaction from list → double-click or Select button → transaction on editing screen.
+- **Editable fields:** GL Account Code, Department, Post Date, Debit/Credit (pop-up),
+  Amount (with warning), Batch Type (pop-up), Entry Date.
+- **Skipped by cursor (mouse required):** Code, Number, Description fields.
+  - Code: customer/vendor/salesperson/item codes; Number: SO/invoice/PO/WO numbers.
+- **Amount warning:** "Potentially dangerous to change a dollar amount without
+  corresponding adjustments to subsidiary files (invoice history, purchase history,
+  job costing) — call IS Tech Support if unsure."
+- **Delete:** select record → access editing screen → press Delete button → same warning shown.
+
+### GL-Q Enter Payroll Checks (pages 615-616)
+IS Tech Support add-on (demo = 5 executions max). For outside payroll services only.
+**Workflow:**
+1. Post total net check amount (non-direct-deposit checks) via GL-B to a Payroll Clearing GL account.
+2. Run GL-Q: enter Bank Account / Posting Date / Payroll Clearing GL Account / Reference.
+3. Enter each check number + net amount; running total shows against clearing account balance.
+4. Click **Post** → one GL entry posted per check, clearing the payroll clearing account;
+   each check also posted to Check Register for GL-J bank reconciliation.
+
+### GL-R Business Status (page 616)
+Dashboard showing current company financial position. Recalculates current period on load.
+- **Main screen balances:** Open AR / Customer Deposits / AP / Cash / Open SOs / Open POs / WIP / Inventory.
+- **Period fields** (based on Period Start/End dates): Billings and Booked Orders.
+- **EOM Projected Cash:** current cash + expected AR receipts − expected AP disbursements by month-end.
+  AR: uses customer Average Days to Pay; fallback for new customers = invoice due date per terms.
+  AP: subtracted if Scheduled Payment Date or due date per terms is before month-end.
+  Does NOT include payroll.
+- Click any label → drill into detail components.
+- **Prior periods:** Tools → Calculate Prior Periods → Previous button or Tools → Graphs
+  (data type + number of periods).
+- AD-B Checking Accounts Defaults controls which accounts appear in Cash Balance.
+
+### GL-S View GL Journal Notes (page 617)
+Displays notes entered via GL-B Enter/Post General Journal Transactions.
+- Notes shown in Transaction Number order; can sort by Code.
+- Click **Print** → filtered by Transaction Number / Code / Date.
+- Note: Date = Entry Date of the note, NOT the journal transaction date.
+- Hidden notes (flagged in GL-B) do NOT print.
 """,
 
 "PR": """
