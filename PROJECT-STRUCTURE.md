@@ -40,7 +40,8 @@ C:\ISTS\
 ├── CHMHELP.EVO           [35 bytes] CHM presence marker (format: unknown)
 ├── RBuilder.ini          Nevrona ReportBuilder preferences
 ├── EvoHELP.CHM           Windows HTML Help — 779 topics
-├── EvoPVT.jar            [1.8 MB] JavaFX SQL helper app
+├── EvoPVT.jar            [1.8 MB] JavaFX SQL helper — drill-down dashboards (CASHFLOW, CRMDASHBOARD, COMMISSIONRPT, PURCHITEM, PURCHVEND); 533 table entity classes; PSQL 13.20.023 JDBC driver bundled
+├── SQLExport.jar         SQL Export helper — invoked by SQLEXPORT.RWN (EX/DE-A); contains 6 DefaultSQL preset queries; writes CSV to DBAMFG$\REPORTS\ [confirmed Pass 540]
 ├── qtintf70.dll          Qt 3/CLX UI layer (used by tp7runtime.exe)
 ├── c4dll.dll             CodeBase data engine DLL
 ├── zipdll.dll            ZIP compression (used by EvoBackup)
@@ -79,6 +80,9 @@ DBAMFG$/
 ├── Menu Backup\          Menu backup company
 ├── Recovered\            Recovered data
 ├── LinkDoc\              Document attachment files (EvoLinks storage)
+├── RTX\                  RTM backup copies — same name as RTM but with .RTX extension; TA-M editor restores from here if RTM edit goes wrong [confirmed EVOHELP.PDF §7.7.6]
+├── DRILL\                Drill-down customizations — ISDRILLM.B (local copy used at runtime; DBAMFG$ root copy is master replaced by updates) [confirmed EVOHELP.PDF §SU-B]
+├── REPORTS\              SQL Export CSV output path (used by EX/DE-A SQL Query/Export) [confirmed from SQLEXPORT.RWN analysis]
 ├── FILE.DDF              Pervasive data dictionary — table names + file IDs
 ├── FIELD.DDF             Pervasive data dictionary — field definitions
 ├── INDEX.DDF             Pervasive data dictionary — index definitions
@@ -508,6 +512,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 |-------|------|---------|
 | AHSYLOG | AHSYLOG.B | User security: AHSY_USER_LEVL (role, 2 chars), AHSY_USER_MENU (starting menu, 4 chars), AHSY_USER_CTRL (control flag, 1 char), AHSY_USER_ACCES_1..20 (20 × 1-char module permission flags) |
 | BKLOGON | BKLOGON.B | Active sessions (10 fields: code, password, company, program, printer, in-use flag, security level, menu, submenu, current printer) |
+| ISEXUSER | ISEXUSER.B | Extended user auth config (12 fields: CODE/GROUP/DATE1/DATE2/MISC1/MISC2/WINDO/PASSW/PEXPD/LPASS/LDATE/FLAGS); SSO Windows domain auth via WINDO/WDA.USERNAME; dual password modes (legacy ENCRYPTSTR / SHA1 hash) [confirmed Pass 227] |
 | BKSYMSTR | BKSYMSTR.B | System master / global config (286 fields: AR/AP/PO invoice numbers, tax rate, 20 payment terms, check accounts, GL accounts, aging buckets, payroll deductions, currency codes) |
 | BKYSMSTR | BKYSMSTR.B | System master variant (second config table) |
 | ISNOTES | ISNOTES.B | EvoNotes append-only note records |
@@ -932,7 +937,7 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 | BKMRPSW | MR (T7MRF) | MRP per-part on/off switch — PART+SW(Y/N); excludes items from MRP calculation | confirmed |
 | ISBUILD | MR (T7MRH) | Build schedule — manually-entered production targets that feed MRP demand | confirmed |
 | ISICMSTR | MR (T7MRI) | IS item config master — extended item config for multi-location MRP | confirmed |
-| ISARDEPL | AR (T7ARN) | AR deposit lines — line-level payment application detail within a deposit record | inferred |
+| ISARDEPL | AR (T7ARN) | AR deposit lines — line-level payment application detail within a deposit record; 20 fields: SO/SCCOG/OAMT/AMT/AMTRM/UNITC/DATEC/GLACT/GLDPT/FLAGS | confirmed Pass221 |
 | MKAHIST | ISTECH.LIB (infra) | MKA audit history — system-wide change/event log opened by nearly every module | confirmed |
 | ISLOG | ISTECH.LIB (infra) | IS activity log — user action audit trail opened by nearly every module | confirmed |
 | ISIS | ISTECH.LIB (infra) | IS image/icon system — UI icon or image lookup table (universal) | confirmed |
@@ -1179,5 +1184,5 @@ All entries marked `confirmed` in this pass exist in the Pervasive DDF schema (`
 
 Tables upgraded: BKGLSTMT, BKGLFSTL, BKGLGJRN, BKGLGJLN, BKPRCURP, BKPRFTAX, BKPRGLFL, BKPRINFO, BKPRTC, BKARINVI, BKART, ISCHAINM, ISDROP, MTMRP, MTICMSTR, BKMRPFC, BKMRPPO, BKMRPSW, ISBUILD, ISICMSTR, MKAHIST, ISLOG, ISIS, BKCMACCN, BKAPDESC, ISMCR, ISSMTCFG, ISNTYPE, ISNOTES, ISSHIPCO, ISORDDSC, ISJOB, ISCYCLCD, ISUDMSTR, BKCMVNDH, BKCMVNDF, ISBROKER, BKCPEC, BKISTAX, ISAPEX, ISMCF, WORKCHG, BKMRPSW, ISBINLOT, ISGLDATE. (45 tables; 2 remain `inferred`: ISICUL, ISPRCONS — not found in DDF.)
 
-**Confidence: 90/100** — 659 tables cataloged from DDF; all major program RWNs mapped with DB fingerprints from rwn_symbols.json; .B file-to-table correspondence confirmed via DDF X$File. Remaining gaps: SUMPNCUS (not in DDF — may be a temp file), ISICUL/ISPRCONS (not in DDF — may be unregistered or different naming), ISARDEPL (not in DDF), some DBAMFG$ subdirectory contents not yet enumerated, cfg.rtm physical path unresolved.
+**Confidence: 92/100** — **Pass 544 (2026-07-02)**: Added RTX\, DRILL\, REPORTS\ subdirectories to DBAMFG$; added SQLExport.jar; upgraded ISARDEPL inferred→confirmed (Pass 221); added ISEXUSER 12-field auth table (Pass 227). 659 tables cataloged from DDF; all major program RWNs mapped with DB fingerprints from rwn_symbols.json; .B file-to-table correspondence confirmed via DDF X$File. Remaining gaps: SUMPNCUS (not in DDF — may be a temp file), ISICUL/ISPRCONS (not in DDF — may be unregistered or different naming), some DBAMFG$ subdirectory contents still not enumerated (e.g. 2004.1\, evo-ERP\), cfg.rtm physical path unresolved.
 
