@@ -83,6 +83,14 @@ DBAMFG$/
 ├── RTX\                  RTM backup copies — same name as RTM but with .RTX extension; TA-M editor restores from here if RTM edit goes wrong [confirmed EVOHELP.PDF §7.7.6]
 ├── DRILL\                Drill-down customizations — ISDRILLM.B (local copy used at runtime; DBAMFG$ root copy is master replaced by updates) [confirmed EVOHELP.PDF §SU-B]
 ├── REPORTS\              SQL Export CSV output path (used by EX/DE-A SQL Query/Export) [confirmed from SQLEXPORT.RWN analysis]
+├── lib\                  Java library JARs (Pass 545):
+│   ├── Evo.jar           [52 classes] Original Swing-based app — Outlook EvoAppointment, ChartDisplayFrame, LookupFrame, PervasiveDatabase JDBC
+│   ├── Evo2.jar          [209 classes] Comprehensive Swing toolkit — SQL Query Wizard (4-step), EvoErpScript mini-language, DbDiag validation (rules.dbr), DataUpload, PatchFile
+│   ├── EVO3.JAR          [648 classes] JavaFX app — development/staging variant of EvoPVT.jar
+│   ├── Evo2-upd.jar      Update version of Evo2.jar (variant/patch)
+│   ├── ACTIVATION.JAR    License activation helper
+│   ├── barcode4j.jar     Barcode generation library (used by RTM barcode components)
+│   └── EVO3_table_fields.txt  Table+field name catalog from EVO3 era (530 tables, ISSR_INFO_* namespace)
 ├── FILE.DDF              Pervasive data dictionary — table names + file IDs
 ├── FIELD.DDF             Pervasive data dictionary — field definitions
 ├── INDEX.DDF             Pervasive data dictionary — index definitions

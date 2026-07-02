@@ -10096,6 +10096,51 @@ All 6 data-export programs share an identical 69-table session-init DB (ISDRILL-
 NO JS-specific business tables — data is read from existing ERP tables via the Java layer.
 T7JSETTINGS has a minimal 14-table config-only DB.
 
+## Additional Java library JARs (Pass 545, 2026-07-02)
+
+The `DBAMFG$\lib\` subfolder contains three additional JARs not previously documented:
+
+### Evo.jar (52 classes — original Swing-based app)
+Older generation Swing UI. Key classes:
+- `com/evoerp/outlook/EvoAppointment` — Outlook/Google Calendar integration; fields: apptTime/reminderTime/customer/subject/note/type/contact/id; `getReminderTimeMinutes()` converts for calendar export
+- `com/evoerp/ui/LookupFrame`, `ChartDisplayFrame`, `QueryResultFrame` — Swing-based data lookup + chart window
+- `com/evoerp/sql/PervasiveDatabase` — JDBC connection (same as Evo2.jar)
+- Predecessor to EvoPVT.jar; chart display replaced by JavaFX TAS 7i native charts
+
+### Evo2.jar (209 classes — comprehensive Swing toolkit)
+Full-featured Swing toolkit used by older bridge programs:
+
+**SQL Query Wizard** (`com/evoerp/sql/wizard/`):
+- 4-step wizard: SelectTablesFrame → SelectFieldsFrame → SelectJoinsFrame → SelectFiltersFrame
+- QueryConstructor builds final SQL with sort (up to 3 fields + ascending flags), GROUP BY, JOINs
+- Variable queries supported (parameterized); output: QueryResultFrame (table view or CSV export)
+- Chart creation frames: Bar, PieChart, Line variants (Daily/Monthly/Weekly/Yearly/Multiple)
+
+**EvoErpScript** (`com/evoerp/ees/EvoErpScript`):
+Mini-script language for parameterized SQL automation:
+- Commands: `statement` (SQL execute), `message` (dialog), `delete_file`, `overwrite_file`, `write_file`
+- Input prompts: `input_value(index, type)` and `input_range(start, end, type)` for string/integer/date
+- Output: `output(csv|chart)`, `store(varname)` (save result for later use)
+- Substitution: `~varname~` tilde-delimited placeholders
+- Reads script from file; executed by Evo2.jar runtime
+
+**DbDiag** (`com/evoerp/dbdiag/`):
+Database validation engine:
+- Loads rules from `rules.dbr` file
+- Rule types: BlankEntryRule, NullValueRule, InvalidValueRule (with Operator enum), SingleTableRule
+- Severity levels: ERROR (red icon), WARNING (yellow), passed (green)
+- Result per Row with Level and color coding
+
+**DataUpload** (`com/evoerp/dataupload/DataUploadArgs`):
+Config from properties file — `database.directory`, `email.host/user/pass/port`, `dataupload.files`; sends data + email attachments
+
+**Other utilities**: PatchFile/PatchInfo (update management), SecurityUtils, SSLSocketHandler (encrypted logging), TrackingNumberWorker (carrier integration), DateUtils/NetUtils
+
+### EVO3.JAR (648 classes — JavaFX evolution)
+Functionally equivalent to EvoPVT.jar but packaged separately. Contains same
+`com/evoerp/javafx/` + `com/evoerp/sql/tables/` architecture. Likely a development
+or staging variant; EvoPVT.jar is the deployed runtime version.
+
 ## Integration
 
 - **[[module-QU|QU]]** — T7JSQL uses same EvoPVT.jar / jdbc.ini pattern as QU-F (Queries)
