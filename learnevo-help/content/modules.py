@@ -8934,6 +8934,391 @@ T7BOLMSO handles LTL and intercompany shipments and adds:
 - **[[module-PR|PR]]** — T7BOLMSO uses BKPRMSTR for driver/employee sign-off (payroll employee table)
 """,
 
+"DS": """
+## What it does
+
+Data Sync — 25 background timer programs (T7DSAP, T7DSAR, T7DSBOM, T7DSCK, T7DSCM,
+T7DSCO, T7DSCS, T7DSDC, T7DSEST, T7DSFO, T7DSGEN, T7DSGL, T7DSHH, T7DSIC,
+T7DSIM, T7DSMRP, T7DSPO, T7DSPR, T7DSQC, T7DSRMA, T7DSRO, T7DSSH, T7DSSO,
+T7DSWC, T7DSTWO) that synchronize EvoERP data with an external system.
+Each T7DS[MOD] stub is a per-module background timer that invokes the central
+Data Sync engine for that module's data.
+
+## Architecture (Passes 117, 191, 232, 255)
+
+Every one of the 25 programs is a **pure stub** — 7 KB, 5 procedures, 1 named variable (STUB):
+- Procedure names: `STUB.ONOPENFILE / STUB.ONSTART / STUB.ONDISPLAY / STUB.ONCLOSE / TIMER.CALL`
+- TIMER.CALL = periodic background timer — DS runs unattended, not interactively
+- ISLOG.IS_LOG_KILL = kill flag — admin can terminate a running sync via ISLOG
+
+The 25 stubs share an identical 36-table DB fingerprint:
+BKAPDESC + BKAPPO + BKAPVEND + BKARCUST + BKARINV + BKCMACCN + BKGLTRAN + BKGLX +
+BKICMSTR + BKSYAR + BKSYHELP + CLASS + DBAFIFO + DBAHLPID + FILELOC + ISDRILL +
+ISDROP + ISGLDATE + ISICMSTR + ISIS + ISLINKS + ISLOG + ISMCR + ISNCR + ISNOTES +
+ISNTYPE + ISNUMBER + ISREMIND + ISTAXGRP + ISTRIGRS + LANGDICT + LOT + MKAHIST +
+MKECLASS + SERIAL + WORKORD
+
+## ISDROP clarification
+
+ISDROP schema (4 fields): CODE(10) + TEXT(30) + DESC(30) + EXTRA(50)
+= **User-Defined Drop-Down Codes** — NOT a drop-ship staging table.
+DS programs read ISDROP as a sync operation status/code lookup reference.
+
+## T7DSQC anomaly
+
+T7DSQC has 0 DB tables = QC sync is NOT implemented. All other 24 programs are active.
+
+## What the central sync engine is
+
+The central sync engine (called by the STUB dispatch token) is NOT a .RWN file — it
+is likely a Java service or external process. It is not directly accessible via static
+analysis of the TAS stubs. The stub architecture IS the complete picture at the TAS layer.
+
+## T7DSGEN.SRC
+
+T7DSGEN.SRC is one of only 7 readable .SRC source files on the network share. It is
+the generic template from which all 25 T7DS* stubs were generated.
+
+## Integration
+
+- **[[module-IS|IS]]** — ISLOG is used for sync session tracking and kill-flag admin
+- **[[module-DE|DE]]** — DE (EDI/Imports) and DS are both data-integration layers; DS is outbound sync
+""",
+
+"AL": """
+## What it does
+
+Audit Log + Alternate Parts — two distinct programs under one module prefix:
+T7ALOGSETUP (configures what gets logged and writes system parameters) and
+T7ALTPART (maintains substitute/alternate part mappings).
+
+## Programs confirmed (Passes 65, 157, 232, 254)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7ALOGSETUP | 43p | — | Configures audit monitoring; also edits BKSYMSTR system parameters |
+| T7ALTPART | 104p | — | Alternate/substitute part maintenance |
+
+## T7ALOGSETUP
+
+Writes to ISLOG + BKSYMSTR + BKPSUSER.
+Opens FILELOC to enumerate all Btrieve tables and configure monitoring per-table.
+
+**Security:** USER / PASSWORD / PASS.OK / EUSER / UPSK = password-gated setup access.
+
+**FILELOC iteration vars:**
+LOC_BUFF_NAME / LOC_FILE_NAME / LOC_COMP_CODE / LOC_REC_SIZE / LOC_REC_TYPE — iterates all Btrieve
+tables to let admin choose which ones to monitor. CNTR = table counter.
+
+**BKSYMSTR edit:** Reads + writes the BKSY.* 55-variable namespace (auto-numbers, company address,
+AR/AP/GL defaults, PO GL, tax GL, check accounts, terms, print flags, fiscal year, etc.).
+T7ALOGSETUP is NOT read-only — it is also a system parameter editor.
+
+## ISLOG schema (9 fields, fully extracted)
+
+WHO + WHAT + DOING + STARTD + STARTT + COMPANY + KILL + MSG + EXTRA
+- KILL = admin session termination flag (set here to kill active user sessions)
+- MSG = log message text
+- DOING = current operation description
+
+## T7ALTPART
+
+Maintains BKSBPART (alternate/substitute parts) — 7 fields:
+PARNT + KEY + KEY2 + PROD + CUST + SUBST + EXTRA
+
+**Key variable:** SAVE.BOTH.WAYS = creates bidirectional substitution (A→B AND B→A simultaneously).
+Ensures that if item A substitutes for B, B also substitutes for A.
+
+**Handles:** ALTPART.H / RLPART.H / ALPART.H — three record handles for part record navigation.
+**Filters:** FROM.ITEM / THRU.ITEM / FROM.LONG / THRU.LONG — item range filters.
+**Flags:** DO.ALT.PART / NO.ALT = operation mode flags.
+
+## Integration
+
+- **[[module-IN|IN]]** — BKSBPART (alternate parts) is an extension of inventory item master
+- **[[module-SM|SM]]** — T7ALOGSETUP writes audit configuration; aligns with SM system manager
+- **[[module-PS|PS]]** — BKPSUSER (user security) opened by T7ALOGSETUP for permission gating
+""",
+
+"EM": """
+## What it does
+
+Emergency GL Maintenance — the single most privileged maintenance program in EvoERP.
+T7EMGL can directly rewrite GL Chart of Accounts entries, AP/PO transactions, WO/BOM
+data, inventory transactions, FIFO cost layers, AND lot/serial/NCR records — all in one
+interface. Used for emergency corrections that cannot be made through normal module paths.
+
+## Program confirmed (Passes 115, 153, 185, 208, 235)
+
+| Program | Pages | Lib | Tables | Purpose |
+|---------|-------|-----|--------|---------|
+| T7EMGL | 62p | LISTG60.LIB | 43 | Emergency direct-edit of GL COA and linked records |
+
+## DFM confirmed (T7EMGL.DFM, Pass 153)
+
+Caption: "Emergency GL Maintenance"
+Fields: GL Account / GL Dept / Extra (GL Account Link)
+Filters: from.glacct + from.gldpt
+Toolbar: Add / Delete / Save
+
+## BKGL.* namespace (14 variables from BKGLCOA)
+
+| Variable | Meaning |
+|----------|---------|
+| ACCT / GLDPT | GL account + department (primary key) |
+| ACCTD | Account description (25 chars) |
+| TYPE | Account type (Asset/Liability/Equity/Revenue/Expense) |
+| CR.DR | Credit/debit normal balance |
+| NON.CASH | Non-cash flag |
+| CURRENT | Current period amounts |
+| BUDGET | Budget amounts |
+| 1YPAST / 1YPAST.YE | Prior year periods + year-end rollup |
+| 2YPAST / 2YPAST.YE | Two-years-ago periods + year-end rollup |
+| EXTRA | GL Account Link field |
+
+## Other confirmed variables
+
+GLCOA.H — GL COA record handle.
+ISSERIAL.H — serial record handle (EM can directly modify SERIAL master records).
+STYPE — account type selector (all / specific type filter).
+REPLNK_REC_HOLD — replace-link record-hold flag (EM can replace inter-record links).
+FROM/THRU.GLACCT + FROM/THRU.GLDPT — range filter vars.
+XRETFLD / XRETFLD2 — extended return fields (2-field lookup return support).
+
+## Key database tables (43 total)
+
+BKGLCOA, BKAPPOL, BKAPPO, WORKORD, WOBOM, INVTXN, BKBMMSTR, BKMRPFC,
+FILELOC, BKGLTRAN, DBAFIFO, ISTRIGRS, ISREMIND, LOT, SERIAL, ISNCR, ISTAXGRP,
+BKICMSTR, ISICMSTR (third item master — per-item integration config overrides),
+BKICLOCM (location code master), BKAPVEND, BKARCUST, BKCMACCN — plus session-init tables.
+
+**ISICMSTR** is distinct from BKICMSTR and MTICMSTR — it is the IS item config master,
+holding per-item integration overrides. First documented in EM.
+
+## Integration
+
+- **[[module-GL|GL]]** — T7EMGL directly edits BKGLCOA; most powerful GL correction tool
+- **[[module-AP|AP]]** — can modify BKAPPOL/BKAPPO AP transactions
+- **[[module-WO|WO]]** — can modify WORKORD/WOBOM WO data
+- **[[module-LC|LC]]** / **[[module-SC|SC]]** — can modify LOT/SERIAL/ISNCR lot/serial/NCR records
+""",
+
+"FS": """
+## What it does
+
+Field Information Base (FIB) — field service technician skills/contract-program management.
+Three-level hierarchy: Class (service territory/region + skill category) → Program
+(service program/contract type) → Info (per-technician-per-program assignment).
+Also links field technicians to their skills via BKPRSALE (salesperson = field tech).
+
+## Programs confirmed (Passes 117, 188, 198, 201, 204)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7FSCLASS | 62p | LISTG60.LIB | FIB class maintenance (service territory + skills) |
+| T7FSEMP | 59p | LISTG60.LIB | FIB employee assignment (technician-to-class via barcode scan) |
+| T7FSINFO | 61p | LISTG60.LIB | FIB info record (per-technician per-program assignment) |
+
+## Three-level FIB hierarchy
+
+```
+CLASS (ISFSCLAS)
+  └─ PROGRAM (ISPRINFO: links program/contract type to CLASS)
+       └─ INFO (ISFSINFO: per-technician per-program record)
+            └─ EMPLOYEE (BKPRSALE via CLASS code)
+```
+
+## Database schemas
+
+**ISFSCLAS** (3 fields): CLASS / GROUP / EXTRA — service territory class code
+**ISPRINFO** (4 fields): PROG / DESC / MISC / TYPE — service program/contract type
+**ISFSINFO** (4 fields): PROGRAM / CONTRACT / MISC / WHO — technician assignment record
+
+## T7FSCLASS unique features
+
+- DFM.H / DFM_CAPTION / DFM_NAME / DFM_OBJNAME — FIB class codes are tied to DFM form names,
+  allowing class-level form access restriction (same pattern as T7LIMACC access control).
+- ADDRESS — geographic address component (FIB CLASS = service territory with address).
+- FULL.INFO — expandable full-info display (shows all programs + employees for a class).
+- MCLASS.H — material class handle (FIB class links to material/skill classification).
+- THRU.CLASS — end of range filter.
+- ISPR.INFO.PROG/DESC/MISC/TYPE — T7FSCLASS can create/edit linked ISPRINFO records from class editor.
+- ISTS.EDATE — LGS Statement of Entry date integration (FIB records link to Canadian customs).
+
+## T7FSEMP unique features
+
+- SCAN.EMP — barcode employee scan (touchscreen-enabled technician entry).
+- BKPR.SLS.CLASS — the FIB→salesperson join field (ISFSCLAS.CLASS → BKPRSALE.CLASS = field
+  technician skills matrix: which technicians hold which FIB class certifications/skills).
+- **BKPR.SLS.* 17-variable namespace (BKPRSALE):**
+  EMPNUM / CLASS / RATE / HOW / WHEN / QUOTA / GROSS / COGS / RCPTS / COMM / PAID /
+  FNMI / LNME / EXPACT / EXPDPT / EXTRA / EMAIL
+  (RATE=commission rate; HOW=how commission calculated; WHEN=payment trigger;
+  QUOTA=sales quota; GROSS/COGS/RCPTS/COMM/PAID=MTD performance accumulators;
+  FNMI/LNME=first/last name; EXPACT/EXPDPT=expense GL account/dept)
+
+## T7FSINFO unique features
+
+- COCODE / HOLD.COCODE — FIB info records are company-scoped (multi-company FIB).
+- CONTRACT — ISFSINFO links info records to a contract number.
+- PROGRAM — FIB program identifier.
+- GRIDNAME / GRIDCAP — grid column name/caption for dynamic FIB display.
+- KEYNAME — key field name for record lookup.
+- FILENME — FIB program file being configured.
+- FFIELDFLT / FOPER — field filter expression + operator.
+- FANDOR / WANDOR — boolean AND/OR filter operators.
+- FMASTERDATA — links FIB to master data record.
+- LIST_RET_FLD / ARETFLD — grid return fields for selection.
+- BUTTON.DATE — quick date selector.
+- FCNTR / MCNTR — find/master counters for ISFSINFO batch navigation.
+- O.REC — original record buffer (undo support).
+
+## Integration
+
+- **[[module-LG|LG]]** — FIB records link to Canadian customs SOE dates (ISTS.EDATE)
+- **[[module-PR|PR]]** — BKPRSALE (salesperson/technician) is the field technician identity
+- **[[module-SM|SM]]** — BKPRSALE commission settings managed in SM; FIB uses same records
+""",
+
+"MA": """
+## What it does
+
+AR Deposits (Map Deposits) — applies customer deposits to open invoices. Two programs:
+T7MAPDEPO (post deposit payments to GL) and T7GETDEP (retrieve available deposits for
+application). Used when a customer pays a deposit in advance of invoicing.
+
+## Programs confirmed (Passes 116, 189, 230, 239)
+
+| Program | Pages | Lib | Purpose |
+|---------|-------|-----|---------|
+| T7MAPDEPO | 97p | LISTG60.LIB | Post deposits to GL; apply deposit credits to invoices |
+| T7GETDEP | 18p | — | Retrieve available deposit balance for a customer |
+
+## BKARDEP schema (6 fields, fully confirmed)
+
+BKAR.DEP.DEPNO / CUST / DATE / SO / SR / EXTRA
+- DEPNO = deposit number (PK)
+- CUST = customer code
+- DATE = deposit date
+- SO = linked Sales Order
+- SR = linked Service/Repair order
+- EXTRA = notes/overflow
+
+## ISARDEPL schema (~18 fields, confirmed from T7MAPDEPO vars)
+
+ISAR.DEPL.* namespace: SO / SCCOG / OAMT / AMT / AMTRM
+- SO = linked SO number
+- SCCOG = subcontract COGS amount
+- OAMT = original amount
+- AMT = amount applied to invoice
+- AMTRM = remaining (unapplied) balance
+
+## T7MAPDEPO key variables
+
+DEPO.ORIG.AMT / DEPO.AMOUNT / AMOUNT.REM — deposit balance tracking:
+- DEPO.ORIG.AMT = original deposit total
+- DEPO.AMOUNT = current deposit amount
+- AMOUNT.REM = unapplied balance remaining
+
+FROM.ITEM / GLACCT / GLDPT — GL distribution vars.
+SFROM.SONUM — source SO number filter.
+
+## T7GETDEP key variables
+
+DEPTOUSE — deposit to apply.
+LINES.DEPCAL — calculated deposit credit lines.
+APPDEP — approved for application flag.
+DEP.TOTAL — total deposit available.
+DEP.TOTAL.LATE — late payment penalty tracking.
+MKECLASS — class-based deposit filtering.
+
+## Deposit workflow
+
+1. Customer pays deposit → T7ARN (AR-N, Enter Cash Receipts) records the payment into BKARDEP.
+2. T7MAPDEPO posts the deposit to GL (BKGLTRAN) and marks the deposit available for application.
+3. At invoicing time, T7GETDEP retrieves available BKARDEP records for the customer.
+4. T7ARC (AR-C, Apply Payments) applies the deposit credit from ISARDEPL to the open invoice.
+
+## Key database tables
+
+| Table | Purpose |
+|-------|---------|
+| BKARDEP | Deposit master (6 fields) |
+| ISARDEPL | Deposit allocation (deposit→invoice application, not in DDF) |
+| BKARCUST | Customer master |
+| BKARINV / BKARINVL / BKARINVT | Invoice header/lines/total |
+| BKGLTRAN | GL journal entries for deposit postings |
+| MKECLASS | Class-based filtering |
+
+## Integration
+
+- **[[module-AR|AR]]** — AR-N (cash receipts) creates deposits; AR-C applies them; AR-A displays them
+- **[[module-GL|GL]]** — BKGLTRAN: deposit postings and GL distribution
+""",
+
+"EX": """
+## What it does
+
+SQL Export / BI Export — exports EvoERP data to an external BI database (EVOBI2) via
+a Java application. T7JTEMP (the TAS launcher stub) calls SQLExport.jar, which connects
+via Pervasive JDBC to EVOBI2 and exports query results as CSV to DBAMFG$\\REPORTS\\.
+
+## Components confirmed (Passes 156, 231, 239, 315, 493)
+
+| Component | Notes |
+|-----------|-------|
+| SQLEXPORT.RWN | 23p, ISTECH.LIB — TAS launcher stub (calls T7JTemp/Java) |
+| SQLEXPORT.DFM | Caption='Loading....', SourceFile='T7JTemp' |
+| SQLExport.jar | Java Swing app, com.evoerp package, v1.5.0 build 2014-03-19 |
+| EvoPVT.jar | Shared Java framework used by SQLExport + QU-F + other Java tools |
+| EVOBI2 | Separate BI database (NOT operational DBAMFG$) |
+
+## Connection architecture
+
+SQLEXPORT.RWN → T7JTemp launcher → SQLExport.jar
+SQLExport.jar connects via Pervasive JDBC (port 1583) to EVOBI2 database.
+Output: CSV files to \\I2S109-SOLIDCRM\\DBAMFG$\\REPORTS\\
+Logs to: DBAMFG$\\logs\\SQL Export.log
+
+## TAS bridge variables (SQLEXPORT.RWN, Pass 231)
+
+HOST / NAME / PORT / TREEDEST / COMP / NOPE / DUMMY_L / DFM / RVAL /
+ISTS.EDATE / JAVA.PATH / JAVA.NAME
+(Identical pattern to QUERYEXECUTE / CASHFLOW / CRMDASHBOARD / VSCHED /
+COMMISSIONRPT / PURCHITEM / PURCHVEND — universal Java bridge pattern.)
+
+EVO.CFG.* workstation vars: TOOLBAR / OLWOA / OLPOA / OLINA / OLINB / OLSOA / OLARA / OLAPA /
+LANG / SOUNDS / REMIND / EREMIND / REMSEC / RSNOOZE / QPRINT
+Per-module screen selectors: ARA/APA/INA/INB/POA/SOA/WOA.CFG.ECSCRN + CVTSCRN
+
+## SQLExport.jar Java classes (Pass 156)
+
+Key classes: PervasiveDatabase + TextExportingWorker + FileOpeningWorker
+Framework classes (via EvoPVT.jar): DatabaseSettings + jdbc.ini config + Query/Field/Expression
+SQL builder + ShopCalendar + TabularView UI + multi-company INSTANCE_MAP
+
+## DefaultSQL preset queries (Pass 493)
+
+6 of 7 CHM preset query SQL files recovered from \\i2s109-solidcrm\\2004.1\\DefaultSQL\\:
+
+| File | Query target |
+|------|-------------|
+| RNI Invoiced.sql | GLPOINV — GL PO invoiced not received |
+| RNI Received.sql | GLPORECPT — GL PO received not invoiced |
+| Inventory txn no GL Post.sql | Inv_Txn_no_GL — INVTXN without matching GL |
+| GL no Inv Txn.sql | INVGL — BKGLTRAN without matching INVTXN |
+| Inventory Non Asset.sql | Inventory items not in asset accounts |
+| Non-Inventory Asset.sql | Asset accounts without inventory items |
+
+All 6 cross-reference INVTXN ↔ BKGLTRAN using 12-code MTIT_TYPE → BKGL_TRN_TYPE mapping.
+
+## Integration
+
+- **[[module-QU|QU]]** — QU-F (Queries) uses the same EvoPVT.jar / jdbc.ini pattern
+- **[[module-JS|JS]]** — JS (Reporting Bridges) also uses EvoPVT.jar; EX is the simpler direct-CSV variant
+- **[[module-GL|GL]]** — EVOBI2 reconciliation queries cross-check BKGLTRAN against INVTXN
+""",
+
 "MU": """
 ## What it does
 
