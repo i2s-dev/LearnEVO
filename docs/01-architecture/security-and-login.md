@@ -48,12 +48,15 @@ appear to participate:
 Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSYUSER.B` (31,744 bytes, Btrieve FC magic).
 This table is Btrieve-only (not in PSQL DDF).
 
-Fields from FILEDICT:
+Fields (confirmed from filedict_fields.csv + T7USG.RWN named_vars, Pass 550):
 - `BKSY.USER.CODE` — user login code (key field)
 - `BKSY.USER.PSWD` — password hash/stored value
-- `BKSY.USER.LEVL` — security level assignment
-- `BKSY.USER.CTRL` — control flags
-- `BKSY.USER.NAME` — user display name
+- `BKSY.USER.SCTY` — security level code (links to BKSLEVEL)
+- `BKSY.USER.COMP` — default company code
+- `BKSY.USER.CHR` — character/type flag
+
+**Correction (Pass 550b):** Prior entry listed LEVL/CTRL/NAME — these were wrong. Confirmed
+correct field names are SCTY/COMP/CHR from filedict_fields.csv and T7USG.RWN named_vars.
 
 Binary analysis: records contain `'N'`-padded fields — no plaintext passwords visible.
 The runtime uses `ENCRYPTSTR`/`DECRYPTSTR` keywords, suggesting passwords are stored
