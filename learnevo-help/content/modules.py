@@ -3576,6 +3576,55 @@ Actions: Tag Individual / Tag Groups / Process / Exit. The tag-based workflow
 lets buyers select items individually or by group before processing them into
 RFQ requests.
 
+## PO-E/F/G workflow details (EVOHELP.PDF §PO-E/F/G pages 127-132, Pass 514)
+
+### PO-E — Enter/Print RFQ's
+
+Identical entry flow to PO-A Enter Purchase Orders, **except prices are not entered**.
+RFQ numbers use a **separate numbering sequence** from POs. Leave RFQ# blank → system assigns next available on save.
+
+**As template PO:** Enter a standing RFQ with typical vendor items and no quantities. To order,
+open the RFQ, enter quantities on specific items, then PO-G converts only items with quantities to a live PO, optionally clearing quantities afterward for reuse.
+
+**Copy function:** From the header, press Home (or click Copy RFQ) → enter target vendor code.
+System creates a new RFQ with a new number, identical content except vendor fields. Can chain: copy → copy → copy for mass multi-vendor RFQ distribution.
+
+**Printing:** On save, prompted to print. Also available any time via F3 (Print button) on a blank screen — prints all unprinted RFQs or a specified range; can include linked documents.
+
+### PO-F — Enter Verbal RFQ's
+
+Single-item verbal quote recorder — used when dealing with frequent subcontractor price calls.
+
+**Header fields:**
+| Field | Notes |
+|-------|-------|
+| RFQ Number | Auto-assigned or manual |
+| Issue Date | Defaults to today |
+| Vendor | Must be valid in vendor file |
+| Estimate# | Optional; ties quote to an ES estimate for cost calculation |
+| WO# | Optional; associates with a specific work order |
+| Sequence | Routing sequence if RFQ is for a service (skips item# entry) |
+| Item# | Must be valid in inventory; pulls Desc/Purch UM/Conv Factor/Lead Time |
+| Use in Est? | Y = use this RFQ's prices in the estimate's cost calculation (only one RFQ per item can have Y) |
+| Exp Date | **Required** — marks when quote expires; used by PO-I-C RFQ Status to separate current from expired |
+| Qty 1-5 / Cost 1-5 | Up to 5 quantity-break price tiers (e.g., 1-99 → $10.00; 100-199 → $7.50) |
+
+### PO-G — Convert RFQ's
+
+Converts an RFQ (either PO-E or PO-F style) to a live purchase order.
+
+**Fields:**
+| Field | Notes |
+|-------|-------|
+| Quote Number | RFQ to convert |
+| P/O Number | Next available PO# displayed; can override |
+| Order Date | Defaults to today |
+| Est Receipt Date | Applied to all line items (individual dates must be changed in PO-A afterward) |
+| WO# | Optional tie to a work order if not already on the RFQ |
+| Transfer Notes | Y/N — copy RFQ notes to the new PO |
+| Stay on File? | Keep RFQ after conversion (can convert again); or purge |
+| Convert qty'd items only | Only lines with quantities are converted; optionally clears quantities for template reuse |
+
 ## Integration
 
 - **[[module-PO|PO]]** — PO-J Accept RFQ creates a PO from the winning quote
@@ -7215,6 +7264,61 @@ holds a multi-language flag.
 
 - **[[module-DE|DE]]** — DE/EDI shares `BKEDMSTR`; ML reads it for its own config
 - **[[module-SM|SM]]** — SM may include a language-selection option in system setup
+""",
+
+"KI": """
+## What it does
+
+Kit Assembly (`T7KIT.RWN`) — a tablet-optimized stockroom picking tool that lets
+a worker pull BOM components for a Work Order into a temporary holding file before
+they are formally issued. A supervisor can review the kit before the final material
+post reduces on-hand inventory.
+
+Also accessible via the Work Orders menu as WO-K-I (Kitting System).
+
+## Workflow (EVOHELP.PDF §WO-K-I, Pass 514)
+
+```
+Enter WO# + Employee ID
+  → WO BOM displayed, first component highlighted
+  → For each component:
+      suggested qty = min(required qty, on-hand qty)
+      Click Select → accept or override quantity
+      If on-hand discrepancy detected → flag for physical count (sets Cycle Code = KIT)
+  → Click Save → transactions staged to temporary file
+  → On-hand NOT reduced yet; allocations NOT satisfied yet
+  → Supervisor reviews kit
+  → Edit/Post Material Issues → final post reduces on-hand
+```
+
+## Key fields and behavior
+
+- **WO#**: work order to be kitted
+- **Employee ID**: picker's employee ID (for audit trail)
+- **Suggested Qty**: minimum of BOM required qty and current on-hand — helps picker know the shortfall immediately
+- **Cycle Code = KIT**: set on items where a discrepancy is detected; flags item for inventory control to recount
+- **Temporary holding file**: until "Edit/Post Material Issues" is run, on-hand qty and allocations are unchanged — the kit staging does not affect inventory balance
+
+## Database tables (from Pass183/208)
+
+| Table | Fields | Purpose |
+|-------|--------|---------|
+| `WOBOM` | 39 | WO bill-of-material — BOM snapshot for the WO being kitted |
+| `WOMAT` | 21 | WO material issue staging — the "temporary holding file" |
+| `MTLOT` | 22 | Lot transaction staging (for lot-controlled kitted items) |
+| `ISBNMSTR` | — | Bin labels master — for multi-bin stockroom bin identification |
+| `ISBIN.LOC.*` | 9 vars | Bin location namespace accessed during picking |
+
+**WOBOM** (32-var namespace): WOPRE/WOSUF/SEQ/COMP/DESC/QTYREQ/QTYISS/UOM/TYPE/
+LOT/SER/BIN + backflush/scrap flags.
+**WOMAT** (21-var namespace): WO/SEQ/COMP/QTY/LOT/SER/BIN/DATE/EMP + staging status.
+**SCAN.ITEM/SCAN.WO/SCAN.EMP**: barcode scan input variables used for tablet operation.
+
+## Integration
+
+- **[[module-WO|WO]]** — WO-K-I is the same program accessed from the WO menu; WO-G Post Material Issues is the final posting step after kit review
+- **[[module-IN|IN]]** — on-hand is not reduced until WO-G posts; BKINVLOC updated then
+- **[[module-LC|LC]]** / **[[module-SC|SC]]** — lot and serial control are applied at kit staging for lot/serial items
 """,
 
 }
