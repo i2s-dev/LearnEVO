@@ -4621,6 +4621,79 @@ tables purged after DE-X-E Transfer.
 | T7DEPH | **DE-P-H Standard Pack / EDI list** — EDI# range, STANDARD PACK / CUSTOMER PO# columns | DFM |
 | T7DEX | Tag-selection panel (Tag All / Untag All / Tag / Untag) — shared utility for multi-record selection | DFM |
 
+## DE sub-program operational details (EVOHELP.PDF §7.6, Pass 532)
+
+### Three-step import pattern (all master-file imports follow this)
+# Step 1 — Import: DE-X-A generates template CSV in IMPORT\ subfolder under
+#   EvoERP program folder. DO NOT reorder columns. DE-X-B reads file.
+#   Date fields must be ISO YYYYMMDD (Excel: Format→Cells→Custom→YYYYMMDD).
+# Step 2 — Edit: DE-X-C error report; DE-X-D edit screen (same as master-file
+#   entry but reads staging tables). DE-H Global Field Change for bulk updates.
+# Step 3 — Transfer: DE-X-E commits only error-free records to permanent files.
+#   Recommended order for new startup: GL accounts → Customers/Vendors →
+#   Inventory → BOM/Routings (each validates against previous).
+
+### DE-B Import Inventory (page 578)
+# Validates against existing inventory. Skip or Replace existing item#s.
+# Staging table: BKDEITEM (Btrieve-only, not in ODBC DDF).
+
+### DE-C Import BOM (page 579)
+# Required: Parent Part#, Component Part#, Component Type, non-zero qty/per.
+# Validates against inventory master. Skip/Replace OR append duplicate
+# components. Transfer ALWAYS appends — if parent already has BOM, duplicates result.
+
+### DE-D Import Routings (page 579)
+# Required: Parent Part#, Type, Work Center (validated against RO-C), non-zero
+# Sequence and Operation. Time-per-part entered as decimal → converted to
+# HH:MM:SS and parts/hr on transfer.
+
+### DE-E Import Customers (page 579-580)
+# Required: Customer Code, Payment Terms Number only. All other fields optional.
+
+### DE-F Import Vendors (page 580)
+# Required: Vendor Code, Payment Terms Number only.
+
+### DE-G Import Chart of Accounts (page 580)
+# Required: Account Code + Type. Valid Types: A/L/O/E/I (Asset/Liability/
+# Owner's Equity/Expense/Income).
+
+### DE-H Global Field Change (pages 580-581)
+# 4 supported files. Replace all values (Y=bulk set entire field to one value)
+# or search-and-replace specific values. Only changes fields on the error report.
+# Example: change all Type=P to Type=R before transferring inventory.
+
+### DE-I Erase Files (page 581)
+# Enter Y per module to erase temporary staging data. Does NOT touch permanent
+# files EXCEPT Labor — BKDCLAB is shared with DC/WO-M; post all valid DC labor
+# before erasing. Provides clean-slate for failed imports.
+
+### DE-J Import & Post Labor (pages 583-584)
+# Required: Employee#, WO#, Sequence# (validated against SM-G employees +
+# open released WOs). Date defaults to system date if not in file.
+# Sub-programs: J-A Import; J-B Print Errors (WO=invalid WO, RI=not status R/I,
+# SQ=invalid seq, EM=invalid employee — record may have multiple errors but
+# only shows one on report); J-C Edit (all fields editable except employee name);
+# post via Edit screen POST button.
+
+### DE-K Import & Post Material Issues (page 584)
+# Required: all fields except Lot# for non-lot-controlled items. Date defaults
+# to workstation system date. Does NOT support Serial Control components.
+# Edit screen: list of unposted txns → edit or click POST → filter by WO+date.
+# Post fails: GL Close Date / Closed WO / Invalid Part# / Lot/Serial required.
+
+### DE-L Import & Post Work Order Receipts (pages 584-585)
+# Same structure as DE-K. Does NOT support Serial Control finished items.
+# Post respects SD-B defaults: Standard vs Actual costing, Backflushing,
+# Auto-close when qty complete ≥ WO start qty.
+# WARNING: Do NOT use with backflush if any BOM component needs Lot/Serial.
+# Post fail reasons: GL Close Date / Closed WO / Lot/Serial of finished item required.
+
+### DE-M Import Physical Inventory Counts (page 585)
+# Indicate PI Year + Quarter + count date. Required fields: Tag# (or line counter),
+# Location, Part#, qty counted. Optional: Employee#, Bin Location.
+# Does NOT support Serialized items (manual PI-C entry required for serial items).
+# After import, editing + posting done via PI-C Enter Tag Counts + PI-G Update Actual.
+
 ## Integration
 
 Every production module writes to DE's target tables — DE-B imports feed
