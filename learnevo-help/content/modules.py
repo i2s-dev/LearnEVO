@@ -4438,6 +4438,8 @@ RTM files are binary Delphi-format streams containing:
 | `EVOReports\\*.RTM` | All report templates (~300+ files) |
 | `T6WOL*.RTM` | Work order listing reports (T6 era) |
 | `T7*.RTM` | Current-era report templates |
+| `barcode4j.jar` | Barcode generation library (DBAMFG$\lib\) — provides bar code rendering for TppDBBarCode components in RTMs; used by T7JUPD deployment |
+| `DBAMFG$\RTX\*.RTX` | Backup copies of all standard RTMs; same name + .RTX extension; restored via TA-M if RTM edit fails |
 
 ## T7RTMVALID — report format name dialog
 
