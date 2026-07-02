@@ -22,7 +22,7 @@ Field details are in per-module files in this directory.
 | BKARDPST | NOT USED | 5 |
 | BKARTXNB | NOT USED | 14 |
 | BKBMCNFG | NOT USED | 7 |
-| BKBMDIM | NOT USED | 11 |
+| BKBMDIM | BOM dimensions (J7CCITEMSYNC — corrugated box dimension spec linked to BOM) | 11 |
 | BKCMCTL1 | NOT USED | 1 |
 | BKCMCTL2 | NOT USED | 1 |
 | BKCMCTL3 | NOT USED | 1 |
@@ -37,7 +37,7 @@ Field details are in per-module files in this directory.
 | BKCMTMP2 | NOT USED | 6 |
 | BKCMTMP3 | NOT USED | 6 |
 | BKCMTMP4 | NOT USED | 6 |
-| BKDCCFG | NOT USED | 7 |
+| BKDCCFG | DC scanner/terminal configuration (J7EIMDCRev) | 7 |
 | BKGLHIST | NOT USED | 16 |
 | BKGLICC | NOT USED | 11 |
 | BKGLTMP | NOT USED | 16 |
@@ -47,7 +47,7 @@ Field details are in per-module files in this directory.
 | BKICDIM | NOT USED | 47 |
 | BKICMFG | NOT USED | 6 |
 | BKICREQ | NOT USED | 46 |
-| BKICTAX | NOT USED | 46 |
+| BKICTAX | Item sales tax codes (J7DCSSOE, J7HHRTSSOE — tax code per item for SO shipping) | 46 |
 | BKICVAL | NOT USED | 4 |
 | BKLOGON | NOT USED | 10 |
 | BKMATRIM | NOT USED | 3 |
@@ -57,7 +57,7 @@ Field details are in per-module files in this directory.
 | BKPRSTFL | NOT USED | 2 |
 | BKPRTCFG | NOT USED | 205 |
 | BKSYCFG | NOT USED | 4 |
-| BKSYHELP | NOT USED | 1 |
+| BKSYHELP | System help/label lookup — F1 context help; opened by 1,040+ programs as standard session table | 1 |
 | BKSYLOG | NOT USED | 215 |
 | BKSYPRTR | NOT USED | 11 |
 | BKUMSRTY | NOT USED | 23 |
@@ -76,9 +76,9 @@ Field details are in per-module files in this directory.
 | ISBILLSH | NOT USED | 4 |
 | ISBMTMP | — | 27 |
 | ISBTCSB | — | 54 |
-| ISCCBTXN | NOT USED | 16 |
+| ISCCBTXN | Corrugated/Cut box transactions (J7CCFABXFER — fabrication transfer records) | 16 |
 | ISCCICM | J7CCITEMSYNC | 59 |
-| ISCCMTF | NOT USED | 2 |
+| ISCCMTF | Corrugated/Cut material transfer (J7CCITEMSYNC — staging for item sync) | 2 |
 | ISCMGRP | NOT USED | 2 |
 | ISCONVRT | J7RCCONVTABLE/J7RCPITEX | 9 |
 | ISDCSER | — | 17 |
@@ -101,7 +101,7 @@ Field details are in per-module files in this directory.
 | ISPRESN | — | 1 |
 | ISREPDEF | NOT USED | 3 |
 | ISRTLOAD | NOT USED | 21 |
-| ISRTMS | NOT USED | 29 |
+| ISRTMS | RTM printer assignments (J7CCSOLABELS/J7NMITEMRTM/J7NMRTMPRINTER — maps items to RTM + printer) | 29 |
 | ISSCOMP | NOT USED | 5 |
 | ISSDET | NOT USED | 4 |
 | ISSEPROC | NOT USED | 2 |
