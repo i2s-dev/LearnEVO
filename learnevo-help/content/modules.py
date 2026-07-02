@@ -4788,11 +4788,12 @@ Login and access control involve a 6-layer chain:
 (`APYN/ARYN/GLYN/ICYN/POYN/PRYN/SOYN/SYYN/OKLM`) plus 20 per-function OK flags for
 each of 10 module groups (OKAP, OKAR, OKGL, OKIC, OKPO, OKPR, OKSO, OKSY, OTH1, OTH2).
 The 1..20 slot to specific menu letter mapping is not yet confirmed (requires live data
-or a populated BKSYLOG record). In this i2 Systems installation, all three auth layers
-(AHSYLOG, BKPSUSER, and the traditional BKSYLOG record set) are empty — access is
-controlled by Windows SSO, not EvoERP security groups.
+or a populated BKSYLOG record). In this i2 Systems installation, auth layers 1/4/5/7 are all empty (BKSYCFG=0,
+AHSYLOG=0, BKPSUSER=0, ISACCESS=0) — access is controlled by Windows SSO only,
+not EvoERP security groups. BKSYLOG.class exists in the EVOBI2 Java/ODBC SQL layer
+(SQLExport.jar), confirming it is also exposed as a PSQL relational view.
 
-`BKSYCFG` feature flags control which top-level subsystems appear:
+`BKSYCFG` (0 records in this installation) — schema stores feature flags:
 - `BKSY_CFG_ACCTG` — accounting module (AP/AR/GL) enabled
 - `BKSY_CFG_ADVWO` — advanced Work Order mode (vs. lite WO mode)
 - `BKSY_CFG_LITEWO` — lite/simplified Work Order mode
