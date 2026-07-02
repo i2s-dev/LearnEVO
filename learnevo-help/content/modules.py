@@ -2182,11 +2182,31 @@ i2 Systems uses ES heavily as the primary pre-sale tool.
 ## Quote lifecycle
 
 ```
+ES-K  Convert Production Inventory to Estimating
+      → copies production item master into Estimating database (required first step)
+
 ES-A  Enter Estimate  →  BKESTQT (header) + BKESTQTL (lines)
                          same schema as BKARINV/BKARINVL
-ES-E  Convert          →  creates SO (BKARINV) or WO (WORKORD)
-ES-B  Print Estimate   →  customer-facing quote document
+
+ES-D  Quick Estimate  →  per-item cost detail entry; handles single-item or
+                         edits lines of multi-line estimates from ES-A
+      → 10 quantity breaks; margins from SD-G Estimating Defaults (editable per estimate)
+      → RFQ optional: vendor pricing from PO RFQ system, else ES-H material costs, else Standard Cost
+
+ES-B  Print Estimate   →  customer-facing quote (options: Notes / Hidden Notes / Kit Components /
+                          Extensions / Linked Documents)
+ES-C  Print Internal Estimate Sheet  →  internal cost+margin detail (BOM / Routing / Extra Charges /
+                          Summary sections, multi-quantity)
+
+ES-E  Convert          →  creates SO and/or WO
+      → new items auto-added to production inventory
+      → if converted to WO: uses Estimate BOM & Routing (NOT production standard)
+      → if customer is a prospect only in CM, creates a customer record at conversion
 ```
+
+**Estimating uses its own parallel inventory database.** Items in the Estimating DB can be production items (copied via ES-K) or new items that only exist in the Estimating DB until ES-E conversion adds them to production inventory.
+
+**Multiple BOMs/Routings per item:** The Estimating module allows multiple BOMs and Routings for the same item number — enabling cost rollups for different configurations of the same product without affecting production standards.
 
 ## Quote status codes (BKESTQT.BKAR_INV_INVCD)
 
@@ -4414,6 +4434,40 @@ Four Java-backed analysis views provide interactive charts.
 
 SA reads (but does not write) `BKARINV`/`BKARINVL` (AR invoices), `BKARCUST`,
 `BKICMSTR`, and for actual-cost analysis: `WORKORD`/`WOMAT`/`WOBOM`.
+
+## SA-A Bookings vs Sales (EVOHELP.PDF §SA-A, Pass 511)
+
+SA-A offers two report modes:
+
+**Sales report:** invoiced shipments only; uses inventory **average cost at time of invoice posting** for COGS.
+
+**Bookings report:** three sections that together equal total net bookings for the period:
+| Section | Content | Cost basis |
+|---------|---------|-----------|
+| Closed Bookings | Invoiced SO lines within the date range | Average cost at invoice posting |
+| Open Bookings | Open SO lines not yet shipped | Standard cost at time of order entry/update |
+| Changed Bookings | Changes made within the date range to SO lines booked before the range | — |
+
+Multi-currency option: B=Base currency (converts source at current exchange rate for open, historical rate for closed).
+
+## SA-F Chart/Export behaviors (EVOHELP.PDF §SA-F, Pass 511)
+
+All SA-F-* programs produce either a **chart** or a **CSV export**:
+- Chart opens in default Windows image viewer (can save or print from there)
+- Export generates CSV, opens in default Windows app (typically Excel)
+
+| Program | Chart type | Export columns |
+|---------|-----------|----------------|
+| SA-F-A | Line chart by day/week/month; optional COGS overlay; optional year-over-year | Invoice#, Date, Customer, Invoice total, COGS, Margin, Margin% |
+| SA-F-B | Line chart (same options as A) | Invoice#, Date, Customer, Invoice total, COGS, Margin, Margin% |
+| SA-F-C | Pie or bar chart by Sales Rep | Invoice#, Date, Bill To, Ship To, Invoice#, Subtotal, Total, COGS, Margin, Margin% |
+| SA-F-D | Pie or bar chart by Item Class (or Top N items) | Item Class, Item#, Desc, Invoice#, Date, Customer, Qty, Extension, Unit Cost, Category, Extended COGS, Margin, Margin% |
+
+## SA-M/SA-N performance note (EVOHELP.PDF §SA-M, Pass 511)
+
+The BKARINV invoice file is large. SA-M/SA-N primary sort key = **Ship Date**. Even when filtering by invoice number range, also specify a Ship Date range to avoid scanning the entire file.
+
+Named reports save all filter settings under a Report Name — reselect the name to reload all settings. RTM formats: T6SAM1 (default detail), T6SAN1 (default summary), T6OPSALE (single summary line per item/customer).
 
 ## SA-M/SA-N filter ranges (T7SAM.DFM confirmed)
 
