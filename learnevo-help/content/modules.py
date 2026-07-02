@@ -5911,6 +5911,53 @@ and module parameters. See [[recipe-configure-defaults]].
 | Print Discount Column on Forms? | Y/N | N=suppress discount column on SO forms |
 | Decimalized Quantities on Forms? | Y/N | Y=suppress decimal places on order documents |
 
+## SD-S — Warehouse Control Defaults (EVOHELP.PDF §7.3.20 page 540–541, Pass 535)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Enable Warehouse Control | Y / N / Q | N=off; Y=multi-bin (no qty tracking per bin); Q=multi-bin with per-bin UOH tracking. Enabling Y/Q for the first time auto-creates default bin for each item. |
+| Use Controlled Bin Locations | Y / N | N=users can create new bins on-the-fly in PO-C/WO-I; Y=only pre-existing bins from WC-A allowed. |
+| Allow Blank Bin Location | Y / N | N=all WC-enabled items require a named bin; Y=blank bin location allowed. |
+| Blank Bin Name | string | Default = "O BIN LOC?"; rename as desired. |
+| Delete Zero Qty Bins | Y / N | Y=auto-delete bin record when on-hand hits 0. Master Bin Loc still kept for other items. |
+| Use Bins for EFP Backflush | Y / N / P | Y=use default bin; N=no bin transactions; P=prompt for bin per component at WO-I backflush. |
+
+## SD-T — Service / RMA Defaults (EVOHELP.PDF §7.3.21 pages 541–542, Pass 535)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Show BOM In Release Serv/Repair | Y / N | Y=show WO BOM when releasing SR order (for cost calc + itemized invoice). |
+| Service/Repair Location | code | Default inventory Location for SR orders. If IN-L-B sets type=Service, stock excluded from Available in IN-A. |
+| Add Misc. information in SR-A & E? | Y / N | Y=extra configurable fields prompt at SR-A/SR-E save (SM-R defines labels). |
+| Allow RMA info changes in RM-C | Y / N | Y=allow RM-C to change Reason for Return + Warranty Status. |
+| Control RMA Return Codes | N / Y / A / R | N=any reason; Y=must match RM-E list; A=add to list on-fly; R=required. |
+| RMA Restock Item Number | item code | Type-N item for restocking charge on returns. |
+| RMA Restock Flat Charge or % | F / P | F=flat $ charge; P=% of return value. |
+| RMA Restock charge or % Amt | decimal | Default amount or percentage. |
+| RMA Credit Item Number | item code | Type-N item for customer credit SOs on defective returns. |
+| Enter Ship Tracking # in SR-E | Y / N | Y=allow freight carrier tracking# entry in SR-E. |
+| Generate S/R WO in SR-A | Y / N / A | Y=auto-generate WO; A=ask at SR-A save. |
+| Allow Upd RMA Reasons after Disp | Y / N | Y=allow Reason for Return change after disposition set. |
+| Convert RMA to S/R Quote | Y / N / A | Y=always convert to S/R Quote; N=convert to S/R Order; A=ask. |
+| S/R Generate WO with Standard BOM & Routing | Y / N / A | Y=use standard BOM+routing; N=blank; A=ask. |
+
+## SD-U — Hand Held Defaults (EVOHELP.PDF §7.3.22 pages 542–543, Pass 535)
+
+| Field | Values | Meaning |
+|-------|--------|---------|
+| Use WO# as Lot # in HH-WOI | Y / N | Y=auto-use WO# as lot number in HH-D Enter Finished Production. |
+| Inventory Labels in HHWOP | N / Y / A | N=never print labels after HH-D; Y=always chain to label print; A=ask per WO. |
+| Allow Qty Entry in HH Pack/Ship | Y / N | Y=allow qty entry in HH-A Scan & Ship; N=scan each unit as packed (qty=1 always). |
+| Release all Lines in HH Pack/Ship | Y / N | Y=include all lines (even fully backordered) on invoice from HH-A. |
+| Process Paperless in Seq/Batch | Seq / Batch | Seq=strict WO+Sequence tracking in HH-I; Batch=allow smaller within-WO batch tracking. |
+| Prevent Exceeding Ship Qty in Pack/Ship | Y / N / A | Y=prohibit over-ship in HH-A; N=allow; A=ask. |
+
+## SD-Q — Master Defaults (EVOHELP.PDF §7.3.18 page 539, Pass 535)
+# Consolidated entry point — all module defaults programs accessible via SD-Q.
+# Only one user can be in SD-Q (or any SD sub-program) at a time.
+# Changes take effect without users needing to exit the system.
+# Sub-programs available: SD-A/B/C/D/E/F/G/H/I/J/L/M/N/O/P/S/T/U/V/AD-A/AD-B/AD-C.
+
 ## Integration
 
 All SD defaults are stored in `BKYSMSTR` (355f) and `BKSYMSTR` (286f). Every
