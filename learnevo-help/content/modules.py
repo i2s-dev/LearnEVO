@@ -4114,6 +4114,84 @@ MENUFILE ties the three security layers together:
 `BKLOGON` (session) → `BKSLEVEL` (access matrix) → `MENUFILE` (menu definition) →
 `MENU_PROG_n` (program to launch)
 
+## TA sub-program operational details (EVOHELP.PDF §7.7, Pass 526)
+
+### TA-C Set Configuration (page 589)
+Settings stored in `TASPRO7.INI` in `C:\ISTS` on each workstation.
+- **General tab:** Do not change unless advised by tech support.
+- **User Options:** Adjust RUN Form Display size (if screens too large/small).
+- **Email Settings:** Not used here — email settings are entered at US-A Customize Settings.
+- **TAS 5.1 Colors tab:** Color customization only; no operational need to change anything else.
+
+### TA-D Maintain Database (page 589)
+Identical to WTASDATAM raw Btrieve record editor (see DFM-confirmed tools above).
+
+### TA-G Maintain Menu Access Records (page 589)
+Identical to PS-G Maintain Menu Access.
+
+### TA-H Maintain Menu — End User (pages 589-590)
+End-user can rearrange their own menu; cannot add or remove programs.
+- Click **Edit** → see Group Buttons (top nav) + Menu Buttons for each group.
+- Drag grey buttons left of list to reorder Group Buttons or Menu Buttons.
+- **Menu Lines tab:** reorder line items within a given menu button.
+- **Right-click → Move to Group:** move a button to a different group.
+
+### TA-L Evo Backup Utility (pages 590-591)
+Creates ZIP backups even while files are open — no need to log all users out.
+- **Full system backup:** current program folder + all subfolders → single zip.
+- **Company Data backup:** tag one or more companies → zip.
+- **Customized backup:** browse+select specific files → save list → zip.
+- Click **Go** to run immediately. **Schedule** button exists but not yet functional.
+
+### TA-M Forms Editor (pages 590-591)
+Edits EN, IEN, T6, or IT6RTM form/report layouts (= ReportBuilder RTM editor).
+- File → Open → select RTM → editing canvas; each object has font/color/size/Visible properties.
+- **Best practice:** make objects Invisible rather than deleting them.
+- **Subreports:** tabs at bottom of screen (e.g., ppReport1SubReport1 for SO line items).
+  Always click back to main report before saving.
+- Cannot edit BK?RTM (DBA Classic) files with this editor.
+- Adding text: click **A** (top-left toolbar) → text object → drag → set Caption.
+- Adding data field: click **A with box** (right toolbar) → click form → drag → double-click
+  Data → Data Dictionary window opens → find file + field.
+- **RTX backups:** every standard RTM has a same-named copy with `.RTX` extension in
+  the RTX subfolder — copy RTX→RTM to start over if needed.
+- Safe workflow: **Save As** different RTM name → test → Save As original name when confirmed.
+
+### TA-N Program Scheduler (page 592)
+Defines programs to run on a pre-scheduled unattended basis.
+Setup: on server, run EVO as Administrator → UT-A → EvoSchedSetup → starts service.
+Stop service before installing updates from a non-server workstation.
+
+Fields: Name / Description / Program Name / Parameters / Company / Frequency (daily/weekly/
+monthly/yearly) / Next Occurrence / Recurrence (minutes for sub-daily) / Log File path / Email address.
+
+**Programs supported for unattended mode** (save settings once via UT-A, then scheduler runs without prompts):
+
+| Program | Function |
+|---------|----------|
+| AUTOIND.RUN | Rebuild Inventory Stock Status |
+| AUTOMRF.RUN | Generate MRP |
+| AUTOBMG.RUN | Standard Cost Rollup |
+| AUTOMME.RUN | Reconcile Inventory |
+| AUTOMMD.RUN | Change Part Number |
+| AUTOUTKG.RUN | Recalculate Inventory Book Value |
+| AUTOUTKF.RUN | Reset Average Cost to Standard Cost |
+| AUTODCH.RUN | Post Data Collection Labor |
+
+### TA-Q Change Logo Image (pages 592-593)
+Changes image on main menu screen per company.
+Formats: JPG, GIF, BMP, PNG. Log out (or change company and back) to see new image.
+**Evo Default** button reverts to standard EVO logo.
+
+### TA-R SQL Editor (page 593)
+Identical to DE-A SQL Query/Export **but has write-back capability** (UPDATE statements).
+Warning: "Only use this program if you have a thorough understanding of SQL update
+statements and the data files you are working with."
+
+### TA-S Data Dictionary Check (pages 593-594)
+Compares data files and dictionary to current DDF update files (fields, lengths, record sizes).
+Generates report suggesting corrective action for any discrepancies.
+
 ## Integration
 
 - **[[module-SD|SD]]** — System Defaults overlap with TA-I Company Setup
