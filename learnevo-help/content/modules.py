@@ -3215,9 +3215,23 @@ multiple accounts exist), Billing Account Number, Notes, Active/Inactive, Insura
 
 ### SM-C Enter Item Classes (pages 463–465)
 Item classes organize inventory for reports and GL posting. Every item must have a class.
-**9 GL accounts per class:**
-asset/expense | COGS | taxable sales | non-taxable sales | WIP |
-absorbed labor | absorbed fixed OH | absorbed variable OH | absorbed material burden
+**10 GL accounts per class** (CLASS.B 24-field DDF, each has a 4-char department code):
+
+| Field | Meaning |
+|-------|---------|
+| CLASS_GLA / DPTA | Asset or Expense account — inventory asset (or expense for N-type items) |
+| CLASS_GLC / DPTC | COGS (cost of goods sold) — posted when SO invoice printed |
+| CLASS_GLS / DPTS | Taxable sales revenue |
+| CLASS_GLSNT / DPTNT | Non-taxable sales revenue (same as GLS if not distinguishing) |
+| CLASS_GLW / DPTW | WIP (Work-In-Process) inventory asset |
+| CLASS_GLLAB / DPTLAB | Absorbed labor (credited when WO labor posted; offset to Direct Labor debit) |
+| CLASS_GLFOH / DPTFOH | Absorbed fixed overhead (credited when WO labor posted) |
+| CLASS_GLVOH / DPTVOH | Absorbed variable overhead (credited when WO labor posted) |
+| CLASS_GLMISC / DPTMISC | Miscellaneous/material burden |
+| CLASS_GLXTRA / DPTXTRA | Extra/custom GL account |
+
+Any blank account falls through to system default from AD-A General Ledger Defaults.
+Multi-location: separate CLASS record per Location code (CLASS_LOC) for per-location GL override.
 
 If any GL account is left blank, the system uses the AD-A default. Classes only need
 non-default GL accounts for exceptions. Material burden % is also per-class.
