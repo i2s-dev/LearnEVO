@@ -2877,6 +2877,41 @@ Programs that use the calendar will not allow dates that fall on marked non-work
 
 **Key warning for SM-J-L/M/N:** These operations change HISTORY files as well as master
 files. Use only during startup or under controlled renumbering projects.
+
+## SM-E / SM-F / SM-I tax and CRM code tables (EVOHELP.PDF pages 467–474, Pass 522)
+
+### SM-E Enter Tax Codes (pages 467–469)
+One tax code per authority (state, local, VAT, etc.). Fields:
+- **Tax Code** — unique identifier
+- **Description** — printed on invoices when Print=Y
+- **% Rate** — tax percentage
+- **ID** — tax identification number (printed on multi-tax invoices)
+- **GL Account** — posting account; blank → uses AD-A GL Defaults
+- **Freight** — Y=tax applied to freight
+- **On** — Y=this tax is calculated on the preceding tax amounts (cascading/tax-on-tax)
+- **Print** — Y=itemize this line on invoices (requires IM-A Multi-Tax Forms=Y)
+
+### SM-F Enter Tax Groups (pages 469–470)
+Groups up to 9 tax codes into a single group assigned to each customer or vendor.
+Group and Description fields; Tax Code repeated up to 9 slots with auto-filled Description/%Rate/ID.
+On/Freight/Print toggles per slot within the group.
+Customers → AR-A; Vendors → AP-A; PO tax tracking enabled via SD-C.
+Reports: AR-K Print Sales Tax Report; AR-L Transfer Sales Taxes.
+
+### SM-I CRM code maintenance programs (pages 472–474)
+All SM-I programs maintain simple code+description tables used as filters in CM-A, AR-A, and reports.
+
+| Sub-program | Purpose | Code format |
+|-------------|---------|-------------|
+| SM-I-A | Lead Source Codes — identifies prospect/customer origin (ad/referral/direct mail) | 5-char alphanumeric |
+| SM-I-B | Territory Codes — sales territory for accounts and mailing labels | 4-char alphanumeric |
+| SM-I-D | Reminder Types (Account Follow-up Codes) — category of CM follow-up (call/show/AR) | 3-char alphanumeric |
+| SM-I-G | Class Codes — user-defined account classification for CM-A filters and mailing | 5-char alphanumeric |
+| SM-I-H | Key Date Codes — labels significant dates (first inquiry/first order/etc.) in CM-A | 2-char alphanumeric |
+
+All SM-I programs follow the same workflow: enter code → enter 25-char description → Save.
+F2/Lookup button to edit existing codes. These tables live in BKCMTERR (territory) and
+BKCM* companion code tables.
 """,
 
 "AM": """
