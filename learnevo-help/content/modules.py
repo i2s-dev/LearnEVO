@@ -4382,6 +4382,55 @@ access to Velocitrack device management within EVO.
 Caption "Approve Vendor" — vendor approval workflow requiring PS-level authorization
 before a new vendor can be used in purchasing. Integrates with [[module-PO|PO]].
 
+## PS-A field semantics (EVOHELP.PDF §PS-A, Pass 513)
+
+**Default users on a new system:** ADMIN and STARTUP.
+
+**Security Level [1–999]:**
+- Level 1 = administrator — can see and edit all lookup grid data
+- Levels 1–5 allow editing of data in lookup grids (admin-only range)
+- Level 999 = least privileged; blank = treated as 999
+- Grid security: each SU-A grid has its own level; a user can only view grids where their level ≤ the grid's level
+
+**Security Code [A/P/1/2/C/V/U/E] — detailed meanings:**
+- A=Admin: always full menu even when new programs added (no PS-G record needed)
+- P=Power User; 1=Sales Rep 1; 2=Sales Rep 2; C=Customer; V=Vendor; U=User; E=Engineer
+- C/V codes: login name must match Customer or Vendor Code exactly
+- 1/2 codes: login name must match Sales Rep number
+- E=Engineer: restricted to Active Status "E" items in IN-B and BM-A only
+
+**Password lifecycle:** Admin sets initial password at creation; user prompted to change at first login.
+User can change own password via File → Change Password in the running EVO session.
+Admin can Reset Password (admin cannot see current password, only overwrite it).
+
+## PS-G field semantics (EVOHELP.PDF §PS-G, Pass 513)
+
+**Built-in template menus:** Admin, PowerUser, User, SalesRep, Customer, Vendor.
+- Admin menu: cannot be edited or deleted; always has full access; auto-updated on any ADMIN login after an update
+- PowerUser/User/Customer/Vendor/SalesRep: can be edited but not deleted — serve as starting templates when creating user menus (copy-from)
+
+**Key operations:**
+- **Update to Latest Prg**: updates program .RWN names for programs a user already has (e.g., BKARA.RUN → T7ARA.RWN) without adding new programs
+- **Change Prg Name**: updates a single program name across all user menus simultaneously
+- **Add Group**: copies a menu group (e.g., "Mfg") from ADMIN or another user; add to one user or all users; skips users who already have the group
+- **Menu Lines tab**: left side = what user has access to; right side = removed programs. New programs from updates appear on the right to be optionally added.
+- **Drag reorder**: drag grey buttons to change menu group order (controls which group displays first)
+
+## PS-H field semantics (EVOHELP.PDF §PS-H, Pass 513)
+
+Auto-Chain programs — lets a program automatically call the next program (e.g., Print Invoice → Post Invoice).
+
+- User Name: blank = chain applies to **all users**; specific name = that user only
+- Chain combination: choose from dropdown of available program pairs
+- Mode: **Y** = run next program automatically without prompting; **A** = ask before chaining
+- Note: chaining bypasses PS-G menu access checks — the chained program runs even if not in the user's menu
+
+## PS-I field semantics (EVOHELP.PDF §PS-I, Pass 513)
+
+Digital Signers for PO (T7DIGSIGADMIN.RWN):
+- Employee must be in SM-G Enter Employees first
+- Fields: Employee Number / Password / Signature Image file path / Initials (printed as "Entered By" on PO) / Approval Threshold (dollar limit; 0 = unlimited authority)
+
 ## Integration
 
 - **[[module-SY|SY]]** — SY-A Enter Users is the T7 user entry screen backed by BKPSUSER
@@ -5100,6 +5149,36 @@ hints: "SO Notes" / "SO Evo Links" / "Clear Data" / "SO Department Evo Links" /
 SO-level and department-level notes and EvoLinks attachments.
 Actions: Save / Exit / Kill.
 
+## Conceptual model (EVOHELP.PDF §CR, Pass 513)
+
+Contract Review replaces the physical "job folder" that circulates through departments for
+approval. The electronic system links scanned PDFs, drawings, inspection sheets, packing
+slips, and invoices to a contract record, replacing the paper folder lifecycle.
+
+**Administrator requirements:**
+- At least one Administrator is required — the admin enters the other approvers and departments.
+- Every department that exists is a **required approval by default** for every contract.
+- The Administrator determines, per contract, which approvals are actually required.
+- Department names must match exactly — "Credit", "Accounts Receivable", and "A/R" are three separate departments.
+
+**Enabling the module:**
+- Once at least one approver exists, Approval Control is active.
+- SOs cannot convert to WOs, print packing slips, or print invoices until approved.
+- Use PS-J Enter Contract Review Signers → Mass Approval option to pre-approve all existing
+  orders when first enabling, so only new orders require fresh approvals.
+
+**CR-A — Assign Departments to Sales Order:**
+- Requires Contract Review Admin ID + password.
+- If no approvals exist for the SO, prompts to add them; else displays existing list.
+- Select which departments are Required for this order vs. optional.
+- Evo Links and Notes can attach at both SO level and per-department level.
+
+**CR-B — View/Enter SO Approvals:**
+- Displays departments assigned and current approval status (date if approved).
+- Approver clicks the Approved field, enters Y, then provides their CR ID + password.
+- System verifies authorization — only designated approvers for the department can sign.
+- Evo Links and Notes accessible per department from CR-B.
+
 ## Integration
 
 - **[[module-SO|SO]]** — SO header status blocked until CR approval clears
@@ -5793,6 +5872,53 @@ used wherever a single string prompt is needed without a full form.
 
 `GetFileName.DFM` — "Enter File" — File Name, Local/Server path toggle, Cancel —
 shared file-path picker for import/export dialogs.
+
+## Drill-down UI mechanics (EVOHELP.PDF §QU, Pass 513)
+
+The drill-down button (green circle with white downward arrow) appears in any program where
+drill-links are established and the user has security level access.
+
+**Navigation bar** (top of all lookup grids): First record / Previous / Next / Last + Select /
+Edit / Add / Delete / Exit buttons + Fast Find field + Sort dropdown.
+
+**Fast Find:** searches the current index as-you-type. Change sort order via the dropdown.
+
+**Sub-string search** (funnel+equals icon): filter/search on a substring — not case-sensitive,
+finds all matches. Configurable fields: up to 6 fields per grid. Result treated as a drill-down;
+drill-back (red circle with white upward arrow) returns to prior level.
+
+**Print Grid** toolbar button: dumps drill-down results to an RTM.
+
+**Print Associated Documents** toolbar button (visible in SO/PO contexts): print
+Acknowledgements / Packing Slips / Invoices (for SO) or POs — batch-print without leaving QU.
+
+## SU-A Maintain Grid Lookups (EVOHELP.PDF §SU-A, Pass 513)
+
+Grid Lookup admin program. Three parts:
+
+**Grid Name section:** Grid Name (the name used by lookups/drill-downs), FD Name (the
+Btrieve/PSQL file opened — select from dropdown of registered file names), Form Name
+(always `WBKLOOKUP`), Security Level (1=full access, 999=most restricted; controls which
+users see which grids).
+
+**Field Data section:** Column Header / Field (from dropdown of file fields) / Sub-string search
+flag (only alphanumeric fields; max 6 per grid).
+
+**Key Data section:** Column Header (sort name) / Index Key Name (from dropdown) /
+Match Field Name (first field of compound index; usually same as key name).
+
+**Deleting:** Bring up a grid and press Delete.
+
+**Copying:** Bring up existing grid → answer "yes" to copy → blank out Grid/FD names →
+type new name (system says "not found, create new?" → answer No) → enter FD name →
+edit fields/keys → save.
+
+## User-Defined Functions (UDF) in SU-A
+
+UDFs add calculated columns or cross-file columns to any Lookup Grid. A UDF is a `.SRC`
+text file (e.g., `UDF1.SRC`) containing up to 5 sections: Define variables / Open file /
+Find correct record / Perform calculation / Return results. Stored in the EVO program
+directory. Referenced in the field data section of SU-A.
 
 ## Integration
 
