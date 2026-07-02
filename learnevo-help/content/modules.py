@@ -3557,6 +3557,53 @@ Note: C and O are not tracked by lot number; they appear in inventory but cannot
 | T7LCE | lot on-hand report | Item Number/Class/Category, Item Type [RFAMNLBTKO], Summary or Detail, Sub Sort by Lot/Exp Date, Exceptions Only, Negative Lot UOH |
 | T7LCF | lot traceability | Item Number, Lot Number, Summary/Details/All |
 | T7LCG | archive/unarchive | Archive/Unarchive [A/U], Item/Exp/Rcvd/Lot Date ranges, Include Zero UOH Only |
+
+## LC sub-program operational details (EVOHELP.PDF §3.4, Pass 534)
+
+### LC-A Edit Lot File (pages 287-288)
+# Lot file contains: current on-hand qty per warehouse location, origin date,
+# originating PO# or WO#. Only Exp Date and Notes should be changed here —
+# On-Hand / dates / order# changes must go through PO/IN/WO/SO to keep INVTXN
+# and GL in sync. Manual lot creation via LC-A does NOT update INVTXN/GL.
+# Enter Item# (F2 lookup) → Enter Lot# (F2 lookup shows all lots for that item).
+
+### LC-B Assign Lot Control (page 288)
+# Enter Item# (F2 lookup); Product Type auto-displays. Y=require lot control;
+# N=remove lot control. Also settable in IN-B Enter Inventory.
+# Affects PO/WO/IN/SO downstream from this point forward.
+
+### LC-C Print Lot Availability (page 289)
+# Current on-hand by lot number, sorted Item#/Lot#. Filters:
+# From/Thru Item#, From/Thru Lot#.
+# Include items allocated to SOs (allocated = not truly available) [Y/N].
+
+### LC-D Print Lot History (pages 289-290)
+# Named report definitions (reusable filter combos). Sort order affects
+# index/speed — default: Item#/Lot#. Additional filters: customer, vendor,
+# date range. Transaction type codes (identical to SC-D):
+# A=Adjustments / B=Bin Transfer / C=PO Price Change (not by lot) /
+# G=Scrap / I=WIP issue / J=PO receipt to WIP / M=Make-From /
+# O=Outside Processing (not by lot) / P=PO to stock / Q=PO to QC /
+# R=Service & Repair / S=Shipments / T=Warehouse Transfer / W=WO receipt.
+# Print filter page: all pages / first only / end only / none.
+# Next Screen: additional filter including Lot Number range.
+
+### LC-E Lot Control On Hand Report (page 290) — Evo-ERP only
+# Compares lot totals to master inventory on-hand. Sort by Lot or Exp Date.
+# Filters: Item#/Class/Category/Item Type. Exception flags:
+# - Exceptions Only — total inventory on-hand ≠ sum of lot quantities
+# - Negative Lot UOH — lot record qty < 0
+# - Orphan Lots — lots assigned to deleted item numbers
+# Summary-only or Lot-detail output.
+
+### LC-F Lot Traceability Report (page 291)
+# All activity for a specific Item#+Lot#: where it came from, where it went,
+# confirmation all units accounted for. Output: Summary / Details / All.
+# Unlike LC-D (range-based history), LC-F is per-lot accountability trace.
+
+### LC-G Archive Lots
+# Archive or Unarchive (Restore). Filters: Item/Exp/Rcvd/Lot Date ranges.
+# Default: only archive zero-on-hand lots. (See T7LCG DFM above.)
 """,
 
 "SC": """
