@@ -8250,11 +8250,16 @@ J7 is the namespace for **i2 Systems custom programs** written by ISTS (the EvoE
 vendor) specifically for i2 Systems. All J7 programs are add-ons that extend standard
 EvoERP modules with business-specific functionality.
 
-**i2 Systems business context (confirmed from DFMs):** i2 Systems is a
-**mattress manufacturer**. Multiple J7 DFMs reference "Mattress Number",
-"Mattress Description", "Print Mattress Labels", and "Serial Num:" in the
-context of serialized mattress production and shipping. The standard EvoERP
-WO/SO/HH modules are extended with mattress-specific serial tracking.
+**i2 Systems business context (confirmed from DFMs and RWN symbols):** i2 Systems
+manufactures **corrugated packaging and mattress components** (BOX, CDBD, INSERT,
+TRAY, PALLET; mattress serial labels). Confirmed customers include Lapco (outdoor
+workwear brand), Albertsons (grocery chain), and RC/NM/PT system integration.
+
+- **J7CC\*** = Corrugated/Cut operations: CCCutSheet, CCFabXfer, CCItemSync, CCPIC, CCSOLabels, CCSHI
+- **J7HH\*** = Handheld scanner operations: scan-to-ship mattresses, inventory adjust/transfer
+- **J7DC\*** = Data collection: Print Mattress Labels (J7DCMatLabels), Shipping scan (J7DCSSOE)
+
+The standard EvoERP WO/SO/HH modules are extended with product-specific serial tracking.
 
 ## J7 programs by category (50 RWN + 41+ DFMs confirmed, Pass 546)
 

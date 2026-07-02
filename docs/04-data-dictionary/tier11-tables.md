@@ -197,3 +197,64 @@ The ISAP* family extends the AP module with archive copies and extended data tab
 | ISPRINFO | 4 | Payroll program info — ISPR_INFO_PROG+DESC+MISC+TYPE — program/module info record |
 
 **Key:** ISPREQ (25f) is the **WO labor authorization** table — before labor can be posted to a WO operation, a request record is created here. This connects the payroll module to the WO module for labor cost control.
+
+---
+
+## IS-Custom Manufacturing Spec Tables (Pass 547, 2026-07-02)
+
+These tables are used exclusively by J7 custom programs (not standard T7*/T6* programs).
+Confirmed from rwn_symbols.json J7 DB access analysis.
+
+### ISCONVRT — Unit Conversion Table (9 fields)
+
+| Field | Notes |
+|-------|-------|
+| IS.CONV.ITEM | Item code (PK) — item requiring non-standard conversion |
+| IS.CONV.PUM | Purchasing unit of measure (e.g. LB, EA, FT) |
+| IS.CONV.SUM | Stocking unit of measure |
+| IS.CONV.WTCONV | Weight conversion factor (numeric) — converts between PUM and SUM |
+
+Used by J7RCCONVTABLE (manage conversion factors) and J7RCPITEX (RC Physical
+Inventory Tax Export — converts purchased weight to stocked units for tax reporting).
+ISCONVRT supplements the standard per-item UOM conversion fields in BKICMSTR;
+it is used for items in the RC customer system that require a different conversion
+rate than the standard item master.
+
+### ISCCICM — Corrugated/Cut Item Master Extension (59 fields, 22 confirmed)
+
+Extended item specification for corrugated packaging and mattress components.
+Keyed by item CODE+CUST (item code + customer-specific variant).
+
+| Field | Notes |
+|-------|-------|
+| ISCC.ICM.CODE | Item code (PK part 1) |
+| ISCC.ICM.CUST | Customer code (PK part 2 — specs can vary by customer) |
+| ISCC.ICM.DESC | Description line 1 |
+| ISCC.ICM.DESC2 | Description line 2 |
+| ISCC.ICM.FSIZE | Finished size of the corrugated sheet/box |
+| ISCC.ICM.HINGE | Hinge type (corrugated box design spec) |
+| ISCC.ICM.BOXNO | Box number (position in multi-box shipment spec) |
+| ISCC.ICM.BTNCOD | Button/binding code (wire binding spec for corrugated) |
+| ISCC.ICM.BTNQTY | Button/binding quantity per box |
+| ISCC.ICM.FILIT | Fill type (mattress padding/cushioning material) |
+| ISCC.ICM.FILQTY | Fill quantity |
+| ISCC.ICM.TIECOD | Ticking/tie code |
+| ISCC.ICM.TIEMTR | Tie material |
+| ISCC.ICM.TIEQTY | Tie quantity |
+| ISCC.ICM.LAWLAB | Law label flag (mattress federal law label requirement) |
+| ISCC.ICM.SEWNOT | Sewing notation/instruction |
+| ISCC.ICM.PERCOM | Per-component quantity or pricing |
+| ISCC.ICM.SPY | Selling price |
+| ISCC.ICM.PDF | PDF spec sheet attachment path |
+| ISCC.ICM.CUSFD | Customer-specific field (order date or dimension) |
+| ISCC.ICM.CUSHTYJ | Customer ship-to code |
+
+Used by J7CCITEMSYNC (item sync between BKICMSTR and ISCCICM + ISICMSTR) to keep
+standard inventory and corrugated spec data synchronized across both item masters.
+The 59-field total (22 confirmed from filedict; ~37 additional) suggests additional
+array-based spec fields (likely additional dimension/spec fields for corrugated specs).
+
+**Business significance:** ISCCICM is the i2 Systems corrugated/mattress manufacturing
+specification table — it captures the product design data (box dimensions, binding
+specs, law label, sewing details) that standard BKICMSTR fields cannot hold. It is
+the bridge between ERP inventory and the shop-floor specification sheet.

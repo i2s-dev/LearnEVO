@@ -77,10 +77,10 @@ Field details are in per-module files in this directory.
 | ISBMTMP | — | 27 |
 | ISBTCSB | — | 54 |
 | ISCCBTXN | NOT USED | 16 |
-| ISCCICM | NOT USED | 59 |
+| ISCCICM | J7CCITEMSYNC | 59 |
 | ISCCMTF | NOT USED | 2 |
 | ISCMGRP | NOT USED | 2 |
-| ISCONVRT | NOT USED | 9 |
+| ISCONVRT | J7RCCONVTABLE/J7RCPITEX | 9 |
 | ISDCSER | — | 17 |
 | ISDEPT | NOT USED | 3 |
 | ISDIV | NOT USED | 3 |
