@@ -1168,7 +1168,7 @@ Full live query of BKYSMSTR via DSN=DBA ODBC. Key structural finding: **YN[150]�
 | YN[229] | `'N'` | DC employee continuation prompt + auto-close on decline | SRC (BKDCA.SRC:228-239) |
 | YN[230] | `'1'` | AR Invoice Age based on (1) age or (2) days past due | DFM |
 | YN[231] | `'Y'` | Open Period End Date | DFM |
-| YN[232] | `'4'` | unknown | live only |
+| YN[232] | `'4'` | Current PR quarter number (1=Jan–Mar, 2=Apr–Jun, 3=Jul–Sep, 4=Oct–Dec); triggers QTD-clear prompt in PR-D when quarter changes | T7PRQTRCHK.DFM |
 | YN[233] | *(blank)* | unknown | — |
 | YN[234] | *(blank)* | unknown | — |
 | YN[235] | *(blank)* | unknown | — |
@@ -1191,7 +1191,7 @@ Full live query of BKYSMSTR via DSN=DBA ODBC. Key structural finding: **YN[150]�
 **Observations:**
 - YN[199-218] is a 20-slot block of consecutive non-empty values. The value pattern ('A','N','1','E' + 'Y'×4 + 'Z' + 'Y'×10 + 'N') is superficially similar to the module-enable block at YN[102-143], but the DFM-mapped entries in this range (YN[200], YN[202], YN[209], YN[212-215], YN[218]) are individual named config settings, not module enables. The 'Z' at YN[207] and 'A' at YN[199] could be coincidental.
 - YN[223]='R' and YN[239]='R' — 'R' is a non-standard value; likely a location/routing/report code.
-- YN[224]='4', YN[225]='2', YN[226]='0', YN[230]='1', YN[232]='4' — numeric strings, format codes or counts.
+- YN[224]='4', YN[225]='2', YN[226]='0', YN[230]='1' — numeric strings, format codes or counts. YN[232]='4' is confirmed PR quarter number (Pass 558: T7PRQTRCHK.DFM).
 - YN[243-247] all='Y' with DFM descriptions matching the printing format flags — but DFM said these store format numbers (1-4), so 'Y' here is anomalous unless 'Y'=default/inherit.
 - YN[250]='0' — **new finding** (previously unknown/blank in prior passes).
 

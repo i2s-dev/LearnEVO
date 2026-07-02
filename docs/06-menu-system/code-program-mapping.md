@@ -1,7 +1,7 @@
 # Menu Code → Program → Database Table Mapping
 
 Status: **verified** — built from `BKMENUSU.TXT` (870 entries) cross-referenced against
-`rwn_symbols.json` (1,122 decrypted RWN programs). Last updated: 2026-06-19. DFM column added 2026-06-19 (723/870 resolved from rwn_dfm_map.json).
+`rwn_symbols.json` (1,122 decrypted RWN programs). Last updated: 2026-07-02 (Pass 558). DFM column: 733/870 resolved (723 original + 10 Java-bridge/FA programs; Pass 558 added BOMTREE/EDITBOMTREE/SQLEXPORT/UT7GFAC/UT7GFAD/PURCHITEM/PURCHVEND/MACHINEVIEW/WORKCENTERLOAD/T7JUPD DFMs). Remaining 137 without DFM: ~105 navigation group entries (GROUPS/*(group)*/BUTTONS header rows) + ~21 .run/.int legacy programs + ~11 RWN programs with no standalone DFM (T7PRLL/bkpl*/bkps*/bkwolg).
 
 Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to 4 primary)
 
@@ -115,8 +115,8 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 | BMK | &K - Enter Approved Vendors | t7bmk.rwn | T7BMK.DFM | BKAPVEND, BKARCUST, BKSBVEND, BKSYMSTR |
 | BML | &L - Enter Approved Manufacturers | t7bml.rwn | T7BML.DFM | BKARCUST, BKSBMFG, BKSYMSTR, BKICMSTR |
 | BMM | &M - Bill of Materials Defaults | T7DSBOM.RWN | STUB.DFM | ISDROP, BKSYHELP, DBAHLPID, ISIS |
-| BMN | &N - BOM Availability - Tree View | BOMTREE.RWN |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
-| BMO | &O - Create/Edit BOM - Tree View | EDITBOMTREE.RWN |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| BMN | &N - BOM Availability - Tree View | BOMTREE.RWN | BOMTREE.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| BMO | &O - Create/Edit BOM - Tree View | EDITBOMTREE.RWN | EDITBOMTREE.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
 | BMP | &P - Print BOM Pick List | T7BMP.RWN | T7BMP.DFM | BKICMSTR, BKSYMSTR, BKYSMSTR, BKBMMSTR |
 | BMQ | &Q - Roll Up Where Used | T7BMQ.RWN | T7BMQ.DFM | BKICMSTR, BKBMMSTR, MTICMSTR, BKSYHELP |
 | BMR | &R - Print BOM for Quoting | T7BMR.RWN | T7BMR.DFM | BKSYMSTR, BKICMSTR, BKARINVL, ISBUILD |
@@ -233,7 +233,7 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 
 | Code | Label | Program | DFM | Key Tables |
 |------|-------|---------|-----|------------|
-| DEA | &A - Export Data | sqlexport.rwn |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| DEA | &A - Export Data | sqlexport.rwn | SQLEXPORT.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
 | DEB | &B - Import Inventory | *(group)* |  |  |
 | DEBA | &A - Generate Import Header | T7DEBA.RWN | STUB.DFM | FILEDICT, FILEKEY, FILELOC, BKSYHELP |
 | DEBB | &B - Import Inventory | T7DEBB.RWN | STUB.DFM | FILEDICT, FILEKEY, FILELOC, BKSYHELP |
@@ -318,8 +318,8 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 |------|-------|---------|-----|------------|
 | FAA | &A - Enter Assets | T7FAA.RWN | T7FAA.DFM | ISFXASST, ISFXATRN, BKGLCOA, BKSYHELP |
 | FAB | &B - Post Depreciation | T7FAB.RWN | T7FAB.DFM | ISFXATRN, ISFXASST, BKGLCOA, BKSYMSTR |
-| FAC | &C - List Depreciation Transactions | UT7GFAC.RWN |  | BKLUGRID, BKSYHELP, DBAHLPID, BKPSUSER |
-| FAD | &D - List Assets | UT7GFAD.RWN |  | BKLUGRID, BKSYHELP, DBAHLPID, BKPSUSER |
+| FAC | &C - List Depreciation Transactions | UT7GFAC.RWN | UT7GFAC.DFM | BKLUGRID, BKSYHELP, DBAHLPID, BKPSUSER |
+| FAD | &D - List Assets | UT7GFAD.RWN | UT7GFAD.DFM | BKLUGRID, BKSYHELP, DBAHLPID, BKPSUSER |
 | FAE | &E - Import Assets | T7FAE.RWN | T7FAE.DFM | ISFXASST, BKGLCOA, BKSYHELP, DBAHLPID |
 
 ## Module: FO
@@ -580,8 +580,8 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 | POIG | &G - Print Purch Order Items by Due Date | t7poig.rwn | T7POIG.DFM | BKSYMSTR, ISNTYPE, ISBUILD, BKAPVEND |
 | POIH | &H - Print On Time Delivery Report | T7POIH.RwN | T7POIH.DFM | BKAPPO, BKQCMSTR, BKAPPOL, BKAPVEND |
 | POII | &I - Print Purchase Order Changes | t7POIi.RwN | T7POII.DFM | BKSYMSTR, ISAPCHG, MTICMSTR, BKAPPO |
-| POIJ | &J - Print/Export Purchases by Item/Item Class | purchitem.rwn |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
-| POIK | &K - Print/Export Purchases by Vendor | purchvend.rwn |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| POIJ | &J - Print/Export Purchases by Item/Item Class | purchitem.rwn | PURCHITEM.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| POIK | &K - Print/Export Purchases by Vendor | purchvend.rwn | PURCHVEND.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
 | POIL | &L - Print Digital Signature Status | t7poil.rwn | T7POIL.DFM | BKAPPO, BKPRMSTR, BKSYHELP, DBAHLPID |
 | POJ | &J - QC Inspection Programs | *(group)* |  |  |
 | POJA | &A - Print Receipt Travelers | t7poja.rwn | T7POJA.DFM | BKSYMSTR, BKQCMSTR, BKAPPOL, BKICMSTR |
@@ -687,7 +687,7 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 | QUC | &C - Calendar Summary Report | isshpcal2.rwn | EVOCSR.DFM | BKARINVL, BKARINV, BKSYHELP, DBAHLPID |
 | QUD | &D - Business Status | t7jbs.rwn | T7JBS.DFM | BKSYHELP, DBAHLPID, ISIS, ISLOG |
 | QUE | &E - Quick Grid Lookup | t7qgrid.rwn | T7QGRID.DFM | BKLUGRID, BKSYHELP, DBAHLPID, ISLOG |
-| QUF | &F - Query Executor | queryexecute.rwn |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| QUF | &F - Query Executor | queryexecute.rwn | QUERYEXECUTE.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
 
 ## Module: RM
 
@@ -800,7 +800,7 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 | SHA | &A - Edit WO Start/Finish/Due Dates | t7sha.rwn | T7SHA.DFM | WORKORD, BKICMSTR, MTICMSTR, BKARINVL |
 | SHB | &B - Manually Schedule Work Orders | t7shb.rwn | T7SHB.DFM | WORKORD, MTICMSTR, WOROUT, WORKCTR |
 | SHC | &C - Manually Schedule Work Centers | t7shc.rwn | T7SHC.DFM | WORKCTR, WOROUT, WORKORD, BKSYHELP |
-| SHD | &D - Manually Schedule Machines | machineview.rwn |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| SHD | &D - Manually Schedule Machines | machineview.rwn | MACHINEVIEW.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
 | SHE | &E - Finite Scheduling | t7she.rwn | T7SHE.DFM | SCHWO, WORKORD, BKSYMSTR, SCHEDCAL |
 | SHF | &F - Infinite Scheduling | t7shf.rwn | T7SHF.DFM | WORKORD, MTICMSTR, WOROUT, CALENDAR |
 | SHG | &G - Print Work Order Schedule | t7shg.rwn | T7SHG.DFM | BKSYMSTR, BKICMSTR, WORKORD, MTICMSTR |
@@ -808,7 +808,7 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 | SHI | &I - Print Work Center Schedule | t7shi.rwn | T7SHI.DFM | BKSYMSTR, MTICMSTR, ISBUILD, WORKCTR |
 | SHJ | &J - Print Machine Schedule | t7shj.rwn | T7SHJ.DFM | BKSYMSTR, MACHINE, WOROUT, WORKORD |
 | SHK | &K - View Work Center Load | t7shk.rwn | STUB.DFM | MKAHIST, MACHINE, WOROUT, WORKORD |
-| SHL | &L - View or Calculate Work Center Load | workcenterload.rwn |  | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
+| SHL | &L - View or Calculate Work Center Load | workcenterload.rwn | WORKCENTERLOAD.DFM | BKSYHELP, DBAHLPID, BKPSUSER, ISDRILL |
 | SHM | &M - Lead Time Estimator | t7shm.rwn | T7SHM.DFM | BKICMSTR, CALENDAR, BKSYHELP, DBAHLPID |
 | SHN | &N - Generate Lead Times | t7shn.rwn | T7SHN.DFM | BKSYMSTR, BKYSMSTR, BKICMSTR, MTICMSTR |
 | SHO | &O - Finite Schedule Bucket Report | t7sho.rwn | T7SHO.DFM | BKSYMSTR, WORKORD, BUCKETS, WORKCTR |
@@ -888,7 +888,7 @@ Columns: **Code** | **Label** | **Program** | **DFM** | **Key DB Tables** (up to
 | SMSD | &D - Vendor Invoice Links | T7SMSD.RWN | T7SMSD.DFM | BKAPINVT, ISLINKS, BKAPVEND, CLASMSTR |
 | SMT | &T - Enter Java Settings | T7JSETTINGS.RWN | T7JSETTINGS.DFM | FILELOC, BKSYHELP, DBAHLPID, ISIS |
 | SMU | &U - Enter Customer Ship Via | T7SMU.RWN | T7SMU.DFM | ISSHPVIA, BKSYMSTR, BKARCUST, BKSYHELP |
-| SMV | &V - Download Updates | T7JUPD.RWN |  | FILELOC, BKSYHELP, DBAHLPID, BKPSUSER |
+| SMV | &V - Download Updates | T7JUPD.RWN | T7JUPD.DFM | FILELOC, BKSYHELP, DBAHLPID, BKPSUSER |
 
 ## Module: SO
 
