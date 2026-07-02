@@ -520,7 +520,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 |-------|------|---------|
 | AHSYLOG | AHSYLOG.B | User security: AHSY_USER_LEVL (role, 2 chars), AHSY_USER_MENU (starting menu, 4 chars), AHSY_USER_CTRL (control flag, 1 char), AHSY_USER_ACCES_1..20 (20 × 1-char module permission flags) |
 | BKLOGON | BKLOGON.B | Active sessions (10 fields: code, password, company, program, printer, in-use flag, security level, menu, submenu, current printer) |
-| ISEXUSER | ISEXUSER.B | Extended user auth config (12 fields: CODE/GROUP/DATE1/DATE2/MISC1/MISC2/WINDO/PASSW/PEXPD/LPASS/LDATE/FLAGS); SSO Windows domain auth via WINDO/WDA.USERNAME; dual password modes (legacy ENCRYPTSTR / SHA1 hash) [confirmed Pass 227] |
+| ISEXUSER | ISEXUSER.B | Extended user auth — enhanced password mode (6 DDF-confirmed fields: CODE/GROUP/DATE1/DATE2/MISC1/MISC2; TAS aliases PASSW=MISC1/LPASS=MISC2/PEXPD=DATE1; EHPASS dual-password mode; 0 records in this installation) [DDF-confirmed Pass 551] |
 | BKSYMSTR | BKSYMSTR.B | System master / global config (286 fields: AR/AP/PO invoice numbers, tax rate, 20 payment terms, check accounts, GL accounts, aging buckets, payroll deductions, currency codes) |
 | BKYSMSTR | BKYSMSTR.B | System master variant (second config table) |
 | ISNOTES | ISNOTES.B | EvoNotes append-only note records |
@@ -634,7 +634,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | ISSETYPE | ISSETYPE.B | IS SE Type — service error category type codes |
 | ISBINLOC | ISBINLOC.B | IS Bin Location — bin location master (distinct from BKICLOC item locations) |
 | ISBINLOT | ISBINLOT.B | IS Bin Lot — bin + lot cross-reference (which lots are in which bins) |
-| ISACCESS | ISACCESS.B | IS Access — module access/license control (which modules are enabled) |
+| ISACCESS | ISACCESS.B | IS Access — field-level UI access control, Layer 7 security (8 DDF fields: NAME/DFM/OBJ/OBJTYPE/STATUS/FIELD/TEXT/EXTRA; 3-key check: user+form+object; 269 programs read it; 0 records = disabled in this installation) [DDF-confirmed Pass 551] |
 | ISSHIPCO | ISSHIPCO.B | IS Ship Company — shipping company/carrier master (codes, names, contacts) |
 | ISREPORD | ISREPORD.B | IS Repeat Order — standing/recurring AR order records |
 | ISDEPT | ISDEPT.B | IS Department — department master (dept codes, names, GL accounts) |

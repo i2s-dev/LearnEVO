@@ -228,9 +228,46 @@ records it intends to modify. When a user picks an action like
 `open BKAPINVT lock W` (write-lock) and other users see
 `LOCK_OWNER = <WHOAMI>`.
 
-`EVOUSERS.DCY` plus `BKLOGON` (1 table on the inventory) probably also
-track who is currently logged in to prevent double-login of the same
-seat and to drive the "who's in the system" status bar.
+### `BKLOGON` — Active Session Tracker (DDF-confirmed Pass 551, 2026-07-02)
+
+DDF Table ID=185, **10 fields** (all 0 records in this installation):
+
+| Field | Offset | Size | dtype | Meaning |
+|-------|-------:|-----:|-------|---------|
+| `BKLOGON_CODE` | 0 | 15 | STRING | User login code (FK→BKSYUSER) |
+| `BKLOGON_PSWD` | 15 | 10 | STRING | Cached password (session copy) |
+| `BKLOGON_CMPY` | 25 | 2 | STRING | Current company code |
+| `BKLOGON_PROG` | 27 | 8 | STRING | Currently running program name |
+| `BKLOGON_PRINTER` | 35 | 2 | INTEGER | Selected printer index |
+| `BKLOGON_INUSE` | 37 | 1 | STRING | In-use flag (`Y`=active session) |
+| `BKLOGON_SCRTY` | 38 | 2 | STRING | Security level code |
+| `BKLOGON_MENU` | 40 | 2 | INTEGER | Current menu selection |
+| `BKLOGON_SUBMENU` | 42 | 2 | INTEGER | Current sub-menu selection |
+| `BKLOGON_CURPRT` | 44 | 2 | INTEGER | Current printer (session override) |
+
+BKLOGON tracks active sessions — which user is in the system, which company/program they are
+running, and their current printer. The `INUSE` flag prevents double-login. This is the
+DBA-era session table; `EVOUSERS.DCY` drives the user-admin UI that writes BKLOGON.
+
+### `ISEXUSER` — Extended User Auth (DDF-confirmed Pass 551, 2026-07-02)
+
+DDF Table ID=397, **6 fields** (0 records in this installation):
+
+| Field | Offset | Size | dtype | TAS alias | Meaning |
+|-------|-------:|-----:|-------|-----------|---------|
+| `ISEX_USER_CODE` | 0 | 15 | STRING | `ISEX.USER.CODE` | User login code (FK→BKSYUSER) |
+| `ISEX_USER_GROUP` | 15 | 10 | STRING | `ISEX.USER.GROUP` | Security group code |
+| `ISEX_USER_DATE1` | 25 | 4 | DATE | `ISEX.USER.PEXPD` | Password expiry date |
+| `ISEX_USER_DATE2` | 29 | 4 | DATE | — | Last password change date (inferred) |
+| `ISEX_USER_MISC1` | 33 | 25 | STRING | `ISEX.USER.PASSW` | Hashed password (EHPASS mode) |
+| `ISEX_USER_MISC2` | 58 | 25 | STRING | `ISEX.USER.LPASS` | Previous password (anti-reuse) |
+
+**Correction (Pass 551):** Prior documentation listed 12 fields (including WINDO/FLAGS/LDATE).
+The actual DDF has only 6 fields. The TAS code references these via dot-notation aliases
+(e.g. `ISEX.USER.PASSW` = `ISEX_USER_MISC1`). FLAGS is likely packed into GROUP or MISC1.
+
+ISEXUSER is part of the EHPASS dual-password architecture: when ISTS.CFG.EHPASS=1, passwords
+are stored as SHA1 hashes in ISEX_USER_MISC1 rather than TAS-encrypted in BKPS.USER.PSWD.
 
 ## Help System Scope — `DBAHLPID.B` (Pass 410, 2026-06-30)
 
@@ -260,6 +297,7 @@ printable strings ≥15 chars — help text is stored in an encoded/binary forma
   AHSYLOG has 0 records in this installation. Would require a different installation
   with configured security, or the original BK-era source code.
 - [ ] Password hashing algorithm: `ENCRYPTSTR` TAS obfuscation (symmetric, key unknown).
-- [ ] `ISACCESS` (field-level access table): not yet queried — may or may not be populated.
+- [x] **`ISACCESS` DDF-confirmed (Pass 551, 2026-07-02):** 8 fields confirmed, 0 records in this installation. Schema: IS_ACC_NAME(10)/DFM(64)/OBJ(30)/OBJTYPE(20)/STATUS(1)/FIELD(80)/TEXT(20)/EXTRA(50). The 3-key lookup is NAME+DFM+OBJ (user + form + object). STATUS (1 char) is the access flag; encoding unknown without records.
+- [x] **`ISEXUSER` DDF-confirmed (Pass 551, 2026-07-02):** 6 fields confirmed (not 12 as previously stated), 0 records. See §ISEXUSER above.
 - [ ] How `AHSY_USER_MENU` maps to a menu tree entry in a configured installation.
 - [ ] Confirm whether other companies (not Default) have populated AHSYLOG or BKPSUSER.
