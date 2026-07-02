@@ -113,6 +113,13 @@ to resolve fully:
    level granular access control table. IS.ACC.NAME+IS.ACC.DFM+IS.ACC.OBJ = 3-key check
    (user name, form DFM file, object/button name). Opened by 269 programs. Managed by
    T7LIMACC.RWN (PS-L). Has 0 records in this installation (NOT configured).
+   **Pass 551 (2026-07-02):** ISEXUSER DDF-confirmed: 6 physical fields only (CODE/GROUP/
+   DATE1/DATE2/MISC1/MISC2, Table ID=397). NOT in FILEDICT — it is a PSQL-SQL-only IS* table
+   (TAS accesses via SQLCALL, not Btrieve native). The 12-field claim from Pass 227 conflated
+   TAS named_vars (semantic aliases) with physical DDF columns. ISACCESS DDF: 8 fields
+   (IS_ACC_NAME/DFM/OBJ/OBJTYPE/STATUS/FIELD/TEXT/EXTRA, Table ID=276); STATUS=1-char flag
+   (encoding unknown — no records to sample from). BKLOGON DDF: 10 fields (Table ID=185,
+   INUSE flag tracks active sessions). Remaining open: STATUS field encoding in ISACCESS.
    **Pass 430 (2026-06-30):** T7YSYN linear mapping DISPROVEN. A prior hypothesis mapped
    YN slot N to the Nth ISTS.CFG key in T7YSYN's symbol pool. SRC evidence refutes this:
    BKROA.SRC:392 confirms YN[38]=WOCALC but linear gives SCRCMP; BKROA.SRC:629 confirms
