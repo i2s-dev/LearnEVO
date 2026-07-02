@@ -1785,7 +1785,7 @@ Fields: 54
 | 54 | ISSR_INFO_UID | NUMERIC | 8 | — | — |
 
 ## ISCCBTXN
-**NOT USED**
+**Corrugated/Cut box transactions** — used by J7CCFABXFER (CC Fabrication Transfer). Tracks fabric/corrugated transfer records by LOT/BIN/LOC.
 
 Fields: 16
 
@@ -1809,7 +1809,7 @@ Fields: 16
 | 16 | ISCC_TXN_TRANS | NUMERIC | 8 | — | — |
 
 ## ISCCICM
-**NOT USED**
+**Mattress cover/fabric product specification** — used by T7CCCITM (CC-C item maintenance) and J7CCITEMSYNC. Stores cover design data: fabric/ticking, fill layers (FILIT_1..4/FILQTY_1..4), cushion type, color, stripe, law label, sewing notations, SolidWorks CAD reference.
 
 Fields: 59
 
@@ -1876,7 +1876,7 @@ Fields: 59
 | 59 | ISICC_ICM_ | STRING | 25 | — | — |
 
 ## ISCCMTF
-**NOT USED**
+**Corrugated/Cut material transfer staging** — used by J7CCITEMSYNC. 2-field staging table for CC item sync operations.
 
 Fields: 2
 
@@ -1896,7 +1896,7 @@ Fields: 2
 | 2 | ISCC_MTF_MTF | STRING | 60 | — | — |
 
 ## ISCONVRT
-**NOT USED**
+**Unit conversion table** — used by J7RCCONVTABLE and J7RCPITEX (RC customer system). Stores per-item PUM/SUM and weight conversion factor for items needing non-standard UOM conversion.
 
 Fields: 9
 
