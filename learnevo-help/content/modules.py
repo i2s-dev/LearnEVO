@@ -2003,6 +2003,124 @@ Fields: Archive/Purge/Restore radio → date range + Shift + Employee# range →
 - **[[module-DE|DE]]** — DE-J batch import writes directly to BKDCLAB
 """,
 
+"ADCA": """
+## What it does
+
+Advanced DC — extended labor entry with WO/routing UDF slots, tray-based WIP container
+tracking, and full shift-schedule management. Two programs: T7ADCA (primary) and T7DCA2
+(adds Start Shift / Stop Shift buttons). These supplement the base [[module-DC|DC-A]]
+touchscreen entry with per-WO and per-operation extension tables not accessed by T7DCA.
+
+Used on shop floors where Work Orders carry custom UDF data (ISWOEX), routing operations
+have extended scheduling fields (ISWOROEX), or WIP moves through labeled physical trays
+(ISWOTRAY). T7DCA2 exposes the shift-start/stop buttons for sites that need explicit
+shift management from the entry screen.
+
+## Programs confirmed (Pass 179)
+
+| Program | Purpose |
+|---------|---------|
+| T7ADCA | Advanced DC-A labor entry — reads/writes IS.WOEX.* + IS.WROEX.* + IS.TRAY.* |
+| T7DCA2 | Adds Start Shift / Stop Shift buttons to T7ADCA for explicit shift management |
+
+## ISWOEX — WO Extended/UDF Record (28 fields)
+
+Keyed by WOPRE + WOSUF (one record per Work Order). Provides generic UDF extension slots
+attached to the Work Order header; allows custom fields without modifying WORKORD.
+
+| Field group | Fields | Type |
+|-------------|--------|------|
+| PK | WOPRE (DECIMAL) + WOSUF (INTEGER) | WO number + suffix |
+| Descriptions | DESC1, DESC2 (STRING) | User-defined text |
+| Alpha slots | ALPHA1–5 (STRING ×5) | Generic alpha UDF slots |
+| Date slots | CDATE, DATE1–5 (DATE ×6) | Create date + 5 UDF dates |
+| Integer slots | INT1–5 (INTEGER ×5) | Generic integer UDF slots |
+| Numeric slots | NUM1, NUM2 (DECIMAL ×2) | Generic numeric UDF slots |
+| Machine | MCLASS (STRING), MNUM (DECIMAL) | Machine class + number override |
+| Type flags | ITP (STRING), ITPP (STRING) | Item type / item type parent |
+| Reference | RF (STRING) | Reference flag |
+| Overflow | EXTRA (STRING) | Extra overflow |
+
+IS.WOEX.ITP and IS.WOEX.ITPP appear as bound FieldName values in T7WOA.DFM and
+T7WOAE.DFM — the WO header and edit forms surface these type flags directly.
+
+## ISWOROEX — Per-Operation Routing Extension (51 fields)
+
+Keyed by WOPRE + WOSUF + OPER (one record per routing operation). Adds 10-slot array
+fields for large per-operation datasets (multi-machine scheduling, cycle tracking, dates).
+
+| Field group | Fields | Type |
+|-------------|--------|------|
+| PK | WOPRE (DECIMAL) + WOSUF (INTEGER) + OPER (INTEGER) | WO + sequence |
+| Day scheduling | SDAY (INTEGER), FDAY (INTEGER) | Start day / finish day offset |
+| Machine | PRMACH (STRING) | Primary machine assigned to operation |
+| Labor qty | LQTY (DECIMAL) | Labor quantity at this operation |
+| First-op flag | FOI (STRING) | First-op indicator (T7WOKA DFM-confirmed) |
+| Type flags | ITP (STRING), ITPP (STRING) | Item type / item type parent |
+| Description | DESC1 (STRING) | Operation description extension |
+| Alpha | ALPHA1, ALPHA2 (STRING); ALPHA3_1..10 (STRING ×10) | 12 alpha slots |
+| Dates | DATE1 (DATE); DATE2_1..10 (DATE ×10) | 11 date slots |
+| Numeric | NUM1 (DECIMAL); NUM2_1..5 (DECIMAL ×5) | 6 numeric slots |
+| Integer | INT_1..5 (INTEGER ×5) | 5 integer slots |
+| Flags | FLAG_1..5 (STRING ×5) | 5 flag slots |
+| Overflow | EXTRA (STRING) | Extra |
+
+IS.WROEX.FOI appears bound in T7WOKA.DFM (WO-K Kit Assembly), confirming that the
+kit-picking tray workflow reads this first-op indicator when sequencing picks.
+
+## ISWOTRAY — WO Tray/Container Tracking (52 fields)
+
+Keyed by NUM (tray number). Tracks physical containers (trays, bins, pallets) assigned
+to WO operations on the shop floor. Up to 5 bin locations per tray.
+
+| Field group | Fields | Type |
+|-------------|--------|------|
+| PK | NUM (STRING) | Tray identifier |
+| WO link | WOPRE (DECIMAL), WOSUF (INTEGER), OPER (INTEGER) | WO + operation |
+| Tray type | CODE (STRING) | Tray type code |
+| Operation | OPDESC (STRING) | Operation description |
+| Qty tracking | COMQTY (DECIMAL) — component qty; SQTY (DECIMAL) — scheduled qty | |
+| QC | QCQTY (DECIMAL), QCREQD (STRING) | QC qty + QC required flag |
+| Scrap | SCRPQTY (DECIMAL) | Scrap quantity |
+| Bin locations | BIN_1..5 (STRING ×5), BINQTY_1..5 (DECIMAL ×5) | 5 bin slots |
+| Location slots | LOC_1..5 (STRING ×5) | 5 location slots |
+| Date slots | DATE_1..5 (DATE ×5) | 5 date slots |
+| Alpha | ALPHA_1..20 (STRING ×20) | 20 generic alpha slots |
+| Overflow | EXTRA (STRING) | Extra |
+
+## BKDCSHFT — Shift Schedule (34 fields)
+
+Singleton record holding all shift timing parameters for 3 shifts. The BKDC.SH.* 14-var
+namespace in T7AutoDCH accesses a flat subset; the full DDF exposes per-shift arrays.
+
+| Field | Meaning |
+|-------|---------|
+| NAME1 / NAME2 / NAME3 | Shift names (e.g. Day / Evening / Night) |
+| START_1..3 | Shift start times (one per shift) |
+| FIN_1..3 | Shift finish times |
+| FINBUF_1..3 | Finish buffer (grace period at shift end) |
+| BUFFER_1..3 | General clock-in/out buffer tolerance |
+| BRK1IN_1..3 / BRK1OUT_1..3 | Break 1 start / end |
+| BRK2IN_1..3 / BRK2OUT_1..3 | Break 2 start / end |
+| LUNCHIN_1..3 / LUNCHOT_1..3 | Lunch start / end |
+| EXTRA | Overflow |
+
+Shift schedule configured via SD-F Data Collection Defaults. BKDC.SH.BRK1IN/BRK1OUT/
+BRK2IN/BRK2OUT/BUFFER/FINBUF/NAME1-3/START/FIN/LUNCHIN/LUNCHOT = the 14-var flat
+access subset used in T7AutoDCH (and T7DCA/T7ADCA at runtime for buffer enforcement).
+
+## Integration
+
+- **[[module-DC|DC]]** — T7ADCA/T7DCA2 are enhanced variants of DC-A; BKDCLAB schema
+  is shared; BKDCSHFT is configured via SD-F
+- **[[module-WO|WO]]** — ISWOEX attaches UDF data to WORKORD records (WOPRE+WOSUF PK);
+  ISWOROEX extends WOROUT per-operation records
+- **[[module-KI|KI]]** — T7WOKA (WO-K Kit Assembly) binds IS.WROEX.FOI confirming
+  kit-picking uses the first-op routing extension
+- **[[module-PA|PA]]** — ISWOTRAY appears in T7Paperless 50-table DB (PA module uses
+  tray tracking for paperless shop floor WIP flow)
+""",
+
 "QC": """
 ## What it does
 
