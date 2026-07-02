@@ -4215,15 +4215,17 @@ These code tables are referenced by SR service orders (BKARINV type field) and S
 
 ---
 
-### LI — License / Module Access
+### LI — Field-Level Access Control (PS-L)
 
-**What it does:** Controls which EvoERP modules are licensed and enabled for this installation. The ISACCESS table is the module gate — T7LIMACC (42 procs) is the admin UI to view/edit it.
+**What it does:** Manages per-user, per-form, per-object access rights for EvoERP screens. `T7LIMACC.RWN` (PS-L) is the admin program. When configured, specific buttons/fields on forms can be hidden or disabled for specific user groups without giving them full module access.
 
-**RWN program:** T7LIMACC (42 procs) — very small program; only opens ISACCESS + BKSYHELP + DBAHLPID + MKAHIST (standard help boilerplate). Single-table maintenance.
+**RWN program:** T7LIMACC (42 procs) — admin UI for ISACCESS maintenance. Opens ISACCESS + BKSYHELP + DBAHLPID + MKAHIST (standard help boilerplate).
 
-**ISACCESS:** Not registered in the Pervasive DDF (same pattern as ISARDEPL, ISWOEX). Contents inferred: module code → enabled/disabled flag. Used as a license gate: EvoERPmenu.RWN checks ISACCESS before dispatching any module.
+**ISACCESS:** The form+object level access control table. **Confirmed (Pass 550, 2026-07-02): 269 programs open ISACCESS.** The 3-key check uses `IS.ACC.NAME` (user/group code) + `IS.ACC.DFM` (DFM form file name) + `IS.ACC.OBJ` (object/button name within the form). Each record stores whether that user has access to that specific UI element on that form. NOT a module licensing gate — module licensing is handled by `BKSYCFG` and `BKMENUSU`. In this installation, ISACCESS has 0 records (not configured — Windows SSO only).
 
-**Confidence: 52/100** — Program identified; ISACCESS confirmed in use across 20+ programs but schema not in DDF; enabled/disabled flag behavior inferred from module load patterns.
+**CORRECTION (Pass 550):** Prior entries in this doc incorrectly described ISACCESS as a "module code → enabled/disabled" license gate. That was wrong. Module licensing is BKSYCFG (4 feature flags). ISACCESS is granular form-element access control.
+
+**Confidence: 78/100** — ISACCESS role confirmed from rwn_symbols.json IS.ACC.NAME/DFM/OBJ var pattern across 269 programs; 0 records in this installation so exact schema unconfirmed.
 
 ---
 
@@ -6618,12 +6620,13 @@ CWHERE indicates which workstation or system module made the change.
 
 ## LESSER-DOCUMENTED MODULES — Pass 43
 
-### LI — Module License Access Control
+### LI — Field-Level Access Control (CORRECTED Pass 550)
 
-**T7LIMACC** (42 procs) — opens ISACCESS as primary table (not registered in DDF schema).
-- Purpose: controls which EvoERP licensed modules are active/accessible per installation.
-- ISACCESS is a file-level table (likely keyed by module code) listing enabled modules.
-- Single program, thin UI — this is an admin-only tool for module activation.
+**T7LIMACC** (42 procs) — opens ISACCESS as primary table. **CORRECTION:** ISACCESS is NOT
+a module license gate. It is a per-user/per-form/per-object access control table. 3-key check:
+IS.ACC.NAME (user group) + IS.ACC.DFM (form DFM file) + IS.ACC.OBJ (button/object). 269 programs
+open ISACCESS to check whether the current user has access to specific UI elements. In this
+installation, ISACCESS has 0 records — not configured. Module licensing is BKSYCFG (4 feature flags).
 
 ---
 
@@ -6678,7 +6681,7 @@ Paperless DC = touchscreen/kiosk-based WO operation reporting without paper trav
 | INVTXN | BKDCSHFT | PA writes inventory transactions at posting; ADCA doesn't (uses payroll/shift timing instead) |
 | ISBINLOT | EIMCOLST | PA does bin-level lot traceability; ADCA has EIM color display config |
 | BKBMMSTR | — | PA reads BOM master directly |
-| ISACCESS | — | PA checks module-enable flag (license gate) |
+| ISACCESS | — | PA checks form/object-level access rights for current user (NOT a module-enable gate — that is BKSYCFG) |
 | BKYSMSTR | — | PA reads the company/system master |
 | WOBOM | — | PA opens the WO BOM detail for material pickup |
 | WODATE | — | PA tracks WO date milestones |
