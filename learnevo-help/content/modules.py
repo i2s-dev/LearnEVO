@@ -5410,6 +5410,15 @@ Digital Signers for PO (T7DIGSIGADMIN.RWN):
 - Employee must be in SM-G Enter Employees first
 - Fields: Employee Number / Password / Signature Image file path / Initials (printed as "Entered By" on PO) / Approval Threshold (dollar limit; 0 = unlimited authority)
 
+## PS-J field semantics (EVOHELP.PDF §PS-J, Pass 536)
+
+Enter Contract Review Signers (T7CTREVUADMIN.RWN):
+- Fields: Name / Department / Password
+- **Administrative level**: at least one approver must be designated Admin — only a CR Admin can add/remove approvers after the first Admin is created
+- Departments must match exactly ("Credit" ≠ "A/R" ≠ "Accounts Receivable")
+- **App SOs button**: bulk-approve a range of Sales Orders (SO Number From/Thru + Order Date From/Thru) — used to pre-approve existing orders when first enabling Contract Review so they don't require individual approval
+- Once any approver exists, Contract Review is active and all new SOs require approval before converting to WOs / printing packing slips / printing invoices
+
 ## Integration
 
 - **[[module-SY|SY]]** — SY-A Enter Users is the T7 user entry screen backed by BKPSUSER
@@ -7346,10 +7355,46 @@ the trigger list; data stored in a Btrieve-only IS_TRIG* table (not in DDF).
 Item number, Customer code, Vendor code, SO#, PO#, WO range (prefix+suffix),
 Operation, Item Class, Item Category, Planner Code, Bin Location, Item Types.
 
+## US-B through US-F operational details (EVOHELP.PDF §US, Pass 536)
+
+### US-B Customize Menu
+Identical to TA-H Maintain Menu - End User. Allows the user to add, remove, or reorder
+their own menu buttons without affecting other users or the system defaults.
+
+### US-C Reset Screen Size / Location
+Click Reset to restore a maximized/off-screen program window (e.g., AP-A) back to
+its default position and size. One-click operation — no fields to enter.
+
+### US-D Reset Password
+User resets their own password (as opposed to admin Reset Password in PS-A).
+Enter: Old Password / New Password / Confirm New Password. Does not require admin access.
+
+### US-E Update PO Electronic Signature Info
+User-facing version of PS-I (admin setup). Enter Employee Number + Password to
+authenticate; then update:
+- Password (via Reset button in lower right)
+- Digital signature image file path (the image printed on signed POs)
+- PO "Entered By" Initials
+
+### US-F Enter Reminders
+Calendar-based reminder system. Initial view: current month calendar with future reminder
+dates shown in blue with a dot indicator. Click a date to create/edit a reminder.
+
+**Reminder fields:** Date / Time / Customer (opens AR-A/AR-Q) / Vendor (opens AP-A/AP-U) /
+Item (opens IN-A) / URL or File link / Subject / Description / Remind Prior to event time (Y/N).
+
+**When triggered:** popup window opens with Dismiss / Snooze (enter new time) options.
+If associated with customer/vendor/item, click the entity button to open the linked program directly.
+
+**Prerequisite:** Enable Evo Reminders on Startup must be Y in US-A → Misc Tab.
+When enabled, a calendar icon also loads on the desktop as an alternate launch point.
+
 ## Integration
 
 - **[[module-SM|SM]]** — SM-K is the same as US-A (Evo User Settings, T7SMK.RWN)
 - **[[module-SY|SY]]** — SY-A manages security levels and module access; US manages personal prefs
+- **[[module-PS|PS]]** — PS-I is the admin version of US-E (electronic signature setup)
+- **[[module-TA|TA]]** — US-B is identical to TA-H Maintain Menu - End User
 """,
 
 "TAS": """
