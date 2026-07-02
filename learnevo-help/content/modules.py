@@ -4351,6 +4351,42 @@ Form Caption: "New Screen" (placeholder) — SourceFile = T7mapdepo
 Note: leaving GL Account blank uses the system default AR Customer Deposits account
 (set in AD-A). Populated when deposits need to be applied to a specific GL instead.
 
+## AR-N deposit entry workflow (EVOHELP.PDF §AR-N, Pass 517)
+
+AR-N is where deposits are **entered** (the origin step). MA/T7MAPDEPO is where they are **applied** to SO lines.
+
+**Purpose:** For job shops requiring advance deposits before running special orders.
+
+**Two benefits:**
+1. Deposit shown on SO acknowledgments and invoices — deducted from total
+2. GL automatically handled: deposit → **Customer Deposits (liability)** account (from AD-A); when invoice posts → auto-debit Customer Deposits, auto-credit AR Receivables, auto-applies to correct invoice in aging
+
+**Entry fields:**
+| Field | Notes |
+|-------|-------|
+| Customer Code | Required; name auto-fills |
+| Deposit Date | |
+| Check Number | |
+| Deposit Amount | |
+| Currency | If multi-currency enabled |
+| Bank Account | Which bank account receives the funds |
+| SO Number | Optional link to a specific sales order |
+
+**Editing restrictions:** Can only change SO link and Description. To change other fields: Delete (prompts for reversal date) → re-enter from scratch.
+
+**Credit card processing:** If X-Charge installed and configured in SD-P, a Credit Card button appears after customer selection. Processes credit card; approval code prefixed with V/M/A/D (Visa/MC/Amex/Discover) stored as Check#.
+
+**Report:** Print listing of open deposits, filtered by from/thru Customer Code or Deposit Date range.
+
+## AR-M Customer Refund (EVOHELP.PDF §AR-M, Pass 517)
+
+Processes refunds of customer credits or deposits not applied to sales orders.
+
+- Payment method: AP Voucher / Credit Card (X-Charge) / Manual Check (immediate cash posting)
+- AP Voucher: prompts for invoice#, date, description, payment terms; processed at AP payment run
+- Manual Check: prompts for bank account, check#, date, description; can print check immediately
+- Customer must have matching Vendor code (system prompts to reuse or create new one)
+
 ## Integration
 
 - **[[module-AR|AR]]** — deposits originate in AR-N/AR-C; MA links them to SO lines
