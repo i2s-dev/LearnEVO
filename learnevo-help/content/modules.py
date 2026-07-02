@@ -2751,6 +2751,93 @@ start), `MTWO_WIP_SFIN` (scheduled finish), `MTWO_WIP_PRTY` (priority code),
 | T7SHP | Color priority report: 3-zone thresholds (X days, X–Y days, >Y days) for priority change, elapsed start, WO finish vs. est. ship date |
 | T7VSCHED | **Visual Scheduler launcher** — WO filter: Item#/Desc/Qty/Start Date/Finish Date/WO Prefix #/WO Status [RF]/Estimate#; **Visual Scheduler Options** panel: (1) Initialize Scheduling Files and start Visual Scheduler, (2) Start Visual Scheduler to continue editing, (3) Post Visual Scheduler dates; "Creating Work Files" progress state; "Work Order Scheduler" + "Work Center Scheduler" dual views; WO Prefix# hint: "Enter the Starting WO Number with a Unique Prefix Number" |
 
+## SH sub-program operational details (EVOHELP.PDF §2.5, Pass 530)
+
+All SH programs have **auto-entry mode** (advances to next WO or sequence automatically;
+Disable Auto-Entry Mode button to stop; ESC or Exit returns to header).
+
+### SH-A Edit WO Start/Finish/Due Dates (pages 179-180)
+Filter screen: Start Date cutoff / Status codes (X=include, Space=exclude) / Priority codes.
+Click Go → WO list → highlight + click or Edit → change Start/Finish/Due dates.
+**Note:** do not manually change Finish Date when using SH-E finite scheduling (it is overwritten on each run).
+
+### SH-B Manually Schedule Work Orders (pages 180-181)
+For manual scheduling. WO# (or F2 lookup) → header: Start/Finish/Due/Priority/Lead Time.
+Advance to routing sequences → select sequence → enter Start/Finish dates for each op.
+Do NOT enter sequence dates if using finite, lead time, or infinite scheduling (auto-calculated by those programs).
+
+### SH-C Manually Schedule Work Centers (pages 181-182)
+Alternative to SH-B. WC# → modify Total Hours/Day / % Utilization / Total Shift Hrs.
+Then sequence list: select each → enter Start/Finish dates.
+Also usable regardless of scheduling method to update WC capacity fields.
+
+### SH-D Manually Schedule Machines (pages 182-183)
+Assign/reassign machines to routing sequences within a WC. WC# → From/Thru machine range filter →
+sequence list → enter Machine# + Start/Finish dates. Not used with finite scheduling (use parent-child WCs).
+**Machine prompt in labor:** SD-E "Display Machine Prompt in Enter Labor?" = Y → pop-up shows assigned
+machine when clocking into WO-F, allowing correction if schedule changed.
+
+### SH-E Finite Scheduling (pages 183)
+Runs finite scheduling engine for all or filtered work orders. For details see §How Finite Scheduling Works.
+Exception report generated for any WOs that cannot be scheduled.
+
+### SH-F Infinite Scheduling (pages 183-184)
+Assigns routing sequence dates without regard to capacity. Status/Priority code filters.
+WO# range / Start/Finish/Class ranges. Exception report for unscheduled WOs.
+Use when due dates are inflexible and capacity is adapted (overtime, temps) to meet them.
+
+### SH-G Print Work Order Schedule (pages 184-185)
+Open WOs listing: current start/finish dates, qty remaining, days late (Due < Finish).
+Sort by Start or Finish date. Status/Priority/Class code X-filters. "Late" priority filter = show only late WOs.
+Ranges: WO# / Item# / Customer.
+
+### SH-H Print Work Order Status (page 185)
+Per-sequence status for individual WOs. Shows qty remaining + hours remaining + days late.
+Sequences behind schedule flagged with asterisk. Ranges: WO#/Start/Finish/Item#/Customer.
+
+### SH-I Print Work Center Schedule (page 185)
+Uncompleted sequences queued per WC. Total hours backlog ÷ hours/day = backlog in days.
+**Used as daily dispatch report.** Sort by Start or Finish date.
+Same status/priority/class filters as SH-G + WO#/Item#/Customer/Start/Finish ranges.
+Option to skip sequences with zero remaining quantity.
+
+### SH-J Print Machine Schedule (pages 185-186)
+Uncompleted sequences queued per machine. Sort by Start or Finish date.
+Same filters/ranges as SH-I. Use with manual or infinite scheduling (not finite — use parent-child WCs instead).
+
+### SH-K View Work Center Load (page 186)
+Real-time WC queue dashboard. Requires Data Collection (DC) or HH-I Paperless Shop Floor.
+WC# → refresh interval (seconds) → Include status-F WOs → Go.
+Top panel: currently clocked-in WOs + employee name. Bottom panel: queued WOs by Priority+Sched Start Date.
+Cross-highlight: clicking a row in either panel highlights matching row in the other.
+
+### SH-L View or Calculate Work Center Load % (pages 186-187)
+WC range + end date → % load by day shown numerically and graphically.
+Tools → Recalculate: rebuilds forward from today (moves all past-due ops to "today").
+Tools → Get/Hide History: controls display of prior period data. Tools → Export to CSV → Excel.
+
+### SH-M Lead Time Estimator (pages 187-188)
+Estimates delivery date for quoting purposes. Item# + Qty + Start Date →
+Estimated Finish Date for Priority 1 / Priority 2 / Priority 3 / No Queue Time (4 columns).
+Includes: production setup + run time + OP lead time + WC queue time per priority.
+Skips non-working days per shop calendar.
+**Note:** does NOT include sub-assembly manufacturing time.
+
+### SH-N Generate Lead Times (pages 188)
+Updates BKICMSTR Lead Time field for all or selected manufactured items.
+Uses: Lot Size (from IN-L-A / RO-A) × routing run time + OP lead time + avg WC queue time.
+Prints change report (old vs. new lead time). Filters: Item#/Type (F/A/M)/Class/Category/Cycle code.
+
+### SH-O Finite Schedule Bucket Report (pages 188-189)
+Analysis of current scheduling load. Columns: WC/WO/Sequence/Start/Finish/Shop Start/
+Shop Finish/Scheduling Units/Days/Critical Ratio/Contention. Used with finite scheduling only.
+
+### SH-P Lead Time Scheduling (page 189)
+Reschedule existing WOs using routing time standards + WC queue times + OP lead times + shop calendar.
+**Forward:** Start Date given → calculates Finish Date.
+**Backward:** Finish Date or Due Date given → calculates Start Date.
+Used when conditions change (queue times, WC shift hours). Status/Priority/WO#/Start/Finish/Class filters.
+
 ## Integration
 
 - **[[module-WO|WO]]** — all SH operations read WORKORD; SH-A writes start/finish dates
