@@ -7856,6 +7856,25 @@ EvoNotes DFM suite fully confirmed (Pass 490, 2026-07-01):
 | classic2evonts.DFM | Classic 2 Evo Notes | Migration utility: converts pre-EvoNotes classic note records to new EvoNotes format |
 | REMREM.DFM | Reminder... | Minimal reminder popup (legacy/alternate reminder dialog) |
 
+## EvoNotes RTM printing pattern (EVOHELP.PDF §SM "Using Evo Notes", Pass 543)
+
+Notes print via subreports embedded in existing RTMs:
+- All notes-printing RTMs are named **"EN…"** or **"IEN…"** (international variant).
+- The subreport contains two fields: **Note Title** (= note type + where it came from) and
+  **IS.NOTE.NOTE** (the note text).
+- Notes print selectively by note type: a PMT (Payment Instructions) note type can be
+  configured to print on invoices but not packing slips; an SHP note on a Ship Via code
+  prints on packing slips for orders using that carrier.
+- Note type selection is saved per-user so users don't re-select on each print run.
+
+**SM-N-B Enter System Notes** — global notes not associated with any specific entity.
+Used for master Terms and Conditions text that prints on every PO, SO, WO, Quote, RFP,
+RMA, or Service/Repair order automatically without re-entering or assigning to items.
+
+**SM-N-C Synchronize Classic Notes to Evo** — migrates pre-EvoNotes DBA Classic notes
+to ISNOTES as CSN (Classic Synchronized Note) or CSH (Classic Synchronized Header)
+records. One-time migration utility; linked to SM-N-C in SM menu.
+
 ## Links system (EvoLinks)
 
 **ISLINKS — 4,196 records / 313 fields (ODBC confirmed)**
