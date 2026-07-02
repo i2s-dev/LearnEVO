@@ -3653,6 +3653,69 @@ Deere as a customer, requiring their barcode/serial specification.
 | T7SCH | SC-H | print/settings |
 | T7SCOMP | compound serial management | Detail, Compound, Visible — compound serial/component tracking |
 
+## SC sub-program operational details (EVOHELP.PDF §3.5, Pass 533)
+
+### SC-A Edit Serial File (page 294)
+# View/edit existing serial records. Enter Item# → then Serial# (F2 lookup
+# shows all serials for that item). Only Exp Date and Notes should be changed
+# here — all other field changes must go through PO/IN/WO/SO to keep INVTXN
+# and GL detail in sync. Serial records are created via PO-C/WO-I normally;
+# manual creation via SC-A does NOT update INVTXN or GL (not recommended).
+# Serial file contains: origin date, origin PO# or WO#.
+
+### SC-B Assign Serial Control (page 295)
+# Enter Item# (F2 lookup); Product Type auto-displays. Set Y=require serial
+# control; N=remove serial control. One item at a time. Affects all transaction
+# entry from this point forward (PO/WO/SO/IN).
+
+### SC-C Print Serial Availability (pages 295-296)
+# Current on-hand by serial number, sorted Item#/Serial#. Filters:
+# From/Thru Item#, From/Thru Serial#. Include items allocated to SOs
+# (allocated = not truly available) [Y/N].
+
+### SC-D Print Serial History (pages 296-297)
+# Full traceability: inception through all uses. Named report definitions
+# (save filter combos for reuse). Sort order affects index and speed —
+# default: Item#/Serial#. Transaction type codes (identical to LC-D):
+# A=Adjustments / B=Bin Transfer / C=PO Price Change (not by serial) /
+# G=Scrap / I=WIP issue / J=PO receipt to WIP / M=Make-From /
+# O=Outside Processing (not by serial) / P=PO to stock / Q=PO to QC /
+# R=Service & Repair / S=Shipments / T=Warehouse Transfer / W=WO receipt.
+# Print filter page: all pages / first only / end only / none.
+# Next Screen: additional filter including Serial Number range.
+
+### SC-E Archive Serial History (page 297)
+# Archive or Unarchive (Restore). Filters: Item#/Serial#/Exp Date/
+# Rcvd Date/Shipped Date ranges. Default: only archive zero-on-hand records (Y).
+# Specify Warehouse Location.
+
+### SC-F Serial Control Exception Report (pages 297-298)
+# Identifies data discrepancies. Filters: Item#/Product Class/Category/Item Type.
+# Exception types:
+# - Negative Serial UOH — individual serial records with qty < 0
+# - Orphan Serial — serial# assigned to item# that no longer exists
+# - Serial Control Change — serial records for items no longer requiring serial control
+# - Serial UOH <> Location UOH — total of all serial on-hands ≠ warehouse location on-hand
+# - Duplicate Serials — same serial#/item in same warehouse location twice
+# - Invalid Serial Locations — serial assigned to warehouse location item not assigned to
+# - Expired Serials [Y/N/Z] — Y=find expired with on-hand; Z=find records with 00/00/00 expiry
+# - Unbalanced Serial Transactions — net of txns ≠ on-hand quantity
+# - Non-zero qty in multiple locations — same serial#/item with >1 non-zero qty across locations
+# - Irregular On Hand Quantity — serial record on-hand other than 1, 0, or -1
+
+### SC-G Enter Serial Generation Parameters (page 298)
+# Scope: per Item# OR per Item Class OR global (leave both blank for global).
+# Fields: Total Length, Start Position of numeric portion, Length of numeric
+# portion, Last Counter Value, Last Serial Number (complete).
+# Format: N=Normal / I=UCC Item barcode / S=UCC Skid barcode / J=John Deere#.
+# Used by WO-I "Auto Generate" button (generates full batch of serials for
+# WO qty and saves last number used back to params file).
+# If auto-generated serial already exists: skipped, next available used.
+
+### SC-H Serial Traceability Report (page 298)
+# All activity for Item#/Serial# range. Enter ranges → Print.
+# More focused than SC-D (no transaction-type filter; just item+serial range).
+
 ## Integration
 
 - **[[module-PO|PO]]** — serial assigned at PO receipt (POCOST/RECDATE/VENDOR)
