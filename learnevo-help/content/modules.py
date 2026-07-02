@@ -8256,7 +8256,7 @@ EvoERP modules with business-specific functionality.
 context of serialized mattress production and shipping. The standard EvoERP
 WO/SO/HH modules are extended with mattress-specific serial tracking.
 
-## J7 programs by category (41 DFMs confirmed)
+## J7 programs by category (50 RWN + 41+ DFMs confirmed, Pass 546)
 
 ### Mattress production & shipping (HH/DC)
 | Program | Caption / Purpose |
@@ -8322,6 +8322,70 @@ WO/SO/HH modules are extended with mattress-specific serial tracking.
 |---------|------------------|
 | J7CCPIC | PI-C Enter Tag Counts — Phys Inv No, Count Date, Year, Name |
 | J7NMRTMPRINTER | RTM Printer config — RTM Name, Printer, Program Name, Setup |
+
+## Additional RWN programs confirmed (Pass 546, RWN symbol analysis, 2026-07-02)
+
+15 programs confirmed via rwn_symbols.json extraction that had no matching DFM in the samples folder:
+
+### WO Job Cost (AJ prefix)
+| Program | Key tables | Purpose |
+|---------|-----------|---------|
+| J7AIJCG | WORKORD/WOROUT/WOLABOR/BKPRMSTR/BKICMSTR | WO Job Cost report — labor + routing analysis |
+| J7AIJCG2 | WOLABOR/WORKORD/WOROUT/BKPRMSTR | Alt WO Job Cost report (variant 2 of AIJCG) |
+
+### Sales Analysis (AI/SA prefix)
+| Program | Key tables | Purpose |
+|---------|-----------|---------|
+| J7AISAN | BKSAREPT/BKARINVL/BKARINV/WORKORD/WOMAT/BKCMLEAD | SA-N comprehensive analysis — ties AR invoices to WO materials + CM leads |
+| J7SISALES | BKICMSTR/BKARCUST/BKPRSALE/ISAREX/BKARINVL | SI Sales — price list + extended AR analysis per item/customer |
+
+### Purchasing / PO
+| Program | Key tables | Purpose |
+|---------|-----------|---------|
+| J7APCHECK | (no DB tables) | AP Check stub — form wrapper with no direct table access |
+| J7POC | BKAPPO/BKAPPOL/BKSYAP/BKICMSTR | PO-C custom variant — PO header + lines + AP settings |
+
+### Shipping / SO (HH, NOR)
+| Program | Key tables | Purpose |
+|---------|-----------|---------|
+| J7HHNORSSOE | BKARINV/ISSHIPCO/ISSOBOX/BKGLX/CLASS | NOR-variant SSOE — ship confirm with box tracking + GL posting |
+| J7CCSHI | BKPIMSTR/BKPRMSTR/BKICMSTR/SERIAL/LOT/BKPIFROZ/BKPIPHYS | CC Shipping — physical inventory variant (PI-Frozen/PI-Physical tables) |
+
+### Inventory / Item management (NM, RC)
+| Program | Key tables | Purpose |
+|---------|-----------|---------|
+| J7NMIMPORT | BKARCUST/BKARINV/BKARINVL/BKICMSTR/BKBMMSTR/ISNOTES | NM Import — SO+AR import with BOM + notes update |
+| J7NMITEMRTM | BKICMSTR/ISRTMS/MTICMSTR/WOBOM | NM Item RTM — assign RTM templates to items |
+| J7RCCONVTABLE | BKICMSTR/ISCONVRT/ROUTING/BKBMMSTR | RC Conversion Table — manage unit conversion factors (ISCONVRT) |
+| J7RCPITEX | BKARINV/BKARINVL/ISCONVRT | RC Physical Inventory Tax Export — AR + conversion for tax reporting |
+| J7RCSOIMPORT | BKARCUST/ISSOBOX/BKARINV/BKSBMFG/BKICPMAT | RC SO Import — from box records + subcontract mfg |
+| J7RITECPOA | ISSOBOX/BKARINV/BKSBMFG/BKSBVEND | RMA/ITE PO Automation — triggers PO from RMA/ITE box records |
+| J7BEFWEBINVAUTO | (no DB tables) | Auto-trigger variant of J7BEFWEBINV web export |
+
+## Database table access patterns (Pass 546, 50 RWN programs analyzed)
+
+Most-accessed tables across all J7 programs (shows integration depth):
+
+| Table | Programs using it | Role |
+|-------|------------------|------|
+| BKICMSTR / MTICMSTR | 30+ | Item master — nearly every J7 touches items |
+| BKARINV / BKARINVL | 25+ | AR invoices + lines — SO/shipping/analysis backbone |
+| WORKORD / WOROUT | 12 | WO header + routing output — production programs |
+| BKARCUST | 15+ | Customer master |
+| SERIAL / LOT | 10 | Serial/lot tracking — mattress + physical inv |
+| BKICLOC / BKICLOCM | 8 | Inventory location / location master |
+| BKAPPO / BKAPPOL | 8 | PO header + lines |
+| WOLABOR | 4 | WO labor postings |
+| ISRTMS | 3 | RTM printer assignments (i2 custom) |
+| ISCONVRT | 3 | Unit conversion table (i2 custom — RC module) |
+| ISSOBOX | 4 | SO box packing records (i2 custom) |
+| ISBANKS / ISAPEX | 1 each | Bank accounts / AP extended (i2 custom, ACH) |
+| ISAREX | 1 | AR extended records (i2 custom, SI Sales) |
+| ISCCICM | 1 | CC item cross-reference (i2 custom, CCITEMSYNC) |
+| BKSBMFG / BKSBVEND | 3 | Subcontract manufacturing / vendor |
+| BKDCLAB | 2 | DC lab/document control (J7DCMATLABELS, J7EIMDCREV) |
+
+**IS* prefix tables** are i2 Systems custom extensions not present in the standard EvoERP DDF — confirmed by their exclusive appearance in J7 programs and absence from standard T7* table lists.
 
 ## T7LGS* — LGS Custom Shipping Programs (3 DFMs confirmed, 2026-07-01)
 
