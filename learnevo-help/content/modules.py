@@ -1475,6 +1475,52 @@ Department filtering: Beg/End Dept Code to limit scope; Print Department Detail 
 Consolidated report option available if AM-G Consolidate Financials has been run for multiple companies.
 
 **Custom financial statements** (AM-I Format / AM-F Print) → use GL-N Print Custom Statements, not GL-F.
+
+## GL-G / GL-I / GL-J / GL-K / GL-L / GL-N / GL-O details (EVOHELP.PDF pages 606–614, Pass 525)
+
+### GL-G Print GL Code and Description (page 606)
+Prints list of GL account codes, departments, account types, and descriptions.
+Filters: from/thru GL account codes + from/thru GL departments.
+
+### GL-I Print Check Register (page 607)
+Prints all checks and deposits for a date/check# range and selected Bank Account.
+Print options: Uncleared Only / Cleared Only / All.
+Primary use: compare with bank statement before running GL-J Reconcile.
+
+### GL-J Reconcile Check Register (pages 607–609)
+Three modes on opening screen:
+1. **Reconcile to bank statement** — tag items as cleared; enter Ending Bank Balance;
+   EVO calculates book/bank balance difference; saves when balanced.
+2. **Mark cleared items as uncleared** — un-clears accidentally cleared items (before archiving).
+3. **Archive cleared items** — removes cleared items from the active check register.
+
+After reconcile: AD-B Checking Accounts Defaults book balance updated; items marked cleared.
+Once archived, items cannot be uncleared.
+
+### GL-K Transfer Bank Account Funds (pages 609–610)
+Transfers funds between bank accounts. Fields: From Account / To Account / Amount / Description.
+On save: posts both debit and credit to GL (Cash Disbursements journal entry).
+Balance displayed excludes unposted GL-B entries.
+
+### GL-L Credit Card Reconciliation (page 610)
+Reconciles credit card GL accounts to the statement.
+Credit cards must be defined as "Banks" in AD-B Checking Accounts.
+Same workflow as GL-J: select account, tag cleared items, archive when done.
+
+### GL-N Print Custom Statements (page 611)
+Prints custom financial statement formats defined in AM-I Format Custom Financial Statements.
+Supports consolidated chart of accounts (from AM-G) for multi-company statements.
+Format selection by name or F2 lookup; otherwise same presentation options as GL-F.
+
+### GL-O Print/Post General Ledger Batches (pages 612–614)
+Final step that moves transactions from the BKGLTEMP temporary file to the permanent GL.
+**Status codes** that block posting:
+- `O` — batch is out of balance (debits ≠ credits)
+- `C` — one or more transactions posted to the Clearing Account (BKGLCOA-clearing)
+- `B` — one or more transactions have invalid GL account codes
+
+Workflow: Print to review → Post (when no blocking codes); can edit individual transactions (GL Acct / Dept / Post Date / D or C) before posting.
+**Warning:** If transactions exist beyond the current fiscal year, EVO prompts to run AM-B Fiscal Year End Routine first; can post current-year items while warning remains.
 """,
 
 "PR": """
