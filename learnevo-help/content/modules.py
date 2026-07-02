@@ -5822,6 +5822,14 @@ Inventory, not through the IC utility. These tables are empty at i2 Systems.
 - **[[module-ES|ES]]** — IC-A populates the IC mirror used by Estimating for standard costs
 - **[[module-IN|IN]]** — source data is BKICMSTR (production inventory master)
 - **[[module-PI|PI]]** — cycle count frequency (ISCYCLCD) is a PI-adjacent feature, not IC
+
+## DFM-confirmed (T7IC2EST.DFM, Pass 519)
+Caption: "Copy Production to Estimate Inventory"
+Only user-input field: **Inventory** (item number). Go + Exit buttons.
+Operation: enter one item number and click Go to copy that item's `BKICMSTR`
+production record into the estimating inventory mirror (`ISICMSTR`/`MTICMSTR`).
+This is a single-item sync, not a full-table copy. Useful after a new item is
+set up in production and needs to be immediately available in ES Estimating.
 """,
 
 "IM": """
@@ -6206,6 +6214,27 @@ in this AC module.
   T7ACDET fixes orphaned activity detail records; all 5 programs share the 16-table WO DB
 - **[[module-CM|CM]]** — T7ACCNFIX updates BKCM.ACCN.* account numbers after renumbering
 - **[[module-RM|RM]]** — T7ACRDTYPE manages the return/defect type codes used by RMA workflows
+
+## DFM-confirmed additional details (Pass 519)
+
+### T7ACRDTYPE.DFM — Document type codes
+Doc Type dropdown contains 6 predefined values:
+| Code | Meaning |
+|------|---------|
+| ECN | Engineering Change Notice |
+| VAR | Variance |
+| MIN | Minor (change) |
+| COR | Corrective (action) |
+| DR | Design Review |
+| QUA | Quality |
+Each record also carries: **Reason** (free-text) + **Disposition** (free-text).
+The OR label suggests these can be combined/OR'd in filters.
+
+### T7ACDATE.DFM — WO date span entry
+Fields: Start Date, Finish Date, Quantity, Parent WO, Top WO, Deleted WO.
+Total Qty shown in footer. Add/Save/Delete/Back toolbar.
+"Top WO" and "Deleted WO" fields confirm this tracks WO hierarchy and handles
+deleted-WO date records (orphan cleanup).
 """,
 
 "DI": """
@@ -7320,6 +7349,27 @@ accessed from both DC and HH menus.
   shop floor data
 - **[[module-HH|HH]]** — HH-L uses T7DCPSF; PA module uses T7Paperless
 - **[[module-WO|WO]]** — reads WORKORD/WOBOM/WORO for WO traveler display
+
+## DFM-confirmed: T7Paperless.DFM WO queue columns (Pass 519)
+The Paperless Shop Floor grid displays one row per open WO with these columns:
+Sequence / WO Number / Item No / Desc / Job No / Drawing / Start Dt / Qty to Make /
+Cust Code / Name / PO Number / Sales Order No / Contact / Priority / Change Ord No /
+Rev / Fin Dt / UM / Operation
+
+**Toolbar actions (keyboard shortcuts):**
+| Action | Key |
+|--------|-----|
+| WO Login | F9 |
+| Enter Production Only | F2 |
+| Enter Labor Only | F3 |
+| Enter Labor/Production | (both) |
+| Print Transfer Label | F4 |
+| Issue Components | — |
+| Notes | F7 |
+| Links | F8 |
+| Item Alerts | button |
+| Archives | button |
+| Refresh | button |
 """,
 
 "AL": """
@@ -7452,6 +7502,16 @@ IS_CHAIN_AUTO / IS_CHAIN_DATE / IS_CHAIN_DESC / IS_CHAIN_EXTRA
 
 - **[[module-PS|PS]]** — PS-H "Configure Auto-Chain Programs" is the menu entry for CH
 - **[[module-SO|SO]]** — SO sub-programs are the most common chain target
+
+## DFM-confirmed: T7CHAINM.DFM program list (Pass 519)
+The Child Program and Parent Program dropdowns include these chainable programs:
+`T6SOA` / `T7SOA` / `T6SOC` / `T7SOC` / `T6SOD` / `T7SOD` / `T6SOE` / `T7SOE` /
+`T6SOF` / `T7SOF` / `T7WOA` / `*T6POA` / `*T7POA` / `*T6POB` / `*T6POR` /
+`T7ARA` / `*T7APA` / `T7SON` / `ACHHSSOE`
+
+The `*` prefix appears on PO and AP programs — possibly indicating optional/conditional
+chain targets. `ACHHSSOE` is an i2-specific ACH/SSO entry point, confirming the chain
+system is also used for ACH integration hooks.
 """,
 
 "ML": """
@@ -7545,6 +7605,161 @@ LOT/SER/BIN + backflush/scrap flags.
 - **[[module-WO|WO]]** — WO-K-I is the same program accessed from the WO menu; WO-G Post Material Issues is the final posting step after kit review
 - **[[module-IN|IN]]** — on-hand is not reduced until WO-G posts; BKINVLOC updated then
 - **[[module-LC|LC]]** / **[[module-SC|SC]]** — lot and serial control are applied at kit staging for lot/serial items
+""",
+
+"BR": """
+## What it does
+
+Brands — a simple brand code reference table for inventory items.
+Maintained via T7BRANDS.RWN.
+
+## DFM-confirmed (T7BRANDS.DFM, Pass 519)
+Caption: "New Screen" (standard list-editor)
+Fields: **Code** + **Description**. Add/Edit/Delete/Back toolbar.
+The brand code is likely stored on inventory items as a user-defined
+classifier (similar to Category and User Defined codes). No other EVO
+tables reference BRANDS in the known schema, suggesting it is a report-
+filter field on BKICPROD (likely MTIC.PROD.BRAND or similar).
+
+## Integration
+
+- **[[module-IN|IN]]** — brand code is a filter/classifier on inventory items in IN-B
+""",
+
+"XC": """
+## What it does
+
+XCharge Conversion Utility — a one-time migration tool to convert legacy
+credit card data stored in EVO into the secure XCharge format.
+
+## DFM-confirmed (T7XCUTIL.DFM, Pass 519)
+Caption: "XCharge Conversion Utility"
+Display label: "Converting data to Secure XCharge"
+No user-input fields visible — the utility runs automatically when launched.
+This is a one-shot conversion, not a recurring program.
+
+## Context
+
+XCharge is the credit card processing integration used throughout EVO
+(AR-N deposits, SO credit card payments). Before the secure XCharge format
+was adopted, card data was stored in a legacy format. T7XCUTIL converts
+that legacy data in-place. After running once, the program is retired.
+
+## Integration
+
+- **[[module-AR|AR]]** — AR-N credit card deposits use XCharge after conversion
+- **[[module-SO|SO]]** — SO credit card payments use XCharge
+""",
+
+"CU": """
+## What it does
+
+WO Cut Sheet — a material allocation/issue confirmation screen used in
+textile or mattress manufacturing to record cutting quantities against
+work orders.
+
+## DFM-confirmed (T7CU programs, Pass 519)
+
+### t7cutsheet2.DFM — Fabric/Material Cut Sheet (primary)
+Fields: Job # / Lot # / Qty Left / Part / Tot (total) / Iss (issued) / Left
+Warning line: "*Some Qtys already Allocated"
+Footer: Total Qty display
+Security: User + Password required to Post
+Toolbar: Skip / Post / Exit
+
+### t7cutsheet2b.DFM — Fabric Variant
+Fields: Job # / Fabric / Req QTY / Tot / Iss / Left
+No password gate — lighter-weight entry form.
+
+## Workflow
+
+1. Operator opens a WO cut sheet by Job # and Lot #.
+2. System displays required vs. issued vs. remaining quantities per part/fabric.
+3. Operator reviews allocations; if "*Some Qtys already Allocated" appears, partial
+   issues already exist — care required to avoid over-issuing.
+4. Operator enters User + Password and clicks Post to confirm the issue.
+5. Alternatively, Skip bypasses the record.
+
+## Integration
+
+- **[[module-WO|WO]]** — cut sheet reads from WORKORD (Job#/Lot#) and posts to material issue tables
+- **[[module-IN|IN]]** — inventory on-hand reduced at Post
+""",
+
+"TE": """
+## What it does
+
+NACHA / ACH — exports vendor payment files in NACHA format (National Automated
+Clearing House Association) for ACH electronic funds transfer. T7TESTNACHA.RWN
+generates the flat-file export from EVO AP check records.
+
+## DFM-confirmed (T7TESTNACHA.DFM, Pass 519)
+Caption: "NACHA"
+Entry fields:
+| Field | Notes |
+|-------|-------|
+| Bank Account Number | ACH originating bank account |
+| Bank Account Name | Name of originating bank account |
+| Check Number From / Thru | Filter by check number range |
+| Check Date From / Thru | Filter by check date range |
+| Export FileName | Output path, e.g., `C:\\EXPORT\\DATA\\Filename.TXT` |
+| Company Tax ID | EIN for ACH Company ID field |
+| Effective Date | ACH settlement date |
+
+Toolbar: Settings / Process / Exit
+
+## Workflow
+
+1. Run AP check printing for the payment batch in AP.
+2. Open TE-NACHA, enter bank account + date range matching the batch.
+3. Enter export path and company Tax ID.
+4. Click Process — generates the NACHA-formatted flat file.
+5. Submit the flat file to the bank for ACH processing.
+
+## Integration
+
+- **[[module-AP|AP]]** — reads AP check records (BKAP.CHK.*) as the source data
+- **[[module-AD|AD]]** — bank account defined in AD-B; account number used here must match
+""",
+
+"QS": """
+## What it does
+
+Quick Sales Entry — a simplified SO entry form for rapid order creation
+without navigating the full SO-A screen. Designed for high-volume or
+counter-sale environments.
+
+## DFM-confirmed (t7qsoa.DFM + T7QSOALines.DFM, Pass 519)
+
+### t7qsoa.DFM — Entry point
+Caption: "Quick Sales Entry"
+Button: **Create Sales Order** + Exit
+
+### T7QSOALines.DFM — Line item entry
+Caption: "New Screen"
+Header: SO Number display
+**Customer Info section:** Customer code
+**New SO Line Item section:**
+| Field | Notes |
+|-------|-------|
+| Item Number | Part number lookup |
+| Quantity | |
+| Discount | Discount % |
+| Price | Unit price |
+
+Toolbar: Lines grid / Save / Clear / Exit
+
+## How it differs from SO-A
+
+SO-A is the full sales order entry program with shipping, terms, tax,
+approval workflow, etc. QS/t7qsoa is a stripped-down form: enter a customer,
+add line items (item/qty/discount/price), Save. The resulting record is a
+standard BKSO* Sales Order record — just created faster.
+
+## Integration
+
+- **[[module-SO|SO]]** — produces the same BKSO* tables as SO-A; QS is just a faster front-end
+- **[[module-IN|IN]]** — item lookup reads BKICMSTR for valid item numbers
 """,
 
 }
