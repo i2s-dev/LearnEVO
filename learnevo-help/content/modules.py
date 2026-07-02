@@ -1936,6 +1936,65 @@ Part / Bin / Bin Location fields; Put Away / Print Label / Clear / Exit buttons;
 ETBcomboval = LISTG60.LIB grid. Confirms the [[module-PU|PU]] Put-Away
 workflow: scan/enter part number → assign to bin location → print bin label.
 
+## DC sub-program operational details (EVOHELP.PDF §2.6, Pass 529)
+
+Three operating modes: **Labor+Production** (DC-A) / **Production Only** (DC-B) / **Labor Only** (DC-C).
+All DC entry programs must have shifts defined in SD-F Data Collection Defaults first.
+
+### DC-A Enter Labor/Production (pages 192-193)
+Employee# → action (Clock In / Report = clock out) → WO# (must be status R or I) → Sequence →
+Run/Setup → parts made → parts scrapped → scrap code → rework qty → QC code → Save.
+- **Shift Start/Stop:** first WO clock-in of the day auto-starts the shift; last clock-out closes shift
+  and auto-clocks out all open WOs.
+- **Buffer periods** (SD-F): employees can clock in before/after shift boundaries without affecting
+  actual job-costing start/stop times. Lunch/break gaps defined in SD-F auto-suspend costing.
+- **Multi-WO:** each clock-in/out auto-clocks out and back in all currently open sequences to
+  distribute labor accurately; parts reported only to the last transaction.
+- Employee# can be entered or scanned from DC-F barcode ticket. Employee must exist in SM-G.
+- WO# can be scanned from WO-C shop traveler or DC-E labor ticket.
+
+### DC-B Enter Production Only (pages 193-194)
+Identical to DC-A except time entry skipped. Employee#, WO#, Sequence, parts made, parts scrapped.
+
+### DC-C Enter Labor Only (page 194)
+Identical to DC-A except parts made/scrapped not prompted. Time entry only.
+
+### DC-D Print Labor Status (pages 194-195)
+View/print data collection transactions. Filters: Open (not clocked out) / Pending (clocked out, not posted) / Posted.
+Sort by Employee or WO. Print detail or subtotals. Shift-only data for payroll. Export to text file.
+Filters: Shift / Date range / Employee range / WO range. Posted: select active or archived WOs.
+**Tip:** enter filters to speed processing — posted DC file grows large.
+Purge posted records via SM-J-H Purge Data Collection File.
+
+### DC-E Print Labor Tickets (pages 195-196)
+Prints barcoded labor tickets (WO# barcode + Sequence# barcode) as alternatives to WO-E.
+Normally printed in advance with shop traveler; extra tickets printed for buffer.
+Unused tickets discarded at WO completion. Fields: From/Thru WO#, qty per operation.
+
+### DC-F Print Employee Tickets (page 196)
+Prints barcoded employee number tickets. Often laminated as ID badges.
+Fields: From/Thru Employee#, qty per employee.
+
+### DC-G Edit Labor Transactions (pages 196-197)
+Edit or delete unposted (Pending) transactions; date range filter. Select → Edit → change → Save.
+Delete: highlight → Delete button.
+Once posted → use WO-K-K Edit Posted DC Labor (reverse + reprocess).
+If multi-WO mode: splitting transactions by clock-in/out means edits may affect multiple records
+for one time segment; parts always on the last transaction.
+
+### DC-H Post Labor Transactions (page 197)
+Batch posts pending transactions to permanent work order files (WOLABOR / WOMAT / BKGLTRAN).
+Once posted, records are marked and no longer editable via DC-G; use WO-K-K to correct.
+Batch timing: can be run once per day or multiple times. Real-time mode also available per SD-F.
+
+### DC-I Work Order Inquiry (page 198)
+Read-only version of WO-A. Does NOT lock records (use instead of WO-A to avoid disrupting DC-H).
+Enter WO# → display header. Buttons to view Labor / Materials / Outside Processing status.
+
+### DC-K Archive or Purge Shift Records (page 198)
+Archive, Purge, or Restore Shift Start/Stop records from the unposted labor file.
+Fields: Archive/Purge/Restore radio → date range + Shift + Employee# range → Process.
+
 ## Integration
 
 - **[[module-WO|WO]]** — BKDCLAB posts to WOLABOR and WOMAT when processed (DC-H)
