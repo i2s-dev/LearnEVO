@@ -170,6 +170,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 ### 08 — Menu system
 - [Menu system overview — 554 codes across 38 modules](06-menu-system/overview.md) — *verified*
 - [Code → Program → DB Table mapping (870 entries)](06-menu-system/code-program-mapping.md) — *verified*
+- [Form-to-Table mapping (726/870 forms, 286 tables, Pass 564)](06-menu-system/form-to-table-mapping.md) — *partial*
 
 ### 09 — Runtime & boot sequence
 - [How EVO starts up (StartEvo.exe → tp7runtime.exe → EvoERPmenu.rwn)](07-runtime-boot/boot-sequence.md) — *draft*
