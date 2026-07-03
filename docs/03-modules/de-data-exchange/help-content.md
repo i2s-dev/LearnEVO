@@ -392,3 +392,88 @@ The import can be triggered manually by clicking the **Import** button, or the s
 | DE-M Import Physical Inventory Counts | PI (Physical Inventory), IN (Inventory) |
 | DE-T Import Web Storefront Orders | SO/EDI (Sales Orders, ED-H, ED-D), AR (Customers), bank accounts |
 | DE-U Upload Stock Balance to Web Storefront | IN (Inventory on-hand), SO (open orders), SM-P-E (UDF definition) |
+
+---
+
+## Technical Implementation (Pass 564, 2026-07-02)
+
+*Derived from rwn_symbols.json (named_vars + db_files per program) and code-program-mapping.md cross-reference.*
+
+### Import Pipeline Architecture — 5-Step Staging Model
+
+Every bulk import group (DE-B through DE-G, DE-J) follows the same 5-step architecture:
+
+| Step | Menu Code | Program Pattern | Function |
+|------|-----------|----------------|---------|
+| A | DExx-A | `T7DExx-A.RWN` (STUB, 5p) | Generate CSV import header — writes column names to a template file so the user knows how to structure the CSV |
+| B | DExx-B | `T7DExx-B.RWN` (STUB, 5p) | Read and validate the CSV; write records to a staging table |
+| C | DExx-C | `T7DExx-C.RWN` (STUB, 5p) | Generate error report listing rows that failed validation (staging table → report) |
+| D | DExx-D | `T7DExx-D.RWN` (STUB, TIMER.CALL) | Interactive form over staging table; allows editing bad records before transfer |
+| E | DExx-E | `T7DExx-E.RWN` (STUB, TIMER.CALL) | Transfer validated staging records to permanent master file |
+
+**Staging table:** `ISWOTRAY` / `ISQCSPEC` are present in T7DEBA/DEBB/DEBC db_files, suggesting they hold the temporary staged records for the inventory import. Other data types likely have their own staging tables.
+
+**TIMER.CALL in D and E programs:** The edit and transfer steps use a timer-driven architecture — the TAS Pro runtime polls the staging table on a timer interval rather than using a blocking I/O loop.
+
+**Variable patterns in STUB programs:**
+- `FIELD.NUMBER`, `FIELD.NUMBER2` — track which .IMP column map entry is being processed (ties to the .IMP binary format: Map1[N-1] = source CSV column for field N)
+- `COMMA.FIXED` — delimiter handling (comma-delimited CSV)
+- `REPLACE` — flag controlling whether existing records are replaced or skipped on duplicate key
+- `IMP.FILENAME` — path to the input CSV file
+- `IMPORT.H` — Btrieve handle to the staging table
+
+### T7DEx.RWN — Generic Ad-Hoc CSV Exporter
+
+**Menu code:** DE-X (not listed in standard menu — accessed via T7MEXB.RWN or direct program launch)
+**Source library:** EVO.LIB (82 procedures, 1,525 variables)
+
+**Architecture:**
+
+```
+FILEDICT → list of all registered tables
+FILELOC  → filter by company code (FILELOC.NAMES array)
+User selects table → user selects columns (grid UI)
+  MEM.SELECT.FLD[] = selected field names
+  MEM.SELECT.NUM   = count of selected fields
+  MEM.DICT_TYPE/SIZE/DEC = DDF metadata for type-correct CSV formatting
+FILEDICT → ISFIELDS → column order/mapping
+CSV.H = output file handle (sequential write)
+```
+
+**Procedure groups:**
+- `GRID.SELECT`, `UMN.CLICK`, `ALL.CLICK`, `AGALL.CLICK` — column selection grid
+- `E.CLICK` — export button: opens Btrieve file, iterates rows, writes CSV
+- `LE_UPLOAD`, `_COPY_FILE` — post-export file operations (copy to network path?)
+- `D_1` through `D_5` — 5 dialog stages (table select → key → fields → filter → run)
+- `ACCESS` — access control check before export
+
+**Key tables:** FILEDICT (schema), FILELOC (company routing), ISFIELDS (column config), BKSYMSTR (config)
+
+### Specific Import/Export Programs
+
+| Menu Code | Program | Key Named Vars | Purpose |
+|-----------|---------|---------------|---------|
+| DE-Q | T7DEQ.RWN (80p, EVO.LIB) | FILE.NAME, IMP_HNDL, ARINVT.H, ARCUST.H, CHK.ACCT, CHK.NUM, BANK.SRT.NUM | Import open AR — reads CSV of AR invoice/payment transactions; writes to BKARINVT, BKARCUST, BKART |
+| DE-R | T7DER.RWN (77p, EVO.LIB) | FILE.NAME, IMP_HNDL, APINVT.H, APVEND.H, CHK.NUM, BANK.SRT.NUM, LONG.INVOICE | Import open AP — reads CSV of AP invoice transactions; writes to BKAPINVT, BKAPVEND |
+| DE-V | T7DEV.RWN (138p, LISTG60.LIB) | IMP.FILENAME, IMP.PONUM, IMP.ITEM, IMP.PQTY, RENAME.FILE, BKIC.PROD.* vars | IC Listing/Vendor pricing import; also IC item master export (BKICMSTR+BKPRMSTR+MTICMSTR) |
+| DE-HD | T7DEHD.RWN (131p, LISTG60.LIB) | IMP.FILENAME, FIELD.NUMBER, COMMA.FIXED, REPLACE, IMPORT.H | Physical inventory count import; writes to BKPIMSTR/BKPIPHYS/BKPILOT/BKPIFROZ |
+| DE-PE | T7DEPE.RWN | ISAREX.RS.EXPDT | EDI Invoice/Acknowledgement export; reads BKARINV+BKARCUST, writes to ISAREX |
+| DE-PF | T7DEPF.RWN | ISAREX.RS.EXPDT | EDI ASN (Advance Ship Notice) export; reads BKARCUST+BKARINV+BKEDMSTR, writes ISAREX |
+| DE-TA | T7DET.RWN | BKPR.SLS.EXPACT, BKPR.EMP.EXPACT, MTIC.PROD.EXPBF | FTP Web Storefront order import (BKYSMSTR+ISMCF+ISBANKS+BKARCUST) |
+| DE-TB | T7DETB.RWN | MTIC.PROD.EXPBF, BKIC.PMAT.EXP | Shopify Web Storefront order import |
+
+### Column Mapping Mechanism
+
+The `FIELD.NUMBER` / `FIELD.NUMBER2` variables in import programs correspond directly to the .IMP binary format (documented in `docs/02-file-formats/`):
+
+```
+.IMP Map1[N-1] = source CSV column number for target field N
+FIELD.NUMBER   = current .IMP column index being processed
+COMMA.FIXED    = fixed comma position in the CSV line being parsed
+```
+
+The .IMP file (442-byte binary) pre-defines the column-to-field mapping for a specific import type. When the user runs DE-xA (Generate Header), the program writes the CSV header based on the stored .IMP template. When DE-xB (Import) runs, it reads each CSV row and maps columns back to Btrieve fields using Map1.
+
+This means the EVO import pipeline is fully table-driven: the .IMP binary defines the mapping; the T7DExx programs execute it generically.
+
+**Confidence: 72/100** — Pipeline architecture confirmed from vars and menu structure; column mapping mechanism inferred from var names + .IMP format knowledge; staging tables partially identified; exact staging table per data type not fully enumerated; logic blocked by RWN encryption.
