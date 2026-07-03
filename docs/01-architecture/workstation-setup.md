@@ -175,15 +175,37 @@ server-side via `FILELOC` (Btrieve routing table): the same program code accesse
 `.B` data files depending on the company code in use. No workstation-level company
 configuration is needed.
 
-**Terminal Server / Citrix deployment:** Not specifically documented. The thin-client
-architecture (all data on share, stateless runtime) is inherently compatible with TS/Citrix
-deployments. Each session would need its own WHOAMI.DBA identity (or use a shared one for
-all sessions on that host). Specific configuration unknown. C:20/100.
+**Terminal Server / Citrix deployment (Pass 566):**
+
+EvoERP's architecture is inherently TS/Citrix-compatible — all programs and data live on
+`\\i2s109-solidcrm\DBAMFG$\`; `tp7runtime.exe` is stateless between module calls.
+A Terminal Server host is configured exactly like any regular workstation (steps 1–8 above),
+with these TS-specific notes:
+
+| Item | TS behavior |
+|------|-------------|
+| **Pervasive client** | One 32-bit client install per TS host; all RDP sessions share it |
+| **System DSN `DBA`** | Machine-wide; one registration in `odbcad32.exe` covers all sessions |
+| **`WHOAMI.DBA`** | Shared across all sessions on that host — workstation identity in ISLOG is the TS host name |
+| **`EvoSettings.INI`** | Shared file, but per-user prefs are in `[User:NAME]` sections keyed by EvoERP login code |
+| **`evo://` URI** | Machine-wide registry key; no per-session registration needed |
+| **Pervasive sessions** | Each concurrent `tp7runtime.exe` instance consumes one Pervasive C/S session slot |
+| **Printer defaults** | Stored by EvoERP login code — give each TS user their own EvoERP login to isolate print settings |
+
+License headroom: current i2 Systems install is licensed for 48 TAS Pro 7 users
+(Serial=670538 from `suwin6.dcy`). Ensure Pervasive server has at least that many session slots.
+
+**Confidence: 42/100** — architectural compatibility confirmed from thin-client design; TS-specific
+behavior (WHOAMI.DBA sharing, EvoSettings.INI per-user sections) inferred from file analysis;
+live TS deployment not directly observed.
 
 ---
 
-**Confidence: 68/100** — taspro7.ini structure fully confirmed; Pervasive client version and
+**Confidence: 65/100** — taspro7.ini structure fully confirmed; Pervasive client version and
 installer paths confirmed; ODBC DSN fields confirmed from registry analysis; WHOAMI.DBA
 confirmed as 2-byte CRLF sentinel (presence-only, content unused, C:95); EVOADMIN DSN source
 uncertain; exact runtime DLL set not cataloged; CHMHELP.EVO confirmed;
-evo:// URI registration confirmed from StartEvo.exe strings.
+evo:// URI registration confirmed from StartEvo.exe strings; Terminal Server section is
+architectural inference (C:42) which is the weakest sub-component.
+
+Last updated: 2026-07-03 (Pass 566 — added Terminal Server deployment notes)

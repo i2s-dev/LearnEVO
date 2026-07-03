@@ -340,3 +340,160 @@ The 100-element arrays (TYPES/PCB/DEF) are TAS `array 100` occurrences — each 
 position maps to one of up to 100 configurable document-type categories (e.g., "quote",
 "drawing", "PO confirmation"). EvoLinks stores ONE record per attached file, with the
 bitmask of applicable types in the array columns.
+
+---
+
+## EvoBackup — Restore Procedure
+
+**Pass 566 (2026-07-03)**
+
+EvoBackup (`EvoERPbackup.RWN` + `EVOERP-BACKUP.JAR`) creates ZIP archives using the
+TZipMaster Delphi VCL component (`zipdll.dll`). No automated restore program exists —
+`EvoERPrestore.RWN` is NOT in the 1,122-program catalog and was not located on the
+network share. Restore is a **manual process**.
+
+### Backup locations
+
+| Mode | Default destination |
+|------|-------------------|
+| Local | `\\i2s109-solidcrm\Bak Up\` |
+| Cloud | `https://login.istechsupport.com/api/v1/evo/backups/archives/` (multi-part SHA-256 upload) |
+
+Archive format: standard ZIP, created by `zipdll.dll` (TZipMaster). File names include
+company code and date (pattern set by ZIPNAME var in `EvoERPbackup.RWN`).
+
+### Manual restore procedure (inferred — not EVO-documented)
+
+1. **Stop EvoService** — prevents Btrieve locks during file replacement.
+   From any workstation: `Services → Evo Service → Stop`, or use `EvoServiceRemove.RWN`.
+
+2. **Stop Pervasive PSQL engine** on `i2s109-solidcrm` (Control Panel → Pervasive →
+   Stop) if replacing `.B` data files. Not needed if only restoring program files
+   (`.RWN`, `.DFM`, `.RTM`).
+
+3. **Locate the backup archive** in `\\i2s109-solidcrm\Bak Up\` or download from
+   `istechsupport.com`.
+
+4. **Extract the ZIP** to the appropriate destination using any standard ZIP tool
+   (7-Zip, Windows Explorer, etc.):
+   - Data files → `\\i2s109-solidcrm\DBAMFG$\` (per-company subdirectory)
+   - Program files → `\\i2s109-solidcrm\DBAMFG$\` (root)
+
+5. **Restart Pervasive** if it was stopped in step 2.
+
+6. **Restart EvoService** so scheduled jobs and reminders resume.
+
+7. **Verify** by launching EvoERP and confirming the restored data is accessible.
+
+**Confidence: 55/100** — backup format (ZIP via zipdll) and destination paths are
+confirmed from binary analysis; restore steps are inferred from standard Pervasive
+Btrieve practice; no EVO restore program or documented procedure was found.
+
+---
+
+## Pervasive License Administrator
+
+**Pass 566 (2026-07-03)**
+
+The Pervasive License Administrator is a standard Pervasive PSQL v11.30 utility used to
+manage engine licenses on both the server (`i2s109-solidcrm`) and local workstations.
+It is NOT an EvoERP program — it is part of the Pervasive PSQL install.
+
+### License context at i2 Systems
+
+| Component | Details |
+|-----------|---------|
+| Server engine | Pervasive PSQL Server v11.30 on `i2s109-solidcrm`, TCP port 1583 |
+| Workgroup key | `V2355B-28BBE` (stored in `\\i2s109-solidcrm\evo-ERP\ISTS\ISTS\BMB.CFG`) |
+| Workgroup engines (local) | v11.31 (local install) + Actian v12 — present but no service running |
+| Client runtime | Pervasive ODBC Client Interface v11.30 (32-bit) on each workstation |
+
+### License Administrator tool
+
+On the server, the Pervasive License Administrator is accessible via:
+
+- **Pervasive Control Center** (`pcc.exe`) → right-click engine → `Licensing…`
+- Or standalone: `C:\Program Files\Pervasive Software\PSQL\bin\LicAdmin.exe`
+
+Key operations:
+
+| Operation | How |
+|-----------|-----|
+| View current license | LicAdmin → License Details tab |
+| Add / activate a new license | LicAdmin → Add Key → enter serial + authorization code |
+| Deactivate (for transfer) | LicAdmin → Deactivate → contact Actian/PSQL support for confirmation code |
+| View concurrent session count | Pervasive Control Center → Monitor → Sessions |
+| Workgroup vs Client/Server | Workgroup: local `.B` access only (≤5 sessions); C/S: TCP remote, unlimited |
+
+### How EVO consumes licenses
+
+Each `tp7runtime.exe` process that opens a Btrieve table via `DSN=DBA` consumes one
+Pervasive Client/Server session slot. In a standard multi-user EvoERP environment,
+each logged-in workstation holds one slot for as long as EvoERP is running.
+
+Terminal Server deployments (see below) can consume many slots from one host, since
+each RDP session runs its own `tp7runtime.exe` instance.
+
+**Confidence: 62/100** — Pervasive version, port, license key, and workgroup vs C/S
+mode are all confirmed from installer packages and BMB.CFG; License Administrator tool
+location and operations are standard Pervasive PSQL v11 behavior; concurrent session
+counting is inferred from standard Btrieve architecture.
+
+---
+
+## Terminal Server / Citrix Deployment
+
+**Pass 566 (2026-07-03)**
+
+EvoERP's thin-client architecture (stateless `tp7runtime.exe`, all programs and data on
+`\\i2s109-solidcrm\DBAMFG$\`) is inherently compatible with Terminal Server (RDP) and
+Citrix deployments. No special EvoERP configuration is required for the server-side
+program files.
+
+### What changes per-host
+
+Each Terminal Server host needs exactly what a regular workstation needs:
+
+1. **Pervasive PSQL Client (32-bit) installed** — one install per TS host machine, not
+   per RDP session. All sessions on that host share one ODBC driver.
+
+2. **System DSN `DBA`** registered in the **32-bit ODBC administrator**
+   (`C:\Windows\SysWOW64\odbcad32.exe`) — System DSN is machine-wide, so one
+   registration serves all RDP sessions on that host.
+
+3. **`C:\ISTS\` created** with `tp7runtime.exe`, `StartEvo.exe`, `qtintf70.dll`, and
+   supporting DLLs — same as any workstation.
+
+4. **`taspro7.ini`** in `C:\ISTS\` with UNC share paths — same content as any workstation.
+
+5. **`WHOAMI.DBA`** in `C:\ISTS\` — 2-byte CRLF sentinel. All RDP sessions on the same
+   host share one `WHOAMI.DBA`. Per-user identity is tracked at login via ISLOG
+   (`IS_LOG_WHO` = the user's EvoERP login code) and session variables, not from this file.
+
+6. **`EvoSettings.INI`** is shared across sessions on the same host. Per-user prefs
+   live in `[User:NAME]` sections, keyed by EvoERP login code, so multiple users on
+   the same TS host do get their own preference storage.
+
+### License implications
+
+Each concurrent RDP session that runs EvoERP consumes:
+- One Pervasive Client/Server session slot (on `i2s109-solidcrm`)
+- One TAS Pro 7 runtime license unit (counted by StartEvo.exe via `tas_menus`)
+
+If 20 users are logged in simultaneously via TS, all 20 slots must be licensed on both
+the Pervasive server and the TAS Pro 7 runtime. The current i2 Systems install shows
+Serial=670538, Users=48 (from `suwin6.dcy` ISTech license dialog).
+
+### Known limitations / gotchas
+
+| Issue | Detail |
+|-------|--------|
+| Printer mapping | EvoERP stores default printer by EvoERP login code in `EvoSettings.INI`. Each TS user should have their own login so printer selections are isolated. |
+| `EvoSettings.INI` contention | Multiple sessions writing the same file simultaneously can cause rare corruption. Standard Windows file-locking prevents total data loss, but preference writes can interleave. |
+| `evo://` URI scheme | Registered per-machine (not per-user) by `StartEvo.exe` → no per-session registration needed. |
+| `WHOAMI.DBA` | Shared across all sessions on the same host — the workstation name in ISLOG is the TS host name, not the RDP client name. |
+
+**Confidence: 42/100** — thin-client compatibility is confirmed from architecture analysis;
+specific TS/Citrix configuration steps are inferred from standard practice and the known
+per-workstation file requirements; per-session behavior of `EvoSettings.INI` and license
+consumption are inferred, not directly observed.
