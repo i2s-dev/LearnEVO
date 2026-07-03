@@ -151,6 +151,34 @@ copy new RWN/DFM/DCY files to the share with retry.
 **INI keys read:** `DEFAULTPATH` and `DFLTCOMPANYCODE` from `taspro7.ini` — the share
 root and the last-used company code.
 
+## Local DLL and utility dependencies (Pass 568, 2026-07-03)
+
+Files in `C:\ISTS\` (confirmed via directory listing + binary string analysis):
+
+| File | Size | Identity | Role |
+|------|------|----------|------|
+| `tp7runtime.exe` | 29.5 MB | TAS Pro 7 runtime interpreter | Runs `.RWN` programs |
+| `evoerp.exe` | 29.5 MB | Same binary — alternate name | Identical to tp7runtime.exe |
+| `StartEvo.exe` | — | .NET launcher | Domain auth, update check, URI handler |
+| `qtintf70.dll` | 4.1 MB | Qt Interface v7.0 | TAS Pro 7 GUI layer (Qt 4.x framework) |
+| `c4dll.dll` | 422 KB | **CodeBase DLL v6.5** (Sequiter Software Inc.) | dBASE/xBase file access for `.DBF`+`.MDX` files |
+| `unzdll.dll` | 120 KB | TZipMaster unzip DLL | ZIP decompression (EvoBackup restore, update install) |
+| `zipdll.dll` | 138 KB | TZipMaster zip DLL | ZIP compression (EvoBackup archive creation) |
+| `quricol32.dll` | 223 KB | **Quricol QR Barcode Library** (Serhiy Perevoznyk, libpng-based) | QR code generation; used by IS2DBAR per-item 2D barcode config |
+| `robocopy.exe` | 80 KB | Windows Robocopy | Mass file sync during startup / update deployment |
+| `PV.EXE` | 61 KB | **Process Viewer v3.11.1.1** (Igor Nys, 2000-2005) | Process management: kill/list/wait for `tp7runtime.exe` |
+| `UPDTP7.EXE` | 86 KB | TAS Pro 7 file updater (custom) | Generates batch scripts for targeted file patching |
+| `RBDsgnr.exe` | 6.2 MB | Nevrona ReportBuilder Designer | RTM report template editor |
+
+**Key architectural finding:** EvoERP uses TWO database engines simultaneously:
+- **Pervasive PSQL / Btrieve** (`btv32.dll` etc.) — for all business data `.B` files
+- **CodeBase** (`c4dll.dll`) — for the TAS Pro 7 internal data dictionary files
+  (`.DBF`/`.MDX` format): BKMENUSU, filedict, filedfld, fileloc, FILEFAST, OCCURS, etc.
+
+This is why `BKMENUSU` has both a `.B` Btrieve file (for PSQL access) and a `.DBF`/`.MDX`
+pair (for direct CodeBase access by the TAS runtime). Both formats are maintained in sync
+by the runtime.
+
 ## Three-tier view
 
 ### Tier 1 — Client (`C:\ISTS\`)
@@ -223,8 +251,11 @@ at the file level (confirmed from `FILELOC.B`, Pass 103d):
 2. It calls a `.RTM` (ReportBuilder) template for formatting.
 3. Output goes to a printer (via `GENERIC.CTL`/printer overlay) or to
    PDF (local `PDFS\` then sometimes to the shared `EVOReports\`).
-4. The `PV.EXE` (PostView) tool is available as a print preview /
-   viewer for older `.TXT` spools.
+4. **Pass 568 correction:** `PV.EXE` is NOT "PostView" — it is
+   **Process Viewer v3.11.1.1** (Igor Nys, 2000-2005), a command-line
+   process management utility (`pv -k`, `pv -l`, `pv -p`). Used to
+   kill/check/manage `tp7runtime.exe` / `evoerp.exe` processes during
+   startup or update. Confirmed from binary string extraction.
 
 ## Data model — what I think lives in the Btrieve store
 
