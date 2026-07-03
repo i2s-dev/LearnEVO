@@ -38,6 +38,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Supporting subsystems (Notes, Scheduler, Service, DC, Links, FNO, Update, …)](01-architecture/subsystems.md) — *draft*
 - [Connecting external software to the EVO database (ODBC, DSN, bitness)](01-architecture/external-odbc-connections.md) — *verified*
 - [Network topology, Pervasive SQL server mode, per-company databases](01-architecture/network-topology.md) — *verified*
+- [Workstation setup procedure (Pervasive client, ODBC DSN, taspro7.ini, identity files)](01-architecture/workstation-setup.md) — *partial*
 
 ### 02 — File formats
 - [File format catalog (all extensions seen in EVO)](02-file-formats/catalog.md)
