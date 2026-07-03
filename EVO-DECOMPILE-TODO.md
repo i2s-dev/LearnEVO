@@ -1066,7 +1066,7 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
 - [x] ✅ `WHOAMI.DBA` decoded: 2 bytes (0x0D 0x0A only = bare CRLF); file existence is the flag, content is empty; samples/WHOAMI.DBA (Pass 112 2026-06-19) — **C: 100/100**
 - [x] ✅ `CHMHELP.EVO` decoded: 35-byte text sentinel — "EvoHELP now set for this computer\r\n"; written by StartEvo.exe after CHM installation; presence signals CHM is installed and configured; samples/CHMHELP.EVO (Pass 112 2026-06-19) — **C: 100/100**
 - [ ] ⬜ Menu tree format inside `EVOERPMENU.DCY` decoded (once decryption solved)
-- [ ] ⬜ `.RUN` (TAS Pro 6) binary structure fully decoded (bytecode, not just strings)
+- [x] 🔄 `.RUN` (TAS Pro 6) binary structure (bytecode) — **Pass 368-374 (2026-06-29)**: dual-channel architecture confirmed (data channel 0x0000–dc_end overlapping instruction channel from code_off); 7-byte instruction format confirmed [opcode][0x00][b2][addr_LE4]; b2=data bytes consumed, addr=absolute file offset of data record; file layout decoded (TAS32 magic at 0x35 for BK* era, TWINB for T6* era; h[7]=table slot count, h[6]=runtime var area size; code_off formula: 0x80+h[7]×16+h[6]); library expansion zone after dc_end confirmed (compiled #LIB code appended); 30+ opcodes mapped (OP_0F=ASSIGN dominant, OP_C0/C1=BLOCK_OPEN/CLOSE, OP_44=ENTER_EXEC_BEGIN 75%, OP_56=DATA_CONTINUATION, OP_19=BROWSE_COLUMN_DESCRIPTOR 70%, OP_1B=LARGE_DESCRIPTOR_BODY 50%, OP_5C=BROWSE_HEADER etc.); 1 true unknown: OP_5D (35%); Rosetta Stone: 7 SRC+RUN pairs in samples/rosetta/; doc: `docs/02-file-formats/run-tas6-bytecode.md` — **C: 58/100** (architecture solid; most common opcodes mapped; ~15% of opcodes still uncharted; OP_5D unknown)
 
 ---
 
