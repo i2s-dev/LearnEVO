@@ -22973,3 +22973,126 @@ For full field lists see `docs/04-data-dictionary/fields-<module>.md`.
 | WOROUTMP | WO | AGGREGATE WO ROUTINGS (Temporary) | 83 |
 | WOSROUT | SH | TEMP WORK ORDER ROUTING FOR VISUAL SCHEDULER | 83 |
 | XXICMSTR | — | NOT USED | 64 |
+
+---
+
+## Pass 564-565 — Form-to-Table Mapping, DE Import Pipeline, Workstation Setup (2026-07-03)
+
+### How do I find which database tables a specific EvoERP form uses?
+
+See `docs/06-menu-system/form-to-table-mapping.md` — a complete cross-reference built from
+`rwn_symbols.json` (Btrieve handles opened at program startup) × `code-program-mapping.md`.
+
+**Coverage:** 726 / 870 forms mapped; 286 unique tables identified; 144 forms have no table
+data (structural nav entries and legacy .RUN programs).
+
+**13 Universal Infrastructure Tables** — opened by EVO.LIB init in >85% of all programs.
+These are boilerplate and NOT listed per-form in the mapping:
+
+| Table | Purpose |
+|-------|---------|
+| MKAHIST | Marketing automation history |
+| DBAHLPID | Help ID → topic map |
+| BKSYHELP | System help path config |
+| ISLOG | Active session audit log |
+| ISDRILL | Drill-down definition store |
+| BKAPDESC | AP description note lines |
+| BKARCUST | AR Customer master |
+| LANGDICT | Language translation dictionary |
+| BKAPVEND | AP Vendor master |
+| BKCMACCN | CRM Account contact (154-field) |
+| BKICMSTR | Inventory Item master |
+| ISLINKS | Document attachment links |
+| ISIS | InfoSystem config singleton |
+
+**Per-module table usage (top tables by form count — module-specific only, infra excluded):**
+
+| Table | Forms using it | Primary module |
+|-------|---------------|----------------|
+| WORKORD | 89+ | WO |
+| BKBMMSTR | 70+ | BM |
+| MTICMSTR | 60+ | IC / MR |
+| BKARINV | 55+ | AR / SO |
+| BKAPPOL | 50+ | PO / AP |
+| INVTXN | 45+ | IN |
+| BKGLTRAN | 40+ | GL |
+
+### How does the DE (Data Exchange / Import) module work?
+
+The DE module uses a **5-step staging pipeline** for all bulk imports (IC, BOM, Routing,
+Customers, Vendors, GL):
+
+| Step | Code | Program | What it does |
+|------|------|---------|--------------|
+| A | DE-x-A | T7DEHA/B/C/D/E | Generate header template CSV |
+| B | DE-x-B | T7DEHA/B/C/D/E | Import CSV to staging table |
+| C | DE-x-C | T7DEHA/B/C/D/E | Error report on staged records |
+| D | DE-x-D | T7DEHA/B/C/D/E | Edit staged records (TIMER.CALL stub) |
+| E | DE-x-E | T7DEHA/B/C/D/E | Transfer staging → master files |
+
+**Staging tables confirmed:**
+- IC import: ISWOTRAY, ISQCSPEC (from T7DEBA/DEBB/DEBC db_files)
+- BOM import: separate staging via DEHD suite
+
+**T7DEx.RWN — Generic CSV Exporter:**
+- `FILEDICT` + `FILELOC` enumerate all tables for the current company
+- `MEM.SELECT.FLD[]` = user-selected field array
+- `MEM.DICT_TYPE/SIZE/DEC` = DDF metadata per field
+- `CSV.H` = output file handle
+- 5 dialog stages (D_1 through D_5)
+
+**Column mapping from .IMP binary files:**
+`FIELD.NUMBER` / `FIELD.NUMBER2` variables in import programs correspond to the `.IMP`
+binary format: `Map1[N-1]` = source CSV column for import field N. The .IMP file is
+selected via `T7DEHD.RWN` and drives the column→field mapping at runtime.
+
+**Menu codes:**
+- DE-A through DE-Z — IC/BOM/Routing/Customer/Vendor/GL import suites
+- DE-Q — CSV export (T7DEQ.RWN, T7DER.RWN error report)
+- DE-V — Validate/verify
+
+### How do I set up a new EvoERP workstation?
+
+Full procedure: `docs/01-architecture/workstation-setup.md`
+
+**Quick summary (8 steps):**
+
+1. **Install Pervasive PSQL Client v11.30 (32-bit)**
+   - Base: `\\i2s109-solidcrm\DBAMFG$\Pervasive\PSQL-Client-11.30.030.000-win.x86.exe`
+   - Patch: `PSQLv11Patch_Client_x86.msp` (apply after base)
+   - 32-bit required — tp7runtime.exe is a 32-bit process
+
+2. **Register ODBC DSN "DBA"** via `C:\Windows\SysWOW64\odbcad32.exe`
+   - Driver: Pervasive ODBC Client Interface
+   - Server Name: `i2s109-SOLIDCRM.1583`
+   - Database Name: `DBA`
+
+3. **Create `C:\ISTS\`** and copy runtime files (tp7runtime.exe, StartEvo.exe, DLLs)
+
+4. **Configure `C:\ISTS\taspro7.ini`:**
+   ```ini
+   [Setup]
+   DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\
+   DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn
+   DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
+   ```
+
+5. **Create `C:\ISTS\WHOAMI.DBA`** — workstation identity file (format C:40)
+
+6. **Install `EvoHELP.CHM`** → `C:\ISTS\`; StartEvo.exe creates `CHMHELP.EVO` sentinel
+
+7. **evo:// URI scheme** — auto-registered by StartEvo.exe at first run (no manual step)
+
+8. **`EvoSettings.INI`** — auto-created/updated by EvoERP at runtime (no manual step)
+
+**Update mechanism:** StartEvo.exe uses `robocopy /z /r:10 /w:1` to copy updated files
+from the share. `robocopy.exe` ships in both `C:\ISTS\` and `\\i2s109-solidcrm\evo-ERP\ISTS\`.
+
+### Infrastructure tables — what are the 13 tables opened by every EvoERP program?
+
+Every TAS Pro 7 EvoERP program opens 13 tables at startup via the shared EVO.LIB init
+routine. These are pre-loaded boilerplate — not business-logic tables. See the list above
+under "How do I find which database tables a specific EvoERP form uses?"
+
+The key practical implication: if you see these tables in a Btrieve handle trace, they are
+not indicative of the specific module being used — they are always present.
