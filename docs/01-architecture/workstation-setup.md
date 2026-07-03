@@ -96,14 +96,17 @@ DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
 StartEvo.exe also reads `DEFAULTPATH` (mixed case) and `DFLTCOMPANYCODE` from taspro7.ini
 for its own pre-launch setup and writes `DFLTCOMPANYCODE` back after user company selection.
 
-### 5. Create WHOAMI.DBA — Workstation Identity File
+### 5. Create WHOAMI.DBA — Workstation Sentinel File
 
-`C:\ISTS\WHOAMI.DBA` is a small workstation identity file read by the EvoERP session at
-startup to identify this workstation.
+`C:\ISTS\WHOAMI.DBA` exists at `C:\ISTS\WHOAMI.DBA` as a 2-byte CRLF-only file (Pass 112
+confirmed: `0x0D 0x0A` only — content is empty). The network share copy is also 2 bytes.
 
-**Format:** Configuration/identity text file (`.DBA` format — see `docs/02-file-formats/other-formats.md`).
-**Exact field layout:** Not fully decoded; inferred to contain the workstation name and
-display name used in session logs and the `BKSY.USER.COMP` variable. C:40/100.
+**Role:** Presence-only sentinel — the file's existence signals the workstation is set up.
+Content is not read by the runtime; EvoERP functions normally with an empty file.
+
+This parallels `CHMHELP.EVO` (35-byte text sentinel for CHM installation).
+The workstation identity is tracked at runtime via `ISLOG` (IS_LOG_WHO field)
+and `BKSY.USER.COMP` from login, not from WHOAMI.DBA content.
 
 ### 6. Install EvoHELP.CHM
 
@@ -179,7 +182,8 @@ all sessions on that host). Specific configuration unknown. C:20/100.
 
 ---
 
-**Confidence: 62/100** — taspro7.ini structure fully confirmed; Pervasive client version and
-installer paths confirmed; ODBC DSN fields confirmed from registry analysis; WHOAMI.DBA format
-not decoded (C:40); EVOADMIN DSN location uncertain; exact runtime DLL set not cataloged;
-CHMHELP.EVO confirmed; evo:// URI registration confirmed from StartEvo.exe strings.
+**Confidence: 68/100** — taspro7.ini structure fully confirmed; Pervasive client version and
+installer paths confirmed; ODBC DSN fields confirmed from registry analysis; WHOAMI.DBA
+confirmed as 2-byte CRLF sentinel (presence-only, content unused, C:95); EVOADMIN DSN source
+uncertain; exact runtime DLL set not cataloged; CHMHELP.EVO confirmed;
+evo:// URI registration confirmed from StartEvo.exe strings.
