@@ -158,13 +158,47 @@ No manual configuration needed — EvoERP manages this file.
 
 ---
 
-## Robocopy-Based Updates
+## Update Mechanisms — Two Distinct Paths
 
-StartEvo.exe uses `robocopy /z /r:10 /w:1` internally to copy updated program files
-from the share to local paths during version updates. The `/z` flag = restartable mode
-(handles network interruption), `/r:10` = 10 retries, `/w:1` = 1 second wait between retries.
+EvoERP uses two separate file-copy mechanisms for updates:
 
-`robocopy.exe` also ships in `C:\ISTS\` for deployment scripting outside of StartEvo.exe.
+### Path 1: StartEvo.exe Robocopy Sync
+
+`StartEvo.exe` uses `robocopy /z /r:10 /w:1` to sync files from the network share to
+local paths before launching the runtime:
+- `/z` = restartable mode (handles network interruption)
+- `/r:10` = 10 retries on failure
+- `/w:1` = 1 second wait between retries
+
+`robocopy.exe` also ships in `C:\ISTS\` for deployment scripting. This mechanism handles
+**mass file sync** (e.g., pulling updated `.RWN` / `.DFM` files from the share to local).
+
+### Path 2: UPDTP7.EXE Batch-Script File Patcher
+
+The in-app update suite (`EvoUPDsetup` → `EvoERPupd` → `UPDTP7.EXE`) uses a different
+mechanism. `UPDTP7.EXE` (86KB, compiled C/C++) does NOT use Robocopy. Instead it:
+
+1. Generates a temporary batch script (`.bat`) with:
+   - `@echo off` — silent mode
+   - `if not exist … mkdir …` — create directories as needed
+   - `attrib +h …` — mark updated files hidden during copy
+   - `if exist … del …` — delete old file before placing new one
+   - Output redirected to `nul` (silent)
+2. Spawns `cmd.exe` (via `COMSPEC` env var + `CreateProcessA`) to execute the batch
+3. Waits for completion via `WaitForSingleObject`
+
+This handles **targeted file updates** for specific `.RWN` / `.DFM` files listed in the
+update package (`fileloc.zip`). The exact source/destination paths are passed at runtime
+by `EvoERPupd.RWN` (encrypted — internal arguments not recoverable without decryption).
+
+**Confirmed from:** `UPDTP7.strings.txt` (Pass 567 2026-07-03); strings include
+`@echo off`, `if not exist`, `mkdir`, `attrib +h`, `del`, `if exist`, `cmd.exe`,
+`command.com`, `COMSPEC`, `CreateProcessA`, `WaitForSingleObject`.
+
+**Confidence: 75/100** — mechanism confirmed from binary string analysis; exact path
+arguments for each update operation are encrypted inside EvoERPupd.RWN.
+
+Last updated: 2026-07-03 (Pass 567)
 
 ---
 
