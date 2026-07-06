@@ -22,7 +22,7 @@
 | 15 | `SECTION:15-help-system` | 15. Help System (EvoHELP.CHM) | C:90 | ✅ |
 | 16 | `SECTION:16-per-table` | 16. Per-Table Schema Pages | C:68-92 | 🔄 |
 | 17 | `SECTION:17-per-form` | 17. Per-Form Documentation | C:90 | 🔄 |
-| 18 | `SECTION:18-per-report` | 18. Per-Report Documentation | C:78 | 🔄 |
+| 18 | `SECTION:18-per-report` | 18. Per-Report Documentation | C:82 | 🔄 |
 | 19 | `SECTION:19-infrastructure` | 19. Infrastructure & Deployment | C:90 | ✅ |
 | 20 | `SECTION:20-confidence-summary` | 20. Master Confidence Summary | — | ✅ |
 
@@ -1208,8 +1208,9 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 - [x] ✅ **1305** RTM files inventoried (corrected from 899); FILELOC+RTMVLD_+ISRTMS architecture documented — **C: 87/100**; **Pass 560 (2026-07-02): top-20 most-called sub-reports confirmed from rtm_crossrefs.csv**; #1 caller BKISWCE1.RTM (244 callers) = "BIN INVENTORY REPORT" (4-view warehouse bin location, ISBIN_LOC_* DataFields); #2 BKSOF4.RTM (239) = SO invoice line-item section; #3 BKWOC1.RTM (237) = WO sub-report with barcode; ISRTMS DDF confirmed 29 fields (1196-byte record: CUST/VEND/ITEM/RTM/PROGRAM/DESC/DFLT/DATE/FLAG/5-label-RTMs/QTY/EXTRA/10-printer-slots); ISRTMS.B = 0 records (label routing not configured); cfg.rtm = NOT in rtm_crossrefs.csv (prior claim corrected); FILELOC schema confirmed: LOC_BUFF_N/FILE_N/COMP_C/REC_SI/REC_TY/LOCATI/DESCRI (7 fields, 218-byte record, 4,464 rows); RTMVLD_ = TAS Pro variable library, not filesystem files — **C: 90/100**
 - [x] ✅ `rtm_callers.csv` cross-reference: 403 static callers; runtime selection via FILELOC explained — **C: 82/100**; **Pass 559 (2026-07-02): sub-report cross-reference map complete** — `samples/rtm_crossrefs.csv`: 4,178 Template.FileName props; 1,600 self-refs; 2,578 cross-refs; 1,078 distinct caller→callee pairs; 892/1,305 RTMs call sub-reports; property name is `\x11Template.FileName` not `\x08FileName` (Pass 406 bug); dev artifacts confirm Delphi 3 origin, dev machines i2s44-hapi/wacke, customer machines Asisvr/Seconsvr01/Cpt-app/EIMCO — **C: 90/100**
 - [x] ✅ **Pass 406 (2026-06-30): All 2610 RTM files parsed for DataField (data pipeline bindings)** — 8,574 unique values; sub-report FileName props: 0 found (sub-report links appear to use a different binary encoding not captured by current parser); label texts = static TppLabel properties (not DataField-bound) — **C: 82/100** (FileName prop encoding gap remains); **Pass 559 (2026-07-02): RESOLVED** — property name is `\x11Template.FileName` (17 chars) not `\x08FileName` (8 chars); full scan found 2,578 cross-refs; `samples/rtm_crossrefs.csv` is the definitive sub-report link map — **C: 92/100**
-- [ ] ⬜ Each report mapped to: calling SRC function + module + menu code (FILELOC live data needed)
-- [ ] ⬜ Report parameter documentation (what filters/date ranges each report accepts)
+- [x] 🔄 **Pass 574 (2026-07-06): Per-report index created** — `docs/02-file-formats/per-report-index.md`; root vs sub-report architecture documented (808 root / 190 sub / 106 leaf); DataField themes confirmed for top 15 sub-reports (BKISWCE1=244 callers/bin-location, BKSOF4=239/invoice-lines, BKWOC1=237/WO-traveler-routing, BKSOC4=131/packing-slip+lot-serial, BKSAM1=120/sales-analysis-line); per-module RTM counts confirmed (SO=253/WO=115/IN=102/AP=95/PO=89/AR=50/PR=52/GL=42); WO traveler sub-report tree documented; naming convention (BK/T6/T7/J7/EN/IBK) confirmed; calling code blocked by RWN encryption — **C: 82/100**
+- [ ] ⬜ Each report mapped to calling menu code (calling TAS code blocked by RWN encryption)
+- [ ] ⬜ Report filter parameter documentation (date ranges, ranges passed from TAS code — blocked by RWN encryption)
 
 ---
 

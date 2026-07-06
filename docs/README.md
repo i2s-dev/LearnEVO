@@ -167,6 +167,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 ### 07 — Reports (ReportBuilder .RTM)
 - [Reporting pipeline overview + RTM cross-reference](05-reports/overview.md) — *verified*
 - [RTM Report Template Inventory by Module — 1,734 RTMs, generation breakdown, custom EN* prefixes](02-file-formats/rtm-module-inventory.md) — *verified, Pass 411 2026-06-30*
+- [Per-Report Index — root/sub architecture, top 15 sub-reports with DataField themes, WO traveler tree, per-module counts](02-file-formats/per-report-index.md) — *partial, Pass 574 2026-07-06*
 
 ### 08 — Menu system
 - [Menu system overview — 554 codes across 38 modules](06-menu-system/overview.md) — *verified*
