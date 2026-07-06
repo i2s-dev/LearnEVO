@@ -432,19 +432,41 @@ intricately integrated.
 
 ## Item classification
 
-Each item in [[table-BKICMSTR|BKICMSTR]] has a **Type** (`BKIC_PROD_TYPE`):
+Each item in [[table-BKICMSTR|BKICMSTR]] has a **Type** (`BKIC_PROD_TYPE`,
+10 values — CHM §IN-B confirmed):
 
 | Code | Meaning |
 | ---- | ------- |
-| R | **Raw / Purchased** — bought outright |
-| M | **Make** / Manufacturing — produced via WO |
-| F | **Finished** — end product |
-| A | **Sub-assembly** — intermediate assembly |
-| N | **Non-inventory** — service, labor, etc. |
-| S | **Service** — billable service item |
+| N | **Non-Inventory** — no on-hand balance; sub-types: Service & Repair placeholder, Multi-Yield placeholder, Surcharge |
+| R | **Regular / Purchased** — bought outright; component or resale |
+| M | **Make From** — outside-process item: PO receipt relieves source components and updates "make from" item |
+| F | **Finished Good** — top-level manufactured item; not normally used as a component in other assemblies |
+| A | **Subassembly** — manufactured for higher-level assemblies; can also be sold |
+| B | **Phantom Assembly** — never physically made or stocked; components flatten into WO BOM at WO creation time |
+| L | **Labor** — labor categories used as BOM line items; no on-hand balance; in BOM only |
+| T | **Outside Processing** — services (plating, painting, heat treat); used in BOM and on POs |
+| K | **Selling Kit** — never manufactured or stocked; used in SO to order/invoice a group of items via one item# |
+| O | **Feature** — for Features & Options module; groups of selectable options presented during SO-A entry |
 
-The Type drives most business logic elsewhere: only M/A items can be
-WO parents; only R/F can receive POs; N items skip inventory tracking.
+The Type drives most business logic: only F/A items can be WO parents (plus
+M for outside-process WOs); R/T items receive POs; N items skip inventory
+tracking; B/K items never have on-hand; L items appear in BOM but carry
+no inventory value.
+
+## Active Status
+
+Each item also has an **Active Status** (`BKIC_PROD_ACTV`, 8 values — CHM §IN-B confirmed):
+
+| Code | Status | What is allowed |
+| ---- | ------ | --------------- |
+| Y | **Active** | All activity allowed |
+| N | **Inactive** | All activity allowed with a warning; item can be excluded from reports |
+| O | **Obsolete** | Historical reference only; no buy/sell/make/on-hand changes; EVO blocks if any open orders or on-hand qty exists |
+| D | **Discontinued** | Deplete existing stock; shipments and WO issues allowed; no new purchases or new WOs |
+| E | **Engineering** | Under development; activity allowed with warning; Security Code E limits access to E-status items only |
+| P | **Production & Purchasing Hold** | No WOs, no POs; any PO receipt is forced to Quality Hold Location |
+| S | **Shipping Hold** | No packing slips, SO release, or invoice processing |
+| Q | **Full Quality Hold** | Combination of P and S; all activity blocked; on-hand transferred to Quality Hold warehouse |
 
 ## Costing methods
 
@@ -699,6 +721,38 @@ Each customer has a default price level (`BKARCUST.BKAR_SAL_LVL`),
 with per-item overrides. Discounts apply by customer price code or
 quantity break.
 
+## SO-A header screen fields (CHM §SO-A confirmed)
+
+| Field | Notes |
+|-------|-------|
+| SO No | Auto-assigned sequence number |
+| SO Date | Order entry date (defaults to today) |
+| Last Invoice | Last invoice# posted against this SO (read-only) |
+| Entered by | User code who created the SO |
+| Customer | Customer code; drives all defaulting below |
+| Name / Address / City / St / Zip / Country | Bill-to address from BKARCUST; editable per order |
+| Attention | Bill-to contact name |
+| Ship to (address block) | Ship-to address; different from bill-to if customer has ship-to codes |
+| Attention (ship-to) | Ship-to contact name |
+| Ord Desc | Order description, 30 characters |
+| Cust PO | Customer's own PO number, 25 characters |
+| Location | Warehouse/inventory location to ship from |
+| Terms Cd | Payment terms (from BKARCUST default) |
+| FOB | FOB shipping point |
+| Job No | Job number for cost tracking |
+| GL Dept | GL department code for revenue posting |
+| Price Cd | Customer price code — drives pricing level |
+| Discnt Cd | Customer discount code |
+| Slsp1 / % | Primary salesperson code + commission % |
+| Slsp2 / % | Secondary salesperson code + commission % |
+| Ship Via | Carrier / shipping method (15 characters) |
+| Taxable? | Y/N whether this order is taxable |
+| By (tax group) | Tax jurisdiction group (defaults from ship-to customer) |
+| Rate | Tax rate (read-only; auto-calculated from jurisdiction) |
+| Currency | Currency code (if International Module active) |
+| Drop Shipment | Y = ship direct from vendor to customer |
+| Ready to Invoice? | Y = auto-check stock and fill backorders; N = manual release via SO-E; H = hold, no invoicing |
+
 ## SO-A line item field semantics (EVOHELP.PDF §SO-A, Pass 506)
 
 | Field | Meaning |
@@ -888,20 +942,42 @@ will be built. When you release a WO:
 This means a WO, once released, is **locked to its plan**. Changes to
 the master BOM won't retroactively change in-progress WOs.
 
+## WO-A status codes (CHM §WO-A confirmed)
+
+The `MTWO_WIP_STATUS` field in `WORKORD` holds a single character:
+
+| Code | Status | What it means / what EVO does |
+|------|--------|-------------------------------|
+| S | **Scheduled** | WO exists but no BOM/routing copied yet; no material allocations; no labor allowed |
+| F | **Firmed** | BOM and routing copied into WO; materials allocated; labor NOT yet allowed |
+| R | **Released** | Actual Start Date assigned; labor and material issues allowed |
+| C | **Closed** | No further transactions; Actual Finish Date set; on-WO qty reversed for uncompleted balance; allocations reversed; backlog hours removed |
+| X | **Canceled** | On-WO qty reversed; backlog removed; non-issued material allocations reversed; WIP material reversed (cannot reverse already-issued labor) |
+| I | **Indirect** | For downtime, vacation, sick leave, R&D — tracks labor without a product WO |
+
+**Status transition rules (CHM §WO-A):**
+- S → F: BOM and routing created; on-WO and allocated qty updated
+- F → S: BOM and routing stripped, all allocations reversed (only if no transactions yet)
+- F/S → R: Actual Start Date set; labor now allowed
+- Any → C: Closes the WO; on-WO and allocated qty fully reversed
+- C or X → F or R: Reopening restores on-WO and allocations
+- **Priority** field: 1 = High, 2 = Medium, 3 = Low (configurable in SM-P-G)
+
 ## WO status lifecycle
 
 ```
-Open (WO-A entered)
+S  Scheduled (WO-A entered; no BOM/routing yet)
   ↓
-Released (WO-B; BOM/routing locked)
+F  Firmed (BOM+routing copied; materials allocated)
   ↓
-In Production
+R  Released (Actual Start Date set; labor/issues allowed)
   ↓ labor entered (DC-A, WO-E)
   ↓ materials issued (DC-B, WO-G)
-Complete (WO-C; finished qty received)
-  ↓
-Closed (WO-D; variances posted, costs locked)
+  ↓ finished qty received (WO-C)
+C  Closed (WO-D; variances posted, costs locked)
 ```
+
+Also: X = Canceled (from any status); I = Indirect (non-product labor)
 
 ## Cost tracking
 

@@ -43,7 +43,8 @@ C:\ISTS\
 ├── EvoPVT.jar            [1.8 MB] JavaFX SQL helper — drill-down dashboards (CASHFLOW, CRMDASHBOARD, COMMISSIONRPT, PURCHITEM, PURCHVEND); 533 table entity classes; PSQL 13.20.023 JDBC driver bundled
 ├── SQLExport.jar         SQL Export helper — invoked by SQLEXPORT.RWN (EX/DE-A); contains 6 DefaultSQL preset queries; writes CSV to DBAMFG$\REPORTS\ [confirmed Pass 540]
 ├── qtintf70.dll          Qt 3/CLX UI layer (used by tp7runtime.exe)
-├── c4dll.dll             CodeBase data engine DLL
+├── c4dll.dll             CodeBase DLL v6.5 (Sequiter Software) — dBASE/xBase engine for .DBF+.MDX files: BKMENUSU, filedict, filedfld, fileloc, FILEFAST, OCCURS [confirmed Pass 568]
+├── quricol32.dll         Quricol QR Barcode Library (Serhiy Perevoznyk, libpng-based) — QR code generation for IS2DBAR labels [confirmed Pass 568b]
 ├── zipdll.dll            ZIP compression (used by EvoBackup)
 ├── unzdll.dll            ZIP decompression
 ├── RBDsgnr.exe           [6.2 MB] Nevrona ReportBuilder stand-alone designer
@@ -812,7 +813,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | EvoERPupd.RWN | Update engine | — |
 | EvoPRupd.RWN | Payroll update | — |
 | EvoUPDSetup.RWN | Update configuration | — |
-| UPDTP7.EXE | Binary patcher (role unconfirmed) | — |
+| UPDTP7.EXE | Targeted file patcher — generates a `.bat` script (`@echo off` / `attrib +h` / `del` / `copy`) and spawns it via `cmd.exe`+`CreateProcessA`+`WaitForSingleObject`; NOT Robocopy (Robocopy = StartEvo.exe path for mass-sync only) [binary-confirmed Pass 567] | — |
 | EvoERPDrillM.RWN | Drill-down / analysis | — |
 | CALREM.RWN | Calendar reminders | — |
 | CALREMGC.DFM | Google Calendar sync form | — |
@@ -1068,8 +1069,7 @@ Xf$File = (SELECT Xi$File FROM X$Index WHERE ...)`.
 
 ---
 
-*Last updated: 2026-06-18 — built from menu_to_form.csv, master_index.csv, tables.txt,
-schema.md, SRC analysis, catalog.md, rwn_symbols.json DB fingerprint passes 1–18, and DFM analysis passes 91–97. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
+*Last updated: 2026-07-06 (Pass 569) — c4dll.dll identified as CodeBase v6.5 (Pass 568); UPDTP7.EXE dual-mechanism confirmed (Pass 567); workstation setup doc created (Pass 565); form-to-table mapping 726/870 (Pass 564); RTM sub-report cross-ref complete (Pass 559-560); ISEXUSER/ISACCESS/BKLOGON DDF-confirmed (Pass 551). Previously: menu_to_form.csv, master_index.csv, tables.txt, schema.md, SRC analysis, catalog.md, rwn_symbols.json DB fingerprint passes 1–18, DFM analysis passes 91–97. Confidence varies by section — see EVO-DECOMPILE-TODO.md.*
 
 ---
 

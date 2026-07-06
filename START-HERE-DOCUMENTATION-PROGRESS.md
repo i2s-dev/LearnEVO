@@ -4,7 +4,7 @@
 > the decompilation project stands, what work is available right now, and what is blocked.
 > It is the authoritative session-start checklist. Keep it current.
 
-Last updated: 2026-07-02 (Pass 551 — DDF-confirmed ISEXUSER(6f)/ISACCESS(8f)/BKLOGON(10f); corrected ISEXUSER "12-field" claim. Pass 550: 7-layer auth model documented (BKSYCFG/BKSYLOG/BKSYUSER/ISACCESS/etc.). Pass 545: barcode4j.jar confirmed; Evo2.jar SQL Query Wizard + EvoErpScript language decoded; EVO3.JAR as JavaFX EvoPVT dev branch. Pass 544: PROJECT-STRUCTURE.md C:90→92; ISEXUSER documented. Pass 542-546: 10+ modules synced to modules.py. All scorecard items now at 90+; major remaining gap is YN[N] slot mapping (88/250 confirmed; remaining 162 blocked by T7YSYN bytecode encryption). Pass 431: Excel data dictionary import: 579 tables / 21,299 fields documented in 33 per-module Markdown files + master table index)
+Last updated: 2026-07-06 (Pass 569 — CHM field-level semantics mined for IN/SO/WO forms: IN item type table corrected 6→10 codes (N/R/M/F/A/B/L/T/K/O) + 8 Active Status codes (Y/N/O/D/E/P/S/Q) added; SO-A 28-field header screen table added; WO-A status codes corrected to actual MTWO_WIP_STATUS values S/F/R/C/X/I with transition rules; L1152 per-form narrative C:86→C:89. Pass 568: all 5 C:\ISTS\ DLLs identified (c4dll.dll=CodeBase v6.5, quricol32.dll=Quricol QR Barcode); PV.EXE corrected to Process Viewer; System Architecture C:93→94. Pass 567: UPDTP7.EXE dual-mechanism (batch-script generator vs Robocopy — two separate update paths). Pass 566: Terminal Server/Citrix deployment documented (C:42); Pervasive License Admin documented (C:62). Pass 565: workstation setup procedure created; form-to-table mapping (C:65, 726/870 forms mapped). Pass 564: form-to-menu-code mapping C:87→C:90; DE module CSV pipeline documented. Pass 563: TPF0 binary property table documented. Pass 562-559: RTM sub-report cross-ref complete (2,578 cross-refs); BKISWCE1 #1 caller (244); all RTM sub-items C:90+. Pass 551: DDF-confirmed ISEXUSER/ISACCESS/BKLOGON; 7-layer auth model. Pass 431: Excel DDB import: 579 tables / 21,299 fields.)
 
 ---
 
@@ -96,13 +96,13 @@ Current decryption scripts:
 | `.DCY` decryptor | ✅ Done | 99/100 | `scripts/dcy_decrypt.py` — K_D key, no IV file; 41/48 OK (7 suwin* different format) |
 | `.SRC` source files | ✅ Done | 90/100 | Only 7 files exist; all analyzed |
 | `.RUN` file structure | ✅ Confirmed | 72/100 | Header / table slots / var storage / code+pool |
-| `.RUN` opcode table | 🔄 Started | 87/100 | string records `41 00 LL_lo LL_hi` confirmed; BKAWLB fully cataloged (786 records/432 readable); method in run-string-extraction.md |
+| `.RUN` opcode table | 🔄 Started | 87/100 | string records `41 00 LL_lo LL_hi` confirmed; BKAWLB fully cataloged (786 records/432 readable); OP_5D=inv_menu descriptor confirmed Pass 565b; method in run-string-extraction.md |
 | TAS Pro 7 `.RWN` bytecode | 🔄 Started | 82/100 | 60+ opcodes; 15 sub-code families; branch target = computed/runtime pool; static CFG architecturally impossible; T7YSYN: 1243 vars, 15-byte name field, 52 procs |
 | `.DCY` binary format | ✅ DONE | 95/100 | 8-byte ID header + DFM content; all 41 forms = Delphi TEditForm; EVOUSERS/WBKLUGRID documented |
 | `suwin*.DCY` format | 🔄 Partial | 50/100 | suwin6.dcy ✅ SOLVED (Pass 387): K_C=ISTech License dialog; suwin7.dcy fails all 5 keys |
 | K_A / K_C key purposes | 🔄 Partial | 65/100 | K_C = suwin6.dcy (ISTech License); K_A still unknown |
-| `.DFM` forms | 🔄 Partial | 87/100 | 1,109 parsed; content coverage ongoing |
-| `.RTM` report templates | 🔄 Partial | 78/100 | 899+ inventoried; content coverage ongoing |
+| `.DFM` forms | 🔄 Partial | 89/100 | 1,109 parsed; form-to-menu-code 90/100 (Pass 563); form-to-table 65/100 (Pass 564, 726/870 mapped); per-form narrative 89/100 (Pass 569, CHM semantics for IN/SO/WO) |
+| `.RTM` report templates | ✅ Good | 92/100 | 1,305 inventoried; sub-report cross-ref complete (2,578 links in rtm_crossrefs.csv); BKISWCE1 #1 caller (244); ISRTMS 29-field schema confirmed (Pass 559-560) |
 | Database schema | ✅ Done | 95/100 | 659 tables (DDF); 579 tables / 21,299 fields from Excel export (Pass 431); 33 per-module field files in docs/04-data-dictionary/ |
 | YN slot mapping (BKYSMSTR) | 🔄 Partial | 82/100 | 250-slot live snapshot complete; 88 DFM+SRC confirmed; YN[102-143]=42 module-enable slots (BKMENUSU GROUPS order); YN[150-198]=all empty; 162 slots still unknown |
 | ISTS.CFG key directory | ✅ Done | 88/100 | 495 confirmed keys from T7YSYN; full docs/05-configuration/ists-cfg-keys.md |
@@ -144,19 +144,23 @@ Current decryption scripts:
    static CFG impossible (branch targets = computed runtime pool). Only angle that could move
    this is T7YSYN pool tree parser to map YN slot indices, or a live debugger session.
 
-4. **✅ DONE (Pass 550+) Module documentation** — All scorecard modules at C:90+;
+4. **Per-form narrative: push from C:89 to C:90+** — CHM semantics mined for IN/SO/WO (Pass 569);
+   remaining 1,106 non-CHM forms require RWN decryption for table bindings. Next best angle:
+   mine remaining high-traffic CHM topics (AR-A, AP-A, PO-A) for header field tables.
+
+5. **✅ DONE (Pass 550+) Module documentation** — All scorecard modules at C:90+;
    50+ modules documented in `learnevo-help/content/modules.py` narratives. DFM, RTM, RWN
    symbol coverage complete for all accessible programs.
 
-5. **✅ DONE (Pass 307-497) Business workflow recipes** — 44 recipe pages in learnevo-help;
+6. **✅ DONE (Pass 307-497) Business workflow recipes** — 44 recipe pages in learnevo-help;
    full SO/WO/AP/GL/period-end/year-end workflows documented; Acctug.pdf (Pass 497) confirms.
 
-6. **✅ DONE (Pass 431) Per-table field meaning documentation** — 579 tables / 21,299 fields
+7. **✅ DONE (Pass 431) Per-table field meaning documentation** — 579 tables / 21,299 fields
    from `Evo-DBA_File_Fields 052421.xlsx`; 33 per-module field files in `docs/04-data-dictionary/`;
    master table index in `docs/04-data-dictionary/table-index.md`. ~65% field descriptions present.
 
-7. **suwin7.dcy decryption** — fails all 5 known keys (K_A/K_B/K_C/K_D/K_E). May use
+8. **suwin7.dcy decryption** — fails all 5 known keys (K_A/K_B/K_C/K_D/K_E). May use
    a 6th key from a different ISTech subsystem. Requires Frida session to capture.
 
-8. **learnevo-help content completeness** — A few sub-90 module stubs may remain; run the
+9. **learnevo-help content completeness** — A few sub-90 module stubs may remain; run the
    help server and check for any missing narratives via the browser UI.
