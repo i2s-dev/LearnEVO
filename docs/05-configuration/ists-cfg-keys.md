@@ -793,16 +793,16 @@ Remaining ~160 slots (of 250) are not bound in these two forms.
 | YN[19] | WO Processing | Labor Prompt in Kit Issues? | unknown | DFM positional |
 | YN[20] | WO Processing | Backflush by Seq in Enter Labor? [Y/N/B] | unknown | DFM positional |
 | YN[21] | WO Processing | Backflush in Enter Finished Prod? [Y/N/A/B] | unknown | DFM positional |
-| YN[22] | WO Processing | Close WO in Enter Finished Prod? | unknown | DFM positional |
+| YN[22] | WO Processing | WOJ: Process WIP Variance — live description overrides DFM "Close WO in Fin Prod" | ISTS.CFG.WIPV | DFM positional (conflicting) + live value label + name-pattern (Pass 571) |
 | YN[23] | INV BOM | Require Sequence Entry - Type R, M, F, A? | unknown | DFM positional |
 | YN[24] | INV BOM | Require Sequence Entry - Type T (Out Process)? | unknown | DFM positional |
 | YN[25] | INV BOM | Require Sequence Entry - Type L (Labor)? | unknown | DFM positional |
 | YN[26] | INV BOM | Require Sequence Entry - Type N (Non Inventory)? | unknown | DFM positional |
-| YN[27] | WO Setup | Allow edit of Component Description in WO-G | unknown | DFM positional |
+| YN[27] | WO Setup | Allow edit of Component Description in WO-G | ISTS.CFG.WOGDSC | DFM positional+name-pattern (Pass 571) |
 | YN[28] | INV Features | Mandatory Feature? | unknown | DFM positional |
 | YN[29] | SO Setup | Turn the Credit Limit Message Off? | unknown | DFM positional |
 | YN[30] | SO Setup | Prompt for Taxable Line Item Amt? | unknown | DFM positional |
-| YN[31] | PO Processing | Receive Into (QC / Inventory) | unknown | DFM positional |
+| YN[31] | WO Processing | Kit issuance mode — live='I'; DFM label "Receive Into QC/Inventory" conflicts; live note says "likely WOGKIT (kit issuance mode)" | ISTS.CFG.WOGKIT | DFM positional (conflicting) + live value hint (Pass 430) + name-pattern (Pass 571) |
 | YN[32] | PO Setup | Default PO Tax rate | unknown | DFM positional |
 | YN[33] | PO Setup | PO-Q Allow Entry to Price | unknown | DFM positional |
 | YN[35] | SO Setup | Prompt for Itemized Sales Tax? | unknown | DFM positional |
@@ -811,25 +811,25 @@ Remaining ~160 slots (of 250) are not bound in these two forms.
 | YN[38] | INV Routing | Make sequence equal template number? | ISTS.CFG.WOCALC | DFM positional+SRC (BKROA.SRC:392,1582) |
 | YN[39] | SO Printing | SO Packing Slip form format: 1=SOC1.RTM (condensed), 2=SOC2.RTM (single qty), 3=SOC3.RTM (plain condensed), 4=SOC4.RTM (plain single qty) — live='4' | unknown | DFM+SRC |
 | YN[40] | PO Setup | Default Ship Via | unknown | DFM positional |
-| YN[41] | WO Printing | Print BOM Remarks? | unknown | DFM positional |
+| YN[41] | WO Printing | Print BOM Remarks? | ISTS.CFG.BOMRM | DFM positional+name-pattern (Pass 571) |
 | YN[42] | WO Printing | Print BOM Comments? | unknown | DFM positional |
 | YN[43] | WO Printing | Print Job Schedule? | unknown | DFM positional |
 | YN[44] | WO Printing | Print Short Form? | unknown | DFM positional |
 | YN[45] | WO Printing | Print Mat in Seqs? | unknown | DFM positional |
 | YN[46] | WO Printing | Print Bill of Mat? | unknown | DFM positional |
 | YN[47] | PR Checking | Payroll check form format: 1=PRD1.RTM (laser), 2=PRD2.RTM (continuous) — live='1' | unknown | DFM+SRC |
-| YN[48] | AP Checking | AP check form format: 1=APHA1.RTM (stub/chk/stub), 2=APH1.RTM (continuous), 4=APHA2.RTM (stub/stub/chk), 5=APHA3.RTM (chk/stub/stub) — live='1' | unknown | DFM+SRC (Bkaph.src:60-81) |
+| YN[48] | AP Checking | AP check form format: 1=APHA1.RTM (stub/chk/stub), 2=APH1.RTM (continuous), 4=APHA2.RTM (stub/stub/chk), 5=APHA3.RTM (chk/stub/stub) — live='1' | ISTS.CFG.APCHK | DFM+SRC (Bkaph.src:60-81)+name-pattern (Pass 571) |
 | YN[50] | INV Setup | Default Inventory Location | unknown | DFM positional |
-| YN[57] | WO Scheduling | Display machine prompt in Enter Labor? | unknown | DFM positional |
+| YN[57] | WO Scheduling | Display machine prompt in Enter Labor? | ISTS.CFG.DCMACH | DFM positional+name-pattern (Pass 571) |
 | YN[59] | WO Scheduling | Allow entry to overlap settings in routings? | unknown | DFM positional+SRC (BKROA.SRC:647) |
-| YN[62] | SO Printing | Sales Quote Print Format Number | unknown | DFM positional |
+| YN[62] | SO Printing | **Decimalized Quantities on Forms?** — positional was wrong (said "Sales Quote Print Format Number") | unknown | **T7MDefNDC.DFM direct binding** (Pass 571) |
 | YN[63] | WO Printing | Print Machine and Tool? | unknown | DFM positional |
 | YN[64] | WO Printing | Print Inspection Fields? | unknown | DFM positional |
-| YN[65] | WO Processing | Use Std Cost in ENT Fin Prod? | unknown | DFM positional |
+| YN[65] | WO Processing | Use Std Cost in ENT Fin Prod? | ISTS.CFG.STDCST | DFM positional+name-pattern (Pass 571) |
 | YN[66] | INV Routing | Display long time prompt? | ISTS.CFG.LNGWT | DFM+SRC (BKROA.SRC:629) |
 | YN[67] | MRP | Include in MRP Generation? | unknown | DFM positional |
 | YN[73] | WO Processing | Divide Labor Cost by # Jobs Worked | unknown | DFM positional |
-| YN[74] | SO Printing | Packing Slip Print Format Number | unknown | DFM positional |
+| YN[74] | SO Printing | **Print Discount Column on Forms?** — positional was wrong (said "Packing Slip Print Format Number") | unknown | **T7MDefNDC.DFM direct binding** (Pass 571) |
 | YN[76] | SO Printing | SO Acknowledgment form format: 1=SOB1.RTM, 2=SOB2.RTM, 3=SOB3.RTM, 4=SOB4.RTM — live='4' | unknown | DFM |
 | YN[77] | SO Printing | SO Quote form format: 1=SOPB1.RTM, 2=SOPB2.RTM, 3=SOPB3.RTM, 4=SOPB4.RTM — live='4' | unknown | DFM |
 | YN[78] | PO Printing | PO form format: 1=POE1.RTM (universal), 2=POE2.RTM (plain paper) — live='2' | unknown | DFM |
@@ -840,14 +840,14 @@ Remaining ~160 slots (of 250) are not bound in these two forms.
 | YN[84] | PO Processing | Receive all lines? | unknown | DFM positional |
 | YN[85] | PO Processing | Display comment lines? | unknown | DFM positional |
 | YN[86] | PO Processing | Display fully received lines? | unknown | DFM positional |
-| YN[87] | Acct. Receivables | Pop-up in AR-C for Cr hld (Y/N/V) | unknown | DFM positional |
+| YN[87] | Acct. Receivables | Pop-up in AR-C for Cr hld (Y/N/V) | ISTS.CFG.CRHOLD | DFM positional+name-pattern (Pass 571) |
 | YN[200] | WO Scheduling | Use Lead Time Scheduling [F/B/N] — live='N' (none) | unknown | DFM positional |
 | YN[202] | WO Processing | Use Projected or Estimate $ and Hrs [P/E]? | unknown | DFM positional |
-| YN[209] | GL Setup | Post WO Transactions? | unknown | DFM positional |
-| YN[212] | GL Setup | Post Inventory Adjustments? | unknown | DFM positional |
-| YN[213] | GL Setup | Post PO Transactions? | unknown | DFM positional |
-| YN[214] | GL Setup | Post COGS Transactions? | unknown | DFM positional |
-| YN[215] | GL Setup | Fiscal Year Start Date | unknown | DFM positional |
+| YN[209] | GL Setup | **Permit use of Item Class GLs?** — positional was wrong (said "Post WO Transactions?") | unknown | **T7MDefNDC.DFM direct binding** (Pass 571) |
+| YN[212] | GL Setup | **Post WO Transactions?** — positional was wrong (said "Post Inventory Adjustments?") | unknown | **T7MDefNDC.DFM direct binding** (Pass 571) |
+| YN[213] | GL Setup | **Post Inventory Adjustments?** — positional was wrong (said "Post PO Transactions?") | ISTS.CFG.INCGL | **T7MDefNDC.DFM direct binding** + name-pattern (INCGL=inventory cost GL) (Pass 571) |
+| YN[214] | GL Setup | **Post PO Transactions?** — positional was wrong (said "Post COGS Transactions?"); COGSDP reassigned to YN[215] | ISTS.CFG.POGLED | **T7MDefNDC.DFM direct binding** + name-pattern (POGLED=PO GL edit) (Pass 571) |
+| YN[215] | GL Setup | **Post COGS Transactions?** — positional was wrong (said "Fiscal Year Start Date"; actual fiscal year start is an ISTS.CFG date field) | ISTS.CFG.COGSDP | **T7MDefNDC.DFM direct binding** + name-pattern (COGSDP=COGS dispatch/post) (Pass 571) |
 | YN[218] | DC Setup | Allow Dec Entry # of jobs worked | unknown | DFM positional |
 | YN[220] | WO Printing | Print Routing Seq Order (A/D) | unknown | DFM positional |
 | YN[222] | PO Setup | Allow entry to (Y/N/Require) — partial label; likely bin location or PO approval | unknown | DFM positional |
@@ -860,15 +860,15 @@ Remaining ~160 slots (of 250) are not bound in these two forms.
 | YN[237] | WO Scheduling | PO & DC update the actual start/finish dates of sequences? | unknown | DFM positional |
 | YN[238] | SO Setup | Prevent Copying of SO# and Quotes? | unknown | DFM positional |
 | YN[239] | SO Setup | Retention Item No | unknown | DFM positional |
-| YN[240] | WO Estimates | Contact Master for Estimates | unknown | DFM positional |
+| YN[240] | WO Estimates | Contact Master for Estimates | ISTS.CFG.CMEST | DFM positional+name-pattern (Pass 571) |
 | YN[241] | PO Printing | RFQ Print Format Number | unknown | DFM positional |
 | YN[242] | PO Printing | Print Title on RFQ? | unknown | DFM positional |
-| YN[243] | SO Printing | Sales Quotes (format number?) | unknown | DFM (old coord. approx. — not confirmed by positional) |
-| YN[244] | SO Printing | Decimalized Quantities on Forms? | unknown | DFM positional |
-| YN[245] | SO Printing | Print Discount Column on Forms? | unknown | DFM positional |
-| YN[246] | SO Printing | Print Co. Name/Address on Forms? | unknown | DFM positional |
+| YN[243] | SO Printing | Print Title on Sales Quotes? [Y/N] — positional was wrong (said "Sales Quotes format number") | unknown | **T7MDefNDC.DFM direct binding** (AllowedChrs='Y N') (Pass 571) |
+| YN[244] | SO Printing | **Print Title on Invoices? [Y/N/A]** — positional was wrong (said "Decimalized Quantities") | unknown | **T7MDefNDC.DFM direct binding** (AllowedChrs='YNA') (Pass 571) |
+| YN[245] | SO Printing | **Print Title on Packing Slips? [Y/N]** — positional was wrong (said "Print Discount Column") | unknown | **T7MDefNDC.DFM direct binding** (AllowedChrs='Y N') (Pass 571) |
+| YN[246] | SO Printing | **Print Title on Acknowledgments? [Y/N]** — positional was wrong (said "Print Co. Name/Address on Forms?") | unknown | **T7MDefNDC.DFM direct binding** (AllowedChrs='Y N') (Pass 571) |
 | YN[247] | Acct. Receivables | Pop-up in AR-C for Comm. (Y/N/C) | unknown | DFM positional |
-| YN[248] | MRP | Expedite Buffer (Days) — stores numeric days as string | unknown | DFM positional |
+| YN[248] | MRP | Expedite Buffer (Days) — stores numeric days as string | ISTS.CFG.MRPDAY | DFM positional+name-pattern (Pass 571) |
 | YN[249] | AP Checking | AP check top margin offset (pixel offset; live='0') — stores numeric as string | unknown | SRC (Bkaph.src:349 `nTopMarg = val(bkys.yn[249])`) |
 
 **Notes on positional matching method (Pass 557):**
@@ -882,6 +882,12 @@ The old method produced ~40 wrong descriptions; this table reflects the correcte
 - YN[36]: positional says “Default sequence increment”; SRC (BKROA.SRC:609) + live='D' confirms “Multiply or Divide by number of processes? (M/D)”.
 - YN[66]: positional says “Multiply or Divide...”; SRC (BKROA.SRC:629) confirms “Display long time prompt?” (ISTS.CFG.LNGWT).
 - YN[228/229]: positional says “Allow clocking in/out on multiple jobs?” / “Use full Screen?”; SRC (BKDCA.SRC:193–239) confirms DCSEQ/DCSYNC. Container label/control counts mismatched.
+
+**T7MDefNDC.DFM direct binding corrections (Pass 571):** The older T7MDefNDC.DFM (April 2018) has DIRECT FieldName='BKYS.YN[N]' bindings on all 85 configurable slots, bypassing positional inference. Where these conflict with T7MDEFAULTS.DFM positional results, the direct binding takes precedence.
+- **GL Setup block reversed:** YN[209/212/213/214/215] were labeled in REVERSE order by positional; direct binding shows: 215=COGS, 214=PO, 213=INV ADJ, 212=WO, 209=Item Class GLs.
+- **SOPrint tab swapped:** positional mixed up “format number” format-selector combos (YN[76/39/77]) with Y/N entry fields. Direct binding: YN[62]=Decimalized Qty, YN[74]=Print Discount Column; YN[243-246]=Print Title on SO forms (Quotes/Invoices/PackSlips/Acks).
+- “Fiscal Year Start Date” is an ISTS.CFG date field (GLBSDT/GLDATE), NOT a BKYS.YN slot.
+- Total direct bindings confirmed in T7MDefNDC.DFM: **85 slots** (all in the table above).
 
 **Note on non-Y/N slot usage:** Not all YN[N] slots store Y/N flags. The BKYSMSTR STRING(2)
 column type allows any 1–2 char value. Known non-Y/N usage: YN[1]='F' (status code),
