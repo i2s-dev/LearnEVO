@@ -1,6 +1,6 @@
 # PI — Physical Inventory: Field Reference
 
-Status: verified-schema
+Status: verified-schema + completed field meanings (Pass 574d, 2026-07-06).
 
 Source: `Evo-DBA_File_Fields 052421.xlsx`, sheet "Fields".
 Field descriptions where provided by source; otherwise name-inferred.
@@ -41,7 +41,7 @@ Fields: 10
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKPI_LOT_BIN | STRING | 15 | — | — |
+| 1 | BKPI_LOT_BIN | STRING | 15 | — | Bin code where this lot was counted |
 | 2 | BKPI_LOT_CODE | STRING | 15 | — | Part Number |
 | 3 | BKPI_LOT_LOC | STRING | 10 | — | Location |
 | 4 | BKPI_LOT_LOT | STRING | 15 | — | Lot Number |
@@ -59,7 +59,7 @@ Fields: 10
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKPI_LOT_BIN | STRING | 15 | — | — |
+| 1 | BKPI_LOT_BIN | STRING | 15 | — | Bin code where this lot was frozen/snapshot taken |
 | 2 | BKPI_LOT_CODE | STRING | 15 | — | Part Number |
 | 3 | BKPI_LOT_LOC | STRING | 10 | — | Location |
 | 4 | BKPI_LOT_LOT | STRING | 15 | — | Lot Number |
@@ -110,7 +110,7 @@ Fields: 10
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKPI_SER_BIN | STRING | 15 | — | — |
+| 1 | BKPI_SER_BIN | STRING | 15 | — | Bin code where this serial was counted |
 | 2 | BKPI_SER_CODE | STRING | 15 | — | Part Number |
 | 3 | BKPI_SER_LOC | STRING | 10 | — | Location for this Serial Number |
 | 4 | BKPI_SER_LOTNO | STRING | 15 | — | Lot # for this Serial if both Lot/Serial |
@@ -128,7 +128,7 @@ Fields: 10
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKPI_SER_BIN | STRING | 15 | — | — |
+| 1 | BKPI_SER_BIN | STRING | 15 | — | Bin code where this serial was frozen/snapshot taken |
 | 2 | BKPI_SER_CODE | STRING | 15 | — | Part Number |
 | 3 | BKPI_SER_LOC | STRING | 10 | — | Location for this Serial Number |
 | 4 | BKPI_SER_LOTNO | STRING | 15 | — | Lot # for this Serial if both Lot/Serial |
@@ -140,45 +140,55 @@ Fields: 10
 | 10 | BKPI_SER_YEAR | STRING | 4 | — | Inventory Year |
 
 ## PIBINLOC
-**PI BIN LOCATION**
+**PI BIN LOCATION** — bin-level inventory snapshot taken at PI freeze time
 
-Fields: 14
+Fields: 14 | Key: PIBIN_LOC_ITEM + PIBIN_LOC_LOC + PIBIN_LOC_BIN + PIBIN_LOC_YEAR + PIBIN_LOC_QTR
+
+Parallel to ISBINLOC (live bin inventory); PIBINLOC is the frozen snapshot used during
+the PI count period. One row per item × location × bin × PI period.
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | PIBIN_LOC_BIN | STRING | 15 | — | — |
-| 2 | PIBIN_LOC_CDATE | DATE | 4 | — | — |
-| 3 | PIBIN_LOC_DFLT | STRING | 1 | — | — |
-| 4 | PIBIN_LOC_EXTRA | STRING | 100 | — | — |
-| 5 | PIBIN_LOC_FDATE | DATE | 4 | — | — |
-| 6 | PIBIN_LOC_ITEM | STRING | 15 | — | — |
-| 7 | PIBIN_LOC_LOC | STRING | 10 | — | — |
-| 8 | PIBIN_LOC_LOT | STRING | 15 | — | — |
-| 9 | PIBIN_LOC_QTR | STRING | 2 | — | — |
-| 10 | PIBIN_LOC_RVLVL | STRING | 5 | — | — |
-| 11 | PIBIN_LOC_SER | STRING | 25 | — | — |
-| 12 | PIBIN_LOC_UOH | NUMERIC | 8 | 2 | — |
-| 13 | PIBIN_LOC_VDATE | DATE | 4 | — | — |
-| 14 | PIBIN_LOC_YEAR | STRING | 4 | — | — |
+| 1 | PIBIN_LOC_BIN | STRING | 15 | — | Bin code |
+| 2 | PIBIN_LOC_CDATE | DATE | 4 | — | Count date — when a tag was entered for this bin |
+| 3 | PIBIN_LOC_DFLT | STRING | 1 | — | Default bin flag: `Y`=preferred bin for this item at this location |
+| 4 | PIBIN_LOC_EXTRA | STRING | 100 | — | User-defined extra data |
+| 5 | PIBIN_LOC_FDATE | DATE | 4 | — | Freeze date — when this PI period was frozen (snapshot date) |
+| 6 | PIBIN_LOC_ITEM | STRING | 15 | — | Item code (FK → BKICMSTR) |
+| 7 | PIBIN_LOC_LOC | STRING | 10 | — | Warehouse location code |
+| 8 | PIBIN_LOC_LOT | STRING | 15 | — | Lot number (if lot-controlled item) |
+| 9 | PIBIN_LOC_QTR | STRING | 2 | — | PI inventory number (identifies which PI period/quarter) |
+| 10 | PIBIN_LOC_RVLVL | STRING | 5 | — | Revision level (for revision-controlled items) |
+| 11 | PIBIN_LOC_SER | STRING | 25 | — | Serial number (if serial-controlled item) |
+| 12 | PIBIN_LOC_UOH | NUMERIC | 8 | 2 | Units on hand at freeze time (book quantity before count) |
+| 13 | PIBIN_LOC_VDATE | DATE | 4 | — | Verification date — when the count was reconciled/verified |
+| 14 | PIBIN_LOC_YEAR | STRING | 4 | — | PI inventory year |
 
 ## PIBINLOT
-**PI LOT BIN LOCATION**
+**PI LOT BIN LOCATION** — lot-level bin detail for PI count period
 
-Fields: 14
+Fields: 14 | Key: PI_BINLOT_ITEM + PI_BINLOT_LOC + PI_BINLOT_LOT + PI_BINLOT_BIN + PI_BINLOT_YR + PI_BINLOT_QTR
+
+Tracks counted vs. system quantities at the lot × bin level during PI. Parallel to
+ISBINLOT (live lot-bin inventory).
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | PI_BINLOT_BIN | STRING | 15 | — | — |
-| 2 | PI_BINLOT_DATE | DATE | 4 | — | — |
-| 3 | PI_BINLOT_EXTRA | STRING | 50 | — | — |
-| 4 | PI_BINLOT_FLAG | STRING | 1 | — | — |
-| 5 | PI_BINLOT_ITEM | STRING | 15 | — | — |
-| 6 | PI_BINLOT_LOC | STRING | 10 | — | — |
-| 7 | PI_BINLOT_LOT | STRING | 15 | — | — |
-| 8 | PI_BINLOT_NUM | NUMERIC | 8 | — | — |
-| 9 | PI_BINLOT_PSTD | STRING | 1 | — | — |
-| 10 | PI_BINLOT_QTR | STRING | 2 | — | — |
-| 11 | PI_BINLOT_SER | STRING | 25 | — | — |
-| 12 | PI_BINLOT_SQTY | NUMERIC | 8 | 2 | — |
-| 13 | PI_BINLOT_UOH | NUMERIC | 8 | 2 | — |
-| 14 | PI_BINLOT_YR | STRING | 4 | — | — |
+| 1 | PI_BINLOT_BIN | STRING | 15 | — | Bin code |
+| 2 | PI_BINLOT_DATE | DATE | 4 | — | Count/transaction date |
+| 3 | PI_BINLOT_EXTRA | STRING | 50 | — | User-defined extra data |
+| 4 | PI_BINLOT_FLAG | STRING | 1 | — | Status flag (active/hold/verified) |
+| 5 | PI_BINLOT_ITEM | STRING | 15 | — | Item code (FK → BKICMSTR) |
+| 6 | PI_BINLOT_LOC | STRING | 10 | — | Warehouse location code |
+| 7 | PI_BINLOT_LOT | STRING | 15 | — | Lot number (FK → LOT) |
+| 8 | PI_BINLOT_NUM | NUMERIC | 8 | — | Tag number associated with this lot count |
+| 9 | PI_BINLOT_PSTD | STRING | 1 | — | Posted flag: `Y`=count posted back to live inventory |
+| 10 | PI_BINLOT_QTR | STRING | 2 | — | PI inventory number |
+| 11 | PI_BINLOT_SER | STRING | 25 | — | Serial number (if serial-controlled) |
+| 12 | PI_BINLOT_SQTY | NUMERIC | 8 | 2 | System quantity (book on-hand before count adjustment) |
+| 13 | PI_BINLOT_UOH | NUMERIC | 8 | 2 | Counted units on hand (physical count result) |
+| 14 | PI_BINLOT_YR | STRING | 4 | — | PI inventory year |
+
+**Confidence: 88/100** — BKPI* table descriptions from Excel confirmed; PIBINLOC/PIBINLOT
+field meanings inferred from ISBINLOC/ISBINLOT parallels + PI workflow context (freeze→count→post);
+PIBIN_LOC_RVLVL, PI_BINLOT_FLAG exact values unconfirmed without RWN access.
