@@ -10,20 +10,20 @@
 | 3 | `SECTION:3-tas-language` | 3. TAS Pro 4GL Language | C:92 | ✅ |
 | 4 | `SECTION:4-data-dictionary` | 4. Data Dictionary & Database Schema | C:95 | ✅ |
 | 5 | `SECTION:5-security` | 5. Security & Login System | C:92 | ✅ |
-| 6 | `SECTION:6-menu-system` | 6. Menu System & Navigation | — | 🔄 |
-| 7 | `SECTION:7-modules` | 7. Modules — Functional Documentation | — | 🔄 |
-| 8 | `SECTION:8-reporting` | 8. Reporting Engine (ReportBuilder/RTM) | — | 🔄 |
-| 9 | `SECTION:9-platform-subsystems` | 9. Platform Subsystems | — | 🔄 |
+| 6 | `SECTION:6-menu-system` | 6. Menu System & Navigation | C:95 | ✅ |
+| 7 | `SECTION:7-modules` | 7. Modules — Functional Documentation | C:90 | ✅ |
+| 8 | `SECTION:8-reporting` | 8. Reporting Engine (ReportBuilder/RTM) | C:90 | ✅ |
+| 9 | `SECTION:9-platform-subsystems` | 9. Platform Subsystems | C:88 | ✅ |
 | 10 | `SECTION:10-java-integration` | 10. Java Integration (EvoPVT.jar) | C:93 | ✅ |
-| 11 | `SECTION:11-odbc` | 11. ODBC / External Connectivity | — | 🔄 |
-| 12 | `SECTION:12-customization` | 12. Customization Modules (J7*) | — | 🔄 |
-| 13 | `SECTION:13-workflows` | 13. Business Workflows / Recipes | — | ✅ |
+| 11 | `SECTION:11-odbc` | 11. ODBC / External Connectivity | C:92 | ✅ |
+| 12 | `SECTION:12-customization` | 12. Customization Modules (J7*) | C:90 | ✅ |
+| 13 | `SECTION:13-workflows` | 13. Business Workflows / Recipes | C:93 | ✅ |
 | 14 | `SECTION:14-encryption` | 14. Encryption & Reverse Engineering Blockers | C:100 | ✅ |
-| 15 | `SECTION:15-help-system` | 15. Help System (EvoHELP.CHM) | — | ✅ |
+| 15 | `SECTION:15-help-system` | 15. Help System (EvoHELP.CHM) | C:90 | ✅ |
 | 16 | `SECTION:16-per-table` | 16. Per-Table Schema Pages | C:68-92 | 🔄 |
-| 17 | `SECTION:17-per-form` | 17. Per-Form Documentation | — | 🔄 |
-| 18 | `SECTION:18-per-report` | 18. Per-Report Documentation | — | 🔄 |
-| 19 | `SECTION:19-infrastructure` | 19. Infrastructure & Deployment | — | 🔄 |
+| 17 | `SECTION:17-per-form` | 17. Per-Form Documentation | C:90 | 🔄 |
+| 18 | `SECTION:18-per-report` | 18. Per-Report Documentation | C:78 | 🔄 |
+| 19 | `SECTION:19-infrastructure` | 19. Infrastructure & Deployment | C:90 | ✅ |
 | 20 | `SECTION:20-confidence-summary` | 20. Master Confidence Summary | — | ✅ |
 
 ---

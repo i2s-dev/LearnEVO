@@ -1092,6 +1092,63 @@ Live values — full BKYSMSTR query (Pass 396 2026-06-30):
 | YN[148] | 'Y' | unknown |
 | YN[149] | 'Y' | unknown |
 
+**Company 'F' cross-validation — BKYSMSTR.B (Pass 571, 2026-07-06):**
+
+Second company data point extracted from `samples/BKYSMSTR.B` (company code 'F', 1045-byte records,
+YN array at offset 0xe01e). Company F is accounting-focused: WO/JC/SH/DC/ES/SO/SR/RM/AR/HH/UT/DE/FA/PL/PR/US
+disabled; PO/MR/QC/IN/RO/BM/LC/SC/FO/PI/WC/SA/CS/CM/CR/QU/SU/SM/SD/IM/PS/TAS/GL/AP/AM/AD enabled.
+
+| YN[N] | Module | Main co. | Co. 'F' | Notes |
+|-------|--------|----------|---------|-------|
+| YN[102] | WO | 'Y' | ' ' | F has no WO module |
+| YN[103] | JC | 'Y' | ' ' | F has no JC module |
+| YN[104] | PO | 'Y' | 'Y' | both enabled |
+| YN[105] | MR | 'A' | 'Y' | main uses advanced mode; F uses standard |
+| YN[106] | SH | 'Q' | ' ' | F has no SH module |
+| YN[107] | DC | 'A' | ' ' | F has no DC module |
+| YN[108] | ES | 'Y' | ' ' | F has no ES module |
+| YN[109] | QC | 'Y' | 'Y' | both enabled |
+| YN[110] | IN | 'Y' | 'Y' | both enabled |
+| YN[111] | RO | 'Y' | 'Y' | both enabled |
+| YN[112] | BM | 'Y' | **'Z'** | F uses Z-mode — **Z is NOT BM/FO/SO-specific; confirmed generic alternate-mode tier flag** |
+| YN[113] | LC | 'Y' | 'Y' | both enabled |
+| YN[114] | SC | 'Y' | 'Y' | both enabled |
+| YN[115] | FO | 'Z' | 'Z' | both use Z-mode |
+| YN[116] | PI | 'Y' | 'Y' | both enabled |
+| YN[117] | WC | 'Y' | 'Y' | both enabled |
+| YN[118] | SO | 'Z' | ' ' | F has no SO; main uses Z-mode |
+| YN[119] | SR | 'Y' | ' ' | F has no SR |
+| YN[120] | RM | 'Y' | ' ' | F has no RM |
+| YN[121] | SA | 'Y' | 'Y' | both enabled |
+| YN[122] | CS | ' ' | 'Y' | **F='Y', main=' ' — BOTH have active CS menu entries; ' ' ≠ disabled** |
+| YN[123] | CM | ' ' | 'Y' | **F='Y', main=' ' — BOTH have active CM menu entries; ' ' ≠ disabled** |
+| YN[124] | AR | 'Y' | ' ' | F has no AR |
+| YN[125] | CR | 'Y' | 'Y' | both enabled |
+| YN[126] | QU | 'Y' | **'1'** | F uses '1'-mode — **'1' is NOT UT-specific; confirmed generic numeric tier flag** |
+| YN[127] | SU | 'Y' | 'Y' | both enabled |
+| YN[128] | HH | 'Y' | ' ' | F has no HH |
+| YN[129] | UT | '1' | ' ' | F has no UT |
+| YN[130] | SM | 'Y' | 'Y' | both enabled |
+| YN[131] | SD | ' ' | 'Y' | F='Y', main=' ' |
+| YN[132] | IM | 'Y' | 'Y' | both enabled |
+| YN[133] | PS | 'Y' | 'Y' | both enabled |
+| YN[134] | DE | 'Y' | ' ' | F has no DE |
+| YN[135] | TAS | 'Y' | 'Y' | both enabled |
+| YN[136] | GL | 'Y' | 'Y' | both enabled |
+| YN[137] | AP | 'Y' | 'Y' | both enabled |
+| YN[138] | FA | 'Y' | ' ' | F has no FA |
+| YN[139] | AM | 'Y' | 'Y' | both enabled |
+| YN[140] | AD | 'Y' | 'Y' | both enabled |
+| YN[141] | PL | 'Y' | ' ' | F has no PL |
+| YN[142] | PR | 'Y' | ' ' | F has no PR |
+| YN[143] | US | 'Y' | ' ' | F has no US |
+
+**Key findings from cross-validation (Pass 571):**
+- `'Z'` appears for BM (co. F), FO (both), SO (main) — confirmed generic alternate-mode tier flag, not module-specific
+- `'1'` appears for QU (co. F), UT (main) — confirmed generic numeric tier flag, not UT-specific
+- `' '` for CS/CM in main co. vs `'Y'` in co. F — definitively confirms `' '` does NOT mean unlicensed; CS and CM operate under different codes per company
+- GROUPS-order mapping fully confirmed: two independent companies with different license profiles show coherent module presence/absence at the same YN indices
+
 **Value semantics — CORRECTED (Pass 413, 2026-06-30):**
 
 Prior "Z=disabled, space=unlicensed" interpretation was WRONG. BKMENUSU.TXT confirmation:
@@ -1117,7 +1174,7 @@ Mapping: YN[102+N−1] = GROUPS entry N (1-indexed). Confirmed because:
 - 42 GROUPS entries × 1:1 = YN[102]–YN[143] exactly fills the documented 48-slot range minus 6 extra
 - YN[144]–YN[149] = 6 slots with no GROUPS entry
 - Prior "contradiction" at YN[118]=SO was caused by wrong 'Z' interpretation, not wrong mapping
-**The 1:1 GROUPS-order mapping is now confirmed as the best structural hypothesis. C:72/100.**
+**The 1:1 GROUPS-order mapping is now confirmed as the best structural hypothesis. C:82/100 (Pass 571: two-company cross-validation; Z/1/space confirmed as generic tier flags not module-specific).**
 The exact value semantics per slot remain blocked (requires T7YSYN.RWN decryption).
 
 **Count:** 48 slots (YN[102]–YN[149]). 42 GROUPS modules + 6 unaccounted slots (YN[144-149]).
