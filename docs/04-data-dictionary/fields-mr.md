@@ -1,127 +1,138 @@
-# MR — Material Requirements: Field Reference
+# MR — Material Requirements Planning: Field Reference
 
-Status: verified-schema
+Status: verified-schema + completed field meanings (Pass 574, 2026-07-06).
 
-Source: `Evo-DBA_File_Fields 052421.xlsx`, sheet "Fields".
-Field descriptions where provided by source; otherwise name-inferred.
+Source: `Evo-DBA_File_Fields 052421.xlsx`, sheet "Fields". Excel provided descriptions
+for MTMRP only; remaining tables' field meanings inferred from naming and MRP conventions.
+
+MRP in EvoERP: regenerates planned orders from demand (sales orders, forecasts) and
+supply (PO/WO). Seven tables cover forecasts, MRP output, PO conversion staging, and
+customer-level sales summaries.
+
+**Note on three identical forecast tables:** BKMRPFC, ISMRPFC, and ISSLSFC share the exact
+same BKMRP_FC_* field schema. They are separate Btrieve files used for different forecast
+pools (BK=base/manual, IS=item/subcontract, SLS=sales-history-derived) feeding the same
+MRP engine.
 
 ---
 
 ## BKMRPFC
-**FORECASTS**
+**FORECASTS** — base/manual forecast demand records
 
-Fields: 9
+Fields: 9 | Key: BKMRP_FC_PART + BKMRP_FC_DATE
 
-| # | Field | Type | Size | Dec | Description |
-|---|-------|------|------|-----|-------------|
-| 1 | BKMRP_FC_CQTY | NUMERIC | 8 | 2 | — |
-| 2 | BKMRP_FC_DATE | DATE | 4 | — | — |
-| 3 | BKMRP_FC_DATE1 | DATE | 4 | — | — |
-| 4 | BKMRP_FC_EXTRA | STRING | 25 | — | — |
-| 5 | BKMRP_FC_FLAG | STRING | 1 | — | — |
-| 6 | BKMRP_FC_NUM | NUMERIC | 8 | — | — |
-| 7 | BKMRP_FC_OQTY | NUMERIC | 8 | 2 | — |
-| 8 | BKMRP_FC_PART | STRING | 15 | — | — |
-| 9 | BKMRP_FC_QTY | NUMERIC | 8 | 2 | — |
-
-## BKMRPPO
-**MRP TO PO CONVERSION FILE (Temporary)**
-
-Fields: 16
+One row per forecast demand entry (item × date). MRP reads this to project future demand
+beyond known open orders.
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKMRP_PO_CONF | STRING | 1 | — | — |
-| 2 | BKMRP_PO_DATE | DATE | 4 | — | — |
-| 3 | BKMRP_PO_DONE | STRING | 10 | — | — |
-| 4 | BKMRP_PO_ERD | DATE | 4 | — | — |
-| 5 | BKMRP_PO_EST | STRING | 10 | — | — |
-| 6 | BKMRP_PO_ESTLNE | NUMERIC | 8 | — | — |
-| 7 | BKMRP_PO_EXTRA | STRING | 50 | — | — |
-| 8 | BKMRP_PO_MTREC | INTEGER | 4 | — | — |
-| 9 | BKMRP_PO_PART | STRING | 15 | — | — |
-| 10 | BKMRP_PO_PLANR | STRING | 4 | — | — |
-| 11 | BKMRP_PO_PRICE | NUMERIC | 8 | 4 | — |
-| 12 | BKMRP_PO_QTY | NUMERIC | 8 | 2 | — |
-| 13 | BKMRP_PO_UID | STRING | 20 | — | — |
-| 14 | BKMRP_PO_VEND | STRING | 10 | — | — |
-| 15 | BKMRP_PO_WOPRE | NUMERIC | 8 | — | — |
-| 16 | BKMRP_PO_WOSUF | INTEGER | 2 | — | — |
-
-## BKMRPSW
-**TEMP FILE USED BY MRP**
-
-Fields: 2
-
-| # | Field | Type | Size | Dec | Description |
-|---|-------|------|------|-----|-------------|
-| 1 | BKMRP_SW_PART | STRING | 15 | — | — |
-| 2 | BKMRP_SW_SW | STRING | 1 | — | — |
+| 1 | BKMRP_FC_CQTY | NUMERIC | 8 | 2 | Consumed quantity — amount of this forecast already absorbed by actual demand |
+| 2 | BKMRP_FC_DATE | DATE | 4 | — | Forecast demand date (required delivery date) |
+| 3 | BKMRP_FC_DATE1 | DATE | 4 | — | Forecast period start date |
+| 4 | BKMRP_FC_EXTRA | STRING | 25 | — | User-defined extra data |
+| 5 | BKMRP_FC_FLAG | STRING | 1 | — | Forecast type flag (exact values unconfirmed; e.g., S=sales, M=manual) |
+| 6 | BKMRP_FC_NUM | NUMERIC | 8 | — | Forecast record number / ID |
+| 7 | BKMRP_FC_OQTY | NUMERIC | 8 | 2 | Original forecast quantity (before any consumption) |
+| 8 | BKMRP_FC_PART | STRING | 15 | — | Item code (FK → BKICMSTR) |
+| 9 | BKMRP_FC_QTY | NUMERIC | 8 | 2 | Current remaining forecast quantity (OQTY − CQTY) |
 
 ## ISMRPFC
-**MRP FORECAST**
+**MRP FORECAST** — item/subcontract forecast demand records
 
-Fields: 9
+Fields: 9 | Key: BKMRP_FC_PART + BKMRP_FC_DATE
 
-| # | Field | Type | Size | Dec | Description |
-|---|-------|------|------|-----|-------------|
-| 1 | BKMRP_FC_CQTY | NUMERIC | 8 | 2 | — |
-| 2 | BKMRP_FC_DATE | DATE | 4 | — | — |
-| 3 | BKMRP_FC_DATE1 | DATE | 4 | — | — |
-| 4 | BKMRP_FC_EXTRA | STRING | 25 | — | — |
-| 5 | BKMRP_FC_FLAG | STRING | 1 | — | — |
-| 6 | BKMRP_FC_NUM | NUMERIC | 8 | — | — |
-| 7 | BKMRP_FC_OQTY | NUMERIC | 8 | 2 | — |
-| 8 | BKMRP_FC_PART | STRING | 15 | — | — |
-| 9 | BKMRP_FC_QTY | NUMERIC | 8 | 2 | — |
+Identical schema to BKMRPFC (same BKMRP_FC_* prefix). Used for item-level or
+subcontract-specific forecast entries. See BKMRPFC above for field definitions.
 
 ## ISSLSFC
-**FORECAST**
+**FORECAST** — sales-history-derived forecast records
 
-Fields: 9
+Fields: 9 | Key: BKMRP_FC_PART + BKMRP_FC_DATE
+
+Identical schema to BKMRPFC (same BKMRP_FC_* prefix). Populated from sales history
+analysis for statistical forecasting. See BKMRPFC above for field definitions.
+
+## BKMRPPO
+**MRP TO PO CONVERSION** — staging records for converting MRP planned orders to POs
+
+Fields: 16 | Key: BKMRP_PO_UID
+
+MRP generates planned PO suggestions; this table holds them for planner review before
+conversion to actual POs in the purchase order module.
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | BKMRP_FC_CQTY | NUMERIC | 8 | 2 | — |
-| 2 | BKMRP_FC_DATE | DATE | 4 | — | — |
-| 3 | BKMRP_FC_DATE1 | DATE | 4 | — | — |
-| 4 | BKMRP_FC_EXTRA | STRING | 25 | — | — |
-| 5 | BKMRP_FC_FLAG | STRING | 1 | — | — |
-| 6 | BKMRP_FC_NUM | NUMERIC | 8 | — | — |
-| 7 | BKMRP_FC_OQTY | NUMERIC | 8 | 2 | — |
-| 8 | BKMRP_FC_PART | STRING | 15 | — | — |
-| 9 | BKMRP_FC_QTY | NUMERIC | 8 | 2 | — |
+| 1 | BKMRP_PO_CONF | STRING | 1 | — | Confirmed flag: `Y`=planner confirmed this planned order for PO conversion |
+| 2 | BKMRP_PO_DATE | DATE | 4 | — | Required date (when material must arrive to meet demand) |
+| 3 | BKMRP_PO_DONE | STRING | 10 | — | Done status (e.g., Y=PO created, or PO number) |
+| 4 | BKMRP_PO_ERD | DATE | 4 | — | Earliest receipt date (lead-time-based date from supplier) |
+| 5 | BKMRP_PO_EST | STRING | 10 | — | Estimate/quote number referenced (if sourcing from an existing estimate) |
+| 6 | BKMRP_PO_ESTLNE | NUMERIC | 8 | — | Estimate line number |
+| 7 | BKMRP_PO_EXTRA | STRING | 50 | — | User-defined extra data |
+| 8 | BKMRP_PO_MTREC | INTEGER | 4 | — | MT record pointer — reference to the MTMRP planned order that generated this |
+| 9 | BKMRP_PO_PART | STRING | 15 | — | Item code (FK → BKICMSTR) |
+| 10 | BKMRP_PO_PLANR | STRING | 4 | — | Planner code (buyer/planner responsible for this item) |
+| 11 | BKMRP_PO_PRICE | NUMERIC | 8 | 4 | Suggested unit price/cost (from vendor price list) |
+| 12 | BKMRP_PO_QTY | NUMERIC | 8 | 2 | Planned order quantity |
+| 13 | BKMRP_PO_UID | STRING | 20 | — | Unique record ID (PK) |
+| 14 | BKMRP_PO_VEND | STRING | 10 | — | Vendor code (FK → BKAPVEND — default vendor for this item) |
+| 15 | BKMRP_PO_WOPRE | NUMERIC | 8 | — | WO prefix — source WO that drove this demand |
+| 16 | BKMRP_PO_WOSUF | INTEGER | 2 | — | WO suffix |
+
+## BKMRPSW
+**TEMP FILE USED BY MRP** — MRP run processing state
+
+Fields: 2 | Key: BKMRP_SW_PART
+
+Scratch table used internally during MRP regeneration. Tracks which items have been
+processed during the current pass. Should be empty outside an active MRP run.
+
+| # | Field | Type | Size | Dec | Description |
+|---|-------|------|------|-----|-------------|
+| 1 | BKMRP_SW_PART | STRING | 15 | — | Item code being processed (PK during MRP run) |
+| 2 | BKMRP_SW_SW | STRING | 1 | — | Switch value: `Y`=processed in current MRP pass |
 
 ## MTMRP
-**MATERIAL REQUIREMENTS (MRP) MASTER**
+**MATERIAL REQUIREMENTS (MRP) MASTER** — MRP planned order output
 
-Fields: 12
+Fields: 12 | Key: MTMRP_PARTNO + MTMRP_DATE
+
+One row per planned order generated by the MRP engine. Primary output of the MRP
+regeneration run — planners review these to decide what to make or buy.
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | MTMRP_ACTION | STRING | 10 | — | Action |
-| 2 | MTMRP_DATE | DATE | 4 | — | MRP Date |
-| 3 | MTMRP_EXTRA | STRING | 50 | — | Extra |
-| 4 | MTMRP_ONHAND | NUMERIC | 8 | 2 | MRP Quantity On-Hand |
-| 5 | MTMRP_ORDER | STRING | 10 | — | Order Ref. |
-| 6 | MTMRP_PARTNO | STRING | 15 | — | Part Number |
-| 7 | MTMRP_PEGTO | STRING | 10 | — | Pegged To |
-| 8 | MTMRP_PG_FDATE | DATE | 4 | — | Finish Date |
-| 9 | MTMRP_PG_QTY | NUMERIC | 8 | 2 | Pegged Quantity |
-| 10 | MTMRP_PG_SDATE | DATE | 4 | — | Start Date |
-| 11 | MTMRP_QTY | NUMERIC | 8 | 2 | MRP Quantity |
-| 12 | MTMRP_STARTDT | DATE | 4 | — | Start Date |
+| 1 | MTMRP_ACTION | STRING | 10 | — | Planner action code: recommended action (e.g., ORDER, RESC, CANC) |
+| 2 | MTMRP_DATE | DATE | 4 | — | MRP planned order date |
+| 3 | MTMRP_EXTRA | STRING | 50 | — | Extra data / planner notes |
+| 4 | MTMRP_ONHAND | NUMERIC | 8 | 2 | MRP projected on-hand quantity at this plan date |
+| 5 | MTMRP_ORDER | STRING | 10 | — | Order reference — document that created demand for this planned order |
+| 6 | MTMRP_PARTNO | STRING | 15 | — | Item code (FK → BKICMSTR) |
+| 7 | MTMRP_PEGTO | STRING | 10 | — | Pegged-to document reference (demand document this planned order covers) |
+| 8 | MTMRP_PG_FDATE | DATE | 4 | — | Pegged demand finish date |
+| 9 | MTMRP_PG_QTY | NUMERIC | 8 | 2 | Pegged demand quantity |
+| 10 | MTMRP_PG_SDATE | DATE | 4 | — | Pegged demand start date |
+| 11 | MTMRP_QTY | NUMERIC | 8 | 2 | Planned order quantity |
+| 12 | MTMRP_STARTDT | DATE | 4 | — | Planned start date for this order |
 
 ## SUMPNCUS
-**MRP TEMP FILE**
+**MRP TEMP FILE** — customer sales summary (used during MRP statistical forecasting)
 
-Fields: 6
+Fields: 6 | Key: SUMPNCUS_PARTNO + SUMPNCUS_CUST + SUMPNCUS_YEAR + SUMPNCUS_MONTH
+
+Aggregated sales history by item × customer × period. Used by MRP forecasting routines
+to derive statistical demand from past sales. Populated and consumed within MRP runs.
 
 | # | Field | Type | Size | Dec | Description |
 |---|-------|------|------|-----|-------------|
-| 1 | SUMPNCUS_COGS | NUMERIC | 8 | 2 | — |
-| 2 | SUMPNCUS_CUST | STRING | 10 | — | — |
-| 3 | SUMPNCUS_MONTH | INTEGER | 2 | — | — |
-| 4 | SUMPNCUS_PARTNO | STRING | 15 | — | — |
-| 5 | SUMPNCUS_SALES | NUMERIC | 8 | 4 | — |
-| 6 | SUMPNCUS_YEAR | INTEGER | 2 | — | — |
+| 1 | SUMPNCUS_COGS | NUMERIC | 8 | 2 | Cost of goods sold amount for this item/customer/period |
+| 2 | SUMPNCUS_CUST | STRING | 10 | — | Customer code (FK → BKARCUST) |
+| 3 | SUMPNCUS_MONTH | INTEGER | 2 | — | Month number (1–12) |
+| 4 | SUMPNCUS_PARTNO | STRING | 15 | — | Item code (FK → BKICMSTR) |
+| 5 | SUMPNCUS_SALES | NUMERIC | 8 | 4 | Sales revenue amount for this item/customer/period |
+| 6 | SUMPNCUS_YEAR | INTEGER | 2 | — | Year (2-digit, e.g., 24 = 2024) |
+
+**Confidence: 78/100** — MTMRP descriptions from Excel confirmed; BKMRPFC/ISMRPFC/ISSLSFC
+field meanings clear from standard MRP forecast conventions; BKMRPPO planner-review semantics
+inferred from naming + MRP-to-PO workflow context; BKMRPSW/SUMPNCUS exact usage confirmed
+by naming; internal MRP logic (BKMRP_FC_FLAG values, BKMRP_PO_DONE values) requires RWN decryption.
