@@ -1,3 +1,35 @@
+# SECTION INDEX — Read this first; do not read the full document
+
+> Navigate by Grep-ing for the anchor string (e.g., grep for `SECTION:7-modules`).
+> Line numbers are NOT used — anchors never shift. Update status/confidence here after working a section.
+
+| # | Anchor | Section | Confidence | Status |
+|---|--------|---------|------------|--------|
+| 1 | `SECTION:1-architecture` | 1. System Architecture & Runtime | C:92 | ✅ |
+| 2 | `SECTION:2-file-formats` | 2. File Formats | C:92 | ✅ |
+| 3 | `SECTION:3-tas-language` | 3. TAS Pro 4GL Language | C:92 | ✅ |
+| 4 | `SECTION:4-data-dictionary` | 4. Data Dictionary & Database Schema | C:95 | ✅ |
+| 5 | `SECTION:5-security` | 5. Security & Login System | C:92 | ✅ |
+| 6 | `SECTION:6-menu-system` | 6. Menu System & Navigation | — | 🔄 |
+| 7 | `SECTION:7-modules` | 7. Modules — Functional Documentation | — | 🔄 |
+| 8 | `SECTION:8-reporting` | 8. Reporting Engine (ReportBuilder/RTM) | — | 🔄 |
+| 9 | `SECTION:9-platform-subsystems` | 9. Platform Subsystems | — | 🔄 |
+| 10 | `SECTION:10-java-integration` | 10. Java Integration (EvoPVT.jar) | C:93 | ✅ |
+| 11 | `SECTION:11-odbc` | 11. ODBC / External Connectivity | — | 🔄 |
+| 12 | `SECTION:12-customization` | 12. Customization Modules (J7*) | — | 🔄 |
+| 13 | `SECTION:13-workflows` | 13. Business Workflows / Recipes | — | ✅ |
+| 14 | `SECTION:14-encryption` | 14. Encryption & Reverse Engineering Blockers | C:100 | ✅ |
+| 15 | `SECTION:15-help-system` | 15. Help System (EvoHELP.CHM) | — | ✅ |
+| 16 | `SECTION:16-per-table` | 16. Per-Table Schema Pages | C:68-92 | 🔄 |
+| 17 | `SECTION:17-per-form` | 17. Per-Form Documentation | — | 🔄 |
+| 18 | `SECTION:18-per-report` | 18. Per-Report Documentation | — | 🔄 |
+| 19 | `SECTION:19-infrastructure` | 19. Infrastructure & Deployment | — | 🔄 |
+| 20 | `SECTION:20-confidence-summary` | 20. Master Confidence Summary | — | ✅ |
+
+---
+
+<!-- MAIN DOCUMENT BEGINS BELOW THIS LINE -->
+
 ﻿# EVO-DECOMPILE-TODO.md
 # EvoERP Full Decompile & Documentation Master Checklist
 
@@ -44,6 +76,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:1-architecture -->
 ## 1. SYSTEM ARCHITECTURE & RUNTIME
 
 ### 1.1 High-Level Architecture
@@ -103,6 +136,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:2-file-formats -->
 ## 2. FILE FORMATS
 
 ### 2.1 `.SRC` — TAS Pro 4GL Source Code
@@ -342,6 +376,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:3-tas-language -->
 ## 3. TAS PRO 4GL LANGUAGE
 
 ### 3.1 Language Fundamentals
@@ -400,6 +435,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:4-data-dictionary -->
 ## 4. DATA DICTIONARY & DATABASE SCHEMA
 
 ### 4.1 Pervasive / Btrieve Infrastructure
@@ -484,6 +520,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:5-security -->
 ## 5. SECURITY & LOGIN SYSTEM
 
 - [x] ✅ Login form identified: `EVOMENU_LOGIN.DCY`; **Pass288 (2026-06-25): fully decoded** — TEditForm1, Caption='Evo ~ ERP'; `entLogOn:TTASENTER`=username; `entPassword:TTASENTER`(PasswordChar='*')=masked password; `entVpassword:TTASENTER`+`ViewPass:TGlyphBtn`=show-password toggle; `TASENTER1:TTASENTER`=3rd entry (likely company code); `slAButton/slAGroup/slAMenu:TTASStrList`=menu population string lists; `Evoshellexe:TShellExe`=shell component; `vldentPassword()`=TAS validation function — **C: 92/100** — **Pass346**
@@ -519,6 +556,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:6-menu-system -->
 ## 6. MENU SYSTEM & NAVIGATION
 
 - [x] ✅ 554 menu codes extracted from `.RUN` string dump — **C: 88/100**
@@ -542,6 +580,7 @@ EVO code or tables can be accurately explained, modified, or reproduced.
 
 ---
 
+<!-- SECTION:7-modules -->
 ## 7. MODULES — FUNCTIONAL DOCUMENTATION
 
 Each module needs: menu codes, implementing files, UI forms, database tables, business logic summary.
@@ -848,6 +887,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ---
 
+<!-- SECTION:8-reporting -->
 ## 8. REPORTING ENGINE (REPORTBUILDER / RTM)
 
 - [x] ✅ Engine identified: Nevrona ReportBuilder (stand-alone: `RBDsgnr.exe`) — **C: 92/100** — **Pass347**
@@ -866,6 +906,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ---
 
+<!-- SECTION:9-platform-subsystems -->
 ## 9. PLATFORM SUBSYSTEMS
 
 ### 9.1 EvoNotes (CRM / Notes)
@@ -951,6 +992,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ---
 
+<!-- SECTION:10-java-integration -->
 ## 10. JAVA INTEGRATION (EvoPVT.jar)
 
 - [x] ✅ JAR analyzed: 1.8 MB JavaFX application — **C: 90/100** — **Pass348**
@@ -970,6 +1012,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ---
 
+<!-- SECTION:11-odbc -->
 ## 11. ODBC / EXTERNAL CONNECTIVITY
 
 - [x] ✅ DSN-based connection: `DSN=DBA;` (preferred) — **C: 92/100** — **Pass348**
@@ -985,6 +1028,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ---
 
+<!-- SECTION:12-customization -->
 ## 12. CUSTOMIZATION MODULES (J7\*)
 
 - [x] ✅ All 50 J7\* RWN modules inventoried (Pass 18, 2026-06-17) — **C: 90/100** — **Pass348**
@@ -998,6 +1042,7 @@ The following modules have menu codes and forms inventoried but no deep logic do
 
 ---
 
+<!-- SECTION:13-workflows -->
 ## 13. BUSINESS WORKFLOWS / RECIPES
 
 Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C: 85/100**; **Pass307-309 (2026-06-25): 44 learnevo-help recipe pages written** — complete coverage: daily-use (enter-item/vendor/po/customer, receive, voucher, checks, payment), sales (SO, ship, RMA, credit-memo, estimates, RFQ), manufacturing (BOM, routing, DC labor, WO lifecycle), inventory (adjust, transfer, PI, close-PO), period-end (AR aging, financial statements, month-end/year-end, 1099, void-check, purge), admin (login, add-user/company, switch-company, backup, update); zero auto-generated stubs remain in learnevo-help — **C: 92/100**; **Pass438 (2026-07-01): Recipes 32+33 added** — AP check run (AP-F→AP-H flow, BKAPCHKF staging, BKAPCHKH posted) + NCR workflow (QC-F-A/B/C/D, ISNCR/ISCAR); **Pass439 (2026-07-01): Recipes 34+35+36 added** — WO-G Issue Materials (WOBOM/WOMAT, KIT=L freeze behavior, 469K issue transactions) + WO-I Enter Finished Production (WORECV, cost variance panel, 53.5K receipts) + ES Estimating conversion (BKESTQT=same structure as BKARINV, ES-E Convert to SO/WO, 6.9K quotes all linked to SOs) — **C: 93/100**; **Pass444 (2026-07-01): Recipe 37 added** — WO Full Lifecycle (WO-A enter → WO-B release → WO-G issue materials → WO-F labor → WO-I finished production → WO-J close); WORKORD status codes F/R/S/C/I/X documented; all 7 lifecycle tables (WORKORD/WOBOM/WOROUT/WOMAT/WORECV/BKINVLOC/BKGLTRAN) cross-referenced; QUICK LOOKUP expanded with 10 new workflow entries — **C: 94/100**
@@ -1040,6 +1085,7 @@ Pass 58 + Pass 97 + Pass 106d (2026-06-18): 16 workflow recipes written — **C:
 
 ---
 
+<!-- SECTION:14-encryption -->
 ## 14. ENCRYPTION & REVERSE ENGINEERING BLOCKERS
 
 These are the primary obstacles to reaching 90%+ confidence on module logic.
@@ -1070,6 +1116,7 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
 
 ---
 
+<!-- SECTION:15-help-system -->
 ## 15. HELP SYSTEM (EvoHELP.CHM)
 
 - [x] ✅ CHM decompiled: 779 topics extracted — **C: 95/100**
@@ -1087,6 +1134,7 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
 
 ---
 
+<!-- SECTION:16-per-table -->
 ## 16. PER-TABLE SCHEMA PAGES
 
 One documentation page needed per table with: all fields, types, meanings, PK, FKs, which module uses it.
@@ -1141,6 +1189,7 @@ One documentation page needed per table with: all fields, types, meanings, PK, F
 
 ---
 
+<!-- SECTION:17-per-form -->
 ## 17. PER-FORM DOCUMENTATION
 
 One page per DFM: field labels, control types, linked table(s), menu code(s) that open it.
@@ -1153,6 +1202,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 ---
 
+<!-- SECTION:18-per-report -->
 ## 18. PER-REPORT DOCUMENTATION
 
 - [x] ✅ **1305** RTM files inventoried (corrected from 899); FILELOC+RTMVLD_+ISRTMS architecture documented — **C: 87/100**; **Pass 560 (2026-07-02): top-20 most-called sub-reports confirmed from rtm_crossrefs.csv**; #1 caller BKISWCE1.RTM (244 callers) = "BIN INVENTORY REPORT" (4-view warehouse bin location, ISBIN_LOC_* DataFields); #2 BKSOF4.RTM (239) = SO invoice line-item section; #3 BKWOC1.RTM (237) = WO sub-report with barcode; ISRTMS DDF confirmed 29 fields (1196-byte record: CUST/VEND/ITEM/RTM/PROGRAM/DESC/DFLT/DATE/FLAG/5-label-RTMs/QTY/EXTRA/10-printer-slots); ISRTMS.B = 0 records (label routing not configured); cfg.rtm = NOT in rtm_crossrefs.csv (prior claim corrected); FILELOC schema confirmed: LOC_BUFF_N/FILE_N/COMP_C/REC_SI/REC_TY/LOCATI/DESCRI (7 fields, 218-byte record, 4,464 rows); RTMVLD_ = TAS Pro variable library, not filesystem files — **C: 90/100**
@@ -1163,6 +1213,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 ---
 
+<!-- SECTION:19-infrastructure -->
 ## 19. INFRASTRUCTURE & DEPLOYMENT
 
 - [x] ✅ Server: `i2s109-solidcrm` — **C: 90/100**
@@ -1178,6 +1229,7 @@ One page per DFM: field labels, control types, linked table(s), menu code(s) tha
 
 ---
 
+<!-- SECTION:20-confidence-summary -->
 ## 20. MASTER CONFIDENCE SUMMARY
 
 | Area | Current C: | Target C: | Gap | Last Updated |

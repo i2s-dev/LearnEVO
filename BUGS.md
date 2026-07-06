@@ -1,5 +1,9 @@
 # BUGS — attempts log
 
+> **DEPRECATED 2026-07-06** — all entries merged into `KNOWN-ISSUES.md`.
+> Individual issue files are in `Issues/BUG-001-glossary-stubs.md` and `Issues/BUG-002-hint-bar-overlap.md`.
+> Do not add new entries here; use `KNOWN-ISSUES.md` instead.
+
 Every bug I (Claude) work on in this workspace gets an entry here. For each
 bug I record **every single thing I try**, whether it works or not, so I
 never repeat a failed fix and the user has a full paper trail.

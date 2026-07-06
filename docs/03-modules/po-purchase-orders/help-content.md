@@ -192,103 +192,84 @@ a reel of 5000 resistors is a PO of `1 REL @ $50` with conversion
 
 *Source: [po-a_enter_purchase_orders.htm](../../../samples/chm/extracted/po-a_enter_purchase_orders.htm)*
 
-The big one — creating / editing POs and Service Orders.
+**Purpose.** Enter, edit, copy, delete, and reverse purchase orders (Type P — tangible items) and service orders (Type S — outside-process services such as plating or painting). PO/SO lines are also the entry point for Make-From (Type M) and Phantom (Type B) items. Supports approved-vendor and approved-manufacturer control. Integrated with AP, WO, JC, Lot Control, Serial Control, and Inventory.
 
-### Header fields worth highlighting
+### PO Header Fields
 
-- **PO No** — default sequence counter at
-  [SD-R Assign Next Numbers](../../../samples/chm/extracted/sd-r_assign_next_numbers.htm).
-  If you type your own, you're prompted to reset the counter — the
-  vendor recommends accepting the auto-assigned number.
-- **Vend Cd** — unknown code? Program jumps you to
-  [AP-A Enter Vendors](../../../samples/chm/extracted/ap-j_print_vendor_code_and_name.htm)
-  to add inline. **Alt-P** on blank vendor → enter item number, pulls
-  in the item's primary vendor.
-- **Type P vs S** — see the module overview above.
-- **Ship To V/C** — direct-ship from vendor to another vendor or
-  customer; blank = your IN-L-B location address.
-- **Ord Desc** — prints on PO *and* on the vendor's check when the
-  PO is invoiced/paid; blank falls back to PO-number cross-ref.
-- **Ship Via / Terms Cd / FOB** — all default from the vendor master.
-- **Taxable? + Tax Group + Tax Rate** — driven by
-  [SD-C](../../../samples/chm/extracted/sd-c_purchase_order_defaults.htm)
-  `Track PO taxes using Tax Groups?` flag. Tax Rate not overridable
-  when using groups.
-- **GL Dept** — header-level override; blank = fall back to each item
-  class's department. Applied to **all GL postings** from the PO
-  except PO/RNI, AP, cash (COD), and FX exchange postings.
-- **Location** — must be a valid location.
-- **Rework PO** — checkbox; filters on [PO-B](#po-b-print-purchase-orders)
-  and [PO-I-G](#po-i-g-print-purch-order-items-by-due-date).
-- **Import Lines** — green-circle button between header and lines;
-  imports a CSV with item/description/quantity/price/receipt-date.
-  Missing price & description fall back to item master + vendor price.
+| Field | Notes |
+|---|---|
+| **PO No** (Required) | Auto-assigned from the next sequential counter in SD-R Assign Next Numbers. Can be typed manually; you are prompted to reset the counter — vendor recommends accepting the auto-assigned number. |
+| **Order Date** | Defaults to today's date. Can be overridden. |
+| **Vend Cd** (Required) | The vendor for this PO. Unknown code jumps to AP-A Enter Vendors to add inline. **Alt-P** when field is blank → enter item number and the item's primary vendor pulls in. |
+| **Type** | `P` = Purchase Order (tangible items). `S` = Service Order (services tied to WO routing sequences). Make-From (M) and Outside-Processing (T) items use Type P even though they involve services. |
+| **Name / Address / City / St / Zip / Country** | Read-only; filled from the vendor master record. |
+| **Ship to Vend/Cust or your Location** | `V` = ship to another vendor; `C` = ship to a customer; blank = your company's IN-L-B location address. F2 / Lookup to select the target vendor or customer. |
+| **Ord Desc** | 30-char general description. Prints on PO documents and on the vendor's AP check stub when the PO is invoiced/paid. Blank → PO number cross-reference appears on AP reports and check stub. |
+| **Ship Via** | 15 chars. Defaults from the vendor master (AP-A). |
+| **Terms Cd** (Required) | Payment terms. Defaults from the vendor master. Terms must be pre-defined in SM-D. |
+| **Job No** | Optional master job number for grouping related POs on reports. Does not affect GL cost posting. |
+| **FOB** | 20 chars. Defaults from vendor master. |
+| **Ent by** | 2-char initials of the person entering the PO. Defaults from SD-C. Used by the Digital Signature program (PO-T). |
+| **Currency** | Active only when multi-currency processing is on in IM-A. Defaults from the vendor master; can be overridden per PO. |
+| **Confirming?** | `Y` prints "Confirming Only" on the purchase order. |
+| **Taxable?** (Required) | `Y` = order is taxable (individual lines can still be set non-taxable). `N` = all lines non-taxable. Default is `N`. |
+| **Tax Group / Tax Rate** | Visible when SD-C `Track PO taxes using Tax Groups?` = `Y` and Taxable = `Y`. Tax Group defaults from vendor master. Tax Rate is read-only (driven by the group). When not using tax groups, the default PO tax rate from SD-C pulls in. |
+| **GL Dept** | Header-level GL department override. Blank = item-class or system-default department used per line. When set, applies to all GL postings from the PO **except**: PO Received/Not Invoiced, AP, cash (COD), and FX exchange. Configurable (display/mandatory) in SD-C. |
+| **Location** | Receiving warehouse or factory. Must be a valid location from the location file. |
+| **Rework PO** | Checkbox. Flags this PO as a rework; filterable on PO-B Print and PO-I-G Due Date report. |
+| **Import Lines** | Green-circle button between header and lines. Imports a CSV file; prompts for column mapping (Item Number, Description, Quantity, Price, Estimated Receipt Date). Missing Price / Description fall back to item master and vendor pricing. |
 
-### Line-item fields worth highlighting
+### PO Line-Item Fields
 
-- **Comment-only lines** — blank Item, text in Description; no qty /
-  price / dates asked for.
-- **Due Date** — first line default = today + lead time (from
-  vendor-price file, falling back to inventory lead time). Non-work
-  days per [SM-H](../../../samples/chm/extracted/sm-h_enter_shop_calendar.htm)
-  get skipped. Subsequent lines default to previous line's date;
-  warning fires if today + lead > previous line's date.
-- **Price** — for type P, defaults from vendor-price file then
-  inventory Last Cost. For type S with no vendor price entered,
-  price stays 0 until WO+seq entered, then offers the routing
-  outside-processing cost.
-- **UM + Conv. Fact.** — see [Key concepts §3](#3-unit-of-measure-codes-and-how-they-affect-pricing).
-- **Work Order + Seq** — type P: optional (qty/cost bypasses
-  inventory → WIP if set). Type S: **required**, and seq must be a
-  valid outside-processing sequence.
-- **GL Acct / GL Dept** — editable per-line only if SD-C's "edit GL
-  Account/Dept by Item type" flag is Y and the line type matches.
-- **Confirmed checkbox** — flag for price/delivery vendor-confirmed.
-- **Promise Date** — defaults to Due Date; later editable in
-  [PO-Q](#po-q-maintain-po-delivery-dates). Vendor-performance
-  reports rate against the **original promise**.
-- **ECO Info button** — active if [SD-H](../../../samples/chm/extracted/sd-h_inventory_defaults.htm)
-  `Use ECO = Y`; lets you specify the revision level.
+| Field | Notes |
+|---|---|
+| **REF** | Optional line reference number. Can be set to auto-assign in SD-C. |
+| **Item Number** | Inventory item from IN-B. Leave blank for comment-only lines (Description only, no qty/price/dates). Non-inventory dummy items (Type N) are common for shop supplies. |
+| **Location** | Receiving location for this line. Defaults from PO header; can be overridden per line. |
+| **Job Number** | Job number for this specific line item. |
+| **Description** | Pulled from inventory master; can be edited for this PO without affecting the standard description. Additional description/comment lines can be added. Second Description, Specifications, and approved Vendor/Manufacturer item numbers also auto-populate as comment lines. |
+| **Quantity** (Required) | 11-digit numeric, 2 decimal places. Defaults to 1.00. Negative quantities reverse a PO (Credit PO). |
+| **Due Date** (Required) | Estimated receipt / vendor promise date. First-line default = today + lead time from vendor price file (PO-H), or from inventory lead time (IN-B) if no vendor price record exists. Non-working days (SM-H Shop Calendar) are skipped to the next working day. Subsequent lines default to previous line's Due Date; warning fires if today + lead time > previous date. |
+| **Price** | 13-digit numeric, 4 decimal places. For Type P: defaults from vendor price file (PO-H), then inventory Last Cost. For Type S with no vendor price: stays 0 until Work Order + Seq entered, then offers the routing's outside-processing cost. |
+| **UM** | Purchase unit of measure. Defaults from vendor price file (PO-H), then inventory master. Special UM codes affect the price calculation — see [Key concepts §3](#3-unit-of-measure-codes-and-how-they-affect-pricing) for the full table (M, H/C, LOT, LB, CWT, SF, MSF, BF, MBF, LF, CLF, MLF). |
+| **Conv. Fact.** | Conversion factor from purchase UM to stock UM on receipt. Defaults from vendor price file then inventory master. Built-in UM codes (M, H, etc.) already have the factor embedded — do not re-enter. |
+| **Taxable?** (Required) | Per-line taxable flag. Active only when PO header Taxable? = `Y`. Defaults from the item's inventory master record. |
+| **Disc%** | Line-item discount off gross unit price. 4-digit numeric, 2 decimal places. Enter 10.00 for 10%. |
+| **Estimate** | Only accessible when called from PO-E Enter/Print RFQs. |
+| **Work Order** | Work order number for this line. Optional for Type P (costs bypass inventory → WIP when set). Required for Type S. F2 / Lookup to select. |
+| **Seq** | Routing sequence number. Type P: not required. Type S: must be a valid outside-processing sequence in the WO routing; costs post to this sequence for job costing. F2 / Lookup to select. |
+| **GL Acct** | Editable when SD-C "Edit GL Accounts by Item type" = `Y` and line type qualifies. Otherwise read-only reference. |
+| **GL Dept** | Editable when SD-C "Edit GL Dept by Item type" = `Y` and line type qualifies. Otherwise read-only reference. |
+| **Confirmed** | Checkbox. Marks that price and delivery have been confirmed by the vendor. |
+| **Promise Date** | Vendor's committed delivery date. Defaults to Due Date. Can be updated later in PO-Q Maintain PO Delivery Dates. Vendor-performance reports (PO-I-H) evaluate on-time delivery against the **original promise date**. |
+| **ECO Info** | Button visible when SD-H `Use ECO = Y`. Allows entry of the revision level for this line; can be printed on the PO. |
 
-### Auto-inserted comment lines (in this order)
+### Auto-inserted comment lines (appended after each PO line, in this order)
 
-If an item has these records, they pull in as comment-only lines
-immediately after the line:
-1. Vendor-specific item number from [BM-K](../../../samples/chm/extracted/bm-k_enter_approved_vendors.htm).
-2. Manufacturer + manufacturer's item number from [BM-L](../../../samples/chm/extracted/bm-l_enter_approved_manufacturers.htm).
+If an item has these records, they pull in as comment-only lines immediately after the line item:
+1. Vendor-specific item number from BM-K Enter Approved Vendors.
+2. Manufacturer and manufacturer's item number from BM-L Enter Approved Manufacturers.
 3. Inventory Specifications (up to 12 lines) — prompted Y/N.
-4. For type S: Routing Notes.
+4. For Type S: Routing Notes.
 
-### Dupe / Insert / Notes / Copy
+### Totals
 
-- **Dupe Line** — click after saving a line; repeats all the line's
-  data (optionally including comments) so you just edit the due date.
-  Classic use: **scheduled / blanket orders** (same item, multiple
-  dates, each its own line).
-- **Ins Line** — move the anchor line into the entry area, click
-  Ins; everything below shifts down one.
-- **Notes** — Notes button → free-form; also **Copy Notes** to pull
-  notes from another PO (template pattern).
-- **Copy PO** — on the opening list, highlight → Copy PO → prompts
-  for PO# (blank = next sequential) and receipt date (blank = lead
-  time on first line).
+| Field | Notes |
+|---|---|
+| **Subtotal** | Running subtotal; updated after each line item is saved. |
+| **Tax** | Calculated when the PO is saved. |
+| **Total** | Subtotal + Tax. Displayed only after the PO is saved. |
 
-### Reversing a PO (credit/return)
+### Program operations
 
-Enter a **new PO** mirroring the original but with **negative line
-quantities**. On receipt, the second PO reverses the first's ledger /
-inventory / vendor activity. Also known as a **Credit PO**.
-
-### Deleting an Existing PO
-
-Opening list → highlight → Delete. **Not allowed** if:
-- Any item is Received-Not-Invoiced.
-- Any item is in QC.
-
-### Approved vendors / manufacturers
-
-This program honors approved-vendor and approved-manufacturer rules
-per [How to Use Approved Vendors and Manufacturers](../../../samples/chm/extracted/how_to_use_approved_vendors_and_manufacturers.htm).
+- **Saving:** F10 or Save button. Prompts to apply SD-C ending lines (print on PO). Saving updates inventory *On Purchase Order* quantities and location on-order quantities.
+- **Dupe Line:** Repeats all fields of the last line (optionally with comments) — edit Due/Promise dates. Classic use: **scheduled / blanket orders** (same item, multiple delivery dates).
+- **Ins Line:** Bring the anchor line into the entry area → click Ins Line; all subsequent lines shift down one.
+- **Notes:** Free-form PO notes; **Copy Notes** copies notes from another PO (template pattern). Notes print after all line items.
+- **Copy PO:** From the opening list, highlight → Copy PO → prompts for PO# (blank = next sequential) and receipt date (blank = calculated from first-line lead time).
+- **Reversing a PO (Credit/Return):** Enter a new PO mirroring the original with **negative line quantities**. On receipt, reverses the first PO's ledger / inventory / vendor activity.
+- **Deleting:** From the opening list → Delete. Not allowed if any item is Received-Not-Invoiced or in QC.
+- **Approved vendors / manufacturers:** Program enforces approved-vendor and approved-manufacturer rules per [How to Use Approved Vendors and Manufacturers](../../../samples/chm/extracted/how_to_use_approved_vendors_and_manufacturers.htm).
 
 ---
 

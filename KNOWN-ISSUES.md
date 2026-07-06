@@ -1,5 +1,9 @@
 # KNOWN-ISSUES.md — EvoERP Known Issues
 
+> **BUGS.md merged into this document 2026-07-06. Do not write to BUGS.md.**
+> learnevo-help tool bugs are tracked here under "learnevo-help Tool Bugs (FIXED)" below.
+> Individual issue files are in `Issues/BUG-NNN-*.md`.
+
 Live production bugs and workarounds. Each entry has a unique ID (KI-NNN) for cross-referencing.
 Newest entries on top within each status group.
 
@@ -20,6 +24,8 @@ ID, fill in all fields, and prepend it under the appropriate status heading.
 | ID | Module | One-line summary | Status | Workaround? |
 |----|--------|-----------------|--------|-------------|
 | [KI-001](#ki-001) | WO-G | KIT=L freezes EVO when first mandatory BOM item is fully issued | ACTIVE | Yes — use KIT=Y |
+| [BUG-001](#bug-001-glossary-stubs) | learnevo-help | Glossary see-also refs produced broken-link stubs | FIXED | n/a |
+| [BUG-002](#bug-002-hint-bar-overlap) | learnevo-help | Hint bar overlapping sidebar + content | FIXED | n/a |
 
 ---
 
@@ -95,6 +101,42 @@ T7WOG4 entirely and issues all remaining components directly. Confirmed working 
 ## Status: FIXED
 
 *(none yet)*
+
+---
+
+## learnevo-help Tool Bugs (FIXED)
+
+These bugs were originally tracked in `BUGS.md` (now deprecated). Full details in `Issues/`.
+
+---
+
+### BUG-001 — Glossary stubs
+
+**Module:** learnevo-help (`build.py`, `content/glossary.py`)
+**Tags:** `glossary` `see_also` `broken-links` `stubs` `pid` `_resolve_ref`
+**Status:** ✅ FIXED — 2026-04-21
+**Full details:** [Issues/BUG-001-glossary-stubs.md](Issues/BUG-001-glossary-stubs.md)
+
+11 stub pages appeared in the help browser because `_resolve_ref()` in `build.py` did not
+canonicalize bare glossary terms (e.g. `"Btrieve"`), producing dangling `#Btrieve` anchors
+instead of proper `glossary-btrieve` pids. Fixed by adding `_glossary_pid()` +
+`_canonicalize()` helpers and threading them through both `_resolve_ref` and
+`convert_wiki_links`. Stub count reduced from 104 → 88 (all 11 broken links eliminated).
+
+---
+
+### BUG-002 — Hint bar overlap
+
+**Module:** learnevo-help (`css/style.css`, `server.py`, `RUN.bat`, `launch.bat`)
+**Tags:** `CSS` `layout` `keyhint` `position-fixed` `flex` `cache` `Edge` `zombie-server` `Cache-Control`
+**Status:** ✅ FIXED — 2026-04-21
+**Full details:** [Issues/BUG-002-hint-bar-overlap.md](Issues/BUG-002-hint-bar-overlap.md)
+
+The `.keyhint` bar was `position: fixed` and floated over both `#sidebar` and `#page`. Fixed
+by making `.keyhint` a `flex-shrink: 0` static flex child of `<body>`. A zombie Python server
+(PID 36084, running since 2026-04-17) masked the fix until killed. Prevention: added
+`kill-help-server.ps1` and wired it into both `RUN.bat` and `launch.bat`. Cache-busted asset
+URLs (`?v=20260421b`) + added `Cache-Control: no-store` to `server.py` to prevent recurrence.
 
 ---
 

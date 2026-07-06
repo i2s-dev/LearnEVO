@@ -1,3 +1,20 @@
+# SECTION INDEX — Read this first; do not read the full document
+
+> Navigate by Grep-ing for the anchor string (e.g., grep for `SECTION:1-chm-categories`).
+> Line numbers are NOT used — anchors never shift. Update status here after working a section.
+
+| # | Anchor | Section | Status |
+|---|--------|---------|--------|
+| 1 | `SECTION:1-chm-categories` | Top-level CHM categories (14 modules) | ✅ All documented 2026-06-01 |
+| 2 | `SECTION:2-how-to-work` | How to work the list | ✅ Reference only |
+| 3 | `SECTION:3-notes` | Notes (779 topics, gaps) | ✅ Reference only |
+
+**Overall status: All 14 CHM categories documented as of 2026-06-01. Only gap: RMA (Sales) had no CHM source content.**
+
+---
+
+<!-- MAIN DOCUMENT BEGINS BELOW THIS LINE -->
+
 # EVO-HELP-TODO
 
 Tracks documentation progress against the **EvoHELP.CHM** table of
@@ -12,6 +29,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
 
 ---
 
+<!-- SECTION:1-chm-categories -->
 ## Top-level categories
 
 - [x] **System Overview** ✅ — 11 subtopics consolidated into
@@ -138,6 +156,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
 
 ---
 
+<!-- SECTION:2-how-to-work -->
 ## How to work the list
 
 1. Pick the next ⬜ category (prefer the one that unblocks the most
@@ -150,6 +169,7 @@ Status key: ✅ done · 🟡 in progress · ⬜ not started.
 5. Update status here (⬜ → 🟡 → ✅) and tick the child boxes.
 6. Commit.
 
+<!-- SECTION:3-notes -->
 ## Notes
 
 - **779 topic pages** total in the CHM. Top-level category count
