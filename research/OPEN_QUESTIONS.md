@@ -126,6 +126,14 @@ to resolve fully:
    YN[66]=LNGWT but linear gives PAYRQE. The symbol pool is in editor-UI order, not YN-index
    order. The yn_table.txt scratchpad from Pass 429 is NOT a confirmed mapping table.
    YN[31]='I' (live) is plausibly WOGKIT from the linear mapping but unconfirmed by SRC.
+   **See [Issues/M-003-yn-table-pool-order-wrong.md](../Issues/M-003-yn-table-pool-order-wrong.md)**
+   for the mislabeled-column resolution and lesson.
+   **Pass 573 (2026-07-06):** T7YSYN bytecode adjacency approach also tried and found
+   unreliable — T7YSYN processes all 250 YN slots in sequence, so small constants 1-250
+   appear near every ISTS.CFG var reference (false adjacency). T7YSYN pool text search
+   yields 0 matches (YN refs encoded as binary var-index + subscript, not text strings).
+   Remaining open: ~162 of 250 slots unassigned; next viable path = search other DFM files
+   beyond T7MDefNDC.DFM for additional BKYS.YN[N] direct FieldName bindings.
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a

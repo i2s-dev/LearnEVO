@@ -131,10 +131,18 @@ Current decryption scripts:
 ## 7. Highest-value next tasks (in priority order)
 
 1. **YN[N] ↔ ISTS.CFG.* mapping — at C:88, push toward C:90** — ~162 of 250 slots still unknown.
-   All 85 T7MDefNDC.DFM direct bindings confirmed (Pass 572 hierarchical parser). Remaining options:
-   (a) T7YSYN pool expression tree parser (complex, multi-token compound format — hardest);
-   (b) grep SRC files for `bkys.yn[N]` patterns to find slots in the 100–199 range;
-   (c) live query more companies' BKYSMSTR to cross-validate flag values.
+   All 85 T7MDefNDC.DFM direct bindings confirmed (Pass 572 hierarchical parser).
+   **Pass 573 (2026-07-06) — approaches exhausted:**
+   - ~~(a) T7YSYN pool expression tree parser~~ — pool text search yields 0 matches; YN refs are
+     binary var-index+subscript encodings, not text strings. Dead end.
+   - ~~(b) T7YSYN bytecode adjacency scan~~ — too noisy; T7YSYN processes all 250 YN slots
+     sequentially, so small constants 1-250 appear near all ISTS.CFG var refs (false adjacency).
+     Script: `scripts/_tmp_ysyn_bytecode.py`. Dead end.
+   - ~~(c) grep SRC files~~ — done; all 7 SRC files searched, 8 confirmed slots, all documented.
+   **Remaining viable paths:**
+   - Search ALL DFM files (not just T7MDefNDC.DFM) for additional `FieldName='BKYS.YN[N]'`
+     direct bindings — other setup screens may bind different YN slots.
+   - Live query additional company BKYSMSTR records for cross-validation.
    Blocked slots YN[102-143]: module-enable order confirmed (BKMENUSU GROUPS order), but
    value semantics (Y/Z/A/Q/1/space flags) blocked by RWN encryption.
    `docs/05-configuration/ists-cfg-keys.md` is the working document.
