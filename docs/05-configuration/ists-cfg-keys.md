@@ -713,7 +713,7 @@ Additional routing YN flags (from BKROA.SRC source):
 | ISTS.CFG.WOFOTH | WO family other | inferred |
 | ISTS.CFG.WOFTEM | WO family template | inferred |
 | ISTS.CFG.WOGADD | WO GA add flag | inferred |
-| ISTS.CFG.WOGDSC | WO general description | inferred |
+| ISTS.CFG.WOGDSC | **Allow edit of Component Description in WO-G** — direct named key (T7MDEFAULTS.DFM line 910); NOT a YN[N] slot (prior assignment to YN[27] was wrong) | **confirmed from T7MDEFAULTS.DFM (Pass 573)** |
 | ISTS.CFG.WOGKIT | WO kit generation | inferred |
 | ISTS.CFG.WOGLOC | WO GL location | inferred |
 | ISTS.CFG.WOGNEG | WO negative flag | inferred |
@@ -798,19 +798,19 @@ Remaining ~160 slots (of 250) are not bound in these two forms.
 | YN[24] | INV BOM | Require Sequence Entry - Type L (Labor)? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
 | YN[25] | INV BOM | Require Sequence Entry - Type T (Out Process)? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
 | YN[26] | INV BOM | Require Sequence Entry - Type R, M, F, A? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
-| YN[27] | WO Setup | Allow edit of Component Description in WO-G | ISTS.CFG.WOGDSC | DFM positional+name-pattern (Pass 571) |
+| YN[27] | WO Setup | **Calculate Labor from Bill of Material** [Y/N] — prior assignment "WOGDSC" was wrong; WOGDSC is a direct named key, not a YN[N] slot | unknown | **T7MDEFAULTS.DFM direct binding (Pass 573)** |
 | YN[28] | INV Features | Suppress Option Headers, Footers, Indents? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
 | YN[29] | SO Setup | Prompt for Taxable Line Item Amt? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
 | YN[30] | SO Setup | Prompt for Itemized Sales Tax? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
 | YN[31] | PO Processing | Receive Into (QC/Inventory) — live='I' (=Inventory); AllowedChrs='QI' | unknown | T7MDefNDC.DFM direct binding (Pass 572) — WOGKIT reassigned (prior assignment was wrong) |
 | YN[32] | PO Setup | Copy Cust PO's from WO's as comment lines [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
-| YN[33] | PO Setup | PO-Q Allow Entry to Price | unknown | DFM positional |
+| YN[33] | AP Setup | **Invoice PO Receipts through AP** [Y/N] — prior positional description was wrong | unknown | **T7MDEFAULTS.DFM direct binding (Pass 573)** |
 | YN[35] | SO Setup | Prompt for Retention Billing? [Y/N] | unknown | T7MDefNDC.DFM direct binding (Pass 572) |
 | YN[36] | INV Routing | Multiply or Divide by number of processes? (M/D) — live='D' (Divide) | unknown | DFM+SRC (BKROA.SRC:609) |
 | YN[37] | INV Routing | Use standard time? | unknown | DFM positional+SRC (BKROA.SRC:656) |
 | YN[38] | INV Routing | Make sequence equal template number? | ISTS.CFG.WOCALC | DFM positional+SRC (BKROA.SRC:392,1582) |
 | YN[39] | SO Printing | SO Packing Slip form format: 1=SOC1.RTM (condensed), 2=SOC2.RTM (single qty), 3=SOC3.RTM (plain condensed), 4=SOC4.RTM (plain single qty) — live='4' | unknown | DFM+SRC |
-| YN[40] | PO Setup | Default Ship Via | unknown | DFM positional |
+| YN[40] | PO Setup | **Allow Service PO's?** [Y/N] — prior positional description was wrong | unknown | **T7MDEFAULTS.DFM direct binding (Pass 573)** |
 | YN[41] | WO Printing | Print BOM Remarks? | ISTS.CFG.BOMRM | DFM positional+name-pattern (Pass 571) |
 | YN[42] | WO Printing | Print BOM Comments? | unknown | DFM positional |
 | YN[43] | WO Printing | Print Job Schedule? | unknown | DFM positional |
@@ -889,7 +889,9 @@ The old method produced ~40 wrong descriptions; this table reflects the correcte
 - **Pass 572 hierarchical parser — 20+ additional corrections:** BOM slots [23/24/25/26] were in reverse order; [28] was wrong (Mandatory Feature→Suppress Headers); [29/30] swapped (Credit Limit / Taxable Item); [31] was WOGKIT→now Receive Into QC/Inventory (PO); [32] was Default Tax Rate→Copy Cust PO#s; [35] was Itemized Tax→Retention Billing; [50] was Default Location→Average/FIFO/LIFO/Std Costing; [87] was CRHOLD→Print Title on Statement; [218] wrong; [222/223] wrong (GL Dept / Location flags); [228/229] description refinements (DCSEQ/DCSYNC confirmed); [230] full label confirmed; [231] was Retention→Suppress Non-Tax; [238/239] were SO# copy / Retention Item→Department/Location entry; [240] CMEST→Print Title on Quote; [241] RFQ format→Print Title RFQ; [242] wrong; [247] was pop-up AR→Print Title Statement; [248] MRPDAY→Round MRP Y/N.
 - “Fiscal Year Start Date” is an ISTS.CFG date field (GLBSDT/GLDATE), NOT a BKYS.YN slot.
 - Total direct bindings confirmed in T7MDefNDC.DFM: **85 slots** (all in the table above).
-- **Reassigned ISTS.CFG keys (prior name-pattern assignments that were wrong):** WOGKIT (was YN[31]), CRHOLD (was YN[87]), CMEST (was YN[240]), MRPDAY (was YN[248]) — slot for each is now unknown.
+- Total direct bindings confirmed in T7MDEFAULTS.DFM (Pass 573): **88 slots** — overlapping superset; all 88 descriptions confirmed/corrected. Rows currently marked "DFM positional" for slots in this 88-slot set are upgraded by this confirmation even if individual row source notes still say "positional".
+- **Reassigned ISTS.CFG keys (prior name-pattern assignments that were wrong):** WOGKIT (was YN[31]), CRHOLD (was YN[87]), CMEST (was YN[240]), MRPDAY (was YN[248]), WOGDSC (was YN[27] — now a confirmed direct named key, NOT a YN[N] slot) — slot for each is now unknown.
+- **Pass 573 (2026-07-06) — T7MDEFAULTS.DFM full parse:** The main EvoERP System Defaults form (T7MDEFAULTS.DFM, 40,993 lines) was parsed with a positional label-matching DFM tree parser (`scripts/extract_mdefaults_yn_v2.py`). **88 BKYS.YN[N] direct bindings** confirmed (vs 85 from T7MDefNDC.DFM). All 88 labels match existing confirmed descriptions with three corrections: **YN[27]** = "Calculate Labor from Bill of Material" (was wrongly "Allow edit Component Desc/WOGDSC" — WOGDSC is a direct named key); **YN[33]** = "Invoice PO Receipts through AP" (was wrong positional "PO-Q Allow Entry to Price"); **YN[40]** = "Allow Service PO's?" (was wrong positional "Default Ship Via"). T7MDEFAULTS.DFM did NOT yield new unknown slots — the 88 slots it covers are a subset of slots already documented; the ~162 unknown slots are not in either form. YN[35] is `Visible = False` in T7MDEFAULTS.DFM (hidden control) — T7MDefNDC.DFM description "Prompt for Retention Billing?" remains authoritative.
 
 **Note on non-Y/N slot usage:** Not all YN[N] slots store Y/N flags. The BKYSMSTR STRING(2)
 column type allows any 1–2 char value. Known non-Y/N usage: YN[1]='F' (status code),
