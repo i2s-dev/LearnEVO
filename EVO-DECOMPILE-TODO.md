@@ -20,7 +20,7 @@
 | 13 | `SECTION:13-workflows` | 13. Business Workflows / Recipes | C:93 | ✅ |
 | 14 | `SECTION:14-encryption` | 14. Encryption & Reverse Engineering Blockers | C:100 | ✅ |
 | 15 | `SECTION:15-help-system` | 15. Help System (EvoHELP.CHM) | C:90 | ✅ |
-| 16 | `SECTION:16-per-table` | 16. Per-Table Schema Pages | C:68-92 | 🔄 |
+| 16 | `SECTION:16-per-table` | 16. Per-Table Schema Pages | C:75-92 | 🔄 |
 | 17 | `SECTION:17-per-form` | 17. Per-Form Documentation | C:90 | 🔄 |
 | 18 | `SECTION:18-per-report` | 18. Per-Report Documentation | C:82 | 🔄 |
 | 19 | `SECTION:19-infrastructure` | 19. Infrastructure & Deployment | C:90 | ✅ |
@@ -1139,7 +1139,7 @@ These are the primary obstacles to reaching 90%+ confidence on module logic.
 
 One documentation page needed per table with: all fields, types, meanings, PK, FKs, which module uses it.
 
-**Status:** Many tier-1 tables now documented in tier1–tier5-tables.md. **Pass431 (2026-06-30): Excel import `Evo-DBA_File_Fields 052421.xlsx` added complete field coverage for all 579 tables / 21,299 fields.** Per-module field reference files `docs/04-data-dictionary/fields-<module>.md` now exist for all 32 modules + misc. Field descriptions present for ~65% of fields. Master table index at `docs/04-data-dictionary/table-index.md`.
+**Status:** Many tier-1 tables now documented in tier1–tier5-tables.md. **Pass431 (2026-06-30): Excel import `Evo-DBA_File_Fields 052421.xlsx` added complete field coverage for all 579 tables / 21,299 fields.** Per-module field reference files `docs/04-data-dictionary/fields-<module>.md` now exist for all 32 modules + misc. **Pass 574k (2026-07-07): ALL field descriptions filled — 0 blank cells remain across all 33 fields-*.md files (24,000+ fields described).** Master table index at `docs/04-data-dictionary/table-index.md`.
 
 ### Priority Tier 1 — Core Transaction Tables (must reach C: 80+ to hit 90% goal)
 - [x] ✅ BKARCUST — AR Customer master — tier1-tables.md **C: 90/100** — **Pass348**
