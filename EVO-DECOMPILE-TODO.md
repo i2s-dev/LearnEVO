@@ -13,7 +13,7 @@
 | 6 | `SECTION:6-menu-system` | 6. Menu System & Navigation | C:95 | ✅ |
 | 7 | `SECTION:7-modules` | 7. Modules — Functional Documentation | C:90 | ✅ |
 | 8 | `SECTION:8-reporting` | 8. Reporting Engine (ReportBuilder/RTM) | C:90 | ✅ |
-| 9 | `SECTION:9-platform-subsystems` | 9. Platform Subsystems | C:88 | ✅ |
+| 9 | `SECTION:9-platform-subsystems` | 9. Platform Subsystems | C:90 | ✅ |
 | 10 | `SECTION:10-java-integration` | 10. Java Integration (EvoPVT.jar) | C:93 | ✅ |
 | 11 | `SECTION:11-odbc` | 11. ODBC / External Connectivity | C:92 | ✅ |
 | 12 | `SECTION:12-customization` | 12. Customization Modules (J7*) | C:90 | ✅ |
@@ -933,10 +933,15 @@ The following modules have menu codes and forms inventoried but no deep logic do
 ### 9.4 EvoBackup
 - [x] ✅ Files: EvoERPbackup.RWN(76p, NZLICE.LIB); opens FILELOC+BKSYMSTR — uses zipdll/unzdll for compression — **C: 72/100**; FILELOC = backup destination paths (source); BKSYMSTR = company info (archive header); no direct Btrieve table writes — backup reads data files via OS, compresses via zipdll.dll; Pass269 (2026-06-25) — **C: 82/100** — **Pass348**
 - [x] ✅ Backup target paths and file selection logic confirmed (Pass 113 2026-06-19) — **C: 88/100** — **Pass348**
+- [x] ✅ Form layout, ISLOG schema, CSTFILELIST, cloud backup endpoint confirmed (Pass 575 2026-07-07) — **C: 90/100**
+  - EvoERPbackup.DFM: Backup Type radios (Full System/Company Data/Customized); companies grid (TAG/EXT/NAME); CSTFILELIST grid (multi-row browse-button file list, only shown in Custom mode); ZipMaster v1.78 component (compression level 9); buttons: Go/Schedule/Exit
+  - ISLOG: 9-field general-purpose IS log (WHO 35/WHAT 15/DOING 60/STARTD DATE/STARTT 12/COMPANY 3/KILL 1/MSG 200/EXTRA 100); written by backup + EvoSchedSetup + CALREM etc.
+  - Cloud backup: GS_BACKUP triggers EVOERP-BACKUP.JAR upload to `https://login.istechsupport.com/api/v1/evo/backups/archives/` (3-step INIT/UPLOAD/COMPLETE, SHA-256); GLACIERKEY = auth key; "AWS Glacier" characterization was incorrect — destination is ISTech's own API server
+  - GS_ARCH / GS_NONE: semantics inferred from names only; GS_NONE = no cloud; GS_ARCH = possibly archive/retrieve tier (not confirmed from bytecode — only remaining gap)
   - Source files: FILELOC registry enumerates all Btrieve .B data files; per-company via COMP.TAG/COMP.EXT/COMP.NAME
   - Three scope modes: FULLSYSTEM (all companies), COMPDATA (current company), CUSTOM (CSTFILELIST)
   - Output: ZIP archive (ZIPNAME) via zipdll; BKSYMSTR provides company name for archive labeling; ISLOG logs backup run
-  - Local target: `\\i2s109-solidcrm\Bak Up\`; cloud: AWS Glacier via GLACIERKEY (GS_ARCH/GS_BACKUP/GS_NONE flags)
+  - Local target: `\\i2s109-solidcrm\Bak Up\`; cloud: ISTech API at `login.istechsupport.com` via EVOERP-BACKUP.JAR (GS_BACKUP flag); GLACIERKEY = auth key; GS_ARCH/GS_NONE semantics inferred only — "AWS Glacier" characterization in earlier passes was from variable names, not confirmed
   - MON/TUE/... flags support scheduled day-of-week automation; ISACCESS checks module license
   - docs: `docs/01-architecture/subsystems.md` (EvoBackup section)
 - [x] 🔄 Restore procedure documented — no EvoERPrestore.RWN found in 1122-program catalog; restore may be manual ZIP extraction — **C: 55/100**; **Pass566 (2026-07-03)**: documented in `docs/01-architecture/subsystems.md` (EvoBackup section); backup=ZIP via zipdll confirmed; restore=manual: stop EvoService → stop Pervasive → extract ZIP → restart Pervasive → restart EvoService; no automated restore tool found; cloud backup via istechsupport.com API (multi-part upload); gap = no live restore test possible

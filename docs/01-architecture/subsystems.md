@@ -81,21 +81,54 @@ EvoSched.RWN (21 procs) is a lightweight standalone variant used for **testing**
 | Component | File | Procs | Purpose |
 | --------- | ---- | ----- | ------- |
 | Main      | `EvoERPbackup.RWN` | 76 | Backup engine with cloud + local modes (see below) |
-| Form      | `EvoERPBACKUP.DCY` | — | UI form for backup configuration |
+| Form      | `EvoERPBACKUP.DCY` / `EvoERPbackup.DFM` | — | UI form for backup configuration |
 
-**Confirmed variables (Pass 107):**
-- `COMP.TAG` / `COMP.EXT` / `COMP.NAME` — per-company file selection
-- `ZIPFILES` / `ZIPNAME` — ZIP archive management (uses `zipdll.dll`)
-- `FULLSYSTEM` / `COMPDATA` / `CUSTOM` — three backup scope modes (full system / company data only / custom selection)
-- `GLACIERKEY` — AWS Glacier archive key (**cloud backup to AWS confirmed**)
-- `GS_ARCH` / `GS_BACKUP` / `GS_NONE` — Glacier storage class flags
-- `MON` / `TUE` / ... — day-of-week schedule flags
-- `FILELOC` — source file index (used to enumerate all Btrieve files)
+**Form layout (EvoERPbackup.DFM — confirmed Pass 575, 2026-07-07):**
+
+Caption: "Evo Backups". Three panels:
+
+- **Backup Type** group (left): radio buttons — `fullsystem` / `compdata` / `custom` ("Full System" default checked)
+- **Companies grid** (right, shown for Full System and Company Data modes): editable `TTASDataGrid` with columns Tag (`COMP.TAG`, checkbox) / Code (`COMP.EXT`, read-only) / Company Name (`COMP.NAME`, read-only) — user checks which companies to include
+- **Custom files grid** (right, shown when "Customized" is selected): editable `TTASDataGrid` with single column "Files to backup" (`CSTFILELIST`, `edEditBtn` editor with browse button) — user adds one file path per row; `AllowInsertRow=True`, `AllowDeleteRow=True`
+- **Details** group (hidden when Custom is selected): `zipfiles` (FieldName='zipfiles', disabled by default) and `zipName` (archive filename entry)
+- **Buttons**: Go, Schedule (routes to EvoScheduler for recurring backups), Exit, Save (hidden)
+- **ZipMaster** embedded component: TZipMaster v1.78, compression level 9 (maximum)
+
+**Confirmed variables (Pass 107 + 575):**
+- `COMP.TAG` / `COMP.EXT` / `COMP.NAME` — per-company file selection (bound to companies grid columns)
+- `ZIPFILES` / `ZIPNAME` — ZIP archive management (TZipMaster v1.78 component)
+- `FULLSYSTEM` / `COMPDATA` / `CUSTOM` — three backup scope modes (radio buttons in form)
+- `CSTFILELIST` — custom file list: multi-row editable grid, one file path per row, browse-button editor; only visible when "Customized" mode is selected
+- `GLACIERKEY` — cloud backup auth/archive key (named_var in RWN, not a UI field)
+- `GS_BACKUP` / `GS_ARCH` / `GS_NONE` — cloud storage flags (named_vars in RWN):
+  - `GS_BACKUP` — **confirmed** (Pass295): triggers upload to `https://login.istechsupport.com/api/v1/evo/backups/archives/` via EVOERP-BACKUP.JAR; 3-step INIT/UPLOAD/COMPLETE API with SHA-256 verification; authentication via `authKey` in `authorization` header; uses Apache HttpClient 5 + Jackson JSON
+  - `GS_ARCH` / `GS_NONE` — inferred from names (archive tier vs no cloud); exact semantics not confirmed from bytecode
+  - **Correction:** the "AWS Glacier" characterization in earlier passes was inferred from variable names only. The confirmed cloud endpoint is ISTech's own server (`login.istechsupport.com`), not AWS directly.
+- `MON` / `TUE` / `WED` / `THU` / `FRI` / `SAT` / `SUN` — day-of-week schedule flags (used when routing through EvoScheduler)
+- `FILELOC` — source file path index (enumerates all Btrieve `.B` files to back up)
+- `BKSY.COMP.NAME/ADD1/ADD2/CSZ` — company name + address embedded in archive header (from BKSYMSTR)
+- `ZIPPATH` / `ZIPFILE` — resolved archive destination path and filename
+
+**ISLOG usage (confirmed from DDF schema — Pass 575, 2026-07-07):**
+
+ISLOG (9 fields, Table ID in DDF) is a general-purpose IS activity log written by EvoBackup
+(and other IS subsystems — EvoSchedSetup, CALREM, etc.):
+
+| Field | Size | Meaning |
+|-------|------|---------|
+| `IS_LOG_WHO` | 35 | EvoERP user login code who ran the operation |
+| `IS_LOG_WHAT` | 15 | Operation type code (e.g., "BACKUP") |
+| `IS_LOG_DOING` | 60 | Specific action description |
+| `IS_LOG_STARTD` | DATE (4) | Date the operation started |
+| `IS_LOG_STARTT` | 12 | Start time string |
+| `IS_LOG_COMPANY` | 3 | Company code |
+| `IS_LOG_KILL` | 1 | Abort/kill flag |
+| `IS_LOG_MSG` | 200 | Result message or status |
+| `IS_LOG_EXTRA` | 100 | Supplemental metadata |
 
 EvoERPbackup opens FILELOC (all file paths) and BKSYMSTR (system config) for target
 resolution. Output destination: `\\i2s109-solidcrm\Bak Up\` for local or
-AWS Glacier for cloud. The `GS_*` variables confirm this is a real supported
-backup tier, not a stub.
+ISTech cloud API for cloud (GS_BACKUP mode).
 
 ## EvoDC — Data Collection (shop-floor / handheld)
 
