@@ -132,8 +132,19 @@ to resolve fully:
    unreliable — T7YSYN processes all 250 YN slots in sequence, so small constants 1-250
    appear near every ISTS.CFG var reference (false adjacency). T7YSYN pool text search
    yields 0 matches (YN refs encoded as binary var-index + subscript, not text strings).
-   Remaining open: ~162 of 250 slots unassigned; next viable path = search other DFM files
-   beyond T7MDefNDC.DFM for additional BKYS.YN[N] direct FieldName bindings.
+   **Pass 575 (2026-07-07):** Extracted all ISTS.CFG key names from 1122 decrypted .RWN
+   files. Total: 542 unique keys, all ≤6 chars (6-byte padded field in 77-byte table
+   entry). Keys saved to `research/ists-cfg-all-keys.txt`. Key finding: CALCLABR,
+   INVAPREC, ALLSVCPO, BACKFLSH do NOT exist as ISTS.CFG keys — the KNOWN_SLOTS entries
+   for YN[27], YN[33], YN[40] used wrong names from a different naming system. Confirmed
+   mappings: YN[38]=WOCALC, YN[48]=APCHK, YN[65]=STDCST, YN[228]=DCSEQ, YN[229]=DCSYNC.
+   Memory dump from Test 03 confirms 77-byte table entry stride, first 13 entries in table
+   order: STDCST→UPLCST→SHPFOB→CHKBAL→CMPLOC→SOIOC→WOGKIT→PRTPS→PICKT→DCSEQ→SCRAP→
+   SOCHG→SHPHST. ISTS.CFG is NOT a Btrieve table — it is built in-memory from BKYSMSTR
+   YN values using hardcoded key names compiled into .RWN files.
+   **Next step:** Run Test 05 (Frida Tests → option 5) — hooks BTRCALLID, fires memory
+   scan 800ms after BKYSMSTR is read, dumps full 542-entry table in init order, then
+   cross-refs against known slot anchors to determine slot = f(table_index).
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a
