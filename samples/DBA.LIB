@@ -1,0 +1,5066 @@
+;2/23/00 two new functions.  add_slash and valid_dir
+;3/15/00 New functions/suboutines to make a consistant open/lock/message
+;        for the BKSYMSTR/BKYSMSTR file.
+;3/17/00 Changing new functions on 3/15/00 to be all one function with a passed
+;        parameter.
+;3/18/00 re: above.  continuing function development
+;04/04/00 FMZ See changes system master file opening functions.
+;4/14/00  AjM New command.  make_gl_entry.  YE entry creating function.
+;5/4/00   ZLD - fixing small spacing problems found when compiling with tas60
+;5/10/00  ZLD - same as above - tas60 compile problems
+;10/26/00 FMZ New function: ChkDupeInvc
+;11/14/00 FMZ New function: NextARInvc
+;12/03/00 FMZ New function: NextARDep
+;12/30/00 FMZ New function: NextARTrxn
+;             Also, fixed a bug in NextARDep, was using a N,6 number for
+;             the deposit# instead of N,10.
+;01/03/01 FMZ New function: LastTDate
+;01/05/01 FMZ New function: AROpenBal
+;01/06/01 AGL New command: RTM_VALID
+;02/21/01 FMZ New function: CheckConv
+;06/12/01 AGL New command: WAV_PLAY
+;02/04/02 AGL New Functions for Location tag list. used by MRF now.
+;02/12/02 FMZ New function: WhatsOn
+;02/12/02 FMZ New functions: PostGLX, FL_ChkCLGL
+;03/20/02 FMZ New function: BZDefGL
+;03/28/02 FMZ New function: OpenGLFiles
+;04/03/02 FMZ New function PostGLT (split out from PostGLX)
+;05/02/02 FMZ Changes to the SEL.CHKACT and VLD.CHKACT functions.
+;             These used to check that the GL code of each bank acct
+;               was a valid GL and would not display in the selection
+;               list any bank accts whose GL was not valid.  This
+;               becomes more problematical now because if Acctg is OFF,
+;               none of the bank accts would have a GL - yet not all
+;               programs that call these functions necessarily test for
+;               Acctg ON/OFF.  Also, if the calling program is one that
+;               posts to GL, then will now have GLCOA OPENV'd, but other
+;               programs may just have it OPENed.  So I am eliminating
+;               the validation on GLCOA in these 2 functions, that way
+;               they work in all circumstances.
+;             Also, further changes to these 2 so that they essentially
+;               do nothing if GL is off (ie have no bank accts).  If that
+;               is the case then sel.chkact always returns 1 as the
+;               "chosen" bank acct without actually offering a selection.
+;05/12/02 FMZ Change to GET.GLYEAR routine which is called independently
+;               by a couple of programs - now always returns 0 if GL
+;               is OFF.
+;05/24/02 FMZ Slight change in Post GLT function as to when you get
+;		an invalid GL message.
+;05/27/02 FMZ Add 2 class params to Post GLX function.
+
+;**************************************************************************
+;   BZDefGL   : This function ensures that the complete set of system
+;		default GLs contains no binary zeroes.
+;
+;		The calling program needs to have already opened the
+;		BKSYMSTR and BKYSMSTR files (doesn't matter whether OPEN
+;		or OPENV), and have both those records active.	This
+;		function does not save any records, the calling program
+;		must do that.
+;
+;		This function is currently called from 2 programs, "General
+;		Ledger Defaults" and "Fix Binary Zeroes".
+;
+;   Parameters: none
+;
+;   Returns   : always .T.
+;**************************************************************************
+:BZDefGL
+#proc
+   func BZDefGL
+      fill bksy.gl.retearn TRAIL chr ' '
+      fill bksy.gldpt.ret TRAIL chr ' '
+      fill bksy.gl.relyr TRAIL chr ' '
+      fill bksy.gldpt.rely TRAIL chr ' '
+      fill bksy.gl.clring TRAIL chr ' '
+      fill bksy.gldpt.clr TRAIL chr ' '
+      fill bksy.ap.glact TRAIL chr ' '
+      fill bksy.ap.gldpt TRAIL chr ' '
+      fill bksy.ap.discgl TRAIL chr ' '
+      fill bksy.ap.discdpt TRAIL chr ' '
+      fill bksy.ar.glact TRAIL chr ' '
+      fill bksy.ar.gldpt TRAIL chr ' '
+      fill bksy.ar.discgl TRAIL chr ' '
+      fill bksy.ar.discdpt TRAIL chr ' '
+      fill bksy.gl.arintr TRAIL chr ' '
+      fill bksy.gldpt.arin TRAIL chr ' '
+      fill bkys.glnum[2] TRAIL chr ' '
+      fill bkys.gldpt[2] TRAIL chr ' '
+      fill bkys.glnum[38] TRAIL chr ' '
+      fill bkys.gldpt[38] TRAIL chr ' '
+      fill bkys.glnum[37] TRAIL chr ' '
+      fill bkys.gldpt[37] TRAIL chr ' '
+      fill bksy.ar.freight TRAIL chr ' '
+      fill bksy.ar.frgtdpt TRAIL chr ' '
+      fill bkys.glnum[4] TRAIL chr ' '
+      fill bkys.gldpt[4] TRAIL chr ' '
+      fill bkys.glnum[17] TRAIL chr ' '
+      fill bkys.gldpt[17] TRAIL chr ' '
+      fill bkys.glnum[18] TRAIL chr ' '
+      fill bkys.gldpt[18] TRAIL chr ' '
+      fill bkys.glnum[36] TRAIL chr ' '
+      fill bkys.gldpt[36] TRAIL chr ' '
+      fill bkys.glnum[35] TRAIL chr ' '
+      fill bkys.gldpt[35] TRAIL chr ' '
+      fill bkys.glnum[14] TRAIL chr ' '
+      fill bkys.gldpt[14] TRAIL chr ' '
+      fill bksy.po.rni TRAIL chr ' '
+      fill bksy.po.rnidpt TRAIL chr ' '
+      fill bksy.po.freight TRAIL chr ' '
+      fill bksy.po.frgtdpt TRAIL chr ' '
+      fill bksy.po.taxgl TRAIL chr ' '
+      fill bksy.po.taxdpt TRAIL chr ' '
+      fill bkys.glnum[9] TRAIL chr ' '
+      fill bkys.gldpt[9] TRAIL chr ' '
+      fill bkys.glnum[10] TRAIL chr ' '
+      fill bkys.gldpt[10] TRAIL chr ' '
+      fill bkys.glnum[3] TRAIL chr ' '
+      fill bkys.gldpt[3] TRAIL chr ' '
+      fill bkys.glnum[6] TRAIL chr ' '
+      fill bkys.gldpt[6] TRAIL chr ' '
+      fill bkys.glnum[7] TRAIL chr ' '
+      fill bkys.gldpt[7] TRAIL chr ' '
+      fill bkys.glnum[34] TRAIL chr ' '
+      fill bkys.gldpt[34] TRAIL chr ' '
+      fill bkys.glnum[20] TRAIL chr ' '
+      fill bkys.gldpt[20] TRAIL chr ' '
+      fill bksy.tax.glact TRAIL chr ' '
+      fill bksy.tax.gldpt TRAIL chr ' '
+
+   ret .t.
+
+#endp
+::
+
+;**************************************************************************
+;   FL_ChkCLGL: This function checks the GL acct setup in the CLASS file
+;               to make sure it is OK for use with FIFO/LIFO (the rule
+;               being that, for every location for a given class, all
+;               inventory asset GL accts must be the same, and all WIP
+;               inventory asset GL accts must be the same).
+;
+;               The calling program needs to have already OPENVd CLASS file,
+;		and the sysGL variables need to have had their values set.
+;
+;   Parameters: 1) The file handle number of CLASS file.
+;               2) The title bar description that existed before this
+;                  function was called.
+;
+;   Returns   : .T. if no problems with CLASS GL setup, .F. if problems.
+;**************************************************************************
+:FL_ChkCLGL
+#proc
+   define FCCClassHndl type i size 5 local
+   define FCCReturn type l local
+   define FCCfound.bad type l local
+   define FCCorig.asset, FCCorig.wip, FCCnew.asset, FCCnew.wip type a size 14 local
+   define FCCorig.class type a size 4 local
+   define FCCTitleBar type a size 70 local
+   define FCCTotRecs type n size 12 dec 2 local
+   define FCCCurCntr type n size 12 dec 2 local
+   define FCCPctComp type n size 6 dec 2 local
+   define FCCoth.asset, FCCoth.wip type a size 14 local
+   define FCCWarnings type i size 5 local
+   func FL_ChkCLGL FCCClassHndl, FCCTitleBar
+    ;FMZ 03/03/02 Only change here is that now a CLASS GL could be blank,
+    ;  meaning that the item would post to the default GL.  So the
+    ;  change here is to, if a blank CLASS GL is encountered, consider
+    ;  that to be equivalent to the default GL acct for purposes of
+    ;  comparison to the other CLASS GLs for that class.
+    ;FMZ 03/19/02 Further note: Now that CLASS records are optional, means
+    ;  we may not necessarily have a given class represented at all
+    ;  locations.  This presents a problem because we don't know if the
+    ;  non-existant CLASS records don't exist because user will never have
+    ;  that class at that location, or because user wants that class/loc
+    ;  combo to always post to the system dflt GLs.
+    ;If it's the 2nd case, we need to make sure here then that we test
+    ;  the GLs of "all the other" locations vs Inventory and WIP GLs of
+    ;  any actual CLASS records for that class.  If they're different then
+    ;  it's a POTENTIAL problem - we can't tell for sure since it may be
+    ;  intentional that they ommitted some CLASS records.  So really all
+    ;  we could say in that case is that it's a warning, not necessarily
+    ;  a problem.
+    findv F fnum FCCClassHndl key mtclass.key nlock
+    if flerr(FCCClassHndl)<>0
+       ret .t.
+    endif
+
+    xtrap_si_udc
+    saves
+    msg 'Checking Item Class GL Setup for FIFO/LIFO...' nowait
+
+    FCCCurCntr=0
+    FCCPctComp=0
+    FCCTotRecs=trc(FCCClassHndl)
+    caption 'Checking Item Class GL Setup for FIFO/LIFO:   0.00%'
+
+    FCCReturn=.t.
+    FCCfound.bad = .f.
+    FCCWarnings=0
+    FCCoth.asset=sysGLA_Inven+sysGLD_Inven
+    FCCoth.wip=sysGLA_WIPInv+sysGLD_WIPInv
+
+    FCCorig.asset=''
+    FCCorig.wip=''
+    FCCorig.class = mtclass.class
+    FCCorig.asset = class.gla + class.dpta
+    if FCCorig.asset=''
+       ;the default GL will be used for posting, so use for comparison
+       FCCorig.asset=sysGLA_Inven+sysGLD_Inven
+    endif
+    FCCorig.wip   = class.glw + class.dptw
+    if FCCorig.wip=''
+       ;the default GL will be used for posting, so use for comparison
+       FCCorig.wip=sysGLA_WIPInv+sysGLD_WIPInv
+    endif
+    ;
+    while .t.
+       FCCCurCntr=FCCCurCntr+1
+       FCCPctComp=(FCCCurCntr/FCCTotRecs)*100.00
+       caption 'Checking Item Class GL Setup for FIFO/LIFO: '+str(FCCPctComp,6,2)+'%'
+
+       if mtclass.class<>FCCorig.class
+	  ;(see the 03/19/02 note above) - at this point, any CLASS records
+	  ;  for the class just processed must all be OK (ie Invt GLs all
+	  ;  match and WIP GLs all match).  We don't know whether there
+	  ;  are other locations or not that don't have CLASS records but
+	  ;  if there are, and they might have a GL posting for this class
+	  ;  (which would then use the system default GLs), those GLs must
+	  ;  match the GLs of any CLASS records.  So check now, for the
+	  ;  previously processed class.
+	  if (FCCoth.asset<>FCCorig.asset) .o. (FCCoth.wip<>FCCorig.wip)
+	     ;This means that the GLs of all the CLASS records for this
+	     ;	class are the same, but they are different from the sys
+	     ;	dflt GLs, to which any other locations not in CLASS file
+	     ;	would post, if there were a posting.  This will just be
+	     ;	a warning, so update counter.
+	     FCCWarnings=FCCWarnings+1
+	  endif
+
+	  ;Reset for next class.
+	  FCCorig.class = mtclass.class
+          FCCorig.asset = class.gla + class.dpta
+          if FCCorig.asset=''
+             ;the default GL will be used for posting, so use for comparison
+	     FCCorig.asset=sysGLA_Inven+sysGLD_Inven
+          endif
+          FCCorig.wip   = class.glw + class.dptw
+          if FCCorig.wip=''
+             ;the default GL will be used for posting, so use for comparison
+	     FCCorig.wip=sysGLA_WIPInv+sysGLD_WIPInv
+          endif
+       endif
+
+       FCCnew.asset = class.gla + class.dpta
+       if FCCnew.asset=''
+          ;the default GL will be used for posting, so use for comparison
+	  FCCnew.asset=sysGLA_Inven+sysGLD_Inven
+       endif
+       FCCnew.wip   = class.glw + class.dptw
+       if FCCnew.wip=''
+          ;the default GL will be used for posting, so use for comparison
+	  FCCnew.wip=sysGLA_WIPInv+sysGLD_WIPInv
+       endif
+       if FCCnew.asset<>FCCorig.asset .o. FCCnew.wip<>FCCorig.wip
+          FCCfound.bad = .t.
+          FCCReturn=.f.
+          exit
+       endif
+
+       findv N fnum FCCClassHndl key mtclass.key nlock
+       if flerr(FCCClassHndl)<>0
+	  ;Before exiting, check if we have to have a warning on last class.
+	  ;This is same code as higher up in loop.
+	  ;(see the 03/19/02 note above) - at this point, any CLASS records
+	  ;  for the class just processed must all be OK (ie Invt GLs all
+	  ;  match and WIP GLs all match).  We don't know whether there
+	  ;  are other locations or not that don't have CLASS records but
+	  ;  if there are, and they might have a GL posting for this class
+	  ;  (which would then use the system default GLs), those GLs must
+	  ;  match the GLs of any CLASS records.  So check now, for the
+	  ;  previously processed class.
+	  if (FCCoth.asset<>FCCorig.asset) .o. (FCCoth.wip<>FCCorig.wip)
+	     ;This means that the GLs of all the CLASS records for this
+	     ;	class are the same, but they are different from the sys
+	     ;	dflt GLs, to which any other locations not in CLASS file
+	     ;	would post, if there were a posting.  This will just be
+	     ;	a warning, so update counter.
+	     FCCWarnings=FCCWarnings+1
+          endif
+	  exit
+       endif
+    endw
+
+    if FCCfound.bad=.t.
+       message[1] = '     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:'
+       message[2] = ''
+       message[3] = ' One of the requirements for using FIFO or LIFO costing'
+       message[4] = ' is that the Inventory Asset GL Account be the same for'
+       message[5] = ' all locations within a given Class of inventory items.'
+       message[6] = ' The same holds true for the WIP GL Account.  The Asset/WIP'
+       message[7] = ' GL Accounts can be different for each Class, but within'
+       message[8] = ' each Class, the Asset GL for every location must be the'
+       message[9] = ' same, and the WIP GL for every location must be the same'
+       message[10]= ' (but the Asset and WIP GLs can be different from each other).'
+       message[11]= ''
+       message[12]= ' In your data, one or more Classes exist where the Asset'
+       message[13]= ' and/or WIP GL Accounts are NOT the same at all locations'
+       message[14]= ' within the Class.  You must correct this in order for FIFO'
+       message[15]= ' or LIFO Costing to work correctly.'
+       message[16]= ''
+       message[17]= ' You should use "Enter Item Classes" to change the Asset'
+       message[18]= ' and WIP GL Accounts to be the same at all locations of each'
+       message[19]= ' Class.  Use the report there to quickly spot the exceptions.'
+       msg_list msg_ptr,19
+    endif
+
+    if FCCfound.bad=.f. .a. FCCWarnings>0
+       ;If there are warnings, only show the warning message if there were
+       ;  no actual errors.  Note, in the case of warnings, but no actual
+       ;  errors, this function will return T so that calling program can
+       ;  complete its processing.  I'll consider a warning not sufficient
+       ;  reason to stop that processing, since the setup that is causing
+       ;  the warning may be intentional and will not do any harm (ie won't
+       ;  throw GL out of sync with ICMSTR totals) so long as they don't
+       ;  post any items to the sys dflt GLs (ie there won't be postings
+       ;  to the "missing" class/location combinations).
+       message[1] = '     INVENTORY ASSET AND WIP GL CODES FOR FIFO/LIFO:'
+       message[2] = ''
+       message[3] = ' One of the requirements for using FIFO or LIFO costing'
+       message[4] = ' is that the Inventory Asset GL Account be the same for'
+       message[5] = ' all locations within a given Class of inventory items.'
+       message[6] = ' The same holds true for the WIP GL Account.'
+       message[7] = ''
+       message[8] = ' In your Item Class GL setup, this requirement has been'
+       message[9] = ' met for all classes.  However, there are one or more'
+       message[10]= ' classes where the Inventory or WIP GL is different from'
+       message[11]= ' the system default Inventory or WIP GL.'
+       message[12]= ''
+       message[13]= ' This may be intentional, and is not necessarily a problem,'
+       message[14]= ' so long as you never post for a class at a location that'
+       message[15]= ' has not been set up in "Enter Item Classes", which would'
+       message[16]= ' result in the system default GLs being used.'
+       message[17]= ''
+       message[18]= ' This message is only a warning, not an error, and will not'
+       message[19]= ' prevent any processing.  For a more complete analysis, use'
+       message[20]= ' the FIFO/LIFO Exceptions report in "Enter Item Classes".'
+       msg_list msg_ptr,20
+    endif
+
+    caption FCCTitleBar
+    redsp
+    xtrap_rstr_udc
+
+    ret FCCReturn
+
+#endp
+::
+
+;**************************************************************************
+;   PostGLT: This function is for posting GL trxns to BKGLTEMP.
+;
+;	     3 files must be open before calling this: BKGLCOA [N],
+;	     BKGLTEMP [R], and CLASS [N].  This function
+;	     counts on these files having been OPENV'd using
+;	     sysBkglcoaHndl, sysBkgltempHndl, and sysClassHndl
+;	     as the handles.  This is best accomplished
+;	     by calling the OpenGLFiles function at the top of the
+;	     program.  However, if there is some reason that program
+;	     OPENVs these files manually, by using these sys vars as
+;	     the handles then this posting function will still work
+;	     (will have to define/set the 3 sys handle vars in the
+;	     calling program).
+;
+;	     Also be sure the calling program has already called the
+;            What's On function to determine accounting settings and
+;	     set the system default GL values.
+;
+;	     This function makes no posting if the trxn $$ amount
+;	     is 0, if Acctg is OFF, or if this type of trxn has
+;	     been flagged in "GL Defaults" to not post to GL.
+;	     Any warnings about invalid GLs are handled within this
+;	     function.
+;
+;   Parameters:
+;   1) [a,1] TRXN TYPE for purposes of checking vs. the
+;      "Post to GL" flags from "GL Defaults".  If the GL posting
+;      flag for this trxn type is OFF, no GL posting is done.
+;      Possible values:
+;      C-COGS  P-PO  A-Adjustment  W-WO
+;      G-Means do NOT check 4 GL posting flags, just post.
+;   2) [n,13,2] TOTAL $$ AMT OF TRXN (+ or -).	The amount in
+;      the BKGLTEMP record is always positive; the BKGLTEMP
+;      debit/credit flag gets set by this function as
+;      D for + amounts, C for - amounts.
+;   3) [d,8] POSTING DATE OF TRXN.  This function does NOT
+;      validate this vs. FY or Close dates, you must do that
+;      in the calling program.
+;   4) [a,8] GL TYPE.  Specify one of 8 "standard" inv/mfg GLs
+;      for this posting and function will use CLASS records
+;      and/or system default GLs to determine the GL acct and
+;      dept.  If one of the "standard" types is specified here,
+;      the GL account parameter is ignored however you can also
+;      optionally specify a GL dept that will override the
+;      "standard" dept determined here.  If this posting should
+;      instead go to a specific GL acct/dept, pass "GL" as the
+;      type here and the GL acct/dept parameters will be used.
+;      Note: If using one of the 8 standard GL Types, you must
+;      also pass in the Location and Item Class if the Item
+;      Class GLs option is ON.
+;      Possible values:
+;      SALES  NTSALES  INVEN  COGS  WIPINV  ALAB  AFOH	AVOH  GL
+;   5) [a,10] GL ACCOUNT.  Required if GL Type is "GL", leave
+;      blank otherwise.
+;   6) [a,4]  GL DEPT.	Required if GL Type is "GL", leave
+;      blank otherwise.  However if using one of the "standard"
+;      GLs, if you do specify a dept here it will override the
+;      "standard" dept, BUT ONLY IF THE STD DEPT IS BLANK.
+;   7) [a,2] GL JOURNAL TYPE
+;   8) [a,25] TRXN DESCRIPTION
+;   9) [a,4] ITEM CLASS (reqd if using a "standard" GL Type and the
+;      Item Class GLs option is ON)
+;  10) [a,10] LOCATION (reqd if using a "standard" GL Type and the
+;      Item Class GLs option is ON)
+;  11) [a,10] Value for the BKGLTEMP "CODE" field
+;  12) [a,10] Value for the BKGLTEMP "INVC" field
+;
+;   Always returns T.
+;**************************************************************************
+:PostGLT
+#proc
+   define GLTTrxnType type a size 1 local
+   define GLTAmount type n size 13 dec 2 local
+   define GLTPostDate type d size 8 local
+   define GLTGLType type a size 8 local
+   define GLTAcct type a size 10 local
+   define GLTDept type a size 4 local
+   define GLTJournal type a size 2 local
+   define GLTDesc type a size 25 local
+   define GLTClass type a size 4 local
+   define GLTLocation type a size 10 local
+   define GLTCode type a size 10 local
+   define GLTInvc type a size 10 local
+   define GLTUseAcct type a size 10 local
+   define GLTUseDept type a size 4 local
+   define GLTUseClassGL type l local
+   define GLTInvalid type a size 15 local
+   define GLTError type i size 5 local
+   func PostGLT GLTTrxnType,GLTAmount,GLTPostDate,GLTGLType,GLTAcct,GLTDept,GLTJournal,GLTDesc,GLTClass,GLTLocation,GLTCode,GLTInvc
+    ;No posting if Acctg is OFF or trxn $$ amt is 0
+    if sysAcctgOn=.f. .o. GLTAmount=0
+       ret .t.
+    endif
+
+    ;Check the 4 GL posting flags
+    if GLTTrxnType='C'
+       if sysPostCOGSGL=.f.
+	  ret .t.
+       endif
+    else_if GLTTrxnType='P'
+       if sysPostPOGL=.f.
+	  ret .t.
+       endif
+    else_if GLTTrxnType='A'
+       if sysPostAdjGL=.f.
+	  ret .t.
+       endif
+    else_if GLTTrxnType='W'
+       if sysPostWOGL=.f.
+	  ret .t.
+       endif
+    else_if GLTTrxnType='G'
+       ;Don't check flags, just post.
+    else
+       msg 'Invalid transaction type: "'+GLTTrxnType+'".  Not sure whether to post to the GL or not, so will go ahead and post to the GL just in case. ' windows 'w'
+    endif
+
+    ;Set the GL acct/dept to use in the posting.
+    GLTUseAcct=''
+    GLTUseDept=''
+    if GLTGLType='GL      '
+       ;Use the acct/dept as passed in.
+       GLTUseAcct=GLTAcct
+       GLTUseDept=GLTDept
+    else
+       ;Use one of the "standard" inv/mfg GLs.
+       GLTUseClassGL=.f.
+       if sysItemClassGL=.t.
+	  ;We need to check CLASS file
+	  if GLTClass=''
+	     msg 'No item class was provided, so the system default GLs will have to be used for this posting instead of location-specific GLs for the item class. ' windows 'w'
+	  else
+	     fill GLTLocation TRAIL chr ' '
+	     findv M fnum sysClassHndl key mtclass.key val GLTClass,GLTLocation nlock
+	     if flerr(sysClassHndl)=0
+		GLTUseClassGL=.t.
+	     endif
+	  endif
+       endif
+       if GLTGLType='SALES   '
+	  if GLTUseClassGL=.t. .a. class.gls<>''
+	     GLTUseAcct=class.gls
+             GLTUseDept=class.dpts
+	  else
+	     GLTUseAcct=sysGLA_Sales
+             GLTUseDept=sysGLD_Sales
+	  endif
+       else_if GLTGLType='NTSALES '
+	  if GLTUseClassGL=.t. .a. class.glsnt<>''
+	     GLTUseAcct=class.glsnt
+	     GLTUseDept=class.dptnt
+	  else
+	     GLTUseAcct=sysGLA_NTSales
+	     GLTUseDept=sysGLD_NTSales
+          endif
+       else_if GLTGLType='INVEN   '
+	  if GLTUseClassGL=.t. .a. class.gla<>''
+	     GLTUseAcct=class.gla
+	     GLTUseDept=class.dpta
+	  else
+	     GLTUseAcct=sysGLA_Inven
+	     GLTUseDept=sysGLD_Inven
+          endif
+       else_if GLTGLType='COGS    '
+	  if GLTUseClassGL=.t. .a. class.glc<>''
+	     GLTUseAcct=class.glc
+	     GLTUseDept=class.dptc
+	  else
+	     GLTUseAcct=sysGLA_COGS
+	     GLTUseDept=sysGLD_COGS
+          endif
+       else_if GLTGLType='WIPINV  '
+	  if GLTUseClassGL=.t. .a. class.glw<>''
+	     GLTUseAcct=class.glw
+	     GLTUseDept=class.dptw
+	  else
+	     GLTUseAcct=sysGLA_WIPInv
+	     GLTUseDept=sysGLD_WIPInv
+          endif
+       else_if GLTGLType='ALAB    '
+	  if GLTUseClassGL=.t. .a. class.gllab<>''
+	     GLTUseAcct=class.gllab
+	     GLTUseDept=class.dptlab
+	  else
+	     GLTUseAcct=sysGLA_AbsLabor
+	     GLTUseDept=sysGLD_AbsLabor
+          endif
+       else_if GLTGLType='AFOH    '
+	  if GLTUseClassGL=.t. .a. class.glfoh<>''
+	     GLTUseAcct=class.glfoh
+	     GLTUseDept=class.dptfoh
+	  else
+	     GLTUseAcct=sysGLA_AbsFOH
+	     GLTUseDept=sysGLD_AbsFOH
+          endif
+       else_if GLTGLType='AVOH    '
+	  if GLTUseClassGL=.t. .a. class.glvoh<>''
+	     GLTUseAcct=class.glvoh
+	     GLTUseDept=class.dptvoh
+	  else
+	     GLTUseAcct=sysGLA_AbsVOH
+	     GLTUseDept=sysGLD_AbsVOH
+          endif
+       else
+	  msg 'Unrecognized GL Type: "'+GLTGLType+'".  This transaction will post to the Clearing Account. ' windows 'w'
+	  GLTUseAcct=sysGLA_Clearing
+	  GLTUseDept=sysGLD_Clearing
+       endif
+       if GLTDept<>'' .a. GLTUseDept='' .a. GLTUseAcct<>sysGLA_Clearing
+	  ;If we're not going to the clearing acct at this point, and
+	  ;  a GL dept was passed in, use that to override the GL dept.
+          ;  But only override the dept if the "standard" dept that
+          ;  was determined here is blank.
+          GLTUseDept=GLTDept
+       endif
+       clr @sysClassHndl buff
+    endif
+
+    ;Ensure no binary zeroes in GLs
+    fill GLTUseAcct TRAIL chr ' '
+    fill GLTUseDept TRAIL chr ' '
+
+    ;Validate the GL code.
+    ;FMZ 05/24/02 Slight change to the logic here due to changes this day
+    ;  to the GL 2002 conversion program, which now specifies the clearing
+    ;  account for any sys dflt GLs that are blank.  This means that here,
+    ;  entries could now be directed at the clearing acct.  That's
+    ;  normally a valid GL acct so would not get the warning message, now
+    ;  changing so that if the GL is invalid OR it's the clearing acct,
+    ;  you get the warning.
+    findv M fnum sysBkglcoaHndl key bkgl.key val GLTUseAcct,GLTUseDept nlock
+    if flerr(sysBkglcoaHndl)=0
+       if GLTUseAcct=sysGLA_Clearing .a. GLTUseDept=sysGLD_Clearing
+	  ;"Intentionally" going to clearing.
+	  GLTError=2
+       else
+	  ;No problems, valid GL acct
+	  GLTError=0
+       endif
+    else
+       ;invalid GL acct
+       GLTError=1
+    endif
+    if GLTError<>0
+       GLTInvalid=GLTUseAcct+'-'+GLTUseDept
+    endif
+    if GLTError<>0
+       if GLTError=1
+	  message[1]='INVALID GL ACCOUNT ENCOUNTERED DURING POSTING.'
+       else
+	  message[1]='A GL POSTING IS GOING TO THE CLEARING ACCOUNT.'
+       endif
+       message[2]=''
+       message[3]='Invalid GL account: '+GLTInvalid
+       message[4]='Transaction Desc  : '+GLTDesc
+       message[5]='Transaction Amount: '+str(GLTAmount,13,2)
+       message[6]=''
+       if GLTError=1
+	  message[7]='The portion of this posting that would have gone to the'
+	  message[8]='invalid GL account will instead post to the default'
+	  message[9]='Clearing Account defined in "General Ledger Defaults".'
+       else
+	  message[7]='A portion of this posting is going to the Clearing Account.'
+	  message[8]='This may be due to a system default GL that is set to the'
+	  message[9]='Clearing Account, as defined in "General Ledger Defaults".'
+       endif
+       message[10]=''
+       message[11]='You should click OK here to continue posting the rest'
+       message[12]='of this transaction.'
+       message[13]=''
+       message[14]='Then go to "Print/Post General Ledger Batches" to get a'
+       message[15]='listing of your Clearing Account entries and edit the'
+       message[16]='entries for the correct GL account(s) through'
+       message[17]='"Edit General Ledger Batch Entries".'
+       msg_list msg_ptr,17
+
+       GLTUseAcct=sysGLA_Clearing
+       GLTUseDept=sysGLD_Clearing
+    endif
+    clr @sysBkglcoaHndl buff
+
+    ;Finally, post the trxn.
+    clr @sysBkgltempHndl buff
+    bkgl.trn.glacct=GLTUseAcct
+    bkgl.trn.gldpt=GLTUseDept
+    bkgl.trn.date=GLTPostDate
+    bkgl.trn.code=GLTCode
+    bkgl.trn.invc=GLTInvc
+    bkgl.trn.desc=GLTDesc
+    bkgl.trn.dc=iif(GLTAmount>0,'D','C')
+    bkgl.trn.amt=abs(GLTAmount)
+    bkgl.trn.type=GLTJournal
+    bkgl.trn.entdte=date()
+    bkgl.trn.extra=''
+    bkgl.trn.trxn=0
+    bkgl.trn.post=''
+    bkgl.trn.period=0
+    bkgl.trn.batch=0
+    save @sysBkgltempHndl nocnf
+
+    ret .t.
+
+#endp
+::
+
+;**************************************************************************
+;   PostGLX: This function is for posting inv/mfg trxns to BKGLX
+;	     (used for Month-End Acctg Summary report).
+;
+;            1 file must be open before calling this: BKGLX [R].
+;            This function counts on this file having been OPENV'd
+;            using sysBkglxHndl as the handle.  This is best done
+;	     by calling the OpenGLFiles function at the top of the
+;	     program.  However, if there is some reason that program
+;            OPENVs this file manually, by using the sys var as
+;            the handle then this posting function will still work
+;            (will have to define/set the sys handle var in the
+;            calling program).
+;
+;	     This function makes no posting if the trxn $$ amount
+;            AND qty are 0.
+;
+;   Parameters:
+;   1) [a,1] TRXN TYPE.  Possible values:
+;      A - Adjustment                     E - Extra costs to WIP
+;      S - Shipment                       M - Misc costs to WIP
+;      P - PO receipt to stock/QC         4 - Closed WO costs (variance)
+;      J - PO receipt to WIP              5 - Customer Sales
+;      W - WO receipt                     6 - Freight from Cust Sales
+;      I - WO issue                       7 - Tax from Cust Sales
+;      L - Labor to WIP                   8 - Customer Payments
+;      F - Fixed OH to WIP
+;      V - Variable OH to WIP
+;   2) [a,15] ITEM NUMBER
+;   3) [n,13,2] UNIT QUANTITY [can be + or -]
+;   4) [n,13,2] TOTAL $$ AMT OF TRXN [can be + or -]
+;   5) [d,8] TRXN DATE
+;   6) [a,2] JOURNAL TYPE
+;   7) [a,30] TRXN DESCRIPTION
+;   8) [n,6,0] WO PREFIX
+;   9) [i,3] WO SUFFIX
+;  10) [n,6,0] PO NUMBER
+;  11) [n,6,0] SO INVOICE NUMBER
+;  12) [a,10] VENDOR (PO) INVOICE NUMBER
+;  13) [a,4] ITEM CLASS
+;  14) [a,4] CUSTOMER CLASS
+;
+;   Always returns T
+;**************************************************************************
+:PostGLX
+#proc
+   define GLXTrxnType type a size 1 local
+   define GLXPart type a size 15 local
+   define GLXQuantity type n size 13 dec 2 local
+   define GLXAmount type n size 13 dec 2 local
+   define GLXPostDate type d size 8 local
+   define GLXJournal type a size 2 local
+   define GLXDesc type a size 30 local
+   define GLXWopre type n size 6 dec 0 local
+   define GLXWosuf type i size 3 local
+   define GLXPONum type n size 6 dec 0 local
+   define GLXSOInvc type n size 6 dec 0 local
+   define GLXPOInvc type a size 10 local
+   define GLXItemClass type a size 4 local
+   define GLXCustClass type a size 4 local
+   func PostGLX GLXTrxnType,GLXPart,GLXQuantity,GLXAmount,GLXPostDate,GLXJournal,GLXDesc,GLXWopre,GLXWosuf,GLXPONum,GLXSOInvc,GLXPOInvc,GLXItemClass,GLXCustClass
+    if GLXAmount=0 .a. GLXQuantity=0
+       ;No posting if BOTH $$ amt and qty are 0
+       ret .t.
+    endif
+
+    clr @sysBkglxHndl buff
+    bkglx.postdate=GLXPostDate
+    bkglx.archdate=0
+    bkglx.entdate=date()
+    bkglx.part=GLXPart
+    bkglx.quantity=GLXQuantity
+    bkglx.amount=GLXAmount
+    bkglx.trxntype=GLXTrxnType
+    bkglx.journal=GLXJournal
+    bkglx.wopre=GLXWopre
+    bkglx.wosuf=GLXWosuf
+    bkglx.ponum=GLXPONum
+    bkglx.soinvc=GLXSOInvc
+    bkglx.poinvc=GLXPOInvc
+    bkglx.desc=GLXDesc
+    bkglx.trxn=0
+    bkglx.batch=0
+    bkglx.post=''
+    bkglx.company=''   ;Leave this alone! Now using as a posting flag.
+    bkglx.iclass=GLXItemClass
+    bkglx.cclass=GLXCustClass
+    save @sysBkglxHndl nocnf
+
+    ret .t.
+
+#endp
+::
+
+;**************************************************************************
+;   WhatsOn:  This function needs to be called at the top of any program
+;             that depends on the system configuration settings.
+;
+;	      This contains the DEFINEs for the following variables,
+;	      so the calling programs DO NOT need to define them:
+;
+;             sysAcctgOn     [T/F] GL on/off flag
+;             sysAROn        [T/F] AR on/off flag
+;             sysAPOn        [T/F] AP on/off flag
+;             sysPostCOGSGL  [T/F] 4 flags governing how/if inventory and
+;             sysPostPOGL    [T/F]   mfg trxns get posted to GL
+;             sysPostAdjGL   [T/F]
+;             sysPostWOGL    [T/F]
+;             sysItemClassGL [T/F] If T, means user may optionally use
+;                                    CLASS records for GLs that will
+;                                    override system default GLs.
+;             SYSTEM DEFAULT GLs [all a10 and a4]:
+;             sysGLA_Clearing, sysGLD_Clearing    Clearing acct
+;             sysGLA_Sales, sysGLD_Sales          Sales
+;             sysGLA_NTSales, sysGLD_NTSales      NT Sales
+;             sysGLA_Inven, sysGLD_Inven          Inventory asset
+;             sysGLA_COGS, sysGLD_COGS            COGS
+;             sysGLA_WIPInv, sysGLD_WIPInv        WIP Inventory asset
+;             sysGLA_AbsLabor, sysGLD_AbsLabor    Absorbed labor
+;             sysGLA_AbsFOH, sysGLD_AbsFOH        Absorbed fixed OH
+;             sysGLA_AbsVOH, sysGLD_AbsVOH        Absorbed variable OH
+;
+;             This checks if the GL2002 conversion program has been
+;               run, returns F if not.
+;             This sets values for all the above variables.
+;             If GL is ON, and any of the sys default GLs are
+;               blank, returns F (unless pass 1 as the 4th param
+;               in which case it does not check the system GL setup.)
+;             Returns F if calling program requires GL, AR, or AP to
+;               be on and they are not.
+;
+;             Note - the BKYSMSTR and BKSYMSTR records need to be active
+;               when you call this function!
+;
+;   Parameters
+;   1-3) These 3 allow calling program to tell this function which
+;      parts of the system must be turned on in order to run the
+;      program.  These are all [a,2], can be 'GL', 'AR' or 'AP' in
+;      any order.  Pass blanks for any parts not required.
+;   4) Optional i,5 variable that is either 0 or 1.  If 0 (the
+;      default so can pass nothing), then sysGL warning here is enabled.
+;
+;   Returns .T. if all OK, .F. otherwise.  If returns F, you must
+;     quit the calling program (does not quit here).
+;**************************************************************************
+:WhatsOn
+#proc
+   ;All these vars are "public", ie visible to the calling program.
+   define sysAcctgOn, sysAROn, sysAPOn type l
+   define sysPostCOGSGL, sysPostPOGL, sysPostAdjGL, sysPostWOGL type l
+   define sysItemClassGL type l
+   define sysGLA_Clearing type a size 10
+   define sysGLD_Clearing type a size 4
+   define sysGLA_Sales type a size 10
+   define sysGLD_Sales type a size 4
+   define sysGLA_NTSales type a size 10
+   define sysGLD_NTSales type a size 4
+   define sysGLA_Inven type a size 10
+   define sysGLD_Inven type a size 4
+   define sysGLA_COGS type a size 10
+   define sysGLD_COGS type a size 4
+   define sysGLA_WIPInv type a size 10
+   define sysGLD_WIPInv type a size 4
+   define sysGLA_AbsLabor type a size 10
+   define sysGLD_AbsLabor type a size 4
+   define sysGLA_AbsFOH type a size 10
+   define sysGLD_AbsFOH type a size 4
+   define sysGLA_AbsVOH type a size 10
+   define sysGLD_AbsVOH type a size 4
+   ;Local variables, only visible to this function:
+   define WHONWarnGL type i size 5 local
+   define WHONNeed1, WHONNeed2, WHONNeed3 type a size 2 local
+   define WHONNeedGL, WHONNeedAR, WHONNeedAP type l local
+   define WHONNeed type a size 2 array 3 local
+   define WHONCntr type i size 5 local
+   define WHONBadGL type l local
+   func WhatsOn WHONNeed1, WHONNeed2, WHONNeed3, WHONWarnGL
+    if bkys.yn[210]<>'Y'
+       msg 'Before using this program, you need to run a GL conversion program.  Please go to the Utilities menu, select "Run a DBA Program", and then enter "GL2002" as the program name.  After that process is complete, you will then be able to use this program. ' windows 'i'
+       ret .f.
+    endif
+
+    if bkys.yn[211]<>'N'
+       sysAcctgOn=.t.
+       if bkys.yn[215]<>'N'
+          sysPostCOGSGL=.t.
+       else
+          sysPostCOGSGL=.f.
+       endif
+       if bkys.yn[214]<>'N'
+          sysPostPOGL=.t.
+       else
+          sysPostPOGL=.f.
+       endif
+       if bkys.yn[213]<>'N'
+          sysPostAdjGL=.t.
+       else
+          sysPostAdjGL=.f.
+       endif
+       if bkys.yn[212]<>'N'
+          sysPostWOGL=.t.
+       else
+          sysPostWOGL=.f.
+       endif
+       ;This one is slightly different, we want it to default to N if
+       ;  nothing is set for it, rather than Y.
+       if bkys.yn[209]<>'Y'
+          sysItemClassGL=.f.
+       else
+          sysItemClassGL=.t.
+       endif
+       sysGLA_Clearing=bksy.gl.clring
+       sysGLD_Clearing=bksy.gldpt.clr
+       if sysGLA_Clearing=''
+          if WHONWarnGL=0
+             msg 'The system default GL Clearing Account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_Sales=bkys.glnum[38]
+       sysGLD_Sales=bkys.gldpt[38]
+       if sysGLA_Sales=''
+          if WHONWarnGL=0
+             msg 'The system default Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_NTSales=bkys.glnum[37]
+       sysGLD_NTSales=bkys.gldpt[37]
+       if sysGLA_NTSales=''
+          if WHONWarnGL=0
+             msg 'The system default Non-Taxable Sales GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_Inven=bkys.glnum[36]
+       sysGLD_Inven=bkys.gldpt[36]
+       if sysGLA_Inven=''
+          if WHONWarnGL=0
+             msg 'The system default Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_COGS=bkys.glnum[35]
+       sysGLD_COGS=bkys.gldpt[35]
+       if sysGLA_COGS=''
+          if WHONWarnGL=0
+             msg 'The system default COGS GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_WIPInv=bkys.glnum[34]
+       sysGLD_WIPInv=bkys.gldpt[34]
+       if sysGLA_WIPInv=''
+          if WHONWarnGL=0
+             msg 'The system default WIP Inventory Asset GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_AbsLabor=bkys.glnum[3]
+       sysGLD_AbsLabor=bkys.gldpt[3]
+       if sysGLA_AbsLabor=''
+          if WHONWarnGL=0
+             msg 'The system default Absorbed Labor GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_AbsFOH=bkys.glnum[6]
+       sysGLD_AbsFOH=bkys.gldpt[6]
+       if sysGLA_AbsFOH=''
+          if WHONWarnGL=0
+             msg 'The system default Absorbed Fixed Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       sysGLA_AbsVOH=bkys.glnum[7]
+       sysGLD_AbsVOH=bkys.gldpt[7]
+       if sysGLA_AbsVOH=''
+          if WHONWarnGL=0
+             msg 'The system default Absorbed Variable Overhead GL account has not been specified.  Please use the "General Ledger Defaults" menu selection to specify this GL account before using this program. ' windows 'w'
+             ret .f.
+          endif
+       endif
+       ;Now check all the other system GLs for blanks.
+       WHONBadGL=.f.
+       if bksy.gl.retearn='' then WHONBadGL=.t.
+       if bksy.gl.relyr='' then WHONBadGL=.t.
+       if bksy.ap.glact='' then WHONBadGL=.t.
+       if bksy.ap.discgl='' then WHONBadGL=.t.
+       if bksy.ar.glact='' then WHONBadGL=.t.
+       if bksy.ar.discgl='' then WHONBadGL=.t.
+       if bksy.gl.arintr='' then WHONBadGL=.t.
+       if bkys.glnum[2]='' then WHONBadGL=.t.
+       if bksy.ar.freight='' then WHONBadGL=.t.
+       if bkys.glnum[4]='' then WHONBadGL=.t.
+       if bkys.glnum[17]='' then WHONBadGL=.t.
+       if bkys.glnum[18]='' then WHONBadGL=.t.
+       if bkys.glnum[14]='' then WHONBadGL=.t.
+       if bksy.po.rni='' then WHONBadGL=.t.
+       if bksy.po.freight='' then WHONBadGL=.t.
+       if bksy.po.taxgl='' then WHONBadGL=.t.
+       if bkys.glnum[9]='' then WHONBadGL=.t.
+       if bkys.glnum[10]='' then WHONBadGL=.t.
+       if bkys.glnum[20]='' then WHONBadGL=.t.
+       if bksy.tax.glact='' then WHONBadGL=.t.
+       if WHONBadGL=.t. .a. WHONWarnGL=0
+          msg 'One of the system default GL accounts has not been specified.  Please use the "General Ledger Defaults" menu selection to specify ALL default GL accounts before using this program. ' windows 'w'
+          ret .f.
+       endif
+    else
+       sysAcctgOn=.f.
+       sysPostCOGSGL=.f.
+       sysPostPOGL=.f.
+       sysPostAdjGL=.f.
+       sysPostWOGL=.f.
+       sysItemClassGL=.f.
+    endif
+
+    if bkys.yn[206]<>'N'
+       sysAROn=.t.
+    endif
+    if bkys.yn[205]<>'N'
+       sysAPOn=.t.
+    endif
+
+    ;Now that the 3 main sys flags have been set, make sure everything
+    ;  is on that the calling program needs.
+    WHONNeed[1]=WHONNeed1
+    WHONNeed[2]=WHONNeed2
+    WHONNeed[3]=WHONNeed3
+    WHONNeedGL=.f.
+    WHONNeedAR=.f.
+    WHONNeedAP=.f.
+    for(WHONCntr;1;3;1)
+       if WHONNeed[WHONCntr]='GL' then WHONNeedGL=.t.
+       if WHONNeed[WHONCntr]='AR' then WHONNeedAR=.t.
+       if WHONNeed[WHONCntr]='AP' then WHONNeedAP=.t.
+    next
+    if WHONNeedGL=.t. .a. sysAcctgOn=.f.
+       msg 'This program is only available when DBA Accounting is activated. ' windows 'i'
+       ret .f.
+    endif
+    if WHONNeedAR=.t. .a. sysAROn=.f.
+       msg 'This program is only available when DBA Accounts Receivable is activated. ' windows 'i'
+       ret .f.
+    endif
+    if WHONNeedAP=.t. .a. sysAPOn=.f.
+       msg 'This program is only available when DBA Accounts Payable is activated. ' windows 'i'
+       ret .f.
+    endif
+
+    ret .t.
+
+#endp
+::
+
+;**************************************************************************
+;   OpenGLFiles:  This function needs to be called at the top of
+;                 any program that posts to GL.  It OPENVs all the
+;                 files needed for GL postings.
+;
+;                 This contains the DEFINEs for the following variables,
+;                 so the calling programs DO NOT need to define them:
+;
+;		  sysBkgltempHndl   [i,5]
+;		  sysBkglcoaHndl    [i,5]
+;		  sysBkglxHndl	    [i,5]
+;		  sysClassHndl	    [i,5]
+;
+;                 This OPENVs BKGLTEMP and BKGLX lock R.
+;                 Also OPENVs BKGLCOA and CLASS lock N.
+;
+;   No parameters
+;
+;   Function returns T if all files opened, F otherwise.
+;**************************************************************************
+:OpenGLFiles
+#proc
+   ;All these vars are "public", ie visible to the calling program.
+   define sysBkgltempHndl, sysBkglxHndl type i size 5
+   define sysBkglcoaHndl, sysClassHndl type i size 5
+   func OpenGLFiles
+
+    openv 'BKGLTEMP' fnum sysBkgltempHndl lock r
+    if open()<>0
+       msg 'An error has occurred - BKGLTEMP could not be opened. ' windows 'w'
+       ret .f.
+    endif
+
+    openv 'BKGLX' fnum sysBkglxHndl lock r
+    if open()<>0
+       msg 'An error has occurred - BKGLX could not be opened. ' windows 'w'
+       ret .f.
+    endif
+
+    openv 'BKGLCOA' fnum sysBkglcoaHndl lock n
+    if open()<>0
+       msg 'An error has occurred - BKGLCOA could not be opened. ' windows 'w'
+       ret .f.
+    endif
+
+    openv 'CLASS' fnum sysClassHndl lock n
+    if open()<>0
+       msg 'An error has occurred - CLASS could not be opened. ' windows 'w'
+       ret .f.
+    endif
+
+    ret .t.
+
+#endp
+::
+
+
+;******************************************************************************
+; WAV_PLAY -  Plays a standard windows WAV file over and over until WAV_PLAY 
+;             is called with a STOP flag. Used for playing music while DBA is
+;             processing large files/ reports. Requires mizik.exe small C exe
+;             John V. Harris wrote for me.
+;******************************************************************************
+:WAV_PLAY
+#proc
+  define wave type a size 8 local
+  define stopflag type a size 5 local
+  define fulwave type a size 12 local
+  cmd wav_play wave,stopflag
+    if UP(stopflag) = "STOP"
+      exec "muzik" with "STOP"
+    else
+      fulwave = wave*".wav"
+      exec "muzik" with fulwave
+    endif
+  ret
+#endp
+;
+::WAV_PLAY
+
+;**************************************************************************
+;   CheckConv:  Generic routine to determine if the user has run a
+;               conversion utility on their data (using flags that the
+;               conversion utility sets in the BKYSMSTR record).
+;
+;               Make sure that the calling program has the BKYSMSTR
+;               file open and that the record is active.  Pass this
+;               function one parameter (a,8) indicating which conversion
+;               is being tested.
+;
+;               Function returns .T. if the conversion test
+;               is passed, .F. otherwise.
+;**************************************************************************
+:CheckConv
+#proc
+   define CHKCWhich type a size 8 local
+   define CHKCReturn type a size 2 local
+   func CheckConv CHKCWhich
+      CHKCReturn='  '
+
+      if CHKCWhich='AR2001  '
+         ;This is for the AR conversion (12/00) which is taking place in
+         ;  several stages.
+
+         if bkys.yn[224]='4'
+            ;This is currently (12/30/00) the highest stage completed.
+            CHKCReturn='OK'
+         else
+            msg 'Due to recent changes in the AR module, it is necessary to run a conversion utility on your AR data prior to using this program.'+chr(13)+chr(13)+'These changes are being made in several stages, so it is possible that you may be asked to run this conversion more than one time, if another stage has been added since the last time you ran the AR conversion.'+chr(13)+chr(13)+'To convert your data, run program AR2001 from UT-A for each of your companies. ' windows 'i'
+         endif
+      endif
+
+      if CHKCReturn='  '
+         ret .f.
+      endif
+
+      ret .t.
+
+#endp
+::
+
+;******************************************************************************
+; RTM_VALID - Gets the default RTM name and lets the user chage it. Then
+;             chekes to see if the RTM name is a valid file name.
+;******************************************************************************
+:RTM_VALID
+#proc
+  cmd rtm_valid
+    define Def_form,file.hldr type A size 12 local
+    define file.name type a size 12 array 500 local
+    define zret type L local
+    define cntr2,cntr3 type I size 5 local
+
+    saves
+    file.hldr=ffile("*.RTM",'f')
+    cntr=0
+    while file.hldr<>''
+      inc cntr
+      file.name[cntr]=UP(mid(file.hldr,1,12))
+      file.hldr=ffile('','n')
+    endw
+    sorta file.name[cntr2] num cntr move file.name[cntr2] cntr cntr2
+    for(cntr2;1;cntr;1)
+     fexit_if file.name[cntr2] = UP(rtm_name)
+    next
+
+    zret = graybox(21,10,3,40,'G')
+    window at 22,11 wdt 38 len 1 bcolor get_win_color('NormalBkg') wcolor get_win_color('NormalBkg') use_colors
+    def_form = rtm_name
+
+    ;MAG BUTTON
+    mag_start
+    zret = rbutton_ref()
+        {
+         func rbutton_ref
+          if .n. magbutton(45,11,1,0) then quit
+         ret .t.
+        }
+
+    ENT.RTM:
+      pmsg "Graphical Form Name :  ",ccr(),"            ",ccf() at 2,1 NOCR
+      enter rtm_name upar ENT.rtm up at 26,1 noclickoff vld frm_rtm() pre frm_pre() post frm_post()
+      {
+       func frm_pre
+        trap F2 gosub dsp_array
+        if .n. magbutton(45,11,1,1) then quit 
+        ret .t.
+
+       func frm_post
+        trap F2 dflt
+        zret = rbutton_ref() 
+        ret .f.
+
+       func frm_rtm
+       if .n. ffile(rtm_name,'F')
+         msg "That Form was not found in the DBA directory." windows 'w'
+         novldmsg
+         rtm_name = def_form
+         ret .f.
+       endif
+       ret .t.
+
+       dsp_array:
+         saves
+         xtrap_si_udc
+         window at 30,2 len 22 wdt 20 wcolor wc  box 'S' bcolor bc shd 'R' scolor sc ttlw 'C' ttl ' Forms List '
+         fnc_list 'F1 Help','Esc Exit'
+         ;s_h_msg
+         define x_ttl1 type a size 59 local
+         define x_uscore type a size 59 local
+         ;
+         setline x_ttl1 with   "Form Name      "
+         setline x_uscore with "ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ"
+         cntr3 = cntr2
+         listm file.name cntr cntr3 actv cntr maxa cntr fline x_ttl1, x_uscore noadd noshift MENU UP blnes 1
+         if cntr3 <> 0
+           rtm_name = file.name[cntr3]
+         endif
+         xtrap_rstr_udc
+         redsp
+        RET
+      }
+    picture remove
+    redsp
+  ret
+#endp
+;
+::RTM_VALID
+
+;**************************************************************************
+;   AROpenBal: Determines what the open balance of an
+;              AR item was, as of any date that you pass.
+;
+;   Parameters:
+;   AROBDate    - date as of which you want open balance calculated.
+;   AROBTrxn    - trxn# of the BKARINVT record (bkar.invt.trxn).
+;   AROBType    - type of BKARINVT item (bkar.invt.type).
+;   AROBNormp   - flag from BKARINVT record where Y means this is a
+;                 payment record fully applied to invoices (thus never
+;                 has an open balance) (bkar.invt.normp).
+;   AROBOpend   - date item was created (bkar.invt.opend).
+;   AROBClosd   - date item was closed (bkar.invt.closd).
+;   AROBTxHndl  - file handle of BKART file (calling program must have
+;                 already opened this file using OPENV).
+;
+;   Function returns a N,12,2 number.
+;**************************************************************************
+:AROpenBal
+#proc
+   define AROBDate type d size 8 local
+   define AROBTrxn type n size 10 dec 0 local
+   define AROBType type a size 1 local
+   define AROBNormp type a size 1 local
+   define AROBOpend type d size 8 local
+   define AROBClosd type d size 8 local
+   define AROBTxHndl type i size 5 local
+   define AROBReturn type n size 12 dec 2 local
+   func AROpenBal AROBDate, AROBTrxn, AROBType, AROBNormp, AROBOpend, AROBClosd, AROBTxHndl
+      AROBReturn=0
+
+      ;If item was opened after the as-of date, could not have had a
+      ;  balance then.
+      if AROBOpend>AROBDate
+         goto AROBGoBack
+      endif
+
+      ;If the item is currently closed, and was closed on or before the
+      ;  as-of date, could not have had a balance then.
+      if AROBClosd<>0 .a. AROBClosd<=AROBDate
+         goto AROBGoBack
+      endif
+
+      ;If this is a "normal" payment-type item (the full amount of the
+      ;  item got applied to invoices), then it never had an open balance
+      ;  to begin with.
+      if AROBType='P' .a. AROBNormp='Y'
+         goto AROBGoBack
+      endif
+
+      ;If the item has no trxns, this should only occur with items that
+      ;  existed prior to the AR conversion, and were fully closed as of
+      ;  the AR conversion.  So we will always return 0 as the open
+      ;  amount in these cases.
+      findv M fnum AROBTxHndl key bkart.trxn val AROBTrxn nlock
+      if flerr(AROBTxHndl)<>0
+         goto AROBGoBack
+      endif
+
+      ;So at this point, item potentially had an open balance on the
+      ;  as-of date.  We will start with a total of 0, rather than the
+      ;  original invoice amt as indicated in bkar.invt.amt, because
+      ;  there will be a trxn record for the initial creation of the
+      ;  item.  Also, if the item had been PARTIALLY paid as of the AR
+      ;  conversion, using bkar.invt.amt as the starting point here
+      ;  would have produced an incorrect result.
+      ;So we start with 0, add in any trxns on or before the as-of date,
+      ;  and ignore any trxns after the as-of date.
+      while bkart.trxn=AROBTrxn
+         if bkart.postdate<=AROBDate
+            AROBReturn=AROBReturn+(bkart.amount+bkart.disc)
+         endif
+         findv N fnum AROBTxHndl key bkart.trxn nlock
+         if flerr(AROBTxHndl)<>0
+            exit
+         endif
+      endw
+
+      AROBGoBack:
+      clr @AROBTxHndl buff
+      ret AROBReturn
+
+#endp
+::
+
+;**************************************************************************
+;   LastTDate: Determines latest trxn date for an AR item.
+;
+;   CAUTION:
+;   This function will disturb current contents of the BKART
+;   record buffer, if these need to be preserved do so
+;   before calling this function.
+;
+;   Calling program must have BKART file already opened, and
+;   this must have been opened using OPENV, not OPEN.
+;
+;   Pass in 3 params:
+;   1) Trxn# of the item from BKARINVT record.
+;   2) Invoice date (essentially the open date) from BKARINVT.
+;   3) File handle of BKART file.
+;
+;   Function returns an D,8 field that is the latest trxn
+;   date.  If no trxns (should never happen), returns the
+;   invoice date.
+;**************************************************************************
+:LastTDate
+#proc
+   define LTDTrxnNo type n size 10 dec 0 local
+   define LTDItemDate type d size 8 local
+   define LTDHndl type i size 5 local
+   define LTDReturn type d size 8 local
+   func LastTDate LTDTrxnNo, LTDItemDate, LTDHndl
+      LTDReturn=0
+
+      scan @LTDHndl key bkart.trxn start LTDTrxnNo while bkart.trxn=LTDTrxnNo nlock
+         if bkart.postdate>LTDReturn
+            LTDReturn=bkart.postdate
+         endif
+      ends
+      clr @LTDHndl buff
+      if LTDReturn=0
+         LTDReturn=LTDItemDate
+      endif
+
+     ret LTDReturn
+
+#endp
+::
+
+
+;**************************************************************************
+;   NextARTrxn: This function assigns the next AR trxn#, based on the
+;               system counter.  Also checks to make sure that the number
+;               being assigned is not a duplicate.
+;
+;   CAUTION: This function will disturb current contents of the BKARINVT
+;            record buffer, if these need to be preserved do so
+;            before calling this function.
+;
+;   Calling program must have the BKSYAR and BKARINVT
+;   files already opened, can be OPENs or OPENVs or combination
+;   of the two.  BKSYAR must have been opened in the calling program
+;   with record locking enabled.
+;
+;   The 2 params tell function how the calling program opened
+;   the files function needs (OPEN vs OPENV; does not have to be
+;   same method for both files).  For files opened with OPEN, pass
+;   a 0.  For files opened with OPENV, pass the corresponding file
+;   handle number:
+;   1) How this program opened BKSYAR file.
+;   2) How this program opened BKARINVT file.
+;
+;   Function returns an N,10,0 field that is the next trxn
+;   number to use.  If it returns 0, means there was some sort
+;   of problem and a number could not be assigned.
+;
+;   IMPORTANT NOTE: Upon return from the function, BKSYAR
+;   record will still be locked.  This is intentional, so that
+;   if you want to guarantee uniqueness of the just-assigned
+;   trxn number until a record gets saved with the new
+;   number in BKARINVT, other users would not be able
+;   to use that same trxn number in the meantime.
+;**************************************************************************
+:NextARTrxn
+#proc
+   define ARTSyar, ARTArinvt type i size 5 local
+   define ARTReturn type n size 10 dec 0 local
+   define ARTDupeCheck type i size 5 local
+   ;This 3rd param, if T, is a secret feature to turn off dupe checking here.
+   ;  Should never use this, just needed it for the AR conversion program.
+   define ARTNoDupeChk type l
+   func NextARTrxn ARTSyar, ARTArinvt, ARTNoDupeChk
+     ARTReturn=0
+
+     ;First try using what the system says s/be next trxn number.
+     ;  This file has record locking enabled.
+     if ARTSyar=0
+        ;Opened with 3.0 OPEN.
+        find F srch bksy.ar.trxn
+        if flerr(fnum('bksyar'))<>0
+           ;No record yet, could well be the case if this is first time
+           ;  the revised (12/2000) AR system is being used.  Create the
+           ;  record now.
+           save BKSYAR nocnf noclr
+        endif
+     else
+        ;Opened with 5.0 OPENV.
+        findv F fnum ARTSyar key bksy.ar.trxn
+        if flerr(ARTSyar)<>0
+           ;No record yet, could well be the case if this is first time
+           ;  the revised (12/2000) AR system is being used.  Create the
+           ;  record now.
+           save @ARTSyar nocnf noclr
+        endif
+     endif
+     if bksy.ar.trxn=0
+        bksy.ar.trxn=1
+        if ARTSyar=0
+           ;Opened with 3.0 OPEN.
+           save BKSYAR nocnf noclr
+        else
+           ;Opened with 5.0 OPENV.
+           save @ARTSyar nocnf noclr
+        endif
+     endif
+     ARTReturn=bksy.ar.trxn
+     ARTDupeCheck=0
+
+     if ARTNoDupeChk=.f.  ;the usual case, DO check for dupes.
+        while .t.
+           ;First check AR aging file BKARINVT to make sure new# not a dupe.
+           if ARTArinvt=0
+              ;Opened with 3.0 OPEN.
+              bkar.invt.trxn=ARTReturn
+              find M srch bkar.invt.trxn nlock
+              if flerr(fnum('bkarinvt'))=0
+                 ;We already do have an aging record.
+                 ARTDupeCheck=1
+              ;AGL 9/10/01 added else to stop endless loop.
+              else
+                 ARTDupeCheck=0
+              endif
+              clr BKARINVT buff
+           else
+              ;Opened with 5.0 OPENV.
+              findv M fnum ARTArinvt key bkar.invt.trxn val ARTReturn nlock
+              if flerr(ARTArinvt)=0
+                 ;We already do have an aging record.
+                 ARTDupeCheck=1
+              ;AGL 9/10/01 added else to stop endless loop.
+              else
+                 ARTDupeCheck=0
+              endif
+              clr @ARTArinvt buff
+           endif
+
+           if ARTDupeCheck<>0
+              ;If cannot use this number try next one.
+              if ARTReturn=9999999999
+                 ARTReturn=1
+              else
+                 ARTReturn=ARTReturn+1
+              endif
+           else
+              ;OK to use this number
+              exit
+           endif
+        endw
+     endif
+
+     ;Now update system counter with NEXT trxn# to use.  We save the
+     ;  system record but keep it locked until return to calling program,
+     ;  to prevent other users from using this trxn#.
+     if ARTReturn=9999999999
+        bksy.ar.trxn=1
+     else
+        bksy.ar.trxn=ARTReturn+1
+     endif
+     if ARTSyar=0
+        ;Opened with 3.0 OPEN.
+        save BKSYAR nocnf noclr
+     else
+        ;Opened with 5.0 OPENV.
+        save @ARTSyar nocnf noclr
+     endif
+
+     ;And return the trxn# to use to calling program.
+     ret ARTReturn
+
+#endp
+::
+
+
+;**************************************************************************
+;   NextARDep: This function assigns the next AR deposit#, based on the
+;              system counter.  Also checks to make sure that the number
+;              being assigned is not a duplicate.
+;
+;   CAUTION: This function will disturb current contents of BKARINVT and
+;            BKARDEP record buffers, if these need to be preserved do so
+;            before calling this function.
+;
+;   Calling program must have the BKSYAR, BKARINVT, and BKARDEP
+;   files already opened, can be OPENs or OPENVs or combination
+;   of the two.  BKSYAR must have been opened in the calling program
+;   with record locking enabled.
+;
+;   All 3 params tell function how the calling program opened
+;   the files function needs (OPEN vs OPENV; does not have to be
+;   same method for all 3 files).  For files opened with OPEN, pass
+;   a 0.  For files opened with OPENV, pass the corresponding file
+;   handle number:
+;   1) How this program opened BKSYAR file.
+;   2) How this program opened BKARINVT file.
+;   3) How this program opened BKARDEP file.
+;
+;   Function returns an N,10,0 field that is the next deposit
+;   number to use.  If it returns 0, means there was some sort
+;   of problem and a number could not be assigned.
+;
+;   IMPORTANT NOTE: Upon return from the function, BKSYAR
+;   record will still be locked.  This is intentional, so that
+;   if you want to guarantee uniqueness of the just-assigned
+;   deposit number until a record gets saved with the new
+;   number in BKARINVT or BKARDEP, other users would not be able
+;   to use that same deposit number in the meantime.
+;**************************************************************************
+:NextARDep
+#proc
+   define ARDSyar, ARDArinvt, ARDArdep type i size 5 local
+   define ARDReturn type n size 10 dec 0 local
+   define ARDDupeCheck type i size 5 local
+   func NextARDep ARDSyar, ARDArinvt, ARDArdep
+     ARDReturn=0
+
+     ;First try using what the system says s/be next deposit number.
+     ;  This file has record locking enabled.
+     if ARDSyar=0
+        ;Opened with 3.0 OPEN.
+        find F srch bksy.ar.trxn
+        if flerr(fnum('bksyar'))<>0
+           ;No record yet, could well be the case if this is first time
+           ;  the revised (12/2000) AR system is being used.  Create the
+           ;  record now.
+           save BKSYAR nocnf noclr
+        endif
+     else
+        ;Opened with 5.0 OPENV.
+        findv F fnum ARDSyar key bksy.ar.trxn
+        if flerr(ARDSyar)<>0
+           ;No record yet, could well be the case if this is first time
+           ;  the revised (12/2000) AR system is being used.  Create the
+           ;  record now.
+           save @ARDSyar nocnf noclr
+        endif
+     endif
+     if bksy.ar.depno=0
+        bksy.ar.depno=1
+        if ARDSyar=0
+           ;Opened with 3.0 OPEN.
+           save BKSYAR nocnf noclr
+        else
+           ;Opened with 5.0 OPENV.
+           save @ARDSyar nocnf noclr
+        endif
+     endif
+     ARDReturn=bksy.ar.depno
+
+     ARDDupeCheck=0
+
+     while .t.
+        ;First check AR aging file BKARINVT to make sure new# not a dupe.
+        if ARDArinvt=0
+           ;Opened with 3.0 OPEN.
+           bkar.invt.depno=ARDReturn
+           find M srch bkar.invt.depno nlock
+           if flerr(fnum('bkarinvt'))=0
+              ;We already do have an aging record.
+              ARDDupeCheck=1
+           ;AGL 9/10/01 added else to stop endless loop.
+           else
+              ARDDupeCheck=0
+           endif
+           clr BKARINVT buff
+        else
+           ;Opened with 5.0 OPENV.
+           findv M fnum ARDArinvt key bkar.invt.depno val ARDReturn nlock
+           if flerr(ARDArinvt)=0
+              ;We already do have an aging record.
+              ARDDupeCheck=1
+           ;AGL 9/10/01 added else to stop endless loop.
+           else
+              ARDDupeCheck=0
+           endif
+           clr @ARDArinvt buff
+        endif
+        if ARDDupeCheck=0
+           ;If it's not a dupe in BKARINVT, now check BKARDEP.
+           if ARDArdep=0
+              ;Opened with 3.0 OPEN.
+              bkar.dep.depno=ARDReturn
+              find M srch bkar.dep.depno nlock
+              if flerr(fnum('bkardep'))=0
+                 ;We already do have a deposit record.
+                 ARDDupeCheck=2
+              endif
+              clr BKARDEP buff
+           else
+              ;Opened with 5.0 OPENV.
+              findv M fnum ARDArdep key bkar.dep.depno val ARDReturn nlock
+              if flerr(ARDArdep)=0
+                 ;We already do have a deposit record.
+                 ARDDupeCheck=2
+              endif
+              clr @ARDArdep buff
+           endif
+        endif
+
+        if ARDDupeCheck<>0
+           ;If cannot use this number try next one.
+           if ARDReturn=9999999999
+              ARDReturn=1
+           else
+              ARDReturn=ARDReturn+1
+           endif
+        else
+           ;OK to use this number
+           exit
+        endif
+     endw
+
+     ;Now update system counter with NEXT deposit# to use.  We save the
+     ;  system record but keep it locked until return to calling program,
+     ;  to prevent other users from using this deposit#.
+     if ARDReturn=9999999999
+        bksy.ar.depno=1
+     else
+        bksy.ar.depno=ARDReturn+1
+     endif
+     if ARDSyar=0
+        ;Opened with 3.0 OPEN.
+        save BKSYAR nocnf noclr
+     else
+        ;Opened with 5.0 OPENV.
+        save @ARDSyar nocnf noclr
+     endif
+
+     ;And return the deposit# to use to calling program.
+     ret ARDReturn
+
+#endp
+::
+
+;**************************************************************************
+;   NextARInvc: This function assigns the next invoice number, based on the
+;               system counter.  Also checks to make sure that the number
+;               being assigned is not a duplicate.
+;
+;   CAUTION: This function will disturb current contents of BKARINVT,
+;            BKARINV, and BKARHINV record buffers, if these need to be
+;            preserved do so before calling this function.
+;
+;   Calling program must have the BKSYMSTR, BKARINVT, BKARINV, and
+;   BKARHINV files already opened, can be OPENs or OPENVs or combination
+;   of the two.  BKSYMSTR must have been opened in the calling program
+;   with record locking enabled.
+;
+;   All 4 params tell function how the calling program opened
+;   the files function needs (OPEN vs OPENV; does not have to be
+;   same method for all 3 files).  For files opened with OPEN, pass
+;   a 0.  For files opened with OPENV, pass the corresponding file
+;   handle number:
+;   1) How this program opened BKSYMSTR file.
+;   2) How this program opened BKARINVT file.
+;   3) How this program opened BKARHINV file.
+;   4) How this program opened BKARINV file.
+;
+;   Function returns an N,6,0 field that is the next invoice
+;   number to use.  If it returns 0, means there was some sort
+;   of problem and a number could not be assigned.
+;
+;   IMPORTANT NOTE: Upon return from the function, BKSYMSTR
+;   record will still be locked.  This is intentional, so that
+;   if you want to guarantee uniqueness of the just-assigned
+;   invoice number until a record gets saved with the new
+;   number in BKARINVT, BKARINV, or BKARHINV, other users
+;   would not be able to use that same invoice number in the
+;   meantime.
+;**************************************************************************
+:NextARInvc
+#proc
+   define ARISymstr, ARIArinvt, ARIArhinv, ARIArinv type i size 5 local
+   define ARITemp type i size 5 local
+   define ARIReturn type n size 6 dec 0 local
+   func NextARInvc ARISymstr, ARIArinvt, ARIArhinv, ARIArinv
+     ARIReturn=0
+
+     ;First try using what the system says s/be next invoice number.
+     ;  This file has record locking enabled.
+     if ARISymstr=0
+        ;Opened with 3.0 OPEN.
+        find F srch BKSY.ARINV.NUM
+     else
+        ;Opened with 5.0 OPENV.
+        findv F fnum ARISymstr key bksy.arinv.num
+     endif
+     if bksy.arinv.num=0
+        bksy.arinv.num=1
+        if ARISymstr=0
+           ;Opened with 3.0 OPEN.
+           save BKSYMSTR nocnf noclr
+        else
+           ;Opened with 5.0 OPENV.
+           save @ARISymstr nocnf noclr
+        endif
+     endif
+     ARIReturn=BKSY.ARINV.NUM
+
+     while .t.
+        ;********************************************************************
+        ;  Determine if the proposed new invoice number has already
+        ;  been used.  Pass this DBA.LIB function the following parameters:
+        ;  1) Proposed new invoice# (must be N,6,0 field).
+        ;  The next 3 params tell function how the calling program opened
+        ;  the files function needs (OPEN vs OPENV; does not have to be
+        ;  same method for all 3 files).  For files opened with OPEN, pass
+        ;  a 0.  For files opened with OPENV, pass the corresponding file
+        ;  handle number:
+        ;  2) How this program opened BKARINVT file.
+        ;  3) How this program opened BKARHINV file.
+        ;  4) How this program opened BKARINV file.
+        ;
+        ;  Function return an I,5 field as follows:
+        ;  0 - No problems, OK to assign this invoice number.
+        ;  1 - Rejected, number already exists in BKARINVT.
+        ;  2 - Rejected, number already exists in BKARHINV.
+        ;  3 - Rejected, number already exists in BKARINV (unposted invoice).
+        ;********************************************************************
+        ARITemp=ChkDupeInvc(ARIReturn, ARIArinvt, ARIArhinv, ARIArinv)
+
+        if ARITemp<>0
+           ;If cannot use this number try next one.
+           if ARIReturn=999999
+              ARIReturn=1
+           else
+              ARIReturn=ARIReturn+1
+           endif
+        else
+           ;OK to use this number
+           exit
+        endif
+     endw
+
+     ;Now update system counter with NEXT invoice# to use.  We save the
+     ;  system record but keep it locked until return to calling program,
+     ;  to prevent other users from using this invoice#.
+     if ARIReturn=999999
+        bksy.arinv.num=1
+     else
+        bksy.arinv.num=ARIReturn+1
+     endif
+     if ARISymstr=0
+        ;Opened with 3.0 OPEN.
+        save BKSYMSTR nocnf noclr
+     else
+        ;Opened with 5.0 OPENV.
+        save @ARISymstr nocnf noclr
+     endif
+
+     ;And return the invoice# to use to calling program.
+     ret ARIReturn
+
+#endp
+::
+
+;****************************************************************************
+;   ChkDupeInvc: This function determines whether or not a proposed new
+;                invoice number has already been used in the system.
+;
+;   CAUTION: This function will disturb current contents of BKARINVT,
+;            BKARINV, and BKARHINV record buffers, if these need to be
+;            preserved do so before calling this function.
+;
+;   Calling program must have the BKARINVT, BKARINV, and BKARHINV files
+;   already opened, can be OPENs or OPENVs or combination of the two.
+;
+;   Passed parameters:
+;   1) Proposed new invoice# (must be N,6,0 field).
+;   The next 3 params tell function how the calling program opened
+;   the files function needs (OPEN vs OPENV; does not have to be
+;   same method for all 3 files).  For files opened with OPEN, pass
+;   a 0.  For file opened with OPENV, pass the corresponding file
+;   handle number:
+;   2) How this program opened BKARINVT file.
+;   3) How this program opened BKARHINV file.
+;   4) How this program opened BKARINV file.
+;
+;   Note: Because SO-F has both BKARINV and BKARHINV opened with 3.0 OPENs,
+;   adding some SETACT commands here to handle it.
+;
+;   Function return an I,5 field as follows:
+;   0 - No problems, OK to assign this invoice number.
+;   1 - Rejected, number already exists in BKARINVT.
+;   2 - Rejected, number already exists in BKARHINV.
+;   3 - Rejected, number already exists in BKARINV (unposted invoice).
+;****************************************************************************
+:ChkDupeInvc
+#proc
+   define CDIInvoice type n size 6 dec 0 local
+   define CDIArinvt, CDIArhinv, CDIArinv type i size 5 local
+   define CDIReturn type i size 5 local
+   func ChkDupeInvc CDIInvoice, CDIArinvt, CDIArhinv, CDIArinv
+     CDIReturn=0
+
+     ;First check AR aging file BKARINVT.
+     if CDIArinvt=0
+        ;Opened with 3.0 OPEN.
+        bkar.invt.num=CDIInvoice
+        find M srch bkar.invt.num nlock
+        if flerr(fnum('bkarinvt'))=0
+           ;We already do have an aging record.
+           CDIReturn=1
+        endif
+        clr BKARINVT buff
+     else
+        ;Opened with 5.0 OPENV.
+        findv M fnum CDIArinvt key bkar.invt.num val CDIInvoice nlock
+        if flerr(CDIArinvt)=0
+           ;We already do have an aging record.
+           CDIReturn=1
+        endif
+        clr @CDIArinvt buff
+     endif
+     if CDIReturn<>0
+        goto CDIDone
+     endif
+
+     ;Check the SO invoice history file BKARHINV.  Have to do this
+     ;  step because at some point in the past they may have purged the
+     ;  BKARINVT aging file.
+     if CDIArhinv=0
+        ;Opened with 3.0 OPEN.
+	setact BKARINV file BKARHINV
+	bkar.inv.num=CDIInvoice
+        find M srch bkar.inv.num nlock
+        if flerr(fnum('bkarhinv'))=0
+           ;We already do have an invoice history record.
+           CDIReturn=2
+        endif
+        clr BKARHINV buff
+     else
+        ;Opened with 5.0 OPENV.
+        findv M fnum CDIArhinv key bkar.inv.num val CDIInvoice nlock
+        if flerr(CDIArhinv)=0
+           ;We already do have an invoice history record.
+           CDIReturn=2
+        endif
+        clr @CDIArhinv buff
+     endif
+     if CDIReturn<>0
+        goto CDIDone
+     endif
+
+     ;Check open SO file BKARINV to see if this invoice number has been
+     ;  assigned as a pending (unposted) invoice number on a SO.
+     if CDIArinv=0
+        ;Opened with 3.0 OPEN.
+	setact BKARINV file BKARINV
+	bkar.inv.num=CDIInvoice
+        find M srch bkar.inv.num nlock
+        if flerr(fnum('bkarinv'))=0
+           ;We already do have a pending invoice.
+           CDIReturn=3
+        endif
+        clr BKARINV buff
+     else
+        ;Opened with 5.0 OPENV.
+        findv M fnum CDIArinv key bkar.inv.num val CDIInvoice nlock
+        if flerr(CDIArinv)=0
+           ;We already do have a pending invoice.
+           CDIReturn=3
+        endif
+        clr @CDIArinv buff
+     endif
+
+   CDIDone:
+   ret CDIReturn
+
+#endp
+::
+
+
+;******************************************************************************
+;   sel.gen - generic nmenu selection box routine for both WIN and DOS.
+;     You pass it parameters for col, row, #choices, choice width,
+;       default choice#, and an optional title which, if passed, will
+;       appear underlined in the box body area.
+;     Note the calling program must have an array called SELGEN.ARR defined
+;       which holds the choices.
+;
+;******************************************************************************
+:sel.gen
+#proc
+  define sgx.phndl, sgx.exphndl type i size 5 local
+  define sgx.col, sgx.row type i size 5 local
+  define sgx.nch, sgx.chwdt, sgx.tlen, sgx.twdt type i size 5 local
+  define sgx.tcolor type r size 10 local
+  define sgx.ret type l local
+  define sgx.choice type i size 5 local
+  define sgx.cntr type i size 5 local
+  define sgx.ext, sgx.ttl type a size 12 local
+  define sgx.title type a size 78 local
+  func sel.gen sgx.col, sgx.row, sgx.nch, sgx.chwdt, sgx.choice, sgx.title
+    saves
+    xtrap_si_udc
+
+    if sgx.choice = 0
+       sgx.choice = 1
+    endif
+    sgx.cntr = sgx.choice
+
+    if windows()
+       ;Determine which BMP images to use
+       if which_size() = 2
+          sgx.ext = 'dbabextm'
+       else_if which_size() = 3
+          sgx.ext = 'dbabextl'
+       else
+          sgx.ext = 'dbabexts'
+       endif
+    endif
+
+    if windows()
+       sgx.twdt = sgx.chwdt+2
+       if sgx.title = ''
+          sgx.tlen = sgx.nch+3
+       else
+          sgx.tlen = sgx.nch+5
+       endif
+    else
+       sgx.twdt = sgx.chwdt+2
+       if sgx.title = ''
+          sgx.tlen = sgx.nch+2
+       else
+          sgx.tlen = sgx.nch+4
+       endif
+    endif
+
+    ;If no col/row coordinates passed, just center the box.
+    if sgx.col = 0 .a. sgx.row = 0
+       sgx.col = (max_cols()/2) - (sgx.twdt/2)
+       sgx.row = (max_rows()/2) - (sgx.tlen/2)
+    endif
+
+    if windows()
+       ;Draw the box (blue title bar)
+       sgx.ret = graybox(sgx.col,sgx.row,sgx.tlen,sgx.twdt,'B')
+
+       ;;Box title
+       ;picture at sfx.col,sfx.row len 2 wdt 14 file sfx.ttl num sfx.phndl no_border use_res
+    endif
+
+    trap ESC goto SGX.ESC
+    if windows()
+       fnc_list '','','',''
+    else
+       clrlne at 1,24
+       fnc_list "F1 Help","Esc Exit",'',''
+    endif
+
+    if windows()
+       ;Exit button on box (blue bkg)
+       picture at sgx.col+(sgx.twdt-3),sgx.row len 2 wdt 3 file sgx.ext num sgx.exphndl key 'ESC' no_border use_res
+
+       ;Save the background color for resetting later, then set bkgrnd
+       ;  color to black on gray.
+       sgx.tcolor = get_win_color('MenuBkg')
+       win_color 'MenuBkg' val get_win_color('NormalBkg')
+
+       ;Menu of selection items
+       if sgx.title = ''
+          nmenu selgen.arr at sgx.col+1,sgx.row+2 len sgx.nch wdt sgx.chwdt cntr sgx.cntr nch sgx.nch array use_colors auto
+       else
+          window at sgx.col+1,sgx.row+2 len sgx.nch+2 wdt sgx.chwdt bcolor get_win_color('NormalBkg') wcolor get_win_color('NormalBkg') use_colors
+          pmsg sgx.title at 1,1 nocr
+          pmsg fill(sgx.chwdt,'Ä') at 1,2 nocr
+          nmenu selgen.arr at sgx.col+1,sgx.row+4 len sgx.nch wdt sgx.chwdt cntr sgx.cntr nch sgx.nch array use_colors auto
+       endif
+    else
+       if sgx.title = ''
+          nmenu selgen.arr at sgx.col,sgx.row len sgx.nch+2 wdt sgx.chwdt+2 array cntr sgx.cntr nch sgx.nch box 's' bcolor bc mcolor mc shd 'r' scolor sc chxpr 1=1 auto
+       else
+          window at sgx.col,sgx.row len sgx.nch+4 wdt sgx.chwdt+2 box 's' shd 'r' wcolor wc bcolor bc scolor sc
+          pmsg sgx.title at 1,1 nocr
+          pmsg fill(sgx.chwdt,'Ä') at 1,2 nocr
+          nmenu selgen.arr at sgx.col+1,sgx.row+3 len sgx.nch wdt sgx.chwdt array cntr sgx.cntr nch sgx.nch mcolor mc chxpr 1=1 auto
+       endif
+    endif
+
+    {
+      SGX.ESC:
+        sgx.cntr = 0
+    }
+
+    if windows()
+       ;Reset bkgrnd color
+       if sgx.tcolor <> 0
+          win_color 'MenuBkg' val sgx.tcolor
+       endif
+
+       ;Remove all the pictures
+       picture remove
+    endif
+
+    redsp
+    xtrap_rstr_udc
+    ret sgx.cntr
+
+#endp
+::
+
+
+;******************************************************************************
+;   sel.form - routine for selecting print formats.
+;
+;******************************************************************************
+:sel.form
+#proc
+  ;Note the calling program must have an array called FORM.ARR defined
+  ;  which holds the choices.
+  define sfx.phndl, sfx.exphndl type i size 5 local
+  define sfx.col, sfx.row type i size 5 local
+  define sfx.nch, sfx.chwdt, sfx.tlen, sfx.twdt type i size 5 local
+  define sfx.tcolor type r size 10 local
+  define sfx.ret type l local
+  define sfx.choice type i size 5 local
+  define sfx.cntr type i size 5 local
+  define sfx.ext, sfx.ttl type a size 12 local
+  func sel.form sfx.col, sfx.row, sfx.nch, sfx.chwdt, sfx.choice
+    saves
+    xtrap_si_udc
+
+    if sfx.choice = 0
+       sfx.choice = 1
+    endif
+    sfx.cntr = sfx.choice
+
+    if windows()
+       ;Determine which BMP images to use
+       if which_size() = 2
+          sfx.ext = 'dbabextm'
+          sfx.ttl = 'dbaformm'
+       else_if which_size() = 3
+          sfx.ext = 'dbabextl'
+          sfx.ttl = 'dbaforml'
+       else
+          sfx.ext = 'dbabexts'
+          sfx.ttl = 'dbaforms'
+       endif
+
+       sfx.twdt = sfx.chwdt+2
+       sfx.tlen = sfx.nch+3
+
+       ;If no col/row coordinates passed, just center the box.
+       if sfx.col = 0 .a. sfx.row = 0
+          sfx.col = (max_cols()/2) - (sfx.twdt/2)
+          sfx.row = (max_rows()/2) - (sfx.tlen/2)
+       endif
+
+       ;Draw the box (blue title bar)
+       sfx.ret = graybox(sfx.col,sfx.row,sfx.tlen,sfx.twdt,'B')
+
+       ;Box title
+       picture at sfx.col,sfx.row len 2 wdt 14 file sfx.ttl num sfx.phndl no_border use_res
+
+       ;Exit button on box (blue bkg)
+       trap ESC goto sfx.ESC
+       picture at sfx.col+(sfx.twdt-3),sfx.row len 2 wdt 3 file sfx.ext num sfx.exphndl key 'ESC' no_border use_res
+
+       ;Save the background color for resetting later, then set bkgrnd
+       ;  color to black on gray.
+       sfx.tcolor = get_win_color('MenuBkg')
+       win_color 'MenuBkg' val get_win_color('NormalBkg')
+
+       ;Menu of selection items
+       nmenu form.arr at sfx.col+1,sfx.row+2 len sfx.nch wdt sfx.chwdt cntr sfx.cntr nch sfx.nch array use_colors
+       {
+         sfx.ESC:
+           sfx.cntr = 0
+       }
+
+       ;Reset bkgrnd color
+       if sfx.tcolor <> 0
+          win_color 'MenuBkg' val sfx.tcolor
+       endif
+
+       ;Remove all the pictures
+       picture remove
+
+    else
+       fnc_list "F1 Help","Esc Exit",'',''
+       nmenu form.arr at sfx.col,sfx.row len sfx.nch+2 wdt sfx.chwdt+2 array cntr sfx.cntr nch sfx.nch ttl " Select Form " ttlw 'l' box 's' bcolor bc mcolor mc shd 'r' scolor sc chxpr 1=1
+    endif
+
+    redsp
+    xtrap_rstr_udc
+    ret sfx.cntr
+
+#endp
+::
+
+;******************************************************************************
+;   sel.terms - routine for selecting AP/AR terms.
+;
+;******************************************************************************
+:sel.terms
+#proc
+  define stx.phndl, stx.exphndl type i size 5 local
+  define stx.col, stx.row type i size 5 local
+  define stx.chwdt, stx.tlen, stx.twdt type i size 5 local
+  define stx.tcolor type r size 10 local
+  define stx.ret type l local
+  define stx.choice type i size 5 local
+  define stx.array type a size 23 array 20 local
+  define stx.cntr, stx.tot type i size 5 local
+  define stx.anum type a size 2 local
+  define stx.num type n size 2 dec 0 local
+  define stx.ext, stx.ttl type a size 12 local
+  func sel.terms stx.col, stx.row, stx.choice
+    saves
+    xtrap_si_udc
+
+    ;First load the terms.  Assume BKSYMSTR record active.
+    updta stx.array clr
+    stx.tot = 0
+    for(stx.cntr;1;20;1)
+      if bksy.terms[stx.cntr] <> ''
+         stx.tot = stx.tot + 1
+         stx.array[stx.tot] = str(stx.cntr,2,0)+' '+bksy.terms[stx.cntr]
+      endif
+      if stx.choice = stx.cntr
+         stx.choice = stx.tot
+      endif
+    next
+
+    if stx.tot = 0
+       msg 'No valid terms have been set up. ' windows 'warn'
+       redsp
+       xtrap_rstr_udc
+       ret stx.tot
+    endif
+
+    if stx.choice = 0 .o. stx.choice > stx.tot
+       stx.choice = 1
+    endif
+    stx.cntr = stx.choice
+
+    if windows()
+       ;Determine which BMP images to use
+       if which_size() = 2
+          stx.ext = 'dbabextm'
+          stx.ttl = 'dbatermm'
+       else_if which_size() = 3
+          stx.ext = 'dbabextl'
+          stx.ttl = 'dbaterml'
+       else
+          stx.ext = 'dbabexts'
+          stx.ttl = 'dbaterms'
+       endif
+
+       stx.chwdt= 23
+       stx.twdt = stx.chwdt+2
+       stx.tlen = stx.tot+3
+
+       ;If no col/row coordinates passed, just center the box.
+       if stx.col = 0 .a. stx.row = 0
+          stx.col = (max_cols()/2) - (stx.twdt/2)
+          stx.row = (max_rows()/2) - (stx.tlen/2)
+       endif
+
+       ;Draw the box (blue title bar)
+       stx.ret = graybox(stx.col,stx.row,stx.tlen,stx.twdt,'B')
+
+       ;Box title
+       picture at stx.col,stx.row len 2 wdt 14 file stx.ttl num stx.phndl no_border use_res
+
+       ;Exit button on box (blue bkg)
+       trap ESC goto STX.ESC
+       picture at stx.col+(stx.twdt-3),stx.row len 2 wdt 3 file stx.ext num stx.exphndl key 'ESC' no_border use_res
+
+       ;Save the background color for resetting later, then set bkgrnd
+       ;  color to black on gray.
+       stx.tcolor = get_win_color('MenuBkg')
+       win_color 'MenuBkg' val get_win_color('NormalBkg')
+
+       ;Menu of selection items
+       nmenu stx.array at stx.col+1,stx.row+2 len stx.tot wdt stx.chwdt cntr stx.cntr nch stx.tot array use_colors
+       {
+         STX.ESC:
+           stx.cntr = 0
+       }
+
+       ;Reset bkgrnd color
+       if stx.tcolor <> 0
+          win_color 'MenuBkg' val stx.tcolor
+       endif
+
+       ;Remove all the pictures
+       picture remove
+
+    else
+       fnc_list "F1 Help","Esc Exit",'',''
+       nmenu stx.array at 27,3 len stx.tot+2 wdt 25 array cntr stx.cntr nch stx.tot ttl " Terms Available " ttlw 'l' box 's' bcolor bc mcolor mc shd 'r' scolor sc chxpr 1=1
+    endif
+
+    if stx.cntr <> 0
+       stx.anum = mid(stx.array[stx.cntr],1,2)
+       stx.num  = val(stx.anum)
+       stx.choice = stx.num
+    else
+       stx.choice = 0
+    endif
+
+    redsp
+    xtrap_rstr_udc
+    ret stx.choice
+
+#endp
+::
+
+;******************************************************************************
+;   sel.skey - WIN-only routine for selecting index key in lookups.
+;              SRCH_KEY_NUM and MENULIST[] are public.
+;******************************************************************************
+:sel.skey
+#proc
+  define ssk.phndl, ssk.exphndl type i size 5 local
+  define ssk.col, ssk.row, ssk.nch, ssk.chwdt type i size 5 local
+  define ssk.tlen, ssk.twdt type i size 5 local
+  define ssk.tcolor type r size 10 local
+  define ssk.ret type l local
+  define ssk.choice type i size 5 local
+  define ssk.ext, ssk.ttl type a size 12 local
+  func sel.skey ssk.col, ssk.row, ssk.nch, ssk.chwdt, ssk.choice
+
+  ;Determine which BMP images to use
+  if which_size() = 2
+     ssk.ext = 'dbabextm'
+     ssk.ttl = 'dbaskeym'
+  else_if which_size() = 3
+     ssk.ext = 'dbabextl'
+     ssk.ttl = 'dbaskeyl'
+  else
+     ssk.ext = 'dbabexts'
+     ssk.ttl = 'dbaskeys'
+  endif
+
+  xtrap_si_udc
+  if ssk.choice = 0
+     ssk.choice = 1
+  endif
+  if ssk.chwdt < 13
+     ssk.chwdt = 13
+  endif
+  ssk.twdt = ssk.chwdt+2
+  ssk.tlen = ssk.nch+3
+
+  ;If no col/row coordinates passed, just center the box.
+  if ssk.col = 0 .a. ssk.row = 0
+     ssk.col = (max_cols()/2) - (ssk.twdt/2)
+     ssk.row = (max_rows()/2) - (ssk.tlen/2)
+  endif
+
+  ;Draw the box (blue title bar)
+  ssk.ret = graybox(ssk.col,ssk.row,ssk.tlen,ssk.twdt,'B')
+
+  ;Box title
+  picture at ssk.col,ssk.row len 2 wdt 11 file ssk.ttl num ssk.phndl no_border use_res
+
+  ;Exit button on box (blue bkg)
+  trap ESC goto SSK.ESC
+  picture at ssk.col+(ssk.twdt-3),ssk.row len 2 wdt 3 file ssk.ext num ssk.exphndl key 'ESC' no_border use_res
+
+  ;Save the background color for resetting later, then set bkgrnd
+  ;  color to black on gray.
+  ssk.tcolor = get_win_color('MenuBkg')
+  win_color 'MenuBkg' val get_win_color('NormalBkg')
+
+  ;Menu of selection items
+  nmenu menulist at ssk.col+1,ssk.row+2 len ssk.nch wdt ssk.chwdt cntr ssk.choice nch ssk.nch array use_colors
+  {
+    SSK.ESC:
+      ssk.choice = 0
+  }
+
+  ;Reset bkgrnd color
+  if ssk.tcolor <> 0
+     win_color 'MenuBkg' val ssk.tcolor
+  endif
+
+  ;Remove all the pictures
+  picture remove
+  xtrap_rstr_udc
+
+  ret ssk.choice
+#endp
+::
+
+;******************************************************************************
+;   graybox - This draws a WIN-style gray box
+;
+;******************************************************************************
+:graybox
+#proc
+  define gbx.phndl type i size 5 local
+  define gbx.col, gbx.row, gbx.tlen, gbx.twdt type i size 5 local
+  define gbx.dist, gbx.start type i size 5 local
+  define gbx.prtd type i size 5 local
+  define gbx.tcolor type a size 1 local
+  define gbx.file type a size 12 local
+  define gbx.tlc, gbx.tp1, gbx.tp2, gbx.tp5, gbx.trc type a size 12 local
+  define gbx.lft1, gbx.lft2, gbx.lft5, gbx.rgt1, gbx.rgt2, gbx.rgt5 type a size 12 local
+  define gbx.blc, gbx.bot1, gbx.bot2, gbx.bot5, gbx.brc type a size 12 local
+  func graybox gbx.col, gbx.row, gbx.tlen, gbx.twdt, gbx.tcolor
+
+    ;Determine which BMP images to use
+    if which_size() = 2
+       if gbx.tcolor = 'B'
+          gbx.tlc  = 'dbabtlcm'
+          gbx.tp1  = 'dbabtp1m'
+          gbx.tp2  = 'dbabtp2m'
+          gbx.tp5  = 'dbabtp5m'
+          gbx.trc  = 'dbabtrcm'
+       else
+          gbx.tlc  = 'dbagtlcm'
+          gbx.tp1  = 'dbagtp1m'
+          gbx.tp2  = 'dbagtp2m'
+          gbx.tp5  = 'dbagtp5m'
+          gbx.trc  = 'dbagtrcm'
+       endif
+       gbx.lft1 = 'dbalft1m'
+       gbx.lft2 = 'dbalft2m'
+       gbx.lft5 = 'dbalft5m'
+       gbx.rgt1 = 'dbargt1m'
+       gbx.rgt2 = 'dbargt2m'
+       gbx.rgt5 = 'dbargt5m'
+       gbx.blc  = 'dbablcrm'
+       gbx.bot1 = 'dbabot1m'
+       gbx.bot2 = 'dbabot2m'
+       gbx.bot5 = 'dbabot5m'
+       gbx.brc  = 'dbabrcrm'
+    else_if which_size() = 3
+       if gbx.tcolor = 'B'
+          gbx.tlc  = 'dbabtlcl'
+          gbx.tp1  = 'dbabtp1l'
+          gbx.tp2  = 'dbabtp2l'
+          gbx.tp5  = 'dbabtp5l'
+          gbx.trc  = 'dbabtrcl'
+       else
+          gbx.tlc  = 'dbagtlcl'
+          gbx.tp1  = 'dbagtp1l'
+          gbx.tp2  = 'dbagtp2l'
+          gbx.tp5  = 'dbagtp5l'
+          gbx.trc  = 'dbagtrcl'
+       endif
+       gbx.lft1 = 'dbalft1l'
+       gbx.lft2 = 'dbalft2l'
+       gbx.lft5 = 'dbalft5l'
+       gbx.rgt1 = 'dbargt1l'
+       gbx.rgt2 = 'dbargt2l'
+       gbx.rgt5 = 'dbargt5l'
+       gbx.blc  = 'dbablcrl'
+       gbx.bot1 = 'dbabot1l'
+       gbx.bot2 = 'dbabot2l'
+       gbx.bot5 = 'dbabot5l'
+       gbx.brc  = 'dbabrcrl'
+    else
+       if gbx.tcolor = 'B'
+          gbx.tlc  = 'dbabtlcs'
+          gbx.tp1  = 'dbabtp1s'
+          gbx.tp2  = 'dbabtp2s'
+          gbx.tp5  = 'dbabtp5s'
+          gbx.trc  = 'dbabtrcs'
+       else
+          gbx.tlc  = 'dbagtlcs'
+          gbx.tp1  = 'dbagtp1s'
+          gbx.tp2  = 'dbagtp2s'
+          gbx.tp5  = 'dbagtp5s'
+          gbx.trc  = 'dbagtrcs'
+       endif
+       gbx.lft1 = 'dbalft1s'
+       gbx.lft2 = 'dbalft2s'
+       gbx.lft5 = 'dbalft5s'
+       gbx.rgt1 = 'dbargt1s'
+       gbx.rgt2 = 'dbargt2s'
+       gbx.rgt5 = 'dbargt5s'
+       gbx.blc  = 'dbablcrs'
+       gbx.bot1 = 'dbabot1s'
+       gbx.bot2 = 'dbabot2s'
+       gbx.bot5 = 'dbabot5s'
+       gbx.brc  = 'dbabrcrs'
+    endif
+
+    ;Overall window
+;    window at gbx.col,gbx.row len gbx.tlen wdt gbx.twdt wcolor get_win_color('NormalBkg') wtxt_color get_win_color('NormalText') use_colors
+
+    ;Top border
+    picture at gbx.col,gbx.row len 2 wdt 1 file gbx.tlc num gbx.phndl no_border use_res
+    gbx.start = gbx.col+1
+    gbx.dist  = gbx.twdt-2
+    while gbx.dist > 0
+       if gbx.dist >= 5
+          picture at gbx.start,gbx.row len 2 wdt 5 file gbx.tp5 num gbx.phndl no_border use_res
+          gbx.prtd = 5
+       else_if gbx.dist >= 2
+          picture at gbx.start,gbx.row len 2 wdt 2 file gbx.tp2 num gbx.phndl no_border use_res
+          gbx.prtd = 2
+       else
+          picture at gbx.start,gbx.row len 2 wdt 1 file gbx.tp1 num gbx.phndl no_border use_res
+          gbx.prtd = 1
+       endif
+       gbx.dist = gbx.dist - gbx.prtd
+       gbx.start= gbx.start + gbx.prtd
+    endw
+    picture at gbx.col+(gbx.twdt-1),gbx.row len 2 wdt 1 file gbx.trc num gbx.phndl no_border use_res
+
+    ;Left and right borders
+    gbx.start = gbx.row+2
+    gbx.dist  = gbx.tlen-3
+    while gbx.dist > 0
+       if gbx.dist >= 5
+          picture at gbx.col,gbx.start len 5 wdt 1 file gbx.lft5 num gbx.phndl no_border use_res
+          picture at gbx.col+(gbx.twdt-1),gbx.start len 5 wdt 1 file gbx.rgt5 num gbx.phndl no_border use_res
+          gbx.prtd = 5
+       else_if gbx.dist >= 2
+          picture at gbx.col,gbx.start len 2 wdt 1 file gbx.lft2 num gbx.phndl no_border use_res
+          picture at gbx.col+(gbx.twdt-1),gbx.start len 2 wdt 1 file gbx.rgt2 num gbx.phndl no_border use_res
+          gbx.prtd = 2
+       else
+          picture at gbx.col,gbx.start len 1 wdt 1 file gbx.lft1 num gbx.phndl no_border use_res
+          picture at gbx.col+(gbx.twdt-1),gbx.start len 1 wdt 1 file gbx.rgt1 num gbx.phndl no_border use_res
+          gbx.prtd = 1
+       endif
+       gbx.dist = gbx.dist - gbx.prtd
+       gbx.start= gbx.start + gbx.prtd
+    endw
+
+    ;Bottom border
+    picture at gbx.col,gbx.row+(gbx.tlen-1) len 1 wdt 1 file gbx.blc num gbx.phndl no_border use_res
+    gbx.start = gbx.col+1
+    gbx.dist  = gbx.twdt-2
+    while gbx.dist > 0
+       if gbx.dist >= 5
+          picture at gbx.start,gbx.row+(gbx.tlen-1) len 1 wdt 5 file gbx.bot5 num gbx.phndl no_border use_res
+          gbx.prtd = 5
+       else_if gbx.dist >= 2
+          picture at gbx.start,gbx.row+(gbx.tlen-1) len 1 wdt 2 file gbx.bot2 num gbx.phndl no_border use_res
+          gbx.prtd = 2
+       else
+          picture at gbx.start,gbx.row+(gbx.tlen-1) len 1 wdt 1 file gbx.bot1 num gbx.phndl no_border use_res
+          gbx.prtd = 1
+       endif
+       gbx.dist = gbx.dist - gbx.prtd
+       gbx.start= gbx.start + gbx.prtd
+    endw
+    picture at gbx.col+(gbx.twdt-1),gbx.row+(gbx.tlen-1) len 1 wdt 1 file gbx.brc num gbx.phndl no_border use_res
+
+    ret .t.
+#endp
+::
+
+;******************************************************************************
+;   find_files - This is a generalized function that can be used to find a
+;                group of files with any extension.
+;******************************************************************************
+:find_files
+#proc
+define find_file_ext type a size 3 local
+define find_file_title type a size 4 local
+define find_file_path type a size 40 local
+func find_files find_file_ext,find_file_title,find_file_path
+    ;
+    ;display them in a list menu format.
+    ;
+    define fle_name type a size 12 local
+    define fle_array type a size 8 array 200 local
+    fle_name = ffile(find_file_path*'*.'+find_file_ext,'f')
+    if fle_name = ''
+        msg 'There are no '+find_file_title+' files currently available.'
+        ret ''
+    endif
+    for(cntr;1;200;1)
+        fle_array[cntr]=mid(fle_name,1,loc('.',fle_name)-1)
+        fle_name = ffile('*.'+find_file_ext,'n')
+        fexit_if fle_name = ''
+    next
+    ;
+    ;when we get here we have the list of files in the array
+    ;
+    cntr1=1
+    sorta fle_array[cntr1] num cntr cntr cntr1 move fle_array[cntr1]
+    cntr1=1
+    window at 15,10 len 10 wdt 13 wcolor wc scolor sc bcolor bc shd 'r' box 's' ttlw 'l' ttl ' '+find_file_title+' Files '
+    listm fle_array cntr cntr1 actv cntr rnd ccolor cc up
+    ;
+    ;return the proper value
+    ;
+    find_file_path=''
+    if cntr1=0
+        ret ''
+    else
+        ret fle_array[cntr1]
+    endif
+#endp
+::
+
+;******************************************************************************
+;  get_scpt_file - This is a centralized routine that will find and open a
+;                  script file for the save and read script routines.
+;******************************************************************************
+;
+:get_scpt_file
+#proc
+define gsf_save type a size 1 local
+define gsf_hndl,gsf_sze,gsf_cntr,gsf_cntr1 type i local
+define gsf_wtd type a size 10 local
+define gsf_ext,gsf_ext2 type a size 4 local
+define gsf_fptr,gsf_scrn_fptr,gsf_script_fptr,gsf_tscrpt_fptr type f local
+
+define gsf_name_hld,gsf_tot_name type a size 59 up local
+define gsf_name type a size 8 local
+
+func get_scpt_file gsf_wtd,gsf_ext2,gsf_sze,gsf_fptr,gsf_scrn_fptr,gsf_script_fptr,gsf_save,gsf_tscrpt_fptr
+;get the script file name
+   trap f2 gosub find_sfile
+   saves &gsf_scrn_fptr
+   clrlne at 1,25 color 31
+   ? 'F2 Display Script Names' at 1,25 color 116 nocr
+    Window At 9,11 len 4 Wdt 61 Wcolor 79 Scolor 7 Bcolor 79 Shd 'R' Box 'S' ttlw 'L' ttl gsf_wtd
+   gsf_name_hld = gsf_tot_name
+   while .t.
+      trap t_esc ignr
+      ? 'Enter the Script file path and name:' at 1,1
+      enter gsf_tot_name at 1,2
+      if gsf_tot_name = '' .o. lstchr() = 283!
+         ;don't save anything
+         exit    && will exit from while loop
+      endif
+      if loc(gsf_tot_name,'.') = 0! then gsf_ext = gsf_ext2
+      if ffile(gsf_tot_name*gsf_ext,'f') <> '' .a. up(gsf_save)='S'
+         if gsf_tot_name = gsf_name_hld
+            ;in this case the user is saving the same name.
+            ;let's rename any current file to .bak and then
+            ;save the changed file.
+            delf gsf_tot_name*'.bak'
+            renf gsf_tot_name*gsf_ext to gsf_tot_name*'.bak'
+         else
+            ask 'The file: '+gsf_tot_name*' already exists, overwrite? Y'
+            if .n. ask()
+               loop    && will go back to beginning of while loop
+            endif
+         endif
+      endif
+      if up(gsf_save)='S'
+         ;if we get here then everything is okay.  Create the new file.
+         openv gsf_tot_name*gsf_ext type x size gsf_sze fnum gsf_hndl buff &gsf_fptr create
+      else
+         ;if we get here then everything is okay.  Open the file.
+         openv gsf_tot_name*gsf_ext type x size gsf_sze fnum gsf_hndl buff &gsf_fptr
+      endif
+      if flerr(gsf_hndl)<> 0!
+         ;error while opening file
+         msg 'An error has occured while opening file: '+gsf_tot_name*'  Try again.'
+         close @gsf_hndl   && will remove the buffer info
+         gsf_hndl=0  && reinit to 0
+         loop
+      endif
+      exit
+   endw
+   ;
+   ;if the file was opened pass back the main part of the file name and
+   ;the full name.
+   ;
+   if gsf_hndl<>0
+      gsf_cntr = eloc('\',gsf_tot_name)
+      inc gsf_cntr    && now pts to the first chr of the actual file name
+      gsf_cntr1 = loc('.',gsf_tot_name,gsf_cntr)
+      if gsf_cntr1 = 0! then gsf_cntr1 = 8!
+      if .n. null(gsf_script_fptr)
+         &gsf_script_fptr = mid(gsf_tot_name,gsf_cntr,gsf_cntr1)
+      endif
+      if .n. null(gsf_tscrpt_fptr)
+         &gsf_tscrpt_fptr = gsf_tot_name
+      endif
+   endif
+   ;
+   redsp &gsf_scrn_fptr
+   ret gsf_hndl
+   ;
+   ;the following is part of the get_scpt_file routine.
+   ;***************************************************
+   ;  find_sfile - list the script files on the disk
+   ;***************************************************
+   find_sfile:
+      ;search for list script files
+      ;
+      gsf_tot_name=find_files('SCL','List')
+      ret
+
+   ;
+   ;the following is also a part of the get_scpt_file routine.
+   ;***************************************************************************
+   ;  open_gsf_src - this will open a source file and return the handle.  This
+   ;                 will allow us to leave the file name data 'encapsulated'
+   ;                 within this routine and not have to violate it.
+   ;***************************************************************************
+   define src_buff_ptr type f local
+   define src_buff_sze type i local
+   define src_buff_typ type a size 1 local
+
+   func open_gsf_src src_buff_ptr,src_buff_sze,src_buff_typ
+      define gsf_shndl type i local
+      openv gsf_tot_name*iif(src_buff_typ='E','.edt','.src') type x size src_buff_sze fnum gsf_shndl buff &src_buff_ptr create
+      if flerr(gsf_shndl)<>0
+           ;error while opening file
+           gsf_shndl=0
+           msg 'An error occured while creating file: '+gsf_tot_name*iif(src_buff_typ='E','.EDT.','.SRC.')
+      endif
+      ret gsf_shndl
+
+;The end of the GET_SCPT_FILE routine.
+#endp
+::
+;******************************************************************************
+;  single hlep func - This is a single routine that can be added to any prg
+;******************************************************************************
+:hlp
+#proc
+define help_fld type a size 320 local
+func hlp help_fld
+    msg trim(Help_fld,'t')
+    ret
+    ;
+#endp
+:end of single help func
+
+;***************** Start of CHK_PATH_CHR *******************************
+;
+;This function will make sure that the last chr in any path is the '\'
+;
+;***********************************************************************
+;
+:chk_path_chr
+#proc
+define cpc_fld type a size 60 local
+define cpc_flds type i local
+func chk_path_chr cpc_fld,cpc_flds
+   define cpc_loc type i local
+   ;
+   ;this will give us both the field and the field size so that we know
+   ;not to return the chr beyond the end of the field
+   ;
+   cpc_loc=lchr(cpc_fld,'l')
+   if lchr(cpc_fld) <> '\' .a. cpc_loc <> 0!
+      mid cpc_fld start iif(cpc_loc+1<=cpc_flds,cpc_loc+1,cpc_flds) fld '\'
+   endif
+   ret cpc_fld
+;
+#endp
+:end of chk_path_chr function
+;
+;****************************************************************************
+;  ret_no_ext - This function will return a file name without an extension.
+;****************************************************************************
+;
+:ret_no_ext
+#proc
+define rne_fld type a size 60 local
+func ret_no_ext rne_fld
+   ;called with the file name including path and possible extension.
+   ;return the entire value if the extension does not exist, no '.', or
+   ;without extension if it does.
+   ;
+   define rne_loc type i local
+   ;
+   rne_loc=loc('.',rne_fld)
+   if rne_loc=0
+      ret rne_fld
+   else
+      ret mid(rne_fld,1,rne_loc-1)
+   endif
+;
+#endp
+:end of ret_no_ext function
+;
+;****************************************************************************
+;  ret_path - This function will return the path without the name
+;****************************************************************************
+;
+:ret_path
+#proc
+define ret_path_fld type a size 124 local
+func ret_path ret_path_fld
+   ;called with the file name including path
+   ;return the path only, returns '' if no path
+   ;
+   define ret_path_loc type i local
+   ;
+   ret_path_loc=eloc('\',ret_path_fld)
+   if ret_path_loc=0
+      ret_path_fld=''
+      ret ret_path_fld
+   else
+      ret mid(ret_path_fld,1,ret_path_loc)
+   endif
+;
+#endp
+:end of ret_path function
+;
+;******************************************************************************
+;  c1 - stnd change color routine
+;******************************************************************************
+:c1
+func c1
+    ;if monitor is color will use the color value, if not, will use monochrome
+    ;color
+    ;
+    ret cc(fc)
+:end of c1 routine
+;
+;
+;******************************************************************************
+;  ae - array element - will return the correct element number for 2 level
+;       arrays
+;******************************************************************************
+:ae
+#proc
+define ae_ele1,ae_ele2,ae_num_ele type i local
+func ae ae_ele1,ae_ele2,ae_num_ele
+   ret ((ae_ele1-1)*ae_num_ele)+ae_ele2
+;
+#endp
+:end of ae function
+
+;
+;******************************************************************************
+;  do_window - common code for setting up a window
+;              appropriate fields have to be defined in the program.
+;******************************************************************************
+:do_window
+cmd do_window
+    window at wx,wy len wl wdt ww wcolor wc scolor sc bcolor bc shd 'r' box 's' ttlw 'l' ttl trim(title_name,'t')+' '
+    ret
+;
+:end of do window
+
+;
+;******************************************************************************
+;  setup_color - setup the color values by either opening or re-opening the
+;                tascolor.ovl file.
+;******************************************************************************
+:setup_color
+cmd setup_color
+    define SND_FNC_LNE_USD type L size 3 RESET
+    SND_FNC_LNE_USD = .F.
+   if color_hndl=0
+      if ffile('tascolor.ovl','f')<>''
+         openv 'tascolor.ovl' fnum color_hndl
+      else
+         openv 'tascolor.ovl' fnum color_hndl path tpath()
+      endif
+      findv f fnum color_hndl
+   else
+      ropen color_hndl
+   endif
+   color norm norm high high err err rev rev enter enter
+   color array norm
+   define norm_hldr type i
+   norm_hldr=norm
+   init_msg_flds
+   clrscr
+   ret
+;
+:end of setup_color
+;
+;******************************************************************************
+;  set_color2 -  setup the color values by either opening or re-opening the
+;                tascolor.ovl file.  Don't clear the screen.
+;******************************************************************************
+:set_color2
+cmd set_color2
+   if color_hndl=0
+      if ffile('tascolor.ovl','f')<>''
+         openv 'tascolor.ovl' fnum color_hndl
+      else
+         openv 'tascolor.ovl' fnum color_hndl path tpath()
+      endif
+      findv f fnum color_hndl
+   else
+      ropen color_hndl
+   endif
+   color norm norm high high err err rev rev enter enter
+   color array norm
+   define norm_hldr type i
+   norm_hldr=norm
+   init_msg_flds
+   ret
+;
+:end of setup_color
+;
+;******************************************************************************
+;  get_file - this routine will call the chsfile.run program
+;******************************************************************************
+:get_file
+#proc
+   define fd_hldr type a size 8 local
+func get_file fd_hldr
+   saves
+   chain tpath()*'chsfile' with fd_hldr
+   redsp
+   ret fd_srch_name
+;
+#endp
+:end of get_file
+;
+;******************************************************************************
+;  init_msg_flds - setup the message array and the msg_ptr field and init it.
+;******************************************************************************
+:init_msg_flds
+#proc
+cmd init_msg_flds
+   ;
+   ;Notice that the following defines are NOT local.  This is on purpose so
+   ;that we can use these fields in all programs.  This is a mod that is
+   ;possible due to Pro 5.0.
+   ;
+   ;define MESSAGE type A size 78 array 16
+   define msg_ptr type p
+   msg_ptr -> message[1]
+   ret
+#endp
+:end of init_msg_flds
+;
+;******************************************************************************
+;  key_srch - allow the user to select from a group of keys for the file.
+;******************************************************************************
+:key_srch
+define key_srch_name type a size 8
+define key_srch_hndl type i
+func key_srch key_srch_name,key_srch_hndl
+    chain tpath()*'srchkeys' with key_srch_name
+    clr @key_srch_hndl buff
+    ret .t.
+:end of key_srch
+;
+;******************************************************************************
+;  degs - Radians to Degrees
+;******************************************************************************
+:degs
+#proc
+define rad_value local
+func degs rad_value
+   ret ((rad_value*360)/(2*pi()))
+#endp
+:end of degs
+;
+;******************************************************************************
+;  rads - Degrees to Radians
+;******************************************************************************
+:rads
+#proc
+define deg_value local
+func rads deg_value
+   ret (deg_value*2*pi())/360
+#endp
+:end of rads
+;
+;******************************************************************************
+;  pv - present value
+;******************************************************************************
+:pv
+#proc
+define pv_amt,pv_yirate,pv_yrs,pv_ppy type n size 15 dec 4 local
+func pv pv_amt,pv_yirate,pv_yrs,pv_ppy
+    ret pv_amt*(1.00/((1.00+(pv_yirate/100.00)/pv_ppy)^(pv_yrs*pv_ppy)))
+#endp
+:end of pv
+;
+;******************************************************************************
+;  pva - present value annuity
+;******************************************************************************
+:pva
+#proc
+define pva_amt,pva_yirate,pva_yrs,pva_ppy type n size 15 dec 4 local
+func pva pva_amt,pva_yirate,pva_yrs,pva_ppy
+    ret pva_amt*((1.00-1.00/((1.00+(pva_yirate/100.00)/pva_ppy)^(pva_yrs*pva_ppy)))/((pva_yirate/100.00)/pva_ppy))
+#endp
+:end of pva
+;
+;******************************************************************************
+;  amort - amortizition of a loan
+;******************************************************************************
+:amort
+#proc
+define amt_amt,amt_yirate,amt_yrs,amt_ppy type n size 15 dec 4 local
+func amort amt_amt,amt_yirate,amt_yrs,amt_ppy
+    ret amt_amt/((1.00-1.00/((1.00+(amt_yirate/100.00)/amt_ppy)^(amt_yrs*amt_ppy)))/((amt_yirate/100.00)/amt_ppy))
+#endp
+:end of amort
+;
+;******************************************************************************
+;  fv - future value
+;******************************************************************************
+:fv
+#proc
+define fv_amt,fv_yirate,fv_yrs,fv_ppy type n size 15 dec 4 local
+func fv fv_amt,fv_yirate,fv_yrs,fv_ppy
+    ret fv_amt*((1.00+(fv_yirate/100.00)/fv_ppy)^(fv_yrs*fv_ppy))
+#endp
+:end of fv
+;
+;******************************************************************************
+;  fva - future value annuity
+;******************************************************************************
+:fva
+#proc
+define fva_amt,fva_yirate,fva_yrs,fva_ppy type n size 15 dec 4 local
+func fva fva_amt,fva_yirate,fva_yrs,fva_ppy
+    ret fva_amt*((((1.00+(fva_yirate/100.00)/fva_ppy)^(fva_yrs*fva_ppy))-1)/((fva_yirate/100.00)/fva_ppy))
+#endp
+:end of fva
+;
+;******************************************************************************
+;  sink - sinking fund
+;******************************************************************************
+:sink
+#proc
+define sink_amt,sink_yirate,sink_yrs,sink_ppy type n size 15 dec 4 local
+func sink sink_amt,sink_yirate,sink_yrs,sink_ppy
+    ret sink_amt/((((1.00+(sink_yirate/100.00)/sink_ppy)^(sink_yrs*sink_ppy))-1)/((sink_yirate/100.00)/sink_ppy))
+#endp
+:end of sink
+;
+;******************************************************************************
+;  ent_list - display a list of msgs rather than a WRAP'd field and enter
+;             a chr at the end.
+;******************************************************************************
+:ent_list
+#proc
+define el_array_ptr type p local
+define el_num,el_wdt,el_cntr type i local
+define el_chr,el_pwhr_hldr type a size 1 local up
+define el_mask type a size 25 local
+func ent_list el_array_ptr,el_num,el_chr,el_mask
+   ;determine the widest item
+   define el_col,el_row type i local
+   if el_num=0 then ret ''
+   init_msg_flds
+   xtrap save ignr
+   el_wdt=0
+   el_pwhr_hldr=pwhr()
+   pset pwhr 's'
+   for(el_cntr;1;el_num;1)
+      if size(@el_array_ptr[el_cntr],'a')>el_wdt then el_wdt=size(@el_array_ptr[el_cntr],'a')
+   next
+   ;we now have the max size, setup the window
+   saves
+   window at 40-((el_wdt+6)/2),26-(el_num+2) len el_num+2 wdt el_wdt+6 box 's' wcolor err
+   for(el_cntr;1;el_num;1)
+      ? trim(@el_array_ptr[el_cntr],'t') at 2,el_cntr nocr color err ptw s
+   next
+   el_chr=up(el_chr)
+   if el_mask='' then el_mask='YN'
+   el_col=col()+1
+   el_row=row()
+   upar
+   enter el_chr at el_col,el_row acr up mask el_mask
+   redsp
+   pset pwhr el_pwhr_hldr
+   xtrap rstr
+   ret el_chr
+#endp
+:end of ent_list
+;
+;******************************************************************************
+;  prg_list - display a list of active programs and allow the user to quit
+;             back to a certain level
+;******************************************************************************
+:prg_list
+#proc
+define pl_action type a size 1 local up
+define pl_name type a size 30 local
+define pl_hldr type b local reset
+cmd prg_list pl_action,pl_name
+   ;this routine will do the following:
+   ;'A' - Add a name to the program list
+   ;'R' - Remove the last item from the program list
+   ;this routine is called by all programs as they enter and exit to keep
+   ;track of which programs are active.
+   trap int ignr
+   if pl_cntr=0
+      ;this is the first program run.  We need to initialize the
+      ;counter and array
+      inc pl_cntr
+      pl_hldr=0
+      pl_array[1]=' A - Exit to DOS'
+      pl_lvl_array[1]=0       && quit to 0
+   endif
+   if up(pl_action)='R'
+      ;remove the current level
+      dec pl_cntr
+      pl_hldr=pl_lvl_array[pl_cntr]
+      quit pl_lvl_array[pl_cntr]
+   else_if up(pl_action)='A'
+      ;add this program name to the array
+      if pl_cntr<20
+         inc pl_cntr
+         inc pl_hldr
+         pl_array[pl_cntr]=' '+chr(64+pl_cntr)+' '+pl_name
+         pl_lvl_array[pl_cntr]=pl_hldr
+      endif
+   else_if up(pl_action)='I'
+      ;this is called by the main menu program when it wants to inc the
+      ;pl_hldr value but doesn't want to add to the list.
+      inc   pl_hldr
+   endif
+   trap int dflt
+   ret
+#endp
+:end of msg_list
+;
+;
+;
+;******************************************************************************
+;  chse_prt - choose the printer if multiple
+;******************************************************************************
+:chse_prt
+#proc
+define laser_printer type l
+define post_prg type a size 8
+define post_prg_run type a size 1
+cmd chse_prt
+   ;this routine will allow the user to chose a printer if there are multiple
+   ;in FILECHSP.
+   if Windows()
+     if Win_laser_prt() gosub cp_set_laser
+     ;in Windows we don't have to do anything else.
+     ret
+   endif
+   define bksyprtr_path type a size 60 local
+   bksyprtr_path=getenv('BKPRINT')
+   if bksyprtr_path<>''
+      bksyprtr_path=chk_path_chr(bksyprtr_path,60)
+      openv 'bksyprtr' fnum bksyprtr_hndl ext 'B' path bksyprtr_path
+   else
+      openv 'bksyprtr' fnum bksyprtr_hndl ext 'B'
+   endif
+   if trc(bksyprtr_hndl)=0
+      ;there are no entries
+      close @bksyprtr_hndl
+      ret
+   endif
+   ;
+   ;if we're here there's at least one entry.  If there is more than one then
+   ;display a list to allow the user to choose which one they want.
+   ;
+   if trc(bksyprtr_hndl)>1
+      ;there are multiple choices, display them.
+      saves
+      window at 23,15 len 10 wdt 34 box 's' wcolor wc bcolor bc shd 'r' scolor sc ttlw 'l' ttl ' Choose Printer '
+      listf bksy.prtr.name file @bksyprtr_hndl key bksy.prtr.name ccolor cc menu up ecolor datc
+      redsp
+      ;if the user presses the ESC key the program will use whatever is
+      ;in the setup program.
+      if bksy.prtr.name=''
+        close @bksyprtr_hndl
+        ret
+      endif
+   else
+      ;only one choice, use it.  We allow the programmer to set it up this
+      ;way so that s/he can change the pset values and make sure the correct
+      ;printer driver is loaded without having to worry about the TAS50.OVL
+      ;file.
+      findv f fnum bksyprtr_hndl key bksy.prtr.name
+   endif
+   ;
+   ;if we're here something needs to be done.  Let's load the printer driver
+   ;and make sure the print specs are set.
+   ;
+   post_prg=bksy.prtr.post          ;save the post prg name and whether or
+   post_prg_run=bksy.prtr.prun      ;not it's a run program.
+   if bksy.prtr.exec<>''
+      ;there is a control file that needs to be executed here first.  If
+      ;bksy.prtr.tas='Y' then we need to run it, otherwise it's a EXEC prg.
+      ;In both cases we assume the program is in the Adv sub-directory.
+      if bksy.prtr.tas='Y'
+         chain bksy.prgs.whr*bksy.prtr.exec
+      else
+         exec bksy.prgs.whr*bksy.prtr.exec
+      endif
+   endif
+   ld_pdrv bksy.prtr.type
+   prt_num bksy.prtr.lptnm
+   pset wdt bksy.prtr.pwdt tlnes bksy.prtr.pmax plnes bksy.prtr.pplne
+   laser_printer=.f.
+   if bksy.prtr.laser='Y' gosub cp_set_laser
+   close @bksyprtr_hndl
+   ret
+
+do_post_cp:
+    if post_prg<>''
+        ;there is a control file that needs to be executed here.  If
+        ;post_prg_run='Y' then we need to run it, otherwise it's a
+        ;EXEC prg.  In both cases we assume the program is in the
+        ;Adv sub-directory.
+        if post_prg_run='Y'
+            chain bksy.prgs.whr*post_prg
+        else
+            exec bksy.prgs.whr*post_prg
+        endif
+        post_prg=''
+        post_prg_run=''
+    endif
+    ret
+
+cp_set_laser:
+    ;in this case we need to reset the number of lines in the printer to 66
+    laser_printer=.t.
+    pchr '66lns' ptw p
+    pset wdt 132 tlnes 66 plnes 66
+    ret
+
+#endp
+;
+::end of chse_prt udc
+;
+;******************************************************************************
+;  get_date - get the date and time for reports
+;******************************************************************************
+:get_date
+#proc
+cmd get_date
+    date_time_fld=mdy(date())+' '+ttoc(time(),7)
+    date_time_fld=just(date_time_fld,'c')
+    ret
+#endp
+;
+:end of get_date udc
+;
+;
+;******************************************************************************
+;  fnc_list - list the possible function keys at the bottom of the screen
+;             This routine will allow us to setup a standard proceedure
+;             that can be used by all programs.
+;******************************************************************************
+:fnc_list
+#proc
+define fnc_list_fld type a size 120 local
+define fnc_list_fld2 type A size 120 LOCAL
+define fnc_list_esc,fnc_list_esc2 type a size 40 local
+define fnc_clr_color type i local
+cmd fnc_list fnc_list_fld,fnc_list_esc,fnc_list_fld2,fnc_list_esc2
+    define save_list_fld,hold_list_fld type A size 120 LOCAL
+    define save_list_fld2,hold_list_fld2 type A size 120 LOCAL
+    define save_list_esc,hold_list_esc type A size 40 LOCAL
+    if mid(up(fnc_list_fld),1,4) = "SAVE" DO
+        save_list_fld = hold_list_fld
+        save_list_fld2 = hold_list_fld2
+        save_list_esc = hold_list_esc
+        ret
+    endif
+    if up(fnc_list_fld) = "RESTORE" DO
+        FNC_list_fld = SAVE_list_fld
+        FNC_list_fld2 = save_list_fld2
+        fnc_list_esc = save_list_esc
+    endif
+    hold_list_fld = fnc_list_fld
+    hold_list_fld2 = fnc_list_fld2
+    hold_list_esc = fnc_list_esc
+   ;
+   ;this routine is called with the field containing the function list in
+   ;fnc_list_fld and the ESC info in fnc_list_esc.  This program will always
+   ;start from the far left at the last line and will put the ESC info at the
+   ;far right.
+   ;
+   define fnc_list_cntr,fnc_list_space type i local
+   define fnc_list_hldr type a size 50 local
+   ;define fnc_beg_chr type a size 1 local
+   if fnc_clr_color = 0 THEN fnc_clr_color = norm_hldr
+   if WINDOWS() GOTO BTN_LIST
+   define fnc_front type I size 2
+   fnc_front = 1
+   ;clrlne at 1,24 abs color fnc_clr_color
+   clrlne at 1,25 abs color fnc_clr_color
+   fnc_list_cntr=1
+   fnc_list_fld = dos_dach(fnc_list_fld)
+   if SND_FNC_LNE_USD DO
+       clrlne at 1,24 ABS color fnc_clr_color
+       ? '' at 1,24 NOCR ABS
+     SND_FNC_LNE_USD = .F.
+   endif
+   ? '' at 1,25 nocr abs
+   while .t.
+       fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_fld)
+      exit_if fnc_list_hldr=''
+      if up(mid(fnc_list_hldr,1,3)) = 'UP-'  DO
+         ;                  2                 1                 1
+         ? C1(),''+trim(mid(fnc_list_hldr,loc('-',fNc_list_hldr),size(fnc_list_HLDR,'a')),'t'),CCF() NOCR ABS
+      eLSE_if up(mid(fnc_list_hldr,1,3)) = 'DOW' DO
+          ? C1(),''+trim(mid(fnc_list_hldr,loc('-',fnc_list_hldr),size(fnc_list_hldr,'a')),'t'),CCF() NOCR ABS
+      else_if up(mid(fnc_list_hldr,1,3)) = 'CAR'
+          ;FMZ 7/22/99 remove left arrow character for WIN compiler
+          ? C1(),'ctrl<-'+trim(mid(fnc_list_hldr,loc('-',fnc_list_hldr),size(fnc_list_hldr,'a')),'t'),CCF() NOCR ABS
+      else_if up(mid(fnc_list_hldr,1,3)) = 'CAL'
+          ;FMZ 7/22/99 remove right arrow character for WIN compiler
+          ? C1(),'ctrl->'+trim(mid(fnc_list_hldr,loc('-',fnc_list_hldr),size(fnc_list_hldr,'a')),'t'),CCF() NOCR ABS
+      ELSE
+      ? C1(),trim(fnc_list_hldr,'t'),CCF() NOCR ABS
+      endif
+      ? '³' color fnc_clr_color NOCR ABS
+     inc fnc_list_cntr
+    endw
+   if fnc_list_fld2<>'' DO
+       fnc_list_fld2 = dos_dach(fnc_list_fld2)
+   fnc_list_cntr=1
+   clrlne at 1,24 color fnc_clr_color
+       ? '' at 1,24 NOCR ABS
+       while .t.
+           fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_fld2)
+           exit_if fnc_list_hldr=''
+           ? C1(),trim(fnc_list_hldr,'t'),CCF() NOCR ABS
+           ? '³' color fnc_clr_color NOCR ABS
+           inc fnc_list_cntr
+       endw
+   endif
+   ;
+   ;now print the ESC info if any
+   if fnc_list_esc<>''
+      fnc_list_esc = dos_dach(fnc_list_esc)
+      fnc_list_cntr = 1
+      ;it does exist, do it.
+      ? C1(),trim(gfld(fnc_list_cntr,,,fnc_list_esc),'t'),CCF() at 81-size(fnc_list_esc,'a'),25 NOCR ABS
+      inc fnc_list_cntr
+      while .t.
+         fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_esc)
+         exit_if fnc_list_hldr=''
+         ? '³' color fnc_clr_color NOCR ABS
+         ? C1(),trim(fnc_list_hldr,'t'),CCF() NOCR ABS
+         inc fnc_list_cntr
+      endw
+   endif
+   ;
+   ;now print the secondary ESC info if any
+   ;
+   if fnc_list_esc2<>''
+       SND_FNC_LNE_USD = .T.
+      fnc_list_esc2 = dos_dach(fnc_list_esc2)
+      fnc_list_cntr = 1
+      ;it does exist, do it.
+      ? C1(),trim(gfld(fnc_list_cntr,,,fnc_list_esc2),'t'),CCF() at 81-size(fnc_list_esc2,'a'),24 NOCR ABS
+      inc fnc_list_cntr
+      while .t.
+         fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_esc2)
+         exit_if fnc_list_hldr=''
+         ? '³' color fnc_clr_color NOCR ABS
+         ? C1(),trim(fnc_list_hldr,'t'),CCF() NOCR ABS
+         inc fnc_list_cntr
+      endw
+   endif
+   fnc_list_fld2=''
+   fnc_list_esc2=''
+   ret
+BTN_LIST:
+    define BTN.POS type R
+    define BTN.KEY type A size 3
+    scrn L
+    BUTTON REMOVE
+    BUTTON OFF
+    if fnc_list_fld2 <> '' DO
+        fnc_list_cntr = 1
+        BTN.POS = 1
+        while .T.
+            fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_fld2)
+            exit_if fnc_list_hldr=''
+            btn.key = mid(fnc_list_hldr,1,3)
+            fnc_list_hldr = mid(fnc_list_hldr,loc(' ',fnc_list_hldr) + 1,size(fnc_list_hldr,'A'))
+            button at BTN.POS,MAX_ROWS() - 3 len 2 wdt SIZE(FNC_LIST_HLDR,'A')+1 caption FNC_LIST_HLDR key SET_KEY(btn.key)
+            BTN.POS = BTN.POS + (SIZE(FNC_LIST_HLDR,'A') + 1)
+            inc fnc_list_cntr
+        endw
+    endif
+    fnc_list_cntr = 1
+    BTN.POS = 1
+    while .T.
+        fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_fld)
+        exit_if fnc_list_hldr=''
+            btn.key = mid(fnc_list_hldr,1,3)
+            fnc_list_hldr = mid(fnc_list_hldr,loc(' ',fnc_list_hldr) + 1,size(fnc_list_hldr,'A'))
+            ;msg fnc_list_hldr + str(loc(' ',fnc_list_hldr))
+            button at BTN.POS,MAX_ROWS() - 1 len 2 wdt SIZE(FNC_LIST_HLDR,'A')+1 caption FNC_LIST_HLDR key SET_KEY(btn.key)
+        BTN.POS = BTN.POS + (SIZE(FNC_LIST_HLDR,'A') + 1)
+        inc fnc_list_cntr
+    endw
+    if fnc_list_esc<>''
+       define FNC_CNTR type I
+       fnc_list_cntr = 1
+       btn.pos = max_cols()
+       while .T.
+           fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_esc)
+           exit_if fnc_list_hldr=''
+           fnc_list_hldr = mid(fnc_list_hldr,loc(' ',fnc_list_hldr) + 1,size(fnc_list_hldr,'A'))
+           btn.pos = btn.pos - size(fnc_list_hldr,'a')
+           inc fnc_list_cntr
+       endw
+       ;it does exist, do it.
+       btn.pos=btn.pos-((fnc_list_cntr-2)*1)
+       fnc_list_cntr = 1
+       while .t.
+          fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_esc)
+          exit_if fnc_list_hldr=''
+          btn.key = mid(fnc_list_hldr,1,3)
+          fnc_list_hldr = mid(fnc_list_hldr,loc(' ',fnc_list_hldr) + 1,size(fnc_list_hldr,'A'))
+          button at BTN.POS,MAX_ROWS()-1 len 2 wdt SIZE(FNC_LIST_HLDR,'A')+1 caption FNC_LIST_HLDR key SET_KEY(btn.key)
+          BTN.POS = BTN.POS + (SIZE(FNC_LIST_HLDR,'A') + 1)
+          inc fnc_list_cntr
+       endw
+    endif
+    ;now check for the secondary esc
+    if fnc_list_esc2<>''
+       fnc_list_cntr = 1
+       ;BTN.POS = (MAX_COLS()+2) - (SIZE(FNC_LIST_ESC2,'A')+1)
+       btn.pos = max_cols()
+       while .T.
+           fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_esc2)
+           exit_if fnc_list_hldr=''
+           fnc_list_hldr = mid(fnc_list_hldr,loc(' ',fnc_list_hldr) + 1,size(fnc_list_hldr,'A'))
+           btn.pos = btn.pos - size(fnc_list_hldr,'a')
+           inc fnc_list_cntr
+       endw
+       ;it does exist, do it.
+       btn.pos=btn.pos-((fnc_list_cntr-2)*1)
+       fnc_list_cntr = 1
+       while .t.
+          fnc_list_hldr = gfld(fnc_list_cntr,,,fnc_list_esc2)
+          exit_if fnc_list_hldr=''
+          btn.key = mid(fnc_list_hldr,1,3)
+          fnc_list_hldr = mid(fnc_list_hldr,loc(' ',fnc_list_hldr) + 1,size(fnc_list_hldr,'A'))
+          button at BTN.POS,MAX_ROWS() - 3 len 2 wdt SIZE(FNC_LIST_HLDR,'A')+1 caption FNC_LIST_HLDR key SET_KEY(btn.key)
+          BTN.POS = BTN.POS + (SIZE(FNC_LIST_HLDR,'A') + 1)
+          inc fnc_list_cntr
+       endw
+    endif
+    ;
+    BUTTON ON
+    scrn R
+    fnc_list_fld2=''
+    fnc_list_esc2=''
+    ret
+
+    define K.TYPE type A size 3
+func SET_KEY K.TYPE
+    K.TYPE = UP(K.TYPE)
+    if K.TYPE = 'UP ' THEN ret 'UP'
+    if K.TYPE = 'DOW' THEN ret 'DOWN'
+    if K.TYPE = 'PGD' THEN ret 'PGDN'
+    if K.TYPE = 'PGU' THEN ret 'PGUP'
+    if K.TYPE = 'INS' THEN ret 'INSERT'
+    if K.TYPE = 'DEL' THEN ret 'DELETE'
+    if K.TYPE = 'HOM' THEN ret 'HOME'
+    if K.TYPE = 'CAR' THEN ret 'WDRT'
+    if K.TYPE = 'CAL' THEN ret 'WDLT'
+    ret K.TYPE
+    define func_list type A size 120
+func DOS_DACH func_list
+    define fpos type I
+    define fpos2 type i
+    fpos2 = 0
+    while .t.
+        ;msg func_list
+        fpos = loc(' ',func_list,fpos2)
+        exit_if fpos=0 .O. FPOS>=SIZE(FUNC_LIST,'A')
+        func_list = mid(func_list,1,fpos-1)+'-'+mid(func_list,fpos+1,SIZE(FUNC_LIST,'D'))
+        ;FMZ 6/28/98 Only put dash in first space.  After replacing a space,
+        ;  then look for a comma starting with the position at which we
+        ;  just replaced.
+        fpos2 = loc(',',func_list,fpos)
+        exit_if fpos2=0 .O. FPOS2>=SIZE(FUNC_LIST,'A')
+        ;end FMZ 6/28/98
+    endw
+    ret func_list
+#endp
+;
+::end of fnc_list func
+;
+;
+;******************************************************************************
+;  do_help - This is a generalized help routine that can be inserted into
+;            any program.  Reads help messages from the BKHELP.B file.
+;******************************************************************************
+:do_help
+#proc
+define do_help_field type A size 17 LOCAL
+define dh_lctr type I LOCAL
+define bkhelp_hndl type I size 4
+func do_help do_help_field
+      ;display any help for the option if it is available
+      do_help_field=up(do_help_field)
+      ;if bkhelp_hndl=0
+         ;the file hasn't been opened yet.
+         openv 'bkfldhlp' fnum bkhelp_hndl type T ext 'B'
+         if open()<>0
+            msg 'There is no help file.'
+            ret .t.
+         endif
+      ;endif
+      findv M fnum bkhelp_hndl key hlp.key val do_help_field,1!
+      if flerr(bkhelp_hndl)<>0
+         msg 'There is no help available for this option.'
+         ret .t.
+      endif
+      ;
+      ;if we're here then help is available
+      ;
+      dh_lctr = val(gfld(1,,,hlp.line))
+      saves
+      window at 6,23-iif(dh_lctr<=10,dh_lctr,10) len iif(dh_lctr<=10,dh_lctr+2,12) wdt 66 wcolor err ttlw 'l' box 's' bcolor err shd 'r' scolor sc
+      listf hlp.line file @bkhelp_hndl key hlp.key while hlp.code=do_help_field
+      redsp
+      ret .t.
+#endp
+;
+::end of do_help proc
+;
+;******************************************************************************
+;  get_help - This is similar to do_help above except it gets the records
+;             from the BKHELP file and returns them in the MESSAGE array
+;******************************************************************************
+:get_help
+#proc
+define get_help_field type A size 17 LOCAL
+define gh_lctr,gh_lctr2 type I LOCAL
+define bkhelp_hndl type I size 5 LOCAL
+define err_help type I size 1 LOCAL
+func get_help get_help_field
+    ;display any help for the option if it is available
+    get_help_field = up(get_help_field)
+    ;if bkhelp_hndl=0 DO
+        ;the file hasn't been opened yet.
+        openv 'bkfldhlp' fnum bkhelp_hndl type T ext 'B'
+        if open()<>0 DO
+            msg 'There is no help file.'
+            ret .t.
+        endif
+    ;endif
+    findv G fnum bkhelp_hndl key hlp.key val get_help_field
+    if flerr(bkhelp_hndl)<>0 DO
+        msg 'There is no help available for this option.'
+        close @BKHELP_HNDL
+        ret .t.
+    endif
+    ;
+    ;if we're here then help is available
+    ;
+    gh_lctr2 = 0
+    err_help = 0
+    while hlp.code=get_help_field .a. err_help=0
+        inc gh_lctr2
+        message[gh_lctr2] = hlp.line
+        findv N fnum bkhelp_hndl key hlp.key
+        if flerr(bkhelp_hndl)<>0 DO
+            err_help = 1
+        endif
+    endw
+    NUM.MSG = GH_LCTR2
+    LNE.LNGTH=0
+    for(MCNTR;1;NUM.MSG;1)
+        LNE.LN2=size(MESSAGE[MCNTR],'A')
+        if LNE.LN2>LNE.LNGTH then LNE.LNGTH=LNE.LN2
+    next
+    NUM.MSG=NUM.MSG + 1
+    if LNE.LNGTH<26 then LNE.LNGTH=26
+    LNE.LNGTH=LNE.LNGTH + 4
+    LLC=40 - (LNE.LNGTH / 2)
+    HT=NUM.MSG + 3
+    WD=LNE.LNGTH + 1
+    saves3 1
+    window at LLC,24-HT len HT+1 wdt WD+1 wcolor wc ttlw 'c' ttl ' Field Description ' box 's' bcolor bc shd 'r' scolor sc
+    NUM.MSG=NUM.MSG - 1
+    pmsg ""
+    for(MCNTR;1;NUM.MSG;1)
+        pmsg MESSAGE[MCNTR] at 3,row() ptw S
+    next
+    WD=(WD - 25) / 2
+    pmsg "" ptw S
+    pmsg "Press any key to continue" at WD,row() wait ptw S
+    redsp3 1
+    close @BKHELP_HNDL
+    ret gh_lctr
+    #endp
+    ;
+::end of get_help proc
+;
+;******************************************************************************
+;  prg_hdr - this will print the first line at the top of the screen
+;******************************************************************************
+:prg_hdr
+;
+;Changed this routine to match Mike's Action Request of this
+;date. 1/23/97 **pdm**
+#proc
+define prg_hdr_name type A size 70 LOCAL
+cmd prg_hdr prg_hdr_name
+define module type a size 2 local
+   ;
+   ;This routine will print the program header at the top of the screen.
+   ;Called with the name to use and the color.  The balance is included
+   ;in this routine.  The program expects a variable to be loaded by the
+   ;name of current_ver which should be from the main menu.
+   ;
+   define prg_hdr_line type a size 80 local
+   define prg_hdr_cv type a size 21 local
+   PRG_HDR_LINE = ' '+PRG_HDR_NAME
+   PROG.HELP.NAME = MID(PRG_HDR_NAME,1,LOC(' ',PRG_HDR_NAME))
+   if .N. WINDOWS() DO
+       module = mid(PRG_HDR_NAME,1,2)
+       mid prg_hdr_line start 62 fld '    DBA Software    '
+       if LOC(module,'GL-AR-AP-SO-SA-CS-CM-PR') > 0 THEN mid prg_hdr_line start 62 fld '    DBA Accounting'
+       if LOC(MODULE,'IN-PO-BM-LW-LC-SC-FO-PI') >0 THEN mid prg_hdr_line start 62 fld '  DBA Distribution'
+       if LOC(module,'RO-AW-JC-ES-MR-SH-DC') >0 THEN mid prg_hdr_line start 62 fld ' DBA Manufacturing'
+       if LOC(module,'UT-MM-MD-AM-AD-PS-AI') >0 THEN mid prg_hdr_line start 62 fld 'DBA System Manager'
+   endif
+   if windows() DO
+       caption prg_hdr_line
+   else
+       ? prg_hdr_line at 1,1 color rev NOCR ABS
+   endif
+   ret
+#endp
+;
+::end of prg_hdr cmd
+;
+;
+;******************************************************************************
+;  ptd_list  - this will allow the user to send the output to the disk and then
+;              access it automatically with a listf command when it's done.
+;              This will give him/her the ability to search forward and
+;              backward in the report.  Pages will be setup so that they print
+;              one per screen.  Option is LIST when asked where to print.
+;******************************************************************************
+;
+:ptd_list
+#proc
+define ptd_wch type a size 1 local
+func ptd_list ptd_wch
+    define ptd_on type l local
+    define ptd_pfn type a size 11 local
+    define ptd_hndl type i local
+    define ptd_buff type a size 155 local
+    if up(ptd_wch)='I'
+        ;start the process, initialize the file.
+        ptd_pfn=mid(ttoc(time()),1,11)
+        mid ptd_pfn fld '_' start 3
+        mid ptd_pfn fld '_' start 6
+        while ffile(ptd_pfn,'f')<>''
+            ;the file exists.  Try again.  All we need to do is stay
+            ;in this loop and eventually, we'll get a file that doesn't
+            ;exist.
+            ptd_pfn=mid(ttoc(time()),1,11)
+            mid ptd_pfn fld '_' start 3
+            mid ptd_pfn fld '_' start 6
+        endw
+        ;when we get here we have a file name.
+        ;first set the print to disk and file name
+        pon d pfn ptd_pfn
+        ;next set the print lines to 22
+        ;pset plnes 22
+        pset plnes 66
+        ptd_on=.t.
+        ret .t.
+    else
+        ;in this case we're ready to list the report
+        clspf       && close the print to disk file.
+        pset pwhr 's'
+        if .n. ptd_on then ret .f.
+        saves
+        openv ptd_pfn type x size 150 buff ptd_buff fnum ptd_hndl
+        window at 1,1 len 24 wdt 80 box 's' ttlw 'l' ttl ' Report Listing '
+        fnc_list 'UseÿArrowÿKeys,PageÿUp,PageÿDown,End,Home,OrÿMouse','EscÿExit',"",''
+        ;listf ptd_fchr(),mid(ptd_buff,31,30),mid(ptd_buff,61,30),mid(ptd_buff,91,42) file @ptd_hndl ccolor 255
+        listf ptd_fchr(),mid(ptd_buff,31,30),mid(ptd_buff,61,30),mid(ptd_buff,91,42) file @ptd_hndl ccolor norm
+        ;
+        ;when we get here the user is finished.
+        ;
+        close @ptd_hndl
+        delf ptd_pfn
+        redsp
+        ptd_on=.f.
+        ret .t.
+    endif
+    ;we'll never get here.
+
+    func ptd_fchr
+        if mid(ptd_buff,1,1)=chr(12)
+            delc ptd_buff start 1 nchr 1
+        else_if asc(mid(ptd_buff,1,1))<32
+            ptd_buff=''
+            ret ''
+        endif
+        ret mid(ptd_buff,1,30)
+#endp
+;
+::ptd_list end
+:FILE_LIST
+#PROC
+define FILE_NAME type A size 12 UP LOCAL
+CMD FILE_LIST FILE_NAME
+    define FILE_hndl type I LOCAL
+    define FILE_buff type A size 5000 LOCAL
+        saves
+        if windows() DO
+            openv FILE_NAME fnum FILE_hndl type X size 255 buff FILE_buff
+        else
+            openv FILE_NAME fnum FILE_hndl type X size 5000 buff FILE_buff
+        endif
+        clrscr
+        fnc_list "","ESC Exit"
+        pmsg 'UseÿArrowÿKeys, PageÿUp, PageÿDown, End, or Home to view the file' at 5,24
+        window at 1,1 len 23 wdt 80 ttlw 'l' ttl ' Listing '+ FILE_NAME box 'N'
+        listf MID(FILE_BUFF,1,60),mid(FILE_buff,61,60),mid(FILE_buff,121,60),mid(FILE_buff,181,60),MID(FILE_BUFF,241,60),MID(FILE_BUFF,301,60),MID(FILE_BUFF,361,60),MID(FILE_BUFF,421,60),IIF(MID(FILE_BUFF,422,1)<>'','+','') file @FILE_hndl ccolor norm
+        ;when we get here the user is finished.
+        ;
+        close @FILE_hndl
+        redsp
+        ret
+#ENDP
+:: FILE_LIST
+;
+;******************************************************************************
+;  prtr_setup - Setup the options for each print type.
+;******************************************************************************
+;FMZ 5/29/98 Added a new variable, PRT_COND_MODE, so calling program will
+;  know if user indicated to print condensed or not.
+;
+:prtr_setup
+#proc
+define prtr_wch type a size 1 local
+define prt_cond_mode type a size 1
+cmd prtr_setup prtr_wch
+    ;trace STEP brk BREAK_ROUTINE
+    ;this assumes that the program has already executed the MOUNT command.
+    define pl_shldr_on type l local
+    define prtr_where,prtr_width type a size 1 local
+    prtr_wch=up(prtr_wch)
+    if prtr_wch='N' .o. prtr_wch='W'
+        ;initial setup for narrow (N) or wide (W) reports
+        prt_cond_mode = 'N'
+        pl_shldr_on=.f.                     && init the save screen flag
+        prtr_where=pwhr()                   && save the pwhr() value for later
+        prtr_width=prtr_wch                 && save the size of the report
+        ;if pwhr()='S' .a. prtr_wch='N'
+            ;Narrow format and to the screen
+            ;window at 1,1 len 22 wdt 80
+        ;else_if pwhr()='L'
+        if pwhr()='L' .o. pwhr()='S' DO && ZLD 5/4/00 fixing spacing around .o.
+            ;format size doesn't matter here, this is a list option.
+            ;Initialize the list.
+            prtr_where = 'L'   ;save the pwhr() value for later
+            dummy_l=ptd_list('i')
+        else_if pwhr()='P'
+            ;ditto to format size, printer option.  However, if prtr_wch='W'
+            ;then we need to ask whether or not to print condensed.
+            if .n. windows() then chse_prt && ZLD 5/4/00 fixing spacing around .n.
+            if prtr_wch='W'
+                ;wide option, ask if user wants to print condensed.
+                ask 'Print in condensed mode? [Y/N] Y'
+                if ask()
+                   pchr 'pcmp'
+                   prt_cond_mode = 'Y'
+                endif
+            endif
+            pchr 'init'             && init in either case
+        else   ;this is add to remove the screen by gws
+            window at 1,1 len 22 wdt 80
+        endif
+        ;
+        ;if we're not going to the screen there's a couple other things we need
+        ;to do.  Also, we need to reset the wdt value if prtr_wch='W'
+        ;
+        if pwhr()<>'S'
+            ;setup the print line info on the screen
+            define pl_shldr type a size 4200 local
+            saves pl_shldr
+            scrn R
+            pl_shldr_on=.t.    && set the flag
+            window at 29,11 box 's' len 3 wdt 22 wcolor wc bcolor bc shd 'r' scolor sc
+            ? ' Print Line: ' ptw s at 1,1 nocr
+            show_pline 15,1
+        endif
+        ;
+        ;reset the number of lines per page to work in both windows and dos
+        ;
+        ;if prtr_wch='W' then pset wdt 132
+        ;
+        if pwhr()='P'
+            if prtr_wch='W'
+                pset wdt 132 tlnes 66 plnes 59
+            else
+                pset wdt 80 tlnes 66 plnes 59
+            endif
+        else
+            ;make sure the printer width is set to 132 if we're not printing
+            ;to the printer and this is a wide report.  This will make sure
+            ;that wide reports are printed properly when printing to disk and
+            ;list
+            if prtr_wch='W' .a. pwhr()<>'S' then pset wdt 132
+        endif
+        ret
+    else
+        ;in this case we should be at the end of the report.  Again figure out
+        ;where we were going and do appropriate resets.
+        ;if prtr_where<>'S' .a. pl_shldr_on
+        if pl_shldr_on DO
+            ;screen has been saved previously, redisplay it.
+            redsp pl_shldr
+            pl_shldr_on=.f.
+        endif
+        trap pg_brk dflt
+        if (prtr_width='N' .o. prtr_where<>'S') .a. iif(prtr_where='S',.n. esc(),.t.) .a. \
+            iif(prtr_where='P'.o. prtr_where='D',prow()<>1 .o. pcol()<>1,.t.)
+            ;if the report was narrow then do a ptof for all, otherwise only
+            ;do one for non-screen outputs.  NOTE:  Don't do ptof if printing
+            ;to screen and the user presses the ESC key.
+            if .n. Windows() then ptof
+        endif
+        if prtr_where='L'
+            ;this is a list output, go do it.
+            dummy_l=ptd_list('d')
+            pset plnes 66       && reset the printable lines value.
+        else_if prtr_where='P'
+            ;if going to printer and width='W' (wide) then reset to regular size
+            pchr 'preg'
+            if laser_printer
+                ;we need to undo what we did before
+                pchr '60lns' ptw p
+                laser_printer=.f.
+            endif
+            ;we also need to check for a post prg.  This is run after the
+            ;printing is complete and may be necessary to reset a lan printer
+            ;path, reset a printer, etc.
+            gosub   do_post_cp
+            ;and we're done.
+            exec 'bktof'                ;force the spooler to close.  Also,
+                                        ;on some computers we have found they
+                                        ;need a real file, can't just do '  '
+        endif
+        ;
+        ;in all cases reset the whr and wdt values to S and 80.  It won't
+        ;effect screen output and it will take care of all others.
+        ;
+        pset wdt 80 pwhr 's'
+        ;
+        ;and we're done.
+        ;
+        ret
+    endif
+    ret     && just in case, normally we shouldn't get here.
+#endp
+;
+::prtr_setup end
+;
+;******************************************************************************
+;  ask_update - This will ask the user whether or not they want to save a
+;               record that has changed before clearing it.  This would occur
+;               when finding a different one, actually clearing it, or escaping
+;               from the program (closing the file).
+;******************************************************************************
+:ask_update
+#proc
+define ask_update_fn type a size 8 local
+func ask_update ask_update_fn
+    message[1]=' You have changed field(s) in a record in the file: '+ask_update_fn
+    message[2]=' Do you wish to save this record before continuing? '
+    if ent_list(msg_ptr,2,'Y','YN')='Y'
+        ret .t.
+    else
+        ret .f.
+    endif
+#endp
+;
+::ask_update end
+;
+;**************************************************************************
+;  sel_prtr - This function display the printers from file bkprtcfg
+;             and return the selection number from the array
+;
+:sel_prtr
+#proc
+define cfg_cntr,cfg_cntrl,cfg_hndl type i local
+func sel_prtr
+    openv 'bkprtcfg' fnum cfg_hndl type T ext 'B'
+    findv F fnum cfg_hndl key @0
+    cfg_cntrl = 0
+    if bkprt.cfg.name[1]='' DO
+        close @CFG_HNDL
+        ret CFG_CNTRL
+    endif
+    for(CFG_CNTR;1;10;1)
+        fexit_if bkprt.cfg.name[cfg_cntr]=''
+    next
+    dec cfg_cntr
+    if cfg_cntr>1 DO
+        saves
+        window at 25,23-cfg_cntr len cfg_cntr + 2 wdt 30 wcolor wc ttlw 'l' ttl 'Choose Printer' box 's' bcolor bc shd 'r' scolor sc
+        listm bkprt.cfg.name actv cfg_cntr maxa 10 cntr cfg_cntrl
+        redsp
+        if cfg_cntrl=0 THEN ret CFG_CNTRL
+        else
+            cfg_cntrl = 1
+        endif
+        close @CFG_HNDL
+        ret CFG_CNTRL
+#endp
+::sel_prtr end
+;
+;******************************************************************************
+;  inc_date - increment the month or year in a date field.
+;******************************************************************************
+:inc_date
+;modified 12/26/94 to allow for inc and dec to a date by setting the value of
+;the inc_date_amt to positive or negative.
+#proc
+define inc_date_date type d local
+define inc_date_amt type n local
+define inc_date_wch type a size 1 local
+func inc_date inc_date_wch,inc_date_date,inc_date_amt
+   ;
+   define inc_date_day type b local
+   define inc_date_month type b local
+   define inc_date_year type i local
+   ;
+   define inc_day_num,inc_month_num,inc_year_num type n size 10
+   ;
+   define inc_date_maxd type b array 12 local
+   if inc_date_maxd[1]=0
+      ;setup the maximum days per month
+      inc_date_maxd[1]=31 | inc_date_maxd[2]=28 | inc_date_maxd[3]=31
+      inc_date_maxd[4]=30 | inc_date_maxd[5]=31 | inc_date_maxd[6]=30
+      inc_date_maxd[7]=31 | inc_date_maxd[8]=31 | inc_date_maxd[9]=30
+      inc_date_maxd[10]=31 | inc_date_maxd[11]=30 | inc_date_maxd[12]=31
+   endif
+   ;
+   ;move the date into the separate fields
+   ;
+   xfer from inc_date_date to inc_date_day nchr 4
+   inc_day_num=inc_date_day
+   inc_month_num=inc_date_month
+   inc_year_num=inc_date_year
+   ;
+   ;now determine what we need to increment
+   ;
+   if up(inc_date_wch)='M'
+      ;increment the month
+      inc_month_num=inc_month_num+inc_date_amt
+      while .t.
+         exit_if inc_month_num<=12 .a. inc_month_num>0
+         if inc_month_num>0
+            ;adding to date
+            inc_year_num=inc_year_num+1
+            inc_month_num=inc_month_num-12
+         else
+            ;subtracting from date
+            inc_year_num=inc_year_num-1
+            inc_month_num=inc_month_num+12
+         endif
+      endw
+      ;check for leap years
+      if int(inc_year_num/4)*4=inc_year_num then inc_date_maxd[2]=29
+      ;
+      ;AJF 3/12/99
+      ;if inc_date_maxd[inc_month_num]<inc_day_num then inc_day_num=inc_date_maxd[inc_date_month]
+       if inc_date_maxd[inc_month_num]<inc_day_num then inc_day_num=inc_date_maxd[inc_month_num]
+      ;
+   else_if up(inc_date_wch)='Y'
+      ;increment the year
+      inc_year_num=inc_year_num+inc_date_amt
+   endif
+   inc_date_day=inc_day_num
+   inc_date_month=inc_month_num
+   inc_date_year=inc_year_num
+   xfer from inc_date_day to inc_date_date nchr 4
+   ret inc_date_date
+#endp
+;
+::end of inc_date func
+;
+;
+;******************************************************************************
+;  xtrap_si_udc and xtrap_rstr_udc
+;******************************************************************************
+:xtrap_si_udc
+#proc
+
+define button_list type r array 20
+define button_cntr type i
+
+cmd xtrap_si_udc
+    ;this udc will do the standard XTRAP SAVE IGNR but will also reset the
+    ;F1 trap so that it will be set properly.
+    xtrap save ignr
+    ;trap F1 GOSUB SHOWHELP  AJF 4/1/99 remove
+    ;now do the button save stuff
+    if windows() then xbtn_save
+    ret
+
+    cmd xbtn_save
+        if button_cntr = 20
+            message[1] = 'Too many XBTN_SAVEs without any XBTN_RSTRs'
+            msg_list msg_ptr,1
+            ret
+        endif
+        inc button_cntr
+        button save_to button_list[button_cntr] off
+        ret
+
+#endp
+;
+::end of xtrap_si_udc
+;
+;******************************************************************************
+;  xtrap_rstr_udc
+;******************************************************************************
+:xtrap_rstr_udc
+#proc
+cmd xtrap_rstr_udc
+    if windows() then xbtn_rstr
+    xtrap rstr
+    ret
+
+    cmd xbtn_rstr
+        if button_cntr = 0
+            message[1] = 'Too many XBTN_RSTRs without equal XBTN_SAVEs'
+            msg_list msg_ptr,1
+            ret
+        endif
+        button rstr_from button_list[button_cntr] on
+        dec button_cntr
+        ret
+#endp
+;
+::end of xtrap_rstr_udc
+;
+;
+;
+;******************************************************************************
+;  func coo - return whether or not the check_open_only flag is set.
+;******************************************************************************
+:coo
+#proc
+define coo_test type l local
+func coo coo_test
+    if coo_test .a. check_open_only then ret .f.
+    ret .t.
+#endp
+;
+::end of coo
+;
+;******************************************************************************
+;  cmd ask_coo - ask the check_open_only question
+;******************************************************************************
+:ask_coo
+#proc
+define check_open_only type l
+define ask_string type a size 50 local
+cmd ask_coo ask_string
+    ask ask_string*' Y'
+    check_open_only = ask()
+    ret
+#endp
+;
+::end of ask_coo
+;
+;******************************************************************************
+;  chk_fiscal_fnc - check the fiscal date for a program.
+;
+;                   Parameter 1 is the date to be checked.
+;                   Parameter 2 is optional, 0 or 1.  0 means that
+;                     messaging withing this function is enabled, 1 means
+;                     that all messaging is disabled.  If only the date is
+;                     passed, and no 2nd parameter, then messaging will by
+;                     default be enabled.
+;                     Basically, messaging should usually be enabled if
+;                     this function being called to validate an entry
+;                     field, disabled if being called as part of some
+;                     non-entry procedure that you do not want interrupted
+;                     by messages.
+;
+;                   This function uses BAD_FISCAL() and ASK_PRIOR() for its
+;                     messaging.  Both of these functions can also be
+;                     called independently of CHK_FISCAL_FNC() by other
+;                     programs.
+;
+;                   This function uses GET.GLYEAR() to determine which FY
+;                     the date is in.  GET.GLYEAR() can also be called
+;                     independently of CHK_FISCAL_FNC() by other programs.
+;
+;                   FMZ 03/08/02 For stand-alone: This function now checks
+;                     to see if Acctg is ON.  If not, this function always
+;                     returns T (allowing any posting date without
+;                     checking FY).  This means that the program calling
+;                     this function MUST have previously called the
+;                     What's On function, which sets the sysAcctgON variable.
+;
+;                   CHK_FISCAL_FNC() returns T if date can be posted
+;                     to the GL (current FY or 1YP, 2YP), F otherwise.
+;
+;       This assumes you have the BKSYMSTR record active in memory.
+;******************************************************************************
+:chk_fiscal_fnc
+#proc
+define chk_fisc_date type d local
+define chk_fisc_msg  type i size 1 local
+define chkf.ret      type l local
+define chkf.fynum    type i size 1 local
+
+func chk_fiscal_fnc chk_fisc_date, chk_fisc_msg
+
+   ;FMZ 03/08/02 Stand-alone: If Acctg is OFF, do not check FY date -
+   ;  allow any trxn date regardless of FY.
+   if sysAcctgOn=.f.
+      ;FMZ 05/13/02 Crap. The problem with just returning T here if
+      ;  GL is off is that now a date of 00/00/00 would be considered
+      ;  valid, which we generally do not want.  Since in the past GL
+      ;  was always on for all users, a date of 00/00/00 was always
+      ;  getting rejected.  So will preserve that here for the users
+      ;  who have GL off.
+      if chk_fisc_date=0
+         ;The date entered is blank.  Give warning and abort display of any
+         ;  other validation message by the calling program.
+         if chk_fisc_msg = 0
+            msg 'The date is not valid (00/00/00). ' windows 'w'
+            novldmsg
+         else
+            ;In all cases, resetting the message flag to 0 to ensure that any
+            ;  later call to this function by the same program won't
+            ;  accidentally have a non-zero value for this flag.  Probably
+            ;  do not have to do this due to it being a local variable but
+            ;  not sure.
+            chk_fisc_msg = 0
+         endif
+         ret .f.
+      endif
+
+      ret .t.
+   endif
+
+   ;Determine which FY the date is in.
+   chkf.fynum = get.glyear(chk_fisc_date)
+
+
+   ;AJF 4/15/00 - handle a future year situation - per MH, no message
+   ;              needs to be provided to the user regardless of the
+   ;              relation of the system date to the fiscal year end
+   if chkf.fynum = 8
+      ret .t.
+   endif
+
+   if chkf.fynum = 9
+      ;The date entered is either beyond the current fiscal year or
+      ;  more than 2 years ago.  Give warning and abort display of any
+      ;  other validation message by the calling program.
+      if chk_fisc_msg = 0
+         chkf.ret = bad_fiscal()
+         novldmsg
+      else
+         ;In all cases, resetting the message flag to 0 to ensure that any
+         ;  later call to this function by the same program won't
+         ;  accidentally have a non-zero value for this flag.  Probably
+         ;  do not have to do this due to it being a local variable but
+         ;  not sure.
+         chk_fisc_msg = 0
+      endif
+      ret .f.
+   endif
+
+
+   ;Warn if this will be a prior-year posting.
+   if chkf.fynum = 0
+   else
+      if chk_fisc_msg = 0
+         chkf.ret = ask_prior()
+         if chkf.ret = .f.
+            novldmsg
+         endif
+         ret chkf.ret
+      endif
+   endif
+
+   chk_fisc_msg = 0
+   ret .t.
+
+func bad_fiscal
+   ;this will print the bad_fiscal date message
+   if windows()
+
+      ;AJF 4/15/00 add clarifying info. that posting can occur in the year following
+      msg "A transaction with this date cannot be posted to the GL."  \
+        +chr(13)+chr(13)+ \
+        "The transaction date must be in the current fiscal year, \
+         or in the fiscal year immediately following, \
+         or in one of the two preceding fiscal years." \
+        +chr(13)+chr(13)+ \
+        "The starting date of the current fiscal year is "+ \
+        dtoc(BKSY.FISCAL.YR)+ ". " windows 'warn'
+   else
+      ;AJF 4/15/00 add clarifying info. that posting can occur in the year following
+      msg "A transaction with this date cannot be posted to the GL.  The \
+           transaction date must be in the current fiscal year, \
+           or in the fiscal year immediately following, \
+           or in one of the two preceding fiscal years.  The \
+           starting date of the current fiscal year is "+ \
+           dtoc(BKSY.FISCAL.YR)+ ". " windows 'warn'
+   endif
+   ret .t.
+
+define askpfy.ret type l local
+func ask_prior
+   ;this prompts user if date is for a prior FY
+   askpfy.ret = zask('This transaction will be posted to a prior fiscal year.  Is this OK? ', .t.)
+   ret askpfy.ret
+
+;
+#endp
+::end of chk_fiscal_fnc routine
+
+;******************************************************************************
+;  chk_glclose - check the GL close date for a program.
+;
+;                   Parameter 1 is the date to be checked.
+;                   Parameter 2 is optional, 0 or 1.  0 means that
+;                     messaging withing this function is enabled, 1 means
+;                     that all messaging is disabled.  If only the date is
+;                     passed, and no 2nd parameter, then messaging will by
+;                     default be enabled.
+;                     Basically, messaging should usually be enabled if
+;                     this function being called to validate an entry
+;                     field, disabled if being called as part of some
+;                     non-entry procedure that you do not want interrupted
+;                     by messages.
+;
+;                   This function uses BAD_GLCLOSE() for its
+;                     messaging.  That function can also be
+;                     called independently of CHK_GLCLOSE() by other
+;                     programs.
+;
+;                   CHK_GLCLOSE() returns T if date is later than
+;                     to the GL close date in AD-B, F otherwise.
+;
+;       This assumes you have the BKYSMSTR record active in memory.
+;******************************************************************************
+:chk_glclose
+#proc
+define chk_glc_date type d local
+define chk_glc_msg  type i size 1 local
+define chkg.ret     type l local
+
+func chk_glclose chk_glc_date, chk_glc_msg
+
+    if chk_glc_date < BKYS.DATE[1]
+       ;Invalid date
+       if chk_glc_msg = 0
+          chkg.ret = bad_glclose()
+          novldmsg
+       endif
+       chk_glc_msg = 0
+       ret .f.
+    endif
+
+    chk_glc_msg = 0
+    ret .t.
+
+func bad_glclose
+   ;this will print the bad_glclose date message
+   msg "The transaction date is prior to the Period-End Close Date. " windows 'warn'
+   ret .t.
+;
+#endp
+::end of chk_glclose routine
+
+;******************************************************************************
+;  get.glyear - You pass it a date, this returns an i,1 value indicating
+;               which GL fiscal year that date is in:
+;               0 = current
+;               1 = 1 year past
+;               2 = 2 years past
+;               8 = next year, i.e. year immediately following the current year
+;               9 = more than 2 years past, or after the end of the
+;                   current FY
+;               Assumes the BKSYMSTR record is active in memory.
+;******************************************************************************
+:get.glyear
+#proc
+define get.glyparam type d size 8 local
+define get.glyret type i size 1 local
+func get.glyear get.glyparam
+
+   if sysAcctgOn=.f.
+      ;FMZ 05/12/02 Always return 0 if GL is OFF (since we don't have
+      ;  a FY in this case, then any date is considered to be in the
+      ;  "current" FY).
+      ;FMZ 05/13/02 Crappola.  This has same issue as FY checker above,
+      ;  for some programs needs to reject date if it is 00/00/00.
+      if get.glyparam=0
+         ;reject blank date
+         get.glyret=9
+      else
+         ;accept any non-blank date
+         get.glyret=0
+      endif
+   else
+
+      ;AJF 4/15/00 we are now allowing the user to input a date
+      ;            that is one year into the future
+      ;            so change the number of years to add from 1 to 2
+      if get.glyparam >= inc_date('Y',BKSY.FISCAL.YR,2) .o. \
+         get.glyparam < inc_date('Y',bksy.fiscal.yr,-2)
+         ;the date entered is either beyond the year after the
+         ;current fiscal year or more than 2 years ago.
+         get.glyret = 9
+      else
+ 
+         ;AJF 4/15/00 - handle next year
+         if get.glyparam >= inc_date('Y',BKSY.FISCAL.YR,1)
+            get.glyret=8
+         else_if get.glyparam >= BKSY.FISCAL.YR
+            get.glyret=0
+         else_if get.glyparam >= inc_date('Y',BKSY.FISCAL.YR,-1)
+            get.glyret=1
+         else
+            get.glyret=2
+         endif
+      endif
+   endif
+
+   ret get.glyret
+;
+#endp
+::end of get.glyear routine
+
+
+;******************************************************************************
+;  zask() - To ask a YN question w/o allowing ESC in DOS
+;           (WIN already does not allow ESC)
+;******************************************************************************
+:zask
+#proc
+define za_text type a size 500 local
+define za_dflt type l local
+func zask za_text, za_dflt
+   if windows()
+      ask za_text dflt za_dflt
+      ret ask()
+   else
+      if za_dflt = .t.
+         za_text = za_text * ' Y'
+      else
+         za_text = za_text * ' N'
+      endif
+      ;
+      while .t.
+         ask za_text dflt za_dflt
+         if lstchr() = 283
+            bell
+         else
+            exit
+         endif
+      endw
+      ret ask()
+   endif
+#endp
+::end of zask routine
+;
+;******************************************************************************
+;  vld.chkact -  Validates the checking accounts set up in BKSYMSTR (1-9).
+;           Returns .t. if at least one valid checking account is set up,
+;             .f. otherwise.
+;           Make sure BKSYMSTR is already open in the calling
+;             program.
+;      -->  This function presumes BKSYMSTR is open and on the first
+;             record; does not attempt a FIND.
+;           No passed parameters.
+;******************************************************************************
+;FMZ 05/02/02 No more GLCOA validation here.  Also, always returns T now
+;             if GL is off (no bank accts so nothing to validate).
+:vld.chkact
+#proc
+define vck.cntr1, vck.cntr2 type i size 5 local
+define vck.glrec type r size 10 local
+func vld.chkact
+    if sysAcctgOn=.f.
+       ret .t.
+    endif
+
+    xtrap_si_udc
+    vck.cntr1 = 0
+    for(vck.cntr2;1;9;1)
+      ;We would only get in here if GL is on, thus we can also validate
+      ;  that each bank acct also has a GL set up.
+      if BKSY.CHK.NAME[vck.cntr2]<>""
+         if BKSY.CHK.CHKACT[vck.cntr2]=""
+            msg 'Warning: Checking account "'+BKSY.CHK.NAME[vck.cntr2]*'" does not have a GL account assigned to it and will not be available for selection.  Please use the "Checking Accounts Defaults" menu selection to correct this. ' windows 'warn'
+         else
+            vck.cntr1 = vck.cntr1 + 1
+         endif
+      endif
+    next
+    if vck.cntr1 = 0
+       msg 'Warning: Checking accounts have not yet been defined.  Please use the "Checking Accounts Defaults" menu selection to set up at least one checking account. ' windows 'warn'
+       xtrap_rstr_udc
+       ret .f.
+    else
+       xtrap_rstr_udc
+       ret .t.
+    endif
+#endp
+::end of vld.chkact routine
+;
+;******************************************************************************
+;  sel.chkact -  Lets user choose one of the checking accounts set up
+;                  in BKSYMSTR (1-9).
+;           Returns an i,2 variable designating the selected account.
+;           If no account selected, returns 0.
+;      -->  Make sure BKSYMSTR is already open in the calling
+;             program.
+;      -->  This function presumes BKSYMSTR is open and on the first
+;             record; does not attempt a FIND.
+;           Passed parameters: SCK.DFLT.ACT (i,2) representing which bank
+;             account (1-9) to use as the default selection.  Also can
+;             pass the 2 coordinates for top left corner of display.
+;******************************************************************************
+;FMZ 05/02/02 No more GLCOA validation here.  Also, always returns 1 as
+;             the "chosen" bank acct if there are no bank accts (ie if
+;             GL is off).
+:sel.chkact
+#proc
+define sck.dflt.act type i size 2
+define sck.chk.act type i size 2 local
+define sck.chk.arr type a size 36 array 9 local
+define sck.tot, sck.cntr type i size 5 local
+define sck.glrec type r size 10 local
+define sck.sel.txt type a size 2 local
+define sck.sel.num type n size 2 dec 0 local
+define sck.row, sck.col type i size 2 local
+define sck.noesc type l local
+func sel.chkact sck.dflt.act, sck.col, sck.row, sck.noesc
+  if sysAcctgOn=.f.
+     ;GL is off so no bank accts, always return 1.
+     sck.chk.act=1
+     ret sck.chk.act
+  endif
+
+  xtrap_si_udc
+
+  if sck.row = 0 then sck.row = 8
+  if sck.col = 0 then sck.col = 21
+
+  ;First, validate the checking accounts and, if there are no valid
+  ;  accounts, return to calling program.
+  if vld.chkact() = .f.
+     sck.chk.act = 0
+     xtrap_rstr_udc
+     ret sck.chk.act
+  endif
+
+  ;Load all valid checking accts into selection array.
+  updta sck.chk.arr clr
+  sck.tot = 0
+  for(sck.cntr;1;9;1)
+    ;Only get here now if have bank accts (ie GL is on) so can require
+    ;  each bank acct to have a GL.
+    if BKSY.CHK.NAME[sck.cntr]<>"" .a. BKSY.CHK.CHKACT[sck.cntr]<>""
+       sck.tot = sck.tot + 1
+       sck.chk.arr[sck.tot]=' '+str(sck.cntr,1,0)+' - '+BKSY.CHK.NAME[sck.cntr]+' '
+       ;Check for default setting.  If this is the default acct, may
+       ;  need to renumber it.
+       if sck.dflt.act <> 0
+          if sck.cntr = sck.dflt.act
+             sck.dflt.act = sck.tot
+          endif
+       endif
+    endif
+  next
+
+  ;And let them select.  If they ESC, sck.sel.act will be 0.
+  SCK.SEL.ACT:
+    if sck.dflt.act = 0
+       sck.chk.act = 1
+    else
+       sck.chk.act = sck.dflt.act
+    endif
+    nmenu sck.chk.arr at sck.col,sck.row len sck.tot+2 wdt 38 \
+          cntr sck.chk.act nch sck.tot box 's' \
+          bcolor bc mcolor mc ccolor cc shd 'r' scolor sc \
+          ttlw 'l' ttl " Select Bank Account " ARRAY AUTO NO_ESC sck.noesc
+
+  if sck.chk.act = 0
+     ;ESC'd from selection process.
+     if .n. zask("The process you are running may not be able to continue if you don't choose a bank account.  Exit without selecting a bank account?", .f.)
+        goto SCK.SEL.ACT
+     endif
+  else
+     ;Have to 'translate' the account number back in case there are
+     ;  invalid acounts in between valid ones.
+     sck.sel.txt = mid(sck.chk.arr[sck.chk.act],1,2)
+     sck.sel.num = val(sck.sel.txt)
+     sck.chk.act = sck.sel.num
+  endif
+
+  xtrap_rstr_udc
+  ret sck.chk.act
+#endp
+::end of sel.chkact routine
+;**************** stat_bar command ********************** 5/28/99
+:stat_bar
+#proc
+define col,row type i size 2
+define current, howmany type n size 6
+define percent type i size 3
+define menu_title type a size 3
+define done type a size 3
+define z,z1 type i size 1
+define x type n size 3
+
+cmd stat_bar col, row, current, howmany, done
+
+;6/1/99 AjM  clearing of the stat bar.
+ if up(done) = 'CLR'
+   ;6/6/00 AJF - increased pmsg by 2 spaces 
+  
+   pmsg '                               ' at col+1,row+1      
+   pbox s at col,row len 3 wdt 33 color get_win_color('normalbkg') clr 
+ else 
+   percent = (current / howmany) *100  
+   menu_title = str(percent)  
+   ;window at col,row len 3 wdt 27
+   if current < 5
+      pmsg '                           ' at col+1,row+1      
+   endif
+   pbox s at col,row len 3 wdt 33 color get_win_color('normaltext') 
+   x = percent
+   z = percent / 4
+   z1 = 1    
+   pmsg ' '+menu_title + '% ' at col + 27,row+1
+   if percent > 3
+     for(z1;1;z;1) && ZLD 5/10/00 remove space between for and (   
+       pmsg cc(get_win_color('yellow')) + chr(219) at col+ 1 + z1,row+1 nocr
+     next
+   endif
+
+  ;6/1/99 adding mod-4 condition.
+   if (mod(x,4) <> 0)
+      if (mod(x,4) = 3)
+         pmsg chr(176) at col+z1+1,row+1 nocr ;°
+      else_if (mod(x,4) = 2)
+         pmsg chr(177) at col+z1+1,row+1 nocr ;±
+      else_if (mod(x,4) = 1)
+         pmsg chr(178) at col+z1+1,row+1 nocr ;²
+      endif
+   endif
+
+
+ 
+   pbox s at col,row len 3 wdt 33 color get_win_color('normaltext') 
+ endif
+ret 
+::stat_bar
+;2/23/00 new functions
+;********************** add_slash *************
+; This is used for putting the backslash at the end of an alpha field
+; for uses with pathing and whatever.
+;********************************************
+:add_slash
+#proc
+define pass_path type a size 66
+define wherespace type i size 2
+define zcount type i size 2
+func add_slash pass_path
+   for(zcount;1;66;1)
+      if mid(pass_path,zcount,1) = ""
+         wherespace = zcount
+         fexit
+      endif
+   next
+   ;if the path is blank and we add a slash instead of the curr directory
+   ; we will end up in the root of the current drive.
+   if mid(pass_path,wherespace-1,1) <> '\'
+      pass_path = pass_path*'\' && just defaulting backslash. 2/23/00
+   endif
+ret pass_path
+#endp
+::add_slash
+;
+;********************** Valid_dir *******************************************
+;  This will to check if the path passed to it is a valid path
+;             parameters:   pass_path - this is the string of the path
+;                                       you would like to check.
+;        NOTE:  assumption is that you have used add_slash BEFORE
+;               calling this function
+;        Added 2/24/00      createdir - This will give you the option
+;                                       to create the directory if it is not
+;                                       there to begin with.
+;                                       1 - check path, create directory,
+;                                           check path again.
+;                                       0 - just check path.
+;
+;        Add 3/21/00        msg_on      1 - messaging is on
+;                                       0 - messaging is off - handle by program
+;****************************************************************************
+:valid_dir
+#proc
+define pass_path type a size 66
+define temp_path type a size 66
+define test_hndl type i size 5
+define test_buff type a size 60
+define createdir type i size 1
+define msg_on type I size 1
+func valid_dir pass_path, createdir, msg_on
+   openv pass_path*'testpath.txt' type X fnum test_hndl buff test_buff size 60 create err no_good
+   ;if we make it here it's a valid path.
+   close @test_hndl
+   delf pass_path*'testpath.txt' && 3/21/00 added testpath.txt
+   ret .t.   
+  no_good:
+   if createdir = 1
+      temp_path = mid(pass_path,1,lchr(pass_path,'l')-1)
+      if windows()
+         if .n. make_dir(temp_path)
+            if msg_on=1 then msg 'Unable to make subdirectory - '+pass_path
+            ret .f.
+         endif
+      else
+         exec 'md '+temp_path*' >nul'
+      endif
+      ret valid_dir(pass_path,0)
+   endif
+   if msg_on=1 then msg 'This subdirectory is invalid! ' windows 'w'
+ret .f.
+#endp
+::valid_dir
+;3/15/00 AjM------------------------------------------------
+;3/17/00-3/18/00 Combining all into one function with a passed parameter.
+;04/04/00 FMZ Minor change to these 3 functions.  We actually need a third
+;             error message in sys_file_lock, for when attempting a file
+;             lock but that is NOT coming from one of the default
+;             settings programs (since in this case the wording about
+;             "you can view these settings but not change them" would make
+;             no sense.  So the MSG_TYPE parameter that gets passed to
+;             the 2 OPEN functions should now only be a 1 if the calling
+;             program is a default settings program, 0 in all other cases.
+;             And we now pass the lock type parameter to sys_file_lock so
+;             it can distinguish an F attempt from R or N and choose the
+;             right message.
+;**********************************************************************
+;    open_symstr: pass a "R" an "N" or a "F" to determine the lock
+;    open_ysmstr: on the file.  case will not matter.
+;                 second parameter.  msg type will determine which
+;                 message is called when you cannot open the file with
+;                 a higher lock.
+;    Example: if .n. open_symstr('N') then quit
+;             if .n. open_symstr('F',1) then quit
+;             if .n. open_ysmstr('N') then quit
+;             if .n. open_ysmstr('R') then quit
+;**********************************************************************
+:open_symstr
+define bksymstr_hndl type i size 5
+#proc
+define xret type l local
+define lock_type type a size 1 local
+define msg_type type i size 1 local
+func open_symstr lock_type,msg_type
+   lock_type = up(lock_type) && force to upcase.
+   if lock_type $ "RN"
+      trap rlck goto sy_locked_n
+      if lock_type = "N"
+         openv 'BKSYMSTR' fnum bksymstr_hndl lock n err sy_locked_n
+      else
+         openv 'BKSYMSTR' fnum bksymstr_hndl lock r err sy_locked_n
+      endif
+      if trc(bksymstr_hndl)>1
+         msg 'The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. ' windows 'W'
+         quit
+      endif
+
+      ;AJF 4/6/00 - nlock the find so that if this is a lock R, we won't
+      ;           - lock the record here - the programmer needs to be sure
+      ;           - to do another findv in the program WITHOUT the nlock
+      ;           - before saving to this file - yes the nlock is redundant
+      ;           - if this is a lock N but it doesn't hurt anything
+      ;           - we could instead do a clr @bksymstr_hndl rec
+      ;           - right after the find and not put the nlock after it
+      ;           - but that's a bit more dangerous because if the
+      ;           - programmer forgot to re-find the record, it would
+      ;           - create a duplicate record in the bksymstr file
+      ;           - and the save would still work
+      findv f fnum bksymstr_hndl key @0 nlock
+
+      if flerr() <> 0
+         msg "The BKSYMSTR file has not been set-up or could not be found. " windows 'w'
+         trap rlck dflt
+         ret .f.
+      endif
+      trap rlck dflt && 3/22/00
+     ret .t.
+      sy_locked_n:
+         msg 'Unable to access the BKSYMSTR system file.  Another user may have it locked. ' windows 'warn'
+         trap rlck dflt   
+      ret .f.
+   else_if lock_type = "F"
+      trap rlck goto sy_locked
+      openv 'BKSYMSTR' fnum bksymstr_hndl lock f err sy_locked
+      if trc(bksymstr_hndl)>1
+         msg 'The system master file BKSYMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. ' windows 'W'
+         quit
+      endif
+      findv f fnum bksymstr_hndl key @0
+      ;this should never happen, but just in case
+      if flerr() <> 0
+         msg "Unable to find the BKSYMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. " windows 'w'
+         trap rlck dflt
+         ret .f.
+      endif
+      trap rlck dflt
+     ret .t.
+      sy_locked:
+         xret = sys_file_lock(msg_type,lock_type)
+         trap rlck dflt
+      ret .f.
+   else
+      msg "You must pass an R/N/F to this function.  Please fix in source code, and recompile. " windows 'w'
+      quit
+   endif
+
+ret .t.
+#endp
+::open_symstr
+:open_ysmstr
+define bkysmstr_hndl type i size 5
+#proc
+define xret type l local
+define lock_type type a size 1 local
+define msg_type type i size 1 local
+func open_ysmstr lock_type,msg_type
+   lock_type = up(lock_type) && force to upcase.
+   if lock_type $ "RN"
+      trap rlck goto ys_locked_n
+      if lock_type = "N"
+         openv 'BKYSMSTR' fnum bkysmstr_hndl lock n err ys_locked_n
+      else
+         openv 'BKYSMSTR' fnum bkysmstr_hndl lock r err ys_locked_n
+      endif
+      
+      if trc(bkysmstr_hndl)>1
+         msg 'The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. ' windows 'W'
+         quit
+      endif
+
+      ;AJF 4/6/00 - nlock the find so that if this is a lock R, we won't
+      ;           - lock the record here - the programmer needs to be sure
+      ;           - to do another findv in the program WITHOUT the nlock
+      ;           - before saving to this file - yes the nlock is redundant
+      ;           - if this is a lock N but it doesn't hurt anything
+      ;           - we could instead do a clr @bkysmstr_hndl rec
+      ;           - right after the find and not put the nlock after it
+      ;           - but that's a bit more dangerous because if the
+      ;           - programmer forgot to re-find the record, it would
+      ;           - create a duplicate record in the bkysmstr file
+      ;           - and the save would still work
+
+      findv f fnum bkysmstr_hndl key @0 nlock
+
+
+      if flerr() <> 0
+         msg "The BKYSMSTR file has not been set-up or could not be found. " windows 'w'
+         trap rlck dflt
+         ret .f.
+      endif
+      trap rlck dflt
+     ret .t.
+      ys_locked_n:
+         msg 'Unable to access the BKYSMSTR system file.  Another user may have it locked. ' windows 'warn'
+         trap rlck dflt   
+      ret .f.
+   else_if lock_type = "F"
+      trap rlck goto ys_locked
+      openv 'BKYSMSTR' fnum bkysmstr_hndl lock f err ys_locked
+      if trc(bkysmstr_hndl)>1
+         msg 'The system master file BKYSMSTR has more than one record.  This needs to be fixed as soon as possible.  Please contact DBA Support. ' windows 'W'
+         quit
+      endif
+      findv f fnum bkysmstr_hndl key @0
+      ;this should never happen, but just in case
+      if flerr() <> 0
+         msg "Unable to find the BKYSMSTR record after successfully locking the file.  There could be a network related problem.  If the problem persists after shutting down and re-booting your system, please contact DBA support. " windows 'w'
+         trap rlck dflt
+         ret .f.
+      endif
+      trap rlck dflt
+     ret .t.
+      ys_locked:
+         xret = sys_file_lock(msg_type,lock_type)
+         trap rlck dflt
+      ret .f.
+   else
+      msg "You must pass an R/N/F to this function.  Please fix in source code, and recompile. " windows 'w'
+      quit
+   endif
+ret .t.
+#endp
+::open_ysmstr
+;
+;**********************************************************************
+;      sys_file_lock : generic message if system files are locked.
+;                      parameter now being added 3/18/00
+;                      two messages are possible now
+;**********************************************************************
+:sys_file_lock
+#proc
+define msg_type type i size 1 local
+define lock_type type a size 1 local
+func sys_file_lock msg_type, lock_type
+   if msg_type=1 .a. lock_type='F'
+      ;Means being called by a default settings program, and attempting a
+      ;  file lock.
+      msg 'Other users are currently logged into this company.  You can view these default settings but will not be able to change them. ' windows 'info'
+   else
+      ;Means being called from a non-default settings program or, if this is
+      ;  a call from a default settings program, we are not attempting a
+      ;  file lock.
+      if lock_type='R' .o. lock_type='N'
+         ;this message would be used in any program that is lock r'ing or lock n'ing
+         msg 'Another user has the system file locked.  You cannot use this program at this time. ' windows 'i'
+      else
+         ;would only apply in a program that is lock f'ing
+         msg "Other users are logged into this company.  You cannot use this program at this time." windows 'i'
+      endif
+   endif
+ret .t.
+::sys_file_lock
+;End AjM 3/15/00------------------------------------------------------------
+;4/14/00 new command to make YE entries into a file with the BKGLTRAN layout
+;***************************************************************************
+;This is the command that creates entries for the 'gltran' file.
+;     You pass the file handle you wish to have saved to and it will create
+;     the transaction record.  This command assumes that you have a bkglcoa
+;     record active.  If you want a Credit pass a negative entry, debit post
+;     a positive amount.
+;
+;         Example             openv 'BKGLTEMP' fnum bkgltemp_hndl lock r
+;                             amt     = bkgl.current[14]
+;                             post_dt = inc_date('y',bksy.fiscal.yr,1)-1
+;                             make_gl_entry bkgltemp_hndl,post_dt,amt
+;
+;
+;***************************************************************************
+:make_gl_entry
+#proc
+define temp_hndl type i size 5 local
+define post_dt type d size 8 local
+define post_amt type n size 14 dec 2 local
+define msg_type type i size 1 local
+cmd make_gl_entry temp_hndl, post_dt, post_amt, msg_type
+   if post_amt=0 then ret   &&AJF 4/20/00
+   bkgl.trn.glacct = bkgl.acct
+   bkgl.trn.gldpt  = bkgl.gldpt
+   bkgl.trn.date   = post_dt
+   if msg_type = 0
+      bkgl.trn.desc= "YE close into Ret Earn"
+   else
+      bkgl.trn.desc= "YE post close into RE"
+   endif
+   bkgl.trn.entdte = date()
+   if post_amt < 0
+      bkgl.trn.dc  = "C"
+      bkgl.trn.amt = abs(post_amt)
+   else
+      bkgl.trn.dc  = "D"
+      bkgl.trn.amt = abs(post_amt)
+   endif
+   bkgl.trn.type   = "YE"
+   bkgl.trn.post   = "N"
+   bkgl.trn.invc   = ""
+   bkgl.trn.code   = ""
+   save @temp_hndl nocnf
+ret
+#endp
+::make_gl_entry
+;end 4/14/00
+;
+;AGL 1/31/02 rippoff of Fred's PI location tag.
+:locsel
+#proc
+define ls.totlocs type i size 5 local
+define ls.single type i size 5 local
+define ls.tot  type i size 5 local
+define ls.header0, ls.header1, ls.header2, ls.header3, ls.header4, ls.header5 type a size 100 local
+define ls.title, ls.undsc type a size 100 local
+define ls.cntr type i size 5 local
+define ls.tagged type i size 5 local
+define lstag type a size 3 local
+define ls.prev type i size 5 local
+
+func locsel ls.totlocs
+
+;First step is to eliminate any previous tags
+for(ls.cntr;1;ls.totlocs;1)
+  loc.tag[ls.cntr] = ' '
+next
+
+ls.single = 0
+
+;If there is only a single location, pre-tag it.
+if ls.totlocs=1
+   loc.tag[1]='Y'
+   ls.tagged=1
+else
+   ls.tagged=0
+endif
+
+saves
+xtrap_si_udc
+if ls.single = 0
+   ;multiple selections
+   fnc_list 'ENTER Tag One,F5 Tag All','F10 Go,ESC Cancel','',''
+else
+   ;single selection only
+   fnc_list 'ENTER Select','ESC Exit','',''
+endif
+
+window at 1,1 len 20 wdt max_cols() box 's' shd 'r' scolor sc wcolor get_win_color('MenuBkg') bcolor get_win_color('MenuBkg') USE_COLORS
+
+ls.header0 = 'LOCATION LISTING'
+setline ls.header1 with ls.header0
+setline ls.header2 with fill(lchr(ls.header0,'l'),chr(223))
+setline ls.header3 with 'Only locations Tagged here will be included in this MRP.'
+setline ls.header4 with ''
+setline ls.header5 with ''
+
+setline ls.title with "Tag","Location  ","Location Name            ","Comments                      "
+setline ls.undsc with "ÄÄÄ","ÄÄÄÄÄÄÄÄÄÄ","ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ","ÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ"
+
+ls.cntr = 1
+
+if ls.single = 0
+   ;allowing multiple selections
+   trap F5  gosub LSALL
+   trap F10 goto LSSAVE
+endif
+
+LSLIST:
+    if ls.single = 0
+       ;multiple selections (function returns T/F)
+       listm ls.tag(),loc.loc,loc.name,loc.note cbf " " fline ls.header1,ls.header2,ls.header3,ls.header4,ls.header5,ls.title,ls.undsc noadd noshift cntr ls.cntr actv ls.totlocs maxa 200 enter ls.edit() use_traps
+       {
+         func ls.tag
+           if loc.tag[ls.cntr] = ' '
+              lstag = '   '
+           else_if loc.tag[ls.cntr] = 'Y'
+              lstag = ' '+chr(251)+' '
+           endif
+           ret lstag
+
+         LSALL:
+           for(mcntr;1;ls.totlocs;1)
+             if loc.tag[mcntr] = ' '
+                loc.tag[mcntr] = 'Y'
+                ls.tagged = ls.tagged + 1
+             endif
+           next
+           rdlist
+           ret
+
+         func ls.edit
+           ;disallow deletions or additions
+           if etyp() <> 'C'
+              ret .f.
+           endif
+           ;This does the tagging/untagging of individual items
+           if loc.tag[ls.cntr] = ' '
+              loc.tag[ls.cntr] = 'Y'
+              ls.tagged = ls.tagged + 1
+           else_if loc.tag[ls.cntr] = 'Y'
+              loc.tag[ls.cntr] = ' '
+              ls.tagged = ls.tagged - 1
+           endif
+           if .n. windows()
+              noredsp
+           endif
+           ret .t.
+       }
+
+       ;If get here, user has escaped from the list.
+       if .n. zask('Exit without choosing any locations? ', .t.)
+          goto LSLIST
+       endif
+       redsp
+       xtrap_rstr_udc
+       ret .f.
+
+       LSSAVE:
+         if ls.tagged = 0
+            msg 'No locations have been tagged. ' windows 'info'
+            goto LSLIST
+         endif
+         redsp
+         xtrap_rstr_udc
+         ret .t.
+
+    else
+       ;Only allowing a single selection like a lookup.  Function returns
+       ;  the element # selected, or 0 if none.
+       listm loc.loc,loc.name,loc.note cbf " " fline ls.header1,ls.header2,ls.header3,ls.header4,ls.header5,ls.title,ls.undsc noadd noshift cntr ls.cntr actv ls.totlocs maxa 200 MENU
+       redsp
+       xtrap_rstr_udc
+       ret ls.cntr
+    endif
+
+#endp
+::
+;************************************************************************
+;***********************************************************************
+;LOCBLD
+;
+;Make sure BKICLOCM has been opened by the calling program.
+;
+;
+:locbld
+#proc
+
+define bld.cfrom type a size 5 local
+define bld.year type a size 4 local
+define bld.qtr type a size 2 local
+define bld.tot  type i size 5 local
+define bld.condition type i size 5 local
+define loc.tag type a size 1 array 200
+define loc.loc type a size 10 array 200
+define loc.note type a size 30 array 200
+define loc.name type a size 25 array 200
+
+func locbld 
+
+updta loc.tag clr
+updta loc.loc clr
+updta loc.note clr
+updta loc.name clr
+bld.tot = 0
+bld.condition = 0
+
+   ;This is for selecting the locations.
+   ;They will be able to select from all available locations.
+
+   find F srch bkic.locm.code nlock
+   while .t.
+      bld.tot = bld.tot + 1
+
+      if bld.tot > 200
+         bld.condition = 1
+         goto BLD.DONE
+      endif
+
+      loc.tag[bld.tot] = ' '
+      loc.loc[bld.tot] = bkic.locm.code
+      loc.name[bld.tot]= bkic.locm.name
+
+      if bkic.locm.code='' .a. bkic.locm.name=''
+         loc.name[bld.tot]='Default Location'
+      endif
+
+      find N srch BKICLOCM nlock
+      if flerr(fnum('bkiclocm')) <> 0
+         exit
+      endif
+   endw
+
+if bld.tot = 0
+   ;No locations
+   bld.condition = 2
+endif
+
+BLD.DONE:
+  if bld.condition <> 0
+     updta loc.tag clr
+     updta loc.loc clr
+     updta loc.note clr
+     updta loc.name clr
+     bld.tot = 0
+
+     if bld.condition = 1
+        msg 'More than 200 locations. ' windows 'warn'
+     else_if bld.condition = 2
+        msg 'No locations. ' windows 'warn'
+     endif
+  endif
+
+ret bld.tot
+
+#endp
+::
+;************************************************************************
+;******************************************************************************
+;  FMZ 05/03/02
+;  THIS FUNCTION IS OBSOLETE!  DO NOT USE IT!  It is preserved here
+;  only for the benefit of the old BKPR programs.
+;
+;  msg.chk.post - displays message when no clearing account is set up yet
+;    2/28/99      or when items get posted to the clearing account
+;                 all GL posting routines should call this function
+;  ;03/27/02 FMZ  Take out hard-coded program name references here.
+;******************************************************************************
+:msg.chk.post
+#proc
+
+define postfail,postoth type i size 1 local
+func msg.chk.post postfail,postoth
+
+  ; displays message when no clearing account is set up yet
+  ;             (e.g. when POST.FAIL=1)   
+  if postfail=1
+   message[1]='A GL Account was not found for at least one of the posted items in'
+   message[2]='this process.  Missing GL Account transactions normally get posted'
+   message[3]='to your Clearing Account; however, a Clearing Account has not been'
+   message[4]='set up yet and therefore this transaction is out of balance.  Go'
+   message[5]='to "General Ledger Defaults" and set up a default Clearing Account.'
+   message[6]='Then go to "Print/Post General Ledger Batches" and print out your'
+   message[7]='GL batch transactions to find the missing entries, then add the '
+   message[8]='missing entries through "Edit General Ledger Batch Entries" to get'
+   message[9]='back in balance.'
+   msg_list msg_ptr,9
+  endif
+
+
+ ; message displayed when items get posted to the Clearing Account
+ ;              (POST.OTHER=1)   
+
+ if postoth=1
+   message[1]='A GL Account was not found for at least one of the posted items in'
+   message[2]='this process.  Missing GL Account transactions get posted to the'
+   message[3]='default Clearing Account defined in "General Ledger Defaults".'
+   message[4]='Go to "Print/Post General Ledger Batches" to get a listing of your'
+   message[5]='Clearing Account entries and edit the entries for the correct'
+   message[6]='GL Account(s) through "Edit General Ledger Batch Entries".'
+   msg_list msg_ptr,6
+ endif
+
+ ret .t.
+
+;
+#endp
+::end of msg.chk.post routine

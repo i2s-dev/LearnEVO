@@ -146,9 +146,16 @@ to resolve fully:
    **Finding:** ISTS.CFG stores the effective/default value, not the raw BKYSMSTR byte.
    YN=' '(blank) means "use default" — so value-correlation is exhausted for Y/N/space
    flags. Only 3 new 1:1 mappings possible via this method.
-   **Next step:** Parse suwin6t.rwn.dec for ISTS.CFG initialization order — this file has
-   469 ISTS.CFG references and should show the exact slot→key assignment sequence in the
-   TAS Pro 7 bytecode.
+   **Pass 575d (2026-07-08): suwin6t.rwn.dec binary analysis:**
+   - File: 95262 bytes; 472 ISTS.CFG. entries confirmed at 77-byte stride starting 0xb21d
+   - Structure: header → table dir (1 entry: MKAHIST) → form property table (728 × 8B entries at 0x6c8) → form UI string data → function table (53B entries: CFG.PATH/GETSERIALNUM/TIMEOUT.CALL/BTNCONTINUE.CLICK/ISTS.GET/NZ_DCR/src names/TEMP0) → ISTS.CFG variable table → local variable table (CFG.BUFFER, ISTXG.HNDL, ..., EMAIL.CFG.*, EVO.CFG.*, etc.)
+   - YN slot NOT stored in 77-byte ISTS.CFG entries (bytes 22-76 are all zeros/padding)
+   - No text-form BKYSMSTR/BKYS strings in file (YN access is compiled bytecode opcodes)
+   - No 1-byte or 2-byte YN slot lookup table found via 8-constraint search
+   - DBA.LIB (187KB plain-text TAS source library): 10 YN refs — YN[205]=APOn, YN[206]=AROn, YN[209]=ItemClassGL, YN[210]=GL conv done, YN[211]=AcctgOn, YN[212]=PostWOGL, YN[213]=PostAdjGL, YN[214]=PostPOGL, YN[215]=PostCOGSGL, YN[224]=AR2001 conversion stage
+   - DBA.LIB has no ISTS.GET or ISTS.CFG initialization code
+   - **Blocker:** TAS Pro 7 bytecode spec unknown; ISTS.GET compiled into suwin6t; no source for SUWIN6T or NZEVO.LIB
+   **Next step options:** (a) Frida Test 05d — hook tp7runtime.exe subroutine dispatch to intercept ISTS.GET calls at startup; (b) analyze tp7runtime.exe in IDA/Ghidra to find the TAS bytecode interpreter loop and identify the CALL opcode handler; (c) accept current 91-slot coverage and document DBA.LIB functional descriptions for YN[205-215,224]
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a

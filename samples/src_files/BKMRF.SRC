@@ -1,0 +1,1736 @@
+***Program name:
+;bkmrf.src
+***Program desc:
+;BKMRF.EDT  23:08:41  01/07/1996
+;Generate Material Requirements
+;
+;       Copyright DBA Software, Inc. 1992-1999 All Rights Reserved
+;   Portions Copyright 1985-1995 Business Tools, Inc.  All Rights Reserved
+;  This source code is CONFIDENTIAL PROPRIETARY information of DBA Software, Inc.
+
+***History
+;Cvtd from TAS-Pro 3.0 edt to 5.0 src on 03/05/96 at 03:32 p
+;
+***Modification summary
+;2/23/99  AjM ADDSUM program makeover, and general code cleanup.
+;08/05/99 FMZ Ben fixed a problem where the field size of MEM.QTY was
+;             being exceeded in some cases, resulting in generation of
+;             no requirement.
+;08/09/99 FMZ Entry on "Include S-type WOs" was not forcing upper case.
+;
+;01/01/01 JVH Major Surgery Completed:
+;             1)REORDLVL moved to stages 1 & 3, to save making another
+;               pass through MTICMSTR.
+;             2)Stages 1, 2 & 3 now loop through each part until all
+;               necessary operations are done.  This allows us to
+;               eliminate the multi-pass operations of Stage 4.
+;             3)Stage 4 now assigns EXPEDITE/DELAY/REVIEW messages...
+;               we get more REASONABLE messages by waiting until all
+;               orders are in place.
+;             4)Expedite and Delay Sensitivities are now functional.
+;             5)Removed a lot of repeated code, and a lot of GOTO
+;               constructs that were making the program difficult to
+;               maintain.
+;
+#UDX
+#LIB DBA50
+#LIB lookups
+#LIB dba
+#lib windows
+#inc helpscrn
+#TDATA 256000
+SETUP_COLOR
+;
+&& DO_DEFINES: AjM ADDSUM 2/23/99 took out label, not needed.
+    define stype type A size 1
+    define CONTINUE type A size 1
+    define FILE type A size 15
+    define ONHAND Type N size 12 dec 2
+    define TEMP.ONHAND Type N size 12 dec 2
+    define TEMP.LOC type R size 10
+    define TEMP.LOC2 type R size 10
+    define TEMP.LOC3 type R size 10
+    define TEMP.LOC4 type R size 10
+    define TEMP.DATE type d size 8
+    define TEMP.DATE2 type d size 8
+    define TEMP.DATE3 type d size 8
+    define r.temp.date, r.temp.date2, r.temp.date3 type r
+    define FLAG type A size 1
+    define PARENT_PART type A size 15
+    define MEM_PARENT type A size 15
+    define MEM_QTY Type N size 12 dec 2
+
+    ;FMZ 8/5/99 Ben fixed, field size getting exceeded.  Change MEM.QTY
+    ;from 15,8 to 12,2 and FACTOR from 15,8 to 16,8.
+    define MEM.QTY Type N size 12 dec 2
+    define FACTOR Type N size 16 dec 8
+
+    define HOLD.QTY Type N size 12 dec 2
+    define HOLD.DATE type d size 8
+    define DASH Type i size 2
+    define NUM.RECS Type N size 1
+    define TEMP.PEGTO type A size 10
+    define TEMP.PG.SDATE type d size 8
+    define TEMP.PG.FDATE type d size 8
+    define TEMP.PG.QTY Type N size 12 dec 2
+    ;JVH 12/03/00 added for phantom lead times
+    define TEMP.LEAD type I size 3
+    ;JVH 12/03/00
+    define DELAY.YN type A size 1
+    ;JVH 11/27/00 added to straighten out delay messages
+    define DELAY.CNT type I size 5
+    define SAMEDAY type I size 5
+    ;end JVH 11/27/00
+    define INC.FORECAST type A size 1
+    define INC.SO type A size 1
+    define THRU.DATE type d size 8
+    define LAST.PART type A size 15
+    define MRP.QTY type N size 12 dec 2
+    define a.order type a size 10
+    define zret type l
+    define stage type i size 2
+
+    ;FMZ 4/22/98
+    define type.ok type i size 1
+    define inc.types type a size 7
+    define inc.types2 type a size 10
+    define opt.types type a size 3
+    opt.types = 'NLT'
+    ;end FMZ 4/22/98
+
+    ;JVH 06/28/00 to be used for planned order numbers
+    define plnum type i size 5
+    define pltxt type a size 10
+    ;end JVH 06/28/00
+    ;JVH 12/03/00 to be used for planned phantom order numbers
+    define plpnum type i size 5
+    define plptxt type a size 10 ;used only in renumber routine
+    ;end JVH 12/03/00
+    ;JVH 12/05/00 for display of pass numbers for stages 2 & 4
+    define pass type i size 3
+    define buynum type i size 5
+    ;end JVH 12/05/00
+    ;JVH 12/20/00 implementation of scan loops requires counters
+    ;and other such stuff
+    define pn.rec.count type i size 5
+    define ctl.recs type i size 5
+    define subpass type i size 5
+    define qflag type L
+    define xpflag type L
+    define created type L
+    define CREATE.RECNO type R size 10
+    ;end JVH 12/20/00
+    ;JVH 01/01/01 for new delay routine
+    define dmessage type a size 10
+    ;end JVH 01/01/01
+    ;JVH 07/01/01 for new GET.RQ.DATE function
+    define RT.RQ type d size 8
+    ;end JVH 07/01/01
+
+&& OPEN_FILES:  AjM ADDSUM 2/23/99 took out, not needed.
+    open BKMRPFC lock N
+    open BKBMMSTR lock N
+    open CALENDAR lock N
+    open BKAPPO lock N
+    open BKAPPOL lock N
+    open WOBOM lock N
+    open WORKORD lock N
+    open BKICLOC lock N
+    open BKICMSTR lock N
+    open MTICMSTR lock N
+    open BKARINVL lock N
+    open BKARINV lock N
+
+    ;FMZ 4/13/98 This is a new file that will hold the MRP switch for each
+    ;  part that used to be in MTICMSTR field MTIC.PROD.MRPSW.  This
+    ;  will operate in the same fashion and will eliminate any locking
+    ;  conflicts when running MRP (change open of MTICMSTR to lock N now).
+
+    ;FMZ 4/15/98 NOTE: We now use the old MTIC.PROD.MRPSW field as the
+    ;  indicator (Y/N) for whether quantities should be rounded to next
+    ;  whole number for each part (Y=round).
+
+    trap F1 GOSUB SHOWHELP
+    trap F10 ignr
+    trap F4 ignr
+    trap F3 ignr
+    trap ESC goto EXIT
+    trap INT goto EXIT
+
+&&  MOUNT_SCRS: && AjM ADDSUM 2/23/99 took out, not needed.
+    clrscr
+    mount BKMRF type S
+    prg_hdr 'MR-F  Generate Material Requirements'
+    fnc_list 'F1 Help','Esc Exit'
+    inc.forecast='Y'
+    inc.so='Y'
+    stype='Y'
+    ;JVH 06/28/00 set the planned order number to 0
+    plnum=0
+    ;JVH 12/03/00 set the planned phantom number to 0
+    plpnum=0
+
+START:
+   
+    ;AjM ADDSUM 2/23/99 added vld and vldm's on the masked enters here.
+    enter INC.FORECAST mask "YN" vld inc.forecast<>"" vldm "You must enter something here." upar START up noclickoff
+    enter INC.SO mask "YN" vld inc.so<>"" vldm "You must enter something here." upar START up noclickoff
+    if inc.so='N'
+       thru.date=0
+    endif
+    enter THRU.DATE pre inc.so='Y' up noclickoff
+
+    ;FMZ 8/9/99 Put a space between the "UP" and the vld message so
+    ;will force upper case entry.
+    ;enter stype mask 'YN'  vld stype<>"" vldm "You must enter something here."up noclickoff
+    enter stype mask 'YN'  vld stype<>"" vldm "You must enter something here." up noclickoff
+
+    ;FMZ 4/22/98
+    ;enter opt.types up mask 'NLT' noclickoff
+    ;end FMZ 4/22/98
+    ;JVH 06/28/00 add a space to the mask, so the user can skip all
+    ;of the optional types
+    enter opt.types up mask ' NLT' noclickoff
+    ;end JVH 06/28/00
+
+    if .n. zask("Generating material requirements may take several hours to run (depending on the amount of data in the system) and will slow down the overall system.  Ready to proceed?", .t.)
+       goto EXIT
+    endif
+
+    saves
+    msg 'Initializing MRP output file...' nowait
+    FILE="MTMRP"
+    casinit file, .t., 'B'*co()
+    open MTMRP lock R
+    redsp
+
+    saves
+
+    ;This deletes any blank records in BKICMSTR, MTICMSTR, and BKICLOC
+    gosub CHK.FILES
+
+    ;Now reset all flags.  This is in the new MRP switch file rather than
+    ;  MTICMSTR now.
+    ;JVH 12/02/00 Initialize file rather than reset flags.
+    ;file should be empty after previous run, but there are no
+    ;guarantees.
+    ;
+    ;find F srch bkmrp.sw.part
+    ;if flerr(fnum('bkmrpsw')) = 0
+       ;while .t.
+          ;if bkmrp.sw.sw <> 'N'
+             ;bkmrp.sw.sw = 'N'
+             ;save BKMRPSW nocnf noclr
+          ;endif
+          ;find N srch BKMRPSW
+          ;if flerr(fnum('bkmrpsw')) <> 0
+             ;exit
+          ;endif
+       ;endw
+    ;endif
+    ;clr BKMRPSW buff
+    msg 'Initializing BKMRPSW file...' nowait
+    FILE="BKMRPSW"
+    casinit file, .t., 'B'*co()
+    open BKMRPSW lock N
+    ;end JVH 12/02/00
+    redsp
+
+    ;FMZ 4/22/98
+    inc.types = 'RFAM'*opt.types
+    ;end FMZ 4/22/98
+    ;JVH 12/02/00 may not need additional field, but using for now
+    inc.types2 = 'RFAMB'*opt.types
+    ;end JVH 12/02/00
+
+    saves
+    window at 5,15 len 10 wdt 70 box 's' wcolor 113 bcolor 113
+    pmsg 'EXISTING REQUIREMENTS:       PART NUMBER      ORDER NUMBER' at 5,1 nocr
+    if inc.so = 'Y'
+       pmsg '      Sales Orders' at 7,2 nocr
+    else
+       pmsg 'n/a   Sales Orders' at 7,2 nocr
+    endif
+    pmsg '      Purchase Orders' at 7,3 nocr
+    pmsg '      Work Orders' at 7,4 nocr
+    pmsg '      WO BOMs' at 7,5 nocr
+    if stype = 'Y'
+       pmsg '      S-Type WO BOMs' at 7,6 nocr
+    else
+       pmsg 'n/a   S-Type WO BOMs' at 7,6 nocr
+    endif
+    if inc.forecast = 'Y'
+       pmsg '      Forecasts' at 7,7 nocr
+    else
+       pmsg 'n/a   Forecasts' at 7,7 nocr
+    endif
+    ;JVH 12/30/00 This process will now be handled within the generator
+    ;pmsg '      Reorder Levels' at 7,8 nocr
+    pmsg '                    ' at 7,8 nocr
+    ;end JVH 12/30/00
+
+;------------------------------------------------------------------------
+DO.SO:
+    if INC.SO<>"Y" goto DO.PO
+    ;Doing the initial search this way skips all comment/blank lines
+    bkar.invl.pcode = '              '+chr(33)
+    find G srch BKAR.INVL.PCODE  err DO.SO4
+    clr MTICMSTR buff
+
+DO.SO2:
+    pmsg bkar.invl.pcode at 34,2 nocr
+    pmsg just(str(bkar.invl.invnm),'L') at 51,2 nocr
+    if THRU.DATE<>0 then if BKAR.INVL.ESD>THRU.DATE goto DO.SO3
+
+    ;Here we are excluding line items on a SO containing parts that will
+    ;  be built into the parent part.  This is because a later step will
+    ;  "explode" those component requirements based on the parent part's
+    ;  BOM.  If we also included these requirements here, would result
+    ;  in duplicate requirements.  Although one problem with this might
+    ;  be on F&O type components - how can the later process explode the
+    ;  requirements properly when they may vary from SO to SO depending
+    ;  on the features selected?
+    if BKAR.INVL.UM.LN[1]="M" GOTO DO.SO3
+
+    if BKAR.INVL.PCODE="" goto DO.SO3
+    if bkar.invl.pqty = 0 .a. bkar.invl.ubo = 0
+       goto DO.SO3
+    endif
+
+    if mtic.prod.code <> bkar.invl.pcode
+       mtic.prod.code = bkar.invl.pcode
+       find M srch MTIC.PROD.CODE err DO.SO3
+    endif
+    if MTIC.PROD.MRP<>"Y" goto DO.SO3
+
+    bkar.inv.sonum = bkar.invl.invnm
+    find M srch BKAR.INV.SONUM err DO.SO3
+    if BKAR.INV.INVCD="Y" goto DO.SO3
+
+    MRP.QTY = BKAR.INVL.PQTY + BKAR.INVL.UBO
+    if MRP.QTY<>0 do
+       if mtic.prod.mrpsw <> 'N'
+          if MRP.QTY>0 then MRP.QTY=MRP.QTY + 0.49
+          if MRP.QTY<0 then MRP.QTY=MRP.QTY - 0.49
+          mrp.qty = round(mrp.qty,0)
+       endif
+    endif
+    MTMRP.QTY=MRP.QTY
+    if MRP.QTY=0 goto DO.SO3
+    MTMRP.QTY=MTMRP.QTY * -1.00
+    MTMRP.PARTNO=BKAR.INVL.PCODE
+    MTMRP.DATE=BKAR.INVL.ESD
+    MTMRP.ONHAND=0
+    MTMRP.PEGTO = STR(BKAR.INVL.INVNM)
+    MTMRP.PEGTO=just(MTMRP.PEGTO,"L")
+    MTMRP.ORDER=""
+    MTMRP.STARTDT=0
+    MTMRP.ACTION=""
+    save MTMRP nocnf
+
+DO.SO3:
+    find N srch BKARINVL
+    if flerr(fnum('bkarinvl')) <> 0
+       goto DO.SO4
+    endif
+    goto DO.SO2
+
+DO.SO4:
+    pmsg 'DONE' at 7,2 nocr
+
+;------------------------------------------------------------------------
+
+DO.PO:
+    ;Doing the initial search this way skips all comment/blank lines
+    bkap.pol.pcode = '              '+chr(33)
+    find G srch BKAP.POL.PCODE  err DO.PO4
+    clr MTICMSTR buff
+
+DO.PO2:
+    pmsg bkap.pol.pcode at 34,3 nocr
+    pmsg just(str(bkap.pol.ponm),'L') at 51,3 nocr
+    if BKAP.POL.PCODE="" goto DO.PO3
+    if bkap.pol.pqty = 0 .a. bkap.pol.qc.qty = 0
+       goto DO.PO3
+    endif
+
+    ;On PO's, we don't skip components of an M-type parent part like we
+    ;  do in SO section above.  This is because on a PO, there will
+    ;  never be a work order to trigger requirements for M-type
+    ;  components, so we need to pull the requirement off the PO.
+
+    if mtic.prod.code <> bkap.pol.pcode
+       mtic.prod.code = bkap.pol.pcode
+       find M srch MTIC.PROD.CODE err DO.PO3
+    endif
+    if MTIC.PROD.MRP<>"Y" goto DO.PO3
+
+    bkap.po.num = bkap.pol.ponm
+    find M srch BKAP.PO.NUM err DO.PO3
+    if BKAP.PO.PRTD $ "CR" goto DO.PO3
+    if BKAP.PO.CONFIRM[2]="S" GOTO DO.PO3
+
+    ;FMZ 9/19/97 Ben found this problem in 3.0.  Items in QC were not
+    ;  being included in the report.  Check for QC quantity if the
+    ;  qty on the order is 0.
+    ;this is the original code MRP.QTY = BKAP.POL.PQTY * MTIC.PROD.PCONV
+    mrp.qty = 0
+    if bkap.pol.pqty <> 0
+       MRP.QTY = BKAP.POL.PQTY * MTIC.PROD.PCONV
+    else_if bkap.pol.qc.qty <> 0
+       mrp.qty = bkap.pol.qc.qty * mtic.prod.pconv
+    endif
+    ;end FMZ 9/19/97
+    ;
+    if MRP.QTY<>0 do
+       if mtic.prod.mrpsw <> 'N'
+          if MRP.QTY>0 then MRP.QTY=MRP.QTY + 0.49
+          if MRP.QTY<0 then MRP.QTY=MRP.QTY - 0.49
+          mrp.qty = round(mrp.qty,0)
+       endif
+    endif
+    MTMRP.QTY=MRP.QTY
+    if MRP.QTY=0 GOTO DO.PO3
+    MTMRP.PARTNO=BKAP.POL.PCODE
+    MTMRP.DATE=BKAP.POL.ERD
+    MTMRP.ONHAND=0
+    MTMRP.PEGTO=""
+    MTMRP.EXTRA="PURCHASE ORDER"
+    MTMRP.ORDER=just(str(bkap.pol.ponm,6,0),"L")
+    ;
+    ;FMZ 9/19/97 Indicate via the order number if this is in QC.
+    if bkap.pol.qc.qty <> 0
+       ;FMZ 11/10/97 Changing this to not use a dash as program will
+       ;  think it is a work order and issue an order to MAKE it.
+       ;mtmrp.order = just(str(bkap.pol.ponm,6,0),"L")*'-QC'
+       mtmrp.order = just(str(bkap.pol.ponm,6,0),"L")*'/QC'
+       ;end FMZ 11/10/97
+    endif
+    ;end FMZ 9/19/97
+    ;
+    MTMRP.STARTDT=BKAP.PO.ORDDTE
+    MTMRP.ACTION=""
+    save MTMRP nocnf
+
+DO.PO3:
+    find N srch BKAPPOL
+    if flerr(fnum('bkappol')) <> 0
+       goto DO.PO4
+    endif
+    goto DO.PO2
+
+DO.PO4:
+    pmsg 'DONE' at 7,3 nocr
+
+;------------------------------------------------------------------------
+
+DO.WO:
+    ;Doing the initial search this way skips all comment/blank lines
+    mtwo.wip.code = '              '+chr(33)
+    find G srch MTWO.WIP.CODE err DO.WO4
+    clr MTICMSTR buff
+
+DO.WO2:
+    pmsg mtwo.wip.code at 34,4 nocr
+    a.order = trim(str(mtwo.wip.wopre,6,0),'L')+'-'+trim(str(mtwo.wip.wosuf,3,0),'L')
+    pmsg a.order at 51,4 nocr
+    if MTWO.WIP.CODE="" goto DO.WO3
+    if MTWO.WIP.STATUS $ "CXI" goto DO.WO3
+    MRP.QTY = MTWO.WIP.SQTY - MTWO.WIP.COMQTY
+    if MRP.QTY<=0 GOTO DO.WO3
+
+    if mtic.prod.code <> mtwo.wip.code
+       mtic.prod.code = mtwo.wip.code
+       find M srch MTIC.PROD.CODE err DO.WO3
+    endif
+    if MTIC.PROD.MRP<>"Y" goto DO.WO3
+
+    ;JVH 12/05/00 If a part is changed to type B from another type,
+    ;it is possible to have a work order on file for a type B part.
+    ;we need to ignore these now, since the generation code will now
+    ;look at type B parts.
+    if MTIC.PROD.TYPE="B" goto DO.WO3
+    ;end JVH 12/05/00
+
+    if MRP.QTY<>0 do
+       if mtic.prod.mrpsw <> 'N'
+          if MRP.QTY>0 then MRP.QTY=MRP.QTY + 0.49
+          if MRP.QTY<0 then MRP.QTY=MRP.QTY - 0.49
+          mrp.qty = round(mrp.qty,0)
+       endif
+    endif
+    MTMRP.QTY=MRP.QTY
+    if MRP.QTY<=0 GOTO DO.WO3
+    MTMRP.PARTNO=MTWO.WIP.CODE
+    MTMRP.DATE=MTWO.WIP.SFIN
+    MTMRP.ONHAND=0
+    MTMRP.PEGTO=""
+    MTMRP.ORDER = str(MTWO.WIP.WOPRE) * "-" * str(MTWO.WIP.WOSUF)
+    MTMRP.ORDER=just(MTMRP.ORDER,"L")
+    MTMRP.STARTDT=MTWO.WIP.SSTART
+    MTMRP.ACTION=""
+    save MTMRP nocnf
+
+DO.WO3:
+    find N srch WORKORD
+    if flerr(fnum('workord')) <> 0
+       goto DO.WO4
+    endif
+    goto DO.WO2
+
+DO.WO4:
+    pmsg 'DONE' at 7,4 nocr
+
+;------------------------------------------------------------------------
+
+DO.WOBOM:
+    ;Doing the initial search this way skips all comment/blank lines
+    wobom.compcode = '              '+chr(33)
+    find G srch WOBOM.COMPCODE err DO.WOBOM4
+    clr MTICMSTR buff
+
+DO.WOBOM2:
+    pmsg wobom.compcode at 34,5 nocr
+    a.order = trim(str(wobom.wopre,6,0),'L')+'-'+trim(str(wobom.wosuf,3,0),'L')
+    pmsg a.order at 51,5 nocr
+    if WOBOM.COMPCODE="" goto DO.WOBOM3
+    MRP.QTY = WOBOM.TOTQTY - WOBOM.QTYISSUED
+    if mrp.qty <= 0
+       goto DO.WOBOM3
+    endif
+
+    if mtic.prod.code <> wobom.compcode
+       mtic.prod.code = wobom.compcode
+       find M srch MTIC.PROD.CODE err DO.WOBOM3
+    endif
+    if MTIC.PROD.MRP<>"Y" goto DO.WOBOM3
+
+    MTWO.WIP.WOPRE=WOBOM.WOPRE
+    MTWO.WIP.WOSUF=WOBOM.WOSUF
+    find M srch MTWO.WIP.KEY  err DO.WOBOM3
+    if MTWO.WIP.STATUS $ "CXI" goto DO.WOBOM3
+
+    ;JVH 12/05/00 need to ignore any WOBOM lines for a B type Work Order
+    MTIC.PROD.CODE=MTWO.WIP.CODE
+    find M srch MTIC.PROD.CODE err DO.WOBOM3
+    if MTIC.PROD.TYPE='B' goto DO.WOBOM3
+    ;end JVH 12/05/00
+
+    ;
+    ;FMZ 12/07/97 Ben fixed a problem by adding this line.  If the work
+    ;  order status had been changed from F to S, was producing requirements
+    ;  twice (since this is one of the "S" type work orders that gets
+    ;  handled by the next section).
+    if mtwo.wip.status = 'S' goto DO.WOBOM3
+    ;end FMZ 12/07/97
+    ;
+    ;FMZ 8/13/97 This is a problem Ben fixed.  The program had been
+    ;  treating over-issues as available quantity to be applied to the
+    ;  upcoming needs.
+    if mrp.qty < 0
+       mrp.qty = 0
+    endif
+    ;end FMZ 8/13/97
+    ;
+    if MRP.QTY<>0 do
+       if mtic.prod.mrpsw <> 'N'
+          if MRP.QTY>0 then MRP.QTY=MRP.QTY + 0.49
+          if MRP.QTY<0 then MRP.QTY=MRP.QTY - 0.49
+          mrp.qty = round(mrp.qty,0)
+       endif
+    endif
+    MTMRP.QTY=MRP.QTY
+    if MRP.QTY=0 GOTO DO.WOBOM3
+    MTMRP.QTY=MTMRP.QTY * -1.00
+    MTMRP.PARTNO=WOBOM.COMPCODE
+    MTMRP.DATE=MTWO.WIP.SSTART
+    MTMRP.ONHAND=0
+    MTMRP.PEGTO = str(MTWO.WIP.WOPRE) * "-" * str(MTWO.WIP.WOSUF)
+    MTMRP.PEGTO=just(MTMRP.PEGTO,"L")
+    MTMRP.ORDER=""
+    MTMRP.STARTDT=0
+    MTMRP.ACTION=""
+    save MTMRP nocnf
+
+DO.WOBOM3:
+    find N srch WOBOM
+    if flerr(fnum('wobom')) <> 0
+       goto DO.WOBOM4
+    endif
+    goto DO.WOBOM2
+
+DO.WOBOM4:
+    pmsg 'DONE' at 7,5 nocr
+
+;------------------------------------------------------------------------
+
+DO.WSBOM:
+    if STYPE<>"Y" goto DO.FC
+    ;Doing the initial search this way skips all comment/blank lines
+    mtwo.wip.code = '              '+chr(33)
+    find G srch MTWO.WIP.CODE err DO.WSBOM4
+    clr MTICMSTR buff
+
+DO.WSBOM2:
+    pmsg mtwo.wip.code at 34,6 nocr
+    a.order = trim(str(mtwo.wip.wopre,6,0),'L')+'-'+trim(str(mtwo.wip.wosuf,3,0),'L')
+    pmsg a.order at 51,6 nocr
+    if MTWO.WIP.STATUS<>"S" goto DO.WSBOM3
+
+    mtic.prod.code = mtwo.wip.code
+    find M srch MTIC.PROD.CODE err DO.WSBOM3
+    if MTIC.PROD.MRP<>"Y" goto DO.WSBOM3
+    ;JVH 12/05/00 ignore WOs for phantoms
+    if MTIC.PROD.TYPE='B' goto DO.WSBOM3
+    ;end JVH 12/05/00
+
+    bkbm.parent = mtwo.wip.code
+    find M srch BKBM.PARENT err DO.WSBOM3
+
+    while BKBM.PARENT = MTWO.WIP.CODE
+        ;FMZ 4/15/98 Had to move the find of the component's MTICMSTR
+        ;  record up here since we now need to know the rounding flag
+        ;  setting for it.
+        MTIC.PROD.CODE=BKBM.COMPONENT
+        find M srch MTIC.PROD.CODE
+        if flerr(fnum('mticmstr')) <> 0
+           mtic.prod.code=''
+           mtic.prod.mrpsw=''
+        endif
+        ;end FMZ 4/15/98
+
+        MRP.QTY=BKBM.QTY.REQD * MTWO.WIP.SQTY
+        if MRP.QTY<>0 do
+           if mtic.prod.mrpsw <> 'N'
+              if MRP.QTY>0 then MRP.QTY=MRP.QTY + 0.49
+              if MRP.QTY<0 then MRP.QTY=MRP.QTY - 0.49
+              mrp.qty = round(mrp.qty,0)
+           endif
+        endif
+        MTMRP.QTY=MRP.QTY
+        if MTMRP.QTY>0 do
+            ;FMZ 4/15/98 This has been moved above.
+            ;MTIC.PROD.CODE=BKBM.COMPONENT
+            ;find M srch MTIC.PROD.CODE
+            ;end FMZ 4/15/98
+            ;Note mtic.prod.code only blank if component MTICMSTR record
+            ;  not found.
+            if MTIC.PROD.MRP="Y" .o. mtic.prod.code=''
+                MTMRP.QTY=MTMRP.QTY * -1.00
+                MTMRP.PARTNO=BKBM.COMPONENT
+                MTMRP.DATE=MTWO.WIP.SSTART
+                MTMRP.ONHAND=0
+                MTMRP.PEGTO = STR(MTWO.WIP.WOPRE) * "-" * STR(MTWO.WIP.WOSUF)
+                MTMRP.PEGTO=just(MTMRP.PEGTO,"L")
+                MTMRP.ORDER=""
+                MTMRP.STARTDT=0
+                MTMRP.ACTION=""
+                save MTMRP nocnf
+            endif
+        endif
+        find N srch BKBMMSTR  err DO.WSBOM3
+    endw
+
+DO.WSBOM3:
+    find N srch WORKORD
+    if flerr(fnum('workord')) <> 0
+       goto DO.WSBOM4
+    endif
+    goto DO.WSBOM2
+
+DO.WSBOM4:
+    pmsg 'DONE' at 7,6 nocr
+
+;------------------------------------------------------------------------
+
+DO.FC:
+    if INC.FORECAST<>"Y" goto DO.RLEVEL
+    ;Doing the initial search this way skips all comment/blank lines
+    bkmrp.fc.part = '              '+chr(33)
+    find G srch BKMRP.FC.PART err DO.FC4
+    clr MTICMSTR buff
+
+DO.FC2:
+    pmsg bkmrp.fc.part at 34,7 nocr
+    if BKMRP.FC.PART="" goto DO.FC3
+
+    if mtic.prod.code <> bkmrp.fc.part
+       mtic.prod.code = bkmrp.fc.part
+       find M srch MTIC.PROD.CODE err DO.FC3
+    endif
+    if MTIC.PROD.MRP<>"Y" goto DO.FC3
+
+    MTMRP.QTY=BKMRP.FC.QTY * -1.00
+    MTMRP.PARTNO=BKMRP.FC.PART
+    MTMRP.DATE=BKMRP.FC.DATE
+    MTMRP.ONHAND=0
+    MTMRP.PEGTO="FORECAST"
+    MTMRP.ORDER=""
+    if MTMRP.QTY>0 do
+        MTMRP.PEGTO=""
+        MTMRP.ORDER="FORECAST"
+    endif
+    MTMRP.STARTDT=0
+    MTMRP.ACTION=""
+    save MTMRP nocnf
+
+DO.FC3:
+    find N srch BKMRPFC
+    if flerr(fnum('bkmrpfc')) <> 0
+       goto DO.FC4
+    endif
+    goto DO.FC2
+
+DO.FC4:
+    pmsg 'DONE' at 7,7 nocr
+
+;------------------------------------------------------------------------
+;JVH 12/30/00 This entire section will be eliminated, as we now handle
+;REORDLVL within the MRP generation(stages 1 & 3).
+goto DONE.OPEN
+;end JVH 12/30/00
+
+;FMZ 4/19/98 Now make a pass thru the entire inventory file and create a
+;  requirement for any parts that don't have a
+;  record yet in the MTMRP file.  If we don't do this then items that
+;  need to be ordered but currently have no open orders will not even be
+;  looked at by the MRP generation code below.
+
+DO.RLEVEL:
+    find F srch mtic.prod.code err DONE.OPEN
+
+DO.RLEV2:
+    pmsg mtic.prod.code at 34,8 nocr
+
+    if MTIC.PROD.MRP<>"Y" goto DO.RLEV3
+
+    ;JVH 12/03/00 skip phantoms, as they should not have any onhand qty
+    if MTIC.PROD.TYPE = "B" goto DO.RLEV3
+    ;end JVH 12/03/00
+
+    bkic.prod.code = mtic.prod.code
+    find M srch bkic.prod.code err DO.RLEV3
+
+    ;FMZ 4/22/98 Include parts with 0 reorder amount
+    ;if bkic.prod.ramt <= 0
+    ;   goto DO.RLEV3
+    ;endif
+    ;end FMZ 4/22/98
+
+    ;FMZ 4/22/98 If the reorder level is non-zero and UOH is above reorder
+    ;  level, do not generate requirement.  If reorder level is zero,
+    ;  and UOH is positive, do not generate requirement.
+    ;if bkic.prod.uoh > bkic.prod.rlvl
+    ;   goto DO.RLEV3
+    ;endif
+    if bkic.prod.rlvl <> 0
+       if bkic.prod.uoh > bkic.prod.rlvl
+          goto DO.RLEV3
+       endif
+    else_if bkic.prod.rlvl = 0
+       if bkic.prod.uoh >= 0
+          goto DO.RLEV3
+       endif
+    endif
+    ;end FMZ 4/22/98
+
+    ;DO NOT generate requirement if there are already existing requirements
+    ;  in the file.
+    mtmrp.partno = mtic.prod.code
+    find M srch mtmrp.partno
+    if flerr(fnum('mtmrp')) = 0
+       goto DO.RLEV3
+    endif
+
+    ;FMZ 4/22/98 For these type requirements, we will always set
+    ;  mtmrp.qty to 0.  This is because this is not really a firm
+    ;  order for the part, and we don't want the calculated on-hand
+    ;  amount during MRP generation to be reduced further by this
+    ;  amount, since it is essentially the on-hand amount anyway.
+    ;  If you don't set mtmrp.qty to 0 here, then the resulting
+    ;  MAKE/BUY order will be for twice the shortage.
+    ;mrp.qty = bkic.prod.ramt
+    mrp.qty = 0
+    ;end FMZ 4/22/98
+
+    ;mrp.qty = 0
+    ;while .t.
+    ;   if (mrp.qty+bkic.prod.uoh) <= bkic.prod.rlvl
+    ;      mrp.qty = mrp.qty + bkic.prod.ramt
+    ;   else
+    ;      exit
+    ;   endif
+    ;endw
+
+    ;FMZ 4/22/98 Qtys here will all be 0.
+    ;if MRP.QTY<>0 do
+    ;   if mtic.prod.mrpsw <> 'N'
+    ;      if MRP.QTY>0 then MRP.QTY=MRP.QTY + 0.49
+    ;      if MRP.QTY<0 then MRP.QTY=MRP.QTY - 0.49
+    ;      mrp.qty = round(mrp.qty,0)
+    ;   endif
+    ;endif
+    ;end FMZ 4/22/98
+
+    MTMRP.QTY=MRP.QTY
+
+    ;FMZ 4/22/98 Need to allow 0 qty here, these will all be 0.
+    ;if MRP.QTY=0 goto DO.RLEV3
+    ;MTMRP.QTY=MTMRP.QTY * -1.00
+    ;end FMZ 4/22/98
+
+    MTMRP.PARTNO=mtic.prod.code
+    MTMRP.DATE=date()
+    MTMRP.ONHAND=0
+    MTMRP.PEGTO = ''
+
+    ;This setting is important to identify requirements that are only
+    ;  being generated by the reorder level, as opposed to an actual
+    ;  open order.  During MRP generation below we will need to know
+    ;  this so that we don't add in the negative on-hand to double the
+    ;  needed MAKE/BUY order.
+    MTMRP.ORDER = "REORDLVL"
+
+    MTMRP.STARTDT=0
+    MTMRP.ACTION=""
+    save MTMRP nocnf
+
+DO.RLEV3:
+    find N srch mticmstr
+    if flerr(fnum('mticmstr')) <> 0
+       goto DO.RLEV4
+    endif
+    goto DO.RLEV2
+
+DO.RLEV4:
+    pmsg 'DONE' at 7,8 nocr
+
+;------------------------------------------------------------------------
+
+DONE.OPEN:
+    redsp
+
+;------------------------------------------------------------------------
+
+saves
+window at 5,15 len 9 wdt 70 box 's' wcolor 113 bcolor 113
+pmsg '               GENERATING MATERIAL REQUIREMENTS' at 5,1 nocr
+pmsg 'Stage 1:' at 26,3 nocr
+pmsg 'Stage 2:' at 26,4 nocr
+pmsg 'Stage 3:' at 26,5 nocr
+pmsg 'Stage 4:' at 26,6 nocr
+pmsg '(Examining product types that MAY have a BOM)' at 16,7 nocr
+
+START.MRP:
+    NUM.RECS=0
+    clr MTMRP buff
+    stage=1
+    ctl.recs=0
+
+    find F srch MTIC.PROD.CODE  err EXIT
+
+    scan MTICMSTR key MTIC.PROD.CODE start '' for MTIC.PROD.MRP = "Y"
+        sloop_if .n. MTIC.PROD.TYPE $ inc.types2
+        sloop_if .n. MTIC.PROD.TYPE $ 'FAMNB'
+        zret = progress()
+        bkic.prod.code = mtic.prod.code
+        find M srch BKIC.PROD.CODE
+        sloop_if flerr(fnum('BKICMSTR')) <> 0
+        ctl.recs = ctl.recs + 1
+        subpass = 0
+    RELOOP1:
+        pmsg "PL #:"*plnum at 53,3 nocr
+        created = .f.
+        ONHAND=BKIC.PROD.UOH
+        if MTIC.PROD.TYPE='B' then ONHAND=0
+        if ONHAND<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if ONHAND>0 then ONHAND=ONHAND + 0.49
+                if ONHAND<0 then ONHAND=ONHAND - 0.49
+                onhand = round(onhand,0)
+            endif
+        endif
+        pn.rec.count = 0
+        scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE,0 while MTMRP.PARTNO=MTIC.PROD.CODE
+            subpass = subpass + 1
+            pn.rec.count = pn.rec.count + 1
+            ;JVH 12/31/00 if we are reading in the same record we just created,
+            ;everything is OK...if not, we want to reloop so that the
+            ;ONHAND is accurate.
+            if created = .t.
+                rcn MTMRP rcn TEMP.LOC get
+                sexit_if TEMP.LOC <> CREATE.RECNO
+            endif
+            ;end JVH 12/31/00
+            ONHAND=ONHAND + MTMRP.QTY
+            MTMRP.ONHAND=ONHAND
+            save MTMRP nocnf noclr
+            xpflag = .f.
+            created = .f.
+
+            ;Only checking for and generating needed PLANNED orders
+            ;at this phase....Expedite and Delay messages are better
+            ;left to a final pass, when all orders are in the file
+            if MTIC.PROD.TYPE = 'B'
+                if MTMRP.ONHAND<0 then xpflag = CHK.PLAND()
+            else
+                if MTMRP.ONHAND<BKIC.PROD.RLVL then xpflag = CHK.PLAND()
+            endif
+            if xpflag = .t.
+                rcn MTMRP rcn TEMP.LOC get
+                rcn MTICMSTR rcn TEMP.LOC2 get
+                rcn BKICMSTR rcn TEMP.LOC3 get
+                created = CREATE.PLN()
+                rcn BKICMSTR rcn TEMP.LOC3 set
+                rcn MTICMSTR rcn TEMP.LOC2 set
+                rcn MTMRP rcn TEMP.LOC set
+            endif
+        ends ;MTMRP
+        if subpass = 0
+            if MTIC.PROD.TYPE <> 'B' .a. BKIC.PROD.UOH < BKIC.PROD.RLVL
+                clr MTMRP buff
+                MTMRP.PARTNO=MTIC.PROD.CODE
+                MTMRP.DATE=date()
+                MTMRP.ORDER='REORDLVL'
+                MTMRP.ACTION=""
+                MTMRP.PEGTO=""
+                MTMRP.QTY=0
+                MTMRP.PG.SDATE=0
+                MTMRP.PG.FDATE=0
+                MTMRP.STARTDT=0
+                MTMRP.PG.QTY=0
+                MTMRP.ONHAND=0
+                save MTMRP nocnf
+                created = .t.
+            endif
+        endif
+        if created = .t. goto RELOOP1
+        ;We are going to use BKMRPSW as a loop control file for the
+        ;Expedite/Delay phase, so we need to have a record for every
+        ;part number that has records in the MTMRP file.
+        if pn.rec.count > 0
+            clr BKMRPSW buff
+            bkmrp.sw.part = mtic.prod.code
+            find M srch bkmrp.sw.part
+            if flerr(fnum('bkmrpsw')) <> 0
+               clr BKMRPSW buff
+               bkmrp.sw.part = MTIC.PROD.CODE
+            endif
+            bkmrp.sw.sw = 'Z'
+            save BKMRPSW nocnf
+        endif
+    ends ;MTICMSTR
+    if ctl.recs = 0
+        pmsg 'DONE' at 20,3 nocr
+        pmsg 'n/a'  at 20,4 nocr
+        pmsg '                                                   ' at 16,7 nocr
+        pmsg '(Examining product types that MAY NOT have a BOM)' at 16,7 nocr
+        goto START.MRP3
+    else
+        pmsg 'DONE' at 20,3 nocr
+        pmsg '                                                   ' at 16,7 nocr
+        pmsg '            ' at 53,3 nocr
+        pmsg '(Resolving BOM types, multiple passes)' at 16,7 nocr
+        pass=0
+        goto START.MRP2
+    endif
+
+;------------------------------------------------------------------------
+
+START.MRP2:
+    ;JVH 12/05/00 stage 2 redesigned to use the BKMRPSW file as the
+    ;control rather than the MTICMSTR file.  Old code has been deleted.
+    NUM.RECS=0
+    pass = pass + 1
+    pmsg "Pass:"*pass at 16,4 nocr
+    stage=2
+    ctl.recs = 0
+    clr BKMRPSW buff
+    scan BKMRPSW key BKMRP.SW.PART start '' for (bkmrp.sw.sw $ inc.types2) 
+        sloop_if .n. bkmrp.sw.sw $ 'FAMNB'
+        MTIC.PROD.CODE=BKMRP.SW.PART
+        find M srch MTIC.PROD.CODE
+        sloop_if flerr(fnum('MTICMSTR')) <> 0
+        sloop_if MTIC.PROD.MRP<>"Y"
+        bkic.prod.code = mtic.prod.code
+        find M srch bkic.prod.code
+        sloop_if flerr(fnum('BKICMSTR')) <> 0
+        ctl.recs = ctl.recs + 1
+        zret = PROGRESS()
+        subpass = 0
+    RELOOP2:
+        pmsg "PL #:"*plnum at 53,4 nocr
+        created = .f.
+        onhand = bkic.prod.uoh
+        if MTIC.PROD.TYPE='B' then ONHAND=0
+        if ONHAND<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if ONHAND>0 then ONHAND=ONHAND + 0.49
+                if ONHAND<0 then ONHAND=ONHAND - 0.49
+                onhand = round(onhand,0)
+            endif
+        endif
+        pn.rec.count = 0
+        scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE,0 while MTMRP.PARTNO = MTIC.PROD.CODE
+            subpass = subpass + 1
+            pn.rec.count = pn.rec.count + 1
+            ;JVH 12/31/00 if we are reading in the same record we just created,
+            ;everything is OK...if not, we want to reloop so that the
+            ;ONHAND is accurate.
+            if created = .t.
+                rcn MTMRP rcn TEMP.LOC get
+                sexit_if TEMP.LOC <> CREATE.RECNO
+            endif
+            ;end JVH 12/31/00
+            NUM.RECS=1
+            ONHAND=ONHAND + MTMRP.QTY
+            MTMRP.ONHAND=ONHAND
+            save MTMRP nocnf noclr
+            xpflag = .f.
+            created = .f.
+
+            ;Only checking for and generating needed PLANNED orders
+            ;at this phase....Expedite and Delay messages are better
+            ;left to a final pass, when all orders are in the file
+            if MTIC.PROD.TYPE <> 'B'
+                if MTMRP.ONHAND<BKIC.PROD.RLVL then xpflag = CHK.PLAND()
+            else
+                if MTMRP.ONHAND<0 then xpflag = CHK.PLAND()
+            endif
+            if xpflag = .t.
+                rcn MTMRP rcn TEMP.LOC get
+                rcn MTICMSTR rcn TEMP.LOC2 get
+                rcn BKICMSTR rcn TEMP.LOC3 get
+                rcn BKMRPSW rcn TEMP.LOC4 get
+                created = CREATE.PLN()
+                rcn BKMRPSW rcn TEMP.LOC4 set
+                rcn BKICMSTR rcn TEMP.LOC3 set
+                rcn MTICMSTR rcn TEMP.LOC2 set
+                rcn MTMRP rcn TEMP.LOC set
+            endif
+        ends ;MTMRP
+        if created = .t. goto RELOOP2
+        bkmrp.sw.sw = 'Z'
+        save BKMRPSW nocnf
+    ends ;BKMRPSW
+    if ctl.recs>0 goto START.MRP2
+    pmsg '    DONE' at 16,4 nocr
+    pmsg '                                                   ' at 16,7 nocr
+    pmsg '(Examining product types that MAY NOT have a BOM)' at 16,7 nocr
+
+;------------------------------------------------------------------------
+
+START.MRP3:
+    NUM.RECS=0
+    clr MTMRP buff
+    stage=3
+    buynum = 0
+    ctl.recs=0
+
+    find F srch MTIC.PROD.CODE  err EXIT
+
+    scan MTICMSTR key MTIC.PROD.CODE start '' for MTIC.PROD.MRP = "Y"
+        sloop_if .n. MTIC.PROD.TYPE $ inc.types2
+        sloop_if .n. MTIC.PROD.TYPE $ 'RLT'
+        zret = progress()
+        bkic.prod.code = mtic.prod.code
+        find M srch BKIC.PROD.CODE
+        sloop_if flerr(fnum('BKICMSTR')) <> 0
+        ctl.recs = ctl.recs + 1
+        subpass = 0
+    RELOOP3:
+        pmsg "Buy #:"*buynum at 52,5 nocr
+        created = .f.
+        ONHAND=BKIC.PROD.UOH
+        if ONHAND<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if ONHAND>0 then ONHAND=ONHAND + 0.49
+                if ONHAND<0 then ONHAND=ONHAND - 0.49
+                onhand = round(onhand,0)
+            endif
+        endif
+        pn.rec.count = 0
+        scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE,0 while MTMRP.PARTNO=MTIC.PROD.CODE
+            subpass = subpass + 1
+            pn.rec.count = pn.rec.count + 1
+            ;JVH 12/31/00 if we are reading in the same record we just created,
+            ;everything is OK...if not, we want to reloop so that the
+            ;ONHAND is accurate.
+            if created = .t.
+                rcn MTMRP rcn TEMP.LOC get
+                sexit_if TEMP.LOC <> CREATE.RECNO
+            endif
+            ;end JVH 12/31/00
+            ONHAND=ONHAND + MTMRP.QTY
+            MTMRP.ONHAND=ONHAND
+            save MTMRP nocnf noclr
+            xpflag = .f.
+            created = .f.
+
+            ;Only checking for and generating needed PLANNED orders
+            ;at this phase....Expedite and Delay messages are better
+            ;left to a final pass, when all orders are in the file
+            ;since CHK.PLAND() is only checking for necessary planned
+            ;orders, and doing nothing else, we will use the same
+            ;function for all 4 stages.
+            if MTMRP.ONHAND<BKIC.PROD.RLVL
+                xpflag = CHK.PLAND()
+            endif
+            if xpflag = .t.
+                rcn MTMRP rcn TEMP.LOC get
+                rcn MTICMSTR rcn TEMP.LOC2 get
+                rcn BKICMSTR rcn TEMP.LOC3 get
+                created = CREATE.PLNB()
+                rcn BKICMSTR rcn TEMP.LOC3 set
+                rcn MTICMSTR rcn TEMP.LOC2 set
+                rcn MTMRP rcn TEMP.LOC set
+            endif
+        ends ;MTMRP
+        if subpass = 0
+            if MTIC.PROD.TYPE <> 'B'.a. BKIC.PROD.UOH < BKIC.PROD.RLVL
+                clr MTMRP buff
+                MTMRP.PARTNO=MTIC.PROD.CODE
+                MTMRP.DATE=date()
+                MTMRP.ORDER='REORDLVL'
+                MTMRP.ACTION=""
+                MTMRP.PEGTO=""
+                MTMRP.QTY=0
+                MTMRP.PG.SDATE=date()
+                MTMRP.PG.FDATE=date()
+                MTMRP.STARTDT=date()
+                MTMRP.PG.QTY=0
+                MTMRP.ONHAND=0
+                save MTMRP nocnf
+                created = .t.
+            endif
+        endif
+        if created = .t. goto RELOOP3
+        if pn.rec.count > 0
+            clr BKMRPSW buff
+            bkmrp.sw.part = mtic.prod.code
+            find M srch bkmrp.sw.part
+            if flerr(fnum('bkmrpsw')) <> 0
+               clr BKMRPSW buff
+               bkmrp.sw.part = MTIC.PROD.CODE
+            endif
+            bkmrp.sw.sw = 'Z'
+            save BKMRPSW nocnf
+        endif
+    ends ;MTICMSTR
+    pmsg 'DONE' at 20,5 nocr
+    pass = 0
+    pmsg '                                                   ' at 16,7 nocr
+    pmsg '(Marking EXPEDITE/DELAY messages, ALL types)' at 16,7 nocr
+
+;------------------------------------------------------------------------
+;Stage 4 is no longer needed for RLT types, so now it will assign
+;the EXPEDITE/DELAY messages for all types.
+START.MRP4:
+    NUM.RECS=0
+    ;pass = pass + 1
+    ;pmsg "Pass:"*pass at 16,6 nocr
+    stage=4
+    ctl.recs = 0
+    clr BKMRPSW buff
+    scan BKMRPSW key BKMRP.SW.PART scope A
+        MTIC.PROD.CODE=BKMRP.SW.PART
+        find M srch MTIC.PROD.CODE
+        sloop_if flerr(fnum('MTICMSTR')) <> 0
+        bkic.prod.code = mtic.prod.code
+        find M srch bkic.prod.code
+        sloop_if flerr(fnum('BKICMSTR')) <> 0
+        ctl.recs = ctl.recs + 1
+        zret = PROGRESS()
+        onhand = bkic.prod.uoh
+        if ONHAND<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if ONHAND>0 then ONHAND=ONHAND + 0.49
+                if ONHAND<0 then ONHAND=ONHAND - 0.49
+                onhand = round(onhand,0)
+            endif
+        endif
+        pn.rec.count = 0
+        scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE,0 while MTMRP.PARTNO = MTIC.PROD.CODE
+            pn.rec.count = pn.rec.count + 1
+            ONHAND=ONHAND + MTMRP.QTY
+            MTMRP.ONHAND=ONHAND
+            save MTMRP nocnf noclr
+            xpflag = .f.
+            if MTIC.PROD.TYPE <> 'B'
+                if MTMRP.ONHAND<BKIC.PROD.RLVL
+                    xpflag = MRK.EXPDTE()
+                endif
+            else
+                if MTMRP.ONHAND<0
+                    xpflag = MRK.EXPDTE()
+                endif
+            endif
+        ends ;MTMRP - EXPEDITE
+
+;************** added 07/03/01 jvh **************
+; make a pass to put req dates in
+        onhand = bkic.prod.uoh
+        if ONHAND<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if ONHAND>0 then ONHAND=ONHAND + 0.49
+                if ONHAND<0 then ONHAND=ONHAND - 0.49
+                onhand = round(onhand,0)
+            endif
+        endif
+        pn.rec.count = 0
+        scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE,0 while MTMRP.PARTNO = MTIC.PROD.CODE
+            pn.rec.count = pn.rec.count + 1
+            ONHAND=ONHAND + MTMRP.QTY
+            MTMRP.ONHAND=ONHAND
+            save MTMRP nocnf noclr
+            xpflag = .f.
+            if '-' $ MTMRP.ORDER .o. MTMRP.EXTRA = 'PURCHASE ORDER'
+                if MTMRP.ACTION = ''
+                    if MTIC.PROD.TYPE <> 'B'
+                        if MTMRP.ONHAND>BKIC.PROD.RLVL
+                            MTMRP.PG.FDATE = GET.RQ.DATE()
+                            save MTMRP nocnf
+                        endif
+                    else
+                        if MTMRP.ONHAND>0
+                            MTMRP.PG.FDATE = GET.RQ.DATE()
+                            save MTMRP nocnf
+                        endif
+                    endif
+                endif
+            endif
+        ends ;MTMRP - DELAY
+
+;********** end 07/03/01 jvh **************
+
+        pn.rec.count = 0
+        onhand = bkic.prod.uoh
+        if ONHAND<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if ONHAND>0 then ONHAND=ONHAND + 0.49
+                if ONHAND<0 then ONHAND=ONHAND - 0.49
+                onhand = round(onhand,0)
+            endif
+        endif
+        scan MTMRP key MTMRP.KEY start MTIC.PROD.CODE,0 while MTMRP.PARTNO = MTIC.PROD.CODE
+            pn.rec.count = pn.rec.count + 1
+            ONHAND=ONHAND + MTMRP.QTY
+            MTMRP.ONHAND=ONHAND
+            save MTMRP nocnf noclr
+            xpflag = .f.
+            if '-' $ MTMRP.ORDER .o. MTMRP.EXTRA = 'PURCHASE ORDER'
+                if MTMRP.ACTION = ''
+                    if MTIC.PROD.TYPE <> 'B'
+                        if MTMRP.ONHAND>BKIC.PROD.RLVL
+                            MTMRP.ACTION = MRK.DELAY()
+                            save MTMRP nocnf
+                        endif
+                    else
+                        if MTMRP.ONHAND>0
+                            MTMRP.ACTION = MRK.DELAY()
+                            save MTMRP nocnf
+                        endif
+                    endif
+                endif
+            endif
+        ends ;MTMRP - DELAY
+        ;del BKMRPSW nocnf
+    ends ;BKMRPSW
+    pmsg '    DONE' at 16,6 nocr
+    pmsg '                                                   ' at 16,7 nocr
+    pmsg 'Re-numbering Planned Orders...' at 16,7 nocr
+    scan MTMRP key MTMRP.ORDER start 'PLP'
+        sexit_if mid(MTMRP.ORDER,1,3) <> 'PLP'
+        rcn MTMRP rcn TEMP.LOC get
+        plptxt=MTMRP.PEGTO
+        pltxt=MTMRP.ORDER
+        gosub RENUM.PHN
+        rcn MTMRP rcn TEMP.LOC set
+        find M srch MTMRP.ORDER
+        del MTMRP nocnf
+    ends
+
+EXIT:
+    Quit
+
+RENUM.PHN:
+    MTMRP.PEGTO=pltxt
+    find M srch MTMRP.PEGTO err BAILOUT
+    while MTMRP.PEGTO=pltxt
+        MTMRP.PEGTO=plptxt
+        save MTMRP nocnf
+        MTMRP.PEGTO=pltxt
+        find M srch MTMRP.PEGTO
+        exit_if flerr(fnum('MTMRP')) <> 0
+    endw
+BAILOUT:
+    ret
+
+;------------------------------------------------------------------------
+
+
+PROGRESS:
+    ;JVH 12/05/00 for more accurate display of progress
+    ; pmsg MTMRP.PARTNO at 35,2+stage nocr
+    if stage=1 .o. stage=3
+        pmsg MTIC.PROD.CODE at 35,2+stage nocr
+    else
+        pmsg MTMRP.PARTNO at 35,2+stage nocr
+    endif
+    ;end JVH 12/05/00
+    ret .t.
+
+;------------------------------------------------------------------------
+;This next section is only called by START.MRP or START.MRP2 (thus only
+;  for F, A, M type parts).
+;JVH 12/20/00 changed to function
+;JVH 12/22/00 no reason that this function will not work for stage 3,
+;so this is what we are gonna use.
+func CHK.PLAND
+    TEMP.PEGTO=MTMRP.PEGTO
+    TEMP.PG.SDATE=MTMRP.STARTDT
+    TEMP.PG.FDATE=MTMRP.DATE
+    TEMP.PG.QTY=MTMRP.QTY
+
+    ;FMZ 4/17/98 If mtmrp.date is 00/00/00, this operation will result in
+    ;  a bad date.
+    ;TEMP.DATE=MTMRP.DATE + MTIC.PROD.EXPBF
+    if mtmrp.date <> 0
+       TEMP.DATE=MTMRP.DATE + MTIC.PROD.EXPBF
+    else
+       temp.date = mtmrp.date
+    endif
+    ;end FMZ 4/17/98
+
+    ;JVH 12/05/00 need to ignore Reorder Level for Phantoms
+    ; TEMP.ONHAND=BKIC.PROD.RLVL - ONHAND
+    if MTIC.PROD.TYPE <> 'B'
+        TEMP.ONHAND=BKIC.PROD.RLVL - ONHAND
+    else
+        TEMP.ONHAND= 0 - ONHAND
+    endif
+    ;end JVH 12/05/00
+    rcn MTMRP rcn TEMP.LOC get
+
+    qflag = .f.
+
+    find N srch MTMRP
+    if flerr(fnum('MTMRP')) <> 0
+        rcn MTMRP rcn TEMP.LOC set
+        ret .t.
+    endif
+    while MTMRP.PARTNO = MTIC.PROD.CODE
+
+        ;JVH 12/22/00 all M-Types now get a planned order number
+        ;rather than an MTMRP.ORDER of 'BUY', so this code never
+        ;runs for stages 1 & 2 anyway, and it needs to be left out
+        ;for stage 3, which didn't have this code.
+        ;;FMZ 4/16/98 This is from the 3.0 code which should allow correct
+        ;;  handling of M-type components.
+        ;if MTMRP.ORDER='BUY' goto NO.EXPBF
+        ;;end FMZ 4/16/98
+        ;end JVH 12/22/00
+
+        exit_if MTMRP.DATE>TEMP.DATE
+        if MTMRP.QTY>0 then TEMP.ONHAND=TEMP.ONHAND - MTMRP.QTY
+        if MTMRP.QTY<0 do
+            if MTMRP.DATE=TEMP.PG.FDATE then TEMP.ONHAND=TEMP.ONHAND - MTMRP.QTY
+        endif
+        if MTMRP.QTY=>TEMP.ONHAND
+            qflag = .t.
+            exit
+        endif
+        find N srch MTMRP
+        ;jvh 04/13/01 while loops don't automatically break at EOF
+        exit_if flerr(fnum('MTMRP')) <> 0
+        ;end jvh 04/13/01
+    endw
+    rcn MTMRP rcn TEMP.LOC set
+    if qflag = .t.
+        ret .f.
+    else
+        ret .t.
+    endif
+
+func MRK.EXPDTE
+    TEMP.PEGTO=MTMRP.PEGTO
+    TEMP.PG.SDATE=MTMRP.STARTDT
+    TEMP.PG.FDATE=MTMRP.DATE
+    TEMP.PG.QTY=MTMRP.QTY
+    if mtmrp.date <> 0
+       TEMP.DATE=MTMRP.DATE + MTIC.PROD.EXPBF
+    else
+       temp.date = mtmrp.date
+    endif
+    rcn MTMRP rcn TEMP.LOC get
+    qflag = .f.
+    scan MTMRP key MTMRP.KEY scope R while MTMRP.PARTNO = MTIC.PROD.CODE
+        sexit_if MTMRP.DATE>TEMP.DATE
+        if MTMRP.QTY>0
+            if '-' $ MTMRP.ORDER .o. MTMRP.EXTRA = 'PURCHASE ORDER'
+                qflag = .t.
+                sexit
+            endif
+        endif
+        sexit_if MTMRP.ONHAND >= BKIC.PROD.RLVL
+    ends
+    if qflag = .f.
+        rcn MTMRP rcn TEMP.LOC set
+        ret .f.
+    endif
+
+    MTMRP.PG.SDATE=TEMP.PG.SDATE
+    MTMRP.PG.FDATE=TEMP.PG.FDATE
+    MTMRP.PG.QTY=TEMP.PG.QTY
+    if MTMRP.ACTION = ''
+        if dtor(MTMRP.DATE) - dtor(TEMP.PG.FDATE) > int(BKIC.PROD.AVFO)
+            MTMRP.ACTION="EXPEDITE"
+        else
+            MTMRP.ACTION="EXPSENS"
+        endif
+        if MTMRP.PEGTO = ''
+            MTMRP.PEGTO=TEMP.PEGTO
+        endif
+    else
+        rcn MTMRP rcn TEMP.LOC set
+        ret .f.
+    endif
+    save MTMRP nocnf
+    rcn MTMRP rcn TEMP.LOC set
+    ret .t.
+
+
+func CREATE.PLN
+    rcn MTMRP rcn TEMP.LOC set
+    MTMRP.ONHAND = ONHAND
+    save MTMRP nocnf noclr
+    if MTMRP.ORDER = 'REORDLVL'
+        MTMRP.PEGTO = 'REORDLVL'
+    else
+        clr MTMRP rec
+    endif
+    MTMRP.QTY=TEMP.ONHAND
+    ;JVH 12/05/00 need to ignore Reorder Amount for Phantoms
+    ; if MTMRP.QTY<BKIC.PROD.RAMT then MTMRP.QTY=BKIC.PROD.RAMT
+    if MTMRP.QTY<BKIC.PROD.RAMT .a. MTIC.PROD.TYPE <> 'B' then MTMRP.QTY=BKIC.PROD.RAMT
+    ;end JVH 12/05/00
+    if MTMRP.QTY<>0 do
+        if mtic.prod.mrpsw <> 'N'
+            if MTMRP.QTY>0 then MTMRP.QTY=MTMRP.QTY + 0.49
+            if MTMRP.QTY<0 then MTMRP.QTY=MTMRP.QTY - 0.49
+            mtmrp.qty = round(mtmrp.qty,0)
+        endif
+    endif
+    ;MTMRP.ONHAND=0
+    MTMRP.PG.SDATE=TEMP.PG.SDATE
+    MTMRP.PG.FDATE=TEMP.PG.FDATE
+    MTMRP.PG.QTY=TEMP.PG.QTY
+    if MTIC.PROD.TYPE='B'
+        plpnum = plpnum + 1
+        MTMRP.ORDER = 'PLP' * str(plpnum)
+    else
+        plnum = plnum + 1
+        MTMRP.ORDER = 'PL' * str(plnum)
+    endif
+    pmsg "PL #:"*plnum at 53,2+stage nocr
+    MTMRP.ORDER=just(MTMRP.ORDER,"L")
+    if mtmrp.date <> 0
+       MTMRP.STARTDT=MTMRP.DATE - MTIC.PROD.LEAD
+    else
+       mtmrp.startdt = mtmrp.date
+    endif
+    TEMP.DATE3=MTMRP.DATE
+    if MTMRP.STARTDT>MTMRP.DATE then MTMRP.STARTDT=MTMRP.DATE
+
+CHK.STRTDT:
+    TEMP.DATE2=MTMRP.STARTDT
+    r.temp.date3 = dtor(temp.date3)
+    r.temp.date2 = dtor(temp.date2)
+    if temp.date3 = 0 .o. temp.date2 = 0
+    else
+       for(r.TEMP.DATE;r.TEMP.DATE3;r.TEMP.DATE2;-1)
+         temp.date = rtod(r.temp.date)
+         MTCAL.DATE=TEMP.DATE
+         ifdup MTCAL.DATE do
+            TEMP.DATE3=TEMP.DATE - 1
+            MTMRP.STARTDT=MTMRP.STARTDT - 1
+            goto CHK.STRTDT
+         endif
+       next
+    endif
+    if mtic.prod.type = 'M'
+        MTMRP.ACTION = 'BUY'
+    else
+        MTMRP.ACTION='MAKE'
+    endif
+
+    ;JVH 12/31/00 We can't modify ONHAND here, because most likely this
+    ;record will be the next one read when we return from the creation
+    ;function.  Also need to save the record number so we can check
+    ;on this.
+    ;ONHAND=ONHAND + MTMRP.QTY
+    ;MTMRP.ONHAND=ONHAND
+    ;save MTMRP nocnf noclr
+    MTMRP.ONHAND=ONHAND + MTMRP.QTY
+    save MTMRP nocnf noclr
+    rcn MTMRP rcn CREATE.RECNO get
+    ;end JVH 12/31/00
+    clr MTMRP rec
+    pltxt = MTMRP.ORDER
+
+    HOLD.QTY=MTMRP.QTY
+    HOLD.DATE=MTMRP.STARTDT
+
+    clr BKMRPSW buff
+    bkmrp.sw.part = mtic.prod.code
+    find M srch bkmrp.sw.part
+    if flerr(fnum('bkmrpsw')) <> 0
+        clr BKMRPSW buff
+        bkmrp.sw.part = mtic.prod.code
+    endif
+    bkmrp.sw.sw = MTIC.PROD.TYPE
+    save BKMRPSW nocnf
+
+GET.BOM:
+    PARENT_PART=MTMRP.PARTNO
+    scan BKBMMSTR key BKBM.KEY start PARENT_PART, 0!, "" while BKBM.PARENT = PARENT_PART
+        bkic.prod.code = bkbm.component
+        find M srch BKIC.PROD.CODE
+        sloop_if flerr(fnum('BKICMSTR')) <> 0
+
+        mtic.prod.code = bkbm.component
+        find M srch MTIC.PROD.CODE
+        sloop_if flerr(fnum('MTICMSTR')) <> 0
+        sloop_if .n. MTIC.PROD.TYPE $ inc.types2
+
+        MEM.QTY=HOLD.QTY * -1.00
+        MTMRP.DATE=HOLD.DATE
+        MTMRP.QTY=(BKBM.QTY.REQD / (1 - (BKBM.PROD.SCRAP / 100.00))) * MEM.QTY
+        if MTMRP.QTY<>0 do
+            if mtic.prod.mrpsw <> 'N'
+                if MTMRP.QTY>0 then MTMRP.QTY=MTMRP.QTY + 0.49
+                if MTMRP.QTY<0 then MTMRP.QTY=MTMRP.QTY - 0.49
+                mtmrp.qty = round(mtmrp.qty,0)
+            endif
+        endif
+        MTMRP.PARTNO=BKBM.COMPONENT
+        MTMRP.ONHAND=0
+        MTMRP.PEGTO=pltxt
+        MTMRP.PEGTO=just(MTMRP.PEGTO,"L")
+        MTMRP.ORDER=""
+        MTMRP.STARTDT=0
+        MTMRP.ACTION=""
+
+        if MTIC.PROD.MRP="Y" do
+            save MTMRP nocnf noclr
+            clr MTMRP REC
+            clr BKMRPSW buff
+            bkmrp.sw.part = mtic.prod.code
+            find M srch bkmrp.sw.part
+            if flerr(fnum('bkmrpsw')) <> 0
+                clr BKMRPSW buff
+                bkmrp.sw.part = mtic.prod.code
+            endif
+            bkmrp.sw.sw = MTIC.PROD.TYPE
+            save BKMRPSW nocnf
+        endif
+    ends
+    ret .t. ;end of CREATE.PLN()
+
+func MRK.DELAY
+    TEMP.PG.FDATE=MTMRP.DATE
+    if mtmrp.date <> 0
+       TEMP.DATE=MTMRP.DATE + MTIC.PROD.EXPBF
+    else
+       temp.date = mtmrp.date
+    endif
+    rcn MTMRP rcn TEMP.LOC get
+    dmessage = ''
+    scan MTMRP key MTMRP.KEY scope R while MTMRP.PARTNO = MTIC.PROD.CODE
+        sexit_if MTMRP.DATE>TEMP.DATE
+        if MTMRP.QTY<0
+            ;BKIC.PROD.AVVO is the delay sensitivity
+            ; dmessage = str( ( dtor(TEMP.PG.FDATE) - dtor(MTMRP.DATE) ), 10, 0 )
+            if ( dtor(TEMP.PG.FDATE) - dtor(MTMRP.DATE) ) > int(BKIC.PROD.AVVO)
+                dmessage = 'DELAY'
+            else
+                dmessage = 'DELSENS'
+            endif
+            sexit
+        endif
+    ends
+    rcn MTMRP rcn TEMP.LOC set
+    if dmessage = ''
+        dmessage = 'REVIEW'
+    endif
+    ret dmessage
+
+func GET.RQ.DATE
+    if mtmrp.date <> 0
+       TEMP.DATE=MTMRP.DATE + MTIC.PROD.DELBF
+    else
+       temp.date = mtmrp.date
+    endif
+    rcn MTMRP rcn TEMP.LOC get
+    scan MTMRP key MTMRP.KEY scope R while MTMRP.PARTNO = MTIC.PROD.CODE
+        if MTMRP.QTY<0
+            RT.RQ = MTMRP.DATE
+            sexit
+        endif
+    ends
+    rcn MTMRP rcn TEMP.LOC set
+    ret RT.RQ
+
+
+;------------------------------------------------------------------------
+;This section is only called by START.MRP3 or START.MRP4 (thus only
+;  for R-type parts).
+;JVH 12/22/00 for checking REXPBF, we will use the CHK.PLAND() function
+;from stages 1 & 2....the actual message procedure will also be common,
+;but the creation of planned orders will be separate for the 2 groups.
+;Note that START.MRP4 only issues EXPEDITE/DELAY messages now.
+
+func CREATE.PLNB
+    rcn MTMRP rcn TEMP.LOC set
+    MTMRP.ONHAND=ONHAND
+    save MTMRP nocnf noclr
+    if MTMRP.ORDER = 'REORDLVL'
+        MTMRP.PEGTO = 'REORDLVL'
+    else
+        clr MTMRP rec
+    endif
+    buynum = buynum + 1
+    pmsg "Buy #:"*buynum at 52,2+stage nocr
+    MTMRP.QTY=TEMP.ONHAND
+    if MTMRP.QTY<BKIC.PROD.RAMT then MTMRP.QTY=BKIC.PROD.RAMT
+    if MTMRP.QTY<>0 do
+        if mtic.prod.mrpsw <> 'N'
+            if MTMRP.QTY>0 then MTMRP.QTY=MTMRP.QTY + 0.49
+            if MTMRP.QTY<0 then MTMRP.QTY=MTMRP.QTY - 0.49
+            mtmrp.qty = round(mtmrp.qty,0)
+        endif
+    endif
+    MTMRP.ONHAND=0
+    MTMRP.ORDER="BUY"
+    MTMRP.PG.SDATE=TEMP.PG.SDATE
+    MTMRP.PG.FDATE=TEMP.PG.FDATE
+    MTMRP.PG.QTY=TEMP.PG.QTY
+
+    ;FMZ 4/17/98 Do not do this operation if mtmrp.date is 00/00/00
+    ;  as it will result in an illogical date.
+    ;MTMRP.STARTDT=MTMRP.DATE - MTIC.PROD.LEAD
+    if mtmrp.date <> 0
+       MTMRP.STARTDT=MTMRP.DATE - MTIC.PROD.LEAD
+    else
+       mtmrp.startdt = mtmrp.date
+    endif
+    ;end FMZ 4/17/98
+
+    TEMP.DATE3=MTMRP.DATE
+    if MTMRP.STARTDT>MTMRP.DATE then MTMRP.STARTDT=MTMRP.DATE
+
+CHK.RSTDT:
+    TEMP.DATE2=MTMRP.STARTDT
+    ;pdm - 11/9/97 - changed for/next loop counters
+    r.temp.date3 = dtor(temp.date3)
+    r.temp.date2 = dtor(temp.date2)
+
+    ;FMZ 4/17/98 Do not do this if mtmrp.date (temp.date3) or mtmrp.startdt
+    ;  (temp.date2) is 00/00/00 as this will result in illogical dates.
+    if temp.date3 = 0 .o. temp.date2 = 0
+    else
+       for(r.TEMP.DATE;r.TEMP.DATE3;r.TEMP.DATE2;-1)
+         temp.date = rtod(r.temp.date)
+         MTCAL.DATE=TEMP.DATE
+         ifdup MTCAL.DATE do
+            TEMP.DATE3=TEMP.DATE - 1
+            MTMRP.STARTDT=MTMRP.STARTDT - 1
+            goto CHK.RSTDT
+         endif
+       next
+    endif
+    ;end FMZ 4/17/98
+
+    MTMRP.ACTION="BUY"
+    ;JVH 12/31/00 We can't modify ONHAND here, because most likely
+    ;this record will be the next one read when we return from the
+    ;creation function.  Also need to save the record number so we
+    ;can check on this.
+    ;ONHAND=ONHAND + MTMRP.QTY
+    ;MTMRP.ONHAND=ONHAND
+    ;save MTMRP nocnf
+    MTMRP.ONHAND=ONHAND + MTMRP.QTY
+    save MTMRP nocnf noclr
+    rcn MTMRP rcn CREATE.RECNO get
+    clr MTMRP buff
+
+    ;FMZ 4/14/98
+    ;MTIC.PROD.MRPSW="Y"
+    ;save MTICMSTR nocnf noclr
+    clr BKMRPSW buff
+    bkmrp.sw.part = mtic.prod.code
+    find M srch bkmrp.sw.part
+    if flerr(fnum('bkmrpsw')) <> 0
+       clr BKMRPSW buff
+       bkmrp.sw.part = mtic.prod.code
+    endif
+    bkmrp.sw.sw = MTIC.PROD.TYPE
+    save BKMRPSW nocnf
+    ;end FMZ 4/14/98
+ret .t. ;end of CREATE.PLNB()
+
+;------------------------------------------------------------------------
+
+CHK.FILES:
+CHK.FILES1:
+    find F srch BKIC.PROD.CODE  err CHK.FILES2
+    if BKIC.PROD.CODE<>"" goto CHK.FILES2
+    del BKICMSTR nocnf
+    goto CHK.FILES1
+CHK.FILES2:
+    find F srch MTIC.PROD.CODE  err CHK.FILES3
+    if MTIC.PROD.CODE<>"" goto CHK.FILES3
+    del MTICMSTR nocnf
+    goto CHK.FILES2
+CHK.FILES3:
+    find F srch BKIC.LOC.PROD  err CHK.FILES4
+    if BKIC.LOC.PROD<>"" goto CHK.FILES4
+    del BKICLOC nocnf
+    goto CHK.FILES3
+CHK.FILES4:
+    clr BKICMSTR buff
+    clr MTICMSTR buff
+    clr BKICLOC buff
+    ret
+;End of Prg
+\S5BKMRF
+  1Y  YSSREC_+name    SDREC_+name    SCREC_+name    NONE          NONE          YNN
+
+
+
+              ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿
+              ³ Include Forecasts in MRP Generation?            ³
+              ³                                                  ³
+              ³ Include Sales Orders in MRP Generation?         ³
+              ³                                                  ³
+              ³ Include Estimated Ship Dates thru        ³
+              ³                                                  ³
+              ³ Include S-Type Work Orders?                     ³
+              ³                                                  ³
+              ³ Include Inventory Types                  RFAM ³
+              ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ
+\COLOR
+  1  1  1 12 80
+  1 13  1 13 80
+  1 14  1100 80
+\FIELDS
+INC.FORECAST     0 64  5  0  0 0    1    0    0A RGMEMORY  NNN    0
+INC.SO           0 64  7  0  0 0    1    0    0A RGMEMORY  NNN    0
+THRU.DATE        0 57  9  0  0 0    8    0    0S RGMEMORY  NNN    0
+STYPE            0 64 11  0  0 0    1    0    0ANRGDEFINED NN     1
+OPT.TYPES        0 62 13  0  0 0    3    0    0ANRGDEFINED NN     3
+\FILES
+\INCLUDE
+\KEY
+\\
+€
