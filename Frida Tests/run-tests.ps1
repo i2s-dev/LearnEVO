@@ -404,6 +404,68 @@ function Run-Test05c {
 }
 
 # ----------------------------------------------------------
+#  TEST 05d -- ISTS.CFG + BKYSMSTR JSON Scan (one company per run)
+# ----------------------------------------------------------
+function Run-Test05d {
+    Write-Header
+    Write-Host "  TEST 05d -- Two-Company Differential YN Mapping"                                  -ForegroundColor White
+    Write-Host "  Saves ISTS.CFG values + BKYSMSTR YN bytes to JSON."                              -ForegroundColor DarkGray
+    Write-Host "  Run once per company. Then run 05d-analyze.py to get mappings."                  -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  Single scan  : finds entries with unique values (like 05c)."                     -ForegroundColor DarkGray
+    Write-Host "  Two scans    : differential -- keys differing between companies pinpoint slots."  -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  IMPORTANT: EVO must be FULLY CLOSED. Start this script first."                   -ForegroundColor Yellow
+    Write-Host ""
+
+    $companyLabel = Read-Host "  Label for this scan (e.g. companyA or companyF)"
+    if (-not $companyLabel) { $companyLabel = "scan" }
+    $companyLabel = $companyLabel -replace '[^A-Za-z0-9_-]', '_'
+
+    Pause-ForUser "STEP 1: Make sure EvoERP is FULLY CLOSED."
+
+    $jsonFile    = Join-Path $logsDir "05d-scan-$companyLabel-$(Get-Timestamp).json"
+    $triggerFile = "$jsonFile.scan_trigger"
+
+    Write-Host ""
+    Write-Host "  [*] Starting scan -- capture window will open and wait for EVO..." -ForegroundColor Cyan
+    Write-Host ""
+    $proc = Start-FridaScript "05d-scan.py" $jsonFile "--trigger `"$triggerFile`""
+    Start-Sleep -Seconds 1
+
+    Pause-ForUser "STEP 2: Launch EvoERP. Log in FULLY and wait until the main EVO menu is on screen."
+
+    Pause-ForUser "STEP 3: Open WO-A and one other module (e.g. IN-A) so all RWN files are loaded."
+
+    Write-Host ""
+    Write-Host "  [*] Firing scan trigger..." -ForegroundColor Cyan
+    Set-Content -Path $triggerFile -Value "scan" -NoNewline
+    $proc.WaitForExit(120000) | Out-Null
+
+    if (Test-Path $jsonFile) {
+        $json = Get-Content $jsonFile -Raw | ConvertFrom-Json
+        $yn   = $json.yn_hex.Length
+        $keys = ($json.ists | Get-Member -MemberType NoteProperty).Count
+        Write-Host ""
+        Write-Host "  --- Summary ---"                          -ForegroundColor Green
+        Write-Host "  JSON saved   : $jsonFile"                 -ForegroundColor Green
+        Write-Host "  YN hex chars : $yn  (expect 500)"         -ForegroundColor White
+        Write-Host "  ISTS keys    : $keys"                     -ForegroundColor White
+    } else {
+        Write-Host "  [!] JSON not found." -ForegroundColor Red
+    }
+    if (Test-Path $triggerFile) { Remove-Item $triggerFile -Force }
+
+    Write-Host ""
+    Write-Host "  To analyze a single scan:"                                    -ForegroundColor Yellow
+    Write-Host "    python tests\05d-analyze.py `"$jsonFile`""                 -ForegroundColor Yellow
+    Write-Host ""
+    Write-Host "  To compare two scans (different companies):"                 -ForegroundColor Yellow
+    Write-Host "    python tests\05d-analyze.py scan_A.json scan_F.json"       -ForegroundColor Yellow
+    Pause-ForUser "Press ENTER to return to the menu."
+}
+
+# ----------------------------------------------------------
 #  MAIN MENU
 # ----------------------------------------------------------
 while ($true) {
@@ -416,7 +478,8 @@ while ($true) {
     Write-Host "   4   ISTS.CFG Dump     -- walk in-memory table, extract all key names"          -ForegroundColor Gray
     Write-Host "   5   Full Table Walk   -- dump entire ISTS.CFG table right after BKYSMSTR"      -ForegroundColor Gray
     Write-Host "   5b  Value Capture     -- BKYSMSTR + entry values (inline bytes, not pointer)"  -ForegroundColor Gray
-    Write-Host "   5c  Actual Values     -- follows pointer to read real config value per entry"   -ForegroundColor Cyan
+    Write-Host "   5c  Actual Values     -- follows pointer to read real config value per entry"   -ForegroundColor Gray
+    Write-Host "   5d  JSON Scan         -- save ISTS+BKYSMSTR to JSON; run twice for diff"       -ForegroundColor Cyan
     Write-Host "   Q   Quit"                                                                       -ForegroundColor Gray
     Write-Host ""
 
@@ -430,6 +493,7 @@ while ($true) {
         '5'     { Run-Test05 }
         '5B'    { Run-Test05b }
         '5C'    { Run-Test05c }
+        '5D'    { Run-Test05d }
         'Q'     { Write-Host ""; Write-Host "  Bye." -ForegroundColor DarkGray; Write-Host ""; exit }
         default { Write-Host "  Invalid choice." -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }
