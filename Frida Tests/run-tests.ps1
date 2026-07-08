@@ -304,18 +304,68 @@ function Run-Test05 {
 }
 
 # ----------------------------------------------------------
+#  TEST 05b -- ISTS.CFG Value Capture (manual trigger)
+# ----------------------------------------------------------
+function Run-Test05b {
+    Write-Header
+    Write-Host "  TEST 05b -- ISTS.CFG Value Capture"                                          -ForegroundColor White
+    Write-Host "  Captures BKYSMSTR + ISTS.CFG entry values; fires on manual trigger."        -ForegroundColor DarkGray
+    Write-Host "  Use after full login to get WOCALC/STDCST/DCSEQ (not just 334 early keys)." -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  IMPORTANT: EVO must be FULLY CLOSED. Start this script first."              -ForegroundColor Yellow
+    Write-Host ""
+
+    Pause-ForUser "STEP 1: Make sure EvoERP is FULLY CLOSED."
+
+    $logFile     = Join-Path $logsDir "test05b-value-$(Get-Timestamp).txt"
+    $triggerFile = "$logFile.scan_trigger"
+
+    Write-Host ""
+    Write-Host "  [*] Starting capture -- window will open and wait for EVO..." -ForegroundColor Cyan
+    Write-Host ""
+    $proc = Start-FridaScript "05b-ists-cfg-value-capture.py" $logFile "--trigger `"$triggerFile`""
+    Start-Sleep -Seconds 1
+
+    Pause-ForUser "STEP 2: Launch EvoERP. Log in FULLY and wait until the main EVO menu is on screen."
+
+    Pause-ForUser "STEP 3: Open WO-A and one other module (e.g. IN-A) so all RWN files are loaded."
+
+    Write-Host ""
+    Write-Host "  [*] Firing scan trigger..." -ForegroundColor Cyan
+    Set-Content -Path $triggerFile -Value "scan" -NoNewline
+    $proc.WaitForExit(120000) | Out-Null
+
+    if (Test-Path $logFile) {
+        $lines = Get-Content $logFile
+        $tbl   = @($lines | Where-Object { $_ -match '^\s+\d+\s+[A-Z]' })
+        Write-Host ""
+        Write-Host "  --- Summary ---"                          -ForegroundColor Green
+        Write-Host "  Log saved    : $logFile"                  -ForegroundColor Green
+        Write-Host "  Table entries: $($tbl.Count)"             -ForegroundColor White
+    } else {
+        Write-Host "  [!] Log not found." -ForegroundColor Red
+    }
+    if (Test-Path $triggerFile) { Remove-Item $triggerFile -Force }
+
+    Write-Host ""
+    Write-Host "  Paste the log file contents into the chat." -ForegroundColor Yellow
+    Pause-ForUser "Press ENTER to return to the menu."
+}
+
+# ----------------------------------------------------------
 #  MAIN MENU
 # ----------------------------------------------------------
 while ($true) {
     Write-Header
     Write-Host "  Select a test to run:" -ForegroundColor White
     Write-Host ""
-    Write-Host "   1  Key Capture      -- log all Twofish keys during boot/login"              -ForegroundColor Gray
-    Write-Host "   2  K_A File Hook    -- identify which file type uses K_A"                   -ForegroundColor Gray
-    Write-Host "   3  YN Slot Mapper   -- capture BKYSMSTR record + scan for key strings"     -ForegroundColor Gray
-    Write-Host "   4  ISTS.CFG Dump    -- walk in-memory table, extract all key names"        -ForegroundColor Gray
-    Write-Host "   5  Full Table Walk  -- dump entire ISTS.CFG table right after BKYSMSTR"    -ForegroundColor Gray
-    Write-Host "   Q  Quit"                                                                     -ForegroundColor Gray
+    Write-Host "   1   Key Capture       -- log all Twofish keys during boot/login"               -ForegroundColor Gray
+    Write-Host "   2   K_A File Hook     -- identify which file type uses K_A"                    -ForegroundColor Gray
+    Write-Host "   3   YN Slot Mapper    -- capture BKYSMSTR record + scan for key strings"       -ForegroundColor Gray
+    Write-Host "   4   ISTS.CFG Dump     -- walk in-memory table, extract all key names"          -ForegroundColor Gray
+    Write-Host "   5   Full Table Walk   -- dump entire ISTS.CFG table right after BKYSMSTR"      -ForegroundColor Gray
+    Write-Host "   5b  Value Capture     -- BKYSMSTR + entry values, manual trigger after login"  -ForegroundColor Gray
+    Write-Host "   Q   Quit"                                                                       -ForegroundColor Gray
     Write-Host ""
 
     $choice = Read-Host "  Choice"
@@ -326,6 +376,7 @@ while ($true) {
         '3'     { Run-Test03 }
         '4'     { Run-Test04 }
         '5'     { Run-Test05 }
+        '5B'    { Run-Test05b }
         'Q'     { Write-Host ""; Write-Host "  Bye." -ForegroundColor DarkGray; Write-Host ""; exit }
         default { Write-Host "  Invalid choice." -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }
