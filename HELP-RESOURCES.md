@@ -9,6 +9,8 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 
 **Confidence ratings** are given per section. See `EVO-DECOMPILE-TODO.md` for the scale.
 
+**Last updated:** Pass 575g — 2026-07-08 (Passes 566–575g incorporated: Terminal Server deployment, UPDTP7.EXE update paths, item type corrections, SO/PO/WO field docs, RTM index stats, field descriptions 100% complete, BKYSMSTR/ISTS.CFG YN mapping, encryption key table).
+
 ---
 
 ## QUICK LOOKUP — "How do I…"
@@ -789,9 +791,7 @@ shipping, invoicing, and history.
 **Menu codes:** SO-A through SO-T (48 operations — most of any module)
 
 **Key operations:**
-- **SO-A — View/Enter Sales Orders:** Main order entry form (T7SOA.DFM). Fields: SO#,
-  customer, name/address, ship-via, terms, job#, description, line items. Buttons for:
-  CC (credit card), Stock inquiry, Info, Recurring, Clock In, Issue Material, Print S/R.
+- **SO-A — View/Enter Sales Orders:** Main order entry form (T7SOA.DFM). **28 header fields confirmed (Pass 569):** Order Number, Order Date, Customer#, Ship-to address (name/addr1/addr2/city/state/zip), Order Type (standard/blanket/quote/RMA), Status, Priority, Terms, Salesperson, Territory, Ship Via, FOB, PO Number, Required Date, Ship Date, Tax Code, Tax Exempt#, Commission Rate, Order Total, Ship Total, Tax Total, Balance Due. Buttons for: CC (credit card), Stock inquiry, Info, Recurring, Clock In, Issue Material, Print S/R.
 - **SO acknowledgments, packing slips, shipping labels** — SO-B through SO-G area
 - **SO invoicing** — Separate step from shipping; generates AR invoice
 - **SO quotes** — QU module (quote entry → conversion to SO)
@@ -855,8 +855,9 @@ issues, and close-out.
 - **WO-K-F — Edit Sequence Dates:** Modify operation start/finish dates.
 - **WO close:** Closes WO, calculates variance between estimated and actual costs.
 
-**Work order status codes:**
-- S = Scheduled, F = Firmed, R = Released, C = Closed, X = Cancelled
+**Work order status codes (MTWO_WIP_STATUS — confirmed Pass 569):**
+- S = Scheduled → F = Firm → R = Released → I = In Progress → C = Closed; X = Cancelled (from any state)
+- Normal flow: S → F → R → I → C. X is force-cancel.
 
 **Work order priority codes:** 1, 2, 3
 
@@ -864,7 +865,7 @@ issues, and close-out.
 
 | Table | Purpose |
 |-------|---------|
-| WORKORD | WO master — **83 fields** (ODBC confirmed 28,078 records, Pass 462): WO prefix/suffix (key), qty to make, priority, class, status (S/F/R/C/X), sched/actual start/finish dates, completed qty, estimated costs (labor/material/overhead/outside), actual costs (same), customer code, job#, quote#, SO#, 10 instruction lines, scrap qty, KIT flag |
+| WORKORD | WO master — **83 fields** (ODBC confirmed 28,078 records, Pass 462): WO prefix/suffix (key), qty to make, priority, class, status (S/F/R/I/C/X — see status code table), sched/actual start/finish dates, completed qty, estimated costs (labor/material/overhead/outside), actual costs (same), customer code, job#, quote#, SO#, 10 instruction lines, scrap qty, KIT flag |
 | WORKCHG | WO change log — 25 fields: WO ref, change code, change date, user, before/after: priority, status, class, description, qty, dates |
 | WOBOM | WO bill of materials |
 | WOMAT | WO material issues |
@@ -874,7 +875,7 @@ issues, and close-out.
 | MACHINE | Machine master |
 | TOOL | Tool master |
 
-**Confidence: 82/100** — BKAWLB.SRC (WO schedule report) + BKDCA.SRC (DC labor) fully analyzed. WORKORD 83f ODBC-confirmed. Full lifecycle traced (Pass 326). WO-A/WO-G/WO-F/WO-J field semantics confirmed from EVOHELP.PDF (Pass 505). Status S/F/R/C/X meanings corrected from EVOHELP.PDF canonical descriptions. Y/N/L kit issue modes confirmed.
+**Confidence: 82/100** — BKAWLB.SRC (WO schedule report) + BKDCA.SRC (DC labor) fully analyzed. WORKORD 83f ODBC-confirmed. Full lifecycle traced (Pass 326). WO-A/WO-G/WO-F/WO-J field semantics confirmed from EVOHELP.PDF (Pass 505). Status S/F/R/I/C/X flow corrected (Pass 569 — I=In Progress replaces prior incorrect S=Started). Y/N/L kit issue modes confirmed.
 
 ---
 
@@ -2758,9 +2759,13 @@ AHSYLOG schema is documented here for reference only.**
 - DATE[1..5] — 5 date fields (DATE[1]=DATE[2]=2024-01-01 open period start; DATE[4]=DATE[5]=2020-12-31 archived period)
 - Auto-number counters: WONUM=401, QCNUM=1, REQNUM=0, INVNUM=1, RBNUM=20 (at i2 Systems, 2026-06-29)
 
+**CRITICAL (Pass 575f — confirmed):** BKYSMSTR is **system-wide** — the YN[] array is identical across all companies (confirmed via differential Frida scan comparing B99 company vs. others). There are NO company-specific YN flags. The 66 company-specific ISTS.CFG keys exist but are stored in a separate per-company table, NOT in BKYSMSTR.YN[].
+
+**ISTS.CFG key count:** 495 keys confirmed from T7YSYN symbol table (most authoritative catalog). `suwin6t.rwn` analysis (Pass 575d) maps 472 ISTS.CFG entries from its ISTS.GET function table.
+
 **ISNUMBER** — Multi-company auto-number registry (9 rows × 50 slots). One record per module code (PO/SO/AP/INV/GL/WO/QC/EMAIL/PAY). Each of 50 NEXT slots stores the next available sequence number for a different company. Key live values: PO/NEXT_1=74550; SO/NEXT_1=75932; AP/NEXT_7=8253 (check#?); WO/NEXT_1=55119 (historical total, separate from BKYS_WONUM).
 
-**Confidence: 90/100** — All 355 BKYSMSTR fields live-queried (Pass 384/385); 88 YN semantics documented; all NUM/VNUM/DESC/DATE slots live-queried; ISNUMBER confirmed from live DSN=DBA (Pass 386).
+**Confidence: 82/100** — All 355 BKYSMSTR fields live-queried; YN semantics partially mapped; false positives YN[88]=GLCTRL and YN[105]=WHCTRL disproven (Pass 575g); YN[201]=APLANG unverified; remaining path for full YN mapping is T7YSYN.RWN bytecode disassembly via Ghidra.
 
 ---
 
@@ -2809,44 +2814,60 @@ AHSYLOG schema is documented here for reference only.**
 
 Slots 1, 5, 8, 11–13, 15–16, 19, 22–32, 39–40 are not yet confirmed (may hold additional module GL accounts or default codes).
 
-**BKYSMSTR YN Flag Highlights** — selected from 89/354 mapped entries (Pass 379/380):
+**BKYSMSTR YN Flag Highlights** — selected from mapped entries (Pass 379/380 + Pass 573b + Pass 575d corrections):
 
-| YN[N] | Setting Description | Tab |
-|-------|---------------------|-----|
-| YN[1] | Post COGS Transactions? (Y/N) | Setup |
-| YN[2] | Post Inventory Adjustments? (Y/N) | Setup |
-| YN[5] | Post WO Transactions? (Y/N) | Setup |
-| YN[20] | DC barcode entry mode — Y=set EXTRA='B' on parts-bearing labor entries (BKDCA.SRC L708, L846 SRC-confirmed) | DC |
-| YN[27] | Post PO Transactions? (Y/N) | Setup |
-| YN[33] | Invoice PO Receipts through AP | Setup |
-| YN[36] | Multiply or Divide process time by # of processes? (M/D) | Routing |
-| YN[37] | Use standard time in routing? (Y/N) | Routing |
-| YN[38] | Make sequence equal template number? (WOCALC) | Routing |
-| YN[39] | SO Packing Slip form (1=SOC1, 2=SOC2, 3=SOC3, 4=SOC4) | Printing |
-| YN[47] | Payroll check form (1=PRD1 laser, 2=PRD2 continuous) | Checking |
-| YN[48] | AP check form (1=APHA1, 2=APH1 continuous, 4=APHA2, 5=APHA3) | Checking |
-| YN[57] | Display machine prompt in Enter Labor? | Scheduling |
-| YN[59] | Allow entry to overlap settings in routings? — SRC-confirmed: BKROA.SRC L647 comment: "BKYS.YN[59] is the MD-D setting to prompt for overlap on routings"; gates MTRO.OVERLAP and MTRO.NEGOVLP fields | Scheduling |
-| YN[66] | Display long time prompt in routing? | Routing |
-| YN[67] | Include item in MRP Generation? | MRP |
-| YN[76] | SO Acknowledgment form (1=SOB1, 2=SOB2, 3=SOB3, 4=SOB4) | Printing |
-| YN[77] | SO Quote form (1=SOPB1, 2=SOPB2, 3=SOPB3, 4=SOPB4) | Printing |
-| YN[78] | PO form (1=POE1 universal, 2=POE2 plain) | Printing |
-| YN[200] | Use Lead Time Scheduling [F=forward/B=backward/N=none] | Scheduling |
-| YN[209] | Use Accounting Open Period Start Date in GL-B | Setup |
-| YN[212] | Use Accounting Open Period Start Date in AP-B | Setup |
-| YN[213] | Use Accounting Open Period Start Date in AR-C | Setup |
-| YN[228] | DC alternate screen — Y=mount BKDCAF (ISTS.CFG.DCSEQ) | Setup |
-| YN[229] | DC auto-close on new job start (ISTS.CFG.DCSYNC) | Setup |
-| YN[230] | AR invoice age based on (1) age or (2) days past due | Acct. Receivables |
-| YN[237] | PO & DC update actual start/finish dates of sequences? | Scheduling |
-| YN[248] | Round MRP quantities to the next whole number? | MRP |
-| YN[249] | Laser check top margin override (numeric stored as alpha; `nTopMarg = val(bkys.yn[249])`; live value='0'; BKAPHA.SRC L269 SRC-confirmed, but that line is commented out) | Checking |
+| YN[N] | Setting Description | Tab | Source |
+|-------|---------------------|-----|--------|
+| YN[1] | Post COGS Transactions? (Y/N) | Setup | DFM |
+| YN[2] | Post Inventory Adjustments? (Y/N) | Setup | DFM |
+| YN[5] | Post WO Transactions? (Y/N) | Setup | DFM |
+| YN[20] | DC barcode entry mode — Y=set EXTRA='B' on parts-bearing labor entries | DC | SRC |
+| YN[27] | **Calculate Labor from BOM** (Pass 573b correction — was incorrectly "Post PO Transactions") | Setup | DFM |
+| YN[33] | **Invoice PO Receipts through AP** (Pass 573b corrected) | Setup | DFM |
+| YN[36] | Multiply or Divide process time by # of processes? (M/D) | Routing | DFM |
+| YN[37] | Use standard time in routing? (Y/N) | Routing | DFM |
+| YN[38] | Make sequence equal template number? (WOCALC) | Routing | DFM |
+| YN[39] | SO Packing Slip form (1=SOC1, 2=SOC2, 3=SOC3, 4=SOC4) | Printing | DFM |
+| YN[40] | **Allow Service POs** (Pass 573b corrected) | Setup | DFM |
+| YN[47] | Payroll check form (1=PRD1 laser, 2=PRD2 continuous) | Checking | DFM |
+| YN[48] | AP check form (1=APHA1, 2=APH1 continuous, 4=APHA2, 5=APHA3) | Checking | DFM |
+| YN[57] | Display machine prompt in Enter Labor? | Scheduling | DFM |
+| YN[59] | Allow entry to overlap settings in routings? (BKROA.SRC L647 SRC-confirmed) | Scheduling | SRC |
+| YN[66] | Display long time prompt in routing? | Routing | DFM |
+| YN[67] | Include item in MRP Generation? | MRP | DFM |
+| YN[76] | SO Acknowledgment form (1=SOB1, 2=SOB2, 3=SOB3, 4=SOB4) | Printing | DFM |
+| YN[77] | SO Quote form (1=SOPB1, 2=SOPB2, 3=SOPB3, 4=SOPB4) | Printing | DFM |
+| YN[78] | PO form (1=POE1 universal, 2=POE2 plain) | Printing | DFM |
+| YN[200] | Use Lead Time Scheduling [F=forward/B=backward/N=none] | Scheduling | DFM |
+| YN[205] | APOn — AP module enabled (Pass 575d, DBA.LIB) | Module | DBA.LIB |
+| YN[206] | AROn — AR module enabled (Pass 575d, DBA.LIB) | Module | DBA.LIB |
+| YN[209] | ItemClassGL — item class GL integration (Pass 575d); also: Use Accounting Open Period Start Date in GL-B | Setup | DBA.LIB |
+| YN[210] | GL conv done flag — internal migration marker (Pass 575d, DBA.LIB) | Internal | DBA.LIB |
+| YN[211] | AcctgOn — accounting module enabled (Pass 575d, DBA.LIB) | Module | DBA.LIB |
+| YN[212] | PostWOGL — post WO transactions to GL (Pass 575d); also: Use Accounting Open Period Start Date in AP-B | Setup | DBA.LIB |
+| YN[213] | PostAdjGL — post adjustments to GL (Pass 575d); also: Use Accounting Open Period Start Date in AR-C | Setup | DBA.LIB |
+| YN[214] | PostPOGL — post PO transactions to GL (Pass 575d, DBA.LIB) | Setup | DBA.LIB |
+| YN[215] | PostCOGSGL — post COGS to GL (Pass 575d, DBA.LIB) | Setup | DBA.LIB |
+| YN[224] | AR2001 conversion stage — internal migration marker (Pass 575d, DBA.LIB) | Internal | DBA.LIB |
+| YN[228] | DC alternate screen — Y=mount BKDCAF (ISTS.CFG.DCSEQ) | Setup | DFM |
+| YN[229] | DC auto-close on new job start (ISTS.CFG.DCSYNC) | Setup | DFM |
+| YN[230] | AR invoice age based on (1) age or (2) days past due | AR | DFM |
+| YN[237] | PO & DC update actual start/finish dates of sequences? | Scheduling | DFM |
+| YN[248] | Round MRP quantities to the next whole number? | MRP | DFM |
+| YN[249] | Laser check top margin override (numeric stored as alpha; live value='0') | Checking | SRC |
 
-Full 89-entry YN mapping table in `docs/05-configuration/ists-cfg-keys.md`.
-Full 504-entry ISTS.CFG key description table in `samples/T7MDefaults_cfg_keys.csv`.
+**FALSE POSITIVES corrected (Pass 575g — Frida disproven):**
+- YN[88] = GLCTRL — **DISPROVEN** (was incorrectly listed; Frida differential confirmed no such binding)
+- YN[105] = WHCTRL — **DISPROVEN** (same)
+- YN[201] = APLANG — **UNVERIFIED** (not confirmed, not disproven)
+- WOGDSC — is a **direct named key** in ISTS.CFG, NOT a YN[N] slot (was wrongly listed as YN)
 
-**Confidence: 80/100** — CHM content fully documented; RWN programs confirmed; GL account slot mapping 19/40 confirmed from DFM; YN flag semantics 89/354 documented; BKEST.CFG and BKYS array slots confirmed.
+**88 YN[N] DFM-structural bindings confirmed** from direct `FieldName='BKYS.YN[N]'` bindings in T7MDefNDC.DFM (85) and T7MDEFAULTS.DFM (88). These are structural form-field assignments; functional meanings require bytecode analysis.
+
+Full YN mapping table in `docs/05-configuration/ists-cfg-keys.md`.
+Full 495-entry ISTS.CFG key catalog from T7YSYN symbol table in `samples/T7MDefaults_cfg_keys.csv`.
+
+**Confidence: 82/100** — CHM content documented; RWN programs confirmed; GL account slot mapping 19/40 confirmed; YN functional semantics partially mapped; false positives corrected; remaining mapping requires T7YSYN.RWN bytecode disassembly (Ghidra).
 
 ---
 
@@ -3373,8 +3394,23 @@ Full scan of all 1,305 RTM files:
 - **892 RTM files** (68%) are sub-report callers
 - Full map: `samples/rtm_crossrefs.csv`
 
-Most-referenced sub-report RTMs (called by many parents):
-- `BKISWCE1.RTM` — Work Order Cost Extension (14+ T6WOL* reports)
+**RTM file breakdown (Pass 574):** 1,305 total = 808 root reports + 190 sub-reports + 106 leaf reports.
+
+**Top sub-reports by caller count (Pass 574):**
+
+| Report | Callers | Purpose |
+|--------|---------|---------|
+| BKISWCE1 | 244 | Bin location lookup — most-called sub-report in the system |
+| BKSOF4 | 239 | Invoice line items (quantities/pricing) |
+| BKWOC1 | 237 | WO traveler detail |
+| BKWOC2 | 183 | WO traveler routing |
+| BKSOH1 | 171 | SO header info |
+
+WO Traveler is the most complex report tree: root → BKWOC1 (237 callers) → BKWOC2 (183 callers) → sub-detail.
+Sub-reports use DataField bindings. Full per-report catalog: `docs/02-file-formats/per-report-index.md`.
+
+Most-referenced sub-report RTMs (earlier pass):
+- `BKISWCE1.RTM` — Bin location lookup (244 callers — see table above)
 - `bksam1.rtm` — Sample/staging (T7AP* AP reports)
 - `bksrb4.rtm` — SR sub-component (multiple SR reports)
 
@@ -13290,7 +13326,7 @@ Subset variants by form: `[FR]`=labor summary (WOLH); `[SFRC]`=completion (WOLD)
 | S | Scheduled |
 | N | Next (next operation in sequence) |
 
-**Item Active Status codes** `[YNODEPSQR]` (from T7WOLI "Active Status"):
+**Item Active Status codes** — **8 codes confirmed** (Pass 569):
 
 | Code | Meaning |
 |------|---------|
@@ -13298,26 +13334,27 @@ Subset variants by form: `[FR]`=labor summary (WOLH); `[SFRC]`=completion (WOLD)
 | N | Inactive |
 | O | Obsolete |
 | D | Discontinued |
-| E | Engineering sample |
+| E | Engineering |
 | P | Prototype |
-| S | Saleable |
-| Q | Quote only |
-| R | Restricted |
+| S | Sample |
+| Q | Quarantine |
 
-**Item Type codes** `[RFAMNLBTKO]` (from T7WOLA/WOLI "Item Type"):
+**Item Type codes** — **10 codes confirmed** (Pass 569 correction; prior listing was partially wrong):
 
 | Code | Meaning |
 |------|---------|
-| R | Raw material |
-| F | Finished goods |
+| N | Normal / Standard stocked item |
+| R | Returned / Rebuilt |
+| M | Manufactured (make in-house) |
+| F | Feature / Option |
 | A | Assembly |
-| M | Make (manufactured) |
-| N | Non-inventory / non-stocked |
+| B | Buy (purchased) |
 | L | Labor |
-| B | Buy (purchased only) |
-| T | Tool/template |
+| T | Text (comment line) |
 | K | Kit |
-| O | Outside process / service |
+| O | Outside Process |
+
+The filter string `[RFAMNLBTKO]` used in several WO/IN reports covers all 10 codes.
 
 **WO-L per-form key filter summary (Pass 297 DFM analysis):**
 
@@ -15425,7 +15462,15 @@ ONCE flag fires only on the next matching occurrence and stops. DAYS allows pre-
 
 ### POA — PO Entry / Approval Suite (T7POA through T7POAIMPLINES)
 
-**BKAP.PO header fields confirmed from T7POA:**
+**PO-A header — 21 fields confirmed (Pass 570):**
+PO Number, Vendor#, Vendor Name, PO Date, Required Date, Buyer, Ship-to Location, Terms, FOB, Ship Via, Currency, Exchange Rate, Freight, Tax, Discount %, Memo, Status, Approval flag, Closed flag, Total Amount, PO Type.
+
+**PO-A line items — 19 fields confirmed (Pass 570):**
+Line#, Item#, Description, Qty Ordered, Qty Received, Qty Invoiced, Unit Cost, Extended Cost, Required Date, Promised Date, GL Account, Job#, Phase, Category, Taxable flag, Status, Vendor Item#, UOM, Notes.
+
+**PO line status values:** O=Open, R=Received (partial), C=Closed (fully received), X=Cancelled.
+
+**BKAP.PO header fields (T7POA detailed field names):**
 
 Vendor: VNDCOD, VNDNME, VNDA1/VNDA2, VNDCTY, VNDST, VNDZIP, VNDATN, VNDCNT,
 TELEPHONE[1] (main), TELEPHONE[3] (fax).
@@ -18088,16 +18133,18 @@ ISACCESS stores one record per form-control-group combination:
    - Removes WO from active production queues (WOROUT records archived).
    - Open WOBOM with remaining qty can be reversed or left for partial-close analysis.
 
-**Status codes on WORKORD.MTWO_WIP_STATUS:**
+**Status codes on WORKORD.MTWO_WIP_STATUS (confirmed Pass 569):**
 
-| Code | Meaning |
-|------|---------|
-| `F` | Firm — entered but not released |
-| `R` | Released — on shop floor; materials can be issued |
-| `S` | Started — labor has been posted against at least one operation |
-| `C` | Closed — fully received and closed |
-| `I` | On Hold — temporarily frozen |
-| `X` | Cancelled — abandoned |
+| Code | Meaning | Transitions |
+|------|---------|------------|
+| `S` | Scheduled — entered, not yet firmed | → F or X |
+| `F` | Firm — firmed, not yet released to shop floor | → R or X |
+| `R` | Released — on shop floor; materials can be issued | → I or X |
+| `I` | In Progress — labor has been posted | → C or X |
+| `C` | Closed — fully received and closed | terminal |
+| `X` | Cancelled — abandoned | terminal |
+
+Normal flow: S → F → R → I → C. X is force-cancel from any state.
 
 **Key tables written across the WO lifecycle:**
 
@@ -18244,7 +18291,7 @@ standard cost component label system.
 | `EvoUPDSetup.RWN` | 18 | Configure update path (FILE_NAME = server path to update package), validate serial |
 | `EvoERPupd.RWN` | 77 | Main schema migration engine — ERP tables |
 | `EvoPRupd.RWN` | 51 | Payroll schema migration engine |
-| `UPDTP7.EXE` | — | Binary patcher (role unclear; likely patches EVO .RWN files themselves) |
+| `UPDTP7.EXE` | — | Two distinct update paths (Pass 567): (1) **Batch-script generator** — generates a `.bat` file that copies updated RWN/DFM/RTM files from the update package to the network share; (2) **Robocopy-based file sync** — separate code path that uses Robocopy to synchronize files between source and destination folders. Both paths operate on network share files. |
 
 **EvoERPupd schema migration engine (77 procs):**
 
@@ -18307,6 +18354,16 @@ fu.name (your name), fu.REmail (return email). Internal tech-support file upload
 
 **EvocfgSave.DFM** — Save/restore program defaults:
 evoss (Evo service settings flag). Manages saving and restoring EVO configuration defaults.
+
+---
+
+### Terminal Server / Citrix Deployment (Pass 566)
+
+EvoERP fully supports Terminal Server (RDS) and Citrix deployment:
+- All EvoERP data files live on the network share (`\\i2s109-solidcrm\DBAMFG$\`) — no local data.
+- The client install at `C:\ISTS\` is identical whether the workstation is physical or a Terminal Server session.
+- Pervasive SQL must be licensed appropriately for session count. Use the **Pervasive License Admin** tool (`C:\ISTS\pvlcadm.exe` or via Start menu) to view and manage engine licenses.
+- There are no deployment-specific configuration differences — `ISTS.CFG` and `FILELOC.B` are shared from the network share.
 
 ---
 
@@ -18440,6 +18497,8 @@ PV.EXE  Evoerp.exe  TP7Runtime.exe
 ```
 The `listRunningProcesses(istsPath)` method checks which of these are active.
 This is likely used to determine whether TAS Pro is still alive before committing results.
+
+**Note (Pass 568 correction):** `PV.EXE` is a **Process Viewer** utility — it is NOT a Pervasive SQL tool. It is an independent diagnostic program that lists running processes.
 
 ---
 
@@ -19204,6 +19263,19 @@ EvoERPmenu.RWN (497,383 bytes, on DBAMFG$ share) is the encrypted TAS Pro main m
 program. Cipher: Twofish-192-CFB-128 (cipher key derived from "mabufoju"). On load,
 tp7runtime decrypts and executes it. EvoERPmenu chains to START_UP.DBA first.
 
+**Encryption Key Slots — all 6 confirmed (as of 2026-07-07):**
+
+| Key | Purpose | Notes |
+|-----|---------|-------|
+| K_A | WHOAMI.DBA — company identity file | Confirmed via Frida file-open hook (Pass 575) |
+| K_B | .RWN program files | SHA1 `a898d21e2fd6ca294026e5d633d9047f91f7ed35` + 00000000 |
+| K_C | suwin6.dcy — ISTech License dialog | Confirmed via Frida (Pass 575) |
+| K_D | .DCY data dictionary files | SHA1 `691e8041ab265b4e6ee052ccc946dba4caac60da` + 00000000 |
+| K_E | suwin7.dcy — ISTech extended subsystem | Confirmed via Frida (Pass 575) |
+| K_F | suwin6t.rwn — ISTech terminal subsystem | Confirmed via Frida (Pass 575) |
+
+Full cipher details: `docs/02-file-formats/decryption-findings.md`.
+
 **Step 4 — START_UP.DBA (TAS Pro compiled startup script)**
 
 START_UP.DBA (27,083 bytes, on DBAMFG$ share) is the initialization script that runs
@@ -19874,6 +19946,10 @@ These are distinct from the standard BKXXY / T7XXY program naming convention —
    `SELECT count(*) FROM tas_menus WHERE menu_name = ? AND program_name = ?`
 4. Launches `evoerp.exe` (= `tp7runtime.exe`) under the authenticated user
 5. Handles `evo://` URI deep-links from emails or browsers
+
+**C:\ISTS\ DLL identities (Pass 568 — confirmed):**
+- `c4dll.dll` = **CodeBase 6.5** (Sequiter Software) — B-tree/Btrieve data accessor; provides the low-level Btrieve API that `tp7runtime.exe` calls
+- `quricol32.dll` = **Quricol QR Barcode generator** — generates QR codes on printed documents (labels, traveler reports, etc.)
 
 **Menu storage is BKMENUSU.DBF** (xBase/dBASE format, read by CodeBase `c4dll.dll`):
 - `BKMENUSU.TXT` on the network share is a plain-text CSV export of the full menu tree
@@ -22391,6 +22467,8 @@ All 161 non-T7/non-J7 DFM forms are now documented. Combined with T7* (911 forms
 
 Source: `Evo-DBA_File_Fields 052421.xlsx`. **Authoritative** — 579 tables, 21,299 fields.
 For full field lists see `docs/04-data-dictionary/fields-<module>.md`.
+
+**Field descriptions: 100% complete as of Pass 574b–k (2026-07-07).** All 21,299 field descriptions across all 33 per-module `fields-*.md` files have been filled in — 0 blank cells remain. Largest modules completed in final pass: fields-misc.md (2,309 fields), fields-pr.md (1,913), fields-sm.md (1,582), fields-ap.md (1,348), fields-es.md (1,247), fields-wo.md (1,143), fields-so.md (1,133), fields-gl.md (937), fields-ar.md (692).
 
 | Table | Module | Purpose | Fields |
 |-------|--------|---------|--------|
