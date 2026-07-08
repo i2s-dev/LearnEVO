@@ -24,13 +24,13 @@ import sys
 import json
 
 
-# Only entries confirmed via Frida unique-value matching.
-# Source-derived entries (APCHK/DCSYNC/WOCALC etc.) were disproven 2026-07-08:
-# their ists values do NOT match the claimed YN slots in live scan data.
+# Frida 05c value-match entries -- reviewed 2026-07-08 via company A vs F differential.
+# YN[88]=GLCTRL and YN[105]=WHCTRL DISPROVEN: ISTS values changed A→F but YN bytes did not.
+# YN[201]=APLANG UNVERIFIED: same value both companies, no disproof possible from this data.
+# The 88 DFM-structural bindings (FieldName='BKYS.YN[N]' in T7MDefNDC/T7MDEFAULTS DFMs)
+# remain authoritative -- they are structural, not value-matched. See Issues/B-020.
 KNOWN_SLOTS = {
-    88:  ('GLCTRL', 'GL control flag (Frida 05c)'),
-    105: ('WHCTRL', 'WH control flag (Frida 05c)'),
-    201: ('APLANG', 'AP language code (Frida 05c)'),
+    201: ('APLANG?', 'AP language code (Frida 05c, UNVERIFIED — same value both companies)'),
 }
 
 

@@ -65,16 +65,18 @@ function hookBtrv() {
                 if (retval.toInt32() !== 0) return;
                 var dataLen = 0;
                 try { dataLen = this.dataLenPtr.readU16(); } catch(e) { return; }
-                if (dataLen === 1045 && !bkysmstrSeen) {
-                    bkysmstrSeen = true;
+                if (dataLen === 1045) {
                     var raw = this.dataBuf.readByteArray(1045);
                     if (raw) {
                         var buf = new Uint8Array(raw);
                         var hex = '';
                         for (var i = 0; i < 1045; i++)
                             hex += (buf[i] < 16 ? '0' : '') + buf[i].toString(16);
-                        bkysmstrHex = hex;
-                        send({event:'bkysmstr_seen', hex: hex});
+                        bkysmstrHex = hex;  // always update with latest read
+                        if (!bkysmstrSeen) {
+                            bkysmstrSeen = true;
+                            send({event:'bkysmstr_seen', hex: hex});
+                        }
                     }
                 }
             } catch(e) {}

@@ -4,7 +4,7 @@
 > Read this index before every session. Only open an Issues/ file when a task touches a similar problem.
 > Never retry a fix marked "didn't work" in an Issues/ file without explicit reasoning for a different outcome.
 
-Last updated: 2026-07-06
+Last updated: 2026-07-08
 
 ---
 
@@ -21,6 +21,7 @@ Last updated: 2026-07-06
 
 | ID | Summary | Keywords | File |
 |----|---------|----------|------|
+| B-020 | Frida 05c value-match produced false-positive slot assignments for GLCTRL (YN[88]) and WHCTRL (YN[105]); company A vs F differential scans disprove both; APLANG (YN[201]) unverified; BKYSMSTR confirmed system-wide | Frida, 05c, 05d, GLCTRL, WHCTRL, APLANG, YN slot, false positive, differential, BKYSMSTR | [Issues/B-020-frida-false-positive-slots.md](Issues/B-020-frida-false-positive-slots.md) |
 | M-005 | TA-R wrongly mapped to QUERYEXECUTE; BKMENUSU.TXT confirms TA-R = T7JSQL.RWN (SQL Editor), QU-F = queryexecute.rwn | TA-R, QUERYEXECUTE, T7JSQL, menu codes, BKMENUSU | [Issues/M-005-ta-r-documented-wrong.md](Issues/M-005-ta-r-documented-wrong.md) |
 | M-004 | QC CAR status documented as 3-state (Open/Review/Closed); T7QCGA.DFM Items.Strings confirms 4-state (adds Failed) | QC, CAR, status codes, T7QCGA, Items.Strings | [Issues/M-004-qc-car-status-3-state-wrong.md](Issues/M-004-qc-car-status-3-state-wrong.md) |
 | M-003 | yn_table.txt "YN Slot" column is T7YSYN pool order, NOT BKYS_YN_N field position; BKROA.SRC is the authoritative mapping source | YN slot, BKYS_YN_N, T7YSYN, pool order, ISTS.CFG, WOCALC | [Issues/M-003-yn-table-pool-order-wrong.md](Issues/M-003-yn-table-pool-order-wrong.md) |
