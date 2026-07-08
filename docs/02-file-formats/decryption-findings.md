@@ -2,7 +2,7 @@
 
 Status: **FULLY SOLVED 2026-06-16**
 
-Last updated: 2026-06-16
+Last updated: 2026-07-07
 
 ---
 
@@ -16,14 +16,22 @@ All confirmed via live Frida capture (`frida_capture_key_and_iv.py`) + Python de
 - **IV parameter to SetKey**: always 0 → P_initial = Encrypt_K(all-zeros)
 - **key_bits (ECX at SetKey entry)**: 160 (= SHA1 output length in bits; padded to 192 with 4 zeros)
 
-### Keys (live-captured 2026-06-16)
+### Keys (live-captured 2026-06-16; expanded 2026-07-07 Frida session)
 
-| Key name | Raw 20-byte hex | Used for |
-|----------|----------------|---------|
-| K_B | `a898d21e2fd6ca294026e5d633d9047f91f7ed35` | **.RWN** files |
-| K_D | `691e8041ab265b4e6ee052ccc946dba4caac60da` | **.DCY** files |
-| K_A | `d97f05679438037073c30628734764020859f77e` | unknown (appears at EVO startup; tried against all suwin files — none pass) |
-| K_C | `fdc2883f6d6537dd667270406d0a4c85969295ac` | **suwin6.dcy** (confirmed 2026-06-17) |
+Confirmed via Frida CreateFileW hook on evoerp.exe — every SetKey call captured with a
+ring buffer of the 30 most recent EVO-extension file opens.
+
+| Key name | SHA-1 (first 20 bytes) | File type confirmed |
+|----------|------------------------|---------------------|
+| K_A | `d97f05679438037073c30628734764020859f77e` | **WHOAMI.DBA** — identity/license file (K_A fired 5×; WHOAMI.DBA was last in buffer every time) |
+| K_B | `a898d21e2fd6ca294026e5d633d9047f91f7ed35` | **.RWN** files (regular TAS Pro 7 modules) |
+| K_C | `507d2b20f46ac5f82d47e82a9065d7bc0c2e12bb` | **suwin6.dcy** — ISTech License dialog form |
+| K_D | `691e8041ab265b4e6ee052ccc946dba4caac60da` | **.DCY** files (regular Delphi form files) |
+| K_E | `d6e9efa8195c45cce839e88e52767768ff8f2463` | **suwin7.dcy** — ISTech subsystem form (fires first at boot; K_E fired once at boot with only suwin7.dcy in buffer) |
+| K_F | `fdc2883f6d6537dd667270406d0a4c85969295ac` | **suwin6t.rwn** — ISTech License runtime code companion (K_F fired once with suwin6t.rwn as trigger) |
+
+**NOTE (2026-07-07):** The hash previously recorded for K_C (`fdc2883f...`) was incorrect — that is K_F's hash.
+K_C's correct SHA-1 is `507d2b20...` (re-confirmed against suwin6.dcy decryption output).
 
 **suwin6.dcy / K_C confirmed (2026-06-17, re-verified Pass 375 2026-06-29 — prior "binary opcodes" finding was WRONG):**
 - Validation block: `4b7650d14b7650d1` — pt[0:4] == pt[4:8] ✅
@@ -47,24 +55,19 @@ All confirmed via live Frida capture (`frida_capture_key_and_iv.py`) + Python de
 - `samples/suwin6_decrypted.bin` regenerated correctly (Pass 375)
 - All DCY files (Type A and B) use the same Delphi VCL text format; K_C and K_D differ only in key bytes
 
-**suwin key summary (corrected Pass 375):**
-| File | Key | Format |
-|------|-----|--------|
+**suwin key summary (corrected Pass 375; K_E/K_F confirmed 2026-07-07):**
+| File | Key | Format / Notes |
+|------|-----|----------------|
 | suwin6.dcy | K_C | Delphi VCL text form (`EditForm1_1` — ISTech License dialog) |
 | suwin6.dcy (Default/) | K_C | Same as above (copy for Default company) |
-| suwin7.dcy | unknown (5th key?) | Unknown — 3527 bytes, entropy 7.945 |
-| suwin6t.rwn | K_B | Standard RWN binary |
+| suwin6t.rwn | K_F | ISTech License runtime code companion (NOT standard K_B — confirmed 2026-07-07) |
+| suwin7.dcy | K_E | ISTech subsystem form; fires first at boot (confirmed 2026-07-07 Frida capture) |
 | suwin7.rwn | K_B | Standard RWN binary |
 
-**suwin7.dcy — still unresolved:**
-- 3,527 bytes, entropy 7.945 (fully encrypted)
-- K_A, K_B, K_C, K_D all FAIL validation → 5th key exists, or different cipher/format
-- suwin7.rwn validates with K_B (same as all .RWN files)
-
-**suwin key summary:**
-| File | Key | Format |
-|------|-----|--------|
-*(suwin key table above — corrected Pass 375)*
+**suwin7.dcy — RESOLVED 2026-07-07:**
+- Previously: 3,527 bytes, entropy 7.945 — K_A/K_B/K_C/K_D all failed
+- Now confirmed: uses K_E (`d6e9efa8195c45cce839e88e52767768ff8f2463`)
+- K_E fired once at boot with only suwin7.dcy in the file-open ring buffer
 
 192-bit key = raw key + `\x00\x00\x00\x00`.
 
@@ -248,10 +251,28 @@ this screen's "Logout Users" button to force a graceful session termination.
 
 ## What is NOT yet known
 
-- The plaintext passphrase(s) behind K_A, K_B, K_C, K_D — not needed for decryption
-- What K_A and K_C are used for (appeared during EVO startup/login, not during module loads)
+- The plaintext passphrase(s) behind K_A through K_F — not needed for decryption; raw bytes sufficient
+- Whether additional keys beyond K_F exist (other encrypted file types not yet observed)
 - Whether different file types (.RUN, old-gen) use the same cipher
 - The meaning of the 4-byte repeated File ID in the DCY header (CRC? Timestamp? Random?)
+- The decrypted content and form structure of suwin7.dcy (key K_E now confirmed; decryption not yet run)
+
+**Resolved 2026-07-07 (no longer unknown):**
+- ~~What K_A is used for~~ → **WHOAMI.DBA** (identity/license file)
+- ~~What K_E and K_F are~~ → **K_E = suwin7.dcy**, **K_F = suwin6t.rwn**
+
+### File-open trace observations (2026-07-07 Frida session)
+
+The following previously undocumented files were observed in the CreateFileW ring buffer
+during the live capture session:
+
+| File | Key used | Notes |
+|------|----------|-------|
+| evomenu_Login.DCY | K_D | Login dialog form |
+| issplash.DCY | K_D | Splash screen form (shown at startup) |
+| EVO.UPD | — | Update definition file (observed opened; encryption status unknown) |
+| START_UP.RUN | — | TAS Pro 6 startup routine — **unencrypted** (pre-TAS7 era) |
+| suwin7.rwn | K_B | Companion runtime to suwin7.dcy; uses standard RWN key (not K_E) |
 
 ---
 

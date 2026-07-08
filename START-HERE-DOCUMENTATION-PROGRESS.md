@@ -56,7 +56,7 @@ begin disassembling `.RWN` bytecode.
 | Disassemble `.RWN` bytecode | Unblocked — TAS Pro 7 bytecode structure not yet mapped; uniform opaque bytes expected |
 | Read module logic for any of the 1,124 `.RWN` programs | Unblocked — bytecode disassembly + DCY format parsing needed first |
 | `.DCY` data dictionary binary structure | **Partially done** — decryption works; binary field layout not yet reverse-engineered |
-| Identify K_A key purpose | K_C confirmed = suwin6.dcy (ISTech License dialog); K_A still unknown — captured live but which file type uses it is not yet known |
+| ~~Identify K_A key purpose~~ | ✅ DONE: K_A = WHOAMI.DBA confirmed via Frida file-open hook 2026-07-07 |
 
 ---
 
@@ -99,8 +99,8 @@ Current decryption scripts:
 | `.RUN` opcode table | 🔄 Started | 87/100 | string records `41 00 LL_lo LL_hi` confirmed; BKAWLB fully cataloged (786 records/432 readable); OP_5D=inv_menu descriptor confirmed Pass 565b; method in run-string-extraction.md |
 | TAS Pro 7 `.RWN` bytecode | 🔄 Started | 82/100 | 60+ opcodes; 15 sub-code families; branch target = computed/runtime pool; static CFG architecturally impossible; T7YSYN: 1243 vars, 15-byte name field, 52 procs |
 | `.DCY` binary format | ✅ DONE | 95/100 | 8-byte ID header + DFM content; all 41 forms = Delphi TEditForm; EVOUSERS/WBKLUGRID documented |
-| `suwin*.DCY` format | 🔄 Partial | 50/100 | suwin6.dcy ✅ SOLVED (Pass 387): K_C=ISTech License dialog; suwin7.dcy fails all 5 keys |
-| K_A / K_C key purposes | 🔄 Partial | 65/100 | K_C = suwin6.dcy (ISTech License); K_A still unknown |
+| `suwin*.DCY` format | 🔄 Partial | 50/100 | suwin6.dcy ✅ SOLVED (Pass 387): K_C=ISTech License dialog; suwin7.dcy key (K_E=d6e9efa8...) now captured via Frida — suwin7.dcy can now be decrypted |
+| K_A / K_C key purposes | ✅ Confirmed | 100/100 | K_A=WHOAMI.DBA; K_C=suwin6.dcy; K_E=suwin7.dcy; K_F=suwin6t.rwn (Frida 2026-07-07) |
 | `.DFM` forms | 🔄 Partial | 90/100 | 1,109 parsed; form-to-menu-code 90/100 (Pass 563); form-to-table 65/100 (Pass 564, 726/870 mapped); per-form narrative 90/100 (Pass 570, PO-A full field table; Pass 569, CHM semantics for IN/SO/WO) |
 | `.RTM` report templates | 🔄 Good | 82/100 | 1,305 inventoried; sub-report cross-ref complete; BKISWCE1 #1 caller (244); ISRTMS 29-field schema confirmed; per-report-index.md: root/sub architecture (808/190/106), DataField themes for top 15 sub-reports, WO traveler tree (Pass 574); remaining ⬜ blocked by RWN encryption |
 | Database schema | ✅ Done | 95/100 | 659 tables (DDF); 579 tables / 21,299 fields from Excel export (Pass 431); 33 per-module field files in docs/04-data-dictionary/ |
@@ -150,8 +150,7 @@ Current decryption scripts:
    value semantics (Y/Z/A/Q/1/space flags) blocked by RWN encryption.
    `docs/05-configuration/ists-cfg-keys.md` is the working document.
 
-2. **Identify K_A purpose** — K_C confirmed (Pass 387) = suwin6.dcy ISTech License dialog.
-   K_A still unknown — fired at boot; Frida file-open hook needed to identify which file uses K_A.
+2. ✅ DONE **Identify K_A purpose** — K_A = WHOAMI.DBA confirmed via Frida file-open hook 2026-07-07. K_C = suwin6.dcy, K_E = suwin7.dcy, K_F = suwin6t.rwn.
 
 3. **`.RWN` bytecode deeper analysis** (C:82 natural ceiling) — 60+ opcodes confirmed;
    static CFG impossible (branch targets = computed runtime pool). Only angle that could move

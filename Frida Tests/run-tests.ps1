@@ -353,6 +353,57 @@ function Run-Test05b {
 }
 
 # ----------------------------------------------------------
+#  TEST 05c -- ISTS.CFG Pointer-Following Value Capture
+# ----------------------------------------------------------
+function Run-Test05c {
+    Write-Header
+    Write-Host "  TEST 05c -- ISTS.CFG Actual-Value Capture (pointer-following)"               -ForegroundColor White
+    Write-Host "  Follows the pointer in each entry to read the real config value."            -ForegroundColor DarkGray
+    Write-Host "  Outputs direct YN slot matches for 1-byte config values."                   -ForegroundColor DarkGray
+    Write-Host ""
+    Write-Host "  IMPORTANT: EVO must be FULLY CLOSED. Start this script first."              -ForegroundColor Yellow
+    Write-Host ""
+
+    Pause-ForUser "STEP 1: Make sure EvoERP is FULLY CLOSED."
+
+    $logFile     = Join-Path $logsDir "test05c-actval-$(Get-Timestamp).txt"
+    $triggerFile = "$logFile.scan_trigger"
+
+    Write-Host ""
+    Write-Host "  [*] Starting capture -- window will open and wait for EVO..." -ForegroundColor Cyan
+    Write-Host ""
+    $proc = Start-FridaScript "05c-ists-cfg-actual-values.py" $logFile "--trigger `"$triggerFile`""
+    Start-Sleep -Seconds 1
+
+    Pause-ForUser "STEP 2: Launch EvoERP. Log in FULLY and wait until the main EVO menu is on screen."
+
+    Pause-ForUser "STEP 3: Open WO-A and one other module (e.g. IN-A) so all RWN files are loaded."
+
+    Write-Host ""
+    Write-Host "  [*] Firing scan trigger..." -ForegroundColor Cyan
+    Set-Content -Path $triggerFile -Value "scan" -NoNewline
+    $proc.WaitForExit(120000) | Out-Null
+
+    if (Test-Path $logFile) {
+        $lines    = Get-Content $logFile
+        $tbl      = @($lines | Where-Object { $_ -match '^\s+\d+\s+[A-Z]' })
+        $mappings = @($lines | Where-Object { $_ -match '^\s+YN\[' -and $_ -notmatch 'NOT IN RUN' })
+        Write-Host ""
+        Write-Host "  --- Summary ---"                          -ForegroundColor Green
+        Write-Host "  Log saved        : $logFile"              -ForegroundColor Green
+        Write-Host "  Table entries    : $($tbl.Count)"         -ForegroundColor White
+        Write-Host "  New slot mappings: $($mappings.Count)"    -ForegroundColor Cyan
+    } else {
+        Write-Host "  [!] Log not found." -ForegroundColor Red
+    }
+    if (Test-Path $triggerFile) { Remove-Item $triggerFile -Force }
+
+    Write-Host ""
+    Write-Host "  Paste the log file contents into the chat." -ForegroundColor Yellow
+    Pause-ForUser "Press ENTER to return to the menu."
+}
+
+# ----------------------------------------------------------
 #  MAIN MENU
 # ----------------------------------------------------------
 while ($true) {
@@ -364,7 +415,8 @@ while ($true) {
     Write-Host "   3   YN Slot Mapper    -- capture BKYSMSTR record + scan for key strings"       -ForegroundColor Gray
     Write-Host "   4   ISTS.CFG Dump     -- walk in-memory table, extract all key names"          -ForegroundColor Gray
     Write-Host "   5   Full Table Walk   -- dump entire ISTS.CFG table right after BKYSMSTR"      -ForegroundColor Gray
-    Write-Host "   5b  Value Capture     -- BKYSMSTR + entry values, manual trigger after login"  -ForegroundColor Gray
+    Write-Host "   5b  Value Capture     -- BKYSMSTR + entry values (inline bytes, not pointer)"  -ForegroundColor Gray
+    Write-Host "   5c  Actual Values     -- follows pointer to read real config value per entry"   -ForegroundColor Cyan
     Write-Host "   Q   Quit"                                                                       -ForegroundColor Gray
     Write-Host ""
 
@@ -377,6 +429,7 @@ while ($true) {
         '4'     { Run-Test04 }
         '5'     { Run-Test05 }
         '5B'    { Run-Test05b }
+        '5C'    { Run-Test05c }
         'Q'     { Write-Host ""; Write-Host "  Bye." -ForegroundColor DarkGray; Write-Host ""; exit }
         default { Write-Host "  Invalid choice." -ForegroundColor Red; Start-Sleep -Seconds 1 }
     }

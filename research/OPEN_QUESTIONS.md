@@ -137,14 +137,18 @@ to resolve fully:
    entry). Keys saved to `research/ists-cfg-all-keys.txt`. Key finding: CALCLABR,
    INVAPREC, ALLSVCPO, BACKFLSH do NOT exist as ISTS.CFG keys — the KNOWN_SLOTS entries
    for YN[27], YN[33], YN[40] used wrong names from a different naming system. Confirmed
-   mappings: YN[38]=WOCALC, YN[48]=APCHK, YN[65]=STDCST, YN[228]=DCSEQ, YN[229]=DCSYNC.
-   Memory dump from Test 03 confirms 77-byte table entry stride, first 13 entries in table
-   order: STDCST→UPLCST→SHPFOB→CHKBAL→CMPLOC→SOIOC→WOGKIT→PRTPS→PICKT→DCSEQ→SCRAP→
-   SOCHG→SHPHST. ISTS.CFG is NOT a Btrieve table — it is built in-memory from BKYSMSTR
-   YN values using hardcoded key names compiled into .RWN files.
-   **Next step:** Run Test 05 (Frida Tests → option 5) — hooks BTRCALLID, fires memory
-   scan 800ms after BKYSMSTR is read, dumps full 542-entry table in init order, then
-   cross-refs against known slot anchors to determine slot = f(table_index).
+   mappings (Test 03): YN[38]=WOCALC, YN[48]=APCHK, YN[65]=STDCST, YN[228]=DCSEQ,
+   YN[229]=DCSYNC.
+   **New confirmed 1:1 (Test 05c, 2026-07-08):** YN[88]=GLCTRL, YN[105]=WHCTRL,
+   YN[201]=APLANG. Found by pointer-following: each ISTS.CFG entry (bytes 15-18) holds a
+   pointer to the actual value; byte 21 = value length. For entries with a unique 1-byte
+   value matching exactly one YN slot, the mapping is direct.
+   **Finding:** ISTS.CFG stores the effective/default value, not the raw BKYSMSTR byte.
+   YN=' '(blank) means "use default" — so value-correlation is exhausted for Y/N/space
+   flags. Only 3 new 1:1 mappings possible via this method.
+   **Next step:** Parse suwin6t.rwn.dec for ISTS.CFG initialization order — this file has
+   469 ISTS.CFG references and should show the exact slot→key assignment sequence in the
+   TAS Pro 7 bytecode.
 
 3. **Password hashing algorithm.**
    Almost certainly a call to the runtime's `ENCRYPTSTR` with a
