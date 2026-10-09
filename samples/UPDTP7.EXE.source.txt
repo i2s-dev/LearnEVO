@@ -1,4 +1,4 @@
-Source: \\i2s109-solidcrm\evo-ERP\ISTS\UPDTP7.EXE
+Source: \\i2s-evo\evo-ERP\ISTS\UPDTP7.EXE
 Copied: 2026-07-03 (Pass 567)
 Size: 86KB
 Purpose: TAS Pro 7 file updater — generates batch scripts for targeted file updates

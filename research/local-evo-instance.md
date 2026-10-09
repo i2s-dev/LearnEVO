@@ -17,9 +17,9 @@ Goal: Determine whether all EVO files can be copied locally and EVO run against 
 File: `C:\ISTS\taspro7.ini` — `[Setup]` section
 
 ```ini
-DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\    ← Pervasive DDF location + data root
-DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn  ← main menu program
-DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\     ← base for all program chaining
+DataDictPath=\\i2s-evo\EVOERP\    ← Pervasive DDF location + data root
+DfltRunPrg=\\i2s-evo\EVOERP\EvoERPmenu.rwn  ← main menu program
+DefaultPath=\\i2s-evo\EVOERP\     ← base for all program chaining
 ```
 
 Changing all three to a local folder (e.g. `C:\EVOLocal\`) redirects the entire TAS Pro session to local files.
@@ -101,10 +101,10 @@ Known broken paths:
 
 | File | Bad path | Correct path |
 |------|----------|--------------|
-| T6WOLB1.RTM | `\\I2s44-hapi\dbamfg$\T6WOLB1.RTM` | `\\i2s109-solidcrm\DBAMFG$\T6WOLB1.RTM` |
-| T6WOLB1.RTM | `C:\DBAMFG\BKISWCE1.RTM` | `\\i2s109-solidcrm\DBAMFG$\BKISWCE1.RTM` |
-| T6WOLA1.RTM | `C:\TASPRO7\dba7\t6wola1.RTM` | `\\i2s109-solidcrm\DBAMFG$\t6wola1.RTM` |
-| T6WOLA1.RTM | `C:\DBAMFG\bksam1.rtm` | `\\i2s109-solidcrm\DBAMFG$\BKSAM1.RTM` |
+| T6WOLB1.RTM | `\\I2s44-hapi\dbamfg$\T6WOLB1.RTM` | `\\i2s-evo\EVOERP\T6WOLB1.RTM` |
+| T6WOLB1.RTM | `C:\DBAMFG\BKISWCE1.RTM` | `\\i2s-evo\EVOERP\BKISWCE1.RTM` |
+| T6WOLA1.RTM | `C:\TASPRO7\dba7\t6wola1.RTM` | `\\i2s-evo\EVOERP\t6wola1.RTM` |
+| T6WOLA1.RTM | `C:\DBAMFG\bksam1.rtm` | `\\i2s-evo\EVOERP\BKSAM1.RTM` |
 
 For a local instance these would be patched to the local folder path instead.
 
@@ -117,7 +117,7 @@ For a local instance these would be patched to the local folder path instead.
 With blockers 1, 3, 4 resolved and 2, 5, 6 mostly resolved:
 
 **Steps required:**
-1. Copy `\\i2s109-solidcrm\DBAMFG$\` → local folder (e.g. `C:\EVOLocal\`)
+1. Copy `\\i2s-evo\EVOERP\` → local folder (e.g. `C:\EVOLocal\`)
 2. Start Workgroup Engine (`w3dbsmgr.exe`) pointing at `C:\EVOLocal\`
 3. Edit `C:\ISTS\taspro7.ini` — update 3 lines to `C:\EVOLocal\`
 4. Binary-patch RTM files with corrected local paths
@@ -152,13 +152,13 @@ With blockers 1, 3, 4 resolved and 2, 5, 6 mostly resolved:
 | `C:\ISTS\EvoSettings.INI` | Per-user EVO settings (printer, UI prefs — no paths) |
 | `C:\Program Files (x86)\Actian\PSQL\bin\w3dbsmgr.exe` | Workgroup Engine (v12, 32-bit) |
 | `C:\Program Files (x86)\Pervasive Software\PSQL\bin\w3dbsmgr.exe` | Workgroup Engine (v11, 32-bit) |
-| `\\i2s109-solidcrm\DBAMFG$\` | Production EVO data and programs |
+| `\\i2s-evo\EVOERP\` | Production EVO data and programs |
 
 ---
 
 ## Next Steps (not yet done)
 
-- [ ] Check the size of `\\i2s109-solidcrm\DBAMFG$\` to estimate copy time/space
+- [ ] Check the size of `\\i2s-evo\EVOERP\` to estimate copy time/space
 - [ ] Test starting `w3dbsmgr.exe` against a small set of local .B files to confirm it works
 - [ ] Check DDF files to confirm relative vs. absolute paths
 - [ ] Write binary patcher for RTM files

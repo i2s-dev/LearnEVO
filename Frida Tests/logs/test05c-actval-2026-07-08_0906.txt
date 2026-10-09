@@ -1,0 +1,425 @@
+TEST 05c - ISTS.CFG Actual-Value Capture (pointer-following)
+============================================================
+Log: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test05c-actval-2026-07-08_0906.txt
+Trigger: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test05c-actval-2026-07-08_0906.txt.scan_trigger
+
+[*] Waiting for evoerp.exe...
+[+] Attached to evoerp.exe
+[+] Hooked BTRCALLID in WBTRV32.DLL
+[+] Script ready. Launch EvoERP.
+    Log in fully, then trigger the scan.
+
+[+] BKYSMSTR captured!
+    YN[  0- 24]: F NNNNNNCNNNNNNNNYNNNYNNN
+    YN[ 25- 49]: NNYNNIYY NDNN4YYYNNNY11 A
+    YN[ 50- 74]: NNNNIFNWNNAYYYNNYNNN  YYY
+    YN[ 75- 99]: 442YYNYYNYYYNP           
+    YN[100-124]:  YYYAQAYYYYYYYZYYZYYY  YY
+    YN[125-149]: YYY1Y YYYYYYYYYYYYYYY YY 
+    YN[150-174]:                          
+    YN[175-199]:                        AN
+    YN[200-224]: 1EYYYYZYYYYYYYYYYN   YR42
+    YN[225-249]: 0 YN1Y4     YRYYYYYYYYN00
+
+[*] Trigger file detected -- scanning now...
+[*] Scanning process memory...
+[+] Raw scan: 1925 ISTS.CFG. patterns
+[+] Longest 77-byte run: 377 entries
+
+=== BKYSMSTR YN[0..249] ===
+  46204e4e4e4e4e4e434e4e4e4e4e4e4e4e594e4e4e594e4e4e4e4e594e4e495959204e444e4e345959594e4e4e59313120414e4e4e4e49464e574e4e415959594e4e594e4e4e202059595934343259594e59594e5959594e50202020202020202020202020595959415141595959595959595a59595a5959592020595959595931592059595959595959595959595959595920595920202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020414e3145595959595a595959595959595959594e202020595234323020594e3159342020202020595259595959595959594e3030
+
+=== KNOWN ANCHORS ===
+  YN[ 38] = WOCALC   -> NOT IN RUN
+  YN[ 48] = APCHK    -> table[ 38]  offset=+10
+  YN[ 65] = STDCST   -> NOT IN RUN
+  YN[228] = DCSEQ    -> NOT IN RUN
+  YN[229] = DCSYNC   -> table[226]  offset=+3
+
+=== FULL TABLE (actual values via pointer) ===
+   Tbl  Key       Len  ActualVal                         ASCII             YN_Match
+   ---  ---       ---  ---                               ---               ---
+     0  WHCTRL      1  51                                Q                 YN[105]
+     1  CTRLBL      1  59                                Y                 87 slots share this value
+     2  ITP         1  4e                                N                 49 slots share this value
+     3  JOB         1  20                                                  79 slots share this value
+     4  SOLLOC      1  20                                                  79 slots share this value
+     5  CANZWO      1  00                                .                 candidates: []
+     6  SOBLNS      2  2030                               0                
+     7  SOCLNS      2  2030                               0                
+     8  SOFLNS      2  2030                               0                
+     9  POBLNS      2  2030                               0                
+    10  SOSPEC      1  20                                                  79 slots share this value
+    11  SRPART     15  202020202020202020202020202020                      
+    12  DELBIN      1  4e                                N                 49 slots share this value
+    13  ACKBO       1  20                                                  79 slots share this value
+    14  CC          1  42                                B                 candidates: []
+    15  INVTTL     20  2020202020202020202020202020202020202020                        
+    16  CRMTTL     20  2020202020202020202020202020202020202020                        
+    17  TFNAME     10  20202020202020202020                                
+    18  TRNSCO      3  202020                                              
+    19  EVOMAX      1  20                                                  79 slots share this value
+    20  ORDDSC      1  20                                                  79 slots share this value
+    21  EVONTS      1  4e                                N                 49 slots share this value
+    22  BASEP       1  59                                Y                 87 slots share this value
+    23  WCBF        1  4e                                N                 49 slots share this value
+    24  CATMST      1  52                                R                 candidates: [222, 238]
+    25  UDMSTR      1  4e                                N                 49 slots share this value
+    26  WOBS        2  2020                                                
+    27  SOEDTE      1  20                                                  79 slots share this value
+    28  POEDTE      1  20                                                  79 slots share this value
+    29  DCOASA     10  39393938202020202020              9998              
+    30  DCOASD      4  20202020                                            
+    31  CKSTDC      1  59                                Y                 87 slots share this value
+    32  TOOLLU      1  20                                                  79 slots share this value
+    33  POCHG       1  59                                Y                 87 slots share this value
+    34  BCCBOX      1  20                                                  79 slots share this value
+    35  MKFROM      1  20                                                  79 slots share this value
+    36  SRINFO      1  20                                                  79 slots share this value
+    37  WOMAKF      1  59                                Y                 87 slots share this value
+    38  APCHK       1  59                                Y                 87 slots share this value  <- confirmed YN[48]
+    39  SOCUST      1  20                                                  79 slots share this value
+    40  RMAINF      1  20                                                  79 slots share this value
+    41  RMAMST      1  59                                Y                 87 slots share this value
+    42  RMASTK     15  202020202020202020202020202020                      
+    43  RMAFLT      1  20                                                  79 slots share this value
+    44  RMAAMT      8  20202020302e3030                      0.00          
+    45  LOTWO       1  20                                                  79 slots share this value
+    46  RMACDT     15  444546454354495645205041525453    DEFECTIVE PARTS   
+    47  POPCRH      1  59                                Y                 87 slots share this value
+    48  POPCOM      1  20                                                  79 slots share this value
+    49  POPSLP      1  20                                                  79 slots share this value
+    50  LEADHR      1  20                                                  79 slots share this value
+    51  HHLBLS      1  20                                                  79 slots share this value
+    52  CLDISC      1  20                                                  79 slots share this value
+    53  SOENBY      1  59                                Y                 87 slots share this value
+    54  QCRPT       1  59                                Y                 87 slots share this value
+    55  APBDTE      1  59                                Y                 87 slots share this value
+    56  HHEQTY      1  20                                                  79 slots share this value
+    57  HHRALL      1  20                                                  79 slots share this value
+    58  MANINV      1  20                                                  79 slots share this value
+    59  OQTYLN      1  59                                Y                 87 slots share this value
+    60  SRTRAK      1  59                                Y                 87 slots share this value
+    61  SRAWOS      1  4e                                N                 49 slots share this value
+    62  RMAUPD      1  59                                Y                 87 slots share this value
+    63  VIAMST      1  20                                                  79 slots share this value
+    64  CRHOLD      1  4e                                N                 49 slots share this value
+    65  WOOVER      1  41                                A                 candidates: [49, 60, 104, 106, 198]
+    66  SOXREF      1  4e                                N                 49 slots share this value
+    67  WARNTY      1  20                                                  79 slots share this value
+    68  DCLOGN      1  20                                                  79 slots share this value
+    69  APLANG      1  45                                E                 YN[201]
+    70  LRNUM       7  00000000000000                    .......           
+    71  PSFSEQ      1  20                                                  79 slots share this value
+    72  WOFOTH      1  20                                                  79 slots share this value
+    73  POCLBL      1  20                                                  79 slots share this value
+    74  GLDATE      8  31322f33312f3236                  12/31/26          
+    75  GLCTRL      1  50                                P                 YN[88]
+    76  WOOPEN      1  20                                                  79 slots share this value
+    77  WOPSWD      8  2020202020202020                                    
+    78  SOONLY      1  42                                B                 candidates: []
+    79  WOONLY      1  4f                                O                 candidates: []
+    80  POONLY      1  20                                                  79 slots share this value
+    81  POCLC0      1  4e                                N                 49 slots share this value
+    82  POREV       1  59                                Y                 87 slots share this value
+    83  SCPMRK      1  20                                                  79 slots share this value
+    84  SORTS       1  20                                                  79 slots share this value
+    85  USNGPR      1  59                                Y                 87 slots share this value
+    86  PRPOST      1  20                                                  79 slots share this value
+    87  APSTDC      1  42                                B                 candidates: []
+    88  RWOPER      3  393939                            999               
+    89  RWWCT      12  5245574f524b202020202020          REWORK            
+    90  EPASS       1  20                                                  79 slots share this value
+    91  XDBA        1  20                                                  79 slots share this value
+    92  SODAYS      3  202030                              0               
+    93  PPTL        1  4e                                N                 49 slots share this value
+    94  PRTL        1  59                                Y                 87 slots share this value
+    95  HHDBIN      1  20                                                  79 slots share this value
+    96  SOASHP      1  20                                                  79 slots share this value
+    97  DUPLNS      1  20                                                  79 slots share this value
+    98  POPRIX      1  20                                                  79 slots share this value
+    99  APPRIX      1  4e                                N                 49 slots share this value
+   100  SOITMZ     15  202020202020202020202020202020                      
+   101  WOBASE      1  20                                                  79 slots share this value
+   102  SOAXRF      1  20                                                  79 slots share this value
+   103  SOAUD       1  20                                                  79 slots share this value
+   104  SOAUPC      1  20                                                  79 slots share this value
+   105  APCGLA     10  39393939202020202020              9999              
+   106  APCGLD      4  20202020                                            
+   107  DCDQTY      1  20                                                  79 slots share this value
+   108  POCPV       1  4e                                N                 49 slots share this value
+   109  POCRN       1  59                                Y                 87 slots share this value
+   110  WOAWN       1  59                                Y                 87 slots share this value
+   111  BOMRM       1  4e                                N                 49 slots share this value
+   112  JOBCUS      1  20                                                  79 slots share this value
+   113  POSIGN      1  20                                                  79 slots share this value
+   114  SUBCOS      1  20                                                  79 slots share this value
+   115  LTWOSD      4  20202020                                            
+   116  FOREC       1  59                                Y                 87 slots share this value
+   117  POADD       1  59                                Y                 87 slots share this value
+   118  EPOQTY      1  4e                                N                 49 slots share this value
+   119  DISC99      1  20                                                  79 slots share this value
+   120  POPAMT      1  20                                                  79 slots share this value
+   121  ROTTY       1  20                                                  79 slots share this value
+   122  ROSTTY      1  20                                                  79 slots share this value
+   123  KITPRC      1  20                                                  79 slots share this value
+   124  POASLM      1  4d                                M                 candidates: []
+   125  BPSOQA      1  20                                                  79 slots share this value
+   126  BMGADT      1  4e                                N                 49 slots share this value
+   127  EVOALT      1  41                                A                 candidates: [49, 60, 104, 106, 198]
+   128  PRCDTE      1  20                                                  79 slots share this value
+   129  POCBF       1  20                                                  79 slots share this value
+   130  SEQCHK      1  20                                                  79 slots share this value
+   131  MRPDAY      3  202030                              0               
+   132  MRPDOL     10  202020202020302e3030                    0.00        
+   133  CCUID      10  20202020202020202020                                
+   134  CCPSW      10  20202020202020202020                                
+   135  SONMY      15  202020202020202020202020202020                      
+   136  WOGNEG      1  59                                Y                 87 slots share this value
+   137  ESDMSG      1  20                                                  79 slots share this value
+   138  WOFTEM      1  20                                                  79 slots share this value
+   139  APPVND      1  20                                                  79 slots share this value
+   140  ACDCSQ      1  4e                                N                 49 slots share this value
+   141  XCOMM       1  20                                                  79 slots share this value
+   142  DCSCRP      1  20                                                  79 slots share this value
+   143  XCOMH       1  20                                                  79 slots share this value
+   144  ZPRCOM      1  20                                                  79 slots share this value
+   145  DAYPAY      1  20                                                  79 slots share this value
+   146  HHMAXQ      1  20                                                  79 slots share this value
+   147  SRLOC      10  53455256524550414952              SERVREPAIR        
+   148  FRTMAX      1  59                                Y                 87 slots share this value
+   149  INBLS       1  4e                                N                 49 slots share this value
+   150  POADEL      1  59                                Y                 87 slots share this value
+   151  COGSDP      1  20                                                  79 slots share this value
+   152  WCDEPT      1  20                                                  79 slots share this value
+   153  WOGDSC      1  20                                                  79 slots share this value
+   154  SOESUR      1  20                                                  79 slots share this value
+   155  WOGLOC      1  53                                S                 candidates: []
+   156  MRFDTE      1  20                                                  79 slots share this value
+   157  WOFAMI      1  20                                                  79 slots share this value
+   158  POCRC2      1  4e                                N                 49 slots share this value
+   159  POCUCV      1  20                                                  79 slots share this value
+   160  ESAFRT      1  20                                                  79 slots share this value
+   161  SONENG      1  20                                                  79 slots share this value
+   162  WOISER      1  20                                                  79 slots share this value
+   163  SOLOT       1  20                                                  79 slots share this value
+   164  SOSER       1  20                                                  79 slots share this value
+   165  DCARUN      1  4e                                N                 49 slots share this value
+   166  DCSQTY      1  59                                Y                 87 slots share this value
+   167  WOSSER      1  20                                                  79 slots share this value
+   168  SOAREP      1  20                                                  79 slots share this value
+   169  FPLOT       1  20                                                  79 slots share this value
+   170  WOFHOL      1  20                                                  79 slots share this value
+   171  WOFDEC      1  20                                                  79 slots share this value
+   172  ARADTE      1  20                                                  79 slots share this value
+   173  APADTE      1  20                                                  79 slots share this value
+   174  DCCQTY      1  59                                Y                 87 slots share this value
+   175  DCMACH      1  20                                                  79 slots share this value
+   176  BMAREF      1  59                                Y                 87 slots share this value
+   177  GENITM      1  20                                                  79 slots share this value
+   178  HHANEG      1  59                                Y                 87 slots share this value
+   179  HHALOT      1  20                                                  79 slots share this value
+   180  HHASER      1  20                                                  79 slots share this value
+   181  BMTYPR      1  59                                Y                 87 slots share this value
+   182  SOLDYS      3  202030                              0               
+   183  HHPOLN      1  20                                                  79 slots share this value
+   184  WOSODT      1  20                                                  79 slots share this value
+   185  SETQTY      1  59                                Y                 87 slots share this value
+   186  SOINFO      1  20                                                  79 slots share this value
+   187  SOADEL      1  20                                                  79 slots share this value
+   188  DCHLS       1  20                                                  79 slots share this value
+   189  DCDAYS      1  20                                                  79 slots share this value
+   190  POQPRC      1  20                                                  79 slots share this value
+   191  SHIFT2      8  30303a30303a3030                  00:00:00          
+   192  SHIFT3      8  30303a30303a3030                  00:00:00          
+   193  UCC14      14  2020202020202020202020202020                        
+   194  QWOQTY      1  20                                                  79 slots share this value
+   195  SOPCQT      1  59                                Y                 87 slots share this value
+   196  GLBSDT      1  59                                Y                 87 slots share this value
+   197  APBSDT      1  4e                                N                 49 slots share this value
+   198  ARCSDT      1  4e                                N                 49 slots share this value
+   199  VNDPRX      1  20                                                  79 slots share this value
+   200  HHCKIT      1  20                                                  79 slots share this value
+   201  VIACUS      1  20                                                  79 slots share this value
+   202  VIAVND      1  20                                                  79 slots share this value
+   203  SOCRTM     12  202020202020202020202020                            
+   204  RMDSRQ      1  20                                                  79 slots share this value
+   205  ESHMIC      1  20                                                  79 slots share this value
+   206  SRCBOM      1  4e                                N                 49 slots share this value
+   207  POSEC       1  20                                                  79 slots share this value
+   208  POBSIG      1  20                                                  79 slots share this value
+   209  XCOMA       1  20                                                  79 slots share this value
+   210  METIN      15  202020202020202020202020202020                      
+   211  METR        5  2020202020                                          
+   212  MTERR       1  20                                                  79 slots share this value
+   213  PRCAT1      1  20                                                  79 slots share this value
+   214  PRCAT2      1  20                                                  79 slots share this value
+   215  PRCAT3      1  20                                                  79 slots share this value
+   216  METSOF      1  20                                                  79 slots share this value
+   217  WOIWOF      3  202020                                              
+   218  SOACFC      1  20                                                  79 slots share this value
+   219  POAVND      1  20                                                  79 slots share this value
+   220  DCTIME      2  2020                                                
+   221  SOELOT      1  20                                                  79 slots share this value
+   222  SOESER      1  20                                                  79 slots share this value
+   223  SOGCFC      1  20                                                  79 slots share this value
+   224  POCSER      1  20                                                  79 slots share this value
+   225  DCTMSS      2  2020                                                
+   226  DCSYNC      1  20                                                  79 slots share this value  <- confirmed YN[229]
+   227  SOACDT      1  20                                                  79 slots share this value
+   228  ARLCST      1  20                                                  79 slots share this value
+   229  SOSTDP      1  20                                                  79 slots share this value
+   230  DCNOSC      1  4e                                N                 49 slots share this value
+   231  DCAPW1      8  2020202020202020                                    
+   232  DCAPW2      8  2020202020202020                                    
+   233  HHCPW1      8  2020202020202020                                    
+   234  HHCPW2      8  2020202020202020                                    
+   235  SOASTN      3  202020                                              
+   236  SOAINC      2  2020                                                
+   237  WOGADD      1  20                                                  79 slots share this value
+   238  POCLOT      1  20                                                  79 slots share this value
+   239  WOJCLS      1  20                                                  79 slots share this value
+   240  DCREWK      1  4e                                N                 49 slots share this value
+   241  INCGL       1  20                                                  79 slots share this value
+   242  POADUE      1  20                                                  79 slots share this value
+   243  WOALOC     10  20202020202020202020                                
+   244  SOALOC     10  49325320202020202020              I2S               
+   245  USINI       1  20                                                  79 slots share this value
+   246  WOAVCK      1  20                                                  79 slots share this value
+   247  SOAVCK      1  20                                                  79 slots share this value
+   248  AREMD       3  202020                                              
+   249  XCMSOA      1  20                                                  79 slots share this value
+   250  APBVND      1  4e                                N                 49 slots share this value
+   251  DCAHHD      1  20                                                  79 slots share this value
+   252  POCSTD      1  20                                                  79 slots share this value
+   253  SOAITM      1  20                                                  79 slots share this value
+   254  WOIRND      1  20                                                  79 slots share this value
+   255  DTERES      1  4e                                N                 49 slots share this value
+   256  SOAATT      1  59                                Y                 87 slots share this value
+   257  DCABRK      1  20                                                  79 slots share this value
+   258  VNDEXP      1  20                                                  79 slots share this value
+   259  SOCBOL      1  20                                                  79 slots share this value
+   260  PRQPST      1  20                                                  79 slots share this value
+   261  DCPREQ      1  20                                                  79 slots share this value
+   262  SOELAB      1  20                                                  79 slots share this value
+   263  WOICST      1  20                                                  79 slots share this value
+   264  POCBIN     15  202020202020202020202020202020                      
+   265  SOEGSB      1  20                                                  79 slots share this value
+   266  SOACDL      1  20                                                  79 slots share this value
+   267  DCBEMP      1  20                                                  79 slots share this value
+   268  TPRTNT      3  202020                                              
+   269  POCPLL      1  20                                                  79 slots share this value
+   270  POACAL      1  20                                                  79 slots share this value
+   271  RMDCWO      1  20                                                  79 slots share this value
+   272  RMDGLA     10  20202020202020202020                                
+   273  RMDGLD      4  20202020                                            
+   274  SOESDT      1  20                                                  79 slots share this value
+   275  SOEUBO      1  20                                                  79 slots share this value
+   276  SHPBIN     15  202020202020202020202020202020                      
+   277  POEPRX      1  20                                                  79 slots share this value
+   278  SOFSND      1  20                                                  79 slots share this value
+   279  EMAILS      1  59                                Y                 87 slots share this value
+   280  EMAILP      1  59                                Y                 87 slots share this value
+   281  NZETYP      3  202020                                              
+   282  INBTLS      1  20                                                  79 slots share this value
+   283  SOASPK      1  20                                                  79 slots share this value
+   284  HHDCWO      1  20                                                  79 slots share this value
+   285  POARSK      1  20                                                  79 slots share this value
+   286  ASTART      1  20                                                  79 slots share this value
+   287  INACT       1  20                                                  79 slots share this value
+   288  URNT        3  202020                                              
+   289  RECYCL     15  202020202020202020202020202020                      
+   290  BLSTDC      4  20202020                                            
+   291  TRKSER      1  20                                                  79 slots share this value
+   292  INKTDT      1  20                                                  79 slots share this value
+   293  POCERD      3  202030                              0               
+   294  POADYS      3  202030                              0               
+   295  QTYADJ      1  59                                Y                 87 slots share this value
+   296  HHFLOC     10  20202020202020202020                                
+   297  HHTLOC     10  20202020202020202020                                
+   298  POCFRT     15  202020202020202020202020202020                      
+   299  DCAENG      1  20                                                  79 slots share this value
+   300  MSGLVL      3  202020                                              
+   301  SOARCH      1  20                                                  79 slots share this value
+   302  WOITXN      1  20                                                  79 slots share this value
+   303  SOLEAD      1  20                                                  79 slots share this value
+   304  POCPJB      1  20                                                  79 slots share this value
+   305  POCPIE      1  20                                                  79 slots share this value
+   306  DCIRWK      1  20                                                  79 slots share this value
+   307  APHXPT     20  7437746573746e616368612e72776e2020202020  t7testnacha.rwn       
+   308  SOACAL      1  20                                                  79 slots share this value
+   309  SOACOM      1  20                                                  79 slots share this value
+   310  SOSEC       1  20                                                  79 slots share this value
+   311  NEGCST      1  20                                                  79 slots share this value
+   312  QUALOC     10  20202020202020202020                                
+   313  SOAGPP      1  20                                                  79 slots share this value
+   314  ORIGPO      1  20                                                  79 slots share this value
+   315  POPROM      8  30302f30302f3030                  00/00/00          
+   316  POAMFG      1  20                                                  79 slots share this value
+   317  ARFTD       1  20                                                  79 slots share this value
+   318  DBLKIT      1  20                                                  79 slots share this value
+   319  PSTKIT      1  20                                                  79 slots share this value
+   320  SOAAUD      1  59                                Y                 87 slots share this value
+   321  DCAWC       1  20                                                  79 slots share this value
+   322  PIUID      10  20202020202020202020                                
+   323  PIPSW      10  20202020202020202020                                
+   324  CCDEF       1  20                                                  79 slots share this value
+   325  DCCOMP      1  20                                                  79 slots share this value
+   326  INCNEG      1  20                                                  79 slots share this value
+   327  WOBWO1      1  59                                Y                 87 slots share this value
+   328  ROADEC      1  20                                                  79 slots share this value
+   329  SOPBLW      1  20                                                  79 slots share this value
+   330  LIMSCT      1  20                                                  79 slots share this value
+   331  RRFPR       1  20                                                  79 slots share this value
+   332  VACGLA     10  39393939202020202020              9999              
+   333  VACGLD      4  20202020                                            
+   334  DCPDTE      8  30302f30302f3030                  00/00/00          
+   335  DCFREQ      2  2030                               0                
+   336  DCMLST      1  20                                                  79 slots share this value
+   337  RMDACM      1  20                                                  79 slots share this value
+   338  INBXFR      1  20                                                  79 slots share this value
+   339  POAPOH      1  20                                                  79 slots share this value
+   340  SMGEDT      1  20                                                  79 slots share this value
+   341  AVATAX      1  20                                                  79 slots share this value
+   342  AVAACT     10  20202020202020202020                                
+   343  AVAKEY     16  20202020202020202020202020202020                    
+   344  SOEVIA      1  20                                                  79 slots share this value
+   345  POQITM      1  59                                Y                 87 slots share this value
+   346  WONEG       1  20                                                  79 slots share this value
+   347  DCNEG       1  20                                                  79 slots share this value
+   348  SOAARN      1  20                                                  79 slots share this value
+   349  AVACOD      8  2020202020202020                                    
+   350  AVACO      18  202020202020202020202020202020202020                      
+   351  DSDTES      1  20                                                  79 slots share this value
+   352  SOECDL      1  20                                                  79 slots share this value
+   353  SMGSYN      1  20                                                  79 slots share this value
+   354  SMGBDT      1  20                                                  79 slots share this value
+   355  VOIC        1  4e                                N                 49 slots share this value
+   356  VOWO        1  20                                                  79 slots share this value
+   357  VOPO        1  20                                                  79 slots share this value
+   358  VOSO        1  20                                                  79 slots share this value
+   359  VOAR        1  20                                                  79 slots share this value
+   360  VOAP        1  20                                                  79 slots share this value
+   361  MAXDC       1  20                                                  79 slots share this value
+   362  DCNCR       1  20                                                  79 slots share this value
+   363  NCRRMD      1  20                                                  79 slots share this value
+   364  WOMPST      1  20                                                  79 slots share this value
+   365  OANDA       1  20                                                  79 slots share this value
+   366  FXKEY      24  202020202020202020202020202020202020202020202020                            
+   367  QCCNTR      3  202030                              0               
+   368  POAVDT      1  20                                                  79 slots share this value
+   369  DCRSH       1  20                                                  79 slots share this value
+   370  ARPSWD      8  2020202020202020                                    
+   371  SRCOMM      1  20                                                  79 slots share this value
+   372  WOLBLS      1  20                                                  79 slots share this value
+   373  WOILTX      1  20                                                  79 slots share this value
+   374  HIDPTH      1  20                                                  79 slots share this value
+   375  DCTSWC     12  202020202020202020202020                            
+   376  ARCBOM      1  20                                                  79 slots share this value
+
+=== NEW 1:1 SLOT MAPPINGS ===
+  YN[105] = WHCTRL  (val=51)
+  YN[201] = APLANG  (val=45)
+  YN[ 88] = GLCTRL  (val=50)
+
+DONE. 377 entries, 3 new 1:1 mappings found.

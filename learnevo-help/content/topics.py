@@ -70,7 +70,7 @@ The launcher (`StartEvo.exe`) reads `C:\\ISTS\\taspro7.ini`, spawns
 `tp7runtime.exe`, and points it at the main menu RWN on the network:
 
 ```
-\\\\I2S109-SOLIDCRM\\DBAMFG$\\EvoERPmenu.rwn
+\\\\i2s-evo\\EVOERP\\EvoERPmenu.rwn
 ```
 
 See [[boot-sequence]] for the deep trace.
@@ -86,7 +86,7 @@ menu code.
 
 After login you'll see a company list (from `EVOMENU_SELCOMP.DCY`).
 Each company is a separate **per-code data folder** on the share — e.g.
-`\\\\i2s109-solidcrm\\DBAMFG$\\22\\*.B22` for company "22". Data
+`\\\\i2s-evo\\EVOERP\\22\\*.B22` for company "22". Data
 tables are completely isolated between companies; the COA, inventory,
 and ledger are all per-company. See [[multi-company]].
 
@@ -364,7 +364,7 @@ The EvoERP stack, top to bottom.
 
 - **Client install** (`C:\\ISTS\\`): `StartEvo.exe`, `tp7runtime.exe`,
   DLLs, local caches (`DFM\\`, `PDFS\\`), `WHOAMI.DBA` seat identity.
-- **Shared share** (`\\\\i2s109-solidcrm\\DBAMFG$\\`): every `.RWN`,
+- **Shared share** (`\\\\i2s-evo\\EVOERP\\`): every `.RWN`,
   `.DCY`, `.DFM`, `.RTM`, plus per-company data folders (`Default`,
   `22`, `AB`, `I2`, `Goldstar`, etc.).
 
@@ -426,10 +426,10 @@ The launcher (37 KB):
 
 ```
 [Setup]
-DataDictPath=\\\\I2S109-SOLIDCRM\\DBAMFG$\\
-DfltRunPrg=\\\\I2S109-SOLIDCRM\\DBAMFG$\\EvoERPmenu.rwn
+DataDictPath=\\\\i2s-evo\\EVOERP\\
+DfltRunPrg=\\\\i2s-evo\\EVOERP\\EvoERPmenu.rwn
 MultiUser=1
-HelpFileName=\\\\I2S109-SOLIDCRM\\DBAMFG$\\EvoHELP.CHM
+HelpFileName=\\\\i2s-evo\\EVOERP\\EvoHELP.CHM
 
 [FileManager]
 UseCodeBase=0
@@ -453,7 +453,7 @@ A 33 MB Delphi 7 executable that:
    `zipdll.dll`/`unzdll.dll` (zip).
 4. Reads local bootstrap files: `suwin6.dcy`, `suwin7.dcy`,
    `suwin6t.rwn`, `suwin7.rwn` from `C:\\ISTS\\`.
-5. Loads the main RWN: `\\\\I2S109-SOLIDCRM\\DBAMFG$\\EvoERPmenu.rwn`.
+5. Loads the main RWN: `\\\\i2s-evo\\EVOERP\\EvoERPmenu.rwn`.
 6. Decrypts the RWN (Twofish CFB, key in runtime — see [[dcy-rwn-decryption]]).
 7. Executes the compiled TAS 4GL program.
 
@@ -632,7 +632,7 @@ All companies share:
 
 ## Company folders seen on this install
 
-- `\\\\i2s109-solidcrm\\DBAMFG$\\Default\\` — primary/seed company
+- `\\\\i2s-evo\\EVOERP\\Default\\` — primary/seed company
 - `22`, `AB`, `AT`, `CA`, `Goldstar`, `I2`, `IT`, `UU` — active user-
   facing companies
 - `DefaultSQL` — SQL-centric variant (for the EvoPVT.jar helper)
@@ -1134,7 +1134,7 @@ of EvoERP — complementary to [[subsystem-evonotes]] (text notes).
 
 ## How it works
 
-- Files are stored in the `\\\\i2s109-solidcrm\\DBAMFG$\\LinkDoc\\` folder
+- Files are stored in the `\\\\i2s-evo\\EVOERP\\LinkDoc\\` folder
   on the network share.
 - `ISLINKS` (313 fields) maps each attachment to its parent record.
   Key fields: `IS_LNK_UID` (record key), `IS_LNK_LINK` (filename/path),
@@ -1345,7 +1345,7 @@ VCL forms**, and reports render via **Nevrona ReportBuilder**.
 ## What's in this installation
 
 - Client: `C:\\ISTS\\` (runtime, DLLs, local caches)
-- Shared code + data: `\\\\i2s109-solidcrm\\DBAMFG$\\`
+- Shared code + data: `\\\\i2s-evo\\EVOERP\\`
 - Companies in use: `Default`, `22`, `AB`, `AT`, `CA`, `Goldstar`,
   `I2`, `IT`, `UU` (plus `DefaultSQL`, `Testdata`, `DEV`)
 - Total database tables: **659**, with **24,113 fields**

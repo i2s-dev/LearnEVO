@@ -1,6 +1,6 @@
 # RTM Report Template Inventory by Module
 
-Status: verified — direct scan of `\\i2s109-solidcrm\DBAMFG$\` (Pass 410, 2026-06-30).
+Status: verified — direct scan of `\\i2s-evo\EVOERP\` (Pass 410, 2026-06-30).
 Source data: `samples/rtm_by_module.csv` (1,734 entries).
 
 ## Summary

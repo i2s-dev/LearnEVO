@@ -2,7 +2,7 @@
 
 Status: verified | Pass 325 2026-06-26 | updated Pass 403 2026-06-30
 
-Sources: hex analysis of 11 × `.IMP` and 8 × `.XPT` files from `\\i2s109-solidcrm\DBAMFG$\`
+Sources: hex analysis of 11 × `.IMP` and 8 × `.XPT` files from `\\i2s-evo\EVOERP\`
 (local copies in `samples/`).
 
 These two file types form the Data Entry/Exchange (DE) module's import and export configuration.

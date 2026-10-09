@@ -1,7 +1,7 @@
 # AR and SO Module — DFM Form Analysis
 Status: partial | verified-from-DFM
 
-Forms read directly from `\\I2S109-SOLIDCRM\DBAMFG$\T7AR*.DFM` and `T7SO*.DFM`.
+Forms read directly from `\\i2s-evo\EVOERP\T7AR*.DFM` and `T7SO*.DFM`.
 
 ---
 

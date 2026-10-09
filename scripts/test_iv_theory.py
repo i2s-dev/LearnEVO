@@ -33,8 +33,8 @@ print(f'Encrypt(IV): {K0_check.hex(" ")}')
 print(f'XOR check : 0x{xor4:08X}  expected 0x{EXP:08X}  {"PASS" if xor4==EXP else "FAIL"}')
 print()
 
-with open(r'\\i2s109-solidcrm\DBAMFG$\MDUMMY.DCY', 'rb') as f: dcy = f.read()
-with open(r'\\i2s109-solidcrm\DBAMFG$\mDummy.DFM', 'rb') as f: dfm = f.read()
+with open(r'\\i2s-evo\EVOERP\MDUMMY.DCY', 'rb') as f: dcy = f.read()
+with open(r'\\i2s-evo\EVOERP\mDummy.DFM', 'rb') as f: dfm = f.read()
 
 pt   = ofb(IV, dcy)
 body = pt[8:8+len(dfm)]
@@ -45,7 +45,7 @@ print(f'body[:40]: {body[:40].decode("latin-1", errors=".")}')
 print()
 
 # Also try the RWN validation check
-with open(r'\\i2s109-solidcrm\DBAMFG$\T7INA.RWN', 'rb') as f: rwn = f.read()
+with open(r'\\i2s-evo\EVOERP\T7INA.RWN', 'rb') as f: rwn = f.read()
 pt_rwn = ofb(IV, rwn[:16])
 rwn_val = pt_rwn[0:4] == pt_rwn[4:8]
 print(f'T7INA.RWN val_ok: {rwn_val}  pt[0:8]={pt_rwn[0:8].hex()}')

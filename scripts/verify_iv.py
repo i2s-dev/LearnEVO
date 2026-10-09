@@ -48,8 +48,8 @@ _KEY = hashlib.sha1(b'mabufoju').digest() + b'\x00' * 4  # 24 bytes (192-bit)
 # Known RWN files to test against (on-disk read-only)
 # ---------------------------------------------------------------------------
 _TEST_RWNS = [
-    r'\\i2s109-solidcrm\DBAMFG$\T7INA.RWN',
-    r'\\i2s109-solidcrm\DBAMFG$\EvoERPmenu.RWN',
+    r'\\i2s-evo\EVOERP\T7INA.RWN',
+    r'\\i2s-evo\EVOERP\EvoERPmenu.RWN',
     r'C:\ISTS\suwin7.rwn',
 ]
 # First 8 bytes of T7INA.RWN (confirmed in analysis): F8 13 B6 7B 3D 24 BC 45

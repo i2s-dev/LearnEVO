@@ -87,8 +87,8 @@ print("=" * 65)
 
 # Only attempt if we can figure out the padding from STEP 1.
 # Try both padding sizes for K_A against MDUMMY.DCY.
-DCY_FILE = r'\\i2s109-solidcrm\DBAMFG$\BKARHINV.DCY'
-ALT_DCY  = r'\\i2s109-solidcrm\DBAMFG$\MDUMMY.DCY'
+DCY_FILE = r'\\i2s-evo\EVOERP\BKARHINV.DCY'
+ALT_DCY  = r'\\i2s-evo\EVOERP\MDUMMY.DCY'
 
 def try_dcy_decrypt(dcy_path, key_raw, pad, key_label):
     try:

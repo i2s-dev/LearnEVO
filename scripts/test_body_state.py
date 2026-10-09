@@ -28,7 +28,7 @@ print(f'MDUMMY.DCY Validation PT: {val_pt.hex()}  match={val_pt[0:4]==val_pt[4:8
 
 # Copy mDummy.DFM
 import shutil, os
-dfm_src = r'\\i2s109-solidcrm\DBAMFG$\mDummy.DFM'
+dfm_src = r'\\i2s-evo\EVOERP\mDummy.DFM'
 dfm_dst = 'samples/mDummy.DFM'
 if not os.path.exists(dfm_dst):
     shutil.copy2(dfm_src, dfm_dst)

@@ -90,7 +90,7 @@ Status: **CIPHER FULLY SOLVED** | Last updated: 2026-06-16
 > TAS32 appears at decrypted offset 0xC5 of T7INA.RWN, then ship the decryptor.**
 
 Authorization: Vendor has granted explicit permission to decompile. The EvoERP version
-installed at \\i2s109-solidcrm\ is an older abandoned version no longer supported by the vendor.
+installed at \\i2s-evo\ is an older abandoned version no longer supported by the vendor.
 
 ---
 

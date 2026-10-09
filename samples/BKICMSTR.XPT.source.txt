@@ -1,3 +1,3 @@
-Source: \\i2s109-solidcrm\DBAMFG$\BKICMSTR.XPT
+Source: \\i2s-evo\EVOERP\BKICMSTR.XPT
 Copied: 2026-06-17
 Note: Empty export template (32000 bytes, header only, no data rows)

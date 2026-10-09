@@ -1,7 +1,7 @@
 # AP Check Printing Workflow
 Status: verified | from-SRC-analysis (Bkaph.SRC + Bkapha.SRC)
 
-Source files: `\\I2S109-SOLIDCRM\DBAMFG$\Bkaph.SRC` (continuous forms) and `Bkapha.SRC` (laser forms).
+Source files: `\\i2s-evo\EVOERP\Bkaph.SRC` (continuous forms) and `Bkapha.SRC` (laser forms).
 Both are plaintext TAS Pro 4GL — fully readable.
 
 ---

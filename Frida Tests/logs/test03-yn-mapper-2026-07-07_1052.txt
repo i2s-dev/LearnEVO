@@ -1,0 +1,373 @@
+TEST 03 - YN Slot Mapper
+==================================================
+Log file: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test03-yn-mapper-2026-07-07_1052.txt
+
+[*] Waiting for evoerp.exe...
+[+] Attached to evoerp.exe
+[+] Hooked BTRCALLID in WBTRV32.DLL at 0x5621300
+[+] All hooks active.
+
+--- Btrieve GetFirst #1 key='................................................................' len=2331 data=.......?.......?.......?.......?........Net 30  
+--- Btrieve GetFirst #2 key='................................................................' len=161 data=1         ...............................       
+--- Btrieve GetNext #3 key='1         ......................................................' len=161 data=10        ...............................       
+--- Btrieve GetNext #4 key='10        ......................................................' len=161 data=11        ...............................       
+--- Btrieve GetNext #5 key='11        ......................................................' len=161 data=12        ......................................
+--- Btrieve GetNext #6 key='12        ......................................................' len=161 data=2         ...............................       
+--- Btrieve GetNext #7 key='2         ......................................................' len=161 data=3         ...............................       
+--- Btrieve GetNext #8 key='3         ......................................................' len=161 data=4         ...............................       
+--- Btrieve GetNext #9 key='4         ......................................................' len=161 data=5         ...............................       
+--- Btrieve GetNext #10 key='5         ......................................................' len=161 data=6         ...............................       
+--- Btrieve GetNext #11 key='6         ......................................................' len=161 data=7         ...............................       
+--- Btrieve GetNext #12 key='7         ......................................................' len=161 data=8         ...............................       
+--- Btrieve GetNext #13 key='8         ......................................................' len=161 data=9         ...............................       
+--- Btrieve GetFirst #14 key='9         ......................................................' len=161 data=1         ...............................       
+--- Btrieve GetFirst #15 key='................................................................' len=161 data=1         ...............................       
+--- Btrieve GetNext #16 key='1         ......................................................' len=161 data=10        ...............................       
+--- Btrieve GetNext #17 key='10        ......................................................' len=161 data=11        ...............................       
+--- Btrieve GetNext #18 key='11        ......................................................' len=161 data=12        ......................................
+--- Btrieve GetNext #19 key='12        ......................................................' len=161 data=2         ...............................       
+--- Btrieve GetNext #20 key='2         ......................................................' len=161 data=3         ...............................       
+--- Btrieve GetNext #21 key='3         ......................................................' len=161 data=4         ...............................       
+--- Btrieve GetNext #22 key='4         ......................................................' len=161 data=5         ...............................       
+--- Btrieve GetNext #23 key='5         ......................................................' len=161 data=6         ...............................       
+--- Btrieve GetNext #24 key='6         ......................................................' len=161 data=7         ...............................       
+--- Btrieve GetNext #25 key='7         ......................................................' len=161 data=8         ...............................       
+--- Btrieve GetNext #26 key='8         ......................................................' len=161 data=9         ...............................       
+--- Btrieve GetFirst #27 key='9         ......................................................' len=161 data=1         ...............................       
+--- Btrieve GetFirst #28 key='................................................................' len=71 data=AALLEN         ....I2 METALS923!.  0 U          
+--- Btrieve GetNext #29 key='AALLEN         .................................................' len=71 data=ABAEZ1         ....I2 GENBA3Z   .  0 U          
+--- Btrieve GetNext #30 key='ABAEZ1         .................................................' len=71 data=ABERNACKI      ....I2.TEST123!  .  0 U          
+--- Btrieve GetNext #31 key='ABERNACKI      .................................................' len=71 data=ABISHIP        ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #32 key='ABISHIP        .................................................' len=71 data=ABLASS         ....I2.TODAY!!   .  0 U          
+--- Btrieve GetNext #33 key='ABLASS         .................................................' len=71 data=ADMIN          ....I2YI2ADMIN21!.  0 A          
+--- Btrieve GetNext #34 key='ADMIN          .................................................' len=71 data=ADMINTEMP      ....I2 WELCOME!  .999 A          
+--- Btrieve GetNext #35 key='ADMINTEMP      .................................................' len=71 data=AGUNALAN       ....I2 ANUSHGUNA .  0 U          
+--- Btrieve GetNext #36 key='AGUNALAN       .................................................' len=71 data=AJENNER        ....I2 PIPSQUEAK!.  0 U          
+--- Btrieve GetNext #37 key='AJENNER        .................................................' len=71 data=AJENNER        ....I2 ...........  0 U          
+--- Btrieve GetNext #38 key='AJENNER        .................................................' len=71 data=AJENNER        ....I2N...........  0 U          
+--- Btrieve GetNext #39 key='AJENNER        .................................................' len=71 data=ALOPEZ         ....I2 LOPEZ2001 .  0 U          
+--- Btrieve GetNext #40 key='ALOPEZ         .................................................' len=71 data=ALYSSAB        ....I2 SUBIE2015 .  0 U          
+--- Btrieve GetNext #41 key='ALYSSAB        .................................................' len=71 data=APICONE        ....I2 TESLA123  .  0 U          
+--- Btrieve GetNext #42 key='APICONE        .................................................' len=71 data=AREDDY         ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #43 key='AREDDY         .................................................' len=71 data=ARODRIGUEZ     ....I2NWELCOME2WT.  0 U          
+--- Btrieve GetNext #44 key='ARODRIGUEZ     .................................................' len=71 data=ASTEMPABI      ....I2 ALS042690 .  0 U          
+--- Btrieve GetNext #45 key='ASTEMPABI      .................................................' len=71 data=ASTEMPIEN      ....I2.MANGO7435 .  0 U          
+--- Btrieve GetNext #46 key='ASTEMPIEN      .................................................' len=71 data=AWESTCOTT      ....I2.AW1234!@  .  0 U          
+--- Btrieve GetNext #47 key='AWESTCOTT      .................................................' len=71 data=AWHELAN        ....I2 LINKINPARK.  0 U          
+--- Btrieve GetNext #48 key='AWHELAN        .................................................' len=71 data=BBENSON        ....I2 WELCOME202.  0 U          
+--- Btrieve GetNext #49 key='BBENSON        .................................................' len=71 data=BBERMEOGALLO   ....I2 NARUTO12R .  0 U          
+--- Btrieve GetNext #50 key='BBERMEOGALLO   .................................................' len=71 data=BBREWSTER      ....I2 BREWMILLS3.  0 U          
+--- Btrieve GetNext #51 key='BBREWSTER      .................................................' len=71 data=BBRUM          ....I2 COMPRA10  .  0 U          
+--- Btrieve GetNext #52 key='BBRUM          .................................................' len=71 data=BCOLADARCI     ....I2 MARBLE15! .  0 U          
+--- Btrieve GetNext #53 key='BCOLADARCI     .................................................' len=71 data=BFITZGERALD    ....I2 RUFUS2001 .  0 U          
+--- Btrieve GetNext #54 key='BFITZGERALD    .................................................' len=71 data=BHEBERT        ....I2 I2M1DDL3  .  0 U          
+--- Btrieve GetNext #55 key='BHEBERT        .................................................' len=71 data=BNAZARIO       ....I2 CHAUNCY   .  0 U          
+--- Btrieve GetNext #56 key='BNAZARIO       .................................................' len=71 data=BROSCOE        ....I2 030979    .  0 U          
+--- Btrieve GetNext #57 key='BROSCOE        .................................................' len=71 data=BROSCOE        ....I2 ...........  0 U          
+--- Btrieve GetNext #58 key='BROSCOE        .................................................' len=71 data=BSCHIBI        ....I2 NYMETS31  .  0 U          
+--- Btrieve GetNext #59 key='BSCHIBI        .................................................' len=71 data=BSCHOON        ....I2.99GALANT  .  0 U          
+--- Btrieve GetNext #60 key='BSCHOON        .................................................' len=71 data=CBOND          ....I2 CB140CADD .  0 U          
+--- Btrieve GetNext #61 key='CBOND          .................................................' len=71 data=CFERRIS        ....I2N47@WARNER .  0 U          
+--- Btrieve GetNext #62 key='CFERRIS        .................................................' len=71 data=CHENION        ....I2.NASCAR    .  0 U          
+--- Btrieve GetNext #63 key='CHENION        .................................................' len=71 data=CHORDERN       ....I2 GASTON1234.  0 U          
+--- Btrieve GetNext #64 key='CHORDERN       .................................................' len=71 data=CHORDERNABI    ....I2 GASTON1234.  0 U          
+--- Btrieve GetNext #65 key='CHORDERNABI    .................................................' len=71 data=CJONES         ....I2 ABC1234   .  0 U          
+--- Btrieve GetNext #66 key='CJONES         .................................................' len=71 data=CKHIM          ....I2.TEST123   .  0 U          
+--- Btrieve GetNext #67 key='CKHIM          .................................................' len=71 data=CMEJIA         ....I2 BABY1125  .  0 U          
+--- Btrieve GetNext #68 key='CMEJIA         .................................................' len=71 data=COVALLE        ....I2NROSA2381  .  0 U          
+--- Btrieve GetNext #69 key='COVALLE        .................................................' len=71 data=CPION          ....I2 WATERTOWN .  0 U          
+--- Btrieve GetNext #70 key='CPION          .................................................' len=71 data=CREED          ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #71 key='CREED          .................................................' len=71 data=CRICE          ....I2 VERONICA53.  0 U          
+--- Btrieve GetNext #72 key='CRICE          .................................................' len=71 data=CUSTSERVMGR    ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #73 key='CUSTSERVMGR    .................................................' len=71 data=CWHITFORD      ....I2.I2SCW123  .  0 U          
+--- Btrieve GetNext #74 key='CWHITFORD      .................................................' len=71 data=CYCLE          ....I2 CCC       .  0 U          
+--- Btrieve GetNext #75 key='CYCLE          .................................................' len=71 data=CYCLE2         ....I2.CCC       .  0 U          
+--- Btrieve GetNext #76 key='CYCLE2         .................................................' len=71 data=DCARBOBABI     ....I2 TEST456   .  0 U          
+--- Btrieve GetNext #77 key='DCARBOBABI     .................................................' len=71 data=DCARBON        ....I2.HENRY     .  0 U          
+--- Btrieve GetNext #78 key='DCARBON        .................................................' len=71 data=DDIAZ          ....I2.MARIA2007 .  0 U          
+--- Btrieve GetNext #79 key='DDIAZ          .................................................' len=71 data=DDOMENICA      ....I2 DISNEYCHAN.  0 U          
+--- Btrieve GetNext #80 key='DDOMENICA      .................................................' len=71 data=DEISWERT       ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #81 key='DEISWERT       .................................................' len=71 data=DEISWERT       ....I2 ...........  0 U          
+--- Btrieve GetNext #82 key='DEISWERT       .................................................' len=71 data=DELLIOTT       ....I2 MARBLE15! .  0 U          
+--- Btrieve GetNext #83 key='DELLIOTT       .................................................' len=71 data=DELLIOTTABI    ....I2 MARBLE15! .  0 U          
+--- Btrieve GetNext #84 key='DELLIOTTABI    .................................................' len=71 data=DFRENETTE      ....I2.KOBE123   .  0 U          
+--- Btrieve GetNext #85 key='DFRENETTE      .................................................' len=71 data=DFRENETTEABI   ....I2 KOBE123   .  0 U          
+--- Btrieve GetNext #86 key='DFRENETTEABI   .................................................' len=71 data=DKOWALSKI      ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #87 key='DKOWALSKI      .................................................' len=71 data=DLAYNE         ....I2 XDBJ5%G2Z%.  0 U          
+--- Btrieve GetNext #88 key='DLAYNE         .................................................' len=71 data=DLAYNE         ....I2 ...........  0 U          
+--- Btrieve GetNext #89 key='DLAYNE         .................................................' len=71 data=DMAYORGA       ....I2 LODEEVO1  .  0 U          
+--- Btrieve GetNext #90 key='DMAYORGA       .................................................' len=71 data=DPAINE         ....I2.DEEPEE99  .  0 U          
+--- Btrieve GetNext #91 key='DPAINE         .................................................' len=71 data=DPAINEABI      ....I2 ABI123    .  0 U          
+--- Btrieve GetNext #92 key='DPAINEABI      .................................................' len=71 data=DSIKORA        ....I2 LOTUS355  .  0 U          
+--- Btrieve GetNext #93 key='DSIKORA        .................................................' len=71 data=DSPENCER       ....I2 DAVINCI11 .  0 U          
+--- Btrieve GetNext #94 key='DSPENCER       .................................................' len=71 data=ECOLON         ....I2 MANNIEWIN1.  0 U          
+--- Btrieve GetNext #95 key='ECOLON         .................................................' len=71 data=EMARTINEZ      ....I2NJAYDEN1503.  0 U          
+--- Btrieve GetNext #96 key='EMARTINEZ      .................................................' len=71 data=ENATALE        ....I2 MARLEY1115.  0 U          
+--- Btrieve GetNext #97 key='ENATALE        .................................................' len=71 data=ENAVEDO        ....I2 ELIZ09    .  0 U          
+--- Btrieve GetNext #98 key='ENAVEDO        .................................................' len=71 data=ENAVEDOABI     ....I2 TEST456   .  0 U          
+--- Btrieve GetNext #99 key='ENAVEDOABI     .................................................' len=71 data=EQUITUIZACA    ....I2 BEN-JI2018.  0 U          
+--- Btrieve GetNext #100 key='EQUITUIZACA    .................................................' len=71 data=ERENE          ....I2 RI2QUAL!TY.  0 U          
+--- Btrieve GetNext #101 key='ERENE          .................................................' len=71 data=FALCANTARA     ....I2NFRANK2026 .  0 U          
+--- Btrieve GetNext #102 key='FALCANTARA     .................................................' len=71 data=FLEONARDO      ....I2.LOVE0823! .  0 U          
+--- Btrieve GetNext #103 key='FLEONARDO      .................................................' len=71 data=FLIU           ....I2 LOUIS!!   .  0 U          
+--- Btrieve GetNext #104 key='FLIU           .................................................' len=71 data=FRIVAS         ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #105 key='FRIVAS         .................................................' len=71 data=FRIVAS         ....I2 ...........  0 U          
+--- Btrieve GetNext #106 key='FRIVAS         .................................................' len=71 data=FRIVAS         ....I2 ...........  0 U          
+--- Btrieve GetNext #107 key='FRIVAS         .................................................' len=71 data=FRIVAS         ....I2 ...........  0 U          
+--- Btrieve GetNext #108 key='FRIVAS         .................................................' len=71 data=GADAMS         ....I2.QWERT6    .  0 U          
+--- Btrieve GetNext #109 key='GADAMS         .................................................' len=71 data=GARCE          ....I2 GUTTAGDS  .  0 U          
+--- Btrieve GetNext #110 key='GARCE          .................................................' len=71 data=GBONACORSI     ....I2 GB2269    .  0 U          
+--- Btrieve GetNext #111 key='GBONACORSI     .................................................' len=71 data=GFROHMAN       ....I2 MICHELLE00.  0 U          
+--- Btrieve GetNext #112 key='GFROHMAN       .................................................' len=71 data=GGUZOWSKI      ....I2 GUZO_2023!.  0 U          
+--- Btrieve GetNext #113 key='GGUZOWSKI      .................................................' len=71 data=GHOXHA         ....I2 YAHOO#1200.  0 U          
+--- Btrieve GetNext #114 key='GHOXHA         .................................................' len=71 data=GJARVIS        ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #115 key='GJARVIS        .................................................' len=71 data=GKELLOGG       ....I2 I2SYSTEMS .  0 U          
+--- Btrieve GetNext #116 key='GKELLOGG       .................................................' len=71 data=GMAC           ....I2.GEMS0424/ .  0 U          
+--- Btrieve GetNext #117 key='GMAC           .................................................' len=71 data=GWOODING       ....I2.TOLL2MORR .  0 U          
+--- Btrieve GetNext #118 key='GWOODING       .................................................' len=71 data=HGANZEL        ....I2 LUKE1434$ .  0 U          
+--- Btrieve GetNext #119 key='HGANZEL        .................................................' len=71 data=HHEATH         ....I2 FIRMLY123G.  0 U          
+--- Btrieve GetNext #120 key='HHEATH         .................................................' len=71 data=HTIMBRELL      ....I2 DECLYN1   .  0 U          
+--- Btrieve GetNext #121 key='HTIMBRELL      .................................................' len=71 data=HVILBOIS       ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #122 key='HVILBOIS       .................................................' len=71 data=I2SSHIP        ....I2.TEST123   .  0 U          
+--- Btrieve GetNext #123 key='I2SSHIP        .................................................' len=71 data=IKESSLER       ....I2.BATMAN12! .  0 U          
+--- Btrieve GetNext #124 key='IKESSLER       .................................................' len=71 data=ISTEMPLATE     ....I2 ..        .  0 U          
+--- Btrieve GetNext #125 key='ISTEMPLATE     .................................................' len=71 data=IWARNER        ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #126 key='IWARNER        .................................................' len=71 data=JBATTA         ....I2 SANDMAN93 .  0 U          
+--- Btrieve GetNext #127 key='JBATTA         .................................................' len=71 data=JCHARETTE      ....I2.0410      .  0 U          
+--- Btrieve GetNext #128 key='JCHARETTE      .................................................' len=71 data=JCOUTU         ....I2 JCDE32WS  .  0 U          
+--- Btrieve GetNext #129 key='JCOUTU         .................................................' len=71 data=JDOEBRICK      ....I2 JIMLEIGH  .  0 U          
+--- Btrieve GetNext #130 key='JDOEBRICK      .................................................' len=71 data=JDOMINGOS      ....I2 LOD120184 .  0 U          
+--- Btrieve GetNext #131 key='JDOMINGOS      .................................................' len=71 data=JDUMAS         ....I2 JLDUMAS09!.  0 U          
+--- Btrieve GetNext #132 key='JDUMAS         .................................................' len=71 data=JDUMAS         ....I2N...........  0 U          
+--- Btrieve GetNext #133 key='JDUMAS         .................................................' len=71 data=JEDGERLY       ....I2 BROWN#TROU.  0 U          
+--- Btrieve GetNext #134 key='JEDGERLY       .................................................' len=71 data=JFLEMING       ....I2 UGRAS     .  0 U          
+--- Btrieve GetNext #135 key='JFLEMING       .................................................' len=71 data=JFOOTE         ....I2 MOLLYWAS12.  0 U          
+--- Btrieve GetNext #136 key='JFOOTE         .................................................' len=71 data=JFOOTE         ....I2 ...........  0 U          
+--- Btrieve GetNext #137 key='JFOOTE         .................................................' len=71 data=JGUARNA        ....I2 NICO_71122.  0            
+--- Btrieve GetNext #138 key='JGUARNA        .................................................' len=71 data=JHARRINGTON    ....I2 JULY2022! .  0 U          
+--- Btrieve GetNext #139 key='JHARRINGTON    .................................................' len=71 data=JHARRINGTONABI ....I2 JULY2022! .  0 U          
+--- Btrieve GetNext #140 key='JHARRINGTONABI .................................................' len=71 data=JHULL          ....I2 TRACEY516 .  0 U          
+--- Btrieve GetNext #141 key='JHULL          .................................................' len=71 data=JMATOS         ....I2 ELIJAH0724.  0 U      2026
+--- Btrieve GetNext #142 key='JMATOS         .................................................' len=71 data=JMETO          ....I2 WYNNWOOD  .  0 U          
+--- Btrieve GetNext #143 key='JMETO          .................................................' len=71 data=JMOOTE         ....I2.EZDUZIT1  .  0 U          
+--- Btrieve GetNext #144 key='JMOOTE         .................................................' len=71 data=JMSUDOL        ....I2 888777ROCK.  0 U          
+--- Btrieve GetNext #145 key='JMSUDOL        .................................................' len=71 data=JNEWTON        ....I2.MOOCHIE13 .  0 U          
+--- Btrieve GetNext #146 key='JNEWTON        .................................................' len=71 data=JOEPECK        ....I2 WASWAS11  .  0 U          
+--- Btrieve GetNext #147 key='JOEPECK        .................................................' len=71 data=JOHLWEILER     ....I2 TRAUMAK9  .  0            
+--- Btrieve GetNext #148 key='JOHLWEILER     .................................................' len=71 data=JORTEGA        ....I2 CANELO04! .  0 U          
+--- Btrieve GetNext #149 key='JORTEGA        .................................................' len=71 data=JPASTORELLA    ....I2 PASTY6969*.  0 U          
+--- Btrieve GetNext #150 key='JPASTORELLA    .................................................' len=71 data=JPATNOE        ....I2 JP0987Y   .  0 U          
+--- Btrieve GetNext #151 key='JPATNOE        .................................................' len=71 data=JPECK          ....I2 JWPECK522 .  0 U          
+--- Btrieve GetNext #152 key='JPECK          .................................................' len=71 data=JPINEDA        ....I2.BRIANNA201.  0 U          
+--- Btrieve GetNext #153 key='JPINEDA        .................................................' len=71 data=JPITRUZZ       ....I2.I2JPIT    .  0 U          
+--- Btrieve GetNext #154 key='JPITRUZZ       .................................................' len=71 data=JRAMIREZ       ....I2.I2ROCKS!  .  0 U      2023
+--- Btrieve GetNext #155 key='JRAMIREZ       .................................................' len=71 data=JRIVERA        ....I2 BENDECIDO9.  0 U          
+--- Btrieve GetNext #156 key='JRIVERA        .................................................' len=71 data=JSMITH         ....I2NBATMAN860 .  0 U          
+--- Btrieve GetNext #157 key='JSMITH         .................................................' len=71 data=JSTEWART       ....I2NLITTLEMAN .  0 U          
+--- Btrieve GetNext #158 key='JSTEWART       .................................................' len=71 data=JSUDOL         ....I2 MEGHAN2019.  0 U          
+--- Btrieve GetNext #159 key='JSUDOL         .................................................' len=71 data=JTRUSLER       ....I2 WHITPC@202.999 U          
+--- Btrieve GetNext #160 key='JTRUSLER       .................................................' len=71 data=JVANETTEN      ....I2 JUST4ME   .  0 U          
+--- Btrieve GetNext #161 key='JVANETTEN      .................................................' len=71 data=JVITA          ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #162 key='JVITA          .................................................' len=71 data=JWARD          ....I2 DODGE2001 .  0 U          
+--- Btrieve GetNext #163 key='JWARD          .................................................' len=71 data=KDONOVAN       ....I2 WHCPA123* .  0 U          
+--- Btrieve GetNext #164 key='KDONOVAN       .................................................' len=71 data=KJOHNSON       ....I2 SPRING#202.  0 U          
+--- Btrieve GetNext #165 key='KJOHNSON       .................................................' len=71 data=KLUDINGTON     ....I2 I2-2023   .  0 U          
+--- Btrieve GetNext #166 key='KLUDINGTON     .................................................' len=71 data=KMANZOLINO     ....I2 COLTON139!.  0 U          
+--- Btrieve GetNext #167 key='KMANZOLINO     .................................................' len=71 data=KMCTIGUE       ....I2 KELLEN224!.  0 U          
+--- Btrieve GetNext #168 key='KMCTIGUE       .................................................' len=71 data=KNELTHROPP     ....I2.KEITHEVO1 .  0 U      2025
+--- Btrieve GetNext #169 key='KNELTHROPP     .................................................' len=71 data=KPENNEY        ....I2 ANUNNAKI  .  0 U          
+--- Btrieve GetNext #170 key='KPENNEY        .................................................' len=71 data=KPOZUCEK       ....I2 K!P0010171.  0 U          
+--- Btrieve GetNext #171 key='KPOZUCEK       .................................................' len=71 data=KRICHARDONE    ....I2 RICHARDONE.  0 U          
+--- Btrieve GetNext #172 key='KRICHARDONE    .................................................' len=71 data=KWHITTEMORE    ....I2 WHITTEMORE.  0 U          
+--- Btrieve GetNext #173 key='KWHITTEMORE    .................................................' len=71 data=KWRIGHT        ....I2 KW081693! .  0 U          
+--- Btrieve GetNext #174 key='KWRIGHT        .................................................' len=71 data=LABOR          ....I2............  0 U          
+--- Btrieve GetNext #175 key='LABOR          .................................................' len=71 data=LABORABI       ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #176 key='LABORABI       .................................................' len=71 data=LABORI2S       ....I2.TEST123   .  0 U          
+--- Btrieve GetNext #177 key='LABORI2S       .................................................' len=71 data=LAUSTIN        ....I2 I2SYS2025!.  0 U          
+--- Btrieve GetNext #178 key='LAUSTIN        .................................................' len=71 data=LJANKAUSKAS    ....I2NGETHO#15  .  0 U          
+--- Btrieve GetNext #179 key='LJANKAUSKAS    .................................................' len=71 data=LMCKENZIE      ....I2.ILUVLOS24 .  0 U          
+--- Btrieve GetNext #180 key='LMCKENZIE      .................................................' len=71 data=LMHHULL        ....I2 LMHHULL   .  0 U          
+--- Btrieve GetNext #181 key='LMHHULL        .................................................' len=71 data=LMORALES       ....I2 ANALEA123!.  0 U          
+--- Btrieve GetNext #182 key='LMORALES       .................................................' len=71 data=LPLUTINO       ....I2 PENGUIN   .  0 U          
+--- Btrieve GetNext #183 key='LPLUTINO       .................................................' len=71 data=LRODRIGUEZ     ....I2 HAPPY@718 .  0 U          
+--- Btrieve GetNext #184 key='LRODRIGUEZ     .................................................' len=71 data=MAKROUR        ....I2 10082018M&.  0 U          
+--- Btrieve GetNext #185 key='MAKROUR        .................................................' len=71 data=MARISSALOPEZ   ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #186 key='MARISSALOPEZ   .................................................' len=71 data=MARKZ          ....I2YPRADA     .  1 A          
+--- Btrieve GetNext #187 key='MARKZ          .................................................' len=71 data=MARYMAZZA      ....I2NGT2025!   .  0 U          
+--- Btrieve GetNext #188 key='MARYMAZZA      .................................................' len=71 data=MATHANDLER     ....I2NI2SYSTEMS .  0 U          
+--- Btrieve GetNext #189 key='MATHANDLER     .................................................' len=71 data=MATHANDLER2    ....I2 I2SYSTEMS .  0 U          
+--- Btrieve GetNext #190 key='MATHANDLER2    .................................................' len=71 data=MATHANDLER2    ....I2 ...........  0 U          
+--- Btrieve GetNext #191 key='MATHANDLER2    .................................................' len=71 data=MBULLARD       ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #192 key='MBULLARD       .................................................' len=71 data=MCATALANO      ....I2 MATTZ2K4K!.  0 U          
+--- Btrieve GetNext #193 key='MCATALANO      .................................................' len=71 data=MGEORGE        ....I2 PROJECT420.  0 U          
+--- Btrieve GetNext #194 key='MGEORGE        .................................................' len=71 data=MGRANITTO      ....I2 VICNATROB1.  0 U          
+--- Btrieve GetNext #195 key='MGRANITTO      .................................................' len=71 data=MHAN           ....I2NGETLOST   .  1 A          
+--- Btrieve GetNext #196 key='MHAN           .................................................' len=71 data=MHANDLER1      ....I2 MHANDLER1 .  0 U      2024
+--- Btrieve GetNext #197 key='MHANDLER1      .................................................' len=71 data=MHUY           ....I2 JOSHUA0406.  0 U          
+--- Btrieve GetNext #198 key='MHUY           .................................................' len=71 data=MJOAQUIN       ....I2.POWERBYSET.  0 U          
+--- Btrieve GetNext #199 key='MJOAQUIN       .................................................' len=71 data=MKISH          ....I2.STEFF@123 .  0 U          
+--- Btrieve GetNext #200 key='MKISH          .................................................' len=71 data=MKISHABI       ....I2 TEST456   .  0 U          
+--- Btrieve GetNext #201 key='MKISHABI       .................................................' len=71 data=MKUSAILA       ....I2 PEPSICOLA .  0 U          
+--- Btrieve GetNext #202 key='MKUSAILA       .................................................' len=71 data=MLAMOUNTAIN    ....I2 BOOK8445! .  0 U          
+--- Btrieve GetNext #203 key='MLAMOUNTAIN    .................................................' len=71 data=MLUCHETTA      ....I2 090316MSZS.  0 U          
+--- Btrieve GetNext #204 key='MLUCHETTA      .................................................' len=71 data=MMARTINEZ      ....I2 YETZIEL   .  0 U          
+--- Btrieve GetNext #205 key='MMARTINEZ      .................................................' len=71 data=MMAZZA         ....I2 GT2025!   .  0 U          
+--- Btrieve GetNext #206 key='MMAZZA         .................................................' len=71 data=MMCNAMARA      ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #207 key='MMCNAMARA      .................................................' len=71 data=MMORANO        ....I2.MMEST0    .  0 U          
+--- Btrieve GetNext #208 key='MMORANO        .................................................' len=71 data=MMURPHY        ....I2 CAMERON   .  0 U          
+--- Btrieve GetNext #209 key='MMURPHY        .................................................' len=71 data=MPALAN         ....I2 MUTHU138  .  0 A          
+--- Btrieve GetNext #210 key='MPALAN         .................................................' len=71 data=MQUINTUNA      ....I2 MARIA1381 .  0 U          
+--- Btrieve GetNext #211 key='MQUINTUNA      .................................................' len=71 data=MRUPP          ....I2.I2SYSTEMS .  0 U          
+--- Btrieve GetNext #212 key='MRUPP          .................................................' len=71 data=MWATSON        ....I2.CHESTER1! .  0 U          
+--- Btrieve GetNext #213 key='MWATSON        .................................................' len=71 data=NARIAS         ....I2 ET31Y!    .  0 U          
+--- Btrieve GetNext #214 key='NARIAS         .................................................' len=71 data=NBESSETTE      ....I2 SILLYGADFL.  0 U          
+--- Btrieve GetNext #215 key='NBESSETTE      .................................................' len=71 data=NPERUGINI      ....I2 $MONA7272!.  0 U          
+--- Btrieve GetNext #216 key='NPERUGINI      .................................................' len=71 data=NSAWYER        ....I2.SAWYER2   .  0 U          
+--- Btrieve GetNext #217 key='NSAWYER        .................................................' len=71 data=NVERETTO       ....I2 KATIEBUG9!.  0 U          
+--- Btrieve GetNext #218 key='NVERETTO       .................................................' len=71 data=NWEAVING       ....I2NMELINDA80 .  0 U          
+--- Btrieve GetNext #219 key='NWEAVING       .................................................' len=71 data=NWEAVING       ....I2N...........  0 U          
+--- Btrieve GetNext #220 key='NWEAVING       .................................................' len=71 data=OGILL          ....I2.CREELED1  .  0 U          
+--- Btrieve GetNext #221 key='OGILL          .................................................' len=71 data=OTENNEY        ....I2 CH@NGEM3  .  0 U          
+--- Btrieve GetNext #222 key='OTENNEY        .................................................' len=71 data=PCIANCIOLO     ....I2 01VANAGON9.  0 U          
+--- Btrieve GetNext #223 key='PCIANCIOLO     .................................................' len=71 data=PFRANSON       ....I2 IBANEZ@303.  0 U          
+--- Btrieve GetNext #224 key='PFRANSON       .................................................' len=71 data=PMOODY         ....I2NANARKIE13 .  0 U          
+--- Btrieve GetNext #225 key='PMOODY         .................................................' len=71 data=PRODASSIST     ....I2.TEST456   .  0 U          
+--- Btrieve GetNext #226 key='PRODASSIST     .................................................' len=71 data=PRODSUPER      ....I2.TEST123   .  0 U          
+--- Btrieve GetNext #227 key='PRODSUPER      .................................................' len=71 data=PSANTOS        ....I2 CHELO1    .  0 U          
+--- Btrieve GetNext #228 key='PSANTOS        .................................................' len=71 data=PSANTOSABI     ....I2 ROJO13    .  0 U          
+--- Btrieve GetNext #229 key='PSANTOSABI     .................................................' len=71 data=PTHORAT        ....I2.I2THORAT  .  0 U          
+--- Btrieve GetNext #230 key='PTHORAT        .................................................' len=71 data=PURCHASING     ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #231 key='PURCHASING     .................................................' len=71 data=PURCHPLAN      ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #232 key='PURCHPLAN      .................................................' len=71 data=RBENOIT        ....I2 TEST12345 .  0 U          
+--- Btrieve GetNext #233 key='RBENOIT        .................................................' len=71 data=RCLAYTON       ....I2 FATMAN660!.  0 U          
+--- Btrieve GetNext #234 key='RCLAYTON       .................................................' len=71 data=RDONOHUE       ....I2 I2355     .  0 U          
+--- Btrieve GetNext #235 key='RDONOHUE       .................................................' len=71 data=RGRANITTO      ....I2NVICNATROB!.  0 U          
+--- Btrieve GetNext #236 key='RGRANITTO      .................................................' len=71 data=RHENSON        ....I2 PALMBG3!  .  0 A          
+--- Btrieve GetNext #237 key='RHENSON        .................................................' len=71 data=RLAVALLEE      ....I2.BONDEDGE20.  0 U          
+--- Btrieve GetNext #238 key='RLAVALLEE      .................................................' len=71 data=RLOPEZ         ....I2.SUPERSALES.  0 U          
+--- Btrieve GetNext #239 key='RLOPEZ         .................................................' len=71 data=RMCGONIGAL     ....I2 1303      .  0 U          
+--- Btrieve GetNext #240 key='RMCGONIGAL     .................................................' len=71 data=RMCGONIGAL     ....I2 ...........  0 U          
+--- Btrieve GetNext #241 key='RMCGONIGAL     .................................................' len=71 data=RMCGONIGALABI  ....I2 1303      .  0 U          
+--- Btrieve GetNext #242 key='RMCGONIGALABI  .................................................' len=71 data=RONEILL        ....I2 EAGLES33  .  0 U          
+--- Btrieve GetNext #243 key='RONEILL        .................................................' len=71 data=RONEILLABI     ....I2 EAGLES33  .  0 U          
+--- Btrieve GetNext #244 key='RONEILLABI     .................................................' len=71 data=SALI           ....I2 POKEMON6  .  0 U          
+--- Btrieve GetNext #245 key='SALI           .................................................' len=71 data=SBABIGIAN      ....I2 FARMINGTON.  0 U          
+--- Btrieve GetNext #246 key='SBABIGIAN      .................................................' len=71 data=SCARNEY        ....I2 WELCOME!  .999 U          
+--- Btrieve GetNext #247 key='SCARNEY        .................................................' len=71 data=SCISKEY        ....I2 FIN23PURP$.  0 U          
+--- Btrieve GetNext #248 key='SCISKEY        .................................................' len=71 data=SGONZALEZ      ....I2 GILBERT25 .  0 U          
+--- Btrieve GetNext #249 key='SGONZALEZ      .................................................' len=71 data=SHIPABI        ....I2 ABI123    .  0 U          
+--- Btrieve GetNext #250 key='SHIPABI        .................................................' len=71 data=SHIPI2S        ....I2 UPSFEDEX  .  0 U          
+--- Btrieve GetNext #251 key='SHIPI2S        .................................................' len=71 data=SMACDONALD     ....I2 MUSHMAX999.  0 U          
+--- Btrieve GetNext #252 key='SMACDONALD     .................................................' len=71 data=SMT OPERATOR   ....I2.SMT2012   .  0 U          
+--- Btrieve GetNext #253 key='SMT OPERATOR   .................................................' len=71 data=SMURPHY        ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #254 key='SMURPHY        .................................................' len=71 data=SNATHANSON     ....I2 HEMLOCK1! .  0 U          
+--- Btrieve GetNext #255 key='SNATHANSON     .................................................' len=71 data=SPOTTS         ....I2 !OODITL7  .  0 U          
+--- Btrieve GetNext #256 key='SPOTTS         .................................................' len=71 data=SPOTTSABI      ....I2 !OODITL7  .  0 U          
+--- Btrieve GetNext #257 key='SPOTTSABI      .................................................' len=71 data=SSANZO         ....I2 FHR8034$  .  0 U          
+--- Btrieve GetNext #258 key='SSANZO         .................................................' len=71 data=SSAVARIAU      ....I2 ACURAMDX17.  0 U          
+--- Btrieve GetNext #259 key='SSAVARIAU      .................................................' len=71 data=SSIMONIN       ....I2 !THUNDER2 .  0 U          
+--- Btrieve GetNext #260 key='SSIMONIN       .................................................' len=71 data=SSUNDARAM      ....I2.TWALD&DM1 .  0 U          
+--- Btrieve GetNext #261 key='SSUNDARAM      .................................................' len=71 data=STEVESP        ....I2 SP!RO666  .  0 U          
+--- Btrieve GetNext #262 key='STEVESP        .................................................' len=71 data=STEVESPABI     ....I2 TEST123!  .  0 U          
+--- Btrieve GetNext #263 key='STEVESPABI     .................................................' len=71 data=SVANJUR        ....I2 NINAKATARI.  0 U          
+--- Btrieve GetNext #264 key='SVANJUR        .................................................' len=71 data=TARMSTRONG     ....I2 I2-2023   .  0 U          
+--- Btrieve GetNext #265 key='TARMSTRONG     .................................................' len=71 data=TEDDES         ....I2.TEST123   .  0 U          
+--- Btrieve GetNext #266 key='TEDDES         .................................................' len=71 data=TESPOSITO      ....I2 PEDDLER33!.  0 U          
+--- Btrieve GetNext #267 key='TESPOSITO      .................................................' len=71 data=TEST           ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #268 key='TEST           .................................................' len=71 data=TEST1          ....I2 TEST1     .  0 U          
+--- Btrieve GetNext #269 key='TEST1          .................................................' len=71 data=TJOSEPH        ....I2 MADII2006 .  0 U          
+--- Btrieve GetNext #270 key='TJOSEPH        .................................................' len=71 data=TLAMOUNTAIN    ....I2.CHARLIE   .  0 U          
+--- Btrieve GetNext #271 key='TLAMOUNTAIN    .................................................' len=71 data=TLEMELIN       ....I2 TIME4!    .  0 U          
+--- Btrieve GetNext #272 key='TLEMELIN       .................................................' len=71 data=TMEFFORD       ....I2 HAILFIRE7 .  0 U          
+--- Btrieve GetNext #273 key='TMEFFORD       .................................................' len=71 data=TNOLAN         ....I2 WEBUILD@69.  0 U          
+--- Btrieve GetNext #274 key='TNOLAN         .................................................' len=71 data=TNORTON        ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #275 key='TNORTON        .................................................' len=71 data=TOBRIEN        ....I2 HARLEY1200.  0 U          
+--- Btrieve GetNext #276 key='TOBRIEN        .................................................' len=71 data=TOMR           ....I2NABI       .  0 U          
+--- Btrieve GetNext #277 key='TOMR           .................................................' len=71 data=TOSBORNE       ....I2 OSCAR2MAX1.  0 U          
+--- Btrieve GetNext #278 key='TOSBORNE       .................................................' len=71 data=TREINHEIMER    ....I2 FISHING22 .  0 U          
+--- Btrieve GetNext #279 key='TREINHEIMER    .................................................' len=71 data=TRODEN         ....I2 PORSCHEZ  .  0 U          
+--- Btrieve GetNext #280 key='TRODEN         .................................................' len=71 data=TSCYCLE        ....I2.I2SYSTEMS .  0 U          
+--- Btrieve GetNext #281 key='TSCYCLE        .................................................' len=71 data=TSINCLAIR      ....I2 785RNFRQ65.  0 U          
+--- Btrieve GetNext #282 key='TSINCLAIR      .................................................' len=71 data=VANCE          ....I2 96WIND0WS*.999 U          
+--- Btrieve GetNext #283 key='VANCE          .................................................' len=71 data=VDOMINGOS      ....I2 VIC2021   .  0 U          
+--- Btrieve GetNext #284 key='VDOMINGOS      .................................................' len=71 data=VERIKSEN       ....I2 ACCOUNTS1 .  0 U          
+--- Btrieve GetNext #285 key='VERIKSEN       .................................................' len=71 data=WALMART        ....I2 HRCHRS    .  0 U          
+--- Btrieve GetNext #286 key='WALMART        .................................................' len=71 data=WARRAL         ....I2 TEST345   .  0 U          
+--- Btrieve GetNext #287 key='WARRAL         .................................................' len=71 data=WBRODHEAD      ....I2 TEST123   .  0 U          
+--- Btrieve GetNext #288 key='WBRODHEAD      .................................................' len=71 data=WRICARDO       ....I2 WELCOME!  .  0 U          
+--- Btrieve GetNext #289 key='WRICARDO       .................................................' len=71 data=WRICARDO       ....I2 ...........  0 U          
+--- Btrieve GetNext #290 key='WRICARDO       .................................................' len=71 data=WRICARDO       ....I2N...........  0 U          
+--- Btrieve GetNext #291 key='WRICARDO       .................................................' len=71 data=XIA            ....I2 BREANNA042.  0 A          
+--- Btrieve GetNext #292 key='XIA            .................................................' len=71 data=YALVARADO      ....I2N13LOVEYAX!.  0 U          
+--- Btrieve GetNext #293 key='YALVARADO      .................................................' len=71 data=YRODRIGUEZ     ....I2NANGI2016  .  0 U          
+--- Btrieve GetEqual #294 key='TSINCLAIR      .................................................' len=71 data=TSINCLAIR      ....I2 785RNFRQ65.  0 U          
+--- Btrieve GetFirst #295 key='................................................................' len=2331 data=................................................
+--- Btrieve GetFirst #296 key='................................................................' len=2331 data=................................................
+=== BKYSMSTR RECORD #297 (GetFirst) len=1045 key='................................................................' ===
+  Header [0:8] : ......y@ | 0000000000107940
+  YN[0..9]     : F NNNNNNCN (46204e4e4e4e4e4e434e)
+  YN[10..19]   : NNNNNNNYNN (4e4e4e4e4e4e4e594e4e)
+  YN[20..29]   : NYNNNNNYNN (4e594e4e4e4e4e594e4e)
+  YN[100..109] :  YYYAQAYYY (20595959415141595959)
+  YN[140..149] : YYYYYY YY  (59595959595920595920)
+  Full YN[0..249]:
+    YN[  0- 24]: F NNNNNNCNNNNNNNNYNNNYNNN  
+    YN[ 25- 49]: NNYNNIYY NDNN4YYYNNNY11 A  [27]=CALCLABR  [33]=INVAPREC  [38]=WOCALC  [40]=ALLSVCPO  [48]=APCHK
+    YN[ 50- 74]: NNNNIFNWNNAYYYNNYNNN  YYY  [65]=STDCST
+    YN[ 75- 99]: 442YYNYYNYYYNP             
+    YN[100-124]:  YYYAQAYYYYYYYZYYZYYY  YY  
+    YN[125-149]: YYY1Y YYYYYYYYYYYYYYY YY   
+    YN[150-174]:                            
+    YN[175-199]:                        AN  
+    YN[200-224]: 1EYYYYZYYYYYYYYYYN   YR42  
+    YN[225-249]: 0 YN1Y4     YRYYYYYYYYN00  [228]=DCSEQ  [229]=DCSYNC
+
+--- Btrieve GetFirst #298 key='................................................................' len=2331 data=................................................
+--- Btrieve GetNext #299 key='U]e=x`@        .................................................' len=312 data=..............U]e=x`@        KEW$__A>NKMA@@O>K  
+--- Btrieve GetNext #300 key='U]e=x`@        .................................................' len=312 data=..............U]e=x`@        KEW$__A>NKMA@@O>K  
+
+[*] Memory scan triggered...
+[*] Scanning memory for 23 known ISTS.CFG key strings...
+    (this may take 10-30 seconds)
+[+] Scan complete.
+  Found (6): CRHOLD@0x6a600ef, MRPDAY@0x6a61563, WOGKIT@0x6a5dabc, WOGDSC@0x6a61c01, DCSYNC@0x6a63290, STDCST@0x6a5d8ee
+  Not found (17): CMEST, CALCLABR, INVAPREC, ALLSVCPO, CSTMETH, RETBILL, ENTDEPT, ENTLOC, BOMMRP, BACKFLSH, PRINTSO, PRINTAR, PRINTAP, MRPROUND, DCSEQ, APCHK, WOCALC
+
+[!!!] TABLE STRUCTURE DETECTED -- 2 co-located key pairs:
+  WOGKIT@0x6a5dabc  <->  STDCST@0x6a5d8ee  dist=462
+  MRPDAY@0x6a61563  <->  WOGDSC@0x6a61c01  dist=1694
+
+[+] 1KB dump at 0x6a5d8ae:
+  +0000  0000000000000000000000000000000001000000000000000000000000000000  |................................|
+  +0020  0000000000000000000000000000000000000000000000495354532e4346472e  |.......................ISTS.CFG.|
+  +0040  5354444353540000000041000100000000000000000000000000000000010000  |STDCST....A.....................|
+  +0060  0000000000000000000000000000000000000000000000000000000000000000  |................................|
+  +0080  00000000495354532e4346472e55504c43535400000000410001000000000000  |....ISTS.CFG.UPLCST....A........|
+  +00a0  0000000000000000000001000000000000000000000000000000000000000000  |................................|
+  +00c0  0000000000000000000000000000000000495354532e4346472e534850464f42  |.................ISTS.CFG.SHPFOB|
+  +00e0  0000000041000100000000000000000000000000000000010000000000000000  |....A...........................|
+  +0100  0000000000000000000000000000000000000000000000000000000000004953  |..............................IS|
+  +0120  54532e4346472e43484b42414c00000000410001000000000000000000000000  |TS.CFG.CHKBAL....A..............|
+  +0140  0000000001000000000000000000000000000000000000000000000000000000  |................................|
+  +0160  0000000000000000000000495354532e4346472e434d504c4f43000000004100  |...........ISTS.CFG.CMPLOC....A.|
+  +0180  0100000000000000000000000000000000010000000000000000000000000000  |................................|
+  +01a0  000000000000000000000000000000000000000000000000495354532e434647  |........................ISTS.CFG|
+  +01c0  2e534f494f432000000000410001000000000000000000000000000000000100  |.SOIOC ....A....................|
+  +01e0  0000000000000000000000000000000000000000000000000000000000000000  |................................|
+  +0200  0000000000495354532e4346472e574f474b4954000000004100010000000000  |.....ISTS.CFG.WOGKIT....A.......|
+  +0220  0000000000000000000000010000000000000000000000000000000000000000  |................................|
+  +0240  000000000000000000000000000000000000495354532e4346472e5052545053  |..................ISTS.CFG.PRTPS|
+  +0260  2000000000410001000000000000000000000000000000000100000000000000  | ....A..........................|
+  +0280  0000000000000000000000000000000000000000000000000000000000000049  |...............................I|
+  +02a0  5354532e4346472e5049434b5420000000004100010000000000000000000000  |STS.CFG.PICKT ....A.............|
+  +02c0  0000000000010000000000000000000000000000000000000000000000000000  |................................|
+  +02e0  000000000000000000000000495354532e4346472e4443534551200000000041  |............ISTS.CFG.DCSEQ ....A|
+  +0300  0001000000000000000000000000000000000100000000000000000000000000  |................................|
+  +0320  00000000000000000000000000000000000000000000000000495354532e4346  |.........................ISTS.CF|
+  +0340  472e534352415020000000004100010000000000000000000000000000000001  |G.SCRAP ....A...................|
+  +0360  0000000000000000000000000000000000000000000000000000000000000000  |................................|
+  +0380  000000000000495354532e4346472e534f434847200000000041000100000000  |......ISTS.CFG.SOCHG ....A......|
+  +03a0  0000000000000000000000000100000000000000000000000000000000000000  |................................|
+  +03c0  00000000000000000000000000000000000000495354532e4346472e53485048  |...................ISTS.CFG.SHPH|
+  +03e0  5354000000004100010000000000000000000000000000000001000000000000  |ST....A.........................|
+

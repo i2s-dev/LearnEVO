@@ -17,7 +17,7 @@ HERE = Path(__file__).parent
 OUT = HERE.parent / "samples" / "rwn_strings"
 OUT.mkdir(exist_ok=True, parents=True)
 
-SHARES = [r"\\I2S109-SOLIDCRM\DBAMFG$"]
+SHARES = [r"\\i2s-evo\EVOERP"]
 
 
 def extract(path_str: str) -> tuple[str, int]:

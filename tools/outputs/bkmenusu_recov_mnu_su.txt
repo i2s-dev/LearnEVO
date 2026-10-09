@@ -1,0 +1,368 @@
+﻿=== ABERNACKI (gnum=6 bnum=41) ===
+
+=== ABLASS (gnum=5 bnum=47) ===
+
+=== ADMIN (gnum=10 bnum=43) ===
+
+=== AGUNALAN (gnum=7 bnum=45) ===
+
+=== ALYSSAB (gnum=7 bnum=45) ===
+
+=== AREDDY (gnum=5 bnum=49) ===
+
+=== ARODRIGUEZ (gnum=6 bnum=46) ===
+
+=== ASTEMPABI (gnum=6 bnum=53) ===
+
+=== ASTEMPIEN (gnum=6 bnum=53) ===
+
+=== AWESTCOTT (gnum=5 bnum=49) ===
+
+=== AWHELAN (gnum=6 bnum=47) ===
+
+=== BBENSON (gnum=5 bnum=47) ===
+
+=== BBERMEOGALLO (gnum=6 bnum=47) ===
+
+=== BBREWSTER (gnum=7 bnum=47) ===
+
+=== BBRUM (gnum=6 bnum=46) ===
+
+=== BCOLADARCI (gnum=8 bnum=49) ===
+
+=== BFITZGERALD (gnum=6 bnum=53) ===
+
+=== BHEBERT (gnum=6 bnum=46) ===
+
+=== BSCHIBI (gnum=6 bnum=46) ===
+
+=== BSCHOON (gnum=5 bnum=47) ===
+
+=== CBOND (gnum=6 bnum=47) ===
+
+=== CFERRIS (gnum=6 bnum=47) ===
+
+=== CHENION (gnum=6 bnum=47) ===
+
+=== CHORDERN (gnum=6 bnum=53) ===
+
+=== CHORDERNABI (gnum=6 bnum=53) ===
+
+=== CJONES (gnum=6 bnum=47) ===
+
+=== COVALLE (gnum=6 bnum=47) ===
+
+=== CREED (gnum=9 bnum=46) ===
+
+=== CRICE (gnum=5 bnum=47) ===
+
+=== DDIAZ (gnum=7 bnum=47) ===
+
+=== DFRENETTE (gnum=6 bnum=47) ===
+
+=== DFRENETTEABI (gnum=6 bnum=47) ===
+
+=== DLAYNE (gnum=6 bnum=53) ===
+
+=== DMAYORGA (gnum=7 bnum=45) ===
+
+=== DSIKORA (gnum=7 bnum=53) ===
+
+=== DSPENCER (gnum=6 bnum=44) ===
+
+=== ECOLON (gnum=6 bnum=47) ===
+
+=== EMARTINEZ (gnum=6 bnum=53) ===
+
+=== ERENE (gnum=6 bnum=47) ===
+
+=== FALCANTARA (gnum=6 bnum=47) ===
+
+=== FLEONARDO (gnum=7 bnum=50) ===
+
+=== FLIU (gnum=6 bnum=45) ===
+
+=== FRIVAS (gnum=6 bnum=47) ===
+
+=== GADAMS (gnum=6 bnum=53) ===
+
+=== GARCE (gnum=6 bnum=53) ===
+
+=== GBONACORSI (gnum=6 bnum=44) ===
+
+=== GFROHMAN (gnum=6 bnum=47) ===
+
+=== GGUZOWSKI (gnum=7 bnum=50) ===
+
+=== GJARVIS (gnum=6 bnum=47) ===
+
+=== GKELLOGG (gnum=5 bnum=47) ===
+
+=== GMAC (gnum=6 bnum=52) ===
+
+=== GWOODING (gnum=6 bnum=53) ===
+
+=== HGANZEL (gnum=6 bnum=46) ===
+
+=== HTIMBRELL (gnum=6 bnum=47) ===
+
+=== I2SSHIP (gnum=6 bnum=47) ===
+
+=== IKESSLER (gnum=6 bnum=53) ===
+
+=== IWARNER (gnum=6 bnum=47) ===
+
+=== JBATTA (gnum=7 bnum=53) ===
+
+=== JCHARETTE (gnum=6 bnum=47) ===
+
+=== JCOUTU (gnum=6 bnum=47) ===
+
+=== JDOEBRICK (gnum=6 bnum=47) ===
+
+=== JEDGERLY (gnum=6 bnum=47) ===
+
+=== JFLEMING (gnum=6 bnum=47) ===
+
+=== JFOOTE (gnum=6 bnum=52) ===
+
+=== JGUARNA (gnum=7 bnum=45) ===
+
+=== JHARRINGTON (gnum=6 bnum=46) ===
+
+=== JHARRINGTONABI (gnum=6 bnum=46) ===
+
+=== JHULL (gnum=6 bnum=47) ===
+
+=== JMETO (gnum=6 bnum=52) ===
+
+=== JMOOTE (gnum=6 bnum=47) ===
+
+=== JNEWTON (gnum=6 bnum=47) ===
+
+=== JOEPECK (gnum=6 bnum=47) ===
+
+=== JORTEGA (gnum=6 bnum=45) ===
+
+=== JPATNOE (gnum=7 bnum=45) ===
+
+=== JPINEDA (gnum=9 bnum=46) ===
+
+=== JPITRUZZ (gnum=6 bnum=47) ===
+
+=== JRAMIREZ (gnum=6 bnum=46) ===
+
+=== JSUDOL (gnum=8 bnum=49) ===
+
+=== JVANETTEN (gnum=5 bnum=44) ===
+
+=== JVITA (gnum=6 bnum=47) ===
+
+=== KDONOVAN (gnum=10 bnum=44) ===
+
+=== KJOHNSON (gnum=6 bnum=47) ===
+
+=== KLUDINGTON (gnum=6 bnum=47) ===
+
+=== KMANZOLINO (gnum=6 bnum=46) ===
+
+=== KMCTIGUE (gnum=6 bnum=47) ===
+
+=== KNELTHROPP (gnum=5 bnum=44) ===
+
+=== KPENNEY (gnum=6 bnum=47) ===
+
+=== KPOZUCEK (gnum=5 bnum=44) ===
+
+=== KRICHARDONE (gnum=6 bnum=53) ===
+
+=== KWRIGHT (gnum=5 bnum=49) ===
+
+=== LABOR (gnum=2 bnum=45) ===
+"2","45","1","&B - Change Company Code","(None)","GETCO.INT","TAB","&B - Change Company Code","GETCO.INT","N","N","",""
+"1","44","1","&A - Enter Labor/Production","(None)","t7dca.rwn","DCA","&A - Enter Labor/Production","t7dca.rwn","N","N","",""
+"1","44","1","&G - Edit Labor Transactions","(None)","bkdcg.run","DCG","&G - Edit Labor Transactions","bkdcg.run","N","N","",""
+"1","44","1","&H - Post Labor Transactions","(None)","T7DCH.RWN","DCH","&H - Post Labor Transactions","bkdch.run","N","N","
+
+=== LABORABI (gnum=1 bnum=44) ===
+"1","44","1","&A - Enter Labor/Production","(None)","t7dca.rwn","DCA","&A - Enter Labor/Production","t7dca.rwn","N","N","",""
+"1","44","1","&G - Edit Labor Transactions","(None)","bkdcg.run","DCG","&G - Edit Labor Transactions","bkdcg.run","N","N","",""
+"1","44","1","&H - Post Labor Transactions","(None)","T7DCH.RWN","DCH","&H - Post Labor Transactions","bkdch.run","N","N","
+
+=== LABORI2S (gnum=1 bnum=44) ===
+"1","44","1","&A - Enter Labor/Production","(None)","t7dca.rwn","DCA","&A - Enter Labor/Production","t7dca.rwn","N","N","",""
+"1","44","1","&G - Edit Labor Transactions","(None)","bkdcg.run","DCG","&G - Edit Labor Transactions","bkdcg.run","N","N","",""
+"1","44","1","&H - Post Labor Transactions","(None)","T7DCH.RWN","DCH","&H - Post Labor Transactions","bkdch.run","N","N","
+
+=== LAUSTIN (gnum=6 bnum=47) ===
+
+=== LJANKAUSKAS (gnum=6 bnum=47) ===
+
+=== LMHHULL (gnum=6 bnum=47) ===
+
+=== LMUBALL (gnum=6 bnum=47) ===
+
+=== LPLUTINO (gnum=6 bnum=47) ===
+
+=== LRODRIGUEZ (gnum=6 bnum=44) ===
+
+=== MAKROUR (gnum=5 bnum=44) ===
+
+=== MARKZ (gnum=10 bnum=51) ===
+
+=== MARRISALOPEZ (gnum=6 bnum=46) ===
+
+=== MATHANDLER (gnum=6 bnum=46) ===
+
+=== MATHANDLER2 (gnum=6 bnum=46) ===
+
+=== MCATALANO (gnum=6 bnum=47) ===
+
+=== MGEORGE (gnum=7 bnum=53) ===
+
+=== MGRANITTO (gnum=6 bnum=47) ===
+
+=== MHANDLER1 (gnum=3 bnum=39) ===
+
+=== MJOAQUIN (gnum=6 bnum=45) ===
+
+=== MKUSAILA (gnum=6 bnum=52) ===
+
+=== MLUCHETTA (gnum=6 bnum=47) ===
+
+=== MMARTINEZ (gnum=7 bnum=47) ===
+
+=== MMAZZA (gnum=10 bnum=44) ===
+
+=== MMORANO (gnum=5 bnum=47) ===
+
+=== MMURPHY (gnum=6 bnum=47) ===
+
+=== MPALAN (gnum=5 bnum=49) ===
+
+=== MQUINTUNA (gnum=6 bnum=47) ===
+
+=== MRUPP (gnum=6 bnum=47) ===
+
+=== MWATSON (gnum=6 bnum=45) ===
+
+=== NARIAS (gnum=6 bnum=46) ===
+
+=== NBESSETTE (gnum=8 bnum=49) ===
+
+=== NPERUGINI (gnum=6 bnum=47) ===
+
+=== NSAWYER (gnum=6 bnum=49) ===
+
+=== OTENNEY (gnum=6 bnum=46) ===
+
+=== PMOODY (gnum=6 bnum=47) ===
+
+=== POWERUSER (gnum=9 bnum=39) ===
+
+=== PTHORAT (gnum=7 bnum=47) ===
+
+=== RBENOIT (gnum=5 bnum=49) ===
+
+=== RCLAYTON (gnum=6 bnum=44) ===
+
+=== RDONOHUE (gnum=10 bnum=44) ===
+
+=== RGRANITTO (gnum=6 bnum=47) ===
+
+=== RHENSON (gnum=6 bnum=52) ===
+
+=== RLAVALLEE (gnum=7 bnum=47) ===
+
+=== RLOPEZ (gnum=6 bnum=51) ===
+
+=== RMCGONIGAL (gnum=7 bnum=53) ===
+
+=== RONEILL (gnum=7 bnum=53) ===
+
+=== RONEILLABI (gnum=6 bnum=46) ===
+
+=== SALESREP (gnum=2 bnum=19) ===
+"3","18","1","&M - Print User-Defined Detail","(None)","T7SAM.RWN","SAM","&M - Print User-Defined Detail","t6sam.run","N","N","
+"3","18","1","&N - Print User-Defined Summary","(None)","T7SAN.RWN","SAN","&N - Print User-Defined Summary","t6san.run","N","N","
+"3","16","1","&O - Reports","(None)","","SOO","&O - Reports","","N","N"
+"3","16","2","&J - Print User-Defined Detail","(None)","T7SOOJ.RWN","SOOJ","&J - Print User-Defined Detail","t6sooj.run","N","N","
+"3","16","2","&K - Print User-Defined Summary","(None)","T7SOOK.RWN","SOOK","&K - Print User-Defined Summary","t6sook.run","N","N","
+"4","19","1","&A - Customize Settings","(None)","T7SMK.RWN","USA","&A - Customize Settings","T7SMK.RWN","N","N","",""
+"4","19","1","&B - Customize Menu","(None)","WBKMENUSUEU.RWN","USB","&B - Customize Menu","WBKMENUSUEU.RWN","N","N","",""
+
+=== SCISKEY (gnum=7 bnum=47) ===
+
+=== SGONZALEZ (gnum=6 bnum=46) ===
+
+=== SHIPABI (gnum=6 bnum=47) ===
+
+=== SHIPI2S (gnum=6 bnum=47) ===
+
+=== SMACDONALD (gnum=5 bnum=47) ===
+
+=== SNATHANSON (gnum=6 bnum=45) ===
+
+=== SSANZO (gnum=4 bnum=43) ===
+
+=== SSUNDARAM (gnum=6 bnum=47) ===
+
+=== STARTUP (gnum=1 bnum=1) ===
+
+=== STEVESP (gnum=7 bnum=47) ===
+
+=== STEVESPABI (gnum=7 bnum=47) ===
+
+=== SVANJUR (gnum=6 bnum=47) ===
+
+=== TARMSTRONG (gnum=6 bnum=47) ===
+
+=== TEDDES (gnum=6 bnum=51) ===
+
+=== TESPOSITO (gnum=5 bnum=47) ===
+
+=== TEST (gnum=6 bnum=47) ===
+
+=== TEST1 (gnum=6 bnum=47) ===
+
+=== TJOSEPH (gnum=6 bnum=47) ===
+
+=== TLAMOUNTAIN (gnum=6 bnum=47) ===
+
+=== TLEMELIN (gnum=6 bnum=46) ===
+
+=== TMEFFORD (gnum=6 bnum=47) ===
+
+=== TNOLAN (gnum=6 bnum=44) ===
+
+=== TNORTON (gnum=6 bnum=44) ===
+
+=== TOSBORNE (gnum=6 bnum=47) ===
+
+=== TREINHEIMER (gnum=7 bnum=53) ===
+
+=== TRODEN (gnum=6 bnum=49) ===
+
+=== USER (gnum=5 bnum=39) ===
+
+=== VANCE (gnum=10 bnum=44) ===
+
+=== VDOMINGOS (gnum=6 bnum=47) ===
+
+=== VENDOR (gnum=2 bnum=4) ===
+"1","3","1","&I - Reports","(None)","","POI","&I - Reports","","N","N"
+"1","3","2","&A - Print Open Purchase Orders Listing","(None)","T7POIA.RWN","POIA","&A - Print Open Purchase Orders Listing","t6poia.run","N","N"
+"1","3","2","&B - Print Closed Purchase Orders Listin","(None)","T7POIB.RWN","POIB","&B - Print Closed Purchase Orders Listin","t6poib.run","N","N"
+"1","3","2","&E - Print Receiving Report","(None)","T7POIE.RWN","POIE","&E - Print Receiving Report","t6poie.run","N","N"
+"1","3","2","&F - Print Received not Invoiced","(None)","T7POIF.RWN","POIF","&F - Print Received not Invoiced","t6poif.run","N","N"
+"2","4","1","&A - Customize Settings","(None)","T7SMK.RWN","USA","&A - Customize Settings","T7SMK.RWN","N","N","",""
+"2","4","1","&B - Customize Menu","(None)","WBKMENUSUEU.RWN","USB","&B - Customize Menu","WBKMENUSUEU.RWN","N","N","",""
+
+=== VERIKSEN (gnum=7 bnum=48) ===
+
+=== VKUSAILA (gnum=7 bnum=71) ===
+
+=== WARRAL (gnum=7 bnum=45) ===
+
+=== XIAABI (gnum=10 bnum=44) ===
+

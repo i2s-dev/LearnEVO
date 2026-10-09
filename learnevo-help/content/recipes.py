@@ -525,7 +525,7 @@ closed.
 ### 7. Backup
 
 - `AM-?` Backup (or `EvoERPbackup.RWN`) — zip current state.
-  Output goes to `\\\\i2s109-solidcrm\\Bak Up\\`.
+  Output goes to `\\\\i2s-evo\\Bak Up\\`.
 
 ### 8. Archive
 

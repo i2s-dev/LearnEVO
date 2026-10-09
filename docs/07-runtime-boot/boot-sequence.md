@@ -24,12 +24,12 @@ post-login steps still inferred from file names.
    `C:\ISTS\taspro7.ini`:
    ```
    [Setup]
-   DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\
-   DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn
+   DataDictPath=\\i2s-evo\EVOERP\
+   DfltRunPrg=\\i2s-evo\EVOERP\EvoERPmenu.rwn
    MultiUser=1
-   DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
+   DefaultPath=\\i2s-evo\EVOERP\
    Titlebar=Evo ~ ERP
-   HelpFileName=\\I2S109-SOLIDCRM\DBAMFG$\EvoHELP.CHM
+   HelpFileName=\\i2s-evo\EVOERP\EvoHELP.CHM
    ```
    Loads:
    - `qtintf70.dll` — Qt 3 / Borland CLX UI support (shipped in `C:\ISTS`).
@@ -38,7 +38,7 @@ post-login steps still inferred from file names.
      the network is reachable (both shipped in `C:\ISTS`).
    - `suwin6t.rwn` / `suwin7.rwn` — tiny bootstrap RWNs.
 
-4. **Main menu program**: `\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn`
+4. **Main menu program**: `\\i2s-evo\EVOERP\EvoERPmenu.rwn`
    (497,383 B). Renders:
    - The logo/splash (`EVOLOGO.DCY` → `ISSPLASH.DCY`?).
    - Login screen (`EVOMENU_LOGIN.DCY`, `EvoDC_LOGIN.DCY`,

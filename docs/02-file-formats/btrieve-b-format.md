@@ -405,7 +405,7 @@ every related-record lookup.
 EvoERP runs 4 active companies + 1 test company. The company file routing is managed
 entirely by `FILELOC` — both a Btrieve file (`FILELOC.B`, 2.8 MB) and a dBASE IV
 mirror (`fileloc.dbf`, 4,461 rows). Each company's tables live in a subfolder of
-`\\i2s109-solidcrm\DBAMFG$\`:
+`\\i2s-evo\EVOERP\`:
 
 | LOC_COMP_C | Subfolder | Description |
 |------------|-----------|-------------|

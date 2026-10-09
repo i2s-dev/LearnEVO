@@ -515,7 +515,7 @@ BKAPCHKF is mutually locked across all of AP-E, F, G, and H — only one step ca
 
 ## Pass 336 — TAS6 binary analysis of 21 BKAP*.RUN programs (2026-06-26)
 
-Source: string extraction from `samples/BKAP*.RUN` (copied from `\\i2s109-solidcrm\DBAMFG$\`).
+Source: string extraction from `samples/BKAP*.RUN` (copied from `\\i2s-evo\EVOERP\`).
 
 ### 21-program TAS6 inventory
 

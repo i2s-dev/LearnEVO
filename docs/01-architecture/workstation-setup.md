@@ -12,7 +12,7 @@ EvoERP uses a thin-client model: almost everything runs from the network share. 
 only needs a handful of local files plus the Pervasive SQL client and TAS Pro runtime.
 
 ```
-Workstation (C:\ISTS\)                 Server (\\i2s109-solidcrm\DBAMFG$\)
+Workstation (C:\ISTS\)                 Server (\\i2s-evo\EVOERP\)
 ─────────────────────────────────      ─────────────────────────────────────
 tp7runtime.exe     ← runtime           EvoERPmenu.rwn   ← entry program
 StartEvo.exe       ← launcher          T7*.RWN          ← all programs
@@ -33,7 +33,7 @@ EvoHELP.CHM        ← help file
 
 **Installers available on share:**
 ```
-\\i2s109-solidcrm\DBAMFG$\Pervasive\
+\\i2s-evo\EVOERP\Pervasive\
   PSQL-Client-11.30.030.000-win.x86.exe   ← base client installer
   PSQLv11Patch_Client_x86.msp              ← client patch
 ```
@@ -52,7 +52,7 @@ create a **System DSN** with these settings:
 |-------|-------|
 | DSN Name | `DBA` |
 | Driver | Pervasive ODBC Client Interface |
-| Server Name | `i2s109-SOLIDCRM.1583` (server with port suffix) |
+| Server Name | `i2s-evo.1583` (server with port suffix) |
 | Database Name | `DBA` |
 | TCP Port | `1583` |
 
@@ -84,9 +84,9 @@ Create or edit `C:\ISTS\taspro7.ini`:
 
 ```ini
 [Setup]
-DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\
-DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn
-DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
+DataDictPath=\\i2s-evo\EVOERP\
+DfltRunPrg=\\i2s-evo\EVOERP\EvoERPmenu.rwn
+DefaultPath=\\i2s-evo\EVOERP\
 ```
 
 - **DataDictPath** — where TAS Pro looks for DDF schema files and other shared assets.
@@ -212,7 +212,7 @@ configuration is needed.
 **Terminal Server / Citrix deployment (Pass 566):**
 
 EvoERP's architecture is inherently TS/Citrix-compatible — all programs and data live on
-`\\i2s109-solidcrm\DBAMFG$\`; `tp7runtime.exe` is stateless between module calls.
+`\\i2s-evo\EVOERP\`; `tp7runtime.exe` is stateless between module calls.
 A Terminal Server host is configured exactly like any regular workstation (steps 1–8 above),
 with these TS-specific notes:
 

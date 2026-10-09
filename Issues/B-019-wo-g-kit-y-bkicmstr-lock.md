@@ -23,7 +23,7 @@ Btrieve record-level lock on a BKICMSTR record for one of 54552-1's components. 
 
 **Recommended next steps:**
 1. Ask other users if anyone is currently in a module that accesses the same item numbers (especially 055-53829-0M40K and nearby SMT parts)
-2. If no live user has the lock → stale lock from the prior force-kill. Admin action needed: Pervasive PSQL Monitor (`pvsw.exe` or Zen Control Center) → Connected Users → find and disconnect the orphaned session. Or restart the Btrieve engine on \\i2s109-solidcrm.
+2. If no live user has the lock → stale lock from the prior force-kill. Admin action needed: Pervasive PSQL Monitor (`pvsw.exe` or Zen Control Center) → Connected Users → find and disconnect the orphaned session. Or restart the Btrieve engine on \\i2s-evo.
 3. If STATUS='R' is the issue, the WO may need to be re-opened (status change) before issuing remaining components.
 
 ## Resolution / Lesson

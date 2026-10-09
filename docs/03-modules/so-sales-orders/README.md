@@ -312,7 +312,7 @@ Source: `samples/rwn_symbols.json` — all T7SO* entries. Top 25 by proc count s
 
 ## Pass 330 — TAS6 BKSO\*.RUN binary analysis (2026-06-26)
 
-All 57 TAS6 BKSO\*.RUN programs copied from `\\i2s109-solidcrm\DBAMFG$\` to `samples/` and analyzed via Python string extraction.
+All 57 TAS6 BKSO\*.RUN programs copied from `\\i2s-evo\EVOERP\` to `samples/` and analyzed via Python string extraction.
 
 ### TAS6 BKSO\*.RUN program inventory (57 files)
 

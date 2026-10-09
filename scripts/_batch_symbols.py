@@ -10,7 +10,7 @@ from twofish_pure import Twofish
 K_B = bytes.fromhex('a898d21e2fd6ca294026e5d633d9047f91f7ed35')
 
 RWN_ROOTS = [
-    r'\\i2s109-solidcrm\DBAMFG$',
+    r'\\i2s-evo\EVOERP',
     r'C:\ISTS',
 ]
 OUT_DIR = 'samples'

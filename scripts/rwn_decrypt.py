@@ -56,7 +56,7 @@ from twofish_pure import Twofish
 _K_B_RAW = bytes.fromhex('a898d21e2fd6ca294026e5d633d9047f91f7ed35')
 _KEY     = _K_B_RAW + b'\x00' * 4    # 24 bytes (192-bit Twofish key)
 
-_RWN_ROOTS   = [r'\\i2s109-solidcrm\DBAMFG$', r'C:\ISTS']
+_RWN_ROOTS   = [r'\\i2s-evo\EVOERP', r'C:\ISTS']
 _DEFAULT_OUT = os.path.join(_repo, 'samples', 'rwn_decrypted')
 _KNOWN_XOR   = 0x3E0A37C5    # le32(K0,0) XOR le32(K0,4) for K_B
 

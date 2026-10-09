@@ -1,0 +1,9 @@
+TEST 04 - ISTS.CFG Table Dump
+==================================================
+Log file: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test04-ists-cfg-dump-2026-07-07_1250.txt
+
+[*] Attaching to evoerp.exe...
+[+] Attached.
+[*] Scanning for ISTS.CFG.STDCST anchor...
+[!] STDCST with ISTS.CFG. prefix not found -- is EVO running?
+[+] Complete.

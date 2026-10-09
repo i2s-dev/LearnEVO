@@ -2,7 +2,7 @@
 
 Status: partial (DFM forms analyzed; RWN program logic is encrypted and not readable).
 
-*Source: `\\i2s109-solidcrm\DBAMFG$\J7*.*` — copied to [samples/j7-customizations/](../../samples/j7-customizations/).*
+*Source: `\\i2s-evo\EVOERP\J7*.*` — copied to [samples/j7-customizations/](../../samples/j7-customizations/).*
 *Inventory date: 2026-06-01. Total files: 109 (41 DFM, 63 RWN, 19 RTM/RTX, 1 ZIP).*
 
 ---

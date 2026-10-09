@@ -2,7 +2,7 @@
 
 Status: verified (Pass 388, 2026-06-29 — live fileloc.dbf parsed; FILELOC.B binary confirmed)
 
-Source: `samples/FILELOC.B` (Btrieve, 2,793,472 bytes, copied from `\\i2s109-solidcrm\DBAMFG$\FILELOC.B`)
+Source: `samples/FILELOC.B` (Btrieve, 2,793,472 bytes, copied from `\\i2s-evo\EVOERP\FILELOC.B`)
 Also: `samples/fileloc.dbf` (dBASE III+ equivalent, 972 KB, 4,461 records including deleted/temp)
 
 ---
@@ -68,7 +68,7 @@ via hardcoded paths or ISTS.CFG configuration keys.
 
 ## Directory Locations
 
-All paths are relative to `\\i2s109-solidcrm\DBAMFG$\`.
+All paths are relative to `\\i2s-evo\EVOERP\`.
 
 | LOC_LOCATI | Full path | Usage |
 |------------|-----------|-------|

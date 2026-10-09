@@ -20,7 +20,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 
 ## Read-first rules
 - See [../CLAUDE.md](../CLAUDE.md). Scope: no writes to `C:\ISTS` or
-  `\\i2s109-solidcrm`. Ever.
+  `\\i2s-evo`. Ever.
 
 ## Table of contents
 

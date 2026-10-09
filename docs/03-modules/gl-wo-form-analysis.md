@@ -1,7 +1,7 @@
 # GL and WO Module — DFM Form Analysis
 Status: partial | verified-from-DFM
 
-Forms read directly from `\\I2S109-SOLIDCRM\DBAMFG$\T7GL*.DFM` and `T7WO*.DFM`.
+Forms read directly from `\\i2s-evo\EVOERP\T7GL*.DFM` and `T7WO*.DFM`.
 
 ---
 

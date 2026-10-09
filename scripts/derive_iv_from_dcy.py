@@ -20,8 +20,8 @@ from twofish_pure import Twofish
 key = hashlib.sha1(b'mabufoju').digest() + b'\x00'*4
 tf  = Twofish(key)
 
-DCY = r'\\i2s109-solidcrm\DBAMFG$\MDUMMY.DCY'
-DFM = r'\\i2s109-solidcrm\DBAMFG$\mDummy.DFM'
+DCY = r'\\i2s-evo\EVOERP\MDUMMY.DCY'
+DFM = r'\\i2s-evo\EVOERP\mDummy.DFM'
 
 with open(DCY, 'rb') as f: dcy = f.read()
 with open(DFM, 'rb') as f: dfm = f.read()

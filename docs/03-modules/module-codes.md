@@ -5,7 +5,7 @@ Pass 410, 2026-06-30). 786 menu items confirmed. 42 module codes cataloged.
 
 ## Complete Module Table
 
-Confirmed from `\\i2s109-solidcrm\DBAMFG$\BKMENUSU.TXT` GROUPS + BUTTONS sections.
+Confirmed from `\\i2s-evo\EVOERP\BKMENUSU.TXT` GROUPS + BUTTONS sections.
 Menu item counts from `samples/menu_catalog.csv`.
 
 | Code | Full Name | Group | Items | Notes |

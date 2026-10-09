@@ -124,32 +124,32 @@ After the workstation block, SQLEXPORT.RWN carries per-module screen selector va
 | `com.evoerp.sqlexport.sql.Permission` | SELECT permission type; `check()` enforces read-only access |
 | `com.evoerp.sqlexport.ui.QueryResultFrame` | Displays result set; supports CSV export with "Format for Excel" checkbox |
 
-**JDBC.INI** (`\\I2S109-SOLIDCRM\DBAMFG$\JDBC.INI`, copied to `samples/jar/JDBC.INI`):
+**JDBC.INI** (`\\i2s-evo\EVOERP\JDBC.INI`, copied to `samples/jar/JDBC.INI`):
 
 ```ini
 [BAB]          ; Main production company
-Host=i2s109-solidcrm
+Host=i2s-evo
 Port=1583
 Name=abi                              ; operational DBAMFG$ database
-Tree Destination=\\I2S109-SOLIDCRM\EVOREPORTS\
+Tree Destination=\\i2s-evo\EVOREPORTS\
 
 [BI2]          ; BI/reporting company
-Host=I2S109-SOLIDCRM
+Host=i2s-evo
 Port=1583
 Name=EVOBI2                           ; separate BI reporting database
-Tree Destination=\\I2S109-SOLIDCRM\DBAMFG$\REPORTS
+Tree Destination=\\i2s-evo\EVOERP\REPORTS
 
 [B22]          ; Second company (testing / alternate)
-Host=i2s109-solidcrm
+Host=i2s-evo
 Port=1583
 Name=evob22
-Tree Destination=\\I2S109-SOLIDCRM\EVOREPORTS\
+Tree Destination=\\i2s-evo\EVOREPORTS\
 
 [BAT]          ; Batch processing company
-Host=I2S109-SOLIDCRM
+Host=i2s-evo
 Port=1583
 Name=EVOBAT
-Tree Destination=\\I2S109-SOLIDCRM\DBAMFG$\REPORTS
+Tree Destination=\\i2s-evo\EVOERP\REPORTS
 ```
 
 All four databases share the same Pervasive PSQL server on port 1583.
@@ -157,10 +157,10 @@ All four databases share the same Pervasive PSQL server on port 1583.
 
 **Output:**
 - Path: `Tree Destination` from jdbc.ini for the active company code
-  - BAB: `\\I2S109-SOLIDCRM\EVOREPORTS\`
-  - BI2/BAT: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\`
+  - BAB: `\\i2s-evo\EVOREPORTS\`
+  - BI2/BAT: `\\i2s-evo\EVOERP\REPORTS\`
 - Format: CSV; "Format for Excel" option adds Excel-compatible quoting
-- Log: `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`
+- Log: `\\i2s-evo\EVOERP\logs\SQL Export.log`
 
 **Saved Queries** — two additional tables in the database store user-saved queries:
 
@@ -190,7 +190,7 @@ PURCHITEM, PURCHVEND, VSCHED. Each uses a different `.jar` and class name in
 
 ## DefaultSQL Query Catalog (Pass 556 — all 19 queries read)
 
-Copied from `\\I2S109-SOLIDCRM\DBAMFG$\DefaultSQL\` → `samples/jar/DefaultSQL/`.
+Copied from `\\i2s-evo\EVOERP\DefaultSQL\` → `samples/jar/DefaultSQL/`.
 All queries target the main `abi` production database (company BAB).
 
 | File | Purpose | Key Tables |
@@ -266,7 +266,7 @@ SELECT IS_SHIP_WEB_2 FROM ISSHIPCO WHERE IS_SHIP_SHIPVIA = ?
 
 ### jdbc.ini Config Format
 
-`DatabaseSettings.class` reads `\\I2S109-SOLIDCRM\DBAMFG$\JDBC.INI`. Format — INI-style,
+`DatabaseSettings.class` reads `\\i2s-evo\EVOERP\JDBC.INI`. Format — INI-style,
 line-by-line scanner with `startsWith` checks. Each section starts with `[COMPANY_CODE]`:
 
 ```ini

@@ -1,0 +1,14 @@
+Windows Registry Editor Version 5.00
+
+; Fixes DSN=DBA — adds missing ServerName and DBQ so ODBC can reach i2s-evo
+; Double-click this file and click Yes to merge.
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\ODBC\ODBC.INI\DBA]
+"ServerName"="i2s-evo.1583"
+"DBQ"="DBA"
+"ArrayFetchOn"="1"
+
+[HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\ODBC\ODBC.INI\DBA]
+"ServerName"="i2s-evo.1583"
+"DBQ"="DBA"
+"ArrayFetchOn"="1"

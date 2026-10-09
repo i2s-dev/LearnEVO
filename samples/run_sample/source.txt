@@ -1,4 +1,4 @@
-Source: \\i2s109-solidcrm\DBAMFG$\<filename>.RUN
+Source: \\i2s-evo\EVOERP\<filename>.RUN
 Copied: 2026-07-02 (Pass 561 — cross-generation corpus confirmation)
 Purpose: Validate .RUN string extraction method across T6/T7/J5/J6 generations
 

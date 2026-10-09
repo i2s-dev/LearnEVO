@@ -23,7 +23,7 @@ from parse_dfm import parse, summary  # type: ignore
 
 
 SHARE_DFMS = [
-    r"\\I2S109-SOLIDCRM\DBAMFG$",
+    r"\\i2s-evo\EVOERP",
     r"C:\ISTS\DFM",
 ]
 

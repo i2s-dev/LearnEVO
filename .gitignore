@@ -31,3 +31,7 @@ samples/rwn_decrypted/*.dec
 # PyInstaller build intermediates (dist/ output lives in C:\ProgramData\i2Systems\Tools\)
 programs/*/build/
 programs/*/dist/
+
+# Oversized Btrieve memo samples (exceed GitHub file limits)
+samples/BKMENUSU.dbt
+samples/BKMENUSU_Recov.dbt

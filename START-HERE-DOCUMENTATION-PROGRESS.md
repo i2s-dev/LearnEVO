@@ -38,7 +38,7 @@ begin disassembling `.RWN` bytecode.
 |------|---------------|
 | Analyze `.RUN` files (TAS Pro 6 compiled — unencrypted) | `samples/rosetta/*.RUN` |
 | **Rosetta Stone opcode mapping** — correlate `.SRC` constructs with `.RUN` binary patterns | `samples/rosetta/` — 7 complete SRC+RUN pairs |
-| Read and document `.DFM` form files (UI layout) | `\\i2s109-solidcrm\DBAMFG$\DFM\` (read-only) |
+| Read and document `.DFM` form files (UI layout) | `\\i2s-evo\EVOERP\DFM\` (read-only) |
 | Read and document `.RTM` ReportBuilder report templates | Network share, read-only |
 | Study `.B` Btrieve data files via `.DDF` schema files | Network share, read-only |
 | Study `tp7runtime.exe` in read-only mode (string search, Capstone disassembly) | `C:\ISTS\tp7runtime.exe` (read-only) |

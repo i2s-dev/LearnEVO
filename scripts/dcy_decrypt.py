@@ -54,7 +54,7 @@ from twofish_pure import Twofish
 _K_D_RAW  = bytes.fromhex('691e8041ab265b4e6ee052ccc946dba4caac60da')
 _KEY      = _K_D_RAW + b'\x00' * 4    # 24 bytes (192-bit Twofish key)
 
-_DCY_ROOTS   = [r'\\i2s109-solidcrm\DBAMFG$']
+_DCY_ROOTS   = [r'\\i2s-evo\EVOERP']
 _DEFAULT_OUT = os.path.join(_repo, 'samples', 'dcy_decrypted')
 _KNOWN_XOR   = 0x0955DC84    # le32(K0,0) XOR le32(K0,4) for K_D
 

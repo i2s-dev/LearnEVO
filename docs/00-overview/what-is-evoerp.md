@@ -12,7 +12,7 @@ this software — is now maintained via Computer Keyes / IDE2
 runtime (`tp7runtime.exe`), an xBase-family 4GL with a Delphi/VCL
 Windows UI layer. Reports are rendered by **Nevrona ReportBuilder**.
 Data lives in server-side **Btrieve** / **CodeBase DBF** files on
-`\\i2s109-solidcrm\DBAMFG$\`.
+`\\i2s-evo\EVOERP\`.
 
 ## Version
 
@@ -67,7 +67,7 @@ Functional area codes, 1–2 letters, after the generation prefix:
 ## How a user starts it
 
 1. Double-clicks `C:\ISTS\EvoERP.lnk` → runs `C:\ISTS\StartEvo.exe`.
-2. `StartEvo.exe` reads `taspro7.ini` (`DfltRunPrg = \\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn`).
+2. `StartEvo.exe` reads `taspro7.ini` (`DfltRunPrg = \\i2s-evo\EVOERP\EvoERPmenu.rwn`).
 3. Spawns `tp7runtime.exe` (aka `evoerp.exe`) with that RWN as the
    initial program.
 4. The runtime loads **EvoERPmenu.rwn** from the share, which renders

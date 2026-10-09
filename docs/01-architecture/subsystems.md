@@ -127,7 +127,7 @@ ISLOG (9 fields, Table ID in DDF) is a general-purpose IS activity log written b
 | `IS_LOG_EXTRA` | 100 | Supplemental metadata |
 
 EvoERPbackup opens FILELOC (all file paths) and BKSYMSTR (system config) for target
-resolution. Output destination: `\\i2s109-solidcrm\Bak Up\` for local or
+resolution. Output destination: `\\i2s-evo\Bak Up\` for local or
 ISTech cloud API for cloud (GS_BACKUP mode).
 
 ## EvoDC — Data Collection (shop-floor / handheld)
@@ -389,7 +389,7 @@ network share. Restore is a **manual process**.
 
 | Mode | Default destination |
 |------|-------------------|
-| Local | `\\i2s109-solidcrm\Bak Up\` |
+| Local | `\\i2s-evo\Bak Up\` |
 | Cloud | `https://login.istechsupport.com/api/v1/evo/backups/archives/` (multi-part SHA-256 upload) |
 
 Archive format: standard ZIP, created by `zipdll.dll` (TZipMaster). File names include
@@ -400,17 +400,17 @@ company code and date (pattern set by ZIPNAME var in `EvoERPbackup.RWN`).
 1. **Stop EvoService** — prevents Btrieve locks during file replacement.
    From any workstation: `Services → Evo Service → Stop`, or use `EvoServiceRemove.RWN`.
 
-2. **Stop Pervasive PSQL engine** on `i2s109-solidcrm` (Control Panel → Pervasive →
+2. **Stop Pervasive PSQL engine** on `i2s-evo` (Control Panel → Pervasive →
    Stop) if replacing `.B` data files. Not needed if only restoring program files
    (`.RWN`, `.DFM`, `.RTM`).
 
-3. **Locate the backup archive** in `\\i2s109-solidcrm\Bak Up\` or download from
+3. **Locate the backup archive** in `\\i2s-evo\Bak Up\` or download from
    `istechsupport.com`.
 
 4. **Extract the ZIP** to the appropriate destination using any standard ZIP tool
    (7-Zip, Windows Explorer, etc.):
-   - Data files → `\\i2s109-solidcrm\DBAMFG$\` (per-company subdirectory)
-   - Program files → `\\i2s109-solidcrm\DBAMFG$\` (root)
+   - Data files → `\\i2s-evo\EVOERP\` (per-company subdirectory)
+   - Program files → `\\i2s-evo\EVOERP\` (root)
 
 5. **Restart Pervasive** if it was stopped in step 2.
 
@@ -429,15 +429,15 @@ Btrieve practice; no EVO restore program or documented procedure was found.
 **Pass 566 (2026-07-03)**
 
 The Pervasive License Administrator is a standard Pervasive PSQL v11.30 utility used to
-manage engine licenses on both the server (`i2s109-solidcrm`) and local workstations.
+manage engine licenses on both the server (`i2s-evo`) and local workstations.
 It is NOT an EvoERP program — it is part of the Pervasive PSQL install.
 
 ### License context at i2 Systems
 
 | Component | Details |
 |-----------|---------|
-| Server engine | Pervasive PSQL Server v11.30 on `i2s109-solidcrm`, TCP port 1583 |
-| Workgroup key | `V2355B-28BBE` (stored in `\\i2s109-solidcrm\evo-ERP\ISTS\ISTS\BMB.CFG`) |
+| Server engine | Pervasive PSQL Server v11.30 on `i2s-evo`, TCP port 1583 |
+| Workgroup key | `V2355B-28BBE` (stored in `\\i2s-evo\evo-ERP\ISTS\ISTS\BMB.CFG`) |
 | Workgroup engines (local) | v11.31 (local install) + Actian v12 — present but no service running |
 | Client runtime | Pervasive ODBC Client Interface v11.30 (32-bit) on each workstation |
 
@@ -479,7 +479,7 @@ counting is inferred from standard Btrieve architecture.
 **Pass 566 (2026-07-03)**
 
 EvoERP's thin-client architecture (stateless `tp7runtime.exe`, all programs and data on
-`\\i2s109-solidcrm\DBAMFG$\`) is inherently compatible with Terminal Server (RDP) and
+`\\i2s-evo\EVOERP\`) is inherently compatible with Terminal Server (RDP) and
 Citrix deployments. No special EvoERP configuration is required for the server-side
 program files.
 
@@ -510,7 +510,7 @@ Each Terminal Server host needs exactly what a regular workstation needs:
 ### License implications
 
 Each concurrent RDP session that runs EvoERP consumes:
-- One Pervasive Client/Server session slot (on `i2s109-solidcrm`)
+- One Pervasive Client/Server session slot (on `i2s-evo`)
 - One TAS Pro 7 runtime license unit (counted by StartEvo.exe via `tas_menus`)
 
 If 20 users are logged in simultaneously via TS, all 20 slots must be licensed on both

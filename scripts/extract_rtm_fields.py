@@ -20,7 +20,7 @@ import csv
 import sys
 from pathlib import Path
 
-SHARE = Path(r"\\i2s109-solidcrm\DBAMFG$")
+SHARE = Path(r"\\i2s-evo\EVOERP")
 OUT_CSV = Path(r"C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\samples\rtm_fields.csv")
 
 # Properties to extract

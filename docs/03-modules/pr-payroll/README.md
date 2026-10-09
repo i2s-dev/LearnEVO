@@ -618,7 +618,7 @@ Source: `samples/rwn_symbols.json` (T7PR* entries).
 
 ## Pass 329 — TAS6 BKPR\*.RUN binary analysis (2026-06-26)
 
-All 37 TAS6 BKPR\*.RUN programs copied from `\\i2s109-solidcrm\DBAMFG$\` to `samples/` and analyzed via Python string extraction. Findings extend and confirm T7-era analysis.
+All 37 TAS6 BKPR\*.RUN programs copied from `\\i2s-evo\EVOERP\` to `samples/` and analyzed via Python string extraction. Findings extend and confirm T7-era analysis.
 
 ### TAS6 BKPR\*.RUN program inventory (37 files)
 

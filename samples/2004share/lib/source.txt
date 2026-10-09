@@ -1,4 +1,4 @@
-Source: \\i2s109-solidcrm\2004.1\lib\
+Source: \\i2s-evo\2004.1\lib\
 Copied: 2026-07-01 (Pass 493) — small JARs only (< 2MB)
 Contents: Evo.jar (162KB), Evo2.jar (632KB), EVO3.JAR (1.3MB), Evo2-upd.jar (604KB),
   Evo2.jaru (243KB), ACTIVATION.JAR (56KB), barcode4j.jar (274KB)

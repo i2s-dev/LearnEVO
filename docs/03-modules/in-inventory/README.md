@@ -425,7 +425,7 @@ Discovered from DB fingerprints in T7IN* programs; not all are in standard DDF.
 
 ## Pass 335 — TAS6 binary analysis of 32 BKIN*.RUN programs (2026-06-26)
 
-Source: string extraction from `samples/BKIN*.RUN` (copied from `\\i2s109-solidcrm\DBAMFG$\`).
+Source: string extraction from `samples/BKIN*.RUN` (copied from `\\i2s-evo\EVOERP\`).
 
 ### 32-program TAS6 inventory
 

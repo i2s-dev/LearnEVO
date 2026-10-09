@@ -809,7 +809,7 @@ Module opens BKARINV, BKARINVL, BKICMSTR. Posts open SO invoice lines to AR.
 3. Already posted (BKARINV record already has POSTDATE set)
 4. Item type exclusion (L=labor, B=phantom, etc.) — but R and N types DO post to AR
 
-**SO data flow:** BKARINV (open invoice header, keyed by BKAR_INV_NUM) → BKARINVL (lines, keyed by INVNM+CNTR) → posted → BKSOX/BKSOXH (posted SO invoice extract). BKARINVI is the SO-to-invoice staging cross-reference (keyed by SONUM+INVNM).
+**SO data flow:** BKARINV (open invoice header, keyed by BKAR_INV_NUM) → BKARINVL (lines, keyed by INVNM+CNTR; INVNM = Sales Order number despite field name) → posted → BKSOX/BKSOXH (posted SO invoice extract). BKARINVI is the SO-to-invoice staging cross-reference (keyed by SONUM+INVNM).
 
 **KEY ARCHITECTURE FACT — SO table = AR table:** There is no BKSOMSTR. Sales Orders and AR Invoices share the same table — BKARINV. T7SOA.RWN operates directly on BKARINV; when an SO is shipped and posted, the record's status fields change but the row never moves. The BKSO* prefix tables are supplemental only: BKSONOTE (notes), BKSOHLOT/BKSOHSER (lot/serial history), BKSOPO (SO→PO cross-reference for special orders), BKSOX/BKSOXH (posted SO extract for reporting). If you're looking for "open sales orders," query BKARINV filtered by status — not a separate table.
 
@@ -818,7 +818,7 @@ Module opens BKARINV, BKARINVL, BKICMSTR. Posts open SO invoice lines to AR.
 | Table | Purpose |
 |-------|---------|
 | BKARINV | Open SO invoice header — 46+ fields: invoice#, SO#, INVCD (type flag), date, customer, ship-to, terms, subtotal, tax, total, NL (# lines), RTS (release flag) |
-| BKARINVL | Open SO invoice lines — 28 fields: INVNM, CNTR, ESD, PCODE (part#), PDESC, PQTY, PPRCE, PDISC, PEXT, PCOGS, ITYPE (item type), TXBLE, UBO, USTD, RTS (release flag), LOC, ABQTY |
+| BKARINVL | Open SO invoice lines — 28 fields: INVNM (Sales Order#), CNTR, ESD, PCODE (part#), PDESC, PQTY, PPRCE, PDISC, PEXT, PCOGS, ITYPE (item type), TXBLE, UBO, USTD, RTS (release flag), LOC, ABQTY |
 | BKARINVI | SO→invoice staging table — SONUM+INVNM cross-ref with ITYPE, qty, price, disc, ext |
 | BKSOX | Posted SO invoice extract — 25 fields (company, invoice#, date, customer, totals, SO#, terms, ship date) |
 | BKSOXH | Posted SO invoice history — same 25-field structure |
@@ -3106,7 +3106,7 @@ Two distinct access tiers exist across these 23 programs:
 - Enable flag: `ISTS.CFG.JOB`; config variants `ISTS.CFG.JOBDEC`, `ISTS.CFG.JOBCUS`
 - Accessed by 15 programs: SO (T7SOA/SOPK), AP (T7APB), AR (T7ARB), GL (T7GLB), PO (T7POA/TPOA), WO (T7WOA/OLD), SA (T7SAA), MRP (T7MRIX), and J7* customizations
 
-**EVOReports network share:** `\\i2s109-solidcrm\EVOReports\` is NOT a print-to-file output folder. Actual contents: ad-hoc SQL files, CSV exports, PNGs — irregularly dated 2015–2023, user-created workspace. Print-to-file PDF output goes elsewhere (per-user or per-workstation), not on this share.
+**EVOReports network share:** `\\i2s-evo\EVOReports\` is NOT a print-to-file output folder. Actual contents: ad-hoc SQL files, CSV exports, PNGs — irregularly dated 2015–2023, user-created workspace. Print-to-file PDF output goes elsewhere (per-user or per-workstation), not on this share.
 
 **Confidence: 85/100** — ISJAVA two-tier access pattern confirmed from rwn_symbols.json (23 programs, 9 with JAVA.H + IS.JAVA.* full access, 14 path-only); DDF schema confirmed for ISJAVA (27f) and ISJOB (9f); T7AUTOFX FX-daemon purpose confirmed; SMTP class structure fully documented. EvoPVT.jar ISJAVA task command IDs not decoded; exact queue write direction requires dynamic trace confirmation.
 
@@ -3217,14 +3217,14 @@ Exports EvoERP data to CSV files by running SQL queries against a separate BI da
 - `SQLExport.jar` — Java Swing application (`com.evoerp.*` package, **v1.8.6 build 2021-09-11**)
 - Same architecture as QU-F pivot tool (EvoPVT.jar) — TAS stub → Java app
 
-**Database connection — 4 Pervasive databases on i2s109-solidcrm:1583 (from `JDBC.INI`):**
+**Database connection — 4 Pervasive databases on i2s-evo:1583 (from `JDBC.INI`):**
 
 | Company | Database | Tree Destination | Purpose |
 |---------|----------|-----------------|---------|
-| BAB | `abi` | `\\I2S109-SOLIDCRM\EVOREPORTS\` | Main production EvoERP database |
-| BI2 | `EVOBI2` | `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS` | Separate BI/reporting database |
-| B22 | `evob22` | `\\I2S109-SOLIDCRM\EVOREPORTS\` | Second company or test |
-| BAT | `EVOBAT` | `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS` | Batch processing |
+| BAB | `abi` | `\\i2s-evo\EVOREPORTS\` | Main production EvoERP database |
+| BI2 | `EVOBI2` | `\\i2s-evo\EVOERP\REPORTS` | Separate BI/reporting database |
+| B22 | `evob22` | `\\i2s-evo\EVOREPORTS\` | Second company or test |
+| BAT | `EVOBAT` | `\\i2s-evo\EVOERP\REPORTS` | Batch processing |
 
 TAS passes `COMP` var → selects the company code → database. DefaultSQL queries target `abi` (main production).
 
@@ -3237,7 +3237,7 @@ TAS passes `COMP` var → selects the company code → database. DefaultSQL quer
 **Output:**
 - Destination: `Tree Destination` from jdbc.ini for the active company (BAB→EVOREPORTS\, BI2→DBAMFG$\REPORTS\)
 - Format: CSV; "Format for Excel" checkbox adds Excel-compatible quoting
-- Log: `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`
+- Log: `\\i2s-evo\EVOERP\logs\SQL Export.log`
 
 **Default Queries (19 pre-built .sql files in `DefaultSQL\`, targeting main `abi` DB):**
 ACH Vendor, AP Count, AP Daily Invoicing, Closed WO, EandO, GL no Inv Txn, Inventory Non Asset,
@@ -3253,7 +3253,7 @@ Full query text in `samples/jar/DefaultSQL/`.
 - "How do I export EvoERP data to Excel/CSV?" → EX module → select from Default Queries menu or write ad-hoc SQL → Execute → Export. Results export as CSV to the network share.
 - "How do I save a custom query?" → Write SQL in the editor → File → Save As → saved as .sql file.
 - "How do I run a parameterized query?" → Tools → Variable Query Wizard → define variables → saved to ISVARSQL.
-- Logs written to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
+- Logs written to `\\i2s-evo\EVOERP\logs\SQL Export.log`.
 
 **Pass 556 (2026-07-02):** SQLExport.jar fully class-string-extracted; JDBC.INI read; all 19 DefaultSQL queries read; ISQRYSQL/ISVARSQL tables confirmed; 4-database architecture confirmed.
 
@@ -3300,7 +3300,7 @@ Reporting and analysis of sales performance. Separate from standard AR invoicing
 
 **To edit an existing report:**
 1. Open `RBDsgnr.exe` (Nevrona ReportBuilder stand-alone designer, located at `C:\ISTS\`)
-2. Open the `.RTM` file from `\\I2S109-SOLIDCRM\DBAMFG$\` (read the file name from the
+2. Open the `.RTM` file from `\\i2s-evo\EVOERP\` (read the file name from the
    calling `.RWN`'s source — if source available — or from the `rtm_callers.csv` index)
 3. Add/remove bands, labels, and database text fields
 4. Database text fields are bound to the TAS data buffer by field name — use names that
@@ -3352,7 +3352,7 @@ with a hardcoded short filename. This is why 789/801 report programs contain the
 **Pattern B (T6/BK-era, 335 RTMs):** Older programs embed the RTM filename directly in their
 pool string and call `RTM_FN bkaph1.rtm` with a hardcoded name.
 
-**RTM file count:** 1,305 RTM files in `\\i2s109-solidcrm\DBAMFG$\` (full list: `samples/rtm_file_list.txt`).
+**RTM file count:** 1,305 RTM files in `\\i2s-evo\EVOERP\` (full list: `samples/rtm_file_list.txt`).
 Of these, 970 are reachable only via Pattern A and appear in no program's pool strings.
 
 **Module-to-RTM count (hardcoded pool only):**
@@ -10336,7 +10336,7 @@ Records which patches/updates have been applied per company. Prevents TA-D from 
 
 ### BKARHINV (84f) / BKARHIVL (28f) — AR Invoice History Archive
 
-Identical BKAR_INV_*/BKAR_INVL_* field prefix and 84f/28f structure as BKARINV/BKARINVL. BKARHINV and BKARHIVL are the closed/paid AR invoice archive — after payment and period close, invoices from BKARINV move here. Used by MA-C, AR-F, and SA (Sales Analysis) history reports. Standard AR invoice architecture: live (BKARINV/BKARINVL) + history (BKARHINV/BKARHIVL).
+Identical BKAR_INV_*/BKAR_INVL_* field prefix and 84f/28f structure as BKARINV/BKARINVL. BKARHINV and BKARHIVL are the closed/paid AR invoice archive — after payment and period close, invoices from BKARINV move here. Used by MA-C, AR-F, and SA (Sales Analysis) history reports. Standard AR invoice architecture: live (BKARINV/BKARINVL) + history (BKARHINV/BKARHIVL). **Note:** Although BKARHIVL shares field names with BKARINVL (both use BKAR_INVL_* prefix), the semantics differ: in BKARHIVL, BKAR_INVL_INVNM holds actual invoice numbers (~94k range); in BKARINVL (open SO lines), the same field name holds Sales Order numbers (~64k–76k range). See `docs/04-data-dictionary/bkarinvl-invnm-field-analysis.md`.
 
 ---
 
@@ -13446,7 +13446,7 @@ SONUM.CHAR — SO number display field
 | BKAR.INVL.STAT | Line status |
 | BKAR.INVL.LONGP | Extended description |
 | BKAR.INVL.HIDE | Hide on document flag |
-| BKAR.INVL.INVNM | Invoice number |
+| BKAR.INVL.INVNM | Sales Order number (field name is misleading — NOT invoice number; confirmed from live data) |
 | BKAR.INVL.FATD | (confirmed/fill-and-tie to date?) |
 | line.prod.comm1/comm2 | Commission rates per line |
 | line.prod.oqty | Original quantity ordered |
@@ -16869,7 +16869,7 @@ data files while sharing the same program installation.
 **What T7NEWINIT does:**
 - Opens FILELOC (the TAS runtime file-location table) — reads the list of all registered `.B` files
 - Opens FILEDES (file template definitions — NOT in Pervasive DDF, TAS runtime only)
-- Creates a new directory on the share: `\\i2s109-solidcrm\DBAMFG$\<COMPANYCODE>\`
+- Creates a new directory on the share: `\\i2s-evo\EVOERP\<COMPANYCODE>\`
 - Creates a new copy of every `.B` file registered in FILELOC, using `.<COMPANYCODE>` suffix
 - Optionally seeds data from an existing company by reading BKAPVEND, BKARCUST, BKCMACCN
 
@@ -17266,20 +17266,20 @@ utilities or EvoERP's own TA-S Data Dictionary Check tool.
 #### Method 1 — Pervasive DDF Builder (Pervasive utility)
 
 ```
-1. Open Pervasive Control Center (PCC) on the server (i2s109-solidcrm)
+1. Open Pervasive Control Center (PCC) on the server (i2s-evo)
    - Path: Start → Pervasive → Pervasive Control Center
 
-2. Connect to the database: i2s109-solidcrm → Databases → DBA (or EVOADMIN)
-   - The DBA database corresponds to \\i2s109-solidcrm\DBAMFG$\
+2. Connect to the database: i2s-evo → Databases → DBA (or EVOADMIN)
+   - The DBA database corresponds to \\i2s-evo\EVOERP\
 
 3. Use DDF Builder tool:
    - Right-click the database → Build DDF
-   - Point at the \\i2s109-solidcrm\DBAMFG$\ directory containing the .B files
+   - Point at the \\i2s-evo\EVOERP\ directory containing the .B files
    - DDF Builder reads each .B file's internal schema and creates:
      FILE.DDF  (table names → file paths)
      FIELD.DDF (field definitions)
      INDEX.DDF (key segment definitions)
-   - Output directory: \\i2s109-solidcrm\DBAMFG$\ (same folder as the .B files)
+   - Output directory: \\i2s-evo\EVOERP\ (same folder as the .B files)
 
 4. Restart Pervasive service to pick up new DDF
 ```
@@ -17308,7 +17308,7 @@ schema changes.
 
 2. System DSN → Add → Pervasive ODBC Client Interface (32-bit)
    - Data Source Name: DBA
-   - Server Name: i2s109-solidcrm
+   - Server Name: i2s-evo
    - Port: 1583
    - Database: @DBA  (@ prefix = Pervasive server-side database)
 
@@ -17318,10 +17318,10 @@ schema changes.
 ```
 
 **Key locations:**
-- DDF files: `\\i2s109-solidcrm\DBAMFG$\FILE.DDF`, `FIELD.DDF`, `INDEX.DDF`
+- DDF files: `\\i2s-evo\EVOERP\FILE.DDF`, `FIELD.DDF`, `INDEX.DDF`
 - ODBC DSN name: `DBA` (32-bit system DSN on each workstation)
-- Pervasive service: runs on `i2s109-solidcrm`, port 1583
-- Java config: `C:\ISTS\jdbc.ini` — Host=i2s109-solidcrm, Name=DBA, Port=1583
+- Pervasive service: runs on `i2s-evo`, port 1583
+- Java config: `C:\ISTS\jdbc.ini` — Host=i2s-evo, Name=DBA, Port=1583
 
 **Bitness warning:** EvoERP is a 32-bit application. Always use the 32-bit ODBC admin
 (`SysWOW64\odbcad32.exe`). The 64-bit admin (`System32\odbcad32.exe`) stores DSNs in
@@ -18360,7 +18360,7 @@ evoss (Evo service settings flag). Manages saving and restoring EVO configuratio
 ### Terminal Server / Citrix Deployment (Pass 566)
 
 EvoERP fully supports Terminal Server (RDS) and Citrix deployment:
-- All EvoERP data files live on the network share (`\\i2s109-solidcrm\DBAMFG$\`) — no local data.
+- All EvoERP data files live on the network share (`\\i2s-evo\EVOERP\`) — no local data.
 - The client install at `C:\ISTS\` is identical whether the workstation is physical or a Terminal Server session.
 - Pervasive SQL must be licensed appropriately for session count. Use the **Pervasive License Admin** tool (`C:\ISTS\pvlcadm.exe` or via Start menu) to view and manage engine licenses.
 - There are no deployment-specific configuration differences — `ISTS.CFG` and `FILELOC.B` are shared from the network share.
@@ -19365,7 +19365,7 @@ The I2 company has 200+ unique aliases, reflecting extensive customization.
 When populated, WHOAMI.DBA stores the workstation identity token written by `tp7runtime.exe` via the `WHOAMI` keyword (opcode 7965).
 The WHOAMI keyword reads/writes this file — EvoERPmenu.RWN uses it to persist the last-logged-in workstation code (WHOAMI/WHOAMIFULL vars) across sessions.
 
-Network share `\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA` does not exist; the file is purely local to each workstation. A "35-byte" filled WHOAMI.DBA would contain the workstation name + company code + user code as a fixed-length record (matches the WHOAMI/WHOAMIFULL variable lengths observed in EvoERPmenu.RWN named_vars).
+Network share `\\i2s-evo\EVOERP\WHOAMI.DBA` does not exist; the file is purely local to each workstation. A "35-byte" filled WHOAMI.DBA would contain the workstation name + company code + user code as a fixed-length record (matches the WHOAMI/WHOAMIFULL variable lengths observed in EvoERPmenu.RWN named_vars).
 
 **Per-workstation files at `C:\ISTS\` (Pass 292 — 2026-06-25, live inspection):**
 
@@ -19422,13 +19422,13 @@ Network share `\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA` does not exist; the file is
 
 ```
 [Setup]                  ;runtime connection settings
-  DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\
-  DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn
-  DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
+  DataDictPath=\\i2s-evo\EVOERP\
+  DfltRunPrg=\\i2s-evo\EVOERP\EvoERPmenu.rwn
+  DefaultPath=\\i2s-evo\EVOERP\
   DfltCompanyCode=       ;(blank = user selects at login)
   MultiUser=1 / MainMenu=1 / FullSetup=1
   Titlebar=Evo ~ ERP
-  HelpFileName=\\I2S109-SOLIDCRM\DBAMFG$\EvoHELP.CHM
+  HelpFileName=\\i2s-evo\EVOERP\EvoHELP.CHM
 
 [FileManager]
   UseCodeBase=0          ;0=Btrieve mode; 1=codebase (dBASE) mode
@@ -19493,7 +19493,7 @@ EvoERP uses two types of companion files alongside its primary data files:
 
 ### Update Mechanism: `FILE*.UPD` Files (Pass 292 — 2026-06-25)
 
-`\\i2s109-solidcrm\DBAMFG$\` contains 11 `.UPD` files:
+`\\i2s-evo\EVOERP\` contains 11 `.UPD` files:
 
 | File | Size | Purpose |
 |------|------|---------|
@@ -20134,7 +20134,7 @@ Three tables:
 
 ## Java Application Inventory (Pass 157+159, 2026-06-22)
 
-EvoERP ships 30+ Java application JARs on `\\i2s109-solidcrm\DBAMFG$\`. Each is launched by a
+EvoERP ships 30+ Java application JARs on `\\i2s-evo\EVOERP\`. Each is launched by a
 TAS Pro 7 stub program (usually 5–30 procs) that populates ISJAVA or uses JAVA.PATH/JAVA.PATH2 vars
 to shell-execute the JAR. The JARs implement the heavy-UI viewer / analysis layer that TAS Pro 7 UI
 cannot efficiently render.
@@ -20687,7 +20687,7 @@ verification algorithm remains in binary (not decompilable).
 ## IN-L — Inventory Utilities Report Suite (Pass 298 — 2026-06-25)
 
 19 DFM forms confirmed on network share (T7INLA–T7INLV; T7INLP and T7INLU do not exist).
-All forms reside in `\\i2s109-solidcrm\DBAMFG$\T7INL*.DFM`.
+All forms reside in `\\i2s-evo\EVOERP\T7INL*.DFM`.
 
 ### Per-Form Reference
 
@@ -20773,7 +20773,7 @@ Both forms are accessed via the SO module (SO-G submenu) for post-shipment cost 
 
 ## HH — Handheld Sub-Form Library (Pass 300 — 2026-06-25)
 
-Handheld (HH) module sub-forms called by the main EvoDC handheld programs. All read from `\\i2s109-solidcrm\DBAMFG$\T7HH*.DFM`.
+Handheld (HH) module sub-forms called by the main EvoDC handheld programs. All read from `\\i2s-evo\EVOERP\T7HH*.DFM`.
 
 ### HH WO — Work Order Handheld Sub-Forms (t7hhwo* — 8 forms)
 
@@ -20899,7 +20899,7 @@ Purpose: the DC module time entry and timecard review form. Employees enter empl
 
 ## PR-L — Payroll Report Suite (Pass 299 — 2026-06-25)
 
-16 DFM forms (T7PRLA through T7PRLQ, with gaps). All in `\\i2s109-solidcrm\DBAMFG$\T7PRL*.DFM`.
+16 DFM forms (T7PRLA through T7PRLQ, with gaps). All in `\\i2s-evo\EVOERP\T7PRL*.DFM`.
 
 ### Per-Form Reference
 
@@ -21080,7 +21080,7 @@ Note: These seed values are also stored in BKYSMSTR auto-number counter fields �
 
 ## Pass 303 — Lot/Serial, Paperless (PL), RFQ, Drag-Schedule, and Utility Module DFMs
 
-*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7*.DFM*
+*Date: 2026-06-25 | Source: \\i2s-evo\EVOERP\T7*.DFM*
 
 ### Lot/Serial Information Entry — T7LotSerial.DFM
 
@@ -21264,7 +21264,7 @@ Despite the file prefix "ftp," the form's primary description ("Broadcast Remind
 
 ## Pass 304 — Sales Order Entry, PO Entry, GL Export, Item Master, Work Center Schedule, and More
 
-*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7*.DFM*
+*Date: 2026-06-25 | Source: \\i2s-evo\EVOERP\T7*.DFM*
 
 ### Sales Order Entry — T7SOA.DFM
 
@@ -21525,7 +21525,7 @@ Fields: Priority (numeric), Description (text label), Color (visual indicator)
 
 ## Pass 305 — Comprehensive Module DFM Survey (A–Z Full Coverage)
 
-*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7*.DFM — 911 DFMs surveyed*
+*Date: 2026-06-25 | Source: \\i2s-evo\EVOERP\T7*.DFM — 911 DFMs surveyed*
 
 This pass documents all remaining module groups discovered in a full alphabetical DFM survey.
 
@@ -22053,7 +22053,7 @@ Note: GF forms are customer-specific customizations embedded in the shared DBAMF
 
 ## Pass 306 — LC (Lot Control) Complete Suite and TODO Corrections
 
-*Date: 2026-06-25 | Source: \\i2s109-solidcrm\DBAMFG$\T7LC*.DFM*
+*Date: 2026-06-25 | Source: \\i2s-evo\EVOERP\T7LC*.DFM*
 
 ### LC Module — Lot Control (Full Suite, T7LC*)
 
@@ -23136,13 +23136,13 @@ Full procedure: `docs/01-architecture/workstation-setup.md`
 **Quick summary (8 steps):**
 
 1. **Install Pervasive PSQL Client v11.30 (32-bit)**
-   - Base: `\\i2s109-solidcrm\DBAMFG$\Pervasive\PSQL-Client-11.30.030.000-win.x86.exe`
+   - Base: `\\i2s-evo\EVOERP\Pervasive\PSQL-Client-11.30.030.000-win.x86.exe`
    - Patch: `PSQLv11Patch_Client_x86.msp` (apply after base)
    - 32-bit required — tp7runtime.exe is a 32-bit process
 
 2. **Register ODBC DSN "DBA"** via `C:\Windows\SysWOW64\odbcad32.exe`
    - Driver: Pervasive ODBC Client Interface
-   - Server Name: `i2s109-SOLIDCRM.1583`
+   - Server Name: `i2s-evo.1583`
    - Database Name: `DBA`
 
 3. **Create `C:\ISTS\`** and copy runtime files (tp7runtime.exe, StartEvo.exe, DLLs)
@@ -23150,9 +23150,9 @@ Full procedure: `docs/01-architecture/workstation-setup.md`
 4. **Configure `C:\ISTS\taspro7.ini`:**
    ```ini
    [Setup]
-   DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\
-   DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn
-   DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\
+   DataDictPath=\\i2s-evo\EVOERP\
+   DfltRunPrg=\\i2s-evo\EVOERP\EvoERPmenu.rwn
+   DefaultPath=\\i2s-evo\EVOERP\
    ```
 
 5. **Create `C:\ISTS\WHOAMI.DBA`** — workstation identity file (format C:40)
@@ -23164,7 +23164,7 @@ Full procedure: `docs/01-architecture/workstation-setup.md`
 8. **`EvoSettings.INI`** — auto-created/updated by EvoERP at runtime (no manual step)
 
 **Update mechanism:** StartEvo.exe uses `robocopy /z /r:10 /w:1` to copy updated files
-from the share. `robocopy.exe` ships in both `C:\ISTS\` and `\\i2s109-solidcrm\evo-ERP\ISTS\`.
+from the share. `robocopy.exe` ships in both `C:\ISTS\` and `\\i2s-evo\evo-ERP\ISTS\`.
 
 ### Infrastructure tables — what are the 13 tables opened by every EvoERP program?
 

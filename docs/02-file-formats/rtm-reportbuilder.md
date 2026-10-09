@@ -173,7 +173,7 @@ drive mapping**, not hardcoded UNC paths. Examples confirmed from binary inspect
 `T:\` is a per-workstation drive letter mapping that resolves to the network share.
 `cfg.rtm` is almost certainly at `T:\cfg.rtm`, meaning it lives at the **root of the `T:\` drive**
 on the network share — the directory that `T:\` maps to. Physical file not found via UNC walk
-because the drive-letter root differs from the `\\i2s109-solidcrm\DBAMFG$\` subfolder scanned.
+because the drive-letter root differs from the `\\i2s-evo\EVOERP\` subfolder scanned.
 `C:\ISTS\RBuilder.ini` was checked — it contains only UI layout settings, no template paths.
 
 ---
@@ -674,7 +674,7 @@ Variable namespace (from T7ARA, J7CCSOLABELS, J7NMITEMRTM, J7NMRTMPRINTER):
 
 ### Corrected total RTM count (Pass 250)
 
-Physical count from `\\i2s109-solidcrm\DBAMFG$\*.RTM`: **1305 files** (not 899 as previously estimated).
+Physical count from `\\i2s-evo\EVOERP\*.RTM`: **1305 files** (not 899 as previously estimated).
 
 | Prefix | Count | Description |
 |--------|-------|-------------|
@@ -841,7 +841,7 @@ The systematic extraction resolves the "full programmatic extraction" open item.
 
 ## Template.FileName cross-reference map (Pass 559, 2026-07-02)
 
-Full binary scan of all 1,305 RTM files on `\\i2s109-solidcrm\DBAMFG$\` for the
+Full binary scan of all 1,305 RTM files on `\\i2s-evo\EVOERP\` for the
 `\x11Template.FileName` Pascal-short-string property (17 bytes: `\x11` + `Template.FileName`).
 Stored as `\x06` (vaString) + length byte + path string. Result: `samples/rtm_crossrefs.csv`.
 
@@ -911,7 +911,7 @@ RTM files retain their original save paths from developer machines. These dev ar
 |-------------|--------|------|
 | `C:\DBAMFG\` | Production i2 Systems workstation | Standard production path |
 | `T:\` | Workstation T: drive mapping → share | Per-workstation mapping |
-| `\\I2s109-solidcrm\dbamfg$\` | Current production UNC | Absolute form of production path |
+| `\\i2s-evo\EVOERP\` | Current production UNC | Absolute form of production path |
 | `C:\SOURCE\RTM\` | Developer source tree | Developer machine (ISTech/Addsum) |
 | `C:\TASPRO7\DBA7\` | Developer TAS Pro 7 project | DBA7 development environment |
 | `\\I2s44-hapi\dbamfg$\` | Dev machine "hapi" | ISTech/Addsum developer workstation |
@@ -1078,7 +1078,7 @@ counts (13 each). Every group definition has a matching header and footer band.
 
 ## Things still open
 
-- Physical location of `cfg.rtm` — not found via UNC walk (`\\i2s109-solidcrm\DBAMFG$\`); **not present in `samples/rtm_crossrefs.csv`** (corrected — earlier note was wrong); likely on T: drive mapping only on a live workstation or does not exist at this installation.
+- Physical location of `cfg.rtm` — not found via UNC walk (`\\i2s-evo\EVOERP\`); **not present in `samples/rtm_crossrefs.csv`** (corrected — earlier note was wrong); likely on T: drive mapping only on a live workstation or does not exist at this installation.
 - Multi-currency report parameter passing (T7MLC uses LANGDICT).
 - FILELOC schema: `fileloc.dbf` fields confirmed: `LOC_BUFF_N(8)`, `LOC_FILE_N(32)`, `LOC_COMP_C(3)`, `LOC_REC_SI(5)`, `LOC_REC_TY(1)`, `LOC_LOCATI(128)`, `LOC_DESCRI(40)`. 4,464 records in live DBF. RTM files are **not** directly in FILELOC — RTMVLD_ uses BKSYMSTR keys, not FILELOC, for RTM path lookup.
 - RTMVLD_ library source — embedded in EVO.LIB or a separate subroutine file (blocked — .RWN encrypted).

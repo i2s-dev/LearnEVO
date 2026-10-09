@@ -341,7 +341,7 @@ Data extracted from rwn_symbols.json.
 
 ## Pass 334 — TAS6 binary analysis of 18 BKAR*.RUN programs (2026-06-26)
 
-Source: string extraction from `samples/BKAR*.RUN` (copied from `\\i2s109-solidcrm\DBAMFG$\`).
+Source: string extraction from `samples/BKAR*.RUN` (copied from `\\i2s-evo\EVOERP\`).
 
 ### 18-program TAS6 inventory
 

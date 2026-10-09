@@ -53,7 +53,7 @@ print()
 print('=== DCY/DFM verification ===')
 print()
 
-dcy_paths = glob.glob(r'\\i2s109-solidcrm\DBAMFG$\*.DCY')
+dcy_paths = glob.glob(r'\\i2s-evo\EVOERP\*.DCY')
 verified = {}
 for dcy_path in sorted(dcy_paths)[:10]:
     dfm_path = dcy_path[:-4] + '.DFM'

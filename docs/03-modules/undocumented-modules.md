@@ -1466,7 +1466,7 @@ receiving and RFQ workflows traced; detailed BKAPPOL field meaning not fully dec
 ---
 
 *Last updated: 2026-06-18*
-*Source: DFM files read from \\I2S109-SOLIDCRM\DBAMFG$\, CHM help topics from samples\chm\extracted\*
+*Source: DFM files read from \\i2s-evo\EVOERP\, CHM help topics from samples\chm\extracted\*
 
 ---
 
@@ -1515,8 +1515,8 @@ These module codes appear in the DDF table names, program files on the network s
 - SQLExport.jar is a Java Swing application (`com.evoerp.*` package, v1.5.0, build 2014-03-19).
 - Connects via Pervasive JDBC v2 to a **separate BI database** (`EVOBI2`) on port 1583 — NOT the operational DBAMFG$ data.
 - Key classes: `com.evoerp.sql.PervasiveDatabase`, `com.evoerp.ui.util.TextExportingWorker` (CSV export), `com.evoerp.ui.util.FileOpeningWorker`.
-- Default output: `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS\` (CSV files).
-- Logs to `\\I2S109-SOLIDCRM\DBAMFG$\logs\SQL Export.log`.
+- Default output: `\\i2s-evo\EVOERP\REPORTS\` (CSV files).
+- Logs to `\\i2s-evo\EVOERP\logs\SQL Export.log`.
 
 Note: t7exec.RUN (TAS Pro 6) is an older generic program launcher — separate from the TAS Pro 7 EX module.
 
@@ -1550,7 +1550,7 @@ Note: t7exec.RUN (TAS Pro 6) is an older generic program launcher — separate f
 
 ### LO — Lot/Serial Assignment Popup (T7LotSerial + t7lottag)
 
-**Pass 317 (2026-06-26):** DFMs read from `\\i2s109-solidcrm\DBAMFG$`; copied to `samples/src/`.
+**Pass 317 (2026-06-26):** DFMs read from `\\i2s-evo\EVOERP`; copied to `samples/src/`.
 
 **Files:** `T7LotSerial.DFM` (54 KB), `t7lottag.DFM` (14 KB)
 

@@ -154,7 +154,7 @@ GLOSSARY = [
 ["CHM", "help-system"]),
 
 ("tp7runtime.exe", "The TAS Professional 7 runtime — what actually runs EVO",
-"The ~8 MB Borland Delphi executable at `C:\\ISTS\\tp7runtime.exe` that loads and interprets every `.RWN` program, renders `.DFM` forms, talks to Pervasive/Btrieve, drives ReportBuilder, and embeds DCPcrypt (Twofish, SHA-1) for `.RWN`/`.DCY` decryption. Launched by `StartEvo.exe`, which points it at `\\\\i2s109-solidcrm\\DBAMFG$\\EvoERPmenu.rwn`. See [[boot-sequence]] and [[format-rwn]].",
+"The ~8 MB Borland Delphi executable at `C:\\ISTS\\tp7runtime.exe` that loads and interprets every `.RWN` program, renders `.DFM` forms, talks to Pervasive/Btrieve, drives ReportBuilder, and embeds DCPcrypt (Twofish, SHA-1) for `.RWN`/`.DCY` decryption. Launched by `StartEvo.exe`, which points it at `\\\\i2s-evo\\EVOERP\\EvoERPmenu.rwn`. See [[boot-sequence]] and [[format-rwn]].",
 ["TAS Professional (TAS Pro 7)", "DCPcrypt", "Twofish", "format-rwn", "boot-sequence"]),
 
 ]

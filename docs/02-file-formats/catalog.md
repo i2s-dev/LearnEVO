@@ -1,6 +1,6 @@
 # EvoERP File Format Catalog
 
-Status: draft (expanding). Counts are from the `\\I2S109-SOLIDCRM\DBAMFG$\`
+Status: draft (expanding). Counts are from the `\\i2s-evo\EVOERP\`
 network share as of 2026-04-17.
 
 This is the master index of every file extension observed in the EvoERP
@@ -90,7 +90,7 @@ The TAS Pro IDE on a developer machine once referenced:
 - `C:\TASPRO7\DBA7\` — legacy install path.
 - `C:\ISTECH` — referenced as library (`Lib Directory=C:\ISTECH`).
 
-These paths confirm that **`\\i2s109-solidcrm\DBAMFG$\` is a deployment
+These paths confirm that **`\\i2s-evo\EVOERP\` is a deployment
 directory**, not a source directory. The plaintext `.SRC` files living there
 (BKAWLB, BKDCA, BKLME, BKMRF, BKROA, Bkaph, Bkapha) are either intentionally
 deployed or leftovers — **open question** why only these seven.

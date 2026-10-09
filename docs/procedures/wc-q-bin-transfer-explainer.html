@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EVO Bin-Transfer "Q" Problem — Visual Explainer</title>
+<meta name="description" content="Why bin-to-bin transfers fail even though Warehouse Control shows Q, and why re-saving fixes it.">
+<style>
+  :root{
+    --ground:#F6F7F9;
+    --panel:#FFFFFF;
+    --ink:#1B2432;
+    --muted:#5C6676;
+    --line:#D7DCE3;
+    --steel:#2F6E8F;        /* accent: the system / neutral path */
+    --steel-wash:#E9F1F5;
+    --good:#2E7D52;
+    --good-wash:#E7F2EC;
+    --bad:#B23A2E;
+    --bad-wash:#FAECEA;
+    --warn:#9A6A12;
+    --warn-wash:#F6EEDC;
+    --mono:"SFMono-Regular",Consolas,"Liberation Mono",Menlo,monospace;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  html,body{margin:0;padding:0;}
+  *{box-sizing:border-box;}
+  .wrap{
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--sans);
+    line-height:1.55;
+    padding:40px 20px 72px;
+    display:flex;flex-direction:column;align-items:center;
+    min-height:100vh;
+  }
+  .col{width:100%;max-width:860px;}
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--steel);margin:0 0 10px;
+  }
+  h1{
+    font-size:clamp(26px,4.4vw,38px);line-height:1.12;margin:0 0 14px;
+    letter-spacing:-.01em;text-wrap:balance;font-weight:680;
+  }
+  .lede{font-size:17px;color:var(--muted);margin:0 0 8px;max-width:62ch;}
+  .lede b{color:var(--ink);font-weight:600;}
+
+  .scene{margin-top:46px;}
+  .scene > h2{
+    font-size:13px;font-family:var(--mono);letter-spacing:.08em;text-transform:uppercase;
+    color:var(--muted);margin:0 0 4px;font-weight:600;
+  }
+  .scene > .cap{font-size:20px;font-weight:620;margin:0 0 18px;letter-spacing:-.01em;text-wrap:balance;}
+
+  .card{
+    background:var(--panel);border:1px solid var(--line);border-radius:12px;
+    padding:18px 18px;box-shadow:0 1px 2px #1b24320a;
+  }
+  .stack{display:flex;flex-direction:column;gap:14px;}
+  .row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:640px){.row2{grid-template-columns:1fr;}}
+
+  .layerlabel{font-family:var(--mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 8px;}
+  .chip{
+    display:inline-flex;align-items:center;gap:7px;font-family:var(--mono);font-size:13px;
+    padding:4px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;
+    font-weight:500;
+  }
+  .chip .dot{width:9px;height:9px;border-radius:50%;flex:none;}
+  .chip.good{color:var(--good);border-color:#bcdcc9;background:var(--good-wash);}
+  .chip.good .dot{background:var(--good);}
+  .chip.bad{color:var(--bad);border-color:#eccac6;background:var(--bad-wash);}
+  .chip.bad .dot{background:var(--bad);}
+  .chip.warn{color:var(--warn);border-color:#e3d3a7;background:var(--warn-wash);}
+  .chip.warn .dot{background:var(--warn);}
+
+  code,.field{font-family:var(--mono);font-size:.9em;}
+  .field{background:#eef1f5;border:1px solid var(--line);border-radius:5px;padding:1px 6px;white-space:nowrap;}
+
+  .seam{
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    font-size:13px;color:var(--muted);font-weight:600;margin:2px 0;
+  }
+  .seam::before,.seam::after{content:"";height:1px;background:var(--line);flex:1;}
+
+  .verdict{display:flex;align-items:center;gap:9px;margin-top:12px;font-weight:620;font-size:15px;}
+  .verdict.good{color:var(--good);} .verdict.bad{color:var(--bad);} .verdict.warn{color:var(--warn);}
+  .verdict .mk{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;color:#fff;font-size:13px;flex:none;}
+  .verdict.good .mk{background:var(--good);} .verdict.bad .mk{background:var(--bad);} .verdict.warn .mk{background:var(--warn);}
+
+  .sub{font-size:13.5px;color:var(--muted);margin:6px 0 0;}
+  .reclist{list-style:none;padding:0;margin:10px 0 0;display:flex;flex-direction:column;gap:7px;}
+  .reclist li{font-size:13.5px;display:flex;gap:9px;align-items:baseline;}
+  .reclist li::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--muted);flex:none;position:relative;top:7px;}
+  .reclist.bins li::before{background:var(--bad);}
+  .reclist.binsgood li::before{background:var(--good);}
+
+  /* flow diagram */
+  .flow{display:flex;flex-direction:column;gap:0;}
+  .node{
+    background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:13px 16px;
+    align-self:center;max-width:560px;width:100%;text-align:center;
+  }
+  .node .q{font-weight:620;font-size:15px;}
+  .node .meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:3px;}
+  .node.decision{border-color:var(--steel);background:var(--steel-wash);}
+  .connector{display:flex;flex-direction:column;align-items:center;height:30px;justify-content:center;}
+  .connector .pipe{width:2px;height:100%;background:var(--line);}
+  .branch{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:560px;width:100%;align-self:center;}
+  @media(max-width:560px){.branch{grid-template-columns:1fr;}}
+  .branchcol{display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .edgelabel{font-family:var(--mono);font-size:11px;font-weight:700;letter-spacing:.06em;padding:2px 9px;border-radius:999px;}
+  .edgelabel.no{color:var(--bad);background:var(--bad-wash);border:1px solid #eccac6;}
+  .edgelabel.yes{color:var(--good);background:var(--good-wash);border:1px solid #bcdcc9;}
+  .terminal{border-radius:10px;padding:12px 15px;width:100%;text-align:center;font-size:14px;font-weight:600;}
+  .terminal.stop{background:var(--bad-wash);border:1px solid #eccac6;color:var(--bad);}
+  .terminal.bug{background:var(--bad-wash);border:2px solid var(--bad);color:var(--bad);}
+  .terminal.ok{background:var(--good-wash);border:1px solid #bcdcc9;color:var(--good);}
+  .terminal small{display:block;font-weight:500;font-family:var(--mono);font-size:11.5px;margin-top:4px;opacity:.85;}
+
+  /* fixes */
+  .fixgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media(max-width:720px){.fixgrid{grid-template-columns:1fr;}}
+  .fix{border-radius:12px;border:1px solid var(--line);background:var(--panel);overflow:hidden;display:flex;flex-direction:column;}
+  .fix .top{padding:13px 15px;border-bottom:1px solid var(--line);}
+  .fix .top h3{margin:0;font-size:15px;font-weight:640;}
+  .fix .top .how{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:3px;}
+  .fix .body{padding:13px 15px;font-size:13.5px;color:var(--muted);flex:1;}
+  .fix .foot{padding:11px 15px;font-weight:650;font-size:14px;display:flex;align-items:center;gap:8px;}
+  .fix.ok{border-color:#bcdcc9;} .fix.ok .foot{background:var(--good-wash);color:var(--good);}
+  .fix.no{border-color:#eccac6;} .fix.no .foot{background:var(--bad-wash);color:var(--bad);}
+  .fix.warn{border-color:#e3d3a7;} .fix.warn .foot{background:var(--warn-wash);color:var(--warn);}
+
+  .footnote{margin-top:46px;padding-top:16px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted);}
+  .footnote code{background:#eef1f5;padding:1px 5px;border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<div class="col">
+
+  <p class="eyebrow">EvoERP · Inventory · Warehouse Control</p>
+  <h1>The field says &ldquo;Q.&rdquo; The transfer still won&rsquo;t move.</h1>
+  <p class="lede">Bin-to-bin transfers (IN-L-J) don&rsquo;t check the <b>&ldquo;Q&rdquo; you see on screen</b>. They check a <b>second, hidden layer of bin records</b> underneath it. When the two disagree, the transfer quietly refuses &mdash; and re-typing &ldquo;Q&rdquo; is what secretly repairs the hidden layer.</p>
+
+  <!-- SCENE 1 -->
+  <section class="scene">
+    <h2>The model</h2>
+    <p class="cap">Two separate things have to agree for a transfer to work</p>
+    <div class="stack">
+      <div class="card">
+        <p class="layerlabel">Layer 1 &mdash; what you see in WC-B</p>
+        <span class="chip good"><span class="dot"></span>Warehouse Control = Q</span>
+        <p class="sub">Stored in <span class="field">BKICLOC.BKIC_LOC_WHCTRL</span>. This is the only thing on the screen &mdash; so it looks like everything is fine.</p>
+      </div>
+      <div class="seam">must match &darr;</div>
+      <div class="card">
+        <p class="layerlabel">Layer 2 &mdash; what IN-L-J actually reads (hidden)</p>
+        <span class="chip"><span class="dot" style="background:var(--steel)"></span>a default bin exists &nbsp;&middot;&nbsp; bin on-hand is in sync</span>
+        <p class="sub">Stored in <span class="field">ISBINLOC</span> (default-bin flag <span class="field">ISBIN_LOC_DFLT=Y</span>, bin qty <span class="field">ISBIN_LOC_UOH</span>). <b>Not shown anywhere on the WC-B screen.</b></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 2 -->
+  <section class="scene">
+    <h2>Broken vs. healthy</h2>
+    <p class="cap">Same &ldquo;Q&rdquo; on top &mdash; different reality underneath</p>
+    <div class="row2">
+      <div class="card">
+        <p class="layerlabel" style="color:var(--bad)">The bug (PCB &amp; WCL items)</p>
+        <span class="chip good"><span class="dot"></span>Q</span>
+        <ul class="reclist bins">
+          <li>No default bin, <i>or</i> bin records missing</li>
+          <li>Bin on-hand stale / doesn&rsquo;t match location on-hand</li>
+          <li>Lot/serial rows never linked</li>
+        </ul>
+        <div class="verdict bad"><span class="mk">&#10007;</span>Transfer blocked</div>
+      </div>
+      <div class="card">
+        <p class="layerlabel" style="color:var(--good)">Healthy item</p>
+        <span class="chip good"><span class="dot"></span>Q</span>
+        <ul class="reclist binsgood">
+          <li>Default bin present (<span class="field">DFLT=Y</span>)</li>
+          <li>Bin on-hand reconciles to location on-hand</li>
+          <li>Lot/serial rows linked</li>
+        </ul>
+        <div class="verdict good"><span class="mk">&#10003;</span>Transfer posts</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 3 -->
+  <section class="scene">
+    <h2>Inside the transfer</h2>
+    <p class="cap">What IN-L-J checks, step by step</p>
+    <div class="card">
+      <div class="flow">
+        <div class="node"><div class="q">Transfer item between two bins in the same warehouse</div><div class="meta">IN-L-J &middot; program BKINLJ</div></div>
+        <div class="connector"><div class="pipe"></div></div>
+
+        <div class="node decision"><div class="q">Is Warehouse Control = Q?</div></div>
+        <div class="connector"><div class="pipe"></div></div>
+        <div class="branch">
+          <div class="branchcol">
+            <span class="edgelabel no">NO</span>
+            <div class="terminal stop">&ldquo;Cannot transfer to the same location unless WC = Q.&rdquo;</div>
+          </div>
+          <div class="branchcol">
+            <span class="edgelabel yes">YES &rarr; keep going</span>
+            <div class="node decision" style="max-width:none"><div class="q">Default bin + synced bin on-hand present?</div><div class="meta">reads ISBINLOC</div></div>
+          </div>
+        </div>
+        <div class="connector"><div class="pipe"></div></div>
+        <div class="branch">
+          <div class="branchcol">
+            <span class="edgelabel no">NO &mdash; this is your bug</span>
+            <div class="terminal bug">&ldquo;NO BIN LOC / this bin does not exist for item.&rdquo;<small>flag says Q, but the records don&rsquo;t back it up &rarr; refuses</small></div>
+          </div>
+          <div class="branchcol">
+            <span class="edgelabel yes">YES</span>
+            <div class="terminal ok">Posts the move + writes INVTXN<small>bin and inventory stay in sync</small></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCENE 4 -->
+  <section class="scene">
+    <h2>The three ways to &ldquo;fix&rdquo; it</h2>
+    <p class="cap">Only one actually repairs the hidden layer</p>
+    <div class="fixgrid">
+      <div class="fix ok">
+        <div class="top"><h3>Re-save &ldquo;Q&rdquo; in WC-B</h3><div class="how">per item, or via F6 Ranges</div></div>
+        <div class="body">Saving re-runs EVO&rsquo;s bin-configuration routine &mdash; it rebuilds the default <span class="field">ISBINLOC</span> record and re-links lot/serial bins. The repair is the <b>side effect of saving</b>, not the value.</div>
+        <div class="foot">&#10003; Fixes it</div>
+      </div>
+      <div class="fix no">
+        <div class="top"><h3>Bulk SQL update</h3><div class="how">SET WHCTRL = 'Q'</div></div>
+        <div class="body">The value is <b>already</b> &ldquo;Q,&rdquo; so the write changes nothing &mdash; and it never triggers the bin reconciliation. Looks done; fixes nothing.</div>
+        <div class="foot">&#10007; No effect</div>
+      </div>
+      <div class="fix warn">
+        <div class="top"><h3>Toggle N &harr; Q or Y &harr; Q</h3><div class="how">to force a rebuild</div></div>
+        <div class="body">WC-B warns that turning control <b>off purges bins</b> and switching to <b>Y zeros bin quantities</b>. It would rebuild &mdash; by destroying on-hand data.</div>
+        <div class="foot">&#9888; Destructive</div>
+      </div>
+    </div>
+  </section>
+
+  <p class="footnote">
+    <b>So, for &ldquo;all PCB items&rdquo;:</b> run it through <b>WC-B &rarr; F6 Ranges</b> filtered by the PCB Class/Category &mdash; not a database update. Test one known-broken item first and confirm a bin transfer then posts; if Ranges skips rows already flagged &ldquo;Q,&rdquo; each still needs an individual re-save. <br><br>
+    Sources: decompiled <code>BKINLJ.RUN</code> (IN-L-J) and <code>ISWCB.RUN</code> (WC-B). Read-only study workspace &mdash; no database change was made. Confidence 83/100.
+  </p>
+
+</div>
+</div>
+</body>
+</html>

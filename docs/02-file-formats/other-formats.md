@@ -75,7 +75,7 @@ revision; 60 of these on the share. See
 
 ## `.B<code>` — Btrieve data file per company
 
-Example: `\\I2S109-SOLIDCRM\DBAMFG$\22\BKARCUST.B22`.
+Example: `\\i2s-evo\EVOERP\22\BKARCUST.B22`.
 Standard Pervasive MKDE file — FC magic, paged, B-tree indexed.
 The suffix (`.B` for Default, `.B22`, `.BAB`, `.BI2`, etc.) carries the
 company code. See the [data-dictionary overview](../04-data-dictionary/overview.md).
@@ -98,7 +98,7 @@ events.
 
 ## `.CHM` — Windows HTML Help (EvoHELP.CHM)
 
-`\\I2S109-SOLIDCRM\DBAMFG$\EvoHELP.CHM` — standard Microsoft
+`\\i2s-evo\EVOERP\EvoHELP.CHM` — standard Microsoft
 compiled-HTML help file. Opens with `hh.exe` on any Windows machine.
 Mentioned in `taspro7.ini` under `HelpFileName=`.
 

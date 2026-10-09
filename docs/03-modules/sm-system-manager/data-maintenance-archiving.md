@@ -126,7 +126,7 @@ Closed Work Orders should be archived on the same schedule:
 
 ## Physical Archive File Locations (Sales Orders)
 
-All files live in `\\i2s109-solidcrm\DBAMFG$\` alongside the active files —
+All files live in `\\i2s-evo\EVOERP\` alongside the active files —
 there is no separate archive subfolder.
 
 | File | Contents |

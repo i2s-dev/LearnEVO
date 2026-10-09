@@ -1,7 +1,7 @@
 # Connecting External Software to the EVO Database
 
 Status: verified — confirmed working on a live workstation (2026-04-22)
-against the `i2s109-solidcrm` Pervasive/Actian server. Read-only scope
+against the `i2s-evo` Pervasive/Actian server. Read-only scope
 only (per [../../CLAUDE.md](../../CLAUDE.md) — no writes to the share or
 the database).
 
@@ -23,7 +23,7 @@ Every workstation where an employee runs EVO has:
 
 1. A Pervasive/Actian client runtime installed (EVO requires it).
 2. An ODBC DSN — typically called **`DBA`** — pointing at the
-   `@DBA` database on `i2s109-solidcrm`. Often a second DSN named
+   `@DBA` database on `i2s-evo`. Often a second DSN named
    `ABI` points at the historical/archive database. These are created
    once during EVO install/setup.
 
@@ -42,7 +42,7 @@ No driver name, no server, no database. The DSN carries all of that.
 
 ### Why not a DSN-less connection string?
 
-The "obvious" form `Driver={Pervasive ODBC Interface};ServerName=i2s109-solidcrm;dbq=@DBA;`
+The "obvious" form `Driver={Pervasive ODBC Interface};ServerName=i2s-evo;dbq=@DBA;`
 **works on some machines and fails with `IM002` on others**, because
 the exact registered driver name varies between Pervasive/Actian
 releases. Depending on which components were installed, a machine may
@@ -149,7 +149,7 @@ publish time. `AnyCPU` is not sufficient — you need `win-x64` *or*
 |------------------------------------------------------|-----------------------------------------------------------------------------|
 | `IM002` with DSN-less `Driver={Pervasive ODBC Interface}` | That exact driver name isn't registered on this machine (version-dependent). Switch to `DSN=DBA`. |
 | `IM002` with `DSN=DBA` in a 64-bit build             | DSN was created on the 32-bit side only. Run the 32-bit build of your tool. |
-| `IM002` with `DSN=DBA` in a 32-bit build             | The 32-bit DSN hasn't been set up on this machine yet. Open `SysWOW64\odbcad32.exe` and add a System DSN `DBA` pointing at `i2s109-solidcrm` / `@DBA`. |
+| `IM002` with `DSN=DBA` in a 32-bit build             | The 32-bit DSN hasn't been set up on this machine yet. Open `SysWOW64\odbcad32.exe` and add a System DSN `DBA` pointing at `i2s-evo` / `@DBA`. |
 | Connection opens but `SELECT` returns nothing       | Probably hitting the wrong database (`@DBA` vs. `@ABI`) — check which DSN name you used. |
 
 ## Known DSN names on this installation (Pass 105, 2026-06-18)
@@ -162,7 +162,7 @@ publish time. `AnyCPU` is not sufficient — you need `win-x64` *or*
 
 The `EVOADMIN` DSN is set up as a **Server DSN** (format: `Server DSN=EVOADMIN;Host=<server>;Port=<port>`)
 rather than a standard ODBC DSN. It is distinct from `DBA` and requires server-side configuration
-on `i2s109-solidcrm`. Its purpose is licensing: `tas_menus` is the PSQL SQL-engine view of
+on `i2s-evo`. Its purpose is licensing: `tas_menus` is the PSQL SQL-engine view of
 `BKMENUSU.DBF` (the xBase menu database). If a program is not in `tas_menus`, StartEvo.exe
 refuses to launch it regardless of what EVO's own security system (`AHSYLOG`) allows.
 
@@ -188,7 +188,7 @@ Client Interface driver prompts for:
 | Parameter | Value for this installation |
 |-----------|---------------------------|
 | Data Source Name | `DBA` (or `ABI` for the archive database) |
-| Server Name (Host) | `i2s109-solidcrm` |
+| Server Name (Host) | `i2s-evo` |
 | Database Name | `@DBA` (the `@` prefix is Pervasive shorthand for a server-registered database — distinct from a disk path) |
 | Port | `1583` (default Pervasive TCP port; rarely changed) |
 | Driver | `Pervasive ODBC Client Interface` (for remote connections from workstations) |
@@ -196,7 +196,7 @@ Client Interface driver prompts for:
 The connection string in code stays `DSN=DBA;` — all of the above is baked into the DSN by whoever
 ran `odbcad32.exe` at workstation setup. No parameters need to be repeated in code.
 
-`EVOADMIN` uses the **Server DSN** flavor (format: `Server DSN=EVOADMIN;Host=i2s109-solidcrm;Port=1583`)
+`EVOADMIN` uses the **Server DSN** flavor (format: `Server DSN=EVOADMIN;Host=i2s-evo;Port=1583`)
 and is configured server-side only — not visible in the workstation ODBC admin.
 
 ## Read/write capability via ODBC (Relational engine)

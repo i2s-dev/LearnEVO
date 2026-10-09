@@ -8,8 +8,8 @@ from twofish_pure import Twofish
 key = hashlib.sha1(b'mabufoju').digest() + b'\x00'*4
 tf  = Twofish(key)
 
-DCY_PATH = r'\\i2s109-solidcrm\DBAMFG$\MDUMMY.DCY'
-DFM_PATH = r'\\i2s109-solidcrm\DBAMFG$\mDummy.DFM'
+DCY_PATH = r'\\i2s-evo\EVOERP\MDUMMY.DCY'
+DFM_PATH = r'\\i2s-evo\EVOERP\mDummy.DFM'
 
 with open(DCY_PATH, 'rb') as f: dcy = f.read()
 with open(DFM_PATH, 'rb') as f: dfm = f.read()

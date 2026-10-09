@@ -108,7 +108,7 @@ python build.py
 
 Every long-lived rule about this workspace lives in [`CLAUDE.md`](CLAUDE.md):
 
-- **§1 — Scope.** `C:\ISTS\` and `\\i2s109-solidcrm\` are read-only;
+- **§1 — Scope.** `C:\ISTS\` and `\\i2s-evo\` are read-only;
   work on *copies* brought into `samples/` instead.
 - **§2 — Mission.** Study the actual program files as the primary source
   of truth; document findings; stay autonomous.

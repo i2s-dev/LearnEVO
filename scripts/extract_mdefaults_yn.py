@@ -12,7 +12,7 @@ Strategy:
 import re
 import os
 
-DFM_PATH = r'\\i2s109-solidcrm\DBAMFG$\DFM\T7MDEFAULTS.DFM'
+DFM_PATH = r'\\i2s-evo\EVOERP\DFM\T7MDEFAULTS.DFM'
 
 def read_file(path):
     for enc in ('utf-8', 'cp1252', 'latin-1'):

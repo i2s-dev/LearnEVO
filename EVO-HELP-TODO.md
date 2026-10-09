@@ -18,7 +18,7 @@
 # EVO-HELP-TODO
 
 Tracks documentation progress against the **EvoHELP.CHM** table of
-contents (`\\i2s109-solidcrm\DBAMFG$\EVOHELP.CHM`, decompiled to
+contents (`\\i2s-evo\EVOERP\EVOHELP.CHM`, decompiled to
 [samples/chm/extracted/](samples/chm/extracted/)).
 
 The CHM has **14 top-level categories**. For each one, we're

@@ -263,7 +263,7 @@ All 7 SRC files use both directives in their preamble:
 - Both `#INC` and `#inc` are valid (case-insensitive).
 - `#INC <name>` resolves `<name>.SRC` in the compiler search path.
 - `#LIB <name>` links `<name>.LIB` (pre-compiled) from the search path.
-- Search path = `DataDictPath` from `taspro7.ini` (i.e., `\\I2S109-SOLIDCRM\DBAMFG$\`).
+- Search path = `DataDictPath` from `taspro7.ini` (i.e., `\\i2s-evo\EVOERP\`).
 - `HELPSCRN.SRC` is the universal F1 help screen template; `ISDEF.SRC` is an IS-module definition include.
 - `#PRO3` (commented out in BKAWLB.SRC as `;#PRO3`) = backward-compat flag for TAS Pro 3.0 programs.
 

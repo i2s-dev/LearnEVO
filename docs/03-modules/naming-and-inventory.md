@@ -47,7 +47,7 @@ Every compiled module name parses as:
 
 ## Matrix (what's in the wild, first pass)
 
-From `//I2S109-SOLIDCRM/DBAMFG$/*.RWN` (sampled):
+From `//i2s-evo/DBAMFG$/*.RWN` (sampled):
 
 | Prefix family | Example files (not exhaustive)                        | Area              |
 | ------------- | ----------------------------------------------------- | ----------------- |

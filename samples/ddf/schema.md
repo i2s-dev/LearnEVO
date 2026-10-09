@@ -1,6 +1,6 @@
 # EvoERP Complete Schema (auto-generated)
 
-Source: parsed `\\I2S109-SOLIDCRM\DBAMFG$\Default\FILE.DDF` + `FIELD.DDF`.
+Source: parsed `\\i2s-evo\EVOERP\Default\FILE.DDF` + `FIELD.DDF`.
 Tables: 659  Fields: 24113
 
 ## AHSYLOG  (AHSYLOG.B)

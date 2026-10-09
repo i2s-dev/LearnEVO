@@ -665,7 +665,7 @@ are runtime-generated startup sequences (header scan + table registry scan), not
 
 ## Batch Decrypt Results (2026-06-15)
 
-- Files scanned: 1,145 `.RWN` files from `\\i2s109-solidcrm\DBAMFG$\` (all subdirs)
+- Files scanned: 1,145 `.RWN` files from `\\i2s-evo\EVOERP\` (all subdirs)
 - OK: 1,144 (99.9%)
 - FAIL: 1 — `t6ine1.RWN` starts with `TPF0` (binary Delphi form, misnamed .RWN)
 - Output: `samples/rwn_decrypted/` (1,122 unique files, ~283 MB, gitignored)

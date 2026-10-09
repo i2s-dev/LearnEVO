@@ -21,7 +21,7 @@ from pathlib import Path
 from collections import defaultdict
 
 SAMPLES = Path(r"C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\samples")
-NETWORK = Path(r"\\i2s109-solidcrm\DBAMFG$\Default")
+NETWORK = Path(r"\\i2s-evo\EVOERP\Default")
 
 # Files we have locally in samples/
 LOCAL_FILES = [

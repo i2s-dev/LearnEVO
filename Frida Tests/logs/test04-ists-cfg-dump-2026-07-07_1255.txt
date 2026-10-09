@@ -1,0 +1,20 @@
+TEST 04 - ISTS.CFG Table Dump
+==================================================
+Log file: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test04-ists-cfg-dump-2026-07-07_1255.txt
+
+[*] Attaching to evoerp.exe...
+[+] Attached.
+[*] Scanning all readable memory for ISTS.CFG. prefix...
+[*] Found 1084 ISTS.CFG. prefix hit(s) in memory.
+[*] Anchor: ISTS.CFG.SOESER @ 0xb52cfab
+[*] Walking table at 77 bytes/entry...
+[+] Anchor: ISTS.CFG.SOESER @ 0xb52cfab
+[+] 1 table entries recovered
+
+  AbsIdx  Key
+  ------  ---
+       0  SOESER
+
+  Total : 1
+  Anchor ISTS.CFG.SOESER is at absolute index 0
+[+] Complete.

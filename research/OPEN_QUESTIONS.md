@@ -170,10 +170,10 @@ to resolve fully:
    **Full mapping in `samples/BKMENUSU.TXT`.**
 
 5. ~~**`WHOAMI.DBA` format**~~ **PARTIALLY RESOLVED 2026-06-17.**
-   On this system, `C:\ISTS\WHOAMI.DBA` and `\\i2s109-solidcrm\DBAMFG$\WHOAMI.DBA`
+   On this system, `C:\ISTS\WHOAMI.DBA` and `\\i2s-evo\EVOERP\WHOAMI.DBA`
    are both 2 bytes (CR+LF only — never initialized on this workstation).
    The "35-byte" format in earlier notes refers to a workstation where EVO has been
-   configured. **`START_UP.DBA`** (27,083 bytes in `\\i2s109-solidcrm\DBAMFG$\`) is
+   configured. **`START_UP.DBA`** (27,083 bytes in `\\i2s-evo\EVOERP\`) is
    the DBA Manufacturing era startup program (TAS Pro 6 compiled binary — analogous
    to a .RUN file). Contains embedded registration: Ser No 75790, Exp 12/31/30,
    15 users, "American Backplane Inc." (legacy customer, now i2 Systems).

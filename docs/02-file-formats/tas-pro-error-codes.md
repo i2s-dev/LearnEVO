@@ -2,7 +2,7 @@
 
 Status: **verified** — complete 392-entry table extracted from ERRMSG.DBF (Pass 247 2026-06-24)
 
-Source file: `\\i2s109-solidcrm\DBAMFG$\errmsg.dbf`  
+Source file: `\\i2s-evo\EVOERP\errmsg.dbf`  
 Local copy: `samples/errmsg.dbf`  
 Format: dBASE III+ (version 0x03), 392 records, 3 fields: ERROR_NUM (N/4), ERROR_MSG (C/64), ERROR_SZE (N/3)
 

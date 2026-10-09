@@ -158,7 +158,7 @@ All 8 written in [learnevo-help/content/topics.py](../learnevo-help/content/topi
 
 The auto-stub system guarantees a placeholder exists for **every page that is linked to**. So "not linked anywhere yet" is the only way a page can be totally absent. Candidates I suspect are missing outright (need verification):
 
-- [ ] **Per-table schema pages** for every `BK*` table that doesn't yet have one. Expected IDs: `table-BK<xx><name>`. Compare actual table IDs in `pages.json` against a definitive list pulled from the `.DCY` files in `\\i2s109-solidcrm\DBAMFG$\`.
+- [ ] **Per-table schema pages** for every `BK*` table that doesn't yet have one. Expected IDs: `table-BK<xx><name>`. Compare actual table IDs in `pages.json` against a definitive list pulled from the `.DCY` files in `\\i2s-evo\EVOERP\`.
 - [ ] **Per-form UI pages** for every `.DFM` file not yet linked. Expected IDs: `form-<name>`. Enumerate DFMs on the share and diff against existing `form-*` pages.
 - [ ] **Per-report pages** for every `.RTM` file. Expected IDs: `report-<name>`. Enumerate RTMs and diff.
 - [ ] **Launcher / entry-point pages**: `StartEvo.exe`, `RUN.bat`, individual EVO utilities in `C:\ISTS\`.

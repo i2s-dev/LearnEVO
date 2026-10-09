@@ -7,11 +7,11 @@ as of 2026-04-17). Per-table field lists are still pending.
 
 EvoERP's data layer is **Pervasive PSQL (Btrieve)**, using the standard
 Pervasive data-dictionary file set. Each "company" in EVO is a separate
-directory under `\\I2S109-SOLIDCRM\DBAMFG$\` whose file extension
+directory under `\\i2s-evo\EVOERP\` whose file extension
 encodes the company code — for example, company `22`:
 
-- `\\I2S109-SOLIDCRM\DBAMFG$\22\BKARCUST.B22` — AR customer master.
-- `\\I2S109-SOLIDCRM\DBAMFG$\Default\BKARCUST.B`  — same table,
+- `\\i2s-evo\EVOERP\22\BKARCUST.B22` — AR customer master.
+- `\\i2s-evo\EVOERP\Default\BKARCUST.B`  — same table,
   `Default` company.
 
 Observed company folders:
@@ -41,7 +41,7 @@ All are in Btrieve format. They are **readable via Pervasive ODBC**
 the system PATH). That opens a read-only SQL path into the entire EVO
 data model — excellent for documentation, but note the strict rule in
 [CLAUDE.md](../../CLAUDE.md): no writes of any kind against
-`\\i2s109-solidcrm`. ODBC `SELECT` only.
+`\\i2s-evo`. ODBC `SELECT` only.
 
 ## Table inventory — 649 tables grouped by prefix
 

@@ -75,7 +75,7 @@ def main():
     # Markdown output — one section per table, sorted
     md = ["# EvoERP Complete Schema (auto-generated)",
           "",
-          f"Source: parsed `\\\\I2S109-SOLIDCRM\\DBAMFG$\\Default\\FILE.DDF` + `FIELD.DDF`.",
+          f"Source: parsed `\\\\i2s-evo\\EVOERP\\Default\\FILE.DDF` + `FIELD.DDF`.",
           f"Tables: {len(files)}  Fields: {sum(len(v['fields']) for v in schema.values())}",
           ""]
     for tname, info in sorted(schema.items()):

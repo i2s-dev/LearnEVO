@@ -33,7 +33,7 @@ Designer: `C:\ISTS\RBDsgnr.exe`.
 
 The string `ISTS.CFG.RTM` appears in **789 of 801 report programs**. This is NOT an
 RTM filename — it is a BKYSMSTR config key that stores the base directory path for
-RTM files (e.g., `\\i2s109-solidcrm\DBAMFG$\`). The program:
+RTM files (e.g., `\\i2s-evo\EVOERP\`). The program:
 1. Reads `ISTS.CFG.RTM` from BKYSMSTR to get the base path
 2. Concatenates the RTM filename (e.g., `T7APH1.RTM`) to form the full path
 3. Calls `RTM_FN <full_path>` → `EXEC_RB`

@@ -56,7 +56,7 @@ The Report Editor / TA-M Forms Editor is the standard interface for modifying gr
 ### Notes on the Underlying Engine
 
 - The Report Editor runs on the **Nevrona ReportBuilder** engine (`RBDsgnr.exe`).
-- Report templates are `.RTM` files stored on the network share (e.g., `\\i2s109-solidcrm\DBAMFG$\` or related paths).
+- Report templates are `.RTM` files stored on the network share (e.g., `\\i2s-evo\EVOERP\` or related paths).
 - Modifying a template here affects every user who prints that report, since the `.RTM` files are shared.
 - The CHM keywords for this topic are `graphical layouts`, `graphical layouts modify`, and `Modify Forms`, indicating these are the primary use cases the vendor anticipated.
 

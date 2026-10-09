@@ -1,4 +1,4 @@
-Source: \\i2s109-solidcrm\2004.1\DefaultSQL\
+Source: \\i2s-evo\2004.1\DefaultSQL\
 Copied: 2026-07-01 (Pass 493)
 Contents: 6 SQL files for DE-A preset queries — GL no Inv Txn.sql, Inventory Non Asset.sql,
   Inventory txn no GL Post.sql, Non-Inventory Asset.sql, RNI Invoiced.sql, RNI Received.sql

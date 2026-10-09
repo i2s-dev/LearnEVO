@@ -45,7 +45,7 @@ appear to participate:
 
 ### Password storage — `BKSYUSER` (confirmed Pass 410, 2026-06-30)
 
-Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSYUSER.B` (31,744 bytes, Btrieve FC magic).
+Physical file: `\\i2s-evo\EVOERP\Default\BKSYUSER.B` (31,744 bytes, Btrieve FC magic).
 This table is Btrieve-only (not in PSQL DDF).
 
 Fields (confirmed from filedict_fields.csv + T7USG.RWN named_vars, Pass 550):
@@ -80,7 +80,7 @@ TAS `WHOAMI` function (runtime keyword at offset 7965 in
 Following login, `EVOMENU_SELCOMP.DCY` drives company selection.
 Companies map to data folders as described in
 [docs/04-data-dictionary/overview.md](../04-data-dictionary/overview.md):
-`\\I2S109-SOLIDCRM\DBAMFG$\<COMPANY>\*.B<CODE>`.
+`\\i2s-evo\EVOERP\<COMPANY>\*.B<CODE>`.
 
 Known company codes on this installation (folder suffixes):
 
@@ -139,7 +139,7 @@ from live data; would require DBA-era source code or a populated installation).
 
 ### `BKSLEVEL` — Security Level Access Masks (confirmed Pass 410, 2026-06-30)
 
-Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSLEVEL.B` (50,176 bytes, Btrieve FC magic).
+Physical file: `\\i2s-evo\EVOERP\Default\BKSLEVEL.B` (50,176 bytes, Btrieve FC magic).
 
 **Record structure** (424 bytes per record; confirmed from FCR[0x16]=424):
 
@@ -162,7 +162,7 @@ Levels '1', '2', '3', '4', '5' — all with all-N (deny) masks.
 
 ### `BKSLMSTR` — Security Level Names (confirmed Pass 410, 2026-06-30)
 
-Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\BKSLMSTR.B` (29,696 bytes).
+Physical file: `\\i2s-evo\EVOERP\Default\BKSLMSTR.B` (29,696 bytes).
 Contains descriptive names for each security level:
 
 | Level | Name |
@@ -271,7 +271,7 @@ are stored as SHA1 hashes in ISEX_USER_MISC1 rather than TAS-encrypted in BKPS.U
 
 ## Help System Scope — `DBAHLPID.B` (Pass 410, 2026-06-30)
 
-Physical file: `\\i2s109-solidcrm\DBAMFG$\Default\DBAHLPID.B` (178,176 bytes).
+Physical file: `\\i2s-evo\EVOERP\Default\DBAHLPID.B` (178,176 bytes).
 Btrieve-only table. Maps menu/help topic codes to help page IDs.
 
 **Record format**: `8XX-Y    ` (9-char fixed-width key) + 1-byte sequential page ID.

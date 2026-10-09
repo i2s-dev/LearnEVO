@@ -1,0 +1,14 @@
+TEST 02 — K_A File-Open Hook
+==================================================
+Target key: d97f05679438037073c30628734764020859f77e  (K_A)
+Log file  : C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test02-ka-file-hook-2026-07-07_1009.txt
+
+[*] Waiting for evoerp.exe...
+[+] Attached to evoerp.exe
+[+] evoerp.exe base  = 0xf00000
+    SetKey hook      -> 0x124f8a4
+    CreateFileA/W hooks live
+
+[+] Hooks active — EvoERP actions will now be captured.
+
+[FRIDA ERROR] TypeError: not a function

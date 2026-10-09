@@ -1,7 +1,7 @@
 # EvoHELP.CHM — The Authoritative Topic Index
 
 Status: verified — extracted from
-`\\I2S109-SOLIDCRM\DBAMFG$\EvoHELP.CHM` (1.7 MB, Microsoft HTML Help
+`\\i2s-evo\EVOERP\EvoHELP.CHM` (1.7 MB, Microsoft HTML Help
 ITSF format).
 
 ## What the CHM contains
@@ -137,7 +137,7 @@ prefix):
 
 `C:\Windows\hh.exe <path-to-chm>` opens it in the standard Windows
 HTML Help viewer. Example:
-`hh.exe "\\I2S109-SOLIDCRM\DBAMFG$\EvoHELP.CHM"`.
+`hh.exe "\\i2s-evo\EVOERP\EvoHELP.CHM"`.
 
 The runtime can also open it contextually; the `cshelp.htm` entry is
 probably driven by pressing F1 on any EVO screen — the runtime passes

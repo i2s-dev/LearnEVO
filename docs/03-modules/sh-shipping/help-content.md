@@ -2,7 +2,7 @@
 
 Status: verified (summarized from the vendor's help file).
 
-Source CHM: `\\i2s109-solidcrm\DBAMFG$\EVOHELP.CHM` →
+Source CHM: `\\i2s-evo\EVOERP\EVOHELP.CHM` →
 [samples/chm/EvoHELP.CHM](../../../samples/chm/EvoHELP.CHM) →
 decompiled to [samples/chm/extracted/](../../../samples/chm/extracted/).
 Extracted via [scripts/chm_to_md.py](../../../scripts/chm_to_md.py).

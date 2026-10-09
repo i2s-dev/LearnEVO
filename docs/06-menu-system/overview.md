@@ -167,8 +167,8 @@ format file accessed by `tp7runtime.exe` via the embedded CodeBase 4 engine (`c4
 from BKMENUSU.DBF at runtime.
 
 A plain-text CSV export of the full menu tree is available at:
-`\\i2s109-solidcrm\DBAMFG$\BKMENUSU.TXT` (870 lines — full menu) and
-`\\i2s109-solidcrm\DBAMFG$\BKMENUST.TXT` (109 lines — Setup Wizard only).
+`\\i2s-evo\EVOERP\BKMENUSU.TXT` (870 lines — full menu) and
+`\\i2s-evo\EVOERP\BKMENUST.TXT` (109 lines — Setup Wizard only).
 Copies in `samples/BKMENUSU.TXT` and `samples/BKMENUST.TXT`.
 
 ### BKMENUSU.TXT record format

@@ -39,7 +39,7 @@ functionality, built using data learned from the LearnEVO research.
 - Programs use **DSN=DBA** (Pervasive SQL ODBC) for database access
 - Python + tkinter + reportlab is the default stack unless another is chosen
 - `requirements.txt` must be kept current in each program folder
-- Programs must **never write to** `C:\ISTS\` or `\\i2s109-solidcrm\` (read-only rule from §1 applies)
+- Programs must **never write to** `C:\ISTS\` or `\\i2s-evo\` (read-only rule from §1 applies)
 - Current programs:
   - `wo-schedule/` — Print Work Order Schedule (mirrors EVO WO-L-B / T7WOLB.DFM + T6WOLB2.RTM)
 
@@ -75,10 +75,19 @@ Rules:
 **READ-ONLY (never write, edit, delete, rename, move, create, or overwrite):**
 
 - `C:\ISTS\` — the local EvoERP client install (and all subfolders).
-- `\\i2s109-solidcrm\` — the network share (and every subfolder, including
-  `\\i2s109-solidcrm\DBAMFG$\`, `\\i2s109-solidcrm\evo-ERP\`,
-  `\\i2s109-solidcrm\ISTS\`, `\\i2s109-solidcrm\EVOReports\`,
-  `\\i2s109-solidcrm\2004.1\`).
+- `\\i2s-evo\` — **the current network server** (192.168.0.237) and every subfolder, including:
+  - `\\i2s-evo\EVOERP\` — primary deployed-code + data tree. **The share was
+    renamed during the 2026-10-09 migration: what used to be the hidden share
+    `DBAMFG$` on the old server is now the plain share `EVOERP`.**
+  - `\\i2s-evo\ISTS\` — the ISTS share.
+
+Server-swap note (2026-10-09): EVO moved to the `i2s-evo` box from a now-dead
+server (old hostname ended in `-solidcrm`; it is being deleted — do not read from
+or reference it). Structure and data are identical; the only confirmed difference
+is the primary share name (old `DBAMFG$` → now `EVOERP`). The old server's separate
+`evo-ERP`, `EVOReports`, and `2004.1` shares are NOT exposed as separate shares on
+`i2s-evo` (likely consolidated under `EVOERP`) — confirm before relying on them.
+If you see the old hostname in any workspace doc or script, treat it as `i2s-evo`.
 
 Reading, opening, hex-dumping, grepping, copying-out-to-this-folder: all fine.
 Any write-side operation on those paths: forbidden, full stop. If a tool call
@@ -123,7 +132,8 @@ code excerpts, note what is confirmed vs. inferred vs. guessed.
 - Built on **TAS Professional 7** (`tp7runtime.exe`) — an xBase-family 4GL
   runtime from Computer Keyes / Business Tools.
 - Main launcher: `C:\ISTS\StartEvo.exe` → runs `tp7runtime.exe` against
-  `\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn`.
+  `\\i2s-evo\EVOERP\EvoERPmenu.rwn` (the primary code+data share; renamed from
+  the old `DBAMFG$` share in the 2026-10-09 server swap).
 - Reporting engine: **Nevrona ReportBuilder** (`RBDsgnr.exe`, `.RTM` files).
 - Data dictionary / forms / compiled code all live on the network share.
 - File type quick-reference (confirmed by inspection):

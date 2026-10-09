@@ -4484,7 +4484,7 @@ Report Templates — **not a standalone top-level menu module.** `RT` refers to 
 Nevrona ReportBuilder `.RTM` file format and report engine used throughout EVO.
 
 All EVO reports are `.RTM` files stored on the network share under `EVOReports\\`
-(confirmed path: `\\\\i2s109-solidcrm\\EVOReports\\`). Reports are designed in
+(confirmed path: `\\\\i2s-evo\\EVOReports\\`). Reports are designed in
 `RBDsgnr.exe` (Nevrona ReportBuilder 5.x).
 
 ## How RTM files work
@@ -7559,7 +7559,7 @@ TA-P Apply Updates
 ```
 
 Network share programs (`.RWN`, `.RTM`, `.DFM`) are updated by Support directly
-copying new versions to `\\\\i2s109-solidcrm\\DBAMFG$\\` — no `.UPD` needed for
+copying new versions to `\\\\i2s-evo\\EVOERP\\` — no `.UPD` needed for
 program files, only for database-structure changes.
 
 See [[module-TA|TA]] for the full Tools Admin module including TA-P.
@@ -8139,7 +8139,7 @@ Eight lookup dimensions confirmed from DFM scan.
 
 ## EvoERP Update System (Pass 491, 2026-07-01)
 
-**Distribution staging**: `\\i2s109-solidcrm\evo-ERP\ISTS\` is the master workstation
+**Distribution staging**: `\\i2s-evo\evo-ERP\ISTS\` is the master workstation
 install image. Robocopy deploys it to `C:\ISTS\` on each workstation. It contains all
 client executables plus zip utilities and UPDTP7.EXE.
 
@@ -8169,7 +8169,7 @@ auto-checks for an available update at startup (default `.F.` = disabled).
   DefPrintPath, Reminder/Notification/RemSeconds/RemSnoozeAll, QuickPrint,
   CheckForUpdates; per-module screen (EvoorClassicScreen E/C); HOT BUTTONS 1-6
 - `taspro7.INI` (deployed: 127 bytes) — minimal: UseBtrvMemos=1, LimitRuntime=1,
-  HelpFileName=`\\i2s109-solidcrm\DBAMFG$\EvoHELP.CHM`
+  HelpFileName=`\\i2s-evo\EVOERP\EvoHELP.CHM`
 - `WHOAMI.DBA` (9 bytes) — last login: "NON EVO" if no user logged in; otherwise
   `<user> <time> <date>` (e.g., "CWILLIAMS      11:00:53 A20171019")
 - `BMB.CFG` (56 bytes) — Pervasive PSQL workstation license key (V2355B-28BBE pattern)
@@ -8177,7 +8177,7 @@ auto-checks for an available update at startup (default `.F.` = disabled).
 
 **Developer source layout** (from `taspro7.ini` in outer distribution):
 - Source files: `F:\Projects\TAS\istech\` (developer machine, F: drive)
-- Old server: `\\2kserver\c\DBAMFG\` (Windows 2000-era predecessor to i2s109-solidcrm)
+- Old server: `\\2kserver\c\DBAMFG\` (Windows 2000-era predecessor to i2s-evo)
 - Dev DataDictPath: `E:\DBAMFG\` (developer's local drive mapping)
 
 ## Maintenance tools
@@ -9990,7 +9990,7 @@ via Pervasive JDBC to EVOBI2 and exports query results as CSV to DBAMFG$\\REPORT
 
 SQLEXPORT.RWN → T7JTemp launcher → SQLExport.jar
 SQLExport.jar connects via Pervasive JDBC (port 1583) to EVOBI2 database.
-Output: CSV files to \\I2S109-SOLIDCRM\\DBAMFG$\\REPORTS\\
+Output: CSV files to \\i2s-evo\\EVOERP\\REPORTS\\
 Logs to: DBAMFG$\\logs\\SQL Export.log
 
 ## TAS bridge variables (SQLEXPORT.RWN, Pass 231)
@@ -10012,7 +10012,7 @@ SQL builder + ShopCalendar + TabularView UI + multi-company INSTANCE_MAP
 
 ## DefaultSQL preset queries (Pass 493)
 
-6 of 7 CHM preset query SQL files recovered from \\i2s109-solidcrm\\2004.1\\DefaultSQL\\:
+6 of 7 CHM preset query SQL files recovered from \\i2s-evo\\2004.1\\DefaultSQL\\:
 
 | File | Query target |
 |------|-------------|

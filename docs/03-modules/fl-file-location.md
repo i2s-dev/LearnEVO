@@ -147,7 +147,7 @@ EvoUpdate also reads/writes them during schema migrations.
 ## Binary Analysis of FILE*.UPD (Pass 409, 2026-06-30)
 
 All FILE*.UPD files are **Btrieve data files** (FC magic `46 43`, 4096-byte pages), stored in
-`\\i2s109-solidcrm\DBAMFG$\`. They are not in the Pervasive DDF — TAS Pro accesses them directly.
+`\\i2s-evo\EVOERP\`. They are not in the Pervasive DDF — TAS Pro accesses them directly.
 
 ### FILELOC.UPD — Table-to-File Location Routing
 

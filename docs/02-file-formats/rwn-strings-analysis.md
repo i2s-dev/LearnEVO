@@ -66,7 +66,7 @@ Each entry in `rwn_symbols.json` is a JSON object:
 
 ```json
 {
-  "path": "\\\\i2s109-solidcrm\\DBAMFG$\\T7ARA.RWN",
+  "path": "\\\\i2s-evo\\EVOERP\\T7ARA.RWN",
   "size": 123456,
   "marker": "TWINB",
   "source_file": "T7ARA.SRC",
@@ -102,7 +102,7 @@ what was compiled to produce this RWN:
 | `suwin7.src` | Boot/license module |
 | Blank | Unknown / stripped |
 
-Only 7 `.SRC` files exist on this install (all in `\\i2s109-solidcrm\DBAMFG$\`):
+Only 7 `.SRC` files exist on this install (all in `\\i2s-evo\EVOERP\`):
 `BKLME.SRC`, `EVOSCHED.SRC`, `EVOSERVICE.SRC`, `BKPLE.SRC`, `ISREPLNK.SRC`, `ISUSERON.SRC`,
 `suwin7.src`. Most T7\*.RWN modules show their original T7\*.SRC filename even without source.
 

@@ -18,7 +18,7 @@ from twofish_pure import Twofish
 KEY = hashlib.sha1(b'mabufoju').digest() + b'\x00' * 4
 
 # A known .DCY file on the network share (read-only)
-DEFAULT_DCY = r'\\i2s109-solidcrm\DBAMFG$\BKWOMSTR.DCY'
+DEFAULT_DCY = r'\\i2s-evo\EVOERP\BKWOMSTR.DCY'
 
 
 def decrypt_block(iv_bytes: bytes, ct: bytes) -> bytes:

@@ -20,7 +20,7 @@ import csv
 from pathlib import Path
 from collections import defaultdict
 
-NETWORK = Path(r"\\i2s109-solidcrm\DBAMFG$")
+NETWORK = Path(r"\\i2s-evo\EVOERP")
 SAMPLES = Path(r"C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\samples")
 
 # Load module names for cross-reference

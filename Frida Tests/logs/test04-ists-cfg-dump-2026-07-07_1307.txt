@@ -1,0 +1,10 @@
+TEST 04 - ISTS.CFG Key Collector
+==================================================
+Log file: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test04-ists-cfg-dump-2026-07-07_1307.txt
+
+[*] Attaching to evoerp.exe...
+[+] Attached.
+[+] Hooked BTRCALLID in WBTRV32.DLL at 0xabe1300
+[+] Hook active. Navigate EVO modules now.
+    ISTS.CFG records will appear below as EVO reads them.
+

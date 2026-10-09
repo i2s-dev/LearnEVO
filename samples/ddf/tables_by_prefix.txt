@@ -1,5 +1,5 @@
 # EvoERP database table inventory (649 tables)
-# Extracted from \I2S109-SOLIDCRM\DBAMFG$\Defaultile.ddf
+# Extracted from \i2s-evo\EVOERP\Defaultile.ddf
 
 ## AHSY (1 tables)
   AHSYLOG

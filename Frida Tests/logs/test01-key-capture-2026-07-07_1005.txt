@@ -1,0 +1,218 @@
+TEST 01 — Twofish Key Capture
+==================================================
+Log file: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test01-key-capture-2026-07-07_1005.txt
+
+[*] Waiting for evoerp.exe...
+[+] Attached to evoerp.exe
+[+] evoerp.exe base = 0xf00000
+    SetKey   -> 0x124f8a4
+    mode2    -> 0x124eb50
+    EncBlock -> 0x1250248
+
+[+] Hooks live — EvoERP actions will now be captured.
+
+--- SetKey #1 ---
+  key_bits : 160
+  key[0:24]: d6e9efa8195c45cce839e88e52767768ff8f2463b47d4e01
+  key[0:20]: d6e9efa8195c45cce839e88e52767768ff8f2463
+  label    : *** UNKNOWN KEY ***
+  IV param : 0x00000000
+
+  EncryptBlock #1: 3b81f49ccf1129cdfcc6fab003cdff77
+--- mode2 #1 ---
+  P       : 3b81f49ccf1129cdfcc6fab003cdff77
+  buffer1 : 3b81f49ccf1129cdfcc6fab003cdff77
+
+  EncryptBlock #2: bfb288310e794531b50e073de90fd7e8
+--- mode2 #2 ---
+  P       : bfb288310e794531b50e073de90fd7e8
+  buffer1 : 3b81f49ccf1129cdfcc6fab003cdff77
+
+  EncryptBlock #3: f5c22424d361fdf33195840b9dc7b427
+  EncryptBlock #4: 0e36e1e7cafeec579ca8dafdf9c2f9db
+  EncryptBlock #5: fb13dca54439a8114228f923e2b246e3
+  EncryptBlock #6: 84d1e9742a672bc13bb95bade76b8945
+  EncryptBlock #7: 7d2114a0a63b7c7774b14addab05eea9
+  EncryptBlock #8: 27d177d3495ccabbfc56762822db17d0
+  EncryptBlock #9: 2a923a26484be6ef047b06bf6f330078
+  EncryptBlock #10: 4e0a2b259df7b3b491b88faa70b26790
+  EncryptBlock #11: 3efee69b5dfb8a8b50c3e34fb942b6a3
+  EncryptBlock #12: e4b69c33da1955e0284cb40d1da96f65
+  EncryptBlock #13: cb781d37e432b775a5504dd0efb626f2
+  EncryptBlock #14: c6985223f86a4beb2527fe6e75441e66
+  EncryptBlock #15: 8fee1c2fd2f1d8a8e876fbceac6e66b8
+  EncryptBlock #16: 4ced96afe543034eaca0e73f46462ca5
+  EncryptBlock #17: 177089d2c1d1af621955a28e7f12604f
+  EncryptBlock #18: 0de13702ae8ded8eca1ca973d4c055c1
+  EncryptBlock #19: 17adfdc59affe77a8d3f26e3123aac64
+  EncryptBlock #20: 32447e04eefd5ba924e49968b4f7a415
+--- mode2 #3 ---
+  P       : 42158d68f42aa2ee40aa55919878466c
+  buffer1 : 3b81f49ccf1129cdfcc6fab003cdff77
+
+--- mode2 #4 ---
+  P       : 42158d68f42aa2ee40aa55919878466c
+  buffer1 : 3b81f49ccf1129cdfcc6fab003cdff77
+
+--- mode2 #5 ---
+  P       : 42158d68f42aa2ee40aa55919878466c
+  buffer1 : 3b81f49ccf1129cdfcc6fab003cdff77
+
+--- SetKey #2 ---
+  key_bits : 160
+  key[0:24]: a898d21e2fd6ca294026e5d633d9047f91f7ed35d50f3805
+  key[0:20]: a898d21e2fd6ca294026e5d633d9047f91f7ed35
+  label    : K_B (RWN files)
+  IV param : 0x00000000
+
+--- mode2 #6 ---
+  P       : 0e6fbff653a28a70d102874c6b1825ad
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #7 ---
+  P       : 8deb949048dc9eae9fdf1779cdc8b551
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #8 ---
+  P       : 1c7e403169068f402af5ae817b83d3ba
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #9 ---
+  P       : 715671fd7c9f490df5fb264e5ce1e758
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #10 ---
+  P       : 6aa03113ac69336f8ddd1e99f5b2aad3
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #11 ---
+  P       : a36a1aa0afccadf04c17268ff11877c8
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #12 ---
+  P       : de95c73ad1deb808f8d44fb633ebbc92
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #13 ---
+  P       : 61a93d703ebda25ee114b24b0af17d26
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #14 ---
+  P       : cddee162aa1005c40de0c1bebc2f931c
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #15 ---
+  P       : 8474fa01ca102fe4200011ddafc05490
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #16 ---
+  P       : 5cbedc90e1647cd73e170204b29f56a4
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #17 ---
+  P       : f627711cdbc6c88b2c57b31563935bd8
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #18 ---
+  P       : 077beb0784d5c566b112d144472dbb19
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #19 ---
+  P       : f66f8bfa83afc6517b317f23f0607c05
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- mode2 #20 ---
+  P       : 006da9b0ddaad58443f6b1c1d5376bac
+  buffer1 : 0e6fbff653a28a70d102874c6b1825ad
+
+--- SetKey #3 ---
+  key_bits : 160
+  key[0:24]: 691e8041ab265b4e6ee052ccc946dba4caac60dad50f3805
+  key[0:20]: 691e8041ab265b4e6ee052ccc946dba4caac60da
+  label    : K_D (DCY files)
+  IV param : 0x00000000
+
+--- SetKey #4 ---
+  key_bits : 160
+  key[0:24]: d97f05679438037073c30628734764020859f77ed0e2a905
+  key[0:20]: d97f05679438037073c30628734764020859f77e
+  label    : K_A (unknown purpose)
+  IV param : 0x00000000
+
+--- SetKey #5 ---
+  key_bits : 160
+  key[0:24]: a898d21e2fd6ca294026e5d633d9047f91f7ed35c0f32f03
+  key[0:20]: a898d21e2fd6ca294026e5d633d9047f91f7ed35
+  label    : K_B (RWN files)
+  IV param : 0x00000000
+
+--- SetKey #6 ---
+  key_bits : 160
+  key[0:24]: fdc2883f6d6537dd667270406d0a4c85969295ac9cef2f03
+  key[0:20]: fdc2883f6d6537dd667270406d0a4c85969295ac
+  label    : *** UNKNOWN KEY ***
+  IV param : 0x00000000
+
+--- SetKey #7 ---
+  key_bits : 160
+  key[0:24]: 691e8041ab265b4e6ee052ccc946dba4caac60da54f12f03
+  key[0:20]: 691e8041ab265b4e6ee052ccc946dba4caac60da
+  label    : K_D (DCY files)
+  IV param : 0x00000000
+
+--- SetKey #8 ---
+  key_bits : 160
+  key[0:24]: d97f05679438037073c30628734764020859f77e30031806
+  key[0:20]: d97f05679438037073c30628734764020859f77e
+  label    : K_A (unknown purpose)
+  IV param : 0x00000000
+
+--- SetKey #9 ---
+  key_bits : 160
+  key[0:24]: 691e8041ab265b4e6ee052ccc946dba4caac60da70f72f03
+  key[0:20]: 691e8041ab265b4e6ee052ccc946dba4caac60da
+  label    : K_D (DCY files)
+  IV param : 0x00000000
+
+--- SetKey #10 ---
+  key_bits : 160
+  key[0:24]: a898d21e2fd6ca294026e5d633d9047f91f7ed3564f82f03
+  key[0:20]: a898d21e2fd6ca294026e5d633d9047f91f7ed35
+  label    : K_B (RWN files)
+  IV param : 0x00000000
+
+--- SetKey #11 ---
+  key_bits : 160
+  key[0:24]: d97f05679438037073c30628734764020859f77ee0b8e60d
+  key[0:20]: d97f05679438037073c30628734764020859f77e
+  label    : K_A (unknown purpose)
+  IV param : 0x00000000
+
+--- SetKey #12 ---
+  key_bits : 160
+  key[0:24]: a898d21e2fd6ca294026e5d633d9047f91f7ed3564f82f03
+  key[0:20]: a898d21e2fd6ca294026e5d633d9047f91f7ed35
+  label    : K_B (RWN files)
+  IV param : 0x00000000
+
+--- SetKey #13 ---
+  key_bits : 160
+  key[0:24]: d97f05679438037073c30628734764020859f77e4086500f
+  key[0:20]: d97f05679438037073c30628734764020859f77e
+  label    : K_A (unknown purpose)
+  IV param : 0x00000000
+
+--- SetKey #14 ---
+  key_bits : 160
+  key[0:24]: a898d21e2fd6ca294026e5d633d9047f91f7ed3564f82f03
+  key[0:20]: a898d21e2fd6ca294026e5d633d9047f91f7ed35
+  label    : K_B (RWN files)
+  IV param : 0x00000000
+
+--- SetKey #15 ---
+  key_bits : 160
+  key[0:24]: d97f05679438037073c30628734764020859f77ec0ed830f
+  key[0:20]: d97f05679438037073c30628734764020859f77e
+  label    : K_A (unknown purpose)
+  IV param : 0x00000000
+

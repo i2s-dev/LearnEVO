@@ -2,7 +2,7 @@
 
 Status: verified | Pass 405 2026-06-30
 
-Sources: ODBC DSN registry (this workstation), `JDBC.INI` from `\\i2s109-solidcrm\DBAMFG$\`,
+Sources: ODBC DSN registry (this workstation), `JDBC.INI` from `\\i2s-evo\EVOERP\`,
 `taspro7.ini` (both workstation and server-side copies), Pervasive installer packages on share.
 
 ---
@@ -17,11 +17,11 @@ Sources: ODBC DSN registry (this workstation), `JDBC.INI` from `\\i2s109-solidcr
 │    tp7runtime.exe (evoerp.exe)   ← TAS Pro 7 runtime                   │
 │    StartEvo.exe                  ← .NET launcher                        │
 │    WHOAMI.DBA                    ← per-workstation identity             │
-│    taspro7.ini                   ← 3 key paths → \\i2s109-solidcrm\    │
+│    taspro7.ini                   ← 3 key paths → \\i2s-evo\    │
 │                                                                          │
 │  Pervasive ODBC Client (32-bit)  ← connects via TCP:1583               │
-│    DSN=DBA   → i2s109-solidcrm, DB=DBA                                 │
-│    DSN="ABI DBA" → i2s109-solidcrm, DB=ABI                             │
+│    DSN=DBA   → i2s-evo, DB=DBA                                 │
+│    DSN="ABI DBA" → i2s-evo, DB=ABI                             │
 │                                                                          │
 │  Pervasive Workgroup Engine (local, NOT used in production)             │
 │    C:\Program Files (x86)\Pervasive Software\PSQL\bin\w3dbsmgr.exe v11.31
@@ -29,20 +29,20 @@ Sources: ODBC DSN registry (this workstation), `JDBC.INI` from `\\i2s109-solidcr
 │    (installed but no service running — for local snapshot testing only)  │
 └────────────────────┬──────────────────────────────────────────────────┘
                      │ TCP/IP  port 1583
-                     │ SMB  \\i2s109-solidcrm\DBAMFG$\
+                     │ SMB  \\i2s-evo\EVOERP\
                      │
 ┌────────────────────▼──────────────────────────────────────────────────┐
-│  Server: i2s109-solidcrm                                                │
+│  Server: i2s-evo                                                │
 │                                                                          │
 │  Pervasive PSQL Server v11.30 — TCP port 1583                          │
 │    Manages Btrieve databases (multiple named DBs, one per company)     │
 │                                                                          │
 │  Network shares:                                                         │
-│    \\i2s109-solidcrm\DBAMFG$\   ← main EVO data + code share          │
-│    \\i2s109-solidcrm\ISTS\      ← (legacy; also accessible)           │
-│    \\i2s109-solidcrm\EVOReports\← report output share (some companies)│
-│    \\i2s109-solidcrm\evo-ERP\   ← legacy EvoERP files                 │
-│    \\i2s109-solidcrm\2004.1\    ← DBA Classic 2004.1 legacy           │
+│    \\i2s-evo\EVOERP\   ← main EVO data + code share          │
+│    \\i2s-evo\ISTS\      ← (legacy; also accessible)           │
+│    \\i2s-evo\EVOReports\← report output share (some companies)│
+│    \\i2s-evo\evo-ERP\   ← legacy EvoERP files                 │
+│    \\i2s-evo\2004.1\    ← DBA Classic 2004.1 legacy           │
 └───────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -57,42 +57,42 @@ EvoERP uses Pervasive PSQL in **Client/Server mode** — NOT workgroup mode.
   with `TransportHint=TCP` and `TCPPort=1583`. The "Client Interface" driver name
   means the ODBC layer connects through the Pervasive MicroKernel Requestor to a remote
   Pervasive Server, not to a local workgroup engine.
-- `ServerName=i2s109-SOLIDCRM.1583` — Pervasive convention appends port to server name.
+- `ServerName=i2s-evo.1583` — Pervasive convention appends port to server name.
   The `.1583` suffix in the DSN ServerName field is how the Pervasive ODBC Client
   encodes the port (distinct from the `TCPPort` attribute, which is redundant but consistent).
 - The Pervasive installer packages stored on the share confirm the server version:
-  - `\\i2s109-solidcrm\DBAMFG$\Pervasive\PSQL-Server-11.30.030.000-win.exe` — the v11.30
+  - `\\i2s-evo\EVOERP\Pervasive\PSQL-Server-11.30.030.000-win.exe` — the v11.30
     server installer, confirming the production server is Pervasive PSQL v11.30.
   - `PSQL-Client-11.30.030.000-win.x86.exe` — corresponding 32-bit client.
   - Patch files: `PSQLv11Patch_Client_x86.msp` and `PSQLv11Patch_Server_x64.msp` — so the
     server is x64, the client is 32-bit (matching TAS Pro 7's 32-bit runtime).
 
-**Pervasive PSQL v11.30 server** runs on i2s109-solidcrm (Windows, x64).
+**Pervasive PSQL v11.30 server** runs on i2s-evo (Windows, x64).
 **Pervasive PSQL Client v11.31** is installed on workstations (32-bit, matching TAS Pro 7).
 
 ---
 
 ## Pervasive databases — one per company (confirmed from JDBC.INI)
 
-The file `\\i2s109-solidcrm\DBAMFG$\JDBC.INI` maps EvoERP company codes to Pervasive
+The file `\\i2s-evo\EVOERP\JDBC.INI` maps EvoERP company codes to Pervasive
 database names and report output paths. This is read by the Java JDBC bridge (EvoPVT.jar /
 T7jsql.RWN) for SQL-based features.
 
 | Company (Btrieve suffix) | Pervasive DB name | Report output (Tree Destination) |
 |--------------------------|-------------------|----------------------------------|
-| BI2 (i2 Systems) | `EVOBI2` | `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS` |
-| BAT (AT) | `EVOBAT` | `\\I2S109-SOLIDCRM\DBAMFG$\REPORTS` |
-| BAB (AB / ABI) | `abi` | `\\I2S109-SOLIDCRM\EVOREPORTS\` |
-| B22 (company 22) | `evob22` | `\\I2S109-SOLIDCRM\EVOREPORTS\` |
+| BI2 (i2 Systems) | `EVOBI2` | `\\i2s-evo\EVOERP\REPORTS` |
+| BAT (AT) | `EVOBAT` | `\\i2s-evo\EVOERP\REPORTS` |
+| BAB (AB / ABI) | `abi` | `\\i2s-evo\EVOREPORTS\` |
+| B22 (company 22) | `evob22` | `\\i2s-evo\EVOREPORTS\` |
 
-All four entries: `Host=i2s109-solidcrm`, `Port=1583`.
+All four entries: `Host=i2s-evo`, `Port=1583`.
 
 **In addition**, from ODBC DSN registration:
 - `DBQ=DBA` → Pervasive DB named `DBA` — the main shared EVO code/menus/config database.
 - `DBQ=ABI` → Pervasive DB named `ABI` — the legacy American Backplane Inc. database
   (the predecessor company; DSN "ABI DBA").
 
-So the full set of Pervasive databases on i2s109-solidcrm:
+So the full set of Pervasive databases on i2s-evo:
 
 | DB name | Contents | Access method |
 |---------|----------|---------------|
@@ -115,7 +115,7 @@ EvoERP uses two parallel paths to the same Btrieve data:
 tp7runtime.exe
   → TAS Pro Btrieve requestor (btrieve.dll / w32mkrde.dll)
   → TCP port 1583
-  → Pervasive MicroKernel (Server mode) on i2s109-solidcrm
+  → Pervasive MicroKernel (Server mode) on i2s-evo
   → DBA database (DDF files in \\DBAMFG$\)
   → physical .B files in \\DBAMFG$\ (routed by FILELOC per company code)
 ```
@@ -128,7 +128,7 @@ Lock mode controlled by TAS Pro `open TABLE lock N/R/F` keyword.
 ```
 TAS Pro program → SQLCALL / MYSQL_QUERY keyword
   → T7jsql.RWN (Java bridge) → EvoPVT.jar
-  → JDBC → Pervasive PSQL SQL engine on i2s109-solidcrm:1583
+  → JDBC → Pervasive PSQL SQL engine on i2s-evo:1583
   → Named database (EVOBI2, EVOBAT, etc. from JDBC.INI)
   → same physical .B files (accessed through PSQL SQL layer)
 ```
@@ -163,12 +163,12 @@ everything:
 
 ```ini
 [Setup]
-DataDictPath=\\I2S109-SOLIDCRM\DBAMFG$\   ← DDF schema location (+ data root)
-DfltRunPrg=\\I2S109-SOLIDCRM\DBAMFG$\EvoERPmenu.rwn  ← entry-point program
-DefaultPath=\\I2S109-SOLIDCRM\DBAMFG$\    ← base for all bare-name program chains
+DataDictPath=\\i2s-evo\EVOERP\   ← DDF schema location (+ data root)
+DfltRunPrg=\\i2s-evo\EVOERP\EvoERPmenu.rwn  ← entry-point program
+DefaultPath=\\i2s-evo\EVOERP\    ← base for all bare-name program chains
 ```
 
-The server-side copy at `\\i2s109-solidcrm\DBAMFG$\taspro7.ini` has these blank
+The server-side copy at `\\i2s-evo\EVOERP\taspro7.ini` has these blank
 (`DataDictPath=` / `DefaultPath=`) — so TAS Pro resolves paths relative to current
 directory when run directly on the server (used for server-side automated tasks).
 
@@ -176,7 +176,7 @@ directory when run directly on the server (used for server-side automated tasks)
 
 ## ARCHIVE.INI — per-company module archive dates
 
-`\\i2s109-solidcrm\DBAMFG$\ARCHIVE.INI` stores the last archive date per module per
+`\\i2s-evo\EVOERP\ARCHIVE.INI` stores the last archive date per module per
 company. Section names use Btrieve file suffixes:
 
 | Section | Module | Company |

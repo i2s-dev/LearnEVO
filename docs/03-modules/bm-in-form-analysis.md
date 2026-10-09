@@ -1,7 +1,7 @@
 # BM and IN Module — DFM Form Analysis
 Status: partial | verified-from-DFM
 
-Forms confirmed from \\I2S109-SOLIDCRM\DBAMFG$\T7BM*.DFM and T7IN*.DFM.
+Forms confirmed from \\i2s-evo\EVOERP\T7BM*.DFM and T7IN*.DFM.
 
 ---
 

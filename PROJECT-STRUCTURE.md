@@ -56,7 +56,7 @@ C:\ISTS\
 
 ---
 
-### Network Share — `\\I2S109-SOLIDCRM\DBAMFG$\` (READ-ONLY)
+### Network Share — `\\i2s-evo\EVOERP\` (READ-ONLY)
 
 This is the primary program and data share. All companies share program files; data files
 are per-company (see Company Layout below).

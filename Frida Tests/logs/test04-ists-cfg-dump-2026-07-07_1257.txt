@@ -1,0 +1,11 @@
+TEST 04 - ISTS.CFG Table Dump
+==================================================
+Log file: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test04-ists-cfg-dump-2026-07-07_1257.txt
+
+[*] Attaching to evoerp.exe...
+[+] Attached.
+[*] Scanning all readable memory (chunked 16 MB) for ISTS.CFG. prefix...
+[*] Found 1084 ISTS.CFG. prefix hit(s).
+[*] Looking for a confirmed table entry (neighbor at exactly +/-77 bytes)...
+[!] No hit has a valid ISTS.CFG. neighbor at +/-77 bytes. Record size may differ, or data is not in memory.
+[+] Complete.

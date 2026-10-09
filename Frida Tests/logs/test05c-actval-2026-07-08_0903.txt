@@ -1,0 +1,41 @@
+TEST 05c - ISTS.CFG Actual-Value Capture (pointer-following)
+============================================================
+Log: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test05c-actval-2026-07-08_0903.txt
+Trigger: C:\Users\tsinclair.I2SYSTEMS\Documents\Visual Studio Code Projects\LearnEVO\Frida Tests\logs\test05c-actval-2026-07-08_0903.txt.scan_trigger
+
+[*] Waiting for evoerp.exe...
+[+] Attached to evoerp.exe
+[+] Hooked BTRCALLID in WBTRV32.DLL
+[+] Script ready. Launch EvoERP.
+    Log in fully, then trigger the scan.
+
+[+] BKYSMSTR captured!
+    YN[  0- 24]: F NNNNNNCNNNNNNNNYNNNYNNN
+    YN[ 25- 49]: NNYNNIYY NDNN4YYYNNNY11 A
+    YN[ 50- 74]: NNNNIFNWNNAYYYNNYNNN  YYY
+    YN[ 75- 99]: 442YYNYYNYYYNP           
+    YN[100-124]:  YYYAQAYYYYYYYZYYZYYY  YY
+    YN[125-149]: YYY1Y YYYYYYYYYYYYYYY YY 
+    YN[150-174]:                          
+    YN[175-199]:                        AN
+    YN[200-224]: 1EYYYYZYYYYYYYYYYN   YR42
+    YN[225-249]: 0 YN1Y4     YRYYYYYYYYN00
+
+[*] Trigger file detected -- scanning now...
+[*] Scanning process memory...
+[+] Raw scan: 1921 ISTS.CFG. patterns
+[+] Longest 77-byte run: 377 entries
+
+=== BKYSMSTR YN[0..249] ===
+  46204e4e4e4e4e4e434e4e4e4e4e4e4e4e594e4e4e594e4e4e4e4e594e4e495959204e444e4e345959594e4e4e59313120414e4e4e4e49464e574e4e415959594e4e594e4e4e202059595934343259594e59594e5959594e50202020202020202020202020595959415141595959595959595a59595a5959592020595959595931592059595959595959595959595959595920595920202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020202020414e3145595959595a595959595959595959594e202020595234323020594e3159342020202020595259595959595959594e3030
+
+=== KNOWN ANCHORS ===
+  YN[ 38] = WOCALC   -> NOT IN RUN
+  YN[ 48] = APCHK    -> table[ 38]  offset=+10
+  YN[ 65] = STDCST   -> NOT IN RUN
+  YN[228] = DCSEQ    -> NOT IN RUN
+  YN[229] = DCSYNC   -> table[226]  offset=+3
+
+=== FULL TABLE (actual values via pointer) ===
+   Tbl  Key       Len  ActualVal                         ASCII             YN_Match
+   ---  ---       ---  ---                               ---               ---

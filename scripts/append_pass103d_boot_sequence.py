@@ -139,7 +139,7 @@ The I2 company has 200+ unique aliases, reflecting extensive customization.
 
 ### WHOAMI.DBA — Workstation Identity File
 
-`\\i2s109-solidcrm\\DBAMFG$\\WHOAMI.DBA` is **2 bytes** (CR+LF only — essentially empty).
+`\\i2s-evo\\EVOERP\\WHOAMI.DBA` is **2 bytes** (CR+LF only — essentially empty).
 The per-workstation identity file is stored locally: `C:\\ISTS\\WHOAMI.DBA`.
 The network copy being empty suggests all workstation-specific data lives locally.
 

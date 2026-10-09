@@ -153,7 +153,7 @@ hypothesized). The file is parsed line-by-line; recognized keys:
 
 | Key | Purpose |
 |-----|---------|
-| `Host` | Database server hostname (e.g. `i2s109-solidcrm`) |
+| `Host` | Database server hostname (e.g. `i2s-evo`) |
 | `Name` | Database name (e.g. `@DBA` for Pervasive ODBC path) |
 | `Port` | Port number (default Pervasive port: 1583) |
 | `Company` | Default company code (e.g. `I2`) |
@@ -229,7 +229,7 @@ WO (T7WOA/OLD), SA (T7SAA), MRP (T7MRIX), and J7* customizations.
 
 ## EVOReports network share (Pass 390 2026-06-30)
 
-`\\i2s109-solidcrm\EVOReports\` is **not** a systematic print-to-file output folder.
+`\\i2s-evo\EVOReports\` is **not** a systematic print-to-file output folder.
 Actual contents: ad-hoc SQL queries (.sql), CSV exports (.csv), screenshot PNGs, an empty subfolder.
 Files are irregularly dated (2015–2023) and user-created. Purpose: informal workspace for sharing
 queries and data extracts across users.  Print-to-file report output goes elsewhere (PDFs likely

@@ -189,7 +189,7 @@ by the runtime.
 - Identity per workstation: `WHOAMI.DBA`.
 - Personalization: `taspro7.ini`.
 
-### Tier 2 — Shared code + data (`\\i2s109-solidcrm\DBAMFG$\`)
+### Tier 2 — Shared code + data (`\\i2s-evo\EVOERP\`)
 
 - Compiled program files (`.RWN`, `.RUN`).
 - Form layouts (`.DFM`).
