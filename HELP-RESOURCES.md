@@ -9,7 +9,7 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 
 **Confidence ratings** are given per section. See `EVO-DECOMPILE-TODO.md` for the scale.
 
-**Last updated:** Pass 575g — 2026-07-08 (Passes 566–575g incorporated: Terminal Server deployment, UPDTP7.EXE update paths, item type corrections, SO/PO/WO field docs, RTM index stats, field descriptions 100% complete, BKYSMSTR/ISTS.CFG YN mapping, encryption key table).
+**Last updated:** 2026-10-12 — added [WO-A Material Issues / Lookup-Drill Engine / ODBC after the i2s-evo migration](#2026-10-12--wo-a-material-issues-lookupdrill-engine-odbc-after-the-i2s-evo-migration) (KI-002, KI-003). Previous: Pass 575g — 2026-07-08 (Passes 566–575g incorporated: Terminal Server deployment, UPDTP7.EXE update paths, item type corrections, SO/PO/WO field docs, RTM index stats, field descriptions 100% complete, BKYSMSTR/ISTS.CFG YN mapping, encryption key table).
 
 ---
 
@@ -100,6 +100,11 @@ business concept, or term. Each section links to deeper documentation in `docs/`
 | Set up a brand-new part number | IN-B → BM → RO-A | [Recipe 6: New Item Setup](#recipe-6-new-item-setup) |
 | Record a customer payment | AR-C | [Recipe 7: AR Cash Receipts](#recipe-7-ar-cash-receipts-customer-payment) |
 | Run a physical inventory | PI-A → PI-C → PI-D → PI-F | [Recipe 8: Physical Inventory](#recipe-8-physical-inventory-count) |
+| See a WO's BOM lines + qty issued from WO-A | WO-A → Material Issues (`Mat`) button | [WO-A Material Issues button](#wo-a-material-issues-button) |
+| Understand an "Empty File" message from a lookup/drill button | — | ["Empty File" message](#empty-file-message) |
+| Fix ODBC "Btrieve Error 161" (Python / Excel / 64-bit tools) | 64-bit DBA DSN → i2s-evo.1583, or DSN-less string | [Btrieve Error 161 / stale 64-bit DSN](#btrieve-error-161--stale-64-bit-dba-dsn-ki-002) |
+| Understand garbage WO numbers / dates from ODBC on WORKORD, WOBOM, ISNUMBER | — | [ODBC DDF misalignment](#odbc-ddf-misalignment-workord-wobom-isnumber) |
+| Know which server / company to use | `\\i2s-evo\EVOERP\`, company I2 | [Server and company](#server-and-company-after-the-2026-10-09-migration) |
 
 ---
 
@@ -846,6 +851,9 @@ issues, and close-out.
   Multiple dates: pop-up allows unlimited start/finish/qty combinations (stored in WODATE).
   Lead time scheduling: enter start date → auto-calc finish; enter finish date → auto-calc start.
   Action buttons: Copy WO, ECO, Material Issues, Labor, Outside Processes, Notes, Links.
+  **Material Issues** shows the WO's BOM lines (WOBOM) with qty issued, drilling to WOMAT issue
+  transactions — currently shows "Empty File" for every WO (since ~10/11/26, KI-003); see
+  [WO-A Material Issues button](#wo-a-material-issues-button).
 - **WO-B — Release Work Orders:** Release to shop floor.
 - **WO-C — Print Traveler:** Shop traveler document.
 - **WO-D — Pick List:** Material pick list.
@@ -3609,9 +3617,9 @@ One-liner per table. For full field lists see `samples/ddf/schema.md`.
 | BKISTAX | BKISTAX.B | AR | Historical tax totals | TAX_CODE + DATE (PK) + TRFLAG + TAXABL + NONTAX + collected amounts |
 | BKARHTAX | BKARHTAX.B | AR | Historical AR tax | Per-invoice historical tax: INVNO + CODE + ID + PID + AMOUNT |
 | ISARTXNB | ISARTXNB.B | AR | AR transaction batch | AR transaction batch records: SONUM + CODE + LINEID + BIN + LOC |
-| ISDRILL | ISDRILL.B | QU/SU | Query definitions | Saved query: LOOKUP_FROM + LOOKUP_FILE + LOOKUP_FILTERS_1..20 (filter criteria) + LOOKUP_WHILE_1..20 (loop conditions) |
+| ISDRILL | ISDRILL.B | QU/SU | Query definitions | Saved query: LOOKUP_FROM + LOOKUP_FILE + LOOKUP_FILTERS_1..20 (filter criteria) + LOOKUP_WHILE_1..20 (loop conditions). Per-company file (e.g. `I2\ISDRILL.BI2`) also holds the last lookup request each program session made — see [glossary](#lookupdrill-engine-glossary) |
 | ISDRILLM | ISDRILLM.B | QU/SU | Drill-down map | Navigation: PARENT→CHILD with SFIELD_1..5→TFIELD_1..5 field mappings + DRILLM_MENU label |
-| BKLUGRID | BKLUGRID.B | QU/SU | Grid column layouts | Per-user saved column visibility/order for F3 lookup grids |
+| BKLUGRID | BKLUGRID.B | QU/SU | Grid column layouts | Per-user saved column visibility/order for F3 lookup grids. Live file on i2s-evo is dBase `Drill\BKLUGRID.DBF` (2026-10-12) |
 | ISDROP | ISDROP.B | System | Dropdown lists | User-configurable picklist: CODE(10) + TEXT(30) + DESC(30) + EXTRA(50) |
 | ISDIGSIG | ISDIGSIG.B | DI | Digital signatures | Per-employee PO approval config — EMP(pk), MOTCACH(16), POENTBY/SOENTBY, ACTIVE_1..10 flags, TYPE_1..10 codes, SDATE/FDATE/TDATE_1..10, AMT_1..10, FLAG_1..10, FILE(256), ATIME/ADATE — 89 fields total |
 | ISARDEPL | n/a | MA | Deposit application lines | Confirmed in use by T7GETDEP and T7MAPDEPO; not registered in Pervasive DDF; tracks deposit-to-invoice application records |
@@ -4065,6 +4073,12 @@ All list-pickers throughout EvoERP use the same **WBKLOOKUP** program (413 procs
 - Actions: Select, Edit, Add New, Delete, Navigate (First/Previous/Next/Last)
 - The Drill Down button (green arrow) invokes drill navigation defined in **ISDRILLM**
 - Column layouts are stored per-user in **BKLUGRID**
+
+> **2026-10-12 update — physical files on i2s-evo:** grid definitions live in the dBase file
+> `\\i2s-evo\EVOERP\Drill\BKLUGRID.DBF/.dbt/.mdx` (278 grids), drill links in `Drill\ISDRILLM.B`, and each
+> company has an **ISDRILL** scratch file (e.g. `I2\ISDRILL.BI2`) where the calling program writes the lookup
+> request. See [Lookup/drill engine glossary](#lookupdrill-engine-glossary). The field table below is from older
+> builds; 2026 builds add `LOOKUP.PFILTER` / `LOOKUP.PWHILE` (internal research only).
 
 **Full toolbar capabilities (confirmed from WBKLOOKUP.DFM):**
 - **Change View** — switch between index/sort views of the table
@@ -23174,3 +23188,117 @@ under "How do I find which database tables a specific EvoERP form uses?"
 
 The key practical implication: if you see these tables in a Btrieve handle trace, they are
 not indicative of the specific module being used — they are always present.
+
+---
+
+## 2026-10-12 — WO-A Material Issues, Lookup/Drill Engine, ODBC after the i2s-evo migration
+
+Deeper docs: [lookup-drill-engine.md](docs/01-architecture/lookup-drill-engine.md) ·
+[wo-a-material-issues.md](docs/03-modules/wo-work-orders/wo-a-material-issues.md) ·
+[2026-10-11-ists-update.md](docs/01-architecture/2026-10-11-ists-update.md) ·
+[odbc-ddf-null-indicator-offsets.md](docs/04-data-dictionary/odbc-ddf-null-indicator-offsets.md) ·
+[external-odbc-connections.md](docs/01-architecture/external-odbc-connections.md) ·
+FAQ.md FAQ-003 · KNOWN-ISSUES KI-002, KI-003.
+
+> **Provenance rule.** Facts marked **(internal research only)** come from decrypted EVO program code. They help us
+> understand the system but must **never** be quoted or used in reports to the vendor (ISTS). Everything else here
+> was seen in the EVO screens, read from our own data files with standard tools (Zen ODBC, file listings), or read
+> from unencrypted config files.
+
+### Server and company after the 2026-10-09 migration
+
+- EVO runs from `\\i2s-evo\EVOERP\` (192.168.0.237) since 2026-10-09.
+- The old server **i2s109-solidcrm** (192.168.0.239) is **retired — DO NOT USE.** It was still powered on and
+  answering on port 1583 on 2026-10-12, so anything still pointing at it (DSNs, scripts, shortcuts) gives
+  misleading errors instead of failing outright. Repoint it to `i2s-evo`.
+- **Company I2 (`.BI2` files in `\\i2s-evo\EVOERP\I2\`) is the only live company.** `22\` is old; `AB\`, `AT\`,
+  `CA\`, `Default\` are small; `Testdata\` (`.B99`) is the test company. In `DSN=DBA`, plain table names
+  (WORKORD, WOMAT, WOBOM…) are company I2.
+- `\\i2s-evo\EVOERP\UPDATE\` (update staging) is empty; `Bak Up\` holds no copy of the pre-10/11 programs.
+
+### WO-A Material Issues button
+
+**Where:** WO-A Enter Work Orders → toolbar button `Mat`, hint "Material Issues".
+
+**What it shows:** the **"Work Order Materials"** grid (grid name **WOBOMMI**), which lists the WO's **bill of
+material lines (WOBOM)**. It does **not** list WOMAT issue transactions directly. Columns: Component, Type,
+Description, Qty Required, UM, Qty Issued, % Issued, BOM Note, Qty Scrapped. From a BOM line you drill down to
+**"Materials Issued"** (drill **WOMATL**) = the WOMAT issue transactions for that WO.
+
+- WOBOM lines are created when a status-F WO is saved; a status-S WO has none until it is changed to F — so a
+  status-S WO legitimately shows "Empty File".
+- **Current status (KI-003, ACTIVE):** since about 10/11/26 the button shows **"Information – Empty File" for every
+  WO tried** (56273-22 status F, 55553-1 status R, 55977-1 and 55968-1 status C), even though WOBOM and WOMAT both
+  contain records for them (e.g. WOMAT: 2 / 23 / 106 rows for 56273-22 / 55553-1 / 55968-1). It worked for ~2 years.
+- Timing: server moved to i2s-evo 10/09/26; `T7WOA.RWN` and `WBKLOOKUP.RWN` show modified dates of 10/11/26 10:23
+  (WO-A title bar: "ISTS Enhancement 09/16/26"); `Drill\ISDRILLM.B` and `Drill\BKLUGRID.*` 10/11/26 16:42.
+  The data and the WOBOMMI grid definition are unchanged (identical to the 2025-05-31 backup), so the fault points to
+  the 10/11 program update. Report to ISTS pending.
+- Side symptom: **closed WOs (55968-1, 55977-1) open as "\* New – Being Created"** instead of loading. Unknown
+  whether this is intended in the new build or a second bug.
+- **Do NOT roll back** T7WOA.RWN, WBKLOOKUP.RWN or the Drill\ files without asking the user first (user rule).
+- Workaround to see issued material: query WOMAT via ODBC (`WOMAT_WOPRE`, `WOMAT_WOSUF`) — WOMAT's ODBC definition is correct.
+
+**Quick diagnosis of any lookup button:** click it, then copy `\\i2s-evo\EVOERP\I2\ISDRILL.BI2` into `samples/`
+and decode the newest record for that program — it shows the grid, file and WHILE filter the program asked for.
+
+### "Empty File" message
+
+"Information – Empty File" from a lookup or drill button means **the lookup returned no records** for the
+filter it was given. It does not mean the data file is empty or damaged. Check, in order: (1) does the data exist
+(ODBC or raw decode)? (2) if yes, the problem is in the lookup request/program, not the data.
+The message is raised by the generic lookup program WBKLOOKUP, immediately after its first record fetch; the next
+message in the same routine is "You do not have security rights to view this lookup." *(internal research only)*
+
+### Lookup/drill engine glossary
+
+| Term | What it is | Where |
+|------|-----------|-------|
+| **WBKLOOKUP** | The one generic lookup/grid program behind every magnifier and drill button. Updated 10/11/26. Version "ISTS Enhancement 05/05/26" (was 05/30/24) *(internal research only)* | `\\i2s-evo\EVOERP\WBKLOOKUP.RWN` |
+| **BKLUGRID** | Grid definitions — one record per grid name: column list (memo), selectable sort keys (memo), file, program. 278 grids. dBase IV file, not Btrieve | `Drill\BKLUGRID.DBF/.dbt/.mdx`; backup `Drill\BKLUGRID.xBF/.xbt/.xdx` (2025-05-31) |
+| **ISDRILLM** | Drill-link master: parent grid → child grid, label, child file, link fields. Btrieve, 400-byte records | `Drill\ISDRILLM.B` (older copy at root, 2026-05-30) |
+| **ISDRILL** | Per-company scratch file: when a program opens a lookup it writes one request record (grid, file, key, filter, WHILE expression). Holds roughly the last lookup per program session — useful for diagnosis. 3456-byte records in I2/AB/AT/CA/Default/Testdata; old 3416-byte layout in `22\`, root and `Drill\` (unused) | `I2\ISDRILL.BI2` etc. |
+| **WOBOMMI** | Grid "Work Order Materials" on WOBOM — opened by WO-A Material Issues, filtered to the WO on screen | defined in BKLUGRID |
+| **WOMATL** | Drill "Materials Issued" on WOMAT — reached from WOBOMMI (and from WORKORDERS). Link WOPRE/WOSUF → WOMAT WOPRE/WOSUF | defined in ISDRILLM |
+| PFILTER / PWHILE | New "program filter" fields added to the ISDRILL request in the 2026 builds ("This is a Program Filter and cannot be removed.") *(internal research only)* | ISDRILL record |
+
+### Btrieve Error 161 / stale 64-bit DBA DSN (KI-002)
+
+**Symptom:** a Python / 64-bit Excel / other 64-bit ODBC query on `DSN=DBA` connects fine but fails opening a
+table with *"A key has reached a maximum limit for user count, session count, or data in use, or has changed state
+to expired or disabled. (Btrieve Error 161)"*.
+
+**Cause:** not a license shortage on i2s-evo (50 users licensed, all keys Active). The migration repointed only the
+**32-bit** DBA DSN. The **64-bit** DSN (`HKLM\SOFTWARE\ODBC\ODBC.INI\DBA`) still said
+`ServerName=i2s109-solidcrm.1583` (and a dead driver path under `Actian\PSQL`), so 64-bit tools reached the retired
+server, whose license had moved away. EVO itself is 32-bit and unaffected.
+
+**Fix:** set the 64-bit DSN's ServerName to `i2s-evo.1583` and Driver to
+`C:\Program Files\Actian\Zen\bin\odbcci64.dll` (needs local admin). Done on PC I21988t 2026-10-12; **other PCs
+unchecked.** Bypass that never depends on a DSN:
+
+```
+Driver={Pervasive ODBC Interface};ServerName=i2s-evo.1583;DBQ=DBA;
+```
+
+Lesson: any server move must update **both** the 32-bit (WOW6432Node) and 64-bit DSNs.
+
+### ODBC DDF misalignment (WORKORD, WOBOM, ISNUMBER)
+
+**Symptom:** through `DSN=DBA`, WORKORD / WOBOM / ISNUMBER return nonsense (WO numbers like `2.36e+189`, "Invalid
+date, time or timestamp value", "Numeric value out of range"), and WHERE filters silently match nothing
+(e.g. `WORKORD WHERE MTWO_WIP_WOPRE=55968` → 0 rows although the WO exists).
+
+**Cause:** the I2 data dictionary defines each column of these tables with a 1-byte null indicator in front of it;
+EVO's records have no such bytes, so every field after the first is read from the wrong place.
+Correct offset = DDF offset − (field index + 1). WORKORD: 83 fields, record length 1173. WOBOM: 39 fields, record
+length 496.
+
+**OK via ODBC:** WOMAT, BKICMSTR. **Not OK:** WORKORD, WOBOM, ISNUMBER.
+
+**Workaround:** copy the `.BI2` file to `samples/` and decode it directly with the corrected offsets (see
+[odbc-ddf-null-indicator-offsets.md](docs/04-data-dictionary/odbc-ddf-null-indicator-offsets.md)). Note:
+`programs/wo-schedule/` reads WORKORD via ODBC and is likely broken against i2s-evo — retest. The root
+`\\i2s-evo\EVOERP\FILE.DDF` is a different multi-company dictionary, not the one DSN=DBA uses.
+
+**Confidence: 80/100** — Server/company layout, file dates, ODBC symptoms, DSN fix and DDF offsets verified 2026-10-12 from file listings, registry and raw decodes; KI-003 root cause inside the 10/11 programs is not yet identified, and lookup-engine internals marked (internal research only) come from decrypted strings, not decompiled logic.

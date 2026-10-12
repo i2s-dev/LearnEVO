@@ -235,6 +235,39 @@ Key behaviors:
 Summary: for reporting (SELECT), ODBC reads are safe at any time. For writes, coordinate to
 avoid the narrow windows when EVO holds explicit locks.
 
+## Stale 64-bit DSN after the i2s-evo migration (2026-10-12)
+
+The 2026-10-09 server move updated only the **32-bit** `DBA` DSN
+(`HKLM\SOFTWARE\WOW6432Node\ODBC\ODBC.INI\DBA` → `i2s-evo.1583`). The **64-bit** one
+(`HKLM\SOFTWARE\ODBC\ODBC.INI\DBA`) still had `ServerName=i2s109-solidcrm.1583` and a dead driver path
+`C:\Program Files\Actian\PSQL\bin\odbcci64.dll` (now `...\Actian\Zen\bin\odbcci64.dll`).
+
+- EVO itself is unaffected: `tp7runtime.exe` and `StartEvo.exe` are 32-bit (PE machine 0x014C) and use native Btrieve.
+- 64-bit tools (Python, 64-bit Excel/Power Query) reached the **retired** server, which is still powered on
+  and returned **Btrieve Error 161** ("A key has reached a maximum limit for user count, session count, or data in use,
+  or has changed state to expired or disabled") because its license moved away.
+- Fixed on this PC (I21988t) 2026-10-12 via an elevated registry edit; other PCs unchecked. See
+  [KI-002](../../Issues/KI-002-odbc-btrieve-161-license-limit.md).
+- Bypass that never depends on a DSN:
+  `Driver={Pervasive ODBC Interface};ServerName=i2s-evo.1583;DBQ=DBA;`
+
+### Checking the server's Zen license and usage (needs i2s-evo admin)
+
+| Tool | Command | Shows |
+|------|---------|-------|
+| `clilcadm.exe` | `clilcadm -i -s i2s-evo -u <admin> -p <pw>` | Keys + state (Active / Expired / Failed Validation) |
+| `bmon.exe` | `bmon -f <cfg> -runonce` (cfg: `server=`, `username=`, `password=`, `Sessions=Yes`, `ResourceStats=Yes`) | Sessions, user count current/peak/max |
+
+Both are in `C:\Program Files (x86)\Actian\Zen\bin\`. Without credentials: "DBU access denied".
+Snapshot 2026-10-12: Zen 16 Enterprise Server, engine 16.11.006, all keys Active, **50 users** (20 permanent +
+30 × 1-user increases), 9 in use (peak 10). One leftover expired temporary key (exp 9/20/2026) is harmless.
+A Docker host (172.20.0.5, `python3.13`, user root) holds a SQL session on DSN DBA — origin unknown.
+
+### Table name → company
+
+In DSN=DBA, plain table names are company **I2** files. Some DDF entries are misaligned — see
+[odbc-ddf-null-indicator-offsets.md](../04-data-dictionary/odbc-ddf-null-indicator-offsets.md).
+
 ## Related
 
 - [../04-data-dictionary/overview.md](../04-data-dictionary/overview.md)

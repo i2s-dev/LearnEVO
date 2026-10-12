@@ -492,6 +492,18 @@ Binary analysis of T7WOG.RWN.dec (wog_deep2.py, 2026-06-29) revised the mechanis
 
 ---
 
+## WO-A Material Issues "Empty File" / 10-11 update (opened 2026-10-12, KI-003)
+
+- Why does the 10/11 build (T7WOA 09/16/26 + WBKLOOKUP 05/05/26) return no records for the WOBOMMI drill
+  although WOBOM has matching lines? Needs RWN bytecode decompile of the drill path (KEY=0 + COMM key no.).
+- Do ALL drill-style lookups (KEY=0, key number in COMM) fail since 10/11, e.g. IN-A Bins?
+- Why do closed (status C) WOs open as "* New" in WO-A — new intended behavior or bug?
+- What does `LOOKUP.PFILTER` / `LOOKUP.PWHILE` (20 B each) hold when set? Name of a program filter?
+- Why is the I2 ODBC DDF built with null indicators for WORKORD/WOBOM/ISNUMBER but not WOMAT? Did the migration
+  regenerate the DDFs? (programs/wo-schedule likely broken against it.)
+- Who runs the Docker host 172.20.0.5 (python3.13, SQL session on DSN DBA as root)?
+- Full scan of every file changed in the 10/11 update — pending (next task).
+
 ## Nice-to-have follow-ups (not blocking)
 
 - **Extract CHM contents fully.** Ran `hh -decompile` but it quietly

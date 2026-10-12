@@ -66,23 +66,32 @@ DBAMFG$/
 ├── [Program files — .RWN, .RUN, .DFM, .RTM, .SRC, .DCY]
 ├── [Database files — *.B (649 tables, Default company)]
 ├── Default\              Default company data (*.B files)
-├── 22\                   Company "22" data (*.B22 files or subdirectory)
+├── 22\                   Company "22" data (*.B22) — old (WOMAT 2017, WORKORD 2026-07); ISDRILL.B22 still old 3416-byte layout [confirmed 2026-10-12]
 ├── AB\                   Company "AB"
 ├── AT\                   Company "AT"
 ├── CA\                   Company "CA"
 ├── Goldstar\             Company "Goldstar"
-├── I2\                   Company "I2"
+├── I2\                   Company "I2" (*.BI2) — **the only live company** (user, 2026-10-12); WORKORD.BI2 modified daily; WOBOM.BI2 = 743 MB (mtime 10/11/26 11:37); ISDRILL.BI2 = per-company lookup scratch file, reclen 3456 [confirmed 2026-10-12, see docs/01-architecture/network-topology.md]
 ├── IT\                   Company "IT"
 ├── UU\                   Company "UU"
 ├── DefaultSQL\           Company "DefaultSQL" (ODBC/SQL variant)
-├── Testdata\             Test data company
+├── Testdata\             Test data company (*.B99); ISDRILL.B99 reclen 3456, modified 10/10/26 17:03
 ├── DEV\                  Development company
-├── Bak Up\               Backup company
+├── Bak Up\               Backup company — subfolders touched 10/11/26 09:43–09:47 by the ISTS update; holds NO pre-update copy of T7WOA/WBKLOOKUP [confirmed 2026-10-12]
+├── UPDATE\               ISTS update staging folder — touched 10/11/26, **empty** on 2026-10-12 [confirmed]
 ├── Menu Backup\          Menu backup company
 ├── Recovered\            Recovered data
 ├── LinkDoc\              Document attachment files (EvoLinks storage)
 ├── RTX\                  RTM backup copies — same name as RTM but with .RTX extension; TA-M editor restores from here if RTM edit goes wrong [confirmed EVOHELP.PDF §7.7.6]
 ├── DRILL\                Drill-down customizations — ISDRILLM.B (local copy used at runtime; DBAMFG$ root copy is master replaced by updates) [confirmed EVOHELP.PDF §SU-B]
+│   ├── ISDRILLM.B        Btrieve, reclen 400 — drill-link master (parent grid → child grid + link fields); replaced 10/11/26 16:42 [confirmed 2026-10-12]
+│   ├── BKLUGRID.DBF/.dbt/.mdx  dBase IV + memo + index — lookup grid definitions, 278 records (one per grid name; LUGRID_DAT memo = columns, LUGRID_KDA memo = keys); replaced 10/11/26 16:42 [confirmed 2026-10-12]
+│   ├── BKLUGRID.xBF/.xbt/.xdx  Backup of previous grid definitions (2025-05-31) [confirmed]
+│   └── ISDRILL.B         Old-layout ISDRILL scratch file, reclen 3416 (unused) [confirmed]
+├── ISDRILLM.B            Root copy — older drill master (2026-05-30) [confirmed 2026-10-12]
+├── ISDRILL.B             Root ISDRILL scratch file, reclen 3416 (pre-2026 layout; unused) [confirmed]
+├── WBKLOOKUP.RWN         Generic lookup/grid program — opens drill\ISDRILLM.B + drill\BKLUGRID.DBF by literal path; source of "Empty File" message; replaced 10/11/26 10:23 (718,359 B, "ISTS Enhancement 05/05/26") [internal research — decrypted code]
+├── T7WOA.RWN             WO-A Enter Work Orders — replaced 10/11/26 10:23 (1,031,261 B; title bar "ISTS Enhancement 09/16/26") [confirmed]
 ├── REPORTS\              SQL Export CSV output path (used by EX/DE-A SQL Query/Export) [confirmed from SQLEXPORT.RWN analysis]
 ├── lib\                  Java library JARs (Pass 545):
 │   ├── Evo.jar           [52 classes] Original Swing-based app — Outlook EvoAppointment, ChartDisplayFrame, LookupFrame, PervasiveDatabase JDBC
@@ -405,7 +414,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 
 | Menu | Program | Key DFM | Description |
 |------|---------|---------|-------------|
-| WO-A | BKWOA, ISTECH, ISWORPT1 | T7WOA.DFM (+ sub-forms: T7WOAC.DFM, T7WOACFG.DFM, etc.) | Enter Work Orders |
+| WO-A | BKWOA, ISTECH, ISWORPT1 | T7WOA.DFM (+ sub-forms: T7WOAC.DFM, T7WOACFG.DFM, etc.) | Enter Work Orders — program T7WOA.RWN updated 10/11/26 ("ISTS Enhancement 09/16/26", 1,031,261 B). `Mat` toolbar button ("Material Issues") → WBKLOOKUP grid WOBOMMI on WOBOM → drill WOMATL on WOMAT. See KI-003 (button shows "Empty File" since ~10/11/26) |
 | WO-K-F | (sub-function) | T7WOKF.DFM | Edit Sequence Dates |
 
 **Source files:** `BKAWLB.SRC` (WO schedule report), `BKDCA.SRC` (DC labor/production entry)
@@ -417,8 +426,8 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | WORKORD | WORKORD.B | Work order master (74 fields: WO prefix/suffix, qty, priority, dates sched/actual, completed qty, status, estimated/actual costs, customer order, instructions, scrap) |
 | WORKCHG | WORKCHG.B | Work order change log (25 fields: WO ref, change code, date, user, before/after values) |
 | WORKCTR | WORKCTR.B | Work center master |
-| WOBOM | WOBOM.B | WO bill of materials |
-| WOMAT | WOMAT.B | WO material issues |
+| WOBOM | WOBOM.B | WO bill of materials — I2 file WOBOM.BI2 is 743 MB, reclen 496, 39 fields; ODBC DDF misaligned (null-indicator bytes) — see docs/04-data-dictionary/odbc-ddf-null-indicator-offsets.md. Listed by lookup grid WOBOMMI (WO-A Material Issues) |
+| WOMAT | WOMAT.B | WO material issues — drill-down target WOMATL "Materials Issued" from WOBOMMI (link WOBOM.WOPRE/WOSUF → WOMAT.WOPRE/WOSUF, key 3). ODBC DDF is correct |
 | WOLABOR | WOLABOR.B | WO labor entries |
 | WOROUT | WOROUT.B | WO routing output / production |
 | WOHBOM | WOHBOM.B | WO history BOM |
@@ -594,8 +603,9 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | BKCPMSTR | BKCPMSTR.B | Cost Period Master — labor cost period tracking |
 | BKESTCFG | BKESTCFG.B | Estimating Config — module-level estimating defaults |
 | BKFOCFG | BKFOCFG.B | FO Config — Features & Options module defaults |
-| BKLUGRID | BKLUGRID.B | Lookup Grid — grid column layout definitions |
-| ISDRILLM | ISDRILLM.B | IS Drill-Down Master — drill-down menu definitions |
+| BKLUGRID | BKLUGRID.B | Lookup Grid — grid column layout definitions. **Correction 2026-10-12:** the live copy used by WBKLOOKUP is dBase `\\i2s-evo\EVOERP\Drill\BKLUGRID.DBF/.dbt/.mdx` (278 grids), not a .B file — see docs/01-architecture/lookup-drill-engine.md |
+| ISDRILLM | ISDRILLM.B | IS Drill-Down Master — drill-down menu definitions. Live copy `Drill\ISDRILLM.B` (reclen 400); per-company `I2\ISDRILLM.BI2` (2024-09-29) appears unused |
+| ISDRILL | ISDRILL.B&lt;co&gt; | IS Drill scratch — one lookup-request record per program session (ID, GRID, REC, KEY, FILE, FILTERS, COMM, WHILE, + PFILTER/PWHILE in 2026 builds). Reclen 3456 in I2/AB/AT/CA/Default/Testdata; 3416 in 22\, root, Drill\. Diagnostic: copy right after a failing lookup click [confirmed 2026-10-12] |
 | ISDROP | ISDROP.B | IS Dropdown — dropdown list definitions |
 | ISREPDEF | ISREPDEF.B | IS Report Def — report parameter defaults |
 | ISREPLNK | ISREPLNK.B | IS Report Link — report-to-menu action links |
@@ -657,7 +667,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | ISSDET | ISSDET.B | IS Standard Detail — type/detail code pairs (used with ISSTYPE) |
 | BKSYUSER | BKSYUSER.B | BK SY User — additional session/user tracking table |
 | ISTRIGRS | ISTRIGRS.B | IS Trigger Results — automated trigger execution/result log |
-| BKLUGRID | BKLUGRID.B | BK Lookup Grid — lookup grid column layout configuration |
+| BKLUGRID | BKLUGRID.B | BK Lookup Grid — lookup grid column layout configuration (live file is `Drill\BKLUGRID.DBF`, dBase — see Special/Misc table above) |
 | BKPIMSTR | BKPIMSTR.B | BK PI Master — physical inventory run master (one record per PI session) |
 | BKPILOT | BKPILOT.B | BK PI Lot — PI lot count records (lot, location, counted qty) |
 | BKPIPHYS | BKPIPHYS.B | BK PI Physical — PI physical count records (item, location, count qty) |
@@ -776,6 +786,7 @@ One RWN can have multiple DFM child forms (sub-dialogs, tabs, lookups).
 | GETALPHAGEN.DCY | DCY (encrypted) | Generic 1-field text input dialog ("Get Alpha General") — caller sets caption/label | confirmed |
 | T7POPGET.DCY | DCY (encrypted) | Generic 5-field popup with Lookup button — caller sets all labels at runtime | confirmed |
 | WBKLOOKUP.DCY | DCY (encrypted) | Standard list-picker — DataGrid + Select/Edit/Add/Delete (DBA Classic era, unchanged) | confirmed |
+| WBKLOOKUP.RWN | RWN (encrypted) | Generic lookup/drill engine program — reads the caller's ISDRILL scratch record, grid def from `drill\BKLUGRID.DBF`, drill links from `drill\ISDRILLM.B`; shows "Empty File" when the lookup returns no rows. Updated 10/11/26 ("ISTS Enhancement 05/05/26"; adds program filters PFILTER/PWHILE) | confirmed (internal research — decrypted) |
 | WBKLUGRID.DCY | DCY (encrypted) | Admin: configure lookup grid definitions (table, security level, sort keys, UDF) | confirmed |
 | EVOUSERS.DCY | DCY (encrypted) | Active user management — Logout / Lock / Clear / Message / User Count | confirmed |
 | T7CLOADING.DCY | DCY (encrypted) | "Loading Data" animated spinner (shown during background data fetches) | confirmed |
@@ -1194,3 +1205,59 @@ Tables upgraded: BKGLSTMT, BKGLFSTL, BKGLGJRN, BKGLGJLN, BKPRCURP, BKPRFTAX, BKP
 
 **Confidence: 92/100** — **Pass 544 (2026-07-02)**: Added RTX\, DRILL\, REPORTS\ subdirectories to DBAMFG$; added SQLExport.jar; upgraded ISARDEPL inferred→confirmed (Pass 221); added ISEXUSER 12-field auth table (Pass 227). 659 tables cataloged from DDF; all major program RWNs mapped with DB fingerprints from rwn_symbols.json; .B file-to-table correspondence confirmed via DDF X$File. Remaining gaps: SUMPNCUS (not in DDF — may be a temp file), ISICUL/ISPRCONS (not in DDF — may be unregistered or different naming), some DBAMFG$ subdirectory contents still not enumerated (e.g. 2004.1\, evo-ERP\), cfg.rtm physical path unresolved.
 
+---
+
+## 2026-10-12 — Lookup/drill engine, 10/11/26 ISTS update, i2s-evo company folders
+
+Source docs: `docs/01-architecture/lookup-drill-engine.md`, `docs/01-architecture/2026-10-11-ists-update.md`,
+`docs/03-modules/wo-work-orders/wo-a-material-issues.md`, `docs/04-data-dictionary/odbc-ddf-null-indicator-offsets.md`,
+`docs/01-architecture/network-topology.md` (§ Company data folders on i2s-evo). Issues: KI-002, KI-003.
+
+**Server:** `\\i2s-evo\EVOERP\` (192.168.0.237) since 2026-10-09. Old server `i2s109-solidcrm` (192.168.0.239) is
+**retired — do not use** (still powered on 2026-10-12; stale 64-bit DSNs reached it → Btrieve Error 161, KI-002).
+
+**Company folders:**
+
+| Folder | Ext | Status |
+|--------|-----|--------|
+| `I2\` | `.BI2` | **Only live company** |
+| `22\` | `.B22` | Old |
+| `AB\`, `AT\`, `CA\`, `Default\` | `.BAB`, `.BAT`, `.BCA`, `.B` | Small; WORKORD/WOMAT/ISDRILL touched by 10/11 update |
+| `Testdata\` | `.B99` | Test company |
+| `Drill\` | — | Shared lookup definitions |
+| `UPDATE\` | — | Update staging; empty |
+| `Bak Up\` | — | Backup folders; no pre-10/11 RWN copies |
+
+**Lookup/drill engine files:**
+
+| File | Format | Role | Status |
+|------|--------|------|--------|
+| `WBKLOOKUP.RWN` | TAS RWN (encrypted) | Generic lookup program; opens `drill\ISDRILLM.B` + `drill\BKLUGRID.DBF` | confirmed (decrypted — internal only) |
+| `Drill\BKLUGRID.DBF/.dbt/.mdx` | dBase IV + memo | 278 grid definitions | confirmed |
+| `Drill\BKLUGRID.xBF/.xbt/.xdx` | dBase backup | Grid definitions as of 2025-05-31 | confirmed |
+| `Drill\ISDRILLM.B` | Btrieve, reclen 400 | Drill links parent grid → child grid | confirmed |
+| `Drill\ISDRILL.B`, root `ISDRILL.B` | Btrieve, reclen 3416 | Old-layout scratch (unused) | confirmed |
+| root `ISDRILLM.B` | Btrieve | Older drill master (2026-05-30) | confirmed |
+| `<co>\ISDRILL.B<co>` (e.g. `I2\ISDRILL.BI2`) | Btrieve, reclen 3456 | Per-company lookup-request scratch | confirmed |
+| `I2\ISDRILLM.BI2` | Btrieve | Per-company drill master (2024-09-29) — appears unused | inferred |
+
+**10/11/26 update — replaced files (mtime):** `T7WOA.RWN` + `WBKLOOKUP.RWN` 10:23; per-company WORKORD/WOMAT
+(AB/AT/CA/Default) 10:27–11:06; `I2\WOBOM.BI2` 11:37 (743 MB); ISDRILL in AB/AT/CA/Default 11:58–12:01;
+`Drill\ISDRILLM.B` + `Drill\BKLUGRID.*` 16:42.
+
+**Relationship — WO-A Material Issues:**
+
+```
+T7WOA.RWN (WO-A)  --[Mat button, MAT.CLICK]-->  writes request to I2\ISDRILL.BI2
+  └── WBKLOOKUP.RWN  reads ISDRILL record
+        ├── grid WOBOMMI "Work Order Materials" (Drill\BKLUGRID.DBF) on WOBOM (I2\WOBOM.BI2)
+        │     WHILE WOBOM.WOPRE = <pre> .A. WOBOM.WOSUF = <suf>
+        └── drill WOMATL "Materials Issued" (Drill\ISDRILLM.B) on WOMAT (I2\WOMAT.BI2)
+              link WOBOM.WOPRE/WOSUF → WOMAT.WOPRE/WOSUF (key 3)
+```
+
+**ODBC DDF misalignment:** In DSN=DBA (company I2), WORKORD (reclen 1173), WOBOM (reclen 496) and ISNUMBER have a
+1-byte null indicator per field in `X$Field` that the data lacks → garbage via ODBC. WOMAT and BKICMSTR are correct.
+Root `FILE.DDF` (2024-09-29) is a separate multi-company dictionary, not the one DSN=DBA uses.
+
+**Local copies:** `samples/t7woa-20261011/`, `samples/drill-20261012/`, `samples/i2-20261012/`, `samples/ddf-i2s-evo-20261012/`.

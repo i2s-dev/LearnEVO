@@ -23,6 +23,8 @@ ID, fill in all fields, and prepend it under the appropriate status heading.
 
 | ID | Module | One-line summary | Status | Workaround? |
 |----|--------|-----------------|--------|-------------|
+| [KI-003](Issues/KI-003-wo-a-material-issues-empty-file.md) | WO-A | Material Issues button shows "Empty File" for ALL WOs since 10/11 ISTS update (T7WOA/WBKLOOKUP) | ACTIVE | Not yet — contact ISTS |
+| [KI-002](Issues/KI-002-odbc-btrieve-161-license-limit.md) | ODBC | 64-bit DBA DSN still points to old server i2s109-solidcrm -> Btrieve Error 161 | FIXED (this PC) | Repoint 64-bit DSN on other PCs |
 | [KI-001](#ki-001) | WO-G | KIT=L freezes EVO when first mandatory BOM item is fully issued | ACTIVE | Yes — use KIT=Y |
 | [BUG-001](#bug-001-glossary-stubs) | learnevo-help | Glossary see-also refs produced broken-link stubs | FIXED | n/a |
 | [BUG-002](#bug-002-hint-bar-overlap) | learnevo-help | Hint bar overlapping sidebar + content | FIXED | n/a |

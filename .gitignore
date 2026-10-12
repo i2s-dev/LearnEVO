@@ -35,3 +35,6 @@ programs/*/dist/
 # Oversized Btrieve memo samples (exceed GitHub file limits)
 samples/BKMENUSU.dbt
 samples/BKMENUSU_Recov.dbt
+
+# Large EVO data copies (2026-10-12)
+samples/i2-20261012/*.BI2

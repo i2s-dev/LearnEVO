@@ -200,3 +200,18 @@ and installer packages; TCP port 1583 confirmed from two independent sources (DS
 per-company Pervasive DB names confirmed from JDBC.INI; EVOADMIN DSN existence confirmed from
 StartEvo.exe strings but not from ODBC registry (may be server-only); DDF relative path
 assumption (for local snapshot) is inferred, not directly verified.
+
+## Company data folders on i2s-evo (2026-10-12)
+
+`\\i2s-evo\EVOERP\` holds one folder per company. **Company I2 is the only live one** (user, 2026-10-12).
+
+| Folder | Extension | Status |
+|--------|-----------|--------|
+| `I2\` | `.BI2` | **Live** — WORKORD.BI2 modified daily |
+| `22\` | `.B22` | Old (WOMAT 2017, WORKORD 2026-07) |
+| `AB\`, `AT\`, `CA\`, `Default\` | `.BAB`, `.BAT`, `.BCA`, `.B` | Small, touched by 10/11 update |
+| `Testdata\` | `.B99` | Test company |
+| `Drill\` | — | Shared lookup definitions (ISDRILLM.B, BKLUGRID.DBF) — see [lookup-drill-engine.md](lookup-drill-engine.md) |
+
+The old server `i2s109-solidcrm` (192.168.0.239) was still powered on and answering on TCP 1583 on 2026-10-12.
+It is retired — **do not use it**. Repoint anything that references it.

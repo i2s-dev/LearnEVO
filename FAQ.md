@@ -11,6 +11,7 @@ Check this file first before investigating any new problem report.
 |---|-------|--------|--------|--------|
 | [FAQ-001](#faq-001) | WO-G shows "Issued to Dt = 0" but IN-A Transactions shows qty issued | WO-G / IN-A | WOBOM, WOMAT, INVTXN | ✅ Solved |
 | [FAQ-002](#faq-002) | Bin-to-bin transfer fails though WC field already shows "Q"; re-saving "Q" fixes it | IN-L-J / WC-B | BKICLOC, ISBINLOC, ISBINLOT, INVTXN | ✅ Root cause confirmed |
+| [FAQ-003](#faq-003) | WO-A Material Issues button says "Empty File" | WO-A | WOBOM, WOMAT, ISDRILL | ⚠️ Open — KI-003 |
 
 ---
 
@@ -190,3 +191,32 @@ above is for Muthu / an authorized admin to action inside EVO; no database write
 ---
 
 *Add new entries above this line. Follow the FAQ-NNN numbering. Update the Index table.*
+
+---
+
+<!-- FAQ-003 -->
+## FAQ-003 — WO-A Material Issues button says "Empty File"
+
+### Symptom
+WO-A → Material Issues (toolbar button) → "Information – Empty File", for every WO tried since ~10/11/26,
+including WOs that load normally and have material issued. Closed WOs also open as "* New".
+
+### What the button shows
+The "Work Order Materials" grid: the WO's **WOBOM** lines (component, qty required, qty issued, % issued),
+with drill-down to **WOMAT** issue transactions. "Empty File" = the grid returned no rows.
+
+### Diagnosis steps
+1. Confirm data exists: `SELECT COUNT(*) FROM WOMAT WHERE WOMAT_WOPRE=<pre> AND WOMAT_WOSUF=<suf>` (DSN=DBA, 32- or
+   64-bit DSN pointing at i2s-evo). WOBOM can't be filtered via ODBC (misaligned DDF) — raw-decode the file instead
+   ([odbc-ddf-null-indicator-offsets.md](docs/04-data-dictionary/odbc-ddf-null-indicator-offsets.md)).
+2. If data exists and the grid is still empty, it's the lookup, not the data.
+3. Copy `I2\ISDRILL.BI2` right after the click and decode the T7WOA record to see the exact request
+   ([lookup-drill-engine.md](docs/01-architecture/lookup-drill-engine.md)).
+
+### Status / fix
+Open — data and lookup config unchanged; failure started with the 10/11/26 program update. Report to ISTS
+(reportable evidence only) — see [KI-003](Issues/KI-003-wo-a-material-issues-empty-file.md). Do not roll back without asking.
+
+### Tables involved
+WOBOM (grid source), WOMAT (drill-down), WORKORD (header), ISDRILL (lookup request scratch).
+

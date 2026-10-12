@@ -38,6 +38,8 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [Supporting subsystems (Notes, Scheduler, Service, DC, Links, FNO, Update, …)](01-architecture/subsystems.md) — *draft*
 - [Connecting external software to the EVO database (ODBC, DSN, bitness)](01-architecture/external-odbc-connections.md) — *verified*
 - [Network topology, Pervasive SQL server mode, per-company databases](01-architecture/network-topology.md) — *verified*
+- [Lookup / drill engine (WBKLOOKUP, ISDRILL scratch records, ISDRILLM links, BKLUGRID grids)](01-architecture/lookup-drill-engine.md) — *partial, 2026-10-12*
+- [2026-10-11 ISTS update — changed files, timeline, backups](01-architecture/2026-10-11-ists-update.md) — *partial, 2026-10-12*
 - [Workstation setup procedure (Pervasive client, ODBC DSN, taspro7.ini, identity files)](01-architecture/workstation-setup.md) — *partial*
 
 ### 02 — File formats
@@ -79,6 +81,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 - [SA — Sales Analysis](03-modules/sa-sales-analysis/README.md) — + [help-content.md](03-modules/sa-sales-analysis/help-content.md)
 - [PO — Purchase Orders](03-modules/po-purchase-orders/README.md) (29 / 41 / 8) — + [help-content.md](03-modules/po-purchase-orders/help-content.md) *(27 CHM topics)*
 - [WO — Work Orders](03-modules/wo-work-orders/README.md) (31 / 68 / 30) — + [help-content.md](03-modules/wo-work-orders/help-content.md) *(52 CHM topics)*
+  - [WO-A Material Issues button (WOBOMMI lookup on WOBOM; KI-003)](03-modules/wo-work-orders/wo-a-material-issues.md) — *partial, 2026-10-12*
 - [GL — General Ledger](03-modules/gl-general-ledger/README.md) (16 / 24 / 28) — + [help-content.md](03-modules/gl-general-ledger/help-content.md) *(18 CHM topics)* — Pass321 2026-06-26: all 9 BKGLTRAN.TYPE codes confirmed from BKGLO.RUN binary; 20 BKGL*.RUN programs inventoried; C:83→97
 - [BM — Bill of Materials](03-modules/bm-bill-of-materials/README.md) (10 / 16 / 10) — + [help-content.md](03-modules/bm-bill-of-materials/help-content.md) *(16 CHM topics)*
 - [RO — Routings](03-modules/ro-routings/README.md) — + [help-content.md](03-modules/ro-routings/help-content.md) *(22 CHM topics)*
@@ -144,6 +147,7 @@ here, it hasn't been investigated yet — see `../research/OPEN_QUESTIONS.md`.
 
 ### 06 — Data dictionary
 - [Data dictionary overview — 649 tables, Pervasive DDF set](04-data-dictionary/overview.md) — *draft*
+- [ODBC DDF null-indicator misalignment (WORKORD/WOBOM/ISNUMBER) + decode rule](04-data-dictionary/odbc-ddf-null-indicator-offsets.md) — *verified, 2026-10-12*
 - [**Table index — ALL 579 DBA tables with module + purpose (from Evo-DBA_File_Fields 052421.xlsx)**](04-data-dictionary/table-index.md) — *verified-schema, Pass 431 2026-06-30*
 - [**Field reference by module — 21,299 fields across 32 modules + misc (from Evo-DBA_File_Fields 052421.xlsx)**](04-data-dictionary/fields-so.md) — *see fields-\<module\>.md files; SO/WO/AR/AP/PO/GL/IN/SM/PR/ES/CM/BM/etc.*
 - [File names — complete table index (vendor help, by module)](04-data-dictionary/file-names-index.md) — *verified, ~320 tables*

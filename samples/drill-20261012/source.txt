@@ -1,0 +1,6 @@
+Copied 2026-10-12 from \i2s-evoVOERP:
+ Drill\ISDRILLM.B (2026-10-11) -> ISDRILLM.new.B
+ ISDRILLM.B root (2026-05-30) -> ISDRILLM.root-20260530.B
+ Drill\BKLUGRID.DBF/.dbt (2026-10-11) -> BKLUGRID.new.*
+ Drill\BKLUGRID.xBF/.xbt (2025-05-31) -> BKLUGRID.old-20250531.*
+ISDRILL.* from each company folder copied 2026-10-12
